@@ -4,7 +4,7 @@
  * author: shiqun.shi@alipay.com
  */
 
-package com.xiaoka.test.sign;
+package com.linyun.airline.common.util;
 
 public final class Base64 {
 
