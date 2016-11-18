@@ -1,33 +1,37 @@
 package com.linyun.airline.entities;
 
-import org.nutz.dao.entity.annotation.*;
-import lombok.Data;
-
 import java.io.Serializable;
 
+import lombok.Data;
+
+import org.nutz.dao.entity.annotation.Column;
+import org.nutz.dao.entity.annotation.Comment;
+import org.nutz.dao.entity.annotation.Id;
+import org.nutz.dao.entity.annotation.Table;
 
 @Data
 @Table("dict_type")
 public class DictTypeEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
+	@Column
 	@Id(auto = true)
-	private Integer id;
-	
+	@Comment("主键")
+	private long id;
+
 	@Column
-    @Comment("字典类别代码")
+	@Comment("字典类别编码")
 	private String typeCode;
-	
+
 	@Column
-    @Comment("字典类别名称")
+	@Comment("字典类别名称")
 	private String typeName;
-	
+
 	@Column
-    @Comment("描述")
+	@Comment("描述")
 	private String description;
-	
+
 	@Column
-    @Comment("状态,0-冻结，1-启用，2--删除")
-	private Integer status;
-	
+	@Comment("状态,0-冻结，1-启用，2--删除")
+	private int status;
 
 }

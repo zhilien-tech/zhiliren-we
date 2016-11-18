@@ -6,22 +6,22 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 @Data
 public class LoginForm {
-	
+
 	/**登录名*/
 	@NotEmpty
-	private String loginName ;
-	
+	private String loginName;
+
 	/**密码*/
 	@NotEmpty
-	private String  password ;
-	
+	private String password;
+
 	/**
 	 * 验证码
 	 */
 	@NotEmpty
-	private String validateCode ;
-	
+	private String validateCode;
+
 	/**错误消息*/
-	private String errMsg ;
+	private String errMsg;
 
 }
