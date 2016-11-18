@@ -4,7 +4,7 @@
  * Copyright (c) 2016, 北京科技有限公司版权所有.
 */
 
-package com.xiaoka.test.entity;
+package com.linyun.airline.common.sabre.bean;
 
 import lombok.Data;
 
@@ -21,16 +21,18 @@ public class SabreAccessToken {
 	/**
 	 * 凭据
 	 */
-	private String accessToken;
+	private String access_token;
 
 	/**
 	 * 凭据类型
 	 */
-	private String tokenType;
+	private String token_type;
 
 	/**
 	 * 过期时间
 	 */
-	private int expiresIn;
+	private int expires_in;
+
+	private long loadTimeMillis;
 
 }
