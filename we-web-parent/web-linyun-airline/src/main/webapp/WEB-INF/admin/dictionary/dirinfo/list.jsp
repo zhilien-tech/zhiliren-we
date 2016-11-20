@@ -51,12 +51,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="box-header">
               <h3 class="box-title">&nbsp;&nbsp;<i class="fa fa-user-secret"></i>字典信息</h3>
             </div>
-            <div class="col-md-3"><!--字典信息名称 搜索框-->
-              <input type="text" class="form-control" placeholder="字典信息名称">
-            </div>
-            <div class="col-md-2 col-padding"><!--搜索 按钮-->
-              <button type="button" class="btn btn-primary btn-sm">搜索</button>
-            </div>
+            <form action="${base}/admin/dictionary/dirinfo/list.html" method="post" onsubmit="return navTabSearch(this);">
+				 <div class="col-md-3"><!--字典信息名称 搜索框-->
+            		  <input type="text" name="dictName" value="${obj.queryForm.dictName}" class="form-control" placeholder="字典信息名称">
+          		  </div>
+				 <div class="col-md-2 col-padding"><!--搜索 按钮-->
+              		<button type="submit" class="btn btn-primary btn-sm">搜索</button>
+           		 </div>
+			</form>
             <div class="col-md-1 col-md-offset-2">
               <button type="button" onclick="javascript:window.open('${base}/admin/dictionary/dirinfo/add.html')" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".Mymodal-lg">添加</button>
             </div>
