@@ -10,12 +10,6 @@
 			  	</div>
 			</div>
 			<div class="form_item">
-				<label class="form_label">创建时间：</label>
-			  	<div class="form_ctrl">
-			    	<input name="createTime" type="text" class="required"  maxlength="10"/>
-			  	</div>
-			</div>
-			<div class="form_item">
 				<label class="form_label">备注：</label>
 			  	<div class="form_ctrl">
 			    	<input name="remark" type="text" class="required"  maxlength="10"/>
