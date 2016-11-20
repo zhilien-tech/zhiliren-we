@@ -51,12 +51,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="box-header">
               <h3 class="box-title">&nbsp;&nbsp;<i class="fa fa-user-secret"></i> 职位</h3>
             </div>
-            <div class="col-md-3"><!--职位名称 搜索框-->
-              <input type="text" class="form-control" placeholder="职位名称">
-            </div>
-            <div class="col-md-2 col-padding"><!--搜索 按钮-->
-              <button type="button" class="btn btn-primary btn-sm">搜索</button>
-            </div>
+            <form action="${base}/admin/job/list.html" method="post" onsubmit="return navTabSearch(this);">
+				 <div class="col-md-3"><!--职位名称 搜索框-->
+            		  <input type="text" name="name" value="${obj.queryForm.name}" class="form-control" placeholder="职位名称">
+          		  </div>
+				 <div class="col-md-2 col-padding"><!--搜索 按钮-->
+              		<button type="submit" class="btn btn-primary btn-sm">搜索</button>
+           		 </div>
+			</form>
             <div class="col-md-1 col-md-offset-2">
               <button type="button" onclick="javascript:window.open('${base}/admin/job/add.html');" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".Mymodal-lg">添加</button>
             </div>
@@ -84,7 +86,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							<%--
 								这里如果有写title，则需要确认才会操作
 							 --%>
-							<a target="ajaxTodo" rel="dlgId1" href="${url}/delete?id=${one.id}" title='是否要删除' class='btn btn_mini btn_del'>删除</a>
+							<a target="ajaxTodo" rel="dlgId1" href="${base}/admin/job/delete?id=${one.id}" title='是否要删除' class='btn btn_mini btn_del'>删除</a>
 						</td>
 					</tr>
 				</c:forEach>

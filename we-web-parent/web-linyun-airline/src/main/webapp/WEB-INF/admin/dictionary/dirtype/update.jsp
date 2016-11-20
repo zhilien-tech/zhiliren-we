@@ -29,7 +29,7 @@
 					<select id="status" name="status">
 						<c:forEach items="${obj }">
 	     					<option value="0">冻结</option>
-							<option value="1" selected="selected">启用</option>
+							<option value="1">启用</option>
 							<option value="2">删除</option>
 						</c:forEach> 
 					</select>
