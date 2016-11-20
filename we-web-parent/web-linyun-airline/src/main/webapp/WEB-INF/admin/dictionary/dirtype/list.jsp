@@ -9,7 +9,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>职位</title>
+  <title>字典类型</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -49,61 +49,55 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">&nbsp;&nbsp;<i class="fa fa-user-secret"></i> 职位</h3>
+              <h3 class="box-title">&nbsp;&nbsp;<i class="fa fa-user-secret"></i>字典类型</h3>
             </div>
-            <div class="col-md-3"><!--职位名称 搜索框-->
-              <input type="text" class="form-control" placeholder="职位名称">
+            <div class="col-md-3"><!--字典类别名称 搜索框-->
+              <input type="text" class="form-control" placeholder="字典类别名称">
             </div>
             <div class="col-md-2 col-padding"><!--搜索 按钮-->
               <button type="button" class="btn btn-primary btn-sm">搜索</button>
             </div>
             <div class="col-md-1 col-md-offset-2">
-              <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".Mymodal-lg">添加</button>
+              <button type="button" onclick="javascript:window.open('${base}/admin/dictionary/dirtype/add.html')" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".Mymodal-lg">添加</button>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="example2" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                	<th><input type="checkbox" group="ids" class="ipt_checkbox checkboxCtrl"></th>
-					<th>用户姓名</th>
-					<th>用户名/手机号码</th>
-					<th>座机号码</th>
-					<th>联系QQ</th>
-					<th>电子邮箱</th>
-					<th>用户类型</th>
+                	<td class="txtc"><input name="ids" value="${one.id}" type="checkbox" class="ipt_checkbox"></td>
+                  	<th>字典类别编码</th>
+					<th>字典类别名称</th>
+					<th>描述</th>
 					<th>状态</th>
-					<th>创建时间</th>
-					<th>更新时间</th>
-					<th>用户是否禁用</th>
-					<th>备注</th>
 					<th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
                     <c:forEach items="${obj.list}" var="one" >
-						<tr>
-							<td class="txtc"><input name="ids" value="${one.id}" type="checkbox" class="ipt_checkbox"></td>
-							<td>${one.userName}</td>
-							<td>${one.telephone}</td>
-							<td>${one.landline}</td>
-							<td>${one.qq}</td>
-							<td>${one.email}</td>
-							<td>${one.userTypeName}</td>
-							<td>${one.userStatusName}</td>
-							<td>${one.createTime}</td>
-							<td>${one.updateTime}</td>
-							<td>${one.disableStatus}</td>
-							<td>${one.remark}</td>
-							<td>
-								<a target="dialog" rel="user_update" href="${url}/update.html?id=${one.id}" class="btn btn_mini btn_modify">修改</a>
-								<%--
-									这里如果有写title，则需要确认才会操作
-								 --%>
-								<a target="ajaxTodo" rel="dlgId1" href="${url}/delete?id=${one.id}" title='是否要删除' class='btn btn_mini btn_del'>删除</a>
-							</td>
-						</tr>
-					</c:forEach>
+					<tr>
+						<td class="txtc"><input name="ids" value="${one.id}" type="checkbox" class="ipt_checkbox"></td>
+						<td>${one.typeCode}</td>
+						<td>${one.typeName }</td>
+						<td>${one.description }</td>
+						<c:if test="${one.status eq 0}"> 
+		     				<td>冻结</td>
+						</c:if>
+						<c:if test="${one.status eq 1}"> 
+		     				<td>启用</td>
+						</c:if>
+						<c:if test="${one.status eq 2}"> 
+		     				<td>删除</td>
+						</c:if>
+						<td>
+							<a target="dialog" rel="dlgId1" href="${base}/admin/dictionary/dirtype//update.html?id=${one.id}" class="btn btn_mini btn_modify" >修改</a>
+							<%--
+								这里如果有写title，则需要确认才会操作
+							 --%>
+							<a target="ajaxTodo" rel="dlgId1" href="${url}/delete?id=${one.id}" title='是否要删除' class='btn btn_mini btn_del'>删除</a>
+						</td>
+					</tr>
+				</c:forEach>
                 </tbody>
               </table>
             </div>
