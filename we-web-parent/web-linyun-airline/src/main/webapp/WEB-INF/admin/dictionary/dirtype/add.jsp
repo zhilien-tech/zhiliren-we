@@ -2,7 +2,6 @@
 <%@include file="/WEB-INF/common/tld.jsp"%>
 <div class="panel_box">
 	<div class="panel_content nopadding">
-	
 		<form method="post" action="${base}/admin/dictionary/dirtype/add.html" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
 			<div class="form_item">
 				<label class="form_label">字典类别编码：</label>

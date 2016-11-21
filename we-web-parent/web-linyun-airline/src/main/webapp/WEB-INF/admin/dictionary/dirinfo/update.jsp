@@ -8,7 +8,15 @@
 			  	<div class="form_ctrl">
 			  		<%-- 字典类别id --%>
 			  		<input name="id" type="hidden" value="${obj.dirinfo.id}"/>
-			    	<input name="typeCode" type="text" class="required"  maxlength="10" value="${obj.dirinfo.typeCode}"/>
+			    	<%-- <input name="typeCode" type="text" class="required"  maxlength="10" value="${obj.dirinfo.typeCode}"/> --%>
+			    	<select id="typeCode" name="typeCode">
+                    	<option>--请选择--</option>
+                        <c:forEach var="shipList" items="${obj }"> 
+							<option value='${shipList.typeCode}' ${shipList.typeCode==typeCode?'selected':''}>
+								${shipList.typeName}
+							</option>
+						</c:forEach>
+                    </select>
 			  	</div>
 			</div>
 			<div class="form_item">
