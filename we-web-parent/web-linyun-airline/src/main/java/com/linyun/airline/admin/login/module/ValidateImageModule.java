@@ -19,7 +19,7 @@ import com.linyun.airline.common.util.ValidateImageUtil;
 @At("/")
 @IocBean
 public class ValidateImageModule {
-	
+
 	/**
 	 * 生成图片验证码
 	 * @throws IOException 
@@ -27,20 +27,20 @@ public class ValidateImageModule {
 	@At
 	@Ok("raw:application/octet-stream")
 	@Filters
-	public void validateImage(final HttpServletResponse response,final HttpSession session) throws IOException{ 
+	public void validateImage(final HttpServletResponse response, final HttpSession session) throws IOException {
 		ValidateImageUtil viu = ValidateImageUtil.Instance();
 		session.setAttribute(CommonConstants.CONFIRMCODE, viu.getString());
-		
-		InputStream ins = viu.getImage(); 
-		byte[] buffer = new byte[ins.available()]; 
+
+		InputStream ins = viu.getImage();
+		byte[] buffer = new byte[ins.available()];
 		ins.read(buffer);
 		ins.close();
-		
-		OutputStream out = new BufferedOutputStream(response.getOutputStream()); 
+
+		OutputStream out = new BufferedOutputStream(response.getOutputStream());
 		response.setContentType("image/jpeg");
 		out.write(buffer);
 		out.flush();
 		out.close();
 	}
-	
+
 }

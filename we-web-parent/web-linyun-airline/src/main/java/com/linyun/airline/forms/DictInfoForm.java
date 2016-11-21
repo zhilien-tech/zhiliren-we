@@ -1,41 +1,41 @@
 package com.linyun.airline.forms;
 
-import com.linyun.airline.entities.DictInfoEntity;
-import com.uxuexi.core.web.form.SQLParamForm;
-import com.uxuexi.core.db.util.EntityUtil;
+import java.io.Serializable;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-import java.io.Serializable;
+import com.linyun.airline.entities.DictInfoEntity;
+import com.uxuexi.core.db.util.EntityUtil;
+import com.uxuexi.core.web.form.SQLParamForm;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DictInfoForm extends SQLParamForm implements Serializable{
+public class DictInfoForm extends SQLParamForm implements Serializable {
 	private static final long serialVersionUID = 1L;
 	/**主键*/
-	private Integer id;
-	
-	/**字典类别代码*/
-	private String typeCode = "";
-	
+	private long id;
+
+	/**字典类别编码*/
+	private String typeCode;
+
 	/**字典代码*/
-	private String dictCode = "";
-	
+	private String dictCode;
+
 	/**字典信息*/
-	private String dictName = "";
-	
+	private String dictName;
+
 	/**描述*/
-	private String description = "";
-	
+	private String description;
+
 	/**字典信息状态,0-冻结，1-启用，2--删除*/
-	private Integer status = 1;
-	
+	private int status;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**
