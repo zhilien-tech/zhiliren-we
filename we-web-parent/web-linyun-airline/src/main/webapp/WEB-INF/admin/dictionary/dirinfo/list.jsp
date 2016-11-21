@@ -53,7 +53,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </div>
             <form action="${base}/admin/dictionary/dirinfo/list.html" method="post" onsubmit="return navTabSearch(this);">
 				 <div class="col-md-3"><!--字典信息名称 搜索框-->
-            		  <input type="text" name="dictName" value="${obj.queryForm.dictName}" class="form-control" placeholder="字典信息名称">
+            		  <input type="text" name="dictName" value="${obj.sqlParamForm.dictName}" class="form-control" placeholder="字典信息名称">
           		  </div>
 				 <div class="col-md-2 col-padding"><!--搜索 按钮-->
               		<button type="submit" class="btn btn-primary btn-sm">搜索</button>

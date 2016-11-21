@@ -11,6 +11,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
 import com.linyun.airline.entities.DictInfoEntity;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.form.SQLParamForm;
 
@@ -51,7 +52,9 @@ public class DictInfoForm extends SQLParamForm implements Serializable {
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		//TODO 添加自定义查询条件（可选）
-
+		if (!Util.isEmpty(dictName)) {
+			cnd.and("i.dictName", "LIKE", "%" + dictName + "%");
+		}
 		return cnd;
 	}
 }

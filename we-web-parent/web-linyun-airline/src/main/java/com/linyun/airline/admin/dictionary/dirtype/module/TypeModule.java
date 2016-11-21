@@ -15,14 +15,13 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
-import com.linyun.airline.admin.dictionary.dirtype.entity.DirtypeEntity;
-import com.linyun.airline.admin.dictionary.dirtype.form.TypeAddForm;
-import com.linyun.airline.admin.dictionary.dirtype.form.TypeModForm;
-import com.linyun.airline.admin.dictionary.dirtype.form.TypeQueryForm;
 import com.linyun.airline.admin.dictionary.dirtype.service.ITypeService;
+import com.linyun.airline.forms.DictTypeAddForm;
+import com.linyun.airline.forms.DictTypeForm;
+import com.linyun.airline.forms.DictTypeUpdateForm;
 import com.uxuexi.core.db.dao.IDbDao;
+import com.uxuexi.core.web.base.page.Pagination;
 import com.uxuexi.core.web.chain.support.JsonResult;
-import com.uxuexi.core.web.util.FormUtil;
 
 /**
  * TODO(这里用一句话描述这个类的作用)
@@ -48,7 +47,8 @@ public class TypeModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public void add() {
+	public Object add() {
+		return null;
 	}
 
 	/**
@@ -59,8 +59,8 @@ public class TypeModule {
 	 */
 	@At
 	@POST
-	public Object add(@Param("..") final TypeAddForm addForm) {
-		FormUtil.add(dbDao, addForm, DirtypeEntity.class);
+	public Object add(@Param("..") final DictTypeAddForm addForm) {
+		iTypeService.add(addForm);
 		return JsonResult.success("添加成功!");
 	}
 
@@ -71,7 +71,7 @@ public class TypeModule {
 	@GET
 	@Ok("jsp")
 	public Object update(@Param("id") final long id) {
-		return iTypeService.findDirtype(id);
+		return iTypeService.fetch(id);
 	}
 
 	/**
@@ -79,8 +79,8 @@ public class TypeModule {
 	 */
 	@At
 	@POST
-	public Object update(@Param("..") final TypeModForm modForm) {
-		iTypeService.update(modForm);
+	public Object update(@Param("..") DictTypeUpdateForm updateForm) {
+		iTypeService.update(updateForm);
 		return JsonResult.success("修改成功!");
 	}
 
@@ -93,8 +93,8 @@ public class TypeModule {
 	 */
 	@At
 	@Ok("jsp")
-	public Object list(@Param("..") final TypeQueryForm queryForm, @Param("..") final Pager pager) {
-		return FormUtil.query(dbDao, DirtypeEntity.class, queryForm, pager);
+	public Pagination list(@Param("..") final DictTypeForm sqlParamForm, @Param("..") final Pager pager) {
+		return iTypeService.listPage(sqlParamForm, pager);
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class TypeModule {
 	 */
 	@At
 	public Object delete(@Param("id") final long id) {
-		FormUtil.delete(dbDao, DirtypeEntity.class, id);
+		iTypeService.deleteById(id);
 		return JsonResult.success("删除成功！");
 	}
 
@@ -110,8 +110,8 @@ public class TypeModule {
 	 * 批量删除记录
 	 */
 	@At
-	public Object batchDelete(@Param("ids") final long[] ids) {
-		FormUtil.delete(dbDao, DirtypeEntity.class, ids);
+	public Object batchDelete(@Param("ids") final Long[] ids) {
+		iTypeService.batchDelete(ids);
 		return JsonResult.success("删除成功！");
 	}
 
