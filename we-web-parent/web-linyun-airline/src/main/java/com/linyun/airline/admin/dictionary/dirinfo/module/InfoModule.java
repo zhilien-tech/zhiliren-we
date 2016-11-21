@@ -6,9 +6,6 @@
 
 package com.linyun.airline.admin.dictionary.dirinfo.module;
 
-import java.util.Map;
-
-import org.nutz.dao.SqlManager;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -18,15 +15,14 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
-import com.linyun.airline.admin.dictionary.dirinfo.entity.DirinfoEntity;
-import com.linyun.airline.admin.dictionary.dirinfo.form.InfoAddForm;
-import com.linyun.airline.admin.dictionary.dirinfo.form.InfoModForm;
-import com.linyun.airline.admin.dictionary.dirinfo.form.InfoSqlForm;
 import com.linyun.airline.admin.dictionary.dirinfo.service.IInfoService;
-import com.linyun.airline.admin.dictionary.dirtype.entity.DirtypeEntity;
+import com.linyun.airline.admin.dictionary.dirtype.service.ITypeService;
+import com.linyun.airline.forms.DictInfoAddForm;
+import com.linyun.airline.forms.DictInfoForm;
+import com.linyun.airline.forms.DictInfoUpdateForm;
 import com.uxuexi.core.db.dao.IDbDao;
+import com.uxuexi.core.web.base.page.Pagination;
 import com.uxuexi.core.web.chain.support.JsonResult;
-import com.uxuexi.core.web.util.FormUtil;
 
 /**
  * TODO(这里用一句话描述这个类的作用)
@@ -46,11 +42,12 @@ public class InfoModule {
 	/**
 	 * 注入容器中管理sql的对象，用于从sql文件中根据key取得sql
 	 */
-	@Inject
-	private SqlManager sqlManager;
 
 	@Inject
 	private IInfoService iInfoService;
+
+	@Inject
+	private ITypeService iTypeService;
 
 	/**
 	 * 跳转到'添加操作'的录入数据页面
@@ -59,7 +56,7 @@ public class InfoModule {
 	@GET
 	@Ok("jsp")
 	public Object add() {
-		return dbDao.query(DirtypeEntity.class, null, null);
+		return null;
 	}
 
 	/**
@@ -69,9 +66,9 @@ public class InfoModule {
 	 */
 	@At
 	@POST
-	public Object add(@Param("..") final InfoAddForm addForm) {
-		FormUtil.add(dbDao, addForm, DirinfoEntity.class);
-		return JsonResult.success("添加成功!");
+	public Object add(@Param("..") DictInfoAddForm addForm) {
+		iInfoService.add(addForm);
+		return JsonResult.success("添加成功！");
 	}
 
 	/**
@@ -81,7 +78,7 @@ public class InfoModule {
 	@GET
 	@Ok("jsp")
 	public Object update(@Param("id") final long id) {
-		return iInfoService.findDirinfo(id);
+		return iInfoService.fetch(id);
 	}
 
 	/**
@@ -89,9 +86,9 @@ public class InfoModule {
 	 */
 	@At
 	@POST
-	public Object update(@Param("..") final InfoModForm modForm) {
-		iInfoService.update(modForm);
-		return JsonResult.success("修改成功!");
+	public Object update(@Param("..") DictInfoUpdateForm updateForm) {
+		iInfoService.update(updateForm);
+		return JsonResult.success("修改成功！");
 	}
 
 	/**
@@ -103,9 +100,8 @@ public class InfoModule {
 	 */
 	@At
 	@Ok("jsp")
-	public Object list(@Param("..") final InfoSqlForm sqlForm, @Param("..") final Pager pager) {
-		Map<String, Object> obj = FormUtil.query(dbDao, sqlManager, sqlForm, pager);
-		return obj;
+	public Pagination list(@Param("..") final DictInfoForm sqlParamForm, @Param("..") final Pager pager) {
+		return iInfoService.listPage(sqlParamForm, pager);
 	}
 
 	/**
@@ -113,7 +109,7 @@ public class InfoModule {
 	 */
 	@At
 	public Object delete(@Param("id") final long id) {
-		FormUtil.delete(dbDao, DirinfoEntity.class, id);
+		iInfoService.deleteById(id);
 		return JsonResult.success("删除成功！");
 	}
 
@@ -121,8 +117,8 @@ public class InfoModule {
 	 * 批量删除记录
 	 */
 	@At
-	public Object batchDelete(@Param("ids") final long[] ids) {
-		FormUtil.delete(dbDao, DirinfoEntity.class, ids);
+	public Object batchDelete(@Param("ids") final Long[] ids) {
+		iInfoService.batchDelete(ids);
 		return JsonResult.success("删除成功！");
 	}
 }
