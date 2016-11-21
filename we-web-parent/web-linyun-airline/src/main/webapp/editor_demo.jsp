@@ -2,53 +2,17 @@
 <%@include file="/WEB-INF/common/tld.jsp"%>
 <div class="panel_box">
 	<div class="panel_content nopadding">
-	
-		<form method="post" action="${base}/admin/activity/add.html" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-			<input type="hidden" id="uploader_picture" name="isDel" value="1"/>
-			<div class="form_item">
-				<label class="form_label">标题：</label>
-			  	<div class="form_ctrl">
-			    	<input name="title" type="text" class="required"  maxlength="10"/>
-			  	</div>
+		<div class="form_item">
+			<label class="form_label">内容：</label>
+			<div class="form_ctrl" >
+				<textarea name="content" id="editor"></textarea>
 			</div>
-			
-			<div class="form_item">
-				<label class="form_label">图片：</label>
-				<div class="form_ctrl" >
-					<input type="hidden" id="webupload_picture" name="cover" value=""/>
-			        <div class="wu-example" id="uploader_00" style="width:300px;height:200px;">
-			        	<div id="imgUrlMessage" name="imgUrlMessage"></div> 
-			        </div>
-				</div>
-			</div>
-			<br>	<br>
-			<div class="form_item">
-				<label class="form_label">活动开始时间：</label>
-				<div class="form_ctrl " >
-					<input  name="beginTime" type="text" class="date" datefmt="yyyy-MM-dd HH:mm:00"/>
-				</div>
-			</div>
-				
-			<div class="form_item">
-				<label class="form_label">活动结束时间：</label>
-				<div class="form_ctrl change" >
-					<input   name="endTime" type="text" class="date" datefmt="yyyy-MM-dd HH:mm:00"/>
-				</div>
-			</div> 
-			<div class="form_item">
-				<label class="form_label">内容：</label>
-				<div class="form_ctrl" >
-					<textarea name="content" id="editor"></textarea>
-				</div>
-			</div>
-			
-            <div class="form_actions">
-              	<button type="submit" class="btn btn_add">保存</button>
-				<button type="button" class="btn btn_del closeDialog">取消</button>
-            </div>
-          </form>
+		</div>
 	</div>
 </div>
+
+<!-- jQuery 2.2.3 -->
+<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 
 <%--  UEDITOR START --%>
 <!-- 配置文件 -->
@@ -76,12 +40,3 @@
   });
  </script>
  <%--  UEDITOR END --%>
-
-<jsp:include page="/WEB-INF/common/webupload_resource.jsp"></jsp:include>
-<script type="text/javascript">
-	$(document).ready(function(){
-		if($("#uploader_00").length>0){
-			inituploader("","00",[]);
-		}
-	});
-</script>
