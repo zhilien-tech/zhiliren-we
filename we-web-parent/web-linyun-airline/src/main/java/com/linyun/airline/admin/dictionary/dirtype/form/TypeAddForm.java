@@ -9,8 +9,6 @@ package com.linyun.airline.admin.dictionary.dirtype.form;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import com.uxuexi.core.web.form.AddForm;
 
 /**
@@ -24,7 +22,6 @@ public class TypeAddForm extends AddForm {
 	//字典类别编码
 	private String typeCode;
 	//字典类别名称
-	@NotEmpty
 	private String typeName;
 	//描述
 	private String description;

@@ -12,8 +12,8 @@
                     <select id="typeCode" name="typeCode">
                     	<option>--请选择--</option>
 						<c:forEach var="shipList" items="${obj.dirtype }">
-							<option value='${shipList.typeCode}' ${shipList.typeCode==typeCode?'selected':''}>
-								${shipList.typeName}
+							<option value='${obj.typeCode}' ${shipList.typeCode==typeCode?'selected':''}>
+								${obj.typeName}
 							</option>
 						</c:forEach> 
 					</select>

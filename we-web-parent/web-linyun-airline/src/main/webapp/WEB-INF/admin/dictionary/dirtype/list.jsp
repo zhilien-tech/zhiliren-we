@@ -59,15 +59,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
               		<button type="submit" class="btn btn-primary btn-sm">搜索</button>
            		 </div>
 			</form>
-            <div class="col-md-1 col-md-offset-2">
-              <button type="button" onclick="javascript:window.open('${base}/admin/dictionary/dirtype/add.html')" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".Mymodal-lg">添加</button>
+            <div class="col-md-1 col-md-offset-6">
+              <%-- <button type="button" onclick="javascript:window.open('${base}/admin/dictionary/dirtype/add.html')" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".Mymodal-lg">添加</button> --%>
+           		<a href="${base}/admin/dictionary/dirtype/add.html" data-toggle="modal" 
+           	class="btn btn-primary btn-sm" id="addBtn" data-target=".Mymodal-lg">添加</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="example2" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                	<td class="txtc"><input name="ids" value="${one.id}" type="checkbox" class="ipt_checkbox"></td>
                   	<th>字典类别编码</th>
 					<th>字典类别名称</th>
 					<th>描述</th>
@@ -78,7 +79,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <tbody>
                     <c:forEach items="${obj.list}" var="one" >
 					<tr>
-						<td class="txtc"><input name="ids" value="${one.id}" type="checkbox" class="ipt_checkbox"></td>
 						<td>${one.typeCode}</td>
 						<td>${one.typeName }</td>
 						<td>${one.description }</td>
@@ -92,7 +92,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		     				<td>删除</td>
 						</c:if>
 						<td>
-							<a target="dialog" rel="dlgId1" href="${base}/admin/dictionary/dirtype/update.html?id=${one.id}" class="btn btn_mini btn_modify" >修改</a>
+							<a href="${base}/admin/dictionary/dirtype/update.html?id=${one.id}" data-toggle="modal" 
+           					 id="addBtn" data-target=".Mymodal-lg">编辑</a>
 							<%--
 								这里如果有写title，则需要确认才会操作
 							 --%>
@@ -117,7 +118,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <%@include file="/WEB-INF/public/footer.jsp"%>
 </div>
 <!-- ./wrapper -->
-
+<!-- 弹框 -->
+	<div class="modal fade Mymodal-lg" role="dialog" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="addTabs">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header">
+              </div>
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
 <!-- REQUIRED JS SCRIPTS -->
 
 <!-- jQuery 2.2.3 -->
@@ -148,6 +159,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
       "autoWidth": false
     });
   });
+  //添加
+  $('#addBtn').click(function(){
+      $(".Mymodal-lg").on("hidden", function() {
+          $(this).removeData("modal");
+      });
+ })
 </script>
 </body>
 </html>

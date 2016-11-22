@@ -6,12 +6,11 @@
 
 package com.linyun.airline.admin.dictionary.dirtype.service;
 
-import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.log.Log;
-import org.nutz.log.Logs;
+import java.util.Map;
 
-import com.linyun.airline.entities.DictTypeEntity;
-import com.uxuexi.core.web.base.service.BaseService;
+import org.nutz.ioc.loader.annotation.IocBean;
+
+import com.linyun.airline.admin.dictionary.dirtype.form.TypeModForm;
 
 /**
  * TODO(这里用一句话描述这个类的作用)
@@ -19,16 +18,14 @@ import com.uxuexi.core.web.base.service.BaseService;
  * @Date	 2016年11月3日 	 
  */
 @IocBean
-public class ITypeService extends BaseService<DictTypeEntity> {
-
-	private static final Log log = Logs.get();
+public interface ITypeService {
 
 	/**
 	 * 修改字典类型信息
 	 * @param form 
 	 * @return
 	 */
-	//public boolean update(TypeModForm form);
+	public boolean update(TypeModForm form);
 
 	/**
 	 * 查询字典类型信息
@@ -36,5 +33,5 @@ public class ITypeService extends BaseService<DictTypeEntity> {
 	 * Dirtype - 字典类型实体
 	 * @param id  角色id
 	 */
-	//Map<String, Object> findDirtype(long id);
+	Map<String, Object> findDirtype(long id);
 }
