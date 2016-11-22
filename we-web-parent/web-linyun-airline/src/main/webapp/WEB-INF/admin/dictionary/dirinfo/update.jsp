@@ -11,10 +11,10 @@
 </head>
 <body onresize=hero();>
           <div class="modal-top">
-          <form method="post" action="${base}/admin/dictionary/dirinfo/update.html">
+          <form id="form1" method="post"  action="${base}/admin/dictionary/dirinfo/update.html">
               <div class="modal-header boderButt">
                   <button type="button" class="btn btn-primary right btn-sm" data-dismiss="modal">返回</button>
-                  <button type="submit" class="btn btn-primary right btn-sm" data-dismiss="modal">保存</button>
+                  <input type="submit" class="btn btn-primary right btn-sm" value="保存"/>
                   <h4>编辑</h4>
               </div>
                 <div class="modal-body">
@@ -63,10 +63,10 @@
                               <textarea name="description" id="description" class="form-control">${obj.dirinfo.description}</textarea>
                             </div>
                         </div>
-                      </form>
                     </div>
                 </div>
-            </div>
+          </form>
+     </div>
 </body>
 </html>	
 <script type="text/javascript">

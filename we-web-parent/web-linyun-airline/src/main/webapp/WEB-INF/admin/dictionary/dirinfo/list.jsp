@@ -58,8 +58,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				 <div class="col-md-2 col-padding"><!--搜索 按钮-->
               		<button type="submit" class="btn btn-primary btn-sm">搜索</button>
            		 </div>
+           		 <div class="col-md-3"><!--状态名称 搜索框-->
+          			<div class="col-sm-8 padding">
+                      <select id="status" name="status" class="form-control input-sm">
+	     					<option value="0" <c:if test="${'0' eq obj.dirtype.status}">selected</c:if>>冻结</option>
+							<option value="1" <c:if test="${'1' eq obj.dirtype.status}">selected</c:if>>启用</option>
+					  </select>
+                    </div>
+          		 </div>
 			</form>
-            <div class="col-md-1 col-md-offset-6">
+            <div class="col-md-1 col-md-offset-3">
            		<a href="${base}/admin/dictionary/dirinfo/add.html" data-toggle="modal" 
            	class="btn btn-primary btn-sm" id="addBtn" data-target=".Mymodal-lg">添加</a>
             </div>

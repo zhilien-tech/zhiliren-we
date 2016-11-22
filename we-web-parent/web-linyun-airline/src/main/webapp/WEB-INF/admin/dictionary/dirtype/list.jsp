@@ -54,13 +54,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <form action="${base}/admin/dictionary/dirtype/list.html" method="post" onsubmit="return navTabSearch(this);">
 				 <div class="col-md-3"><!--字典类别名称 搜索框-->
             		  <input type="text" name="typeName" value="${obj.queryForm.typeName}" class="form-control" placeholder="字典类别名称">
-          		  </div>
+          		 </div>
 				 <div class="col-md-2 col-padding"><!--搜索 按钮-->
               		<button type="submit" class="btn btn-primary btn-sm">搜索</button>
            		 </div>
+           		 <div class="col-md-3"><!--状态名称 搜索框-->
+          			<div class="col-sm-8 padding">
+                      <select id="status" name="status" class="form-control input-sm">
+	     					<option value="0" <c:if test="${'0' eq obj.dirtype.status}">selected</c:if>>冻结</option>
+							<option value="1" <c:if test="${'1' eq obj.dirtype.status}">selected</c:if>>启用</option>
+					  </select>
+                    </div>
+          		 </div>
 			</form>
-            <div class="col-md-1 col-md-offset-6">
-              <%-- <button type="button" onclick="javascript:window.open('${base}/admin/dictionary/dirtype/add.html')" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".Mymodal-lg">添加</button> --%>
+            <div class="col-md-1 col-md-offset-3">
            		<a href="${base}/admin/dictionary/dirtype/add.html" data-toggle="modal" 
            	class="btn btn-primary btn-sm" id="addBtn" data-target=".Mymodal-lg">添加</a>
             </div>
@@ -87,9 +94,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 						</c:if>
 						<c:if test="${one.status eq 1}"> 
 		     				<td>启用</td>
-						</c:if>
-						<c:if test="${one.status eq 2}"> 
-		     				<td>删除</td>
 						</c:if>
 						<td>
 							<a href="${base}/admin/dictionary/dirtype/update.html?id=${one.id}" data-toggle="modal" 
