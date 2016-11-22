@@ -9,8 +9,6 @@ package com.linyun.airline.admin.dictionary.dirinfo.form;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import com.uxuexi.core.web.form.ModForm;
 
 /**
@@ -25,7 +23,6 @@ public class InfoModForm extends ModForm {
 	//字典类别编码
 	private String typeCode;
 	//字典代码
-	@NotEmpty
 	private String dictCode;
 	//字典信息
 	private String dictName;
@@ -33,4 +30,6 @@ public class InfoModForm extends ModForm {
 	private String description;
 	//状态
 	private int status;
+	//删除标识
+	private int dr;
 }

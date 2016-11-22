@@ -52,22 +52,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <h3 class="box-title">&nbsp;&nbsp;<i class="fa fa-user-secret"></i>字典类型</h3>
             </div>
             <form action="${base}/admin/dictionary/dirtype/list.html" method="post" onsubmit="return navTabSearch(this);">
-				 <div class="col-md-3"><!--字典类别名称 搜索框-->
+				  <div class="col-md-2"><!--状态名称 搜索框-->
+          			<div class="col-sm-12 padding">
+                      <select id="status" name="status" class="form-control input-sm">
+     						<option value="">--请选择--</option>
+     						<option value="0" <c:if test="${'0' eq obj.queryForm.status}">selected</c:if>>冻结</option>
+							<option value="1" <c:if test="${'1' eq obj.queryForm.status}">selected</c:if>>启用</option>
+					  </select>
+                    </div>
+          		 </div>
+				 
+				 <div class="col-md-3 dictInfoSousuo"><!--字典类别名称 搜索框-->
             		  <input type="text" name="typeName" value="${obj.queryForm.typeName}" class="form-control" placeholder="字典类别名称">
           		 </div>
 				 <div class="col-md-2 col-padding"><!--搜索 按钮-->
               		<button type="submit" class="btn btn-primary btn-sm">搜索</button>
            		 </div>
-           		 <div class="col-md-3"><!--状态名称 搜索框-->
-          			<div class="col-sm-8 padding">
-                      <select id="status" name="status" class="form-control input-sm">
-	     					<option value="0" <c:if test="${'0' eq obj.dirtype.status}">selected</c:if>>冻结</option>
-							<option value="1" <c:if test="${'1' eq obj.dirtype.status}">selected</c:if>>启用</option>
-					  </select>
-                    </div>
-          		 </div>
+           		
 			</form>
-            <div class="col-md-1 col-md-offset-3">
+            <div class="col-md-1 col-md-offset-4">
            		<a href="${base}/admin/dictionary/dirtype/add.html" data-toggle="modal" 
            	class="btn btn-primary btn-sm" id="addBtn" data-target=".Mymodal-lg">添加</a>
             </div>
@@ -88,7 +91,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					<tr>
 						<td>${one.typeCode}</td>
 						<td>${one.typeName }</td>
-						<td>${one.description }</td>
+						<td><span data-toggle="tooltip" data-placement="right" title="${one.description }">${one.description }<span></td>
 						<c:if test="${one.status eq 0}"> 
 		     				<td>冻结</td>
 						</c:if>
@@ -101,7 +104,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							<%--
 								这里如果有写title，则需要确认才会操作
 							 --%>
-							<a target="ajaxTodo" rel="dlgId1" href="${base}/admin/dictionary/dirtype/delete?id=${one.id}" title='是否要删除' class='btn btn_mini btn_del'>删除</a>
+							<a href="${base}/admin/dictionary/dirtype/delete?id=${one.id}" class='btn btn_mini btn_del'>删除</a>
 						</td>
 					</tr>
 				</c:forEach>
@@ -151,7 +154,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- AdminLTE for demo purposes -->
 <script src="${base}/public/dist/js/demo.js"></script>
 <!-- page script -->
-<script>
+<script type="text/javascript">
   $(function () {
     $("#example1").DataTable();
     $('#example2').DataTable({
@@ -169,6 +172,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
           $(this).removeData("modal");
       });
  })
+ //删除询问框
+ /* $('#remove').on('click', function(){
+    var othis = $(this);
+    layer.open({
+        content: '您确认要删除？',
+        btn: ['确认', '取消'],
+        shadeClose: false,
+        yes: function(){
+            layer.open({content: '删除成功!', time: 1});
+            othis.parents('.atxt').remove();
+        }, no: function(){
+            layer.open({content: '删除失败!', time: 1});
+        }
+    });
+}); */
+  //描述提示信息弹出层Tooltip
+  $(function () { $("[data-toggle='tooltip']").tooltip(); });
 </script>
 </body>
 </html>

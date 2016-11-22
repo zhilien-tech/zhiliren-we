@@ -32,4 +32,6 @@ public class InfoAddForm extends AddForm {
 	private String description;
 	//状态
 	private int status;
+	//删除标识
+	private int dr;
 }

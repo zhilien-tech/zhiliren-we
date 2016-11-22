@@ -52,28 +52,31 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <h3 class="box-title">&nbsp;&nbsp;<i class="fa fa-user-secret"></i>字典信息</h3>
             </div>
             <form action="${base}/admin/dictionary/dirinfo/list.html" method="post" onsubmit="return navTabSearch(this);">
-				 <div class="col-md-3"><!--字典信息名称 搜索框-->
+				 <div class="col-md-2"><!--状态名称 搜索框-->
+          			<div class="col-sm-12 padding">
+                      <select id="status" name="status" class="form-control input-sm">
+	     					<option value="">--请选择--</option>
+	     					<option value="0" <c:if test="${'0' eq obj.queryForm.status}">selected</c:if>>冻结</option>
+							<option value="1" <c:if test="${'1' eq obj.queryForm.status}">selected</c:if>>启用</option>
+					  </select>
+                    </div>
+          		 </div>
+				 
+				 <div class="col-md-3 dictInfoSousuo"><!--字典信息名称 搜索框-->
             		  <input type="text" name="dictName" value="${obj.queryForm.dictName}" class="form-control" placeholder="字典信息名称">
           		  </div>
 				 <div class="col-md-2 col-padding"><!--搜索 按钮-->
               		<button type="submit" class="btn btn-primary btn-sm">搜索</button>
            		 </div>
-           		 <div class="col-md-3"><!--状态名称 搜索框-->
-          			<div class="col-sm-8 padding">
-                      <select id="status" name="status" class="form-control input-sm">
-	     					<option value="0" <c:if test="${'0' eq obj.dirtype.status}">selected</c:if>>冻结</option>
-							<option value="1" <c:if test="${'1' eq obj.dirtype.status}">selected</c:if>>启用</option>
-					  </select>
-                    </div>
-          		 </div>
+           		 
 			</form>
-            <div class="col-md-1 col-md-offset-3">
+            <div class="col-md-1 col-md-offset-4">
            		<a href="${base}/admin/dictionary/dirinfo/add.html" data-toggle="modal" 
            	class="btn btn-primary btn-sm" id="addBtn" data-target=".Mymodal-lg">添加</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example2" class="table table-bordered table-hover">
+              <table id="example2" class="table table-bordered table-hover table-wid">
                 <thead>
                 <tr>
                   	<th>字典类别编码</th>
@@ -90,7 +93,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 						    <td>${one.typeCode}</td>
 							<td>${one.dictCode}</td>
 							<td>${one.dictName }</td>
-							<td>${one.description }</td>
+							<td><span data-toggle="tooltip" data-placement="right" title="${one.description }">${one.description }</td>
 							<c:if test="${one.status eq 0}"> 
 			     				<td>冻结</td>
 							</c:if>
@@ -174,6 +177,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
           $(this).removeData("modal");
       });
  })
+ //描述提示信息弹出层Tooltip
+  $(function () { $("[data-toggle='tooltip']").tooltip(); });
 </script>
 </body>
 </html>

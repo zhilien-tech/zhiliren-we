@@ -22,6 +22,10 @@ public class RelationAddForm extends AddForm {
 
 	//字典id
 	private int sourceId;
+
 	//关联字典id
 	private String targetId;
+
+	//删除标识
+	private int dr;
 }

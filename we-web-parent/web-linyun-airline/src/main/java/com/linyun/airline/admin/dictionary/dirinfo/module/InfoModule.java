@@ -83,9 +83,9 @@ public class InfoModule {
 	@Ok("jsp")
 	public Object update(@Param("id") final long id) {
 		Map<String, Object> obj = new HashMap<String, Object>();
-		//obj.put("dirtype", dbDao.fetch(DictTypeEntity.class, null));
-		//obj.put("dirtype", dbDao.query(DictTypeEntity.class, null, null));
-		return iInfoService.findDirinfo(id);
+		obj.put("dirtype", dbDao.query(DictTypeEntity.class, null, null));
+		obj.put("dirinfo", iInfoService.findDirinfo(id));
+		return obj;
 	}
 
 	/**
@@ -108,8 +108,6 @@ public class InfoModule {
 	@At
 	@Ok("jsp")
 	public Object list(@Param("..") final InfoQueryForm queryForm, @Param("..") final Pager pager) {
-		Map<String, Object> obj = FormUtil.query(dbDao, DictInfoEntity.class, queryForm, pager);
-		obj.put("dirtype", dbDao.query(DictTypeEntity.class, null, null));
 		return FormUtil.query(dbDao, DictInfoEntity.class, queryForm, pager);
 	}
 

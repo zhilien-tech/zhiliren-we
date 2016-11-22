@@ -35,6 +35,8 @@ public class InfoSqlForm implements ISqlForm {
 	private String description;
 	//状态
 	private int status;
+	//删除标识
+	private int dr;
 
 	@Override
 	public Sql createPagerSql(IDbDao dbDao, SqlManager sqlManager) {

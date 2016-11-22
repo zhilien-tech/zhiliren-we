@@ -21,14 +21,14 @@
                  <div class="tab-content">
                         <div class="form-group row">
                         	<%-- 字典类别id --%>
-                        	<input name="id" type="hidden" value="${obj.dirtype.id}"/>
+                        	<input name="id" type="hidden" value="${obj.dirinfo.id}"/>
                             <label class="col-sm-3 text-right padding">字典类型编码：</label>
                             <div class="col-sm-8 padding">
-                            	<select id="typeCode" name="typeCode">
+                            	<select id="typeCode" name="typeCode" class="form-control input-sm">
 			                    	<option>--请选择--</option>
-										<c:forEach var="shipList" items="${obj.dirtype }">
-											<option value='${obj.typeCode}' ${shipList.typeCode==typeCode?'selected':''}>
-												${obj.typeName}
+										<c:forEach var="one" items="${obj.dirtype }">
+											<option value='${one.typeCode}' ${one.typeCode==obj.dirinfo.typeCode?'selected':''}>
+												${one.typeName}
 											</option>
 										</c:forEach> 
 								</select>

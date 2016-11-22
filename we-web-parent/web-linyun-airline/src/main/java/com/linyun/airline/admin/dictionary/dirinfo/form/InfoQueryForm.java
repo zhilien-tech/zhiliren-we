@@ -25,4 +25,7 @@ public class InfoQueryForm extends QueryForm {
 	//字典信息
 	@Condition(match = MatchType.LIKE)
 	private String dictName;
+	//按状态查询
+	@Condition(match = MatchType.EQ)
+	private String status;
 }

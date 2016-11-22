@@ -24,4 +24,7 @@ public class DictTypeUpdateForm extends ModForm implements Serializable {
 	/**状态,0-冻结，1-启用，2--删除*/
 	private int status;
 
+	/**删除标识,0-未删除，1-已删除*/
+	private int dr;
+
 }
