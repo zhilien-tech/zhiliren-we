@@ -57,10 +57,14 @@
 </html>	
 <script type="text/javascript">
 <!-- 状态默认选择 -->
-/**状态默认选中*/
+	/**状态默认选中*/
 	//var  ss = document.getElementById('status');
 	//var status= "${obj.dirtype.status}";
 	//ss[status].selected=true;
+	//保存数据后刷新页面
+	function save(){
+		window.location.reload(true); 
+	}
 </script>
 	
 	

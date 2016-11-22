@@ -8,6 +8,7 @@
     <title>添加</title>
 	<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
+	<script src="${base}/common/js/layer/layer.js"></script>
 </head>
 <body onresize=hero();>
           <div class="modal-top">
@@ -52,7 +53,18 @@
             </div>
 </body>
 </html>	
-	
+<script type="text/javascript">
+<!--//-->
+function remove(){
+	//删除询问框
+	layer.confirm('您确定要删除吗？', {
+		  btn: ['确认','取消'] //按钮
+		}, function(){
+		  layer.msg('删除成功！', {icon: 1});
+		}
+	});
+}
+</script>
 	
 	
 	
