@@ -93,11 +93,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			     				<td>删除</td>
 							</c:if>
 							<td>
-								<a target="dialog" rel="dlgId1" href="${base}/admin/dictionary/dirinfo/update.html?id=${one.id}" class="btn btn_mini btn_modify" >修改</a>
+								<a href="${base}/admin/dictionary/dirinfo/update.html?id=${one.id}" data-toggle="modal" 
+           					 id="addBtn" data-target=".Mymodal-lg">编辑</a>
 								<%--
 									这里如果有写title，则需要确认才会操作
 								 --%>
-								<a target="ajaxTodo" rel="dlgId1" href="${base}/admin/dictionary/dirinfo/delete?id=${one.id}" title='是否要删除' class='btn btn_mini btn_del'>删除</a>
+								<a id="deleteBtn" href="${base}/admin/dictionary/dirinfo/delete?id=${one.id}" title='是否要删除' class='btn btn_mini btn_del'>删除</a>
 							</td>
 						</tr>
 					</c:forEach>
