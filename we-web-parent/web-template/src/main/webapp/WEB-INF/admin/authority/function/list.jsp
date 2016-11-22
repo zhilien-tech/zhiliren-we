@@ -14,8 +14,14 @@
 	<form action="${url}/list.html" method="post" onsubmit="return navTabSearch(this);">
 		<input type="hidden" name="pageSize" value="${obj.pager.pageSize}" />
 		<input type="hidden" name="pageNumber" value="${obj.pager.pageNumber}" />
-		<p><span class="tag">功能名称：</span><span class="ipts"><input type="text" name="name" value="${obj.queryForm.name}"/></span></p>
-		<p><span class="tag">上级功能：</span>
+		<p>
+			<span class="tag">功能名称：</span>
+			<span class="ipts">
+				<input type="text" name="name" value="${obj.queryForm.name}"/>
+			</span>
+		</p>
+		<p>
+			<span class="tag">上级功能：</span>
 			<span class="ipts">
 				<select name="parentId">
 					<option value="-1">--不限--</option>

@@ -11,15 +11,15 @@ import java.io.Serializable;
 public class SUserRoleMapEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id(auto = true)
-	private Integer id;
+	private Long id;
 	
 	@Column
     @Comment("用户id")
-	private Integer userId = 0;
+	private Long userId;
 	
 	@Column
     @Comment("角色id")
-	private Integer roleId = 0;
+	private Long roleId;
 	
 
 }

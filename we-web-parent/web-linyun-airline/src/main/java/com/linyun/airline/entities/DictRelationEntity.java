@@ -1,25 +1,29 @@
 package com.linyun.airline.entities;
 
-import org.nutz.dao.entity.annotation.*;
-import lombok.Data;
-
 import java.io.Serializable;
 
+import lombok.Data;
+
+import org.nutz.dao.entity.annotation.Column;
+import org.nutz.dao.entity.annotation.Comment;
+import org.nutz.dao.entity.annotation.Id;
+import org.nutz.dao.entity.annotation.Table;
 
 @Data
 @Table("dict_relation")
 public class DictRelationEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
+	@Column
 	@Id(auto = true)
-	private Integer id;
-	
+	@Comment("主键")
+	private long id;
+
 	@Column
-    @Comment("字典id")
-	private Integer sourceId;
-	
+	@Comment("字典id")
+	private long sourceId;
+
 	@Column
-    @Comment("关联字典id")
-	private Integer targetId;
-	
+	@Comment("关联字典id")
+	private long targetId;
 
 }

@@ -21,7 +21,7 @@ import com.xiaoka.template.common.actionfilter.LoginFilter;
 import com.xiaoka.template.common.annotation.NoFilter;
 
 @IocBy(type = ComboIocProvider.class, args = { "*org.nutz.ioc.loader.json.JsonLoader", "webconfig/",
-		"*org.nutz.ioc.loader.annotation.AnnotationIocLoader", "com.xiaoka.template" })
+	"*org.nutz.ioc.loader.annotation.AnnotationIocLoader", "com.xiaoka.template" })
 @Encoding(input = "UTF-8", output = "UTF-8")
 @Modules(scanPackage = true)
 @Localization("msg")

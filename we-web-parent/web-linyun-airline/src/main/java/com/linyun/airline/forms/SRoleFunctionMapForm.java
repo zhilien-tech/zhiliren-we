@@ -1,16 +1,14 @@
 package com.linyun.airline.forms;
 
-import com.linyun.airline.entities.SRoleFunctionMapEntity;
 import com.uxuexi.core.web.form.SQLParamForm;
 import com.uxuexi.core.db.util.EntityUtil;
-
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import com.linyun.airline.entities.SRoleFunctionMapEntity;
 
 import java.io.Serializable;
 
@@ -19,13 +17,13 @@ import java.io.Serializable;
 public class SRoleFunctionMapForm extends SQLParamForm implements Serializable{
 	private static final long serialVersionUID = 1L;
 	/**主键*/
-	private Integer id;
+	private Long id;
 	
 	/**角色id*/
-	private Integer roleId;
+	private Long roleId;
 	
 	/**功能id*/
-	private Integer functionId;
+	private Long functionId;
 	
 	@Override
 	public Sql sql(SqlManager sqlManager) {

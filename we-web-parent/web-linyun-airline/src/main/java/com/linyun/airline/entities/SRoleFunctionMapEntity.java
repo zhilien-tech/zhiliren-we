@@ -11,15 +11,15 @@ import java.io.Serializable;
 public class SRoleFunctionMapEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id(auto = true)
-	private Integer id;
+	private Long id;
 	
 	@Column
     @Comment("角色id")
-	private Integer roleId;
+	private Long roleId;
 	
 	@Column
     @Comment("功能id")
-	private Integer functionId;
+	private Long functionId;
 	
 
 }

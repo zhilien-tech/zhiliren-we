@@ -12,9 +12,9 @@ public class SUserRoleMapAddForm extends AddForm implements Serializable{
 	private static final long serialVersionUID = 1L;
 		
 	/**用户id*/
-	private Integer userId = 0;
+	private Long userId;
 		
 	/**角色id*/
-	private Integer roleId = 0;
+	private Long roleId;
 		
 }

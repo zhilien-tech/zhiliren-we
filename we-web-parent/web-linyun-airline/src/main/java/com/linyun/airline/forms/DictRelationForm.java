@@ -1,32 +1,32 @@
 package com.linyun.airline.forms;
 
-import com.linyun.airline.entities.DictRelationEntity;
-import com.uxuexi.core.web.form.SQLParamForm;
-import com.uxuexi.core.db.util.EntityUtil;
+import java.io.Serializable;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-import java.io.Serializable;
+import com.linyun.airline.entities.DictRelationEntity;
+import com.uxuexi.core.db.util.EntityUtil;
+import com.uxuexi.core.web.form.SQLParamForm;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DictRelationForm extends SQLParamForm implements Serializable{
+public class DictRelationForm extends SQLParamForm implements Serializable {
 	private static final long serialVersionUID = 1L;
 	/**主键*/
-	private Integer id;
-	
+	private long id;
+
 	/**字典id*/
-	private Integer sourceId;
-	
+	private long sourceId;
+
 	/**关联字典id*/
-	private Integer targetId;
-	
+	private long targetId;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**
