@@ -6,12 +6,11 @@
 
 package com.linyun.airline.admin.dictionary.dirinfo.service;
 
-import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.log.Log;
-import org.nutz.log.Logs;
+import java.util.Map;
 
-import com.linyun.airline.entities.DictInfoEntity;
-import com.uxuexi.core.web.base.service.BaseService;
+import org.nutz.ioc.loader.annotation.IocBean;
+
+import com.linyun.airline.admin.dictionary.dirinfo.form.InfoModForm;
 
 /**
  * TODO(这里用一句话描述这个类的作用)
@@ -19,14 +18,14 @@ import com.uxuexi.core.web.base.service.BaseService;
  * @Date	 2016年11月3日 	 
  */
 @IocBean
-public class IInfoService extends BaseService<DictInfoEntity> {
-	private static final Log log = Logs.get();
+public interface IInfoService {
+
 	/**
 	 * 修改字典信息
 	 * @param form 
 	 * @return
 	 */
-	//public boolean update(InfoModForm form);
+	public boolean update(InfoModForm form);
 
 	/**
 	 * 查询字典信息
@@ -34,5 +33,5 @@ public class IInfoService extends BaseService<DictInfoEntity> {
 	 * Dirtype - 字典类型实体
 	 * @param id  角色id
 	 */
-	//Map<String, Object> findDirinfo(long id);
+	Map<String, Object> findDirinfo(long id);
 }

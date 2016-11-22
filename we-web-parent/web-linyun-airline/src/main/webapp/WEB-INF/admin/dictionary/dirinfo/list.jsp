@@ -53,21 +53,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </div>
             <form action="${base}/admin/dictionary/dirinfo/list.html" method="post" onsubmit="return navTabSearch(this);">
 				 <div class="col-md-3"><!--字典信息名称 搜索框-->
-            		  <input type="text" name="dictName" value="${obj.sqlParamForm.dictName}" class="form-control" placeholder="字典信息名称">
+            		  <input type="text" name="dictName" value="${obj.queryForm.dictName}" class="form-control" placeholder="字典信息名称">
           		  </div>
 				 <div class="col-md-2 col-padding"><!--搜索 按钮-->
               		<button type="submit" class="btn btn-primary btn-sm">搜索</button>
            		 </div>
 			</form>
-            <div class="col-md-1 col-md-offset-2">
-              <button type="button" onclick="javascript:window.open('${base}/admin/dictionary/dirinfo/add.html')" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".Mymodal-lg">添加</button>
+            <div class="col-md-1 col-md-offset-6">
+           		<a href="${base}/admin/dictionary/dirinfo/add.html" data-toggle="modal" 
+           	class="btn btn-primary btn-sm" id="addBtn" data-target=".Mymodal-lg">添加</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="example2" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                	<td class="txtc"><input name="ids" value="${one.id}" type="checkbox" class="ipt_checkbox"></td>
                   	<th>字典类别编码</th>
 					<th>字典代码</th>
 					<th>字典信息</th>
@@ -79,7 +79,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <tbody>
                     <c:forEach items="${obj.list}" var="one" >
 						<tr>
-							<td class="txtc"><input name="ids" value="${one.id}" type="checkbox" class="ipt_checkbox"></td>
 						    <td>${one.typeCode}</td>
 							<td>${one.dictCode}</td>
 							<td>${one.dictName }</td>
@@ -98,7 +97,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 								<%--
 									这里如果有写title，则需要确认才会操作
 								 --%>
-								<a target="ajaxTodo" rel="dlgId1" href="${url}/delete?id=${one.id}" title='是否要删除' class='btn btn_mini btn_del'>删除</a>
+								<a target="ajaxTodo" rel="dlgId1" href="${base}/admin/dictionary/dirinfo/delete?id=${one.id}" title='是否要删除' class='btn btn_mini btn_del'>删除</a>
 							</td>
 						</tr>
 					</c:forEach>
@@ -119,7 +118,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <%@include file="/WEB-INF/public/footer.jsp"%>
 </div>
 <!-- ./wrapper -->
-
+<!-- 弹框 -->
+	<div class="modal fade Mymodal-lg" role="dialog" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="addTabs">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header">
+              </div>
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
 <!-- REQUIRED JS SCRIPTS -->
 
 <!-- jQuery 2.2.3 -->
@@ -150,6 +159,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
       "autoWidth": false
     });
   });
+  //添加
+  $('#addBtn').click(function(){
+      $(".Mymodal-lg").on("hidden", function() {
+          $(this).removeData("modal");
+      });
+ })
 </script>
 </body>
 </html>
