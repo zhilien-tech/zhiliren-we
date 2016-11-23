@@ -15,7 +15,7 @@ import org.nutz.dao.sql.Sql;
  * @author   朱晓川
  * @Date	 2016年8月26日 	 
  */
-public abstract class SQLParamForm {
+public interface SQLParamForm {
 
 	/**
 	 * 返回封装好查询参数之后的完整查询sql

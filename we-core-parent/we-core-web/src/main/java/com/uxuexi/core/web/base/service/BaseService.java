@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
@@ -28,10 +29,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.uxuexi.core.common.util.BeanUtil;
+import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.dao.IDbDao;
+import com.uxuexi.core.web.base.page.OffsetPager;
 import com.uxuexi.core.web.base.page.Pagination;
 import com.uxuexi.core.web.form.AddForm;
+import com.uxuexi.core.web.form.DataTablesParamForm;
 import com.uxuexi.core.web.form.ModForm;
 import com.uxuexi.core.web.form.SQLParamForm;
 import com.uxuexi.core.web.util.FormUtil;
@@ -323,6 +327,37 @@ public abstract class BaseService<T> {
 		if (!sql.isSelect()) {
 			throw pEx("执行查询sql时，sql不是select语句！");
 		}
+	}
+
+	/**
+	 * bootstrap插件Datatables分页查询
+	 * <p>
+	 *
+	 * @param sqlParamForm   Sql查询参数封装
+	 * @param start   起始记录(页面是从0开始算的)
+	 * @param length  查询多少条
+	 * @param draw    当前查询序号
+	 */
+	public Map<String, Object> listPage4Datatables(final DataTablesParamForm sqlParamForm) {
+		checkNull(sqlParamForm, "sqlParamForm不能为空");
+		Sql sql = sqlParamForm.sql(sqlManager);
+
+		Pager pager = new OffsetPager(sqlParamForm.getStart(), sqlParamForm.getLength());
+		pager.setRecordCount((int) Daos.queryCount(nutDao, sql.toString()));
+
+		sql.setPager(pager);
+		sql.setCallback(Sqls.callback.records());
+		nutDao.execute(sql);
+
+		@SuppressWarnings("unchecked")
+		List<Record> list = (List<Record>) sql.getResult();
+
+		Map<String, Object> re = MapUtil.map();
+		re.put("data", list);
+		re.put("draw", sqlParamForm.getDraw());
+		re.put("recordsTotal", pager.getPageSize());
+		re.put("recordsFiltered", pager.getRecordCount());
+		return re;
 	}
 
 }

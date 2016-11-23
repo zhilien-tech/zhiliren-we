@@ -16,6 +16,8 @@ public class TCompanyUpdateForm extends ModForm implements Serializable {
 
 	/**管理员账号id*/
 	private long adminId;
+	/**用户名*/
+	private String telephone;
 
 	/**公司名称*/
 	private String comName;
@@ -54,6 +56,6 @@ public class TCompanyUpdateForm extends ModForm implements Serializable {
 	private DateTime lastupdatetime;
 
 	/**删除标识*/
-	private String deletestatus;
+	private int deletestatus;
 
 }
