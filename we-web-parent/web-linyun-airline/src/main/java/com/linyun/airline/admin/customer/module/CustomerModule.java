@@ -3,7 +3,6 @@ package com.linyun.airline.admin.customer.module;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -21,10 +20,10 @@ import com.linyun.airline.entities.TAgentEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
-import com.linyun.airline.forms.TCustomerInfoForm;
+import com.linyun.airline.forms.TCustomerInfoQueryForm;
 import com.linyun.airline.forms.TCustomerInfoUpdateForm;
+import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.db.dao.IDbDao;
-import com.uxuexi.core.web.base.page.Pagination;
 import com.uxuexi.core.web.chain.support.JsonResult;
 import com.uxuexi.core.web.util.FormUtil;
 
@@ -82,8 +81,15 @@ public class CustomerModule {
 	@POST
 	public Object add(@Param("..") TCustomerInfoAddForm addForm) throws Exception {
 		//addForm.setCreateTime(DateTimeUtil.nowDateTime());
+		addForm.setCreateTime(DateTimeUtil.nowDateTime());
 		FormUtil.add(dbDao, addForm, TCustomerInfoEntity.class);
 		return JsonResult.success("添加成功");
+	}
+
+	@At
+	@GET
+	@Ok("jsp")
+	public void date() {
 	}
 
 	/**
@@ -94,7 +100,6 @@ public class CustomerModule {
 	@Ok("jsp")
 	public Object update(@Param("id") final long id) {
 		Map<String, Object> obj = new HashMap<String, Object>();
-		obj.put("list", dbDao.query(TCustomerInfoEntity.class, Cnd.where("id", "!=", id), null));
 		obj.put("customer", dbDao.fetch(TCustomerInfoEntity.class, id));
 		return obj;
 	}
@@ -115,8 +120,8 @@ public class CustomerModule {
 	 */
 	@At
 	@Ok("jsp")
-	public Pagination list(@Param("..") final TCustomerInfoForm sqlParamForm, @Param("..") final Pager pager) {
-		return customerViewService.listPage(sqlParamForm, pager);
+	public Object list(@Param("..") final TCustomerInfoQueryForm queryForm, @Param("..") final Pager pager) {
+		return FormUtil.query(dbDao, TCustomerInfoEntity.class, queryForm, pager);
 	}
 
 	/**

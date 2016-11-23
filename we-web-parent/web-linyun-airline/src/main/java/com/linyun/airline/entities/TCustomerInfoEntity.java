@@ -119,4 +119,8 @@ public class TCustomerInfoEntity implements Serializable {
 	@Comment("是否禁用")
 	private long forbid;
 
+	@Column
+	@Comment("业务范围")
+	private String business;
+
 }

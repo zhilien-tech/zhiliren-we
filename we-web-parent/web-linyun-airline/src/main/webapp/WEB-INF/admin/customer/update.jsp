@@ -11,14 +11,11 @@
 <link rel="stylesheet" href="dist/css/AdminLTE.css">
 </head>
 <body>
-
 	<div class="modal-content">
-		<form method="post" action="${base}/admin/customer/update.html">
+		<form id="form1" method="post" action="${base}/admin/customer/update.html">
 			<div class="modal-header">
-				<button type="button" class="btn btn-primary right btn-sm"
-					data-dismiss="modal">返回</button>
-				<input type="submit" class="btn btn-primary right btn-sm"
-					data-dismiss="modal" value="更新" />
+				<button type="button" class="btn btn-primary right btn-sm" data-dismiss="modal">返回</button>
+				<input type="submit" class="btn btn-primary right btn-sm" value="保存" onclick="update()"/>
 				<ul class="nav nav-tabs">
 					<li class="active"><a href="#tabs_1" data-toggle="tab">基本信息</a></li>
 					<li><a href="#tabs_2" data-toggle="tab">线路权限</a></li>
@@ -30,10 +27,11 @@
 			<div class="modal-body">
 				<div class="tab-content">
 					<div class="tab-pane active" id="tabs_1">
-						<input name="comId" type="hidden" value="1" /> <input
-							name="agentId" type="hidden" value="1" />
+						<input name="comId" type="hidden" value="1" /> 
+						<input name="agentId" type="hidden" value="1" />
 						<!--基本信息-->
 						<div class="form-group row">
+							<input name="id" type="hidden" value="${obj.customer.id}"/>
 							<label class="col-sm-3 text-right padding">公司名称：</label>
 							<div class="col-sm-8 padding">
 								<input name="name" type="text" class="form-control input-sm"
@@ -209,7 +207,7 @@
 							</div>
 						</div>
 
-						<div class="form-group row">
+						<div style="display: none;" class="form-group row">
 							<label class="col-sm-2 text-right padding">发票项目：</label>
 							<div class="col-sm-4 padding">
 								<input type="tel" class="form-control input-sm" placeholder="" />
@@ -226,6 +224,23 @@
 	<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<!-- Bootstrap 3.3.6 -->
 	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		//更新时刷新页面
+		function update(){
+			window.location.reload();
+		}
+		
+		//显示或隐藏发票项
+		function gaveInvioce(){
+			var s = document.getElementById("invoice").value;
+			if(s==1){
+				document.getElementById("invioceType").style.display="";
+			}
+			if(s==0){
+				document.getElementById("invioceType").style.display="none";
+			}
+		}
+	</script>
 </body>
 </html>
 

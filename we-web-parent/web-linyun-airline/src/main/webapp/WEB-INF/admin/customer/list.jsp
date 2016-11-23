@@ -27,6 +27,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- Ionicons -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+<!-- daterange picker -->
+<link rel="stylesheet"
+	href="${base}/public/plugins/dateraner/daterangepicker.css">
+<!-- bootstrap datepicker -->
+<link rel="stylesheet"
+	href="${base}/public/plugins/datepicker/datepicker3.css">
+<!-- iCheck for checkboxes and radio inputs -->
+<link rel="stylesheet" href="${base}/public/plugins/iCheck/all.css">
+<!-- Bootstrap Color Picker -->
+<link rel="stylesheet"
+	href="${base}/public/plugins/colorpicker/bootstrap-colorpicker.min.css">
+<!-- Bootstrap time Picker -->
+<link rel="stylesheet"
+	href="${base}/public/plugins/timepicker/bootstrap-timepicker.min.css">
+<!-- Select2 -->
+<link rel="stylesheet"
+	href="${base}/public/plugins/select2/select2.min.css">
 <!-- Theme style -->
 <link rel="stylesheet"
 	href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
@@ -52,12 +69,37 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
+<!-- Select2 -->
+<script src="${base}/public/plugins/select2/select2.full.min.js"></script>
+<!-- InputMask -->
+<script src="${base}/public/plugins/input-mask/jquery.inputmask.js"></script>
+<script
+	src="${base}/public/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script
+	src="${base}/public/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<!-- date-range-picker -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="${base}/public/plugins/daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap datepicker -->
+<script src="${base}/public/plugins/datepicker/bootstrap-datepicker.js"></script>
+<!-- bootstrap color picker -->
+<script
+	src="${base}/public/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
+<!-- bootstrap time picker -->
+<script
+	src="${base}/public/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+
 <!-- DataTables -->
 <script src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
 <script
 	src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
 <script src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- iCheck 1.0.1 -->
+<script src="${base}/public/plugins/iCheck/icheck.min.js"></script>
+<!-- FastClick -->
+<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
 <!-- FastClick -->
 <script src="${base}/public/plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
@@ -66,37 +108,38 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="${base}/public/dist/js/demo.js"></script>
 <!-- page script -->
 <script type="text/javascript">
-  $(function () {
-    $("#example1").DataTable();
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false
-    });
-  });
-  
-  function makeDefault(){
-	  $("#sname").val("");
-	  $("#select1").val("-1");
-	  $("#select2").val("-1");
-  }
- 
-  $('#addBtn').click(function(){
-      $(".Mymodal-lg").on("hidden", function() {
-          $(this).removeData("modal");
-      });
-  });
-  
-  $('#updateBtn').click(function(){
-      $(".Mymodal-lg").on("hidden", function() {
-          $(this).removeData("modal");
-      });
-  });
- 
-  
+	$(function() {
+		$("#example1").DataTable();
+		$('#example2').DataTable({
+			"paging" : true,
+			"lengthChange" : false,
+			"searching" : false,
+			"ordering" : true,
+			"info" : true,
+			"autoWidth" : false
+		});
+		
+	    
+	});
+
+	//设置默认
+	function makeDefault() {
+		$("#sname").val("");
+		$("#select1").val("-1");
+		$("#select2").val("-1");
+	}
+
+	$('#addBtn').click(function() {
+		$(".Mymodal-lg").on("hidden", function() {
+			$(this).removeData("modal");
+		});
+	});
+
+	$('#updateBtn').click(function() {
+		$(".Mymodal-lg").on("hidden", function() {
+			$(this).removeData("modal");
+		});
+	});
 </script>
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
@@ -115,7 +158,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 								<h3 class="box-title">
 									&nbsp;&nbsp;<i class="fa fa-user-secret"></i> 客户管理
 								</h3>
-								<form role="form" class="form-horizontal"
+								<form id="searchForm" role="form" class="form-horizontal"
 									action="${base}/admin/customer/list.html" method="post"
 									onsubmit="return navTabSearch(this);">
 									<div class="form-group row form-right">
@@ -123,26 +166,33 @@ scratch. This page gets rid of all links and provides the needed markup only.
 										<div class="col-md-2">
 											<!--是否签约 下拉框-->
 											<select id="select1" class="form-control select"
-												name="contract" <!-- onchange="alert($(this).val())" -->>
-												<option value="-1">是否签约</option>
-												<option value="0">未签约</option>
-												<option value="1">已签约</option>
-												<option value="2">禁止合作</option>
+												name="contract"
+												<!-- onchange="alert($(this).val())" -->>
+												<option value="">是否签约</option>
+												<option value="0"
+													<c:if test="${'0' eq obj.queryForm.contract}">selected</c:if>>未签约</option>
+												<option value="1"
+													<c:if test="${'1' eq obj.queryForm.contract}">selected</c:if>>已签约</option>
+												<option value="2"
+													<c:if test="${'2' eq obj.queryForm.contract}">selected</c:if>>禁止合作</option>
 											</select>
 										</div>
 										<div class="col-md-2">
 											<!--是否禁用 下拉框-->
 											<select id="select2" class="form-control select"
 												name="forbid">
-												<option value="-1">是否禁用</option>
-												<option value="1">是</option>
-												<option value="0">否</option>
+												<option value="">是否禁用</option>
+												<option value="0"
+													<c:if test="${'0' eq obj.queryForm.forbid}">selected</c:if>>否</option>
+												<option value="1"
+													<c:if test="${'1' eq obj.queryForm.forbid}">selected</c:if>>是</option>
 											</select>
 										</div>
 										<div class="col-md-3">
 											<!--公司名称/负责人/电话 搜索框-->
 											<input type="text" id="sname" name="name"
-												class="form-control" value="" placeholder="公司名称/负责人/电话">
+												onkeyup="searchText()" class="form-control"
+												value="${obj.queryForm.name }" placeholder="公司名称/负责人/电话">
 										</div>
 										<div class="col-md-2 col-padding">
 											<!--搜索 恢复默认 按钮-->
@@ -178,9 +228,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 									<tbody>
 										<c:forEach items="${obj.list}" var="one">
 											<tr>
-												<td class="txtc"><input name="ids" value="${one.id}"
-													type="checkbox" class="ipt_checkbox">&nbsp;&nbsp;&nbsp;${one.id}
-												</td>
+												<td class="txtc">${one.id}</td>
 												<td>${one.name}</td>
 												<td>${one.linkMan}</td>
 												<td>${one.telephone}</td>
@@ -188,13 +236,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 														test="${one.contract==0 }">未签约</c:if></td>
 												<td><fmt:formatDate value="${one.contractDueTime}"
 														pattern="yyyy-MM-dd" /></td>
-												<td><a target="dialog" rel="dlgId1"
+												<td><a
 													href="${base}/admin/customer/update.html?id=${one.id}"
 													id="updateBtn" class="btn btn_mini btn_modify"
-													data-target=".Mymodal-lg" data-toggle="modal">修改</a> <a
-													target="ajaxTodo" rel="dlgId1"
-													href="${url}/delete?id=${one.id}" title='是否要删除'
-													class='btn btn_mini btn_del'>删除</a></td>
+													data-target=".Mymodal-lg" data-toggle="modal">编辑</a></td>
 											</tr>
 										</c:forEach>
 									</tbody>

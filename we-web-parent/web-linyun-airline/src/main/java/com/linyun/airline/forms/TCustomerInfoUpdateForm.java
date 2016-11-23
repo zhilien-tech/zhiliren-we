@@ -89,6 +89,9 @@ public class TCustomerInfoUpdateForm extends ModForm implements Serializable {
 	/**是否禁用*/
 	private long forbid;
 
+	/**业务范围*/
+	private String business;
+
 	public void setCreateTime(Timestamp createTime) {
 		if (Util.isEmpty(createTime)) {
 			this.createTime = null;
