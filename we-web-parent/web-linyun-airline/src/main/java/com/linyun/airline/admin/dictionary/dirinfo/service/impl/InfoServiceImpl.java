@@ -2,19 +2,22 @@
  * InfoServiceImpl.java
  * com.xiaoka.template.admin.dictionary.dirinfo.service.impl
  * Copyright (c) 2016, 北京科技有限公司版权所有.
-*/
+ */
 
 package com.linyun.airline.admin.dictionary.dirinfo.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.linyun.airline.admin.dictionary.dirinfo.form.InfoModForm;
 import com.linyun.airline.admin.dictionary.dirinfo.service.IInfoService;
 import com.linyun.airline.entities.DictInfoEntity;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.util.FormUtil;
 
@@ -41,6 +44,17 @@ public class InfoServiceImpl implements IInfoService {
 		Map<String, Object> obj = new HashMap<String, Object>();
 		obj.put("dirinfo", dbDao.fetch(DictInfoEntity.class, id));
 		return obj;
+	}
+
+	//客户管理中 模糊查询字典表
+	@Override
+	public List<DictInfoEntity> search(String name) {
+		Cnd cnd = Cnd.NEW();
+		if (!Util.isEmpty(name)) {
+			cnd.and("dictName", "LIKE", "%" + name + "%");
+		}
+		Map<String, Object> query = FormUtil.query(dbDao, DictInfoEntity.class, cnd, null);
+		return null;
 
 	}
 

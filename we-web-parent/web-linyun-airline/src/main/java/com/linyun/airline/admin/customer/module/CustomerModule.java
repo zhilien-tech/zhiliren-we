@@ -1,6 +1,7 @@
 package com.linyun.airline.admin.customer.module;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.nutz.dao.SqlManager;
@@ -16,6 +17,8 @@ import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.customer.service.CustomerService;
 import com.linyun.airline.admin.customer.service.CustomerViewService;
+import com.linyun.airline.admin.dictionary.dirinfo.service.IInfoService;
+import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAgentEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
@@ -59,6 +62,9 @@ public class CustomerModule {
 	@Inject
 	private CustomerViewService customerViewService;
 
+	@Inject
+	private IInfoService iInfoService;
+
 	/**
 	 * 跳转到'添加操作'的录入数据页面
 	 */
@@ -86,10 +92,8 @@ public class CustomerModule {
 		return JsonResult.success("添加成功");
 	}
 
-	@At
-	@GET
-	@Ok("jsp")
-	public void date() {
+	public void goCity(@Param("id") final String name) {
+		List<DictInfoEntity> search = iInfoService.search(name);
 	}
 
 	/**
