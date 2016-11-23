@@ -7,6 +7,7 @@
 package com.linyun.airline.forms;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
@@ -14,8 +15,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
 import com.uxuexi.core.common.util.Util;
-import com.uxuexi.core.db.dao.IDbDao;
-import com.uxuexi.core.web.form.ISqlForm;
+import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
  * TODO(这里用一句话描述这个类的作用)
@@ -26,32 +26,11 @@ import com.uxuexi.core.web.form.ISqlForm;
  * @Date	 2016年11月21日 	 
  */
 @Data
-public class TCompanySqlForm implements ISqlForm {
+@EqualsAndHashCode(callSuper = true)
+public class TCompanySqlForm extends DataTablesParamForm {
 
 	/**公司名称*/
 	private String companyName;
-
-	@Override
-	public Sql createPagerSql(IDbDao paramIDbDao, SqlManager paramSqlManager) {
-		/**
-		 * 默认使用了当前form关联entity的单表查询sql,如果是多表复杂sql，
-		 * 请使用sqlManager获取自定义的sql，并设置查询条件
-		 */
-		//		String sqlString = EntityUtil.entityCndSql(TCompanyEntity.class);
-		String sqlString = paramSqlManager.get("company_list");
-		Sql sql = Sqls.create(sqlString);
-		sql.setCondition(cnd());
-		return sql;
-	}
-
-	@Override
-	public Sql createCountSql(IDbDao paramIDbDao, SqlManager paramSqlManager) {
-
-		String sqlString = paramSqlManager.get("company_list_count");
-		Sql sql = Sqls.create(sqlString);
-		sql.setCondition(cnd());
-		return sql;
-	}
 
 	private Cnd cnd() {
 		Cnd cnd = Cnd.limit();
@@ -62,5 +41,13 @@ public class TCompanySqlForm implements ISqlForm {
 		}
 		cnd.and("t.deletestatus", "=", 0);
 		return cnd;
+	}
+
+	@Override
+	public Sql sql(SqlManager sqlManager) {
+		String sqlString = sqlManager.get("company_list");
+		Sql sql = Sqls.create(sqlString);
+		sql.setCondition(cnd());
+		return sql;
 	}
 }

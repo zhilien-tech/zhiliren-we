@@ -23,7 +23,6 @@ import com.linyun.airline.forms.TCompanySqlForm;
 import com.linyun.airline.forms.TCompanyUpdateForm;
 import com.linyun.airline.forms.TCompanyUserSqlForm;
 import com.uxuexi.core.common.util.DateTimeUtil;
-import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
 import com.uxuexi.core.web.util.FormUtil;
@@ -56,8 +55,7 @@ public class CompanyModule {
 	@At
 	@Ok("jsp")
 	public Object list(@Param("..") final TCompanySqlForm sqlForm, @Param("..") final Pager pager) {
-		Map<String, Object> obj = FormUtil.query(dbDao, sqlManager, sqlForm, pager);
-		return obj;
+		return companyViewService.listPage(sqlForm, pager);
 	}
 
 	/**
@@ -99,7 +97,7 @@ public class CompanyModule {
 	@At
 	@POST
 	public Object update(@Param("..") TCompanyUpdateForm updateForm) {
-		updateForm.setLastupdatetime(DateTimeUtil.now());
+		//updateForm.setLastupdatetime(DateTimeUtil.now());
 		companyViewService.update(updateForm);
 		return JsonResult.success("修改成功");
 	}
@@ -177,14 +175,7 @@ public class CompanyModule {
 	 * 分页查询
 	 */
 	@At
-	public Object listData(@Param("..") final TCompanySqlForm sqlForm, @Param("..") final Pager pager) {
-		Map<String, Object> obj = FormUtil.query(dbDao, sqlManager, sqlForm, pager);
-
-		Map<String, Object> re = MapUtil.map();
-		re.put("data", obj.get("list"));
-		re.put("draw", 1);
-		re.put("recordsTotal", pager.getPageSize());
-		re.put("recordsFiltered", pager.getRecordCount());
-		return re;
+	public Object listData(@Param("..") final TCompanySqlForm paramForm) {
+		return companyViewService.listPage4Datatables(paramForm);
 	}
 }
