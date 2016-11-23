@@ -1,4 +1,4 @@
-package com.linyun.airline.common.page;
+package com.uxuexi.core.web.base.page;
 
 import org.nutz.dao.pager.Pager;
 
