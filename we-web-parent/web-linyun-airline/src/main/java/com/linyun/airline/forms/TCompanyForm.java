@@ -11,8 +11,7 @@ import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
-import com.linyun.airline.entities.TCompanyEntity;
-import com.uxuexi.core.db.util.EntityUtil;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.SQLParamForm;
 
 @Data
@@ -70,7 +69,8 @@ public class TCompanyForm extends SQLParamForm implements Serializable {
 		 * 默认使用了当前form关联entity的单表查询sql,如果是多表复杂sql，
 		 * 请使用sqlManager获取自定义的sql，并设置查询条件
 		 */
-		String sqlString = EntityUtil.entityCndSql(TCompanyEntity.class);
+		//		String sqlString = EntityUtil.entityCndSql(TCompanyEntity.class);
+		String sqlString = sqlManager.get("company_list");
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;
@@ -79,7 +79,11 @@ public class TCompanyForm extends SQLParamForm implements Serializable {
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		//TODO 添加自定义查询条件（可选）
+		if (!Util.isEmpty(comName)) {
+			cnd.and("t.comName", "LIKE", "%" + comName + "%").or("t.connect", "LIKE", "%" + comName + "%")
+					.or("t.mobile", "LIKE", "%" + comName + "%");
 
+		}
 		return cnd;
 	}
 }
