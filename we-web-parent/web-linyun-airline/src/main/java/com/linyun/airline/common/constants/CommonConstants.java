@@ -8,7 +8,7 @@ package com.linyun.airline.common.constants;
 public class CommonConstants {
 
 	/**超级管理员*/
-	public static final String SUPER_ADMIN = "ccigmall";
+	public static final String SUPER_ADMIN = "admin";
 
 	/**数据状态:@see DataStatusEnum*/
 	/**数据状态-启用中*/
@@ -33,5 +33,10 @@ public class CommonConstants {
 	 * 验证码-session key
 	 */
 	public static final String CONFIRMCODE = "confirmcode";
+
+	/**
+	 * 图片服务器地址
+	 */
+	public static final String IMAGES_SERVER_ADDR = "http://123.57.46.249/";
 
 }

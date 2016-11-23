@@ -122,5 +122,4 @@ public class TCustomerInfoEntity implements Serializable {
 	@Column
 	@Comment("业务范围")
 	private String business;
-
 }

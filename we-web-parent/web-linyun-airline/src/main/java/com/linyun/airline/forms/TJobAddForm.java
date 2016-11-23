@@ -19,6 +19,9 @@ public class TJobAddForm extends AddForm {
 	/**职位名称*/
 	private String name;
 
+	/**部门id*/
+	private long deptId;
+
 	/**创建时间*/
 	private DateTime createTime;
 

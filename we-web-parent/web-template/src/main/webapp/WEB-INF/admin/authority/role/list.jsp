@@ -15,7 +15,6 @@
 		<input type="hidden" name="pageNumber" value="${obj.pager.pageNumber}" />
 		<p><span class="tag">角色名称：</span><span class="ipts"><input type="text" name="name" value="${obj.queryForm.name}"/></span></p>
 		<p><span class="ipts"><input class="btn btn_add" type="submit" value="检索"/></span></p>
-		
 	</form>
 </div>
 

@@ -12,7 +12,7 @@
 (function () {
 	//服务器域名
 //	var server = "http://game.xiaoka360.com" ;
-	var server = "http://localhost:8080" ;
+	var server = window.PROJECT_CONTEXT ;
 	
 	//兼容已经做好的模块
 	if(null != window.xiaokaBasePath && window.xiaokaBasePath.length > 1){

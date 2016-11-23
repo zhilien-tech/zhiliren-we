@@ -128,5 +128,4 @@ public class TCustomerInfoAddForm extends AddForm implements Serializable {
 			this.contractDueTime = contractDueTime;
 		}
 	}
-
 }

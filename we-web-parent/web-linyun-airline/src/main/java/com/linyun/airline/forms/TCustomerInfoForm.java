@@ -1,18 +1,17 @@
 package com.linyun.airline.forms;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import org.joda.time.DateTime;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
 import com.linyun.airline.entities.TCustomerInfoEntity;
-import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.form.SQLParamForm;
 
@@ -54,7 +53,7 @@ public class TCustomerInfoForm extends SQLParamForm implements Serializable {
 	private String agent;
 
 	/**添加时间*/
-	private Timestamp createTime;
+	private DateTime createTime;
 
 	/**出发城市*/
 	private String departureCity;
@@ -81,25 +80,22 @@ public class TCustomerInfoForm extends SQLParamForm implements Serializable {
 	private long payType;
 
 	/**合作时间*/
-	private Timestamp cooperateTime;
+	private DateTime cooperateTime;
 
 	/**合作到期时间*/
-	private Timestamp cooperateDueTime;
+	private DateTime cooperateDueTime;
 
 	/**签约时间*/
-	private Timestamp contractTime;
+	private DateTime contractTime;
 
 	/**签约到期时间*/
-	private Timestamp contractDueTime;
+	private DateTime contractDueTime;
 
 	/**是否签约（未签约、已签约、禁止合作）*/
 	private long contract;
 
 	/**是否禁用*/
 	private long forbid;
-
-	/**业务范围*/
-	private String business;
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {
@@ -116,18 +112,6 @@ public class TCustomerInfoForm extends SQLParamForm implements Serializable {
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		//TODO 添加自定义查询条件（可选）
-		if (!Util.isEmpty(name)) {
-			cnd.and("name", "LIKE", "%" + name + "%").or("agent", "LIKE", "%" + name + "%")
-					.or("telephone", "LIKE", "%" + name + "%");
-		}
-		if (contract != -1) {
-			cnd.and("contract", "=", contract);
-			System.out.println("ccc");
-		}
-		if (forbid != -1) {
-			cnd.and("forbid", "=", forbid);
-			System.out.println("ffff");
-		}
 
 		return cnd;
 

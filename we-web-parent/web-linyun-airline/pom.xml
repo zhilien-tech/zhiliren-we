@@ -25,6 +25,12 @@
 			<artifactId>json</artifactId>
 			<version>1.0</version>
 		</dependency>
+		
+		<!-- upload -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+		</dependency>
 
 		<!-- apache-poi -->
 		<dependency>

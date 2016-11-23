@@ -131,5 +131,4 @@ public class TCustomerInfoUpdateForm extends ModForm implements Serializable {
 			this.contractDueTime = contractDueTime;
 		}
 	}
-
 }

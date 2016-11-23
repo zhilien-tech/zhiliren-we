@@ -25,7 +25,16 @@
         <!-- Optionally, you can add icons to the links -->
 
         <li><a href="employeeManage.html"><i class="fa fa-users"></i> <span>员工管理</span></a></li>
+
         <li class="active"><a href="list.html"><i class="fa fa-user-secret"></i><span>客户管理</span></a></li>
+
+        <li class="active"><a href="clientManage.html"><i class="fa fa-user-secret"></i><span>客户管理</span></a></li>
+        <li class="active"><a href="clientManage.html"><i class="fa fa-user-secret"></i><span>功能管理</span></a></li>
+        <li class="active"><a href="${base}/admin/user/list.html"><i class="fa fa-user-secret"></i><span>用户管理</span></a></li>
+        <li class="active"><a href="${base}/admin/job/list.html"><i class="fa fa-user-secret"></i><span>职位设置</span></a></li>
+        <li class="active"><a href="${base}/admin/dictionary/dirtype/list.html"><i class="fa fa-user-secret"></i><span>字典类型</span></a></li>
+        <li class="active"><a href="${base}/admin/dictionary/dirinfo/list.html"><i class="fa fa-user-secret"></i><span>字典信息</span></a></li>
+
       </ul>
       <!-- /.sidebar-menu -->
     </section>
