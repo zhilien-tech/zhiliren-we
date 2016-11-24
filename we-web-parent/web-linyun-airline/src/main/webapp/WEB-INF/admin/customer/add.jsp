@@ -9,6 +9,10 @@
 <title>添加</title>
 <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="dist/css/AdminLTE.css">
+<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
+<link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
+<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
+
 </head>
 <!-- jQuery 2.2.3 -->
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -312,6 +316,16 @@
 								<input id="departureCity" name="departureCity" type="text"
 									onkeyup="goCity()" class="form-control input-sm"
 									placeholder="请输入出发城市" />
+									
+								<select class="form-control select2" multiple="multiple"
+									data-placeholder="请输入出发城市" >
+									<option>上海</option>
+									<option>北京</option>
+									<option>大连</option>
+									<option>江苏</option>
+									<option>苏州</option>
+								</select>
+								
 							</div>
 						</div>
 
