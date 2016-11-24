@@ -20,16 +20,21 @@ import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.Company.service.CompanyViewService;
+import com.linyun.airline.common.access.AccessConfig;
+import com.linyun.airline.common.access.sign.MD5;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.entities.TCompanyEntity;
+import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TCompanyAddForm;
 import com.linyun.airline.forms.TCompanySqlForm;
 import com.linyun.airline.forms.TCompanyUpdateForm;
 import com.linyun.airline.forms.TCompanyUserSqlForm;
+import com.linyun.airline.forms.TUserAddForm;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
+import com.uxuexi.core.web.util.FormUtil;
 
 @IocBean
 @At("/admin/Company")
@@ -79,9 +84,15 @@ public class CompanyModule {
 	 */
 	@At
 	@POST
-	public Object add(@Param("..") TCompanyAddForm addForm) {
+	public Object add(@Param("..") TCompanyAddForm addForm, @Param("..") TUserAddForm userAddForm) {
+		//添加管理员信息数据
+		userAddForm.setPassword(MD5.sign("000000", AccessConfig.password_secret, AccessConfig.INPUT_CHARSET));
+		userAddForm.setUserName(addForm.getComName() + "系统管理员");
+		TUserEntity userEntity = FormUtil.add(dbDao, userAddForm, TUserEntity.class);
+		//添加公司信息数据
 		addForm.setCreatetime(new Date());
 		addForm.setLastupdatetime(new Date());
+		addForm.setAdminId(userEntity.getId());
 		return companyViewService.add(addForm);
 	}
 
@@ -93,7 +104,12 @@ public class CompanyModule {
 	@Ok("jsp")
 	public Object update(@Param("id") final long id) {
 		Map<String, Object> obj = new HashMap<String, Object>();
-		obj.put("company", companyViewService.fetch(id));
+		TCompanyEntity companyEntity = companyViewService.fetch(id);
+		//准备数据
+		obj.put("company", companyEntity);
+		//准备用户名
+		obj.put("telephone", dbDao.fetch(TUserEntity.class, companyEntity.getAdminId()).getTelephone());
+		//准备下拉框
 		obj.put("companyTypeEnum", EnumUtil.enum2(CompanyTypeEnum.class));
 		return obj;
 	}
@@ -104,6 +120,12 @@ public class CompanyModule {
 	@At
 	@POST
 	public Object update(@Param("..") TCompanyUpdateForm updateForm) {
+		//修改管理员用户名
+		TUserEntity userEntity = dbDao.fetch(TUserEntity.class, updateForm.getAdminId());
+		userEntity.setTelephone(updateForm.getTelephone());
+		userEntity.setUserName(updateForm.getComName() + "系统管理员");
+		dbDao.update(userEntity);
+		//修改公司信息
 		updateForm.setLastupdatetime(new Date());
 		companyViewService.update(updateForm);
 		return JsonResult.success("修改成功");

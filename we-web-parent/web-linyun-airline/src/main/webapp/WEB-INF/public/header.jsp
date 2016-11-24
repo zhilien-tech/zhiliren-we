@@ -12,7 +12,9 @@
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="${base }/public/dist/css/font-awesome.min.css">
+ <%--  <link rel="stylesheet" href="${base }/public/dist/css/font-awesome.min.css"> --%>
+  <link rel="stylesheet" href="${base }/public/font-awesome/css/font-awesome.min.css">
+ 
   <!-- Ionicons -->
   <link rel="stylesheet" href="${base }/public/dist/css/ionicons.min.css">
   <!-- Theme style -->
@@ -69,7 +71,6 @@
                     <a href="#">
                       <div class="pull-left">
                         <!-- User Image -->
-                        <img src="${base}/public/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                       </div>
                       <!-- Message title and timestamp -->
                       <h4>
@@ -117,7 +118,6 @@
             <!-- Menu Toggle Button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
-              <img src="${base}/public/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
               <span class="hidden-xs">User name</span>
             </a>
@@ -172,14 +172,6 @@
 
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
-        <div class="pull-left image">
-          <img src="${base}/public/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-        </div>
-        <div class="pull-left info">
-          <p>User name</p>
-          <!-- Status -->
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-        </div>
       </div>
 
       <!-- Sidebar Menu -->
@@ -187,8 +179,8 @@
         <li class="header">菜单栏</li>
         <!-- Optionally, you can add icons to the links -->
 
-        <li><a href="${base}/admin/Company/list.html"><i class="fa fa-users"></i> <span>公司管理</span></a></li>
-        <li class="active"><a href="clientManage.html"><i class="fa fa-user-secret"></i><span>客户管理</span></a></li>
+        <li class="active"><a href="${base}/admin/Company/list.html"><i class="fa fa-users"></i> <span>公司管理</span></a></li>
+        <li ><a href="clientManage.html"><i class="fa fa-user-secret"></i><span>客户管理</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>

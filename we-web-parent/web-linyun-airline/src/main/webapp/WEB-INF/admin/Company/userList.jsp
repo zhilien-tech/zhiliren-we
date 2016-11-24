@@ -25,7 +25,7 @@
 <body>
 		<div class="modal-top">
                  <div class="modal-header boderButt marHead">
-                     <button type="button" onclick="closewindow()" class="btn btn-primary right btn-sm" data-dismiss="modal">返回</button>
+                     <button type="button" onclick="closewindow()" class="btn btn-primary right btn-sm returnMargi" data-dismiss="modal">返回</button>
                          
                          <div class="form-group row">
                            <label class="radio-inline SelectWid">
@@ -63,22 +63,22 @@
                 </div>
           </div>
 
-<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
-<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
-<!-- DataTables -->
-<script src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
-<!-- SlimScroll -->
-<script src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="${base}/public/dist/js/app.min.js"></script>
-<!--layer -->
-<script src="${base}/common/js/layer/layer.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="${base}/public/dist/js/demo.js"></script>
+	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
+	<!-- Bootstrap 3.3.6 -->
+	<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
+	<!-- DataTables -->
+	<script src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
+	<script src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
+	<!-- SlimScroll -->
+	<script src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+	<!-- FastClick -->
+	<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
+	<!-- AdminLTE App -->
+	<script src="${base}/public/dist/js/app.min.js"></script>
+	<!--layer -->
+	<script src="${base}/common/js/layer/layer.js"></script>
+	<!-- AdminLTE for demo purposes -->
+	<script src="${base}/public/dist/js/demo.js"></script>
 <!-- page script -->
 <script>
 var datatable;

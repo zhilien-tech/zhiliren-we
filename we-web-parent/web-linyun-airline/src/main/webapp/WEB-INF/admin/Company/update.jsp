@@ -14,6 +14,17 @@
 	<link rel="stylesheet" href="${base }/public/dist/css/ionicons.min.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/skins/_all-skins.min.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
+	<style type="text/css">
+		.wu-example .statusBar .btns .uploadBtn {
+		    background: #3c8dbc !important;
+		    color: #fff;
+		    border-color: transparent;
+		    position: relative;
+		    top: -122px;
+		    height: 40px;
+		    border-radius: 5px;
+		}
+	</style>
 </head>
 <body onresize=hero();>
           <div class="modal-top">
@@ -37,7 +48,8 @@
                         <div class="form-group row">
                             <label class="col-sm-3 text-right padding">用户名：</label>
                             <div class="col-sm-3 padding">
-                              <input name="telephone" type="tel" class="form-control input-sm" placeholder="请输入用户名" value="${obj.user.telephone }"/>
+                              <input name="adminId" type="hidden" value="${obj.company.adminId }">
+                              <input name="telephone" type="tel" class="form-control input-sm" placeholder="请输入用户名" value="${obj.telephone }"/>
                             </div>
                           
                             <label class="col-sm-2 text-right padding">联系人：</label>
@@ -134,6 +146,10 @@
 	            	validators: {
 	                    notEmpty: {
 	                        message: '用户名不能为空'
+	                    },
+	                    regexp: {
+	                        regexp: /^[A-Za-z0-9]+$/,
+	                        message: '用户名只能为字母或数字'
 	                    }
 	                }
 	            },
@@ -147,7 +163,7 @@
 	            mobile: {
 	            	validators: {
 	            		notEmpty: {
-	                        message: '用户名不能为空'
+	                        message: '联系人手机号不能为空'
 	                    },
 	            		regexp: {
 	                        regexp: /^[1][34578][0-9]{9}$/,
