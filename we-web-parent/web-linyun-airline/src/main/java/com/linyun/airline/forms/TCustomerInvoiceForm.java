@@ -25,6 +25,9 @@ public class TCustomerInvoiceForm implements SQLParamForm, Serializable {
 	/**发票项id*/
 	private long invoiceId;
 
+	/**发票项名称*/
+	private long invioceName;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**

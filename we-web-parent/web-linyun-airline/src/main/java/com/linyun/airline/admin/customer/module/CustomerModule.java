@@ -4,10 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -24,11 +28,14 @@ import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.linyun.airline.admin.customer.service.CustomerService;
 import com.linyun.airline.admin.customer.service.CustomerViewService;
-import com.linyun.airline.admin.dictionary.dirinfo.service.IInfoService;
+import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
+import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAgentEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
+import com.linyun.airline.entities.TCustomerInvoiceEntity;
+import com.linyun.airline.entities.TCustomerLineEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
 import com.linyun.airline.forms.TCustomerInfoQueryForm;
@@ -70,7 +77,7 @@ public class CustomerModule {
 	private CustomerViewService customerViewService;
 
 	@Inject
-	private IInfoService iInfoService;
+	private externalInfoService externalInfoService;
 
 	@Inject
 	private UploadService fdfsUploadService;
@@ -99,28 +106,6 @@ public class CustomerModule {
 		addForm.setCreateTime(new Date());
 		customerViewService.add(addForm);
 		return JsonResult.success("添加成功");
-	}
-
-	//出发城市模糊查询
-	@At
-	@POST
-	public Object goCity(@Param("departureCity") final String name) {
-		/*iInfoService.searchDict("departureCity", name);*/
-		return null;
-	}
-
-	//线路模糊查询
-	@At
-	@POST
-	public Object line(@Param("line") final String name) {
-		return null;
-	}
-
-	//发票项目模糊查询
-	@At
-	@POST
-	public Object invioceType(@Param("invioce") final String name) {
-		return null;
 	}
 
 	/**
@@ -189,10 +174,97 @@ public class CustomerModule {
 		}
 	}
 
+	//公司名称模糊查询
+	//TODO 接口未写
+
+	//出发城市模糊查询
 	@At
-	@GET
-	@Ok("jsp")
-	public void newadd2() {
+	@POST
+	public Object goCity(@Param("departureCity") final String name) throws Exception {
+		Set<String> set = new HashSet();
+
+		List<TCustomerLineEntity> localLineList = dbDao.query(TCustomerLineEntity.class,
+				Cnd.where("lineName", "like", "%" + name + "%"), null);
+
+		List<DictInfoEntity> dictLineList = externalInfoService.findDictInfoByName(name);
+
+		if (localLineList.size() > 5) {
+			for (int i = 0; i < 5; i++) {
+				set.add(localLineList.get(i).getLineName());
+			}
+		} else {
+			for (TCustomerLineEntity tCustomerLineEntity : localLineList) {
+				set.add(tCustomerLineEntity.getLineName());
+			}
+			//需要从字典表中查询的记录数   5-set.size()
+			int num = 5 - set.size();
+			while (num > 0) {
+				set.add(dictLineList.get(num).getDictName());
+				num--;
+			}
+		}
+
+		return set;
+	}
+
+	//线路模糊查询
+	@At
+	@POST
+	public Object isLine(@Param("line") final String name) throws Exception {
+		Set<String> set = new HashSet();
+
+		List<TCustomerLineEntity> localLineList = dbDao.query(TCustomerLineEntity.class,
+				Cnd.where("lineName", "like", "%" + name + "%"), null);
+
+		List<DictInfoEntity> dictLineList = externalInfoService.findDictInfoByName(name);
+
+		if (localLineList.size() > 5) {
+			for (int i = 0; i < 5; i++) {
+				set.add(localLineList.get(i).getLineName());
+			}
+		} else {
+			for (TCustomerLineEntity tCustomerLineEntity : localLineList) {
+				set.add(tCustomerLineEntity.getLineName());
+			}
+			//需要从字典表中查询的记录数   5-set.size()
+			int num = 5 - set.size();
+			while (num > 0) {
+				set.add(dictLineList.get(num).getDictName());
+				num--;
+			}
+		}
+
+		return set;
+	}
+
+	//发票项目模糊查询
+	@At
+	@POST
+	public Object invioceType(@Param("invioce") final String name) throws Exception {
+		Set<String> set = new HashSet();
+
+		List<TCustomerInvoiceEntity> localInvioceList = dbDao.query(TCustomerInvoiceEntity.class,
+				Cnd.where("invioceName", "like", "%" + name + "%"), null);
+		List<DictInfoEntity> dictLineList = externalInfoService.findDictInfoByName(name);
+
+		if (localInvioceList.size() > 5) {
+			for (int i = 0; i < 5; i++) {
+				set.add(localInvioceList.get(i).getInvioceName());
+			}
+		} else {
+			for (TCustomerInvoiceEntity tCustomerInvoiceEntity : localInvioceList) {
+				set.add(tCustomerInvoiceEntity.getInvioceName());
+			}
+
+			//需要从字典表中查询的记录数   5-set.size()
+			int num = 5 - set.size();
+			while (num > 0) {
+				set.add(dictLineList.get(num).getDictName());
+				num--;
+			}
+		}
+
+		return set;
 	}
 
 }

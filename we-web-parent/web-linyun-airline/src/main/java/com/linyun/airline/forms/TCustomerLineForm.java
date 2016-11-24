@@ -25,6 +25,9 @@ public class TCustomerLineForm implements SQLParamForm, Serializable {
 	/**线路ID*/
 	private long lineId;
 
+	/**线路名称*/
+	private String lineName;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**

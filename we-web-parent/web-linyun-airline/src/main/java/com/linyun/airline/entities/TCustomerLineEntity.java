@@ -26,4 +26,8 @@ public class TCustomerLineEntity implements Serializable {
 	@Comment("线路ID")
 	private long lineId;
 
+	@Column
+	@Comment("线路名称")
+	private String lineName;
+
 }

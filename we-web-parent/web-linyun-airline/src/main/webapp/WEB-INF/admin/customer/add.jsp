@@ -181,6 +181,23 @@
 
 		});
 	}
+	
+	
+	function isLine(){
+		alert($("#line").val());
+		$.ajax({
+			type : 'POST',
+			data : {
+				departureCity : $("#line").val()
+			},
+			dataType : 'json',
+			url : '${base}/admin/customer/isLine.html',
+			success : function(data) {
+
+			}
+
+		});
+	}
 </script>
 
 <body>
@@ -304,13 +321,13 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">国境内陆：</label>
 							<div class="col-sm-3 padding">
-								<input type="text" class="form-control input-sm" placeholder=""
-									onkeyup="" />
+								<input id="line" name="line" type="text" class="form-control input-sm"
+									onkeyup="isLine()" />
 							</div>
 
 							<label class="col-sm-2 text-right padding">国际：</label>
 							<div class="col-sm-3 padding">
-								<input type="text" class="form-control input-sm" placeholder="" />
+								<input id="line" name="line" onkeyup="isLine()" type="text" class="form-control input-sm"/>
 							</div>
 						</div>
 
