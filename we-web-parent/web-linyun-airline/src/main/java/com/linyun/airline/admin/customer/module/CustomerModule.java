@@ -1,31 +1,38 @@
 package com.linyun.airline.admin.customer.module;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Files;
+import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
+import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.linyun.airline.admin.customer.service.CustomerService;
 import com.linyun.airline.admin.customer.service.CustomerViewService;
 import com.linyun.airline.admin.dictionary.dirinfo.service.IInfoService;
-import com.linyun.airline.entities.DictInfoEntity;
+import com.linyun.airline.common.base.MobileResult;
+import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.entities.TAgentEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
 import com.linyun.airline.forms.TCustomerInfoQueryForm;
 import com.linyun.airline.forms.TCustomerInfoUpdateForm;
-import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
 import com.uxuexi.core.web.util.FormUtil;
@@ -65,6 +72,9 @@ public class CustomerModule {
 	@Inject
 	private IInfoService iInfoService;
 
+	@Inject
+	private UploadService fdfsUploadService;
+
 	/**
 	 * 跳转到'添加操作'的录入数据页面
 	 */
@@ -86,14 +96,31 @@ public class CustomerModule {
 	@At
 	@POST
 	public Object add(@Param("..") TCustomerInfoAddForm addForm) throws Exception {
-		//addForm.setCreateTime(DateTimeUtil.nowDateTime());
-		addForm.setCreateTime(DateTimeUtil.nowDateTime());
-		FormUtil.add(dbDao, addForm, TCustomerInfoEntity.class);
+		addForm.setCreateTime(new Date());
+		customerViewService.add(addForm);
 		return JsonResult.success("添加成功");
 	}
 
-	public void goCity(@Param("id") final String name) {
-		List<DictInfoEntity> search = iInfoService.search(name);
+	//出发城市模糊查询
+	@At
+	@POST
+	public Object goCity(@Param("departureCity") final String name) {
+		/*iInfoService.searchDict("departureCity", name);*/
+		return null;
+	}
+
+	//线路模糊查询
+	@At
+	@POST
+	public Object line(@Param("line") final String name) {
+		return null;
+	}
+
+	//发票项目模糊查询
+	@At
+	@POST
+	public Object invioceType(@Param("invioce") final String name) {
+		return null;
 	}
 
 	/**
@@ -114,8 +141,7 @@ public class CustomerModule {
 	@At
 	@POST
 	public Object update(@Param("..") TCustomerInfoUpdateForm updateForm) {
-		//updateForm.setCreateTime(DateTimeUtil.nowDateTime());
-		FormUtil.modify(dbDao, updateForm, TCustomerInfoEntity.class);
+		customerViewService.update(updateForm);
 		return JsonResult.success("修改成功");
 	}
 
@@ -133,7 +159,7 @@ public class CustomerModule {
 	 */
 	@At
 	public Object delete(@Param("id") final long id) {
-		FormUtil.delete(dbDao, TCustomerInfoEntity.class, id);
+		customerViewService.deleteById(id);
 		return JsonResult.success("删除成功");
 	}
 
@@ -144,6 +170,29 @@ public class CustomerModule {
 	public Object batchDelete(@Param("ids") final long[] ids) {
 		FormUtil.delete(dbDao, TCustomerInfoEntity.class, ids);
 		return JsonResult.success("删除成功");
+	}
+
+	//附件上传 返回值文件存储地址
+	@POST
+	@AdaptBy(type = UploadAdaptor.class, args = { "ioc:imgUpload" })
+	@Ok("json")
+	public Object upload(final @Param("file") File file, final HttpSession session) {
+		try {
+			String ext = Files.getSuffix(file);
+			FileInputStream fileInputStream = new FileInputStream(file);
+			String url = fdfsUploadService.uploadImage(fileInputStream, ext, null);
+			//文件存储地址
+			return url;
+			//业务
+		} catch (Exception e) {
+			return MobileResult.error("操作失败", null);
+		}
+	}
+
+	@At
+	@GET
+	@Ok("jsp")
+	public void newadd2() {
 	}
 
 }

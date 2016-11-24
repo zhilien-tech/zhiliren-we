@@ -1,12 +1,11 @@
 package com.linyun.airline.forms;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.AddForm;
 
 @Data
@@ -45,7 +44,7 @@ public class TCustomerInfoAddForm extends AddForm implements Serializable {
 	private String agent;
 
 	/**添加时间*/
-	private Timestamp createTime;
+	private Date createTime;
 
 	/**出发城市*/
 	private String departureCity;
@@ -72,16 +71,16 @@ public class TCustomerInfoAddForm extends AddForm implements Serializable {
 	private long payType;
 
 	/**合作时间*/
-	private Timestamp cooperateTime;
+	private Date cooperateTime;
 
 	/**合作到期时间*/
-	private Timestamp cooperateDueTime;
+	private Date cooperateDueTime;
 
 	/**签约时间*/
-	private Timestamp contractTime;
+	private Date contractTime;
 
 	/**签约到期时间*/
-	private Timestamp contractDueTime;
+	private Date contractDueTime;
 
 	/**是否签约（未签约、已签约、禁止合作）*/
 	private long contract;
@@ -89,43 +88,4 @@ public class TCustomerInfoAddForm extends AddForm implements Serializable {
 	/**是否禁用*/
 	private long forbid;
 
-	public void setCreateTime(Timestamp createTime) {
-		if (Util.isEmpty(createTime)) {
-			this.createTime = null;
-		} else {
-			this.createTime = createTime;
-		}
-	}
-
-	public void setCooperateTime(Timestamp cooperateTime) {
-		if (Util.isEmpty(cooperateTime)) {
-			this.cooperateTime = null;
-		} else {
-			this.cooperateTime = cooperateTime;
-		}
-	}
-
-	public void setCooperateDueTime(Timestamp cooperateDueTime) {
-		if (Util.isEmpty(cooperateDueTime)) {
-			this.cooperateDueTime = null;
-		} else {
-			this.cooperateDueTime = cooperateDueTime;
-		}
-	}
-
-	public void setContractTime(Timestamp contractTime) {
-		if (Util.isEmpty(contractTime)) {
-			this.contractTime = null;
-		} else {
-			this.contractTime = contractTime;
-		}
-	}
-
-	public void setContractDueTime(Timestamp contractDueTime) {
-		if (Util.isEmpty(contractDueTime)) {
-			this.contractDueTime = null;
-		} else {
-			this.contractDueTime = contractDueTime;
-		}
-	}
 }

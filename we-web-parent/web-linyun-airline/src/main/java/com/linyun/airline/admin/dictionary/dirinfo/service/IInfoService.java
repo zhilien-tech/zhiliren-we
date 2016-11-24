@@ -6,13 +6,11 @@
 
 package com.linyun.airline.admin.dictionary.dirinfo.service;
 
-import java.util.List;
 import java.util.Map;
 
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.linyun.airline.admin.dictionary.dirinfo.form.InfoModForm;
-import com.linyun.airline.entities.DictInfoEntity;
 
 /**
  * TODO(这里用一句话描述这个类的作用)
@@ -38,5 +36,5 @@ public interface IInfoService {
 	Map<String, Object> findDirinfo(long id);
 
 	//模糊查询
-	public List<DictInfoEntity> search(String name);
+	/*public Object searchDict(String tableName, String name);*/
 }

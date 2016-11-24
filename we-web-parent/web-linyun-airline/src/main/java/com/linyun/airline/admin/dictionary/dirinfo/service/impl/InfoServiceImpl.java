@@ -7,17 +7,14 @@
 package com.linyun.airline.admin.dictionary.dirinfo.service.impl;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.linyun.airline.admin.dictionary.dirinfo.form.InfoModForm;
 import com.linyun.airline.admin.dictionary.dirinfo.service.IInfoService;
 import com.linyun.airline.entities.DictInfoEntity;
-import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.util.FormUtil;
 
@@ -46,16 +43,15 @@ public class InfoServiceImpl implements IInfoService {
 		return obj;
 	}
 
-	//客户管理中 模糊查询字典表
+	/*//客户管理中 字典表模糊查询
 	@Override
-	public List<DictInfoEntity> search(String name) {
+	public Object searchDict(String columnName, String name) {
 		Cnd cnd = Cnd.NEW();
 		if (!Util.isEmpty(name)) {
-			cnd.and("dictName", "LIKE", "%" + name + "%");
+			cnd.and(columnName, "LIKE", "%" + name + "%");
 		}
-		Map<String, Object> query = FormUtil.query(dbDao, DictInfoEntity.class, cnd, null);
-		return null;
-
-	}
+		Map<String, Object> map = FormUtil.query(dbDao, DictInfoEntity.class, cnd, null);
+		return map.get("list");
+	}*/
 
 }

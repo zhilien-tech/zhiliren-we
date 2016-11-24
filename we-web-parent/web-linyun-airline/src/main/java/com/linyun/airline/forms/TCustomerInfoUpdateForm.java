@@ -2,6 +2,7 @@ package com.linyun.airline.forms;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -45,7 +46,7 @@ public class TCustomerInfoUpdateForm extends ModForm implements Serializable {
 	private String agent;
 
 	/**添加时间*/
-	private Timestamp createTime;
+	private Date createTime;
 
 	/**出发城市*/
 	private String departureCity;
@@ -72,16 +73,16 @@ public class TCustomerInfoUpdateForm extends ModForm implements Serializable {
 	private long payType;
 
 	/**合作时间*/
-	private Timestamp cooperateTime;
+	private Date cooperateTime;
 
 	/**合作到期时间*/
-	private Timestamp cooperateDueTime;
+	private Date cooperateDueTime;
 
 	/**签约时间*/
-	private Timestamp contractTime;
+	private Date contractTime;
 
 	/**签约到期时间*/
-	private Timestamp contractDueTime;
+	private Date contractDueTime;
 
 	/**是否签约（未签约、已签约、禁止合作）*/
 	private long contract;

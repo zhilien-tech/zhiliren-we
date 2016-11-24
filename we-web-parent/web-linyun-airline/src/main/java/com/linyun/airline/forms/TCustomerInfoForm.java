@@ -1,11 +1,11 @@
 package com.linyun.airline.forms;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import org.joda.time.DateTime;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
@@ -53,7 +53,7 @@ public class TCustomerInfoForm extends SQLParamForm implements Serializable {
 	private String agent;
 
 	/**添加时间*/
-	private DateTime createTime;
+	private Date createTime;
 
 	/**出发城市*/
 	private String departureCity;
@@ -80,16 +80,16 @@ public class TCustomerInfoForm extends SQLParamForm implements Serializable {
 	private long payType;
 
 	/**合作时间*/
-	private DateTime cooperateTime;
+	private Date cooperateTime;
 
 	/**合作到期时间*/
-	private DateTime cooperateDueTime;
+	private Date cooperateDueTime;
 
 	/**签约时间*/
-	private DateTime contractTime;
+	private Date contractTime;
 
 	/**签约到期时间*/
-	private DateTime contractDueTime;
+	private Date contractDueTime;
 
 	/**是否签约（未签约、已签约、禁止合作）*/
 	private long contract;
