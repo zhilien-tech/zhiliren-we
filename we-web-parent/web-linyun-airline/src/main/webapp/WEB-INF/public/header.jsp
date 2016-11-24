@@ -14,7 +14,8 @@
   <!-- Font Awesome -->
  <%--  <link rel="stylesheet" href="${base }/public/dist/css/font-awesome.min.css"> --%>
   <link rel="stylesheet" href="${base }/public/font-awesome/css/font-awesome.min.css">
- 
+  <!-- style -->
+  <link rel="stylesheet" href="${base }/public/css/style.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="${base }/public/dist/css/ionicons.min.css">
   <!-- Theme style -->
