@@ -11,10 +11,10 @@
 </head>
 <body onresize=hero();>
           <div class="modal-top">
-          <form id="form1" method="post" action="${base}/admin/dictionary/dirinfo/add.html"> 
+          <form id="form1" method="post"> 
               <div class="modal-header boderButt">
                   <button type="button" class="btn btn-primary right btn-sm" data-dismiss="modal">返回</button>
-                  <input type="submit" id="submit" class="btn btn-primary right btn-sm" value="保存"/>
+                  <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
                   <h4>添加</h4>
               </div>
                 <div class="modal-body">
@@ -49,8 +49,8 @@
                             <label class="col-sm-3 text-right padding">状态：</label>
                             <div class="col-sm-8 padding">
                               <select id="status" name="status" class="form-control input-sm">
-                                <option value="0">冻结</option>
-								<option value="1" selected="selected">启用</option>
+                                <option value="1" selected="selected">启用</option>
+								<option value="2">删除</option>
                               </select>
                             </div>
                         </div>
@@ -66,7 +66,28 @@
             </div>
 </body>
 </html>	
-	
+<script src="${base}/common/js/layer/layer.js"></script>
+<script type="text/javascript">
+	$("#submit").click(function(){
+		$.ajax({
+           cache: true,
+           type: "POST",
+           url:'${base}/admin/dictionary/dirinfo/add.html',
+           data:$('#form1').serialize(),// 你的formid
+           error: function(request) {
+              layer.msg('添加失败!');
+           },
+            success: function(data) {
+			layer.load(1, {
+				 shade: [0.1,'#fff'] //0.1透明度的白色背景
+			});
+              layer.msg('添加成功!',{time: 5000, icon:6});
+			  window.location.reload(true);
+           }
+       });
+		 $(".Mymodal-lg").modal('hide');
+	});
+</script>
 	
 	
 	

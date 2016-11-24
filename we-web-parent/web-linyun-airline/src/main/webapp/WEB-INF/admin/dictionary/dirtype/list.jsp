@@ -55,9 +55,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				  <div class="col-md-2"><!--状态名称 搜索框-->
           			<div class="col-sm-12 padding">
                       <select id="status" name="status" class="form-control input-sm">
-     						<option value="">--请选择--</option>
-     						<option value="0" <c:if test="${'0' eq obj.queryForm.status}">selected</c:if>>冻结</option>
-							<option value="1" <c:if test="${'1' eq obj.queryForm.status}">selected</c:if>>启用</option>
+     						<option value="">--不限--</option>
+								<c:forEach var="map" items="${obj.dataStatusEnum}" >
+									<c:choose>
+									   <c:when test="${map.key == obj.queryForm.status}">
+									   		<option value="${map.key}" selected="selected">${map.value}</option>
+									   </c:when>
+									   <c:otherwise>
+									   		<option value="${map.key}">${map.value}</option>
+									   </c:otherwise>
+								</c:choose>
+							</c:forEach>
 					  </select>
                     </div>
           		 </div>
@@ -68,7 +76,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				 <div class="col-md-2 col-padding"><!--搜索 按钮-->
               		<button type="submit" class="btn btn-primary btn-sm">搜索</button>
            		 </div>
-           		
 			</form>
             <div class="col-md-1 col-md-offset-4">
            		<a href="${base}/admin/dictionary/dirtype/add.html" data-toggle="modal" 
@@ -92,19 +99,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 						<td>${one.typeCode}</td>
 						<td>${one.typeName }</td>
 						<td><span data-toggle="tooltip" data-placement="right" title="${one.description }">${one.description }<span></td>
-						<c:if test="${one.status eq 0}"> 
-		     				<td>冻结</td>
-						</c:if>
-						<c:if test="${one.status eq 1}"> 
-		     				<td>启用</td>
-						</c:if>
+						<td><we:enum key="${one.status }" className="com.linyun.airline.common.enums.DataStatusEnum"/></td>
 						<td>
 							<a href="${base}/admin/dictionary/dirtype/update.html?id=${one.id}" data-toggle="modal" 
-           					 id="addBtn" data-target=".Mymodal-lg">编辑</a>
-							<%--
-								这里如果有写title，则需要确认才会操作
-							 --%>
-							<a href="${base}/admin/dictionary/dirtype/delete?id=${one.id}" class='btn btn_mini btn_del'>删除</a>
+           					 id="addBtn" class="btn btn-primary btn-sm" data-target=".Mymodal-lg">编辑</a>
+							<%--这里如果有写title，则需要确认才会操作--%>
+							<c:choose>
+							   <c:when test="${1 == one.status}">
+							   		<a href='javascript:physicalDelete(${one.id},2);' class='btn btn-danger btn-sm'>删除</a>
+							   </c:when>
+							   <c:otherwise>
+							   		<a href='javascript:physicalDelete(${one.id},1);' class='btn btn-success btn-sm'>启用</a>
+							   </c:otherwise>
+							</c:choose>
 						</td>
 					</tr>
 				</c:forEach>
@@ -151,44 +158,58 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="${base}/public/plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="${base}/public/dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="${base}/public/dist/js/demo.js"></script>
+<script src="${base}/common/js/layer/layer.js"></script>
 <!-- page script -->
 <script type="text/javascript">
-  $(function () {
-    $("#example1").DataTable();
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false
-    });
-  });
   //添加
   $('#addBtn').click(function(){
       $(".Mymodal-lg").on("hidden", function() {
           $(this).removeData("modal");
       });
- })
- //删除询问框
- /* $('#remove').on('click', function(){
-    var othis = $(this);
-    layer.open({
-        content: '您确认要删除？',
-        btn: ['确认', '取消'],
-        shadeClose: false,
-        yes: function(){
-            layer.open({content: '删除成功!', time: 1});
-            othis.parents('.atxt').remove();
-        }, no: function(){
-            layer.open({content: '删除失败!', time: 1});
+ });
+ //删除提示
+function physicalDelete(did,status){
+		$.ajax({ 
+			type: 'POST', 
+			data: {id:did,status:status}, 
+			dataType:'json',   
+			url: '${base}/admin/dictionary/dirtype/updateDeleteStatus.html',
+	           success: function (data) { 
+	           	if("200" == data.status){
+	           		layer.msg("操作成功!","",3000);
+	           		window.location.reload(true);
+	           	}else{
+	           		layer.msg("操作失败!","",3000);
+	           	}
+	           },
+	           error: function (xhr) {
+	           	layer.msg("操作失败","",3000);
+	           } 
+       });
+	}
+  //描述提示信息弹出层Tooltip 
+  $(function () { 
+	  $("[data-toggle='tooltip']").tooltip();
+	});
+
+</script>
+<script type="text/javascript">
+var datatable;
+function initDatatable() {
+    datatable = $('#example2').DataTable({
+    	"searching":false,
+        "processing": true,
+        "serverSide": false,
+        "bLengthChange": false,
+        "language": {
+            "url": "${base}/public/plugins/datatables/cn.json"
         }
     });
-}); */
-  //描述提示信息弹出层Tooltip
-  $(function () { $("[data-toggle='tooltip']").tooltip(); });
+}
+$(function () {
+    initDatatable();
+});
+
 </script>
 </body>
 </html>

@@ -34,11 +34,14 @@ public class DictInfoForm extends SQLParamForm implements Serializable {
 	/**描述*/
 	private String description;
 
-	/**字典信息状态,0-冻结，1-启用，2--删除*/
+	/**字典信息状态,1-启用，2--删除*/
 	private int status;
 
-	/**删除标识,0-未删除，1-已删除*/
-	private int dr;
+	/**全拼*/
+	private String quanPin;
+
+	/**简拼*/
+	private String jianpin;
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {

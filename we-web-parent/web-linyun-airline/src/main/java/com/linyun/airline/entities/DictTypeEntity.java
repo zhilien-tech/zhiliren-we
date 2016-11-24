@@ -31,11 +31,6 @@ public class DictTypeEntity implements Serializable {
 	private String description;
 
 	@Column
-	@Comment("状态,0-冻结，1-启用，2--删除")
+	@Comment("状态,1-启用，2--删除")
 	private int status;
-
-	@Column
-	@Comment("删除标识:(0,表示未删除；1,表示已删除)")
-	private int dr;
-
 }

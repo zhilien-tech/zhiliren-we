@@ -7,8 +7,8 @@ import com.uxuexi.core.common.enums.IEnum;
  * @author 朱晓川
  *
  */
-public enum DataStatusEnum implements IEnum{
-	FREEZE(0, "已冻结"),ENABLE(1, "启用中"),DELETE(2,"已删除") ;
+public enum DataStatusEnum implements IEnum {
+	ENABLE(1, "启用中"), DELETE(2, "已删除");
 	private int key;
 	private String value;
 
@@ -26,6 +26,7 @@ public enum DataStatusEnum implements IEnum{
 	public String value() {
 		return value;
 	}
+
 	public int intKey() {
 		return key;
 	}

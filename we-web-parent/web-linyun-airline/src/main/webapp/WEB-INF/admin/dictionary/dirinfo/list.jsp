@@ -55,9 +55,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				 <div class="col-md-2"><!--状态名称 搜索框-->
           			<div class="col-sm-12 padding">
                       <select id="status" name="status" class="form-control input-sm">
-	     					<option value="">--请选择--</option>
-	     					<option value="0" <c:if test="${'0' eq obj.queryForm.status}">selected</c:if>>冻结</option>
-							<option value="1" <c:if test="${'1' eq obj.queryForm.status}">selected</c:if>>启用</option>
+	     					<option value="">--不限--</option>
+								<c:forEach var="map" items="${obj.dataStatusEnum}" >
+									<c:choose>
+									   <c:when test="${map.key == obj.queryForm.status}">
+									   		<option value="${map.key}" selected="selected">${map.value}</option>
+									   </c:when>
+									   <c:otherwise>
+									   		<option value="${map.key}">${map.value}</option>
+									   </c:otherwise>
+									</c:choose>
+								</c:forEach>
 					  </select>
                     </div>
           		 </div>
@@ -72,7 +80,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			</form>
             <div class="col-md-1 col-md-offset-4">
            		<a href="${base}/admin/dictionary/dirinfo/add.html" data-toggle="modal" 
-           	class="btn btn-primary btn-sm" id="addBtn" data-target=".Mymodal-lg">添加</a>
+           		class="btn btn-primary btn-sm" id="addBtn" data-target=".Mymodal-lg">添加</a>
+            	<!-- <a class="btn btn-primary btn-sm" onclick="add();">添加</a> -->
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -94,22 +103,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							<td>${one.dictCode}</td>
 							<td>${one.dictName }</td>
 							<td><span data-toggle="tooltip" data-placement="right" title="${one.description }">${one.description }</td>
-							<c:if test="${one.status eq 0}"> 
-			     				<td>冻结</td>
-							</c:if>
-							<c:if test="${one.status eq 1}"> 
-			     				<td>启用</td>
-							</c:if>
-							<c:if test="${one.status eq 2}"> 
-			     				<td>删除</td>
-							</c:if>
+							<td><we:enum key="${one.status }" className="com.linyun.airline.common.enums.DataStatusEnum"/></td>
 							<td>
 								<a href="${base}/admin/dictionary/dirinfo/update.html?id=${one.id}" data-toggle="modal" 
-           					 id="addBtn" data-target=".Mymodal-lg">编辑</a>
-								<%--
-									这里如果有写title，则需要确认才会操作
-								 --%>
-								<a id="deleteBtn" href="${base}/admin/dictionary/dirinfo/delete?id=${one.id}" title='是否要删除' class='btn btn_mini btn_del'>删除</a>
+           					 id="addBtn" class="btn btn-primary btn-sm" data-target=".Mymodal-lg">编辑</a>
+								<%--这里如果有写title，则需要确认才会操作--%>
+								<c:choose>
+								   <c:when test="${1 == one.status}">
+								   		<a href='javascript:physicalDelete(${one.id},2);' class='btn btn-danger btn-sm'>删除</a>
+								   </c:when>
+								   <c:otherwise>
+								   		<a href='javascript:physicalDelete(${one.id},1);' class='btn btn-success btn-sm'>启用</a>
+								   </c:otherwise>
+								</c:choose>
 							</td>
 						</tr>
 					</c:forEach>
@@ -156,9 +162,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="${base}/public/plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="${base}/public/dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="${base}/public/dist/js/demo.js"></script>
-<!-- page script -->
+<script src="${base}/common/js/layer/layer.js"></script>
+
 <script>
   $(function () {
     $("#example1").DataTable();
@@ -176,9 +181,87 @@ scratch. This page gets rid of all links and provides the needed markup only.
       $(".Mymodal-lg").on("hidden", function() {
           $(this).removeData("modal");
       });
- })
+ });
+ //删除提示
+function physicalDelete(did,status){
+		$.ajax({ 
+			type: 'POST', 
+			data: {id:did,status:status}, 
+			dataType:'json',   
+			url: '${base}/admin/dictionary/dirinfo/updateDeleteStatus.html',
+	           success: function (data) { 
+	           	if("200" == data.status){
+	           		layer.msg("操作成功!","",3000);
+	           		window.location.reload(true);
+	           	}else{
+	           		layer.msg("操作失败!","",3000);
+	           	}
+	           },
+	           error: function (xhr) {
+	           	layer.msg("操作失败","",3000);
+	           } 
+       });
+	}
  //描述提示信息弹出层Tooltip
   $(function () { $("[data-toggle='tooltip']").tooltip(); });
+</script>
+
+<script type="text/javascript">
+//分页显示
+var datatable;
+function initDatatable() {
+    datatable = $('#example2').DataTable({
+    	"searching":false,
+        "processing": true,
+        "serverSide": false,
+        "bLengthChange": false,
+        "language": {
+            "url": "${base}/public/plugins/datatables/cn.json"
+        },
+        "ajax": {
+            "url": "${base}/admin/Company/listData.html",
+            "type": "post",
+            "data": function (d) {
+            	
+            }
+        },
+        "columns": [
+                    {"data": "comname", "bSortable": true},
+                    {"data": "connect", "bSortable": true},
+                    {"data": "mobile", "bSortable": true},
+                    {"data": "renshu", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var s = '';
+                    		if(row.renshu <= '0'){
+                    			s = '0';
+                    		}else{
+                    			s = '<a  style="cursor:pointer;" onclick="userlist('+row.id+')">'+row.renshu+'</a>';
+                    		}
+                            return s
+                        }
+                    },
+                    {"data": "comtype", "bSortable": true}
+            ],
+        columnDefs: [{
+            //   指定第一列，从0开始，0表示第一列，1表示第二列……
+            targets: 5,
+            render: function(data, type, row, meta) {
+                return '<a class="btn btn-primary btn-sm" onclick="edit('+row.id+');">编辑</a>'
+            }
+        }]
+    });
+}
+
+$("#searchBtn").on('click', function () {
+	
+	
+    datatable.ajax.reload();
+});
+
+$(function () {
+    initDatatable();
+});
+
 </script>
 </body>
 </html>

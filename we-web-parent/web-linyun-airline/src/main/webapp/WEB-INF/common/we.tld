@@ -89,7 +89,7 @@
 	    <name>enum</name> 
 	    
 		<!-- 指定标签类文件的全路径  -->
-	    <tag-class>com.xiaoka.game.common.util.EnumTag</tag-class>
+	    <tag-class>com.linyun.airline.common.util.EnumTag</tag-class>
 	
 		<!--如果不需要标签体则设置empty，反之设定jsp -->
 	    <body-content>empty</body-content>
@@ -115,7 +115,7 @@
 	    <name>ago</name> 
 	    
 		<!-- 指定标签类文件的全路径  -->
-	    <tag-class>com.xiaoka.game.common.util.TimeAgoTag</tag-class>
+	    <tag-class>com.linyun.airline.common.util.TimeAgoTag</tag-class>
 	
 		<!--如果不需要标签体则设置empty，反之设定jsp -->
 	    <body-content>empty</body-content>

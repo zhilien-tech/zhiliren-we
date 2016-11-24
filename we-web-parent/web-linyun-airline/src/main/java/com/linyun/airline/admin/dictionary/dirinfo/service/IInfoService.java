@@ -34,4 +34,5 @@ public interface IInfoService {
 	 * @param id  角色id
 	 */
 	Map<String, Object> findDirinfo(long id);
+
 }

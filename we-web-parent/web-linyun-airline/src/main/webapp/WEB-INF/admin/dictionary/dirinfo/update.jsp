@@ -14,7 +14,7 @@
           <form id="form1" method="post"  action="${base}/admin/dictionary/dirinfo/update.html">
               <div class="modal-header boderButt">
                   <button type="button" class="btn btn-primary right btn-sm" data-dismiss="modal">返回</button>
-                  <input type="submit" class="btn btn-primary right btn-sm" value="保存"/>
+                  <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
                   <h4>编辑</h4>
               </div>
                 <div class="modal-body">
@@ -50,10 +50,16 @@
                             <label class="col-sm-3 text-right padding">状态：</label>
                             <div class="col-sm-8 padding">
                               	<select id="status" name="status" class="form-control input-sm">
-									<c:forEach items="${obj }">
-				     					<option value="0" <c:if test="${'0' eq obj.dirinfo.status}">selected</c:if>>冻结</option>
-										<option value="1" <c:if test="${'1' eq obj.dirinfo.status}">selected</c:if>>启用</option>
-									</c:forEach> 
+									<c:forEach var="map" items="${obj.dataStatusEnum}" >
+										<c:choose>
+										   <c:when test="${map.key == obj.dirinfo.status}">
+										   		<option value="${map.key}" selected="selected">${map.value}</option>
+										   </c:when>
+										   <c:otherwise>
+										   		<option value="${map.key}">${map.value}</option>
+										   </c:otherwise>
+										</c:choose>
+									</c:forEach>
 								</select>
                             </div>
                         </div>
@@ -70,11 +76,25 @@
 </body>
 </html>	
 <script type="text/javascript">
-<!-- 状态默认选择 -->
-/**状态默认选中*/
-	//var  ss = document.getElementById('status');
-	//var status= "${obj.dirinfo.status}";
-	//ss[status].selected=true;
+$("#submit").click(function(){
+	$.ajax({
+           cache: true,
+           type: "POST",
+           url:'${base}/admin/dictionary/dirinfo/update.html',
+           data:$('#form1').serialize(),// 你的formid
+           error: function(request) {
+              layer.msg('修改失败!');
+           },
+             success: function(data) {
+		layer.load(1, {
+			 shade: [0.1,'#fff'] //0.1透明度的白色背景
+		});
+              layer.msg('修改成功!',{time: 5000, icon:6});
+		  	  window.location.reload(true);
+          }
+       });
+	 $(".Mymodal-lg").modal('hide');
+});
 </script>
 	
 	

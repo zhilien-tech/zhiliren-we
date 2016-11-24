@@ -15,7 +15,9 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import com.linyun.airline.admin.dictionary.dirinfo.form.InfoModForm;
 import com.linyun.airline.admin.dictionary.dirinfo.service.IInfoService;
 import com.linyun.airline.entities.DictInfoEntity;
+import com.linyun.airline.entities.DictTypeEntity;
 import com.uxuexi.core.db.dao.IDbDao;
+import com.uxuexi.core.web.base.service.BaseService;
 import com.uxuexi.core.web.util.FormUtil;
 
 /**
@@ -24,7 +26,7 @@ import com.uxuexi.core.web.util.FormUtil;
  * @Date	 2016年11月3日 	 
  */
 @IocBean(name = "iInfoService")
-public class InfoServiceImpl implements IInfoService {
+public class InfoServiceImpl extends BaseService<DictInfoEntity> implements IInfoService {
 
 	@Inject
 	private IDbDao dbDao;
@@ -39,6 +41,7 @@ public class InfoServiceImpl implements IInfoService {
 	@Override
 	public Map<String, Object> findDirinfo(long id) {
 		Map<String, Object> obj = new HashMap<String, Object>();
+		obj.put("dirtype", dbDao.query(DictTypeEntity.class, null, null));
 		obj.put("dirinfo", dbDao.fetch(DictInfoEntity.class, id));
 		return obj;
 

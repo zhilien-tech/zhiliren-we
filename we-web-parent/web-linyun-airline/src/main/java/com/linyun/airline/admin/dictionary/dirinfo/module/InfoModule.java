@@ -6,9 +6,11 @@
 
 package com.linyun.airline.admin.dictionary.dirinfo.module;
 
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.Map;
 
+import org.nutz.dao.Chain;
+import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -23,8 +25,12 @@ import com.linyun.airline.admin.dictionary.dirinfo.form.InfoAddForm;
 import com.linyun.airline.admin.dictionary.dirinfo.form.InfoModForm;
 import com.linyun.airline.admin.dictionary.dirinfo.form.InfoQueryForm;
 import com.linyun.airline.admin.dictionary.dirinfo.service.IInfoService;
+import com.linyun.airline.admin.dictionary.dirinfo.service.impl.InfoServiceImpl;
+import com.linyun.airline.common.enums.DataStatusEnum;
+import com.linyun.airline.common.form.AlterStatusForm;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.DictTypeEntity;
+import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
 import com.uxuexi.core.web.util.FormUtil;
@@ -52,6 +58,9 @@ public class InfoModule {
 
 	@Inject
 	private IInfoService iInfoService;
+
+	@Inject
+	private InfoServiceImpl infoService;
 
 	/**
 	 * 跳转到'添加操作'的录入数据页面
@@ -82,10 +91,9 @@ public class InfoModule {
 	@GET
 	@Ok("jsp")
 	public Object update(@Param("id") final long id) {
-		Map<String, Object> obj = new HashMap<String, Object>();
-		obj.put("dirtype", dbDao.query(DictTypeEntity.class, null, null));
-		obj.put("dirinfo", iInfoService.findDirinfo(id));
-		return obj;
+		Map<String, Object> map = iInfoService.findDirinfo(id);
+		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));
+		return map;
 	}
 
 	/**
@@ -108,14 +116,17 @@ public class InfoModule {
 	@At
 	@Ok("jsp")
 	public Object list(@Param("..") final InfoQueryForm queryForm, @Param("..") final Pager pager) {
-		return FormUtil.query(dbDao, DictInfoEntity.class, queryForm, pager);
+		Map<String, Object> map = FormUtil.query(dbDao, DictInfoEntity.class, queryForm, pager);
+		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));
+		return map;
 	}
 
 	/**
 	 * 删除记录
+	 * @throws IOException 
 	 */
 	@At
-	public Object delete(@Param("id") final long id) {
+	public Object delete(@Param("id") final long id) throws IOException {
 		FormUtil.delete(dbDao, DictInfoEntity.class, id);
 		return JsonResult.success("删除成功！");
 	}
@@ -127,5 +138,24 @@ public class InfoModule {
 	public Object batchDelete(@Param("ids") final long[] ids) {
 		FormUtil.delete(dbDao, DictInfoEntity.class, ids);
 		return JsonResult.success("删除成功！");
+	}
+
+	/**
+	 * 更新删除状态
+	 * TODO(这里用一句话描述这个方法的作用)
+	 * @param updateForm
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	@At
+	@POST
+	public Object updateDeleteStatus(@Param("..") AlterStatusForm form) {
+		try {
+			dbDao.update(DictInfoEntity.class, Chain.make("status", form.getStatus()),
+					Cnd.where("id", "=", form.getId()));
+			return JsonResult.success("操作成功!");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JsonResult.error("操作失败!");
+		}
 	}
 }

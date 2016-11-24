@@ -27,29 +27,28 @@
 
         <li><a href="employeeManage.html"><i class="fa fa-users"></i> <span>员工管理</span></a></li>
         <li><a href="clientManage.html"><i class="fa fa-user-secret"></i><span>客户管理</span></a></li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-files-o"></i>
-            <span>权限管理</span>
+         <li class="treeview">
+          <a href="${base}/admin/job/list.html">
+            <i class="fa fa-edit"></i> <span>权限管理</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
             <li><a href="${base}/admin/job/list.html"><i class="fa fa-circle-o"></i> 职位管理</a></li>
-            <li><a href=""><i class="fa fa-circle-o"></i> 用户管理</a></li>
-            <li><a href=""><i class="fa fa-circle-o"></i> 功能管理</a></li>
+            <li><a href="${base}/admin/job/list.html"><i class="fa fa-circle-o"></i> 用户管理</a></li>
+            <li><a href="${base}/admin/job/list.html"><i class="fa fa-circle-o"></i> 功能管理</a></li>
           </ul>
         </li>
         <li class="active treeview">
           <a href="${base}/admin/dictionary/dirtype/list.html">
-            <i class="fa fa-dashboard"></i> <span>数据字典</span>
+            <i class="fa fa-table"></i> <span>数据字典</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="${base}/admin/dictionary/dirtype/list.html"><i class="fa fa-circle-o"></i> 字典类型</a></li>
+            <li><a href="${base}/admin/dictionary/dirtype/list.html"><i class="fa fa-circle-o"></i> 字典类型</a></li>
             <li><a href="${base}/admin/dictionary/dirinfo/list.html"><i class="fa fa-circle-o"></i> 字典信息</a></li>
           </ul>
         </li>
@@ -58,7 +57,6 @@
     </section>
     <!-- /.sidebar -->
   </aside>
-
   
   
   
