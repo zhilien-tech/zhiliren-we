@@ -29,7 +29,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 <!-- daterange picker -->
 <link rel="stylesheet"
-	href="${base}/public/plugins/dateraner/daterangepicker.css">
+	href="${base}/public/plugins/daterangepicker/daterangepicker.css">
 <!-- bootstrap datepicker -->
 <link rel="stylesheet"
 	href="${base}/public/plugins/datepicker/datepicker3.css">
@@ -105,41 +105,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- AdminLTE App -->
 <script src="${base}/public/dist/js/app.min.js"></script>
 <script src="${base}/common/js/layer/layer.js"></script>
-<!-- page script -->
-<script type="text/javascript">
-	$(function() {
-		$("#example1").DataTable();
-		$('#example2').DataTable({
-			"paging" : true,
-			"lengthChange" : false,
-			"searching" : false,
-			"ordering" : true,
-			"info" : true,
-			"autoWidth" : false
-		});
-		
-	    
-	});
 
-	//设置默认
-	function makeDefault() {
-		$("#sname").val("");
-		$("#select1").val("");
-		$("#select2").val("");
-	}
-
-	$('#addBtn').click(function() {
-		$(".Mymodal-lg").on("hidden", function() {
-			$(this).removeData("modal");
-		});
-	});
-
-	$('#updateBtn').click(function() {
-		$(".Mymodal-lg").on("hidden", function() {
-			$(this).removeData("modal");
-		});
-	});
-</script>
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
 
@@ -157,14 +123,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 								<h3 class="box-title">
 									&nbsp;&nbsp;<i class="fa fa-user-secret"></i> 客户管理
 								</h3>
-								<form id="searchForm" role="form" class="form-horizontal"
-									action="${base}/admin/customer/list.html" method="post"
-									onsubmit="return navTabSearch(this);">
 									<div class="form-group row form-right">
 
 										<div class="col-md-2">
 											<!--是否签约 下拉框-->
-											<select id="select1" class="form-control select"
+											<select id="contract" class="form-control select"
 												name="contract"
 												<!-- onchange="alert($(this).val())" -->>
 												<option value="">是否签约</option>
@@ -178,7 +141,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 										</div>
 										<div class="col-md-2">
 											<!--是否禁用 下拉框-->
-											<select id="select2" class="form-control select"
+											<select id="forbid" class="form-control select"
 												name="forbid">
 												<option value="">是否禁用</option>
 												<option value="0"
@@ -190,12 +153,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 										<div class="col-md-3">
 											<!--公司名称/负责人/电话 搜索框-->
 											<input type="text" id="sname" name="name"
-												onkeyup="searchText()" class="form-control"
-												value="${obj.queryForm.name }" placeholder="公司名称/负责人/电话">
+												 class="form-control"  placeholder="公司名称/负责人/电话">
 										</div>
 										<div class="col-md-2 col-padding">
 											<!--搜索 恢复默认 按钮-->
-											<button type="submit" class="btn btn-primary btn-sm">搜索</button>
+											<button id="searchBtn" type="submit" class="btn btn-primary btn-sm">搜索</button>
 											<button type="button" class="btn btn-primary btn-sm btn-left"
 												onclick="makeDefault()">恢复默认</button>
 										</div>
@@ -208,11 +170,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 										</div>
 
 									</div>
-								</form>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
-								<table id="example2" class="table table-bordered table-hover">
+								<table id="datatable" class="table table-bordered table-hover">
 									<thead>
 										<tr>
 											<th>序号</th>
@@ -225,22 +186,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach items="${obj.list}" var="one">
-											<tr>
-												<td class="txtc">${one.id}</td>
-												<td>${one.name}</td>
-												<td>${one.linkMan}</td>
-												<td>${one.telephone}</td>
-												<td><c:if test="${one.contract==1 }">已签约</c:if> <c:if
-														test="${one.contract==0 }">未签约</c:if></td>
-												<td><fmt:formatDate value="${one.contractDueTime}"
-														pattern="yyyy-MM-dd" /></td>
-												<td><a
-													href="${base}/admin/customer/update.html?id=${one.id}"
-													id="updateBtn" class="btn btn_mini btn_modify"
-													data-target=".Mymodal-lg" data-toggle="modal">编辑</a></td>
-											</tr>
-										</c:forEach>
 									</tbody>
 								</table>
 							</div>
@@ -280,6 +225,98 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			</div>
 		</div>
 	</div>
+	<!-- page script -->
+<script type="text/javascript">
+var datatable;
+function initDatatable() {
+    datatable = $('#datatable').DataTable({
+    	"searching":false,
+    	"bLengthChange": false,
+        "processing": true,
+        "serverSide": true,
+        "language": {
+            "url": "${base}/public/plugins/datatables/cn.json"
+        },
+        "ajax": {
+            "url": "${base}/admin/customer/listData.html",
+            "type": "post",
+            "data": function (d) {
+            	
+            }
+        },
+        "columns": [
+                    {"data": "id", "bSortable": false},
+                    {"data": "name", "bSortable": false},
+                    {"data": "linkman", "bSortable": false},
+                    {"data": "telephone", "bSortable": false},
+                    {"data": "contract", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var s = '';
+                    		if(row.contract == '1'){
+                    			s = '已签约';
+                    		}else if(row.contract == '0'){
+                    			s = '未签约';
+                    		}
+                            return s
+                        }
+                    },
+                    {"data": "contractDueTime", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var s = '';
+                    		if(row.contractDueTime == ''){
+                    			s = '';
+                    		}else{
+                    			//日期需要格式化
+                    			
+                    		}
+                            return s
+                        }
+                    }
+            ],
+        columnDefs: [{
+            //   指定第一列，从0开始，0表示第一列，1表示第二列……
+            targets: 6,
+            render: function(data, type, row, meta) {
+                return '<a href="${base}/admin/customer/update.html?id='+row.id+'" id="updateBtn" class="btn btn_mini btn_modify" data-target=".Mymodal-lg" data-toggle="modal">编辑</a>'
+            }
+        }]
+    });
+}
 
+	$("#searchBtn").on('click', function () {
+		var sname = $("#sname").val();
+		var contract = $("#contract").val("");
+		var forbid = $("#forbid").val("");
+	    var param = {
+	        "name": sname,"contract":contract,"forbid":forbid
+	    };
+	    datatable.settings()[0].ajax.data = param;
+	    datatable.ajax.reload();
+	});
+
+	$(function () {
+	    initDatatable();
+	});
+
+	//设置默认
+	function makeDefault() {
+		$("#sname").val("");
+		$("#select1").val("");
+		$("#select2").val("");
+	}
+
+	$('#addBtn').click(function() {
+		$(".Mymodal-lg").on("hidden", function() {
+			$(this).removeData("modal");
+		});
+	});
+
+	$('#updateBtn').click(function() {
+		$(".Mymodal-lg").on("hidden", function() {
+			$(this).removeData("modal");
+		});
+	});
+	
+</script>
 </body>
 </html>

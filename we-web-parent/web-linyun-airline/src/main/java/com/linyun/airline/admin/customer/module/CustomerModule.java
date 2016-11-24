@@ -131,12 +131,18 @@ public class CustomerModule {
 	}
 
 	/**
-	 * 分页查询
+	 * 客户端分页查询
 	 */
 	@At
 	@Ok("jsp")
 	public Object list(@Param("..") final TCustomerInfoQueryForm queryForm, @Param("..") final Pager pager) {
-		return FormUtil.query(dbDao, TCustomerInfoEntity.class, queryForm, pager);
+		return null;
+	}
+
+	//服务器端分页查询
+	@At
+	public Object listData(@Param("..") final TCustomerInfoQueryForm queryForm) {
+		return customerViewService.listPage4Datatables(queryForm);
 	}
 
 	/**

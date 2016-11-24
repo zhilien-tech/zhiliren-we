@@ -7,17 +7,15 @@
 <head>
 <meta charset="UTF-8">
 <title>添加</title>
-<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="dist/css/AdminLTE.css">
 <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
 
 </head>
 <!-- jQuery 2.2.3 -->
-<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
-<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
 <script src="${base}/common/js/layer/layer.js"></script>
 <script type="text/javascript">
 	$(function() {
