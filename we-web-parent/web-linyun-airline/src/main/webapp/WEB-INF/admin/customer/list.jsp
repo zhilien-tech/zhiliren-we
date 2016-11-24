@@ -247,7 +247,7 @@ function initDatatable() {
         "columns": [
                     {"data": "id", "bSortable": false},
                     {"data": "name", "bSortable": false},
-                    {"data": "linkman", "bSortable": false},
+                    {"data": "agent", "bSortable": false},
                     {"data": "telephone", "bSortable": false},
                     {"data": "contract", "bSortable": false,
                     	render: function(data, type, row, meta) {

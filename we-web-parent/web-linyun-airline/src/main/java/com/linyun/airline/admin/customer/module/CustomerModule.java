@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpSession;
 
@@ -18,6 +19,7 @@ import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Files;
+import org.nutz.lang.Strings;
 import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Filters;
@@ -41,6 +43,7 @@ import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
 import com.linyun.airline.forms.TCustomerInfoQueryForm;
 import com.linyun.airline.forms.TCustomerInfoUpdateForm;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
 import com.uxuexi.core.web.util.FormUtil;
@@ -188,34 +191,42 @@ public class CustomerModule {
 	@At
 	@POST
 	public Object goCity(@Param("departureCity") final String name) throws Exception {
-		List<String> list = new ArrayList<String>();
-
+		Set<DictInfoEntity> set = new TreeSet<DictInfoEntity>();
 		//需要加排序事件
 		List<TCustomerLineEntity> localLineList = dbDao.query(TCustomerLineEntity.class,
-				Cnd.where("lineName", "like", "%" + name + "%"), null);
+				Cnd.where("lineName", "like", name + "%"), null);
 
-		List<DictInfoEntity> dictLineList = externalInfoService.findDictInfoByName(name);
-
-		if (localLineList.size() > 5) {
+		if (localLineList.size() >= 5) {
 			for (int i = 0; i < 5; i++) {
-				list.add(localLineList.get(i).getLineName());
+				DictInfoEntity info = new DictInfoEntity();
+				TCustomerLineEntity cl = localLineList.get(i);
+				info.setId(cl.getLineId());
+				info.setDictName(cl.getLineName());
+				set.add(info);
 			}
 		} else {
-			for (TCustomerLineEntity tCustomerLineEntity : localLineList) {
-				list.add(tCustomerLineEntity.getLineName());
+
+			for (TCustomerLineEntity cl : localLineList) {
+				DictInfoEntity info = new DictInfoEntity();
+				info.setId(cl.getLineId());
+				info.setDictName(cl.getLineName());
+				set.add(info);
 			}
-			//需要从字典表中查询的记录数   5-set.size()
-			int num = dictLineList.size();
-			if (dictLineList.size() + list.size() >= 5) {
-				num = 5 - list.size();
-			}
-			for (int i = 0; i < num; i++) {
-				DictInfoEntity dictInfoEntity = dictLineList.get(i);
-				list.add(dictInfoEntity.getDictName());
+
+			List<DictInfoEntity> dictLineList = externalInfoService.findDictInfoByName(name);
+			int needmore = 5 - localLineList.size();
+
+			if (!Util.isEmpty(dictLineList)) {
+				if (dictLineList.size() <= needmore) {
+					set.addAll(dictLineList);
+				} else {
+					for (int i = 0; i < needmore; i++) {
+						set.add(dictLineList.get(i));
+					}
+				}
 			}
 		}
-
-		return list;
+		return set;
 	}
 
 	//线路模糊查询
@@ -225,7 +236,7 @@ public class CustomerModule {
 		Set<String> set = new HashSet();
 
 		List<TCustomerLineEntity> localLineList = dbDao.query(TCustomerLineEntity.class,
-				Cnd.where("lineName", "like", "%" + name + "%"), null);
+				Cnd.where("lineName", "like", name + "%"), null);
 
 		List<DictInfoEntity> dictLineList = externalInfoService.findDictInfoByName(name);
 
@@ -255,7 +266,7 @@ public class CustomerModule {
 		List<String> list = new ArrayList<String>();
 
 		List<TCustomerInvoiceEntity> localInvioceList = dbDao.query(TCustomerInvoiceEntity.class,
-				Cnd.where("invioceName", "like", "%" + name + "%"), null);
+				Cnd.where("invioceName", "like", "%" + Strings.trim(name) + "%"), null);
 		List<DictInfoEntity> dictLineList = externalInfoService.findDictInfoByName(name);
 
 		if (localInvioceList.size() > 5) {

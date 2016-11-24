@@ -6,15 +6,12 @@
 <html lang="en-US">
 <head>
 <meta charset="UTF-8">
-<title>添加</title>
-<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="dist/css/AdminLTE.css">
+<title>更新</title>
+<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
+<link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
+<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
 </head>
-<!-- jQuery 2.2.3 -->
-<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
-<script src="bootstrap/js/bootstrap.min.js"></script>
-<script src="${base}/common/js/layer/layer.js"></script>
+
 <body>
 	<div class="modal-content">
 		<form id="form1">
@@ -34,15 +31,15 @@
 			<div class="modal-body">
 				<div class="tab-content">
 					<div class="tab-pane active" id="tabs_1">
-						<input name="comId" type="hidden" value="1" /> 
-						<input name="agentId" type="hidden" value="1" />
+						<input name="comId" type="hidden" value="1" /> <input
+							name="agentId" type="hidden" value="1" />
 						<!--基本信息-->
 						<div class="form-group row">
 							<input name="id" type="hidden" value="${obj.customer.id}" /> <label
 								class="col-sm-3 text-right padding">公司名称：</label>
 							<div class="col-sm-8 padding">
 								<input name="name" type="text" class="form-control input-sm"
-									value="${obj.customer.name}" placeholder="聚优国际旅行社（北京）有限公司" />
+									value="${obj.customer.name}"  onkeyup="sname() placeholder="聚优国际旅行社（北京）有限公司" />
 							</div>
 						</div>
 
@@ -124,9 +121,10 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">出发城市：</label>
 							<div class="col-sm-3 padding">
-								<input name="departureCity" type="tel"
-									class="form-control input-sm"
-									value="${obj.customer.departureCity}" />
+	<input id="departureCity" name="departureCity" type="text"
+									onkeyup="goCity()" class="form-control input-sm"
+									placeholder="请输入出发城市" value="${obj.customer.departureCity}"/>
+								
 							</div>
 						</div>
 
@@ -136,12 +134,14 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">国境内陆：</label>
 							<div class="col-sm-3 padding">
-								<input type="text" class="form-control input-sm" placeholder="" />
+								<input id="line" name="line" type="text"
+									class="form-control input-sm" onkeyup="isLine()" />
 							</div>
 
 							<label class="col-sm-2 text-right padding">国际：</label>
 							<div class="col-sm-3 padding">
-								<input type="text" class="form-control input-sm" placeholder="" />
+								<input id="line" name="line" onkeyup="isLine()" type="text"
+									class="form-control input-sm" />
 							</div>
 						</div>
 
@@ -151,7 +151,9 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">附件列表：</label>
 							<div class="col-sm-3 padding">
-								<input name="appendix" type="file" id="file" />
+									<p class="flie_A">
+									上传 <input name="appendix" type="file" id="file" />
+								</p>
 							</div>
 						</div>
 					</div>
@@ -182,10 +184,11 @@
 
 							<label class="col-sm-2 text-right padding">合作时间：</label>
 							<div class="col-sm-5 padding">
-								<input name="cooperateTime" type="text"
+								<input id="datepicker1" name="cooperateTime" type="date"
 									class="form-control input-sm input-wid"
-									placeholder="2015-08-08" /> 至 <input name="cooperateDueTime"
-									type="text" class="form-control input-sm input-wid"
+									placeholder="2015-08-08" /> 至 <input id="datepicker2"
+									name="cooperateDueTime" type="date"
+									class="form-control input-sm input-wid"
 									placeholder="2088-09-09" />
 							</div>
 						</div>
@@ -193,7 +196,9 @@
 						<div class="form-group row">
 							<label class="col-sm-2 text-right padding">付款方式：</label>
 							<div class="col-sm-2 padding">
-								<select id="payWay" name="payWay" class="form-control input-sm">
+								<select id="payWay" name="payWay"
+ class="form-control input-sm paySele"
+									onchange="paySelect_change(this)">
 									<option value="1"
 										<c:if test="${'1' eq obj.customer.payWay}">selected</c:if>>现金</option>
 									<option value="2"
@@ -207,10 +212,19 @@
 								</select>
 							</div>
 
+<div class="col-sm-8">
+								<div class="col-sm-12 padding payInp"></div>
+							</div>
+						</div>
+
+
+						<div class="form-group row">
+
 							<label class="col-sm-2 text-right padding">结算方式：</label>
 							<div class="col-sm-2 padding">
 								<select id="payType" name="payType"
-									class="form-control input-sm">
+								class="form-control input-sm sele"
+									onchange="select_change(this)">
 									<option value="1"
 										<c:if test="${'1' eq obj.customer.payType}">selected</c:if>>月结</option>
 									<option value="2"
@@ -222,10 +236,17 @@
 								</select>
 							</div>
 
+<div class="col-sm-8">
+								<div class="col-sm-12 padding inpAdd"></div>
+							</div>
+						</div>
+
+						<div class="form-group row">
+
 							<label class="col-sm-2 text-right padding">提供发票：</label>
 							<div class="col-sm-2 padding">
 								<select id="invoice" name="invoice"
-									class="form-control input-sm">
+									class="form-control input-sm" onchange="gaveInvioce()">
 									<option value="0"
 										<c:if test="${'0' eq obj.customer.invoice}">selected</c:if>>否</option>
 									<option value="1"
@@ -234,24 +255,123 @@
 							</div>
 						</div>
 
-						<div style="display: none;" class="form-group row">
+					<div class="col-sm-8" style="display: none;" id="invioceType">
 							<label class="col-sm-2 text-right padding">发票项目：</label>
-							<div class="col-sm-4 padding">
-								<input type="tel" class="form-control input-sm" placeholder="" />
+							<div class="col-sm-8 padding">
+								<input type="text" class="form-control input-sm" placeholder="" />
 							</div>
 
 						</div>
 					</div>
 				</div>
 			</div>
-		</form>
+</form>
 	</div>
 
 	<!-- jQuery 2.2.3 -->
-	<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<!-- Bootstrap 3.3.6 -->
-	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Select2 -->
+	<script src="${base}/public/plugins/select2/select2.full.min.js"></script>
+
+	<script src="${base}/public/plugins/iCheck/icheck.min.js"></script>
+	<!-- FastClick 快 点击-->
+	<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
+
+	<script src="${base}/common/js/layer/layer.js"></script>
+
 	<script type="text/javascript">
+		$(function() {
+			//Initialize Select2 Elements
+			$(".select2").select2();
+
+			//Datemask dd/mm/yyyy
+			$("#datemask").inputmask("dd/mm/yyyy", {
+				"placeholder" : "dd/mm/yyyy"
+			});
+			//Datemask2 mm/dd/yyyy
+			$("#datemask2").inputmask("mm/dd/yyyy", {
+				"placeholder" : "mm/dd/yyyy"
+			});
+			//Money Euro
+			$("[data-mask]").inputmask();
+
+			//Date range picker
+			$('#reservation').daterangepicker();
+			//Date range picker with time picker
+			$('#reservationtime').daterangepicker({
+				timePicker : true,
+				timePickerIncrement : 30,
+				format : 'MM/DD/YYYY h:mm A'
+			});
+			//Date range as a button
+			$('#daterange-btn').daterangepicker(
+					{
+						ranges : {
+							'Today' : [ moment(), moment() ],
+							'Yesterday' : [ moment().subtract(1, 'days'),
+									moment().subtract(1, 'days') ],
+							'Last 7 Days' : [ moment().subtract(6, 'days'),
+									moment() ],
+							'Last 30 Days' : [ moment().subtract(29, 'days'),
+									moment() ],
+							'This Month' : [ moment().startOf('month'),
+									moment().endOf('month') ],
+							'Last Month' : [
+									moment().subtract(1, 'month').startOf(
+											'month'),
+									moment().subtract(1, 'month')
+											.endOf('month') ]
+						},
+						startDate : moment().subtract(29, 'days'),
+						endDate : moment()
+					},
+					function(start, end) {
+						$('#daterange-btn span').html(
+								start.format('MMMM D, YYYY') + ' - '
+										+ end.format('MMMM D, YYYY'));
+					});
+
+			//Date picker
+			$('#datepicker1').datepicker({
+				autoclose : true
+			});
+			$('#datepicker2').datepicker({
+				autoclose : true
+			});
+
+			//iCheck for checkbox and radio inputs
+			$('input[type="checkbox"].minimal, input[type="radio"].minimal')
+					.iCheck({
+						checkboxClass : 'icheckbox_minimal-blue',
+						radioClass : 'iradio_minimal-blue'
+					});
+			//Red color scheme for iCheck
+			$(
+					'input[type="checkbox"].minimal-red, input[type="radio"].minimal-red')
+					.iCheck({
+						checkboxClass : 'icheckbox_minimal-red',
+						radioClass : 'iradio_minimal-red'
+					});
+			//Flat red color scheme for iCheck
+			$('input[type="checkbox"].flat-red, input[type="radio"].flat-red')
+					.iCheck({
+						checkboxClass : 'icheckbox_flat-green',
+						radioClass : 'iradio_flat-green'
+					});
+
+			//Colorpicker
+			$(".my-colorpicker1").colorpicker();
+			//color picker with addon
+			$(".my-colorpicker2").colorpicker();
+
+			//Timepicker
+			$(".timepicker").timepicker({
+				showInputs : false
+			});
+		});
+
 		//更新时刷新页面
 		function update() {
 			window.location.reload();
@@ -268,7 +388,6 @@
 			}
 		}
 
-		
 		//更新弹框提示
 		$("#submit").click(function() {
 			$.ajax({
@@ -293,6 +412,26 @@
 			});
 			$(".Mymodal-lg").modal('hide');
 		});
+
+		function sname() {
+		}
+
+		//出发城市
+		function goCity() {
+			alert($("#departureCity").val());
+			$.ajax({
+				type : 'POST',
+				data : {
+					departureCity : $("#departureCity").val()
+				},
+				dataType : 'json',
+				url : '${base}/admin/customer/goCity.html',
+				success : function(data) {
+
+				}
+
+			});
+		}
 	</script>
 </body>
 </html>

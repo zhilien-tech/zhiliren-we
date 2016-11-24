@@ -30,4 +30,7 @@ public class TCustomerLineEntity implements Serializable {
 	@Comment("线路名称")
 	private String lineName;
 
+	/**使用次数*/
+	private int count;
+
 }
