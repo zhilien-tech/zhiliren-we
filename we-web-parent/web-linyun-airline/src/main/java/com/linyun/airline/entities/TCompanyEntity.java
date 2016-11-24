@@ -1,10 +1,10 @@
 package com.linyun.airline.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 
-import org.joda.time.DateTime;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Comment;
 import org.nutz.dao.entity.annotation.Id;
@@ -63,11 +63,11 @@ public class TCompanyEntity implements Serializable {
 
 	@Column
 	@Comment("创建时间")
-	private DateTime createtime;
+	private Date createtime;
 
 	@Column
 	@Comment("最后修改时间")
-	private DateTime lastupdatetime;
+	private Date lastupdatetime;
 
 	@Column
 	@Comment("删除标识")

@@ -7,6 +7,7 @@
 package com.linyun.airline.forms;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
@@ -14,8 +15,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
 import com.uxuexi.core.common.util.Util;
-import com.uxuexi.core.db.dao.IDbDao;
-import com.uxuexi.core.web.form.ISqlForm;
+import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
  * TODO(这里用一句话描述这个类的作用)
@@ -26,40 +26,39 @@ import com.uxuexi.core.web.form.ISqlForm;
  * @Date	 2016年11月21日 	 
  */
 @Data
-public class TCompanyUserSqlForm implements ISqlForm {
+@EqualsAndHashCode(callSuper = true)
+public class TCompanyUserSqlForm extends DataTablesParamForm {
 
 	private Long id;
 
 	private String userName;
 
-	@Override
-	public Sql createPagerSql(IDbDao paramIDbDao, SqlManager paramSqlManager) {
-
-		String sqlString = paramSqlManager.get("company_user_info_list");
-		Sql sql = Sqls.create(sqlString);
-		sql.setCondition(cnd());
-		return sql;
-
-	}
-
-	@Override
-	public Sql createCountSql(IDbDao paramIDbDao, SqlManager paramSqlManager) {
-
-		// TODO Auto-generated method stub
-		return null;
-
-	}
+	private String depid;
 
 	private Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		//TODO 添加自定义查询条件（可选）
+		cnd.and("tuj.status", "=", 1);
 		if (!Util.isEmpty(id)) {
 			cnd.and("tcj.comId", "=", id);
 		}
 		if (!Util.isEmpty(userName)) {
 			cnd.and("tu.userName", "like", "%" + userName + "%").or("tu.telephone", "like", "%" + userName + "%");
 		}
+		if (!Util.isEmpty(depid)) {
+			cnd.and("td.id", "=", depid);
+		}
 		return cnd;
+	}
+
+	@Override
+	public Sql sql(SqlManager sqlManager) {
+
+		String sqlString = sqlManager.get("company_user_info_list");
+		Sql sql = Sqls.create(sqlString);
+		sql.setCondition(cnd());
+		return sql;
+
 	}
 
 }

@@ -364,10 +364,15 @@ height: 274px;
 }
 
 .wu-example .statusBar .btns .uploadBtn {
-    background: #00b7ee;
+    background: #3c8dbc !important;
     color: #fff;
     border-color: transparent;
+    position: relative;
+    top: -122px;
+    height: 40px;
+    border-radius: 5px;
 }
+
 .wu-example .statusBar .btns .uploadBtn:hover {
     background: #00a2d4;
 }
@@ -375,4 +380,16 @@ height: 274px;
 .wu-example .statusBar .btns .uploadBtn.disabled {
     pointer-events: none;
     opacity: 0.6;
+}
+
+
+
+.wu-example .statusBar .btns .uploadBtn {
+    background: #3c8dbc !important;
+    color: #fff;
+    border-color: transparent;
+    position: relative;
+    top: -122px;
+    height: 40px;
+    border-radius: 5px;
 }

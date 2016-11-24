@@ -14,13 +14,26 @@
 	<link rel="stylesheet" href="${base }/public/dist/css/ionicons.min.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/skins/_all-skins.min.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
+	<!-- style -->
+  <link rel="stylesheet" href="${base }/public/css/style.css">
+	<style type="text/css">
+		.wu-example .statusBar .btns .uploadBtn {
+		    background: #3c8dbc !important;
+		    color: #fff;
+		    border-color: transparent;
+		    position: relative;
+		    top: -122px;
+		    height: 40px;
+		    border-radius: 5px;
+		}
+	</style>
 </head>
 <body onresize=hero();>
           <div class="modal-top">
                 <form id="companyaddForm"> 
               <div class="modal-header boderButt">
                   <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">返回</button>
-                  <input type="submit" id="submitButton" class="btn btn-primary right btn-sm" value="保存"/>
+                  <input type="button" id="submitButton" class="btn btn-primary right btn-sm" onclick="submitCompany()" value="保存"/>
                   <h4>&nbsp;&nbsp;&nbsp;<i class="fa fa-user"></i> 基本资料</h4>
               </div>
                 <div class="modal-body">
@@ -28,26 +41,26 @@
                         <div class="form-group row">
                             <label class="col-sm-3 text-right padding">公司名称：</label>
                             <div class="col-sm-8 padding">
-                              <input name="comName" type="tel" class="form-control input-sm" placeholder="请输入公司名称" />
+                              <input name="comName" type="tel" class="form-control input-sm inpImpWid" placeholder="请输入公司名称" /><span class="prompt">*</span>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label class="col-sm-3 text-right padding">用户名：</label>
                             <div class="col-sm-3 padding">
-                              <input name="telephone" type="tel" class="form-control input-sm" placeholder="请输入用户名" />
+                              <input name="telephone" type="tel" class="form-control input-sm inpImportant" placeholder="请输入用户名" /><span class="prompt">*</span>
                             </div>
                           
                             <label class="col-sm-2 text-right padding">联系人：</label>
                             <div class="col-sm-3 padding">
-                              <input name="connect" type="tel" class="form-control input-sm" placeholder="请输入联系人姓名" />
+                              <input name="connect" type="tel" class="form-control input-sm inpImportant" placeholder="请输入联系人姓名" /><span class="prompt">*</span>
                             </div>
                         </div>
 
                         <div class="form-group row">
                           <label class="col-sm-3 text-right padding">联系电话：</label>
                             <div class="col-sm-3 padding">
-                              <input name="mobile" type="tel" class="form-control input-sm" placeholder="请输入联系人手机号" />
+                              <input name="mobile" type="tel" class="form-control input-sm inpImportant" placeholder="请输入联系人手机号" /><span class="prompt">*</span>
                             </div>
                             
                             <label class="col-sm-2 text-right padding">联系邮箱：</label>
@@ -59,23 +72,24 @@
                         <div class="form-group row">
                           <label class="col-sm-3 text-right padding">座机电话：</label>
                             <div class="col-sm-3 padding">
-                              <input name="phonenumber" type="tel" class="form-control input-sm" placeholder="请输入公司座机号" />
+                              <input name="phonenumber" type="tel" class="form-control input-sm inpImportant" placeholder="请输入公司座机号" />
                             </div>
                           
                             <label class="col-sm-2 text-right padding">公司类型：</label>
                             <div class="col-sm-3 padding">
-                              <select class="form-control input-sm" name="comType">
+                              <select class="form-control input-sm inpImportant" name="comType">
                                 <option value="">==请选择==</option>
-                                <option value="1">上游公司</option>
-                                <option value="2">代理商</option>
-                              </select>
+                              	<c:forEach var="map" items="${obj.companyTypeEnum}" >
+							   		<option value="${map.key}">${map.value}</option>
+								</c:forEach>
+                              </select><span class="prompt">*</span>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label class="col-sm-3 text-right padding">地址：</label>
                             <div class="col-sm-8 padding">
-                              <input name="address" type="tel" class="form-control input-sm" placeholder="请输入详细地址" />
+                              <input name="address" type="tel" class="form-control input-sm inpImpWid" placeholder="请输入详细地址" /><span class="prompt">*</span>
                             </div>
                         </div>
 
@@ -91,20 +105,6 @@
                         </div>
 
 
-						<!-- <div class="panel_box">
-							<div class="panel_content nopadding">
-								<div class="form_item">
-									<label class="form_label">图片：</label>
-									<div class="form_ctrl" >
-										<input type="hidden" id="webupload_picture" name="license" value=""/>
-								        <div class="wu-example" id="uploader_00" style="width:300px;height:200px;">
-								        	<div id="imgUrlMessage" name="imgUrlMessage"></div> 
-								        </div>
-									</div>
-								</div>
-							</div>
-						</div> -->
-
                  </div>
                 </div>
                  </form>
@@ -113,6 +113,8 @@
 <script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="${base}/public/bootstrap/js/bootstrap.js"></script>
 <script src="${base}/public/dist/js/bootstrapValidator.js"></script>
+<!--layer -->
+	<script src="${base}/common/js/layer/layer.js"></script>
 <jsp:include page="/WEB-INF/common/webupload_resource.jsp"></jsp:include>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -139,6 +141,10 @@
 	            	validators: {
 	                    notEmpty: {
 	                        message: '用户名不能为空'
+	                    },
+		                regexp: {
+	                        regexp: /^[A-Za-z0-9]+$/,
+	                        message: '用户名只能为字母或数字'
 	                    }
 	                }
 	            },
@@ -152,7 +158,7 @@
 	            mobile: {
 	            	validators: {
 	            		notEmpty: {
-	                        message: '用户名不能为空'
+	                        message: '联系人手机号不能为空'
 	                    },
 	            		regexp: {
 	                        regexp: /^[1][34578][0-9]{9}$/,
@@ -172,7 +178,7 @@
 	            	validators: {
 	            		regexp: {
 	                        regexp: /^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/,
-	                        message: '座机格式错误'
+	                        message: '座机格式:区号-座机号'
 	                    }
 	                }
 	            },
@@ -200,6 +206,29 @@
 	function closewindow(){
 		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 		parent.layer.close(index);
+		parent.location.reload();
+	}
+	function submitCompany(){
+		$('#companyaddForm').bootstrapValidator('validate');
+		var bootstrapValidator = $("#companyaddForm").data('bootstrapValidator');
+		if(bootstrapValidator.isValid()){
+			$.ajax({ 
+				type: 'POST', 
+				data: $("#companyaddForm").serialize(), 
+				url: '${base}/admin/Company/add.html',
+	            success: function (data) { 
+	            	alert("添加成功");
+	            	location.reload();
+	            	$('#companyaddForm')[0].reset();
+	            	if($("#uploader_00").length>0){
+	        			inituploader("","00",[]);
+	        		}
+	            },
+	            error: function (xhr) {
+	            	layer.msg("添加失败","",3000);
+	            } 
+	        });
+		}
 	}
 </script>
 	

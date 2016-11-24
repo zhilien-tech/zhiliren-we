@@ -14,6 +14,19 @@
 	<link rel="stylesheet" href="${base }/public/dist/css/ionicons.min.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/skins/_all-skins.min.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
+	<!-- style -->
+    <link rel="stylesheet" href="${base }/public/css/style.css">
+	<style type="text/css">
+		.wu-example .statusBar .btns .uploadBtn {
+		    background: #3c8dbc !important;
+		    color: #fff;
+		    border-color: transparent;
+		    position: relative;
+		    top: -122px;
+		    height: 40px;
+		    border-radius: 5px;
+		}
+	</style>
 </head>
 <body onresize=hero();>
           <div class="modal-top">
@@ -21,7 +34,7 @@
              <form  id="companyUpdateForm"> 
               <div class="modal-header boderButt">
                   <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">返回</button>
-                  <input type="button" id="submitButton" onsubmit="submitCompany()" class="btn btn-primary right btn-sm" value="保存"/>
+                  <input type="button" id="submitButton" class="btn btn-primary right btn-sm" onclick="submitCompany();" value="保存"/>
                   <button type="button" class="btn right btn-sm" onclick="deleteCompany();">删除</button>
                   <h4>&nbsp;&nbsp;&nbsp;<i class="fa fa-user"></i> 基本资料</h4>
               </div>
@@ -31,26 +44,26 @@
                         <div class="form-group row">
                             <label class="col-sm-3 text-right padding">公司名称：</label>
                             <div class="col-sm-8 padding">
-                              <input name="comName" type="tel" class="form-control input-sm" placeholder="请输入公司名称" value="${obj.company.comName }"/>
+                              <input name="comName" type="tel" class="form-control input-sm inpImpWid" placeholder="请输入公司名称" value="${obj.company.comName }"/><span class="prompt">*</span>
                             </div>
                         </div>
-
                         <div class="form-group row">
                             <label class="col-sm-3 text-right padding">用户名：</label>
                             <div class="col-sm-3 padding">
-                              <input name="telephone" type="tel" class="form-control input-sm" placeholder="请输入用户名" value="${obj.user.telephone }"/>
+                              <input name="adminId" type="hidden" value="${obj.company.adminId }">
+                              <input name="telephone" type="tel" class="form-control input-sm inpImportant" placeholder="请输入用户名" value="${obj.telephone }"/><span class="prompt">*</span>
                             </div>
                           
                             <label class="col-sm-2 text-right padding">联系人：</label>
                             <div class="col-sm-3 padding">
-                              <input name="connect" type="tel" class="form-control input-sm" placeholder="请输入联系人姓名" value="${obj.company.connect }"/>
+                              <input name="connect" type="tel" class="form-control input-sm inpImportant" placeholder="请输入联系人姓名" value="${obj.company.connect }"/><span class="prompt">*</span>
                             </div>
                         </div>
 
                         <div class="form-group row">
                           <label class="col-sm-3 text-right padding">联系电话：</label>
                             <div class="col-sm-3 padding">
-                              <input name="mobile" type="tel" class="form-control input-sm" placeholder="请输入联系人手机号" value="${obj.company.mobile }"/>
+                              <input name="mobile" type="tel" class="form-control input-sm inpImportant" placeholder="请输入联系人手机号" value="${obj.company.mobile }"/><span class="prompt">*</span>
                             </div>
                             
                             <label class="col-sm-2 text-right padding">联系邮箱：</label>
@@ -67,26 +80,26 @@
                           
                             <label class="col-sm-2 text-right padding">公司类型：</label>
                             <div class="col-sm-3 padding">
-                              <select class="form-control input-sm" name="comType">
+                              <select class="form-control input-sm inpImportant" name="comType">
                                 <option value="">==请选择==</option>
-                                <option value="2" <c:if test="${'1' eq obj.company.comType}">selected</c:if>>上游公司</option>
-                                <option value="1" <c:if test="${'2' eq obj.company.comType}">selected</c:if>>代理商</option>
-                              </select>
+                                <option value="1" <c:if test="${'1' eq obj.company.comType}">selected</c:if>>上游公司</option>
+                                <option value="2" <c:if test="${'2' eq obj.company.comType}">selected</c:if>>代理商</option>
+                              </select><span class="prompt">*</span>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label class="col-sm-3 text-right padding">地址：</label>
                             <div class="col-sm-8 padding">
-                              <input name="address" type="tel" class="form-control input-sm" placeholder="请输入详细地址" value="${obj.company.id }"/>
+                              <input name="address" type="tel" class="form-control input-sm inpImpWid" placeholder="请输入详细地址" value="${obj.company.address }"/><span class="prompt">*</span>
                             </div>
                         </div>
 
 
 						 <div class="form-group row">
-                            <label class="col-sm-3 text-right padding">图片：</label>
+                            <label class="col-sm-3 text-right padding">上传营业执照：</label>
                             <div class="col-sm-8 padding">
-                              <input type="hidden" id="webupload_picture" name="license" value=""/>
+                              <input type="hidden" id="webupload_picture" name="license" value="${obj.company.license }"/>
 								        <div class="wu-example" id="uploader_00" style="width:300px;height:200px;">
 								        	<div id="imgUrlMessage" name="imgUrlMessage"></div> 
 								        </div>
@@ -123,7 +136,7 @@
 	            invalid: 'glyphicon glyphicon-remove',
 	            validating: 'glyphicon glyphicon-refresh'
 	        },
-	        fields: {
+	        fields: {	
 	        	comName: {
 	                validators: {
 	                    notEmpty: {
@@ -135,6 +148,10 @@
 	            	validators: {
 	                    notEmpty: {
 	                        message: '用户名不能为空'
+	                    },
+	                    regexp: {
+	                        regexp: /^[A-Za-z0-9]+$/,
+	                        message: '用户名只能为字母或数字'
 	                    }
 	                }
 	            },
@@ -148,7 +165,7 @@
 	            mobile: {
 	            	validators: {
 	            		notEmpty: {
-	                        message: '用户名不能为空'
+	                        message: '联系人手机号不能为空'
 	                    },
 	            		regexp: {
 	                        regexp: /^[1][34578][0-9]{9}$/,
@@ -201,45 +218,41 @@
 	}
 	
 	function submitCompany(){
-		$.ajax({ 
-			type: 'POST', 
-			data: $("#companyUpdateForm").serialize(), 
-			url: '${base}/admin/Company/update.html',
-            success: function (data) { 
-            	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-            	if("200" == data.status){
-            		layer.msg("修改成功","",3000);
-            	}else{
-            		layer.msg("修改失败","",3000);
-            	}
-            	layer.close(index);
-            	parent.location.reload();
-            	
-            },
-            error: function (xhr) {
-            	layer.msg("修改失败","",3000);
-            } 
-        });
+		$('#companyUpdateForm').bootstrapValidator('validate');
+		var bootstrapValidator = $("#companyUpdateForm").data('bootstrapValidator');
+		if(bootstrapValidator.isValid()){
+			$.ajax({ 
+				type: 'POST', 
+				data: $("#companyUpdateForm").serialize(), 
+				url: '${base}/admin/Company/update.html',
+	            success: function (data) { 
+	            	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	            	window.parent.successCallback('2');
+	            	parent.layer.close(index);
+	            	
+	            },
+	            error: function (xhr) {
+	            	layer.msg("修改失败","",3000);
+	            } 
+	        });
+		}
 	}
 	function deleteCompany(){
-		$.ajax({ 
-			type: 'POST', 
-			data: {id:'${obj.company.id}'}, 
-			url: '${base}/admin/Company/updateDeleteStatus.html',
-            success: function (data) { 
-            	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-            	if("200" == data.status){
-            		layer.msg("删除成功","",3000);
-            	}else{
-            		layer.msg("删除失败","",3000);
-            	}
-            	layer.close(index);
-            	parent.location.reload();
-            },
-            error: function (xhr) {
-            	layer.msg("删除失败","",3000);
-            } 
-        });
+		layer.confirm('确认你的操作?', {icon: 3, title:'提示'}, function(){
+			$.ajax({ 
+				type: 'POST', 
+				data: {id:'${obj.company.id}'}, 
+				url: '${base}/admin/Company/updateDeleteStatus.html',
+	            success: function (data) { 
+	            	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	            	window.parent.successCallback('3');
+	            	parent.layer.close(index);
+	            },
+	            error: function (xhr) {
+	            	layer.msg("删除失败","",3000);
+	            } 
+	        });
+		});
 	}
 </script>
 	
