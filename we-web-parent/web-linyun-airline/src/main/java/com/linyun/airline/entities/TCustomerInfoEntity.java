@@ -1,10 +1,10 @@
 package com.linyun.airline.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 
-import org.joda.time.DateTime;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Comment;
 import org.nutz.dao.entity.annotation.Id;
@@ -61,7 +61,7 @@ public class TCustomerInfoEntity implements Serializable {
 
 	@Column
 	@Comment("添加时间")
-	private DateTime createTime;
+	private Date createTime;
 
 	@Column
 	@Comment("出发城市")
@@ -97,19 +97,19 @@ public class TCustomerInfoEntity implements Serializable {
 
 	@Column
 	@Comment("合作时间")
-	private DateTime cooperateTime;
+	private Date cooperateTime;
 
 	@Column
 	@Comment("合作到期时间")
-	private DateTime cooperateDueTime;
+	private Date cooperateDueTime;
 
 	@Column
 	@Comment("签约时间")
-	private DateTime contractTime;
+	private Date contractTime;
 
 	@Column
 	@Comment("签约到期时间")
-	private DateTime contractDueTime;
+	private Date contractDueTime;
 
 	@Column
 	@Comment("是否签约（未签约、已签约、禁止合作）")
@@ -119,4 +119,7 @@ public class TCustomerInfoEntity implements Serializable {
 	@Comment("是否禁用")
 	private long forbid;
 
+	@Column
+	@Comment("业务范围")
+	private String business;
 }

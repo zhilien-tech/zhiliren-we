@@ -20,6 +20,8 @@ public class TCompanyAddForm extends AddForm implements Serializable {
 	/**公司名称*/
 	private String comName;
 
+	/**用户名*/
+	private String telephone;
 	/**公司类型*/
 	private String comType;
 
@@ -54,6 +56,6 @@ public class TCompanyAddForm extends AddForm implements Serializable {
 	private DateTime lastupdatetime;
 
 	/**删除标识*/
-	private String deletestatus;
+	private int deletestatus;
 
 }

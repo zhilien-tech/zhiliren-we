@@ -96,13 +96,3 @@ $("#submit").click(function(){
 	 $(".Mymodal-lg").modal('hide');
 });
 </script>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	

@@ -3,7 +3,6 @@ package com.linyun.airline.forms;
 import java.io.Serializable;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import org.joda.time.DateTime;
 import org.nutz.dao.Cnd;
@@ -16,8 +15,7 @@ import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.form.SQLParamForm;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class TCustomerInfoForm extends SQLParamForm implements Serializable {
+public class TCustomerInfoForm implements SQLParamForm, Serializable {
 	private static final long serialVersionUID = 1L;
 	/**主键*/
 	private long id;

@@ -81,13 +81,3 @@
     	$('#form1').validation();//自定义form表单的id
   })
 </script>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	

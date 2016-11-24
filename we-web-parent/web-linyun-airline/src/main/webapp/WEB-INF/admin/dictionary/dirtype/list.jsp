@@ -209,7 +209,6 @@ function initDatatable() {
 $(function () {
     initDatatable();
 });
-
 </script>
 </body>
 </html>

@@ -24,7 +24,6 @@ import com.uxuexi.core.web.form.ModForm;
 @EqualsAndHashCode(callSuper = true)
 public class TypeModForm extends ModForm implements Serializable {
 	private static final long serialVersionUID = 248685602143257341L;
-
 	//字典类别编码
 	private String typeCode;
 	//字典类别名称

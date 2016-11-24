@@ -1,4 +1,5 @@
-package com.linyun.airline.admin.login.service.impl;
+/*package com.linyun.airline.admin.login.service.impl;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -108,3 +109,4 @@ public class LoginServiceImpl extends BaseService<TUserEntity> implements LoginS
 	}
 
 }
+*/
