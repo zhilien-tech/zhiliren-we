@@ -63,7 +63,7 @@
                             
                             <label class="col-sm-2 text-right padding">联系邮箱：</label>
                             <div class="col-sm-3 padding">
-                              <input name="email" type="tel" class="form-control input-sm inpImportant" placeholder="请输入联系邮箱" />
+                              <input name="email" type="tel" class="form-control input-sm" placeholder="请输入联系邮箱" />
                             </div>
                         </div>
 

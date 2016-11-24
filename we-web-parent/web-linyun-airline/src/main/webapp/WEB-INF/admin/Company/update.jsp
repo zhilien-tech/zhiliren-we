@@ -42,26 +42,26 @@
                         <div class="form-group row">
                             <label class="col-sm-3 text-right padding">公司名称：</label>
                             <div class="col-sm-8 padding">
-                              <input name="comName" type="tel" class="form-control input-sm" placeholder="请输入公司名称" value="${obj.company.comName }"/>
+                              <input name="comName" type="tel" class="form-control input-sm inpImpWid" placeholder="请输入公司名称" value="${obj.company.comName }"/><span class="prompt">*</span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 text-right padding">用户名：</label>
                             <div class="col-sm-3 padding">
                               <input name="adminId" type="hidden" value="${obj.company.adminId }">
-                              <input name="telephone" type="tel" class="form-control input-sm" placeholder="请输入用户名" value="${obj.telephone }"/>
+                              <input name="telephone" type="tel" class="form-control input-sm inpImportant" placeholder="请输入用户名" value="${obj.telephone }"/><span class="prompt">*</span>
                             </div>
                           
                             <label class="col-sm-2 text-right padding">联系人：</label>
                             <div class="col-sm-3 padding">
-                              <input name="connect" type="tel" class="form-control input-sm" placeholder="请输入联系人姓名" value="${obj.company.connect }"/>
+                              <input name="connect" type="tel" class="form-control input-sm inpImportant" placeholder="请输入联系人姓名" value="${obj.company.connect }"/><span class="prompt">*</span>
                             </div>
                         </div>
 
                         <div class="form-group row">
                           <label class="col-sm-3 text-right padding">联系电话：</label>
                             <div class="col-sm-3 padding">
-                              <input name="mobile" type="tel" class="form-control input-sm" placeholder="请输入联系人手机号" value="${obj.company.mobile }"/>
+                              <input name="mobile" type="tel" class="form-control input-sm inpImportant" placeholder="请输入联系人手机号" value="${obj.company.mobile }"/><span class="prompt">*</span>
                             </div>
                             
                             <label class="col-sm-2 text-right padding">联系邮箱：</label>
@@ -78,24 +78,24 @@
                           
                             <label class="col-sm-2 text-right padding">公司类型：</label>
                             <div class="col-sm-3 padding">
-                              <select class="form-control input-sm" name="comType">
+                              <select class="form-control input-sm inpImportant" name="comType">
                                 <option value="">==请选择==</option>
                                 <option value="1" <c:if test="${'1' eq obj.company.comType}">selected</c:if>>上游公司</option>
                                 <option value="2" <c:if test="${'2' eq obj.company.comType}">selected</c:if>>代理商</option>
-                              </select>
+                              </select><span class="prompt">*</span>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label class="col-sm-3 text-right padding">地址：</label>
                             <div class="col-sm-8 padding">
-                              <input name="address" type="tel" class="form-control input-sm" placeholder="请输入详细地址" value="${obj.company.address }"/>
+                              <input name="address" type="tel" class="form-control input-sm inpImpWid" placeholder="请输入详细地址" value="${obj.company.address }"/><span class="prompt">*</span>
                             </div>
                         </div>
 
 
 						 <div class="form-group row">
-                            <label class="col-sm-3 text-right padding">图片：</label>
+                            <label class="col-sm-3 text-right padding">上传营业执照：</label>
                             <div class="col-sm-8 padding">
                               <input type="hidden" id="webupload_picture" name="license" value="${obj.company.license }"/>
 								        <div class="wu-example" id="uploader_00" style="width:300px;height:200px;">
