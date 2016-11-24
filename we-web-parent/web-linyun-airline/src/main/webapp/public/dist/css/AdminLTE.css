@@ -250,13 +250,13 @@ a:focus {
     border: 0;
   }
 }
-.main-header .sidebar-toggle {
+/*.main-header .sidebar-toggle {
   float: left;
   background-color: transparent;
   background-image: none;
   padding: 15px 15px;
   font-family: fontAwesome;
-}
+}*/
 .main-header .sidebar-toggle:before {
   content: "\f0c9";
 }
@@ -4949,6 +4949,11 @@ table.text-center th {
 .form-right{margin-top: 15px;margin-bottom: 0px;}
 .col-padding{padding-left: 0;}
 .btn-left{margin-left: 10px;}
+
+/*header*/
+i.fa.fa-bell-o {margin-top: 5px;}
+
+
 /*弹框Style*/
 .right{float: right;margin-right: 10px;}
 .span-color{color: red;display: inline-block;}
@@ -4965,15 +4970,11 @@ label {font-weight: 500 !important;color: #4d4d4d !important;font-size: 13px !im
 .boderButt{border-bottom: 1px solid #e5e5e5;}
 .add-height{height: 500px;width: 370px;}
 
-
-
 /*员工管理 弹框*/
 h4{font-size: 16px;}
 .margi-left{margin-left: -50px;}
 .beas-widt{width:95%;display: inline-block;}
 .prompt{display: inline-block;color: red;}
-
-
 
 /*------桌面-------*/
 .taskInfo{margin-left: -9px;background-color: #fff;margin-bottom: 15px;padding: 10px 35px;border-radius: 0px 3px 3px 3px;width: 102%;margin-bottom: 0;}
@@ -4982,13 +4983,14 @@ h4{font-size: 16px;}
 .marHeight{margin-top: 20px;}
 .box-sha{box-shadow: 0px 2px 2px #d8d8d8;}
 
-
 /*数据字典*/
 #example2 tbody td{width: 20%;}
 #example2 tbody td span{width:266px;display:block;word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
 .table-wid tbody td{width: 15%;}
 
-
+/*公司管理*/
+.padLeft{padding-left: 14px;font-size: 14px;margin: 15px 0 2px 0;}
+.paddiLeAdd{padding-left: inherit;}
 
 /*公司管理---->公司人员*/
 .SelectWid{width: 150px;}
@@ -4996,6 +4998,29 @@ h4{font-size: 16px;}
 .textWidth{width: 200px;}
 .marHead{padding: 24px 15px 5px;}
 .form-control{font-size: 13px;}
+.inpImportant{width: 96%;display: inline-block;}
+.inpImpWid {width: 98.5%;display: inline-block;}
+
+/*菜单栏*/
+.hides{display: none;}
+.ifea{width: 100%;min-height: 650px;overflow-y:auto;}
+.def{background-color: #212121;border-left: solid 4px #336eb1;color: #dbdbdb !important;}
+.div_li,.sidebar_li,.div_li1 {color: #fff;line-height:40px;padding-left: 30px !important;}
+.div_sub,.div_sub1{padding-left:50px !important;}
+.returnMargi {position: relative;top: 15px;}
+
+
+
+/*客户管理*/
+.flie_A{display: inline-block;width: 75px;height: 30px;background: #3c8dbc;position: relative;overflow: hidden;text-align: center;line-height: 33px;color: #fff;border-radius: 4px;font-size: 13px;}
+.flie_A input{position: absolute;right:0px;top: 0;font-size: 100px;opacity: 0;filter: alpha(opacity=0);width: 82px;height: 31px;}
+
+
+
+
+
+
+
 
 
 

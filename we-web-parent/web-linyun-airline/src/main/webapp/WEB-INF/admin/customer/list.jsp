@@ -20,7 +20,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	name="viewport">
 <!-- Bootstrap 3.3.6 -->
 <link rel="stylesheet"
-	href="${base}/public/bootstrap/css/bootstrap.min.css">
+	href="${base}/public/bootstrap/css/bootstrap.css">
 <!-- Font Awesome -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -155,7 +155,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 											<input type="text" id="sname" name="name"
 												 class="form-control"  placeholder="公司名称/负责人/电话">
 										</div>
-										<div class="col-md-2 col-padding">
+										<div class="col-md-3 col-padding">
 											<!--搜索 恢复默认 按钮-->
 											<button id="searchBtn" type="submit" class="btn btn-primary btn-sm">搜索</button>
 											<button type="button" class="btn btn-primary btn-sm btn-left"
@@ -163,7 +163,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 										</div>
 
 
-										<div class="col-md-1 col-md-offset-2">
+										<div class="col-md-1 col-md-offset-1">
 											<a href="${base}/admin/customer/add.html" data-toggle="modal"
 												class="btn btn-primary btn-sm" id="addBtn"
 												data-target=".Mymodal-lg">添加</a>
@@ -173,7 +173,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
-								<table id="datatable" class="table table-bordered table-hover">
+								<table id="datatable" class="table table-bordered table-hover" style="width:100%;">
 									<thead>
 										<tr>
 											<th>序号</th>
@@ -207,7 +207,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				<!-- Anything you want -->
 			</div>
 			<!-- Default to the left -->
-			<strong>版权 &copy; 2016 <a href="#">北京XXX科技有限公司</a>.
+			<strong>版权 &copy; 2016 <a href="#">聚优国际旅行社（北京）有限公司</a>.
 			</strong> 保留所有权利.
 		</footer>
 		<div class="control-sidebar-bg"></div>
@@ -263,11 +263,13 @@ function initDatatable() {
                     {"data": "contractDueTime", "bSortable": false,
                     	render: function(data, type, row, meta) {
                     		var s = '';
-                    		if(row.contractDueTime == ''){
+                    		if(row.contractduetime == null){
                     			s = '';
                     		}else{
                     			//日期需要格式化
-                    			
+                    			var javascriptDate = new Date(row.contractduetime);
+                				javascriptDate = javascriptDate.getFullYear()+"-"+(javascriptDate.getMonth()+1)+"-"+javascriptDate.getDate();
+                    			s = javascriptDate;
                     		}
                             return s;
                         }
