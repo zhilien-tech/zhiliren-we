@@ -195,7 +195,7 @@
 			dataType : 'json',
 			url : '${base}/admin/customer/isLine.html',
 			success : function(data) {
-
+				alert(data.toString());
 			}
 
 		});
@@ -315,7 +315,7 @@
 									onkeyup="goCity()" class="form-control input-sm"
 									placeholder="请输入出发城市" />
 									
-								<select class="form-control select2" multiple="multiple"
+								<select class="form-control select2" multiple="multiple" onkeyup="goCity()"
 									data-placeholder="请输入出发城市" >
 									<option>上海</option>
 									<option>北京</option>

@@ -257,7 +257,7 @@ function initDatatable() {
                     		}else if(row.contract == '0'){
                     			s = '未签约';
                     		}
-                            return s
+                            return s;
                         }
                     },
                     {"data": "contractDueTime", "bSortable": false,
@@ -269,7 +269,7 @@ function initDatatable() {
                     			//日期需要格式化
                     			
                     		}
-                            return s
+                            return s;
                         }
                     }
             ],
@@ -277,7 +277,7 @@ function initDatatable() {
             //   指定第一列，从0开始，0表示第一列，1表示第二列……
             targets: 6,
             render: function(data, type, row, meta) {
-                return '<a href="${base}/admin/customer/update.html?id='+row.id+'" id="updateBtn" class="btn btn_mini btn_modify" data-target=".Mymodal-lg" data-toggle="modal">编辑</a>'
+                return '<a href="${base}/admin/customer/update.html?id='+row.id+'" id="updateBtn" class="btn btn_mini btn_modify" data-target=".Mymodal-lg" data-toggle="modal">编辑</a>';
             }
         }]
     });
@@ -285,8 +285,8 @@ function initDatatable() {
 
 	$("#searchBtn").on('click', function () {
 		var sname = $("#sname").val();
-		var contract = $("#contract").val("");
-		var forbid = $("#forbid").val("");
+		var contract = $("#contract").val();
+		var forbid = $("#forbid").val();
 	    var param = {
 	        "name": sname,"contract":contract,"forbid":forbid
 	    };

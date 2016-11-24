@@ -9,9 +9,12 @@ package com.linyun.airline.admin.dictionary.external;
 import java.util.List;
 
 import org.nutz.dao.Cnd;
+import org.nutz.dao.Sqls;
+import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.linyun.airline.entities.DictInfoEntity;
+import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.base.service.BaseService;
 
 /**
@@ -24,18 +27,18 @@ public class externalInfoServiceImpl extends BaseService<DictInfoEntity> impleme
 
 	@Override
 	public List<DictInfoEntity> findDictInfoByName(String name) throws Exception {
-		/*String sqlString = EntityUtil.entityCndSql(DictInfoEntity.class);
+		String sqlString = EntityUtil.entityCndSql(DictInfoEntity.class);
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
-		cnd.and("comType", "=", comType);
-		cnd.and("deletestatus", "=", 0);
+		cnd.and("dictName", "like", name + "%");
+		cnd.and("status", "=", 1);
 		sql.setCondition(cnd);
 		sql.setCallback(Sqls.callback.records());
 		nutDao.execute(sql);
 		@SuppressWarnings("unchecked")
-		List<DictInfoEntity> list = (List<DictInfoEntity>) sql.getResult();*/
-		List<DictInfoEntity> infoList = dbDao.query(DictInfoEntity.class,
-				Cnd.where("dictName", "like", "%" + name + "%"), null);
-		return infoList;
+		List<DictInfoEntity> list = (List<DictInfoEntity>) sql.getResult();
+		/*List<DictInfoEntity> infoList = dbDao.query(DictInfoEntity.class,
+				Cnd.where("dictName", "like", "%" + name + "%"), null);*/
+		return list;
 	}
 }

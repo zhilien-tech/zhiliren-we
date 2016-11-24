@@ -2,6 +2,7 @@ package com.linyun.airline.admin.customer.module;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -187,8 +188,9 @@ public class CustomerModule {
 	@At
 	@POST
 	public Object goCity(@Param("departureCity") final String name) throws Exception {
-		Set<String> set = new HashSet();
+		List<String> list = new ArrayList<String>();
 
+		//需要加排序事件
 		List<TCustomerLineEntity> localLineList = dbDao.query(TCustomerLineEntity.class,
 				Cnd.where("lineName", "like", "%" + name + "%"), null);
 
@@ -196,21 +198,24 @@ public class CustomerModule {
 
 		if (localLineList.size() > 5) {
 			for (int i = 0; i < 5; i++) {
-				set.add(localLineList.get(i).getLineName());
+				list.add(localLineList.get(i).getLineName());
 			}
 		} else {
 			for (TCustomerLineEntity tCustomerLineEntity : localLineList) {
-				set.add(tCustomerLineEntity.getLineName());
+				list.add(tCustomerLineEntity.getLineName());
 			}
 			//需要从字典表中查询的记录数   5-set.size()
-			int num = 5 - set.size();
-			while (num > 0) {
-				set.add(dictLineList.get(num).getDictName());
-				num--;
+			int num = dictLineList.size();
+			if (dictLineList.size() + list.size() >= 5) {
+				num = 5 - list.size();
+			}
+			for (int i = 0; i < num; i++) {
+				DictInfoEntity dictInfoEntity = dictLineList.get(i);
+				list.add(dictInfoEntity.getDictName());
 			}
 		}
 
-		return set;
+		return list;
 	}
 
 	//线路模糊查询
@@ -247,7 +252,7 @@ public class CustomerModule {
 	@At
 	@POST
 	public Object invioceType(@Param("invioce") final String name) throws Exception {
-		Set<String> set = new HashSet();
+		List<String> list = new ArrayList<String>();
 
 		List<TCustomerInvoiceEntity> localInvioceList = dbDao.query(TCustomerInvoiceEntity.class,
 				Cnd.where("invioceName", "like", "%" + name + "%"), null);
@@ -255,22 +260,22 @@ public class CustomerModule {
 
 		if (localInvioceList.size() > 5) {
 			for (int i = 0; i < 5; i++) {
-				set.add(localInvioceList.get(i).getInvioceName());
+				list.add(localInvioceList.get(i).getInvioceName());
 			}
 		} else {
 			for (TCustomerInvoiceEntity tCustomerInvoiceEntity : localInvioceList) {
-				set.add(tCustomerInvoiceEntity.getInvioceName());
+				list.add(tCustomerInvoiceEntity.getInvioceName());
 			}
 
 			//需要从字典表中查询的记录数   5-set.size()
-			int num = 5 - set.size();
+			int num = 5 - list.size();
 			while (num > 0) {
-				set.add(dictLineList.get(num).getDictName());
+				list.add(dictLineList.get(num).getDictName());
 				num--;
 			}
 		}
 
-		return set;
+		return list;
 	}
 
 }
