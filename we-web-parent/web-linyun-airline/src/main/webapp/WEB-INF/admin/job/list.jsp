@@ -59,7 +59,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               		<button type="submit" class="btn btn-primary btn-sm">搜索</button>
            		 </div>
 			</form>
-            <div class="col-md-1 col-md-offset-2">
+            <div class="col-md-1 col-md-offset-6">
               <button type="button" onclick="javascript:window.open('${base}/admin/job/add.html');" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".Mymodal-lg">添加</button>
             </div>
             <!-- /.box-header -->
@@ -67,7 +67,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <table id="example2" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                	<td class="txtc"><input name="ids" value="${one.id}" type="checkbox" class="ipt_checkbox"></td>
                   	<th>职位名称</th>
 					<th>创建时间</th>
 					<th>备注</th>
@@ -77,7 +76,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <tbody>
                     <c:forEach items="${obj.list}" var="one" >
 					<tr>
-						<td class="txtc"><input name="ids" value="${one.id}" type="checkbox" class="ipt_checkbox"></td>
 						<td>${one.name}</td>
 						<td><fmt:formatDate value="${one.createTime}" pattern="yyyy-MM-dd"/></td>
 						<td>${one.remark}</td>
@@ -123,8 +121,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="${base}/public/plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="${base}/public/dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="${base}/public/dist/js/demo.js"></script>
 <!-- page script -->
 <script>
   $(function () {

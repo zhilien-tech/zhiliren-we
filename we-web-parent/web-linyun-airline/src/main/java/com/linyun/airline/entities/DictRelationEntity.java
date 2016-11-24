@@ -26,4 +26,8 @@ public class DictRelationEntity implements Serializable {
 	@Comment("关联字典id")
 	private long targetId;
 
+	@Column
+	@Comment("删除标识:(0,表示未删除；1,表示已删除)")
+	private int dr;
+
 }

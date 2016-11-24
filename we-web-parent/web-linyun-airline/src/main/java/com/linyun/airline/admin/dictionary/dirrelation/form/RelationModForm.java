@@ -22,4 +22,6 @@ public class RelationModForm {
 	private int sourceId;
 	//关联字典id
 	private int targetId;
+	//删除标识
+	private int dr;
 }

@@ -52,15 +52,32 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <h3 class="box-title">&nbsp;&nbsp;<i class="fa fa-user-secret"></i>字典类型</h3>
             </div>
             <form action="${base}/admin/dictionary/dirtype/list.html" method="post" onsubmit="return navTabSearch(this);">
-				 <div class="col-md-3"><!--字典类别名称 搜索框-->
+				  <div class="col-md-2"><!--状态名称 搜索框-->
+          			<div class="col-sm-12 padding">
+                      <select id="status" name="status" class="form-control input-sm">
+     						<option value="">--不限--</option>
+								<c:forEach var="map" items="${obj.dataStatusEnum}" >
+									<c:choose>
+									   <c:when test="${map.key == obj.queryForm.status}">
+									   		<option value="${map.key}" selected="selected">${map.value}</option>
+									   </c:when>
+									   <c:otherwise>
+									   		<option value="${map.key}">${map.value}</option>
+									   </c:otherwise>
+								</c:choose>
+							</c:forEach>
+					  </select>
+                    </div>
+          		 </div>
+				 
+				 <div class="col-md-3 dictInfoSousuo"><!--字典类别名称 搜索框-->
             		  <input type="text" name="typeName" value="${obj.queryForm.typeName}" class="form-control" placeholder="字典类别名称">
-          		  </div>
+          		 </div>
 				 <div class="col-md-2 col-padding"><!--搜索 按钮-->
               		<button type="submit" class="btn btn-primary btn-sm">搜索</button>
            		 </div>
 			</form>
-            <div class="col-md-1 col-md-offset-6">
-              <%-- <button type="button" onclick="javascript:window.open('${base}/admin/dictionary/dirtype/add.html')" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".Mymodal-lg">添加</button> --%>
+            <div class="col-md-1 col-md-offset-4">
            		<a href="${base}/admin/dictionary/dirtype/add.html" data-toggle="modal" 
            	class="btn btn-primary btn-sm" id="addBtn" data-target=".Mymodal-lg">添加</a>
             </div>
@@ -81,23 +98,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
 					<tr>
 						<td>${one.typeCode}</td>
 						<td>${one.typeName }</td>
-						<td>${one.description }</td>
-						<c:if test="${one.status eq 0}"> 
-		     				<td>冻结</td>
-						</c:if>
-						<c:if test="${one.status eq 1}"> 
-		     				<td>启用</td>
-						</c:if>
-						<c:if test="${one.status eq 2}"> 
-		     				<td>删除</td>
-						</c:if>
+						<td><span data-toggle="tooltip" data-placement="right" title="${one.description }">${one.description }<span></td>
+						<td><we:enum key="${one.status }" className="com.linyun.airline.common.enums.DataStatusEnum"/></td>
 						<td>
 							<a href="${base}/admin/dictionary/dirtype/update.html?id=${one.id}" data-toggle="modal" 
-           					 id="addBtn" data-target=".Mymodal-lg">编辑</a>
-							<%--
-								这里如果有写title，则需要确认才会操作
-							 --%>
-							<a target="ajaxTodo" rel="dlgId1" href="${base}/admin/dictionary/dirtype/delete?id=${one.id}" title='是否要删除' class='btn btn_mini btn_del'>删除</a>
+           					 id="addBtn" class="btn btn-primary btn-sm" data-target=".Mymodal-lg">编辑</a>
+							<%--这里如果有写title，则需要确认才会操作--%>
+							<c:choose>
+							   <c:when test="${1 == one.status}">
+							   		<a href='javascript:physicalDelete(${one.id},2);' class='btn btn-danger btn-sm'>删除</a>
+							   </c:when>
+							   <c:otherwise>
+							   		<a href='javascript:physicalDelete(${one.id},1);' class='btn btn-success btn-sm'>启用</a>
+							   </c:otherwise>
+							</c:choose>
 						</td>
 					</tr>
 				</c:forEach>
@@ -144,27 +158,57 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="${base}/public/plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="${base}/public/dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="${base}/public/dist/js/demo.js"></script>
+<script src="${base}/common/js/layer/layer.js"></script>
 <!-- page script -->
-<script>
-  $(function () {
-    $("#example1").DataTable();
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false
-    });
-  });
+<script type="text/javascript">
   //添加
   $('#addBtn').click(function(){
       $(".Mymodal-lg").on("hidden", function() {
           $(this).removeData("modal");
       });
- })
+ });
+ //删除提示
+function physicalDelete(did,status){
+		$.ajax({ 
+			type: 'POST', 
+			data: {id:did,status:status}, 
+			dataType:'json',   
+			url: '${base}/admin/dictionary/dirtype/updateDeleteStatus.html',
+	           success: function (data) { 
+	           	if("200" == data.status){
+	           		layer.msg("操作成功!","",3000);
+	           		window.location.reload(true);
+	           	}else{
+	           		layer.msg("操作失败!","",3000);
+	           	}
+	           },
+	           error: function (xhr) {
+	           	layer.msg("操作失败","",3000);
+	           } 
+       });
+	}
+  //描述提示信息弹出层Tooltip 
+  $(function () { 
+	  $("[data-toggle='tooltip']").tooltip();
+	});
+
+</script>
+<script type="text/javascript">
+var datatable;
+function initDatatable() {
+    datatable = $('#example2').DataTable({
+    	"searching":false,
+        "processing": true,
+        "serverSide": false,
+        "bLengthChange": false,
+        "language": {
+            "url": "${base}/public/plugins/datatables/cn.json"
+        }
+    });
+}
+$(function () {
+    initDatatable();
+});
 </script>
 </body>
 </html>

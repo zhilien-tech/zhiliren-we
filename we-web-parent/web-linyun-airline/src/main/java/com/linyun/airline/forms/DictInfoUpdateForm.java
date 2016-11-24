@@ -24,7 +24,12 @@ public class DictInfoUpdateForm extends ModForm implements Serializable {
 	/**描述*/
 	private String description;
 
-	/**字典信息状态,0-冻结，1-启用，2--删除*/
+	/**字典信息状态,1-启用，2--删除*/
 	private int status;
 
+	/**全拼*/
+	private String quanPin;
+
+	/**简拼*/
+	private String jianpin;
 }

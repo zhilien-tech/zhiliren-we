@@ -35,7 +35,14 @@ public class DictInfoEntity implements Serializable {
 	private String description;
 
 	@Column
-	@Comment("字典信息状态,0-冻结，1-启用，2--删除")
+	@Comment("字典信息状态,1-启用，2--删除")
 	private int status;
 
+	@Column
+	@Comment("全拼")
+	private String quanPin;
+
+	@Column
+	@Comment("简拼")
+	private String jianpin;
 }

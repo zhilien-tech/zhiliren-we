@@ -25,6 +25,9 @@ public class DictRelationForm implements SQLParamForm, Serializable {
 	/**关联字典id*/
 	private long targetId;
 
+	/**删除标识,0-未删除，1-已删除*/
+	private int dr;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**

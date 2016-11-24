@@ -6,6 +6,10 @@
 
 package com.linyun.airline.admin.dictionary.dirtype.module;
 
+import java.util.Map;
+
+import org.nutz.dao.Chain;
+import org.nutz.dao.Cnd;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -19,7 +23,10 @@ import com.linyun.airline.admin.dictionary.dirtype.form.TypeAddForm;
 import com.linyun.airline.admin.dictionary.dirtype.form.TypeModForm;
 import com.linyun.airline.admin.dictionary.dirtype.form.TypeQueryForm;
 import com.linyun.airline.admin.dictionary.dirtype.service.ITypeService;
+import com.linyun.airline.common.enums.DataStatusEnum;
+import com.linyun.airline.common.form.AlterStatusForm;
 import com.linyun.airline.entities.DictTypeEntity;
+import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
 import com.uxuexi.core.web.util.FormUtil;
@@ -71,7 +78,9 @@ public class TypeModule {
 	@GET
 	@Ok("jsp")
 	public Object update(@Param("id") final long id) {
-		return iTypeService.findDirtype(id);
+		Map<String, Object> map = iTypeService.findDirtype(id);
+		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));
+		return map;
 	}
 
 	/**
@@ -94,7 +103,9 @@ public class TypeModule {
 	@At
 	@Ok("jsp")
 	public Object list(@Param("..") final TypeQueryForm queryForm, @Param("..") final Pager pager) {
-		return FormUtil.query(dbDao, DictTypeEntity.class, queryForm, pager);
+		Map<String, Object> map = FormUtil.query(dbDao, DictTypeEntity.class, queryForm, pager);
+		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));
+		return map;
 	}
 
 	/**
@@ -115,4 +126,22 @@ public class TypeModule {
 		return JsonResult.success("删除成功！");
 	}
 
+	/**
+	 * 更新删除状态
+	 * TODO(这里用一句话描述这个方法的作用)
+	 * @param updateForm
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	@At
+	@POST
+	public Object updateDeleteStatus(@Param("..") AlterStatusForm form) {
+		try {
+			dbDao.update(DictTypeEntity.class, Chain.make("status", form.getStatus()),
+					Cnd.where("id", "=", form.getId()));
+			return JsonResult.success("操作成功!");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JsonResult.error("操作失败!");
+		}
+	}
 }

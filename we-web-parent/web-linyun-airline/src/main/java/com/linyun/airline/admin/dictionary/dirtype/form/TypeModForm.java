@@ -6,6 +6,8 @@
 
 package com.linyun.airline.admin.dictionary.dirtype.form;
 
+import java.io.Serializable;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,7 +22,8 @@ import com.uxuexi.core.web.form.ModForm;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class TypeModForm extends ModForm {
+public class TypeModForm extends ModForm implements Serializable {
+	private static final long serialVersionUID = 248685602143257341L;
 	//字典类别编码
 	private String typeCode;
 	//字典类别名称

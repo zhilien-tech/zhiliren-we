@@ -25,4 +25,8 @@ public class TypeQueryForm extends QueryForm {
 	//类型名称
 	@Condition(match = MatchType.LIKE)
 	private String typeName;
+
+	//按状态查询
+	@Condition(match = MatchType.EQ)
+	private String status;
 }

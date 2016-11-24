@@ -2,20 +2,21 @@
  * InfoServiceImpl.java
  * com.xiaoka.template.admin.dictionary.dirinfo.service.impl
  * Copyright (c) 2016, 北京科技有限公司版权所有.
- */
+<<<<<<< HEAD
+*/
 
 package com.linyun.airline.admin.dictionary.dirinfo.service.impl;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.linyun.airline.admin.dictionary.dirinfo.form.InfoModForm;
 import com.linyun.airline.admin.dictionary.dirinfo.service.IInfoService;
 import com.linyun.airline.entities.DictInfoEntity;
-import com.uxuexi.core.db.dao.IDbDao;
+import com.linyun.airline.entities.DictTypeEntity;
+import com.uxuexi.core.web.base.service.BaseService;
 import com.uxuexi.core.web.util.FormUtil;
 
 /**
@@ -24,10 +25,7 @@ import com.uxuexi.core.web.util.FormUtil;
  * @Date	 2016年11月3日 	 
  */
 @IocBean(name = "iInfoService")
-public class InfoServiceImpl implements IInfoService {
-
-	@Inject
-	private IDbDao dbDao;
+public class InfoServiceImpl extends BaseService<DictInfoEntity> implements IInfoService {
 
 	@Override
 	public boolean update(InfoModForm form) {
@@ -39,19 +37,10 @@ public class InfoServiceImpl implements IInfoService {
 	@Override
 	public Map<String, Object> findDirinfo(long id) {
 		Map<String, Object> obj = new HashMap<String, Object>();
+		obj.put("dirtype", dbDao.query(DictTypeEntity.class, null, null));
 		obj.put("dirinfo", dbDao.fetch(DictInfoEntity.class, id));
 		return obj;
-	}
 
-	/*//客户管理中 字典表模糊查询
-	@Override
-	public Object searchDict(String columnName, String name) {
-		Cnd cnd = Cnd.NEW();
-		if (!Util.isEmpty(name)) {
-			cnd.and(columnName, "LIKE", "%" + name + "%");
-		}
-		Map<String, Object> map = FormUtil.query(dbDao, DictInfoEntity.class, cnd, null);
-		return map.get("list");
-	}*/
+	}
 
 }

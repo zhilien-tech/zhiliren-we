@@ -6,6 +6,51 @@
 
 package com.linyun.airline.admin.dictionary.dirinfo.module;
 
+/**
+ * TODO(这里用一句话描述这个类的作用)
+ * @author   崔建斌
+ * @Date	 2016年11月3日 	 
+ */
+/**
+	 * 注入容器中的dbDao对象，用于数据库查询、持久操作
+	 */
+/**
+	 * 注入容器中管理sql的对象，用于从sql文件中根据key取得sql
+	 */
+/**
+	 * 跳转到'添加操作'的录入数据页面
+	 */
+/**
+	 * TODO 添加
+	 * @param addForm
+	 * @return TODO(添加表单对象)
+	 */
+/**
+	 * 跳转到'修改操作'的录入数据页面,实际就是[按照主键查询单个实体]
+	 */
+/**
+	 * 执行'修改操作'
+	 */
+/**
+	 * 分页查询
+	 * <P>
+	 * 
+	 * @param queryForm  查询表单
+	 * @param pager      分页对象
+	 */
+/**
+	 * 删除记录
+	 * @throws IOException 
+	 */
+/**
+	 * 批量删除记录
+	 */
+/**
+	 * 更新删除状态
+	 * TODO(这里用一句话描述这个方法的作用)
+	 * @param updateForm
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
 import java.util.HashMap;
 import java.util.Map;
 
