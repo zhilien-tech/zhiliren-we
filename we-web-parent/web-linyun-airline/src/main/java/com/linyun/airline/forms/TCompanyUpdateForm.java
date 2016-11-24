@@ -1,11 +1,10 @@
 package com.linyun.airline.forms;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import org.joda.time.DateTime;
 
 import com.uxuexi.core.web.form.ModForm;
 
@@ -50,10 +49,10 @@ public class TCompanyUpdateForm extends ModForm implements Serializable {
 	private long opid;
 
 	/**创建时间*/
-	private DateTime createtime;
+	private Date createtime;
 
 	/**最后修改时间*/
-	private DateTime lastupdatetime;
+	private Date lastupdatetime;
 
 	/**删除标识*/
 	private int deletestatus;

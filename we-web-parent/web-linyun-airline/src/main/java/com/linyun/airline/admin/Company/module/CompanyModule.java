@@ -1,9 +1,12 @@
 package com.linyun.airline.admin.Company.module;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.nutz.dao.SqlManager;
+import org.nutz.dao.entity.Record;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -17,15 +20,16 @@ import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.Company.service.CompanyViewService;
+import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.forms.TCompanyAddForm;
 import com.linyun.airline.forms.TCompanySqlForm;
 import com.linyun.airline.forms.TCompanyUpdateForm;
 import com.linyun.airline.forms.TCompanyUserSqlForm;
-import com.uxuexi.core.common.util.DateTimeUtil;
+import com.uxuexi.core.common.util.EnumUtil;
+import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
-import com.uxuexi.core.web.util.FormUtil;
 
 @IocBean
 @At("/admin/Company")
@@ -54,8 +58,8 @@ public class CompanyModule {
 	 */
 	@At
 	@Ok("jsp")
-	public Object list(@Param("..") final TCompanySqlForm sqlForm, @Param("..") final Pager pager) {
-		return companyViewService.listPage(sqlForm, pager);
+	public Object list() {
+		return companyViewService.getUpCompanyAndAgentCount(sqlManager);
 	}
 
 	/**
@@ -65,7 +69,9 @@ public class CompanyModule {
 	@GET
 	@Ok("jsp")
 	public Object add() {
-		return null;
+		Map<String, Object> obj = MapUtil.map();
+		obj.put("companyTypeEnum", EnumUtil.enum2(CompanyTypeEnum.class));
+		return obj;
 	}
 
 	/**
@@ -74,8 +80,8 @@ public class CompanyModule {
 	@At
 	@POST
 	public Object add(@Param("..") TCompanyAddForm addForm) {
-		addForm.setCreatetime(DateTimeUtil.now());
-		addForm.setLastupdatetime(DateTimeUtil.now());
+		addForm.setCreatetime(new Date());
+		addForm.setLastupdatetime(new Date());
 		return companyViewService.add(addForm);
 	}
 
@@ -88,6 +94,7 @@ public class CompanyModule {
 	public Object update(@Param("id") final long id) {
 		Map<String, Object> obj = new HashMap<String, Object>();
 		obj.put("company", companyViewService.fetch(id));
+		obj.put("companyTypeEnum", EnumUtil.enum2(CompanyTypeEnum.class));
 		return obj;
 	}
 
@@ -97,7 +104,7 @@ public class CompanyModule {
 	@At
 	@POST
 	public Object update(@Param("..") TCompanyUpdateForm updateForm) {
-		//updateForm.setLastupdatetime(DateTimeUtil.now());
+		updateForm.setLastupdatetime(new Date());
 		companyViewService.update(updateForm);
 		return JsonResult.success("修改成功");
 	}
@@ -138,7 +145,10 @@ public class CompanyModule {
 	@At
 	@Ok("jsp")
 	public Object userList(@Param("..") final TCompanyUserSqlForm sqlForm, @Param("..") final Pager pager) {
-		Map<String, Object> obj = FormUtil.query(dbDao, sqlManager, sqlForm, pager);
+		Map<String, Object> obj = MapUtil.map();
+		obj.put("companyuser", sqlForm);
+		List<Record> deplist = companyViewService.getCompanyDepartment(sqlManager, sqlForm.getId());
+		obj.put("deplist", deplist);
 		return obj;
 	}
 
@@ -165,17 +175,19 @@ public class CompanyModule {
 		}
 	}
 
-	@At
-	@Ok("jsp")
-	public Object demolist() {
-		return null;
-	}
-
 	/**
 	 * 分页查询
 	 */
 	@At
 	public Object listData(@Param("..") final TCompanySqlForm paramForm) {
+		return companyViewService.listPage4Datatables(paramForm);
+	}
+
+	/**
+	 * 分页查询公司员工
+	 */
+	@At
+	public Object userListData(@Param("..") final TCompanyUserSqlForm paramForm) {
 		return companyViewService.listPage4Datatables(paramForm);
 	}
 }

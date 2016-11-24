@@ -20,7 +20,7 @@
                 <form id="companyaddForm"> 
               <div class="modal-header boderButt">
                   <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">返回</button>
-                  <input type="submit" id="submitButton" class="btn btn-primary right btn-sm" value="保存"/>
+                  <input type="button" id="submitButton" class="btn btn-primary right btn-sm" onclick="submitCompany()" value="保存"/>
                   <h4>&nbsp;&nbsp;&nbsp;<i class="fa fa-user"></i> 基本资料</h4>
               </div>
                 <div class="modal-body">
@@ -66,8 +66,9 @@
                             <div class="col-sm-3 padding">
                               <select class="form-control input-sm" name="comType">
                                 <option value="">==请选择==</option>
-                                <option value="1">上游公司</option>
-                                <option value="2">代理商</option>
+                              	<c:forEach var="map" items="${obj.companyTypeEnum}" >
+							   		<option value="${map.key}">${map.value}</option>
+								</c:forEach>
                               </select>
                             </div>
                         </div>
@@ -91,20 +92,6 @@
                         </div>
 
 
-						<!-- <div class="panel_box">
-							<div class="panel_content nopadding">
-								<div class="form_item">
-									<label class="form_label">图片：</label>
-									<div class="form_ctrl" >
-										<input type="hidden" id="webupload_picture" name="license" value=""/>
-								        <div class="wu-example" id="uploader_00" style="width:300px;height:200px;">
-								        	<div id="imgUrlMessage" name="imgUrlMessage"></div> 
-								        </div>
-									</div>
-								</div>
-							</div>
-						</div> -->
-
                  </div>
                 </div>
                  </form>
@@ -113,6 +100,8 @@
 <script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="${base}/public/bootstrap/js/bootstrap.js"></script>
 <script src="${base}/public/dist/js/bootstrapValidator.js"></script>
+<!--layer -->
+	<script src="${base}/common/js/layer/layer.js"></script>
 <jsp:include page="/WEB-INF/common/webupload_resource.jsp"></jsp:include>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -172,7 +161,7 @@
 	            	validators: {
 	            		regexp: {
 	                        regexp: /^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/,
-	                        message: '座机格式错误'
+	                        message: '座机格式:区号-座机号'
 	                    }
 	                }
 	            },
@@ -200,6 +189,26 @@
 	function closewindow(){
 		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 		parent.layer.close(index);
+	}
+	function submitCompany(){
+		$('#companyaddForm').bootstrapValidator('validate');
+		var bootstrapValidator = $("#companyaddForm").data('bootstrapValidator');
+		if(bootstrapValidator.isValid()){
+			$.ajax({ 
+				type: 'POST', 
+				data: $("#companyaddForm").serialize(), 
+				url: '${base}/admin/Company/add.html',
+	            success: function (data) { 
+	            	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	            	window.parent.successCallback('1');
+	            	parent.layer.close(index);
+	            	
+	            },
+	            error: function (xhr) {
+	            	layer.msg("添加失败","",3000);
+	            } 
+	        });
+		}
 	}
 </script>
 	

@@ -1,48 +1,59 @@
 package com.linyun.airline.admin.userjob.module;
 
-import com.linyun.airline.admin.userjob.service.UserjobViewService;
-import com.linyun.airline.forms.TUserJobUpdateForm;
-import com.linyun.airline.forms.TUserJobAddForm;
-import com.linyun.airline.forms.TUserJobForm;
-
+import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
-import org.nutz.dao.pager.Pager;
-import org.nutz.mvc.annotation.*;
+import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.Filters;
+import org.nutz.mvc.annotation.GET;
+import org.nutz.mvc.annotation.Ok;
+import org.nutz.mvc.annotation.POST;
+import org.nutz.mvc.annotation.Param;
 
+import com.linyun.airline.admin.userjob.service.UserjobViewService;
+import com.linyun.airline.entities.TUserJobEntity;
+import com.linyun.airline.forms.TUserJobAddForm;
+import com.linyun.airline.forms.TUserJobForm;
+import com.linyun.airline.forms.TUserJobUpdateForm;
+import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.base.page.Pagination;
 import com.uxuexi.core.web.chain.support.JsonResult;
 
 @IocBean
 @At("/admin/userjob")
 @Filters({//@By(type = AuthFilter.class)
-	})
+})
 public class UserjobModule {
 
 	private static final Log log = Logs.get();
-	
+
 	@Inject
 	private UserjobViewService userjobViewService;
-	
+	/**
+	 * 注入容器中的dbDao对象，用于数据库查询、持久操作
+	 */
+	@Inject
+	private IDbDao dbDao;
+
 	/**
 	 * 分页查询
 	 */
 	@At
 	@Ok("jsp")
-	public Pagination list(@Param("..") final TUserJobForm sqlParamForm,@Param("..") final Pager pager) {
-    	return userjobViewService.listPage(sqlParamForm,pager);
-    }
-    
-    /**
+	public Pagination list(@Param("..") final TUserJobForm sqlParamForm, @Param("..") final Pager pager) {
+		return userjobViewService.listPage(sqlParamForm, pager);
+	}
+
+	/**
 	 * 跳转到'添加操作'的录入数据页面
 	 */
 	@At
 	@GET
 	@Ok("jsp")
 	public Object add() {
-		return null ;
+		return null;
 	}
 
 	/**
@@ -50,7 +61,7 @@ public class UserjobModule {
 	 */
 	@At
 	@POST
-	public Object add(@Param("..")TUserJobAddForm addForm) {
+	public Object add(@Param("..") TUserJobAddForm addForm) {
 		return userjobViewService.add(addForm);
 	}
 
@@ -69,7 +80,7 @@ public class UserjobModule {
 	 */
 	@At
 	@POST
-	public Object update(@Param("..")TUserJobUpdateForm updateForm) {
+	public Object update(@Param("..") TUserJobUpdateForm updateForm) {
 		return userjobViewService.update(updateForm);
 	}
 
@@ -90,5 +101,21 @@ public class UserjobModule {
 		userjobViewService.batchDelete(ids);
 		return JsonResult.success("删除成功");
 	}
-	
+
+	/**
+	 * 移除员工
+	 */
+	@At
+	public Object removeUser(@Param("id") final long id) {
+		try {
+			TUserJobEntity userJobEntity = userjobViewService.fetch(id);
+			userJobEntity.setStatus(2);
+			dbDao.update(userJobEntity);
+			return JsonResult.success("移除成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JsonResult.error("移除失败");
+		}
+	}
+
 }

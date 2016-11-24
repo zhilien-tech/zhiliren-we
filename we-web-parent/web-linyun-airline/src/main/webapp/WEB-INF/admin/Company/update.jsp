@@ -21,7 +21,7 @@
              <form  id="companyUpdateForm"> 
               <div class="modal-header boderButt">
                   <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">返回</button>
-                  <input type="button" id="submitButton" onsubmit="submitCompany()" class="btn btn-primary right btn-sm" value="保存"/>
+                  <input type="button" id="submitButton" class="btn btn-primary right btn-sm" onclick="submitCompany();" value="保存"/>
                   <button type="button" class="btn right btn-sm" onclick="deleteCompany();">删除</button>
                   <h4>&nbsp;&nbsp;&nbsp;<i class="fa fa-user"></i> 基本资料</h4>
               </div>
@@ -34,7 +34,6 @@
                               <input name="comName" type="tel" class="form-control input-sm" placeholder="请输入公司名称" value="${obj.company.comName }"/>
                             </div>
                         </div>
-
                         <div class="form-group row">
                             <label class="col-sm-3 text-right padding">用户名：</label>
                             <div class="col-sm-3 padding">
@@ -69,8 +68,8 @@
                             <div class="col-sm-3 padding">
                               <select class="form-control input-sm" name="comType">
                                 <option value="">==请选择==</option>
-                                <option value="2" <c:if test="${'1' eq obj.company.comType}">selected</c:if>>上游公司</option>
-                                <option value="1" <c:if test="${'2' eq obj.company.comType}">selected</c:if>>代理商</option>
+                                <option value="1" <c:if test="${'1' eq obj.company.comType}">selected</c:if>>上游公司</option>
+                                <option value="2" <c:if test="${'2' eq obj.company.comType}">selected</c:if>>代理商</option>
                               </select>
                             </div>
                         </div>
@@ -78,7 +77,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 text-right padding">地址：</label>
                             <div class="col-sm-8 padding">
-                              <input name="address" type="tel" class="form-control input-sm" placeholder="请输入详细地址" value="${obj.company.id }"/>
+                              <input name="address" type="tel" class="form-control input-sm" placeholder="请输入详细地址" value="${obj.company.address }"/>
                             </div>
                         </div>
 
@@ -86,7 +85,7 @@
 						 <div class="form-group row">
                             <label class="col-sm-3 text-right padding">图片：</label>
                             <div class="col-sm-8 padding">
-                              <input type="hidden" id="webupload_picture" name="license" value=""/>
+                              <input type="hidden" id="webupload_picture" name="license" value="${obj.company.license }"/>
 								        <div class="wu-example" id="uploader_00" style="width:300px;height:200px;">
 								        	<div id="imgUrlMessage" name="imgUrlMessage"></div> 
 								        </div>
@@ -123,7 +122,7 @@
 	            invalid: 'glyphicon glyphicon-remove',
 	            validating: 'glyphicon glyphicon-refresh'
 	        },
-	        fields: {
+	        fields: {	
 	        	comName: {
 	                validators: {
 	                    notEmpty: {
@@ -201,45 +200,41 @@
 	}
 	
 	function submitCompany(){
-		$.ajax({ 
-			type: 'POST', 
-			data: $("#companyUpdateForm").serialize(), 
-			url: '${base}/admin/Company/update.html',
-            success: function (data) { 
-            	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-            	if("200" == data.status){
-            		layer.msg("修改成功","",3000);
-            	}else{
-            		layer.msg("修改失败","",3000);
-            	}
-            	layer.close(index);
-            	parent.location.reload();
-            	
-            },
-            error: function (xhr) {
-            	layer.msg("修改失败","",3000);
-            } 
-        });
+		$('#companyUpdateForm').bootstrapValidator('validate');
+		var bootstrapValidator = $("#companyUpdateForm").data('bootstrapValidator');
+		if(bootstrapValidator.isValid()){
+			$.ajax({ 
+				type: 'POST', 
+				data: $("#companyUpdateForm").serialize(), 
+				url: '${base}/admin/Company/update.html',
+	            success: function (data) { 
+	            	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	            	window.parent.successCallback('2');
+	            	parent.layer.close(index);
+	            	
+	            },
+	            error: function (xhr) {
+	            	layer.msg("修改失败","",3000);
+	            } 
+	        });
+		}
 	}
 	function deleteCompany(){
-		$.ajax({ 
-			type: 'POST', 
-			data: {id:'${obj.company.id}'}, 
-			url: '${base}/admin/Company/updateDeleteStatus.html',
-            success: function (data) { 
-            	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-            	if("200" == data.status){
-            		layer.msg("删除成功","",3000);
-            	}else{
-            		layer.msg("删除失败","",3000);
-            	}
-            	layer.close(index);
-            	parent.location.reload();
-            },
-            error: function (xhr) {
-            	layer.msg("删除失败","",3000);
-            } 
-        });
+		layer.confirm('确认你的操作?', {icon: 3, title:'提示'}, function(){
+			$.ajax({ 
+				type: 'POST', 
+				data: {id:'${obj.company.id}'}, 
+				url: '${base}/admin/Company/updateDeleteStatus.html',
+	            success: function (data) { 
+	            	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	            	window.parent.successCallback('3');
+	            	parent.layer.close(index);
+	            },
+	            error: function (xhr) {
+	            	layer.msg("删除失败","",3000);
+	            } 
+	        });
+		});
 	}
 </script>
 	

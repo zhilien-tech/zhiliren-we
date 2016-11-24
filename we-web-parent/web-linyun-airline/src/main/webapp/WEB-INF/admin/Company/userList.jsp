@@ -7,7 +7,7 @@
 <title>员工列表</title>
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="${base }/public/dist/css/font-awesome.min.css">
   <!-- Ionicons -->
@@ -23,70 +23,45 @@
   <link rel="stylesheet" href="${base}/public/dist/css/skins/_all-skins.min.css">
 </head>
 <body>
-<!-- Content Wrapper. Contains page content -->
-    <!-- Main content -->
-    <section class="content">
-    <div class="row row-top">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">&nbsp;&nbsp;<i class="fa fa-user-secret"></i> 公司员工</h3>
-               <form role="form" class="form-horizontal">
-              <div class="form-group row form-right">
-             
-                
-                <div class="col-md-3"><!--公司名称/负责人/电话 搜索框-->
-                  <input type="text" name="userName" class="form-control" placeholder="员工姓名/电话" >
-                </div>
-                <div class="col-md-2 col-padding"><!--搜索 恢复默认 按钮-->
-                  <button type="button" class="btn btn-primary btn-sm">搜索</button>
-                </div>
-              
-                <div class="col-md-1 col-md-offset-2">
-                </div>
-				
-              </div>
-              </form>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <table id="example2" class="table table-bordered table-hover">
-                <thead>
-                <tr>
-                  <th>员工姓名</th>
-                  <th>部门</th>
-                  <th>职位</th>
-                  <th>电话</th>
-                  <th>是否从本公司移除</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${obj.list}" var="one" >
-						<tr>
-							<td>${one.userName}</td>
-							<td>${one.department}</td>
-							<td>${one.zhiwei}</td>
-							<td>${one.telephone}</td>
-							<td>
-								<a href="${base }/admin/userjob/update.html?id=${one.ujid}&status=0" data-toggle="modal">是</a>
-							</td>
-						</tr>
-					</c:forEach>
-                </tbody>
-              </table>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
-      </div>
-    </section>
-    <!-- /.content -->
-  <!-- /.content-wrapper -->
+		<div class="modal-top">
+                 <div class="modal-header boderButt marHead">
+                     <button type="button" onclick="closewindow()" class="btn btn-primary right btn-sm" data-dismiss="modal">返回</button>
+                         
+                         <div class="form-group row">
+                           <label class="radio-inline SelectWid">
+                             <!--部门 下拉框-->
+                               <select class="form-control select" id="depid" onchange="selectDept();">
+                                 <option value="">==请选择部门==</option>
+                                 <c:forEach items="${obj.deplist}" var="one" >
+                                 	<option value="${one.id }">${one.deptname }</option>
+								</c:forEach>
+                               </select>
+                           </label>
+                             <label class="radio-inline textWidth marWid">
+                                 <input class="form-control" id="userName" name="userName" type="text" onkeypress="onkeyEnter();" placeholder="员工姓名/电话" />
+                             </label>
+                             <label class="radio-inline marWid">
+                                 <button id="searchBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
+                             </label>
+                         </div>
+                 </div>
 
-</div>
-<!-- ./wrapper -->
+                 <div class="modal-body">
+                     <table id="datatable" class="table table-bordered table-hover">
+                        <thead>
+                          <tr>
+                            <th>员工姓名</th>
+                            <th>部门</th>
+                            <th>职位</th>
+                            <th>电话</th>
+                            <th>是否从本公司移除</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                      </table>
+                </div>
+          </div>
 
 <script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
@@ -100,22 +75,94 @@
 <script src="${base}/public/plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="${base}/public/dist/js/app.min.js"></script>
+<!--layer -->
+<script src="${base}/common/js/layer/layer.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="${base}/public/dist/js/demo.js"></script>
 <!-- page script -->
 <script>
-  $(function () {
-    $("#example1").DataTable();
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false
+var datatable;
+function initDatatable() {
+    datatable = $('#datatable').DataTable({
+    	"searching":false,
+    	"bLengthChange": false,
+        "processing": true,
+        "serverSide": true,
+        "language": {
+            "url": "${base}/public/plugins/datatables/cn.json"
+        },
+        "ajax": {
+            "url": "${base}/admin/Company/userListData.html?id=${obj.companyuser.id}",
+            "type": "post",
+            "data": function (d) {
+            	
+            }
+        },
+        "columns": [
+                    {"data": "username", "bSortable": true},
+                    {"data": "department", "bSortable": true},
+                    {"data": "zhiwei", "bSortable": true},
+                    {"data": "telephone", "bSortable": false}
+            ],
+        columnDefs: [{
+            //   指定第一列，从0开始，0表示第一列，1表示第二列……
+            targets: 4,
+            render: function(data, type, row, meta) {
+                return '<a style="cursor:pointer;" onclick="removeUser('+row.id+')">是</a>'
+            }
+        }]
     });
-  });
-  
+}
+
+	$("#searchBtn").on('click', function () {
+		var depid = $("#depid").val();
+		var userName = $("#userName").val();
+	    var param = {
+	        "userName": userName,
+			"depid" : depid
+	    };
+	    datatable.settings()[0].ajax.data = param;
+	    datatable.ajax.reload();
+	});
+
+	$(function () {
+	    initDatatable();
+	});
+	function closewindow(){
+		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+		parent.layer.close(index);
+	}
+
+	function selectDept(){
+		$("#searchBtn").click();
+	}
+	
+	function onkeyEnter(){
+		 if(event.keyCode==13){
+			 $("#searchBtn").click();
+		 }
+	}
+  	
+	function removeUser(id){
+		layer.confirm('确定要移除该员工吗?', {icon: 3, title:'提示'}, function(){
+			$.ajax({ 
+				type: 'POST', 
+				data: {id:id}, 
+				url: '${base}/admin/userjob/removeUser.html',
+	            success: function (data) { 
+	            	if("200" == data.status){
+	            		layer.msg("移除成功","",3000);
+	            	}else{
+	            		layer.msg("移除除失败","",3000);
+	            	}
+	            	datatable.ajax.reload();
+	            },
+	            error: function (xhr) {
+	            	layer.msg("移除失败","",3000);
+	            } 
+	        });
+		});
+	}
 </script>
 
 </body>

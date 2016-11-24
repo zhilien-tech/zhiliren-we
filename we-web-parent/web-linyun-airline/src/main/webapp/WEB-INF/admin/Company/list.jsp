@@ -12,15 +12,14 @@
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">&nbsp;&nbsp;<i class="fa fa-user-secret"></i> 公司管理</h3>
-               <form role="form" class="form-horizontal">
               <div class="form-group row form-right">
              
                 
                 <div class="col-md-3"><!--公司名称/负责人/电话 搜索框-->
-                  <input type="text" name="companyName" class="form-control" placeholder="公司名称/负责人/电话" value="${obj.queryForm.companyName}">
+                  <input type="text" name="companyName" id="companyName" class="form-control" placeholder="公司名称/负责人/电话" onkeypress="onkeyEnter();">
                 </div>
                 <div class="col-md-2 col-padding"><!--搜索 恢复默认 按钮-->
-                  <button type="button" class="btn btn-primary btn-sm">搜索</button>
+                  <button id="searchBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
                 </div>
               
                 <div class="col-md-1 col-md-offset-6">
@@ -31,12 +30,11 @@
                 </div>
 				
               </div>
-              </form>
             </div>
-            <h4>全部公司：100 上游公司：80 代理商：20</h4>
+            <h4>全部公司：${obj.totalcompany } 上游公司：${obj.upconpany } 代理商：${obj.agent }</h4>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example2" class="table table-bordered table-hover">
+              <table id="datatable" class="table table-bordered table-hover">
                 <thead>
                 <tr>
                   <th>公司名称</th>
@@ -48,25 +46,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <c:forEach items="${obj.list}" var="one" >
-						<tr>
-							<td>${one.comName}</td>
-							<td>${one.connect}</td>
-							<td>${one.mobile}</td>
-							<td>
-								<c:if test="${empty one.renshu}">
-									0
-								</c:if>
-								<c:if test="${not empty one.renshu}">
-									<a  style="cursor:pointer;" onclick="userlist(${one.id})">${one.renshu }</a>
-								</c:if>
-							</td>
-							<td>${one.comType}</td>
-							<td>
-								<a class="btn btn-primary btn-sm" onclick="edit(${one.id});">编辑</a>
-							</td>
-						</tr>
-					</c:forEach>
                 </tbody>
               </table>
             </div>
@@ -99,17 +78,62 @@
 
 <!-- page script -->
 <script>
-  $(function () {
-    $("#example1").DataTable();
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false
+var datatable;
+function initDatatable() {
+    datatable = $('#datatable').DataTable({
+    	"searching":false,
+    	"bLengthChange": false,
+        "processing": true,
+        "serverSide": true,
+        "language": {
+            "url": "${base}/public/plugins/datatables/cn.json"
+        },
+        "ajax": {
+            "url": "${base}/admin/Company/listData.html",
+            "type": "post",
+            "data": function (d) {
+            	
+            }
+        },
+        "columns": [
+                    {"data": "comname", "bSortable": true},
+                    {"data": "connect", "bSortable": true},
+                    {"data": "mobile", "bSortable": true},
+                    {"data": "renshu", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var s = '';
+                    		if(row.renshu <= '0'){
+                    			s = '0';
+                    		}else{
+                    			s = '<a  style="cursor:pointer;" onclick="userlist('+row.id+')">'+row.renshu+'</a>';
+                    		}
+                            return s
+                        }
+                    },
+                    {"data": "comtype", "bSortable": true}
+            ],
+        columnDefs: [{
+            //   指定第一列，从0开始，0表示第一列，1表示第二列……
+            targets: 5,
+            render: function(data, type, row, meta) {
+                return '<a style="cursor:pointer;" onclick="edit('+row.id+');">编辑</a>'
+            }
+        }]
     });
-  });
+}
+
+	$("#searchBtn").on('click', function () {
+		var companyName = $("#companyName").val();
+	    var param = {
+	        "companyName": companyName
+	    };
+	    datatable.settings()[0].ajax.data = param;
+	    datatable.ajax.reload();
+	});
+
+$(function () {
+    initDatatable();
+});
    function add(){
       layer.open({
     	    type: 2,
@@ -137,7 +161,7 @@
   function userlist(id){
 	  layer.open({
   	    type: 2,
-  	    title: '公司信息修改',
+  	    title: '员工列表',
   	    fix: false,
   	    maxmin: false,
   	    shadeClose: false,
@@ -145,6 +169,21 @@
   	    content: '${url}/userList.html?id='+id
   	    
   	  });
+  }
+  function onkeyEnter(){
+		 if(event.keyCode==13){
+			 $("#searchBtn").click();
+		 }
+	}
+  function successCallback(id){
+	  datatable.ajax.reload();
+	  if(id == '1'){
+		  layer.msg("添加成功",{time: 2000, icon:1});
+	  }else if(id == '2'){
+		  layer.msg("修改成功",{time: 2000, icon:1});
+	  }else if(id == '3'){
+		  layer.msg("删除成功",{time: 2000, icon:1});
+	  }
   }
 </script>
 
