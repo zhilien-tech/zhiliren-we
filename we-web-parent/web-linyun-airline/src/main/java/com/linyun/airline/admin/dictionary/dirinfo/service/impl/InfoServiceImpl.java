@@ -2,7 +2,7 @@
  * InfoServiceImpl.java
  * com.xiaoka.template.admin.dictionary.dirinfo.service.impl
  * Copyright (c) 2016, 北京科技有限公司版权所有.
-*/
+ */
 
 package com.linyun.airline.admin.dictionary.dirinfo.service.impl;
 
@@ -41,7 +41,17 @@ public class InfoServiceImpl implements IInfoService {
 		Map<String, Object> obj = new HashMap<String, Object>();
 		obj.put("dirinfo", dbDao.fetch(DictInfoEntity.class, id));
 		return obj;
-
 	}
+
+	/*//客户管理中 字典表模糊查询
+	@Override
+	public Object searchDict(String columnName, String name) {
+		Cnd cnd = Cnd.NEW();
+		if (!Util.isEmpty(name)) {
+			cnd.and(columnName, "LIKE", "%" + name + "%");
+		}
+		Map<String, Object> map = FormUtil.query(dbDao, DictInfoEntity.class, cnd, null);
+		return map.get("list");
+	}*/
 
 }

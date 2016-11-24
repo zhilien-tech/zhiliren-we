@@ -9,8 +9,6 @@ package com.linyun.airline.common.sabre;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
-import com.xiaoka.test.entity.TestAPI;
-
 /**
  * TODO(这里用一句话描述这个类的作用)
  * <p>
@@ -22,7 +20,7 @@ import com.xiaoka.test.entity.TestAPI;
 public class SabreConfig {
 
 	//打log用
-	protected static Log log = Logs.getLog(TestAPI.class);
+	protected static Log log = Logs.getLog(SabreConfig.class);
 
 	/**
 	 * API环境分为测试环境和生产环境，测试的时候使用测试环境

@@ -25,6 +25,7 @@ public class DictInfoAddForm extends AddForm implements Serializable {
 	private String description;
 
 	/**字典信息状态,0-冻结，1-启用，2--删除*/
-	private int status;
+
+	private int status = 1;
 
 }

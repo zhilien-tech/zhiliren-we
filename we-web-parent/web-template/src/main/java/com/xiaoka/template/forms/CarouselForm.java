@@ -1,36 +1,36 @@
 package com.xiaoka.template.forms;
 
-import com.uxuexi.core.web.form.SQLParamForm;
-import com.uxuexi.core.db.util.EntityUtil;
+import java.io.Serializable;
+
+import lombok.Data;
+
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import com.uxuexi.core.db.util.EntityUtil;
+import com.uxuexi.core.web.form.SQLParamForm;
 import com.xiaoka.template.entities.CarouselEntity;
 
-import java.io.Serializable;
-
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class CarouselForm extends SQLParamForm implements Serializable{
+public class CarouselForm implements SQLParamForm, Serializable {
 	private static final long serialVersionUID = 1L;
 	/**主键*/
 	private Long id;
-	
+
 	/**图片地址*/
 	private String url;
-	
+
 	/**外链地址*/
 	private String link;
-	
+
 	/**描述*/
 	private String description;
-	
+
 	/**序号*/
 	private Integer sort;
-	
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**
