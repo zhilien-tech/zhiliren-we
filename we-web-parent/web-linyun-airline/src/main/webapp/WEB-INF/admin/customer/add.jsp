@@ -14,6 +14,7 @@
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="${base}/common/js/layer/layer.js"></script>
 <script type="text/javascript">
 	$(function() {
 		//Initialize Select2 Elements
@@ -104,26 +105,50 @@
 
 	//保存页面
 	function save() {
-		$.ajax({ 
-			type: 'POST', 
-			data: $("#customerAdd").serialize(), 
-			url: '${base}/admin/customer/add.html',
-            success: function (data) { 
-            	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-            	if("200" == data.status){
-            		layer.msg("修改成功","",3000);
-            	}else{
-            		layer.msg("修改失败","",3000);
-            	}
-            	layer.close(index);
-            	parent.location.reload();
-            	
-            },
-            error: function (xhr) {
-            	layer.msg("修改失败","",3000);
-            } 
-        });
+		$.ajax({
+			type : 'POST',
+			data : $("#customerAdd").serialize(),
+			url : '${base}/admin/customer/add.html',
+			success : function(data) {
+				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				if ("200" == data.status) {
+					layer.msg("修改成功", "", 3000);
+				} else {
+					layer.msg("修改失败", "", 3000);
+				}
+				layer.close(index);
+				parent.location.reload();
+
+			},
+			error : function(xhr) {
+				layer.msg("修改失败", "", 3000);
+			}
+		});
 	}
+
+	$("#submit").click(function() {
+		$.ajax({
+			cache : true,
+			type : "POST",
+			url : '${base}/admin/customer/add.html',
+			data : $('#form1').serialize(),
+			error : function(request) {
+				layer.msg('添加失败!');
+			},
+			success : function(data) {
+				layer.load(1, {
+					shade : [ 0.1, '#fff' ]
+				//0.1透明度的白色背景
+				});
+				layer.msg('添加成功!', {
+					time : 5000,
+					icon : 6
+				});
+				window.location.reload(true);
+			}
+		});
+		$(".Mymodal-lg").modal('hide');
+	});
 
 	//显示或隐藏发票项
 	function gaveInvioce() {
@@ -151,9 +176,9 @@
 			dataType : 'json',
 			url : '${base}/admin/customer/goCity.html',
 			success : function(data) {
-				
+
 			}
-				
+
 		});
 	}
 </script>
@@ -161,13 +186,14 @@
 <body>
 
 	<div class="modal-content">
-		<form id="customerAdd" method="post"
+		<form id="form1" method="post"
 			action="${base}/admin/customer/add.html">
 			<div class="modal-header">
 				<button type="button" class="btn btn-primary right btn-sm"
 					data-dismiss="modal">返回</button>
-				<input type="submit" class="btn btn-primary right btn-sm" value="保存"
-					onclick="save()" />
+				<button type="button" id="submit"
+					class="btn btn-primary right btn-sm">保存</button>
+
 				<ul class="nav nav-tabs">
 					<li class="active"><a href="#tabs_1" data-toggle="tab">基本信息</a></li>
 					<li><a href="#tabs_2" data-toggle="tab">线路权限</a></li>
@@ -278,7 +304,8 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">国境内陆：</label>
 							<div class="col-sm-3 padding">
-								<input type="text" class="form-control input-sm" placeholder="" onkeyup=""/>
+								<input type="text" class="form-control input-sm" placeholder=""
+									onkeyup="" />
 							</div>
 
 							<label class="col-sm-2 text-right padding">国际：</label>
@@ -323,9 +350,8 @@
 							<div class="col-sm-5 padding">
 								<input id="datepicker1" name="cooperateTime" type="date"
 									class="form-control input-sm input-wid"
-									placeholder="2015-08-08" /> 
-							至 
-								<input id="datepicker2" name="cooperateDueTime" type="date"
+									placeholder="2015-08-08" /> 至 <input id="datepicker2"
+									name="cooperateDueTime" type="date"
 									class="form-control input-sm input-wid"
 									placeholder="2088-09-09" />
 							</div>

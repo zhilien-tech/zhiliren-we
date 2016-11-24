@@ -104,8 +104,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="${base}/public/plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="${base}/public/dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="${base}/public/dist/js/demo.js"></script>
+<script src="${base}/common/js/layer/layer.js"></script>
 <!-- page script -->
 <script type="text/javascript">
 	$(function() {
@@ -125,8 +124,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	//设置默认
 	function makeDefault() {
 		$("#sname").val("");
-		$("#select1").val("-1");
-		$("#select2").val("-1");
+		$("#select1").val("");
+		$("#select2").val("");
 	}
 
 	$('#addBtn').click(function() {
