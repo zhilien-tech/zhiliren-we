@@ -1,34 +1,34 @@
 package com.linyun.airline.forms;
 
-import com.uxuexi.core.web.form.SQLParamForm;
-import com.uxuexi.core.db.util.EntityUtil;
+import java.io.Serializable;
+import java.util.Date;
+
+import lombok.Data;
+
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import com.linyun.airline.entities.SRoleEntity;
-import java.util.Date;
 
-import java.io.Serializable;
+import com.linyun.airline.entities.SRoleEntity;
+import com.uxuexi.core.db.util.EntityUtil;
+import com.uxuexi.core.web.form.SQLParamForm;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class SRoleForm extends SQLParamForm implements Serializable{
+public class SRoleForm implements SQLParamForm, Serializable {
 	private static final long serialVersionUID = 1L;
 	/**主键*/
 	private Long id;
-	
+
 	/**角色名称*/
 	private String name;
-	
+
 	/**备注*/
 	private String remark;
-	
+
 	/**创建时间*/
 	private Date createTime;
-	
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**

@@ -1,7 +1,5 @@
 /*package com.linyun.airline.admin.login.service.impl;
-=======
-package com.linyun.airline.admin.login.service.impl;
->>>>>>> refs/remotes/origin/dev
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

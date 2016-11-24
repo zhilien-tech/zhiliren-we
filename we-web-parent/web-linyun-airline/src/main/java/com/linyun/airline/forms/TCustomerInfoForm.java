@@ -1,11 +1,10 @@
 package com.linyun.airline.forms;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
+import org.joda.time.DateTime;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
@@ -16,8 +15,7 @@ import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.form.SQLParamForm;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class TCustomerInfoForm extends SQLParamForm implements Serializable {
+public class TCustomerInfoForm implements SQLParamForm, Serializable {
 	private static final long serialVersionUID = 1L;
 	/**主键*/
 	private long id;
@@ -53,7 +51,7 @@ public class TCustomerInfoForm extends SQLParamForm implements Serializable {
 	private String agent;
 
 	/**添加时间*/
-	private Date createTime;
+	private DateTime createTime;
 
 	/**出发城市*/
 	private String departureCity;
@@ -80,16 +78,16 @@ public class TCustomerInfoForm extends SQLParamForm implements Serializable {
 	private long payType;
 
 	/**合作时间*/
-	private Date cooperateTime;
+	private DateTime cooperateTime;
 
 	/**合作到期时间*/
-	private Date cooperateDueTime;
+	private DateTime cooperateDueTime;
 
 	/**签约时间*/
-	private Date contractTime;
+	private DateTime contractTime;
 
 	/**签约到期时间*/
-	private Date contractDueTime;
+	private DateTime contractDueTime;
 
 	/**是否签约（未签约、已签约、禁止合作）*/
 	private long contract;
@@ -114,6 +112,5 @@ public class TCustomerInfoForm extends SQLParamForm implements Serializable {
 		//TODO 添加自定义查询条件（可选）
 
 		return cnd;
-
 	}
 }

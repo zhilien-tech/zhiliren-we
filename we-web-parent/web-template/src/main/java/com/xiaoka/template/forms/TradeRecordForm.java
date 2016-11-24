@@ -1,52 +1,52 @@
 package com.xiaoka.template.forms;
 
-import com.uxuexi.core.web.form.SQLParamForm;
-import com.uxuexi.core.db.util.EntityUtil;
+import java.io.Serializable;
+import java.util.Date;
+
+import lombok.Data;
+
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import com.xiaoka.template.entities.TradeRecordEntity;
-import java.util.Date;
 
-import java.io.Serializable;
+import com.uxuexi.core.db.util.EntityUtil;
+import com.uxuexi.core.web.form.SQLParamForm;
+import com.xiaoka.template.entities.TradeRecordEntity;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class TradeRecordForm extends SQLParamForm implements Serializable{
+public class TradeRecordForm implements SQLParamForm, Serializable {
 	private static final long serialVersionUID = 1L;
 	/**主键*/
 	private Long id;
-	
+
 	/**单品id*/
 	private Integer itemId;
-	
+
 	/**是否交易当前单品*/
 	private Integer isCurrentItem;
-	
+
 	/**平台商品id*/
 	private String platformItemId;
-	
+
 	/**用户id*/
 	private Integer userId;
-	
+
 	/**交易平台类型*/
 	private Integer tradePlatform;
-	
+
 	/**平台用户*/
 	private String platformUser;
-	
+
 	/**平台交易号*/
 	private String tradeNo;
-	
+
 	/**支付结果*/
 	private Integer payStatus;
-	
+
 	/**支付时间*/
 	private Date payTime;
-	
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**

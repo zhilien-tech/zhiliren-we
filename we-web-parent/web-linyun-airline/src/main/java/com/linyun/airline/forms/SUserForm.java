@@ -1,40 +1,40 @@
 package com.linyun.airline.forms;
 
-import com.uxuexi.core.web.form.SQLParamForm;
-import com.uxuexi.core.db.util.EntityUtil;
+import java.io.Serializable;
+import java.util.Date;
+
+import lombok.Data;
+
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import com.linyun.airline.entities.SUserEntity;
-import java.util.Date;
 
-import java.io.Serializable;
+import com.linyun.airline.entities.SUserEntity;
+import com.uxuexi.core.db.util.EntityUtil;
+import com.uxuexi.core.web.form.SQLParamForm;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class SUserForm extends SQLParamForm implements Serializable{
+public class SUserForm implements SQLParamForm, Serializable {
 	private static final long serialVersionUID = 1L;
 	/**主键*/
 	private Long id;
-	
+
 	/**登录名*/
 	private String username;
-	
+
 	/**登录密码*/
 	private String password;
-	
+
 	/**用户状态:0-未激活，1-激活，2-冻结*/
 	private Integer status;
-	
+
 	/**用户类型:0-前台用户，1-后台用户*/
 	private Integer userType;
-	
+
 	/**创建时间*/
 	private Date createTime;
-	
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**
