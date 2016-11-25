@@ -256,6 +256,8 @@ function initDatatable() {
                     			s = '已签约';
                     		}else if(row.contract == '0'){
                     			s = '未签约';
+                    		}else{
+                    			s = '禁止合作';
                     		}
                             return s;
                         }

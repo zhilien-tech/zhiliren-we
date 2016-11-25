@@ -194,7 +194,7 @@ public class CustomerModule {
 		Set<DictInfoEntity> set = new TreeSet<DictInfoEntity>();
 		//需要加排序事件
 		List<TCustomerLineEntity> localLineList = dbDao.query(TCustomerLineEntity.class,
-				Cnd.where("lineName", "like", name + "%"), null);
+				Cnd.where("lineName", "like", Strings.trim(name) + "%"), null);
 
 		if (localLineList.size() >= 5) {
 			for (int i = 0; i < 5; i++) {
@@ -208,7 +208,7 @@ public class CustomerModule {
 
 			for (TCustomerLineEntity cl : localLineList) {
 				DictInfoEntity info = new DictInfoEntity();
-				info.setId(cl.getLineId());
+				info.setId(cl.getDictLineId());
 				info.setDictName(cl.getLineName());
 				set.add(info);
 			}
@@ -218,7 +218,9 @@ public class CustomerModule {
 
 			if (!Util.isEmpty(dictLineList)) {
 				if (dictLineList.size() <= needmore) {
-					set.addAll(dictLineList);
+					for (DictInfoEntity dict : dictLineList) {
+						set.add(dict);
+					}
 				} else {
 					for (int i = 0; i < needmore; i++) {
 						set.add(dictLineList.get(i));

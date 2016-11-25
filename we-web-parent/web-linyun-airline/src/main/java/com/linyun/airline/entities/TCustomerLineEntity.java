@@ -33,4 +33,8 @@ public class TCustomerLineEntity implements Serializable {
 	/**使用次数*/
 	private int count;
 
+	@Column
+	@Comment("线路字典id")
+	private long dictLineId;
+
 }
