@@ -6,6 +6,7 @@
 
 package com.linyun.airline.admin.dictionary.dirtype.module;
 
+import java.util.Date;
 import java.util.Map;
 
 import org.nutz.dao.Chain;
@@ -67,6 +68,7 @@ public class TypeModule {
 	@At
 	@POST
 	public Object add(@Param("..") final TypeAddForm addForm) {
+		addForm.setCreateTime(new Date());
 		FormUtil.add(dbDao, addForm, DictTypeEntity.class);
 		return JsonResult.success("添加成功!");
 	}
@@ -89,6 +91,7 @@ public class TypeModule {
 	@At
 	@POST
 	public Object update(@Param("..") final TypeModForm modForm) {
+		modForm.setCreateTime(new Date());
 		iTypeService.update(modForm);
 		return JsonResult.success("修改成功!");
 	}
