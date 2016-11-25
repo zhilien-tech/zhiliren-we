@@ -6,6 +6,8 @@
 
 package com.linyun.airline.admin.dictionary.dirinfo.form;
 
+import java.util.Date;
+
 import lombok.Data;
 
 import org.nutz.dao.Cnd;
@@ -35,6 +37,8 @@ public class InfoSqlForm implements ISqlForm {
 	private String description;
 	//状态
 	private int status;
+	//创建时间
+	private Date createTime;
 
 	@Override
 	public Sql createPagerSql(IDbDao dbDao, SqlManager sqlManager) {

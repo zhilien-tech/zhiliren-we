@@ -1,6 +1,7 @@
 package com.linyun.airline.forms;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,12 +26,15 @@ public class DictInfoAddForm extends AddForm implements Serializable {
 	private String description;
 
 	/**字典信息状态,1-启用，2--删除*/
-	private int status;
+	private long status;
 
 	/**全拼*/
 	private String quanPin;
 
 	/**简拼*/
 	private String jianpin;
+
+	/**创建时间*/
+	private Date createTime;
 
 }

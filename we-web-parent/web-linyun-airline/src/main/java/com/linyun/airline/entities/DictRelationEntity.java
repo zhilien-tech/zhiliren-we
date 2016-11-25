@@ -28,6 +28,6 @@ public class DictRelationEntity implements Serializable {
 
 	@Column
 	@Comment("删除标识:(0,表示未删除；1,表示已删除)")
-	private int dr;
+	private long dr;
 
 }
