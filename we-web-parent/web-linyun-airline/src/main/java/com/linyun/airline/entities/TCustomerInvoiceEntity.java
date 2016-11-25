@@ -26,4 +26,8 @@ public class TCustomerInvoiceEntity implements Serializable {
 	@Comment("发票项id")
 	private long invoiceId;
 
+	@Column
+	@Comment("发票项名称")
+	private String invioceName;
+
 }
