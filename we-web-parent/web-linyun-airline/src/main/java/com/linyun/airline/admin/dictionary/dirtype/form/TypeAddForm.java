@@ -6,6 +6,8 @@
 
 package com.linyun.airline.admin.dictionary.dirtype.form;
 
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -26,5 +28,7 @@ public class TypeAddForm extends AddForm {
 	//描述
 	private String description;
 	//状态
-	private int status;
+	private long status;
+	//创建时间
+	private Date createTime;
 }

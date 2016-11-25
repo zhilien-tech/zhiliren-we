@@ -1,6 +1,7 @@
 package com.linyun.airline.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 
@@ -32,5 +33,9 @@ public class DictTypeEntity implements Serializable {
 
 	@Column
 	@Comment("状态,1-启用，2--删除")
-	private int status;
+	private long status;
+
+	@Column
+	@Comment("创建时间")
+	private Date createTime;
 }

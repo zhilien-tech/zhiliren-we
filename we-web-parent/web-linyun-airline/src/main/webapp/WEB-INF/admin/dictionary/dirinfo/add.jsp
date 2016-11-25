@@ -8,10 +8,16 @@
     <title>添加</title>
 	<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
+	<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
+	<!-- js -->
+	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
+	<script src="${base}/public/bootstrap/js/bootstrap.js"></script>
+	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
+	<script src="${base}/common/js/layer/layer.js"></script>
 </head>
 <body onresize=hero();>
           <div class="modal-top">
-          <form id="form1" method="post"> 
+          <form id="addForm" method="post"> 
               <div class="modal-header boderButt">
                   <button type="button" class="btn btn-primary right btn-sm" data-dismiss="modal">返回</button>
                   <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
@@ -22,9 +28,8 @@
                         <div class="form-group row">
                             <label class="col-sm-3 text-right padding">字典类型编码：</label>
                             <div class="col-sm-8 padding">
-                              <!-- <input name="typeCode" class="form-control input-sm" placeholder="请输入字典类型编码" /> -->
-                            	<select id="typeCode" name="typeCode" class="form-control input-sm">
-			                    	<option>--请选择--</option>
+                            	<select id="typeCode" name="typeCode" class="form-control input-sm inpImpWid">
+			                    	<option value="">--请选择--</option>
 			                        <c:forEach var="shipList" items="${obj }"> 
 										<option value='${shipList.typeCode}' ${shipList.typeCode==typeCode?'selected':''}>
 											${shipList.typeName}
@@ -36,19 +41,21 @@
                         <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">字典代码：</label>
                             <div class="col-sm-8 padding">
-                              <input name="dictCode" class="form-control input-sm" placeholder="请输入字典代码" />
+                              <input name="dictCode" class="form-control input-sm inpImpWid" placeholder="请输入字典代码" />
+                              <span class="prompt">*</span>
                             </div>
                         </div>
                         <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">字典信息：</label>
                             <div class="col-sm-8 padding">
-                              <input name="dictName" class="form-control input-sm" placeholder="请输入字典信息" />
+                              <input name="dictName" class="form-control input-sm inpImpWid" placeholder="请输入字典信息" />
+                            	<span class="prompt">*</span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 text-right padding">状态：</label>
                             <div class="col-sm-8 padding">
-                              <select id="status" name="status" class="form-control input-sm">
+                              <select id="status" name="status" class="form-control input-sm inpImpWid">
                                 <option value="1" selected="selected">启用</option>
 								<option value="2">删除</option>
                               </select>
@@ -56,38 +63,77 @@
                         </div>
 						<div class="form-group row">
                             <label class="col-sm-3 text-right padding">描述：</label>
-                            <div class="col-sm-8 padding">
-                              <textarea name="description" class="form-control"></textarea>
+                            <div class="col-sm-8 padding ">
+                              <textarea name="description" class="form-control inpImpWid"></textarea>
                             </div>
                         </div>
                       </form>
                     </div>
                 </div>
             </div>
+	<script type="text/javascript">
+	//验证
+	$(document).ready(function(){
+		$('#addForm').bootstrapValidator({
+			message: '验证不通过!',
+	        feedbackIcons: {
+	            valid: 'glyphicon glyphicon-ok',
+	            invalid: 'glyphicon glyphicon-remove',
+	            validating: 'glyphicon glyphicon-refresh'
+	        },
+	        fields: {
+	        	dictCode: {
+	                validators: {
+	                    notEmpty: {
+	                        message: '字典代码不能为空!'
+	                    },
+		                regexp: {
+	                        regexp: /^[A-Za-z0-9]+$/,
+	                        message: '字典代码只能为字母或数字'
+	                    }
+	                }
+	            },
+	            dictName: {
+	            	validators: {
+	                    notEmpty: {
+	                        message: '字典信息不能为空!'
+	                    }
+	                }
+	            }
+	        }
+		});
+	});
+		$("#submit").click(function(){
+			$('#addForm').bootstrapValidator('validate');
+			var bootstrapValidator = $("#addForm").data('bootstrapValidator');
+			if(bootstrapValidator.isValid()){
+				$.ajax({
+		           cache: true,
+		           type: "POST",
+		           url:'${base}/admin/dictionary/dirinfo/add.html',
+		           data:$('#addForm').serialize(),// 你的formid
+		           error: function(request) {
+		              layer.msg('添加失败!');
+		           },
+		            success: function(data) {
+					layer.load(1, {
+						 shade: [0.1,'#fff'] //0.1透明度的白色背景
+					});
+		              layer.msg('添加成功!',{time: 5000, icon:6});
+					  window.location.reload(true);
+		           }
+		       });
+			}
+			 $(".Mymodal-lg").modal('hide');
+		});
+		//提交时开始验证
+		$('#submit').click(function() {
+	        $('#addForm').bootstrapValidator('validate');
+	    });
+		
+	</script>
 </body>
 </html>	
-<script src="${base}/common/js/layer/layer.js"></script>
-<script type="text/javascript">
-	$("#submit").click(function(){
-		$.ajax({
-           cache: true,
-           type: "POST",
-           url:'${base}/admin/dictionary/dirinfo/add.html',
-           data:$('#form1').serialize(),// 你的formid
-           error: function(request) {
-              layer.msg('添加失败!');
-           },
-            success: function(data) {
-			layer.load(1, {
-				 shade: [0.1,'#fff'] //0.1透明度的白色背景
-			});
-              layer.msg('添加成功!',{time: 5000, icon:6});
-			  window.location.reload(true);
-           }
-       });
-		 $(".Mymodal-lg").modal('hide');
-	});
-</script>
 	
 	
 	

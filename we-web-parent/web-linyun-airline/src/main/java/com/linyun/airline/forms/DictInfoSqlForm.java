@@ -1,9 +1,15 @@
+/**
+ * DictInfoSqlForm.java
+ * com.linyun.airline.forms
+ * Copyright (c) 2016, 北京科技有限公司版权所有.
+*/
+
 package com.linyun.airline.forms;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
@@ -13,40 +19,27 @@ import org.nutz.dao.sql.Sql;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.EntityUtil;
-import com.uxuexi.core.web.form.SQLParamForm;
+import com.uxuexi.core.web.form.DataTablesParamForm;
 
+/**
+ * TODO(这里用一句话描述这个类的作用)
+ * @author   崔建斌
+ * @Date	 2016年11月24日 	 
+ */
 @Data
-public class DictInfoForm implements SQLParamForm, Serializable {
-	private static final long serialVersionUID = 1L;
-	/**主键*/
-	private long id;
+@EqualsAndHashCode(callSuper = true)
+public class DictInfoSqlForm extends DataTablesParamForm {
 
-	/**字典类别编码*/
-	private String typeCode;
-
-	/**字典代码*/
-	private String dictCode;
-
-	/**字典信息*/
+	//字典信息
 	private String dictName;
-
-	/**描述*/
-	private String description;
-
-	/**字典信息状态,1-启用，2--删除*/
-	private long status;
-
-	/**全拼*/
-	private String quanPin;
-
-	/**简拼*/
-	private String jianpin;
+	//按状态查询
+	private String status;
 
 	/**创建时间*/
 	private Date createTime;
 
 	@Override
-	public Sql sql(SqlManager sqlManager) {
+	public Sql sql(SqlManager paramSqlManager) {
 		/**
 		 * 默认使用了当前form关联entity的单表查询sql,如果是多表复杂sql，
 		 * 请使用sqlManager获取自定义的sql，并设置查询条件
@@ -61,8 +54,12 @@ public class DictInfoForm implements SQLParamForm, Serializable {
 		Cnd cnd = Cnd.NEW();
 		//TODO 添加自定义查询条件（可选）
 		if (!Util.isEmpty(dictName)) {
-			cnd.and("i.dictName", "LIKE", "%" + dictName + "%");
+			cnd.and("dictName", "LIKE", "%" + dictName + "%");
+		}
+		if (!Util.isEmpty(status)) {
+			cnd.and("status", "=", status);
 		}
 		return cnd;
 	}
+
 }

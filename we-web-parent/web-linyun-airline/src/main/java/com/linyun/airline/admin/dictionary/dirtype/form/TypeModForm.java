@@ -7,11 +7,10 @@
 package com.linyun.airline.admin.dictionary.dirtype.form;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import org.hibernate.validator.constraints.NotEmpty;
 
 import com.uxuexi.core.web.form.ModForm;
 
@@ -27,10 +26,11 @@ public class TypeModForm extends ModForm implements Serializable {
 	//字典类别编码
 	private String typeCode;
 	//字典类别名称
-	@NotEmpty
 	private String typeName;
 	//描述
 	private String description;
 	//状态
-	private int status;
+	private long status;
+	//创建时间
+	private Date createTime;
 }
