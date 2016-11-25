@@ -10,7 +10,9 @@ import java.util.List;
 
 import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
 
+import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.uxuexi.core.web.base.service.BaseService;
 
@@ -24,18 +26,11 @@ public class externalInfoServiceImpl extends BaseService<DictInfoEntity> impleme
 
 	@Override
 	public List<DictInfoEntity> findDictInfoByName(String name) throws Exception {
-		/*String sqlString = EntityUtil.entityCndSql(DictInfoEntity.class);
-		Sql sql = Sqls.create(sqlString);
-		Cnd cnd = Cnd.NEW();
-		cnd.and("comType", "=", comType);
-		cnd.and("deletestatus", "=", 0);
-		sql.setCondition(cnd);
-		sql.setCallback(Sqls.callback.records());
-		nutDao.execute(sql);
-		@SuppressWarnings("unchecked")
-		List<DictInfoEntity> list = (List<DictInfoEntity>) sql.getResult();*/
-		List<DictInfoEntity> infoList = dbDao.query(DictInfoEntity.class,
-				Cnd.where("dictName", "like", "%" + name + "%"), null);
+		List<DictInfoEntity> infoList = dbDao.query(
+				DictInfoEntity.class,
+				Cnd.where("dictName", "like", Strings.trim(name) + "%").and("status", "=",
+						DataStatusEnum.ENABLE.intKey()), null);
+
 		return infoList;
 	}
 }

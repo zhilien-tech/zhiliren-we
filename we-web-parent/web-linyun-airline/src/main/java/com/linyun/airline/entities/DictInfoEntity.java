@@ -11,7 +11,7 @@ import org.nutz.dao.entity.annotation.Table;
 
 @Data
 @Table("dict_info")
-public class DictInfoEntity implements Serializable {
+public class DictInfoEntity implements Serializable, Comparable<DictInfoEntity> {
 	private static final long serialVersionUID = 1L;
 	@Column
 	@Id(auto = true)
@@ -45,4 +45,47 @@ public class DictInfoEntity implements Serializable {
 	@Column
 	@Comment("简拼")
 	private String jianpin;
+
+	/**
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DictInfoEntity other = (DictInfoEntity) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		Long intId = Long.valueOf(this.id);
+		return intId.hashCode();
+	}
+
+	/**使用次数*/
+	private int count;
+
+	@Override
+	public int compareTo(DictInfoEntity o) {
+		if (this.count > o.count) {
+			return 1;
+		} else if (this.count < o.count) {
+			return -1;
+		} else {
+			return 0;
+		}
+	}
+
 }

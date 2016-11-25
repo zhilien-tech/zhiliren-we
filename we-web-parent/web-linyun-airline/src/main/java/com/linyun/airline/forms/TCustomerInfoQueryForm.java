@@ -18,13 +18,18 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import org.nutz.dao.Cnd;
+import org.nutz.dao.SqlManager;
+import org.nutz.dao.Sqls;
+import org.nutz.dao.sql.Sql;
 
+import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.uxuexi.core.common.util.Util;
-import com.uxuexi.core.web.form.QueryForm;
+import com.uxuexi.core.db.util.EntityUtil;
+import com.uxuexi.core.web.form.DataTablesParamForm;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class TCustomerInfoQueryForm extends QueryForm {
+public class TCustomerInfoQueryForm extends DataTablesParamForm {
 
 	/**客户 电话 负责人*/
 	private String name;
@@ -35,8 +40,7 @@ public class TCustomerInfoQueryForm extends QueryForm {
 	/**是否禁用*/
 	private String forbid;
 
-	@Override
-	public Cnd createCnd() {
+	public Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		//TODO 添加自定义查询条件（可选）
 		if (!Util.isEmpty(name)) {
@@ -53,6 +57,19 @@ public class TCustomerInfoQueryForm extends QueryForm {
 		}
 
 		return cnd;
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * @see com.uxuexi.core.web.form.SQLParamForm#sql(org.nutz.dao.SqlManager)
+	 */
+	@Override
+	public Sql sql(SqlManager sqlManager) {
+		String sqlString = EntityUtil.entityCndSql(TCustomerInfoEntity.class);
+		Sql sql = Sqls.create(sqlString);
+		sql.setCondition(cnd());
+		return sql;
+
 	}
 
 }
