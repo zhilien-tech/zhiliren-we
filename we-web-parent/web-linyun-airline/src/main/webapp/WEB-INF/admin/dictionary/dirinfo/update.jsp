@@ -11,7 +11,7 @@
 </head>
 <body onresize=hero();>
           <div class="modal-top">
-          <form id="form1" method="post"  action="${base}/admin/dictionary/dirinfo/update.html">
+          <form id="updateForm">
               <div class="modal-header boderButt">
                   <button type="button" class="btn btn-primary right btn-sm" data-dismiss="modal">返回</button>
                   <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
@@ -81,7 +81,7 @@ $("#submit").click(function(){
            cache: true,
            type: "POST",
            url:'${base}/admin/dictionary/dirinfo/update.html',
-           data:$('#form1').serialize(),// 你的formid
+           data:$('#updateForm').serialize(),// 你的formid
            error: function(request) {
               layer.msg('修改失败!');
            },

@@ -6,8 +6,12 @@
 
 package com.linyun.airline.admin.dictionary.dirinfo.form;
 
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import org.nutz.dao.Cnd;
 
 import com.uxuexi.core.web.form.QueryForm;
 import com.uxuexi.core.web.form.support.Condition;
@@ -28,4 +32,14 @@ public class InfoQueryForm extends QueryForm {
 	//按状态查询
 	@Condition(match = MatchType.EQ)
 	private String status;
+
+	//按创建时间排序
+	private Date createTime;
+
+	@Override
+	public Cnd createCnd() {
+		Cnd cnd = super.createCnd();
+		cnd.orderBy("createTime", "ASC");
+		return cnd;
+	}
 }

@@ -4988,6 +4988,22 @@ h4{font-size: 16px;}
 #example2 tbody td{width: 20%;}
 #example2 tbody td span{width:266px;display:block;word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
 .table-wid tbody td{width: 15%;}
+.a_p{width:180px;border:solid 0px red;}
+.a_info{width:150px;border:solid 0px red;}
+.p_time{width:130px;border:solid 0px red;}
+
+/*公司管理*/
+.padLeft{padding-left: 14px;font-size: 14px;margin: 15px 0 2px 0;}
+.paddiLeAdd{padding-left: inherit;}
+
+/*公司管理---->公司人员*/
+.SelectWid{width: 150px;}
+.marWid{margin-left: -10px !important;}
+.textWidth{width: 200px;}
+.marHead{padding: 24px 15px 5px;}
+.form-control{font-size: 13px;}
+.inpImportant{width: 96%;display: inline-block;}
+.inpImpWid {width: 98.5%;display: inline-block;}
 
 /*菜单栏*/
 .hides{display: none;}
@@ -4995,4 +5011,8 @@ h4{font-size: 16px;}
 .def{background-color: #212121;border-left: solid 4px #336eb1;color: #dbdbdb !important;}
 .div_li,.sidebar_li,.div_li1 {color: #fff;line-height:40px;padding-left: 30px !important;}
 .div_sub,.div_sub1{padding-left:50px !important;}
+.returnMargi {position: relative;top: 15px;}
 
+/*客户管理*/
+.flie_A{display: inline-block;width: 75px;height: 30px;background: #3c8dbc;position: relative;overflow: hidden;text-align: center;line-height: 33px;color: #fff;border-radius: 4px;font-size: 13px;}
+.flie_A input{position: absolute;right:0px;top: 0;font-size: 100px;opacity: 0;filter: alpha(opacity=0);width: 82px;height: 31px;}

@@ -6,6 +6,8 @@
 
 package com.linyun.airline.admin.dictionary.dirinfo.form;
 
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -33,4 +35,6 @@ public class InfoModForm extends ModForm {
 	private String description;
 	//状态
 	private int status;
+	//创建时间
+	private Date createTime;
 }
