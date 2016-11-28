@@ -1,10 +1,10 @@
 package com.linyun.airline.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 
-import org.joda.time.DateTime;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Comment;
 import org.nutz.dao.entity.annotation.Id;
@@ -58,11 +58,11 @@ public class TUserEntity implements Serializable {
 
 	@Column
 	@Comment("创建时间")
-	private DateTime createTime;
+	private Date createTime;
 
 	@Column
 	@Comment("更新时间")
-	private DateTime updateTime;
+	private Date updateTime;
 
 	@Column
 	@Comment("用户是否禁用")
