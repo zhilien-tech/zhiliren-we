@@ -4,7 +4,7 @@
  * Copyright (c) 2016, 北京科技有限公司版权所有.
 */
 
-package com.linyun.airline.forms;
+package com.linyun.airline.admin.Company.form;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -40,6 +40,7 @@ public class TCompanySqlForm extends DataTablesParamForm {
 					.or("t.mobile", "LIKE", "%" + companyName + "%");
 		}
 		cnd.and("t.deletestatus", "=", 0);
+		cnd.orderBy("t.createtime", "desc");
 		return cnd;
 	}
 
