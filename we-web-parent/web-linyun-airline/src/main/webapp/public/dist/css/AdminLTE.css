@@ -1,3 +1,4 @@
+
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic);
 /*!
  *   AdminLTE v2.3.7
@@ -5015,3 +5016,4 @@ h4{font-size: 16px;}
 /*客户管理*/
 .flie_A{display: inline-block;width: 75px;height: 30px;background: #3c8dbc;position: relative;overflow: hidden;text-align: center;line-height: 33px;color: #fff;border-radius: 4px;font-size: 13px;}
 .flie_A input{position: absolute;right:0px;top: 0;font-size: 100px;opacity: 0;filter: alpha(opacity=0);width: 82px;height: 31px;}
+/*验证git冲突*/

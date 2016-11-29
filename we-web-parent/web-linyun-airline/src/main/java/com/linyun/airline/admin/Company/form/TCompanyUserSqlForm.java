@@ -4,7 +4,7 @@
  * Copyright (c) 2016, 北京科技有限公司版权所有.
 */
 
-package com.linyun.airline.forms;
+package com.linyun.airline.admin.Company.form;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
