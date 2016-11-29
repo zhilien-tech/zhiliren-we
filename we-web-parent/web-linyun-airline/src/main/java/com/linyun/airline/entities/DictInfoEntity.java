@@ -53,30 +53,14 @@ public class DictInfoEntity implements Serializable, Comparable<DictInfoEntity> 
 
 	/**
 	 * (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		DictInfoEntity other = (DictInfoEntity) obj;
-		if (dictName != other.dictName)
-			return false;
-		return true;
-	}
-
-	/**
-	 * (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
-		Long intId = Long.valueOf(this.id);
-		return intId.hashCode();
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
 	}
 
 	/**使用次数*/
@@ -89,8 +73,32 @@ public class DictInfoEntity implements Serializable, Comparable<DictInfoEntity> 
 		} else if (this.count < o.count) {
 			return -1;
 		} else {
+			/**
+			 * 当compareTo返回0，TreeSet会认为“两个元素相等”
+			 */
+			if (this.id != o.id) {
+				return new Long(this.id).compareTo(new Long(o.id));
+			}
 			return 0;
 		}
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DictInfoEntity other = (DictInfoEntity) obj;
+		if (id != other.id)
+			return false;
+		return true;
 	}
 
 }

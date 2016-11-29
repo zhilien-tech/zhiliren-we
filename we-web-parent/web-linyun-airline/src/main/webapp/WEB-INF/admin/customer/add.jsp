@@ -68,8 +68,6 @@
 
 							<label class="col-sm-2 text-right padding">负责人：</label>
 							<div class="col-sm-3 padding">
-								<!-- <input name="agent" type="tel" class="form-control input-sm"
-									placeholder="请输入负责人姓名" /> -->
 								<!-- 负责人下拉列表 -->
 								<select id="agentId" name="agent" class="form-control input-sm">
 
@@ -137,15 +135,10 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">出发城市：</label>
 							<div class="col-sm-8 padding">
-
-								<!--<input id="departureCityID" name="departureCity" type="text"
-									onkeyup="goCity()" class="form-control input-sm"
-									placeholder="请输入出发城市" />  -->
-
-								<select id="city" class="form-control select2"  multiple="multiple" data-placeholder="请输入出发城市">
+								<select id="city" class="form-control select2"  multiple="multiple"  data-placeholder="请输入出发城市">
 								</select>
-
-
+								<!-- 出发城市ID -->
+								<input id="outcity" type="hidden" name="outcityname" value = selectedCityId/>
 							</div>
 						</div>
 
@@ -156,8 +149,8 @@
 							<label class="col-sm-3 text-right padding">国境内陆：</label>
 							<div class="col-sm-3 padding">
 								<input id="line1ID" name="line1" onkeyup="goLine1()" type="text"
-									class="form-control input-sm" /> <select id="sLine1ID"
-									name="sLine1" class="form-control select2"
+									class="form-control input-sm" /> 
+								<select id="sLine1ID" name="sLine1" class="form-control select2"
 									style="display: none;" multiple="multiple">
 
 								</select>
@@ -213,7 +206,8 @@
 							<div class="col-sm-5 padding">
 								<input id="datepicker1" name="contractTime" type="text"
 									class="form-control input-sm input-wid"
-									placeholder="2015-08-08" /> 至 <input id="datepicker2"
+									placeholder="2015-08-08" /> 
+								至 <input id="datepicker2"
 									name="contractDueTime" type="text"
 									class="form-control input-sm input-wid"
 									placeholder="2088-09-09" />
@@ -278,11 +272,8 @@
 						<div class="col-sm-8" style="display: block;" id="invioceType">
 							<label class="col-sm-2 text-right padding">发票项目：</label>
 							<div class="col-sm-8 padding">
-								<input id="inInvioceID" name="inInvioce" onkeyup="goToInvioce()"
-									type="text" class="form-control input-sm" placeholder="请输入发票项" />
-								<select id="sInvID" name="sInv" class="form-control select2"
-									style="display: none;" multiple="multiple"></select>
-
+								<select id="sInvID" name="sInv" class="form-control select2"  multiple="multiple"  data-placeholder="请输入发票项">
+								</select>
 							</div>
 						</div>
 					</div>
@@ -300,6 +291,7 @@
 	<script src="${base}/public/bootstrap/js/bootstrap.js"></script>
 	<!-- Select2 -->
 	<script src="${base}/public/plugins/select2/select2.full.min.js"></script>
+	<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
 
 	<script src="${base}/public/plugins/iCheck/icheck.min.js"></script>
 	<!-- FastClick 快 点击-->
@@ -311,9 +303,48 @@
 	<script type="text/javascript">
 		$(function() {
 			
+			//页面加载时 执行
+			angentList();
+			
+			
+			
 			$("#city").select2({
 					ajax : {
 						url : "${base}/admin/customer/goCity.html",
+						dataType : 'json',
+						delay : 250,
+						type : 'post',
+						data : function(params) {
+							return {
+								q : params.term, // search term
+								page : params.page,
+							};
+						},
+						processResults : function(data, params) {
+							params.page = params.page || 1;
+
+							return {
+								results : data
+							};
+						},
+						cache : true
+					},
+					
+					escapeMarkup : function(markup) {
+						return markup;
+					}, // let our custom formatter work
+					minimumInputLength : 1,
+					maximumInputLength : 20,
+					language : "zh-CN", //设置 提示语言
+					maximumSelectionLength : 3, //设置最多可以选择多少项
+					tags : false, //设置必须存在的选项 才能选中
+				});
+
+			
+
+			$("#sInvID").select2({
+					ajax : {
+						url : "${base}/admin/customer/isInvioce.html",
 						dataType : 'json',
 						delay : 250,
 						type : 'post',
@@ -324,52 +355,27 @@
 							};
 						},
 						processResults : function(data, params) {
-							var content = "";
-							
-							for (var i = 0; i < data.length; i++) {
-								var dictName = data[i].dictName;
-								var id = data[i].id;
-								content += '<option value="' + id + '" onclick="optCity(this)">' + dictName + '</option>';
-							}
-							console.log(content);
-							document.getElementById("city").innerHTML=content;
-							//$("#city").html(content);
-							$("#city").css("display", "block");
-							$("#city").remove("");
 							params.page = params.page || 1;
 
 							return {
-								results : data.items
+								results : data
 							};
 						},
 						cache : true
 					},
+					
 					escapeMarkup : function(markup) {
 						return markup;
 					}, // let our custom formatter work
 					minimumInputLength : 1,
+					maximumInputLength : 20,
 					language : "zh-CN", //设置 提示语言
 					maximumSelectionLength : 3, //设置最多可以选择多少项
-					placeholder : "请选择",
 					tags : false, //设置必须存在的选项 才能选中
-					templateResult : function(repo) { //搜索到结果返回后执行，可以控制下拉选项的样式
-						/* console.log("====================templateResult开始==================");
-						console.log(repo);
-						console.log("====================templateResult结束==================");
-						if (repo.loading)
-							return repo.text;
-						var markup = "<div class=''>" + repo.text
-								+ "</div>";
-						return markup; */
-					},
-					templateSelection : function(repo) { //选中某一个选项是执行
-						/* console.log("------------------templateSelection开始-------------------------------------");
-						console.log(repo);
-						console.log("------------------templateSelection结束-------------------------------------");
-						return repo.full_name || repo.text; */
-					}
 				});
-
+			
+			
+			//日期
 			var picker1 = new Pikaday(
 				    {
 				        field: document.getElementById('datepicker1'),
@@ -423,9 +429,8 @@
 					},
 					shortName : {
 						validators : {
-							regexp : {
-								regexp : /^[\u4e00-\u9fa5A-Za-z]{1,6}$/,
-								message : '公司简称长度最多为6'
+							notEmpty : {
+								message : '公司简称不能为空'
 							}
 						}
 					},
@@ -464,25 +469,7 @@
 				}
 			});
 
-			/* 负责人名称 下拉列表*/
-			function angentList() {
-				$.ajax({
-					type : 'POST',
-					dataType : 'json',
-					url : '${base}/admin/customer/agent.html',
-					success : function(data) {
-						var content = "";
-						for (var i = 0; i < data.length; i++) {
-							var name = data[i].name;
-							var id = data[i].id;
-							content += "<option value='" + id
-									+ "' onclick='optAgent(this)'>" + name
-									+ "</option>";
-						}
-						$("#agentID").html(content);
-					}
-				});
-			}
+			
 
 		});
 		/* 页面初始化加载完毕 */
@@ -510,39 +497,26 @@
 			});
 		}
 	
-		//出发城市
-		function goCity() {
+		/* 负责人名称 下拉列表*/
+		function angentList() {
 			$.ajax({
 				type : 'POST',
-				data : {
-					departureCity : $("#departureCityID").val()
-				},
 				dataType : 'json',
-				url : '${base}/admin/customer/goCity.html',
+				url : '${base}/admin/customer/agent.html',
 				success : function(data) {
 					var content = "";
 					for (var i = 0; i < data.length; i++) {
-						var dictName = data[i].dictName;
+						var name = data[i].name;
 						var id = data[i].id;
 						content += "<option value='" + id
-								+ "' onclick='optCity(this)'>" + dictName
+								+ "' onclick='optAgent(this)'>" + name
 								+ "</option>";
 					}
-					$("#city").html(content);
-					$("#city").css("display", "block");
+					$("#agentID").html(content);
 				}
 			});
 		}
-	
-		$("input[type='search']").keyup(function() {
-			goCity();
-		});
-	
-		//每个城市的点击事件
-		function optCity(obj) {
-			alert(obj.id);
-		}
-	
+		
 		//国境内陆线路
 		function goLine1() {
 			$.ajax({
@@ -644,6 +618,10 @@
 	<!-- 保存页面 -->
 	<script type="text/javascript">
 		function save() {
+			//出发城市ID
+			var selectedCityId = $("#city").select2("val") ;
+			$("#outcity").val(selectedCityId) ;
+			
 			$('#customerAddForm').bootstrapValidator('validate');
 			var bootstrapValidator = $("#customerAddForm").data(
 					'bootstrapValidator');
