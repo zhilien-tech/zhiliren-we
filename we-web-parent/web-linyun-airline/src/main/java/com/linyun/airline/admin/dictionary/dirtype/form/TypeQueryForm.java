@@ -32,7 +32,7 @@ public class TypeQueryForm extends QueryForm {
 
 	//按状态查询
 	@Condition(match = MatchType.EQ)
-	private String status;
+	private long status;
 
 	//按状态查询
 	@Condition(match = MatchType.EQ)
