@@ -33,7 +33,7 @@ public class InfoQueryForm extends QueryForm {
 	private String dictName;
 	//按状态查询
 	@Condition(match = MatchType.EQ)
-	private String status;
+	private long status;
 
 	//按创建时间排序
 	private Date createTime;

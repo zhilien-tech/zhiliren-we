@@ -115,8 +115,8 @@ public class InfoModule {
 	@At
 	@Ok("jsp")
 	public Object list(@Param("..") final InfoQueryForm queryForm, @Param("..") final Pager pager) {
-		if (queryForm.getStatus() == null) {
-			queryForm.setStatus("1");
+		if (Util.isEmpty(queryForm.getStatus())) {
+			queryForm.setStatus(DataStatusEnum.ENABLE.intKey());
 		}
 		Map<String, Object> map = FormUtil.query(dbDao, DictInfoEntity.class, queryForm, pager);
 		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));
