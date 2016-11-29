@@ -40,7 +40,14 @@ public class InfoServiceImpl extends BaseService<DictInfoEntity> implements IInf
 		obj.put("dirtype", dbDao.query(DictTypeEntity.class, null, null));
 		obj.put("dirinfo", dbDao.fetch(DictInfoEntity.class, id));
 		return obj;
-
 	}
 
+	/*public Map<String, Object> listCode(DictInfoSqlForm paramForm) {
+		Map<String, Object> obj = new HashMap<String, Object>();
+		obj.put("dictCode",
+				dbDao.query(DictInfoEntity.class, Chain.make("diceCode", modForm.getDictCode()),
+						Cnd.where("id", "=", modForm.getId())));
+		return obj;
+
+	}*/
 }

@@ -25,7 +25,9 @@ import com.uxuexi.core.web.form.support.Condition.MatchType;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class InfoQueryForm extends QueryForm {
-
+	//字典类别编码
+	@Condition(match = MatchType.LIKE)
+	private String typeCode;
 	//字典信息
 	@Condition(match = MatchType.LIKE)
 	private String dictName;
@@ -39,7 +41,7 @@ public class InfoQueryForm extends QueryForm {
 	@Override
 	public Cnd createCnd() {
 		Cnd cnd = super.createCnd();
-		cnd.orderBy("createTime", "ASC");
+		cnd.orderBy("status", "DESC").orderBy("createTime", "DESC");
 		return cnd;
 	}
 }

@@ -69,8 +69,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 									<!--状态名称 搜索框-->
 									<div class="col-sm-12 padding">
 										<select id="status" name="status"
-											class="form-control input-sm">
-											<option value="">--不限--</option>
+											class="form-control input-sm" onchange="defaultSelect();">
 											<c:forEach var="map" items="${obj.dataStatusEnum}">
 												<c:choose>
 													<c:when test="${map.key == obj.queryForm.status}">
@@ -128,15 +127,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
 												<p class="a_p">
 												<a href="${base}/admin/dictionary/dirtype/update.html?id=${one.id}"
 													data-toggle="modal" id="editBtn"
-													class="btn btn-primary btn-sm" data-target="#editTabs">编辑</a>
-													<%--这里如果有写title，则需要确认才会操作--%> <c:choose>
+													class="btn btn_mini btn_modify" data-target="#editTabs">编辑</a>
+													<%--这里如果有写title，则需要确认才会操作--%> 
+													<c:choose>
 														<c:when test="${1 == one.status}">
 															<a href='javascript:physicalDelete(${one.id},2);'
-																class='btn btn-danger btn-sm'>删除</a>
+																class='btn btn_mini btn_modify'><font color="#CCCCCC">删除</font></a>
 														</c:when>
 														<c:otherwise>
 															<a href='javascript:physicalDelete(${one.id},1);'
-																class='btn btn-success btn-sm'>启用</a>
+																class='btn btn_mini btn_modify'>启用</a>
 														</c:otherwise>
 													</c:choose>
 													</p>
@@ -237,6 +237,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		});
 	</script>
 	<script type="text/javascript">
+		//状态默认选中
+		function defaultSelect(){
+			document.getElementById("form1").submit();
+		}
+	</script>
+	<script type="text/javascript">
 		var datatable;
 		function initDatatable() {
 			datatable = $('#example2').DataTable({
@@ -252,6 +258,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		$(function() {
 			initDatatable();
 		});
+		//状态默认搜索status
+		function searchStatus(){
+			
+		}
+		
 	</script>
 </body>
 </html>

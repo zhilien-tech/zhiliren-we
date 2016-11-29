@@ -34,6 +34,10 @@ public class TypeQueryForm extends QueryForm {
 	@Condition(match = MatchType.EQ)
 	private String status;
 
+	//按状态查询
+	@Condition(match = MatchType.EQ)
+	private String typeCode;
+
 	//按创建时间排序
 	private Date createTime;
 

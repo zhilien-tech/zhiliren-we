@@ -1,5 +1,6 @@
 package com.linyun.airline.admin.job.module;
 
+import org.joda.time.DateTime;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -55,14 +56,7 @@ public class JobModule {
 	@At
 	@POST
 	public Object add(@Param("..") final TJobAddForm addForm) {
-		//		addForm.setCreateTime(DateTimeUtil.nowDateTime());
-
-		/*Date date = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String time = sdf.format(date);*/
-		//addForm.setCreateTime(time);
-
-		addForm.setDeptId(1);
+		addForm.setCreateTime(new DateTime());
 		FormUtil.add(dbDao, addForm, TJobEntity.class);
 		return JsonResult.success("添加成功!");
 	}

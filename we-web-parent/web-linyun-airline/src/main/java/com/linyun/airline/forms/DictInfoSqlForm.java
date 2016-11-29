@@ -38,6 +38,9 @@ public class DictInfoSqlForm extends DataTablesParamForm {
 	/**创建时间*/
 	private Date createTime;
 
+	//字典代码
+	private String dictCode;
+
 	@Override
 	public Sql sql(SqlManager paramSqlManager) {
 		/**
@@ -59,7 +62,9 @@ public class DictInfoSqlForm extends DataTablesParamForm {
 		if (!Util.isEmpty(status)) {
 			cnd.and("status", "=", status);
 		}
+		/*if (!Util.isEmpty(dictCode)) {
+			cnd.and("dictCode");
+		}*/
 		return cnd;
 	}
-
 }
