@@ -19,7 +19,7 @@
           <div class="modal-top">
           <form id="addForm" method="post"> 
               <div class="modal-header boderButt">
-                  <button type="button" class="btn btn-primary right btn-sm" data-dismiss="modal">返回</button>
+                  <button id="backBtn" type="button" class="btn btn-primary right btn-sm" data-dismiss="modal">返回</button>
                   <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
                   <h4>添加</h4>
               </div>
@@ -41,7 +41,7 @@
                         <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">字典代码：</label>
                             <div class="col-sm-8 padding">
-                              <input name="dictCode" class="form-control input-sm inpImpWid" placeholder="请输入字典代码" />
+                              <input name="dictCode" onblur="uniqueCheck();" class="form-control input-sm inpImpWid" placeholder="请输入字典代码" />
                               <span class="prompt">*</span>
                             </div>
                         </div>
@@ -87,6 +87,18 @@
 	                    notEmpty: {
 	                        message: '字典代码不能为空!'
 	                    },
+	                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
+	                         url: '${base}/admin/dictionary/dirinfo/checkTypeCodeExist.html',//验证地址
+	                         message: '字典代码已存在，请重新输入!',//提示消息
+	                         delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+	                         type: 'POST',//请求方式
+	                         //自定义提交数据，默认值提交当前input value
+	                         data: function(validator) {
+	                            return {
+	                            	typeCode:$('#typeCode').val()
+	                            };
+	                         }
+	                     },
 		                regexp: {
 	                        regexp: /^[A-Za-z0-9]+$/,
 	                        message: '字典代码只能为字母或数字'
@@ -103,6 +115,7 @@
 	        }
 		});
 	});
+	//添加
 		$("#submit").click(function(){
 			$('#addForm').bootstrapValidator('validate');
 			var bootstrapValidator = $("#addForm").data('bootstrapValidator');
@@ -130,7 +143,10 @@
 		$('#submit').click(function() {
 	        $('#addForm').bootstrapValidator('validate');
 	    });
-		
+		//点击返回按钮自动刷新页面
+		$('#backBtn').click(function(){
+			window.location.href="${base}/admin/dictionary/dirinfo/list.html";
+		});
 	</script>
 </body>
 </html>	

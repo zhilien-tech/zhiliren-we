@@ -34,4 +34,12 @@ public interface ITypeService {
 	 * @param id  角色id
 	 */
 	Map<String, Object> findDirtype(long id);
+
+	/**
+	 * 查询字典类型信息
+	 * list - 功能列表
+	 * Dirtype - 字典类型实体
+	 * @param id  角色id
+	 */
+	//Map<String, Object> findDirtypeCode(long typeCode);
 }
