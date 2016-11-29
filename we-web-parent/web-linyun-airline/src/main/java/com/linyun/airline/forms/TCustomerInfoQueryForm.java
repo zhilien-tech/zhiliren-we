@@ -14,6 +14,8 @@
  */
 package com.linyun.airline.forms;
 
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -40,6 +42,9 @@ public class TCustomerInfoQueryForm extends DataTablesParamForm {
 	/**是否禁用*/
 	private String forbid;
 
+	/*时间*/
+	private Date createTime;
+
 	public Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		//TODO 添加自定义查询条件（可选）
@@ -49,11 +54,12 @@ public class TCustomerInfoQueryForm extends DataTablesParamForm {
 		}
 		if (!Util.isEmpty(contract)) {
 			cnd.and("contract", "=", contract);
-			System.out.println("ccc");
 		}
 		if (!Util.isEmpty(forbid)) {
 			cnd.and("forbid", "=", forbid);
-			System.out.println("ffff");
+		}
+		if (!Util.isEmpty(createTime)) {
+			cnd.orderBy("createTime", "DESC");
 		}
 
 		return cnd;

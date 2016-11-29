@@ -1,15 +1,17 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@include file="/WEB-INF/common/tld.jsp"%>
+    
 <!DOCTYPE HTML>
 <html lang="en-US">
 <head>
 <meta charset="UTF-8">
 <title>添加</title>
-<link rel="stylesheet" href="bootstrap/css/bootstrap.css">
-<link rel="stylesheet" href="plugins/select2/select2.css">
-<link rel="stylesheet" href="dist/css/AdminLTE.css">
+<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
+<link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
+<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
 
 </head>
-
-
 <body>
 
 	<div class="modal-content">

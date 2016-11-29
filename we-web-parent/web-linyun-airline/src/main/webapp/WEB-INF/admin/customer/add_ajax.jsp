@@ -1,17 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java"
-	pageEncoding="UTF-8" errorPage="/WEB-INF/public/500.jsp"%>
+	pageEncoding="UTF-8" errorPage="/WEB-INF/common/500.jsp"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
-<c:set var="url" value="${base}/admin/customer" />
-
-<!DOCTYPE HTML>
-<html lang="en-US">
-<head>
-<meta charset="UTF-8">
-<title>添加</title>
-<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
-<link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
-<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
-
 <!DOCTYPE HTML>
 <html lang="en-US">
 <head>

@@ -5,11 +5,7 @@
 <c:set var="url" value="${base}/admin/customer" />
 
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
-<html>
+<html lang="en-US">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -73,22 +69,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="${base}/public/plugins/select2/select2.full.min.js"></script>
 <!-- InputMask -->
 <script src="${base}/public/plugins/input-mask/jquery.inputmask.js"></script>
-<script
-	src="${base}/public/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-<script
-	src="${base}/public/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<script src="${base}/public/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="${base}/public/plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <!-- date-range-picker -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 <script src="${base}/public/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap datepicker -->
 <script src="${base}/public/plugins/datepicker/bootstrap-datepicker.js"></script>
 <!-- bootstrap color picker -->
-<script
-	src="${base}/public/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
+<script src="${base}/public/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
 <!-- bootstrap time picker -->
-<script
-	src="${base}/public/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+<script src="${base}/public/plugins/timepicker/bootstrap-timepicker.min.js"></script>
 
 <!-- DataTables -->
 <script src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
@@ -131,10 +122,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 												name="contract"
 												<!-- onchange="alert($(this).val())" -->>
 												<option value="">是否签约</option>
-												<option value="0"
-													<c:if test="${'0' eq obj.queryForm.contract}">selected</c:if>>未签约</option>
 												<option value="1"
 													<c:if test="${'1' eq obj.queryForm.contract}">selected</c:if>>已签约</option>
+												<option value="0"
+													<c:if test="${'0' eq obj.queryForm.contract}">selected</c:if>>未签约</option>
 												<option value="2"
 													<c:if test="${'2' eq obj.queryForm.contract}">selected</c:if>>禁止合作</option>
 											</select>
@@ -305,8 +296,8 @@ function initDatatable() {
 	//设置默认
 	function makeDefault() {
 		$("#sname").val("");
-		$("#select1").val("");
-		$("#select2").val("");
+		$("#contract").val("");
+		$("#forbid").val("");
 	}
 
 	$('#addBtn').click(function() {

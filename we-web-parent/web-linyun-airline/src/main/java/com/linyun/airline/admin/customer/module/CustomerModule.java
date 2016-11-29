@@ -2,14 +2,11 @@ package com.linyun.airline.admin.customer.module;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.servlet.http.HttpSession;
 
@@ -37,7 +34,6 @@ import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAgentEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
-import com.linyun.airline.entities.TCustomerInvoiceEntity;
 import com.linyun.airline.entities.TCustomerLineEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
@@ -134,9 +130,6 @@ public class CustomerModule {
 		return JsonResult.success("修改成功");
 	}
 
-	/**
-	 * 客户端分页查询
-	 */
 	@At
 	@Ok("jsp")
 	public Object list(@Param("..") final TCustomerInfoQueryForm queryForm, @Param("..") final Pager pager) {
@@ -177,6 +170,7 @@ public class CustomerModule {
 			FileInputStream fileInputStream = new FileInputStream(file);
 			String url = fdfsUploadService.uploadImage(fileInputStream, ext, null);
 			//文件存储地址
+			System.out.println(url);
 			return url;
 			//业务
 		} catch (Exception e) {
@@ -185,110 +179,143 @@ public class CustomerModule {
 	}
 
 	//公司名称模糊查询
-	//TODO 接口未写
+	@At
+	@POST
+	public Object company() {
+		//TODO 调用接口返回客户列表
+
+		return null;
+	}
+
+	//公司负责人名称模糊查询
+	@At
+	@POST
+	public Object agent() {
+		//TODO 调用接口返回客户列表
+
+		return null;
+	}
+
+	@At
+	@Ok("jsp")
+	public Object nadd() {
+		return null;
+	}
 
 	//出发城市模糊查询
 	@At
 	@POST
-	public Object goCity(@Param("departureCity") final String name) throws Exception {
-		Set<DictInfoEntity> set = new TreeSet<DictInfoEntity>();
+	public Object goCity(@Param("q") final String name) throws Exception {
+		//Set<DictInfoEntity> set = new TreeSet<DictInfoEntity>();
+		//List list = new ArrayList<DictInfoEntity>();
+		HashSet<DictInfoEntity> hSet = new HashSet<DictInfoEntity>();
+
 		//需要加排序事件
 		List<TCustomerLineEntity> localLineList = dbDao.query(TCustomerLineEntity.class,
 				Cnd.where("lineName", "like", Strings.trim(name) + "%"), null);
 
+		//假设不去本地表中查找,利用词典表中的count字段
 		if (localLineList.size() >= 5) {
 			for (int i = 0; i < 5; i++) {
 				DictInfoEntity info = new DictInfoEntity();
 				TCustomerLineEntity cl = localLineList.get(i);
 				info.setId(cl.getLineId());
 				info.setDictName(cl.getLineName());
-				set.add(info);
+				//set.add(info);
+				hSet.add(info);
 			}
 		} else {
-
 			for (TCustomerLineEntity cl : localLineList) {
 				DictInfoEntity info = new DictInfoEntity();
 				info.setId(cl.getDictLineId());
 				info.setDictName(cl.getLineName());
-				set.add(info);
+				//set.add(info);
+				hSet.add(info);
 			}
-
 			List<DictInfoEntity> dictLineList = externalInfoService.findDictInfoByName(name);
 			int needmore = 5 - localLineList.size();
-
 			if (!Util.isEmpty(dictLineList)) {
 				if (dictLineList.size() <= needmore) {
 					for (DictInfoEntity dict : dictLineList) {
-						set.add(dict);
+						//set.add(dict);
+						hSet.add(dict);
 					}
 				} else {
 					for (int i = 0; i < needmore; i++) {
-						set.add(dictLineList.get(i));
+						//set.add(dictLineList.get(i));
+						hSet.add(dictLineList.get(i));
 					}
 				}
 			}
 		}
-		return set;
+
+		return hSet;
 	}
 
 	//线路模糊查询
 	@At
 	@POST
 	public Object isLine(@Param("line") final String name) throws Exception {
-		Set<String> set = new HashSet();
 
+		HashSet<DictInfoEntity> hSet = new HashSet<DictInfoEntity>();
 		List<TCustomerLineEntity> localLineList = dbDao.query(TCustomerLineEntity.class,
-				Cnd.where("lineName", "like", name + "%"), null);
-
-		List<DictInfoEntity> dictLineList = externalInfoService.findDictInfoByName(name);
-
-		if (localLineList.size() > 5) {
+				Cnd.where("lineName", "like", Strings.trim(name) + "%"), null);
+		if (localLineList.size() >= 5) {
 			for (int i = 0; i < 5; i++) {
-				set.add(localLineList.get(i).getLineName());
+				DictInfoEntity info = new DictInfoEntity();
+				TCustomerLineEntity cl = localLineList.get(i);
+				info.setId(cl.getLineId());
+				info.setDictName(cl.getLineName());
+				hSet.add(info);
 			}
 		} else {
-			for (TCustomerLineEntity tCustomerLineEntity : localLineList) {
-				set.add(tCustomerLineEntity.getLineName());
+			for (TCustomerLineEntity cl : localLineList) {
+				DictInfoEntity info = new DictInfoEntity();
+				info.setId(cl.getDictLineId());
+				info.setDictName(cl.getLineName());
+				hSet.add(info);
 			}
-			//需要从字典表中查询的记录数   5-set.size()
-			int num = 5 - set.size();
-			while (num > 0) {
-				set.add(dictLineList.get(num).getDictName());
-				num--;
+			List<DictInfoEntity> dictLineList = externalInfoService.findDictInfoByName(name);
+			int needmore = 5 - localLineList.size();
+			if (!Util.isEmpty(dictLineList)) {
+				if (dictLineList.size() <= needmore) {
+					for (DictInfoEntity dict : dictLineList) {
+						hSet.add(dict);
+					}
+				} else {
+					for (int i = 0; i < needmore; i++) {
+						hSet.add(dictLineList.get(i));
+					}
+				}
 			}
 		}
 
-		return set;
+		return hSet;
 	}
 
 	//发票项目模糊查询
 	@At
 	@POST
-	public Object invioceType(@Param("invioce") final String name) throws Exception {
-		List<String> list = new ArrayList<String>();
+	public Object isInvioce(@Param("invioce") final String name) throws Exception {
 
-		List<TCustomerInvoiceEntity> localInvioceList = dbDao.query(TCustomerInvoiceEntity.class,
-				Cnd.where("invioceName", "like", "%" + Strings.trim(name) + "%"), null);
-		List<DictInfoEntity> dictLineList = externalInfoService.findDictInfoByName(name);
+		HashSet<DictInfoEntity> hSet = new HashSet<DictInfoEntity>();
 
-		if (localInvioceList.size() > 5) {
-			for (int i = 0; i < 5; i++) {
-				list.add(localInvioceList.get(i).getInvioceName());
-			}
-		} else {
-			for (TCustomerInvoiceEntity tCustomerInvoiceEntity : localInvioceList) {
-				list.add(tCustomerInvoiceEntity.getInvioceName());
-			}
+		List<DictInfoEntity> dictInvioceList = externalInfoService.findDictInfoByName(name);
+		int needmore = 5;
 
-			//需要从字典表中查询的记录数   5-set.size()
-			int num = 5 - list.size();
-			while (num > 0) {
-				list.add(dictLineList.get(num).getDictName());
-				num--;
+		if (!Util.isEmpty(dictInvioceList)) {
+			if (dictInvioceList.size() <= needmore) {
+				for (DictInfoEntity dict : dictInvioceList) {
+					hSet.add(dict);
+				}
+			} else {
+				for (int i = 0; i < needmore; i++) {
+					hSet.add(dictInvioceList.get(i));
+				}
 			}
 		}
 
-		return list;
+		return hSet;
 	}
 
 }

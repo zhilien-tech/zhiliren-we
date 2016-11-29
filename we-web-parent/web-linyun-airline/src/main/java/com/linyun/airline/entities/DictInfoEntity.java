@@ -64,7 +64,7 @@ public class DictInfoEntity implements Serializable, Comparable<DictInfoEntity> 
 		if (getClass() != obj.getClass())
 			return false;
 		DictInfoEntity other = (DictInfoEntity) obj;
-		if (id != other.id)
+		if (dictName != other.dictName)
 			return false;
 		return true;
 	}
