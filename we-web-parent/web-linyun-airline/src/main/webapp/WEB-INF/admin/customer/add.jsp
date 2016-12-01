@@ -39,7 +39,7 @@
 					<div class="tab-pane active" id="tabs_1">
 						<!-- 上游公司ID  以后会从当前登陆记录-->
 						<!-- TODO -->
-						<input name="comId" type="hidden" value="1" />
+						<input name="comId" type="hidden" value="" />
 
 						<!--基本信息-->
 						<div class="form-group row">
@@ -48,7 +48,9 @@
 								<select id="companyID" class="form-control select2" multiple="multiple"  data-placeholder="请输入公司名称">
 								</select>
 								<!-- 公司ID -->
-								<input id="agentId" type="hidden" name="agentId" value = selectedCityId/>
+								<input id="agentId" type="hidden" name="agentId"/>
+								<!-- 公司名称 -->
+								<input id="comName" type="hidden" name="name"/>
 							</div>
 
 						</div>
@@ -134,7 +136,7 @@
 								<select id="city" class="form-control select2"  multiple="multiple"  data-placeholder="请输入出发城市">
 								</select>
 								<!-- 出发城市ID -->
-								<input id="outcity" type="hidden" name="outcityname" value = selectedCityId/>
+								<input id="outcity" type="hidden" name="outcityname" />
 							</div>
 						</div>
 
@@ -147,7 +149,7 @@
 								<select id="isLine" class="form-control select2"  multiple="multiple"  data-placeholder="请输入国境内陆">
 								</select>
 								<!-- 国境内陆ID -->
-								<input id="sLine1ID" type="hidden" name="sLine1" value = selectedCityId/>
+								<input id="sLine1ID" type="hidden" name="sLine1" />
 							</div>
 
 							<label class="col-sm-2 text-right padding">国际：</label>
@@ -155,7 +157,7 @@
 								<select id="sLine2ID" class="form-control select2"  multiple="multiple"  data-placeholder="请输入国际线路">
 								</select>
 								<!-- 国际线路ID -->
-								<input id="line2ID" type="hidden" name="internationLine" value = selectedCityId/>
+								<input id="line2ID" type="hidden" name="internationLine" />
 							</div>
 						</div>
 
@@ -269,7 +271,7 @@
 								<select id="sInvID" class="form-control select2"  multiple="multiple"  data-placeholder="请输入国际线路">
 								</select>
 								<!-- 发票项ID -->
-								<input id="sInvName" type="hidden" name="sInvName" value = selectedCityId/>
+								<input id="sInvName" type="hidden" name="sInvName" />
 							</div>
 						</div>
 					</div>
@@ -475,13 +477,15 @@
 			//代理商ID
 			var selectedcompanyId = $("#companyID").select2("val") ;
 			$("#agentId").val(selectedcompanyId) ;
-			//出发城市ID
+			var selectedcompanyName = $('#companyID').find("option:selected").text();
+			$("#comName").val(selectedcompanyName);
+			//国境线路ID
 			var selectedisLine = $("#isLine").select2("val") ;
 			$("#sLine1ID").val(selectedisLine) ;
-			//出发城市ID
+			//国际线路ID
 			var selectedsLine2ID = $("#sLine2ID").select2("val") ;
 			$("#line2ID").val(selectedsLine2ID) ;
-			//出发城市ID
+			//发票项ID
 			var selectedsInvID = $("#sInvID").select2("val") ;
 			$("#sInvName").val(selectedsInvID) ;
 			

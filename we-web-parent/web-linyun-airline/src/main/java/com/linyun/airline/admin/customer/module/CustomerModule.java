@@ -1,6 +1,7 @@
 package com.linyun.airline.admin.customer.module;
 
 import java.io.File;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,10 +88,7 @@ public class CustomerModule {
 	@At
 	@POST
 	public Object add(@Param("..") TCustomerInfoAddForm addForm) throws Exception {
-		//保存时   获得出发城市id
-		//Iterable<String> split = Splitter.on(",").split(outcity);
-		//addForm.get
-
+		addForm.setCreateTime(new Date());
 		customerViewService.addCustomInfo(addForm);
 		return JsonResult.success("添加成功");
 	}
@@ -111,7 +109,7 @@ public class CustomerModule {
 	@At
 	@POST
 	public Object update(@Param("..") TCustomerInfoUpdateForm updateForm) {
-		customerViewService.update(updateForm);
+		customerViewService.updateCustomInfo(updateForm);
 		return JsonResult.success("修改成功");
 	}
 

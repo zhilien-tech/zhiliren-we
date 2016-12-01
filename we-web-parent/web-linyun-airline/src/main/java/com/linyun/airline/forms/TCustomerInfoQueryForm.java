@@ -41,6 +41,8 @@ public class TCustomerInfoQueryForm extends DataTablesParamForm {
 
 	/**是否禁用*/
 	private String forbid;
+	/**是否禁用*/
+	private long id;
 
 	/*时间*/
 	private Date createTime;
@@ -61,7 +63,9 @@ public class TCustomerInfoQueryForm extends DataTablesParamForm {
 		if (!Util.isEmpty(createTime)) {
 			cnd.orderBy("createTime", "DESC");
 		}
-
+		if (!Util.isEmpty(id)) {
+			cnd.orderBy("id", "DESC");
+		}
 		return cnd;
 	}
 

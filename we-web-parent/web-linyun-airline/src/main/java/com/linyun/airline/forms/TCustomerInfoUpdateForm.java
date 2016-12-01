@@ -1,13 +1,11 @@
 package com.linyun.airline.forms;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.ModForm;
 
 @Data
@@ -81,8 +79,12 @@ public class TCustomerInfoUpdateForm extends ModForm implements Serializable {
 	/**签约时间*/
 	private Date contractTime;
 
+	private String contractTimeString;
+
 	/**签约到期时间*/
 	private Date contractDueTime;
+
+	private String contractDueTimeString;
 
 	/**是否签约（未签约、已签约、禁止合作）*/
 	private long contract;
@@ -93,43 +95,15 @@ public class TCustomerInfoUpdateForm extends ModForm implements Serializable {
 	/**业务范围*/
 	private String business;
 
-	public void setCreateTime(Timestamp createTime) {
-		if (Util.isEmpty(createTime)) {
-			this.createTime = null;
-		} else {
-			this.createTime = createTime;
-		}
-	}
+	/**出发城市Ids*/
+	private String outcityname;
 
-	public void setCooperateTime(Timestamp cooperateTime) {
-		if (Util.isEmpty(cooperateTime)) {
-			this.cooperateTime = null;
-		} else {
-			this.cooperateTime = cooperateTime;
-		}
-	}
+	/**国境内陆*/
+	private String sLine1;
 
-	public void setCooperateDueTime(Timestamp cooperateDueTime) {
-		if (Util.isEmpty(cooperateDueTime)) {
-			this.cooperateDueTime = null;
-		} else {
-			this.cooperateDueTime = cooperateDueTime;
-		}
-	}
+	/**国际线路*/
+	private String internationLine;
 
-	public void setContractTime(Timestamp contractTime) {
-		if (Util.isEmpty(contractTime)) {
-			this.contractTime = null;
-		} else {
-			this.contractTime = contractTime;
-		}
-	}
-
-	public void setContractDueTime(Timestamp contractDueTime) {
-		if (Util.isEmpty(contractDueTime)) {
-			this.contractDueTime = null;
-		} else {
-			this.contractDueTime = contractDueTime;
-		}
-	}
+	/**发票项目*/
+	private String sInvName;
 }

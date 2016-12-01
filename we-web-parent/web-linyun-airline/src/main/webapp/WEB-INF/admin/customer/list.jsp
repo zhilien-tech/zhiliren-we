@@ -157,7 +157,7 @@
 										<div class="col-md-1 col-md-offset-1">
 											<a href="${base}/admin/customer/add.html" data-toggle="modal"
 												class="btn btn-primary btn-sm" id="addBtn"
-												data-target=".Mymodal-lg">添加</a>
+												data-target="#addModal">添加</a>
 										</div>
 
 									</div>
@@ -205,8 +205,19 @@
 	</div>
 	<!-- ./wrapper -->
 
-	<!--弹框 div-->
-	<div class="modal fade Mymodal-lg" role="dialog" tabindex="-1"
+	<!--添加弹框div-->
+	<div class="modal fade Mymodal-lg" id="addModal" role="dialog" tabindex="-1"
+		aria-labelledby="myLargeModalLabel" aria-hidden="true" id="addTabs"
+		style="width: auto; height: 1000px;">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header"></div>
+				<div class="modal-body"></div>
+			</div>
+		</div>
+	</div>
+	<!--更新弹框 div-->
+	<div class="modal fade Mymodal-lg" id="updateModal" role="dialog" tabindex="-1"
 		aria-labelledby="myLargeModalLabel" aria-hidden="true" id="addTabs"
 		style="width: auto; height: 1000px;">
 		<div class="modal-dialog modal-lg">
@@ -235,6 +246,12 @@ function initDatatable() {
             	
             }
         },
+        "fnDrawCallback"    : function(){
+  	       　　this.api().column(0).nodes().each(function(cell, i) {
+  	       　　　　cell.innerHTML =  i + 1;
+  	       　　});
+     	},
+
         "columns": [
                     {"data": "id", "bSortable": false},
                     {"data": "name", "bSortable": false},
@@ -272,7 +289,7 @@ function initDatatable() {
             //   指定第一列，从0开始，0表示第一列，1表示第二列……
             targets: 6,
             render: function(data, type, row, meta) {
-                return '<a href="${base}/admin/customer/update.html?id='+row.id+'" id="updateBtn" class="btn btn_mini btn_modify" data-target=".Mymodal-lg" data-toggle="modal">编辑</a>';
+                return '<a href="${base}/admin/customer/update.html?id='+row.id+'" id="updateBtn" class="btn btn_mini btn_modify" data-target="#updateModal" data-toggle="modal">编辑</a>';
             }
         }]
     });
@@ -301,13 +318,15 @@ function initDatatable() {
 	}
 
 	$('#addBtn').click(function() {
-		$(".Mymodal-lg").on("hidden", function() {
+		$("#updateModal").removeData("modal");
+		$("#addModal").on("hidden", function() {
 			$(this).removeData("modal");
 		});
 	});
 
 	$('#updateBtn').click(function() {
-		$(".Mymodal-lg").on("hidden", function() {
+		$("#addModal").removeData("modal");
+		$("#updateModal").on("hidden", function() {
 			$(this).removeData("modal");
 		});
 	});

@@ -12,19 +12,16 @@
 <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
-<link rel="stylesheet"
-	href="${base }/public/dist/css/bootstrapValidator.css" />
+<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css" />
 
 </head>
 
 <body>
 	<div class="modal-content">
-		<form id="form1">
+		<form id="updateForm">
 			<div class="modal-header">
-				<button type="button" class="btn btn-primary right btn-sm"
-					data-dismiss="modal">返回</button>
-				<button type="button" id="submit"
-					class="btn btn-primary right btn-sm">保存</button>
+				<button type="button" class="btn btn-primary right btn-sm" data-dismiss="modal">返回</button>
+				<button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
 				<ul class="nav nav-tabs">
 					<li class="active"><a href="#tabs_1" data-toggle="tab">基本信息</a></li>
 					<li><a href="#tabs_2" data-toggle="tab">线路权限</a></li>
@@ -36,16 +33,22 @@
 			<div class="modal-body">
 				<div class="tab-content">
 					<div class="tab-pane active" id="tabs_1">
-						<input name="comId" type="hidden" value="1" /> <input
-							name="agentId" type="hidden" value="1" />
+						<input name="comId" type="hidden" value="1" /> 
 						<!--基本信息-->
 						<div class="form-group row">
+							<input name="id" type="hidden" value="${obj.customer.id }">
 							<label class="col-sm-3 text-right padding">公司名称：</label>
 							<div class="col-sm-8 padding">
-								<select id="companyID" class="form-control select2" multiple="multiple"  data-placeholder="请输入公司名称">
+								<select id="companyId" class="form-control select2" multiple="multiple"  data-placeholder="请输入公司名称">
+									<option></option>
+									<c:forEach var="one" items="${obj.comEntity }">
+										<option value="${one.id }">${one.text}</option>
+									</c:forEach>
 								</select>
 								<!-- 公司ID -->
 								<input id="agentId" type="hidden" name="agentId" value="${obj.customer.agentId}"/>
+								<!-- 公司名称 -->
+								<input id="comName" type="hidden" name="name"/>
 							</div>
 						</div>
 
@@ -150,6 +153,10 @@
 							<label class="col-sm-3 text-right padding">国境内陆：</label>
 							<div class="col-sm-3 padding">
 								<select id="isLine" class="form-control select2"  multiple="multiple"  data-placeholder="请输入国境内陆">
+									<option></option>
+									<c:forEach var="one" items="${obj.innerlinelist }">
+										<option value="${one.id }">${one.text}</option>
+									</c:forEach>
 								</select>
 								<!-- 国境内陆ID -->
 								<input id="sLine1ID" type="hidden" name="sLine1" value = selectedCityId/>
@@ -158,6 +165,10 @@
 							<label class="col-sm-2 text-right padding">国际：</label>
 							<div class="col-sm-3 padding">
 								<select id="sLine2ID" class="form-control select2"  multiple="multiple"  data-placeholder="请输入国际线路">
+									<option></option>
+									<c:forEach var="one" items="${obj.interlinelist }">
+										<option value="${one.id }">${one.text}</option>
+									</c:forEach>
 								</select>
 								<!-- 国际线路ID -->
 								<input id="line2ID" type="hidden" name="internationLine" value = selectedCityId/>
@@ -278,6 +289,10 @@
 							<label class="col-sm-2 text-right padding">发票项目：</label>
 							<div class="col-sm-8 padding">
 								<select id="sInvID" class="form-control select2"  multiple="multiple"  data-placeholder="请输入国际线路">
+									<option></option>
+									<c:forEach var="one" items="${obj.invoicelist }">
+										<option value="${one.id }">${one.text}</option>
+									</c:forEach>
 								</select>
 								<!-- 发票项ID -->
 								<input id="sInvName" type="hidden" name="sInvName" value = selectedCityId/>
@@ -318,6 +333,40 @@
 	<script type="text/javascript">
 		$(function() {
 			
+			//公司名称回显companyId
+			var _comSelect = $("#companyId").select2({
+				ajax : {
+					url : BASE_PATH  + "/admin/customer/company.html",
+					dataType : 'json',
+					delay : 250,
+					type : 'post',
+					data : function(params) {
+						return {
+							q : params.term, // search term
+							page : params.page,
+						};
+					},
+					processResults : function(data, params) {
+						params.page = params.page || 1;
+						
+						return {
+							results : data
+						};
+					},
+					cache : true
+				},
+				escapeMarkup : function(markup) {
+					return markup;
+				}, // let our custom formatter work
+				minimumInputLength : 1,
+				maximumInputLength : 20,
+				language : "zh-CN", //设置 提示语言
+				maximumSelectionLength : 1, //设置最多可以选择多少项
+				tags : true, //设置必须存在的选项 才能选中
+			});
+			_comSelect.val([${obj.comIds}]).trigger("change");
+			
+			//出发城市回显
 			var _citySelect = $("#city").select2({
 				ajax : {
 					url : BASE_PATH  + "/admin/customer/goCity.html",
@@ -331,8 +380,6 @@
 						};
 					},
 					processResults : function(data, params) {
-						//clear select options
-						_citySelect.val('').trigger("change");
 						params.page = params.page || 1;
 						
 						return {
@@ -350,8 +397,106 @@
 				maximumSelectionLength : 5, //设置最多可以选择多少项
 				tags : true, //设置必须存在的选项 才能选中
 			});
-			_citySelect.val([43]).trigger("change");
+			_citySelect.val([${obj.outcityIds}]).trigger("change");
 			
+			//国境内陆回显
+			var _innerLineSelect = $("#isLine").select2({
+				ajax : {
+					url : BASE_PATH  + "/admin/customer/isLine.html",
+					dataType : 'json',
+					delay : 250,
+					type : 'post',
+					data : function(params) {
+						return {
+							q : params.term, // search term
+							page : params.page,
+						};
+					},
+					processResults : function(data, params) {
+						params.page = params.page || 1;
+						
+						return {
+							results : data
+						};
+					},
+					cache : true
+				},
+				escapeMarkup : function(markup) {
+					return markup;
+				}, // let our custom formatter work
+				minimumInputLength : 1,
+				maximumInputLength : 20,
+				language : "zh-CN", //设置 提示语言
+				maximumSelectionLength : 5, //设置最多可以选择多少项
+				tags : true, //设置必须存在的选项 才能选中
+			});
+			_innerLineSelect.val([${obj.innerCityIds}]).trigger("change");
+			
+			//国际线路回显
+			var _interLineSelect = $("#sLine2ID").select2({
+				ajax : {
+					url : BASE_PATH  + "/admin/customer/international.html",
+					dataType : 'json',
+					delay : 250,
+					type : 'post',
+					data : function(params) {
+						return {
+							q : params.term, // search term
+							page : params.page,
+						};
+					},
+					processResults : function(data, params) {
+						params.page = params.page || 1;
+						
+						return {
+							results : data
+						};
+					},
+					cache : true
+				},
+				escapeMarkup : function(markup) {
+					return markup;
+				}, // let our custom formatter work
+				minimumInputLength : 1,
+				maximumInputLength : 20,
+				language : "zh-CN", //设置 提示语言
+				maximumSelectionLength : 5, //设置最多可以选择多少项
+				tags : true, //设置必须存在的选项 才能选中
+			});
+			_interLineSelect.val([${obj.interLineIds}]).trigger("change");
+			
+			//发票项回显
+			var _invioceSelect = $("#sInvID").select2({
+				ajax : {
+					url : BASE_PATH  + "/admin/customer/isInvioce.html",
+					dataType : 'json',
+					delay : 250,
+					type : 'post',
+					data : function(params) {
+						return {
+							q : params.term, // search term
+							page : params.page,
+						};
+					},
+					processResults : function(data, params) {
+						params.page = params.page || 1;
+						
+						return {
+							results : data
+						};
+					},
+					cache : true
+				},
+				escapeMarkup : function(markup) {
+					return markup;
+				}, // let our custom formatter work
+				minimumInputLength : 1,
+				maximumInputLength : 20,
+				language : "zh-CN", //设置 提示语言
+				maximumSelectionLength : 5, //设置最多可以选择多少项
+				tags : true, //设置必须存在的选项 才能选中
+			});
+			_invioceSelect.val([${obj.invioceIds}]).trigger("change");
 			
 			
 			
@@ -397,11 +542,30 @@
 
 		//更新弹框提示
 		$("#submit").click(function() {
+			//出发城市ID
+			var selectedCityId = $("#city").select2("val") ;
+			$("#outcity").val(selectedCityId) ;
+			//代理商ID
+			var selectedcompanyId = $("#companyID").select2("val") ;
+			$("#agentId").val(selectedcompanyId) ;
+			//代理商名称
+			var selectedcompanyName = $('#companyID').find("option:selected").text();
+			$("#comName").val(selectedcompanyName);
+			
+			//出发城市ID
+			var selectedisLine = $("#isLine").select2("val") ;
+			$("#sLine1ID").val(selectedisLine) ;
+			//出发城市ID
+			var selectedsLine2ID = $("#sLine2ID").select2("val") ;
+			$("#line2ID").val(selectedsLine2ID) ;
+			//出发城市ID
+			var selectedsInvID = $("#sInvID").select2("val") ;
+			$("#sInvName").val(selectedsInvID) ; 
+			
 			$.ajax({
-				cache : true,
 				type : "POST",
 				url : '${base}/admin/customer/update.html',
-				data : $('#form1').serialize(),// 你的formid
+				data : $('#updateForm').serialize(),// 你的formid
 				error : function(request) {
 					layer.msg('修改失败!');
 				},
@@ -414,10 +578,8 @@
 						time : 5000,
 						icon : 6
 					});
-					window.location.reload(true);
 				}
 			});
-			$(".Mymodal-lg").modal('hide');
 		});
 
 	</script>
