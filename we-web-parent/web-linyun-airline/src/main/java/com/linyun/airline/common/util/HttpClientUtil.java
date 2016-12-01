@@ -7,10 +7,12 @@
 package com.linyun.airline.common.util;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.SocketTimeoutException;
 import java.security.GeneralSecurityException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.List;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
@@ -32,8 +34,15 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
+import org.nutz.lang.Mirror;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
+
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+import com.uxuexi.core.common.util.CollectionUtil;
+import com.uxuexi.core.common.util.Util;
 
 /**
  * http请求工具类
@@ -48,12 +57,15 @@ public class HttpClientUtil {
 	private static Log log = Logs.getLog(HttpClientUtil.class);
 
 	private static PoolingHttpClientConnectionManager connMgr;
+
 	private static RequestConfig requestConfig;
+
 	private static final int MAX_TIMEOUT = 10000;
 
 	static {
 		// 设置连接池  
 		connMgr = new PoolingHttpClientConnectionManager();
+
 		// 设置连接池大小  
 		connMgr.setMaxTotal(100);
 		connMgr.setDefaultMaxPerRoute(connMgr.getMaxTotal());
@@ -96,6 +108,7 @@ public class HttpClientUtil {
 
 		} catch (Exception e) {
 			log.error("http get throw Exception");
+			e.printStackTrace();
 
 		} finally {
 			httpPost.abort();
@@ -116,7 +129,6 @@ public class HttpClientUtil {
 
 			HttpEntity entity = response.getEntity();
 			result = EntityUtils.toString(entity, "UTF-8");
-			log.info(result);
 		} catch (ConnectionPoolTimeoutException e) {
 			log.error("http get throw ConnectionPoolTimeoutException(wait time out)");
 
@@ -128,7 +140,7 @@ public class HttpClientUtil {
 
 		} catch (Exception e) {
 			log.error("http get throw Exception");
-
+			e.printStackTrace();
 		} finally {
 			httpGet.abort();
 		}
@@ -137,7 +149,6 @@ public class HttpClientUtil {
 
 	/** 
 	 * 创建SSL安全连接 
-	 * 
 	 * @return 
 	 */
 	private static SSLConnectionSocketFactory createSSLConnSocketFactory() {
@@ -172,6 +183,28 @@ public class HttpClientUtil {
 			e.printStackTrace();
 		}
 		return sslsf;
+	}
+
+	/**
+	 * 从实体类得到单表查询该实体的sql
+	 */
+	public static String getParams(final Object paramForm) {
+		Mirror<?> mirror = Mirror.me(paramForm);
+		Field[] fields = mirror.getFields();
+		List<String> fieldNames = Lists.transform(CollectionUtil.list(fields), new Function<Field, String>() {
+			@Override
+			public String apply(Field f) {
+				Object val = mirror.getValue(paramForm, f);
+				if (Util.isEmpty(val)) {
+					return null;
+				}
+				return f.getName() + "=" + val;
+			}
+		});
+
+		StringBuffer sb = new StringBuffer("?");
+		sb.append(Joiner.on("&").skipNulls().join(fieldNames));
+		return sb.toString();
 	}
 
 }
