@@ -216,7 +216,7 @@
 
 								<select id="payWayID" name="payWay"
 									class="form-control input-sm paySele"
-									onchange="paySelect_change(this)">
+									onchange="paywaySelect_change(this)">
 									<option value="1" selected="selected">现金</option>
 									<option value="2">支票</option>
 									<option value="3">银行汇款</option>
@@ -225,8 +225,10 @@
 								</select>
 							</div>
 
-							<div class="col-sm-8">
-								<div class="col-sm-12 padding payInp"></div>
+							<div class="col-sm-8" style="display: none;" id="paywayDivId">
+								<div class="col-sm-12 padding payInp">
+									<input type="text" id="paywayId" name="paywayName" class="paytext form-control input-sm" placeholder="请输入付款方式">
+								</div>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -234,7 +236,7 @@
 							<div class="col-sm-2 padding">
 								<select id="payTypeID" name="payType"
 									class="form-control input-sm sele"
-									onchange="select_change(this)">
+									onchange="paytypeSelect_change(this)">
 
 									<option value="1" selected="selected">月结</option>
 									<option value="2">周结</option>
@@ -242,8 +244,10 @@
 									<option value="4">其他</option>
 								</select>
 							</div>
-							<div class="col-sm-8">
-								<div class="col-sm-12 padding inpAdd"></div>
+							<div class="col-sm-8" style="display: none;" id="paytypeDivId">
+								<div class="col-sm-12 padding inpAdd">
+									<input type="text" name="paytypeName" class="paytext form-control input-sm" placeholder="请输入结算方式">
+								</div>
 							</div>
 						</div>
 
@@ -256,24 +260,17 @@
 									<option value="1">是</option>
 								</select>
 							</div>
+							<!-- 发票项  -->
 							<div class="col-sm-8" style="display: none;" id="invioceType">
 								<div class="col-sm-12 padding">
-									<input type="text" class="form-control input-sm"
-										placeholder="提供发票项" />
+									<select id="sInvID" class="form-control select2"  multiple="multiple"  data-placeholder="请输入发票项">
+									</select>
+									<!-- 发票项ID -->
+									<input id="sInvName" type="hidden" name="sInvName" />
 								</div>
 							</div>
 						</div>
 
-
-						<div class="col-sm-8" style="display: block;" id="invioceType">
-							<label class="col-sm-2 text-right padding">发票项目：</label>
-							<div class="col-sm-8 padding">
-								<select id="sInvID" class="form-control select2"  multiple="multiple"  data-placeholder="请输入国际线路">
-								</select>
-								<!-- 发票项ID -->
-								<input id="sInvName" type="hidden" name="sInvName" />
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -442,25 +439,25 @@
 		
 	
 		//结算方式 add input
-		function select_change(obj) {
+		function paytypeSelect_change(obj) {
 	
 			var seleValue = $(".sele").find("option:selected").attr("value");
 			if (seleValue == 4) {
-				$('.inpAdd').append('<input type="text" class="inp form-control input-sm" placeholder="请输入结算方式">');
-			} else {
-				$('.inp').remove();
+				document.getElementById("paytypeDivId").style.display = "block";
+			}else{
+				document.getElementById("paytypeDivId").style.display = "none";	
 			}
 	
 		}
 	
 		//付款方式 add input
-		function paySelect_change(obj) {
+		function paywaySelect_change(obj) {
 	
 			var payValue = $(".paySele").find("option:selected").attr("value");
 			if (payValue == 5) {
-				$('.payInp').append('<input type="text" class="paytext form-control input-sm" placeholder="请输入付款方式">');
-			} else {
-				$('.paytext').remove();
+				document.getElementById("paywayDivId").style.display = "block";
+			}else{
+				document.getElementById("paywayDivId").style.display = "none";	
 			}
 	
 		}
@@ -477,6 +474,7 @@
 			//代理商ID
 			var selectedcompanyId = $("#companyID").select2("val") ;
 			$("#agentId").val(selectedcompanyId) ;
+			//公司名称
 			var selectedcompanyName = $('#companyID').find("option:selected").text();
 			$("#comName").val(selectedcompanyName);
 			//国境线路ID
@@ -521,7 +519,7 @@
 	
 		//显示或隐藏发票项
 		function gaveInvioce() {
-			var s = document.getElementById("invoice").value;
+			var s = document.getElementById("invoiceID").value;
 			if (s == 1) {
 				document.getElementById("invioceType").style.display = "";
 			}

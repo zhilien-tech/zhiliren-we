@@ -228,7 +228,7 @@
 						<div class="form-group row">
 							<label class="col-sm-2 text-right padding">付款方式：</label>
 							<div class="col-sm-2 padding">
-								<select id="payWay" name="payWay" class="form-control input-sm paySele" onchange="paySelect_change(this)">
+								<select id="payWay" name="payWay" class="form-control input-sm paySele" onchange="paywaySelect_change(this)">
 									<option value="1"
 										<c:if test="${'1' eq obj.customer.payWay}">selected</c:if>>现金</option>
 									<option value="2"
@@ -242,9 +242,12 @@
 								</select>
 							</div>
 
-							<div class="col-sm-8">
-								<div class="col-sm-12 padding payInp"></div>
+							<div class="col-sm-8" style="display: none;" id="paywayDivId">
+								<div class="col-sm-12 padding payInp">
+									<input type="text" id="paywayId" name="paywayName" class="paytext form-control input-sm" placeholder="请输入付款方式">
+								</div>
 							</div>
+							
 						</div>
 
 
@@ -254,7 +257,7 @@
 							<div class="col-sm-2 padding">
 								<select id="payType" name="payType"
 								class="form-control input-sm sele"
-									onchange="select_change(this)">
+									onchange="paytypeSelect_change(this)">
 									<option value="1"
 										<c:if test="${'1' eq obj.customer.payType}">selected</c:if>>月结</option>
 									<option value="2"
@@ -266,8 +269,10 @@
 								</select>
 							</div>
 
-							<div class="col-sm-8">
-								<div class="col-sm-12 padding inpAdd"></div>
+							<div class="col-sm-8" style="display: none;" id="paytypeDivId">
+								<div class="col-sm-12 padding inpAdd">
+									<input type="text" name="paytypeName" class="paytext form-control input-sm" placeholder="请输入结算方式">
+								</div>
 							</div>
 						</div>
 
@@ -283,22 +288,22 @@
 										<c:if test="${'1' eq obj.customer.invoice}">selected</c:if>>是</option>
 								</select>
 							</div>
-						</div>
-
-					<div class="col-sm-8" style="display: none;" id="invioceType">
-							<label class="col-sm-2 text-right padding">发票项目：</label>
-							<div class="col-sm-8 padding">
-								<select id="sInvID" class="form-control select2"  multiple="multiple"  data-placeholder="请输入国际线路">
-									<option></option>
-									<c:forEach var="one" items="${obj.invoicelist }">
-										<option value="${one.id }">${one.text}</option>
-									</c:forEach>
-								</select>
-								<!-- 发票项ID -->
-								<input id="sInvName" type="hidden" name="sInvName" value = selectedCityId/>
+							<!-- 发票项  -->
+							<div class="col-sm-8" style="display: none;" id="invioceType">
+								<div class="col-sm-12 padding">
+									<select id="sInvID" class="form-control select2"
+										multiple="multiple" data-placeholder="请输入发票项">
+										<option></option>
+										<c:forEach var="one" items="${obj.invoicelist }">
+											<option value="${one.id }">${one.text}</option>
+										</c:forEach>
+									</select>
+									<!-- 发票项ID -->
+									<input id="sInvName" type="hidden" name="sInvName" />
+								</div>
 							</div>
-
 						</div>
+
 					</div>
 				</div>
 			</div>
@@ -498,10 +503,6 @@
 			});
 			_invioceSelect.val([${obj.invioceIds}]).trigger("change");
 			
-			
-			
-			gaveInvioce();
-			
 			//iCheck for checkbox and radio inputs
 			$('input[type="checkbox"].minimal, input[type="radio"].minimal')
 					.iCheck({
@@ -583,6 +584,30 @@
 		});
 
 	</script>
+	
+	<!-- 付款结算方式 -->
+	<script>
+	//结算方式 add input
+	function paytypeSelect_change(obj) {
+		var seleValue = $(".sele").find("option:selected").attr("value");
+		if (seleValue == 4) {
+			document.getElementById("paytypeDivId").style.display = "block";
+		}else{
+			document.getElementById("paytypeDivId").style.display = "none";	
+		}
+	}
+
+	//付款方式 add input
+	function paywaySelect_change(obj) {
+		var payValue = $(".paySele").find("option:selected").attr("value");
+		if (payValue == 5) {
+			document.getElementById("paywayDivId").style.display = "block";
+		}else{
+			document.getElementById("paywayDivId").style.display = "none";	
+		}
+	}
+	</script>
+	
 </body>
 </html>
 
