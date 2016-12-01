@@ -33,6 +33,7 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+  <link rel="stylesheet" href="${base}/public/css/pikaday.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -162,24 +163,4 @@
       </div>
     </nav>
   </header>
-  <aside class="main-sidebar">
-
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-
-      <!-- Sidebar user panel (optional) -->
-      <div class="user-panel">
-      </div>
-
-      <!-- Sidebar Menu -->
-      <ul class="sidebar-menu">
-        <li class="header">菜单栏</li>
-        <!-- Optionally, you can add icons to the links -->
-
-        <li class="active"><a href="${base}/admin/Company/list.html"><i class="fa fa-users"></i> <span>公司管理</span></a></li>
-        <li ><a href="clientManage.html"><i class="fa fa-user-secret"></i><span>客户管理</span></a></li>
-      </ul>
-      <!-- /.sidebar-menu -->
-    </section>
-    <!-- /.sidebar -->
-  </aside>
+  
