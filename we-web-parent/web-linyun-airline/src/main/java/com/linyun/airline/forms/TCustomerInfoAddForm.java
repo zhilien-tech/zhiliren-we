@@ -79,8 +79,12 @@ public class TCustomerInfoAddForm extends AddForm implements Serializable {
 	/**签约时间*/
 	private Date contractTime;
 
+	private String contractTimeString;
+
 	/**签约到期时间*/
 	private Date contractDueTime;
+
+	private String contractDueTimeString;
 
 	/**是否签约（未签约、已签约、禁止合作）*/
 	private long contract;
@@ -88,4 +92,18 @@ public class TCustomerInfoAddForm extends AddForm implements Serializable {
 	/**是否禁用*/
 	private long forbid;
 
+	/**出发城市Ids*/
+	private String outcityname;
+
+	/**国境内陆*/
+	private String sLine1;
+
+	/**国际线路*/
+	private String internationLine;
+
+	/**业务范围*/
+	private String business;
+
+	/**发票项目*/
+	private String sInvName;
 }

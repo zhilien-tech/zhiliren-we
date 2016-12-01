@@ -7,9 +7,14 @@
 <head>
 <meta charset="UTF-8">
 <title>更新</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<link rel="stylesheet" href="${base}/public/css/pikaday.css">
 <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
+<link rel="stylesheet"
+	href="${base }/public/dist/css/bootstrapValidator.css" />
+
 </head>
 
 <body>
@@ -35,11 +40,12 @@
 							name="agentId" type="hidden" value="1" />
 						<!--基本信息-->
 						<div class="form-group row">
-							<input name="id" type="hidden" value="${obj.customer.id}" /> <label
-								class="col-sm-3 text-right padding">公司名称：</label>
+							<label class="col-sm-3 text-right padding">公司名称：</label>
 							<div class="col-sm-8 padding">
-								<input name="name" type="text" class="form-control input-sm"
-									value="${obj.customer.name}"  onkeyup="sname() placeholder="聚优国际旅行社（北京）有限公司" />
+								<select id="companyID" class="form-control select2" multiple="multiple"  data-placeholder="请输入公司名称">
+								</select>
+								<!-- 公司ID -->
+								<input id="agentId" type="hidden" name="agentId" value="${obj.customer.agentId}"/>
 							</div>
 						</div>
 
@@ -52,8 +58,12 @@
 
 							<label class="col-sm-2 text-right padding">负责人：</label>
 							<div class="col-sm-3 padding">
-								<input name="agent" type="tel" class="form-control input-sm"
-									value="${obj.customer.agent}" placeholder="请输入负责人姓名" />
+								<!-- 负责人下拉列表 -->
+								<select id="agent" name="agent" class="form-control input-sm">
+									<c:forEach var="one" items="${obj.userlist }">
+										<option value="${one.id }" <c:if test="${one.id eq obj.customer.agent}">selected</c:if>>${one.userName}</option>
+									</c:forEach>
+								</select>
 							</div>
 						</div>
 
@@ -120,11 +130,16 @@
 
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">出发城市：</label>
-							<div class="col-sm-3 padding">
-	<input id="departureCity" name="departureCity" type="text"
-									onkeyup="goCity()" class="form-control input-sm"
-									placeholder="请输入出发城市" value="${obj.customer.departureCity}"/>
-								
+							
+							<div class="col-sm-8 padding">
+								<select id="city" class="form-control select2"  multiple="multiple"  data-placeholder="请输入出发城市">
+									<option></option>
+									<c:forEach var="one" items="${obj.outcitylist }">
+										<option value="${one.id }">${one.text}</option>
+									</c:forEach>
+								</select>
+								<!-- 出发城市ID -->
+								<input id="outcity" type="hidden" name="outcityname" value = selectedCityId/>
 							</div>
 						</div>
 
@@ -134,14 +149,18 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">国境内陆：</label>
 							<div class="col-sm-3 padding">
-								<input id="line" name="line" type="text"
-									class="form-control input-sm" onkeyup="isLine()" />
+								<select id="isLine" class="form-control select2"  multiple="multiple"  data-placeholder="请输入国境内陆">
+								</select>
+								<!-- 国境内陆ID -->
+								<input id="sLine1ID" type="hidden" name="sLine1" value = selectedCityId/>
 							</div>
 
 							<label class="col-sm-2 text-right padding">国际：</label>
 							<div class="col-sm-3 padding">
-								<input id="line" name="line" onkeyup="isLine()" type="text"
-									class="form-control input-sm" />
+								<select id="sLine2ID" class="form-control select2"  multiple="multiple"  data-placeholder="请输入国际线路">
+								</select>
+								<!-- 国际线路ID -->
+								<input id="line2ID" type="hidden" name="internationLine" value = selectedCityId/>
 							</div>
 						</div>
 
@@ -151,8 +170,10 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">附件列表：</label>
 							<div class="col-sm-3 padding">
-									<p class="flie_A">
-									上传 <input name="appendix" type="file" id="file" />
+								<input type="file" name="fileID" id="uploadify" />
+								<input type="hidden" name="appendix" id="appendix" />
+								<p class="flie_A" onclick="fileupload();">
+									上传
 								</p>
 							</div>
 						</div>
@@ -162,7 +183,7 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">业务范围：</label>
 							<div class="col-sm-8 padding">
-								<textarea name="business" class="form-control textar-hei"></textarea>
+								<textarea name="business" class="form-control textar-hei" >${obj.customer.business }</textarea>
 							</div>
 						</div>
 					</div>
@@ -196,9 +217,7 @@
 						<div class="form-group row">
 							<label class="col-sm-2 text-right padding">付款方式：</label>
 							<div class="col-sm-2 padding">
-								<select id="payWay" name="payWay"
- class="form-control input-sm paySele"
-									onchange="paySelect_change(this)">
+								<select id="payWay" name="payWay" class="form-control input-sm paySele" onchange="paySelect_change(this)">
 									<option value="1"
 										<c:if test="${'1' eq obj.customer.payWay}">selected</c:if>>现金</option>
 									<option value="2"
@@ -212,7 +231,7 @@
 								</select>
 							</div>
 
-<div class="col-sm-8">
+							<div class="col-sm-8">
 								<div class="col-sm-12 padding payInp"></div>
 							</div>
 						</div>
@@ -236,7 +255,7 @@
 								</select>
 							</div>
 
-<div class="col-sm-8">
+							<div class="col-sm-8">
 								<div class="col-sm-12 padding inpAdd"></div>
 							</div>
 						</div>
@@ -258,7 +277,10 @@
 					<div class="col-sm-8" style="display: none;" id="invioceType">
 							<label class="col-sm-2 text-right padding">发票项目：</label>
 							<div class="col-sm-8 padding">
-								<input type="text" class="form-control input-sm" placeholder="" />
+								<select id="sInvID" class="form-control select2"  multiple="multiple"  data-placeholder="请输入国际线路">
+								</select>
+								<!-- 发票项ID -->
+								<input id="sInvName" type="hidden" name="sInvName" value = selectedCityId/>
 							</div>
 
 						</div>
@@ -267,80 +289,74 @@
 			</div>
 </form>
 	</div>
-
+	<script type="text/javascript">
+		var BASE_PATH = '${base}';
+		var  agentId  = '${obj.customer.agentId}';
+	</script>
 	<!-- jQuery 2.2.3 -->
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<!-- Bootstrap 3.3.6 -->
-	<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
+	<script src="${base}/public/bootstrap/js/bootstrap.js"></script>
 	<!-- Select2 -->
 	<script src="${base}/public/plugins/select2/select2.full.min.js"></script>
-
+	<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
 	<script src="${base}/public/plugins/iCheck/icheck.min.js"></script>
 	<!-- FastClick 快 点击-->
 	<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
-
+	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 	<script src="${base}/common/js/layer/layer.js"></script>
-
+	<script src="${base}/public/dist/js/pikaday.js"></script>
+	<!-- 文件上传 -->
+	<link href="${base }/public/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css" />  
+	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
+	
+	<!-- 页面js -->
+	<script src="${base}/admin/customer/baseinfo.js"></script>
+	<script src="${base}/admin/customer/line.js"></script>
+	<script src="${base}/admin/customer/upload.js"></script>
+	<script src="${base}/admin/customer/caiwu.js"></script>
 	<script type="text/javascript">
 		$(function() {
-			//Initialize Select2 Elements
-			$(".select2").select2();
-
-			//Datemask dd/mm/yyyy
-			$("#datemask").inputmask("dd/mm/yyyy", {
-				"placeholder" : "dd/mm/yyyy"
-			});
-			//Datemask2 mm/dd/yyyy
-			$("#datemask2").inputmask("mm/dd/yyyy", {
-				"placeholder" : "mm/dd/yyyy"
-			});
-			//Money Euro
-			$("[data-mask]").inputmask();
-
-			//Date range picker
-			$('#reservation').daterangepicker();
-			//Date range picker with time picker
-			$('#reservationtime').daterangepicker({
-				timePicker : true,
-				timePickerIncrement : 30,
-				format : 'MM/DD/YYYY h:mm A'
-			});
-			//Date range as a button
-			$('#daterange-btn').daterangepicker(
-					{
-						ranges : {
-							'Today' : [ moment(), moment() ],
-							'Yesterday' : [ moment().subtract(1, 'days'),
-									moment().subtract(1, 'days') ],
-							'Last 7 Days' : [ moment().subtract(6, 'days'),
-									moment() ],
-							'Last 30 Days' : [ moment().subtract(29, 'days'),
-									moment() ],
-							'This Month' : [ moment().startOf('month'),
-									moment().endOf('month') ],
-							'Last Month' : [
-									moment().subtract(1, 'month').startOf(
-											'month'),
-									moment().subtract(1, 'month')
-											.endOf('month') ]
-						},
-						startDate : moment().subtract(29, 'days'),
-						endDate : moment()
+			
+			var _citySelect = $("#city").select2({
+				ajax : {
+					url : BASE_PATH  + "/admin/customer/goCity.html",
+					dataType : 'json',
+					delay : 250,
+					type : 'post',
+					data : function(params) {
+						return {
+							q : params.term, // search term
+							page : params.page,
+						};
 					},
-					function(start, end) {
-						$('#daterange-btn span').html(
-								start.format('MMMM D, YYYY') + ' - '
-										+ end.format('MMMM D, YYYY'));
-					});
-
-			//Date picker
-			$('#datepicker1').datepicker({
-				autoclose : true
+					processResults : function(data, params) {
+						//clear select options
+						_citySelect.val('').trigger("change");
+						params.page = params.page || 1;
+						
+						return {
+							results : data
+						};
+					},
+					cache : true
+				},
+				escapeMarkup : function(markup) {
+					return markup;
+				}, // let our custom formatter work
+				minimumInputLength : 1,
+				maximumInputLength : 20,
+				language : "zh-CN", //设置 提示语言
+				maximumSelectionLength : 5, //设置最多可以选择多少项
+				tags : true, //设置必须存在的选项 才能选中
 			});
-			$('#datepicker2').datepicker({
-				autoclose : true
-			});
-
+			_citySelect.val([43]).trigger("change");
+			
+			
+			
+			
+			gaveInvioce();
+			
 			//iCheck for checkbox and radio inputs
 			$('input[type="checkbox"].minimal, input[type="radio"].minimal')
 					.iCheck({
@@ -361,15 +377,6 @@
 						radioClass : 'iradio_flat-green'
 					});
 
-			//Colorpicker
-			$(".my-colorpicker1").colorpicker();
-			//color picker with addon
-			$(".my-colorpicker2").colorpicker();
-
-			//Timepicker
-			$(".timepicker").timepicker({
-				showInputs : false
-			});
 		});
 
 		//更新时刷新页面
@@ -413,25 +420,6 @@
 			$(".Mymodal-lg").modal('hide');
 		});
 
-		function sname() {
-		}
-
-		//出发城市
-		function goCity() {
-			alert($("#departureCity").val());
-			$.ajax({
-				type : 'POST',
-				data : {
-					departureCity : $("#departureCity").val()
-				},
-				dataType : 'json',
-				url : '${base}/admin/customer/goCity.html',
-				success : function(data) {
-
-				}
-
-			});
-		}
 	</script>
 </body>
 </html>

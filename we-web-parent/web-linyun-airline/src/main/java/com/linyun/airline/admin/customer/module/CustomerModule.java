@@ -2,8 +2,11 @@ package com.linyun.airline.admin.customer.module;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.SqlManager;
@@ -20,9 +23,10 @@ import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.linyun.airline.admin.customer.service.CustomerViewService;
-import com.linyun.airline.entities.TAgentEntity;
-import com.linyun.airline.entities.TCustomerInfoEntity;
-import com.linyun.airline.entities.TUpcompanyEntity;
+import com.linyun.airline.common.base.UploadService;
+import com.linyun.airline.common.base.Uploader;
+import com.linyun.airline.common.constants.CommonConstants;
+import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
 import com.linyun.airline.forms.TCustomerInfoQueryForm;
 import com.linyun.airline.forms.TCustomerInfoUpdateForm;
@@ -58,6 +62,9 @@ public class CustomerModule {
 	@Inject
 	private CustomerViewService customerViewService;
 
+	@Inject
+	private UploadService fdfsUploadService;
+
 	/**
 	 * 跳转到'添加操作'的录入数据页面
 	 */
@@ -66,9 +73,10 @@ public class CustomerModule {
 	@Ok("jsp")
 	public Object add(@Param("id") final long id) {
 		Map<String, Object> obj = new HashMap<String, Object>();
-		obj.put("upCompany", dbDao.fetch(TUpcompanyEntity.class, id));
-		obj.put("agent", dbDao.fetch(TAgentEntity.class, id));
-		return dbDao.query(TCustomerInfoEntity.class, null, null);
+
+		List<TUserEntity> userlist = dbDao.query(TUserEntity.class, null, null);
+		obj.put("userlist", userlist);
+		return obj;
 	}
 
 	/**
@@ -83,7 +91,7 @@ public class CustomerModule {
 		//Iterable<String> split = Splitter.on(",").split(outcity);
 		//addForm.get
 
-		customerViewService.add(addForm);
+		customerViewService.addCustomInfo(addForm);
 		return JsonResult.success("添加成功");
 	}
 
@@ -94,9 +102,7 @@ public class CustomerModule {
 	@GET
 	@Ok("jsp")
 	public Object update(@Param("id") final long id) {
-		Map<String, Object> obj = new HashMap<String, Object>();
-		obj.put("customer", dbDao.fetch(TCustomerInfoEntity.class, id));
-		return obj;
+		return customerViewService.toUpdatePage(id);
 	}
 
 	/**
@@ -139,18 +145,19 @@ public class CustomerModule {
 	}
 
 	//附件上传 返回值文件存储地址
+	@At
 	@POST
 	@AdaptBy(type = UploadAdaptor.class, args = { "ioc:imgUpload" })
 	@Ok("json")
-	public Object upload(final @Param("file") File file, final HttpSession session) {
+	public Object upload(final @Param("fileId") File file, final HttpSession session) {
 		return customerViewService.upload(file, session);
 	}
 
 	//客户公司查询
 	@At
 	@POST
-	public Object company() {
-		return customerViewService.company();
+	public Object company(@Param("q") final String comName) {
+		return customerViewService.company(comName);
 	}
 
 	//负责人查询
@@ -170,15 +177,36 @@ public class CustomerModule {
 	//线路查询
 	@At
 	@POST
-	public Object isLine(@Param("line") final String name) throws Exception {
+	public Object isLine(@Param("q") final String name) throws Exception {
 		return customerViewService.isLine(name);
+	}
+
+	//线路查询
+	@At
+	@POST
+	public Object international(@Param("q") final String name) throws Exception {
+		return customerViewService.international(name);
 	}
 
 	//发票项目查询
 	@At
 	@POST
-	public Object isInvioce(@Param("invioce") final String name) throws Exception {
+	public Object isInvioce(@Param("q") final String name) throws Exception {
 		return customerViewService.isInvioce(name);
+	}
+
+	/**
+	 * 上传文件
+	 */
+	@At
+	@Ok("json")
+	public String uploadFile(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("utf-8");
+		response.setCharacterEncoding("utf-8");
+		Uploader uploader = new Uploader(request, fdfsUploadService);
+		uploader.upload();
+		String url = CommonConstants.IMAGES_SERVER_ADDR + uploader.getUrl();
+		return url;
 	}
 
 }

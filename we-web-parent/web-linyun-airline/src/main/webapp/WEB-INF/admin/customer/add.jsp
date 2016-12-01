@@ -12,8 +12,7 @@
 <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
-<link rel="stylesheet"
-	href="${base }/public/dist/css/bootstrapValidator.css" />
+<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css" />
 
 </head>
 
@@ -42,19 +41,14 @@
 						<!-- TODO -->
 						<input name="comId" type="hidden" value="1" />
 
-						<!-- 客户 代理商ID -->
-						<input name="agentId" type="hidden" value="1" />
-
-
 						<!--基本信息-->
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">公司名称：</label>
 							<div class="col-sm-8 padding">
-								<input id="companyID" name="name" type="text"
-									class="form-control input-sm" onkeyup="sname()"
-									placeholder="请输入公司名称" onkeyup="" />
-
-
+								<select id="companyID" class="form-control select2" multiple="multiple"  data-placeholder="请输入公司名称">
+								</select>
+								<!-- 公司ID -->
+								<input id="agentId" type="hidden" name="agentId" value = selectedCityId/>
 							</div>
 
 						</div>
@@ -69,8 +63,10 @@
 							<label class="col-sm-2 text-right padding">负责人：</label>
 							<div class="col-sm-3 padding">
 								<!-- 负责人下拉列表 -->
-								<select id="agentId" name="agent" class="form-control input-sm">
-
+								<select id="agent" name="agent" class="form-control input-sm">
+									<c:forEach var="one" items="${obj.userlist }">
+										<option value="${one.id }">${one.userName}</option>
+									</c:forEach>
 								</select>
 							</div>
 						</div>
@@ -148,21 +144,18 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">国境内陆：</label>
 							<div class="col-sm-3 padding">
-								<input id="line1ID" name="line1" onkeyup="goLine1()" type="text"
-									class="form-control input-sm" /> 
-								<select id="sLine1ID" name="sLine1" class="form-control select2"
-									style="display: none;" multiple="multiple">
-
+								<select id="isLine" class="form-control select2"  multiple="multiple"  data-placeholder="请输入国境内陆">
 								</select>
+								<!-- 国境内陆ID -->
+								<input id="sLine1ID" type="hidden" name="sLine1" value = selectedCityId/>
 							</div>
 
 							<label class="col-sm-2 text-right padding">国际：</label>
 							<div class="col-sm-3 padding">
-								<input id="line2ID" name="line2" onkeyup="goLine2()" type="text"
-									class="form-control input-sm" /> <select id="sLine2ID"
-									name="sLine2" class="form-control select2"
-									style="display: none;" multiple="multiple">
+								<select id="sLine2ID" class="form-control select2"  multiple="multiple"  data-placeholder="请输入国际线路">
 								</select>
+								<!-- 国际线路ID -->
+								<input id="line2ID" type="hidden" name="internationLine" value = selectedCityId/>
 							</div>
 						</div>
 
@@ -172,9 +165,10 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">附件列表：</label>
 							<div class="col-sm-3 padding">
-								<p class="flie_A">
-									上传 <input name="appendix" type="file" id="fileID" /> 
-									<input type="button" name="fileLoad" id="fileLoad" value="上传" onclick="fileupload()" />
+								<input type="file" name="fileID" id="uploadify" />
+								<input type="hidden" name="appendix" id="appendix" />
+								<p class="flie_A" onclick="fileupload();">
+									上传
 								</p>
 							</div>
 						</div>
@@ -204,11 +198,11 @@
 
 							<label class="col-sm-2 text-right padding">合作时间：</label>
 							<div class="col-sm-5 padding">
-								<input id="datepicker1" name="contractTime" type="text"
+								<input id="datepicker1" name="contractTimeString" type="text"
 									class="form-control input-sm input-wid"
 									placeholder="2015-08-08" /> 
 								至 <input id="datepicker2"
-									name="contractDueTime" type="text"
+									name="contractDueTimeString" type="text"
 									class="form-control input-sm input-wid"
 									placeholder="2088-09-09" />
 							</div>
@@ -272,8 +266,10 @@
 						<div class="col-sm-8" style="display: block;" id="invioceType">
 							<label class="col-sm-2 text-right padding">发票项目：</label>
 							<div class="col-sm-8 padding">
-								<select id="sInvID" name="sInv" class="form-control select2"  multiple="multiple"  data-placeholder="请输入发票项">
+								<select id="sInvID" class="form-control select2"  multiple="multiple"  data-placeholder="请输入国际线路">
 								</select>
+								<!-- 发票项ID -->
+								<input id="sInvName" type="hidden" name="sInvName" value = selectedCityId/>
 							</div>
 						</div>
 					</div>
@@ -282,11 +278,11 @@
 	</div>
 	</form>
 	</div>
+	<script type="text/javascript">
+		var BASE_PATH = '${base}';
+	</script>
 	<!-- jQuery 2.2.3 -->
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
-	<!-- 文件上传 -->
-	<script src="${base}/public/uploadFile/ajaxfileupload.js"></script>
-
 	<!-- Bootstrap 3.3.6 -->
 	<script src="${base}/public/bootstrap/js/bootstrap.js"></script>
 	<!-- Select2 -->
@@ -300,107 +296,51 @@
 	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 	<script src="${base}/common/js/layer/layer.js"></script>
 	<script src="${base}/public/dist/js/pikaday.js"></script>
+	
+	<link href="${base }/public/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css" />  
+	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
+	<!-- 页面js -->
+	<script src="${base}/admin/customer/baseinfo.js"></script>
+	<script src="${base}/admin/customer/line.js"></script>
+	<script src="${base}/admin/customer/upload.js"></script>
+	<script src="${base}/admin/customer/caiwu.js"></script>
 	<script type="text/javascript">
+	var base = "${base}";
 		$(function() {
 			
+			$.fileupload1 = $('#uploadify').uploadify({
+	            'auto' : true,
+	            'formData' : {
+	            	'fcharset' : 'uft-8',
+	                'action' : 'uploadimage'
+	            },
+	            'buttonText': '选择上传文件',
+	            'fileSizeLimit' : '3000MB',
+	            'fileTypeDesc' : '文件',
+	            'fileTypeExts' : '*.png; *.txt',//文件类型过滤
+	            'swf'      : '${base}/public/plugins/uploadify/uploadify.swf',
+	            'multi':false,
+	            'successTimeout':1800,
+	            'queueSizeLimit':100,
+	            'uploader' : '${base}/admin/customer/uploadFile.html',
+	            //onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
+	            //下面的例子演示如何获取到vid
+	            'onUploadSuccess':function(file,data,response){
+	                var jsonobj=eval('('+data+')');               
+	                $('#appendix').val(data);
+	            }
+	        });
+
 			//页面加载时 执行
 			angentList();
 			
-			
-			
-			$("#city").select2({
-					ajax : {
-						url : "${base}/admin/customer/goCity.html",
-						dataType : 'json',
-						delay : 250,
-						type : 'post',
-						data : function(params) {
-							return {
-								q : params.term, // search term
-								page : params.page,
-							};
-						},
-						processResults : function(data, params) {
-							params.page = params.page || 1;
-
-							return {
-								results : data
-							};
-						},
-						cache : true
-					},
-					
-					escapeMarkup : function(markup) {
-						return markup;
-					}, // let our custom formatter work
-					minimumInputLength : 1,
-					maximumInputLength : 20,
-					language : "zh-CN", //设置 提示语言
-					maximumSelectionLength : 3, //设置最多可以选择多少项
-					tags : false, //设置必须存在的选项 才能选中
-				});
-
-			
-
-			$("#sInvID").select2({
-					ajax : {
-						url : "${base}/admin/customer/isInvioce.html",
-						dataType : 'json',
-						delay : 250,
-						type : 'post',
-						data : function(params) {
-							return {
-								q : params.term, // search term
-								page : params.page
-							};
-						},
-						processResults : function(data, params) {
-							params.page = params.page || 1;
-
-							return {
-								results : data
-							};
-						},
-						cache : true
-					},
-					
-					escapeMarkup : function(markup) {
-						return markup;
-					}, // let our custom formatter work
-					minimumInputLength : 1,
-					maximumInputLength : 20,
-					language : "zh-CN", //设置 提示语言
-					maximumSelectionLength : 3, //设置最多可以选择多少项
-					tags : false, //设置必须存在的选项 才能选中
-				});
-			
-			
-			//日期
-			var picker1 = new Pikaday(
-				    {
-				        field: document.getElementById('datepicker1'),
-				        firstDay: 1,
-				        minDate: new Date('2000-01-01'),
-				        maxDate: new Date('3099-12-31'),
-				        yearRange: [2000,3099]
-				    });
-			var picker2 = new Pikaday(
-				    {
-				        field: document.getElementById('datepicker2'),
-				        firstDay: 1,
-				        minDate: new Date('2000-01-01'),
-				        maxDate: new Date('3099-12-31'),
-				        yearRange: [2000,3099]
-				    });
-
 			//iCheck for checkbox and radio inputs
 			$('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
 						checkboxClass : 'icheckbox_minimal-blue',
 						radioClass : 'iradio_minimal-blue'
 					});
 			//Red color scheme for iCheck
-			$(
-					'input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+			$('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
 						checkboxClass : 'icheckbox_minimal-red',
 						radioClass : 'iradio_minimal-red'
 					});
@@ -477,25 +417,6 @@
 	
 	<!-- 下拉列表 -->
 	<script type="text/javascript">
-		/* 公司名称下拉列表输入框 */
-		function companyList() {
-			$.ajax({
-				type : 'POST',
-				dataType : 'json',
-				url : '${base}/admin/customer/company.html',
-				success : function(data) {
-					var content = "";
-					for (var i = 0; i < data.length; i++) {
-						var comName = data[i].comName;
-						var id = data[i].id;
-						content += "<option value='" + id
-								+ "' onclick='optCompany(this)'>" + comName
-								+ "</option>";
-					}
-					$("#company").html(content);
-				}
-			});
-		}
 	
 		/* 负责人名称 下拉列表*/
 		function angentList() {
@@ -517,77 +438,6 @@
 			});
 		}
 		
-		//国境内陆线路
-		function goLine1() {
-			$.ajax({
-				type : 'POST',
-				data : {
-					line : $("#line1ID").val()
-				},
-				dataType : 'json',
-				url : '${base}/admin/customer/isLine.html',
-				success : function(data) {
-					var content = "";
-					for (var i = 0; i < data.length; i++) {
-						var dictName = data[i].dictName;
-						var id = data[i].id;
-						content += "<option value='" + id
-								+ "' onclick='optCity(this)'>" + dictName
-								+ "</option>";
-					}
-					$("#sLine1ID").html(content);
-					$("#sLine1ID").css("display", "block");
-				}
-			});
-		}
-	
-		//国际线路
-		function goLine2() {
-			$.ajax({
-				type : 'POST',
-				data : {
-					line : $("#line2ID").val()
-				},
-				dataType : 'json',
-				url : '${base}/admin/customer/isLine.html',
-				success : function(data) {
-					var content = "";
-					for (var i = 0; i < data.length; i++) {
-						var dictName = data[i].dictName;
-						var id = data[i].id;
-						content += "<option value='" + id
-								+ "' onclick='optCity(this)'>" + dictName
-								+ "</option>";
-					}
-					$("#sLine2ID").html(content);
-					$("#sLine2ID").css("display", "block");
-				}
-			});
-		}
-	
-		//发票项
-		function goToInvioce() {
-			$.ajax({
-				type : 'POST',
-				data : {
-					invioce : $("#inInvioceID").val()
-				},
-				dataType : 'json',
-				url : '${base}/admin/customer/isInvioce.html',
-				success : function(data) {
-					var content = "";
-					for (var i = 0; i < data.length; i++) {
-						var dictName = data[i].dictName;
-						var id = data[i].id;
-						content += "<option value='" + id
-								+ "' onclick='optInvioce(this)'>" + dictName
-								+ "</option>";
-					}
-					$("#sInvID").html(content);
-					$("#sInvID").css("display", "block");
-				}
-			});
-		}
 	
 		//结算方式 add input
 		function select_change(obj) {
@@ -621,6 +471,19 @@
 			//出发城市ID
 			var selectedCityId = $("#city").select2("val") ;
 			$("#outcity").val(selectedCityId) ;
+			
+			//代理商ID
+			var selectedcompanyId = $("#companyID").select2("val") ;
+			$("#agentId").val(selectedcompanyId) ;
+			//出发城市ID
+			var selectedisLine = $("#isLine").select2("val") ;
+			$("#sLine1ID").val(selectedisLine) ;
+			//出发城市ID
+			var selectedsLine2ID = $("#sLine2ID").select2("val") ;
+			$("#line2ID").val(selectedsLine2ID) ;
+			//出发城市ID
+			var selectedsInvID = $("#sInvID").select2("val") ;
+			$("#sInvName").val(selectedsInvID) ;
 			
 			$('#customerAddForm').bootstrapValidator('validate');
 			var bootstrapValidator = $("#customerAddForm").data(
@@ -667,27 +530,6 @@
 		function reload() { window.location.reload(); }
 	</script>
 
-	<!-- 文件上传 -->
-	<script type="text/javascript">
-		function fileupload() {
-			if ($("#fileID").val() == "") {
-				alert("上传文件不能为空!");
-				return false;
-			}
-			$.ajaxFileUpload({
-				url : "${base}/admin/customer/upload.html",
-				secureuri : false,
-				fileElementId : 'fileID',
-				dataType : 'text/xml',
-				success : function(data) {
-					alert("data");
-				},
-				error : function(data, status, e) {
-					alert("fail");
-				}
-			});
-		}
-	</script>
 
 </body>
 </html>
