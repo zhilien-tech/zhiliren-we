@@ -18,9 +18,15 @@
                   <%-- <button type="button" class="btn btn-primary btn-sm" onClick="window.open('${url}/add.html', 'newwindow', 'height=500, width=800, top=120, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no');">添加</button> --%>
                   <%-- <a data-toggle="modal" href="${url }/add.html" data-target="#addTabs">添加</a> --%>
                   　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
-                  <a class="btn btn-primary btn-sm" onclick="add();">模板</a>
-                  　		　<a class="btn btn-primary btn-sm" onclick="add();">导入Excel</a>
-		                  　<a class="btn btn-primary btn-sm" onclick="add();">导出Excel</a>
+                  <a class="btn btn-primary btn-sm" href="${url }/downloadTemplate.html">模板</a>
+                  　		　<!-- <a class="btn btn-primary btn-sm" onclick="add();">导入Excel</a> -->
+                  <span>
+                  <form id="uploadExcelForm" action="${url }/inportExcelData.html" name="form3" enctype="multipart/form-data" method="post" target="hidden_frame" style="display: inline;">
+	                   	<input type="file" name="excelFile" id="excelFile" size="20" onchange="javascript:onfileChange();" style="width:180px;"/>
+						<iframe name='hidden_frame' id='hidden_frame' style="display: none"></iframe>
+					</form>
+					</span>
+		                  　<a class="btn btn-primary btn-sm" onclick="">导出Excel</a>
 		                  　<a class="btn btn-primary btn-sm" onclick="add();">添加</a>
                   <br/>
                 <label class="radio-inline SelectWid">
@@ -128,7 +134,11 @@ function initDatatable() {
                     		return leavedate.getDate() + "/" + MM;
                     	}
                     },
-                    {"data": "leavecity", "bSortable": false},
+                    {"data": "leavecity", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		return row.leavecity + "-" + row.backcity;
+                    	}
+                    },
                     {"data": "backdate", "bSortable": false,
                     	render: function(data, type, row, meta) {
                     		var backdate = new Date(row.backdate);
@@ -136,7 +146,11 @@ function initDatatable() {
                     		return backdate.getDate() + "/" + MM;
                     	}
                     },
-                    {"data": "backcity", "bSortable": false},
+                    {"data": "backcity", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		return row.backcity + "-" + row.leavecity;
+                    	}	
+                    },
                     {"data": "totalcount", "bSortable": false},
                     {"data": "totalday", "bSortable": false},
                     {"data": "travel", "bSortable": false},
@@ -188,9 +202,22 @@ function initDatatable() {
 	    datatable.settings()[0].ajax.data = param;
 	    datatable.ajax.reload();
 	});
-
+//恢复默认
+$('#resetBtn').on('click', function () {
+	$("#isclose").val('');
+	$("#airline").val('');
+	$("#travel").val('');
+	$("#totalcount").val('');
+	$("#totalday").val('');
+	$("#leavedate").val('');
+	$("#leavecity").val('');
+	$("#backdate").val('');
+	$("#backcity").val('');
+	datatable.ajax.reload();
+});
 $(function () {
     initDatatable();
+   	//初始化日期控件
     var picker = new Pikaday({
         field: document.getElementById('leavedate'),
         firstDay: 1,
@@ -255,6 +282,24 @@ $(function () {
 			 $("#searchBtn").click();
 		 }
 	}
+//选中视频后上传
+  function onfileChange() {
+	   uploadfile();
+  }
+  //上传视频
+  function uploadfile() {
+  		var filepath = document.getElementById("excelFile").value;
+  		var extStart = filepath.lastIndexOf(".");
+  		var ext = filepath.substring(extStart, filepath.length).toUpperCase();
+  		if (ext != ".XLS" && ext != ".XLSX") {
+  			layer.alert("请选择正确的Excel文件");
+  			return;
+  		}
+  		document.getElementById("uploadExcelForm").submit();
+  		//layer.load(1, {shade: [0.8, '#393D49']});
+  	}
+  
+  
   //其他页面回调
   function successCallback(id){
 	  datatable.ajax.reload();
@@ -265,6 +310,11 @@ $(function () {
 	  }else if(id == '3'){
 		  layer.msg("关闭成功",{time: 2000, icon:1});
 	  }
+  }
+  
+  function callback(){
+	  layer.msg("导入成功",{time: 2000, icon:1});
+	  datatable.ajax.reload();
   }
 </script>
 

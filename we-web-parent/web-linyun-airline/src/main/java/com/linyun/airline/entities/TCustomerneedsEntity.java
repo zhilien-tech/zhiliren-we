@@ -63,7 +63,7 @@ public class TCustomerneedsEntity implements Serializable {
 
 	@Column
 	@Comment("是否关闭")
-	private Integer isclose;
+	private int isclose;
 
 	@Column
 	@Comment("操作人")

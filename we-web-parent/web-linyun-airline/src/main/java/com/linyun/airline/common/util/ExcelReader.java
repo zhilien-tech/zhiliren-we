@@ -152,6 +152,10 @@ public class ExcelReader {
 			Map<Integer, String[]> map = excelReader.readExcelContent(is2);
 			for (int i = 1; i <= map.size(); i++) {
 				System.out.println(map.get(i));
+				String[] ssss = map.get(i);
+				for (String str : ssss) {
+					System.out.print(str + " ");
+				}
 			}
 
 		} catch (FileNotFoundException e) {

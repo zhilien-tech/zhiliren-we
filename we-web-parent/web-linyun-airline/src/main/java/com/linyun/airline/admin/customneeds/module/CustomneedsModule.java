@@ -1,16 +1,22 @@
 package com.linyun.airline.admin.customneeds.module;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
+import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
+import org.nutz.mvc.upload.TempFile;
+import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.linyun.airline.admin.customneeds.form.TCustomNeedsSqlForm;
 import com.linyun.airline.admin.customneeds.service.CustomneedsViewService;
@@ -111,5 +117,26 @@ public class CustomneedsModule {
 	@POST
 	public Object closeCustomNeeds(@Param("id") long id) {
 		return customneedsViewService.closeCustomNeeds(id);
+	}
+
+	/**
+	 * 导入Excel
+	 */
+	@At
+	@POST
+	@Ok("jsp")
+	@AdaptBy(type = UploadAdaptor.class, args = { "/uploadTemp", "8192", "UTF-8", "10" })
+	public Object inportExcelData(@Param("excelFile") TempFile file, HttpServletRequest request) {
+		return customneedsViewService.inportExcelData(file, request);
+	}
+
+	/**
+	 * 下载模板
+	 */
+	@At
+	@GET
+	@Ok("json")
+	public Object downloadTemplate(HttpServletRequest request, HttpServletResponse response) {
+		return customneedsViewService.downloadTemplate(request, response);
 	}
 }

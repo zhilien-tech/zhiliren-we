@@ -25,6 +25,7 @@ import com.linyun.airline.forms.TCompanyUpdateForm;
 import com.linyun.airline.forms.TUserAddForm;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.MapUtil;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.base.service.BaseService;
 import com.uxuexi.core.web.util.FormUtil;
@@ -173,5 +174,27 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 		//修改公司信息
 		updateForm.setLastupdatetime(new Date());
 		return this.update(updateForm);
+	}
+
+	/**
+	 * 
+	 * 验证公司名称唯一
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param comName
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Map<String, Object> validatorCompanyName(String comName) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		TCompanyEntity companyEntity = dbDao.fetch(TCompanyEntity.class, Cnd.where("comName", "=", comName));
+		if (Util.isEmpty(companyEntity)) {
+			result.put("valid", true);
+		} else {
+			result.put("valid", false);
+		}
+		// TODO Auto-generated method stub
+		return result;
+
 	}
 }
