@@ -57,9 +57,9 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
-          <li class="dropdown messages-menu">
+          <!-- <li class="dropdown messages-menu"> -->
             <!-- Menu toggle button -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">小工具</a>
+            <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">小工具</a> -->
             <ul class="dropdown-menu">
               <li class="header">You have 4 messages</li>
               <li>
@@ -89,11 +89,11 @@
           <!-- /.messages-menu -->
 
           <!-- Notifications Menu -->
-          <li class="dropdown notifications-menu">
+          <!-- <li class="dropdown notifications-menu"> -->
             <!-- Menu toggle button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
-              <span class="label label-warning">10</span>
+              <!-- <span class="label label-warning">10</span> -->
             </a>
             <ul class="dropdown-menu">
               <li class="header">You have 10 notifications</li>
@@ -114,9 +114,9 @@
           <!-- User Account Menu -->
           <li class="dropdown user user-menu">
             <!-- Menu Toggle Button -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+           <!--  <a href="#" class="dropdown-toggle" data-toggle="dropdown"> -->
               <!-- The user image in the navbar-->
-              <span class="hidden-xs">User name</span>
+              <!-- <span class="hidden-xs">User name</span> -->
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
@@ -156,7 +156,7 @@
           </li>
           <!-- Control Sidebar Toggle Button -->
           <li>
-            <a href="#" data-toggle="control-sidebar">退出</a>
+            <!-- <a href="#" data-toggle="control-sidebar">退出</a> -->
           </li>
         </ul>
       </div>
