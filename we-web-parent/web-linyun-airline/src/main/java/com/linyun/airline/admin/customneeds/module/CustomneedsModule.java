@@ -139,4 +139,15 @@ public class CustomneedsModule {
 	public Object downloadTemplate(HttpServletRequest request, HttpServletResponse response) {
 		return customneedsViewService.downloadTemplate(request, response);
 	}
+
+	/**
+	 * 导出客户需求Excel
+	 */
+	@At
+	@POST
+	@Ok("json")
+	public Object exportCustomNeedsExcel(HttpServletResponse response,
+			@Param("..") final TCustomNeedsSqlForm sqlParamForm) {
+		return customneedsViewService.exportCustomNeedsExcel(response, sqlParamForm);
+	}
 }

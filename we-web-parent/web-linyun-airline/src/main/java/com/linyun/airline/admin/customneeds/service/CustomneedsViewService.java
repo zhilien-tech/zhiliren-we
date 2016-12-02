@@ -7,25 +7,34 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.nutz.dao.Sqls;
+import org.nutz.dao.entity.Record;
+import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.nutz.mvc.upload.TempFile;
 
+import com.linyun.airline.admin.customneeds.form.TCustomNeedsSqlForm;
 import com.linyun.airline.common.util.ExcelReader;
+import com.linyun.airline.common.util.ExportExcel;
 import com.linyun.airline.entities.TCustomerneedsEntity;
 import com.linyun.airline.forms.TCustomerneedsAddForm;
 import com.linyun.airline.forms.TCustomerneedsUpdateForm;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.Util;
+import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.base.service.BaseService;
 
 @IocBean
@@ -34,6 +43,9 @@ public class CustomneedsViewService extends BaseService<TCustomerneedsEntity> {
 
 	private static final String EXCEL_PATH = "download";
 	private static final String FILE_EXCEL_NAME = "客户需求导入模板.xlsx";
+	private static final String[] EXCEL_COLUMN_TITLE = { "航空公司名称", "去程日期", "去程航段", "回程日期", "回程航段", "人数", "天数", "旅行社名称",
+			"联运要求" };
+	private static final String EXCEL_TITLE = "客户需求";
 
 	/**
 	 *
@@ -170,6 +182,40 @@ public class CustomneedsViewService extends BaseService<TCustomerneedsEntity> {
 			os.write(buffer);// 输出文件
 			os.flush();
 			os.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	public Object exportCustomNeedsExcel(HttpServletResponse response, TCustomNeedsSqlForm sqlParamForm) {
+		try {
+			//设置Excel表格输入的日期格式
+			DateFormat df = new SimpleDateFormat("dd/MMM", Locale.ENGLISH);
+			//定义Excel表格的列标题
+			String[] excelColumnTitle = this.EXCEL_COLUMN_TITLE;
+			//设置Excel表格标题
+			String title = this.EXCEL_TITLE;
+			//为Excel准备数据
+			String sqlString = EntityUtil.entityCndSql(TCustomerneedsEntity.class);
+			Sql sql = Sqls.create(sqlString);
+			sql.setCondition(sqlParamForm.cnd());
+			sql.setCallback(Sqls.callback.records());
+			nutDao.execute(sql);
+			@SuppressWarnings("unchecked")
+			List<Record> rerultList = (List<Record>) sql.getResult();
+			//设置Excel数据
+			List<Object[]> excelData = new ArrayList<Object[]>();
+			for (Record record : rerultList) {
+				Object[] obj = { record.get("airline"), df.format(record.get("leavedate")),
+						record.get("leavecity") + "-" + record.get("backcity"), df.format(record.get("backdate")),
+						record.get("backcity") + "-" + record.get("leavecity"), record.get("totalcount"),
+						record.get("totalday"), record.get("travel"), record.get("uniontransport") };
+				excelData.add(obj);
+			}
+			ExportExcel excel = new ExportExcel(title, excelColumnTitle, excelData, response);
+			excel.export();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -26,7 +26,7 @@
 						<iframe name='hidden_frame' id='hidden_frame' style="display: none"></iframe>
 					</form>
 					</span>
-		                  　<a class="btn btn-primary btn-sm" onclick="">导出Excel</a>
+		                  　<a class="btn btn-primary btn-sm" onclick="exportCustomNeedsExcel();">导出Excel</a>
 		                  　<a class="btn btn-primary btn-sm" onclick="add();">添加</a>
                   <br/>
                 <label class="radio-inline SelectWid">
@@ -173,6 +173,12 @@ function initDatatable() {
 }
 	//按钮点击搜索
 	$("#searchBtn").on('click', function () {
+	    var param = getSearchInfo();
+	    datatable.settings()[0].ajax.data = param;
+	    datatable.ajax.reload();
+	});
+	//获取搜索数据
+	function getSearchInfo(){
 		var isclose = $("#isclose").val();
 		var airline = $("#airline").val();
 		var travel = $("#travel").val();
@@ -199,9 +205,8 @@ function initDatatable() {
 	        "backdate": backdate,
 	        "backcity": backcity
 	    };
-	    datatable.settings()[0].ajax.data = param;
-	    datatable.ajax.reload();
-	});
+		return param;
+	}
 //恢复默认
 $('#resetBtn').on('click', function () {
 	$("#isclose").val('');
@@ -282,11 +287,11 @@ $(function () {
 			 $("#searchBtn").click();
 		 }
 	}
-//选中视频后上传
+//选中后开始导入
   function onfileChange() {
 	   uploadfile();
   }
-  //上传视频
+  //导入Excel
   function uploadfile() {
   		var filepath = document.getElementById("excelFile").value;
   		var extStart = filepath.lastIndexOf(".");
@@ -298,7 +303,22 @@ $(function () {
   		document.getElementById("uploadExcelForm").submit();
   		//layer.load(1, {shade: [0.8, '#393D49']});
   	}
-  
+  	//导出Excel
+	function exportCustomNeedsExcel(){
+		var param = getSearchInfo();
+		$.ajax({ 
+			type: 'POST', 
+			data: param, 
+			url: '${base}/admin/customneeds/exportCustomNeedsExcel.html',
+            success: function (data) { 
+            	layer.msg("导出Excel成功",{time: 2000, icon:1});
+            	datatable.ajax.reload();
+            },
+            error: function (xhr) {
+            	layer.msg("导出Excel失败",{time: 2000, icon:1});
+            } 
+        });
+  	}
   
   //其他页面回调
   function successCallback(id){
@@ -316,5 +336,6 @@ $(function () {
 	  layer.msg("导入成功",{time: 2000, icon:1});
 	  datatable.ajax.reload();
   }
+  
 </script>
 

@@ -8,8 +8,12 @@ package com.linyun.airline.common.util;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,10 +41,17 @@ public class ExportExcel {
 	private String title;
 	//导出表的列名  
 	private String[] rowName;
-
+	//内容
 	private List<Object[]> dataList = new ArrayList<Object[]>();
 
 	HttpServletResponse response;
+
+	public ExportExcel(String title, String[] rowName, List<Object[]> dataList, HttpServletResponse response) {
+		this.title = title;
+		this.rowName = rowName;
+		this.dataList = dataList;
+		this.response = response;
+	}
 
 	public String getTitle() {
 		return title;
@@ -128,32 +139,7 @@ public class ExportExcel {
 				}
 			}
 			//让列宽随着导出的列长自动适应  
-			for (int colNum = 0; colNum < columnNum; colNum++) {
-				int columnWidth = sheet.getColumnWidth(colNum) / 256;
-				for (int rowNum = 0; rowNum < sheet.getLastRowNum(); rowNum++) {
-					HSSFRow currentRow;
-					//当前行未被使用过  
-					if (sheet.getRow(rowNum) == null) {
-						currentRow = sheet.createRow(rowNum);
-					} else {
-						currentRow = sheet.getRow(rowNum);
-					}
-					if (currentRow.getCell(colNum) != null) {
-						HSSFCell currentCell = currentRow.getCell(colNum);
-						if (currentCell.getCellType() == HSSFCell.CELL_TYPE_STRING) {
-							int length = currentCell.getStringCellValue().getBytes().length;
-							if (columnWidth < length) {
-								columnWidth = length;
-							}
-						}
-					}
-				}
-				if (colNum == 0) {
-					sheet.setColumnWidth(colNum, (columnWidth - 2) * 256);
-				} else {
-					sheet.setColumnWidth(colNum, (columnWidth + 4) * 256);
-				}
-			}
+			widthAdaptive(sheet, columnNum);
 
 			if (workbook != null) {
 				OutputStream out = null;
@@ -176,6 +162,45 @@ public class ExportExcel {
 			e.printStackTrace();
 		}
 
+	}
+
+	/**
+	 * 
+	 * 设置Excel表格列宽度为自适应
+	 * <p>
+	 * 设置Excel表格列宽度为自适应
+	 *
+	 * @param sheet ：对应的Excel表格对象
+	 * @param columnNum 列数
+	 */
+	public void widthAdaptive(HSSFSheet sheet, int columnNum) {
+		//让列宽随着导出的列长自动适应  
+		for (int colNum = 0; colNum < columnNum; colNum++) {
+			int columnWidth = sheet.getColumnWidth(colNum) / 256;
+			for (int rowNum = 0; rowNum < sheet.getLastRowNum(); rowNum++) {
+				HSSFRow currentRow;
+				//当前行未被使用过  
+				if (sheet.getRow(rowNum) == null) {
+					currentRow = sheet.createRow(rowNum);
+				} else {
+					currentRow = sheet.getRow(rowNum);
+				}
+				if (currentRow.getCell(colNum) != null) {
+					HSSFCell currentCell = currentRow.getCell(colNum);
+					if (currentCell.getCellType() == HSSFCell.CELL_TYPE_STRING) {
+						int length = currentCell.getStringCellValue().getBytes().length;
+						if (columnWidth < length) {
+							columnWidth = length;
+						}
+					}
+				}
+			}
+			if (colNum == 0) {
+				sheet.setColumnWidth(colNum, (columnWidth - 2) * 256);
+			} else {
+				sheet.setColumnWidth(colNum, (columnWidth + 4) * 256);
+			}
+		}
 	}
 
 	/*   
@@ -218,5 +243,11 @@ public class ExportExcel {
 		style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 
 		return style;
+	}
+
+	public static void main(String[] args) {
+		Date date = new Date();
+		DateFormat df = new SimpleDateFormat("dd/MMM", Locale.ENGLISH);
+		System.out.println(df.format(date));
 	}
 }

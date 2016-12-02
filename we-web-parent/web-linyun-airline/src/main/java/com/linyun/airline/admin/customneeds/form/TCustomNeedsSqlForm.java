@@ -78,7 +78,7 @@ public class TCustomNeedsSqlForm extends DataTablesParamForm {
 	/**最后修改时间*/
 	private Date lastupdatetime;
 
-	private Cnd cnd() {
+	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		cnd.and("isclose", "=", 0);
 		if (!Util.isEmpty(airline)) {
