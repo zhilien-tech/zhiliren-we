@@ -210,7 +210,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	<!-- AdminLTE App -->
 	<script src="${base}/public/dist/js/app.min.js"></script>
 	<script src="${base}/common/js/layer/layer.js"></script>
-
 	<script>
 		//添加
 		$('#addBtn').click(function() {
@@ -220,37 +219,40 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		});
 		//删除提示
 		function physicalDelete(did, status) {
-			$.ajax({
-				type : 'POST',
-				data : {
-					id : did,
-					status : status
-				},
-				dataType : 'json',
-				url : '${base}/admin/dictionary/dirinfo/updateDeleteStatus.html',
-				success : function(data) {
-					if ("200" == data.status) {
-						layer.msg("操作成功!", "", 3000);
-						window.location.reload(true);
-					} else {
-						layer.msg("操作失败!", "", 3000);
+			layer.confirm("您确认删除(启用)信息吗？", {
+			    btn: ["是","否"], //按钮
+			    shade: false //不显示遮罩
+			}, function(){
+				// 点击确定之后
+				var url = '${base}/admin/dictionary/dirinfo/updateDeleteStatus.html';
+				$.ajax({
+					type : 'POST',
+					data : {
+						id : did,
+						status : status
+					},
+					dataType : 'json',
+					url : url,
+					success : function(data) {
+						if ("200" == data.status) {
+							layer.msg("操作成功!", "", 3000);
+							window.location.reload(true);
+						} else {
+							layer.msg("操作失败!", "", 3000);
+						}
+					},
+					error : function(xhr) {
+						layer.msg("操作失败", "", 3000);
 					}
-				},
-				error : function(xhr) {
-					layer.msg("操作失败", "", 3000);
-				}
+				});
+			}, function(){
+			    // 取消之后不用处理
 			});
 		}
 		//描述提示信息弹出层Tooltip
 		$(function() {
 			$("[data-toggle='tooltip']").tooltip();
 		});
-	</script>
-	<script type="text/javascript">
-		//状态默认选中
-		function defaultSelect(){
-			document.getElementById("form1").submit();
-		}
 	</script>
 	<!-- 分页显示 -->
 	<script type="text/javascript">
@@ -269,6 +271,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		$(function() {
 			initDatatable();
 		});
+	</script>
+	<script type="text/javascript">
+		//状态默认选中
+		function defaultSelect(){
+			document.getElementById("form1").submit();
+		}
 	</script>
 </body>
 </html>

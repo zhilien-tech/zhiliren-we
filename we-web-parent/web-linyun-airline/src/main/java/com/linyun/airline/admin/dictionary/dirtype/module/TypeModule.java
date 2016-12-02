@@ -113,8 +113,8 @@ public class TypeModule {
 	@At
 	@Ok("jsp")
 	public Object list(@Param("..") final TypeQueryForm queryForm, @Param("..") final Pager pager) {
-		if (Util.isEmpty(queryForm.getStatus())) {
-			queryForm.setStatus(DataStatusEnum.ENABLE.intKey());
+		if (Util.isEmpty(queryForm.getTypeName())) {
+			queryForm.setTypeName(null);
 		}
 		Map<String, Object> map = FormUtil.query(dbDao, DictTypeEntity.class, queryForm, pager);
 		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));

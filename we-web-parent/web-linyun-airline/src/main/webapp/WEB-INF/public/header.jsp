@@ -172,13 +172,7 @@
       </div>
 
       <!-- Sidebar Menu -->
-      <ul class="sidebar-menu">
-        <li class="header">菜单栏</li>
-        <!-- Optionally, you can add icons to the links -->
-
-        <li class="active"><a href="${base}/admin/Company/list.html"><i class="fa fa-users"></i> <span>公司管理</span></a></li>
-        <li ><a href="clientManage.html"><i class="fa fa-user-secret"></i><span>客户管理</span></a></li>
-      </ul>
+      
       <!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->
