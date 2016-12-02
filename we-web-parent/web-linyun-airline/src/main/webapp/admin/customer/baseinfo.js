@@ -1,4 +1,4 @@
-$("#companyID").select2({
+$("#companyId").select2({
 	ajax : {
 		url : BASE_PATH + "/admin/customer/company.html",
 		dataType : 'json',

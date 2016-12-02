@@ -57,16 +57,14 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">公司名称：</label>
 							<div class="col-sm-8 padding seleSpanWid">
-								<select id="companyId" class="form-control select2 inpImpWid"
-									multiple="multiple" data-placeholder="请输入公司名称"><span
-									class="prompt">*</span>
+								<select id="companyId" class="form-control select2 inpImpWid" multiple="multiple"  data-placeholder="请输入公司名称">
+									
 								</select><span class="prompt">*</span>
 								<!-- 公司ID -->
 								<input id="agentId" type="hidden" name="agentId" />
 								<!-- 公司名称 -->
 								<input id="comName" type="hidden" name="name" />
 							</div>
-
 						</div>
 
 						<div class="form-group row">

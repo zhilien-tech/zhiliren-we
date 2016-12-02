@@ -296,8 +296,7 @@
 							<!-- 发票项  -->
 							<div class="col-sm-8" style="display: none;" id="invioceType">
 								<div class="col-sm-12 padding">
-									<select id="sInvID" class="form-control select2"
-										multiple="multiple" data-placeholder="请输入发票项">
+									<select id="sInvID" class="form-control select2" multiple="multiple" data-placeholder="请输入发票项">
 										<option></option>
 										<c:forEach var="one" items="${obj.invoicelist }">
 											<option value="${one.id }">${one.text}</option>
