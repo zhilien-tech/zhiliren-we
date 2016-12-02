@@ -59,4 +59,13 @@ select
 	d.*
 from 
 	t_customer_invioce l inner join dict_info d on l.dictInfoId=d.id
+	
+/*customer_list_info*/
+SELECT
+	u.userName,
+	t.*
+FROM
+	t_customer_info t
+INNER JOIN t_user u ON t.agent = u.id
+$condition
 

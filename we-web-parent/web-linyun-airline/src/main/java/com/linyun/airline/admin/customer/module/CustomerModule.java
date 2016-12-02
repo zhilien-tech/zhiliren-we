@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -27,10 +28,12 @@ import com.linyun.airline.admin.customer.service.CustomerViewService;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.base.Uploader;
 import com.linyun.airline.common.constants.CommonConstants;
+import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
 import com.linyun.airline.forms.TCustomerInfoQueryForm;
 import com.linyun.airline.forms.TCustomerInfoUpdateForm;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
 
@@ -74,7 +77,6 @@ public class CustomerModule {
 	@Ok("jsp")
 	public Object add(@Param("id") final long id) {
 		Map<String, Object> obj = new HashMap<String, Object>();
-
 		List<TUserEntity> userlist = dbDao.query(TUserEntity.class, null, null);
 		obj.put("userlist", userlist);
 		return obj;
@@ -122,6 +124,9 @@ public class CustomerModule {
 	//服务器端分页查询
 	@At
 	public Object listData(@Param("..") final TCustomerInfoQueryForm queryForm) {
+		//TODO 设置 列表展示的负责人名称
+		//queryForm.setAgentName();
+
 		return customerViewService.listPage4Datatables(queryForm);
 	}
 
@@ -172,17 +177,17 @@ public class CustomerModule {
 		return customerViewService.goCity(name);
 	}
 
-	//线路查询
+	//國内线路查询
 	@At
 	@POST
-	public Object isLine(@Param("q") final String name) throws Exception {
+	public Object innerLine(@Param("q") final String name) throws Exception {
 		return customerViewService.isLine(name);
 	}
 
-	//线路查询
+	//國際线路查询
 	@At
 	@POST
-	public Object international(@Param("q") final String name) throws Exception {
+	public Object interLine(@Param("q") final String name) throws Exception {
 		return customerViewService.international(name);
 	}
 
@@ -205,6 +210,23 @@ public class CustomerModule {
 		uploader.upload();
 		String url = CommonConstants.IMAGES_SERVER_ADDR + uploader.getUrl();
 		return url;
+	}
+
+	/**
+	 * 公司名称唯一性校验
+	 */
+	@At
+	@POST
+	public Object checkComNameExist(@Param("agentId") final String id) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<TCustomerInfoEntity> comNameList = dbDao.query(TCustomerInfoEntity.class, Cnd.where("agentId", "=", id),
+				null);
+		if (!Util.isEmpty(comNameList)) {
+			map.put("valid", false);
+		} else {
+			map.put("valid", true);
+		}
+		return map;
 	}
 
 }

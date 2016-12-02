@@ -132,7 +132,6 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		if (!Util.isEmpty(addForm.getContractTimeString())) {
 			addForm.setContractTime(DateUtil.string2Date(addForm.getContractTimeString(), "yyyy-MM-dd"));
 		}
-
 		TCustomerInfoEntity customerInfo = this.add(addForm);
 
 		//出发城市城市截取
@@ -203,6 +202,10 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		agentSql.params().set("agentId", id);
 		List<TUserEntity> userlist = DbSqlUtil.query(dbDao, TUserEntity.class, agentSql);
 		obj.put("userlist", userlist);
+
+		/*//获得所有的列表
+		List<TUserEntity> userlist = dbDao.query(TUserEntity.class, null, null);
+		obj.put("userlist", userlist);*/
 
 		//查询公司名称
 		Sql comSql = Sqls.create(sqlManager.get("customer_comOption_list"));

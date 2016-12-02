@@ -80,6 +80,10 @@ public class TCustomerInfoEntity implements Serializable {
 	private int payWay;
 
 	@Column
+	@Comment("其他付款方式")
+	private int paywayName;
+
+	@Column
 	@Comment("是否提供发票（0：否   1：是）")
 	private int invoice;
 
@@ -94,6 +98,10 @@ public class TCustomerInfoEntity implements Serializable {
 	@Column
 	@Comment("结算形式（月结、周结、单结、其他）")
 	private int payType;
+
+	@Column
+	@Comment("其他结算方式")
+	private int paytypeName;
 
 	@Column
 	@Comment("合作时间")

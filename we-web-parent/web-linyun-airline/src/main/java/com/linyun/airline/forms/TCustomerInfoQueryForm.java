@@ -24,9 +24,7 @@ import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
-import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.uxuexi.core.common.util.Util;
-import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
 @Data
@@ -41,8 +39,12 @@ public class TCustomerInfoQueryForm extends DataTablesParamForm {
 
 	/**是否禁用*/
 	private String forbid;
+
 	/**是否禁用*/
 	private long id;
+
+	/**负责人姓名*/
+	private String agentName;
 
 	/*时间*/
 	private Date createTime;
@@ -51,20 +53,20 @@ public class TCustomerInfoQueryForm extends DataTablesParamForm {
 		Cnd cnd = Cnd.NEW();
 		//TODO 添加自定义查询条件（可选）
 		if (!Util.isEmpty(name)) {
-			cnd.and("name", "LIKE", "%" + name + "%").or("agent", "LIKE", "%" + name + "%")
-					.or("telephone", "LIKE", "%" + name + "%");
+			cnd.and("t.name", "LIKE", "%" + name + "%").or("u.userName", "LIKE", "%" + name + "%")
+					.or("t.telephone", "LIKE", "%" + name + "%");
 		}
 		if (!Util.isEmpty(contract)) {
-			cnd.and("contract", "=", contract);
+			cnd.and("t.contract", "=", contract);
 		}
 		if (!Util.isEmpty(forbid)) {
-			cnd.and("forbid", "=", forbid);
+			cnd.and("t.forbid", "=", forbid);
 		}
 		if (!Util.isEmpty(createTime)) {
-			cnd.orderBy("createTime", "DESC");
+			cnd.orderBy("t.createTime", "DESC");
 		}
 		if (!Util.isEmpty(id)) {
-			cnd.orderBy("id", "DESC");
+			cnd.orderBy("t.id", "DESC");
 		}
 		return cnd;
 	}
@@ -75,7 +77,8 @@ public class TCustomerInfoQueryForm extends DataTablesParamForm {
 	 */
 	@Override
 	public Sql sql(SqlManager sqlManager) {
-		String sqlString = EntityUtil.entityCndSql(TCustomerInfoEntity.class);
+		String sqlString = sqlManager.get("customer_list_info");
+		//String sqlString = EntityUtil.entityCndSql(TCustomerInfoEntity.class);
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;

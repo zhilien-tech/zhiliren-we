@@ -119,7 +119,7 @@
 										<div class="col-md-2">
 											<!--是否签约 下拉框-->
 											<select id="contract" class="form-control select"
-												name="contract"
+												name="contract" onchange="searchOpt();"
 												<!-- onchange="alert($(this).val())" -->>
 												<option value="">是否签约</option>
 												<option value="1"
@@ -132,8 +132,7 @@
 										</div>
 										<div class="col-md-2">
 											<!--是否禁用 下拉框-->
-											<select id="forbid" class="form-control select"
-												name="forbid">
+											<select id="forbid" class="form-control select" name="forbid" onchange="searchOpt();">
 												<option value="">是否禁用</option>
 												<option value="0"
 													<c:if test="${'0' eq obj.queryForm.forbid}">selected</c:if>>否</option>
@@ -144,7 +143,7 @@
 										<div class="col-md-3">
 											<!--公司名称/负责人/电话 搜索框-->
 											<input type="text" id="sname" name="name"
-												 class="form-control"  placeholder="公司名称/负责人/电话">
+												 class="form-control"  placeholder="公司名称/负责人/电话" onkeypress="onkeyEnter();">
 										</div>
 										<div class="col-md-3 col-padding">
 											<!--搜索 恢复默认 按钮-->
@@ -255,7 +254,7 @@ function initDatatable() {
         "columns": [
                     {"data": "id", "bSortable": false},
                     {"data": "name", "bSortable": false},
-                    {"data": "agent", "bSortable": false},
+                    {"data": "username", "bSortable": false},
                     {"data": "telephone", "bSortable": false},
                     {"data": "contract", "bSortable": false,
                     	render: function(data, type, row, meta) {
@@ -296,11 +295,11 @@ function initDatatable() {
 }
 
 	$("#searchBtn").on('click', function () {
-		var sname = $("#sname").val();
-		var contract = $("#contract").val();
-		var forbid = $("#forbid").val();
+		var snameVal = $("#sname").val();
+		var contractVal = $("#contract").val();
+		var forbidVal = $("#forbid").val();
 	    var param = {
-	        "name": sname,"contract":contract,"forbid":forbid
+	        "name": snameVal,"contract":contractVal,"forbid":forbidVal
 	    };
 	    datatable.settings()[0].ajax.data = param;
 	    datatable.ajax.reload();
@@ -330,6 +329,17 @@ function initDatatable() {
 			$(this).removeData("modal");
 		});
 	});
+	
+	//回车查询
+	function onkeyEnter(){
+		 if(event.keyCode==13){
+			 $("#searchBtn").click();
+		 }
+	}
+	//下拉查询
+	function searchOpt(){
+		$("#searchBtn").click();
+	}
 	
 </script>
 </body>
