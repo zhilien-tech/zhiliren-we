@@ -15,7 +15,7 @@
         <%-- <li><a href="${base}/admin/customer/list.html"><i class="fa fa-users"></i><span>员工管理</span></a></li> --%>
         <li><a href="${base}/admin/Company/list.html"><i class="fa fa-users"></i><span>公司管理</span></a></li>
         <li><a href="${base}/admin/customer/list.html"><i class="fa fa-user-secret"></i><span>客户管理</span></a></li>
-        <li><a href="${base}/admin/authority/function/list.html"><i class="fa fa-user-secret"></i><span>功能管理</span></a></li>
+        <%-- <li><a href="${base}/admin/authority/function/list.html"><i class="fa fa-user-secret"></i><span>功能管理</span></a></li> --%>
         <li><a href="${base}/admin/authority/companyfunction/companyList.html"><i class="fa fa-user-secret"></i><span>公司权限配置</span></a></li>
          <%-- <li class="treeview">
           <a href="${base}/admin/job/list.html">
