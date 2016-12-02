@@ -222,14 +222,14 @@
 							<div class="col-sm-5 padding">
 								<input id="datepicker1" name="contractTimeString" type="text"
 									class="form-control input-sm input-wid"
-									placeholder="2015-08-08" /> 
+									placeholder="2015-08-08" value="${obj.customer.contractTime}"/> 
 								至 <input id="datepicker2"
 									name="contractDueTimeString" type="text"
 									class="form-control input-sm input-wid"
-									placeholder="2088-09-09" />
+									placeholder="2088-09-09" value="${obj.customer.contractDueTime}" pattern="yyyy-MM-dd"/>
 							</div>
 						</div>
-
+						 
 						<div class="form-group row">
 							<label class="col-sm-2 text-right padding">付款方式：</label>
 							<div class="col-sm-2 padding">

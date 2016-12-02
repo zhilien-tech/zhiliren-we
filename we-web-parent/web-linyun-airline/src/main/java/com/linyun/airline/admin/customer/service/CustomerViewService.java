@@ -378,7 +378,6 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 		//国境内陆截取
 		Iterable<String> sLine1s = Splitter.on(",").split(updateForm.getSLine1());
-		Iterable<String> internationLines = Splitter.on(",").split(updateForm.getInternationLine());
 		//国境内陆更新
 		List<TCustomerLineEntity> linesAfter = new ArrayList<TCustomerLineEntity>();
 		for (String dictInfoId : sLine1s) {
@@ -387,15 +386,21 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 			lineEntity.setDictInfoId(Long.valueOf(dictInfoId));
 			linesAfter.add(lineEntity);
 		}
+		List<TCustomerLineEntity> innerLinesBefore = dbDao.query(TCustomerLineEntity.class,
+				Cnd.where("infoId", "=", updateForm.getId()), null);
+		dbDao.updateRelations(innerLinesBefore, linesAfter);
+
+		//国际截取
+		Iterable<String> internationLines = Splitter.on(",").split(updateForm.getInternationLine());
 		for (String dictInfoId : internationLines) {
 			TCustomerLineEntity lineEntity = new TCustomerLineEntity();
 			lineEntity.setInfoId(updateForm.getId());
 			lineEntity.setDictInfoId(Long.valueOf(dictInfoId));
 			linesAfter.add(lineEntity);
 		}
-		List<TCustomerLineEntity> linesBefore = dbDao.query(TCustomerLineEntity.class,
+		List<TCustomerLineEntity> interLinesBefore = dbDao.query(TCustomerLineEntity.class,
 				Cnd.where("infoId", "=", updateForm.getId()), null);
-		dbDao.updateRelations(linesBefore, linesAfter);
+		dbDao.updateRelations(interLinesBefore, linesAfter);
 
 		//发票信息截取
 		Iterable<String> sInvNames = Splitter.on(",").split(updateForm.getSInvName());
