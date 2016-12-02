@@ -60,6 +60,11 @@ public class BaseServiceTest {
 		log.info("create table if not exists done");
 	}
 
+	/**
+	 * validate-conflicts:
+	 * 添加注释，验证git冲突
+	 * <p>
+	 */
 	@Test
 	public void testInsert() {
 		TestEntity en = new TestEntity();

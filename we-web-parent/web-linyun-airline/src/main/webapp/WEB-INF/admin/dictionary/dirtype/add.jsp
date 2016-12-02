@@ -21,7 +21,7 @@
 	<div class="modal-top">
 		<form id="addForm">
 			<div class="modal-header boderButt">
-				<button type="button" class="btn btn-primary right btn-sm"
+				<button id="backBtn" type="button" class="btn btn-primary right btn-sm"
 					data-dismiss="modal">返回</button>
 				<button type="button" id="submit"
 					class="btn btn-primary right btn-sm">保存</button>
@@ -63,7 +63,7 @@
 		</form>
 	</div>
 	<script type="text/javascript">
-	//验证
+	//验证输入内容不能为空
 	$(document).ready(function(){
 		$('#addForm').bootstrapValidator({
 			message: '验证不通过!',
@@ -76,9 +76,22 @@
 	        	typeCode: {
 	                validators: {
 	                    notEmpty: {
-	                        message: '字典代码类别编码不能为空!'
+	                        message: '字典类别编码不能为空!'
 	                    },
-		                regexp: {
+	                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
+	                         url: '${base}/admin/dictionary/dirtype/checkTypeCodeExist.html',//验证地址
+	                         message: '字典类别编码已存在，请重新输入!',//提示消息
+	                         delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+	                         type: 'POST',//请求方式
+	                         //自定义提交数据，默认值提交当前input value
+	                         data: function(validator) {
+	                            return {
+	                            	//typeCode:$('#typeCode').val()
+	                            	typeCode:$('input[name="typeCode"]').val()
+	                            };
+	                         }
+	                     },
+	                     regexp: {
 	                        regexp: /^[A-Za-z0-9]+$/,
 	                        message: '字典代码只能为字母或数字'
 	                    }
@@ -94,6 +107,7 @@
 	        }
 		});
 	});
+	
 		//添加成功提示
 		$("#submit").click(function() {
 			$('#addForm').bootstrapValidator('validate');
@@ -127,6 +141,10 @@
 		$('#submit').click(function() {
 	        $('#addForm').bootstrapValidator('validate');
 	    });
+		//点击返回按钮自动刷新页面
+		$('#backBtn').click(function(){
+			window.location.href="${base}/admin/dictionary/dirtype/list.html";
+		});
 	</script>
 </body>
 </html>

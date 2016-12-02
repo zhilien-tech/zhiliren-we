@@ -12,9 +12,12 @@
       <ul class="sidebar-menu">
         <li class="header">菜单栏</li>
         <!-- Optionally, you can add icons to the links -->
-        <li><a href="employeeManage.html"><i class="fa fa-users"></i> <span>员工管理</span></a></li>
+        <%-- <li><a href="${base}/admin/customer/list.html"><i class="fa fa-users"></i><span>员工管理</span></a></li> --%>
+        <li><a href="${base}/admin/Company/list.html"><i class="fa fa-users"></i><span>公司管理</span></a></li>
         <li><a href="${base}/admin/customer/list.html"><i class="fa fa-user-secret"></i><span>客户管理</span></a></li>
-         <li class="treeview">
+        <%-- <li><a href="${base}/admin/authority/function/list.html"><i class="fa fa-user-secret"></i><span>功能管理</span></a></li> --%>
+        <li><a href="${base}/admin/authority/companyfunction/companyList.html"><i class="fa fa-user-secret"></i><span>公司权限配置</span></a></li>
+         <%-- <li class="treeview">
           <a href="${base}/admin/job/list.html">
             <i class="fa fa-edit"></i> <span>权限管理</span>
             <span class="pull-right-container">
@@ -25,9 +28,9 @@
             <li><a href="${base}/admin/job/list.html"><i class="fa fa-circle-o"></i> 职位管理</a></li>
             <li><a href="${base}/admin/job/list.html"><i class="fa fa-circle-o"></i> 用户管理</a></li>
             <li><a href="${base}/admin/job/list.html"><i class="fa fa-circle-o"></i> 功能管理</a></li>
-          </ul>
+          </ul> --%>
         </li>
-        <li class="active treeview">
+        <li class="treeview">
           <a href="${base}/admin/dictionary/dirtype/list.html">
             <i class="fa fa-table"></i> <span>数据字典</span>
             <span class="pull-right-container">

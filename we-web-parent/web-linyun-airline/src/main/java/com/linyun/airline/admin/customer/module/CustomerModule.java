@@ -180,14 +180,14 @@ public class CustomerModule {
 	//國内线路查询
 	@At
 	@POST
-	public Object innerLine(@Param("q") final String name) throws Exception {
+	public Object isLine(@Param("q") final String name) throws Exception {
 		return customerViewService.isLine(name);
 	}
 
 	//國際线路查询
 	@At
 	@POST
-	public Object interLine(@Param("q") final String name) throws Exception {
+	public Object international(@Param("q") final String name) throws Exception {
 		return customerViewService.international(name);
 	}
 

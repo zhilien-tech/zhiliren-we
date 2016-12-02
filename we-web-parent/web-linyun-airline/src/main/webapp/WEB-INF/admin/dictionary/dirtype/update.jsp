@@ -16,7 +16,7 @@
 	<div class="modal-top">
 		<form id="updateForm" method="post">
 			<div class="modal-header boderButt">
-				<button type="button" class="btn btn-primary right btn-sm"
+				<button id="backBtn" type="button" class="btn btn-primary right btn-sm"
 					data-dismiss="modal">返回</button>
 				<button type="button" id="submit"
 					class="btn btn-primary right btn-sm">保存</button>
@@ -94,5 +94,9 @@
 			}
 		});
 		$(".Mymodal-lg").modal('hide');
+	});
+	//点击返回按钮自动刷新页面
+	$('#backBtn').click(function(){
+		window.location.href="${base}/admin/dictionary/dirtype/list.html";
 	});
 </script>
