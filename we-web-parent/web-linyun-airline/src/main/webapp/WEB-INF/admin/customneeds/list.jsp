@@ -26,7 +26,7 @@
 						<iframe name='hidden_frame' id='hidden_frame' style="display: none"></iframe>
 					</form>
 					</span>
-		                  　<a class="btn btn-primary btn-sm" onclick="exportCustomNeedsExcel();">导出Excel</a>
+		                  　<a class="btn btn-primary btn-sm" href="${base}/admin/customneeds/exportCustomNeedsExcel.html" id="exportExcelId">导出Excel</a>
 		                  　<a class="btn btn-primary btn-sm" onclick="add();">添加</a>
                   <br/>
                 <label class="radio-inline SelectWid">
@@ -36,6 +36,7 @@
                     <option value="1">关闭</option>
                      </select>
                  </label>
+                 	<form id="searchForm">
 			                航空公司<input type="text" name="airline" id="airline"  placeholder="首航-CA" onkeypress="onkeyEnter();">
 			                旅行社<input type="text" name="travel" id="travel"  onkeypress="onkeyEnter();">
 			                人数<input type="text" name="totalcount" id="totalcount"  onkeypress="onkeyEnter();">
@@ -44,6 +45,7 @@
 			                去程航段<input type="text" name="leavecity" id="leavecity"  placeholder="北京-PEK" onkeypress="onkeyEnter();">
 			                回程日期<input type="text" name="backdate" id="backdate"  onkeypress="onkeyEnter();">
 			                  回程航段<input type="text" name="backcity" id="backcity"  placeholder="悉尼-SYD" onkeypress="onkeyEnter();">
+                  </form>
                   <button id="searchBtn" type="button" class="btn btn-primary btn-sm">搜索</button>　
                   <button id="resetBtn" type="button" class="btn btn-primary btn-sm">恢复默认</button>
               
@@ -173,6 +175,8 @@ function initDatatable() {
 }
 	//按钮点击搜索
 	$("#searchBtn").on('click', function () {
+		//为Excel导出提供方法
+		document.getElementById('exportExcelId').href= "${base}/admin/customneeds/exportCustomNeedsExcel.html?" + $("#searchForm").serialize();
 	    var param = getSearchInfo();
 	    datatable.settings()[0].ajax.data = param;
 	    datatable.ajax.reload();
@@ -282,10 +286,11 @@ $(function () {
 	        });
 		});
   }
-  function onkeyEnter(){
-		 if(event.keyCode==13){
-			 $("#searchBtn").click();
-		 }
+    function onkeyEnter(){
+       var e = window.event || arguments.callee.caller.arguments[0];
+	   if(e || e.keyCode == 13){
+		 $("#searchBtn").click();
+	   }
 	}
 //选中后开始导入
   function onfileChange() {
@@ -303,23 +308,6 @@ $(function () {
   		document.getElementById("uploadExcelForm").submit();
   		//layer.load(1, {shade: [0.8, '#393D49']});
   	}
-  	//导出Excel
-	function exportCustomNeedsExcel(){
-		var param = getSearchInfo();
-		$.ajax({ 
-			type: 'POST', 
-			data: param, 
-			url: '${base}/admin/customneeds/exportCustomNeedsExcel.html',
-            success: function (data) { 
-            	layer.msg("导出Excel成功",{time: 2000, icon:1});
-            	datatable.ajax.reload();
-            },
-            error: function (xhr) {
-            	layer.msg("导出Excel失败",{time: 2000, icon:1});
-            } 
-        });
-  	}
-  
   //其他页面回调
   function successCallback(id){
 	  datatable.ajax.reload();

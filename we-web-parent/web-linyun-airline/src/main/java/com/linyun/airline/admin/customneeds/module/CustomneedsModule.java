@@ -144,7 +144,7 @@ public class CustomneedsModule {
 	 * 导出客户需求Excel
 	 */
 	@At
-	@POST
+	@GET
 	@Ok("json")
 	public Object exportCustomNeedsExcel(HttpServletResponse response,
 			@Param("..") final TCustomNeedsSqlForm sqlParamForm) {
