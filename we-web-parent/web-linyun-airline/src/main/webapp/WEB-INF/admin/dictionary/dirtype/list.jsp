@@ -46,10 +46,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
-
 		<%@include file="/WEB-INF/public/header.jsp"%>
 		<%@include file="/WEB-INF/public/aside.jsp"%>
-
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
 			<!-- Main content -->
@@ -62,14 +60,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 									&nbsp;&nbsp;<i class="fa fa-user-secret">字典类型</i>
 								</h3>
 							</div>
-							<form id="form1"
+							<form id="listForm"
 								action="${base}/admin/dictionary/dirtype/list.html"
 								method="post" onsubmit="return navTabSearch(this);">
 								<div class="col-md-2">
 									<!--状态名称 搜索框-->
 									<div class="col-sm-12 padding">
 										<select id="status" name="status"
-											class="form-control input-sm" onchange="defaultSelect();">
+											class="form-control input-sm" onchange="defaultSelect()">
 											<c:forEach var="map" items="${obj.dataStatusEnum}">
 												<c:choose>
 													<c:when test="${map.key == obj.queryForm.status}">
@@ -209,38 +207,40 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		});
 		//删除提示
 		function physicalDelete(did, status) {
-			$
-					.ajax({
-						type : 'POST',
-						data : {
-							id : did,
-							status : status
-						},
-						dataType : 'json',
-						url : '${base}/admin/dictionary/dirtype/updateDeleteStatus.html',
-						success : function(data) {
-							if ("200" == data.status) {
-								layer.msg("操作成功!", "", 3000);
-								window.location.reload(true);
-							} else {
-								layer.msg("操作失败!", "", 3000);
-							}
-						},
-						error : function(xhr) {
-							layer.msg("操作失败", "", 3000);
+			layer.confirm("您确认删除(启用)信息吗？", {
+			    btn: ["是","否"], //按钮
+			    shade: false //不显示遮罩
+			}, function(){
+				// 点击确定之后
+				var url = '${base}/admin/dictionary/dirtype/updateDeleteStatus.html';
+				$.ajax({
+					url : url,
+					type : 'POST',
+					dataType : 'json',
+					data : {
+						id : did,
+						status : status
+					},
+					success :function(data) {
+						if ("200" == data.status) {
+							layer.msg("操作成功!", "", 3000);
+							// 重新加载
+							setTimeout("location.reload()",1000);
+						} else {
+							layer.msg("操作失败!", "", 3000);
 						}
-					});
+					},error : function(xhr) {
+						layer.msg("操作失败", "", 3000);
+					}
+				});
+			}, function(){
+			    // 取消之后不用处理
+			});
 		}
 		//描述提示信息弹出层Tooltip 
 		$(function() {
 			$("[data-toggle='tooltip']").tooltip();
 		});
-	</script>
-	<script type="text/javascript">
-		//状态默认选中
-		function defaultSelect(){
-			document.getElementById("form1").submit();
-		}
 	</script>
 	<script type="text/javascript">
 		var datatable;
@@ -251,18 +251,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 				"serverSide" : false,
 				"bLengthChange" : false,
 				"language" : {
-					"url" : "${base}/public/plugins/datatables/cn.json"
+				"url" : "${base}/public/plugins/datatables/cn.json"
 				}
 			});
 		}
 		$(function() {
 			initDatatable();
 		});
-		//状态默认搜索status
-		function searchStatus(){
-			
+	</script>
+	<script type="text/javascript">
+		//状态默认选中
+		function defaultSelect(){
+			document.getElementById("listForm").submit();
 		}
-		
 	</script>
 </body>
 </html>

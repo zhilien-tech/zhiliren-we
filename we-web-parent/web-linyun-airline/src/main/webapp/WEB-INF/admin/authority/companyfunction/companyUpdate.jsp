@@ -1,0 +1,174 @@
+<%@ page contentType="text/html; charset=UTF-8" language="java"
+	pageEncoding="UTF-8" errorPage="/WEB-INF/common/500.jsp"%>
+<%@include file="/WEB-INF/common/tld.jsp"%>
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+<meta http-equiv="Access-Control-Allow-Origin" content="*" />
+<meta name="alexaVerifyID" content="" />
+<title>公司权限配置</title>
+<link rel="stylesheet"
+	href="${base }/public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="${base }/public/dist/css/AdminLTE.css">
+<link rel="stylesheet"
+	href="${base }/public/dist/css/font-awesome.min.css">
+<link rel="stylesheet" href="${base }/public/dist/css/ionicons.min.css">
+<link rel="stylesheet"
+	href="${base }/public/dist/css/skins/_all-skins.min.css">
+<link rel="stylesheet"
+	href="${base }/public/dist/css/bootstrapValidator.css" />
+<!-- zTree -->
+<link rel="stylesheet"
+	href="${base }/common/js/zTree/css/zTreeStyle/zTreeStyle.css">
+<!-- style -->
+<link rel="stylesheet" href="${base }/public/css/style.css">
+<style type="text/css">
+.wu-example .statusBar .btns .uploadBtn {
+	background: #3c8dbc !important;
+	color: #fff;
+	border-color: transparent;
+	position: relative;
+	top: -122px;
+	height: 40px;
+	border-radius: 5px;
+}
+</style>
+</head>
+<body onresize=hero();>
+	<div class="modal-top">
+		<form id="companyUpdateForm">
+			<div class="modal-header boderButt">
+				<button type="button" class="btn btn-primary right btn-sm"
+					onclick="closewindow();">返回</button>
+				<input type="button" id="submitButton"
+					class="btn btn-primary right btn-sm" onclick="submitCompany();"
+					value="保存" />
+				<button type="button" class="btn right btn-sm"
+					onclick="deleteCompany();">删除</button>
+				<h4>公司权限配置</h4>
+			</div>
+			<div class="modal-body">
+				<div class="tab-content">
+					<input name="id" type="hidden" value="${obj.company.id }">
+					<input name="functionIds" type="hidden" value=""/>
+					<div class="form-group row">
+						<label class="col-sm-5 text-right padding"><h4>公司名称：</h4></label>
+						<div class="col-sm-5 padding">
+							<h4 class="text-red">${obj.company.comName }</h4>
+						</div>
+					</div>
+                        <label class="col-sm-5 text-right padding"><h4>功能：</h4></label>
+                        <div class="col-sm-1 text-right padding">
+                          <ul id="treeDemo" class="ztree"></ul>
+                        </div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<!-- jQuery 2.2.3 -->
+	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
+	<script src="${base}/public/bootstrap/js/bootstrap.js"></script>
+	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
+	<!--zTree -->
+	<script src="${base}/common/js/zTree/jquery.ztree.core-3.5.js"></script>
+	<script src="${base}/common/js/zTree/jquery.ztree.excheck-3.5.js"></script>
+	<script src="${base}/common/js/zTree/jquery.ztree.exedit-3.5.js"></script>
+	<!--layer -->
+	<script src="${base}/common/js/layer/layer.js"></script>
+	<jsp:include page="/WEB-INF/common/webupload_resource.jsp"></jsp:include>
+	<script type="text/javascript">
+		// Validate the form manually
+		$('#submitButton').click(function() {
+			$('#companyUpdateForm').bootstrapValidator('validate');
+		});
+		//关闭当前弹层
+		function closewindow() {
+			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+			parent.layer.close(index);
+		}
+		//保存
+		function submitCompany() {
+			$('#companyUpdateForm').bootstrapValidator('validate');
+			var bootstrapValidator = $("#companyUpdateForm").data(
+					'bootstrapValidator');
+			if (bootstrapValidator.isValid()) {
+				$.ajax({
+					type : 'POST',
+					data : $("#companyUpdateForm").serialize(),
+					url : '${base}/admin/Company/update.html',
+					success : function(data) {
+						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+						window.parent.successCallback('2');
+						parent.layer.close(index);
+
+					},
+					error : function(xhr) {
+						layer.msg("保存失败", "", 3000);
+					}
+				});
+			}
+		}
+		//删除
+		function deleteCompany() {
+			layer.confirm('确认你的操作?', {
+				icon : 3,
+				title : '提示'
+			}, function() {
+				$.ajax({
+					type : 'POST',
+					data : {
+						id : '${obj.company.id}'
+					},
+					url : '${base}/admin/Company/updateDeleteStatus.html',
+					success : function(data) {
+						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+						window.parent.successCallback('3');
+						parent.layer.close(index);
+					},
+					error : function(xhr) {
+						layer.msg("删除失败", "", 3000);
+					}
+				});
+			});
+		}
+	</script>
+	<!-- 功能树 -->
+	<script type="text/javascript">
+		var setting = {
+				check: {
+					enable: true,//显示复选框
+					chkStyle: "checkbox",
+					chkboxType: { "Y": "ps", "N": "ps" }
+				},
+				data: {
+					simpleData: {
+						enable: true
+					}
+				}
+			};
+		//初始化功能树
+		$(document).ready(function(){
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+		});
+		function setFunc(){
+			var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+			var nodes =  treeObj.getCheckedNodes(true);
+			var funcIds = "" ;
+			for(var i = 0 ; i < nodes.length; i ++){
+				funcIds += (nodes[i].id + ",") ;
+			}
+			$("input[name='functionIds']").val(funcIds) ;
+		}
+		//遍历得到的对象
+		var zNodes =[
+			 {id:"0", pId:"0", name:"功能菜单", open:true},
+			<c:forEach var="p" items="${obj.list}">
+				{ id:"${p.id }", pId:"${p.parentId }", name:"${p.name }", open:true,checked:"${p.checked}"},
+			</c:forEach>
+		];
+	</script>
+	
+</body>
+</html>

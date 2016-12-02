@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" errorPage="/WEB-INF/public/500.jsp"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
 <%@include file="/WEB-INF/public/header.jsp"%>
+<%@include file="/WEB-INF/public/aside.jsp"%>
 
 <c:set var="url" value="${base}/admin/Company" />
   <!-- Content Wrapper. Contains page content -->

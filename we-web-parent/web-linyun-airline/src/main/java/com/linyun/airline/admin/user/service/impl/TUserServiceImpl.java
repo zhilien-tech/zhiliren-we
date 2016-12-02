@@ -16,11 +16,11 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.linyun.airline.admin.authority.function.entity.TFunctionEntity;
+import com.linyun.airline.admin.authority.job.entity.TJobEntity;
 import com.linyun.airline.admin.user.service.UserViewService;
 import com.linyun.airline.common.enums.UserStatusEnum;
 import com.linyun.airline.common.enums.UserTypeEnum;
-import com.linyun.airline.entities.TFunctionEntity;
-import com.linyun.airline.entities.TJobEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.entities.TUserJobEntity;
 import com.linyun.airline.forms.TUserModForm;

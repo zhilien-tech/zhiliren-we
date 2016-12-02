@@ -62,9 +62,6 @@ public class DictInfoSqlForm extends DataTablesParamForm {
 		if (!Util.isEmpty(status)) {
 			cnd.and("status", "=", status);
 		}
-		/*if (!Util.isEmpty(dictCode)) {
-			cnd.and("dictCode");
-		}*/
 		return cnd;
 	}
 }

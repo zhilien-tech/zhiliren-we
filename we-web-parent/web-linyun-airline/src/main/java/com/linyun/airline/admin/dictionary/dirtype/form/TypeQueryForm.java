@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
 
 import org.nutz.dao.Cnd;
 
+import com.linyun.airline.common.enums.DataStatusEnum;
 import com.uxuexi.core.web.form.QueryForm;
 import com.uxuexi.core.web.form.support.Condition;
 import com.uxuexi.core.web.form.support.Condition.MatchType;
@@ -32,10 +33,10 @@ public class TypeQueryForm extends QueryForm {
 
 	//按状态查询
 	@Condition(match = MatchType.EQ)
-	private long status;
+	private int status = DataStatusEnum.ENABLE.intKey();
 
 	//按状态查询
-	@Condition(match = MatchType.EQ)
+	@Condition(match = MatchType.LIKE)
 	private String typeCode;
 
 	//按创建时间排序
@@ -44,7 +45,7 @@ public class TypeQueryForm extends QueryForm {
 	@Override
 	public Cnd createCnd() {
 		Cnd cnd = super.createCnd();
-		cnd.orderBy("createTime", "ASC");
+		cnd.orderBy("status", "DESC").orderBy("createTime", "DESC");
 		return cnd;
 	}
 
