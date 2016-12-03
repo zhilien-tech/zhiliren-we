@@ -35,9 +35,7 @@
 			<div class="modal-header">
 				<button id="backBtn" type="button" onclick="reload()"
 					class="btn btn-primary right btn-sm" data-dismiss="modal">返回</button>
-
-				<input type="button" id="addBtn"
-					class="btn btn-primary right btn-sm" value="保存" onclick="save()" />
+				<input type="button" id="addBtn" class="btn btn-primary right btn-sm" value="保存" onclick="save()" />
 				<ul class="nav nav-tabs">
 					<li class="active"><a href="#tabs_1" data-toggle="tab">基本信息</a></li>
 					<li><a href="#tabs_2" data-toggle="tab">线路权限</a></li>
@@ -52,12 +50,11 @@
 						<!-- 上游公司ID  以后会从当前登陆记录-->
 						<!-- TODO -->
 						<input name="comId" type="hidden" value="" />
-
 						<!--基本信息-->
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">公司名称：</label>
 							<div class="col-sm-8 padding seleSpanWid">
-								<select id="companyId" class="form-control select2 inpImpWid" multiple="multiple"  data-placeholder="请输入公司名称">
+								<select id="companyId" onchange="editInput()" class="form-control select2 inpImpWid" multiple="multiple"  data-placeholder="请输入公司名称">
 									
 								</select><span class="prompt">*</span>
 								<!-- 公司ID -->
@@ -66,7 +63,15 @@
 								<input id="comName" type="hidden" name="name" />
 							</div>
 						</div>
-
+						<!-- 选中公司 隐藏或显示光标 -->
+						<script type="text/javascript">
+							function editInput(){
+								//var o = $("#companyId").html();
+								
+								
+							}
+						</script>
+						
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">公司简称：</label>
 							<div class="col-sm-3 padding">
@@ -222,7 +227,8 @@
 							<div class="col-sm-5 padding">
 								<input id="datepicker1" name="contractTimeString" type="text"
 									class="form-control input-sm input-wid"
-									placeholder="2015-08-08" /> 至 <input id="datepicker2"
+									placeholder="2015-08-08" /> 
+								至 <input id="datepicker2"
 									name="contractDueTimeString" type="text"
 									class="form-control input-sm input-wid"
 									placeholder="2088-09-09" />
@@ -358,7 +364,9 @@
 			//页面加载时 执行
 			angentList();
 
-
+			//公司名称文本框
+			var comInput = $("input[placeholder=请输入公司名称]");
+			
 			//校验
 			$('#customerAddForm').bootstrapValidator({
 				message : '验证不通过',
@@ -372,18 +380,6 @@
 						validators : {
 							notEmpty : {
 								message : '公司名称不能为空'
-							},
-							remote : {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
-								url : '${base}/admin/customer/checkComNameExist.html',//验证地址
-								message : '公司已存在，请重新输入!',//提示消息
-								delay : 2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
-								type : 'POST',//请求方式
-								//自定义提交数据，默认值提交当前input value
-								data : function(validator) {
-									return {
-										name : $('#companyId').find("option:selected").text();
-									};
-								}
 							}
 						}
 					},
@@ -475,7 +471,7 @@
 
 	<!-- 保存页面 -->
 	<script type="text/javascript">
-		function save() {
+		function save(){
 			//出发城市ID
 			var selectedCityId = $("#city").select2("val");
 			$("#outcity").val(selectedCityId);
@@ -519,7 +515,7 @@
 						layer.msg("添加失败", "", 3000);
 					}
 				});
-			}
+			} 
 		}
 		//提交时开始验证
 		$('#addBtn').click(function() {

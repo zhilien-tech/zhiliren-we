@@ -101,7 +101,7 @@ public class CustomerModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object update(@Param("id") final long id) {
+	public Object update(@Param("id") final long id) throws Exception {
 		return customerViewService.toUpdatePage(id);
 	}
 

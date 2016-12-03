@@ -2,7 +2,9 @@ package com.linyun.airline.admin.customer.service;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -125,6 +127,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object addCustomInfo(TCustomerInfoAddForm addForm) {
+
 		if (!Util.isEmpty(addForm.getContractDueTimeString())) {
 			//客户信息保存
 			addForm.setContractDueTime(DateUtil.string2Date(addForm.getContractDueTimeString(), "yyyy-MM-dd"));
@@ -193,13 +196,31 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 * @param id
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object toUpdatePage(long id) {
+	public Object toUpdatePage(long id) throws Exception {
+
 		Map<String, Object> obj = new HashMap<String, Object>();
+
 		//查询客户信息
-		obj.put("customer", dbDao.fetch(TCustomerInfoEntity.class, id));
+		TCustomerInfoEntity tCustomerInfoEntity = dbDao.fetch(TCustomerInfoEntity.class, id);
+		Date contractTime = tCustomerInfoEntity.getContractTime();
+		Date contractDueTime = tCustomerInfoEntity.getContractDueTime();
+
+		//日期格式转换
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		if (!Util.isEmpty(contractTime)) {
+			String contractTimeStr = sdf.format(contractTime);
+			tCustomerInfoEntity.setContractTimeString(contractTimeStr);
+		}
+		if (!Util.isEmpty(contractDueTime)) {
+			String contractDueTimeStr = sdf.format(contractDueTime);
+			tCustomerInfoEntity.setContractDueTimeString(contractDueTimeStr);
+		}
+
+		obj.put("customer", tCustomerInfoEntity);
+
 		//准备负责人下拉
 		Sql agentSql = Sqls.create(sqlManager.get("customer_agent"));
-		agentSql.params().set("agentId", id);
+		//agentSql.params().set("agentId", id);
 		List<TUserEntity> userlist = DbSqlUtil.query(dbDao, TUserEntity.class, agentSql);
 		obj.put("userlist", userlist);
 
@@ -292,7 +313,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		interLineCnd.and("o.infoId", "=", id);
 		interLineCnd.and("d.typeCode", "=", "GJ");
 		interLineCnd.orderBy("d.dictName", "desc");
-		interLineSql.setCondition(lineCnd);
+		interLineSql.setCondition(interLineCnd);
 		List<DictInfoEntity> interLineEntities = DbSqlUtil.query(dbDao, DictInfoEntity.class, interLineSql);
 		//国际线路id 拼串
 		String interLineIds = "";
@@ -317,7 +338,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		//发票项
 		Sql invioceSql = Sqls.create(sqlManager.get("customer_invioceOption_list"));
 		Cnd invioceCnd = Cnd.NEW();
-		invioceCnd.and("o.infoId", "=", id);
+		invioceCnd.and("l.infoId", "=", id);
 		invioceCnd.and("d.typeCode", "=", "FPXM");
 		invioceCnd.orderBy("d.dictName", "desc");
 		invioceSql.setCondition(invioceCnd);

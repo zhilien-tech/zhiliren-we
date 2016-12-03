@@ -222,11 +222,11 @@
 							<div class="col-sm-5 padding">
 								<input id="datepicker1" name="contractTimeString" type="text"
 									class="form-control input-sm input-wid"
-									placeholder="2015-08-08" value="${obj.customer.contractTime}"/> 
+									placeholder="2015-08-08" value="${obj.customer.contractTimeString}"/> 
 								至 <input id="datepicker2"
 									name="contractDueTimeString" type="text"
 									class="form-control input-sm input-wid"
-									placeholder="2088-09-09" value="${obj.customer.contractDueTime}" pattern="yyyy-MM-dd"/>
+									placeholder="2088-09-09" value="${obj.customer.contractDueTimeString}"/>
 							</div>
 						</div>
 						 
@@ -285,12 +285,12 @@
 
 							<label class="col-sm-2 text-right padding">提供发票：</label>
 							<div class="col-sm-2 padding">
-								<select id="invoice" name="invoice"
+								<select id="invoiceId" name="invoice"
 									class="form-control input-sm" onchange="gaveInvioce()">
 									<option value="0"
-										<c:if test="${'0' eq obj.customer.invoice}">selected</c:if>>否</option>
+										<c:if test="${0 eq obj.customer.invoice}">selected</c:if>>否</option>
 									<option value="1"
-										<c:if test="${'1' eq obj.customer.invoice}">selected</c:if>>是</option>
+										<c:if test="${1 eq obj.customer.invoice}">selected</c:if>>是</option>
 								</select>
 							</div>
 							<!-- 发票项  -->
@@ -619,9 +619,10 @@
 	
 	<!-- 隐藏 显示 方式 -->
 	<script type="text/javascript">
+		
 		//显示或隐藏发票项
 		function gaveInvioce() {
-			var s = document.getElementById("invoice").value;
+			var s = document.getElementById("invoiceId").value;
 			if (s == 1) {
 				document.getElementById("invioceType").style.display = "";
 			}
@@ -629,6 +630,7 @@
 				document.getElementById("invioceType").style.display = "none";
 			}
 		}
+	
 		//结算方式 add input
 		function paytypeSelect_change(obj) {
 			var seleValue = $(".sele").find("option:selected").attr("value");
@@ -704,17 +706,6 @@
 		$('#updateBtn').click(function() {
 			$('#customerUpdateForm').bootstrapValidator('validate');
 		}); 
-	
-		//显示或隐藏发票项
-		function gaveInvioce() {
-			var s = document.getElementById("invoiceID").value;
-			if (s == 1) {
-				document.getElementById("invioceType").style.display = "";
-			}
-			if (s == 0) {
-				document.getElementById("invioceType").style.display = "none";
-			}
-		}
 	
 		//返回刷新页面 
 		function reload() { window.location.reload(); }

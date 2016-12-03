@@ -51,6 +51,7 @@ select
   	o.infoId,
 	d.*
 FROM t_customer_line o INNER JOIN dict_info d on o.dictInfoId = d.id
+$condition
 
 /*customer_invioceOption_list*/
 select 
@@ -59,7 +60,8 @@ select
 	d.*
 from 
 	t_customer_invioce l inner join dict_info d on l.dictInfoId=d.id
-	
+$condition
+
 /*customer_list_info*/
 SELECT
 	u.userName,
