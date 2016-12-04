@@ -144,7 +144,10 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		for (String dictInfoId : outcityids) {
 			TCustomerOutcityEntity outcityEntity = new TCustomerOutcityEntity();
 			outcityEntity.setInfoId(customerInfo.getId());
-			outcityEntity.setDictInfoId(Long.valueOf(dictInfoId));
+			//判断是否为空
+			if (!Util.isEmpty(dictInfoId)) {
+				outcityEntity.setDictInfoId(Long.valueOf(dictInfoId));
+			}
 			outcityEntities.add(outcityEntity);
 		}
 		dbDao.insert(outcityEntities);
@@ -157,16 +160,20 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		for (String dictInfoId : sLine1s) {
 			TCustomerLineEntity lineEntity = new TCustomerLineEntity();
 			lineEntity.setInfoId(customerInfo.getId());
-			if (!Util.isEmpty(Long.valueOf(dictInfoId))) {
+			if (!Util.isEmpty(dictInfoId)) {
 				lineEntity.setDictInfoId(Long.valueOf(dictInfoId));
 			}
 			lineEntities.add(lineEntity);
 		}
-		for (String dictInfoId : internationLines) {
-			TCustomerLineEntity lineEntity = new TCustomerLineEntity();
-			lineEntity.setInfoId(customerInfo.getId());
-			lineEntity.setDictInfoId(Long.valueOf(dictInfoId));
-			lineEntities.add(lineEntity);
+		if (!Util.isEmpty(internationLines)) {
+			for (String dictInfoId : internationLines) {
+				TCustomerLineEntity lineEntity = new TCustomerLineEntity();
+				lineEntity.setInfoId(customerInfo.getId());
+				if (!Util.isEmpty(dictInfoId)) {
+					lineEntity.setDictInfoId(Long.valueOf(dictInfoId));
+				}
+				lineEntities.add(lineEntity);
+			}
 		}
 		dbDao.insert(lineEntities);
 
@@ -176,10 +183,12 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		Iterable<String> sInvNames = Splitter.on(",").split(addForm.getSInvName());
 		//发票信息保存
 		List<TCustomerInvoiceEntity> invoiceEntities = new ArrayList<TCustomerInvoiceEntity>();
-		for (String dictInfoId : sLine1s) {
+		for (String dictInfoId : sInvNames) {
 			TCustomerInvoiceEntity invoiceEntity = new TCustomerInvoiceEntity();
 			invoiceEntity.setInfoId(customerInfo.getId());
-			invoiceEntity.setDictInfoId(Long.valueOf(dictInfoId));
+			if (!Util.isEmpty(dictInfoId)) {
+				invoiceEntity.setDictInfoId(Long.valueOf(dictInfoId));
+			}
 			invoiceEntities.add(invoiceEntity);
 		}
 		dbDao.insert(invoiceEntities);
@@ -218,15 +227,8 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 		obj.put("customer", tCustomerInfoEntity);
 
-		//准备负责人下拉
-		Sql agentSql = Sqls.create(sqlManager.get("customer_agent"));
-		//agentSql.params().set("agentId", id);
-		List<TUserEntity> userlist = DbSqlUtil.query(dbDao, TUserEntity.class, agentSql);
-		obj.put("userlist", userlist);
-
-		/*//获得所有的列表
 		List<TUserEntity> userlist = dbDao.query(TUserEntity.class, null, null);
-		obj.put("userlist", userlist);*/
+		obj.put("userlist", userlist);
 
 		//查询公司名称
 		Sql comSql = Sqls.create(sqlManager.get("customer_comOption_list"));
@@ -389,7 +391,9 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		for (String dictInfoId : outcityids) {
 			TCustomerOutcityEntity outcityEntity = new TCustomerOutcityEntity();
 			outcityEntity.setInfoId(updateForm.getId());
-			outcityEntity.setDictInfoId(Long.valueOf(dictInfoId));
+			if (!Util.isEmpty(dictInfoId)) {
+				outcityEntity.setDictInfoId(Long.valueOf(dictInfoId));
+			}
 			outCitysAfter.add(outcityEntity);
 		}
 
@@ -406,13 +410,17 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		for (String dictInfoId : sLine1s) {
 			TCustomerLineEntity lineEntity = new TCustomerLineEntity();
 			lineEntity.setInfoId(updateForm.getId());
-			lineEntity.setDictInfoId(Long.valueOf(dictInfoId));
+			if (!Util.isEmpty(dictInfoId)) {
+				lineEntity.setDictInfoId(Long.valueOf(dictInfoId));
+			}
 			linesAfter.add(lineEntity);
 		}
 		for (String dictInfoId : internationLines) {
 			TCustomerLineEntity lineEntity = new TCustomerLineEntity();
 			lineEntity.setInfoId(updateForm.getId());
-			lineEntity.setDictInfoId(Long.valueOf(dictInfoId));
+			if (!Util.isEmpty(dictInfoId)) {
+				lineEntity.setDictInfoId(Long.valueOf(dictInfoId));
+			}
 			linesAfter.add(lineEntity);
 		}
 		List<TCustomerLineEntity> linesBefore = dbDao.query(TCustomerLineEntity.class,
@@ -426,7 +434,9 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		for (String dictInfoId : sLine1s) {
 			TCustomerInvoiceEntity invoiceEntity = new TCustomerInvoiceEntity();
 			invoiceEntity.setInfoId(updateForm.getId());
-			invoiceEntity.setDictInfoId(Long.valueOf(dictInfoId));
+			if (!Util.isEmpty(dictInfoId)) {
+				invoiceEntity.setDictInfoId(Long.valueOf(dictInfoId));
+			}
 			invoicesAfter.add(invoiceEntity);
 		}
 		List<TCustomerInvoiceEntity> invioceBefore = dbDao.query(TCustomerInvoiceEntity.class,

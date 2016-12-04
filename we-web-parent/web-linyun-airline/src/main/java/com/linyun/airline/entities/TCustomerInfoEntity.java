@@ -81,7 +81,7 @@ public class TCustomerInfoEntity implements Serializable {
 
 	@Column
 	@Comment("其他付款方式")
-	private int paywayName;
+	private String paywayName;
 
 	@Column
 	@Comment("是否提供发票（0：否   1：是）")
@@ -101,7 +101,7 @@ public class TCustomerInfoEntity implements Serializable {
 
 	@Column
 	@Comment("其他结算方式")
-	private int paytypeName;
+	private String paytypeName;
 
 	@Column
 	@Comment("合作时间")

@@ -65,10 +65,9 @@
 						</div>
 						<!-- 选中公司 隐藏或显示光标 -->
 						<script type="text/javascript">
+							var comInput = $("input[placeholder=请输入公司名称]");
 							function editInput(){
-								//var o = $("#companyId").html();
-								
-								
+								var opt = $("#companyId").html();
 							}
 						</script>
 						
@@ -102,7 +101,7 @@
 
 							<label class="col-sm-2 text-right padding">联系电话：</label>
 							<div class="col-sm-3 padding">
-								<input name="telephone" type="text"
+								<input id="telephoneId" name="telephone" type="text"
 									class="form-control input-sm inpImportant"
 									placeholder="请输入联系电话" /><span class="prompt">*</span>
 							</div>
@@ -156,7 +155,7 @@
 							<label class="col-sm-3 text-right padding">出发城市：</label>
 							<div class="col-sm-8 padding seleSpanWid">
 								<select id="city" class="form-control select2 inpImpWid"
-									multiple="multiple" data-placeholder="请输入出发城市">
+									multiple="multiple" onchange="cityOpt()" data-placeholder="请输入出发城市">
 								</select><span class="prompt">*</span>
 								<!-- 出发城市ID -->
 								<input id="outcity" type="hidden" name="outcityname" />
@@ -194,9 +193,9 @@
 							<div class="col-sm-3 padding">
 								<input type="file" name="fileID" id="uploadify" /> <input
 									type="hidden" name="appendix" id="appendix" />
-								<p class="flie_A">
+							<!-- <p class="flie_A">
 									上传<input type="button" onclick="fileupload();" />
-								</p>
+								</p> -->
 							</div>
 						</div>
 					</div>
@@ -302,7 +301,6 @@
 					</div>
 				</div>
 			</div>
-	</div>
 	</form>
 	</div>
 	<script type="text/javascript">
@@ -343,7 +341,7 @@
 					'fcharset' : 'uft-8',
 					'action' : 'uploadimage'
 				},
-				'buttonText' : '选择上传文件',
+				'buttonText' : '上传',
 				'fileSizeLimit' : '3000MB',
 				'fileTypeDesc' : '文件',
 				'fileTypeExts' : '*.png; *.txt',//文件类型过滤
@@ -357,13 +355,12 @@
 				'onUploadSuccess' : function(file, data, response) {
 					var jsonobj = eval('(' + data + ')');
 					$('#appendix').val(data);
-					alert(data);
 				}
 			});
 
 			//页面加载时 执行
 			angentList();
-
+			
 			//公司名称文本框
 			var comInput = $("input[placeholder=请输入公司名称]");
 			
@@ -380,13 +377,29 @@
 						validators : {
 							notEmpty : {
 								message : '公司名称不能为空'
-							}
+							},
+		                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
+		                         url: '${base}/admin/customer/checkComNameExist.html',//验证地址
+		                         message: '公司名称已存在，请重新输入!',//提示消息
+		                         delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+		                         type: 'POST',//请求方式
+		                         //自定义提交数据，默认值提交当前input value
+		                         data: function(validator) {
+		                            return {
+		                            	name:$('#companyId').find("option:selected").text()
+		                            };
+		                         }
+		                     }
 						}
 					},
 					shortName : {
 						validators : {
 							notEmpty : {
 								message : '公司简称不能为空'
+							},
+							regexp : {
+								regexp : /^[a-zA-Z\u4e00-\u9fa5]{1,6}$/,
+								message : '公司简称最多为6个字'
 							}
 						}
 					},
@@ -402,6 +415,17 @@
 							notEmpty : {
 								message : '联系电话不能为空'
 							},
+		                    remote: {
+		                         url: '${base}/admin/customer/checkTelephoneExist.html',
+		                         message: '联系电话已存在，请重新输入!',
+		                         delay :  2000,
+		                         type: 'POST',
+		                         data: function(validator) {
+		                            return {
+		                            	telephone:$('#telephoneId').val()
+		                            };
+		                         }
+		                     },
 							regexp : {
 								regexp : /^[1][34578][0-9]{9}$/,
 								message : '联系电话格式错误'
@@ -412,6 +436,17 @@
 						validators : {
 							notEmpty : {
 								message : '公司地址不能为空'
+							}
+						}
+					},
+					siteUrl : {
+						validators : {
+							notEmpty : {
+								message : '网址址不能为空'
+							},
+							regexp : {
+								regexp : /^(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?$/,
+								message : '网址格式错误'
 							}
 						}
 					}
@@ -466,6 +501,13 @@
 				document.getElementById("paywayDivId").style.display = "none";
 			}
 
+		}
+	</script>
+
+	<!-- 删除option节点 -->
+	<script type="text/javascript">
+		function cityOpt(){
+			var ss = $("#city option:selected").val();
 		}
 	</script>
 

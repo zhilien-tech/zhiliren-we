@@ -217,11 +217,28 @@ public class CustomerModule {
 	 */
 	@At
 	@POST
-	public Object checkComNameExist(@Param("agentId") final String id) {
+	public Object checkComNameExist(@Param("ccName") final String comName) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<TCustomerInfoEntity> comNameList = dbDao.query(TCustomerInfoEntity.class, Cnd.where("agentId", "=", id),
+		List<TCustomerInfoEntity> comNameList = dbDao.query(TCustomerInfoEntity.class, Cnd.where("name", "=", comName),
 				null);
 		if (!Util.isEmpty(comNameList)) {
+			map.put("valid", false);
+		} else {
+			map.put("valid", true);
+		}
+		return map;
+	}
+
+	/**
+	 * 联系电话唯一性校验
+	 */
+	@At
+	@POST
+	public Object checkTelephoneExist(@Param("telephone") final String phoneNum) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<TCustomerInfoEntity> phoneNumList = dbDao.query(TCustomerInfoEntity.class,
+				Cnd.where("telephone", "=", phoneNum), null);
+		if (!Util.isEmpty(phoneNumList)) {
 			map.put("valid", false);
 		} else {
 			map.put("valid", true);

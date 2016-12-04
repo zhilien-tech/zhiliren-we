@@ -14,7 +14,15 @@
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
 <link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css" />
 <style type="text/css">
-	.select2-container{width: 98.5% !important;display: inline-block;}
+	.select2-container {
+		width: 95.5% !important;
+		display: inline-block;
+	}
+	
+	.seleSpanWid .select2-container {
+		width: 98.5% !important;
+		display: inline-block;
+	}
 </style>
 
 
@@ -37,7 +45,7 @@
 			<div class="modal-body">
 				<div class="tab-content">
 					<div class="tab-pane active" id="tabs_1">
-						<input name="comId" type="hidden" value="1" /> 
+						<input name="comId" type="hidden" value="" /> 
 						<!--基本信息-->
 						<div class="form-group row">
 							<input name="id" type="hidden" value="${obj.customer.id }">
@@ -177,6 +185,8 @@
 								<!-- 国际线路ID -->
 								<input id="line2ID" type="hidden" name="internationLine" />
 							</div>
+							
+							
 						</div>
 
 					</div>
@@ -187,9 +197,9 @@
 							<div class="col-sm-3 padding">
 								<input type="file" name="fileID" id="uploadify" />
 								<input type="hidden" name="appendix" id="appendix" />
-								<p class="flie_A" >
+								<!-- <p class="flie_A" >
 									上传<input type="button" onclick="fileupload();"/>
-								</p>
+								</p> -->
 							</div>
 						</div>
 					</div>
@@ -249,7 +259,7 @@
 
 							<div class="col-sm-8" style="display: none;" id="paywayDivId">
 								<div class="col-sm-12 padding payInp">
-									<input type="text" id="paywayId" name="paywayName" class="paytext form-control input-sm" placeholder="请输入付款方式">
+									<input type="text" id="paywayId" name="paywayName" value="${obj.customer.paywayName}" class="paytext form-control input-sm" placeholder="请输入付款方式">
 								</div>
 							</div>
 							
@@ -276,7 +286,7 @@
 
 							<div class="col-sm-8" style="display: none;" id="paytypeDivId">
 								<div class="col-sm-12 padding inpAdd">
-									<input type="text" name="paytypeName" class="paytext form-control input-sm" placeholder="请输入结算方式">
+									<input type="text" name="paytypeName" value="${obj.customer.paytypeName}"  class="paytext form-control input-sm" placeholder="请输入结算方式">
 								</div>
 							</div>
 						</div>
@@ -294,7 +304,7 @@
 								</select>
 							</div>
 							<!-- 发票项  -->
-							<div class="col-sm-8" style="display: none;" id="invioceType">
+							<div class="col-sm-8" style="display: none;" id="invioceTypeId">
 								<div class="col-sm-12 padding">
 									<select id="sInvID" class="form-control select2" multiple="multiple" data-placeholder="请输入发票项">
 										<option></option>
@@ -311,6 +321,7 @@
 					</div>
 				</div>
 			</div>
+			
 </form>
 	</div>
 	<script type="text/javascript">
@@ -339,6 +350,7 @@
 	<script src="${base}/admin/customer/upload.js"></script>
 	<script src="${base}/admin/customer/caiwu.js"></script>
 	<script type="text/javascript">
+		var base = "${base}";
 		$(function() {
 			
 			$.fileupload1 = $('#uploadify').uploadify({
@@ -347,7 +359,7 @@
 	            	'fcharset' : 'uft-8',
 	                'action' : 'uploadimage'
 	            },
-	            'buttonText': '选择上传文件',
+	            'buttonText': '上传',
 	            'fileSizeLimit' : '3000MB',
 	            'fileTypeDesc' : '文件',
 	            'fileTypeExts' : '*.png; *.txt',//文件类型过滤
@@ -360,7 +372,6 @@
 	            //下面的例子演示如何获取到vid
 	            'onUploadSuccess':function(file,data,response){
 	                var jsonobj=eval('('+data+')'); 
-	                alert(jsonobj);
 	                $('#appendix').val(data);
 	            }
 	        });
@@ -368,6 +379,16 @@
 			//页面加载时 执行
 			angentList();
 			
+			//页面加载 显示文本框
+			if($('#payWay option:selected').val() == "5"){
+				$("#paywayDivId").css('display','block'); 
+			}
+			if($('#payType option:selected').val() == "4"){
+				$("#paytypeDivId").css('display','block'); 
+			}
+			if($('#invoiceId option:selected').val() == "1"){
+				$("#invioceTypeId").css('display','block'); 
+			}
 			
 			//公司名称回显companyId
 			var _comSelect = $("#companyId").select2({
@@ -438,7 +459,7 @@
 			//国境内陆回显
 			var _innerLineSelect = $("#isLine").select2({
 				ajax : {
-					url : BASE_PATH  + "/admin/customer/innerLine.html",
+					url : BASE_PATH  + "/admin/customer/isLine.html",
 					dataType : 'json',
 					delay : 250,
 					type : 'post',
@@ -471,7 +492,7 @@
 			//国际线路回显
 			var _interLineSelect = $("#sLine2ID").select2({
 				ajax : {
-					url : BASE_PATH  + "/admin/customer/interLine.html",
+					url : BASE_PATH  + "/admin/customer/international.html",
 					dataType : 'json',
 					delay : 250,
 					type : 'post',
@@ -548,13 +569,29 @@
 						validators : {
 							notEmpty : {
 								message : '公司名称不能为空'
-							}
+							},
+		                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
+		                         url: '${base}/admin/customer/checkComNameExist.html',//验证地址
+		                         message: '公司名称已存在，请重新输入!',//提示消息
+		                         delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+		                         type: 'POST',//请求方式
+		                         //自定义提交数据，默认值提交当前input value
+		                         data: function(validator) {
+		                            return {
+		                            	comName:$('#companyId').find("option:selected").text()
+		                            };
+		                         }
+		                     }
 						}
 					},
 					shortName : {
 						validators : {
 							notEmpty : {
 								message : '公司简称不能为空'
+							},
+							regexp : {
+								regexp : /^[a-zA-Z\u4e00-\u9fa5]{1,6}$/,
+								message : '公司简称最多为6个字'
 							}
 						}
 					},
@@ -570,6 +607,17 @@
 							notEmpty : {
 								message : '联系电话不能为空'
 							},
+		                    remote: {
+		                         url: '${base}/admin/customer/checkTelephoneExist.html',
+		                         message: '联系电话已存在，请重新输入!',
+		                         delay :  2000,
+		                         type: 'POST',
+		                         data: function(validator) {
+		                            return {
+		                            	telephone:$('#telephoneId').val()
+		                            };
+		                         }
+		                     },
 							regexp : {
 								regexp : /^[1][34578][0-9]{9}$/,
 								message : '联系电话格式错误'
@@ -580,6 +628,17 @@
 						validators : {
 							notEmpty : {
 								message : '公司地址不能为空'
+							}
+						}
+					},
+					siteUrl : {
+						validators : {
+							notEmpty : {
+								message : '网址址不能为空'
+							},
+							regexp : {
+								regexp : /^(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?$/,
+								message : '网址格式错误'
 							}
 						}
 					}
@@ -624,10 +683,10 @@
 		function gaveInvioce() {
 			var s = document.getElementById("invoiceId").value;
 			if (s == 1) {
-				document.getElementById("invioceType").style.display = "";
+				document.getElementById("invioceTypeId").style.display = "";
 			}
 			if (s == 0) {
-				document.getElementById("invioceType").style.display = "none";
+				document.getElementById("invioceTypeId").style.display = "none";
 			}
 		}
 	

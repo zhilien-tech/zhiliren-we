@@ -57,6 +57,8 @@ public class TCustomerInfoUpdateForm extends ModForm implements Serializable {
 
 	/**付款方式（现金、支票、银行汇款、第三方、其他）*/
 	private long payWay;
+	/**其他付款方式*/
+	private String paywayName;
 
 	/**是否提供发票（0：否   1：是）*/
 	private long invoice;
@@ -69,6 +71,8 @@ public class TCustomerInfoUpdateForm extends ModForm implements Serializable {
 
 	/**结算形式（月结、周结、单结、其他）*/
 	private long payType;
+	/**其他结算方式*/
+	private String paytypeName;
 
 	/**合作时间*/
 	private Date cooperateTime;
