@@ -222,21 +222,16 @@ public class CustomerModule {
 
 		List<TCustomerInfoEntity> companys = dbDao.query(TCustomerInfoEntity.class, Cnd.where("agentId", "=", comId),
 				null);
-		if (!Util.isEmpty(id)) {
-
-			List<TCustomerInfoEntity> comNameList = dbDao.query(TCustomerInfoEntity.class,
-					Cnd.where("agentId", "=", comId).and("id", "=", id), null);
-			if (companys.containsAll(comNameList)) {
-				map.put("valid", true);
-			} else {
+		List<TCustomerInfoEntity> comNameList = dbDao.query(TCustomerInfoEntity.class, Cnd.where("agentId", "=", comId)
+				.and("id", "=", id), null);
+		if (!Util.isEmpty(companys)) {
+			if (Util.isEmpty(id)) {
 				map.put("valid", false);
+			} else if (!Util.isEmpty(comNameList)) {
+				map.put("valid", true);
 			}
 		} else {
-			if (!Util.isEmpty(companys)) {
-				map.put("valid", false);
-			} else {
-				map.put("valid", true);
-			}
+			map.put("valid", true);
 		}
 
 		return map;
@@ -252,22 +247,17 @@ public class CustomerModule {
 
 		List<TCustomerInfoEntity> customer = dbDao.query(TCustomerInfoEntity.class,
 				Cnd.where("telephone", "=", phoneNum), null);
-		List<TCustomerInfoEntity> phoneNumList;
-		if (!Util.isEmpty(id)) {
-			phoneNumList = dbDao.query(TCustomerInfoEntity.class,
-					Cnd.where("telephone", "=", phoneNum).and("id", "=", id), null);
-			if (customer.containsAll(phoneNumList)) {
-				map.put("valid", true);
-			} else {
+		List<TCustomerInfoEntity> phoneNumList = dbDao.query(TCustomerInfoEntity.class,
+				Cnd.where("telephone", "=", phoneNum).and("id", "=", id), null);
+
+		if (!Util.isEmpty(customer)) {
+			if (Util.isEmpty(id)) {
 				map.put("valid", false);
+			} else if (!Util.isEmpty(phoneNumList)) {
+				map.put("valid", true);
 			}
 		} else {
-
-			if (!Util.isEmpty(customer)) {
-				map.put("valid", false);
-			} else {
-				map.put("valid", true);
-			}
+			map.put("valid", true);
 		}
 
 		return map;

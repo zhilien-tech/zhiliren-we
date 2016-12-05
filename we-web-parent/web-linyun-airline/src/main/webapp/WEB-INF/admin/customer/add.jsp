@@ -25,6 +25,7 @@
 	width: 98.5% !important;
 	display: inline-block;
 }
+.inpNone .select2 .selection span ul li+li{display:none;}
 </style>
 </head>
 
@@ -35,7 +36,7 @@
 			<div class="modal-header">
 				<button id="backBtn" type="button" onclick="reload()"
 					class="btn btn-primary right btn-sm" data-dismiss="modal">返回</button>
-				<input type="button" id="addBtn" class="btn btn-primary right btn-sm" value="保存" onclick="save()" />
+				<input type="button" id="addBtn" class="btn btn-primary right btn-sm" value="保存" onclick="save();" />
 				<ul class="nav nav-tabs">
 					<li class="active"><a href="#tabs_1" data-toggle="tab">基本信息</a></li>
 					<li><a href="#tabs_2" data-toggle="tab">线路权限</a></li>
@@ -393,7 +394,8 @@
 		                         //自定义提交数据，默认值提交当前input value
 		                         data: function(validator) {
 		                            return {
-		                            	name:$('#companyId').find("option:selected").val()
+		                            	name:$('#companyId').find("option:selected").val(),
+		                            	cid:$("#companyId").select2("val")
 		                            };
 		                         }
 		                     }
@@ -422,17 +424,18 @@
 							notEmpty : {
 								message : '联系电话不能为空'
 							},
-		                   /*  remote: {
+		                   remote: {
 		                         url: '${base}/admin/customer/checkTelephoneExist.html',
 		                         message: '联系电话已存在，请重新输入!',
 		                         delay :  2000,
 		                         type: 'POST',
 		                         data: function(validator) {
 		                            return {
-		                            	telephone:$('#telephoneId').val()
+		                            	telephone:$('#telephoneId').val(),
+		                            	aId:'${obj.customer.id}'
 		                            };
 		                         }
-		                     }, */
+		                     },
 							regexp : {
 								regexp : /^[1][34578][0-9]{9}$/,
 								message : '联系电话格式错误'
@@ -466,10 +469,6 @@
 
 	<!-- 显示隐藏问题 -->
 	<script type="text/javascript">
-	
-		$(function(){
-			$('.inpNone span ul li:eq(0)').css('border','solid 1px red');
-		});
 	
 		/* 负责人名称 下拉列表*/
 		function angentList() {
@@ -548,8 +547,7 @@
 	<script type="text/javascript">
 		function save(){
 			$('#customerAddForm').bootstrapValidator('validate');
-			var bootstrapValidator = $("#customerAddForm").data(
-					'bootstrapValidator');
+			var bootstrapValidator = $("#customerAddForm").data('bootstrapValidator');
 			if (bootstrapValidator.isValid()) {
 				$.ajax({
 					type : 'POST',

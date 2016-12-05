@@ -23,6 +23,7 @@
 		width: 98.5% !important;
 		display: inline-block;
 	}
+	.inpNone .select2 .selection span ul li+li{display:none;}
 </style>
 
 
@@ -50,7 +51,7 @@
 						<div class="form-group row">
 							<input name="id" type="hidden" value="${obj.customer.id }">
 							<label class="col-sm-3 text-right padding">公司名称：</label>
-							<div class="col-sm-8 padding">
+							<div class="col-sm-8 padding inpNone">
 								<select id="companyId" name="companyId"  onchange="editInput()" class="form-control select2 inpImpWid" multiple="multiple"  data-placeholder="请输入公司名称">
 									<option></option>
 									<c:forEach var="one" items="${obj.comEntity }">
@@ -772,9 +773,9 @@
 					success : function(data) {
 						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						if ("200" == data.status) {
-							layer.msg("编辑成功", 3000);
+							layer.msg("编辑成功","", 3000);
 						} else {
-							layer.msg("编辑失败！", 3000);
+							layer.msg("编辑失败！","", 3000);
 						}
 						layer.close(index);
 						parent.location.reload();
