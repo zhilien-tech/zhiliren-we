@@ -32,7 +32,7 @@
 				
               </div>
             </div>
-            <h4 class="padLeft">全部公司：${obj.totalcompany }　上游公司：${obj.upconpany } 　代理商：${obj.agent }</h4>
+            <h4 class="padLeft" id="companyCount"></h4>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="datatable" class="table table-bordered table-hover" style="width: 100%;">
@@ -133,6 +133,7 @@ function initDatatable() {
 	});
 
 $(function () {
+    loadCompanyCount();
     initDatatable();
 });
    function add(){
@@ -183,11 +184,30 @@ $(function () {
 	  datatable.ajax.reload();
 	  if(id == '1'){
 		  layer.msg("添加成功",{time: 2000, icon:1});
+		  loadCompanyCount();
 	  }else if(id == '2'){
 		  layer.msg("修改成功",{time: 2000, icon:1});
+		  loadCompanyCount();
 	  }else if(id == '3'){
 		  layer.msg("删除成功",{time: 2000, icon:1});
+		  loadCompanyCount();
 	  }
+  }
+  
+  function loadCompanyCount(){
+	  $.ajax({ 
+		  type: 'POST', 
+		  data: {}, 
+		  async:false,
+		  url: '${base}/admin/Company/loadCompanyCount.html',
+          success: function (data) { 
+        	  var str = "全部公司：" + data.totalcompany + "&nbsp;&nbsp;&nbsp;&nbsp;上游公司：" + data.upconpany + "&nbsp;&nbsp;&nbsp;&nbsp;代理商：" + data.agent;
+        	  //$('#companyCount').html(str);
+        	  document.getElementById("companyCount").innerHTML= str;
+          },
+          error: function (xhr) {
+          } 
+      });
   }
 </script>
 
