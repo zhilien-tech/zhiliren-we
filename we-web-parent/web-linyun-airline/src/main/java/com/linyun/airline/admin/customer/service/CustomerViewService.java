@@ -432,7 +432,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		Iterable<String> sInvNames = Splitter.on(",").split(updateForm.getSInvName());
 		//发票信息更新
 		List<TCustomerInvoiceEntity> invoicesAfter = new ArrayList<TCustomerInvoiceEntity>();
-		for (String dictInfoId : sLine1s) {
+		for (String dictInfoId : sInvNames) {
 			TCustomerInvoiceEntity invoiceEntity = new TCustomerInvoiceEntity();
 			invoiceEntity.setInfoId(updateForm.getId());
 			if (!Util.isEmpty(dictInfoId)) {
