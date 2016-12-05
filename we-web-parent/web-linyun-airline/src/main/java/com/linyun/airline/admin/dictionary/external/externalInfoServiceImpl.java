@@ -25,11 +25,11 @@ import com.uxuexi.core.web.base.service.BaseService;
 public class externalInfoServiceImpl extends BaseService<DictInfoEntity> implements externalInfoService {
 
 	@Override
-	public List<DictInfoEntity> findDictInfoByName(String name) throws Exception {
+	public List<DictInfoEntity> findDictInfoByName(String name, String typeCode) throws Exception {
 		List<DictInfoEntity> infoList = dbDao.query(
 				DictInfoEntity.class,
-				Cnd.where("dictName", "like", Strings.trim(name) + "%").and("status", "=",
-						DataStatusEnum.ENABLE.intKey()), null);
+				Cnd.where("dictName", "like", Strings.trim(name) + "%")
+						.and("status", "=", DataStatusEnum.ENABLE.intKey()).and("typeCode", "=", typeCode), null);
 
 		return infoList;
 	}

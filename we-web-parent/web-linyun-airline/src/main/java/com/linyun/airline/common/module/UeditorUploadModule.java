@@ -21,7 +21,6 @@ import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.base.Uploader;
 import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.common.util.UploaderUtil;
-import com.uxuexi.core.common.util.Util;
 
 @IocBean
 @Filters
@@ -39,9 +38,9 @@ public class UeditorUploadModule {
 			throws Exception {
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
-		if (Util.isEmpty(action)) {
+		/*if (Util.isEmpty(action)) {
 			return "ueditor:action should not be null";
-		}
+		}*/
 
 		//1单张上传
 		String result = "";

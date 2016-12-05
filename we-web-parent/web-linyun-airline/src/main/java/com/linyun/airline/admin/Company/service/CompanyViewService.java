@@ -99,6 +99,31 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 
 	/**
 	 * 
+	 * 获取客户公司下拉框
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param comType 公司类型（枚举）
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public List<Record> getCompanyList(int comType, String comName) {
+		String sqlString = EntityUtil.entityCndSql(TCompanyEntity.class);
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("comType", "=", comType);
+		cnd.and("deletestatus", "=", 0);
+		cnd.and("comName", "like", comName + "%");
+		sql.setCondition(cnd);
+		sql.setCallback(Sqls.callback.records());
+		nutDao.execute(sql);
+
+		@SuppressWarnings("unchecked")
+		List<Record> list = (List<Record>) sql.getResult();
+		return list;
+	}
+
+	/**
+	 * 
 	 * 获取公司部门下拉框
 	 * <p>
 	 * TODO(这里描述这个方法详情– 可选)
