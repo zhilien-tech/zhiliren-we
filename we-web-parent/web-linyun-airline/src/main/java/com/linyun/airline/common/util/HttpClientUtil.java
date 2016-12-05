@@ -62,6 +62,11 @@ public class HttpClientUtil {
 
 	private static final int MAX_TIMEOUT = 10000;
 
+	/**
+	 * HTTP请求成功状态码
+	 */
+	public static final String SUCCESS_CODE = "200";
+
 	static {
 		// 设置连接池  
 		connMgr = new PoolingHttpClientConnectionManager();
@@ -186,7 +191,7 @@ public class HttpClientUtil {
 	}
 
 	/**
-	 * 从实体类得到单表查询该实体的sql
+	 * 从实体类得到http-get请求参数字符串(形如:?p1=v1&p2=v2..)
 	 */
 	public static String getParams(final Object paramForm) {
 		Mirror<?> mirror = Mirror.me(paramForm);

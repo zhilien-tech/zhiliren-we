@@ -96,7 +96,7 @@ public class SabreAPITest {
 		InstaFlightsSearchForm form = new InstaFlightsSearchForm();
 		form.setOrigin("ATL");
 		form.setDestination("LAS");
-		form.setDeparturedate("2016-12-30");
+		form.setDeparturedate("2016-12-32");
 		form.setReturndate("2017-01-15");
 		form.setOffset(1);
 		form.setLimit(1);
@@ -111,6 +111,7 @@ public class SabreAPITest {
 
 		log.info("executing request " + httpget.getRequestLine());
 		result = HttpClientUtil.httpsGet(httpget);
+
 		log.info(result);
 	}
 
