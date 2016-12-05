@@ -147,6 +147,8 @@ public class CustomneedsViewService extends BaseService<TCustomerneedsEntity> {
 				customerneeds.setTravel(row[9]);
 				//联运要求
 				customerneeds.setUniontransport(row[10]);
+				//操作时间
+				customerneeds.setOptime(new Date());
 				customerneedsEntities.add(customerneeds);
 			}
 			//导入数据库

@@ -20,6 +20,7 @@ import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.linyun.airline.admin.customneeds.form.TCustomNeedsSqlForm;
 import com.linyun.airline.admin.customneeds.service.CustomneedsViewService;
+import com.linyun.airline.entities.TCustomerneedsEntity;
 import com.linyun.airline.forms.TCustomerneedsAddForm;
 import com.linyun.airline.forms.TCustomerneedsForm;
 import com.linyun.airline.forms.TCustomerneedsUpdateForm;
@@ -81,6 +82,8 @@ public class CustomneedsModule {
 	@At
 	@POST
 	public Object update(@Param("..") TCustomerneedsUpdateForm updateForm) {
+		TCustomerneedsEntity fetch = customneedsViewService.fetch(updateForm.getId());
+		updateForm.setOptime(fetch.getOptime());
 		return customneedsViewService.updateCustomNeedsInfo(updateForm);
 	}
 
