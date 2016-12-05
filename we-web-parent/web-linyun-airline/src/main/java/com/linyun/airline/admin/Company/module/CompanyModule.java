@@ -188,4 +188,22 @@ public class CompanyModule {
 	public Object userListData(@Param("..") final TCompanyUserSqlForm paramForm) {
 		return companyViewService.listPage4Datatables(paramForm);
 	}
+
+	/**
+	 * 验证公司名称唯一
+	 */
+	@At
+	@POST
+	public Object validatorCompanyName(@Param("comName") String comName) {
+		return companyViewService.validatorCompanyName(comName);
+	}
+
+	/**
+	 * 异步加载公司数量
+	 */
+	@At
+	@POST
+	public Object loadCompanyCount() {
+		return companyViewService.getUpCompanyAndAgentCount(sqlManager);
+	}
 }

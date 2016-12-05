@@ -121,7 +121,10 @@
 		if($("#uploader_00").length>0){
 			inituploader("","00",[]);
 		}
-		
+		formValidator();
+	});
+	//表单校验
+	function formValidator(){
 		$('#companyaddForm').bootstrapValidator({
 			 message: 'This value is not valid',
 	        feedbackIcons: {
@@ -134,6 +137,16 @@
 	                validators: {
 	                    notEmpty: {
 	                        message: '公司名称不能为空'
+	                    },
+	                    remote:{
+	                    	   url:'${base}/admin/Company/validatorCompanyName.html',
+	                    	   type:'POST',
+	                    	   data:function(validator) {
+	                    		   return {
+		                    		   comName:$('#comName').val()
+	                    		   }
+	                    	   },
+	                    	   message:'公司名已存在'
 	                    }
 	                }
 	            },
@@ -198,7 +211,7 @@
 	            }
 	        }
 		});
-	});
+	}
 	// Validate the form manually
     $('#submitButton').click(function() {
         $('#companyaddForm').bootstrapValidator('validate');
@@ -217,12 +230,14 @@
 				data: $("#companyaddForm").serialize(), 
 				url: '${base}/admin/Company/add.html',
 	            success: function (data) { 
-	            	alert("添加成功");
-	            	location.reload();
+	            	//alert("添加成功");
+	            	//location.reload();
+	            	layer.msg("添加成功",{time: 2000, icon:1});
 	            	$('#companyaddForm')[0].reset();
-	            	if($("#uploader_00").length>0){
-	        			inituploader("","00",[]);
-	        		}
+	            	$("#companyaddForm").data('bootstrapValidator').destroy();
+	                $('#companyaddForm').data('bootstrapValidator', null);
+	                formValidator();
+	            	
 	            },
 	            error: function (xhr) {
 	            	layer.msg("添加失败","",3000);
@@ -231,17 +246,5 @@
 		}
 	}
 </script>
-	
 </body>
 </html>	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
