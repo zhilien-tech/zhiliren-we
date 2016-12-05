@@ -53,8 +53,8 @@
 						<!--基本信息-->
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">公司名称：</label>
-							<div class="col-sm-8 padding seleSpanWid">
-								<select id="companyId" onchange="editInput()" class="form-control select2 inpImpWid" multiple="multiple"  data-placeholder="请输入公司名称">
+							<div class="col-sm-8 padding seleSpanWid inpNone">
+								<select id="companyId" name="companyId" onchange="editInput()" class="form-control select2 inpImpWid" multiple="multiple"  data-placeholder="请输入公司名称">
 									
 								</select><span class="prompt">*</span>
 								<!-- 公司ID -->
@@ -63,11 +63,18 @@
 								<input id="comName" type="hidden" name="name" />
 							</div>
 						</div>
-						<!-- 选中公司 隐藏或显示光标 -->
+						<!-- 公司OnChange事件 -->
 						<script type="text/javascript">
+							
 							var comInput = $("input[placeholder=请输入公司名称]");
 							function editInput(){
 								var opt = $("#companyId").html();
+								//代理商公司ID
+								var selectedcompanyId = $("#companyId").select2("val");
+								$("#agentId").val(selectedcompanyId);
+								//公司名称
+								var selectedcompanyName = $('#companyId').find("option:selected").text();
+								$("#comName").val(selectedcompanyName);
 							}
 						</script>
 						
@@ -169,7 +176,7 @@
 							<label class="col-sm-3 text-right padding">国境内陆：</label>
 							<div class="col-sm-3 padding">
 								<select id="isLine" class="form-control select2 inpImportant"
-									multiple="multiple" data-placeholder="请输入国境内陆">
+									multiple="multiple" onchange="inLine()" data-placeholder="请输入国境内陆">
 								</select><span class="prompt">*</span>
 								<!-- 国境内陆ID -->
 								<input id="sLine1ID" type="hidden" name="sLine1" />
@@ -178,7 +185,7 @@
 							<label class="col-sm-2 text-right padding">国际：</label>
 							<div class="col-sm-3 padding">
 								<select id="sLine2ID" class="form-control select2 inpImportant"
-									multiple="multiple" data-placeholder="请输入国际线路">
+									multiple="multiple" onchange="outLine()" data-placeholder="请输入国际线路">
 								</select><span class="prompt">*</span>
 								<!-- 国际线路ID -->
 								<input id="line2ID" type="hidden" name="internationLine" />
@@ -280,7 +287,7 @@
 						<div class="form-group row">
 							<label class="col-sm-2 text-right padding">提供发票：</label>
 							<div class="col-sm-2 padding">
-								<select id="invoiceID" name="invoice"
+								<select id="invoiceID" name="invoice" 
 									class="form-control input-sm" onchange="gaveInvioce()">
 									<option value="0" selected="selected">否</option>
 									<option value="1">是</option>
@@ -289,7 +296,7 @@
 							<!-- 发票项  -->
 							<div class="col-sm-8" style="display: none;" id="invioceType">
 								<div class="col-sm-12 padding">
-									<select id="sInvID" class="form-control select2"
+									<select id="sInvID" class="form-control select2" onchange="sInvioce()"
 										multiple="multiple" data-placeholder="请输入发票项">
 									</select>
 									<!-- 发票项ID -->
@@ -373,7 +380,7 @@
 					validating : 'glyphicon glyphicon-refresh'
 				},
 				fields : {
-					name : {
+					companyId : {
 						validators : {
 							notEmpty : {
 								message : '公司名称不能为空'
@@ -386,7 +393,7 @@
 		                         //自定义提交数据，默认值提交当前input value
 		                         data: function(validator) {
 		                            return {
-		                            	name:$('#companyId').find("option:selected").text()
+		                            	name:$('#companyId').find("option:selected").val()
 		                            };
 		                         }
 		                     }
@@ -415,7 +422,7 @@
 							notEmpty : {
 								message : '联系电话不能为空'
 							},
-		                    remote: {
+		                   /*  remote: {
 		                         url: '${base}/admin/customer/checkTelephoneExist.html',
 		                         message: '联系电话已存在，请重新输入!',
 		                         delay :  2000,
@@ -425,7 +432,7 @@
 		                            	telephone:$('#telephoneId').val()
 		                            };
 		                         }
-		                     },
+		                     }, */
 							regexp : {
 								regexp : /^[1][34578][0-9]{9}$/,
 								message : '联系电话格式错误'
@@ -459,6 +466,11 @@
 
 	<!-- 显示隐藏问题 -->
 	<script type="text/javascript">
+	
+		$(function(){
+			$('.inpNone span ul li:eq(0)').css('border','solid 1px red');
+		});
+	
 		/* 负责人名称 下拉列表*/
 		function angentList() {
 			$.ajax({
@@ -504,36 +516,37 @@
 		}
 	</script>
 
-	<!-- 删除option节点 -->
+	<!-- Select2 Onchange事件 -->
 	<script type="text/javascript">
+		/* 出发城市 */
 		function cityOpt(){
-			var ss = $("#city option:selected").val();
+			//出发城市Id
+			var selectedCityId = $("#city").select2("val");
+			$("#outcity").val(selectedCityId);
+		}
+		/* 国内线路 */
+		function inLine(){
+			//国内线路Id
+			var selectedisLine = $("#isLine").select2("val");
+			$("#sLine1ID").val(selectedisLine);
+		}
+		/* 国际线路 */
+		function outLine(){
+			//国际线路Id
+			var selectedsLine2ID = $("#sLine2ID").select2("val");
+			$("#line2ID").val(selectedsLine2ID);
+		}
+		/*发票项*/
+		function sInvioce(){
+			//发票项Id
+			var selectedsInvID = $("#sInvID").select2("val");
+			$("#sInvName").val(selectedsInvID);
 		}
 	</script>
 
 	<!-- 保存页面 -->
 	<script type="text/javascript">
 		function save(){
-			//出发城市ID
-			var selectedCityId = $("#city").select2("val");
-			$("#outcity").val(selectedCityId);
-
-			//代理商公司ID
-			var selectedcompanyId = $("#companyId").select2("val");
-			$("#agentId").val(selectedcompanyId);
-			//公司名称
-			var selectedcompanyName = $('#companyId').find("option:selected").text();
-			$("#comName").val(selectedcompanyName);
-			//国境线路ID
-			var selectedisLine = $("#isLine").select2("val");
-			$("#sLine1ID").val(selectedisLine);
-			//国际线路ID
-			var selectedsLine2ID = $("#sLine2ID").select2("val");
-			$("#line2ID").val(selectedsLine2ID);
-			//发票项ID
-			var selectedsInvID = $("#sInvID").select2("val");
-			$("#sInvName").val(selectedsInvID);
-
 			$('#customerAddForm').bootstrapValidator('validate');
 			var bootstrapValidator = $("#customerAddForm").data(
 					'bootstrapValidator');

@@ -173,29 +173,29 @@ public class CustomerModule {
 	//出发城市查询
 	@At
 	@POST
-	public Object goCity(@Param("q") final String name) throws Exception {
-		return customerViewService.goCity(name);
+	public Object goCity(@Param("q") final String name, @Param("ids") final String ids) throws Exception {
+		return customerViewService.goCity(name, ids);
 	}
 
 	//國内线路查询
 	@At
 	@POST
-	public Object isLine(@Param("q") final String name) throws Exception {
-		return customerViewService.isLine(name);
+	public Object isLine(@Param("q") final String name, @Param("ids") final String ids) throws Exception {
+		return customerViewService.isLine(name, ids);
 	}
 
 	//國際线路查询
 	@At
 	@POST
-	public Object international(@Param("q") final String name) throws Exception {
-		return customerViewService.international(name);
+	public Object international(@Param("q") final String name, @Param("ids") final String ids) throws Exception {
+		return customerViewService.international(name, ids);
 	}
 
 	//发票项目查询
 	@At
 	@POST
-	public Object isInvioce(@Param("q") final String name) throws Exception {
-		return customerViewService.isInvioce(name);
+	public Object isInvioce(@Param("q") final String name, @Param("ids") final String ids) throws Exception {
+		return customerViewService.isInvioce(name, ids);
 	}
 
 	/**
@@ -217,15 +217,28 @@ public class CustomerModule {
 	 */
 	@At
 	@POST
-	public Object checkComNameExist(@Param("ccName") final String comName) {
+	public Object checkComNameExist(@Param("name") final String comId, @Param("cid") final String id) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<TCustomerInfoEntity> comNameList = dbDao.query(TCustomerInfoEntity.class, Cnd.where("name", "=", comName),
+
+		List<TCustomerInfoEntity> companys = dbDao.query(TCustomerInfoEntity.class, Cnd.where("agentId", "=", comId),
 				null);
-		if (!Util.isEmpty(comNameList)) {
-			map.put("valid", false);
+		if (!Util.isEmpty(id)) {
+
+			List<TCustomerInfoEntity> comNameList = dbDao.query(TCustomerInfoEntity.class,
+					Cnd.where("agentId", "=", comId).and("id", "=", id), null);
+			if (companys.containsAll(comNameList)) {
+				map.put("valid", true);
+			} else {
+				map.put("valid", false);
+			}
 		} else {
-			map.put("valid", true);
+			if (!Util.isEmpty(companys)) {
+				map.put("valid", false);
+			} else {
+				map.put("valid", true);
+			}
 		}
+
 		return map;
 	}
 
@@ -234,15 +247,29 @@ public class CustomerModule {
 	 */
 	@At
 	@POST
-	public Object checkTelephoneExist(@Param("telephone") final String phoneNum) {
+	public Object checkTelephoneExist(@Param("telephone") final String phoneNum, @Param("aId") final String id) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<TCustomerInfoEntity> phoneNumList = dbDao.query(TCustomerInfoEntity.class,
+
+		List<TCustomerInfoEntity> customer = dbDao.query(TCustomerInfoEntity.class,
 				Cnd.where("telephone", "=", phoneNum), null);
-		if (!Util.isEmpty(phoneNumList)) {
-			map.put("valid", false);
+		List<TCustomerInfoEntity> phoneNumList;
+		if (!Util.isEmpty(id)) {
+			phoneNumList = dbDao.query(TCustomerInfoEntity.class,
+					Cnd.where("telephone", "=", phoneNum).and("id", "=", id), null);
+			if (customer.containsAll(phoneNumList)) {
+				map.put("valid", true);
+			} else {
+				map.put("valid", false);
+			}
 		} else {
-			map.put("valid", true);
+
+			if (!Util.isEmpty(customer)) {
+				map.put("valid", false);
+			} else {
+				map.put("valid", true);
+			}
 		}
+
 		return map;
 	}
 

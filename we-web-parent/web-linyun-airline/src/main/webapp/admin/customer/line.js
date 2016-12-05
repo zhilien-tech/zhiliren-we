@@ -5,9 +5,10 @@ $("#isLine").select2({
 		delay : 250,
 		type : 'post',
 		data : function(params) {
-			return {
+			return {  
 				q : params.term, // search term
-				page : params.page,
+				ids:$('#sLine1ID').val(),
+				page : params.page
 			};
 		},
 		processResults : function(data, params) {
@@ -30,6 +31,8 @@ $("#isLine").select2({
 	tags : false, //设置必须存在的选项 才能选中
 });
 
+
+//国际
 $("#sLine2ID").select2({
 	ajax : {
 		url : BASE_PATH + "/admin/customer/international.html",
@@ -39,7 +42,8 @@ $("#sLine2ID").select2({
 		data : function(params) {
 			return {
 				q : params.term, // search term
-				page : params.page,
+				ids:$('#line2ID').val(),
+				page : params.page
 			};
 		},
 		processResults : function(data, params) {

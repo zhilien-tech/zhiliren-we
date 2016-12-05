@@ -51,7 +51,7 @@
 							<input name="id" type="hidden" value="${obj.customer.id }">
 							<label class="col-sm-3 text-right padding">公司名称：</label>
 							<div class="col-sm-8 padding">
-								<select id="companyId" class="form-control select2 inpImpWid" multiple="multiple"  data-placeholder="请输入公司名称">
+								<select id="companyId" name="companyId"  onchange="editInput()" class="form-control select2 inpImpWid" multiple="multiple"  data-placeholder="请输入公司名称">
 									<option></option>
 									<c:forEach var="one" items="${obj.comEntity }">
 										<option value="${one.id }">${one.text}</option>
@@ -147,7 +147,7 @@
 							<label class="col-sm-3 text-right padding">出发城市：</label>
 							
 							<div class="col-sm-8 padding">
-								<select id="city" class="form-control select2"  multiple="multiple"  data-placeholder="请输入出发城市">
+								<select id="city" class="form-control select2" onchange="cityOpt()"  multiple="multiple"  data-placeholder="请输入出发城市">
 									<option></option>
 									<c:forEach var="one" items="${obj.outcitylist }">
 										<option value="${one.id }">${one.text}</option>
@@ -164,7 +164,7 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">国境内陆：</label>
 							<div class="col-sm-3 padding">
-								<select id="isLine" class="form-control select2 inpImportant"  multiple="multiple"  data-placeholder="请输入国境内陆">
+								<select id="isLine" class="form-control select2 inpImportant" onchange="inLine()"  multiple="multiple"  data-placeholder="请输入国境内陆">
 									<option></option>
 									<c:forEach var="one" items="${obj.innerlinelist }">
 										<option value="${one.id }">${one.text}</option>
@@ -176,7 +176,7 @@
 
 							<label class="col-sm-2 text-right padding">国际：</label>
 							<div class="col-sm-3 padding">
-								<select id="sLine2ID" class="form-control select2 inpImportant"  multiple="multiple"  data-placeholder="请输入国际线路">
+								<select id="sLine2ID" class="form-control select2 inpImportant" onchange="outLine()" multiple="multiple"  data-placeholder="请输入国际线路">
 									<option></option>
 									<c:forEach var="one" items="${obj.interlinelist }">
 										<option value="${one.id }">${one.text}</option>
@@ -306,7 +306,7 @@
 							<!-- 发票项  -->
 							<div class="col-sm-8" style="display: none;" id="invioceTypeId">
 								<div class="col-sm-12 padding">
-									<select id="sInvID" class="form-control select2" multiple="multiple" data-placeholder="请输入发票项">
+									<select id="sInvID" class="form-control select2" onchange="sInvioce()" multiple="multiple" data-placeholder="请输入发票项">
 										<option></option>
 										<c:forEach var="one" items="${obj.invoicelist }">
 											<option value="${one.id }">${one.text}</option>
@@ -400,7 +400,7 @@
 					data : function(params) {
 						return {
 							q : params.term, // search term
-							page : params.page,
+							page : params.page
 						};
 					},
 					processResults : function(data, params) {
@@ -433,7 +433,8 @@
 					data : function(params) {
 						return {
 							q : params.term, // search term
-							page : params.page,
+							ids:$('#outcity').val(),
+							page : params.page
 						};
 					},
 					processResults : function(data, params) {
@@ -466,7 +467,8 @@
 					data : function(params) {
 						return {
 							q : params.term, // search term
-							page : params.page,
+							ids:$('#sLine1ID').val(),
+							page : params.page
 						};
 					},
 					processResults : function(data, params) {
@@ -499,7 +501,8 @@
 					data : function(params) {
 						return {
 							q : params.term, // search term
-							page : params.page,
+							ids:$('#line2ID').val(),
+							page : params.page
 						};
 					},
 					processResults : function(data, params) {
@@ -532,7 +535,8 @@
 					data : function(params) {
 						return {
 							q : params.term, // search term
-							page : params.page,
+							ids:$('#sInvName').val(),
+							page : params.page
 						};
 					},
 					processResults : function(data, params) {
@@ -565,7 +569,7 @@
 					validating : 'glyphicon glyphicon-refresh'
 				},
 				fields : {
-					name : {
+					companyId : {
 						validators : {
 							notEmpty : {
 								message : '公司名称不能为空'
@@ -578,7 +582,8 @@
 		                         //自定义提交数据，默认值提交当前input value
 		                         data: function(validator) {
 		                            return {
-		                            	comName:$('#companyId').find("option:selected").text()
+		                            	name:$('#companyId').find("option:selected").val(),
+		                            	cid:'${obj.customer.id}'
 		                            };
 		                         }
 		                     }
@@ -614,10 +619,11 @@
 		                         type: 'POST',
 		                         data: function(validator) {
 		                            return {
-		                            	telephone:$('#telephoneId').val()
+		                            	telephone:$('#telephoneId').val(),
+		                            	aId:'${obj.customer.id }'
 		                            };
 		                         }
-		                     },
+		                     }, 
 							regexp : {
 								regexp : /^[1][34578][0-9]{9}$/,
 								message : '联系电话格式错误'
@@ -711,34 +717,53 @@
 	</script>
 	
 	
-	<!-- 更新 -->
+	<!-- Select2 Onchange事件 -->
 	<script type="text/javascript">
-		function updateCustomerInfo() {
-			//出发城市ID
-			var selectedCityId = $("#city").select2("val") ;
-			$("#outcity").val(selectedCityId) ;
-			
+		/* 客户公司名称和Id */
+		function editInput(){
 			//代理商公司ID
 			var selectedcompanyId = $("#companyId").select2("val");
 			$("#agentId").val(selectedcompanyId);
 			//公司名称
 			var selectedcompanyName = $('#companyId').find("option:selected").text();
 			$("#comName").val(selectedcompanyName);
-			
-			
-			//国境线路ID
-			var selectedisLine = $("#isLine").select2("val") ;
-			$("#sLine1ID").val(selectedisLine) ;
-			//国际线路ID
-			var selectedsLine2ID = $("#sLine2ID").select2("val") ;
-			$("#line2ID").val(selectedsLine2ID) ;
-			//发票项ID
-			var selectedsInvID = $("#sInvID").select2("val") ;
-			$("#sInvName").val(selectedsInvID) ;
+		}
+		/* 出发城市 */
+		function cityOpt(){
+			//出发城市Id
+			var selectedCityId = $("#city").select2("val");
+			$("#outcity").val(selectedCityId);
+		}
+		/* 国内线路 */
+		function inLine(){
+			//国内线路Id
+			var selectedisLine = $("#isLine").select2("val");
+			$("#sLine1ID").val(selectedisLine);
+		}
+		/* 国际线路 */
+		function outLine(){
+			//国际线路Id
+			var selectedsLine2ID = $("#sLine2ID").select2("val");
+			$("#line2ID").val(selectedsLine2ID);
+		}
+		/*发票项*/
+		function sInvioce(){
+			//发票项Id
+			var selectedsInvID = $("#sInvID").select2("val");
+			$("#sInvName").val(selectedsInvID);
+		}
+	 	//提交时开始验证
+		$('#updateBtn').click(function() {
+			$('#customerUpdateForm').bootstrapValidator('validate');
+		}); 
+	</script>
+	
+	<!-- 更新 -->
+	<script type="text/javascript">
+		function updateCustomerInfo() {
 			
 			$('#customerUpdateForm').bootstrapValidator('validate');
-			var bootstrapValidator = $("#customerUpdateForm").data(
-					'bootstrapValidator');
+			var bootstrapValidator = $("#customerUpdateForm").data('bootstrapValidator');
 			if (bootstrapValidator.isValid()) {
 				$.ajax({
 					type : 'POST',
@@ -747,9 +772,9 @@
 					success : function(data) {
 						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						if ("200" == data.status) {
-							layer.msg("编辑成功", "", 3000);
+							layer.msg("编辑成功", 3000);
 						} else {
-							layer.msg("编辑失败！", "", 3000);
+							layer.msg("编辑失败！", 3000);
 						}
 						layer.close(index);
 						parent.location.reload();
@@ -761,10 +786,6 @@
 				});
 			}
 		}
-	 	//提交时开始验证
-		$('#updateBtn').click(function() {
-			$('#customerUpdateForm').bootstrapValidator('validate');
-		}); 
 	
 		//返回刷新页面 
 		function reload() { window.location.reload(); }

@@ -7,7 +7,7 @@ $("#companyId").select2({
 		data : function(params) {
 			return {
 				q : params.term, // search term
-				page : params.page,
+				page : params.page
 			};
 		},
 		processResults : function(data, params) {
@@ -40,7 +40,8 @@ $("#city").select2({
 			data : function(params) {
 				return {
 					q : params.term, // search term
-					page : params.page,
+					ids:$('#outcity').val(),
+					page : params.page
 				};
 			},
 			processResults : function(data, params) {

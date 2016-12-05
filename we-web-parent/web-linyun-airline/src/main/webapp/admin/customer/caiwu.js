@@ -7,7 +7,8 @@ $("#sInvID").select2({
 		data : function(params) {
 			return {
 				q : params.term, // search term
-				page : params.page,
+				ids:$('#sInvName').val(),
+				page : params.page
 			};
 		},
 		processResults : function(data, params) {

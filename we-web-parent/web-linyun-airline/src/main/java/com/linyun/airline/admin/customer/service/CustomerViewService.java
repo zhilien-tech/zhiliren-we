@@ -135,6 +135,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		if (!Util.isEmpty(addForm.getContractTimeString())) {
 			addForm.setContractTime(DateUtil.string2Date(addForm.getContractTimeString(), "yyyy-MM-dd"));
 		}
+
 		TCustomerInfoEntity customerInfo = this.add(addForm);
 
 		//出发城市城市截取
@@ -477,7 +478,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 * @return
 	 * @throws Exception TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object goCity(String outcityName) throws Exception {
+	public Object goCity(String outcityName, String ids) throws Exception {
 
 		Set<DictInfoEntity> set = Sets.newTreeSet();
 
@@ -523,7 +524,19 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 				list.add(op);
 			}
 		}
-
+		if (!Util.isEmpty(ids)) {
+			//删除已存在的
+			Iterable<String> outcityid = Splitter.on(",").split(ids);
+			List<Select2Option> removelist = new ArrayList<Select2Option>();
+			for (String str : outcityid) {
+				for (Select2Option sel : list) {
+					if (sel.getId() == Long.valueOf(str)) {
+						removelist.add(sel);
+					}
+				}
+			}
+			list.removeAll(removelist);
+		}
 		return list;
 	}
 
@@ -537,7 +550,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 * @return
 	 * @throws Exception TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object isLine(String lineName) throws Exception {
+	public Object isLine(String lineName, String ids) throws Exception {
 		Set<DictInfoEntity> set = Sets.newTreeSet();
 
 		Sql sql = Sqls.create(sqlManager.get("customer_line_list"));
@@ -582,7 +595,19 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 				list.add(op);
 			}
 		}
-
+		if (!Util.isEmpty(ids)) {
+			//删除已存在的
+			Iterable<String> outcityid = Splitter.on(",").split(ids);
+			List<Select2Option> removelist = new ArrayList<Select2Option>();
+			for (String str : outcityid) {
+				for (Select2Option sel : list) {
+					if (sel.getId() == Long.valueOf(str)) {
+						removelist.add(sel);
+					}
+				}
+			}
+			list.removeAll(removelist);
+		}
 		return list;
 	}
 
@@ -596,7 +621,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 * @return
 	 * @throws Exception TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object isInvioce(String invioceName) throws Exception {
+	public Object isInvioce(String invioceName, String ids) throws Exception {
 		Set<DictInfoEntity> set = Sets.newTreeSet();
 
 		Sql sql = Sqls.create(sqlManager.get("customer_invioce_list"));
@@ -641,7 +666,19 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 				list.add(op);
 			}
 		}
-
+		if (!Util.isEmpty(ids)) {
+			//删除已存在的
+			Iterable<String> outcityid = Splitter.on(",").split(ids);
+			List<Select2Option> removelist = new ArrayList<Select2Option>();
+			for (String str : outcityid) {
+				for (Select2Option sel : list) {
+					if (sel.getId() == Long.valueOf(str)) {
+						removelist.add(sel);
+					}
+				}
+			}
+			list.removeAll(removelist);
+		}
 		return list;
 	}
 
@@ -655,7 +692,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 * @return
 	 * @throws Exception TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object international(String lineName) throws Exception {
+	public Object international(String lineName, String ids) throws Exception {
 		Set<DictInfoEntity> set = Sets.newTreeSet();
 
 		Sql sql = Sqls.create(sqlManager.get("customer_line_list"));
@@ -699,6 +736,20 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 				op.setText(dict.getDictName());
 				list.add(op);
 			}
+		}
+
+		if (!Util.isEmpty(ids)) {
+			//删除已存在的
+			Iterable<String> outcityid = Splitter.on(",").split(ids);
+			List<Select2Option> removelist = new ArrayList<Select2Option>();
+			for (String str : outcityid) {
+				for (Select2Option sel : list) {
+					if (sel.getId() == Long.valueOf(str)) {
+						removelist.add(sel);
+					}
+				}
+			}
+			list.removeAll(removelist);
 		}
 
 		return list;
