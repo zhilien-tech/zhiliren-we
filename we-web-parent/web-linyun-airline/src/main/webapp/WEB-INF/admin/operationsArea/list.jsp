@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" errorPage="/WEB-INF/common/500.jsp"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
 
-<c:set var="url" value="${base}/admin/customerinvoice" />
+<c:set var="url" value="${base}/admin/operationsArea" />
 
 <form id="pagerForm" action="${url}/list.html" method="post">
 	<input type="hidden" name="pageNumber" value="${obj.pageNumber}" />
@@ -27,8 +27,11 @@
 			<thead>
 				<tr>
 					<th><input type="checkbox" group="ids" class="ipt_checkbox checkboxCtrl"></th>
-					<th>客户信息id</th>
-					<th>发票项id</th>
+					<th>标题</th>
+					<th>内容</th>
+					<th>消息类型</th>
+					<th>生成日期</th>
+					<th>优先级</th>
 					<th>操作</th>
 				</tr>
 			</thead>
@@ -36,8 +39,11 @@
 				<c:forEach items="${obj.list}" var="one" >
 					<tr>
 						<td class="txtc"><input name="ids" value="${one.id}" type="checkbox" class="ipt_checkbox"></td>
-						<td>${one.infoId}</td>
-						<td>${one.invoiceId}</td>
+						<td>${one.msgTitle}</td>
+						<td>${one.msgContent}</td>
+						<td>${one.msgType}</td>
+						<td>${one.generateTime}</td>
+						<td>${one.priorityLevel}</td>
 						<td>
 							<a target="dialog" rel="user_update" href="${url}/update.html?id=${one.id}" class="btn btn_mini btn_modify">修改</a>
 							<%--

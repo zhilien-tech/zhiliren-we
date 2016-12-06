@@ -7,14 +7,13 @@
 <head>
 <meta charset="UTF-8">
 <title>添加</title>
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, minimum-scale=1">
-<link rel="stylesheet" href="${base}/public/css/pikaday.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+
 <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
-<link rel="stylesheet"
-	href="${base }/public/dist/css/bootstrapValidator.css" />
+<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css" />
+<link href="${base }/public/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 .select2-container {
 	width: 95.5% !important;
@@ -25,7 +24,10 @@
 	width: 98.5% !important;
 	display: inline-block;
 }
-.inpNone .select2 .selection span ul li+li{display:none;}
+
+.inpNone .select2 .selection span ul li+li {
+	display: none;
+}
 </style>
 </head>
 
@@ -34,9 +36,10 @@
 	<div class="modal-content">
 		<form id="customerAddForm">
 			<div class="modal-header">
-				<button id="backBtn" type="button" onclick="reload()"
+				<button id="backBtn" type="button" onclick="closeWindow()"
 					class="btn btn-primary right btn-sm" data-dismiss="modal">返回</button>
-				<input type="button" id="addBtn" class="btn btn-primary right btn-sm" value="保存" onclick="save();" />
+				<input type="button" id="addBtn"
+					class="btn btn-primary right btn-sm" value="保存" onclick="save();" />
 				<ul class="nav nav-tabs">
 					<li class="active"><a href="#tabs_1" data-toggle="tab">基本信息</a></li>
 					<li><a href="#tabs_2" data-toggle="tab">线路权限</a></li>
@@ -55,8 +58,10 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">公司名称：</label>
 							<div class="col-sm-8 padding seleSpanWid inpNone">
-								<select id="companyId" name="companyId" onchange="editInput()" class="form-control select2 inpImpWid" multiple="multiple"  data-placeholder="请输入公司名称">
-									
+								<select id="companyId" name="companyId" onchange="editInput()"
+									class="form-control select2 inpImpWid" multiple="multiple"
+									data-placeholder="请输入公司名称">
+
 								</select><span class="prompt">*</span>
 								<!-- 公司ID -->
 								<input id="agentId" type="hidden" name="agentId" />
@@ -66,9 +71,8 @@
 						</div>
 						<!-- 公司OnChange事件 -->
 						<script type="text/javascript">
-							
 							var comInput = $("input[placeholder=请输入公司名称]");
-							function editInput(){
+							function editInput() {
 								var opt = $("#companyId").html();
 								//代理商公司ID
 								var selectedcompanyId = $("#companyId").select2("val");
@@ -78,7 +82,7 @@
 								$("#comName").val(selectedcompanyName);
 							}
 						</script>
-						
+
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">公司简称：</label>
 							<div class="col-sm-3 padding">
@@ -124,7 +128,7 @@
 
 							<label class="col-sm-2 text-right padding">传真：</label>
 							<div class="col-sm-3 padding">
-								<input name="fax" type="text"
+								<input id="fax" name="fax" type="text"
 									class="form-control input-sm inpImportant" placeholder="请输入传真" />
 							</div>
 						</div>
@@ -163,7 +167,8 @@
 							<label class="col-sm-3 text-right padding">出发城市：</label>
 							<div class="col-sm-8 padding seleSpanWid">
 								<select id="city" class="form-control select2 inpImpWid"
-									multiple="multiple" onchange="cityOpt()" data-placeholder="请输入出发城市">
+									multiple="multiple" onchange="cityOpt()"
+									data-placeholder="请输入出发城市">
 								</select><span class="prompt">*</span>
 								<!-- 出发城市ID -->
 								<input id="outcity" type="hidden" name="outcityname" />
@@ -177,7 +182,8 @@
 							<label class="col-sm-3 text-right padding">国境内陆：</label>
 							<div class="col-sm-3 padding">
 								<select id="isLine" class="form-control select2 inpImportant"
-									multiple="multiple" onchange="inLine()" data-placeholder="请输入国境内陆">
+									multiple="multiple" onchange="inLine()"
+									data-placeholder="请输入国境内陆">
 								</select><span class="prompt">*</span>
 								<!-- 国境内陆ID -->
 								<input id="sLine1ID" type="hidden" name="sLine1" />
@@ -186,7 +192,8 @@
 							<label class="col-sm-2 text-right padding">国际：</label>
 							<div class="col-sm-3 padding">
 								<select id="sLine2ID" class="form-control select2 inpImportant"
-									multiple="multiple" onchange="outLine()" data-placeholder="请输入国际线路">
+									multiple="multiple" onchange="outLine()"
+									data-placeholder="请输入国际线路">
 								</select><span class="prompt">*</span>
 								<!-- 国际线路ID -->
 								<input id="line2ID" type="hidden" name="internationLine" />
@@ -201,7 +208,7 @@
 							<div class="col-sm-3 padding">
 								<input type="file" name="fileID" id="uploadify" /> <input
 									type="hidden" name="appendix" id="appendix" />
-							<!-- <p class="flie_A">
+								<!-- <p class="flie_A">
 									上传<input type="button" onclick="fileupload();" />
 								</p> -->
 							</div>
@@ -234,8 +241,7 @@
 							<div class="col-sm-5 padding">
 								<input id="datepicker1" name="contractTimeString" type="text"
 									class="form-control input-sm input-wid"
-									placeholder="2015-08-08" /> 
-								至 <input id="datepicker2"
+									placeholder="2015-08-08" /> 至 <input id="datepicker2"
 									name="contractDueTimeString" type="text"
 									class="form-control input-sm input-wid"
 									placeholder="2088-09-09" />
@@ -288,7 +294,7 @@
 						<div class="form-group row">
 							<label class="col-sm-2 text-right padding">提供发票：</label>
 							<div class="col-sm-2 padding">
-								<select id="invoiceID" name="invoice" 
+								<select id="invoiceID" name="invoice"
 									class="form-control input-sm" onchange="gaveInvioce()">
 									<option value="0" selected="selected">否</option>
 									<option value="1">是</option>
@@ -297,8 +303,9 @@
 							<!-- 发票项  -->
 							<div class="col-sm-8" style="display: none;" id="invioceType">
 								<div class="col-sm-12 padding">
-									<select id="sInvID" class="form-control select2" onchange="sInvioce()"
-										multiple="multiple" data-placeholder="请输入发票项">
+									<select id="sInvID" class="form-control select2"
+										onchange="sInvioce()" multiple="multiple"
+										data-placeholder="请输入发票项">
 									</select>
 									<!-- 发票项ID -->
 									<input id="sInvName" type="hidden" name="sInvName" />
@@ -309,7 +316,7 @@
 					</div>
 				</div>
 			</div>
-	</form>
+		</form>
 	</div>
 	<script type="text/javascript">
 		var BASE_PATH = '${base}';
@@ -328,12 +335,10 @@
 
 	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 	<script src="${base}/common/js/layer/layer.js"></script>
+	<link rel="stylesheet" href="${base}/public/css/pikaday.css">
 	<script src="${base}/public/dist/js/pikaday.js"></script>
 
-	<link href="${base }/public/plugins/uploadify/uploadify.css"
-		rel="stylesheet" type="text/css" />
-	<script type="text/javascript"
-		src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
+	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
 	<!-- 页面js -->
 	<script src="${base}/admin/customer/baseinfo.js"></script>
 	<script src="${base}/admin/customer/line.js"></script>
@@ -368,100 +373,116 @@
 
 			//页面加载时 执行
 			angentList();
-			
+
 			//公司名称文本框
 			var comInput = $("input[placeholder=请输入公司名称]");
-			
+
 			//校验
-			$('#customerAddForm').bootstrapValidator({
-				message : '验证不通过',
-				feedbackIcons : {
-					valid : 'glyphicon glyphicon-ok',
-					invalid : 'glyphicon glyphicon-remove',
-					validating : 'glyphicon glyphicon-refresh'
-				},
-				fields : {
-					companyId : {
-						validators : {
-							notEmpty : {
-								message : '公司名称不能为空'
-							},
-		                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
-		                         url: '${base}/admin/customer/checkComNameExist.html',//验证地址
-		                         message: '公司名称已存在，请重新输入!',//提示消息
-		                         delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
-		                         type: 'POST',//请求方式
-		                         //自定义提交数据，默认值提交当前input value
-		                         data: function(validator) {
-		                            return {
-		                            	name:$('#companyId').find("option:selected").val(),
-		                            	cid:$("#companyId").select2("val")
-		                            };
-		                         }
-		                     }
-						}
-					},
-					shortName : {
-						validators : {
-							notEmpty : {
-								message : '公司简称不能为空'
-							},
-							regexp : {
-								regexp : /^[a-zA-Z\u4e00-\u9fa5]{1,6}$/,
-								message : '公司简称最多为6个字'
-							}
-						}
-					},
-					linkMan : {
-						validators : {
-							notEmpty : {
-								message : '联系人不能为空'
-							}
-						}
-					},
-					telephone : {
-						validators : {
-							notEmpty : {
-								message : '联系电话不能为空'
-							},
-		                   remote: {
-		                         url: '${base}/admin/customer/checkTelephoneExist.html',
-		                         message: '联系电话已存在，请重新输入!',
-		                         delay :  2000,
-		                         type: 'POST',
-		                         data: function(validator) {
-		                            return {
-		                            	telephone:$('#telephoneId').val(),
-		                            	aId:'${obj.customer.id}'
-		                            };
-		                         }
-		                     },
-							regexp : {
-								regexp : /^[1][34578][0-9]{9}$/,
-								message : '联系电话格式错误'
-							}
-						}
-					},
-					address : {
-						validators : {
-							notEmpty : {
-								message : '公司地址不能为空'
-							}
-						}
-					},
-					siteUrl : {
-						validators : {
-							notEmpty : {
-								message : '网址址不能为空'
-							},
-							regexp : {
-								regexp : /^(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?$/,
-								message : '网址格式错误'
-							}
-						}
-					}
-				}
-			});
+			$('#customerAddForm')
+					.bootstrapValidator(
+							{
+								message : '验证不通过',
+								feedbackIcons : {
+									valid : 'glyphicon glyphicon-ok',
+									invalid : 'glyphicon glyphicon-remove',
+									validating : 'glyphicon glyphicon-refresh'
+								},
+								fields : {
+									companyId : {
+										validators : {
+											notEmpty : {
+												message : '公司名称不能为空'
+											},
+											remote : {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
+												url : '${base}/admin/customer/checkComNameExist.html',//验证地址
+												message : '公司名称已存在，请重新输入!',//提示消息
+												delay : 2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+												type : 'POST',//请求方式
+												//自定义提交数据，默认值提交当前input value
+												data : function(validator) {
+													return {
+														name : $('#companyId')
+																.find(
+																		"option:selected")
+																.val(),
+														cid : $("#companyId")
+																.select2("val")
+													};
+												}
+											}
+										}
+									},
+									shortName : {
+										validators : {
+											notEmpty : {
+												message : '公司简称不能为空'
+											},
+											regexp : {
+												regexp : /^[a-zA-Z\u4e00-\u9fa5]{1,6}$/,
+												message : '公司简称最多为6个字'
+											}
+										}
+									},
+									linkMan : {
+										validators : {
+											notEmpty : {
+												message : '联系人不能为空'
+											}
+										}
+									},
+									telephone : {
+										validators : {
+											notEmpty : {
+												message : '联系电话不能为空'
+											},
+											remote : {
+												url : '${base}/admin/customer/checkTelephoneExist.html',
+												message : '联系电话已存在，请重新输入!',
+												delay : 2000,
+												type : 'POST',
+												data : function(validator) {
+													return {
+														telephone : $(
+																'#telephoneId')
+																.val(),
+														aId : '${obj.customer.id}'
+													};
+												}
+											},
+											regexp : {
+												regexp : /^[1][34578][0-9]{9}$/,
+												message : '联系电话格式错误'
+											}
+										}
+									},
+									address : {
+										validators : {
+											notEmpty : {
+												message : '公司地址不能为空'
+											}
+										}
+									},
+									fax : {
+										validators : {
+											regexp : {
+												regexp : /^[+]{0,1}(\d){1,3}[ ]?([-]?((\d)|[ ]){1,12})+$/,
+												message : '传真格式错误'
+											}
+										}
+									},
+									siteUrl : {
+										validators : {
+											notEmpty : {
+												message : '网址址不能为空'
+											},
+											regexp : {
+												regexp : /^(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?$/,
+												message : '网址格式错误'
+											}
+										}
+									}
+								}
+							});
 
 		});
 		/* 页面初始化加载完毕 */
@@ -469,7 +490,6 @@
 
 	<!-- 显示隐藏问题 -->
 	<script type="text/javascript">
-	
 		/* 负责人名称 下拉列表*/
 		function angentList() {
 			$.ajax({
@@ -518,25 +538,25 @@
 	<!-- Select2 Onchange事件 -->
 	<script type="text/javascript">
 		/* 出发城市 */
-		function cityOpt(){
+		function cityOpt() {
 			//出发城市Id
 			var selectedCityId = $("#city").select2("val");
 			$("#outcity").val(selectedCityId);
 		}
 		/* 国内线路 */
-		function inLine(){
+		function inLine() {
 			//国内线路Id
 			var selectedisLine = $("#isLine").select2("val");
 			$("#sLine1ID").val(selectedisLine);
 		}
 		/* 国际线路 */
-		function outLine(){
+		function outLine() {
 			//国际线路Id
 			var selectedsLine2ID = $("#sLine2ID").select2("val");
 			$("#line2ID").val(selectedsLine2ID);
 		}
 		/*发票项*/
-		function sInvioce(){
+		function sInvioce() {
 			//发票项Id
 			var selectedsInvID = $("#sInvID").select2("val");
 			$("#sInvName").val(selectedsInvID);
@@ -545,9 +565,10 @@
 
 	<!-- 保存页面 -->
 	<script type="text/javascript">
-		function save(){
+		function save() {
 			$('#customerAddForm').bootstrapValidator('validate');
-			var bootstrapValidator = $("#customerAddForm").data('bootstrapValidator');
+			var bootstrapValidator = $("#customerAddForm").data(
+					'bootstrapValidator');
 			if (bootstrapValidator.isValid()) {
 				$.ajax({
 					type : 'POST',
@@ -556,19 +577,19 @@
 					success : function(data) {
 						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						if ("200" == data.status) {
-							layer.msg("添加成功", "", 3000);
+							layer.close(index);
+							window.parent.successCallback('1');
+							parent.layer.close(index);
 						} else {
-							layer.msg("添加失败!", "", 3000);
+							layer.msg("添加失败", "", 3000);
 						}
-						layer.close(index);
-						parent.location.reload();
 
 					},
 					error : function(xhr) {
 						layer.msg("添加失败", "", 3000);
 					}
 				});
-			} 
+			}
 		}
 		//提交时开始验证
 		$('#addBtn').click(function() {
@@ -586,9 +607,10 @@
 			}
 		}
 
-		//返回刷新页面 
-		function reload() {
-			window.location.reload();
+		//返回 
+		function closeWindow() {
+			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+			parent.layer.close(index);
 		}
 	</script>
 

@@ -146,7 +146,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 			TCustomerOutcityEntity outcityEntity = new TCustomerOutcityEntity();
 			outcityEntity.setInfoId(customerInfo.getId());
 			//判断是否为空
-			if (!Util.isEmpty(dictInfoId)) {
+			if (!Util.isEmpty(dictInfoId) && Long.valueOf(dictInfoId) != 0) {
 				outcityEntity.setDictInfoId(Long.valueOf(dictInfoId));
 			}
 			outcityEntities.add(outcityEntity);
@@ -217,12 +217,14 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 		//日期格式转换
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String contractTimeStr = null;
 		if (!Util.isEmpty(contractTime)) {
-			String contractTimeStr = sdf.format(contractTime);
+			contractTimeStr = sdf.format(contractTime);
 			tCustomerInfoEntity.setContractTimeString(contractTimeStr);
 		}
+		String contractDueTimeStr = null;
 		if (!Util.isEmpty(contractDueTime)) {
-			String contractDueTimeStr = sdf.format(contractDueTime);
+			contractDueTimeStr = sdf.format(contractDueTime);
 			tCustomerInfoEntity.setContractDueTimeString(contractDueTimeStr);
 		}
 
