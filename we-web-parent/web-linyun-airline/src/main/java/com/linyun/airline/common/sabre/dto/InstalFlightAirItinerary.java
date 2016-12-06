@@ -6,16 +6,28 @@
 
 package com.linyun.airline.common.sabre.dto;
 
+import java.util.List;
+
 import lombok.Data;
 
 /**
- * 机票查询结果
+ * 机票查询结果-航旅信息
+ * <p>
+ * 一次航旅(AirItinerary)包含多段航段(segment)
  *
  * @author   朱晓川
  * @Date	 2016年12月5日 	 
  */
 @Data
-public class InstalFlightSearchResult {
+public class InstalFlightAirItinerary {
+
+	/**排序号*/
+	private int SequenceNumber;
+
+	/**
+	 * 航空公司图片地址
+	 */
+	private String airlineImgUrl;
 
 	/**
 	 * 航空公司3字母代码
@@ -28,13 +40,13 @@ public class InstalFlightSearchResult {
 	private String airlineName;
 
 	/**
-	 * 航空公司图片地址
+	 * 机票类型
 	 */
-	private String airlineImgUrl;
+	private String TicketType;
 
 	/**
-	 * 耗时(分)
+	 * 航段
 	 */
-	private int elapsedTime;
+	List<FlightSegment> list;
 
 }
