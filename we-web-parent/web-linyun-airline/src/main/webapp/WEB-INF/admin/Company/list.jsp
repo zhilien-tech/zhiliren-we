@@ -140,7 +140,7 @@ $(function () {
       layer.open({
     	    type: 2,
     	    title: false,
-    	    closeBtn:false,
+    	    closeBtn:true,
     	    fix: false,
     	    maxmin: false,
     	    shadeClose: false,
@@ -169,7 +169,7 @@ $(function () {
   	  	closeBtn:false,
   	    fix: false,
   	    maxmin: false,
-  	    shadeClose: false,
+  	    shadeClose: true,
   	    area: ['900px', '600px'],
   	    content: '${url}/userList.html?id='+id
   	    
@@ -182,15 +182,13 @@ $(function () {
 	}
   function successCallback(id){
 	  datatable.ajax.reload();
+	  loadCompanyCount();
 	  if(id == '1'){
 		  layer.msg("添加成功",{time: 2000, icon:1});
-		  loadCompanyCount();
 	  }else if(id == '2'){
 		  layer.msg("修改成功",{time: 2000, icon:1});
-		  loadCompanyCount();
 	  }else if(id == '3'){
 		  layer.msg("删除成功",{time: 2000, icon:1});
-		  loadCompanyCount();
 	  }
   }
   

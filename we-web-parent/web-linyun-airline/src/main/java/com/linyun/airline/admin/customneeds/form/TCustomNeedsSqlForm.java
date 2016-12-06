@@ -67,7 +67,7 @@ public class TCustomNeedsSqlForm extends DataTablesParamForm {
 	private String backflight;
 
 	/**是否关闭*/
-	private Integer isclose;
+	private int isclose;
 
 	/**操作人*/
 	private String opid;
@@ -80,7 +80,7 @@ public class TCustomNeedsSqlForm extends DataTablesParamForm {
 
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
-		cnd.and("isclose", "=", 0);
+		cnd.and("isclose", "=", isclose);
 		if (!Util.isEmpty(airline)) {
 			cnd.and("airline", "like", "%" + airline + "%");
 		}

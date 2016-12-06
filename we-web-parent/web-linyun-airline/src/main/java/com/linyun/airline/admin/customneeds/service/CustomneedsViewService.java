@@ -77,6 +77,7 @@ public class CustomneedsViewService extends BaseService<TCustomerneedsEntity> {
 	 * @param updateForm
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
+	@SuppressWarnings("deprecation")
 	public Object updateCustomNeedsInfo(TCustomerneedsUpdateForm updateForm) {
 		if (!Util.isEmpty(updateForm.getLeavedateString())) {
 			updateForm.setLeavedate(new Date(updateForm.getLeavedateString()));
@@ -164,6 +165,16 @@ public class CustomneedsViewService extends BaseService<TCustomerneedsEntity> {
 
 	}
 
+	/**
+	 * 
+	 * 下载客户需求Excel导入模板
+	 * <p>
+	 * TODO下载客户需求Excel导入模板
+	 *
+	 * @param request
+	 * @param response
+	 * @return TODO下载客户需求Excel导入模板
+	 */
 	public Object downloadTemplate(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			String filepath = request.getServletContext().getRealPath(this.EXCEL_PATH);
@@ -191,6 +202,15 @@ public class CustomneedsViewService extends BaseService<TCustomerneedsEntity> {
 
 	}
 
+	/**
+	 * 客户需求导出Excel
+	 * <p>
+	 * 客户需求导出Excel
+	 *
+	 * @param response
+	 * @param sqlParamForm
+	 * @return 客户需求导出Excel
+	 */
 	public Object exportCustomNeedsExcel(HttpServletResponse response, TCustomNeedsSqlForm sqlParamForm) {
 		try {
 			//设置Excel表格输入的日期格式

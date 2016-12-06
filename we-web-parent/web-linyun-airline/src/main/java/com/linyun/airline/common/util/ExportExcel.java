@@ -55,6 +55,10 @@ public class ExportExcel {
 		this.response = response;
 	}
 
+	public ExportExcel() {
+
+	}
+
 	public String getTitle() {
 		return title;
 	}

@@ -27,88 +27,80 @@
 		    height: 40px;
 		    border-radius: 5px;
 		}
+		html, body {min-height: 0;min-width: 0;overflow-x: auto !important;}
 	</style>
 </head>
-<body onresize=hero();>
-          <div class="modal-top">
-                <form id="customNeedsUpdatedForm"> 
-              <div class="modal-header boderButt">
-                  <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">返回</button>
-                  <input type="button" id="submitButton" class="btn btn-primary right btn-sm" onclick="submitCustomNeeds()" value="保存"/>
-                  <button type="button" class="btn right btn-sm" onclick="closeCustomNeeds();">关闭</button>
-                  <h4>&nbsp;&nbsp;&nbsp;<i class="fa fa-user"></i> 编辑客户需求</h4>
-              </div>
-                <div class="modal-body">
-                 <div class="tab-content">
-                        <div class="form-group row">
-                        	<input type="hidden" id="id" name="id" value="${obj.id }">
-                            <label class="col-sm-3 text-right padding">航空公司：</label>
-                            <div class="col-sm-3 padding">
-                              <input name="airline" type="tel" class="form-control input-sm inpImportant" placeholder="请输入公司名称" value="${obj.airline }"/><span class="prompt">*</span>
-                            </div>
-                            
-                            <label class="col-sm-3 text-right padding">旅行社：</label>
-                            <div class="col-sm-3 padding">
-                              <input name="travel" type="tel" class="form-control input-sm inpImportant" placeholder="请输入旅行社" value="${obj.travel}"/><span class="prompt">*</span>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label class="col-sm-2 text-right padding">人数：</label>
-                            <div class="col-sm-2 padding">
-                              <input name="totalcount" type="tel" class="form-control input-sm inpImportant" value="${obj.totalcount}"/>
-                            </div>
-                          
-                            <label class="col-sm-2 text-right padding">天数：</label>
-                            <div class="col-sm-2 padding">
-                              <input name="totalday" type="tel" class="form-control input-sm " value="${obj.totalday}"/>
-                            </div>
-                            
-                            <label class="col-sm-2 text-right padding">联运要求：</label>
-                            <div class="col-sm-2 padding">
-                              <input name="uniontransport" type="tel" class="form-control input-sm inpImportant" value="${obj.uniontransport}"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                          <label class="col-sm-2 text-right padding">去程日期：</label>
-                            <div class="col-sm-2 padding">
-                              <input id="leavedateString" name="leavedateString" type="tel" class="form-control input-sm inpImportant" value="${obj.leavedate}"/>
-                            </div>
-                            
-                            <label class="col-sm-2 text-right padding">出发城市：</label>
-                            <div class="col-sm-2 padding">
-                              <input name="leavecity" type="tel" class="form-control input-sm" value="${obj.leavecity}"/>
-                            </div>
-                            
-                            <label class="col-sm-2 text-right padding">出发航班：</label>
-                            <div class="col-sm-2 padding">
-                              <input name="leaveflight" type="tel" class="form-control input-sm" value="${obj.leaveflight}"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                          <label class="col-sm-2 text-right padding">回程日期：</label>
-                            <div class="col-sm-2 padding">
-                              <input id="backdateString" name="backdateString" type="tel" class="form-control input-sm inpImportant" value="${obj.backdate}"/>
-                            </div>
-                          
-                            <label class="col-sm-2 text-right padding">返回城市：</label>
-                            <div class="col-sm-2 padding">
-                              <input name="backcity" type="tel" class="form-control input-sm inpImportant"  value="${obj.backcity}"/>
-                            </div>
-                            <label class="col-sm-2 text-right padding">回程航班：</label>
-                            <div class="col-sm-2 padding">
-                              <input name="backflight" type="tel" class="form-control input-sm inpImportant" value="${obj.backflight}"/>
-                            </div>
-                        </div>
-
-
-
-                 </div>
-                </div>
-                 </form>
-            </div>
+<body >
+     <div class="modal-top">
+		<form id="customNeedsUpdatedForm"> 
+	    <div class="modal-header boderButt">
+	       <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">返回</button>
+	       <input type="submit" id="submitButton" class="btn btn-primary right btn-sm" onclick="submitCustomNeeds()" value="保存"/>
+	       <button type="button" class="btn right btn-sm" onclick="closeCustomNeeds();">关闭</button>
+	       <h4>添加客户需求</h4>
+	     </div>
+	     <div class="modal-body">
+	       <div class="tab-content">
+	           <div class="form-group row"><!--航空公司/旅行社-->
+	           	 <input type="hidden" id="id" name="id" value="${obj.id }">
+	             <label class="col-sm-2 text-right padding customerEdit">航空公司：</label>
+	             <div class="col-sm-2 padding">
+	               <input name="airline" type="text" class="form-control input-sm" placeholder="首航-CA" value="${obj.airline }"/>
+	             </div>
+	             <label class="col-sm-2 text-right padding">旅行社：</label>
+	             <div class="col-sm-2 padding">
+	               <input name="travel" type="text" class="form-control input-sm" placeholder=" " value="${obj.travel}"/>
+	             </div>
+	           </div><!--end 航空公司/旅行社-->
+	
+	           <div class="form-group row"><!--人数/天数/联运要求-->
+	             <label class="col-sm-2 text-right padding customerEdit">人数：</label>
+	             <div class="col-sm-2 padding">
+	               <input name="totalcount" type="text" class="form-control input-sm" placeholder="" value="${obj.totalcount}"/>
+	             </div>
+	             <label class="col-sm-2 text-right padding">天数：</label>
+	             <div class="col-sm-2 padding">
+	               <input name="totalday" type="text" class="form-control input-sm" placeholder=" " value="${obj.totalday}"/>
+	             </div>
+	             <label class="col-sm-2 text-right padding">联运要求：</label>
+	             <div class="col-sm-2 padding">
+	               <input name="uniontransport" type="text" class="form-control input-sm" placeholder=" " value="${obj.uniontransport}"/>
+	             </div>
+	           </div><!--end 人数/天数/联运要求-->
+	
+	           <div class="form-group row"><!--去程日期/出发城市/出发航班-->
+	             <label class="col-sm-2 text-right padding customerEdit">去程日期：</label>
+	             <div class="col-sm-2 padding">
+	               <input id="leavedateString" name="leavedateString"  type="text" class="form-control input-sm" value="${obj.leavedate}"/>
+	             </div>
+	             <label class="col-sm-2 text-right padding">出发城市：</label>
+	             <div class="col-sm-2 padding">
+	               <input name="leavecity" type="text" class="form-control input-sm" placeholder="" value="${obj.leavecity}"/>
+	             </div>
+	             <label class="col-sm-2 text-right padding">出发航班：</label>
+	             <div class="col-sm-2 padding">
+	               <input name="leaveflight" type="text" class="form-control input-sm" placeholder=" " value="${obj.leaveflight}"/>
+	             </div>
+	           </div><!--end 去程日期/出发城市/出发航班-->
+	
+	           <div class="form-group row"><!--回程日期/返回城市/回程航班-->
+	             <label class="col-sm-2 text-right padding customerEdit">回程日期：</label>
+	             <div class="col-sm-2 padding">
+	               <input id="backdateString" name="backdateString" type="text" class="form-control input-sm" value="${obj.backdate}"/>
+	             </div>
+	             <label class="col-sm-2 text-right padding">返回城市：</label>
+	             <div class="col-sm-2 padding">
+	               <input name="backcity" type="text" class="form-control input-sm" placeholder="" value="${obj.backcity}"/>
+	             </div>
+	             <label class="col-sm-2 text-right padding">回程航班：</label>
+	             <div class="col-sm-2 padding">
+	               <input name="backflight" type="text" class="form-control input-sm" placeholder=" " value="${obj.backflight}"/>
+	             </div>
+	           </div><!--end 回程日期/返回城市/回程航班-->
+	       </div>
+	     </div>
+	     </form>
+	</div>
 	<!-- jQuery 2.2.3 -->
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script src="${base}/public/bootstrap/js/bootstrap.js"></script>
