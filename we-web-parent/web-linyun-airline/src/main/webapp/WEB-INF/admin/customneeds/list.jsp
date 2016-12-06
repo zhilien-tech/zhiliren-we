@@ -2,7 +2,7 @@
 <%@include file="/WEB-INF/common/tld.jsp"%>
 <%@include file="/WEB-INF/public/header.jsp"%>
 <%@include file="/WEB-INF/public/aside.jsp"%>
-
+<link rel="stylesheet" href="${base }/public/plugins/chosen/chosen.css">
 <c:set var="url" value="${base}/admin/customneeds" />
   <!-- Content Wrapper. Contains page content -->
 	<!--内容-->
@@ -169,7 +169,7 @@
                           <div class="form-group row">
                             <label class="col-sm-1 text-right padding">旅行社：</label>
                             <div class="col-sm-1 padding">
-                              <input type="text" class="form-control input-sm" placeholder="旅行社名称">
+                              <select id="tranvelname" onfocus="loadTranvel();" class="form-control input-sm chzn-select" data-placeholder="旅行社名称" tabindex="5"></select>
                             </div>
                             <label class="col-sm-1 text-right padding">人数：</label>
                             <div class="col-sm-1 padding">
@@ -403,7 +403,13 @@
   <%@include file="/WEB-INF/public/footer.jsp"%>
 </div>
 <!-- ./wrapper -->
+<script type="text/javascript">
+	var BASE_PATH = '${base}';
+</script>
 <script src="${base}/public/dist/js/pikaday.js"></script>
+<script src="${base}/admin/airline/editplan.js"></script>
+<script src="${base}/admin/airline/planmake.js"></script>
+<script src="${base}/public/plugins/chosen/chosen.jquery.js"></script>
 <!-- page script -->
 <script>
 var datatable;
@@ -622,6 +628,7 @@ $(function () {
   
   function callback(){
 	  layer.msg("导入成功",{time: 2000, icon:1});
+	  $('#uploadExcelForm')[0].reset();
 	  datatable.ajax.reload();
   }
   
