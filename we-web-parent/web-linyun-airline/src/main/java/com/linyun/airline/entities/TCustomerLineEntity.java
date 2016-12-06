@@ -23,18 +23,40 @@ public class TCustomerLineEntity implements Serializable {
 	private long infoId;
 
 	@Column
-	@Comment("线路ID")
-	private long lineId;
-
-	@Column
-	@Comment("线路名称")
-	private String lineName;
-
-	/**使用次数*/
-	private int count;
-
-	@Column
 	@Comment("线路字典id")
-	private long dictLineId;
+	private long dictInfoId;
+
+	/**
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TCustomerLineEntity other = (TCustomerLineEntity) obj;
+		if (dictInfoId != other.dictInfoId)
+			return false;
+		if (infoId != other.infoId)
+			return false;
+		return true;
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (dictInfoId ^ (dictInfoId >>> 32));
+		result = prime * result + (int) (infoId ^ (infoId >>> 32));
+		return result;
+	}
 
 }

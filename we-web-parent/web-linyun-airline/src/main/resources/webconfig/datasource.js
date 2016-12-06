@@ -20,7 +20,7 @@ var ioc = {
 			password : {java:"$dbConfig.get('jdbc_password')"},
 			
 			/*初始化时建立物理连接的个数*/
-			InitialSize : 5,
+			InitialSize : 20,
 			
 			/*最小连接池数量*/
 			minIdle : 5,

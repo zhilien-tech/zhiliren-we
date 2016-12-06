@@ -115,7 +115,7 @@
 <script src="${base}/public/bootstrap/js/bootstrap.js"></script>
 <script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 <!--layer -->
-	<script src="${base}/common/js/layer/layer.js"></script>
+<script src="${base}/common/js/layer/layer.js"></script>
 <jsp:include page="/WEB-INF/common/webupload_resource.jsp"></jsp:include>
 <script type="text/javascript">
 	$(document).ready(function(){

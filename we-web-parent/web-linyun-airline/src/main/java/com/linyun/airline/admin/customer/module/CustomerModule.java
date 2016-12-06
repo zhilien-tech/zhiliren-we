@@ -1,16 +1,13 @@
 package com.linyun.airline.admin.customer.module;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Cnd;
@@ -18,8 +15,6 @@ import org.nutz.dao.SqlManager;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.lang.Files;
-import org.nutz.lang.Strings;
 import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Filters;
@@ -29,24 +24,18 @@ import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.upload.UploadAdaptor;
 
-import com.linyun.airline.admin.customer.service.CustomerService;
 import com.linyun.airline.admin.customer.service.CustomerViewService;
-import com.linyun.airline.admin.dictionary.external.externalInfoService;
-import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
-import com.linyun.airline.entities.DictInfoEntity;
-import com.linyun.airline.entities.TAgentEntity;
+import com.linyun.airline.common.base.Uploader;
+import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.entities.TCustomerInfoEntity;
-import com.linyun.airline.entities.TCustomerInvoiceEntity;
-import com.linyun.airline.entities.TCustomerLineEntity;
-import com.linyun.airline.entities.TUpcompanyEntity;
+import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
 import com.linyun.airline.forms.TCustomerInfoQueryForm;
 import com.linyun.airline.forms.TCustomerInfoUpdateForm;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
-import com.uxuexi.core.web.util.FormUtil;
 
 /**
  * 
@@ -75,13 +64,7 @@ public class CustomerModule {
 	 * 注入容器中的Service对象
 	 */
 	@Inject
-	private CustomerService customerService;
-
-	@Inject
 	private CustomerViewService customerViewService;
-
-	@Inject
-	private externalInfoService externalInfoService;
 
 	@Inject
 	private UploadService fdfsUploadService;
@@ -94,9 +77,9 @@ public class CustomerModule {
 	@Ok("jsp")
 	public Object add(@Param("id") final long id) {
 		Map<String, Object> obj = new HashMap<String, Object>();
-		obj.put("upCompany", dbDao.fetch(TUpcompanyEntity.class, id));
-		obj.put("agent", dbDao.fetch(TAgentEntity.class, id));
-		return dbDao.query(TCustomerInfoEntity.class, null, null);
+		List<TUserEntity> userlist = dbDao.query(TUserEntity.class, null, null);
+		obj.put("userlist", userlist);
+		return obj;
 	}
 
 	/**
@@ -108,7 +91,7 @@ public class CustomerModule {
 	@POST
 	public Object add(@Param("..") TCustomerInfoAddForm addForm) throws Exception {
 		addForm.setCreateTime(new Date());
-		customerViewService.add(addForm);
+		customerViewService.addCustomInfo(addForm);
 		return JsonResult.success("添加成功");
 	}
 
@@ -118,10 +101,8 @@ public class CustomerModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object update(@Param("id") final long id) {
-		Map<String, Object> obj = new HashMap<String, Object>();
-		obj.put("customer", dbDao.fetch(TCustomerInfoEntity.class, id));
-		return obj;
+	public Object update(@Param("id") final long id) throws Exception {
+		return customerViewService.toUpdatePage(id);
 	}
 
 	/**
@@ -130,13 +111,10 @@ public class CustomerModule {
 	@At
 	@POST
 	public Object update(@Param("..") TCustomerInfoUpdateForm updateForm) {
-		customerViewService.update(updateForm);
+		customerViewService.updateCustomInfo(updateForm);
 		return JsonResult.success("修改成功");
 	}
 
-	/**
-	 * 客户端分页查询
-	 */
 	@At
 	@Ok("jsp")
 	public Object list(@Param("..") final TCustomerInfoQueryForm queryForm, @Param("..") final Pager pager) {
@@ -146,6 +124,9 @@ public class CustomerModule {
 	//服务器端分页查询
 	@At
 	public Object listData(@Param("..") final TCustomerInfoQueryForm queryForm) {
+		//TODO 设置 列表展示的负责人名称
+		//queryForm.setAgentName();
+
 		return customerViewService.listPage4Datatables(queryForm);
 	}
 
@@ -163,132 +144,123 @@ public class CustomerModule {
 	 */
 	@At
 	public Object batchDelete(@Param("ids") final long[] ids) {
-		FormUtil.delete(dbDao, TCustomerInfoEntity.class, ids);
-		return JsonResult.success("删除成功");
+		return customerViewService.batchDelete(ids);
 	}
 
 	//附件上传 返回值文件存储地址
+	@At
 	@POST
 	@AdaptBy(type = UploadAdaptor.class, args = { "ioc:imgUpload" })
 	@Ok("json")
-	public Object upload(final @Param("file") File file, final HttpSession session) {
-		try {
-			String ext = Files.getSuffix(file);
-			FileInputStream fileInputStream = new FileInputStream(file);
-			String url = fdfsUploadService.uploadImage(fileInputStream, ext, null);
-			//文件存储地址
-			return url;
-			//业务
-		} catch (Exception e) {
-			return MobileResult.error("操作失败", null);
-		}
+	public Object upload(final @Param("fileId") File file, final HttpSession session) {
+		return customerViewService.upload(file, session);
 	}
 
-	//公司名称模糊查询
-	//TODO 接口未写
-
-	//出发城市模糊查询
+	//客户公司查询
 	@At
 	@POST
-	public Object goCity(@Param("departureCity") final String name) throws Exception {
-		Set<DictInfoEntity> set = new TreeSet<DictInfoEntity>();
-		//需要加排序事件
-		List<TCustomerLineEntity> localLineList = dbDao.query(TCustomerLineEntity.class,
-				Cnd.where("lineName", "like", Strings.trim(name) + "%"), null);
-
-		if (localLineList.size() >= 5) {
-			for (int i = 0; i < 5; i++) {
-				DictInfoEntity info = new DictInfoEntity();
-				TCustomerLineEntity cl = localLineList.get(i);
-				info.setId(cl.getLineId());
-				info.setDictName(cl.getLineName());
-				set.add(info);
-			}
-		} else {
-
-			for (TCustomerLineEntity cl : localLineList) {
-				DictInfoEntity info = new DictInfoEntity();
-				info.setId(cl.getDictLineId());
-				info.setDictName(cl.getLineName());
-				set.add(info);
-			}
-
-			List<DictInfoEntity> dictLineList = externalInfoService.findDictInfoByName(name);
-			int needmore = 5 - localLineList.size();
-
-			if (!Util.isEmpty(dictLineList)) {
-				if (dictLineList.size() <= needmore) {
-					for (DictInfoEntity dict : dictLineList) {
-						set.add(dict);
-					}
-				} else {
-					for (int i = 0; i < needmore; i++) {
-						set.add(dictLineList.get(i));
-					}
-				}
-			}
-		}
-		return set;
+	public Object company(@Param("q") final String comName) {
+		return customerViewService.company(comName);
 	}
 
-	//线路模糊查询
+	//负责人查询
 	@At
 	@POST
-	public Object isLine(@Param("line") final String name) throws Exception {
-		Set<String> set = new HashSet();
-
-		List<TCustomerLineEntity> localLineList = dbDao.query(TCustomerLineEntity.class,
-				Cnd.where("lineName", "like", name + "%"), null);
-
-		List<DictInfoEntity> dictLineList = externalInfoService.findDictInfoByName(name);
-
-		if (localLineList.size() > 5) {
-			for (int i = 0; i < 5; i++) {
-				set.add(localLineList.get(i).getLineName());
-			}
-		} else {
-			for (TCustomerLineEntity tCustomerLineEntity : localLineList) {
-				set.add(tCustomerLineEntity.getLineName());
-			}
-			//需要从字典表中查询的记录数   5-set.size()
-			int num = 5 - set.size();
-			while (num > 0) {
-				set.add(dictLineList.get(num).getDictName());
-				num--;
-			}
-		}
-
-		return set;
+	public Object agent() {
+		return customerViewService.agent();
 	}
 
-	//发票项目模糊查询
+	//出发城市查询
 	@At
 	@POST
-	public Object invioceType(@Param("invioce") final String name) throws Exception {
-		List<String> list = new ArrayList<String>();
+	public Object goCity(@Param("q") final String name, @Param("ids") final String ids) throws Exception {
+		return customerViewService.goCity(name, ids);
+	}
 
-		List<TCustomerInvoiceEntity> localInvioceList = dbDao.query(TCustomerInvoiceEntity.class,
-				Cnd.where("invioceName", "like", "%" + Strings.trim(name) + "%"), null);
-		List<DictInfoEntity> dictLineList = externalInfoService.findDictInfoByName(name);
+	//國内线路查询
+	@At
+	@POST
+	public Object isLine(@Param("q") final String name, @Param("ids") final String ids) throws Exception {
+		return customerViewService.isLine(name, ids);
+	}
 
-		if (localInvioceList.size() > 5) {
-			for (int i = 0; i < 5; i++) {
-				list.add(localInvioceList.get(i).getInvioceName());
+	//國際线路查询
+	@At
+	@POST
+	public Object international(@Param("q") final String name, @Param("ids") final String ids) throws Exception {
+		return customerViewService.international(name, ids);
+	}
+
+	//发票项目查询
+	@At
+	@POST
+	public Object isInvioce(@Param("q") final String name, @Param("ids") final String ids) throws Exception {
+		return customerViewService.isInvioce(name, ids);
+	}
+
+	/**
+	 * 上传文件
+	 */
+	@At
+	@Ok("json")
+	public String uploadFile(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("utf-8");
+		response.setCharacterEncoding("utf-8");
+		Uploader uploader = new Uploader(request, fdfsUploadService);
+		uploader.upload();
+		String url = CommonConstants.IMAGES_SERVER_ADDR + uploader.getUrl();
+		return url;
+	}
+
+	/**
+	 * 公司名称唯一性校验
+	 */
+	@At
+	@POST
+	public Object checkComNameExist(@Param("name") final String comId, @Param("cid") final String id) {
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		List<TCustomerInfoEntity> companys = dbDao.query(TCustomerInfoEntity.class, Cnd.where("agentId", "=", comId),
+				null);
+		List<TCustomerInfoEntity> comNameList = dbDao.query(TCustomerInfoEntity.class, Cnd.where("agentId", "=", comId)
+				.and("id", "=", id), null);
+		if (!Util.isEmpty(companys)) {
+			if (Util.isEmpty(id)) {
+				map.put("valid", false);
+			} else if (!Util.isEmpty(comNameList)) {
+				map.put("valid", true);
 			}
 		} else {
-			for (TCustomerInvoiceEntity tCustomerInvoiceEntity : localInvioceList) {
-				list.add(tCustomerInvoiceEntity.getInvioceName());
-			}
-
-			//需要从字典表中查询的记录数   5-set.size()
-			int num = 5 - list.size();
-			while (num > 0) {
-				list.add(dictLineList.get(num).getDictName());
-				num--;
-			}
+			map.put("valid", true);
 		}
 
-		return list;
+		return map;
+	}
+
+	/**
+	 * 联系电话唯一性校验
+	 */
+	@At
+	@POST
+	public Object checkTelephoneExist(@Param("telephone") final String phoneNum, @Param("aId") final String id) {
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		List<TCustomerInfoEntity> customer = dbDao.query(TCustomerInfoEntity.class,
+				Cnd.where("telephone", "=", phoneNum), null);
+		List<TCustomerInfoEntity> phoneNumList = dbDao.query(TCustomerInfoEntity.class,
+				Cnd.where("telephone", "=", phoneNum).and("id", "=", id), null);
+
+		if (!Util.isEmpty(customer)) {
+			if (Util.isEmpty(id)) {
+				map.put("valid", false);
+			} else if (!Util.isEmpty(phoneNumList)) {
+				map.put("valid", true);
+			}
+		} else {
+			map.put("valid", true);
+		}
+
+		return map;
 	}
 
 }

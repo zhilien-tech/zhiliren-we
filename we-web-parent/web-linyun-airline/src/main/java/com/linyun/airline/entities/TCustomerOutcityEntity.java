@@ -10,8 +10,8 @@ import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Table;
 
 @Data
-@Table("t_customer_invioce")
-public class TCustomerInvoiceEntity implements Serializable {
+@Table("t_customer_outcity")
+public class TCustomerOutcityEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Column
 	@Id(auto = true)
@@ -23,7 +23,7 @@ public class TCustomerInvoiceEntity implements Serializable {
 	private long infoId;
 
 	@Column
-	@Comment("字典信息id")
+	@Comment("线路字典id")
 	private long dictInfoId;
 
 	/**
@@ -38,7 +38,7 @@ public class TCustomerInvoiceEntity implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TCustomerInvoiceEntity other = (TCustomerInvoiceEntity) obj;
+		TCustomerOutcityEntity other = (TCustomerOutcityEntity) obj;
 		if (dictInfoId != other.dictInfoId)
 			return false;
 		if (infoId != other.infoId)

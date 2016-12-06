@@ -80,6 +80,10 @@ public class TCustomerInfoEntity implements Serializable {
 	private int payWay;
 
 	@Column
+	@Comment("其他付款方式")
+	private String paywayName;
+
+	@Column
 	@Comment("是否提供发票（0：否   1：是）")
 	private int invoice;
 
@@ -96,6 +100,10 @@ public class TCustomerInfoEntity implements Serializable {
 	private int payType;
 
 	@Column
+	@Comment("其他结算方式")
+	private String paytypeName;
+
+	@Column
 	@Comment("合作时间")
 	private Date cooperateTime;
 
@@ -106,10 +114,12 @@ public class TCustomerInfoEntity implements Serializable {
 	@Column
 	@Comment("签约时间")
 	private Date contractTime;
+	private String contractTimeString;
 
 	@Column
 	@Comment("签约到期时间")
 	private Date contractDueTime;
+	private String contractDueTimeString;
 
 	@Column
 	@Comment("是否签约（未签约、已签约、禁止合作）")
