@@ -154,9 +154,7 @@
 
 
 										<div class="col-md-1 col-md-offset-1">
-											<a href="${base}/admin/customer/add.html" data-toggle="modal"
-												class="btn btn-primary btn-sm" id="addBtn"
-												data-target="#addModal">添加</a>
+											<a class="btn btn-primary btn-sm" onclick="add();" id="addBtn">添加</a>
 										</div>
 
 									</div>
@@ -245,11 +243,14 @@ function initDatatable() {
             	
             }
         },
+        /* 列表序号 */
         "fnDrawCallback"    : function(){
-  	       　　this.api().column(0).nodes().each(function(cell, i) {
-  	       　　　　cell.innerHTML =  i + 1;
-  	       　　});
-     	},
+        	var api = this.api();
+        	var startIndex= api.context[0]._iDisplayStart;
+   	       　　  api.column(0).nodes().each(function(cell, i) {
+   	       　　　　cell.innerHTML = startIndex + i + 1;
+   	       　　});
+      	},
 
         "columns": [
                     {"data": "id", "bSortable": false},
@@ -288,7 +289,7 @@ function initDatatable() {
             //   指定第一列，从0开始，0表示第一列，1表示第二列……
             targets: 6,
             render: function(data, type, row, meta) {
-                return '<a href="${base}/admin/customer/update.html?id='+row.id+'" id="updateBtn" class="btn btn_mini btn_modify" data-target="#updateModal" data-toggle="modal">编辑</a>';
+                return '<a onclick="edit('+row.id+')" id="updateBtn" class="btn btn_mini btn_modify">编辑</a>';
             }
         }]
     });
@@ -323,12 +324,52 @@ function initDatatable() {
 		});
 	});
 
+	/* layer添加 */
+	function add(){
+	      layer.open({
+	    	    type: 2,
+	    	    title: false,
+	    	    closeBtn:false,
+	    	    fix: false,
+	    	    maxmin: false,
+	    	    shadeClose: false,
+	    	    area: ['900px', '500px'],
+	    	    content: '${base}/admin/customer/add.html'
+	    	  });
+	  }
+	/* layer编辑 */
+	function edit(id){
+	      layer.open({
+	    	    type: 2,
+	    	    title: false,
+	    	    closeBtn:false,
+	    	    fix: false,
+	    	    maxmin: false,
+	    	    shadeClose: false,
+	    	    area: ['900px', '500px'],
+	    	    content: '${base}/admin/customer/update.html?id='+id
+	    	  });
+	  }
+	
 	$('#updateBtn').click(function() {
 		$("#addModal").removeData("modal");
 		$("#updateModal").on("hidden", function() {
 			$(this).removeData("modal");
 		});
 	});
+	
+	/* 保存按钮事件 */
+	function successCallback(id){
+	  datatable.ajax.reload();
+	  if(id == '1'){
+		  layer.msg("添加成功",{time: 2000, icon:1});
+	  }else if(id == '2'){
+		  layer.msg("修改成功",{time: 2000, icon:1});
+	  }else if(id == '3'){
+		  layer.msg("删除成功",{time: 2000, icon:1});
+	  }
+  }
+
 	
 	//回车查询
 	function onkeyEnter(){

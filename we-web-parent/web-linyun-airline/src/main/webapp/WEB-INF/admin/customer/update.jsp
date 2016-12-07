@@ -33,7 +33,7 @@
 	<div class="modal-content">
 		<form id="customerUpdateForm">
 			<div class="modal-header">
-				<button type="button" class="btn btn-primary right btn-sm" data-dismiss="modal">返回</button>
+				<button type="button" onclick="closeWindow()" class="btn btn-primary right btn-sm" data-dismiss="modal">返回</button>
 				<input id="updateBtn" type="button" class="btn btn-primary right btn-sm" value="保存" onclick="updateCustomerInfo()" />
 				<ul class="nav nav-tabs">
 					<li class="active"><a href="#tabs_1" data-toggle="tab">基本信息</a></li>
@@ -638,6 +638,14 @@
 							}
 						}
 					},
+					fax:{
+						validators : {
+							regexp : {
+								regexp : /^[+]{0,1}(\d){1,3}[ ]?([-]?((\d)|[ ]){1,12})+$/,
+								message : '传真格式错误'
+							}
+						}
+					},
 					siteUrl : {
 						validators : {
 							notEmpty : {
@@ -773,12 +781,12 @@
 					success : function(data) {
 						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						if ("200" == data.status) {
-							layer.msg("编辑成功","", 3000);
+							layer.close(index);
+							window.parent.successCallback('2');
+							parent.layer.close(index);
 						} else {
 							layer.msg("编辑失败！","", 3000);
 						}
-						layer.close(index);
-						parent.location.reload();
 	
 					},
 					error : function(xhr) {
@@ -789,7 +797,11 @@
 		}
 	
 		//返回刷新页面 
-		function reload() { window.location.reload(); }
+		function closeWindow() {
+			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        	window.parent.successCallback('4');
+        	parent.layer.close(index);
+		}
 	</script>
 	
 	
