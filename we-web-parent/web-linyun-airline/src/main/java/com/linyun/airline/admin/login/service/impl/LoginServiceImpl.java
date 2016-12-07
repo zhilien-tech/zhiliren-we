@@ -25,6 +25,18 @@ public class LoginServiceImpl extends BaseService<TUserEntity> implements LoginS
 	@Override
 	public boolean login(final LoginForm form, final HttpSession session, final HttpServletRequest req) {
 
+		String loginName = form.getLoginName();
+		if (Util.isEmpty(loginName)) {
+			form.setErrMsg("用户名不能为空");
+			return false;
+		}
+
+		String password = form.getPassword();
+		if (Util.isEmpty(password)) {
+			form.setErrMsg("密码不能为空");
+			return false;
+		}
+
 		String recode = (String) session.getAttribute(CommonConstants.CONFIRMCODE);
 		String vCode = form.getValidateCode();
 		if (Util.isEmpty(vCode) || !recode.equalsIgnoreCase(vCode)) {

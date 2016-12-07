@@ -6,24 +6,23 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>管理平台</title>
+  <title>航空票务系统</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome-4.4.0/css/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons-2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="${base }/public/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="${base }/public/dist/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
-  <!-- login style -->
-   <link rel="stylesheet" href="${base}/public/dist/css/login.css">
   <!-- iCheck -->
   <link rel="stylesheet" href="${base}/public/plugins/iCheck/square/blue.css">
 </head>
+
 <body class="hold-transition login-page bodySll">
 <div class="login-box">
   <div class="login-logo">
-    <h3 class="loginTitle">航空票务<i>系统</i></h3>
+    <h3 class="loginTitle">航空票务系统</h3>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
@@ -33,23 +32,23 @@
         <label>用户名</label>
       </div>
       <div class="form-group marginBott5 has-feedback cf">
-        <input id="userName" name="loginName" value="${obj.loginName}" type="text" class="form-control" placeholder="用户名/电话号码">
+        <input id="userName" name="loginName" value="${obj.loginName}" type="text" class="form-control loginpaddingrig" placeholder="用户名/手机号">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="LoginLabel">
         <label>密码</label>
       </div>
       <div class="form-group marginBott5 has-feedback cf">
-        <input id="password" name="password" value="${obj.password}" type="password" class="form-control" placeholder="密码">
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        <input id="password" name="password" value="${obj.password}" type="password" class="form-control loginpaddingrig" placeholder="密码">
+        <span class="fa fa-unlock-alt form-control-feedback"></span>
       </div>
       <div class="LoginLabel">
         <label>验证码</label>
       </div>
-      <div class="form-group marginBott5 has-feedback cf">
+      <div class="form-group marginBott5 cf">
         <input id="validateCode" name="validateCode" value="${obj.validateCode}" type="text" class="form-control authText" placeholder="">
         <div class="authImg">
-        	<img style="width:150px;" title="看不清，点击换一张" onclick="changeValidateCode()" id="confirmCode" src="${base}/validateImage.html"/>
+        	<img title="看不清，点击换一张" onclick="changeValidateCode()" id="confirmCode" src="${base}/validateImage.html"/>
         </div>
       </div>
       <div class="row LoginBtn">
@@ -58,11 +57,24 @@
         </div>
         <!-- /.col -->
       </div>
+      
+      	<!-- 
+		登录消息提示区
+		<p style="color: red; margin-left: 10px;"></p>
+		 -->
+		<c:if test="${obj != null}">
+			<label class="red toolText">${obj.errMsg}！</label>
+		</c:if>
+      
     </form>
+    
     <!-- /.social-auth-links -->
   </div>
   <!-- /.login-box-body -->
+  <p class="login-p">版权 © 2016 聚优国际旅行社（北京）有限公司</p>
 </div>
+<!-- /.login-box -->
+
 <!-- /.login-box -->
 <!-- jQuery 2.2.3 -->
 <script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -70,6 +82,7 @@
 <script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
 <!-- iCheck -->
 <script src="${base}/public/plugins/iCheck/icheck.min.js"></script>
+
 <script>
   $(function () {
     $('input').iCheck({
