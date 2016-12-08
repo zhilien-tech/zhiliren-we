@@ -45,12 +45,33 @@ public class OperationsAreaModule {
 	private SqlManager sqlManager;
 
 	/**
-	 * 分页查询
+	 * 到添加自定义事件页面
 	 */
 	@At
+	@GET
 	@Ok("jsp")
-	public Pagination list(@Param("..") final TMessageForm sqlParamForm, @Param("..") final Pager pager) {
-		return operationsAreaViewService.listPage(sqlParamForm, pager);
+	public Object customEvent(@Param("selDate") final String selDate) {
+		return selDate;
+	}
+
+	/**
+	 * 跳转到桌面
+	 */
+	@At
+	@GET
+	@Ok("jsp")
+	public Object desktop() {
+		return null;
+	}
+
+	/**
+	 * 桌面自定义事件 列表展示
+	 */
+	@At
+	@GET
+	public Object getCustomEvents(@Param("id") final Long id, @Param("start") final String start,
+			@Param("end") final String end) {
+		return operationsAreaViewService.getCustomEvent(Long.valueOf(1), start, end);
 	}
 
 	/**
@@ -69,7 +90,7 @@ public class OperationsAreaModule {
 	@At
 	@POST
 	public Object add(@Param("..") TMessageAddForm addForm) {
-		return operationsAreaViewService.addCsutomerEvent(addForm);
+		return operationsAreaViewService.addCustomEvent(addForm);
 	}
 
 	/**
@@ -109,4 +130,12 @@ public class OperationsAreaModule {
 		return JsonResult.success("删除成功");
 	}
 
+	/**
+	 * 分页查询
+	 */
+	@At
+	@Ok("jsp")
+	public Pagination list(@Param("..") final TMessageForm sqlParamForm, @Param("..") final Pager pager) {
+		return operationsAreaViewService.listPage(sqlParamForm, pager);
+	}
 }

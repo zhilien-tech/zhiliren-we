@@ -1,30 +1,41 @@
 package com.linyun.airline.admin.operationsArea.form;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import com.uxuexi.core.web.form.AddForm;
+import java.io.Serializable;
 import java.util.Date;
 
-import java.io.Serializable;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import com.uxuexi.core.web.form.AddForm;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class TMessageAddForm extends AddForm implements Serializable{
-	private static final long serialVersionUID = 1L;
-		
+public class TMessageAddForm extends AddForm implements Serializable {
+	private static final Long serialVersionUID = 1L;
+
 	/**标题*/
 	private String msgTitle;
-		
+
 	/**内容*/
 	private String msgContent;
-		
+
 	/**消息类型*/
 	private Integer msgType;
-		
+
 	/**生成日期*/
 	private Date generateTime;
-		
+	private String generateTimeString;
+
 	/**优先级*/
 	private Integer priorityLevel;
-		
+
+	//用户id
+	private Integer recUserId;
+	//用户类型
+	private Integer recUserType;
+	//来源id
+	private Integer sendUserId;
+	//来源类型
+	private Integer sendUserType;
+
 }

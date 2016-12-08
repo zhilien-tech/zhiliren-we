@@ -1,0 +1,32 @@
+/*--------------大日历----------------*/
+#calendar{width:100%; margin:20px auto 0px auto}
+.fancy{width:450px; height:auto}
+.fancy h3{height:30px; line-height:30px; border-bottom:1px solid #d3d3d3; font-size:14px}
+.fancy form{padding:10px}
+.fancy p{height:28px; line-height:28px; padding:4px; color:#999}
+.input{height:20px; line-height:20px; padding:2px; border:1px solid #d3d3d3; width:100px}
+.btn{-webkit-border-radius: 3px;-moz-border-radius:3px;padding:5px 12px; cursor:pointer}
+.btn_ok{background: #360;border: 1px solid #390;color:#fff}
+.btn_cancel{background:#f0f0f0;border: 1px solid #d3d3d3; color:#666 }
+.btn_del{background:#f90;border: 1px solid #f80; color:#fff }
+.sub_btn{height:32px; line-height:32px; padding-top:6px; border-top:1px solid #f0f0f0; text-align:right; position:relative}
+.sub_btn .del{position:absolute; left:2px}
+/*--------------提醒 弹框----------------*/
+.EventBody{width: 400px;height: 160px;}
+.eventText{margin-top: 10px;padding-bottom: 10px;border: 0;border-bottom: solid 1px #eee;font-size: 15px;margin-bottom: 10px;border-radius: 0px;}
+.evevtTool{height: 30px;padding-left: 20px;margin-top: 15px;}
+.evevtTool input{display: inline-block;width: 80%;}
+.evevtBttton{width: 145px;margin: 15px 61px;}
+.evevtBttton .btn{height: 30px;padding: 0px 15px;font-size: 13px;line-height: 30px;}
+/*--------------小日历----------------*/
+#box-min p{width: 80px;margin: 8px 0 0px 63%;}
+#minCalen{border: solid 1px #fff;margin: 5px 0px 0px 0px;padding: 0;}
+#minCalen .k-first-month{margin-top: 0px;margin-left: 3px;}
+#minCalen .k-middle-month{margin-left: 3px;margin-top: 0;}
+#minCalen .k-last-month{margin-left: 3px;margin-top: 0;}
+#minCalen .k-last-month .k-title{overflow: inherit;}
+#minCalen .k-last-month .k-title .k-btn-next-year{position: relative; top: -497px; left: 162px;}
+#minCalen .k-last-month .k-title .k-btn-next-month{position: relative; top: -497px; left: 135px;}
+#minCalen .k-days span{height: 30px;}
+
+
