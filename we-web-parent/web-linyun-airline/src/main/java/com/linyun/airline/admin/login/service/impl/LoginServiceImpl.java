@@ -11,6 +11,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.nutz.dao.Sqls;
+import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
@@ -22,9 +24,12 @@ import com.linyun.airline.admin.user.service.UserViewService;
 import com.linyun.airline.common.access.AccessConfig;
 import com.linyun.airline.common.access.sign.MD5;
 import com.linyun.airline.common.constants.CommonConstants;
+import com.linyun.airline.common.enums.UserJobStatusEnum;
 import com.linyun.airline.common.util.IpUtil;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.Util;
+import com.uxuexi.core.db.util.DbSqlUtil;
 import com.uxuexi.core.web.base.service.BaseService;
 
 @IocBean(name = "loginService")
@@ -72,6 +77,15 @@ public class LoginServiceImpl extends BaseService<TUserEntity> implements LoginS
 			addLoginlog(user, req);
 
 			List<TFunctionEntity> allUserFunction = userService.findUserFunctions(user.getId());
+			//查询当前用户的公司
+			Sql companySql = Sqls.create(sqlManager.get("login_select_company"));
+			companySql.params().set("userId", user.getId());
+			companySql.params().set("jobStatus", UserJobStatusEnum.ON.intKey());
+			List<TCompanyEntity> companyLst = DbSqlUtil.query(dbDao, TCompanyEntity.class, companySql);
+			if (!Util.isEmpty(companyLst) && companyLst.size() != 1) {
+				throw new IllegalArgumentException("用户只能在一家公司就职");
+			}
+			TCompanyEntity company = companyLst.get(0);
 
 			//1级菜单
 			List<TFunctionEntity> menus = new ArrayList<TFunctionEntity>();
@@ -112,6 +126,7 @@ public class LoginServiceImpl extends BaseService<TUserEntity> implements LoginS
 			}
 
 			//将用户权限保存到session中
+			session.setAttribute(USER_COMPANY_KEY, company); //公司
 			session.setAttribute(FUNCTION_MAP_KEY, functionMap); //功能
 			session.setAttribute(MENU_KEY, menus); //菜单
 			session.setAttribute(AUTHS_KEY, allUserFunction); //所有功能
