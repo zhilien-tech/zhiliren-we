@@ -49,7 +49,7 @@ public class TFunctionEntity implements Serializable {
 
 	@Column
 	@Comment("序号")
-	private long sort;
+	private Integer sort;
 
 	/**在树形节点中是否选中*/
 	private String checked = "false";

@@ -1,16 +1,10 @@
 /*user_function_all*/
-SELECT
-  `id`,
-  `parentId`,
-  `name`,
-  `url`,
-  `level`,
-  `remark`,
-  `createTime`,
-  `updateTime`,
-   sort
-FROM `s_function`
-WHERE id IN (SELECT rm.`functionId` FROM 
-`s_user_role_map` ur,`s_role_function_map` rm
-WHERE ur.`roleId`=rm.`roleId`
-AND ur.`userId`=@userId)
+SELECT F.* FROM 
+ t_function f,
+ t_company_function_map cf,
+ t_com_fun_pos_map cfp,
+ t_user_job uj
+WHERE f.id=cf.funId 
+AND cf.id=cfp.companyFunId
+AND cfp.jobId=uj.companyJobId
+AND uj.userid=@userId

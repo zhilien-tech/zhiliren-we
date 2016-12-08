@@ -18,6 +18,6 @@ import com.linyun.airline.entities.DictInfoEntity;
 
 public interface externalInfoService {
 
-	public List<DictInfoEntity> findDictInfoByName(String name) throws Exception;
+	public List<DictInfoEntity> findDictInfoByName(String name, String typeCode) throws Exception;
 
 }
