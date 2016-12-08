@@ -9,6 +9,7 @@ package com.linyun.airline.admin.dictionary.dirinfo.form;
 import java.util.Date;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
@@ -16,8 +17,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
 import com.uxuexi.core.common.util.Util;
-import com.uxuexi.core.db.dao.IDbDao;
-import com.uxuexi.core.web.form.ISqlForm;
+import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
  * TODO(这里用一句话描述这个类的作用)
@@ -25,7 +25,8 @@ import com.uxuexi.core.web.form.ISqlForm;
  * @Date	 2016年11月3日 	 
  */
 @Data
-public class InfoSqlForm implements ISqlForm {
+@EqualsAndHashCode(callSuper = true)
+public class InfoSqlForm extends DataTablesParamForm {
 
 	//字典类别编码
 	private String typeCode;
@@ -36,30 +37,31 @@ public class InfoSqlForm implements ISqlForm {
 	//描述
 	private String description;
 	//状态
-	private int status;
+	private int status = 1;
 	//创建时间
 	private Date createTime;
 
-	@Override
-	public Sql createPagerSql(IDbDao dbDao, SqlManager sqlManager) {
-		Sql sql = Sqls.create(sqlManager.get("dict_info_list"));
-		sql.setCondition(cnd());
-		return sql;
-
-	}
-
-	@Override
-	public Sql createCountSql(IDbDao dbDao, SqlManager sqlManager) {
-		Sql sql = Sqls.create(sqlManager.get("dict_info_list_count"));
-		sql.setCondition(cnd());
-		return sql;
-	}
-
+	@SuppressWarnings("deprecation")
 	private Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		if (!Util.isEmpty(dictName)) {
 			cnd.and("i.dictName", "LIKE", "%" + dictName + "%");
 		}
+		if (!Util.isEmpty(status)) {
+			cnd.and("i.status", "=", status);
+		}
+		if (!Util.isEmpty(typeCode)) {
+			cnd.and("i.typeCode", "=", typeCode);
+		}
+		cnd.orderBy("i.createTime", "desc");
 		return cnd;
+	}
+
+	@Override
+	public Sql sql(SqlManager sqlManager) {
+		String sqlString = sqlManager.get("dict_info_list");
+		Sql sql = Sqls.create(sqlString);
+		sql.setCondition(cnd());
+		return sql;
 	}
 }

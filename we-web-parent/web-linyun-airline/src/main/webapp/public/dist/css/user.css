@@ -1,0 +1,13 @@
+/*------------------------员工管理-----------------------------*/
+.marginBott{margin-bottom: 10px;}
+.selePadd5{padding-top: 5px;}
+/*------------------------员工管理 弹框-----------------------------*/
+h4{font-size: 16px !important;}
+.margi-left{margin-left: -50px;}
+.beas-widt{width:95%;display: inline-block;}
+.prompt{display: inline-block;color: red;}
+
+.inpImportant,.inpImpWid,.inputWidth{display: inline-block;}
+.inpImportant{width: 96%;}
+.inpImpWid {width: 98.5%;}
+.inputWidth{width: 95.5%;}

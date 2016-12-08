@@ -24,6 +24,6 @@ public class TComFunPosMapEntity implements Serializable {
 
 	@Column
 	@Comment("公司功能id")
-	private long funId;
+	private long companyFunId;
 
 }

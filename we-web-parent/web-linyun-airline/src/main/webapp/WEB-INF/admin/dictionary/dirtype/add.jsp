@@ -33,7 +33,7 @@
 						<label class="col-sm-3 text-right padding">字典类型编码：</label>
 						<div class="col-sm-8 padding">
 							<input name="typeCode" class="form-control input-sm inpImpWid"
-								placeholder="请输入字典类型编码" /> <span class="prompt">*</span>
+								placeholder="请输入字典类型编码" /><span class="prompt">*</span>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -86,7 +86,6 @@
 	                         //自定义提交数据，默认值提交当前input value
 	                         data: function(validator) {
 	                            return {
-	                            	//typeCode:$('#typeCode').val()
 	                            	typeCode:$('input[name="typeCode"]').val()
 	                            };
 	                         }
@@ -101,7 +100,19 @@
 	            	validators: {
 	                    notEmpty: {
 	                        message: '字典类别名称不能为空!'
-	                    }
+	                    },
+	                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
+	                    url: '${base}/admin/dictionary/dirtype/checkTypeNameExist.html',//验证地址
+	                         message: '字典类别名称重复，请重新输入!',//提示消息
+	                         delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+	                         type: 'POST',//请求方式
+	                         //自定义提交数据，默认值提交当前input value
+	                         data: function(validator) {
+	                            return {
+	                            	typeName:$('input[name="typeName"]').val()
+	                            };
+	                         }
+	                     }
 	                }
 	            }
 	        }

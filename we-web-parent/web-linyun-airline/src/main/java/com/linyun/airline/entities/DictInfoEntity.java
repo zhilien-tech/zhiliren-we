@@ -10,6 +10,9 @@ import org.nutz.dao.entity.annotation.Comment;
 import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Table;
 
+import com.linyun.airline.common.enums.DataStatusEnum;
+import com.uxuexi.core.common.util.EnumUtil;
+
 @Data
 @Table("dict_info")
 public class DictInfoEntity implements Serializable, Comparable<DictInfoEntity> {
@@ -38,6 +41,8 @@ public class DictInfoEntity implements Serializable, Comparable<DictInfoEntity> 
 	@Column
 	@Comment("字典信息状态,1-启用，2--删除")
 	private long status;
+
+	private String statusName;
 
 	@Column
 	@Comment("创建时间")
@@ -91,6 +96,11 @@ public class DictInfoEntity implements Serializable, Comparable<DictInfoEntity> 
 		} else {
 			return 0;
 		}
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+		this.statusName = EnumUtil.getValue(DataStatusEnum.class, status);
 	}
 
 }

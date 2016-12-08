@@ -135,7 +135,7 @@ $(function () {
     	    fix: false,
     	    maxmin: false,
     	    shadeClose: false,
-    	    area: ['900px', '700px'],
+    	    area: ['600px', '500px'],
     	    content: '${url}/add.html'
     	    
     	  });
@@ -149,7 +149,7 @@ $(function () {
   	    fix: false,
   	    maxmin: false,
   	    shadeClose: false,
-  	    area: ['900px', '700px'],
+  	    area: ['800px', '500px'],
   	    content: '/admin/authority/companyfunction/companyUpdate.html?id='+id
   	  });
   }

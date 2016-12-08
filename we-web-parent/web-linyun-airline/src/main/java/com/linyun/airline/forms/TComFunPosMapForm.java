@@ -23,7 +23,7 @@ public class TComFunPosMapForm implements SQLParamForm, Serializable {
 	private long jobId;
 
 	/**公司功能id*/
-	private long funId;
+	private long companyFunId;
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {

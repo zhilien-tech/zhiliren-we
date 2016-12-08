@@ -1,11 +1,10 @@
 package com.linyun.airline.admin.authority.job.form;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import org.joda.time.DateTime;
 
 import com.uxuexi.core.web.form.ModForm;
 
@@ -21,7 +20,7 @@ public class TJobUpdateForm extends ModForm implements Serializable {
 	private String name;
 
 	/**创建时间*/
-	private DateTime createTime;
+	private Date createTime;
 
 	/**备注*/
 	private String remark;

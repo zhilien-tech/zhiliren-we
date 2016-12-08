@@ -1,111 +1,81 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" errorPage="/WEB-INF/common/500.jsp"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
 <!DOCTYPE html>
-<html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>管理平台</title>
-<link href="${base}/common/css/style.css" rel="stylesheet" type="text/css" media="screen">
-<link href="${base}/common/css/core.css" rel="stylesheet" type="text/css" media="screen">
-<link href="${base}/common/css/login.css" rel="stylesheet" type="text/css">
-
-<!-- form验证 -->
-<link rel="stylesheet" href="${base}/common/css/validationEngine.css" type="text/css">
-<script src="${base}/common/js/jquery-1.js" type="text/javascript"></script>
-<script src="${base}/common/js/jquery.js" type="text/javascript" charset="utf-8"></script>
-<script src="${base}/common/js/jquery_002.js" type="text/javascript" charset="utf-8"></script>
-<script>
-    jQuery(document).ready(function(){
-        jQuery("#formID").validationEngine();
-    });
-    jQuery(document).ready(function(){
-    	$("#captcha").click(function(){
-    		$(this).attr("src", "/Captcha.jpg?time=" + new Date());
-    		return false;
-    	});
-    });
-    
-    function changeValidateCode(){
-        var timenow = new Date().getTime(); 
-        var _obj = $("#confirmCode");
-        _obj.attr("src","${base}/validateImage.html?d="+timenow);
-    }
-
-</script>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>管理平台</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome-4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons-2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
+  <!-- login style -->
+   <link rel="stylesheet" href="${base}/public/dist/css/login.css">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="${base}/public/plugins/iCheck/square/blue.css">
 </head>
-<body>
-<div id="login">
-		<div id="login_header">
-			<h1 class="login_logo">
-				<%-- 
-				<img src="${base}/common/images/logo1.png">
-				--%>
-			</h1>
+<body class="hold-transition login-page bodySll">
+<div class="login-box">
+  <div class="login-logo">
+    <h3 class="loginTitle">航空票务<i>系统</i></h3>
+  </div>
+  <!-- /.login-logo -->
+  <div class="login-box-body">
 
-			<div class="login_headerContent">
-				<h2 class="login_title">请登录</h2>
-			</div>
-		</div>
-		<div id="login_content">
-			<div class="loginForm">
-				<form method="post" action="${base}/admin/login.html" id="formID">
-					<!-- 
-					登录消息提示区
-					<p style="color: red; margin-left: 10px;"></p>
-					 -->
-					<c:if test="${obj != null}">
-						<p style="color: red; margin-left: 10px;">${obj.errMsg}</p>
-					</c:if>
-					<p>
-						<label>用户名:</label>
-						<input name="loginName" style="width: 150px;" class="validate[required] login_input" id="username" type="text" value="${obj.loginName}" maxlength="32">
-					</p>
-					<p>
-						<label>密&nbsp;&nbsp;&nbsp;&nbsp;码:</label>
-						<input name="password" style="width: 150px;" class="validate[required] login_input" id="password" type="password" value="${obj.password}" maxlength="32">
-					</p>	
-					
-					<p>
-						<label>验证码:</label>
-						<input name="validateCode" style="width: 150px;" class="validate[required] login_input" id="validateCode" type="text" value="${obj.validateCode}" maxlength="4">
-					</p>
-					<p>
-						<label>&nbsp;</label>
-						<img style="width:150px;" title="看不清，点击换一张" onclick="changeValidateCode()" id="confirmCode" src="${base}/validateImage.html"/>
-					</p>
-								
-					<div class="login_bar" style="disply:block;float:left;">
-						<input class="sub" value="" type="submit">
-					</div>
-				</form>
-			</div>
-			<div class="login_banner"><img src="${base}/common/images/login_banner.jpg"></div>
-			
-		</div>
-		<div id="login_footer">
-			校咖
-		</div>
-	</div>
-
+    <form action="${base}/admin/login.html" method="post">
+      <div class="LoginLabel">
+        <label>用户名</label>
+      </div>
+      <div class="form-group marginBott5 has-feedback cf">
+        <input id="userName" name="loginName" value="${obj.loginName}" type="text" class="form-control" placeholder="用户名/电话号码">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="LoginLabel">
+        <label>密码</label>
+      </div>
+      <div class="form-group marginBott5 has-feedback cf">
+        <input id="password" name="password" value="${obj.password}" type="password" class="form-control" placeholder="密码">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="LoginLabel">
+        <label>验证码</label>
+      </div>
+      <div class="form-group marginBott5 has-feedback cf">
+        <input id="validateCode" name="validateCode" value="${obj.validateCode}" type="text" class="form-control authText" placeholder="">
+        <div class="authImg"><img src="yzm.png"></div>
+      </div>
+      <div class="row LoginBtn">
+        <div class="col-xs-12">
+          <button type="submit" class="btn btn-primary btn-block">登录</button>
+        </div>
+        <!-- /.col -->
+      </div>
+    </form>
+    <!-- /.social-auth-links -->
+  </div>
+  <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
+<!-- jQuery 2.2.3 -->
+<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
+<!-- iCheck -->
+<script src="${base}/public/plugins/iCheck/icheck.min.js"></script>
+<script>
+  $(function () {
+    $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%' // optional
+    });
+  });
+</script>
 </body>
 </html>
-<% 
-	/*
-		解决安全性:会话标识未更新的问题(登录前后) 
-		将用户进入登陆页面时所产生的会话也就是session清空，然后让跟踪这个会话的cookie过期，这样服务器就不再掌握有关这个会话的任何信息了。
-		要想与服务器继续通信，就要产生一个新的会话才行。于是会话标示就更新了
-		目前测试在服务器启动以后，第一次访问的时候会报错，因此暂时注释了
-	 */
-	 
-/*
-	if(null != request){
-		session = request.getSession();
-		if(session != null){
-			session.invalidate();//清空session
-			Cookie cookie = request.getCookies()[0];//获取cookie
-			if(cookie != null){
-				cookie.setMaxAge(0);//让cookie过期
-			}
-		}
-	}
-*/
-%>

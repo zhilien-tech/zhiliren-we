@@ -1,11 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" errorPage="/WEB-INF/public/500.jsp"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
-<html>	
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -51,7 +46,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="box-header">
               <h3 class="box-title">&nbsp;&nbsp;<i class="fa fa-user-secret"></i> 职位</h3>
             </div>
-            <form action="${base}/admin/job/list.html" method="post" onsubmit="return navTabSearch(this);">
+            <form action="${base}/admin/authority/job/list.html" method="post" onsubmit="return navTabSearch(this);">
 				 <div class="col-md-3"><!--职位名称 搜索框-->
             		  <input type="text" name="name" value="${obj.queryForm.name}" class="form-control" placeholder="职位名称">
           		  </div>
@@ -60,7 +55,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
            		 </div>
 			</form>
             <div class="col-md-1 col-md-offset-6">
-              <button type="button" onclick="javascript:window.open('${base}/admin/job/add.html');" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".Mymodal-lg">添加</button>
+              <button type="button" onclick="javascript:window.open('${base}/admin/authority/job/add.html');" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".Mymodal-lg">添加</button>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -80,11 +75,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 						<td><fmt:formatDate value="${one.createTime}" pattern="yyyy-MM-dd"/></td>
 						<td>${one.remark}</td>
 						<td>
-							<a target="dialog" rel="user_update" href="${base}/admin/job/update.html?id=${one.id}" class="btn btn_mini btn_modify">修改</a>
+							<a target="dialog" rel="user_update" href="${base}/admin/authority/job/update.html?id=${one.id}" class="btn btn_mini btn_modify">修改</a>
 							<%--
 								这里如果有写title，则需要确认才会操作
 							 --%>
-							<a target="ajaxTodo" rel="dlgId1" href="${base}/admin/job/delete?id=${one.id}" title='是否要删除' class='btn btn_mini btn_del'>删除</a>
+							<a target="ajaxTodo" rel="dlgId1" href="${base}/admin/authority/job/delete?id=${one.id}" title='是否要删除' class='btn btn_mini btn_del'>删除</a>
 						</td>
 					</tr>
 				</c:forEach>

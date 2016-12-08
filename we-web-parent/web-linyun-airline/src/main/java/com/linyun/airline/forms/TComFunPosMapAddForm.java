@@ -16,6 +16,6 @@ public class TComFunPosMapAddForm extends AddForm implements Serializable {
 	private long jobId;
 
 	/**公司功能id*/
-	private long funId;
+	private long companyFunId;
 
 }

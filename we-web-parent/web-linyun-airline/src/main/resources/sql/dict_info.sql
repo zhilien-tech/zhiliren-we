@@ -6,7 +6,10 @@ SELECT
   i.`dictCode`,
   i.`dictName`,
   i.`description`,
-  i.`status`
+  i.`status`,
+  i.`quanPin`,
+  i.`jianpin`,
+  i.`createTime`
 FROM `dict_info` i INNER JOIN dict_type t
 ON i.`typeCode`=t.`typeCode`
 $condition

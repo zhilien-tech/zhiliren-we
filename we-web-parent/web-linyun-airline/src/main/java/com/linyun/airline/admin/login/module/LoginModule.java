@@ -23,7 +23,7 @@ public class LoginModule {
 	private LoginService loginService;
 
 	/**
-	 * 登陆
+	 * 登录
 	 * @param username 用户名
 	 * @param password 密码
 	 * @param session session会话对象

@@ -108,17 +108,15 @@
 												<td>${one.url}</td>
 												<td>${one.parentName }</td>
 												<td>${one.level}</td>
-												<td><fmt:formatDate value="${one.createTime}"
-														pattern="yyyy-MM-dd" /></td>
-												<td><fmt:formatDate value="${one.updateTime}"
-														pattern="yyyy-MM-dd" /></td>
+												<td><fmt:formatDate value="${one.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+												<td><fmt:formatDate value="${one.updateTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 												<td>${one.remark}</td>
 												<td>${one.sort}</td>
 												<td>
-												<a
-														href="${base}/admin/authority/function/update.html?id=${one.id}"
-														data-toggle="modal" id="editBtn"
-														class="btn btn_mini btn_modify" data-target="#editTabs">编辑</a>
+													<a href="${base}/admin/authority/function/update.html?id=${one.id}"
+													   data-toggle="modal" id="editBtn" class="btn btn_mini btn_modify"
+													   data-target="#editTabs">编辑</a>
+												</td>  
 												 <%--这里如果有写title，则需要确认才会操作 --%> 
 												 <%-- <a
 														href="${base}/admin/authority/function/delete?id=${one.id}"

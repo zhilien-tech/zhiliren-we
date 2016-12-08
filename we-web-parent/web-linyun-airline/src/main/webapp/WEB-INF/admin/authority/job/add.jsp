@@ -2,7 +2,7 @@
 <%@include file="/WEB-INF/common/tld.jsp"%>
 <div class="panel_box">
 	<div class="panel_content nopadding">
-		<form method="post" action="${base}/admin/job/add.html" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		<form method="post" action="${base}/admin/authority/job/add.html" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
 			<div class="form_item">
 				<label class="form_label">职位名称：</label>
 			  	<div class="form_ctrl">
