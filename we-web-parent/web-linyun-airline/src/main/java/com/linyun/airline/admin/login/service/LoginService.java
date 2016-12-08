@@ -11,6 +11,7 @@ public interface LoginService {
 	public static final String AUTHS_KEY = "auths";
 	public static final String MENU_KEY = "menus";
 	public static final String FUNCTION_MAP_KEY = "functionMap";
+	public static final String USER_COMPANY_KEY = "user_company";
 	public static final String LOGINUSER = "loginuser";
 
 	/**登录*/
