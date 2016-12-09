@@ -1,5 +1,10 @@
 package com.linyun.airline.admin.operationsArea.module;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -13,10 +18,12 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
+import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.form.TMessageAddForm;
 import com.linyun.airline.admin.operationsArea.form.TMessageForm;
 import com.linyun.airline.admin.operationsArea.form.TMessageUpdateForm;
 import com.linyun.airline.admin.operationsArea.service.OperationsAreaViewService;
+import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.base.page.Pagination;
 import com.uxuexi.core.web.chain.support.JsonResult;
@@ -60,8 +67,13 @@ public class OperationsAreaModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object desktop() {
-		return null;
+	public Object desktop(HttpSession session) {
+		Map<String, Object> obj = new HashMap<String, Object>();
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long userId = loginUser.getId();
+		Object checkBox = operationsAreaViewService.getCheckBox("1"); //以后在session中获取
+		obj.put("checkBox", checkBox);
+		return obj;
 	}
 
 	/**
@@ -81,6 +93,24 @@ public class OperationsAreaModule {
 	@POST
 	public Object getTaskEvents(@Param("id") final Long id) {
 		return operationsAreaViewService.getTaskEvents(Long.valueOf(1));
+	}
+
+	/**
+	 * 自定义界面设置
+	 */
+	@At
+	@POST
+	public Object setCheckBox(@Param("userId") final String id, @Param("checkboxname") final String checkboxname) {
+		return operationsAreaViewService.setCheckBox(id, checkboxname);
+	}
+
+	/**
+	 * 自定义界面获取
+	 */
+	@At
+	@POST
+	public Object getCheckBox(@Param("userId") final String id) {
+		return operationsAreaViewService.getCheckBox(id);
 	}
 
 	/**

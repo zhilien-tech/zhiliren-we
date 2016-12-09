@@ -38,4 +38,9 @@ public class TMessageAddForm extends AddForm implements Serializable {
 	//来源类型
 	private Integer sendUserType;
 
+	//自定义界面多选框
+	private String checkboxname;
+	//当前用户
+	private Integer userId;
+
 }

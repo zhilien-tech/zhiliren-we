@@ -7,16 +7,19 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
+import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
+import com.google.common.base.Splitter;
 import com.linyun.airline.admin.operationsArea.form.TMessageAddForm;
 import com.linyun.airline.common.admin.operationsArea.enums.MessageLevelEnum;
 import com.linyun.airline.common.admin.operationsArea.enums.MessageSourceEnum;
 import com.linyun.airline.common.admin.operationsArea.enums.MessageStatusEnum;
 import com.linyun.airline.common.admin.operationsArea.enums.MessageTypeEnum;
 import com.linyun.airline.common.admin.operationsArea.enums.MessageUserEnum;
+import com.linyun.airline.entities.TCheckboxStatusEntity;
 import com.linyun.airline.entities.TMessageEntity;
 import com.linyun.airline.entities.TUserMsgEntity;
 import com.uxuexi.core.common.util.DateTimeUtil;
@@ -143,5 +146,55 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		}
 
 		return JsonUtil.toJson(list);
+	}
+
+	/**
+	 * 自定义界面设置
+	 */
+	@Aop("txDb")
+	public Object setCheckBox(String userId, String checkboxname) {
+		Iterable<String> checkS = Splitter.on(",").split(checkboxname);
+		TCheckboxStatusEntity checkEntity = new TCheckboxStatusEntity();
+
+		//查询用户是否存在
+		if (!Util.isEmpty(userId)) {
+			checkEntity = dbDao.fetch(TCheckboxStatusEntity.class, Long.valueOf(userId));
+		}
+		long task = 0;
+		long maxC = 0;
+		long minC = 0;
+		//设置状态值
+		if (!Util.isEmpty(checkS)) {
+			for (String s : checkS) {
+				if ("task".equals(s)) {
+					task = 1;
+				}
+				if ("maxC".equals(s)) {
+					maxC = 1;
+				}
+				if ("minC".equals(s)) {
+					minC = 1;
+				}
+			}
+		}
+		checkEntity.setTaskShow(Long.valueOf(task)); //任务栏被勾选
+		checkEntity.setMaxCShow(Long.valueOf(maxC)); //大日历被勾选
+		checkEntity.setMinCShow(Long.valueOf(minC)); //小日历被勾选
+		//判断id是否存在， 存在则更新
+		if (!Util.isEmpty(userId)) {
+			dbDao.update(checkEntity, null);
+		} else {
+			dbDao.insert(checkEntity);
+		}
+
+		return null;
+	}
+
+	/**
+	 * 自定义界面获取
+	 */
+	public Object getCheckBox(String userId) {
+		TCheckboxStatusEntity checkBoxEntity = dbDao.fetch(TCheckboxStatusEntity.class, Long.valueOf(userId));
+		return checkBoxEntity;
 	}
 }
