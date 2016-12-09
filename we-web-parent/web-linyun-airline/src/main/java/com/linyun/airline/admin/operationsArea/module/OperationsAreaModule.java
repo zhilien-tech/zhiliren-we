@@ -1,5 +1,6 @@
-package com.linyun.airline.admin.customerInvoice.module;
+package com.linyun.airline.admin.operationsArea.module;
 
+import org.nutz.dao.SqlManager;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -12,31 +13,44 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
-import com.linyun.airline.admin.customerInvoice.service.CustomerinvoiceViewService;
-import com.linyun.airline.forms.TCustomerInvoiceAddForm;
-import com.linyun.airline.forms.TCustomerInvoiceForm;
-import com.linyun.airline.forms.TCustomerInvoiceUpdateForm;
+import com.linyun.airline.admin.operationsArea.form.TMessageAddForm;
+import com.linyun.airline.admin.operationsArea.form.TMessageForm;
+import com.linyun.airline.admin.operationsArea.form.TMessageUpdateForm;
+import com.linyun.airline.admin.operationsArea.service.OperationsAreaViewService;
+import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.base.page.Pagination;
 import com.uxuexi.core.web.chain.support.JsonResult;
 
 @IocBean
-@At("/admin/customerinvoice")
+@At("/admin/operationsArea")
 @Filters({//@By(type = AuthFilter.class)
 })
-public class CustomerinvoiceModule {
+public class OperationsAreaModule {
 
 	private static final Log log = Logs.get();
 
 	@Inject
-	private CustomerinvoiceViewService customerinvoiceViewService;
+	private OperationsAreaViewService operationsAreaViewService;
+
+	/**
+	 * 注入容器中的dbDao对象，用于数据库查询、持久操作
+	 */
+	@Inject
+	private IDbDao dbDao;
+
+	/**
+	 * 注入容器中管理sql的对象，用于从sql文件中根据key取得sql
+	 */
+	@Inject
+	private SqlManager sqlManager;
 
 	/**
 	 * 分页查询
 	 */
 	@At
 	@Ok("jsp")
-	public Pagination list(@Param("..") final TCustomerInvoiceForm sqlParamForm, @Param("..") final Pager pager) {
-		return customerinvoiceViewService.listPage(sqlParamForm, pager);
+	public Pagination list(@Param("..") final TMessageForm sqlParamForm, @Param("..") final Pager pager) {
+		return operationsAreaViewService.listPage(sqlParamForm, pager);
 	}
 
 	/**
@@ -54,8 +68,8 @@ public class CustomerinvoiceModule {
 	 */
 	@At
 	@POST
-	public Object add(@Param("..") TCustomerInvoiceAddForm addForm) {
-		return customerinvoiceViewService.add(addForm);
+	public Object add(@Param("..") TMessageAddForm addForm) {
+		return operationsAreaViewService.addCsutomerEvent(addForm);
 	}
 
 	/**
@@ -65,7 +79,7 @@ public class CustomerinvoiceModule {
 	@GET
 	@Ok("jsp")
 	public Object update(@Param("id") final long id) {
-		return customerinvoiceViewService.fetch(id);
+		return operationsAreaViewService.fetch(id);
 	}
 
 	/**
@@ -73,8 +87,8 @@ public class CustomerinvoiceModule {
 	 */
 	@At
 	@POST
-	public Object update(@Param("..") TCustomerInvoiceUpdateForm updateForm) {
-		return customerinvoiceViewService.update(updateForm);
+	public Object update(@Param("..") TMessageUpdateForm updateForm) {
+		return operationsAreaViewService.update(updateForm);
 	}
 
 	/**
@@ -82,7 +96,7 @@ public class CustomerinvoiceModule {
 	 */
 	@At
 	public Object delete(@Param("id") final long id) {
-		customerinvoiceViewService.deleteById(id);
+		operationsAreaViewService.deleteById(id);
 		return JsonResult.success("删除成功");
 	}
 
@@ -91,7 +105,7 @@ public class CustomerinvoiceModule {
 	 */
 	@At
 	public Object batchDelete(@Param("ids") final Long[] ids) {
-		customerinvoiceViewService.batchDelete(ids);
+		operationsAreaViewService.batchDelete(ids);
 		return JsonResult.success("删除成功");
 	}
 

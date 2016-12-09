@@ -15,7 +15,7 @@
 	<link rel="stylesheet" href="${base }/public/dist/css/skins/_all-skins.min.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
 	<!-- style -->
-  <link rel="stylesheet" href="${base }/public/css/style.css">
+  	<link rel="stylesheet" href="${base }/public/css/style.css">
 	<style type="text/css">
 		.wu-example .statusBar .btns .uploadBtn {
 		    background: #3c8dbc !important;

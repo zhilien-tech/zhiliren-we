@@ -27,8 +27,8 @@ public interface UserViewService {
 	 */
 	Map<String, Object> findUser(long userId);
 
-	/**根据用户名和密码查询用户*/
-	TUserEntity findUser(final String userName, final String passwd);
+	/**根据用户名或手机号和密码查询用户*/
+	TUserEntity findUser(final String loginName, final String passwd);
 
 	List<TFunctionEntity> findUserFunctions(long userId);
 }

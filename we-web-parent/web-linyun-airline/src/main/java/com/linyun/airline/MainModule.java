@@ -2,6 +2,7 @@ package com.linyun.airline;
 
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.By;
 import org.nutz.mvc.annotation.ChainBy;
 import org.nutz.mvc.annotation.Encoding;
 import org.nutz.mvc.annotation.Fail;
@@ -14,6 +15,7 @@ import org.nutz.mvc.annotation.SetupBy;
 import org.nutz.mvc.annotation.Views;
 import org.nutz.mvc.ioc.provider.ComboIocProvider;
 
+import com.linyun.airline.common.actionfilter.LoginFilter;
 import com.linyun.airline.common.annotation.NoFilter;
 import com.uxuexi.core.web.view.WeViewMaker;
 
@@ -28,7 +30,7 @@ import com.uxuexi.core.web.view.WeViewMaker;
 @ChainBy(args = { "${app.root}/WEB-INF/classes/webconfig/chains.js" })
 @Views(WeViewMaker.class)
 @IocBean
-@Filters({/*@By(type = CSRFFilter.class),*/})
+@Filters({ @By(type = LoginFilter.class) })
 public class MainModule {
 
 	@At("/")
