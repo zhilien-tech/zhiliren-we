@@ -7,6 +7,8 @@
 package com.linyun.airline.admin.dictionary.dirinfo.module;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.nutz.dao.Chain;
@@ -31,6 +33,7 @@ import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.DictTypeEntity;
 import com.linyun.airline.forms.DictInfoSqlForm;
 import com.uxuexi.core.common.util.EnumUtil;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
 import com.uxuexi.core.web.util.FormUtil;
@@ -160,5 +163,21 @@ public class InfoModule {
 	@At
 	public Object listData(@Param("..") final DictInfoSqlForm paramForm) {
 		return infoService.listPage4Datatables(paramForm);
+	}
+
+	/**
+	 * 校验字典代码
+	 */
+	@At
+	@POST
+	public Object checkTypeCodeExist(@Param("dictCode") final String Code) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<DictInfoEntity> listCode = dbDao.query(DictInfoEntity.class, Cnd.where("dictCode", "=", Code), null);
+		if (!Util.isEmpty(listCode)) {
+			map.put("valid", false);
+		} else {
+			map.put("valid", true);
+		}
+		return map;
 	}
 }

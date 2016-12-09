@@ -7,6 +7,8 @@
 package com.linyun.airline.admin.dictionary.dirtype.module;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.nutz.dao.Chain;
@@ -24,10 +26,12 @@ import com.linyun.airline.admin.dictionary.dirtype.form.TypeAddForm;
 import com.linyun.airline.admin.dictionary.dirtype.form.TypeModForm;
 import com.linyun.airline.admin.dictionary.dirtype.form.TypeQueryForm;
 import com.linyun.airline.admin.dictionary.dirtype.service.ITypeService;
+import com.linyun.airline.admin.dictionary.dirtype.service.impl.TypeServiceImpl;
 import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.common.form.AlterStatusForm;
 import com.linyun.airline.entities.DictTypeEntity;
 import com.uxuexi.core.common.util.EnumUtil;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
 import com.uxuexi.core.web.util.FormUtil;
@@ -49,6 +53,9 @@ public class TypeModule {
 
 	@Inject
 	private ITypeService iTypeService;
+
+	@Inject
+	TypeServiceImpl typeViewService;
 
 	/**
 	 * 跳转到'添加操作'的录入数据页面
@@ -106,6 +113,9 @@ public class TypeModule {
 	@At
 	@Ok("jsp")
 	public Object list(@Param("..") final TypeQueryForm queryForm, @Param("..") final Pager pager) {
+		if (Util.isEmpty(queryForm.getTypeName())) {
+			queryForm.setTypeName(null);
+		}
 		Map<String, Object> map = FormUtil.query(dbDao, DictTypeEntity.class, queryForm, pager);
 		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));
 		return map;
@@ -146,5 +156,21 @@ public class TypeModule {
 			e.printStackTrace();
 			return JsonResult.error("操作失败!");
 		}
+	}
+
+	/**
+	 * 校验字典代码
+	 */
+	@At
+	@POST
+	public Object checkTypeCodeExist(@Param("typeCode") final String Code) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<DictTypeEntity> listCode = dbDao.query(DictTypeEntity.class, Cnd.where("typeCode", "=", Code), null);
+		if (!Util.isEmpty(listCode)) {
+			map.put("valid", false);
+		} else {
+			map.put("valid", true);
+		}
+		return map;
 	}
 }

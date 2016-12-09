@@ -16,11 +16,11 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.linyun.airline.admin.authority.function.entity.TFunctionEntity;
+import com.linyun.airline.admin.authority.job.entity.TJobEntity;
 import com.linyun.airline.admin.user.service.UserViewService;
 import com.linyun.airline.common.enums.UserStatusEnum;
 import com.linyun.airline.common.enums.UserTypeEnum;
-import com.linyun.airline.entities.TFunctionEntity;
-import com.linyun.airline.entities.TJobEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.entities.TUserJobEntity;
 import com.linyun.airline.forms.TUserModForm;
@@ -103,8 +103,14 @@ public class TUserServiceImpl extends BaseService<TUserEntity> implements UserVi
 	}
 
 	@Override
-	public TUserEntity findUser(String userName, String passwd) {
-		return dbDao.fetch(TUserEntity.class, Cnd.where("userName", "=", userName).and("password", "=", passwd));
+	public TUserEntity findUser(String loginName, String passwd) {
+		TUserEntity user = dbDao.fetch(TUserEntity.class,
+				Cnd.where("userName", "=", loginName).and("password", "=", passwd));
+
+		if (Util.isEmpty(user)) {
+			user = dbDao.fetch(TUserEntity.class, Cnd.where("telephone", "=", loginName).and("password", "=", passwd));
+		}
+		return user;
 	}
 
 	@Override

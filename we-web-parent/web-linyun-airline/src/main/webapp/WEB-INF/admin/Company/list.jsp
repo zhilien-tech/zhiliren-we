@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" errorPage="/WEB-INF/public/500.jsp"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
 <%@include file="/WEB-INF/public/header.jsp"%>
+<%@include file="/WEB-INF/public/aside.jsp"%>
 
 <c:set var="url" value="${base}/admin/Company" />
   <!-- Content Wrapper. Contains page content -->
@@ -31,7 +32,7 @@
 				
               </div>
             </div>
-            <h4 class="padLeft">全部公司：${obj.totalcompany }　上游公司：${obj.upconpany } 　代理商：${obj.agent }</h4>
+            <h4 class="padLeft" id="companyCount"></h4>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="datatable" class="table table-bordered table-hover" style="width: 100%;">
@@ -132,13 +133,14 @@ function initDatatable() {
 	});
 
 $(function () {
+    loadCompanyCount();
     initDatatable();
 });
    function add(){
       layer.open({
     	    type: 2,
     	    title: false,
-    	    closeBtn:false,
+    	    closeBtn:true,
     	    fix: false,
     	    maxmin: false,
     	    shadeClose: false,
@@ -167,7 +169,7 @@ $(function () {
   	  	closeBtn:false,
   	    fix: false,
   	    maxmin: false,
-  	    shadeClose: false,
+  	    shadeClose: true,
   	    area: ['900px', '600px'],
   	    content: '${url}/userList.html?id='+id
   	    
@@ -180,6 +182,7 @@ $(function () {
 	}
   function successCallback(id){
 	  datatable.ajax.reload();
+	  loadCompanyCount();
 	  if(id == '1'){
 		  layer.msg("添加成功",{time: 2000, icon:1});
 	  }else if(id == '2'){
@@ -187,6 +190,22 @@ $(function () {
 	  }else if(id == '3'){
 		  layer.msg("删除成功",{time: 2000, icon:1});
 	  }
+  }
+  
+  function loadCompanyCount(){
+	  $.ajax({ 
+		  type: 'POST', 
+		  data: {}, 
+		  async:false,
+		  url: '${base}/admin/Company/loadCompanyCount.html',
+          success: function (data) { 
+        	  var str = "全部公司：" + data.totalcompany + "&nbsp;&nbsp;&nbsp;&nbsp;上游公司：" + data.upconpany + "&nbsp;&nbsp;&nbsp;&nbsp;代理商：" + data.agent;
+        	  //$('#companyCount').html(str);
+        	  document.getElementById("companyCount").innerHTML= str;
+          },
+          error: function (xhr) {
+          } 
+      });
   }
 </script>
 

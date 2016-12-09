@@ -69,8 +69,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 									<!--状态名称 搜索框-->
 									<div class="col-sm-12 padding">
 										<select id="status" name="status"
-											class="form-control input-sm">
-											<option value="">--不限--</option>
+											class="form-control input-sm" onchange="defaultSelect();">
 											<c:forEach var="map" items="${obj.dataStatusEnum}">
 												<c:choose>
 													<c:when test="${map.key == obj.queryForm.status}">
@@ -84,18 +83,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
 										</select>
 									</div>
 								</div>
-								<div class="col-md-3 dictInfoSousuo">
+								<div class="col-md-3 dictInfoSousuo" style="float:left;">
+									<!--字典类别编码 搜索框-->
+                                    <input type="text" name="typeCode"
+										value="${obj.queryForm.typeCode}" class="form-control"
+										placeholder="字典类别编码">
+								</div>
+                                <div class="col-md-3 dictInfoSousuo" style="float:left;">
 									<!--字典信息名称 搜索框-->
 									<input type="text" name="dictName"
 										value="${obj.queryForm.dictName}" class="form-control"
-										placeholder="字典信息名称">
+										placeholder="字典信息">
 								</div>
 								<div class="col-md-2 col-padding">
 									<!--搜索 按钮-->
 									<button type="submit" class="btn btn-primary btn-sm">搜索</button>
 								</div>
 							</form>
-							<div class="col-md-1 col-md-offset-4">
+							<div class="col-md-1 col-md-offset-1">
 								<a href="${base}/admin/dictionary/dirinfo/add.html"
 									data-toggle="modal" class="btn btn-primary btn-sm" id="addBtn"
 									data-target="#addTabs">添加</a>
@@ -125,24 +130,29 @@ scratch. This page gets rid of all links and provides the needed markup only.
 													title="${one.description }">${one.description }</span></td>
 												<td><we:enum key="${one.status }"
 														className="com.linyun.airline.common.enums.DataStatusEnum" /></td>
-												<td><p class="p_time"><fmt:formatDate value="${one.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></p></td>
+												<td><p class="p_time">
+														<fmt:formatDate value="${one.createTime}"
+															pattern="yyyy-MM-dd HH:mm:ss" />
+													</p></td>
 												<td>
 													<p class="a_info">
-													<a href="${base}/admin/dictionary/dirinfo/update.html?id=${one.id}"
-														data-toggle="modal" id="editBtn"
-														class="btn btn-primary btn-sm" data-target="#editTabs">编辑</a>
+														<a
+															href="${base}/admin/dictionary/dirinfo/update.html?id=${one.id}"
+															data-toggle="modal" id="editBtn"
+															class="btn btn_mini btn_modify" data-target="#editTabs">编辑</a>
 														<c:choose>
 															<c:when test="${1 == one.status}">
 																<a href='javascript:physicalDelete(${one.id},2);'
-																	class='btn btn-danger btn-sm'>删除</a>
+																	class='btn btn_mini btn_modify'><font
+																	color="#CCCCCC">删除</font></a>
 															</c:when>
 															<c:otherwise>
 																<a href='javascript:physicalDelete(${one.id},1);'
-																	class='btn btn-success btn-sm'>启用</a>
+																	class='btn btn_mini btn_modify'>启用</a>
 															</c:otherwise>
 														</c:choose>
-														</p>
-													</td>
+													</p>
+												</td>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -183,7 +193,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		</div>
 	</div>
 	<!-- REQUIRED JS SCRIPTS -->
-
 	<!-- jQuery 2.2.3 -->
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<!-- Bootstrap 3.3.6 -->
@@ -201,7 +210,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	<!-- AdminLTE App -->
 	<script src="${base}/public/dist/js/app.min.js"></script>
 	<script src="${base}/common/js/layer/layer.js"></script>
-
 	<script>
 		//添加
 		$('#addBtn').click(function() {
@@ -211,27 +219,35 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		});
 		//删除提示
 		function physicalDelete(did, status) {
-			$
-					.ajax({
-						type : 'POST',
-						data : {
-							id : did,
-							status : status
-						},
-						dataType : 'json',
-						url : '${base}/admin/dictionary/dirinfo/updateDeleteStatus.html',
-						success : function(data) {
-							if ("200" == data.status) {
-								layer.msg("操作成功!", "", 3000);
-								window.location.reload(true);
-							} else {
-								layer.msg("操作失败!", "", 3000);
-							}
-						},
-						error : function(xhr) {
-							layer.msg("操作失败", "", 3000);
+			layer.confirm("您确认删除(启用)信息吗？", {
+			    btn: ["是","否"], //按钮
+			    shade: false //不显示遮罩
+			}, function(){
+				// 点击确定之后
+				var url = '${base}/admin/dictionary/dirinfo/updateDeleteStatus.html';
+				$.ajax({
+					type : 'POST',
+					data : {
+						id : did,
+						status : status
+					},
+					dataType : 'json',
+					url : url,
+					success : function(data) {
+						if ("200" == data.status) {
+							layer.msg("操作成功!", "", 3000);
+							window.location.reload(true);
+						} else {
+							layer.msg("操作失败!", "", 3000);
 						}
-					});
+					},
+					error : function(xhr) {
+						layer.msg("操作失败", "", 3000);
+					}
+				});
+			}, function(){
+			    // 取消之后不用处理
+			});
 		}
 		//描述提示信息弹出层Tooltip
 		$(function() {
@@ -255,6 +271,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		$(function() {
 			initDatatable();
 		});
+	</script>
+	<script type="text/javascript">
+		//状态默认选中
+		function defaultSelect(){
+			document.getElementById("form1").submit();
+		}
 	</script>
 </body>
 </html>

@@ -57,6 +57,8 @@ public class TCustomerInfoAddForm extends AddForm implements Serializable {
 
 	/**付款方式（现金、支票、银行汇款、第三方、其他）*/
 	private long payWay;
+	/**其他付款方式*/
+	private String paywayName;
 
 	/**是否提供发票（0：否   1：是）*/
 	private long invoice;
@@ -69,6 +71,8 @@ public class TCustomerInfoAddForm extends AddForm implements Serializable {
 
 	/**结算形式（月结、周结、单结、其他）*/
 	private long payType;
+	/**其他结算方式*/
+	private String paytypeName;
 
 	/**合作时间*/
 	private Date cooperateTime;
@@ -78,9 +82,11 @@ public class TCustomerInfoAddForm extends AddForm implements Serializable {
 
 	/**签约时间*/
 	private Date contractTime;
+	private String contractTimeString;
 
 	/**签约到期时间*/
 	private Date contractDueTime;
+	private String contractDueTimeString;
 
 	/**是否签约（未签约、已签约、禁止合作）*/
 	private long contract;
@@ -88,4 +94,18 @@ public class TCustomerInfoAddForm extends AddForm implements Serializable {
 	/**是否禁用*/
 	private long forbid;
 
+	/**出发城市Ids*/
+	private String outcityname;
+
+	/**国境内陆*/
+	private String sLine1;
+
+	/**国际线路*/
+	private String internationLine;
+
+	/**业务范围*/
+	private String business;
+
+	/**发票项目*/
+	private String sInvName;
 }

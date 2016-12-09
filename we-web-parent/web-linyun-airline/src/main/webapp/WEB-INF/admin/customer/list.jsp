@@ -5,11 +5,7 @@
 <c:set var="url" value="${base}/admin/customer" />
 
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
-<html>
+<html lang="en-US">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -73,22 +69,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="${base}/public/plugins/select2/select2.full.min.js"></script>
 <!-- InputMask -->
 <script src="${base}/public/plugins/input-mask/jquery.inputmask.js"></script>
-<script
-	src="${base}/public/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-<script
-	src="${base}/public/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<script src="${base}/public/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="${base}/public/plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <!-- date-range-picker -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 <script src="${base}/public/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap datepicker -->
 <script src="${base}/public/plugins/datepicker/bootstrap-datepicker.js"></script>
 <!-- bootstrap color picker -->
-<script
-	src="${base}/public/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
+<script src="${base}/public/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
 <!-- bootstrap time picker -->
-<script
-	src="${base}/public/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+<script src="${base}/public/plugins/timepicker/bootstrap-timepicker.min.js"></script>
 
 <!-- DataTables -->
 <script src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
@@ -128,21 +119,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
 										<div class="col-md-2">
 											<!--是否签约 下拉框-->
 											<select id="contract" class="form-control select"
-												name="contract"
+												name="contract" onchange="searchOpt();"
 												<!-- onchange="alert($(this).val())" -->>
 												<option value="">是否签约</option>
-												<option value="0"
-													<c:if test="${'0' eq obj.queryForm.contract}">selected</c:if>>未签约</option>
 												<option value="1"
 													<c:if test="${'1' eq obj.queryForm.contract}">selected</c:if>>已签约</option>
+												<option value="0"
+													<c:if test="${'0' eq obj.queryForm.contract}">selected</c:if>>未签约</option>
 												<option value="2"
 													<c:if test="${'2' eq obj.queryForm.contract}">selected</c:if>>禁止合作</option>
 											</select>
 										</div>
 										<div class="col-md-2">
 											<!--是否禁用 下拉框-->
-											<select id="forbid" class="form-control select"
-												name="forbid">
+											<select id="forbid" class="form-control select" name="forbid" onchange="searchOpt();">
 												<option value="">是否禁用</option>
 												<option value="0"
 													<c:if test="${'0' eq obj.queryForm.forbid}">selected</c:if>>否</option>
@@ -153,7 +143,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 										<div class="col-md-3">
 											<!--公司名称/负责人/电话 搜索框-->
 											<input type="text" id="sname" name="name"
-												 class="form-control"  placeholder="公司名称/负责人/电话">
+												 class="form-control"  placeholder="公司名称/负责人/电话" onkeypress="onkeyEnter();">
 										</div>
 										<div class="col-md-3 col-padding">
 											<!--搜索 恢复默认 按钮-->
@@ -164,9 +154,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
 										<div class="col-md-1 col-md-offset-1">
-											<a href="${base}/admin/customer/add.html" data-toggle="modal"
-												class="btn btn-primary btn-sm" id="addBtn"
-												data-target=".Mymodal-lg">添加</a>
+											<a class="btn btn-primary btn-sm" onclick="add();" id="addBtn">添加</a>
 										</div>
 
 									</div>
@@ -214,8 +202,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	</div>
 	<!-- ./wrapper -->
 
-	<!--弹框 div-->
-	<div class="modal fade Mymodal-lg" role="dialog" tabindex="-1"
+	<!--添加弹框div-->
+	<div class="modal fade Mymodal-lg" id="addModal" role="dialog" tabindex="-1"
+		aria-labelledby="myLargeModalLabel" aria-hidden="true" id="addTabs"
+		style="width: auto; height: 1000px;">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header"></div>
+				<div class="modal-body"></div>
+			</div>
+		</div>
+	</div>
+	<!--更新弹框 div-->
+	<div class="modal fade Mymodal-lg" id="updateModal" role="dialog" tabindex="-1"
 		aria-labelledby="myLargeModalLabel" aria-hidden="true" id="addTabs"
 		style="width: auto; height: 1000px;">
 		<div class="modal-dialog modal-lg">
@@ -244,10 +243,19 @@ function initDatatable() {
             	
             }
         },
+        /* 列表序号 */
+        "fnDrawCallback"    : function(){
+        	var api = this.api();
+        	var startIndex= api.context[0]._iDisplayStart;
+   	       　　  api.column(0).nodes().each(function(cell, i) {
+   	       　　　　cell.innerHTML = startIndex + i + 1;
+   	       　　});
+      	},
+
         "columns": [
                     {"data": "id", "bSortable": false},
                     {"data": "name", "bSortable": false},
-                    {"data": "agent", "bSortable": false},
+                    {"data": "username", "bSortable": false},
                     {"data": "telephone", "bSortable": false},
                     {"data": "contract", "bSortable": false,
                     	render: function(data, type, row, meta) {
@@ -281,18 +289,18 @@ function initDatatable() {
             //   指定第一列，从0开始，0表示第一列，1表示第二列……
             targets: 6,
             render: function(data, type, row, meta) {
-                return '<a href="${base}/admin/customer/update.html?id='+row.id+'" id="updateBtn" class="btn btn_mini btn_modify" data-target=".Mymodal-lg" data-toggle="modal">编辑</a>';
+                return '<a onclick="edit('+row.id+')" id="updateBtn" class="btn btn_mini btn_modify">编辑</a>';
             }
         }]
     });
 }
 
 	$("#searchBtn").on('click', function () {
-		var sname = $("#sname").val();
-		var contract = $("#contract").val();
-		var forbid = $("#forbid").val();
+		var snameVal = $("#sname").val();
+		var contractVal = $("#contract").val();
+		var forbidVal = $("#forbid").val();
 	    var param = {
-	        "name": sname,"contract":contract,"forbid":forbid
+	        "name": snameVal,"contract":contractVal,"forbid":forbidVal
 	    };
 	    datatable.settings()[0].ajax.data = param;
 	    datatable.ajax.reload();
@@ -305,21 +313,74 @@ function initDatatable() {
 	//设置默认
 	function makeDefault() {
 		$("#sname").val("");
-		$("#select1").val("");
-		$("#select2").val("");
+		$("#contract").val("");
+		$("#forbid").val("");
 	}
 
 	$('#addBtn').click(function() {
-		$(".Mymodal-lg").on("hidden", function() {
+		$("#updateModal").removeData("modal");
+		$("#addModal").on("hidden", function() {
 			$(this).removeData("modal");
 		});
 	});
 
+	/* layer添加 */
+	function add(){
+	      layer.open({
+	    	    type: 2,
+	    	    title: false,
+	    	    closeBtn:false,
+	    	    fix: false,
+	    	    maxmin: false,
+	    	    shadeClose: false,
+	    	    area: ['900px', '500px'],
+	    	    content: '${base}/admin/customer/add.html'
+	    	  });
+	  }
+	/* layer编辑 */
+	function edit(id){
+	      layer.open({
+	    	    type: 2,
+	    	    title: false,
+	    	    closeBtn:false,
+	    	    fix: false,
+	    	    maxmin: false,
+	    	    shadeClose: false,
+	    	    area: ['900px', '500px'],
+	    	    content: '${base}/admin/customer/update.html?id='+id
+	    	  });
+	  }
+	
 	$('#updateBtn').click(function() {
-		$(".Mymodal-lg").on("hidden", function() {
+		$("#addModal").removeData("modal");
+		$("#updateModal").on("hidden", function() {
 			$(this).removeData("modal");
 		});
 	});
+	
+	/* 保存按钮事件 */
+	function successCallback(id){
+	  datatable.ajax.reload();
+	  if(id == '1'){
+		  layer.msg("添加成功",{time: 2000, icon:1});
+	  }else if(id == '2'){
+		  layer.msg("修改成功",{time: 2000, icon:1});
+	  }else if(id == '3'){
+		  layer.msg("删除成功",{time: 2000, icon:1});
+	  }
+  }
+
+	
+	//回车查询
+	function onkeyEnter(){
+		 if(event.keyCode==13){
+			 $("#searchBtn").click();
+		 }
+	}
+	//下拉查询
+	function searchOpt(){
+		$("#searchBtn").click();
+	}
 	
 </script>
 </body>

@@ -53,6 +53,7 @@ public final class Util {
 		if (obj instanceof Map<?, ?>) {
 			return ((Map<?, ?>) obj).isEmpty();
 		}
+
 		return false;
 	}
 

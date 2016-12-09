@@ -16,6 +16,7 @@ import com.linyun.airline.admin.dictionary.dirtype.form.TypeModForm;
 import com.linyun.airline.admin.dictionary.dirtype.service.ITypeService;
 import com.linyun.airline.entities.DictTypeEntity;
 import com.uxuexi.core.db.dao.IDbDao;
+import com.uxuexi.core.web.base.service.BaseService;
 import com.uxuexi.core.web.util.FormUtil;
 
 /**
@@ -24,7 +25,7 @@ import com.uxuexi.core.web.util.FormUtil;
  * @Date	 2016年11月3日 	 
  */
 @IocBean(name = "iTypeService")
-public class TypeServiceImpl implements ITypeService {
+public class TypeServiceImpl extends BaseService<DictTypeEntity> implements ITypeService {
 
 	@Inject
 	private IDbDao dbDao;
@@ -43,5 +44,12 @@ public class TypeServiceImpl implements ITypeService {
 		obj.put("dirtype", dbDao.fetch(DictTypeEntity.class, id));
 		return obj;
 	}
+
+	/*@Override
+	public Map<String, Object> findDirtypeCode(Condition condition) {
+		Map<String, Object> obj = new HashMap<String, Object>();
+		obj.put("dirtype", dbDao.fetch(DictTypeEntity.class, condition));
+		return obj;
+	}*/
 
 }

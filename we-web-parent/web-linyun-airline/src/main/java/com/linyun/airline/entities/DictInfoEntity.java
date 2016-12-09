@@ -53,6 +53,38 @@ public class DictInfoEntity implements Serializable, Comparable<DictInfoEntity> 
 
 	/**
 	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	/**使用次数*/
+	private int count;
+
+	@Override
+	public int compareTo(DictInfoEntity o) {
+		if (this.count > o.count) {
+			return 1;
+		} else if (this.count < o.count) {
+			return -1;
+		} else {
+			/**
+			 * 当compareTo返回0，TreeSet会认为“两个元素相等”
+			 */
+			if (this.id != o.id) {
+				return new Long(this.id).compareTo(new Long(o.id));
+			}
+			return 0;
+		}
+	}
+
+	/**
+	 * (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -67,30 +99,6 @@ public class DictInfoEntity implements Serializable, Comparable<DictInfoEntity> 
 		if (id != other.id)
 			return false;
 		return true;
-	}
-
-	/**
-	 * (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		Long intId = Long.valueOf(this.id);
-		return intId.hashCode();
-	}
-
-	/**使用次数*/
-	private int count;
-
-	@Override
-	public int compareTo(DictInfoEntity o) {
-		if (this.count > o.count) {
-			return 1;
-		} else if (this.count < o.count) {
-			return -1;
-		} else {
-			return 0;
-		}
 	}
 
 }
