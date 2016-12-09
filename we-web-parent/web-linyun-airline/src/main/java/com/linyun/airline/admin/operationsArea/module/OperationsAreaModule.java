@@ -18,12 +18,10 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
-import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.form.TMessageAddForm;
 import com.linyun.airline.admin.operationsArea.form.TMessageForm;
 import com.linyun.airline.admin.operationsArea.form.TMessageUpdateForm;
 import com.linyun.airline.admin.operationsArea.service.OperationsAreaViewService;
-import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.base.page.Pagination;
 import com.uxuexi.core.web.chain.support.JsonResult;
@@ -69,8 +67,8 @@ public class OperationsAreaModule {
 	@Ok("jsp")
 	public Object desktop(HttpSession session) {
 		Map<String, Object> obj = new HashMap<String, Object>();
-		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
-		long userId = loginUser.getId();
+		/*TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long userId = loginUser.getId();*/
 		Object checkBox = operationsAreaViewService.getCheckBox("1"); //以后在session中获取
 		obj.put("checkBox", checkBox);
 		return obj;

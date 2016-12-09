@@ -360,14 +360,40 @@
 		          }); 
 		        });
 
-		  /*-----end 自定义界面 js-----*/
+		   /*  $('#taskBoxId').click(function(){//任务 显示/隐藏
+		          if($(this).prop('checked')){
+		              $('.taskDiv').css('display','block');
+		        }else{
+		              $('.taskDiv').css('display','none');
+		         }
+		    });
+
+		    $('#maxCalenderId').click(function(){//大日历 显示/隐藏
+		          if($(this).prop('checked')){
+		              $('.maxCalender').css('display','block');
+		        }else{
+		              $('.maxCalender').css('display','none');
+		         }
+		    });
+
+		    $('#minCalenderId').click(function(){//小日历 显示/隐藏
+		          if($(this).prop('checked')){
+		              $('#box-min').css('display','block');
+		        }else{
+		              $('#box-min').css('display','none');
+		         }
+		    }); */
+		    
+		   
+		  
 		}
-	</script>
-	<script type="text/javascript">
 		
+		 /* 关闭自定义界面 */
+	    function closewindow(){
+	    	 layer.closeAll();
+	    }
 	</script>
 	<!-- end 自定义界面 -->
-
 
 	
 	<!--小日历 js-->
