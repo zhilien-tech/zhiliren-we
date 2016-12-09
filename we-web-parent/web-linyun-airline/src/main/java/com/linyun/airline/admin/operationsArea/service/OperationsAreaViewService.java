@@ -1,5 +1,6 @@
 package com.linyun.airline.admin.operationsArea.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.nutz.dao.Cnd;
@@ -18,6 +19,7 @@ import com.linyun.airline.common.admin.operationsArea.enums.MessageTypeEnum;
 import com.linyun.airline.common.admin.operationsArea.enums.MessageUserEnum;
 import com.linyun.airline.entities.TMessageEntity;
 import com.linyun.airline.entities.TUserMsgEntity;
+import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.JsonUtil;
 import com.uxuexi.core.common.util.Util;
@@ -111,8 +113,35 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	/**
 	 * 查询 任务事件
 	 */
-	public Object getTaskEvents() {
+	public Object getTaskEvents(Long id) {
+		//DOTO 当前没有代理商任务， 所以查询自定义事件
+		Sql sql = Sqls.create(sqlManager.get("msg_user_company_task testDate"));
+		if (!Util.isEmpty(id)) {
+			sql.params().set("userId", id);
+		}
+		sql.params().set("now", DateTimeUtil.nowDateTime());
+		Cnd cnd = Cnd.NEW();
+		sql.setCondition(cnd);
+		sql.setCallback(Sqls.callback.records());
+		nutDao.execute(sql);
+		List<Record> records = (List<Record>) sql.getResult();
 
-		return null;
+		//存取记录
+		List<Record> list = new ArrayList<Record>();
+		if (records.size() >= 5) {
+			for (int i = 0; i < 5; i++) {
+				Record r = records.get(i);
+				String datetimeStr = r.getString("generatetime");
+				/*String date = datetimeStr.substring(5, 10);
+				String time = datetimeStr.substring(11, 16);*/
+				list.add(records.get(i));
+			}
+		} else {
+			for (Record record : records) {
+				list.add(record);
+			}
+		}
+
+		return JsonUtil.toJson(list);
 	}
 }

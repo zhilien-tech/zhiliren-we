@@ -75,6 +75,15 @@ public class OperationsAreaModule {
 	}
 
 	/**
+	 * 任务栏事件显示
+	 */
+	@At
+	@POST
+	public Object getTaskEvents(@Param("id") final Long id) {
+		return operationsAreaViewService.getTaskEvents(Long.valueOf(1));
+	}
+
+	/**
 	 * 跳转到'添加操作'的录入数据页面
 	 */
 	@At

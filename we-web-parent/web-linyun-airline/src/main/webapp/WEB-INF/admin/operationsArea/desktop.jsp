@@ -102,8 +102,8 @@
 							<h4 class="box-title">任务</h4>
 						</div>
 						<div class="box-body box-sha">
-							<ul class="taskInfo">
-								<li><a href="">今天
+							<ul id="taskListId" class="taskInfo">
+								<!-- <li><a href="">今天
 										&nbsp;07：23&nbsp;&nbsp;&nbsp;聚美优品孙先哲向你发送一个预售订单</a></li>
 								<li><a href="">昨天
 										&nbsp;07：23&nbsp;&nbsp;&nbsp;爱我行&nbsp;&nbsp;&nbsp;王行&nbsp;&nbsp;&nbsp;0494573团需要支付一订</a></li>
@@ -112,7 +112,7 @@
 								<li><a href="">今天
 										&nbsp;07：23&nbsp;&nbsp;&nbsp;聚美优品孙先哲向你发送一个预售订单</a></li>
 								<li><a href="">今天
-										&nbsp;07：23&nbsp;&nbsp;&nbsp;聚美优品孙先哲向你发送一个预售订单</a></li>
+										&nbsp;07：23&nbsp;&nbsp;&nbsp;聚美优品孙先哲向你发送一个预售订单</a></li> -->
 							</ul>
 						</div>
 						<!--end 任务-->
@@ -179,9 +179,62 @@
 		src='${base}/public/plugins/fullcalendar/js/jquery.fancybox-1.3.1.pack.js'></script>
 	<script type="text/javascript">
 		$(function() {
+			/* 大日历 */
 			calendarInit();
+			/* 任务提醒 */
+			taskEventList();
 		});
 	</script>
+	
+	<!-- 任务事件提醒 -->
+	<script type="text/javascript">
+		function taskEventList() {
+			//获取当前日期
+			var d = new Date();
+			if(d.getDate() < 10){
+				var dateStr = d.getMonth()+1 +"-0"+ d.getDate();
+				var yesterdayStr = d.getMonth()+1 +"-0"+ (d.getDate()-1);
+			}else{
+				var dateStr = d.getMonth()+1 +"-"+ d.getDate();
+				var yesterdayStr = d.getMonth()+1 +"-"+ (d.getDate()-1);
+			}
+			//获取当前时间
+			var timeStr = d.getHours() +":"+ d.getMinutes();
+			
+			$.ajax({
+				type : 'POST',
+				dataType : 'json',
+				url : '${base}/admin/operationsArea/getTaskEvents.html',
+				success : function(data){
+					var content = "";
+					$.each(eval(data),function(index, element){
+	                	var datetimeStr = element.generatetime;
+	                	var dStr = datetimeStr.substr(5, 5);
+	                	var tStr = datetimeStr.substr(11, 5);
+	                	if(dStr == dateStr){
+	                		dStr="今天";
+	                	}
+	                	if(dStr == yesterdayStr){
+	                		dStr="昨天";
+	                	}
+	                	
+	                	var comName = element.shortname;
+	                	var agent = element.username;
+	                	var msgC = element.msgcontent;
+	                	content += '<li>'+ dStr 
+	                				+'&nbsp;&nbsp;'+tStr
+	                				+'&nbsp;&nbsp;&nbsp;'
+	                				+comName+'&nbsp;记录了 '
+	                				+msgC+'</li>';
+		            });
+		           
+					$("#taskListId").html(content);
+				}
+			});
+		}
+	</script>
+	
+	
 	<!-- 大日历 -->
 	<script type="text/javascript">
 	function calendarInit(){
