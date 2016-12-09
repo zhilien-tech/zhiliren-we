@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
@@ -25,9 +26,12 @@ import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.google.common.base.Splitter;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
+import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.util.ExportExcel;
 import com.linyun.airline.entities.DictInfoEntity;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TPlanInfoEntity;
+import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TPlanInfoAddForm;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.Util;
@@ -157,15 +161,21 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 * <p>
 	 * 计划制作
 	 * @param addForm
+	 * @param session 
 	 * @return 根据页面提交的数据进行航空公司模块的计划制作
 	 */
 	@SuppressWarnings({ "deprecation", "static-access" })
-	public Object airlineMakePlan(TPlanInfoAddForm addForm) {
+	public Object airlineMakePlan(TPlanInfoAddForm addForm, HttpSession session) {
 		List<TPlanInfoEntity> planInfos = new ArrayList<TPlanInfoEntity>();
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		//页面选择的起始日期
-		Date startdate = new Date(addForm.getStartdate());
+		Date startdate = DateUtil.string2Date(addForm.getStartdate(), DateUtil.FORMAT_YYYY_MM_DD);
+
 		//页面选择的结束日期
-		Date enddate = new Date(addForm.getEnddate());
+		Date enddate = DateUtil.string2Date(addForm.getEnddate(), DateUtil.FORMAT_YYYY_MM_DD);
 		//根据航班号获取航空公司名称
 		String airLineName = this.getAirCompanyByAirLine(addForm.getLeaveairline());
 		//自由制作计划
@@ -189,6 +199,8 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 					planInfoEntity.setDayscount(addForm.getDayscount());
 					planInfoEntity.setUnioncity(addForm.getUnioncity());
 					planInfoEntity.setTeamtype(addForm.getTeamtype());
+					planInfoEntity.setOpid(user.getId());
+					planInfoEntity.setCompanyid(company.getId());
 					planInfos.add(planInfoEntity);
 				}
 			}
@@ -221,6 +233,8 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 						planInfoEntity.setDayscount(addForm.getDayscount());
 						planInfoEntity.setUnioncity(addForm.getUnioncity());
 						planInfoEntity.setTeamtype(addForm.getTeamtype());
+						planInfoEntity.setOpid(user.getId());
+						planInfoEntity.setCompanyid(company.getId());
 						planInfos.add(planInfoEntity);
 					}
 				}
@@ -283,12 +297,15 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 * 保存计划
 	 * <p>
 	 * 保存计划
+	 * @param session 
 	 * @return 保存计划
 	 */
-	public Object savePlanData() {
+	public Object savePlanData(HttpSession session) {
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		String sqlString = EntityUtil.entityCndSql(TPlanInfoEntity.class);
 		Sql sql = Sqls.create(sqlString);
-		sql.setCondition(Cnd.where("issave", "=", 0));
+		sql.setCondition(Cnd.where("issave", "=", 0).and("companyid", "=", company.getId()));
 		List<TPlanInfoEntity> planInfoEntities = this.listPageBean(TPlanInfoEntity.class, sql, null);
 		for (TPlanInfoEntity tPlanInfoEntity : planInfoEntities) {
 			tPlanInfoEntity.setIssave(1);
@@ -300,9 +317,10 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 * 导出东航模板
 	 * EXCEL导出东航模板
 	 * @param response
+	 * @param session 
 	 * @return Excel导出东航模板
 	 */
-	public Object exportDongHangTemplate(HttpServletResponse response) {
+	public Object exportDongHangTemplate(HttpServletResponse response, HttpSession session) {
 		try {
 			//设置Excel表格输入的日期格式
 			DateFormat df = new SimpleDateFormat("dd/MMM", Locale.ENGLISH);
@@ -312,7 +330,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 			String title = this.EXCEL_DONGHANG_TITLE;
 			//为Excel准备数据
 			@SuppressWarnings("unchecked")
-			List<Record> rerultList = getMakePlanData();
+			List<Record> rerultList = getMakePlanData(session);
 			//设置Excel数据
 			List<Object[]> excelData = new ArrayList<Object[]>();
 			for (Record record : rerultList) {
@@ -331,12 +349,16 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	}
 
 	/**
-	 * 获取计划制作数据
+	 * 获取计划制作导出Excel数据
+	 * @param session 
 	 */
-	private List<Record> getMakePlanData() {
+	private List<Record> getMakePlanData(HttpSession session) {
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		String sqlString = EntityUtil.entityCndSql(TPlanInfoEntity.class);
 		Sql sql = Sqls.create(sqlString);
-		sql.setCondition(Cnd.where("issave", "=", 0).orderBy("leavesdate", "asc"));
+		sql.setCondition(Cnd.where("issave", "=", 0).and("companyid", "=", company.getId())
+				.orderBy("leavesdate", "asc"));
 		sql.setCallback(Sqls.callback.records());
 		nutDao.execute(sql);
 		@SuppressWarnings("unchecked")
@@ -370,7 +392,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 * @param response
 	 * @return 导出南航Excel模板
 	 */
-	public Object exportNanHangTemplate(HttpServletResponse response) {
+	public Object exportNanHangTemplate(HttpServletResponse response, HttpSession session) {
 		try {
 			//设置Excel表格输入的日期格式
 			DateFormat df = new SimpleDateFormat("dd-MMM", Locale.ENGLISH);
@@ -380,7 +402,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 			String title = this.EXCEL_NANHANG_TITLE;
 			//为Excel准备数据
 			@SuppressWarnings("unchecked")
-			List<Record> rerultList = getMakePlanData();
+			List<Record> rerultList = getMakePlanData(session);
 			//设置Excel数据
 			List<Object[]> excelData = new ArrayList<Object[]>();
 			for (Record record : rerultList) {
@@ -411,9 +433,10 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 * 导出凌云模板
 	 *
 	 * @param response
+	 * @param session 
 	 * @return 导出凌云模板
 	 */
-	public Object exportLingYunTemplate(HttpServletResponse response) {
+	public Object exportLingYunTemplate(HttpServletResponse response, HttpSession session) {
 		try {
 			//设置Excel表格输入的日期格式
 			DateFormat df = new SimpleDateFormat("dd-MMM", Locale.ENGLISH);
@@ -424,7 +447,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 			String title = this.EXCEL_LINGYUN_TITLE;
 			//为Excel准备数据
 			@SuppressWarnings("unchecked")
-			List<Record> rerultList = getMakePlanData();
+			List<Record> rerultList = getMakePlanData(session);
 			//设置Excel数据
 			List<Object[]> excelData = new ArrayList<Object[]>();
 			excelData.add(this.EXCEL_LINGYUN_FIRST_DATA);
