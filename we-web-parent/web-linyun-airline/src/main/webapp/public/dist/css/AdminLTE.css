@@ -20,6 +20,7 @@ body {
 .layout-boxed body {
   height: 100%;
 }
+.bodyOne{min-height: 0;min-width: 0;overflow-x: auto !important;}
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -5058,7 +5059,7 @@ p{margin: 0 0 0px 10px;}
 .checkWeek{/*background-color: #eee;*/}
 .checkWeek span{font-size: 13px;}
 .checkWeek input{position: relative;top: 3px;margin-left: 8px;width: 15px;height: 15px;}
-.hidnCalendar{height: 300px;border: solid 1px #dedbdb;width: 83.3%;margin: 0 auto 10px auto;border-radius: 3px;background-color: #fbfbfb;}
+/*.hidnCalendar{height: 300px;border: solid 1px #dedbdb;width: 83.3%;margin: 0 auto 10px auto;border-radius: 3px;background-color: #fbfbfb;}*/
 .addMake{border: solid 1px #efefef;border-radius: 5px;background-color: #fbfbfb;margin-bottom: 10px;}
 .dropdoImport{width: 99px;min-height: 32px;float: right;}
 .dropdoImport ul{min-width: 92px;}

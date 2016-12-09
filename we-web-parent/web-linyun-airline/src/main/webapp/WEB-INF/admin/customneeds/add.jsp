@@ -135,7 +135,6 @@
 	function closewindow(){
 		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 		parent.layer.close(index);
-		parent.location.reload();
 	}
 	//提交表单数据
 	function submitCustomNeeds(){

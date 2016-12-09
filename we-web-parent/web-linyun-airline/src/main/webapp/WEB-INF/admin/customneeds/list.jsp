@@ -3,6 +3,8 @@
 <%@include file="/WEB-INF/public/header.jsp"%>
 <%@include file="/WEB-INF/public/aside.jsp"%>
 <link rel="stylesheet" href="${base }/public/plugins/chosen/chosen.css">
+<!--小日历-->
+<link rel="stylesheet" type="text/css" href="${base }/public/build/kalendae.css">
 <c:set var="url" value="${base}/admin/customneeds" />
   <!-- Content Wrapper. Contains page content -->
 	<!--内容-->
@@ -121,14 +123,14 @@
                         <div class="form-group row">
                           <label class="col-sm-1 text-right padding marTop5">状态：</label>
                           <div class="col-md-1 padding">
-                            <select class="form-control select1">
-                              <option>系列团</option>
-                              <option>临时团</option>
+                            <select class="form-control select1" id="teamtype">
+                              <option value="1">系列团</option>
+                              <option value="2">临时团</option>
                             </select>
                           </div>
                           <div class="col-md-10">
-                            <button type="button" class="btn btn-primary btn-sm right">制作</button>
-                            <button type="button" class="btn btn-primary btn-sm right">保存计划</button>
+                            <button type="button" onclick="makePlan();" class="btn btn-primary btn-sm right">制作</button>
+                            <button type="button" class="btn btn-primary btn-sm right" onclick="savePlan();">保存计划</button>
                             <!-- <p class="flie_A right">
                               导出excel
                               <input name="appendix" type="file"/>
@@ -140,22 +142,16 @@
                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:;">南航</a></li>
                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:;">新航</a></li> -->
                                        <li role="presentation">
-                                          <p class="flie_A flie_import">
-                                            东航
-                                            <input name="appendix" type="file"/>
-                                          </p>
+                                          <a class="flie_A flie_import" href="${url}/exportDongHangTemplate.html">东航</a>
                                        </li>
                                        <li role="presentation">
-                                          <p class="flie_A flie_import">
-                                            南航
-                                            <input name="appendix" type="file"/>
-                                          </p>
+                                          <a class="flie_A flie_import" href="${url}/exportNanHangTemplate.html">南航</a>
                                        </li>
                                        <li role="presentation">
-                                          <p class="flie_A flie_import">
-                                            新航
-                                            <input name="appendix" type="file"/>
-                                          </p>
+                                          <a class="flie_A flie_import">新航</a>
+                                       </li>
+                                       <li role="presentation">
+                                          <a class="flie_A flie_import" href="${url}/exportLingYunTemplate.html">凌云</a>
                                        </li>
                                     </ul>
                             </div>
@@ -163,29 +159,32 @@
                         </div><!--end 系列团/临时团 select and 按钮（导出、保存计划）-->
                         
                         <div class="addMake aa">
-                          <a href="javascript:;" class="glyphicon glyphicon-plus addIcon removAddMake"></a><!--添加div按钮-->
-                          <a href="javascript:;" class="glyphicon glyphicon-minus removIcon removAddMake"></a><!--删除div按钮->
+                          <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake"></a><!--添加div按钮-->
+                          <a href="javascript:;" name="closeButton" class="glyphicon glyphicon-minus removIcon removAddMake"></a><!--删除div按钮->
                           <!--旅行社名称/人数/天数/去程航班/回程航班 text-->
                           <div class="form-group row">
                             <label class="col-sm-1 text-right padding">旅行社：</label>
                             <div class="col-sm-1 padding">
-                              <select id="tranvelname" onfocus="loadTranvel();" class="form-control input-sm chzn-select" data-placeholder="旅行社名称" tabindex="5"></select>
+                              <!-- <select id="tranvelname" onclick="loadTranvel();" class="form-control input-sm chzn-select" data-placeholder="旅行社名称" tabindex="7">
+                              </select> -->
+                              <select id="travelname0" name="travelname" class="form-control js-data-example-ajax js-example-basic-single" multiple="multiple" data-placeholder="旅行社名称">
+								</select>
                             </div>
                             <label class="col-sm-1 text-right padding">人数：</label>
                             <div class="col-sm-1 padding">
-                              <input type="text" class="form-control input-sm" placeholder="">
+                              <input type="text" name="peoplecount" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" class="form-control input-sm" placeholder="">
                             </div>
                             <label class="col-sm-1 text-right padding">天数：</label>
                             <div class="col-sm-1 padding">
-                              <input type="text" class="form-control input-sm" placeholder="">
+                              <input type="text" name="dayscount" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" class="form-control input-sm" placeholder="">
                             </div>
                             <label class="col-sm-1 text-right padding">去程航班：</label>
                             <div class="col-sm-1 padding">
-                              <input type="text" class="form-control input-sm" placeholder="">
+                              <select id="leaveairline0" name="leaveairline" class="form-control input-sm js-data-example-ajax" multiple="multiple" placeholder=""></select>
                             </div>
                             <label class="col-sm-1 text-right padding">回程航班：</label>
                             <div class="col-sm-1 padding">
-                              <input type="text" class="form-control input-sm" placeholder="">
+                              <select id="backairline0" name="backairline" class="form-control input-sm js-data-example-ajax" multiple="multiple" placeholder=""></select>
                             </div>
                             <!-- <div class="col-sm-1">
                               <a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a>
@@ -197,15 +196,15 @@
                           <div class="form-group row">
                             <label class="col-sm-1 text-right padding cf">起飞城市：</label>
                             <div class="col-sm-1 padding">
-                              <input type="text" class="form-control input-sm" placeholder="">
+                              <select id="leavescity0" name="leavescity" class="form-control input-sm js-data-example-ajax" multiple="multiple" placeholder=""></select>
                             </div>
                             <label class="col-sm-1 text-right padding cf">降落城市：</label>
                             <div class="col-sm-1 padding">
-                              <input type="text" class="form-control input-sm" placeholder="">
+                              <select id="backscity0" name="backscity" class="form-control input-sm js-data-example-ajax" multiple="multiple" placeholder=""></select>
                             </div>
                             <label class="col-sm-1 text-right padding cf">联运城市：</label>
                             <div class="col-sm-1 padding">
-                              <input type="text" class="form-control input-sm" placeholder="">
+                              <select id="unioncity0" name="unioncity" class="form-control input-sm js-data-example-ajax" multiple="multiple" placeholder=""></select>
                             </div>
                           </div><!--end 起飞城市/降落城市/联运城市 text-->
 
@@ -213,7 +212,7 @@
                           <div class="form-group row">
                             <label class="col-sm-1 text-right padding cf">从：</label>
                             <div class="col-sm-3 padding">
-                              <input type="text" class="form-control input-sm timeWid" placeholder="2016-11-05"> - <input type="text" class="form-control input-sm timeWid" placeholder="2016-12-01">
+                              <input id="startdate0" name="startdate" type="text" class="form-control input-sm timeWid" placeholder="2016-11-05"> - <input id="enddate0" name="enddate" type="text" class="form-control input-sm timeWid" placeholder="2016-12-01">
                             </div>
                             <div class="col-sm-2 padding cf">
                               <select class="form-control selectMargin cf" id="weekSelect" onchange="select_change(this)">
@@ -222,20 +221,20 @@
                               </select>
                             </div>
                             <div class="col-sm-6 padding cf checkWeek">
-                              <input type="checkbox"><span>周日</span>
-                              <input type="checkbox"><span>周一</span>
-                              <input type="checkbox"><span>周二</span>
-                              <input type="checkbox"><span>周三</span>
-                              <input type="checkbox"><span>周四</span>
-                              <input type="checkbox"><span>周五</span>
-                              <input type="checkbox"><span>周六</span>
+                              <input type="checkbox" name="weekday" value="7"><span>周日</span>
+                              <input type="checkbox" name="weekday" value="1"><span>周一</span>
+                              <input type="checkbox" name="weekday" value="2"><span>周二</span>
+                              <input type="checkbox" name="weekday" value="3"><span>周三</span>
+                              <input type="checkbox" name="weekday" value="4"><span>周四</span>
+                              <input type="checkbox" name="weekday" value="5"><span>周五</span>
+                              <input type="checkbox" name="weekday" value="6"><span>周六</span>
                             </div>
                           </div><!--end time 选择-->
                           
                           <!-- select 自由 日历-->
-                          <div class="hidnCalendar none">
-                            
+                          <div class="hidnCalendar none" id="minCalender0" name="minCalender">
                           </div><!--end select 自由 日历-->
+                           <input id="calenderdate0" name="calenderdate" type="hidden">
                         </div>
 
                         <table id="example3" class="table table-bordered table-hover">
@@ -254,18 +253,6 @@
                           </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td>1</td>
-                              <td>CA</td>
-                              <td>18/Jan</td>
-                              <td>西安-悉尼</td>
-                              <td>28/Jan</td>
-                              <td>悉尼-西安</td>
-                              <td>20</td>
-                              <td>10</td>
-                              <td>爱自由</td>
-                              <td>全国联运</td>
-                            </tr>
                           </tbody>
                         </table>
                       </div><!--end 计划制作-->
@@ -407,9 +394,12 @@
 	var BASE_PATH = '${base}';
 </script>
 <script src="${base}/public/dist/js/pikaday.js"></script>
-<script src="${base}/admin/airline/editplan.js"></script>
-<script src="${base}/admin/airline/planmake.js"></script>
 <script src="${base}/public/plugins/chosen/chosen.jquery.js"></script>
+<!--小日历-->
+<script src="${base}/public/build/kalendae.standalone.js" type="text/javascript" charset="utf-8"></script>
+<script src="${base}/public/build/calendar.js" type="text/javascript"></script>
+<script src="${base}/admin/airline/planmake.js"></script>
+<script src="${base}/admin/airline/editplan.js"></script>
 <!-- page script -->
 <script>
 var datatable;
@@ -568,7 +558,10 @@ $(function () {
   	    maxmin: false,
   	    shadeClose: false,
   	    area: ['900px', '500px'],
-  	    content: '${url}/update.html?id='+id
+  	    content: '${url}/update.html?id='+id,
+  	    end:function(){
+  	    	datatable.ajax.reload();
+  	    }
   	  });
   }
  
