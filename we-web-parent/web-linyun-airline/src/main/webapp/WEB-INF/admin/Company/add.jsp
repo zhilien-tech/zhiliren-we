@@ -26,6 +26,7 @@
 		    height: 40px;
 		    border-radius: 5px;
 		}
+		html, body {min-height: 0;min-width: 0;overflow-x: auto !important;}
 	</style>
 </head>
 <body onresize=hero();>
@@ -219,9 +220,11 @@
 	function closewindow(){
 		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 		parent.layer.close(index);
-		parent.location.reload();
+		window.parent.successCallback('4');
+		//parent.location.reload();
 	}
 	function submitCompany(){
+		layer.load(1);
 		$('#companyaddForm').bootstrapValidator('validate');
 		var bootstrapValidator = $("#companyaddForm").data('bootstrapValidator');
 		if(bootstrapValidator.isValid()){
@@ -232,6 +235,7 @@
 	            success: function (data) { 
 	            	//alert("添加成功");
 	            	//location.reload();
+	            	layer.closeAll('loading');
 	            	layer.msg("添加成功",{time: 2000, icon:1});
 	            	$('#companyaddForm')[0].reset();
 	            	$("#companyaddForm").data('bootstrapValidator').destroy();

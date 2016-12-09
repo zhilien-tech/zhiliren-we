@@ -128,7 +128,7 @@ public class CustomneedsModule {
 	@At
 	@POST
 	@Ok("jsp")
-	@AdaptBy(type = UploadAdaptor.class, args = { "/uploadTemp", "8192", "UTF-8", "10" })
+	@AdaptBy(type = UploadAdaptor.class)
 	public Object inportExcelData(@Param("excelFile") TempFile file, HttpServletRequest request) {
 		return customneedsViewService.inportExcelData(file, request);
 	}

@@ -103,8 +103,14 @@ public class TUserServiceImpl extends BaseService<TUserEntity> implements UserVi
 	}
 
 	@Override
-	public TUserEntity findUser(String userName, String passwd) {
-		return dbDao.fetch(TUserEntity.class, Cnd.where("userName", "=", userName).and("password", "=", passwd));
+	public TUserEntity findUser(String loginName, String passwd) {
+		TUserEntity user = dbDao.fetch(TUserEntity.class,
+				Cnd.where("userName", "=", loginName).and("password", "=", passwd));
+
+		if (Util.isEmpty(user)) {
+			user = dbDao.fetch(TUserEntity.class, Cnd.where("telephone", "=", loginName).and("password", "=", passwd));
+		}
+		return user;
 	}
 
 	@Override
