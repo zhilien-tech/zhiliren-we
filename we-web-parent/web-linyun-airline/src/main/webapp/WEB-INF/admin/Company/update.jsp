@@ -26,6 +26,7 @@
 		    height: 40px;
 		    border-radius: 5px;
 		}
+		html, body {min-height: 0;min-width: 0;overflow-x: auto !important;}
 	</style>
 </head>
 <body onresize=hero();>
