@@ -61,4 +61,7 @@ public class TCustomerneedsAddForm extends AddForm implements Serializable {
 	/**最后修改时间*/
 	private Date lastupdatetime;
 
+	/**所属公司*/
+	private long companyid;
+
 }

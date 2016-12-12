@@ -68,9 +68,12 @@ public class PlanMakeSqlForm extends DataTablesParamForm {
 
 	private Date laseupdatetime;
 
+	private long companyid;
+
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		cnd.and("issave", "=", "0");
+		cnd.and("companyid", "=", companyid);
 		cnd.orderBy("leavesdate", "asc");
 		return cnd;
 	}
