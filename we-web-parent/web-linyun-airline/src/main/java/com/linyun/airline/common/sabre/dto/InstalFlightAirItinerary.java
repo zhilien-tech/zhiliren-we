@@ -49,4 +49,9 @@ public class InstalFlightAirItinerary {
 	 */
 	List<FlightSegment> list;
 
+	/**
+	 * 票价信息
+	 */
+	private FlightPriceInfo priceInfo;
+
 }

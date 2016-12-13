@@ -28,6 +28,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.linyun.airline.common.sabre.SabreConfig;
 import com.linyun.airline.common.sabre.SabreTokenFactory;
 import com.linyun.airline.common.sabre.bean.SabreAccessToken;
+import com.linyun.airline.common.sabre.dto.FlightPriceInfo;
 import com.linyun.airline.common.sabre.dto.FlightSegment;
 import com.linyun.airline.common.sabre.dto.InstalFlightAirItinerary;
 import com.linyun.airline.common.sabre.form.InstaFlightsSearchForm;
@@ -138,6 +139,9 @@ public class SabreAPITest {
 
 				//TODO 航空公司名称、图片
 
+				//价格信息
+				readPriceInfo(json, ir);
+
 				ir.setAirlineCode(airlineCode);
 				ir.setSequenceNumber(sequenceNumber);
 				ir.setTicketType(ticketType);
@@ -152,6 +156,25 @@ public class SabreAPITest {
 				list.add(ir);
 			}
 		}
+	}
+
+	private static void readPriceInfo(String json, InstalFlightAirItinerary ir) {
+		String currencyCode = JsonPath.read(json, "$.AirItineraryPricingInfo.ItinTotalFare.TotalFare.CurrencyCode");
+		double totalAmount = JsonPath.read(json, "$.AirItineraryPricingInfo.ItinTotalFare.TotalFare.Amount");
+		double baseAmount = JsonPath.read(json, "$.AirItineraryPricingInfo.ItinTotalFare.BaseFare.Amount");
+		double equivFareAmount = JsonPath.read(json, "$.AirItineraryPricingInfo.ItinTotalFare.EquivFare.Amount");
+
+		log.info("currencyCode:" + currencyCode);
+		log.info("totalAmount:" + totalAmount);
+		log.info("baseAmount:" + baseAmount);
+		log.info("equivFareAmount:" + equivFareAmount);
+
+		FlightPriceInfo fi = new FlightPriceInfo();
+		fi.setCurrencyCode(currencyCode);
+		fi.setTotalAmount(totalAmount);
+		fi.setBaseAmount(baseAmount);
+		fi.setEquivFareAmount(equivFareAmount);
+		ir.setPriceInfo(fi);
 	}
 
 	/***
