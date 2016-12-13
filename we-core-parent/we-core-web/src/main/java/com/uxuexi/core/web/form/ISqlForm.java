@@ -13,8 +13,10 @@ import com.uxuexi.core.db.dao.IDbDao;
 
 /**
  * 表单里用于创建sql对象的接口
+ * <p>
+ * nutz可以不用查询条数的count-sql，因此Deprecated此接口
  *
- * @author   庄君祥
+ * @author   庄君祥，朱晓川
  * @Date	 2013-10-10 	 
  */
 public interface ISqlForm {
