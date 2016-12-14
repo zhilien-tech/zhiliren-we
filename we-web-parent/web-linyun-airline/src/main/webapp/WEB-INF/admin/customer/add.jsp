@@ -1,7 +1,5 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java"
-	pageEncoding="UTF-8" errorPage="/WEB-INF/common/500.jsp"%>
+<%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" errorPage="/WEB-INF/common/500.jsp"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
-
 <!DOCTYPE HTML>
 <html lang="en-US">
 <head>
@@ -53,7 +51,7 @@
 					<div class="tab-pane active" id="tabs_1">
 						<!-- 上游公司ID  以后会从当前登陆记录-->
 						<!-- TODO -->
-						<input name="comId" type="hidden" value="" />
+						<!-- <input name="comId" type="hidden" value="" /> -->
 						<!--基本信息-->
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">公司名称：</label>
@@ -241,9 +239,12 @@
 							<div class="col-sm-5 padding">
 								<input id="datepicker1" name="contractTimeString" type="text"
 									class="form-control input-sm input-wid"
-									placeholder="2015-08-08" /> 至 <input id="datepicker2"
-									name="contractDueTimeString" type="text"
+									onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'datepicker2\')}'})"
+									placeholder="2015-08-08" /> 
+								至 
+								<input id="datepicker2" name="contractDueTimeString" type="text"
 									class="form-control input-sm input-wid"
+									onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'datepicker1\')}'})"
 									placeholder="2088-09-09" />
 							</div>
 						</div>
@@ -323,6 +324,8 @@
 	</script>
 	<!-- jQuery 2.2.3 -->
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
+	<!-- 时间控件 -->
+	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 	<!-- Bootstrap 3.3.6 -->
 	<script src="${base}/public/bootstrap/js/bootstrap.js"></script>
 	<!-- Select2 -->
@@ -335,8 +338,7 @@
 
 	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 	<script src="${base}/common/js/layer/layer.js"></script>
-	<link rel="stylesheet" href="${base}/public/css/pikaday.css">
-	<script src="${base}/public/dist/js/pikaday.js"></script>
+	
 
 	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
 	<!-- 页面js -->

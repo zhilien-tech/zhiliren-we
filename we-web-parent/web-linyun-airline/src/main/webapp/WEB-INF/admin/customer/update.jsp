@@ -8,7 +8,6 @@
 <meta charset="UTF-8">
 <title>更新</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<link rel="stylesheet" href="${base}/public/css/pikaday.css">
 <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
@@ -233,10 +232,12 @@
 							<div class="col-sm-5 padding">
 								<input id="datepicker1" name="contractTimeString" type="text"
 									class="form-control input-sm input-wid"
+									onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'datepicker2\')}'})"
 									placeholder="2015-08-08" value="${obj.customer.contractTimeString}"/> 
 								至 <input id="datepicker2"
 									name="contractDueTimeString" type="text"
 									class="form-control input-sm input-wid"
+									onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'datepicker1\')}'})"
 									placeholder="2088-09-09" value="${obj.customer.contractDueTimeString}"/>
 							</div>
 						</div>
@@ -330,6 +331,8 @@
 	</script>
 	<!-- jQuery 2.2.3 -->
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
+	<!-- 时间控件 -->
+	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 	<!-- Bootstrap 3.3.6 -->
 	<script src="${base}/public/bootstrap/js/bootstrap.js"></script>
 	<!-- Select2 -->
@@ -340,7 +343,6 @@
 	<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
 	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 	<script src="${base}/common/js/layer/layer.js"></script>
-	<script src="${base}/public/dist/js/pikaday.js"></script>
 	<!-- 文件上传 -->
 	<link href="${base }/public/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css" />  
 	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>

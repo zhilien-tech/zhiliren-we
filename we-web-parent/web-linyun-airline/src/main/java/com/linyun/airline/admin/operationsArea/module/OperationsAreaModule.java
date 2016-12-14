@@ -1,8 +1,5 @@
 package com.linyun.airline.admin.operationsArea.module;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.SqlManager;
@@ -12,7 +9,6 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
@@ -28,8 +24,6 @@ import com.uxuexi.core.web.chain.support.JsonResult;
 
 @IocBean
 @At("/admin/operationsArea")
-@Filters({//@By(type = AuthFilter.class)
-})
 public class OperationsAreaModule {
 
 	private static final Log log = Logs.get();
@@ -66,12 +60,7 @@ public class OperationsAreaModule {
 	@GET
 	@Ok("jsp")
 	public Object desktop(HttpSession session) {
-		Map<String, Object> obj = new HashMap<String, Object>();
-		/*TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
-		long userId = loginUser.getId();*/
-		Object checkBox = operationsAreaViewService.getCheckBox("1"); //以后在session中获取
-		obj.put("checkBox", checkBox);
-		return obj;
+		return operationsAreaViewService.getCheckBox(session);
 	}
 
 	/**
@@ -79,9 +68,9 @@ public class OperationsAreaModule {
 	 */
 	@At
 	@GET
-	public Object getCustomEvents(@Param("id") final Long id, @Param("start") final String start,
+	public Object getCustomEvents(HttpSession session, @Param("start") final String start,
 			@Param("end") final String end) {
-		return operationsAreaViewService.getCustomEvent(Long.valueOf(1), start, end);
+		return operationsAreaViewService.getCustomEvent(session, start, end);
 	}
 
 	/**
@@ -89,8 +78,8 @@ public class OperationsAreaModule {
 	 */
 	@At
 	@POST
-	public Object getTaskEvents(@Param("id") final Long id) {
-		return operationsAreaViewService.getTaskEvents(Long.valueOf(1));
+	public Object getTaskEvents(HttpSession session) {
+		return operationsAreaViewService.getTaskEvents(session);
 	}
 
 	/**
@@ -98,8 +87,8 @@ public class OperationsAreaModule {
 	 */
 	@At
 	@POST
-	public Object setCheckBox(@Param("userId") final String id, @Param("checkboxname") final String checkboxname) {
-		return operationsAreaViewService.setCheckBox(id, checkboxname);
+	public Object setCheckBox(HttpSession session, @Param("checkboxname") final String checkboxname) {
+		return operationsAreaViewService.setCheckBox(session, checkboxname);
 	}
 
 	/**
@@ -107,8 +96,8 @@ public class OperationsAreaModule {
 	 */
 	@At
 	@POST
-	public Object getCheckBox(@Param("userId") final String id) {
-		return operationsAreaViewService.getCheckBox(id);
+	public Object getCheckBox(HttpSession session) {
+		return operationsAreaViewService.getCheckBox(session);
 	}
 
 	/**
@@ -116,8 +105,8 @@ public class OperationsAreaModule {
 	 */
 	@At
 	@POST
-	public Object getMinCalList(@Param("userId") final Long id, @Param("timeStr") final String timeStr) {
-		return operationsAreaViewService.getMinCalList(id, timeStr);
+	public Object getMinCalList(HttpSession session, @Param("timeStr") final String timeStr) {
+		return operationsAreaViewService.getMinCalList(session, timeStr);
 	}
 
 	/**
@@ -135,8 +124,8 @@ public class OperationsAreaModule {
 	 */
 	@At
 	@POST
-	public Object add(@Param("..") TMessageAddForm addForm) {
-		return operationsAreaViewService.addCustomEvent(addForm);
+	public Object add(@Param("..") TMessageAddForm addForm, HttpSession session) {
+		return operationsAreaViewService.addCustomEvent(addForm, session);
 	}
 
 	/**

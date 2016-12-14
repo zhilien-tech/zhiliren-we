@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpSession;
+
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
@@ -18,6 +20,7 @@ import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
 import com.google.common.base.Splitter;
+import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.form.TMessageAddForm;
 import com.linyun.airline.common.admin.operationsArea.enums.MessageLevelEnum;
 import com.linyun.airline.common.admin.operationsArea.enums.MessageSourceEnum;
@@ -26,6 +29,7 @@ import com.linyun.airline.common.admin.operationsArea.enums.MessageTypeEnum;
 import com.linyun.airline.common.admin.operationsArea.enums.MessageUserEnum;
 import com.linyun.airline.entities.TCheckboxStatusEntity;
 import com.linyun.airline.entities.TMessageEntity;
+import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.entities.TUserMsgEntity;
 import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.DateUtil;
@@ -46,7 +50,11 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	 * @param addForm
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object addCustomEvent(TMessageAddForm addForm) {
+	public Object addCustomEvent(TMessageAddForm addForm, HttpSession session) {
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long id = loginUser.getId();
+
 		//消息类型
 		addForm.setMsgType(MessageTypeEnum.PROCESSMSG.intKey());
 		//消息优先级  MSGLEVEL1.intKey()表示等级最低
@@ -54,7 +62,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		//格式化日期
 		String generateTimeStr = addForm.getGenerateTimeString();
 		if (!Util.isEmpty(generateTimeStr)) {
-			addForm.setGenerateTime(DateUtil.string2Date(generateTimeStr, "yyyy-MM-dd"));
+			addForm.setGenerateTime(DateUtil.string2Date(generateTimeStr, "yyyy-MM-dd hh:mm:ss"));
 		}
 		//添加消息数据
 		TMessageEntity tMessageEntity = this.add(addForm);
@@ -64,20 +72,20 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		//消息ID
 		tUserMsgEntity.setMsgId(Long.valueOf(tMessageEntity.getId()));
 		//用户ID
-		tUserMsgEntity.setUserId(Long.valueOf(addForm.getRecUserId()));
+		tUserMsgEntity.setUserId(id);
 		//用户类型
 		tUserMsgEntity.setUserType(Long.valueOf(MessageUserEnum.PERSONAL.intKey()));
 		//来源方ID  TODO 
-		tUserMsgEntity.setFromId(Long.valueOf(addForm.getSendUserId()));
+		tUserMsgEntity.setFromId(id);
 		//来源方类型  自定义事件
 		tUserMsgEntity.setMsgSource(Long.valueOf(MessageSourceEnum.PERSONALMSG.intKey()));
 		//是否阅读  默认为未读状态
 		tUserMsgEntity.setIsRead(Long.valueOf(MessageStatusEnum.UNREAD.intKey()));
 		//自定义事件的时间
 		tUserMsgEntity.setSendTime(addForm.getGenerateTime());
-		dbDao.insert(tUserMsgEntity);
+		TUserMsgEntity entity = dbDao.insert(tUserMsgEntity);
 
-		return null;
+		return JsonUtil.toJson(entity);
 	}
 
 	/**
@@ -89,11 +97,12 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	 * @param addForm
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object getCustomEvent(Long id, String start, String end) {
+	public Object getCustomEvent(HttpSession session, String start, String end) {
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long id = loginUser.getId();
+
 		Sql sql = Sqls.create(sqlManager.get("msg_user_company"));
-		//格式化时间戳
-		//String startStr = DateTimeUtil.format(new Timestamp(Long.valueOf(start) * 1000));
-		//String endStr = DateTimeUtil.format(new Timestamp(Long.valueOf(end) * 1000));
 		if (!Util.isEmpty(id)) {
 			sql.params().set("userId", id);
 		}
@@ -107,10 +116,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		cnd.orderBy("m.priorityLevel", "desc");
 		sql.setCondition(cnd);
 		sql.setCallback(Sqls.callback.records());
-		nutDao.execute(sql);
-
-		@SuppressWarnings("unchecked")
-		List<Record> rList = (List<Record>) sql.getResult();
+		List<Record> rList = dbDao.query(sql, cnd, null);
 		String jsonStr = JsonUtil.toJson(rList);
 		jsonStr = jsonStr.replaceAll("generatetime", "start");
 		jsonStr = jsonStr.replaceAll("msgcontent", "title");
@@ -121,27 +127,26 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	/**
 	 * 查询 任务事件
 	 */
-	public Object getTaskEvents(Long id) {
+	public Object getTaskEvents(HttpSession session) {
+
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long id = loginUser.getId();
+
 		//DOTO 当前没有代理商任务， 所以查询自定义事件
-		Sql sql = Sqls.create(sqlManager.get("msg_user_company_task testDate"));
+		Sql sql = Sqls.create(sqlManager.get("msg_user_company_task"));
 		if (!Util.isEmpty(id)) {
 			sql.params().set("userId", id);
 		}
 		sql.params().set("now", DateTimeUtil.nowDateTime());
-		//		Cnd cnd = Cnd.NEW();
-		//		sql.setCondition(cnd);
 		sql.setCallback(Sqls.callback.records());
-		nutDao.execute(sql);
-		List<Record> records = (List<Record>) sql.getResult();
-
+		List<Record> records = dbDao.query(sql, null, null);
 		//存取记录
 		List<Record> list = new ArrayList<Record>();
 		if (records.size() >= 5) {
 			for (int i = 0; i < 5; i++) {
 				Record r = records.get(i);
 				String datetimeStr = r.getString("generatetime");
-				/*String date = datetimeStr.substring(5, 10);
-				String time = datetimeStr.substring(11, 16);*/
 				list.add(records.get(i));
 			}
 		} else {
@@ -157,14 +162,17 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	 * 自定义界面设置
 	 */
 	@Aop("txDb")
-	public Object setCheckBox(String userId, String checkboxname) {
+	public Object setCheckBox(HttpSession session, String checkboxname) {
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long userId = loginUser.getId();
+
 		Map<String, Object> obj = new HashMap<String, Object>();
 		Iterable<String> checkS = Splitter.on(",").split(checkboxname);
 		TCheckboxStatusEntity checkEntity = new TCheckboxStatusEntity();
 
 		//查询用户是否存在
 		if (!Util.isEmpty(userId)) {
-			checkEntity = dbDao.fetch(TCheckboxStatusEntity.class, Long.valueOf(userId));
+			checkEntity = dbDao.fetch(TCheckboxStatusEntity.class, userId);
 		}
 		long task = 0;
 		long maxC = 0;
@@ -199,9 +207,14 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	/**
 	 * 自定义界面获取
 	 */
-	public Object getCheckBox(String userId) {
-		TCheckboxStatusEntity checkBoxEntity = dbDao.fetch(TCheckboxStatusEntity.class, Long.valueOf(userId));
-		return checkBoxEntity;
+	public Object getCheckBox(HttpSession session) {
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long userId = loginUser.getId();
+
+		Map<String, Object> obj = new HashMap<String, Object>();
+		TCheckboxStatusEntity checkBoxEntity = dbDao.fetch(TCheckboxStatusEntity.class, userId);
+		obj.put("checkBox", checkBoxEntity);
+		return obj;
 	}
 
 	/**
@@ -214,24 +227,27 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	 * @param timeStr   格式"2016-10","2016-12","2017-11"
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object getMinCalList(Long id, String timeStr) {
+	public Object getMinCalList(HttpSession session, String timeStr) {
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long id = loginUser.getId();
+
 		Map<String, Object> obj = new HashMap<String, Object>();
 		Sql sql = Sqls.create(sqlManager.get("msg_type_list"));
 		Date date1 = DateUtil.string2Date(timeStr);
 		Date date2 = DateUtil.addMonth(date1, 1);
 		Date date3 = DateUtil.addMonth(date1, 2);
+		if (!Util.isEmpty(id)) {
+			sql.params().set("userId", id);
+		}
 		sql.params().set("MincalTimes1", date1);
 		sql.params().set("MincalTimes2", date2);
 		sql.params().set("MincalTimes3", date3);
-
-		/*Cnd cnd = Cnd.NEW();
-		cnd.and("m.msgType", "=", MessageTypeEnum.PROCESSMSG.intKey()); //消息类型为个人自定义事件
-		sql.setCondition(cnd)*/
 		sql.setCallback(Sqls.callback.records());
-		nutDao.execute(sql);
-		@SuppressWarnings("unchecked")
-		List<Record> rList = (List<Record>) sql.getResult();
+
 		Set<String> set = new HashSet<String>();
+
+		List<Record> rList = dbDao.query(sql, null, null);
 		for (Record record : rList) {
 			set.add(record.getString("gtime"));
 		}
