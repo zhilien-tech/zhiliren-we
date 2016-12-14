@@ -25,9 +25,11 @@ public class SabreConfig {
 	/**
 	 * API环境分为测试环境和生产环境，测试的时候使用测试环境
 	 */
-	protected static final String test_environment = "https://api.test.sabre.com";
+	public static final String test_environment = "https://api.test.sabre.com";
 
-	protected static final String prod_environment = "https://api.sabre.com";
+	public static final String prod_environment = "https://api.sabre.com";
+
+	public static final String INSTAL_FLIGHTS_URl = "/v1/shop/flights";
 
 	protected static final String CHARSET = "UTF-8";
 

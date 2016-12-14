@@ -75,7 +75,7 @@ public class TPlanInfoEntity implements Serializable {
 
 	@Column
 	@Comment("操作人")
-	private Integer opid;
+	private long opid;
 
 	@Column
 	@Comment("创建时间")
@@ -84,5 +84,9 @@ public class TPlanInfoEntity implements Serializable {
 	@Column
 	@Comment("最后修改时间")
 	private Date laseupdatetime;
+
+	@Column
+	@Comment("所属公司")
+	private long companyid;
 
 }

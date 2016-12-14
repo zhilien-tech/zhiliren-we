@@ -78,6 +78,9 @@ public class TCustomNeedsSqlForm extends DataTablesParamForm {
 	/**最后修改时间*/
 	private Date lastupdatetime;
 
+	/**所属公司*/
+	private long companyid;
+
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		cnd.and("isclose", "=", isclose);
@@ -107,6 +110,9 @@ public class TCustomNeedsSqlForm extends DataTablesParamForm {
 		}
 		if (!Util.isEmpty(isclose)) {
 			cnd.and("isclose", "=", isclose);
+		}
+		if (!Util.isEmpty(companyid)) {
+			cnd.and("companyid", "=", companyid);
 		}
 		cnd.orderBy("optime", "desc");
 		return cnd;

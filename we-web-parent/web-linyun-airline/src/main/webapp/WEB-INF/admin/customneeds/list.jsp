@@ -544,8 +544,10 @@ $(function () {
     	    maxmin: false,
     	    shadeClose: false,
     	    area: ['900px', '500px'],
-    	    content: '${url}/add.html'
-    	    
+    	    content: '${url}/add.html',
+    	    end:function(){
+      	    	datatable.ajax.reload();
+      	    }
     	  });
   }
   
