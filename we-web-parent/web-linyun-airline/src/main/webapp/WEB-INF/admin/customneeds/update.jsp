@@ -36,7 +36,14 @@
 	    <div class="modal-header boderButt">
 	       <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">返回</button>
 	       <input type="submit" id="submitButton" class="btn btn-primary right btn-sm" onclick="submitCustomNeeds()" value="保存"/>
-	       <button type="button" class="btn right btn-sm" onclick="closeCustomNeeds();">关闭</button>
+	       <c:choose>
+		       <c:when test="${obj.isclose eq 0 }">
+		      	 <button type="button" class="btn right btn-sm" onclick="closeCustomNeeds();">关闭</button>
+	       	   </c:when>
+	       	   <c:otherwise>
+	       	   		<button type="button" class="btn right btn-sm" onclick="enableCustomNeeds();">启用</button>
+	       	   </c:otherwise>
+	       </c:choose>
 	       <h4>添加客户需求</h4>
 	     </div>
 	     <div class="modal-body">
@@ -176,7 +183,24 @@
 	        });
 		});
 	}
-	
+	//启用客户需求
+	function enableCustomNeeds(){
+		layer.confirm('确定要启用该需求吗?', {icon: 3, title:'提示'}, function(){
+			$.ajax({ 
+				type: 'POST', 
+				data: {id:'${obj.id}'}, 
+				url: '${base}/admin/customneeds/enableCustomNeeds.html',
+	            success: function (data) { 
+	            	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	            	window.parent.successCallback('4');
+	            	parent.layer.close(index);
+	            },
+	            error: function (xhr) {
+	            	layer.msg("启用失败","",3000);
+	            } 
+	        });
+		});
+	}
 	//页面校验方法
 	function formValidator(){
 		$('#customNeedsUpdatedForm').bootstrapValidator({

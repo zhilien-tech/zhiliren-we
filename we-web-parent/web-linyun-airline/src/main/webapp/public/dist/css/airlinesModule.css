@@ -1,0 +1,12 @@
+.kalendae{overflow: hidden;}
+.k-btn-previous-year,.k-btn-next-year{display: none;}
+.k-first-month{margin-left: -270px;}
+.k-first-month .k-title{overflow:inherit;}
+.kalendae .k-btn-previous-month{margin-left: 250px;margin-top: -5px;}
+div[data-cal-index="2"]{margin-left:15px;}
+div[data-cal-index="2"] .k-title{width: 120px;margin: 0 auto;}
+.kalendae .k-btn-next-month{right: -2px;}
+.celenderBtn{padding:2px 6px;float: right;margin-left: -38px;margin-top: 190px;}
+.hidnBtn,.showBtn{padding: 3px 10px;margin: 3px 0px 0px 5px;}
+.removeBtn{margin-right:135px;}
+

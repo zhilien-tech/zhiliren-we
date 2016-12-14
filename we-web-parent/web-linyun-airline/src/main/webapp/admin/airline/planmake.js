@@ -103,8 +103,8 @@ function initSelect2(){
 				minimumInputLength : 1,
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
-				maximumSelectionLength : 1 //设置最多可以选择多少项
-				//tags : false, //设置必须存在的选项 才能选中
+				maximumSelectionLength : 1, //设置最多可以选择多少项
+				tags : false //设置必须存在的选项 才能选中
 			});
 			//加载出发航班号下拉
 			$("#leaveairline" + i).select2({
@@ -139,8 +139,8 @@ function initSelect2(){
 				minimumInputLength : 1,
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
-				maximumSelectionLength : 1 //设置最多可以选择多少项
-				//tags : false, //设置必须存在的选项 才能选中
+				maximumSelectionLength : 1, //设置最多可以选择多少项
+				tags : false //设置必须存在的选项 才能选中
 			});
 			//加载返程航班下拉
 			$("#backairline" + i).select2({
@@ -175,8 +175,8 @@ function initSelect2(){
 				minimumInputLength : 1,
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
-				maximumSelectionLength : 1 //设置最多可以选择多少项
-				//tags : false, //设置必须存在的选项 才能选中
+				maximumSelectionLength : 1, //设置最多可以选择多少项
+				tags : false //设置必须存在的选项 才能选中
 			});
 			//加载起飞城市下拉
 			$("#leavescity" + i).select2({
@@ -211,8 +211,8 @@ function initSelect2(){
 				minimumInputLength : 1,
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
-				maximumSelectionLength : 1 //设置最多可以选择多少项
-				//tags : false, //设置必须存在的选项 才能选中
+				maximumSelectionLength : 1, //设置最多可以选择多少项
+				tags : false //设置必须存在的选项 才能选中
 			});
 			//加载降落城市下拉
 			$("#backscity" + i).select2({
@@ -247,8 +247,8 @@ function initSelect2(){
 				minimumInputLength : 1,
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
-				maximumSelectionLength : 1 //设置最多可以选择多少项
-				//tags : false, //设置必须存在的选项 才能选中
+				maximumSelectionLength : 1, //设置最多可以选择多少项
+				tags : false //设置必须存在的选项 才能选中
 			});
 			//加载联运城市下拉
 			$("#unioncity" + i).select2({
@@ -283,8 +283,8 @@ function initSelect2(){
 				minimumInputLength : 1,
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
-				maximumSelectionLength : 1 //设置最多可以选择多少项
-				//tags : false, //设置必须存在的选项 才能选中
+				maximumSelectionLength : 1, //设置最多可以选择多少项
+				tags : false, //设置必须存在的选项 才能选中
 			});
 			//初始化起始日期
 			var startdatepicker = new Pikaday({
@@ -337,13 +337,16 @@ function select_change(obj){
 $(function () {
 	//添加 addMake
 	$('.addIcon').click(function(){
+	   var clonediv = $('.addMake').first();
 	   var divTest =  $('.addMake').last(); 
-	   var newDiv = divTest.clone(false,true);
+	   var newDiv = clonediv.clone(false,true);
 	   divTest.after(newDiv);
 	   $('.addMake').each(function(i){
 		   if($('.addMake').length - 1 == i){
-			   $(this).find('[name=addButton]').remove();
-			   $(this).find('[name=closeButton]').remove();
+			   $(this).find('.addIcon').remove();
+			   $(this).find('.removIcon').remove();
+			   $('.addMake').first().find('.removIcon').hide();
+			   $(this).children().first().before('<a href="javascript:;" name="closeButton" class="removeBtn glyphicon glyphicon-minus removIcon removAddMake"></a><!--删除div按钮->');
 			   //设置新的旅行社Id
 			   var travelname = $(this).find('[name=travelname]');
 			   travelname.attr("id","travelname"+i);
@@ -400,17 +403,27 @@ $(function () {
 	//删除 addMake
 	$(".removIcon").click(function() {
 		if($('.addMake').length > 1){
-			$('.addMake').last().remove();
+			$(this).parent().remove();
+		}else{
+			layer.msg("最后一个不能删",{time: 2000, icon:1});
 		}
 	});
 });
 
+$(document).on('click', '.removeBtn', function(e) {
+	if($('.addMake').length > 1){
+		if($('.addMake').length == 2){
+			$('.addMake').first().find('.removIcon').show();
+		}
+		$(this).parent().remove();
+	}
+});
 //制作计划 
 function makePlan(){
 	var divlength = $('.addMake').length;
 	var teamtype = $('#teamtype').val();
-	//layer.load(2);
 	if(checkIsNull()){
+		layer.load(2);
 		$('.addMake').each(function(i){
 			var travelname = $(this).find('[name=travelname]').val();
 			if(travelname){
@@ -468,7 +481,7 @@ function makePlan(){
 	            success: function (data) {
 	            	$(this).remove();
 	            	if(divlength-1 == i){
-	            		//layer.closeAll('loading');
+	            		layer.closeAll('loading');
 	            		layer.msg("制作成功",{time: 2000, icon:1});
 	            		datatable1.ajax.reload();
 	            	}
@@ -588,4 +601,36 @@ function savePlan(){
             } 
         });
 	});
+}
+
+window.onbeforeunload = function(event) {
+	var isplan = false;
+	$.ajax({ 
+		type: 'POST', 
+		data: {}, 
+		async:false,
+		url: BASE_PATH + '/admin/customneeds/isHavePlanData.html',
+        success: function (data) { 
+        	if(data){
+        		isplan = true;
+        	}
+        },
+        error: function (xhr) {
+        } 
+    });
+	if(isplan){
+		return "计划制作内容尚未保存，确定离开此页面吗？";
+	}
+}
+window.onunload = function(event){
+	$.ajax({ 
+		type: 'POST', 
+		data: {}, 
+		async:false,
+		url: BASE_PATH + '/admin/customneeds/deleteMakePlanData.html',
+        success: function (data) { 
+        },
+        error: function (xhr) {
+        } 
+    });
 }

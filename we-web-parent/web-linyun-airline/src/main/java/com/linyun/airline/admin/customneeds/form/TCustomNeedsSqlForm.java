@@ -17,6 +17,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
 import com.linyun.airline.entities.TCustomerneedsEntity;
+import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.form.DataTablesParamForm;
@@ -97,13 +98,13 @@ public class TCustomNeedsSqlForm extends DataTablesParamForm {
 			cnd.and("totalday", "=", totalday);
 		}
 		if (!Util.isEmpty(leavedate)) {
-			cnd.and("leavedate", "=", new Date(leavedate));
+			cnd.and("leavedate", "=", DateUtil.string2Date(leavedate, DateUtil.FORMAT_YYYY_MM_DD));
 		}
 		if (!Util.isEmpty(leavecity)) {
 			cnd.and("leavecity", "=", leavecity);
 		}
 		if (!Util.isEmpty(backdate)) {
-			cnd.and("backdate", "=", new Date(backdate));
+			cnd.and("backdate", "=", DateUtil.string2Date(backdate, DateUtil.FORMAT_YYYY_MM_DD));
 		}
 		if (!Util.isEmpty(backcity)) {
 			cnd.and("backcity", "=", backcity);

@@ -129,6 +129,15 @@ public class CustomneedsModule {
 	}
 
 	/**
+	 * 启用客户需求
+	 */
+	@At
+	@POST
+	public Object enableCustomNeeds(@Param("id") long id) {
+		return customneedsViewService.enableCustomNeeds(id);
+	}
+
+	/**
 	 * 导入Excel
 	 */
 	@At

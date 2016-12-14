@@ -27,6 +27,15 @@ public class PlanMakeModule {
 	private PlanMakeService planMakeService;
 
 	/**
+	 * 获取航空公司下拉
+	 */
+	@At
+	@POST
+	public Object getAirComSelect(@Param("aircom") String aircom) {
+		return planMakeService.getAirComSelect(aircom);
+	}
+
+	/**
 	 * 获取旅行社下拉
 	 */
 	@At
@@ -110,7 +119,28 @@ public class PlanMakeModule {
 	 * 导出凌云模板
 	 */
 	@At
+	public Object exportGuoTaiTemplate(HttpServletResponse response, HttpSession session) {
+		return planMakeService.exportGuoTaiTemplate(response, session);
+	}
+
+	@At
 	public Object exportLingYunTemplate(HttpServletResponse response, HttpSession session) {
 		return planMakeService.exportLingYunTemplate(response, session);
+	}
+
+	/**
+	 * 判断是否存在未保存的计划
+	 */
+	@At
+	public Object isHavePlanData(HttpSession session) {
+		return planMakeService.isHavePlanData(session);
+	}
+
+	/**
+	 * 删除计划制作临时信息
+	 */
+	@At
+	public Object deleteMakePlanData(HttpSession session) {
+		return planMakeService.deleteMakePlanData(session);
 	}
 }
