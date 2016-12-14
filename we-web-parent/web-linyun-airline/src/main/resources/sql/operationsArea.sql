@@ -105,3 +105,35 @@ AND
 	m.generateTime<@now
 ORDER BY m.generateTime DESC
 $condition
+
+
+/*msg_count_list*/
+SELECT DISTINCT
+	(
+		DATE_FORMAT(m.generateTime, '%Y-%m-%d')
+	) AS gtime,
+	COUNT(m.generateTime) AS counts,
+	m.msgType
+FROM
+	t_message m
+WHERE
+	date_format(m.generateTime, '%Y-%m') = date_format(@MincalTimes1,'%Y-%m') 
+	OR date_format(m.generateTime, '%Y-%m') = date_format(@MincalTimes2,'%Y-%m')
+	OR date_format(m.generateTime, '%Y-%m') = date_format(@MincalTimes3,'%Y-%m')
+	
+GROUP BY
+	generateTime
+
+/*msg_type_list*/
+SELECT DISTINCT
+	(
+	DATE_FORMAT(m.generateTime, '%Y-%m-%d')
+	) AS gtime,
+	m.msgContent,
+	m.msgType
+FROM
+	t_message m
+WHERE
+	date_format(m.generateTime, '%Y-%m') = date_format(@MincalTimes1,'%Y-%m')
+OR date_format(m.generateTime, '%Y-%m') = date_format(@MincalTimes2,'%Y-%m')
+OR date_format(m.generateTime, '%Y-%m') = date_format(@MincalTimes3,'%Y-%m')

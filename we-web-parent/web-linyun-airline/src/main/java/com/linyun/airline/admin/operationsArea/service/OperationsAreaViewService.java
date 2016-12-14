@@ -1,7 +1,12 @@
 package com.linyun.airline.admin.operationsArea.service;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
@@ -123,8 +128,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			sql.params().set("userId", id);
 		}
 		sql.params().set("now", DateTimeUtil.nowDateTime());
-		Cnd cnd = Cnd.NEW();
-		sql.setCondition(cnd);
+		//		Cnd cnd = Cnd.NEW();
+		//		sql.setCondition(cnd);
 		sql.setCallback(Sqls.callback.records());
 		nutDao.execute(sql);
 		List<Record> records = (List<Record>) sql.getResult();
@@ -153,6 +158,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	 */
 	@Aop("txDb")
 	public Object setCheckBox(String userId, String checkboxname) {
+		Map<String, Object> obj = new HashMap<String, Object>();
 		Iterable<String> checkS = Splitter.on(",").split(checkboxname);
 		TCheckboxStatusEntity checkEntity = new TCheckboxStatusEntity();
 
@@ -186,8 +192,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		} else {
 			dbDao.insert(checkEntity);
 		}
-
-		return null;
+		obj.put("success", "保存成功");
+		return obj;
 	}
 
 	/**
@@ -196,5 +202,52 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	public Object getCheckBox(String userId) {
 		TCheckboxStatusEntity checkBoxEntity = dbDao.fetch(TCheckboxStatusEntity.class, Long.valueOf(userId));
 		return checkBoxEntity;
+	}
+
+	/**
+	 * 
+	 * TODO(查询指定月 每天的自定义事件数)
+	 * <p>
+	 * TODO(以后查询 飞机票相关的事件)
+	 *
+	 * @param id
+	 * @param timeStr   格式"2016-10","2016-12","2017-11"
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object getMinCalList(Long id, String timeStr) {
+		Map<String, Object> obj = new HashMap<String, Object>();
+		Sql sql = Sqls.create(sqlManager.get("msg_type_list"));
+		Date date1 = DateUtil.string2Date(timeStr);
+		Date date2 = DateUtil.addMonth(date1, 1);
+		Date date3 = DateUtil.addMonth(date1, 2);
+		sql.params().set("MincalTimes1", date1);
+		sql.params().set("MincalTimes2", date2);
+		sql.params().set("MincalTimes3", date3);
+
+		/*Cnd cnd = Cnd.NEW();
+		cnd.and("m.msgType", "=", MessageTypeEnum.PROCESSMSG.intKey()); //消息类型为个人自定义事件
+		sql.setCondition(cnd)*/
+		sql.setCallback(Sqls.callback.records());
+		nutDao.execute(sql);
+		@SuppressWarnings("unchecked")
+		List<Record> rList = (List<Record>) sql.getResult();
+		Set<String> set = new HashSet<String>();
+		for (Record record : rList) {
+			set.add(record.getString("gtime"));
+		}
+		List<Map<String, Object>> resultlist = new ArrayList<Map<String, Object>>();
+		for (String datestr : set) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("gtime", datestr);
+			String msgcontent = "";
+			for (Record r : rList) {
+				if (datestr.equals(r.getString("gtime"))) {
+					msgcontent += r.getString("msgcontent") + "<br/>";
+				}
+			}
+			map.put("msgcontent", msgcontent);
+			resultlist.add(map);
+		}
+		return JsonUtil.toJson(resultlist);
 	}
 }

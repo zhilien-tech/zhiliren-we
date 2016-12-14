@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
 <meta charset="utf-8">
@@ -144,15 +145,15 @@
 			    <div class="modal-body">
 			      <div class="layer-check">
 			          <p>
-			            <input id="taskBoxId"  name="checkboxname" type="checkbox" value="task">
+			            <input id="taskBoxId"  name="checkboxname" type="checkbox" value="task"/>
 			            <span>任务</span>
 			          </p>
 			          <p>
-			            <input id="maxCalenderId" name="checkboxname" type="checkbox" value="maxC">
+			            <input id="maxCalenderId" name="checkboxname" type="checkbox" value="maxC"/>
 			            <span>大日历</span>
 			          </p>
 			          <p>
-			            <input id="minCalenderId"  name="checkboxname" type="checkbox" value="minC">
+			            <input id="minCalenderId"  name="checkboxname" type="checkbox" value="minC"/>
 			            <span>小日历</span>
 			          </p>
 			      </div>
@@ -175,8 +176,26 @@
 	<!--大日历 js-->
 	<%-- <script src='${base}/public/plugins/fullcalendar/js/jquery-ui.css'></script> --%>
 	<script src='${base}/public/plugins/fullcalendar/js/fullcalendar.min.js'></script>
-	<script src='${base}/public/plugins/fullcalendar/js/jquery.fancybox-1.3.1.pack.js'></script>
+	<!--小日历 js-->
+	<script src="${base }/public/build/kalendae.standalone.js" type="text/javascript" charset="utf-8"></script>
 	<script src="${base}/common/js/layer/layer.js"></script>
+	<script type="text/javascript">
+		new Kalendae({//小日历 创建
+	        attachTo:document.getElementById("box-min"),
+	        months:4,
+	        mode:'single',
+	        dayAttributeFormat:"YYYY-MM-DD",
+	        subscribe: {
+	             'date-clicked': function (date) {//点击时，取到当前当天的时间
+	                //console.log(date, this.getSelected());
+	                return false;
+	              }
+	        },
+	        //dateClassMap:classMap,
+	        selected:[Kalendae.moment().subtract({M:1}), Kalendae.moment().add({M:1})]
+		});
+		//end 小日历 js
+	</script><!-- end 小日历js -->
 	<script type="text/javascript">
 		$(function() {
 			/* 大日历 */
@@ -187,20 +206,20 @@
 			customInterfaces();
 			/*自定义界面*/
 			checkBoxShow();
-			
+			/*小日历*/
+			minCalendarInit();
 		});
 	</script>
 	
 	<!-- 自定义界面保存 -->
 	<script type="text/javascript">
    		function checkboxSave(){
-   			alert($("#checkboxform").serialize());
    			$.ajax({
 				type : 'POST',
 				dataType: 'json',
 				data : $("#checkboxform").serialize(),
 				url : '${base}/admin/operationsArea/setCheckBox.html',
-				success : function(data) {
+				success : function(data){
 					
 				},
 				error : function(xhr) {
@@ -209,8 +228,8 @@
 			});
    		}
 	  </script>
-	  <!-- 自定义界面展示 -->
-	  <script type="text/javascript">
+	<!-- 自定义界面展示 -->
+	<script type="text/javascript">
 	  	function checkBoxShow(){
 	  		var taskShow = ${obj.checkBox.taskShow};
 	  		var maxCShow = ${obj.checkBox.maxCShow};
@@ -270,7 +289,7 @@
 	                	content += '<li>'+ dStr 
 	                				+'&nbsp;&nbsp;'+tStr
 	                				+'&nbsp;&nbsp;&nbsp;'
-	                				+comName+'&nbsp;记录了 '
+	                				+comName+'&nbsp;&nbsp;'+agent+'&nbsp;记录了 '
 	                				+msgC+'</li>';
 		            });
 		           
@@ -279,7 +298,6 @@
 			});
 		}
 	</script>
-	
 	
 	<!-- 大日历 -->
 	<script type="text/javascript">
@@ -315,7 +333,7 @@
 			    //點擊事件
 			    dayClick: function(date, allDay, jsEvent, view) {
 			     	  /* 自定义事件 弹框日期 */
-			      	  var selDate =$.fullCalendar.formatDate(date,'yyyy-MM-dd hh:mm:ss');
+			      	  var selDate =$.fullCalendar.formatDate(date,'yyyy-MM-dd');
 			          layer.open({
 			              type: 2,
 			              title:false,
@@ -332,10 +350,9 @@
 			            
 			      },
 			      eventClick: function(calEvent, jsEvent, view) {
-
 			         alert('自定义事件：' + calEvent.title);
-			         
-			      }
+			      },
+			      alDaylDefault : false
 			  });
 	  }
 	</script>
@@ -346,7 +363,7 @@
 		function customInterfaces(){
 			 /*-----自定义界面 js-----*/
 		    $('.customInterface').on('click',function(){
-		          layer.open({
+		         layer.open({
 		            type: 1, //Page层类型
 		            area: ['350px', '125px'],
 		            title: false,
@@ -357,35 +374,9 @@
 		            closeBtn: 0, //不显示关闭按钮
 		            shadeClose: true, //开启遮罩关闭
 		            content: $('#layer-diy')
-		          }); 
-		        });
+		         }); 
+		     });
 
-		   /*  $('#taskBoxId').click(function(){//任务 显示/隐藏
-		          if($(this).prop('checked')){
-		              $('.taskDiv').css('display','block');
-		        }else{
-		              $('.taskDiv').css('display','none');
-		         }
-		    });
-
-		    $('#maxCalenderId').click(function(){//大日历 显示/隐藏
-		          if($(this).prop('checked')){
-		              $('.maxCalender').css('display','block');
-		        }else{
-		              $('.maxCalender').css('display','none');
-		         }
-		    });
-
-		    $('#minCalenderId').click(function(){//小日历 显示/隐藏
-		          if($(this).prop('checked')){
-		              $('#box-min').css('display','block');
-		        }else{
-		              $('#box-min').css('display','none');
-		         }
-		    }); */
-		    
-		   
-		  
 		}
 		
 		 /* 关闭自定义界面 */
@@ -395,32 +386,86 @@
 	</script>
 	<!-- end 自定义界面 -->
 
+	<!-- 小日历 -->
+	<script type="text/javascript">
+		function minCalendarInit(){
+			  $('#box-min .kalendae').attr('id','minCalen');//给小日历添加ID
+				
+			  //日历中添加红色圆点
+			  $('.back').append('<i class="dot"></i>');
+			  //获取当前3个月事件
+			  getTimeStr();
+			  /* $('span[data-date="2016-12-06"]').append('<i class="dot"></i>');
+			  $('span[data-date="2016-12-09"]').append('<i class="dot"></i>');
+			  $('span[data-date="2016-12-10"]').append('<i class="dot"></i>'); */
+			  //end 日历中添加红色圆点
+			  
+			  $('.checkShow').click(function(){//显示提醒 显示/隐藏
+			      if($(this).prop('checked')){
+			            $('.dot').css('display','block');
+			      }else{
+			            $('.dot').css('display','none');
+			      }
+			  });//end 显示提醒 显示/隐藏
+			  
+		}
+	</script>
+	<script type="text/javascript">
+		function getTimeStr(){
+		  /* 获取当前月  格式化为：2016-12的形式 */
+		  var dateValue=document.getElementById('box-min').getElementsByClassName('k-caption');//获取 小日历 的/年/月
+    	  var d = dateValue[1].innerHTML;
+    	  var length = d.length;
+    	  var y = d.substring(0,4);
+    	  var m = "";
+    	  var timeStr = "";
+    	  if(length>=11){
+    		  m = d.substring(8,10);
+    		  timeStr = y +"-"+ m;
+    	  }else{
+    		  m = d.substring(8,9);
+    		  timeStr = y +"-0"+ m;
+    	  }
+	      $.ajax({
+	            url: '/admin/operationsArea/getMinCalList.html',
+	            dataType: 'json',
+	            type: 'POST',
+	            data: {
+	            	timeStr: timeStr
+	            },
+	            success: function(data) {
+	            	$.each(eval(data), function (index, element) { 
+            			//显示小红点
+		            	$('span[data-date="'+element.gtime+'"]').append('<i class="dot"></i>');
+	            		
+	            		//小红点点击弹框事件
+	            		$(document).on('click','span[data-date="'+ element.gtime +'"]',function(){//如果有红色圆点，点击 显示小div信息
+		      			    layer.tips(
+		      			    	 element.msgcontent, 
+	      			    		 this,
+	      			    		 {
+	      					        tips: [3, 'rgb(90, 90, 90)'],
+	      					        time: 3000
+	      					     }
+		      			    );
+	      			  	});//end 如果有红色圆点，点击 显示小div信息 
+	                }); 
+	            }
+	       });
+		}
+		
 	
-	<!--小日历 js-->
-	<script src="${base}/public/build/kalendae.standalone.js"
-		type="text/javascript" charset="utf-8">
+	</script>
+	<script type="text/javascript">
+		//小日历上一个按钮
+		$(".k-btn-previous-month").click(function(){
+			getTimeStr();
+		});
+		//小日历下一个按钮
+		$(".k-btn-next-month").click(function(){
+			getTimeStr(); 
+		});
 	</script>
 	
-	<!-- Page specific script -->
-	<script src="${base }/public/build/kalendae.standalone.js" type="text/javascript" charset="utf-8"></script>
-	<script type="text/javascript">
-	//小日历 js
-	 new Kalendae({
-	          attachTo:document.getElementById("box-min"),
-	          months:3,
-	          mode:'single',
-	          subscribe: {
-	                 'date-clicked': function (date) {//点击时，取到当前当天的时间
-	                     //console.log(date, this.getSelected());
-	                 }
-	          },
-	          selected:[Kalendae.moment().subtract({M:1}), Kalendae.moment().add({M:1})]
-	   });
-	 $(function(){
-		 $('#box-min .kalendae').attr('id','minCalen');//给小日历添加ID
-		 
-	 });
-//end 小日历 js
-</script>
 </body>
 </html>

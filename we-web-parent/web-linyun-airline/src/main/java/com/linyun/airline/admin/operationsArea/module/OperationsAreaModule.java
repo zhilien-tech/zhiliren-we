@@ -112,6 +112,15 @@ public class OperationsAreaModule {
 	}
 
 	/**
+	 * 小日历事件的获取
+	 */
+	@At
+	@POST
+	public Object getMinCalList(@Param("userId") final Long id, @Param("timeStr") final String timeStr) {
+		return operationsAreaViewService.getMinCalList(id, timeStr);
+	}
+
+	/**
 	 * 跳转到'添加操作'的录入数据页面
 	 */
 	@At
