@@ -21,7 +21,7 @@ public class TCustomerInfoEntity implements Serializable {
 
 	@Column
 	@Comment("上游公司id")
-	private long comId;
+	private long upComId;
 
 	@Column
 	@Comment("代理商id")

@@ -111,7 +111,7 @@
                 </div>
                  </form>
             </div>
-	<!-- jQuery 2.2.3 -->
+<!-- jQuery 2.2.3 -->
 <script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="${base}/public/bootstrap/js/bootstrap.js"></script>
 <script src="${base}/public/dist/js/bootstrapValidator.js"></script>
@@ -241,8 +241,7 @@
 	            	$('#companyaddForm')[0].reset();
 	            	$("#companyaddForm").data('bootstrapValidator').destroy();
 	                $('#companyaddForm').data('bootstrapValidator', null);
-	                formValidator();
-	            	
+	                formValidator();	
 	            },
 	            error: function (xhr) {
 	            	layer.msg("添加失败","",3000);

@@ -3,15 +3,15 @@
 <%@include file="/WEB-INF/common/tld.jsp"%>
 
 <!DOCTYPE HTML>
-<html lang="en-US">
+<html lang="en-US" id="addHtml">
 <head>
 <meta charset="UTF-8">
 <title>更新</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<link rel="stylesheet" href="${base}/public/css/pikaday.css">
 <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
+<link rel="stylesheet" href="${base}/public/dist/css/customer.css">
 <link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css" />
 <style type="text/css">
 	.select2-container {
@@ -51,7 +51,7 @@
 						<div class="form-group row">
 							<input name="id" type="hidden" value="${obj.customer.id }">
 							<label class="col-sm-3 text-right padding">公司名称：</label>
-							<div class="col-sm-8 padding inpNone">
+							<div class="col-sm-8 padding inpNone seleSpanWid">
 								<select id="companyId" name="companyId"  onchange="editInput()" class="form-control select2 inpImpWid" multiple="multiple"  data-placeholder="请输入公司名称">
 									<option></option>
 									<c:forEach var="one" items="${obj.comEntity }">
@@ -68,7 +68,7 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">公司简称：</label>
 							<div class="col-sm-3 padding">
-								<input name="shortName" type="tel" class="form-control input-sm"
+								<input name="shortName" type="tel" class="form-control input-sm inpImportant"
 									value="${obj.customer.shortName}" placeholder="请输入公司简称" />
 							</div>
 
@@ -92,7 +92,7 @@
 
 							<label class="col-sm-2 text-right padding">联系电话：</label>
 							<div class="col-sm-3 padding">
-								<input name="telephone" type="tel" class="form-control input-sm"
+								<input name="telephone" type="tel" class="form-control input-sm inpImportant"
 									value="${obj.customer.telephone}" placeholder="请输入联系电话" /><span class="prompt">*</span>
 							</div>
 						</div>
@@ -100,13 +100,13 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">网址：</label>
 							<div class="col-sm-3 padding">
-								<input name="siteUrl" type="tel" class="form-control input-sm"
+								<input name="siteUrl" type="tel" class="form-control input-sm inpImportant"
 									value="${obj.customer.siteUrl}" placeholder="请输入网址" />
 							</div>
 
 							<label class="col-sm-2 text-right padding">传真：</label>
 							<div class="col-sm-3 padding">
-								<input name="fax" type="tel" class="form-control input-sm"
+								<input name="fax" type="tel" class="form-control input-sm inpImportant"
 									value="${obj.customer.fax}" placeholder="请输入传真" />
 							</div>
 						</div>
@@ -123,7 +123,7 @@
 							<label class="col-sm-3 text-right padding">旅行社类型：</label>
 							<div class="col-sm-3 padding">
 								<select id="travelType" name="travelType"
-									class="form-control input-sm">
+									class="form-control input-sm inpImportant">
 									<option value="1"
 										<c:if test="${'1' eq obj.customer.travelType}">selected</c:if>>出境社</option>
 									<option value="2"
@@ -135,7 +135,7 @@
 
 							<label class="col-sm-2 text-right padding">是否禁用：</label>
 							<div class="col-sm-3 padding">
-								<select id="forbid" name="forbid" class="form-control input-sm">
+								<select id="forbid" name="forbid" class="form-control input-sm inpImportant">
 									<option value="0"
 										<c:if test="${'0' eq obj.customer.forbid}">selected</c:if>>否</option>
 									<option value="1"
@@ -147,7 +147,7 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">出发城市：</label>
 							
-							<div class="col-sm-8 padding">
+							<div class="col-sm-8 padding seleSpanWid">
 								<select id="city" class="form-control select2" onchange="cityOpt()"  multiple="multiple"  data-placeholder="请输入出发城市">
 									<option></option>
 									<c:forEach var="one" items="${obj.outcitylist }">
@@ -233,10 +233,12 @@
 							<div class="col-sm-5 padding">
 								<input id="datepicker1" name="contractTimeString" type="text"
 									class="form-control input-sm input-wid"
+									onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'datepicker2\')}'})"
 									placeholder="2015-08-08" value="${obj.customer.contractTimeString}"/> 
 								至 <input id="datepicker2"
 									name="contractDueTimeString" type="text"
 									class="form-control input-sm input-wid"
+									onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'datepicker1\')}'})"
 									placeholder="2088-09-09" value="${obj.customer.contractDueTimeString}"/>
 							</div>
 						</div>
@@ -330,6 +332,8 @@
 	</script>
 	<!-- jQuery 2.2.3 -->
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
+	<!-- 时间控件 -->
+	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 	<!-- Bootstrap 3.3.6 -->
 	<script src="${base}/public/bootstrap/js/bootstrap.js"></script>
 	<!-- Select2 -->
@@ -340,7 +344,6 @@
 	<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
 	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 	<script src="${base}/common/js/layer/layer.js"></script>
-	<script src="${base}/public/dist/js/pikaday.js"></script>
 	<!-- 文件上传 -->
 	<link href="${base }/public/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css" />  
 	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>

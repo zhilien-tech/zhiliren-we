@@ -12,26 +12,26 @@ import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
-import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.upload.UploadAdaptor;
 
+import com.linyun.airline.admin.customer.form.TCustomerInfoSqlForm;
 import com.linyun.airline.admin.customer.service.CustomerViewService;
+import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.base.Uploader;
 import com.linyun.airline.common.constants.CommonConstants;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
-import com.linyun.airline.forms.TCustomerInfoQueryForm;
 import com.linyun.airline.forms.TCustomerInfoUpdateForm;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.dao.IDbDao;
@@ -44,8 +44,6 @@ import com.uxuexi.core.web.chain.support.JsonResult;
  */
 @IocBean
 @At("/admin/customer")
-@Filters({//@By(type = AuthFilter.class)
-})
 public class CustomerModule {
 
 	/**
@@ -75,7 +73,7 @@ public class CustomerModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object add(@Param("id") final long id) {
+	public Object add() {
 		Map<String, Object> obj = new HashMap<String, Object>();
 		List<TUserEntity> userlist = dbDao.query(TUserEntity.class, null, null);
 		obj.put("userlist", userlist);
@@ -89,9 +87,9 @@ public class CustomerModule {
 	 */
 	@At
 	@POST
-	public Object add(@Param("..") TCustomerInfoAddForm addForm) throws Exception {
+	public Object add(HttpSession session, @Param("..") TCustomerInfoAddForm addForm) throws Exception {
 		addForm.setCreateTime(new Date());
-		customerViewService.addCustomInfo(addForm);
+		customerViewService.addCustomInfo(session, addForm);
 		return JsonResult.success("添加成功");
 	}
 
@@ -117,15 +115,16 @@ public class CustomerModule {
 
 	@At
 	@Ok("jsp")
-	public Object list(@Param("..") final TCustomerInfoQueryForm queryForm, @Param("..") final Pager pager) {
+	public Object list() {
 		return null;
 	}
 
-	//服务器端分页查询
+	//服务器端分页查询,当前用户的提醒信息
 	@At
-	public Object listData(@Param("..") final TCustomerInfoQueryForm queryForm) {
-		//TODO 设置 列表展示的负责人名称
-		//queryForm.setAgentName();
+	public Object listData(@Param("..") final TCustomerInfoSqlForm queryForm, HttpSession session) {
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();//得到公司id
+		queryForm.setCompanyId(companyId);
 
 		return customerViewService.listPage4Datatables(queryForm);
 	}
@@ -152,7 +151,7 @@ public class CustomerModule {
 	@POST
 	@AdaptBy(type = UploadAdaptor.class, args = { "ioc:imgUpload" })
 	@Ok("json")
-	public Object upload(final @Param("fileId") File file, final HttpSession session) {
+	public Object upload(final @Param("fileId") File file, HttpSession session) {
 		return customerViewService.upload(file, session);
 	}
 
