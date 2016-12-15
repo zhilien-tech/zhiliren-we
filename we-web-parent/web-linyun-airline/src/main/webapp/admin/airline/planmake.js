@@ -418,8 +418,8 @@ $(function () {
 			   //设置新的结束日期控件ID
 			   var enddate = $(this).find('[name=enddate]');
 			   enddate.attr("id","enddate"+i);*/
-			   //startdate.attr("onFocus","WdatePicker({maxDate:'#F{$dp.$D(\'enddate"+i+"\')}'})");
-			   //enddate.attr("onFocus","WdatePicker({minDate:'#F{$dp.$D(\'startdate"+i+"\')}'})");
+			   //startdate.attr("onFocus","WdatePicker({maxDate:'#F{$dp.$D(\\'enddate"+i+"\\')}'})");
+			   //enddate.attr("onFocus","WdatePicker({minDate:'#F{$dp.$D(\\'startdate"+i+"\\')}'})");
 			   //显示按钮 
 			   var showbutton = $(this).find('[name=showbutton]');
 			   showbutton.attr("id","showbutton"+i);
@@ -543,10 +543,10 @@ function makePlan(){
 				data: param, 
 				url: BASE_PATH + '/admin/customneeds/airlineMakePlan.html',
 	            success: function (data) {
+	            	datatable1.ajax.reload();
 	            	if(divlength-1 == i){
 	            		layer.closeAll('loading');
 	            		layer.msg("制作成功",{time: 2000, icon:1});
-	            		datatable1.ajax.reload();
 	            	}
 	            },
 	            error: function (xhr) {
