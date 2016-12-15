@@ -71,25 +71,24 @@ public class InfoServiceImpl extends BaseService<DictInfoEntity> implements IInf
 		return list;
 	}
 
-	//分页显示实现方法
-	/*public Map<String, Object> listData(@Param("..") final InfoSqlForm sqlForm) {
-		Map<String, Object> map = infoService.listPage4Datatables(sqlForm);
-		List<Record> list = (List<Record>) map.get("data");
-		List<DictInfoDto> lst = Lists.newArrayList();
-		if (!Util.isEmpty(list)) {
-			for (Record r : list) {
-				DictInfoDto en = new DictInfoDto();
-				en.setStatus(r.getInt("status"));
-				en.setId(r.getInt("id"));
-				en.setDictcode(r.getString("dictCode"));
-				en.setTypecode(r.getString("typeCode"));
-				en.setDictname(r.getString("dictName"));
-				en.setDescription(r.getString("description"));
-				en.setTypename(r.getString("typeName"));
-				en.setCreatetime(r.getTimestamp("createTime"));
-				lst.add(en);
-			}
-		}
-		map.put("data", lst);
-	}*/
+	/**
+	 * 获取字典信息名称下拉框
+	 * @param typeCode
+	 * @param dictName
+	 */
+
+	public List<Record> getDictNameList(String typeCode, String dictName) {
+		String sqlString = sqlManager.get("dict_info_area");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("i.typeCode", "=", "QY");
+		cnd.and("i.status", "=", 1);
+		cnd.and("i.dictName", "like", dictName + "%");
+		sql.setCondition(cnd);
+		sql.setCallback(Sqls.callback.records());
+		nutDao.execute(sql);
+		@SuppressWarnings("unchecked")
+		List<Record> list = (List<Record>) sql.getResult();
+		return list;
+	}
 }

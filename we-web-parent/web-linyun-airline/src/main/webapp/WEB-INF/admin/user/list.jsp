@@ -10,14 +10,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>员工管理</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
-  <link rel="stylesheet" href="${base}/public/font-awesome-4.4.0/css/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="${base}/public/ionicons-2.0.1/css/ionicons.min.css">
-  <link rel="stylesheet" href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
-  <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
-  <link rel="stylesheet" href="${base}/public/dist/css/skins/skin-blue.min.css">
-  <link rel="stylesheet" href="${base}/public/dist/css/skins/_all-skins.min.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -33,23 +25,32 @@
                <form role="form" class="form-horizontal">
               <div class="form-group row marginBott cf">
                 <div class="col-md-2"><!--部门 下拉框-->
-                  <select class="form-control selePadd5">
-                    <option>部门</option>
-                    <option>客户部</option>
-                    <option>销售部</option>
+                  <select id="deptName" name="deptName" onchange="selectDeptName();" class="form-control selePadd5">
+                    <c:forEach items="${obj.deplist}" var="one" varStatus="indexs">
+						<c:choose>
+							<c:when test="${indexs.index eq 0}">
+                               	<option value="${one.deptName }" selected="selected">
+                               		${one.deptName }
+                               	</option>
+							</c:when>
+							<c:otherwise>
+                               	<option value="${one.deptName }">
+                               		${one.deptName }
+                               	</option>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
                   </select>
                 </div>
                 <div class="col-md-3"><!--姓名/联系电话 搜索框-->
-                  <input type="text" class="form-control" placeholder="姓名/联系电话">
+                  <input id="userName" name="userName" type="text"  onkeypress="onkeyEnter();" class="form-control" placeholder="姓名/联系电话">
                 </div>
                 <div class="col-md-1 col-padding"><!--搜索 按钮-->
-                  <button type="button" class="btn btn-primary btn-sm">搜索</button>
+                  <button id="searchBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
                 </div>
               
                 <div class="col-md-1 col-md-offset-5">
-                  <a href="${base}/admin/user/add.html"
-					data-toggle="modal" class="btn btn-primary btn-sm" id="addBtn"
-					data-target="#addTabs">添加</a>
+                  <a id="addUserBtn" class="btn btn-primary btn-sm" onclick="addUser();">添加</a>
                 </div>
 
               </div>
@@ -57,7 +58,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example2" class="table table-bordered table-hover">
+              <table id="datatable" class="table table-bordered table-hover">
                 <thead>
                 <tr>
                   <th>姓名</th>
@@ -68,19 +69,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                  <c:forEach items="${obj.list}" var="one" >
-						<tr>
-							<td>${one.userName}</td>
-							<td>${one.telephone}</td>
-							<td>${one.qq}</td>
-							<td>${one.email}</td>
-							<td>
-								<a href="${base}/admin/user/update.html?id=${one.id}"
-									data-toggle="modal" id="editBtn"
-									class="btn btn_mini btn_modify" data-target="#editTabs">编辑</a>
-							</td>
-						</tr>
-					</c:forEach>
                 </tbody>
               </table>
             </div>
@@ -96,60 +84,157 @@
   <!-- /.content-wrapper -->
   <%@include file="/WEB-INF/public/footer.jsp"%>
 <!-- ./wrapper -->
-<!-- 添加弹框 -->
-	<div class="modal fade Mymodal-lg" role="dialog" tabindex="-1"
-		aria-labelledby="myLargeModalLabel" aria-hidden="true" id="addTabs">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-				<div class="modal-header"></div>
-				<div class="modal-body"></div>
-			</div>
-		</div>
-	</div>
-	<!-- 编辑弹框 -->
-	<div class="modal fade Mymodal-lg" role="dialog" tabindex="-1"
-		aria-labelledby="myLargeModalLabel" aria-hidden="true" id="editTabs">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-				<div class="modal-header"></div>
-				<div class="modal-body"></div>
-			</div>
-		</div>
-	</div>
 
 <!-- REQUIRED JS SCRIPTS -->
-
-<!-- jQuery 2.2.3 -->
-<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
-<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
-<!-- DataTables -->
-<script src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
-<!-- SlimScroll -->
-<script src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="${base}/public/dist/js/app.min.js"></script>
 <!-- page script -->
 <script type="text/javascript">
-		var datatable;
-		function initDatatable() {
-			datatable = $('#example2').DataTable({
-				"searching" : false,
-				"processing" : true,
-				"serverSide" : false,
-				"bLengthChange" : false,
-				"bSort": true, //排序功能 
-				"language" : {
-				"url" : "${base}/public/plugins/datatables/cn.json"
+	//添加基本资料
+	function addUser(){
+      layer.open({
+    	    type: 2,
+    	    title:false,
+    	    closeBtn:false,
+    	    fix: false,
+    	    maxmin: false,
+    	    shadeClose: false,
+    	    area: ['900px', '500px'],
+    	    content: '${base}/admin/user/add.html',
+    	    end: function(){//添加完页面点击返回的时候自动加载表格数据
+    	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+    			parent.layer.close(index);
+    	    	parent.location.reload();
+    	    }
+   	 	 });
+		 }
+	//编辑
+	function editUser(id){
+		alert(id);
+	  layer.open({
+  	    type: 2,
+  	    title: false,
+  	  	closeBtn:false,
+  	    fix: false,
+  	    maxmin: false,
+  	    shadeClose: false,
+  	    area: ['900px', '400px'],
+  	    content: '${base}/admin/user/update.html?id='+id
+  	  });
+	}
+	//事件提示
+	function successCallback(id){
+		deptDatatable.ajax.reload();
+		  if(id == '1'){
+			  layer.msg("添加成功",{time: 2000, icon:1});
+		  }else if(id == '2'){
+			  layer.msg("修改成功",{time: 2000, icon:1});
+		  }else if(id == '3'){
+			  layer.msg("删除成功",{time: 2000, icon:1});
+		  }
+	  }
+	//删除提示
+	function physicalDelete(did, status) {
+		if(2==status){
+			var zt = "删除";
+		}else if(1==status){
+			var zt = "启用";
+		}
+		layer.confirm("您确认"+zt+"信息吗？", {
+		    btn: ["是","否"], //按钮
+		    shade: false //不显示遮罩
+		}, function(){
+			// 点击确定之后
+			var url = '${base}/admin/user/updateDeleteStatus.html';
+			$.ajax({
+				type : 'POST',
+				data : {
+					id : did,
+					status : status
+				},
+				dataType : 'json',
+				url : url,
+				success : function(data) {
+					if ("200" == data.status) {
+						layer.msg("操作成功!", "", 3000);
+						window.location.reload(true);
+					} else {
+						layer.msg("操作失败!", "", 3000);
+					}
+				},
+				error : function(xhr) {
+					layer.msg("操作失败", "", 3000);
 				}
 			});
-		}
-		$(function() {
-			initDatatable();
+		}, function(){
+		    // 取消之后不用处理
 		});
-	</script>
+	}
+	//描述提示信息弹出层Tooltip
+	$(function() {
+		$("[data-toggle='tooltip']").tooltip();
+	});
+</script>
+<script type="text/javascript">
+	var datatable;
+	function initDatatable() {
+		datatable = $('#datatable').DataTable({
+			"searching" : false,
+			"processing" : true,
+			"serverSide" : true,
+			"bLengthChange" : false,
+			"bSort": true, //排序功能 
+			"language" : {
+				"url" : "${base}/public/plugins/datatables/cn.json"
+			},
+           	"ajax": {
+                   "url": "${base}/admin/user/listData.html",
+                   "type": "post",
+                   "data": function (d) {
+                	   
+                	}
+	        },
+	        "columns": [
+	                    {"data": "username", "bSortable": false},
+	                    {"data": "telephone", "bSortable": false},
+	                    {"data": "deptname", "bSortable": false},
+	                    {"data": "jobname", "bSortable": false}
+	            ],
+            columnDefs: [{
+                //   指定第一列，从0开始，0表示第一列，1表示第二列……
+                targets: 4,
+                render: function(data, type, row, meta) {
+                	var modify = '<a style="cursor:pointer;" onclick="editUser('+row.id+');">编辑</a>';
+                    return modify;
+                }
+            }]
+		});
+	}
+	$(function() {
+		initDatatable();
+	});
+	//搜索
+	$("#searchBtn").on('click', function () {
+		var userName = $("#userName").val();
+		var telephone = $('#telephone').val();
+		//var deptName = $('#deptName').val();
+		alert(userName+telephone);
+		var param = {
+	        "userName": userName,
+			"telephone":telephone
+			//"deptName":deptName
+	    };
+	    datatable.settings()[0].ajax.data = param;
+	    datatable.ajax.reload();
+	});
+	//搜索回车事件
+	function onkeyEnter(){
+		 if(event.keyCode==13){
+			 $("#searchBtn").click();
+		 }
+	}
+	//筛选条件自动切换
+	function selectDeptName(){
+		$("#searchBtn").click();
+	}
+</script>
 </body>
 </html>

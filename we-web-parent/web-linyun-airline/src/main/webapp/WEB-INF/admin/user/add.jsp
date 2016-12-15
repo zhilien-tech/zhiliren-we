@@ -1,29 +1,27 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
 <!DOCTYPE HTML>
-<html lang="en-US">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>添加</title>
-<link rel="stylesheet"
-	href="${base}/public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
 <link rel="stylesheet" href="${base}/public/dist/css/user.css">
 <link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
 <!-- jQuery 2.2.3 -->
 <script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
-	<script src="${base}/public/bootstrap/js/bootstrap.js"></script>
-	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
+<script src="${base}/public/bootstrap/js/bootstrap.js"></script>
+<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 <script src="${base}/common/js/layer/layer.js"></script>
 </head>
 <body onresize=hero();>
 	<div class="modal-dialog modal-lg">
           <div class="modal-content">
-          	<form method="post" action="${base}/admin/user/add.html">
+          	<form id="addaddUserForm" method="post">
               <div class="modal-header">
-                  <button id="backBtn" type="button" class="btn btn-primary right btn-sm" data-dismiss="modal">返回</button>
-                  <button type="submit" class="btn btn-primary right btn-sm" data-dismiss="modal">保存</button>
+                  <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">返回</button>
+               	  <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
                   <button type="submit" class="btn btn-primary right btn-sm" data-dismiss="modal">初始化密码</button>
                   <button type="submit" class="btn right btn-sm" data-dismiss="modal">删除</button>
                   <h4>基本资料</h4>
@@ -109,7 +107,7 @@
 	<script type="text/javascript">
 	//验证输入内容不能为空
 	$(document).ready(function(){
-		$('#addForm').bootstrapValidator({
+		$('#addUserForm').bootstrapValidator({
 			message: '验证不通过!',
 	        feedbackIcons: {
 	            valid: 'glyphicon glyphicon-ok',
@@ -123,7 +121,7 @@
 	                        message: '字典类别编码不能为空!'
 	                    },
 	                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
-	                         url: '${base}/admin/dictionary/dirtype/checkTypeCodeExist.html',//验证地址
+	                         url: '${base}/admin/user/checkTypeCodeExist.html',//验证地址
 	                         message: '字典类别编码已存在，请重新输入!',//提示消息
 	                         delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
 	                         type: 'POST',//请求方式
@@ -146,7 +144,7 @@
 	                        message: '字典类别名称不能为空!'
 	                    },
 	                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
-	                    url: '${base}/admin/dictionary/dirtype/checkTypeNameExist.html',//验证地址
+	                    url: '${base}/admin/user/checkTypeNameExist.html',//验证地址
 	                         message: '字典类别名称重复，请重新输入!',//提示消息
 	                         delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
 	                         type: 'POST',//请求方式
@@ -165,14 +163,14 @@
 	
 		//添加成功提示
 		$("#submit").click(function() {
-			$('#addForm').bootstrapValidator('validate');
-			var bootstrapValidator = $("#addForm").data('bootstrapValidator');
+			$('#addUserForm').bootstrapValidator('validate');
+			var bootstrapValidator = $("#addUserForm").data('bootstrapValidator');
 			if(bootstrapValidator.isValid()){
 				$.ajax({
 					cache : true,
 					type : "POST",
-					url : '${base}/admin/dictionary/dirtype/add.html',
-					data : $('#addForm').serialize(),// 你的formid
+					url : '${base}/admin/user/add.html',
+					data : $('#addUserForm').serialize(),// 你的formid
 					error : function(request) {
 						layer.msg('添加失败!');
 					},
@@ -194,12 +192,13 @@
 		});
 		//提交时开始验证
 		$('#submit').click(function() {
-	        $('#addForm').bootstrapValidator('validate');
-	    });
-		//点击返回按钮自动刷新页面
-		$('#backBtn').click(function(){
-			window.location.href="${base}/admin/user/list.html";
+		    $('#addUserForm').bootstrapValidator('validate');
 		});
+		//点击返回
+		function closewindow(){
+			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+			parent.layer.close(index);
+		}
 	</script>
 </body>
 </html>

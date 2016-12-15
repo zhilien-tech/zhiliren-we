@@ -10,13 +10,22 @@ import lombok.Data;
 @Data
 public class DeptJobForm {
 
-	/**部门名称*/
+	//部门id/
+	private long deptId;
+
+	//部门名称
 	private String deptName;
 
-	/**职位名称*/
+	//职位名称
+	private String jobJson;
+
+	//部门id
+	private long jobId;
+
+	//部门名称
 	private String jobName;
 
-	/**功能id串*/
+	//功能id
 	private String functionIds;
 
 }

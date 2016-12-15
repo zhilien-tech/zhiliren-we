@@ -1,202 +1,277 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
 <!DOCTYPE HTML>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>部门职位-添加</title>
+<title>部门职位-编辑</title>
 <link rel="stylesheet"
 	href="${base}/public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
-<link rel="stylesheet"
-	href="${base}/public/dist/css/authoritymanage.css">
+<link rel="stylesheet" href="${base}/public/dist/css/authoritymanage.css">
+<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css" />
 <!-- zTree -->
-<link rel="stylesheet"
-	href="${base }/common/js/zTree/css/zTreeStyle/zTreeStyle.css">
+<link rel="stylesheet" href="${base }/common/js/zTree/css/zTreeStyle/zTreeStyle.css">
 </head>
 <body class="bodyOne">
-	<div class="modal-top">
-		<div class="modal-header">
-			<button type="button" class="btn btn-primary right btn-sm"
-				data-dismiss="modal">取消</button>
-			<button type="submit" class="btn btn-primary right btn-sm"
-				data-dismiss="modal">保存</button>
-			<h4>添加职位部门</h4>
-		</div>
-		<div class="modal-body">
-			<div class="departmentName">
-				<!--部门权限 设置-->
-				<div class="form-group row">
-					<label class="col-md-2 text-right padding">部门名称：</label>
-					<div class="col-md-6 padding">
-						<input type="text" class="form-control input-sm inpImportant"
-							placeholder="请输入部门名称"> <span class="prompt">*</span>
-					</div>
-					<div class="col-md-4 padding">
-						<button type="button" class="btn btn-primary btn-sm btnPadding"
-							id="addJob">添加职位</button>
-					</div>
-				</div>
+	<div class="divContent">
+		<form id="editDeptForm" method="post">
+			<div class="headerClass">
+				<button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">取消</button>
+				<button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
+				<h4>编辑职位部门</h4>
 			</div>
-			<!--end 部门权限 设置-->
-			<div class="jobName none">
-				<!--职位权限 设置-->
-				<div class="form-group row">
-					<label class="col-md-2 text-right padding">职位名称：</label>
-					<div class="col-md-6 padding">
-						<input type="text" class="form-control input-sm inpImportant"
-							placeholder="请输入职位名称"> <span class="prompt">*</span>
-					</div>
-					<div class="col-md-4 padding">
-						<button type="submit" class="btn btn-primary btn-sm btnPadding"
-							id="settingsPermis">设置权限</button>
-						<button type="button" class="btn btn-primary btn-sm btnPadding"
-							id="deleteBtn">删除</button>
-					</div>
-				</div>
-				<div class="check_div checkTwo none">
-					<div class="row">
-						<div class="col-md-12">
-							<input type="checkbox"><span>部门模块设置</span>
-						</div>
-					</div>
-					<div class="row check_row">
-						<div class="col-md-3">
-							<input type="checkbox"><span>个人信息</span>
-						</div>
-					</div>
-					<div class="row check_row">
-						<div class="col-md-3">
-							<input type="checkbox"><span>桌面</span>
-						</div>
-					</div>
-					<div class="row check_row">
-						<div class="col-md-3">
-							<input type="checkbox"><span>消息通知</span>
-						</div>
-					</div>
-					<div class="row check_row">
-						<div class="col-md-3">
-							<input type="checkbox"><span>权限管理：</span>
-						</div>
-					</div>
-					<div class="row check_row_One">
-						<div class="col-md-3">
-							<input type="checkbox"><span>查看</span>
-						</div>
-						<div class="col-md-3">
-							<input type="checkbox"><span>新增</span>
-						</div>
-						<div class="col-md-3">
-							<input type="checkbox"><span>修改</span>
-						</div>
-						<div class="col-md-3">
-							<input type="checkbox"><span>删除</span>
-						</div>
-					</div>
-					<div class="row check_row">
-						<div class="col-md-3">
-							<input type="checkbox"><span>员工管理：</span>
-						</div>
-					</div>
-					<div class="row check_row_One">
-						<div class="col-md-3">
-							<input type="checkbox"><span>查看</span>
-						</div>
-						<div class="col-md-3">
-							<input type="checkbox"><span>新增</span>
-						</div>
-						<div class="col-md-3">
-							<input type="checkbox"><span>修改</span>
-						</div>
-						<div class="col-md-3">
-							<input type="checkbox"><span>删除</span>
-						</div>
-					</div>
-					<div class="row check_row">
-						<div class="col-md-3">
-							<input type="checkbox"><span>统计</span>
-						</div>
-					</div>
-					<div class="row check_row">
-						<div class="col-md-3">
-							<input type="checkbox"><span>客户管理：</span>
-						</div>
-					</div>
-					<div class="row check_row_One">
-						<div class="col-md-3">
-							<input type="checkbox"><span>查看</span>
-						</div>
-						<div class="col-md-3">
-							<input type="checkbox"><span>新增</span>
-						</div>
-						<div class="col-md-3">
-							<input type="checkbox"><span>修改</span>
-						</div>
-						<div class="col-md-3">
-							<input type="checkbox"><span>删除</span>
-						</div>
-					</div>
-					<div class="row check_row">
-						<div class="col-md-12">
-							<input type="checkbox"><span>航空公司模块：</span>
-						</div>
-					</div>
-					<div class="row check_row_One">
-						<div class="col-md-3">
-							<input type="checkbox"><span>客户需求</span>
-						</div>
-						<div class="col-md-3">
-							<input type="checkbox"><span>计划制作</span>
-						</div>
-						<div class="col-md-3">
-							<input type="checkbox"><span>excel对比</span>
-						</div>
-					</div>
-					<div class="row check_row">
-						<div class="col-md-3">
-							<input type="checkbox"><span>卖票管理(待定)</span>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!--end 职位权限 设置-->
-		</div>
+			<div class="modal-body">
+	          <div class="departmentName"><!--部门权限 设置-->
+	                 	<input id="jobJson" name="jobJson" type="hidden" value=""/>
+	                 <ul class="addDepartment">
+	                   <li><label class=" text-right">部门名称：</label></li>
+	                   <li class="li-input"> 
+		                    <input id="deptName" name="deptName" type="text" class="form-control input-sm inputText" value="${obj.dept.deptName }">
+		                    <span class="prompt">*</span>
+	                   </li>
+	                   <li><button type="button" class="btn btn-primary btn-sm btnPadding" id="addJob">添加职位</button></li>
+	                 </ul>
+	          </div><!--end 部门权限 设置-->
+			
+	          <div class="jobName cf"><!--职位权限 设置-->
+					<c:forEach var="one" items="${obj.list}" varStatus="stat">
+						<div class="job_container">
+							<ul class="addDepartment marHei"><li><label class="text-right">职位名称：</label></li>
+							<li class="li-input inpPadd">
+							<input name="jobName" type="text" class="form-control input-sm inputText" value='${one.jobName }'>
+							<input name="jobId" type="hidden" value='${one.jobId }'>
+							</li>
+							<li><button type="button" class="btn btn-primary btn-sm btnPadding" id="settingsPermis">设置权限</button>
+							<button type="button" class="btn btn-primary btn-sm btnPadding" id="deleteBtn" >删除</button></li></ul>
+							
+							<c:choose>
+								<c:when test="${stat.index == 0}">
+									<div class="ztree"><ul id="tree_${stat.index}"></ul></div>
+								</c:when>
+								<c:otherwise>
+									<div class="ztree none"><ul id="tree_${stat.index}"></ul></div>
+								</c:otherwise>
+							</c:choose>
+		       				<input type="hidden" class="znodes" value='${one.znodes }'/>
+	       				</div>
+					</c:forEach>
+	          </div><!--end 职位权限 设置-->
+	        </div>
+        </form>
 	</div>
-	<script type="text/javascript">
-		$(function() {
-			//部门职位 添加职位
-			$('#addJob').click(function() {
-				$('.jobName').toggle();
-			});
-			//部门职位 设置权限
-			$('#settingsPermis').click(function() {
-				$('.checkTwo').toggle();
-			});
-			//部门职位 删除
-			$("#deleteBtn").click(function() {
-				$(".jobName").hide();
-			});
-		});
-	</script>
 	<!--JS 文件-->
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
+	<script	src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 	<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
-	<script
-		src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 	<!-- SlimScroll -->
 	<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
 	<!-- FastClick -->
 	<script src="${base}/public/dist/js/app.min.js"></script>
-	<!-- AdminLTE App -->
+	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 	<!--zTree -->
 	<script src="${base}/common/js/zTree/jquery.ztree.core-3.5.js"></script>
 	<script src="${base}/common/js/zTree/jquery.ztree.excheck-3.5.js"></script>
 	<script src="${base}/common/js/zTree/jquery.ztree.exedit-3.5.js"></script>
-	<!-- 功能树 -->
-	<script type="text/javascript">
-		
-	</script>
+	<script src="${base}/common/js/layer/layer.js"></script>
+	<!-- AdminLTE App -->
+
+<script type="text/javascript">
+	var setting = {
+			check: {
+				enable: true,//显示复选框
+				chkStyle: "checkbox",
+				chkboxType: { "Y": "ps", "N": "ps" }
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+ 	
+   var treeIndex = "${obj.list.size()}";
+   $(function () {
+		//部门职位 编辑职位
+	    $('#addJob').click(function(){
+	       $('.jobName').append('<div class="job_container"><ul class="addDepartment marHei"><li><label class="text-right">职位名称：</label></li><li class="li-input inpPadd"><input name="jobName" type="text" class="form-control input-sm inputText" placeholder="请输入职位名称"></li><li><button type="button" class="btn btn-primary btn-sm btnPadding" id="settingsPermis">设置权限</button><button type="button" class="btn btn-primary btn-sm btnPadding" id="deleteBtn" >删除</button></li></ul>'
+	       +'<div class="ztree none"><ul id="tree_'+treeIndex+'"></ul></div></div>');
+	       treeIndex++;
+	    });
+	    
+	    //删除按钮
+	    $('.jobName').on("click","#deleteBtn",function() {
+	      $(this).parent().parent().next().remove();
+	      $(this).closest('.marHei').remove();
+	
+	    });
+	    
+	  	//新增职位的时候需要的功能节点
+		var zNodes =[
+			 {id:"0", pId:"0", name:"职位权限设置", open:true},
+			<c:forEach var="p" items="${obj.zNodes}">
+				{ id:"${p.id }", pId:"${p.parentId }", name:"${p.name }", open:true,checked:"${p.checked}"},
+			</c:forEach>
+		];
+	    
+	    var root =  {id:"0", pId:"0", name:"职位权限设置", open:true};
+	    //创建所有的树
+	    $('.job_container').each(function(index,element){
+	    	var znodesJson = $(element).find("input.znodes").val();
+	    	var treeContainer = $(element).find("div.ztree").find("ul:first");
+	    	
+	    	//每个职位的节点
+	    	var nodes = eval('(' +znodesJson+ ')');
+	    	
+	    	nodes.push(root) ;
+	    	$.fn.zTree.init(treeContainer, setting, nodes);
+	    });
+	    
+	    
+	     //设置权限 按钮
+	    $('.jobName').on("click","#settingsPermis",function() {
+	      	var ztree_container = $(this).parents(".marHei").next("div.ztree").find("ul:first");
+	      	var treeId = ztree_container.attr("id") ;
+	      	var treeObj = $.fn.zTree.getZTreeObj(treeId);
+	      	if(null == treeObj || undefined == treeObj){
+	      	//初始化ztree
+		    	$.fn.zTree.init(ztree_container, setting, zNodes);
+	      	}
+	      	$(this).parents(".marHei").next().toggle().siblings('div').hide();
+	    }); 
+    });
+   //设置功能
+	function setFunc(){
+	   var jobInfos = [];
+	   //取所有树
+	   $(".job_container").each(function(index,container){
+		   var jobName = $(container).find("input[name='jobName']").val();
+		   var jobId = $(container).find("input[name='jobId']").val();
+		   var treeObj = $.fn.zTree.getZTreeObj("tree_" + index);
+		   var nodes =  treeObj.getCheckedNodes(true);
+		   var funcIds = "" ;
+			/* for(var i = 0 ; i < nodes.length; i ++){
+				funcIds += (nodes[i].id + ",");
+			} */
+			$(nodes).each(function(i,node){
+				funcIds += node.id + ",";
+			});
+		   var job = new Object();
+		   job.jobName=jobName;
+		   job.jobId=jobId;
+		   job.functionIds=funcIds;
+		   jobInfos.push(job);
+	   });
+	   
+	   var jobJson = JSON.stringify(jobInfos) ;
+	   $("#jobJson").val(jobJson) ;
+	}
+	//点击返回关闭窗口
+	function closewindow(){
+		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+		parent.layer.close(index);
+	}
+</script>
+<script type="text/javascript">
+//验证
+/* $(document).ready(function(){
+	$('#editDeptForm').bootstrapValidator({
+		message: '验证不通过!',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+        	deptName: {
+                validators: {
+                    notEmpty: {
+                        message: '部门名称不能为空!'
+                    },
+                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
+                         url: '${base}/admin/authority/authoritymanage/checkDeptNameExist.html',//验证地址
+                         message: '部门名称已存在，请重新输入!',//提示消息
+                         delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+                         type: 'POST',//请求方式
+                         //自定义提交数据，默认值提交当前input value
+                         data: function(validator) {
+                            return {
+                            	deptName:$('#deptName').val()
+                            };
+                         }
+                     }
+                }
+            },
+            jobJson: {
+            	validators: {
+                    notEmpty: {
+                        message: '职位名称不能为空!'
+                    },
+                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
+	                    url: '${base}/admin/authority/authoritymanage/checkJobNameExist.html',//验证地址
+	                         message: '职位名称重复，请重新输入!',//提示消息
+	                         delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+	                         type: 'POST',//请求方式
+	                         //自定义提交数据，默认值提交当前input value
+	                         data: function(validator) {
+	                            return {
+	                            	name:$('input[name="jobJson"]').val(),
+	                            };
+	                         }
+	                   }
+                }
+            }
+        }
+	});
+}); */
+	//编辑保存
+	$("#submit").click(function(){
+		setFunc();
+		$('#editDeptForm').bootstrapValidator('validate');
+		var bootstrapValidator = $("#editDeptForm").data('bootstrapValidator');
+		var _deptName = $("input#deptName").val();
+		var _jobJson = $("input#jobJson").val();
+		if(bootstrapValidator.isValid()){
+			var loadLayer = layer.load(1, {
+				 shade: [0.1,'#fff'] //0.1透明度的白色背景
+			});
+			$.ajax({
+	           cache: true,
+	           type: "POST",
+	           url:'${base}/admin/authority/authoritymanage/update.html',
+	           data:{
+					deptName:_deptName,
+					jobJson:_jobJson,
+					deptId:"${obj.dept.id}"
+			   },
+	           error: function(request) {
+	              layer.msg('编辑失败!');
+	           },
+	           success: function(data) {
+					if(data.status == '200'){
+						layer.close(loadLayer) ;
+						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+						parent.layer.close(index);
+						window.parent.successCallback('2');
+					}else{
+						layer.close(loadLayer) ;
+						layer.msg(data.message) ;
+					}
+	           }
+	       });
+		}
+		 $(".Mymodal-lg").modal('hide');
+	}); 
+	//提交时开始验证
+	$('#submit').click(function() {
+	    $('#editDeptForm').bootstrapValidator('validate');
+	});
+	//点击返回关闭窗口
+	function closewindow(){
+		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+		parent.layer.close(index);
+	}
+	
+</script>
 </body>
 </html>

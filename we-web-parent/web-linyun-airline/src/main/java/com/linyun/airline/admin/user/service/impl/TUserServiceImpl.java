@@ -12,7 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.nutz.dao.Cnd;
+import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
+import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
 
@@ -21,12 +23,14 @@ import com.linyun.airline.admin.authority.job.entity.TJobEntity;
 import com.linyun.airline.admin.user.service.UserViewService;
 import com.linyun.airline.common.enums.UserStatusEnum;
 import com.linyun.airline.common.enums.UserTypeEnum;
+import com.linyun.airline.entities.TDepartmentEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.entities.TUserJobEntity;
 import com.linyun.airline.forms.TUserModForm;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.DbSqlUtil;
+import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.base.service.BaseService;
 import com.uxuexi.core.web.util.FormUtil;
 
@@ -37,6 +41,23 @@ import com.uxuexi.core.web.util.FormUtil;
  */
 @IocBean(name = "tuserService")
 public class TUserServiceImpl extends BaseService<TUserEntity> implements UserViewService {
+
+	/**
+	 * 
+	 * 根据部门名称进行筛选
+	 * @param sqlManager
+	 */
+	@SuppressWarnings("all")
+	public List<Record> getDeptNameSelect(SqlManager sqlManager) {
+		String sqlString = EntityUtil.entityCndSql(TDepartmentEntity.class);
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		sql.setCondition(cnd);
+		sql.setCallback(Sqls.callback.records());
+		nutDao.execute(sql);
+		List<Record> list = (List<Record>) sql.getResult();
+		return list;
+	}
 
 	@Override
 	public boolean update(TUserModForm form) {
@@ -52,13 +73,10 @@ public class TUserServiceImpl extends BaseService<TUserEntity> implements UserVi
 	@Override
 	public Map<String, Object> findUser(long userId) {
 		Map<String, Object> obj = new HashMap<String, Object>();
-
 		//全部职位
 		List<TJobEntity> allJob = dbDao.query(TJobEntity.class, null, null);
-
-		//根据用户查询user_role
+		//根据用户查询user_job
 		List<TUserJobEntity> relation = dbDao.query(TUserJobEntity.class, Cnd.where("userId", "=", userId), null);
-
 		//如果该用户拥有功能
 		if (!Util.isEmpty(relation)) {
 			//该职位的功能id集合
@@ -66,7 +84,6 @@ public class TUserServiceImpl extends BaseService<TUserEntity> implements UserVi
 			for (TUserJobEntity r : relation) {
 				existsJobIds.add(r.getCompanyJobId());
 			}
-
 			for (TJobEntity job : allJob) {
 				if (existsJobIds.contains(job.getId())) {
 					job.setChecked(true);

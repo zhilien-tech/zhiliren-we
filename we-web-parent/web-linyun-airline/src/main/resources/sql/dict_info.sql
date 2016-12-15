@@ -45,3 +45,18 @@ SELECT
 FROM `dict_info` info ,`dict_type` t
 WHERE info.`typeCode`=t.`typeCode`
 AND info.`id` = @id
+
+/*dict_info_area*/
+SELECT
+	i.id AS infoId,
+	i.typeCode,
+	i.dictCode,
+	i.dictName,
+	i.description,
+	i.`status`,
+	i.quanPin,
+	i.jianpin,
+	i.createTime
+FROM
+	dict_info i
+$condition

@@ -1,100 +1,140 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
 <!DOCTYPE HTML>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>部门职位-添加</title>
-<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="${base}/public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
 <link rel="stylesheet" href="${base}/public/dist/css/authoritymanage.css">
-<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
+<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css" />
 <!-- zTree -->
 <link rel="stylesheet" href="${base }/common/js/zTree/css/zTreeStyle/zTreeStyle.css">
 </head>
 <body class="bodyOne">
-	<div class="modal-top">
+	<div class="divContent">
 		<form id="addDeptForm" method="post">
-			<div class="modal-header">
+			<div class="headerClass">
 				<button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">取消</button>
-                <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
+				<button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
 				<h4>添加职位部门</h4>
 			</div>
 			<div class="modal-body">
-				<div class="departmentName">
-					<!--部门权限 设置-->
-					<div class="form-group row">
-						<input id="functionIds" name="functionIds" type="hidden" value=""/>
-						<label class="col-md-2 text-right padding">部门名称：</label>
-						<div class="col-md-6 padding">
-							<input id="deptName" name="deptName" type="text" class="form-control input-sm inpImportant"
-								placeholder="请输入部门名称"> <span class="prompt">*</span>
-						</div>
-						<div class="col-md-4 padding">
-							<button type="button" class="btn btn-primary btn-sm btnPadding"
-								id="addJob">添加职位</button>
-						</div>
-					</div>
-				</div>
-				<!--end 部门权限 设置-->
-				<div class="jobName none">
-					<!--职位权限 设置-->
-					<div class="form-group row">
-						<label class="col-md-2 text-right padding">职位名称：</label>
-						<div class="col-md-6 padding">
-							<input id="jobName" name="name" type="text" class="form-control input-sm inpImportant"
-								placeholder="请输入职位名称"> <span class="prompt">*</span>
-						</div>
-						<div class="col-md-4 padding">
-							<button type="button" class="btn btn-primary btn-sm btnPadding"
-								id="settingsPermis">设置权限</button>
-							<button type="button" class="btn btn-primary btn-sm btnPadding"
-								id="deleteBtn">删除</button>
-						</div>
-					</div>
-					<div class="check_div checkTwo none">
-						<!-- 权限配置 -->
-						<div class="col-sm-9 text-right padding">
-	                          <ul id="treeDemo" class="ztree"></ul>
-	                    </div>
-					</div>
-				</div>
-				<!--end 职位权限 设置-->
-			</div>
-		</form>
+	          <div class="departmentName"><!--部门权限 设置-->
+	                 <ul class="addDepartment">
+	                 	<input id="jobJson" name="jobJson" type="hidden" value=""/>
+	                   <li><label class=" text-right">部门名称：</label></li>
+	                   <li class="li-input"> 
+		                    <input id="deptName" name="deptName" type="text" class="form-control input-sm inputText" placeholder="请输入部门名称">
+		                    <span class="prompt">*</span>
+	                   </li>
+	                   <li><button type="button" class="btn btn-primary btn-sm btnPadding" id="addJob">添加职位</button></li>
+	                 </ul>
+	          </div><!--end 部门权限 设置-->
+	
+	          <div class="jobName cf"><!--职位权限 设置-->
+	              
+	          </div><!--end 职位权限 设置-->
+	        </div>
+        </form>
 	</div>
-<!--JS 文件-->
+	<!--JS 文件-->
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
-	<script
-		src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+	<script	src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 	<!-- SlimScroll -->
 	<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
 	<!-- FastClick -->
 	<script src="${base}/public/dist/js/app.min.js"></script>
 	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
-	<script src="${base}/common/js/layer/layer.js"></script>
-	<!-- AdminLTE App -->
 	<!--zTree -->
 	<script src="${base}/common/js/zTree/jquery.ztree.core-3.5.js"></script>
 	<script src="${base}/common/js/zTree/jquery.ztree.excheck-3.5.js"></script>
 	<script src="${base}/common/js/zTree/jquery.ztree.exedit-3.5.js"></script>
+	<script src="${base}/common/js/layer/layer.js"></script>
+	<!-- AdminLTE App -->
+
 <script type="text/javascript">
-	$(function() {
+	var setting = {
+			check: {
+				enable: true,//显示复选框
+				chkStyle: "checkbox",
+				chkboxType: { "Y": "ps", "N": "ps" }
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+	
+	//遍历得到的对象
+	var zNodes =[
+		 {id:"0", pId:"0", name:"职位权限设置", open:true},
+		<c:forEach var="p" items="${obj.list}">
+			{ id:"${p.id }", pId:"${p.parentId }", name:"${p.name }", open:true,checked:"${p.checked}"},
+		</c:forEach>
+	];
+ 	
+   var treeIndex = 0 ;
+   $(function () {
 		//部门职位 添加职位
-		$('#addJob').click(function() {
-			$('.jobName').toggle();
-		});
-		//部门职位 设置权限
-		$('#settingsPermis').click(function() {
-			$('.checkTwo').toggle();
-		});
-		//部门职位 删除
-		$("#deleteBtn").click(function() {
-			$(".jobName").hide();
-		});
-	});
+	    $('#addJob').click(function(){
+	       $('.jobName').append('<div class="job_container"><ul class="addDepartment marHei"><li><label class="text-right">职位名称：</label></li><li class="li-input inpPadd"><input name="jobName" type="text" class="form-control input-sm inputText" placeholder="请输入职位名称"></li><li><button type="button" class="btn btn-primary btn-sm btnPadding" id="settingsPermis">设置权限</button><button type="button" class="btn btn-primary btn-sm btnPadding" id="deleteBtn" >删除</button></li></ul>'
+	       +'<div class="ztree none"><ul id="tree_'+treeIndex+'"></ul></div></div>');
+	       treeIndex++;
+	    });
+	    //删除按钮
+	    $('.jobName').on("click","#deleteBtn",function() {
+	      $(this).parent().parent().next().remove();
+	      $(this).closest('.marHei').remove();
+	
+	    });
+	    //设置权限 按钮
+	    $('.jobName').on("click","#settingsPermis",function() {
+	    	
+	      	var ztree_container = $(this).parents(".marHei").next("div.ztree").find("ul:first");
+	      	var treeId = ztree_container.attr("id") ;
+	      	
+	      	var treeObj = $.fn.zTree.getZTreeObj(treeId);
+	      	if(null == treeObj || undefined == treeObj){
+	      	//初始化ztree
+		    	$.fn.zTree.init(ztree_container, setting, zNodes);
+	      	}
+	      	$(this).parents(".marHei").next().toggle().siblings('div').hide();
+	    });
+    });
+   //设置功能
+	function setFunc(){
+	   var jobInfos = [];
+	   //取所有树
+	   $(".job_container").each(function(index,container){
+		   var jobName = $(container).find("input[name='jobName']").val();
+		   var treeObj = $.fn.zTree.getZTreeObj("tree_" + index);
+		   var nodes =  treeObj.getCheckedNodes(true);
+		   var funcIds = "" ;
+			/* for(var i = 0 ; i < nodes.length; i ++){
+				funcIds += (nodes[i].id + ",");
+			} */
+			$(nodes).each(function(i,node){
+				funcIds += node.id + ",";
+			});
+		   var job = new Object();
+		   job.jobName=jobName;
+		   job.functionIds=funcIds;
+		   jobInfos.push(job);
+	   });
+	   
+	   var jobJson = JSON.stringify(jobInfos) ;
+	   $("#jobJson").val(jobJson) ;
+	}
+	//点击返回关闭窗口
+	function closewindow(){
+		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+		parent.layer.close(index);
+	}
 </script>
 <script type="text/javascript">
 //验证
@@ -120,14 +160,13 @@ $(document).ready(function(){
                          //自定义提交数据，默认值提交当前input value
                          data: function(validator) {
                             return {
-                            	deptName:$('#deptName').val(),
-                            	id:$('#id').val()
+                            	deptName:$('#deptName').val()
                             };
                          }
                      }
                 }
             },
-            name: {
+            jobJson: {
             	validators: {
                     notEmpty: {
                         message: '职位名称不能为空!'
@@ -140,7 +179,7 @@ $(document).ready(function(){
 	                         //自定义提交数据，默认值提交当前input value
 	                         data: function(validator) {
 	                            return {
-	                            	name:$('input[name="name"]').val(),
+	                            	name:$('input[name="jobJson"]').val(),
 	                            };
 	                         }
 	                   }
@@ -155,8 +194,7 @@ $(document).ready(function(){
 		$('#addDeptForm').bootstrapValidator('validate');
 		var bootstrapValidator = $("#addDeptForm").data('bootstrapValidator');
 		var _deptName = $("input#deptName").val();
-		var _jobName = $("input#jobName").val();
-		var _functionIds = $("input#functionIds").val() ;
+		var _jobJson = $("input#jobJson").val();
 		if(bootstrapValidator.isValid()){
 			$.ajax({
 	           cache: true,
@@ -164,8 +202,7 @@ $(document).ready(function(){
 	           url:'${base}/admin/authority/authoritymanage/add.html',
 	           data:{
 					deptName:_deptName,
-					jobName:_jobName,
-					functionIds:_functionIds
+					jobJson:_jobJson
 			   },
 	           error: function(request) {
 	              layer.msg('添加失败!');
@@ -175,57 +212,23 @@ $(document).ready(function(){
 					 shade: [0.1,'#fff'] //0.1透明度的白色背景
 				});
 	              layer.msg('添加成功!',{time: 5000, icon:6});
-				  window.location.reload(true);
+				  var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				   parent.layer.close(index);
+				  parent.location.reload();
 	           }
 	       });
 		}
 		 $(".Mymodal-lg").modal('hide');
-	});
+	}); 
 	//提交时开始验证
 	$('#submit').click(function() {
 	    $('#addDeptForm').bootstrapValidator('validate');
 	});
-	//点击返回
+	//点击返回关闭窗口
 	function closewindow(){
 		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 		parent.layer.close(index);
-		parent.location.reload();
 	}
-</script>
-<!-- 功能树 -->
-<script type="text/javascript">
-	var setting = {
-			check: {
-				enable: true,//显示复选框
-				chkStyle: "checkbox",
-				chkboxType: { "Y": "ps", "N": "ps" }
-			},
-			data: {
-				simpleData: {
-					enable: true
-				}
-			}
-		};
-	//初始化功能树
-	$(document).ready(function(){
-		$.fn.zTree.init($("#treeDemo"), setting, zNodes);
-	});
-	function setFunc(){
-		var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-		var nodes =  treeObj.getCheckedNodes(true);
-		var funcIds = "" ;
-		for(var i = 0 ; i < nodes.length; i ++){
-			funcIds += (nodes[i].id + ",") ;
-		}
-		$("input[name='functionIds']").val(funcIds) ;
-	}
-	//遍历得到的对象
-	var zNodes =[
-		 {id:"0", pId:"0", name:"职位权限设置", open:true},
-		<c:forEach var="p" items="${obj.list}">
-			{ id:"${p.id }", pId:"${p.parentId }", name:"${p.name }", open:true,checked:"${p.checked}"},
-		</c:forEach>
-	];
 </script>
 </body>
 </html>

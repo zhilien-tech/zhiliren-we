@@ -116,8 +116,8 @@ public class InfoModule {
 	 * 分页查询
 	 * <P>
 	 * 
-	 * @param queryForm  查询表单
-	 * @param pager      分页对象
+	 * @param sqlForm  查询表单
+	 * @param pager    分页对象
 	 */
 	@At
 	@Ok("jsp")

@@ -30,10 +30,7 @@
                       <!--部门职位-->
                       <div class="tab-pane pane-content active" id="tab_1">
                          <div class="col-md-1 col-md-offset-11">
-								<%-- <a href="${base}/admin/authority/authoritymanage/add.html"
-									data-toggle="modal" class="btn btn-primary btn-sm" id="addDeptBtn"
-									data-target="#addDeptTabs">添加</a> --%>
-								<a id="addDeptBtn" class="btn btn-primary btn-sm" onclick="addDept();">添加</a>
+							<a id="addDeptBtn" class="btn btn-primary btn-sm" onclick="addDept();">添加</a>
 						 </div>
                          <table id="deptDatatable" class="table table-bordered table-hover">
                           <thead>
@@ -48,12 +45,11 @@
                           </tbody>
                         </table>
                       </div><!--end 部门职位-->
-                      <!--区域-->
+                      
+                      <!-----------区域------------->
                       <div class="tab-pane pane-content" id="tab_2">
 	                    <div class="col-md-1 col-md-offset-11">
-	                        <a href="${base}/admin/area/add.html"
-										data-toggle="modal" class="btn btn-primary btn-sm" id="addAreaBtn"
-										data-target="#addAreaTabs">添加</a>
+	                        <a id="addAreaBtn" class="btn btn-primary btn-sm" onclick="addArea();">添加</a>
 						</div>
                         <table id="areaDatatable" class="table table-bordered table-hover">
                           <thead>
@@ -63,14 +59,6 @@
                           </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td>美国</td>
-                              <td>
-                              	<a href="${base}/admin/area/update.html?id=${one.id}"
-										data-toggle="modal" id="editAreaBtn"
-										class="btn btn_mini btn_modify" data-target="#editDeptTabs">编辑</a>
-                              </td>
-                            </tr>
                           </tbody>
                         </table>
                       </div><!--end 区域-->
@@ -104,26 +92,28 @@
     	    area: ['900px', '500px'],
     	    content: '${base}/admin/authority/authoritymanage/add.html',
     	    end: function(){//添加完页面点击返回的时候自动加载表格数据
-    	    	parent.location.reload();
+    	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+    			parent.layer.close(index);
     	    }
    	 	 });
-		 }
+	 }
 	//编辑
-	function edit(id){
-		  layer.open({
-	  	    type: 2,
-	  	    title: false,
-	  	  	closeBtn:false,
-	  	    fix: false,
-	  	    maxmin: false,
-	  	    shadeClose: false,
-	  	    area: ['900px', '400px'],
-	  	    content: '${base}/admin/dictionary/dirinfo/update.html?id='+id
-	  	  });
-	  }
+	function editDept(id){
+	  layer.open({
+  	    type: 2,
+  	    title: false,
+  	  	closeBtn:false,
+  	    fix: false,
+  	    maxmin: false,
+  	    shadeClose: false,
+  	    area: ['900px', '400px'],
+  	    content: '${base}/admin/authority/authoritymanage/update.html?id='+id
+  	  });
+	}
 	//事件提示
 	function successCallback(id){
 		deptDatatable.ajax.reload();
+		areaDatatable.ajax.reload();
 		  if(id == '1'){
 			  layer.msg("添加成功",{time: 2000, icon:1});
 		  }else if(id == '2'){
@@ -144,7 +134,7 @@
 		    shade: false //不显示遮罩
 		}, function(){
 			// 点击确定之后
-			var url = '${base}/admin/dictionary/dirinfo/updateDeleteStatus.html';
+			var url = '${base}/admin/authority/authoritymanage/updateDeleteStatus.html';
 			$.ajax({
 				type : 'POST',
 				data : {
@@ -174,7 +164,7 @@
 		$("[data-toggle='tooltip']").tooltip();
 	});
 </script>
-<!-- 分页显示 -->
+<!-- 分页显示 部门职位权限设置 -->
 <script type="text/javascript">
 	var deptDatatable;
 	function initDatatable() {
@@ -183,6 +173,7 @@
 			"processing" : true,
 			"serverSide" : true,
 			"bLengthChange" : false,
+			"bSort": true, //排序功能 
 			"language" : {
 				"url" : "${base}/public/plugins/datatables/cn.json"
 			},
@@ -194,23 +185,23 @@
                 	}
 	        },
 	        "columns": [
-	                    {"data": "deptName", "bSortable": false},
-	                    {"data": "moduleName", "bSortable": false,
+	                    {"data": "deptname", "bSortable": false},
+	                    {"data": "modulename", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		if(row.moduleName==null){
+	                    		if(row.modulename==null){
 	                    			return "";
 	                    		}else{
-	                    			return row.moduleName;
+	                    			return row.modulename;
 	                    		}
 	                    	}
 	                    },
-	                    {"data": "name", "bSortable": false}
+	                    {"data": "jobname", "bSortable": false}
 	            ],
             columnDefs: [{
                 //   指定第一列，从0开始，0表示第一列，1表示第二列……
                 targets: 3,
                 render: function(data, type, row, meta) {
-                	var modify = '<a style="cursor:pointer;" onclick="edit('+row.id+');">编辑</a>';
+                	var modify = '<a style="cursor:pointer;" onclick="editDept('+row.deptid+');">编辑</a>';
                     return modify;
                 }
             }]
@@ -218,6 +209,76 @@
 	}
 	$(function() {
 		initDatatable();
+	});
+</script>
+<!-- 区域的添加 -->
+<script type="text/javascript">
+//添加区域
+function addArea(){
+  layer.open({
+	    type: 2,
+	    title:false,
+	    closeBtn:false,
+	    fix: false,
+	    maxmin: false,
+	    shadeClose: false,
+	    area: ['900px', '500px'],
+	    content: '${base}/admin/area/add.html',
+	    end: function(){//添加完页面点击返回的时候自动加载表格数据
+	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+			parent.layer.close(index);
+	    	parent.location.reload();
+	    }
+	});
+}
+//编辑区域
+function editArea(id){
+  layer.open({
+	    type: 2,
+	    title: false,
+	  	closeBtn:false,
+	    fix: false,
+	    maxmin: false,
+	    shadeClose: false,
+	    area: ['900px', '400px'],
+	    content: '${base}/admin/area/update.html?id='+id
+	  });
+}
+</script>
+<!-- 区域分页显示  -->
+<script type="text/javascript">
+	var areaDatatable;
+	function initareaDatatable() {
+		areaDatatable = $('#areaDatatable').DataTable({
+			"searching" : false,
+			"processing" : true,
+			"serverSide" : true,
+			"bLengthChange" : false,
+			"language" : {
+				"url" : "${base}/public/plugins/datatables/cn.json"
+			},
+           	"ajax": {
+                   "url": "${base}/admin/area/listAreaData.html",
+                   "type": "post",
+                   "data": function (d) {
+                	   
+                	}
+	        },
+	        "columns": [
+	               	{"data": "areaname", "bSortable": false}
+	            ],
+            columnDefs: [{
+                //   指定第一列，从0开始，0表示第一列，1表示第二列……
+                targets: 1,
+                render: function(data, type, row, meta) {
+                	var modify = '<a style="cursor:pointer;" onclick="editArea('+row.id+');">编辑</a>';
+                    return modify;
+                }
+            }]
+		});
+	}
+	$(function() {
+		initareaDatatable();
 	});
 </script>
 </body>

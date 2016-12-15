@@ -1,7 +1,10 @@
 package com.linyun.airline.admin.user.module;
 
+import java.util.List;
 import java.util.Map;
 
+import org.nutz.dao.SqlManager;
+import org.nutz.dao.entity.Record;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -12,13 +15,13 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
-import com.linyun.airline.admin.user.service.UserViewService;
+import com.linyun.airline.admin.user.form.TUserSqlForm;
+import com.linyun.airline.admin.user.service.impl.TUserServiceImpl;
 import com.linyun.airline.common.enums.UserStatusEnum;
 import com.linyun.airline.common.enums.UserTypeEnum;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TUserAddForm;
 import com.linyun.airline.forms.TUserModForm;
-import com.linyun.airline.forms.TUserQueryForm;
 import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.MapUtil;
@@ -45,15 +48,33 @@ public class UserModule {
 	private IDbDao dbDao;
 
 	@Inject
-	private UserViewService userViewService;
+	private SqlManager sqlManager;
+
+	@Inject
+	private TUserServiceImpl userViewService;
 
 	/**
-	 * 分页查询
+	 * 
+	 * 列表展示
+	 * @param sqlForm
+	 * @param pager
 	 */
+
 	@At
 	@Ok("jsp")
-	public Object list(@Param("..") final TUserQueryForm queryForm, @Param("..") final Pager pager) {
-		return FormUtil.query(dbDao, TUserEntity.class, queryForm, pager);
+	public Object list(@Param("..") final TUserSqlForm sqlForm, @Param("..") final Pager pager) {
+		Map<String, Object> map = MapUtil.map();
+		List<Record> deplist = userViewService.getDeptNameSelect(sqlManager);
+		map.put("deplist", deplist);
+		return map;
+	}
+
+	/**
+	 * 服务端分页查询
+	 */
+	@At
+	public Object listData(@Param("..") final TUserSqlForm sqlForm) {
+		return userViewService.listPage4Datatables(sqlForm);
 	}
 
 	/**
@@ -87,7 +108,7 @@ public class UserModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object update(@Param("id") final long userId) {
+	public Object update(@Param("id") final Long userId) {
 		return userViewService.findUser(userId);
 	}
 

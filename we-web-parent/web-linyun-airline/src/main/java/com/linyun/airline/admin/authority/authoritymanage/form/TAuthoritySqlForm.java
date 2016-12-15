@@ -24,6 +24,9 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class TAuthoritySqlForm extends DataTablesParamForm {
+
+	private Long comId;
+
 	//主键
 	private long id;
 	//部门id
@@ -38,8 +41,8 @@ public class TAuthoritySqlForm extends DataTablesParamForm {
 	@SuppressWarnings("deprecation")
 	private Cnd cnd() {
 		Cnd cnd = Cnd.limit();
-		//TODO 添加自定义查询条件（可选）
-
+		cnd.and("c.id", "=", comId);
+		cnd.groupBy("d.id");
 		return cnd;
 	}
 

@@ -50,7 +50,7 @@
 							<form id="form1"
 								action="${base}/admin/authority/function/list.html"
 								method="post" onsubmit="return navTabSearch(this);">
-								<div class="col-md-2">
+								<%-- <div class="col-md-2">
 									<!--上级功能 搜索框-->
 									<div class="col-sm-12 padding">
 										<select name="parentId" class="form-control input-sm">
@@ -66,8 +66,8 @@
 												</c:choose>
 											</c:forEach>
 										</select>
-									</div>
-								</div>
+									</div> 
+								</div>--%>
 								<div class="col-md-3 dictInfoSousuo" style="float: left;">
 									<!--功能名称 搜索框-->
 									<input type="text" name="typeCode"
