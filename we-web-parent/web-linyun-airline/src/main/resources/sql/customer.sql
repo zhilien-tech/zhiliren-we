@@ -30,6 +30,20 @@ select
 FROM t_customer_outcity o INNER JOIN dict_info d on o.dictInfoId = d.id
 $condition
 
+/*customer_user_company*/
+SELECT
+    uj.userid,
+	c.id,
+	c.comName
+FROM
+	t_user_job uj,
+	t_company_job cj,
+	t_company c
+WHERE
+	uj.companyJobId = cj.posid
+AND cj.comId = c.id
+AND uj.userid = @userId
+
 /*customer_agent*/
 SELECT 
  u.id,u.userName
@@ -63,11 +77,37 @@ from
 $condition
 
 /*customer_list_info*/
-SELECT
-	u.userName,
-	t.*
-FROM
-	t_customer_info t
-INNER JOIN t_user u ON t.agent = u.id
+SELECT 	i.id, 
+	i.upComId, 
+	i.agentId, 
+	i.name, 
+	i.shortName, 
+	i.linkMan, 
+	i.telephone, 
+	i.fax, 
+	i.siteUrl, 
+	i.address, 
+	i.agent, 
+	i.createTime, 
+	i.departureCity, 
+	i.appendix, 
+	i.travelType, 
+	i.payWay, 
+	i.paywayName, 
+	i.invoice, 
+	i.sellPrice, 
+	i.moneyUnit, 
+	i.payType, 
+	i.paytypeName, 
+	i.cooperateTime, 
+	i.cooperateDueTime, 
+	i.contractTime, 
+	i.contractDueTime, 
+	i.contract, 
+	i.forbid, 
+	i.business,
+	u.userName
+	FROM 
+t_customer_info i INNER JOIN t_upCompany uc ON i.upComId=uc.id
+INNER JOIN t_user u ON i.agent=u.id
 $condition
-

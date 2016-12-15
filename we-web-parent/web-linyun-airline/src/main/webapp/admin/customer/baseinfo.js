@@ -68,7 +68,7 @@ $("#city").select2({
 
 
 
-//日期
+/*//日期
 var picker1 = new Pikaday(
 	    {
 	        field: document.getElementById('datepicker1'),
@@ -84,4 +84,4 @@ var picker2 = new Pikaday(
 	        minDate: new Date('2000-01-01'),
 	        maxDate: new Date('3099-12-31'),
 	        yearRange: [2000,3099]
-	    });
+	    });*/

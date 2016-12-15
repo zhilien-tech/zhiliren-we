@@ -14,7 +14,7 @@ public class TCustomerInfoUpdateForm extends ModForm implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**上游公司id*/
-	private long comId;
+	private long upComId;
 
 	/**代理商id*/
 	private long agentId;

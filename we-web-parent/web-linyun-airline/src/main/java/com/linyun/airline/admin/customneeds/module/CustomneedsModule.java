@@ -2,6 +2,7 @@ package com.linyun.airline.admin.customneeds.module;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -10,7 +11,6 @@ import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
@@ -20,6 +20,8 @@ import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.linyun.airline.admin.customneeds.form.TCustomNeedsSqlForm;
 import com.linyun.airline.admin.customneeds.service.CustomneedsViewService;
+import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerneedsEntity;
 import com.linyun.airline.forms.TCustomerneedsAddForm;
 import com.linyun.airline.forms.TCustomerneedsForm;
@@ -29,8 +31,6 @@ import com.uxuexi.core.web.chain.support.JsonResult;
 
 @IocBean
 @At("/admin/customneeds")
-@Filters({//@By(type = AuthFilter.class)
-})
 public class CustomneedsModule {
 
 	private static final Log log = Logs.get();
@@ -62,8 +62,8 @@ public class CustomneedsModule {
 	 */
 	@At
 	@POST
-	public Object add(@Param("..") TCustomerneedsAddForm addForm) {
-		return customneedsViewService.addCustomNeedsInfo(addForm);
+	public Object add(@Param("..") TCustomerneedsAddForm addForm, HttpSession session) {
+		return customneedsViewService.addCustomNeedsInfo(addForm, session);
 	}
 
 	/**
@@ -81,9 +81,12 @@ public class CustomneedsModule {
 	 */
 	@At
 	@POST
-	public Object update(@Param("..") TCustomerneedsUpdateForm updateForm) {
+	public Object update(@Param("..") TCustomerneedsUpdateForm updateForm, HttpSession session) {
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		TCustomerneedsEntity fetch = customneedsViewService.fetch(updateForm.getId());
 		updateForm.setOptime(fetch.getOptime());
+		updateForm.setCompanyid(company.getId());
 		return customneedsViewService.updateCustomNeedsInfo(updateForm);
 	}
 
@@ -109,7 +112,10 @@ public class CustomneedsModule {
 	 * 查询客户需求列表数据
 	 */
 	@At
-	public Object listData(@Param("..") final TCustomNeedsSqlForm sqlParamForm) {
+	public Object listData(@Param("..") final TCustomNeedsSqlForm sqlParamForm, HttpSession session) {
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		sqlParamForm.setCompanyid(company.getId());
 		return customneedsViewService.listPage4Datatables(sqlParamForm);
 	}
 
@@ -123,14 +129,23 @@ public class CustomneedsModule {
 	}
 
 	/**
+	 * 启用客户需求
+	 */
+	@At
+	@POST
+	public Object enableCustomNeeds(@Param("id") long id) {
+		return customneedsViewService.enableCustomNeeds(id);
+	}
+
+	/**
 	 * 导入Excel
 	 */
 	@At
 	@POST
 	@Ok("jsp")
-	@AdaptBy(type = UploadAdaptor.class, args = { "/uploadTemp", "8192", "UTF-8", "10" })
-	public Object inportExcelData(@Param("excelFile") TempFile file, HttpServletRequest request) {
-		return customneedsViewService.inportExcelData(file, request);
+	@AdaptBy(type = UploadAdaptor.class)
+	public Object inportExcelData(@Param("excelFile") TempFile file, HttpSession session) {
+		return customneedsViewService.inportExcelData(file, session);
 	}
 
 	/**
@@ -150,7 +165,10 @@ public class CustomneedsModule {
 	@GET
 	@Ok("json")
 	public Object exportCustomNeedsExcel(HttpServletResponse response,
-			@Param("..") final TCustomNeedsSqlForm sqlParamForm) {
+			@Param("..") final TCustomNeedsSqlForm sqlParamForm, HttpSession session) {
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		sqlParamForm.setCompanyid(company.getId());
 		return customneedsViewService.exportCustomNeedsExcel(response, sqlParamForm);
 	}
 }

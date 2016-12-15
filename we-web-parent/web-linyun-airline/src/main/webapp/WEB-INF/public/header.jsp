@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="${base }/public/dist/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
+  <link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
   <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
@@ -34,6 +35,8 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
   <link rel="stylesheet" href="${base}/public/css/pikaday.css">
+  
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">

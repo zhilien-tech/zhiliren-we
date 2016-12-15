@@ -17,6 +17,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
@@ -27,9 +28,12 @@ import org.nutz.log.Logs;
 import org.nutz.mvc.upload.TempFile;
 
 import com.linyun.airline.admin.customneeds.form.TCustomNeedsSqlForm;
+import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.util.ExcelReader;
 import com.linyun.airline.common.util.ExportExcel;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerneedsEntity;
+import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TCustomerneedsAddForm;
 import com.linyun.airline.forms.TCustomerneedsUpdateForm;
 import com.uxuexi.core.common.util.DateUtil;
@@ -54,17 +58,21 @@ public class CustomneedsViewService extends BaseService<TCustomerneedsEntity> {
 	 * TODO客户需求
 	 *
 	 * @param addForm
+	 * @param session 
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	@SuppressWarnings("deprecation")
-	public Object addCustomNeedsInfo(TCustomerneedsAddForm addForm) {
+	public Object addCustomNeedsInfo(TCustomerneedsAddForm addForm, HttpSession session) {
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		if (!Util.isEmpty(addForm.getLeavedateString())) {
-			addForm.setLeavedate(new Date(addForm.getLeavedateString()));
+			addForm.setLeavedate(DateUtil.string2Date(addForm.getLeavedateString(), DateUtil.FORMAT_YYYY_MM_DD));
 		}
 		if (!Util.isEmpty(addForm.getBackdateString())) {
-			addForm.setBackdate(new Date(addForm.getBackdateString()));
+			addForm.setBackdate(DateUtil.string2Date(addForm.getBackdateString(), DateUtil.FORMAT_YYYY_MM_DD));
 		}
 		addForm.setOptime(new Date());
+		addForm.setCompanyid(company.getId());
 		return this.add(addForm);
 	}
 
@@ -77,12 +85,13 @@ public class CustomneedsViewService extends BaseService<TCustomerneedsEntity> {
 	 * @param updateForm
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
+	@SuppressWarnings("deprecation")
 	public Object updateCustomNeedsInfo(TCustomerneedsUpdateForm updateForm) {
 		if (!Util.isEmpty(updateForm.getLeavedateString())) {
-			updateForm.setLeavedate(new Date(updateForm.getLeavedateString()));
+			updateForm.setLeavedate(DateUtil.string2Date(updateForm.getLeavedateString(), DateUtil.FORMAT_YYYY_MM_DD));
 		}
 		if (!Util.isEmpty(updateForm.getBackdateString())) {
-			updateForm.setBackdate(new Date(updateForm.getBackdateString()));
+			updateForm.setBackdate(DateUtil.string2Date(updateForm.getBackdateString(), DateUtil.FORMAT_YYYY_MM_DD));
 		}
 		updateForm.setLastupdatetime(new Date());
 		return this.update(updateForm);
@@ -101,7 +110,6 @@ public class CustomneedsViewService extends BaseService<TCustomerneedsEntity> {
 		TCustomerneedsEntity customerneedsEntity = this.fetch(id);
 		customerneedsEntity.setIsclose(1);
 		return dbDao.update(customerneedsEntity);
-
 	}
 
 	/**
@@ -114,8 +122,11 @@ public class CustomneedsViewService extends BaseService<TCustomerneedsEntity> {
 	 * @param request
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object inportExcelData(TempFile file, HttpServletRequest request) {
-
+	public Object inportExcelData(TempFile file, HttpSession session) {
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		try {
 			InputStream is = new FileInputStream(file.getFile());
 			ExcelReader excelReader = new ExcelReader();
@@ -149,6 +160,8 @@ public class CustomneedsViewService extends BaseService<TCustomerneedsEntity> {
 				customerneeds.setUniontransport(row[10]);
 				//操作时间
 				customerneeds.setOptime(new Date());
+				//设置操作人所属公司
+				customerneeds.setCompanyid(company.getId());
 				customerneedsEntities.add(customerneeds);
 			}
 			//导入数据库
@@ -164,6 +177,16 @@ public class CustomneedsViewService extends BaseService<TCustomerneedsEntity> {
 
 	}
 
+	/**
+	 * 
+	 * 下载客户需求Excel导入模板
+	 * <p>
+	 * TODO下载客户需求Excel导入模板
+	 *
+	 * @param request
+	 * @param response
+	 * @return TODO下载客户需求Excel导入模板
+	 */
 	public Object downloadTemplate(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			String filepath = request.getServletContext().getRealPath(this.EXCEL_PATH);
@@ -191,6 +214,15 @@ public class CustomneedsViewService extends BaseService<TCustomerneedsEntity> {
 
 	}
 
+	/**
+	 * 客户需求导出Excel
+	 * <p>
+	 * 客户需求导出Excel
+	 *
+	 * @param response
+	 * @param sqlParamForm
+	 * @return 客户需求导出Excel
+	 */
 	public Object exportCustomNeedsExcel(HttpServletResponse response, TCustomNeedsSqlForm sqlParamForm) {
 		try {
 			//设置Excel表格输入的日期格式
@@ -222,6 +254,21 @@ public class CustomneedsViewService extends BaseService<TCustomerneedsEntity> {
 			e.printStackTrace();
 		}
 		return null;
+
+	}
+
+	/**
+	 * 启用客户需求
+	 * <p>
+	 * 启用客户需求
+	 *
+	 * @param id
+	 * @return 启用客户需求
+	 */
+	public Object enableCustomNeeds(long id) {
+		TCustomerneedsEntity customerneedsEntity = this.fetch(id);
+		customerneedsEntity.setIsclose(0);
+		return dbDao.update(customerneedsEntity);
 
 	}
 }

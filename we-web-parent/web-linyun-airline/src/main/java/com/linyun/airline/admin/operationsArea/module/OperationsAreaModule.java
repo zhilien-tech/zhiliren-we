@@ -1,5 +1,7 @@
 package com.linyun.airline.admin.operationsArea.module;
 
+import javax.servlet.http.HttpSession;
+
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -7,7 +9,6 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
@@ -23,8 +24,6 @@ import com.uxuexi.core.web.chain.support.JsonResult;
 
 @IocBean
 @At("/admin/operationsArea")
-@Filters({//@By(type = AuthFilter.class)
-})
 public class OperationsAreaModule {
 
 	private static final Log log = Logs.get();
@@ -45,12 +44,89 @@ public class OperationsAreaModule {
 	private SqlManager sqlManager;
 
 	/**
-	 * 分页查询
+	 * 到添加自定义事件页面
 	 */
 	@At
+	@GET
 	@Ok("jsp")
-	public Pagination list(@Param("..") final TMessageForm sqlParamForm, @Param("..") final Pager pager) {
-		return operationsAreaViewService.listPage(sqlParamForm, pager);
+	public Object customEvent(@Param("selDate") final String selDate) {
+		return selDate;
+	}
+
+	/**
+	 * 到修改自定义事件页面
+	 */
+	@At
+	@GET
+	@Ok("jsp")
+	public Object updateCustomEvent(@Param("msgId") final long id) throws Exception {
+		return operationsAreaViewService.toUpdateCustomEvent(id);
+	}
+
+	/**
+	 * 执行修改自定义事件
+	 */
+	@At
+	@POST
+	public Object updateCustom(@Param("..") TMessageUpdateForm messageUpdateForm) {
+		operationsAreaViewService.updateCustom(messageUpdateForm);
+		return JsonResult.success("修改成功");
+	}
+
+	/**
+	 * 跳转到桌面
+	 */
+	@At
+	@GET
+	@Ok("jsp")
+	public Object desktop(HttpSession session) {
+		return operationsAreaViewService.getCheckBox(session);
+	}
+
+	/**
+	 * 桌面自定义事件 列表展示
+	 */
+	@At
+	@GET
+	public Object getCustomEvents(HttpSession session, @Param("start") final String start,
+			@Param("end") final String end) {
+		return operationsAreaViewService.getCustomEvent(session, start, end);
+	}
+
+	/**
+	 * 任务栏事件显示
+	 */
+	@At
+	@POST
+	public Object getTaskEvents(HttpSession session) {
+		return operationsAreaViewService.getTaskEvents(session);
+	}
+
+	/**
+	 * 自定义界面设置
+	 */
+	@At
+	@POST
+	public Object setCheckBox(HttpSession session, @Param("checkboxname") final String checkboxname) {
+		return operationsAreaViewService.setCheckBox(session, checkboxname);
+	}
+
+	/**
+	 * 自定义界面获取
+	 */
+	@At
+	@POST
+	public Object getCheckBox(HttpSession session) {
+		return operationsAreaViewService.getCheckBox(session);
+	}
+
+	/**
+	 * 小日历事件的获取
+	 */
+	@At
+	@POST
+	public Object getMinCalList(HttpSession session, @Param("timeStr") final String timeStr) {
+		return operationsAreaViewService.getMinCalList(session, timeStr);
 	}
 
 	/**
@@ -68,8 +144,8 @@ public class OperationsAreaModule {
 	 */
 	@At
 	@POST
-	public Object add(@Param("..") TMessageAddForm addForm) {
-		return operationsAreaViewService.addCsutomerEvent(addForm);
+	public Object add(@Param("..") TMessageAddForm addForm, HttpSession session) {
+		return operationsAreaViewService.addCustomEvent(addForm, session);
 	}
 
 	/**
@@ -109,4 +185,12 @@ public class OperationsAreaModule {
 		return JsonResult.success("删除成功");
 	}
 
+	/**
+	 * 分页查询
+	 */
+	@At
+	@Ok("jsp")
+	public Pagination list(@Param("..") final TMessageForm sqlParamForm, @Param("..") final Pager pager) {
+		return operationsAreaViewService.listPage(sqlParamForm, pager);
+	}
 }

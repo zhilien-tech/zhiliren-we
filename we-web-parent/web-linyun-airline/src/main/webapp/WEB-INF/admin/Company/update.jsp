@@ -26,6 +26,8 @@
 		    height: 40px;
 		    border-radius: 5px;
 		}
+		.form-control-feedback {position: absolute;top: -2px;right: -25px;}
+		html, body {min-height: 0;min-width: 0;overflow-x: auto !important;}
 	</style>
 </head>
 <body onresize=hero();>
@@ -221,11 +223,13 @@
 		$('#companyUpdateForm').bootstrapValidator('validate');
 		var bootstrapValidator = $("#companyUpdateForm").data('bootstrapValidator');
 		if(bootstrapValidator.isValid()){
+			layer.load(1);
 			$.ajax({ 
 				type: 'POST', 
 				data: $("#companyUpdateForm").serialize(), 
 				url: '${base}/admin/Company/update.html',
 	            success: function (data) { 
+	            	layer.closeAll('loading');
 	            	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 	            	window.parent.successCallback('2');
 	            	parent.layer.close(index);

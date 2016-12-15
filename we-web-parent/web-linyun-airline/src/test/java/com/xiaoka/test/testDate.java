@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.uxuexi.core.common.util.DateTimeUtil;
+import com.uxuexi.core.common.util.DateUtil;
 
 /**
  * TODO(这里用一句话描述这个类的作用)
@@ -35,5 +36,7 @@ public class testDate {
 		String format2 = sdf.format(DateTimeUtil.nowDateTime());
 		Date date = sdf.parse(format2); //你要的日期格式
 		System.out.println(sdf.format(date));
+
+		System.out.println(DateUtil.addMonth(new Date(), 1));
 	}
 }

@@ -1,39 +1,41 @@
 package com.linyun.airline.admin.operationsArea.form;
 
-import com.uxuexi.core.web.form.SQLParamForm;
-import com.uxuexi.core.db.util.EntityUtil;
+import java.io.Serializable;
+import java.util.Date;
+
+import lombok.Data;
+
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import com.linyun.airline.entities.TMessageEntity;
-import java.util.Date;
 
-import java.io.Serializable;
+import com.linyun.airline.entities.TMessageEntity;
+import com.uxuexi.core.db.util.EntityUtil;
+import com.uxuexi.core.web.form.SQLParamForm;
 
 @Data
-public class TMessageForm implements SQLParamForm,Serializable{
-	private static final long serialVersionUID = 1L;
+public class TMessageForm implements SQLParamForm, Serializable {
+	private static final Long serialVersionUID = 1L;
 	/**主键*/
 	private Integer id;
-	
+
 	/**标题*/
 	private String msgTitle;
-	
+
 	/**内容*/
 	private String msgContent;
-	
+
 	/**消息类型*/
 	private Integer msgType;
-	
+
 	/**生成日期*/
 	private Date generateTime;
-	
+	private String generateTimeString;
+
 	/**优先级*/
 	private Integer priorityLevel;
-	
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**
