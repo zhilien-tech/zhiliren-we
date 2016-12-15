@@ -23,6 +23,7 @@ import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
 
 import com.google.common.base.Splitter;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
@@ -148,9 +149,11 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 		List<DictInfoEntity> citySelect = new ArrayList<DictInfoEntity>();
 		try {
 			citySelect = externalInfoService.findDictInfoByName(cityname, this.CITYCODE);
-			DictInfoEntity dictInfoEntity = new DictInfoEntity();
-			dictInfoEntity.setDictName(this.QUANGUOLIANYUN);
-			citySelect.add(dictInfoEntity);
+			if (this.QUANGUOLIANYUN.indexOf(Strings.trim(cityname)) != -1) {
+				DictInfoEntity dictInfoEntity = new DictInfoEntity();
+				dictInfoEntity.setDictName(this.QUANGUOLIANYUN);
+				citySelect.add(0, dictInfoEntity);
+			}
 			if (citySelect.size() > 5) {
 				citySelect = citySelect.subList(0, 5);
 			}
@@ -175,16 +178,8 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
-		//获取已存在的计划
-		List<TPlanInfoEntity> beforeplan = dbDao.query(TPlanInfoEntity.class,
-				Cnd.where("issave", "=", 0).and("companyid", "=", company.getId()).orderBy("leavesdate", "asc"), null);
-		//删除临时计划
-		if (beforeplan.size() > 0) {
-			dbDao.delete(beforeplan);
-		}
 		//页面选择的起始日期
 		Date startdate = DateUtil.string2Date(addForm.getStartdate(), DateUtil.FORMAT_YYYY_MM_DD);
-
 		//页面选择的结束日期
 		Date enddate = DateUtil.string2Date(addForm.getEnddate(), DateUtil.FORMAT_YYYY_MM_DD);
 		//根据航班号获取航空公司名称

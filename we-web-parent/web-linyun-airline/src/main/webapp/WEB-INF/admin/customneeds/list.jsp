@@ -75,7 +75,7 @@
                         <div class="form-group row">
                           <label class="col-sm-1 text-right padding">去程日期：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" class="form-control input-sm inputdatestr" name="leavedate" id="leavedate"  onkeypress="onkeyEnter();" placeholder="2016/03/06">
+                            <input type="text" class="form-control input-sm inputdatestr" name="leavedate" id="leavedate" onkeypress="onkeyEnter();" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'backdate\')}'})" placeholder="2016/03/06">
                           </div>
                           <label class="col-sm-1 text-right padding">去程航段：</label>
                           <div class="col-sm-1 padding">
@@ -83,7 +83,7 @@
                           </div>
                           <label class="col-sm-1 text-right padding inputdatestr">回程日期：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" class="form-control input-sm" name="backdate" id="backdate"  onkeypress="onkeyEnter();" placeholder="2016/04/01">
+                            <input type="text" class="form-control input-sm" name="backdate" id="backdate" onkeypress="onkeyEnter();" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'leavedate\')}'})" placeholder="2016/04/01">
                           </div>
                           <label class="col-sm-1 text-right padding">回程航段：</label>
                           <div class="col-sm-1 padding">
@@ -213,8 +213,9 @@
                           <!--time 选择-->
                           <div class="form-group row">
                             <label class="col-sm-1 text-right padding cf">从：</label>
-                            <div class="col-sm-3 padding">
-                              <input id="startdate0" name="startdate" type="text" class="form-control input-sm timeWid inputdatestr" placeholder="2016-11-05"> - <input id="enddate0" name="enddate" type="text" class="form-control input-sm timeWid inputdatestr" placeholder="2016-12-01">
+                            <div class="col-sm-3 padding" name="startenddate">
+                              <input id="startdate0" name="startdate" type="text" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'enddate0\')}'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2016-11-05"> 
+                              - <input id="enddate0" name="enddate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startdate0\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2016-12-01">
                             </div>
                             <div class="col-sm-2 padding cf">
                               <select class="form-control selectMargin cf dateAddHeng" id="weekSelect" onchange="select_change(this)">
@@ -231,6 +232,8 @@
                               <input type="checkbox" name="weekday" value="5"><span>周五</span>
                               <input type="checkbox" name="weekday" value="6"><span>周六</span>
                             </div>
+                            <button type="button" id="hidebutton0" name="hidebutton" class="btn btn-primary btn-sm none hidnBtn">隐藏日历</button>
+                            <button type="button" id="showbutton0" name="showbutton" class="btn btn-primary btn-sm none showBtn">显示日历</button>
                           </div><!--end time 选择-->
                           
                           <!-- select 自由 日历-->
@@ -397,6 +400,7 @@
 </script>
 <script src="${base}/public/dist/js/pikaday.js"></script>
 <script src="${base}/public/dist/js/laydate/laydate.dev.js"></script>
+<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 <!--小日历-->
 <script src="${base}/public/build/kalendae.standalone.js" type="text/javascript" charset="utf-8"></script>
 <script src="${base}/public/build/calendar.js" type="text/javascript"></script>
@@ -530,12 +534,6 @@ $('#resetBtn').on('click', function () {
 $(function () {
     initDatatable();
    	//初始化日期控件
-   	laydate({
-        elem: '#leavedate'
-    });
-   	laydate({
-        elem: '#backdate'
-    });
     /* var picker = new Pikaday({
         field: document.getElementById('leavedate'),
         firstDay: 1,

@@ -287,7 +287,7 @@ function initSelect2(){
 				tags : false, //设置必须存在的选项 才能选中
 			});
 			//初始化起始日期
-			var startdatepicker = new Pikaday({
+			/*var startdatepicker = new Pikaday({
 			    field: document.getElementById('startdate' + i),
 			    firstDay: 1,
 			    minDate: new Date(),
@@ -301,21 +301,48 @@ function initSelect2(){
 			    minDate: new Date('2000-01-01'),
 			    maxDate: new Date('2120-12-31'),
 			    yearRange: [2000,2020]
-			});
+			});*/
 			//初始化小日历
 			new Kalendae({
 			    attachTo:document.getElementById('minCalender' + i),
 			    months:3,
+			    direction:'today-future',
 			    mode:'multiple',
 			    subscribe: {
 			         'date-clicked': function (date) {
 			             console.log(date, this.getSelected());
-			             $('#calenderdate' + i).val(this.getSelected());
+			             var selectdate = this.getSelected();
+			             if(selectdate){
+			            	 if(selectdate.indexOf(FormatDate(date))!=-1){
+			            		 selectdate = selectdate.substr(0,selectdate.indexOf(FormatDate(date))-2);
+			            	 }else{
+			            		 selectdate += ',' + FormatDate(date);
+			            	 }
+			             }else{
+			            	 selectdate += FormatDate(date);
+			             }
+			             console.log(selectdate);
+			             $('#calenderdate' + i).val(selectdate);
 			             // return false;
 			         }
-			     },//点击 获取到当天的时间
-			    selected:[Kalendae.moment().subtract({M:1}), Kalendae.moment().add({M:1})]
+			     }//点击 获取到当天的时间
+			     
+			    //selected:[Kalendae.moment().subtract({M:1}), Kalendae.moment().add({M:1})]
 			});
+			 $('.kalendae').append('<input type="button" class="btn btn-sm btn-primary celenderBtn" value="确定">');
+			//计划执着 隐藏日历按钮
+		    $('#hidebutton'+i).click(function(){
+		      $('#minCalender'+i).slideUp("slow");
+		      $(this).hide();
+		      $('#showbutton'+i).slideDown("slow");
+		    });
+
+		    //计划执着 隐藏日历按钮
+		    $('#showbutton'+i).click(function(){
+		      $('#minCalender'+i).slideDown("slow");
+		      $(this).hide();
+		      $('#hidebutton'+i).slideDown("slow");
+		    });
 		}
 	});
 	
@@ -328,9 +355,12 @@ function select_change(obj){
    if (seleValue==2) {
         addMake_aa.find('.checkWeek').slideUp("slow");//checked hide
         addMake_aa.find('.hidnCalendar').slideDown("slow");//div show
+        addMake_aa.find('.hidnBtn').slideDown("slow");//show 隐藏日历 按钮
      }else{
        addMake_aa.find('.checkWeek').slideDown("slow");//checked show
        addMake_aa.find('.hidnCalendar').slideUp("slow");//div hide
+       addMake_aa.find('.hidnBtn').slideUp("slow");//hide 隐藏日历 按钮
+       addMake_aa.find('.showBtn').slideUp("slow");
   };
 }
 
@@ -375,13 +405,27 @@ $(function () {
 			   var unioncity = $(this).find('[name=unioncity]');
 			   unioncity.attr("id","unioncity"+i);
 			   $('#unioncity'+i).next().remove();
+			   
+			   var startenddate = $(this).find('[name=startenddate]');
+			   startenddate.empty();
+			   var startenddatestr = '<input id="startdate'+i+'" name="startdate" type="text" onFocus='+"WdatePicker({maxDate:'#F{$dp.$D(\\'enddate"+i+"\\')}'})"+' class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2016-11-05">'+ 
+                   '- <input id="enddate'+i+'" name="enddate" type="text" onFocus='+"WdatePicker({minDate:'#F{$dp.$D(\\'startdate"+i+"\\')}'})" +' class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2016-12-01">';
+			   startenddate.html(startenddatestr);
 			   //设置新的开始日期控件ID
-			   var startdate = $(this).find('[name=startdate]');
+			   /*var startdate = $(this).find('[name=startdate]');
 			   startdate.attr("id","startdate"+i);
 			   $('#startdate'+i).val('');
 			   //设置新的结束日期控件ID
 			   var enddate = $(this).find('[name=enddate]');
-			   enddate.attr("id","enddate"+i);
+			   enddate.attr("id","enddate"+i);*/
+			   //startdate.attr("onFocus","WdatePicker({maxDate:'#F{$dp.$D(\'enddate"+i+"\')}'})");
+			   //enddate.attr("onFocus","WdatePicker({minDate:'#F{$dp.$D(\'startdate"+i+"\')}'})");
+			   //显示按钮 
+			   var showbutton = $(this).find('[name=showbutton]');
+			   showbutton.attr("id","showbutton"+i);
+			   //隐藏按钮
+			   var hidebutton = $(this).find('[name=hidebutton]');
+			   hidebutton.attr("id","hidebutton"+i);
 			   $('#enddate'+i).val('');
 			   //清空选择每周
 			   $(this).find('input[name=weekday]').each(function() { 
@@ -397,6 +441,7 @@ $(function () {
 		   }
 	   });
 	   initSelect2();
+	   select_change(newDiv.find('[id=weekSelect]'));
 	   var No = parseInt(divTest.find("p").html())+1;   //假设你用p标签显示序号
 	   newDiv.find("p").html(No);  
 	})
@@ -418,12 +463,31 @@ $(document).on('click', '.removeBtn', function(e) {
 		$(this).parent().remove();
 	}
 });
+/*$(document).on('focus', '.startdatestr', function(e) {
+	var enddateid = $(this).next(".inputdatestr").attr("id");
+	return "WdatePicker({maxDate:'#F{$dp.$D(\'"+enddateid+"\')}'})";
+});
+$(document).on('focus', '.enddatestr', function(e) {
+	var startdateid = $(this).prev(".inputdatestr").attr("id");
+	return "WdatePicker({minDate:'#F{$dp.$D(\'"+startdateid+"\')}'})";
+});*/
 //制作计划 
 function makePlan(){
 	var divlength = $('.addMake').length;
 	var teamtype = $('#teamtype').val();
 	if(checkIsNull()){
 		layer.load(2);
+		//删除已制作的临时数据
+		$.ajax({ 
+			type: 'POST', 
+			data: {}, 
+			async:false,
+			url: BASE_PATH + '/admin/customneeds/deleteMakePlanData.html',
+	        success: function (data) { 
+	        },
+	        error: function (xhr) {
+	        } 
+	    });
 		$('.addMake').each(function(i){
 			var travelname = $(this).find('[name=travelname]').val();
 			if(travelname){
@@ -479,7 +543,6 @@ function makePlan(){
 				data: param, 
 				url: BASE_PATH + '/admin/customneeds/airlineMakePlan.html',
 	            success: function (data) {
-	            	$(this).remove();
 	            	if(divlength-1 == i){
 	            		layer.closeAll('loading');
 	            		layer.msg("制作成功",{time: 2000, icon:1});
@@ -602,7 +665,7 @@ function savePlan(){
         });
 	});
 }
-
+//提示是否保存已经制作的计划
 window.onbeforeunload = function(event) {
 	var isplan = false;
 	$.ajax({ 
@@ -622,6 +685,7 @@ window.onbeforeunload = function(event) {
 		return "计划制作内容尚未保存，确定离开此页面吗？";
 	}
 }
+//关闭页面删除临时计划制作数据
 window.onunload = function(event){
 	$.ajax({ 
 		type: 'POST', 
@@ -633,4 +697,16 @@ window.onunload = function(event){
         error: function (xhr) {
         } 
     });
+}
+function FormatDate (strTime) {
+    var date = new Date(strTime);
+    return date.getFullYear()+"-"+zeroize((date.getMonth()+1),2)+"-"+zeroize(date.getDate(),2);
+}
+function zeroize(value, length) {
+    if (!length) length = 2;
+    value = String(value);
+    for (var i = 0, zeros = ''; i < (length - value.length); i++) {
+        zeros += '0';
+    }
+    return zeros + value;
 }

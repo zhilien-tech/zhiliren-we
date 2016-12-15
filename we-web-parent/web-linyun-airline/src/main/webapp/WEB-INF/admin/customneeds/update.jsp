@@ -15,6 +15,7 @@
 	<link rel="stylesheet" href="${base }/public/dist/css/skins/_all-skins.min.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
 	<link rel="stylesheet" href="${base}/public/css/pikaday.css">
+	<link rel="stylesheet" type="text/css" href="${base }/public/dist/css/airlinesModule.css">
 	<!-- style -->
   <link rel="stylesheet" href="${base }/public/css/style.css">
 	<style type="text/css">
@@ -78,7 +79,7 @@
 	           <div class="form-group row"><!--去程日期/出发城市/出发航班-->
 	             <label class="col-sm-2 text-right padding customerEdit">去程日期：</label>
 	             <div class="col-sm-2 padding">
-	               <input id="leavedateString" name="leavedateString"  type="text" class="form-control input-sm" value="${obj.leavedate}"/>
+	               <input id="leavedateString" name="leavedateString"  type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'backdateString\')}'})" class="form-control input-sm" value="<fmt:formatDate value="${obj.leavedate}" pattern="yyyy-MM-dd" />"/>
 	             </div>
 	             <label class="col-sm-2 text-right padding">出发城市：</label>
 	             <div class="col-sm-2 padding">
@@ -93,7 +94,7 @@
 	           <div class="form-group row"><!--回程日期/返回城市/回程航班-->
 	             <label class="col-sm-2 text-right padding customerEdit">回程日期：</label>
 	             <div class="col-sm-2 padding">
-	               <input id="backdateString" name="backdateString" type="text" class="form-control input-sm" value="${obj.backdate}"/>
+	               <input id="backdateString" name="backdateString" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'leavedateString\')}'})" class="form-control input-sm" value="<fmt:formatDate value="${obj.backdate}" pattern="yyyy-MM-dd" />"/>
 	             </div>
 	             <label class="col-sm-2 text-right padding">返回城市：</label>
 	             <div class="col-sm-2 padding">
@@ -116,25 +117,12 @@
 	<script src="${base}/common/js/layer/layer.js"></script>
 	<!--pikaday -->
 	<script src="${base}/public/dist/js/pikaday.js"></script>
+	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		//页面校验
 		formValidator();
 		//选择日期控件
-		var picker = new Pikaday({
-	        field: document.getElementById('leavedateString'),
-	        firstDay: 1,
-	        minDate: new Date('2000-01-01'),
-	        maxDate: new Date('2120-12-31'),
-	        yearRange: [2000,2020]
-	    });
-	    var picker = new Pikaday({
-	        field: document.getElementById('backdateString'),
-	        firstDay: 1,
-	        minDate: new Date('2000-01-01'),
-	        maxDate: new Date('2120-12-31'),
-	        yearRange: [2000,2020]
-	    });
 	});
 	// Validate the form manually
     $('#submitButton').click(function() {
