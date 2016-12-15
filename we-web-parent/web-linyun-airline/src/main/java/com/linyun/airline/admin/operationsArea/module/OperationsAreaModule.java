@@ -54,6 +54,26 @@ public class OperationsAreaModule {
 	}
 
 	/**
+	 * 到修改自定义事件页面
+	 */
+	@At
+	@GET
+	@Ok("jsp")
+	public Object updateCustomEvent(@Param("msgId") final long id) throws Exception {
+		return operationsAreaViewService.toUpdateCustomEvent(id);
+	}
+
+	/**
+	 * 执行修改自定义事件
+	 */
+	@At
+	@POST
+	public Object updateCustom(@Param("..") TMessageUpdateForm messageUpdateForm) {
+		operationsAreaViewService.updateCustom(messageUpdateForm);
+		return JsonResult.success("修改成功");
+	}
+
+	/**
 	 * 跳转到桌面
 	 */
 	@At

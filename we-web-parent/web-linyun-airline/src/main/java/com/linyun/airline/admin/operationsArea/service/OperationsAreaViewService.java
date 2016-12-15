@@ -22,6 +22,7 @@ import org.nutz.log.Logs;
 import com.google.common.base.Splitter;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.form.TMessageAddForm;
+import com.linyun.airline.admin.operationsArea.form.TMessageUpdateForm;
 import com.linyun.airline.common.admin.operationsArea.enums.MessageLevelEnum;
 import com.linyun.airline.common.admin.operationsArea.enums.MessageSourceEnum;
 import com.linyun.airline.common.admin.operationsArea.enums.MessageStatusEnum;
@@ -86,6 +87,35 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		TUserMsgEntity entity = dbDao.insert(tUserMsgEntity);
 
 		return JsonUtil.toJson(entity);
+	}
+
+	/**
+	 * 
+	 * TODO(到更新自定义事件)
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param id
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object toUpdateCustomEvent(Long id) {
+		Map<String, Object> obj = new HashMap<String, Object>();
+		//查询自定义消息
+		TMessageEntity tMessage = dbDao.fetch(TMessageEntity.class, id);
+		obj.put("message", tMessage);
+		return obj;
+	}
+
+	public Object updateCustom(TMessageUpdateForm messageUpdateForm) {
+
+		TMessageEntity tMessage = dbDao.fetch(TMessageEntity.class, messageUpdateForm.getId());
+		tMessage.setMsgContent(messageUpdateForm.getMsgContent());
+		tMessage.setGenerateTime(DateUtil.string2Date(messageUpdateForm.getGenerateTimeString(), "yyyy-MM-dd hh:mm:ss"));
+
+		messageUpdateForm.setMsgType(MessageTypeEnum.PROCESSMSG.intKey());
+		messageUpdateForm.setPriorityLevel(MessageLevelEnum.MSGLEVEL1.intKey());
+
+		return dbDao.update(tMessage);
 	}
 
 	/**

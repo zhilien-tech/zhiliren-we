@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
 <!DOCTYPE HTML>
-<html lang="en-US">
+<html lang="en-US" class="addhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=7" />
@@ -49,7 +49,7 @@
 			//formValidator();
 		});
 		
-		//获得当前时间
+		
 		
 		//表单校验
 		$('#customEventForm').bootstrapValidator({
@@ -108,11 +108,12 @@
 		
 		//关闭窗口
 		function closewindow() {
+			window.parent.location.reload(); 
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			parent.layer.close(index);
 		}
 		
-		
+		//获得当前时间
 		function FormatDate () {
 		    var date = new Date();
 		    return zeroize(date.getHours(),2)+":"+zeroize(date.getMinutes(),2)+":"+zeroize(date.getSeconds(),2);

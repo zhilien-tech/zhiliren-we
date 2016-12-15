@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" errorPage="/WEB-INF/common/500.jsp"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
 <!DOCTYPE HTML>
-<html lang="en-US">
+<html lang="en-US" id="addHtml">
 <head>
 <meta charset="UTF-8">
 <title>添加</title>
@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
+<link rel="stylesheet" href="${base}/public/dist/css/customer.css">
 <link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css" />
 <link href="${base }/public/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
 <style type="text/css">

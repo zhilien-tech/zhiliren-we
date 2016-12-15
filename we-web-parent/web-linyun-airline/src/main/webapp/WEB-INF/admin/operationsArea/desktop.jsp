@@ -79,7 +79,7 @@
 					</div>
 					<!--end 任务and大日历-->
 
-					<div id="minCId" style="display: none" class="col-md-3">
+					<div id="minCId" style="display: none" class="col-md-3 minCelender">
 						<!--小日历-->
 						<div class="box box-primary" id="box-min">
 							<p>
@@ -264,11 +264,7 @@
 	                	var cName = element.comname;
 	                	var agent = element.username;
 	                	var msgC = element.msgcontent;
-	                	content += '<li>'+ dStr 
-	                				+'&nbsp;&nbsp;'+tStr
-	                				+'&nbsp;&nbsp;&nbsp;'
-	                				+cName+'&nbsp;&nbsp;'+agent+'&nbsp;记录了 '
-	                				+msgC+'</li>';
+	                	content += '<li><a href="javascript:;"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;自定义事件：'+msgC+'</a></li>';
 		            });
 		           
 					$("#taskListId").html(content);
@@ -318,7 +314,7 @@
 			              shadeClose:false,
 			              shade:0.6,
 			              maxmin: false, 
-			              area: ['400px', '275px'],
+			              area: ['400px', '210px'],
 			              closeBtn: false,
 			              content: '${base}/admin/operationsArea/customEvent.html?selDate='+selDate,
 			              end: function () {
@@ -328,7 +324,21 @@
 			            
 			      },
 			      eventClick: function(calEvent, jsEvent, view) {
-			         alert('自定义事件：' + calEvent.title);
+			         /* 自定义事件 弹框日期 */
+			      	  var msgId = calEvent.id;
+			          layer.open({
+			              type: 2,
+			              title:false,
+			              shadeClose:false,
+			              shade:0.6,
+			              maxmin: false, 
+			              area: ['400px', '275px'],
+			              closeBtn: false,
+			              content: '${base}/admin/operationsArea/updateCustomEvent.html?msgId='+ msgId,
+			              end: function () {
+			            	  calendarInit();
+			              }
+			          }); 
 			      },
 			      alDaylDefault : false
 			  });
@@ -446,6 +456,55 @@
 			getTimeStr(); 
 		});
 	</script>
-
+	
+	<!-- 大日历年月选择 -->
+	<script type="text/javascript">
+		$.each(this.split(','), function(j, buttonName) {
+			if (buttonName == 'title') {
+			//e.append("<span class='fc-header-title'><h2>&nbsp;</h2></span>");
+			// modified feifei.im 下拉框选择年月
+			var selectHtml = '';
+			var i = 0;
+			selectHtml +="<span id='fc-dateSelect' class='fc-header-title'>";
+			selectHtml +="<select name='fcs_date_year' id='fcs_date_year' class='selectable m_year mr15'>";
+			// 循环年份
+			for(i=1901;i<=2100;i++){        
+			selectHtml +="<option value='"+i+"'>"+$.trim(i+"年")+"</option>";                        
+			}
+			selectHtml +="</select>";
+			selectHtml +="<select name='fcs_date_month' id='fcs_date_month' class='selectable m_year'>";
+			// 循环月份
+			var monthDigitCN = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'];
+			for(i=0;i<=11;i++){
+			selectHtml +="<option value='"+i+"'>" +$.trim(monthDigitCN[i]+"月") + "</option>";
+			}
+			selectHtml +="</select>";
+			selectHtml +="</span>";
+			e.append(selectHtml);
+			if (prevButton) {
+			    prevButton.addClass(tm + '-corner-right');
+			}
+			prevButton = null;
+		}
+			
+		function updateTitle(html) {
+	        //element.find('h2').html(html);
+	        // modified feifei.im 更新title时修改为下拉框
+		    var shtm = html.split(" ");
+		    if(shtm && shtm.length>1){
+		        $("#fcs_date_month").find("option").filter(function(){return ($(this).text() == $.trim(shtm[0]));}).prop('selected', true);
+		    $('#fcs_date_year option[value="'+$.trim(shtm[1])+'"]').prop('selected', true);
+		    }    
+		}
+		
+		/** 绑定事件到日期下拉框 **/
+		$(function(){
+		    $("#fc-dateSelect").delegate("select","change",function(){
+		        var fcsYear = $("#fcs_date_year").val();
+		        var fcsMonth = $("#fcs_date_month").val();
+		        $("#calendar").fullCalendar('gotoDate', fcsYear, fcsMonth);
+		    });
+		});
+	</script>
 </body>
 </html>
