@@ -1,0 +1,18 @@
+.kalendae{overflow: hidden;}
+.k-btn-previous-year,.k-btn-next-year{display: none;}
+.k-first-month{margin-left: -270px;}
+.k-first-month .k-title{overflow:inherit;}
+.kalendae .k-btn-previous-month{margin-left: 250px;margin-top: -5px;}
+div[data-cal-index="2"]{margin-left:15px;}
+div[data-cal-index="2"] .k-title{width: 120px;margin: 0 auto;}
+.kalendae .k-btn-next-month{right: -2px;}
+.celenderBtn{padding:2px 6px;float: right;margin-left: -38px;margin-top: 190px;}
+.hidnBtn,.showBtn{padding: 3px 10px;margin: 3px 0px 0px 5px;}
+.removeBtn{margin-right:135px;}
+.select2-container .select2-search--inline {float: none;}
+.select2-container--default .select2-results__option--highlighted[aria-selected] {background-color: #3c8dbc;color: white;word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+.select2-results__option {padding: 6px;word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+.dataTable tbody td span {max-width:200px;display: block;word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+.form-control-feedback {position: absolute;top: -2px;right: -25px;}
+.tooltip-inner{background-color: #a9a9a9;border: solid 1px #9a9a9a;}
+.tooltip.right .tooltip-arrow {border-right-color: #a5a5a5;}

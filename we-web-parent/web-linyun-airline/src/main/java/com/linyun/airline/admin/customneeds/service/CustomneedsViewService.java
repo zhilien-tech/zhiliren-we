@@ -110,7 +110,6 @@ public class CustomneedsViewService extends BaseService<TCustomerneedsEntity> {
 		TCustomerneedsEntity customerneedsEntity = this.fetch(id);
 		customerneedsEntity.setIsclose(1);
 		return dbDao.update(customerneedsEntity);
-
 	}
 
 	/**
@@ -255,6 +254,21 @@ public class CustomneedsViewService extends BaseService<TCustomerneedsEntity> {
 			e.printStackTrace();
 		}
 		return null;
+
+	}
+
+	/**
+	 * 启用客户需求
+	 * <p>
+	 * 启用客户需求
+	 *
+	 * @param id
+	 * @return 启用客户需求
+	 */
+	public Object enableCustomNeeds(long id) {
+		TCustomerneedsEntity customerneedsEntity = this.fetch(id);
+		customerneedsEntity.setIsclose(0);
+		return dbDao.update(customerneedsEntity);
 
 	}
 }
