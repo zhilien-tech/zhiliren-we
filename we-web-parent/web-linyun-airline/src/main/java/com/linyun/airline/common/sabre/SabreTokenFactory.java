@@ -27,9 +27,8 @@ import com.linyun.airline.common.util.HttpClientUtil;
 import com.uxuexi.core.common.util.Util;
 
 /**
- * TODO(这里用一句话描述这个类的作用)
- * <p>
- * TODO(这里描述这个类补充说明 – 可选)
+ * 获取sabre接口auth-token的缓存实现。
+ * <p>当token过期的时候需要重新访问sabre网站进行获取，其他时候从缓存获取
  *
  * @author   朱晓川
  * @Date	 2016年11月15日 	 
@@ -40,7 +39,7 @@ public class SabreTokenFactory {
 
 	private static final String TOKEN_KEY = "sabre_access_token";
 
-	//token授权过期时间(秒)
+	//token授权默认过期时间(秒)
 	private static final int DEFAULT_EXPIREXIN = 604800;
 
 	//LoadingCache在缓存项不存在时可以自动加载缓存 
@@ -141,20 +140,5 @@ public class SabreTokenFactory {
 		respTxt = HttpClientUtil.httpsPost(httpPost);
 		SabreAccessToken accessToken = Json.fromJson(SabreAccessToken.class, respTxt);
 		return accessToken;
-	}
-
-	public static void main(String[] args) throws InterruptedException {
-
-		for (int i = 0; i < 20; i++) {
-			//从缓存中得到数据，由于我们没有设置过缓存，所以需要通过CacheLoader加载缓存数据
-			SabreAccessToken accessToken = getAccessToken();
-			log.info(accessToken.getAccess_token());
-			//休眠1秒
-			TimeUnit.SECONDS.sleep(1);
-		}
-
-		//最后打印缓存的命中率等 情况
-		System.out.println("cache stats:");
-		System.out.println(cache.stats().toString());
 	}
 }

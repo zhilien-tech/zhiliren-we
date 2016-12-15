@@ -143,6 +143,8 @@ public abstract class BaseService<T> {
 
 	/**
 	 * 忽略值为null的字段,更新
+	 * <p>
+	 * 注:这里只能是Entity对象
 	 */
 	public int updateIgnoreNull(Object obj) {
 		return nutDao.updateIgnoreNull(obj);
