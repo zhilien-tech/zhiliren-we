@@ -42,7 +42,8 @@ http://nicolasgallagher.com/micro-clearfix-hack/
     width: 240px;
     margin: 8px;
 }
-
+.pika-lendar input{background-color: #33aaff;border: #2b74a9 solid 1px;color: #fff; border-radius: 3px 3px 3px 3px;font-size: 12px;padding: 2px 10px;}
+.pika-lendar input:hover{background-color: #2d92da;}
 .pika-title {
     position: relative;
     text-align: center;
