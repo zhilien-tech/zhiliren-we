@@ -43,7 +43,7 @@ public class TFunctionSqlForm implements ISqlForm {
 	private Date createTime;
 
 	/**更新时间*/
-	private Date upDateTimeTime;
+	private Date updateTime;
 
 	/**备注*/
 	private String remark;

@@ -14,6 +14,7 @@ import lombok.EqualsAndHashCode;
 import org.nutz.dao.Cnd;
 
 import com.linyun.airline.common.enums.DataStatusEnum;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.QueryForm;
 import com.uxuexi.core.web.form.support.Condition;
 import com.uxuexi.core.web.form.support.Condition.MatchType;
@@ -42,6 +43,20 @@ public class InfoQueryForm extends QueryForm {
 	@Override
 	public Cnd createCnd() {
 		Cnd cnd = super.createCnd();
+		cnd.orderBy("status", "DESC").orderBy("createTime", "DESC");
+		return cnd;
+	}
+
+	@SuppressWarnings("unused")
+	private Cnd cnd() {
+		Cnd cnd = Cnd.NEW();
+		//TODO 添加自定义查询条件（可选）
+		if (!Util.isEmpty(dictName) || !Util.isEmpty(typeCode)) {
+			cnd.and("dictName", "LIKE", "%" + dictName + "%").or("typeCode", "LIKE", "%" + typeCode + "%");
+		}
+		if (!Util.isEmpty(status)) {
+			cnd.and("status", "=", 1);
+		}
 		cnd.orderBy("status", "DESC").orderBy("createTime", "DESC");
 		return cnd;
 	}

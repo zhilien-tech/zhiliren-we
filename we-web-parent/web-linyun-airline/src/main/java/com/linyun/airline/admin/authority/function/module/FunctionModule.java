@@ -80,6 +80,7 @@ public class FunctionModule {
 	@POST
 	public Object add(@Param("..") TFunctionAddForm addForm) {
 		addForm.setCreateTime(new Date());
+		addForm.setUpdateTime(new Date());
 		FormUtil.add(dbDao, addForm, TFunctionEntity.class);
 		return JsonResult.success("添加成功!");
 	}
@@ -105,6 +106,7 @@ public class FunctionModule {
 	@POST
 	public Object update(@Param("..") TFunctionModForm modForm) {
 		modForm.setUpdateTime(new Date());
+		modForm.setCreateTime(new Date());
 		FormUtil.modify(dbDao, modForm, TFunctionEntity.class);
 		return JsonResult.success("修改成功!");
 	}

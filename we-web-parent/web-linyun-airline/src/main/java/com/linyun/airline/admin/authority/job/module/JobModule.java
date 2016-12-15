@@ -1,22 +1,17 @@
 package com.linyun.airline.admin.authority.job.module;
 
-import org.joda.time.DateTime;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
-import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.authority.job.entity.TJobEntity;
-import com.linyun.airline.admin.authority.job.form.TJobAddForm;
-import com.linyun.airline.admin.authority.job.form.TJobModForm;
 import com.linyun.airline.admin.authority.job.form.TJobQueryForm;
 import com.linyun.airline.admin.authority.job.service.JobViewService;
 import com.uxuexi.core.db.dao.IDbDao;
-import com.uxuexi.core.web.chain.support.JsonResult;
 import com.uxuexi.core.web.util.FormUtil;
 
 @IocBean
@@ -53,50 +48,51 @@ public class JobModule {
 	/**
 	 * 添加
 	 */
-	@At
+	/*@At
 	@POST
-	public Object add(@Param("..") final TJobAddForm addForm) {
-		addForm.setCreateTime(new DateTime());
+	public Object add(@Param("..") final DeptJobForm addForm) {
+		addForm.setCreateTime(new Date());
 		FormUtil.add(dbDao, addForm, TJobEntity.class);
 		return JsonResult.success("添加成功!");
-	}
+	}*/
 
 	/**
 	 * 跳转到'修改操作'的录入数据页面,实际就是[按照主键查询单个实体]
 	 */
-	@At
+	/*@At
 	@GET
 	@Ok("jsp")
 	public Object update(@Param("id") final long id) {
-		return jobViewService.findJob(id);
-	}
+		//return jobViewService.findJob(id);
+		return null;
+	}*/
 
 	/**
 	 * 执行'修改操作'
 	 */
-	@At
+	/*@At
 	@POST
 	public Object update(@Param("..") final TJobModForm modForm) {
 		jobViewService.update(modForm);
 		return JsonResult.success("修改成功!");
-	}
+	}*/
 
 	/**
 	 * 删除记录
 	 */
-	@At
+	/*@At
 	public Object delete(@Param("id") final long id) {
 		FormUtil.delete(dbDao, TJobEntity.class, id);
 		return JsonResult.success("删除成功!");
-	}
+	}*/
 
 	/**
 	 * 批量删除记录
 	 */
-	@At
+	/*@At
 	public Object batchDelete(@Param("ids") final long[] ids) {
 		FormUtil.delete(dbDao, TJobEntity.class, ids);
 		return JsonResult.success("删除成功!");
-	}
+	}*/
 
 }

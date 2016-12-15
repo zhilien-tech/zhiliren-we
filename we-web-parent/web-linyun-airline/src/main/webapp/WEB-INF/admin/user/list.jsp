@@ -1,46 +1,18 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" errorPage="/WEB-INF/public/500.jsp"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
+<%@include file="/WEB-INF/public/header.jsp"%>
+<%@include file="/WEB-INF/public/aside.jsp"%>
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
-<html>	
+<html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>职位</title>
-  <!-- Tell the browser to be responsive to screen width -->
+  <title>员工管理</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
-  <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
-  <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
-        page. However, you can choose any other skin. Make sure you
-        apply the skin class to the body tag so the changes take effect.
-  -->
-  <link rel="stylesheet" href="${base}/public/dist/css/skins/skin-blue.min.css">
-  <link rel="stylesheet" href="${base}/public/dist/css/skins/_all-skins.min.css">
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
 </head>
-
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-
-  <%@include file="/WEB-INF/public/header.jsp"%>
-  <%@include file="/WEB-INF/public/aside.jsp"%>
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Main content -->
@@ -49,61 +21,54 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">&nbsp;&nbsp;<i class="fa fa-user-secret"></i> 职位</h3>
-            </div>
-            <div class="col-md-3"><!--职位名称 搜索框-->
-              <input type="text" class="form-control" placeholder="职位名称">
-            </div>
-            <div class="col-md-2 col-padding"><!--搜索 按钮-->
-              <button type="button" class="btn btn-primary btn-sm">搜索</button>
-            </div>
-            <div class="col-md-1 col-md-offset-2">
-              <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".Mymodal-lg">添加</button>
+              <h3 class="box-title">&nbsp;&nbsp;<i class="fa fa-users"></i> 员工管理</h3>
+               <form role="form" class="form-horizontal">
+              <div class="form-group row marginBott cf">
+                <div class="col-md-2"><!--部门 下拉框-->
+                  <select id="deptName" name="deptName" onchange="selectDeptName();" class="form-control selePadd5">
+                    <c:forEach items="${obj.deplist}" var="one" varStatus="indexs">
+						<c:choose>
+							<c:when test="${indexs.index eq 0}">
+                               	<option value="${one.deptName }" selected="selected">
+                               		${one.deptName }
+                               	</option>
+							</c:when>
+							<c:otherwise>
+                               	<option value="${one.deptName }">
+                               		${one.deptName }
+                               	</option>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+                  </select>
+                </div>
+                <div class="col-md-3"><!--姓名/联系电话 搜索框-->
+                  <input id="userName" name="userName" type="text"  onkeypress="onkeyEnter();" class="form-control" placeholder="姓名/联系电话">
+                </div>
+                <div class="col-md-1 col-padding"><!--搜索 按钮-->
+                  <button id="searchBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
+                </div>
+              
+                <div class="col-md-1 col-md-offset-5">
+                  <a id="addUserBtn" class="btn btn-primary btn-sm" onclick="addUser();">添加</a>
+                </div>
+
+              </div>
+              </form>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example2" class="table table-bordered table-hover">
+              <table id="datatable" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                	<th><input type="checkbox" group="ids" class="ipt_checkbox checkboxCtrl"></th>
-					<th>用户姓名</th>
-					<th>用户名/手机号码</th>
-					<th>座机号码</th>
-					<th>联系QQ</th>
-					<th>电子邮箱</th>
-					<th>用户类型</th>
-					<th>状态</th>
-					<th>创建时间</th>
-					<th>更新时间</th>
-					<th>用户是否禁用</th>
-					<th>备注</th>
-					<th>操作</th>
+                  <th>姓名</th>
+                  <th>联系电话</th>
+                  <th>部门</th>
+                  <th>职位</th>
+                  <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                    <c:forEach items="${obj.list}" var="one" >
-						<tr>
-							<td class="txtc"><input name="ids" value="${one.id}" type="checkbox" class="ipt_checkbox"></td>
-							<td>${one.userName}</td>
-							<td>${one.telephone}</td>
-							<td>${one.landline}</td>
-							<td>${one.qq}</td>
-							<td>${one.email}</td>
-							<td>${one.userTypeName}</td>
-							<td>${one.userStatusName}</td>
-							<td>${one.createTime}</td>
-							<td>${one.updateTime}</td>
-							<td>${one.disableStatus}</td>
-							<td>${one.remark}</td>
-							<td>
-								<a target="dialog" rel="user_update" href="${url}/update.html?id=${one.id}" class="btn btn_mini btn_modify">修改</a>
-								<%--
-									这里如果有写title，则需要确认才会操作
-								 --%>
-								<a target="ajaxTodo" rel="dlgId1" href="${url}/delete?id=${one.id}" title='是否要删除' class='btn btn_mini btn_del'>删除</a>
-							</td>
-						</tr>
-					</c:forEach>
                 </tbody>
               </table>
             </div>
@@ -117,41 +82,159 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-
   <%@include file="/WEB-INF/public/footer.jsp"%>
-</div>
 <!-- ./wrapper -->
 
 <!-- REQUIRED JS SCRIPTS -->
-
-<!-- jQuery 2.2.3 -->
-<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
-<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
-<!-- DataTables -->
-<script src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
-<!-- SlimScroll -->
-<script src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="${base}/public/dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="${base}/public/dist/js/demo.js"></script>
 <!-- page script -->
-<script>
-  $(function () {
-    $("#example1").DataTable();
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false
-    });
-  });
+<script type="text/javascript">
+	//添加基本资料
+	function addUser(){
+      layer.open({
+    	    type: 2,
+    	    title:false,
+    	    closeBtn:false,
+    	    fix: false,
+    	    maxmin: false,
+    	    shadeClose: false,
+    	    area: ['900px', '500px'],
+    	    content: '${base}/admin/user/add.html',
+    	    end: function(){//添加完页面点击返回的时候自动加载表格数据
+    	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+    			parent.layer.close(index);
+    	    	parent.location.reload();
+    	    }
+   	 	 });
+		 }
+	//编辑
+	function editUser(id){
+		alert(id);
+	  layer.open({
+  	    type: 2,
+  	    title: false,
+  	  	closeBtn:false,
+  	    fix: false,
+  	    maxmin: false,
+  	    shadeClose: false,
+  	    area: ['900px', '400px'],
+  	    content: '${base}/admin/user/update.html?id='+id
+  	  });
+	}
+	//事件提示
+	function successCallback(id){
+		deptDatatable.ajax.reload();
+		  if(id == '1'){
+			  layer.msg("添加成功",{time: 2000, icon:1});
+		  }else if(id == '2'){
+			  layer.msg("修改成功",{time: 2000, icon:1});
+		  }else if(id == '3'){
+			  layer.msg("删除成功",{time: 2000, icon:1});
+		  }
+	  }
+	//删除提示
+	function physicalDelete(did, status) {
+		if(2==status){
+			var zt = "删除";
+		}else if(1==status){
+			var zt = "启用";
+		}
+		layer.confirm("您确认"+zt+"信息吗？", {
+		    btn: ["是","否"], //按钮
+		    shade: false //不显示遮罩
+		}, function(){
+			// 点击确定之后
+			var url = '${base}/admin/user/updateDeleteStatus.html';
+			$.ajax({
+				type : 'POST',
+				data : {
+					id : did,
+					status : status
+				},
+				dataType : 'json',
+				url : url,
+				success : function(data) {
+					if ("200" == data.status) {
+						layer.msg("操作成功!", "", 3000);
+						window.location.reload(true);
+					} else {
+						layer.msg("操作失败!", "", 3000);
+					}
+				},
+				error : function(xhr) {
+					layer.msg("操作失败", "", 3000);
+				}
+			});
+		}, function(){
+		    // 取消之后不用处理
+		});
+	}
+	//描述提示信息弹出层Tooltip
+	$(function() {
+		$("[data-toggle='tooltip']").tooltip();
+	});
+</script>
+<script type="text/javascript">
+	var datatable;
+	function initDatatable() {
+		datatable = $('#datatable').DataTable({
+			"searching" : false,
+			"processing" : true,
+			"serverSide" : true,
+			"bLengthChange" : false,
+			"bSort": true, //排序功能 
+			"language" : {
+				"url" : "${base}/public/plugins/datatables/cn.json"
+			},
+           	"ajax": {
+                   "url": "${base}/admin/user/listData.html",
+                   "type": "post",
+                   "data": function (d) {
+                	   
+                	}
+	        },
+	        "columns": [
+	                    {"data": "username", "bSortable": false},
+	                    {"data": "telephone", "bSortable": false},
+	                    {"data": "deptname", "bSortable": false},
+	                    {"data": "jobname", "bSortable": false}
+	            ],
+            columnDefs: [{
+                //   指定第一列，从0开始，0表示第一列，1表示第二列……
+                targets: 4,
+                render: function(data, type, row, meta) {
+                	var modify = '<a style="cursor:pointer;" onclick="editUser('+row.id+');">编辑</a>';
+                    return modify;
+                }
+            }]
+		});
+	}
+	$(function() {
+		initDatatable();
+	});
+	//搜索
+	$("#searchBtn").on('click', function () {
+		var userName = $("#userName").val();
+		var telephone = $('#telephone').val();
+		//var deptName = $('#deptName').val();
+		alert(userName+telephone);
+		var param = {
+	        "userName": userName,
+			"telephone":telephone
+			//"deptName":deptName
+	    };
+	    datatable.settings()[0].ajax.data = param;
+	    datatable.ajax.reload();
+	});
+	//搜索回车事件
+	function onkeyEnter(){
+		 if(event.keyCode==13){
+			 $("#searchBtn").click();
+		 }
+	}
+	//筛选条件自动切换
+	function selectDeptName(){
+		$("#searchBtn").click();
+	}
 </script>
 </body>
 </html>
