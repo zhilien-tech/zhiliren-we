@@ -89,6 +89,7 @@
 						//更新成功 刷新任务栏
 						window.parent.taskEventList();
 						window.parent.reload();
+						window.parent.getTimeStr();
 						
 					},
 					error : function(xhr) {

@@ -219,6 +219,7 @@
 	  		if(maxCShow){
 	  			$("#maxCId").css('display','block');
 	  			$("#maxCalenderId").attr('checked','checked');
+	  			$('#calendar').empty();
 	  			calendarInit();
 	  		}
 	  		if(minCShow){
@@ -337,9 +338,16 @@
 			          }); 
 			          
 			          $('#calendar').fullCalendar('updateEvent', events);
+			      },
+			      eventMouseover:function( event, jsEvent, view ) {
+			    	  $('.fc-event-title').css('display','block');
+					  $('.fc-event-title').attr('title',event.title);
 			      }
 			  });
+		  
 	  }
+	
+	
 	</script>
 	<script type="text/javascript">
 		function reload(){
@@ -379,15 +387,9 @@
 	<script type="text/javascript">
 		function minCalendarInit(){
 			  $('#box-min .kalendae').attr('id','minCalen');//给小日历添加ID
-				
-			  //日历中添加红色圆点
-			 // $('.back').append('<i class="dot"></i>');
+			 
 			  //获取当前3个月事件
 			  getTimeStr();
-			  /* $('span[data-date="2016-12-06"]').append('<i class="dot"></i>');
-			  $('span[data-date="2016-12-09"]').append('<i class="dot"></i>');
-			  $('span[data-date="2016-12-10"]').append('<i class="dot"></i>'); */
-			  //end 日历中添加红色圆点
 			  
 			  $('.checkShow').click(function(){//显示提醒 显示/隐藏
 			      if($(this).prop('checked')){
@@ -423,8 +425,12 @@
 	            	timeStr: timeStr
 	            },
 	            success: function(data) {
-	            	$.each(eval(data), function (index, element) { 
+	            	$.each(eval(data), function (index, element) {
             			//显示小红点
+            			if($('span[data-date="'+element.gtime+'"]').children().find('i')){
+            				$('span[data-date="'+element.gtime+'"]').find('i').remove();
+            				
+            			}
 		            	$('span[data-date="'+element.gtime+'"]').append('<i class="dot"></i>');
 	            		
 	            		//小红点点击弹框事件
@@ -434,7 +440,7 @@
 	      			    		 this,
 	      			    		 {
 	      					        tips: [3, 'rgb(90, 90, 90)'],
-	      					        time: 3000
+	      					        time: 2000
 	      					     }
 		      			    );
 	      			  	});//end 如果有红色圆点，点击 显示小div信息 
