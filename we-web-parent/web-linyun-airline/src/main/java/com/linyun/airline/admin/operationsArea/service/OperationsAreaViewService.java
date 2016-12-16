@@ -171,7 +171,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		sql.params().set("now", DateTimeUtil.nowDateTime());
 		sql.setCallback(Sqls.callback.records());
 		List<Record> records = dbDao.query(sql, null, null);
-		//存取记录
+		/*//存取记录
 		List<Record> list = new ArrayList<Record>();
 		if (records.size() >= 5) {
 			for (int i = 0; i < 5; i++) {
@@ -183,9 +183,9 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			for (Record record : records) {
 				list.add(record);
 			}
-		}
+		}*/
 
-		return JsonUtil.toJson(list);
+		return JsonUtil.toJson(records);
 	}
 
 	/**
@@ -226,7 +226,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		checkEntity.setMinCShow(Long.valueOf(minC)); //小日历被勾选
 		//判断id是否存在， 存在则更新
 		if (!Util.isEmpty(userId)) {
-			dbDao.update(checkEntity, null);
+			dbDao.update(checkEntity);
 		} else {
 			dbDao.insert(checkEntity);
 		}

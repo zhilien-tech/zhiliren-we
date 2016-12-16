@@ -26,11 +26,12 @@
 			</div>
 			<div class="evevtTool cf">
 				<label>提醒：</label> 
-				<input id="datepicker" name="generateTimeString" type="text" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" <fmt:formatDate value="${obj.message.generateTime }" pattern="yyyy-MM-dd HH:mm:ss" />  placeholder="2016-12-05 13:20"/>
+				<input id="datepicker" name="generateTimeString" type="text" value="<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"  value="${obj.message.generateTime}" />" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="${obj.message.generateTime }"  placeholder="2016-12-05 13:20"/>
+				
 			</div>
 			<input type="hidden" id="id" name="id" value="${obj.message.id}"/>
 			<div class="evevtBttton">
-				<input id="submitBtn" type="button" class="btn btn-primary" onclick="update();" value="添加"/>
+				<input id="submitBtn" type="button" class="btn btn-primary" onclick="update();" value="更新"/>
 				<button type="button" class="btn btn-primary right" onclick="closewindow();">取消</button>
 			</div>
 		</form>
@@ -84,7 +85,11 @@
 						
 						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						parent.layer.close(index);
+						//window.location.reload();
+						//更新成功 刷新任务栏
 						window.parent.taskEventList();
+						window.parent.reload();
+						
 					},
 					error : function(xhr) {
 						layer.msg("更新失败", "", 3000);

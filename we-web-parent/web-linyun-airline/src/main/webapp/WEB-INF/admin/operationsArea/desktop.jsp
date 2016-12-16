@@ -149,8 +149,7 @@
 	<script src="${base}/public/dist/js/app.min.js"></script>
 	<!--大日历 js-->
 	<%-- <script src='${base}/public/plugins/fullcalendar/js/jquery-ui.css'></script> --%>
-	<script
-		src='${base}/public/plugins/fullcalendar/js/fullcalendar.min.js'></script>
+	<script src='${base}/public/plugins/fullcalendar/js/fullcalendar.min.js'></script>
 	<!--小日历 js-->
 	<script src="${base }/public/build/kalendae.standalone.js"
 		type="text/javascript" charset="utf-8"></script>
@@ -286,7 +285,7 @@
 			    	
 			    	var fStart = $.fullCalendar.formatDate(start,"yyyy-MM-dd hh:mm:ss"); 
 			    	var fEnd = $.fullCalendar.formatDate(end,"yyyy-MM-dd hh:mm:ss"); 
-			    
+			    	
 			        $.ajax({
 			            url: '/admin/operationsArea/getCustomEvents.html',
 			            dataType: 'json',
@@ -303,11 +302,11 @@
 			            }
 			        });
 			    },
-			    
 			    //點擊事件
 			    dayClick: function(date, allDay, jsEvent, view) {
 			     	  /* 自定义事件 弹框日期 */
 			      	  var selDate =$.fullCalendar.formatDate(date,'yyyy-MM-dd');
+			      	  
 			          layer.open({
 			              type: 2,
 			              title:false,
@@ -318,10 +317,10 @@
 			              closeBtn: false,
 			              content: '${base}/admin/operationsArea/customEvent.html?selDate='+selDate,
 			              end: function () {
-			            	  calendarInit();
+			            	  /* $.fancybox.close();  */
+			                  $('#calendar').fullCalendar('refetchEvents');
 			              }
 			          }); 
-			            
 			      },
 			      eventClick: function(calEvent, jsEvent, view) {
 			         /* 自定义事件 弹框日期 */
@@ -334,17 +333,19 @@
 			              maxmin: false, 
 			              area: ['400px', '275px'],
 			              closeBtn: false,
-			              content: '${base}/admin/operationsArea/updateCustomEvent.html?msgId='+ msgId,
-			              end: function () {
-			            	  calendarInit();
-			              }
+			              content: '${base}/admin/operationsArea/updateCustomEvent.html?msgId='+ msgId
 			          }); 
-			      },
-			      alDaylDefault : false
+			          
+			          $('#calendar').fullCalendar('updateEvent', events);
+			      }
 			  });
 	  }
 	</script>
-	<!-- end  大日历 -->
+	<script type="text/javascript">
+		function reload(){
+			$('#calendar').fullCalendar( 'refetchEvents' );
+		}
+	</script>
 
 	<!-- 自定义界面 -->
 	<script type="text/javascript">
@@ -369,7 +370,7 @@
 		
 		 /* 关闭自定义界面 */
 	    function closewindow(){
-	    	 layer.closeAll();
+	    	layer.closeAll();
 	    }
 	</script>
 	<!-- end 自定义界面 -->
@@ -380,7 +381,7 @@
 			  $('#box-min .kalendae').attr('id','minCalen');//给小日历添加ID
 				
 			  //日历中添加红色圆点
-			  $('.back').append('<i class="dot"></i>');
+			 // $('.back').append('<i class="dot"></i>');
 			  //获取当前3个月事件
 			  getTimeStr();
 			  /* $('span[data-date="2016-12-06"]').append('<i class="dot"></i>');
@@ -438,7 +439,6 @@
 		      			    );
 	      			  	});//end 如果有红色圆点，点击 显示小div信息 
 	      			  	
-	      			  	
 	                }); 
 	            }
 	       });
@@ -457,54 +457,5 @@
 		});
 	</script>
 	
-	<!-- 大日历年月选择 -->
-	<script type="text/javascript">
-		$.each(this.split(','), function(j, buttonName) {
-			if (buttonName == 'title') {
-			//e.append("<span class='fc-header-title'><h2>&nbsp;</h2></span>");
-			// modified feifei.im 下拉框选择年月
-			var selectHtml = '';
-			var i = 0;
-			selectHtml +="<span id='fc-dateSelect' class='fc-header-title'>";
-			selectHtml +="<select name='fcs_date_year' id='fcs_date_year' class='selectable m_year mr15'>";
-			// 循环年份
-			for(i=1901;i<=2100;i++){        
-			selectHtml +="<option value='"+i+"'>"+$.trim(i+"年")+"</option>";                        
-			}
-			selectHtml +="</select>";
-			selectHtml +="<select name='fcs_date_month' id='fcs_date_month' class='selectable m_year'>";
-			// 循环月份
-			var monthDigitCN = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'];
-			for(i=0;i<=11;i++){
-			selectHtml +="<option value='"+i+"'>" +$.trim(monthDigitCN[i]+"月") + "</option>";
-			}
-			selectHtml +="</select>";
-			selectHtml +="</span>";
-			e.append(selectHtml);
-			if (prevButton) {
-			    prevButton.addClass(tm + '-corner-right');
-			}
-			prevButton = null;
-		}
-			
-		function updateTitle(html) {
-	        //element.find('h2').html(html);
-	        // modified feifei.im 更新title时修改为下拉框
-		    var shtm = html.split(" ");
-		    if(shtm && shtm.length>1){
-		        $("#fcs_date_month").find("option").filter(function(){return ($(this).text() == $.trim(shtm[0]));}).prop('selected', true);
-		    $('#fcs_date_year option[value="'+$.trim(shtm[1])+'"]').prop('selected', true);
-		    }    
-		}
-		
-		/** 绑定事件到日期下拉框 **/
-		$(function(){
-		    $("#fc-dateSelect").delegate("select","change",function(){
-		        var fcsYear = $("#fcs_date_year").val();
-		        var fcsMonth = $("#fcs_date_month").val();
-		        $("#calendar").fullCalendar('gotoDate', fcsYear, fcsMonth);
-		    });
-		});
-	</script>
 </body>
 </html>

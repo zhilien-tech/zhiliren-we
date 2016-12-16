@@ -66,14 +66,7 @@
 							message : '提醒事件不能为空'
 						}
 					}
-				}/* ,
-				generateTimeString{
-					validators : {
-						notEmpty : {
-							message : '日期格式不正确'
-						}
-					}
-				} */
+				}
 			}
 		});
 
@@ -94,9 +87,10 @@
 					success : function(data) {
 						//formValidator();
 						layer.msg("添加成功", "", 3000);
+						//保存成功 刷新任务栏
+						window.parent.taskEventList();
 						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						parent.layer.close(index);
-						window.parent.taskEventList();
 					},
 					error : function(xhr) {
 						layer.msg("添加失败", "", 3000);
@@ -108,7 +102,6 @@
 		
 		//关闭窗口
 		function closewindow() {
-			window.parent.location.reload(); 
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			parent.layer.close(index);
 		}
