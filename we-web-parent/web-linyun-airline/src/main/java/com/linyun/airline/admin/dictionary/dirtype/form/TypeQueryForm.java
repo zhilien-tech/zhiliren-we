@@ -35,7 +35,7 @@ public class TypeQueryForm extends QueryForm {
 	@Condition(match = MatchType.EQ)
 	private int status = DataStatusEnum.ENABLE.intKey();
 
-	//按状态查询
+	//按字典类别编码查询
 	@Condition(match = MatchType.LIKE)
 	private String typeCode;
 
@@ -45,7 +45,9 @@ public class TypeQueryForm extends QueryForm {
 	@Override
 	public Cnd createCnd() {
 		Cnd cnd = super.createCnd();
-		cnd.orderBy("status", "DESC").orderBy("createTime", "DESC");
+		cnd.orderBy("id", "DESC");
+		cnd.orderBy("status", "DESC");
+		cnd.orderBy("createTime", "DESC");
 		return cnd;
 	}
 

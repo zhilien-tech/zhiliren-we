@@ -13,9 +13,12 @@
         <li class="header">菜单栏</li>
         <!-- Optionally, you can add icons to the links -->
         <%-- <li><a href="${base}/admin/customer/list.html"><i class="fa fa-users"></i><span>员工管理</span></a></li> --%>
+		<li><a href="${base}/admin/authority/authoritymanage/list.html"><i class="fa fa-users"></i><span>权限管理</span></a></li>
+        <li><a href="${base}/admin/operationsArea/desktop.html"><i class="fa fa-tv"></i><span>桌面</span></a></li>
         <li><a href="${base}/admin/Company/list.html"><i class="fa fa-users"></i><span>公司管理</span></a></li>
         <li><a href="${base}/admin/customer/list.html"><i class="fa fa-user-secret"></i><span>客户管理</span></a></li>
         <li><a href="${base}/admin/customneeds/list.html"><i class="fa fa-plane"></i><span>航空公司模块</span></a></li>
+		<li><a href="${base}/admin/authority/companyfunction/companyList.html"><i class="fa fa-user-secret"></i><span>公司权限配置</span></a></li>
         <%-- <li><a href="${base}/admin/authority/function/list.html"><i class="fa fa-user-secret"></i><span>功能管理</span></a></li> --%>
         <li><a href="${base}/admin/authority/companyfunction/companyList.html"><i class="fa fa-user-secret"></i><span>公司权限配置</span></a></li>
          <%-- <li class="treeview">

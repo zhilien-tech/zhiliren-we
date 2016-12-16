@@ -39,4 +39,7 @@ public class CommonConstants {
 	 */
 	public static final String IMAGES_SERVER_ADDR = "http://123.57.46.249/";
 
+	/**无效数据id*/
+	public static final int INVALID_DATA_ID = -1;
+
 }

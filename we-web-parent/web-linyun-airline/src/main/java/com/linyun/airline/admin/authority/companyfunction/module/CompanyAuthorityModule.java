@@ -11,8 +11,8 @@ import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.Company.form.TCompanySqlForm;
+import com.linyun.airline.admin.authority.companyfunction.form.CompanyFuctionForm;
 import com.linyun.airline.admin.authority.companyfunction.service.CompanyAuthorityService;
-import com.linyun.airline.forms.TCompanyUpdateForm;
 import com.uxuexi.core.web.chain.support.JsonResult;
 
 @IocBean
@@ -51,9 +51,9 @@ public class CompanyAuthorityModule {
 	 */
 	@At
 	@POST
-	public Object update(@Param("..") TCompanyUpdateForm updateForm) {
+	public Object update(@Param("..") CompanyFuctionForm updateForm) {
 		try {
-			companyAuthorityService.updateCompany(updateForm);
+			companyAuthorityService.updateComFunctions(updateForm);
 			return JsonResult.success("修改成功");
 		} catch (Exception e) {
 			e.printStackTrace();

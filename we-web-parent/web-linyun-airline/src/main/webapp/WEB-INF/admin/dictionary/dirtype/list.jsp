@@ -100,7 +100,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
-								<table id="example2" class="table table-bordered table-hover">
+								<table id="datatable" class="table table-bordered table-hover">
 									<thead>
 										<tr>
 											<th>字典类别编码</th>
@@ -126,7 +126,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 												<a href="${base}/admin/dictionary/dirtype/update.html?id=${one.id}"
 													data-toggle="modal" id="editBtn"
 													class="btn btn_mini btn_modify" data-target="#editTabs">编辑</a>
-													<%--这里如果有写title，则需要确认才会操作--%> 
+													<!-- 这里如果有写title，则需要确认才会操作  -->
 													<c:choose>
 														<c:when test="${1 == one.status}">
 															<a href='javascript:physicalDelete(${one.id},2);'
@@ -245,16 +245,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	<script type="text/javascript">
 		var datatable;
 		function initDatatable() {
-			datatable = $('#example2').DataTable({
+			datatable = $('#datatable').DataTable({
 				"searching" : false,
 				"processing" : true,
 				"serverSide" : false,
 				"bLengthChange" : false,
+				"bSort": true, //排序功能 
 				"language" : {
-				"url" : "${base}/public/plugins/datatables/cn.json"
+					"url" : "${base}/public/plugins/datatables/cn.json"
 				}
 			});
 		}
+		/* $(document).ready(function(){
+			$('#datatable').dataTable({
+			"aoColumns": [
+				null,
+			{"asSorting":["desc"]}
+			]
+			});
+			}); */
 		$(function() {
 			initDatatable();
 		});

@@ -23,6 +23,10 @@ public class TAreaEntity implements Serializable {
 	private String areaName;
 
 	@Column
+	@Comment("字典信息id")
+	private String infoId;
+
+	@Column
 	@Comment("备注")
 	private String remark;
 

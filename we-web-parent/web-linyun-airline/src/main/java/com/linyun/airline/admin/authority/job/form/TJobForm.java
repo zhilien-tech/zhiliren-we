@@ -1,10 +1,10 @@
 package com.linyun.airline.admin.authority.job.form;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 
-import org.joda.time.DateTime;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
@@ -27,7 +27,7 @@ public class TJobForm implements SQLParamForm, Serializable {
 	private String name;
 
 	/**创建时间*/
-	private DateTime createTime;
+	private Date createTime;
 
 	/**备注*/
 	private String remark;

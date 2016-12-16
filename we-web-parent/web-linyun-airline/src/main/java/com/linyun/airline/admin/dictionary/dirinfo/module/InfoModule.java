@@ -13,6 +13,8 @@ import java.util.Map;
 
 import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
+import org.nutz.dao.SqlManager;
+import org.nutz.dao.entity.Record;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -22,17 +24,18 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
+import com.google.common.collect.Lists;
+import com.linyun.airline.admin.dictionary.dirinfo.dto.DictInfoDto;
 import com.linyun.airline.admin.dictionary.dirinfo.form.InfoAddForm;
 import com.linyun.airline.admin.dictionary.dirinfo.form.InfoModForm;
-import com.linyun.airline.admin.dictionary.dirinfo.form.InfoQueryForm;
+import com.linyun.airline.admin.dictionary.dirinfo.form.InfoSqlForm;
 import com.linyun.airline.admin.dictionary.dirinfo.service.IInfoService;
 import com.linyun.airline.admin.dictionary.dirinfo.service.impl.InfoServiceImpl;
 import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.common.form.AlterStatusForm;
 import com.linyun.airline.entities.DictInfoEntity;
-import com.linyun.airline.entities.DictTypeEntity;
-import com.linyun.airline.forms.DictInfoSqlForm;
 import com.uxuexi.core.common.util.EnumUtil;
+import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
@@ -54,6 +57,9 @@ public class InfoModule {
 	private IDbDao dbDao;
 
 	@Inject
+	private SqlManager sqlManager;
+
+	@Inject
 	private IInfoService iInfoService;
 
 	@Inject
@@ -65,8 +71,9 @@ public class InfoModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object add() {
-		return dbDao.query(DictTypeEntity.class, null, null);
+	public Object add(@Param("id") final long id) {
+		Map<String, Object> map = iInfoService.findDirinfo(id);
+		return map;
 	}
 
 	/**
@@ -109,13 +116,15 @@ public class InfoModule {
 	 * 分页查询
 	 * <P>
 	 * 
-	 * @param queryForm  查询表单
-	 * @param pager      分页对象
+	 * @param sqlForm  查询表单
+	 * @param pager    分页对象
 	 */
 	@At
 	@Ok("jsp")
-	public Object list(@Param("..") final InfoQueryForm queryForm, @Param("..") final Pager pager) {
-		Map<String, Object> map = FormUtil.query(dbDao, DictInfoEntity.class, queryForm, pager);
+	public Object list(@Param("..") final InfoSqlForm sqlForm, @Param("..") final Pager pager) {
+		Map<String, Object> map = MapUtil.map();
+		List<Record> deplist = infoService.getTypeNameSelect(sqlManager);
+		map.put("deplist", deplist);
 		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));
 		return map;
 	}
@@ -158,11 +167,29 @@ public class InfoModule {
 	}
 
 	/**
-	 * 分页查询
+	 * 服务端分页查询
 	 */
 	@At
-	public Object listData(@Param("..") final DictInfoSqlForm paramForm) {
-		return infoService.listPage4Datatables(paramForm);
+	public Object listData(@Param("..") final InfoSqlForm sqlForm) {
+		Map<String, Object> map = infoService.listPage4Datatables(sqlForm);
+		List<Record> list = (List<Record>) map.get("data");
+		List<DictInfoDto> lst = Lists.newArrayList();
+		if (!Util.isEmpty(list)) {
+			for (Record r : list) {
+				DictInfoDto en = new DictInfoDto();
+				en.setStatus(r.getInt("status"));
+				en.setId(r.getInt("id"));
+				en.setDictcode(r.getString("dictCode"));
+				en.setTypecode(r.getString("typeCode"));
+				en.setDictname(r.getString("dictName"));
+				en.setDescription(r.getString("description"));
+				en.setTypename(r.getString("typeName"));
+				en.setCreatetime(r.getTimestamp("createTime"));
+				lst.add(en);
+			}
+		}
+		map.put("data", lst);
+		return map;
 	}
 
 	/**
@@ -170,11 +197,39 @@ public class InfoModule {
 	 */
 	@At
 	@POST
-	public Object checkTypeCodeExist(@Param("dictCode") final String Code) {
+	public Object checkTypeCodeExist(@Param("dictCode") final String Code, @Param("id") final long id) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<DictInfoEntity> listCode = dbDao.query(DictInfoEntity.class, Cnd.where("dictCode", "=", Code), null);
+		List<DictInfoEntity> listCode2 = dbDao.query(DictInfoEntity.class,
+				Cnd.where("dictCode", "=", Code).and("id", "=", id), null);
 		if (!Util.isEmpty(listCode)) {
-			map.put("valid", false);
+			if (Util.isEmpty(id)) {
+				map.put("valid", false);
+			} else if (!Util.isEmpty(listCode2)) {
+				map.put("valid", true);
+			}
+		} else {
+			map.put("valid", true);
+		}
+		return map;
+	}
+
+	/**
+	 * 校验字典信息名称
+	 */
+	@At
+	@POST
+	public Object checkDictNameExist(@Param("dictName") final String Name, @Param("id") final long id) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<DictInfoEntity> listName = dbDao.query(DictInfoEntity.class, Cnd.where("dictName", "=", Name), null);
+		List<DictInfoEntity> listName2 = dbDao.query(DictInfoEntity.class,
+				Cnd.where("dictName", "=", Name).and("id", "=", id), null);
+		if (!Util.isEmpty(listName)) {
+			if (Util.isEmpty(id)) {
+				map.put("valid", false);
+			} else if (!Util.isEmpty(listName2)) {
+				map.put("valid", true);
+			}
 		} else {
 			map.put("valid", true);
 		}

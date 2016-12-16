@@ -6,13 +6,14 @@
 
 package com.linyun.airline.admin.authority.job.form;
 
+import java.util.Date;
+
 import javax.validation.constraints.Pattern;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.DateTime;
 
 import com.uxuexi.core.web.form.ModForm;
 
@@ -33,7 +34,7 @@ public class TJobModForm extends ModForm {
 	private String name;
 
 	/**创建时间*/
-	private DateTime createTime;
+	private Date createTime;
 
 	/**备注*/
 	private String remark;

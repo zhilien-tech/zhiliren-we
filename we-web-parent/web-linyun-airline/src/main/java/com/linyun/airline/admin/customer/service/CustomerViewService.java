@@ -32,6 +32,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.linyun.airline.admin.Company.service.CompanyViewService;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
+import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
@@ -43,6 +44,7 @@ import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TCustomerInvoiceEntity;
 import com.linyun.airline.entities.TCustomerLineEntity;
 import com.linyun.airline.entities.TCustomerOutcityEntity;
+import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
 import com.linyun.airline.forms.TCustomerInfoUpdateForm;
@@ -126,7 +128,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 * @param addForm
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object addCustomInfo(TCustomerInfoAddForm addForm) {
+	public Object addCustomInfo(HttpSession session, TCustomerInfoAddForm addForm) {
 
 		if (!Util.isEmpty(addForm.getContractDueTimeString())) {
 			//客户信息保存
@@ -135,7 +137,14 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		if (!Util.isEmpty(addForm.getContractTimeString())) {
 			addForm.setContractTime(DateUtil.string2Date(addForm.getContractTimeString(), "yyyy-MM-dd"));
 		}
-
+		//得到当前用户所在公司的id
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
+		if (Util.isEmpty(upcompany)) {
+			throw new IllegalArgumentException("用户上游公司不存在，companyId：" + companyId);
+		}
+		addForm.setUpComId(upcompany.getId());
 		TCustomerInfoEntity customerInfo = this.add(addForm);
 
 		//出发城市城市截取
@@ -385,6 +394,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		if (!Util.isEmpty(updateForm.getContractTimeString())) {
 			updateForm.setContractTime(DateUtil.string2Date(updateForm.getContractTimeString(), "yyyy-MM-dd"));
 		}
+
 		this.update(updateForm);
 
 		//出发城市城市截取

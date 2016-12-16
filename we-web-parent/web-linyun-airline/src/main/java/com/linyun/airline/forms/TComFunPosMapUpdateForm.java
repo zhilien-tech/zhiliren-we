@@ -16,6 +16,6 @@ public class TComFunPosMapUpdateForm extends ModForm implements Serializable {
 	private long jobId;
 
 	/**公司功能id*/
-	private long funId;
+	private long companyFunId;
 
 }
