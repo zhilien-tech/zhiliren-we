@@ -138,7 +138,11 @@ public class LoginServiceImpl extends BaseService<TUserEntity> implements LoginS
 
 	@Override
 	public void logout(HttpSession session) {
+		session.removeAttribute(USER_COMPANY_KEY);
+		session.removeAttribute(FUNCTION_MAP_KEY);
+		session.removeAttribute(MENU_KEY);
 		session.removeAttribute(AUTHS_KEY);
+		session.removeAttribute(LOGINUSER);
 		session.removeAttribute(IS_LOGIN_KEY);
 		session.invalidate();
 	}

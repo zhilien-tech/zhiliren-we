@@ -153,14 +153,14 @@
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="${base}/admin/logout.html" class="btn btn-default btn-flat">退出登录</a>
                 </div>
               </li>
             </ul>
           </li>
           <!-- Control Sidebar Toggle Button -->
           <li>
-             <a href="${base}/admin/login.html" data-toggle="control-sidebar">退出</a>
+             <a href="${base}/admin/logout.html">退出</a>
           </li>
         </ul>
       </div>
