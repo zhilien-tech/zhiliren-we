@@ -35,7 +35,7 @@
             <h4 class="padLeft" id="companyCount"></h4>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="datatable" class="table table-bordered table-hover" style="width: 100%;">
+              <table id="datatables" class="table table-bordered table-hover" style="width: 100%;">
                 <thead>
                 <tr>
                   <th>　 公司名称</th>
@@ -81,7 +81,7 @@
 <script>
 var datatable;
 function initDatatable() {
-    datatable = $('#datatable').DataTable({
+    datatable = $('#datatables').DataTable({
     	"searching":false,
     	"bLengthChange": false,
         "processing": true,
@@ -144,7 +144,7 @@ $(function () {
     	    fix: false,
     	    maxmin: false,
     	    shadeClose: false,
-    	    area: ['900px', '700px'],
+    	    area: ['900px', '590px'],
     	    content: '${url}/add.html'
     	    
     	  });

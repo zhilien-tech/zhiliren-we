@@ -35,7 +35,7 @@ function initDatatable1() {
                     },
                     {"data": "leavescity", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		return row.leavescity + "-" + row.backscity;
+                    		return row.leavescity;
                     	}
                     },
                     {"data": "backsdate", "bSortable": false,
@@ -47,7 +47,7 @@ function initDatatable1() {
                     },
                     {"data": "backscity", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		return row.backscity + "-" + row.leavescity;
+                    		return row.backscity;
                     	}	
                     },
                     {"data": "peoplecount", "bSortable": false},
@@ -348,8 +348,8 @@ function initSelect2(){
 	
 }
 
-//计划制作的 时间选择
-function select_change(obj){
+//计划制作的 时间选择  obj当前div对象   status  是否显示过渡效果
+function select_change(obj,status){
    var seleValue=$(obj).find("option:selected").attr("value");
    var addMake_aa = $(obj).closest(".aa") ; 
    if (seleValue==2) {
@@ -357,10 +357,17 @@ function select_change(obj){
         addMake_aa.find('.hidnCalendar').slideDown("slow");//div show
         addMake_aa.find('.hidnBtn').slideDown("slow");//show 隐藏日历 按钮
      }else{
-       addMake_aa.find('.checkWeek').slideDown("slow");//checked show
-       addMake_aa.find('.hidnCalendar').slideUp("slow");//div hide
-       addMake_aa.find('.hidnBtn').slideUp("slow");//hide 隐藏日历 按钮
-       addMake_aa.find('.showBtn').slideUp("slow");
+    	 if(status){
+    		 addMake_aa.find('.checkWeek').show();//checked show
+    		 addMake_aa.find('.hidnCalendar').hide();//div hide
+    		 addMake_aa.find('.hidnBtn').hide();//hide 隐藏日历 按钮
+    		 addMake_aa.find('.showBtn').hide();
+    	 }else{
+    		 addMake_aa.find('.checkWeek').slideDown("slow");//checked show
+    		 addMake_aa.find('.hidnCalendar').slideUp("slow");//div hide
+    		 addMake_aa.find('.hidnBtn').slideUp("slow");//hide 隐藏日历 按钮
+    		 addMake_aa.find('.showBtn').slideUp("slow");
+    	 }
   };
 }
 
@@ -418,8 +425,8 @@ $(function () {
 			   //设置新的结束日期控件ID
 			   var enddate = $(this).find('[name=enddate]');
 			   enddate.attr("id","enddate"+i);*/
-			   //startdate.attr("onFocus","WdatePicker({maxDate:'#F{$dp.$D(\'enddate"+i+"\')}'})");
-			   //enddate.attr("onFocus","WdatePicker({minDate:'#F{$dp.$D(\'startdate"+i+"\')}'})");
+			   //startdate.attr("onFocus","WdatePicker({maxDate:'#F{$dp.$D(\\'enddate"+i+"\\')}'})");
+			   //enddate.attr("onFocus","WdatePicker({minDate:'#F{$dp.$D(\\'startdate"+i+"\\')}'})");
 			   //显示按钮 
 			   var showbutton = $(this).find('[name=showbutton]');
 			   showbutton.attr("id","showbutton"+i);
@@ -441,7 +448,7 @@ $(function () {
 		   }
 	   });
 	   initSelect2();
-	   select_change(newDiv.find('[id=weekSelect]'));
+	   select_change(newDiv.find('[id=weekSelect]'),1);
 	   var No = parseInt(divTest.find("p").html())+1;   //假设你用p标签显示序号
 	   newDiv.find("p").html(No);  
 	})
@@ -543,10 +550,10 @@ function makePlan(){
 				data: param, 
 				url: BASE_PATH + '/admin/customneeds/airlineMakePlan.html',
 	            success: function (data) {
+	            	datatable1.ajax.reload();
 	            	if(divlength-1 == i){
 	            		layer.closeAll('loading');
 	            		layer.msg("制作成功",{time: 2000, icon:1});
-	            		datatable1.ajax.reload();
 	            	}
 	            },
 	            error: function (xhr) {
