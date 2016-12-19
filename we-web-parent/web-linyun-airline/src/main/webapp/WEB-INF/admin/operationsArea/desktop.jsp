@@ -89,6 +89,7 @@
 						</div>
 					</div>
 					<!--end 小日历-->
+					<input id="minCalId" type="hidden" >
 
 				</div>
 			</section>
@@ -141,8 +142,7 @@
 	<!-- Bootstrap 3.3.6 -->
 	<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
 	<!-- Slimscroll -->
-	<script
-		src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+	<script src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 	<!-- FastClick -->
 	<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
 	<!-- AdminLTE App -->
@@ -151,8 +151,7 @@
 	<%-- <script src='${base}/public/plugins/fullcalendar/js/jquery-ui.css'></script> --%>
 	<script src='${base}/public/plugins/fullcalendar/js/fullcalendar.min.js'></script>
 	<!--小日历 js-->
-	<script src="${base }/public/build/kalendae.standalone.js"
-		type="text/javascript" charset="utf-8"></script>
+	<script src="${base }/public/build/kalendae.standalone.js" type="text/javascript" charset="utf-8"></script>
 	<script src="${base}/common/js/layer/layer.js"></script>
 	<script type="text/javascript">
 		new Kalendae({//小日历 创建
@@ -178,20 +177,21 @@
 			calendarInit();
 			/* 任务提醒 */
 			taskEventList();
-			/*自定义事件*/
+			/*自定义界面选择*/
 			customInterfaces();
-			/*自定义界面*/
+			/*模块展示页面*/
 			checkBoxShow();
 			/*小日历*/
 			minCalendarInit();
+			
 		});
 	</script>
 
+	
 	<!-- 自定义界面保存 -->
 	<script type="text/javascript">
    		function checkboxSave(){
    			$.ajax({
-                cache: true,
                 type: "POST",
                 url:'${base}/admin/operationsArea/setCheckBox.html',
                 data:$('#checkboxform').serialize(),
@@ -360,7 +360,34 @@
 		function customInterfaces(){
 			 /*-----自定义界面 js-----*/
 		    $('.customInterface').on('click',function(){
-		         layer.open({
+		    	$.ajax({
+	                type: "POST",
+	                url:'${base}/admin/operationsArea/getCheckBox.html',
+	                success: function(data) {
+	                	var taskShow = ${obj.checkBox.taskShow};
+	        	  		var maxCShow = ${obj.checkBox.maxCShow};
+	        	  		var minCShow = ${obj.checkBox.minCShow};
+	        	  		if(taskShow){
+	        	  			$("#taskBoxId").prop('checked',true);
+	        	  		}else{
+	        	  			$("#taskBoxId").prop('checked',false);
+	        	  		}
+	        	  		if(maxCShow){
+	        	  			$("#maxCalenderId").prop('checked',true);
+	        	  		}else{
+	        	  			$("#maxCalenderId").prop('checked',false);
+	        	  		}
+	        	  		if(minCShow){
+	        	  			$("#minCalenderId").prop('checked',true);
+	        	  		}else{
+	        	  			$("#minCalenderId").prop('checked',false);
+	        	  		}
+	                },
+					error: function(request) {
+	                    
+	                }
+	            });
+		        layer.open({
 		            type: 1, //Page层类型
 		            area: ['350px', '125px'],
 		            title: false,
@@ -378,6 +405,7 @@
 		
 		 /* 关闭自定义界面 */
 	    function closewindow(){
+	    	//getCheckBox();
 	    	layer.closeAll();
 	    }
 	</script>
@@ -435,14 +463,31 @@
 	            		
 	            		//小红点点击弹框事件
 	            		$(document).on('click','span[data-date="'+ element.gtime +'"]',function(){//如果有红色圆点，点击 显示小div信息
-		      			    layer.tips(
-		      			    	 element.msgcontent, 
+	            			$.ajax({
+	        		            url: '/admin/operationsArea/getMinCal.html',
+	        		            dataType: 'json',
+	        		            type: 'POST',
+	        		            async:false,
+	        		            data: {
+	        		            	gtime: element.gtime
+	        		            },
+	        		            success: function(data) {
+	        		            	$.each(eval(data), function (index, element) {
+	        		            		$("#minCalId").val("");
+	        		            		$("#minCalId").val(element.msgcontent);
+	        		                }); 
+	        		            }
+	        		        });
+	            		
+	            			layer.tips(
+	            				 $("#minCalId").val(), 
 	      			    		 this,
 	      			    		 {
 	      					        tips: [3, 'rgb(90, 90, 90)'],
-	      					        time: 2000
+	      					        time: 3000
 	      					     }
 		      			    );
+	            		
 	      			  	});//end 如果有红色圆点，点击 显示小div信息 
 	      			  	
 	                }); 
@@ -452,6 +497,7 @@
 		
 	
 	</script>
+
 	<script type="text/javascript">
 		//小日历上一个按钮
 		$(".k-btn-previous-month").click(function(){

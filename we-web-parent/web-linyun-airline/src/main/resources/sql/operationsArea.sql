@@ -89,3 +89,16 @@ WHERE
 OR date_format(m.generateTime, '%Y-%m') = date_format(@MincalTimes2,'%Y-%m')
 OR date_format(m.generateTime, '%Y-%m') = date_format(@MincalTimes3,'%Y-%m')
 
+/*msg_type*/
+SELECT DISTINCT
+	(
+	DATE_FORMAT(m.generateTime, '%Y-%m-%d')
+	) AS gtime,
+	m.msgContent,
+	m.msgType
+FROM
+	t_message m
+WHERE
+	date_format(m.generateTime, '%Y-%m-%d') = date_format(@MincalTimes1,'%Y-%m-%d')
+
+

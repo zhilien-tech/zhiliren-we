@@ -262,7 +262,6 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long id = loginUser.getId();
 
-		Map<String, Object> obj = new HashMap<String, Object>();
 		Sql sql = Sqls.create(sqlManager.get("msg_type_list"));
 		Date date1 = DateUtil.string2Date(timeStr);
 		Date date2 = DateUtil.addMonth(date1, 1);
@@ -278,6 +277,49 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		Set<String> set = new HashSet<String>();
 
 		List<Record> rList = dbDao.query(sql, null, null);
+		for (Record record : rList) {
+			set.add(record.getString("gtime"));
+		}
+		List<Map<String, Object>> resultlist = new ArrayList<Map<String, Object>>();
+		for (String datestr : set) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("gtime", datestr);
+			String msgcontent = "";
+			for (Record r : rList) {
+				if (datestr.equals(r.getString("gtime"))) {
+					msgcontent += r.getString("msgcontent") + "<br/>";
+				}
+			}
+			map.put("msgcontent", msgcontent);
+			resultlist.add(map);
+		}
+		return JsonUtil.toJson(resultlist);
+	}
+
+	/**
+	 * 
+	 * TODO(查询当天的自定义事件)
+	 * <p>
+	 * TODO(以后查询 飞机票相关的事件)
+	 *
+	 * @param id
+	 * @param timeStr   格式"2016-10"
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object getMinCal(HttpSession session, String timeStr) {
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long id = loginUser.getId();
+
+		Sql sql = Sqls.create(sqlManager.get("msg_type"));
+		Date date1 = DateUtil.string2Date(timeStr);
+		if (!Util.isEmpty(id)) {
+			sql.params().set("userId", id);
+		}
+		sql.params().set("MincalTimes1", date1);
+		List<Record> rList = dbDao.query(sql, null, null);
+
+		Set<String> set = new HashSet<String>();
 		for (Record record : rList) {
 			set.add(record.getString("gtime"));
 		}
