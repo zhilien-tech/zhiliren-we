@@ -28,6 +28,7 @@
 		}
 		.form-control-feedback {position: absolute;top: -2px;right: -25px;}
 		html, body {min-height: 0;min-width: 0;overflow-x: auto !important;}
+		.modal-body{height: 515px; overflow-y: auto;}
 	</style>
 </head>
 <body onresize=hero();>

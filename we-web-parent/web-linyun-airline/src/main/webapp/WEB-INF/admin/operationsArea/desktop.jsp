@@ -89,6 +89,7 @@
 						</div>
 					</div>
 					<!--end 小日历-->
+					<input id="minCalId" type="hidden" >
 
 				</div>
 			</section>
@@ -141,19 +142,16 @@
 	<!-- Bootstrap 3.3.6 -->
 	<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
 	<!-- Slimscroll -->
-	<script
-		src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+	<script src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 	<!-- FastClick -->
 	<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
 	<!-- AdminLTE App -->
 	<script src="${base}/public/dist/js/app.min.js"></script>
 	<!--大日历 js-->
 	<%-- <script src='${base}/public/plugins/fullcalendar/js/jquery-ui.css'></script> --%>
-	<script
-		src='${base}/public/plugins/fullcalendar/js/fullcalendar.min.js'></script>
+	<script src='${base}/public/plugins/fullcalendar/js/fullcalendar.min.js'></script>
 	<!--小日历 js-->
-	<script src="${base }/public/build/kalendae.standalone.js"
-		type="text/javascript" charset="utf-8"></script>
+	<script src="${base }/public/build/kalendae.standalone.js" type="text/javascript" charset="utf-8"></script>
 	<script src="${base}/common/js/layer/layer.js"></script>
 	<script type="text/javascript">
 		new Kalendae({//小日历 创建
@@ -179,20 +177,21 @@
 			calendarInit();
 			/* 任务提醒 */
 			taskEventList();
-			/*自定义事件*/
+			/*自定义界面选择*/
 			customInterfaces();
-			/*自定义界面*/
+			/*模块展示页面*/
 			checkBoxShow();
 			/*小日历*/
 			minCalendarInit();
+			
 		});
 	</script>
 
+	
 	<!-- 自定义界面保存 -->
 	<script type="text/javascript">
    		function checkboxSave(){
    			$.ajax({
-                cache: true,
                 type: "POST",
                 url:'${base}/admin/operationsArea/setCheckBox.html',
                 data:$('#checkboxform').serialize(),
@@ -220,6 +219,7 @@
 	  		if(maxCShow){
 	  			$("#maxCId").css('display','block');
 	  			$("#maxCalenderId").attr('checked','checked');
+	  			$('#calendar').empty();
 	  			calendarInit();
 	  		}
 	  		if(minCShow){
@@ -286,7 +286,7 @@
 			    	
 			    	var fStart = $.fullCalendar.formatDate(start,"yyyy-MM-dd hh:mm:ss"); 
 			    	var fEnd = $.fullCalendar.formatDate(end,"yyyy-MM-dd hh:mm:ss"); 
-			    
+			    	
 			        $.ajax({
 			            url: '/admin/operationsArea/getCustomEvents.html',
 			            dataType: 'json',
@@ -303,11 +303,11 @@
 			            }
 			        });
 			    },
-			    
 			    //點擊事件
 			    dayClick: function(date, allDay, jsEvent, view) {
 			     	  /* 自定义事件 弹框日期 */
 			      	  var selDate =$.fullCalendar.formatDate(date,'yyyy-MM-dd');
+			      	  
 			          layer.open({
 			              type: 2,
 			              title:false,
@@ -318,10 +318,10 @@
 			              closeBtn: false,
 			              content: '${base}/admin/operationsArea/customEvent.html?selDate='+selDate,
 			              end: function () {
-			            	  calendarInit();
+			            	  /* $.fancybox.close();  */
+			                  $('#calendar').fullCalendar('refetchEvents');
 			              }
 			          }); 
-			            
 			      },
 			      eventClick: function(calEvent, jsEvent, view) {
 			         /* 自定义事件 弹框日期 */
@@ -334,24 +334,60 @@
 			              maxmin: false, 
 			              area: ['400px', '275px'],
 			              closeBtn: false,
-			              content: '${base}/admin/operationsArea/updateCustomEvent.html?msgId='+ msgId,
-			              end: function () {
-			            	  calendarInit();
-			              }
+			              content: '${base}/admin/operationsArea/updateCustomEvent.html?msgId='+ msgId
 			          }); 
+			          
+			          $('#calendar').fullCalendar('updateEvent', events);
 			      },
-			      alDaylDefault : false
+			      eventMouseover:function( event, jsEvent, view ) {
+			    	  $('.fc-event-title').css('display','block');
+					  $('.fc-event-title').attr('title',event.title);
+			      }
 			  });
+		  
 	  }
+	
+	
 	</script>
-	<!-- end  大日历 -->
+	<script type="text/javascript">
+		function reload(){
+			$('#calendar').fullCalendar( 'refetchEvents' );
+		}
+	</script>
 
 	<!-- 自定义界面 -->
 	<script type="text/javascript">
 		function customInterfaces(){
 			 /*-----自定义界面 js-----*/
 		    $('.customInterface').on('click',function(){
-		         layer.open({
+		    	$.ajax({
+	                type: "POST",
+	                url:'${base}/admin/operationsArea/getCheckBox.html',
+	                success: function(data) {
+	                	var taskShow = ${obj.checkBox.taskShow};
+	        	  		var maxCShow = ${obj.checkBox.maxCShow};
+	        	  		var minCShow = ${obj.checkBox.minCShow};
+	        	  		if(taskShow){
+	        	  			$("#taskBoxId").prop('checked',true);
+	        	  		}else{
+	        	  			$("#taskBoxId").prop('checked',false);
+	        	  		}
+	        	  		if(maxCShow){
+	        	  			$("#maxCalenderId").prop('checked',true);
+	        	  		}else{
+	        	  			$("#maxCalenderId").prop('checked',false);
+	        	  		}
+	        	  		if(minCShow){
+	        	  			$("#minCalenderId").prop('checked',true);
+	        	  		}else{
+	        	  			$("#minCalenderId").prop('checked',false);
+	        	  		}
+	                },
+					error: function(request) {
+	                    
+	                }
+	            });
+		        layer.open({
 		            type: 1, //Page层类型
 		            area: ['350px', '125px'],
 		            title: false,
@@ -369,7 +405,8 @@
 		
 		 /* 关闭自定义界面 */
 	    function closewindow(){
-	    	 layer.closeAll();
+	    	//getCheckBox();
+	    	layer.closeAll();
 	    }
 	</script>
 	<!-- end 自定义界面 -->
@@ -378,15 +415,9 @@
 	<script type="text/javascript">
 		function minCalendarInit(){
 			  $('#box-min .kalendae').attr('id','minCalen');//给小日历添加ID
-				
-			  //日历中添加红色圆点
-			  $('.back').append('<i class="dot"></i>');
+			 
 			  //获取当前3个月事件
 			  getTimeStr();
-			  /* $('span[data-date="2016-12-06"]').append('<i class="dot"></i>');
-			  $('span[data-date="2016-12-09"]').append('<i class="dot"></i>');
-			  $('span[data-date="2016-12-10"]').append('<i class="dot"></i>'); */
-			  //end 日历中添加红色圆点
 			  
 			  $('.checkShow').click(function(){//显示提醒 显示/隐藏
 			      if($(this).prop('checked')){
@@ -422,22 +453,42 @@
 	            	timeStr: timeStr
 	            },
 	            success: function(data) {
-	            	$.each(eval(data), function (index, element) { 
+	            	$.each(eval(data), function (index, element) {
             			//显示小红点
+            			if($('span[data-date="'+element.gtime+'"]').children().find('i')){
+            				$('span[data-date="'+element.gtime+'"]').find('i').remove();
+            				
+            			}
 		            	$('span[data-date="'+element.gtime+'"]').append('<i class="dot"></i>');
 	            		
 	            		//小红点点击弹框事件
 	            		$(document).on('click','span[data-date="'+ element.gtime +'"]',function(){//如果有红色圆点，点击 显示小div信息
-		      			    layer.tips(
-		      			    	 element.msgcontent, 
+	            			$.ajax({
+	        		            url: '/admin/operationsArea/getMinCal.html',
+	        		            dataType: 'json',
+	        		            type: 'POST',
+	        		            async:false,
+	        		            data: {
+	        		            	gtime: element.gtime
+	        		            },
+	        		            success: function(data) {
+	        		            	$.each(eval(data), function (index, element) {
+	        		            		$("#minCalId").val("");
+	        		            		$("#minCalId").val(element.msgcontent);
+	        		                }); 
+	        		            }
+	        		        });
+	            		
+	            			layer.tips(
+	            				 $("#minCalId").val(), 
 	      			    		 this,
 	      			    		 {
 	      					        tips: [3, 'rgb(90, 90, 90)'],
 	      					        time: 3000
 	      					     }
 		      			    );
+	            		
 	      			  	});//end 如果有红色圆点，点击 显示小div信息 
-	      			  	
 	      			  	
 	                }); 
 	            }
@@ -446,6 +497,7 @@
 		
 	
 	</script>
+
 	<script type="text/javascript">
 		//小日历上一个按钮
 		$(".k-btn-previous-month").click(function(){
@@ -457,54 +509,5 @@
 		});
 	</script>
 	
-	<!-- 大日历年月选择 -->
-	<script type="text/javascript">
-		$.each(this.split(','), function(j, buttonName) {
-			if (buttonName == 'title') {
-			//e.append("<span class='fc-header-title'><h2>&nbsp;</h2></span>");
-			// modified feifei.im 下拉框选择年月
-			var selectHtml = '';
-			var i = 0;
-			selectHtml +="<span id='fc-dateSelect' class='fc-header-title'>";
-			selectHtml +="<select name='fcs_date_year' id='fcs_date_year' class='selectable m_year mr15'>";
-			// 循环年份
-			for(i=1901;i<=2100;i++){        
-			selectHtml +="<option value='"+i+"'>"+$.trim(i+"年")+"</option>";                        
-			}
-			selectHtml +="</select>";
-			selectHtml +="<select name='fcs_date_month' id='fcs_date_month' class='selectable m_year'>";
-			// 循环月份
-			var monthDigitCN = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'];
-			for(i=0;i<=11;i++){
-			selectHtml +="<option value='"+i+"'>" +$.trim(monthDigitCN[i]+"月") + "</option>";
-			}
-			selectHtml +="</select>";
-			selectHtml +="</span>";
-			e.append(selectHtml);
-			if (prevButton) {
-			    prevButton.addClass(tm + '-corner-right');
-			}
-			prevButton = null;
-		}
-			
-		function updateTitle(html) {
-	        //element.find('h2').html(html);
-	        // modified feifei.im 更新title时修改为下拉框
-		    var shtm = html.split(" ");
-		    if(shtm && shtm.length>1){
-		        $("#fcs_date_month").find("option").filter(function(){return ($(this).text() == $.trim(shtm[0]));}).prop('selected', true);
-		    $('#fcs_date_year option[value="'+$.trim(shtm[1])+'"]').prop('selected', true);
-		    }    
-		}
-		
-		/** 绑定事件到日期下拉框 **/
-		$(function(){
-		    $("#fc-dateSelect").delegate("select","change",function(){
-		        var fcsYear = $("#fcs_date_year").val();
-		        var fcsMonth = $("#fcs_date_month").val();
-		        $("#calendar").fullCalendar('gotoDate', fcsYear, fcsMonth);
-		    });
-		});
-	</script>
 </body>
 </html>

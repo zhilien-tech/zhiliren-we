@@ -77,7 +77,7 @@
                           <div class="col-sm-1 padding">
                             <input type="text" class="form-control input-sm inputdatestr" name="leavedate" id="leavedate" onkeypress="onkeyEnter();" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'backdate\')}'})" placeholder="2016/03/06">
                           </div>
-                          <label class="col-sm-1 text-right padding">去程航段：</label>
+                          <label class="col-sm-1 text-right padding">起飞城市：</label>
                           <div class="col-sm-1 padding">
                             <input type="text" class="form-control input-sm" name="leavecity" id="leavecity"  placeholder="北京-PEK" onkeypress="onkeyEnter();">
                           </div>
@@ -85,7 +85,7 @@
                           <div class="col-sm-1 padding">
                             <input type="text" class="form-control input-sm" name="backdate" id="backdate" onkeypress="onkeyEnter();" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'leavedate\')}'})" placeholder="2016/04/01">
                           </div>
-                          <label class="col-sm-1 text-right padding">回程航段：</label>
+                          <label class="col-sm-1 text-right padding">降落城市：</label>
                           <div class="col-sm-1 padding">
                             <input type="text" class="form-control input-sm" name="backcity" id="backcity"  placeholder="悉尼-SYD" onkeypress="onkeyEnter();">
                           </div>
@@ -95,15 +95,15 @@
                           </div>
                         </div><!--end 去程日期/去程航段/回程日期/回程航段 文本框-->
                        </form>
-                         <table id="datatable" class="table table-bordered table-hover">
+                         <table id="datatables" class="table table-bordered table-hover">
                           <thead>
                           <tr>
                             <th>序号</th>
                             <th>航空公司名称</th>
                             <th>去程日期</th>
-                            <th>去程航段</th>
+                            <th>起飞城市</th>
                             <th>回程日期</th>
-                            <th>回程航段</th>
+                            <th>降落城市</th>
                             <th>人数</th>
                             <th>天数</th>
                             <th>旅行社名称</th> 
@@ -131,16 +131,10 @@
                           <div class="col-md-10">
                             <button type="button" onclick="makePlan();" class="btn btn-primary btn-sm right">制作</button>
                             <button type="button" class="btn btn-primary btn-sm right" onclick="savePlan();">保存计划</button>
-                            <!-- <p class="flie_A right">
-                              导出excel
-                              <input name="appendix" type="file"/>
-                            </p> -->
+                            </p>  
                             <div class="dropdown dropdoImport">
                                 <button class="btn btn-primary dropdown-toggle btn-sm right" type="button" data-toggle="dropdown">导出excel</button>
                                     <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="dropdownMenu1">
-                                       <!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:;">东航</a></li>
-                                       <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:;">南航</a></li>
-                                       <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:;">新航</a></li> -->
                                        <li role="presentation">
                                           <a class="flie_A flie_import" target="hidden_frame" href="${url}/exportDongHangTemplate.html">东航</a>
                                        </li>
@@ -248,9 +242,9 @@
                             <th>序号</th>
                             <th>航空公司名称</th>
                             <th>去程日期</th>
-                            <th>去程航段</th>
+                            <th>起飞城市</th>
                             <th>回程日期</th>
-                            <th>回程航段</th>
+                            <th>降落城市</th>
                             <th>人数</th>
                             <th>天数</th>
                             <th>旅行社名称</th> 
@@ -415,7 +409,7 @@
 <script>
 var datatable;
 function initDatatable() {
-    datatable = $('#datatable').DataTable({
+    datatable = $('#datatables').DataTable({
     	"searching":false,
     	"bLengthChange": false,
         "processing": true,
@@ -452,11 +446,7 @@ function initDatatable() {
                     		return leavedate.getDate() + "/" + MM;
                     	}
                     },
-                    {"data": "leavecity", "bSortable": false,
-                    	render: function(data, type, row, meta) {
-                    		return row.leavecity + "-" + row.backcity;
-                    	}
-                    },
+                    {"data": "leavecity", "bSortable": false},
                     {"data": "backdate", "bSortable": false,
                     	render: function(data, type, row, meta) {
                     		var backdate = new Date(row.backdate);
@@ -464,11 +454,7 @@ function initDatatable() {
                     		return backdate.getDate() + "/" + MM;
                     	}
                     },
-                    {"data": "backcity", "bSortable": false,
-                    	render: function(data, type, row, meta) {
-                    		return row.backcity + "-" + row.leavecity;
-                    	}	
-                    },
+                    {"data": "backcity", "bSortable": false},
                     {"data": "totalcount", "bSortable": false},
                     {"data": "totalday", "bSortable": false},
                     {"data": "travel", "bSortable": false},

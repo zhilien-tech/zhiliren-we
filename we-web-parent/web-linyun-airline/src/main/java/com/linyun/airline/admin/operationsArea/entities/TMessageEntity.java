@@ -32,6 +32,7 @@ public class TMessageEntity implements Serializable {
 	@Column
 	@Comment("生成日期")
 	private Date generateTime;
+	private String generateTimeStr;
 
 	@Column
 	@Comment("优先级")
