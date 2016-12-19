@@ -130,6 +130,15 @@ public class OperationsAreaModule {
 	}
 
 	/**
+	 * 单个小日历事件获取
+	 */
+	@At
+	@POST
+	public Object getMinCal(HttpSession session, @Param("gtime") final String timeStr) {
+		return operationsAreaViewService.getMinCal(session, timeStr);
+	}
+
+	/**
 	 * 跳转到'添加操作'的录入数据页面
 	 */
 	@At

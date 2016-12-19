@@ -5,7 +5,7 @@
 .taskInfo li{line-height: 25px;font-size: 13px;}
 .box-head{width: 100px;border:solid 1px #eee;border-top:solid 3px #3c8dbc;background-color: #fff;border-radius: 4px 4px 0px 0px;}
 .marHeight{margin-top: 20px;}
-.box-sha{box-shadow: 0px 2px 2px #d8d8d8;}
+.box-sha{box-shadow: 0px 2px 2px #d8d8d8;height:141px;overflow-y: auto;}
 /*--------------大日历----------------*/
 .box{clear: both;}
 #calendar{width:100%; margin:20px auto 0px auto}
@@ -22,6 +22,15 @@
 .sub_btn .del{position:absolute; left:2px}
 .fc-event {text-shadow: 0 0 0 #eee;border: 1px solid #d8d8d8;background-color: rgb(247, 247, 247);color: #4e4e4e;font-size: .85em;cursor: default;}
 .fc-header-right{display:none;}
+.tooltip-inner {max-width: 200px;padding: 3px 8px;color: #6b6b6b;text-align: left;background-color: #dedede;border-radius: 4px;border: solid 1px #adadad;}
+.tooltip.right .tooltip-arrow {border-right-color: #9c9c9c;}
+.fc-event-title {
+	width: 110px;
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 /*--------------提醒 弹框----------------*/
 .EventBody{width: 400px;height: 175px;}
 .eventText{margin-top: 10px;padding-bottom: 10px;border: 0;border-bottom: solid 1px #eee;font-size: 15px;margin-bottom: 10px;border-radius: 0px;}
