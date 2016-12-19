@@ -21,7 +21,7 @@
 				<button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
 				<h4>编辑职位部门</h4>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" style="height:435px;overflow-y: auto;">
 	          <div class="departmentName"><!--部门权限 设置-->
 	                 	<input id="jobJson" name="jobJson" type="hidden" value=""/>
 	                 <ul class="addDepartment">
@@ -43,8 +43,7 @@
 							<input name="jobId" type="hidden" value='${one.jobId }'>
 							</li>
 							<li><button type="button" class="btn btn-primary btn-sm btnPadding" id="settingsPermis">设置权限</button>
-							<button type="button" class="btn btn-primary btn-sm btnPadding" id="deleteBtn" >删除</button></li></ul>
-							
+							<button type="button" class="btn btn-primary btn-sm btnPadding" id="deleteBtn" onclick="physicalDelete('${one.jobId}');" >删除</button></li></ul>
 							<c:choose>
 								<c:when test="${stat.index == 0}">
 									<div class="ztree"><ul id="tree_${stat.index}"></ul></div>
@@ -94,15 +93,24 @@
    $(function () {
 		//部门职位 编辑职位
 	    $('#addJob').click(function(){
+	       $(".job_container .ztree").hide();
 	       $('.jobName').append('<div class="job_container"><ul class="addDepartment marHei"><li><label class="text-right">职位名称：</label></li><li class="li-input inpPadd"><input name="jobName" type="text" class="form-control input-sm inputText" placeholder="请输入职位名称"></li><li><button type="button" class="btn btn-primary btn-sm btnPadding" id="settingsPermis">设置权限</button><button type="button" class="btn btn-primary btn-sm btnPadding" id="deleteBtn" >删除</button></li></ul>'
-	       +'<div class="ztree none"><ul id="tree_'+treeIndex+'"></ul></div></div>');
+	       +'<div class="ztree"><ul id="tree_'+treeIndex+'"></ul></div></div>');
 	       treeIndex++;
+	       
+	       var ztree_container = $(".job_container:last").find("div.ztree").find("ul:first");
+	       var treeId = ztree_container.attr("id") ;
+	       var treeObj = $.fn.zTree.getZTreeObj(treeId);
+	       if(null == treeObj || undefined == treeObj){
+		      	//初始化ztree
+			    $.fn.zTree.init(ztree_container, setting, zNodes);
+	      	}
 	    });
 	    
 	    //删除按钮
 	    $('.jobName').on("click","#deleteBtn",function() {
 	      $(this).parent().parent().next().remove();
-	      $(this).closest('.marHei').remove();
+	      $(this).closest('.job_container').remove();
 	
 	    });
 	    
@@ -126,20 +134,20 @@
 	    	nodes.push(root) ;
 	    	$.fn.zTree.init(treeContainer, setting, nodes);
 	    });
-	    
-	    
-	     //设置权限 按钮
+	    //设置权限 按钮
 	    $('.jobName').on("click","#settingsPermis",function() {
+		    $(this).parents('.marHei').next().toggle('500');
+	        $(this).parents(".job_container").siblings().children('.ztree').hide();
 	      	var ztree_container = $(this).parents(".marHei").next("div.ztree").find("ul:first");
 	      	var treeId = ztree_container.attr("id") ;
+	      	
 	      	var treeObj = $.fn.zTree.getZTreeObj(treeId);
 	      	if(null == treeObj || undefined == treeObj){
 	      	//初始化ztree
 		    	$.fn.zTree.init(ztree_container, setting, zNodes);
 	      	}
-	      	$(this).parents(".marHei").next().toggle().siblings('div').hide();
-	    }); 
-    });
+	    });
+     });
    //设置功能
 	function setFunc(){
 	   var jobInfos = [];
@@ -150,12 +158,9 @@
 		   var treeObj = $.fn.zTree.getZTreeObj("tree_" + index);
 		   var nodes =  treeObj.getCheckedNodes(true);
 		   var funcIds = "" ;
-			/* for(var i = 0 ; i < nodes.length; i ++){
-				funcIds += (nodes[i].id + ",");
-			} */
-			$(nodes).each(function(i,node){
-				funcIds += node.id + ",";
-			});
+		   $(nodes).each(function(i,node){
+			  funcIds += node.id + ",";
+		   });
 		   var job = new Object();
 		   job.jobName=jobName;
 		   job.jobId=jobId;
@@ -261,7 +266,40 @@
 	       });
 		}
 		 $(".Mymodal-lg").modal('hide');
-	}); 
+	});
+//删除提示
+function physicalDelete(jobId) {
+	layer.confirm("您确认删除信息吗？", {
+	    btn: ["是","否"], //按钮
+	    shade: false //不显示遮罩
+	}, function(){
+		// 点击确定之后
+		var url = '${base}/admin/authority/authoritymanage/delete.html';
+		$.ajax({
+			type : 'POST',
+			data : {
+				jobId : jobId
+			},
+			dataType : 'json',
+			url : url,
+			success : function(data) {
+				if ("200" == data.status) {
+					layer.msg("操作成功!", "", 3000);
+					 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				     parent.layer.close(index);
+				     window.parent.successCallback('3');
+				} else {
+					layer.msg("操作失败!此职位下还有用户", "", 3000);
+				}
+			},
+			error : function(xhr) {
+				layer.msg("操作失败", "", 3000);
+			}
+		});
+	}, function(){
+	    // 取消之后不用处理
+	});
+}
 	//提交时开始验证
 	$('#submit').click(function() {
 	    $('#editDeptForm').bootstrapValidator('validate');

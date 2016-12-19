@@ -23,8 +23,13 @@
                   <!-- Custom Tabs -->
                   <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                      <li class="active"><a href="#tab_1" data-toggle="tab">部门职位</a></li>
-                      <li><a href="#tab_2" data-toggle="tab">区域</a></li>
+                      <li class="active" id="dept_button">
+                      	<a href="#tab_1" onclick="setPageStatus('0');" data-toggle="tab">部门职位</a>
+                      </li>
+                      <input id="pagerStatus" type="hidden" value="0"/>
+                      <li id="area_button">
+                      	<a href="#tab_2" data-toggle="tab" onclick="setPageStatus('1');">区域</a>
+                      </li>
                     </ul>
                     <div class="tab-content">
                       <!--部门职位-->
@@ -106,7 +111,7 @@
   	    fix: false,
   	    maxmin: false,
   	    shadeClose: false,
-  	    area: ['900px', '400px'],
+  	    area: ['900px', '500px'],
   	    content: '${base}/admin/authority/authoritymanage/update.html?id='+id
   	  });
 	}
@@ -122,43 +127,6 @@
 			  layer.msg("删除成功",{time: 2000, icon:1});
 		  }
 	  }
-	//删除提示
-	function physicalDelete(did, status) {
-		if(2==status){
-			var zt = "删除";
-		}else if(1==status){
-			var zt = "启用";
-		}
-		layer.confirm("您确认"+zt+"信息吗？", {
-		    btn: ["是","否"], //按钮
-		    shade: false //不显示遮罩
-		}, function(){
-			// 点击确定之后
-			var url = '${base}/admin/authority/authoritymanage/updateDeleteStatus.html';
-			$.ajax({
-				type : 'POST',
-				data : {
-					id : did,
-					status : status
-				},
-				dataType : 'json',
-				url : url,
-				success : function(data) {
-					if ("200" == data.status) {
-						layer.msg("操作成功!", "", 3000);
-						window.location.reload(true);
-					} else {
-						layer.msg("操作失败!", "", 3000);
-					}
-				},
-				error : function(xhr) {
-					layer.msg("操作失败", "", 3000);
-				}
-			});
-		}, function(){
-		    // 取消之后不用处理
-		});
-	}
 	//描述提示信息弹出层Tooltip
 	$(function() {
 		$("[data-toggle='tooltip']").tooltip();
@@ -222,12 +190,11 @@ function addArea(){
 	    fix: false,
 	    maxmin: false,
 	    shadeClose: false,
-	    area: ['900px', '500px'],
+	    area: ['450px', '200px'],
 	    content: '${base}/admin/area/add.html',
 	    end: function(){//添加完页面点击返回的时候自动加载表格数据
 	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			parent.layer.close(index);
-	    	parent.location.reload();
 	    }
 	});
 }
@@ -240,7 +207,7 @@ function editArea(id){
 	    fix: false,
 	    maxmin: false,
 	    shadeClose: false,
-	    area: ['900px', '400px'],
+	    area: ['450px', '200px'],
 	    content: '${base}/admin/area/update.html?id='+id
 	  });
 }
@@ -279,6 +246,22 @@ function editArea(id){
 	}
 	$(function() {
 		initareaDatatable();
+	});
+</script>
+<script type="text/javascript">
+	function setPageStatus(status){
+		$("input#pagerStatus").val(status) ;
+	}
+	
+	$(function() {
+		var pageStatus = $("input#pagerStatus").val();
+		if("0" == pageStatus){
+			$("li#dept_button").addClass("active");
+			$("li#area_button").removeClass("active");
+		}else{
+			$("li#dept_button").removeClass("active");
+			$("li#area_button").addClass("active");
+		}
 	});
 </script>
 </body>

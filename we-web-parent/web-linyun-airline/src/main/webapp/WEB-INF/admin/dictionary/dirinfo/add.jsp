@@ -8,6 +8,7 @@
     <title>添加</title>
 	<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
+	<link rel="stylesheet" href="${base}/public/dist/css/dict.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
 	<!-- js -->
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -23,7 +24,7 @@
                   <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
                   <h4>添加</h4>
               </div>
-                <div class="modal-body">
+                <div class="modal-body" style="height:360px;overflow-y: auto;">
                  <div class="tab-content">
                         <div class="form-group row">
                             <label class="col-sm-3 text-right padding">字典类型编码：</label>
@@ -41,14 +42,14 @@
                         <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">字典代码：</label>
                             <div class="col-sm-8 padding">
-                              <input name="dictCode" onblur="uniqueCheck();" class="form-control input-sm inpImpWid" placeholder="请输入字典代码" />
+                              <input id="dictCode" name="dictCode" onblur="uniqueCheck();" class="form-control input-sm inpImpWid" placeholder="请输入字典代码" />
                               <span class="prompt">*</span>
                             </div>
                         </div>
                         <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">字典信息：</label>
                             <div class="col-sm-8 padding">
-                              <input name="dictName" class="form-control input-sm inpImpWid" placeholder="请输入字典信息" />
+                              <input id="dictName" name="dictName" class="form-control input-sm inpImpWid" placeholder="请输入字典信息" />
                             	<span class="prompt">*</span>
                             </div>
                         </div>
@@ -64,7 +65,7 @@
 						<div class="form-group row">
                             <label class="col-sm-3 text-right padding">描述：</label>
                             <div class="col-sm-8 padding ">
-                              <textarea name="description" class="form-control inpImpWid"></textarea>
+                              <textarea name="description" class="form-control inpImpWid textareaHei"></textarea>
                             </div>
                         </div>
                       </form>
@@ -95,7 +96,7 @@
 	                         //自定义提交数据，默认值提交当前input value
 	                         data: function(validator) {
 	                            return {
-	                            	typeCode:$('#typeCode').val()
+	                            	dictCode:$('#dictCode').val()
 	                            };
 	                         }
 	                     },
@@ -118,7 +119,7 @@
 		                         //自定义提交数据，默认值提交当前input value
 		                         data: function(validator) {
 		                            return {
-		                            	dictName:$('input[name="dictName"]').val(),
+		                            	dictName:$('input[name="dictName"]').val()
 		                            };
 		                         }
 		                   }

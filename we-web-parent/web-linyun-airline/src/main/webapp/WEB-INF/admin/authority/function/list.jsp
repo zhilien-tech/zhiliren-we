@@ -50,7 +50,7 @@
 							<form id="form1"
 								action="${base}/admin/authority/function/list.html"
 								method="post" onsubmit="return navTabSearch(this);">
-								<%-- <div class="col-md-2">
+								<div class="col-md-2">
 									<!--上级功能 搜索框-->
 									<div class="col-sm-12 padding">
 										<select name="parentId" class="form-control input-sm">
@@ -67,7 +67,7 @@
 											</c:forEach>
 										</select>
 									</div> 
-								</div>--%>
+								</div>
 								<div class="col-md-3 dictInfoSousuo" style="float: left;">
 									<!--功能名称 搜索框-->
 									<input type="text" name="typeCode"
@@ -81,12 +81,12 @@
 							</form>
 							<div class="col-md-2 col-md-offset-3">
 								<a href="${base}/admin/authority/function/add.html"
-									data-toggle="modal" class="btn btn-primary btn-sm" id="addBtn"
+									data-toggle="modal" class="btn btn-primary btn-sm right" id="addBtn"
 									data-target="#addTabs">添加功能</a>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
-								<table id="example2"
+								<table id="funDatatable"
 									class="table table-bordered table-hover table-wid">
 									<thead>
 										<tr>
@@ -234,11 +234,23 @@
 	<script type="text/javascript">
 		var datatable;
 		function initDatatable() {
-			datatable = $('#example2').DataTable({
+			datatable = $('#funDatatable').DataTable({
 				"searching" : false,
 				"processing" : true,
 				"serverSide" : false,
 				"bLengthChange" : false,
+				"bJQueryUI": true,
+				"aoColumnDefs": [
+				 /*  { "sWidth": "5%",  "aTargets": [0] },
+				  { "sWidth": "10%",  "aTargets": [1] },
+				  { "sWidth": "10%",  "aTargets": [2] },
+				  { "sWidth": "10%",  "aTargets": [3] },
+				  { "sWidth": "10%",  "aTargets": [4] },
+				  { "sWidth": "10%",  "aTargets": [5] },
+				  { "sWidth": "10%",  "aTargets": [6] },
+				  { "sWidth": "15%",  "aTargets": [7] }, */
+				  { "sWidth": "30%",  "aTargets": [7] }
+				  ],
 				"language" : {
 					"url" : "${base}/public/plugins/datatables/cn.json"
 				}
