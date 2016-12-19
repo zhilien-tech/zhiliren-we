@@ -4,7 +4,6 @@ import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
@@ -18,8 +17,6 @@ import com.uxuexi.core.web.chain.support.JsonResult;
 
 @IocBean
 @At("/admin/area")
-@Filters({//@By(type = AuthFilter.class)
-})
 public class AreaModule {
 	@Inject
 	private AreaViewService areaViewService;
@@ -49,14 +46,6 @@ public class AreaModule {
 	@Ok("jsp")
 	public Object add() {
 		return null;
-	}
-
-	//区域查询
-	@At
-	@POST
-	public Object areaSelect2(@Param("q") final String dictAreaName) {
-		String typeCode = "QY";
-		return areaViewService.areaSelect2(typeCode, dictAreaName);
 	}
 
 	/**

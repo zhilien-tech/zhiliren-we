@@ -12,6 +12,7 @@
 <link rel="stylesheet"
 	href="${base }/public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="${base }/public/dist/css/AdminLTE.css">
+<link rel="stylesheet" href="${base }/public/dist/css/dict.css">
 <link rel="stylesheet"
 	href="${base }/public/dist/css/font-awesome.min.css">
 <link rel="stylesheet" href="${base }/public/dist/css/ionicons.min.css">
@@ -23,17 +24,9 @@
 <link rel="stylesheet"
 	href="${base }/common/js/zTree/css/zTreeStyle/zTreeStyle.css">
 <!-- style -->
-<link rel="stylesheet" href="${base }/public/css/style.css">
+<link rel="stylesheet" href="${base}/public/css/style.css">
 <style type="text/css">
-.wu-example .statusBar .btns .uploadBtn {
-	background: #3c8dbc !important;
-	color: #fff;
-	border-color: transparent;
-	position: relative;
-	top: -122px;
-	height: 40px;
-	border-radius: 5px;
-}
+	.wu-example .statusBar .btns .uploadBtn {background: #3c8dbc !important;color: #fff;border-color: transparent;position: relative;top: -122px;height: 40px;border-radius: 5px;}
 </style>
 </head>
 <body onresize=hero();>
@@ -47,19 +40,19 @@
 					value="保存" />
 				<h4>公司权限配置</h4>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" style="height:430px;overflow-y: auto;">
 				<div class="tab-content">
 					<input id="companyId" name="companyId" type="hidden" value="${obj.company.id }">
 					<input id="functionIds" name="functionIds" type="hidden" value=""/>
-					<div class="form-group row">
+					<div class="form-group row comForSty">
 						<label class="col-sm-3 text-right padding"><h5>公司名称：</h5></label>
 						<div class="col-sm-9 padding">
 							<h5 class="text-red">${obj.company.comName }</h5>
 						</div>
 					</div>
-					<div class="form-group row">
+					<div class="form-group row comForSty">
                         <label class="col-sm-3 text-right padding"><h5>功能：</h5></label>
-                        <div class="col-sm-9 text-right padding">
+                        <div class="col-sm-9 text-right padding comSty">
                           <ul id="treeDemo" class="ztree"></ul>
                         </div>
                     </div>

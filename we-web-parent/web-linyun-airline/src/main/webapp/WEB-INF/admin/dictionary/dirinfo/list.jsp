@@ -9,6 +9,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>字典信息</title>
+<link rel="stylesheet" href="${base}/public/dist/css/dict.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
@@ -79,7 +80,7 @@
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
-								<table id="datatable" class="table table-bordered table-hover">
+								<table id="datatableInfo" class="table table-bordered table-hover">
 									<thead>
 										<tr>
 											<th>类别编码</th>
@@ -119,7 +120,7 @@
 	    	    fix: false,
 	    	    maxmin: false,
 	    	    shadeClose: false,
-	    	    area: ['900px', '400px'],
+	    	    area: ['900px', '435px'],
 	    	    content: '${base}/admin/dictionary/dirinfo/add.html',
 	    	    end: function(){//添加完页面点击返回的时候自动加载表格数据
 	    	    	parent.location.reload();
@@ -135,13 +136,13 @@
 		  	    fix: false,
 		  	    maxmin: false,
 		  	    shadeClose: false,
-		  	    area: ['900px', '400px'],
+		  	    area: ['900px', '435px'],
 		  	    content: '${base}/admin/dictionary/dirinfo/update.html?id='+id
 		  	  });
 		  }
 		//事件提示
 		function successCallback(id){
-			  datatable.ajax.reload();
+			  datatableInfo.ajax.reload();
 			  if(id == '1'){
 				  layer.msg("添加成功",{time: 2000, icon:1});
 			  }else if(id == '2'){
@@ -194,13 +195,15 @@
 	</script>
 	<!-- 分页显示 -->
 	<script type="text/javascript">
-		var datatable;
+		var datatableInfo;
 		function initDatatable() {
-			datatable = $('#datatable').DataTable({
+			datatableInfo = $('#datatableInfo').DataTable({
 				"searching" : false,
 				"processing" : true,
 				"serverSide" : true,
 				"bLengthChange" : false,
+				"bJQueryUI": true,
+				
 				"language" : {
 					"url" : "${base}/public/plugins/datatables/cn.json"
 				},
@@ -240,19 +243,28 @@
 		                        } 	
 		                    }
 		            ],
-		            columnDefs: [{
+		            "columnDefs": [{
 		                //   指定第一列，从0开始，0表示第一列，1表示第二列……
 		                targets: 7,
 		                render: function(data, type, row, meta) {
 		                	var modify = '<a style="cursor:pointer;" onclick="edit('+row.id+');">编辑</a>';
                     		if(1==row.status){
-                    			var judge = '<a href="javascript:physicalDelete('+row.id+',2)" class="btn btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
+                    			var judge = '<a href="javascript:physicalDelete('+row.id+',2)" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
                     		}else{
-                    			var judge = '<a href="javascript:physicalDelete('+row.id+',1)" class="btn btn_mini btn_modify">启用</a>';
+                    			var judge = '<a href="javascript:physicalDelete('+row.id+',1)" class="btn_mini btn_modify">启用</a>';
                     		}
 		                    return modify+judge;
 		                }
-		            }]
+		            },{ "sWidth": "9%",  "aTargets": [0] },
+					{ "sWidth": "9%", "aTargets": [1] },
+					{ "sWidth": "9%", "aTargets": [2] },
+					{ "sWidth": "9%", "aTargets": [3] },
+					{ "sWidth": "16%", "aTargets": [4] },
+					{ "sWidth": "6%", "aTargets": [5] },
+					{ "sWidth": "12%", "aTargets": [6] },
+					{ "sWidth": "15%", "aTargets": [7] }
+		            
+		            ]
 			});
 		}
 		$(function() {
@@ -268,8 +280,8 @@
 				"status":status,
 				"typeCode":typeCode
 		    };
-		    datatable.settings()[0].ajax.data = param;
-		    datatable.ajax.reload();
+		    datatableInfo.settings()[0].ajax.data = param;
+		    datatableInfo.ajax.reload();
 		});
 		//搜索回车事件
 		function onkeyEnter(){

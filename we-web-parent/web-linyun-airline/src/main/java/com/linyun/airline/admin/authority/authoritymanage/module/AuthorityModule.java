@@ -18,10 +18,8 @@ import com.linyun.airline.admin.authority.job.form.DeptJobForm;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.entities.TCompanyEntity;
-import com.linyun.airline.entities.TDepartmentEntity;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
-import com.uxuexi.core.web.util.FormUtil;
 
 /**
  * 功能管理	控制类
@@ -121,8 +119,9 @@ public class AuthorityModule {
 	 * 删除记录
 	 */
 	@At
-	public Object delete(@Param("id") final long id) {
-		FormUtil.delete(dbDao, TDepartmentEntity.class, id);
+	public Object delete(@Param("jobId") final long jobId, final HttpSession session) {
+		//FormUtil.delete(dbDao, TDepartmentEntity.class, jobId);
+		authorityViewService.deleteJob(jobId, session);
 		return JsonResult.success("删除成功!");
 	}
 

@@ -28,11 +28,14 @@ import com.linyun.airline.admin.authority.function.entity.TFunctionEntity;
 import com.linyun.airline.admin.authority.job.entity.TJobEntity;
 import com.linyun.airline.admin.authority.job.form.DeptJobForm;
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.common.base.MobileResult;
+import com.linyun.airline.common.enums.UserJobStatusEnum;
 import com.linyun.airline.entities.TComFunPosMapEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCompanyFunctionMapEntity;
 import com.linyun.airline.entities.TCompanyJobEntity;
 import com.linyun.airline.entities.TDepartmentEntity;
+import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.BeanUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.DbSqlUtil;
@@ -290,5 +293,36 @@ public class AuthorityViewService extends BaseService<DeptJobForm> {
 		map.put("list", JobZnodes);
 		map.put("zNodes", allModule);
 		return map;
+	}
+
+	/**
+	 * @param jobId
+	 * @param session
+	 * 删除职位,若此职位下面没有用户则可以删除;
+	 * 若是有用户使用则不可能删除，需提示有哪个用户在使用
+	 */
+	@Aop("txDb")
+	public Object deleteJob(final Long jobId, final HttpSession session) {
+		//通过session获取公司的id
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long companyId = company.getId();//得到公司的id
+		//查询出职位id,并查出该职位是否有用户正在使用
+		Sql sql = Sqls.create(sqlManager.get("authoritymanage_delete_job"));
+		sql.params().set("jobId", jobId);
+		sql.params().set("jobStatus", UserJobStatusEnum.ON.intKey());
+		sql.params().set("companyId", companyId);
+		List<TUserEntity> listUser = DbSqlUtil.query(dbDao, TUserEntity.class, sql);
+		//校验,若是该职位无用户使用，则可删除，反之亦然
+		if (Util.isEmpty(listUser)) {
+			//删除职位
+			nutDao.clear(TCompanyJobEntity.class, Cnd.where("posid", "=", jobId));
+			nutDao.clear(TComFunPosMapEntity.class, Cnd.where("jobId", "=", jobId));
+			nutDao.delete(TJobEntity.class, jobId);
+			return JsonResult.success("删除成功");
+		} else {
+			//返回此职位下的用户信息，提示不能删除
+			return MobileResult.error("删除失败", listUser);
+		}
+
 	}
 }
