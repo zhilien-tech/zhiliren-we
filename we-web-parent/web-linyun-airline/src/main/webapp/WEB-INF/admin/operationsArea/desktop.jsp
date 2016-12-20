@@ -83,7 +83,7 @@
 						<!--小日历-->
 						<div class="box box-primary" id="box-min">
 							<p>
-								<input type="checkbox" class="checkShow" checked="checked">
+								<input id="checkShow" type="checkbox" class="checkShow" checked="checked">
 								显示提醒
 							</p>
 						</div>
@@ -405,7 +405,6 @@
 		
 		 /* 关闭自定义界面 */
 	    function closewindow(){
-	    	//getCheckBox();
 	    	layer.closeAll();
 	    }
 	</script>
@@ -429,6 +428,20 @@
 			  
 		}
 	</script>
+	<script type="text/javascript">
+		 $('.checkShow').click(function(){//显示提醒 显示/隐藏
+			 
+		      if($(this).prop('checked')){
+		          $('.dot').css('display','block');
+		          $("#checkShow").prop('checked',true);
+		      }else{
+		          $('.dot').css('display','none');
+		          $("#checkShow").prop('checked',false);
+		      }
+		  });//end 显示提醒 显示/隐藏
+	</script>
+	
+	
 	<script type="text/javascript">
 		function getTimeStr(){
 		  /* 获取当前月  格式化为：2016-12的形式 */
@@ -457,7 +470,6 @@
             			//显示小红点
             			if($('span[data-date="'+element.gtime+'"]').children().find('i')){
             				$('span[data-date="'+element.gtime+'"]').find('i').remove();
-            				
             			}
 		            	$('span[data-date="'+element.gtime+'"]').append('<i class="dot"></i>');
 	            		
@@ -489,6 +501,7 @@
 		      			    );
 	            		
 	      			  	});//end 如果有红色圆点，点击 显示小div信息 
+		            	
 	      			  	
 	                }); 
 	            }
