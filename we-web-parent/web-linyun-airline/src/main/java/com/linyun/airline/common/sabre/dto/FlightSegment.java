@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * 航段
  * <p>
- * 一次旅程有多个航段
+ * 一次旅程有多个航段，或者理解为一张机票有多个航班(经停)
  *
  * @author   朱晓川
  * @Date	 2016年12月5日 	 
@@ -62,6 +62,9 @@ public class FlightSegment {
 	 */
 	private int OnTimePerformance;
 
+	/**售票航空公司代码*/
+	private String MarketingAirline;
+
 	/**实际执行的航空公司代码*/
 	private String opAirlineCode;
 
@@ -79,7 +82,7 @@ public class FlightSegment {
 	 * <p>
 	 * 比如320代表空客320
 	 */
-	private int Equipment;
+	private String Equipment;
 
 	@Override
 	public String toString() {

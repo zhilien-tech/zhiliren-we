@@ -159,7 +159,7 @@ public class SabreServiceImpl implements SabreService {
 						int ArrivalTimeZone = JsonPath.read(segJ, "$.ArrivalTimeZone.GMTOffset");
 
 						String ResBookDesigCode = JsonPath.read(segJ, "$.ResBookDesigCode");
-						int Equipment = JsonPath.read(segJ, "$.Equipment.AirEquipType");
+						String Equipment = JsonPath.read(segJ, "$.Equipment.AirEquipType");
 
 						seg.setStopQuantity(StopQuantity);
 						seg.setArrivalAirport(ArrivalAirport);
