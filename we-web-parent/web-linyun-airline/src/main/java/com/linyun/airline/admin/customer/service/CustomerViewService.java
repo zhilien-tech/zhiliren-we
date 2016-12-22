@@ -19,6 +19,7 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Files;
+import org.nutz.lang.Strings;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.nutz.mvc.annotation.AdaptBy;
@@ -49,6 +50,7 @@ import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
 import com.linyun.airline.forms.TCustomerInfoUpdateForm;
 import com.uxuexi.core.common.util.DateUtil;
+import com.uxuexi.core.common.util.JsonUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.DbSqlUtil;
 import com.uxuexi.core.web.base.service.BaseService;
@@ -768,4 +770,104 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 	}
 
+	/**
+	 * 
+	 * TODO(根据客户姓名查询客户信息)
+	 * <p>
+	 *
+	 * @param linkname
+	 * @return TODO(客户信息列表)
+	 */
+	public List<TCustomerInfoEntity> getCustomerInfoByLinkName(String linkname) {
+		List<TCustomerInfoEntity> customerInfos = new ArrayList<TCustomerInfoEntity>();
+		try {
+			customerInfos = dbDao.query(TCustomerInfoEntity.class,
+					Cnd.where("linkMan", "like", Strings.trim(linkname) + "%"), null);
+			if (customerInfos.size() > 5) {
+				customerInfos = customerInfos.subList(0, 5);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return customerInfos;
+	}
+
+	/**
+	 * 
+	 * TODO(根据客户电话查询客户信息)
+	 * <p>
+	 *
+	 * @param linkname
+	 * @return TODO(客户信息列表)
+	 */
+	public List<TCustomerInfoEntity> getCustomerInfoByPhone(String phonenum) {
+		List<TCustomerInfoEntity> customerInfos = new ArrayList<TCustomerInfoEntity>();
+		try {
+			customerInfos = dbDao.query(TCustomerInfoEntity.class,
+					Cnd.where("telephone", "like", Strings.trim(phonenum) + "%"), null);
+			if (customerInfos.size() > 5) {
+				customerInfos = customerInfos.subList(0, 5);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return customerInfos;
+	}
+
+	/**
+	 * 
+	 * TODO(根据id查询客户信息)
+	 * <p>
+	 *
+	 * @param id
+	 * @return TODO(客户信息)
+	 */
+	public Object getCustomerById(Long id) {
+		TCustomerInfoEntity customerInfoEntity = dbDao.fetch(TCustomerInfoEntity.class, id);
+		String agent = customerInfoEntity.getAgent();
+		TUserEntity userEntity = dbDao.fetch(TUserEntity.class, Cnd.where("id", "=", agent));
+		customerInfoEntity.setAgent(userEntity.getUserName());
+		Map<String, Object> obj = getOutCitys(id);
+		obj.put("customerInfoEntity", customerInfoEntity);
+
+		return JsonUtil.toJson(obj);
+	}
+
+	/**
+	 * 
+	 * TODO(根据客户id查询出发城市)
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param id
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Map<String, Object> getOutCitys(Long id) {
+		Map<String, Object> obj = new HashMap<String, Object>();
+		Sql citySql = Sqls.create(sqlManager.get("customer_cityOption_list"));
+		Cnd cityCnd = Cnd.NEW();
+		cityCnd.and("o.infoId", "=", id);
+		cityCnd.orderBy("d.dictName", "desc");
+		citySql.setCondition(cityCnd);
+		List<DictInfoEntity> outcityEntities = DbSqlUtil.query(dbDao, DictInfoEntity.class, citySql);
+		//出发城市id 拼串
+		String outcityIds = "";
+		for (DictInfoEntity outcityEntity : outcityEntities) {
+			outcityIds += outcityEntity.getId() + ",";
+		}
+		if (outcityIds.length() > 0) {
+			outcityIds = outcityIds.substring(0, outcityIds.length() - 1);
+		}
+		obj.put("outcityIds", outcityIds);
+		obj.put("outcitylist", Lists.transform(outcityEntities, new Function<DictInfoEntity, Select2Option>() {
+			@Override
+			public Select2Option apply(DictInfoEntity record) {
+				Select2Option op = new Select2Option();
+				op.setId(record.getId());
+				op.setText(record.getDictName());
+				return op;
+			}
+		}));
+		return obj;
+	}
 }
