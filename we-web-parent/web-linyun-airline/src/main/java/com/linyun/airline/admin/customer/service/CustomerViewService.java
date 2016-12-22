@@ -388,7 +388,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 * @param typeCode
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object updateCustomInfo(TCustomerInfoUpdateForm updateForm) {
+	public Object updateCustomInfo(HttpSession session, TCustomerInfoUpdateForm updateForm) {
 		if (!Util.isEmpty(updateForm.getContractDueTimeString())) {
 			//客户信息保存
 			updateForm.setContractDueTime(DateUtil.string2Date(updateForm.getContractDueTimeString(), "yyyy-MM-dd"));
@@ -396,6 +396,14 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		if (!Util.isEmpty(updateForm.getContractTimeString())) {
 			updateForm.setContractTime(DateUtil.string2Date(updateForm.getContractTimeString(), "yyyy-MM-dd"));
 		}
+		//得到当前用户所在公司的id
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
+		if (Util.isEmpty(upcompany)) {
+			throw new IllegalArgumentException("用户上游公司不存在，companyId：" + companyId);
+		}
+		updateForm.setUpComId(upcompany.getId());
 
 		this.update(updateForm);
 

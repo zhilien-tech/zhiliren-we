@@ -126,41 +126,70 @@
                           <table class="scatteredTable1">
                               <tr>
                                 <td><label>搜索筛选：</label></td>
-                                <td><input type="radio" name="internat" value="1"><span>国际内陆</span></td>
-                                <td colspan="2"><input type="radio" name="internat" value="2"><span>国际</span></td>
+                                <td>
+                                	<input type="radio" name="internat" value="1"><span>国际内陆</span>
+                                </td>
+                                <td colspan="2">
+                                	<input type="radio" name="internat" value="2"><span>国际</span>
+							    </td>
                               </tr>
                               <tr>
                                 <td><label>航程类型：</label></td>
-                                <td><input type="radio" name="voyageType" value="1" onclick="radioFunct(this)"><span>单程</span></td>
-                                <td><input type="radio" name="voyageType" value="2" onclick="radioFunct()"><span>往返</span></td>
-                                <td><input type="radio" name="voyageType" value="3" onclick="radioFunct()"><span>多程</span></td>
+                                <td>
+                                	<input type="radio" name="voyageType" value="1" onclick="radioFunct(this)"><span>单程</span>
+                                </td>
+                                <td>
+                                	<input type="radio" name="voyageType" value="2" onclick="radioFunct()"><span>往返</span>
+                               	</td>
+                                <td>
+                                	<input type="radio" name="voyageType" value="3" onclick="radioFunct()"><span>多程</span>
+                                </td>
                               </tr>
                           </table>
                           <table class="scatteredTable2">
                             <tr>
                               <td><label>出发城市：</label></td>
-                              <td><input type="text" class="form-control input-sm" placeholder="拼音/三字代码"></td>
+                              <td>
+                              	<input type="text" class="form-control input-sm" placeholder="拼音/三字代码">
+                              </td>
                               <td class="untilTd"><i class="fa fa-minus"></i></td>
                               <td><label>到达城市：</label></td>
-                              <td><input type="text" class="form-control input-sm" placeholder="拼音/三字代码"></td>
+                              <td>
+                              	<input type="text" class="form-control input-sm" placeholder="拼音/三字代码">
+                              </td>
                               <td class="untilTd1"></td><!--空白处 可以忽略-->
                               <td><label>出发日期：</label></td>
-                              <td><input type="text" class="form-control input-sm" placeholder="2016-12-21"></td>
-                              <td class="setoutLabel"><label>返回日期：</label></td>
-                              <td class="setoutinput"><input type="text" class="form-control input-sm" placeholder="2016-12-25"></td>
+                              <td>
+                              	<!-- <input id="" name="" type="text" class="form-control input-sm" placeholder="2016-12-21"> -->
+                              	<input id="datepicker1" name="datepicker1" type="text" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'datepicker2\')}'})" placeholder="2016-12-21">
+                              </td>
+                              <td class="setoutLabel">
+                              <label>返回日期：</label></td>
+                              <td class="setoutinput">
+                              	<!-- <input type="text" class="form-control input-sm" placeholder="2016-12-25"> -->
+                              	<input id="datepicker2" name="datepicker2" type="text" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'datepicker1\')}'})" placeholder="2016-12-25">
+                              </td>
                               <td class="addIconTd none"><i class="glyphicon glyphicon-plus addMore"></i></td>
                             </tr>
                             <tr class="hideTr none">
                               <td><label>出发城市：</label></td>
-                              <td><input type="text" class="form-control input-sm" placeholder="拼音/三字代码"></td>
+                              <td>
+                              	<input type="text" class="form-control input-sm" placeholder="拼音/三字代码">
+                              </td>
                               <td class="untilTd"><i class="fa fa-minus"></i></td>
                               <td><label>到达城市：</label></td>
-                              <td><input type="text" class="form-control input-sm" placeholder="拼音/三字代码"></td>
+                              <td>
+                              	<input type="text" class="form-control input-sm" placeholder="拼音/三字代码">
+                              </td>
                               <td class="untilTd1"></td><!--空白处 可以忽略-->
                               <td><label>出发日期：</label></td>
-                              <td><input type="text" class="form-control input-sm" placeholder="2016-12-21"></td>
+                              <td>
+                              	<input type="text" class="form-control input-sm" placeholder="2016-12-21">
+                              </td>
                               <td class="setoutLabel"><label>返回日期：</label></td>
-                              <td class="setoutinput"><input type="text" class="form-control input-sm" placeholder="2016-12-25"></td>
+                              <td class="setoutinput">
+                              	<input type="text" class="form-control input-sm" placeholder="2016-12-25">
+                              </td>
                               <td class="addIconTd none"><i class="glyphicon glyphicon-plus addMore"></i></td>
                             </tr>
                           </table>
@@ -285,28 +314,44 @@
                           <table class="scatteredTable2">
                             <tr>
                               <td><label>出发城市：</label></td>
-                              <td><input type="text" class="form-control input-sm" placeholder="拼音/三字代码"></td>
+                              <td>
+                              	<input type="text" class="form-control input-sm" placeholder="拼音/三字代码">
+                              </td>
                               <td class="untilTd"><i class="fa fa-minus"></i></td>
                               <td><label>到达城市：</label></td>
-                              <td><input type="text" class="form-control input-sm" placeholder="拼音/三字代码"></td>
+                              <td>
+                              	<input type="text" class="form-control input-sm" placeholder="拼音/三字代码">
+                              </td>
                               <td class="untilTd1"></td><!--空白处 可以忽略-->
                               <td><label>出发日期：</label></td>
-                              <td><input type="text" class="form-control input-sm" placeholder="2016-12-21"></td>
+                              <td>
+                              	<input type="text" class="form-control input-sm" placeholder="2016-12-21">
+                              </td>
                               <td class="setoutLabel"><label>返回日期：</label></td>
-                              <td class="setoutinput"><input type="text" class="form-control input-sm" placeholder="2016-12-25"></td>
+                              <td class="setoutinput">
+                              	<input type="text" class="form-control input-sm" placeholder="2016-12-25">
+                              </td>
                               <td class="addIconTd none"><i class="glyphicon glyphicon-plus addMore"></i></td>
                             </tr>
                             <tr class="hideTr none">
                               <td><label>出发城市：</label></td>
-                              <td><input type="text" class="form-control input-sm" placeholder="拼音/三字代码"></td>
+                              <td>
+                              	<input type="text" class="form-control input-sm" placeholder="拼音/三字代码">
+                              </td>
                               <td class="untilTd"><i class="fa fa-minus"></i></td>
                               <td><label>到达城市：</label></td>
-                              <td><input type="text" class="form-control input-sm" placeholder="拼音/三字代码"></td>
+                              <td>
+                              	<input type="text" class="form-control input-sm" placeholder="拼音/三字代码">
+                              </td>
                               <td class="untilTd1"></td><!--空白处 可以忽略-->
                               <td><label>出发日期：</label></td>
-                              <td><input type="text" class="form-control input-sm" placeholder="2016-12-21"></td>
+                              <td>
+                              	<input type="text" class="form-control input-sm" placeholder="2016-12-21">
+                              </td>
                               <td class="setoutLabel"><label>返回日期：</label></td>
-                              <td class="setoutinput"><input type="text" class="form-control input-sm" placeholder="2016-12-25"></td>
+                              <td class="setoutinput">
+                              	<input type="text" class="form-control input-sm" placeholder="2016-12-25">
+                              </td>
                               <td class="addIconTd none"><i class="glyphicon glyphicon-plus addMore"></i></td>
                             </tr>
                           </table>
@@ -315,15 +360,19 @@
                               <td><label>舱位等级：</label></td>
                               <td>
                                  <select class="form-control input-sm selectWid1">
-                                   <option>经济舱</option>
-                                   <option>超级经济舱</option>
-                                   <option>商务舱</option>
-                                   <option>头等舱</option>
+                                   <option value="1">经济舱</option>
+                                   <option value="2">超级经济舱</option>
+                                   <option value="3">商务舱</option>
+                                   <option value="4">头等舱</option>
                                  </select>
                               </td>
                               <td><label>航空公司：</label></td>
-                              <td><input type="text" class="form-control input-sm" placeholder="(选填)中文/代码"></td>
-                              <td><button class="btn btn-primary btn-sm">搜索机票</button></td>
+                              <td>
+                              	<input type="text" class="form-control input-sm" placeholder="(选填)中文/代码">
+                              </td>
+                              <td>
+                              	<button class="btn btn-primary btn-sm">搜索机票</button>
+                              </td>
                             </tr>
                           </table>
 
@@ -445,56 +494,6 @@
 	            $(this).parent().parent().remove(); 
 	        });
 	      });
-		  /*散客 航程类型 点击事件*/
-	      function radioFunct(obj){
-	           var radio = document.getElementsByName("voyageType");  
-	           for (i=0; i<radio.length; i++) {  
-	                if (radio[i].checked) {  
-	                   var radioValue=radio[i].value;
-	                   if (radioValue==1) {
-	                        $('.setoutLabel').hide('300');
-	                        $('.setoutinput').hide('300');
-	                        $('.addIconTd').hide('300');
-	                        $('.removeIconTd').hide('300');
-	                   }else if(radioValue==2){
-	                        $('.setoutLabel').show('300');
-	                        $('.setoutinput').show('300');
-	                        $('.addIconTd').hide('300');
-	                        $('.removeIconTd').hide('300');
-	                   }else if(radioValue==3){
-	                        $('.setoutLabel').show('300');
-	                        $('.setoutinput').show('300');
-	                        $('.addIconTd').show('300');
-	                        $('.removeIconTd').show('300');
-	                   };
-	                }  
-	           }
-	      }
-		  /*团队 航程类型 点击事件*/
-	      function radioFunct1(){
-	            var radio1 = document.getElementsByName("voyageType1");  
-	             for (i=0; i<radio1.length; i++) {  
-	                  if (radio1[i].checked) {  
-	                     var radioValue1=radio1[i].value;
-	                     if (radioValue1==1) {
-	                          $('.setoutLabel').hide('300');
-	                          $('.setoutinput').hide('300');
-	                          $('.addIconTd').hide('300');
-	                          $('.removeIconTd').hide('300');
-	                     }else if(radioValue1==2){
-	                          $('.setoutLabel').show('300');
-	                          $('.setoutinput').show('300');
-	                          $('.addIconTd').hide('300');
-	                          $('.removeIconTd').hide('300');
-	                     }else if(radioValue1==3){
-	                          $('.setoutLabel').show('300');
-	                          $('.setoutinput').show('300');
-	                          $('.addIconTd').show('300');
-	                          $('.removeIconTd').show('300');
-	                     };
-	                  }  
-	             }
-	      }
 	  </script>
 	
 </body>

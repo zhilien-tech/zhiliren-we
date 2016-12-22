@@ -108,8 +108,8 @@ public class CustomerModule {
 	 */
 	@At
 	@POST
-	public Object update(@Param("..") TCustomerInfoUpdateForm updateForm) {
-		customerViewService.updateCustomInfo(updateForm);
+	public Object update(HttpSession session, @Param("..") TCustomerInfoUpdateForm updateForm) {
+		customerViewService.updateCustomInfo(session, updateForm);
 		return JsonResult.success("修改成功");
 	}
 

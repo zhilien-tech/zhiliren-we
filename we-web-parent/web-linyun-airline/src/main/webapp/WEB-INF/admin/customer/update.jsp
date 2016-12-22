@@ -46,7 +46,6 @@
 			<div class="modal-body">
 				<div class="tab-content">
 					<div class="tab-pane active" id="tabs_1">
-						<input name="comId" type="hidden" value="" /> 
 						<!--基本信息-->
 						<div class="form-group row">
 							<input name="id" type="hidden" value="${obj.customer.id }">

@@ -183,7 +183,7 @@ $("#phoneNumId").on('select2:unselect', function (evt) {
 $("#clearBtn").click(function(){
 	clearText();
 });
-
+/*客户信息 清除回显内容*/
 function clearText(){
 	//客户姓名清空
 	$("#linkNameId").val(null).trigger("change");
@@ -199,4 +199,55 @@ function clearText(){
 	$("#faxId").val("");
 	//付款方式清除
 	$("#payTypeId").html("");
+}
+
+/*散客 航程类型 点击事件*/
+function radioFunct(obj){
+	var radio = document.getElementsByName("voyageType");  
+	for (i=0; i<radio.length; i++) {  
+		if (radio[i].checked) {  
+			var radioValue=radio[i].value;
+			if (radioValue==1) {
+				$('.setoutLabel').hide('300');
+				$('.setoutinput').hide('300');
+				$('.addIconTd').hide('300');
+				$('.removeIconTd').hide('300');
+			}else if(radioValue==2){
+				$('.setoutLabel').show('300');
+				$('.setoutinput').show('300');
+				$('.addIconTd').hide('300');
+				$('.removeIconTd').hide('300');
+			}else if(radioValue==3){
+				$('.setoutLabel').show('300');
+				$('.setoutinput').show('300');
+				$('.addIconTd').show('300');
+				$('.removeIconTd').show('300');
+			};
+		}  
+	}
+}
+/*团队 航程类型 点击事件*/
+function radioFunct1(){
+	var radio1 = document.getElementsByName("voyageType1");  
+	for (i=0; i<radio1.length; i++) {  
+		if (radio1[i].checked) {  
+			var radioValue1=radio1[i].value;
+			if (radioValue1==1) {
+				$('.setoutLabel').hide('300');
+				$('.setoutinput').hide('300');
+				$('.addIconTd').hide('300');
+				$('.removeIconTd').hide('300');
+			}else if(radioValue1==2){
+				$('.setoutLabel').show('300');
+				$('.setoutinput').show('300');
+				$('.addIconTd').hide('300');
+				$('.removeIconTd').hide('300');
+			}else if(radioValue1==3){
+				$('.setoutLabel').show('300');
+				$('.setoutinput').show('300');
+				$('.addIconTd').show('300');
+				$('.removeIconTd').show('300');
+			};
+		}  
+	}
 }
