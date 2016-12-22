@@ -13,37 +13,20 @@
 <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
 <!-- 图标 -->
-<link rel="stylesheet"
-	href="${base}/public/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css"
-	href="${base}/public/ionicons/css/ionicons.min.css">
+<link rel="stylesheet" href="${base}/public/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="${base}/public/ionicons/css/ionicons.min.css">
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
-<link rel="stylesheet"
-	href="${base}/public/dist/css/skins/_all-skins.min.css">
-<link rel="stylesheet" href="${base}/public/dist/css/query.css">
-<!--本页面styleFlie-->
+<link rel="stylesheet" href="${base}/public/dist/css/skins/_all-skins.min.css">
+<link rel="stylesheet" href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
+<link rel="stylesheet" href="${base}/public/dist/css/query.css"><!--本页面styleFlie-->
 
-<style type="text/css">
-.select2-container {
-	width: 95.5% !important;
-	display: inline-block;
-}
-
-.seleSpanWid .select2-container {
-	width: 98.5% !important;
-	display: inline-block;
-}
-
-.inpNone .select2 .selection span ul li+li {
-	display: none;
-}
-</style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
 		<!--right Content-->
 		<div class="content-wrapper">
 			<section class="content">
+				<!--客户信息 start-->
 				<div class="customerInfo">
 					<div class="infoTop">
 						<p>客户信息</p>
@@ -91,7 +74,6 @@
 							</tr>
 						</table>
 						
-
 						<table class="hideTable none">
 							<tr>
 								<td><label>公司简称：</label></td>
@@ -123,16 +105,284 @@
 
 							</tr>
 							<tr>
-								<td><label>结算方式：</label></td>
+								<td><label style="position: relative;top: 4px;">结算方式：</label></td>
 								<td colspan="9"><pre><span id="payTypeId"></span> 信用额度：0  临时额度：0  历史欠款：0  预存款：0</pre></td>
 							</tr>
 						</table>
 
 					</div>
 				</div>
-				<!--客户信息-->
-				<div class="listInfo"></div>
-				<!--购票查询 列表-->
+				<!--客户信息 end-->
+				
+				<!--购票查询列表 start-->
+				<div class="listInfo">
+                  <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                      <li class="active"><a href="#tab_1" data-toggle="tab">散客</a></li>
+                      <li><a href="#tab_2" data-toggle="tab">团队</a></li>
+                    </ul>
+                    <div class="tab-content">
+                      <div class="tab-pane active" id="tab_1">
+                          <table class="scatteredTable1">
+                              <tr>
+                                <td><label>搜索筛选：</label></td>
+                                <td><input type="radio" name="internat" value="1"><span>国际内陆</span></td>
+                                <td colspan="2"><input type="radio" name="internat" value="2"><span>国际</span></td>
+                              </tr>
+                              <tr>
+                                <td><label>航程类型：</label></td>
+                                <td><input type="radio" name="voyageType" value="1" onclick="radioFunct(this)"><span>单程</span></td>
+                                <td><input type="radio" name="voyageType" value="2" onclick="radioFunct()"><span>往返</span></td>
+                                <td><input type="radio" name="voyageType" value="3" onclick="radioFunct()"><span>多程</span></td>
+                              </tr>
+                          </table>
+                          <table class="scatteredTable2">
+                            <tr>
+                              <td><label>出发城市：</label></td>
+                              <td><input type="text" class="form-control input-sm" placeholder="拼音/三字代码"></td>
+                              <td class="untilTd"><i class="fa fa-minus"></i></td>
+                              <td><label>到达城市：</label></td>
+                              <td><input type="text" class="form-control input-sm" placeholder="拼音/三字代码"></td>
+                              <td class="untilTd1"></td><!--空白处 可以忽略-->
+                              <td><label>出发日期：</label></td>
+                              <td><input type="text" class="form-control input-sm" placeholder="2016-12-21"></td>
+                              <td class="setoutLabel"><label>返回日期：</label></td>
+                              <td class="setoutinput"><input type="text" class="form-control input-sm" placeholder="2016-12-25"></td>
+                              <td class="addIconTd none"><i class="glyphicon glyphicon-plus addMore"></i></td>
+                            </tr>
+                            <tr class="hideTr none">
+                              <td><label>出发城市：</label></td>
+                              <td><input type="text" class="form-control input-sm" placeholder="拼音/三字代码"></td>
+                              <td class="untilTd"><i class="fa fa-minus"></i></td>
+                              <td><label>到达城市：</label></td>
+                              <td><input type="text" class="form-control input-sm" placeholder="拼音/三字代码"></td>
+                              <td class="untilTd1"></td><!--空白处 可以忽略-->
+                              <td><label>出发日期：</label></td>
+                              <td><input type="text" class="form-control input-sm" placeholder="2016-12-21"></td>
+                              <td class="setoutLabel"><label>返回日期：</label></td>
+                              <td class="setoutinput"><input type="text" class="form-control input-sm" placeholder="2016-12-25"></td>
+                              <td class="addIconTd none"><i class="glyphicon glyphicon-plus addMore"></i></td>
+                            </tr>
+                          </table>
+                          <table class="scatteredTable3">
+                            <tr>
+                              <td><label>乘客类型：</label></td>
+                              <td>
+                                <select class="form-control input-sm">
+                                  <option>成人 0</option>
+                                  <option>成人 1</option>
+                                  <option>成人 2</option>
+                                  <option>成人 3</option>
+                                  <option>成人 4</option>
+                                  <option>成人 5</option>
+                                  <option>成人 6</option>
+								  <option>成人 7</option>
+                                  <option>成人 8</option>
+                                  <option>成人 9</option>
+                                  <option>成人 10</option>
+                                  
+                                </select>
+                              </td>
+                              <td class="paddTd">
+                                <select class="form-control input-sm">
+                                  <option>儿童 0</option>
+                                  <option>儿童 1</option>
+                                  <option>儿童 2</option>
+                                  <option>儿童 3</option>
+                                  <option>儿童 4</option>
+                                  <option>儿童 5</option>
+                                  <option>儿童 6</option>
+                                  <option>儿童 7</option>
+                                  <option>儿童 8</option>
+                                  <option>儿童 9</option>
+                                  <option>儿童 10</option>
+                                </select>
+                              </td>
+                              <td class="paddTd">
+                                <select class="form-control input-sm">
+                                  <option>婴儿 0</option>
+                                  <option>婴儿 1</option>
+                                  <option>婴儿 2</option>
+                                  <option>婴儿 3</option>
+                                  <option>婴儿 4</option>
+                                  <option>婴儿 5</option>
+                                  <option>婴儿 6</option>
+                                  <option>婴儿 7</option>
+                                  <option>婴儿 7</option>
+                                  <option>婴儿 9</option>
+                                  <option>婴儿 10</option>
+                                </select>
+                              </td>
+                              <td><label>舱位等级：</label></td>
+                              <td>
+                                 <select class="form-control input-sm selectWid">
+                                   <option value="1">经济舱</option>
+                                   <option value="2">超级经济舱</option>
+                                   <option value="3">商务舱</option>
+                                   <option value="4">头等舱</option>
+                                 </select>
+                              </td>
+                              <td><label>航空公司：</label></td>
+                              <td><input type="text" class="form-control input-sm" placeholder="(选填)中文/代码"></td>
+                              <td><button class="btn btn-primary btn-sm">搜索机票</button></td>
+                            </tr>
+                          </table>
+                          <div class="TableListInfo">
+                              <h5>北京--悉尼</h5>
+                              <div class="paragraphNumber">
+                                <ul class="paragraphBtn">
+                                  <li class="btnStyle">第一段</li>
+                                  <li>第二段</li>
+                                  <li>第三段</li>
+                                  <li>第四段</li>
+                                </ul>
+                                <ul class="paragraphBtn">
+                                  <li class="btnStyle">12-21 周三</li>
+                                  <li>12-22 周四</li>
+                                  <li>12-23 周五</li>
+                                  <li>12-24 周六</li>
+                                  <li>12-25 周日</li>
+                                  <li>12-26 周一</li>
+                                  <li>12-27 周二</li>
+                                </ul>
+                                <ul class="paragraphListInfo">
+                                  <li>
+                                    <div class="imgIconDiv"><img src="logoIcon.png"><p>首航CA1890</p></div>
+                                    <div class="distanceTimeDiv">
+                                        <span class="chufaCS"><b>06:30</b><p>首都T1</p></span>
+                                        <span class="shiDuan">3h23m</span>
+                                        <span class="daodaCS"><b>10:20</b><p>悉尼机场</p></span>
+                                    </div>
+                                    <div class="moneyDiv"><i class="fa fa-cny"></i>4986</div>
+                                  </li>
+                                  <li>
+                                    <div class="imgIconDiv"><img src="logoIcon.png"><p>首航CA1890</p></div>
+                                    <div class="distanceTimeDiv">
+                                        <span class="chufaCS"><b>06:30</b><p>首都T1</p></span>
+                                        <span class="shiDuan">3h23m</span>
+                                        <span class="daodaCS"><b>10:20</b><p>悉尼机场</p></span>
+                                    </div>
+                                    <div class="moneyDiv"><i class="fa fa-cny"></i>4986</div>
+                                  </li>
+                                </ul>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="tab-pane" id="tab_2">
+                          <table class="scatteredTable1">
+                              <tr>
+                                <td><label>搜索筛选：</label></td>
+                                <td><input type="radio" name="internat1" value="1"><span>国际内陆</span></td>
+                                <td colspan="2"><input type="radio" name="internat1" value="2"><span>国际</span></td>
+                              </tr>
+                              <tr>
+                                <td><label>航程类型：</label></td>
+                                <td><input type="radio" name="voyageType1" value="1" onclick="radioFunct1()"><span>单程</span></td>
+                                <td><input type="radio" name="voyageType1" value="2" onclick="radioFunct1()"><span>往返</span></td>
+                                <td><input type="radio" name="voyageType1" value="3" onclick="radioFunct1()"><span>多程</span></td>
+                              </tr>
+                          </table><!--搜索筛选/航程类型-->
+                          <table class="scatteredTable2">
+                            <tr>
+                              <td><label>出发城市：</label></td>
+                              <td><input type="text" class="form-control input-sm" placeholder="拼音/三字代码"></td>
+                              <td class="untilTd"><i class="fa fa-minus"></i></td>
+                              <td><label>到达城市：</label></td>
+                              <td><input type="text" class="form-control input-sm" placeholder="拼音/三字代码"></td>
+                              <td class="untilTd1"></td><!--空白处 可以忽略-->
+                              <td><label>出发日期：</label></td>
+                              <td><input type="text" class="form-control input-sm" placeholder="2016-12-21"></td>
+                              <td class="setoutLabel"><label>返回日期：</label></td>
+                              <td class="setoutinput"><input type="text" class="form-control input-sm" placeholder="2016-12-25"></td>
+                              <td class="addIconTd none"><i class="glyphicon glyphicon-plus addMore"></i></td>
+                            </tr>
+                            <tr class="hideTr none">
+                              <td><label>出发城市：</label></td>
+                              <td><input type="text" class="form-control input-sm" placeholder="拼音/三字代码"></td>
+                              <td class="untilTd"><i class="fa fa-minus"></i></td>
+                              <td><label>到达城市：</label></td>
+                              <td><input type="text" class="form-control input-sm" placeholder="拼音/三字代码"></td>
+                              <td class="untilTd1"></td><!--空白处 可以忽略-->
+                              <td><label>出发日期：</label></td>
+                              <td><input type="text" class="form-control input-sm" placeholder="2016-12-21"></td>
+                              <td class="setoutLabel"><label>返回日期：</label></td>
+                              <td class="setoutinput"><input type="text" class="form-control input-sm" placeholder="2016-12-25"></td>
+                              <td class="addIconTd none"><i class="glyphicon glyphicon-plus addMore"></i></td>
+                            </tr>
+                          </table>
+                          <table class="scatteredTable3">
+                            <tr>
+                              <td><label>舱位等级：</label></td>
+                              <td>
+                                 <select class="form-control input-sm selectWid1">
+                                   <option>经济舱</option>
+                                   <option>超级经济舱</option>
+                                   <option>商务舱</option>
+                                   <option>头等舱</option>
+                                 </select>
+                              </td>
+                              <td><label>航空公司：</label></td>
+                              <td><input type="text" class="form-control input-sm" placeholder="(选填)中文/代码"></td>
+                              <td><button class="btn btn-primary btn-sm">搜索机票</button></td>
+                            </tr>
+                          </table>
+
+                          <div class="tableInfoDiv">
+                            <table class="table table-bordered table-hover">
+                              <thead>
+                              <tr>
+                                <th>订单号</th>
+                                <th>团型</th>
+                                <th>团名</th>
+                                <th>程航</th>
+                                <th>始发日期</th>
+                                <th>价格</th>
+                                <th>数量</th>
+                                <th>申请日期</th>
+                                <th>操作人</th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>120000069</td>
+                                  <td>散客</td>
+                                  <td>aksdfkjsbdn</td>
+                                  <td>西安-意大利</td>
+                                  <td>2016-10-22</td>
+                                  <td>￥4990</td>
+                                  <td>6</td>
+                                  <td>2016-10-21</td>
+                                  <td>马云</td>
+                                </tr>
+                                <tr>
+                                  <td>120120030</td>
+                                  <td>散客</td>
+                                  <td>aksdfkjsbdn</td>
+                                  <td>西安-澳大利亚</td>
+                                  <td>2016-12-22</td>
+                                  <td>￥4890</td>
+                                  <td>6</td>
+                                  <td>2016-10-21</td>
+                                  <td>刘强东</td>
+                                </tr>
+                                <tr>
+                                  <td>120120320</td>
+                                  <td>团队</td>
+                                  <td>aksdfkjsbdn</td>
+                                  <td>西安-韩国</td>
+                                  <td>2016-12-22</td>
+                                  <td>￥9890</td>
+                                  <td>6</td>
+                                  <td>2016-10-21</td>
+                                  <td>王健林</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+          </div><!--购票查询 列表-->
 			</section>
 		</div>
 		<!--end right Content-->
@@ -156,16 +406,96 @@
 		<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
 		<!-- My97DatePicker -->
 		<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
+		<!-- 页面自身js文件 -->
+		<script src="${base}/admin/searchTicket/searchCustomerInfo.js"></script>
 		<!-- layer -->
 		<script src="${base}/common/js/layer/layer.js"></script>
 		<script type="text/javascript">
 	      $(function(){
-	        $('.UnderIcon').on('click',function(){
-	          $('.hideTable').toggle('400');
+            $('.UnderIcon').on('click',function(){//客户信息 显示/隐藏
+              $('.hideTable').toggle('400');
+            });
+    		
+       		$('#clearBtn').click(function(){//清楚按钮 隐藏
+              $('.hideTable').hide('400');
+            });
+	        /*散客*/
+	        document.getElementsByName("internat")[0].checked="checked";//radio 默认 国际内陆
+	        document.getElementsByName("voyageType")[1].checked="checked";//radio 默认 选中往返
+	        /*团队*/
+	        document.getElementsByName("internat1")[0].checked="checked";//radio 默认 国际内陆
+	        document.getElementsByName("voyageType1")[1].checked="checked";//radio 默认 选中往返
+	
+	        $('.paragraphBtn li').click(function(){//段数 样式切换
+	          $(this).addClass('btnStyle').siblings().removeClass('btnStyle');
+	        });
+	
+	        //添加 .addMore
+	        $('.addMore').click(function(){
+	            var divTest = $(this).parent().parent(); 
+	            var newDiv = divTest.clone(true);
+	            divTest.after(newDiv);
+	            var No = parseInt(divTest.find("p").html())+1;//假设你用p标签显示序号
+	            newDiv.find("p").html(No); 
+	            newDiv.find('.addIconTd').remove();
+	            newDiv.append('<td class="removeIconTd"><i class="glyphicon glyphicon-minus removeMore"></i></td>');
+	        });
+			    //删除 .addMore
+	        $(document).on('click','.removeMore',function(){
+	            $(this).parent().parent().remove(); 
 	        });
 	      });
-	    </script>
-	    <script src="${base}/admin/searchTicket/searchCustomerInfo.js"></script>
+		  /*散客 航程类型 点击事件*/
+	      function radioFunct(obj){
+	           var radio = document.getElementsByName("voyageType");  
+	           for (i=0; i<radio.length; i++) {  
+	                if (radio[i].checked) {  
+	                   var radioValue=radio[i].value;
+	                   if (radioValue==1) {
+	                        $('.setoutLabel').hide('300');
+	                        $('.setoutinput').hide('300');
+	                        $('.addIconTd').hide('300');
+	                        $('.removeIconTd').hide('300');
+	                   }else if(radioValue==2){
+	                        $('.setoutLabel').show('300');
+	                        $('.setoutinput').show('300');
+	                        $('.addIconTd').hide('300');
+	                        $('.removeIconTd').hide('300');
+	                   }else if(radioValue==3){
+	                        $('.setoutLabel').show('300');
+	                        $('.setoutinput').show('300');
+	                        $('.addIconTd').show('300');
+	                        $('.removeIconTd').show('300');
+	                   };
+	                }  
+	           }
+	      }
+		  /*团队 航程类型 点击事件*/
+	      function radioFunct1(){
+	            var radio1 = document.getElementsByName("voyageType1");  
+	             for (i=0; i<radio1.length; i++) {  
+	                  if (radio1[i].checked) {  
+	                     var radioValue1=radio1[i].value;
+	                     if (radioValue1==1) {
+	                          $('.setoutLabel').hide('300');
+	                          $('.setoutinput').hide('300');
+	                          $('.addIconTd').hide('300');
+	                          $('.removeIconTd').hide('300');
+	                     }else if(radioValue1==2){
+	                          $('.setoutLabel').show('300');
+	                          $('.setoutinput').show('300');
+	                          $('.addIconTd').hide('300');
+	                          $('.removeIconTd').hide('300');
+	                     }else if(radioValue1==3){
+	                          $('.setoutLabel').show('300');
+	                          $('.setoutinput').show('300');
+	                          $('.addIconTd').show('300');
+	                          $('.removeIconTd').show('300');
+	                     };
+	                  }  
+	             }
+	      }
+	  </script>
 	
 </body>
 </html>

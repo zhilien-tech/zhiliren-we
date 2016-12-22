@@ -100,7 +100,7 @@ $("#linkNameId").on('select2:select', function (evt) {
 			}else if(payType == 3){
 				$("#payTypeId").html("单结");
 			}else if(payType == 4){
-				$("#payTypeId").html("其他");
+				$("#payTypeId").html(dataJson.customerInfoEntity.paytypeName);
 			}
 			/* 电话补全 */
 			$("#phoneNumId").select2({
@@ -150,7 +150,7 @@ $("#phoneNumId").on('select2:select', function (evt) {
 			}else if(payType == 3){
 				$("#payTypeId").html("单结");
 			}else if(payType == 4){
-				$("#payTypeId").html("其他");
+				$("#payTypeId").html(dataJson.customerInfoEntity.paytypeName);
 			}
 			/* 客户名称补全 */
 			$("#linkNameId").select2({
