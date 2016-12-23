@@ -29,7 +29,15 @@ public class SabreConfig {
 
 	public static final String prod_environment = "https://api.sabre.com";
 
+	/**
+	 * 航班查询
+	 */
 	public static final String INSTAL_FLIGHTS_URl = "/v1/shop/flights";
+
+	/**
+	 * MAC多机场城市代码查询
+	 */
+	public static final String MAC_LOOKUP_URI = "/v1/lists/supported/cities";
 
 	protected static final String CHARSET = "UTF-8";
 

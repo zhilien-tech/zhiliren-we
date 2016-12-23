@@ -20,14 +20,14 @@ public class InstaFlightsSearchForm {
 	/**
 	 * 起飞机场/出发城市（必须）
 	 * <p>
-	 * IATA3字代码,比如ATL
+	 * IATA机场3字代码或者MAC城市三字代码,比如ATL,BJS(北京)
 	 */
 	private String origin;
 
 	/**
 	 * 降落机场/到达城市（必须）
 	 * <p>
-	 * IATA3字代码，比如LAS
+	 * IATA机场3字代码或者MAC城市三字代码,比如ATL,BJS(北京)
 	 */
 	private String destination;
 
