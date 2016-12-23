@@ -18,15 +18,19 @@ import org.nutz.log.Logs;
 import org.testng.collections.Lists;
 
 import com.jayway.jsonpath.JsonPath;
+import com.linyun.airline.common.result.HttpResult;
 import com.linyun.airline.common.sabre.SabreConfig;
 import com.linyun.airline.common.sabre.SabreTokenFactory;
 import com.linyun.airline.common.sabre.bean.SabreAccessToken;
 import com.linyun.airline.common.sabre.dto.FlightPriceInfo;
 import com.linyun.airline.common.sabre.dto.FlightSegment;
 import com.linyun.airline.common.sabre.dto.InstalFlightAirItinerary;
+import com.linyun.airline.common.sabre.dto.SabreExResponse;
+import com.linyun.airline.common.sabre.dto.SabreResponse;
 import com.linyun.airline.common.sabre.form.InstaFlightsSearchForm;
 import com.linyun.airline.common.sabre.service.SabreService;
 import com.linyun.airline.common.util.HttpClientUtil;
+import com.linyun.airline.common.util.JsonPathGeneric;
 import com.uxuexi.core.common.util.Util;
 import com.xiaoka.test.SabreAPITest;
 
@@ -41,20 +45,30 @@ public class SabreServiceImpl implements SabreService {
 	static Log log = Logs.getLog(SabreAPITest.class);
 
 	@Override
-	public List<InstalFlightAirItinerary> instaFlightsSearch(InstaFlightsSearchForm paramForm) {
+	public SabreResponse instaFlightsSearch(InstaFlightsSearchForm paramForm) {
+		SabreResponse resp = new SabreResponse();
 
 		String searchUrl = SabreConfig.test_environment + SabreConfig.INSTAL_FLIGHTS_URl
 				+ HttpClientUtil.getParams(paramForm);
-		String result = null;
+
 		HttpGet httpget = new HttpGet(searchUrl);
 
 		SabreAccessToken accessToken = SabreTokenFactory.getAccessToken();
 		String token = accessToken.getAccess_token();
 		httpget.addHeader("Authorization", "Bearer " + token);
-
 		log.info("executing request " + httpget.getRequestLine());
-		result = HttpClientUtil.httpsGet(httpget);
+
+		HttpResult hr = HttpClientUtil.httpsGet(httpget);
+		String result = hr.getResult();
 		log.info(result);
+
+		int statusCode = hr.getStatusCode();
+		if (HttpClientUtil.SUCCESS_CODE != statusCode) {
+			SabreExResponse exResp = new JsonPathGeneric().getGenericObject(result, "$", SabreExResponse.class);
+			resp.setStatusCode(statusCode);
+			resp.setData(exResp);
+			return resp;
+		}
 
 		List<Map<String, Object>> pricedItineraries = JsonPath.read(result, "$.PricedItineraries[*]");
 
@@ -89,7 +103,10 @@ public class SabreServiceImpl implements SabreService {
 				list.add(ir);
 			}
 		}
-		return list;
+
+		resp.setStatusCode(statusCode);
+		resp.setData(list);
+		return resp;
 	}
 
 	private static void readPriceInfo(String json, InstalFlightAirItinerary ir) {
@@ -148,7 +165,7 @@ public class SabreServiceImpl implements SabreService {
 						//耗时
 						int ElapsedTime = JsonPath.read(segJ, "$.ElapsedTime");
 						//准点率(%)
-						int OnTimePerformance = JsonPath.read(segJ, "$.OnTimePerformance.Percentage");
+						//						int OnTimePerformance = JsonPath.read(segJ, "$.OnTimePerformance.Percentage");
 						/**实际执行的航空公司代码*/
 						String opAirlineCode = JsonPath.read(segJ, "$.OperatingAirline.Code");
 						/**实际乘坐的航班号*/
@@ -159,7 +176,7 @@ public class SabreServiceImpl implements SabreService {
 						int ArrivalTimeZone = JsonPath.read(segJ, "$.ArrivalTimeZone.GMTOffset");
 
 						String ResBookDesigCode = JsonPath.read(segJ, "$.ResBookDesigCode");
-						String Equipment = JsonPath.read(segJ, "$.Equipment.AirEquipType");
+						//						String Equipment = JsonPath.read(segJ, "$.Equipment.AirEquipType");
 
 						seg.setStopQuantity(StopQuantity);
 						seg.setArrivalAirport(ArrivalAirport);
@@ -170,14 +187,14 @@ public class SabreServiceImpl implements SabreService {
 
 						seg.setFlightNumber(FlightNumber);
 						seg.setElapsedTime(ElapsedTime);
-						seg.setOnTimePerformance(OnTimePerformance);
+						//						seg.setOnTimePerformance(OnTimePerformance);
 						seg.setOpAirlineCode(opAirlineCode);
 						seg.setOpFlightNumber(opFlightNumber);
 						seg.setDepartureTimeZone(DepartureTimeZone);
 						seg.setArrivalTimeZone(ArrivalTimeZone);
 						//扩展
 						seg.setResBookDesigCode(ResBookDesigCode);
-						seg.setEquipment(Equipment);
+						//						seg.setEquipment(Equipment);
 
 						log.info(seg);
 
