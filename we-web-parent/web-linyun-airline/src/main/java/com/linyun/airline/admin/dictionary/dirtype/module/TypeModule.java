@@ -173,4 +173,20 @@ public class TypeModule {
 		}
 		return map;
 	}
+
+	/**
+	 * 校验字典类别名称
+	 */
+	@At
+	@POST
+	public Object checkTypeNameExist(@Param("typeName") final String Name) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<DictTypeEntity> listName = dbDao.query(DictTypeEntity.class, Cnd.where("typeName", "=", Name), null);
+		if (!Util.isEmpty(listName)) {
+			map.put("valid", false);
+		} else {
+			map.put("valid", true);
+		}
+		return map;
+	}
 }

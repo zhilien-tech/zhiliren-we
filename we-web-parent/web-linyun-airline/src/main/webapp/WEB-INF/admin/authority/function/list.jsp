@@ -66,7 +66,7 @@
 												</c:choose>
 											</c:forEach>
 										</select>
-									</div>
+									</div> 
 								</div>
 								<div class="col-md-3 dictInfoSousuo" style="float: left;">
 									<!--功能名称 搜索框-->
@@ -81,12 +81,12 @@
 							</form>
 							<div class="col-md-2 col-md-offset-3">
 								<a href="${base}/admin/authority/function/add.html"
-									data-toggle="modal" class="btn btn-primary btn-sm" id="addBtn"
+									data-toggle="modal" class="btn btn-primary btn-sm right" id="addBtn"
 									data-target="#addTabs">添加功能</a>
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
-								<table id="example2"
+								<table id="funDatatable"
 									class="table table-bordered table-hover table-wid">
 									<thead>
 										<tr>
@@ -108,17 +108,15 @@
 												<td>${one.url}</td>
 												<td>${one.parentName }</td>
 												<td>${one.level}</td>
-												<td><fmt:formatDate value="${one.createTime}"
-														pattern="yyyy-MM-dd" /></td>
-												<td><fmt:formatDate value="${one.updateTime}"
-														pattern="yyyy-MM-dd" /></td>
+												<td><fmt:formatDate value="${one.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+												<td><fmt:formatDate value="${one.updateTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 												<td>${one.remark}</td>
 												<td>${one.sort}</td>
 												<td>
-												<a
-														href="${base}/admin/authority/function/update.html?id=${one.id}"
-														data-toggle="modal" id="editBtn"
-														class="btn btn_mini btn_modify" data-target="#editTabs">编辑</a>
+													<a href="${base}/admin/authority/function/update.html?id=${one.id}"
+													   data-toggle="modal" id="editBtn" class="btn btn_mini btn_modify"
+													   data-target="#editTabs">编辑</a>
+												</td>  
 												 <%--这里如果有写title，则需要确认才会操作 --%> 
 												 <%-- <a
 														href="${base}/admin/authority/function/delete?id=${one.id}"
@@ -236,11 +234,23 @@
 	<script type="text/javascript">
 		var datatable;
 		function initDatatable() {
-			datatable = $('#example2').DataTable({
+			datatable = $('#funDatatable').DataTable({
 				"searching" : false,
 				"processing" : true,
 				"serverSide" : false,
 				"bLengthChange" : false,
+				"bJQueryUI": true,
+				"aoColumnDefs": [
+				 /*  { "sWidth": "5%",  "aTargets": [0] },
+				  { "sWidth": "10%",  "aTargets": [1] },
+				  { "sWidth": "10%",  "aTargets": [2] },
+				  { "sWidth": "10%",  "aTargets": [3] },
+				  { "sWidth": "10%",  "aTargets": [4] },
+				  { "sWidth": "10%",  "aTargets": [5] },
+				  { "sWidth": "10%",  "aTargets": [6] },
+				  { "sWidth": "15%",  "aTargets": [7] }, */
+				  { "sWidth": "30%",  "aTargets": [7] }
+				  ],
 				"language" : {
 					"url" : "${base}/public/plugins/datatables/cn.json"
 				}

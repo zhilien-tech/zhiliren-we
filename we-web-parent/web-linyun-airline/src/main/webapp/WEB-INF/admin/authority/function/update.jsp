@@ -23,13 +23,13 @@
                         <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">功能名称：</label>
                             <div class="col-sm-8 padding">
-                              <input name="name" type="text" class="form-control input-sm"  maxlength="32" value="${obj.name}"/>
+                              <input name="name" type="text" class="form-control input-sm"  maxlength="32" value="${obj.function.name}"/>
                             </div>
                         </div>
                         <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">访问地止：</label>
                             <div class="col-sm-8 padding">
-                            	<input name="url" type="text" class="form-control input-sm" maxlength="32" value="${obj.url}"/>
+                            	<input name="url" type="text" class="form-control input-sm" maxlength="32" value="${obj.function.url}"/>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -53,19 +53,19 @@
                         <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">功能等级：</label>
                             <div class="col-sm-8 padding">
-                            	<input name="level" type="text" class="form-control input-sm" maxlength="32" value="${obj.level}"/>
+                            	<input name="level" type="text" class="form-control input-sm" maxlength="32" value="${obj.function.level}"/>
                             </div>
                         </div>
                         <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">序号：</label>
                             <div class="col-sm-8 padding">
-                            	<input name="sort" type="text" class="form-control input-sm" maxlength="32" value="${obj.sort}"/>
+                            	<input name="sort" type="text" class="form-control input-sm" maxlength="32" value="${obj.function.sort}"/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 text-right padding">备注：</label>
                             <div class="col-sm-8 padding">
-                              <textarea name="remark" id="remark" class="form-control">${obj.remark}</textarea>
+                              <textarea name="remark" id="remark" class="form-control">${obj.function.remark}</textarea>
                             </div>
                         </div>
                     </div>

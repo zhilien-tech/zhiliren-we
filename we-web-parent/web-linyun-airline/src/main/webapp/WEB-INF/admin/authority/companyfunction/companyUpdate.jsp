@@ -12,6 +12,7 @@
 <link rel="stylesheet"
 	href="${base }/public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="${base }/public/dist/css/AdminLTE.css">
+<link rel="stylesheet" href="${base }/public/dist/css/dict.css">
 <link rel="stylesheet"
 	href="${base }/public/dist/css/font-awesome.min.css">
 <link rel="stylesheet" href="${base }/public/dist/css/ionicons.min.css">
@@ -23,17 +24,9 @@
 <link rel="stylesheet"
 	href="${base }/common/js/zTree/css/zTreeStyle/zTreeStyle.css">
 <!-- style -->
-<link rel="stylesheet" href="${base }/public/css/style.css">
+<link rel="stylesheet" href="${base}/public/css/style.css">
 <style type="text/css">
-.wu-example .statusBar .btns .uploadBtn {
-	background: #3c8dbc !important;
-	color: #fff;
-	border-color: transparent;
-	position: relative;
-	top: -122px;
-	height: 40px;
-	border-radius: 5px;
-}
+	.wu-example .statusBar .btns .uploadBtn {background: #3c8dbc !important;color: #fff;border-color: transparent;position: relative;top: -122px;height: 40px;border-radius: 5px;}
 </style>
 </head>
 <body onresize=hero();>
@@ -45,24 +38,24 @@
 				<input type="button" id="submitButton"
 					class="btn btn-primary right btn-sm" onclick="submitCompany();"
 					value="保存" />
-				<button type="button" class="btn right btn-sm"
-					onclick="deleteCompany();">删除</button>
 				<h4>公司权限配置</h4>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" style="height:430px;overflow-y: auto;">
 				<div class="tab-content">
-					<input name="id" type="hidden" value="${obj.company.id }">
-					<input name="functionIds" type="hidden" value=""/>
-					<div class="form-group row">
-						<label class="col-sm-5 text-right padding"><h4>公司名称：</h4></label>
-						<div class="col-sm-5 padding">
-							<h4 class="text-red">${obj.company.comName }</h4>
+					<input id="companyId" name="companyId" type="hidden" value="${obj.company.id }">
+					<input id="functionIds" name="functionIds" type="hidden" value=""/>
+					<div class="form-group row comForSty">
+						<label class="col-sm-3 text-right padding"><h5>公司名称：</h5></label>
+						<div class="col-sm-9 padding">
+							<h5 class="text-red">${obj.company.comName }</h5>
 						</div>
 					</div>
-                        <label class="col-sm-5 text-right padding"><h4>功能：</h4></label>
-                        <div class="col-sm-1 text-right padding">
+					<div class="form-group row comForSty">
+                        <label class="col-sm-3 text-right padding"><h5>功能：</h5></label>
+                        <div class="col-sm-9 text-right padding comSty">
                           <ul id="treeDemo" class="ztree"></ul>
                         </div>
+                    </div>
 				</div>
 			</div>
 		</form>
@@ -90,25 +83,26 @@
 		}
 		//保存
 		function submitCompany() {
-			$('#companyUpdateForm').bootstrapValidator('validate');
-			var bootstrapValidator = $("#companyUpdateForm").data(
-					'bootstrapValidator');
-			if (bootstrapValidator.isValid()) {
-				$.ajax({
-					type : 'POST',
-					data : $("#companyUpdateForm").serialize(),
-					url : '${base}/admin/Company/update.html',
-					success : function(data) {
-						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-						window.parent.successCallback('2');
-						parent.layer.close(index);
+			setFunc();
+			var _companyId = $("input#companyId").val() ;
+			var _functionIds = $("input#functionIds").val() ;
+			$.ajax({
+				type : 'POST',
+				data : {
+					companyId : _companyId,
+					functionIds:_functionIds
+				},
+				url : '${base}/admin/authority/companyfunction/update.html',
+				success : function(data) {
+					var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+					window.parent.successCallback('2');
+					parent.layer.close(index);
 
-					},
-					error : function(xhr) {
-						layer.msg("保存失败", "", 3000);
-					}
-				});
-			}
+				},
+				error : function(xhr) {
+					layer.msg("保存失败", "", 3000);
+				}
+			});
 		}
 		//删除
 		function deleteCompany() {

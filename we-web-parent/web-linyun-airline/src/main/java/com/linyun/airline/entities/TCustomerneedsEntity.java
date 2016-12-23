@@ -77,4 +77,8 @@ public class TCustomerneedsEntity implements Serializable {
 	@Comment("最后修改时间")
 	private Date lastupdatetime;
 
+	@Column
+	@Comment("所属公司")
+	private long companyid;
+
 }

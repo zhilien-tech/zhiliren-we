@@ -19,9 +19,6 @@
 <script src="${base}/public/dist/js/demo.js"></script>
 <!--layer -->
 <script src="${base}/common/js/layer/layer.js"></script>
-<!-- Select2 -->
-<script src="${base}/public/plugins/select2/select2.full.min.js"></script>
-<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
  <!-- Main Footer -->
   <footer class="main-footer">
     <!-- To the right -->

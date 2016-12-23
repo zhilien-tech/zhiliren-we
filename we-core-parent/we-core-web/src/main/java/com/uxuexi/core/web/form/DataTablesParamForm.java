@@ -2,8 +2,6 @@ package com.uxuexi.core.web.form;
 
 import lombok.Data;
 
-import com.uxuexi.core.web.form.SQLParamForm;
-
 /**
  * 用于接收bootstrap插件Datatables页面ajax请求发送给服务端的参数
  */

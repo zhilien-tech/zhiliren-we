@@ -35,7 +35,7 @@ function initDatatable1() {
                     },
                     {"data": "leavescity", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		return row.leavescity + "-" + row.backscity;
+                    		return row.leavescity;
                     	}
                     },
                     {"data": "backsdate", "bSortable": false,
@@ -47,7 +47,7 @@ function initDatatable1() {
                     },
                     {"data": "backscity", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		return row.backscity + "-" + row.leavescity;
+                    		return row.backscity;
                     	}	
                     },
                     {"data": "peoplecount", "bSortable": false},
@@ -103,8 +103,8 @@ function initSelect2(){
 				minimumInputLength : 1,
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
-				maximumSelectionLength : 1 //设置最多可以选择多少项
-				//tags : false, //设置必须存在的选项 才能选中
+				maximumSelectionLength : 1, //设置最多可以选择多少项
+				tags : false //设置必须存在的选项 才能选中
 			});
 			//加载出发航班号下拉
 			$("#leaveairline" + i).select2({
@@ -139,8 +139,8 @@ function initSelect2(){
 				minimumInputLength : 1,
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
-				maximumSelectionLength : 1 //设置最多可以选择多少项
-				//tags : false, //设置必须存在的选项 才能选中
+				maximumSelectionLength : 1, //设置最多可以选择多少项
+				tags : false //设置必须存在的选项 才能选中
 			});
 			//加载返程航班下拉
 			$("#backairline" + i).select2({
@@ -175,8 +175,8 @@ function initSelect2(){
 				minimumInputLength : 1,
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
-				maximumSelectionLength : 1 //设置最多可以选择多少项
-				//tags : false, //设置必须存在的选项 才能选中
+				maximumSelectionLength : 1, //设置最多可以选择多少项
+				tags : false //设置必须存在的选项 才能选中
 			});
 			//加载起飞城市下拉
 			$("#leavescity" + i).select2({
@@ -211,8 +211,8 @@ function initSelect2(){
 				minimumInputLength : 1,
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
-				maximumSelectionLength : 1 //设置最多可以选择多少项
-				//tags : false, //设置必须存在的选项 才能选中
+				maximumSelectionLength : 1, //设置最多可以选择多少项
+				tags : false //设置必须存在的选项 才能选中
 			});
 			//加载降落城市下拉
 			$("#backscity" + i).select2({
@@ -247,8 +247,8 @@ function initSelect2(){
 				minimumInputLength : 1,
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
-				maximumSelectionLength : 1 //设置最多可以选择多少项
-				//tags : false, //设置必须存在的选项 才能选中
+				maximumSelectionLength : 1, //设置最多可以选择多少项
+				tags : false //设置必须存在的选项 才能选中
 			});
 			//加载联运城市下拉
 			$("#unioncity" + i).select2({
@@ -283,11 +283,11 @@ function initSelect2(){
 				minimumInputLength : 1,
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
-				maximumSelectionLength : 1 //设置最多可以选择多少项
-				//tags : false, //设置必须存在的选项 才能选中
+				maximumSelectionLength : 1, //设置最多可以选择多少项
+				tags : false, //设置必须存在的选项 才能选中
 			});
 			//初始化起始日期
-			var startdatepicker = new Pikaday({
+			/*var startdatepicker = new Pikaday({
 			    field: document.getElementById('startdate' + i),
 			    firstDay: 1,
 			    minDate: new Date(),
@@ -301,49 +301,89 @@ function initSelect2(){
 			    minDate: new Date('2000-01-01'),
 			    maxDate: new Date('2120-12-31'),
 			    yearRange: [2000,2020]
-			});
+			});*/
 			//初始化小日历
 			new Kalendae({
 			    attachTo:document.getElementById('minCalender' + i),
 			    months:3,
+			    direction:'today-future',
 			    mode:'multiple',
 			    subscribe: {
 			         'date-clicked': function (date) {
 			             console.log(date, this.getSelected());
-			             $('#calenderdate' + i).val(this.getSelected());
+			             var selectdate = this.getSelected();
+			             if(selectdate){
+			            	 if(selectdate.indexOf(FormatDate(date))!=-1){
+			            		 selectdate = selectdate.substr(0,selectdate.indexOf(FormatDate(date))-2);
+			            	 }else{
+			            		 selectdate += ',' + FormatDate(date);
+			            	 }
+			             }else{
+			            	 selectdate += FormatDate(date);
+			             }
+			             console.log(selectdate);
+			             $('#calenderdate' + i).val(selectdate);
 			             // return false;
 			         }
-			     },//点击 获取到当天的时间
-			    selected:[Kalendae.moment().subtract({M:1}), Kalendae.moment().add({M:1})]
+			     }//点击 获取到当天的时间
+			     
+			    //selected:[Kalendae.moment().subtract({M:1}), Kalendae.moment().add({M:1})]
 			});
+			 $('.kalendae').append('<input type="button" class="btn btn-sm btn-primary celenderBtn" value="确定">');
+			//计划执着 隐藏日历按钮
+		    $('#hidebutton'+i).click(function(){
+		      $('#minCalender'+i).slideUp("slow");
+		      $(this).hide();
+		      $('#showbutton'+i).slideDown("slow");
+		    });
+
+		    //计划执着 隐藏日历按钮
+		    $('#showbutton'+i).click(function(){
+		      $('#minCalender'+i).slideDown("slow");
+		      $(this).hide();
+		      $('#hidebutton'+i).slideDown("slow");
+		    });
 		}
 	});
 	
 }
 
-//计划制作的 时间选择
-function select_change(obj){
+//计划制作的 时间选择  obj当前div对象   status  是否显示过渡效果
+function select_change(obj,status){
    var seleValue=$(obj).find("option:selected").attr("value");
    var addMake_aa = $(obj).closest(".aa") ; 
    if (seleValue==2) {
         addMake_aa.find('.checkWeek').slideUp("slow");//checked hide
         addMake_aa.find('.hidnCalendar').slideDown("slow");//div show
+        addMake_aa.find('.hidnBtn').slideDown("slow");//show 隐藏日历 按钮
      }else{
-       addMake_aa.find('.checkWeek').slideDown("slow");//checked show
-       addMake_aa.find('.hidnCalendar').slideUp("slow");//div hide
+    	 if(status){
+    		 addMake_aa.find('.checkWeek').show();//checked show
+    		 addMake_aa.find('.hidnCalendar').hide();//div hide
+    		 addMake_aa.find('.hidnBtn').hide();//hide 隐藏日历 按钮
+    		 addMake_aa.find('.showBtn').hide();
+    	 }else{
+    		 addMake_aa.find('.checkWeek').slideDown("slow");//checked show
+    		 addMake_aa.find('.hidnCalendar').slideUp("slow");//div hide
+    		 addMake_aa.find('.hidnBtn').slideUp("slow");//hide 隐藏日历 按钮
+    		 addMake_aa.find('.showBtn').slideUp("slow");
+    	 }
   };
 }
 
 $(function () {
 	//添加 addMake
 	$('.addIcon').click(function(){
+	   var clonediv = $('.addMake').first();
 	   var divTest =  $('.addMake').last(); 
-	   var newDiv = divTest.clone(false,true);
+	   var newDiv = clonediv.clone(false,true);
 	   divTest.after(newDiv);
 	   $('.addMake').each(function(i){
 		   if($('.addMake').length - 1 == i){
-			   $(this).find('[name=addButton]').remove();
-			   $(this).find('[name=closeButton]').remove();
+			   $(this).find('.addIcon').remove();
+			   $(this).find('.removIcon').remove();
+			   $('.addMake').first().find('.removIcon').hide();
+			   $(this).children().first().before('<a href="javascript:;" name="closeButton" class="removeBtn glyphicon glyphicon-minus removIcon removAddMake"></a><!--删除div按钮->');
 			   //设置新的旅行社Id
 			   var travelname = $(this).find('[name=travelname]');
 			   travelname.attr("id","travelname"+i);
@@ -372,13 +412,27 @@ $(function () {
 			   var unioncity = $(this).find('[name=unioncity]');
 			   unioncity.attr("id","unioncity"+i);
 			   $('#unioncity'+i).next().remove();
+			   
+			   var startenddate = $(this).find('[name=startenddate]');
+			   startenddate.empty();
+			   var startenddatestr = '<input id="startdate'+i+'" name="startdate" type="text" onFocus='+"WdatePicker({maxDate:'#F{$dp.$D(\\'enddate"+i+"\\')}'})"+' class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2016-11-05">'+ 
+                   '- <input id="enddate'+i+'" name="enddate" type="text" onFocus='+"WdatePicker({minDate:'#F{$dp.$D(\\'startdate"+i+"\\')}'})" +' class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2016-12-01">';
+			   startenddate.html(startenddatestr);
 			   //设置新的开始日期控件ID
-			   var startdate = $(this).find('[name=startdate]');
+			   /*var startdate = $(this).find('[name=startdate]');
 			   startdate.attr("id","startdate"+i);
 			   $('#startdate'+i).val('');
 			   //设置新的结束日期控件ID
 			   var enddate = $(this).find('[name=enddate]');
-			   enddate.attr("id","enddate"+i);
+			   enddate.attr("id","enddate"+i);*/
+			   //startdate.attr("onFocus","WdatePicker({maxDate:'#F{$dp.$D(\\'enddate"+i+"\\')}'})");
+			   //enddate.attr("onFocus","WdatePicker({minDate:'#F{$dp.$D(\\'startdate"+i+"\\')}'})");
+			   //显示按钮 
+			   var showbutton = $(this).find('[name=showbutton]');
+			   showbutton.attr("id","showbutton"+i);
+			   //隐藏按钮
+			   var hidebutton = $(this).find('[name=hidebutton]');
+			   hidebutton.attr("id","hidebutton"+i);
 			   $('#enddate'+i).val('');
 			   //清空选择每周
 			   $(this).find('input[name=weekday]').each(function() { 
@@ -394,23 +448,53 @@ $(function () {
 		   }
 	   });
 	   initSelect2();
+	   select_change(newDiv.find('[id=weekSelect]'),1);
 	   var No = parseInt(divTest.find("p").html())+1;   //假设你用p标签显示序号
 	   newDiv.find("p").html(No);  
 	})
 	//删除 addMake
 	$(".removIcon").click(function() {
 		if($('.addMake').length > 1){
-			$('.addMake').last().remove();
+			$(this).parent().remove();
+		}else{
+			layer.msg("最后一个不能删",{time: 2000, icon:1});
 		}
 	});
 });
 
+$(document).on('click', '.removeBtn', function(e) {
+	if($('.addMake').length > 1){
+		if($('.addMake').length == 2){
+			$('.addMake').first().find('.removIcon').show();
+		}
+		$(this).parent().remove();
+	}
+});
+/*$(document).on('focus', '.startdatestr', function(e) {
+	var enddateid = $(this).next(".inputdatestr").attr("id");
+	return "WdatePicker({maxDate:'#F{$dp.$D(\'"+enddateid+"\')}'})";
+});
+$(document).on('focus', '.enddatestr', function(e) {
+	var startdateid = $(this).prev(".inputdatestr").attr("id");
+	return "WdatePicker({minDate:'#F{$dp.$D(\'"+startdateid+"\')}'})";
+});*/
 //制作计划 
 function makePlan(){
 	var divlength = $('.addMake').length;
 	var teamtype = $('#teamtype').val();
-	//layer.load(2);
 	if(checkIsNull()){
+		layer.load(2);
+		//删除已制作的临时数据
+		$.ajax({ 
+			type: 'POST', 
+			data: {}, 
+			async:false,
+			url: BASE_PATH + '/admin/customneeds/deleteMakePlanData.html',
+	        success: function (data) { 
+	        },
+	        error: function (xhr) {
+	        } 
+	    });
 		$('.addMake').each(function(i){
 			var travelname = $(this).find('[name=travelname]').val();
 			if(travelname){
@@ -466,11 +550,10 @@ function makePlan(){
 				data: param, 
 				url: BASE_PATH + '/admin/customneeds/airlineMakePlan.html',
 	            success: function (data) {
-	            	$(this).remove();
+	            	datatable1.ajax.reload();
 	            	if(divlength-1 == i){
-	            		//layer.closeAll('loading');
+	            		layer.closeAll('loading');
 	            		layer.msg("制作成功",{time: 2000, icon:1});
-	            		datatable1.ajax.reload();
 	            	}
 	            },
 	            error: function (xhr) {
@@ -588,4 +671,49 @@ function savePlan(){
             } 
         });
 	});
+}
+//提示是否保存已经制作的计划
+window.onbeforeunload = function(event) {
+	var isplan = false;
+	$.ajax({ 
+		type: 'POST', 
+		data: {}, 
+		async:false,
+		url: BASE_PATH + '/admin/customneeds/isHavePlanData.html',
+        success: function (data) { 
+        	if(data){
+        		isplan = true;
+        	}
+        },
+        error: function (xhr) {
+        } 
+    });
+	if(isplan){
+		return "计划制作内容尚未保存，确定离开此页面吗？";
+	}
+}
+//关闭页面删除临时计划制作数据
+window.onunload = function(event){
+	$.ajax({ 
+		type: 'POST', 
+		data: {}, 
+		async:false,
+		url: BASE_PATH + '/admin/customneeds/deleteMakePlanData.html',
+        success: function (data) { 
+        },
+        error: function (xhr) {
+        } 
+    });
+}
+function FormatDate (strTime) {
+    var date = new Date(strTime);
+    return date.getFullYear()+"-"+zeroize((date.getMonth()+1),2)+"-"+zeroize(date.getDate(),2);
+}
+function zeroize(value, length) {
+    if (!length) length = 2;
+    value = String(value);
+    for (var i = 0, zeros = ''; i < (length - value.length); i++) {
+        zeros += '0';
+    }
+    return zeros + value;
 }

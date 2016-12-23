@@ -1,7 +1,6 @@
 package com.linyun.airline.admin.authority.companyfunction.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,18 +15,16 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import com.google.common.base.Function;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import com.linyun.airline.admin.authority.companyfunction.form.TCompanyModForm;
+import com.linyun.airline.admin.authority.companyfunction.form.CompanyFuctionForm;
 import com.linyun.airline.admin.authority.function.entity.TFunctionEntity;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCompanyFunctionMapEntity;
-import com.linyun.airline.entities.TUserEntity;
-import com.linyun.airline.forms.TCompanyUpdateForm;
-import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.base.service.BaseService;
+import com.uxuexi.core.web.chain.support.JsonResult;
 
 /**
  * TODO(这里用一句话描述这个类的作用)
@@ -44,27 +41,6 @@ public class CompanyAuthorityService extends BaseService<TCompanyEntity> {
 	 */
 	public TFunctionEntity findFuctionByRequestPath(String requestPath) {
 		return dbDao.fetch(TFunctionEntity.class, Cnd.where("url", "LIKE", "%" + requestPath + "%"));
-	}
-
-	/**修改公司功能关系*/
-	public void updateCompanyFunctionMap(TCompanyModForm form) {
-		String functionIds = form.getFunctionIds();
-		//根据公司查询关系
-		Long comId = form.getId();
-		List<TCompanyFunctionMapEntity> before = dbDao.query(TCompanyFunctionMapEntity.class,
-				Cnd.where("comId", "=", comId), null);
-		//欲更新为
-		List<TCompanyFunctionMapEntity> after = new ArrayList<TCompanyFunctionMapEntity>();
-		if (!Util.isEmpty(functionIds)) {
-			Iterable<String> funcIds = Splitter.on(",").split(functionIds);
-			for (String fid : funcIds) {
-				TCompanyFunctionMapEntity each = new TCompanyFunctionMapEntity();
-				each.setComId(comId);
-				each.setFunId(Long.valueOf(fid));
-				after.add(each);
-			}
-		}
-		dbDao.updateRelations(before, after);
 	}
 
 	public Map<String, Object> findCompany(long id) {
@@ -135,35 +111,33 @@ public class CompanyAuthorityService extends BaseService<TCompanyEntity> {
 		return Daos.queryCount(nutDao, sql.toString());
 	}
 
-	/**
-	 * 为修改页面准备信息
-	 * TODO(这里用一句话描述这个方法的作用)
-	 * <p>
-	 * TODO(这里描述这个方法详情– 可选)
-	 *
-	 * @param id
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
-	 */
-	public Map<String, Object> getCompanyPageInfo(long id) {
-		Map<String, Object> obj = new HashMap<String, Object>();
-		TCompanyEntity companyEntity = this.fetch(id);
-		//准备数据
-		obj.put("company", companyEntity);
-		//准备用户名
-		obj.put("telephone", dbDao.fetch(TUserEntity.class, companyEntity.getAdminId()).getTelephone());
-		//准备下拉框
-		obj.put("companyTypeEnum", EnumUtil.enum2(CompanyTypeEnum.class));
-		return obj;
+	public Object updateComFunctions(CompanyFuctionForm updateForm) {
+		updateCompanyFunctionMap(updateForm);
+		return JsonResult.success("更新成功");
 	}
 
-	public Object updateCompany(TCompanyUpdateForm updateForm) {
-		//修改管理员用户名
-		TUserEntity userEntity = dbDao.fetch(TUserEntity.class, updateForm.getAdminId());
-		userEntity.setTelephone(updateForm.getTelephone());
-		userEntity.setUserName(updateForm.getComName() + "系统管理员");
-		dbDao.update(userEntity);
-		//修改公司信息
-		updateForm.setLastupdatetime(new Date());
-		return this.update(updateForm);
+	/**修改公司功能关系*/
+	private void updateCompanyFunctionMap(CompanyFuctionForm form) {
+		String functionIds = form.getFunctionIds();
+		//根据公司查询关系
+		Long comId = form.getCompanyId();
+		List<TCompanyFunctionMapEntity> before = dbDao.query(TCompanyFunctionMapEntity.class,
+				Cnd.where("comId", "=", comId), null);
+		//欲更新为
+		List<TCompanyFunctionMapEntity> after = new ArrayList<TCompanyFunctionMapEntity>();
+		if (!Util.isEmpty(functionIds)) {
+			Iterable<String> funcIds = Splitter.on(",").omitEmptyStrings().split(functionIds);
+			for (String fid : funcIds) {
+				long funcId = Long.valueOf(fid);
+				if (funcId <= 0) {
+					continue;
+				}
+				TCompanyFunctionMapEntity each = new TCompanyFunctionMapEntity();
+				each.setComId(comId);
+				each.setFunId(funcId);
+				after.add(each);
+			}
+		}
+		dbDao.updateRelations(before, after);
 	}
 }

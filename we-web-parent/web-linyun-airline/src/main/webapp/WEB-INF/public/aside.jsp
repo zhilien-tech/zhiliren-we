@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <!-- Left side column. contains the logo and sidebar -->
    
   <aside class="main-sidebar">
@@ -12,34 +12,26 @@
       <ul class="sidebar-menu">
         <li class="header">菜单栏</li>
         <!-- Optionally, you can add icons to the links -->
-        <%-- <li><a href="${base}/admin/customer/list.html"><i class="fa fa-users"></i><span>员工管理</span></a></li> --%>
-        <li><a href="${base}/admin/Company/list.html"><i class="fa fa-users"></i><span>公司管理</span></a></li>
+        <%-- <li><a href="${base}/admin/user/list.html"><i class="fa fa-users"></i><span>员工管理</span></a></li> --%>
+		<li><a href="${base}/admin/authority/authoritymanage/list.html"><i class="fa fa-eye"></i><span>权限管理</span></a></li>
+        <li><a href="${base}/admin/operationsArea/desktop.html"><i class="fa fa-tv"></i><span>桌面</span></a></li>
+        <li><a href="${base}/admin/Company/list.html"><i class="fa fa-building"></i><span>公司管理</span></a></li>
         <li><a href="${base}/admin/customer/list.html"><i class="fa fa-user-secret"></i><span>客户管理</span></a></li>
-        <%-- <li><a href="${base}/admin/authority/function/list.html"><i class="fa fa-user-secret"></i><span>功能管理</span></a></li> --%>
-        <li><a href="${base}/admin/authority/companyfunction/companyList.html"><i class="fa fa-user-secret"></i><span>公司权限配置</span></a></li>
-         <%-- <li class="treeview">
-          <a href="${base}/admin/job/list.html">
-            <i class="fa fa-edit"></i> <span>权限管理</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="${base}/admin/job/list.html"><i class="fa fa-circle-o"></i> 职位管理</a></li>
-            <li><a href="${base}/admin/job/list.html"><i class="fa fa-circle-o"></i> 用户管理</a></li>
-            <li><a href="${base}/admin/job/list.html"><i class="fa fa-circle-o"></i> 功能管理</a></li>
-          </ul> --%>
+        <li><a href="${base}/admin/customneeds/list.html"><i class="fa fa-plane"></i><span>航空公司模块</span></a></li>
+        <%-- <li><a href="${base}/admin/authority/function/list.html"><i class="fa fa-th-large"></i><span>功能管理</span></a></li> --%>
+        <li><a href="${base}/admin/authority/companyfunction/companyList.html"><i class="fa fa-gears"></i><span>公司权限配置</span></a></li>
+         
         </li>
         <li class="treeview">
           <a href="${base}/admin/dictionary/dirtype/list.html">
             <i class="fa fa-table"></i> <span>数据字典</span>
             <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
+              <i class="fa fa-chevron-right pull-right" style="font-size:12px;margin: 2px 10px;"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="${base}/admin/dictionary/dirtype/list.html"><i class="fa fa-circle-o"></i> 字典类型</a></li>
-            <li><a href="${base}/admin/dictionary/dirinfo/list.html"><i class="fa fa-circle-o"></i> 字典信息</a></li>
+            <li><a href="${base}/admin/dictionary/dirtype/list.html" style="margin-left: 15px;"><i class="fa fa-circle-o"></i> 字典类型</a></li>
+            <li><a href="${base}/admin/dictionary/dirinfo/list.html" style="margin-left: 15px;"><i class="fa fa-circle-o"></i> 字典信息</a></li>
           </ul>
         </li>
       </ul>

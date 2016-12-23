@@ -12,7 +12,7 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">&nbsp;&nbsp;<i class="fa fa-users"></i>公司管理</h3>
+              <h3 class="box-title">&nbsp;&nbsp;<i class="fa fa-sitemap"></i>公司权限配置</h3>
               <div class="form-group row form-right">
              
                 
@@ -27,7 +27,7 @@
             <h4 class="padLeft">全部公司：${obj.totalcompany }　上游公司：${obj.upconpany } 　代理商：${obj.agent }</h4>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="datatable" class="table table-bordered table-hover" style="width: 100%;">
+              <table id="datatableAuthority" class="table table-bordered table-hover" style="width: 100%;">
                 <thead>
                 <tr>
                   <th>公司名称</th>
@@ -73,7 +73,7 @@
 <script>
 var datatable;
 function initDatatable() {
-    datatable = $('#datatable').DataTable({
+    datatable = $('#datatableAuthority').DataTable({
     	"searching":false,
     	"bLengthChange": false,
         "processing": true,
@@ -135,7 +135,7 @@ $(function () {
     	    fix: false,
     	    maxmin: false,
     	    shadeClose: false,
-    	    area: ['900px', '700px'],
+    	    area: ['600px', '500px'],
     	    content: '${url}/add.html'
     	    
     	  });
@@ -149,7 +149,7 @@ $(function () {
   	    fix: false,
   	    maxmin: false,
   	    shadeClose: false,
-  	    area: ['900px', '700px'],
+  	    area: ['800px', '500px'],
   	    content: '/admin/authority/companyfunction/companyUpdate.html?id='+id
   	  });
   }

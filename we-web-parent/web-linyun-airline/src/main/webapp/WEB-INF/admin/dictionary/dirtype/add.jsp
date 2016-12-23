@@ -10,6 +10,7 @@
 <link rel="stylesheet"
 	href="${base}/public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
+<link rel="stylesheet" href="${base}/public/dist/css/dict.css">
 <link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
 <!-- jQuery 2.2.3 -->
 <script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -21,19 +22,17 @@
 	<div class="modal-top">
 		<form id="addForm">
 			<div class="modal-header boderButt">
-				<button id="backBtn" type="button" class="btn btn-primary right btn-sm"
-					data-dismiss="modal">返回</button>
-				<button type="button" id="submit"
-					class="btn btn-primary right btn-sm">保存</button>
+				<button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">返回</button>
+                <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
 				<h4>添加</h4>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" style="height:310px;overflow-y: auto;">
 				<div class="tab-content">
 					<div class="form-group row">
 						<label class="col-sm-3 text-right padding">字典类型编码：</label>
 						<div class="col-sm-8 padding">
 							<input name="typeCode" class="form-control input-sm inpImpWid"
-								placeholder="请输入字典类型编码" /> <span class="prompt">*</span>
+								placeholder="请输入字典类型编码" /><span class="prompt">*</span>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -55,7 +54,7 @@
 					<div class="form-group row">
 						<label class="col-sm-3 text-right padding">描述：</label>
 						<div class="col-sm-8 padding">
-							<textarea name="description" class="form-control inpImpWid"></textarea>
+							<textarea name="description" class="form-control inpImpWid textareaHei"></textarea>
 						</div>
 					</div>
 				</div>
@@ -86,7 +85,6 @@
 	                         //自定义提交数据，默认值提交当前input value
 	                         data: function(validator) {
 	                            return {
-	                            	//typeCode:$('#typeCode').val()
 	                            	typeCode:$('input[name="typeCode"]').val()
 	                            };
 	                         }
@@ -101,7 +99,19 @@
 	            	validators: {
 	                    notEmpty: {
 	                        message: '字典类别名称不能为空!'
-	                    }
+	                    },
+	                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
+	                    url: '${base}/admin/dictionary/dirtype/checkTypeNameExist.html',//验证地址
+	                         message: '字典类别名称重复，请重新输入!',//提示消息
+	                         delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+	                         type: 'POST',//请求方式
+	                         //自定义提交数据，默认值提交当前input value
+	                         data: function(validator) {
+	                            return {
+	                            	typeName:$('input[name="typeName"]').val()
+	                            };
+	                         }
+	                     }
 	                }
 	            }
 	        }
@@ -130,7 +140,9 @@
 							time : 5000,
 							icon : 6
 						});
-						window.location.reload(true);
+						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+						parent.layer.close(index);
+						window.parent.successCallback('1');
 					}
 				});
 			}
@@ -141,10 +153,11 @@
 		$('#submit').click(function() {
 	        $('#addForm').bootstrapValidator('validate');
 	    });
-		//点击返回按钮自动刷新页面
-		$('#backBtn').click(function(){
-			window.location.href="${base}/admin/dictionary/dirtype/list.html";
-		});
+		//点击返回
+		function closewindow(){
+			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+			parent.layer.close(index);
+		}
 	</script>
 </body>
 </html>

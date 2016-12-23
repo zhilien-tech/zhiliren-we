@@ -1,10 +1,10 @@
 package com.linyun.airline.admin.authority.function.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 
-import org.joda.time.DateTime;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Comment;
 import org.nutz.dao.entity.annotation.Id;
@@ -12,7 +12,7 @@ import org.nutz.dao.entity.annotation.Table;
 
 @Data
 @Table("t_function")
-public class TFunctionEntity implements Serializable {
+public class TFunctionEntity implements Serializable, Cloneable {
 	private static final long serialVersionUID = 1L;
 	@Column
 	@Id(auto = true)
@@ -37,11 +37,11 @@ public class TFunctionEntity implements Serializable {
 
 	@Column
 	@Comment("创建时间")
-	private DateTime createTime;
+	private Date createTime;
 
 	@Column
 	@Comment("更新时间")
-	private DateTime updateTime;
+	private Date updateTime;
 
 	@Column
 	@Comment("备注")
@@ -83,4 +83,21 @@ public class TFunctionEntity implements Serializable {
 		result = prime * result + (int) (id ^ (id >>> 32));
 		return result;
 	}
+
+	/**
+	 * (non-Javadoc)
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	public TFunctionEntity clone() throws CloneNotSupportedException {
+		TFunctionEntity clone = null;
+		try {
+			clone = (TFunctionEntity) super.clone();
+
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException(e); // won't happen 
+		}
+		return clone;
+	}
+
 }

@@ -164,6 +164,5 @@ function initDatatable() {
 		});
 	}
 </script>
-
 </body>
 </html>

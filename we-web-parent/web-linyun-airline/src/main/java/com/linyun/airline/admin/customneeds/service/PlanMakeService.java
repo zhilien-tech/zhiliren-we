@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
@@ -22,12 +23,16 @@ import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
 
 import com.google.common.base.Splitter;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
+import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.util.ExportExcel;
 import com.linyun.airline.entities.DictInfoEntity;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TPlanInfoEntity;
+import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TPlanInfoAddForm;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.Util;
@@ -51,6 +56,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	private static final String TRAVELCODE = "LXS";
 	private static final String AIRLINECODE = "HBH";
 	private static final String CITYCODE = "CFCS";
+	private static final String AIRCOMCODE = "HKGS";
 	private static final String QUANGUOLIANYUN = "全国联运";
 
 	private static final String[] EXCEL_DONGHANG_COLUMN_TITLE = { "去程日期", "去程航班", "行程", "回程日期", "回程航班", "人数", "组团社",
@@ -59,10 +65,13 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	private static final String[] EXCEL_NANHANG_COLUMN_TITLE = { "区域", "日期段", "合作旅行社", "行程", "去程航班", "回程航班",
 			"去程班期（周几）", "回程班期（周几）", "天数(以国际航班起飞时间计算)", "每月周期第几周发团", "座位数", "团队个数/月", "去程日期", "回程日期", "申请编号", "价格", "TC" };
 	private static final String EXCEL_NANHANG_TITLE = "南航";
-	private static final String[] EXCEL_LINGYUN_COLUMN_TITLE = { "代理", "出发日期", "回程日期", "目的地", "人数", " ", "价格", "航班备注" };
-	private static final String EXCEL_LINGYUN_TITLE = "凌云";
-	private static final String[] EXCEL_LINGYUN_FIRST_DATA = { "Agent", "Dep Date", "Return Date", "Dest", "TCP",
+	private static final String[] EXCEL_GUOTAI_COLUMN_TITLE = { "代理", "出发日期", "回程日期", "目的地", "人数", " ", "价格", "航班备注" };
+	private static final String EXCEL_GUOTAI_TITLE = "国泰";
+	private static final String[] EXCEL_GUOTAI_FIRST_DATA = { "Agent", "Dep Date", "Return Date", "Dest", "TCP",
 			"RLOC", "Fare", "RMP(Optional)" };
+	private static final String[] EXCEL_LINGYUN_COLUMN_TITLE = { "航空公司名称", "去程日期", "去程航段", "去程航班", "回程日期", "回程航段",
+			"回程航班", "人数", "天数", "旅行社", "联运要求" };
+	private static final String EXCEL_LINGYUN_TITLE = "凌云";
 
 	/**
 	 * 获取旅行社名称下拉
@@ -140,9 +149,11 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 		List<DictInfoEntity> citySelect = new ArrayList<DictInfoEntity>();
 		try {
 			citySelect = externalInfoService.findDictInfoByName(cityname, this.CITYCODE);
-			DictInfoEntity dictInfoEntity = new DictInfoEntity();
-			dictInfoEntity.setDictName(this.QUANGUOLIANYUN);
-			citySelect.add(dictInfoEntity);
+			if (this.QUANGUOLIANYUN.indexOf(Strings.trim(cityname)) != -1) {
+				DictInfoEntity dictInfoEntity = new DictInfoEntity();
+				dictInfoEntity.setDictName(this.QUANGUOLIANYUN);
+				citySelect.add(0, dictInfoEntity);
+			}
 			if (citySelect.size() > 5) {
 				citySelect = citySelect.subList(0, 5);
 			}
@@ -157,15 +168,20 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 * <p>
 	 * 计划制作
 	 * @param addForm
+	 * @param session 
 	 * @return 根据页面提交的数据进行航空公司模块的计划制作
 	 */
 	@SuppressWarnings({ "deprecation", "static-access" })
-	public Object airlineMakePlan(TPlanInfoAddForm addForm) {
+	public Object airlineMakePlan(TPlanInfoAddForm addForm, HttpSession session) {
 		List<TPlanInfoEntity> planInfos = new ArrayList<TPlanInfoEntity>();
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		//页面选择的起始日期
-		Date startdate = new Date(addForm.getStartdate());
+		Date startdate = DateUtil.string2Date(addForm.getStartdate(), DateUtil.FORMAT_YYYY_MM_DD);
 		//页面选择的结束日期
-		Date enddate = new Date(addForm.getEnddate());
+		Date enddate = DateUtil.string2Date(addForm.getEnddate(), DateUtil.FORMAT_YYYY_MM_DD);
 		//根据航班号获取航空公司名称
 		String airLineName = this.getAirCompanyByAirLine(addForm.getLeaveairline());
 		//自由制作计划
@@ -189,6 +205,8 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 					planInfoEntity.setDayscount(addForm.getDayscount());
 					planInfoEntity.setUnioncity(addForm.getUnioncity());
 					planInfoEntity.setTeamtype(addForm.getTeamtype());
+					planInfoEntity.setOpid(user.getId());
+					planInfoEntity.setCompanyid(company.getId());
 					planInfos.add(planInfoEntity);
 				}
 			}
@@ -221,6 +239,8 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 						planInfoEntity.setDayscount(addForm.getDayscount());
 						planInfoEntity.setUnioncity(addForm.getUnioncity());
 						planInfoEntity.setTeamtype(addForm.getTeamtype());
+						planInfoEntity.setOpid(user.getId());
+						planInfoEntity.setCompanyid(company.getId());
 						planInfos.add(planInfoEntity);
 					}
 				}
@@ -283,12 +303,15 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 * 保存计划
 	 * <p>
 	 * 保存计划
+	 * @param session 
 	 * @return 保存计划
 	 */
-	public Object savePlanData() {
+	public Object savePlanData(HttpSession session) {
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		String sqlString = EntityUtil.entityCndSql(TPlanInfoEntity.class);
 		Sql sql = Sqls.create(sqlString);
-		sql.setCondition(Cnd.where("issave", "=", 0));
+		sql.setCondition(Cnd.where("issave", "=", 0).and("companyid", "=", company.getId()));
 		List<TPlanInfoEntity> planInfoEntities = this.listPageBean(TPlanInfoEntity.class, sql, null);
 		for (TPlanInfoEntity tPlanInfoEntity : planInfoEntities) {
 			tPlanInfoEntity.setIssave(1);
@@ -300,9 +323,10 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 * 导出东航模板
 	 * EXCEL导出东航模板
 	 * @param response
+	 * @param session 
 	 * @return Excel导出东航模板
 	 */
-	public Object exportDongHangTemplate(HttpServletResponse response) {
+	public Object exportDongHangTemplate(HttpServletResponse response, HttpSession session) {
 		try {
 			//设置Excel表格输入的日期格式
 			DateFormat df = new SimpleDateFormat("dd/MMM", Locale.ENGLISH);
@@ -312,7 +336,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 			String title = this.EXCEL_DONGHANG_TITLE;
 			//为Excel准备数据
 			@SuppressWarnings("unchecked")
-			List<Record> rerultList = getMakePlanData();
+			List<Record> rerultList = getMakePlanData(session);
 			//设置Excel数据
 			List<Object[]> excelData = new ArrayList<Object[]>();
 			for (Record record : rerultList) {
@@ -331,16 +355,32 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	}
 
 	/**
-	 * 获取计划制作数据
+	 * 获取计划制作导出Excel数据
+	 * @param session 
 	 */
-	private List<Record> getMakePlanData() {
+	private List<Record> getMakePlanData(HttpSession session) {
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		String sqlString = EntityUtil.entityCndSql(TPlanInfoEntity.class);
 		Sql sql = Sqls.create(sqlString);
-		sql.setCondition(Cnd.where("issave", "=", 0).orderBy("leavesdate", "asc"));
+		sql.setCondition(Cnd.where("issave", "=", 0).and("companyid", "=", company.getId())
+				.orderBy("leavesdate", "asc"));
 		sql.setCallback(Sqls.callback.records());
 		nutDao.execute(sql);
 		@SuppressWarnings("unchecked")
 		List<Record> rerultList = (List<Record>) sql.getResult();
+		return rerultList;
+	}
+
+	/**
+	 * 获取计划制作导出Excel数据
+	 * @param session 
+	 */
+	private List<TPlanInfoEntity> getMakePlansData(HttpSession session) {
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		List<TPlanInfoEntity> rerultList = dbDao.query(TPlanInfoEntity.class,
+				Cnd.where("issave", "=", 0).and("companyid", "=", company.getId()).orderBy("leavesdate", "asc"), null);
 		return rerultList;
 	}
 
@@ -370,7 +410,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 * @param response
 	 * @return 导出南航Excel模板
 	 */
-	public Object exportNanHangTemplate(HttpServletResponse response) {
+	public Object exportNanHangTemplate(HttpServletResponse response, HttpSession session) {
 		try {
 			//设置Excel表格输入的日期格式
 			DateFormat df = new SimpleDateFormat("dd-MMM", Locale.ENGLISH);
@@ -380,7 +420,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 			String title = this.EXCEL_NANHANG_TITLE;
 			//为Excel准备数据
 			@SuppressWarnings("unchecked")
-			List<Record> rerultList = getMakePlanData();
+			List<Record> rerultList = getMakePlanData(session);
 			//设置Excel数据
 			List<Object[]> excelData = new ArrayList<Object[]>();
 			for (Record record : rerultList) {
@@ -405,29 +445,28 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	}
 
 	/**
-	 * 
-	 * 导出凌云模板
+	 * 导出国泰模板
 	 * <p>
-	 * 导出凌云模板
-	 *
+	 * 导出国泰模板
 	 * @param response
-	 * @return 导出凌云模板
+	 * @param session 
+	 * @return 导出国泰模板
 	 */
-	public Object exportLingYunTemplate(HttpServletResponse response) {
+	public Object exportGuoTaiTemplate(HttpServletResponse response, HttpSession session) {
 		try {
 			//设置Excel表格输入的日期格式
 			DateFormat df = new SimpleDateFormat("dd-MMM", Locale.ENGLISH);
 			DateFormat df1 = new SimpleDateFormat("yyyy年MM月dd日");
 			//定义Excel表格的列标题
-			String[] excelColumnTitle = this.EXCEL_LINGYUN_COLUMN_TITLE;
+			String[] excelColumnTitle = this.EXCEL_GUOTAI_COLUMN_TITLE;
 			//设置Excel表格标题
-			String title = this.EXCEL_LINGYUN_TITLE;
+			String title = this.EXCEL_GUOTAI_TITLE;
 			//为Excel准备数据
 			@SuppressWarnings("unchecked")
-			List<Record> rerultList = getMakePlanData();
+			List<Record> rerultList = getMakePlanData(session);
 			//设置Excel数据
 			List<Object[]> excelData = new ArrayList<Object[]>();
-			excelData.add(this.EXCEL_LINGYUN_FIRST_DATA);
+			excelData.add(this.EXCEL_GUOTAI_FIRST_DATA);
 			for (Record record : rerultList) {
 				Object[] obj = {
 						record.get("travelname"),
@@ -443,5 +482,95 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	/**
+	 * 导出凌云模板
+	 * <p>
+	 * 导出凌云模板
+	 *
+	 * @param response
+	 * @param session
+	 * @return 导出凌云模板
+	 */
+	public Object exportLingYunTemplate(HttpServletResponse response, HttpSession session) {
+		try {
+			//设置Excel表格输入的日期格式
+			DateFormat df = new SimpleDateFormat("dd/MMM", Locale.ENGLISH);
+			//定义Excel表格的列标题
+			String[] excelColumnTitle = this.EXCEL_LINGYUN_COLUMN_TITLE;
+			//设置Excel表格标题
+			String title = this.EXCEL_LINGYUN_TITLE;
+			//为Excel准备数据
+			@SuppressWarnings("unchecked")
+			List<TPlanInfoEntity> rerultList = getMakePlansData(session);
+			//设置Excel数据
+			List<Object[]> excelData = new ArrayList<Object[]>();
+			for (TPlanInfoEntity record : rerultList) {
+				Object[] obj = { record.getAirlinename(), df.format(record.getLeavesdate()),
+						record.getLeavescity() + "-" + record.getBackscity(), record.getLeaveairline(),
+						df.format(record.getBacksdate()), record.getBackscity() + "-" + record.getLeavescity(),
+						record.getBackairline(), record.getPeoplecount(), record.getDayscount(),
+						record.getTravelname(), record.getUnioncity() };
+				excelData.add(obj);
+			}
+			ExportExcel excel = new ExportExcel(title, excelColumnTitle, excelData, response);
+			excel.export();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * 判断是否存在未保存的计划
+	 * <p>
+	 *判断是否存在未保存的计划
+	 *
+	 * @return 判断是否存在未保存的计划
+	 */
+	public boolean isHavePlanData(HttpSession session) {
+		boolean result = false;
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		List<TPlanInfoEntity> makeplaninfo = dbDao.query(TPlanInfoEntity.class,
+				Cnd.where("issave", "=", 0).and("companyid", "=", company.getId()).orderBy("leavesdate", "asc"), null);
+		if (makeplaninfo.size() > 0) {
+			result = true;
+		}
+		return result;
+	}
+
+	/**离开页面删除临时制作信息
+	 * <p>
+	 *离开页面删除临时制作信息
+	 * @param session
+	 * @return 离开页面删除临时制作信息
+	 */
+	public Object deleteMakePlanData(HttpSession session) {
+		//获取当前公司
+		int result = 0;
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		List<TPlanInfoEntity> makeplaninfo = dbDao.query(TPlanInfoEntity.class,
+				Cnd.where("issave", "=", 0).and("companyid", "=", company.getId()).orderBy("leavesdate", "asc"), null);
+		if (makeplaninfo.size() > 0) {
+			result = dbDao.delete(makeplaninfo);
+		}
+		return result;
+	}
+
+	public Object getAirComSelect(String aircom) {
+
+		List<DictInfoEntity> aircomSelect = new ArrayList<DictInfoEntity>();
+		try {
+			aircomSelect = externalInfoService.findDictInfoByName(aircom, this.AIRCOMCODE);
+			if (aircomSelect.size() > 5) {
+				aircomSelect = aircomSelect.subList(0, 5);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return aircomSelect;
+
 	}
 }

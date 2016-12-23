@@ -15,8 +15,8 @@ import org.nutz.json.Json;
 import org.nutz.json.JsonFormat;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
-import org.testng.collections.Lists;
 
+import com.google.common.collect.Lists;
 import com.jayway.jsonpath.JsonPath;
 import com.linyun.airline.common.result.HttpResult;
 import com.linyun.airline.common.sabre.SabreConfig;
@@ -32,7 +32,6 @@ import com.linyun.airline.common.sabre.service.SabreService;
 import com.linyun.airline.common.util.HttpClientUtil;
 import com.linyun.airline.common.util.JsonPathGeneric;
 import com.uxuexi.core.common.util.Util;
-import com.xiaoka.test.SabreAPITest;
 
 /**
  * @author   朱晓川
@@ -42,7 +41,7 @@ import com.xiaoka.test.SabreAPITest;
 public class SabreServiceImpl implements SabreService {
 
 	//打log用
-	static Log log = Logs.getLog(SabreAPITest.class);
+	static Log log = Logs.getLog(SabreServiceImpl.class);
 
 	@Override
 	public SabreResponse instaFlightsSearch(InstaFlightsSearchForm paramForm) {

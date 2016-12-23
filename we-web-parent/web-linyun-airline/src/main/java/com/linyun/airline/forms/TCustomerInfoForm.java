@@ -21,7 +21,7 @@ public class TCustomerInfoForm implements SQLParamForm, Serializable {
 	private long id;
 
 	/**上游公司id*/
-	private long comId;
+	private long upComId;
 
 	/**代理商id*/
 	private long agentId;

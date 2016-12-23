@@ -26,7 +26,9 @@
 		    height: 40px;
 		    border-radius: 5px;
 		}
+		.form-control-feedback {position: absolute;top: -2px;right: -25px;}
 		html, body {min-height: 0;min-width: 0;overflow-x: auto !important;}
+		.modal-body{height: 515px; overflow-y: auto;}
 	</style>
 </head>
 <body onresize=hero();>
@@ -110,7 +112,7 @@
                 </div>
                  </form>
             </div>
-	<!-- jQuery 2.2.3 -->
+<!-- jQuery 2.2.3 -->
 <script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="${base}/public/bootstrap/js/bootstrap.js"></script>
 <script src="${base}/public/dist/js/bootstrapValidator.js"></script>
@@ -221,13 +223,12 @@
 		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 		parent.layer.close(index);
 		window.parent.successCallback('4');
-		//parent.location.reload();
 	}
 	function submitCompany(){
-		layer.load(1);
 		$('#companyaddForm').bootstrapValidator('validate');
 		var bootstrapValidator = $("#companyaddForm").data('bootstrapValidator');
 		if(bootstrapValidator.isValid()){
+			layer.load(1);
 			$.ajax({ 
 				type: 'POST', 
 				data: $("#companyaddForm").serialize(), 
@@ -240,8 +241,7 @@
 	            	$('#companyaddForm')[0].reset();
 	            	$("#companyaddForm").data('bootstrapValidator').destroy();
 	                $('#companyaddForm').data('bootstrapValidator', null);
-	                formValidator();
-	            	
+	                formValidator();	
 	            },
 	            error: function (xhr) {
 	            	layer.msg("添加失败","",3000);

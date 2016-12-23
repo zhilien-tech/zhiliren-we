@@ -44,6 +44,7 @@
 <link rel="stylesheet"
 	href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
+<link rel="stylesheet" href="${base}/public/dist/css/customer.css">
 <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect.
@@ -161,7 +162,7 @@
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
-								<table id="datatable" class="table table-bordered table-hover" style="width:100%;">
+								<table id="datatableCustomerId" class="table table-bordered table-hover" style="width:100%;">
 									<thead>
 										<tr>
 											<th>序号</th>
@@ -228,7 +229,7 @@
 <script type="text/javascript">
 var datatable;
 function initDatatable() {
-    datatable = $('#datatable').DataTable({
+    datatable = $('#datatableCustomerId').DataTable({
     	"searching":false,
     	"bLengthChange": false,
         "processing": true,
@@ -289,7 +290,7 @@ function initDatatable() {
             //   指定第一列，从0开始，0表示第一列，1表示第二列……
             targets: 6,
             render: function(data, type, row, meta) {
-                return '<a onclick="edit('+row.id+')" id="updateBtn" class="btn btn_mini btn_modify">编辑</a>';
+                return '<a onclick="edit('+row.id+')" id="updateBtn" class="btn_mini btn_modify eti_a">编辑</a>';
             }
         }]
     });

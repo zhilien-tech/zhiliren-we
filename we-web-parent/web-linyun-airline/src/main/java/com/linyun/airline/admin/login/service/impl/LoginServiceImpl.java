@@ -82,8 +82,8 @@ public class LoginServiceImpl extends BaseService<TUserEntity> implements LoginS
 			companySql.params().set("userId", user.getId());
 			companySql.params().set("jobStatus", UserJobStatusEnum.ON.intKey());
 			List<TCompanyEntity> companyLst = DbSqlUtil.query(dbDao, TCompanyEntity.class, companySql);
-			if (!Util.isEmpty(companyLst) && companyLst.size() != 1) {
-				throw new IllegalArgumentException("用户只能在一家公司就职");
+			if (Util.isEmpty(companyLst) && companyLst.size() != 1) {
+				throw new IllegalArgumentException("用户必须且只能在一家公司就职");
 			}
 			TCompanyEntity company = companyLst.get(0);
 
@@ -138,7 +138,11 @@ public class LoginServiceImpl extends BaseService<TUserEntity> implements LoginS
 
 	@Override
 	public void logout(HttpSession session) {
+		session.removeAttribute(USER_COMPANY_KEY);
+		session.removeAttribute(FUNCTION_MAP_KEY);
+		session.removeAttribute(MENU_KEY);
 		session.removeAttribute(AUTHS_KEY);
+		session.removeAttribute(LOGINUSER);
 		session.removeAttribute(IS_LOGIN_KEY);
 		session.invalidate();
 	}
