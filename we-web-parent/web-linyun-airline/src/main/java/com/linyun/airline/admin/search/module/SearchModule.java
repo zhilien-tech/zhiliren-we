@@ -58,10 +58,46 @@ public class SearchModule {
 		return searchViewService.getCustomerById(id);
 	}
 
-	//出发城市查询
+	//根据客户Id查询出发城市
 	@At
 	@POST
 	public Object getCitys(@Param("id") final long id) throws Exception {
 		return searchViewService.getCitys(id);
 	}
+
+	String typeCodestr = "GJNL";
+
+	/**
+	 * 初始化 线路类型
+	 */
+	@At
+	@POST
+	public String initCityTypeCode(@Param("typeCode") String typeCode) {
+		if ("GJNL".equals(typeCode)) {
+			typeCodestr = "GJNL";
+		}
+		if ("GJ".equals(typeCode)) {
+			typeCodestr = "GJ";
+		}
+		return typeCodestr;
+	}
+
+	/**
+	 * 获取出发、抵达城市下拉
+	 */
+	@At
+	@POST
+	public Object getCitySelect(@Param("cityname") String cityname, @Param("ids") final String ids) {
+		return searchViewService.getCitySelect(cityname, typeCodestr, ids);
+	}
+
+	/**
+	 * 获取航空公司下拉
+	 */
+	@At
+	@POST
+	public Object getAirLineSelect(@Param("airlinename") String airlinename, @Param("ids") final String ids) {
+		return searchViewService.getAirLineSelect(airlinename, ids);
+	}
+
 }
