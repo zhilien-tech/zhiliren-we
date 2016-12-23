@@ -1,8 +1,6 @@
 package com.linyun.airline.common.sabre.service;
 
-import java.util.List;
-
-import com.linyun.airline.common.sabre.dto.InstalFlightAirItinerary;
+import com.linyun.airline.common.sabre.dto.SabreResponse;
 import com.linyun.airline.common.sabre.form.InstaFlightsSearchForm;
 
 /**
@@ -16,6 +14,6 @@ public interface SabreService {
 	/***
 	 * Sabre接口查询机票
 	 */
-	public List<InstalFlightAirItinerary> instaFlightsSearch(InstaFlightsSearchForm paramForm);
+	public SabreResponse instaFlightsSearch(InstaFlightsSearchForm paramForm);
 
 }
