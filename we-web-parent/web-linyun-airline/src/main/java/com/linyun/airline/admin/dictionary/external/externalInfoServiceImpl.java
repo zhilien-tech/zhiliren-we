@@ -24,12 +24,14 @@ import com.uxuexi.core.web.base.service.BaseService;
 @IocBean(name = "externalDictInfoService")
 public class externalInfoServiceImpl extends BaseService<DictInfoEntity> implements externalInfoService {
 
+	@SuppressWarnings("static-access")
 	@Override
 	public List<DictInfoEntity> findDictInfoByName(String name, String typeCode) throws Exception {
 		List<DictInfoEntity> infoList = dbDao.query(
 				DictInfoEntity.class,
-				Cnd.where("dictName", "like", Strings.trim(name) + "%")
-						.and("status", "=", DataStatusEnum.ENABLE.intKey()).and("typeCode", "=", typeCode), null);
+				Cnd.wrap("(dictCode like '" + Strings.trim(name) + "%' or dictName like '" + Strings.trim(name)
+						+ "%') and status = " + DataStatusEnum.ENABLE.intKey() + " and typeCode = '" + typeCode + "'"),
+				null);
 
 		return infoList;
 	}
