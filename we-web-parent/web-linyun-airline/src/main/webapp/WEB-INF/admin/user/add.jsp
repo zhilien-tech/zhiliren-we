@@ -16,8 +16,7 @@
 <script src="${base}/common/js/layer/layer.js"></script>
 </head>
 <body onresize=hero();>
-	<div class="modal-dialog modal-lg">
-          <div class="modal-content">
+
           	<form id="addaddUserForm" method="post">
               <div class="modal-header">
                   <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">返回</button>
@@ -100,8 +99,7 @@
                             </div>
                         </div>
                       </form>
-                 </div>
-                </div>
+                
             </div>
         </div>
 	<script type="text/javascript">

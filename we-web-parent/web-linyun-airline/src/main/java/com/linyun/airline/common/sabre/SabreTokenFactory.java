@@ -137,7 +137,7 @@ public class SabreTokenFactory {
 		httpPost.setEntity(postEntity);
 
 		log.debug("executing request " + httpPost.getRequestLine());
-		respTxt = HttpClientUtil.httpsPost(httpPost);
+		respTxt = HttpClientUtil.httpsPost(httpPost).getResult();
 		SabreAccessToken accessToken = Json.fromJson(SabreAccessToken.class, respTxt);
 		return accessToken;
 	}

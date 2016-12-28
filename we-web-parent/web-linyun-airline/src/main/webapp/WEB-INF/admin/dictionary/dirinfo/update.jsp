@@ -8,6 +8,7 @@
     <title>编辑</title>
 	<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
+	<link rel="stylesheet" href="${base}/public/dist/css/dict.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
 </head>
 <body onresize=hero();>
@@ -15,11 +16,10 @@
           <form id="updateForm">
               <div class="modal-header boderButt">
                   <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">返回</button>
-                  <!-- <button type="button" id="submitButton" class="btn btn-primary right btn-sm" onclick="submitInfo();">保存</button> -->
                   <input type="button" id="submitButton" class="btn btn-primary right btn-sm" onclick="submitInfo();" value="保存"/>
                   <h4>编辑</h4>
               </div>
-                <div class="modal-body">
+                <div class="modal-body" style="height:360px;overflow-y: auto;">
                  <div class="tab-content">
                         <div class="form-group row">
                         	<%-- 字典类别id --%>
@@ -68,7 +68,7 @@
 						<div class="form-group row">
                             <label class="col-sm-3 text-right padding">描述：</label>
                             <div class="col-sm-8 padding">
-                              <textarea name="description" id="description" class="form-control">${obj.dirinfo.description}</textarea>
+                              <textarea name="description" id="description" class="form-control textareaHei">${obj.dirinfo.description}</textarea>
                             </div>
                         </div>
                     </div>
@@ -141,12 +141,7 @@ $(document).ready(function(){
         }
 	});
 });
-	//关闭当前弹层
-	function closewindow(){
-		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-		parent.layer.close(index);
-	}
-	//更新保存
+	//更新保存验证
 	$('#submitButton').click(function() {
         $('#updateForm').bootstrapValidator('validate');
     });
@@ -161,8 +156,8 @@ $(document).ready(function(){
 				url: '${base}/admin/dictionary/dirinfo/update.html',
 	            success: function (data) { 
 	            	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-	            	window.parent.successCallback('2');
 	            	parent.layer.close(index);
+	            	window.parent.successCallback('2');
 	            },
 	            error: function (xhr) {
 	            	layer.msg("编辑失败","",3000);

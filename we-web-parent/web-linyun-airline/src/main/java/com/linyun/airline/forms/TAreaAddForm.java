@@ -15,9 +15,6 @@ public class TAreaAddForm extends AddForm implements Serializable {
 	/**区域名称*/
 	private String areaName;
 
-	/**字典信息id*/
-	private String infoId;
-
 	/**备注*/
 	private String remark;
 

@@ -102,17 +102,15 @@ WHERE
 	c.id =@comId
 AND d.deptName =@deptName
 
-/*authoritymanage_loadJobJosn*/
-/**SELECT
-	d.id AS deptId,
-	j.id,
-	j.`name`,
-	tf.id AS functionId
+/*authoritymanage_delete_job*/
+SELECT
+	u.id,
+	u.userName
 FROM
-	t_department d
-LEFT JOIN t_job j ON d.id = j.deptId
-LEFT JOIN t_com_fun_pos_map cpm ON j.id = cpm.jobId
-LEFT JOIN t_company_function_map cfm ON cfm.id = cpm.companyFunId
-LEFT JOIN t_function tf ON tf.id = cfm.funId
+	t_user u
+INNER JOIN t_user_job uj ON u.id = uj.userid
+INNER JOIN t_company_job cj ON uj.companyJobId = cj.id
 WHERE
-	j.deptId =@deptId*/
+	cj.posid =@jobId
+AND uj.`status` =@jobStatus
+AND cj.comId=@companyId

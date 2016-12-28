@@ -41,6 +41,7 @@ import org.nutz.log.Logs;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.linyun.airline.common.result.HttpResult;
 import com.uxuexi.core.common.util.CollectionUtil;
 import com.uxuexi.core.common.util.Util;
 
@@ -65,7 +66,7 @@ public class HttpClientUtil {
 	/**
 	 * HTTP请求成功状态码
 	 */
-	public static final String SUCCESS_CODE = "200";
+	public static final int SUCCESS_CODE = 200;
 
 	static {
 		// 设置连接池  
@@ -89,7 +90,8 @@ public class HttpClientUtil {
 		requestConfig = configBuilder.build();
 	}
 
-	public static String httpsPost(HttpPost httpPost) {
+	public static HttpResult httpsPost(HttpPost httpPost) {
+		HttpResult hr = new HttpResult();
 		String result = "";
 		try {
 			//ssl连接,sabre接口必须走https
@@ -102,26 +104,26 @@ public class HttpClientUtil {
 
 			HttpEntity entity = response.getEntity();
 			result = EntityUtils.toString(entity, "UTF-8");
+
+			hr.setStatusCode(statusCode);
+			hr.setResult(result);
 		} catch (ConnectionPoolTimeoutException e) {
 			log.error("http get throw ConnectionPoolTimeoutException(wait time out)");
-
 		} catch (ConnectTimeoutException e) {
 			log.error("http get throw ConnectTimeoutException");
-
 		} catch (SocketTimeoutException e) {
 			log.error("http get throw SocketTimeoutException");
-
 		} catch (Exception e) {
 			log.error("http get throw Exception");
 			e.printStackTrace();
-
 		} finally {
 			httpPost.abort();
 		}
-		return result;
+		return hr;
 	}
 
-	public static String httpsGet(HttpGet httpGet) {
+	public static HttpResult httpsGet(HttpGet httpGet) {
+		HttpResult hr = new HttpResult();
 		String result = "";
 		try {
 			//ssl连接,sabre接口必须走https
@@ -134,22 +136,22 @@ public class HttpClientUtil {
 
 			HttpEntity entity = response.getEntity();
 			result = EntityUtils.toString(entity, "UTF-8");
+
+			hr.setStatusCode(statusCode);
+			hr.setResult(result);
 		} catch (ConnectionPoolTimeoutException e) {
 			log.error("http get throw ConnectionPoolTimeoutException(wait time out)");
-
 		} catch (ConnectTimeoutException e) {
 			log.error("http get throw ConnectTimeoutException");
-
 		} catch (SocketTimeoutException e) {
 			log.error("http get throw SocketTimeoutException");
-
 		} catch (Exception e) {
 			log.error("http get throw Exception");
 			e.printStackTrace();
 		} finally {
 			httpGet.abort();
 		}
-		return result;
+		return hr;
 	}
 
 	/** 

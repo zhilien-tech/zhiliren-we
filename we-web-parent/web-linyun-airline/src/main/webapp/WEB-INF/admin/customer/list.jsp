@@ -162,7 +162,7 @@
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
-								<table id="datatable" class="table table-bordered table-hover" style="width:100%;">
+								<table id="datatableCustomerId" class="table table-bordered table-hover" style="width:100%;">
 									<thead>
 										<tr>
 											<th>序号</th>
@@ -229,7 +229,7 @@
 <script type="text/javascript">
 var datatable;
 function initDatatable() {
-    datatable = $('#datatable').DataTable({
+    datatable = $('#datatableCustomerId').DataTable({
     	"searching":false,
     	"bLengthChange": false,
         "processing": true,

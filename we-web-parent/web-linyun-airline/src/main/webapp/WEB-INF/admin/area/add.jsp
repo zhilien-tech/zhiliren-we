@@ -6,24 +6,9 @@
     <meta charset="UTF-8">
     <title>添加</title>
 	<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
 	<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
+	<link rel="stylesheet" href="${base}/public/dist/css/dict.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
-<style type="text/css">
-.select2-container {
-	width: 95.5% !important;
-	display: inline-block;
-}
-
-.seleSpanWid .select2-container {
-	width: 98.5% !important;
-	display: inline-block;
-}
-
-.inpNone .select2 .selection span ul li+li {
-	display: none;
-}
-</style>
 </head>
 <body>
 	<div class="modal-top">
@@ -37,46 +22,19 @@
 		      <div class="modal-body">
 		          <div class="form-group">
 		             <div class="col-md-8 col-md-offset-2">
-						<select id="areaName" name="dictAreaName" onchange="editInput();"
-							class="form-control select2 inpImpWid" multiple="multiple"
-							data-placeholder="请输入区域名称">
-						</select><span class="prompt">*</span>
-						<!-- 字典信息ID -->
-						<input id="infoId" type="hidden" name="infoId" />
-						<!-- 字典信息区域名称 -->
-						<input id="dictAreaName" type="hidden" name="areaName" />
+						<input id="areaName" name="areaName" type="text" placeholder="请输入区域名称" class="form-control input-sm">
 		             </div>
 		          </div>
-		          	<!-- 字典信息OnChange事件 -->
-					<script type="text/javascript">
-						function editInput() {
-							var comInput = $("input[placeholder=请输入区域名称]");
-							//select的id为areaName,通过infoId获取到它的值
-							var selectedAreaName = $("#areaName").select2("val");
-							$("#infoId").val(selectedAreaName);
-							//区域名称
-							var selectedDictAreaName = $('#areaName').find("option:selected").text();
-							$("#dictAreaName").val(selectedDictAreaName);
-						}
-					</script>
 		      </div>
 		</form>
 	</div>
-    <!--JS 文件-->
-    <script type="text/javascript">
-		var BASE_PATH = '${base}';
-	</script>
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
 	<script src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script><!-- SlimScroll -->
 	<script src="${base}/public/plugins/fastclick/fastclick.js"></script><!-- FastClick -->
 	<script src="${base}/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
 	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
-	<!-- Select2 -->
-	<script src="${base}/public/plugins/select2/select2.full.min.js"></script>
 	<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
-	<!-- 页面select2下拉框js -->
-	<script src="${base}/admin/areaSelect2/area.js"></script>
 	<script src="${base}/common/js/layer/layer.js"></script>
 <script type="text/javascript">
 //验证
@@ -89,7 +47,7 @@ $(document).ready(function(){
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-        	dictAreaName: {
+        	areaName: {
                 validators: {
                     notEmpty: {
                         message: '区域名称不能为空!'
@@ -131,10 +89,8 @@ $("#submit").click(function(){
 			layer.load(1, {
 				 shade: [0.1,'#fff'] //0.1透明度的白色背景
 			});
-              layer.msg('添加成功!',{time: 5000, icon:6});
-			  var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-			  parent.layer.close(index);
-			  window.location.reload(true);
+              	layer.msg('添加成功!',{time: 5000, icon:6});
+				window.location.reload(true);
            }
        });
 	}
@@ -148,6 +104,7 @@ $('#submit').click(function() {
 function closewindow(){
 	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 	parent.layer.close(index);
+	window.parent.successCallback('1');
 }
 </script>
 </body>

@@ -49,8 +49,6 @@
 			//formValidator();
 		});
 		
-		
-		
 		//表单校验
 		$('#customEventForm').bootstrapValidator({
 			message : '验证不通过',
@@ -66,14 +64,7 @@
 							message : '提醒事件不能为空'
 						}
 					}
-				}/* ,
-				generateTimeString{
-					validators : {
-						notEmpty : {
-							message : '日期格式不正确'
-						}
-					}
-				} */
+				}
 			}
 		});
 
@@ -96,7 +87,10 @@
 						layer.msg("添加成功", "", 3000);
 						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						parent.layer.close(index);
+						//添加成功 刷新各个模块
 						window.parent.taskEventList();
+						window.parent.reload();
+						window.parent.getTimeStr();
 					},
 					error : function(xhr) {
 						layer.msg("添加失败", "", 3000);
@@ -108,7 +102,6 @@
 		
 		//关闭窗口
 		function closewindow() {
-			window.parent.location.reload(); 
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			parent.layer.close(index);
 		}
