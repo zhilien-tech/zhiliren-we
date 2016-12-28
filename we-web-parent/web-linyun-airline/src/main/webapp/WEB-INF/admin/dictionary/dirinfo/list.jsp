@@ -123,7 +123,8 @@
 	    	    area: ['900px', '435px'],
 	    	    content: '${base}/admin/dictionary/dirinfo/add.html',
 	    	    end: function(){//添加完页面点击返回的时候自动加载表格数据
-	    	    	parent.location.reload();
+	    	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	    			parent.layer.close(index);
 	    	    }
     	 	 });
  		 }

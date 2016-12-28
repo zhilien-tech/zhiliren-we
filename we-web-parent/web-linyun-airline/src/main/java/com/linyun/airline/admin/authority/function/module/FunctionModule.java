@@ -6,11 +6,9 @@ import java.util.Map;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
-import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
@@ -21,6 +19,7 @@ import com.linyun.airline.admin.authority.function.form.TFunctionAddForm;
 import com.linyun.airline.admin.authority.function.form.TFunctionModForm;
 import com.linyun.airline.admin.authority.function.form.TFunctionSqlForm;
 import com.linyun.airline.admin.authority.function.service.FunctionViewService;
+import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
 import com.uxuexi.core.web.util.FormUtil;
@@ -33,8 +32,6 @@ import com.uxuexi.core.web.util.FormUtil;
  */
 @IocBean
 @At("/admin/authority/function")
-@Filters({//@By(type = AuthFilter.class)
-})
 public class FunctionModule {
 
 	/**
@@ -57,10 +54,18 @@ public class FunctionModule {
 	 */
 	@At
 	@Ok("jsp")
-	public Object list(@Param("..") final TFunctionSqlForm sqlParamForm, @Param("..") final Pager pager) {
-		Map<String, Object> obj = FormUtil.query(dbDao, sqlManager, sqlParamForm, pager);
-		obj.put("functions", dbDao.query(TFunctionEntity.class, Cnd.where("level", "<=", 2), null));
+	public Object list() {
+		Map<String, Object> obj = MapUtil.map();
+		obj.put("functions", dbDao.query(TFunctionEntity.class, null, null));
 		return obj;
+	}
+
+	/**
+	 * 服务端分页查询
+	 */
+	@At
+	public Object listData(@Param("..") final TFunctionSqlForm sqlForm) {
+		return functionViewService.listPage4Datatables(sqlForm);
 	}
 
 	/**

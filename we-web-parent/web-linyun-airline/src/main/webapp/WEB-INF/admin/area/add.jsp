@@ -16,7 +16,6 @@
 		     <div class="modal-header">
 		          <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">取消</button>
 		          <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
-		          <button type="button" class="btn right btn-sm" data-dismiss="modal">删除</button>
 		          <h4>添加区域</h4>
 		     </div>
 		      <div class="modal-body">
@@ -34,7 +33,6 @@
 	<script src="${base}/public/plugins/fastclick/fastclick.js"></script><!-- FastClick -->
 	<script src="${base}/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
 	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
-	<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
 	<script src="${base}/common/js/layer/layer.js"></script>
 <script type="text/javascript">
 //验证
@@ -104,7 +102,7 @@ $('#submit').click(function() {
 function closewindow(){
 	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 	parent.layer.close(index);
-	window.parent.successCallback('1');
+	window.parent.successCallback('4');
 }
 </script>
 </body>

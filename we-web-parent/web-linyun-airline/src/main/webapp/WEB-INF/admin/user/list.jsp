@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
 <%@include file="/WEB-INF/public/header.jsp"%>
 <%@include file="/WEB-INF/public/aside.jsp"%>
@@ -21,44 +20,47 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">&nbsp;&nbsp;<i class="fa fa-users"></i> 员工管理</h3>
-               <form role="form" class="form-horizontal">
-              <div class="form-group row marginBott cf">
-                <div class="col-md-2"><!--部门 下拉框-->
-                  <select id="deptName" name="deptName" onchange="selectDeptName();" class="form-control selePadd5">
-                    <c:forEach items="${obj.deplist}" var="one" varStatus="indexs">
-						<c:choose>
-							<c:when test="${indexs.index eq 0}">
-                               	<option value="${one.deptName }" selected="selected">
-                               		${one.deptName }
-                               	</option>
-							</c:when>
-							<c:otherwise>
-                               	<option value="${one.deptName }">
-                               		${one.deptName }
-                               	</option>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
-                  </select>
-                </div>
-                <div class="col-md-3"><!--姓名/联系电话 搜索框-->
-                  <input id="userName" name="userName" type="text"  onkeypress="onkeyEnter();" class="form-control" placeholder="姓名/联系电话">
-                </div>
-                <div class="col-md-1 col-padding"><!--搜索 按钮-->
-                  <button id="searchBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
-                </div>
-              
-                <div class="col-md-1 col-md-offset-5">
-                  <a id="addUserBtn" class="btn btn-primary btn-sm" onclick="addUser();">添加</a>
-                </div>
-
-              </div>
-              </form>
+               <h3 class="box-title">&nbsp;&nbsp; <!-- 员工管理 --></h3> 
+	              <div class="form-group row marginBott cf">
+	                <div class="col-md-2"><!--部门 下拉框-->
+	                  <select id="deptName" name="deptName" onchange="selectDeptName();" class="form-control selePadd5">
+	                    <option value="">==请选择==</option>
+	                    <c:forEach items="${obj.deplist}" var="one" varStatus="indexs">
+	                    	<option value="${one.deptName }">
+                            	${one.deptName }
+                            </option>
+	                    
+							<%-- <c:choose>
+								<c:when test="${indexs.index eq 0}">
+	                               	<option value="${one.deptName }" selected="selected">
+	                               		${one.deptName }
+	                               	</option>
+								</c:when>
+								<c:otherwise>
+	                               	<option value="${one.deptName }">
+	                               		${one.deptName }
+	                               	</option>
+								</c:otherwise>
+							</c:choose> --%>
+						</c:forEach>
+	                  </select>
+	                </div>
+	                <div class="col-md-3"><!--姓名/联系电话 搜索框-->
+	                  <input id="userName" name="userName" type="text"  onkeypress="onkeyEnter();" class="form-control" placeholder="姓名/联系电话">
+	                </div>
+	                <div class="col-md-1 col-padding"><!--搜索 按钮-->
+	                  <button id="searchBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
+	                </div>
+	              
+	                <div class="col-md-1 col-md-offset-5">
+	                  <a id="addUserBtn" class="btn btn-primary btn-sm" onclick="addUser();">添加</a>
+	                </div>
+	
+	              </div>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="datatable" class="table table-bordered table-hover">
+              <table id="empTable" class="table table-bordered table-hover">
                 <thead>
                 <tr>
                   <th>姓名</th>
@@ -102,13 +104,11 @@
     	    end: function(){//添加完页面点击返回的时候自动加载表格数据
     	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
     			parent.layer.close(index);
-    	    	parent.location.reload();
     	    }
    	 	 });
-		 }
+	}
 	//编辑
 	function editUser(id){
-		alert(id);
 	  layer.open({
   	    type: 2,
   	    title: false,
@@ -122,13 +122,15 @@
 	}
 	//事件提示
 	function successCallback(id){
-		deptDatatable.ajax.reload();
+		empTable.ajax.reload();
 		  if(id == '1'){
 			  layer.msg("添加成功",{time: 2000, icon:1});
 		  }else if(id == '2'){
 			  layer.msg("修改成功",{time: 2000, icon:1});
 		  }else if(id == '3'){
 			  layer.msg("删除成功",{time: 2000, icon:1});
+		  }else if(id == '4'){
+			  layer.msg("初始化密码成功",{time: 2000, icon:1});
 		  }
 	  }
 	//删除提示
@@ -174,9 +176,9 @@
 	});
 </script>
 <script type="text/javascript">
-	var datatable;
+	var empTable;
 	function initDatatable() {
-		datatable = $('#datatable').DataTable({
+		empTable = $('#empTable').DataTable({
 			"searching" : false,
 			"processing" : true,
 			"serverSide" : true,
@@ -202,7 +204,7 @@
                 //   指定第一列，从0开始，0表示第一列，1表示第二列……
                 targets: 4,
                 render: function(data, type, row, meta) {
-                	var modify = '<a style="cursor:pointer;" onclick="editUser('+row.id+');">编辑</a>';
+                	var modify = '<a style="cursor:pointer;" onclick="editUser('+row.userid+');">编辑</a>';
                     return modify;
                 }
             }]
@@ -210,20 +212,18 @@
 	}
 	$(function() {
 		initDatatable();
+		//selectDeptName();
 	});
 	//搜索
 	$("#searchBtn").on('click', function () {
 		var userName = $("#userName").val();
-		var telephone = $('#telephone').val();
-		//var deptName = $('#deptName').val();
-		alert(userName+telephone);
+		var deptName = $('#deptName').val();
 		var param = {
 	        "userName": userName,
-			"telephone":telephone
-			//"deptName":deptName
+			"deptName":deptName
 	    };
-	    datatable.settings()[0].ajax.data = param;
-	    datatable.ajax.reload();
+	    empTable.settings()[0].ajax.data = param;
+	    empTable.ajax.reload();
 	});
 	//搜索回车事件
 	function onkeyEnter(){
@@ -231,6 +231,7 @@
 			 $("#searchBtn").click();
 		 }
 	}
+	
 	//筛选条件自动切换
 	function selectDeptName(){
 		$("#searchBtn").click();
