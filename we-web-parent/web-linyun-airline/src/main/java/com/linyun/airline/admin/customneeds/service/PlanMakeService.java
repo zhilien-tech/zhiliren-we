@@ -1,9 +1,3 @@
-/**
- * PlanMakeService.java
- * com.linyun.airline.admin.customneeds.service
- * Copyright (c) 2016, 北京科技有限公司版权所有.
-*/
-
 package com.linyun.airline.admin.customneeds.service;
 
 import java.text.DateFormat;
@@ -26,11 +20,14 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
 
 import com.google.common.base.Splitter;
+import com.linyun.airline.admin.Company.service.CompanyViewService;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.common.util.ExportExcel;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
+import com.linyun.airline.entities.TFlightInfoEntity;
 import com.linyun.airline.entities.TPlanInfoEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TPlanInfoAddForm;
@@ -51,26 +48,38 @@ import com.uxuexi.core.web.base.service.BaseService;
 public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 
 	@Inject
+	private CompanyViewService companyViewService;
+	@Inject
 	private externalInfoService externalInfoService;
-
+	//旅行社字典代码
 	private static final String TRAVELCODE = "LXS";
+	//航班号字典代码
 	private static final String AIRLINECODE = "HBH";
+	//城市字典代码
 	private static final String CITYCODE = "CFCS";
+	//航空公司字典代码
 	private static final String AIRCOMCODE = "HKGS";
 	private static final String QUANGUOLIANYUN = "全国联运";
-
+	//东航模板列标题
 	private static final String[] EXCEL_DONGHANG_COLUMN_TITLE = { "去程日期", "去程航班", "行程", "回程日期", "回程航班", "人数", "组团社",
 			"航程", "价格", "订单号" };
+	//东航标题
 	private static final String EXCEL_DONGHANG_TITLE = "东航";
+	//南航列标题
 	private static final String[] EXCEL_NANHANG_COLUMN_TITLE = { "区域", "日期段", "合作旅行社", "行程", "去程航班", "回程航班",
 			"去程班期（周几）", "回程班期（周几）", "天数(以国际航班起飞时间计算)", "每月周期第几周发团", "座位数", "团队个数/月", "去程日期", "回程日期", "申请编号", "价格", "TC" };
+	//南航标题
 	private static final String EXCEL_NANHANG_TITLE = "南航";
+	//国泰列标题
 	private static final String[] EXCEL_GUOTAI_COLUMN_TITLE = { "代理", "出发日期", "回程日期", "目的地", "人数", " ", "价格", "航班备注" };
+	//国泰标题
 	private static final String EXCEL_GUOTAI_TITLE = "国泰";
 	private static final String[] EXCEL_GUOTAI_FIRST_DATA = { "Agent", "Dep Date", "Return Date", "Dest", "TCP",
 			"RLOC", "Fare", "RMP(Optional)" };
+	//凌云列标题
 	private static final String[] EXCEL_LINGYUN_COLUMN_TITLE = { "航空公司名称", "去程日期", "去程航段", "去程航班", "回程日期", "回程航段",
 			"回程航班", "人数", "天数", "旅行社", "联运要求" };
+	//凌云
 	private static final String EXCEL_LINGYUN_TITLE = "凌云";
 
 	/**
@@ -82,9 +91,9 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 * @return 返回旅行社名称的下拉列表
 	 */
 	public Object getTravelNameSelect(String TravelName) {
-		List<DictInfoEntity> travelSelect = new ArrayList<DictInfoEntity>();
+		List<Record> travelSelect = new ArrayList<Record>();
 		try {
-			travelSelect = externalInfoService.findDictInfoByName(TravelName, this.TRAVELCODE);
+			travelSelect = companyViewService.getCompanyList(CompanyTypeEnum.AGENT.intKey(), TravelName);
 			if (travelSelect.size() > 5) {
 				travelSelect = travelSelect.subList(0, 5);
 			}
@@ -104,9 +113,12 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 * @return 获取航班号下拉框
 	 */
 	public Object getAirLineSelect(String airlinename) {
-		List<DictInfoEntity> airlineSelect = new ArrayList<DictInfoEntity>();
+		//List<DictInfoEntity> airlineSelect = new ArrayList<DictInfoEntity>();
+		List<TFlightInfoEntity> airlineSelect = new ArrayList<TFlightInfoEntity>();
 		try {
-			airlineSelect = externalInfoService.findDictInfoByName(airlinename, this.AIRLINECODE);
+			//airlineSelect = externalInfoService.findDictInfoByName(airlinename, this.AIRLINECODE);
+			airlineSelect = dbDao.query(TFlightInfoEntity.class,
+					Cnd.where("airlinenum", "like", Strings.trim(airlinename) + "%"), null);
 			if (airlineSelect.size() > 5) {
 				airlineSelect = airlineSelect.subList(0, 5);
 			}
@@ -152,6 +164,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 			if (this.QUANGUOLIANYUN.indexOf(Strings.trim(cityname)) != -1) {
 				DictInfoEntity dictInfoEntity = new DictInfoEntity();
 				dictInfoEntity.setDictName(this.QUANGUOLIANYUN);
+				dictInfoEntity.setDictCode(this.QUANGUOLIANYUN);
 				citySelect.add(0, dictInfoEntity);
 			}
 			if (citySelect.size() > 5) {
@@ -183,7 +196,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 		//页面选择的结束日期
 		Date enddate = DateUtil.string2Date(addForm.getEnddate(), DateUtil.FORMAT_YYYY_MM_DD);
 		//根据航班号获取航空公司名称
-		String airLineName = this.getAirCompanyByAirLine(addForm.getLeaveairline());
+		String airLineName = (String) this.getAirCompanyByAirLine(addForm.getLeaveairline()).get("dictCode");
 		//自由制作计划
 		if (!Util.isEmpty(addForm.getCalenderdate())) {
 			//循环小日历的日期
@@ -207,6 +220,12 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 					planInfoEntity.setTeamtype(addForm.getTeamtype());
 					planInfoEntity.setOpid(user.getId());
 					planInfoEntity.setCompanyid(company.getId());
+					planInfoEntity.setTimetype(addForm.getTimetype());
+					planInfoEntity.setStarttime(startdate);
+					planInfoEntity.setEndtime(enddate);
+					planInfoEntity.setFoc(addForm.getFoc());
+					planInfoEntity.setBackleavecity(addForm.getBackleavecity());
+					planInfoEntity.setBackbackcity(addForm.getBackbackcity());
 					planInfos.add(planInfoEntity);
 				}
 			}
@@ -241,6 +260,12 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 						planInfoEntity.setTeamtype(addForm.getTeamtype());
 						planInfoEntity.setOpid(user.getId());
 						planInfoEntity.setCompanyid(company.getId());
+						planInfoEntity.setTimetype(addForm.getTimetype());
+						planInfoEntity.setStarttime(startdate);
+						planInfoEntity.setEndtime(enddate);
+						planInfoEntity.setFoc(addForm.getFoc());
+						planInfoEntity.setBackleavecity(addForm.getBackleavecity());
+						planInfoEntity.setBackbackcity(addForm.getBackbackcity());
 						planInfos.add(planInfoEntity);
 					}
 				}
@@ -287,16 +312,16 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 * 获取航班号所在的航空公司
 	 */
 	@SuppressWarnings("unused")
-	private String getAirCompanyByAirLine(String airLine) {
+	private Record getAirCompanyByAirLine(String airLine) {
 		String sqlstring = sqlManager.get("airline_company_info");
 		Sql sql = Sqls.create(sqlstring);
-		sql.setCondition(Cnd.where("di2.dictName", "=", airLine));
+		sql.setCondition(Cnd.where("t.airlinenum", "=", airLine));
 		sql.setCallback(Sqls.callback.records());
 		nutDao.execute(sql);
 
 		@SuppressWarnings("unchecked")
 		List<Record> list = (List<Record>) sql.getResult();
-		return list.get(0).getString("dictcode");
+		return list.get(0);
 	}
 
 	/**
@@ -573,4 +598,5 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 		return aircomSelect;
 
 	}
+
 }
