@@ -9,18 +9,14 @@
 <meta http-equiv="Access-Control-Allow-Origin" content="*" />
 <meta name="alexaVerifyID" content="" />
 <title>添加</title>
-<link rel="stylesheet"
-	href="${base }/public/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="${base }/public/dist/css/AdminLTE.css">
-<link rel="stylesheet"
-	href="${base }/public/dist/css/font-awesome.min.css">
-<link rel="stylesheet" href="${base }/public/dist/css/ionicons.min.css">
-<link rel="stylesheet"
-	href="${base }/public/dist/css/skins/_all-skins.min.css">
-<link rel="stylesheet"
-	href="${base }/public/dist/css/bootstrapValidator.css" />
+<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
+<link rel="stylesheet" href="${base }/public/dist/css/font-awesome.min.css">
+<link rel="stylesheet" href="${base}/public/dist/css/ionicons.min.css">
+<link rel="stylesheet" href="${base }/public/dist/css/skins/_all-skins.min.css">
+<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css" />
 <!-- style -->
-<link rel="stylesheet" href="${base }/public/css/style.css">
+<link rel="stylesheet" href="${base}/public/css/style.css">
 <style type="text/css">
 .wu-example .statusBar .btns .uploadBtn {
 	background: #3c8dbc !important;
@@ -35,33 +31,16 @@
 </head>
 <body onresize=hero();>
 	<div class="modal-top">
-		<form id="functionAddForm">
+		<form id="functionAddForm" method="post">
 			<div class="modal-header boderButt">
 				<button type="button" class="btn btn-primary right btn-sm"
 					onclick="closewindow();">返回</button>
 				<input type="button" id="submitButton"
-					class="btn btn-primary right btn-sm" onclick="submitCompany()"
-					value="保存" />
+					class="btn btn-primary right btn-sm" onclick="submitFunction()"	value="保存" />
 				<h4>功能添加</h4>
 			</div>
 			<div class="modal-body">
 				<div class="tab-content">
-					<div class="form-group row">
-						<label class="col-sm-3 text-right padding">功能名称：</label>
-						<div class="col-sm-8 padding">
-							<input name="name" type="text"
-								class="form-control input-sm inpImpWid" placeholder="请输入功能名称" /><span
-								class="prompt">*</span>
-						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-sm-3 text-right padding">访问地止：</label>
-						<div class="col-sm-8 padding">
-							<input name="url" type="text"
-								class="form-control input-sm inpImpWid" placeholder="请输入访问地止" /><span
-								class="prompt">*</span>
-						</div>
-					</div>
 					<div class="form-group row">
 						<label class="col-sm-3 text-right padding">上级功能：</label>
 						<div class="col-sm-8 padding">
@@ -71,6 +50,20 @@
 									<option value="${pro.id}">${pro.name}</option>
 								</c:forEach>
 							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-3 text-right padding">访问地止：</label>
+						<div class="col-sm-8 padding">
+							<input name="url" type="text"
+								class="form-control input-sm inpImpWid" placeholder="请输入访问地止" />
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-3 text-right padding">功能名称：</label>
+						<div class="col-sm-8 padding">
+							<input name="name" type="text"
+								class="form-control input-sm inpImpWid" placeholder="请输入功能名称" />
 						</div>
 					</div>
 					<div class="form-group row">
@@ -105,11 +98,6 @@
 	<script src="${base}/common/js/layer/layer.js"></script>
 	<jsp:include page="/WEB-INF/common/webupload_resource.jsp"></jsp:include>
 	<script type="text/javascript">
-		$(document).ready(function() {
-			if ($("#uploader_00").length > 0) {
-				inituploader("", "00", []);
-			}
-		});
 		// Validate the form manually
 		$('#submitButton').click(function() {
 			$('#functionAddForm').bootstrapValidator('validate');
@@ -119,7 +107,7 @@
 			parent.layer.close(index);
 			parent.location.reload();
 		}
-		function submitCompany() {
+		function submitFunction() {
 			$('#functionAddForm').bootstrapValidator('validate');
 			var bootstrapValidator = $("#functionAddForm").data('bootstrapValidator');
 			if (bootstrapValidator.isValid()) {
@@ -129,11 +117,9 @@
 					url : '${base}/admin/authority/function/add.html',
 					success : function(data) {
 						layer.msg("添加成功", "", 3000);
-						location.reload();
-						$('#functionAddForm')[0].reset();
-						if ($("#uploader_00").length > 0) {
-							inituploader("", "00", []);
-						}
+						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+						parent.layer.close(index);
+						window.parent.successCallback('1');
 					},
 					error : function(xhr) {
 						layer.msg("添加失败", "", 3000);

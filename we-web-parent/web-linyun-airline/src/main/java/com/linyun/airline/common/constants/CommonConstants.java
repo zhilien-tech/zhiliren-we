@@ -1,5 +1,8 @@
 package com.linyun.airline.common.constants;
 
+import com.linyun.airline.common.access.AccessConfig;
+import com.linyun.airline.common.access.sign.MD5;
+
 /**
  * 通用常量
  * @author 朱晓川
@@ -41,5 +44,9 @@ public class CommonConstants {
 
 	/**无效数据id*/
 	public static final int INVALID_DATA_ID = -1;
+
+	/**用户初始密码*/
+	public static final String INITIAL_PASSWORD = MD5.sign("000000", AccessConfig.password_secret,
+			AccessConfig.INPUT_CHARSET);
 
 }

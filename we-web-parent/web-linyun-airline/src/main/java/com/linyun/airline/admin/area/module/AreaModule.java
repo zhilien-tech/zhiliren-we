@@ -1,5 +1,7 @@
 package com.linyun.airline.admin.area.module;
 
+import java.util.Date;
+
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -54,6 +56,7 @@ public class AreaModule {
 	@At
 	@POST
 	public Object add(@Param("..") TAreaAddForm addForm) {
+		addForm.setCreateTime(new Date());
 		return areaViewService.add(addForm);
 	}
 
@@ -73,6 +76,7 @@ public class AreaModule {
 	@At
 	@POST
 	public Object update(@Param("..") TAreaUpdateForm updateForm) {
+		updateForm.setCreateTime(new Date());
 		return areaViewService.update(updateForm);
 	}
 
@@ -82,15 +86,6 @@ public class AreaModule {
 	@At
 	public Object delete(@Param("id") final long id) {
 		areaViewService.deleteById(id);
-		return JsonResult.success("删除成功");
-	}
-
-	/**
-	 * 批量删除记录
-	 */
-	@At
-	public Object batchDelete(@Param("ids") final Long[] ids) {
-		areaViewService.batchDelete(ids);
 		return JsonResult.success("删除成功");
 	}
 
