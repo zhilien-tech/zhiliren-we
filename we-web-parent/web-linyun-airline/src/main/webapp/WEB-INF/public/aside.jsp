@@ -11,7 +11,6 @@
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
         <li class="header">菜单栏</li>
-        
         <c:forEach items="${menus}" var="menu" >
 	  	<c:if test="${menu.level == 1 }">
 	  		<li>

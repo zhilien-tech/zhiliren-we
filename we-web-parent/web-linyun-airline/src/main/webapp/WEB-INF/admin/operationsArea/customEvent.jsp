@@ -24,9 +24,11 @@
 		 	<div class="col-sm-3 padding">
 				<input id="msgContent" name="msgContent" type="text" class="form-control input-sm eventText" placeholder="请输入新提示事件">
 			</div>
-			<div class="evevtTool cf">
-				<label>提醒：</label> 
-				<input id="datepicker" name="generateTimeString" type="text" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" placeholder="2016-12-05 13:20">
+			<div class="col-sm-3 padding">
+				<div class="evevtTool cf">
+					<label>提醒：</label> 
+					<input id="datepicker" name="generateTimeString" type="text" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+				</div>
 			</div>
 
 			<div class="evevtBttton">
@@ -46,7 +48,6 @@
 	<script type="text/javascript">
 		$(function() {
 			$("#datepicker").val('${obj}'+' '+FormatDate());
-			//formValidator();
 		});
 		
 		//表单校验
@@ -62,6 +63,13 @@
 					validators : {
 						notEmpty : {
 							message : '提醒事件不能为空'
+						}
+					}
+				},
+				generateTimeString : {
+					validators : {
+						notEmpty : {
+							message : '提醒日期不能为空'
 						}
 					}
 				}
