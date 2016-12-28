@@ -26,4 +26,37 @@ public class TUserAreaMapEntity implements Serializable {
 	@Comment("区域id")
 	private long areaId;
 
+	/**
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TUserAreaMapEntity other = (TUserAreaMapEntity) obj;
+		if (areaId != other.areaId)
+			return false;
+		if (userId != other.userId)
+			return false;
+		return true;
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (areaId ^ (areaId >>> 32));
+		result = prime * result + (int) (userId ^ (userId >>> 32));
+		return result;
+	}
+
 }

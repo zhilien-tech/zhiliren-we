@@ -570,8 +570,7 @@
 	<script type="text/javascript">
 		function save() {
 			$('#customerAddForm').bootstrapValidator('validate');
-			var bootstrapValidator = $("#customerAddForm").data(
-					'bootstrapValidator');
+			var bootstrapValidator = $("#customerAddForm").data('bootstrapValidator');
 			if (bootstrapValidator.isValid()) {
 				$.ajax({
 					type : 'POST',

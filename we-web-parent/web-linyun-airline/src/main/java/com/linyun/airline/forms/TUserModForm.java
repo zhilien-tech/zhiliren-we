@@ -7,13 +7,13 @@
 package com.linyun.airline.forms;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import org.hibernate.validator.constraints.Range;
-import org.joda.time.DateTime;
 
 import com.linyun.airline.common.access.AccessConfig;
 import com.linyun.airline.common.access.sign.MD5;
@@ -30,11 +30,26 @@ import com.uxuexi.core.web.form.ModForm;
 @EqualsAndHashCode(callSuper = true)
 public class TUserModForm extends ModForm {
 
+	//部门名称
+	private long deptId;
+
+	//职位名称
+	private long jobId;
+
+	/*select2 id字符串*/
+	private String selectedAreaIds;
+
 	/**用户姓名*/
 	private String userName;
 
 	/**密码*/
 	private String password;
+
+	/**新密码*/
+	private String newPass;
+
+	/**重复新密码*/
+	private String repeatPass;
 
 	/**用户名/手机号码*/
 	private String telephone;
@@ -61,10 +76,10 @@ public class TUserModForm extends ModForm {
 	private long status;
 
 	/**创建时间*/
-	private DateTime createTime;
+	private Date createTime;
 
 	/**更新时间*/
-	private DateTime updateTime;
+	private Date updateTime;
 
 	/**用户是否禁用*/
 	private long disableStatus;

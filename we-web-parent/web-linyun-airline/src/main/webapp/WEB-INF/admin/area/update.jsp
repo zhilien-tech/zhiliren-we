@@ -16,7 +16,7 @@
 		     	  <%-- <input id="id" name="id" type="hidden" value="${obj.id}"> --%>
 		          <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">取消</button>
 		          <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
-		          <button type="submit" class="btn right btn-sm" data-dismiss="modal">删除</button>
+		          <button type="button" onclick="physicalDelete('${obj.id}');" class="btn right btn-sm" data-dismiss="modal">删除</button>
 		          <h4>编辑区域</h4>
 		     </div>
 		      <div class="modal-body">
@@ -35,7 +35,6 @@
 	<script src="${base}/public/plugins/fastclick/fastclick.js"></script><!-- FastClick -->
 	<script src="${base}/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
 	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
-	<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
 	<script src="${base}/common/js/layer/layer.js"></script>
 <script type="text/javascript">
 //验证
@@ -109,6 +108,39 @@ $('#submit').click(function() {
 function closewindow(){
 	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 	parent.layer.close(index);
+}
+//删除
+function physicalDelete(id) {
+	layer.confirm("您确认删除信息吗？", {
+	    btn: ["是","否"], //按钮
+	    shade: false //不显示遮罩
+	}, function(){
+		// 点击确定之后
+		var url = '${base}/admin/area/delete.html';
+		$.ajax({
+			type : 'POST',
+			data : {
+				id : id
+			},
+			dataType : 'json',
+			url : url,
+			success : function(data) {
+				if ("200" == data.status) {
+					layer.msg("操作成功!", "", 3000);
+					 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				     parent.layer.close(index);
+				     window.parent.successCallback('3');
+				} else {
+					layer.msg("操作失败!", "", 3000);
+				}
+			},
+			error : function(xhr) {
+				layer.msg("操作失败", "", 3000);
+			}
+		});
+	}, function(){
+	    // 取消之后不用处理
+	});
 }
 </script>
 </body>

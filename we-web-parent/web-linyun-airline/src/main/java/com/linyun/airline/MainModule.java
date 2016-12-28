@@ -30,7 +30,7 @@ import com.uxuexi.core.web.view.WeViewMaker;
 @ChainBy(args = { "${app.root}/WEB-INF/classes/webconfig/chains.js" })
 @Views(WeViewMaker.class)
 @IocBean
-@Filters({ @By(type = LoginFilter.class) })
+@Filters({ @By(type = LoginFilter.class), /*@By(type = AuthFilter.class)*/})
 public class MainModule {
 
 	@At("/")

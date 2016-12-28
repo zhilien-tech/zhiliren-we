@@ -23,6 +23,7 @@ public class InstaFlightsSearchForm {
 	 * IATA机场3字代码或者MAC城市三字代码,比如ATL,BJS(北京)
 	 */
 	private String origin;
+	private String outCityCode;
 
 	/**
 	 * 降落机场/到达城市（必须）
@@ -30,6 +31,7 @@ public class InstaFlightsSearchForm {
 	 * IATA机场3字代码或者MAC城市三字代码,比如ATL,BJS(北京)
 	 */
 	private String destination;
+	private String arriveCityCode;
 
 	/**
 	 * 出发日期（必须）
@@ -37,6 +39,7 @@ public class InstaFlightsSearchForm {
 	 * 格式:yyyy-MM-dd,最大日期:当前日期 + 192 (天)
 	 */
 	private String departuredate;
+	private String outDatepicker;
 
 	/**
 	 * 返程日期（可选）
@@ -44,6 +47,7 @@ public class InstaFlightsSearchForm {
 	 * 格式:yyyy-MM-dd,最大日期:出发日期 + 16 (天)
 	 */
 	private String returndate;
+	private String returnDatepicker;
 
 	/**
 	 * 航空公司（可选）
@@ -52,6 +56,7 @@ public class InstaFlightsSearchForm {
 	 * 
 	 */
 	private String includedcarriers;
+	private String airlineCode;
 
 	/**
 	 * 旅程最低总价（可选）
@@ -124,4 +129,14 @@ public class InstaFlightsSearchForm {
 	 * 首班出境航班，一般就是指从起飞机场出发的第一班。
 	 */
 	//	private String outbounddeparturewindow;
+
+	//成人
+	private String agentSelect;
+	//儿童
+	private String childrenSelect;
+	//婴儿
+	private String babySelect;
+	//舱位等级
+	private String airLevel;
+
 }
