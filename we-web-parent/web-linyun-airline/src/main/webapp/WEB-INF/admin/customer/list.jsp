@@ -1,5 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java"
-	pageEncoding="UTF-8" errorPage="/WEB-INF/public/500.jsp"%>
+<%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" errorPage="/WEB-INF/public/500.jsp"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
 
 <c:set var="url" value="${base}/admin/customer" />
