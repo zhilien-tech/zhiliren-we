@@ -64,24 +64,3 @@ $("#city").select2({
 		tags : false, //设置必须存在的选项 才能选中
 	});
 
-
-
-
-
-/*//日期
-var picker1 = new Pikaday(
-	    {
-	        field: document.getElementById('datepicker1'),
-	        firstDay: 1,
-	        minDate: new Date('2000-01-01'),
-	        maxDate: new Date('3099-12-31'),
-	        yearRange: [2000,3099]
-	    });
-var picker2 = new Pikaday(
-	    {
-	        field: document.getElementById('datepicker2'),
-	        firstDay: 1,
-	        minDate: new Date('2000-01-01'),
-	        maxDate: new Date('3099-12-31'),
-	        yearRange: [2000,3099]
-	    });*/
