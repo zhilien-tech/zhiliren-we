@@ -16,8 +16,6 @@ import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
-import com.linyun.airline.entities.TPlanInfoEntity;
-import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
@@ -80,7 +78,7 @@ public class PlanMakeSqlForm extends DataTablesParamForm {
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {
-		String sqlString = EntityUtil.entityCndSql(TPlanInfoEntity.class);
+		String sqlString = sqlManager.get("get_plan_make_info_withtime");
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;

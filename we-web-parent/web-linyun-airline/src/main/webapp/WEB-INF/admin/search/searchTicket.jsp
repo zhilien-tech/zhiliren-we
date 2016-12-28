@@ -18,7 +18,9 @@
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
 <link rel="stylesheet" href="${base}/public/dist/css/skins/_all-skins.min.css">
 <link rel="stylesheet" href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
+
 <link rel="stylesheet" href="${base}/public/dist/css/bootstrapValidator.css" />
+
 <link rel="stylesheet" href="${base}/public/dist/css/query.css"><!--本页面styleFlie-->
 
 </head>
@@ -50,7 +52,9 @@
 						</div>
 					</div>
 					<div class="infofooter">
+
 					<form id="customerCheckFrom" method="post">
+
 						<table>
 							<tr>
 								<td><label>客户姓名：</label></td>
@@ -76,6 +80,7 @@
 							</tr>
 						</table>
 					</form>
+
 						<table class="hideTable none">
 							<tr>
 								<td><label>公司简称：</label></td>
@@ -330,9 +335,9 @@
                                 <th>操作人</th>
                               </tr>
                               </thead>
+
                               <!-- 显示团队票信息 -->
                               <tbody id="teamtbody">
-                              	
                               </tbody>
                             </table>
                           </div>
@@ -343,7 +348,7 @@
 			</section>
 		</div>
 		<!--end right Content-->
-		
+
 		<!--footer-->
 			<%@include file="/WEB-INF/public/footer.jsp"%>
 		<!--end footer-->
@@ -364,8 +369,10 @@
 		<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
 		<!-- My97DatePicker -->
 		<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
+
 		<!-- Validator -->
 		<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
+
 		<!-- 客户信息 js -->
 		<script src="${base}/admin/searchTicket/searchCustomerInfo.js"></script>
 		<!-- 订单信息 js -->
@@ -377,12 +384,15 @@
 		
 		<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 		
+
 		<!-- layer -->
 		<script src="${base}/common/js/layer/layer.js"></script>
 		<script type="text/javascript">
 	      $(function(){
+
 	    	//客户信息 显示/隐藏
             $('.UnderIcon').on('click',function(){
+
               $('.hideTable').toggle('400');
             });
     		
@@ -587,5 +597,6 @@
 			});
 		});
 	  </script>
+
 </body>
 </html>

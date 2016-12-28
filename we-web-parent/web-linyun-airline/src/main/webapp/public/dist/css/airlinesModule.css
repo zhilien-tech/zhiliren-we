@@ -16,3 +16,5 @@ div[data-cal-index="2"] .k-title{width: 120px;margin: 0 auto;}
 .form-control-feedback {position: absolute;top: -2px;right: -25px;}
 .tooltip-inner{background-color: #a9a9a9;border: solid 1px #9a9a9a;}
 .tooltip.right .tooltip-arrow {border-right-color: #a5a5a5;}
+.checkWeek input {margin-left: 5px;}
+.timeWid {width: 47.6%;}

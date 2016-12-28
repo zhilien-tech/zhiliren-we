@@ -89,4 +89,51 @@ public class TPlanInfoEntity implements Serializable {
 	@Comment("所属公司")
 	private long companyid;
 
+	@Column
+	@Comment("选择时间的类型（每周or自由）")
+	private int timetype;
+
+	@Column
+	@Comment("起始时间")
+	private Date starttime;
+
+	@Column
+	@Comment("结束时间")
+	private Date endtime;
+
+	@Column
+	@Comment("是否关闭")
+	private int isclose;
+
+	@Column
+	@Comment("FOC")
+	private int foc;
+
+	@Column
+	@Comment("返程出发城市")
+	private String backleavecity;
+
+	@Column
+	@Comment("返程抵达城市")
+	private String backbackcity;
+
+	@Column
+	@Comment("售价")
+	private Double price;
+
+	@Column
+	@Comment("结算货币代码")
+	private String currencycode;
+
+	@Column
+	@Comment("乘客类型")
+	private int passengertype;
+
+	@Column
+	@Comment("机票类型")
+	private int tickettype;
+
+	@Column
+	@Comment("航程类型")
+	private int rengetype;
 }
