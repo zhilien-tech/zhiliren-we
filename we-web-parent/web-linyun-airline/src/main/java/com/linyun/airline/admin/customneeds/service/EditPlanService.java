@@ -27,14 +27,19 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
+import com.google.common.base.Splitter;
+import com.linyun.airline.admin.Company.service.CompanyViewService;
 import com.linyun.airline.admin.customneeds.form.EditPlanSqlForm;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.common.util.ExportExcel;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
+import com.linyun.airline.entities.TFlightInfoEntity;
 import com.linyun.airline.entities.TPlanInfoEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
+import com.linyun.airline.entities.TUpOrderTicketEntity;
 import com.linyun.airline.forms.TPlanInfoUpdateForm;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.Util;
@@ -54,6 +59,9 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 	private static final Log log = Logs.get();
 	@Inject
 	private externalInfoService externalInfoService;
+
+	@Inject
+	private CompanyViewService companyViewService;
 	//旅行社字典代码
 	private static final String TRAVELCODE = "LXS";
 	//航班号字典代码
@@ -132,16 +140,17 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 			List<DictInfoEntity> city = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", this.CITYCODE),
 					null);
 			//旅行社下拉
-			result.put("travel", dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", this.TRAVELCODE), null));
+			result.put("travel", companyViewService.getCompanyList(CompanyTypeEnum.AGENT.intKey(), ""));
 			//航空公司下拉
 			result.put("aircom", dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", this.AIRCOMCODE), null));
 			//城市下拉
 			result.put("city", city);
 			//航班号下拉
-			result.put("airline", dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", this.AIRLINECODE), null));
+			result.put("airline", dbDao.query(TFlightInfoEntity.class, null, null));
 			//准备联运城市下拉数据
 			DictInfoEntity dictinfo = new DictInfoEntity();
 			dictinfo.setDictName(this.QUANGUOLIANYUN);
+			dictinfo.setDictCode(this.QUANGUOLIANYUN);
 			city.add(0, dictinfo);
 			//联运下拉
 			result.put("union", city);
@@ -227,41 +236,75 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 	 *
 	 * @return 生成订单
 	 */
-	public synchronized Object insertOrderNum(HttpSession session, long planId) {
+	public synchronized Object insertOrderNum(HttpSession session, String planIds) {
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		//获取计划信息
-		TPlanInfoEntity planInfo = this.fetch(planId);
 		//格式化日期
 		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
 		String dateStr = format.format(new Date());
 		//查询当前天订单号最大的一条
 		String sqlStr = sqlManager.get("select_max_order_num");
 		Sql sql = Sqls.create(sqlStr);
-		List<Record> orders = dbDao.query(sql, Cnd.where("SUBSTR(ordersnum,1,8)", "=", dateStr), null);
-		//如果当前天最大值存在
-		if (!Util.isEmpty(orders.get(0).get("ordersnum"))) {
-			TUpOrderEntity upOrderEntity = new TUpOrderEntity();
-			upOrderEntity.setAmount(planInfo.getPrice());
-			upOrderEntity.setCurrencyCode(planInfo.getCurrencycode());
-			upOrderEntity.setCustomid(company.getId());
-			upOrderEntity.setOrdersnum(dateStr + ((Integer) orders.get(0).get("ordersnum") + 1));
-			upOrderEntity.setOrdersstatus(0);
-			upOrderEntity.setOrderstime(new Date());
-			upOrderEntity.setOrderstype(0);
-			dbDao.insert(upOrderEntity);
-		} else {
-			TUpOrderEntity upOrderEntity = new TUpOrderEntity();
-			upOrderEntity.setAmount(planInfo.getPrice());
-			upOrderEntity.setCurrencyCode(planInfo.getCurrencycode());
-			upOrderEntity.setCustomid(company.getId());
-			upOrderEntity.setOrdersnum(dateStr + "00001");
-			upOrderEntity.setOrdersstatus(0);
-			upOrderEntity.setOrderstime(new Date());
-			upOrderEntity.setOrderstype(0);
-			dbDao.insert(upOrderEntity);
+		Iterable<String> split = Splitter.on(",").split(planIds);
+		for (String str : split) {
+			long planId = Long.valueOf(str);
+			List<TUpOrderTicketEntity> query = dbDao.query(TUpOrderTicketEntity.class,
+					Cnd.where("ticketid", "=", planId), null);
+			//如果不存在订单号则生成
+			if (query.size() < 1) {
+				//获取计划信息
+				TPlanInfoEntity planInfo = this.fetch(planId);
+				//查询最大的订单号数据
+				List<Record> orders = dbDao.query(sql, Cnd.where("SUBSTR(ordersnum,1,8)", "=", dateStr), null);
+				//如果当前天最大值存在
+				TUpOrderEntity insertOrder = new TUpOrderEntity();
+				if (!Util.isEmpty(orders.get(0).get("maxnum"))) {
+					TUpOrderEntity upOrderEntity = new TUpOrderEntity();
+					upOrderEntity.setAmount(planInfo.getPrice());
+					upOrderEntity.setCurrencyCode(planInfo.getCurrencycode());
+					upOrderEntity.setCustomid(company.getId());
+					String maxnum = (String) orders.get(0).get("maxnum");
+					//maxnum = maxnum.substring(8, maxnum.length());
+					upOrderEntity.setOrdersnum(dateStr + zeroize((Integer.valueOf(maxnum) + 1), 5));
+					upOrderEntity.setOrdersstatus(0);
+					upOrderEntity.setOrderstime(new Date());
+					upOrderEntity.setOrderstype(0);
+					insertOrder = dbDao.insert(upOrderEntity);
+				} else {
+					TUpOrderEntity upOrderEntity = new TUpOrderEntity();
+					upOrderEntity.setAmount(planInfo.getPrice());
+					upOrderEntity.setCurrencyCode(planInfo.getCurrencycode());
+					upOrderEntity.setCustomid(company.getId());
+					upOrderEntity.setOrdersnum(dateStr + zeroize(1, 5));
+					upOrderEntity.setOrdersstatus(0);
+					upOrderEntity.setOrderstime(new Date());
+					upOrderEntity.setOrderstype(0);
+					insertOrder = dbDao.insert(upOrderEntity);
+				}
+				//更新关系表
+				TUpOrderTicketEntity orderTicketEntity = new TUpOrderTicketEntity();
+				orderTicketEntity.setOrderid(insertOrder.getId());
+				orderTicketEntity.setPrice(planInfo.getPrice());
+				orderTicketEntity.setTicketid(planId);
+				dbDao.insert(orderTicketEntity);
+			}
 		}
-		return null;
+		return 1;
 	}
 
+	/**
+	 * 位数不足补零
+	 * TODO(这里描述这个方法详情– 可选)
+	 * @param num
+	 * @param length
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	private String zeroize(int num, int length) {
+		String value = String.valueOf(num);
+		String zero = "";
+		for (int i = 0; i < length - value.length(); i++) {
+			zero += "0";
+		}
+		return zero + value;
+	}
 }

@@ -57,7 +57,7 @@
                 <div class="form-group row"><!--航空公司/旅行社-->
                 	<input id="id" name="id" type="hidden" value="${obj.planinfo.id}">
                   <div class="col-sm-2 col-sm-offset-2 padding">
-                    <input type="checkbox" class="inputEdit"><span class="spanEdit">生成订单</span>
+                    <input id="generateOrder" type="checkbox" class="inputEdit" value="1"><span class="spanEdit">生成订单</span>
                   </div>
                   <label class="col-sm-2 text-right padding customerEdit">航空公司：</label>
                   <div class="col-sm-2 padding">
@@ -70,9 +70,9 @@
                   </div>
                   <label class="col-sm-2 text-right padding">旅行社：</label>
                   <div class="col-sm-2 padding">
-                    <select id="travelname" name="travelname" type="text" class="form-control input-sm select2" placeholder=" " multiple="multiple">
+                    <select id="travelname" name="travelname" type="text" class="form-control input-sm select2" placeholder="" multiple="multiple">
                     	<c:forEach var="one" items="${obj.travel }">
-							<option value="${one.dictName }">${one.dictName}</option>
+							<option value="${one.comName }">${one.comName}</option>
 						</c:forEach>
                     </select>
                   </div>
@@ -114,7 +114,7 @@
                   <div class="col-sm-2 padding">
                     <select id="leaveairline" name="leaveairline" type="text" class="form-control input-sm select2" multiple="multiple" placeholder=" " >
                     	<c:forEach var="one" items="${obj.airline }">
-							<option value="${one.dictName }">${one.dictName}</option>
+							<option value="${one.airlinenum }">${one.airlinenum}</option>
 						</c:forEach>
                     </select>
                   </div>
@@ -137,7 +137,7 @@
                   <div class="col-sm-2 padding">
                     <select id="backairline" name="backairline" type="text" class="form-control input-sm select2" multiple="multiple" placeholder=" ">
                     	<c:forEach var="one" items="${obj.airline }">
-							<option value="${one.dictName }">${one.dictName}</option>
+							<option value="${one.airlinenum }">${one.airlinenum}</option>
 						</c:forEach>
                     </select>
                   </div>
@@ -176,6 +176,19 @@
 	}
 	//保存编辑计划
 	function saveEditPlan(){
+		var generateOrder = $('#generateOrder').is(':checked');
+		//生成订单
+		if(generateOrder){
+			$.ajax({ 
+				type: 'POST', 
+				data: {planids:'${obj.planinfo.id}'}, 
+				url: '${base}/admin/customneeds/generateOrderNum.html',
+	            success: function (data) { 
+	            },
+	            error: function (xhr) {
+	            } 
+	        });
+		}
 		//校验
 		$('#editPlanForm').bootstrapValidator('validate');
 		var bootstrapValidator = $("#editPlanForm").data('bootstrapValidator');

@@ -67,9 +67,9 @@ public class EditPlanSqlForm extends DataTablesParamForm {
 			cnd.and("t.travelname", "like", "%" + travelname1 + "%");
 		}
 		if (idordernum == 1) {
-			cnd.and("t.ordernumber", "is not", null);
+			cnd.and("tu.ordersnum", "is not", null);
 		} else {
-			cnd.and("t.ordernumber", "is", null);
+			cnd.and("tu.ordersnum", "is", null);
 
 		}
 		if (!Util.isEmpty(leaveairline1)) {

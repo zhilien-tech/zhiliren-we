@@ -109,7 +109,7 @@ public class EditPlanModule {
 	 * 生成订单
 	 */
 	@At
-	public Object generateOrderNum(HttpSession session, long planId) {
-		return editPlanService.insertOrderNum(session, planId);
+	public Object generateOrderNum(HttpSession session, @Param("planids") String planIds) {
+		return editPlanService.insertOrderNum(session, planIds);
 	}
 }

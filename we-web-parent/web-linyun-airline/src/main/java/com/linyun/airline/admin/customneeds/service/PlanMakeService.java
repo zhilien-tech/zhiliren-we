@@ -27,6 +27,7 @@ import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.common.util.ExportExcel;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
+import com.linyun.airline.entities.TFlightInfoEntity;
 import com.linyun.airline.entities.TPlanInfoEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TPlanInfoAddForm;
@@ -112,9 +113,12 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 * @return 获取航班号下拉框
 	 */
 	public Object getAirLineSelect(String airlinename) {
-		List<DictInfoEntity> airlineSelect = new ArrayList<DictInfoEntity>();
+		//List<DictInfoEntity> airlineSelect = new ArrayList<DictInfoEntity>();
+		List<TFlightInfoEntity> airlineSelect = new ArrayList<TFlightInfoEntity>();
 		try {
-			airlineSelect = externalInfoService.findDictInfoByName(airlinename, this.AIRLINECODE);
+			//airlineSelect = externalInfoService.findDictInfoByName(airlinename, this.AIRLINECODE);
+			airlineSelect = dbDao.query(TFlightInfoEntity.class,
+					Cnd.where("airlinenum", "like", Strings.trim(airlinename) + "%"), null);
 			if (airlineSelect.size() > 5) {
 				airlineSelect = airlineSelect.subList(0, 5);
 			}
@@ -192,7 +196,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 		//页面选择的结束日期
 		Date enddate = DateUtil.string2Date(addForm.getEnddate(), DateUtil.FORMAT_YYYY_MM_DD);
 		//根据航班号获取航空公司名称
-		String airLineName = this.getAirCompanyByAirLine(addForm.getLeaveairline());
+		String airLineName = (String) this.getAirCompanyByAirLine(addForm.getLeaveairline()).get("dictCode");
 		//自由制作计划
 		if (!Util.isEmpty(addForm.getCalenderdate())) {
 			//循环小日历的日期
@@ -308,16 +312,16 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 * 获取航班号所在的航空公司
 	 */
 	@SuppressWarnings("unused")
-	private String getAirCompanyByAirLine(String airLine) {
+	private Record getAirCompanyByAirLine(String airLine) {
 		String sqlstring = sqlManager.get("airline_company_info");
 		Sql sql = Sqls.create(sqlstring);
-		sql.setCondition(Cnd.where("di2.dictName", "=", airLine));
+		sql.setCondition(Cnd.where("t.airlinenum", "=", airLine));
 		sql.setCallback(Sqls.callback.records());
 		nutDao.execute(sql);
 
 		@SuppressWarnings("unchecked")
 		List<Record> list = (List<Record>) sql.getResult();
-		return list.get(0).getString("dictcode");
+		return list.get(0);
 	}
 
 	/**

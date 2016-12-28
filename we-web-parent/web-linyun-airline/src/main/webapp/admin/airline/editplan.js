@@ -226,15 +226,29 @@ function batchClosePlan(){
 }
 //生成订单
 function generateOrderNum(){
-	$.ajax({
-		type: 'POST', 
-		data: {}, 
-		url: BASE_PATH + '/admin/customneeds/generateOrderNum.html',
-		success: function (data) { 
-			layer.msg("生成成功",{time: 2000, icon:1});
-		},
-		error: function (xhr) {
-			layer.msg("生成失败",{time: 2000, icon:1});
-		} 
-	});
+	var length = $(".checkchild:checked").length;
+	if(length < 1){
+		layer.msg("请至少选中一条记录",{time: 2000, icon:1});
+	}else{
+		layer.confirm('确定要批量生成订单吗?', {icon: 3, title:'提示'}, function(){
+			var ids = [];
+			$(".checkchild:checked").each(function(){
+				ids.push($(this).val());
+			});
+			ids = ids.join(',');
+			$.ajax({
+				type: 'POST', 
+				data: {planids:ids}, 
+				url: BASE_PATH + '/admin/customneeds/generateOrderNum.html',
+				success: function (data) { 
+					layer.msg("生成成功",{time: 2000, icon:1});
+					datatable2.ajax.reload();
+					$('.checkall').attr('checked',false);
+				},
+				error: function (xhr) {
+					layer.msg("生成失败",{time: 2000, icon:1});
+				} 
+			});
+		});
+	}
 }

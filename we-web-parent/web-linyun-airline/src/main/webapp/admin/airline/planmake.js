@@ -59,7 +59,11 @@ function initDatatable1() {
                     },
                     {"data": "backscity", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		return row.backscity;
+                    		var result = '<ul>' 
+                        		+'<li style="list-style:none;">'+(row.lleavetime +'/'+ row.lbacktime)+'</li>'
+                        		+'<li style="list-style:none;">'+(row.bleavetime +'/'+ row.bbacktime)+'</li>'
+                        		+'</ul>';
+                    		return result;
                     	}	
                     },
                     {"data": "peoplecount", "bSortable": false},
@@ -143,8 +147,8 @@ function initSelect2(){
 					processResults : function(data, params) {
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
-							  obj.id = obj.dictName; // replace pk with your identifier
-							  obj.text = obj.dictName; // replace pk with your identifier
+							  obj.id = obj.airlinenum; // replace pk with your identifier
+							  obj.text = obj.airlinenum; // replace pk with your identifier
 							  return obj;
 						});
 						return {
@@ -178,8 +182,8 @@ function initSelect2(){
 					processResults : function(data, params) {
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
-							  obj.id = obj.dictName; // replace pk with your identifier
-							  obj.text = obj.dictName; // replace pk with your identifier
+							  obj.id = obj.airlinenum; // replace pk with your identifier
+							  obj.text = obj.airlinenum; // replace pk with your identifier
 							  return obj;
 						});
 						return {
@@ -793,21 +797,39 @@ function checkIsNull(){
 }
 //保存计划
 function savePlan(){
-	layer.confirm('确定要保存计划吗?', {icon: 3, title:'提示'}, function(){
-		$.ajax({ 
-			type: 'POST', 
-			data: {}, 
-			url: BASE_PATH + '/admin/customneeds/savePlanData.html',
-            success: function (data) { 
-            	layer.msg("保存成功",{time: 2000, icon:1});
-            	datatable1.ajax.reload();
-            	datatable2.ajax.reload();
-            },
-            error: function (xhr) {
-            	layer.msg("保存失败",{time: 2000, icon:1});
-            } 
-        });
-	});
+	var isplan = false;
+	$.ajax({ 
+		type: 'POST', 
+		data: {}, 
+		async:false,
+		url: BASE_PATH + '/admin/customneeds/isHavePlanData.html',
+        success: function (data) { 
+        	if(data){
+        		isplan = true;
+        	}
+        },
+        error: function (xhr) {
+        } 
+    });
+	if(isplan){
+		layer.confirm('确定要保存计划吗?', {icon: 3, title:'提示'}, function(){
+			$.ajax({ 
+				type: 'POST', 
+				data: {}, 
+				url: BASE_PATH + '/admin/customneeds/savePlanData.html',
+				success: function (data) { 
+					layer.msg("保存成功",{time: 2000, icon:1});
+					datatable1.ajax.reload();
+					datatable2.ajax.reload();
+				},
+				error: function (xhr) {
+					layer.msg("保存失败",{time: 2000, icon:1});
+				} 
+			});
+		});
+	}else{
+		layer.msg("没有需要保存的计划",{time: 2000, icon:1});
+	}
 }
 //提示是否保存已经制作的计划
 window.onbeforeunload = function(event) {

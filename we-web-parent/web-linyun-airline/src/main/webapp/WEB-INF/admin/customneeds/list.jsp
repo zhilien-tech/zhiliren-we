@@ -232,7 +232,7 @@
                                 <option value="2">自由</option>
                               </select>
                             </div>
-                            <div class="col-sm-6 padding cf checkWeek">
+                            <div class="col-sm-4 padding cf checkWeek">
                               <input type="checkbox" name="weekday" value="7"><span>周日</span>
                               <input type="checkbox" name="weekday" value="1"><span>周一</span>
                               <input type="checkbox" name="weekday" value="2"><span>周二</span>

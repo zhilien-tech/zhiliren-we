@@ -49,9 +49,9 @@ var _travelname = $("#travelname").select2({
 		processResults : function(data, params) {
 			params.page = params.page || 1;
 			var selectdata = $.map(data, function (obj) {
-				obj.id =  obj.dictName; // replace pk with your identifier
-				obj.text =  obj.dictName; // replace pk with your identifier
-				return obj;
+				  obj.id =  obj.comname; // replace pk with your identifier
+				  obj.text =  obj.comname; // replace pk with your identifier
+				  return obj;
 			});
 			return {
 				results : selectdata
@@ -86,8 +86,8 @@ var _leaveairline = $("#leaveairline").select2({
 		processResults : function(data, params) {
 			params.page = params.page || 1;
 			var selectdata = $.map(data, function (obj) {
-				obj.id = obj.dictName; // replace pk with your identifier
-				obj.text = obj.dictName; // replace pk with your identifier
+				obj.id = obj.airlinenum; // replace pk with your identifier
+				obj.text = obj.airlinenum; // replace pk with your identifier
 				return obj;
 			});
 			return {
@@ -123,8 +123,8 @@ var _backairline = $("#backairline").select2({
 		processResults : function(data, params) {
 			params.page = params.page || 1;
 			var selectdata = $.map(data, function (obj) {
-				obj.id = obj.dictName; // replace pk with your identifier
-				obj.text = obj.dictName; // replace pk with your identifier
+				obj.id = obj.airlinenum; // replace pk with your identifier
+				obj.text = obj.airlinenum; // replace pk with your identifier
 				return obj;
 			});
 			return {

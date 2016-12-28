@@ -1,6 +1,10 @@
 /*get_editplan_info_list*/
-select t.*,'123' dingdanhao
-from t_plan_info t
+SELECT
+	t.*, ifnull(tu.ordersnum,'无订单号') dingdanhao
+FROM
+	t_plan_info t
+left JOIN t_up_order_ticket tuo ON t.id = tuo.ticketid
+left JOIN t_up_order tu ON tuo.orderid = tu.id
 $condition
 
 /*select_max_order_num*/
