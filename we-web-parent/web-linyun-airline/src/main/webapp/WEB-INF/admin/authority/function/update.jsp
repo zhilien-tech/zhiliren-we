@@ -13,26 +13,14 @@
           <div class="modal-top">
           <form id="updateForm">
               <div class="modal-header boderButt">
-                  <button id="backBtn" type="button" class="btn btn-primary right btn-sm" data-dismiss="modal">返回</button>
-                  <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
+                  <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">返回</button>
+     			  <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
                   <h4>编辑</h4>
               </div>
                 <div class="modal-body">
                  <div class="tab-content">
                        <input name="id" type="hidden" value="${obj.function.id}"/>
-                        <div class="form-group row">
-                        	<label class="col-sm-3 text-right padding">功能名称：</label>
-                            <div class="col-sm-8 padding">
-                              <input name="name" type="text" class="form-control input-sm"  maxlength="32" value="${obj.function.name}"/>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                        	<label class="col-sm-3 text-right padding">访问地止：</label>
-                            <div class="col-sm-8 padding">
-                            	<input name="url" type="text" class="form-control input-sm" maxlength="32" value="${obj.function.url}"/>
-                            </div>
-                        </div>
-                        <div class="form-group row">
+                       <div class="form-group row">
                             <label class="col-sm-3 text-right padding">上级功能：</label>
                             <div class="col-sm-8 padding">
 								<select name="parentId" class="form-control input-sm">
@@ -51,15 +39,27 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                        	<label class="col-sm-3 text-right padding">访问地止：</label>
+                            <div class="col-sm-8 padding">
+                            	<input name="url" type="text" class="form-control input-sm"  value="${obj.function.url}"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                        	<label class="col-sm-3 text-right padding">功能名称：</label>
+                            <div class="col-sm-8 padding">
+                              <input name="name" type="text" class="form-control input-sm" value="${obj.function.name}"/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">功能等级：</label>
                             <div class="col-sm-8 padding">
-                            	<input name="level" type="text" class="form-control input-sm" maxlength="32" value="${obj.function.level}"/>
+                            	<input name="level" type="text" class="form-control input-sm" value="${obj.function.level}"/>
                             </div>
                         </div>
                         <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">序号：</label>
                             <div class="col-sm-8 padding">
-                            	<input name="sort" type="text" class="form-control input-sm" maxlength="32" value="${obj.function.sort}"/>
+                            	<input name="sort" type="text" class="form-control input-sm" value="${obj.function.sort}"/>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -73,7 +73,12 @@
           </form>
      </div>
 </body>
-</html>	
+</html>
+<!-- jQuery 2.2.3 -->
+<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="${base}/public/bootstrap/js/bootstrap.js"></script>
+<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
+<script src="${base}/common/js/layer/layer.js"></script>
 <script type="text/javascript">
 //更新提交
 $("#submit").click(function(){
@@ -89,14 +94,17 @@ $("#submit").click(function(){
 		layer.load(1, {
 			 shade: [0.1,'#fff'] //0.1透明度的白色背景
 		});
-              layer.msg('修改成功!',{time: 5000, icon:6});
-		  	  window.location.reload(true);
+              	layer.msg('修改成功!',{time: 5000, icon:6});
+				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				parent.layer.close(index);
+				window.parent.successCallback('2');
           }
        });
 	 $(".Mymodal-lg").modal('hide');
 });
-//点击返回按钮自动刷新页面
-$('#backBtn').click(function(){
-	window.location.href="${base}/admin/authority/function/list.html";
-});
+//点击返回
+function closewindow(){
+	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	parent.layer.close(index);
+}
 </script>

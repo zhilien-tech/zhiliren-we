@@ -17,7 +17,7 @@
     <section class="content">
       <div class="row row-top">
         <div class="col-xs-12">
-             <h4 class="page-header"><i class="fa fa-eye"></i> 权限管理</h4>
+             <!-- <h4 class="page-header"><i class="fa fa-eye"></i> 权限管理</h4> -->
               <div class="row">
                 <div class="col-md-12">
                   <!-- Custom Tabs -->
@@ -115,18 +115,7 @@
   	    content: '${base}/admin/authority/authoritymanage/update.html?id='+id
   	  });
 	}
-	//事件提示
-	function successCallback(id){
-		deptDatatable.ajax.reload();
-		areaDatatable.ajax.reload();
-		  if(id == '1'){
-			  layer.msg("添加成功",{time: 2000, icon:1});
-		  }else if(id == '2'){
-			  layer.msg("修改成功",{time: 2000, icon:1});
-		  }else if(id == '3'){
-			  layer.msg("删除成功",{time: 2000, icon:1});
-		  }
-	  }
+	
 	//描述提示信息弹出层Tooltip
 	$(function() {
 		$("[data-toggle='tooltip']").tooltip();
@@ -263,6 +252,18 @@ function editArea(id){
 			$("li#area_button").addClass("active");
 		}
 	});
+	//事件提示
+	function successCallback(id){
+		deptDatatable.ajax.reload();
+		areaDatatable.ajax.reload();
+		  if(id == '1'){
+			  layer.msg("添加成功",{time: 2000, icon:1});
+		  }else if(id == '2'){
+			  layer.msg("修改成功",{time: 2000, icon:1});
+		  }else if(id == '3'){
+			  layer.msg("删除成功",{time: 2000, icon:1});
+		  }
+	  }
 </script>
 </body>
 </html>

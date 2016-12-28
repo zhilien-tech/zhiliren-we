@@ -3,28 +3,30 @@ package com.linyun.airline.admin.user.module;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
+import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.entity.Record;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
+import com.linyun.airline.admin.area.service.AreaViewService;
+import com.linyun.airline.admin.authority.job.entity.TJobEntity;
 import com.linyun.airline.admin.user.form.TUserSqlForm;
-import com.linyun.airline.admin.user.service.impl.TUserServiceImpl;
-import com.linyun.airline.common.enums.UserStatusEnum;
-import com.linyun.airline.common.enums.UserTypeEnum;
+import com.linyun.airline.admin.user.service.UserViewService;
+import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TUserAddForm;
 import com.linyun.airline.forms.TUserModForm;
-import com.uxuexi.core.common.util.DateTimeUtil;
-import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.MapUtil;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
 import com.uxuexi.core.web.util.FormUtil;
@@ -37,8 +39,6 @@ import com.uxuexi.core.web.util.FormUtil;
  */
 @IocBean
 @At("/admin/user")
-@Filters({//@By(type = AuthFilter.class)
-})
 public class UserModule {
 
 	/**
@@ -51,10 +51,12 @@ public class UserModule {
 	private SqlManager sqlManager;
 
 	@Inject
-	private TUserServiceImpl userViewService;
+	private UserViewService userViewService;
+
+	@Inject
+	private AreaViewService areaViewService;
 
 	/**
-	 * 
 	 * 列表展示
 	 * @param sqlForm
 	 * @param pager
@@ -67,6 +69,17 @@ public class UserModule {
 		List<Record> deplist = userViewService.getDeptNameSelect(sqlManager);
 		map.put("deplist", deplist);
 		return map;
+	}
+
+	/**
+	 * @param sqlForm
+	 * @param pager
+	 * 个人信息
+	 */
+	@At
+	@Ok("jsp")
+	public Object personalInfoList(final HttpSession session) {
+		return userViewService.personalInfo(session);
 	}
 
 	/**
@@ -83,23 +96,104 @@ public class UserModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object add() {
-		Map<String, Object> obj = MapUtil.map();
-		obj.put("userTypeEnum", EnumUtil.enum2(UserTypeEnum.class));
-		obj.put("userStatusEnum", EnumUtil.enum2(UserStatusEnum.class));
-		return obj;
+	public Object add(final HttpSession session) {
+		return userViewService.queryDept(session);
 	}
 
 	/**
-	 * 添加
+	 * 添加操作
 	 */
 	@At
 	@POST
-	public Object add(@Param("..") final TUserAddForm addForm) {
-		addForm.setCreateTime(DateTimeUtil.now());
-		addForm.setUpdateTime(DateTimeUtil.now());
-		FormUtil.add(dbDao, addForm, TUserEntity.class);
+	public Object add(@Param("..") final TUserAddForm addForm, @Param("areaId") final Long areaId,
+			@Param("jobId") final Long jobId, final HttpSession session) {
+		userViewService.saveEmployeeData(addForm, areaId, jobId, session);
 		return JsonResult.success("添加成功!");
+	}
+
+	/**
+	 * 添加时查询出部门联动带出职位
+	 */
+	@At
+	public Object selectDeptName(@Param("deptId") final Long deptId) {
+		//根据前端传过来的部门id查询出职位
+		return dbDao.query(TJobEntity.class, Cnd.where("deptId", "=", deptId), null);
+	}
+
+	/**
+	 * 添加时查询出部门联动带出职位
+	 */
+	@At
+	public Object passwordInit(@Param("..") final TUserModForm setForm) {
+		//根据前端传过来的用户id设置该用户的密码
+		TUserEntity singleUser = dbDao.fetch(TUserEntity.class, setForm.getId());
+		if (!Util.isEmpty(singleUser)) {
+			singleUser.setPassword(CommonConstants.INITIAL_PASSWORD);
+			userViewService.updateIgnoreNull(singleUser);
+			return JsonResult.success("密码初始化成功!");
+		}
+		return JsonResult.error("用户不存在!");
+	}
+
+	/**
+	 * 修改密码页面
+	 */
+	@At
+	@GET
+	@Ok("jsp")
+	public Object updatePassword(final HttpSession session) {
+		return userViewService.updatePassword(session);
+	}
+
+	/**
+	 * @param PassForm
+	 * @param session
+	 * 执行密码修改操作
+	 */
+	@At
+	@POST
+	public Object updatePassword(@Param("..") final TUserModForm PassForm, @Param("id") final Long userId) {
+		return userViewService.updatePassData(PassForm, userId);
+	}
+
+	/**
+	 * @param userId
+	 * 验证原密码输入是否正确
+	 */
+	/*public Object checkOldPass(@Param("..") final TUserModForm PassForm, @Param("id") final Long userId) {
+		return userViewService.checkOldPass(PassForm, userId);
+	}*/
+
+	/**
+	 * @param userId
+	 * @param session
+	 * 编辑个人信息页面回显数据
+	 */
+	@At
+	@Ok("jsp")
+	public Object updatePersonal(@Param("id") final Long userId, final HttpSession session) {
+		return userViewService.editPersonal(userId, session);
+	}
+
+	/**
+	 * 执行'修改操作'
+	 */
+	@At
+	@POST
+	public Object updatePersonal(@Param("..") final TUserModForm updatePerForm, @Param("id") final Long userId) {
+		userViewService.updatePersonalData(updatePerForm, userId);
+		return JsonResult.success("修改成功!");
+	}
+
+	/**
+	 * @param dictAreaName
+	 * 区域select2查询
+	 */
+	@At
+	@POST
+	public Object areaSelect2(@Param("area") final String dictAreaName,
+			@Param("selectedAreaIds") final String selectedAreaIds) {
+		return areaViewService.areaSelect2(dictAreaName, selectedAreaIds);
 	}
 
 	/**
@@ -108,8 +202,8 @@ public class UserModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object update(@Param("id") final Long userId) {
-		return userViewService.findUser(userId);
+	public Object update(@Param("id") final Long userId, final HttpSession session) {
+		return userViewService.updateUserinfo(userId, session);
 	}
 
 	/**
@@ -117,17 +211,17 @@ public class UserModule {
 	 */
 	@At
 	@POST
-	public Object update(@Param("::user.") final TUserModForm modForm) {
-		userViewService.update(modForm);
-		return JsonResult.success("修改成功!", "user.list", true);
+	public Object update(@Param("..") final TUserModForm updateForm, final HttpSession session) {
+		userViewService.updateData(updateForm, session);
+		return JsonResult.success("修改成功!");
 	}
 
 	/**
 	 * 删除记录
 	 */
 	@At
-	public Object delete(@Param("id") final long id) {
-		FormUtil.delete(dbDao, TUserEntity.class, id);
+	public Object delete(@Param("userId") final Long userId) {
+		userViewService.deleteUserInfo(userId);
 		return JsonResult.success("删除成功!");
 	}
 
@@ -140,4 +234,21 @@ public class UserModule {
 		return JsonResult.success("删除成功!");
 	}
 
+	/**
+	 * 校验部门名称
+	 */
+	@At
+	@POST
+	public Object checkUserNameExist(@Param("userName") final String userName, @Param("id") final Long userId) {
+		return userViewService.checkDeptNameExist(userName, userId);
+	}
+
+	/**
+	 * 校验联系电话
+	 */
+	@At
+	@POST
+	public Object checkTelephoneExist(@Param("telephone") final String telephone, @Param("id") final Long userId) {
+		return userViewService.checkTelephoneExist(telephone, userId);
+	}
 }

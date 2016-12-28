@@ -6,15 +6,17 @@
 
 package com.linyun.airline.admin.user.form;
 
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import org.joda.time.DateTime;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
+import com.linyun.airline.common.enums.UserJobStatusEnum;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
@@ -31,6 +33,9 @@ public class TUserSqlForm extends DataTablesParamForm {
 
 	/**用户姓名*/
 	private String userName;
+
+	/**部门名称*/
+	private String deptName;
 
 	/**密码*/
 	private String password;
@@ -54,10 +59,10 @@ public class TUserSqlForm extends DataTablesParamForm {
 	private long status;
 
 	/**创建时间*/
-	private DateTime createTime;
+	private Date createTime;
 
 	/**更新时间*/
-	private DateTime updateTime;
+	private Date updateTime;
 
 	/**用户是否禁用*/
 	private long disableStatus;
@@ -79,8 +84,13 @@ public class TUserSqlForm extends DataTablesParamForm {
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		if (!Util.isEmpty(userName)) {
-			cnd.and("u.userName", "LIKE", "%" + userName + "%").or("u.telephone", "LIKE", "%" + telephone + "%");
+			cnd.and("u.userName", "LIKE", "%" + userName + "%").or("u.telephone", "LIKE", "%" + userName + "%");
 		}
+		if (!Util.isEmpty(deptName)) {
+			cnd.and("d.deptName", "=", deptName);
+		}
+		cnd.and("u.status", "=", UserJobStatusEnum.ON.intKey());
+		cnd.orderBy("u.createTime", "DESC");
 		return cnd;
 	}
 }

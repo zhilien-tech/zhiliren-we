@@ -1,6 +1,7 @@
 package com.linyun.airline.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 
@@ -23,8 +24,8 @@ public class TAreaEntity implements Serializable {
 	private String areaName;
 
 	@Column
-	@Comment("字典信息id")
-	private String infoId;
+	@Comment("创建时间")
+	private Date createTime;
 
 	@Column
 	@Comment("备注")

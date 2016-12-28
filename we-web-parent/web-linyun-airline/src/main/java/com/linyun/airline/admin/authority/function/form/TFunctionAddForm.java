@@ -19,6 +19,9 @@ public class TFunctionAddForm extends AddForm {
 	/**上级功能id*/
 	private long parentId;
 
+	/**上级功能名称*/
+	private String parentName;
+
 	/**功能名称*/
 	private String name;
 
