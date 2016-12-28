@@ -1,9 +1,9 @@
 package com.linyun.airline.forms;
 
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import org.joda.time.DateTime;
 
 import com.linyun.airline.common.access.AccessConfig;
 import com.linyun.airline.common.access.sign.MD5;
@@ -18,6 +18,11 @@ import com.uxuexi.core.web.form.AddForm;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class TUserAddForm extends AddForm {
+	/**主键*/
+	private long id;
+
+	/*select2 id字符串*/
+	private String selectedAreaIds;
 
 	/**用户姓名*/
 	private String userName;
@@ -44,12 +49,12 @@ public class TUserAddForm extends AddForm {
 	private long status;
 
 	/**创建时间*/
-	private DateTime createTime;
+	private Date createTime;
 
 	/**更新时间*/
-	private DateTime updateTime;
+	private Date updateTime;
 
-	/**用户是否禁用*/
+	/**用户是否禁用(0-启用，1-禁用，默认为0)*/
 	private long disableStatus;
 
 	/**备注*/

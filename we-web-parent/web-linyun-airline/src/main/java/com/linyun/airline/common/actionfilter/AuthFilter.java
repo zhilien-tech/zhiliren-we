@@ -1,16 +1,16 @@
 package com.linyun.airline.common.actionfilter;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import lombok.Data;
-
+import org.nutz.json.JsonFormat;
 import org.nutz.mvc.ActionContext;
-import org.nutz.mvc.ActionFilter;
 import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.View;
+import org.nutz.mvc.view.JspView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,19 +18,16 @@ import com.linyun.airline.admin.authority.function.entity.TFunctionEntity;
 import com.linyun.airline.admin.authority.function.service.FunctionViewService;
 import com.linyun.airline.admin.log.service.SLogService;
 import com.linyun.airline.admin.login.service.LoginService;
-import com.linyun.airline.common.annotation.NoFilter;
+import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.util.IpUtil;
 import com.linyun.airline.entities.TUserEntity;
-import com.uxuexi.core.common.exception.impl.BusinessException;
 import com.uxuexi.core.common.util.StringUtil;
 import com.uxuexi.core.common.util.Util;
+import com.uxuexi.core.web.view.Utf8JsonTransferView;
 
-@Data
-public class AuthFilter implements ActionFilter {
+public class AuthFilter extends BaseActionFilter {
 
 	private Logger logger = LoggerFactory.getLogger(AuthFilter.class);
-
-	public static final String NO_LOGIN_MSG = "对不起你还没有登陆!";
 
 	/**请求路径后缀标志符*/
 	public static final String REQ_TAIL_FLAG = ".";
@@ -47,8 +44,6 @@ public class AuthFilter implements ActionFilter {
 		HttpServletRequest request = actionContext.getRequest();
 		String requestPath = request.getServletPath();
 
-		logger.info("当前访问路径:：" + requestPath);
-
 		HttpSession session = Mvcs.getHttpSession();
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		isAllowed = hasPermission(session, requestPath);
@@ -56,26 +51,36 @@ public class AuthFilter implements ActionFilter {
 		FunctionViewService funcService = Mvcs.getIoc().get(FunctionViewService.class, "functionViewService");
 		TFunctionEntity function = funcService.findFuctionByRequestPath(requestPath);
 
-		logger.info((null == user ? "--游客" : user.getUserName()) + "--访问后台功能:[" + function.getName()
-				+ (isAllowed == true ? "]--允许" : "]--权限不足"));
+		if (Util.isEmpty(function)) {
+			isAllowed = true;
+			logger.info("注意:访问地址:[" + requestPath + "]未设置未功能.");
+		} else {
+			logger.info("当前访问路径:[" + requestPath + "].");
+			logger.info((null == user ? "--游客" : user.getUserName()) + "--访问后台功能:[" + function.getName()
+					+ (isAllowed == true ? "]--允许" : "]--权限不足"));
+		}
+
 		if (isAllowed) {
-			SLogService sLogService = Mvcs.getIoc().get(SLogService.class, "sLogService");
-			String ip = IpUtil.getIpAddr(request);
-			sLogService.addSyslog(function, user, ip);
+			if (!Util.isEmpty(function)) {
+				SLogService sLogService = Mvcs.getIoc().get(SLogService.class, "sLogService");
+				String ip = IpUtil.getIpAddr(request);
+				sLogService.addSyslog(function, user, ip);
+			}
 			return null;
 		} else {
-			throw new BusinessException("对不起，你没有访问该功能的权限！");
-		}
-	}
+			String msg = "对不起，你没有访问该功能的权限！";
+			//判断访问类型
+			HttpServletRequest req = actionContext.getRequest();
+			if (isAjax(req)) {
+				Utf8JsonTransferView jsonView = new Utf8JsonTransferView(JsonFormat.full());
 
-	/**
-	 * 该请求是否需要进行权限管理
-	 * @param actionContext 
-	 * @return 布尔值
-	 */
-	private boolean isNeedValidate(final ActionContext actionContext) {
-		final NoFilter noFilter = actionContext.getMethod().getAnnotation(NoFilter.class);
-		return Util.isEmpty(noFilter);
+				Map<String, Object> data = MobileResult.error(msg, null);
+				jsonView.setData(data);
+				return jsonView;
+			} else {
+				return new JspView("common.auth_msg");
+			}
+		}
 	}
 
 	public boolean hasPermission(final HttpSession session, final String requestPath) {
