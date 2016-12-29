@@ -242,7 +242,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		long userId = loginUser.getId();
 
 		Map<String, Object> obj = new HashMap<String, Object>();
-		TCheckboxStatusEntity checkBoxEntity = dbDao.fetch(TCheckboxStatusEntity.class, userId);
+		TCheckboxStatusEntity checkBoxEntity = dbDao.fetch(TCheckboxStatusEntity.class,
+				Cnd.where("userId", "=", userId));
 		obj.put("checkBox", checkBoxEntity);
 		return obj;
 	}

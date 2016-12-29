@@ -30,7 +30,6 @@ import com.linyun.airline.common.base.Uploader;
 import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
-import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
 import com.linyun.airline.forms.TCustomerInfoUpdateForm;
 import com.uxuexi.core.common.util.Util;
@@ -73,11 +72,8 @@ public class CustomerModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object add() {
-		Map<String, Object> obj = new HashMap<String, Object>();
-		List<TUserEntity> userlist = dbDao.query(TUserEntity.class, null, null);
-		obj.put("userlist", userlist);
-		return obj;
+	public Object add(HttpSession session) {
+		return customerViewService.agent(session);
 	}
 
 	/**
@@ -99,8 +95,8 @@ public class CustomerModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object update(@Param("id") final long id) throws Exception {
-		return customerViewService.toUpdatePage(id);
+	public Object update(HttpSession session, @Param("id") final long id) throws Exception {
+		return customerViewService.toUpdatePage(session, id);
 	}
 
 	/**
@@ -165,8 +161,8 @@ public class CustomerModule {
 	//负责人查询
 	@At
 	@POST
-	public Object agent() {
-		return customerViewService.agent();
+	public Object agent(HttpSession session) {
+		return customerViewService.agent(session);
 	}
 
 	//出发城市查询
