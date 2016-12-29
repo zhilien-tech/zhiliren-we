@@ -24,10 +24,11 @@
 		 	<div class="col-sm-3 padding">
 				<input id="msgContent" name="msgContent" type="text" class="form-control input-sm eventText" value="${obj.message.msgContent }" placeholder="请输入新提示事件"/>
 			</div>
-			<div class="evevtTool cf">
-				<label>提醒：</label> 
-				<input id="datepicker" name="generateTimeString" type="text" value="<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"  value="${obj.message.generateTime}" />" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="${obj.message.generateTime }"  placeholder="2016-12-05 13:20"/>
-				
+			<div class="col-sm-3 padding">
+				<div class="evevtTool cf">
+					<label>提醒：</label> 
+					<input id="datepicker" name="generateTimeString" type="text" value="<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"  value="${obj.message.generateTime}" />" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="${obj.message.generateTime }"  placeholder="2016-12-05 13:20"/>
+				</div>
 			</div>
 			<input type="hidden" id="id" name="id" value="${obj.message.id}"/>
 			<div class="evevtBttton">

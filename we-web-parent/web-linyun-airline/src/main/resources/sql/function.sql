@@ -2,11 +2,11 @@
 SELECT
   t.id,
   t.parentId,
-  t.level,
-  p.name parentName ,
+  t.level nLevel,
+  ifnull(p.name,'') parentName,
   t.name,
-  t.url,
-  t.remark,
+  ifnull(t.url,'') url,
+  ifnull(t.remark,'') remark,
   t.createTime,
   t.updateTime,
   t.sort

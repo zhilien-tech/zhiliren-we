@@ -26,4 +26,37 @@ public class TCompanyJobEntity implements Serializable {
 	@Comment("公司id")
 	private long comId;
 
+	/**
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TCompanyJobEntity other = (TCompanyJobEntity) obj;
+		if (comId != other.comId)
+			return false;
+		if (posid != other.posid)
+			return false;
+		return true;
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (comId ^ (comId >>> 32));
+		result = prime * result + (int) (posid ^ (posid >>> 32));
+		return result;
+	}
+
 }

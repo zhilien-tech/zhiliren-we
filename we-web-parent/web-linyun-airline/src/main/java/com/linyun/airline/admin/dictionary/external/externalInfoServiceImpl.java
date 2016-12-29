@@ -9,6 +9,7 @@ package com.linyun.airline.admin.dictionary.external;
 import java.util.List;
 
 import org.nutz.dao.Cnd;
+import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
 
@@ -24,13 +25,24 @@ import com.uxuexi.core.web.base.service.BaseService;
 @IocBean(name = "externalDictInfoService")
 public class externalInfoServiceImpl extends BaseService<DictInfoEntity> implements externalInfoService {
 
+	@SuppressWarnings("static-access")
 	@Override
 	public List<DictInfoEntity> findDictInfoByName(String name, String typeCode) throws Exception {
 		List<DictInfoEntity> infoList = dbDao.query(
 				DictInfoEntity.class,
-				Cnd.where("dictName", "like", Strings.trim(name) + "%")
-						.and("status", "=", DataStatusEnum.ENABLE.intKey()).and("typeCode", "=", typeCode), null);
+				Cnd.wrap("(dictCode like '" + Strings.trim(name) + "%' or dictName like '" + Strings.trim(name)
+						+ "%') and status = " + DataStatusEnum.ENABLE.intKey() + " and typeCode = '" + typeCode + "'"),
+				null);
 
+		return infoList;
+	}
+
+	@Override
+	public List<DictInfoEntity> findDictInfoByText(String name, String typeCode) throws Exception {
+		SqlExpressionGroup exp = new SqlExpressionGroup();
+		exp.and("dictName", "like", Strings.trim(name) + "%").or("dictCode", "like", Strings.trim(name) + "%");
+		List<DictInfoEntity> infoList = dbDao.query(DictInfoEntity.class,
+				Cnd.where(exp).and("status", "=", DataStatusEnum.ENABLE.intKey()).and("typeCode", "=", typeCode), null);
 		return infoList;
 	}
 }

@@ -1,8 +1,9 @@
 package com.linyun.airline.entities;
 
+import java.util.Date;
+
 import lombok.Data;
 
-import org.joda.time.DateTime;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Comment;
 import org.nutz.dao.entity.annotation.Id;
@@ -35,14 +36,47 @@ public class TUserJobEntity {
 
 	@Column
 	@Comment("入职时间")
-	private DateTime hireDate;
+	private Date hireDate;
 
 	@Column
 	@Comment("离职时间")
-	private DateTime leaveDate;
+	private Date leaveDate;
 
 	@Column
 	@Comment("备注")
 	private String remark;
+
+	/**
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TUserJobEntity other = (TUserJobEntity) obj;
+		if (companyJobId != other.companyJobId)
+			return false;
+		if (userid != other.userid)
+			return false;
+		return true;
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (companyJobId ^ (companyJobId >>> 32));
+		result = prime * result + (int) (userid ^ (userid >>> 32));
+		return result;
+	}
 
 }

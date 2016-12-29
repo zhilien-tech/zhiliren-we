@@ -1,5 +1,7 @@
 package com.linyun.airline.forms;
 
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,6 +11,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
 import com.linyun.airline.entities.TAreaEntity;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
@@ -20,6 +23,9 @@ public class TAreaForm extends DataTablesParamForm {
 
 	/**区域名称*/
 	private String areaName;
+
+	/**创建时间*/
+	private Date createTime;
 
 	/**备注*/
 	private String remark;
@@ -40,6 +46,9 @@ public class TAreaForm extends DataTablesParamForm {
 	//自定义查询条件
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
+		if (Util.isEmpty(createTime)) {
+			cnd.orderBy("createTime", "DESC");
+		}
 		return cnd;
 	}
 }

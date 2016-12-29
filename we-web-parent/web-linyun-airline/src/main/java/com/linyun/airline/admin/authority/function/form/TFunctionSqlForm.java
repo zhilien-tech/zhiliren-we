@@ -9,6 +9,7 @@ package com.linyun.airline.admin.authority.function.form;
 import java.util.Date;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
@@ -16,8 +17,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
 import com.uxuexi.core.common.util.Util;
-import com.uxuexi.core.db.dao.IDbDao;
-import com.uxuexi.core.web.form.ISqlForm;
+import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
  * TODO(这里用一句话描述这个类的作用)
@@ -25,7 +25,8 @@ import com.uxuexi.core.web.form.ISqlForm;
  * @Date	 2016年11月18日 	 
  */
 @Data
-public class TFunctionSqlForm implements ISqlForm {
+@EqualsAndHashCode(callSuper = true)
+public class TFunctionSqlForm extends DataTablesParamForm {
 
 	/**上级功能id*/
 	private long parentId;
@@ -52,22 +53,21 @@ public class TFunctionSqlForm implements ISqlForm {
 	private long sort;
 
 	@Override
-	public Sql createPagerSql(IDbDao dbDao, SqlManager sqlManager) {
-		Sql sql = Sqls.create(sqlManager.get("function_manage_list"));
+	public Sql sql(SqlManager sqlManager) {
+		/**
+		 * 默认使用了当前form关联entity的单表查询sql,如果是多表复杂sql，
+		 * 请使用sqlManager获取自定义的sql，并设置查询条件
+		 */
+		String sqlString = sqlManager.get("function_manage_list");
+		//String sqlString = EntityUtil.entityCndSql(TFunctionEntity.class);
+		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;
 	}
 
-	@Override
-	public Sql createCountSql(IDbDao dbDao, SqlManager sqlManager) {
-		Sql sql = Sqls.create(sqlManager.get("function_manage_list_count"));
-		sql.setCondition(cnd());
-		return sql;
-	}
-
-	@SuppressWarnings("deprecation")
+	//自定义条件
 	private Cnd cnd() {
-		Cnd cnd = Cnd.limit();
+		Cnd cnd = Cnd.NEW();
 		if (!Util.isEmpty(name))
 			cnd.and("t.name", "LIKE", "%" + name + "%");
 

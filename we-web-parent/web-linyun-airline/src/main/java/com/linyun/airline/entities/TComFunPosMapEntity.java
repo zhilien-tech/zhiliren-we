@@ -26,4 +26,37 @@ public class TComFunPosMapEntity implements Serializable {
 	@Comment("公司功能id")
 	private long companyFunId;
 
+	/**
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TComFunPosMapEntity other = (TComFunPosMapEntity) obj;
+		if (companyFunId != other.companyFunId)
+			return false;
+		if (jobId != other.jobId)
+			return false;
+		return true;
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (companyFunId ^ (companyFunId >>> 32));
+		result = prime * result + (int) (jobId ^ (jobId >>> 32));
+		return result;
+	}
+
 }

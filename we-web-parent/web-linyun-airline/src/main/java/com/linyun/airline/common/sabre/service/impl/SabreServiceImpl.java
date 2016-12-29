@@ -85,7 +85,8 @@ public class SabreServiceImpl implements SabreService {
 
 				//TODO 航空公司名称、图片
 
-				//价格信息
+				//价格信息 
+				//TODO 类型转换异常 java.lang.String cannot be cast to java.lang.Double
 				readPriceInfo(json, ir);
 
 				ir.setAirlineCode(airlineCode);
@@ -135,12 +136,13 @@ public class SabreServiceImpl implements SabreService {
 		List<Map<String, Object>> odopts = JsonPath.read(json,
 				"$.AirItinerary.OriginDestinationOptions.OriginDestinationOption[*]");
 		if (!Util.isEmpty(odopts)) {
+			List<FlightSegment> segLst = Lists.newArrayList();
 			for (Map<String, Object> each : odopts) {
 				String optJ = Json.toJson(each, JsonFormat.tidy());
 
 				List<Map<String, Object>> segments = JsonPath.read(optJ, "$.FlightSegment[*]");
 				if (!Util.isEmpty(segments)) {
-					List<FlightSegment> segLst = Lists.newArrayList();
+
 					for (Map<String, Object> eachSeg : segments) {
 						String segJ = Json.toJson(eachSeg, JsonFormat.tidy());
 
@@ -200,7 +202,7 @@ public class SabreServiceImpl implements SabreService {
 						segLst.add(seg);
 					}
 					ir.setList(segLst);
-				}
+				}//end of odopts for loop
 			}
 		}
 	}
