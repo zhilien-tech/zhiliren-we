@@ -41,7 +41,7 @@ import javax.mail.internet.MimeUtility;
  * @author   朱晓川
  * @Date	 2016年12月26日 	 
  */
-public class POP3ReceiveMailTest {
+public class ReceiveMailTest {
 
 	public static void main(String[] args) throws Exception {
 		receive();
@@ -53,14 +53,20 @@ public class POP3ReceiveMailTest {
 	public static void receive() throws Exception {
 		// 准备连接服务器的会话信息  
 		Properties props = new Properties();
-		props.setProperty("mail.store.protocol", "pop3"); // 协议  
-		props.setProperty("mail.pop3.port", "110"); // 端口  
-		props.setProperty("mail.pop3.host", "pop3.163.com"); // pop3服务器  
+		props.setProperty("mail.store.protocol", "imap"); // 协议  
+		props.setProperty("mail.imap.host", "imap.qq.com"); // imap服务器
+		props.setProperty("mail.imap.port", "143"); // 端口  
+
+		/**  QQ邮箱需要建立ssl连接 */
+		props.setProperty("mail.imap.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+		props.setProperty("mail.imap.socketFactory.fallback", "false");
+		props.setProperty("mail.imap.starttls.enable", "true");
+		props.setProperty("mail.imap.socketFactory.port", "993");
 
 		// 创建Session实例对象  
 		Session session = Session.getInstance(props);
-		Store store = session.getStore("pop3");
-		store.connect("xyang0917@163.com", "123456abc");
+		Store store = session.getStore("imap");
+		store.connect("32009805@qq.com", "tcwnecbkfbajbiff");
 
 		// 获得收件箱  
 		Folder folder = store.getFolder("INBOX");
@@ -99,19 +105,25 @@ public class POP3ReceiveMailTest {
 		// 解析所有邮件  
 		for (int i = 0, count = messages.length; i < count; i++) {
 			MimeMessage msg = (MimeMessage) messages[i];
+
+			boolean isRead = isRead(msg);
+			if (isRead) {
+				continue;
+			}
+
 			System.out.println("------------------解析第" + msg.getMessageNumber() + "封邮件-------------------- ");
 			System.out.println("主题: " + getSubject(msg));
 			System.out.println("发件人: " + getFrom(msg));
 			System.out.println("收件人：" + getReceiveAddress(msg, null));
 			System.out.println("发送时间：" + getSentDate(msg, null));
-			System.out.println("是否已读：" + isSeen(msg));
+			System.out.println("是否已读：" + isRead);
 			System.out.println("邮件优先级：" + getPriority(msg));
 			System.out.println("是否需要回执：" + isReplySign(msg));
 			System.out.println("邮件大小：" + msg.getSize() * 1024 + "kb");
 			boolean isContainerAttachment = isContainAttachment(msg);
 			System.out.println("是否包含附件：" + isContainerAttachment);
 			if (isContainerAttachment) {
-				saveAttachment(msg, "c:\\mailtmp\\" + msg.getSubject() + "_"); //保存附件  
+				//				saveAttachment(msg, "D:/maildownload/" + msg.getSubject() + "_"); //保存附件  
 			}
 			StringBuffer content = new StringBuffer(30);
 			getMailTextContent(msg, content);
@@ -248,7 +260,7 @@ public class POP3ReceiveMailTest {
 	 * @return 如果邮件已读返回true,否则返回false  
 	 * @throws MessagingException   
 	 */
-	public static boolean isSeen(MimeMessage msg) throws MessagingException {
+	public static boolean isRead(MimeMessage msg) throws MessagingException {
 		return msg.getFlags().contains(Flags.Flag.SEEN);
 	}
 
