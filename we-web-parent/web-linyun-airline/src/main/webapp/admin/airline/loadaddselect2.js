@@ -50,8 +50,8 @@ function initAddSelect2(){
 			processResults : function(data, params) {
 				params.page = params.page || 1;
 				var selectdata = $.map(data, function (obj) {
-					obj.id =  obj.dictName; // replace pk with your identifier
-					obj.text =  obj.dictName; // replace pk with your identifier
+					obj.id =  obj.comname; // replace pk with your identifier
+					obj.text =  obj.comname; // replace pk with your identifier
 					return obj;
 				});
 				return {
