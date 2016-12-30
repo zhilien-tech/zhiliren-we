@@ -7,7 +7,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=7" />
 	<meta http-equiv="Access-Control-Allow-Origin" content="*" />
 	<meta name="alexaVerifyID" content="" />
-    <title>添加</title>
+    <title>编辑</title>
 	<link rel="stylesheet" href="${base }/public/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/AdminLTE.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/font-awesome.min.css">
@@ -45,7 +45,7 @@
 	       	   		<button type="button" class="btn right btn-sm" onclick="enableCustomNeeds();">启用</button>
 	       	   </c:otherwise>
 	       </c:choose>
-	       <h4>添加客户需求</h4>
+	       <h4>编辑客户需求</h4>
 	     </div>
 	     <div class="modal-body">
 	       <div class="tab-content">

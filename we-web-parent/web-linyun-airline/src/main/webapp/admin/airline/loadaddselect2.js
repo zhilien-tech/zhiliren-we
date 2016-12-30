@@ -86,8 +86,8 @@ function initAddSelect2(){
 			processResults : function(data, params) {
 				params.page = params.page || 1;
 				var selectdata = $.map(data, function (obj) {
-					obj.id = obj.dictName; // replace pk with your identifier
-					obj.text = obj.dictName; // replace pk with your identifier
+					obj.id = obj.airlinenum; // replace pk with your identifier
+					obj.text = obj.airlinenum; // replace pk with your identifier
 					return obj;
 				});
 				return {
@@ -122,8 +122,8 @@ function initAddSelect2(){
 			processResults : function(data, params) {
 				params.page = params.page || 1;
 				var selectdata = $.map(data, function (obj) {
-					obj.id = obj.dictName; // replace pk with your identifier
-					obj.text = obj.dictName; // replace pk with your identifier
+					obj.id = obj.airlinenum; // replace pk with your identifier
+					obj.text = obj.airlinenum; // replace pk with your identifier
 					return obj;
 				});
 				return {
