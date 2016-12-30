@@ -12,6 +12,7 @@ import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.customneeds.form.PlanMakeSqlForm;
+import com.linyun.airline.admin.customneeds.service.ExportXinHangService;
 import com.linyun.airline.admin.customneeds.service.PlanMakeService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.entities.TCompanyEntity;
@@ -25,6 +26,8 @@ public class PlanMakeModule {
 
 	@Inject
 	private PlanMakeService planMakeService;
+	@Inject
+	private ExportXinHangService exportXinHangService;
 
 	/**
 	 * 获取航空公司下拉
@@ -142,5 +145,13 @@ public class PlanMakeModule {
 	@At
 	public Object deleteMakePlanData(HttpSession session) {
 		return planMakeService.deleteMakePlanData(session);
+	}
+
+	/**
+	 * 导出新航模板
+	 */
+	@At
+	public Object exportXinHangTemplate(HttpSession session, HttpServletResponse response) {
+		return exportXinHangService.exportXinHangTemplate(session, response);
 	}
 }
