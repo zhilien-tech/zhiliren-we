@@ -135,6 +135,15 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 		try {
 			//准备回显数据
 			TPlanInfoEntity planInfoEntity = this.fetch(id);
+			//获取关系表数据
+			TUpOrderTicketEntity orderTicket = dbDao.fetch(TUpOrderTicketEntity.class, Cnd.where("ticketid", "=", id));
+			if (!Util.isEmpty(orderTicket)) {
+				TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(orderTicket.getOrderid()));
+				result.put("ordernum", order.getOrdersnum());
+			} else {
+				result.put("ordernum", null);
+			}
+			//获取订单信息
 			result.put("planinfo", planInfoEntity);
 			//准备城市下拉数据
 			List<DictInfoEntity> city = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", this.CITYCODE),

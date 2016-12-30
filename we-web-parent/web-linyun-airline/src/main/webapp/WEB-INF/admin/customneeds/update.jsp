@@ -49,62 +49,81 @@
 	     </div>
 	     <div class="modal-body">
 	       <div class="tab-content">
-	           <div class="form-group row"><!--航空公司/旅行社-->
-	           	 <input type="hidden" id="id" name="id" value="${obj.id }">
-	             <label class="col-sm-2 text-right padding customerEdit">航空公司：</label>
-	             <div class="col-sm-2 padding">
-	               <input name="airline" type="text" class="form-control input-sm" placeholder="首航-CA" value="${obj.airline }"/>
-	             </div>
-	             <label class="col-sm-2 text-right padding">旅行社：</label>
-	             <div class="col-sm-2 padding">
-	               <input name="travel" type="text" class="form-control input-sm" placeholder=" " value="${obj.travel}"/>
-	             </div>
-	           </div><!--end 航空公司/旅行社-->
-	
-	           <div class="form-group row"><!--人数/天数/联运要求-->
-	             <label class="col-sm-2 text-right padding customerEdit">人数：</label>
-	             <div class="col-sm-2 padding">
-	               <input name="totalcount" type="text" class="form-control input-sm" placeholder="" value="${obj.totalcount}"/>
-	             </div>
-	             <label class="col-sm-2 text-right padding">天数：</label>
-	             <div class="col-sm-2 padding">
-	               <input name="totalday" type="text" class="form-control input-sm" placeholder=" " value="${obj.totalday}"/>
-	             </div>
-	             <label class="col-sm-2 text-right padding">联运要求：</label>
-	             <div class="col-sm-2 padding">
-	               <input name="uniontransport" type="text" class="form-control input-sm" placeholder=" " value="${obj.uniontransport}"/>
-	             </div>
-	           </div><!--end 人数/天数/联运要求-->
-	
-	           <div class="form-group row"><!--去程日期/出发城市/出发航班-->
-	             <label class="col-sm-2 text-right padding customerEdit">去程日期：</label>
-	             <div class="col-sm-2 padding">
-	               <input id="leavedateString" name="leavedateString"  type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'backdateString\')}'})" class="form-control input-sm" value="<fmt:formatDate value="${obj.leavedate}" pattern="yyyy-MM-dd" />"/>
-	             </div>
-	             <label class="col-sm-2 text-right padding">出发城市：</label>
-	             <div class="col-sm-2 padding">
-	               <input name="leavecity" type="text" class="form-control input-sm" placeholder="" value="${obj.leavecity}"/>
-	             </div>
-	             <label class="col-sm-2 text-right padding">出发航班：</label>
-	             <div class="col-sm-2 padding">
-	               <input name="leaveflight" type="text" class="form-control input-sm" placeholder=" " value="${obj.leaveflight}"/>
-	             </div>
-	           </div><!--end 去程日期/出发城市/出发航班-->
-	
-	           <div class="form-group row"><!--回程日期/返回城市/回程航班-->
-	             <label class="col-sm-2 text-right padding customerEdit">回程日期：</label>
-	             <div class="col-sm-2 padding">
-	               <input id="backdateString" name="backdateString" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'leavedateString\')}'})" class="form-control input-sm" value="<fmt:formatDate value="${obj.backdate}" pattern="yyyy-MM-dd" />"/>
-	             </div>
-	             <label class="col-sm-2 text-right padding">返回城市：</label>
-	             <div class="col-sm-2 padding">
-	               <input name="backcity" type="text" class="form-control input-sm" placeholder="" value="${obj.backcity}"/>
-	             </div>
-	             <label class="col-sm-2 text-right padding">回程航班：</label>
-	             <div class="col-sm-2 padding">
-	               <input name="backflight" type="text" class="form-control input-sm" placeholder=" " value="${obj.backflight}"/>
-	             </div>
-	           </div><!--end 回程日期/返回城市/回程航班-->
+	       		<div class="row">
+		           <div class="form-group"><!--航空公司/旅行社-->
+		           	 <input type="hidden" id="id" name="id" value="${obj.id }">
+		             <label class="col-sm-2 text-right padding customerEdit">航空公司：</label>
+		             <div class="col-sm-2 padding">
+		               <input name="airline" type="text" class="form-control input-sm" placeholder="首航-CA" value="${obj.airline }"/>
+		             </div>
+		            </div>
+					<div class="form-group form-group1">
+		             <label class="col-sm-2 text-right padding">旅行社：</label>
+		             <div class="col-sm-2 padding">
+		               <input name="travel" type="text" class="form-control input-sm" placeholder=" " value="${obj.travel}"/>
+		             </div>
+		           </div><!--end 航空公司/旅行社-->
+				</div>
+				<div class="row">
+		           <div class="form-group"><!--人数/天数/联运要求-->
+		             <label class="col-sm-2 text-right padding customerEdit">人数：</label>
+		             <div class="col-sm-2 padding">
+		               <input name="totalcount" type="text" class="form-control input-sm" placeholder="" value="${obj.totalcount}"/>
+		             </div>
+		            </div>
+					<div class="form-group form-group1">
+		             <label class="col-sm-2 text-right padding">天数：</label>
+		             <div class="col-sm-2 padding">
+		               <input name="totalday" type="text" class="form-control input-sm" placeholder=" " value="${obj.totalday}"/>
+		             </div>
+		            </div>
+					<div class="form-group form-group1">
+		             <label class="col-sm-2 text-right padding">联运要求：</label>
+		             <div class="col-sm-2 padding">
+		               <input name="uniontransport" type="text" class="form-control input-sm" placeholder=" " value="${obj.uniontransport}"/>
+		             </div>
+		           </div><!--end 人数/天数/联运要求-->
+				</div>
+				<div class="row">
+		           <div class="form-group"><!--去程日期/出发城市/出发航班-->
+		             <label class="col-sm-2 text-right padding customerEdit">去程日期：</label>
+		             <div class="col-sm-2 padding">
+		               <input id="leavedateString" name="leavedateString"  type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'backdateString\')}'})" class="form-control input-sm" value="<fmt:formatDate value="${obj.leavedate}" pattern="yyyy-MM-dd" />"/>
+		             </div>
+		            </div>
+					<div class="form-group form-group1">
+		             <label class="col-sm-2 text-right padding">出发城市：</label>
+		             <div class="col-sm-2 padding">
+		               <input name="leavecity" type="text" class="form-control input-sm" placeholder="" value="${obj.leavecity}"/>
+		             </div>
+		            </div>
+					<div class="form-group form-group1">
+		             <label class="col-sm-2 text-right padding">出发航班：</label>
+		             <div class="col-sm-2 padding">
+		               <input name="leaveflight" type="text" class="form-control input-sm" placeholder=" " value="${obj.leaveflight}"/>
+		             </div>
+		           </div><!--end 去程日期/出发城市/出发航班-->
+				</div>
+				<div class="row">
+		           <div class="form-group"><!--回程日期/返回城市/回程航班-->
+		             <label class="col-sm-2 text-right padding customerEdit">回程日期：</label>
+		             <div class="col-sm-2 padding">
+		               <input id="backdateString" name="backdateString" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'leavedateString\')}'})" class="form-control input-sm" value="<fmt:formatDate value="${obj.backdate}" pattern="yyyy-MM-dd" />"/>
+		             </div>
+		            </div>
+					<div class="form-group form-group1">
+		             <label class="col-sm-2 text-right padding">返回城市：</label>
+		             <div class="col-sm-2 padding">
+		               <input name="backcity" type="text" class="form-control input-sm" placeholder="" value="${obj.backcity}"/>
+		             </div>
+		            </div>
+					<div class="form-group form-group1">
+		             <label class="col-sm-2 text-right padding">回程航班：</label>
+		             <div class="col-sm-2 padding">
+		               <input name="backflight" type="text" class="form-control input-sm" placeholder=" " value="${obj.backflight}"/>
+		             </div>
+		           </div><!--end 回程日期/返回城市/回程航班-->
+	           </div>
 	       </div>
 	     </div>
 	     </form>
@@ -142,13 +161,13 @@
 				data: $("#customNeedsUpdatedForm").serialize(), 
 				url: '${base}/admin/customneeds/update.html',
 	            success: function (data) { 
-	            	layer.msg("修改成功",{time: 2000, icon:1});
+	            	layer.alert("修改成功",{time: 2000, icon:1});
 	            	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 	            	window.parent.successCallback('2');
 	            	parent.layer.close(index);
 	            },
 	            error: function (xhr) {
-	            	layer.msg("修改失败","",3000);
+	            	layer.alert("修改失败","",3000);
 	            } 
 	        });
 		}
@@ -166,7 +185,7 @@
 	            	parent.layer.close(index);
 	            },
 	            error: function (xhr) {
-	            	layer.msg("关闭失败","",3000);
+	            	layer.alert("关闭失败","",3000);
 	            } 
 	        });
 		});
@@ -184,7 +203,7 @@
 	            	parent.layer.close(index);
 	            },
 	            error: function (xhr) {
-	            	layer.msg("启用失败","",3000);
+	            	layer.alert("启用失败","",3000);
 	            } 
 	        });
 		});

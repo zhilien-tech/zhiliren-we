@@ -75,8 +75,9 @@ function initDatatable2() {
             //   指定第一列，从0开始，0表示第一列，1表示第二列……
             targets: 12,
             render: function(data, type, row, meta) {
-            	var s = '<a style="cursor:pointer;" onclick="editplan('+row.id+');">编辑</a>';
+            	var s = '';
             	if(row.isclose == 0){
+            		s += '<a style="cursor:pointer;" onclick="editplan('+row.id+');">编辑</a>';
             		s += '&nbsp;&nbsp;&nbsp;<a style="cursor:pointer;" onclick="closeEditPlan('+row.id+');">关闭</a>';
             	}else{
             		s += '&nbsp;&nbsp;&nbsp;<a style="cursor:pointer;" onclick="enableEditPlan('+row.id+');">启用</a>';
@@ -170,11 +171,11 @@ function closeEditPlan(id){
 			data: {id:id}, 
 			url: BASE_PATH + '/admin/customneeds/closeEditPlan.html',
             success: function (data) { 
-            	layer.msg("关闭成功",{time: 2000, icon:1});
+            	layer.alert("关闭成功",{time: 2000, icon:1});
             	datatable2.ajax.reload();
             },
             error: function (xhr) {
-            	layer.msg("关闭失败",{time: 2000, icon:1});
+            	layer.alert("关闭失败",{time: 2000, icon:1});
             } 
         });
 	});
@@ -187,11 +188,11 @@ function enableEditPlan(id){
 			data: {id:id}, 
 			url: BASE_PATH + '/admin/customneeds/enableEditPlan.html',
             success: function (data) { 
-            	layer.msg("启用成功",{time: 2000, icon:1});
+            	layer.alert("启用成功",{time: 2000, icon:1});
             	datatable2.ajax.reload();
             },
             error: function (xhr) {
-            	layer.msg("启用失败",{time: 2000, icon:1});
+            	layer.alert("启用失败",{time: 2000, icon:1});
             } 
         });
 	});
@@ -200,7 +201,7 @@ function enableEditPlan(id){
 function batchClosePlan(){
 	var length = $(".checkchild:checked").length;
 	if(length < 1){
-		layer.msg("请至少选中一条记录",{time: 2000, icon:1});
+		layer.alert("请至少选中一条记录",{time: 2000, icon:1});
 	}else{
 		layer.confirm('确定要关闭该计划吗?', {icon: 3, title:'提示'}, function(){
 			var ids = [];
@@ -213,12 +214,12 @@ function batchClosePlan(){
 				data: {ids:ids}, 
 				url: BASE_PATH + '/admin/customneeds/betchClosePlan.html',
 				success: function (data) { 
-					layer.msg("关闭成功",{time: 2000, icon:1});
+					layer.alert("关闭成功",{time: 2000, icon:1});
 					datatable2.ajax.reload();
 					$('.checkall').attr('checked',false);
 				},
 				error: function (xhr) {
-					layer.msg("关闭失败",{time: 2000, icon:1});
+					layer.alert("关闭失败",{time: 2000, icon:1});
 				} 
 			});
 		});
@@ -228,7 +229,7 @@ function batchClosePlan(){
 function generateOrderNum(){
 	var length = $(".checkchild:checked").length;
 	if(length < 1){
-		layer.msg("请至少选中一条记录",{time: 2000, icon:1});
+		layer.alert("请至少选中一条记录",{time: 2000, icon:1});
 	}else{
 		layer.confirm('确定要批量生成订单吗?', {icon: 3, title:'提示'}, function(){
 			var ids = [];
@@ -241,12 +242,12 @@ function generateOrderNum(){
 				data: {planids:ids}, 
 				url: BASE_PATH + '/admin/customneeds/generateOrderNum.html',
 				success: function (data) { 
-					layer.msg("生成成功",{time: 2000, icon:1});
+					layer.alert("生成成功",{time: 2000, icon:1});
 					datatable2.ajax.reload();
 					$('.checkall').attr('checked',false);
 				},
 				error: function (xhr) {
-					layer.msg("生成失败",{time: 2000, icon:1});
+					layer.alert("生成失败",{time: 2000, icon:1});
 				} 
 			});
 		});
