@@ -12,7 +12,6 @@ import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.Daos;
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.lang.Strings;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
@@ -113,7 +112,7 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("comType", "=", comType);
 		cnd.and("deletestatus", "=", 0);
-		cnd.and("comName", "like", Strings.trim(comName) + "%");
+		cnd.and("comName", "like", comName + "%");
 		sql.setCondition(cnd);
 		sql.setCallback(Sqls.callback.records());
 		nutDao.execute(sql);

@@ -53,6 +53,17 @@ where c.agent=u.id
 and c.id=@agentId
 $condition
 
+/*customer_agent_list*/
+SELECT
+	u.*
+FROM
+	(
+		t_user_job uj
+		INNER JOIN t_user u ON uj.userid = u.id
+	)
+INNER JOIN t_company_job cj ON uj.companyJobId = cj.id
+where cj.comId=@comid
+
 /*customer_comOption_list*/
 select 
 	o.id,

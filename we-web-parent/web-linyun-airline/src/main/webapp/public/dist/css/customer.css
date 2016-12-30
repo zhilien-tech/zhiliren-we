@@ -5,7 +5,8 @@
 /*add*/
 .modal-header {border-bottom: 0px;}
 #addHtml{min-width: 150px; overflow-x: auto !important;}
-
+.nav li a{color: #b9b9b9;}
+.nav .active a{color: #3b8cbc !important;}
 /*update*/
 .form-control-feedback{position: absolute;top: -2px;right: -15px;}
 
