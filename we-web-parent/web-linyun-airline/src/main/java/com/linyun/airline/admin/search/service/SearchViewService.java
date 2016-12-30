@@ -143,23 +143,21 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 */
 	public Object searchSingleTickets(InstaFlightsSearchForm searchForm) {
 		InstaFlightsSearchForm form = new InstaFlightsSearchForm();
-		form.setDestination(searchForm.getArriveCityCode());
-		form.setOrigin(searchForm.getOutCityCode());
-		form.setDeparturedate(searchForm.getOutDatepicker());
-		form.setReturndate(searchForm.getReturnDatepicker());
-
-		if (!Util.isEmpty(searchForm.getOutDatepicker())) {
+		form.setOrigin(searchForm.getOrigin());
+		form.setDestination(searchForm.getDestination());
+		form.setDeparturedate(searchForm.getDeparturedate());
+		if (!Util.isEmpty(searchForm.getDeparturedate())) {
 			//默认设置返回日期为15天
-			Date outD = DateTimeUtil.string2Date(searchForm.getOutDatepicker(), "yyyy-MM-dd");
+			Date outD = DateTimeUtil.string2Date(searchForm.getDeparturedate(), "yyyy-MM-dd");
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			String returnD = df.format(new Date(outD.getTime() + 15 * 24 * 60 * 60 * 1000));
 			form.setReturndate(returnD);
 		}
+		form.setReturndate(searchForm.getReturndate());
 		//如果返回日期不为空， 则用
-		if (!Util.isEmpty(searchForm.getReturnDatepicker())) {
-			form.setReturndate(searchForm.getReturnDatepicker());
+		if (!Util.isEmpty(searchForm.getReturndate())) {
+			form.setReturndate(searchForm.getReturndate());
 		}
-
 		//乘客数量
 		String childrenSelect = searchForm.getChildrenSelect();
 		String agentSelect = searchForm.getAgentSelect();
@@ -170,16 +168,14 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			form.setPassengercount(passengercount);
 		}
 		//航空公司
-		if (!Util.isEmpty(searchForm.getAirlineCode())) {
-			form.setIncludedcarriers(searchForm.getAirlineCode());
+		if (!Util.isEmpty(searchForm.getIncludedcarriers())) {
+			form.setIncludedcarriers(searchForm.getIncludedcarriers());
 		}
 		form.setPointofsalecountry("US");
 		form.setOffset(1);
 		form.setLimit(10);
 		SabreService service = new SabreServiceImpl();
 		SabreResponse resp = service.instaFlightsSearch(form);
-
-		SimpleDateFormat sdf = sdf = new SimpleDateFormat("HH:mm");
 		String departureDateTime = "";
 		String arrivalDateTime = "";
 		if (resp.getStatusCode() == 200) {
@@ -197,24 +193,19 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 						arrivalDateTime = arrivalDateTime.substring(11, 16);
 						flight.setArrivalDateTime(arrivalDateTime);
 					}
-
 				}
 				String airlineCode = instalFlightAirItinerary.getAirlineCode();
 				DictInfoEntity dictInfo = dbDao.fetch(DictInfoEntity.class,
 						Cnd.where("typeCode", "=", "HKGS").and("dictCode", "=", airlineCode));
-
 				String dictName = dictInfo.getDictName();
 				if (!Util.isEmpty(dictName)) {
 					instalFlightAirItinerary.setAirlineName(dictName);
 				}
-
 			}
 		}
-
 		if (resp.getStatusCode() == 400) {
 			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
 			String message = sabreExResponse.getMessage();
-
 			if (message.contains("origin")) {
 				sabreExResponse.setMessage("出发城市不能为空");
 			}
@@ -231,10 +222,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				sabreExResponse.setMessage("未查询到结果");
 			}
 		}
-
-		System.out.println(resp.toString());
-		System.out.println(resp.getData().toString());
-
 		return resp;
 	}
 
@@ -248,7 +235,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		String returndate = searchForm.getReturndate();//返回日期
 		String airLevel = searchForm.getAirLevel();//舱位等级
 		String includedcarriers = searchForm.getIncludedcarriers();//航空公司名称
-
 		Sql sql = Sqls.create(sqlManager.get("team_ticket_list"));
 		Cnd cnd = Cnd.NEW();
 		if (!Util.isEmpty(origin)) {
@@ -266,7 +252,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		if (!Util.isEmpty(includedcarriers)) {
 			cnd.and("airlinename", "=", includedcarriers);
 		}
-
 		List<Record> list = dbDao.query(sql, cnd, null);
 		for (Record record : list) {
 			String id = record.getString("opid");

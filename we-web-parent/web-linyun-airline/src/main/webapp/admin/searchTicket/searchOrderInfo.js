@@ -25,7 +25,7 @@ $("input[name=internat]").click(function(){
 });
 
 
-/*出发城市下拉列表*/
+/*出发城市下拉列表
 $("#outCity").select2({
 	ajax : {
 		url : BASE_PATH  + "/admin/search/getCitySelect.html",
@@ -63,7 +63,7 @@ $("#outCity").select2({
 	tags : false, 
 });
 
-/*抵达城市查询*/
+抵达城市查询
 $("#singleArriveCity").select2({
 	ajax : {
 		url : BASE_PATH  + "/admin/search/getCitySelect.html",
@@ -99,7 +99,7 @@ $("#singleArriveCity").select2({
 	language : "zh-CN", 
 	maximumSelectionLength : 1, 
 	tags : false,
-});
+});*/
 
 
 /*航空公司查询*/
@@ -171,39 +171,54 @@ for ( i = 1; i <= 10; i++){
 linkNameOpt = function(){
 	$("#linkNameValidator").val($('#linkNameId').find("option:selected").text());
 }
-/* 出发城市 */
+/* 出发城市 
 outCityNameOpt = function (){
 	var cityName = $('#outCity').find("option:selected").text();
 	$("#outCityName").val(cityName);
 	var selectedCityId = $("#outCity").select2("val");
 	$("#outCityCode").val(selectedCityId);
 }
-/* 抵达城市 */
+ 抵达城市 
 arriveCityNameOpt = function(){
 	var cityName = $('#singleArriveCity').find("option:selected").text();
 	$("#arriveCityName").val(cityName);
 	var selectedCityId = $("#singleArriveCity").select2("val");
 	$("#arriveCityCode").val(selectedCityId);
 }
-/* 航空公司 */
+ 航空公司 
 airlineNameOpt = function(){
 	var airName = $('#airline').find("option:selected").text();
 	$("#airlineName").val(airName);
 	var selectedAirId = $("#airline").select2("val");
 	$("#airlineCode").val(selectedAirId);
-}
+}*/
 /*-----------------------select2隐藏域赋值  end----------------------------*/
 
-/*-----------------------往返段数查询  start--------------------------------*/
-$(document).on('click','#num01',function(){
-	$("#airInfoList").val("1");
+/*-----------------------单程、往返段数查询  start--------------------------------*/
+$(document).on('click','#num1',function(){
+	var index=1;
+	$("#airInfoList").val(index);
+	$("#origin").val($("#outCity"+index).select2("val"));
+	$("#destination").val($("#singleArriveCity"+index).select2("val"));
+	$("#departuredate").val($("#outDatepicker"+index).val());
+	$("#returndate").val($("#returnDatepicker"+index).val());
 	$("#searchSingleTicketsBtn").click();
 });
-$(document).on('click','#num02',function(){
-	$("#airInfoList").val("2");
+$(document).on('click','#num2',function(){
+	var index=2;
+	$("#airInfoList").val(index);
+	$("#origin").val($("#singleArriveCity"+index).select2("val"));
+	$("#destination").val($("#outCity"+index).select2("val"));
+	$("#departuredate").val($("#returnDatepicker"+index).val());
+	$("#returndate").val($("#outDatepicker"+index).val());
 	$("#searchSingleTicketsBtn").click();
 });
 /*-----------------------往返段数查询  end--------------------------------*/
+
+/*-----------------------多程段数查询  start------------------------------*/
+
+/*-----------------------多程段数查询  end--------------------------------*/
+
 
 /* -------------------------日期小卡片 start------------------------------- */
 cardDate = function(v){
