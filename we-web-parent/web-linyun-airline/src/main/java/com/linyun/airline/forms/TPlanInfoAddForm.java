@@ -76,16 +76,4 @@ public class TPlanInfoAddForm extends AddForm implements Serializable {
 	/**每周几（页面提交）*/
 	private String weekday;
 
-	/**时间类型*/
-	private int timetype;
-
-	/**FOC*/
-	private int foc;
-
-	/**返程出发城市*/
-	private String backleavecity;
-
-	/**返程抵达城市*/
-	private String backbackcity;
-
 }

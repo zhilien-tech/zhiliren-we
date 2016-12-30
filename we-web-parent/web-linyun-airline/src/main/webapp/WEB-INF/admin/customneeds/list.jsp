@@ -14,7 +14,7 @@
     <section class="content">
       <div class="row row-top">
         <div class="col-xs-12">
-             <!-- <h4 class="page-header"><i class="fa fa-plane"></i> 航空公司模块</h4> -->
+             <h4 class="page-header"><i class="fa fa-plane"></i> 航空公司模块</h4>
               <div class="row">
                 <div class="col-md-12">
                   <!-- Custom Tabs -->
@@ -55,7 +55,7 @@
                           </div>
                           <label class="col-sm-1 text-right padding">航空公司：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" name="airline" id="airline" onblur="this.value=this.value.toUpperCase().replace(/(^\s*)|(\s*$)/g, '')" class="form-control input-sm" placeholder="首航-CA" onkeypress="onkeyEnter();">
+                            <input type="text" name="airline" id="airline" oninput="this.value=this.value.toUpperCase().replace(/(^\s*)|(\s*$)/g, '')" class="form-control input-sm" placeholder="首航-CA" onkeypress="onkeyEnter();">
                           </div>
                           <label class="col-sm-1 text-right padding">旅行社：</label>
                           <div class="col-sm-1 padding">
@@ -142,7 +142,7 @@
                                           <a class="flie_A flie_import" target="hidden_frame" href="${url}/exportNanHangTemplate.html">南航</a>
                                        </li>
                                        <li role="presentation">
-                                          <a class="flie_A flie_import" target="hidden_frame" onclick="exportXinHangTemplate()">新航</a>
+                                          <a class="flie_A flie_import" target="hidden_frame">新航</a>
                                        </li>
                                        <li role="presentation">
                                           <a class="flie_A flie_import" target="hidden_frame" href="${url}/exportGuoTaiTemplate.html">国泰</a>
@@ -190,21 +190,13 @@
 
                           <!--起飞城市/降落城市/联运城市 text-->
                           <div class="form-group row">
-                            <label class="col-sm-1 text-right padding cf">出发城市：</label>
+                            <label class="col-sm-1 text-right padding cf">起飞城市：</label>
                             <div class="col-sm-1 padding">
                               <select id="leavescity0" name="leavescity" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
                             </div>
-                            <label class="col-sm-1 text-right padding cf">抵达城市：</label>
+                            <label class="col-sm-1 text-right padding cf">降落城市：</label>
                             <div class="col-sm-1 padding">
                               <select id="backscity0" name="backscity" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
-                            </div>
-                            <label class="col-sm-1 text-right padding cf">出发城市：</label>
-                            <div class="col-sm-1 padding">
-                              <select id="backleavecity0" name="backleavecity" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
-                            </div>
-                            <label class="col-sm-1 text-right padding cf">抵达城市：</label>
-                            <div class="col-sm-1 padding">
-                              <select id="backbackcity0" name="backbackcity" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
                             </div>
                             <label class="col-sm-1 text-right padding cf">联运城市：</label>
                             <div class="col-sm-1 padding">
@@ -214,13 +206,6 @@
 
                           <!--time 选择-->
                           <div class="form-group row">
-                          	<label class="col-sm-1 text-right padding cf">FOC：</label>
-                            <div class="col-sm-1 padding">
-                              <select id="foc" name="foc" class="form-control select2" placeholder="">
-                              	<option value="0">否</option>
-                              	<option value="1">是</option>
-                              </select>
-                            </div>
                             <label class="col-sm-1 text-right padding cf">从：</label>
                             <div class="col-sm-3 padding" name="startenddate">
                               <input id="startdate0" name="startdate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'enddate0\')}'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2016-11-05"> 
@@ -232,7 +217,7 @@
                                 <option value="2">自由</option>
                               </select>
                             </div>
-                            <div class="col-sm-4 padding cf checkWeek">
+                            <div class="col-sm-6 padding cf checkWeek">
                               <input type="checkbox" name="weekday" value="7"><span>周日</span>
                               <input type="checkbox" name="weekday" value="1"><span>周一</span>
                               <input type="checkbox" name="weekday" value="2"><span>周二</span>
@@ -255,13 +240,12 @@
                           <thead>
                           <tr>
                             <th>序号</th>
-                           <!--  <th>航空公司名称</th> -->
-                            <th>日期</th>
-                            <th>航班号</th>
-                            <th>航段</th>
-                            <th>时间</th>
+                            <th>航空公司名称</th>
+                            <th>去程日期</th>
+                            <th>起飞城市</th>
+                            <th>回程日期</th>
+                            <th>降落城市</th>
                             <th>人数</th>
-                            <th>FOC</th>
                             <th>天数</th>
                             <th>旅行社名称</th> 
                             <th>联运要求</th>
@@ -274,32 +258,30 @@
 
                       <!--编辑计划-->
                       <div class="tab-pane pane-content labelMar" id="tab_3">
-                      <form id="editPlanForm">
                        <!--团状态/单号状态 下拉框 and 按钮（导出、批量生成订单、批量关闭....）-->
                         <div class="form-group row">
                           <label class="col-sm-1 text-right padding marTop5">状态：</label>
                           <div class="col-md-1 padding">
-                            <select class="form-control select1" id="teamtype1" name="teamtype" onchange="editPlanListSearch();">
-                              <option value="">全部</option>
-                              <option value="1">系列团</option>
-                              <option value="2">临时团</option>
-                              <option value="3">关闭</option>
+                            <select class="form-control select1">
+                              <option>全部</option>
+                              <option>系列团</option>
+                              <option>临时团</option>
+                              <option>关闭</option>
                             </select>
                           </div>
                           <div class="col-md-2 padding">
-                            <select class="form-control select1" id="idordernum" name="idordernum" onchange="editPlanListSearch();">
-                              <option value="0">无订单号</option>
-                              <option value="1">有订单号</option>
+                            <select class="form-control select1">
+                              <option>有订单号</option>
+                              <option>无订单号</option>
                             </select>
                           </div>
                           <div class="col-md-8">
-                            <button type="button" class="btn btn-primary btn-sm right" onclick="batchClosePlan();">批量关闭</button>
-                            <button type="button" class="btn btn-primary btn-sm right" onclick="generateOrderNum();">批量生成订单</button>
-                            <a class="btn btn-primary btn-sm right" id="exportEditPlanId" target="hidden_frame" href="${base}/admin/customneeds/exportEditPlanExcel.html">导出excel</a>
-                            <!-- <p class="flie_A right">
+                            <button type="button" class="btn btn-primary btn-sm right">批量关闭</button>
+                            <button type="button" class="btn btn-primary btn-sm right">批量生成订单</button>
+                            <p class="flie_A right">
                               导出excel
                               <input name="appendix" type="file"/>
-                            </p> -->
+                            </p>
                             
                           </div>
                         </div><!--end 默认/关闭 下拉框 and 按钮（添加、导入、导出....）-->
@@ -309,27 +291,27 @@
                         <div class="form-group row">
                           <label class="col-sm-1 text-right padding">旅行社：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" class="form-control input-sm" placeholder="" id="travelname1" name="travelname1" onkeypress="onEnterSearch();">
+                            <input type="text" class="form-control input-sm" placeholder="">
                           </div>
                           <label class="col-sm-1 text-right padding">人数：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" class="form-control input-sm" placeholder="" id="peoplecount1" name="peoplecount1" onkeypress="onEnterSearch();">
+                            <input type="text" class="form-control input-sm" placeholder="">
                           </div>
                           <label class="col-sm-1 text-right padding">天数：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" class="form-control input-sm" placeholder="" id="dayscount1" name="dayscount1" onkeypress="onEnterSearch();">
+                            <input type="text" class="form-control input-sm" placeholder="">
                           </div>
-                          <label class="col-sm-1 text-right padding inputdatestr">去程航班：</label>
+                          <label class="col-sm-1 text-right padding inputdatestr">去程日期：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" class="form-control input-sm" placeholder="" id="leaveairline1" name="leaveairline1" onkeypress="onEnterSearch();">
+                            <input type="text" class="form-control input-sm" placeholder="2016/03/06">
                           </div>
-                          <label class="col-sm-1 text-right padding">回程航班：</label>
+                          <label class="col-sm-1 text-right padding">去程航段：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" class="form-control input-sm" placeholder="" id="backairline1" name="backairline1" onkeypress="onEnterSearch();">
+                            <input type="text" class="form-control input-sm" placeholder="">
                           </div>
                           <label class="col-sm-1 text-right padding">联运城市：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" class="form-control input-sm" placeholder="" id="unioncity1" name="unioncity1" onkeypress="onEnterSearch();">
+                            <input type="text" class="form-control input-sm" placeholder="">
                           </div>
                         </div><!--end 航空公司/旅行社/人数/天数 文本框-->
                         
@@ -339,41 +321,57 @@
                           
                           <label class="col-sm-1 text-right padding cf">从：</label>
                             <div class="col-sm-3 padding">
+
                               <input type="text" class="form-control input-sm timeWid inputdatestr" id="startdate1" name="startdate1" placeholder="2016-11-05" onkeypress="onEnterSearch();" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'enddate1\')}'})"> - <input type="text" id="enddate1" name="enddate1" class="form-control input-sm timeWid inputdatestr" placeholder="2016-12-01" onkeypress="onEnterSearch();" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startdate1\')}'})">
+
                             </div>
                           <label class="col-sm-1 text-right padding">起飞城市：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" class="form-control input-sm" placeholder="" id="leavescity1" name="leavescity1" onkeypress="onEnterSearch();">
+                            <input type="text" class="form-control input-sm" placeholder="">
                           </div>
                           <label class="col-sm-1 text-right padding">降落城市：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" class="form-control input-sm" placeholder="" id="backscity1" name="backscity1" onkeypress="onEnterSearch();">
+                            <input type="text" class="form-control input-sm" placeholder="">
                           </div>
                           <div class="col-md-3">
-                            <button type="button" id="editPlanSearch" class="btn btn-primary btn-sm">搜索</button>
-                            <button type="button" id="resetPlanBtn" class="btn btn-primary btn-sm btn-left">恢复默认</button>
+                            <button type="button" class="btn btn-primary btn-sm">搜索</button>
+                            <button type="button" class="btn btn-primary btn-sm btn-left">恢复默认</button>
                           </div>
                         </div><!--end 去程日期/去程航段/回程日期/回程航段 文本框-->
-                        </form>
-                         <table id="datatable2" class="table table-bordered table-hover">
+                        
+                         <table class="table table-bordered table-hover">
                           <thead>
                           <tr>
-                            <th><input type="checkbox" class="checkall" /></th>
                             <th>序号</th>
-                            <th>订单号</th>
-                            <th>航空公司</th>
+                            <th>航空公司名称</th>
                             <th>去程日期</th>
-                            <th>出发城市</th>
+                            <th>去程航段</th>
                             <th>回程日期</th>
-                            <th>抵达城市</th>
+                            <th>回程航段</th>
                             <th>人数</th>
                             <th>天数</th>
-                            <th>旅行社</th> 
+                            <th>旅行社名称</th> 
                             <th>联运要求</th>
                             <th>操作</th>
                           </tr>
                           </thead>
                           <tbody>
+                            <tr>
+                              <td>1</td>
+                              <td>CA</td>
+                              <td>18/Jan</td>
+                              <td>西安-悉尼</td>
+                              <td>28/Jan</td>
+                              <td>悉尼-西安</td>
+                              <td>20</td>
+                              <td>10</td>
+                              <td>爱自由</td>
+                              <td>全国联运</td>
+                              <td>
+                                <a href="" data-toggle="modal" data-target='#planDetailEdit'>编辑</a>
+                                <a href="" data-toggle="modal">关闭</a>
+                              </td>
+                            </tr>
                           </tbody>
                         </table>
                       </div><!--end 编辑计划-->
@@ -632,8 +630,12 @@ $(function () {
   	}
   //其他页面回调
   function successCallback(id){
+<<<<<<< HEAD
+	  datatable.ajax.reload();
+=======
 	  datatable.ajax.reload(null,false);
 	  datatable2.ajax.reload(null,false);
+>>>>>>> origin/dev
 	  if(id == '1'){
 		  layer.alert("添加成功",{time: 2000, icon:1});
 	  }else if(id == '2'){

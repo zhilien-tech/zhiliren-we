@@ -422,7 +422,7 @@
 											},
 											regexp : {
 												regexp : /^[a-zA-Z\u4e00-\u9fa5]{1,6}$/,
-												message : '公司简称最多为6个字'
+												message : '公司简称长度为6'
 											}
 										}
 									},
@@ -470,17 +470,6 @@
 											regexp : {
 												regexp : /^[+]{0,1}(\d){1,3}[ ]?([-]?((\d)|[ ]){1,12})+$/,
 												message : '传真格式错误'
-											}
-										}
-									},
-									siteUrl : {
-										validators : {
-											notEmpty : {
-												message : '网址址不能为空'
-											},
-											regexp : {
-												regexp : /^(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?$/,
-												message : '网址格式错误'
 											}
 										}
 									}

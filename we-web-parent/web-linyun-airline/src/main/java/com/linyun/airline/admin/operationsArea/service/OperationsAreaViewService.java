@@ -171,19 +171,10 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		sql.params().set("now", DateTimeUtil.nowDateTime());
 		sql.setCallback(Sqls.callback.records());
 		List<Record> records = dbDao.query(sql, null, null);
-		/*//存取记录
-		List<Record> list = new ArrayList<Record>();
-		if (records.size() >= 5) {
-			for (int i = 0; i < 5; i++) {
-				Record r = records.get(i);
-				String datetimeStr = r.getString("generatetime");
-				list.add(records.get(i));
-			}
-		} else {
-			for (Record record : records) {
-				list.add(record);
-			}
-		}*/
+		int size = records.size();
+		for (Record record : records) {
+			record.set("num", size);
+		}
 
 		return JsonUtil.toJson(records);
 	}
@@ -202,7 +193,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 
 		//查询用户是否存在
 		if (!Util.isEmpty(userId)) {
-			checkEntity = dbDao.fetch(TCheckboxStatusEntity.class, userId);
+			checkEntity = dbDao.fetch(TCheckboxStatusEntity.class, Cnd.where("userId", "=", userId));
 		}
 		long task = 0;
 		long maxC = 0;
@@ -242,7 +233,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		long userId = loginUser.getId();
 
 		Map<String, Object> obj = new HashMap<String, Object>();
-		TCheckboxStatusEntity checkBoxEntity = dbDao.fetch(TCheckboxStatusEntity.class, userId);
+		TCheckboxStatusEntity checkBoxEntity = dbDao.fetch(TCheckboxStatusEntity.class,
+				Cnd.where("userId", "=", userId));
 		obj.put("checkBox", checkBoxEntity);
 		return obj;
 	}

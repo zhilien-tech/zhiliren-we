@@ -2,21 +2,21 @@
 .box{min-height: 500px;}
 .infoTop{margin-top:20px;border-bottom:solid 1px #f1f1f1;}
 .infoTop p{background-color: #fff;margin: 0px;border: solid 1px #e0e0e0;display:inline-block;width: 85px;text-align: center;line-height: 30px;border-top: solid 2px #3c8dbc;border-radius: 3px 3px 0 0;border-bottom: 0;}
-.infoTopContent{width: 533px;height: 30px;float: right;}
+.infoTopContent{width: 575px;height: 30px;float: right;}
 .infoTopContent input{display: inline-block;}
 .infoTopContent .conCheckInput{width: 15px;height: 15px;position: relative;top: 3px;right: 3px;}
 .infoTopContent .conSelect{width: 70px; height: 28px;display: inline-block;margin:0 15px; }
 .infoTopContent .infoTopContent input{display: inline-block;}
-.infoTopContent .conTimeInput{width: 175px;height: 28px;}
-.infoTopContent .btn{margin-left: 12px;padding: 4px 15px;}
+.infoTopContent .conTimeInput{width: 125px;height: 28px;position: relative;top: -2px;}
+.infoTopContent .btn{margin-left: 12px;padding: 4px 15px;position: relative;top: -3px;}
 .infofooter{min-height:50px;border: solid 1px #e0e0e0;border-top: 0; padding: 20px 0px 10px 0px;background-color: #fff;border-radius: 0 4px 4px 4px;}
-.infofooter table tr td label{width: 78px;text-align: right;}
+.infofooter table tr td label{width: 78px;text-align: right;position: relative;top: 3px;}
 .infofooter table tr td .form-control{width: 115px;}
 .addressInput{width: 309px !important;}
 .infofooter  table tr td .btn{margin-left: 17px;padding: 4px 15px;}
 .infofooter  table tr td .UnderIcon{font-size: 20px;cursor: pointer;color: #5d6a7b;position: relative;top: 3px;left: 15px;}
 .infofooter  table tr td .UnderIcon:hover{color: #4b5563;}
-.hideTable{margin-top: 20px;}
+.hideTable{margin-top:15px;}
 .hideTable tr td pre{display: block;padding: 0;margin: 15px 0 10px;font-size: 13px;color: #585858;word-break: break-all;word-wrap: break-word;border: 0;background-color: #fff;}
 
 .listInfo{margin-top: 10px;}
@@ -46,7 +46,7 @@
 .scatteredTable3 tr td select{width:96px;}
 .scatteredTable3 tr td .selectWid{width: 160px;}
 .scatteredTable3 tr td .btn{margin-left: 17px;padding: 4px 15px;}
-.TableListInfo{border: solid 1px #eee;min-height: 300px;margin: 15px;max-width:100%;border-radius: 3px;background-color: rgba(251, 251, 251, 0.58);}
+.TableListInfo{border: solid 1px #eee;min-height:200px;margin: 15px;max-width:100%;border-radius: 3px;background-color: rgba(251, 251, 251, 0.58);}
 .TableListInfo h5{width: 620px;text-align: center;color: #7d7d7d;font-weight: 600; }
 .paragraphBtn,.paragraphTime,.paragraphListInfo{padding: 0 0 0 10px;}
 .paragraphBtn li{display: inline-block;background-color:rgba(239, 239, 239, 0.34);margin: 0px;padding: 4px 10px;font-size: 13px;cursor: pointer;color:#8c8c8c;border: solid 1px #dcdcdc;border-radius: 2px;}
@@ -66,16 +66,17 @@
 .moneyDiv i{font-size: 15px;}
 .chufaCS,.shiDuan,.daodaCS{float: left;height: 58px;}
 .chufaCS,.daodaCS{ width: 80px;}
-
-.shiDuan{height: 32px;width:95px;border-bottom: 2px solid rgba(51, 51, 51, 0.72);text-align: center;line-height: 45px;color: #b1b1b1;}
+.shiDuan{height: 32px;width: 195px;border-bottom: 2px solid rgba(51, 51, 51, 0.72);text-align: center;line-height: 45px;color: #b1b1b1;}
 
 .selectWid1{width: 135px !important;}
 .tableInfoDiv{padding: 15px 10px 0 10px;}
 .showDis{display:table-cell;}
-
-
-
-
-
-
-
+.timSelect{display: inline-block;width:90px;height: 28px !important;}
+.dropdown-toggle {display: block;margin-top: 10px;}
+.navbar-custom-menu ul li:last-child {margin-top: 10px;}
+.select2-container {width: 115px !important;}
+.select2-container--default.select2-container--disabled .select2-selection--multiple{width: 115px;}
+.select2-selection__rendered li:nth-child(2){display:none;}
+.select2-container--default .select2-search--inline .select2-search__field {width:100% !important;}
+td[colspan="3"] .select2 .selection .select2-selection{width: 308px;}
+td[colspan="3"] .select2 .selection .select2-selection ul .select2-search--inline{display: none;}

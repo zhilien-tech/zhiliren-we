@@ -1,4 +1,4 @@
-/*单选按钮*/
+/*单选按钮
 $("input[name=internat1]").click(function(){
 	var typeCodeStr = "";
 	switch($("input[name=internat1]:checked").attr("id")){
@@ -25,7 +25,7 @@ $("input[name=internat1]").click(function(){
 });
 
 
-/*出发城市下拉列表*/
+出发城市下拉列表
 $("#teamOutCity").select2({
 	ajax : {
 		url : BASE_PATH  + "/admin/search/getCitySelect.html",
@@ -62,8 +62,7 @@ $("#teamOutCity").select2({
 	maximumSelectionLength : 1, 
 	tags : false, 
 });
-
-/*抵达城市查询*/
+抵达城市查询
 $("#teamArriveCity").select2({
 	ajax : {
 		url : BASE_PATH  + "/admin/search/getCitySelect.html",
@@ -102,7 +101,9 @@ $("#teamArriveCity").select2({
 });
 
 
-/*航空公司查询*/
+
+
+航空公司查询
 $("#teamAirline").select2({
 	ajax : {
 		url : BASE_PATH  + "/admin/search/getAirLineSelect.html",
@@ -139,26 +140,26 @@ $("#teamAirline").select2({
 	tags : false,
 });
 
-/*-----------------------select2隐藏域赋值  start------------------------*/
-/* 出发城市 */
-teamOutCityNameOpt = function (){
+-----------------------select2隐藏域赋值  start------------------------
+ 出发城市 
+outCityNameOpt = function (){
 	var cityName = $('#teamOutCity').find("option:selected").text();
 	$("#teamOutCityName").val(cityName);
 	var selectedCityId = $("#teamOutCity").select2("val");
 	$("#teamOutCityCode").val(selectedCityId);
 }
-/* 抵达城市 */
-teamArriveCityNameOpt = function(){
+ 抵达城市 
+arriveCityNameOpt = function(){
 	var cityName = $('#teamArriveCity').find("option:selected").text();
 	$("#teamArriveCityName").val(cityName);
 	var selectedCityId = $("#teamArriveCity").select2("val");
 	$("#teamArriveCityCode").val(selectedCityId);
 }
-/* 航空公司 */
-teamAirlineNameOpt = function(){
+ 航空公司 
+airlineNameOpt = function(){
 	var airName = $('#teamAirline').find("option:selected").text();
 	$("#teamAirlineName").val(airName);
 	var selectedAirId = $("#teamAirline").select2("val");
 	$("#teamAirlineCode").val(selectedAirId);
 }
-/*-----------------------select2隐藏域赋值  end----------------------------*/
+-----------------------select2隐藏域赋值  end----------------------------*/

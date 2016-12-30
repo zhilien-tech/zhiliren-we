@@ -53,7 +53,7 @@
 					</div>
 					<div class="infofooter">
 
-					<form id="customerCheckFrom" method="post">
+					<form id="customerCheckForm" method="post">
 
 						<table>
 							<tr>
@@ -99,18 +99,19 @@
 								<td>
 									<input id="faxId" type="text" disabled="disabled" class="form-control input-sm">
 								</td>
+								
+							</tr>
+							<tr>
 								<td><label>出发城市：</label></td>
-								<td>
+								<td colspan="3">
 									<!-- <input id="departureCityId" type="text" disabled="disabled" class="form-control input-sm"> -->
-									<select id="city" class="form-control input-sm" multiple="multiple" Disabled = "true" data-placeholder="">
+									<select id="city" class="form-control input-sm addWidths" multiple="multiple" Disabled = "true" data-placeholder="">
 										<option></option>
 										<c:forEach var="one" items="${obj.outcitylist }">
 											<option value="${one.id }">${one.text}</option>
 										</c:forEach>
 									</select>
 								</td>
-							</tr>
-							<tr>
 								<td><label style="position: relative;top: 4px;">结算方式：</label></td>
 								<td colspan="9"><pre><span id="payTypeId"></span> 信用额度：0  临时额度：0  历史欠款：0  预存款：0</pre></td>
 							</tr>
@@ -155,35 +156,36 @@
 <form id="searchSingleTicketsForm" method="post">
 	<table class="scatteredTable2">
                            
+                           <input id="origin" name="origin" type="hidden"/>
+						   <input id="destination" name="destination" type="hidden"/>
+						   <input id="departuredate" name="departuredate" type="hidden"/>
+                           <input id="returndate" name="returndate" type="hidden"/>
+						   
                            <!-- 多程查询 start -->
                            <tr class="setMore">
                               <td><label>出发城市：</label></td>
                               <td>
                               	<!-- <input type="text" class="form-control input-sm" placeholder="拼音/三字代码"> -->
-								<select id="outCity" name="outCity" onchange="outCityNameOpt()" class="form-control input-sm" multiple="multiple" data-placeholder="拼音/三字代码"></select>
-								<input id="outCityName" name="outCityName" type="hidden"/>
-								<input id="outCityCode" name="outCityCode" type="hidden"/>
+								<select id="outCity0" name="origin0" class="form-control input-sm" multiple="multiple" data-placeholder="拼音/三字代码"></select>
                               </td>
                               <td class="untilTd"><i class="fa fa-minus"></i></td>
                               <td><label>到达城市：</label></td>
                               <td>
-                              	<select id="singleArriveCity" name="singleArriveCity" onchange="arriveCityNameOpt()"  class="form-control input-sm" multiple="multiple" data-placeholder="拼音/三字代码"></select>
-                              	<input id="arriveCityName" name="arriveCityName" type="hidden"/>
-                              	<input id="arriveCityCode" name="arriveCityCode" type="hidden"/>
+                              	<select id="singleArriveCity0" name="destination0"  class="form-control input-sm" multiple="multiple" data-placeholder="拼音/三字代码"></select>
                               </td>
                               <td class="untilTd1"></td><!--空白处 可以忽略-->
                               <td><label>出发日期：</label></td>
                               <td>
                               	<!-- <input id="" name="" type="text" class="form-control input-sm" placeholder="2016-12-21"> -->
-                              	<input id="outDatepicker" name="outDatepicker" type="text" class="form-control input-sm" onFocus="WdatePicker({startDate:'%y', dateFmt:'yyyy-MM-dd',minDate:'%y-%M-{%d}'})" placeholder="2016-12-21">
+                              	<input id="outDatepicker0" name="departuredate0" type="text" class="form-control input-sm" onFocus="WdatePicker({startDate:'%y', dateFmt:'yyyy-MM-dd',minDate:'%y-%M-{%d}'})" placeholder="2017-01-01">
                               </td>
                               <td class="setoutLabel">
                               <label>返回日期：</label></td>
                               <td class="setoutinput">
                               	<!-- <input type="text" class="form-control input-sm" placeholder="2016-12-25"> -->
-                              	<input id="returnDatepicker" name="returnDatepicker" type="text" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'outDatepicker\')}'})" placeholder="2016-12-25">
+                              	<input id="returnDatepicker0" name="returndate0" type="text" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'outDatepicker0\')}'})" placeholder="2017-01-15">
                               </td>
-                              <td class="addIconTd none"><i class="glyphicon glyphicon-plus addMore"></i></td>
+                              <td class="addIconTd addSingleIconTd none"><i class="glyphicon glyphicon-plus addMore"></i></td>
                            </tr>
                            <!-- 多程查询 end -->
                             
@@ -218,9 +220,7 @@
                              <td><label>航空公司：</label></td>
                              <td>
                              	<!-- <input type="text" class="form-control input-sm" placeholder="(选填)中文/二字代码"> -->
-                             	<select id="airline" name="airline" onchange="airlineNameOpt()"  class="form-control input-sm" multiple="multiple" data-placeholder="(选填)中文/二字代码"></select>
-                             	<input id="airlineName" name="airlineName" type="hidden"/>
-                             	<input id="airlineCode" name="airlineCode" type="hidden"/>
+                             	<select id="airline" name="includedcarriers" onchange="airlineNameOpt()"  class="form-control input-sm" multiple="multiple" data-placeholder="(选填)中文/二字代码"></select>
                              </td>
                              <td>
                              	<button id="searchSingleTicketsBtn" type="button"  class="btn btn-primary btn-sm">搜索机票</button>
@@ -264,34 +264,36 @@
 <!-- 查询团队机票 start -->                  
 <form id="searchTeamTicketsForm" method="post">
       <table class="scatteredTable2">
-                            <tr>
+                            <input id="teamorigin" name="origin" type="hidden"/>
+						    <input id="teamdestination" name="destination" type="hidden"/>
+						    <input id="teamdeparturedate" name="departuredate" type="hidden"/>
+                            <input id="teamreturndate" name="returndate" type="hidden"/>
+                            
+                            <!-- 团队多程查询 -->
+                            <tr class="setTeamMore">
                               <td><label>出发城市：</label></td>
                               <td>
                               	<!-- <input type="text" class="form-control input-sm" placeholder="拼音/三字代码"> -->
-                              	<select id="teamOutCity" name="teamOutCity" onchange="teamOutCityNameOpt()" class="form-control input-sm" multiple="multiple" data-placeholder="拼音/三字代码"></select>
-								<input id="teamOutCityName" name="teamOutCityName" type="hidden"/>
-								<input id="teamOutCityCode" name="origin" type="hidden"/>
+                              	<select id="teamOutCity0" name="origin1" class="form-control input-sm" multiple="multiple" data-placeholder="拼音/三字代码"></select>
                               </td>
                               <td class="untilTd"><i class="fa fa-minus"></i></td>
                               <td><label>到达城市：</label></td>
                               <td>
                               	<!-- <input type="text" class="form-control input-sm" placeholder="拼音/三字代码"> -->
-                              	<select id="teamArriveCity" name="teamArriveCity" onchange="teamArriveCityNameOpt()"  class="form-control input-sm" multiple="multiple" data-placeholder="拼音/三字代码"></select>
-                              	<input id="teamArriveCityName" name="teamArriveCityName" type="hidden"/>
-                              	<input id="teamArriveCityCode" name="destination" type="hidden"/>
+                              	<select id="teamArriveCity0" name="destination1" class="form-control input-sm" multiple="multiple" data-placeholder="拼音/三字代码"></select>
                               </td>
                               <td class="untilTd1"></td><!--空白处 可以忽略-->
                               <td><label>出发日期：</label></td>
                               <td>
                               	<!-- <input type="text" class="form-control input-sm" placeholder="2016-12-21"> -->
-                              	<input id="teamOutDatepicker" name="departuredate" type="text" class="form-control input-sm" onFocus="WdatePicker({startDate:'%y', dateFmt:'yyyy-MM-dd',minDate:'%y-%M-{%d}'})" placeholder="2016-12-21">
+                              	<input id="teamOutDatepicker0" name="departuredate1" type="text" class="form-control input-sm" onFocus="WdatePicker({startDate:'%y', dateFmt:'yyyy-MM-dd',minDate:'%y-%M-{%d}'})" placeholder="2017-01-01">
                               </td>
                               <td class="setoutLabel"><label>返回日期：</label></td>
                               <td class="setoutinput">
                               	<!-- <input type="text" class="form-control input-sm" placeholder="2016-12-25"> -->
-                              	<input id="teamReturnDatepicker" name="returndate" type="text" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'teamOutDatepicker\')}'})" placeholder="2016-12-25">
+                              	<input id="teamReturnDatepicker0" name="returndate1" type="text" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'teamOutDatepicker0\')}'})" placeholder="2017-01-15">
                               </td>
-                              <td class="addIconTd none"><i class="glyphicon glyphicon-plus addMore"></i></td>
+                              <td class="addIconTd addTeamIconTd none"><i class="glyphicon glyphicon-plus addMore"></i></td>
                             </tr>
 	 </table>
 	 <table class="scatteredTable3">
@@ -321,6 +323,11 @@
 <!-- 查询团队机票  end --> 
 
                           <div class="tableInfoDiv">
+                          
+                          	 <ul id="travelTeamTypeNum" class="paragraphBtn">
+                                
+                             </ul>
+                          
                             <table class="table table-bordered table-hover">
                               <thead>
                               <tr>
@@ -378,9 +385,9 @@
 		<!-- 订单信息 js -->
 		<script src="${base}/admin/searchTicket/searchOrderInfo.js"></script>
 		<!-- 多程信息 js -->
-		<%-- <script src="${base}/admin/searchTicket/searchMoreline.js"></script> --%>
+		<script src="${base}/admin/searchTicket/searchMoreLine.js"></script>
 		<!-- 团队信息  js -->
-		<script src="${base}/admin/searchTicket/searchTeamOrder.js"></script>
+		<script src="${base}/admin/searchTicket/searchTeamMoreLine.js"></script>
 		
 		<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 		
@@ -389,6 +396,8 @@
 		<script src="${base}/common/js/layer/layer.js"></script>
 		<script type="text/javascript">
 	      $(function(){
+<<<<<<< HEAD
+=======
 
 	    	//客户信息 显示/隐藏
             $('.UnderIcon').on('click',function(){
@@ -425,6 +434,7 @@
 	            $(this).parent().parent().remove(); 
 	        });
 			
+>>>>>>> origin/dev
 	        //校验
 	    	$('#customerCheckFrom').bootstrapValidator({
 	  			message: '验证不通过!',
@@ -443,12 +453,68 @@
 	  	            }
 	  	        }
 	  		});
-	        alert();
 	        
 	     });
 	  </script>
 	  
 	  <script type="text/javascript">
+	  
+	  	/* 段数按钮点击事件 */
+			$(document).click(function (e) { 
+				var num_id = $(e.target).attr('id'); 
+				/* 点击 团客每段提醒事件 */
+				if(num_id.indexOf("teamNum")>0){
+					alert(num_id);
+					var i = num_id.substring(7,num_id.length);
+					var index = "";
+					alert(num_id);
+					alert(i);
+					if(i%2){
+						/* 去程数据 */
+						index = (i-1)/2;
+						$("#teamorigin").val($("#teamOutCity"+index).select2("val"));
+						$("#teamdestination").val($("#teamArriveCity"+index).select2("val"));
+						$("#teamdeparturedate").val($("#teamOutDatepicker"+index).val());
+						$("#teamreturndate").val($("#teamReturnDatepicker"+index).val());
+						$("#searchTeamTicketsBtn").click();
+					}else{
+						/* 返程数据 */
+						index = (i-2)/2;
+						$("#teamorigin").val($("#teamArriveCity"+index).select2("val"));
+						$("#teamdestination").val($("#teamOutCity"+index).select2("val"));
+						$("#teamdeparturedate").val($("#teamReturnDatepicker"+index).val());
+						$("#teamreturndate").val($("#teamOutDatepicker"+index).val());
+						$("#searchTeamTicketsBtn").click(); 					
+					}
+				}
+				
+				/* 点击 散客每段提醒事件 */
+				if(num_id.indexOf("um")>0){
+					var i = num_id.substring(3,num_id.length);
+					var index = "";
+					if(i%2){
+						index = (i-1)/2;
+						$("#origin").val($("#outCity"+index).select2("val"));
+						$("#destination").val($("#singleArriveCity"+index).select2("val"));
+						$("#departuredate").val($("#outDatepicker"+index).val());
+						$("#returndate").val($("#returnDatepicker"+index).val());
+						/* 获取去程数据 */
+						$("#airInfoList").val("1");
+						$("#searchSingleTicketsBtn").click();
+					}else{
+						index = (i-2)/2;
+						$("#origin").val($("#singleArriveCity"+index).select2("val"));
+						$("#destination").val($("#outCity"+index).select2("val"));
+						$("#departuredate").val($("#returnDatepicker"+index).val());
+						$("#returndate").val($("#outDatepicker"+index).val());
+						/* 获取返程数据 */
+						$("#airInfoList").val("2");
+						$("#searchSingleTicketsBtn").click();	  					
+					}
+				}
+				
+			});
+	 
  	  	/* 散客查询 */
   		$("#searchSingleTicketsBtn").click(function() {
   			var link = $("#linkNameId").val();
@@ -456,6 +522,14 @@
   				layer.msg("客户名称不能为空", "", 2000);
   				return;
   			}
+  			var index = 0;
+			$("#origin").val($("#outCity"+index).select2("val"));
+			$("#destination").val($("#singleArriveCity"+index).select2("val"));
+			$("#departuredate").val($("#outDatepicker"+index).val());
+			$("#returndate").val($("#returnDatepicker"+index).val());
+			/* 获取去程数据 */
+			$("#airInfoList").val("1");
+  			
 			$.ajax({
 				type : 'POST',
 				data : $("#searchSingleTicketsForm").serialize(),
@@ -473,22 +547,26 @@
 						var airType = $("input[name='voyageType']:checked").val();
 						var html = "";
 						if(airType == 1){
-							html = '<li id="num01" class="btnStyle">第一段</li>';
-							document.getElementById('travelTypeNum').innerHTML=html;
+							html = '<li id="num1" class="btnStyle">第1段</li>';
+							document.getElementById('travelTeamTypeNum').innerHTML=html;
 						}
 						if(airType == 2){
-							html = '<li id="num01" class="btnStyle">第一段</li><li id="num02">第二段</li>';
-							document.getElementById('travelTypeNum').innerHTML=html;
+							html = '<li id="num1" class="btnStyle">第1段</li><li id="num2">第2段</li>';
+							document.getElementById('travelTeamTypeNum').innerHTML=html;
 						}
 						/* 多程 显示多段 */
 						if(airType == 3){
-							
+							for(var i=1; i<$('.setMore').length*2; i=i+2){
+			  					var j = i+1;
+			  					html +='<li id="num'+i+'">第'+i+'段</li><li id="num'+j+'">第'+j+'段</li>';
+			  				}
+			  				document.getElementById('travelTypeNum').innerHTML=html;
 						}
 						/* 日期小卡片  */
 						getDateCard();
 						
-						var outCodeStr = $("#outCity").select2("val");
-						var arriveCodeStr = $("#singleArriveCity").select2("val");
+						var outCodeStr = $("#outCity0").select2("val");
+						var arriveCodeStr = $("#singleArriveCity0").select2("val");
 						var outList = new Array();
 						var returnList = new Array();
 						
@@ -580,22 +658,99 @@
   				layer.msg("客户名称不能为空", "", 2000);
   				return;
   			}
+  			var index=0;
+  			$("#teamorigin").val($("#teamOutCity"+index).select2("val"));
+  			$("#teamdestination").val($("#teamArriveCity"+index).select2("val"));
+  			$("#teamdeparturedate").val($("#teamOutDatepicker"+index).val());
+  			$("#teamreturndate").val($("#teamReturnDatepicker"+index).val());
 			$.ajax({
 				type : 'POST',
 				data : $("#searchTeamTicketsForm").serialize(),
 				url : '${base}/admin/search/searchTeamTickets.html',
 				success : function(data) {
+					//段数
+					var airTeamType = $("input[name='voyageType1']:checked").val();
+					var html = "";
+					if(airTeamType == 1){
+						html = '<li id="teamNum1" class="btnStyle">第1段</li>';
+						document.getElementById('travelTeamTypeNum').innerHTML=html;
+					}
+					if(airTeamType == 2){
+						html = '<li id="teamNum1" class="btnStyle">第1段</li><li id="teamNum2">第2段</li>';
+						document.getElementById('travelTeamTypeNum').innerHTML=html;
+					}
+					/* 多程 显示多段 */
+					if(airTeamType == 3){
+						for(var i=1; i<$('.setTeamMore').length*2; i=i+2){
+		  					var j = i+1;
+		  					html +='<li id="teamNum'+i+'">第'+i+'段</li><li id="teamNum'+j+'">第'+j+'段</li>';
+		  				}
+		  				document.getElementById('travelTeamTypeNum').innerHTML=html;
+					}
+					
 					var teamList = "";
-					 $.each(data, function (index, element) {  
+					$.each(data, function (index, element) {  
 			              teamList += '<tr><td>'+ element.ordersnum +'</td><td>'+ "团队" +'</td><td>'+ "爱自由" +'</td><td>'+element.leavescity +'/'+ element.backscity +'</td>'+
 			              			'<td>'+element.leavesdate+'</td><td>'+element.price+'</td><td>'+element.amount+'</td><td>'+element.orderstime+'</td><td>'+element.opid+'</td></tr>';
-			         });  
-					 document.getElementById('teamtbody').innerHTML=teamList;
+			        });  
+					document.getElementById('teamtbody').innerHTML=teamList;
 				},
 				error : function() {
 				}
 			});
 		});
+	  	
+		/*散客 航程类型 点击事件*/
+	      function radioFunct(obj){
+	           var radio = document.getElementsByName("voyageType");  
+	           for (i=0; i<radio.length; i++) {  
+	                if (radio[i].checked) {  
+	                   var radioValue=radio[i].value;
+	                   if (radioValue==1) {
+	                        $('.setoutLabel').hide('300');
+	                        $('.setoutinput').hide('300');
+	                        $('.addIconTd').hide('300');
+	                        $('.removeIconTd').hide('300');
+	                   }else if(radioValue==2){
+	                        $('.setoutLabel').show('300');
+	                        $('.setoutinput').show('300');
+	                        $('.addIconTd').hide('300');
+	                        $('.removeIconTd').hide('300');
+	                   }else if(radioValue==3){
+	                        $('.setoutLabel').show('300');
+	                        $('.setoutinput').show('300');
+	                        $('.addIconTd').show('300');
+	                        $('.removeIconTd').show('300');
+	                   };
+	                }  
+	           }
+	      }
+	      /*团队 航程类型 点击事件*/
+	      function radioFunct1(){
+	            var radio1 = document.getElementsByName("voyageType1");  
+	             for (i=0; i<radio1.length; i++) {  
+	                  if (radio1[i].checked) {  
+	                     var radioValue1=radio1[i].value;
+	                     if (radioValue1==1) {
+	                          $('.setoutLabel').hide('300');
+	                          $('.setoutinput').hide('300');
+	                          $('.addIconTd').hide('300');
+	                          $('.removeIconTd').hide('300');
+	                     }else if(radioValue1==2){
+	                          $('.setoutLabel').show('300');
+	                          $('.setoutinput').show('300');
+	                          $('.addIconTd').hide('300');
+	                          $('.removeIconTd').hide('300');
+	                     }else if(radioValue1==3){
+	                          $('.setoutLabel').show('300');
+	                          $('.setoutinput').show('300');
+	                          $('.addIconTd').show('300');
+	                          $('.removeIconTd').show('300');
+	                     };
+	                  }  
+	             }
+	      }
+	  	
 	  </script>
 
 </body>

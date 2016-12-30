@@ -1,3 +1,4 @@
+
 //计划制作表格初始化
 var datatable2;
 function initDatatable2() {
@@ -253,3 +254,4 @@ function generateOrderNum(){
 		});
 	}
 }
+

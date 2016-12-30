@@ -25,57 +25,32 @@ function initDatatable1() {
       	},
         "columns": [
                     {"data": "xuhao", "bSortable": false},
+                    {"data": "airlinename", "bSortable": false},
                     {"data": "leavesdate", "bSortable": false,
                     	render: function(data, type, row, meta) {
                     		var leavesdate = new Date(row.leavesdate);
-                    		var backsdate = new Date(row.backsdate);
-                    		var MM = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'][leavesdate.getMonth()];
-                    		var week = ['MO','TU','WE','TH','FR','SA','SU'][leavesdate.getUTCDay()]
-                    		var MM2 = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'][backsdate.getMonth()];
-                    		var week2 = ['MO','TU','WE','TH','FR','SA','SU'][backsdate.getUTCDay()]
-                    		var result = '<ul><li style="list-style:none;">'+(week+leavesdate.getDate() + MM)+'</li>'
-                    		+'<li style="list-style:none;">'+(week2+backsdate.getDate() + MM2)+'</li>'
-                    		+'</ul>';
-                    		return result;
+                    		var MM = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][leavesdate.getMonth()];
+                    		return leavesdate.getDate() + "/" + MM;
                     	}
                     },
                     {"data": "leavescity", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		var result = '<ul>'
-                        		+'<li style="list-style:none;">'+row.leaveairline+'</li>'
-                        		+'<li style="list-style:none;">'+row.backairline+'</li>'
-                        		+'</ul>';
-                    		return result;
+                    		return row.leavescity;
                     	}
                     },
                     {"data": "backsdate", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		var result = '<ul>' 
-                        		+'<li style="list-style:none;">'+(row.leavescity +'/'+ row.backscity)+'</li>'
-                        		+'<li style="list-style:none;">'+(row.backleavecity +'/'+ row.backbackcity)+'</li>'
-                        		+'</ul>';
-                    		return result;
+                    		var backsdate = new Date(row.backsdate);
+                    		var MM = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][backsdate.getMonth()];
+                    		return backsdate.getDate() + "/" + MM;
                     	}
                     },
                     {"data": "backscity", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		var result = '<ul>' 
-                        		+'<li style="list-style:none;">'+(row.lleavetime +'/'+ row.lbacktime)+'</li>'
-                        		+'<li style="list-style:none;">'+(row.bleavetime +'/'+ row.bbacktime)+'</li>'
-                        		+'</ul>';
-                    		return result;
+                    		return row.backscity;
                     	}	
                     },
                     {"data": "peoplecount", "bSortable": false},
-                    {"data": "foc", "bSortable": false,
-                    	render: function(data, type, row, meta) {
-                    		var result = '否';
-                    		if(row.foc == 1){
-                    			result = '16/1';
-                    		}
-                    		return result;
-                    	}
-                    },
                     {"data": "dayscount", "bSortable": false},
                     {"data": "travelname", "bSortable": false},
                     {"data": "unioncity", "bSortable": false}
@@ -111,8 +86,8 @@ function initSelect2(){
 					processResults : function(data, params) {
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
-							  obj.id =  obj.comname; // replace pk with your identifier
-							  obj.text =  obj.comname; // replace pk with your identifier
+							  obj.id =  obj.dictName; // replace pk with your identifier
+							  obj.text =  obj.dictName; // replace pk with your identifier
 							  return obj;
 						});
 						return {
@@ -152,8 +127,8 @@ function initSelect2(){
 					processResults : function(data, params) {
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
-							  obj.id = obj.airlinenum; // replace pk with your identifier
-							  obj.text = obj.airlinenum; // replace pk with your identifier
+							  obj.id = obj.dictName; // replace pk with your identifier
+							  obj.text = obj.dictName; // replace pk with your identifier
 							  return obj;
 						});
 						return {
@@ -162,6 +137,7 @@ function initSelect2(){
 					},
 					cache : false
 				},
+				
 				escapeMarkup : function(markup) {
 					return markup;
 				}, // let our custom formatter work
@@ -192,8 +168,8 @@ function initSelect2(){
 					processResults : function(data, params) {
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
-							  obj.id = obj.airlinenum; // replace pk with your identifier
-							  obj.text = obj.airlinenum; // replace pk with your identifier
+							  obj.id = obj.dictName; // replace pk with your identifier
+							  obj.text = obj.dictName; // replace pk with your identifier
 							  return obj;
 						});
 						return {
@@ -235,6 +211,7 @@ function initSelect2(){
 						var selectdata = $.map(data, function (obj) {
 							  obj.id = obj.dictCode; // replace pk with your identifier
 							  obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
+
 							  return obj;
 						});
 						return {
@@ -274,8 +251,13 @@ function initSelect2(){
 					processResults : function(data, params) {
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
+<<<<<<< HEAD
+							  obj.id = obj.dictName; // replace pk with your identifier
+							  obj.text = obj.dictName; // replace pk with your identifier
+=======
 							  obj.id = obj.dictCode; // replace pk with your identifier
 							  obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
+>>>>>>> origin/dev
 							  return obj;
 						});
 						return {
@@ -294,6 +276,8 @@ function initSelect2(){
 				maximumSelectionLength : 1, //设置最多可以选择多少项
 				tags : false //设置必须存在的选项 才能选中
 			});
+<<<<<<< HEAD
+=======
 			//回程出发城市下拉
 			$("#backleavecity" + i).select2({
 				ajax : {
@@ -376,6 +360,7 @@ function initSelect2(){
 				maximumSelectionLength : 1, //设置最多可以选择多少项
 				tags : false //设置必须存在的选项 才能选中
 			});
+>>>>>>> origin/dev
 			//加载联运城市下拉
 			$("#unioncity" + i).select2({
 				ajax : {
@@ -392,12 +377,17 @@ function initSelect2(){
 					processResults : function(data, params) {
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
+<<<<<<< HEAD
+							  obj.id = obj.dictName; // replace pk with your identifier
+							  obj.text = obj.dictName; // replace pk with your identifier
+=======
 							  obj.id = obj.dictCode; // replace pk with your identifier
 							  var text = obj.dictCode;
 							  if(obj.dictName){
 								  text = obj.dictCode+'('+obj.dictName+')'
 							  }
 							  obj.text = text; // replace pk with your identifier
+>>>>>>> origin/dev
 							  return obj;
 						});
 						return {
@@ -530,22 +520,14 @@ $(function () {
 			   var backairline = $(this).find('[name=backairline]');
 			   backairline.attr("id","backairline"+i);
 			   $('#backairline'+i).next().remove();
-			   //设置新的去程出发城市下拉ID
+			   //设置新的出发城市下拉ID
 			   var leavescity = $(this).find('[name=leavescity]');
 			   leavescity.attr("id","leavescity"+i);
 			   $('#leavescity'+i).next().remove();
-			   //设置新的去程抵达城市下拉框ID
+			   //设置新的降落城市下拉框ID
 			   var backscity = $(this).find('[name=backscity]');
 			   backscity.attr("id","backscity"+i);
 			   $('#backscity'+i).next().remove();
-			   //设置新的返程出发城市下拉ID
-			   var backleavecity = $(this).find('[name=backleavecity]');
-			   backleavecity.attr("id","backleavecity"+i);
-			   $('#backleavecity'+i).next().remove();
-			   //设置新的返程抵达城市下拉框ID
-			   var backbackcity = $(this).find('[name=backbackcity]');
-			   backbackcity.attr("id","backbackcity"+i);
-			   $('#backbackcity'+i).next().remove();
 			   //设置新的联运城市下拉框ID
 			   var unioncity = $(this).find('[name=unioncity]');
 			   unioncity.attr("id","unioncity"+i);
@@ -656,21 +638,10 @@ function makePlan(){
 			if (backscity) {
 				backscity = backscity.join(',');
 			}
-			var backleavecity = $(this).find('[name=backleavecity]').val();
-			if (backleavecity) {
-				backleavecity = backleavecity.join(',');
-			}
-			var backbackcity = $(this).find('[name=backbackcity]').val();
-			if (backbackcity) {
-				backbackcity = backbackcity.join(',');
-			}
 			var unioncity = $(this).find('[name=unioncity]').val();
 			if (unioncity) {
 				unioncity = unioncity.join(',');
 			}
-			var foc = $(this).find('[name=foc]').val();
-			//时间类型
-			var weekSelect = $(this).find('[id=weekSelect]').val();
 			var startdate = $(this).find('[name=startdate]').val();
 			var enddate = $(this).find('[name=enddate]').val();
 			var calenderdate = $(this).find('[name=calenderdate]').val();
@@ -681,11 +652,6 @@ function makePlan(){
 			if (weekday) {
 				weekday = weekday.join(',');
 			}
-			if(weekSelect == 1){
-				calenderdate = '';
-			}else if(weekSelect == 2){
-				weekday = '';
-			}
 			var param = {teamtype:teamtype,
 						 travelname:travelname,
 						 peoplecount:peoplecount,
@@ -694,13 +660,9 @@ function makePlan(){
 						 backairline:backairline,
 						 leavescity:leavescity,
 						 backscity:backscity,
-						 backleavecity:backleavecity,
-						 backbackcity:backbackcity,
-						 foc:foc,
 						 unioncity:unioncity,
 						 startdate:startdate,
 						 enddate:enddate,
-						 timetype:weekSelect,
 						 calenderdate:calenderdate,
 						 weekday:weekday};
 			$.ajax({ 
@@ -753,19 +715,23 @@ function checkIsNull(){
 			result = false;
 			return false;
 		}
-		/*var backairline = $(this).find('[name=backairline]').val();
+		var backairline = $(this).find('[name=backairline]').val();
 		if (backairline) {
 			backairline = backairline.join(',');
 		}else{
 			layer.alert("请填写第"+(i+1)+"个回程航班",{time: 2000, icon:1});
 			result = false;
 			return false;
-		}*/
+		}
 		var leavescity = $(this).find('[name=leavescity]').val();
 		if (leavescity) {
 			leavescity = leavescity.join(',');
 		}else{
+<<<<<<< HEAD
+			layer.msg("请填写第"+(i+1)+"个出发城市",{time: 2000, icon:1});
+=======
 			layer.alert("请填写第"+(i+1)+"个去程出发城市",{time: 2000, icon:1});
+>>>>>>> origin/dev
 			result = false;
 			return false;
 		}
@@ -773,6 +739,9 @@ function checkIsNull(){
 		if (backscity) {
 			backscity = backscity.join(',');
 		}else{
+<<<<<<< HEAD
+			layer.msg("请填写第"+(i+1)+"个返回城市",{time: 2000, icon:1});
+=======
 			layer.alert("请填写第"+(i+1)+"个去程抵达城市",{time: 2000, icon:1});
 			result = false;
 			return false;
@@ -790,6 +759,7 @@ function checkIsNull(){
 			backbackcity = backbackcity.join(',');
 		}else{
 			layer.alert("请填写第"+(i+1)+"个返程抵达城市",{time: 2000, icon:1});
+>>>>>>> origin/dev
 			result = false;
 			return false;
 		}*/
@@ -831,6 +801,22 @@ function checkIsNull(){
 }
 //保存计划
 function savePlan(){
+<<<<<<< HEAD
+	layer.confirm('确定要保存计划吗?', {icon: 3, title:'提示'}, function(){
+		$.ajax({ 
+			type: 'POST', 
+			data: {}, 
+			url: BASE_PATH + '/admin/customneeds/savePlanData.html',
+            success: function (data) { 
+            	layer.msg("保存成功",{time: 2000, icon:1});
+            	datatable1.ajax.reload();
+            },
+            error: function (xhr) {
+            	layer.msg("保存失败",{time: 2000, icon:1});
+            } 
+        });
+	});
+=======
 	var isplan = false;
 	$.ajax({ 
 		type: 'POST', 
@@ -864,6 +850,7 @@ function savePlan(){
 	}else{
 		layer.alert("没有需要保存的计划",{time: 2000, icon:1});
 	}
+>>>>>>> origin/dev
 }
 //提示是否保存已经制作的计划
 window.onbeforeunload = function(event) {
@@ -898,12 +885,10 @@ window.onunload = function(event){
         } 
     });
 }
-//格式化日期
 function FormatDate (strTime) {
     var date = new Date(strTime);
     return date.getFullYear()+"-"+zeroize((date.getMonth()+1),2)+"-"+zeroize(date.getDate(),2);
 }
-//位数不足  补0
 function zeroize(value, length) {
     if (!length) length = 2;
     value = String(value);
@@ -911,8 +896,4 @@ function zeroize(value, length) {
         zeros += '0';
     }
     return zeros + value;
-}
-//导出新航模板
-function exportXinHangTemplate(){
-	
 }
