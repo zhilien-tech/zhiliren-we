@@ -67,6 +67,7 @@
 .chufaCS,.shiDuan,.daodaCS{float: left;height: 58px;}
 .chufaCS,.daodaCS{ width: 80px;}
 .shiDuan{height: 32px;width: 195px;border-bottom: 2px solid rgba(51, 51, 51, 0.72);text-align: center;line-height: 45px;color: #b1b1b1;}
+
 .selectWid1{width: 135px !important;}
 .tableInfoDiv{padding: 15px 10px 0 10px;}
 .showDis{display:table-cell;}

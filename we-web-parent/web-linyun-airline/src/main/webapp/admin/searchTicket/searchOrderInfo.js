@@ -7,6 +7,7 @@ $("input[name=internat]").click(function(){
 		break;
 	case "gjRadio":
 		typeCodeStr = "GJ";
+
 		break;
 	}
 	$.ajax({
@@ -35,6 +36,7 @@ $("#outCity").select2({
 		data : function(params) {
 			return {
 				cityname : params.term, 
+
 				ids:$('#arriveCityCode').val(),
 				page : params.page
 			};
@@ -43,7 +45,7 @@ $("#outCity").select2({
 			params.page = params.page || 1;
 			var selectdata = $.map(data, function (obj) {
 				obj.id = obj.dictCode; 
-				obj.text = obj.dictCode +"("+ obj.dictName +")"; 
+				obj.text = obj.dictCode +"("+ obj.dictName +")";
 				return obj;
 			});
 			return {
@@ -60,7 +62,7 @@ $("#outCity").select2({
 	maximumInputLength : 20,
 	language : "zh-CN", 
 	maximumSelectionLength : 1, 
-	tags : false, 
+	tags : false
 });
 
 抵达城市查询
@@ -102,6 +104,7 @@ $("#singleArriveCity").select2({
 });*/
 
 
+
 /*航空公司查询*/
 $("#airline").select2({
 	ajax : {
@@ -131,6 +134,7 @@ $("#airline").select2({
 
 	escapeMarkup : function(markup) {
 		return markup;
+
 	}, 
 	minimumInputLength : 1,
 	maximumInputLength : 20,
@@ -340,3 +344,4 @@ defaultDate = function(){
 }
 
 /* -------------------------日期格式转换 end---------------------------- */
+

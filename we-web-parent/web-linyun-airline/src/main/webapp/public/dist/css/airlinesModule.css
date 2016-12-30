@@ -2,10 +2,11 @@
 .k-btn-previous-year,.k-btn-next-year{display: none;}
 .k-first-month{margin-left: -270px;}
 .k-first-month .k-title{overflow:inherit;}
-.kalendae .k-btn-previous-month{margin-left: 250px;margin-top: -5px;}
+.kalendae .k-title, .kalendae .k-header, .kalendae .k-days {overflow: visible;}
+.kalendae .k-btn-previous-month{margin-left: -100px; margin-top: -2px;border: solid 1px #DEDEDE;height: 24px;width: 24px;border-radius: 3px;}
 div[data-cal-index="2"]{margin-left:15px;}
 div[data-cal-index="2"] .k-title{width: 120px;margin: 0 auto;}
-.kalendae .k-btn-next-month{right: -2px;}
+.kalendae .k-btn-next-month{right: 750px;top:-10px;border: solid 1px #DEDEDE;height: 24px;width: 24px;border-radius: 3px;}
 .celenderBtn{padding:2px 6px;float: right;margin-left: -38px;margin-top: 190px;}
 .hidnBtn,.showBtn{padding: 3px 10px;margin: 3px 0px 0px 5px;}
 .removeBtn{margin-right:135px;}
@@ -16,3 +17,17 @@ div[data-cal-index="2"] .k-title{width: 120px;margin: 0 auto;}
 .form-control-feedback {position: absolute;top: -2px;right: -25px;}
 .tooltip-inner{background-color: #a9a9a9;border: solid 1px #9a9a9a;}
 .tooltip.right .tooltip-arrow {border-right-color: #a5a5a5;}
+.checkWeek input {margin-left: 5px;}
+.timeWid {width: 47.6%;}
+.dropdown-menu>li>a {padding: 3px 31px;}
+#example3 tbody tr td ul{margin-bottom: 0;padding-left: 0px;}
+#example3>tbody>tr>td {padding: 3px 0px;}
+#example3 tbody tr td ul li:first-child {border-bottom: solid 1px #eee;}
+#example3 tbody tr .sorting_1{line-height: 40px !important;}
+#example3 tbody tr td:nth-child(6){line-height:40px;}
+#example3 tbody tr td:nth-child(7){line-height:40px;}
+#example3 tbody tr td:nth-child(8){line-height:40px;}
+#example3 tbody tr td:nth-child(9){line-height:40px;}
+#example3 tbody tr td:nth-child(10){line-height:40px;}
+#example3 thead tr th{padding-right: 0px;}
+

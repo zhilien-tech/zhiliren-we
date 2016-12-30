@@ -23,7 +23,7 @@ function initAddSelect2(){
 					results : selectdata
 				};
 			},
-			cache : true
+			cache : false
 		},
 		
 		escapeMarkup : function(markup) {
@@ -58,7 +58,7 @@ function initAddSelect2(){
 					results : selectdata
 				};
 			},
-			cache : true
+			cache : false
 		},
 		
 		escapeMarkup : function(markup) {
@@ -94,7 +94,7 @@ function initAddSelect2(){
 					results : selectdata
 				};
 			},
-			cache : true
+			cache : false
 		},
 		
 		escapeMarkup : function(markup) {
@@ -130,7 +130,7 @@ function initAddSelect2(){
 					results : selectdata
 				};
 			},
-			cache : true
+			cache : false
 		},
 		
 		escapeMarkup : function(markup) {
@@ -159,14 +159,14 @@ function initAddSelect2(){
 				params.page = params.page || 1;
 				var selectdata = $.map(data, function (obj) {
 					obj.id = obj.dictName; // replace pk with your identifier
-					obj.text = obj.dictName; // replace pk with your identifier
+					obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
 					return obj;
 				});
 				return {
 					results : selectdata
 				};
 			},
-			cache : true
+			cache : false
 		},
 		
 		escapeMarkup : function(markup) {
@@ -195,14 +195,14 @@ function initAddSelect2(){
 				params.page = params.page || 1;
 				var selectdata = $.map(data, function (obj) {
 					obj.id = obj.dictName; // replace pk with your identifier
-					obj.text = obj.dictName; // replace pk with your identifier
+					obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
 					return obj;
 				});
 				return {
 					results : selectdata
 				};
 			},
-			cache : true
+			cache : false
 		},
 		
 		escapeMarkup : function(markup) {
@@ -238,7 +238,7 @@ function initAddSelect2(){
 					results : selectdata
 				};
 			},
-			cache : true
+			cache : false
 		},
 		
 		escapeMarkup : function(markup) {

@@ -18,7 +18,9 @@
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
 <link rel="stylesheet" href="${base}/public/dist/css/skins/_all-skins.min.css">
 <link rel="stylesheet" href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
+
 <link rel="stylesheet" href="${base}/public/dist/css/bootstrapValidator.css" />
+
 <link rel="stylesheet" href="${base}/public/dist/css/query.css"><!--本页面styleFlie-->
 
 </head>
@@ -50,7 +52,9 @@
 						</div>
 					</div>
 					<div class="infofooter">
+
 					<form id="customerCheckForm" method="post">
+
 						<table>
 							<tr>
 								<td><label>客户姓名：</label></td>
@@ -76,6 +80,7 @@
 							</tr>
 						</table>
 					</form>
+
 						<table class="hideTable none">
 							<tr>
 								<td><label>公司简称：</label></td>
@@ -337,9 +342,9 @@
                                 <th>操作人</th>
                               </tr>
                               </thead>
+
                               <!-- 显示团队票信息 -->
                               <tbody id="teamtbody">
-                              	
                               </tbody>
                             </table>
                           </div>
@@ -350,7 +355,7 @@
 			</section>
 		</div>
 		<!--end right Content-->
-		
+
 		<!--footer-->
 			<%@include file="/WEB-INF/public/footer.jsp"%>
 		<!--end footer-->
@@ -371,8 +376,10 @@
 		<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
 		<!-- My97DatePicker -->
 		<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
+
 		<!-- Validator -->
 		<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
+
 		<!-- 客户信息 js -->
 		<script src="${base}/admin/searchTicket/searchCustomerInfo.js"></script>
 		<!-- 订单信息 js -->
@@ -384,10 +391,50 @@
 		
 		<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 		
+
 		<!-- layer -->
 		<script src="${base}/common/js/layer/layer.js"></script>
 		<script type="text/javascript">
 	      $(function(){
+<<<<<<< HEAD
+=======
+
+	    	//客户信息 显示/隐藏
+            $('.UnderIcon').on('click',function(){
+
+              $('.hideTable').toggle('400');
+            });
+    		
+       		$('#clearBtn').click(function(){//清楚按钮 隐藏
+              $('.hideTable').hide('400');
+            });
+	        /*散客*/
+	        document.getElementsByName("internat")[0].checked="checked";//radio 默认 国际内陆
+	        document.getElementsByName("voyageType")[1].checked="checked";//radio 默认 选中往返
+	        /*团队*/
+	        document.getElementsByName("internat1")[0].checked="checked";//radio 默认 国际内陆
+	        document.getElementsByName("voyageType1")[1].checked="checked";//radio 默认 选中往返
+	
+	        $('.paragraphBtn li').click(function(){//段数 样式切换
+	          $(this).addClass('btnStyle').siblings().removeClass('btnStyle');
+	        });
+	
+	        //添加 .addMore
+	        $('.addMore').click(function(){
+	            var divTest = $(this).parent().parent(); 
+	            var newDiv = divTest.clone(true);
+	            divTest.after(newDiv);
+	            var No = parseInt(divTest.find("p").html())+1;//假设你用p标签显示序号
+	            newDiv.find("p").html(No); 
+	            newDiv.find('.addIconTd').remove();
+	            newDiv.append('<td class="removeIconTd"><i class="glyphicon glyphicon-minus removeMore"></i></td>');
+	        });
+			//删除 .addMore
+	        $(document).on('click','.removeMore',function(){
+	            $(this).parent().parent().remove(); 
+	        });
+			
+>>>>>>> origin/dev
 	        //校验
 	    	$('#customerCheckFrom').bootstrapValidator({
 	  			message: '验证不通过!',
@@ -705,5 +752,6 @@
 	      }
 	  	
 	  </script>
+
 </body>
 </html>
