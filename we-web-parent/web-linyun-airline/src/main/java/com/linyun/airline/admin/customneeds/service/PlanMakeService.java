@@ -110,15 +110,23 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 * 获取航班号下拉框
 	 *
 	 * @param airlinename
+	 * @param exname 
 	 * @return 获取航班号下拉框
 	 */
-	public Object getAirLineSelect(String airlinename) {
+	public Object getAirLineSelect(String airlinename, String exname) {
 		//List<DictInfoEntity> airlineSelect = new ArrayList<DictInfoEntity>();
 		List<TFlightInfoEntity> airlineSelect = new ArrayList<TFlightInfoEntity>();
 		try {
 			//airlineSelect = externalInfoService.findDictInfoByName(airlinename, this.AIRLINECODE);
 			airlineSelect = dbDao.query(TFlightInfoEntity.class,
 					Cnd.where("airlinenum", "like", Strings.trim(airlinename) + "%"), null);
+			TFlightInfoEntity exinfo = new TFlightInfoEntity();
+			for (TFlightInfoEntity tFlightInfoEntity : airlineSelect) {
+				if (!Util.isEmpty(exname) && tFlightInfoEntity.getAirlinenum().equals(exname)) {
+					exinfo = tFlightInfoEntity;
+				}
+			}
+			airlineSelect.remove(exinfo);
 			if (airlineSelect.size() > 5) {
 				airlineSelect = airlineSelect.subList(0, 5);
 			}
@@ -136,10 +144,18 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 * @param cityname
 	 * @return 返回城市下拉列表
 	 */
-	public Object getCitySelect(String cityname) {
+	public Object getCitySelect(String cityname, String exname) {
 		List<DictInfoEntity> citySelect = new ArrayList<DictInfoEntity>();
 		try {
 			citySelect = externalInfoService.findDictInfoByName(cityname, this.CITYCODE);
+			//移除的城市
+			DictInfoEntity removeinfo = new DictInfoEntity();
+			for (DictInfoEntity dictInfoEntity : citySelect) {
+				if (!Util.isEmpty(exname) && dictInfoEntity.getDictCode().equals(exname)) {
+					removeinfo = dictInfoEntity;
+				}
+			}
+			citySelect.remove(removeinfo);
 			if (citySelect.size() > 5) {
 				citySelect = citySelect.subList(0, 5);
 			}
@@ -163,7 +179,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 			citySelect = externalInfoService.findDictInfoByName(cityname, this.CITYCODE);
 			if (this.QUANGUOLIANYUN.indexOf(Strings.trim(cityname)) != -1) {
 				DictInfoEntity dictInfoEntity = new DictInfoEntity();
-				dictInfoEntity.setDictName(this.QUANGUOLIANYUN);
+				//dictInfoEntity.setDictName(this.QUANGUOLIANYUN);
 				dictInfoEntity.setDictCode(this.QUANGUOLIANYUN);
 				citySelect.add(0, dictInfoEntity);
 			}

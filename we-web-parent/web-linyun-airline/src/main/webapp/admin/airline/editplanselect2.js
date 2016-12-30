@@ -21,7 +21,7 @@ var _airlinename = $("#airlinename").select2({
 				results : selectdata
 			};
 		},
-		cache : true
+		cache : false
 	},
 	
 	escapeMarkup : function(markup) {
@@ -57,7 +57,7 @@ var _travelname = $("#travelname").select2({
 				results : selectdata
 			};
 		},
-		cache : true
+		cache : false
 	},
 	
 	escapeMarkup : function(markup) {
@@ -94,7 +94,7 @@ var _leaveairline = $("#leaveairline").select2({
 				results : selectdata
 			};
 		},
-		cache : true
+		cache : false
 	},
 	
 	escapeMarkup : function(markup) {
@@ -131,7 +131,7 @@ var _backairline = $("#backairline").select2({
 				results : selectdata
 			};
 		},
-		cache : true
+		cache : false
 	},
 	
 	escapeMarkup : function(markup) {
@@ -161,14 +161,14 @@ var _leavescity = $("#leavescity").select2({
 			params.page = params.page || 1;
 			var selectdata = $.map(data, function (obj) {
 				obj.id = obj.dictCode; // replace pk with your identifier
-				obj.text = obj.dictCode; // replace pk with your identifier
+				obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
 				return obj;
 			});
 			return {
 				results : selectdata
 			};
 		},
-		cache : true
+		cache : false
 	},
 	
 	escapeMarkup : function(markup) {
@@ -198,14 +198,14 @@ var _backscity = $("#backscity").select2({
 			params.page = params.page || 1;
 			var selectdata = $.map(data, function (obj) {
 				obj.id = obj.dictCode; // replace pk with your identifier
-				obj.text = obj.dictCode; // replace pk with your identifier
+				obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
 				return obj;
 			});
 			return {
 				results : selectdata
 			};
 		},
-		cache : true
+		cache : false
 	},
 	
 	escapeMarkup : function(markup) {
@@ -242,7 +242,7 @@ var _unioncity = $("#unioncity").select2({
 				results : selectdata
 			};
 		},
-		cache : true
+		cache : false
 	},
 	
 	escapeMarkup : function(markup) {

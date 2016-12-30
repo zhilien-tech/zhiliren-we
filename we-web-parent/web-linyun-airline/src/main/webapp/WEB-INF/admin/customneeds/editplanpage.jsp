@@ -56,10 +56,21 @@
                 <form id="editPlanForm">
                 <div class="form-group row"><!--航空公司/旅行社-->
                 	<input id="id" name="id" type="hidden" value="${obj.planinfo.id}">
-                  <div class="col-sm-2 col-sm-offset-2 padding">
-                    <input id="generateOrder" type="checkbox" class="inputEdit" value="1"><span class="spanEdit">生成订单</span>
-                  </div>
-                  <label class="col-sm-2 text-right padding customerEdit">航空公司：</label>
+                  	 <c:choose>
+                  		<c:when test="${empty obj.ordernum}">
+                  			<label class="col-sm-2 text-right padding customerEdit"></label>
+                  			<div class="col-sm-2 padding">	
+		                   	 　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="generateOrder" type="checkbox" class="inputEdit" value="1"><span class="spanEdit">生成订单</span>
+		                    </div>
+                  		</c:when>
+                  		<c:otherwise>
+		                  <label class="col-sm-2 text-right padding customerEdit">订单号：</label>
+			              <div class="col-sm-2 padding">	
+			                 <label class="col-sm-2 padding customerEdit">${obj.ordernum }</label>
+			              </div>
+                  		</c:otherwise>
+                  	</c:choose> 
+                  <label class="col-sm-2 text-right padding">航空公司：</label>
                   <div class="col-sm-2 padding">
                     <select id="airlinename" name="airlinename" type="text" class="form-control input-sm select2" multiple="multiple"
                       placeholder="首航-CA" >
@@ -203,7 +214,7 @@
 	            	window.parent.successCallback('2');
 	            },
 	            error: function (xhr) {
-	            	layer.msg("添加失败","",3000);
+	            	layer.alert("添加失败","",3000);
 	            } 
 	        });
 		}
@@ -220,7 +231,7 @@
 	            	window.parent.successCallback('3');
 	            },
 	            error: function (xhr) {
-	            	layer.msg("关闭失败",{time: 2000, icon:1});
+	            	layer.alert("关闭失败",{time: 2000, icon:1});
 	            } 
 	        });
 		});
@@ -237,7 +248,7 @@
 	            	window.parent.successCallback('4');
 	            },
 	            error: function (xhr) {
-	            	layer.msg("启用失败",{time: 2000, icon:1});
+	            	layer.alert("启用失败",{time: 2000, icon:1});
 	            } 
 	        });
 		});

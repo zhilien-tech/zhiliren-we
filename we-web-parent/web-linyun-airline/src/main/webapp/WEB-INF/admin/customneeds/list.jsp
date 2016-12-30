@@ -75,7 +75,7 @@
                         <div class="form-group row">
                           <label class="col-sm-1 text-right padding">去程日期：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" class="form-control input-sm inputdatestr" name="leavedate" id="leavedate" onkeypress="onkeyEnter();" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'backdate\')}'})" placeholder="2016/03/06">
+                            <input type="text" class="form-control input-sm inputdatestr" name="leavedate" id="leavedate" onkeypress="onkeyEnter();" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'backdate\')}'})" placeholder="2016/03/06">
                           </div>
                           <label class="col-sm-1 text-right padding">起飞城市：</label>
                           <div class="col-sm-1 padding">
@@ -223,7 +223,7 @@
                             </div>
                             <label class="col-sm-1 text-right padding cf">从：</label>
                             <div class="col-sm-3 padding" name="startenddate">
-                              <input id="startdate0" name="startdate" type="text" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'enddate0\')}'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2016-11-05"> 
+                              <input id="startdate0" name="startdate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'enddate0\')}'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2016-11-05"> 
                               - <input id="enddate0" name="enddate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startdate0\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2016-12-01">
                             </div>
                             <div class="col-sm-2 padding cf">
@@ -339,7 +339,7 @@
                           
                           <label class="col-sm-1 text-right padding cf">从：</label>
                             <div class="col-sm-3 padding">
-                              <input type="text" class="form-control input-sm timeWid inputdatestr" id="startdate1" name="startdate1" placeholder="2016-11-05" onkeypress="onEnterSearch();" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'enddate1\')}'})"> - <input type="text" id="enddate1" name="enddate1" class="form-control input-sm timeWid inputdatestr" placeholder="2016-12-01" onkeypress="onEnterSearch();" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startdate1\')}'})">
+                              <input type="text" class="form-control input-sm timeWid inputdatestr" id="startdate1" name="startdate1" placeholder="2016-11-05" onkeypress="onEnterSearch();" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'enddate1\')}'})"> - <input type="text" id="enddate1" name="enddate1" class="form-control input-sm timeWid inputdatestr" placeholder="2016-12-01" onkeypress="onEnterSearch();" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startdate1\')}'})">
                             </div>
                           <label class="col-sm-1 text-right padding">起飞城市：</label>
                           <div class="col-sm-1 padding">
@@ -567,7 +567,7 @@ $(function () {
   	    area: ['900px', '500px'],
   	    content: '${url}/update.html?id='+id,
   	    end:function(){
-  	    	datatable.ajax.reload();
+  	    	datatable.ajax.reload(null,false);
   	    }
   	  });
   }
@@ -579,11 +579,11 @@ $(function () {
 				data: {id:id}, 
 				url: '${base}/admin/customneeds/closeCustomNeeds.html',
 	            success: function (data) { 
-	            	layer.msg("关闭成功",{time: 2000, icon:1});
-	            	datatable.ajax.reload();
+	            	layer.alert("关闭成功",{time: 2000, icon:1});
+	            	datatable.ajax.reload(null,false);
 	            },
 	            error: function (xhr) {
-	            	layer.msg("关闭失败",{time: 2000, icon:1});
+	            	layer.alert("关闭失败",{time: 2000, icon:1});
 	            } 
 	        });
 		});
@@ -595,11 +595,11 @@ $(function () {
 				data: {id:id}, 
 				url: '${base}/admin/customneeds/enableCustomNeeds.html',
 	            success: function (data) { 
-	            	layer.msg("启用成功",{time: 2000, icon:1});
-	            	datatable.ajax.reload();
+	            	layer.alert("启用成功",{time: 2000, icon:1});
+	            	datatable.ajax.reload(null,false);
 	            },
 	            error: function (xhr) {
-	            	layer.msg("启用失败",{time: 2000, icon:1});
+	            	layer.alert("启用失败",{time: 2000, icon:1});
 	            } 
 	        });
 		});
@@ -632,21 +632,21 @@ $(function () {
   	}
   //其他页面回调
   function successCallback(id){
-	  datatable.ajax.reload();
-	  datatable2.ajax.reload();
+	  datatable.ajax.reload(null,false);
+	  datatable2.ajax.reload(null,false);
 	  if(id == '1'){
-		  layer.msg("添加成功",{time: 2000, icon:1});
+		  layer.alert("添加成功",{time: 2000, icon:1});
 	  }else if(id == '2'){
-		  layer.msg("修改成功",{time: 2000, icon:1});
+		  layer.alert("修改成功",{time: 2000, icon:1});
 	  }else if(id == '3'){
-		  layer.msg("关闭成功",{time: 2000, icon:1});
+		  layer.alert("关闭成功",{time: 2000, icon:1});
 	  }else if(id == '4'){
-		  layer.msg("启用成功",{time: 2000, icon:1});
+		  layer.alert("启用成功",{time: 2000, icon:1});
 	  }
   }
   
   function callback(){
-	  layer.msg("导入成功",{time: 2000, icon:1});
+	  layer.alert("导入成功",{time: 2000, icon:1});
 	  $('#uploadExcelForm')[0].reset();
 	  datatable.ajax.reload();
   }
