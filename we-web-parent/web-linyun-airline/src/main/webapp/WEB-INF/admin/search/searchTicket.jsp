@@ -396,45 +396,6 @@
 		<script src="${base}/common/js/layer/layer.js"></script>
 		<script type="text/javascript">
 	      $(function(){
-<<<<<<< HEAD
-=======
-
-	    	//客户信息 显示/隐藏
-            $('.UnderIcon').on('click',function(){
-
-              $('.hideTable').toggle('400');
-            });
-    		
-       		$('#clearBtn').click(function(){//清楚按钮 隐藏
-              $('.hideTable').hide('400');
-            });
-	        /*散客*/
-	        document.getElementsByName("internat")[0].checked="checked";//radio 默认 国际内陆
-	        document.getElementsByName("voyageType")[1].checked="checked";//radio 默认 选中往返
-	        /*团队*/
-	        document.getElementsByName("internat1")[0].checked="checked";//radio 默认 国际内陆
-	        document.getElementsByName("voyageType1")[1].checked="checked";//radio 默认 选中往返
-	
-	        $('.paragraphBtn li').click(function(){//段数 样式切换
-	          $(this).addClass('btnStyle').siblings().removeClass('btnStyle');
-	        });
-	
-	        //添加 .addMore
-	        $('.addMore').click(function(){
-	            var divTest = $(this).parent().parent(); 
-	            var newDiv = divTest.clone(true);
-	            divTest.after(newDiv);
-	            var No = parseInt(divTest.find("p").html())+1;//假设你用p标签显示序号
-	            newDiv.find("p").html(No); 
-	            newDiv.find('.addIconTd').remove();
-	            newDiv.append('<td class="removeIconTd"><i class="glyphicon glyphicon-minus removeMore"></i></td>');
-	        });
-			//删除 .addMore
-	        $(document).on('click','.removeMore',function(){
-	            $(this).parent().parent().remove(); 
-	        });
-			
->>>>>>> origin/dev
 	        //校验
 	    	$('#customerCheckFrom').bootstrapValidator({
 	  			message: '验证不通过!',
