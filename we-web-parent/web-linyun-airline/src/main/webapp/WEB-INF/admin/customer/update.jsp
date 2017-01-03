@@ -68,7 +68,7 @@
 							<label class="col-sm-3 text-right padding">公司简称：</label>
 							<div class="col-sm-3 padding">
 								<input name="shortName" type="tel" class="form-control input-sm inpImportant"
-									value="${obj.customer.shortName}" placeholder="请输入公司简称" />
+									value="${obj.customer.shortName}" placeholder="请输入公司简称" /><span class="prompt">*</span>
 							</div>
 
 							<label class="col-sm-2 text-right padding">负责人：</label>
@@ -169,7 +169,7 @@
 									<c:forEach var="one" items="${obj.innerlinelist }">
 										<option value="${one.id }">${one.text}</option>
 									</c:forEach>
-								</select><span class="prompt">*</span>
+								</select>
 								<!-- 国境内陆ID -->
 								<input id="sLine1ID" type="hidden" name="sLine1"/>
 							</div>
@@ -181,7 +181,7 @@
 									<c:forEach var="one" items="${obj.interlinelist }">
 										<option value="${one.id }">${one.text}</option>
 									</c:forEach>
-								</select><span class="prompt">*</span>
+								</select>
 								<!-- 国际线路ID -->
 								<input id="line2ID" type="hidden" name="internationLine" />
 							</div>
@@ -266,7 +266,6 @@
 							</div>
 							
 						</div>
-
 
 						<div class="form-group row">
 

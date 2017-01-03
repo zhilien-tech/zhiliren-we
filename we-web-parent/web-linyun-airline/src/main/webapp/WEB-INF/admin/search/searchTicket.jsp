@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
 <%@include file="/WEB-INF/public/header.jsp"%>
 <%@include file="/WEB-INF/public/aside.jsp"%>
@@ -18,9 +17,7 @@
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
 <link rel="stylesheet" href="${base}/public/dist/css/skins/_all-skins.min.css">
 <link rel="stylesheet" href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
-
 <link rel="stylesheet" href="${base}/public/dist/css/bootstrapValidator.css" />
-
 <link rel="stylesheet" href="${base}/public/dist/css/query.css"><!--本页面styleFlie-->
 
 </head>
@@ -46,15 +43,21 @@
 								<option value="8">关闭</option>
 							</select> 
 							<label>提醒：</label> 
+							 <select class="form-control input-sm timSelect">
+			                     <option value="0">每15分</option>
+			                     <option value="1">每30分</option>
+			                     <option value="2">每1小时</option>
+			                     <option value="3">每天</option>
+			                     <option value="4">每周</option>
+			                     <option value="5">每月</option>
+			                   </select>
 							<input id="datepicker" name="datepicker" type="text" class="form-control input-sm conTimeInput" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" placeholder="请选择提醒日期"> 
 							<input type="button" class="btn btn-primary btn-sm" value="保存"> 
 							<input type="button" class="btn btn-primary btn-sm" value="取消">
 						</div>
 					</div>
 					<div class="infofooter">
-
 					<form id="customerCheckForm" method="post">
-
 						<table>
 							<tr>
 								<td><label>客户姓名：</label></td>
@@ -80,7 +83,6 @@
 							</tr>
 						</table>
 					</form>
-
 						<table class="hideTable none">
 							<tr>
 								<td><label>公司简称：</label></td>
@@ -99,7 +101,6 @@
 								<td>
 									<input id="faxId" type="text" disabled="disabled" class="form-control input-sm">
 								</td>
-								
 							</tr>
 							<tr>
 								<td><label>出发城市：</label></td>
@@ -119,7 +120,6 @@
 					</div>
 				</div>
 				<!--客户信息 end-->
-				
 				<!--购票查询列表 start-->
 				<div class="listInfo">
                   <div class="nav-tabs-custom">
@@ -155,12 +155,10 @@
 <!-- 查询 start -->                  
 <form id="searchSingleTicketsForm" method="post">
 	<table class="scatteredTable2">
-                           
                            <input id="origin" name="origin" type="hidden"/>
 						   <input id="destination" name="destination" type="hidden"/>
 						   <input id="departuredate" name="departuredate" type="hidden"/>
                            <input id="returndate" name="returndate" type="hidden"/>
-						   
                            <!-- 多程查询 start -->
                            <tr class="setMore">
                               <td><label>出发城市：</label></td>
@@ -188,7 +186,6 @@
                               <td class="addIconTd addSingleIconTd none"><i class="glyphicon glyphicon-plus addMore"></i></td>
                            </tr>
                            <!-- 多程查询 end -->
-                            
    						 </table>
                          <table class="scatteredTable3">
                            <tr>
@@ -232,20 +229,14 @@
                           <div class="TableListInfo">
                               <h5 id="travelArea"></h5>
                               <div class="paragraphNumber">
-                                <ul id="travelTypeNum" class="paragraphBtn">
-                                	
-                                </ul>
-                                <ul id="travelDateNum" class="paragraphBtn">
-                                
-                                </ul>
+                                <ul id="travelTypeNum" class="paragraphBtn"> </ul>
+                                <ul id="travelDateNum" class="paragraphBtn"> </ul>
                                 <!-- 机票信息展示 -->
                                 <ul id="paragraphListInfo" class="paragraphListInfo"></ul>
                                 <input type="hidden" id="airInfoList" name="airInfoList" value="1">
                               </div>
                           </div>
                       </div>
-                      
-                      
                       <!-- 团队票 检索 -->
                       <div class="tab-pane" id="tab_2">
                           <table class="scatteredTable1">
@@ -321,13 +312,8 @@
      </table>
 </form>
 <!-- 查询团队机票  end --> 
-
                           <div class="tableInfoDiv">
-                          
-                          	 <ul id="travelTeamTypeNum" class="paragraphBtn">
-                                
-                             </ul>
-                          
+                          	<ul id="travelTeamTypeNum" class="paragraphBtn"></ul>
                             <table class="table table-bordered table-hover">
                               <thead>
                               <tr>
@@ -342,7 +328,6 @@
                                 <th>操作人</th>
                               </tr>
                               </thead>
-
                               <!-- 显示团队票信息 -->
                               <tbody id="teamtbody">
                               </tbody>
@@ -355,11 +340,9 @@
 			</section>
 		</div>
 		<!--end right Content-->
-
 		<!--footer-->
 			<%@include file="/WEB-INF/public/footer.jsp"%>
 		<!--end footer-->
-
 		<script type="text/javascript">
 			var BASE_PATH = '${base}';
 		</script>
@@ -376,10 +359,8 @@
 		<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
 		<!-- My97DatePicker -->
 		<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
-
 		<!-- Validator -->
 		<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
-
 		<!-- 客户信息 js -->
 		<script src="${base}/admin/searchTicket/searchCustomerInfo.js"></script>
 		<!-- 订单信息 js -->
@@ -388,10 +369,7 @@
 		<script src="${base}/admin/searchTicket/searchMoreLine.js"></script>
 		<!-- 团队信息  js -->
 		<script src="${base}/admin/searchTicket/searchTeamMoreLine.js"></script>
-		
 		<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
-		
-
 		<!-- layer -->
 		<script src="${base}/common/js/layer/layer.js"></script>
 		<script type="text/javascript">
@@ -414,22 +392,41 @@
 	  	            }
 	  	        }
 	  		});
-	        
 	     });
 	  </script>
-	  
 	  <script type="text/javascript">
-	  
-	  	/* 段数按钮点击事件 */
-			$(document).click(function (e) { 
-				var num_id = $(e.target).attr('id'); 
-				/* 点击 团客每段提醒事件 */
-				if(num_id.indexOf("teamNum")>0){
-					alert(num_id);
+  		/* 段数按钮点击事件 */
+		$(document).click(function (e) { 
+			var num_id = $(e.target).attr('id'); 
+			/* 点击 散客每段提醒事件 */
+			if(num_id.indexOf("num")==0){
+				var i = num_id.substring(3,num_id.length);
+				var index = "";
+				if(i%2){
+					index = (i-1)/2;
+					$("#origin").val($("#outCity"+index).select2("val"));
+					$("#destination").val($("#singleArriveCity"+index).select2("val"));
+					$("#departuredate").val($("#outDatepicker"+index).val());
+					$("#returndate").val($("#returnDatepicker"+index).val());
+					/* 获取去程数据 */
+					$("#airInfoList").val("1");
+					$("#searchSingleTicketsBtn").click();
+				}else{
+					index = (i-2)/2;
+					$("#origin").val($("#singleArriveCity"+index).select2("val"));
+					$("#destination").val($("#outCity"+index).select2("val"));
+					$("#departuredate").val($("#returnDatepicker"+index).val());
+					$("#returndate").val($("#outDatepicker"+index).val());
+					/* 获取返程数据 */
+					$("#airInfoList").val("2");
+					$("#searchSingleTicketsBtn").click();	  					
+				}
+			}
+			/* 点击 团客每段提醒事件 */
+			if(num_id != null){
+				if(num_id.indexOf("teamNum")==0){
 					var i = num_id.substring(7,num_id.length);
 					var index = "";
-					alert(num_id);
-					alert(i);
 					if(i%2){
 						/* 去程数据 */
 						index = (i-1)/2;
@@ -445,274 +442,11 @@
 						$("#teamdestination").val($("#teamOutCity"+index).select2("val"));
 						$("#teamdeparturedate").val($("#teamReturnDatepicker"+index).val());
 						$("#teamreturndate").val($("#teamOutDatepicker"+index).val());
-						$("#searchTeamTicketsBtn").click(); 					
+						$("#searchTeamTicketsBtn").click(); 
 					}
 				}
-				
-				/* 点击 散客每段提醒事件 */
-				if(num_id.indexOf("um")>0){
-					var i = num_id.substring(3,num_id.length);
-					var index = "";
-					if(i%2){
-						index = (i-1)/2;
-						$("#origin").val($("#outCity"+index).select2("val"));
-						$("#destination").val($("#singleArriveCity"+index).select2("val"));
-						$("#departuredate").val($("#outDatepicker"+index).val());
-						$("#returndate").val($("#returnDatepicker"+index).val());
-						/* 获取去程数据 */
-						$("#airInfoList").val("1");
-						$("#searchSingleTicketsBtn").click();
-					}else{
-						index = (i-2)/2;
-						$("#origin").val($("#singleArriveCity"+index).select2("val"));
-						$("#destination").val($("#outCity"+index).select2("val"));
-						$("#departuredate").val($("#returnDatepicker"+index).val());
-						$("#returndate").val($("#outDatepicker"+index).val());
-						/* 获取返程数据 */
-						$("#airInfoList").val("2");
-						$("#searchSingleTicketsBtn").click();	  					
-					}
-				}
-				
-			});
-	 
- 	  	/* 散客查询 */
-  		$("#searchSingleTicketsBtn").click(function() {
-  			var link = $("#linkNameId").val();
-  			if(link==null){
-  				layer.msg("客户名称不能为空", "", 2000);
-  				return;
-  			}
-  			var index = 0;
-			$("#origin").val($("#outCity"+index).select2("val"));
-			$("#destination").val($("#singleArriveCity"+index).select2("val"));
-			$("#departuredate").val($("#outDatepicker"+index).val());
-			$("#returndate").val($("#returnDatepicker"+index).val());
-			/* 获取去程数据 */
-			$("#airInfoList").val("1");
-  			
-			$.ajax({
-				type : 'POST',
-				data : $("#searchSingleTicketsForm").serialize(),
-				url : '${base}/admin/search/searchSingleTickets.html',
-				success : function(resp) {
-					var outLiList = "";
-					var returnLiList = "";
-					
-					if ("200" == resp.statusCode) {
-						//如果成功返回数据才显示段数
-						//区间
-						var area = $("#outCityName").val()+' -- '+$("#arriveCityName").val();
-						document.getElementById('travelArea').innerHTML=area;
-						//段数
-						var airType = $("input[name='voyageType']:checked").val();
-						var html = "";
-						if(airType == 1){
-							html = '<li id="num1" class="btnStyle">第1段</li>';
-							document.getElementById('travelTeamTypeNum').innerHTML=html;
-						}
-						if(airType == 2){
-							html = '<li id="num1" class="btnStyle">第1段</li><li id="num2">第2段</li>';
-							document.getElementById('travelTeamTypeNum').innerHTML=html;
-						}
-						/* 多程 显示多段 */
-						if(airType == 3){
-							for(var i=1; i<$('.setMore').length*2; i=i+2){
-			  					var j = i+1;
-			  					html +='<li id="num'+i+'">第'+i+'段</li><li id="num'+j+'">第'+j+'段</li>';
-			  				}
-			  				document.getElementById('travelTypeNum').innerHTML=html;
-						}
-						/* 日期小卡片  */
-						getDateCard();
-						
-						var outCodeStr = $("#outCity0").select2("val");
-						var arriveCodeStr = $("#singleArriveCity0").select2("val");
-						var outList = new Array();
-						var returnList = new Array();
-						
-						for (var i=0; i<resp.data.length; i++){
-							var list = resp.data[i].list;
-							
-							var returnIdx = 0 ;
-							for(var j=0; j<list.length; j++){
-								var DepartureAirport = resp.data[i].list[j].DepartureAirport;
-								/*返程*/
-								if(DepartureAirport == arriveCodeStr ){
-									returnIdx = j;
-									break;
-								}
-							}
-							for(var j=0; j<list.length; j++){
-								if(j < returnIdx){
-									outList.push(list[j]);
-								}else{
-									returnList.push(list[j]);
-								}
-							}
-							
-							/* 去程列表 */
-							for(var foot = 0; foot < outList.length;foot++){
-								var AirlineName = resp.data[i].airlineName;
-								var airlineCode = resp.data[i].airlineCode;
-								var FlightNumber = outList[foot].FlightNumber;
-								var ArrivalAirport = outList[foot].ArrivalAirport;
-								var DepartureAirport = outList[foot].DepartureAirport;
-								var DepartureDateTime = outList[foot].DepartureDateTime;
-								var ArrivalDateTime = outList[foot].ArrivalDateTime;
-								var ElapsedTime = outList[foot].ElapsedTime;
-								var totalAmount = resp.data[i].priceInfo.totalAmount;
-								
-								
-								outLiList += '<li>'+
-							    '<div class="imgIconDiv"><img src="logoIcon.png"><p>'+AirlineName+airlineCode+FlightNumber+'</p></div>'+
-   								'<div class="distanceTimeDiv"><span class="chufaCS"><b>'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
-   								'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b>'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
-						   					'<div class="moneyDiv"><i class="fa fa-cny"></i>'+totalAmount+'</div>'+
-						   					'</li>';
-							}
-							
-							/* 返程列表 */
-							for(var foot = 0; foot < returnList.length;foot++){
-								var AirlineName = resp.data[i].airlineName;
-								var airlineCode = resp.data[i].airlineCode;
-								var FlightNumber = returnList[foot].FlightNumber;
-								var ArrivalAirport = returnList[foot].ArrivalAirport;
-								var DepartureAirport = returnList[foot].DepartureAirport;
-								var DepartureDateTime = returnList[foot].DepartureDateTime;
-								var ArrivalDateTime = returnList[foot].ArrivalDateTime;
-								var ElapsedTime = returnList[foot].ElapsedTime;
-								var totalAmount = resp.data[i].priceInfo.totalAmount;
-								
-								
-								returnLiList += '<li>'+
-							    '<div class="imgIconDiv"><img src="logoIcon.png"><p>'+AirlineName+airlineCode+FlightNumber+'</p></div>'+
-   								'<div class="distanceTimeDiv"><span class="chufaCS"><b>'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
-   								'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b>'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
-						   					'<div class="moneyDiv"><i class="fa fa-cny"></i>'+totalAmount+'</div>'+
-						   					'</li>';
-							}
-							
-						}
-						
-						if($("#airInfoList").val() == 1){
-							document.getElementById('paragraphListInfo').innerHTML=outLiList;
-						}else{
-							document.getElementById('paragraphListInfo').innerHTML=returnLiList;
-						}
-						
-					} else {
-						layer.msg(resp.data.message, "", 2000);
-					}
-
-				},
-				error : function(xhr) {
-				}
-			});
-			
+			}
 		});
-  		
-	  	/* 团客查询 */
-		$("#searchTeamTicketsBtn").click(function() {
-			var link = $("#linkNameId").val();
-  			if(link==null){
-  				layer.msg("客户名称不能为空", "", 2000);
-  				return;
-  			}
-  			var index=0;
-  			$("#teamorigin").val($("#teamOutCity"+index).select2("val"));
-  			$("#teamdestination").val($("#teamArriveCity"+index).select2("val"));
-  			$("#teamdeparturedate").val($("#teamOutDatepicker"+index).val());
-  			$("#teamreturndate").val($("#teamReturnDatepicker"+index).val());
-			$.ajax({
-				type : 'POST',
-				data : $("#searchTeamTicketsForm").serialize(),
-				url : '${base}/admin/search/searchTeamTickets.html',
-				success : function(data) {
-					//段数
-					var airTeamType = $("input[name='voyageType1']:checked").val();
-					var html = "";
-					if(airTeamType == 1){
-						html = '<li id="teamNum1" class="btnStyle">第1段</li>';
-						document.getElementById('travelTeamTypeNum').innerHTML=html;
-					}
-					if(airTeamType == 2){
-						html = '<li id="teamNum1" class="btnStyle">第1段</li><li id="teamNum2">第2段</li>';
-						document.getElementById('travelTeamTypeNum').innerHTML=html;
-					}
-					/* 多程 显示多段 */
-					if(airTeamType == 3){
-						for(var i=1; i<$('.setTeamMore').length*2; i=i+2){
-		  					var j = i+1;
-		  					html +='<li id="teamNum'+i+'">第'+i+'段</li><li id="teamNum'+j+'">第'+j+'段</li>';
-		  				}
-		  				document.getElementById('travelTeamTypeNum').innerHTML=html;
-					}
-					
-					var teamList = "";
-					$.each(data, function (index, element) {  
-			              teamList += '<tr><td>'+ element.ordersnum +'</td><td>'+ "团队" +'</td><td>'+ "爱自由" +'</td><td>'+element.leavescity +'/'+ element.backscity +'</td>'+
-			              			'<td>'+element.leavesdate+'</td><td>'+element.price+'</td><td>'+element.amount+'</td><td>'+element.orderstime+'</td><td>'+element.opid+'</td></tr>';
-			        });  
-					document.getElementById('teamtbody').innerHTML=teamList;
-				},
-				error : function() {
-				}
-			});
-		});
-	  	
-		/*散客 航程类型 点击事件*/
-	      function radioFunct(obj){
-	           var radio = document.getElementsByName("voyageType");  
-	           for (i=0; i<radio.length; i++) {  
-	                if (radio[i].checked) {  
-	                   var radioValue=radio[i].value;
-	                   if (radioValue==1) {
-	                        $('.setoutLabel').hide('300');
-	                        $('.setoutinput').hide('300');
-	                        $('.addIconTd').hide('300');
-	                        $('.removeIconTd').hide('300');
-	                   }else if(radioValue==2){
-	                        $('.setoutLabel').show('300');
-	                        $('.setoutinput').show('300');
-	                        $('.addIconTd').hide('300');
-	                        $('.removeIconTd').hide('300');
-	                   }else if(radioValue==3){
-	                        $('.setoutLabel').show('300');
-	                        $('.setoutinput').show('300');
-	                        $('.addIconTd').show('300');
-	                        $('.removeIconTd').show('300');
-	                   };
-	                }  
-	           }
-	      }
-	      /*团队 航程类型 点击事件*/
-	      function radioFunct1(){
-	            var radio1 = document.getElementsByName("voyageType1");  
-	             for (i=0; i<radio1.length; i++) {  
-	                  if (radio1[i].checked) {  
-	                     var radioValue1=radio1[i].value;
-	                     if (radioValue1==1) {
-	                          $('.setoutLabel').hide('300');
-	                          $('.setoutinput').hide('300');
-	                          $('.addIconTd').hide('300');
-	                          $('.removeIconTd').hide('300');
-	                     }else if(radioValue1==2){
-	                          $('.setoutLabel').show('300');
-	                          $('.setoutinput').show('300');
-	                          $('.addIconTd').hide('300');
-	                          $('.removeIconTd').hide('300');
-	                     }else if(radioValue1==3){
-	                          $('.setoutLabel').show('300');
-	                          $('.setoutinput').show('300');
-	                          $('.addIconTd').show('300');
-	                          $('.removeIconTd').show('300');
-	                     };
-	                  }  
-	             }
-	      }
-	  	
-	  </script>
-
+	 </script>
 </body>
 </html>
