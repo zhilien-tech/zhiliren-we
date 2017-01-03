@@ -104,7 +104,6 @@ function initTeamSelect2(){
 				maximumSelectionLength : 1, 
 				tags : false
 			});
-
 		}
 	});
 }
@@ -114,7 +113,7 @@ $(function () {
 	$('.paragraphBtn li').click(function(){
 		$(this).addClass('btnStyle').siblings().removeClass('btnStyle');
 	});
-	
+
 	//添加 setTeamMore
 	$('.addTeamIconTd').click(function(){
 		var clonediv = $('.setTeamMore').first();
@@ -195,6 +194,60 @@ $("#teamAirline").select2({
 	maximumSelectionLength : 1, 
 	tags : false
 });
+
+
+/* 团客多程查询 */
+var clickone=1;
+$("#searchTeamTicketsBtn").click(function() {
+	var link = $("#linkNameId").val();
+	if(link==null){
+		layer.msg("客户名称不能为空", "", 2000);
+		return;
+	}
+	if(clickone){
+		var index=0;
+		$("#teamorigin").val($("#teamOutCity"+index).select2("val"));
+		$("#teamdestination").val($("#teamArriveCity"+index).select2("val"));
+		$("#teamdeparturedate").val($("#teamOutDatepicker"+index).val());
+		$("#teamreturndate").val($("#teamReturnDatepicker"+index).val());
+		clickone=0;
+	}
+	$.ajax({
+		type : 'POST',
+		data : $("#searchTeamTicketsForm").serialize(),
+		url : BASE_PATH  + '/admin/search/searchTeamTickets.html',
+		success : function(data) {
+			//段数
+			var airTeamType = $("input[name='voyageType1']:checked").val();
+			var html = "";
+			if(airTeamType == 1){
+				html = '<li id="teamNum1" class="btnStyle">第1段</li>';
+				document.getElementById('travelTeamTypeNum').innerHTML=html;
+			}
+			if(airTeamType == 2){
+				html = '<li id="teamNum1" class="btnStyle">第1段</li><li id="teamNum2">第2段</li>';
+				document.getElementById('travelTeamTypeNum').innerHTML=html;
+			}
+			/* 多程 显示多段 */
+			if(airTeamType == 3){
+				for(var i=1; i<$('.setTeamMore').length*2; i=i+2){
+					var j = i+1;
+					html +='<li id="teamNum'+i+'">第'+i+'段</li><li id="teamNum'+j+'">第'+j+'段</li>';
+				}
+				document.getElementById('travelTeamTypeNum').innerHTML=html;
+			}
+			var teamList = "";
+			$.each(data, function (index, element) {  
+				teamList += '<tr><td>'+ element.ordersnum +'</td><td>'+ " " +'</td><td>'+ " " +'</td><td>'+element.leavescity +'/'+ element.backscity +'</td>'+
+				'<td>'+element.leavesdate+'</td><td>'+element.price+'</td><td>'+element.amount+'</td><td>'+element.orderstime+'</td><td>'+element.opid+'</td></tr>';
+			});  
+			document.getElementById('teamtbody').innerHTML=teamList;
+		},
+		error : function(){
+		}
+	});
+});
+
 
 /*-----------------------select2隐藏域赋值  start------------------------*/
 /* 航空公司 */

@@ -60,7 +60,6 @@
 								<select id="companyId" name="companyId" onchange="editInput()"
 									class="form-control select2 inpImpWid" multiple="multiple"
 									data-placeholder="请输入公司名称">
-
 								</select><span class="prompt">*</span>
 								<!-- 公司ID -->
 								<input id="agentId" type="hidden" name="agentId" />
@@ -87,7 +86,7 @@
 							<div class="col-sm-3 padding">
 								<input name="shortName" type="text"
 									class="form-control input-sm inpImportant"
-									placeholder="请输入公司简称" />
+									placeholder="请输入公司简称" /><span class="prompt">*</span>
 							</div>
 
 							<label class="col-sm-2 text-right padding">负责人：</label>
@@ -183,7 +182,7 @@
 								<select id="isLine" class="form-control select2 inpImportant"
 									multiple="multiple" onchange="inLine()"
 									data-placeholder="请输入国境内陆">
-								</select><span class="prompt">*</span>
+								</select>
 								<!-- 国境内陆ID -->
 								<input id="sLine1ID" type="hidden" name="sLine1" />
 							</div>
@@ -193,7 +192,7 @@
 								<select id="sLine2ID" class="form-control select2 inpImportant"
 									multiple="multiple" onchange="outLine()"
 									data-placeholder="请输入国际线路">
-								</select><span class="prompt">*</span>
+								</select>
 								<!-- 国际线路ID -->
 								<input id="line2ID" type="hidden" name="internationLine" />
 							</div>
@@ -583,9 +582,9 @@
 			}
 		}
 		//提交时开始验证
-		$('#addBtn').click(function() {
+		/* $('#addBtn').click(function() {
 			$('#customerAddForm').bootstrapValidator('validate');
-		});
+		}); */
 
 		//显示或隐藏发票项
 		function gaveInvioce() {
