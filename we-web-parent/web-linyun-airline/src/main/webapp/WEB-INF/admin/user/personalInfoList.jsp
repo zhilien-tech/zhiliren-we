@@ -102,7 +102,7 @@ function editPersonal(userId){
 }
 //事件提示
 function successCallback(id){
-	PersonDatatable.ajax.reload();
+	PersonDatatable.ajax.reload(null,false);
 	  if(id == '1'){
 		  layer.msg("密码修改成功!",{time: 2000, icon:1});
 	  }else if(id == '2'){

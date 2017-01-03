@@ -254,8 +254,8 @@ function editArea(id){
 	});
 	//事件提示
 	function successCallback(id){
-		deptDatatable.ajax.reload();
-		areaDatatable.ajax.reload();
+		deptDatatable.ajax.reload(null,false);
+		areaDatatable.ajax.reload(null,false);
 		  if(id == '1'){
 			  layer.msg("添加成功",{time: 2000, icon:1});
 		  }else if(id == '2'){

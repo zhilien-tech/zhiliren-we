@@ -15,7 +15,6 @@ import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.json.Json;
 
-import com.google.common.base.CharMatcher;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
@@ -214,8 +213,7 @@ public class AuthorityViewService extends BaseService<DeptJobForm> {
 
 		//2，截取功能模块id，根据功能id和公司id查询出公司功能id，用公司功能id和职位id往公司功能职位表添加数据
 		if (!Util.isEmpty(functionIds)) {
-			Iterable<String> funcIdIter = Splitter.on(",").trimResults(CharMatcher.anyOf("0")).omitEmptyStrings()
-					.split(functionIds);
+			Iterable<String> funcIdIter = Splitter.on(",").omitEmptyStrings().split(functionIds);
 			String funcIds = Joiner.on(",").join(funcIdIter);
 
 			List<TComFunPosMapEntity> before = dbDao.query(TComFunPosMapEntity.class, Cnd.where("jobId", "=", jobId),

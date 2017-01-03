@@ -160,7 +160,6 @@ $(document).ready(function(){
                          type: 'POST',//请求方式
                          //自定义提交数据，默认值提交当前input value
                          data: function(validator) {
-                        	 alert($('#deptName').val());
                             return {
                             	deptName:$('#deptName').val()
                             };
@@ -201,7 +200,6 @@ $(document).ready(function(){
 	           }
 	       });
 		}
-		 $(".Mymodal-lg").modal('hide');
 	}); 
 	//提交时开始验证
 	$('#submit').click(function() {

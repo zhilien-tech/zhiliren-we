@@ -172,7 +172,7 @@ $(function () {
 		 }
 	}
   function successCallback(id){
-	  datatable.ajax.reload();
+	  datatable.ajax.reload(null,false);
 	  if(id == '1'){
 		  layer.msg("添加成功",{time: 2000, icon:1});
 	  }else if(id == '2'){

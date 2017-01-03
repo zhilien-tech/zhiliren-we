@@ -85,7 +85,6 @@ $("#submit").click(function() {
 			alert('对不起，两次输入密码不一致!');
 			return;
 		} */
-		alert($('#passwordForm').serialize());
 		$.ajax({
 			cache : true,
 			type : "POST",
