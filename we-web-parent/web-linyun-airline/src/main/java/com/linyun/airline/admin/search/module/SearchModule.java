@@ -11,6 +11,8 @@ import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.search.service.SearchViewService;
+import com.linyun.airline.common.sabre.form.InstaFlightsSearchForm;
+
 
 @IocBean
 @At("/admin/search")
@@ -99,5 +101,25 @@ public class SearchModule {
 	public Object getAirLineSelect(@Param("airlinename") String airlinename, @Param("ids") final String ids) {
 		return searchViewService.getAirLineSelect(airlinename, ids);
 	}
+
+
+	/**
+	 * 查询散客机票
+	 */
+	@At
+	@POST
+	public Object searchSingleTickets(@Param("..") InstaFlightsSearchForm searchForm) {
+		return searchViewService.searchSingleTickets(searchForm);
+	}
+
+	/**
+	 * 查询团队机票
+	 */
+	@At
+	@POST
+	public Object searchTeamTickets(@Param("..") InstaFlightsSearchForm searchForm) {
+		return searchViewService.searchTeamTickets(searchForm);
+	}
+
 
 }

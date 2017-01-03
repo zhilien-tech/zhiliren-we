@@ -119,7 +119,7 @@ function initSelect2(){
 							results : selectdata
 						};
 					},
-					cache : true
+					cache : false
 				},
 				
 				escapeMarkup : function(markup) {
@@ -139,7 +139,12 @@ function initSelect2(){
 					delay : 250,
 					type : 'post',
 					data : function(params) {
+						var backairline = $('#backairline'+i).val();
+						if(backairline){
+							backairline = backairline.join(',');
+						}
 						return {
+							exname : backairline,
 							airlinename : params.term, // search term
 							page : params.page
 						};
@@ -155,7 +160,7 @@ function initSelect2(){
 							results : selectdata
 						};
 					},
-					cache : true
+					cache : false
 				},
 				escapeMarkup : function(markup) {
 					return markup;
@@ -174,7 +179,12 @@ function initSelect2(){
 					delay : 250,
 					type : 'post',
 					data : function(params) {
+						var leaveairline = $('#leaveairline'+i).val();
+						if(leaveairline){
+							leaveairline = leaveairline.join(',');
+						}
 						return {
+							exname : leaveairline,
 							airlinename : params.term, // search term
 							page : params.page
 						};
@@ -190,7 +200,7 @@ function initSelect2(){
 							results : selectdata
 						};
 					},
-					cache : true
+					cache : false
 				},
 				
 				escapeMarkup : function(markup) {
@@ -210,7 +220,12 @@ function initSelect2(){
 					delay : 250,
 					type : 'post',
 					data : function(params) {
+						var backscity = $('#backscity'+i).val();
+						if(backscity){
+							backscity = backscity.join(',');
+						}
 						return {
+							exname : backscity,
 							cityname : params.term, // search term
 							page : params.page
 						};
@@ -219,14 +234,14 @@ function initSelect2(){
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
 							  obj.id = obj.dictCode; // replace pk with your identifier
-							  obj.text = obj.dictCode; // replace pk with your identifier
+							  obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
 							  return obj;
 						});
 						return {
 							results : selectdata
 						};
 					},
-					cache : true
+					cache : false
 				},
 				
 				escapeMarkup : function(markup) {
@@ -246,7 +261,12 @@ function initSelect2(){
 					delay : 250,
 					type : 'post',
 					data : function(params) {
+						var leavescity = $('#leavescity'+i).val();
+						if(leavescity){
+							leavescity = leavescity.join(',');
+						}
 						return {
+							exname : leavescity,
 							cityname : params.term, // search term
 							page : params.page
 						};
@@ -255,14 +275,14 @@ function initSelect2(){
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
 							  obj.id = obj.dictCode; // replace pk with your identifier
-							  obj.text = obj.dictCode; // replace pk with your identifier
+							  obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
 							  return obj;
 						});
 						return {
 							results : selectdata
 						};
 					},
-					cache : true
+					cache : false
 				},
 				
 				escapeMarkup : function(markup) {
@@ -282,7 +302,12 @@ function initSelect2(){
 					delay : 250,
 					type : 'post',
 					data : function(params) {
+						var backbackcity = $('#backbackcity'+i).val();
+						if(backbackcity){
+							backbackcity = backbackcity.join(',');
+						}
 						return {
+							exname : backbackcity,
 							cityname : params.term, // search term
 							page : params.page
 						};
@@ -291,14 +316,14 @@ function initSelect2(){
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
 							obj.id = obj.dictCode; // replace pk with your identifier
-							obj.text = obj.dictCode; // replace pk with your identifier
+							obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
 							return obj;
 						});
 						return {
 							results : selectdata
 						};
 					},
-					cache : true
+					cache : false
 				},
 				
 				escapeMarkup : function(markup) {
@@ -318,7 +343,12 @@ function initSelect2(){
 					delay : 250,
 					type : 'post',
 					data : function(params) {
+						var backleavecity = $('#backleavecity'+i).val();
+						if(backleavecity){
+							backleavecity = backleavecity.join(',');
+						}
 						return {
+							exname : backleavecity,
 							cityname : params.term, // search term
 							page : params.page
 						};
@@ -327,14 +357,14 @@ function initSelect2(){
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
 							obj.id = obj.dictCode; // replace pk with your identifier
-							obj.text = obj.dictCode; // replace pk with your identifier
+							obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
 							return obj;
 						});
 						return {
 							results : selectdata
 						};
 					},
-					cache : true
+					cache : false
 				},
 				
 				escapeMarkup : function(markup) {
@@ -363,14 +393,18 @@ function initSelect2(){
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
 							  obj.id = obj.dictCode; // replace pk with your identifier
-							  obj.text = obj.dictCode; // replace pk with your identifier
+							  var text = obj.dictCode;
+							  if(obj.dictName){
+								  text = obj.dictCode+'('+obj.dictName+')'
+							  }
+							  obj.text = text; // replace pk with your identifier
 							  return obj;
 						});
 						return {
 							results : selectdata
 						};
 					},
-					cache : true
+					cache : false
 				},
 				
 				escapeMarkup : function(markup) {
@@ -561,7 +595,7 @@ $(function () {
 		if($('.addMake').length > 1){
 			$(this).parent().remove();
 		}else{
-			layer.msg("最后一个不能删",{time: 2000, icon:1});
+			layer.alert("最后一个不能删",{time: 2000, icon:1});
 		}
 	});
 });
@@ -677,11 +711,11 @@ function makePlan(){
 	            	datatable1.ajax.reload();
 	            	if(divlength-1 == i){
 	            		layer.closeAll('loading');
-	            		layer.msg("制作成功",{time: 2000, icon:1});
+	            		layer.alert("制作成功",{time: 2000, icon:1});
 	            	}
 	            },
 	            error: function (xhr) {
-	            	layer.msg("制作失败",{time: 2000, icon:1});
+	            	layer.alert("制作失败",{time: 2000, icon:1});
 	            } 
 	        });
 		});
@@ -695,19 +729,19 @@ function checkIsNull(){
 		if(travelname){
 			travelname = travelname.join(',');
 		}else{
-			layer.msg("请填写第"+(i+1)+"个旅行社",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个旅行社",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}
 		var peoplecount = $(this).find('[name=peoplecount]').val();
 		if(!peoplecount){
-			layer.msg("请填写第"+(i+1)+"个人数",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个人数",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}
 		var dayscount = $(this).find('[name=dayscount]').val();
 		if(!dayscount){
-			layer.msg("请填写第"+(i+1)+"个天数",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个天数",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}
@@ -715,7 +749,7 @@ function checkIsNull(){
 		if (leaveairline) {
 			leaveairline = leaveairline.join(',');
 		}else{
-			layer.msg("请填写第"+(i+1)+"个去程航班",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个去程航班",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}
@@ -723,7 +757,7 @@ function checkIsNull(){
 		if (backairline) {
 			backairline = backairline.join(',');
 		}else{
-			layer.msg("请填写第"+(i+1)+"个回程航班",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个回程航班",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}*/
@@ -731,7 +765,7 @@ function checkIsNull(){
 		if (leavescity) {
 			leavescity = leavescity.join(',');
 		}else{
-			layer.msg("请填写第"+(i+1)+"个去程出发城市",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个去程出发城市",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}
@@ -739,15 +773,15 @@ function checkIsNull(){
 		if (backscity) {
 			backscity = backscity.join(',');
 		}else{
-			layer.msg("请填写第"+(i+1)+"个去程抵达城市",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个去程抵达城市",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}
-		var backleavecity = $(this).find('[name=backleavecity]').val();
+		/*var backleavecity = $(this).find('[name=backleavecity]').val();
 		if (backleavecity) {
 			backleavecity = backleavecity.join(',');
 		}else{
-			layer.msg("请填写第"+(i+1)+"个返程出发城市",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个返程出发城市",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}
@@ -755,27 +789,27 @@ function checkIsNull(){
 		if (backbackcity) {
 			backbackcity = backbackcity.join(',');
 		}else{
-			layer.msg("请填写第"+(i+1)+"个返程抵达城市",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个返程抵达城市",{time: 2000, icon:1});
 			result = false;
 			return false;
-		}
+		}*/
 		var unioncity = $(this).find('[name=unioncity]').val();
 		if (unioncity) {
 			unioncity = unioncity.join(',');
 		}else{
-			layer.msg("请填写第"+(i+1)+"个联运城市",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个联运城市",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}
 		var startdate = $(this).find('[name=startdate]').val();
 		if(!startdate){
-			layer.msg("请填写第"+(i+1)+"个起始日期",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个起始日期",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}
 		var enddate = $(this).find('[name=enddate]').val();
 		if(!enddate){
-			layer.msg("请填写第"+(i+1)+"个截止日期",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个截止日期",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}
@@ -788,7 +822,7 @@ function checkIsNull(){
 			weekday = weekday.join(',');
 		}
 		if(!weekday && !calenderdate){
-			layer.msg("请选择第"+(i+1)+"个每周或自由中的一种",{time: 2000, icon:1});
+			layer.alert("请选择第"+(i+1)+"个每周或自由中的一种",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}
@@ -818,17 +852,17 @@ function savePlan(){
 				data: {}, 
 				url: BASE_PATH + '/admin/customneeds/savePlanData.html',
 				success: function (data) { 
-					layer.msg("保存成功",{time: 2000, icon:1});
+					layer.alert("保存成功",{time: 2000, icon:1});
 					datatable1.ajax.reload();
 					datatable2.ajax.reload();
 				},
 				error: function (xhr) {
-					layer.msg("保存失败",{time: 2000, icon:1});
+					layer.alert("保存失败",{time: 2000, icon:1});
 				} 
 			});
 		});
 	}else{
-		layer.msg("没有需要保存的计划",{time: 2000, icon:1});
+		layer.alert("没有需要保存的计划",{time: 2000, icon:1});
 	}
 }
 //提示是否保存已经制作的计划

@@ -646,17 +646,6 @@
 								message : '传真格式错误'
 							}
 						}
-					},
-					siteUrl : {
-						validators : {
-							notEmpty : {
-								message : '网址址不能为空'
-							},
-							regexp : {
-								regexp : /^(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?$/,
-								message : '网址格式错误'
-							}
-						}
 					}
 				}
 			});

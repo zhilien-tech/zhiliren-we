@@ -161,7 +161,8 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 	public Object addCompany(TCompanyAddForm addForm, TUserAddForm userAddForm) {
 		//添加管理员信息数据
 		userAddForm.setPassword(MD5.sign("000000", AccessConfig.password_secret, AccessConfig.INPUT_CHARSET));
-		userAddForm.setUserName(addForm.getComName() + "系统管理员");
+		userAddForm.setUserName(addForm.getTelephone());
+		userAddForm.setStatus(1);
 		TUserEntity userEntity = FormUtil.add(dbDao, userAddForm, TUserEntity.class);
 		//添加公司信息数据
 		addForm.setCreatetime(new Date());
@@ -185,7 +186,7 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 		//准备数据
 		obj.put("company", companyEntity);
 		//准备用户名
-		obj.put("telephone", dbDao.fetch(TUserEntity.class, companyEntity.getAdminId()).getTelephone());
+		obj.put("telephone", dbDao.fetch(TUserEntity.class, companyEntity.getAdminId()).getUserName());
 		//准备下拉框
 		obj.put("companyTypeEnum", EnumUtil.enum2(CompanyTypeEnum.class));
 		return obj;
@@ -194,8 +195,7 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 	public Object updateCompany(TCompanyUpdateForm updateForm) {
 		//修改管理员用户名
 		TUserEntity userEntity = dbDao.fetch(TUserEntity.class, updateForm.getAdminId());
-		userEntity.setTelephone(updateForm.getTelephone());
-		userEntity.setUserName(updateForm.getComName() + "系统管理员");
+		userEntity.setUserName(updateForm.getTelephone());
 		dbDao.update(userEntity);
 		//修改公司信息
 		updateForm.setLastupdatetime(new Date());

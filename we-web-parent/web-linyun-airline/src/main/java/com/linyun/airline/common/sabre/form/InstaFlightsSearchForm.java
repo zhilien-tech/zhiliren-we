@@ -124,4 +124,14 @@ public class InstaFlightsSearchForm {
 	 * 首班出境航班，一般就是指从起飞机场出发的第一班。
 	 */
 	//	private String outbounddeparturewindow;
+
+	//成人
+	private String agentSelect;
+	//儿童
+	private String childrenSelect;
+	//婴儿
+	private String babySelect;
+	//舱位等级
+	private String airLevel;
+
 }

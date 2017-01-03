@@ -39,7 +39,6 @@ import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.entities.DictInfoEntity;
-import com.linyun.airline.entities.TAgentEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TCustomerInvoiceEntity;
@@ -71,9 +70,15 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	private UploadService fdfsUploadService;
 
 	//负责人
-	public Object agent() {
-		List<TAgentEntity> agentList = dbDao.query(TAgentEntity.class, null, null);
-		return agentList;
+	public Object agent(HttpSession session) {
+		Map<String, Object> obj = new HashMap<String, Object>();
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		Sql sql = Sqls.create(sqlManager.get("customer_agent_list"));
+		sql.setParam("comid", companyId);
+		List<Record> record = dbDao.query(sql, null, null);
+		obj.put("userlist", record);
+		return obj;
 	}
 
 	//客户公司
@@ -217,7 +222,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 * @param id
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object toUpdatePage(long id) throws Exception {
+	public Object toUpdatePage(HttpSession session, long id) throws Exception {
 
 		Map<String, Object> obj = new HashMap<String, Object>();
 
@@ -241,8 +246,13 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 		obj.put("customer", tCustomerInfoEntity);
 
-		List<TUserEntity> userlist = dbDao.query(TUserEntity.class, null, null);
-		obj.put("userlist", userlist);
+		//负责人查询
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		Sql sql = Sqls.create(sqlManager.get("customer_agent_list"));
+		sql.setParam("comid", companyId);
+		List<Record> record = dbDao.query(sql, null, null);
+		obj.put("userlist", record);
 
 		//查询公司名称
 		Sql comSql = Sqls.create(sqlManager.get("customer_comOption_list"));
