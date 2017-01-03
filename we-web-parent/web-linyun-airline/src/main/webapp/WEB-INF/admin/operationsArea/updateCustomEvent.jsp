@@ -32,6 +32,7 @@
 			</div>
 			<input type="hidden" id="id" name="id" value="${obj.message.id}"/>
 			<div class="evevtBttton">
+				<button type="button" class="btn right" onclick="deleteEvent()">删除</button>
 				<input id="submitBtn" type="button" class="btn btn-primary" onclick="update();" value="更新"/>
 				<button type="button" class="btn btn-primary right" onclick="closewindow();">取消</button>
 			</div>
@@ -121,6 +122,10 @@
 		    return zeros + value;
 		}
 
+		
+		function deleteEvent(){
+			alert();
+		}
 		
 	</script>
 </body>

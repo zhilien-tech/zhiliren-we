@@ -80,11 +80,9 @@
 <script src="${base}/public/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
 <!-- bootstrap time picker -->
 <script src="${base}/public/plugins/timepicker/bootstrap-timepicker.min.js"></script>
-
 <!-- DataTables -->
 <script src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
-<script
-	src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script  src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
 <script src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- iCheck 1.0.1 -->
@@ -233,6 +231,7 @@ function initDatatable() {
     	"bLengthChange": false,
         "processing": true,
         "serverSide": true,
+        "stripeClasses": [ 'strip1','strip2' ],
         "language": {
             "url": "${base}/public/plugins/datatables/cn.json"
         },
@@ -360,7 +359,7 @@ function initDatatable() {
 	
 	/* 保存按钮事件 */
 	function successCallback(id){
-	  datatable.ajax.reload();
+	  datatable.ajax.reload(null,false);
 	  if(id == '1'){
 		  layer.msg("添加成功",{time: 2000, icon:1});
 	  }else if(id == '2'){

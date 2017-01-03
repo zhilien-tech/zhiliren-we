@@ -258,6 +258,8 @@
 			if(d.getDate() < 10){
 				var dateStr = d.getMonth()+1 +"-0"+ d.getDate();
 				var yesterdayStr = d.getMonth()+1 +"-0"+ (d.getDate()-1);
+				dateStr = "0" + dateStr;
+				yesterdayStr = "0" + yesterdayStr;
 			}else{
 				var dateStr = d.getMonth()+1 +"-"+ d.getDate();
 				var yesterdayStr = d.getMonth()+1 +"-"+ (d.getDate()-1);
