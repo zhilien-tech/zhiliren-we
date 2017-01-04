@@ -122,9 +122,27 @@
 		    return zeros + value;
 		}
 
-		
+		//删除自定义事件
 		function deleteEvent(){
-			alert();
+			$.ajax({
+				type : 'POST',
+				dataType:'json',
+				url : '${base}/admin/operationsArea/deleteCustom.html',
+				data :  $("#customEventForm").serialize(),
+				success : function(data) {
+					layer.msg("删除成功", "", 3000);
+					var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+					parent.layer.close(index);
+					//window.location.reload();
+					//更新成功 刷新各个模块
+					window.parent.taskEventList();
+					window.parent.reload();
+					window.parent.getTimeStr();
+				},
+				error : function() {
+					layer.msg("删除失败", "", 3000);
+				}
+			});
 		}
 		
 	</script>

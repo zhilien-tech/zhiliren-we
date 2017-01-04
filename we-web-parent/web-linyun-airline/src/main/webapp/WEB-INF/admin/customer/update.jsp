@@ -74,7 +74,7 @@
 										value="${obj.customer.shortName}" placeholder="请输入公司简称" /><span class="prompt">*</span>
 								</div>
 							</div>
-							<div class="form-group form-group1">
+							<div class="form-group">
 								<label class="col-sm-2 text-right padding">负责人：</label>
 								<div class="col-sm-3 padding">
 									<!-- 负责人下拉列表 -->
@@ -95,7 +95,7 @@
 										value="${obj.customer.linkMan}" placeholder="请输入联系人" /><span class="prompt">*</span>
 								</div>
 							</div>
-							<div class="form-group form-group1">
+							<div class="form-group">
 								<label class="col-sm-2 text-right padding">联系电话：</label>
 								<div class="col-sm-3 padding">
 									<input name="telephone" type="tel" class="form-control input-sm inpImportant"
@@ -212,7 +212,7 @@
 								<span id="completeFileName">
 									<c:if test="${not empty obj.customer.appendixName}">
 										<div>
-											<a href='${obj.customer.appendix}' download='${obj.customer.appendixName}' onclick='downloadFile(${obj.customer.appendixName});'>
+											<a href='${obj.customer.appendix}' download='${obj.customer.appendixName}'>
 		                                		${obj.customer.appendixName}
 			                                </a>&nbsp;&nbsp;<span>上传成功</span>&nbsp;&nbsp;&nbsp;&nbsp;
 			                                <input type='button' class='delete' onclick='deleteFile();' value='删除'>
@@ -383,7 +383,7 @@
 	            'buttonText': '上传',
 	            'fileSizeLimit' : '3000MB',
 	            'fileTypeDesc' : '文件',
-	            'fileTypeExts' : '*.png; *.txt',//文件类型过滤
+	            'fileTypeExts' : '*.png; *.txt; *.doc; *.pdf; *.xls; *.jpg; *.docx; *.xlsx;',//文件类型过滤
 	            'swf'      : '${base}/public/plugins/uploadify/uploadify.swf',
 	            'multi':false,
 	            'successTimeout':1800,
@@ -410,7 +410,23 @@
                         innerHtml = "<div>该附件上传失败，请重新上传</div>";
                     }
                     $("#completeFileName").html($("#completeFileName").html() + innerHtml);
-	            }
+	            },
+                //加上此句会重写onSelectError方法【需要重写的事件】
+                'overrideEvents': ['onSelectError', 'onDialogClose'],
+                //返回一个错误，选择文件的时候触发
+                'onSelectError':function(file, errorCode, errorMsg){
+                    switch(errorCode) {
+                        case -110:
+                            alert("文件 ["+file.name+"] 大小超出系统限制！");
+                            break;
+                        case -120:
+                            alert("文件 ["+file.name+"] 大小异常！");
+                            break;
+                        case -130:
+                            alert("文件 ["+file.name+"] 类型不正确！");
+                            break;
+                    }
+                }
 	        });
 			
 			//页面加载时 执行
