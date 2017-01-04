@@ -124,25 +124,34 @@
 
 		//删除自定义事件
 		function deleteEvent(){
-			$.ajax({
-				type : 'POST',
-				dataType:'json',
-				url : '${base}/admin/operationsArea/deleteCustom.html',
-				data :  $("#customEventForm").serialize(),
-				success : function(data) {
-					layer.msg("删除成功", "", 3000);
-					var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-					parent.layer.close(index);
-					//window.location.reload();
-					//更新成功 刷新各个模块
-					window.parent.taskEventList();
-					window.parent.reload();
-					window.parent.getTimeStr();
-				},
-				error : function() {
-					layer.msg("删除失败", "", 3000);
-				}
+			layer.confirm("您确认删除信息吗？", {
+			    btn: ["是","否"], //按钮
+			    shade: false //不显示遮罩
+			}, function(){
+				// 点击确定之后
+				$.ajax({
+					type : 'POST',
+					dataType:'json',
+					url : '${base}/admin/operationsArea/deleteCustom.html',
+					data :  $("#customEventForm").serialize(),
+					success : function(data) {
+						layer.msg("删除成功", "", 3000);
+						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+						parent.layer.close(index);
+						//window.location.reload();
+						//更新成功 刷新各个模块
+						window.parent.taskEventList();
+						window.parent.reload();
+						window.parent.getTimeStr();
+					},
+					error : function() {
+						layer.msg("删除失败", "", 3000);
+					}
+				});
+			}, function(){
+			    // 取消之后不用处理
 			});
+			
 		}
 		
 	</script>

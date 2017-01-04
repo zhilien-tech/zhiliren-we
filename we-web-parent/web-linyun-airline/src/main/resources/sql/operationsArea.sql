@@ -24,8 +24,11 @@ AND
 	cj.comId=c.id 
 AND 
 	u.id=@userId
+AND
+	m.msgStatus=@msgStatus
 AND 
 	m.generateTime between @start AND @end
+	
 
 /*msg_user_company_task*/
 SELECT

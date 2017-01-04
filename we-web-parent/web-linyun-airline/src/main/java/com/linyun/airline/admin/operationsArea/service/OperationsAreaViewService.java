@@ -145,7 +145,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		//当前用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long id = loginUser.getId();
-
+		int msgstatus = 1;
 		Sql sql = Sqls.create(sqlManager.get("msg_user_company"));
 		if (!Util.isEmpty(id)) {
 			sql.params().set("userId", id);
@@ -156,6 +156,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		if (!Util.isEmpty(end)) {
 			sql.params().set("end", end);
 		}
+		sql.params().set("msgStatus", msgstatus);
 		Cnd cnd = Cnd.NEW();
 		cnd.orderBy("m.priorityLevel", "desc");
 		sql.setCondition(cnd);
