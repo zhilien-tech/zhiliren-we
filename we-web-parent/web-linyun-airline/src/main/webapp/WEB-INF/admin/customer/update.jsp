@@ -47,52 +47,60 @@
 				<div class="tab-content">
 					<div class="tab-pane active" id="tabs_1">
 						<!--基本信息-->
-						<div class="form-group row">
-							<input name="id" type="hidden" value="${obj.customer.id }">
-							<label class="col-sm-3 text-right padding">公司名称：</label>
-							<div class="col-sm-8 padding inpNone seleSpanWid">
-								<select id="companyId" name="companyId"  onchange="editInput()" class="form-control select2 inpImpWid" multiple="multiple"  data-placeholder="请输入公司名称">
-									<option></option>
-									<c:forEach var="one" items="${obj.comEntity }">
-										<option value="${one.id }">${one.text}</option>
-									</c:forEach>
-								</select><span class="prompt">*</span>
-								<!-- 公司ID -->
-								<input id="agentId" type="hidden" name="agentId" />
-								<!-- 公司名称 -->
-								<input id="comName" type="hidden" name="name" />
+						<div class="row">
+							<div class="form-group">
+								<input name="id" type="hidden" value="${obj.customer.id }">
+								<label class="col-sm-3 text-right padding">公司名称：</label>
+								<div class="col-sm-8 padding inpNone seleSpanWid">
+									<select id="companyId" name="companyId"  onchange="editInput()" class="form-control select2 inpImpWid" multiple="multiple"  data-placeholder="请输入公司名称">
+										<option></option>
+										<c:forEach var="one" items="${obj.comEntity }">
+											<option value="${one.id }">${one.text}</option>
+										</c:forEach>
+									</select><span class="prompt">*</span>
+									<!-- 公司ID -->
+									<input id="agentId" type="hidden" name="agentId" />
+									<!-- 公司名称 -->
+									<input id="comName" type="hidden" name="name" />
+								</div>
 							</div>
 						</div>
 
-						<div class="form-group row">
-							<label class="col-sm-3 text-right padding">公司简称：</label>
-							<div class="col-sm-3 padding">
-								<input name="shortName" type="tel" class="form-control input-sm inpImportant"
-									value="${obj.customer.shortName}" placeholder="请输入公司简称" /><span class="prompt">*</span>
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">公司简称：</label>
+								<div class="col-sm-3 padding">
+									<input name="shortName" type="tel" class="form-control input-sm inpImportant"
+										value="${obj.customer.shortName}" placeholder="请输入公司简称" /><span class="prompt">*</span>
+								</div>
 							</div>
-
-							<label class="col-sm-2 text-right padding">负责人：</label>
-							<div class="col-sm-3 padding">
-								<!-- 负责人下拉列表 -->
-								<select id="agent" name="agent" class="form-control input-sm inpImportant">
-									<c:forEach var="one" items="${obj.userlist }">
-										<option value="${one.id }" <c:if test="${one.id eq obj.customer.agent}">selected</c:if>>${one.userName}</option>
-									</c:forEach>
-								</select><span class="prompt">*</span>
+							<div class="form-group form-group1">
+								<label class="col-sm-2 text-right padding">负责人：</label>
+								<div class="col-sm-3 padding">
+									<!-- 负责人下拉列表 -->
+									<select id="agent" name="agent" class="form-control input-sm inpImportant">
+										<c:forEach var="one" items="${obj.userlist }">
+											<option value="${one.id }" <c:if test="${one.id eq obj.customer.agent}">selected</c:if>>${one.userName}</option>
+										</c:forEach>
+									</select><span class="prompt">*</span>
+								</div>
 							</div>
 						</div>
 
-						<div class="form-group row">
-							<label class="col-sm-3 text-right padding">联系人：</label>
-							<div class="col-sm-3 padding">
-								<input name="linkMan" type="tel" class="form-control input-sm inpImportant"
-									value="${obj.customer.linkMan}" placeholder="请输入联系人" /><span class="prompt">*</span>
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">联系人：</label>
+								<div class="col-sm-3 padding">
+									<input name="linkMan" type="tel" class="form-control input-sm inpImportant"
+										value="${obj.customer.linkMan}" placeholder="请输入联系人" /><span class="prompt">*</span>
+								</div>
 							</div>
-
-							<label class="col-sm-2 text-right padding">联系电话：</label>
-							<div class="col-sm-3 padding">
-								<input name="telephone" type="tel" class="form-control input-sm inpImportant"
-									value="${obj.customer.telephone}" placeholder="请输入联系电话" /><span class="prompt">*</span>
+							<div class="form-group form-group1">
+								<label class="col-sm-2 text-right padding">联系电话：</label>
+								<div class="col-sm-3 padding">
+									<input name="telephone" type="tel" class="form-control input-sm inpImportant"
+										value="${obj.customer.telephone}" placeholder="请输入联系电话" /><span class="prompt">*</span>
+								</div>
 							</div>
 						</div>
 
@@ -110,11 +118,13 @@
 							</div>
 						</div>
 
-						<div class="form-group row">
-							<label class="col-sm-3 text-right padding">地址：</label>
-							<div class="col-sm-8 padding">
-								<input name="address" type="tel" class="form-control input-sm inpImpWid"
-									value="${obj.customer.address}" placeholder="请输入详细地址" /><span class="prompt">*</span>
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">地址：</label>
+								<div class="col-sm-8 padding">
+									<input name="address" type="tel" class="form-control input-sm inpImpWid"
+										value="${obj.customer.address}" placeholder="请输入详细地址" /><span class="prompt">*</span>
+								</div>
 							</div>
 						</div>
 
@@ -197,9 +207,18 @@
 							<div class="col-sm-3 padding">
 								<input type="file" name="fileID" id="uploadify" />
 								<input type="hidden" name="appendix" id="appendix" />
-								<!-- <p class="flie_A" >
-									上传<input type="button" onclick="fileupload();"/>
-								</p> -->
+								<input type="hidden" id="fileUrl">
+								<input type="hidden" id="appendixName" name="appendixName">
+								<span id="completeFileName">
+									<c:if test="${not empty obj.customer.appendixName}">
+										<div>
+											<a href='${obj.customer.appendix}' download='${obj.customer.appendixName}' onclick='downloadFile(${obj.customer.appendixName});'>
+		                                		${obj.customer.appendixName}
+			                                </a>&nbsp;&nbsp;<span>上传成功</span>&nbsp;&nbsp;&nbsp;&nbsp;
+			                                <input type='button' class='delete' onclick='deleteFile();' value='删除'>
+		                                </div>
+									</c:if>
+								</span>
 							</div>
 						</div>
 					</div>
@@ -373,8 +392,24 @@
 	            //onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
 	            //下面的例子演示如何获取到vid
 	            'onUploadSuccess':function(file,data,response){
-	                var jsonobj=eval('('+data+')'); 
-	                $('#appendix').val(data);
+	            	$("#completeFileName").html("");
+					var jsonobj = eval('(' + data + ')');
+					$('#appendix').val(data);
+					$("#fileUrl").val(data);
+					$("#appendixName").val(file.name);
+					var innerHtml = "";
+                    if (response) {
+                        innerHtml = "<div><a id='downloadA' href='#' download='"+file.name+"' onclick='downloadFile("
+                                + data
+                                + ");' >"
+                                + file.name
+                                + "</a>&nbsp;&nbsp;<span>上传成功</span>&nbsp;&nbsp;&nbsp;&nbsp;"
+                                + "<input type='button' class='delete' onclick='deleteFile();' value='删除'><input type='hidden' name='${attachIds}' value='"
+                                + data + "'></div>";
+                    } else {
+                        innerHtml = "<div>该附件上传失败，请重新上传</div>";
+                    }
+                    $("#completeFileName").html($("#completeFileName").html() + innerHtml);
 	            }
 	        });
 			
@@ -751,9 +786,9 @@
 			$("#sInvName").val(selectedsInvID);
 		}
 	 	//提交时开始验证
-		$('#updateBtn').click(function() {
+		/* $('#updateBtn').click(function() {
 			$('#customerUpdateForm').bootstrapValidator('validate');
-		}); 
+		});  */
 	</script>
 	
 	<!-- 更新 -->
@@ -791,6 +826,16 @@
         	window.parent.successCallback('4');
         	parent.layer.close(index);
 		}
+		
+		//删除上传文件
+		function deleteFile(){
+			$("#completeFileName").html("");
+			$("#appendix").val("");
+		}
+		//下载文件
+		function downloadFile(url) {  
+			$("#downloadA").attr("href", url);
+	    }
 	</script>
 	
 	
