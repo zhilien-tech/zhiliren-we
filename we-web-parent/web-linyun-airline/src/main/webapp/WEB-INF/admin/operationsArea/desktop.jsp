@@ -140,20 +140,19 @@
 					<div class="layer-check">
 						<p>
 							<input id="taskBoxId" name="checkboxname" type="checkbox"
-								value="task" /> <span>任务</span>
+								value="task" class="checkNum" onchange="checkBoxChange(this)" /> <span>任务</span>
 						</p>
 						<p>
 							<input id="maxCalenderId" name="checkboxname" type="checkbox"
-								value="maxC" /> <span>大日历</span>
+								value="maxC" class="checkNum" onchange="checkBoxChange(this)"/> <span>大日历</span>
 						</p>
 						<p>
 							<input id="minCalenderId" name="checkboxname" type="checkbox"
-								value="minC" /> <span>小日历</span>
+								value="minC" class="checkNum" onchange="checkBoxChange(this)"/> <span>小日历</span>
 						</p>
 					</div>
 				</div>
 			</form>
-
 		</div>
 		<!--end 自定义界面 弹框-->
 	</div>
@@ -211,6 +210,12 @@
 	
 	<!-- 自定义界面保存 -->
 	<script type="text/javascript">
+		function checkBoxChange(obj){
+			if($(".checkNum:checked").size()==0){
+				obj.checked = true;
+   			}
+		}
+	
    		function checkboxSave(){
    			$.ajax({
                 type: "POST",
