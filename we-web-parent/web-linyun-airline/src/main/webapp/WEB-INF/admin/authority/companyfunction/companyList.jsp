@@ -12,7 +12,7 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">&nbsp;&nbsp;<i class="fa fa-sitemap"></i>公司权限配置</h3>
+              <h3 class="box-title">&nbsp;&nbsp;<!-- <i class="fa fa-sitemap"></i>公司权限配置 --></h3>
               <div class="form-group row form-right">
              
                 
@@ -77,6 +77,7 @@ function initDatatable() {
     	"searching":false,
     	"bLengthChange": false,
         "processing": true,
+        "stripeClasses": [ 'strip1','strip2' ],//斑马线
         "serverSide": true,
         "language": {
             "url": "${base}/public/plugins/datatables/cn.json"

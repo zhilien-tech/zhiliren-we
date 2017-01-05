@@ -9,6 +9,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>个人信息</title>
   <link rel="stylesheet" type="text/css" href="${base}/public/dist/css/personalInfo.css"><!--本页的styleFlie-->
+  <style type="text/css">
+  	.strip1{background-color: #ffffff;}
+	.strip2{background-color: #cfe2f3;}
+  </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -27,35 +31,35 @@
             <div class="personalTable">
               <table id="PersonDatatable" class="table table-bordered table-hover">
                 <tbody>
-                  <tr>
+                  <tr class="strip1">
                     <td>用户名称</td>
                     <td>${obj.personalInfo[0].userName}</td>
                   </tr>
-                  <tr>
+                  <tr class="strip2">
                     <td>用户名/手机号码</td>
                     <td>${obj.personalInfo[0].telephone }</td>
                   </tr>
-                  <tr>
+                  <tr class="strip1">
                     <td>座机号码</td>
                     <td>${obj.personalInfo[0].landline }</td>
                   </tr>
-                  <tr>
+                  <tr class="strip2">
                     <td>联系QQ</td>
                     <td>${obj.personalInfo[0].qq }</td>
                   </tr>
-                  <tr>
+                  <tr class="strip1">
                     <td>电子邮箱</td>
                     <td>${obj.personalInfo[0].email }</td>
                   </tr>
-                  <tr>
+                  <tr class="strip2">
                     <td>所属部门</td>
                     <td>${obj.personalInfo[0].deptName }</td>
                   </tr>
-                  <tr>
+                  <tr class="strip1">
                     <td>用户职位</td>
                     <td>${obj.personalInfo[0].jobName }</td>
                   </tr>
-                   <tr>
+                   <tr class="strip2">
                     <td>负责区域</td>
                     <td>${obj.personalInfo[0].areaName }</td>
                   </tr>

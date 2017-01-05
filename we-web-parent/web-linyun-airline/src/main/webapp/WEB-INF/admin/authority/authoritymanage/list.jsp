@@ -130,6 +130,7 @@
 			"processing" : true,
 			"serverSide" : true,
 			"bLengthChange" : false,
+			"stripeClasses": [ 'strip1','strip2' ],//斑马线
 			"bSort": true, //排序功能 
 			"language" : {
 				"url" : "${base}/public/plugins/datatables/cn.json"

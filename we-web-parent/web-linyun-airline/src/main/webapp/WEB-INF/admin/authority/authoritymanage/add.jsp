@@ -5,8 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>部门职位-添加</title>
-<link rel="stylesheet"
-	href="${base}/public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
 <link rel="stylesheet" href="${base}/public/dist/css/authoritymanage.css">
 <link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css" />
@@ -23,17 +22,17 @@
 			</div>
 			<div class="modal-body" style="height:435px;overflow-y: auto;">
 	          <div class="departmentName"><!--部门权限 设置-->
-	                 <ul class="addDepartment">
-	                 	<input id="jobJson" name="jobJson" type="hidden" value=""/>
-	                   <li><label class=" text-right">部门名称：</label></li>
-	                   <li class="li-input">
-	                   		<div>
-	                   			<input id="deptName" name="deptName"  type="text" class="form-control input-sm inputText" placeholder="请输入部门名称">
-		                    	<span class="prompt">*</span>
-	                   		</div>
-	                   </li>
-	                   <li><button type="button" class="btn btn-primary btn-sm btnPadding" id="addJob">添加职位</button></li>
-	                 </ul>
+                 <ul class="addDepartment">
+                 	<input id="jobJson" name="jobJson" type="hidden" value=""/>
+                   <li><label class=" text-right">部门名称：</label></li>
+                   <li class="li-input">
+                   		<div>
+                   			<input id="deptName" name="deptName"  type="text" class="form-control input-sm inputText" placeholder="请输入部门名称">
+	                    	<span class="prompt">*</span>
+                   		</div>
+                   </li>
+                   <li><button type="button" class="btn btn-primary btn-sm btnPadding" id="addJob">添加职位</button></li>
+                 </ul>
 	          </div><!--end 部门权限 设置-->
 	
 	          <div class="jobName cf"><!--职位权限 设置-->
@@ -85,7 +84,7 @@
 		//部门职位 添加职位
 	    $('#addJob').click(function(){
 	       $(".job_container .ztree").hide();
-	       $('.jobName').append('<div class="job_container"><ul class="addDepartment marHei"><li><label class="text-right">职位名称：</label></li><li class="li-input inpPadd"><input name="jobName" type="text" class="form-control input-sm inputText" placeholder="请输入职位名称"></li><li><button type="button" class="btn btn-primary btn-sm btnPadding" id="settingsPermis">设置权限</button><button type="button" class="btn btn-primary btn-sm btnPadding" id="deleteBtn" >删除</button></li></ul>'
+	       $('.jobName').append('<div class="job_container"><ul class="addDepartment marHei"><li><label class="text-right">职位名称：</label></li><li class="li-input inpPadd"><input id="jobName" name="jobName" type="text" class="form-control input-sm inputText" placeholder="请输入职位名称"></li><li><button type="button" class="btn btn-primary btn-sm btnPadding" id="settingsPermis">设置权限</button><button type="button" class="btn btn-primary btn-sm btnPadding" id="deleteBtn" >删除</button></li></ul>'
 	       +'<div class="ztree"><ul id="tree_'+treeIndex+'"></ul></div></div>');
 	       treeIndex++;
 		   var ztree_container = $(".job_container:last").find("div.ztree").find("ul:first");

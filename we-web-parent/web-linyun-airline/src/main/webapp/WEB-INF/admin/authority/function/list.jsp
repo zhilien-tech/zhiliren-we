@@ -20,7 +20,7 @@
 						<div class="box">
 							<div class="box-header">
 								<h3 class="box-title">
-									&nbsp;&nbsp;<i class="fa fa-user-secret"></i>功能管理
+									&nbsp;&nbsp;<!-- <i class="fa fa-user-secret"></i>功能管理 -->
 								</h3>
 							</div>
 							<form id="functionForm" method="post">
@@ -143,6 +143,7 @@ function initDatatable() {
 		"searching" : false,
 		"processing" : true,
 		"serverSide" : true,
+		"stripeClasses": [ 'strip1','strip2' ],//斑马线
 		"bLengthChange" : false,
 		"bSort": true, //排序功能 
 		"language" : {

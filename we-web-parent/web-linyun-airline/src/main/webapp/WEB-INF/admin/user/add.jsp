@@ -24,6 +24,8 @@
 .inpNone .select2 .selection span ul li+li {
 	display: none;
 }
+/**验证时对勾的位置*/
+.form-control-feedback {position: absolute;top: -2px;right: -25px;}
 </style>
 
 </head>

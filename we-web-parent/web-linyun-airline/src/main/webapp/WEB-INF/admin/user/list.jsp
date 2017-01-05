@@ -182,6 +182,7 @@
 			"searching" : false,
 			"processing" : true,
 			"serverSide" : true,
+			"stripeClasses": [ 'strip1','strip2' ],//斑马线
 			"bLengthChange" : false,
 			"bSort": true, //排序功能 
 			"language" : {

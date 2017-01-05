@@ -23,6 +23,7 @@ import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.user.form.TUserSqlForm;
 import com.linyun.airline.admin.user.service.UserViewService;
 import com.linyun.airline.common.constants.CommonConstants;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TUserAddForm;
 import com.linyun.airline.forms.TUserModForm;
@@ -92,6 +93,10 @@ public class UserModule {
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		Long userId = user.getId();//得到用户的id
 		sqlForm.setUserId(userId);
+		//查询该公司拥有的所有功能
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long companyId = company.getId();//得到公司的id
+		sqlForm.setComId(companyId);
 		return userViewService.listPage4Datatables(sqlForm);
 	}
 

@@ -70,6 +70,9 @@ public class TUserSqlForm extends DataTablesParamForm {
 	/**用户是否禁用*/
 	private long disableStatus;
 
+	/**用户是否禁用*/
+	private long comId;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**
@@ -94,6 +97,7 @@ public class TUserSqlForm extends DataTablesParamForm {
 		}
 		cnd.and("u.status", "=", UserJobStatusEnum.ON.intKey());
 		cnd.and("u.id", "!=", userId);
+		cnd.and("cj.comId", "=", comId);
 		cnd.orderBy("u.createTime", "DESC");
 		return cnd;
 	}

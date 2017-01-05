@@ -233,19 +233,39 @@ public class AuthorityViewService extends BaseService<DeptJobForm> {
 	}
 
 	//校验部门名称唯一性
-	public Object checkDeptNameExist(final String deptName, final Long deptId) {
+	public Object checkDeptNameExist(final String deptName, final Long deptId, final HttpSession session) {
 		Map<String, Object> map = new HashMap<String, Object>();
+		//通过session获取公司的id
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long companyId = company.getId();//得到公司的id
 		int count = 0;
 		if (Util.isEmpty(deptId)) {
 			//add
-			count = nutDao.count(TDepartmentEntity.class, Cnd.where("deptName", "=", deptName));
+			count = nutDao.count(TDepartmentEntity.class,
+					Cnd.where("deptName", "=", deptName).and("comId", "=", companyId));
 		} else {
 			//update
-			count = nutDao.count(TDepartmentEntity.class, Cnd.where("deptName", "=", deptName).and("id", "!=", deptId));
+			count = nutDao.count(TDepartmentEntity.class, Cnd.where("deptName", "=", deptName).and("id", "!=", deptId)
+					.and("comId", "=", companyId));
 		}
 		map.put("valid", count <= 0);
 		return map;
 	}
+
+	//校验职位名称唯一性
+	/*public Object checkJobNameExist(final String jobName, final Long jobId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		int count = 0;
+		if (Util.isEmpty(jobId)) {
+			//add
+			count = nutDao.count(TJobEntity.class, Cnd.where("name", "=", jobName));
+		} else {
+			//update
+			count = nutDao.count(TJobEntity.class, Cnd.where("name", "=", jobName).and("id", "!=", jobId));
+		}
+		map.put("valid", count <= 0);
+		return map;
+	}*/
 
 	//回显部门职位和职位功能
 	public Object loadJobJosn(final Long deptId, HttpSession session) {
