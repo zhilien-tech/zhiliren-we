@@ -210,6 +210,7 @@ function editArea(id){
 			"searching" : false,
 			"processing" : true,
 			"serverSide" : true,
+			"stripeClasses": [ 'strip1','strip2' ],//斑马线
 			"bLengthChange" : false,
 			"language" : {
 				"url" : "${base}/public/plugins/datatables/cn.json"
