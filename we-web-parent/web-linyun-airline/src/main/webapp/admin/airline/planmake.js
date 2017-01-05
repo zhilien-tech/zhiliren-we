@@ -6,6 +6,7 @@ function initDatatable1() {
     	"bLengthChange": false,
         "processing": true,
         "serverSide": true,
+        "stripeClasses": [ 'strip1','strip2' ],
         "language": {
             "url": BASE_PATH + "/public/plugins/datatables/cn.json"
         },

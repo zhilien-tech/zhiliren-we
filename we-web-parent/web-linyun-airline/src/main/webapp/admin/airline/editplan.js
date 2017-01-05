@@ -6,6 +6,7 @@ function initDatatable2() {
     	"bLengthChange": false,
         "processing": true,
         "serverSide": true,
+        "stripeClasses": [ 'strip1','strip2' ],
         "language": {
             "url": BASE_PATH + "/public/plugins/datatables/cn.json"
         },
@@ -159,7 +160,7 @@ function editplan(id){
   	    area: ['900px', '500px'],
   	    content: BASE_PATH + '/admin/customneeds/editplanpage.html?id='+id,
   	    end:function(){
-  	    	datatable2.ajax.reload();
+  	    	datatable2.ajax.reload(null,false);
   	    }
   	});
 }
