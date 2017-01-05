@@ -1,12 +1,13 @@
 /*list*/
 .eti_a{cursor: pointer;}
-
-
 /*add*/
 .modal-header {border-bottom: 0px;}
 #addHtml{min-width: 150px; overflow-x: auto !important;}
-.nav li a{color: #b9b9b9;}
+.nav li a{color: #b9b9b9;padding: 15px 0px 0px 15px;}
 .nav .active a{color: #3b8cbc !important;}
+#completeFileName div .delete{background-color: #e0e0e0;border: 0;color: #717171;font-size: 12px;padding: 0px 22px;border-radius: 3px;}
+.row {margin-left: -65px;}
+.modal-body{position: relative;max-height: 443px;overflow-y: auto;width: 100%;}
 /*update*/
 .form-control-feedback{position: absolute;top: -2px;right: -15px;}
 

@@ -74,6 +74,16 @@ public class OperationsAreaModule {
 	}
 
 	/**
+	 * 执行修改自定义事件
+	 */
+	@At
+	@POST
+	public Object deleteCustom(@Param("..") TMessageUpdateForm messageUpdateForm) {
+		operationsAreaViewService.deleteCustom(messageUpdateForm);
+		return JsonResult.success("删除成功");
+	}
+
+	/**
 	 * 跳转到桌面
 	 */
 	@At

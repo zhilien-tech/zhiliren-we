@@ -72,6 +72,10 @@ public class TCustomerInfoEntity implements Serializable {
 	private String appendix;
 
 	@Column
+	@Comment("附件名称")
+	private String appendixName;
+
+	@Column
 	@Comment("旅行社类型")
 	private int travelType;
 

@@ -58,6 +58,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 
 		//消息类型
 		addForm.setMsgType(MessageTypeEnum.PROCESSMSG.intKey());
+		//消息状态默认为 （1：表示未删除）
+		addForm.setMsgStatus(1);
 		//消息优先级  MSGLEVEL1.intKey()表示等级最低
 		addForm.setPriorityLevel(MessageLevelEnum.MSGLEVEL1.intKey());
 		//格式化日期
@@ -106,15 +108,27 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		return obj;
 	}
 
+	/**
+	 * 
+	 * TODO(更新自定义事件)
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param messageUpdateForm
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
 	public Object updateCustom(TMessageUpdateForm messageUpdateForm) {
-
 		TMessageEntity tMessage = dbDao.fetch(TMessageEntity.class, messageUpdateForm.getId());
 		tMessage.setMsgContent(messageUpdateForm.getMsgContent());
 		tMessage.setGenerateTime(DateUtil.string2Date(messageUpdateForm.getGenerateTimeString(), "yyyy-MM-dd hh:mm:ss"));
-
 		messageUpdateForm.setMsgType(MessageTypeEnum.PROCESSMSG.intKey());
 		messageUpdateForm.setPriorityLevel(MessageLevelEnum.MSGLEVEL1.intKey());
+		return dbDao.update(tMessage);
+	}
 
+	public Object deleteCustom(TMessageUpdateForm messageUpdateForm) {
+		TMessageEntity tMessage = dbDao.fetch(TMessageEntity.class, messageUpdateForm.getId());
+		tMessage.setMsgStatus(0L);
 		return dbDao.update(tMessage);
 	}
 
@@ -131,7 +145,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		//当前用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long id = loginUser.getId();
-
+		int msgstatus = 1;
 		Sql sql = Sqls.create(sqlManager.get("msg_user_company"));
 		if (!Util.isEmpty(id)) {
 			sql.params().set("userId", id);
@@ -142,6 +156,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		if (!Util.isEmpty(end)) {
 			sql.params().set("end", end);
 		}
+		sql.params().set("msgStatus", msgstatus);
 		Cnd cnd = Cnd.NEW();
 		cnd.orderBy("m.priorityLevel", "desc");
 		sql.setCondition(cnd);
@@ -168,7 +183,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		if (!Util.isEmpty(id)) {
 			sql.params().set("userId", id);
 		}
-		sql.params().set("now", DateTimeUtil.nowDateTime());
+		sql.params().set("msgStatus", 1);
+		sql.params().set("now", DateTimeUtil.tomorrow());
 		sql.setCallback(Sqls.callback.records());
 		List<Record> records = dbDao.query(sql, null, null);
 		int size = records.size();
@@ -264,6 +280,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		sql.params().set("MincalTimes1", date1);
 		sql.params().set("MincalTimes2", date2);
 		sql.params().set("MincalTimes3", date3);
+		sql.params().set("msgStatus", 1);
 		sql.setCallback(Sqls.callback.records());
 
 		Set<String> set = new HashSet<String>();
@@ -309,6 +326,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			sql.params().set("userId", id);
 		}
 		sql.params().set("MincalTimes1", date1);
+		sql.params().set("msgStatus", 1);
 		List<Record> rList = dbDao.query(sql, null, null);
 
 		Set<String> set = new HashSet<String>();
