@@ -148,14 +148,10 @@ function initDatatable() {
 			$.ajax({ 
 				type: 'POST', 
 				data: {id:id}, 
-				url: '${base}/admin/userjob/removeUser.html',
+				url: '${base}/admin/Company/removeUser.html',
 	            success: function (data) { 
-	            	if("200" == data.status){
-	            		layer.msg("移除成功","",3000);
-	            	}else{
-	            		layer.msg("移除除失败","",3000);
-	            	}
-	            	datatable.ajax.reload();
+            		layer.msg("移除成功","",3000);
+	            	datatable.ajax.reload(null,false);
 	            },
 	            error: function (xhr) {
 	            	layer.msg("移除失败","",3000);
