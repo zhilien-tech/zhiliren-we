@@ -2,12 +2,23 @@
 <%@include file="/WEB-INF/common/tld.jsp"%>
 <%@include file="/WEB-INF/public/header.jsp"%>
 <%@include file="/WEB-INF/public/aside.jsp"%>
-  <div class="content-wrapper">
-    <!-- Main content -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- <div class="content-wrapper">
+    Main content
     <section class="content">
     	<h1>欢迎登陆</h1>
     </section>
-    <!-- /.content -->
-  </div>
+    /.content
+  </div> -->
   <%@include file="/WEB-INF/public/footer.jsp"%>
-</div>
+</head>
+<script type="text/javascript">
+ 	window.location.href="${base}/admin/operationsArea/desktop.html";
+</script>
+<body>
+</body>
+</html>

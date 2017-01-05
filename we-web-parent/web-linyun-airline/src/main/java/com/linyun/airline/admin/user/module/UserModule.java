@@ -19,9 +19,11 @@ import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.area.service.AreaViewService;
 import com.linyun.airline.admin.authority.job.entity.TJobEntity;
+import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.user.form.TUserSqlForm;
 import com.linyun.airline.admin.user.service.UserViewService;
 import com.linyun.airline.common.constants.CommonConstants;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TUserAddForm;
 import com.linyun.airline.forms.TUserModForm;
@@ -86,7 +88,15 @@ public class UserModule {
 	 * 服务端分页查询
 	 */
 	@At
-	public Object listData(@Param("..") final TUserSqlForm sqlForm) {
+	public Object listData(@Param("..") final TUserSqlForm sqlForm, final HttpSession session) {
+		//通过session获取当前登录用户的id
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		Long userId = user.getId();//得到用户的id
+		sqlForm.setUserId(userId);
+		//查询该公司拥有的所有功能
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long companyId = company.getId();//得到公司的id
+		sqlForm.setComId(companyId);
 		return userViewService.listPage4Datatables(sqlForm);
 	}
 

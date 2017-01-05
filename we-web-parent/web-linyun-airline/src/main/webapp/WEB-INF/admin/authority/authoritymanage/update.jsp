@@ -23,15 +23,16 @@
 			</div>
 			<div class="modal-body" style="height:435px;overflow-y: auto;">
 	          <div class="departmentName"><!--部门权限 设置-->
-	                 	<input id="jobJson" name="jobJson" type="hidden" value=""/>
-	                 <ul class="addDepartment">
-	                   <li><label class=" text-right">部门名称：</label></li>
-	                   <li class="li-input"> 
-		                    <input id="deptName" name="deptName" type="text" class="form-control input-sm inputText" value="${obj.dept.deptName }">
-		                    <span class="prompt">*</span>
-	                   </li>
-	                   <li><button type="button" class="btn btn-primary btn-sm btnPadding" id="addJob">添加职位</button></li>
-	                 </ul>
+                 <input id="jobJson" name="jobJson" type="hidden" value=""/>
+                 <input name="id" type="hidden" value="${obj.dept.id}"/>
+                 <ul class="addDepartment">
+                   <li><label class=" text-right">部门名称：</label></li>
+                   <li class="li-input"> 
+	                    <input id="deptName" name="deptName" type="text" class="form-control input-sm inputText" value="${obj.dept.deptName }">
+	                    <span class="prompt">*</span>
+                   </li>
+                   <li><button type="button" class="btn btn-primary btn-sm btnPadding" id="addJob">添加职位</button></li>
+                 </ul>
 	          </div><!--end 部门权限 设置-->
 			
 	          <div class="jobName cf"><!--职位权限 设置-->
@@ -46,7 +47,7 @@
 							<button type="button" class="btn btn-primary btn-sm btnPadding" id="deleteBtn" onclick="physicalDelete('${one.jobId}');" >删除</button></li></ul>
 							<c:choose>
 								<c:when test="${stat.index == 0}">
-									<div class="ztree"><ul id="tree_${stat.index}"></ul></div>
+									<div class="ztree none"><ul id="tree_${stat.index}"></ul></div>
 								</c:when>
 								<c:otherwise>
 									<div class="ztree none"><ul id="tree_${stat.index}"></ul></div>
@@ -179,7 +180,7 @@
 </script>
 <script type="text/javascript">
 //验证
-/* $(document).ready(function(){
+$(document).ready(function(){
 	$('#editDeptForm').bootstrapValidator({
 		message: '验证不通过!',
         feedbackIcons: {
@@ -201,34 +202,16 @@
                          //自定义提交数据，默认值提交当前input value
                          data: function(validator) {
                             return {
-                            	deptName:$('#deptName').val()
+                            	deptName:$('#deptName').val(),
+                            	id:'${obj.dept.id}'
                             };
                          }
                      }
                 }
-            },
-            jobJson: {
-            	validators: {
-                    notEmpty: {
-                        message: '职位名称不能为空!'
-                    },
-                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
-	                    url: '${base}/admin/authority/authoritymanage/checkJobNameExist.html',//验证地址
-	                         message: '职位名称重复，请重新输入!',//提示消息
-	                         delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
-	                         type: 'POST',//请求方式
-	                         //自定义提交数据，默认值提交当前input value
-	                         data: function(validator) {
-	                            return {
-	                            	name:$('input[name="jobJson"]').val(),
-	                            };
-	                         }
-	                   }
-                }
             }
         }
 	});
-}); */
+});
 	//编辑保存
 	$("#submit").click(function(){
 		setFunc();
@@ -309,7 +292,6 @@ function physicalDelete(jobId) {
 		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 		parent.layer.close(index);
 	}
-	
 </script>
 </body>
 </html>

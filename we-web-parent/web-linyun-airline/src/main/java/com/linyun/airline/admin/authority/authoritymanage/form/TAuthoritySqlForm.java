@@ -25,8 +25,8 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
 @EqualsAndHashCode(callSuper = true)
 public class TAuthoritySqlForm extends DataTablesParamForm {
 
-	private Long comId;
-
+	//公司id
+	private long comId;
 	//主键
 	private long id;
 	//部门id

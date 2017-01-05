@@ -152,7 +152,6 @@
 	           }
 	       });
 		}
-		 $(".Mymodal-lg").modal('hide');
 	});
 	//提交时开始验证
 	$('#submit').click(function() {

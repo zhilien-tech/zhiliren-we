@@ -20,14 +20,14 @@
 						<div class="box">
 							<div class="box-header">
 								<h3 class="box-title">
-									&nbsp;&nbsp;<i class="fa fa-user-secret"></i>功能管理
+									&nbsp;&nbsp;<!-- <i class="fa fa-user-secret"></i>功能管理 -->
 								</h3>
 							</div>
 							<form id="functionForm" method="post">
 								<div class="col-md-2">
 									<!--上级功能 搜索框-->
 									<div class="col-sm-12 padding">
-										<select name="parentId" class="form-control input-sm">
+										<select name="parentId" onchange="selectFunName();" class="form-control input-sm">
 											<option value="-1">--不限--</option>
 											<c:forEach items="${obj.functions}" var="pro">
 												<c:choose>
@@ -44,8 +44,8 @@
 								</div>
 								<div class="col-md-3 dictInfoSousuo" style="float: left;">
 									<!--功能名称 搜索框-->
-									<input type="text" id="name" name="name" onkeypress="onkeyEnter();"
-										value="${obj.name}" class="form-control"
+									<input type="text" id="name" name="name" 
+										value="${obj.name}" onkeypress="onkeyEnter();" class="form-control"
 										placeholder="功能名称">
 								</div>
 								<div class="col-md-2 col-padding">
@@ -125,7 +125,7 @@ function editFunction(id){
 
 //事件提示
 function successCallback(id){
-	funDatatable.ajax.reload();
+	funDatatable.ajax.reload(null,false);
 	  if(id == '1'){
 		  layer.msg("添加成功",{time: 2000, icon:1});
 	  }else if(id == '2'){
@@ -143,6 +143,7 @@ function initDatatable() {
 		"searching" : false,
 		"processing" : true,
 		"serverSide" : true,
+		"stripeClasses": [ 'strip1','strip2' ],//斑马线
 		"bLengthChange" : false,
 		"bSort": true, //排序功能 
 		"language" : {
@@ -200,7 +201,7 @@ function onkeyEnter(){
 	 }
 }
 //筛选条件自动切换
-function selectDeptName(){
+function selectFunName(){
 	$("#searchBtn").click();
 }
 </script>

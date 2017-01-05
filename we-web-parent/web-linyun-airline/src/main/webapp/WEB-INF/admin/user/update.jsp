@@ -24,6 +24,8 @@
 .inpNone .select2 .selection span ul li+li {
 	display: none;
 }
+/**验证时对勾的位置*/
+.form-control-feedback {position: absolute;top: -2px;right: -25px;}
 </style>
 
 </head>
@@ -38,39 +40,47 @@
     	<form id="editUserForm" method="post">
            <div class="modal-body">
               <div class="tab-content">
-                  <div class="form-group row">
+                  <div class="row">
+                  	<div class="form-group">
                   	  <input name="id" type="hidden" value='${obj.userInfo.id}'/>
                       <label class="col-sm-3 text-right padding">用户姓名：</label>
                       <div class="col-sm-3 padding">
                         <input id="userName" name="userName" type="text" class="form-control input-sm inputWidth" value="${obj.userInfo.userName}"/>
                         <span class="prompt">*</span>
                       </div>
-                    
+                    </div>
+                    <div class="form-group form-group1">
                       <label class="col-sm-2 text-right padding">用户名/手机号码：</label>
                       <div class="col-sm-3 padding">
                         <input id="telephone" name="telephone" type="text" class="form-control input-sm inputWidth" value="${obj.userInfo.telephone}"/>
                         <span class="prompt">*</span>
                       </div>
+                     </div>
                   </div>
 
-                  <div class="form-group row">
+                  <div class="row">
+                  	<div class="form-group">
                       <label class="col-sm-3 text-right padding">联系QQ：</label>
                       <div class="col-sm-3 padding">
                         <input id="qq" name="qq" type="text" class="form-control input-sm inputWidth" value="${obj.userInfo.qq}"/>
                       </div>
-                    
+                    </div>
+                    <div class="form-group form-group1">
                       <label class="col-sm-2 text-right padding">座机号码：</label>
                       <div class="col-sm-3 padding">
                         <input id="landline" name="landline" type="text" class="form-control input-sm inputWidth" value="${obj.userInfo.landline}"/>
                       </div>
+                     </div>
                   </div>
 
-                  <div class="form-group row">
+                  <div class="row">
+                  	<div class="form-group">
                       <label class="col-sm-3 text-right padding">电子邮箱：</label>
                       <div class="col-sm-3 padding">
                         <input id="email" name="email" type="eamil" class="form-control input-sm inputWidth" value="${obj.userInfo.email}"/>
                       </div>
-                    
+                    </div>
+                    <div class="form-group form-group1">
                      <label class="col-sm-2 text-right padding">所属部门：</label>
                       <div class="col-sm-3 padding">
                         <select id="deptId" name="deptId" onchange="selectDeptName();" class="form-control input-sm inputWidth">
@@ -82,16 +92,19 @@
                         </select>
                         <span class="prompt">*</span>
                       </div>
+                     </div>
                   </div>
 
-                  <div class="form-group row">
+                  <div class="row">
+                  	<div class="form-group">
                       <label class="col-sm-3 text-right padding">用户职位：</label>
                       <div class="col-sm-3 padding">
                          <select id="jobId" name="jobId" class="form-control input-sm inputWidth">
               			 </select>
                         <span class="prompt">*</span>
                       </div>
-
+					</div>
+					<div class="form-group form-group1">
                       <label class="col-sm-2 text-right padding">用户是否禁用：</label>
                       <div class="col-sm-3 padding">
                         <select id="disableStatus" name="disableStatus" class="form-control input-sm inputWidth">
@@ -101,11 +114,10 @@
 							<c:if test="${'1' eq obj.userInfo.disableStatus}">selected</c:if>>是</option>
                         </select>
                       </div>
+                     </div>
                   </div>
-					<script type="text/javascript">
-						
-					</script>
-                  <div class="form-group row">
+                  <div class="row">
+                  	<div class="form-group">
                       <label class="col-sm-3 text-right padding">负责区域：</label>
                       <div class="col-sm-3 padding">
                          <select id="areaSelect" onchange="setSelectedAreaIds();"
@@ -122,6 +134,7 @@
 						 <input id="selectedAreaIds" type="hidden" name="selectedAreaIds"/>
                          <span class="prompt">*</span>
                       </div>
+                     </div>
                   </div>
                   <!-- 设置已选中的项 -->
 					<script type="text/javascript">

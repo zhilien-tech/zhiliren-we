@@ -31,6 +31,9 @@ public class TUserSqlForm extends DataTablesParamForm {
 	/**主键*/
 	private long id;
 
+	/**主键*/
+	private long userId;
+
 	/**用户姓名*/
 	private String userName;
 
@@ -67,6 +70,9 @@ public class TUserSqlForm extends DataTablesParamForm {
 	/**用户是否禁用*/
 	private long disableStatus;
 
+	/**用户是否禁用*/
+	private long comId;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**
@@ -90,6 +96,8 @@ public class TUserSqlForm extends DataTablesParamForm {
 			cnd.and("d.deptName", "=", deptName);
 		}
 		cnd.and("u.status", "=", UserJobStatusEnum.ON.intKey());
+		cnd.and("u.id", "!=", userId);
+		cnd.and("cj.comId", "=", comId);
 		cnd.orderBy("u.createTime", "DESC");
 		return cnd;
 	}

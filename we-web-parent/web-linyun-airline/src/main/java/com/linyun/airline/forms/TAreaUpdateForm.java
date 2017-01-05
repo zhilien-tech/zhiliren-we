@@ -13,6 +13,9 @@ import com.uxuexi.core.web.form.ModForm;
 public class TAreaUpdateForm extends ModForm implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	/**用户id*/
+	private long userId;
+
 	/**区域名称*/
 	private String areaName;
 

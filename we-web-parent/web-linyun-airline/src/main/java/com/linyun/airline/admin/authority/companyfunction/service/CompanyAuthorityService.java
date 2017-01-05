@@ -18,8 +18,11 @@ import com.google.common.collect.Lists;
 import com.linyun.airline.admin.authority.companyfunction.form.CompanyFuctionForm;
 import com.linyun.airline.admin.authority.function.entity.TFunctionEntity;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
+import com.linyun.airline.entities.TComFunPosMapEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCompanyFunctionMapEntity;
+import com.linyun.airline.entities.TCompanyJobEntity;
+import com.linyun.airline.entities.TUserJobEntity;
 import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.EntityUtil;
@@ -120,7 +123,17 @@ public class CompanyAuthorityService extends BaseService<TCompanyEntity> {
 	private void updateCompanyFunctionMap(CompanyFuctionForm form) {
 		String functionIds = form.getFunctionIds();
 		//根据公司查询关系
-		Long comId = form.getCompanyId();
+		Long comId = form.getCompanyId();//得到公司id
+		//根据公司id查询出管理员账号id
+		TCompanyEntity singleCom = dbDao.fetch(TCompanyEntity.class, Cnd.where("id", "=", comId));
+		Long adminId = singleCom.getAdminId();//得到管理员账号id
+		//根据管理员账号id查询用户就职表
+		TUserJobEntity singleUserJob = dbDao.fetch(TUserJobEntity.class, Cnd.where("userid", "=", adminId));
+		Long companyJobId = singleUserJob.getCompanyJobId();//得到公司职位id
+		//根据公司职位id查询公司职位表
+		TCompanyJobEntity singleComJob = dbDao.fetch(TCompanyJobEntity.class, Cnd.where("id", "=", companyJobId));
+		Long posId = singleComJob.getPosid();//得到职位id
+
 		List<TCompanyFunctionMapEntity> before = dbDao.query(TCompanyFunctionMapEntity.class,
 				Cnd.where("comId", "=", comId), null);
 		//欲更新为
@@ -139,5 +152,22 @@ public class CompanyAuthorityService extends BaseService<TCompanyEntity> {
 			}
 		}
 		dbDao.updateRelations(before, after);
+		List<TCompanyFunctionMapEntity> allComFun = dbDao.query(TCompanyFunctionMapEntity.class,
+				Cnd.where("comId", "=", comId), null);
+		//截取功能模块id,根据功能id和公司id查询出公司功能id
+		if (allComFun.size() > 0) {
+			List<TComFunPosMapEntity> beforeComFun = dbDao.query(TComFunPosMapEntity.class,
+					Cnd.where("jobId", "=", posId), null);
+			//欲更新为
+			List<TComFunPosMapEntity> afterComFun = Lists.newArrayList();
+			for (TCompanyFunctionMapEntity tComFunMap : allComFun) {
+				TComFunPosMapEntity funpos = new TComFunPosMapEntity();
+				funpos.setJobId(posId);
+				funpos.setCompanyFunId(tComFunMap.getId());
+				afterComFun.add(funpos);
+			}
+			dbDao.updateRelations(beforeComFun, afterComFun);
+		}
+
 	}
 }

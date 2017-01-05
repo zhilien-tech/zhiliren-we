@@ -130,6 +130,7 @@
 			"processing" : true,
 			"serverSide" : true,
 			"bLengthChange" : false,
+			"stripeClasses": [ 'strip1','strip2' ],//斑马线
 			"bSort": true, //排序功能 
 			"language" : {
 				"url" : "${base}/public/plugins/datatables/cn.json"
@@ -209,6 +210,7 @@ function editArea(id){
 			"searching" : false,
 			"processing" : true,
 			"serverSide" : true,
+			"stripeClasses": [ 'strip1','strip2' ],//斑马线
 			"bLengthChange" : false,
 			"language" : {
 				"url" : "${base}/public/plugins/datatables/cn.json"
@@ -254,8 +256,8 @@ function editArea(id){
 	});
 	//事件提示
 	function successCallback(id){
-		deptDatatable.ajax.reload();
-		areaDatatable.ajax.reload();
+		deptDatatable.ajax.reload(null,false);
+		areaDatatable.ajax.reload(null,false);
 		  if(id == '1'){
 			  layer.msg("添加成功",{time: 2000, icon:1});
 		  }else if(id == '2'){

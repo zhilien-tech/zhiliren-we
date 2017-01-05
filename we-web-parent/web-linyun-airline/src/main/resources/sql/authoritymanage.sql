@@ -15,6 +15,17 @@ FROM
         INNER JOIN t_function f ON cf.funId=f.id
 $condition
 
+/*authoritymanage_area_list*/
+SELECT
+	a.id,
+	a.createTime,
+	a.areaName,
+	a.remark
+FROM
+	t_area a
+INNER JOIN t_user_area_map am ON a.id=am.areaId
+$condition
+
 /*deptJob_select*/
 SELECT
 	tj.id AS jobId,
