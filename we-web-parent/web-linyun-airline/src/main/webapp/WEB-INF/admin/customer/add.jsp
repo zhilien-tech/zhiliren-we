@@ -105,7 +105,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div class="row">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">联系人：</label>
@@ -123,21 +122,17 @@
 								</div>
 							</div>
 						</div>
-
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">网址：</label>
 							<div class="col-sm-3 padding">
 								<input name="siteUrl" type="text"
 									class="form-control input-sm inpImportant" placeholder="请输入网址" />
 							</div>
-
 							<label class="col-sm-2 text-right padding">传真：</label>
 							<div class="col-sm-3 padding">
-								<input id="fax" name="fax" type="text"
-									class="form-control input-sm inpImportant" placeholder="请输入传真" />
+								<input id="fax" name="fax" type="text" class="form-control input-sm inpImportant" placeholder="请输入传真" />
 							</div>
 						</div>
-
 						<div class="row">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">地址：</label>
@@ -148,7 +143,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">旅行社类型：</label>
 							<div class="col-sm-3 padding">
@@ -159,7 +153,6 @@
 									<option value="3">综合</option>
 								</select>
 							</div>
-
 							<label class="col-sm-2 text-right padding">是否禁用：</label>
 							<div class="col-sm-3 padding">
 								<select id="forbidID" name="forbid"
@@ -169,7 +162,6 @@
 								</select>
 							</div>
 						</div>
-
 						<div class="row">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">出发城市：</label>
@@ -183,7 +175,6 @@
 								</div>
 							</div>
 						</div>
-
 					</div>
 					<div class="tab-pane" id="tabs_2">
 						<!--路线权限-->
@@ -197,7 +188,6 @@
 								<!-- 国境内陆ID -->
 								<input id="sLine1ID" type="hidden" name="sLine1" />
 							</div>
-
 							<label class="col-sm-2 text-right padding">国际：</label>
 							<div class="col-sm-3 padding">
 								<select id="sLine2ID" class="form-control select2 inpImportant"
@@ -208,7 +198,6 @@
 								<input id="line2ID" type="hidden" name="internationLine" />
 							</div>
 						</div>
-
 					</div>
 					<div class="tab-pane" id="tabs_3">
 						<!--附件管理-->
@@ -228,8 +217,7 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">业务范围：</label>
 							<div class="col-sm-8 padding">
-								<textarea id="businessID" name="business"
-									class="form-control textar-hei"></textarea>
+								<textarea id="businessID" name="business" class="form-control textar-hei"></textarea>
 							</div>
 						</div>
 					</div>
@@ -245,7 +233,6 @@
 									<option value="2">禁止合作</option>
 								</select>
 							</div>
-
 							<label class="col-sm-2 text-right padding">合作时间：</label>
 							<div class="col-sm-5 padding">
 								<input id="datepicker1" name="contractTimeString" type="text"
@@ -259,11 +246,9 @@
 									placeholder="2088-09-09" />
 							</div>
 						</div>
-
 						<div class="form-group row">
 							<label class="col-sm-2 text-right padding">付款方式：</label>
 							<div class="col-sm-2 padding">
-
 								<select id="payWayID" name="payWay"
 									class="form-control input-sm paySele"
 									onchange="paywaySelect_change(this)">
@@ -274,7 +259,6 @@
 									<option value="5">其他</option>
 								</select>
 							</div>
-
 							<div class="col-sm-8" style="display: none;" id="paywayDivId">
 								<div class="col-sm-12 padding payInp">
 									<input type="text" id="paywayId" name="paywayName"
@@ -285,10 +269,7 @@
 						<div class="form-group row">
 							<label class="col-sm-2 text-right padding">结算方式：</label>
 							<div class="col-sm-2 padding">
-								<select id="payTypeID" name="payType"
-									class="form-control input-sm sele"
-									onchange="paytypeSelect_change(this)">
-
+								<select id="payTypeID" name="payType" class="form-control input-sm sele" onchange="paytypeSelect_change(this)">
 									<option value="1" selected="selected">月结</option>
 									<option value="2">周结</option>
 									<option value="3">单结</option>
@@ -297,12 +278,10 @@
 							</div>
 							<div class="col-sm-8" style="display: none;" id="paytypeDivId">
 								<div class="col-sm-12 padding inpAdd">
-									<input type="text" name="paytypeName"
-										class="paytext form-control input-sm" placeholder="请输入结算方式">
+									<input type="text" name="paytypeName" class="paytext form-control input-sm" placeholder="请输入结算方式">
 								</div>
 							</div>
 						</div>
-
 						<div class="form-group row">
 							<label class="col-sm-2 text-right padding">提供发票：</label>
 							<div class="col-sm-2 padding">
@@ -413,91 +392,91 @@
 
 			//校验
 			$('#customerAddForm').bootstrapValidator({
-								message : '验证不通过',
-								feedbackIcons : {
-									valid : 'glyphicon glyphicon-ok',
-									invalid : 'glyphicon glyphicon-remove',
-									validating : 'glyphicon glyphicon-refresh'
-								},
-								fields : {
-									companyId : {
-										validators : {
-											notEmpty : {
-												message : '公司名称不能为空'
-											},
-											remote : {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
-												url : '${base}/admin/customer/checkComNameExist.html',//验证地址
-												message : '公司名称已存在，请重新输入!',//提示消息
-												delay : 2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
-												type : 'POST',//请求方式
-												//自定义提交数据，默认值提交当前input value
-												data : function(validator) {
-													return {
-														name : $('#companyId').find("option:selected").val(),
-														cid : $("#companyId").select2("val")
-													};
-												}
-											}
-										}
-									},
-									shortName : {
-										validators : {
-											notEmpty : {
-												message : '公司简称不能为空'
-											},
-											regexp : {
-												regexp : /^[a-zA-Z\u4e00-\u9fa5]{1,6}$/,
-												message : '公司简称长度为6'
-											}
-										}
-									},
-									linkMan : {
-										validators : {
-											notEmpty : {
-												message : '联系人不能为空'
-											}
-										}
-									},
-									telephone : {
-										validators : {
-											notEmpty : {
-												message : '联系电话不能为空'
-											},
-											remote : {
-												url : '${base}/admin/customer/checkTelephoneExist.html',
-												message : '联系电话已存在，请重新输入!',
-												delay : 2000,
-												type : 'POST',
-												data : function(validator) {
-													return {
-														telephone : $('#telephoneId').val(),
-														aId : '${obj.customer.id}'
-													};
-												}
-											},
-											regexp : {
-												regexp : /^[1][34578][0-9]{9}$/,
-												message : '联系电话格式错误'
-											}
-										}
-									},
-									address : {
-										validators : {
-											notEmpty : {
-												message : '公司地址不能为空'
-											}
-										}
-									},
-									fax : {
-										validators : {
-											regexp : {
-												regexp : /^[+]{0,1}(\d){1,3}[ ]?([-]?((\d)|[ ]){1,12})+$/,
-												message : '传真格式错误'
-											}
-										}
-									}
+				message : '验证不通过',
+				feedbackIcons : {
+					valid : 'glyphicon glyphicon-ok',
+					invalid : 'glyphicon glyphicon-remove',
+					validating : 'glyphicon glyphicon-refresh'
+				},
+				fields : {
+					companyId : {
+						validators : {
+							notEmpty : {
+								message : '公司名称不能为空'
+							},
+							remote : {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
+								url : '${base}/admin/customer/checkComNameExist.html',//验证地址
+								message : '公司名称已存在，请重新输入!',//提示消息
+								delay : 2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+								type : 'POST',//请求方式
+								//自定义提交数据，默认值提交当前input value
+								data : function(validator) {
+									return {
+										name : $('#companyId').find("option:selected").val(),
+										cid : $("#companyId").select2("val")
+									};
 								}
-							});
+							}
+						}
+					},
+					shortName : {
+						validators : {
+							notEmpty : {
+								message : '公司简称不能为空'
+							},
+							regexp : {
+								regexp : /^[a-zA-Z\u4e00-\u9fa5]{1,6}$/,
+								message : '公司简称长度为6'
+							}
+						}
+					},
+					linkMan : {
+						validators : {
+							notEmpty : {
+								message : '联系人不能为空'
+							}
+						}
+					},
+					telephone : {
+						validators : {
+							notEmpty : {
+								message : '联系电话不能为空'
+							},
+							remote : {
+								url : '${base}/admin/customer/checkTelephoneExist.html',
+								message : '联系电话已存在，请重新输入!',
+								delay : 2000,
+								type : 'POST',
+								data : function(validator) {
+									return {
+										telephone : $('#telephoneId').val(),
+										aId : '${obj.customer.id}'
+									};
+								}
+							},
+							regexp : {
+								regexp : /^[1][34578][0-9]{9}$/,
+								message : '联系电话格式错误'
+							}
+						}
+					},
+					address : {
+						validators : {
+							notEmpty : {
+								message : '公司地址不能为空'
+							}
+						}
+					},
+					fax : {
+						validators : {
+							regexp : {
+								regexp : /^[+]{0,1}(\d){1,3}[ ]?([-]?((\d)|[ ]){1,12})+$/,
+								message : '传真格式错误'
+							}
+						}
+					}
+				}
+			});
 		});
 		/* 页面初始化加载完毕 */
 	</script>

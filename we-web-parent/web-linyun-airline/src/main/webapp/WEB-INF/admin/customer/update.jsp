@@ -18,7 +18,6 @@
 		width: 95.5% !important;
 		display: inline-block;
 	}
-	
 	.seleSpanWid .select2-container {
 		width: 98.5% !important;
 		display: inline-block;
@@ -65,7 +64,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div class="row">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">公司简称：</label>
@@ -86,7 +84,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div class="row">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">联系人：</label>
@@ -103,7 +100,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">网址：</label>
 							<div class="col-sm-3 padding">
@@ -117,7 +113,6 @@
 									value="${obj.customer.fax}" placeholder="请输入传真" />
 							</div>
 						</div>
-
 						<div class="row">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">地址：</label>
@@ -127,7 +122,6 @@
 								</div>
 							</div>
 						</div>
-
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">旅行社类型：</label>
 							<div class="col-sm-3 padding">
@@ -141,7 +135,6 @@
 										<c:if test="${'3' eq obj.customer.travelType}">selected</c:if>>综合</option>
 								</select>
 							</div>
-
 							<label class="col-sm-2 text-right padding">是否禁用：</label>
 							<div class="col-sm-3 padding">
 								<select id="forbid" name="forbid" class="form-control input-sm inpImportant">
@@ -152,7 +145,6 @@
 								</select>
 							</div>
 						</div>
-
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">出发城市：</label>
 							
@@ -167,7 +159,6 @@
 								<input id="outcity" type="hidden" name="outcityname"/>
 							</div>
 						</div>
-
 					</div>
 					<div class="tab-pane" id="tabs_2">
 						<!--路线权限-->
@@ -195,10 +186,7 @@
 								<!-- 国际线路ID -->
 								<input id="line2ID" type="hidden" name="internationLine" />
 							</div>
-							
-							
 						</div>
-
 					</div>
 					<div class="tab-pane" id="tabs_3">
 						<!--附件管理-->
@@ -260,7 +248,6 @@
 									placeholder="2088-09-09" value="${obj.customer.contractDueTimeString}"/>
 							</div>
 						</div>
-						 
 						<div class="form-group row">
 							<label class="col-sm-2 text-right padding">付款方式：</label>
 							<div class="col-sm-2 padding">
@@ -277,17 +264,13 @@
 										<c:if test="${'5' eq obj.customer.payWay}">selected</c:if>>其他</option>
 								</select>
 							</div>
-
 							<div class="col-sm-8" style="display: none;" id="paywayDivId">
 								<div class="col-sm-12 padding payInp">
 									<input type="text" id="paywayId" name="paywayName" value="${obj.customer.paywayName}" class="paytext form-control input-sm" placeholder="请输入付款方式">
 								</div>
 							</div>
-							
 						</div>
-
 						<div class="form-group row">
-
 							<label class="col-sm-2 text-right padding">结算方式：</label>
 							<div class="col-sm-2 padding">
 								<select id="payType" name="payType"
@@ -303,16 +286,13 @@
 										<c:if test="${'4' eq obj.customer.payType}">selected</c:if>>其他</option>
 								</select>
 							</div>
-
 							<div class="col-sm-8" style="display: none;" id="paytypeDivId">
 								<div class="col-sm-12 padding inpAdd">
 									<input type="text" name="paytypeName" value="${obj.customer.paytypeName}"  class="paytext form-control input-sm" placeholder="请输入结算方式">
 								</div>
 							</div>
 						</div>
-
 						<div class="form-group row">
-
 							<label class="col-sm-2 text-right padding">提供发票：</label>
 							<div class="col-sm-2 padding">
 								<select id="invoiceId" name="invoice"
@@ -337,12 +317,10 @@
 								</div>
 							</div>
 						</div>
-
 					</div>
 				</div>
 			</div>
-			
-</form>
+		</form>
 	</div>
 	<script type="text/javascript">
 		var BASE_PATH = '${base}';
@@ -373,7 +351,6 @@
 	<script type="text/javascript">
 		var base = "${base}";
 		$(function() {
-			
 			$.fileupload1 = $('#uploadify').uploadify({
 	            'auto' : true,
 	            'formData' : {
@@ -458,7 +435,6 @@
 					},
 					processResults : function(data, params) {
 						params.page = params.page || 1;
-						
 						return {
 							results : data
 						};

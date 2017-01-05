@@ -37,27 +37,14 @@
 <link rel="stylesheet"
 	href="${base}/public/plugins/timepicker/bootstrap-timepicker.min.css">
 <!-- Select2 -->
-<link rel="stylesheet"
-	href="${base}/public/plugins/select2/select2.min.css">
+<link rel="stylesheet" href="${base}/public/plugins/select2/select2.min.css">
 <!-- Theme style -->
-<link rel="stylesheet"
-	href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
+<link rel="stylesheet" href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
 <link rel="stylesheet" href="${base}/public/dist/css/customer.css">
-<!-- AdminLTE Skins. We have chosen the skin-blue for this starter
-        page. However, you can choose any other skin. Make sure you
-        apply the skin class to the body tag so the changes take effect.
-  -->
-<link rel="stylesheet"
-	href="${base}/public/dist/css/skins/skin-blue.min.css">
-<link rel="stylesheet"
-	href="${base}/public/dist/css/skins/_all-skins.min.css">
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
+<link rel="stylesheet" href="${base}/public/dist/css/skins/skin-blue.min.css">
+<link rel="stylesheet" href="${base}/public/dist/css/skins/_all-skins.min.css">
+
 </head>
 <!-- REQUIRED JS SCRIPTS -->
 
@@ -109,9 +96,9 @@
 					<div class="col-xs-12">
 						<div class="box">
 							<div class="box-header">
-								<h3 class="box-title">
+								<!-- <h3 class="box-title">
 									&nbsp;&nbsp;<i class="fa fa-user-secret"></i> 客户管理
-								</h3>
+								</h3> -->
 									<div class="form-group row form-right">
 
 										<div class="col-md-2">

@@ -203,12 +203,11 @@
 			checkBoxShow();
 			/*小日历*/
 			minCalendarInit();
-			  
 		});
 	</script>
 
 	
-	<!-- 自定义界面保存 -->
+	<!-- 自定义界面 -->
 	<script type="text/javascript">
 		function checkBoxChange(obj){
 			if($(".checkNum:checked").size()==0){
@@ -251,6 +250,7 @@
 	  		if(minCShow){
 	  			$("#minCId").css('display','block');
 	  			$("#minCalenderId").attr('checked','checked');
+	  			minCalendarInit();
 	  		}
 	  	}
 	  </script>
@@ -365,7 +365,6 @@
 			              closeBtn: false,
 			              content: '${base}/admin/operationsArea/updateCustomEvent.html?msgId='+ msgId
 			          }); 
-			          
 			          $('#calendar').fullCalendar('updateEvent', events);
 			      },
 			      eventMouseover:function( event, jsEvent, view ) {
@@ -429,7 +428,6 @@
 		            content: $('#layer-diy')
 		         }); 
 		     });
-
 		}
 		
 		 /* 关闭自定义界面 */
@@ -644,7 +642,6 @@
             				$('span[data-date="'+element.gtime+'"]').find('i').remove();
             			}
 		            	$('span[data-date="'+element.gtime+'"]').append('<i class="dot"></i>');
-	            		
 	            		//小红点点击弹框事件
 	            		$(document).on('click','span[data-date="'+ element.gtime +'"]',function(){//如果有红色圆点，点击 显示小div信息
 	            			$.ajax({
@@ -662,7 +659,7 @@
 	        		                }); 
 	        		            }
 	        		        });
-	            		
+	            			//弹框提示信息
 	            			layer.tips(
 	            				 $("#minCalId").val(), 
 	      			    		 this,
@@ -671,10 +668,7 @@
 	      					        time: 3000
 	      					     }
 		      			    );
-	            		
 	      			  	});//end 如果有红色圆点，点击 显示小div信息 
-		            	
-	      			  	
 	                }); 
 	            }
 	       });

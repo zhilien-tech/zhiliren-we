@@ -183,7 +183,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		if (!Util.isEmpty(id)) {
 			sql.params().set("userId", id);
 		}
-		sql.params().set("now", DateTimeUtil.nowDateTime());
+		sql.params().set("msgStatus", 1);
+		sql.params().set("now", DateTimeUtil.tomorrow());
 		sql.setCallback(Sqls.callback.records());
 		List<Record> records = dbDao.query(sql, null, null);
 		int size = records.size();
@@ -279,6 +280,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		sql.params().set("MincalTimes1", date1);
 		sql.params().set("MincalTimes2", date2);
 		sql.params().set("MincalTimes3", date3);
+		sql.params().set("msgStatus", 1);
 		sql.setCallback(Sqls.callback.records());
 
 		Set<String> set = new HashSet<String>();
@@ -324,6 +326,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			sql.params().set("userId", id);
 		}
 		sql.params().set("MincalTimes1", date1);
+		sql.params().set("msgStatus", 1);
 		List<Record> rList = dbDao.query(sql, null, null);
 
 		Set<String> set = new HashSet<String>();
