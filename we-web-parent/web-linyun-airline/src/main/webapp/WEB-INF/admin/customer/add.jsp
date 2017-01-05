@@ -57,7 +57,7 @@
 						<div class="row">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">公司名称：</label>
-								<div class="col-sm-8 padding seleSpanWid inpNone">
+								<div id="comDiv" class="col-sm-8 padding seleSpanWid inpNone">
 									<select id="companyId" name="companyId" onchange="editInput()"
 										class="form-control select2 inpImpWid" multiple="multiple"
 										data-placeholder="请输入公司名称">
@@ -115,7 +115,7 @@
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 text-right padding">联系电话：</label>
-								<div class="col-sm-3 padding">
+								<div id="phoneDiv" class="col-sm-3 padding">
 									<input id="telephoneId" name="telephone" type="text"
 										class="form-control input-sm inpImportant"
 										placeholder="请输入联系电话" /><span class="prompt">*</span>
@@ -588,17 +588,53 @@
 					layer.msg('地址不能为空');
 					return;
 				}
-				var comMsg = $('small[data-bv-for="companyId"]').text();
-				comMsg = comMsg.substring(8, comMsg.length);
-				if(comMsg != ""){
-					layer.msg(comMsg);
-					return;
+				if(!$('small[data-bv-for="companyId"]').attr("style")=='display: none;'){
+					var comMsg = $('small[data-bv-for="companyId"]').text();
+					comMsg = comMsg.substring(8, comMsg.length);
+					if(comMsg != ""){
+						layer.msg(comMsg);
+						return;
+					}
 				}
-				var phoneMsg = $('small[data-bv-for="telephone"]').text();
-				phoneMsg = phoneMsg.substring(8, 22);
-				if(phoneMsg != ""){
-					layer.msg(phoneMsg);
-					return;
+				var small2 = $('#comDiv small:eq(1)').attr("style");
+				if(small2 == "" || small2=='display: block;'){
+					var comMsg = $('#comDiv small:eq(1)').text();
+					if(comMsg != ""){
+						layer.msg(comMsg);
+						return;
+					}
+				}
+				if(!($('small[data-bv-for="telephone"]').attr("style"))=='display: none;'){
+					var phoneMsg = $('small[data-bv-for="telephone"]').text();
+					phoneMsg = phoneMsg.substring(8, 22);
+					if(phoneMsg != ""){
+						layer.msg(phoneMsg);
+						return;
+					}
+				}
+				var small2 = $('#phoneDiv small:eq(1)').attr("style");
+				if(small2 == "" || small2=='display: block;'){
+					var comMsg = $('#phoneDiv small:eq(1)').text();
+					if(comMsg != ""){
+						layer.msg(comMsg);
+						return;
+					}
+				}
+				var small2 = $('#phoneDiv small:eq(2)').attr("style");
+				if(small2 == "" || small2=='display: block;'){
+					var comMsg = $('#phoneDiv small:eq(2)').text();
+					if(comMsg != ""){
+						layer.msg(comMsg);
+						return;
+					}
+				}
+				var small2 = $('#phoneDiv small:eq(3)').attr("style");
+				if(small2 == "" || small2=='display: block;'){
+					var comMsg = $('#phoneDiv small:eq(3)').text();
+					if(comMsg != ""){
+						layer.msg(comMsg);
+						return;
+					}
 				}
 				
 				
