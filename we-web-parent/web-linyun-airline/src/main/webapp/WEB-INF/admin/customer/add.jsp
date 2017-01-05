@@ -87,7 +87,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">公司简称：</label>
 								<div class="col-sm-3 padding">
-									<input name="shortName" type="text"
+									<input id="shortName" name="shortName" type="text"
 										class="form-control input-sm inpImportant"
 										placeholder="请输入公司简称" /><span class="prompt">*</span>
 								</div>
@@ -109,7 +109,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">联系人：</label>
 								<div class="col-sm-3 padding">
-									<input name="linkMan" type="text" class="form-control input-sm inpImportant" placeholder="请输入联系人" />
+									<input id="linkMan" name="linkMan" type="text" class="form-control input-sm inpImportant" placeholder="请输入联系人" />
 									<span class="prompt">*</span>
 								</div>
 							</div>
@@ -137,7 +137,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">地址：</label>
 								<div class="col-sm-8 padding">
-									<input name="address" type="text"
+									<input id="address" name="address" type="text"
 										class="form-control input-sm inpImpWid" placeholder="请输入详细地址" /><span
 										class="prompt">*</span>
 								</div>
@@ -562,6 +562,46 @@
 			// 执行表单验证 
 			bootstrapValidator.validate();
 			if (bootstrapValidator.isValid()) {
+				//获取必填项信息
+				var selectedcompany = $('#companyId').find("option:selected").text();
+				var shortName = $("#shortName").val();
+				var linkMan = $("#linkMan").val();
+				var telephone = $("#telephoneId").val();
+				var address = $("#address").val();
+				if(selectedcompany==""){
+					layer.msg('公司名称不能为空');
+					return;
+				}
+				if(shortName==""){
+					layer.msg('公司简称不能为空');
+					return;
+				}
+				if(linkMan==""){
+					layer.msg('联系人不能为空');
+					return;
+				}
+				if(telephone==""){
+					layer.msg('联系电话不能为空');
+					return;
+				}
+				if(address==""){
+					layer.msg('地址不能为空');
+					return;
+				}
+				var comMsg = $('small[data-bv-for="companyId"]').text();
+				comMsg = comMsg.substring(8, comMsg.length);
+				if(comMsg != ""){
+					layer.msg(comMsg);
+					return;
+				}
+				var phoneMsg = $('small[data-bv-for="telephone"]').text();
+				phoneMsg = phoneMsg.substring(8, 22);
+				if(phoneMsg != ""){
+					layer.msg(phoneMsg);
+					return;
+				}
+				
+				
 				$.ajax({
 					type : 'POST',
 					data : $("#customerAddForm").serialize(),

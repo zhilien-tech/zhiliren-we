@@ -68,7 +68,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">公司简称：</label>
 								<div class="col-sm-3 padding">
-									<input name="shortName" type="tel" class="form-control input-sm inpImportant"
+									<input id="shortName" name="shortName" type="tel" class="form-control input-sm inpImportant"
 										value="${obj.customer.shortName}" placeholder="请输入公司简称" /><span class="prompt">*</span>
 								</div>
 							</div>
@@ -88,14 +88,14 @@
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">联系人：</label>
 								<div class="col-sm-3 padding">
-									<input name="linkMan" type="tel" class="form-control input-sm inpImportant"
+									<input id="linkMan" name="linkMan" type="tel" class="form-control input-sm inpImportant"
 										value="${obj.customer.linkMan}" placeholder="请输入联系人" /><span class="prompt">*</span>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 text-right padding">联系电话：</label>
 								<div class="col-sm-3 padding">
-									<input name="telephone" type="tel" class="form-control input-sm inpImportant"
+									<input id="telephone" name="telephone" type="tel" class="form-control input-sm inpImportant"
 										value="${obj.customer.telephone}" placeholder="请输入联系电话" /><span class="prompt">*</span>
 								</div>
 							</div>
@@ -117,7 +117,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">地址：</label>
 								<div class="col-sm-8 padding">
-									<input name="address" type="tel" class="form-control input-sm inpImpWid"
+									<input id="address" name="address" type="tel" class="form-control input-sm inpImpWid"
 										value="${obj.customer.address}" placeholder="请输入详细地址" /><span class="prompt">*</span>
 								</div>
 							</div>
@@ -200,9 +200,10 @@
 								<span id="completeFileName">
 									<c:if test="${not empty obj.customer.appendixName}">
 										<div>
-											<a href='${obj.customer.appendix}' download='${obj.customer.appendixName}'>
+											<a id='downloadA' href='#' download='${obj.customer.appendixName}' onclick='downloadFile(${obj.customer.appendix})' >
 		                                		${obj.customer.appendixName}
-			                                </a>&nbsp;&nbsp;<span>上传成功</span>&nbsp;&nbsp;&nbsp;&nbsp;
+			                                </a>
+			                                &nbsp;&nbsp;<span>上传成功</span>&nbsp;&nbsp;&nbsp;&nbsp;
 			                                <input type='button' class='delete' onclick='deleteFile();' value='删除'>
 		                                </div>
 									</c:if>
@@ -419,6 +420,7 @@
 			if($('#invoiceId option:selected').val() == "1"){
 				$("#invioceTypeId").css('display','block'); 
 			}
+			
 			
 			//公司名称回显companyId
 			var _comSelect = $("#companyId").select2({
@@ -647,7 +649,7 @@
 		                         type: 'POST',
 		                         data: function(validator) {
 		                            return {
-		                            	telephone:$('#telephoneId').val(),
+		                            	telephone:$('#telephone').val(),
 		                            	aId:'${obj.customer.id }'
 		                            };
 		                         }
@@ -790,6 +792,46 @@
 			$('#customerUpdateForm').bootstrapValidator('validate');
 			var bootstrapValidator = $("#customerUpdateForm").data('bootstrapValidator');
 			if (bootstrapValidator.isValid()) {
+				
+				//获取必填项信息
+				var selectedcompany = $('#companyId').find("option:selected").text();
+				var shortName = $("#shortName").val();
+				var linkMan = $("#linkMan").val();
+				var telephone = $("#telephone").val();
+				var address = $("#address").val();
+				if(selectedcompany==""){
+					layer.msg('公司名称不能为空');
+					return;
+				}
+				if(shortName==""){
+					layer.msg('公司简称不能为空');
+					return;
+				}
+				if(linkMan==""){
+					layer.msg('联系人不能为空');
+					return;
+				}
+				if(telephone==""){
+					layer.msg('联系电话不能为空');
+					return;
+				}
+				if(address==""){
+					layer.msg('地址不能为空');
+					return;
+				}
+				var comMsg = $('small[data-bv-for="companyId"]').text();
+				comMsg = comMsg.substring(8, comMsg.length);
+				if(comMsg != ""){
+					layer.msg(comMsg);
+					return;
+				}
+				var phoneMsg = $('small[data-bv-for="telephone"]').text();
+				phoneMsg = phoneMsg.substring(8, 22);
+				if(phoneMsg != ""){
+					layer.msg(phoneMsg);
+					return;
+				}
+				
 				$.ajax({
 					type : 'POST',
 					data : $("#customerUpdateForm").serialize(),
