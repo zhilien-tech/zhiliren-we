@@ -140,20 +140,19 @@
 					<div class="layer-check">
 						<p>
 							<input id="taskBoxId" name="checkboxname" type="checkbox"
-								value="task" /> <span>任务</span>
+								value="task" class="checkNum" onchange="checkBoxChange(this)" /> <span>任务</span>
 						</p>
 						<p>
 							<input id="maxCalenderId" name="checkboxname" type="checkbox"
-								value="maxC" /> <span>大日历</span>
+								value="maxC" class="checkNum" onchange="checkBoxChange(this)"/> <span>大日历</span>
 						</p>
 						<p>
 							<input id="minCalenderId" name="checkboxname" type="checkbox"
-								value="minC" /> <span>小日历</span>
+								value="minC" class="checkNum" onchange="checkBoxChange(this)"/> <span>小日历</span>
 						</p>
 					</div>
 				</div>
 			</form>
-
 		</div>
 		<!--end 自定义界面 弹框-->
 	</div>
@@ -204,13 +203,18 @@
 			checkBoxShow();
 			/*小日历*/
 			minCalendarInit();
-			  
 		});
 	</script>
 
 	
-	<!-- 自定义界面保存 -->
+	<!-- 自定义界面 -->
 	<script type="text/javascript">
+		function checkBoxChange(obj){
+			if($(".checkNum:checked").size()==0){
+				obj.checked = true;
+   			}
+		}
+	
    		function checkboxSave(){
    			$.ajax({
                 type: "POST",
@@ -246,6 +250,7 @@
 	  		if(minCShow){
 	  			$("#minCId").css('display','block');
 	  			$("#minCalenderId").attr('checked','checked');
+	  			minCalendarInit();
 	  		}
 	  	}
 	  </script>
@@ -258,6 +263,8 @@
 			if(d.getDate() < 10){
 				var dateStr = d.getMonth()+1 +"-0"+ d.getDate();
 				var yesterdayStr = d.getMonth()+1 +"-0"+ (d.getDate()-1);
+				dateStr = "0" + dateStr;
+				yesterdayStr = "0" + yesterdayStr;
 			}else{
 				var dateStr = d.getMonth()+1 +"-"+ d.getDate();
 				var yesterdayStr = d.getMonth()+1 +"-"+ (d.getDate()-1);
@@ -358,7 +365,6 @@
 			              closeBtn: false,
 			              content: '${base}/admin/operationsArea/updateCustomEvent.html?msgId='+ msgId
 			          }); 
-			          
 			          $('#calendar').fullCalendar('updateEvent', events);
 			      },
 			      eventMouseover:function( event, jsEvent, view ) {
@@ -422,7 +428,6 @@
 		            content: $('#layer-diy')
 		         }); 
 		     });
-
 		}
 		
 		 /* 关闭自定义界面 */
@@ -637,7 +642,6 @@
             				$('span[data-date="'+element.gtime+'"]').find('i').remove();
             			}
 		            	$('span[data-date="'+element.gtime+'"]').append('<i class="dot"></i>');
-	            		
 	            		//小红点点击弹框事件
 	            		$(document).on('click','span[data-date="'+ element.gtime +'"]',function(){//如果有红色圆点，点击 显示小div信息
 	            			$.ajax({
@@ -655,7 +659,7 @@
 	        		                }); 
 	        		            }
 	        		        });
-	            		
+	            			//弹框提示信息
 	            			layer.tips(
 	            				 $("#minCalId").val(), 
 	      			    		 this,
@@ -664,10 +668,7 @@
 	      					        time: 3000
 	      					     }
 		      			    );
-	            		
 	      			  	});//end 如果有红色圆点，点击 显示小div信息 
-		            	
-	      			  	
 	                }); 
 	            }
 	       });

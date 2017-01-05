@@ -214,7 +214,7 @@
 	            	window.parent.successCallback('2');
 	            },
 	            error: function (xhr) {
-	            	layer.alert("添加失败","",3000);
+	            	layer.alert("编辑失败","",3000);
 	            } 
 	        });
 		}

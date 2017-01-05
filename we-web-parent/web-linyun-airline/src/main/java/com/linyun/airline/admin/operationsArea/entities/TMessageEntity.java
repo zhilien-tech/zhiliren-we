@@ -30,6 +30,10 @@ public class TMessageEntity implements Serializable {
 	private Long msgType;
 
 	@Column
+	@Comment("消息状态")
+	private Long msgStatus;
+
+	@Column
 	@Comment("生成日期")
 	private Date generateTime;
 	private String generateTimeStr;

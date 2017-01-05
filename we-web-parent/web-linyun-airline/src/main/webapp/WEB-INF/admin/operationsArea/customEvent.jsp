@@ -97,6 +97,7 @@
 						window.parent.taskEventList();
 						window.parent.reload();
 						window.parent.getTimeStr();
+						window.parent.checkBoxShow();
 					},
 					error : function(xhr) {
 						layer.msg("添加失败", "", 3000);
@@ -125,8 +126,6 @@
 		    }
 		    return zeros + value;
 		}
-
-		
 	</script>
 </body>
 </html>

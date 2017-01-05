@@ -7,7 +7,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=7" />
 	<meta http-equiv="Access-Control-Allow-Origin" content="*" />
 	<meta name="alexaVerifyID" content="" />
-    <title>添加</title>
+    <title>编辑</title>
 	<link rel="stylesheet" href="${base }/public/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/AdminLTE.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/font-awesome.min.css">
@@ -49,45 +49,54 @@
                               <input name="comName" type="tel" class="form-control input-sm inpImpWid" placeholder="请输入公司名称" value="${obj.company.comName }"/><span class="prompt">*</span>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 text-right padding">用户名：</label>
-                            <div class="col-sm-3 padding">
-                              <input name="adminId" type="hidden" value="${obj.company.adminId }">
-                              <input name="telephone" type="tel" class="form-control input-sm inpImportant" placeholder="请输入用户名" value="${obj.telephone }"/><span class="prompt">*</span>
-                            </div>
-                          
-                            <label class="col-sm-2 text-right padding">联系人：</label>
-                            <div class="col-sm-3 padding">
-                              <input name="connect" type="tel" class="form-control input-sm inpImportant" placeholder="请输入联系人姓名" value="${obj.company.connect }"/><span class="prompt">*</span>
-                            </div>
+                        <div class="row">
+                        	<div class="form-group">
+	                            <label class="col-sm-3 text-right padding">用户名：</label>
+	                            <div class="col-sm-3 padding">
+	                              <input name="adminId" type="hidden" value="${obj.company.adminId }">
+	                              <input name="telephone" type="tel" class="form-control input-sm inpImportant" placeholder="请输入用户名" value="${obj.telephone }"/><span class="prompt">*</span>
+	                            </div>
+                        	</div>
+                          	<div class="form-group form-group1">
+	                            <label class="col-sm-2 text-right padding">联系人：</label>
+	                            <div class="col-sm-3 padding">
+	                              <input name="connect" type="tel" class="form-control input-sm inpImportant" placeholder="请输入联系人姓名" value="${obj.company.connect }"/><span class="prompt">*</span>
+	                            </div>
+                          	</div>
                         </div>
 
-                        <div class="form-group row">
-                          <label class="col-sm-3 text-right padding">联系电话：</label>
-                            <div class="col-sm-3 padding">
-                              <input name="mobile" type="tel" class="form-control input-sm inpImportant" placeholder="请输入联系人手机号" value="${obj.company.mobile }"/><span class="prompt">*</span>
+                        <div class="row">
+                        	<div class="form-group">
+	                          <label class="col-sm-3 text-right padding">联系电话：</label>
+	                            <div class="col-sm-3 padding">
+	                              <input name="mobile" type="tel" class="form-control input-sm inpImportant" placeholder="请输入联系人手机号" value="${obj.company.mobile }"/><span class="prompt">*</span>
+	                            </div>
                             </div>
-                            
-                            <label class="col-sm-2 text-right padding">联系邮箱：</label>
-                            <div class="col-sm-3 padding">
-                              <input name="email" type="tel" class="form-control input-sm" placeholder="请输入联系邮箱" value="${obj.company.email }"/>
-                            </div>
+                          	<div class="form-group form-group1">
+	                            <label class="col-sm-2 text-right padding">联系邮箱：</label>
+	                            <div class="col-sm-3 padding">
+	                              <input name="email" type="tel" class="form-control input-sm" placeholder="请输入联系邮箱" value="${obj.company.email }"/>
+	                            </div>
+	                        </div>
                         </div>
 
-                        <div class="form-group row">
-                          <label class="col-sm-3 text-right padding">座机电话：</label>
-                            <div class="col-sm-3 padding">
-                              <input name="phonenumber" type="tel" class="form-control input-sm" placeholder="请输入公司座机号" value="${obj.company.phonenumber }"/>
-                            </div>
-                          
-                            <label class="col-sm-2 text-right padding">公司类型：</label>
-                            <div class="col-sm-3 padding">
-                              <select class="form-control input-sm inpImportant" name="comType">
-                                <option value="">==请选择==</option>
-                                <option value="1" <c:if test="${'1' eq obj.company.comType}">selected</c:if>>上游公司</option>
-                                <option value="2" <c:if test="${'2' eq obj.company.comType}">selected</c:if>>代理商</option>
-                              </select><span class="prompt">*</span>
-                            </div>
+                        <div class="row">
+                        	<div class="form-group">
+	                          <label class="col-sm-3 text-right padding">座机电话：</label>
+	                            <div class="col-sm-3 padding">
+	                              <input name="phonenumber" type="tel" class="form-control input-sm" placeholder="请输入公司座机号" value="${obj.company.phonenumber }"/>
+	                            </div>
+                        	</div>
+                          	<div class="form-group form-group1">
+	                            <label class="col-sm-2 text-right padding">公司类型：</label>
+	                            <div class="col-sm-3 padding">
+	                              <select class="form-control input-sm inpImportant" name="comType">
+	                                <option value="">==请选择==</option>
+	                                <option value="1" <c:if test="${'1' eq obj.company.comType}">selected</c:if>>上游公司</option>
+	                                <option value="2" <c:if test="${'2' eq obj.company.comType}">selected</c:if>>代理商</option>
+	                              </select><span class="prompt">*</span>
+	                            </div>
+	                        </div>
                         </div>
 
                         <div class="form-group row">

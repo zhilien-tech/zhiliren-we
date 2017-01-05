@@ -104,8 +104,8 @@ public class SabreAPITest {
 		InstaFlightsSearchForm form = new InstaFlightsSearchForm();
 		form.setOrigin("LAS");
 		form.setDestination("ATL");
-		form.setDeparturedate("2017-01-02");
-		form.setReturndate("2017-01-16");
+		form.setDeparturedate("2017-01-10");
+		form.setReturndate("2017-01-24");
 		form.setPointofsalecountry("US");
 		form.setOffset(1);
 		form.setLimit(10);

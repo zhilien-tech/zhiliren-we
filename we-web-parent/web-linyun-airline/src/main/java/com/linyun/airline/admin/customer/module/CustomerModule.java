@@ -30,6 +30,7 @@ import com.linyun.airline.common.base.Uploader;
 import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
+import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
 import com.linyun.airline.forms.TCustomerInfoUpdateForm;
 import com.uxuexi.core.common.util.Util;
@@ -119,9 +120,8 @@ public class CustomerModule {
 	@At
 	public Object listData(@Param("..") final TCustomerInfoSqlForm queryForm, HttpSession session) {
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		long companyId = tCompanyEntity.getId();//得到公司id
+		long companyId = tCompanyEntity.getId();//得到公司关系表id
 		queryForm.setCompanyId(companyId);
-
 		return customerViewService.listPage4Datatables(queryForm);
 	}
 
@@ -212,11 +212,16 @@ public class CustomerModule {
 	 */
 	@At
 	@POST
-	public Object checkComNameExist(@Param("name") final String comId, @Param("cid") final String id) {
+	public Object checkComNameExist(@Param("name") final String comId, @Param("cid") final String id,
+			HttpSession session) {
 		Map<String, Object> map = new HashMap<String, Object>();
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();//当前用户所在公司关系表id
+		TUpcompanyEntity upRelationEntity = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
+		long upRelationId = upRelationEntity.getId();
 
-		List<TCustomerInfoEntity> companys = dbDao.query(TCustomerInfoEntity.class, Cnd.where("agentId", "=", comId),
-				null);
+		List<TCustomerInfoEntity> companys = dbDao.query(TCustomerInfoEntity.class, Cnd.where("agentId", "=", comId)
+				.and("upComId", "=", upRelationId), null);
 		List<TCustomerInfoEntity> comNameList = dbDao.query(TCustomerInfoEntity.class, Cnd.where("agentId", "=", comId)
 				.and("id", "=", id), null);
 		if (!Util.isEmpty(companys)) {
@@ -228,7 +233,6 @@ public class CustomerModule {
 		} else {
 			map.put("valid", true);
 		}
-
 		return map;
 	}
 

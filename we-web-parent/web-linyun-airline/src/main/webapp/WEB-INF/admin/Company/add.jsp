@@ -244,6 +244,9 @@
 	            	layer.closeAll('loading');
 	            	layer.msg("添加成功",{time: 2000, icon:1});
 	            	$('#companyaddForm')[0].reset();
+	            	$('#uploader_00').empty();
+	            	$('#uploader_00').html('<div id="imgUrlMessage" name="imgUrlMessage"></div>');
+	            	inituploader("","00",[]);
 	            	$("#companyaddForm").data('bootstrapValidator').destroy();
 	                $('#companyaddForm').data('bootstrapValidator', null);
 	                formValidator();	

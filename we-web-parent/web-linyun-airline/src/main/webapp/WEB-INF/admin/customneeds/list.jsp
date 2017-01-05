@@ -5,7 +5,6 @@
 <!--小日历-->
 <link rel="stylesheet" type="text/css" href="${base }/public/build/kalendae.css">
 <link rel="stylesheet" type="text/css" href="${base }/public/dist/css/airlinesModule.css">
-
 <c:set var="url" value="${base}/admin/customneeds" />
   <!-- Content Wrapper. Contains page content -->
 	<!--内容-->
@@ -418,6 +417,7 @@ function initDatatable() {
     	"bLengthChange": false,
         "processing": true,
         "serverSide": true,
+        "stripeClasses": [ 'strip1','strip2' ],
         "language": {
             "url": "${base}/public/plugins/datatables/cn.json"
         },
@@ -628,12 +628,11 @@ $(function () {
   			return;
   		}
   		document.getElementById("uploadExcelForm").submit();
-  		//layer.load(1, {shade: [0.8, '#393D49']});
+  		layer.load(1);
   	}
   //其他页面回调
   function successCallback(id){
 	  datatable.ajax.reload(null,false);
-	  datatable2.ajax.reload(null,false);
 	  if(id == '1'){
 		  layer.alert("添加成功",{time: 2000, icon:1});
 	  }else if(id == '2'){
@@ -648,6 +647,7 @@ $(function () {
   function callback(){
 	  layer.alert("导入成功",{time: 2000, icon:1});
 	  $('#uploadExcelForm')[0].reset();
+	  layer.closeAll('loading');
 	  datatable.ajax.reload();
   }
   //输入格式必须为yyyy-MM-dd
