@@ -186,6 +186,8 @@ public class CompanyModule {
 	 */
 	@At
 	public Object userListData(@Param("..") final TCompanyUserSqlForm paramForm) {
+		TCompanyEntity company = companyViewService.fetch(paramForm.getId());
+		paramForm.setAdminid(company.getAdminId());
 		return companyViewService.listPage4Datatables(paramForm);
 	}
 
@@ -205,5 +207,13 @@ public class CompanyModule {
 	@POST
 	public Object loadCompanyCount() {
 		return companyViewService.getUpCompanyAndAgentCount(sqlManager);
+	}
+
+	/**
+	 * 移除员工
+	 */
+	@At
+	public Object removeUser(@Param("id") final long id) {
+		return companyViewService.removeUser(id);
 	}
 }

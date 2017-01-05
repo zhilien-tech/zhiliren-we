@@ -35,10 +35,13 @@ public class TCompanyUserSqlForm extends DataTablesParamForm {
 
 	private String depid;
 
+	private long adminid;
+
 	private Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		//TODO 添加自定义查询条件（可选）
-		cnd.and("tuj.status", "=", 1);
+		cnd.and("tu.status", "=", 1);
+		cnd.and("tu.id", "!=", adminid);
 		if (!Util.isEmpty(id)) {
 			cnd.and("tcj.comId", "=", id);
 		}

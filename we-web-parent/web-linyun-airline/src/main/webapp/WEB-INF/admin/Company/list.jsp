@@ -86,6 +86,7 @@ function initDatatable() {
     	"bLengthChange": false,
         "processing": true,
         "serverSide": true,
+        "stripeClasses": [ 'strip1','strip2' ],
         "language": {
             "url": "${base}/public/plugins/datatables/cn.json"
         },
@@ -158,7 +159,7 @@ $(function () {
   	    fix: false,
   	    maxmin: false,
   	    shadeClose: false,
-  	    area: ['900px', '700px'],
+  	    area: ['900px', '590px'],
   	    content: '${url}/update.html?id='+id
   	  });
   }
@@ -171,8 +172,10 @@ $(function () {
   	    maxmin: false,
   	    shadeClose: true,
   	    area: ['900px', '600px'],
-  	    content: '${url}/userList.html?id='+id
-  	    
+  	    content: '${url}/userList.html?id='+id,
+  	  	end:function(){
+	    	datatable.ajax.reload(null,false);
+	    }
   	  });
   }
   function onkeyEnter(){
