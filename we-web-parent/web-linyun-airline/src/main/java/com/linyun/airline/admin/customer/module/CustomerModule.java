@@ -218,18 +218,16 @@ public class CustomerModule {
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();//当前用户所在公司关系表id
 		TUpcompanyEntity upRelationEntity = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
-		long upRelationId = upRelationEntity.getId();
+		long upRelationId = 0;
+		if (!Util.isEmpty(upRelationEntity)) {
+			upRelationId = upRelationEntity.getId();
+		}
 
 		List<TCustomerInfoEntity> companys = dbDao.query(TCustomerInfoEntity.class, Cnd.where("agentId", "=", comId)
 				.and("upComId", "=", upRelationId), null);
-		List<TCustomerInfoEntity> comNameList = dbDao.query(TCustomerInfoEntity.class, Cnd.where("agentId", "=", comId)
-				.and("id", "=", id), null);
+
 		if (!Util.isEmpty(companys)) {
-			if (Util.isEmpty(id)) {
-				map.put("valid", false);
-			} else if (!Util.isEmpty(comNameList)) {
-				map.put("valid", true);
-			}
+			map.put("valid", false);
 		} else {
 			map.put("valid", true);
 		}

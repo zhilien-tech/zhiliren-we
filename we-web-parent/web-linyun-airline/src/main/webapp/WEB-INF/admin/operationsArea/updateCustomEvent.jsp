@@ -85,7 +85,6 @@
 					success : function(data) {
 						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						parent.layer.close(index);
-						//window.location.reload();
 						//更新成功 刷新各个模块
 						window.parent.taskEventList();
 						window.parent.reload();
@@ -135,7 +134,6 @@
 					success : function(data) {
 						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						parent.layer.close(index);
-						//更新成功 刷新各个模块
 						window.parent.taskEventList();
 						window.parent.reload();
 						window.parent.getTimeStr();

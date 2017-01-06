@@ -124,21 +124,12 @@
 				<div class="listInfo">
                   <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                      <li class="active"><a href="#tab_1" data-toggle="tab">散客</a></li>
-                      <li><a href="#tab_2" data-toggle="tab">团队</a></li>
+                      <li class="active"><a href="#tab_1" data-toggle="tab">内陆跨海</a></li>
+                      <li><a href="#tab_2" data-toggle="tab">国际</a></li>
                     </ul>
                     <div class="tab-content">
                       <div class="tab-pane active" id="tab_1">
                           <table class="scatteredTable1">
-                              <tr>
-                                <td><label>搜索筛选：</label></td>
-                                <td>
-                                	<input id="gjnlRadio" type="radio" name="internat" value="1"><span>国际内陆</span>
-                                </td>
-                                <td colspan="2">
-                                	<input id="gjRadio" type="radio" name="internat" value="2"><span>国际</span>
-							    </td>
-                              </tr>
                               <tr>
                                 <td><label>航程类型：</label></td>
                                 <td>
@@ -241,11 +232,6 @@
                       <div class="tab-pane" id="tab_2">
                           <table class="scatteredTable1">
                               <tr>
-                                <td><label>搜索筛选：</label></td>
-                                <td><input id="gjnlRadioTeam" type="radio" name="internat1" value="1"><span>国际内陆</span></td>
-                                <td colspan="2"><input id="gjRadioTeam" type="radio" name="internat1" value="2"><span>国际</span></td>
-                              </tr>
-                              <tr>
                                 <td><label>航程类型：</label></td>
                                 <td><input type="radio" name="voyageType1" value="1" onclick="radioFunct1()"><span>单程</span></td>
                                 <td><input type="radio" name="voyageType1" value="2" onclick="radioFunct1()"><span>往返</span></td>
@@ -317,15 +303,15 @@
                             <table class="table table-bordered table-hover">
                               <thead>
                               <tr>
-                                <th>订单号</th>
-                                <th>团型</th>
-                                <th>团名</th>
-                                <th>程航</th>
-                                <th>始发日期</th>
-                                <th>价格</th>
-                                <th>数量</th>
-                                <th>申请日期</th>
-                                <th>操作人</th>
+                                <th>序号</th>
+	                            <th>航空公司名称</th>
+	                            <th>去程日期</th>
+	                            <th>起飞城市</th>
+	                            <th>回程日期</th>
+	                            <th>降落城市</th>
+	                            <th>人数</th>
+	                            <th>天数</th>
+	                            <th>联运要求</th>
                               </tr>
                               </thead>
                               <!-- 显示团队票信息 -->
@@ -399,7 +385,8 @@
 		$(document).click(function (e) { 
 			var num_id = $(e.target).attr('id'); 
 			/* 点击 散客每段提醒事件 */
-			if(num_id.indexOf("num")==0){
+			var num = num_id.indexOf("num");
+			if(num==0){
 				var i = num_id.substring(3,num_id.length);
 				var index = "";
 				if(i%2){
@@ -424,7 +411,8 @@
 			}
 			/* 点击 团客每段提醒事件 */
 			if(num_id != null){
-				if(num_id.indexOf("teamNum")==0){
+				var teamnum = num_id.indexOf("teamNum");
+				if(teamnum == 0){
 					var i = num_id.substring(7,num_id.length);
 					var index = "";
 					if(i%2){

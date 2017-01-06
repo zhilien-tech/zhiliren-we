@@ -204,6 +204,10 @@ $("#searchTeamTicketsBtn").click(function() {
 		layer.msg("客户名称不能为空", "", 2000);
 		return;
 	}
+	//loading层
+	var index = layer.load(1, {
+	  shade: [0.1,'#fff'] //0.1透明度的白色背景
+	});
 	if(clickone){
 		var index=0;
 		$("#teamorigin").val($("#teamOutCity"+index).select2("val"));
