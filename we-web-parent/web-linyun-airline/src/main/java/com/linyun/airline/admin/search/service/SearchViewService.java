@@ -1,6 +1,5 @@
 package com.linyun.airline.admin.search.service;
 
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,7 +9,6 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
-
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
@@ -95,6 +93,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 */
 	public Object getCitySelect(String cityname, String typeCode, String ids) {
 		List<DictInfoEntity> citySelect = new ArrayList<DictInfoEntity>();
+		typeCode = typeCode.substring(0, 2);
 		try {
 			citySelect = externalInfoService.findDictInfoByText(cityname, typeCode);
 			if (citySelect.size() > 5) {
@@ -139,7 +138,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		}
 		return airlineSelect;
 	}
-
 
 	/**
 	 * 查询散客飞机票
@@ -272,6 +270,5 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 		return list;
 	}
-
 
 }

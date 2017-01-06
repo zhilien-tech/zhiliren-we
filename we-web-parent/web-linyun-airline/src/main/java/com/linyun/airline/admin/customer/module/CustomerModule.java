@@ -226,8 +226,15 @@ public class CustomerModule {
 		List<TCustomerInfoEntity> companys = dbDao.query(TCustomerInfoEntity.class, Cnd.where("agentId", "=", comId)
 				.and("upComId", "=", upRelationId), null);
 
+		List<TCustomerInfoEntity> comNameList = dbDao.query(TCustomerInfoEntity.class, Cnd.where("agentId", "=", comId)
+				.and("id", "=", id), null);
+
 		if (!Util.isEmpty(companys)) {
-			map.put("valid", false);
+			if (Util.isEmpty(id)) {
+				map.put("valid", false);
+			} else if (!Util.isEmpty(comNameList)) {
+				map.put("valid", true);
+			}
 		} else {
 			map.put("valid", true);
 		}

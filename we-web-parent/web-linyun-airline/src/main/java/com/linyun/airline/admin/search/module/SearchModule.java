@@ -13,7 +13,6 @@ import org.nutz.mvc.annotation.Param;
 import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.sabre.form.InstaFlightsSearchForm;
 
-
 @IocBean
 @At("/admin/search")
 public class SearchModule {
@@ -102,7 +101,6 @@ public class SearchModule {
 		return searchViewService.getAirLineSelect(airlinename, ids);
 	}
 
-
 	/**
 	 * 查询散客机票
 	 */
@@ -120,6 +118,5 @@ public class SearchModule {
 	public Object searchTeamTickets(@Param("..") InstaFlightsSearchForm searchForm) {
 		return searchViewService.searchTeamTickets(searchForm);
 	}
-
 
 }
