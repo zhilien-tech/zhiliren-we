@@ -212,6 +212,8 @@ function radioFunct(obj){
 				$('.setoutinput').hide('300');
 				$('.addIconTd').hide('300');
 				$('.removeIconTd').hide('300');
+				//清除
+				
 			}else if(radioValue==2){
 				$('.setoutLabel').show('300');
 				$('.setoutinput').show('300');

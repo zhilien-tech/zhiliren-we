@@ -319,7 +319,7 @@ function initDatatable() {
 	    	    fix: false,
 	    	    maxmin: false,
 	    	    shadeClose: false,
-	    	    area: ['900px', '500px'],
+	    	    area: ['900px', '550px'],
 	    	    content: '${base}/admin/customer/add.html'
 	    	  });
 	  }

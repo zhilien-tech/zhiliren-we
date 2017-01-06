@@ -304,12 +304,12 @@
                               <thead>
                               <tr>
                                 <th>序号</th>
-	                            <th>航空公司名称</th>
-	                            <th>去程日期</th>
-	                            <th>起飞城市</th>
-	                            <th>回程日期</th>
-	                            <th>降落城市</th>
+	                            <th>日期</th>
+	                            <th>航班号</th>
+	                            <th>航段</th>
+	                            <th>时间</th>
 	                            <th>人数</th>
+	                            <th>FOC</th>
 	                            <th>天数</th>
 	                            <th>联运要求</th>
                               </tr>

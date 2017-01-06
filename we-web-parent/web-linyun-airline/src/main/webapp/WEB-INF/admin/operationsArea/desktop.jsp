@@ -119,11 +119,7 @@
 		<!--end right Content-->
 
 		<!--footer-->
-		<footer class="main-footer">
-			<div class="pull-right hidden-xs"></div>
-			<strong>版权 &copy; 2016 <a href="#">聚优国际旅行社（北京）有限公司</a>.
-			</strong> 保留所有权利.
-		</footer>
+		<%@include file="/WEB-INF/public/footer.jsp"%>
 		<!--end footer-->
 
 		<!--自定义界面 弹框-->
