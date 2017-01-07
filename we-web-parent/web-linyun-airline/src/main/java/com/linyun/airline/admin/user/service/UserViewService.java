@@ -385,7 +385,6 @@ public class UserViewService extends BaseService<TUserEntity> {
 	 * 修改密码执行操作
 	 */
 	public Object updatePassData(final TUserModForm PassForm, final Long userId) {
-		Map<String, Object> obj = Maps.newHashMap();
 		TUserEntity userPass = dbDao.fetch(TUserEntity.class, Cnd.where("id", "=", userId));
 		String oldPass = userPass.getPassword();//获得数据库中存在的原密码
 		//前端输入的原密码
@@ -399,7 +398,7 @@ public class UserViewService extends BaseService<TUserEntity> {
 			//将原密码更新为新密码
 			dbDao.update(TUserEntity.class, Chain.make("password", newPass), Cnd.where("id", "=", userId));
 		}
-		return obj;
+		return JsonResult.success("密码修改成功!");
 	}
 
 	/*public Object checkOldPass(TUserModForm PassForm, final Long userId) {

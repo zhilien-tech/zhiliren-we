@@ -39,24 +39,30 @@
 <script type="text/javascript">
 //修改密码
 $("#submit").click(function() {
-	$.ajax({
-		cache : true,
-		type : "POST",
-		url : '${base}/admin/user/updatePassData.html',
-		data : $('#passwordForm').serialize(),//form表单数据
-		success : function(data) {
-			layer.load(1, {
-				 shade: [0.1,'#fff'] //0.1透明度的白色背景
-			});
-            layer.msg('密码修改成功!',{time: 5000, icon:6});
-			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-		    parent.layer.close(index);
-		    window.location.reload();
-		},
-		error : function(request) {
-			layer.msg('密码修改失败!');
-		}
+	var loadLayer = layer.load(1, {
+		 shade: [0.1,'#fff'] //0.1透明度的白色背景
 	});
+	$.ajax({
+		type: 'POST',
+		dataType : 'json',
+		data: $("#passwordForm").serialize(),//form表单数据
+		url: '${base}/admin/user/updatePassword.html',
+        success: function (data) { 
+        	if(data.status == '200'){
+				layer.close(loadLayer) ;
+				location.href="${base}/admin/login.html";//密码修改成功跳到登录页
+				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				parent.layer.close(index);
+				window.parent.successCallback('1');
+			}else{
+				layer.close(loadLayer) ;
+				layer.msg(data.message) ;
+			}
+        },
+        error: function (request) {
+        	layer.msg("密码修改失败!","",3000);
+        } 
+    });
 });
 //验证原密码是否输入正确
 /* function checkOldPass(userId){

@@ -38,15 +38,16 @@ $(document).ready(function(){
 		 $(".sidebar-menu > li").removeClass('active');
          $(this).addClass("active");//同时 添加记录样式
       });
-	
 	 //cookie记录已点击的index
     if(_index!=null && undefined != _index && _index != ""){
-    	$(".sidebar-menu  li").eq(_index).siblings().removeClass('active');
-    	$(".sidebar-menu  li").eq(_index).addClass("active");//当前下标的元素添加样式
+    	
+    	$(".sidebar-menu > li").eq(_index).siblings().removeClass('active');
+    	$(".sidebar-menu > li").eq(_index).addClass("active");//当前下标的元素添加样式
     }else{
-    	$(".sidebar-menu  li").eq(0).siblings().removeClass('active');
-    	$(".sidebar-menu  li").eq(0).addClass("active");//当前下标的元素添加样式
+    	$(".sidebar-menu > li").eq(0).siblings().removeClass('active');
+    	$(".sidebar-menu > li").eq(0).addClass("active");//当前下标的元素添加样式
     }
+	
 });
 </script>
 </html>

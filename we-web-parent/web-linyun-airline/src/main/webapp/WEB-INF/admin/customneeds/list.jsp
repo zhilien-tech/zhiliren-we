@@ -141,7 +141,7 @@
                                           <a class="flie_A flie_import" target="hidden_frame" href="${url}/exportNanHangTemplate.html">南航</a>
                                        </li>
                                        <li role="presentation">
-                                          <a class="flie_A flie_import" target="hidden_frame" onclick="exportXinHangTemplate()">新航</a>
+                                          <a class="flie_A flie_import" target="hidden_frame" href="${url}/exportXinHangTemplate.html">新航</a>
                                        </li>
                                        <li role="presentation">
                                           <a class="flie_A flie_import" target="hidden_frame" href="${url}/exportGuoTaiTemplate.html">国泰</a>
@@ -288,10 +288,10 @@
                             </select>
                           </div>
                           <div class="col-md-2 padding">
-                            <select class="form-control select1" id="idordernum" name="idordernum" onchange="editPlanListSearch();">
+                            <!-- <select class="form-control select1" id="idordernum" name="idordernum" onchange="editPlanListSearch();">
                               <option value="0">无订单号</option>
                               <option value="1">有订单号</option>
-                            </select>
+                            </select> -->
                           </div>
                           <div class="col-md-8">
                             <button type="button" class="btn btn-primary btn-sm right" onclick="batchClosePlan();">批量关闭</button>
