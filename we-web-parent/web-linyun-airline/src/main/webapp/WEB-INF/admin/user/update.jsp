@@ -196,7 +196,7 @@ $(document).ready(function(){
 					results : data
 				};
 			},
-			cache : true
+			cache : false
 		},
 		escapeMarkup : function(markup) {
 			return markup;
@@ -210,7 +210,9 @@ $(document).ready(function(){
 	_areaSelect.val([${obj.areaIds}]).trigger("change");
 });
 //校验
-	$('#editUserForm').bootstrapValidator({
+
+function validateParams(){
+	var options = {
 		message: '验证不通过!',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
@@ -305,7 +307,13 @@ $(document).ready(function(){
                 }
             }
         }
-	});
+	};
+	
+	$("#editUserForm").bootstrapValidator(options);  
+	$("#editUserForm").data('bootstrapValidator').validate();
+	return $("#editUserForm").data('bootstrapValidator').isValid();
+}
+
 //部门职位联动查询
 function selectDeptName(){
 	$.ajax({
@@ -329,9 +337,9 @@ function selectDeptName(){
 }
 //修改保存
 function saveSubmit(){
-	$('#editUserForm').bootstrapValidator('validate');
-	var bootstrapValidator = $("#editUserForm").data('bootstrapValidator');
-	if(bootstrapValidator.isValid()){
+	var valid = validateParams() ;
+	
+	if(valid){
 		$.ajax({
 			type : "POST",
 			url : '${base}/admin/user/update.html',
@@ -350,10 +358,6 @@ function saveSubmit(){
 		});
 	}
 }
-//提交时开始验证
-/* $('#submitBtn').click(function() {
-    $('#editUserForm').bootstrapValidator('validate');
-}); */
 //密码初始化
 function passwordInit(userId){
 	layer.confirm("您确认初始化密码吗？", {

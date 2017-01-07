@@ -25,28 +25,17 @@
 				              <i class="fa fa-angle-right pull-right" style="font-size:12px;margin: 2px 10px;"></i>
 				            </span>
 				   		</a>
+				   		<%--子菜单 --%>
+				   		<ul class="treeview-menu">
+							<c:forEach var="function" items="${functionMap[menu.id]}">
+								<li>
+									<a href="${base}${function.url}?currentPageIndex=${stat.index}" style="margin-left: 15px;"><i class="fa fa-circle-o"></i> ${function.name}</a>
+								</li>
+							</c:forEach>
+						</ul>
 				   </c:otherwise>
 			    </c:choose>
-			    <c:choose>
-			    	<c:when test="${empty menu.url }">
-			    		<ul class="treeview-menu">
-							<c:forEach var="function" items="${functionMap[menu.id]}" varStatus="stat">
-								<li>
-									<a href="${base}${function.url}?currentPageIndex=${stat.index}" style="margin-left: 15px;"><i class="fa fa-circle-o"></i> ${function.name}</a>
-								</li>
-							</c:forEach>
-						</ul>
-			    	</c:when>
-			    	<c:otherwise>
-			    		<ul>
-							<c:forEach var="function" items="${functionMap[menu.id]}" varStatus="stat">
-								<li>
-									<a href="${base}${function.url}?currentPageIndex=${stat.index}" style="margin-left: 15px;"><i class="fa fa-circle-o"></i> ${function.name}</a>
-								</li>
-							</c:forEach>
-						</ul>
-			    	</c:otherwise>
-			    </c:choose>
+			    
 				<!-- <ul class="treeview-menu">
 				</ul> -->
 			</li>

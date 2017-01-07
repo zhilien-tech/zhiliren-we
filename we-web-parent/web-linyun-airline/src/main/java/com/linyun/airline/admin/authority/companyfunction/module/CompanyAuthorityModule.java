@@ -4,7 +4,6 @@ import org.nutz.dao.SqlManager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
@@ -17,8 +16,6 @@ import com.uxuexi.core.web.chain.support.JsonResult;
 
 @IocBean
 @At("/admin/authority/companyfunction")
-@Filters({//@By(type = AuthFilter.class)
-})
 public class CompanyAuthorityModule {
 
 	@Inject
