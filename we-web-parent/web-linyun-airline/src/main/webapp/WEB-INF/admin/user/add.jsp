@@ -292,7 +292,6 @@ $("#submit").click(function() {
 				layer.load(1, {
 					 shade: [0.1,'#fff'] //0.1透明度的白色背景
 				});
-              	layer.msg('添加成功!',{time: 5000, icon:6});
 				formValidator();
 				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			    parent.layer.close(index);

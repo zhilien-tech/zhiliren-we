@@ -81,7 +81,7 @@ function updatePassword(){
   layer.open({
 	    type: 2,
 	    title: false,
-	  	closeBtn:true,
+	  	closeBtn:false,
 	    fix: false,
 	    maxmin: false,
 	    shadeClose: false,
