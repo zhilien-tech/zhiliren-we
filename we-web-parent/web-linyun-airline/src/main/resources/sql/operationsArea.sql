@@ -123,5 +123,12 @@ AND
 AND
 	c.deletestatus=@deletestatus
 
+/*get_checkbox_status*/
+SELECT
+	*
+FROM
+	t_checkbox_status t
+WHERE
+	t.userId =@userid
 
 

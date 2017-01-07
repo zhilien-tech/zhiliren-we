@@ -242,6 +242,7 @@ $("#searchTeamTicketsBtn").click(function() {
 				document.getElementById('travelTeamTypeNum').innerHTML=html;
 			}
 			var teamList = "";
+			alert(JSON.stringify(data));
 			$.each(data, function (index, element) { 
 				teamList += '<tr><td>'+ element.ordersnum +'</td><td>'+ " " +'</td><td>'+ " " +'</td><td>'+element.leavescity +'/'+ element.backscity +'</td>'+
 				'<td>'+element.leavesdate+'</td><td>'+element.price+'</td><td>'+element.amount+'</td><td>'+element.orderstime+'</td><td>'+element.opid+'</td></tr>';
