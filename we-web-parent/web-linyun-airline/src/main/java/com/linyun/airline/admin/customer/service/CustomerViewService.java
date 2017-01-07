@@ -83,8 +83,14 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 	//客户公司
 	public Object company(String comName) {
-		List<Record> companyList = companyViewService.getCompanyList(CompanyTypeEnum.AGENT.intKey(), comName);
-		List<Select2Option> result = transform2SelectOptions(companyList);
+		Sql sql = Sqls.create(sqlManager.get("agentCompany_list"));
+		sql.setParam("comtype", CompanyTypeEnum.AGENT.intKey());
+		sql.setParam("deletestatus", 0);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("comName", "like", Strings.trim(comName) + "%");
+		sql.setCondition(cnd);
+		List<Record> agentCompanyList = dbDao.query(sql, null, null);
+		List<Select2Option> result = transform2SelectOptions(agentCompanyList);
 		return result;
 	}
 
@@ -148,10 +154,9 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
 		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
-		if (Util.isEmpty(upcompany)) {
-			throw new IllegalArgumentException("用户上游公司不存在，companyId：" + companyId);
+		if (!Util.isEmpty(upcompany)) {
+			addForm.setUpComId(upcompany.getId());
 		}
-		addForm.setUpComId(upcompany.getId());
 		TCustomerInfoEntity customerInfo = this.add(addForm);
 
 		//出发城市城市截取
@@ -257,25 +262,25 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		//查询公司名称
 		Sql comSql = Sqls.create(sqlManager.get("customer_comOption_list"));
 		Cnd comCnd = Cnd.NEW();
-		comCnd.and("o.id", "=", id);
+		comCnd.and("ci.id", "=", id);
 		comSql.setCondition(comCnd);
-		//只有一个城市
-		List<TCompanyEntity> comEntity = DbSqlUtil.query(dbDao, TCompanyEntity.class, comSql);
+		//只有一个
+		List<Record> agentCompanyList = dbDao.query(comSql, null, null);
 		//公司名称id 拼串
 		String comIds = "";
 		String comName = "";
-		for (TCompanyEntity company : comEntity) {
-			comIds = company.getId() + "";
-			comName = company.getComName();
+		for (Record r : agentCompanyList) {
+			comIds = r.getString("agentId") + "";
+			comName = r.getString("name");
 		}
 		obj.put("comIds", comIds);
-		obj.put("comEntity", Lists.transform(comEntity, new Function<TCompanyEntity, Select2Option>() {
+		obj.put("comEntity", Lists.transform(agentCompanyList, new Function<Record, Select2Option>() {
 			@Override
-			public Select2Option apply(TCompanyEntity record) {
+			public Select2Option apply(Record record) {
 				Select2Option op = new Select2Option();
 
-				op.setId(record.getId());
-				op.setText(record.getComName());
+				op.setId(Long.valueOf(record.getString("agentid")));
+				op.setText(record.getString("comname"));
 				return op;
 			}
 		}));
@@ -410,10 +415,9 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
 		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
-		if (Util.isEmpty(upcompany)) {
-			throw new IllegalArgumentException("用户上游公司不存在，companyId：" + companyId);
+		if (!Util.isEmpty(upcompany)) {
+			updateForm.setUpComId(upcompany.getId());
 		}
-		updateForm.setUpComId(upcompany.getId());
 
 		this.update(updateForm);
 

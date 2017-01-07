@@ -12,10 +12,8 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">&nbsp;&nbsp;<i class="fa fa-users"></i> 公司管理</h3>
               <div class="form-group row form-right">
              
-                
                 <div class="col-md-3"><!--公司名称/负责人/电话 搜索框-->
                   <input type="text" name="companyName" id="companyName" class="form-control" placeholder="公司名称/负责人/电话" onkeypress="onkeyEnter();">
                 </div>

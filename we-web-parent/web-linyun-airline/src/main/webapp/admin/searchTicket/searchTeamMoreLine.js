@@ -204,6 +204,11 @@ $("#searchTeamTicketsBtn").click(function() {
 		layer.msg("客户名称不能为空", "", 2000);
 		return;
 	}
+	//loading层
+	/*var index = layer.load(1, {
+	  shade: [0.1,'#fff'], //0.1透明度的白色背景
+	  2000
+	});*/
 	if(clickone){
 		var index=0;
 		$("#teamorigin").val($("#teamOutCity"+index).select2("val"));
@@ -237,7 +242,8 @@ $("#searchTeamTicketsBtn").click(function() {
 				document.getElementById('travelTeamTypeNum').innerHTML=html;
 			}
 			var teamList = "";
-			$.each(data, function (index, element) {  
+			alert(JSON.stringify(data));
+			$.each(data, function (index, element) { 
 				teamList += '<tr><td>'+ element.ordersnum +'</td><td>'+ " " +'</td><td>'+ " " +'</td><td>'+element.leavescity +'/'+ element.backscity +'</td>'+
 				'<td>'+element.leavesdate+'</td><td>'+element.price+'</td><td>'+element.amount+'</td><td>'+element.orderstime+'</td><td>'+element.opid+'</td></tr>';
 			});  

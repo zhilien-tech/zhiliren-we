@@ -22,7 +22,7 @@ public class TCompanyAddForm extends AddForm implements Serializable {
 	/**用户名*/
 	private String telephone;
 	/**公司类型*/
-	private String comType;
+	private int comType;
 
 	/**备注*/
 	private String remark;

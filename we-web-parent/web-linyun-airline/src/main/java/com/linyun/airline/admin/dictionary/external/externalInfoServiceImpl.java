@@ -43,4 +43,16 @@ public class externalInfoServiceImpl extends BaseService<DictInfoEntity> impleme
 				Cnd.where(exp).and("status", "=", DataStatusEnum.ENABLE.intKey()).and("typeCode", "=", typeCode), null);
 		return infoList;
 	}
+
+	//查询多个类型
+	@Override
+	public List<DictInfoEntity> findDictInfoByTypes(String name, String typeCode1, String typeCode2) throws Exception {
+		SqlExpressionGroup exp = new SqlExpressionGroup();
+		exp.and("dictName", "like", Strings.trim(name) + "%").or("dictCode", "like", Strings.trim(name) + "%");
+		List<DictInfoEntity> infoList = dbDao.query(
+				DictInfoEntity.class,
+				Cnd.where(exp).and("status", "=", DataStatusEnum.ENABLE.intKey()).and("typeCode", "=", typeCode1)
+						.or("typeCode", "=", typeCode2), null);
+		return infoList;
+	}
 }

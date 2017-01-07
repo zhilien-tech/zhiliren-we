@@ -65,10 +65,13 @@ INNER JOIN t_company_job cj ON uj.companyJobId = cj.id
 where cj.comId=@comid
 
 /*customer_comOption_list*/
-select 
-	o.id,
-	c.*
-FROM t_customer_info o INNER JOIN t_company c on o.agentId = c.id
+SELECT
+	ci.agentId,
+  c.comName
+FROM
+	t_customer_info ci
+INNER JOIN t_agent a ON ci.agentId = a.id
+INNER JOIN t_company c ON a.comId = c.id
 $condition
 
 /*customer_islineOption_list*/

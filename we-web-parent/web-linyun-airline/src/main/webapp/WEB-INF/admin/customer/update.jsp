@@ -788,7 +788,6 @@
 	<!-- 更新 -->
 	<script type="text/javascript">
 		function updateCustomerInfo() {
-			
 			$('#customerUpdateForm').bootstrapValidator('validate');
 			var bootstrapValidator = $("#customerUpdateForm").data('bootstrapValidator');
 			if (bootstrapValidator.isValid()) {

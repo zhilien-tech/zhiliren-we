@@ -31,33 +31,57 @@ function initDatatable2() {
                         }
                     },
                     {"data": "xuhao", "bSortable": false},
-                    {"data": "dingdanhao", "bSortable": false},
-                    {"data": "airlinename", "bSortable": false},
                     {"data": "leavesdate", "bSortable": false,
                     	render: function(data, type, row, meta) {
                     		var leavesdate = new Date(row.leavesdate);
-                    		var MM = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][leavesdate.getMonth()];
-                    		return leavesdate.getDate() + "/" + MM;
+                    		var backsdate = new Date(row.backsdate);
+                    		var MM = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'][leavesdate.getMonth()];
+                    		var week = ['MO','TU','WE','TH','FR','SA','SU'][leavesdate.getUTCDay()]
+                    		var MM2 = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'][backsdate.getMonth()];
+                    		var week2 = ['MO','TU','WE','TH','FR','SA','SU'][backsdate.getUTCDay()]
+                    		var result = '<ul><li style="list-style:none;">'+(week+leavesdate.getDate() + MM)+'</li>'
+                    		+'<li style="list-style:none;">'+(week2+backsdate.getDate() + MM2)+'</li>'
+                    		+'</ul>';
+                    		return result;
                     	}
                     },
                     {"data": "leavescity", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		return row.leavescity;
+                    		var result = '<ul>'
+                        		+'<li style="list-style:none;">'+row.leaveairline+'</li>'
+                        		+'<li style="list-style:none;">'+row.backairline+'</li>'
+                        		+'</ul>';
+                    		return result;
                     	}
                     },
                     {"data": "backsdate", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		var backsdate = new Date(row.backsdate);
-                    		var MM = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][backsdate.getMonth()];
-                    		return backsdate.getDate() + "/" + MM;
+                    		var result = '<ul>' 
+                        		+'<li style="list-style:none;">'+(row.leavescity +'/'+ row.backscity)+'</li>'
+                        		+'<li style="list-style:none;">'+(row.backleavecity +'/'+ row.backbackcity)+'</li>'
+                        		+'</ul>';
+                    		return result;
                     	}
                     },
                     {"data": "backscity", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		return row.backscity;
+                    		var result = '<ul>' 
+                        		+'<li style="list-style:none;">'+(row.lleavetime +'/'+ row.lbacktime)+'</li>'
+                        		+'<li style="list-style:none;">'+(row.bleavetime +'/'+ row.bbacktime)+'</li>'
+                        		+'</ul>';
+                    		return result;
                     	}	
                     },
                     {"data": "peoplecount", "bSortable": false},
+                    {"data": "foc", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var result = '否';
+                    		if(row.foc == 1){
+                    			result = '16/1';
+                    		}
+                    		return result;
+                    	}
+                    },
                     {"data": "dayscount", "bSortable": false},
                     {"data": "travelname", "bSortable": false},
                     {"data": "unioncity", "bSortable": false}
@@ -74,7 +98,7 @@ function initDatatable2() {
             }
     	},{
             //   指定第一列，从0开始，0表示第一列，1表示第二列……
-            targets: 12,
+            targets: 11,
             render: function(data, type, row, meta) {
             	var s = '';
             	if(row.isclose == 0){
