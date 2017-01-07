@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import org.joda.time.DateTime;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
@@ -184,7 +185,10 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			sql.params().set("userId", id);
 		}
 		sql.params().set("msgStatus", 1);
-		sql.params().set("now", DateTimeUtil.tomorrow());
+		long millis = DateTimeUtil.millis();
+		millis += 30 * 60 * 1000;
+		DateTime dateTime = DateUtil.dateTime(new Date(millis));
+		sql.params().set("now", dateTime);
 		sql.setCallback(Sqls.callback.records());
 		List<Record> records = dbDao.query(sql, null, null);
 		int size = records.size();

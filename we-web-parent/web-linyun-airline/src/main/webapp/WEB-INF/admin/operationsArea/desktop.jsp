@@ -229,6 +229,9 @@
 	<!-- 任务事件提醒 -->
 	<script type="text/javascript">
 		function taskEventList() {
+			
+			//自动获取
+			setTimeout(taskEventList,1000*60);
 			//获取当前日期
 			var d = new Date();
 			if(d.getDate() < 10){
@@ -271,7 +274,6 @@
 				}
 			});
 		}
-		setTimeout('taskEventList()',3000); //指定1秒刷新一次
 	</script>
 
 	<!-- 大日历 -->
@@ -601,9 +603,9 @@
 			  
 		}
 	</script>
+	
 	<script type="text/javascript">
-		 $('.checkShow').click(function(){//显示提醒 显示/隐藏
-			 
+	    $('.checkShow').click(function(){//显示提醒 显示/隐藏
 		      if($(this).prop('checked')){
 		          $('.dot').css('display','block');
 		          $("#checkShow").prop('checked',true);
@@ -611,12 +613,10 @@
 		          $('.dot').css('display','none');
 		          $("#checkShow").prop('checked',false);
 		      }
-		  });//end 显示提醒 显示/隐藏
-	</script>
+	    });//end 显示提醒 显示/隐藏
 	
-	
-	<script type="text/javascript">
 		function getTimeStr(){
+		  //setTimeout(getTimeStr,100);
 		  /* 获取当前月  格式化为：2016-12的形式 */
 		  var dateValue=document.getElementById('box-min').getElementsByClassName('k-caption');//获取 小日历 的/年/月
     	  var d = dateValue[1].innerHTML;
@@ -681,10 +681,6 @@
 	       });
 		}
 		
-	
-	</script>
-
-	<script type="text/javascript">
 		//小日历上一个按钮
 		$(".k-btn-previous-month").click(function(){
 			getTimeStr();
@@ -694,6 +690,6 @@
 			getTimeStr(); 
 		});
 	</script>
-	
+
 </body>
 </html>
