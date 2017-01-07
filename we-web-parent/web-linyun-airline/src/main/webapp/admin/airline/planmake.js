@@ -112,8 +112,8 @@ function initSelect2(){
 					processResults : function(data, params) {
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
-							  obj.id =  obj.comname; // replace pk with your identifier
-							  obj.text =  obj.comname; // replace pk with your identifier
+							  obj.id =  obj.shortName; // replace pk with your identifier
+							  obj.text =  obj.shortName; // replace pk with your identifier
 							  return obj;
 						});
 						return {
@@ -726,14 +726,14 @@ function makePlan(){
 function checkIsNull(){
 	var result = true;
 	$('.addMake').each(function(i){
-		var travelname = $(this).find('[name=travelname]').val();
+		/*var travelname = $(this).find('[name=travelname]').val();
 		if(travelname){
 			travelname = travelname.join(',');
 		}else{
 			layer.alert("请填写第"+(i+1)+"个旅行社",{time: 2000, icon:1});
 			result = false;
 			return false;
-		}
+		}*/
 		var peoplecount = $(this).find('[name=peoplecount]').val();
 		if(!peoplecount){
 			layer.alert("请填写第"+(i+1)+"个人数",{time: 2000, icon:1});
@@ -794,14 +794,14 @@ function checkIsNull(){
 			result = false;
 			return false;
 		}*/
-		var unioncity = $(this).find('[name=unioncity]').val();
+		/*var unioncity = $(this).find('[name=unioncity]').val();
 		if (unioncity) {
 			unioncity = unioncity.join(',');
 		}else{
 			layer.alert("请填写第"+(i+1)+"个联运城市",{time: 2000, icon:1});
 			result = false;
 			return false;
-		}
+		}*/
 		var startdate = $(this).find('[name=startdate]').val();
 		if(!startdate){
 			layer.alert("请填写第"+(i+1)+"个起始日期",{time: 2000, icon:1});

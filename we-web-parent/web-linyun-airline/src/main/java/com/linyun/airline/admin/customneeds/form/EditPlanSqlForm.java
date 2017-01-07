@@ -61,10 +61,10 @@ public class EditPlanSqlForm extends DataTablesParamForm {
 
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
-		cnd.and("t.issave", "=", "1");
-		cnd.and("t.companyid", "=", companyid);
+		cnd.and("tt.issave", "=", "1");
+		cnd.and("tt.companyid", "=", companyid);
 		if (!Util.isEmpty(travelname1)) {
-			cnd.and("t.travelname", "like", "%" + travelname1 + "%");
+			cnd.and("tt.travelname", "like", "%" + travelname1 + "%");
 		}
 		if (idordernum == 1) {
 			cnd.and("tu.ordersnum", "is not", null);
@@ -73,40 +73,40 @@ public class EditPlanSqlForm extends DataTablesParamForm {
 
 		}
 		if (!Util.isEmpty(leaveairline1)) {
-			cnd.and("t.leaveairline", "like", "%" + leaveairline1 + "%");
+			cnd.and("tt.leaveairline", "like", "%" + leaveairline1 + "%");
 		}
 		if (!Util.isEmpty(leavescity1)) {
-			cnd.and("t.leavescity", "like", "%" + leavescity1 + "%");
+			cnd.and("tt.leavescity", "like", "%" + leavescity1 + "%");
 		}
 		if (!Util.isEmpty(backairline1)) {
-			cnd.and("t.backairline", "like", "%" + backairline1 + "%");
+			cnd.and("tt.backairline", "like", "%" + backairline1 + "%");
 		}
 		if (!Util.isEmpty(backscity1)) {
-			cnd.and("t.backscity", "like", "%" + backscity1 + "%");
+			cnd.and("tt.backscity", "like", "%" + backscity1 + "%");
 		}
 		if (!Util.isEmpty(peoplecount1)) {
-			cnd.and("t.peoplecount", "=", peoplecount1);
+			cnd.and("tt.peoplecount", "=", peoplecount1);
 		}
 		if (!Util.isEmpty(dayscount1)) {
-			cnd.and("t.dayscount", "=", dayscount1);
+			cnd.and("tt.dayscount", "=", dayscount1);
 		}
 		if (!Util.isEmpty(unioncity1)) {
-			cnd.and("t.unioncity", "like", "%" + unioncity1 + "%");
+			cnd.and("tt.unioncity", "like", "%" + unioncity1 + "%");
 		}
 		if (!Util.isEmpty(teamtype)) {
 			if (teamtype == 3) {
-				cnd.and("t.isclose", "=", 1);
+				cnd.and("tt.isclose", "=", 1);
 			} else {
-				cnd.and("t.teamtype", "=", teamtype);
+				cnd.and("tt.teamtype", "=", teamtype);
 			}
 		}
 		if (!Util.isEmpty(startdate1)) {
-			cnd.and("t.leavesdate", ">=", startdate1);
+			cnd.and("tt.leavesdate", ">=", startdate1);
 		}
 		if (!Util.isEmpty(enddate1)) {
-			cnd.and("t.leavesdate", "<=", enddate1);
+			cnd.and("tt.leavesdate", "<=", enddate1);
 		}
-		cnd.orderBy("t.leavesdate", "asc");
+		cnd.orderBy("tt.leavesdate", "asc");
 		return cnd;
 	}
 

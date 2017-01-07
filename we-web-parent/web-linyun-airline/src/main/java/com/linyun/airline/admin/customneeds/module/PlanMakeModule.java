@@ -43,8 +43,8 @@ public class PlanMakeModule {
 	 */
 	@At
 	@POST
-	public Object getTravelNameSelect(@Param("travelname") String TravelName) {
-		return planMakeService.getTravelNameSelect(TravelName);
+	public Object getTravelNameSelect(@Param("travelname") String TravelName, final HttpSession session) {
+		return planMakeService.getTravelNameSelect(TravelName, session);
 	}
 
 	/**
