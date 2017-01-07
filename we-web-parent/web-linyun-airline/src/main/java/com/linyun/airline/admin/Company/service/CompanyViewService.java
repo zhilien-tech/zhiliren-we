@@ -18,9 +18,11 @@ import org.nutz.log.Logs;
 
 import com.linyun.airline.admin.authority.job.entity.TJobEntity;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
+import com.linyun.airline.entities.TAgentEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCompanyJobEntity;
 import com.linyun.airline.entities.TDepartmentEntity;
+import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.entities.TUserJobEntity;
 import com.linyun.airline.forms.TCompanyAddForm;
@@ -169,7 +171,7 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 	 */
 	public Object addCompany(TCompanyAddForm addForm, TUserAddForm userAddForm) {
 		//添加管理员信息数据
-		userAddForm.setPassword(this.MANAGE_PASSWORD);
+		userAddForm.setPassword(MANAGE_PASSWORD);
 		userAddForm.setUserName(addForm.getTelephone());
 		userAddForm.setStatus(1);
 		TUserEntity userEntity = FormUtil.add(dbDao, userAddForm, TUserEntity.class);
@@ -181,13 +183,13 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 		//添加管理员所在的部门信息
 		TDepartmentEntity depart = new TDepartmentEntity();
 		depart.setComId(company.getId());
-		depart.setDeptName(this.MANAGE_DEPART);
+		depart.setDeptName(MANAGE_DEPART);
 		TDepartmentEntity department = dbDao.insert(depart);
 		//添加公司管理员的职位信息
 		TJobEntity jobEntity = new TJobEntity();
 		jobEntity.setCreateTime(new Date());
 		jobEntity.setDeptId(department.getId());
-		jobEntity.setName(this.MANAGE_POSITION);
+		jobEntity.setName(MANAGE_POSITION);
 		TJobEntity job = dbDao.insert(jobEntity);
 		//在公司职位表中添加管理员的公司职位信息
 		TCompanyJobEntity companyJobEntity = new TCompanyJobEntity();
@@ -200,6 +202,16 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 		userJobEntity.setHireDate(new Date());
 		userJobEntity.setStatus(userEntity.getStatus());
 		userJobEntity.setUserid(userEntity.getId());
+		//添加上游公司代理商关系表
+		if (addForm.getComType() == CompanyTypeEnum.UPCOMPANY.intKey()) {
+			TUpcompanyEntity upcompany = new TUpcompanyEntity();
+			upcompany.setComId(company.getId());
+			dbDao.insert(upcompany);
+		} else {
+			TAgentEntity agent = new TAgentEntity();
+			agent.setComId(company.getId());
+			dbDao.insert(agent);
+		}
 		return dbDao.insert(userJobEntity);
 	}
 
@@ -229,6 +241,30 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 		TUserEntity userEntity = dbDao.fetch(TUserEntity.class, updateForm.getAdminId());
 		userEntity.setUserName(updateForm.getTelephone());
 		dbDao.update(userEntity);
+		//上游公司表的信息
+		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", updateForm.getId()));
+		//代理商表信息
+		TAgentEntity agent = dbDao.fetch(TAgentEntity.class, Cnd.where("comId", "=", updateForm.getId()));
+		//更新上游公司、代理商表信息
+		if (updateForm.getComType() == CompanyTypeEnum.UPCOMPANY.intKey()) {
+			if (Util.isEmpty(upcompany)) {
+				TUpcompanyEntity upcompanyinsert = new TUpcompanyEntity();
+				upcompanyinsert.setComId(updateForm.getId());
+				dbDao.insert(upcompanyinsert);
+			}
+			if (!Util.isEmpty(agent)) {
+				dbDao.delete(agent);
+			}
+		} else {
+			if (Util.isEmpty(agent)) {
+				TAgentEntity agentinsert = new TAgentEntity();
+				agentinsert.setComId(updateForm.getId());
+				dbDao.insert(agentinsert);
+			}
+			if (!Util.isEmpty(upcompany)) {
+				dbDao.delete(upcompany);
+			}
+		}
 		//修改公司信息
 		updateForm.setLastupdatetime(new Date());
 		return this.update(updateForm);

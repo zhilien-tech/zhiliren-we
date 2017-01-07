@@ -173,14 +173,6 @@
                             <div class="col-sm-1 padding">
                               <input type="text" name="dayscount" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" class="form-control input-sm" placeholder="">
                             </div>
-                            <label class="col-sm-1 text-right padding">去程航班：</label>
-                            <div class="col-sm-1 padding">
-                              <select id="leaveairline0" name="leaveairline" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
-                            </div>
-                            <label class="col-sm-1 text-right padding">回程航班：</label>
-                            <div class="col-sm-1 padding">
-                              <select id="backairline0" name="backairline" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
-                            </div>
                             <!-- <div class="col-sm-1">
                               <a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a>
                             </div> -->
@@ -197,6 +189,12 @@
                             <div class="col-sm-1 padding">
                               <select id="backscity0" name="backscity" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
                             </div>
+                             <label class="col-sm-1 text-right padding">去程航班：</label>
+                            <div class="col-sm-1 padding">
+                              <select id="leaveairline0" name="leaveairline" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
+                            </div>
+                          </div><!--end 起飞城市/降落城市/联运城市 text-->
+                          <div class="form-group row">
                             <label class="col-sm-1 text-right padding cf">出发城市：</label>
                             <div class="col-sm-1 padding">
                               <select id="backleavecity0" name="backleavecity" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
@@ -205,11 +203,15 @@
                             <div class="col-sm-1 padding">
                               <select id="backbackcity0" name="backbackcity" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
                             </div>
+                            <label class="col-sm-1 text-right padding">回程航班：</label>
+                            <div class="col-sm-1 padding">
+                              <select id="backairline0" name="backairline" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
+                            </div>
                             <label class="col-sm-1 text-right padding cf">联运城市：</label>
                             <div class="col-sm-1 padding">
                               <select id="unioncity0" name="unioncity" class="form-control input-sm js-data-example-ajax" multiple="multiple" placeholder=""></select>
                             </div>
-                          </div><!--end 起飞城市/降落城市/联运城市 text-->
+                          </div>
 
                           <!--time 选择-->
                           <div class="form-group row">
@@ -250,7 +252,7 @@
                            <input id="calenderdate0" name="calenderdate" type="hidden">
                         </div>
 
-                        <table id="example3" class="table table-bordered table-hover">
+                        <table id="example3" class="table table-bordered table-hover	">
                           <thead>
                           <tr>
                             <th>序号</th>
@@ -359,15 +361,14 @@
                           <tr>
                             <th><input type="checkbox" class="checkall" /></th>
                             <th>序号</th>
-                            <th>订单号</th>
-                            <th>航空公司</th>
-                            <th>去程日期</th>
-                            <th>出发城市</th>
-                            <th>回程日期</th>
-                            <th>抵达城市</th>
+                            <th>日期</th>
+                            <th>航班号</th>
+                            <th>航段</th>
+                            <th>时间</th>
                             <th>人数</th>
+                            <th>FOC</th>
                             <th>天数</th>
-                            <th>旅行社</th> 
+                            <th>旅行社名称</th> 
                             <th>联运要求</th>
                             <th>操作</th>
                           </tr>

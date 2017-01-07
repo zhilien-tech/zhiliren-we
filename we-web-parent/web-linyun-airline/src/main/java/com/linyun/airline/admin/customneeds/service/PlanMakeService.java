@@ -23,12 +23,13 @@ import com.google.common.base.Splitter;
 import com.linyun.airline.admin.Company.service.CompanyViewService;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
-import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.common.util.ExportExcel;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
+import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TFlightInfoEntity;
 import com.linyun.airline.entities.TPlanInfoEntity;
+import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TPlanInfoAddForm;
 import com.uxuexi.core.common.util.DateUtil;
@@ -86,14 +87,22 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 * 获取旅行社名称下拉
 	 * <p>
 	 * 获取旅行社名称下拉
+	 * @param session 
 	 * @param name 
 	 *
 	 * @return 返回旅行社名称的下拉列表
 	 */
-	public Object getTravelNameSelect(String TravelName) {
-		List<Record> travelSelect = new ArrayList<Record>();
+	public Object getTravelNameSelect(String TravelName, HttpSession session) {
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		//上有公司信息
+		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", company.getId()));
+		List<TCustomerInfoEntity> travelSelect = new ArrayList<TCustomerInfoEntity>();
 		try {
-			travelSelect = companyViewService.getCompanyList(CompanyTypeEnum.AGENT.intKey(), TravelName);
+			travelSelect = dbDao.query(
+					TCustomerInfoEntity.class,
+					Cnd.where("upComId", "=", upcompany.getId()).and("shortName", "like",
+							Strings.trim(TravelName) + "%"), null);
 			if (travelSelect.size() > 5) {
 				travelSelect = travelSelect.subList(0, 5);
 			}
@@ -176,11 +185,11 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	public Object getUnionCitySelect(String cityname) {
 		List<DictInfoEntity> citySelect = new ArrayList<DictInfoEntity>();
 		try {
-			citySelect = externalInfoService.findDictInfoByName(cityname, this.CITYCODE);
-			if (this.QUANGUOLIANYUN.indexOf(Strings.trim(cityname)) != -1) {
+			citySelect = externalInfoService.findDictInfoByName(cityname, CITYCODE);
+			if (QUANGUOLIANYUN.indexOf(Strings.trim(cityname)) != -1) {
 				DictInfoEntity dictInfoEntity = new DictInfoEntity();
 				//dictInfoEntity.setDictName(this.QUANGUOLIANYUN);
-				dictInfoEntity.setDictCode(this.QUANGUOLIANYUN);
+				dictInfoEntity.setDictCode(QUANGUOLIANYUN);
 				citySelect.add(0, dictInfoEntity);
 			}
 			if (citySelect.size() > 5) {
@@ -372,9 +381,9 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 			//设置Excel表格输入的日期格式
 			DateFormat df = new SimpleDateFormat("dd/MMM", Locale.ENGLISH);
 			//定义Excel表格的列标题
-			String[] excelColumnTitle = this.EXCEL_DONGHANG_COLUMN_TITLE;
+			String[] excelColumnTitle = EXCEL_DONGHANG_COLUMN_TITLE;
 			//设置Excel表格标题
-			String title = this.EXCEL_DONGHANG_TITLE;
+			String title = EXCEL_DONGHANG_TITLE;
 			//为Excel准备数据
 			@SuppressWarnings("unchecked")
 			List<Record> rerultList = getMakePlanData(session);
@@ -433,7 +442,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 		List<DictInfoEntity> DictInfo = new ArrayList<DictInfoEntity>();
 		;
 		try {
-			DictInfo = externalInfoService.findDictInfoByName(cityName, this.CITYCODE);
+			DictInfo = externalInfoService.findDictInfoByName(cityName, CITYCODE);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -456,24 +465,20 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 			//设置Excel表格输入的日期格式
 			DateFormat df = new SimpleDateFormat("dd-MMM", Locale.ENGLISH);
 			//定义Excel表格的列标题
-			String[] excelColumnTitle = this.EXCEL_NANHANG_COLUMN_TITLE;
+			String[] excelColumnTitle = EXCEL_NANHANG_COLUMN_TITLE;
 			//设置Excel表格标题
-			String title = this.EXCEL_NANHANG_TITLE;
+			String title = EXCEL_NANHANG_TITLE;
 			//为Excel准备数据
 			@SuppressWarnings("unchecked")
 			List<Record> rerultList = getMakePlanData(session);
 			//设置Excel数据
 			List<Object[]> excelData = new ArrayList<Object[]>();
 			for (Record record : rerultList) {
-				Object[] obj = {
-						" ",
-						" ",
-						record.get("travelname"),
-						this.getCityCode((String) record.get("leavescity")) + "//"
-								+ this.getCityCode((String) record.get("backscity")), record.get("leaveairline"),
-						record.get("backairline"), this.dayForWeek((Date) record.get("leavesdate")),
-						this.dayForWeek((Date) record.get("leavesdate")), record.get("dayscount"),
-						this.weekOfMonth((Date) record.get("leavesdate")), record.get("peoplecount"), " ",
+				Object[] obj = { " ", " ", record.get("travelname"),
+						record.get("leavescity") + "//" + record.get("backscity"), record.get("leaveairline"),
+						record.get("backairline"), dayForWeek((Date) record.get("leavesdate")),
+						dayForWeek((Date) record.get("leavesdate")), record.get("dayscount"),
+						weekOfMonth((Date) record.get("leavesdate")), record.get("peoplecount"), " ",
 						df.format(record.get("leavesdate")), df.format(record.get("backsdate")) };
 				excelData.add(obj);
 			}
@@ -499,22 +504,19 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 			DateFormat df = new SimpleDateFormat("dd-MMM", Locale.ENGLISH);
 			DateFormat df1 = new SimpleDateFormat("yyyy年MM月dd日");
 			//定义Excel表格的列标题
-			String[] excelColumnTitle = this.EXCEL_GUOTAI_COLUMN_TITLE;
+			String[] excelColumnTitle = EXCEL_GUOTAI_COLUMN_TITLE;
 			//设置Excel表格标题
-			String title = this.EXCEL_GUOTAI_TITLE;
+			String title = EXCEL_GUOTAI_TITLE;
 			//为Excel准备数据
 			@SuppressWarnings("unchecked")
 			List<Record> rerultList = getMakePlanData(session);
 			//设置Excel数据
 			List<Object[]> excelData = new ArrayList<Object[]>();
-			excelData.add(this.EXCEL_GUOTAI_FIRST_DATA);
+			excelData.add(EXCEL_GUOTAI_FIRST_DATA);
 			for (Record record : rerultList) {
-				Object[] obj = {
-						record.get("travelname"),
-						df1.format((Date) record.get("leavesdate")),
+				Object[] obj = { record.get("travelname"), df1.format((Date) record.get("leavesdate")),
 						df1.format((Date) record.get("backsdate")),
-						this.getCityCode((String) record.get("leavescity")) + "//"
-								+ this.getCityCode((String) record.get("backscity")), record.get("peoplecount") };
+						record.get("leavescity") + "//" + record.get("backscity"), record.get("peoplecount") };
 				excelData.add(obj);
 			}
 			ExportExcel excel = new ExportExcel(title, excelColumnTitle, excelData, response);
@@ -539,9 +541,9 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 			//设置Excel表格输入的日期格式
 			DateFormat df = new SimpleDateFormat("dd/MMM", Locale.ENGLISH);
 			//定义Excel表格的列标题
-			String[] excelColumnTitle = this.EXCEL_LINGYUN_COLUMN_TITLE;
+			String[] excelColumnTitle = EXCEL_LINGYUN_COLUMN_TITLE;
 			//设置Excel表格标题
-			String title = this.EXCEL_LINGYUN_TITLE;
+			String title = EXCEL_LINGYUN_TITLE;
 			//为Excel准备数据
 			@SuppressWarnings("unchecked")
 			List<TPlanInfoEntity> rerultList = getMakePlansData(session);
@@ -604,7 +606,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 
 		List<DictInfoEntity> aircomSelect = new ArrayList<DictInfoEntity>();
 		try {
-			aircomSelect = externalInfoService.findDictInfoByName(aircom, this.AIRCOMCODE);
+			aircomSelect = externalInfoService.findDictInfoByName(aircom, AIRCOMCODE);
 			if (aircomSelect.size() > 5) {
 				aircomSelect = aircomSelect.subList(0, 5);
 			}
