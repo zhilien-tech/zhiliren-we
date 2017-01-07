@@ -162,12 +162,6 @@ $("#searchSingleTicketsBtn").click(function() {
 		$("#departuredate").val($("#outDatepicker"+index).val());
 		$("#returndate").val($("#returnDatepicker"+index).val());
 	}
-	/* 获取去程数据 */
-	$("#airInfoList").val("1");
-	//loading层
-	var index = layer.load(1, {
-	  shade: [0.1,'#fff'] //0.1透明度的白色背景
-	});
 	$.ajax({
 		type : 'POST',
 		data : $("#searchSingleTicketsForm").serialize(),

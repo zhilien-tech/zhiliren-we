@@ -170,20 +170,24 @@
 	<script src="${base }/public/build/kalendae.standalone.js" type="text/javascript" charset="utf-8"></script>
 	<script src="${base}/common/js/layer/layer.js"></script>
 	<script type="text/javascript">
-		new Kalendae({//小日历 创建
-	        attachTo:document.getElementById("box-min"),
-	        months:4,
-	        mode:'single',
-	        dayAttributeFormat:"YYYY-MM-DD",
-	        subscribe: {
-	             'date-clicked': function (date) {//点击时，取到当前当天的时间
-	                //console.log(date, this.getSelected());
-	                return false;
-	              }
-	        },
-	        //dateClassMap:classMap,
-	        selected:[Kalendae.moment().subtract({M:1}), Kalendae.moment().add({M:1})]
-		});
+	   function createMinCanlender(){
+		   $('#box-min').html('<p><input id="checkShow" type="checkbox" class="checkShow" checked="checked">显示提醒</p>');
+			new Kalendae({//小日历 创建
+		        attachTo:document.getElementById("box-min"),
+		        months:4,
+		        mode:'single',
+		        dayAttributeFormat:"YYYY-MM-DD",
+		        subscribe: {
+		             'date-clicked': function (date) {//点击时，取到当前当天的时间
+		                //console.log(date, this.getSelected());
+		                return false;
+		              }
+		        },
+		        //dateClassMap:classMap,
+		        selected:[Kalendae.moment().subtract({M:1}), Kalendae.moment().add({M:1})]
+			});
+	   }
+			createMinCanlender();
 		//end 小日历 js
 	</script>
 	<!-- end 小日历js -->
@@ -231,7 +235,7 @@
 		function taskEventList() {
 			
 			//自动获取
-			setTimeout(taskEventList,1000*29);
+			setTimeout(taskEventList,1000);
 			//获取当前日期
 			var d = new Date();
 			if(d.getDate() < 10){
@@ -603,7 +607,7 @@
 			  
 		}
 	</script>
-	
+	<input id="redDivDate" name="redDivDate" type="hidden">
 	<script type="text/javascript">
 	    $('.checkShow').click(function(){//显示提醒 显示/隐藏
 		      if($(this).prop('checked')){
@@ -647,6 +651,7 @@
 		            	$('span[data-date="'+element.gtime+'"]').append('<i class="dot"></i>');
 	            		//小红点点击弹框事件
 	            		$(document).on('click','span[data-date="'+ element.gtime +'"]',function(){//如果有红色圆点，点击 显示小div信息
+	            			$("#redDivDate").val(element.gtime);
 	            			if($("#checkShow").prop('checked')){
 	            				$.ajax({
 		        		            url: '/admin/operationsArea/getMinCal.html',
@@ -673,7 +678,6 @@
 		      					     }
 			      			    );
 	            			}
-	            			
 	      			  	});//end 如果有红色圆点，点击 显示小div信息 
 	                }); 
 	            	

@@ -33,7 +33,7 @@
 		<form id="customerUpdateForm">
 			<div class="modal-header">
 				<button type="button" onclick="closeWindow()" class="btn btn-primary right btn-sm" data-dismiss="modal">返回</button>
-				<input id="updateBtn" type="button" class="btn btn-primary right btn-sm" value="保存" onclick="updateCustomerInfo()" />
+				<input id="updateBtn" type="button" class="btn btn-primary right btn-sm" value="保存" onclick="updateCustomerInfo();" />
 				<ul class="nav nav-tabs">
 					<li class="active"><a href="#tabs_1" data-toggle="tab">基本信息</a></li>
 					<li><a href="#tabs_2" data-toggle="tab">线路权限</a></li>
@@ -113,7 +113,7 @@
 									value="${obj.customer.fax}" placeholder="请输入传真" />
 							</div>
 						</div>
-						<div class="row">
+						<div class="row address">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">地址：</label>
 								<div class="col-sm-8 padding">

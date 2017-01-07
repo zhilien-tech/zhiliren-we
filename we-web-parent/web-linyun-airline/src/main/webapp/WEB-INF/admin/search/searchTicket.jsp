@@ -245,6 +245,7 @@
 						    <input id="teamdestination" name="destination" type="hidden"/>
 						    <input id="teamdeparturedate" name="departuredate" type="hidden"/>
                             <input id="teamreturndate" name="returndate" type="hidden"/>
+                            <input id="teamAirlineCode" name="includedcarriers" type="hidden"/>
                             
                             <!-- 团队多程查询 -->
                             <tr class="setTeamMore">
@@ -289,7 +290,6 @@
                               	<!-- <input type="text" class="form-control input-sm" placeholder="(选填)中文/代码"> -->
                               	<select id="teamAirline" name="teamAirline" onchange="teamAirlineNameOpt()"  class="form-control input-sm" multiple="multiple" data-placeholder="(选填)中文/二字代码"></select>
                              	<input id="teamAirlineName" name="teamAirlineName" type="hidden"/>
-                             	<input id="teamAirlineCode" name="includedcarriers" type="hidden"/>
                               </td>
                               <td>
                               	<button id="searchTeamTicketsBtn" type="button" class="btn btn-primary btn-sm">搜索机票</button>
@@ -300,9 +300,10 @@
 <!-- 查询团队机票  end --> 
                           <div class="tableInfoDiv">
                           	<ul id="travelTeamTypeNum" class="paragraphBtn"></ul>
-                            <table class="table table-bordered table-hover">
+                            <table id="datatable2" class="table table-bordered table-hover">
                               <thead>
-                              <tr>
+                              <tr id="teamTrId">
+                              	<th><input type="checkbox" class="checkall" /></th>
                                 <th>序号</th>
 	                            <th>日期</th>
 	                            <th>航班号</th>
@@ -347,6 +348,9 @@
 		<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 		<!-- Validator -->
 		<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
+		<!-- DataTables -->
+		<script src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 		<!-- 客户信息 js -->
 		<script src="${base}/admin/searchTicket/searchCustomerInfo.js"></script>
 		<!-- 订单信息 js -->
@@ -378,6 +382,7 @@
 	  	            }
 	  	        }
 	  		});
+	        
 	     });
 	  </script>
 	  <script type="text/javascript">
@@ -444,6 +449,10 @@
 	             if (radio[i].checked) {  
 	                var radioValue=radio[i].value;
 	                $("#singletable tr").not(":first").remove();
+	                $("#outCity0").val(null).trigger("change");
+	                $("#singleArriveCity0").val(null).trigger("change");
+	                $("#outDatepicker0").val("");
+	                $("#returnDatepicker0").val("");
 	                if (radioValue==1) {
 	                     $('.setoutLabel').hide();
 	                     $('.setoutinput').hide();
@@ -469,6 +478,11 @@
 	          for (i=0; i<radio1.length; i++) {  
 	               if (radio1[i].checked) {  
 	                  var radioValue1=radio1[i].value;
+	                  $("#singletable tr").not(":first").remove();
+		              $("#teamOutCity0").val(null).trigger("change");
+		              $("#teamArriveCity0").val(null).trigger("change");
+		              $("#teamOutDatepicker0").val("");
+		              $("#teamReturnDatepicker0").val("");
 	                  $("#teamTable tr").not(":first").remove();
 	                  if (radioValue1==1) {
 	                       $('.setoutLabel').hide();
