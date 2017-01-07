@@ -231,7 +231,7 @@
 		function taskEventList() {
 			
 			//自动获取
-			setTimeout(taskEventList,1000*60);
+			setTimeout(taskEventList,1000*29);
 			//获取当前日期
 			var d = new Date();
 			if(d.getDate() < 10){
