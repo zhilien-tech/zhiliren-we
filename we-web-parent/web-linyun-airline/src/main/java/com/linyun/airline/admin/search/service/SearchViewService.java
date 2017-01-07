@@ -1,6 +1,5 @@
 package com.linyun.airline.admin.search.service;
 
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,7 +9,6 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
-
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
@@ -93,10 +91,10 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * @param cityname
 	 * @return 返回城市下拉列表
 	 */
-	public Object getCitySelect(String cityname, String typeCode, String ids) {
+	public Object getCitySelect(String cityname, String typeCode1, String typeCode2, String ids) {
 		List<DictInfoEntity> citySelect = new ArrayList<DictInfoEntity>();
 		try {
-			citySelect = externalInfoService.findDictInfoByText(cityname, typeCode);
+			citySelect = externalInfoService.findDictInfoByTypes(cityname, typeCode1, typeCode2);
 			if (citySelect.size() > 5) {
 				citySelect = citySelect.subList(0, 5);
 			}
@@ -139,7 +137,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		}
 		return airlineSelect;
 	}
-
 
 	/**
 	 * 查询散客飞机票
@@ -241,19 +238,19 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		Sql sql = Sqls.create(sqlManager.get("team_ticket_list"));
 		Cnd cnd = Cnd.NEW();
 		if (!Util.isEmpty(origin)) {
-			cnd.and("leavescity", "=", origin);
+			cnd.and("tt.leavescity", "=", origin);
 		}
 		if (!Util.isEmpty(destination)) {
-			cnd.and("backscity", "=", destination);
+			cnd.and("tt.backscity", "=", destination);
 		}
 		if (!Util.isEmpty(departuredate)) {
-			cnd.and("date_format(pi.leavesdate,'%Y-%m-%d')", "like", departuredate);
+			cnd.and("date_format(tt.leavesdate,'%Y-%m-%d')", "like", departuredate);
 		}
 		if (!Util.isEmpty(returndate)) {
-			cnd.and("date_format(pi.backsdate,'%Y-%m-%d')", "like", returndate);
+			cnd.and("date_format(tt.backsdate,'%Y-%m-%d')", "like", returndate);
 		}
 		if (!Util.isEmpty(includedcarriers)) {
-			cnd.and("airlinename", "=", includedcarriers);
+			cnd.and("tt.airlinename", "=", includedcarriers);
 		}
 		List<Record> list = dbDao.query(sql, cnd, null);
 		for (Record record : list) {
@@ -272,6 +269,5 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 		return list;
 	}
-
 
 }

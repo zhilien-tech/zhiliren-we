@@ -174,15 +174,7 @@
 		<!-- /.content-wrapper -->
 
 		<!-- Main Footer -->
-		<footer class="main-footer">
-			<!-- To the right -->
-			<div class="pull-right hidden-xs">
-				<!-- Anything you want -->
-			</div>
-			<!-- Default to the left -->
-			<strong>版权 &copy; 2016 <a href="#">聚优国际旅行社（北京）有限公司</a>.
-			</strong> 保留所有权利.
-		</footer>
+		<%@include file="/WEB-INF/public/footer.jsp"%>
 		<div class="control-sidebar-bg"></div>
 	</div>
 	<!-- ./wrapper -->
@@ -319,7 +311,7 @@ function initDatatable() {
 	    	    fix: false,
 	    	    maxmin: false,
 	    	    shadeClose: false,
-	    	    area: ['900px', '500px'],
+	    	    area: ['900px', '550px'],
 	    	    content: '${base}/admin/customer/add.html'
 	    	  });
 	  }

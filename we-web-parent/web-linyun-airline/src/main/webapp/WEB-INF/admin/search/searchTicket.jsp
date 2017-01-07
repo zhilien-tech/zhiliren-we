@@ -124,25 +124,16 @@
 				<div class="listInfo">
                   <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                      <li class="active"><a href="#tab_1" data-toggle="tab">散客</a></li>
-                      <li><a href="#tab_2" data-toggle="tab">团队</a></li>
+                      <li class="active"><a href="#tab_1" data-toggle="tab">内陆跨海</a></li>
+                      <li><a href="#tab_2" data-toggle="tab">国际</a></li>
                     </ul>
                     <div class="tab-content">
                       <div class="tab-pane active" id="tab_1">
                           <table class="scatteredTable1">
                               <tr>
-                                <td><label>搜索筛选：</label></td>
-                                <td>
-                                	<input id="gjnlRadio" type="radio" name="internat" value="1"><span>国际内陆</span>
-                                </td>
-                                <td colspan="2">
-                                	<input id="gjRadio" type="radio" name="internat" value="2"><span>国际</span>
-							    </td>
-                              </tr>
-                              <tr>
                                 <td><label>航程类型：</label></td>
                                 <td>
-                                	<input id="singleType" type="radio" name="voyageType" value="1" onclick="radioFunct(this)"><span>单程</span>
+                                	<input id="singleType" type="radio" name="voyageType" value="1" onclick="radioFunct()"><span>单程</span>
                                 </td>
                                 <td>
                                 	<input id="returnType" type="radio" name="voyageType" value="2" onclick="radioFunct()"><span>往返</span>
@@ -154,7 +145,7 @@
                           </table>
 <!-- 查询 start -->                  
 <form id="searchSingleTicketsForm" method="post">
-	<table class="scatteredTable2">
+	<table id="singletable" class="scatteredTable2">
                            <input id="origin" name="origin" type="hidden"/>
 						   <input id="destination" name="destination" type="hidden"/>
 						   <input id="departuredate" name="departuredate" type="hidden"/>
@@ -241,11 +232,6 @@
                       <div class="tab-pane" id="tab_2">
                           <table class="scatteredTable1">
                               <tr>
-                                <td><label>搜索筛选：</label></td>
-                                <td><input id="gjnlRadioTeam" type="radio" name="internat1" value="1"><span>国际内陆</span></td>
-                                <td colspan="2"><input id="gjRadioTeam" type="radio" name="internat1" value="2"><span>国际</span></td>
-                              </tr>
-                              <tr>
                                 <td><label>航程类型：</label></td>
                                 <td><input type="radio" name="voyageType1" value="1" onclick="radioFunct1()"><span>单程</span></td>
                                 <td><input type="radio" name="voyageType1" value="2" onclick="radioFunct1()"><span>往返</span></td>
@@ -254,7 +240,7 @@
                           </table><!--搜索筛选/航程类型-->
 <!-- 查询团队机票 start -->                  
 <form id="searchTeamTicketsForm" method="post">
-      <table class="scatteredTable2">
+      <table id="teamTable" class="scatteredTable2">
                             <input id="teamorigin" name="origin" type="hidden"/>
 						    <input id="teamdestination" name="destination" type="hidden"/>
 						    <input id="teamdeparturedate" name="departuredate" type="hidden"/>
@@ -317,15 +303,15 @@
                             <table class="table table-bordered table-hover">
                               <thead>
                               <tr>
-                                <th>订单号</th>
-                                <th>团型</th>
-                                <th>团名</th>
-                                <th>程航</th>
-                                <th>始发日期</th>
-                                <th>价格</th>
-                                <th>数量</th>
-                                <th>申请日期</th>
-                                <th>操作人</th>
+                                <th>序号</th>
+	                            <th>日期</th>
+	                            <th>航班号</th>
+	                            <th>航段</th>
+	                            <th>时间</th>
+	                            <th>人数</th>
+	                            <th>FOC</th>
+	                            <th>天数</th>
+	                            <th>联运要求</th>
                               </tr>
                               </thead>
                               <!-- 显示团队票信息 -->
@@ -399,7 +385,8 @@
 		$(document).click(function (e) { 
 			var num_id = $(e.target).attr('id'); 
 			/* 点击 散客每段提醒事件 */
-			if(num_id.indexOf("num")==0){
+			var num = num_id.indexOf("num");
+			if(num==0){
 				var i = num_id.substring(3,num_id.length);
 				var index = "";
 				if(i%2){
@@ -424,7 +411,8 @@
 			}
 			/* 点击 团客每段提醒事件 */
 			if(num_id != null){
-				if(num_id.indexOf("teamNum")==0){
+				var teamnum = num_id.indexOf("teamNum");
+				if(teamnum == 0){
 					var i = num_id.substring(7,num_id.length);
 					var index = "";
 					if(i%2){
@@ -447,6 +435,60 @@
 				}
 			}
 		});
+	 </script>
+	 <script type="text/javascript">
+	 /* ------------------------散客 航程类型 点击事件-------------------------*/
+	 function radioFunct(){
+	        var radio = document.getElementsByName("voyageType");  
+	        for (i=0; i<radio.length; i++) {  
+	             if (radio[i].checked) {  
+	                var radioValue=radio[i].value;
+	                $("#singletable tr").not(":first").remove();
+	                if (radioValue==1) {
+	                     $('.setoutLabel').hide();
+	                     $('.setoutinput').hide();
+	                     $('.addIconTd').hide();
+	                     $('.removeIconTd').hide();
+	                }else if(radioValue==2){
+	                     $('.setoutLabel').show();
+	                     $('.setoutinput').show();
+	                     $('.addIconTd').hide();
+	                     $('.removeIconTd').hide();
+	                }else if(radioValue==3){
+	                     $('.setoutLabel').hide();
+	                     $('.setoutinput').hide();
+	                     $('.addIconTd').show();
+	                     $('.removeIconTd').show();
+	                };
+	             }  
+	        }
+	   }
+	   /*团队 航程类型 点击事件*/
+	   function radioFunct1(){
+	         var radio1 = document.getElementsByName("voyageType1");  
+	          for (i=0; i<radio1.length; i++) {  
+	               if (radio1[i].checked) {  
+	                  var radioValue1=radio1[i].value;
+	                  $("#teamTable tr").not(":first").remove();
+	                  if (radioValue1==1) {
+	                       $('.setoutLabel').hide();
+	                       $('.setoutinput').hide();
+	                       $('.addIconTd').hide();
+	                       $('.removeIconTd').hide();
+	                  }else if(radioValue1==2){
+	                       $('.setoutLabel').show();
+	                       $('.setoutinput').show();
+	                       $('.addIconTd').hide();
+	                       $('.removeIconTd').hide();
+	                  }else if(radioValue1==3){
+	                       $('.setoutLabel').hide();
+	                       $('.setoutinput').hide();
+	                       $('.addIconTd').show();
+	                       $('.removeIconTd').show();
+	                  };
+	               }  
+	          }
+	   }
 	 </script>
 </body>
 </html>
