@@ -2,7 +2,6 @@ package com.linyun.airline.admin.login.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +15,8 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.google.common.collect.Lists;
+import com.linyun.airline.admin.authority.authoritymanage.service.AuthorityViewService;
 import com.linyun.airline.admin.authority.function.entity.TFunctionEntity;
 import com.linyun.airline.admin.log.service.SLogService;
 import com.linyun.airline.admin.login.form.LoginForm;
@@ -25,6 +26,7 @@ import com.linyun.airline.common.access.AccessConfig;
 import com.linyun.airline.common.access.sign.MD5;
 import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.common.enums.UserJobStatusEnum;
+import com.linyun.airline.common.enums.UserTypeEnum;
 import com.linyun.airline.common.util.IpUtil;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
@@ -41,9 +43,12 @@ public class LoginServiceImpl extends BaseService<TUserEntity> implements LoginS
 	@Inject
 	private SLogService sLogService;
 
+	@Inject
+	private AuthorityViewService authorityViewService;
+
 	@Override
 	public boolean login(final LoginForm form, final HttpSession session, final HttpServletRequest req) {
-
+		form.setReturnUrl("jsp:admin.login");
 		String loginName = form.getLoginName();
 		if (Util.isEmpty(loginName)) {
 			form.setErrMsg("用户名不能为空");
@@ -57,6 +62,10 @@ public class LoginServiceImpl extends BaseService<TUserEntity> implements LoginS
 		}
 
 		String recode = (String) session.getAttribute(CommonConstants.CONFIRMCODE);
+		if (Util.isEmpty(recode)) {
+			return false;
+		}
+
 		String vCode = form.getValidateCode();
 		if (Util.isEmpty(vCode) || !recode.equalsIgnoreCase(vCode)) {
 			form.setErrMsg("验证码不正确");
@@ -73,19 +82,29 @@ public class LoginServiceImpl extends BaseService<TUserEntity> implements LoginS
 				form.setErrMsg("账号未激活");
 				return false;
 			}
-
 			addLoginlog(user, req);
+			int userType = user.getUserType();
 
-			List<TFunctionEntity> allUserFunction = userService.findUserFunctions(user.getId());
 			//查询当前用户的公司
 			Sql companySql = Sqls.create(sqlManager.get("login_select_company"));
 			companySql.params().set("userId", user.getId());
 			companySql.params().set("jobStatus", UserJobStatusEnum.ON.intKey());
 			List<TCompanyEntity> companyLst = DbSqlUtil.query(dbDao, TCompanyEntity.class, companySql);
-			if (Util.isEmpty(companyLst) && companyLst.size() != 1) {
+
+			if (UserTypeEnum.PLAT.intKey() != userType && Util.isEmpty(companyLst) && companyLst.size() != 1) {
 				throw new IllegalArgumentException("用户必须且只能在一家公司就职");
 			}
 			TCompanyEntity company = companyLst.get(0);
+			session.setAttribute(USER_COMPANY_KEY, company); //公司
+
+			List<TFunctionEntity> allUserFunction = Lists.newArrayList();
+			if (!Util.isEmpty(user) && CommonConstants.SUPER_ADMIN.equals(user.getUserName())) {
+				allUserFunction = dbDao.query(TFunctionEntity.class, null, null);
+			} else if (UserTypeEnum.UP_MANAGER.intKey() == userType || UserTypeEnum.AGENT_MANAGER.intKey() == userType) {
+				allUserFunction = authorityViewService.getCompanyFunctions(session);
+			} else {
+				allUserFunction = userService.findUserFunctions(user.getId());
+			}
 
 			//1级菜单
 			List<TFunctionEntity> menus = new ArrayList<TFunctionEntity>();
@@ -108,30 +127,38 @@ public class LoginServiceImpl extends BaseService<TUserEntity> implements LoginS
 				}
 			}
 
+			//一级菜单排序
+			if (!Util.isEmpty(menus)) {
+				Collections.sort(menus);
+			}
+
 			//排序functionMap
 			Set<Long> keySet = functionMap.keySet();
 			for (Long key : keySet) {
 				List<TFunctionEntity> list = functionMap.get(key);
 				if (!Util.isEmpty(list)) {
-					Collections.sort(list, new Comparator<TFunctionEntity>() {
-						@Override
-						public int compare(TFunctionEntity o1, TFunctionEntity o2) {
-							if (null == o1 || null == o1.getSort()) {
-								return 0;
-							}
-							return o1.getSort().compareTo(o2.getSort());
-						}
-					});
+					Collections.sort(list);
 				}
 			}
 
 			//将用户权限保存到session中
-			session.setAttribute(USER_COMPANY_KEY, company); //公司
 			session.setAttribute(FUNCTION_MAP_KEY, functionMap); //功能
 			session.setAttribute(MENU_KEY, menus); //菜单
 			session.setAttribute(AUTHS_KEY, allUserFunction); //所有功能
 			session.setAttribute(LOGINUSER, user);
 			session.setAttribute(IS_LOGIN_KEY, true);
+			session.setAttribute("currentPageIndex", 0);
+		}
+		if (UserTypeEnum.PLAT.intKey() == user.getUserType()) {
+			form.setReturnUrl(">>:/admin/Company/list.html");
+		} else if (UserTypeEnum.UPCOM.intKey() == user.getUserType()
+				|| UserTypeEnum.UP_MANAGER.intKey() == user.getUserType()) {
+			form.setReturnUrl(">>:/admin/operationsArea/desktop.html");
+		} else if (UserTypeEnum.AGENT.intKey() == user.getUserType()
+				|| UserTypeEnum.AGENT_MANAGER.intKey() == user.getUserType()) {
+			form.setReturnUrl(">>:/admin/user/list.html");
+		} else {
+			form.setReturnUrl("jsp:main");
 		}
 		return true;
 	}

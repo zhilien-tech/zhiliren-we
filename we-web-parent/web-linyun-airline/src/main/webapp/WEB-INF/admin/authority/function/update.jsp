@@ -16,7 +16,7 @@
 </head>
 <body onresize=hero();>
           <div class="modal-top">
-          <form id="functionEditForm">
+          <form id="functionEditForm" method="post">
               <div class="modal-header boderButt">
                   <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">返回</button>
      			  <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
@@ -142,7 +142,7 @@ $(document).ready(function(){
 //更新提交
 $("#submit").click(function(){
 	$('#functionEditForm').bootstrapValidator('validate');
-	var bootstrapValidator = $("#functionAddForm").data('bootstrapValidator');
+	var bootstrapValidator = $("#functionEditForm").data('bootstrapValidator');
 	if (bootstrapValidator.isValid()) {
 		$.ajax({
 	           cache: true,

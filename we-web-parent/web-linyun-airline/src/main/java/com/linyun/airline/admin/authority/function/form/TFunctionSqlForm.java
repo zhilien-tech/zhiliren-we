@@ -52,6 +52,9 @@ public class TFunctionSqlForm extends DataTablesParamForm {
 	/**序号*/
 	private long sort;
 
+	/**头像*/
+	private String portrait;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**

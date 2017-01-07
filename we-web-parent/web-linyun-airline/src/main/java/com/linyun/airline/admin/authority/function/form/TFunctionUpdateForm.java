@@ -37,4 +37,7 @@ public class TFunctionUpdateForm extends ModForm implements Serializable {
 	/**序号*/
 	private long sort;
 
+	/**头像*/
+	private String portrait;
+
 }

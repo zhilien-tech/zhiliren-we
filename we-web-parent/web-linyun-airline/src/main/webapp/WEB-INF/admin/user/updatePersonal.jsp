@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
 	<link rel="stylesheet" href="${base}/public/dist/css/personalInfo.css"><!--本页的styleFlie-->
+	<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
 </head>
 <body>
 	<div class="modal-top">
@@ -23,9 +24,9 @@
 	          	<table class="editInfo">
 	          		<tr>
 	          			<td><label>用户名称：</label></td>
-	          			<td><input id="userName" name="userName" type="text" value="${obj.personalInfo[0].userName}" class="form-control input-sm" readonly="readonly"></td>
+	          			<td><input id="userName" name="userName" type="text" value="${obj.personalInfo[0].userName}" class="form-control input-sm" disabled></td>
 	          			<td><label>用户名/手机号码：</label></td>
-	          			<td><input id="telephone" name="telephone" type="text" value="${obj.personalInfo[0].telephone }" class="form-control input-sm" readonly="readonly"></td>
+	          			<td><input id="telephone" name="telephone" type="text" value="${obj.personalInfo[0].telephone }" class="form-control input-sm" disabled></td>
 	          		</tr>
 	          		<tr>
 	          			<td><label>座机电话：</label></td>
@@ -37,13 +38,13 @@
 	          			<td><label>电子邮箱：</label></td>
 	          			<td><input id="email" name="email" type="text" value="${obj.personalInfo[0].email }" class="form-control input-sm"></td>
 	          			<td><label>所属部门：</label></td>
-	          			<td><input id="deptName" name="deptName" type="text" value="${obj.personalInfo[0].deptName }" class="form-control input-sm" readonly="readonly"></td>
+	          			<td><input id="deptName" name="deptName" type="text" value="${obj.personalInfo[0].deptName }" class="form-control input-sm" disabled></td>
 	          		</tr>
 	          		<tr>
 	          			<td><label>用户职位：</label></td>
-	          			<td><input id="jobName" name="jobName" type="text" value="${obj.personalInfo[0].jobName }" class="form-control input-sm" readonly="readonly"></td>
+	          			<td><input id="jobName" name="jobName" type="text" value="${obj.personalInfo[0].jobName }" class="form-control input-sm" disabled></td>
 	          			<td><label>负责区域：</label></td>
-	          			<td><input id="areaName" name="areaName" type="text" value="${obj.personalInfo[0].areaName }" class="form-control input-sm" readonly="readonly"></td>
+	          			<td><input id="areaName" name="areaName" type="text" value="${obj.personalInfo[0].areaName }" class="form-control input-sm" disabled></td>
 	          		</tr>
 	          	</table>
               </form>
@@ -56,10 +57,51 @@
 	<script src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script><!-- SlimScroll -->
 	<script src="${base}/public/plugins/fastclick/fastclick.js"></script><!-- FastClick -->
 	<script src="${base}/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
+	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 	<script src="${base}/common/js/layer/layer.js"></script>
 <script type="text/javascript">
+//验证
+$(document).ready(function(){
+	$('#editPersonalForm').bootstrapValidator({
+		message: '验证不通过!',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+        	landline: {
+                validators: {
+                	regexp: {
+                        regexp: /^[0-9]*$/,
+                        message: '座机号码只能输入数字!'
+                    }
+                }
+            },
+            qq: {
+            	validators: {
+            		regexp: {
+                        regexp: /^[0-9]*$/,
+                        message: 'qq只能输入数字!'
+                    }
+                }
+            },
+            email: {
+            	validators: {
+            		regexp: {
+                        regexp: /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/,
+                        message: '邮箱格式错误!'
+                    }
+                }
+            }
+        }
+	});
+});
 //修改成功提示
 $("#submit").click(function() {
+	$('#editPersonalForm').bootstrapValidator('validate');
+	var bootstrapValidator = $("#editPersonalForm").data('bootstrapValidator');
+	if(bootstrapValidator.isValid()){
 		$.ajax({
 			cache : true,
 			type : "POST",
@@ -72,12 +114,13 @@ $("#submit").click(function() {
 				layer.load(1, {
 					 shade: [0.1,'#fff'] //0.1透明度的白色背景
 				});
-              	layer.msg('修改成功!',{time: 5000, icon:6});
+			    window.parent.location.reload();
 				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-				parent.layer.close(index);
-				location.reload();
+			    parent.layer.close(index);
+              	layer.msg('修改成功!',{time: 5000, icon:6});
 			}
 		});
+	}
 });
 //点击取消
 function closewindow(){
