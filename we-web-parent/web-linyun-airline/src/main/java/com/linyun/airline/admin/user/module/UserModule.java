@@ -163,7 +163,12 @@ public class UserModule {
 	@At
 	@POST
 	public Object updatePassword(@Param("..") final TUserModForm PassForm, @Param("id") final Long userId) {
-		return userViewService.updatePassData(PassForm, userId);
+		try {
+			userViewService.updatePassData(PassForm, userId);
+		} catch (Exception e) {
+			return JsonResult.error(e.getMessage());
+		}
+		return JsonResult.success("密码修改成功!");
 	}
 
 	/**
