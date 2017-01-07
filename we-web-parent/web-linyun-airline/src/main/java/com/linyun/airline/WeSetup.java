@@ -19,7 +19,6 @@ import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.web.config.KvConfig;
 import com.uxuexi.core.web.util.FtlUtil;
 import com.uxuexi.core.web.util.InitUtil;
-import com.uxuexi.core.web.util.QuartzUtil;
 
 import freemarker.template.Configuration;
 
@@ -79,7 +78,6 @@ public class WeSetup implements Setup {
 
 		//启动定时任务
 		//		startTasks(ioc) ;
-		QuartzUtil.init();
 	}
 
 	private void initWebGlobalConfig(final KvConfig config, final ServletContext sc) {
