@@ -70,7 +70,7 @@ public class AuthorityViewService extends BaseService<DeptJobForm> {
 		return obj;
 	}
 
-	private List<TFunctionEntity> getCompanyFunctions(final HttpSession session) {
+	public List<TFunctionEntity> getCompanyFunctions(final HttpSession session) {
 		//查询该公司拥有的所有功能
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Long companyId = company.getId();//得到公司的id

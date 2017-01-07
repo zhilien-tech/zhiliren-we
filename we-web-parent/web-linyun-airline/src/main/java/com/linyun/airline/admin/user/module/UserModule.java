@@ -131,7 +131,7 @@ public class UserModule {
 	}
 
 	/**
-	 * 添加时查询出部门联动带出职位
+	 * 密码初始化
 	 */
 	@At
 	public Object passwordInit(@Param("..") final TUserModForm setForm) {

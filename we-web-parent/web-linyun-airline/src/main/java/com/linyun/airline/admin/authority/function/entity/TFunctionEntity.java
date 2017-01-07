@@ -12,7 +12,7 @@ import org.nutz.dao.entity.annotation.Table;
 
 @Data
 @Table("t_function")
-public class TFunctionEntity implements Serializable, Cloneable {
+public class TFunctionEntity implements Serializable, Cloneable, Comparable<TFunctionEntity> {
 	private static final long serialVersionUID = 1L;
 	@Column
 	@Id(auto = true)
@@ -50,6 +50,10 @@ public class TFunctionEntity implements Serializable, Cloneable {
 	@Column
 	@Comment("序号")
 	private Integer sort;
+
+	@Column
+	@Comment("头像")
+	private String portrait;
 
 	/**在树形节点中是否选中*/
 	private String checked = "false";
@@ -98,6 +102,14 @@ public class TFunctionEntity implements Serializable, Cloneable {
 			throw new RuntimeException(e); // won't happen 
 		}
 		return clone;
+	}
+
+	@Override
+	public int compareTo(TFunctionEntity o) {
+		if (null == o || null == o.getSort()) {
+			return -1;
+		}
+		return this.getSort().compareTo(o.getSort());
 	}
 
 }

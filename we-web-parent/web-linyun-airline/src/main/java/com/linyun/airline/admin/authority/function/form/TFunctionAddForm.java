@@ -43,4 +43,7 @@ public class TFunctionAddForm extends AddForm {
 	/**序号*/
 	private long sort;
 
+	/**头像*/
+	private String portrait;
+
 }
