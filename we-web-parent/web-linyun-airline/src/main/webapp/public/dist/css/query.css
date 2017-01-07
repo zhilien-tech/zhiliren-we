@@ -18,7 +18,6 @@
 .infofooter  table tr td .UnderIcon:hover{color: #4b5563;}
 .hideTable{margin-top:15px;}
 .hideTable tr td pre{display: block;padding: 0;margin: 15px 0 10px;font-size: 13px;color: #585858;word-break: break-all;word-wrap: break-word;border: 0;background-color: #fff;}
-
 .listInfo{margin-top: 10px;}
 .tab-pane{margin: 0;}
 .nav-tabs-custom > .tab-content {padding: 10px 0;}
@@ -67,7 +66,6 @@
 .chufaCS,.shiDuan,.daodaCS{float: left;height: 58px;}
 .chufaCS,.daodaCS{ width: 80px;}
 .shiDuan{height: 32px;width: 195px;border-bottom: 2px solid rgba(51, 51, 51, 0.72);text-align: center;line-height: 45px;color: #b1b1b1;}
-
 .selectWid1{width: 135px !important;}
 .tableInfoDiv{padding: 15px 10px 0 10px;}
 .showDis{display:table-cell;}
@@ -80,3 +78,19 @@
 .select2-container--default .select2-search--inline .select2-search__field {width:100% !important;}
 td[colspan="3"] .select2 .selection .select2-selection{width: 308px;}
 td[colspan="3"] .select2 .selection .select2-selection ul .select2-search--inline{display: none;}
+#datatable2 tbody tr td ul{margin-bottom: 0;padding-left: 0px;}
+#datatable2>tbody>tr>td {padding: 3px 0px;}
+#datatable2 tbody tr td ul li:first-child {border-bottom: solid 1px #eee;}
+#datatable2 tbody tr .sorting_1{padding-top: 14px !important;}
+#datatable2 tbody tr td:nth-child(1){line-height:40px;}
+#datatable2 tbody tr td:nth-child(2){line-height:40px;}
+#datatable2 tbody tr td:nth-child(7){line-height:40px;}
+#datatable2 tbody tr td:nth-child(8){line-height:40px;}
+#datatable2 tbody tr td:nth-child(9){line-height:40px;}
+#datatable2 tbody tr td:nth-child(10){line-height:40px;}
+#datatable2 thead tr th{padding-right: 0px;}
+#datatable2 thead .sorting_asc:after {display: none;}
+
+
+
+

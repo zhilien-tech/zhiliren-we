@@ -5,17 +5,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
 import com.linyun.airline.admin.customer.service.CustomerViewService;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
+import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.entities.TMessageEntity;
 import com.linyun.airline.common.sabre.dto.FlightSegment;
 import com.linyun.airline.common.sabre.dto.InstalFlightAirItinerary;
@@ -25,7 +29,9 @@ import com.linyun.airline.common.sabre.form.InstaFlightsSearchForm;
 import com.linyun.airline.common.sabre.service.SabreService;
 import com.linyun.airline.common.sabre.service.impl.SabreServiceImpl;
 import com.linyun.airline.entities.DictInfoEntity;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
+import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.Util;
@@ -51,8 +57,26 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * @param linkname
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object getLinkNameSelect(String linkname) {
-		List<TCustomerInfoEntity> customerInfos = customerViewService.getCustomerInfoByLinkName(linkname);
+	public Object getLinkNameSelect(String linkname, HttpSession session) {
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
+		long upcompanyRelationId = 0;
+		if (!Util.isEmpty(upcompany)) {
+			upcompanyRelationId = upcompany.getId();
+		}
+		List<TCustomerInfoEntity> customerInfos = new ArrayList<TCustomerInfoEntity>();
+		try {
+			customerInfos = dbDao
+					.query(TCustomerInfoEntity.class,
+							Cnd.where("linkMan", "like", Strings.trim(linkname) + "%").and("upComId", "=",
+									upcompanyRelationId), null);
+			if (customerInfos.size() > 5) {
+				customerInfos = customerInfos.subList(0, 5);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return customerInfos;
 	}
 

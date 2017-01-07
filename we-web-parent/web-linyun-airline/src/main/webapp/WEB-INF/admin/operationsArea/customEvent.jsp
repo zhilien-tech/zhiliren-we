@@ -31,7 +31,7 @@
 				</div>
 			</div>
 
-			<div class="evevtBttton">
+			<div class="evevtBttton" style="width:145px;">
 				<input id="submitBtn" type="button" class="btn btn-primary" onclick="save();" value="添加">
 				<button type="button" class="btn btn-primary right" onclick="closewindow();">取消</button>
 			</div>

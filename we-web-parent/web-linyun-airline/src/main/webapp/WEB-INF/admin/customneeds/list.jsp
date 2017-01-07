@@ -407,6 +407,9 @@
 <script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
 <script src="${base}/admin/airline/planmake.js"></script>
 <script src="${base}/admin/airline/editplan.js"></script>
+<!-- DataTables -->
+<script src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <!-- page script -->
 
 

@@ -42,8 +42,8 @@ public class SearchModule {
 	 */
 	@At
 	@POST
-	public Object getLinkNameSelect(@Param("linkname") String linkname) {
-		return searchViewService.getLinkNameSelect(linkname);
+	public Object getLinkNameSelect(@Param("linkname") String linkname, HttpSession session) {
+		return searchViewService.getLinkNameSelect(linkname, session);
 	}
 
 	/**

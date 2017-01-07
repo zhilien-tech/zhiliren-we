@@ -32,4 +32,6 @@ public class TMessageUpdateForm extends ModForm implements Serializable {
 	/**消息状态*/
 	private Integer msgStatus;
 
+	/**生成日期*/
+	private Date redDivDate;
 }

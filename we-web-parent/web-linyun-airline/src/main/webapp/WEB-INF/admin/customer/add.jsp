@@ -31,7 +31,6 @@
 </head>
 
 <body>
-
 	<div class="modal-content">
 		<form id="customerAddForm">
 			<div class="modal-header">
@@ -133,7 +132,7 @@
 								<input id="fax" name="fax" type="text" class="form-control input-sm inpImportant" placeholder="请输入传真" />
 							</div>
 						</div>
-						<div class="row">
+						<div class="row address">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">地址：</label>
 								<div class="col-sm-8 padding">
@@ -163,7 +162,7 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="form-group">
+							<div>
 								<label class="col-sm-3 text-right padding">出发城市：</label>
 								<div class="col-sm-8 padding seleSpanWid">
 									<select id="city" class="form-control select2 inpImpWid"
