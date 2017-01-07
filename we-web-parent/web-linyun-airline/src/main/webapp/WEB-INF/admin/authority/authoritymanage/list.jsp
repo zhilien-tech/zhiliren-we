@@ -149,7 +149,8 @@
 	                    		if(row.modulename==null){
 	                    			return "";
 	                    		}else{
-	                    			return row.modulename;
+	                    			var result = '<span data-toggle="tooltip" data-placement="right" title="'+row.modulename+'">'+row.modulename+'<span>';
+		                    		return result;
 	                    		}
 	                    	}
 	                    },

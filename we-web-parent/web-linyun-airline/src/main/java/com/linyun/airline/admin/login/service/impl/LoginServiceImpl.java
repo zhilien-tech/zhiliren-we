@@ -63,6 +63,7 @@ public class LoginServiceImpl extends BaseService<TUserEntity> implements LoginS
 
 		String recode = (String) session.getAttribute(CommonConstants.CONFIRMCODE);
 		if (Util.isEmpty(recode)) {
+			form.setErrMsg(null);
 			return false;
 		}
 
