@@ -19,6 +19,7 @@ import com.linyun.airline.admin.authority.function.service.FunctionViewService;
 import com.linyun.airline.admin.log.service.SLogService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.base.MobileResult;
+import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.common.util.IpUtil;
 import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.StringUtil;
@@ -45,7 +46,15 @@ public class AuthFilter extends BaseActionFilter {
 		String requestPath = request.getServletPath();
 
 		HttpSession session = Mvcs.getHttpSession();
+		String currentPageIndex = request.getParameter("currentPageIndex");
+		session.setAttribute("currentPageIndex", currentPageIndex);
+		logger.info("currentPageIndex:[" + currentPageIndex + "]");
+
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		if (!Util.isEmpty(user) && CommonConstants.SUPER_ADMIN.equals(user.getUserName())) {
+			return null;
+		}
+
 		isAllowed = hasPermission(session, requestPath);
 
 		FunctionViewService funcService = Mvcs.getIoc().get(FunctionViewService.class, "functionViewService");
@@ -95,6 +104,9 @@ public class AuthFilter extends BaseActionFilter {
 		for (TFunctionEntity f : functions) {
 			String furl = f.getUrl();
 			furl = StringUtil.trimRight(furl, REQ_TAIL_FLAG);
+			if (!Util.isEmpty(furl)) {
+				furl = furl.trim();
+			}
 
 			if (reqPath.equals(furl)) {
 				return true;

@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
 <style type="text/css">
 .select2-container {
-	width: 95.5% !important;
+	width: 98.5% !important;
 	display: inline-block;
 }
 
@@ -117,7 +117,7 @@
                   <div class="row">
                   	<div class="form-group">
                       <label class="col-sm-3 text-right padding">负责区域：</label>
-                      <div class="col-sm-3 padding">
+                      <div class="col-sm-8 padding">
                          <select id="areaSelect" name="dictAreaName" onchange="setSelectedAreaIds();"
 							class="form-control select2 inpImpWid" multiple="multiple"
 							data-placeholder="请输入区域名称">
