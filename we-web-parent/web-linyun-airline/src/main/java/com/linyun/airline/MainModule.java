@@ -15,6 +15,7 @@ import org.nutz.mvc.annotation.SetupBy;
 import org.nutz.mvc.annotation.Views;
 import org.nutz.mvc.ioc.provider.ComboIocProvider;
 
+import com.linyun.airline.common.actionfilter.AuthFilter;
 import com.linyun.airline.common.actionfilter.LoginFilter;
 import com.linyun.airline.common.annotation.NoFilter;
 import com.uxuexi.core.web.view.WeViewMaker;
@@ -30,7 +31,7 @@ import com.uxuexi.core.web.view.WeViewMaker;
 @ChainBy(args = { "${app.root}/WEB-INF/classes/webconfig/chains.js" })
 @Views(WeViewMaker.class)
 @IocBean
-@Filters({ @By(type = LoginFilter.class), /*@By(type = AuthFilter.class)*/})
+@Filters({ @By(type = LoginFilter.class), @By(type = AuthFilter.class) })
 public class MainModule {
 
 	@At("/")

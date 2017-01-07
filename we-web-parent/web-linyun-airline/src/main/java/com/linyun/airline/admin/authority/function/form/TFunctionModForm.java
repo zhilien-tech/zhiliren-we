@@ -45,4 +45,7 @@ public class TFunctionModForm extends ModForm {
 
 	/**序号*/
 	private long sort;
+
+	/**头像*/
+	private String portrait;
 }

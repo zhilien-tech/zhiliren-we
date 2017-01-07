@@ -63,7 +63,7 @@
           <!-- Messages: style can be found in dropdown.less-->
            <li class="dropdown messages-menu">
             <!-- Menu toggle button -->
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">小工具</a>
+              <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">小工具</a> -->
             <ul class="dropdown-menu">
               <li class="header">You have 4 messages</li>
               <li>
@@ -95,12 +95,12 @@
           <!-- Notifications Menu -->
           <li class="dropdown notifications-menu">
             <!-- Menu toggle button -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
               	<span class="label label-warning">10</span>
-            </a>
+            </a> -->
             <ul class="dropdown-menu">
-              <li class="header">You have 10 notifications</li>
+              <!-- <li class="header">You have 10 notifications</li> -->
               <li>
                 <!-- Inner Menu: contains the notifications -->
                 <ul class="menu">
@@ -120,12 +120,12 @@
             <!-- Menu Toggle Button -->
              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
-               <span class="hidden-xs">User name</span>
+               <!-- <span class="hidden-xs">User name</span> -->
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="${base}/public/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <%-- <img src="${base}/public/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"> --%>
 
                 <p>
                   Alexander Pierce - Web Developer

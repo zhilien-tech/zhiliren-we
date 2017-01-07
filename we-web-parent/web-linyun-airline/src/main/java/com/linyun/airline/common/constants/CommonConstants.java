@@ -11,7 +11,7 @@ import com.linyun.airline.common.access.sign.MD5;
 public class CommonConstants {
 
 	/**超级管理员*/
-	public static final String SUPER_ADMIN = "admin";
+	public static final String SUPER_ADMIN = "lxl";
 
 	/**数据状态:@see DataStatusEnum*/
 	/**数据状态-启用中*/

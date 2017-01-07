@@ -16,9 +16,6 @@
   </div> -->
   <%@include file="/WEB-INF/public/footer.jsp"%>
 </head>
-<script type="text/javascript">
- 	window.location.href="${base}/admin/operationsArea/desktop.html";
-</script>
 <body>
 </body>
 </html>
