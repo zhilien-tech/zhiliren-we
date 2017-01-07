@@ -83,7 +83,7 @@ function initDatatable2() {
                     	}
                     },
                     {"data": "dayscount", "bSortable": false},
-                    {"data": "travelname", "bSortable": false},
+                    {"data": "travelnames", "bSortable": false},
                     {"data": "unioncity", "bSortable": false}
             ],
         columnDefs: [{
