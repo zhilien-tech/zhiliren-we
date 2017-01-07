@@ -18,6 +18,7 @@ import org.nutz.log.Logs;
 
 import com.linyun.airline.admin.authority.job.entity.TJobEntity;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
+import com.linyun.airline.common.enums.UserTypeEnum;
 import com.linyun.airline.entities.TAgentEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCompanyJobEntity;
@@ -174,6 +175,12 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 		userAddForm.setPassword(MANAGE_PASSWORD);
 		userAddForm.setUserName(addForm.getTelephone());
 		userAddForm.setStatus(1);
+		//设置上游公司或代理商的管理员用户类型
+		if (addForm.getComType() == CompanyTypeEnum.UPCOMPANY.intKey()) {
+			userAddForm.setUserType(UserTypeEnum.UP_MANAGER.intKey());
+		} else if (addForm.getComType() == CompanyTypeEnum.AGENT.intKey()) {
+			userAddForm.setUserType(UserTypeEnum.AGENT_MANAGER.intKey());
+		}
 		TUserEntity userEntity = FormUtil.add(dbDao, userAddForm, TUserEntity.class);
 		//添加公司信息数据
 		addForm.setCreatetime(new Date());
@@ -240,6 +247,12 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 		//修改管理员用户名
 		TUserEntity userEntity = dbDao.fetch(TUserEntity.class, updateForm.getAdminId());
 		userEntity.setUserName(updateForm.getTelephone());
+		//设置上游公司或代理商的管理员用户类型
+		if (updateForm.getComType() == CompanyTypeEnum.UPCOMPANY.intKey()) {
+			userEntity.setUserType(UserTypeEnum.UP_MANAGER.intKey());
+		} else if (updateForm.getComType() == CompanyTypeEnum.AGENT.intKey()) {
+			userEntity.setUserType(UserTypeEnum.AGENT_MANAGER.intKey());
+		}
 		dbDao.update(userEntity);
 		//上游公司表的信息
 		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", updateForm.getId()));
