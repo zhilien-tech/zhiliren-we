@@ -180,6 +180,10 @@
 	<!--pikaday -->
 	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
+
+	if(travelname){
+		$('#generateOrder').attr('checked','checked');
+	}
 	//关闭弹框,关闭当前窗口
 	function closewindow(){
 		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
@@ -270,13 +274,6 @@
                validators: {
                    notEmpty: {
                        message: '航空公司不能为空'
-                   }
-               }
-           },
-           travelname: {
-           	validators: {
-                   notEmpty: {
-                       message: '旅行社不能为空'
                    }
                }
            },

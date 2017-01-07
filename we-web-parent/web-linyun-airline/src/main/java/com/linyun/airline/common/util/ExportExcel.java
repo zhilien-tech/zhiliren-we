@@ -8,7 +8,10 @@ package com.linyun.airline.common.util;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +22,8 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import com.uxuexi.core.common.util.DateUtil;
 
 /**
  * 导出Excel
@@ -148,16 +153,21 @@ public class ExportExcel {
 				}
 			}
 			//让列宽随着导出的列长自动适应  
-			widthAdaptive(sheet, columnNum);
+			//widthAdaptive(sheet, columnNum);
 
 			if (workbook != null) {
 				OutputStream out = null;
 				try {
-					String fileName = "Excel-" + String.valueOf(System.currentTimeMillis()).substring(4, 13) + ".xls";
+					//String fileName = "Excel-" + String.valueOf(System.currentTimeMillis()).substring(4, 13) + ".xls";
+					DateFormat format = new SimpleDateFormat(DateUtil.FORMAT_YYYYMMDD);
+					String fileName = this.getTitle() + "-" + format.format(new Date()) + ".xls";
 					String headStr = "attachment; filename=\"" + fileName + "\"";
 					response = getResponse();
 					response.setContentType("APPLICATION/OCTET-STREAM");
-					response.setHeader("Content-Disposition", headStr);
+					//response.setHeader("Content-Disposition", headStr);
+					response.addHeader("Content-Disposition",
+							"attachment;filename="
+									+ new String(fileName.replaceAll(" ", "").getBytes("utf-8"), "iso8859-1"));
 					out = response.getOutputStream();
 					workbook.write(out);
 				} catch (IOException e) {

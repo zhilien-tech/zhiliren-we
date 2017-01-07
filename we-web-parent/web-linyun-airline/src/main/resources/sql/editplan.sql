@@ -3,7 +3,8 @@ SELECT
 	tt.*, ifnull(
 		tu.ordersnum,
 		'无订单号'
-	) dingdanhao
+	) dingdanhao,
+	ifnull(tt.travelname,'') travelnames
 FROM
 	(
 		SELECT
