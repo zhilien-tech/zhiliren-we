@@ -111,5 +111,24 @@ WHERE
 	date_format(m.generateTime, '%Y-%m-%d') = date_format(@MincalTimes1,'%Y-%m-%d')
 AND
 	m.msgStatus=@msgStatus
+	
+/*agentCompany_list*/
+SELECT
+	*
+FROM
+	t_company c
+INNER JOIN t_agent a ON a.comId=c.id
+AND
+	c.comType=@comtype
+AND
+	c.deletestatus=@deletestatus
+
+/*get_checkbox_status*/
+SELECT
+	*
+FROM
+	t_checkbox_status t
+WHERE
+	t.userId =@userid
 
 

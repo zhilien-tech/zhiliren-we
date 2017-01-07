@@ -94,10 +94,10 @@ $(function () {
 		$('.hideTable').hide('400');
 	});
 	//散客
-	document.getElementsByName("internat")[0].checked="checked";//radio 默认 国际内陆
+	//document.getElementsByName("internat")[0].checked="checked";//radio 默认 国际内陆
 	document.getElementsByName("voyageType")[1].checked="checked";//radio 默认 选中往返
 	//团队
-	document.getElementsByName("internat1")[0].checked="checked";//radio 默认 国际内陆
+	//document.getElementsByName("internat1")[0].checked="checked";//radio 默认 国际内陆
 	document.getElementsByName("voyageType1")[1].checked="checked";//radio 默认 选中往返
 	//段数 样式切换
 	$('.paragraphBtn li').click(function(){
@@ -129,10 +129,10 @@ $(function () {
 				departuredate.attr("id","outDatepicker"+i);
 				$("#outDatepicker"+i).val("");
 				//设置新的到达日期
-				var returndate = $(this).find('[name=returndate0]');
+				/*var returndate = $(this).find('[name=returndate0]');
 				returndate.attr("id","returnDatepicker"+i);
 				returndate.attr("onFocus",'WdatePicker({dateFmt:"yyyy-MM-dd",minDate:"#F{$dp.$D(\'outDatepicker'+ i +'\')}"})');
-				$("#returnDatepicker"+i).val("");
+				$("#returnDatepicker"+i).val("");*/
 			}
 		});
 		initSelect2();
@@ -164,6 +164,10 @@ $("#searchSingleTicketsBtn").click(function() {
 	}
 	/* 获取去程数据 */
 	$("#airInfoList").val("1");
+	//loading层
+	var index = layer.load(1, {
+	  shade: [0.1,'#fff'] //0.1透明度的白色背景
+	});
 	$.ajax({
 		type : 'POST',
 		data : $("#searchSingleTicketsForm").serialize(),

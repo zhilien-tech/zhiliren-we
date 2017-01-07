@@ -247,7 +247,15 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	public Object getCheckBox(HttpSession session) {
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long userId = loginUser.getId();
-
+		TCheckboxStatusEntity checkbox = dbDao.fetch(TCheckboxStatusEntity.class, userId);
+		if (Util.isEmpty(checkbox)) {
+			TCheckboxStatusEntity check = new TCheckboxStatusEntity();
+			check.setUserId(userId);
+			check.setTaskShow(Long.valueOf(1));
+			check.setMaxCShow(Long.valueOf(1));
+			check.setMinCShow(Long.valueOf(1));
+			dbDao.insert(check);
+		}
 		Map<String, Object> obj = new HashMap<String, Object>();
 		TCheckboxStatusEntity checkBoxEntity = dbDao.fetch(TCheckboxStatusEntity.class,
 				Cnd.where("userId", "=", userId));

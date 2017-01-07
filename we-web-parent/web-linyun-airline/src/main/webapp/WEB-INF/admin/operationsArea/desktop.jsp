@@ -119,11 +119,7 @@
 		<!--end right Content-->
 
 		<!--footer-->
-		<footer class="main-footer">
-			<div class="pull-right hidden-xs"></div>
-			<strong>版权 &copy; 2016 <a href="#">聚优国际旅行社（北京）有限公司</a>.
-			</strong> 保留所有权利.
-		</footer>
+		<%@include file="/WEB-INF/public/footer.jsp"%>
 		<!--end footer-->
 
 		<!--自定义界面 弹框-->
@@ -132,7 +128,7 @@
 				<div class="layer-header">
 					<button type="button" class="btn btn-primary right btn-sm"
 						onclick="closewindow();">取消</button>
-					<button type="submit" id="saveCustom"
+					<button type="button" id="saveCustom"
 						class="btn btn-primary right btn-sm" onclick="checkboxSave()">保存</button>
 					<h4>自定义界面</h4>
 				</div>
@@ -206,31 +202,6 @@
 		});
 	</script>
 
-	
-	<!-- 自定义界面 -->
-	<script type="text/javascript">
-		function checkBoxChange(obj){
-			if($(".checkNum:checked").size()==0){
-				obj.checked = true;
-   			}
-		}
-	
-   		function checkboxSave(){
-   			$.ajax({
-                type: "POST",
-                url:'${base}/admin/operationsArea/setCheckBox.html',
-                data:$('#checkboxform').serialize(),
-                async: false,
-                success: function(data) {
-                	window.location='${base}/admin/operationsArea/desktop.html';
-                },
-				error: function(request) {
-                    
-                }
-            });
-   		}
-	  </script>
-	<!-- 自定义界面展示 -->
 	<script type="text/javascript">
 	  	function checkBoxShow(){
 	  		var taskShow = ${obj.checkBox.taskShow};
@@ -300,6 +271,7 @@
 				}
 			});
 		}
+		setTimeout('taskEventList()',3000); //指定1秒刷新一次
 	</script>
 
 	<!-- 大日历 -->
@@ -373,14 +345,12 @@
 			      }
 			  });
 		  
-	  }
+	    }
 	
-	
-	</script>
-	<script type="text/javascript">
 		function reload(){
 			$('#calendar').fullCalendar( 'refetchEvents' );
 		}
+	
 	</script>
 
 	<!-- 自定义界面 -->
@@ -430,7 +400,40 @@
 		     });
 		}
 		
-		 /* 关闭自定义界面 */
+		/* 复选框必须选一个 */
+		function checkBoxChange(obj){
+			if($(".checkNum:checked").size()==0){
+				obj.checked = true;
+   			}
+		}
+	
+		/* 保存自定义界面 */
+   		function checkboxSave(){
+   			$.ajax({
+                type: "POST",
+                url:'${base}/admin/operationsArea/setCheckBox.html',
+                data:$('#checkboxform').serialize(),
+                async: false,
+                success: function(data) {
+                	window.parent.successCallback('1');
+                },
+				error: function(request) {
+					window.parent.successCallback('2');
+                }
+            }); 
+   		}
+		
+   		//事件提示
+   		function successCallback(id){
+   			window.location.reload("${base}/admin/operationsArea/desktop.html");
+			if(id == '1'){
+				layer.msg("设置成功",{time: 2000, icon:1});
+			}else{
+				layer.msg("设置失败",{time: 2000, icon:1});
+			}
+		}
+		
+		/* 关闭自定义界面 */
 	    function closewindow(){
 	    	layer.closeAll();
 	    }
@@ -644,32 +647,36 @@
 		            	$('span[data-date="'+element.gtime+'"]').append('<i class="dot"></i>');
 	            		//小红点点击弹框事件
 	            		$(document).on('click','span[data-date="'+ element.gtime +'"]',function(){//如果有红色圆点，点击 显示小div信息
-	            			$.ajax({
-	        		            url: '/admin/operationsArea/getMinCal.html',
-	        		            dataType: 'json',
-	        		            type: 'POST',
-	        		            async:false,
-	        		            data: {
-	        		            	gtime: element.gtime
-	        		            },
-	        		            success: function(data) {
-	        		            	$.each(eval(data), function (index, element) {
-	        		            		$("#minCalId").val("");
-	        		            		$("#minCalId").val(element.msgcontent);
-	        		                }); 
-	        		            }
-	        		        });
-	            			//弹框提示信息
-	            			layer.tips(
-	            				 $("#minCalId").val(), 
-	      			    		 this,
-	      			    		 {
-	      					        tips: [3, 'rgb(90, 90, 90)'],
-	      					        time: 3000
-	      					     }
-		      			    );
+	            			if($("#checkShow").prop('checked')){
+	            				$.ajax({
+		        		            url: '/admin/operationsArea/getMinCal.html',
+		        		            dataType: 'json',
+		        		            type: 'POST',
+		        		            async:false,
+		        		            data: {
+		        		            	gtime: element.gtime
+		        		            },
+		        		            success: function(data) {
+		        		            	$.each(eval(data), function (index, element) {
+		        		            		$("#minCalId").val("");
+		        		            		$("#minCalId").val(element.msgcontent);
+		        		                }); 
+		        		            }
+		        		        });
+	            				//弹框提示信息
+		            			layer.tips(
+		            				 $("#minCalId").val(), 
+		      			    		 this,
+		      			    		 {
+		      					        tips: [3, 'rgb(90, 90, 90)'],
+		      					        time: 2000
+		      					     }
+			      			    );
+	            			}
+	            			
 	      			  	});//end 如果有红色圆点，点击 显示小div信息 
 	                }); 
+	            	
 	            }
 	       });
 		}
