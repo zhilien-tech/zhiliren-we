@@ -17,16 +17,24 @@
                 <div class="col-md-3"><!--公司名称/负责人/电话 搜索框-->
                   <input type="text" name="companyName" id="companyName" class="form-control" placeholder="公司名称/负责人/电话" onkeypress="onkeyEnter();">
                 </div>
-                <div class="col-md-2 col-padding"><!--搜索 恢复默认 按钮-->
+                <div class="col-md-2">
+                  <select class="form-control input-sm inpImportant" name="comType" id="comType" onchange="selectListData();">
+                     <option value="">==请选择==</option>
+                   	 <c:forEach var="map" items="${obj.companyTypeEnum}" >
+			   		    <option value="${map.key}">${map.value}</option>
+				     </c:forEach>
+                  </select>
+                </div>
+                <div class="col-md-7 col-padding"><!--搜索 恢复默认 按钮-->
                   <button id="searchBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
+                  <a class="btn btn-primary btn-sm right" onclick="add();">添加</a>
                 </div>
               
-                <div class="col-md-1 col-md-offset-6 paddiLeAdd">
+               <%--  <div class="col-md-1 col-md-offset-6 paddiLeAdd">
                   <!-- <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" >添加</button> -->
-                  <%-- <button type="button" class="btn btn-primary btn-sm" onClick="window.open('${url}/add.html', 'newwindow', 'height=500, width=800, top=120, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no');">添加</button> --%>
-                  <%-- <a data-toggle="modal" href="${url }/add.html" data-target="#addTabs">添加</a> --%>
-                  <a class="btn btn-primary btn-sm" onclick="add();">添加</a>
-                </div>
+                  <button type="button" class="btn btn-primary btn-sm" onClick="window.open('${url}/add.html', 'newwindow', 'height=500, width=800, top=120, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no');">添加</button>
+                  <a data-toggle="modal" href="${url }/add.html" data-target="#addTabs">添加</a>
+                </div> --%>
 				
               </div>
             </div>
@@ -124,8 +132,10 @@ function initDatatable() {
 
 	$("#searchBtn").on('click', function () {
 		var companyName = $("#companyName").val();
+		var comType = $('#comType').val();
 	    var param = {
-	        "companyName": companyName
+	        "companyName": companyName,
+			"comType" : comType
 	    };
 	    datatable.settings()[0].ajax.data = param;
 	    datatable.ajax.reload();
@@ -177,10 +187,14 @@ $(function () {
   	  });
   }
   function onkeyEnter(){
-		 if(event.keyCode==13){
+	     var e = window.event || arguments.callee.caller.arguments[0];
+	     if(e && e.keyCode == 13){
 			 $("#searchBtn").click();
 		 }
 	}
+  function selectListData(){
+	  $("#searchBtn").click();
+  }
   function successCallback(id){
 	  datatable.ajax.reload(null,false);
 	  loadCompanyCount();
