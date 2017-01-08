@@ -109,11 +109,11 @@ public class SabreServiceImpl implements SabreService {
 		return resp;
 	}
 
-	private static void readPriceInfo(String json, InstalFlightAirItinerary ir) {
+	private void readPriceInfo(String json, InstalFlightAirItinerary ir) {
 		String currencyCode = JsonPath.read(json, "$.AirItineraryPricingInfo.ItinTotalFare.TotalFare.CurrencyCode");
-		double totalAmount = JsonPath.read(json, "$.AirItineraryPricingInfo.ItinTotalFare.TotalFare.Amount");
-		double baseAmount = JsonPath.read(json, "$.AirItineraryPricingInfo.ItinTotalFare.BaseFare.Amount");
-		double equivFareAmount = JsonPath.read(json, "$.AirItineraryPricingInfo.ItinTotalFare.EquivFare.Amount");
+		double totalAmount = readDouble(json, "$.AirItineraryPricingInfo.ItinTotalFare.TotalFare.Amount");
+		double baseAmount = readDouble(json, "$.AirItineraryPricingInfo.ItinTotalFare.BaseFare.Amount");
+		double equivFareAmount = readDouble(json, "$.AirItineraryPricingInfo.ItinTotalFare.EquivFare.Amount");
 
 		log.debug("currencyCode:" + currencyCode);
 		log.debug("totalAmount:" + totalAmount);
@@ -131,7 +131,7 @@ public class SabreServiceImpl implements SabreService {
 	/***
 	 * 读取航段信息
 	 */
-	private static void readSegmentsInfo(String json, InstalFlightAirItinerary ir) {
+	private void readSegmentsInfo(String json, InstalFlightAirItinerary ir) {
 
 		List<Map<String, Object>> odopts = JsonPath.read(json,
 				"$.AirItinerary.OriginDestinationOptions.OriginDestinationOption[*]");
@@ -207,4 +207,14 @@ public class SabreServiceImpl implements SabreService {
 		}
 	}
 
+	private static double readDouble(String json, String key) {
+		Object obj = JsonPath.read(json, key);
+		double totalAmount = 0d;
+		if (obj instanceof String) {
+			totalAmount = Double.valueOf((String) obj);
+		} else {
+			totalAmount = Double.valueOf((Double) obj);
+		}
+		return totalAmount;
+	}
 }
