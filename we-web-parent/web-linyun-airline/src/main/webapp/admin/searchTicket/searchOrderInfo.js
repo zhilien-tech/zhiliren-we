@@ -238,14 +238,14 @@ cardDate = function(v){
 		strDate = "0" + strDate;
 	}
 	var cardStr = year +'-'+ month +'-'+ strDate;
-	$("#outDatepicker").val(cardStr);
+	$("#outDatepicker0").val(cardStr);
 	$("#searchSingleTicketsBtn").click();
 }
 getDateCard =function(){
 	var dateNumHtml = "";
-	var outStr = $("#outDatepicker").val();
+	var outStr = $("#outDatepicker0").val();
 	var outDate = new Date(outStr.replace(/-/g,"/"));
-	var returnStr = $("#returnDatepicker").val();
+	var returnStr = $("#returnDatepicker0").val();
 	var returnDate = new Date(returnStr.replace(/-/g,"/"));
 	/* 出发前的日期 */
 	var time = outDate.getTime() - new Date().getTime() ; //日期的long型值之差
@@ -342,7 +342,15 @@ defaultDate = function(){
 
 	return returnDateStr;
 }
-
+function selectSingle(){
+	$("#searchSingleTicketsBtn").click();
+}
+function onkeyEnter(){
+	var e = window.event || arguments.callee.caller.arguments[0];
+    if(e && e.keyCode == 13){
+    	selectSingle();
+    }
+}
 /* -------------------------日期格式转换 end---------------------------- */
 
 

@@ -54,104 +54,128 @@
                   <p class="EditTitle_p">系列团：</p>
                 </div>
                 <form id="editPlanForm">
-                <div class="form-group row"><!--航空公司/旅行社-->
-                	<input id="id" name="id" type="hidden" value="${obj.planinfo.id}">
-                  	 <c:choose>
-                  		<c:when test="${empty obj.ordernum}">
-                  			<label class="col-sm-2 text-right padding customerEdit"></label>
-                  			<div class="col-sm-2 padding">	
-		                   	 　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="generateOrder" type="checkbox" class="inputEdit" value="1"><span class="spanEdit">生成订单</span>
-		                    </div>
-                  		</c:when>
-                  		<c:otherwise>
-		                  <label class="col-sm-2 text-right padding customerEdit">订单号：</label>
-			              <div class="col-sm-2 padding">	
-			                 <label class="col-sm-2 padding customerEdit">${obj.ordernum }</label>
-			              </div>
-                  		</c:otherwise>
-                  	</c:choose> 
-                  <label class="col-sm-2 text-right padding">航空公司：</label>
-                  <div class="col-sm-2 padding">
-                    <select id="airlinename" name="airlinename" type="text" class="form-control input-sm select2" multiple="multiple"
-                      placeholder="首航-CA" >
-                      	<c:forEach var="one" items="${obj.aircom }">
-							<option value="${one.dictCode }">${one.dictName}</option>
-						</c:forEach>
-                      </select>
-                  </div>
-                  <label class="col-sm-2 text-right padding">旅行社：</label>
-                  <div class="col-sm-2 padding">
-                    <select id="travelname" name="travelname" type="text" class="form-control input-sm select2" placeholder="" multiple="multiple">
-                    	<c:forEach var="one" items="${obj.travel }">
-							<option value="${one.comName }">${one.comName}</option>
-						</c:forEach>
-                    </select>
-                  </div>
+                <div class="row"><!--航空公司/旅行社-->
+                	<div class="form-group">
+	                	<input id="id" name="id" type="hidden" value="${obj.planinfo.id}">
+	                  	 <c:choose>
+	                  		<c:when test="${empty obj.ordernum}">
+	                  			<label class="col-sm-2 text-right padding customerEdit"></label>
+	                  			<div class="col-sm-2 padding">	
+			                   	 　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="generateOrder" type="checkbox" class="inputEdit" value="1"><span class="spanEdit">生成订单</span>
+			                    </div>
+	                  		</c:when>
+	                  		<c:otherwise>
+			                  <label class="col-sm-2 text-right padding customerEdit">订单号：</label>
+				              <div class="col-sm-2 padding">	
+				                 <label class="col-sm-2 padding customerEdit">${obj.ordernum }</label>
+				              </div>
+	                  		</c:otherwise>
+	                  	</c:choose> 
+                	</div>
+                	<div class="form-group">
+	                  <label class="col-sm-2 text-right padding">航空公司：</label>
+	                  <div class="col-sm-2 padding">
+	                    <select id="airlinename" name="airlinename" type="text" class="form-control input-sm select2" multiple="multiple"
+	                      placeholder="首航-CA" >
+	                      	<c:forEach var="one" items="${obj.aircom }">
+								<option value="${one.dictCode }">${one.dictName}</option>
+							</c:forEach>
+	                      </select>
+	                  </div>
+                	</div>
+                	<div class="form-group">
+	                  <label class="col-sm-2 text-right padding">旅行社：</label>
+	                  <div class="col-sm-2 padding">
+	                    <select id="travelname" name="travelname" type="text" class="form-control input-sm select2" placeholder="" multiple="multiple">
+	                    	<c:forEach var="one" items="${obj.travel }">
+								<option value="${one.comName }">${one.comName}</option>
+							</c:forEach>
+	                    </select>
+	                  </div>
+                	</div>
                 </div><!--end 航空公司/旅行社-->
 
-                <div class="form-group row"><!--人数/天数/联运要求-->
-                  <label class="col-sm-2 text-right padding customerEdit">人数：</label>
-                  <div class="col-sm-2 padding">	
-                    <input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm" placeholder="" value="${obj.planinfo.peoplecount }"/>
-                  </div>
-                  <label class="col-sm-2 text-right padding">天数：</label>
-                  <div class="col-sm-2 padding">
-                    <input id="dayscount" name="dayscount" type="text" class="form-control input-sm" placeholder=" " value="${obj.planinfo.dayscount }"/>
-                  </div>
-                  <label class="col-sm-2 text-right padding">联运要求：</label>
-                  <div class="col-sm-2 padding">
-                    <select id="unioncity" name="unioncity" type="text" class="form-control input-sm select2" multiple="multiple" placeholder=" " >
-                    	<c:forEach var="one" items="${obj.union }">
-							<option value="${one.dictCode }">${one.dictCode}</option>
-						</c:forEach>
-                    </select>
-                  </div>
+                <div class="row"><!--人数/天数/联运要求-->
+                	<div class="form-group">
+	                  <label class="col-sm-2 text-right padding customerEdit">人数：</label>
+	                  <div class="col-sm-2 padding">	
+	                    <input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm" placeholder="" value="${obj.planinfo.peoplecount }"/>
+	                  </div>
+                	</div>
+                	<div class="form-group">
+	                  <label class="col-sm-2 text-right padding">天数：</label>
+	                  <div class="col-sm-2 padding">
+	                    <input id="dayscount" name="dayscount" type="text" class="form-control input-sm" placeholder=" " value="${obj.planinfo.dayscount }"/>
+	                  </div>
+                	</div>
+                	<div class="form-group">
+	                  <label class="col-sm-2 text-right padding">联运要求：</label>
+	                  <div class="col-sm-2 padding">
+	                    <select id="unioncity" name="unioncity" type="text" class="form-control input-sm select2" multiple="multiple" placeholder=" " >
+	                    	<c:forEach var="one" items="${obj.union }">
+								<option value="${one.dictCode }">${one.dictCode}</option>
+							</c:forEach>
+	                    </select>
+	                  </div>
+                	</div>
                 </div><!--end 人数/天数/联运要求-->
 
-                <div class="form-group row"><!--去程日期/出发城市/出发航班-->
-                  <label class="col-sm-2 text-right padding customerEdit">去程日期：</label>
-                  <div class="col-sm-2 padding">
-                    <input id="leavedateString" name="leavedateString" type="text" class="form-control input-sm" placeholder="2016-12-01" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'backdateString\')}'})" value="<fmt:formatDate value="${obj.planinfo.leavesdate }" pattern="yyyy-MM-dd" />"/>
-                  </div>
-                  <label class="col-sm-2 text-right padding">出发城市：</label>
-                  <div class="col-sm-2 padding">
-                    <select id="leavescity" name="leavescity" type="text" class="form-control input-sm select2" multiple="multiple" placeholder="" >
-                    	<c:forEach var="one" items="${obj.city }">
-							<option value="${one.dictCode }">${one.dictCode}</option>
-						</c:forEach>
-                    </select>
-                  </div>
-                  <label class="col-sm-2 text-right padding">出发航班：</label>
-                  <div class="col-sm-2 padding">
-                    <select id="leaveairline" name="leaveairline" type="text" class="form-control input-sm select2" multiple="multiple" placeholder=" " >
-                    	<c:forEach var="one" items="${obj.airline }">
-							<option value="${one.airlinenum }">${one.airlinenum}</option>
-						</c:forEach>
-                    </select>
-                  </div>
+                <div class="row"><!--去程日期/出发城市/出发航班-->
+                	<div class="form-group">
+	                  <label class="col-sm-2 text-right padding customerEdit">去程日期：</label>
+	                  <div class="col-sm-2 padding">
+	                    <input id="leavedateString" name="leavedateString" type="text" class="form-control input-sm" placeholder="2016-12-01" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'backdateString\')}'})" value="<fmt:formatDate value="${obj.planinfo.leavesdate }" pattern="yyyy-MM-dd" />"/>
+	                  </div>
+                	</div>
+                	<div class="form-group">
+	                  <label class="col-sm-2 text-right padding">出发城市：</label>
+	                  <div class="col-sm-2 padding">
+	                    <select id="leavescity" name="leavescity" type="text" class="form-control input-sm select2" multiple="multiple" placeholder="" >
+	                    	<c:forEach var="one" items="${obj.city }">
+								<option value="${one.dictCode }">${one.dictCode}</option>
+							</c:forEach>
+	                    </select>
+	                  </div>
+                	</div>
+                	<div class="form-group">
+	                  <label class="col-sm-2 text-right padding">出发航班：</label>
+	                  <div class="col-sm-2 padding">
+	                    <select id="leaveairline" name="leaveairline" type="text" class="form-control input-sm select2" multiple="multiple" placeholder=" " >
+	                    	<c:forEach var="one" items="${obj.airline }">
+								<option value="${one.airlinenum }">${one.airlinenum}</option>
+							</c:forEach>
+	                    </select>
+	                  </div>
+                	</div>
                 </div><!--end 去程日期/出发城市/出发航班-->
 
-                <div class="form-group row"><!--回程日期/返回城市/回程航班-->
-                  <label class="col-sm-2 text-right padding customerEdit">回程日期：</label>
-                  <div class="col-sm-2 padding">
-                    <input id="backdateString" name="backdateString" type="text" class="form-control input-sm" multiple="multiple" placeholder="2016-12-01" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'leavedateString\')}'})" value="<fmt:formatDate value="${obj.planinfo.backsdate }" pattern="yyyy-MM-dd" />"/>
-                  </div>
-                  <label class="col-sm-2 text-right padding">返回城市：</label>
-                  <div class="col-sm-2 padding">
-                    <select id="backscity" name="backscity" type="text" class="form-control input-sm select2" multiple="multiple" placeholder="">
-                    	<c:forEach var="one" items="${obj.city }">
-							<option value="${one.dictCode }">${one.dictCode}</option>
-						</c:forEach>
-                    </select>
-                  </div>
-                  <label class="col-sm-2 text-right padding">回程航班：</label>
-                  <div class="col-sm-2 padding">
-                    <select id="backairline" name="backairline" type="text" class="form-control input-sm select2" multiple="multiple" placeholder=" ">
-                    	<c:forEach var="one" items="${obj.airline }">
-							<option value="${one.airlinenum }">${one.airlinenum}</option>
-						</c:forEach>
-                    </select>
-                  </div>
+                <div class="row"><!--回程日期/返回城市/回程航班-->
+                	<div class="form-group">
+	                  <label class="col-sm-2 text-right padding customerEdit">回程日期：</label>
+	                  <div class="col-sm-2 padding">
+	                    <input id="backdateString" name="backdateString" type="text" class="form-control input-sm" multiple="multiple" placeholder="2016-12-01" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'leavedateString\')}'})" value="<fmt:formatDate value="${obj.planinfo.backsdate }" pattern="yyyy-MM-dd" />"/>
+	                  </div>
+                	</div>
+                	<div class="form-group">
+	                  <label class="col-sm-2 text-right padding">返回城市：</label>
+	                  <div class="col-sm-2 padding">
+	                    <select id="backscity" name="backscity" type="text" class="form-control input-sm select2" multiple="multiple" placeholder="">
+	                    	<c:forEach var="one" items="${obj.city }">
+								<option value="${one.dictCode }">${one.dictCode}</option>
+							</c:forEach>
+	                    </select>
+	                  </div>
+                	</div>
+                	<div class="form-group">
+	                  <label class="col-sm-2 text-right padding">回程航班：</label>
+	                  <div class="col-sm-2 padding">
+	                    <select id="backairline" name="backairline" type="text" class="form-control input-sm select2" multiple="multiple" placeholder=" ">
+	                    	<c:forEach var="one" items="${obj.airline }">
+								<option value="${one.airlinenum }">${one.airlinenum}</option>
+							</c:forEach>
+	                    </select>
+	                  </div>
+                	</div>
                 </div><!--end 回程日期/返回城市/回程航班-->
                 </form>
             </div>
@@ -180,6 +204,10 @@
 	<!--pikaday -->
 	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
+
+	if(travelname){
+		$('#generateOrder').attr('checked','checked');
+	}
 	//关闭弹框,关闭当前窗口
 	function closewindow(){
 		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
@@ -273,13 +301,6 @@
                    }
                }
            },
-           travelname: {
-           	validators: {
-                   notEmpty: {
-                       message: '旅行社不能为空'
-                   }
-               }
-           },
            peoplecount: {
            	validators: {
            		notEmpty: {
@@ -299,13 +320,6 @@
            		regexp: {
                        regexp: /^[0-9]+$/,
                        message: '天数只能为数字'
-                   }
-               }
-           },
-           unioncity:{
-               validators: {
-                   notEmpty: {
-                       message: '联运要求不能为空'
                    }
                }
            },
@@ -343,16 +357,16 @@
                        message: '返回城市不能为空'
                    }
                }
-           },
-           backairline:{
-               validators: {
-                   notEmpty: {
-                       message: '回程航班不能为空'
-                   }
-               }
            }
        }
 	});
+	//选择旅行社之后选中复选框
+	$('#travelname').change(function(){
+		var airlinename = $('#airlinename').val();
+		if(airlinename){
+			$('#generateOrder').attr('checked','checked');
+		}
+	}); 
 </script>
 </body>
 </html>	

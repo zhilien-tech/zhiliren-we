@@ -32,12 +32,18 @@ public class TCompanySqlForm extends DataTablesParamForm {
 	/**公司名称*/
 	private String companyName;
 
+	/**公司类型*/
+	private String comType;
+
 	private Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		//TODO 添加自定义查询条件（可选）
 		if (!Util.isEmpty(companyName)) {
 			cnd.and("t.comName", "LIKE", "%" + companyName + "%").or("t.connect", "LIKE", "%" + companyName + "%")
 					.or("t.mobile", "LIKE", "%" + companyName + "%");
+		}
+		if (!Util.isEmpty(comType)) {
+			cnd.and("t.comType", "=", comType);
 		}
 		cnd.and("t.deletestatus", "=", 0);
 		cnd.orderBy("t.createtime", "desc");

@@ -39,9 +39,13 @@ function initTeamSelect2(){
 					delay : 250,
 					type : 'post',
 					data : function(params) {
+						var ids = $('#teamArriveCity'+i).val();
+						if(ids){
+							ids = ids.join(',');
+						}
 						return {
 							cityname : params.term, 
-							ids:$('#teamArriveCity'+i).val(),
+							ids:ids,
 							page : params.page
 						};
 					},
@@ -56,7 +60,7 @@ function initTeamSelect2(){
 							results : selectdata
 						};
 					},
-					cache : true
+					cache : false
 				},
 				escapeMarkup : function(markup) {
 					return markup;
@@ -76,9 +80,13 @@ function initTeamSelect2(){
 					delay : 250,
 					type : 'post',
 					data : function(params) {
+						var ids = $('#teamOutCity'+i).val();
+						if(ids){
+							ids = ids.join(',');
+						}
 						return {
 							cityname : params.term, 
-							ids:$('#teamOutCity'+i).val(),
+							ids:ids,
 							page : params.page
 						};
 					},
@@ -110,7 +118,10 @@ function initTeamSelect2(){
 
 $(function () {
 	//段数 样式切换
-	$('.paragraphBtn li').click(function(){
+	/*$('.paragraphBtn li').click(function(){
+		$(this).addClass('btnStyle').siblings().removeClass('btnStyle');
+	});*/
+	$(document).on("click",".paragraphBtn li",function(){
 		$(this).addClass('btnStyle').siblings().removeClass('btnStyle');
 	});
 
@@ -161,7 +172,7 @@ $(document).on('click', '.removeMore', function(e) {
 /*航空公司查询*/
 $("#teamAirline").select2({
 	ajax : {
-		url : BASE_PATH  + "/admin/search/getAirLineSelect.html",
+		url : BASE_PATH  + '/admin/search/getAirLineSelect.html',
 		dataType : 'json',
 		delay : 250,
 		type : 'post',
@@ -196,63 +207,29 @@ $("#teamAirline").select2({
 });
 
 
-/* 团客多程查询 */
-var clickone=1;
-$("#searchTeamTicketsBtn").click(function() {
-	var link = $("#linkNameId").val();
-	if(link==null){
-		layer.msg("客户名称不能为空", "", 2000);
-		return;
+/*-----------------------拼接多段  start------------------------*/
+function makePart(){
+	//段数
+	var airTeamType = $("input[name='voyageType1']:checked").val();
+	var html = "";
+	if(airTeamType == 1){
+		html = '<li id="teamNum1" class="btnStyle">第1段</li>';
+		document.getElementById('travelTeamTypeNum').innerHTML=html;
 	}
-	//loading层
-	/*var index = layer.load(1, {
-	  shade: [0.1,'#fff'], //0.1透明度的白色背景
-	  2000
-	});*/
-	if(clickone){
-		var index=0;
-		$("#teamorigin").val($("#teamOutCity"+index).select2("val"));
-		$("#teamdestination").val($("#teamArriveCity"+index).select2("val"));
-		$("#teamdeparturedate").val($("#teamOutDatepicker"+index).val());
-		$("#teamreturndate").val($("#teamReturnDatepicker"+index).val());
-		clickone=0;
+	if(airTeamType == 2){
+		html = '<li id="teamNum1" class="btnStyle">第1段</li><li id="teamNum2">第2段</li>';
+		document.getElementById('travelTeamTypeNum').innerHTML=html;
 	}
-	$.ajax({
-		type : 'POST',
-		data : $("#searchTeamTicketsForm").serialize(),
-		url : BASE_PATH  + '/admin/search/searchTeamTickets.html',
-		success : function(data) {
-			//段数
-			var airTeamType = $("input[name='voyageType1']:checked").val();
-			var html = "";
-			if(airTeamType == 1){
-				html = '<li id="teamNum1" class="btnStyle">第1段</li>';
-				document.getElementById('travelTeamTypeNum').innerHTML=html;
-			}
-			if(airTeamType == 2){
-				html = '<li id="teamNum1" class="btnStyle">第1段</li><li id="teamNum2">第2段</li>';
-				document.getElementById('travelTeamTypeNum').innerHTML=html;
-			}
-			/* 多程 显示多段 */
-			if(airTeamType == 3){
-				for(var i=1; i<$('.setTeamMore').length*2; i=i+2){
-					var j = i+1;
-					html +='<li id="teamNum'+i+'">第'+i+'段</li><li id="teamNum'+j+'">第'+j+'段</li>';
-				}
-				document.getElementById('travelTeamTypeNum').innerHTML=html;
-			}
-			var teamList = "";
-			alert(JSON.stringify(data));
-			$.each(data, function (index, element) { 
-				teamList += '<tr><td>'+ element.ordersnum +'</td><td>'+ " " +'</td><td>'+ " " +'</td><td>'+element.leavescity +'/'+ element.backscity +'</td>'+
-				'<td>'+element.leavesdate+'</td><td>'+element.price+'</td><td>'+element.amount+'</td><td>'+element.orderstime+'</td><td>'+element.opid+'</td></tr>';
-			});  
-			document.getElementById('teamtbody').innerHTML=teamList;
-		},
-		error : function(){
+	/* 多程 显示多段 */
+	if(airTeamType == 3){
+		for(var i=1; i<$('.setTeamMore').length*2; i=i+2){
+			var j = i+1;
+			html +='<li id="teamNum'+i+'">第'+i+'段</li><li id="teamNum'+j+'">第'+j+'段</li>';
 		}
-	});
-});
+		document.getElementById('travelTeamTypeNum').innerHTML=html;
+	}
+}
+/*-----------------------拼接多段  end--------------------------*/
 
 
 /*-----------------------select2隐藏域赋值  start------------------------*/
@@ -279,4 +256,167 @@ $(document).on('click','#teamNum2',function(){
 	$("#teamdeparturedate").val($("#teamReturnDatepicker"+index).val());
 	$("#teamreturndate").val($("#teamOutDatepicker"+index).val());
 	$("#searchTeamTicketsBtn").click();
+});
+
+
+//国际表格初始化
+var datatable2;
+function initDatatable2() {
+    datatable2 = $('#datatable2').DataTable({
+    	"searching":false,
+    	"bLengthChange": false,
+        "processing": true,
+        "serverSide": true,
+        "stripeClasses": [ 'strip1','strip2' ],
+        "language": {
+            "url": BASE_PATH + "/public/plugins/datatables/cn.json"
+        },
+        "ajax": {
+        	"url": BASE_PATH + '/admin/search/searchTeamTickets.html',
+            "type": "post",
+            "data": function (d) {
+            	
+            }
+        },
+        "fnDrawCallback" : function(){
+        	var api = this.api();
+        	var startIndex= api.context[0]._iDisplayStart;
+   	       　　  api.column(1).nodes().each(function(cell, i) {
+   	       　　　　cell.innerHTML = startIndex + i + 1; 
+   	       　　});
+      	},
+        "columns": [
+                	{"data": "id", "bSortable": false,
+                    	"render": function (data, type, row, meta) {
+                            return '<input type="checkbox"  class="checkchild"  value="' + row.id + '" />';
+                        }
+                    },
+                    {"data": "xuhao", "bSortable": false},
+                    {"data": "leavesdate", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var leavesdate = new Date(row.leavesdate);
+                    		var backsdate = new Date(row.backsdate);
+                    		var MM = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'][leavesdate.getMonth()];
+                    		var week = ['MO','TU','WE','TH','FR','SA','SU'][leavesdate.getUTCDay()]
+                    		var MM2 = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'][backsdate.getMonth()];
+                    		var week2 = ['MO','TU','WE','TH','FR','SA','SU'][backsdate.getUTCDay()]
+                    		var result = '<ul><li style="list-style:none;">'+(week+leavesdate.getDate() + MM)+'</li>'
+                    		+'<li style="list-style:none;">'+(week2+backsdate.getDate() + MM2)+'</li>'
+                    		+'</ul>';
+                    		return result;
+                    	}
+                    },
+                    {"data": "leavescity", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var result = '<ul>'
+                        		+'<li style="list-style:none;">'+row.leaveairline+'</li>'
+                        		+'<li style="list-style:none;">'+row.backairline+'</li>'
+                        		+'</ul>';
+                    		return result;
+                    	}
+                    },
+                    {"data": "backsdate", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var result = '<ul>' 
+                        		+'<li style="list-style:none;">'+(row.leavescity +'/'+ row.backscity)+'</li>'
+                        		+'<li style="list-style:none;">'+(row.backleavecity +'/'+ row.backbackcity)+'</li>'
+                        		+'</ul>';
+                    		return result;
+                    	}
+                    },
+                    {"data": "backscity", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var result = '<ul>' 
+                        		+'<li style="list-style:none;">'+(row.lleavetime +'/'+ row.lbacktime)+'</li>'
+                        		+'<li style="list-style:none;">'+(row.bleavetime +'/'+ row.bbacktime)+'</li>'
+                        		+'</ul>';
+                    		return result;
+                    	}	
+                    },
+                    {"data": "peoplecount", "bSortable": false},
+                    {"data": "foc", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var result = '否';
+                    		if(row.foc == 1){
+                    			result = '16/1';
+                    		}
+                    		return result;
+                    	}
+                    },
+                    {"data": "dayscount", "bSortable": false},
+                    /*{"data": "travelname", "bSortable": false},*/
+                    {"data": "unioncity", "bSortable": false}
+            ],
+        columnDefs: [{
+    		targets: 0,
+            render: function(data, type, row, meta) {
+                return null
+            }
+    	},{
+    		targets: 1,
+            render: function(data, type, row, meta) {
+                return null
+            }
+    	}]
+    });
+}
+
+//控制复选框
+$(".checkall").click(function () {
+    var check = $(this).prop("checked");
+    $(".checkchild").prop("checked", check);
+});
+
+
+//获取检索条件数据
+function getEditPlanParam(){
+	var origin = $('#teamorigin').val();
+	var destination = $('#teamdestination').val();
+	var departuredate = $('#teamdeparturedate').val();
+	var returndate = $('#teamreturndate').val();
+	var includedcarriers = $('#teamAirlineCode').val();
+	var param = {
+			origin:origin,
+			destination:destination,
+			departuredate:departuredate,
+			returndate:returndate,
+			includedcarriers:includedcarriers
+	};
+	return param;
+}
+function selectteam(){
+	$("#searchTeamTicketsBtn").click();
+}
+function onkeyTeamEnter(){
+	var e = window.event || arguments.callee.caller.arguments[0];
+    if(e && e.keyCode == 13){
+    	selectteam();
+    }
+}
+/* 团客多程查询 */
+var clickone=1;
+$("#searchTeamTicketsBtn").click(function() {
+	var link = $("#linkNameId").val();
+	if(link==null){
+		layer.msg("客户名称不能为空", "", 2000);
+		return;
+	}
+	
+	//第一次点击查询 默认第一段
+	if(clickone){
+		var index=0;
+		$("#teamorigin").val($("#teamOutCity"+index).select2("val"));
+		$("#teamdestination").val($("#teamArriveCity"+index).select2("val"));
+		$("#teamdeparturedate").val($("#teamOutDatepicker"+index).val());
+		$("#teamreturndate").val($("#teamReturnDatepicker"+index).val());
+		clickone=0;
+		//加载列表数据
+		initDatatable2();
+	}
+	
+	makePart();
+	
+	var param = getEditPlanParam();
+    datatable2.settings()[0].ajax.data = param;
+    datatable2.ajax.url(BASE_PATH + '/admin/search/searchTeamTickets.html').load();
 });

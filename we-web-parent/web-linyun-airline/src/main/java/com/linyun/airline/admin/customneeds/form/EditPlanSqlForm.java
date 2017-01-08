@@ -13,6 +13,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
+import org.nutz.dao.util.cri.SqlExpressionGroup;
 
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
@@ -51,7 +52,7 @@ public class EditPlanSqlForm extends DataTablesParamForm {
 
 	private String enddate1;
 
-	private Integer teamtype;
+	private Integer teamtype = 1;
 
 	private int idordernum;
 
@@ -62,16 +63,19 @@ public class EditPlanSqlForm extends DataTablesParamForm {
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		cnd.and("tt.issave", "=", "1");
+		SqlExpressionGroup exp = new SqlExpressionGroup();
+		exp.and("tt.travelname", "is", null).or("tt.travelname", "=", "").or("tu.ordersnum", "is", null);
+		cnd.and(exp);
 		cnd.and("tt.companyid", "=", companyid);
 		if (!Util.isEmpty(travelname1)) {
 			cnd.and("tt.travelname", "like", "%" + travelname1 + "%");
 		}
-		if (idordernum == 1) {
+		/*if (idordernum == 1) {
 			cnd.and("tu.ordersnum", "is not", null);
 		} else {
 			cnd.and("tu.ordersnum", "is", null);
 
-		}
+		}*/
 		if (!Util.isEmpty(leaveairline1)) {
 			cnd.and("tt.leaveairline", "like", "%" + leaveairline1 + "%");
 		}
@@ -97,6 +101,7 @@ public class EditPlanSqlForm extends DataTablesParamForm {
 			if (teamtype == 3) {
 				cnd.and("tt.isclose", "=", 1);
 			} else {
+				cnd.and("tt.isclose", "=", 0);
 				cnd.and("tt.teamtype", "=", teamtype);
 			}
 		}

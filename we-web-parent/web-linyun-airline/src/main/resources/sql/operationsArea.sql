@@ -83,15 +83,18 @@ GROUP BY
 /*msg_type_list*/
 SELECT DISTINCT
 	(
-	DATE_FORMAT(m.generateTime, '%Y-%m-%d')
+		DATE_FORMAT(m.generateTime, '%Y-%m-%d')
 	) AS gtime,
 	m.msgContent,
 	m.msgType
 FROM
 	t_message m
+INNER JOIN t_user_msg um ON m.id = um.msgId
 WHERE
-	m.msgStatus=@msgStatus
-AND	
+	m.msgStatus = @msgStatus
+AND 
+	um.userId = @userid
+AND
 	date_format(m.generateTime, '%Y-%m') = date_format(@MincalTimes1,'%Y-%m')
 OR date_format(m.generateTime, '%Y-%m') = date_format(@MincalTimes2,'%Y-%m')
 OR date_format(m.generateTime, '%Y-%m') = date_format(@MincalTimes3,'%Y-%m')
@@ -122,6 +125,7 @@ AND
 	c.comType=@comtype
 AND
 	c.deletestatus=@deletestatus
+LIMIT 0,5
 
 /*get_checkbox_status*/
 SELECT

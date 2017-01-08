@@ -5,17 +5,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
 import com.linyun.airline.admin.customer.service.CustomerViewService;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
+import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.entities.TMessageEntity;
 import com.linyun.airline.common.sabre.dto.FlightSegment;
 import com.linyun.airline.common.sabre.dto.InstalFlightAirItinerary;
@@ -25,7 +29,9 @@ import com.linyun.airline.common.sabre.form.InstaFlightsSearchForm;
 import com.linyun.airline.common.sabre.service.SabreService;
 import com.linyun.airline.common.sabre.service.impl.SabreServiceImpl;
 import com.linyun.airline.entities.DictInfoEntity;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
+import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.Util;
@@ -51,8 +57,26 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * @param linkname
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object getLinkNameSelect(String linkname) {
-		List<TCustomerInfoEntity> customerInfos = customerViewService.getCustomerInfoByLinkName(linkname);
+	public Object getLinkNameSelect(String linkname, HttpSession session) {
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
+		long upcompanyRelationId = 0;
+		if (!Util.isEmpty(upcompany)) {
+			upcompanyRelationId = upcompany.getId();
+		}
+		List<TCustomerInfoEntity> customerInfos = new ArrayList<TCustomerInfoEntity>();
+		try {
+			customerInfos = dbDao
+					.query(TCustomerInfoEntity.class,
+							Cnd.where("linkMan", "like", Strings.trim(linkname) + "%").and("upComId", "=",
+									upcompanyRelationId), null);
+			if (customerInfos.size() > 5) {
+				customerInfos = customerInfos.subList(0, 5);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return customerInfos;
 	}
 
@@ -91,10 +115,21 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * @param cityname
 	 * @return 返回城市下拉列表
 	 */
-	public Object getCitySelect(String cityname, String typeCode1, String typeCode2, String ids) {
+	public Object getCitySelect(String cityname, String typeCode, String ids) {
 		List<DictInfoEntity> citySelect = new ArrayList<DictInfoEntity>();
 		try {
-			citySelect = externalInfoService.findDictInfoByTypes(cityname, typeCode1, typeCode2);
+			citySelect = externalInfoService.findDictInfoByText(cityname, typeCode);
+			//出发抵达城市去重
+			if (!Util.isEmpty(ids)) {
+				//已选中的城市
+				List<DictInfoEntity> existCitys = new ArrayList<DictInfoEntity>();
+				for (DictInfoEntity dictInfoEntity : citySelect) {
+					if (dictInfoEntity.getDictCode().equals(ids)) {
+						existCitys.add(dictInfoEntity);
+					}
+				}
+				citySelect.removeAll(existCitys);
+			}
 			if (citySelect.size() > 5) {
 				citySelect = citySelect.subList(0, 5);
 			}
@@ -102,17 +137,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			e.printStackTrace();
 		}
 
-		//出发抵达城市去重
-		if (!Util.isEmpty(ids)) {
-			//已选中的城市
-			List<DictInfoEntity> existCitys = new ArrayList<DictInfoEntity>();
-			for (DictInfoEntity dictInfoEntity : citySelect) {
-				if (dictInfoEntity.getDictCode().equals(ids)) {
-					existCitys.add(dictInfoEntity);
-				}
-			}
-			citySelect.removeAll(existCitys);
-		}
 
 		return citySelect;
 	}
@@ -153,7 +177,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			String returnD = df.format(new Date(outD.getTime() + 15 * 24 * 60 * 60 * 1000));
 			form.setReturndate(returnD);
 		}
-		form.setReturndate(searchForm.getReturndate());
 		//如果返回日期不为空， 则用
 		if (!Util.isEmpty(searchForm.getReturndate())) {
 			form.setReturndate(searchForm.getReturndate());
@@ -237,6 +260,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		String includedcarriers = searchForm.getIncludedcarriers();//航空公司名称
 		Sql sql = Sqls.create(sqlManager.get("team_ticket_list"));
 		Cnd cnd = Cnd.NEW();
+		cnd.and("tt.travelname", "=", "");
 		if (!Util.isEmpty(origin)) {
 			cnd.and("tt.leavescity", "=", origin);
 		}

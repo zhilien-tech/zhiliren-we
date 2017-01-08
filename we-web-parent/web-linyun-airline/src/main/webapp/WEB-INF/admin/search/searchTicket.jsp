@@ -155,24 +155,24 @@
                               <td><label>出发城市：</label></td>
                               <td>
                               	<!-- <input type="text" class="form-control input-sm" placeholder="拼音/三字代码"> -->
-								<select id="outCity0" name="origin0" class="form-control input-sm" multiple="multiple" data-placeholder="拼音/三字代码"></select>
+								<select id="outCity0" name="origin0"  class="form-control input-sm" multiple="multiple" data-placeholder="拼音/三字代码"></select>
                               </td>
                               <td class="untilTd"><i class="fa fa-minus"></i></td>
                               <td><label>到达城市：</label></td>
                               <td>
-                              	<select id="singleArriveCity0" name="destination0"  class="form-control input-sm" multiple="multiple" data-placeholder="拼音/三字代码"></select>
+                              	<select id="singleArriveCity0" name="destination0" onkeypress="onkeyEnter();" class="form-control input-sm" multiple="multiple" data-placeholder="拼音/三字代码"></select>
                               </td>
                               <td class="untilTd1"></td><!--空白处 可以忽略-->
                               <td><label>出发日期：</label></td>
                               <td>
                               	<!-- <input id="" name="" type="text" class="form-control input-sm" placeholder="2016-12-21"> -->
-                              	<input id="outDatepicker0" name="departuredate0" type="text" class="form-control input-sm" onFocus="WdatePicker({startDate:'%y', dateFmt:'yyyy-MM-dd',minDate:'%y-%M-{%d}'})" placeholder="2017-01-01">
+                              	<input id="outDatepicker0" name="departuredate0" onkeypress="onkeyEnter();" type="text" class="form-control input-sm" onFocus="WdatePicker({startDate:'%y', dateFmt:'yyyy-MM-dd',minDate:'%y-%M-{%d}'})" placeholder="2017-01-01">
                               </td>
                               <td class="setoutLabel">
                               <label>返回日期：</label></td>
                               <td class="setoutinput">
                               	<!-- <input type="text" class="form-control input-sm" placeholder="2016-12-25"> -->
-                              	<input id="returnDatepicker0" name="returndate0" type="text" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'outDatepicker0\')}'})" placeholder="2017-01-15">
+                              	<input id="returnDatepicker0" name="returndate0" onkeypress="onkeyEnter();" type="text" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'outDatepicker0\')}',maxDate:'#F{$dp.$D(\'outDatepicker0\',{d:15})}'})" placeholder="2017-01-15">
                               </td>
                               <td class="addIconTd addSingleIconTd none"><i class="glyphicon glyphicon-plus addMore"></i></td>
                            </tr>
@@ -208,7 +208,7 @@
                              <td><label>航空公司：</label></td>
                              <td>
                              	<!-- <input type="text" class="form-control input-sm" placeholder="(选填)中文/二字代码"> -->
-                             	<select id="airline" name="includedcarriers" onchange="airlineNameOpt()"  class="form-control input-sm" multiple="multiple" data-placeholder="(选填)中文/二字代码"></select>
+                             	<select id="airline" name="includedcarriers" onkeypress="onkeyEnter();" onchange="airlineNameOpt()"  class="form-control input-sm" multiple="multiple" data-placeholder="(选填)中文/二字代码"></select>
                              </td>
                              <td>
                              	<button id="searchSingleTicketsBtn" type="button"  class="btn btn-primary btn-sm">搜索机票</button>
@@ -245,30 +245,31 @@
 						    <input id="teamdestination" name="destination" type="hidden"/>
 						    <input id="teamdeparturedate" name="departuredate" type="hidden"/>
                             <input id="teamreturndate" name="returndate" type="hidden"/>
+                            <input id="teamAirlineCode" name="includedcarriers" type="hidden"/>
                             
                             <!-- 团队多程查询 -->
                             <tr class="setTeamMore">
                               <td><label>出发城市：</label></td>
                               <td>
                               	<!-- <input type="text" class="form-control input-sm" placeholder="拼音/三字代码"> -->
-                              	<select id="teamOutCity0" name="origin1" class="form-control input-sm" multiple="multiple" data-placeholder="拼音/三字代码"></select>
+                              	<select id="teamOutCity0" name="origin1" onchange="selectteam();" class="form-control input-sm" multiple="multiple" data-placeholder="拼音/三字代码"></select>
                               </td>
                               <td class="untilTd"><i class="fa fa-minus"></i></td>
                               <td><label>到达城市：</label></td>
                               <td>
                               	<!-- <input type="text" class="form-control input-sm" placeholder="拼音/三字代码"> -->
-                              	<select id="teamArriveCity0" name="destination1" class="form-control input-sm" multiple="multiple" data-placeholder="拼音/三字代码"></select>
+                              	<select id="teamArriveCity0" name="destination1" onchange="selectteam();" class="form-control input-sm" multiple="multiple" data-placeholder="拼音/三字代码"></select>
                               </td>
                               <td class="untilTd1"></td><!--空白处 可以忽略-->
                               <td><label>出发日期：</label></td>
                               <td>
                               	<!-- <input type="text" class="form-control input-sm" placeholder="2016-12-21"> -->
-                              	<input id="teamOutDatepicker0" name="departuredate1" type="text" class="form-control input-sm" onFocus="WdatePicker({startDate:'%y', dateFmt:'yyyy-MM-dd',minDate:'%y-%M-{%d}'})" placeholder="2017-01-01">
+                              	<input id="teamOutDatepicker0" name="departuredate1" onkeypress="onkeyTeamEnter();" type="text" class="form-control input-sm" onFocus="WdatePicker({startDate:'%y', dateFmt:'yyyy-MM-dd',minDate:'%y-%M-{%d}'})" placeholder="2017-01-01">
                               </td>
                               <td class="setoutLabel"><label>返回日期：</label></td>
                               <td class="setoutinput">
                               	<!-- <input type="text" class="form-control input-sm" placeholder="2016-12-25"> -->
-                              	<input id="teamReturnDatepicker0" name="returndate1" type="text" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'teamOutDatepicker0\')}'})" placeholder="2017-01-15">
+                              	<input id="teamReturnDatepicker0" name="returndate1" type="text" onkeypress="onkeyTeamEnter();" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'teamOutDatepicker0\')}'})" placeholder="2017-01-15">
                               </td>
                               <td class="addIconTd addTeamIconTd none"><i class="glyphicon glyphicon-plus addMore"></i></td>
                             </tr>
@@ -287,9 +288,8 @@
                               <td><label>航空公司：</label></td>
                               <td>
                               	<!-- <input type="text" class="form-control input-sm" placeholder="(选填)中文/代码"> -->
-                              	<select id="teamAirline" name="teamAirline" onchange="teamAirlineNameOpt()"  class="form-control input-sm" multiple="multiple" data-placeholder="(选填)中文/二字代码"></select>
+                              	<select id="teamAirline" name="teamAirline" onchange="selectteam();"   class="form-control input-sm" multiple="multiple" data-placeholder="(选填)中文/二字代码"></select>
                              	<input id="teamAirlineName" name="teamAirlineName" type="hidden"/>
-                             	<input id="teamAirlineCode" name="includedcarriers" type="hidden"/>
                               </td>
                               <td>
                               	<button id="searchTeamTicketsBtn" type="button" class="btn btn-primary btn-sm">搜索机票</button>
@@ -300,9 +300,10 @@
 <!-- 查询团队机票  end --> 
                           <div class="tableInfoDiv">
                           	<ul id="travelTeamTypeNum" class="paragraphBtn"></ul>
-                            <table class="table table-bordered table-hover">
+                            <table id="datatable2" class="table table-bordered table-hover">
                               <thead>
-                              <tr>
+                              <tr id="teamTrId">
+                              	<th><input type="checkbox" class="checkall" /></th>
                                 <th>序号</th>
 	                            <th>日期</th>
 	                            <th>航班号</th>
@@ -347,6 +348,9 @@
 		<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 		<!-- Validator -->
 		<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
+		<!-- DataTables -->
+		<script src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 		<!-- 客户信息 js -->
 		<script src="${base}/admin/searchTicket/searchCustomerInfo.js"></script>
 		<!-- 订单信息 js -->
@@ -378,6 +382,7 @@
 	  	            }
 	  	        }
 	  		});
+	        
 	     });
 	  </script>
 	  <script type="text/javascript">
@@ -390,6 +395,7 @@
 				var i = num_id.substring(3,num_id.length);
 				var index = "";
 				if(i%2){
+					//去程
 					index = (i-1)/2;
 					$("#origin").val($("#outCity"+index).select2("val"));
 					$("#destination").val($("#singleArriveCity"+index).select2("val"));
@@ -444,6 +450,10 @@
 	             if (radio[i].checked) {  
 	                var radioValue=radio[i].value;
 	                $("#singletable tr").not(":first").remove();
+	                $("#outCity0").val(null).trigger("change");
+	                $("#singleArriveCity0").val(null).trigger("change");
+	                $("#outDatepicker0").val("");
+	                $("#returnDatepicker0").val("");
 	                if (radioValue==1) {
 	                     $('.setoutLabel').hide();
 	                     $('.setoutinput').hide();
@@ -469,6 +479,11 @@
 	          for (i=0; i<radio1.length; i++) {  
 	               if (radio1[i].checked) {  
 	                  var radioValue1=radio1[i].value;
+	                  $("#singletable tr").not(":first").remove();
+		              $("#teamOutCity0").val(null).trigger("change");
+		              $("#teamArriveCity0").val(null).trigger("change");
+		              $("#teamOutDatepicker0").val("");
+		              $("#teamReturnDatepicker0").val("");
 	                  $("#teamTable tr").not(":first").remove();
 	                  if (radioValue1==1) {
 	                       $('.setoutLabel').hide();

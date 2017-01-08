@@ -63,6 +63,7 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 		map.put("upconpany", upconpany);
 		map.put("agent", agent);
 		map.put("totalcompany", upconpany + agent);
+		map.put("companyTypeEnum", EnumUtil.enum2(CompanyTypeEnum.class));
 		return map;
 	}
 
@@ -174,6 +175,7 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 		//添加管理员信息数据
 		userAddForm.setPassword(MANAGE_PASSWORD);
 		userAddForm.setUserName(addForm.getTelephone());
+		userAddForm.setTelephone("");
 		userAddForm.setStatus(1);
 		//设置上游公司或代理商的管理员用户类型
 		if (addForm.getComType() == CompanyTypeEnum.UPCOMPANY.intKey()) {
@@ -278,7 +280,9 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 				dbDao.delete(upcompany);
 			}
 		}
+		TCompanyEntity company = this.fetch(updateForm.getId());
 		//修改公司信息
+		updateForm.setCreatetime(company.getCreatetime());
 		updateForm.setLastupdatetime(new Date());
 		return this.update(updateForm);
 	}

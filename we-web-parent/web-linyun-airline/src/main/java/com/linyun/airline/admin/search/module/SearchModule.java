@@ -42,8 +42,8 @@ public class SearchModule {
 	 */
 	@At
 	@POST
-	public Object getLinkNameSelect(@Param("linkname") String linkname) {
-		return searchViewService.getLinkNameSelect(linkname);
+	public Object getLinkNameSelect(@Param("linkname") String linkname, HttpSession session) {
+		return searchViewService.getLinkNameSelect(linkname, session);
 	}
 
 	/**
@@ -94,9 +94,8 @@ public class SearchModule {
 	@At
 	@POST
 	public Object getCitySelect(@Param("cityname") String cityname, @Param("ids") final String ids) {
-		String typeCodestr1 = "GJNL";
-		String typeCodestr2 = "GJ";
-		return searchViewService.getCitySelect(cityname, typeCodestr1, typeCodestr2, ids);
+		String typeCode = "CFCS";
+		return searchViewService.getCitySelect(cityname, typeCode, ids);
 	}
 
 	/**
