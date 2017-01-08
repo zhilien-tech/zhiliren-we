@@ -54,7 +54,7 @@
                           </div>
                           <label class="col-sm-1 text-right padding">航空公司：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" name="airline" id="airline" onblur="this.value=this.value.toUpperCase().replace(/(^\s*)|(\s*$)/g, '')" class="form-control input-sm" placeholder="首航-CA" onkeypress="onkeyEnter();">
+                            <input type="text" name="airline" id="airline" onblur="this.value=this.value.toUpperCase().replace(/(^\s*)|(\s*$)/g, '')" class="form-control input-sm" placeholder="" onkeypress="onkeyEnter();">
                           </div>
                           <label class="col-sm-1 text-right padding">旅行社：</label>
                           <div class="col-sm-1 padding">
@@ -74,19 +74,19 @@
                         <div class="form-group row">
                           <label class="col-sm-1 text-right padding">去程日期：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" class="form-control input-sm inputdatestr" name="leavedate" id="leavedate" onkeypress="onkeyEnter();" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'backdate\')}'})" placeholder="2016/03/06">
+                            <input type="text" class="form-control input-sm inputdatestr" name="leavedate" id="leavedate" onkeypress="onkeyEnter();" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'backdate\')}'})" placeholder="">
                           </div>
                           <label class="col-sm-1 text-right padding">起飞城市：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" class="form-control input-sm" name="leavecity" id="leavecity"  placeholder="北京-PEK" onkeypress="onkeyEnter();">
+                            <input type="text" class="form-control input-sm" name="leavecity" id="leavecity"  placeholder="" onkeypress="onkeyEnter();">
                           </div>
                           <label class="col-sm-1 text-right padding inputdatestr">回程日期：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" class="form-control input-sm" name="backdate" id="backdate" onkeypress="onkeyEnter();" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'leavedate\')}'})" placeholder="2016/04/01">
+                            <input type="text" class="form-control input-sm" name="backdate" id="backdate" onkeypress="onkeyEnter();" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'leavedate\')}'})" placeholder="">
                           </div>
                           <label class="col-sm-1 text-right padding">降落城市：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" class="form-control input-sm" name="backcity" id="backcity"  placeholder="悉尼-SYD" onkeypress="onkeyEnter();">
+                            <input type="text" class="form-control input-sm" name="backcity" id="backcity"  placeholder="" onkeypress="onkeyEnter();">
                           </div>
                           <div class="col-md-3">
                             <button id="searchBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
@@ -281,7 +281,6 @@
                           <label class="col-sm-1 text-right padding marTop5">状态：</label>
                           <div class="col-md-1 padding">
                             <select class="form-control select1" id="teamtype1" name="teamtype" onchange="editPlanListSearch();">
-                              <option value="">全部</option>
                               <option value="1">系列团</option>
                               <option value="2">临时团</option>
                               <option value="3">关闭</option>
@@ -376,6 +375,7 @@
                           <tbody>
                           </tbody>
                         </table>
+                        <input id="checkedboxval" name="checkedboxval" type="hidden">
                       </div><!--end 编辑计划-->
 
                     </div><!-- end tab-content -->

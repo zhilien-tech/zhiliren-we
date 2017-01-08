@@ -156,7 +156,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	public Object getCitySelect(String cityname, String exname) {
 		List<DictInfoEntity> citySelect = new ArrayList<DictInfoEntity>();
 		try {
-			citySelect = externalInfoService.findDictInfoByName(cityname, this.CITYCODE);
+			citySelect = externalInfoService.findDictInfoByText(cityname, this.CITYCODE);
 			//移除的城市
 			DictInfoEntity removeinfo = new DictInfoEntity();
 			for (DictInfoEntity dictInfoEntity : citySelect) {
@@ -185,7 +185,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	public Object getUnionCitySelect(String cityname) {
 		List<DictInfoEntity> citySelect = new ArrayList<DictInfoEntity>();
 		try {
-			citySelect = externalInfoService.findDictInfoByName(cityname, CITYCODE);
+			citySelect = externalInfoService.findDictInfoByText(cityname, CITYCODE);
 			if (QUANGUOLIANYUN.indexOf(Strings.trim(cityname)) != -1) {
 				DictInfoEntity dictInfoEntity = new DictInfoEntity();
 				//dictInfoEntity.setDictName(this.QUANGUOLIANYUN);
@@ -606,7 +606,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 
 		List<DictInfoEntity> aircomSelect = new ArrayList<DictInfoEntity>();
 		try {
-			aircomSelect = externalInfoService.findDictInfoByName(aircom, AIRCOMCODE);
+			aircomSelect = externalInfoService.findDictInfoByText(aircom, AIRCOMCODE);
 			if (aircomSelect.size() > 5) {
 				aircomSelect = aircomSelect.subList(0, 5);
 			}

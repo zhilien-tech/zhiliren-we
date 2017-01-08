@@ -90,7 +90,7 @@
                           	<div class="form-group form-group1">
 	                            <label class="col-sm-2 text-right padding">公司类型：</label>
 	                            <div class="col-sm-3 padding">
-	                              <select class="form-control input-sm inpImportant" name="comType">
+	                              <select class="form-control input-sm inpImportant" name="comType" id="comType">
 	                                <option value="">==请选择==</option>
 	                                <option value="1" <c:if test="${'1' eq obj.company.comType}">selected</c:if>>上游公司</option>
 	                                <option value="2" <c:if test="${'2' eq obj.company.comType}">selected</c:if>>代理商</option>
@@ -140,6 +140,7 @@
 		if($("#uploader_00").length>0){
 			inituploader("","00",urllist);
 		}
+		$('#comType').attr("disabled",true);
 		$('#companyUpdateForm').bootstrapValidator({
 			 message: 'This value is not valid',
 	        feedbackIcons: {

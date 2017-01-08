@@ -14,7 +14,6 @@ function initDatatable2() {
             "url": BASE_PATH + "/admin/customneeds/listEditPlanData.html",
             "type": "post",
             "data": function (d) {
-            	
             }
         },
         "fnDrawCallback" : function(){
@@ -27,7 +26,21 @@ function initDatatable2() {
         "columns": [
                 	{"data": "id", "bSortable": false,
                     	"render": function (data, type, row, meta) {
-                            return '<input type="checkbox"  class="checkchild"  value="' + row.id + '" />';
+                    		var result = '';
+                    		var hiddenval = $('#checkedboxval').val();
+                    		var splits = hiddenval.split(',');
+                    		var flag = false;
+                    		for(var i=0;i<splits.length;i++){
+                    			if(splits[i] == row.id){
+                    				flag = true;
+                    			}
+                    		}	
+                    		if(flag){
+                    			result = '<input type="checkbox"  class="checkchild" checked="true" value="' + row.id + '" />';
+                    		}else{
+                    			result = '<input type="checkbox"  class="checkchild" value="' + row.id + '" />';
+                    		}
+                            return result;
                         }
                     },
                     {"data": "xuhao", "bSortable": false},
@@ -109,13 +122,68 @@ function initDatatable2() {
             	}
                 return s
             }
-    	}]
+    	}],
+    	"infoCallback": function (settings, start, end, max, total, pre) {
+    		var length = $(".checkchild:checked").length;
+    		if(datatable2.page.len() == length){
+    			$(".checkall").prop("checked", true);
+    		}else{
+    			$(".checkall").prop("checked", false);
+    			
+    		}
+    		return '显示第 '+start+' 至 '+end+' 条结果，共'+total+' 条 (每页显示 '+max+' 条)'
+    	}
     });
 }
 //控制复选框
 $(".checkall").click(function () {
     var check = $(this).prop("checked");
     $(".checkchild").prop("checked", check);
+    //隐藏域的值
+    var hiddenval = $('#checkedboxval').val();
+	if(check){
+		var splits = hiddenval.split(',');
+		$(".checkchild:checked").each(function(){
+			var thisvals = $(this).val();
+			var flag = false;
+			for(var i=0;i<splits.length;i++){
+				if(splits[i] == thisvals){
+					flag = true;
+				}
+			}
+			//如果隐藏域值为空
+			if(hiddenval){
+				if(!flag){
+					hiddenval += ',' + thisvals;
+				}
+			}else{
+				hiddenval = thisvals;
+			}
+		});
+	}else{
+		$(".checkchild").each(function(){
+			var thisval = $(this).val();
+			var flag = false;
+			var splits = hiddenval.split(',');
+			for(var i=0;i<splits.length;i++){
+				if(splits[i] == thisval){
+					flag = true;
+				}
+			}
+			//如果隐藏域值为空
+			if(flag){
+				var ids = [];
+				for(var i=0;i<splits.length;i++){
+					if(splits[i] != thisval){
+						ids.push(splits[i]);
+					}
+				}
+				ids = ids.join(',');
+				hiddenval = ids;
+			}
+		});
+	}
+	$('#checkedboxval').val(hiddenval);
 });
 //加载编辑计划列表数据
 initDatatable2();
@@ -224,23 +292,25 @@ function enableEditPlan(id){
 }
 //批量关闭计划
 function batchClosePlan(){
+	var ids = $('#checkedboxval').val();
 	var length = $(".checkchild:checked").length;
-	if(length < 1){
+	if(!ids){
 		layer.alert("请至少选中一条记录",{time: 2000, icon:1});
 	}else{
 		layer.confirm('确定要关闭该计划吗?', {icon: 3, title:'提示'}, function(){
-			var ids = [];
+			/*var ids = [];
 			$(".checkchild:checked").each(function(){
 				ids.push($(this).val());
 			});
-			ids = ids.join(',');
+			ids = ids.join(',');*/
 			$.ajax({
 				type: 'POST', 
 				data: {ids:ids}, 
 				url: BASE_PATH + '/admin/customneeds/betchClosePlan.html',
 				success: function (data) { 
 					layer.alert("关闭成功",{time: 2000, icon:1});
-					datatable2.ajax.reload();
+					datatable2.ajax.reload(null,false);
+					$('#checkedboxval').val('');
 					$('.checkall').attr('checked',false);
 				},
 				error: function (xhr) {
@@ -252,16 +322,17 @@ function batchClosePlan(){
 }
 //生成订单
 function generateOrderNum(){
+	var ids = $('#checkedboxval').val();
 	var length = $(".checkchild:checked").length;
-	if(length < 1){
+	if(!ids){
 		layer.alert("请至少选中一条记录",{time: 2000, icon:1});
 	}else{
 		layer.confirm('确定要批量生成订单吗?', {icon: 3, title:'提示'}, function(){
-			var ids = [];
+			/*var ids = [];
 			$(".checkchild:checked").each(function(){
 				ids.push($(this).val());
 			});
-			ids = ids.join(',');
+			ids = ids.join(',');*/
 			$.ajax({
 				type: 'POST', 
 				data: {planids:ids}, 
@@ -278,3 +349,43 @@ function generateOrderNum(){
 		});
 	}
 }
+//点击之后给隐藏域赋值
+$(document).on('click', '.checkchild', function(e) {
+	var hiddenval = $('#checkedboxval').val();
+	var thisval = $(this).val();
+	var check = $(this).prop("checked");
+	if(check){
+		if(!hiddenval){
+			$('#checkedboxval').val(thisval);
+		}else{
+			$('#checkedboxval').val(hiddenval+','+thisval);
+		}
+	}else{
+		var splits = hiddenval.split(',');
+		var flag = false;
+		for(var i=0;i<splits.length;i++){
+			if(splits[i] == thisval){
+				flag = true;
+			}
+		}
+		//如果存在则删掉当前值
+		if(flag){
+			var ids = [];
+			for(var i=0;i<splits.length;i++){
+				if(splits[i] != thisval){
+					ids.push(splits[i]);
+				}
+			}
+			ids = ids.join(',');
+			$('#checkedboxval').val(ids);
+		}else{
+			$('#checkedboxval').val(hiddenval);
+		}
+	}
+	var length = $(".checkchild:checked").length;
+	if(datatable2.page.len() == length){
+		$(".checkall").prop("checked", true);
+	}else{
+		$(".checkall").prop("checked", false);
+	}
+});
