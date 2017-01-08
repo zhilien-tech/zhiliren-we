@@ -122,6 +122,7 @@ AND
 	c.comType=@comtype
 AND
 	c.deletestatus=@deletestatus
+LIMIT 0,5
 
 /*get_checkbox_status*/
 SELECT

@@ -147,6 +147,9 @@ $(document).on('click', '.removeMore', function(e) {
 	}
 });
 
+/*回车搜索*/
+
+
 /* 散客多程查询 */
 var clickfirst=1;
 $("#searchSingleTicketsBtn").click(function() {

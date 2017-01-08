@@ -154,8 +154,8 @@ public class CustomerModule {
 	//客户公司查询
 	@At
 	@POST
-	public Object company(@Param("q") final String comName) {
-		return customerViewService.company(comName);
+	public Object company(@Param("q") final String comName, HttpSession session) {
+		return customerViewService.company(comName, session);
 	}
 
 	//负责人查询
@@ -258,6 +258,32 @@ public class CustomerModule {
 			if (Util.isEmpty(id)) {
 				map.put("valid", false);
 			} else if (!Util.isEmpty(phoneNumList)) {
+				map.put("valid", true);
+			}
+		} else {
+			map.put("valid", true);
+		}
+
+		return map;
+	}
+
+	/**
+	 * 公司简称唯一性校验
+	 */
+	@At
+	@POST
+	public Object checkShortNameExist(@Param("shortName") final String shortName, @Param("aId") final String id) {
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		List<TCustomerInfoEntity> customer = dbDao.query(TCustomerInfoEntity.class,
+				Cnd.where("shortName", "=", shortName), null);
+		List<TCustomerInfoEntity> shortNameList = dbDao.query(TCustomerInfoEntity.class,
+				Cnd.where("shortName", "=", shortName).and("id", "=", id), null);
+
+		if (!Util.isEmpty(customer)) {
+			if (Util.isEmpty(id)) {
+				map.put("valid", false);
+			} else if (!Util.isEmpty(shortNameList)) {
 				map.put("valid", true);
 			}
 		} else {

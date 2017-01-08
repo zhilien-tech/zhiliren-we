@@ -74,7 +74,6 @@
 .navbar-custom-menu ul li:last-child {margin-top: 10px;}
 .select2-container {width: 115px !important;}
 .select2-container--default.select2-container--disabled .select2-selection--multiple{width: 115px;}
-.select2-selection__rendered li:nth-child(2){display:none;}
 .select2-container--default .select2-search--inline .select2-search__field {width:100% !important;}
 td[colspan="3"] .select2 .selection .select2-selection{width: 308px;}
 td[colspan="3"] .select2 .selection .select2-selection ul .select2-search--inline{display: none;}

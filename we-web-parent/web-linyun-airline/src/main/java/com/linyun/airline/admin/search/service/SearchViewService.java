@@ -115,10 +115,10 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * @param cityname
 	 * @return 返回城市下拉列表
 	 */
-	public Object getCitySelect(String cityname, String typeCode1, String typeCode2, String ids) {
+	public Object getCitySelect(String cityname, String typeCode, String ids) {
 		List<DictInfoEntity> citySelect = new ArrayList<DictInfoEntity>();
 		try {
-			citySelect = externalInfoService.findDictInfoByTypes(cityname, typeCode1, typeCode2);
+			citySelect = externalInfoService.findDictInfoByText(cityname, typeCode);
 			if (citySelect.size() > 5) {
 				citySelect = citySelect.subList(0, 5);
 			}

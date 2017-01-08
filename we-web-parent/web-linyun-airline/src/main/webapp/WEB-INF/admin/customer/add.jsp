@@ -24,9 +24,6 @@
 	display: inline-block;
 }
 
-.inpNone .select2 .selection span ul li+li {
-	display: none;
-}
 </style>
 </head>
 
@@ -85,7 +82,7 @@
 						<div class="row">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">公司简称：</label>
-								<div class="col-sm-3 padding">
+								<div id="shortNameDiv" class="col-sm-3 padding">
 									<input id="shortName" name="shortName" type="text"
 										class="form-control input-sm inpImportant"
 										placeholder="请输入公司简称" /><span class="prompt">*</span>
@@ -425,7 +422,19 @@
 							},
 							regexp : {
 								regexp : /^[a-zA-Z\u4e00-\u9fa5]{1,6}$/,
-								message : '公司简称长度为6'
+								message : '公司简称长度为6',
+							},
+							remote : {
+								url : '${base}/admin/customer/checkShortNameExist.html',
+								message : '公司简称已存在，请重新输入!',
+								delay : 2000,
+								type : 'POST',
+								data : function(validator) {
+									return {
+										shortName : $('#shortName').val(),
+										aId : '${obj.customer.id}'
+									};
+								}
 							}
 						}
 					},
@@ -635,7 +644,30 @@
 						return;
 					}
 				}
-				
+				var small2 = $('#shortNameDiv small:eq(1)').attr("style");
+				if(small2 == "" || small2=='display: block;'){
+					var comMsg = $('#shortNameDiv small:eq(1)').text();
+					if(comMsg != ""){
+						layer.msg(comMsg);
+						return;
+					}
+				}
+				var small2 = $('#shortNameDiv small:eq(2)').attr("style");
+				if(small2 == "" || small2=='display: block;'){
+					var comMsg = $('#shortNameDiv small:eq(2)').text();
+					if(comMsg != ""){
+						layer.msg(comMsg);
+						return;
+					}
+				}
+				var small2 = $('#shortNameDiv small:eq(3)').attr("style");
+				if(small2 == "" || small2=='display: block;'){
+					var comMsg = $('#shortNameDiv small:eq(3)').text();
+					if(comMsg != ""){
+						layer.msg(comMsg);
+						return;
+					}
+				}
 				
 				$.ajax({
 					type : 'POST',
