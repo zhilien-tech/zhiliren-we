@@ -40,7 +40,9 @@
 		<button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">返回</button>
 		<input type="button" id="submitBtn" class="btn btn-primary right btn-sm" onclick="saveSubmit();" value="保存">
 		<button type="button" onclick="passwordInit('${obj.userInfo.id}');" class="btn btn-primary right btn-sm" data-dismiss="modal">初始化密码</button>
-		<button type="button" onclick="physicalDelete('${obj.userInfo.id}');" class="btn right btn-sm" data-dismiss="modal">删除</button>
+		<c:if test="${not (obj.userInfo.userType==1 || obj.userInfo.userType==4) }">
+			<button type="button" onclick="physicalDelete('${obj.userInfo.id}');" class="btn right btn-sm" data-dismiss="modal">删除</button>
+		</c:if>
 		<h4>编辑</h4>
 	</div>
 	<div class="modal-body">

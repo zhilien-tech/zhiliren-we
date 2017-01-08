@@ -47,7 +47,8 @@ SELECT
 	tf.createTime, 
 	tf.updateTime, 
 	tf.remark, 
-	tf.sort
+	tf.sort,
+	tf.portrait
 FROM
 	t_function tf
 INNER JOIN t_company_function_map cfm ON tf.id = cfm.funId
