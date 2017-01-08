@@ -421,7 +421,7 @@
 								message : '公司简称不能为空'
 							},
 							regexp : {
-								regexp : /^[a-zA-Z\u4e00-\u9fa5]{1,6}$/,
+								regexp : /^[0-9a-zA-Z\u4e00-\u9fa5]{1,6}$/,
 								message : '公司简称长度为6',
 							},
 							remote : {

@@ -590,6 +590,10 @@
 			_invioceSelect.val([${obj.invioceIds}]).trigger("change");
 			
 			
+			
+
+		});
+		function initvalidate(){
 			//校验
 			$('#customerUpdateForm').bootstrapValidator({
 				message : '验证不通过',
@@ -625,8 +629,8 @@
 								message : '公司简称不能为空'
 							},
 							regexp : {
-								regexp : /^[a-zA-Z\u4e00-\u9fa5]{1,6}$/,
-								message : '公司简称最多为6个字'
+								regexp : /^[0-9a-zA-Z\u4e00-\u9fa5]{1,6}$/,
+								message : '公司简称长度为6',
 							},
 							remote : {
 								url : '${base}/admin/customer/checkShortNameExist.html',
@@ -689,9 +693,7 @@
 					}
 				}
 			});
-
-		});
-
+		}
 		//更新时刷新页面
 		function update() {
 			window.location.reload();
@@ -799,6 +801,8 @@
 	
 	<!-- 更新 -->
 	<script type="text/javascript">
+	        initvalidate();
+			$('#customerUpdateForm').bootstrapValidator('validate');
 		function updateCustomerInfo() {
 			$('#customerUpdateForm').bootstrapValidator('validate');
 			var bootstrapValidator = $("#customerUpdateForm").data('bootstrapValidator');
