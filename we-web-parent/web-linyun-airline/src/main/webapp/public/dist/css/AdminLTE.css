@@ -4931,6 +4931,9 @@ p{margin: 0 0 0px 10px;}
 #deleteBtn {padding: 5px 22px;}
 .layui-layer-btn .layui-layer-btn0 {border-color: #c7c7c7 !important;background-color: #ececec !important;color: #afafaf !important;}
 .layui-layer-btn a{border: 1px solid #3c8dbc !important;background-color: #3c8dbc !important;color: #f5f5f5 !important;}
+.tooltip-inner {text-align: left;color: #5a5a5a;background-color: #ececec;border: solid 1px #bfbdbd;}
+.tooltip.right .tooltip-arrow {border-right-color: #bfbdbd;}
+#deptDatatable tbody td span { width: 360px;display: block;word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 auto;}
 /*------------------------航空公司模块-----------------------------*/
 .select1{margin-top: 5px;}
 .marTop5{margin-top: 5px;}

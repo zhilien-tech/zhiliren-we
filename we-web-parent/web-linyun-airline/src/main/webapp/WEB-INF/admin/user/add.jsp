@@ -81,7 +81,7 @@
                      <label class="col-sm-2 text-right padding">所属部门：</label>
                       <div class="col-sm-3 padding">
                         <select id="deptId" name="deptId" onchange="selectDeptName();" class="form-control input-sm inputWidth">
-                         	<option>--请选择--</option>
+                         	<option value="">--请选择--</option>
                          	<c:forEach items="${obj}" var="one">
 	                           	<option value="${one.id }">
 	                           		${one.deptName }
@@ -98,7 +98,7 @@
                       <label class="col-sm-3 text-right padding">用户职位：</label>
                       <div class="col-sm-3 padding">
                          <select id="jobId" name="jobId" class="form-control input-sm inputWidth">
-                 			<option>--请选择--</option>
+                 			<option value="">--请选择--</option>
               			 </select>
                         <span class="prompt">*</span>
                       </div>

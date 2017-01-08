@@ -253,7 +253,7 @@ public class AuthorityViewService extends BaseService<DeptJobForm> {
 	}
 
 	//校验职位名称唯一性
-	/*public Object checkJobNameExist(final String jobName, final Long jobId) {
+	public Object checkJobNameExist(final String jobName, final Long jobId) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		int count = 0;
 		if (Util.isEmpty(jobId)) {
@@ -265,7 +265,7 @@ public class AuthorityViewService extends BaseService<DeptJobForm> {
 		}
 		map.put("valid", count <= 0);
 		return map;
-	}*/
+	}
 
 	//回显部门职位和职位功能
 	public Object loadJobJosn(final Long deptId, HttpSession session) {

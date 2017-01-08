@@ -171,7 +171,7 @@
 	<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
 	<!-- 页面select2下拉框js -->
 	<script src="${base}/common/js/layer/layer.js"></script>
-	<script type="text/javascript">
+<script type="text/javascript">
 	var BASE_PATH = '${base}';
 </script>
 	<script type="text/javascript">
@@ -294,13 +294,13 @@ function validateParams(){
                     }
                 }
             },
-            jobId: {
+            /* jobId: {
             	validators: {
                     notEmpty: {
                         message: '职位不能为空!'
                     }
                 }
-            },
+            }, */
             dictAreaName: {
             	validators: {
                     notEmpty: {
@@ -337,10 +337,10 @@ function selectDeptName(){
 		}
 	});
 }
+validateParams();
 //修改保存
 function saveSubmit(){
 	var valid = validateParams() ;
-	
 	if(valid){
 		$.ajax({
 			type : "POST",
