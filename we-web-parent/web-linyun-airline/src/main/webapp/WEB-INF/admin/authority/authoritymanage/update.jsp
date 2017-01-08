@@ -12,6 +12,11 @@
 <link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css" />
 <!-- zTree -->
 <link rel="stylesheet" href="${base }/common/js/zTree/css/zTreeStyle/zTreeStyle.css">
+<%-- 解决部门验证样式 --%>
+<style type="text/css">
+	small.help-block {display: inline-block;position: relative;left: 151px;top: -5px;}
+	.form-control-feedback {position: absolute;top: 0px;right: 330px;}
+</style>
 </head>
 <body class="bodyOne">
 	<div class="divContent">
@@ -22,7 +27,7 @@
 				<h4>编辑职位部门</h4>
 			</div>
 			<div class="modal-body" style="height:435px;overflow-y: auto;">
-	          <div class="departmentName"><!--部门权限 设置-->
+	          <div class="departmentName form-group"><!--部门权限 设置-->
                  <input id="jobJson" name="jobJson" type="hidden" value=""/>
                  <input name="id" type="hidden" value="${obj.dept.id}"/>
                  <ul class="addDepartment">
@@ -87,15 +92,25 @@
 				simpleData: {
 					enable: true
 				}
+			},
+			callback: {
+				beforeCheck: zTreeBeforeCheck
 			}
 		};
- 	
+	//默认选中个人信息和操作台
+	function zTreeBeforeCheck(treeId, treeNode) {
+		if((treeNode.id == 43 || treeNode.id == 44) && treeNode.checked){
+			return false ;
+		}else{
+			return true;
+		}
+	};
    var treeIndex = "${obj.list.size()}";
    $(function () {
 		//部门职位 编辑职位
 	    $('#addJob').click(function(){
 	       $(".job_container .ztree").hide();
-	       $('.jobName').append('<div class="job_container"><ul class="addDepartment marHei"><li><label class="text-right">职位名称：</label></li><li class="li-input inpPadd"><input name="jobName" type="text" class="form-control input-sm inputText" placeholder="请输入职位名称"></li><li><button type="button" class="btn btn-primary btn-sm btnPadding" id="settingsPermis">设置权限</button><button type="button" class="btn btn-primary btn-sm btnPadding" id="deleteBtn" >删除</button></li></ul>'
+	       $('.jobName').append('<div class="job_container"><ul class="addDepartment marHei"><li><label class="text-right">职位名称：</label></li><li class="li-input inpPadd"><input id="jobName" name="jobName" type="text" class="form-control input-sm inputText" placeholder="请输入职位名称"></li><li><button type="button" class="btn btn-primary btn-sm btnPadding" id="settingsPermis">设置权限</button><button type="button" class="btn btn-primary btn-sm btnPadding" id="deleteBtn" >删除</button></li></ul>'
 	       +'<div class="ztree"><ul id="tree_'+treeIndex+'"></ul></div></div>');
 	       treeIndex++;
 	       
@@ -108,21 +123,20 @@
 	      	}
 	    });
 	    
-	    //删除按钮
-	    $('.jobName').on("click","#deleteBtn",function() {
-	      $(this).parent().parent().next().remove();
-	      $(this).closest('.job_container').remove();
-	
-	    });
-	    
 	  	//新增职位的时候需要的功能节点
 		var zNodes =[
 			 {id:"0", pId:"0", name:"职位权限设置", open:true},
 			<c:forEach var="p" items="${obj.zNodes}">
-				{ id:"${p.id }", pId:"${p.parentId }", name:"${p.name }", open:true,checked:"${p.checked}"},
+				<c:choose>
+					<c:when test="${p.id eq 43 || p.id eq 44}">
+						{ id:"${p.id }", pId:"${p.parentId }", name:"${p.name }", open:true,checked:true},
+					</c:when>
+					<c:otherwise>
+						{ id:"${p.id }", pId:"${p.parentId }", name:"${p.name }", open:true,checked:"${p.checked}"},
+					</c:otherwise>
+				</c:choose>
 			</c:forEach>
 		];
-	    
 	    var root =  {id:"0", pId:"0", name:"职位权限设置", open:true};
 	    //创建所有的树
 	    $('.job_container').each(function(index,element){
@@ -180,8 +194,8 @@
 </script>
 <script type="text/javascript">
 //验证
-$(document).ready(function(){
-	$('#editDeptForm').bootstrapValidator({
+function formValidator(){
+	var options = {
 		message: '验证不通过!',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
@@ -210,8 +224,12 @@ $(document).ready(function(){
                 }
             }
         }
-	});
-});
+	};
+	$("#editDeptForm").bootstrapValidator(options);  
+	$("#editDeptForm").data('bootstrapValidator').validate();
+	return $("#editDeptForm").data('bootstrapValidator').isValid();
+}
+formValidator();
 	//编辑保存
 	$("#submit").click(function(){
 		setFunc();
@@ -219,12 +237,25 @@ $(document).ready(function(){
 		var bootstrapValidator = $("#editDeptForm").data('bootstrapValidator');
 		var _deptName = $("input#deptName").val();
 		var _jobJson = $("input#jobJson").val();
+		
+		try{
+			$("input[id='jobName']").each(function(index,element){
+				var eachJobName = $(element).val();
+				if(null == eachJobName || undefined == eachJobName || "" == eachJobName || "" == $.trim(eachJobName)){
+					throw "职位名称不能为空";
+				}
+			}) ;
+		}catch(e){
+			layer.msg(e) ;
+			return false ;
+		}
+		
 		if(bootstrapValidator.isValid()){
 			var loadLayer = layer.load(1, {
 				 shade: [0.1,'#fff'] //0.1透明度的白色背景
 			});
 			$.ajax({
-	           cache: true,
+	           cache: false,
 	           type: "POST",
 	           url:'${base}/admin/authority/authoritymanage/update.html',
 	           data:{

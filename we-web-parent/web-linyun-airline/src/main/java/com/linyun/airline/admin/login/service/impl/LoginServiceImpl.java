@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -106,7 +107,13 @@ public class LoginServiceImpl extends BaseService<TUserEntity> implements LoginS
 			} else {
 				allUserFunction = userService.findUserFunctions(user.getId());
 			}
-
+			List<TFunctionEntity> meunSingle = dbDao.query(TFunctionEntity.class,
+					Cnd.where("id", "=", CommonConstants.PERSON_ID).or("id", "=", CommonConstants.DESKTOP_ID), null);
+			for (TFunctionEntity tf : meunSingle) {
+				if (!allUserFunction.contains(tf)) {
+					allUserFunction.add(tf);
+				}
+			}
 			//1级菜单
 			List<TFunctionEntity> menus = new ArrayList<TFunctionEntity>();
 			//根据菜单取功能的map

@@ -39,21 +39,19 @@
 <script type="text/javascript">
 //修改密码
 $("#submit").click(function() {
-	var loadLayer = layer.load(1, {
+	var loadLayer = layer.load(0.1, {
 		 shade: [0.1,'#fff'] //0.1透明度的白色背景
 	});
 	$.ajax({
 		type: 'POST',
 		dataType : 'json',
+		async: false,
 		data: $("#passwordForm").serialize(),//form表单数据
 		url: '${base}/admin/user/updatePassword.html',
         success: function (data) { 
         	if(data.status == '200'){
-				layer.close(loadLayer) ;
-				location.href="${base}/admin/login.html";//密码修改成功跳到登录页
-				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-				parent.layer.close(index);
-				window.parent.successCallback('1');
+				layer.close(loadLayer);
+				window.parent.location.href="${base}/admin/logout.html";//密码修改成功跳到登录页
 			}else{
 				layer.close(loadLayer) ;
 				layer.msg(data.message) ;

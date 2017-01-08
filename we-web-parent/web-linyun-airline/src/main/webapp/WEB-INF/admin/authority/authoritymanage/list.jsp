@@ -8,6 +8,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>权限管理</title>
+    <style type="text/css">
+    	#deptDatatable{width:100% !important;}
+    </style>
   </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -156,13 +159,19 @@
 	                    },
 	                    {"data": "jobname", "bSortable": false}
 	            ],
-            columnDefs: [{
+            "columnDefs": [
+					{ "sWidth": "15%",  "targets": [0] },
+					{ "sWidth": "35%",  "targets": [1] },
+					{ "sWidth": "35%",  "targets": [2] },
+					{ "sWidth": "15%",  "targets": [3] },
+                         {
                 //   指定第一列，从0开始，0表示第一列，1表示第二列……
                 targets: 3,
                 render: function(data, type, row, meta) {
                 	var modify = '<a style="cursor:pointer;" onclick="editDept('+row.deptid+');">编辑</a>';
                     return modify;
-                }
+                },
+            	
             }]
 		});
 	}

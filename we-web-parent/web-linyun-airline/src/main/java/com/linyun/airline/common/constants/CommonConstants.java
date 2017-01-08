@@ -49,4 +49,10 @@ public class CommonConstants {
 	public static final String INITIAL_PASSWORD = MD5.sign("000000", AccessConfig.password_secret,
 			AccessConfig.INPUT_CHARSET);
 
+	/**个人信息id，不可随意更改，必须与数据库保持一致*/
+	public static final int PERSON_ID = 43;
+
+	/**操作台id，不可随意更改，必须与数据库保持一致*/
+	public static final int DESKTOP_ID = 44;
+
 }

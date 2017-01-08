@@ -40,7 +40,9 @@
 		<button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">返回</button>
 		<input type="button" id="submitBtn" class="btn btn-primary right btn-sm" onclick="saveSubmit();" value="保存">
 		<button type="button" onclick="passwordInit('${obj.userInfo.id}');" class="btn btn-primary right btn-sm" data-dismiss="modal">初始化密码</button>
-		<button type="button" onclick="physicalDelete('${obj.userInfo.id}');" class="btn right btn-sm" data-dismiss="modal">删除</button>
+		<c:if test="${not (obj.userInfo.userType==1 || obj.userInfo.userType==4) }">
+			<button type="button" onclick="physicalDelete('${obj.userInfo.id}');" class="btn right btn-sm" data-dismiss="modal">删除</button>
+		</c:if>
 		<h4>编辑</h4>
 	</div>
 	<div class="modal-body">
@@ -169,7 +171,7 @@
 	<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
 	<!-- 页面select2下拉框js -->
 	<script src="${base}/common/js/layer/layer.js"></script>
-	<script type="text/javascript">
+<script type="text/javascript">
 	var BASE_PATH = '${base}';
 </script>
 	<script type="text/javascript">
@@ -292,13 +294,13 @@ function validateParams(){
                     }
                 }
             },
-            jobId: {
+            /* jobId: {
             	validators: {
                     notEmpty: {
                         message: '职位不能为空!'
                     }
                 }
-            },
+            }, */
             dictAreaName: {
             	validators: {
                     notEmpty: {
@@ -335,10 +337,10 @@ function selectDeptName(){
 		}
 	});
 }
+validateParams();
 //修改保存
 function saveSubmit(){
 	var valid = validateParams() ;
-	
 	if(valid){
 		$.ajax({
 			type : "POST",

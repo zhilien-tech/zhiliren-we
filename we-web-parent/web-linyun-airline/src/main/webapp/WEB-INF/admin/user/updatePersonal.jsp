@@ -17,8 +17,8 @@
           <button id="submit" class="btn btn-primary right btn-sm" data-dismiss="modal">保存</button>
           <h5>编辑个人信息</h5>
      </div>
-      <div class="modal-body" style="height:253px;overflow-y:auto;">
-          <div class="form-group">
+      <div class="modal-body" style="height:334px;overflow-y:auto;">
+          <!-- <div class="form-group"> -->
           	<form id="editPersonalForm" method="post">
           		<input id="id" name="id" type="hidden" value="${obj.personalInfo[0].id}"/>
 	          	<table class="editInfo">
@@ -30,13 +30,26 @@
 	          		</tr>
 	          		<tr>
 	          			<td><label>座机电话：</label></td>
-	          			<td><input id="landline" name="landline" type="text" value="${obj.personalInfo[0].landline }" class="form-control input-sm"></td>
+	          			<td>
+	          				<div class="form-group">
+	          				<input id="landline" name="landline" type="text" value="${obj.personalInfo[0].landline }" class="form-control input-sm">
+	          				</div>
+	          			</td>
 	          			<td><label>联系QQ：</label></td>
-	          			<td><input id="qq" name="qq" type="text" value="${obj.personalInfo[0].qq }" class="form-control input-sm"></td>
+	          			<td>
+	          			<div class="form-group">
+	          			<input id="qq" name="qq" type="text" value="${obj.personalInfo[0].qq }" class="form-control input-sm">
+	          			</div>
+	          			</td>
 	          		</tr>
 	          		<tr>
 	          			<td><label>电子邮箱：</label></td>
-	          			<td><input id="email" name="email" type="text" value="${obj.personalInfo[0].email }" class="form-control input-sm"></td>
+	          			<td>
+	          			<div class="form-group">
+	          			<input id="email" name="email" type="text" value="${obj.personalInfo[0].email }" class="form-control input-sm">
+	          			</div>
+	          			</td>
+	          			
 	          			<td><label>所属部门：</label></td>
 	          			<td><input id="deptName" name="deptName" type="text" value="${obj.personalInfo[0].deptName }" class="form-control input-sm" disabled></td>
 	          		</tr>
@@ -48,7 +61,7 @@
 	          		</tr>
 	          	</table>
               </form>
-          </div>
+          <!-- </div> -->
       </div>
 	</div>
    <!--JS 文件-->
@@ -103,7 +116,7 @@ $("#submit").click(function() {
 	var bootstrapValidator = $("#editPersonalForm").data('bootstrapValidator');
 	if(bootstrapValidator.isValid()){
 		$.ajax({
-			cache : true,
+			cache : false,
 			type : "POST",
 			url : '${base}/admin/user/updatePersonal.html',
 			data : $('#editPersonalForm').serialize(),

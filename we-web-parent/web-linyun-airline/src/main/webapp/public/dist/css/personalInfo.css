@@ -10,3 +10,5 @@
 .editInfo tbody tr td input{margin-top: 15px;}
 .editInfo tbody tr td select{margin-top: 15px;}
 .box-header {top: 20px;}
+#email,#qq,#landline {position: relative;top: 8px;}
+.form-control-feedback {position: absolute;top: 7px !important;right: -25px;}

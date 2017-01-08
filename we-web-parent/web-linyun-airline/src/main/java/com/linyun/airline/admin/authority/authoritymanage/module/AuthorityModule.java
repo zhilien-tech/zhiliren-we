@@ -138,9 +138,9 @@ public class AuthorityModule {
 	/**
 	 * 校验职位名称
 	 */
-	/*@At
+	@At
 	@POST
 	public Object checkJobNameExist(@Param("jobName") final String jobName, @Param("id") final Long jobId) {
-		return authorityViewService.checkDeptNameExist(jobName, jobId);
-	}*/
+		return authorityViewService.checkJobNameExist(jobName, jobId);
+	}
 }
