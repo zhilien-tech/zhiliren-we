@@ -82,12 +82,18 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	}
 
 	//客户公司
-	public Object company(String comName) {
-		Sql sql = Sqls.create(sqlManager.get("agentCompany_list"));
+	public Object company(String comName, HttpSession session) {
+		//得到当前用户所在公司的id
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
+		long upRelationId = upcompany.getId();
+		Sql sql = Sqls.create(sqlManager.get("customer_comOption_list"));
 		sql.setParam("comtype", CompanyTypeEnum.AGENT.intKey());
 		sql.setParam("deletestatus", 0);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("comName", "like", Strings.trim(comName) + "%");
+		//cnd.and("upComId", "=", upRelationId);
 		sql.setCondition(cnd);
 		List<Record> agentCompanyList = dbDao.query(sql, null, null);
 		List<Select2Option> result = transform2SelectOptions(agentCompanyList);
@@ -262,7 +268,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		//查询公司名称
 		Sql comSql = Sqls.create(sqlManager.get("customer_comOption_list"));
 		Cnd comCnd = Cnd.NEW();
-		comCnd.and("ci.id", "=", id);
+		comCnd.and("a.id", "=", tCustomerInfoEntity.getAgentId());
 		comSql.setCondition(comCnd);
 		//只有一个
 		List<Record> agentCompanyList = dbDao.query(comSql, null, null);
@@ -270,7 +276,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		String comIds = "";
 		String comName = "";
 		for (Record r : agentCompanyList) {
-			comIds = r.getString("agentId") + "";
+			comIds = r.getString("id") + "";
 			comName = r.getString("name");
 		}
 		obj.put("comIds", comIds);
@@ -279,7 +285,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 			public Select2Option apply(Record record) {
 				Select2Option op = new Select2Option();
 
-				op.setId(Long.valueOf(record.getString("agentid")));
+				op.setId(Long.valueOf(record.getString("id")));
 				op.setText(record.getString("comname"));
 				return op;
 			}

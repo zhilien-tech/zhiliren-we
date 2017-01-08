@@ -177,7 +177,7 @@ $("#linkNameId").on('select2:unselect', function (evt) {
 }); 
 $("#phoneNumId").on('select2:unselect', function (evt) {
 	clearText();
-}); 
+});
 
 /* 清除按钮 */
 $("#clearBtn").click(function(){

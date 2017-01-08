@@ -39,9 +39,13 @@ function initTeamSelect2(){
 					delay : 250,
 					type : 'post',
 					data : function(params) {
+						var ids = $('#teamArriveCity'+i).val();
+						if(ids){
+							ids = ids.join(',');
+						}
 						return {
 							cityname : params.term, 
-							ids:$('#teamArriveCity'+i).val(),
+							ids:ids,
 							page : params.page
 						};
 					},
@@ -56,7 +60,7 @@ function initTeamSelect2(){
 							results : selectdata
 						};
 					},
-					cache : true
+					cache : false
 				},
 				escapeMarkup : function(markup) {
 					return markup;
@@ -76,9 +80,13 @@ function initTeamSelect2(){
 					delay : 250,
 					type : 'post',
 					data : function(params) {
+						var ids = $('#teamOutCity'+i).val();
+						if(ids){
+							ids = ids.join(',');
+						}
 						return {
 							cityname : params.term, 
-							ids:$('#teamOutCity'+i).val(),
+							ids:ids,
 							page : params.page
 						};
 					},
@@ -114,7 +122,6 @@ $(function () {
 		$(this).addClass('btnStyle').siblings().removeClass('btnStyle');
 	});*/
 	$(document).on("click",".paragraphBtn li",function(){
-		$(this).css("border","solid 1px red");
 		$(this).addClass('btnStyle').siblings().removeClass('btnStyle');
 	});
 
@@ -377,8 +384,15 @@ function getEditPlanParam(){
 	};
 	return param;
 }
-
-
+function selectteam(){
+	$("#searchTeamTicketsBtn").click();
+}
+function onkeyTeamEnter(){
+	var e = window.event || arguments.callee.caller.arguments[0];
+    if(e && e.keyCode == 13){
+    	selectteam();
+    }
+}
 /* 团客多程查询 */
 var clickone=1;
 $("#searchTeamTicketsBtn").click(function() {

@@ -66,13 +66,13 @@ where cj.comId=@comid
 
 /*customer_comOption_list*/
 SELECT
-	ci.agentId,
-  c.comName
+a.id,
+c.comName
 FROM
-	t_customer_info ci
-INNER JOIN t_agent a ON ci.agentId = a.id
+t_agent a
 INNER JOIN t_company c ON a.comId = c.id
 $condition
+
 
 /*customer_islineOption_list*/
 select 

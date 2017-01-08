@@ -115,10 +115,21 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * @param cityname
 	 * @return 返回城市下拉列表
 	 */
-	public Object getCitySelect(String cityname, String typeCode1, String typeCode2, String ids) {
+	public Object getCitySelect(String cityname, String typeCode, String ids) {
 		List<DictInfoEntity> citySelect = new ArrayList<DictInfoEntity>();
 		try {
-			citySelect = externalInfoService.findDictInfoByTypes(cityname, typeCode1, typeCode2);
+			citySelect = externalInfoService.findDictInfoByText(cityname, typeCode);
+			//出发抵达城市去重
+			if (!Util.isEmpty(ids)) {
+				//已选中的城市
+				List<DictInfoEntity> existCitys = new ArrayList<DictInfoEntity>();
+				for (DictInfoEntity dictInfoEntity : citySelect) {
+					if (dictInfoEntity.getDictCode().equals(ids)) {
+						existCitys.add(dictInfoEntity);
+					}
+				}
+				citySelect.removeAll(existCitys);
+			}
 			if (citySelect.size() > 5) {
 				citySelect = citySelect.subList(0, 5);
 			}
@@ -126,17 +137,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			e.printStackTrace();
 		}
 
-		//出发抵达城市去重
-		if (!Util.isEmpty(ids)) {
-			//已选中的城市
-			List<DictInfoEntity> existCitys = new ArrayList<DictInfoEntity>();
-			for (DictInfoEntity dictInfoEntity : citySelect) {
-				if (dictInfoEntity.getDictCode().equals(ids)) {
-					existCitys.add(dictInfoEntity);
-				}
-			}
-			citySelect.removeAll(existCitys);
-		}
 
 		return citySelect;
 	}
@@ -177,7 +177,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			String returnD = df.format(new Date(outD.getTime() + 15 * 24 * 60 * 60 * 1000));
 			form.setReturndate(returnD);
 		}
-		form.setReturndate(searchForm.getReturndate());
 		//如果返回日期不为空， 则用
 		if (!Util.isEmpty(searchForm.getReturndate())) {
 			form.setReturndate(searchForm.getReturndate());
@@ -261,6 +260,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		String includedcarriers = searchForm.getIncludedcarriers();//航空公司名称
 		Sql sql = Sqls.create(sqlManager.get("team_ticket_list"));
 		Cnd cnd = Cnd.NEW();
+		cnd.and("tt.travelname", "=", "");
 		if (!Util.isEmpty(origin)) {
 			cnd.and("tt.leavescity", "=", origin);
 		}

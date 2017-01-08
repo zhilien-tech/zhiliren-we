@@ -295,6 +295,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		sql.params().set("MincalTimes2", date2);
 		sql.params().set("MincalTimes3", date3);
 		sql.params().set("msgStatus", 1);
+		sql.params().set("userid", id);
 		sql.setCallback(Sqls.callback.records());
 
 		Set<String> set = new HashSet<String>();

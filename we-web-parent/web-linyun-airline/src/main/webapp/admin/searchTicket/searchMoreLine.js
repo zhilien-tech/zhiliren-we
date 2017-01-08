@@ -14,9 +14,13 @@ function initSelect2(){
 					delay : 250,
 					type : 'post',
 					data : function(params) {
+						var ids = $('#singleArriveCity'+i).val();
+						if(ids){
+							ids = ids.join(',');
+						}
 						return {
 							cityname : params.term, 
-							ids:$('#singleArriveCity'+i).val(),
+							ids:ids,
 							page : params.page
 						};
 					},
@@ -31,7 +35,7 @@ function initSelect2(){
 							results : selectdata
 						};
 					},
-					cache : true
+					cache : false
 				},
 				escapeMarkup : function(markup) {
 					return markup;
@@ -40,7 +44,7 @@ function initSelect2(){
 				maximumInputLength : 20,
 				language : "zh-CN", 
 				maximumSelectionLength : 1, 
-				tags : false, 
+				tags : false
 			});
 
 			//抵达城市查询
@@ -51,9 +55,13 @@ function initSelect2(){
 					delay : 250,
 					type : 'post',
 					data : function(params) {
+						var ids = $('#outCity'+i).val();
+						if(ids){
+							ids = ids.join(',');
+						}
 						return {
 							cityname : params.term, 
-							ids:$('#outCity'+i).val(),
+							ids:ids,
 							page : params.page
 						};
 					},
@@ -68,7 +76,7 @@ function initSelect2(){
 							results : selectdata
 						};
 					},
-					cache : true
+					cache : false
 				},
 				escapeMarkup : function(markup) {
 					return markup;
@@ -77,7 +85,7 @@ function initSelect2(){
 				maximumInputLength : 20,
 				language : "zh-CN", 
 				maximumSelectionLength : 1, 
-				tags : false,
+				tags : false
 			});
 
 		}
@@ -99,10 +107,6 @@ $(function () {
 	//团队
 	//document.getElementsByName("internat1")[0].checked="checked";//radio 默认 国际内陆
 	document.getElementsByName("voyageType1")[1].checked="checked";//radio 默认 选中往返
-	//段数 样式切换
-	$('.paragraphBtn li').click(function(){
-		$(this).addClass('btnStyle').siblings().removeClass('btnStyle');
-	});
 
 	//添加 setMore
 	$('.addSingleIconTd').click(function(){
@@ -147,11 +151,12 @@ $(document).on('click', '.removeMore', function(e) {
 	}
 });
 
+
 /* 散客多程查询 */
 var clickfirst=1;
 $("#searchSingleTicketsBtn").click(function() {
-	var link = $("#linkNameId").val();
-	if(link==null){
+	var link = $("#linkNameId").select2().text;
+	if(!link){
 		layer.msg("客户名称不能为空", "", 2000);
 		return;
 	}
@@ -162,6 +167,29 @@ $("#searchSingleTicketsBtn").click(function() {
 		$("#departuredate").val($("#outDatepicker"+index).val());
 		$("#returndate").val($("#returnDatepicker"+index).val());
 	}
+	//显示段数
+	var area = $("#origin").val()+' -- '+$("#destination").val();
+	document.getElementById('travelArea').innerHTML=area;
+	//段数
+	var airType = $("input[name='voyageType']:checked").val();
+	var html = "";
+	if(airType == 1){
+		html = '<li id="num1" class="btnStyle">第1段</li>';
+		document.getElementById('travelTypeNum').innerHTML=html;
+	}
+	if(airType == 2){
+		html = '<li id="num1" class="btnStyle">第1段</li><li id="num2">第2段</li>';
+		document.getElementById('travelTypeNum').innerHTML=html;
+	}
+	/* 多程 显示多段 */
+	if(airType == 3){
+		for(var i=1; i<$('.setMore').length*2; i=i+2){
+			var j = i+1;
+			html +='<li id="num'+i+'">第'+i+'段</li><li id="num'+j+'">第'+j+'段</li>';
+		}
+		document.getElementById('travelTypeNum').innerHTML=html;
+	}
+	
 	$.ajax({
 		type : 'POST',
 		data : $("#searchSingleTicketsForm").serialize(),
@@ -170,29 +198,6 @@ $("#searchSingleTicketsBtn").click(function() {
 			var outLiList = "";
 			var returnLiList = "";
 			if ("200" == resp.statusCode) {
-				//如果成功返回数据才显示段数
-				//区间
-				var area = $("#outCityName").val()+' -- '+$("#arriveCityName").val();
-				document.getElementById('travelArea').innerHTML=area;
-				//段数
-				var airType = $("input[name='voyageType']:checked").val();
-				var html = "";
-				if(airType == 1){
-					html = '<li id="num1" class="btnStyle">第1段</li>';
-					document.getElementById('travelTeamTypeNum').innerHTML=html;
-				}
-				if(airType == 2){
-					html = '<li id="num1" class="btnStyle">第1段</li><li id="num2">第2段</li>';
-					document.getElementById('travelTeamTypeNum').innerHTML=html;
-				}
-				/* 多程 显示多段 */
-				if(airType == 3){
-					for(var i=1; i<$('.setMore').length*2; i=i+2){
-						var j = i+1;
-						html +='<li id="num'+i+'">第'+i+'段</li><li id="num'+j+'">第'+j+'段</li>';
-					}
-					document.getElementById('travelTypeNum').innerHTML=html;
-				}
 				/* 日期小卡片  */
 				getDateCard();
 				var outCodeStr = $("#outCity0").select2("val");
