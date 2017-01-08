@@ -52,7 +52,7 @@ public class EditPlanSqlForm extends DataTablesParamForm {
 
 	private String enddate1;
 
-	private Integer teamtype;
+	private Integer teamtype = 1;
 
 	private int idordernum;
 
@@ -64,7 +64,7 @@ public class EditPlanSqlForm extends DataTablesParamForm {
 		Cnd cnd = Cnd.limit();
 		cnd.and("tt.issave", "=", "1");
 		SqlExpressionGroup exp = new SqlExpressionGroup();
-		exp.and("tt.travelname", "is", null).or("tu.ordersnum", "is", null);
+		exp.and("tt.travelname", "is", null).or("tt.travelname", "=", "").or("tu.ordersnum", "is", null);
 		cnd.and(exp);
 		cnd.and("tt.companyid", "=", companyid);
 		if (!Util.isEmpty(travelname1)) {
@@ -101,6 +101,7 @@ public class EditPlanSqlForm extends DataTablesParamForm {
 			if (teamtype == 3) {
 				cnd.and("tt.isclose", "=", 1);
 			} else {
+				cnd.and("tt.isclose", "=", 0);
 				cnd.and("tt.teamtype", "=", teamtype);
 			}
 		}

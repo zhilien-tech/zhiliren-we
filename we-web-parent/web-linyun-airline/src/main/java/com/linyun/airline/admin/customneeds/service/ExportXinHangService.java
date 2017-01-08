@@ -37,7 +37,7 @@ import com.uxuexi.core.web.base.service.BaseService;
 @IocBean
 public class ExportXinHangService extends BaseService<TPlanInfoEntity> {
 	//第一个表格标题
-	private static final String ONETITLE = "Lull";
+	private static final String ONETITLE = "新航";
 	//第二个表格标题
 	private static final String TWOTITLE = "PEAK01-CNY";
 	//第三个表格标题
