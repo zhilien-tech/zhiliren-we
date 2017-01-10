@@ -91,7 +91,7 @@
 								</td>
 								<td><label>负责人：</label></td>
 								<td>
-									<input id="agentId" type="text" disabled="disabled" class="form-control input-sm">
+									<input id="responsibleId" type="text" disabled="disabled" class="form-control input-sm">
 								</td>
 								<td><label>网址：</label></td>
 								<td>
@@ -252,13 +252,13 @@
                               <td><label>出发城市：</label></td>
                               <td>
                               	<!-- <input type="text" class="form-control input-sm" placeholder="拼音/三字代码"> -->
-                              	<select id="teamOutCity0" name="origin1" onchange="selectteam();" class="form-control input-sm" multiple="multiple" data-placeholder="拼音/三字代码"></select>
+                              	<select id="teamOutCity0" name="origin1" onkeypress="onkeyTeamEnter();" class="form-control input-sm" multiple="multiple" data-placeholder="拼音/三字代码"></select>
                               </td>
                               <td class="untilTd"><i class="fa fa-minus"></i></td>
                               <td><label>到达城市：</label></td>
                               <td>
                               	<!-- <input type="text" class="form-control input-sm" placeholder="拼音/三字代码"> -->
-                              	<select id="teamArriveCity0" name="destination1" onchange="selectteam();" class="form-control input-sm" multiple="multiple" data-placeholder="拼音/三字代码"></select>
+                              	<select id="teamArriveCity0" name="destination1" onkeypress="onkeyTeamEnter();" class="form-control input-sm" multiple="multiple" data-placeholder="拼音/三字代码"></select>
                               </td>
                               <td class="untilTd1"></td><!--空白处 可以忽略-->
                               <td><label>出发日期：</label></td>
@@ -390,9 +390,17 @@
 		$(document).click(function (e) { 
 			var num_id = $(e.target).attr('id'); 
 			/* 点击 散客每段提醒事件 */
-			var num = num_id.indexOf("num");
-			if(num==0){
-				var i = num_id.substring(3,num_id.length);
+			var moreNum = num_id.indexOf("moreNum");
+			if(moreNum==0){
+				var index = num_id.substring(7,num_id.length)-1;
+				$("#origin").val($("#outCity"+index).select2("val"));
+				$("#destination").val($("#singleArriveCity"+index).select2("val"));
+				$("#departuredate").val($("#outDatepicker"+index).val());
+				$("#returndate").val($("#returnDatepicker"+index).val());
+				//获取去程数据 
+				$("#airInfoList").val("1");
+				$("#searchSingleTicketsBtn").click();
+				/* var i = num_id.substring(3,num_id.length);
 				var index = "";
 				if(i%2){
 					//去程
@@ -401,7 +409,7 @@
 					$("#destination").val($("#singleArriveCity"+index).select2("val"));
 					$("#departuredate").val($("#outDatepicker"+index).val());
 					$("#returndate").val($("#returnDatepicker"+index).val());
-					/* 获取去程数据 */
+					//获取去程数据 
 					$("#airInfoList").val("1");
 					$("#searchSingleTicketsBtn").click();
 				}else{
@@ -410,19 +418,27 @@
 					$("#destination").val($("#outCity"+index).select2("val"));
 					$("#departuredate").val($("#returnDatepicker"+index).val());
 					$("#returndate").val($("#outDatepicker"+index).val());
-					/* 获取返程数据 */
+					//获取返程数据
 					$("#airInfoList").val("2");
 					$("#searchSingleTicketsBtn").click();	  					
-				}
+				} */
 			}
 			/* 点击 团客每段提醒事件 */
 			if(num_id != null){
-				var teamnum = num_id.indexOf("teamNum");
-				if(teamnum == 0){
-					var i = num_id.substring(7,num_id.length);
-					var index = "";
+				var num_id = $(e.target).attr('id'); 
+				/* 点击 散客每段提醒事件 */
+				var teamNumMore = num_id.indexOf("teamNumMore");
+				if(teamNumMore == 0){
+					/* 去程数据 */
+					var index = num_id.substring(11,num_id.length)-1;
+					$("#teamorigin").val($("#teamOutCity"+index).select2("val"));
+					$("#teamdestination").val($("#teamArriveCity"+index).select2("val"));
+					$("#teamdeparturedate").val($("#teamOutDatepicker"+index).val());
+					$("#teamreturndate").val($("#teamReturnDatepicker"+index).val());
+					$("#searchTeamTicketsBtn").click();
+					/* var index = "";
 					if(i%2){
-						/* 去程数据 */
+						//去程数据 
 						index = (i-1)/2;
 						$("#teamorigin").val($("#teamOutCity"+index).select2("val"));
 						$("#teamdestination").val($("#teamArriveCity"+index).select2("val"));
@@ -430,80 +446,83 @@
 						$("#teamreturndate").val($("#teamReturnDatepicker"+index).val());
 						$("#searchTeamTicketsBtn").click();
 					}else{
-						/* 返程数据 */
+						//返程数据
 						index = (i-2)/2;
 						$("#teamorigin").val($("#teamArriveCity"+index).select2("val"));
 						$("#teamdestination").val($("#teamOutCity"+index).select2("val"));
 						$("#teamdeparturedate").val($("#teamReturnDatepicker"+index).val());
 						$("#teamreturndate").val($("#teamOutDatepicker"+index).val());
 						$("#searchTeamTicketsBtn").click(); 
-					}
+					} */
 				}
 			}
 		});
+  		
+		/* ------------------------散客 航程类型 点击事件-------------------------*/
+		function radioFunct(){
+			var radio = document.getElementsByName("voyageType");  
+			for (i=0; i<radio.length; i++) {  
+				if (radio[i].checked) {  
+					var radioValue=radio[i].value;
+					$("#singletable tr").not(":first").remove();
+					$("#outCity0").val(null).trigger("change");
+					$("#singleArriveCity0").val(null).trigger("change");
+					$("#outDatepicker0").val("");
+					$("#returnDatepicker0").val("");
+					if (radioValue==1) {
+						$('.setoutLabel').hide();
+						$('.setoutinput').hide();
+						$('.addIconTd').hide();
+						$('.removeIconTd').hide();
+					}else if(radioValue==2){
+						$('.setoutLabel').show();
+						$('.setoutinput').show();
+						$('.addIconTd').hide();
+						$('.removeIconTd').hide();
+					}else if(radioValue==3){
+						$('.setoutLabel').hide();
+						$('.setoutinput').hide();
+						$('.addIconTd').show();
+						$('.removeIconTd').show();
+					};
+					clearSearchHtml();
+				}  
+			}
+		}
+		/* ------------------------团队 航程类型 点击事件-------------------------*/
+		function radioFunct1(){
+			var radio1 = document.getElementsByName("voyageType1");  
+			for (i=0; i<radio1.length; i++) {  
+				if (radio1[i].checked) {  
+					var radioValue1=radio1[i].value;
+					$("#singletable tr").not(":first").remove();
+					$("#teamOutCity0").val(null).trigger("change");
+					$("#teamArriveCity0").val(null).trigger("change");
+					$("#teamOutDatepicker0").val("");
+					$("#teamReturnDatepicker0").val("");
+					$("#teamTable tr").not(":first").remove();
+					if (radioValue1==1) {
+						$('.setoutLabel').hide();
+						$('.setoutinput').hide();
+						$('.addIconTd').hide();
+						$('.removeIconTd').hide();
+					}else if(radioValue1==2){
+						$('.setoutLabel').show();
+						$('.setoutinput').show();
+						$('.addIconTd').hide();
+						$('.removeIconTd').hide();
+					}else if(radioValue1==3){
+						$('.setoutLabel').hide();
+						$('.setoutinput').hide();
+						$('.addIconTd').show();
+						$('.removeIconTd').show();
+					};
+					clearSearchTeamHtml();
+				}  
+			}
+		}
+  		
 	 </script>
-	 <script type="text/javascript">
-	 /* ------------------------散客 航程类型 点击事件-------------------------*/
-	 function radioFunct(){
-	        var radio = document.getElementsByName("voyageType");  
-	        for (i=0; i<radio.length; i++) {  
-	             if (radio[i].checked) {  
-	                var radioValue=radio[i].value;
-	                $("#singletable tr").not(":first").remove();
-	                $("#outCity0").val(null).trigger("change");
-	                $("#singleArriveCity0").val(null).trigger("change");
-	                $("#outDatepicker0").val("");
-	                $("#returnDatepicker0").val("");
-	                if (radioValue==1) {
-	                     $('.setoutLabel').hide();
-	                     $('.setoutinput').hide();
-	                     $('.addIconTd').hide();
-	                     $('.removeIconTd').hide();
-	                }else if(radioValue==2){
-	                     $('.setoutLabel').show();
-	                     $('.setoutinput').show();
-	                     $('.addIconTd').hide();
-	                     $('.removeIconTd').hide();
-	                }else if(radioValue==3){
-	                     $('.setoutLabel').hide();
-	                     $('.setoutinput').hide();
-	                     $('.addIconTd').show();
-	                     $('.removeIconTd').show();
-	                };
-	             }  
-	        }
-	   }
-	   /*团队 航程类型 点击事件*/
-	   function radioFunct1(){
-	         var radio1 = document.getElementsByName("voyageType1");  
-	          for (i=0; i<radio1.length; i++) {  
-	               if (radio1[i].checked) {  
-	                  var radioValue1=radio1[i].value;
-	                  $("#singletable tr").not(":first").remove();
-		              $("#teamOutCity0").val(null).trigger("change");
-		              $("#teamArriveCity0").val(null).trigger("change");
-		              $("#teamOutDatepicker0").val("");
-		              $("#teamReturnDatepicker0").val("");
-	                  $("#teamTable tr").not(":first").remove();
-	                  if (radioValue1==1) {
-	                       $('.setoutLabel').hide();
-	                       $('.setoutinput').hide();
-	                       $('.addIconTd').hide();
-	                       $('.removeIconTd').hide();
-	                  }else if(radioValue1==2){
-	                       $('.setoutLabel').show();
-	                       $('.setoutinput').show();
-	                       $('.addIconTd').hide();
-	                       $('.removeIconTd').hide();
-	                  }else if(radioValue1==3){
-	                       $('.setoutLabel').hide();
-	                       $('.setoutinput').hide();
-	                       $('.addIconTd').show();
-	                       $('.removeIconTd').show();
-	                  };
-	               }  
-	          }
-	   }
-	 </script>
+	 
 </body>
 </html>

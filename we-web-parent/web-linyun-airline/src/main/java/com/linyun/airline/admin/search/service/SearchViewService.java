@@ -82,7 +82,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 	/**
 	 * 
-	 * TODO(获取客户姓名下拉列表)
+	 * TODO(获取联系电话下拉列表)
 	 *
 	 * @param linkname
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
@@ -136,7 +136,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 
 		return citySelect;
 	}

@@ -852,12 +852,12 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 */
 	public Object getCustomerById(Long id) {
 		TCustomerInfoEntity customerInfoEntity = dbDao.fetch(TCustomerInfoEntity.class, id);
-		String agent = customerInfoEntity.getAgent();
-		TUserEntity userEntity = dbDao.fetch(TUserEntity.class, Cnd.where("id", "=", agent));
-		customerInfoEntity.setAgent(userEntity.getUserName());
+		long responsibleId = customerInfoEntity.getResponsibleId();
+		TUserEntity userEntity = dbDao.fetch(TUserEntity.class, Cnd.where("id", "=", responsibleId));
+		String responsibleName = userEntity.getUserName();
 		Map<String, Object> obj = getOutCitys(id);
+		obj.put("responsibleName", responsibleName);
 		obj.put("customerInfoEntity", customerInfoEntity);
-
 		return JsonUtil.toJson(obj);
 	}
 

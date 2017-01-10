@@ -170,7 +170,7 @@
 	<script type="text/javascript">
 	   function createMinCanlender(){
 		   $('#box-min').html('<p><input id="checkShow" type="checkbox" class="checkShow" checked="checked">显示提醒</p>');
-			new Kalendae({//小日历 创建
+		   new Kalendae({//小日历 创建
 		        attachTo:document.getElementById("box-min"),
 		        months:4,
 		        mode:'single',
@@ -184,13 +184,16 @@
 		        //dateClassMap:classMap,
 		        selected:[Kalendae.moment().subtract({M:1}), Kalendae.moment().add({M:1})]
 			});
-	   }
-			createMinCanlender();
+	   	}
+		createMinCanlender();
 		//end 小日历 js
 	</script>
 	<!-- end 小日历js -->
 	<script type="text/javascript">
 		$(function() {
+			$('.k-out-of-month').click(function(){
+		      return false;
+		    });
 			/* 大日历 */
 			calendarInit();
 			/* 任务提醒 */
@@ -231,9 +234,8 @@
 	<!-- 任务事件提醒 -->
 	<script type="text/javascript">
 		function taskEventList() {
-			
 			//自动获取
-			setTimeout(taskEventList,1000);
+			setTimeout(taskEventList,1000*60);
 			//获取当前日期
 			var d = new Date();
 			if(d.getDate() < 10){
@@ -271,7 +273,12 @@
 	                	var msgC = element.msgcontent;
 	                	content += '<li><a href="javascript:;"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;自定义事件：'+msgC+'</a></li>';
 		            });
-		            $("#remindMsg").html(num);
+					if(num){
+						$("#remindMsg").html(num);
+					}else{
+						$("#remindMsg").html(0);
+					}
+		            
 					$("#taskListId").html(content);
 				}
 			});

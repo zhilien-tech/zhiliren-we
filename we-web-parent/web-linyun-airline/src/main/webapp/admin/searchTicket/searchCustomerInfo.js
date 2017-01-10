@@ -90,7 +90,7 @@ $("#linkNameId").on('select2:select', function (evt) {
 			var payType = dataJson.customerInfoEntity.payType;
 			$("#addressId").val(dataJson.customerInfoEntity.address);
 			$("#shortNameId").val(dataJson.customerInfoEntity.shortName);
-			$("#agentId").val(dataJson.customerInfoEntity.agent);
+			$("#responsibleId").val(dataJson.responsibleName);
 			$("#siteUrlId").val(dataJson.customerInfoEntity.siteUrl);
 			$("#faxId").val(dataJson.customerInfoEntity.fax);
 			if(payType == 1){
@@ -140,7 +140,7 @@ $("#phoneNumId").on('select2:select', function (evt) {
 			var payType = dataJson.customerInfoEntity.payType;
 			$("#addressId").val(dataJson.customerInfoEntity.address);
 			$("#shortNameId").val(dataJson.customerInfoEntity.shortName);
-			$("#agentId").val(dataJson.customerInfoEntity.agent);
+			$("#responsibleId").val(dataJson.responsibleName);
 			$("#siteUrlId").val(dataJson.customerInfoEntity.siteUrl);
 			$("#faxId").val(dataJson.customerInfoEntity.fax);
 			if(payType == 1){
@@ -194,7 +194,7 @@ function clearText(){
 	//文本框清空
 	$("#addressId").val("");
 	$("#shortNameId").val("");
-	$("#agentId").val("");
+	$("#responsibleId").val("");
 	$("#siteUrlId").val("");
 	$("#faxId").val("");
 	//付款方式清除

@@ -1,110 +1,3 @@
-/*单选按钮*/
-$("input[name=internat]").click(function(){
-	var typeCodeStr = "";
-	switch($("input[name=internat]:checked").attr("id")){
-	case "gjnlRadio":
-		typeCodeStr = "GJNL";
-		break;
-	case "gjRadio":
-		typeCodeStr = "GJ";
-
-		break;
-	}
-	$.ajax({
-		type : 'POST',
-		data : {
-			typeCode:typeCodeStr
-		},
-		dataType:'json',
-		url : BASE_PATH+'/admin/search/initCityTypeCode.html',
-		success : function(data) {
-
-		},
-		error : function() {
-		}
-	});
-});
-
-
-/*出发城市下拉列表
-$("#outCity").select2({
-	ajax : {
-		url : BASE_PATH  + "/admin/search/getCitySelect.html",
-		dataType : 'json',
-		delay : 250,
-		type : 'post',
-		data : function(params) {
-			return {
-				cityname : params.term, 
-
-				ids:$('#arriveCityCode').val(),
-				page : params.page
-			};
-		},
-		processResults : function(data, params) {
-			params.page = params.page || 1;
-			var selectdata = $.map(data, function (obj) {
-				obj.id = obj.dictCode; 
-				obj.text = obj.dictCode +"("+ obj.dictName +")";
-				return obj;
-			});
-			return {
-				results : selectdata
-			};
-		},
-		cache : true
-	},
-
-	escapeMarkup : function(markup) {
-		return markup;
-	}, // let our custom formatter work
-	minimumInputLength : 1,
-	maximumInputLength : 20,
-	language : "zh-CN", 
-	maximumSelectionLength : 1, 
-	tags : false
-});
-
-抵达城市查询
-$("#singleArriveCity").select2({
-	ajax : {
-		url : BASE_PATH  + "/admin/search/getCitySelect.html",
-		dataType : 'json',
-		delay : 250,
-		type : 'post',
-		data : function(params) {
-			return {
-				cityname : params.term, 
-				ids:$('#outCityCode').val(),
-				page : params.page
-			};
-		},
-		processResults : function(data, params) {
-			params.page = params.page || 1;
-			var selectdata = $.map(data, function (obj) {
-				obj.id = obj.dictCode; 
-				obj.text = obj.dictCode +"("+ obj.dictName +")"; 
-				return obj;
-			});
-			return {
-				results : selectdata
-			};
-		},
-		cache : true
-	},
-
-	escapeMarkup : function(markup) {
-		return markup;
-	}, // let our custom formatter work
-	minimumInputLength : 1,
-	maximumInputLength : 20,
-	language : "zh-CN", 
-	maximumSelectionLength : 1, 
-	tags : false,
-});*/
-
-
-
 /*航空公司查询*/
 $("#airline").select2({
 	ajax : {
@@ -175,33 +68,12 @@ for ( i = 1; i <= 10; i++){
 linkNameOpt = function(){
 	$("#linkNameValidator").val($('#linkNameId').find("option:selected").text());
 }
-/* 出发城市 
-outCityNameOpt = function (){
-	var cityName = $('#outCity').find("option:selected").text();
-	$("#outCityName").val(cityName);
-	var selectedCityId = $("#outCity").select2("val");
-	$("#outCityCode").val(selectedCityId);
-}
- 抵达城市 
-arriveCityNameOpt = function(){
-	var cityName = $('#singleArriveCity').find("option:selected").text();
-	$("#arriveCityName").val(cityName);
-	var selectedCityId = $("#singleArriveCity").select2("val");
-	$("#arriveCityCode").val(selectedCityId);
-}
- 航空公司 
-airlineNameOpt = function(){
-	var airName = $('#airline').find("option:selected").text();
-	$("#airlineName").val(airName);
-	var selectedAirId = $("#airline").select2("val");
-	$("#airlineCode").val(selectedAirId);
-}*/
-/*-----------------------select2隐藏域赋值  end----------------------------*/
+/*-----------------------select2隐藏域赋值  end------------------------*/
 
 /*-----------------------单程、往返段数查询  start--------------------------------*/
 $(document).on('click','#num1',function(){
-	var index=1;
-	$("#airInfoList").val(index);
+	var index=0;
+	$("#airInfoList").val(1);
 	$("#origin").val($("#outCity"+index).select2("val"));
 	$("#destination").val($("#singleArriveCity"+index).select2("val"));
 	$("#departuredate").val($("#outDatepicker"+index).val());
@@ -209,8 +81,8 @@ $(document).on('click','#num1',function(){
 	$("#searchSingleTicketsBtn").click();
 });
 $(document).on('click','#num2',function(){
-	var index=2;
-	$("#airInfoList").val(index);
+	var index=0;
+	$("#airInfoList").val(2);
 	$("#origin").val($("#singleArriveCity"+index).select2("val"));
 	$("#destination").val($("#outCity"+index).select2("val"));
 	$("#departuredate").val($("#returnDatepicker"+index).val());
@@ -219,10 +91,17 @@ $(document).on('click','#num2',function(){
 });
 /*-----------------------往返段数查询  end--------------------------------*/
 
-/*-----------------------多程段数查询  start------------------------------*/
-
-/*-----------------------多程段数查询  end--------------------------------*/
-
+//清除跨海内陆 列表项
+function clearSearchHtml(){
+	document.getElementById('travelArea').innerHTML="";
+	document.getElementById('travelTypeNum').innerHTML="";
+	document.getElementById('travelDateNum').innerHTML="";
+	document.getElementById('paragraphListInfo').innerHTML="";
+}
+//清除国际 列表项
+function clearSearchTeamHtml(){
+	document.getElementById('travelTeamTypeNum').innerHTML="";
+}
 
 /* -------------------------日期小卡片 start------------------------------- */
 cardDate = function(v){
@@ -238,7 +117,8 @@ cardDate = function(v){
 		strDate = "0" + strDate;
 	}
 	var cardStr = year +'-'+ month +'-'+ strDate;
-	$("#outDatepicker0").val(cardStr);
+	$("#departuredate").val(cardStr);
+	alert($("#departuredate").val());
 	$("#searchSingleTicketsBtn").click();
 }
 getDateCard =function(){
@@ -345,16 +225,10 @@ defaultDate = function(){
 function selectSingle(){
 	$("#searchSingleTicketsBtn").click();
 }
-function onkeyEnter(){
-	var e = window.event || arguments.callee.caller.arguments[0];
-    if(e && e.keyCode == 13){
-    	selectSingle();
-    }
-}
 /* -------------------------日期格式转换 end---------------------------- */
 
 
-/*国际内陆*/
+/*跨海内陆*/
 document.getElementsByName("voyageType")[1].checked="checked";//radio 默认 选中往返
 /*国际*/
 document.getElementsByName("voyageType1")[1].checked="checked";//radio 默认 选中往返
