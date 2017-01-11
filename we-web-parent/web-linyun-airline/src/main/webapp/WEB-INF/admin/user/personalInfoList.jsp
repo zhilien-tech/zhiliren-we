@@ -9,10 +9,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>个人信息</title>
   <link rel="stylesheet" type="text/css" href="${base}/public/dist/css/personalInfo.css"><!--本页的styleFlie-->
-  <style type="text/css">
-  	.strip1{background-color: #ffffff;}
-	.strip2{background-color: #cfe2f3;}
-  </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">

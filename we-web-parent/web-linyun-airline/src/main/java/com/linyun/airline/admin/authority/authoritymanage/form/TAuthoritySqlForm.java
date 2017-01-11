@@ -38,10 +38,10 @@ public class TAuthoritySqlForm extends DataTablesParamForm {
 	//职位名称
 	private String name;
 
-	@SuppressWarnings("deprecation")
 	private Cnd cnd() {
-		Cnd cnd = Cnd.limit();
+		Cnd cnd = Cnd.NEW();
 		cnd.and("c.id", "=", comId);
+		cnd.and("f.parentId", "=", 0);
 		cnd.groupBy("d.id");
 		return cnd;
 	}

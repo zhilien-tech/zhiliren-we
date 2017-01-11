@@ -67,9 +67,10 @@ public class UserModule {
 
 	@At
 	@Ok("jsp")
-	public Object list(@Param("..") final TUserSqlForm sqlForm, @Param("..") final Pager pager) {
+	public Object list(@Param("..") final TUserSqlForm sqlForm, @Param("..") final Pager pager,
+			final HttpSession session) {
 		Map<String, Object> map = MapUtil.map();
-		List<Record> deplist = userViewService.getDeptNameSelect(sqlManager);
+		List<Record> deplist = userViewService.getDeptNameSelect(sqlManager, session);
 		map.put("deplist", deplist);
 		return map;
 	}

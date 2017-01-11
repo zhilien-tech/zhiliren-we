@@ -86,8 +86,8 @@
 														className="com.linyun.airline.common.enums.DataStatusEnum" /></td>
 												<td><fmt:formatDate value="${one.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 												<td>
-												<p class="a_p">
-												<a onclick="edit(${one.id});" class="btn_mini btn_modify">编辑</a>
+													<p class="a_p">
+													<a onclick='edit(${one.id});' class='btn_mini btn_modify' style='cursor:pointer'>编辑</a>
 													<!-- 这里如果有写title，则需要确认才会操作  -->
 													<c:choose>
 														<c:when test="${1 == one.status}">
