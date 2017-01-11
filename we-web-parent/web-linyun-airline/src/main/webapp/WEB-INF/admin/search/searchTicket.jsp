@@ -527,6 +527,7 @@
 						$('.removeIconTd').show();
 					};
 					clearSearchTeamHtml();
+					
 				}  
 			}
 		}

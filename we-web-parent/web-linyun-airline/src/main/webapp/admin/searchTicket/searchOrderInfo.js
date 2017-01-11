@@ -109,7 +109,6 @@ function clearSearchHtml(){
 function clearSearchTeamHtml(){
 	$("#teamAirline").val(null).trigger("change");
 	document.getElementById('travelTeamTypeNum').innerHTML="";
-	document.getElementById('travelTeamTypeNum').innerHTML="";
 	document.getElementById('teamtbody').innerHTML="";
 	document.getElementById('datatable2_info').innerHTML="";
 	document.getElementById('datatable2_paginate').innerHTML="";
