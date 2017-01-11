@@ -76,6 +76,9 @@ public class TUserSqlForm extends DataTablesParamForm {
 	/**公司管理员id*/
 	private long adminId;
 
+	/**部门id*/
+	private long deptId;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**

@@ -48,7 +48,6 @@ public class AuthFilter extends BaseActionFilter {
 		HttpSession session = Mvcs.getHttpSession();
 		String currentPageIndex = request.getParameter("currentPageIndex");
 		session.setAttribute("currentPageIndex", currentPageIndex);
-		logger.info("currentPageIndex:[" + currentPageIndex + "]");
 
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		if (!Util.isEmpty(user) && CommonConstants.SUPER_ADMIN.equals(user.getUserName())) {
