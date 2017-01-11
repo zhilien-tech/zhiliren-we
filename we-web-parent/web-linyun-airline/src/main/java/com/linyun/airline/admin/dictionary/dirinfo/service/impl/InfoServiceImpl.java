@@ -20,6 +20,7 @@ import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.linyun.airline.admin.dictionary.dirinfo.form.InfoModForm;
 import com.linyun.airline.admin.dictionary.dirinfo.service.IInfoService;
+import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.DictTypeEntity;
 import com.uxuexi.core.db.util.EntityUtil;
@@ -63,6 +64,7 @@ public class InfoServiceImpl extends BaseService<DictInfoEntity> implements IInf
 		String sqlString = EntityUtil.entityCndSql(DictTypeEntity.class);
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
+		cnd.and("status", "=", DataStatusEnum.ENABLE.intKey());
 		sql.setCondition(cnd);
 		sql.setCallback(Sqls.callback.records());
 		nutDao.execute(sql);
