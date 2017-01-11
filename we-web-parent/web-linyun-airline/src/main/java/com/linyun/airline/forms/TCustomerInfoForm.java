@@ -48,7 +48,7 @@ public class TCustomerInfoForm implements SQLParamForm, Serializable {
 	private String address;
 
 	/**负责人id*/
-	private String agent;
+	private long responsibleId;
 
 	/**负责人姓名*/
 	private String agentName;

@@ -74,9 +74,11 @@ SELECT DISTINCT
 FROM
 	t_message m
 WHERE
+(
 	date_format(m.generateTime, '%Y-%m') = date_format(@MincalTimes1,'%Y-%m') 
 	OR date_format(m.generateTime, '%Y-%m') = date_format(@MincalTimes2,'%Y-%m')
 	OR date_format(m.generateTime, '%Y-%m') = date_format(@MincalTimes3,'%Y-%m')
+)
 GROUP BY
 	generateTime
 
@@ -95,9 +97,11 @@ WHERE
 AND 
 	um.userId = @userid
 AND
+(
 	date_format(m.generateTime, '%Y-%m') = date_format(@MincalTimes1,'%Y-%m')
-OR date_format(m.generateTime, '%Y-%m') = date_format(@MincalTimes2,'%Y-%m')
-OR date_format(m.generateTime, '%Y-%m') = date_format(@MincalTimes3,'%Y-%m')
+	OR date_format(m.generateTime, '%Y-%m') = date_format(@MincalTimes2,'%Y-%m')
+	OR date_format(m.generateTime, '%Y-%m') = date_format(@MincalTimes3,'%Y-%m')
+)
 
 	
 

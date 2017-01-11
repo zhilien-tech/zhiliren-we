@@ -41,7 +41,7 @@ public class TCustomerInfoUpdateForm extends ModForm implements Serializable {
 	private String address;
 
 	/**负责人*/
-	private String agent;
+	private long responsibleId;
 
 	/**添加时间*/
 	private Date createTime;

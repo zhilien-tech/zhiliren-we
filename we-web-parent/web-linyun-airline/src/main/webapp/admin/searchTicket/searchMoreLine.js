@@ -1,5 +1,3 @@
-/*--------------------------------加载下拉列表---------------------------------*/
-
 //第一次初始化加载
 initSelect2();
 
@@ -102,10 +100,8 @@ $(function () {
 		$('.hideTable').hide('400');
 	});
 	//散客
-	//document.getElementsByName("internat")[0].checked="checked";//radio 默认 国际内陆
 	document.getElementsByName("voyageType")[1].checked="checked";//radio 默认 选中往返
 	//团队
-	//document.getElementsByName("internat1")[0].checked="checked";//radio 默认 国际内陆
 	document.getElementsByName("voyageType1")[1].checked="checked";//radio 默认 选中往返
 
 	//添加 setMore
@@ -151,12 +147,20 @@ $(document).on('click', '.removeMore', function(e) {
 	}
 });
 
+/*回车搜索*/
+function onkeyEnter(){
+	var e = window.event || arguments.callee.caller.arguments[0];
+    if(e && e.keyCode == 13){
+    	selectSingle();
+    }
+}
 
 /* 散客多程查询 */
 var clickfirst=1;
 $("#searchSingleTicketsBtn").click(function() {
-	var link = $("#linkNameId").select2().text;
-	if(!link){
+	var linkName = $("#linkNameId").select2("val");
+	var phoneNum = $("#phoneNumId").select2("val");
+	if(!(linkName || phoneNum)){
 		layer.msg("客户名称不能为空", "", 2000);
 		return;
 	}
@@ -167,8 +171,8 @@ $("#searchSingleTicketsBtn").click(function() {
 		$("#departuredate").val($("#outDatepicker"+index).val());
 		$("#returndate").val($("#returnDatepicker"+index).val());
 	}
-	//显示段数
-	var area = $("#origin").val()+' -- '+$("#destination").val();
+	//显示区间
+	var area = $("#origin").val()+' --- '+$("#destination").val();
 	document.getElementById('travelArea').innerHTML=area;
 	//段数
 	var airType = $("input[name='voyageType']:checked").val();
@@ -178,14 +182,21 @@ $("#searchSingleTicketsBtn").click(function() {
 		document.getElementById('travelTypeNum').innerHTML=html;
 	}
 	if(airType == 2){
-		html = '<li id="num1" class="btnStyle">第1段</li><li id="num2">第2段</li>';
+		html = '<li id="num1" class="btnStyle dClas">第1段</li><li id="num2" class="dClas">第2段</li>';
 		document.getElementById('travelTypeNum').innerHTML=html;
 	}
 	/* 多程 显示多段 */
 	if(airType == 3){
+		/*
+		//方案一 显示往返段
 		for(var i=1; i<$('.setMore').length*2; i=i+2){
 			var j = i+1;
 			html +='<li id="num'+i+'">第'+i+'段</li><li id="num'+j+'">第'+j+'段</li>';
+		}*/
+		//方案二 显示去程段
+		html ='<li id="moreNum1" class="btnStyle dClas">第1段</li>';
+		for(var i=2; i<=$('.setMore').length; i++){
+			html +='<li id="moreNum'+i+'">第'+i+'段</li>';
 		}
 		document.getElementById('travelTypeNum').innerHTML=html;
 	}
@@ -234,7 +245,7 @@ $("#searchSingleTicketsBtn").click(function() {
 						var ElapsedTime = outList[foot].ElapsedTime;
 						var totalAmount = resp.data[i].priceInfo.totalAmount;
 						outLiList += '<li>'+
-						'<div class="imgIconDiv"><img src="logoIcon.png"><p>'+AirlineName+airlineCode+FlightNumber+'</p></div>'+
+						'<p class="p">'+airlineCode+FlightNumber+'</p></div>'+
 						'<div class="distanceTimeDiv"><span class="chufaCS"><b>'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
 						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b>'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
 						'<div class="moneyDiv"><i class="fa fa-cny"></i>'+totalAmount+'</div>'+
@@ -252,7 +263,7 @@ $("#searchSingleTicketsBtn").click(function() {
 						var ElapsedTime = returnList[foot].ElapsedTime;
 						var totalAmount = resp.data[i].priceInfo.totalAmount;
 						returnLiList += '<li>'+
-						'<div class="imgIconDiv"><img src="logoIcon.png"><p>'+AirlineName+airlineCode+FlightNumber+'</p></div>'+
+						'<p class="p">'+airlineCode+FlightNumber+'</p></div>'+
 						'<div class="distanceTimeDiv"><span class="chufaCS"><b>'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
 						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b>'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
 						'<div class="moneyDiv"><i class="fa fa-cny"></i>'+totalAmount+'</div>'+

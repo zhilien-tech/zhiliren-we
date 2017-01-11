@@ -82,7 +82,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 	/**
 	 * 
-	 * TODO(获取客户姓名下拉列表)
+	 * TODO(获取联系电话下拉列表)
 	 *
 	 * @param linkname
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
@@ -137,7 +137,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			e.printStackTrace();
 		}
 
-
 		return citySelect;
 	}
 
@@ -163,7 +162,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	}
 
 	/**
-	 * 查询散客飞机票
+	 * 查询跨海内陆飞机票
 	 */
 	public Object searchSingleTickets(InstaFlightsSearchForm searchForm) {
 		InstaFlightsSearchForm form = new InstaFlightsSearchForm();
@@ -224,6 +223,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				if (!Util.isEmpty(dictName)) {
 					instalFlightAirItinerary.setAirlineName(dictName);
 				}
+
 			}
 		}
 		if (resp.getStatusCode() == 400) {
@@ -241,7 +241,14 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			if (message.contains("arrivalDateTime")) {
 				sabreExResponse.setMessage("返回日期不能为空");
 			}
-			if (message.contains("No results were found")) {
+			if (message.contains("No results")) {
+				sabreExResponse.setMessage("未查询到结果");
+			}
+		}
+		if (resp.getStatusCode() == 404) {
+			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
+			String message = sabreExResponse.getMessage();
+			if (message.contains("No results")) {
 				sabreExResponse.setMessage("未查询到结果");
 			}
 		}
@@ -249,7 +256,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	}
 
 	/**
-	 * 查询团客飞机票
+	 * 查询国际飞机票
 	 */
 	public Object searchTeamTickets(InstaFlightsSearchForm searchForm) {
 		String origin = searchForm.getOrigin(); //起飞机场/出发城市

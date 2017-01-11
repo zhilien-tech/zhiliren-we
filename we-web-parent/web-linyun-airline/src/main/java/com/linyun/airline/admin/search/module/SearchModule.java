@@ -108,7 +108,7 @@ public class SearchModule {
 	}
 
 	/**
-	 * 查询散客机票
+	 * 查询跨海内陆机票
 	 */
 	@At
 	@POST
@@ -117,7 +117,7 @@ public class SearchModule {
 	}
 
 	/**
-	 * 查询团队机票
+	 * 查询国际机票
 	 */
 	@At
 	@POST

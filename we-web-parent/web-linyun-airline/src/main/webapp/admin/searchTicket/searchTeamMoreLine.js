@@ -1,30 +1,3 @@
-/*单选按钮*/
-$("input[name=internat1]").click(function(){
-	var typeCodeStr = "";
-	switch($("input[name=internat1]:checked").attr("id")){
-	case "gjnlRadioTeam":
-		typeCodeStr = "GJNL";
-		break;
-	case "gjRadioTeam":
-		typeCodeStr = "GJ";
-		break;
-	}
-	$.ajax({
-		type : 'POST',
-		data : {
-			typeCode:typeCodeStr
-		},
-		dataType:'json',
-		url : BASE_PATH+'/admin/search/initCityTypeCode.html',
-		success : function(data) {
-
-		},
-		error : function() {
-		}
-	});
-});
-
-
 //第一次初始化加载
 initTeamSelect2();
 
@@ -217,14 +190,21 @@ function makePart(){
 		document.getElementById('travelTeamTypeNum').innerHTML=html;
 	}
 	if(airTeamType == 2){
-		html = '<li id="teamNum1" class="btnStyle">第1段</li><li id="teamNum2">第2段</li>';
+		html = '<li id="teamNum1" class="btnStyle dClass">第1段</li><li id="teamNum2"  class="dClass">第2段</li>';
 		document.getElementById('travelTeamTypeNum').innerHTML=html;
 	}
 	/* 多程 显示多段 */
 	if(airTeamType == 3){
+		/*
+		//方案一  显示往返段
 		for(var i=1; i<$('.setTeamMore').length*2; i=i+2){
 			var j = i+1;
 			html +='<li id="teamNum'+i+'">第'+i+'段</li><li id="teamNum'+j+'">第'+j+'段</li>';
+		}*/
+		//方案二  显示去程段
+		html ='<li id="teamNumMore1" class="btnStyle">第1段</li>';
+		for(var i=2; i<=$('.setTeamMore').length; i++){
+			html +='<li id="teamNumMore'+i+'">第'+i+'段</li>';
 		}
 		document.getElementById('travelTeamTypeNum').innerHTML=html;
 	}
@@ -247,124 +227,127 @@ $(document).on('click','#teamNum1',function(){
 	$("#teamdestination").val($("#teamArriveCity"+index).select2("val"));
 	$("#teamdeparturedate").val($("#teamOutDatepicker"+index).val());
 	$("#teamreturndate").val($("#teamReturnDatepicker"+index).val());
-	$("#searchTeamTicketsBtn").click();
+	//$("#searchTeamTicketsBtn").click();
+	searchInternetOrders();
 });
 $(document).on('click','#teamNum2',function(){
 	var index=0;
 	$("#teamorigin").val($("#teamArriveCity"+index).select2("val"));
 	$("#teamdestination").val($("#teamOutCity"+index).select2("val"));
 	$("#teamdeparturedate").val($("#teamReturnDatepicker"+index).val());
-	$("#teamreturndate").val($("#teamOutDatepicker"+index).val());
-	$("#searchTeamTicketsBtn").click();
+	//$("#teamreturndate").val($("#teamOutDatepicker"+index).val());
+	//$("#searchTeamTicketsBtn").click();
+	searchInternetOrders();
 });
 
 
 //国际表格初始化
 var datatable2;
 function initDatatable2() {
-    datatable2 = $('#datatable2').DataTable({
-    	"searching":false,
-    	"bLengthChange": false,
-        "processing": true,
-        "serverSide": true,
-        "stripeClasses": [ 'strip1','strip2' ],
-        "language": {
-            "url": BASE_PATH + "/public/plugins/datatables/cn.json"
-        },
-        "ajax": {
-        	"url": BASE_PATH + '/admin/search/searchTeamTickets.html',
-            "type": "post",
-            "data": function (d) {
-            	
-            }
-        },
-        "fnDrawCallback" : function(){
-        	var api = this.api();
-        	var startIndex= api.context[0]._iDisplayStart;
-   	       　　  api.column(1).nodes().each(function(cell, i) {
-   	       　　　　cell.innerHTML = startIndex + i + 1; 
-   	       　　});
-      	},
-        "columns": [
-                	{"data": "id", "bSortable": false,
-                    	"render": function (data, type, row, meta) {
-                            return '<input type="checkbox"  class="checkchild"  value="' + row.id + '" />';
-                        }
-                    },
-                    {"data": "xuhao", "bSortable": false},
-                    {"data": "leavesdate", "bSortable": false,
-                    	render: function(data, type, row, meta) {
-                    		var leavesdate = new Date(row.leavesdate);
-                    		var backsdate = new Date(row.backsdate);
-                    		var MM = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'][leavesdate.getMonth()];
-                    		var week = ['MO','TU','WE','TH','FR','SA','SU'][leavesdate.getUTCDay()]
-                    		var MM2 = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'][backsdate.getMonth()];
-                    		var week2 = ['MO','TU','WE','TH','FR','SA','SU'][backsdate.getUTCDay()]
-                    		var result = '<ul><li style="list-style:none;">'+(week+leavesdate.getDate() + MM)+'</li>'
-                    		+'<li style="list-style:none;">'+(week2+backsdate.getDate() + MM2)+'</li>'
-                    		+'</ul>';
-                    		return result;
-                    	}
-                    },
-                    {"data": "leavescity", "bSortable": false,
-                    	render: function(data, type, row, meta) {
-                    		var result = '<ul>'
-                        		+'<li style="list-style:none;">'+row.leaveairline+'</li>'
-                        		+'<li style="list-style:none;">'+row.backairline+'</li>'
-                        		+'</ul>';
-                    		return result;
-                    	}
-                    },
-                    {"data": "backsdate", "bSortable": false,
-                    	render: function(data, type, row, meta) {
-                    		var result = '<ul>' 
-                        		+'<li style="list-style:none;">'+(row.leavescity +'/'+ row.backscity)+'</li>'
-                        		+'<li style="list-style:none;">'+(row.backleavecity +'/'+ row.backbackcity)+'</li>'
-                        		+'</ul>';
-                    		return result;
-                    	}
-                    },
-                    {"data": "backscity", "bSortable": false,
-                    	render: function(data, type, row, meta) {
-                    		var result = '<ul>' 
-                        		+'<li style="list-style:none;">'+(row.lleavetime +'/'+ row.lbacktime)+'</li>'
-                        		+'<li style="list-style:none;">'+(row.bleavetime +'/'+ row.bbacktime)+'</li>'
-                        		+'</ul>';
-                    		return result;
-                    	}	
-                    },
-                    {"data": "peoplecount", "bSortable": false},
-                    {"data": "foc", "bSortable": false,
-                    	render: function(data, type, row, meta) {
-                    		var result = '否';
-                    		if(row.foc == 1){
-                    			result = '16/1';
-                    		}
-                    		return result;
-                    	}
-                    },
-                    {"data": "dayscount", "bSortable": false},
-                    /*{"data": "travelname", "bSortable": false},*/
-                    {"data": "unioncity", "bSortable": false}
-            ],
-        columnDefs: [{
-    		targets: 0,
-            render: function(data, type, row, meta) {
-                return null
-            }
-    	},{
-    		targets: 1,
-            render: function(data, type, row, meta) {
-                return null
-            }
-    	}]
-    });
+	datatable2 = $('#datatable2').DataTable({
+		"searching":false,
+		"bLengthChange": false,
+		"processing": true,
+		"serverSide": true,
+		"destroy": true,
+		"stripeClasses": [ 'strip1','strip2' ],
+		"language": {
+			"url": BASE_PATH + "/public/plugins/datatables/cn.json"
+		},
+		"ajax": {
+			"url": BASE_PATH + '/admin/search/searchTeamTickets.html',
+			"type": "post",
+			"data": function (d) {
+
+			}
+		},
+		"fnDrawCallback" : function(){
+			var api = this.api();
+			var startIndex= api.context[0]._iDisplayStart;
+			api.column(1).nodes().each(function(cell, i) {
+				cell.innerHTML = startIndex + i + 1; 
+			});
+		},
+		"columns": [
+		            {"data": "id", "bSortable": false,
+		            	"render": function (data, type, row, meta) {
+		            		return '<input type="checkbox"  class="checkchild"  value="' + row.id + '" />';
+		            	}
+		            },
+		            {"data": "xuhao", "bSortable": false},
+		            {"data": "leavesdate", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var leavesdate = new Date(row.leavesdate);
+		            		var backsdate = new Date(row.backsdate);
+		            		var MM = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'][leavesdate.getMonth()];
+		            		var week = ['MO','TU','WE','TH','FR','SA','SU'][leavesdate.getUTCDay()]
+		            		var MM2 = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'][backsdate.getMonth()];
+		            		var week2 = ['MO','TU','WE','TH','FR','SA','SU'][backsdate.getUTCDay()]
+		            		var result = '<ul><li style="list-style:none;">'+(week+leavesdate.getDate() + MM)+'</li>'
+		            		+'<li style="list-style:none;">'+(week2+backsdate.getDate() + MM2)+'</li>'
+		            		+'</ul>';
+		            		return result;
+		            	}
+		            },
+		            {"data": "leavescity", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var result = '<ul>'
+		            			+'<li style="list-style:none;">'+row.leaveairline+'</li>'
+		            			+'<li style="list-style:none;">'+row.backairline+'</li>'
+		            			+'</ul>';
+		            		return result;
+		            	}
+		            },
+		            {"data": "backsdate", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var result = '<ul>' 
+		            			+'<li style="list-style:none;">'+(row.leavescity +'/'+ row.backscity)+'</li>'
+		            			+'<li style="list-style:none;">'+(row.backleavecity +'/'+ row.backbackcity)+'</li>'
+		            			+'</ul>';
+		            		return result;
+		            	}
+		            },
+		            {"data": "backscity", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var result = '<ul>' 
+		            			+'<li style="list-style:none;">'+(row.lleavetime +'/'+ row.lbacktime)+'</li>'
+		            			+'<li style="list-style:none;">'+(row.bleavetime +'/'+ row.bbacktime)+'</li>'
+		            			+'</ul>';
+		            		return result;
+		            	}	
+		            },
+		            {"data": "peoplecount", "bSortable": false},
+		            {"data": "foc", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var result = '否';
+		            		if(row.foc == 1){
+		            			result = '16/1';
+		            		}
+		            		return result;
+		            	}
+		            },
+		            {"data": "dayscount", "bSortable": false},
+		            /*{"data": "travelname", "bSortable": false},*/
+		            {"data": "unioncity", "bSortable": false}
+		            ],
+		            columnDefs: [{
+		            	targets: 0,
+		            	render: function(data, type, row, meta) {
+		            		return null
+		            	}
+		            },{
+		            	targets: 1,
+		            	render: function(data, type, row, meta) {
+		            		return null
+		            	}
+		            }]
+	});
 }
 
 //控制复选框
 $(".checkall").click(function () {
-    var check = $(this).prop("checked");
-    $(".checkchild").prop("checked", check);
+	var check = $(this).prop("checked");
+	$(".checkchild").prop("checked", check);
 });
 
 
@@ -389,34 +372,46 @@ function selectteam(){
 }
 function onkeyTeamEnter(){
 	var e = window.event || arguments.callee.caller.arguments[0];
-    if(e && e.keyCode == 13){
-    	selectteam();
-    }
+	if(e && e.keyCode == 13){
+		selectteam();
+	}
 }
+
 /* 团客多程查询 */
 var clickone=1;
 $("#searchTeamTicketsBtn").click(function() {
-	var link = $("#linkNameId").val();
-	if(link==null){
+	var linkName = $("#linkNameId").select2("val");
+	var phoneNum = $("#phoneNumId").select2("val");
+	if(!(linkName || phoneNum)){
 		layer.msg("客户名称不能为空", "", 2000);
 		return;
 	}
-	
-	//第一次点击查询 默认第一段
+	$("#teamTrId").attr("style", "");
+
+	//默认第一段
 	if(clickone){
-		var index=0;
+		var index = 0;
 		$("#teamorigin").val($("#teamOutCity"+index).select2("val"));
 		$("#teamdestination").val($("#teamArriveCity"+index).select2("val"));
 		$("#teamdeparturedate").val($("#teamOutDatepicker"+index).val());
 		$("#teamreturndate").val($("#teamReturnDatepicker"+index).val());
-		clickone=0;
 		//加载列表数据
 		initDatatable2();
 	}
-	
+
 	makePart();
-	
+
+	/*$('#teamNum1').click(function(){
+		$('#teamNum1').addClass('btnStyle');
+		$('#teamNum2').removeClass('btnStyle');
+	});
+	$('#teamNum2').click(function(){
+		$('#teamNum2').addClass('btnStyle');
+		$('#teamNum1').removeClass('btnStyle');
+	});*/
+
 	var param = getEditPlanParam();
-    datatable2.settings()[0].ajax.data = param;
-    datatable2.ajax.url(BASE_PATH + '/admin/search/searchTeamTickets.html').load();
+	datatable2.settings()[0].ajax.data = param;
+	datatable2.ajax.url(BASE_PATH + '/admin/search/searchTeamTickets.html').load();
+	
 });
