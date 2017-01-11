@@ -54,8 +54,9 @@
 						 	<ul class="nav nav-tabs">
 			                  <li class="active"><a href="#tab_1" data-toggle="tab">询单(6)</a></li>
 			                  <li><a href="#tab_2" data-toggle="tab">订单(10)</a></li>
-			                  <li><a href="#tab_3" data-toggle="tab">账期(2)</a></li>
-			                  <li><a href="#tab_4" data-toggle="tab">我的提醒(<span id="remindMsg"></span>)</a></li>
+			                  <li><a href="#tab_3" data-toggle="tab">我的提醒(<span id="remindMsg"></span>)</a></li>
+			                  <li><a href="#tab_4" data-toggle="tab">账期(2)</a></li>
+			                  
 			                </ul>
 			                <div class="tab-content">
 				                  <div class="tab-pane active" id="tab_1">
@@ -73,15 +74,16 @@
 				                    </ul>
 				                  </div>
 				                  <div class="tab-pane" id="tab_3">
+				                    <ul id="taskListId" class="taskInfo">
+				                    </ul>
+				                  </div>
+				                  <div class="tab-pane" id="tab_4">
 				                    <ul class="taskInfo">
 				                      <li><a href=""><span>今天</span><span>07：00</span>聚美优品孙先哲向你发送一个预售订单</a></li>
 				                      <li><a href=""><span>昨天</span><span>09：23</span>爱我行&nbsp;&nbsp;&nbsp;王行&nbsp;&nbsp;&nbsp;0494573团需要支付一订</a></li>
 				                    </ul>
 				                  </div>
-				                  <div class="tab-pane" id="tab_4">
-				                    <ul id="taskListId" class="taskInfo">
-				                    </ul>
-				                  </div>
+				                  
 				            </div>
 			                
 						 </div>

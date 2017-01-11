@@ -22,7 +22,6 @@
 		width: 98.5% !important;
 		display: inline-block;
 	}
-	.inpNone .select2 .selection span ul li+li{display:none;}
 </style>
 
 

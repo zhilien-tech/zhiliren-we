@@ -33,7 +33,8 @@
 .minCelender{padding-left: 0;}
 #box-min{overflow: hidden;}
 #box-min p{width: 80px;margin: 5px 0 0px 70%; position: relative;left:-3px;}
-#minCalen{border: solid 1px #fff;margin: -285px 0px 0px 0px;padding: 0;position: static;}
+#minCId{min-width: 247px;}
+#minCalen{border: solid 1px #fff;margin: -285px 0px 0px 0px;padding: 0;position: static;min-width: 234px;}
 #minCalen div[data-cal-index="2"]{margin-top: 40px;}
 #minCalen div[data-cal-index="2"] .k-title{width: 40%;height: 20px;float: right;padding-right: 0px}
 #minCalen div[data-cal-index="2"] .k-title .k-caption{right:2px !important;}
@@ -46,6 +47,23 @@
 #minCalen .k-last-month .k-title .k-btn-next-month{display: inline-block;position: relative;top: -505px;left: -55px;border: solid 1px #c5c5c5;height: 24px;width: 25px;background-color: #f9f9f9;border-radius: 3px;}
 #minCalen .k-title{overflow: visible;width: 100%;padding-right:23px;}
 #minCalen .k-days span{height: 30px;width:13.5%;}
+@media screen and (max-width: 1224px) and (min-width: 1180px){
+	#minCalen div[data-cal-index="0"] .k-title .k-btn-next-month{left: -30px;}
+	#minCalen div[data-cal-index="3"] .k-title .k-btn-previous-month{left: -50px;}
+}
+@media screen and (max-width: 1320px) and (min-width: 1225px){
+	#minCalen div[data-cal-index="0"] .k-btn-next-month{left: -30px !important;}
+	#minCalen div[data-cal-index="3"] .k-title .k-btn-previous-month{left: -50px;}
+}
+@media screen and (max-width: 1399px) and (min-width: 1321px){
+	#minCalen div[data-cal-index="0"] .k-title .k-btn-previous-month{left: -55px;}
+}
+@media screen and (max-width: 1602px) and (min-width: 1500px){
+	#minCalen div[data-cal-index="0"] .k-title .k-btn-next-month{top:-497px;}
+}
+@media screen and (max-width: 1802px) and (min-width: 1700px){
+	#minCalen div[data-cal-index="0"] .k-title .k-btn-next-month{top: -484px;}
+}
 .checkShow{width: 15px;height: 15px;position: relative;top: 3px;margin-right: 4px;}
 .dot{background-color:#e04174;width: 5px;height: 5px;display: block;position: relative;top: 3px;margin: 0 auto;border-radius:10px;}
 /*#minCalen .k-title .k-btn-previous-year{position: absolute;left: -0px;top: 285px;}*/
@@ -55,7 +73,7 @@
 .kalendae .k-header span{width:13.5%;}
 .k-days{width:100% !important;}
 .back{background-color:#eee !important;}
-.kalendae .k-header span, .kalendae .k-days span {display:inline-table;}
+.kalendae .k-header span, .kalendae .k-days span{display:inline-table;}
 span[data-date*="-01-01"],span[data-date*="-02-14"],span[data-date*="-03-12"],span[data-date*="-03-08"],span[data-date*="-04-01"],span[data-date*="-05-01"],span[data-date*="-06-01"],span[data-date*="-09-10"],span[data-date*="-10-01"],span[data-date*="-12-25"]{color: rgb(224, 65, 116) !important;}
 /*---------------自定义界面----------------*/
 .customInterface{background-color: #367fa9;margin-top: 3px;color: #fff;padding: 7px;float: right;box-shadow: 0px 0px 10px 0px #B5B5B5;border-radius: 4px 4px 0 0;}
@@ -76,24 +94,6 @@ span[data-date*="-01-01"],span[data-date*="-02-14"],span[data-date*="-03-12"],sp
 .nav-tabs-custom > .nav-tabs > li.active {border-top: solid 2px #3c8dbc;}
 .nav-tabs-custom > .tab-content{padding: 0;}
 .nav-tabs-custom > .nav-tabs > li > a {color: #969696;border-radius: 0;}
-@media screen and (max-width: 1444px) and (min-width: 1400px){
-	#minCalen .k-last-month .k-title .k-btn-next-month {top: -505px;left: -55px;}
-}
-@media screen and (max-width: 1390px) and (min-width: 1345px){
-	#minCalen .k-title .k-btn-previous-month {left: -68px;}
-}
-@media screen and (max-width: 1400px) and (min-width: 1119px){
-	#minCalen .k-last-month .k-title .k-btn-next-month {top: -497px;left: -45px;}
-	#minCalen .k-title .k-btn-previous-month {left: -71px;}
-}
-@media screen and (max-width: 1420px) and (min-width: 1200px){
-	#minCalen .k-last-month .k-title .k-btn-next-month {top: -492px;}
-	#minCalen .k-title .k-btn-previous-month {left: -71px;}
-}
-@media screen and (max-width: 1603px) and (min-width: 1582px){
-	#minCalen .k-last-month .k-title .k-btn-next-month {top: -497px;}
-	#minCalen .k-title .k-btn-previous-month {left: -71px;}
-}
 #minCalen div[data-cal-index="2"] .k-title .k-btn-previous-month{display: none !important;}
 #minCalen div[data-cal-index="1"] .k-title .k-btn-previous-month{display: none !important;}
 #minCalen div[data-cal-index="1"] .k-title .k-caption {float: right;}

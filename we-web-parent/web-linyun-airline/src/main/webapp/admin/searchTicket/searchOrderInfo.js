@@ -72,22 +72,24 @@ linkNameOpt = function(){
 
 /*-----------------------单程、往返段数查询  start--------------------------------*/
 $(document).on('click','#num1',function(){
+	document.getElementById('paragraphListInfo').innerHTML="";
 	var index=0;
 	$("#airInfoList").val(1);
 	$("#origin").val($("#outCity"+index).select2("val"));
 	$("#destination").val($("#singleArriveCity"+index).select2("val"));
 	$("#departuredate").val($("#outDatepicker"+index).val());
 	$("#returndate").val($("#returnDatepicker"+index).val());
-	$("#searchSingleTicketsBtn").click();
+	searchInlandOrder();
 });
 $(document).on('click','#num2',function(){
+	document.getElementById('paragraphListInfo').innerHTML="";
 	var index=0;
 	$("#airInfoList").val(2);
 	$("#origin").val($("#singleArriveCity"+index).select2("val"));
 	$("#destination").val($("#outCity"+index).select2("val"));
 	$("#departuredate").val($("#returnDatepicker"+index).val());
-	$("#returndate").val($("#outDatepicker"+index).val());
-	$("#searchSingleTicketsBtn").click();
+	$("#returndate").val("");
+	searchInlandOrder();
 });
 /*-----------------------往返段数查询  end--------------------------------*/
 
@@ -97,11 +99,25 @@ function clearSearchHtml(){
 	document.getElementById('travelTypeNum').innerHTML="";
 	document.getElementById('travelDateNum').innerHTML="";
 	document.getElementById('paragraphListInfo').innerHTML="";
+	$("#airline").val(null).trigger("change");
+	$("#agentSelect").val("0");
+	$("#childrenSelect").val("0");
+	$("#babySelect").val("0");
+	$("#airLevel").val("1");
 }
 //清除国际 列表项
 function clearSearchTeamHtml(){
+	$("#teamAirline").val(null).trigger("change");
 	document.getElementById('travelTeamTypeNum').innerHTML="";
+	document.getElementById('travelTeamTypeNum').innerHTML="";
+	document.getElementById('teamtbody').innerHTML="";
+	document.getElementById('datatable2_info').innerHTML="";
+	document.getElementById('datatable2_paginate').innerHTML="";
+	document.getElementById('datatable2').innerHTML="";
+	$("#teamAirLevel").val("1");
 }
+
+
 
 /* -------------------------日期小卡片 start------------------------------- */
 cardDate = function(v){
@@ -118,8 +134,9 @@ cardDate = function(v){
 	}
 	var cardStr = year +'-'+ month +'-'+ strDate;
 	$("#departuredate").val(cardStr);
-	alert($("#departuredate").val());
-	$("#searchSingleTicketsBtn").click();
+	var id = v.getAttribute("id");
+	document.getElementById('paragraphListInfo').innerHTML="";
+	searchInlandOrder();
 }
 getDateCard =function(){
 	var dateNumHtml = "";
@@ -219,7 +236,6 @@ defaultDate = function(){
 		days = "0" + days;
 	}
 	var returnDateStr = years +'-'+ months +'-'+days;
-
 	return returnDateStr;
 }
 function selectSingle(){
@@ -233,3 +249,20 @@ document.getElementsByName("voyageType")[1].checked="checked";//radio 默认 选
 /*国际*/
 document.getElementsByName("voyageType1")[1].checked="checked";//radio 默认 选中往返
 
+
+
+//全局回车事件
+/*document.onkeydown=function(event){
+	var tab1Aira = $("#tab_1Id").attr("aria-expanded");
+	var tab2Aira = $("#tab_2Id").attr("aria-expanded");
+	var e = event || window.event || arguments.callee.caller.arguments[0];
+	if(e && e.keyCode==13){ // enter 键
+		alert(tab1Aira +"-"+tab2Aira);
+		if(tab1Aira){
+			$("#searchSingleTicketsBtn").click();
+		}
+		if(tab2Aira){
+			$("#searchTeamTicketsBtn").click();
+		}
+	}
+}; */

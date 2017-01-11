@@ -1,22 +1,22 @@
-package com.linyun.airline.common.admin.operationsArea.enums;
+package com.linyun.airline.common.enums;
 
 import com.uxuexi.core.common.enums.IEnum;
 
 /**
  * 
- * 消息来源
+ * 消息中的  消息状态
  * <p>
  * 
  * @author   彭辉
  * @Date	 2016年12月07日
  */
-public enum MessageSourceEnum implements IEnum {
-	PERSONALMSG(1, "来自个人的消息"), COMPANYMSG(2, "来自公司的消息");
+public enum MessageStatusEnum implements IEnum {
+	UNREAD(0, "未读"), READ(1, "已读");
 
 	private int key;
 	private String value;
 
-	private MessageSourceEnum(final int key, final String value) {
+	private MessageStatusEnum(final int key, final String value) {
 		this.value = value;
 		this.key = key;
 	}

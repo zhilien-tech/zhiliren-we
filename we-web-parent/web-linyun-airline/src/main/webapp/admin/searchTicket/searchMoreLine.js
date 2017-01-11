@@ -158,8 +158,9 @@ function onkeyEnter(){
 /* 散客多程查询 */
 var clickfirst=1;
 $("#searchSingleTicketsBtn").click(function() {
-	var linkName = $("#linkNameId").select2().text;
-	if(!linkName){
+	var linkName = $("#linkNameId").select2("val");
+	var phoneNum = $("#phoneNumId").select2("val");
+	if(!(linkName || phoneNum)){
 		layer.msg("客户名称不能为空", "", 2000);
 		return;
 	}
@@ -181,7 +182,7 @@ $("#searchSingleTicketsBtn").click(function() {
 		document.getElementById('travelTypeNum').innerHTML=html;
 	}
 	if(airType == 2){
-		html = '<li id="num1" class="btnStyle">第1段</li><li id="num2">第2段</li>';
+		html = '<li id="num1" class="btnStyle dClas">第1段</li><li id="num2" class="dClas">第2段</li>';
 		document.getElementById('travelTypeNum').innerHTML=html;
 	}
 	/* 多程 显示多段 */
@@ -193,7 +194,7 @@ $("#searchSingleTicketsBtn").click(function() {
 			html +='<li id="num'+i+'">第'+i+'段</li><li id="num'+j+'">第'+j+'段</li>';
 		}*/
 		//方案二 显示去程段
-		html ='<li id="moreNum1" class="btnStyle">第1段</li>';
+		html ='<li id="moreNum1" class="btnStyle dClas">第1段</li>';
 		for(var i=2; i<=$('.setMore').length; i++){
 			html +='<li id="moreNum'+i+'">第'+i+'段</li>';
 		}

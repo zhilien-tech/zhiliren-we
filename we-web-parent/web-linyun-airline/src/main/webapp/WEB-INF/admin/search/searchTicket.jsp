@@ -124,8 +124,12 @@
 				<div class="listInfo">
                   <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                      <li class="active"><a href="#tab_1" data-toggle="tab">内陆跨海</a></li>
-                      <li><a href="#tab_2" data-toggle="tab">国际</a></li>
+                      <li class="active">
+                      	<a id="tab_1Id" href="#tab_1" data-toggle="tab">内陆跨海</a>
+                      </li>
+                      <li>
+                      	<a id="tab_2Id" href="#tab_2" data-toggle="tab">国际</a>
+                      </li>
                     </ul>
                     <div class="tab-content">
                       <div class="tab-pane active" id="tab_1">
@@ -225,6 +229,7 @@
                                 <!-- 机票信息展示 -->
                                 <ul id="paragraphListInfo" class="paragraphListInfo"></ul>
                                 <input type="hidden" id="airInfoList" name="airInfoList" value="1">
+                                <input type="hidden" id="duanshuId"> 
                               </div>
                           </div>
                       </div>
@@ -288,7 +293,7 @@
                               <td><label>航空公司：</label></td>
                               <td>
                               	<!-- <input type="text" class="form-control input-sm" placeholder="(选填)中文/代码"> -->
-                              	<select id="teamAirline" name="teamAirline" onchange="selectteam();"   class="form-control input-sm" multiple="multiple" data-placeholder="(选填)中文/二字代码"></select>
+                              	<select id="teamAirline" name="teamAirline" class="form-control input-sm" multiple="multiple" data-placeholder="(选填)中文/二字代码"></select>
                              	<input id="teamAirlineName" name="teamAirlineName" type="hidden"/>
                               </td>
                               <td>
@@ -302,7 +307,7 @@
                           	<ul id="travelTeamTypeNum" class="paragraphBtn"></ul>
                             <table id="datatable2" class="table table-bordered table-hover">
                               <thead>
-                              <tr id="teamTrId">
+                              <tr id="teamTrId" style="display:none;">
                               	<th><input type="checkbox" class="checkall" /></th>
                                 <th>序号</th>
 	                            <th>日期</th>
@@ -359,6 +364,8 @@
 		<script src="${base}/admin/searchTicket/searchMoreLine.js"></script>
 		<!-- 团队信息  js -->
 		<script src="${base}/admin/searchTicket/searchTeamMoreLine.js"></script>
+		<!-- 多条件查询 -->
+		<script src="${base}/admin/searchTicket/searchMoreOrderLines.js"></script>
 		<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 		<!-- layer -->
 		<script src="${base}/common/js/layer/layer.js"></script>
@@ -392,14 +399,16 @@
 			/* 点击 散客每段提醒事件 */
 			var moreNum = num_id.indexOf("moreNum");
 			if(moreNum==0){
+				document.getElementById('paragraphListInfo').innerHTML="";
 				var index = num_id.substring(7,num_id.length)-1;
+				$("#duanshuId").val(index);
 				$("#origin").val($("#outCity"+index).select2("val"));
 				$("#destination").val($("#singleArriveCity"+index).select2("val"));
 				$("#departuredate").val($("#outDatepicker"+index).val());
 				$("#returndate").val($("#returnDatepicker"+index).val());
 				//获取去程数据 
-				$("#airInfoList").val("1");
-				$("#searchSingleTicketsBtn").click();
+				$("#airInfoList").val(1);
+				searchInlandOrder();
 				/* var i = num_id.substring(3,num_id.length);
 				var index = "";
 				if(i%2){
@@ -435,7 +444,7 @@
 					$("#teamdestination").val($("#teamArriveCity"+index).select2("val"));
 					$("#teamdeparturedate").val($("#teamOutDatepicker"+index).val());
 					$("#teamreturndate").val($("#teamReturnDatepicker"+index).val());
-					$("#searchTeamTicketsBtn").click();
+					searchInternetOrders();
 					/* var index = "";
 					if(i%2){
 						//去程数据 
