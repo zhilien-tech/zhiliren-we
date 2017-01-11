@@ -4982,3 +4982,4 @@ p{margin: 0 0 0px 10px;}
 .form-group1{position: relative;top: -15px;}
 .strip1{background-color: #ffffff;}
 .strip2{background-color: #e9f1f5;}
+.has-feedback .form-control{padding-right: 10px !important;}
