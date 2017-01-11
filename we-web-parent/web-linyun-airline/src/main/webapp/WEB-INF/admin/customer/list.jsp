@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" errorPage="/WEB-INF/public/500.jsp"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
-
+<%@include file="/WEB-INF/public/header.jsp"%>
+<%@include file="/WEB-INF/public/aside.jsp"%>
 <c:set var="url" value="${base}/admin/customer" />
 
 <!DOCTYPE html>
@@ -9,41 +10,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>客户管理</title>
-<!-- Tell the browser to be responsive to screen width -->
-<meta
-	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-	name="viewport">
-<!-- Bootstrap 3.3.6 -->
-<link rel="stylesheet"
-	href="${base}/public/bootstrap/css/bootstrap.css">
-<!-- Font Awesome -->
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-<!-- Ionicons -->
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 <!-- daterange picker -->
-<link rel="stylesheet"
-	href="${base}/public/plugins/daterangepicker/daterangepicker.css">
+<link rel="stylesheet" href="${base}/public/plugins/daterangepicker/daterangepicker.css">
 <!-- bootstrap datepicker -->
-<link rel="stylesheet"
-	href="${base}/public/plugins/datepicker/datepicker3.css">
+<link rel="stylesheet" href="${base}/public/plugins/datepicker/datepicker3.css">
 <!-- iCheck for checkboxes and radio inputs -->
 <link rel="stylesheet" href="${base}/public/plugins/iCheck/all.css">
-<!-- Bootstrap Color Picker -->
-<link rel="stylesheet"
-	href="${base}/public/plugins/colorpicker/bootstrap-colorpicker.min.css">
-<!-- Bootstrap time Picker -->
-<link rel="stylesheet"
-	href="${base}/public/plugins/timepicker/bootstrap-timepicker.min.css">
-<!-- Select2 -->
-<link rel="stylesheet" href="${base}/public/plugins/select2/select2.min.css">
-<!-- Theme style -->
-<link rel="stylesheet" href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
-<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
 <link rel="stylesheet" href="${base}/public/dist/css/customer.css">
-<link rel="stylesheet" href="${base}/public/dist/css/skins/skin-blue.min.css">
-<link rel="stylesheet" href="${base}/public/dist/css/skins/_all-skins.min.css">
 
 </head>
 <!-- REQUIRED JS SCRIPTS -->
@@ -84,10 +57,6 @@
 
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
-
-		<%@include file="/WEB-INF/public/header.jsp"%>
-		<%@include file="/WEB-INF/public/aside.jsp"%>
-
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
 			<!-- Main content -->

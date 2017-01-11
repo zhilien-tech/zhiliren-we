@@ -57,7 +57,7 @@ public class TCustomerInfoEntity implements Serializable {
 
 	@Column
 	@Comment("负责人")
-	private String agent;
+	private long responsibleId;
 
 	@Column
 	@Comment("添加时间")

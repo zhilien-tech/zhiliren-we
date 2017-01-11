@@ -92,7 +92,7 @@
 								<label class="col-sm-2 text-right padding">负责人：</label>
 								<div class="col-sm-3 padding">
 									<!-- 负责人下拉列表 -->
-									<select id="agent" name="agent"
+									<select id="agent" name="responsibleId"
 										class="form-control input-sm inpImportant">
 										<c:forEach var="one" items="${obj.userlist }">
 											<option value="${one.id }">${one.userName}</option>
@@ -118,15 +118,17 @@
 								</div>
 							</div>
 						</div>
-						<div class="form-group row">
+						<div class="row sitefax">
 							<label class="col-sm-3 text-right padding">网址：</label>
 							<div class="col-sm-3 padding">
 								<input name="siteUrl" type="text"
 									class="form-control input-sm inpImportant" placeholder="请输入网址" />
 							</div>
-							<label class="col-sm-2 text-right padding">传真：</label>
-							<div class="col-sm-3 padding">
-								<input id="fax" name="fax" type="text" class="form-control input-sm inpImportant" placeholder="请输入传真" />
+							<div class="form-group fax">
+								<label class="col-sm-2 text-right padding">传真：</label>
+								<div  class="col-sm-3 padding">
+									<input id="fax" name="fax" type="text" class="form-control input-sm inpImportant" placeholder="请输入传真" />
+								</div>
 							</div>
 						</div>
 						<div class="row address">
@@ -423,7 +425,7 @@
 							regexp : {
 								regexp : /^[0-9a-zA-Z\u4e00-\u9fa5]{1,6}$/,
 								message : '公司简称长度为6',
-							},
+							}/* ,
 							remote : {
 								url : '${base}/admin/customer/checkShortNameExist.html',
 								message : '公司简称已存在，请重新输入!',
@@ -435,7 +437,7 @@
 										aId : '${obj.customer.id}'
 									};
 								}
-							}
+							} */
 						}
 					},
 					linkMan : {
