@@ -206,6 +206,7 @@
 			checkBoxShow();
 			/*小日历*/
 			minCalendarInit();
+			setInterval(taskEventList,1000*30);
 		});
 	</script>
 
@@ -236,8 +237,6 @@
 	<!-- 任务事件提醒 -->
 	<script type="text/javascript">
 		function taskEventList() {
-			//自动获取
-			setTimeout(taskEventList,1000*60);
 			//获取当前日期
 			var d = new Date();
 			if(d.getDate() < 10){
