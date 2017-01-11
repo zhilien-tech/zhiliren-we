@@ -116,8 +116,6 @@ function clearSearchTeamHtml(){
 	$("#teamAirLevel").val("1");
 }
 
-
-
 /* -------------------------日期小卡片 start------------------------------- */
 cardDate = function(v){
 	var d = new Date(v.getAttribute("value"));
