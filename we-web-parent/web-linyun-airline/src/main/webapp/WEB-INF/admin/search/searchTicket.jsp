@@ -154,6 +154,7 @@
 						   <input id="destination" name="destination" type="hidden"/>
 						   <input id="departuredate" name="departuredate" type="hidden"/>
                            <input id="returndate" name="returndate" type="hidden"/>
+                           <input id="addbtnStyle" type="hidden"/><!-- 目的：设置日期卡片的颜色 -->
                            <!-- 多程查询 start -->
                            <tr class="setMore">
                               <td><label>出发城市：</label></td>
