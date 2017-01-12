@@ -160,10 +160,26 @@ var clickfirst=1;
 $("#searchSingleTicketsBtn").click(function() {
 	var linkName = $("#linkNameId").select2("val");
 	var phoneNum = $("#phoneNumId").select2("val");
+	var outCity = $('#outCity0').find("option:selected").text();
+	var arriveCity = $('#singleArriveCity0').find("option:selected").text();
+	var outDatepicker = $("#outDatepicker0").val();
 	if(!(linkName || phoneNum)){
 		layer.msg("客户名称不能为空", "", 2000);
 		return;
 	}
+	if(outCity==""){
+		layer.msg('出发城市不能为空');
+		return;
+	}
+	if(arriveCity==""){
+		layer.msg('到达城市不能为空');
+		return;
+	}
+	if(outDatepicker==""){
+		layer.msg('出发日期不能为空');
+		return;
+	}
+	var msgIndex = layer.msg('查询中...',{time:0});
 	if(clickfirst){
 		var index = 0;
 		$("#origin").val($("#outCity"+index).select2("val"));
@@ -208,9 +224,11 @@ $("#searchSingleTicketsBtn").click(function() {
 		success : function(resp) {
 			var outLiList = "";
 			var returnLiList = "";
+			layer.close(msgIndex);
 			if ("200" == resp.statusCode) {
 				/* 日期小卡片  */
 				getDateCard();
+				
 				var outCodeStr = $("#outCity0").select2("val");
 				var arriveCodeStr = $("#singleArriveCity0").select2("val");
 				var outList = new Array();

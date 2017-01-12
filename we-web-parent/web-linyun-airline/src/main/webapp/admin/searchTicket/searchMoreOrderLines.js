@@ -21,6 +21,7 @@ function searchInlandOrder(){
 		layer.msg('出发日期不能为空');
 		return;
 	}
+	var msgIndex = layer.msg('查询中...',{time:0});
 	//显示区间
 	var area = $("#origin").val()+' --- '+$("#destination").val();
 	document.getElementById('travelArea').innerHTML=area;
@@ -51,9 +52,13 @@ function searchInlandOrder(){
 		success : function(resp) {
 			var outLiList = "";
 			var returnLiList = "";
+			layer.close(msgIndex);
 			if ("200" == resp.statusCode) {
 				/* 日期小卡片  */
 				getDateCard();
+				var clickBtnId = $("#addbtnStyle").val();
+				$("#"+clickBtnId).prop("class","btnStyle");
+				alert(clickBtnId);
 				var duanshu = $("#duanshuId").val();
 				if(duanshu != ""){
 					var outCodeStr = $("#outCity"+duanshu).select2("val");

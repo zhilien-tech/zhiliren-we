@@ -229,13 +229,13 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		if (resp.getStatusCode() == 400) {
 			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
 			String message = sabreExResponse.getMessage();
-			if (message.contains("origin")) {
+			if (message.contains("Parameter 'origin' must be specified")) {
 				sabreExResponse.setMessage("出发城市不能为空");
 			}
-			if (message.contains("destination")) {
+			if (message.contains("Parameter 'destination' must be specified")) {
 				sabreExResponse.setMessage("到达城市不能为空");
 			}
-			if (message.contains("departuredate")) {
+			if (message.contains("Parameter 'departuredate' must be specified")) {
 				sabreExResponse.setMessage("出发日期不能为空");
 			}
 			if (message.contains("arrivalDateTime")) {
@@ -243,6 +243,9 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			}
 			if (message.contains("No results")) {
 				sabreExResponse.setMessage("未查询到结果");
+			}
+			if (message.contains("Date range in 'departuredate' and 'returndate' exceeds the maximum allowed")) {
+				sabreExResponse.setMessage("出发日期和返回日期之差不超过15天");
 			}
 		}
 		if (resp.getStatusCode() == 404) {

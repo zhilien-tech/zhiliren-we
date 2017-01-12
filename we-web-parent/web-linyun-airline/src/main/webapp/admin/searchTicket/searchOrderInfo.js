@@ -109,7 +109,6 @@ function clearSearchHtml(){
 function clearSearchTeamHtml(){
 	$("#teamAirline").val(null).trigger("change");
 	document.getElementById('travelTeamTypeNum').innerHTML="";
-	document.getElementById('teamtbody').innerHTML="";
 	document.getElementById('datatable2_info').innerHTML="";
 	document.getElementById('datatable2_paginate').innerHTML="";
 	document.getElementById('datatable2').innerHTML="";
@@ -117,8 +116,8 @@ function clearSearchTeamHtml(){
 }
 
 /* -------------------------日期小卡片 start------------------------------- */
-cardDate = function(v){
-	var d = new Date(v.getAttribute("value"));
+cardDate = function(obj){
+	var d = new Date(obj.getAttribute("value"));
 	var seperator1 = "-";
 	var year = d.getFullYear();
 	var month = d.getMonth() + 1;
@@ -131,7 +130,8 @@ cardDate = function(v){
 	}
 	var cardStr = year +'-'+ month +'-'+ strDate;
 	$("#departuredate").val(cardStr);
-	var id = v.getAttribute("id");
+	var id = obj.getAttribute("id");
+	$("#addbtnStyle").val(id);
 	document.getElementById('paragraphListInfo').innerHTML="";
 	searchInlandOrder();
 }
