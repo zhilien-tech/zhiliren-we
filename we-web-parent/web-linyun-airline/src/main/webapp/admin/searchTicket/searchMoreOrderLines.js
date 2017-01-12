@@ -56,9 +56,10 @@ function searchInlandOrder(){
 			if ("200" == resp.statusCode) {
 				/* 日期小卡片  */
 				getDateCard();
-				var clickBtnId = $("#addbtnStyle").val();
-				$("#"+clickBtnId).prop("class","btnStyle");
-				alert(clickBtnId);
+				
+				/*清除按钮样式*/
+				clearBtnClass();
+				
 				var duanshu = $("#duanshuId").val();
 				if(duanshu != ""){
 					var outCodeStr = $("#outCity"+duanshu).select2("val");
@@ -90,7 +91,6 @@ function searchInlandOrder(){
 					}
 					/* 去程列表 */
 					for(var foot = 0; foot < outList.length;foot++){
-						var AirlineName = resp.data[i].airlineName;
 						var airlineCode = resp.data[i].airlineCode;
 						var FlightNumber = outList[foot].FlightNumber;
 						var ArrivalAirport = outList[foot].ArrivalAirport;
@@ -108,7 +108,6 @@ function searchInlandOrder(){
 					}
 					/* 返程列表 */
 					for(var foot = 0; foot < returnList.length;foot++){
-						var AirlineName = resp.data[i].airlineName;
 						var airlineCode = resp.data[i].airlineCode;
 						var FlightNumber = returnList[foot].FlightNumber;
 						var ArrivalAirport = returnList[foot].ArrivalAirport;
@@ -130,6 +129,7 @@ function searchInlandOrder(){
 				}else{
 					document.getElementById('paragraphListInfo').innerHTML=returnLiList;
 				}
+				
 			} else {
 				layer.msg(resp.data.message, "", 2000);
 			}

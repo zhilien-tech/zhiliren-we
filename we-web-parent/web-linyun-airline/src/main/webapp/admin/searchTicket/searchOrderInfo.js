@@ -241,7 +241,7 @@ function selectSingle(){
 /* -------------------------日期格式转换 end---------------------------- */
 
 
-/*跨海内陆*/
+/*内陆跨海*/
 document.getElementsByName("voyageType")[1].checked="checked";//radio 默认 选中往返
 /*国际*/
 document.getElementsByName("voyageType1")[1].checked="checked";//radio 默认 选中往返
@@ -249,17 +249,35 @@ document.getElementsByName("voyageType1")[1].checked="checked";//radio 默认 �
 
 
 //全局回车事件
-/*document.onkeydown=function(event){
-	var tab1Aira = $("#tab_1Id").attr("aria-expanded");
-	var tab2Aira = $("#tab_2Id").attr("aria-expanded");
+var keydownIndex = 0;
+document.onkeydown=function(event){
 	var e = event || window.event || arguments.callee.caller.arguments[0];
-	if(e && e.keyCode==13){ // enter 键
-		alert(tab1Aira +"-"+tab2Aira);
-		if(tab1Aira){
+	if(keydownIndex){
+		var tab1Aira = $("#tab_1Id").attr("aria-expanded");
+		var tab2Aira = $("#tab_2Id").attr("aria-expanded");
+		if(e && e.keyCode==13){ // enter 键
+			if(tab1Aira=="true"){
+				$("#searchSingleTicketsBtn").click();
+			}
+			if(tab2Aira=="true"){
+				$("#searchTeamTicketsBtn").click();
+			}
+		}
+	}else{
+		if(e && e.keyCode==13){ // enter 键
 			$("#searchSingleTicketsBtn").click();
 		}
-		if(tab2Aira){
-			$("#searchTeamTicketsBtn").click();
-		}
+		keydownIndex=1;
 	}
-}; */
+	
+}; 
+
+/*清除卡片按钮样式*/
+function clearBtnClass(){
+	$("#travelDateNum li").attr("class", "");
+	var clickBtnId = $("#addbtnStyle").val();
+	var btn = document.getElementById(clickBtnId);
+	if(btn){
+		btn.setAttribute("class", "btnStyle");
+	}
+}
