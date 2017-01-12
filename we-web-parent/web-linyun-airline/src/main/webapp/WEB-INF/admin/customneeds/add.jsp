@@ -75,7 +75,7 @@
 		             <label class="col-sm-2 text-right padding">联运要求：</label>
 		             <div class="col-sm-2 padding">
 		             	<select id="unioncity" name="unioncity" onchange="changeunioncity();" class="form-control select2" multiple="multiple"></select>
-		               <input name="uniontransport" id="uniontransport" type="hidden" class="form-control input-sm" placeholder=" " />
+		                <input name="uniontransport" id="uniontransport" type="hidden" class="form-control input-sm" placeholder=" " />
 		             </div>
 		           </div><!--end 人数/天数/联运要求-->
 				</div>
@@ -307,18 +307,10 @@
 		  }
 		  $(this).val(values);
 	  });
+	  $(".inputdatestr").bind("propertychange", function() { 
+	  	alert($(this).val()); 
+	  }); 
 </script>
 	
 </body>
 </html>	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	

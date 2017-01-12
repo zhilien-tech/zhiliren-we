@@ -150,11 +150,12 @@ public class CustomneedsModule {
 
 	/**
 	 * 下载模板
+	 * @throws Exception 
 	 */
 	@At
 	@GET
 	@Ok("json")
-	public Object downloadTemplate(HttpServletRequest request, HttpServletResponse response) {
+	public Object downloadTemplate(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		return customneedsViewService.downloadTemplate(request, response);
 	}
 

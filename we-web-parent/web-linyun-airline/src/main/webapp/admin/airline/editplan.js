@@ -69,9 +69,17 @@ function initDatatable2() {
                     },
                     {"data": "backsdate", "bSortable": false,
                     	render: function(data, type, row, meta) {
+                    		var backleavecity = row.backleavecity;
+                    		var backbackcity = row.backbackcity;
+                    		if(!row.backleavecity){
+                    			backleavecity = row.backscity;
+                    		}
+                    		if(!row.backbackcity){
+                    			backbackcity = row.leavescity;
+                    		}
                     		var result = '<ul>' 
                         		+'<li style="list-style:none;">'+(row.leavescity +'/'+ row.backscity)+'</li>'
-                        		+'<li style="list-style:none;">'+(row.backleavecity +'/'+ row.backbackcity)+'</li>'
+                        		+'<li style="list-style:none;">'+(backleavecity +'/'+ backbackcity)+'</li>'
                         		+'</ul>';
                     		return result;
                     	}
@@ -309,8 +317,8 @@ function batchClosePlan(){
 				url: BASE_PATH + '/admin/customneeds/betchClosePlan.html',
 				success: function (data) { 
 					layer.alert("关闭成功",{time: 2000, icon:1});
-					datatable2.ajax.reload(null,false);
 					$('#checkedboxval').val('');
+					datatable2.ajax.reload(null,false);
 					$('.checkall').attr('checked',false);
 				},
 				error: function (xhr) {
@@ -339,6 +347,7 @@ function generateOrderNum(){
 				url: BASE_PATH + '/admin/customneeds/generateOrderNum.html',
 				success: function (data) { 
 					layer.alert("生成成功",{time: 2000, icon:1});
+					$('#checkedboxval').val('');
 					datatable2.ajax.reload();
 					$('.checkall').attr('checked',false);
 				},
