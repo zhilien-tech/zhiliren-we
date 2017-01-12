@@ -51,9 +51,17 @@ function initDatatable1() {
                     },
                     {"data": "backsdate", "bSortable": false,
                     	render: function(data, type, row, meta) {
+                    		var backleavecity = row.backleavecity;
+                    		var backbackcity = row.backbackcity;
+                    		if(!row.backleavecity){
+                    			backleavecity = row.backscity;
+                    		}
+                    		if(!row.backbackcity){
+                    			backbackcity = row.leavescity;
+                    		}
                     		var result = '<ul>' 
                         		+'<li style="list-style:none;">'+(row.leavescity +'/'+ row.backscity)+'</li>'
-                        		+'<li style="list-style:none;">'+(row.backleavecity +'/'+ row.backbackcity)+'</li>'
+                        		+'<li style="list-style:none;">'+(backleavecity +'/'+ backbackcity)+'</li>'
                         		+'</ul>';
                     		return result;
                     	}
@@ -487,17 +495,23 @@ function select_change(obj,status){
         addMake_aa.find('.checkWeek').slideUp("slow");//checked hide
         addMake_aa.find('.hidnCalendar').slideDown("slow");//div show
         addMake_aa.find('.hidnBtn').slideDown("slow");//show 隐藏日历 按钮
+        addMake_aa.find('[name=congcong]').hide();//show 隐藏开始日期
+        //addMake_aa.find('[name=startenddate]').hide();//show 隐藏结束日期
      }else{
     	 if(status){
     		 addMake_aa.find('.checkWeek').show();//checked show
     		 addMake_aa.find('.hidnCalendar').hide();//div hide
     		 addMake_aa.find('.hidnBtn').hide();//hide 隐藏日历 按钮
     		 addMake_aa.find('.showBtn').hide();
+    		 addMake_aa.find('[name=congcong]').show();//show 显示开始日期
+    	     //addMake_aa.find('[name=startenddate]').show();//show 显示结束日期
     	 }else{
     		 addMake_aa.find('.checkWeek').slideDown("slow");//checked show
     		 addMake_aa.find('.hidnCalendar').slideUp("slow");//div hide
     		 addMake_aa.find('.hidnBtn').slideUp("slow");//hide 隐藏日历 按钮
     		 addMake_aa.find('.showBtn').slideUp("slow");
+    		 addMake_aa.find('[name=congcong]').show();//show 显示开始日期
+    	     //addMake_aa.find('[name=startenddate]').show();//show 显示结束日期
     	 }
   };
 }
@@ -802,19 +816,41 @@ function checkIsNull(){
 			result = false;
 			return false;
 		}*/
+		var weekSelect = $(this).find('[id=weekSelect]').val();
 		var startdate = $(this).find('[name=startdate]').val();
-		if(!startdate){
-			layer.alert("请填写第"+(i+1)+"个起始日期",{time: 2000, icon:1});
-			result = false;
-			return false;
+		if(weekSelect==2){
+			var calenderdate = $(this).find('[name=calenderdate]').val();
+			if(!calenderdate){
+				layer.alert("请选择第"+(i+1)+"个自由日期",{time: 2000, icon:1});
+				result = false;
+				return false;
+			}
+		}else{
+			if(!startdate){
+				layer.alert("请填写第"+(i+1)+"个起始日期",{time: 2000, icon:1});
+				result = false;
+				return false;
+			}
+			var enddate = $(this).find('[name=enddate]').val();
+			if(!enddate){
+				layer.alert("请填写第"+(i+1)+"个截止日期",{time: 2000, icon:1});
+				result = false;
+				return false;
+			}
+			var weekday =[];    
+			$(this).find('input[name="weekday"]:checked').each(function(){    
+				weekday.push($(this).val());    
+			});   
+			if (weekday) {
+				weekday = weekday.join(',');
+			}
+			if(!weekday){
+				layer.alert("请选择第"+(i+1)+"个每周",{time: 2000, icon:1});
+				result = false;
+				return false;
+			}
 		}
-		var enddate = $(this).find('[name=enddate]').val();
-		if(!enddate){
-			layer.alert("请填写第"+(i+1)+"个截止日期",{time: 2000, icon:1});
-			result = false;
-			return false;
-		}
-		var calenderdate = $(this).find('[name=calenderdate]').val();
+		/*var calenderdate = $(this).find('[name=calenderdate]').val();
 		var weekday =[];    
 		$(this).find('input[name="weekday"]:checked').each(function(){    
 			weekday.push($(this).val());    
@@ -826,7 +862,7 @@ function checkIsNull(){
 			layer.alert("请选择第"+(i+1)+"个每周或自由中的一种",{time: 2000, icon:1});
 			result = false;
 			return false;
-		}
+		}*/
 	});
 	return result;
 }
