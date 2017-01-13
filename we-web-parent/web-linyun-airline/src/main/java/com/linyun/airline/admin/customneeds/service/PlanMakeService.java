@@ -217,9 +217,15 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		//页面选择的起始日期
-		Date startdate = DateUtil.string2Date(addForm.getStartdate(), DateUtil.FORMAT_YYYY_MM_DD);
+		Date startdate = null;
+		if (!Util.isEmpty(addForm.getStartdate())) {
+			startdate = DateUtil.string2Date(addForm.getStartdate(), DateUtil.FORMAT_YYYY_MM_DD);
+		}
 		//页面选择的结束日期
-		Date enddate = DateUtil.string2Date(addForm.getEnddate(), DateUtil.FORMAT_YYYY_MM_DD);
+		Date enddate = null;
+		if (!Util.isEmpty(addForm.getEnddate())) {
+			enddate = DateUtil.string2Date(addForm.getEnddate(), DateUtil.FORMAT_YYYY_MM_DD);
+		}
 		//根据航班号获取航空公司名称
 		String airLineName = (String) this.getAirCompanyByAirLine(addForm.getLeaveairline()).get("dictCode");
 		//自由制作计划

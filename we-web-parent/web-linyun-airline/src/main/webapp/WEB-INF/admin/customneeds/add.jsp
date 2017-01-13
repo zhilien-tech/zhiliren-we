@@ -235,13 +235,13 @@
 	                    }
 	                }
 	            },
-	            leavedateString:{
+	            /* leavedateString:{
 	                validators: {
 	                    notEmpty: {
 	                        message: '去程日期不能为空'
 	                    }
 	                }
-	            },
+	            }, */
 	            leavescity:{
 	                validators: {
 	                    notEmpty: {
@@ -256,13 +256,13 @@
 	                    }
 	                }
 	            },
-	            backdateString:{
+	            /* backdateString:{
 	                validators: {
 	                    notEmpty: {
 	                        message: '回程日期不能为空'
 	                    }
 	                }
-	            },
+	            }, */
 	            backscity:{
 	                validators: {
 	                    notEmpty: {

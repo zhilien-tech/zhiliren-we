@@ -88,7 +88,7 @@
 		           <div class="form-group"><!--去程日期/出发城市/出发航班-->
 		             <label class="col-sm-2 text-right padding customerEdit">去程日期：</label>
 		             <div class="col-sm-2 padding">
-		               <input id="leavedateString" name="leavedateString"  type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'backdateString\')}'})" class="form-control input-sm" value="<fmt:formatDate value="${obj.leavedate}" pattern="yyyy-MM-dd" />"/>
+		               <input id="leavedateString" name="leavedateString"  type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'backdateString\')}'})" class="form-control input-sm" value="<fmt:formatDate value="${obj.leavedate}" pattern="yyyy-MM-dd" />"/>
 		             </div>
 		            </div>
 					<div class="form-group form-group1">
