@@ -10,14 +10,7 @@
 <title>查询</title>
 <!-- Bootstrap 3.3.6 -->
 <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
-<link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
-<!-- 图标 -->
-<link rel="stylesheet" href="${base}/public/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href="${base}/public/ionicons/css/ionicons.min.css">
-<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
-<link rel="stylesheet" href="${base}/public/dist/css/skins/_all-skins.min.css">
 <link rel="stylesheet" href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
-<link rel="stylesheet" href="${base}/public/dist/css/bootstrapValidator.css" />
 <link rel="stylesheet" href="${base}/public/dist/css/query.css"><!--本页面styleFlie-->
 
 </head>
@@ -341,14 +334,8 @@
 		<script type="text/javascript">
 			var BASE_PATH = '${base}';
 		</script>
-		<!-- jQuery 2.2.3 -->
-		<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
-		<!-- Bootstrap 3.3.6 -->
-		<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
-		<!-- Slimscroll -->
-		<script src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-		<!-- FastClick -->
-		<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
+		
+		
 		<!-- select2 -->
 		<script src="${base}/public/plugins/select2/select2.full.min.js"></script>
 		<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
@@ -369,9 +356,6 @@
 		<script src="${base}/admin/searchTicket/searchTeamMoreLine.js"></script>
 		<!-- 多条件查询 -->
 		<script src="${base}/admin/searchTicket/searchMoreOrderLines.js"></script>
-		<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
-		<!-- layer -->
-		<script src="${base}/common/js/layer/layer.js"></script>
 		<script type="text/javascript">
 	      $(function(){
 	        //校验
