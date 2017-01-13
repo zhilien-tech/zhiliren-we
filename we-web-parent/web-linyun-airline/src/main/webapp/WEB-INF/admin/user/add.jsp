@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
 <style type="text/css">
 .select2-container {
-	width: 95.5% !important;
+	width: 98.5% !important;
 	display: inline-block;
 }
 
@@ -24,6 +24,8 @@
 .inpNone .select2 .selection span ul li+li {
 	display: none;
 }
+/**验证时对勾的位置*/
+.form-control-feedback {position: absolute;top: -2px;right: -25px;}
 </style>
 
 </head>
@@ -36,42 +38,50 @@
     	<form id="addUserForm" method="post">
            <div class="modal-body">
               <div class="tab-content">
-                  <div class="form-group row">
-                      <label class="col-sm-3 text-right padding">用户姓名：</label>
-                      <div class="col-sm-3 padding">
-                        <input id="userName" name="userName" type="text" class="form-control input-sm inputWidth" placeholder="请输入用户姓名" />
-                        <span class="prompt">*</span>
-                      </div>
-                    
-                      <label class="col-sm-2 text-right padding">用户名/手机号码：</label>
-                      <div class="col-sm-3 padding">
-                        <input id="telephone" name="telephone" type="text" class="form-control input-sm inputWidth" placeholder="请输入用户名/手机号码" />
-                        <span class="prompt">*</span>
-                      </div>
+                  <div class="row">
+                  	<div class="form-group">
+                  		<label class="col-sm-3 text-right padding">用户姓名：</label>
+                      	<div class="col-sm-3 padding">
+                        	<input id="userName" name="userName" type="text" class="form-control input-sm inputWidth" placeholder="请输入用户姓名" />
+                        	<span class="prompt">*</span>
+                      	</div>
+                  	</div>
+	               	<div class="form-group form-group1">
+	                   <label class="col-sm-2 text-right padding">用户名/手机号码：</label>
+	                   <div class="col-sm-3 padding">
+	                     <input id="telephone" name="telephone" type="text" class="form-control input-sm inputWidth" placeholder="请输入用户名/手机号码" />
+	                     <span class="prompt">*</span>
+	                   </div>
+                    </div>
                   </div>
 
-                  <div class="form-group row">
+                  <div class="row">
+                  	<div class="form-group">
                       <label class="col-sm-3 text-right padding">联系QQ：</label>
                       <div class="col-sm-3 padding">
                         <input id="qq" name="qq" type="text" class="form-control input-sm inputWidth" placeholder="请输入联系QQ" />
                       </div>
-                    
+                    </div>
+                    <div class="form-group form-group1">
                       <label class="col-sm-2 text-right padding">座机号码：</label>
                       <div class="col-sm-3 padding">
                         <input id="landline" name="landline" type="text" class="form-control input-sm inputWidth" placeholder="请输入座机号码" />
                       </div>
+                     </div>
                   </div>
 
-                  <div class="form-group row">
+                  <div class="row">
+                  	<div class="form-group">
                       <label class="col-sm-3 text-right padding">电子邮箱：</label>
                       <div class="col-sm-3 padding">
                         <input id="email" name="email" type="eamil" class="form-control input-sm inputWidth" placeholder="请输入邮箱" />
                       </div>
-                    
+                    </div>
+                    <div class="form-group form-group1">
                      <label class="col-sm-2 text-right padding">所属部门：</label>
                       <div class="col-sm-3 padding">
                         <select id="deptId" name="deptId" onchange="selectDeptName();" class="form-control input-sm inputWidth">
-                         	<option>--请选择--</option>
+                         	<option value="">--请选择--</option>
                          	<c:forEach items="${obj}" var="one">
 	                           	<option value="${one.id }">
 	                           		${one.deptName }
@@ -80,17 +90,20 @@
                         </select>
                         <span class="prompt">*</span>
                       </div>
+                     </div>
                   </div>
 
-                  <div class="form-group row">
+                  <div class="row">
+                  	<div class="form-group">
                       <label class="col-sm-3 text-right padding">用户职位：</label>
                       <div class="col-sm-3 padding">
                          <select id="jobId" name="jobId" class="form-control input-sm inputWidth">
-                 			<option>--请选择--</option>
+                 			<option value="">--请选择--</option>
               			 </select>
                         <span class="prompt">*</span>
                       </div>
-
+                    </div>
+					<div class="form-group form-group1">
                       <label class="col-sm-2 text-right padding">用户是否禁用：</label>
                       <div class="col-sm-3 padding">
                         <select id="disableStatus" name="disableStatus" class="form-control input-sm inputWidth">
@@ -98,11 +111,13 @@
                           <option value="1">是</option>
                         </select>
                       </div>
+                     </div>
                   </div>
-
-                  <div class="form-group row">
+				
+                  <div class="row">
+                  	<div class="form-group">
                       <label class="col-sm-3 text-right padding">负责区域：</label>
-                      <div class="col-sm-3 padding">
+                      <div class="col-sm-8 padding">
                          <select id="areaSelect" name="dictAreaName" onchange="setSelectedAreaIds();"
 							class="form-control select2 inpImpWid" multiple="multiple"
 							data-placeholder="请输入区域名称">
@@ -111,6 +126,7 @@
 						 <input id="selectedAreaIds" name="selectedAreaIds" type="hidden"/>
                          <span class="prompt">*</span>
                       </div>
+                     </div>
                   </div>
                   	<!-- 设置已选中的项 -->
 					<script type="text/javascript">
@@ -276,7 +292,6 @@ $("#submit").click(function() {
 				layer.load(1, {
 					 shade: [0.1,'#fff'] //0.1透明度的白色背景
 				});
-              	layer.msg('添加成功!',{time: 5000, icon:6});
 				formValidator();
 				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			    parent.layer.close(index);

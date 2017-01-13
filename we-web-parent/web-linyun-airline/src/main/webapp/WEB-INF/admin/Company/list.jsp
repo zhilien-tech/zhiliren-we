@@ -12,23 +12,29 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">&nbsp;&nbsp;<i class="fa fa-users"></i> 公司管理</h3>
               <div class="form-group row form-right">
              
-                
                 <div class="col-md-3"><!--公司名称/负责人/电话 搜索框-->
                   <input type="text" name="companyName" id="companyName" class="form-control" placeholder="公司名称/负责人/电话" onkeypress="onkeyEnter();">
                 </div>
-                <div class="col-md-2 col-padding"><!--搜索 恢复默认 按钮-->
+                <div class="col-md-2">
+                  <select class="form-control input-sm inpImportant" name="comType" id="comType" onchange="selectListData();">
+                     <option value="">==请选择==</option>
+                   	 <c:forEach var="map" items="${obj.companyTypeEnum}" >
+			   		    <option value="${map.key}">${map.value}</option>
+				     </c:forEach>
+                  </select>
+                </div>
+                <div class="col-md-7 col-padding"><!--搜索 恢复默认 按钮-->
                   <button id="searchBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
+                  <a class="btn btn-primary btn-sm right" onclick="add();">添加</a>
                 </div>
               
-                <div class="col-md-1 col-md-offset-6 paddiLeAdd">
+               <%--  <div class="col-md-1 col-md-offset-6 paddiLeAdd">
                   <!-- <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" >添加</button> -->
-                  <%-- <button type="button" class="btn btn-primary btn-sm" onClick="window.open('${url}/add.html', 'newwindow', 'height=500, width=800, top=120, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no');">添加</button> --%>
-                  <%-- <a data-toggle="modal" href="${url }/add.html" data-target="#addTabs">添加</a> --%>
-                  <a class="btn btn-primary btn-sm" onclick="add();">添加</a>
-                </div>
+                  <button type="button" class="btn btn-primary btn-sm" onClick="window.open('${url}/add.html', 'newwindow', 'height=500, width=800, top=120, left=500, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no');">添加</button>
+                  <a data-toggle="modal" href="${url }/add.html" data-target="#addTabs">添加</a>
+                </div> --%>
 				
               </div>
             </div>
@@ -86,6 +92,7 @@ function initDatatable() {
     	"bLengthChange": false,
         "processing": true,
         "serverSide": true,
+        "stripeClasses": [ 'strip1','strip2' ],
         "language": {
             "url": "${base}/public/plugins/datatables/cn.json"
         },
@@ -125,8 +132,10 @@ function initDatatable() {
 
 	$("#searchBtn").on('click', function () {
 		var companyName = $("#companyName").val();
+		var comType = $('#comType').val();
 	    var param = {
-	        "companyName": companyName
+	        "companyName": companyName,
+			"comType" : comType
 	    };
 	    datatable.settings()[0].ajax.data = param;
 	    datatable.ajax.reload();
@@ -140,7 +149,7 @@ $(function () {
       layer.open({
     	    type: 2,
     	    title: false,
-    	    closeBtn:true,
+    	    closeBtn:false,
     	    fix: false,
     	    maxmin: false,
     	    shadeClose: false,
@@ -158,7 +167,7 @@ $(function () {
   	    fix: false,
   	    maxmin: false,
   	    shadeClose: false,
-  	    area: ['900px', '700px'],
+  	    area: ['900px', '590px'],
   	    content: '${url}/update.html?id='+id
   	  });
   }
@@ -171,17 +180,23 @@ $(function () {
   	    maxmin: false,
   	    shadeClose: true,
   	    area: ['900px', '600px'],
-  	    content: '${url}/userList.html?id='+id
-  	    
+  	    content: '${url}/userList.html?id='+id,
+  	  	end:function(){
+	    	datatable.ajax.reload(null,false);
+	    }
   	  });
   }
   function onkeyEnter(){
-		 if(event.keyCode==13){
+	     var e = window.event || arguments.callee.caller.arguments[0];
+	     if(e && e.keyCode == 13){
 			 $("#searchBtn").click();
 		 }
 	}
+  function selectListData(){
+	  $("#searchBtn").click();
+  }
   function successCallback(id){
-	  datatable.ajax.reload();
+	  datatable.ajax.reload(null,false);
 	  loadCompanyCount();
 	  if(id == '1'){
 		  layer.msg("添加成功",{time: 2000, icon:1});

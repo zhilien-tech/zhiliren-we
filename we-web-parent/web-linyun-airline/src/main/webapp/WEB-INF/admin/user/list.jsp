@@ -6,6 +6,7 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>员工管理</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -122,7 +123,7 @@
 	}
 	//事件提示
 	function successCallback(id){
-		empTable.ajax.reload();
+		empTable.ajax.reload(null,false);
 		  if(id == '1'){
 			  layer.msg("添加成功",{time: 2000, icon:1});
 		  }else if(id == '2'){
@@ -182,6 +183,7 @@
 			"searching" : false,
 			"processing" : true,
 			"serverSide" : true,
+			"stripeClasses": [ 'strip1','strip2' ],//斑马线
 			"bLengthChange" : false,
 			"bSort": true, //排序功能 
 			"language" : {

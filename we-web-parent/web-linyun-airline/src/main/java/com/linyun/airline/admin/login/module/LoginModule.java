@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.mvc.ViewModel;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.GET;
@@ -32,14 +33,13 @@ public class LoginModule {
 	@At
 	@POST
 	@Filters
-	@Ok("jsp:${obj == null ? 'main' : 'admin.login'}")
+	@Ok("re")
 	//登录成功返回主页,失败返回登录页
-	public Object login(@Param("..") final LoginForm form, final HttpSession session, final HttpServletRequest req) {
-
-		if (!loginService.login(form, session, req)) {
-			return form;
-		}
-		return null;
+	public Object login(@Param("..") final LoginForm form, final HttpSession session, final HttpServletRequest req,
+			ViewModel model) {
+		loginService.login(form, session, req);
+		model.setv("errMsg", form.getErrMsg());
+		return form.getReturnUrl();
 	}
 
 	@At

@@ -23,6 +23,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
+import org.nutz.dao.util.cri.SqlExpressionGroup;
 
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
@@ -55,9 +56,11 @@ public class TCustomerInfoSqlForm extends DataTablesParamForm {
 	public Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		//TODO 添加自定义查询条件（可选）
+		SqlExpressionGroup group = new SqlExpressionGroup();
+		group.and("i.name", "LIKE", "%" + name + "%").or("u.userName", "LIKE", "%" + name + "%")
+				.or("i.telephone", "LIKE", "%" + name + "%");
 		if (!Util.isEmpty(name)) {
-			cnd.and("i.name", "LIKE", "%" + name + "%").or("u.userName", "LIKE", "%" + name + "%")
-					.or("i.telephone", "LIKE", "%" + name + "%");
+			cnd.and(group);
 		}
 		if (!Util.isEmpty(contract)) {
 			cnd.and("i.contract", "=", contract);

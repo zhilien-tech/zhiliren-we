@@ -27,35 +27,35 @@
             <div class="personalTable">
               <table id="PersonDatatable" class="table table-bordered table-hover">
                 <tbody>
-                  <tr>
+                  <tr class="strip1">
                     <td>用户名称</td>
                     <td>${obj.personalInfo[0].userName}</td>
                   </tr>
-                  <tr>
+                  <tr class="strip2">
                     <td>用户名/手机号码</td>
                     <td>${obj.personalInfo[0].telephone }</td>
                   </tr>
-                  <tr>
+                  <tr class="strip1">
                     <td>座机号码</td>
                     <td>${obj.personalInfo[0].landline }</td>
                   </tr>
-                  <tr>
+                  <tr class="strip2">
                     <td>联系QQ</td>
                     <td>${obj.personalInfo[0].qq }</td>
                   </tr>
-                  <tr>
+                  <tr class="strip1">
                     <td>电子邮箱</td>
                     <td>${obj.personalInfo[0].email }</td>
                   </tr>
-                  <tr>
+                  <tr class="strip2">
                     <td>所属部门</td>
                     <td>${obj.personalInfo[0].deptName }</td>
                   </tr>
-                  <tr>
+                  <tr class="strip1">
                     <td>用户职位</td>
                     <td>${obj.personalInfo[0].jobName }</td>
                   </tr>
-                   <tr>
+                   <tr class="strip2">
                     <td>负责区域</td>
                     <td>${obj.personalInfo[0].areaName }</td>
                   </tr>
@@ -77,7 +77,7 @@ function updatePassword(){
   layer.open({
 	    type: 2,
 	    title: false,
-	  	closeBtn:true,
+	  	closeBtn:false,
 	    fix: false,
 	    maxmin: false,
 	    shadeClose: false,
@@ -102,7 +102,7 @@ function editPersonal(userId){
 }
 //事件提示
 function successCallback(id){
-	PersonDatatable.ajax.reload();
+	PersonDatatable.ajax.reload(null,false);
 	  if(id == '1'){
 		  layer.msg("密码修改成功!",{time: 2000, icon:1});
 	  }else if(id == '2'){

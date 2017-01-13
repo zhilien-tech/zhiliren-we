@@ -37,74 +37,30 @@
 	<script src="${base}/public/plugins/fastclick/fastclick.js"></script><!-- FastClick -->
 	<script src="${base}/common/js/layer/layer.js"></script>
 <script type="text/javascript">
-//验证输入内容不能为空
-/* $(document).ready(function(){
-	$('#passwordForm').bootstrapValidator({
-		message: '验证不通过!',
-	    feedbackIcons: {
-	        valid: 'glyphicon glyphicon-ok',
-	        invalid: 'glyphicon glyphicon-remove',
-	        validating: 'glyphicon glyphicon-refresh'
-	    },
-	    fields: {
-	    	oldPass: {
-	            validators: {
-	                notEmpty: {
-	                    message: '原密码不能为空!'
-	                }
-	            }
-	        },
-	        newPass: {
-	        	validators: {
-	                notEmpty: {
-	                    message: '新密码不能为空!'
-	                }
-	            }
-	        },
-	        repeatPass: {
-	        	validators: {
-	        		notEmpty: {
-	                    message: '重复输入新密码不能为空!'
-	                }
-	            }
-	        }
-	    }
-	});
-}); */
-</script>
-<script type="text/javascript">
 //修改密码
 $("#submit").click(function() {
-	/* $('#passwordForm').bootstrapValidator('validate');
-	var bootstrapValidator = $("#passwordForm").data('bootstrapValidator');
-	if(bootstrapValidator.isValid()){ */
-		//验证两次输入密码是否一致
-		/* var _newPass = $("#newPass").val();
-		var _repeatPass = $("#repeatPass").val();
-		if(_newPass != _repeatPass){
-			alert('对不起，两次输入密码不一致!');
-			return;
-		} */
-		alert($('#passwordForm').serialize());
-		$.ajax({
-			cache : true,
-			type : "POST",
-			url : '${base}/admin/user/updatePassData.html',
-			data : $('#passwordForm').serialize(),//form表单数据
-			success : function(data) {
-				layer.load(1, {
-					 shade: [0.1,'#fff'] //0.1透明度的白色背景
-				});
-	            layer.msg('密码修改成功!',{time: 5000, icon:6});
-				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-			    parent.layer.close(index);
-			    window.location.reload();
-			},
-			error : function(request) {
-				layer.msg('密码修改失败!');
+	var loadLayer = layer.load(0.1, {
+		 shade: [0.1,'#fff'] //0.1透明度的白色背景
+	});
+	$.ajax({
+		type: 'POST',
+		dataType : 'json',
+		async: false,
+		data: $("#passwordForm").serialize(),//form表单数据
+		url: '${base}/admin/user/updatePassword.html',
+        success: function (data) { 
+        	if(data.status == '200'){
+				layer.close(loadLayer);
+				window.parent.location.href="${base}/admin/logout.html";//密码修改成功跳到登录页
+			}else{
+				layer.close(loadLayer) ;
+				layer.msg(data.message) ;
 			}
-		});
- 	/* } */
+        },
+        error: function (request) {
+        	layer.msg("密码修改失败!","",3000);
+        } 
+    });
 });
 //验证原密码是否输入正确
 /* function checkOldPass(userId){

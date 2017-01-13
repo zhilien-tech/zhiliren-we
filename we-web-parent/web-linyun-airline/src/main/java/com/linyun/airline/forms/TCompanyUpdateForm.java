@@ -22,7 +22,7 @@ public class TCompanyUpdateForm extends ModForm implements Serializable {
 	private String comName;
 
 	/**公司类型*/
-	private String comType;
+	private int comType;
 
 	/**备注*/
 	private String remark;

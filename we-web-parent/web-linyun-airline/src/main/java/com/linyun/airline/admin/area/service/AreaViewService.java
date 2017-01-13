@@ -24,7 +24,34 @@ public class AreaViewService extends BaseService<TAreaEntity> {
 	@Inject
 	private UserViewService userViewService;
 
-	//校验名称名称唯一性
+	/*//添加区域保存
+	public Object addAreaName(TAreaAddForm addForm, final HttpSession session) {
+		//通过session获取当前登录用户的id
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		Long userId = user.getId();//得到用户的id
+		//先添加区域
+		TAreaEntity areaEntity = new TAreaEntity();
+		areaEntity.setAreaName(addForm.getAreaName());
+		areaEntity.setCreateTime(new Date());
+		areaEntity.setRemark(addForm.getRemark());
+		areaEntity = dbDao.insert(areaEntity);
+		//获取到区域id
+		Long areaId = areaEntity.getId();
+		//往用户区域表中填数据
+		TUserAreaMapEntity areaEntities = new TUserAreaMapEntity();
+		areaEntities.setAreaId(areaId);
+		areaEntities.setUserId(userId);
+		dbDao.insert(areaEntities);
+		return JsonResult.success("添加成功!");
+	}*/
+
+	//区域名称保存
+	public Object addAreaName(TAreaAddForm addForm) {
+		TAreaEntity areaEntity = this.add(addForm);
+		return dbDao.insert(areaEntity);
+	}
+
+	//校验区域名称唯一性
 	public Object checkAreaNameExist(final String areaName, final Long areaId) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		int count = 0;
@@ -57,11 +84,4 @@ public class AreaViewService extends BaseService<TAreaEntity> {
 			}
 		});
 	}
-
-	//区域名称保存
-	public Object addAreaName(TAreaAddForm addForm) {
-		TAreaEntity areaEntity = this.add(addForm);
-		return dbDao.insert(areaEntity);
-	}
-
 }

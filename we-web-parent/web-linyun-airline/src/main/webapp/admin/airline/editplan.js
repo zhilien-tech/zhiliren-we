@@ -6,6 +6,7 @@ function initDatatable2() {
     	"bLengthChange": false,
         "processing": true,
         "serverSide": true,
+        "stripeClasses": [ 'strip1','strip2' ],
         "language": {
             "url": BASE_PATH + "/public/plugins/datatables/cn.json"
         },
@@ -13,7 +14,6 @@ function initDatatable2() {
             "url": BASE_PATH + "/admin/customneeds/listEditPlanData.html",
             "type": "post",
             "data": function (d) {
-            	
             }
         },
         "fnDrawCallback" : function(){
@@ -26,39 +26,85 @@ function initDatatable2() {
         "columns": [
                 	{"data": "id", "bSortable": false,
                     	"render": function (data, type, row, meta) {
-                            return '<input type="checkbox"  class="checkchild"  value="' + row.id + '" />';
+                    		var result = '';
+                    		var hiddenval = $('#checkedboxval').val();
+                    		var splits = hiddenval.split(',');
+                    		var flag = false;
+                    		for(var i=0;i<splits.length;i++){
+                    			if(splits[i] == row.id){
+                    				flag = true;
+                    			}
+                    		}	
+                    		if(flag){
+                    			result = '<input type="checkbox"  class="checkchild" checked="true" value="' + row.id + '" />';
+                    		}else{
+                    			result = '<input type="checkbox"  class="checkchild" value="' + row.id + '" />';
+                    		}
+                            return result;
                         }
                     },
                     {"data": "xuhao", "bSortable": false},
-                    {"data": "dingdanhao", "bSortable": false},
-                    {"data": "airlinename", "bSortable": false},
                     {"data": "leavesdate", "bSortable": false,
                     	render: function(data, type, row, meta) {
                     		var leavesdate = new Date(row.leavesdate);
-                    		var MM = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][leavesdate.getMonth()];
-                    		return leavesdate.getDate() + "/" + MM;
+                    		var backsdate = new Date(row.backsdate);
+                    		var MM = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'][leavesdate.getMonth()];
+                    		var week = ['MO','TU','WE','TH','FR','SA','SU'][leavesdate.getUTCDay()]
+                    		var MM2 = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'][backsdate.getMonth()];
+                    		var week2 = ['MO','TU','WE','TH','FR','SA','SU'][backsdate.getUTCDay()]
+                    		var result = '<ul><li style="list-style:none;">'+(week+leavesdate.getDate() + MM)+'</li>'
+                    		+'<li style="list-style:none;">'+(week2+backsdate.getDate() + MM2)+'</li>'
+                    		+'</ul>';
+                    		return result;
                     	}
                     },
                     {"data": "leavescity", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		return row.leavescity;
+                    		var result = '<ul>'
+                        		+'<li style="list-style:none;">'+row.leaveairline+'</li>'
+                        		+'<li style="list-style:none;">'+row.backairline+'</li>'
+                        		+'</ul>';
+                    		return result;
                     	}
                     },
                     {"data": "backsdate", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		var backsdate = new Date(row.backsdate);
-                    		var MM = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][backsdate.getMonth()];
-                    		return backsdate.getDate() + "/" + MM;
+                    		var backleavecity = row.backleavecity;
+                    		var backbackcity = row.backbackcity;
+                    		if(!row.backleavecity){
+                    			backleavecity = row.backscity;
+                    		}
+                    		if(!row.backbackcity){
+                    			backbackcity = row.leavescity;
+                    		}
+                    		var result = '<ul>' 
+                        		+'<li style="list-style:none;">'+(row.leavescity +'/'+ row.backscity)+'</li>'
+                        		+'<li style="list-style:none;">'+(backleavecity +'/'+ backbackcity)+'</li>'
+                        		+'</ul>';
+                    		return result;
                     	}
                     },
                     {"data": "backscity", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		return row.backscity;
+                    		var result = '<ul>' 
+                        		+'<li style="list-style:none;">'+(row.lleavetime +'/'+ row.lbacktime)+'</li>'
+                        		+'<li style="list-style:none;">'+(row.bleavetime +'/'+ row.bbacktime)+'</li>'
+                        		+'</ul>';
+                    		return result;
                     	}	
                     },
                     {"data": "peoplecount", "bSortable": false},
+                    {"data": "foc", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var result = '否';
+                    		if(row.foc == 1){
+                    			result = '16/1';
+                    		}
+                    		return result;
+                    	}
+                    },
                     {"data": "dayscount", "bSortable": false},
-                    {"data": "travelname", "bSortable": false},
+                    {"data": "travelnames", "bSortable": false},
                     {"data": "unioncity", "bSortable": false}
             ],
         columnDefs: [{
@@ -73,23 +119,79 @@ function initDatatable2() {
             }
     	},{
             //   指定第一列，从0开始，0表示第一列，1表示第二列……
-            targets: 12,
+            targets: 11,
             render: function(data, type, row, meta) {
-            	var s = '<a style="cursor:pointer;" onclick="editplan('+row.id+');">编辑</a>';
+            	var s = '';
             	if(row.isclose == 0){
+            		s += '<a style="cursor:pointer;" onclick="editplan('+row.id+');">编辑</a>';
             		s += '&nbsp;&nbsp;&nbsp;<a style="cursor:pointer;" onclick="closeEditPlan('+row.id+');">关闭</a>';
             	}else{
             		s += '&nbsp;&nbsp;&nbsp;<a style="cursor:pointer;" onclick="enableEditPlan('+row.id+');">启用</a>';
             	}
                 return s
             }
-    	}]
+    	}],
+    	"infoCallback": function (settings, start, end, max, total, pre) {
+    		var length = $(".checkchild:checked").length;
+    		if(datatable2.page.len() == length){
+    			$(".checkall").prop("checked", true);
+    		}else{
+    			$(".checkall").prop("checked", false);
+    			
+    		}
+    		return '显示第 '+start+' 至 '+end+' 条结果，共'+total+' 条 (每页显示 '+max+' 条)'
+    	}
     });
 }
 //控制复选框
 $(".checkall").click(function () {
     var check = $(this).prop("checked");
     $(".checkchild").prop("checked", check);
+    //隐藏域的值
+    var hiddenval = $('#checkedboxval').val();
+	if(check){
+		var splits = hiddenval.split(',');
+		$(".checkchild:checked").each(function(){
+			var thisvals = $(this).val();
+			var flag = false;
+			for(var i=0;i<splits.length;i++){
+				if(splits[i] == thisvals){
+					flag = true;
+				}
+			}
+			//如果隐藏域值为空
+			if(hiddenval){
+				if(!flag){
+					hiddenval += ',' + thisvals;
+				}
+			}else{
+				hiddenval = thisvals;
+			}
+		});
+	}else{
+		$(".checkchild").each(function(){
+			var thisval = $(this).val();
+			var flag = false;
+			var splits = hiddenval.split(',');
+			for(var i=0;i<splits.length;i++){
+				if(splits[i] == thisval){
+					flag = true;
+				}
+			}
+			//如果隐藏域值为空
+			if(flag){
+				var ids = [];
+				for(var i=0;i<splits.length;i++){
+					if(splits[i] != thisval){
+						ids.push(splits[i]);
+					}
+				}
+				ids = ids.join(',');
+				hiddenval = ids;
+			}
+		});
+	}
+	$('#checkedboxval').val(hiddenval);
 });
 //加载编辑计划列表数据
 initDatatable2();
@@ -158,7 +260,7 @@ function editplan(id){
   	    area: ['900px', '500px'],
   	    content: BASE_PATH + '/admin/customneeds/editplanpage.html?id='+id,
   	    end:function(){
-  	    	datatable2.ajax.reload();
+  	    	datatable2.ajax.reload(null,false);
   	    }
   	});
 }
@@ -170,11 +272,11 @@ function closeEditPlan(id){
 			data: {id:id}, 
 			url: BASE_PATH + '/admin/customneeds/closeEditPlan.html',
             success: function (data) { 
-            	layer.msg("关闭成功",{time: 2000, icon:1});
+            	layer.alert("关闭成功",{time: 2000, icon:1});
             	datatable2.ajax.reload();
             },
             error: function (xhr) {
-            	layer.msg("关闭失败",{time: 2000, icon:1});
+            	layer.alert("关闭失败",{time: 2000, icon:1});
             } 
         });
 	});
@@ -187,38 +289,40 @@ function enableEditPlan(id){
 			data: {id:id}, 
 			url: BASE_PATH + '/admin/customneeds/enableEditPlan.html',
             success: function (data) { 
-            	layer.msg("启用成功",{time: 2000, icon:1});
+            	layer.alert("启用成功",{time: 2000, icon:1});
             	datatable2.ajax.reload();
             },
             error: function (xhr) {
-            	layer.msg("启用失败",{time: 2000, icon:1});
+            	layer.alert("启用失败",{time: 2000, icon:1});
             } 
         });
 	});
 }
 //批量关闭计划
 function batchClosePlan(){
+	var ids = $('#checkedboxval').val();
 	var length = $(".checkchild:checked").length;
-	if(length < 1){
-		layer.msg("请至少选中一条记录",{time: 2000, icon:1});
+	if(!ids){
+		layer.alert("请至少选中一条记录",{time: 2000, icon:1});
 	}else{
 		layer.confirm('确定要关闭该计划吗?', {icon: 3, title:'提示'}, function(){
-			var ids = [];
+			/*var ids = [];
 			$(".checkchild:checked").each(function(){
 				ids.push($(this).val());
 			});
-			ids = ids.join(',');
+			ids = ids.join(',');*/
 			$.ajax({
 				type: 'POST', 
 				data: {ids:ids}, 
 				url: BASE_PATH + '/admin/customneeds/betchClosePlan.html',
 				success: function (data) { 
-					layer.msg("关闭成功",{time: 2000, icon:1});
-					datatable2.ajax.reload();
+					layer.alert("关闭成功",{time: 2000, icon:1});
+					$('#checkedboxval').val('');
+					datatable2.ajax.reload(null,false);
 					$('.checkall').attr('checked',false);
 				},
 				error: function (xhr) {
-					layer.msg("关闭失败",{time: 2000, icon:1});
+					layer.alert("关闭失败",{time: 2000, icon:1});
 				} 
 			});
 		});
@@ -226,29 +330,71 @@ function batchClosePlan(){
 }
 //生成订单
 function generateOrderNum(){
+	var ids = $('#checkedboxval').val();
 	var length = $(".checkchild:checked").length;
-	if(length < 1){
-		layer.msg("请至少选中一条记录",{time: 2000, icon:1});
+	if(!ids){
+		layer.alert("请至少选中一条记录",{time: 2000, icon:1});
 	}else{
 		layer.confirm('确定要批量生成订单吗?', {icon: 3, title:'提示'}, function(){
-			var ids = [];
+			/*var ids = [];
 			$(".checkchild:checked").each(function(){
 				ids.push($(this).val());
 			});
-			ids = ids.join(',');
+			ids = ids.join(',');*/
 			$.ajax({
 				type: 'POST', 
 				data: {planids:ids}, 
 				url: BASE_PATH + '/admin/customneeds/generateOrderNum.html',
 				success: function (data) { 
-					layer.msg("生成成功",{time: 2000, icon:1});
+					layer.alert("生成成功",{time: 2000, icon:1});
+					$('#checkedboxval').val('');
 					datatable2.ajax.reload();
 					$('.checkall').attr('checked',false);
 				},
 				error: function (xhr) {
-					layer.msg("生成失败",{time: 2000, icon:1});
+					layer.alert("生成失败",{time: 2000, icon:1});
 				} 
 			});
 		});
 	}
 }
+//点击之后给隐藏域赋值
+$(document).on('click', '.checkchild', function(e) {
+	var hiddenval = $('#checkedboxval').val();
+	var thisval = $(this).val();
+	var check = $(this).prop("checked");
+	if(check){
+		if(!hiddenval){
+			$('#checkedboxval').val(thisval);
+		}else{
+			$('#checkedboxval').val(hiddenval+','+thisval);
+		}
+	}else{
+		var splits = hiddenval.split(',');
+		var flag = false;
+		for(var i=0;i<splits.length;i++){
+			if(splits[i] == thisval){
+				flag = true;
+			}
+		}
+		//如果存在则删掉当前值
+		if(flag){
+			var ids = [];
+			for(var i=0;i<splits.length;i++){
+				if(splits[i] != thisval){
+					ids.push(splits[i]);
+				}
+			}
+			ids = ids.join(',');
+			$('#checkedboxval').val(ids);
+		}else{
+			$('#checkedboxval').val(hiddenval);
+		}
+	}
+	var length = $(".checkchild:checked").length;
+	if(datatable2.page.len() == length){
+		$(".checkall").prop("checked", true);
+	}else{
+		$(".checkall").prop("checked", false);
+	}
+});

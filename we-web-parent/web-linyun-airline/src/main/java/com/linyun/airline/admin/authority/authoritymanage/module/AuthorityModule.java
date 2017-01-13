@@ -130,7 +130,17 @@ public class AuthorityModule {
 	 */
 	@At
 	@POST
-	public Object checkDeptNameExist(@Param("deptName") final String deptName, @Param("id") final Long deptId) {
-		return authorityViewService.checkDeptNameExist(deptName, deptId);
+	public Object checkDeptNameExist(@Param("deptName") final String deptName, @Param("id") final Long deptId,
+			final HttpSession session) {
+		return authorityViewService.checkDeptNameExist(deptName, deptId, session);
+	}
+
+	/**
+	 * 校验职位名称
+	 */
+	@At
+	@POST
+	public Object checkJobNameExist(@Param("jobName") final String jobName, @Param("id") final Long jobId) {
+		return authorityViewService.checkJobNameExist(jobName, jobId);
 	}
 }

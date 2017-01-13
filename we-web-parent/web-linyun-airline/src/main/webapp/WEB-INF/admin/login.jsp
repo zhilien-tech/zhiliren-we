@@ -92,7 +92,11 @@
 <script src="${base}/public/plugins/iCheck/icheck.min.js"></script>
 <script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 
-<script>
+<script type="text/javascript">
+	if (top != window){//session过期后跳到登录页
+		top.location.href = window.location.href;
+	}  
+	
   $(function () {
 	    $('input').iCheck({
 	      checkboxClass: 'icheckbox_square-blue',

@@ -22,6 +22,9 @@ public class TMessageAddForm extends AddForm implements Serializable {
 	/**消息类型*/
 	private Integer msgType;
 
+	/**消息状态*/
+	private Integer msgStatus;
+
 	/**生成日期*/
 	private Date generateTime;
 	private String generateTimeString;

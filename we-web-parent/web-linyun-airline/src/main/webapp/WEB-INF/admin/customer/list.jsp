@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" errorPage="/WEB-INF/public/500.jsp"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
-
+<%@include file="/WEB-INF/public/header.jsp"%>
+<%@include file="/WEB-INF/public/aside.jsp"%>
 <c:set var="url" value="${base}/admin/customer" />
 
 <!DOCTYPE html>
@@ -9,55 +10,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>客户管理</title>
-<!-- Tell the browser to be responsive to screen width -->
-<meta
-	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-	name="viewport">
-<!-- Bootstrap 3.3.6 -->
-<link rel="stylesheet"
-	href="${base}/public/bootstrap/css/bootstrap.css">
-<!-- Font Awesome -->
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-<!-- Ionicons -->
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 <!-- daterange picker -->
-<link rel="stylesheet"
-	href="${base}/public/plugins/daterangepicker/daterangepicker.css">
+<link rel="stylesheet" href="${base}/public/plugins/daterangepicker/daterangepicker.css">
 <!-- bootstrap datepicker -->
-<link rel="stylesheet"
-	href="${base}/public/plugins/datepicker/datepicker3.css">
+<link rel="stylesheet" href="${base}/public/plugins/datepicker/datepicker3.css">
 <!-- iCheck for checkboxes and radio inputs -->
 <link rel="stylesheet" href="${base}/public/plugins/iCheck/all.css">
-<!-- Bootstrap Color Picker -->
-<link rel="stylesheet"
-	href="${base}/public/plugins/colorpicker/bootstrap-colorpicker.min.css">
-<!-- Bootstrap time Picker -->
-<link rel="stylesheet"
-	href="${base}/public/plugins/timepicker/bootstrap-timepicker.min.css">
-<!-- Select2 -->
-<link rel="stylesheet"
-	href="${base}/public/plugins/select2/select2.min.css">
-<!-- Theme style -->
-<link rel="stylesheet"
-	href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
-<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
 <link rel="stylesheet" href="${base}/public/dist/css/customer.css">
-<!-- AdminLTE Skins. We have chosen the skin-blue for this starter
-        page. However, you can choose any other skin. Make sure you
-        apply the skin class to the body tag so the changes take effect.
-  -->
-<link rel="stylesheet"
-	href="${base}/public/dist/css/skins/skin-blue.min.css">
-<link rel="stylesheet"
-	href="${base}/public/dist/css/skins/_all-skins.min.css">
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
+
 </head>
 <!-- REQUIRED JS SCRIPTS -->
 
@@ -80,11 +40,9 @@
 <script src="${base}/public/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
 <!-- bootstrap time picker -->
 <script src="${base}/public/plugins/timepicker/bootstrap-timepicker.min.js"></script>
-
 <!-- DataTables -->
 <script src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
-<script
-	src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script  src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
 <script src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- iCheck 1.0.1 -->
@@ -99,10 +57,6 @@
 
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
-
-		<%@include file="/WEB-INF/public/header.jsp"%>
-		<%@include file="/WEB-INF/public/aside.jsp"%>
-
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
 			<!-- Main content -->
@@ -111,9 +65,9 @@
 					<div class="col-xs-12">
 						<div class="box">
 							<div class="box-header">
-								<h3 class="box-title">
+								<!-- <h3 class="box-title">
 									&nbsp;&nbsp;<i class="fa fa-user-secret"></i> 客户管理
-								</h3>
+								</h3> -->
 									<div class="form-group row form-right">
 
 										<div class="col-md-2">
@@ -189,15 +143,7 @@
 		<!-- /.content-wrapper -->
 
 		<!-- Main Footer -->
-		<footer class="main-footer">
-			<!-- To the right -->
-			<div class="pull-right hidden-xs">
-				<!-- Anything you want -->
-			</div>
-			<!-- Default to the left -->
-			<strong>版权 &copy; 2016 <a href="#">聚优国际旅行社（北京）有限公司</a>.
-			</strong> 保留所有权利.
-		</footer>
+		<%@include file="/WEB-INF/public/footer.jsp"%>
 		<div class="control-sidebar-bg"></div>
 	</div>
 	<!-- ./wrapper -->
@@ -233,6 +179,7 @@ function initDatatable() {
     	"bLengthChange": false,
         "processing": true,
         "serverSide": true,
+        "stripeClasses": [ 'strip1','strip2' ],
         "language": {
             "url": "${base}/public/plugins/datatables/cn.json"
         },
@@ -333,7 +280,7 @@ function initDatatable() {
 	    	    fix: false,
 	    	    maxmin: false,
 	    	    shadeClose: false,
-	    	    area: ['900px', '500px'],
+	    	    area: ['900px', '550px'],
 	    	    content: '${base}/admin/customer/add.html'
 	    	  });
 	  }
@@ -360,7 +307,7 @@ function initDatatable() {
 	
 	/* 保存按钮事件 */
 	function successCallback(id){
-	  datatable.ajax.reload();
+	  datatable.ajax.reload(null,false);
 	  if(id == '1'){
 		  layer.msg("添加成功",{time: 2000, icon:1});
 	  }else if(id == '2'){

@@ -57,7 +57,7 @@ public class TCustomerInfoEntity implements Serializable {
 
 	@Column
 	@Comment("负责人")
-	private String agent;
+	private long responsibleId;
 
 	@Column
 	@Comment("添加时间")
@@ -70,6 +70,10 @@ public class TCustomerInfoEntity implements Serializable {
 	@Column
 	@Comment("附件管理")
 	private String appendix;
+
+	@Column
+	@Comment("附件名称")
+	private String appendixName;
 
 	@Column
 	@Comment("旅行社类型")

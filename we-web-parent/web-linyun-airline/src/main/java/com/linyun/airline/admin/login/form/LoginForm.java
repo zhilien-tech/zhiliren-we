@@ -19,4 +19,7 @@ public class LoginForm {
 	/**错误消息*/
 	private String errMsg;
 
+	/**登录成功的返回页*/
+	private String returnUrl;
+
 }

@@ -23,11 +23,11 @@ import com.google.common.base.Splitter;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.form.TMessageAddForm;
 import com.linyun.airline.admin.operationsArea.form.TMessageUpdateForm;
-import com.linyun.airline.common.admin.operationsArea.enums.MessageLevelEnum;
-import com.linyun.airline.common.admin.operationsArea.enums.MessageSourceEnum;
-import com.linyun.airline.common.admin.operationsArea.enums.MessageStatusEnum;
-import com.linyun.airline.common.admin.operationsArea.enums.MessageTypeEnum;
-import com.linyun.airline.common.admin.operationsArea.enums.MessageUserEnum;
+import com.linyun.airline.common.enums.MessageLevelEnum;
+import com.linyun.airline.common.enums.MessageSourceEnum;
+import com.linyun.airline.common.enums.MessageStatusEnum;
+import com.linyun.airline.common.enums.MessageTypeEnum;
+import com.linyun.airline.common.enums.MessageUserEnum;
 import com.linyun.airline.entities.TCheckboxStatusEntity;
 import com.linyun.airline.entities.TMessageEntity;
 import com.linyun.airline.entities.TUserEntity;
@@ -58,6 +58,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 
 		//消息类型
 		addForm.setMsgType(MessageTypeEnum.PROCESSMSG.intKey());
+		//消息状态默认为 （1：表示未删除）
+		addForm.setMsgStatus(1);
 		//消息优先级  MSGLEVEL1.intKey()表示等级最低
 		addForm.setPriorityLevel(MessageLevelEnum.MSGLEVEL1.intKey());
 		//格式化日期
@@ -106,15 +108,27 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		return obj;
 	}
 
+	/**
+	 * 
+	 * TODO(更新自定义事件)
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param messageUpdateForm
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
 	public Object updateCustom(TMessageUpdateForm messageUpdateForm) {
-
 		TMessageEntity tMessage = dbDao.fetch(TMessageEntity.class, messageUpdateForm.getId());
 		tMessage.setMsgContent(messageUpdateForm.getMsgContent());
 		tMessage.setGenerateTime(DateUtil.string2Date(messageUpdateForm.getGenerateTimeString(), "yyyy-MM-dd hh:mm:ss"));
-
 		messageUpdateForm.setMsgType(MessageTypeEnum.PROCESSMSG.intKey());
 		messageUpdateForm.setPriorityLevel(MessageLevelEnum.MSGLEVEL1.intKey());
+		return dbDao.update(tMessage);
+	}
 
+	public Object deleteCustom(TMessageUpdateForm messageUpdateForm) {
+		TMessageEntity tMessage = dbDao.fetch(TMessageEntity.class, messageUpdateForm.getId());
+		tMessage.setMsgStatus(0L);
 		return dbDao.update(tMessage);
 	}
 
@@ -131,7 +145,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		//当前用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long id = loginUser.getId();
-
+		int msgstatus = 1;
 		Sql sql = Sqls.create(sqlManager.get("msg_user_company"));
 		if (!Util.isEmpty(id)) {
 			sql.params().set("userId", id);
@@ -142,6 +156,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		if (!Util.isEmpty(end)) {
 			sql.params().set("end", end);
 		}
+		sql.params().set("msgStatus", msgstatus);
 		Cnd cnd = Cnd.NEW();
 		cnd.orderBy("m.priorityLevel", "desc");
 		sql.setCondition(cnd);
@@ -168,22 +183,20 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		if (!Util.isEmpty(id)) {
 			sql.params().set("userId", id);
 		}
-		sql.params().set("now", DateTimeUtil.nowDateTime());
+		sql.params().set("msgStatus", 1);
+		/*
+		 * 当前时间+30分钟
+		long millis = DateTimeUtil.millis();
+		millis += 30 * 60 * 1000;
+		DateTime dateTime = DateUtil.dateTime(new Date(millis));*/
+
+		sql.params().set("now", DateTimeUtil.now());
 		sql.setCallback(Sqls.callback.records());
 		List<Record> records = dbDao.query(sql, null, null);
-		/*//存取记录
-		List<Record> list = new ArrayList<Record>();
-		if (records.size() >= 5) {
-			for (int i = 0; i < 5; i++) {
-				Record r = records.get(i);
-				String datetimeStr = r.getString("generatetime");
-				list.add(records.get(i));
-			}
-		} else {
-			for (Record record : records) {
-				list.add(record);
-			}
-		}*/
+		int size = records.size();
+		for (Record record : records) {
+			record.set("num", size);
+		}
 
 		return JsonUtil.toJson(records);
 	}
@@ -202,7 +215,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 
 		//查询用户是否存在
 		if (!Util.isEmpty(userId)) {
-			checkEntity = dbDao.fetch(TCheckboxStatusEntity.class, userId);
+			checkEntity = dbDao.fetch(TCheckboxStatusEntity.class, Cnd.where("userId", "=", userId));
 		}
 		long task = 0;
 		long maxC = 0;
@@ -240,9 +253,18 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	public Object getCheckBox(HttpSession session) {
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long userId = loginUser.getId();
-
+		TCheckboxStatusEntity checkbox = dbDao.fetch(TCheckboxStatusEntity.class, userId);
+		if (Util.isEmpty(checkbox)) {
+			TCheckboxStatusEntity check = new TCheckboxStatusEntity();
+			check.setUserId(userId);
+			check.setTaskShow(Long.valueOf(1));
+			check.setMaxCShow(Long.valueOf(1));
+			check.setMinCShow(Long.valueOf(1));
+			dbDao.insert(check);
+		}
 		Map<String, Object> obj = new HashMap<String, Object>();
-		TCheckboxStatusEntity checkBoxEntity = dbDao.fetch(TCheckboxStatusEntity.class, userId);
+		TCheckboxStatusEntity checkBoxEntity = dbDao.fetch(TCheckboxStatusEntity.class,
+				Cnd.where("userId", "=", userId));
 		obj.put("checkBox", checkBoxEntity);
 		return obj;
 	}
@@ -272,6 +294,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		sql.params().set("MincalTimes1", date1);
 		sql.params().set("MincalTimes2", date2);
 		sql.params().set("MincalTimes3", date3);
+		sql.params().set("msgStatus", 1);
+		sql.params().set("userid", id);
 		sql.setCallback(Sqls.callback.records());
 
 		Set<String> set = new HashSet<String>();
@@ -317,6 +341,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			sql.params().set("userId", id);
 		}
 		sql.params().set("MincalTimes1", date1);
+		sql.params().set("msgStatus", 1);
 		List<Record> rList = dbDao.query(sql, null, null);
 
 		Set<String> set = new HashSet<String>();

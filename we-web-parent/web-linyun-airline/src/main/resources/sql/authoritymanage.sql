@@ -8,11 +8,23 @@ SELECT
 	f.id AS functionId,
 	GROUP_CONCAT(DISTINCT f.`name`) AS moduleName
 FROM
-	t_company c INNER JOIN t_department d ON c.id=d.comId
+	t_company c 
+	LEFT JOIN t_department d ON c.id=d.comId
 	LEFT JOIN t_job j ON d.id=j.deptId 
-        LEFT JOIN t_com_fun_pos_map cfp ON j.id=cfp.jobId
-        INNER JOIN t_company_function_map cf ON cfp.companyFunId=cf.id
-        INNER JOIN t_function f ON cf.funId=f.id
+    LEFT JOIN t_com_fun_pos_map cfp ON j.id=cfp.jobId
+    LEFT JOIN t_company_function_map cf ON cfp.companyFunId=cf.id
+    LEFT JOIN t_function f ON cf.funId=f.id
+$condition
+
+/*authoritymanage_area_list*/
+SELECT
+	a.id,
+	a.createTime,
+	a.areaName,
+	a.remark
+FROM
+	t_area a
+INNER JOIN t_user_area_map am ON a.id=am.areaId
 $condition
 
 /*deptJob_select*/
@@ -36,7 +48,8 @@ SELECT
 	tf.createTime, 
 	tf.updateTime, 
 	tf.remark, 
-	tf.sort
+	tf.sort,
+	tf.portrait
 FROM
 	t_function tf
 INNER JOIN t_company_function_map cfm ON tf.id = cfm.funId

@@ -11,7 +11,7 @@ import com.linyun.airline.common.access.sign.MD5;
 public class CommonConstants {
 
 	/**超级管理员*/
-	public static final String SUPER_ADMIN = "admin";
+	public static final String SUPER_ADMIN = "lxl";
 
 	/**数据状态:@see DataStatusEnum*/
 	/**数据状态-启用中*/
@@ -48,5 +48,11 @@ public class CommonConstants {
 	/**用户初始密码*/
 	public static final String INITIAL_PASSWORD = MD5.sign("000000", AccessConfig.password_secret,
 			AccessConfig.INPUT_CHARSET);
+
+	/**个人信息id，不可随意更改，必须与数据库保持一致*/
+	public static final int PERSON_ID = 43;
+
+	/**操作台id，不可随意更改，必须与数据库保持一致*/
+	public static final int DESKTOP_ID = 44;
 
 }

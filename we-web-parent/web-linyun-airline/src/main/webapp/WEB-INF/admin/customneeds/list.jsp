@@ -5,7 +5,6 @@
 <!--小日历-->
 <link rel="stylesheet" type="text/css" href="${base }/public/build/kalendae.css">
 <link rel="stylesheet" type="text/css" href="${base }/public/dist/css/airlinesModule.css">
-
 <c:set var="url" value="${base}/admin/customneeds" />
   <!-- Content Wrapper. Contains page content -->
 	<!--内容-->
@@ -55,7 +54,7 @@
                           </div>
                           <label class="col-sm-1 text-right padding">航空公司：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" name="airline" id="airline" onblur="this.value=this.value.toUpperCase().replace(/(^\s*)|(\s*$)/g, '')" class="form-control input-sm" placeholder="首航-CA" onkeypress="onkeyEnter();">
+                            <input type="text" name="airline" id="airline" onblur="this.value=this.value.toUpperCase().replace(/(^\s*)|(\s*$)/g, '')" class="form-control input-sm" placeholder="" onkeypress="onkeyEnter();">
                           </div>
                           <label class="col-sm-1 text-right padding">旅行社：</label>
                           <div class="col-sm-1 padding">
@@ -75,19 +74,19 @@
                         <div class="form-group row">
                           <label class="col-sm-1 text-right padding">去程日期：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" class="form-control input-sm inputdatestr" name="leavedate" id="leavedate" onkeypress="onkeyEnter();" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'backdate\')}'})" placeholder="2016/03/06">
+                            <input type="text" class="form-control input-sm inputdatestr" name="leavedate" id="leavedate" onkeypress="onkeyEnter();" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'backdate\')}'})" placeholder="">
                           </div>
                           <label class="col-sm-1 text-right padding">起飞城市：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" class="form-control input-sm" name="leavecity" id="leavecity"  placeholder="北京-PEK" onkeypress="onkeyEnter();">
+                            <input type="text" class="form-control input-sm" name="leavecity" id="leavecity"  placeholder="" onkeypress="onkeyEnter();">
                           </div>
                           <label class="col-sm-1 text-right padding inputdatestr">回程日期：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" class="form-control input-sm" name="backdate" id="backdate" onkeypress="onkeyEnter();" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'leavedate\')}'})" placeholder="2016/04/01">
+                            <input type="text" class="form-control input-sm" name="backdate" id="backdate" onkeypress="onkeyEnter();" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'leavedate\')}'})" placeholder="">
                           </div>
                           <label class="col-sm-1 text-right padding">降落城市：</label>
                           <div class="col-sm-1 padding">
-                            <input type="text" class="form-control input-sm" name="backcity" id="backcity"  placeholder="悉尼-SYD" onkeypress="onkeyEnter();">
+                            <input type="text" class="form-control input-sm" name="backcity" id="backcity"  placeholder="" onkeypress="onkeyEnter();">
                           </div>
                           <div class="col-md-3">
                             <button id="searchBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
@@ -142,7 +141,7 @@
                                           <a class="flie_A flie_import" target="hidden_frame" href="${url}/exportNanHangTemplate.html">南航</a>
                                        </li>
                                        <li role="presentation">
-                                          <a class="flie_A flie_import" target="hidden_frame" onclick="exportXinHangTemplate()">新航</a>
+                                          <a class="flie_A flie_import" target="hidden_frame" href="${url}/exportXinHangTemplate.html">新航</a>
                                        </li>
                                        <li role="presentation">
                                           <a class="flie_A flie_import" target="hidden_frame" href="${url}/exportGuoTaiTemplate.html">国泰</a>
@@ -174,14 +173,6 @@
                             <div class="col-sm-1 padding">
                               <input type="text" name="dayscount" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" class="form-control input-sm" placeholder="">
                             </div>
-                            <label class="col-sm-1 text-right padding">去程航班：</label>
-                            <div class="col-sm-1 padding">
-                              <select id="leaveairline0" name="leaveairline" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
-                            </div>
-                            <label class="col-sm-1 text-right padding">回程航班：</label>
-                            <div class="col-sm-1 padding">
-                              <select id="backairline0" name="backairline" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
-                            </div>
                             <!-- <div class="col-sm-1">
                               <a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a>
                             </div> -->
@@ -198,6 +189,12 @@
                             <div class="col-sm-1 padding">
                               <select id="backscity0" name="backscity" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
                             </div>
+                             <label class="col-sm-1 text-right padding">去程航班：</label>
+                            <div class="col-sm-1 padding">
+                              <select id="leaveairline0" name="leaveairline" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
+                            </div>
+                          </div><!--end 起飞城市/降落城市/联运城市 text-->
+                          <div class="form-group row">
                             <label class="col-sm-1 text-right padding cf">出发城市：</label>
                             <div class="col-sm-1 padding">
                               <select id="backleavecity0" name="backleavecity" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
@@ -206,11 +203,15 @@
                             <div class="col-sm-1 padding">
                               <select id="backbackcity0" name="backbackcity" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
                             </div>
+                            <label class="col-sm-1 text-right padding">回程航班：</label>
+                            <div class="col-sm-1 padding">
+                              <select id="backairline0" name="backairline" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
+                            </div>
                             <label class="col-sm-1 text-right padding cf">联运城市：</label>
                             <div class="col-sm-1 padding">
                               <select id="unioncity0" name="unioncity" class="form-control input-sm js-data-example-ajax" multiple="multiple" placeholder=""></select>
                             </div>
-                          </div><!--end 起飞城市/降落城市/联运城市 text-->
+                          </div>
 
                           <!--time 选择-->
                           <div class="form-group row">
@@ -221,10 +222,12 @@
                               	<option value="1">是</option>
                               </select>
                             </div>
-                            <label class="col-sm-1 text-right padding cf">从：</label>
-                            <div class="col-sm-3 padding" name="startenddate">
-                              <input id="startdate0" name="startdate" type="text" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'enddate0\')}'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2016-11-05"> 
-                              - <input id="enddate0" name="enddate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startdate0\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2016-12-01">
+                            <div name="congcong">
+	                            <label class="col-sm-1 text-right padding cf">从：</label>
+	                            <div class="col-sm-3 padding" name="startenddate">
+	                              <input id="startdate0" name="startdate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'enddate0\')}'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2016-11-05"> 
+	                              - <input id="enddate0" name="enddate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startdate0\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2016-12-01">
+	                            </div>
                             </div>
                             <div class="col-sm-2 padding cf">
                               <select class="form-control selectMargin cf dateAddHeng" id="weekSelect" onchange="select_change(this)">
@@ -251,7 +254,7 @@
                            <input id="calenderdate0" name="calenderdate" type="hidden">
                         </div>
 
-                        <table id="example3" class="table table-bordered table-hover">
+                        <table id="example3" class="table table-bordered table-hover	">
                           <thead>
                           <tr>
                             <th>序号</th>
@@ -280,17 +283,16 @@
                           <label class="col-sm-1 text-right padding marTop5">状态：</label>
                           <div class="col-md-1 padding">
                             <select class="form-control select1" id="teamtype1" name="teamtype" onchange="editPlanListSearch();">
-                              <option value="">全部</option>
                               <option value="1">系列团</option>
                               <option value="2">临时团</option>
                               <option value="3">关闭</option>
                             </select>
                           </div>
                           <div class="col-md-2 padding">
-                            <select class="form-control select1" id="idordernum" name="idordernum" onchange="editPlanListSearch();">
+                            <!-- <select class="form-control select1" id="idordernum" name="idordernum" onchange="editPlanListSearch();">
                               <option value="0">无订单号</option>
                               <option value="1">有订单号</option>
-                            </select>
+                            </select> -->
                           </div>
                           <div class="col-md-8">
                             <button type="button" class="btn btn-primary btn-sm right" onclick="batchClosePlan();">批量关闭</button>
@@ -339,7 +341,7 @@
                           
                           <label class="col-sm-1 text-right padding cf">从：</label>
                             <div class="col-sm-3 padding">
-                              <input type="text" class="form-control input-sm timeWid inputdatestr" id="startdate1" name="startdate1" placeholder="2016-11-05" onkeypress="onEnterSearch();" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'enddate1\')}'})"> - <input type="text" id="enddate1" name="enddate1" class="form-control input-sm timeWid inputdatestr" placeholder="2016-12-01" onkeypress="onEnterSearch();" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startdate1\')}'})">
+                              <input type="text" class="form-control input-sm timeWid inputdatestr" id="startdate1" name="startdate1" placeholder="2016-11-05" onkeypress="onEnterSearch();" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'enddate1\')}'})"> - <input type="text" id="enddate1" name="enddate1" class="form-control input-sm timeWid inputdatestr" placeholder="2016-12-01" onkeypress="onEnterSearch();" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startdate1\')}'})">
                             </div>
                           <label class="col-sm-1 text-right padding">起飞城市：</label>
                           <div class="col-sm-1 padding">
@@ -360,15 +362,14 @@
                           <tr>
                             <th><input type="checkbox" class="checkall" /></th>
                             <th>序号</th>
-                            <th>订单号</th>
-                            <th>航空公司</th>
-                            <th>去程日期</th>
-                            <th>出发城市</th>
-                            <th>回程日期</th>
-                            <th>抵达城市</th>
+                            <th>日期</th>
+                            <th>航班号</th>
+                            <th>航段</th>
+                            <th>时间</th>
                             <th>人数</th>
+                            <th>FOC</th>
                             <th>天数</th>
-                            <th>旅行社</th> 
+                            <th>旅行社名称</th> 
                             <th>联运要求</th>
                             <th>操作</th>
                           </tr>
@@ -376,6 +377,7 @@
                           <tbody>
                           </tbody>
                         </table>
+                        <input id="checkedboxval" name="checkedboxval" type="hidden">
                       </div><!--end 编辑计划-->
 
                     </div><!-- end tab-content -->
@@ -407,6 +409,9 @@
 <script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
 <script src="${base}/admin/airline/planmake.js"></script>
 <script src="${base}/admin/airline/editplan.js"></script>
+<!-- DataTables -->
+<script src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <!-- page script -->
 
 
@@ -418,6 +423,7 @@ function initDatatable() {
     	"bLengthChange": false,
         "processing": true,
         "serverSide": true,
+        "stripeClasses": [ 'strip1','strip2' ],
         "language": {
             "url": "${base}/public/plugins/datatables/cn.json"
         },
@@ -567,7 +573,7 @@ $(function () {
   	    area: ['900px', '500px'],
   	    content: '${url}/update.html?id='+id,
   	    end:function(){
-  	    	datatable.ajax.reload();
+  	    	datatable.ajax.reload(null,false);
   	    }
   	  });
   }
@@ -579,11 +585,11 @@ $(function () {
 				data: {id:id}, 
 				url: '${base}/admin/customneeds/closeCustomNeeds.html',
 	            success: function (data) { 
-	            	layer.msg("关闭成功",{time: 2000, icon:1});
-	            	datatable.ajax.reload();
+	            	layer.alert("关闭成功",{time: 2000, icon:1});
+	            	datatable.ajax.reload(null,false);
 	            },
 	            error: function (xhr) {
-	            	layer.msg("关闭失败",{time: 2000, icon:1});
+	            	layer.alert("关闭失败",{time: 2000, icon:1});
 	            } 
 	        });
 		});
@@ -595,11 +601,11 @@ $(function () {
 				data: {id:id}, 
 				url: '${base}/admin/customneeds/enableCustomNeeds.html',
 	            success: function (data) { 
-	            	layer.msg("启用成功",{time: 2000, icon:1});
-	            	datatable.ajax.reload();
+	            	layer.alert("启用成功",{time: 2000, icon:1});
+	            	datatable.ajax.reload(null,false);
 	            },
 	            error: function (xhr) {
-	            	layer.msg("启用失败",{time: 2000, icon:1});
+	            	layer.alert("启用失败",{time: 2000, icon:1});
 	            } 
 	        });
 		});
@@ -628,26 +634,26 @@ $(function () {
   			return;
   		}
   		document.getElementById("uploadExcelForm").submit();
-  		//layer.load(1, {shade: [0.8, '#393D49']});
+  		layer.load(1);
   	}
   //其他页面回调
   function successCallback(id){
-	  datatable.ajax.reload();
-	  datatable2.ajax.reload();
+	  datatable.ajax.reload(null,false);
 	  if(id == '1'){
-		  layer.msg("添加成功",{time: 2000, icon:1});
+		  layer.alert("添加成功",{time: 2000, icon:1});
 	  }else if(id == '2'){
-		  layer.msg("修改成功",{time: 2000, icon:1});
+		  layer.alert("修改成功",{time: 2000, icon:1});
 	  }else if(id == '3'){
-		  layer.msg("关闭成功",{time: 2000, icon:1});
+		  layer.alert("关闭成功",{time: 2000, icon:1});
 	  }else if(id == '4'){
-		  layer.msg("启用成功",{time: 2000, icon:1});
+		  layer.alert("启用成功",{time: 2000, icon:1});
 	  }
   }
   
   function callback(){
-	  layer.msg("导入成功",{time: 2000, icon:1});
+	  layer.alert("导入成功",{time: 2000, icon:1});
 	  $('#uploadExcelForm')[0].reset();
+	  layer.closeAll('loading');
 	  datatable.ajax.reload();
   }
   //输入格式必须为yyyy-MM-dd

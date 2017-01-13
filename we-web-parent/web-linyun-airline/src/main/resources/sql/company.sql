@@ -21,9 +21,9 @@ select t.id,
 		t.lastupdatetime,
 		t.deletestatus,
     IFNULL(t1.countuser,0) renshu
-from t_company t left join (select count(tuj.id) countuser,tcj.comId  
-										from t_company_job tcj,t_user_job tuj 
-										where tcj.id = tuj.companyJobId GROUP BY tcj.comId) t1 
+from t_company t left join (select count(tu.id)-1 countuser,tcj.comId  
+										from t_company_job tcj,t_user_job tuj,t_user tu 
+										where tcj.id = tuj.companyJobId and tu.id=tuj.userid and tu.status=1 GROUP BY tcj.comId) t1 
 				on t1.comId = t.id
 $condition
 /*company_list_count*/

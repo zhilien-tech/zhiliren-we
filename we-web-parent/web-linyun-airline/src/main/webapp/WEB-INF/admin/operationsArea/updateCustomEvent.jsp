@@ -32,6 +32,7 @@
 			</div>
 			<input type="hidden" id="id" name="id" value="${obj.message.id}"/>
 			<div class="evevtBttton">
+				<button type="button" class="btn right" onclick="deleteEvent()">删除</button>
 				<input id="submitBtn" type="button" class="btn btn-primary" onclick="update();" value="更新"/>
 				<button type="button" class="btn btn-primary right" onclick="closewindow();">取消</button>
 			</div>
@@ -82,14 +83,14 @@
 					url : '${base}/admin/operationsArea/updateCustom.html',
 					data : $("#customEventForm").serialize(),
 					success : function(data) {
-						layer.msg("更新成功", "", 3000);
-						
 						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						parent.layer.close(index);
-						//window.location.reload();
-						//更新成功 刷新各个模块
+						//添加成功 刷新各个模块
 						window.parent.taskEventList();
 						window.parent.reload();
+						window.parent.checkBoxShow();
+						window.parent.createMinCanlender();
+						window.parent.minCalendarInit();
 						window.parent.getTimeStr();
 						
 					},
@@ -121,6 +122,38 @@
 		    return zeros + value;
 		}
 
+		//删除自定义事件
+		function deleteEvent(){
+			layer.confirm("您确认删除信息吗？", {
+			    btn: ["是","否"], //按钮
+			    shade: false //不显示遮罩
+			}, function(){
+				// 点击确定之后
+				$.ajax({
+					type : 'POST',
+					dataType:'json',
+					url : '${base}/admin/operationsArea/deleteCustom.html',
+					data :  $("#customEventForm").serialize(),
+					success : function(data) {
+						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+						parent.layer.close(index);
+						//添加成功 刷新各个模块
+						window.parent.taskEventList();
+						window.parent.reload();
+						window.parent.checkBoxShow();
+						window.parent.createMinCanlender();
+						window.parent.minCalendarInit();
+						window.parent.getTimeStr();
+					},
+					error : function() {
+						layer.msg("删除失败", "", 3000);
+					}
+				});
+			}, function(){
+			    // 取消之后不用处理
+			});
+			
+		}
 		
 	</script>
 </body>

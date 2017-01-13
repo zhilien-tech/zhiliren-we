@@ -49,16 +49,31 @@ SELECT
  u.id,u.userName
 from t_customer_info c INNER JOIN
 t_user u 
-where c.agent=u.id
+where c.responsibleId=u.id
 and c.id=@agentId
 $condition
 
+/*customer_agent_list*/
+SELECT
+	u.*
+FROM
+	(
+		t_user_job uj
+		INNER JOIN t_user u ON uj.userid = u.id
+	)
+INNER JOIN t_company_job cj ON uj.companyJobId = cj.id
+where cj.comId=@comid
+
 /*customer_comOption_list*/
-select 
-	o.id,
-	c.*
-FROM t_customer_info o INNER JOIN t_company c on o.agentId = c.id
+SELECT
+a.id,
+c.comName
+FROM
+t_agent a
+INNER JOIN t_company c ON a.comId = c.id
 $condition
+LIMIT 0,5
+
 
 /*customer_islineOption_list*/
 select 
@@ -87,7 +102,7 @@ SELECT 	i.id,
 	i.fax, 
 	i.siteUrl, 
 	i.address, 
-	i.agent, 
+	i.responsibleId, 
 	i.createTime, 
 	i.departureCity, 
 	i.appendix, 
@@ -109,5 +124,5 @@ SELECT 	i.id,
 	u.userName
 	FROM 
 t_customer_info i INNER JOIN t_upCompany uc ON i.upComId=uc.id
-INNER JOIN t_user u ON i.agent=u.id
+INNER JOIN t_user u ON i.responsibleId=u.id
 $condition

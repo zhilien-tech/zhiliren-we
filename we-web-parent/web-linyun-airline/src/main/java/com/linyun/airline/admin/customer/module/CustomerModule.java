@@ -30,7 +30,7 @@ import com.linyun.airline.common.base.Uploader;
 import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
-import com.linyun.airline.entities.TUserEntity;
+import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
 import com.linyun.airline.forms.TCustomerInfoUpdateForm;
 import com.uxuexi.core.common.util.Util;
@@ -73,11 +73,8 @@ public class CustomerModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object add() {
-		Map<String, Object> obj = new HashMap<String, Object>();
-		List<TUserEntity> userlist = dbDao.query(TUserEntity.class, null, null);
-		obj.put("userlist", userlist);
-		return obj;
+	public Object add(HttpSession session) {
+		return customerViewService.agent(session);
 	}
 
 	/**
@@ -99,8 +96,8 @@ public class CustomerModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object update(@Param("id") final long id) throws Exception {
-		return customerViewService.toUpdatePage(id);
+	public Object update(HttpSession session, @Param("id") final long id) throws Exception {
+		return customerViewService.toUpdatePage(session, id);
 	}
 
 	/**
@@ -123,9 +120,8 @@ public class CustomerModule {
 	@At
 	public Object listData(@Param("..") final TCustomerInfoSqlForm queryForm, HttpSession session) {
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		long companyId = tCompanyEntity.getId();//得到公司id
+		long companyId = tCompanyEntity.getId();//得到公司关系表id
 		queryForm.setCompanyId(companyId);
-
 		return customerViewService.listPage4Datatables(queryForm);
 	}
 
@@ -158,15 +154,15 @@ public class CustomerModule {
 	//客户公司查询
 	@At
 	@POST
-	public Object company(@Param("q") final String comName) {
-		return customerViewService.company(comName);
+	public Object company(@Param("q") final String comName, HttpSession session) {
+		return customerViewService.company(comName, session);
 	}
 
 	//负责人查询
 	@At
 	@POST
-	public Object agent() {
-		return customerViewService.agent();
+	public Object agent(HttpSession session) {
+		return customerViewService.agent(session);
 	}
 
 	//出发城市查询
@@ -216,13 +212,23 @@ public class CustomerModule {
 	 */
 	@At
 	@POST
-	public Object checkComNameExist(@Param("name") final String comId, @Param("cid") final String id) {
+	public Object checkComNameExist(@Param("name") final String comId, @Param("cid") final String id,
+			HttpSession session) {
 		Map<String, Object> map = new HashMap<String, Object>();
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();//当前用户所在公司关系表id
+		TUpcompanyEntity upRelationEntity = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
+		long upRelationId = 0;
+		if (!Util.isEmpty(upRelationEntity)) {
+			upRelationId = upRelationEntity.getId();
+		}
 
-		List<TCustomerInfoEntity> companys = dbDao.query(TCustomerInfoEntity.class, Cnd.where("agentId", "=", comId),
-				null);
+		List<TCustomerInfoEntity> companys = dbDao.query(TCustomerInfoEntity.class, Cnd.where("agentId", "=", comId)
+				.and("upComId", "=", upRelationId), null);
+
 		List<TCustomerInfoEntity> comNameList = dbDao.query(TCustomerInfoEntity.class, Cnd.where("agentId", "=", comId)
 				.and("id", "=", id), null);
+
 		if (!Util.isEmpty(companys)) {
 			if (Util.isEmpty(id)) {
 				map.put("valid", false);
@@ -232,7 +238,6 @@ public class CustomerModule {
 		} else {
 			map.put("valid", true);
 		}
-
 		return map;
 	}
 
@@ -253,6 +258,32 @@ public class CustomerModule {
 			if (Util.isEmpty(id)) {
 				map.put("valid", false);
 			} else if (!Util.isEmpty(phoneNumList)) {
+				map.put("valid", true);
+			}
+		} else {
+			map.put("valid", true);
+		}
+
+		return map;
+	}
+
+	/**
+	 * 公司简称唯一性校验
+	 */
+	@At
+	@POST
+	public Object checkShortNameExist(@Param("shortName") final String shortName, @Param("aId") final String id) {
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		List<TCustomerInfoEntity> customer = dbDao.query(TCustomerInfoEntity.class,
+				Cnd.where("shortName", "=", shortName), null);
+		List<TCustomerInfoEntity> shortNameList = dbDao.query(TCustomerInfoEntity.class,
+				Cnd.where("shortName", "=", shortName).and("id", "=", id), null);
+
+		if (!Util.isEmpty(customer)) {
+			if (Util.isEmpty(id)) {
+				map.put("valid", false);
+			} else if (!Util.isEmpty(shortNameList)) {
 				map.put("valid", true);
 			}
 		} else {

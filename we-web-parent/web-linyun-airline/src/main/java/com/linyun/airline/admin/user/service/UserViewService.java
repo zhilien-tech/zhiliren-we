@@ -66,10 +66,14 @@ public class UserViewService extends BaseService<TUserEntity> {
 	 * @param sqlManager
 	 */
 	@SuppressWarnings("all")
-	public List<Record> getDeptNameSelect(SqlManager sqlManager) {
+	public List<Record> getDeptNameSelect(SqlManager sqlManager, final HttpSession session) {
+		//查询该公司拥有的所有功能
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long companyId = company.getId();//得到公司的id
 		String sqlString = EntityUtil.entityCndSql(TDepartmentEntity.class);
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
+		cnd.and("comId", "=", companyId);
 		sql.setCondition(cnd);
 		sql.setCallback(Sqls.callback.records());
 		nutDao.execute(sql);
@@ -385,7 +389,6 @@ public class UserViewService extends BaseService<TUserEntity> {
 	 * 修改密码执行操作
 	 */
 	public Object updatePassData(final TUserModForm PassForm, final Long userId) {
-		Map<String, Object> obj = Maps.newHashMap();
 		TUserEntity userPass = dbDao.fetch(TUserEntity.class, Cnd.where("id", "=", userId));
 		String oldPass = userPass.getPassword();//获得数据库中存在的原密码
 		//前端输入的原密码
@@ -399,7 +402,7 @@ public class UserViewService extends BaseService<TUserEntity> {
 			//将原密码更新为新密码
 			dbDao.update(TUserEntity.class, Chain.make("password", newPass), Cnd.where("id", "=", userId));
 		}
-		return obj;
+		return JsonResult.success("密码修改成功!");
 	}
 
 	/*public Object checkOldPass(TUserModForm PassForm, final Long userId) {

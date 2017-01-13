@@ -17,7 +17,7 @@ import com.linyun.airline.common.access.sign.MD5;
 public class TestPassword {
 
 	public static void main(String[] args) {
-		String pass = MD5.sign("111111", AccessConfig.password_secret, AccessConfig.INPUT_CHARSET);
+		String pass = MD5.sign("1", AccessConfig.password_secret, AccessConfig.INPUT_CHARSET);
 		System.out.println(pass);
 	}
 

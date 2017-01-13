@@ -6,6 +6,7 @@ function initDatatable1() {
     	"bLengthChange": false,
         "processing": true,
         "serverSide": true,
+        "stripeClasses": [ 'strip1','strip2' ],
         "language": {
             "url": BASE_PATH + "/public/plugins/datatables/cn.json"
         },
@@ -50,9 +51,17 @@ function initDatatable1() {
                     },
                     {"data": "backsdate", "bSortable": false,
                     	render: function(data, type, row, meta) {
+                    		var backleavecity = row.backleavecity;
+                    		var backbackcity = row.backbackcity;
+                    		if(!row.backleavecity){
+                    			backleavecity = row.backscity;
+                    		}
+                    		if(!row.backbackcity){
+                    			backbackcity = row.leavescity;
+                    		}
                     		var result = '<ul>' 
                         		+'<li style="list-style:none;">'+(row.leavescity +'/'+ row.backscity)+'</li>'
-                        		+'<li style="list-style:none;">'+(row.backleavecity +'/'+ row.backbackcity)+'</li>'
+                        		+'<li style="list-style:none;">'+(backleavecity +'/'+ backbackcity)+'</li>'
                         		+'</ul>';
                     		return result;
                     	}
@@ -111,15 +120,15 @@ function initSelect2(){
 					processResults : function(data, params) {
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
-							  obj.id =  obj.comname; // replace pk with your identifier
-							  obj.text =  obj.comname; // replace pk with your identifier
+							  obj.id =  obj.shortName; // replace pk with your identifier
+							  obj.text =  obj.shortName; // replace pk with your identifier
 							  return obj;
 						});
 						return {
 							results : selectdata
 						};
 					},
-					cache : true
+					cache : false
 				},
 				
 				escapeMarkup : function(markup) {
@@ -139,7 +148,12 @@ function initSelect2(){
 					delay : 250,
 					type : 'post',
 					data : function(params) {
+						var backairline = $('#backairline'+i).val();
+						if(backairline){
+							backairline = backairline.join(',');
+						}
 						return {
+							exname : backairline,
 							airlinename : params.term, // search term
 							page : params.page
 						};
@@ -155,7 +169,7 @@ function initSelect2(){
 							results : selectdata
 						};
 					},
-					cache : true
+					cache : false
 				},
 				escapeMarkup : function(markup) {
 					return markup;
@@ -174,7 +188,12 @@ function initSelect2(){
 					delay : 250,
 					type : 'post',
 					data : function(params) {
+						var leaveairline = $('#leaveairline'+i).val();
+						if(leaveairline){
+							leaveairline = leaveairline.join(',');
+						}
 						return {
+							exname : leaveairline,
 							airlinename : params.term, // search term
 							page : params.page
 						};
@@ -190,7 +209,7 @@ function initSelect2(){
 							results : selectdata
 						};
 					},
-					cache : true
+					cache : false
 				},
 				
 				escapeMarkup : function(markup) {
@@ -210,7 +229,12 @@ function initSelect2(){
 					delay : 250,
 					type : 'post',
 					data : function(params) {
+						var backscity = $('#backscity'+i).val();
+						if(backscity){
+							backscity = backscity.join(',');
+						}
 						return {
+							exname : backscity,
 							cityname : params.term, // search term
 							page : params.page
 						};
@@ -219,14 +243,14 @@ function initSelect2(){
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
 							  obj.id = obj.dictCode; // replace pk with your identifier
-							  obj.text = obj.dictCode; // replace pk with your identifier
+							  obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
 							  return obj;
 						});
 						return {
 							results : selectdata
 						};
 					},
-					cache : true
+					cache : false
 				},
 				
 				escapeMarkup : function(markup) {
@@ -246,7 +270,12 @@ function initSelect2(){
 					delay : 250,
 					type : 'post',
 					data : function(params) {
+						var leavescity = $('#leavescity'+i).val();
+						if(leavescity){
+							leavescity = leavescity.join(',');
+						}
 						return {
+							exname : leavescity,
 							cityname : params.term, // search term
 							page : params.page
 						};
@@ -255,14 +284,14 @@ function initSelect2(){
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
 							  obj.id = obj.dictCode; // replace pk with your identifier
-							  obj.text = obj.dictCode; // replace pk with your identifier
+							  obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
 							  return obj;
 						});
 						return {
 							results : selectdata
 						};
 					},
-					cache : true
+					cache : false
 				},
 				
 				escapeMarkup : function(markup) {
@@ -282,7 +311,12 @@ function initSelect2(){
 					delay : 250,
 					type : 'post',
 					data : function(params) {
+						var backbackcity = $('#backbackcity'+i).val();
+						if(backbackcity){
+							backbackcity = backbackcity.join(',');
+						}
 						return {
+							exname : backbackcity,
 							cityname : params.term, // search term
 							page : params.page
 						};
@@ -291,14 +325,14 @@ function initSelect2(){
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
 							obj.id = obj.dictCode; // replace pk with your identifier
-							obj.text = obj.dictCode; // replace pk with your identifier
+							obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
 							return obj;
 						});
 						return {
 							results : selectdata
 						};
 					},
-					cache : true
+					cache : false
 				},
 				
 				escapeMarkup : function(markup) {
@@ -318,7 +352,12 @@ function initSelect2(){
 					delay : 250,
 					type : 'post',
 					data : function(params) {
+						var backleavecity = $('#backleavecity'+i).val();
+						if(backleavecity){
+							backleavecity = backleavecity.join(',');
+						}
 						return {
+							exname : backleavecity,
 							cityname : params.term, // search term
 							page : params.page
 						};
@@ -327,14 +366,14 @@ function initSelect2(){
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
 							obj.id = obj.dictCode; // replace pk with your identifier
-							obj.text = obj.dictCode; // replace pk with your identifier
+							obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
 							return obj;
 						});
 						return {
 							results : selectdata
 						};
 					},
-					cache : true
+					cache : false
 				},
 				
 				escapeMarkup : function(markup) {
@@ -363,14 +402,18 @@ function initSelect2(){
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
 							  obj.id = obj.dictCode; // replace pk with your identifier
-							  obj.text = obj.dictCode; // replace pk with your identifier
+							  var text = obj.dictCode;
+							  if(obj.dictName){
+								  text = obj.dictCode+'('+obj.dictName+')'
+							  }
+							  obj.text = text; // replace pk with your identifier
 							  return obj;
 						});
 						return {
 							results : selectdata
 						};
 					},
-					cache : true
+					cache : false
 				},
 				
 				escapeMarkup : function(markup) {
@@ -452,17 +495,23 @@ function select_change(obj,status){
         addMake_aa.find('.checkWeek').slideUp("slow");//checked hide
         addMake_aa.find('.hidnCalendar').slideDown("slow");//div show
         addMake_aa.find('.hidnBtn').slideDown("slow");//show 隐藏日历 按钮
+        addMake_aa.find('[name=congcong]').hide();//show 隐藏开始日期
+        //addMake_aa.find('[name=startenddate]').hide();//show 隐藏结束日期
      }else{
     	 if(status){
     		 addMake_aa.find('.checkWeek').show();//checked show
     		 addMake_aa.find('.hidnCalendar').hide();//div hide
     		 addMake_aa.find('.hidnBtn').hide();//hide 隐藏日历 按钮
     		 addMake_aa.find('.showBtn').hide();
+    		 addMake_aa.find('[name=congcong]').show();//show 显示开始日期
+    	     //addMake_aa.find('[name=startenddate]').show();//show 显示结束日期
     	 }else{
     		 addMake_aa.find('.checkWeek').slideDown("slow");//checked show
     		 addMake_aa.find('.hidnCalendar').slideUp("slow");//div hide
     		 addMake_aa.find('.hidnBtn').slideUp("slow");//hide 隐藏日历 按钮
     		 addMake_aa.find('.showBtn').slideUp("slow");
+    		 addMake_aa.find('[name=congcong]').show();//show 显示开始日期
+    	     //addMake_aa.find('[name=startenddate]').show();//show 显示结束日期
     	 }
   };
 }
@@ -561,7 +610,7 @@ $(function () {
 		if($('.addMake').length > 1){
 			$(this).parent().remove();
 		}else{
-			layer.msg("最后一个不能删",{time: 2000, icon:1});
+			layer.alert("最后一个不能删",{time: 2000, icon:1});
 		}
 	});
 });
@@ -677,11 +726,11 @@ function makePlan(){
 	            	datatable1.ajax.reload();
 	            	if(divlength-1 == i){
 	            		layer.closeAll('loading');
-	            		layer.msg("制作成功",{time: 2000, icon:1});
+	            		layer.alert("制作成功",{time: 2000, icon:1});
 	            	}
 	            },
 	            error: function (xhr) {
-	            	layer.msg("制作失败",{time: 2000, icon:1});
+	            	layer.alert("制作失败",{time: 2000, icon:1});
 	            } 
 	        });
 		});
@@ -691,23 +740,23 @@ function makePlan(){
 function checkIsNull(){
 	var result = true;
 	$('.addMake').each(function(i){
-		var travelname = $(this).find('[name=travelname]').val();
+		/*var travelname = $(this).find('[name=travelname]').val();
 		if(travelname){
 			travelname = travelname.join(',');
 		}else{
-			layer.msg("请填写第"+(i+1)+"个旅行社",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个旅行社",{time: 2000, icon:1});
 			result = false;
 			return false;
-		}
+		}*/
 		var peoplecount = $(this).find('[name=peoplecount]').val();
 		if(!peoplecount){
-			layer.msg("请填写第"+(i+1)+"个人数",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个人数",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}
 		var dayscount = $(this).find('[name=dayscount]').val();
 		if(!dayscount){
-			layer.msg("请填写第"+(i+1)+"个天数",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个天数",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}
@@ -715,7 +764,7 @@ function checkIsNull(){
 		if (leaveairline) {
 			leaveairline = leaveairline.join(',');
 		}else{
-			layer.msg("请填写第"+(i+1)+"个去程航班",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个去程航班",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}
@@ -723,7 +772,7 @@ function checkIsNull(){
 		if (backairline) {
 			backairline = backairline.join(',');
 		}else{
-			layer.msg("请填写第"+(i+1)+"个回程航班",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个回程航班",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}*/
@@ -731,7 +780,7 @@ function checkIsNull(){
 		if (leavescity) {
 			leavescity = leavescity.join(',');
 		}else{
-			layer.msg("请填写第"+(i+1)+"个去程出发城市",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个去程出发城市",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}
@@ -739,15 +788,15 @@ function checkIsNull(){
 		if (backscity) {
 			backscity = backscity.join(',');
 		}else{
-			layer.msg("请填写第"+(i+1)+"个去程抵达城市",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个去程抵达城市",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}
-		var backleavecity = $(this).find('[name=backleavecity]').val();
+		/*var backleavecity = $(this).find('[name=backleavecity]').val();
 		if (backleavecity) {
 			backleavecity = backleavecity.join(',');
 		}else{
-			layer.msg("请填写第"+(i+1)+"个返程出发城市",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个返程出发城市",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}
@@ -755,31 +804,53 @@ function checkIsNull(){
 		if (backbackcity) {
 			backbackcity = backbackcity.join(',');
 		}else{
-			layer.msg("请填写第"+(i+1)+"个返程抵达城市",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个返程抵达城市",{time: 2000, icon:1});
 			result = false;
 			return false;
-		}
-		var unioncity = $(this).find('[name=unioncity]').val();
+		}*/
+		/*var unioncity = $(this).find('[name=unioncity]').val();
 		if (unioncity) {
 			unioncity = unioncity.join(',');
 		}else{
-			layer.msg("请填写第"+(i+1)+"个联运城市",{time: 2000, icon:1});
+			layer.alert("请填写第"+(i+1)+"个联运城市",{time: 2000, icon:1});
 			result = false;
 			return false;
-		}
+		}*/
+		var weekSelect = $(this).find('[id=weekSelect]').val();
 		var startdate = $(this).find('[name=startdate]').val();
-		if(!startdate){
-			layer.msg("请填写第"+(i+1)+"个起始日期",{time: 2000, icon:1});
-			result = false;
-			return false;
+		if(weekSelect==2){
+			var calenderdate = $(this).find('[name=calenderdate]').val();
+			if(!calenderdate){
+				layer.alert("请选择第"+(i+1)+"个自由日期",{time: 2000, icon:1});
+				result = false;
+				return false;
+			}
+		}else{
+			if(!startdate){
+				layer.alert("请填写第"+(i+1)+"个起始日期",{time: 2000, icon:1});
+				result = false;
+				return false;
+			}
+			var enddate = $(this).find('[name=enddate]').val();
+			if(!enddate){
+				layer.alert("请填写第"+(i+1)+"个截止日期",{time: 2000, icon:1});
+				result = false;
+				return false;
+			}
+			var weekday =[];    
+			$(this).find('input[name="weekday"]:checked').each(function(){    
+				weekday.push($(this).val());    
+			});   
+			if (weekday) {
+				weekday = weekday.join(',');
+			}
+			if(!weekday){
+				layer.alert("请选择第"+(i+1)+"个每周",{time: 2000, icon:1});
+				result = false;
+				return false;
+			}
 		}
-		var enddate = $(this).find('[name=enddate]').val();
-		if(!enddate){
-			layer.msg("请填写第"+(i+1)+"个截止日期",{time: 2000, icon:1});
-			result = false;
-			return false;
-		}
-		var calenderdate = $(this).find('[name=calenderdate]').val();
+		/*var calenderdate = $(this).find('[name=calenderdate]').val();
 		var weekday =[];    
 		$(this).find('input[name="weekday"]:checked').each(function(){    
 			weekday.push($(this).val());    
@@ -788,10 +859,10 @@ function checkIsNull(){
 			weekday = weekday.join(',');
 		}
 		if(!weekday && !calenderdate){
-			layer.msg("请选择第"+(i+1)+"个每周或自由中的一种",{time: 2000, icon:1});
+			layer.alert("请选择第"+(i+1)+"个每周或自由中的一种",{time: 2000, icon:1});
 			result = false;
 			return false;
-		}
+		}*/
 	});
 	return result;
 }
@@ -818,17 +889,17 @@ function savePlan(){
 				data: {}, 
 				url: BASE_PATH + '/admin/customneeds/savePlanData.html',
 				success: function (data) { 
-					layer.msg("保存成功",{time: 2000, icon:1});
+					layer.alert("保存成功",{time: 2000, icon:1});
 					datatable1.ajax.reload();
 					datatable2.ajax.reload();
 				},
 				error: function (xhr) {
-					layer.msg("保存失败",{time: 2000, icon:1});
+					layer.alert("保存失败",{time: 2000, icon:1});
 				} 
 			});
 		});
 	}else{
-		layer.msg("没有需要保存的计划",{time: 2000, icon:1});
+		layer.alert("没有需要保存的计划",{time: 2000, icon:1});
 	}
 }
 //提示是否保存已经制作的计划

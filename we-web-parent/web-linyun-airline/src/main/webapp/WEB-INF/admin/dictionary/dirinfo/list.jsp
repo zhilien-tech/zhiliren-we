@@ -22,7 +22,7 @@
 						<div class="box">
 							<div class="box-header">
 								<h3 class="box-title">
-									&nbsp;&nbsp;<i class="fa fa-user-secret"></i>字典信息
+									&nbsp;&nbsp;<!-- <i class="fa fa-user-secret"></i>字典信息 -->
 								</h3>
 							</div>
 								<div class="col-md-2">
@@ -202,6 +202,7 @@
 				"searching" : false,
 				"processing" : true,
 				"serverSide" : true,
+				"stripeClasses": [ 'strip1','strip2' ],//斑马线
 				"bLengthChange" : false,
 				"bJQueryUI": true,
 				

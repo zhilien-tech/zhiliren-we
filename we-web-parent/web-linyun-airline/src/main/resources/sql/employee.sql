@@ -76,11 +76,11 @@ SELECT
 	u.remark
 FROM
 	t_user u
-INNER JOIN t_user_area_map am ON u.id = am.userId
-INNER JOIN t_area a ON a.id = am.areaId
-INNER JOIN t_user_job uj ON u.id = uj.userid
-INNER JOIN t_company_job cj ON cj.id = uj.companyJobId
-INNER JOIN t_job j ON j.id = cj.posid
+LEFT JOIN t_user_area_map am ON u.id = am.userId
+LEFT JOIN t_area a ON a.id = am.areaId
+LEFT JOIN t_user_job uj ON u.id = uj.userid
+LEFT JOIN t_company_job cj ON cj.id = uj.companyJobId
+LEFT JOIN t_job j ON j.id = cj.posid
 WHERE u.id=@userId
 
 /*employee_delete_data*/

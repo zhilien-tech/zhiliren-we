@@ -48,7 +48,7 @@ public class TCustomerInfoForm implements SQLParamForm, Serializable {
 	private String address;
 
 	/**负责人id*/
-	private String agent;
+	private long responsibleId;
 
 	/**负责人姓名*/
 	private String agentName;
@@ -61,6 +61,8 @@ public class TCustomerInfoForm implements SQLParamForm, Serializable {
 
 	/**附件管理*/
 	private String appendix;
+	/**附件名称*/
+	private String appendixName;
 
 	/**旅行社类型*/
 	private long travelType;

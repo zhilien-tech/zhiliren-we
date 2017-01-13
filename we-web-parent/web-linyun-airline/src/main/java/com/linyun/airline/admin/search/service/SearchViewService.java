@@ -1,23 +1,25 @@
 package com.linyun.airline.admin.search.service;
 
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
-
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
 import com.linyun.airline.admin.customer.service.CustomerViewService;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
+import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.entities.TMessageEntity;
 import com.linyun.airline.common.sabre.dto.FlightSegment;
 import com.linyun.airline.common.sabre.dto.InstalFlightAirItinerary;
@@ -27,7 +29,9 @@ import com.linyun.airline.common.sabre.form.InstaFlightsSearchForm;
 import com.linyun.airline.common.sabre.service.SabreService;
 import com.linyun.airline.common.sabre.service.impl.SabreServiceImpl;
 import com.linyun.airline.entities.DictInfoEntity;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
+import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.Util;
@@ -53,14 +57,32 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * @param linkname
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object getLinkNameSelect(String linkname) {
-		List<TCustomerInfoEntity> customerInfos = customerViewService.getCustomerInfoByLinkName(linkname);
+	public Object getLinkNameSelect(String linkname, HttpSession session) {
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
+		long upcompanyRelationId = 0;
+		if (!Util.isEmpty(upcompany)) {
+			upcompanyRelationId = upcompany.getId();
+		}
+		List<TCustomerInfoEntity> customerInfos = new ArrayList<TCustomerInfoEntity>();
+		try {
+			customerInfos = dbDao
+					.query(TCustomerInfoEntity.class,
+							Cnd.where("linkMan", "like", Strings.trim(linkname) + "%").and("upComId", "=",
+									upcompanyRelationId), null);
+			if (customerInfos.size() > 5) {
+				customerInfos = customerInfos.subList(0, 5);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return customerInfos;
 	}
 
 	/**
 	 * 
-	 * TODO(获取客户姓名下拉列表)
+	 * TODO(获取联系电话下拉列表)
 	 *
 	 * @param linkname
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
@@ -97,23 +119,22 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		List<DictInfoEntity> citySelect = new ArrayList<DictInfoEntity>();
 		try {
 			citySelect = externalInfoService.findDictInfoByText(cityname, typeCode);
+			//出发抵达城市去重
+			if (!Util.isEmpty(ids)) {
+				//已选中的城市
+				List<DictInfoEntity> existCitys = new ArrayList<DictInfoEntity>();
+				for (DictInfoEntity dictInfoEntity : citySelect) {
+					if (dictInfoEntity.getDictCode().equals(ids)) {
+						existCitys.add(dictInfoEntity);
+					}
+				}
+				citySelect.removeAll(existCitys);
+			}
 			if (citySelect.size() > 5) {
 				citySelect = citySelect.subList(0, 5);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-
-		//出发抵达城市去重
-		if (!Util.isEmpty(ids)) {
-			//已选中的城市
-			List<DictInfoEntity> existCitys = new ArrayList<DictInfoEntity>();
-			for (DictInfoEntity dictInfoEntity : citySelect) {
-				if (dictInfoEntity.getDictCode().equals(ids)) {
-					existCitys.add(dictInfoEntity);
-				}
-			}
-			citySelect.removeAll(existCitys);
 		}
 
 		return citySelect;
@@ -140,29 +161,25 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		return airlineSelect;
 	}
 
-
 	/**
-	 * 查询散客飞机票
+	 * 查询跨海内陆飞机票
 	 */
 	public Object searchSingleTickets(InstaFlightsSearchForm searchForm) {
 		InstaFlightsSearchForm form = new InstaFlightsSearchForm();
-		form.setDestination(searchForm.getArriveCityCode());
-		form.setOrigin(searchForm.getOutCityCode());
-		form.setDeparturedate(searchForm.getOutDatepicker());
-		form.setReturndate(searchForm.getReturnDatepicker());
-
-		if (!Util.isEmpty(searchForm.getOutDatepicker())) {
+		form.setOrigin(searchForm.getOrigin());
+		form.setDestination(searchForm.getDestination());
+		form.setDeparturedate(searchForm.getDeparturedate());
+		if (!Util.isEmpty(searchForm.getDeparturedate())) {
 			//默认设置返回日期为15天
-			Date outD = DateTimeUtil.string2Date(searchForm.getOutDatepicker(), "yyyy-MM-dd");
+			Date outD = DateTimeUtil.string2Date(searchForm.getDeparturedate(), "yyyy-MM-dd");
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			String returnD = df.format(new Date(outD.getTime() + 15 * 24 * 60 * 60 * 1000));
 			form.setReturndate(returnD);
 		}
 		//如果返回日期不为空， 则用
-		if (!Util.isEmpty(searchForm.getReturnDatepicker())) {
-			form.setReturndate(searchForm.getReturnDatepicker());
+		if (!Util.isEmpty(searchForm.getReturndate())) {
+			form.setReturndate(searchForm.getReturndate());
 		}
-
 		//乘客数量
 		String childrenSelect = searchForm.getChildrenSelect();
 		String agentSelect = searchForm.getAgentSelect();
@@ -173,16 +190,14 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			form.setPassengercount(passengercount);
 		}
 		//航空公司
-		if (!Util.isEmpty(searchForm.getAirlineCode())) {
-			form.setIncludedcarriers(searchForm.getAirlineCode());
+		if (!Util.isEmpty(searchForm.getIncludedcarriers())) {
+			form.setIncludedcarriers(searchForm.getIncludedcarriers());
 		}
 		form.setPointofsalecountry("US");
 		form.setOffset(1);
 		form.setLimit(10);
 		SabreService service = new SabreServiceImpl();
 		SabreResponse resp = service.instaFlightsSearch(form);
-
-		SimpleDateFormat sdf = sdf = new SimpleDateFormat("HH:mm");
 		String departureDateTime = "";
 		String arrivalDateTime = "";
 		if (resp.getStatusCode() == 200) {
@@ -200,12 +215,10 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 						arrivalDateTime = arrivalDateTime.substring(11, 16);
 						flight.setArrivalDateTime(arrivalDateTime);
 					}
-
 				}
 				String airlineCode = instalFlightAirItinerary.getAirlineCode();
 				DictInfoEntity dictInfo = dbDao.fetch(DictInfoEntity.class,
 						Cnd.where("typeCode", "=", "HKGS").and("dictCode", "=", airlineCode));
-
 				String dictName = dictInfo.getDictName();
 				if (!Util.isEmpty(dictName)) {
 					instalFlightAirItinerary.setAirlineName(dictName);
@@ -213,36 +226,40 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 			}
 		}
-
 		if (resp.getStatusCode() == 400) {
 			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
 			String message = sabreExResponse.getMessage();
-
-			if (message.contains("origin")) {
+			if (message.contains("Parameter 'origin' must be specified")) {
 				sabreExResponse.setMessage("出发城市不能为空");
 			}
-			if (message.contains("destination")) {
+			if (message.contains("Parameter 'destination' must be specified")) {
 				sabreExResponse.setMessage("到达城市不能为空");
 			}
-			if (message.contains("departuredate")) {
+			if (message.contains("Parameter 'departuredate' must be specified")) {
 				sabreExResponse.setMessage("出发日期不能为空");
 			}
 			if (message.contains("arrivalDateTime")) {
 				sabreExResponse.setMessage("返回日期不能为空");
 			}
-			if (message.contains("No results were found")) {
+			if (message.contains("No results")) {
+				sabreExResponse.setMessage("未查询到结果");
+			}
+			if (message.contains("Date range in 'departuredate' and 'returndate' exceeds the maximum allowed")) {
+				sabreExResponse.setMessage("出发日期和返回日期之差不超过15天");
+			}
+		}
+		if (resp.getStatusCode() == 404) {
+			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
+			String message = sabreExResponse.getMessage();
+			if (message.contains("No results")) {
 				sabreExResponse.setMessage("未查询到结果");
 			}
 		}
-
-		System.out.println(resp.toString());
-		System.out.println(resp.getData().toString());
-
 		return resp;
 	}
 
 	/**
-	 * 查询团客飞机票
+	 * 查询国际飞机票
 	 */
 	public Object searchTeamTickets(InstaFlightsSearchForm searchForm) {
 		String origin = searchForm.getOrigin(); //起飞机场/出发城市
@@ -251,25 +268,24 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		String returndate = searchForm.getReturndate();//返回日期
 		String airLevel = searchForm.getAirLevel();//舱位等级
 		String includedcarriers = searchForm.getIncludedcarriers();//航空公司名称
-
 		Sql sql = Sqls.create(sqlManager.get("team_ticket_list"));
 		Cnd cnd = Cnd.NEW();
+		cnd.and("tt.travelname", "=", "");
 		if (!Util.isEmpty(origin)) {
-			cnd.and("leavescity", "=", origin);
+			cnd.and("tt.leavescity", "=", origin);
 		}
 		if (!Util.isEmpty(destination)) {
-			cnd.and("backscity", "=", destination);
+			cnd.and("tt.backscity", "=", destination);
 		}
 		if (!Util.isEmpty(departuredate)) {
-			cnd.and("date_format(pi.leavesdate,'%Y-%m-%d')", "like", departuredate);
+			cnd.and("date_format(tt.leavesdate,'%Y-%m-%d')", "like", departuredate);
 		}
 		if (!Util.isEmpty(returndate)) {
-			cnd.and("date_format(pi.backsdate,'%Y-%m-%d')", "like", returndate);
+			cnd.and("date_format(tt.backsdate,'%Y-%m-%d')", "like", returndate);
 		}
 		if (!Util.isEmpty(includedcarriers)) {
-			cnd.and("airlinename", "=", includedcarriers);
+			cnd.and("tt.airlinename", "=", includedcarriers);
 		}
-
 		List<Record> list = dbDao.query(sql, cnd, null);
 		for (Record record : list) {
 			String id = record.getString("opid");
@@ -287,6 +303,5 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 		return list;
 	}
-
 
 }

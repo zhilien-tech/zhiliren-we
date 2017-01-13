@@ -58,7 +58,7 @@ $(document).ready(function(){
                          //自定义提交数据，默认值提交当前input value
                          data: function(validator) {
                             return {
-                            	dictAreaName : $('#areaName').find("option:selected").val(),
+                            	areaName:$('input#areaName').val()
                             };
                          }
                      }

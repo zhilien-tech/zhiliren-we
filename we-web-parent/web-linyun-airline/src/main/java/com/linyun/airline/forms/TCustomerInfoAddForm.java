@@ -41,7 +41,7 @@ public class TCustomerInfoAddForm extends AddForm implements Serializable {
 	private String address;
 
 	/**负责人*/
-	private String agent;
+	private long responsibleId;
 
 	/**添加时间*/
 	private Date createTime;
@@ -52,11 +52,15 @@ public class TCustomerInfoAddForm extends AddForm implements Serializable {
 	/**附件管理*/
 	private String appendix;
 
+	/**附件名称*/
+	private String appendixName;
+
 	/**旅行社类型*/
 	private long travelType;
 
 	/**付款方式（现金、支票、银行汇款、第三方、其他）*/
 	private long payWay;
+
 	/**其他付款方式*/
 	private String paywayName;
 
@@ -71,6 +75,7 @@ public class TCustomerInfoAddForm extends AddForm implements Serializable {
 
 	/**结算形式（月结、周结、单结、其他）*/
 	private long payType;
+
 	/**其他结算方式*/
 	private String paytypeName;
 

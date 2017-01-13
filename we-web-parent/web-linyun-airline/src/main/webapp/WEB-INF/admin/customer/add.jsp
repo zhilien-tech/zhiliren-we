@@ -24,14 +24,10 @@
 	display: inline-block;
 }
 
-.inpNone .select2 .selection span ul li+li {
-	display: none;
-}
 </style>
 </head>
 
 <body>
-
 	<div class="modal-content">
 		<form id="customerAddForm">
 			<div class="modal-header">
@@ -54,23 +50,24 @@
 						<!-- TODO -->
 						<!-- <input name="comId" type="hidden" value="" /> -->
 						<!--基本信息-->
-						<div class="form-group row">
-							<label class="col-sm-3 text-right padding">公司名称：</label>
-							<div class="col-sm-8 padding seleSpanWid inpNone">
-								<select id="companyId" name="companyId" onchange="editInput()"
-									class="form-control select2 inpImpWid" multiple="multiple"
-									data-placeholder="请输入公司名称">
-
-								</select><span class="prompt">*</span>
-								<!-- 公司ID -->
-								<input id="agentId" type="hidden" name="agentId" />
-								<!-- 公司名称 -->
-								<input id="comName" type="hidden" name="name" />
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">公司名称：</label>
+								<div id="comDiv" class="col-sm-8 padding seleSpanWid inpNone">
+									<select id="companyId" name="companyId" onchange="editInput()"
+										class="form-control select2 inpImpWid" multiple="multiple"
+										data-placeholder="请输入公司名称">
+									</select><span class="prompt">*</span>
+									<!-- 公司ID -->
+									<input id="agentId" type="hidden" name="agentId" />
+									<!-- 公司名称 -->
+									<input id="comName" type="hidden" name="name" />
+								</div>
 							</div>
 						</div>
 						<!-- 公司OnChange事件 -->
 						<script type="text/javascript">
-							var comInput = $("input[placeholder=请输入公司名称]");
+							/* var comInput = $("input[placeholder=请输入公司名称]"); */
 							function editInput() {
 								var opt = $("#companyId").html();
 								//代理商公司ID
@@ -82,65 +79,68 @@
 							}
 						</script>
 
-						<div class="form-group row">
-							<label class="col-sm-3 text-right padding">公司简称：</label>
-							<div class="col-sm-3 padding">
-								<input name="shortName" type="text"
-									class="form-control input-sm inpImportant"
-									placeholder="请输入公司简称" />
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">公司简称：</label>
+								<div id="shortNameDiv" class="col-sm-3 padding">
+									<input id="shortName" name="shortName" type="text"
+										class="form-control input-sm inpImportant"
+										placeholder="请输入公司简称" /><span class="prompt">*</span>
+								</div>
 							</div>
-
-							<label class="col-sm-2 text-right padding">负责人：</label>
-							<div class="col-sm-3 padding">
-								<!-- 负责人下拉列表 -->
-								<select id="agent" name="agent"
-									class="form-control input-sm inpImportant">
-									<c:forEach var="one" items="${obj.userlist }">
-										<option value="${one.id }">${one.userName}</option>
-									</c:forEach>
-								</select><span class="prompt">*</span>
-							</div>
-						</div>
-
-						<div class="form-group row">
-							<label class="col-sm-3 text-right padding">联系人：</label>
-							<div class="col-sm-3 padding">
-								<input name="linkMan" type="text"
-									class="form-control input-sm inpImportant" placeholder="请输入联系人" /><span
-									class="prompt">*</span>
-							</div>
-
-							<label class="col-sm-2 text-right padding">联系电话：</label>
-							<div class="col-sm-3 padding">
-								<input id="telephoneId" name="telephone" type="text"
-									class="form-control input-sm inpImportant"
-									placeholder="请输入联系电话" /><span class="prompt">*</span>
+							<div class="form-group">
+								<label class="col-sm-2 text-right padding">负责人：</label>
+								<div class="col-sm-3 padding">
+									<!-- 负责人下拉列表 -->
+									<select id="agent" name="responsibleId"
+										class="form-control input-sm inpImportant">
+										<c:forEach var="one" items="${obj.userlist }">
+											<option value="${one.id }">${one.userName}</option>
+										</c:forEach>
+									</select><span class="prompt">*</span>
+								</div>
 							</div>
 						</div>
-
-						<div class="form-group row">
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">联系人：</label>
+								<div class="col-sm-3 padding">
+									<input id="linkMan" name="linkMan" type="text" class="form-control input-sm inpImportant" placeholder="请输入联系人" />
+									<span class="prompt">*</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 text-right padding">联系电话：</label>
+								<div id="phoneDiv" class="col-sm-3 padding">
+									<input id="telephoneId" name="telephone" type="text"
+										class="form-control input-sm inpImportant"
+										placeholder="请输入联系电话" /><span class="prompt">*</span>
+								</div>
+							</div>
+						</div>
+						<div class="row sitefax">
 							<label class="col-sm-3 text-right padding">网址：</label>
 							<div class="col-sm-3 padding">
 								<input name="siteUrl" type="text"
 									class="form-control input-sm inpImportant" placeholder="请输入网址" />
 							</div>
-
-							<label class="col-sm-2 text-right padding">传真：</label>
-							<div class="col-sm-3 padding">
-								<input id="fax" name="fax" type="text"
-									class="form-control input-sm inpImportant" placeholder="请输入传真" />
+							<div class="form-group fax">
+								<label class="col-sm-2 text-right padding">传真：</label>
+								<div  class="col-sm-3 padding">
+									<input id="fax" name="fax" type="text" class="form-control input-sm inpImportant" placeholder="请输入传真" />
+								</div>
 							</div>
 						</div>
-
-						<div class="form-group row">
-							<label class="col-sm-3 text-right padding">地址：</label>
-							<div class="col-sm-8 padding">
-								<input name="address" type="text"
-									class="form-control input-sm inpImpWid" placeholder="请输入详细地址" /><span
-									class="prompt">*</span>
+						<div class="row address">
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">地址：</label>
+								<div class="col-sm-8 padding">
+									<input id="address" name="address" type="text"
+										class="form-control input-sm inpImpWid" placeholder="请输入详细地址" /><span
+										class="prompt">*</span>
+								</div>
 							</div>
 						</div>
-
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">旅行社类型：</label>
 							<div class="col-sm-3 padding">
@@ -151,7 +151,6 @@
 									<option value="3">综合</option>
 								</select>
 							</div>
-
 							<label class="col-sm-2 text-right padding">是否禁用：</label>
 							<div class="col-sm-3 padding">
 								<select id="forbidID" name="forbid"
@@ -161,19 +160,19 @@
 								</select>
 							</div>
 						</div>
-
-						<div class="form-group row">
-							<label class="col-sm-3 text-right padding">出发城市：</label>
-							<div class="col-sm-8 padding seleSpanWid">
-								<select id="city" class="form-control select2 inpImpWid"
-									multiple="multiple" onchange="cityOpt()"
-									data-placeholder="请输入出发城市">
-								</select><span class="prompt">*</span>
-								<!-- 出发城市ID -->
-								<input id="outcity" type="hidden" name="outcityname" />
+						<div class="row">
+							<div>
+								<label class="col-sm-3 text-right padding">出发城市：</label>
+								<div class="col-sm-8 padding seleSpanWid">
+									<select id="city" class="form-control select2 inpImpWid"
+										multiple="multiple" onchange="cityOpt()"
+										data-placeholder="请输入出发城市">
+									</select><!-- <span class="prompt">*</span> -->
+									<!-- 出发城市ID -->
+									<input id="outcity" type="hidden" name="outcityname" />
+								</div>
 							</div>
 						</div>
-
 					</div>
 					<div class="tab-pane" id="tabs_2">
 						<!--路线权限-->
@@ -183,33 +182,31 @@
 								<select id="isLine" class="form-control select2 inpImportant"
 									multiple="multiple" onchange="inLine()"
 									data-placeholder="请输入国境内陆">
-								</select><span class="prompt">*</span>
+								</select>
 								<!-- 国境内陆ID -->
 								<input id="sLine1ID" type="hidden" name="sLine1" />
 							</div>
-
 							<label class="col-sm-2 text-right padding">国际：</label>
 							<div class="col-sm-3 padding">
 								<select id="sLine2ID" class="form-control select2 inpImportant"
 									multiple="multiple" onchange="outLine()"
 									data-placeholder="请输入国际线路">
-								</select><span class="prompt">*</span>
+								</select>
 								<!-- 国际线路ID -->
 								<input id="line2ID" type="hidden" name="internationLine" />
 							</div>
 						</div>
-
 					</div>
 					<div class="tab-pane" id="tabs_3">
 						<!--附件管理-->
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">附件列表：</label>
 							<div class="col-sm-3 padding">
-								<input type="file" name="fileID" id="uploadify" /> <input
-									type="hidden" name="appendix" id="appendix" />
-								<!-- <p class="flie_A">
-									上传<input type="button" onclick="fileupload();" />
-								</p> -->
+								<input type="file" name="fileID" id="uploadify" /> 
+								<input type="hidden" name="appendix" id="appendix" />
+								<input type="hidden" id="fileUrl">
+								<input type="hidden" id="appendixName" name="appendixName">
+								<span id="completeFileName"></span>
 							</div>
 						</div>
 					</div>
@@ -218,8 +215,7 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">业务范围：</label>
 							<div class="col-sm-8 padding">
-								<textarea id="businessID" name="business"
-									class="form-control textar-hei"></textarea>
+								<textarea id="businessID" name="business" class="form-control textar-hei"></textarea>
 							</div>
 						</div>
 					</div>
@@ -235,7 +231,6 @@
 									<option value="2">禁止合作</option>
 								</select>
 							</div>
-
 							<label class="col-sm-2 text-right padding">合作时间：</label>
 							<div class="col-sm-5 padding">
 								<input id="datepicker1" name="contractTimeString" type="text"
@@ -249,11 +244,9 @@
 									placeholder="2088-09-09" />
 							</div>
 						</div>
-
 						<div class="form-group row">
 							<label class="col-sm-2 text-right padding">付款方式：</label>
 							<div class="col-sm-2 padding">
-
 								<select id="payWayID" name="payWay"
 									class="form-control input-sm paySele"
 									onchange="paywaySelect_change(this)">
@@ -264,7 +257,6 @@
 									<option value="5">其他</option>
 								</select>
 							</div>
-
 							<div class="col-sm-8" style="display: none;" id="paywayDivId">
 								<div class="col-sm-12 padding payInp">
 									<input type="text" id="paywayId" name="paywayName"
@@ -275,10 +267,7 @@
 						<div class="form-group row">
 							<label class="col-sm-2 text-right padding">结算方式：</label>
 							<div class="col-sm-2 padding">
-								<select id="payTypeID" name="payType"
-									class="form-control input-sm sele"
-									onchange="paytypeSelect_change(this)">
-
+								<select id="payTypeID" name="payType" class="form-control input-sm sele" onchange="paytypeSelect_change(this)">
 									<option value="1" selected="selected">月结</option>
 									<option value="2">周结</option>
 									<option value="3">单结</option>
@@ -287,12 +276,10 @@
 							</div>
 							<div class="col-sm-8" style="display: none;" id="paytypeDivId">
 								<div class="col-sm-12 padding inpAdd">
-									<input type="text" name="paytypeName"
-										class="paytext form-control input-sm" placeholder="请输入结算方式">
+									<input type="text" name="paytypeName" class="paytext form-control input-sm" placeholder="请输入结算方式">
 								</div>
 							</div>
 						</div>
-
 						<div class="form-group row">
 							<label class="col-sm-2 text-right padding">提供发票：</label>
 							<div class="col-sm-2 padding">
@@ -314,17 +301,16 @@
 								</div>
 							</div>
 						</div>
-
 					</div>
 				</div>
 			</div>
 		</form>
 	</div>
+	<!-- jQuery 2.2.3 -->
+	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script type="text/javascript">
 		var BASE_PATH = '${base}';
 	</script>
-	<!-- jQuery 2.2.3 -->
-	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<!-- 时间控件 -->
 	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 	<!-- Bootstrap 3.3.6 -->
@@ -332,25 +318,18 @@
 	<!-- Select2 -->
 	<script src="${base}/public/plugins/select2/select2.full.min.js"></script>
 	<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
-
-	<script src="${base}/public/plugins/iCheck/icheck.min.js"></script>
-	<!-- FastClick 快 点击-->
 	<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
-
 	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
-	<script src="${base}/common/js/layer/layer.js"></script>
-	
-
 	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
 	<!-- 页面js -->
 	<script src="${base}/admin/customer/baseinfo.js"></script>
 	<script src="${base}/admin/customer/line.js"></script>
 	<script src="${base}/admin/customer/upload.js"></script>
 	<script src="${base}/admin/customer/caiwu.js"></script>
+	<script src="${base}/common/js/layer/layer.js"></script>
 	<script type="text/javascript">
 		var base = "${base}";
 		$(function() {
-
 			$.fileupload1 = $('#uploadify').uploadify({
 				'auto' : true,
 				'formData' : {
@@ -360,7 +339,7 @@
 				'buttonText' : '上传',
 				'fileSizeLimit' : '3000MB',
 				'fileTypeDesc' : '文件',
-				'fileTypeExts' : '*.png; *.txt',//文件类型过滤
+				'fileTypeExts' : '*.png; *.txt; *.doc; *.pdf; *.xls; *.jpg; *.docx; *.xlsx;',//文件类型过滤
 				'swf' : '${base}/public/plugins/uploadify/uploadify.swf',
 				'multi' : false,
 				'successTimeout' : 1800,
@@ -369,124 +348,145 @@
 				//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
 				//下面的例子演示如何获取到vid
 				'onUploadSuccess' : function(file, data, response) {
+					$("#completeFileName").html("");
 					var jsonobj = eval('(' + data + ')');
 					$('#appendix').val(data);
-				}
+					$("#fileUrl").val(data);
+					$("#appendixName").val(file.name);
+					var innerHtml = "";
+                    if (response) {
+                        innerHtml = "<div><a id='downloadA' href='#' download='"+file.name+"' onclick='downloadFile("
+                                + data
+                                + ");' >"
+                                + file.name
+                                + "</a>&nbsp;&nbsp;<span>上传成功</span>&nbsp;&nbsp;&nbsp;&nbsp;"
+                                + "<input type='button' class='delete' onclick='deleteFile();' value='删除'><input type='hidden' name='${attachIds}' value='"
+                                + data + "'></div>";
+                    } else {
+                        innerHtml = "<div>该附件上传失败，请重新上传</div>";
+                    }
+                    $("#completeFileName").html($("#completeFileName").html() + innerHtml);
+				},
+                //加上此句会重写onSelectError方法【需要重写的事件】
+                'overrideEvents': ['onSelectError', 'onDialogClose'],
+                //返回一个错误，选择文件的时候触发
+                'onSelectError':function(file, errorCode, errorMsg){
+                    switch(errorCode) {
+                        case -110:
+                            alert("文件 ["+file.name+"] 大小超出系统限制！");
+                            break;
+                        case -120:
+                            alert("文件 ["+file.name+"] 大小异常！");
+                            break;
+                        case -130:
+                            alert("文件 ["+file.name+"] 类型不正确！");
+                            break;
+                    }
+                }
 			});
 
 			//页面加载时 执行
 			angentList();
 
-			//公司名称文本框
-			var comInput = $("input[placeholder=请输入公司名称]");
-
 			//校验
-			$('#customerAddForm')
-					.bootstrapValidator(
-							{
-								message : '验证不通过',
-								feedbackIcons : {
-									valid : 'glyphicon glyphicon-ok',
-									invalid : 'glyphicon glyphicon-remove',
-									validating : 'glyphicon glyphicon-refresh'
-								},
-								fields : {
-									companyId : {
-										validators : {
-											notEmpty : {
-												message : '公司名称不能为空'
-											},
-											remote : {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
-												url : '${base}/admin/customer/checkComNameExist.html',//验证地址
-												message : '公司名称已存在，请重新输入!',//提示消息
-												delay : 2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
-												type : 'POST',//请求方式
-												//自定义提交数据，默认值提交当前input value
-												data : function(validator) {
-													return {
-														name : $('#companyId')
-																.find(
-																		"option:selected")
-																.val(),
-														cid : $("#companyId")
-																.select2("val")
-													};
-												}
-											}
-										}
-									},
-									shortName : {
-										validators : {
-											notEmpty : {
-												message : '公司简称不能为空'
-											},
-											regexp : {
-												regexp : /^[a-zA-Z\u4e00-\u9fa5]{1,6}$/,
-												message : '公司简称最多为6个字'
-											}
-										}
-									},
-									linkMan : {
-										validators : {
-											notEmpty : {
-												message : '联系人不能为空'
-											}
-										}
-									},
-									telephone : {
-										validators : {
-											notEmpty : {
-												message : '联系电话不能为空'
-											},
-											remote : {
-												url : '${base}/admin/customer/checkTelephoneExist.html',
-												message : '联系电话已存在，请重新输入!',
-												delay : 2000,
-												type : 'POST',
-												data : function(validator) {
-													return {
-														telephone : $(
-																'#telephoneId')
-																.val(),
-														aId : '${obj.customer.id}'
-													};
-												}
-											},
-											regexp : {
-												regexp : /^[1][34578][0-9]{9}$/,
-												message : '联系电话格式错误'
-											}
-										}
-									},
-									address : {
-										validators : {
-											notEmpty : {
-												message : '公司地址不能为空'
-											}
-										}
-									},
-									fax : {
-										validators : {
-											regexp : {
-												regexp : /^[+]{0,1}(\d){1,3}[ ]?([-]?((\d)|[ ]){1,12})+$/,
-												message : '传真格式错误'
-											}
-										}
-									},
-									siteUrl : {
-										validators : {
-											notEmpty : {
-												message : '网址址不能为空'
-											},
-											regexp : {
-												regexp : /^(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?$/,
-												message : '网址格式错误'
-											}
-										}
-									}
+			$('#customerAddForm').bootstrapValidator({
+				message : '验证不通过',
+				feedbackIcons : {
+					valid : 'glyphicon glyphicon-ok',
+					invalid : 'glyphicon glyphicon-remove',
+					validating : 'glyphicon glyphicon-refresh'
+				},
+				fields : {
+					companyId : {
+						validators : {
+							notEmpty : {
+								message : '公司名称不能为空'
+							},
+							remote : {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
+								url : '${base}/admin/customer/checkComNameExist.html',//验证地址
+								message : '公司名称已存在，请重新输入!',//提示消息
+								delay : 2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+								type : 'POST',//请求方式
+								//自定义提交数据，默认值提交当前input value
+								data : function(validator) {
+									return {
+										name : $('#companyId').find("option:selected").val(),
+										cid : $("#companyId").select2("val")
+									};
 								}
-							});
-
+							}
+						}
+					},
+					shortName : {
+						validators : {
+							notEmpty : {
+								message : '公司简称不能为空'
+							},
+							regexp : {
+								regexp : /^[0-9a-zA-Z\u4e00-\u9fa5]{1,6}$/,
+								message : '公司简称长度为6',
+							}/* ,
+							remote : {
+								url : '${base}/admin/customer/checkShortNameExist.html',
+								message : '公司简称已存在，请重新输入!',
+								delay : 2000,
+								type : 'POST',
+								data : function(validator) {
+									return {
+										shortName : $('#shortName').val(),
+										aId : '${obj.customer.id}'
+									};
+								}
+							} */
+						}
+					},
+					linkMan : {
+						validators : {
+							notEmpty : {
+								message : '联系人不能为空'
+							}
+						}
+					},
+					telephone : {
+						validators : {
+							notEmpty : {
+								message : '联系电话不能为空'
+							},
+							remote : {
+								url : '${base}/admin/customer/checkTelephoneExist.html',
+								message : '联系电话已存在，请重新输入!',
+								delay : 2000,
+								type : 'POST',
+								data : function(validator) {
+									return {
+										telephone : $('#telephoneId').val(),
+										aId : '${obj.customer.id}'
+									};
+								}
+							},
+							regexp : {
+								regexp : /^[1][34578][0-9]{9}$/,
+								message : '联系电话格式错误'
+							}
+						}
+					},
+					address : {
+						validators : {
+							notEmpty : {
+								message : '公司地址不能为空'
+							}
+						}
+					},
+					fax : {
+						validators : {
+							regexp : {
+								regexp : /^[+]{0,1}(\d){1,3}[ ]?([-]?((\d)|[ ]){1,12})+$/,
+								message : '传真格式错误'
+							}
+						}
+					}
+				}
+			});
 		});
 		/* 页面初始化加载完毕 */
 	</script>
@@ -515,26 +515,22 @@
 
 		//结算方式 add input
 		function paytypeSelect_change(obj) {
-
 			var seleValue = $(".sele").find("option:selected").attr("value");
 			if (seleValue == 4) {
 				document.getElementById("paytypeDivId").style.display = "block";
 			} else {
 				document.getElementById("paytypeDivId").style.display = "none";
 			}
-
 		}
 
 		//付款方式 add input
 		function paywaySelect_change(obj) {
-
 			var payValue = $(".paySele").find("option:selected").attr("value");
 			if (payValue == 5) {
 				document.getElementById("paywayDivId").style.display = "block";
 			} else {
 				document.getElementById("paywayDivId").style.display = "none";
 			}
-
 		}
 	</script>
 
@@ -569,9 +565,112 @@
 	<!-- 保存页面 -->
 	<script type="text/javascript">
 		function save() {
+			//初始化验证插件
 			$('#customerAddForm').bootstrapValidator('validate');
+			//得到获取validator对象或实例 
 			var bootstrapValidator = $("#customerAddForm").data('bootstrapValidator');
+			// 执行表单验证 
+			bootstrapValidator.validate();
 			if (bootstrapValidator.isValid()) {
+				//获取必填项信息
+				var selectedcompany = $('#companyId').find("option:selected").text();
+				var shortName = $("#shortName").val();
+				var linkMan = $("#linkMan").val();
+				var telephone = $("#telephoneId").val();
+				var address = $("#address").val();
+				if(selectedcompany==""){
+					layer.msg('公司名称不能为空');
+					return;
+				}
+				if(shortName==""){
+					layer.msg('公司简称不能为空');
+					return;
+				}
+				if(linkMan==""){
+					layer.msg('联系人不能为空');
+					return;
+				}
+				if(telephone==""){
+					layer.msg('联系电话不能为空');
+					return;
+				}
+				if(address==""){
+					layer.msg('地址不能为空');
+					return;
+				}
+				if(!$('small[data-bv-for="companyId"]').attr("style")=='display: none;'){
+					var comMsg = $('small[data-bv-for="companyId"]').text();
+					comMsg = comMsg.substring(8, comMsg.length);
+					if(comMsg != ""){
+						layer.msg(comMsg);
+						return;
+					}
+				}
+				var small2 = $('#comDiv small:eq(1)').attr("style");
+				if(small2 == "" || small2=='display: block;'){
+					var comMsg = $('#comDiv small:eq(1)').text();
+					if(comMsg != ""){
+						layer.msg(comMsg);
+						return;
+					}
+				}
+				if(!($('small[data-bv-for="telephone"]').attr("style"))=='display: none;'){
+					var phoneMsg = $('small[data-bv-for="telephone"]').text();
+					phoneMsg = phoneMsg.substring(8, 22);
+					if(phoneMsg != ""){
+						layer.msg(phoneMsg);
+						return;
+					}
+				}
+				var small2 = $('#phoneDiv small:eq(1)').attr("style");
+				if(small2 == "" || small2=='display: block;'){
+					var comMsg = $('#phoneDiv small:eq(1)').text();
+					if(comMsg != ""){
+						layer.msg(comMsg);
+						return;
+					}
+				}
+				var small2 = $('#phoneDiv small:eq(2)').attr("style");
+				if(small2 == "" || small2=='display: block;'){
+					var comMsg = $('#phoneDiv small:eq(2)').text();
+					if(comMsg != ""){
+						layer.msg(comMsg);
+						return;
+					}
+				}
+				var small2 = $('#phoneDiv small:eq(3)').attr("style");
+				if(small2 == "" || small2=='display: block;'){
+					var comMsg = $('#phoneDiv small:eq(3)').text();
+					if(comMsg != ""){
+						layer.msg(comMsg);
+						return;
+					}
+				}
+				var small2 = $('#shortNameDiv small:eq(1)').attr("style");
+				if(small2 == "" || small2=='display: block;'){
+					var comMsg = $('#shortNameDiv small:eq(1)').text();
+					if(comMsg != ""){
+						layer.msg(comMsg);
+						return;
+					}
+				}
+				var small2 = $('#shortNameDiv small:eq(2)').attr("style");
+				if(small2 == "" || small2=='display: block;'){
+					var comMsg = $('#shortNameDiv small:eq(2)').text();
+					if(comMsg != ""){
+						layer.msg(comMsg);
+						return;
+					}
+				}
+				var small2 = $('#shortNameDiv small:eq(3)').attr("style");
+				if(small2 == "" || small2=='display: block;'){
+					var comMsg = $('#shortNameDiv small:eq(3)').text();
+					if(comMsg != ""){
+						layer.msg(comMsg);
+						return;
+					}
+				}
+				
 				$.ajax({
 					type : 'POST',
 					data : $("#customerAddForm").serialize(),
@@ -585,7 +684,6 @@
 						} else {
 							layer.msg("添加失败", "", 3000);
 						}
-
 					},
 					error : function(xhr) {
 						layer.msg("添加失败", "", 3000);
@@ -594,9 +692,9 @@
 			}
 		}
 		//提交时开始验证
-		$('#addBtn').click(function() {
+		/* $('#addBtn').click(function() {
 			$('#customerAddForm').bootstrapValidator('validate');
-		});
+		}); */
 
 		//显示或隐藏发票项
 		function gaveInvioce() {
@@ -614,6 +712,16 @@
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			parent.layer.close(index);
 		}
+		
+		//删除上传文件
+		function deleteFile(){
+			$("#completeFileName").html("");
+			$("#appendix").val("");
+		}
+		//下载文件
+		function downloadFile(url) {  
+			$("#downloadA").attr("href", url);
+	    }
 	</script>
 
 

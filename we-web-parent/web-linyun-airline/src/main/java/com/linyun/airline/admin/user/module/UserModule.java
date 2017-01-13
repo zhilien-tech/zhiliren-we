@@ -19,9 +19,12 @@ import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.area.service.AreaViewService;
 import com.linyun.airline.admin.authority.job.entity.TJobEntity;
+import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.user.form.TUserSqlForm;
 import com.linyun.airline.admin.user.service.UserViewService;
 import com.linyun.airline.common.constants.CommonConstants;
+import com.linyun.airline.common.enums.UserTypeEnum;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TUserAddForm;
 import com.linyun.airline.forms.TUserModForm;
@@ -64,9 +67,10 @@ public class UserModule {
 
 	@At
 	@Ok("jsp")
-	public Object list(@Param("..") final TUserSqlForm sqlForm, @Param("..") final Pager pager) {
+	public Object list(@Param("..") final TUserSqlForm sqlForm, @Param("..") final Pager pager,
+			final HttpSession session) {
 		Map<String, Object> map = MapUtil.map();
-		List<Record> deplist = userViewService.getDeptNameSelect(sqlManager);
+		List<Record> deplist = userViewService.getDeptNameSelect(sqlManager, session);
 		map.put("deplist", deplist);
 		return map;
 	}
@@ -86,7 +90,19 @@ public class UserModule {
 	 * 服务端分页查询
 	 */
 	@At
-	public Object listData(@Param("..") final TUserSqlForm sqlForm) {
+	public Object listData(@Param("..") final TUserSqlForm sqlForm, final HttpSession session) {
+		//查询该公司拥有的所有功能
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long companyId = company.getId();//得到公司的id
+		Long adminId = company.getAdminId();//得到公司管理员id
+		sqlForm.setComId(companyId);
+		//通过session获取当前登录用户的id
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long userType = user.getUserType();//得到用户类型
+		if (UserTypeEnum.UPCOM.intKey() == userType || UserTypeEnum.AGENT.intKey() == userType) {
+			//如果当前用户是普通用户,登录到系统中只能显示出自己的数据，不可以看到管理员的账户
+			sqlForm.setAdminId(adminId);
+		}
 		return userViewService.listPage4Datatables(sqlForm);
 	}
 
@@ -121,7 +137,7 @@ public class UserModule {
 	}
 
 	/**
-	 * 添加时查询出部门联动带出职位
+	 * 密码初始化
 	 */
 	@At
 	public Object passwordInit(@Param("..") final TUserModForm setForm) {
@@ -153,7 +169,12 @@ public class UserModule {
 	@At
 	@POST
 	public Object updatePassword(@Param("..") final TUserModForm PassForm, @Param("id") final Long userId) {
-		return userViewService.updatePassData(PassForm, userId);
+		try {
+			userViewService.updatePassData(PassForm, userId);
+		} catch (Exception e) {
+			return JsonResult.error(e.getMessage());
+		}
+		return JsonResult.success("密码修改成功!");
 	}
 
 	/**

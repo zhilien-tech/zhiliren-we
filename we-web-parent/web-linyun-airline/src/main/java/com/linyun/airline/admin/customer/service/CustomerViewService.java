@@ -39,7 +39,6 @@ import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.entities.DictInfoEntity;
-import com.linyun.airline.entities.TAgentEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TCustomerInvoiceEntity;
@@ -71,15 +70,33 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	private UploadService fdfsUploadService;
 
 	//负责人
-	public Object agent() {
-		List<TAgentEntity> agentList = dbDao.query(TAgentEntity.class, null, null);
-		return agentList;
+	public Object agent(HttpSession session) {
+		Map<String, Object> obj = new HashMap<String, Object>();
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		Sql sql = Sqls.create(sqlManager.get("customer_agent_list"));
+		sql.setParam("comid", companyId);
+		List<Record> record = dbDao.query(sql, null, null);
+		obj.put("userlist", record);
+		return obj;
 	}
 
 	//客户公司
-	public Object company(String comName) {
-		List<Record> companyList = companyViewService.getCompanyList(CompanyTypeEnum.AGENT.intKey(), comName);
-		List<Select2Option> result = transform2SelectOptions(companyList);
+	public Object company(String comName, HttpSession session) {
+		//得到当前用户所在公司的id
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
+		long upRelationId = upcompany.getId();
+		Sql sql = Sqls.create(sqlManager.get("customer_comOption_list"));
+		sql.setParam("comtype", CompanyTypeEnum.AGENT.intKey());
+		sql.setParam("deletestatus", 0);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("comName", "like", Strings.trim(comName) + "%");
+		//cnd.and("upComId", "=", upRelationId);
+		sql.setCondition(cnd);
+		List<Record> agentCompanyList = dbDao.query(sql, null, null);
+		List<Select2Option> result = transform2SelectOptions(agentCompanyList);
 		return result;
 	}
 
@@ -143,10 +160,9 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
 		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
-		if (Util.isEmpty(upcompany)) {
-			throw new IllegalArgumentException("用户上游公司不存在，companyId：" + companyId);
+		if (!Util.isEmpty(upcompany)) {
+			addForm.setUpComId(upcompany.getId());
 		}
-		addForm.setUpComId(upcompany.getId());
 		TCustomerInfoEntity customerInfo = this.add(addForm);
 
 		//出发城市城市截取
@@ -217,7 +233,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 * @param id
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object toUpdatePage(long id) throws Exception {
+	public Object toUpdatePage(HttpSession session, long id) throws Exception {
 
 		Map<String, Object> obj = new HashMap<String, Object>();
 
@@ -241,31 +257,36 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 		obj.put("customer", tCustomerInfoEntity);
 
-		List<TUserEntity> userlist = dbDao.query(TUserEntity.class, null, null);
-		obj.put("userlist", userlist);
+		//负责人查询
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		Sql sql = Sqls.create(sqlManager.get("customer_agent_list"));
+		sql.setParam("comid", companyId);
+		List<Record> record = dbDao.query(sql, null, null);
+		obj.put("userlist", record);
 
 		//查询公司名称
 		Sql comSql = Sqls.create(sqlManager.get("customer_comOption_list"));
 		Cnd comCnd = Cnd.NEW();
-		comCnd.and("o.id", "=", id);
+		comCnd.and("a.id", "=", tCustomerInfoEntity.getAgentId());
 		comSql.setCondition(comCnd);
-		//只有一个城市
-		List<TCompanyEntity> comEntity = DbSqlUtil.query(dbDao, TCompanyEntity.class, comSql);
+		//只有一个
+		List<Record> agentCompanyList = dbDao.query(comSql, null, null);
 		//公司名称id 拼串
 		String comIds = "";
 		String comName = "";
-		for (TCompanyEntity company : comEntity) {
-			comIds = company.getId() + "";
-			comName = company.getComName();
+		for (Record r : agentCompanyList) {
+			comIds = r.getString("id") + "";
+			comName = r.getString("name");
 		}
 		obj.put("comIds", comIds);
-		obj.put("comEntity", Lists.transform(comEntity, new Function<TCompanyEntity, Select2Option>() {
+		obj.put("comEntity", Lists.transform(agentCompanyList, new Function<Record, Select2Option>() {
 			@Override
-			public Select2Option apply(TCompanyEntity record) {
+			public Select2Option apply(Record record) {
 				Select2Option op = new Select2Option();
 
-				op.setId(record.getId());
-				op.setText(record.getComName());
+				op.setId(Long.valueOf(record.getString("id")));
+				op.setText(record.getString("comname"));
 				return op;
 			}
 		}));
@@ -400,10 +421,9 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
 		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
-		if (Util.isEmpty(upcompany)) {
-			throw new IllegalArgumentException("用户上游公司不存在，companyId：" + companyId);
+		if (!Util.isEmpty(upcompany)) {
+			updateForm.setUpComId(upcompany.getId());
 		}
-		updateForm.setUpComId(upcompany.getId());
 
 		this.update(updateForm);
 
@@ -832,12 +852,12 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 */
 	public Object getCustomerById(Long id) {
 		TCustomerInfoEntity customerInfoEntity = dbDao.fetch(TCustomerInfoEntity.class, id);
-		String agent = customerInfoEntity.getAgent();
-		TUserEntity userEntity = dbDao.fetch(TUserEntity.class, Cnd.where("id", "=", agent));
-		customerInfoEntity.setAgent(userEntity.getUserName());
+		long responsibleId = customerInfoEntity.getResponsibleId();
+		TUserEntity userEntity = dbDao.fetch(TUserEntity.class, Cnd.where("id", "=", responsibleId));
+		String responsibleName = userEntity.getUserName();
 		Map<String, Object> obj = getOutCitys(id);
+		obj.put("responsibleName", responsibleName);
 		obj.put("customerInfoEntity", customerInfoEntity);
-
 		return JsonUtil.toJson(obj);
 	}
 

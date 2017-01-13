@@ -31,7 +31,7 @@
 				</div>
 			</div>
 
-			<div class="evevtBttton">
+			<div class="evevtBttton" style="width:145px;">
 				<input id="submitBtn" type="button" class="btn btn-primary" onclick="save();" value="添加">
 				<button type="button" class="btn btn-primary right" onclick="closewindow();">取消</button>
 			</div>
@@ -91,14 +91,13 @@
 					url : '${base}/admin/operationsArea/add.html',
 					data : $("#customEventForm").serialize(),
 					success : function(data) {
-						//formValidator();
-						layer.msg("添加成功", "", 3000);
 						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						parent.layer.close(index);
 						//添加成功 刷新各个模块
 						window.parent.taskEventList();
 						window.parent.reload();
 						window.parent.getTimeStr();
+						window.parent.checkBoxShow();
 					},
 					error : function(xhr) {
 						layer.msg("添加失败", "", 3000);
@@ -127,8 +126,6 @@
 		    }
 		    return zeros + value;
 		}
-
-		
 	</script>
 </body>
 </html>

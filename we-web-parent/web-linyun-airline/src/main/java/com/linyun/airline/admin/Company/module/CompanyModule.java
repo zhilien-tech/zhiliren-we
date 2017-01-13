@@ -11,7 +11,6 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
@@ -32,8 +31,6 @@ import com.uxuexi.core.web.chain.support.JsonResult;
 
 @IocBean
 @At("/admin/Company")
-@Filters({//@By(type = AuthFilter.class)
-})
 public class CompanyModule {
 
 	private static final Log log = Logs.get();
@@ -186,6 +183,8 @@ public class CompanyModule {
 	 */
 	@At
 	public Object userListData(@Param("..") final TCompanyUserSqlForm paramForm) {
+		TCompanyEntity company = companyViewService.fetch(paramForm.getId());
+		paramForm.setAdminid(company.getAdminId());
 		return companyViewService.listPage4Datatables(paramForm);
 	}
 
@@ -205,5 +204,13 @@ public class CompanyModule {
 	@POST
 	public Object loadCompanyCount() {
 		return companyViewService.getUpCompanyAndAgentCount(sqlManager);
+	}
+
+	/**
+	 * 移除员工
+	 */
+	@At
+	public Object removeUser(@Param("id") final long id) {
+		return companyViewService.removeUser(id);
 	}
 }

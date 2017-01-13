@@ -140,6 +140,9 @@
 					simpleData: {
 						enable: true
 					}
+				},
+				callback: {
+					beforeCheck: zTreeBeforeCheck
 				}
 			};
 		//初始化功能树
@@ -155,11 +158,26 @@
 			}
 			$("input[name='functionIds']").val(funcIds) ;
 		}
+		//默认选中个人信息和操作台
+		function zTreeBeforeCheck(treeId, treeNode) {
+			if((treeNode.id == 43 || treeNode.id == 44) && treeNode.checked){
+				return false ;
+			}else{
+				return true;
+			}
+		};
 		//遍历得到的对象
 		var zNodes =[
-			 {id:"0", pId:"0", name:"功能菜单", open:true},
+			{id:"0", pId:"0", name:"功能菜单", open:true},
 			<c:forEach var="p" items="${obj.list}">
-				{ id:"${p.id }", pId:"${p.parentId }", name:"${p.name }", open:true,checked:"${p.checked}"},
+				<c:choose>
+					<c:when test="${p.id eq 43 || p.id eq 44}">
+						{ id:"${p.id }", pId:"${p.parentId }", name:"${p.name }", open:true,checked:true},
+					</c:when>
+					<c:otherwise>
+						{ id:"${p.id }", pId:"${p.parentId }", name:"${p.name }", open:true,checked:"${p.checked}"},
+					</c:otherwise>
+				</c:choose>
 			</c:forEach>
 		];
 	</script>

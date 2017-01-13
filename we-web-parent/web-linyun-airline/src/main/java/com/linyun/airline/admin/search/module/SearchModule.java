@@ -1,5 +1,7 @@
 package com.linyun.airline.admin.search.module;
 
+import javax.servlet.http.HttpSession;
+
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
@@ -10,9 +12,11 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
+import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.search.form.SearchTicketSqlForm;
 import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.sabre.form.InstaFlightsSearchForm;
-
+import com.linyun.airline.entities.TCompanyEntity;
 
 @IocBean
 @At("/admin/search")
@@ -38,8 +42,8 @@ public class SearchModule {
 	 */
 	@At
 	@POST
-	public Object getLinkNameSelect(@Param("linkname") String linkname) {
-		return searchViewService.getLinkNameSelect(linkname);
+	public Object getLinkNameSelect(@Param("linkname") String linkname, HttpSession session) {
+		return searchViewService.getLinkNameSelect(linkname, session);
 	}
 
 	/**
@@ -90,7 +94,8 @@ public class SearchModule {
 	@At
 	@POST
 	public Object getCitySelect(@Param("cityname") String cityname, @Param("ids") final String ids) {
-		return searchViewService.getCitySelect(cityname, typeCodestr, ids);
+		String typeCode = "CFCS";
+		return searchViewService.getCitySelect(cityname, typeCode, ids);
 	}
 
 	/**
@@ -102,9 +107,8 @@ public class SearchModule {
 		return searchViewService.getAirLineSelect(airlinename, ids);
 	}
 
-
 	/**
-	 * 查询散客机票
+	 * 查询跨海内陆机票
 	 */
 	@At
 	@POST
@@ -113,13 +117,15 @@ public class SearchModule {
 	}
 
 	/**
-	 * 查询团队机票
+	 * 查询国际机票
 	 */
 	@At
 	@POST
-	public Object searchTeamTickets(@Param("..") InstaFlightsSearchForm searchForm) {
-		return searchViewService.searchTeamTickets(searchForm);
+	public Object searchTeamTickets(@Param("..") SearchTicketSqlForm sqlForm, HttpSession session) {
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();//得到公司关系表id
+		sqlForm.setCompanyId(companyId);
+		return searchViewService.listPage4Datatables(sqlForm);
 	}
-
 
 }

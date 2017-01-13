@@ -43,8 +43,8 @@ public class PlanMakeModule {
 	 */
 	@At
 	@POST
-	public Object getTravelNameSelect(@Param("travelname") String TravelName) {
-		return planMakeService.getTravelNameSelect(TravelName);
+	public Object getTravelNameSelect(@Param("travelname") String TravelName, final HttpSession session) {
+		return planMakeService.getTravelNameSelect(TravelName, session);
 	}
 
 	/**
@@ -52,8 +52,8 @@ public class PlanMakeModule {
 	 */
 	@At
 	@POST
-	public Object getAirLineSelect(@Param("airlinename") String airlinename) {
-		return planMakeService.getAirLineSelect(airlinename);
+	public Object getAirLineSelect(@Param("airlinename") String airlinename, @Param("exname") String exname) {
+		return planMakeService.getAirLineSelect(airlinename, exname);
 	}
 
 	/**
@@ -61,8 +61,8 @@ public class PlanMakeModule {
 	 */
 	@At
 	@POST
-	public Object getCitySelect(@Param("cityname") String cityname) {
-		return planMakeService.getCitySelect(cityname);
+	public Object getCitySelect(@Param("cityname") String cityname, @Param("exname") String exname) {
+		return planMakeService.getCitySelect(cityname, exname);
 	}
 
 	/**

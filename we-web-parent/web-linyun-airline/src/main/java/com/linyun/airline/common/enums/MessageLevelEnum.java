@@ -1,4 +1,4 @@
-package com.linyun.airline.common.admin.operationsArea.enums;
+package com.linyun.airline.common.enums;
 
 import com.uxuexi.core.common.enums.IEnum;
 
