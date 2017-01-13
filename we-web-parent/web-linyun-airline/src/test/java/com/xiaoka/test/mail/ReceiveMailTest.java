@@ -34,9 +34,8 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
 
 /**
- * TODO(这里用一句话描述这个类的作用)
+ * 邮件抓取测试
  * <p>
- * TODO(这里描述这个类补充说明 – 可选)
  *
  * @author   朱晓川
  * @Date	 2016年12月26日 	 
@@ -54,6 +53,9 @@ public class ReceiveMailTest {
 		// 准备连接服务器的会话信息  
 		Properties props = new Properties();
 		props.setProperty("mail.store.protocol", "imap"); // 协议  
+		/* 新浪:imap.sina.com
+		 * 腾讯:imap.qq.com
+		 */
 		props.setProperty("mail.imap.host", "imap.qq.com"); // imap服务器
 		props.setProperty("mail.imap.port", "143"); // 端口  
 
@@ -66,7 +68,11 @@ public class ReceiveMailTest {
 		// 创建Session实例对象  
 		Session session = Session.getInstance(props);
 		Store store = session.getStore("imap");
-		store.connect("32009805@qq.com", "tcwnecbkfbajbiff");
+
+		//对于user和password，qq邮箱的password填写授权key
+		String user = "ericschu@163.com";
+		String passwd = "QWE1984zxc0225";
+		store.connect(user, passwd);
 
 		// 获得收件箱  
 		Folder folder = store.getFolder("INBOX");
