@@ -155,7 +155,7 @@ function onkeyEnter(){
     }
 }
 
-/* 散客多程查询 */
+/* 跨海内陆多程查询 */
 var clickfirst=1;
 $("#searchSingleTicketsBtn").click(function() {
 	var linkName = $("#linkNameId").select2("val");
@@ -163,6 +163,8 @@ $("#searchSingleTicketsBtn").click(function() {
 	var outCity = $('#outCity0').find("option:selected").text();
 	var arriveCity = $('#singleArriveCity0').find("option:selected").text();
 	var outDatepicker = $("#outDatepicker0").val();
+	var returnDatepicker = $("#returnDatepicker0").val();
+	var airType = $("input[name='voyageType']:checked").val();
 	if(!(linkName || phoneNum)){
 		layer.msg("客户名称不能为空", "", 2000);
 		return;
@@ -179,6 +181,13 @@ $("#searchSingleTicketsBtn").click(function() {
 		layer.msg('出发日期不能为空');
 		return;
 	}
+	if(airType == 2){
+		if(returnDatepicker==""){
+			layer.msg('返回日期不能为空');
+			return;
+		}
+	}
+	
 	var msgIndex = layer.msg('查询中...',{time:0});
 	if(clickfirst){
 		var index = 0;

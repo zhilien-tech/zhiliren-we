@@ -192,7 +192,7 @@ public class CustomneedsViewService extends BaseService<TCustomerneedsEntity> {
 		OutputStream os = null;
 		try {
 			String filepath = request.getServletContext().getRealPath(EXCEL_PATH);
-			String path = filepath + "\\" + FILE_EXCEL_NAME;
+			String path = filepath + File.separator + FILE_EXCEL_NAME;
 			File file = new File(path);// path是根据日志路径和文件名拼接出来的
 			String filename = file.getName();// 获取日志文件名称
 			InputStream fis = new BufferedInputStream(new FileInputStream(path));

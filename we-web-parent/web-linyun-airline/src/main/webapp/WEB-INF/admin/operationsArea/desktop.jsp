@@ -51,7 +51,7 @@
 						<a href="javascript:;" class="customInterface">自定义界面</a>
 
 						 <div class="nav-tabs-custom" id="taskId" style="display: none">
-						 	<ul class="nav nav-tabs">
+						 	<ul class="nav nav-tabs custome">
 			                  <li class="active"><a href="#tab_1" data-toggle="tab">询单(6)</a></li>
 			                  <li><a href="#tab_2" data-toggle="tab">订单(10)</a></li>
 			                  <li><a href="#tab_3" data-toggle="tab">我的提醒(<span id="remindMsg"></span>)</a></li>
@@ -625,6 +625,7 @@
 		      }
 	    });//end 显示提醒 显示/隐藏
 	
+	    /* 小日历加载小红点事件 */
 		function getTimeStr(){
 		  //setTimeout(getTimeStr,100);
 		  /* 获取当前月  格式化为：2016-12的形式 */
@@ -655,42 +656,52 @@
             				$('span[data-date="'+element.gtime+'"]').find('i').remove();
             			}
 		            	$('span[data-date="'+element.gtime+'"]').append('<i class="dot"></i>');
-	            		//小红点点击弹框事件
-	            		$(document).on('click','span[data-date="'+ element.gtime +'"]',function(){//如果有红色圆点，点击 显示小div信息
-	            			$("#redDivDate").val(element.gtime);
-	            			if($("#checkShow").prop('checked')){
-	            				$.ajax({
-		        		            url: '/admin/operationsArea/getMinCal.html',
-		        		            dataType: 'json',
-		        		            type: 'POST',
-		        		            async:false,
-		        		            data: {
-		        		            	gtime: element.gtime
-		        		            },
-		        		            success: function(data) {
-		        		            	$.each(eval(data), function (index, element) {
-		        		            		$("#minCalId").val("");
-		        		            		$("#minCalId").val(element.msgcontent);
-		        		                }); 
-		        		            }
-		        		        });
-	            				//弹框提示信息
-		            			layer.tips(
-		            				 $("#minCalId").val(), 
-		      			    		 this,
-		      			    		 {
-		      					        tips: [3, 'rgb(90, 90, 90)'],
-		      					        time: 2000
-		      					     }
-			      			    );
-	            			}
-	      			  	});//end 如果有红色圆点，点击 显示小div信息 
+		            	$('span[data-date="'+element.gtime+'"]').attr("name", "redDotSpanMsg");
 	                }); 
-	            	
 	            }
 	       });
 		}
-		
+	    
+	    
+	    /* 小日历点击事件 */
+	    $(document).click(function (e) { 
+	    	var redDotSpan = $(e.target).attr('name'); 
+			/* 点击 散客每段提醒事件 */
+			var redDotStr = redDotSpan.indexOf("redDotSpanMsg");
+			if(redDotStr==0){
+				var redDate = $(e.target).attr('data-date');
+				$("#redDivDate").val(redDate);
+    			if($("#checkShow").prop('checked')){
+    				$.ajax({
+    		            url: '/admin/operationsArea/getMinCal.html',
+    		            dataType: 'json',
+    		            type: 'POST',
+    		            async:false,
+    		            data: {
+    		            	gtime: redDate
+    		            },
+    		            success: function(data) {
+    		            	$.each(eval(data), function (index, element) {
+    		            		$("#minCalId").val("");
+    		            		$("#minCalId").val(element.msgcontent);
+    		                }); 
+    		            }
+    		        });
+    				//弹框提示信息
+    				var msg = $("#minCalId").val();
+        			layer.tips(
+        				 msg, 
+        				 $(e.target),
+  			    		 {
+  					        tips: [3, 'rgb(90, 90, 90)'],
+  					        time: 2000
+  					     }
+      			    );
+    				
+    			}
+			}
+	    });
+	    
 		//小日历上一个按钮
 		$(".k-btn-previous-month").click(function(){
 			getTimeStr();
