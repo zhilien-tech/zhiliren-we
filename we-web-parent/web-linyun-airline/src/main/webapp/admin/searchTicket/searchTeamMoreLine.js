@@ -237,6 +237,7 @@ $(document).on('click','#teamNum2',function(){
 	$("#teamdeparturedate").val($("#teamReturnDatepicker"+index).val());
 	//$("#teamreturndate").val($("#teamOutDatepicker"+index).val());
 	//$("#searchTeamTicketsBtn").click();
+	$("#teamNum2").attr("class","btnStyle dClass");
 	searchInternetOrders();
 });
 

@@ -17,10 +17,10 @@ function searchInlandOrder(){
 		layer.msg('到达城市不能为空');
 		return;
 	}
-	if(outDatepicker==""){
+	/*if(outDatepicker==""){
 		layer.msg('出发日期不能为空');
 		return;
-	}
+	}*/
 	var msgIndex = layer.msg('查询中...',{time:0});
 	//显示区间
 	var area = $("#origin").val()+' --- '+$("#destination").val();
