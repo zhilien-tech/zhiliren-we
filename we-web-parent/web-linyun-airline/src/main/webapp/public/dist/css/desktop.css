@@ -89,7 +89,7 @@ span[data-date*="-01-01"],span[data-date*="-02-14"],span[data-date*="-03-12"],sp
 /*-----------------------任务-------------------------*/
 .tab-pane{margin: 0;}
 .nav-tabs-custom > .nav-tabs {background-color: #ecf0f5;height: 35px;}
-.nav > li > a {padding: 5px 15px;}
+.custome > li > a {padding: 5px 15px;}
 .nav-tabs-custom > .nav-tabs > li {border: solid 1px #f3f3f3;background-color: #fff;margin-right:-2px;}
 .nav-tabs-custom > .nav-tabs > li.active {border-top: solid 2px #3c8dbc;}
 .nav-tabs-custom > .tab-content{padding: 0;}

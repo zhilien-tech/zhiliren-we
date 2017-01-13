@@ -35,7 +35,7 @@
 					class="btn btn-primary right btn-sm" data-dismiss="modal">返回</button>
 				<input type="button" id="addBtn"
 					class="btn btn-primary right btn-sm" value="保存" onclick="save();" />
-				<ul class="nav nav-tabs">
+				<ul class="nav nav-tabs addCustomer">
 					<li class="active"><a href="#tabs_1" data-toggle="tab">基本信息</a></li>
 					<li><a href="#tabs_2" data-toggle="tab">线路权限</a></li>
 					<li><a href="#tabs_3" data-toggle="tab">附件管理</a></li>

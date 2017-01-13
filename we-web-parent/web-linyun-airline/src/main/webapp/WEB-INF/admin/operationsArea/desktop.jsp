@@ -51,7 +51,7 @@
 						<a href="javascript:;" class="customInterface">自定义界面</a>
 
 						 <div class="nav-tabs-custom" id="taskId" style="display: none">
-						 	<ul class="nav nav-tabs">
+						 	<ul class="nav nav-tabs custome">
 			                  <li class="active"><a href="#tab_1" data-toggle="tab">询单(6)</a></li>
 			                  <li><a href="#tab_2" data-toggle="tab">订单(10)</a></li>
 			                  <li><a href="#tab_3" data-toggle="tab">我的提醒(<span id="remindMsg"></span>)</a></li>
