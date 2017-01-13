@@ -43,23 +43,30 @@ import javax.mail.internet.MimeUtility;
 public class ReceiveMailTest {
 
 	public static void main(String[] args) throws Exception {
-		receive();
+		//		receivePop3();
+		receiveImap();
 	}
 
 	/** 
 	 * 接收邮件 
 	 */
-	public static void receive() throws Exception {
+	public static void receiveImap() throws Exception {
+		String imapServer = "imap.sina.com";
+		String imapPort = "143";
+		//对于user和password，qq邮箱的password填写授权key
+		String user = "";
+		String passwd = "";
+
 		// 准备连接服务器的会话信息  
 		Properties props = new Properties();
 		props.setProperty("mail.store.protocol", "imap"); // 协议  
 		/* 新浪:imap.sina.com
 		 * 腾讯:imap.qq.com
 		 */
-		props.setProperty("mail.imap.host", "imap.qq.com"); // imap服务器
-		props.setProperty("mail.imap.port", "143"); // 端口  
+		props.setProperty("mail.imap.host", imapServer); // imap服务器
+		props.setProperty("mail.imap.port", imapPort); // 端口  
 
-		/**  QQ邮箱需要建立ssl连接 */
+		/**ssl连接 */
 		props.setProperty("mail.imap.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 		props.setProperty("mail.imap.socketFactory.fallback", "false");
 		props.setProperty("mail.imap.starttls.enable", "true");
@@ -68,10 +75,56 @@ public class ReceiveMailTest {
 		// 创建Session实例对象  
 		Session session = Session.getInstance(props);
 		Store store = session.getStore("imap");
+		store.connect(user, passwd);
 
+		// 获得收件箱  
+		Folder folder = store.getFolder("INBOX");
+		/* Folder.READ_ONLY：只读权限 
+		 * Folder.READ_WRITE：可读可写（可以修改邮件的状态） 
+		 */
+		folder.open(Folder.READ_WRITE); //打开收件箱  
+
+		// 由于POP3协议无法获知邮件的状态,所以getUnreadMessageCount得到的是收件箱的邮件总数  
+		System.out.println("未读邮件数: " + folder.getUnreadMessageCount());
+
+		// 由于POP3协议无法获知邮件的状态,所以下面得到的结果始终都是为0  
+		System.out.println("删除邮件数: " + folder.getDeletedMessageCount());
+		System.out.println("新邮件: " + folder.getNewMessageCount());
+
+		// 获得收件箱中的邮件总数  
+		System.out.println("邮件总数: " + folder.getMessageCount());
+
+		// 得到收件箱中的所有邮件,并解析  
+		Message[] messages = folder.getMessages();
+		parseMessage(messages);
+
+		//释放资源  
+		folder.close(true);
+		store.close();
+	}
+
+	/** 
+	 * 接收邮件 
+	 */
+	public static void receivePop3() throws Exception {
+		String pop3Server = "pop3.sina.com";
+		String pop3Port = "110";
 		//对于user和password，qq邮箱的password填写授权key
-		String user = "ericschu@163.com";
-		String passwd = "QWE1984zxc0225";
+		String user = "";
+		String passwd = "";
+
+		// 准备连接服务器的会话信息  
+		Properties props = new Properties();
+		props.setProperty("mail.store.protocol", "pop3"); // 协议  
+		/* 新浪:imap.sina.com
+		 * 腾讯:imap.qq.com
+		 */
+		props.setProperty("mail.pop3.host", pop3Server); // imap服务器
+		props.setProperty("mail.pop3.port", pop3Port); // 端口  
+
+		// 创建Session实例对象  
+		Session session = Session.getInstance(props);
+		Store store = session.getStore("pop3");
 		store.connect(user, passwd);
 
 		// 获得收件箱  
