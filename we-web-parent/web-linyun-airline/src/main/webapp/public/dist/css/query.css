@@ -22,7 +22,7 @@
 .tab-pane{margin: 0;}
 .nav-tabs-custom > .tab-content {padding: 10px 0;}
 .nav-tabs-custom > .nav-tabs > li {border-top: 2px solid transparent;}
-.nav > li > a {padding:5px 27px;}
+.query-style > li > a {padding:5px 27px;}
 .tab-pane table tr td label {width: 78px;text-align: right;}
 .scatteredTable1{color: #5f5f5f;}
 .scatteredTable1 tr td{padding: 4px 0;}
@@ -71,7 +71,6 @@
 .showDis{display:table-cell;}
 .timSelect{display: inline-block;width:90px;height: 28px !important;}
 .dropdown-toggle {display: block;margin-top: 10px;}
-.navbar-custom-menu ul li:last-child {margin-top: 10px;}
 .select2-container {width: 115px !important;}
 .select2-container--default.select2-container--disabled .select2-selection--multiple{width: 115px;}
 td[colspan="3"] .select2 .selection .select2-selection{width: 308px;}
@@ -91,3 +90,4 @@ td[colspan="3"] .select2 .selection .select2-selection ul .select2-search--inlin
 .select2-container .select2-search--inline {float: none;}
 .content-wrapper, .right-side {min-height: 793px;}
 .p {float: left;line-height: 60px; width: 60px;text-align: center;}  
+.user-menu a{margin-top: 0;}

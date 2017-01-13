@@ -88,6 +88,7 @@ $("#linkNameId").on('select2:select', function (evt) {
 			var dataJson = jQuery.parseJSON(data); 
 			var phoneNum = dataJson.customerInfoEntity.telephone;
 			var payType = dataJson.customerInfoEntity.payType;
+			var id = dataJson.customerInfoEntity.id;
 			$("#addressId").val(dataJson.customerInfoEntity.address);
 			$("#shortNameId").val(dataJson.customerInfoEntity.shortName);
 			$("#responsibleId").val(dataJson.responsibleName);
@@ -103,12 +104,7 @@ $("#linkNameId").on('select2:select', function (evt) {
 				$("#payTypeId").html(dataJson.customerInfoEntity.paytypeName);
 			}
 			/* 电话补全 */
-			$("#phoneNumId").select2({
-				initSelection : function (element, callback) {
-					var data = {id: 1, text: phoneNum};
-					callback(data);
-				}
-			});
+			$("#phoneNumId").append('<option selected="true" value='+ id +'>'+phoneNum+'</option>'); 
 			/* 出发城市补全 */
 			$("#city").select2({
 				initSelection : function (element, callback) {
@@ -137,6 +133,7 @@ $("#phoneNumId").on('select2:select', function (evt) {
 			var dataJson = jQuery.parseJSON(data); 
 			var dataJson = jQuery.parseJSON(data); 
 			var linkName = dataJson.customerInfoEntity.linkMan;
+			var id = dataJson.customerInfoEntity.id;
 			var payType = dataJson.customerInfoEntity.payType;
 			$("#addressId").val(dataJson.customerInfoEntity.address);
 			$("#shortNameId").val(dataJson.customerInfoEntity.shortName);
@@ -153,12 +150,7 @@ $("#phoneNumId").on('select2:select', function (evt) {
 				$("#payTypeId").html(dataJson.customerInfoEntity.paytypeName);
 			}
 			/* 客户名称补全 */
-			$("#linkNameId").select2({
-				initSelection : function (element, callback) {
-					var data = {id: 1, text: linkName};
-					callback(data);
-				}
-			});
+			$("#linkNameId").append('<option selected="true" value='+ id +'>'+linkName+'</option>'); 
 			/* 出发城市补全 */
 			$("#city").select2({
 				initSelection : function (element, callback) {
@@ -189,6 +181,7 @@ function clearText(){
 	$("#linkNameId").val(null).trigger("change");
 	//电话清空
 	$("#phoneNumId").val(null).trigger("change");
+	
 	//出发城市清空
 	$("#city").val(null).trigger("change");
 	//文本框清空

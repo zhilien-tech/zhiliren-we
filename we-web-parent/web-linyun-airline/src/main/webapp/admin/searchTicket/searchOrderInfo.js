@@ -80,6 +80,8 @@ $(document).on('click','#num1',function(){
 	$("#departuredate").val($("#outDatepicker"+index).val());
 	$("#returndate").val($("#returnDatepicker"+index).val());
 	searchInlandOrder();
+	$("#num1").attr("class","btnStyle");
+	$("#num2").attr("class","");
 });
 $(document).on('click','#num2',function(){
 	document.getElementById('paragraphListInfo').innerHTML="";
@@ -90,6 +92,8 @@ $(document).on('click','#num2',function(){
 	$("#departuredate").val($("#returnDatepicker"+index).val());
 	$("#returndate").val("");
 	searchInlandOrder();
+	$("#num1").attr("class","");
+	$("#num2").attr("class","btnStyle");
 });
 /*-----------------------往返段数查询  end--------------------------------*/
 
@@ -137,9 +141,9 @@ cardDate = function(obj){
 }
 getDateCard =function(){
 	var dateNumHtml = "";
-	var outStr = $("#outDatepicker0").val();
+	var outStr = $("#departureCardDate").val();
 	var outDate = new Date(outStr.replace(/-/g,"/"));
-	var returnStr = $("#returnDatepicker0").val();
+	var returnStr = $("#returnCardDate").val();
 	var returnDate = new Date(returnStr.replace(/-/g,"/"));
 	/* 出发前的日期 */
 	var time = outDate.getTime() - new Date().getTime() ; //日期的long型值之差

@@ -229,6 +229,8 @@ $(document).on('click','#teamNum1',function(){
 	$("#teamreturndate").val($("#teamReturnDatepicker"+index).val());
 	//$("#searchTeamTicketsBtn").click();
 	searchInternetOrders();
+	$("#travelTeamTypeNum li").attr("class","");
+	$("#teamNum1").attr("class","btnStyle");
 });
 $(document).on('click','#teamNum2',function(){
 	var index=0;
@@ -238,6 +240,8 @@ $(document).on('click','#teamNum2',function(){
 	//$("#teamreturndate").val($("#teamOutDatepicker"+index).val());
 	//$("#searchTeamTicketsBtn").click();
 	searchInternetOrders();
+	$("#travelTeamTypeNum li").attr("class","");
+	$("#teamNum2").attr("class","btnStyle");
 });
 
 

@@ -17,7 +17,7 @@ function searchInlandOrder(){
 		layer.msg('到达城市不能为空');
 		return;
 	}
-	if(outDatepicker==""){
+	if(outDatepicker == ""){
 		layer.msg('出发日期不能为空');
 		return;
 	}
