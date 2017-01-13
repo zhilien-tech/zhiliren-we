@@ -15,6 +15,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
+import org.nutz.dao.util.cri.SqlExpressionGroup;
 
 import com.linyun.airline.common.enums.UserJobStatusEnum;
 import com.uxuexi.core.common.util.Util;
@@ -95,8 +96,10 @@ public class TUserSqlForm extends DataTablesParamForm {
 	//自定义条件
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
+		SqlExpressionGroup group = new SqlExpressionGroup();
+		group.and("u.userName", "LIKE", "%" + userName + "%").or("u.telephone", "LIKE", "%" + userName + "%");
 		if (!Util.isEmpty(userName)) {
-			cnd.and("u.userName", "LIKE", "%" + userName + "%").or("u.telephone", "LIKE", "%" + userName + "%");
+			cnd.and(group);
 		}
 		if (!Util.isEmpty(deptName)) {
 			cnd.and("d.deptName", "=", deptName);
