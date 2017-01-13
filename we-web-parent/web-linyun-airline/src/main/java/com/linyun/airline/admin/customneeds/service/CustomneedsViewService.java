@@ -186,11 +186,13 @@ public class CustomneedsViewService extends BaseService<TCustomerneedsEntity> {
 	 * @param request
 	 * @param response
 	 * @return TODO下载客户需求Excel导入模板
+	 * @throws Exception 
 	 */
-	public Object downloadTemplate(HttpServletRequest request, HttpServletResponse response) {
+	public Object downloadTemplate(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		OutputStream os = null;
 		try {
-			String filepath = request.getServletContext().getRealPath(this.EXCEL_PATH);
-			String path = filepath + "\\" + this.FILE_EXCEL_NAME;
+			String filepath = request.getServletContext().getRealPath(EXCEL_PATH);
+			String path = filepath + "\\" + FILE_EXCEL_NAME;
 			File file = new File(path);// path是根据日志路径和文件名拼接出来的
 			String filename = file.getName();// 获取日志文件名称
 			InputStream fis = new BufferedInputStream(new FileInputStream(path));
@@ -203,12 +205,13 @@ public class CustomneedsViewService extends BaseService<TCustomerneedsEntity> {
 					+ new String(filename.replaceAll(" ", "").getBytes("utf-8"), "iso8859-1"));
 			response.addHeader("Content-Length", "" + file.length());
 			response.setContentType("application/octet-stream");
-			OutputStream os = new BufferedOutputStream(response.getOutputStream());
+			os = new BufferedOutputStream(response.getOutputStream());
 			os.write(buffer);// 输出文件
 			os.flush();
-			os.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			os.close();
 		}
 		return null;
 
@@ -228,9 +231,9 @@ public class CustomneedsViewService extends BaseService<TCustomerneedsEntity> {
 			//设置Excel表格输入的日期格式
 			DateFormat df = new SimpleDateFormat("dd/MMM", Locale.ENGLISH);
 			//定义Excel表格的列标题
-			String[] excelColumnTitle = this.EXCEL_COLUMN_TITLE;
+			String[] excelColumnTitle = EXCEL_COLUMN_TITLE;
 			//设置Excel表格标题
-			String title = this.EXCEL_TITLE;
+			String title = EXCEL_TITLE;
 			//为Excel准备数据
 			String sqlString = EntityUtil.entityCndSql(TCustomerneedsEntity.class);
 			Sql sql = Sqls.create(sqlString);

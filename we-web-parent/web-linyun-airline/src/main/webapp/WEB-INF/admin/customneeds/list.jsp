@@ -222,10 +222,12 @@
                               	<option value="1">是</option>
                               </select>
                             </div>
-                            <label class="col-sm-1 text-right padding cf">从：</label>
-                            <div class="col-sm-3 padding" name="startenddate">
-                              <input id="startdate0" name="startdate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'enddate0\')}'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2016-11-05"> 
-                              - <input id="enddate0" name="enddate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startdate0\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2016-12-01">
+                            <div name="congcong">
+	                            <label class="col-sm-1 text-right padding cf">从：</label>
+	                            <div class="col-sm-3 padding" name="startenddate">
+	                              <input id="startdate0" name="startdate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'enddate0\')}'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2016-11-05"> 
+	                              - <input id="enddate0" name="enddate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startdate0\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2016-12-01">
+	                            </div>
                             </div>
                             <div class="col-sm-2 padding cf">
                               <select class="form-control selectMargin cf dateAddHeng" id="weekSelect" onchange="select_change(this)">

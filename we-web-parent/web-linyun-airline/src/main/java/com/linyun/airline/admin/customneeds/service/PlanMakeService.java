@@ -229,30 +229,30 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 			for (String str : calenders) {
 				//选择的日期
 				Date calendate = DateUtil.string2Date(str);
-				if (DateUtil.dateBetween(calendate, startdate, enddate)) {
-					TPlanInfoEntity planInfoEntity = new TPlanInfoEntity();
-					planInfoEntity.setTravelname(addForm.getTravelname());
-					planInfoEntity.setAirlinename(airLineName);
-					planInfoEntity.setLeavesdate(calendate);
-					planInfoEntity.setLeaveairline(addForm.getLeaveairline());
-					planInfoEntity.setLeavescity(addForm.getLeavescity());
-					planInfoEntity.setBacksdate(DateUtil.addDay(calendate, addForm.getDayscount()));
-					planInfoEntity.setBackairline(addForm.getBackairline());
-					planInfoEntity.setBackscity(addForm.getBackscity());
-					planInfoEntity.setPeoplecount(addForm.getPeoplecount());
-					planInfoEntity.setDayscount(addForm.getDayscount());
-					planInfoEntity.setUnioncity(addForm.getUnioncity());
-					planInfoEntity.setTeamtype(addForm.getTeamtype());
-					planInfoEntity.setOpid(user.getId());
-					planInfoEntity.setCompanyid(company.getId());
-					planInfoEntity.setTimetype(addForm.getTimetype());
-					planInfoEntity.setStarttime(startdate);
-					planInfoEntity.setEndtime(enddate);
-					planInfoEntity.setFoc(addForm.getFoc());
-					planInfoEntity.setBackleavecity(addForm.getBackleavecity());
-					planInfoEntity.setBackbackcity(addForm.getBackbackcity());
-					planInfos.add(planInfoEntity);
-				}
+				//if (DateUtil.dateBetween(calendate, startdate, enddate)) {
+				TPlanInfoEntity planInfoEntity = new TPlanInfoEntity();
+				planInfoEntity.setTravelname(addForm.getTravelname());
+				planInfoEntity.setAirlinename(airLineName);
+				planInfoEntity.setLeavesdate(calendate);
+				planInfoEntity.setLeaveairline(addForm.getLeaveairline());
+				planInfoEntity.setLeavescity(addForm.getLeavescity());
+				planInfoEntity.setBacksdate(DateUtil.addDay(calendate, addForm.getDayscount()));
+				planInfoEntity.setBackairline(addForm.getBackairline());
+				planInfoEntity.setBackscity(addForm.getBackscity());
+				planInfoEntity.setPeoplecount(addForm.getPeoplecount());
+				planInfoEntity.setDayscount(addForm.getDayscount());
+				planInfoEntity.setUnioncity(addForm.getUnioncity());
+				planInfoEntity.setTeamtype(addForm.getTeamtype());
+				planInfoEntity.setOpid(user.getId());
+				planInfoEntity.setCompanyid(company.getId());
+				planInfoEntity.setTimetype(addForm.getTimetype());
+				planInfoEntity.setStarttime(startdate);
+				planInfoEntity.setEndtime(enddate);
+				planInfoEntity.setFoc(addForm.getFoc());
+				planInfoEntity.setBackleavecity(addForm.getBackleavecity());
+				planInfoEntity.setBackbackcity(addForm.getBackbackcity());
+				planInfos.add(planInfoEntity);
+				//}
 			}
 		}
 		//根据每周制作计划
