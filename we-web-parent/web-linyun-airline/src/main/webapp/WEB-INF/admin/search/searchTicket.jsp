@@ -123,7 +123,7 @@
 				<!--购票查询列表 start-->
 				<div class="listInfo">
                   <div class="nav-tabs-custom">
-                    <ul class="nav nav-tabs">
+                    <ul class="nav nav-tabs query-style">
                       <li class="active">
                       	<a id="tab_1Id" href="#tab_1" data-toggle="tab">内陆跨海</a>
                       </li>
