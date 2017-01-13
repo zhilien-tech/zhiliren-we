@@ -200,7 +200,7 @@ $(function () {
         });
       }
     });
-}
+});
 </script>
 <script type="text/javascript">
 //删除提示

@@ -54,8 +54,8 @@ public class ReceiveMailTest {
 		String imapServer = "imap.sina.com";
 		String imapPort = "143";
 		//对于user和password，qq邮箱的password填写授权key
-		String user = "";
-		String passwd = "";
+		String user = "richardcjb@sina.com";
+		String passwd = "7883376CJB.";
 
 		// 准备连接服务器的会话信息  
 		Properties props = new Properties();
