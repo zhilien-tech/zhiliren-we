@@ -51,8 +51,8 @@ public class SearchModule {
 	 */
 	@At
 	@POST
-	public Object getPhoneNumSelect(@Param("phonenum") String phonenum) {
-		return searchViewService.getPhoneNumSelect(phonenum);
+	public Object getPhoneNumSelect(@Param("phonenum") String phonenum, HttpSession session) {
+		return searchViewService.getPhoneNumSelect(phonenum, session);
 	}
 
 	/**

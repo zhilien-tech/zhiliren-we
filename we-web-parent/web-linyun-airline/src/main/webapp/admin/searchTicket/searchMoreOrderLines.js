@@ -6,7 +6,7 @@ function searchInlandOrder(){
 	var arriveCity = $('#singleArriveCity0').find("option:selected").text();
 	var outDatepicker = $("#outDatepicker0").val();
 	if(!(linkName || phoneNum)){
-		layer.msg("客户名称不能为空", "", 2000);
+		layer.msg("客户姓名不能为空", "", 2000);
 		return;
 	}
 	if(outCity==""){
@@ -145,7 +145,7 @@ function searchInternetOrders(){
 	var linkName = $("#linkNameId").select2("val");
 	var phoneNum = $("#phoneNumId").select2("val");
 	if(!(linkName || phoneNum)){
-		layer.msg("客户名称不能为空", "", 2000);
+		layer.msg("客户姓名不能为空", "", 2000);
 		return;
 	}
 	makePart();
