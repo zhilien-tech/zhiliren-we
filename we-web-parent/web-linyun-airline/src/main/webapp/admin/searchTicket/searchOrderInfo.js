@@ -268,12 +268,16 @@ document.onkeydown=function(event){
 			}
 		}
 	}else{
+		var tab2Aira = $("#tab_2Id").attr("aria-expanded");
 		if(e && e.keyCode==13){ // enter 键
-			$("#searchSingleTicketsBtn").click();
+			if(tab2Aira=="true"){
+				$("#searchTeamTicketsBtn").click();
+			}else{
+				$("#searchSingleTicketsBtn").click();
+			}
 		}
 		keydownIndex=1;
 	}
-	
 }; 
 
 /*清除卡片按钮样式*/
