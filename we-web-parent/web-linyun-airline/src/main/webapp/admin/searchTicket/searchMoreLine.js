@@ -166,7 +166,7 @@ $("#searchSingleTicketsBtn").click(function() {
 	var returnDatepicker = $("#returnDatepicker0").val();
 	var airType = $("input[name='voyageType']:checked").val();
 	if(!(linkName || phoneNum)){
-		layer.msg("客户名称不能为空", "", 2000);
+		layer.msg("客户姓名不能为空", "", 2000);
 		return;
 	}
 	if(outCity==""){

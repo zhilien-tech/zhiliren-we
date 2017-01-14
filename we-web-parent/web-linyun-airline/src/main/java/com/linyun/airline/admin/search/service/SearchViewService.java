@@ -87,8 +87,26 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * @param linkname
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object getPhoneNumSelect(String phonenum) {
-		List<TCustomerInfoEntity> customerInfos = customerViewService.getCustomerInfoByPhone(phonenum);
+	public Object getPhoneNumSelect(String phonenum, HttpSession session) {
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
+		long upcompanyRelationId = 0;
+		if (!Util.isEmpty(upcompany)) {
+			upcompanyRelationId = upcompany.getId();
+		}
+		List<TCustomerInfoEntity> customerInfos = new ArrayList<TCustomerInfoEntity>();
+		try {
+			customerInfos = dbDao.query(
+					TCustomerInfoEntity.class,
+					Cnd.where("telephone", "like", Strings.trim(phonenum) + "%").and("upComId", "=",
+							upcompanyRelationId), null);
+			if (customerInfos.size() > 5) {
+				customerInfos = customerInfos.subList(0, 5);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return customerInfos;
 	}
 

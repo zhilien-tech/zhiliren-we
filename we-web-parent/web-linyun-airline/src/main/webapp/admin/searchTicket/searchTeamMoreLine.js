@@ -190,7 +190,9 @@ function makePart(){
 		document.getElementById('travelTeamTypeNum').innerHTML=html;
 	}
 	if(airTeamType == 2){
-		html = '<li id="teamNum1" class="btnStyle dClass">第1段</li><li id="teamNum2"  class="dClass">第2段</li>';
+		/*国际往返不需要显示第二段*/
+		/*html = '<li id="teamNum1" class="btnStyle dClass">第1段</li><li id="teamNum2"  class="dClass">第2段</li>';*/
+		html = '<li id="teamNum1" class="btnStyle dClass">第1段</li>';
 		document.getElementById('travelTeamTypeNum').innerHTML=html;
 	}
 	/* 多程 显示多段 */
@@ -387,7 +389,7 @@ $("#searchTeamTicketsBtn").click(function() {
 	var linkName = $("#linkNameId").select2("val");
 	var phoneNum = $("#phoneNumId").select2("val");
 	if(!(linkName || phoneNum)){
-		layer.msg("客户名称不能为空", "", 2000);
+		layer.msg("客户姓名不能为空", "", 2000);
 		return;
 	}
 	$("#teamTrId").attr("style", "");

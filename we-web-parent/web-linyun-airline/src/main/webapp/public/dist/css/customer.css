@@ -16,11 +16,9 @@
 .addCustomer li a {color: #b9b9b9 !important;}
 .fax {top: -15px;}
 .sitefax {margin-top: 15px;}
-
-
-
-
-
+#completeFileName div span {display: inline-block;}
+#customerUpdateForm .modal-header .nav li a{color: #b3c0cb !important;}
+#customerUpdateForm .modal-header .nav .active a{color: #3b8cbc !important;}
 
 
 

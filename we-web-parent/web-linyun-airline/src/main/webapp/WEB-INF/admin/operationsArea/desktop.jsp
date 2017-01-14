@@ -206,6 +206,7 @@
 			checkBoxShow();
 			/*小日历*/
 			minCalendarInit();
+			/* 定时刷新任务栏 */
 			setInterval(taskEventList,1000*30);
 		});
 	</script>
@@ -439,9 +440,9 @@
    		function successCallback(id){
    			window.location.reload("${base}/admin/operationsArea/desktop.html");
 			if(id == '1'){
-				layer.msg("设置成功",{time: 2000, icon:1});
+				layer.msg("设置成功", "", 2000);
 			}else{
-				layer.msg("设置失败",{time: 2000, icon:1});
+				layer.msg("设置失败", "", 2000);
 			}
 		}
 		
