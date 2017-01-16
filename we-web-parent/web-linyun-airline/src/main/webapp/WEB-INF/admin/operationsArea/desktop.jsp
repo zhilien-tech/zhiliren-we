@@ -193,6 +193,9 @@
 	<!-- end 小日历js -->
 	<script type="text/javascript">
 		$(function() {
+			$('div[data-cal-index="2"]').prepend('<i class="month-i1"></i>');//小日历 top 显示月份
+			$('div[data-cal-index="1"]').prepend('<i class="month-i2"></i>');//小日历 center 显示月份
+			$('div[data-cal-index="0"]').prepend('<i class="month-i3"></i>');//小日历 buttom 显示月份
 			$('.k-out-of-month').click(function(){
 		      return false;
 		    });
@@ -292,9 +295,9 @@
 	function calendarInit(){
 		  $('#calendar').fullCalendar({
 			    header: {
-			      left: 'prev, next, today',
-			      center: ' ',
-			      right: 'title'
+			      left: 'prev, next',
+			      center: 'title',
+			      right: 'today'
 			    },
 			    events: function(start, end,callback) {
 			    	
@@ -611,8 +614,26 @@
 			            $('.dot').css('display','none');
 			      }
 			  });//end 显示提醒 显示/隐藏
+			  backgroundMonth();
+			
 			  
 		}
+		//-------------------小日历背景 添加 月份显示-----------------------
+		function backgroundMonth(){
+			
+		    var monthVal1= $('div[data-cal-index="2"] .k-title .k-caption').text();//获取top月份
+		    var DXmonth1=monthVal1.substring((monthVal1.length-1),(monthVal1.length-3));//倒序截取月份
+		    $('.month-i1').text(DXmonth1);
+
+		    var monthVal2= $('div[data-cal-index="1"] .k-title .k-caption').text();//获取center月份
+		    var DXmonth2=monthVal2.substring((monthVal2.length-1),(monthVal2.length-3));//倒序截取月份
+		    $('.month-i2').text(DXmonth2);
+
+		    var monthVal3= $('div[data-cal-index="0"] .k-title .k-caption').text();//获取buttom月份
+		    var DXmonth3=monthVal3.substring((monthVal3.length-1),(monthVal3.length-3));//倒序截取月份
+		    $('.month-i3').text(DXmonth3);
+		}
+		//-------------------小日历背景 添加 月份显示-----------------------
 	</script>
 	<input id="redDivDate" name="redDivDate" type="hidden">
 	<script type="text/javascript">
@@ -661,15 +682,16 @@
 	                }); 
 	            }
 	       });
+		   
 		}
 	    
 	    
 	    /* 小日历点击事件 */
 	    $(document).click(function (e) { 
 	    	var redDotSpan = $(e.target).attr('name'); 
-			/* 点击 散客每段提醒事件 */
 			var redDotStr = redDotSpan.indexOf("redDotSpanMsg");
-			if(redDotStr==0){
+			var iLength = $(e.target).find("i").length;
+			if(redDotStr==0 && iLength>0){
 				var redDate = $(e.target).attr('data-date');
 				$("#redDivDate").val(redDate);
     			if($("#checkShow").prop('checked')){
@@ -706,10 +728,12 @@
 		//小日历上一个按钮
 		$(".k-btn-previous-month").click(function(){
 			getTimeStr();
+			backgroundMonth();
 		});
 		//小日历下一个按钮
 		$(".k-btn-next-month").click(function(){
 			getTimeStr(); 
+			backgroundMonth();
 		});
 	</script>
 
