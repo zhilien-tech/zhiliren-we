@@ -182,7 +182,7 @@ public class ReceiveMailTest {
 			boolean isContainerAttachment = isContainAttachment(msg);
 			System.out.println("是否包含附件：" + isContainerAttachment);
 			if (isContainerAttachment) {
-				//				saveAttachment(msg, "D:/maildownload/" + msg.getSubject() + "_"); //保存附件  
+				//saveAttachment(msg, "D:/maildownload/" + msg.getSubject() + "_"); //保存附件  
 			}
 			StringBuffer content = new StringBuffer(30);
 			getMailTextContent(msg, content);
