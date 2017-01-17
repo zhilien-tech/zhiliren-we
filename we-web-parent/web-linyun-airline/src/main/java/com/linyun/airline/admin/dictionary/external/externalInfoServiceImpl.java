@@ -13,6 +13,7 @@ import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
 
+import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.uxuexi.core.web.base.service.BaseService;
@@ -30,6 +31,27 @@ public class externalInfoServiceImpl extends BaseService<DictInfoEntity> impleme
 		List<DictInfoEntity> infoList = dbDao.query(
 				DictInfoEntity.class,
 				Cnd.where("dictName", "like", Strings.trim(name) + "%")
+						.and("status", "=", DataStatusEnum.ENABLE.intKey()).and("typeCode", "=", typeCode), null);
+
+		return infoList;
+	}
+
+	/**
+	 * 
+	 * TODO(根据字典编码 查询出发城市)
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param codeName
+	 * @param typeCode
+	 * @return
+	 * @throws Exception TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	@Override
+	public List<TDepartureCityEntity> findDepartureCityByCode(String codeName, String typeCode) throws Exception {
+		List<TDepartureCityEntity> infoList = dbDao.query(
+				TDepartureCityEntity.class,
+				Cnd.where("dictCode", "like", Strings.trim(codeName) + "%")
 						.and("status", "=", DataStatusEnum.ENABLE.intKey()).and("typeCode", "=", typeCode), null);
 
 		return infoList;

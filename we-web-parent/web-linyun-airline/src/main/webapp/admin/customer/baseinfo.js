@@ -46,12 +46,11 @@ $("#city").select2({
 			},
 			processResults : function(data, params) {
 				params.page = params.page || 1;
-
 				return {
 					results : data
 				};
 			},
-			cache : true
+			cache : false
 		},
 		
 		escapeMarkup : function(markup) {

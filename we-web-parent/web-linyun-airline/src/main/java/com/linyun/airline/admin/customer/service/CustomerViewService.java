@@ -32,6 +32,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.linyun.airline.admin.Company.service.CompanyViewService;
+import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.base.MobileResult;
@@ -284,7 +285,6 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 			@Override
 			public Select2Option apply(Record record) {
 				Select2Option op = new Select2Option();
-
 				op.setId(Long.valueOf(record.getString("id")));
 				op.setText(record.getString("comname"));
 				return op;
@@ -294,25 +294,26 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		//查询出发城市
 		Sql citySql = Sqls.create(sqlManager.get("customer_cityOption_list"));
 		Cnd cityCnd = Cnd.NEW();
-		cityCnd.and("o.infoId", "=", id);
-		cityCnd.orderBy("d.dictName", "desc");
+		cityCnd.and("c.infoId", "=", id);
+		cityCnd.orderBy("d.dictCode", "desc");
 		citySql.setCondition(cityCnd);
-		List<DictInfoEntity> outcityEntities = DbSqlUtil.query(dbDao, DictInfoEntity.class, citySql);
+		List<TDepartureCityEntity> outcityEntities = DbSqlUtil.query(dbDao, TDepartureCityEntity.class, citySql);
 		//出发城市id 拼串
 		String outcityIds = "";
-		for (DictInfoEntity outcityEntity : outcityEntities) {
+		for (TDepartureCityEntity outcityEntity : outcityEntities) {
 			outcityIds += outcityEntity.getId() + ",";
 		}
 		if (outcityIds.length() > 0) {
 			outcityIds = outcityIds.substring(0, outcityIds.length() - 1);
 		}
 		obj.put("outcityIds", outcityIds);
-		obj.put("outcitylist", Lists.transform(outcityEntities, new Function<DictInfoEntity, Select2Option>() {
+		obj.put("outcitylist", Lists.transform(outcityEntities, new Function<TDepartureCityEntity, Select2Option>() {
 			@Override
-			public Select2Option apply(DictInfoEntity record) {
+			public Select2Option apply(TDepartureCityEntity record) {
 				Select2Option op = new Select2Option();
+				String text = record.getDictCode() + " - " + record.getEnglishName() + " - " + record.getCountryName();
 				op.setId(record.getId());
-				op.setText(record.getDictName());
+				op.setText(text);
 				return op;
 			}
 		}));
@@ -520,32 +521,31 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 * @return
 	 * @throws Exception TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object goCity(String outcityName, String ids) throws Exception {
+	public Object goCity(String outcityCode, String ids) throws Exception {
 
-		Set<DictInfoEntity> set = Sets.newTreeSet();
+		Set<TDepartureCityEntity> set = Sets.newTreeSet();
 
 		//出发城市
 		Sql sql = Sqls.create(sqlManager.get("customer_city_list"));
 		Cnd cnd = Cnd.NEW();
-		cnd.and("dictName", "like", outcityName);
-		cnd.orderBy("dictName", "desc");
+		cnd.and("dictCode", "like", outcityCode);
 		sql.setCondition(cnd);
-		List<DictInfoEntity> localOutCityList = DbSqlUtil.query(dbDao, DictInfoEntity.class, sql);
+		List<TDepartureCityEntity> localOutCityList = DbSqlUtil.query(dbDao, TDepartureCityEntity.class, sql);
 
 		if (localOutCityList.size() >= 5) {
 			for (int i = 0; i < 5; i++) {
-				DictInfoEntity info = localOutCityList.get(i);
+				TDepartureCityEntity info = localOutCityList.get(i);
 				set.add(info);
 			}
 		} else {
 			set.addAll(localOutCityList);
 
 			//数据字典表中查找出发城市
-			List<DictInfoEntity> dictLineList = externalInfoService.findDictInfoByName(outcityName, "CFCS");
+			List<TDepartureCityEntity> dictLineList = externalInfoService.findDepartureCityByCode(outcityCode, "CFCS");
 			int needmore = 5 - localOutCityList.size();
 			if (!Util.isEmpty(dictLineList)) {
 				if (dictLineList.size() <= needmore) {
-					for (DictInfoEntity dict : dictLineList) {
+					for (TDepartureCityEntity dict : dictLineList) {
 						set.add(dict);
 					}
 				} else {
@@ -559,10 +559,11 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		List<Select2Option> list = new ArrayList<Select2Option>();
 		//判断是否为空
 		if (!Util.isEmpty(set)) {
-			for (DictInfoEntity dict : set) {
+			for (TDepartureCityEntity dict : set) {
 				Select2Option op = new Select2Option();
+				String text = dict.getDictCode() + " - " + dict.getEnglishName() + " - " + dict.getCountryName();
 				op.setId(dict.getId());
-				op.setText(dict.getDictName());
+				op.setText(text);
 				list.add(op);
 			}
 		}

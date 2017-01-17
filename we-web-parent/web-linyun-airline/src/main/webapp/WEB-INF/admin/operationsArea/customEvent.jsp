@@ -98,9 +98,10 @@
 						window.parent.reload();
 						window.parent.getTimeStr();
 						window.parent.checkBoxShow();
+						layer.msg("添加成功", "", 2000);
 					},
 					error : function(xhr) {
-						layer.msg("添加失败", "", 3000);
+						layer.msg("添加失败", "", 2000);
 					}
 				});
 			}

@@ -120,8 +120,11 @@
                       <li class="active">
                       	<a id="tab_1Id" href="#tab_1" data-toggle="tab">内陆跨海</a>
                       </li>
+                       <li>
+                      	<a id="tab_3Id" href="#tab_3" data-toggle="tab">国际</a>
+                      </li>
                       <li>
-                      	<a id="tab_2Id" href="#tab_2" data-toggle="tab">国际</a>
+                      	<a id="tab_2Id" href="#tab_2" data-toggle="tab">机票库</a>
                       </li>
                     </ul>
                     <div class="tab-content">

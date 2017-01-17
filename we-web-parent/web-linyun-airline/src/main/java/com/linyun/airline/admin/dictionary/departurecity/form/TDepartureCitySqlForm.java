@@ -21,7 +21,7 @@ public class TDepartureCitySqlForm extends DataTablesParamForm {
 	private Integer id;
 
 	/**字典类别编码*/
-	private Integer typeCode;
+	private String typeCode;
 
 	/**三字代码*/
 	private String dictCode;

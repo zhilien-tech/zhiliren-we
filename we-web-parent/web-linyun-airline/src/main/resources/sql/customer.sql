@@ -1,9 +1,13 @@
 /*customer_city_list*/
-select l.dictInfoId id,
-	d.dictName 
-from 
-	t_customer_outcity l inner join dict_info d on l.dictInfoId=d.id
-and l.infoId=@companyId
+SELECT
+	o.dictInfoId id,
+	d.dictCode,
+	d.EnglishName,
+	d.countryName
+FROM
+	t_customer_outcity o
+INNER JOIN t_departure_city d ON o.dictInfoId = d.id
+AND o.infoId = @companyId
 $condition
 
 /*customer_line_list*/
@@ -25,9 +29,9 @@ and l.infoId=@companyId
 $condition
 
 /*customer_cityOption_list*/
-select 
+select
 	d.*
-FROM t_customer_outcity o INNER JOIN dict_info d on o.dictInfoId = d.id
+FROM t_customer_outcity c INNER JOIN t_departure_city d on c.dictInfoId = d.id
 $condition
 
 /*customer_user_company*/
