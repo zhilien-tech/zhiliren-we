@@ -51,7 +51,7 @@
 						<a href="javascript:;" class="customInterface">自定义界面</a>
 
 						 <div class="nav-tabs-custom" id="taskId" style="display: none">
-						 	<ul class="nav nav-tabs">
+						 	<ul class="nav nav-tabs custome">
 			                  <li class="active"><a href="#tab_1" data-toggle="tab">询单(6)</a></li>
 			                  <li><a href="#tab_2" data-toggle="tab">订单(10)</a></li>
 			                  <li><a href="#tab_3" data-toggle="tab">我的提醒(<span id="remindMsg"></span>)</a></li>
@@ -193,6 +193,9 @@
 	<!-- end 小日历js -->
 	<script type="text/javascript">
 		$(function() {
+			$('div[data-cal-index="2"]').prepend('<i class="month-i1"></i>');//小日历 top 显示月份
+			$('div[data-cal-index="1"]').prepend('<i class="month-i2"></i>');//小日历 center 显示月份
+			$('div[data-cal-index="0"]').prepend('<i class="month-i3"></i>');//小日历 buttom 显示月份
 			$('.k-out-of-month').click(function(){
 		      return false;
 		    });
@@ -206,6 +209,7 @@
 			checkBoxShow();
 			/*小日历*/
 			minCalendarInit();
+			/* 定时刷新任务栏 */
 			setInterval(taskEventList,1000*30);
 		});
 	</script>
@@ -291,9 +295,9 @@
 	function calendarInit(){
 		  $('#calendar').fullCalendar({
 			    header: {
-			      left: 'prev, next, today',
-			      center: ' ',
-			      right: 'title'
+			      left: 'prev, next',
+			      center: 'title',
+			      right: 'today'
 			    },
 			    events: function(start, end,callback) {
 			    	
@@ -439,9 +443,9 @@
    		function successCallback(id){
    			window.location.reload("${base}/admin/operationsArea/desktop.html");
 			if(id == '1'){
-				layer.msg("设置成功",{time: 2000, icon:1});
+				layer.msg("设置成功", "", 2000);
 			}else{
-				layer.msg("设置失败",{time: 2000, icon:1});
+				layer.msg("设置失败", "", 2000);
 			}
 		}
 		
@@ -610,8 +614,26 @@
 			            $('.dot').css('display','none');
 			      }
 			  });//end 显示提醒 显示/隐藏
+			  backgroundMonth();
+			
 			  
 		}
+		//-------------------小日历背景 添加 月份显示-----------------------
+		function backgroundMonth(){
+			
+		    var monthVal1= $('div[data-cal-index="2"] .k-title .k-caption').text();//获取top月份
+		    var DXmonth1=monthVal1.substring((monthVal1.length-1),(monthVal1.length-3));//倒序截取月份
+		    $('.month-i1').text(DXmonth1);
+
+		    var monthVal2= $('div[data-cal-index="1"] .k-title .k-caption').text();//获取center月份
+		    var DXmonth2=monthVal2.substring((monthVal2.length-1),(monthVal2.length-3));//倒序截取月份
+		    $('.month-i2').text(DXmonth2);
+
+		    var monthVal3= $('div[data-cal-index="0"] .k-title .k-caption').text();//获取buttom月份
+		    var DXmonth3=monthVal3.substring((monthVal3.length-1),(monthVal3.length-3));//倒序截取月份
+		    $('.month-i3').text(DXmonth3);
+		}
+		//-------------------小日历背景 添加 月份显示-----------------------
 	</script>
 	<input id="redDivDate" name="redDivDate" type="hidden">
 	<script type="text/javascript">
@@ -625,6 +647,7 @@
 		      }
 	    });//end 显示提醒 显示/隐藏
 	
+	    /* 小日历加载小红点事件 */
 		function getTimeStr(){
 		  //setTimeout(getTimeStr,100);
 		  /* 获取当前月  格式化为：2016-12的形式 */
@@ -655,49 +678,62 @@
             				$('span[data-date="'+element.gtime+'"]').find('i').remove();
             			}
 		            	$('span[data-date="'+element.gtime+'"]').append('<i class="dot"></i>');
-	            		//小红点点击弹框事件
-	            		$(document).on('click','span[data-date="'+ element.gtime +'"]',function(){//如果有红色圆点，点击 显示小div信息
-	            			$("#redDivDate").val(element.gtime);
-	            			if($("#checkShow").prop('checked')){
-	            				$.ajax({
-		        		            url: '/admin/operationsArea/getMinCal.html',
-		        		            dataType: 'json',
-		        		            type: 'POST',
-		        		            async:false,
-		        		            data: {
-		        		            	gtime: element.gtime
-		        		            },
-		        		            success: function(data) {
-		        		            	$.each(eval(data), function (index, element) {
-		        		            		$("#minCalId").val("");
-		        		            		$("#minCalId").val(element.msgcontent);
-		        		                }); 
-		        		            }
-		        		        });
-	            				//弹框提示信息
-		            			layer.tips(
-		            				 $("#minCalId").val(), 
-		      			    		 this,
-		      			    		 {
-		      					        tips: [3, 'rgb(90, 90, 90)'],
-		      					        time: 2000
-		      					     }
-			      			    );
-	            			}
-	      			  	});//end 如果有红色圆点，点击 显示小div信息 
+		            	$('span[data-date="'+element.gtime+'"]').attr("name", "redDotSpanMsg");
 	                }); 
-	            	
 	            }
 	       });
+		   
 		}
-		
+	    
+	    
+	    /* 小日历点击事件 */
+	    $(document).click(function (e) { 
+	    	var redDotSpan = $(e.target).attr('name'); 
+			var redDotStr = redDotSpan.indexOf("redDotSpanMsg");
+			var iLength = $(e.target).find("i").length;
+			if(redDotStr==0 && iLength>0){
+				var redDate = $(e.target).attr('data-date');
+				$("#redDivDate").val(redDate);
+    			if($("#checkShow").prop('checked')){
+    				$.ajax({
+    		            url: '/admin/operationsArea/getMinCal.html',
+    		            dataType: 'json',
+    		            type: 'POST',
+    		            async:false,
+    		            data: {
+    		            	gtime: redDate
+    		            },
+    		            success: function(data) {
+    		            	$.each(eval(data), function (index, element) {
+    		            		$("#minCalId").val("");
+    		            		$("#minCalId").val(element.msgcontent);
+    		                }); 
+    		            }
+    		        });
+    				//弹框提示信息
+    				var msg = $("#minCalId").val();
+        			layer.tips(
+        				 msg, 
+        				 $(e.target),
+  			    		 {
+  					        tips: [3, 'rgb(90, 90, 90)'],
+  					        time: 1500
+  					     }
+      			    );
+    				
+    			}
+			}
+	    });
+	    
 		//小日历上一个按钮
 		$(".k-btn-previous-month").click(function(){
 			getTimeStr();
+			backgroundMonth();
 		});
 		//小日历下一个按钮
 		$(".k-btn-next-month").click(function(){
 			getTimeStr(); 
+			backgroundMonth();
 		});
 	</script>
 
