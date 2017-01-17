@@ -83,7 +83,6 @@
 								<table id="datatableInfo" class="table table-bordered table-hover">
 									<thead>
 										<tr>
-											<th>类别编码</th>
 											<th>类别名称</th>
 											<th>字典代码</th>
 											<th>字典信息</th>
@@ -143,7 +142,7 @@
 		  }
 		//事件提示
 		function successCallback(id){
-			  datatableInfo.ajax.reload();
+			  datatableInfo.ajax.reload(null,false);
 			  if(id == '1'){
 				  layer.msg("添加成功",{time: 2000, icon:1});
 			  }else if(id == '2'){
@@ -225,7 +224,6 @@
 		            }
 		        },
 		        "columns": [
-		                    {"data": "typecode", "bSortable": false},
 		                    {"data": "typename", "bSortable": false},
 		                    {"data": "dictcode", "bSortable": false},
 		                    {"data": "dictname", "bSortable": false},
@@ -247,7 +245,7 @@
 		            ],
 		            "columnDefs": [{
 		                //   指定第一列，从0开始，0表示第一列，1表示第二列……
-		                targets: 7,
+		                targets: 6,
 		                render: function(data, type, row, meta) {
 		                	var modify = '<a style="cursor:pointer;" onclick="edit('+row.id+');">编辑</a>';
                     		if(1==row.status){
@@ -257,15 +255,14 @@
                     		}
 		                    return modify+judge;
 		                }
-		            },{ "sWidth": "9%",  "aTargets": [0] },
+		            },
+					{ "sWidth": "9%", "aTargets": [0] },
 					{ "sWidth": "9%", "aTargets": [1] },
 					{ "sWidth": "9%", "aTargets": [2] },
-					{ "sWidth": "9%", "aTargets": [3] },
-					{ "sWidth": "16%", "aTargets": [4] },
-					{ "sWidth": "6%", "aTargets": [5] },
-					{ "sWidth": "12%", "aTargets": [6] },
-					{ "sWidth": "15%", "aTargets": [7] }
-		            
+					{ "sWidth": "16%", "aTargets": [3] },
+					{ "sWidth": "6%", "aTargets": [4] },
+					{ "sWidth": "12%", "aTargets": [5] },
+					{ "sWidth": "15%", "aTargets": [6] }
 		            ]
 			});
 		}

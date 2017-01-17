@@ -9,6 +9,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>退税</title>
+	<link href="${base }/public/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" href="${base}/public/dist/css/grabMail.css"><!--本页面样式-->
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -33,8 +34,7 @@
                      <button type="button" class="btn btn-primary btn-sm right noneBtn none">删除</button>
                      <button type="button" class="btn btn-primary btn-sm right noneBtn none">移动到</button>
                      <button type="button" class="btn btn-primary btn-sm right batchBtn">批量操作</button>
-                     <button type="button" class="btn btn-primary btn-sm right">上传</button>
-                     <button type="button" class="btn btn-primary btn-sm right">新建文件夹</button>
+                     <button id="uploadify" name="fileID" type="file" class="btn btn-primary btn-sm right">上传</button>
                      <button type="button" class="btn btn-primary btn-sm right returnBtn none">返回上一级</button>
                      <button type="button" class="btn btn-primary btn-sm right indexBtn none">返回首页</button>
                    </div>
@@ -54,61 +54,6 @@
                        <td class="text-left"><a href="javascript:;">vme</a></td>
                        <td>2016-12-12  00:12</td>
                        <td>20k</td>
-                       <td>
-                          <a href="javascript:;">下载&nbsp;&nbsp;&nbsp;</a>
-                          <a href="javascript:;">移动到&nbsp;&nbsp;&nbsp;</a>
-                          <a href="javascript:;">删除</a>
-                       </td>
-                      </tr>
-                      <tr>
-                       <td class="none checkTd"><input type="checkbox"></td>
-                       <td class="text-left"><a href="javascript:;">aaa</a></td>
-                       <td>2016-12-10  01:12</td>
-                       <td>89k</td>
-                       <td>
-                          <a href="javascript:;">下载&nbsp;&nbsp;&nbsp;</a>
-                          <a href="javascript:;">移动到&nbsp;&nbsp;&nbsp;</a>
-                          <a href="javascript:;">删除</a>
-                       </td>
-                      </tr>
-                      <tr>
-                       <td class="none checkTd"><input type="checkbox"></td>
-                       <td class="text-left"><a href="javascript:;">aaa</a></td>
-                       <td>2016-12-10  01:12</td>
-                       <td>89k</td>
-                       <td>
-                          <a href="javascript:;">下载&nbsp;&nbsp;&nbsp;</a>
-                          <a href="javascript:;">移动到&nbsp;&nbsp;&nbsp;</a>
-                          <a href="javascript:;">删除</a>
-                       </td>
-                      </tr>
-                      <tr>
-                       <td class="none checkTd"><input type="checkbox"></td>
-                       <td class="text-left"><a href="javascript:;">aaa</a></td>
-                       <td>2016-12-10  01:12</td>
-                       <td>89k</td>
-                       <td>
-                          <a href="javascript:;">下载&nbsp;&nbsp;&nbsp;</a>
-                          <a href="javascript:;">移动到&nbsp;&nbsp;&nbsp;</a>
-                          <a href="javascript:;">删除</a>
-                       </td>
-                      </tr>
-                      <tr>
-                       <td class="none checkTd"><input type="checkbox"></td>
-                       <td class="text-left"><a href="javascript:;">aaa</a></td>
-                       <td>2016-12-10  01:12</td>
-                       <td>89k</td>
-                       <td>
-                          <a href="javascript:;">下载&nbsp;&nbsp;&nbsp;</a>
-                          <a href="javascript:;">移动到&nbsp;&nbsp;&nbsp;</a>
-                          <a href="javascript:;">删除</a>
-                       </td>
-                      </tr>
-                      <tr>
-                       <td class="none checkTd"><input type="checkbox"></td>
-                       <td class="text-left"><a href="javascript:;">aaa</a></td>
-                       <td>2016-12-10  01:12</td>
-                       <td>89k</td>
                        <td>
                           <a href="javascript:;">下载&nbsp;&nbsp;&nbsp;</a>
                           <a href="javascript:;">移动到&nbsp;&nbsp;&nbsp;</a>
@@ -180,6 +125,7 @@
   <!-- Main footer -->
   <%@include file="/WEB-INF/public/footer.jsp"%>
   <!--end footer-->
+<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
 <script type="text/javascript">
 $(function () {
 	//批量管理 点击操作
@@ -200,6 +146,62 @@ $(function () {
         });
       }
     });
+    //文件上传
+    /* $('#uploadify').click(function(){
+    	$.fileupload1 = $('#uploadify').uploadify({
+    		'auto' : true,
+    		'formData' : {
+    			'fcharset' : 'uft-8',
+    			'action' : 'uploadimage'
+    		},
+    		'buttonText' : '上传',
+    		'fileSizeLimit' : '3000MB',
+    		'fileTypeDesc' : '文件',
+    		'fileTypeExts' : '*.png; *.txt; *.doc; *.pdf; *.xls; *.jpg; *.docx; *.xlsx;',//文件类型过滤
+    		'swf' : '${base}/public/plugins/uploadify/uploadify.swf',
+    		'multi' : false,
+    		'successTimeout' : 1800,
+    		'queueSizeLimit' : 100,
+    		'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html',
+    		//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
+    		//下面的例子演示如何获取到vid
+    		'onUploadSuccess' : function(file, data, response) {
+    			$("#completeFileName").html("");
+    			var jsonobj = eval('(' + data + ')');
+    			$("#fileUrl").val(data);
+    			$("#fileName").val(file.name);
+    			var innerHtml = "";
+                if (response) {
+                    innerHtml = "<div><a id='downloadA' href='#' download='"+file.name+"' onclick='downloadFile("
+                            + data
+                            + ");' >"
+                            + file.name
+                            + "</a>&nbsp;&nbsp;<span>上传成功</span>&nbsp;&nbsp;&nbsp;&nbsp;"
+                            + "<input type='button' class='delete' onclick='deleteFile();' value='删除'><input type='hidden' name='${attachIds}' value='"
+                            + data + "'></div>";
+                } else {
+                    innerHtml = "<div>该附件上传失败，请重新上传</div>";
+                }
+                $("#completeFileName").html($("#completeFileName").html() + innerHtml);
+    		},
+            //加上此句会重写onSelectError方法【需要重写的事件】
+            'overrideEvents': ['onSelectError', 'onDialogClose'],
+            //返回一个错误，选择文件的时候触发
+            'onSelectError':function(file, errorCode, errorMsg){
+                switch(errorCode) {
+                    case -110:
+                        alert("文件 ["+file.name+"] 大小超出系统限制！");
+                        break;
+                    case -120:
+                        alert("文件 ["+file.name+"] 大小异常！");
+                        break;
+                    case -130:
+                        alert("文件 ["+file.name+"] 类型不正确！");
+                        break;
+                }
+            }
+    	});
+    }); */
 });
 </script>
 <script type="text/javascript">

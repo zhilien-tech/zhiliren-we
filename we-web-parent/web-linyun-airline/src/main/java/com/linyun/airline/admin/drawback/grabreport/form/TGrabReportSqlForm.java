@@ -1,7 +1,5 @@
 package com.linyun.airline.admin.drawback.grabreport.form;
 
-import java.util.Date;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -60,10 +58,10 @@ public class TGrabReportSqlForm extends DataTablesParamForm {
 	private String agencyFee2;
 
 	/**入澳时间*/
-	private Date inAustralianTime;
+	private String inAustralianTime;
 
 	/**出澳时间*/
-	private Date outAustralianTime;
+	private String outAustralianTime;
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {

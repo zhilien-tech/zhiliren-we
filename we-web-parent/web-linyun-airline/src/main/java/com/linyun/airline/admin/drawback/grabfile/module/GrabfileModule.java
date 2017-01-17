@@ -1,5 +1,8 @@
 package com.linyun.airline.admin.drawback.grabfile.module;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -14,6 +17,9 @@ import com.linyun.airline.admin.drawback.grabfile.form.TGrabFileAddForm;
 import com.linyun.airline.admin.drawback.grabfile.form.TGrabFileSqlForm;
 import com.linyun.airline.admin.drawback.grabfile.form.TGrabFileUpdateForm;
 import com.linyun.airline.admin.drawback.grabfile.service.GrabfileViewService;
+import com.linyun.airline.common.base.UploadService;
+import com.linyun.airline.common.base.Uploader;
+import com.linyun.airline.common.constants.CommonConstants;
 import com.uxuexi.core.web.chain.support.JsonResult;
 
 @IocBean
@@ -23,6 +29,9 @@ public class GrabfileModule {
 
 	@Inject
 	private GrabfileViewService grabfileViewService;
+
+	@Inject
+	private UploadService fdfsUploadService;//文件上传
 
 	/**
 	 * 分页查询
@@ -41,6 +50,20 @@ public class GrabfileModule {
 	@At
 	public Object listData(@Param("..") final TGrabFileSqlForm sqlForm) {
 		return grabfileViewService.listPage4Datatables(sqlForm);
+	}
+
+	/**
+	 * 上传文件
+	 */
+	@At
+	@Ok("json")
+	public String uploadFile(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding(CommonConstants.CHARACTER_ENCODING_PROJECT);//字符编码为utf-8
+		response.setCharacterEncoding(CommonConstants.CHARACTER_ENCODING_PROJECT);
+		Uploader uploader = new Uploader(request, fdfsUploadService);
+		uploader.upload();
+		String url = CommonConstants.IMAGES_SERVER_ADDR + uploader.getUrl();
+		return url;
 	}
 
 	/**
