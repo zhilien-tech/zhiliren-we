@@ -18,6 +18,7 @@ import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
 import com.linyun.airline.admin.customer.service.CustomerViewService;
+import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.entities.TMessageEntity;
@@ -134,14 +135,14 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * @return 返回城市下拉列表
 	 */
 	public Object getCitySelect(String cityname, String typeCode, String ids) {
-		List<DictInfoEntity> citySelect = new ArrayList<DictInfoEntity>();
+		List<TDepartureCityEntity> citySelect = new ArrayList<TDepartureCityEntity>();
 		try {
-			citySelect = externalInfoService.findDictInfoByText(cityname, typeCode);
+			citySelect = externalInfoService.findCityByCode(cityname, typeCode);
 			//出发抵达城市去重
 			if (!Util.isEmpty(ids)) {
 				//已选中的城市
-				List<DictInfoEntity> existCitys = new ArrayList<DictInfoEntity>();
-				for (DictInfoEntity dictInfoEntity : citySelect) {
+				List<TDepartureCityEntity> existCitys = new ArrayList<TDepartureCityEntity>();
+				for (TDepartureCityEntity dictInfoEntity : citySelect) {
 					if (dictInfoEntity.getDictCode().equals(ids)) {
 						existCitys.add(dictInfoEntity);
 					}
@@ -235,13 +236,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 					}
 				}
 				String airlineCode = instalFlightAirItinerary.getAirlineCode();
-				DictInfoEntity dictInfo = dbDao.fetch(DictInfoEntity.class,
-						Cnd.where("typeCode", "=", "HKGS").and("dictCode", "=", airlineCode));
-				String dictName = dictInfo.getDictName();
-				if (!Util.isEmpty(dictName)) {
-					instalFlightAirItinerary.setAirlineName(dictName);
-				}
-
 			}
 		}
 		if (resp.getStatusCode() == 400) {

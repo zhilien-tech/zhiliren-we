@@ -26,7 +26,7 @@ function initTeamSelect2(){
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
 							obj.id = obj.dictCode; 
-							obj.text = obj.dictCode +"("+ obj.dictName +")"; 
+							obj.text = obj.dictCode +" - "+ obj.englishName +" - "+ obj.countryName; 
 							return obj;
 						});
 						return {
@@ -67,7 +67,7 @@ function initTeamSelect2(){
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
 							obj.id = obj.dictCode; 
-							obj.text = obj.dictCode +"("+ obj.dictName +")"; 
+							obj.text = obj.dictCode +" - "+ obj.englishName +" - "+ obj.countryName; 
 							return obj;
 						});
 						return {
@@ -386,6 +386,7 @@ function onkeyTeamEnter(){
 /* 团客多程查询 */
 var clickone=1;
 $("#searchTeamTicketsBtn").click(function() {
+	clearSearchTeamHtml();
 	var linkName = $("#linkNameId").select2("val");
 	var phoneNum = $("#phoneNumId").select2("val");
 	if(!(linkName || phoneNum)){

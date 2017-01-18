@@ -86,16 +86,18 @@
 						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						parent.layer.close(index);
 						//添加成功 刷新各个模块
+						window.parent.backgroundMonth();
 						window.parent.taskEventList();
 						window.parent.reload();
+						window.parent.getTimeStr();
+						window.parent.backgroundMonth();
 						window.parent.checkBoxShow();
 						window.parent.createMinCanlender();
 						window.parent.minCalendarInit();
-						window.parent.getTimeStr();
-						
+						window.parent.backgroundMonth();
 					},
 					error : function(xhr) {
-						layer.msg("更新失败", "", 3000);
+						layer.msg("更新失败", "", 2000);
 					}
 				});
 			}
@@ -140,10 +142,11 @@
 						//添加成功 刷新各个模块
 						window.parent.taskEventList();
 						window.parent.reload();
+						window.parent.getTimeStr();
+						window.parent.backgroundMonth();
 						window.parent.checkBoxShow();
 						window.parent.createMinCanlender();
 						window.parent.minCalendarInit();
-						window.parent.getTimeStr();
 					},
 					error : function() {
 						layer.msg("删除失败", "", 3000);

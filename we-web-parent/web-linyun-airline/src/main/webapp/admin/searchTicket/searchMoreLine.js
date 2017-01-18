@@ -26,7 +26,7 @@ function initSelect2(){
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
 							obj.id = obj.dictCode; 
-							obj.text = obj.dictCode +"("+ obj.dictName +")"; 
+							obj.text = obj.dictCode +" - "+ obj.englishName +" - "+ obj.countryName; 
 							return obj;
 						});
 						return {
@@ -67,7 +67,7 @@ function initSelect2(){
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
 							obj.id = obj.dictCode; 
-							obj.text = obj.dictCode +"("+ obj.dictName +")"; 
+							obj.text = obj.dictCode +" - "+ obj.englishName +" - "+ obj.countryName; 
 							return obj;
 						});
 						return {
@@ -158,6 +158,7 @@ function onkeyEnter(){
 /* 跨海内陆多程查询 */
 var clickfirst=1;
 $("#searchSingleTicketsBtn").click(function() {
+	clearSearchHtml();
 	var linkName = $("#linkNameId").select2("val");
 	var phoneNum = $("#phoneNumId").select2("val");
 	var outCity = $('#outCity0').find("option:selected").text();
@@ -189,13 +190,14 @@ $("#searchSingleTicketsBtn").click(function() {
 	}
 	
 	var msgIndex = layer.msg('查询中...',{time:0});
-	if(clickfirst){
-		var index = 0;
-		$("#origin").val($("#outCity"+index).select2("val"));
-		$("#destination").val($("#singleArriveCity"+index).select2("val"));
-		$("#departuredate").val($("#outDatepicker"+index).val());
-		$("#returndate").val($("#returnDatepicker"+index).val());
-	}
+	
+	$("#origin").val($("#outCity0").select2("val"));
+	$("#destination").val($("#singleArriveCity0").select2("val"));
+	$("#departuredate").val($("#outDatepicker0").val());
+	$("#returndate").val($("#returnDatepicker0").val());
+	$("#departureCardDate").val($("#outDatepicker0").val());
+	$("#returnCardDate").val($("#returnDatepicker0").val());
+	
 	//显示区间
 	var area = $("#origin").val()+' --- '+$("#destination").val();
 	document.getElementById('travelArea').innerHTML=area;
@@ -240,8 +242,14 @@ $("#searchSingleTicketsBtn").click(function() {
 				
 				var outCodeStr = $("#outCity0").select2("val");
 				var arriveCodeStr = $("#singleArriveCity0").select2("val");
+				
+				/*中转+直飞的*/
 				var outList = new Array();
 				var returnList = new Array();
+				/*直飞的*/
+				var outNonstopList = new Array();
+				var returnNonstopList = new Array();
+				
 				for (var i=0; i<resp.data.length; i++){
 					var list = resp.data[i].list;
 					var returnIdx = 0 ;
@@ -255,11 +263,34 @@ $("#searchSingleTicketsBtn").click(function() {
 					}
 					for(var j=0; j<list.length; j++){
 						if(j < returnIdx){
+							/*中转 和 直飞*/
 							outList.push(list[j]);
+							/*直飞*/
+							var departureAirport = list[j].DepartureAirport;
+							var arrivalAirport = list[j].ArrivalAirport;
+							if(arrivalAirport==arriveCodeStr && departureAirport==outCodeStr){
+								outNonstopList.push(list[j]);
+							}
+							
 						}else{
+							/*中转 和 直飞*/
 							returnList.push(list[j]);
+							/*直飞*/
+							var departureAirport = list[j].DepartureAirport;
+							var arrivalAirport = list[j].ArrivalAirport;
+							if(arrivalAirport==outCodeStr && departureAirport==arriveCodeStr){
+								returnNonstopList.push(list[j]);
+							}
 						}
 					}
+					
+					/*是否直飞*/
+					var isNonstop = $("#nonstopType").val();
+					if(isNonstop){
+						outList = outNonstopList;
+						returnList = returnNonstopList;
+					}
+					
 					/* 去程列表 */
 					for(var foot = 0; foot < outList.length;foot++){
 						var AirlineName = resp.data[i].airlineName;

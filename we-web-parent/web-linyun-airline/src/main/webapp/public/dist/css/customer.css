@@ -19,12 +19,9 @@
 #completeFileName div span {display: inline-block;}
 #customerUpdateForm .modal-header .nav li a{color: #b3c0cb !important;}
 #customerUpdateForm .modal-header .nav .active a{color: #3b8cbc !important;}
-
-
-
-
-
-
-
+.box-header{padding:0;}
+.box-body{padding: 0;}
+.content {padding-left: 15px;padding-right: 15px;}
+table.dataTable thead .sorting_asc:after {display: none;}
 
 
