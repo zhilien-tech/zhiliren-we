@@ -195,6 +195,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 			if (QUANGUOLIANYUN.indexOf(Strings.trim(cityname)) != -1) {
 				TDepartureCityEntity dictInfoEntity = new TDepartureCityEntity();
 				//dictInfoEntity.setDictName(this.QUANGUOLIANYUN);
+				dictInfoEntity.setId(0);
 				dictInfoEntity.setDictCode(QUANGUOLIANYUN);
 				citySelect.add(0, dictInfoEntity);
 			}
