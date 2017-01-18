@@ -203,7 +203,7 @@
                             </div>
                             <label class="col-sm-1 text-right padding">时间：</label>
                             <div class="col-sm-1 padding">
-                              <input id="setofftime" name="setofftime" type="text" class="form-control input-sm" placeholder=""/>
+                              <input id="setofftime" name="setofftime" type="text" class="form-control input-sm inputtime" placeholder=""/>
                             </div>
                             <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addNeeds"></a><!--添加div按钮-->
                           </div><!--end 起飞城市/降落城市/联运城市 text-->

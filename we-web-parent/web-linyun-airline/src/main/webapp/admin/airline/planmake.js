@@ -28,10 +28,15 @@ function initDatatable1() {
                     {"data": "xuhao", "bSortable": false},
                     {"data": "leavesdate", "bSortable": false,
                     	render: function(data, type, row, meta) {
+                    		var result = '<ul>';
+                    		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
+                    		var week = ['MO','TU','WE','TH','FR','SA','SU'];
                     		$.each(row.airinfo, function(name, value) {
-                    		    alert(name+":"+value);
+                    			var leavedate = new Date(value.leavedate);
+                    			result += '<li style="list-style:none;">'+(week[leavedate.getUTCDay()]+leavedate.getDate() + MM[leavedate.getMonth()])+'</li>';
                     		});
-                    		var leavesdate = new Date(row.leavesdate);
+                    		result += '</ul>';
+                    		/*var leavesdate = new Date(row.leavesdate);
                     		var backsdate = new Date(row.backsdate);
                     		var MM = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'][leavesdate.getMonth()];
                     		var week = ['MO','TU','WE','TH','FR','SA','SU'][leavesdate.getUTCDay()]
@@ -39,42 +44,49 @@ function initDatatable1() {
                     		var week2 = ['MO','TU','WE','TH','FR','SA','SU'][backsdate.getUTCDay()]
                     		var result = '<ul><li style="list-style:none;">'+(week+leavesdate.getDate() + MM)+'</li>'
                     		+'<li style="list-style:none;">'+(week2+backsdate.getDate() + MM2)+'</li>'
-                    		+'</ul>';
+                    		+'</ul>';*/
                     		return result;
                     	}
                     },
                     {"data": "leavescity", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		var result = '<ul>'
+                    		var result = '<ul>';
+                    		$.each(row.airinfo, function(name, value) {
+                    			result += '<li style="list-style:none;">'+value.ailinenum+'</li>';
+                    		});
+                    		result += '</ul>';
+                    		/*var result = '<ul>'
                         		+'<li style="list-style:none;">'+row.leaveairline+'</li>'
                         		+'<li style="list-style:none;">'+row.backairline+'</li>'
-                        		+'</ul>';
+                        		+'</ul>';*/
                     		return result;
                     	}
                     },
                     {"data": "backsdate", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		var backleavecity = row.backleavecity;
-                    		var backbackcity = row.backbackcity;
-                    		if(!row.backleavecity){
-                    			backleavecity = row.backscity;
-                    		}
-                    		if(!row.backbackcity){
-                    			backbackcity = row.leavescity;
-                    		}
-                    		var result = '<ul>' 
+                    		var result = '<ul>';
+                    		$.each(row.airinfo, function(name, value) {
+                    			result += '<li style="list-style:none;">'+(value.leavecity+'/'+value.arrvicity)+'</li>';
+                    		});
+                    		result += '</ul>';
+                    		/*var result = '<ul>' 
                         		+'<li style="list-style:none;">'+(row.leavescity +'/'+ row.backscity)+'</li>'
                         		+'<li style="list-style:none;">'+(backleavecity +'/'+ backbackcity)+'</li>'
-                        		+'</ul>';
+                        		+'</ul>';*/
                     		return result;
                     	}
                     },
                     {"data": "backscity", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		var result = '<ul>' 
+                    		var result = '<ul>';
+                    		$.each(row.airinfo, function(name, value) {
+                    			result += '<li style="list-style:none;">'+(value.leavetime+'/'+value.arrivetime)+'</li>';
+                    		});
+                    		result += '</ul>';
+                    		/*var result = '<ul>' 
                         		+'<li style="list-style:none;">'+(row.lleavetime +'/'+ row.lbacktime)+'</li>'
                         		+'<li style="list-style:none;">'+(row.bleavetime +'/'+ row.bbacktime)+'</li>'
-                        		+'</ul>';
+                        		+'</ul>';*/
                     		return result;
                     	}	
                     },
@@ -246,7 +258,7 @@ function initSelect2(){
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
 							  obj.id = obj.dictCode; // replace pk with your identifier
-							  obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
+							  obj.text = obj.dictCode+'-'+obj.englishName+'-'+obj.countryName; // replace pk with your identifier
 							  return obj;
 						});
 						return {
@@ -287,7 +299,7 @@ function initSelect2(){
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
 							  obj.id = obj.dictCode; // replace pk with your identifier
-							  obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
+							  obj.text = obj.dictCode+'-'+obj.englishName+'-'+obj.countryName; // replace pk with your identifier
 							  return obj;
 						});
 						return {
@@ -328,7 +340,7 @@ function initSelect2(){
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
 							obj.id = obj.dictCode; // replace pk with your identifier
-							obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
+							obj.text = obj.dictCode+'-'+obj.englishName+'-'+obj.countryName; // replace pk with your identifier
 							return obj;
 						});
 						return {
@@ -369,7 +381,7 @@ function initSelect2(){
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
 							obj.id = obj.dictCode; // replace pk with your identifier
-							obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
+							obj.text = obj.dictCode+'-'+obj.englishName+'-'+obj.countryName; // replace pk with your identifier
 							return obj;
 						});
 						return {
@@ -406,8 +418,8 @@ function initSelect2(){
 						var selectdata = $.map(data, function (obj) {
 							  obj.id = obj.dictCode; // replace pk with your identifier
 							  var text = obj.dictCode;
-							  if(obj.dictName){
-								  text = obj.dictCode+'('+obj.dictName+')'
+							  if(obj.englishName){
+								  text = obj.dictCode+'-'+obj.englishName+'-'+obj.countryName;
 							  }
 							  obj.text = text; // replace pk with your identifier
 							  return obj;
@@ -642,11 +654,34 @@ $(document).on('click', '.removeBtn', function(e) {
 $(document).on('click', '.removeNeeds', function(e) {
 	$(this).parent().remove();
 });
-
+//航班时间输入框绑定事件
+$(document).on('keyup','.inputtime',function(e) {
+	  var values = $(this).val();
+	  if(values.length <= 4){
+		  values = values.replace(/\D/g,'');
+		  if(values.length == 4){
+			  values += '/';
+		  }
+	  }else if(values.length <= 9){
+		  var temp1 = values.substr(0,5);
+		  var temp2 = values.substr(5,values.length);
+		  temp2 = temp2.replace(/\D/g,'');
+		  values = temp1 + temp2;
+	  }else{
+		  values = values.substr(0,9);
+	  }
+	  $(this).val(values);
+});
 $(document).on('click', '.addNeeds', function(e) {
 	var addNeedDiv = $(this).parent();
 	var plandiv = addNeedDiv.parent();
+	//获取最后一个div 将新克隆的放在其后
 	var lastNeedDiv = plandiv.find('.addCityAirline').last();
+	//获取首个div  将获取其ID
+	var firstNeedDiv = plandiv.find('.addCityAirline').first();
+	var setoffdate = firstNeedDiv.find('[name=setoffdate]').first();
+	var setoffid = setoffdate.attr('id');
+	setoffid = setoffid.charAt(setoffid.length-1);
 	var newDiv = addNeedDiv.clone(false,true);
 	lastNeedDiv.after(newDiv);
 	//设置新的出发航班Id
@@ -659,7 +694,7 @@ $(document).on('click', '.addNeeds', function(e) {
     var backscity = newDiv.find('[name=backscity]');
     backscity.next().remove();
     //出发日期置空
-    newDiv.find('[name=setoffdate]').attr("onFocus","WdatePicker({minDate:'#F{$dp.$D(\\'setoffdate"+i+"\\')}'})");
+    newDiv.find('[name=setoffdate]').attr("onFocus","WdatePicker({minDate:'#F{$dp.$D(\\'setoffdate"+setoffid+"\\')}'})");
     newDiv.find('[name=setoffdate]').val('');
     //出发时间置空
     newDiv.find('[name=setofftime]').val('');
@@ -684,7 +719,7 @@ $(document).on('click', '.addNeeds', function(e) {
 				params.page = params.page || 1;
 				var selectdata = $.map(data, function (obj) {
 					  obj.id = obj.dictCode; // replace pk with your identifier
-					  obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
+					  obj.text = obj.dictCode+'-'+obj.englishName+'-'+obj.countryName; // replace pk with your identifier
 					  return obj;
 				});
 				return {
@@ -725,7 +760,7 @@ $(document).on('click', '.addNeeds', function(e) {
 				params.page = params.page || 1;
 				var selectdata = $.map(data, function (obj) {
 					  obj.id = obj.dictCode; // replace pk with your identifier
-					  obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
+					  obj.text = obj.dictCode+'-'+obj.englishName+'-'+obj.countryName; // replace pk with your identifier
 					  return obj;
 				});
 				return {
@@ -949,17 +984,13 @@ function checkIsNull(){
 			return false;
 		}
 		var setoffdate = $(this).find('[name=setoffdate]').first().val();
-		if (setoffdate) {
-			setoffdate = setoffdate.join(',');
-		}else{
+		if (!setoffdate) {
 			layer.alert("请填写第"+(i+1)+"个出发日期",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}
 		var setofftime = $(this).find('[name=setofftime]').first().val();
-		if (setofftime) {
-			setofftime = setofftime.join(',');
-		}else{
+		if (!setofftime) {
 			layer.alert("请填写第"+(i+1)+"个时间",{time: 2000, icon:1});
 			result = false;
 			return false;

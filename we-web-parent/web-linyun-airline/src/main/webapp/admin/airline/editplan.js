@@ -46,50 +46,44 @@ function initDatatable2() {
                     {"data": "xuhao", "bSortable": false},
                     {"data": "leavesdate", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		var leavesdate = new Date(row.leavesdate);
-                    		var backsdate = new Date(row.backsdate);
-                    		var MM = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'][leavesdate.getMonth()];
-                    		var week = ['MO','TU','WE','TH','FR','SA','SU'][leavesdate.getUTCDay()]
-                    		var MM2 = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'][backsdate.getMonth()];
-                    		var week2 = ['MO','TU','WE','TH','FR','SA','SU'][backsdate.getUTCDay()]
-                    		var result = '<ul><li style="list-style:none;">'+(week+leavesdate.getDate() + MM)+'</li>'
-                    		+'<li style="list-style:none;">'+(week2+backsdate.getDate() + MM2)+'</li>'
-                    		+'</ul>';
+                    		var result = '<ul>';
+                    		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
+                    		var week = ['MO','TU','WE','TH','FR','SA','SU'];
+                    		$.each(row.airinfo, function(name, value) {
+                    			var leavedate = new Date(value.leavedate);
+                    			result += '<li style="list-style:none;">'+(week[leavedate.getUTCDay()]+leavedate.getDate() + MM[leavedate.getMonth()])+'</li>';
+                    		});
+                    		result += '</ul>';
                     		return result;
                     	}
                     },
                     {"data": "leavescity", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		var result = '<ul>'
-                        		+'<li style="list-style:none;">'+row.leaveairline+'</li>'
-                        		+'<li style="list-style:none;">'+row.backairline+'</li>'
-                        		+'</ul>';
+                    		var result = '<ul>';
+                    		$.each(row.airinfo, function(name, value) {
+                    			result += '<li style="list-style:none;">'+value.ailinenum+'</li>';
+                    		});
+                    		result += '</ul>';
                     		return result;
                     	}
                     },
                     {"data": "backsdate", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		var backleavecity = row.backleavecity;
-                    		var backbackcity = row.backbackcity;
-                    		if(!row.backleavecity){
-                    			backleavecity = row.backscity;
-                    		}
-                    		if(!row.backbackcity){
-                    			backbackcity = row.leavescity;
-                    		}
-                    		var result = '<ul>' 
-                        		+'<li style="list-style:none;">'+(row.leavescity +'/'+ row.backscity)+'</li>'
-                        		+'<li style="list-style:none;">'+(backleavecity +'/'+ backbackcity)+'</li>'
-                        		+'</ul>';
+                    		var result = '<ul>';
+                    		$.each(row.airinfo, function(name, value) {
+                    			result += '<li style="list-style:none;">'+(value.leavecity+'/'+value.arrvicity)+'</li>';
+                    		});
+                    		result += '</ul>';
                     		return result;
                     	}
                     },
                     {"data": "backscity", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		var result = '<ul>' 
-                        		+'<li style="list-style:none;">'+(row.lleavetime +'/'+ row.lbacktime)+'</li>'
-                        		+'<li style="list-style:none;">'+(row.bleavetime +'/'+ row.bbacktime)+'</li>'
-                        		+'</ul>';
+                    		var result = '<ul>';
+                    		$.each(row.airinfo, function(name, value) {
+                    			result += '<li style="list-style:none;">'+(value.leavetime+'/'+value.arrivetime)+'</li>';
+                    		});
+                    		result += '</ul>';
                     		return result;
                     	}	
                     },
@@ -104,7 +98,7 @@ function initDatatable2() {
                     	}
                     },
                     {"data": "dayscount", "bSortable": false},
-                    {"data": "travelnames", "bSortable": false},
+                    {"data": "travelname", "bSortable": false},
                     {"data": "unioncity", "bSortable": false}
             ],
         columnDefs: [{

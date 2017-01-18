@@ -158,8 +158,8 @@ function initAddSelect2(){
 			processResults : function(data, params) {
 				params.page = params.page || 1;
 				var selectdata = $.map(data, function (obj) {
-					obj.id = obj.dictName; // replace pk with your identifier
-					obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
+					obj.id = obj.dictCode; // replace pk with your identifier
+					obj.text = obj.dictCode+'-'+obj.englishName+'-'+obj.countryName; // replace pk with your identifier
 					return obj;
 				});
 				return {
@@ -194,8 +194,8 @@ function initAddSelect2(){
 			processResults : function(data, params) {
 				params.page = params.page || 1;
 				var selectdata = $.map(data, function (obj) {
-					obj.id = obj.dictName; // replace pk with your identifier
-					obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
+					obj.id = obj.dictCode; // replace pk with your identifier
+					obj.text = obj.dictCode+'-'+obj.englishName+'-'+obj.countryName; // replace pk with your identifier
 					return obj;
 				});
 				return {
@@ -232,8 +232,8 @@ function initAddSelect2(){
 				var selectdata = $.map(data, function (obj) {
 					obj.id = obj.dictCode; // replace pk with your identifier
 				    var text = obj.dictCode;
-				    if(obj.dictName){
-					  text = obj.dictCode+'('+obj.dictName+')'
+				    if(obj.englishName){
+					    text = obj.dictCode+'-'+obj.englishName+'-'+obj.countryName;
 				    }
 				    obj.text = text; // replace pk with your identifier
 				    return obj;

@@ -23,6 +23,7 @@ import org.nutz.lang.Strings;
 import com.linyun.airline.admin.Company.service.CompanyViewService;
 import com.linyun.airline.admin.customneeds.form.CityAirlineJson;
 import com.linyun.airline.admin.customneeds.form.PlanMakeSqlForm;
+import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.util.ExportExcel;
@@ -159,12 +160,12 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 * @return 返回城市下拉列表
 	 */
 	public Object getCitySelect(String cityname, String exname) {
-		List<DictInfoEntity> citySelect = new ArrayList<DictInfoEntity>();
+		List<TDepartureCityEntity> citySelect = new ArrayList<TDepartureCityEntity>();
 		try {
-			citySelect = externalInfoService.findDictInfoByText(cityname, this.CITYCODE);
+			citySelect = externalInfoService.findCityByCode(cityname, CITYCODE);
 			//移除的城市
-			DictInfoEntity removeinfo = new DictInfoEntity();
-			for (DictInfoEntity dictInfoEntity : citySelect) {
+			TDepartureCityEntity removeinfo = new TDepartureCityEntity();
+			for (TDepartureCityEntity dictInfoEntity : citySelect) {
 				if (!Util.isEmpty(exname) && dictInfoEntity.getDictCode().equals(exname)) {
 					removeinfo = dictInfoEntity;
 				}
@@ -188,11 +189,11 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 * @return 返回联运城市下拉列表
 	 */
 	public Object getUnionCitySelect(String cityname) {
-		List<DictInfoEntity> citySelect = new ArrayList<DictInfoEntity>();
+		List<TDepartureCityEntity> citySelect = new ArrayList<TDepartureCityEntity>();
 		try {
-			citySelect = externalInfoService.findDictInfoByText(cityname, CITYCODE);
+			citySelect = externalInfoService.findCityByCode(cityname, CITYCODE);
 			if (QUANGUOLIANYUN.indexOf(Strings.trim(cityname)) != -1) {
-				DictInfoEntity dictInfoEntity = new DictInfoEntity();
+				TDepartureCityEntity dictInfoEntity = new TDepartureCityEntity();
 				//dictInfoEntity.setDictName(this.QUANGUOLIANYUN);
 				dictInfoEntity.setDictCode(QUANGUOLIANYUN);
 				citySelect.add(0, dictInfoEntity);
@@ -216,7 +217,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 */
 	@SuppressWarnings({ "deprecation", "static-access" })
 	public Object airlineMakePlan(TPlanInfoAddForm addForm, HttpSession session) {
-		List<TPlanInfoEntity> planInfos = new ArrayList<TPlanInfoEntity>();
+		//List<TPlanInfoEntity> planInfos = new ArrayList<TPlanInfoEntity>();
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		//获取当前登录用户
@@ -273,7 +274,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 		}*/
 		//根据每周制作计划
 		try {
-			if ("1".equals(addForm.getTimetype())) {
+			if (addForm.getTimetype() == 1) {
 				Date setoffdate = DateUtil.string2Date(airlineJson.get(0).getSetoffdate(), DateUtil.FORMAT_YYYY_MM_DD);
 				for (Date date = setoffdate; DateUtil.dateBetween(date, DateUtil.addDay(startdate, -1),
 						DateUtil.addDay(enddate, 1)); date = DateUtil.addDay(date, 7)) {
