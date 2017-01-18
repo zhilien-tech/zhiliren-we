@@ -117,13 +117,11 @@
           </li>
           <!-- User Account Menu -->
           <li class="dropdown user user-menu">
-            <!-- Menu Toggle Button -->
-             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+             <a href="#" class="dropdown-toggle" style= "cursor:default">
               <!-- 登录的当前用户-->
                <span class="hidden-xs">${loginuser.userName}</span>
             </a>
           </li>
-          <!-- Control Sidebar Toggle Button -->
           <li>
              <a href="${base}/admin/logout.html">退出</a>
           </li>

@@ -45,7 +45,8 @@ public class InfoServiceImpl extends BaseService<DictInfoEntity> implements IInf
 	@Override
 	public Map<String, Object> findDirinfo(long id) {
 		Map<String, Object> obj = new HashMap<String, Object>();
-		obj.put("dirtype", dbDao.query(DictTypeEntity.class, null, null));
+		obj.put("dirtype",
+				dbDao.query(DictTypeEntity.class, Cnd.where("status", "=", DataStatusEnum.ENABLE.intKey()), null));
 		obj.put("dirinfo", dbDao.fetch(DictInfoEntity.class, id));
 		return obj;
 	}

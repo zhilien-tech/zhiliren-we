@@ -1,6 +1,6 @@
 function fileupload() {
 	if ($("#fileID").val() == "") {
-		alert("上传文件不能为空!");
+		layer.msg("上传文件不能为空", "", 2000);
 		return false;
 	}
 	var actionUrl = BASE_PATH + "/admin/customer/upload.html";
@@ -21,7 +21,7 @@ function fileupload() {
         success: function (obj) {//请求成功后的函数  
         	alert(obj);
         	layer.close(loadLayer) ;
-        	layer.msg("设置成功");
+        	layer.msg("设置成功", "", 2000);
             layer.close(index) ;//关闭层
         },  
         error: function (obj) {

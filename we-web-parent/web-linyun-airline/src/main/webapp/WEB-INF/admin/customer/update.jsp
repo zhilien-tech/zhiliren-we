@@ -915,7 +915,7 @@
 							window.parent.successCallback('2');
 							parent.layer.close(index);
 						} else {
-							layer.msg("编辑失败！","", 3000);
+							layer.msg("编辑失败","", 3000);
 						}
 	
 					},

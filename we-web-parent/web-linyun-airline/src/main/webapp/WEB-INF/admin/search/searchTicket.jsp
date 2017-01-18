@@ -10,14 +10,7 @@
 <title>查询</title>
 <!-- Bootstrap 3.3.6 -->
 <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
-<link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
-<!-- 图标 -->
-<link rel="stylesheet" href="${base}/public/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href="${base}/public/ionicons/css/ionicons.min.css">
-<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
-<link rel="stylesheet" href="${base}/public/dist/css/skins/_all-skins.min.css">
 <link rel="stylesheet" href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
-<link rel="stylesheet" href="${base}/public/dist/css/bootstrapValidator.css" />
 <link rel="stylesheet" href="${base}/public/dist/css/query.css"><!--本页面styleFlie-->
 
 </head>
@@ -123,7 +116,7 @@
 				<!--购票查询列表 start-->
 				<div class="listInfo">
                   <div class="nav-tabs-custom">
-                    <ul class="nav nav-tabs">
+                    <ul class="nav nav-tabs query-style">
                       <li class="active">
                       	<a id="tab_1Id" href="#tab_1" data-toggle="tab">内陆跨海</a>
                       </li>
@@ -155,6 +148,8 @@
 						   <input id="departuredate" name="departuredate" type="hidden"/>
                            <input id="returndate" name="returndate" type="hidden"/>
                            <input id="addbtnStyle" type="hidden"/><!-- 目的：设置日期卡片的颜色 -->
+                           <input id="departureCardDate" type="hidden"/><!-- 目的：设置日期卡片 -->
+                           <input id="returnCardDate" type="hidden"/><!-- 目的：设置日期卡片 -->
                            <!-- 多程查询 start -->
                            <tr class="setMore">
                               <td><label>出发城市：</label></td>
@@ -339,14 +334,8 @@
 		<script type="text/javascript">
 			var BASE_PATH = '${base}';
 		</script>
-		<!-- jQuery 2.2.3 -->
-		<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
-		<!-- Bootstrap 3.3.6 -->
-		<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
-		<!-- Slimscroll -->
-		<script src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-		<!-- FastClick -->
-		<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
+		
+		
 		<!-- select2 -->
 		<script src="${base}/public/plugins/select2/select2.full.min.js"></script>
 		<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
@@ -367,9 +356,6 @@
 		<script src="${base}/admin/searchTicket/searchTeamMoreLine.js"></script>
 		<!-- 多条件查询 -->
 		<script src="${base}/admin/searchTicket/searchMoreOrderLines.js"></script>
-		<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
-		<!-- layer -->
-		<script src="${base}/common/js/layer/layer.js"></script>
 		<script type="text/javascript">
 	      $(function(){
 	        //校验
@@ -402,14 +388,24 @@
 			if(moreNum==0){
 				document.getElementById('paragraphListInfo').innerHTML="";
 				var index = num_id.substring(7,num_id.length)-1;
+				var outCityI = $("#outCity"+index).select2("val");
+				var ArriveCityI = $("#singleArriveCity"+index).select2("val");
+				var outDateI = $("#outDatepicker"+index).val();
+				var returnDateI = $("#returnDatepicker"+index).val();
 				$("#duanshuId").val(index);
-				$("#origin").val($("#outCity"+index).select2("val"));
-				$("#destination").val($("#singleArriveCity"+index).select2("val"));
-				$("#departuredate").val($("#outDatepicker"+index).val());
-				$("#returndate").val($("#returnDatepicker"+index).val());
+				$("#origin").val(outCityI);
+				$("#destination").val(ArriveCityI);
+				$("#departuredate").val(outDateI);
+				$("#returndate").val(returnDateI);
+				$("#departureCardDate").val(outDateI);
+				$("#returnCardDate").val(returnDateI);
 				//获取去程数据 
 				$("#airInfoList").val(1);
 				searchInlandOrder();
+				/* 点击不同段落 切换按钮样式 */
+				var styleIndex = index+1;
+				$("#travelTypeNum li").attr("class", "");
+				$("#moreNum"+styleIndex).attr("class", "btnStyle");
 				/* var i = num_id.substring(3,num_id.length);
 				var index = "";
 				if(i%2){
@@ -441,11 +437,19 @@
 				if(teamNumMore == 0){
 					/* 去程数据 */
 					var index = num_id.substring(11,num_id.length)-1;
-					$("#teamorigin").val($("#teamOutCity"+index).select2("val"));
-					$("#teamdestination").val($("#teamArriveCity"+index).select2("val"));
-					$("#teamdeparturedate").val($("#teamOutDatepicker"+index).val());
-					$("#teamreturndate").val($("#teamReturnDatepicker"+index).val());
+					var teamOutCityI = $("#teamOutCity"+index).select2("val");
+					var teamArriveCityI = $("#teamArriveCity"+index).select2("val");
+					var teamOutDateI = $("#teamOutDatepicker"+index).val();
+					var teamReturnDateI = $("#teamReturnDatepicker"+index).val();
+					$("#teamorigin").val(teamOutCityI);
+					$("#teamdestination").val(teamArriveCityI);
+					$("#teamdeparturedate").val(teamOutDateI);
+					$("#teamreturndate").val(teamReturnDateI);
 					searchInternetOrders();
+					/* 点击不同段落 切换按钮样式 */
+					var styleIndex = index+1;
+					$("#travelTeamTypeNum li").attr("class", "");
+					$("#teamNumMore"+styleIndex).attr("class", "btnStyle");
 					/* var index = "";
 					if(i%2){
 						//去程数据 
