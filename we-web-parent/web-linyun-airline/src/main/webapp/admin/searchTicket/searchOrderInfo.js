@@ -97,6 +97,17 @@ $(document).on('click','#num2',function(){
 });
 /*-----------------------往返段数查询  end--------------------------------*/
 
+//清空跨海内陆和国际的任一项
+function clearTicketHtml(){
+	clearSearchHtml();
+	$("#outCity0").val(null).trigger("change");
+	$("#singleArriveCity0").val(null).trigger("change");
+	document.getElementsByName("voyageType")[1].checked="checked";//radio 默认 选中往返
+	document.getElementsByName("nonstopType").checked=true;
+	$("#outDatepicker0").val("");
+	$("#returnDatepicker0").val("");
+}
+
 //清除跨海内陆 列表项
 function clearSearchHtml(){
 	document.getElementById('travelArea').innerHTML="";
@@ -109,13 +120,14 @@ function clearSearchHtml(){
 	$("#babySelect").val("0");
 	$("#airLevel").val("1");
 }
-//清除国际 列表项
+//清除机票库 列表项
 function clearSearchTeamHtml(){
 	$("#teamAirline").val(null).trigger("change");
 	document.getElementById('travelTeamTypeNum').innerHTML="";
 	document.getElementById('datatable2_info').innerHTML="";
 	document.getElementById('datatable2_paginate').innerHTML="";
 	document.getElementById('datatable2').innerHTML="";
+	document.getElementsByName("voyageType1")[1].checked="checked";//radio 默认 选中往返
 	$("#teamAirLevel").val("1");
 }
 
@@ -154,7 +166,7 @@ getDateCard =function(){
 		for(var i=days; i>=1; i--){
 			var beforeDate= outDate.getTime()- 1000*60*60*24*i;
 			var changeDate=new Date(beforeDate);
-			var formatDate = getNowFormatDate(changeDate);
+			var formatDate = getNowFormatDate(changeDate).substring(0, 5);
 			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="'+formatDate+'">'+formatDate+'</li>';
 		}
 	}else{
@@ -162,11 +174,13 @@ getDateCard =function(){
 		for(var i=3; i>=1; i--){
 			var beforeDate= outDate.getTime()- 1000*60*60*24*i;
 			var changeDate=new Date(beforeDate);
-			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="'+getNowFormatDate(changeDate)+'">'+getNowFormatDate(changeDate)+'</li>';
+			var formatDate = getNowFormatDate(changeDate).substring(0, 5);
+			
+			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="'+formatDate+'">'+getNowFormatDate(changeDate)+'</li>';
 		}
 	}
 	/* 出发日期 */
-	dataCardHtml += '<li onclick="cardDate(this);" value="'+outDate+'" id="'+getNowFormatDate(outDate)+'" class="btnStyle">'+getNowFormatDate(outDate)+'</li>';
+	dataCardHtml += '<li onclick="cardDate(this);" value="'+outDate+'" id="'+getNowFormatDate(outDate).substring(0, 5)+'" class="btnStyle">'+getNowFormatDate(outDate)+'</li>';
 	/* 出发后的日期 */
 	var travelTime = returnDate.getTime() - outDate.getTime();
 	var travelDays = Math.floor(travelTime/(24*60*60*1000))+1;
@@ -175,14 +189,16 @@ getDateCard =function(){
 		for(var i=1; i<=3; i++){
 			afterDate+=1000*60*60*24;
 			var changeDate=new Date(afterDate);
-			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="'+getNowFormatDate(changeDate)+'">'+getNowFormatDate(changeDate)+'</li>';
+			var formatDate = getNowFormatDate(changeDate).substring(0, 5);
+			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="'+formatDate+'">'+getNowFormatDate(changeDate)+'</li>';
 		}
 	}else{
 		var afterDate = outDate.getTime();
 		for(var i=1; i<travelDays; i++){
 			afterDate+=1000*60*60*24;
 			var changeDate=new Date(afterDate);
-			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="'+getNowFormatDate(changeDate)+'">'+getNowFormatDate(changeDate)+'</li>';
+			var formatDate = getNowFormatDate(changeDate).substring(0, 5);
+			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="'+formatDate+'">'+getNowFormatDate(changeDate)+'</li>';
 		}
 	}
 	document.getElementById('travelDateNum').innerHTML=dataCardHtml;
@@ -290,3 +306,22 @@ function clearBtnClass(){
 		btn.setAttribute("class", "btnStyle");
 	}
 }
+
+
+/*直飞勾选*/
+$('#nonstopType').click(function(){                
+	if($(this).prop('checked')){
+		$("#nonstopType").prop('value',"true");
+	}else{
+		$("#nonstopType").prop('value',"false");
+	}
+});
+
+/*点击跨海内陆tab*/
+$("#tab_1Id").click(function(){
+	clearTicketHtml();
+});
+/*点击国际tab*/
+$("#tab_3Id").click(function(){
+	clearTicketHtml();
+});

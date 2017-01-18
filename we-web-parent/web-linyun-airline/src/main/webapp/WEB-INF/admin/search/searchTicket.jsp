@@ -142,7 +142,7 @@
                                 	<input id="moreType" type="radio" name="voyageType" value="3" onclick="radioFunct()"><span>多程</span>
                                 </td>
                                 <td>
-                                	<input id="nonstopType" type="checkbox" class="checkClass" checked="checked"><span class="checkSpan">直飞</span>
+                                	<input id="nonstopType" name="nonstopType" value="true" type="checkbox" class="checkClass" checked="checked"><span class="checkSpan">直飞</span>
                                 </td>
                               </tr>
                           </table>
@@ -412,35 +412,17 @@
 				searchInlandOrder();
 				/* 点击不同段落 切换按钮样式 */
 				var styleIndex = index+1;
-				$("#travelTypeNum li").attr("class", "");
 				$("#moreNum"+styleIndex).attr("class", "btnStyle");
-				/* var i = num_id.substring(3,num_id.length);
-				var index = "";
-				if(i%2){
-					//去程
-					index = (i-1)/2;
-					$("#origin").val($("#outCity"+index).select2("val"));
-					$("#destination").val($("#singleArriveCity"+index).select2("val"));
-					$("#departuredate").val($("#outDatepicker"+index).val());
-					$("#returndate").val($("#returnDatepicker"+index).val());
-					//获取去程数据 
-					$("#airInfoList").val("1");
-					$("#searchSingleTicketsBtn").click();
-				}else{
-					index = (i-2)/2;
-					$("#origin").val($("#singleArriveCity"+index).select2("val"));
-					$("#destination").val($("#outCity"+index).select2("val"));
-					$("#departuredate").val($("#returnDatepicker"+index).val());
-					$("#returndate").val($("#outDatepicker"+index).val());
-					//获取返程数据
-					$("#airInfoList").val("2");
-					$("#searchSingleTicketsBtn").click();	  					
-				} */
+				
+				/*当前出发日期 卡片变色*/
+				var cardIndex = outDateI.substring(5,outDateI.length);
+				alert(cardIndex);
+				$("#"+cardIndex).attr("class", "btnStyle");
+				
 			}
-			/* 点击 团客每段提醒事件 */
+			/* 点击 机票库 每段提醒事件 */
 			if(num_id != null){
 				var num_id = $(e.target).attr('id'); 
-				/* 点击 散客每段提醒事件 */
 				var teamNumMore = num_id.indexOf("teamNumMore");
 				if(teamNumMore == 0){
 					/* 去程数据 */
@@ -458,29 +440,11 @@
 					var styleIndex = index+1;
 					$("#travelTeamTypeNum li").attr("class", "");
 					$("#teamNumMore"+styleIndex).attr("class", "btnStyle");
-					/* var index = "";
-					if(i%2){
-						//去程数据 
-						index = (i-1)/2;
-						$("#teamorigin").val($("#teamOutCity"+index).select2("val"));
-						$("#teamdestination").val($("#teamArriveCity"+index).select2("val"));
-						$("#teamdeparturedate").val($("#teamOutDatepicker"+index).val());
-						$("#teamreturndate").val($("#teamReturnDatepicker"+index).val());
-						$("#searchTeamTicketsBtn").click();
-					}else{
-						//返程数据
-						index = (i-2)/2;
-						$("#teamorigin").val($("#teamArriveCity"+index).select2("val"));
-						$("#teamdestination").val($("#teamOutCity"+index).select2("val"));
-						$("#teamdeparturedate").val($("#teamReturnDatepicker"+index).val());
-						$("#teamreturndate").val($("#teamOutDatepicker"+index).val());
-						$("#searchTeamTicketsBtn").click(); 
-					} */
 				}
 			}
 		});
   		
-		/* ------------------------散客 航程类型 点击事件-------------------------*/
+		/* ------------------------内陆跨海 航程类型 点击事件-------------------------*/
 		function radioFunct(){
 			var radio = document.getElementsByName("voyageType");  
 			for (i=0; i<radio.length; i++) {  
@@ -511,7 +475,7 @@
 				}  
 			}
 		}
-		/* ------------------------团队 航程类型 点击事件-------------------------*/
+		/* ------------------------机票库 航程类型 点击事件-------------------------*/
 		function radioFunct1(){
 			var radio1 = document.getElementsByName("voyageType1");  
 			for (i=0; i<radio1.length; i++) {  
