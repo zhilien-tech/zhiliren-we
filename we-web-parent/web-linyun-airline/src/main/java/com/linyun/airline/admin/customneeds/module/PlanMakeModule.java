@@ -14,8 +14,6 @@ import org.nutz.mvc.annotation.Param;
 import com.linyun.airline.admin.customneeds.form.PlanMakeSqlForm;
 import com.linyun.airline.admin.customneeds.service.ExportXinHangService;
 import com.linyun.airline.admin.customneeds.service.PlanMakeService;
-import com.linyun.airline.admin.login.service.LoginService;
-import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.forms.TPlanInfoAddForm;
 
 @IocBean
@@ -88,10 +86,7 @@ public class PlanMakeModule {
 	 */
 	@At
 	public Object listPlanMakeData(@Param("..") PlanMakeSqlForm sqlForm, HttpSession session) {
-		//获取当前公司
-		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		sqlForm.setCompanyid(company.getId());
-		return planMakeService.listPage4Datatables(sqlForm);
+		return planMakeService.listPlanMakeData(sqlForm, session);
 	}
 
 	/**

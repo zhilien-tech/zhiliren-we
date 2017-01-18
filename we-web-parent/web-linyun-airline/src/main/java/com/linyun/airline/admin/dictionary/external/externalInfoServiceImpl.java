@@ -13,6 +13,7 @@ import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
 
+import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.uxuexi.core.web.base.service.BaseService;
@@ -53,6 +54,15 @@ public class externalInfoServiceImpl extends BaseService<DictInfoEntity> impleme
 				DictInfoEntity.class,
 				Cnd.where(exp).and("status", "=", DataStatusEnum.ENABLE.intKey()).and("typeCode", "=", typeCode1)
 						.or("typeCode", "=", typeCode2), null);
+		return infoList;
+	}
+
+	@Override
+	public List<TDepartureCityEntity> findCityByCode(String name, String typeCode) {
+		List<TDepartureCityEntity> infoList = dbDao.query(
+				TDepartureCityEntity.class,
+				Cnd.where("dictCode", "like", Strings.trim(name) + "%").and("status", "=",
+						DataStatusEnum.ENABLE.intKey()), null);
 		return infoList;
 	}
 }

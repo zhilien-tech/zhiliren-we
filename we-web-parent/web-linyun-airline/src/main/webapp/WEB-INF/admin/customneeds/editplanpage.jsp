@@ -215,24 +215,24 @@
 	}
 	//保存编辑计划
 	function saveEditPlan(){
-		var generateOrder = $('#generateOrder').is(':checked');
-		//生成订单
-		if(generateOrder){
-			$.ajax({ 
-				type: 'POST', 
-				data: {planids:'${obj.planinfo.id}'}, 
-				url: '${base}/admin/customneeds/generateOrderNum.html',
-	            success: function (data) { 
-	            },
-	            error: function (xhr) {
-	            } 
-	        });
-		}
 		//校验
 		$('#editPlanForm').bootstrapValidator('validate');
 		var bootstrapValidator = $("#editPlanForm").data('bootstrapValidator');
 		//如果校验通过则提交更新数据
 		if(bootstrapValidator.isValid()){
+			var generateOrder = $('#generateOrder').is(':checked');
+			//生成订单
+			if(generateOrder){
+				$.ajax({ 
+					type: 'POST', 
+					data: {planids:'${obj.planinfo.id}'}, 
+					url: '${base}/admin/customneeds/generateOrderNum.html',
+		            success: function (data) { 
+		            },
+		            error: function (xhr) {
+		            } 
+		        });
+			}
 			$.ajax({ 
 				type: 'POST', 
 				data: $("#editPlanForm").serialize(), 

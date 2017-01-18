@@ -21,8 +21,6 @@ import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.customneeds.form.EditPlanSqlForm;
 import com.linyun.airline.admin.customneeds.service.EditPlanService;
-import com.linyun.airline.admin.login.service.LoginService;
-import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.forms.TPlanInfoUpdateForm;
 
 /**
@@ -47,10 +45,7 @@ public class EditPlanModule {
 	@At
 	@POST
 	public Object listEditPlanData(@Param("..") EditPlanSqlForm sqlForm, HttpSession session) {
-		//获取当前公司
-		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		sqlForm.setCompanyid(company.getId());
-		return editPlanService.listPage4Datatables(sqlForm);
+		return editPlanService.listEditPlanData(sqlForm, session);
 	}
 
 	/**
