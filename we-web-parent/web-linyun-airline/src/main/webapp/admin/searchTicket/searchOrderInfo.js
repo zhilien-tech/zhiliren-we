@@ -320,8 +320,15 @@ $('#nonstopType').click(function(){
 /*点击跨海内陆tab*/
 $("#tab_1Id").click(function(){
 	clearTicketHtml();
+	radioFunct();
 });
 /*点击国际tab*/
 $("#tab_3Id").click(function(){
 	clearTicketHtml();
+	radioFunct();
+});
+/*点击国际tab*/
+$("#tab_2Id").click(function(){
+	document.getElementsByName("voyageType1")[1].checked="checked";
+	radioFunct1();
 });

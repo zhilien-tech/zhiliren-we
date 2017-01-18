@@ -174,13 +174,13 @@
                               	<!-- <input id="" name="" type="text" class="form-control input-sm" placeholder="2016-12-21"> -->
                               	<input id="outDatepicker0" name="departuredate0" onkeypress="onkeyEnter();" type="text" class="form-control input-sm" onFocus="WdatePicker({startDate:'%y', dateFmt:'yyyy-MM-dd',minDate:'%y-%M-{%d}'})" placeholder="2017-01-01">
                               </td>
-                              <td class="setoutLabel">
+                              <td class="setoutLabel gj1">
                               <label>返回日期：</label></td>
-                              <td class="setoutinput">
+                              <td class="setoutinput gj1">
                               	<!-- <input type="text" class="form-control input-sm" placeholder="2016-12-25"> -->
                               	<input id="returnDatepicker0" name="returndate0" onkeypress="onkeyEnter();" type="text" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'outDatepicker0\')}',maxDate:'#F{$dp.$D(\'outDatepicker0\',{d:15})}'})" placeholder="2017-01-15">
                               </td>
-                              <td class="addIconTd addSingleIconTd none"><i class="glyphicon glyphicon-plus addMore"></i></td>
+                              <td class="addIconTd addSingleIconTd none gjAdd"><i class="glyphicon glyphicon-plus addMore"></i></td>
                            </tr>
                            <!-- 多程查询 end -->
    						 </table>
@@ -275,12 +275,12 @@
                               	<!-- <input type="text" class="form-control input-sm" placeholder="2016-12-21"> -->
                               	<input id="teamOutDatepicker0" name="departuredate1" onkeypress="onkeyTeamEnter();" type="text" class="form-control input-sm" onFocus="WdatePicker({startDate:'%y', dateFmt:'yyyy-MM-dd',minDate:'%y-%M-{%d}'})" placeholder="2017-01-01">
                               </td>
-                              <td class="setoutLabel"><label>返回日期：</label></td>
-                              <td class="setoutinput">
+                              <td class="setoutLabel fhrq1"><label>返回日期：</label></td>
+                              <td class="setoutinput fhrq1">
                               	<!-- <input type="text" class="form-control input-sm" placeholder="2016-12-25"> -->
                               	<input id="teamReturnDatepicker0" name="returndate1" type="text" onkeypress="onkeyTeamEnter();" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'teamOutDatepicker0\')}'})" placeholder="2017-01-15">
                               </td>
-                              <td class="addIconTd addTeamIconTd none"><i class="glyphicon glyphicon-plus addMore"></i></td>
+                              <td class="addIconTd addTeamIconTd none jpkAdd"><i class="glyphicon glyphicon-plus addMore"></i></td>
                             </tr>
 	 </table>
 	 <table class="scatteredTable3">
@@ -456,19 +456,16 @@
 					$("#outDatepicker0").val("");
 					$("#returnDatepicker0").val("");
 					if (radioValue==1) {
-						$('.setoutLabel').hide();
-						$('.setoutinput').hide();
-						$('.addIconTd').hide();
+						$('.gj1').hide();
+						$('.gjAdd').hide();
 						$('.removeIconTd').hide();
 					}else if(radioValue==2){
-						$('.setoutLabel').show();
-						$('.setoutinput').show();
-						$('.addIconTd').hide();
+						$('.gj1').show();
+						$('.gjAdd').hide();
 						$('.removeIconTd').hide();
 					}else if(radioValue==3){
-						$('.setoutLabel').hide();
-						$('.setoutinput').hide();
-						$('.addIconTd').show();
+						$('.gj1').hide();
+						$('.gjAdd').show();
 						$('.removeIconTd').show();
 					};
 					clearSearchHtml();
@@ -488,19 +485,16 @@
 					$("#teamReturnDatepicker0").val("");
 					$("#teamTable tr").not(":first").remove();
 					if (radioValue1==1) {
-						$('.setoutLabel').hide();
-						$('.setoutinput').hide();
-						$('.addIconTd').hide();
+						$('.fhrq1').hide();
+						$('.jpkAdd').hide();
 						$('.removeIconTd').hide();
 					}else if(radioValue1==2){
-						$('.setoutLabel').show();
-						$('.setoutinput').show();
-						$('.addIconTd').hide();
+						$('.fhrq1').show();
+						$('.jpkAdd').hide();
 						$('.removeIconTd').hide();
 					}else if(radioValue1==3){
-						$('.setoutLabel').hide();
-						$('.setoutinput').hide();
-						$('.addIconTd').show();
+						$('.fhrq1').hide();
+						$('.jpkAdd').show();
 						$('.removeIconTd').show();
 					};
 					clearSearchTeamHtml();
