@@ -158,6 +158,7 @@ function onkeyEnter(){
 /* 跨海内陆多程查询 */
 var clickfirst=1;
 $("#searchSingleTicketsBtn").click(function() {
+	clearSearchHtml();
 	var linkName = $("#linkNameId").select2("val");
 	var phoneNum = $("#phoneNumId").select2("val");
 	var outCity = $('#outCity0').find("option:selected").text();
@@ -238,10 +239,12 @@ $("#searchSingleTicketsBtn").click(function() {
 			if ("200" == resp.statusCode) {
 				/* 日期小卡片  */
 				getDateCard();
+				
 				var outCodeStr = $("#outCity0").select2("val");
 				var arriveCodeStr = $("#singleArriveCity0").select2("val");
 				var outList = new Array();
 				var returnList = new Array();
+				
 				for (var i=0; i<resp.data.length; i++){
 					var list = resp.data[i].list;
 					var returnIdx = 0 ;
@@ -255,6 +258,10 @@ $("#searchSingleTicketsBtn").click(function() {
 					}
 					for(var j=0; j<list.length; j++){
 						if(j < returnIdx){
+							/*var departureAirport = list[j].DepartureAirport;
+							var arrivalAirport = list[j].ArrivalAirport;
+							alert(departureAirport +' '+ arrivalAirport);
+							alert(arrivalAirport==arriveCodeStr && departureAirport==outCodeStr);*/
 							outList.push(list[j]);
 						}else{
 							returnList.push(list[j]);

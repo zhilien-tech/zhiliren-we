@@ -386,6 +386,7 @@ function onkeyTeamEnter(){
 /* 团客多程查询 */
 var clickone=1;
 $("#searchTeamTicketsBtn").click(function() {
+	clearSearchTeamHtml();
 	var linkName = $("#linkNameId").select2("val");
 	var phoneNum = $("#phoneNumId").select2("val");
 	if(!(linkName || phoneNum)){

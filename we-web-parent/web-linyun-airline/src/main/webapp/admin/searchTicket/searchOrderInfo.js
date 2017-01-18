@@ -119,6 +119,7 @@ function clearSearchTeamHtml(){
 	$("#teamAirLevel").val("1");
 }
 
+
 /* -------------------------日期小卡片 start------------------------------- */
 cardDate = function(obj){
 	var d = new Date(obj.getAttribute("value"));
@@ -257,8 +258,8 @@ var keydownIndex = 0;
 document.onkeydown=function(event){
 	var e = event || window.event || arguments.callee.caller.arguments[0];
 	if(keydownIndex){
-		var tab1Aira = $("#tab_1Id").attr("aria-expanded");
-		var tab2Aira = $("#tab_2Id").attr("aria-expanded");
+		var tab1Aira = $("#tab_1Id").attr("aria-expanded");//跨海内陆
+		var tab2Aira = $("#tab_2Id").attr("aria-expanded");//机票库
 		if(e && e.keyCode==13){ // enter 键
 			if(tab1Aira=="true"){
 				$("#searchSingleTicketsBtn").click();

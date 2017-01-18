@@ -25,7 +25,7 @@ function searchInlandOrder(){
 	//显示区间
 	var area = $("#origin").val()+' --- '+$("#destination").val();
 	document.getElementById('travelArea').innerHTML=area;
-	//段数
+	/*//段数
 	var airType = $("input[name='voyageType']:checked").val();
 	var html = "";
 	if(airType == 1){
@@ -36,14 +36,14 @@ function searchInlandOrder(){
 		html = '<li id="num1" class="btnStyle">第1段</li><li id="num2">第2段</li>';
 		document.getElementById('travelTypeNum').innerHTML=html;
 	}
-	/* 多程 显示多段 */
+	 多程 显示多段 
 	if(airType == 3){
 		html ='<li id="moreNum1" class="btnStyle">第1段</li>';
 		for(var i=2; i<=$('.setMore').length; i++){
 			html +='<li id="moreNum'+i+'">第'+i+'段</li>';
 		}
 		document.getElementById('travelTypeNum').innerHTML=html;
-	}
+	}*/
 	
 	$.ajax({
 		type : 'POST',

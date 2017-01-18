@@ -121,7 +121,7 @@
                       	<a id="tab_1Id" href="#tab_1" data-toggle="tab">内陆跨海</a>
                       </li>
                       <li>
-                      	<a id="tab_3Id" href="#tab_3" data-toggle="tab">国际</a>
+                      	<a id="tab_3Id" href="#tab_1" data-toggle="tab">国际</a>
                       </li>
                       <li>
                       	<a id="tab_2Id" href="#tab_2" data-toggle="tab">机票库</a>
@@ -140,6 +140,9 @@
                                	</td>
                                 <td>
                                 	<input id="moreType" type="radio" name="voyageType" value="3" onclick="radioFunct()"><span>多程</span>
+                                </td>
+                                <td>
+                                	<input id="nonstopType" type="checkbox" class="checkClass" checked="checked"><span class="checkSpan">直飞</span>
                                 </td>
                               </tr>
                           </table>
@@ -232,7 +235,9 @@
                               </div>
                           </div>
                       </div>
-                      <!-- 团队票 检索 -->
+                      
+                      
+                      <!-- 机票库 检索 -->
                       <div class="tab-pane" id="tab_2">
                           <table class="scatteredTable1">
                               <tr>
@@ -242,7 +247,7 @@
                                  <td><input type="radio" name="voyageType1" value="3" onclick="radioFunct1()"><span>多程</span></td>
                               </tr>
                           </table><!--搜索筛选/航程类型-->
-<!-- 查询团队机票 start -->                  
+<!-- 查询机票库 start -->                  
 <form id="searchTeamTicketsForm" method="post">
       <table id="teamTable" class="scatteredTable2">
                             <input id="teamorigin" name="origin" type="hidden"/>

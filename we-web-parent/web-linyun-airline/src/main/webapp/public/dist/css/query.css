@@ -91,4 +91,6 @@ td[colspan="3"] .select2 .selection .select2-selection ul .select2-search--inlin
 .content-wrapper, .right-side {min-height: 793px;}
 .p {float: left;width: 60px;text-align: center;position: relative;top: 20px;}
 .user-menu a{margin-top: 0;}
+.checkClass {height: 15px;width: 15px;}
+.checkSpan{top:-3px !important;}
 .select2-container--default .select2-selection--multiple .select2-selection__rendered li {position: relative;}
