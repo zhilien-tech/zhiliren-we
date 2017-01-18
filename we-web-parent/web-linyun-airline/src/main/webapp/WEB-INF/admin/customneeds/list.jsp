@@ -173,6 +173,10 @@
                             <div class="col-sm-1 padding">
                               <input type="text" name="dayscount" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" class="form-control input-sm" placeholder="">
                             </div>
+                            <label class="col-sm-1 text-right padding cf">联运城市：</label>
+                            <div class="col-sm-1 padding">
+                              <select id="unioncity0" name="unioncity" class="form-control input-sm js-data-example-ajax" multiple="multiple" placeholder=""></select>
+                            </div>
                             <!-- <div class="col-sm-1">
                               <a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a>
                             </div> -->
@@ -180,7 +184,7 @@
                           
 
                           <!--起飞城市/降落城市/联运城市 text-->
-                          <div class="form-group row">
+                          <div class="form-group row addCityAirline">
                             <label class="col-sm-1 text-right padding cf">出发城市：</label>
                             <div class="col-sm-1 padding">
                               <select id="leavescity0" name="leavescity" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
@@ -193,25 +197,16 @@
                             <div class="col-sm-1 padding">
                               <select id="leaveairline0" name="leaveairline" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
                             </div>
+                            <label class="col-sm-1 text-right padding">出发日期：</label>
+                            <div class="col-sm-1 padding">
+                              <input id="setoffdate0" name="setoffdate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d'})" class="form-control input-sm inputdatestr" placeholder=""/>
+                            </div>
+                            <label class="col-sm-1 text-right padding">时间：</label>
+                            <div class="col-sm-1 padding">
+                              <input id="setofftime" name="setofftime" type="text" class="form-control input-sm" placeholder=""/>
+                            </div>
+                            <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addNeeds"></a><!--添加div按钮-->
                           </div><!--end 起飞城市/降落城市/联运城市 text-->
-                          <div class="form-group row">
-                            <label class="col-sm-1 text-right padding cf">出发城市：</label>
-                            <div class="col-sm-1 padding">
-                              <select id="backleavecity0" name="backleavecity" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
-                            </div>
-                            <label class="col-sm-1 text-right padding cf">抵达城市：</label>
-                            <div class="col-sm-1 padding">
-                              <select id="backbackcity0" name="backbackcity" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
-                            </div>
-                            <label class="col-sm-1 text-right padding">回程航班：</label>
-                            <div class="col-sm-1 padding">
-                              <select id="backairline0" name="backairline" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
-                            </div>
-                            <label class="col-sm-1 text-right padding cf">联运城市：</label>
-                            <div class="col-sm-1 padding">
-                              <select id="unioncity0" name="unioncity" class="form-control input-sm js-data-example-ajax" multiple="multiple" placeholder=""></select>
-                            </div>
-                          </div>
 
                           <!--time 选择-->
                           <div class="form-group row">

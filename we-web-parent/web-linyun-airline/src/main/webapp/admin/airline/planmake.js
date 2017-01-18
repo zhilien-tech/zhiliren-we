@@ -28,6 +28,9 @@ function initDatatable1() {
                     {"data": "xuhao", "bSortable": false},
                     {"data": "leavesdate", "bSortable": false,
                     	render: function(data, type, row, meta) {
+                    		$.each(row.airinfo, function(name, value) {
+                    		    alert(name+":"+value);
+                    		});
                     		var leavesdate = new Date(row.leavesdate);
                     		var backsdate = new Date(row.backsdate);
                     		var MM = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'][leavesdate.getMonth()];
@@ -468,7 +471,7 @@ function initSelect2(){
 			     
 			    //selected:[Kalendae.moment().subtract({M:1}), Kalendae.moment().add({M:1})]
 			});
-			 $('.kalendae').append('<input type="button" class="btn btn-sm btn-primary celenderBtn" value="确定">');
+			 //$('.kalendae').append('<input type="button" class="btn btn-sm btn-primary celenderBtn" value="确定">');
 			//计划执着 隐藏日历按钮
 		    $('#hidebutton'+i).click(function(){
 		      $('#minCalender'+i).slideUp("slow");
@@ -537,22 +540,34 @@ $(function () {
 			   $(this).find('[name=peoplecount]').val('');
 			   //天数置空
 			   $(this).find('[name=dayscount]').val('');
-			   //设置新的出发航班Id
-			   var leaveairline = $(this).find('[name=leaveairline]');
-			   leaveairline.attr("id","leaveairline"+i);
-			   $('#leaveairline'+i).next().remove();
 			   //设置新的返回航班下拉框ID
 			   var backairline = $(this).find('[name=backairline]');
 			   backairline.attr("id","backairline"+i);
 			   $('#backairline'+i).next().remove();
-			   //设置新的去程出发城市下拉ID
-			   var leavescity = $(this).find('[name=leavescity]');
-			   leavescity.attr("id","leavescity"+i);
-			   $('#leavescity'+i).next().remove();
-			   //设置新的去程抵达城市下拉框ID
-			   var backscity = $(this).find('[name=backscity]');
-			   backscity.attr("id","backscity"+i);
-			   $('#backscity'+i).next().remove();
+			   //只显示一条
+			   $(this).find('.addCityAirline').each(function(j){
+				   if(j == 0){
+					   //设置新的出发航班Id
+					   var leaveairline = $(this).find('[name=leaveairline]');
+					   leaveairline.attr("id","leaveairline"+i);
+					   $('#leaveairline'+i).next().remove();
+					   //设置新的去程出发城市下拉ID
+					   var leavescity = $(this).find('[name=leavescity]');
+					   leavescity.attr("id","leavescity"+i);
+					   $('#leavescity'+i).next().remove();
+					   //设置新的去程抵达城市下拉框ID
+					   var backscity = $(this).find('[name=backscity]');
+					   backscity.attr("id","backscity"+i);
+					   $('#backscity'+i).next().remove();
+				   }else{
+					   $(this).remove();
+				   }
+			   });
+			   //出发日期置空
+			   $(this).find('[name=setoffdate]').val('');
+			   $(this).find('[name=setoffdate]').attr("id","setoffdate"+i);
+			   //出发时间置空
+			   $(this).find('[name=setofftime]').val('');
 			   //设置新的返程出发城市下拉ID
 			   var backleavecity = $(this).find('[name=backleavecity]');
 			   backleavecity.attr("id","backleavecity"+i);
@@ -623,6 +638,150 @@ $(document).on('click', '.removeBtn', function(e) {
 		$(this).parent().remove();
 	}
 });
+
+$(document).on('click', '.removeNeeds', function(e) {
+	$(this).parent().remove();
+});
+
+$(document).on('click', '.addNeeds', function(e) {
+	var addNeedDiv = $(this).parent();
+	var plandiv = addNeedDiv.parent();
+	var lastNeedDiv = plandiv.find('.addCityAirline').last();
+	var newDiv = addNeedDiv.clone(false,true);
+	lastNeedDiv.after(newDiv);
+	//设置新的出发航班Id
+    var leaveairline = newDiv.find('[name=leaveairline]');
+    leaveairline.next().remove();
+    //设置新的去程出发城市下拉ID
+    var leavescity = newDiv.find('[name=leavescity]');
+    leavescity.next().remove();
+    //设置新的去程抵达城市下拉框ID
+    var backscity = newDiv.find('[name=backscity]');
+    backscity.next().remove();
+    //出发日期置空
+    newDiv.find('[name=setoffdate]').attr("onFocus","WdatePicker({minDate:'#F{$dp.$D(\\'setoffdate"+i+"\\')}'})");
+    newDiv.find('[name=setoffdate]').val('');
+    //出发时间置空
+    newDiv.find('[name=setofftime]').val('');
+	newDiv.find('[name=leavescity]').select2({
+		ajax : {
+			url : BASE_PATH + "/admin/customneeds/getCitySelect.html",
+			dataType : 'json',
+			delay : 250,
+			type : 'post',
+			data : function(params) {
+				var backscity = newDiv.find('[name=backscity]').val();
+				if(backscity){
+					backscity = backscity.join(',');
+				}
+				return {
+					exname : backscity,
+					cityname : params.term, // search term
+					page : params.page
+				};
+			},
+			processResults : function(data, params) {
+				params.page = params.page || 1;
+				var selectdata = $.map(data, function (obj) {
+					  obj.id = obj.dictCode; // replace pk with your identifier
+					  obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
+					  return obj;
+				});
+				return {
+					results : selectdata
+				};
+			},
+			cache : false
+		},
+		
+		escapeMarkup : function(markup) {
+			return markup;
+		}, // let our custom formatter work
+		minimumInputLength : 1,
+		maximumInputLength : 20,
+		language : "zh-CN", //设置 提示语言
+		maximumSelectionLength : 1, //设置最多可以选择多少项
+		tags : false //设置必须存在的选项 才能选中
+	});
+	//加载降落城市下拉
+	newDiv.find('[name=backscity]').select2({
+		ajax : {
+			url : BASE_PATH + "/admin/customneeds/getCitySelect.html",
+			dataType : 'json',
+			delay : 250,
+			type : 'post',
+			data : function(params) {
+				var leavescity = newDiv.find('[name=leavescity]').val();
+				if(leavescity){
+					leavescity = leavescity.join(',');
+				}
+				return {
+					exname : leavescity,
+					cityname : params.term, // search term
+					page : params.page
+				};
+			},
+			processResults : function(data, params) {
+				params.page = params.page || 1;
+				var selectdata = $.map(data, function (obj) {
+					  obj.id = obj.dictCode; // replace pk with your identifier
+					  obj.text = obj.dictCode+'('+obj.dictName+')'; // replace pk with your identifier
+					  return obj;
+				});
+				return {
+					results : selectdata
+				};
+			},
+			cache : false
+		},
+		
+		escapeMarkup : function(markup) {
+			return markup;
+		}, // let our custom formatter work
+		minimumInputLength : 1,
+		maximumInputLength : 20,
+		language : "zh-CN", //设置 提示语言
+		maximumSelectionLength : 1, //设置最多可以选择多少项
+		tags : false //设置必须存在的选项 才能选中
+	});
+	//加载出发航班号下拉
+	newDiv.find('[name=leaveairline]').select2({
+		ajax : {
+			url : BASE_PATH + "/admin/customneeds/getAirLineSelect.html",
+			dataType : 'json',
+			delay : 250,
+			type : 'post',
+			data : function(params) {
+				return {
+					airlinename : params.term, // search term
+					page : params.page
+				};
+			},
+			processResults : function(data, params) {
+				params.page = params.page || 1;
+				var selectdata = $.map(data, function (obj) {
+					  obj.id = obj.airlinenum; // replace pk with your identifier
+					  obj.text = obj.airlinenum; // replace pk with your identifier
+					  return obj;
+				});
+				return {
+					results : selectdata
+				};
+			},
+			cache : false
+		},
+		escapeMarkup : function(markup) {
+			return markup;
+		}, // let our custom formatter work
+		minimumInputLength : 1,
+		maximumInputLength : 20,
+		language : "zh-CN", //设置 提示语言
+		maximumSelectionLength : 1, //设置最多可以选择多少项
+		tags : false //设置必须存在的选项 才能选中
+	});
+	newDiv.find('[name=addButton]').remove();
+	var newdivlast = newDiv.children().last().after('<a href="javascript:;" name="closeButton" class="removeBtn glyphicon glyphicon-minus removAddMake removeNeeds"></a><!--删除div按钮->');
+});
 /*$(document).on('focus', '.startdatestr', function(e) {
 	var enddateid = $(this).next(".inputdatestr").attr("id");
 	return "WdatePicker({maxDate:'#F{$dp.$D(\'"+enddateid+"\')}'})";
@@ -655,30 +814,32 @@ function makePlan(){
 			}
 			var peoplecount = $(this).find('[name=peoplecount]').val();
 			var dayscount = $(this).find('[name=dayscount]').val();
-			var leaveairline = $(this).find('[name=leaveairline]').val();
-			if (leaveairline) {
-				leaveairline = leaveairline.join(',');
-			}
-			var backairline = $(this).find('[name=backairline]').val();
-			if (backairline) {
-				backairline = backairline.join(',');
-			}
-			var leavescity = $(this).find('[name=leavescity]').val();
-			if (leavescity) {
-				leavescity = leavescity.join(',');
-			}
-			var backscity = $(this).find('[name=backscity]').val();
-			if (backscity) {
-				backscity = backscity.join(',');
-			}
-			var backleavecity = $(this).find('[name=backleavecity]').val();
-			if (backleavecity) {
-				backleavecity = backleavecity.join(',');
-			}
-			var backbackcity = $(this).find('[name=backbackcity]').val();
-			if (backbackcity) {
-				backbackcity = backbackcity.join(',');
-			}
+			//循环出发城市、抵达城市、航班号
+			var cityairlinejson = '[';
+			$(this).find('.addCityAirline').each(function(j){
+				//航班号
+				var leaveairline = $(this).find('[name=leaveairline]').val();
+				if (leaveairline) {
+					leaveairline = leaveairline.join(',');
+				}
+				//出发城市
+				var leavescity = $(this).find('[name=leavescity]').val();
+				if (leavescity) {
+					leavescity = leavescity.join(',');
+				}
+				//抵达城市
+				var backscity = $(this).find('[name=backscity]').val();
+				if (backscity) {
+					backscity = backscity.join(',');
+				}
+				//出发日期
+				var setoffdate = $(this).find('[name=setoffdate]').val();
+				//出发时间
+				var setofftime = $(this).find('[name=setofftime]').val();
+				cityairlinejson += '{"leaveairline":"'+leaveairline+'","leavescity":"'+leavescity+'","backscity":"'+backscity+'","setoffdate":"'+setoffdate+'","setofftime":"'+setofftime+'"},';
+			});
+			cityairlinejson = cityairlinejson.substring(0,cityairlinejson.length-1);
+			cityairlinejson += ']';
 			var unioncity = $(this).find('[name=unioncity]').val();
 			if (unioncity) {
 				unioncity = unioncity.join(',');
@@ -705,12 +866,7 @@ function makePlan(){
 						 travelname:travelname,
 						 peoplecount:peoplecount,
 						 dayscount:dayscount,
-						 leaveairline:leaveairline,
-						 backairline:backairline,
-						 leavescity:leavescity,
-						 backscity:backscity,
-						 backleavecity:backleavecity,
-						 backbackcity:backbackcity,
+						 cityairlinejson:cityairlinejson,
 						 foc:foc,
 						 unioncity:unioncity,
 						 startdate:startdate,
@@ -760,14 +916,6 @@ function checkIsNull(){
 			result = false;
 			return false;
 		}
-		var leaveairline = $(this).find('[name=leaveairline]').val();
-		if (leaveairline) {
-			leaveairline = leaveairline.join(',');
-		}else{
-			layer.alert("请填写第"+(i+1)+"个去程航班",{time: 2000, icon:1});
-			result = false;
-			return false;
-		}
 		/*var backairline = $(this).find('[name=backairline]').val();
 		if (backairline) {
 			backairline = backairline.join(',');
@@ -776,7 +924,7 @@ function checkIsNull(){
 			result = false;
 			return false;
 		}*/
-		var leavescity = $(this).find('[name=leavescity]').val();
+		var leavescity = $(this).find('[name=leavescity]').first().val();
 		if (leavescity) {
 			leavescity = leavescity.join(',');
 		}else{
@@ -784,11 +932,35 @@ function checkIsNull(){
 			result = false;
 			return false;
 		}
-		var backscity = $(this).find('[name=backscity]').val();
+		var backscity = $(this).find('[name=backscity]').first().val();
 		if (backscity) {
 			backscity = backscity.join(',');
 		}else{
 			layer.alert("请填写第"+(i+1)+"个去程抵达城市",{time: 2000, icon:1});
+			result = false;
+			return false;
+		}
+		var leaveairline = $(this).find('[name=leaveairline]').first().val();
+		if (leaveairline) {
+			leaveairline = leaveairline.join(',');
+		}else{
+			layer.alert("请填写第"+(i+1)+"个去程航班",{time: 2000, icon:1});
+			result = false;
+			return false;
+		}
+		var setoffdate = $(this).find('[name=setoffdate]').first().val();
+		if (setoffdate) {
+			setoffdate = setoffdate.join(',');
+		}else{
+			layer.alert("请填写第"+(i+1)+"个出发日期",{time: 2000, icon:1});
+			result = false;
+			return false;
+		}
+		var setofftime = $(this).find('[name=setofftime]').first().val();
+		if (setofftime) {
+			setofftime = setofftime.join(',');
+		}else{
+			layer.alert("请填写第"+(i+1)+"个时间",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}
@@ -837,7 +1009,7 @@ function checkIsNull(){
 				result = false;
 				return false;
 			}
-			var weekday =[];    
+			/*var weekday =[];    
 			$(this).find('input[name="weekday"]:checked').each(function(){    
 				weekday.push($(this).val());    
 			});   
@@ -848,7 +1020,7 @@ function checkIsNull(){
 				layer.alert("请选择第"+(i+1)+"个每周",{time: 2000, icon:1});
 				result = false;
 				return false;
-			}
+			}*/
 		}
 		/*var calenderdate = $(this).find('[name=calenderdate]').val();
 		var weekday =[];    
@@ -948,8 +1120,4 @@ function zeroize(value, length) {
         zeros += '0';
     }
     return zeros + value;
-}
-//导出新航模板
-function exportXinHangTemplate(){
-	
 }

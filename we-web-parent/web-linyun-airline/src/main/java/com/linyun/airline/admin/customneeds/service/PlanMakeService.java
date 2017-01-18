@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -19,12 +20,14 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
 
-import com.google.common.base.Splitter;
 import com.linyun.airline.admin.Company.service.CompanyViewService;
+import com.linyun.airline.admin.customneeds.form.CityAirlineJson;
+import com.linyun.airline.admin.customneeds.form.PlanMakeSqlForm;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.util.ExportExcel;
 import com.linyun.airline.entities.DictInfoEntity;
+import com.linyun.airline.entities.TAirlineInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TFlightInfoEntity;
@@ -33,9 +36,11 @@ import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TPlanInfoAddForm;
 import com.uxuexi.core.common.util.DateUtil;
+import com.uxuexi.core.common.util.JsonUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.base.service.BaseService;
+import com.uxuexi.core.web.chain.support.JsonResult;
 
 /**
  * TODO(这里用一句话描述这个类的作用)
@@ -216,6 +221,11 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//格式化日期
+		SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.FORMAT_YYYY_MM_DD);
+		//获取出发城市、抵达城市、航班号、出发日期、时间的list
+		List<CityAirlineJson> airlineJson = JsonUtil
+				.fromJsonAsList(CityAirlineJson.class, addForm.getCityairlinejson());
 		//页面选择的起始日期
 		Date startdate = null;
 		if (!Util.isEmpty(addForm.getStartdate())) {
@@ -227,9 +237,9 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 			enddate = DateUtil.string2Date(addForm.getEnddate(), DateUtil.FORMAT_YYYY_MM_DD);
 		}
 		//根据航班号获取航空公司名称
-		String airLineName = (String) this.getAirCompanyByAirLine(addForm.getLeaveairline()).get("dictCode");
+		//String airLineName = (String) this.getAirCompanyByAirLine(addForm.getLeaveairline()).get("dictCode");
 		//自由制作计划
-		if (!Util.isEmpty(addForm.getCalenderdate())) {
+		/*if (!Util.isEmpty(addForm.getCalenderdate())) {
 			//循环小日历的日期
 			Iterable<String> calenders = Splitter.on(",").split(addForm.getCalenderdate());
 			for (String str : calenders) {
@@ -238,13 +248,13 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 				//if (DateUtil.dateBetween(calendate, startdate, enddate)) {
 				TPlanInfoEntity planInfoEntity = new TPlanInfoEntity();
 				planInfoEntity.setTravelname(addForm.getTravelname());
-				planInfoEntity.setAirlinename(airLineName);
+				//planInfoEntity.setAirlinename(airLineName);
 				planInfoEntity.setLeavesdate(calendate);
-				planInfoEntity.setLeaveairline(addForm.getLeaveairline());
-				planInfoEntity.setLeavescity(addForm.getLeavescity());
+				//planInfoEntity.setLeaveairline(addForm.getLeaveairline());
+				//planInfoEntity.setLeavescity(addForm.getLeavescity());
 				planInfoEntity.setBacksdate(DateUtil.addDay(calendate, addForm.getDayscount()));
 				planInfoEntity.setBackairline(addForm.getBackairline());
-				planInfoEntity.setBackscity(addForm.getBackscity());
+				//planInfoEntity.setBackscity(addForm.getBackscity());
 				planInfoEntity.setPeoplecount(addForm.getPeoplecount());
 				planInfoEntity.setDayscount(addForm.getDayscount());
 				planInfoEntity.setUnioncity(addForm.getUnioncity());
@@ -260,10 +270,72 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 				planInfos.add(planInfoEntity);
 				//}
 			}
-		}
+		}*/
 		//根据每周制作计划
 		try {
-			if (!Util.isEmpty(addForm.getWeekday())) {
+			if ("1".equals(addForm.getTimetype())) {
+				Date setoffdate = DateUtil.string2Date(airlineJson.get(0).getSetoffdate(), DateUtil.FORMAT_YYYY_MM_DD);
+				for (Date date = setoffdate; DateUtil.dateBetween(date, DateUtil.addDay(startdate, -1),
+						DateUtil.addDay(enddate, 1)); date = DateUtil.addDay(date, 7)) {
+					//若日期符合所要的周几  则该计划制作
+					//if (weeklist.contains(this.dayForWeek(date))) {
+					TPlanInfoEntity planInfoEntity = new TPlanInfoEntity();
+					planInfoEntity.setTravelname(addForm.getTravelname());
+					//planInfoEntity.setAirlinename(airLineName);
+					planInfoEntity.setLeavesdate(date);
+					//planInfoEntity.setLeaveairline(addForm.getLeaveairline());
+					//planInfoEntity.setLeavescity(addForm.getLeavescity());
+					//planInfoEntity.setBacksdate(DateUtil.addDay(date, addForm.getDayscount()));
+					//planInfoEntity.setBackairline(addForm.getBackairline());
+					//planInfoEntity.setBackscity(addForm.getBackscity());
+					planInfoEntity.setPeoplecount(addForm.getPeoplecount());
+					planInfoEntity.setDayscount(addForm.getDayscount());
+					planInfoEntity.setUnioncity(addForm.getUnioncity());
+					planInfoEntity.setTeamtype(addForm.getTeamtype());
+					planInfoEntity.setOpid(user.getId());
+					planInfoEntity.setCompanyid(company.getId());
+					planInfoEntity.setTimetype(addForm.getTimetype());
+					planInfoEntity.setStarttime(startdate);
+					planInfoEntity.setEndtime(enddate);
+					planInfoEntity.setFoc(addForm.getFoc());
+					//planInfoEntity.setBackleavecity(addForm.getBackleavecity());
+					//planInfoEntity.setBackbackcity(addForm.getBackbackcity());
+					//planInfos.add(planInfoEntity);
+					TPlanInfoEntity insertPlan = dbDao.insert(planInfoEntity);
+					//}
+					List<TAirlineInfoEntity> airlines = new ArrayList<TAirlineInfoEntity>();
+					//添加多个航段
+					for (CityAirlineJson cityAirlineJson : airlineJson) {
+						TAirlineInfoEntity airline = new TAirlineInfoEntity();
+						airline.setLeavecity(cityAirlineJson.getLeavescity());
+						airline.setArrvicity(cityAirlineJson.getBackscity());
+						airline.setAilinenum(cityAirlineJson.getLeaveairline());
+						airline.setPlanid(insertPlan.getId());
+						airline.setLeavedate(DateUtil.string2Date(cityAirlineJson.getSetoffdate(),
+								DateUtil.FORMAT_YYYY_MM_DD));
+						//添加时间
+						if (!Util.isEmpty(cityAirlineJson.getSetofftime())) {
+							String[] offtimes = cityAirlineJson.getSetofftime().split("/");
+							if (!Util.isEmpty(offtimes[0])) {
+								airline.setLeavetime(offtimes[0]);
+							}
+							if (!Util.isEmpty(offtimes[1])) {
+								airline.setArrivetime(offtimes[1]);
+							}
+						}
+						airlines.add(airline);
+					}
+					//保存多个航段
+					dbDao.insert(airlines);
+					//修改出发日期
+					for (CityAirlineJson cityAirlineJson : airlineJson) {
+						Date airdate = DateUtil
+								.string2Date(cityAirlineJson.getSetoffdate(), DateUtil.FORMAT_YYYY_MM_DD);
+						cityAirlineJson.setSetoffdate(dateFormat.format(DateUtil.addDay(airdate, 7)));
+					}
+				}
+			}
+			/*if (!Util.isEmpty(addForm.getWeekday())) {
 				//获取每周几
 				Iterable<String> weeks = Splitter.on(",").split(addForm.getWeekday());
 				//将周几放入List
@@ -272,39 +344,11 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 					weeklist.add(Integer.valueOf(week));
 				}
 				//循环该日期段
-				for (Date date = startdate; DateUtil.dateBetween(date, DateUtil.addDay(startdate, -1),
-						DateUtil.addDay(enddate, 1)); date = DateUtil.addDay(date, 1)) {
-					//若日期符合所要的周几  则该计划制作
-					if (weeklist.contains(this.dayForWeek(date))) {
-						TPlanInfoEntity planInfoEntity = new TPlanInfoEntity();
-						planInfoEntity.setTravelname(addForm.getTravelname());
-						planInfoEntity.setAirlinename(airLineName);
-						planInfoEntity.setLeavesdate(date);
-						planInfoEntity.setLeaveairline(addForm.getLeaveairline());
-						planInfoEntity.setLeavescity(addForm.getLeavescity());
-						planInfoEntity.setBacksdate(DateUtil.addDay(date, addForm.getDayscount()));
-						planInfoEntity.setBackairline(addForm.getBackairline());
-						planInfoEntity.setBackscity(addForm.getBackscity());
-						planInfoEntity.setPeoplecount(addForm.getPeoplecount());
-						planInfoEntity.setDayscount(addForm.getDayscount());
-						planInfoEntity.setUnioncity(addForm.getUnioncity());
-						planInfoEntity.setTeamtype(addForm.getTeamtype());
-						planInfoEntity.setOpid(user.getId());
-						planInfoEntity.setCompanyid(company.getId());
-						planInfoEntity.setTimetype(addForm.getTimetype());
-						planInfoEntity.setStarttime(startdate);
-						planInfoEntity.setEndtime(enddate);
-						planInfoEntity.setFoc(addForm.getFoc());
-						planInfoEntity.setBackleavecity(addForm.getBackleavecity());
-						planInfoEntity.setBackbackcity(addForm.getBackbackcity());
-						planInfos.add(planInfoEntity);
-					}
-				}
-			}
+			}*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return dbDao.insert(planInfos);
+		return JsonResult.success("制作成功");
 
 	}
 
@@ -344,6 +388,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 */
 	@SuppressWarnings("unused")
 	private Record getAirCompanyByAirLine(String airLine) {
+		Record result = new Record();
 		String sqlstring = sqlManager.get("airline_company_info");
 		Sql sql = Sqls.create(sqlstring);
 		sql.setCondition(Cnd.where("t.airlinenum", "=", airLine));
@@ -352,7 +397,10 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 
 		@SuppressWarnings("unchecked")
 		List<Record> list = (List<Record>) sql.getResult();
-		return list.get(0);
+		if (list.size() > 0) {
+			result = list.get(0);
+		}
+		return result;
 	}
 
 	/**
@@ -620,6 +668,23 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 			e.printStackTrace();
 		}
 		return aircomSelect;
+
+	}
+
+	public Object listPlanMakeData(PlanMakeSqlForm sqlForm, HttpSession session) {
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		sqlForm.setCompanyid(company.getId());
+		Map<String, Object> listPageData = this.listPage4Datatables(sqlForm);
+		List<Record> list = (List<Record>) listPageData.get("data");
+		for (Record record : list) {
+			List<TAirlineInfoEntity> query = dbDao.query(TAirlineInfoEntity.class,
+					Cnd.where("planid", "=", record.get("id")).orderBy("leavedate", "asc"), null);
+			record.put("airinfo", query);
+		}
+		listPageData.remove("data");
+		listPageData.put("data", list);
+		return listPageData;
 
 	}
 
