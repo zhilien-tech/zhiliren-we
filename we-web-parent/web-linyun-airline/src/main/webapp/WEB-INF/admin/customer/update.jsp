@@ -431,7 +431,7 @@
 					type : 'post',
 					data : function(params) {
 						return {
-							q : params.term, // search term
+							q : params.term, 
 							page : params.page
 						};
 					},
@@ -441,7 +441,7 @@
 							results : data
 						};
 					},
-					cache : true
+					cache : false
 				},
 				escapeMarkup : function(markup) {
 					return markup;
@@ -474,7 +474,7 @@
 							results : data
 						};
 					},
-					cache : true
+					cache : false
 				},
 				escapeMarkup : function(markup) {
 					return markup;
@@ -508,7 +508,7 @@
 							results : data
 						};
 					},
-					cache : true
+					cache : false
 				},
 				escapeMarkup : function(markup) {
 					return markup;
@@ -542,7 +542,7 @@
 							results : data
 						};
 					},
-					cache : true
+					cache : false
 				},
 				escapeMarkup : function(markup) {
 					return markup;
@@ -576,7 +576,7 @@
 							results : data
 						};
 					},
-					cache : true
+					cache : false
 				},
 				escapeMarkup : function(markup) {
 					return markup;

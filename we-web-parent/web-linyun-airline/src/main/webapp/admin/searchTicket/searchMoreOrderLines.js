@@ -68,9 +68,13 @@ function searchInlandOrder(){
 					var outCodeStr = $("#outCity0").select2("val");
 					var arriveCodeStr = $("#singleArriveCity0").select2("val");
 				}
-				
+				/*中转+直飞的*/
+				var outNonstopList = new Array();
+				var returnNonstopList = new Array();
+				/*直飞的*/
 				var outList = new Array();
 				var returnList = new Array();
+				
 				for (var i=0; i<resp.data.length; i++){
 					var list = resp.data[i].list;
 					var returnIdx = 0 ;
@@ -89,6 +93,7 @@ function searchInlandOrder(){
 							returnList.push(list[j]);
 						}
 					}
+					
 					/* 去程列表 */
 					for(var foot = 0; foot < outList.length;foot++){
 						var airlineCode = resp.data[i].airlineCode;

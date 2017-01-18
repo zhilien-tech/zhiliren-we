@@ -189,13 +189,14 @@ $("#searchSingleTicketsBtn").click(function() {
 	}
 	
 	var msgIndex = layer.msg('查询中...',{time:0});
-	if(clickfirst){
-		var index = 0;
-		$("#origin").val($("#outCity"+index).select2("val"));
-		$("#destination").val($("#singleArriveCity"+index).select2("val"));
-		$("#departuredate").val($("#outDatepicker"+index).val());
-		$("#returndate").val($("#returnDatepicker"+index).val());
-	}
+	
+	$("#origin").val($("#outCity0").select2("val"));
+	$("#destination").val($("#singleArriveCity0").select2("val"));
+	$("#departuredate").val($("#outDatepicker0").val());
+	$("#returndate").val($("#returnDatepicker0").val());
+	$("#departureCardDate").val($("#outDatepicker0").val());
+	$("#returnCardDate").val($("#returnDatepicker0").val());
+	
 	//显示区间
 	var area = $("#origin").val()+' --- '+$("#destination").val();
 	document.getElementById('travelArea').innerHTML=area;
@@ -237,7 +238,6 @@ $("#searchSingleTicketsBtn").click(function() {
 			if ("200" == resp.statusCode) {
 				/* 日期小卡片  */
 				getDateCard();
-				
 				var outCodeStr = $("#outCity0").select2("val");
 				var arriveCodeStr = $("#singleArriveCity0").select2("val");
 				var outList = new Array();

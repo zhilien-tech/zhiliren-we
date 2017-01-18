@@ -875,8 +875,8 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		Map<String, Object> obj = new HashMap<String, Object>();
 		Sql citySql = Sqls.create(sqlManager.get("customer_cityOption_list"));
 		Cnd cityCnd = Cnd.NEW();
-		cityCnd.and("o.infoId", "=", id);
-		cityCnd.orderBy("d.dictName", "desc");
+		cityCnd.and("c.infoId", "=", id);
+		cityCnd.orderBy("d.dictCode", "desc");
 		citySql.setCondition(cityCnd);
 		List<DictInfoEntity> outcityEntities = DbSqlUtil.query(dbDao, DictInfoEntity.class, citySql);
 		//出发城市id 拼串

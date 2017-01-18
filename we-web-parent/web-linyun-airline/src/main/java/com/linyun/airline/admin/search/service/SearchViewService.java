@@ -236,13 +236,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 					}
 				}
 				String airlineCode = instalFlightAirItinerary.getAirlineCode();
-				DictInfoEntity dictInfo = dbDao.fetch(DictInfoEntity.class,
-						Cnd.where("typeCode", "=", "HKGS").and("dictCode", "=", airlineCode));
-				String dictName = dictInfo.getDictName();
-				if (!Util.isEmpty(dictName)) {
-					instalFlightAirItinerary.setAirlineName(dictName);
-				}
-
 			}
 		}
 		if (resp.getStatusCode() == 400) {
