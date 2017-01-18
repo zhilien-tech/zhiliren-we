@@ -35,6 +35,7 @@ import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.common.util.ExportExcel;
 import com.linyun.airline.entities.DictInfoEntity;
+import com.linyun.airline.entities.TAirlineInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TFlightInfoEntity;
 import com.linyun.airline.entities.TPlanInfoEntity;
@@ -136,9 +137,9 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 			//准备回显数据
 			TPlanInfoEntity planInfoEntity = this.fetch(id);
 			//获取关系表数据
-			TUpOrderTicketEntity orderTicket = dbDao.fetch(TUpOrderTicketEntity.class, Cnd.where("ticketid", "=", id));
-			if (!Util.isEmpty(orderTicket)) {
-				TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(orderTicket.getOrderid()));
+			//TUpOrderTicketEntity orderTicket = dbDao.fetch(TUpOrderTicketEntity.class, Cnd.where("ticketid", "=", id));
+			if (!Util.isEmpty(planInfoEntity.getOrdernumber())) {
+				TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(planInfoEntity.getOrdernumber()));
 				result.put("ordernum", order.getOrdersnum());
 			} else {
 				result.put("ordernum", null);
@@ -146,20 +147,19 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 			//获取订单信息
 			result.put("planinfo", planInfoEntity);
 			//准备城市下拉数据
-			List<DictInfoEntity> city = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", this.CITYCODE),
-					null);
+			List<DictInfoEntity> city = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", CITYCODE), null);
 			//旅行社下拉
 			result.put("travel", companyViewService.getCompanyList(CompanyTypeEnum.AGENT.intKey(), ""));
 			//航空公司下拉
-			result.put("aircom", dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", this.AIRCOMCODE), null));
+			result.put("aircom", dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", AIRCOMCODE), null));
 			//城市下拉
 			result.put("city", city);
 			//航班号下拉
 			result.put("airline", dbDao.query(TFlightInfoEntity.class, null, null));
 			//准备联运城市下拉数据
 			DictInfoEntity dictinfo = new DictInfoEntity();
-			dictinfo.setDictName(this.QUANGUOLIANYUN);
-			dictinfo.setDictCode(this.QUANGUOLIANYUN);
+			dictinfo.setDictName(QUANGUOLIANYUN);
+			dictinfo.setDictCode(QUANGUOLIANYUN);
 			city.add(0, dictinfo);
 			//联运下拉
 			result.put("union", city);
@@ -257,10 +257,12 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 		Iterable<String> split = Splitter.on(",").split(planIds);
 		for (String str : split) {
 			long planId = Long.valueOf(str);
+			//查询当前记录
+			TPlanInfoEntity planinfo = this.fetch(planId);
 			List<TUpOrderTicketEntity> query = dbDao.query(TUpOrderTicketEntity.class,
 					Cnd.where("ticketid", "=", planId), null);
 			//如果不存在订单号则生成
-			if (query.size() < 1) {
+			if (Util.isEmpty(planinfo.getOrdernumber())) {
 				//获取计划信息
 				TPlanInfoEntity planInfo = this.fetch(planId);
 				//查询最大的订单号数据
@@ -290,12 +292,8 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 					upOrderEntity.setOrderstype(0);
 					insertOrder = dbDao.insert(upOrderEntity);
 				}
-				//更新关系表
-				TUpOrderTicketEntity orderTicketEntity = new TUpOrderTicketEntity();
-				orderTicketEntity.setOrderid(insertOrder.getId());
-				orderTicketEntity.setPrice(planInfo.getPrice());
-				orderTicketEntity.setTicketid(planId);
-				dbDao.insert(orderTicketEntity);
+				planinfo.setOrdernumber(String.valueOf(insertOrder.getId()));
+				dbDao.update(planinfo);
 			}
 		}
 		return 1;
@@ -315,5 +313,22 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 			zero += "0";
 		}
 		return zero + value;
+	}
+
+	public Object listEditPlanData(EditPlanSqlForm sqlForm, HttpSession session) {
+
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		sqlForm.setCompanyid(company.getId());
+		Map<String, Object> listPageData = this.listPage4Datatables(sqlForm);
+		List<Record> list = (List<Record>) listPageData.get("data");
+		for (Record record : list) {
+			List<TAirlineInfoEntity> query = dbDao.query(TAirlineInfoEntity.class,
+					Cnd.where("planid", "=", record.get("id")).orderBy("leavedate", "asc"), null);
+			record.put("airinfo", query);
+		}
+		listPageData.remove("data");
+		listPageData.put("data", list);
+		return listPageData;
 	}
 }

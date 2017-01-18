@@ -137,7 +137,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	public Object getCitySelect(String cityname, String typeCode, String ids) {
 		List<TDepartureCityEntity> citySelect = new ArrayList<TDepartureCityEntity>();
 		try {
-			citySelect = externalInfoService.findDepartureCityByCode(cityname, typeCode);
+			citySelect = externalInfoService.findCityByCode(cityname, typeCode);
 			//出发抵达城市去重
 			if (!Util.isEmpty(ids)) {
 				//已选中的城市

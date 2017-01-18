@@ -541,7 +541,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 			set.addAll(localOutCityList);
 
 			//数据字典表中查找出发城市
-			List<TDepartureCityEntity> dictLineList = externalInfoService.findDepartureCityByCode(outcityCode, "CFCS");
+			List<TDepartureCityEntity> dictLineList = externalInfoService.findCityByCode(outcityCode, "CFCS");
 			int needmore = 5 - localOutCityList.size();
 			if (!Util.isEmpty(dictLineList)) {
 				if (dictLineList.size() <= needmore) {
