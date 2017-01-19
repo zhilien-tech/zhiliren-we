@@ -321,6 +321,7 @@
 	                            <th>人数</th>
 	                            <th>FOC</th>
 	                            <th>天数</th>
+	                            <th>旅行社名称</th> 
 	                            <th>联运要求</th>
                               </tr>
                               </thead>
@@ -328,6 +329,7 @@
                               <tbody id="teamtbody">
                               </tbody>
                             </table>
+                            <input id="checkedboxval" name="checkedboxval" type="hidden">
                           </div>
                       </div>
                     </div>
