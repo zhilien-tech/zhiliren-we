@@ -12,8 +12,8 @@
 <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
 <link rel="stylesheet" href="${base}/public/dist/css/query.css"><!--本页面styleFlie-->
-
 </head>
+
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
 		<!--right Content-->
@@ -321,6 +321,7 @@
 	                            <th>人数</th>
 	                            <th>FOC</th>
 	                            <th>天数</th>
+	                            <th>旅行社名称</th> 
 	                            <th>联运要求</th>
                               </tr>
                               </thead>
@@ -328,6 +329,7 @@
                               <tbody id="teamtbody">
                               </tbody>
                             </table>
+                            <input id="checkedboxval" name="checkedboxval" type="hidden">
                           </div>
                       </div>
                     </div>
@@ -416,8 +418,7 @@
 				
 				/*当前出发日期 卡片变色*/
 				var cardIndex = outDateI.substring(5,outDateI.length);
-				alert(cardIndex);
-				$("#"+cardIndex).attr("class", "btnStyle");
+				$("#card"+cardIndex).attr("class", "btnStyle");
 				
 			}
 			/* 点击 机票库 每段提醒事件 */

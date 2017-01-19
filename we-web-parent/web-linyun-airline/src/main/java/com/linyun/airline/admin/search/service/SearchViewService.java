@@ -4,13 +4,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Cnd;
-import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
-import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
@@ -22,6 +21,7 @@ import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEn
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.entities.TMessageEntity;
+import com.linyun.airline.admin.search.form.SearchTicketSqlForm;
 import com.linyun.airline.common.sabre.dto.FlightSegment;
 import com.linyun.airline.common.sabre.dto.InstalFlightAirItinerary;
 import com.linyun.airline.common.sabre.dto.SabreExResponse;
@@ -30,10 +30,10 @@ import com.linyun.airline.common.sabre.form.InstaFlightsSearchForm;
 import com.linyun.airline.common.sabre.service.SabreService;
 import com.linyun.airline.common.sabre.service.impl.SabreServiceImpl;
 import com.linyun.airline.entities.DictInfoEntity;
+import com.linyun.airline.entities.TAirlineInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
-import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.base.service.BaseService;
@@ -271,49 +271,49 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	}
 
 	/**
-	 * 查询国际飞机票
+	 * 查询飞机库
 	 */
-	public Object searchTeamTickets(InstaFlightsSearchForm searchForm) {
-		String origin = searchForm.getOrigin(); //起飞机场/出发城市
-		String destination = searchForm.getDestination();//降落机场/到达城市
-		String departuredate = searchForm.getDeparturedate();//出发日期
-		String returndate = searchForm.getReturndate();//返回日期
-		String airLevel = searchForm.getAirLevel();//舱位等级
-		String includedcarriers = searchForm.getIncludedcarriers();//航空公司名称
-		Sql sql = Sqls.create(sqlManager.get("team_ticket_list"));
-		Cnd cnd = Cnd.NEW();
-		cnd.and("tt.travelname", "=", "");
-		if (!Util.isEmpty(origin)) {
-			cnd.and("tt.leavescity", "=", origin);
-		}
-		if (!Util.isEmpty(destination)) {
-			cnd.and("tt.backscity", "=", destination);
-		}
-		if (!Util.isEmpty(departuredate)) {
-			cnd.and("date_format(tt.leavesdate,'%Y-%m-%d')", "like", departuredate);
-		}
-		if (!Util.isEmpty(returndate)) {
-			cnd.and("date_format(tt.backsdate,'%Y-%m-%d')", "like", returndate);
-		}
-		if (!Util.isEmpty(includedcarriers)) {
-			cnd.and("tt.airlinename", "=", includedcarriers);
-		}
-		List<Record> list = dbDao.query(sql, cnd, null);
+	public Object listPage4Datatables(SearchTicketSqlForm sqlForm, HttpSession session) {
+		//获得当前公司id
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		sqlForm.setCompanyId(companyId);
+		Map<String, Object> listPageData = this.listPage4Datatables(sqlForm);
+		List<Record> list = (List<Record>) listPageData.get("data");
+		boolean isOrigin = !Util.isEmpty(sqlForm.getOrigin());
+		boolean isDestination = !Util.isEmpty(sqlForm.getDestination());
+		boolean isDeparturedate = !Util.isEmpty(sqlForm.getDeparturedate());
+		boolean isReturndate = !Util.isEmpty(sqlForm.getReturndate());
 		for (Record record : list) {
-			String id = record.getString("opid");
-			TUserEntity userEntity = dbDao.fetch(TUserEntity.class, Long.valueOf(id));
-			record.set("opid", userEntity.getUserName());
-			record.set("leavesdate", record.getString("leavesdate").substring(0, 10));
-			record.set("orderstime", record.getString("orderstime").substring(0, 10));
-			if (Util.isEmpty(record.getString("price"))) {
-				record.set("price", "");
+			Cnd cnd = Cnd.NEW();
+			cnd.and("planid", "=", record.get("id"));
+			if (isOrigin || isDestination) {
+				if (isOrigin) {
+					cnd.and("leavecity", "=", sqlForm.getOrigin());
+				}
+				if (isDestination) {
+					cnd.and("arrvicity", "=", sqlForm.getDestination());
+				}
 			}
-			if (Util.isEmpty(record.getString("amount"))) {
-				record.set("amount", "");
-			}
+			cnd.orderBy("leavedate", "asc");
+			List<TAirlineInfoEntity> query = dbDao.query(TAirlineInfoEntity.class, cnd, null);
+			record.put("airinfo", query);
 		}
-
-		return list;
+		listPageData.remove("data");
+		List<Record> list2 = new ArrayList<Record>();
+		if (isOrigin || isDestination) {
+			for (Record record : list) {
+				Object obj = record.get("airinfo");
+				if (!Util.isEmpty(obj)) {
+					list2.add(record);
+				}
+			}
+			listPageData.put("data", list2);
+			listPageData.put("recordsFiltered", list2.size());
+		} else {
+			listPageData.put("data", list);
+		}
+		return listPageData;
 	}
 
 }
