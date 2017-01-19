@@ -30,19 +30,20 @@
                             <label class="col-sm-3 text-right padding">字典类型编码：</label>
                             <div class="col-sm-8 padding">
                             	<select id="typeCode" name="typeCode" class="form-control input-sm inpImpWid">
-			                    	<option>--请选择--</option>
+			                    	<option value="">--请选择--</option>
 										<c:forEach var="one" items="${obj.dirtype }">
 											<option value='${one.typeCode}' ${one.typeCode==obj.dirinfo.typeCode?'selected':''}>
 												${one.typeName}
 											</option>
 										</c:forEach> 
                     			</select>
+                    			<span class="prompt">*</span>
                             </div>
                         </div>
                         <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">字典代码：</label>
                             <div class="col-sm-8 padding">
-                              <input id="dictCode" name="dictCode" onblur="uniqueCheck();" class="form-control input-sm inpImpWid" placeholder="请输入字典代码" />
+                              <input id="dictCode" name="dictCode" class="form-control input-sm inpImpWid" oninput="this.value=this.value.toUpperCase().replace(/(^\s*)|(\s*$)/g, '')" placeholder="请输入字典代码" />
                               <span class="prompt">*</span>
                             </div>
                         </div>
@@ -101,8 +102,8 @@
 	                         }
 	                     },
 		                regexp: {
-	                        regexp: /^[A-Za-z0-9]+$/,
-	                        message: '字典代码只能为字母或数字'
+		                	regexp: /^[a-zA-Z]+$/,
+	                        message: '字典代码只能为英文字母!'
 	                    }
 	                }
 	            },
@@ -123,6 +124,13 @@
 		                            };
 		                         }
 		                   }
+	                }
+	            },
+	            typeCode: {
+	            	validators: {
+	            		notEmpty: {
+	                        message: '字典类型编码不能为空!'
+	                    }
 	                }
 	            }
 	        }

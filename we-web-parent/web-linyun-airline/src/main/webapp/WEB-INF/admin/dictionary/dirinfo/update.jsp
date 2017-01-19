@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" errorPage="/WEB-INF/common/500.jsp"%> 
 <%@include file="/WEB-INF/common/tld.jsp"%>
-
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -27,7 +26,7 @@
                             <label class="col-sm-3 text-right padding">字典类型编码：</label>
                             <div class="col-sm-8 padding">
                             	<select id="typeCode" name="typeCode" class="form-control input-sm">
-			                    	<option>--请选择--</option>
+			                    	<option value="">--请选择--</option>
 										<c:forEach var="one" items="${obj.dirtype }">
 											<option value='${one.typeCode}' ${one.typeCode==obj.dirinfo.typeCode?'selected':''}>
 												${one.typeName}
@@ -39,13 +38,13 @@
                         <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">字典代码：</label>
                             <div class="col-sm-8 padding">
-                              <input name="dictCode" id="dictCode" type="text" class="form-control input-sm" maxlength="32" value="${obj.dirinfo.dictCode}"/>
+                              <input name="dictCode" id="dictCode" type="text" class="form-control input-sm" oninput="this.value=this.value.toUpperCase().replace(/(^\s*)|(\s*$)/g, '')"  value="${obj.dirinfo.dictCode}"/>
                             </div>
                         </div>
                         <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">字典信息：</label>
                             <div class="col-sm-8 padding">
-                              <input name="dictName" id="dictName" type="text" class="form-control input-sm" maxlength="32" value="${obj.dirinfo.dictName}"/>
+                              <input name="dictName" id="dictName" type="text" class="form-control input-sm"  value="${obj.dirinfo.dictName}"/>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -85,8 +84,8 @@
 <script src="${base}/common/js/layer/layer.js"></script>
 <script type="text/javascript">
 //验证
-$(document).ready(function(){
-	$('#updateForm').bootstrapValidator({
+function validateParams(){
+	var options = {
 		message: '验证不通过!',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
@@ -113,8 +112,8 @@ $(document).ready(function(){
                          }
                      },
 	                regexp: {
-                        regexp: /^[A-Za-z0-9]+$/,
-                        message: '字典代码只能为字母或数字'
+	                	regexp: /^[a-zA-Z]+$/,
+                        message: '字典代码只能为英文字母!'
                     }
                 }
             },
@@ -137,37 +136,43 @@ $(document).ready(function(){
 	                         }
 	                   }
                 }
+            },
+            typeCode: {
+            	validators: {
+            		notEmpty: {
+                        message: '字典类型编码不能为空!'
+                    }
+                }
             }
         }
-	});
-});
-	//更新保存验证
-	$('#submitButton').click(function() {
-        $('#updateForm').bootstrapValidator('validate');
-    });
-	
-	function submitInfo(){
-		$('#updateForm').bootstrapValidator('validate');
-		var bootstrapValidator = $("#updateForm").data('bootstrapValidator');
-		if(bootstrapValidator.isValid()){
-			$.ajax({
-				type: 'POST', 
-				data: $("#updateForm").serialize(), 
-				url: '${base}/admin/dictionary/dirinfo/update.html',
-	            success: function (data) { 
-	            	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-	            	parent.layer.close(index);
-	            	window.parent.successCallback('2');
-	            },
-	            error: function (xhr) {
-	            	layer.msg("编辑失败","",3000);
-	            } 
-	        });
-		}
+	};
+	$("#updateForm").bootstrapValidator(options);  
+	$("#updateForm").data('bootstrapValidator').validate();
+	return $("#updateForm").data('bootstrapValidator').isValid();
+}
+validateParams();
+//修改保存
+function submitInfo(){
+	var valid = validateParams();
+	if(valid){
+		$.ajax({
+			type: 'POST', 
+			data: $("#updateForm").serialize(), 
+			url: '${base}/admin/dictionary/dirinfo/update.html',
+            success: function (data) { 
+            	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            	parent.layer.close(index);
+            	window.parent.successCallback('2');
+            },
+            error: function (xhr) {
+            	layer.msg("编辑失败","",3000);
+            } 
+        });
 	}
-	//点击返回
-	function closewindow(){
-		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-		parent.layer.close(index);
-	}
+}
+//点击返回
+function closewindow(){
+	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	parent.layer.close(index);
+}
 </script>

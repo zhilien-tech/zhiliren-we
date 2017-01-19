@@ -14,6 +14,26 @@ FROM `dict_info` i INNER JOIN dict_type t
 ON i.`typeCode`=t.`typeCode`
 $condition
 
+/*dict_departurecity_list*/
+SELECT
+	dc.id,
+	dc.typeCode,
+	t.typeName,
+	dc.dictCode,
+	dc.countryName,
+	dc.stateName,
+	dc.EnglishName,
+	dc.ChineseName,
+	dc.pinYin,
+	dc.description,
+	dc.`status`,
+	dc.createTime,
+	dc.updateTime
+FROM
+	t_departure_city AS dc
+INNER JOIN dict_type t ON t.typeCode = dc.typeCode
+$condition
+
 /*dict_info_list_count*/
 SELECT COUNT(*) 
 FROM `dict_info` i INNER JOIN dict_type t

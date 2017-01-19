@@ -15,6 +15,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
+import org.nutz.dao.util.cri.SqlExpressionGroup;
 
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
@@ -41,11 +42,33 @@ public class InfoSqlForm extends DataTablesParamForm {
 	//创建时间
 	private Date createTime;
 
-	@SuppressWarnings("deprecation")
+	/**国家*/
+	private String countryName;
+
+	/**州*/
+	private String stateName;
+
+	/**英文名称*/
+	private String englishName;
+
+	/**中文名称*/
+	private String chinesename;
+
+	/**拼音*/
+	private String pinYin;
+
+	/**修改时间*/
+	private Date updateTime;
+
+	/**国际状态*/
+	private Integer internatStatus;
+
 	private Cnd cnd() {
-		Cnd cnd = Cnd.limit();
+		Cnd cnd = Cnd.NEW();
+		SqlExpressionGroup group = new SqlExpressionGroup();
+		group.and("i.dictName", "LIKE", "%" + dictName + "%");
 		if (!Util.isEmpty(dictName)) {
-			cnd.and("i.dictName", "LIKE", "%" + dictName + "%");
+			cnd.and(group);
 		}
 		if (!Util.isEmpty(status)) {
 			cnd.and("i.status", "=", status);

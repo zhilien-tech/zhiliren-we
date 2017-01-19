@@ -21,7 +21,7 @@ public class TDepartureCityEntity implements Serializable {
 
 	@Column
 	@Comment("字典类别编码")
-	private Integer typeCode;
+	private String typeCode;
 
 	@Column
 	@Comment("三字代码")
@@ -62,5 +62,9 @@ public class TDepartureCityEntity implements Serializable {
 	@Column
 	@Comment("修改时间")
 	private Date updateTime;
+
+	@Column
+	@Comment("国际状态")
+	private Integer internatStatus;
 
 }
