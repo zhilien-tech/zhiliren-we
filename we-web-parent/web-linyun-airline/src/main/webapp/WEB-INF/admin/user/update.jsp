@@ -340,7 +340,7 @@ function selectDeptName(){
 validateParams();
 //修改保存
 function saveSubmit(){
-	var valid = validateParams() ;
+	var valid = validateParams();
 	if(valid){
 		$.ajax({
 			type : "POST",

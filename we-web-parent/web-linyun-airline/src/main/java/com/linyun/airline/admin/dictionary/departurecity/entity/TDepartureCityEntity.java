@@ -63,6 +63,10 @@ public class TDepartureCityEntity implements Serializable, Comparable<TDeparture
 	@Comment("修改时间")
 	private Date updateTime;
 
+	@Column
+	@Comment("国际状态")
+	private Integer internatStatus;
+
 	/**
 	 * (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
