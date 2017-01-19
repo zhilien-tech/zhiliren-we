@@ -23,20 +23,46 @@ public class DictInfoDto implements Comparable<DictInfoDto> {
 
 	private long id;
 
-	private String typecode;
-
-	private String dictcode;
-
 	private String dictname;
-	private String typename;
 
-	private String description;
+	private String typename;
 
 	private int status;
 
 	private String statusname;
 
+	/**字典类别编码*/
+	private String typecode;
+
+	/**三字代码*/
+	private String dictcode;
+
+	/**国家*/
+	private String countryname;
+
+	/**州*/
+	private String statename;
+
+	/**英文名称*/
+	private String englishname;
+
+	/**中文名称*/
+	private String chinesename;
+
+	/**拼音*/
+	private String pinyin;
+
+	/**描述*/
+	private String description;
+
+	/**创建时间*/
 	private Date createtime;
+
+	/**修改时间*/
+	private Date updatetime;
+
+	/**国际状态*/
+	private Integer internatstatus;
 
 	/**
 	 * (non-Javadoc)

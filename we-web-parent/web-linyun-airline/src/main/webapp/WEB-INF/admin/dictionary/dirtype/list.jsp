@@ -20,12 +20,7 @@
 			<section class="content">
 				<div class="row row-top">
 					<div class="col-xs-12">
-						<div class="box">
-							<div class="box-header">
-								<h3 class="box-title">
-									&nbsp;&nbsp;<!-- <i class="fa fa-user-secret">字典类型</i> -->
-								</h3>
-							</div>
+						<div class="box" style="padding-top:10px;">
 							<form id="listForm"
 								action="${base}/admin/dictionary/dirtype/list.html"
 								method="post" onsubmit="return navTabSearch(this);">
