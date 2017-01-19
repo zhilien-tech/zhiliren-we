@@ -68,4 +68,6 @@ public class TPlanInfoUpdateForm extends ModForm implements Serializable {
 	/**最后修改时间*/
 	private Date laseupdatetime;
 
+	private String cityairlinejson;
+
 }

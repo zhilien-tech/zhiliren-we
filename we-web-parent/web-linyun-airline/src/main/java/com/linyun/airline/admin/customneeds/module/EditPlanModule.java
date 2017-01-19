@@ -63,8 +63,8 @@ public class EditPlanModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object editplanpage(@Param("id") long id) {
-		return editPlanService.editplanpage(id);
+	public Object editplanpage(@Param("id") long id, HttpSession session) {
+		return editPlanService.editplanpage(id, session);
 	}
 
 	/**
