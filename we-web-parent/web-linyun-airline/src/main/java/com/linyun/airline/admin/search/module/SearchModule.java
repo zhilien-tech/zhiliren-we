@@ -12,11 +12,9 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
-import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.search.form.SearchTicketSqlForm;
 import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.sabre.form.InstaFlightsSearchForm;
-import com.linyun.airline.entities.TCompanyEntity;
 
 @IocBean
 @At("/admin/search")
@@ -122,10 +120,7 @@ public class SearchModule {
 	@At
 	@POST
 	public Object searchTeamTickets(@Param("..") SearchTicketSqlForm sqlForm, HttpSession session) {
-		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		long companyId = tCompanyEntity.getId();//得到公司关系表id
-		sqlForm.setCompanyId(companyId);
-		return searchViewService.listPage4Datatables(sqlForm);
+		return searchViewService.listPage4Datatables(sqlForm, session);
 	}
 
 }

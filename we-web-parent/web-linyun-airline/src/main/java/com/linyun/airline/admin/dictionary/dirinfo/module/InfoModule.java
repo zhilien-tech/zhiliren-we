@@ -24,8 +24,10 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
-import com.google.common.collect.Lists;
-import com.linyun.airline.admin.dictionary.dirinfo.dto.DictInfoDto;
+import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
+import com.linyun.airline.admin.dictionary.departurecity.form.TDepartureCityAddForm;
+import com.linyun.airline.admin.dictionary.departurecity.form.TDepartureCitySqlForm;
+import com.linyun.airline.admin.dictionary.departurecity.form.TDepartureCityUpdateForm;
 import com.linyun.airline.admin.dictionary.dirinfo.form.InfoAddForm;
 import com.linyun.airline.admin.dictionary.dirinfo.form.InfoModForm;
 import com.linyun.airline.admin.dictionary.dirinfo.form.InfoSqlForm;
@@ -66,6 +68,55 @@ public class InfoModule {
 	private InfoServiceImpl infoService;
 
 	/**
+	 * 分页查询
+	 * <P>
+	 * 
+	 * @param sqlForm  查询表单
+	 * @param pager    分页对象
+	 */
+	@At
+	@Ok("jsp")
+	public Object list(@Param("..") final InfoSqlForm sqlForm, @Param("..") final Pager pager) {
+		Map<String, Object> map = MapUtil.map();
+		List<Record> deplist = infoService.getTypeNameSelect(sqlManager);
+		map.put("deplist", deplist);
+		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));
+		return map;
+	}
+
+	/**
+	 * @param sqlForm
+	 * @param pager
+	 * 出发城市列表页
+	 */
+	@At
+	@Ok("jsp")
+	public Object departureCityList(@Param("..") final TDepartureCitySqlForm sqlForm, @Param("..") final Pager pager) {
+		Map<String, Object> map = MapUtil.map();
+		List<Record> deplist = infoService.getTypeNameSelect(sqlManager);
+		map.put("deplist", deplist);
+		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));
+		return map;
+	}
+
+	/**
+	 * 服务端分页查询
+	 */
+	@At
+	public Object listData(@Param("..") final InfoSqlForm sqlForm) {
+		return infoService.listData(sqlForm);
+	}
+
+	/**
+	 * @param sqlForm
+	 * 出发城市dataTable数据
+	 */
+	@At
+	public Object departureCityData(@Param("..") final TDepartureCitySqlForm sqlForm) {
+		return infoService.departureCityData(sqlForm);
+	}
+
+	/**
 	 * 跳转到'添加操作'的录入数据页面
 	 */
 	@At
@@ -86,6 +137,31 @@ public class InfoModule {
 	public Object add(@Param("..") final InfoAddForm addForm) {
 		addForm.setCreateTime(new Date());
 		FormUtil.add(dbDao, addForm, DictInfoEntity.class);
+		return JsonResult.success("添加成功!");
+	}
+
+	/**
+	 * 跳转到'添加出发城市'的录入数据页面
+	 */
+	@At
+	@GET
+	@Ok("jsp")
+	public Object addDepartureCity(@Param("id") final long id) {
+		Map<String, Object> map = infoService.findCityDirinfo(id);
+		return map;
+	}
+
+	/**
+	 * TODO 添加出发城市
+	 * @param addForm
+	 * @return TODO(添加表单对象)
+	 */
+	@At
+	@POST
+	public Object addDepartureCity(@Param("..") final TDepartureCityAddForm addForm) {
+		addForm.setCreateTime(new Date());
+		addForm.setUpdateTime(new Date());
+		FormUtil.add(dbDao, addForm, TDepartureCityEntity.class);
 		return JsonResult.success("添加成功!");
 	}
 
@@ -113,20 +189,27 @@ public class InfoModule {
 	}
 
 	/**
-	 * 分页查询
-	 * <P>
-	 * 
-	 * @param sqlForm  查询表单
-	 * @param pager    分页对象
+	 * 跳转到'出发城市修改操作'的录入数据页面
 	 */
 	@At
+	@GET
 	@Ok("jsp")
-	public Object list(@Param("..") final InfoSqlForm sqlForm, @Param("..") final Pager pager) {
-		Map<String, Object> map = MapUtil.map();
-		List<Record> deplist = infoService.getTypeNameSelect(sqlManager);
-		map.put("deplist", deplist);
+	public Object updateDepartureCity(@Param("id") final long id) {
+		Map<String, Object> map = infoService.findCityDirinfo(id);
 		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));
 		return map;
+	}
+
+	/**
+	 * 执行'出发城市修改操作'
+	 */
+	@At
+	@POST
+	public Object updateDepartureCity(@Param("..") final TDepartureCityUpdateForm modForm) {
+		modForm.setCreateTime(new Date());
+		modForm.setUpdateTime(new Date());
+		infoService.updateDepartureCity(modForm);
+		return JsonResult.success("修改成功!");
 	}
 
 	/**
@@ -159,37 +242,13 @@ public class InfoModule {
 		try {
 			dbDao.update(DictInfoEntity.class, Chain.make("status", form.getStatus()),
 					Cnd.where("id", "=", form.getId()));
+			dbDao.update(TDepartureCityEntity.class, Chain.make("status", form.getStatus()),
+					Cnd.where("id", "=", form.getId()));
 			return JsonResult.success("操作成功!");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return JsonResult.error("操作失败!");
 		}
-	}
-
-	/**
-	 * 服务端分页查询
-	 */
-	@At
-	public Object listData(@Param("..") final InfoSqlForm sqlForm) {
-		Map<String, Object> map = infoService.listPage4Datatables(sqlForm);
-		List<Record> list = (List<Record>) map.get("data");
-		List<DictInfoDto> lst = Lists.newArrayList();
-		if (!Util.isEmpty(list)) {
-			for (Record r : list) {
-				DictInfoDto en = new DictInfoDto();
-				en.setStatus(r.getInt("status"));
-				en.setId(r.getInt("id"));
-				en.setDictcode(r.getString("dictCode"));
-				en.setTypecode(r.getString("typeCode"));
-				en.setDictname(r.getString("dictName"));
-				en.setDescription(r.getString("description"));
-				en.setTypename(r.getString("typeName"));
-				en.setCreatetime(r.getTimestamp("createTime"));
-				lst.add(en);
-			}
-		}
-		map.put("data", lst);
-		return map;
 	}
 
 	/**
@@ -202,10 +261,14 @@ public class InfoModule {
 		List<DictInfoEntity> listCode = dbDao.query(DictInfoEntity.class, Cnd.where("dictCode", "=", Code), null);
 		List<DictInfoEntity> listCode2 = dbDao.query(DictInfoEntity.class,
 				Cnd.where("dictCode", "=", Code).and("id", "=", id), null);
-		if (!Util.isEmpty(listCode)) {
+		List<TDepartureCityEntity> listCityCode = dbDao.query(TDepartureCityEntity.class,
+				Cnd.where("dictCode", "=", Code), null);
+		List<TDepartureCityEntity> listCityCode2 = dbDao.query(TDepartureCityEntity.class,
+				Cnd.where("dictCode", "=", Code).and("id", "=", id), null);
+		if (!Util.isEmpty(listCode) || !Util.isEmpty(listCityCode)) {
 			if (Util.isEmpty(id)) {
 				map.put("valid", false);
-			} else if (!Util.isEmpty(listCode2)) {
+			} else if (!Util.isEmpty(listCode2) || !Util.isEmpty(listCityCode2)) {
 				map.put("valid", true);
 			}
 		} else {

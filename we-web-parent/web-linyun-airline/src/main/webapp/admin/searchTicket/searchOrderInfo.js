@@ -127,7 +127,6 @@ function clearSearchTeamHtml(){
 	document.getElementById('datatable2_info').innerHTML="";
 	document.getElementById('datatable2_paginate').innerHTML="";
 	document.getElementById('datatable2').innerHTML="";
-	document.getElementsByName("voyageType1")[1].checked="checked";//radio 默认 选中往返
 	$("#teamAirLevel").val("1");
 }
 
@@ -167,7 +166,7 @@ getDateCard =function(){
 			var beforeDate= outDate.getTime()- 1000*60*60*24*i;
 			var changeDate=new Date(beforeDate);
 			var formatDate = getNowFormatDate(changeDate).substring(0, 5);
-			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="'+formatDate+'">'+formatDate+'</li>';
+			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="card'+formatDate+'">'+formatDate+'</li>';
 		}
 	}else{
 		var dataCardHtml = "";
@@ -176,11 +175,11 @@ getDateCard =function(){
 			var changeDate=new Date(beforeDate);
 			var formatDate = getNowFormatDate(changeDate).substring(0, 5);
 			
-			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="'+formatDate+'">'+getNowFormatDate(changeDate)+'</li>';
+			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="card'+formatDate+'">'+getNowFormatDate(changeDate)+'</li>';
 		}
 	}
 	/* 出发日期 */
-	dataCardHtml += '<li onclick="cardDate(this);" value="'+outDate+'" id="'+getNowFormatDate(outDate).substring(0, 5)+'" class="btnStyle">'+getNowFormatDate(outDate)+'</li>';
+	dataCardHtml += '<li onclick="cardDate(this);" value="'+outDate+'" id="card'+getNowFormatDate(outDate).substring(0, 5)+'" class="btnStyle">'+getNowFormatDate(outDate)+'</li>';
 	/* 出发后的日期 */
 	var travelTime = returnDate.getTime() - outDate.getTime();
 	var travelDays = Math.floor(travelTime/(24*60*60*1000))+1;
@@ -190,7 +189,7 @@ getDateCard =function(){
 			afterDate+=1000*60*60*24;
 			var changeDate=new Date(afterDate);
 			var formatDate = getNowFormatDate(changeDate).substring(0, 5);
-			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="'+formatDate+'">'+getNowFormatDate(changeDate)+'</li>';
+			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="card'+formatDate+'">'+getNowFormatDate(changeDate)+'</li>';
 		}
 	}else{
 		var afterDate = outDate.getTime();
@@ -198,7 +197,16 @@ getDateCard =function(){
 			afterDate+=1000*60*60*24;
 			var changeDate=new Date(afterDate);
 			var formatDate = getNowFormatDate(changeDate).substring(0, 5);
-			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="'+formatDate+'">'+getNowFormatDate(changeDate)+'</li>';
+			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="card'+formatDate+'">'+getNowFormatDate(changeDate)+'</li>';
+		}
+	}
+	if(!returnDate.getTime()){
+		var afterDate = outDate.getTime();
+		for(var i=1; i<=3; i++){
+			afterDate+=1000*60*60*24;
+			var changeDate=new Date(afterDate);
+			var formatDate = getNowFormatDate(changeDate).substring(0, 5);
+			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="card'+formatDate+'">'+getNowFormatDate(changeDate)+'</li>';
 		}
 	}
 	document.getElementById('travelDateNum').innerHTML=dataCardHtml;

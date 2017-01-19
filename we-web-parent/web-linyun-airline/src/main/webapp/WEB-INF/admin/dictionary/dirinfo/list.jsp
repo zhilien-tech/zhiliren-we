@@ -19,12 +19,7 @@
 			<section class="content">
 				<div class="row row-top">
 					<div class="col-xs-12">
-						<div class="box">
-							<div class="box-header">
-								<h3 class="box-title">
-									&nbsp;&nbsp;<!-- <i class="fa fa-user-secret"></i>字典信息 -->
-								</h3>
-							</div>
+						<div class="box" style="padding-top:10px;">
 								<div class="col-md-2">
 									<!--状态名称 搜索框-->
 									<div class="col-sm-12 padding">
@@ -67,9 +62,8 @@
 								</div>
                                 <div class="col-md-3 dictInfoSousuo" style="float:left;">
 									<!--字典信息名称 搜索框-->
-									<input type="text" id="dictName" name="dictName"
-										value="${obj.queryForm.dictName}" onkeypress="onkeyEnter();" class="form-control"
-										placeholder="字典信息">
+									<input type="text" id="dictName" name="dictName" onkeypress="onkeyEnter();" class="form-control"
+										placeholder="字典信息/中文名称">
 								</div>
 								<div class="col-md-2 col-padding">
 									<!--搜索 按钮-->
@@ -79,7 +73,7 @@
 								<a class="btn btn-primary btn-sm" onclick="add();">添加</a>
 							</div>
 							<!-- /.box-header -->
-							<div class="box-body">
+							<div id="datatableInfo_container" class="box-body none">
 								<table id="datatableInfo" class="table table-bordered table-hover">
 									<thead>
 										<tr>
@@ -89,6 +83,25 @@
 											<th>描述</th>
 											<th>状态</th>
 											<th>创建时间</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+							<div id="departurecityTable_container" class="box-body">
+								<table id="departurecityTable" class="table table-bordered table-hover">
+									<thead>
+										<tr>
+											<th>类别名称</th>
+											<th>三字代码</th>
+											<th>国家</th>
+											<th>州</th>
+											<th>英文名称</th>
+											<th>中文名称</th>
+											<th>拼音</th>
+											<th>状态</th>
 											<th>操作</th>
 										</tr>
 									</thead>
@@ -110,45 +123,80 @@
 		<%@include file="/WEB-INF/public/footer.jsp"%>
 	</div>
 	<script type="text/javascript">
-		//添加
 		function add(){
-	      layer.open({
-	    	    type: 2,
-	    	    title:false,
-	    	    closeBtn:false,
-	    	    fix: false,
-	    	    maxmin: false,
-	    	    shadeClose: false,
-	    	    area: ['900px', '435px'],
-	    	    content: '${base}/admin/dictionary/dirinfo/add.html',
-	    	    end: function(){//添加完页面点击返回的时候自动加载表格数据
-	    	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-	    			parent.layer.close(index);
-	    	    }
-    	 	 });
- 		 }
+			var typeCode = $("#typeCode").val();
+			if("CFCS"==typeCode){
+				//添加出发城市
+			    layer.open({
+		    	    type: 2,
+		    	    title:false,
+		    	    closeBtn:false,
+		    	    fix: false,
+		    	    maxmin: false,
+		    	    shadeClose: false,
+		    	    area: ['920px', '500px'],
+		    	    content: '${base}/admin/dictionary/dirinfo/addDepartureCity.html',
+		    	    end: function(){//添加完页面点击返回的时候自动加载表格数据
+		    	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+		    			parent.layer.close(index);
+		    	    }
+		    	 });
+			}else{
+				//添加
+			    layer.open({
+		    	    type: 2,
+		    	    title:false,
+		    	    closeBtn:false,
+		    	    fix: false,
+		    	    maxmin: false,
+		    	    shadeClose: false,
+		    	    area: ['900px', '435px'],
+		    	    content: '${base}/admin/dictionary/dirinfo/add.html',
+		    	    end: function(){//添加完页面点击返回的时候自动加载表格数据
+		    	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+		    			parent.layer.close(index);
+		    	    }
+		    	 });
+			}
+		}
+		
 		//编辑
 		function edit(id){
-			  layer.open({
-		  	    type: 2,
-		  	    title: false,
-		  	  	closeBtn:false,
-		  	    fix: false,
-		  	    maxmin: false,
-		  	    shadeClose: false,
-		  	    area: ['900px', '435px'],
-		  	    content: '${base}/admin/dictionary/dirinfo/update.html?id='+id
-		  	  });
+			var typeCode = $("#typeCode").val();
+			if("CFCS"==typeCode){
+				layer.open({
+			  	    type: 2,
+			  	    title: false,
+			  	  	closeBtn:false,
+			  	    fix: false,
+			  	    maxmin: false,
+			  	    shadeClose: false,
+			  	  	area: ['920px', '500px'],
+			  	    content: '${base}/admin/dictionary/dirinfo/updateDepartureCity.html?id='+id
+			  	  });
+			}else{
+				layer.open({
+			  	    type: 2,
+			  	    title: false,
+			  	  	closeBtn:false,
+			  	    fix: false,
+			  	    maxmin: false,
+			  	    shadeClose: false,
+			  	    area: ['900px', '435px'],
+			  	    content: '${base}/admin/dictionary/dirinfo/update.html?id='+id
+			  	  });
+			}
 		  }
 		//事件提示
 		function successCallback(id){
 			  datatableInfo.ajax.reload(null,false);
+			  departurecityTable.ajax.reload(null,false);
 			  if(id == '1'){
-				  layer.msg("添加成功",{time: 2000, icon:1});
+				  layer.msg("添加成功",{time: 1000, icon:1});
 			  }else if(id == '2'){
-				  layer.msg("修改成功",{time: 2000, icon:1});
+				  layer.msg("修改成功",{time: 1000, icon:1});
 			  }else if(id == '3'){
-				  layer.msg("删除成功",{time: 2000, icon:1});
+				  layer.msg("删除成功",{time: 1000, icon:1});
 			  }
 		  }
 		//删除提示
@@ -195,7 +243,27 @@
 	</script>
 	<!-- 分页显示 -->
 	<script type="text/javascript">
+		var flag=$('#typeCode').val();
 		var datatableInfo;
+		var departurecityTable;
+		//初始化
+		$(function() {
+			initDatatable();
+			selectTypeName();
+		});
+		//判断如果是出发城市则隐藏掉其他内容
+		$('#typeCode').change(function(){
+			var seleID= $(this).find('option:selected').attr("value");
+			if(seleID=="CFCS"){
+				$('#departurecityTable_container').show();
+				$('#datatableInfo_container').hide();
+			}else{
+				$('#datatableInfo_container').show();
+				$('#departurecityTable_container').hide();
+			}
+		});
+		
+		//出发城市dataTable
 		function initDatatable() {
 			datatableInfo = $('#datatableInfo').DataTable({
 				"searching" : false,
@@ -203,8 +271,6 @@
 				"serverSide" : true,
 				"stripeClasses": [ 'strip1','strip2' ],//斑马线
 				"bLengthChange" : false,
-				"bJQueryUI": true,
-				
 				"language" : {
 					"url" : "${base}/public/plugins/datatables/cn.json"
 				},
@@ -212,15 +278,6 @@
 		            "url": "${base}/admin/dictionary/dirinfo/listData.html",
 		            "type": "post",
 		            "data": function (d) {
-		            	var dictName = $("#dictName").val();
-		    			var status = $('#status').val();
-		    			var typeCode = $('#typeCode').val();
-		            	var param = {
-           			        "dictName": dictName,
-           					"status":status,
-           					"typeCode":typeCode
-           			    };
-		            	return param;
 		            }
 		        },
 		        "columns": [
@@ -255,20 +312,99 @@
                     		}
 		                    return modify+judge;
 		                }
-		            },
-					{ "sWidth": "9%", "aTargets": [0] },
+		            }/* ,
+					{ "sWidth": "14%", "aTargets": [0] },
 					{ "sWidth": "9%", "aTargets": [1] },
 					{ "sWidth": "9%", "aTargets": [2] },
 					{ "sWidth": "16%", "aTargets": [3] },
 					{ "sWidth": "6%", "aTargets": [4] },
 					{ "sWidth": "12%", "aTargets": [5] },
-					{ "sWidth": "15%", "aTargets": [6] }
+					{ "sWidth": "10%", "aTargets": [6] } */
+		            ]
+			});
+			departurecityTable = $('#departurecityTable').DataTable({
+				"searching" : false,
+				"processing" : true,
+				"serverSide" : true,
+				"stripeClasses": [ 'strip1','strip2' ],//斑马线
+				"bLengthChange" : false,
+				"language" : {
+					"url" : "${base}/public/plugins/datatables/cn.json"
+				},
+		        "ajax": {
+		            "url": "${base}/admin/dictionary/dirinfo/departureCityData.html",
+		            "type": "post",
+		            "data": function (d) {
+		            	
+		            }
+		        },
+		        "columns": [
+		                    {"data": "typename", "bSortable": false},
+		                    {"data": "dictcode", "bSortable": false},
+		                    {"data": "countryname", "bSortable": false},
+		                    {"data": "statename", "bSortable": false,
+		                    	render: function(data, type, row, meta) {
+		                    		var statename = row.statename;
+		                    		if(statename=="" || null==statename || undefined==statename){
+		                    			return "";
+		                    		}
+		                    		return statename;
+		                        } 
+		                    },
+		                    {"data": "englishname", "bSortable": false,
+		                    	render: function(data, type, row, meta) {
+		                    		var englishname = row.englishname;
+		                    		if(englishname=="" || englishname==null || undefined==englishname){
+		                    			return "";
+		                    		}
+		                    		return englishname;
+		                        } 	
+		                    },
+		                    {"data": "chinesename", "bSortable": false,
+		                    	render: function(data, type, row, meta) {
+		                    		var chinesename = row.chinesename;
+		                    		if(chinesename=="" || chinesename==null || undefined==chinesename){
+		                    			return "";
+		                    		}
+		                    		return chinesename;
+		                        }	
+		                    },
+		                    {"data": "pinyin", "bSortable": false,
+		                    	render: function(data, type, row, meta) {
+		                    		var pinyin = row.pinyin;
+		                    		if(pinyin=="" || pinyin==null || undefined==pinyin){
+		                    			return "";
+		                    		}
+		                    		return pinyin;
+		                        }
+		                    },
+		                    {"data": "statusname", "bSortable": true}
+		            ],
+		            "columnDefs": [{
+		                //   指定第一列，从0开始，0表示第一列，1表示第二列……
+		                targets: 8,
+		                render: function(data, type, row, meta) {
+		                	var modify = '<a style="cursor:pointer;" onclick="edit('+row.id+');">编辑</a>';
+                    		if(1==row.status){
+                    			var judge = '<a href="javascript:physicalDelete('+row.id+',2)" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
+                    		}else{
+                    			var judge = '<a href="javascript:physicalDelete('+row.id+',1)" class="btn_mini btn_modify">启用</a>';
+                    		}
+		                    return modify+judge;
+		                }
+		            }/* ,
+					{ "sWidth": "8%", "aTargets": [0] },
+					{ "sWidth": "8%", "aTargets": [1] },
+					{ "sWidth": "9%", "aTargets": [2] },
+					{ "sWidth": "12%", "aTargets": [3] },
+					{ "sWidth": "12%", "aTargets": [4] },
+					{ "sWidth": "12%", "aTargets": [5] },
+					{ "sWidth": "6%", "aTargets": [6] },
+					{ "sWidth": "5%", "aTargets": [7] },
+					{ "sWidth": "8%", "aTargets": [8] } */
 		            ]
 			});
 		}
-		$(function() {
-			initDatatable();
-		});
 		//搜索
 		$("#searchBtn").on('click', function () {
 			var dictName = $("#dictName").val();
@@ -277,10 +413,13 @@
 		    var param = {
 		        "dictName": dictName,
 				"status":status,
-				"typeCode":typeCode
+				"typeCode":typeCode,
+				"chineseName": dictName
 		    };
-		    datatableInfo.settings()[0].ajax.data = param;
-		    datatableInfo.ajax.reload();
+				departurecityTable.settings()[0].ajax.data = param;
+				departurecityTable.ajax.reload();
+				datatableInfo.settings()[0].ajax.data = param;
+			    datatableInfo.ajax.reload();
 		});
 		//搜索回车事件
 		function onkeyEnter(){

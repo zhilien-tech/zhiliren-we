@@ -89,7 +89,7 @@ function initTeamSelect2(){
 	});
 }
 
-$(function () {
+$(function(){
 	//段数 样式切换
 	/*$('.paragraphBtn li').click(function(){
 		$(this).addClass('btnStyle').siblings().removeClass('btnStyle');
@@ -190,7 +190,7 @@ function makePart(){
 		document.getElementById('travelTeamTypeNum').innerHTML=html;
 	}
 	if(airTeamType == 2){
-		/*国际往返不需要显示第二段*/
+		/*往返不需要显示第二段*/
 		/*html = '<li id="teamNum1" class="btnStyle dClass">第1段</li><li id="teamNum2"  class="dClass">第2段</li>';*/
 		html = '<li id="teamNum1" class="btnStyle dClass">第1段</li>';
 		document.getElementById('travelTeamTypeNum').innerHTML=html;
@@ -247,7 +247,7 @@ $(document).on('click','#teamNum2',function(){
 });
 
 
-//国际表格初始化
+//机票库表格初始化
 var datatable2;
 function initDatatable2() {
 	datatable2 = $('#datatable2').DataTable({
@@ -264,7 +264,6 @@ function initDatatable2() {
 			"url": BASE_PATH + '/admin/search/searchTeamTickets.html',
 			"type": "post",
 			"data": function (d) {
-
 			}
 		},
 		"fnDrawCallback" : function(){
@@ -277,48 +276,64 @@ function initDatatable2() {
 		"columns": [
 		            {"data": "id", "bSortable": false,
 		            	"render": function (data, type, row, meta) {
-		            		return '<input type="checkbox"  class="checkchild"  value="' + row.id + '" />';
-		            	}
+                    		var result = '';
+                    		var hiddenval = $('#checkedboxval').val();
+                    		var splits = hiddenval.split(',');
+                    		var flag = false;
+                    		for(var i=0;i<splits.length;i++){
+                    			if(splits[i] == row.id){
+                    				flag = true;
+                    			}
+                    		}	
+                    		if(flag){
+                    			result = '<input type="checkbox"  class="checkchild" checked="true" value="' + row.id + '" />';
+                    		}else{
+                    			result = '<input type="checkbox"  class="checkchild" value="' + row.id + '" />';
+                    		}
+                            return result;
+                        }
 		            },
 		            {"data": "xuhao", "bSortable": false},
 		            {"data": "leavesdate", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		var leavesdate = new Date(row.leavesdate);
-		            		var backsdate = new Date(row.backsdate);
-		            		var MM = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'][leavesdate.getMonth()];
-		            		var week = ['MO','TU','WE','TH','FR','SA','SU'][leavesdate.getUTCDay()]
-		            		var MM2 = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'][backsdate.getMonth()];
-		            		var week2 = ['MO','TU','WE','TH','FR','SA','SU'][backsdate.getUTCDay()]
-		            		var result = '<ul><li style="list-style:none;">'+(week+leavesdate.getDate() + MM)+'</li>'
-		            		+'<li style="list-style:none;">'+(week2+backsdate.getDate() + MM2)+'</li>'
-		            		+'</ul>';
-		            		return result;
-		            	}
+                    		var result = '<ul>';
+                    		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
+                    		var week = ['MO','TU','WE','TH','FR','SA','SU'];
+                    		$.each(row.airinfo, function(name, value) {
+                    			var leavedate = new Date(value.leavedate);
+                    			result += '<li style="list-style:none;">'+(week[leavedate.getUTCDay()]+leavedate.getDate() + MM[leavedate.getMonth()])+'</li>';
+                    		});
+                    		result += '</ul>';
+                    		return result;
+                    	}
 		            },
 		            {"data": "leavescity", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		var result = '<ul>'
-		            			+'<li style="list-style:none;">'+row.leaveairline+'</li>'
-		            			+'<li style="list-style:none;">'+row.backairline+'</li>'
-		            			+'</ul>';
+		            		var result = '<ul>';
+                    		$.each(row.airinfo, function(name, value) {
+                    			result += '<li style="list-style:none;">'+value.ailinenum+'</li>';
+                    		});
+                    		result += '</ul>';
 		            		return result;
 		            	}
 		            },
 		            {"data": "backsdate", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		var result = '<ul>' 
-		            			+'<li style="list-style:none;">'+(row.leavescity +'/'+ row.backscity)+'</li>'
-		            			+'<li style="list-style:none;">'+(row.backleavecity +'/'+ row.backbackcity)+'</li>'
-		            			+'</ul>';
+		            		var result = '<ul>';
+                    		$.each(row.airinfo, function(name, value) {
+                    			result += '<li style="list-style:none;">'+(value.leavecity+'/'+value.arrvicity)+'</li>';
+                    		});
+                    		result += '</ul>';
 		            		return result;
 		            	}
 		            },
 		            {"data": "backscity", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		var result = '<ul>' 
-		            			+'<li style="list-style:none;">'+(row.lleavetime +'/'+ row.lbacktime)+'</li>'
-		            			+'<li style="list-style:none;">'+(row.bleavetime +'/'+ row.bbacktime)+'</li>'
-		            			+'</ul>';
+		            		var result = '<ul>';
+                    		$.each(row.airinfo, function(name, value) {
+                    			result += '<li style="list-style:none;">'+(value.leavetime+'/'+value.arrivetime)+'</li>';
+                    		});
+                    		result += '</ul>';
 		            		return result;
 		            	}	
 		            },
@@ -333,7 +348,7 @@ function initDatatable2() {
 		            	}
 		            },
 		            {"data": "dayscount", "bSortable": false},
-		            /*{"data": "travelname", "bSortable": false},*/
+		            {"data": "travelname", "bSortable": false},
 		            {"data": "unioncity", "bSortable": false}
 		            ],
 		            columnDefs: [{
@@ -373,20 +388,9 @@ function getEditPlanParam(){
 	};
 	return param;
 }
-function selectteam(){
-	$("#searchTeamTicketsBtn").click();
-}
-function onkeyTeamEnter(){
-	var e = window.event || arguments.callee.caller.arguments[0];
-	if(e && e.keyCode == 13){
-		selectteam();
-	}
-}
 
-/* 团客多程查询 */
-var clickone=1;
+/* 机票库多程查询 */
 $("#searchTeamTicketsBtn").click(function() {
-	clearSearchTeamHtml();
 	var linkName = $("#linkNameId").select2("val");
 	var phoneNum = $("#phoneNumId").select2("val");
 	if(!(linkName || phoneNum)){
@@ -396,29 +400,30 @@ $("#searchTeamTicketsBtn").click(function() {
 	$("#teamTrId").attr("style", "");
 
 	//默认第一段
-	if(clickone){
-		var index = 0;
-		$("#teamorigin").val($("#teamOutCity"+index).select2("val"));
-		$("#teamdestination").val($("#teamArriveCity"+index).select2("val"));
-		$("#teamdeparturedate").val($("#teamOutDatepicker"+index).val());
-		$("#teamreturndate").val($("#teamReturnDatepicker"+index).val());
-		//加载列表数据
-		initDatatable2();
-	}
+	var index = 0;
+	$("#teamorigin").val($("#teamOutCity"+index).select2("val"));
+	$("#teamdestination").val($("#teamArriveCity"+index).select2("val"));
+	$("#teamdeparturedate").val($("#teamOutDatepicker"+index).val());
+	$("#teamreturndate").val($("#teamReturnDatepicker"+index).val());
+	//加载列表数据
+	initDatatable2();
 
 	makePart();
-
-	/*$('#teamNum1').click(function(){
-		$('#teamNum1').addClass('btnStyle');
-		$('#teamNum2').removeClass('btnStyle');
-	});
-	$('#teamNum2').click(function(){
-		$('#teamNum2').addClass('btnStyle');
-		$('#teamNum1').removeClass('btnStyle');
-	});*/
 
 	var param = getEditPlanParam();
 	datatable2.settings()[0].ajax.data = param;
 	datatable2.ajax.url(BASE_PATH + '/admin/search/searchTeamTickets.html').load();
 	
 });
+
+
+function selectteam(){
+	$("#searchTeamTicketsBtn").click();
+}
+
+function onkeyTeamEnter(){
+	var e = window.event || arguments.callee.caller.arguments[0];
+	if(e && e.keyCode == 13){
+		selectteam();
+	}
+}
