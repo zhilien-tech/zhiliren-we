@@ -18,7 +18,7 @@ $("#isLine").select2({
 				results : data
 			};
 		},
-		cache : true
+		cache : false
 	},
 	
 	escapeMarkup : function(markup) {
@@ -53,7 +53,7 @@ $("#sLine2ID").select2({
 				results : data
 			};
 		},
-		cache : true
+		cache : false
 	},
 	
 	escapeMarkup : function(markup) {

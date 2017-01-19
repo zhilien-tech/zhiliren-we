@@ -12,7 +12,7 @@ import org.nutz.dao.entity.annotation.Table;
 
 @Data
 @Table("t_departure_city")
-public class TDepartureCityEntity implements Serializable {
+public class TDepartureCityEntity implements Serializable, Comparable<TDepartureCityEntity> {
 	private static final long serialVersionUID = 1L;
 	@Column
 	@Comment("主键")
@@ -66,5 +66,59 @@ public class TDepartureCityEntity implements Serializable {
 	@Column
 	@Comment("国际状态")
 	private Integer internatStatus;
+
+	/**
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	/**使用次数*/
+	private int count;
+
+	@Override
+	public int compareTo(TDepartureCityEntity o) {
+		if (this.count > o.count) {
+			return 1;
+		} else if (this.count < o.count) {
+			return -1;
+		} else {
+			/**
+			 * 当compareTo返回0，TreeSet会认为“两个元素相等”
+			 */
+			if (this.id != o.id) {
+				return new Long(this.id).compareTo(new Long(o.id));
+			}
+			return 0;
+		}
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TDepartureCityEntity other = (TDepartureCityEntity) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
 
 }

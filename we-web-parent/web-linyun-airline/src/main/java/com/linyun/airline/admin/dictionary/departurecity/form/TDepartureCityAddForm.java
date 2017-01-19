@@ -48,5 +48,4 @@ public class TDepartureCityAddForm extends AddForm implements Serializable {
 
 	/**国际状态*/
 	private Integer internatStatus;
-
 }

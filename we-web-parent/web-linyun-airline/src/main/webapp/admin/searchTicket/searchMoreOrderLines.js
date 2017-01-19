@@ -25,25 +25,6 @@ function searchInlandOrder(){
 	//显示区间
 	var area = $("#origin").val()+' --- '+$("#destination").val();
 	document.getElementById('travelArea').innerHTML=area;
-	//段数
-	var airType = $("input[name='voyageType']:checked").val();
-	var html = "";
-	if(airType == 1){
-		html = '<li id="num1" class="btnStyle">第1段</li>';
-		document.getElementById('travelTypeNum').innerHTML=html;
-	}
-	if(airType == 2){
-		html = '<li id="num1" class="btnStyle">第1段</li><li id="num2">第2段</li>';
-		document.getElementById('travelTypeNum').innerHTML=html;
-	}
-	/* 多程 显示多段 */
-	if(airType == 3){
-		html ='<li id="moreNum1" class="btnStyle">第1段</li>';
-		for(var i=2; i<=$('.setMore').length; i++){
-			html +='<li id="moreNum'+i+'">第'+i+'段</li>';
-		}
-		document.getElementById('travelTypeNum').innerHTML=html;
-	}
 	
 	$.ajax({
 		type : 'POST',
@@ -68,9 +49,13 @@ function searchInlandOrder(){
 					var outCodeStr = $("#outCity0").select2("val");
 					var arriveCodeStr = $("#singleArriveCity0").select2("val");
 				}
-				
+				/*中转+直飞的*/
 				var outList = new Array();
 				var returnList = new Array();
+				/*直飞的*/
+				var outNonstopList = new Array();
+				var returnNonstopList = new Array();
+				
 				for (var i=0; i<resp.data.length; i++){
 					var list = resp.data[i].list;
 					var returnIdx = 0 ;
@@ -84,11 +69,33 @@ function searchInlandOrder(){
 					}
 					for(var j=0; j<list.length; j++){
 						if(j < returnIdx){
+							/*中转 和 直飞*/
 							outList.push(list[j]);
+							/*直飞*/
+							var departureAirport = list[j].DepartureAirport;
+							var arrivalAirport = list[j].ArrivalAirport;
+							if(arrivalAirport==arriveCodeStr && departureAirport==outCodeStr){
+								outNonstopList.push(list[j]);
+							}
 						}else{
+							/*中转 和 直飞*/
 							returnList.push(list[j]);
+							/*直飞*/
+							var departureAirport = list[j].DepartureAirport;
+							var arrivalAirport = list[j].ArrivalAirport;
+							if(arrivalAirport==outCodeStr && departureAirport==arriveCodeStr){
+								returnNonstopList.push(list[j]);
+							}
 						}
 					}
+					
+					/*是否直飞*/
+					var isNonstop = $("#nonstopType").val();
+					if(isNonstop){
+						outList = outNonstopList;
+						returnList = returnNonstopList;
+					}
+					
 					/* 去程列表 */
 					for(var foot = 0; foot < outList.length;foot++){
 						var airlineCode = resp.data[i].airlineCode;

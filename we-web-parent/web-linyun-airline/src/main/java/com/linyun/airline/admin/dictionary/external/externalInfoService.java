@@ -8,6 +8,7 @@ package com.linyun.airline.admin.dictionary.external;
 
 import java.util.List;
 
+import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.entities.DictInfoEntity;
 
 /**
@@ -23,5 +24,7 @@ public interface externalInfoService {
 	public List<DictInfoEntity> findDictInfoByText(String name, String typeCode) throws Exception;
 
 	public List<DictInfoEntity> findDictInfoByTypes(String name, String typeCode1, String typeCode2) throws Exception;
+
+	public List<TDepartureCityEntity> findCityByCode(String name, String typeCode);
 
 }

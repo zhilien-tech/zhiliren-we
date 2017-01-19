@@ -33,30 +33,25 @@
 <!--小日历 css-->
 <link rel="stylesheet" href="${base}/public/build/kalendae.css"
 	type="text/css" charset="utf-8">
-
 <link rel="stylesheet" type="text/css"
 	href="${base}/public/dist/css/desktop.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini bodyOne">
 	<div class="wrapper">
-
 		<!--right Content-->
 		<div class="content-wrapper">
 			<!-- Main content -->
 			<section class="content">
 				<div class="row">
-
 					<div class="col-md-9">
 						<!--任务and大日历-->
 						<a href="javascript:;" class="customInterface">自定义界面</a>
-
-						 <div class="nav-tabs-custom" id="taskId" style="display: none">
+						<div class="nav-tabs-custom" id="taskId" style="display: none">
 						 	<ul class="nav nav-tabs custome">
 			                  <li class="active"><a href="#tab_1" data-toggle="tab">询单(6)</a></li>
 			                  <li><a href="#tab_2" data-toggle="tab">订单(10)</a></li>
 			                  <li><a href="#tab_3" data-toggle="tab">我的提醒(<span id="remindMsg"></span>)</a></li>
 			                  <li><a href="#tab_4" data-toggle="tab">账期(2)</a></li>
-			                  
 			                </ul>
 			                <div class="tab-content">
 				                  <div class="tab-pane active" id="tab_1">
@@ -83,9 +78,7 @@
 				                      <li><a href=""><span>昨天</span><span>09：23</span>爱我行&nbsp;&nbsp;&nbsp;王行&nbsp;&nbsp;&nbsp;0494573团需要支付一订</a></li>
 				                    </ul>
 				                  </div>
-				                  
 				            </div>
-			                
 						 </div>
 
 						<div id="maxCId" style="display: none"
@@ -111,7 +104,6 @@
 					</div>
 					<!--end 小日历-->
 					<input id="minCalId" type="hidden" >
-
 				</div>
 			</section>
 			<!-- /.content -->
@@ -126,25 +118,27 @@
 		<div class="layer-content none" id="layer-diy">
 			<form id="checkboxform" method="post">
 				<div class="layer-header">
-					<button type="button" class="btn btn-primary right btn-sm"
-						onclick="closewindow();">取消</button>
-					<button type="button" id="saveCustom"
-						class="btn btn-primary right btn-sm" onclick="checkboxSave()">保存</button>
+					<button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">
+						取消
+					</button>
+					<button type="button" id="saveCustom" class="btn btn-primary right btn-sm" onclick="checkboxSave()">
+						保存
+					</button>
 					<h4>自定义界面</h4>
 				</div>
 				<div class="modal-body">
 					<div class="layer-check">
 						<p>
-							<input id="taskBoxId" name="checkboxname" type="checkbox"
-								value="task" class="checkNum" onchange="checkBoxChange(this)" /> <span>任务</span>
+							<input id="taskBoxId" name="checkboxname" type="checkbox" value="task" class="checkNum" onchange="checkBoxChange(this)" /> 
+							<span>任务</span>
 						</p>
 						<p>
-							<input id="maxCalenderId" name="checkboxname" type="checkbox"
-								value="maxC" class="checkNum" onchange="checkBoxChange(this)"/> <span>大日历</span>
+							<input id="maxCalenderId" name="checkboxname" type="checkbox" value="maxC" class="checkNum" onchange="checkBoxChange(this)"/> 
+							<span>大日历</span>
 						</p>
 						<p>
-							<input id="minCalenderId" name="checkboxname" type="checkbox"
-								value="minC" class="checkNum" onchange="checkBoxChange(this)"/> <span>小日历</span>
+							<input id="minCalenderId" name="checkboxname" type="checkbox" value="minC" class="checkNum" onchange="checkBoxChange(this)"/> 
+							<span>小日历</span>
 						</p>
 					</div>
 				</div>
@@ -575,9 +569,12 @@
 		                  cMonth=k-n+1;//获取页面的 农历 月
 		                  cDay=total;//获取页面的 农历 日
 		                  if(k==12){
-		                      if(cMonth==Math.floor(CalendarData[m]/0x10000)+1){cMonth=1-cMonth;} 
-		                      if(cMonth>Math.floor(CalendarData[m]/0x10000)+1)
-		                          cMonth--;
+		                      if(cMonth==Math.floor(CalendarData[m]/0x10000)+1){
+		                    	  cMonth=1-cMonth;
+		                      } 
+		                      if(cMonth>Math.floor(CalendarData[m]/0x10000)+1){
+		                    	  cMonth--;
+		                      }
 		                  }
 		                  for(var q=0;q<lFtv.length;q++){
 		                      var NjjrMonth=lFtv[q].substr(0,2);//获取农历的节假日 月
@@ -604,23 +601,24 @@
 		          showHoliday();
 		    });
 		    /*---------------------------------end 小日历 节假日------------------------------------*/
-			  //获取当前3个月事件
-			  getTimeStr();
 			  
-			  $('.checkShow').click(function(){//显示提醒 显示/隐藏
-			      if($(this).prop('checked')){
-			            $('.dot').css('display','block');
-			      }else{
-			            $('.dot').css('display','none');
-			      }
-			  });//end 显示提醒 显示/隐藏
-			  backgroundMonth();
+		    //获取当前3个月事件
+			getTimeStr();
+			  
+			$('.checkShow').click(function(){//显示提醒 显示/隐藏
+			    if($(this).prop('checked')){
+			          $('.dot').css('display','block');
+			    }else{
+			          $('.dot').css('display','none');
+			    }
+			});//end 显示提醒 显示/隐藏
 			
-			  
+			/* 小日历 背景显示月份 */
+			backgroundMonth();
 		}
 		//-------------------小日历背景 添加 月份显示-----------------------
 		function backgroundMonth(){
-			
+			/* alert("显示月份"); */
 		    var monthVal1= $('div[data-cal-index="2"] .k-title .k-caption').text();//获取top月份
 		    var DXmonth1=monthVal1.substring((monthVal1.length-1),(monthVal1.length-3));//倒序截取月份
 		    $('.month-i1').text(DXmonth1);

@@ -3,7 +3,7 @@
 <%@include file="/WEB-INF/common/tld.jsp"%>
 
 <!DOCTYPE HTML>
-<html lang="en-US" id="addHtml">
+<html lang="en-US" id="updateHtml">
 <head>
 <meta charset="UTF-8">
 <title>更新</title>
@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
 <link rel="stylesheet" href="${base}/public/dist/css/customer.css">
 <link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css" />
+<link href="${base }/public/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 	.select2-container {
 		width: 95.5% !important;
@@ -431,7 +432,7 @@
 					type : 'post',
 					data : function(params) {
 						return {
-							q : params.term, // search term
+							q : params.term, 
 							page : params.page
 						};
 					},
@@ -441,7 +442,7 @@
 							results : data
 						};
 					},
-					cache : true
+					cache : false
 				},
 				escapeMarkup : function(markup) {
 					return markup;
@@ -474,7 +475,7 @@
 							results : data
 						};
 					},
-					cache : true
+					cache : false
 				},
 				escapeMarkup : function(markup) {
 					return markup;
@@ -508,7 +509,7 @@
 							results : data
 						};
 					},
-					cache : true
+					cache : false
 				},
 				escapeMarkup : function(markup) {
 					return markup;
@@ -542,7 +543,7 @@
 							results : data
 						};
 					},
-					cache : true
+					cache : false
 				},
 				escapeMarkup : function(markup) {
 					return markup;
@@ -576,7 +577,7 @@
 							results : data
 						};
 					},
-					cache : true
+					cache : false
 				},
 				escapeMarkup : function(markup) {
 					return markup;
@@ -801,8 +802,8 @@
 	
 	<!-- 更新 -->
 	<script type="text/javascript">
-	        initvalidate();
-			$('#customerUpdateForm').bootstrapValidator('validate');
+	    initvalidate();
+		$('#customerUpdateForm').bootstrapValidator('validate');
 		function updateCustomerInfo() {
 			$('#customerUpdateForm').bootstrapValidator('validate');
 			var bootstrapValidator = $("#customerUpdateForm").data('bootstrapValidator');

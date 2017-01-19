@@ -18,7 +18,7 @@ $("#sInvID").select2({
 				results : data
 			};
 		},
-		cache : true
+		cache : false
 	},
 	
 	escapeMarkup : function(markup) {

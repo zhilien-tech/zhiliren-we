@@ -88,4 +88,7 @@ public class TPlanInfoAddForm extends AddForm implements Serializable {
 	/**返程抵达城市*/
 	private String backbackcity;
 
+	/**出发城市、抵达城市、航班号json串*/
+	private String cityairlinejson;
+
 }

@@ -15,7 +15,9 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.cri.SqlExpressionGroup;
 
+import com.linyun.airline.entities.TPlanInfoEntity;
 import com.uxuexi.core.common.util.Util;
+import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
@@ -62,13 +64,14 @@ public class EditPlanSqlForm extends DataTablesParamForm {
 
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
-		cnd.and("tt.issave", "=", "1");
+		cnd.and("issave", "=", "1");
 		SqlExpressionGroup exp = new SqlExpressionGroup();
-		exp.and("tt.travelname", "is", null).or("tt.travelname", "=", "").or("tu.ordersnum", "is", null);
+		exp.and("travelname", "is", null).or("travelname", "=", "").or("ordernumber", "is", null)
+				.or("ordernumber", "=", "");
 		cnd.and(exp);
-		cnd.and("tt.companyid", "=", companyid);
+		cnd.and("companyid", "=", companyid);
 		if (!Util.isEmpty(travelname1)) {
-			cnd.and("tt.travelname", "like", "%" + travelname1 + "%");
+			cnd.and("travelname", "like", "%" + travelname1 + "%");
 		}
 		/*if (idordernum == 1) {
 			cnd.and("tu.ordersnum", "is not", null);
@@ -76,49 +79,37 @@ public class EditPlanSqlForm extends DataTablesParamForm {
 			cnd.and("tu.ordersnum", "is", null);
 
 		}*/
-		if (!Util.isEmpty(leaveairline1)) {
-			cnd.and("tt.leaveairline", "like", "%" + leaveairline1 + "%");
-		}
-		if (!Util.isEmpty(leavescity1)) {
-			cnd.and("tt.leavescity", "like", "%" + leavescity1 + "%");
-		}
-		if (!Util.isEmpty(backairline1)) {
-			cnd.and("tt.backairline", "like", "%" + backairline1 + "%");
-		}
-		if (!Util.isEmpty(backscity1)) {
-			cnd.and("tt.backscity", "like", "%" + backscity1 + "%");
-		}
 		if (!Util.isEmpty(peoplecount1)) {
-			cnd.and("tt.peoplecount", "=", peoplecount1);
+			cnd.and("peoplecount", "=", peoplecount1);
 		}
 		if (!Util.isEmpty(dayscount1)) {
-			cnd.and("tt.dayscount", "=", dayscount1);
+			cnd.and("dayscount", "=", dayscount1);
 		}
 		if (!Util.isEmpty(unioncity1)) {
-			cnd.and("tt.unioncity", "like", "%" + unioncity1 + "%");
+			cnd.and("unioncity", "like", "%" + unioncity1 + "%");
 		}
 		if (!Util.isEmpty(teamtype)) {
 			if (teamtype == 3) {
-				cnd.and("tt.isclose", "=", 1);
+				cnd.and("isclose", "=", 1);
 			} else {
-				cnd.and("tt.isclose", "=", 0);
-				cnd.and("tt.teamtype", "=", teamtype);
+				cnd.and("isclose", "=", 0);
+				cnd.and("teamtype", "=", teamtype);
 			}
 		}
 		if (!Util.isEmpty(startdate1)) {
-			cnd.and("tt.leavesdate", ">=", startdate1);
+			cnd.and("leavesdate", ">=", startdate1);
 		}
 		if (!Util.isEmpty(enddate1)) {
-			cnd.and("tt.leavesdate", "<=", enddate1);
+			cnd.and("leavesdate", "<=", enddate1);
 		}
-		cnd.orderBy("tt.leavesdate", "asc");
+		cnd.orderBy("leavesdate", "asc");
 		return cnd;
 	}
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {
-		String sqlString = sqlManager.get("get_editplan_info_list");
-		//String sqlString = EntityUtil.entityCndSql(TPlanInfoEntity.class);
+		//String sqlString = sqlManager.get("get_editplan_info_list");
+		String sqlString = EntityUtil.entityCndSql(TPlanInfoEntity.class);
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;

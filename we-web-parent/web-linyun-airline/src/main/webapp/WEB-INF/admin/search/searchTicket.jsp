@@ -121,7 +121,10 @@
                       	<a id="tab_1Id" href="#tab_1" data-toggle="tab">内陆跨海</a>
                       </li>
                       <li>
-                      	<a id="tab_2Id" href="#tab_2" data-toggle="tab">国际</a>
+                      	<a id="tab_3Id" href="#tab_1" data-toggle="tab">国际</a>
+                      </li>
+                      <li>
+                      	<a id="tab_2Id" href="#tab_2" data-toggle="tab">机票库</a>
                       </li>
                     </ul>
                     <div class="tab-content">
@@ -137,6 +140,9 @@
                                	</td>
                                 <td>
                                 	<input id="moreType" type="radio" name="voyageType" value="3" onclick="radioFunct()"><span>多程</span>
+                                </td>
+                                <td>
+                                	<input id="nonstopType" name="nonstopType" value="true" type="checkbox" class="checkClass" checked="checked"><span class="checkSpan">直飞</span>
                                 </td>
                               </tr>
                           </table>
@@ -168,13 +174,13 @@
                               	<!-- <input id="" name="" type="text" class="form-control input-sm" placeholder="2016-12-21"> -->
                               	<input id="outDatepicker0" name="departuredate0" onkeypress="onkeyEnter();" type="text" class="form-control input-sm" onFocus="WdatePicker({startDate:'%y', dateFmt:'yyyy-MM-dd',minDate:'%y-%M-{%d}'})" placeholder="2017-01-01">
                               </td>
-                              <td class="setoutLabel">
+                              <td class="setoutLabel gj1">
                               <label>返回日期：</label></td>
-                              <td class="setoutinput">
+                              <td class="setoutinput gj1">
                               	<!-- <input type="text" class="form-control input-sm" placeholder="2016-12-25"> -->
                               	<input id="returnDatepicker0" name="returndate0" onkeypress="onkeyEnter();" type="text" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'outDatepicker0\')}',maxDate:'#F{$dp.$D(\'outDatepicker0\',{d:15})}'})" placeholder="2017-01-15">
                               </td>
-                              <td class="addIconTd addSingleIconTd none"><i class="glyphicon glyphicon-plus addMore"></i></td>
+                              <td class="addIconTd addSingleIconTd none gjAdd"><i class="glyphicon glyphicon-plus addMore"></i></td>
                            </tr>
                            <!-- 多程查询 end -->
    						 </table>
@@ -229,7 +235,9 @@
                               </div>
                           </div>
                       </div>
-                      <!-- 团队票 检索 -->
+                      
+                      
+                      <!-- 机票库 检索 -->
                       <div class="tab-pane" id="tab_2">
                           <table class="scatteredTable1">
                               <tr>
@@ -239,7 +247,7 @@
                                  <td><input type="radio" name="voyageType1" value="3" onclick="radioFunct1()"><span>多程</span></td>
                               </tr>
                           </table><!--搜索筛选/航程类型-->
-<!-- 查询团队机票 start -->                  
+<!-- 查询机票库 start -->                  
 <form id="searchTeamTicketsForm" method="post">
       <table id="teamTable" class="scatteredTable2">
                             <input id="teamorigin" name="origin" type="hidden"/>
@@ -267,12 +275,12 @@
                               	<!-- <input type="text" class="form-control input-sm" placeholder="2016-12-21"> -->
                               	<input id="teamOutDatepicker0" name="departuredate1" onkeypress="onkeyTeamEnter();" type="text" class="form-control input-sm" onFocus="WdatePicker({startDate:'%y', dateFmt:'yyyy-MM-dd',minDate:'%y-%M-{%d}'})" placeholder="2017-01-01">
                               </td>
-                              <td class="setoutLabel"><label>返回日期：</label></td>
-                              <td class="setoutinput">
+                              <td class="setoutLabel fhrq1"><label>返回日期：</label></td>
+                              <td class="setoutinput fhrq1">
                               	<!-- <input type="text" class="form-control input-sm" placeholder="2016-12-25"> -->
                               	<input id="teamReturnDatepicker0" name="returndate1" type="text" onkeypress="onkeyTeamEnter();" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'teamOutDatepicker0\')}'})" placeholder="2017-01-15">
                               </td>
-                              <td class="addIconTd addTeamIconTd none"><i class="glyphicon glyphicon-plus addMore"></i></td>
+                              <td class="addIconTd addTeamIconTd none jpkAdd"><i class="glyphicon glyphicon-plus addMore"></i></td>
                             </tr>
 	 </table>
 	 <table class="scatteredTable3">
@@ -404,35 +412,17 @@
 				searchInlandOrder();
 				/* 点击不同段落 切换按钮样式 */
 				var styleIndex = index+1;
-				$("#travelTypeNum li").attr("class", "");
 				$("#moreNum"+styleIndex).attr("class", "btnStyle");
-				/* var i = num_id.substring(3,num_id.length);
-				var index = "";
-				if(i%2){
-					//去程
-					index = (i-1)/2;
-					$("#origin").val($("#outCity"+index).select2("val"));
-					$("#destination").val($("#singleArriveCity"+index).select2("val"));
-					$("#departuredate").val($("#outDatepicker"+index).val());
-					$("#returndate").val($("#returnDatepicker"+index).val());
-					//获取去程数据 
-					$("#airInfoList").val("1");
-					$("#searchSingleTicketsBtn").click();
-				}else{
-					index = (i-2)/2;
-					$("#origin").val($("#singleArriveCity"+index).select2("val"));
-					$("#destination").val($("#outCity"+index).select2("val"));
-					$("#departuredate").val($("#returnDatepicker"+index).val());
-					$("#returndate").val($("#outDatepicker"+index).val());
-					//获取返程数据
-					$("#airInfoList").val("2");
-					$("#searchSingleTicketsBtn").click();	  					
-				} */
+				
+				/*当前出发日期 卡片变色*/
+				var cardIndex = outDateI.substring(5,outDateI.length);
+				alert(cardIndex);
+				$("#"+cardIndex).attr("class", "btnStyle");
+				
 			}
-			/* 点击 团客每段提醒事件 */
+			/* 点击 机票库 每段提醒事件 */
 			if(num_id != null){
 				var num_id = $(e.target).attr('id'); 
-				/* 点击 散客每段提醒事件 */
 				var teamNumMore = num_id.indexOf("teamNumMore");
 				if(teamNumMore == 0){
 					/* 去程数据 */
@@ -450,29 +440,11 @@
 					var styleIndex = index+1;
 					$("#travelTeamTypeNum li").attr("class", "");
 					$("#teamNumMore"+styleIndex).attr("class", "btnStyle");
-					/* var index = "";
-					if(i%2){
-						//去程数据 
-						index = (i-1)/2;
-						$("#teamorigin").val($("#teamOutCity"+index).select2("val"));
-						$("#teamdestination").val($("#teamArriveCity"+index).select2("val"));
-						$("#teamdeparturedate").val($("#teamOutDatepicker"+index).val());
-						$("#teamreturndate").val($("#teamReturnDatepicker"+index).val());
-						$("#searchTeamTicketsBtn").click();
-					}else{
-						//返程数据
-						index = (i-2)/2;
-						$("#teamorigin").val($("#teamArriveCity"+index).select2("val"));
-						$("#teamdestination").val($("#teamOutCity"+index).select2("val"));
-						$("#teamdeparturedate").val($("#teamReturnDatepicker"+index).val());
-						$("#teamreturndate").val($("#teamOutDatepicker"+index).val());
-						$("#searchTeamTicketsBtn").click(); 
-					} */
 				}
 			}
 		});
   		
-		/* ------------------------散客 航程类型 点击事件-------------------------*/
+		/* ------------------------内陆跨海 航程类型 点击事件-------------------------*/
 		function radioFunct(){
 			var radio = document.getElementsByName("voyageType");  
 			for (i=0; i<radio.length; i++) {  
@@ -484,26 +456,23 @@
 					$("#outDatepicker0").val("");
 					$("#returnDatepicker0").val("");
 					if (radioValue==1) {
-						$('.setoutLabel').hide();
-						$('.setoutinput').hide();
-						$('.addIconTd').hide();
+						$('.gj1').hide();
+						$('.gjAdd').hide();
 						$('.removeIconTd').hide();
 					}else if(radioValue==2){
-						$('.setoutLabel').show();
-						$('.setoutinput').show();
-						$('.addIconTd').hide();
+						$('.gj1').show();
+						$('.gjAdd').hide();
 						$('.removeIconTd').hide();
 					}else if(radioValue==3){
-						$('.setoutLabel').hide();
-						$('.setoutinput').hide();
-						$('.addIconTd').show();
+						$('.gj1').hide();
+						$('.gjAdd').show();
 						$('.removeIconTd').show();
 					};
 					clearSearchHtml();
 				}  
 			}
 		}
-		/* ------------------------团队 航程类型 点击事件-------------------------*/
+		/* ------------------------机票库 航程类型 点击事件-------------------------*/
 		function radioFunct1(){
 			var radio1 = document.getElementsByName("voyageType1");  
 			for (i=0; i<radio1.length; i++) {  
@@ -516,19 +485,16 @@
 					$("#teamReturnDatepicker0").val("");
 					$("#teamTable tr").not(":first").remove();
 					if (radioValue1==1) {
-						$('.setoutLabel').hide();
-						$('.setoutinput').hide();
-						$('.addIconTd').hide();
+						$('.fhrq1').hide();
+						$('.jpkAdd').hide();
 						$('.removeIconTd').hide();
 					}else if(radioValue1==2){
-						$('.setoutLabel').show();
-						$('.setoutinput').show();
-						$('.addIconTd').hide();
+						$('.fhrq1').show();
+						$('.jpkAdd').hide();
 						$('.removeIconTd').hide();
 					}else if(radioValue1==3){
-						$('.setoutLabel').hide();
-						$('.setoutinput').hide();
-						$('.addIconTd').show();
+						$('.fhrq1').hide();
+						$('.jpkAdd').show();
 						$('.removeIconTd').show();
 					};
 					clearSearchTeamHtml();

@@ -48,5 +48,4 @@ public class TDepartureCityUpdateForm extends ModForm implements Serializable {
 
 	/**国际状态*/
 	private Integer internatStatus;
-
 }

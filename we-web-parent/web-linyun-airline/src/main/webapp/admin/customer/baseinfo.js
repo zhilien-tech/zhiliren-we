@@ -12,12 +12,11 @@ $("#companyId").select2({
 		},
 		processResults : function(data, params) {
 			params.page = params.page || 1;
-
 			return {
 				results : data
 			};
 		},
-		cache : true
+		cache : false
 	},
 	val: agentId,
 	escapeMarkup : function(markup) {
@@ -46,12 +45,16 @@ $("#city").select2({
 			},
 			processResults : function(data, params) {
 				params.page = params.page || 1;
-
+				var selectdata = $.map(data, function (obj) {
+					obj.id = obj.id; 
+					obj.text = obj.text; 
+					return obj;
+				});
 				return {
-					results : data
+					results : selectdata
 				};
 			},
-			cache : true
+			cache : false
 		},
 		
 		escapeMarkup : function(markup) {
