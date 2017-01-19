@@ -247,7 +247,7 @@ $(document).on('click','#teamNum2',function(){
 });
 
 
-//国际表格初始化
+//机票库表格初始化
 var datatable2;
 function initDatatable2() {
 	datatable2 = $('#datatable2').DataTable({

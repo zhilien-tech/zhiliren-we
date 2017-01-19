@@ -15,9 +15,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.cri.SqlExpressionGroup;
 
-import com.linyun.airline.entities.TPlanInfoEntity;
 import com.uxuexi.core.common.util.Util;
-import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
@@ -81,10 +79,10 @@ public class SearchTicketSqlForm extends DataTablesParamForm {
 
 		cnd.and("companyid", "=", companyId);
 		if (!Util.isEmpty(origin)) {
-			cnd.and("leavescity", "like", "%" + origin + "%");
+			cnd.and("leavecity", "like", "%" + origin + "%");
 		}
 		if (!Util.isEmpty(destination)) {
-			cnd.and("backscity", "like", "%" + destination + "%");
+			cnd.and("arrvicity", "like", "%" + destination + "%");
 		}
 		if (!Util.isEmpty(departuredate)) {
 			cnd.and("leavesdate", ">=", departuredate);
@@ -101,7 +99,7 @@ public class SearchTicketSqlForm extends DataTablesParamForm {
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {
-		String sqlString = EntityUtil.entityCndSql(TPlanInfoEntity.class);
+		String sqlString = sqlManager.get("plan_ticket_list");
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;
