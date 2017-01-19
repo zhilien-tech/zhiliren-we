@@ -90,7 +90,7 @@ public class SearchTicketSqlForm extends DataTablesParamForm {
 			cnd.and("leavesdate", ">=", departuredate);
 		}
 		if (!Util.isEmpty(returndate)) {
-			cnd.and("backsdate", ">=", returndate);
+			cnd.and("leavesdate", "<=", returndate);
 		}
 		if (!Util.isEmpty(includedcarriers)) {
 			cnd.and("airlinename", "like", "%" + includedcarriers + "%");

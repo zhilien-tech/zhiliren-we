@@ -12,8 +12,8 @@
 <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
 <link rel="stylesheet" href="${base}/public/dist/css/query.css"><!--本页面styleFlie-->
-
 </head>
+
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
 		<!--right Content-->
