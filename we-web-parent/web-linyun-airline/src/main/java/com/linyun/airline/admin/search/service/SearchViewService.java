@@ -278,15 +278,12 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
 		sqlForm.setCompanyId(companyId);
-
 		Map<String, Object> listPageData = this.listPage4Datatables(sqlForm);
 		List<Record> list = (List<Record>) listPageData.get("data");
-
 		boolean isOrigin = !Util.isEmpty(sqlForm.getOrigin());
 		boolean isDestination = !Util.isEmpty(sqlForm.getDestination());
 		boolean isDeparturedate = !Util.isEmpty(sqlForm.getDeparturedate());
 		boolean isReturndate = !Util.isEmpty(sqlForm.getReturndate());
-
 		for (Record record : list) {
 			Cnd cnd = Cnd.NEW();
 			cnd.and("planid", "=", record.get("id"));
@@ -302,9 +299,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			List<TAirlineInfoEntity> query = dbDao.query(TAirlineInfoEntity.class, cnd, null);
 			record.put("airinfo", query);
 		}
-
 		listPageData.remove("data");
-
 		List<Record> list2 = new ArrayList<Record>();
 		if (isOrigin || isDestination) {
 			for (Record record : list) {
@@ -318,7 +313,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		} else {
 			listPageData.put("data", list);
 		}
-
 		return listPageData;
 	}
 

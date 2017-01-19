@@ -127,7 +127,6 @@ function clearSearchTeamHtml(){
 	document.getElementById('datatable2_info').innerHTML="";
 	document.getElementById('datatable2_paginate').innerHTML="";
 	document.getElementById('datatable2').innerHTML="";
-	document.getElementsByName("voyageType1")[1].checked="checked";//radio 默认 选中往返
 	$("#teamAirLevel").val("1");
 }
 
