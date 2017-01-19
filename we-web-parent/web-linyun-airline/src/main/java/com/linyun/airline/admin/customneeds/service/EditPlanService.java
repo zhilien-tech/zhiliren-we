@@ -29,20 +29,23 @@ import org.nutz.log.Logs;
 
 import com.google.common.base.Splitter;
 import com.linyun.airline.admin.Company.service.CompanyViewService;
+import com.linyun.airline.admin.customneeds.form.CityAirlineJson;
 import com.linyun.airline.admin.customneeds.form.EditPlanSqlForm;
+import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
-import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.common.util.ExportExcel;
-import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAirlineInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
+import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TFlightInfoEntity;
 import com.linyun.airline.entities.TPlanInfoEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUpOrderTicketEntity;
+import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.forms.TPlanInfoUpdateForm;
 import com.uxuexi.core.common.util.DateUtil;
+import com.uxuexi.core.common.util.JsonUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.base.service.BaseService;
 
@@ -129,9 +132,12 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 	 * 跳转到编辑计划页面
 	 *
 	 * @param id
+	 * @param session 
 	 * @return TODO跳转到编辑计划页面
 	 */
-	public Object editplanpage(long id) {
+	public Object editplanpage(long id, HttpSession session) {
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			//准备回显数据
@@ -146,19 +152,27 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 			}
 			//获取订单信息
 			result.put("planinfo", planInfoEntity);
+			//获取航段信息
+			List<TAirlineInfoEntity> airlineinfo = dbDao.query(TAirlineInfoEntity.class, Cnd.where("planid", "=", id)
+					.orderBy("leavedate", "asc"), null);
+			result.put("airlineinfo", airlineinfo);
 			//准备城市下拉数据
-			List<DictInfoEntity> city = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", CITYCODE), null);
+			//List<DictInfoEntity> city = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", CITYCODE), null);
+			List<TDepartureCityEntity> city = externalInfoService.findCityByCode("", CITYCODE);
 			//旅行社下拉
-			result.put("travel", companyViewService.getCompanyList(CompanyTypeEnum.AGENT.intKey(), ""));
+			//上游公司信息
+			TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", company.getId()));
+			result.put("travel",
+					dbDao.query(TCustomerInfoEntity.class, Cnd.where("upComId", "=", upcompany.getId()), null));
 			//航空公司下拉
-			result.put("aircom", dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", AIRCOMCODE), null));
+			//result.put("aircom", dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", AIRCOMCODE), null));
 			//城市下拉
 			result.put("city", city);
 			//航班号下拉
 			result.put("airline", dbDao.query(TFlightInfoEntity.class, null, null));
 			//准备联运城市下拉数据
-			DictInfoEntity dictinfo = new DictInfoEntity();
-			dictinfo.setDictName(QUANGUOLIANYUN);
+			TDepartureCityEntity dictinfo = new TDepartureCityEntity();
+			dictinfo.setId(0);
 			dictinfo.setDictCode(QUANGUOLIANYUN);
 			city.add(0, dictinfo);
 			//联运下拉
@@ -180,17 +194,43 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 	 */
 	public Object updateEditPlan(TPlanInfoUpdateForm updateForm) {
 		TPlanInfoEntity planInfoEntity = this.fetch(updateForm.getId());
-		planInfoEntity.setAirlinename(updateForm.getAirlinename());
+		//planInfoEntity.setAirlinename(updateForm.getAirlinename());
 		planInfoEntity.setTravelname(updateForm.getTravelname());
 		planInfoEntity.setPeoplecount(updateForm.getPeoplecount());
 		planInfoEntity.setDayscount(updateForm.getDayscount());
 		planInfoEntity.setUnioncity(updateForm.getUnioncity());
-		planInfoEntity.setLeavesdate(DateUtil.string2Date(updateForm.getLeavedateString(), DateUtil.FORMAT_YYYY_MM_DD));
-		planInfoEntity.setLeavescity(updateForm.getLeavescity());
-		planInfoEntity.setLeaveairline(updateForm.getLeaveairline());
-		planInfoEntity.setBacksdate(DateUtil.string2Date(updateForm.getBackdateString(), DateUtil.FORMAT_YYYY_MM_DD));
-		planInfoEntity.setBackscity(updateForm.getBackscity());
-		planInfoEntity.setBackairline(updateForm.getBackairline());
+		//页面获取的数据转换为list<扩展类>
+		List<CityAirlineJson> airlineJson = JsonUtil.fromJsonAsList(CityAirlineJson.class,
+				updateForm.getCityairlinejson());
+		//更新多航段
+		//查询之前的list
+		List<TAirlineInfoEntity> before = dbDao.query(TAirlineInfoEntity.class,
+				Cnd.where("planid", "=", planInfoEntity.getId()), null);
+		//组装list
+		List<TAirlineInfoEntity> airlines = new ArrayList<TAirlineInfoEntity>();
+		//添加多个航段
+		for (CityAirlineJson cityAirlineJson : airlineJson) {
+			TAirlineInfoEntity airline = new TAirlineInfoEntity();
+			airline.setLeavecity(cityAirlineJson.getLeavescity());
+			airline.setArrvicity(cityAirlineJson.getBackscity());
+			airline.setAilinenum(cityAirlineJson.getLeaveairline());
+			airline.setPlanid(planInfoEntity.getId());
+			if (!Util.isEmpty(cityAirlineJson.getSetoffdate())) {
+				airline.setLeavedate(DateUtil.string2Date(cityAirlineJson.getSetoffdate(), DateUtil.FORMAT_YYYY_MM_DD));
+			}
+			//添加时间
+			if (!Util.isEmpty(cityAirlineJson.getSetofftime())) {
+				String[] offtimes = cityAirlineJson.getSetofftime().split("/");
+				if (!Util.isEmpty(offtimes[0])) {
+					airline.setLeavetime(offtimes[0]);
+				}
+				if (!Util.isEmpty(offtimes[1])) {
+					airline.setArrivetime(offtimes[1]);
+				}
+			}
+			airlines.add(airline);
+		}
+		dbDao.updateRelations(before, airlines);
 		return dbDao.update(planInfoEntity);
 	}
 

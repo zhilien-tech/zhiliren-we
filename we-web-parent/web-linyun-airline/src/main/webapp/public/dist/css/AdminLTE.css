@@ -4976,3 +4976,5 @@ p{margin: 0 0 0px 10px;}
 .strip2{background-color: #e9f1f5;}
 .has-feedback .form-control{padding-right: 10px !important;}
 .table-hover>tbody>tr:hover {background-color: rgba(0, 166, 90, 0.62);}/*table 滑动效果*/
+.select2-dropdown--below{width: 150px !important;}
+.sorting_1 input{display: block;margin: 30% auto;}

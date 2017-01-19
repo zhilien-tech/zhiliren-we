@@ -336,7 +336,7 @@
                           
                           <label class="col-sm-1 text-right padding cf">从：</label>
                             <div class="col-sm-3 padding">
-                              <input type="text" class="form-control input-sm timeWid inputdatestr" id="startdate1" name="startdate1" placeholder="2016-11-05" onkeypress="onEnterSearch();" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'enddate1\')}'})"> - <input type="text" id="enddate1" name="enddate1" class="form-control input-sm timeWid inputdatestr" placeholder="2016-12-01" onkeypress="onEnterSearch();" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startdate1\')}'})">
+                              <input type="text" class="form-control input-sm timeWid inputdatestr" id="startdate1" name="startdate1" placeholder="2016-11-05" onkeypress="onEnterSearch();" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'enddate1\')}'})"> - <input type="text" id="enddate1" name="enddate1" class="form-control input-sm timeWid inputdatestr" placeholder="2016-12-01" onkeypress="onEnterSearch();" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startdate1\')}'})">
                             </div>
                           <label class="col-sm-1 text-right padding">起飞城市：</label>
                           <div class="col-sm-1 padding">

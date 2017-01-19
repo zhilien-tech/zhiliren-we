@@ -98,7 +98,15 @@ function initDatatable2() {
                     	}
                     },
                     {"data": "dayscount", "bSortable": false},
-                    {"data": "travelname", "bSortable": false},
+                    {"data": "travelname", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var result=' ';
+                    		if(row.travelname){
+                    			result = row.travelname;
+                    		}
+                    		return result;
+                    	}
+                    },
                     {"data": "unioncity", "bSortable": false}
             ],
         columnDefs: [{
@@ -251,7 +259,7 @@ function editplan(id){
   	    fix: false,
   	    maxmin: false,
   	    shadeClose: false,
-  	    area: ['900px', '500px'],
+  	    area: ['1100px', '500px'],
   	    content: BASE_PATH + '/admin/customneeds/editplanpage.html?id='+id,
   	    end:function(){
   	    	datatable2.ajax.reload(null,false);
