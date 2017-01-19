@@ -190,7 +190,7 @@ function makePart(){
 		document.getElementById('travelTeamTypeNum').innerHTML=html;
 	}
 	if(airTeamType == 2){
-		/*国际往返不需要显示第二段*/
+		/*往返不需要显示第二段*/
 		/*html = '<li id="teamNum1" class="btnStyle dClass">第1段</li><li id="teamNum2"  class="dClass">第2段</li>';*/
 		html = '<li id="teamNum1" class="btnStyle dClass">第1段</li>';
 		document.getElementById('travelTeamTypeNum').innerHTML=html;
@@ -389,7 +389,7 @@ function getEditPlanParam(){
 	return param;
 }
 
-/* 团客多程查询 */
+/* 机票库多程查询 */
 $("#searchTeamTicketsBtn").click(function() {
 	var linkName = $("#linkNameId").select2("val");
 	var phoneNum = $("#phoneNumId").select2("val");

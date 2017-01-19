@@ -418,7 +418,6 @@
 				
 				/*当前出发日期 卡片变色*/
 				var cardIndex = outDateI.substring(5,outDateI.length);
-				alert(cardIndex);
 				$("#"+cardIndex).attr("class", "btnStyle");
 				
 			}

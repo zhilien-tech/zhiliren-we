@@ -282,8 +282,16 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		Map<String, Object> listPageData = this.listPage4Datatables(sqlForm);
 		List<Record> list = (List<Record>) listPageData.get("data");
 		for (Record record : list) {
-			List<TAirlineInfoEntity> query = dbDao.query(TAirlineInfoEntity.class,
-					Cnd.where("planid", "=", record.get("id")).orderBy("leavedate", "asc"), null);
+			Cnd cnd = Cnd.NEW();
+			cnd.and("planid", "=", record.get("id"));
+
+			if (!Util.isEmpty(sqlForm.getOrigin()) || !Util.isEmpty(sqlForm.getDestination())) {
+				cnd.and("leavecity", "=", record.get("leavescity"));
+				cnd.and("arrvicity", "=", record.get("backscity"));
+			}
+
+			cnd.orderBy("leavedate", "asc");
+			List<TAirlineInfoEntity> query = dbDao.query(TAirlineInfoEntity.class, cnd, null);
 			record.put("airinfo", query);
 		}
 		listPageData.remove("data");
