@@ -281,21 +281,43 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 		Map<String, Object> listPageData = this.listPage4Datatables(sqlForm);
 		List<Record> list = (List<Record>) listPageData.get("data");
+
+		boolean isOrigin = !Util.isEmpty(sqlForm.getOrigin());
+		boolean isDestination = !Util.isEmpty(sqlForm.getDestination());
+		boolean isDeparturedate = !Util.isEmpty(sqlForm.getDeparturedate());
+		boolean isReturndate = !Util.isEmpty(sqlForm.getReturndate());
+
 		for (Record record : list) {
 			Cnd cnd = Cnd.NEW();
 			cnd.and("planid", "=", record.get("id"));
-
-			if (!Util.isEmpty(sqlForm.getOrigin()) || !Util.isEmpty(sqlForm.getDestination())) {
-				cnd.and("leavecity", "=", record.get("leavescity"));
-				cnd.and("arrvicity", "=", record.get("backscity"));
+			if (isOrigin || isDestination) {
+				if (isOrigin) {
+					cnd.and("leavecity", "=", sqlForm.getOrigin());
+				}
+				if (isDestination) {
+					cnd.and("arrvicity", "=", sqlForm.getDestination());
+				}
 			}
-
 			cnd.orderBy("leavedate", "asc");
 			List<TAirlineInfoEntity> query = dbDao.query(TAirlineInfoEntity.class, cnd, null);
 			record.put("airinfo", query);
 		}
+
 		listPageData.remove("data");
-		listPageData.put("data", list);
+
+		List<Record> list2 = new ArrayList<Record>();
+		if (isOrigin || isDestination) {
+			for (Record record : list) {
+				Object obj = record.get("airinfo");
+				if (!Util.isEmpty(obj)) {
+					list2.add(record);
+				}
+			}
+			listPageData.put("data", list2);
+			listPageData.put("recordsFiltered", list2.size());
+		} else {
+			listPageData.put("data", list);
+		}
 
 		return listPageData;
 	}
