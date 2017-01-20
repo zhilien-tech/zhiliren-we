@@ -165,7 +165,7 @@ getDateCard =function(){
 		for(var i=days; i>=1; i--){
 			var beforeDate= outDate.getTime()- 1000*60*60*24*i;
 			var changeDate=new Date(beforeDate);
-			var formatDate = getNowFormatDate(changeDate).substring(0, 5);
+			var formatDate = getNowFormatDate(changeDate);
 			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="card'+formatDate+'">'+formatDate+'</li>';
 		}
 	}else{
