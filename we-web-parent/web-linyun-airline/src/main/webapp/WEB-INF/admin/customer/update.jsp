@@ -1,5 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java"
-	pageEncoding="UTF-8" errorPage="/WEB-INF/common/500.jsp"%>
+<%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" errorPage="/WEB-INF/common/500.jsp"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
 
 <!DOCTYPE HTML>
@@ -451,7 +450,7 @@
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
 				maximumSelectionLength : 1, //设置最多可以选择多少项
-				tags : true, //设置必须存在的选项 才能选中
+				tags : false, //设置必须存在的选项 才能选中
 			});
 			_comSelect.val([${obj.comIds}]).trigger("change");
 			
@@ -484,7 +483,7 @@
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
 				maximumSelectionLength : 5, //设置最多可以选择多少项
-				tags : true, //设置必须存在的选项 才能选中
+				tags : false, //设置必须存在的选项 才能选中
 			});
 			_citySelect.val([${obj.outcityIds}]).trigger("change");
 			
@@ -518,7 +517,7 @@
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
 				maximumSelectionLength : 5, //设置最多可以选择多少项
-				tags : true, //设置必须存在的选项 才能选中
+				tags : false, //设置必须存在的选项 才能选中
 			});
 			_innerLineSelect.val([${obj.innerCityIds}]).trigger("change");
 			
@@ -552,7 +551,7 @@
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
 				maximumSelectionLength : 5, //设置最多可以选择多少项
-				tags : true, //设置必须存在的选项 才能选中
+				tags : false, //设置必须存在的选项 才能选中
 			});
 			_interLineSelect.val([${obj.interLineIds}]).trigger("change");
 			
@@ -586,7 +585,7 @@
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
 				maximumSelectionLength : 5, //设置最多可以选择多少项
-				tags : true, //设置必须存在的选项 才能选中
+				tags : false, //设置必须存在的选项 才能选中
 			});
 			_invioceSelect.val([${obj.invioceIds}]).trigger("change");
 			
