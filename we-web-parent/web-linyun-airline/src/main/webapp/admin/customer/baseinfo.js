@@ -56,7 +56,6 @@ $("#city").select2({
 			},
 			cache : false
 		},
-		
 		escapeMarkup : function(markup) {
 			return markup;
 		}, // let our custom formatter work

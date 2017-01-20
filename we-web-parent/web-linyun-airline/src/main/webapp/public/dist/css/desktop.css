@@ -51,12 +51,12 @@ span.fc-button {border-radius: 4px;margin-left: 10px;}
 #minCalen .k-title{overflow: visible;width: 100%;padding-right:23px;}
 #minCalen .k-days span{height: 30px;width:13.5%;}
 @media screen and (max-width: 1224px) and (min-width: 1180px){
-	#minCalen div[data-cal-index="0"] .k-title .k-btn-next-month{left: -30px;}
+	#minCalen div[data-cal-index="0"] .k-title .k-btn-next-month{left: -70px;}
 	#minCalen div[data-cal-index="3"] .k-title .k-btn-previous-month{left: -50px;}
 }
 @media screen and (max-width: 1320px) and (min-width: 1225px){
-	#minCalen div[data-cal-index="0"] .k-btn-next-month{left: -30px !important;}
-	#minCalen div[data-cal-index="3"] .k-title .k-btn-previous-month{left: -50px;}
+	#minCalen div[data-cal-index="0"] .k-btn-next-month{left: -75px !important;}
+	#minCalen div[data-cal-index="3"] .k-title .k-btn-previous-month{left: -60px;}
 }
 @media screen and (max-width: 1399px) and (min-width: 1321px){
 	#minCalen div[data-cal-index="0"] .k-title .k-btn-previous-month{left: -55px;}

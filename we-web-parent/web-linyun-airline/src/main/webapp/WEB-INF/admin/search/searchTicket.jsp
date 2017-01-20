@@ -154,6 +154,7 @@
 						   <input id="departuredate" name="departuredate" type="hidden"/>
                            <input id="returndate" name="returndate" type="hidden"/>
                            <input id="addbtnStyle" type="hidden"/><!-- 目的：设置日期卡片的颜色 -->
+                           <input id="changebtnStyle" type="hidden"/><!-- 目的：设置日期卡片的颜色 -->
                            <input id="departureCardDate" type="hidden"/><!-- 目的：设置日期卡片 -->
                            <input id="returnCardDate" type="hidden"/><!-- 目的：设置日期卡片 -->
                            <!-- 多程查询 start -->
@@ -402,6 +403,7 @@
 				var ArriveCityI = $("#singleArriveCity"+index).select2("val");
 				var outDateI = $("#outDatepicker"+index).val();
 				var returnDateI = $("#returnDatepicker"+index).val();
+				
 				$("#duanshuId").val(index);
 				$("#origin").val(outCityI);
 				$("#destination").val(ArriveCityI);
@@ -416,9 +418,6 @@
 				var styleIndex = index+1;
 				$("#moreNum"+styleIndex).attr("class", "btnStyle");
 				
-				/*当前出发日期 卡片变色*/
-				var cardIndex = outDateI.substring(5,outDateI.length);
-				$("#card"+cardIndex).attr("class", "btnStyle");
 				
 			}
 			/* 点击 机票库 每段提醒事件 */
@@ -441,6 +440,7 @@
 					var styleIndex = index+1;
 					$("#travelTeamTypeNum li").attr("class", "");
 					$("#teamNumMore"+styleIndex).attr("class", "btnStyle");
+					
 				}
 			}
 		});
@@ -499,7 +499,6 @@
 						$('.removeIconTd').show();
 					};
 					clearSearchTeamHtml();
-					
 				}  
 			}
 		}
