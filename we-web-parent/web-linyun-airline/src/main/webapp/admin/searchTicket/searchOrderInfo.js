@@ -153,9 +153,9 @@ cardDate = function(obj){
 }
 getDateCard =function(){
 	var dateNumHtml = "";
-	var outStr = $("#departureCardDate").val();
+	var outStr = $("#departuredate").val();
 	var outDate = new Date(outStr.replace(/-/g,"/"));
-	var returnStr = $("#returnCardDate").val();
+	var returnStr = $("#returndate").val();
 	var returnDate = new Date(returnStr.replace(/-/g,"/"));
 	/* 出发前的日期 */
 	var time = outDate.getTime() - new Date().getTime() ; //日期的long型值之差
