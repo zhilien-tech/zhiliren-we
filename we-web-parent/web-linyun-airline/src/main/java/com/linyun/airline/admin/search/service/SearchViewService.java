@@ -259,6 +259,9 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			if (message.contains("Date range in 'departuredate' and 'returndate' exceeds the maximum allowed")) {
 				sabreExResponse.setMessage("出发日期和返回日期之差不超过15天");
 			}
+			if (message.contains("Parameter 'passengercount' must be between 0 and 10")) {
+				sabreExResponse.setMessage("乘客数量必须是 0 到 10 之间");
+			}
 		}
 		if (resp.getStatusCode() == 404) {
 			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();

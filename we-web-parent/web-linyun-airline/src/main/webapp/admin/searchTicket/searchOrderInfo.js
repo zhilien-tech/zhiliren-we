@@ -108,7 +108,7 @@ function clearTicketHtml(){
 	$("#returnDatepicker0").val("");
 }
 
-//清除跨海内陆 列表项
+//清除跨海内陆 国际 列表项
 function clearSearchHtml(){
 	document.getElementById('travelArea').innerHTML="";
 	document.getElementById('travelTypeNum').innerHTML="";
@@ -120,6 +120,15 @@ function clearSearchHtml(){
 	$("#babySelect").val("0");
 	$("#airLevel").val("1");
 }
+
+//清除检索结果
+function clearSearchResult(){
+	document.getElementById('travelArea').innerHTML="";
+	document.getElementById('travelTypeNum').innerHTML="";
+	document.getElementById('travelDateNum').innerHTML="";
+	document.getElementById('paragraphListInfo').innerHTML="";
+}
+
 //清除机票库 列表项
 function clearSearchTeamHtml(){
 	$("#teamAirline").val(null).trigger("change");
