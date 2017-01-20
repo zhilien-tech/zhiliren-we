@@ -152,7 +152,7 @@ cardDate = function(obj){
 	searchInlandOrder();
 }
 getDateCard =function(){
-	var dateNumHtml = "";
+	var dateNumHtml = null;
 	var outStr = $("#departuredate").val();
 	var outDate = new Date(outStr.replace(/-/g,"/"));
 	var returnStr = $("#returndate").val();
@@ -179,7 +179,7 @@ getDateCard =function(){
 		}
 	}
 	/* 出发日期 */
-	dataCardHtml += '<li onclick="cardDate(this);" value="'+outDate+'" id="card'+getNowFormatDate(outDate).substring(0, 5)+'" class="btnStyle">'+getNowFormatDate(outDate)+'</li>';
+	dataCardHtml += '<li onclick="cardDate(this);" class="btnStyle" value="'+outDate+'" id="card'+getNowFormatDate(outDate).substring(0, 5)+'">'+getNowFormatDate(outDate)+'</li>';
 	/* 出发后的日期 */
 	var travelTime = returnDate.getTime() - outDate.getTime();
 	var travelDays = Math.floor(travelTime/(24*60*60*1000))+1;
@@ -210,6 +210,7 @@ getDateCard =function(){
 		}
 	}
 	document.getElementById('travelDateNum').innerHTML=dataCardHtml;
+	
 }
 /* -------------------------日期小卡片 end------------------------------- */
 
@@ -314,6 +315,7 @@ function clearBtnClass(){
 		btn.setAttribute("class", "btnStyle");
 	}
 }
+
 
 
 /*直飞勾选*/
