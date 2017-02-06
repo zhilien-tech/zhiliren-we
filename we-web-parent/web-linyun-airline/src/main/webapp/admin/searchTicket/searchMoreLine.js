@@ -271,7 +271,6 @@ $("#searchSingleTicketsBtn").click(function() {
 							if(arrivalAirport==arriveCodeStr && departureAirport==outCodeStr){
 								outNonstopList.push(list[j]);
 							}
-							
 						}else{
 							/*中转 和 直飞*/
 							returnList.push(list[j]);

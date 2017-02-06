@@ -91,7 +91,7 @@ function searchInlandOrder(){
 					
 					/*是否直飞*/
 					var isNonstop = $("#nonstopType").val();
-					if(isNonstop){
+					if(isNonstop == "true"){
 						outList = outNonstopList;
 						returnList = returnNonstopList;
 					}
