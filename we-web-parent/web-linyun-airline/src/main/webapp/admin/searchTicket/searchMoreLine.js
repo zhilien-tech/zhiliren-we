@@ -242,7 +242,6 @@ $("#searchSingleTicketsBtn").click(function() {
 				
 				var outCodeStr = $("#outCity0").select2("val");
 				var arriveCodeStr = $("#singleArriveCity0").select2("val");
-				
 				/*中转+直飞的*/
 				var outList = new Array();
 				var returnList = new Array();
@@ -263,7 +262,7 @@ $("#searchSingleTicketsBtn").click(function() {
 					}
 					for(var j=0; j<list.length; j++){
 						if(j < returnIdx){
-							/*中转 和 直飞*/
+							/*去程   中转 和 直飞*/
 							outList.push(list[j]);
 							/*直飞*/
 							var departureAirport = list[j].DepartureAirport;
@@ -272,7 +271,7 @@ $("#searchSingleTicketsBtn").click(function() {
 								outNonstopList.push(list[j]);
 							}
 						}else{
-							/*中转 和 直飞*/
+							/*返程    中转 和 直飞*/
 							returnList.push(list[j]);
 							/*直飞*/
 							var departureAirport = list[j].DepartureAirport;
