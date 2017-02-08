@@ -318,6 +318,49 @@
 								</div>
 							</div>
 						</div>
+						
+<!--------------------------------------------新编辑 内容   财务信息 start-------------------------------------------------->
+						<div class="form-group row">
+                            <label class="col-sm-2 text-right padding">信用额度：</label>
+                            <div class="col-sm-2 padding">
+                              <input name="creditLine" value="${obj.customer.creditLine}" type="text" class="form-control input-sm">
+                            </div>
+                          
+                            <label class="col-sm-1 text-right padding">已欠款：</label>
+                            <div class="col-sm-2 padding">
+                            	<input name="arrears" value="${obj.customer.arrears}" type="text" readonly="readonly" class="form-control input-sm">
+                            </div>
+
+                             <label class="col-sm-1 text-right padding">预收款：</label>
+                            <div class="col-sm-1 padding">
+                              <input name="preDeposit" value="${obj.customer.preDeposit}" type="text" class="form-control input-sm">
+                            </div>
+                        </div>
+						<div class="form-group row">
+                            <label class="col-sm-2 text-right padding">票价折扣：</label>
+                            <div class="col-sm-2 padding">
+                              <input name="discountFare" value="${obj.customer.discountFare}" type="text" class="form-control input-sm discountText">
+                              <span>%</span>
+                            </div>
+                          
+                            <label class="col-sm-1 text-right padding">手续费：</label>
+                            <div class="col-sm-2 padding">
+                            	<input name="fees" value="${obj.customer.fees}" type="text" class="form-control input-sm discountText">
+                            	<span>￥</span>
+                            </div>
+
+                            <label class="col-sm-1 text-right padding">汇率：</label>
+                            <div class="col-sm-1 padding">
+                              <input name="exchangeRates" value="${obj.customer.exchangeRates}" type="text" class="form-control input-sm">
+                            </div>
+
+                            <label class="col-sm-1 text-right padding">退税：</label>
+                            <div class="col-sm-2 padding">
+                              <input name="taxRefund" value="${obj.customer.taxRefund}" type="text" class="form-control input-sm taxText">
+                            </div>
+                        </div>
+<!--------------------------------------------新编辑 内容   财务信息  end-------------------------------------------------->
+						
 					</div>
 				</div>
 			</div>

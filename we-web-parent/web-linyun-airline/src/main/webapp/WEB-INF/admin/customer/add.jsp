@@ -306,40 +306,40 @@
 						<div class="form-group row">
                             <label class="col-sm-2 text-right padding">信用额度：</label>
                             <div class="col-sm-2 padding">
-                              <input type="text" class="form-control input-sm">
+                              <input name="creditLine" type="text" class="form-control input-sm">
                             </div>
                           
                             <label class="col-sm-1 text-right padding">已欠款：</label>
                             <div class="col-sm-2 padding">
-                            	<input type="text" readonly="readonly" class="form-control input-sm">
+                            	<input name="arrears" type="text" readonly="readonly" class="form-control input-sm">
                             </div>
 
                              <label class="col-sm-1 text-right padding">预收款：</label>
                             <div class="col-sm-1 padding">
-                              <input type="text" class="form-control input-sm">
+                              <input name="preDeposit" type="text" class="form-control input-sm">
                             </div>
                         </div>
 						<div class="form-group row">
                             <label class="col-sm-2 text-right padding">票价折扣：</label>
                             <div class="col-sm-2 padding">
-                              <input type="text" class="form-control input-sm discountText">
+                              <input name="discountFare" type="text" class="form-control input-sm discountText">
                               <span>%</span>
                             </div>
                           
                             <label class="col-sm-1 text-right padding">手续费：</label>
                             <div class="col-sm-2 padding">
-                            	<input type="text" class="form-control input-sm discountText">
+                            	<input name="fees" type="text" class="form-control input-sm discountText">
                             	<span>￥</span>
                             </div>
 
                             <label class="col-sm-1 text-right padding">汇率：</label>
                             <div class="col-sm-1 padding">
-                              <input type="text" class="form-control input-sm">
+                              <input name="exchangeRates" type="text" class="form-control input-sm">
                             </div>
 
                             <label class="col-sm-1 text-right padding">退税：</label>
                             <div class="col-sm-2 padding">
-                              <input type="text" class="form-control input-sm taxText">
+                              <input name="taxRefund" type="text" class="form-control input-sm taxText">
                             </div>
                         </div>
 <!--------------------------------------------新添加 内容   财务信息  end-------------------------------------------------->
