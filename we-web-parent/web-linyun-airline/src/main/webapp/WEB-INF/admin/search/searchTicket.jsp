@@ -417,8 +417,6 @@
 				/* 点击不同段落 切换按钮样式 */
 				var styleIndex = index+1;
 				$("#moreNum"+styleIndex).attr("class", "btnStyle");
-				
-				
 			}
 			/* 点击 机票库 每段提醒事件 */
 			if(num_id != null){
@@ -502,7 +500,6 @@
 				}  
 			}
 		}
-  		
 	 </script>
 	 
 </body>

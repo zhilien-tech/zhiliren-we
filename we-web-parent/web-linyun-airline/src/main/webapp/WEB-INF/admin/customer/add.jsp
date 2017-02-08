@@ -401,7 +401,7 @@
 						validators : {
 							notEmpty : {
 								message : '公司名称不能为空'
-							},
+							}/* ,
 							remote : {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
 								url : '${base}/admin/customer/checkComNameExist.html',//验证地址
 								message : '公司名称已存在，请重新输入!',//提示消息
@@ -414,7 +414,7 @@
 										cid : $("#companyId").select2("val")
 									};
 								}
-							}
+							} */
 						}
 					},
 					shortName : {
