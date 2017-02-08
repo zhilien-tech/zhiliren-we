@@ -23,5 +23,5 @@
 .box-body{padding: 0;}
 .content {padding-left: 0px;padding-right: 0px;}
 table.dataTable thead .sorting_asc:after {display: none;}
-
-
+.discountText{width: 88%;display: inline-block;}
+.taxText{width:78%;}
