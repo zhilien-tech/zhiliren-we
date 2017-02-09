@@ -1024,9 +1024,7 @@ function checkIsNull(){
 		}*/
 		var weekSelect = $(this).find('[id=weekSelect]').val();
 		var startdate = $(this).find('[name=startdate]').val();
-		alert(teamtype +'    '+startdate);
 		if(teamtype == 1){
-			alert('dasdas');
 			if(weekSelect==2){
 				var calenderdate = $(this).find('[name=calenderdate]').val();
 				if(!calenderdate){

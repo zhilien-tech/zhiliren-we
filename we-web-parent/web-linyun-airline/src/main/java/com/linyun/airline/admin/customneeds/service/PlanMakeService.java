@@ -277,8 +277,8 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 					//添加多个航段
 					int flag = 1;
 					for (CityAirlineJson cityAirlineJson : airlineJson) {
-						@SuppressWarnings("unused")
 						Date setoffdates = null;
+						//系列团第一个日期为出发日期，第二个日期为返回日期，返回日期=出发日期+天数
 						if (flag > 1) {
 							setoffdates = DateUtil.addDay(calendate, addForm.getDayscount());
 						} else {
@@ -291,7 +291,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 						airline.setPlanid(insertplanInfo.getId());
 						airline.setLeavedate(setoffdates);
 						//添加时间
-						/*if (!Util.isEmpty(cityAirlineJson.getSetofftime())) {
+						if (!Util.isEmpty(cityAirlineJson.getSetofftime())) {
 							String[] offtimes = cityAirlineJson.getSetofftime().split("/");
 							if (!Util.isEmpty(offtimes[0])) {
 								airline.setLeavetime(offtimes[0]);
@@ -299,7 +299,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 							if (!Util.isEmpty(offtimes[1])) {
 								airline.setArrivetime(offtimes[1]);
 							}
-						}*/
+						}
 						airlines.add(airline);
 						flag++;
 					}
@@ -307,6 +307,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 					dbDao.insert(airlines);
 				}
 			}
+			//如果选择每周
 			if (addForm.getTimetype() == 1) {
 				//Date setoffdate = DateUtil.string2Date(airlineJson.get(0).getSetoffdate(), DateUtil.FORMAT_YYYY_MM_DD);
 				Date setoffdate = DateUtil.string2Date(addForm.getStartdate(), DateUtil.FORMAT_YYYY_MM_DD);
@@ -334,7 +335,9 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 						int flag = 1;
 						for (CityAirlineJson cityAirlineJson : airlineJson) {
 							@SuppressWarnings("unused")
+							//航班日期
 							Date setoffdates = null;
+							//系列团第一个日期为出发日期，第二个日期为返回日期，返回日期=出发日期+天数
 							if (flag > 1) {
 								setoffdates = DateUtil.addDay(date, addForm.getDayscount());
 							} else {
