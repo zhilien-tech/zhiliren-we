@@ -1,23 +1,24 @@
 .content{min-width: 950px;min-height:700px;overflow: hidden;padding: 1px 15px;}
 .box{min-height: 500px;}
-.infoTop{margin-top:20px;border-bottom:solid 1px #f1f1f1;}
+.infoTop{margin-top:15px;border-bottom:solid 1px #f1f1f1;}
 .infoTop p{background-color: #fff;margin: 0px;border: solid 1px #e0e0e0;display:inline-block;width: 85px;text-align: center;line-height: 30px;border-top: solid 2px #3c8dbc;border-radius: 3px 3px 0 0;border-bottom: 0;}
-.infoTopContent{width: 575px;height: 30px;float: right;}
+.infoTopContent{width: 583px;height: 30px;float: right;}
 .infoTopContent input{display: inline-block;}
 .infoTopContent .conCheckInput{width: 15px;height: 15px;position: relative;top: 3px;right: 3px;}
 .infoTopContent .conSelect{width: 70px; height: 28px;display: inline-block;margin:0 15px; }
 .infoTopContent .infoTopContent input{display: inline-block;}
 .infoTopContent .conTimeInput{width: 125px;height: 28px;position: relative;top: -2px;}
 .infoTopContent .btn{margin-left: 12px;padding: 4px 15px;position: relative;top: -3px;}
-.infofooter{min-height:50px;border: solid 1px #e0e0e0;border-top: 0; padding: 20px 0px 10px 0px;background-color: #fff;border-radius: 0 4px 4px 4px;}
+.infofooter{min-height:50px;border: solid 1px #e0e0e0;border-top: 0; padding: 10px 0px 0px 0px;background-color: #fff;border-radius: 0 4px 4px 4px;}
 .infofooter table tr td label{width: 78px;text-align: right;position: relative;top: 3px;}
-.infofooter table tr td .form-control{width: 115px;}
-.addressInput{width: 309px !important;}
+/* .infofooter table tbody tr td .form-control{width: 115px;}*/
+.cloTable tr td:nth-of-type(even){ width: 10%;}
+.addressInput{width: 231px !important;}
 .infofooter  table tr td .btn{margin-left: 17px;padding: 4px 15px;}
 .infofooter  table tr td .UnderIcon{font-size: 20px;cursor: pointer;color: #5d6a7b;position: relative;top: 3px;left: 15px;}
 .infofooter  table tr td .UnderIcon:hover{color: #4b5563;}
-.hideTable{margin-top:15px;}
-.hideTable tr td pre{display: block;padding: 0;margin: 15px 0 10px;font-size: 13px;color: #585858;word-break: break-all;word-wrap: break-word;border: 0;background-color: #fff;}
+.hideTable{margin-top:5px;margin-bottom: 15px;}
+.preTxt{display: block;padding: 0;margin: 15px 0 10px;font-size: 13px;color: #585858;word-break: break-all;word-wrap: break-word;border: 0;background-color: #fff;}
 .listInfo{margin-top: 10px;}
 .tab-pane{margin: 0;}
 .nav-tabs-custom > .tab-content {padding: 10px 0;}
@@ -96,3 +97,15 @@ td[colspan="3"] .select2 .selection .select2-selection ul .select2-search--inlin
 .checkSpan{top:-3px !important;}
 .select2-container--default .select2-selection--multiple .select2-selection__rendered li {position: relative;}
 .sorting_1 input { display: block; margin: 30% auto;}
+.KHinfo td{padding-top: 12px;}
+/*---------客户信息---------*/
+.DemandDiv{background-color: #f5f5f5;box-shadow: 0px 1px 5px #bebebe;margin-bottom:15px;}
+.titleNum{float: left;border: rgb(45, 110, 149) solid 1px;text-align: center !important;margin-left: 10px;border-radius: 3px;font-size: 15px !important;color: #2d6e95;margin-top: 5px;width: 24px;}
+.addDemand,.removeDemand{padding: 5px 11px;position: relative;left: 88%;margin-top: 5px;}
+.cloTable{margin-top:5px;}
+.cloTable tr {height: 40px;}
+.addIcon{top: 0px;margin-right: 20px;margin-left: 15px;}
+.noteText{width: 100% !important;}
+.removIcon{color: #3c8dbc;margin-right: 20px;margin-top: 0;cursor: pointer;}
+.removIcon:hover{color: rgba(60, 141, 188, 0.75);}
+/*---------end 客户信息---------*/

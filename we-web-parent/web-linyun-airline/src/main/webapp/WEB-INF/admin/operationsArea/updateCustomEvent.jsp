@@ -47,7 +47,6 @@
 	<script src="${base}/common/js/layer/layer.js"></script>
 
 	<script type="text/javascript">
-		
 		//表单校验
 		$('#customEventForm').bootstrapValidator({
 			message : '验证不通过',
@@ -93,8 +92,8 @@
 						window.parent.backgroundMonth();
 						window.parent.checkBoxShow();
 						window.parent.createMinCanlender();
+						window.parent.minCalendarbackground();
 						window.parent.minCalendarInit();
-						window.parent.backgroundMonth();
 					},
 					error : function(xhr) {
 						layer.msg("更新失败", "", 2000);
@@ -103,7 +102,6 @@
 			}
 		}
 
-		
 		//关闭窗口
 		function closewindow() {
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
@@ -146,6 +144,7 @@
 						window.parent.backgroundMonth();
 						window.parent.checkBoxShow();
 						window.parent.createMinCanlender();
+						window.parent.minCalendarbackground();
 						window.parent.minCalendarInit();
 					},
 					error : function() {
@@ -155,7 +154,6 @@
 			}, function(){
 			    // 取消之后不用处理
 			});
-			
 		}
 		
 	</script>

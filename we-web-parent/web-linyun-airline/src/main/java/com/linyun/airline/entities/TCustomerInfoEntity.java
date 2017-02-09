@@ -136,4 +136,32 @@ public class TCustomerInfoEntity implements Serializable {
 	@Column
 	@Comment("业务范围")
 	private String business;
+
+	@Column
+	@Comment("信用额度")
+	private Double creditLine;
+
+	@Column
+	@Comment("票价折扣")
+	private Double discountFare;
+
+	@Column
+	@Comment("已欠款")
+	private Double arrears;
+
+	@Column
+	@Comment("预存款")
+	private Double preDeposit;
+
+	@Column
+	@Comment("手续费")
+	private Double fees;
+
+	@Column
+	@Comment("汇率")
+	private Double exchangeRates;
+
+	@Column
+	@Comment("退税")
+	private Double taxRefund;
 }

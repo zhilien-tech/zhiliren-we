@@ -187,12 +187,8 @@
 	<!-- end 小日历js -->
 	<script type="text/javascript">
 		$(function() {
-			$('div[data-cal-index="2"]').prepend('<i class="month-i1"></i>');//小日历 top 显示月份
-			$('div[data-cal-index="1"]').prepend('<i class="month-i2"></i>');//小日历 center 显示月份
-			$('div[data-cal-index="0"]').prepend('<i class="month-i3"></i>');//小日历 buttom 显示月份
-			$('.k-out-of-month').click(function(){
-		      return false;
-		    });
+			/* 小日历背景*/
+			minCalendarbackground();
 			/* 大日历 */
 			calendarInit();
 			/* 任务提醒 */
@@ -452,6 +448,17 @@
 
 	<!-- 小日历 -->
 	<script type="text/javascript">
+	
+		/* 小日历背景*/
+		function minCalendarbackground(){
+			$('div[data-cal-index="2"]').prepend('<i class="month-i1"></i>');//小日历 top 显示月份
+			$('div[data-cal-index="1"]').prepend('<i class="month-i2"></i>');//小日历 center 显示月份
+			$('div[data-cal-index="0"]').prepend('<i class="month-i3"></i>');//小日历 buttom 显示月份
+			$('.k-out-of-month').click(function(){
+		      return false;
+		    });
+		}
+		/* 小日历*/
 		function minCalendarInit(){
 			$('#box-min .kalendae').attr('id','minCalen');//给小日历添加ID
 		    /*---------------------------------小日历 节假日------------------------------------*/
@@ -618,7 +625,6 @@
 		}
 		//-------------------小日历背景 添加 月份显示-----------------------
 		function backgroundMonth(){
-			/* alert("显示月份"); */
 		    var monthVal1= $('div[data-cal-index="2"] .k-title .k-caption').text();//获取top月份
 		    var DXmonth1=monthVal1.substring((monthVal1.length-1),(monthVal1.length-3));//倒序截取月份
 		    $('.month-i1').text(DXmonth1);
@@ -680,7 +686,6 @@
 	                }); 
 	            }
 	       });
-		   
 		}
 	    
 	    
@@ -718,7 +723,6 @@
   					        time: 1500
   					     }
       			    );
-    				
     			}
 			}
 	    });
