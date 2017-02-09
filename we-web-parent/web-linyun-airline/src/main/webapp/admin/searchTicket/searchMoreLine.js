@@ -158,7 +158,7 @@ function onkeyEnter(){
 /* 跨海内陆多程查询 */
 var clickfirst=1;
 $("#searchSingleTicketsBtn").click(function() {
-	clearSearchHtml();
+	//clearSearchHtml();
 	var linkName = $("#linkNameId").select2("val");
 	var phoneNum = $("#phoneNumId").select2("val");
 	var outCity = $('#outCity0').find("option:selected").text();
@@ -286,7 +286,7 @@ $("#searchSingleTicketsBtn").click(function() {
 					
 					/*是否直飞*/
 					var isNonstop = $("#nonstopType").val();
-					if(isNonstop){
+					if(isNonstop == "true"){
 						outList = outNonstopList;
 						returnList = returnNonstopList;
 					}
@@ -306,7 +306,7 @@ $("#searchSingleTicketsBtn").click(function() {
 						'<p class="p">'+airlineCode+FlightNumber+'</p></div>'+
 						'<div class="distanceTimeDiv"><span class="chufaCS"><b>'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
 						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b>'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
-						'<div class="moneyDiv"><i class="fa fa-cny"></i>'+totalAmount+'</div>'+
+						'<div class="moneyDiv"><i class="fa fa-usd"></i>'+totalAmount+'</div>'+
 						'</li>';
 					}
 					/* 返程列表 */
@@ -324,7 +324,7 @@ $("#searchSingleTicketsBtn").click(function() {
 						'<p class="p">'+airlineCode+FlightNumber+'</p></div>'+
 						'<div class="distanceTimeDiv"><span class="chufaCS"><b>'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
 						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b>'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
-						'<div class="moneyDiv"><i class="fa fa-cny"></i>'+totalAmount+'</div>'+
+						'<div class="moneyDiv"><i class="fa fa-usd"></i>'+totalAmount+'</div>'+
 						'</li>';
 					}
 				}
