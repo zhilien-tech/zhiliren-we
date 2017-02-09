@@ -125,6 +125,60 @@
 					</div>
 				</div>
 				<!--客户信息 end-->
+				
+				 <div class="customerInfo"><!--客户需求-->
+	               <div class="infoTop">
+	                 <p>客户需求</p>
+	               </div>
+	               <div id="infofooter" class="infofooter">
+	                <div class="DemandDiv">
+	                 <span class="titleNum">1</span>
+	                 <a href="javascript:;" class="btn btn-primary btn-sm addDemand"><b>+</b>&nbsp;&nbsp;需求</a>
+	                 <table class="cloTable">
+	                   <tr>
+	                     <td><label>出发城市：</label></td>
+	                     <td><input type="text" class="form-control input-sm" placeholder="PEK(北京)"></td>
+	                     <td><label>抵达城市：</label></td>
+	                     <td><input type="text" class="form-control input-sm" placeholder="SYD(悉尼)"></td>
+	                     <td><label>出发日期：</label></td>
+	                     <td><input type="text" class="form-control input-sm textWid" placeholder="2017-02-22"></td>
+	                     <td><label>人数：</label></td>
+	                     <td><input type="text" class="form-control input-sm textWid"></td>
+	                     <td><label class="labelWid">早中晚：</label></td>
+	                     <td>
+	                       <select class="form-control input-sm textWid">
+	                         <option>早</option>
+	                         <option>中</option>
+	                         <option>晚</option>
+	                       </select>
+	                     </td>
+	                   </tr>
+	                   <tr>
+	                     <td></span><label>航空公司：</label></td>
+	                     <td><input type="text" class="form-control input-sm" placeholder="PEK(北京)"></td>
+	                     <td><label>航班号：</label></td>
+	                     <td><input type="text" class="form-control input-sm" placeholder="SYD(悉尼)"></td>
+	                     <td><label>出发日期：</label></td>
+	                     <td><input type="text" class="form-control input-sm textWid" placeholder="2017-02-22"></td>
+	                     <td><label>抵达时间：</label></td>
+	                     <td><input type="text" class="form-control input-sm textWid"></td>
+	                     <td><label class="labelWid">销售价：</label></td>
+	                     <td><input type="text" class="form-control input-sm textWid"></td>
+	                     <td><label class="labelWid">成本价：</label></td>
+	                     <td><input type="text" class="form-control input-sm textWid"></td>
+	                     <td>
+	                      <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake"></a>
+	                     </td>
+	                   </tr>
+	                   <tr>
+	                     <td></span><label>备注：</label></td>
+	                     <td colspan="11"><input type="text" class="form-control input-sm noteText" placeholder=" "></td>
+	                   </tr>
+	                 </table>
+	                </div>
+	               </div>
+	            </div><!--end 客户需求-->
+				
 				<!--购票查询列表 start-->
 				<div class="listInfo">
                   <div class="nav-tabs-custom">
@@ -137,6 +191,15 @@
                       </li>
                       <li>
                       	<a id="tab_2Id" href="#tab_2" data-toggle="tab">机票库</a>
+                      </li>
+                      <li>
+                      	<a href="#tab_4" data-toggle="tab">sabre</a>
+                      </li>
+                      <li>
+                      	<a href="#tab_5" data-toggle="tab">etem</a>
+                      </li>
+                      <li>
+                      	<a href="#tab_6" data-toggle="tab">CA</a>
                       </li>
                     </ul>
                     <div class="tab-content">
@@ -371,6 +434,8 @@
 		<script src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 		<!-- 客户信息 js -->
 		<script src="${base}/admin/searchTicket/searchCustomerInfo.js"></script>
+		<!-- 客户需求 js -->
+		<script src="${base}/admin/searchTicket/customerNeeds.js"></script>
 		<!-- 订单信息 js -->
 		<script src="${base}/admin/searchTicket/searchOrderInfo.js"></script>
 		<!-- 多程信息 js -->
