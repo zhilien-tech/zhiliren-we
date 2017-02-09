@@ -238,7 +238,9 @@ function clearText(){
 	$("#creditLineId").html("0.00");
 	//历史欠款清除
 	$("#arrearsId").html("0.00");
+	$('#fontLSqk').css("color","");
 	//预存款
 	$("#preDepositId").html("0.00");
+	
 }
 
