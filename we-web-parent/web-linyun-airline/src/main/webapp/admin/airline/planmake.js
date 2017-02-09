@@ -673,7 +673,7 @@ $(document).on('keyup','.inputtime',function(e) {
 	  $(this).val(values);
 });
 $(document).on('click', '.addNeeds', function(e) {
-	var addNeedDiv = $(this).parent();
+	var addNeedDiv = $(this).parent().parent();
 	var plandiv = addNeedDiv.parent();
 	//获取最后一个div 将新克隆的放在其后
 	var lastNeedDiv = plandiv.find('.addCityAirline').last();
@@ -939,6 +939,7 @@ function checkIsNull(){
 			result = false;
 			return false;
 		}*/
+		var teamtype = $('#teamtype').val();
 		var peoplecount = $(this).find('[name=peoplecount]').val();
 		if(!peoplecount){
 			layer.alert("请填写第"+(i+1)+"个人数",{time: 2000, icon:1});
@@ -983,17 +984,19 @@ function checkIsNull(){
 			result = false;
 			return false;
 		}
-		var setoffdate = $(this).find('[name=setoffdate]').first().val();
-		if (!setoffdate) {
-			layer.alert("请填写第"+(i+1)+"个出发日期",{time: 2000, icon:1});
-			result = false;
-			return false;
-		}
-		var setofftime = $(this).find('[name=setofftime]').first().val();
-		if (!setofftime) {
-			layer.alert("请填写第"+(i+1)+"个时间",{time: 2000, icon:1});
-			result = false;
-			return false;
+		if(teamtype == 2){
+			var setoffdate = $(this).find('[name=setoffdate]').first().val();
+			if (!setoffdate) {
+				layer.alert("请填写第"+(i+1)+"个出发日期",{time: 2000, icon:1});
+				result = false;
+				return false;
+			}
+			var setofftime = $(this).find('[name=setofftime]').first().val();
+			if (!setofftime) {
+				layer.alert("请填写第"+(i+1)+"个时间",{time: 2000, icon:1});
+				result = false;
+				return false;
+			}
 		}
 		/*var backleavecity = $(this).find('[name=backleavecity]').val();
 		if (backleavecity) {
@@ -1021,26 +1024,29 @@ function checkIsNull(){
 		}*/
 		var weekSelect = $(this).find('[id=weekSelect]').val();
 		var startdate = $(this).find('[name=startdate]').val();
-		if(weekSelect==2){
-			var calenderdate = $(this).find('[name=calenderdate]').val();
-			if(!calenderdate){
-				layer.alert("请选择第"+(i+1)+"个自由日期",{time: 2000, icon:1});
-				result = false;
-				return false;
-			}
-		}else{
-			if(!startdate){
-				layer.alert("请填写第"+(i+1)+"个起始日期",{time: 2000, icon:1});
-				result = false;
-				return false;
-			}
-			var enddate = $(this).find('[name=enddate]').val();
-			if(!enddate){
-				layer.alert("请填写第"+(i+1)+"个截止日期",{time: 2000, icon:1});
-				result = false;
-				return false;
-			}
-			/*var weekday =[];    
+		alert(teamtype +'    '+startdate);
+		if(teamtype == 1){
+			alert('dasdas');
+			if(weekSelect==2){
+				var calenderdate = $(this).find('[name=calenderdate]').val();
+				if(!calenderdate){
+					layer.alert("请选择第"+(i+1)+"个自由日期",{time: 2000, icon:1});
+					result = false;
+					return false;
+				}
+			}else{
+				if(!startdate){
+					layer.alert("请填写第"+(i+1)+"个起始日期",{time: 2000, icon:1});
+					result = false;
+					return false;
+				}
+				var enddate = $(this).find('[name=enddate]').val();
+				if(!enddate){
+					layer.alert("请填写第"+(i+1)+"个截止日期",{time: 2000, icon:1});
+					result = false;
+					return false;
+				}
+				/*var weekday =[];    
 			$(this).find('input[name="weekday"]:checked').each(function(){    
 				weekday.push($(this).val());    
 			});   
@@ -1052,6 +1058,7 @@ function checkIsNull(){
 				result = false;
 				return false;
 			}*/
+			}
 		}
 		/*var calenderdate = $(this).find('[name=calenderdate]').val();
 		var weekday =[];    
@@ -1151,4 +1158,164 @@ function zeroize(value, length) {
         zeros += '0';
     }
     return zeros + value;
+}
+changeType();
+//系列团、临时团选中事件
+function changeType(){
+	var teamtype = $('#teamtype').val();
+	//系列团
+	if(teamtype == '1'){
+		$('.addMake').each(function(){
+			$(this).find('[name=congcong]').show();
+			$(this).find('[name=weekSelect]').show();
+			$(this).find('.checkWeek').show();
+			$(this).find('[name=teamtypehide]').hide();
+			var clonediv = $(this).find('.addCityAirline').first();
+			var newdiv = clonediv.clone();
+			//设置新的出发航班Id
+		    var leaveairline = newdiv.find('[name=leaveairline]');
+		    leaveairline.next().remove();
+		    //设置新的去程出发城市下拉ID
+		    var leavescity = newdiv.find('[name=leavescity]');
+		    leavescity.next().remove();
+		    //设置新的去程抵达城市下拉框ID
+		    var backscity = newdiv.find('[name=backscity]');
+		    backscity.next().remove();
+			$(this).find('.addCityAirline').each(function(i){
+				if(i > 0){
+					$(this).remove();
+				}
+			});
+			newdiv.find('[name=leavescity]').select2({
+				ajax : {
+					url : BASE_PATH + "/admin/customneeds/getCitySelect.html",
+					dataType : 'json',
+					delay : 250,
+					type : 'post',
+					data : function(params) {
+						var backscity = newdiv.find('[name=backscity]').val();
+						if(backscity){
+							backscity = backscity.join(',');
+						}
+						return {
+							exname : backscity,
+							cityname : params.term, // search term
+							page : params.page
+						};
+					},
+					processResults : function(data, params) {
+						params.page = params.page || 1;
+						var selectdata = $.map(data, function (obj) {
+							  obj.id = obj.dictCode; // replace pk with your identifier
+							  obj.text = obj.dictCode+'-'+obj.englishName+'-'+obj.countryName; // replace pk with your identifier
+							  return obj;
+						});
+						return {
+							results : selectdata
+						};
+					},
+					cache : false
+				},
+				
+				escapeMarkup : function(markup) {
+					return markup;
+				}, // let our custom formatter work
+				minimumInputLength : 1,
+				maximumInputLength : 20,
+				language : "zh-CN", //设置 提示语言
+				maximumSelectionLength : 1, //设置最多可以选择多少项
+				tags : false //设置必须存在的选项 才能选中
+			});
+			//加载降落城市下拉
+			newdiv.find('[name=backscity]').select2({
+				ajax : {
+					url : BASE_PATH + "/admin/customneeds/getCitySelect.html",
+					dataType : 'json',
+					delay : 250,
+					type : 'post',
+					data : function(params) {
+						var leavescity = newdiv.find('[name=leavescity]').val();
+						if(leavescity){
+							leavescity = leavescity.join(',');
+						}
+						return {
+							exname : leavescity,
+							cityname : params.term, // search term
+							page : params.page
+						};
+					},
+					processResults : function(data, params) {
+						params.page = params.page || 1;
+						var selectdata = $.map(data, function (obj) {
+							  obj.id = obj.dictCode; // replace pk with your identifier
+							  obj.text = obj.dictCode+'-'+obj.englishName+'-'+obj.countryName; // replace pk with your identifier
+							  return obj;
+						});
+						return {
+							results : selectdata
+						};
+					},
+					cache : false
+				},
+				
+				escapeMarkup : function(markup) {
+					return markup;
+				}, // let our custom formatter work
+				minimumInputLength : 1,
+				maximumInputLength : 20,
+				language : "zh-CN", //设置 提示语言
+				maximumSelectionLength : 1, //设置最多可以选择多少项
+				tags : false //设置必须存在的选项 才能选中
+			});
+			//加载出发航班号下拉
+			newdiv.find('[name=leaveairline]').select2({
+				ajax : {
+					url : BASE_PATH + "/admin/customneeds/getAirLineSelect.html",
+					dataType : 'json',
+					delay : 250,
+					type : 'post',
+					data : function(params) {
+						return {
+							airlinename : params.term, // search term
+							page : params.page
+						};
+					},
+					processResults : function(data, params) {
+						params.page = params.page || 1;
+						var selectdata = $.map(data, function (obj) {
+							  obj.id = obj.airlinenum; // replace pk with your identifier
+							  obj.text = obj.airlinenum; // replace pk with your identifier
+							  return obj;
+						});
+						return {
+							results : selectdata
+						};
+					},
+					cache : false
+				},
+				escapeMarkup : function(markup) {
+					return markup;
+				}, // let our custom formatter work
+				minimumInputLength : 1,
+				maximumInputLength : 20,
+				language : "zh-CN", //设置 提示语言
+				maximumSelectionLength : 1, //设置最多可以选择多少项
+				tags : false //设置必须存在的选项 才能选中
+			});
+			clonediv.after(newdiv);
+		});
+	//临时团
+	}else{
+		$('.addMake').each(function(){
+			$(this).find('[name=teamtypehide]').show();
+			$(this).find('[name=congcong]').hide();
+			$(this).find('[name=weekSelect]').hide();
+			$(this).find('.checkWeek').hide();
+			$(this).find('.addCityAirline').each(function(i){
+				if(i > 0){
+					$(this).remove();
+				}
+			});
+		});
+	}
 }
