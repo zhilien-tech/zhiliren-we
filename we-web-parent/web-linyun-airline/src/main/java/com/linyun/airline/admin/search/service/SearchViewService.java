@@ -165,6 +165,12 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		obj.put("customerInfoEntity", customerInfoEntity);
 		Double arrears = customerInfoEntity.getArrears();//历史欠款
 		Double creditLine = customerInfoEntity.getCreditLine();//信用额度
+		if (arrears == null) {
+			arrears = 0.0;
+		}
+		if (creditLine == null) {
+			creditLine = 0.0;
+		}
 		double subNum = creditLine - arrears;
 		if (subNum < 10000) {
 			obj.put("isArrearsRed", "true");
