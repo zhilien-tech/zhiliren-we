@@ -50,66 +50,78 @@
 						</div>
 					</div>
 					<div class="infofooter">
-					<form id="customerCheckForm" method="post">
-						<table>
-							<tr>
-								<td><label>客户姓名：</label></td>
-								<td>
-									<!-- <input type="text" class="form-control input-sm" placeholder="请输入客户姓名"> -->
-									<select id="linkNameId" name="linkName" onchange="linkNameOpt()" class="form-control input-sm" multiple="multiple" data-placeholder="请输入客户姓名"></select>
-								</td>
-								<input type="hidden" id="linkManId"> 
-								<input type="hidden" id="phoneId">
-								<td><label>电话：</label></td>
-								<td>
-									<!-- <input type="text" class="form-control input-sm" placeholder="请输入电话"> -->
-									<select id="phoneNumId" name="phoneNum" class="form-control input-sm" multiple="multiple" data-placeholder="请输入电话"></select>
-								</td>
-								<td><label>地址：</label></td>
-								<td>
-									<input id="addressId" type="text" disabled="disabled" class="form-control input-sm addressInput">
-								</td>
-								<td>
-									<input id="clearBtn" type="button" value="清空" class="btn btn-primary btn-sm">
-									<i class="UnderIcon fa fa-chevron-circle-down"></i>
-								</td>
-							</tr>
-						</table>
-					</form>
-						<table class="hideTable none">
-							<tr>
-								<td><label>公司简称：</label></td>
-								<td>
-									<input id="shortNameId" type="text" disabled="disabled" class="form-control input-sm">
-								</td>
-								<td><label>负责人：</label></td>
-								<td>
-									<input id="responsibleId" type="text" disabled="disabled" class="form-control input-sm">
-								</td>
-								<td><label>网址：</label></td>
-								<td>
-									<input id="siteUrlId" type="text" disabled="disabled" class="form-control input-sm">
-								</td>
-								<td><label>传真：</label></td>
-								<td>
-									<input id="faxId" type="text" disabled="disabled" class="form-control input-sm">
-								</td>
-							</tr>
-							<tr>
-								<td><label>出发城市：</label></td>
-								<td colspan="3">
-									<!-- <input id="departureCityId" type="text" disabled="disabled" class="form-control input-sm"> -->
-									<select id="city" class="form-control input-sm addWidths" multiple="multiple" Disabled = "true" data-placeholder="">
-										<option></option>
-										<c:forEach var="one" items="${obj.outcitylist }">
-											<option value="${one.id }">${one.text}</option>
-										</c:forEach>
-									</select>
-								</td>
-								<td><label style="position: relative;top: 4px;">结算方式：</label></td>
-								<td colspan="9"><pre><span id="payTypeId"></span> 信用额度：0  临时额度：0  历史欠款：0  预存款：0</pre></td>
-							</tr>
-						</table>
+						<form id="customerCheckForm" method="post">
+							<table>
+								<tr>
+									<td><label>客户姓名：</label></td>
+									<td>
+										<!-- <input type="text" class="form-control input-sm" placeholder="请输入客户姓名"> -->
+										<select id="linkNameId" name="linkName" onchange="linkNameOpt()" class="form-control input-sm" multiple="multiple" data-placeholder="请输入客户姓名"></select>
+									</td>
+									<input type="hidden" id="linkManId"> 
+									<input type="hidden" id="phoneId">
+									<td><label style="position: relative;top: 4px;">结算方式：</label></td>
+									<td colspan="3">
+										<pre class="preTxt">
+											<span id="payTypeId">不限</span> 
+											&nbsp;信用额度：<span id="creditLineId">0.00</span>   
+											<font id="fontLSqk">
+												&nbsp;历史欠款：<span id="arrearsId">0.00</span> 
+											</font>  
+											&nbsp;预存款：<span id="preDepositId">0.00</span> 
+										</pre>
+									</td>
+									<td>
+										<input id="clearBtn" type="button" value="清空" class="btn btn-primary btn-sm">
+										<i class="UnderIcon fa fa-chevron-circle-down"></i>
+									</td>
+								</tr>
+							</table>
+						
+							<table class="hideTable none">
+								<tr>
+									<td><label>公司简称：</label></td>
+									<td>
+										<input id="shortNameId" type="text" disabled="disabled" class="form-control input-sm">
+									</td>
+									<td><label>电话：</label></td>
+									<td>
+										<!-- <input type="text" class="form-control input-sm" placeholder="请输入电话"> -->
+										<select id="phoneNumId" name="phoneNum" class="form-control input-sm" multiple="multiple" data-placeholder="请输入电话"></select>
+									</td>
+									<td><label>地址：</label></td>
+									<td>
+										<input id="addressId" type="text" disabled="disabled" class="form-control input-sm addressInput">
+									</td>
+								</tr>
+								<tr class="KHinfo">
+									<td><label>负责人：</label></td>
+									<td>
+										<input id="responsibleId" type="text" disabled="disabled" class="form-control input-sm">
+									</td>
+									<td><label>网址：</label></td>
+									<td>
+										<input id="siteUrlId" type="text" disabled="disabled" class="form-control input-sm">
+									</td>
+									<td><label>传真：</label></td>
+									<td>
+										<input id="faxId" type="text" disabled="disabled" class="form-control input-sm">
+									</td>
+								</tr>
+								<tr class="KHinfo">
+									<td><label>出发城市：</label></td>
+									<td colspan="3">
+										<!-- <input id="departureCityId" type="text" disabled="disabled" class="form-control input-sm"> -->
+										<select id="city" class="form-control input-sm addWidths" multiple="multiple" Disabled = "true" data-placeholder="">
+											<option></option>
+											<c:forEach var="one" items="${obj.outcitylist }">
+												<option value="${one.id }">${one.text}</option>
+											</c:forEach>
+										</select>
+									</td>
+								</tr>
+							</table>
+						</form>
 					</div>
 				</div>
 				<!--客户信息 end-->

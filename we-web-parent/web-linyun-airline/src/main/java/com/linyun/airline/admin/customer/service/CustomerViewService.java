@@ -595,7 +595,6 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 */
 	public Object isLine(String lineName, String ids) throws Exception {
 		Set<DictInfoEntity> set = Sets.newTreeSet();
-
 		Sql sql = Sqls.create(sqlManager.get("customer_line_list"));
 		Cnd cnd = Cnd.NEW();
 		cnd.and("d.typeCode", "=", "GJNL");
@@ -603,7 +602,6 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		cnd.orderBy("d.dictName", "desc");
 		sql.setCondition(cnd);
 		List<DictInfoEntity> localLineList = DbSqlUtil.query(dbDao, DictInfoEntity.class, sql);
-
 		if (localLineList.size() >= 5) {
 			for (int i = 0; i < 5; i++) {
 				DictInfoEntity info = localLineList.get(i);
@@ -611,7 +609,6 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 			}
 		} else {
 			set.addAll(localLineList);
-
 			//数据字典表中查找出发城市
 			List<DictInfoEntity> dictLineList = externalInfoService.findDictInfoByName(lineName, "GJNL");
 			int needmore = 5 - localLineList.size();

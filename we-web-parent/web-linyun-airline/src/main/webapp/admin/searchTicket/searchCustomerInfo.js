@@ -87,8 +87,25 @@ $("#linkNameId").on('select2:select', function (evt) {
 		success : function(data) {
 			var dataJson = jQuery.parseJSON(data); 
 			var phoneNum = dataJson.customerInfoEntity.telephone;
-			var payType = dataJson.customerInfoEntity.payType;
+			/* 电话补全 */
+			$("#phoneNumId").append('<option selected="true" value='+ id +'>'+phoneNum+'</option>'); 
+			/* 出发城市补全 */
+			$("#city").select2({
+				initSelection : function (element, callback) {
+					var data = dataJson.outcitylist;
+					callback(data);
+				}
+			});
+			
+			if(dataJson.isArrearsRed){
+				$('#fontLSqk').css("color","red");
+			}
+			
 			var id = dataJson.customerInfoEntity.id;
+			var payType = dataJson.customerInfoEntity.payType;
+			var creditLine = dataJson.customerInfoEntity.creditLine;
+			var arrears = dataJson.customerInfoEntity.arrears;
+			var preDeposit = dataJson.customerInfoEntity.preDeposit;
 			$("#addressId").val(dataJson.customerInfoEntity.address);
 			$("#shortNameId").val(dataJson.customerInfoEntity.shortName);
 			$("#responsibleId").val(dataJson.responsibleName);
@@ -103,15 +120,21 @@ $("#linkNameId").on('select2:select', function (evt) {
 			}else if(payType == 4){
 				$("#payTypeId").html(dataJson.customerInfoEntity.paytypeName);
 			}
-			/* 电话补全 */
-			$("#phoneNumId").append('<option selected="true" value='+ id +'>'+phoneNum+'</option>'); 
-			/* 出发城市补全 */
-			$("#city").select2({
-				initSelection : function (element, callback) {
-					var data = dataJson.outcitylist;
-					callback(data);
-				}
-			});
+			if(creditLine){
+				$("#creditLineId").html(dataJson.customerInfoEntity.creditLine);
+			}else{
+				$("#creditLineId").html("0.00");
+			}
+			if(arrears){
+				$("#arrearsId").html(dataJson.customerInfoEntity.arrears);
+			}else{
+				$("#arrearsId").html("0.00");
+			}
+			if(preDeposit){
+				$("#preDepositId").html(dataJson.customerInfoEntity.preDeposit);
+			}else{
+				$("#preDepositId").html("0.00");
+			}
 		},
 		error : function() {
 		}
@@ -131,10 +154,22 @@ $("#phoneNumId").on('select2:select', function (evt) {
 		url : BASE_PATH+'/admin/search/getCustomerById.html',
 		success : function(data) {
 			var dataJson = jQuery.parseJSON(data); 
-			var dataJson = jQuery.parseJSON(data); 
 			var linkName = dataJson.customerInfoEntity.linkMan;
+			/* 客户名称补全 */
+			$("#linkNameId").append('<option selected="true" value='+ id +'>'+linkName+'</option>'); 
+			/* 出发城市补全 */
+			$("#city").select2({
+				initSelection : function (element, callback) {
+					var data = dataJson.outcitylist;
+					callback(data);
+				}
+			});
+			
 			var id = dataJson.customerInfoEntity.id;
 			var payType = dataJson.customerInfoEntity.payType;
+			var creditLine = dataJson.customerInfoEntity.creditLine;
+			var arrears = dataJson.customerInfoEntity.arrears;
+			var preDeposit = dataJson.customerInfoEntity.preDeposit;
 			$("#addressId").val(dataJson.customerInfoEntity.address);
 			$("#shortNameId").val(dataJson.customerInfoEntity.shortName);
 			$("#responsibleId").val(dataJson.responsibleName);
@@ -149,15 +184,21 @@ $("#phoneNumId").on('select2:select', function (evt) {
 			}else if(payType == 4){
 				$("#payTypeId").html(dataJson.customerInfoEntity.paytypeName);
 			}
-			/* 客户名称补全 */
-			$("#linkNameId").append('<option selected="true" value='+ id +'>'+linkName+'</option>'); 
-			/* 出发城市补全 */
-			$("#city").select2({
-				initSelection : function (element, callback) {
-					var data = dataJson.outcitylist;
-					callback(data);
-				}
-			});
+			if(creditLine){
+				$("#creditLineId").html(dataJson.customerInfoEntity.creditLine);
+			}else{
+				$("#creditLineId").html("0.00");
+			}
+			if(arrears){
+				$("#arrearsId").html(dataJson.customerInfoEntity.arrears);
+			}else{
+				$("#arrearsId").html("0.00");
+			}
+			if(preDeposit){
+				$("#preDepositId").html(dataJson.customerInfoEntity.preDeposit);
+			}else{
+				$("#preDepositId").html("0.00");
+			}
 		},
 		error : function() {
 		}
@@ -170,6 +211,7 @@ $("#linkNameId").on('select2:unselect', function (evt) {
 $("#phoneNumId").on('select2:unselect', function (evt) {
 	clearText();
 });
+
 
 /* 清除按钮 */
 $("#clearBtn").click(function(){
@@ -191,6 +233,14 @@ function clearText(){
 	$("#siteUrlId").val("");
 	$("#faxId").val("");
 	//付款方式清除
-	$("#payTypeId").html("");
+	$("#payTypeId").html("不限");
+	//信用额度清除
+	$("#creditLineId").html("0.00");
+	//历史欠款清除
+	$("#arrearsId").html("0.00");
+	$('#fontLSqk').css("color","");
+	//预存款
+	$("#preDepositId").html("0.00");
+	
 }
 

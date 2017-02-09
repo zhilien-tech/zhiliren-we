@@ -3,25 +3,31 @@ package com.linyun.airline.admin.search.service;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Cnd;
+import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
+import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.linyun.airline.admin.customer.service.CustomerViewService;
 import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.entities.TMessageEntity;
 import com.linyun.airline.admin.search.form.SearchTicketSqlForm;
+import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.common.sabre.dto.FlightSegment;
 import com.linyun.airline.common.sabre.dto.InstalFlightAirItinerary;
 import com.linyun.airline.common.sabre.dto.SabreExResponse;
@@ -34,8 +40,11 @@ import com.linyun.airline.entities.TAirlineInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
+import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.DateTimeUtil;
+import com.uxuexi.core.common.util.JsonUtil;
 import com.uxuexi.core.common.util.Util;
+import com.uxuexi.core.db.util.DbSqlUtil;
 import com.uxuexi.core.web.base.service.BaseService;
 
 @IocBean
@@ -119,11 +128,84 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object getCustomerById(Long id) {
-		return customerViewService.getCustomerById(id);
+		Map<String, Object> obj = new HashMap<String, Object>();
+
+		TCustomerInfoEntity customerInfoEntity = dbDao.fetch(TCustomerInfoEntity.class, id);
+		long responsibleId = customerInfoEntity.getResponsibleId();
+		TUserEntity userEntity = dbDao.fetch(TUserEntity.class, Cnd.where("id", "=", responsibleId));
+		String responsibleName = userEntity.getUserName();
+
+		Sql citySql = Sqls.create(sqlManager.get("customer_cityOption_list"));
+		Cnd cityCnd = Cnd.NEW();
+		cityCnd.and("c.infoId", "=", id);
+		cityCnd.orderBy("d.dictCode", "desc");
+		citySql.setCondition(cityCnd);
+		List<TDepartureCityEntity> outcityEntities = DbSqlUtil.query(dbDao, TDepartureCityEntity.class, citySql);
+		//出发城市id 拼串
+		String outcityIds = "";
+		for (TDepartureCityEntity outcityEntity : outcityEntities) {
+			outcityIds += outcityEntity.getId() + ",";
+		}
+		if (outcityIds.length() > 0) {
+			outcityIds = outcityIds.substring(0, outcityIds.length() - 1);
+		}
+		obj.put("outcityIds", outcityIds);
+		obj.put("outcitylist", Lists.transform(outcityEntities, new Function<TDepartureCityEntity, Select2Option>() {
+			@Override
+			public Select2Option apply(TDepartureCityEntity record) {
+				Select2Option op = new Select2Option();
+				String text = record.getDictCode() + " - " + record.getEnglishName() + " - " + record.getCountryName();
+				op.setId(record.getId());
+				op.setText(text);
+				return op;
+			}
+		}));
+
+		obj.put("responsibleName", responsibleName);
+		obj.put("customerInfoEntity", customerInfoEntity);
+		Double arrears = customerInfoEntity.getArrears();//历史欠款
+		Double creditLine = customerInfoEntity.getCreditLine();//信用额度
+		if (Util.isEmpty(arrears)) {
+			arrears = 0.0;
+		}
+		if (Util.isEmpty(creditLine)) {
+			creditLine = 0.0;
+		}
+		double subNum = creditLine - arrears;
+		if (subNum < 10000) {
+			obj.put("isArrearsRed", "true");
+		}
+		return JsonUtil.toJson(obj);
 	}
 
 	public Object getCitys(Long id) {
-		return customerViewService.getOutCitys(id);
+		Map<String, Object> obj = new HashMap<String, Object>();
+		Sql citySql = Sqls.create(sqlManager.get("customer_cityOption_list"));
+		Cnd cityCnd = Cnd.NEW();
+		cityCnd.and("c.infoId", "=", id);
+		cityCnd.orderBy("d.dictCode", "desc");
+		citySql.setCondition(cityCnd);
+		List<TDepartureCityEntity> outcityEntities = DbSqlUtil.query(dbDao, TDepartureCityEntity.class, citySql);
+		//出发城市id 拼串
+		String outcityIds = "";
+		for (TDepartureCityEntity outcityEntity : outcityEntities) {
+			outcityIds += outcityEntity.getId() + ",";
+		}
+		if (outcityIds.length() > 0) {
+			outcityIds = outcityIds.substring(0, outcityIds.length() - 1);
+		}
+		obj.put("outcityIds", outcityIds);
+		obj.put("outcitylist", Lists.transform(outcityEntities, new Function<TDepartureCityEntity, Select2Option>() {
+			@Override
+			public Select2Option apply(TDepartureCityEntity record) {
+				Select2Option op = new Select2Option();
+				String text = record.getDictCode() + " - " + record.getEnglishName() + " - " + record.getCountryName();
+				op.setId(record.getId());
+				op.setText(text);
+				return op;
+			}
+		}));
+		return obj;
 	}
 
 	/**
