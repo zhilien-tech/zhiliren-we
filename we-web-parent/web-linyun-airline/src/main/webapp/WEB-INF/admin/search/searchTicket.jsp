@@ -137,42 +137,68 @@
 	                 <table class="cloTable">
 	                   <tr>
 	                     <td><label>出发城市：</label></td>
-	                     <td><input type="text" class="form-control input-sm" placeholder="PEK(北京)"></td>
+	                     <td>
+	                     	<!-- <input id="cOutcity" name="cOutcity" type="text" class="form-control input-sm" placeholder="PEK(北京)"> -->
+	                     	<select id="cOutcity" name="cOutcity" class="form-control select2" multiple="multiple" data-placeholder="PEK(北京)"></select>
+	                     </td>
 	                     <td><label>抵达城市：</label></td>
-	                     <td><input type="text" class="form-control input-sm" placeholder="SYD(悉尼)"></td>
+	                     <td>
+	                     	<!-- <input id="cArrivalcity" type="text" class="form-control input-sm" placeholder="SYD(悉尼)"> -->
+	                     	<select id="cArrivalcity" name="cArrivalcity" class="form-control select2" multiple="multiple" data-placeholder="SHA(上海)"></select>
+	                     </td>
 	                     <td><label>出发日期：</label></td>
-	                     <td><input type="text" class="form-control input-sm textWid" placeholder="2017-02-22"></td>
+	                     <td>
+	                     	<input id="cOutDate" name="cOutDate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2020-01-01">
+	                     </td>
 	                     <td><label>人数：</label></td>
-	                     <td><input type="text" class="form-control input-sm textWid"></td>
+	                     <td>
+	                     	<input id="cPersonAmount" name="cPersonAmount" type="text" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" class="form-control input-sm" placeholder="">
+	                     </td>
 	                     <td><label class="labelWid">早中晚：</label></td>
 	                     <td>
-	                       <select class="form-control input-sm textWid">
-	                         <option>早</option>
-	                         <option>中</option>
-	                         <option>晚</option>
+	                       <select id="morningDay" class="form-control input-sm textWid">
+	                         <option value="morning">早</option>
+	                         <option value="nooning">中</option>
+	                         <option value="evening">晚</option>
 	                       </select>
 	                     </td>
 	                   </tr>
-	                   <tr>
+	                   <tr class="addCustomerAirline">
 	                     <td></span><label>航空公司：</label></td>
-	                     <td><input type="text" class="form-control input-sm" placeholder="PEK(北京)"></td>
+	                     <td>
+	                     	<select id="cAirlineCompany" name="cAirlineCompany" class="form-control select2" multiple="multiple" data-placeholder="AA-美国美洲航空"></select>
+	                     </td>
 	                     <td><label>航班号：</label></td>
-	                     <td><input type="text" class="form-control input-sm" placeholder="SYD(悉尼)"></td>
+	                     <td>
+	                     	<select id="cAirlineNum" name="cAirlineNum" class="form-control select2" multiple="multiple" data-placeholder="MU8876"></select>
+	                     </td>
 	                     <td><label>出发日期：</label></td>
-	                     <td><input type="text" class="form-control input-sm textWid" placeholder="2017-02-22"></td>
+	                     <td>
+	                     	<!-- <input id="cAirOutDate" name="cAirOutDate" type="text" class="form-control input-sm textWid" placeholder="2020-01-01"> -->
+	                     	<input id="cAirOutDate" name="cAirOutDate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'cAirArrivalDate\')}'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2020-01-01">
+	                     </td>
 	                     <td><label>抵达时间：</label></td>
-	                     <td><input type="text" class="form-control input-sm textWid"></td>
+	                     <td>
+	                     	<!-- <input id="cAirArrivalDate" name="cAirArrivalDate" type="text" class="form-control input-sm textWid"> -->
+	                     	<input id="cAirArrivalDate" name="cAirArrivalDate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'cAirOutDate\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2020-01-01">
+	                     </td>
 	                     <td><label class="labelWid">销售价：</label></td>
-	                     <td><input type="text" class="form-control input-sm textWid"></td>
+	                     <td>
+	                     	<input id="cAirPretium" name="cAirPretium" type="text" class="form-control input-sm textWid" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+	                     </td>
 	                     <td><label class="labelWid">成本价：</label></td>
-	                     <td><input type="text" class="form-control input-sm textWid"></td>
+	                     <td>
+	                     	<input id="cAirCost" name="cAirCost" type="text" class="form-control input-sm textWid" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+	                     </td>
 	                     <td>
 	                      <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake"></a>
 	                     </td>
 	                   </tr>
 	                   <tr>
 	                     <td></span><label>备注：</label></td>
-	                     <td colspan="11"><input type="text" class="form-control input-sm noteText" placeholder=" "></td>
+	                     <td colspan="11">
+	                     	<input id="cRemark" name="cRemark" type="text" class="form-control input-sm noteText" placeholder=" ">
+	                     </td>
 	                   </tr>
 	                 </table>
 	                </div>
@@ -464,6 +490,9 @@
 	  	            }
 	  	        }
 	  		});
+	        
+	        //加载客户需求下拉列表
+	    	initCustNeedsSelect2();
 	        
 	     });
 	  </script>

@@ -39,6 +39,7 @@ import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAirlineInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
+import com.linyun.airline.entities.TFlightInfoEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.DateTimeUtil;
@@ -399,6 +400,68 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			listPageData.put("data", list);
 		}
 		return listPageData;
+	}
+
+	/**
+	 * 获取城市下拉
+	 * <p>
+	 * 获取城市下拉
+	 *
+	 * @param cityname
+	 * @return 返回城市下拉列表
+	 */
+	public Object getCustomerCitySelect(String cityname, String exname) {
+		List<TDepartureCityEntity> citySelect = new ArrayList<TDepartureCityEntity>();
+		try {
+			citySelect = externalInfoService.findCityByCode(cityname, CITYCODE);
+			//移除的城市
+			TDepartureCityEntity removeinfo = new TDepartureCityEntity();
+			for (TDepartureCityEntity dictInfoEntity : citySelect) {
+				if (!Util.isEmpty(exname) && dictInfoEntity.getDictCode().equals(exname)) {
+					removeinfo = dictInfoEntity;
+				}
+			}
+			citySelect.remove(removeinfo);
+			if (citySelect.size() > 5) {
+				citySelect = citySelect.subList(0, 5);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return citySelect;
+	}
+
+	/**
+	 * 
+	 * 获取航班号下拉框
+	 * <p>
+	 * 获取航班号下拉框
+	 *
+	 * @param airlinename
+	 * @param exname 
+	 * @return 获取航班号下拉框
+	 */
+	public Object getCAirNumSelect(String airlinename, String exname) {
+		//List<DictInfoEntity> airlineSelect = new ArrayList<DictInfoEntity>();
+		List<TFlightInfoEntity> airlineSelect = new ArrayList<TFlightInfoEntity>();
+		try {
+			//airlineSelect = externalInfoService.findDictInfoByName(airlinename, this.AIRLINECODE);
+			airlineSelect = dbDao.query(TFlightInfoEntity.class,
+					Cnd.where("airlinenum", "like", Strings.trim(airlinename) + "%"), null);
+			TFlightInfoEntity exinfo = new TFlightInfoEntity();
+			for (TFlightInfoEntity tFlightInfoEntity : airlineSelect) {
+				if (!Util.isEmpty(exname) && tFlightInfoEntity.getAirlinenum().equals(exname)) {
+					exinfo = tFlightInfoEntity;
+				}
+			}
+			airlineSelect.remove(exinfo);
+			if (airlineSelect.size() > 5) {
+				airlineSelect = airlineSelect.subList(0, 5);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return airlineSelect;
 	}
 
 }
