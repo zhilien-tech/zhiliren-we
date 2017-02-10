@@ -175,12 +175,12 @@
 	                     <td><label>出发日期：</label></td>
 	                     <td>
 	                     	<!-- <input id="cAirOutDate" name="cAirOutDate" type="text" class="form-control input-sm textWid" placeholder="2020-01-01"> -->
-	                     	<input id="cAirOutDate" name="cAirOutDate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'cAirArrivalDate\')}'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2020-01-01">
+	                     	<input id="cAirOutDate0" name="cAirOutDate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'cAirArrivalDate0\')}'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2020-01-01">
 	                     </td>
-	                     <td><label>抵达时间：</label></td>
+	                     <td><label>抵达日期：</label></td>
 	                     <td>
 	                     	<!-- <input id="cAirArrivalDate" name="cAirArrivalDate" type="text" class="form-control input-sm textWid"> -->
-	                     	<input id="cAirArrivalDate" name="cAirArrivalDate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'cAirOutDate\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2020-01-01">
+	                     	<input id="cAirArrivalDate0" name="cAirArrivalDate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'cAirOutDate0\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2020-01-01">
 	                     </td>
 	                     <td><label class="labelWid">销售价：</label></td>
 	                     <td>

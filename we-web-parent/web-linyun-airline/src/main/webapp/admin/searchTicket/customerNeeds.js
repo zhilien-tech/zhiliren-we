@@ -330,11 +330,11 @@ $('.addDemand').click(function(){
 	//航空段数 只显示一条
 	newDiv.find('.addCustomerAirline').each(function(j){
 		if(j == 0){
-			//设置新的航空公司
-			$(this).find('[name=cAirlineCompany]').next().remove();
-			//设置新的航班号
-			$(this).find('[name=cAirlineNum]').next().remove();
-			//航空段数   出发日期、抵达日期、销售价、成本清除
+			//设置新的 航空公司
+			newDiv.find('[name=cAirlineCompany]').next().next().remove();
+			//设置新的 航班号
+			newDiv.find('[name=cAirlineNum]').next().next().remove();
+			//设置新的 航空段数   出发日期、抵达日期、销售价、成本
 			$(this).find('[name=cAirOutDate]').val('');
 			$(this).find('[name=cAirArrivalDate]').val('');
 			$(this).find('[name=cAirPretium]').val('');
@@ -356,7 +356,7 @@ $(document).on("click",".removeDemand",function(){
 });
 
 //客户需求的航空段数 + 按钮
-$('.addIcon').click(function(){
+$(document).on("click",".addIcon",function(){
 	var divTest = $(this).parent().parent(); 
 	var newDiv = divTest.clone(false,true);
 	divTest.after(newDiv);
@@ -364,7 +364,17 @@ $('.addIcon').click(function(){
 	newDiv.find("p").html(No); 
 	newDiv.find('.addIcon').parent().remove();
 	newDiv.append('<td class="removeIconTd"><i class="glyphicon glyphicon-minus removIcon"></i></td>');
-
+	
+	//循环设置每段 出发、抵达日期的id
+	/*newDiv.find('.addCustomerAirline').each(function(i){
+		if($('.addCustomerAirline').length - 1 == i){
+			//出发日期设置id
+			$(this).find('[name=cAirOutDate]').attr("id","cAirOutDate"+i);
+			//抵达日期设置id
+			$(this).find('[name=cAirArrivalDate]').attr("id","cAirArrivalDate"+i);
+		}
+	});*/
+	
 	//航空段数 设置新的航空公司
 	newDiv.find('[name=cAirlineCompany]').next().remove();
 	newDiv.find('[name=cAirlineCompany]').select2({
