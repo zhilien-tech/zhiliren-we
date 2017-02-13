@@ -1,4 +1,4 @@
-//客户需求加载下拉列表
+/************************************客户需求加载下拉列表 start ************************************/
 function initCustNeedsSelect2(){
 	//加载出发城市下拉
 	$("#cOutcity").select2({
@@ -156,8 +156,9 @@ function initCustNeedsSelect2(){
 		tags : false //设置必须存在的选项 才能选中
 	});
 }
+/************************************客户需求加载下拉列表 end ************************************/
 
-//客户需求的 +需求 按钮
+/************************************客户需求的 +需求 按钮 start ************************************/
 $('.addDemand').click(function(){
 	var divTest = $(this).parent(); 
 	var newDiv = divTest.clone(false,true);
@@ -166,11 +167,11 @@ $('.addDemand').click(function(){
 	var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
 	newDiv.find("p").html(No); 
 	newDiv.find('.addDemand').remove();
-	newDiv.find('.addDemand').remove();
 	newDiv.prepend('<a href="javascript:;" class="btn btn-primary btn-sm removeDemand"><b>-</b>&nbsp;&nbsp;需求</a>');
 	var divId=document.getElementById('infofooter').getElementsByTagName('div');
 	newDiv.find('.titleNum').text(divId.length);
-	//客户需求 设置新的出发城市
+	
+	/**************************************客户需求 设置新的出发城市**************************************/
 	newDiv.find('[name=cOutcity]').next().remove();
 	newDiv.find('[name=cOutcity]').select2({
 		ajax : {
@@ -212,7 +213,7 @@ $('.addDemand').click(function(){
 		tags : false //设置必须存在的选项 才能选中
 	});
 
-	//客户需求 设置新的抵达城市
+	/**************************************客户需求 设置新的抵达城市**************************************/
 	newDiv.find('[name=cArrivalcity]').next().remove();
 	newDiv.find('[name=cArrivalcity]').select2({
 		ajax : {
@@ -254,7 +255,7 @@ $('.addDemand').click(function(){
 		tags : false //设置必须存在的选项 才能选中
 	});
 	
-	// 航空段数  设置新的航空公司
+	/**************************************航空段数  设置新的航空公司**************************************/
 	newDiv.find('[name=cAirlineCompany]').select2({
 		ajax : {
 			url : BASE_PATH  + "/admin/search/getAirLineSelect.html",
@@ -291,7 +292,7 @@ $('.addDemand').click(function(){
 		tags : false,
 	});
 	
-	// 航空段数  设置新的航班号
+	/**************************************设置新的航班号**************************************/
 	newDiv.find('[name=cAirlineNum]').select2({
 		ajax : {
 			url : BASE_PATH + "/admin/search/getCAirNumSelect.html",
@@ -350,12 +351,15 @@ $('.addDemand').click(function(){
 	newDiv.find('[name=cRemark]').val('');
 
 });
+
+/************************************客户需求的 +需求 按钮 end ************************************/
 //客户需求的 -需求 按钮
 $(document).on("click",".removeDemand",function(){
 	$(this).parent().remove();
 });
 
-//客户需求的航空段数 + 按钮
+
+/************************************客户需求的航空段数 + 按钮 start ************************************/
 $(document).on("click",".addIcon",function(){
 	var divTest = $(this).parent().parent(); 
 	var newDiv = divTest.clone(false,true);
@@ -375,7 +379,7 @@ $(document).on("click",".addIcon",function(){
 		}
 	});*/
 	
-	//航空段数 设置新的航空公司
+	/**************************************设置新的航空公司**************************************/
 	newDiv.find('[name=cAirlineCompany]').next().remove();
 	newDiv.find('[name=cAirlineCompany]').select2({
 		ajax : {
@@ -412,7 +416,8 @@ $(document).on("click",".addIcon",function(){
 		maximumSelectionLength : 1, 
 		tags : false,
 	});
-	//航空段数 设置新的航班号
+	
+	/**************************************设置新的航班号**************************************/
 	newDiv.find('[name=cAirlineNum]').next().remove();
 	newDiv.find('[name=cAirlineNum]').select2({
 		ajax : {
@@ -455,6 +460,8 @@ $(document).on("click",".addIcon",function(){
 	newDiv.find('[name=cAirPretium]').val('');
 	newDiv.find('[name=cAirCost]').val('');
 });
+/************************************客户需求的航空段数 + 按钮 end ************************************/
+
 //客户需求的航空段数 - 按钮
 $(document).on("click",".removIcon",function(){
 	$(this).parent().parent().remove();
