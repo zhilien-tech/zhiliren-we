@@ -23,8 +23,8 @@ function searchInlandOrder(){
 	}
 	var msgIndex = layer.msg('查询中...',{time:0});
 	//显示区间
-	var area = $("#origin").val()+' --- '+$("#destination").val();
-	document.getElementById('travelArea').innerHTML=area;
+	/*var area = $("#origin").val()+' --- '+$("#destination").val();
+	document.getElementById('travelArea').innerHTML=area;*/
 	
 	$.ajax({
 		type : 'POST',

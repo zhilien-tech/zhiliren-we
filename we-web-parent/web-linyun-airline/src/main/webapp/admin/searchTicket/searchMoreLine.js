@@ -199,8 +199,8 @@ $("#searchSingleTicketsBtn").click(function() {
 	$("#returnCardDate").val($("#returnDatepicker0").val());
 	
 	//显示区间
-	var area = $("#origin").val()+' --- '+$("#destination").val();
-	document.getElementById('travelArea').innerHTML=area;
+	/*var area = $("#origin").val()+' --- '+$("#destination").val();
+	document.getElementById('travelArea').innerHTML=area;*/
 	//段数
 	var airType = $("input[name='voyageType']:checked").val();
 	var html = "";
@@ -348,12 +348,12 @@ $("#searchSingleTicketsBtn").click(function() {
 					document.getElementById('paragraphListInfo').innerHTML=returnLiList;
 				}
 				
-				var custLines = '';
+				/*var custLines = '';
 				for(var i=0; i<$(".DemandDiv").length; i++){
 					var custNeedNum = $(".DemandDiv .titleNum").eq(i).html()
 					var custLine = custNeedNum +'.北京 - 布利斯';
 					custLines += '<li><a href="javascript:;">'+ custLine +'</a></li>';
-				}
+				}*/
 				$(".dropdown-menu").append(custLines);
 				
 			} else {
