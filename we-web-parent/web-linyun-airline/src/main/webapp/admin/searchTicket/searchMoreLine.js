@@ -199,17 +199,19 @@ $("#searchSingleTicketsBtn").click(function() {
 	$("#returnCardDate").val($("#returnDatepicker0").val());
 	
 	//显示区间
-	var area = $("#origin").val()+' --- '+$("#destination").val();
-	document.getElementById('travelArea').innerHTML=area;
+	/*var area = $("#origin").val()+' --- '+$("#destination").val();
+	document.getElementById('travelArea').innerHTML=area;*/
 	//段数
 	var airType = $("input[name='voyageType']:checked").val();
 	var html = "";
+	var outArrivalCity0 = $("#outCity0").select2("val") +'-'+ $("#singleArriveCity0").select2("val");
+	var arrivalOutCity0 = $("#singleArriveCity0").select2("val") +'-'+ $("#outCity0").select2("val");
 	if(airType == 1){
-		html = '<li id="num1" class="btnStyle">第1段</li>';
+		html = '<li id="num1" class="btnStyle">第1段<p>'+ outArrivalCity0 +'</p></li>';
 		document.getElementById('travelTypeNum').innerHTML=html;
 	}
 	if(airType == 2){
-		html = '<li id="num1" class="btnStyle dClas">第1段</li><li id="num2" class="dClas">第2段</li>';
+		html = '<li id="num1" class="btnStyle dClas">第1段<p>'+ outArrivalCity0 +'</p></li><li id="num2" class="dClas">第2段<p>'+ arrivalOutCity0 +'</p></li>';
 		document.getElementById('travelTypeNum').innerHTML=html;
 	}
 	/* 多程 显示多段 */
@@ -221,9 +223,11 @@ $("#searchSingleTicketsBtn").click(function() {
 			html +='<li id="num'+i+'">第'+i+'段</li><li id="num'+j+'">第'+j+'段</li>';
 		}*/
 		//方案二 显示去程段
-		html ='<li id="moreNum1" class="btnStyle dClas">第1段</li>';
+		html ='<li id="moreNum1" class="btnStyle dClas">第1段<p>'+ outArrivalCity0 +'</p></li>';
 		for(var i=2; i<=$('.setMore').length; i++){
-			html +='<li id="moreNum'+i+'">第'+i+'段</li>';
+			var iNum = i-1;
+			var outArrivalCityi = $("#outCity"+ iNum).select2("val") +'-'+ $("#singleArriveCity"+ iNum).select2("val");
+			html +='<li id="moreNum'+i+'">第'+i+'段<p>'+ outArrivalCityi +'</p></li>';
 		}
 		document.getElementById('travelTypeNum').innerHTML=html;
 	}
@@ -300,11 +304,17 @@ $("#searchSingleTicketsBtn").click(function() {
 						var ArrivalDateTime = outList[foot].ArrivalDateTime;
 						var ElapsedTime = outList[foot].ElapsedTime;
 						var totalAmount = resp.data[i].priceInfo.totalAmount;
-						outLiList += '<li>'+
-						'<p class="p">'+airlineCode+FlightNumber+'</p></div>'+
+						outLiList += '<li class="ticketsLi">'+
+						'<p class="p">'+airlineCode+FlightNumber+'</p>'+
 						'<div class="distanceTimeDiv"><span class="chufaCS"><b>'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
 						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b>'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
 						'<div class="moneyDiv"><i class="fa fa-usd"></i>'+totalAmount+'</div>'+
+						'<div class="btn-group xuanzeBtn">'+
+							'<button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
+							'<ul class="dropdown-menu">'+
+							
+							'</ul>'+
+						'</div>'+
 						'</li>';
 					}
 					/* 返程列表 */
@@ -318,11 +328,17 @@ $("#searchSingleTicketsBtn").click(function() {
 						var ArrivalDateTime = returnList[foot].ArrivalDateTime;
 						var ElapsedTime = returnList[foot].ElapsedTime;
 						var totalAmount = resp.data[i].priceInfo.totalAmount;
-						returnLiList += '<li>'+
-						'<p class="p">'+airlineCode+FlightNumber+'</p></div>'+
+						returnLiList += '<li class="ticketsLi">'+
+						'<p class="p">'+airlineCode+FlightNumber+'</p>'+
 						'<div class="distanceTimeDiv"><span class="chufaCS"><b>'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
 						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b>'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
 						'<div class="moneyDiv"><i class="fa fa-usd"></i>'+totalAmount+'</div>'+
+						'<div class="btn-group xuanzeBtn">'+
+							'<button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
+							'<ul class="dropdown-menu">'+
+							
+							'</ul>'+
+						'</div>'+
 						'</li>';
 					}
 				}
@@ -331,6 +347,15 @@ $("#searchSingleTicketsBtn").click(function() {
 				}else{
 					document.getElementById('paragraphListInfo').innerHTML=returnLiList;
 				}
+				
+				/*var custLines = '';
+				for(var i=0; i<$(".DemandDiv").length; i++){
+					var custNeedNum = $(".DemandDiv .titleNum").eq(i).html()
+					var custLine = custNeedNum +'.北京 - 布利斯';
+					custLines += '<li><a href="javascript:;">'+ custLine +'</a></li>';
+				}*/
+				$(".dropdown-menu").append(custLines);
+				
 			} else {
 				layer.msg(resp.data.message, "", 2000);
 			}
@@ -338,6 +363,7 @@ $("#searchSingleTicketsBtn").click(function() {
 		error : function(xhr) {
 		}
 	});
+	
 });
 
 
