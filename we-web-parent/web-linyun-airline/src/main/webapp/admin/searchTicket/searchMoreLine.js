@@ -354,6 +354,18 @@ $("#searchSingleTicketsBtn").click(function() {
 					var custLine = custNeedNum +'.北京 - 布利斯';
 					custLines += '<li><a href="javascript:;">'+ custLine +'</a></li>';
 				}*/
+				
+				//循环设置每段 出发、抵达城市
+				var custLines = '';
+				$('.DemandDiv').each(function(i){
+					var custNeedNum = $(this).find('[class=titleNum]').html();
+					var custOutCity = $(this).find('[name=cOutcity]').select2("val");
+					var custArrivalCity = $(this).find('[name=cArrivalcity]').select2("val");
+					
+					var custLine = custNeedNum +'. '+ custOutCity +' - '+ custArrivalCity;
+					custLines += '<li><a href="javascript:;">'+ custLine +'</a></li>';
+				});
+				
 				$(".dropdown-menu").append(custLines);
 				
 			} else {
