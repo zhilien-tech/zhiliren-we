@@ -180,7 +180,7 @@ $('.addDemand').click(function(){
 			delay : 250,
 			type : 'post',
 			data : function(params) {
-				var cArrivalcity = newDiv.find('[name=cArrivalcity]').val();
+				var cArrivalcity = newDiv.find('[name=cArrivalcity]').select2("val");
 				if(cArrivalcity){
 					cArrivalcity = cArrivalcity.join(',');
 				}
@@ -222,7 +222,7 @@ $('.addDemand').click(function(){
 			delay : 250,
 			type : 'post',
 			data : function(params) {
-				var cOutcity = $('#cOutcity').val();
+				var cOutcity = newDiv.find('[name=cOutcity]').select2("val");
 				if(cOutcity){
 					cOutcity = cOutcity.join(',');
 				}
