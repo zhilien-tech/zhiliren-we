@@ -23,8 +23,8 @@ function searchInlandOrder(){
 	}
 	var msgIndex = layer.msg('查询中...',{time:0});
 	//显示区间
-	var area = $("#origin").val()+' --- '+$("#destination").val();
-	document.getElementById('travelArea').innerHTML=area;
+	/*var area = $("#origin").val()+' --- '+$("#destination").val();
+	document.getElementById('travelArea').innerHTML=area;*/
 	
 	$.ajax({
 		type : 'POST',
@@ -111,6 +111,12 @@ function searchInlandOrder(){
 						'<div class="distanceTimeDiv"><span class="chufaCS"><b>'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
 						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b>'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
 						'<div class="moneyDiv"><i class="fa fa-usd"></i>'+totalAmount+'</div>'+
+						'<div class="btn-group xuanzeBtn">'+
+							'<button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
+							'<ul class="dropdown-menu">'+
+							
+							'</ul>'+
+						'</div>'+
 						'</li>';
 					}
 					/* 返程列表 */
@@ -128,6 +134,12 @@ function searchInlandOrder(){
 						'<div class="distanceTimeDiv"><span class="chufaCS"><b>'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
 						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b>'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
 						'<div class="moneyDiv"><i class="fa fa-usd"></i>'+totalAmount+'</div>'+
+							'<div class="btn-group xuanzeBtn">'+
+							'<button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
+							'<ul class="dropdown-menu">'+
+							
+							'</ul>'+
+						'</div>'+
 						'</li>';
 					}
 				}

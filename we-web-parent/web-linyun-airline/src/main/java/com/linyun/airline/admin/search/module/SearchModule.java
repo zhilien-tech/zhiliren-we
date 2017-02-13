@@ -106,6 +106,15 @@ public class SearchModule {
 	}
 
 	/**
+	 * 获取航班号下拉
+	 */
+	@At
+	@POST
+	public Object getCAirNumSelect(@Param("airlinename") String airlinename, @Param("exname") String exname) {
+		return searchViewService.getCAirNumSelect(airlinename, exname);
+	}
+
+	/**
 	 * 查询跨海内陆机票
 	 */
 	@At
@@ -121,6 +130,15 @@ public class SearchModule {
 	@POST
 	public Object searchTeamTickets(@Param("..") SearchTicketSqlForm sqlForm, HttpSession session) {
 		return searchViewService.listPage4Datatables(sqlForm, session);
+	}
+
+	/**
+	 * 获取客户需求 城市下拉
+	 */
+	@At
+	@POST
+	public Object getCustomerCitySelect(@Param("cityname") String cityname, @Param("exname") String exname) {
+		return searchViewService.getCustomerCitySelect(cityname, exname);
 	}
 
 }
