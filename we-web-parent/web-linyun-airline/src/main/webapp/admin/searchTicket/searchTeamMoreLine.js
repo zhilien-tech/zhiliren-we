@@ -391,12 +391,12 @@ function getEditPlanParam(){
 
 /* 机票库多程查询 */
 $("#searchTeamTicketsBtn").click(function() {
-	var linkName = $("#linkNameId").select2("val");
+	/*var linkName = $("#linkNameId").select2("val");
 	var phoneNum = $("#phoneNumId").select2("val");
 	if(!(linkName || phoneNum)){
 		layer.msg("客户姓名不能为空", "", 2000);
 		return;
-	}
+	}*/
 	$("#teamTrId").attr("style", "");
 
 	//默认第一段

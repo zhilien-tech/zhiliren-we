@@ -166,10 +166,16 @@ $("#searchSingleTicketsBtn").click(function() {
 	var outDatepicker = $("#outDatepicker0").val();
 	var returnDatepicker = $("#returnDatepicker0").val();
 	var airType = $("input[name='voyageType']:checked").val();
-	if(!(linkName || phoneNum)){
-		layer.msg("客户姓名不能为空", "", 2000);
-		return;
+	
+	var ariaStr = $('#tab_3Id').attr("aria-expanded");
+	//国际不需要验证 客户名称
+	if(ariaStr != "true"){
+		if(!(linkName || phoneNum)){
+			layer.msg("客户姓名不能为空", "", 2000);
+			return;
+		}
 	}
+	
 	if(outCity==""){
 		layer.msg('出发城市不能为空');
 		return;
