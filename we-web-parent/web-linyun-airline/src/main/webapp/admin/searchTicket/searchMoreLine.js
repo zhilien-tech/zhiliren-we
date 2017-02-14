@@ -340,7 +340,7 @@ $("#searchSingleTicketsBtn").click(function() {
 						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b>'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
 						'<div class="moneyDiv"><i class="fa fa-usd"></i>'+totalAmount+'</div>'+
 						'<div class="btn-group xuanzeBtn">'+
-							'<button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
+							'<button class="btn chooseLineBtn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
 							'<ul class="dropdown-menu">'+
 							
 							'</ul>'+
@@ -362,17 +362,17 @@ $("#searchSingleTicketsBtn").click(function() {
 				}*/
 				
 				//循环设置每段 出发、抵达城市
-				var custLines = '';
+				/*var custLines = '';
 				$('.DemandDiv').each(function(i){
 					var custNeedNum = $(this).find('[class=titleNum]').html();
 					var custOutCity = $(this).find('[name=cOutcity]').select2("val");
 					var custArrivalCity = $(this).find('[name=cArrivalcity]').select2("val");
 					
 					var custLine = custNeedNum +'. '+ custOutCity +' - '+ custArrivalCity;
-					custLines += '<li><a href="javascript:;" class='+custNeedNum+' onclick="custLineChoose()">'+ custLine +'</a></li>';
+					custLines += '<li><a href="javascript:;" name="custLineChoose" onclick="custLineChoose()">'+ custLine +'</a></li>';
 				});
 				
-				$(".dropdown-menu").append(custLines);
+				$(".dropdown-menu").append(custLines);*/
 				
 			} else {
 				layer.msg(resp.data.message, "", 2000);

@@ -172,17 +172,15 @@
 	                     <td>
 	                     	<select id="cAirlineNum" name="cAirlineNum" class="form-control select2" multiple="multiple" data-placeholder="MU8876"></select>
 	                     </td>
-	                     <td><label>出发日期：</label></td>
+	                     <td><label>出发时间：</label></td>
 	                     <td>
-	                     	<!-- <input id="cAirOutDate" name="cAirOutDate" type="text" class="form-control input-sm textWid" placeholder="2020-01-01"> -->
+	                     	<input name="cAirOutDate" type="text" class="form-control input-sm textWid" placeholder="08:00">
 	                     	<!-- <input id="cAirOutDate0" name="cAirOutDate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'cAirArrivalDate0\')}'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2020-01-01"> -->
-	                     	<input id="cAirOutDate0" name="cAirOutDate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2020-01-01">
 	                     </td>
-	                     <td><label>抵达日期：</label></td>
+	                     <td><label>抵达时间：</label></td>
 	                     <td>
-	                     	<!-- <input id="cAirArrivalDate" name="cAirArrivalDate" type="text" class="form-control input-sm textWid"> -->
+	                     	<input name="cAirArrivalDate" type="text" class="form-control input-sm textWid" placeholder="14:00">
 	                     	<!-- <input id="cAirArrivalDate0" name="cAirArrivalDate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'cAirOutDate0\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2020-01-01"> -->
-	                     	<input id="cAirArrivalDate0" name="cAirArrivalDate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2020-01-01">
 	                     </td>
 	                     <td><label class="labelWid">销售价：</label></td>
 	                     <td>
@@ -436,6 +434,22 @@
                             <input id="checkedboxval" name="checkedboxval" type="hidden">
                           </div>
                       </div>
+                      
+                      <!-- PNR解析 -->
+                      <div class="tab-pane" id="tab_4">
+                          sabre
+                      </div>
+                      
+                      <!-- PNR解析 -->
+                      <div class="tab-pane" id="tab_5">
+                          etem
+                      </div>
+                      
+                      <!-- CA跳转 -->
+                      <div class="tab-pane" id="tab_6">
+                          <iframe class="ifea" src="http://www.jdair.net/" frameborder="0" scrolling="no" ></iframe>
+                      </div>
+                      
                     </div>
                   </div>
           </div><!--购票查询 列表-->
@@ -448,7 +462,6 @@
 		<script type="text/javascript">
 			var BASE_PATH = '${base}';
 		</script>
-		
 		
 		<!-- select2 -->
 		<script src="${base}/public/plugins/select2/select2.full.min.js"></script>

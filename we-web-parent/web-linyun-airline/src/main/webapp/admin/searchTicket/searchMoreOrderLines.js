@@ -5,9 +5,13 @@ function searchInlandOrder(){
 	var outCity = $('#outCity0').find("option:selected").text();
 	var arriveCity = $('#singleArriveCity0').find("option:selected").text();
 	var outDatepicker = $("#outDatepicker0").val();
-	if(!(linkName || phoneNum)){
-		layer.msg("客户姓名不能为空", "", 2000);
-		return;
+	var ariaStr = $('#tab_3Id').attr("aria-expanded");
+	//国际不需要验证 客户名称
+	if(ariaStr != "true"){
+		if(!(linkName || phoneNum)){
+			layer.msg("客户姓名不能为空", "", 2000);
+			return;
+		}
 	}
 	if(outCity==""){
 		layer.msg('出发城市不能为空');
@@ -112,7 +116,7 @@ function searchInlandOrder(){
 						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b>'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
 						'<div class="moneyDiv"><i class="fa fa-usd"></i>'+totalAmount+'</div>'+
 						'<div class="btn-group xuanzeBtn">'+
-							'<button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
+							'<button class="btn chooseLineBtn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
 							'<ul class="dropdown-menu">'+
 							
 							'</ul>'+

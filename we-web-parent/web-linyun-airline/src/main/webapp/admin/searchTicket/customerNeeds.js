@@ -469,12 +469,26 @@ $(document).on("click",".removIcon",function(){
 
 
 /************************************飞机票 选择项点击事件  start ************************************/
-function custLineChoose(){
+$(document).on("click",".custLineChoose",function(){
+	
 	/*$('.DemandDiv').each(function(i){
 		var custNeedNum = $(this).find('[class=titleNum]').html();
-		if(i == custNeedNum){
-			alert();
-		}
+		alert(custNeedNum);
 		$(this).find('[class=addButton]').click();
 	});*/
-}
+});
+
+$(document).on("click",".chooseLineBtn",function(){
+	alert();
+	var custLines = '';
+	$('.DemandDiv').each(function(i){
+		var custNeedNum = $(this).find('[class=titleNum]').html();
+		var custOutCity = $(this).find('[name=cOutcity]').select2("val");
+		var custArrivalCity = $(this).find('[name=cArrivalcity]').select2("val");
+		
+		var custLine = custNeedNum +'. '+ custOutCity +' - '+ custArrivalCity;
+		custLines += '<li><a href="javascript:;" name="custLineChoose" onclick="custLineChoose()">'+ custLine +'</a></li>';
+	});
+	
+	$(".dropdown-menu").append(custLines);
+});
