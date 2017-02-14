@@ -466,3 +466,15 @@ $(document).on("click",".addIcon",function(){
 $(document).on("click",".removIcon",function(){
 	$(this).parent().parent().remove();
 });
+
+
+/************************************飞机票 选择项点击事件  start ************************************/
+function custLineChoose(){
+	/*$('.DemandDiv').each(function(i){
+		var custNeedNum = $(this).find('[class=titleNum]').html();
+		if(i == custNeedNum){
+			alert();
+		}
+		$(this).find('[class=addButton]').click();
+	});*/
+}

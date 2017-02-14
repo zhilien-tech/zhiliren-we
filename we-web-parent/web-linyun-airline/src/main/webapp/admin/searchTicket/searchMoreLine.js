@@ -363,7 +363,7 @@ $("#searchSingleTicketsBtn").click(function() {
 					var custArrivalCity = $(this).find('[name=cArrivalcity]').select2("val");
 					
 					var custLine = custNeedNum +'. '+ custOutCity +' - '+ custArrivalCity;
-					custLines += '<li><a href="javascript:;">'+ custLine +'</a></li>';
+					custLines += '<li><a href="javascript:;" class='+custNeedNum+' onclick="custLineChoose()">'+ custLine +'</a></li>';
 				});
 				
 				$(".dropdown-menu").append(custLines);

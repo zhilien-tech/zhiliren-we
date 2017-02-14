@@ -99,6 +99,7 @@ $("#linkNameId").on('select2:select', function (evt) {
 			
 			if(dataJson.isArrearsRed){
 				$('#fontLSqk').css("color","red");
+				$("#custInfoName").css("color","red");
 			}
 			
 			var id = dataJson.customerInfoEntity.id;
@@ -164,6 +165,11 @@ $("#phoneNumId").on('select2:select', function (evt) {
 					callback(data);
 				}
 			});
+			
+			if(dataJson.isArrearsRed){
+				$('#fontLSqk').css("color","red");
+				$("#custInfoName").css("color","red");
+			}
 			
 			var id = dataJson.customerInfoEntity.id;
 			var payType = dataJson.customerInfoEntity.payType;
@@ -241,6 +247,9 @@ function clearText(){
 	$('#fontLSqk').css("color","");
 	//预存款
 	$("#preDepositId").html("0.00");
+	//客户名称
+	$("#custInfoName").css("color","");
+	
 	
 }
 

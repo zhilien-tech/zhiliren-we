@@ -53,7 +53,7 @@
 						<form id="customerCheckForm" method="post">
 							<table>
 								<tr>
-									<td><label>客户姓名：</label></td>
+									<td><label><p id="custInfoName">客户姓名：<p></label></td>
 									<td>
 										<!-- <input type="text" class="form-control input-sm" placeholder="请输入客户姓名"> -->
 										<select id="linkNameId" name="linkName" onchange="linkNameOpt()" class="form-control input-sm" multiple="multiple" data-placeholder="请输入客户姓名"></select>
