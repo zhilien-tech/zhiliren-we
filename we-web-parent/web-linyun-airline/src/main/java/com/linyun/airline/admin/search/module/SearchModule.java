@@ -151,4 +151,13 @@ public class SearchModule {
 		return searchViewService.getCustomerCitySelect(cityname, exname);
 	}
 
+	/**
+	 * 解析PNR
+	 */
+	@At
+	@POST
+	public Object parsingPNR(@Param("sabrePNR") String sabrePNR) {
+		return searchViewService.parsingPNR(sabrePNR);
+	}
+
 }

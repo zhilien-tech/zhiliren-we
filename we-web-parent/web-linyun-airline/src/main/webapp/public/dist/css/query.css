@@ -116,3 +116,21 @@ td[colspan="3"] .select2 .selection .select2-selection ul .select2-search--inlin
 .removIcon{color: #3c8dbc;margin-right: 20px;margin-top: 0;cursor: pointer;}
 .removIcon:hover{color: rgba(60, 141, 188, 0.75);}
 /*---------end 客户信息---------*/
+.sabre{padding: 3px 15px;}
+.sabreTextatea{max-width:730px;height: 200px !important;display: inline-block;}
+.parsingBtn{display: inline-block;position: relative;top: -12px;left: 15px;}
+table.dataTable thead .sorting_asc:after {display: none;}
+table.dataTable thead .sorting:after {display: none;}
+table.dataTable thead .sorting_desc:after {display: none;}
+table.dataTable thead > tr > th {padding-right:0px;}
+
+
+
+
+
+
+
+
+
+
+

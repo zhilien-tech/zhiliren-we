@@ -26,6 +26,7 @@ import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEn
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.entities.TMessageEntity;
+import com.linyun.airline.admin.search.entities.ParsingSabreEntity;
 import com.linyun.airline.admin.search.form.SearchTicketSqlForm;
 import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.common.sabre.dto.FlightSegment;
@@ -464,10 +465,104 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		return airlineSelect;
 	}
 
+	/**
+	 * 
+	 * TODO(根据航空公司代码，查询其对应的名称)
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param airCompCode
+	 * @param typeCode
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
 	public String getCAirNameByCode(String airCompCode, String typeCode) {
 		DictInfoEntity dictInfo = dbDao.fetch(DictInfoEntity.class,
 				Cnd.where("dictCode", "=", airCompCode).and("typeCode", "=", typeCode));
 		return dictInfo.getDictName();
 	}
 
+	/**
+	 * 
+	 * TODO(解析 PNR)
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param sabreText
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object parsingPNR(String sabrePNR) {
+
+		String[] sabrePnrs = sabrePNR.split(" ");
+		ParsingSabreEntity pSabreEntity = new ParsingSabreEntity();
+		ArrayList<Object> arrayList = Lists.newArrayList();
+
+		//判断以哪种格式解析
+		String parsingType = "";
+		String sabrePnrsStr = sabrePnrs[0];
+		if (sabrePnrsStr.contains("/D¥") && sabrePnrsStr.contains("<<")) {
+			parsingType = "1";
+		} else if (sabrePnrsStr.contains("WP<<")) {
+			parsingType = "3";
+		} else {
+			parsingType = "2";
+		}
+
+		//分割sabre组
+		//String regexStr = "^[0-9]+[a-zA-Z0-9][a-zA-Z0-9]/[a-zA-Z0-9][a-zA-Z0-9]$";
+		//String[] sabreGroup = sabrePNR.split(regexStr);
+
+		//for (String pnrs : sabreGroup) {
+		/***********************根据 128FEBAKLSYD/D￥VA<< 解析***********************/
+		//序号
+		int id = 0;
+		//航空公司
+		String airCompName = "";
+		//航班号 
+		String flightNum = "";
+		//航段
+		String airLine = "";
+		//起飞日期
+		String airLeavelDate = "";
+		//起飞时间
+		String airDepartureTime = "";
+		//降落时间
+		String airLandingTime = "";
+		//舱位
+		String airSeats = "";
+
+		id = Integer.parseInt(sabrePnrs[0].substring(0, 1));
+		airCompName = sabrePnrs[0].substring(1);
+		flightNum = sabrePnrs[1];
+		String containStr = sabrePnrs[7];
+		if (containStr.contains("*")) {
+			String[] seatLine = containStr.split("[*]");
+			for (int i = 2; i <= 6; i++) {
+				airSeats += (" " + sabrePnrs[i]);
+			}
+			airLine = seatLine[1];
+			airSeats += (" " + seatLine[0]);
+			airDepartureTime = sabrePnrs[8];
+			airLandingTime = sabrePnrs[9];
+		} else {
+			for (int i = 2; i <= 7; i++) {
+				airSeats += (" " + sabrePnrs[i]);
+			}
+			airLine = sabrePnrs[8];
+			airDepartureTime = sabrePnrs[9];
+			airLandingTime = sabrePnrs[10];
+		}
+
+		pSabreEntity.setId(id);
+		pSabreEntity.setAirlineComName(airCompName);
+		pSabreEntity.setFlightNum(flightNum);
+		pSabreEntity.setAirLine(airLine);
+		pSabreEntity.setAirSeats(airSeats);
+		pSabreEntity.setAirDepartureTime(airDepartureTime);
+		pSabreEntity.setAirLandingTime(airLandingTime);
+
+		//arrayList.add(pSabreEntity);
+		//}
+
+		return pSabreEntity;
+	}
 }

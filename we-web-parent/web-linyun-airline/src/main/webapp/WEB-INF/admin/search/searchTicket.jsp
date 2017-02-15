@@ -439,7 +439,28 @@
                       
                       <!-- PNR解析 -->
                       <div class="tab-pane" id="tab_4">
-                          sabre
+                         <textarea id="sabreTextArea" class="form-control sabreTextatea"></textarea>
+                         <button type="button" onclick="parsingText()" class="btn btn-primary input-sm parsingBtn">解析</button>
+                         <table id="sabreTable" class="table table-bordered table-hover">
+                            <thead>
+                              <tr>
+                                <th>序号</th>
+                                <th>航空公司</th>
+                                <th>航班号</th>
+                                <th>航段</th>
+                                <th>舱位</th>
+                                <th>起飞时间</th>
+                                <th>航程时间</th>
+                                <th>预订时间</th>
+                                <th>座位数</th>
+                                <th>价格</th>
+                                <th>状态</th>
+                              </tr>
+                            </thead>
+                            <tbody id="pnrtbody">
+                              
+                            </tbody>
+                         </table>
                       </div>
                       
                       <!-- PNR解析 -->
@@ -487,6 +508,39 @@
 		<script src="${base}/admin/searchTicket/searchTeamMoreLine.js"></script>
 		<!-- 多条件查询 -->
 		<script src="${base}/admin/searchTicket/searchMoreOrderLines.js"></script>
+		
+		<!-- 解析PNR -->
+		<script type="text/javascript">
+		function parsingText(){
+			$.ajax({  
+				url : BASE_PATH + "/admin/search/parsingPNR.html",
+				dataType : 'json',
+				type : 'post',
+				async: false,
+				data : {  
+					"sabrePNR" : $('#sabreTextArea').val()  
+				},
+				success : function(obj) {
+					var pnr = '<tr>'+
+								'<td>'+obj.id+'</td>'+
+			                    '<td>'+obj.airlineComName+'</td>'+
+			                    '<td>'+obj.flightNum+'</td>'+
+			                    '<td>'+obj.airLine+'</td>'+
+			                    '<td>'+obj.airSeats+'</td>'+
+			                    '<td></td>'+
+			                    '<td>'+obj.airDepartureTime+'-'+obj.airLandingTime+'</td>'+
+			                    '<td></td>'+
+			                    '<td></td>'+
+			                    '<td></td>'+
+			                    '<td></td>'+
+			                  '</tr>';
+					$("#pnrtbody").append(pnr);
+				}  
+			});  
+		}
+		</script>
+		
+		
 		<script type="text/javascript">
 	      $(function(){
 	        //校验
@@ -629,6 +683,11 @@
 				}  
 			}
 		}
+	 </script>
+	 
+	 <!-- CA链接 -->
+	 <script type="text/javascript">
+	 
 	 </script>
 	 
 </body>

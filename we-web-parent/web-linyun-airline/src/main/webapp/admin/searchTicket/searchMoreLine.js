@@ -356,25 +356,6 @@ $("#searchSingleTicketsBtn").click(function() {
 					document.getElementById('paragraphListInfo').innerHTML=returnLiList;
 				}
 				
-				/*var custLines = '';
-				for(var i=0; i<$(".DemandDiv").length; i++){
-					var custNeedNum = $(".DemandDiv .titleNum").eq(i).html()
-					var custLine = custNeedNum +'.北京 - 布利斯';
-					custLines += '<li><a href="javascript:;">'+ custLine +'</a></li>';
-				}*/
-				
-				//循环设置每段 出发、抵达城市
-				/*var custLines = '';
-				$('.DemandDiv').each(function(i){
-					var custNeedNum = $(this).find('[class=titleNum]').html();
-					var custOutCity = $(this).find('[name=cOutcity]').select2("val");
-					var custArrivalCity = $(this).find('[name=cArrivalcity]').select2("val");
-					
-					var custLine = custNeedNum +'. '+ custOutCity +' - '+ custArrivalCity;
-					custLines += '<li><a href="javascript:;" name="custLineChoose" onclick="custLineChoose()">'+ custLine +'</a></li>';
-				});
-				$(".dropdown-menu").append(custLines);*/
-				
 			} else {
 				layer.msg(resp.data.message, "", 2000);
 			}
