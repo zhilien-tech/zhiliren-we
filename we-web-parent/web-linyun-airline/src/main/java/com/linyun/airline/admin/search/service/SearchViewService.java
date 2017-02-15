@@ -464,4 +464,10 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		return airlineSelect;
 	}
 
+	public String getCAirNameByCode(String airCompCode, String typeCode) {
+		DictInfoEntity dictInfo = dbDao.fetch(DictInfoEntity.class,
+				Cnd.where("dictCode", "=", airCompCode).and("typeCode", "=", typeCode));
+		return dictInfo.getDictName();
+	}
+
 }

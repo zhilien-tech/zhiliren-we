@@ -311,12 +311,13 @@ $("#searchSingleTicketsBtn").click(function() {
 						var ElapsedTime = outList[foot].ElapsedTime;
 						var totalAmount = resp.data[i].priceInfo.totalAmount;
 						outLiList += '<li class="ticketsLi">'+
+						'<p class="lineCode" hidden>'+airlineCode+'</p>'+
 						'<p class="p">'+airlineCode+FlightNumber+'</p>'+
-						'<div class="distanceTimeDiv"><span class="chufaCS"><b>'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
-						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b>'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
-						'<div class="moneyDiv"><i class="fa fa-usd"></i>'+totalAmount+'</div>'+
+						'<div class="distanceTimeDiv"><span class="chufaCS"><b class="DepartureDateTime">'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
+						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b  class="ArrivalDateTime">'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
+						'<div class="moneyDiv"><i class="fa fa-usd"></i><i class="airTotalMoney">'+totalAmount+'</i></div>'+
 						'<div class="btn-group xuanzeBtn">'+
-							'<button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
+							'<button class="btn chooseLineBtn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
 							'<ul class="dropdown-menu">'+
 							
 							'</ul>'+
@@ -335,10 +336,11 @@ $("#searchSingleTicketsBtn").click(function() {
 						var ElapsedTime = returnList[foot].ElapsedTime;
 						var totalAmount = resp.data[i].priceInfo.totalAmount;
 						returnLiList += '<li class="ticketsLi">'+
+						'<p class="lineCode" hidden>'+airlineCode+'</p>'+
 						'<p class="p">'+airlineCode+FlightNumber+'</p>'+
-						'<div class="distanceTimeDiv"><span class="chufaCS"><b>'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
-						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b>'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
-						'<div class="moneyDiv"><i class="fa fa-usd"></i>'+totalAmount+'</div>'+
+						'<div class="distanceTimeDiv"><span class="chufaCS"><b class="DepartureDateTime">'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
+						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b class="ArrivalDateTime">'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
+						'<div class="moneyDiv"><i class="fa fa-usd"></i><i class="airTotalMoney">'+totalAmount+'</i></div>'+
 						'<div class="btn-group xuanzeBtn">'+
 							'<button class="btn chooseLineBtn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
 							'<ul class="dropdown-menu">'+
@@ -371,7 +373,6 @@ $("#searchSingleTicketsBtn").click(function() {
 					var custLine = custNeedNum +'. '+ custOutCity +' - '+ custArrivalCity;
 					custLines += '<li><a href="javascript:;" name="custLineChoose" onclick="custLineChoose()">'+ custLine +'</a></li>';
 				});
-				
 				$(".dropdown-menu").append(custLines);*/
 				
 			} else {

@@ -106,6 +106,16 @@ public class SearchModule {
 	}
 
 	/**
+	 * 根据代码 获取航空公司名称
+	 */
+	@At
+	@POST
+	public String getCAirNameByCode(@Param("airCompCode") String airCompCode) {
+		String typeCode = "HKGS";
+		return searchViewService.getCAirNameByCode(airCompCode, typeCode);
+	}
+
+	/**
 	 * 获取航班号下拉
 	 */
 	@At

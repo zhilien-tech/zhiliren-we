@@ -132,6 +132,8 @@
 	               </div>
 	               <div id="infofooter" class="infofooter">
 	                <div class="DemandDiv">
+	                 <!-- 隐藏域   控制第一次添加航空段数时，只添加内容 -->
+	                 <input name="airLineClickHidden" value="1" type="hidden" />
 	                 <span class="titleNum">1</span>
 	                 <a href="javascript:;" class="btn btn-primary btn-sm addDemand"><b>+</b>&nbsp;&nbsp;需求</a>
 	                 <table class="cloTable">
@@ -182,13 +184,13 @@
 	                     	<input name="cAirArrivalDate" type="text" class="form-control input-sm textWid" placeholder="14:00">
 	                     	<!-- <input id="cAirArrivalDate0" name="cAirArrivalDate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'cAirOutDate0\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2020-01-01"> -->
 	                     </td>
-	                     <td><label class="labelWid">销售价：</label></td>
-	                     <td>
-	                     	<input id="cAirPretium" name="cAirPretium" type="text" class="form-control input-sm textWid" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-	                     </td>
 	                     <td><label class="labelWid">成本价：</label></td>
 	                     <td>
 	                     	<input id="cAirCost" name="cAirCost" type="text" class="form-control input-sm textWid" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+	                     </td>
+	                     <td><label class="labelWid">销售价：</label></td>
+	                     <td>
+	                     	<input id="cAirPretium" name="cAirPretium" type="text" class="form-control input-sm textWid" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
 	                     </td>
 	                     <td>
 	                      <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake"></a>
