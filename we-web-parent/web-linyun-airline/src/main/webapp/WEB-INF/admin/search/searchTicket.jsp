@@ -196,7 +196,7 @@
 	                      <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake"></a>
 	                     </td>
 	                   </tr>
-	                   <tr>
+	                   <tr name="cRemarkTr">
 	                     <td></span><label>备注：</label></td>
 	                     <td colspan="11">
 	                     	<input id="cRemark" name="cRemark" type="text" class="form-control input-sm noteText" placeholder=" ">
@@ -517,6 +517,9 @@
   		/* 段数按钮点击事件 */
 		$(document).click(function (e) { 
 			var num_id = $(e.target).attr('id'); 
+			if(num_id == null || num_id == undefined){
+				return;
+			}
 			/* 点击 散客每段提醒事件 */
 			var moreNum = num_id.indexOf("moreNum");
 			if(moreNum==0){
@@ -543,7 +546,10 @@
 			}
 			/* 点击 机票库 每段提醒事件 */
 			if(num_id != null){
-				var num_id = $(e.target).attr('id'); 
+				var num_id = $(e.target).attr('id');
+				if(num_id == null || num_id == undefined){
+					return;
+				}
 				var teamNumMore = num_id.indexOf("teamNumMore");
 				if(teamNumMore == 0){
 					/* 去程数据 */

@@ -366,7 +366,8 @@ $(document).on("click",".removeDemand",function(){
 $(document).on("click",".addIcon",function(){
 	var divTest = $(this).parent().parent(); 
 	var newDiv = divTest.clone(false,true);
-	divTest.after(newDiv);
+	divTest.parent().find('tr[name!="cRemarkTr"]').last().after(newDiv);
+	
 	var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
 	newDiv.find("p").html(No); 
 	newDiv.find('.addIcon').parent().remove();
@@ -463,6 +464,7 @@ $(document).on("click",".addIcon",function(){
 	newDiv.find('[name=cAirArrivalDate]').val('');
 	newDiv.find('[name=cAirPretium]').val('');
 	newDiv.find('[name=cAirCost]').val('');
+	newDiv.find('[name=airLineClickHidden]').val("1");
 });
 /************************************客户需求的航空段数 + 按钮 end ************************************/
 
@@ -508,19 +510,20 @@ $(document).on("click",".chooseLineBtn",function(){
 /************************************飞机票 选择项点击事件  start ************************************/
 $(document).on("click",".custLineChoose",function(){
 	var chooseLiIndex = $(this).attr("value"); //选择项中的value值
-	$('.DemandDiv').each(function(i){
-		var custNeedNum = $(this).find('[class=titleNum]').html(); //客户需求的序号 P
+	$('.DemandDiv').each(function(i, demandE){
+		var custNeedNum =$(demandE).find('[class=titleNum]').html(); //客户需求的序号 P
 		if(custNeedNum == chooseLiIndex){
+			
 			//第一次 不加航空段数
 			var ClickHiddenInput =  $(this).find('[name=airLineClickHidden]').val();
 			if(ClickHiddenInput == "1"){
-				$(this).find('[name=airLineClickHidden]').val("0");
+				$(demandE).find('[name=airLineClickHidden]').val("0");
 			}else{
-				$(this).find('[name=addButton]').click();
+				$(demandE).find('[name=addButton]').click();
 			}
 
 			//字典填充航空段数
-			$(this).find('[class=addCustomerAirline]').last().each(function(i){
+			$(demandE).find('[class=addCustomerAirline]').last().find('td').each(function(i, tdE){
 				//航空公司回显
 				$.ajax({  
 					url : BASE_PATH + "/admin/search/getCAirNameByCode.html",
@@ -534,12 +537,12 @@ $(document).on("click",".custLineChoose",function(){
 						airCompName = airCompName +'-'+ obj;
 					}  
 				});  
-				$(this).find('[name=cAirlineCompany]').append('<option class="autoAddairLineName" selected="true">'+airCompName+'</option>'); 
+				$(tdE).find('[name=cAirlineCompany]').append('<option class="autoAddairLineName" selected="true">'+airCompName+'</option>'); 
 				//航班号回显
-				$(this).find('[name=cAirlineNum]').append('<option class="autoAddairLineNum" selected="true">'+airLineNum+'</option>'); 
-				$(this).find('[name=cAirOutDate]').val(DepartureDateTime);
-				$(this).find('[name=cAirArrivalDate]').val(ArrivalDateTime);
-				$(this).find('[name=cAirCost]').val(airTotalMoney);
+				$(tdE).find('[name=cAirlineNum]').append('<option class="autoAddairLineNum" selected="true">'+airLineNum+'</option>'); 
+				$(tdE).find('[name=cAirOutDate]').val(DepartureDateTime);
+				$(tdE).find('[name=cAirArrivalDate]').val(ArrivalDateTime);
+				$(tdE).find('[name=cAirCost]').val(airTotalMoney);
 			});
 		}
 
