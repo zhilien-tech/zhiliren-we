@@ -58,8 +58,16 @@
 										<!-- <input type="text" class="form-control input-sm" placeholder="请输入客户姓名"> -->
 										<select id="linkNameId" name="linkName" onchange="linkNameOpt()" class="form-control input-sm" multiple="multiple" data-placeholder="请输入客户姓名"></select>
 									</td>
+									<!-- 联系人 -->
 									<input type="hidden" id="linkManId"> 
+									<!-- 联系电话 -->
 									<input type="hidden" id="phoneId">
+									<!-- 票价折扣  -->
+									<input id="discountHidden" name="discountHidden" type="hidden">
+									<!-- 手续费 -->
+									<input id="feeHidden" name="feeHidden" type="hidden">
+									<!-- 汇率 -->
+									<input id="ratesHidden" name="ratesHidden" type="hidden">
 									<td><label style="position: relative;top: 4px;">结算方式：</label></td>
 									<td colspan="3">
 										<pre class="preTxt">
@@ -77,7 +85,7 @@
 									</td>
 								</tr>
 							</table>
-						
+							
 							<table class="hideTable none">
 								<tr>
 									<td><label>公司简称：</label></td>
@@ -184,7 +192,7 @@
 	                     	<input name="cAirArrivalDate" type="text" class="form-control input-sm textWid" placeholder="14:00">
 	                     	<!-- <input id="cAirArrivalDate0" name="cAirArrivalDate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'cAirOutDate0\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2020-01-01"> -->
 	                     </td>
-	                     <td><label class="labelWid">成本价：</label></td>
+                     	 <td><label class="labelWid">成本价：</label></td>
 	                     <td>
 	                     	<input id="cAirCost" name="cAirCost" type="text" class="form-control input-sm textWid" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
 	                     </td>
@@ -442,20 +450,8 @@
                          <textarea id="sabreTextArea" class="form-control sabreTextatea"></textarea>
                          <button type="button" onclick="parsingText()" class="btn btn-primary input-sm parsingBtn">解析</button>
                          <table id="sabreTable" class="table table-bordered table-hover">
-                            <thead>
-                              <tr>
-                                <th>序号</th>
-                                <th>航空公司</th>
-                                <th>航班号</th>
-                                <th>航段</th>
-                                <th>舱位</th>
-                                <th>起飞时间</th>
-                                <th>航程时间</th>
-                                <th>预订时间</th>
-                                <th>座位数</th>
-                                <th>价格</th>
-                                <th>状态</th>
-                              </tr>
+                            <thead id="pnrThread">
+                              
                             </thead>
                             <tbody id="pnrtbody">
                               
@@ -521,20 +517,26 @@
 					"sabrePNR" : $('#sabreTextArea').val()  
 				},
 				success : function(obj) {
-					var pnr = '<tr>'+
+					var pnrThread = '<tr>'+
+                        				'<th>序号</th>'+
+                        				'<th>航空公司</th>'+
+                        				'<th>航班号</th>'+
+                       					'<th>航段</th>'+
+                        				'<th>舱位</th>'+
+                        				'<th>起飞日期</th>'+
+                        				'<th>航程时间</th>'+
+                      				'</tr>';
+					var pnrBody = '<tr>'+
 								'<td>'+obj.id+'</td>'+
 			                    '<td>'+obj.airlineComName+'</td>'+
 			                    '<td>'+obj.flightNum+'</td>'+
 			                    '<td>'+obj.airLine+'</td>'+
 			                    '<td>'+obj.airSeats+'</td>'+
-			                    '<td></td>'+
+			                    '<td>'+obj.airLeavelDate+'</td>'+
 			                    '<td>'+obj.airDepartureTime+'-'+obj.airLandingTime+'</td>'+
-			                    '<td></td>'+
-			                    '<td></td>'+
-			                    '<td></td>'+
-			                    '<td></td>'+
 			                  '</tr>';
-					$("#pnrtbody").append(pnr);
+					$("#pnrThread").html(pnrThread);
+					$("#pnrtbody").append(pnrBody);
 				}  
 			});  
 		}

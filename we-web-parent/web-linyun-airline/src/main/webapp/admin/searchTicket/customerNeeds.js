@@ -367,7 +367,7 @@ $(document).on("click",".addIcon",function(){
 	var divTest = $(this).parent().parent(); 
 	var newDiv = divTest.clone(false,true);
 	divTest.parent().find('tr[name!="cRemarkTr"]').last().after(newDiv);
-	
+
 	var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
 	newDiv.find("p").html(No); 
 	newDiv.find('.addIcon').parent().remove();
@@ -513,7 +513,7 @@ $(document).on("click",".custLineChoose",function(){
 	$('.DemandDiv').each(function(i, demandE){
 		var custNeedNum =$(demandE).find('[class=titleNum]').html(); //客户需求的序号 P
 		if(custNeedNum == chooseLiIndex){
-			
+
 			//第一次 不加航空段数
 			var ClickHiddenInput =  $(this).find('[name=airLineClickHidden]').val();
 			if(ClickHiddenInput == "1"){
@@ -542,7 +542,19 @@ $(document).on("click",".custLineChoose",function(){
 				$(tdE).find('[name=cAirlineNum]').append('<option class="autoAddairLineNum" selected="true">'+airLineNum+'</option>'); 
 				$(tdE).find('[name=cAirOutDate]').val(DepartureDateTime);
 				$(tdE).find('[name=cAirArrivalDate]').val(ArrivalDateTime);
-				$(tdE).find('[name=cAirCost]').val(airTotalMoney);
+				//成本
+				var costRMB = airTotalMoney;
+				if($("#ratesHidden").val() != ""){
+					costRMB = airTotalMoney * ($("#ratesHidden").attr("value"));
+				}
+				var PretiumRMB = "";
+				if($("#discountHidden").val() != ""){
+					PretiumRMB = costRMB * ($("#discountHidden").val())*0.01 + ($("#feeHidden").val());
+				}else{
+					PretiumRMB = costRMB + ($("#feeHidden").val());
+				}
+				$(tdE).find('[name=cAirCost]').val(costRMB);
+				$(tdE).find('[name=cAirPretium]').val(PretiumRMB);
 			});
 		}
 

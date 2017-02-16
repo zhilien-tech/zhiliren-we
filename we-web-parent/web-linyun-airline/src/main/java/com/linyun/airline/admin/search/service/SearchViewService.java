@@ -499,7 +499,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		//判断以哪种格式解析
 		String parsingType = "";
 		String sabrePnrsStr = sabrePnrs[0];
-		if (sabrePnrsStr.contains("/D¥") && sabrePnrsStr.contains("<<")) {
+		if (sabrePnrsStr.contains("/D￥") && sabrePnrsStr.contains("<<")) {
 			parsingType = "1";
 		} else if (sabrePnrsStr.contains("WP<<")) {
 			parsingType = "3";
@@ -507,61 +507,70 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			parsingType = "2";
 		}
 
-		//分割sabre组
-		//String regexStr = "^[0-9]+[a-zA-Z0-9][a-zA-Z0-9]/[a-zA-Z0-9][a-zA-Z0-9]$";
-		//String[] sabreGroup = sabrePNR.split(regexStr);
+		if (parsingType == "1") {
+			//分割sabre组
+			//String regexStr = "^[0-9]+[a-zA-Z0-9][a-zA-Z0-9]/[a-zA-Z0-9][a-zA-Z0-9]$";
+			//String[] sabreGroup = sabrePNR.split(regexStr);
 
-		//for (String pnrs : sabreGroup) {
-		/***********************根据 128FEBAKLSYD/D￥VA<< 解析***********************/
-		//序号
-		int id = 0;
-		//航空公司
-		String airCompName = "";
-		//航班号 
-		String flightNum = "";
-		//航段
-		String airLine = "";
-		//起飞日期
-		String airLeavelDate = "";
-		//起飞时间
-		String airDepartureTime = "";
-		//降落时间
-		String airLandingTime = "";
-		//舱位
-		String airSeats = "";
+			//for (String pnrs : sabreGroup) {
 
-		id = Integer.parseInt(sabrePnrs[0].substring(0, 1));
-		airCompName = sabrePnrs[0].substring(1);
-		flightNum = sabrePnrs[1];
-		String containStr = sabrePnrs[7];
-		if (containStr.contains("*")) {
-			String[] seatLine = containStr.split("[*]");
-			for (int i = 2; i <= 6; i++) {
-				airSeats += (" " + sabrePnrs[i]);
+			/***********************根据 128FEBAKLSYD/D￥VA<< 解析***********************/
+			//序号
+			int id = 0;
+			//航空公司
+			String airCompName = "";
+			//航班号 
+			String flightNum = "";
+			//航段
+			String airLine = "";
+			//起飞日期
+			String airLeavelDate = "";
+			//起飞时间
+			String airDepartureTime = "";
+			//降落时间
+			String airLandingTime = "";
+			//舱位
+			String airSeats = "";
+
+			id = Integer.parseInt(sabrePnrs[5].substring(0, 1));
+			airCompName = sabrePnrs[5].substring(1);
+			flightNum = sabrePnrs[6];
+			airLeavelDate = sabrePnrs[1];
+			String containStr = sabrePnrs[12];
+			if (containStr.contains("*")) {
+				String[] seatLine = containStr.split("[*]");
+				for (int i = 7; i <= 11; i++) {
+					airSeats += (" " + sabrePnrs[i]);
+				}
+				airLine = seatLine[6];
+				airSeats += (" " + seatLine[5]);
+				airDepartureTime = sabrePnrs[15];
+				airLandingTime = sabrePnrs[14];
+			} else {
+				for (int i = 7; i <= 12; i++) {
+					airSeats += (" " + sabrePnrs[i]);
+				}
+				airLine = sabrePnrs[13];
+				airDepartureTime = sabrePnrs[14];
+				airLandingTime = sabrePnrs[15];
 			}
-			airLine = seatLine[1];
-			airSeats += (" " + seatLine[0]);
-			airDepartureTime = sabrePnrs[8];
-			airLandingTime = sabrePnrs[9];
-		} else {
-			for (int i = 2; i <= 7; i++) {
-				airSeats += (" " + sabrePnrs[i]);
-			}
-			airLine = sabrePnrs[8];
-			airDepartureTime = sabrePnrs[9];
-			airLandingTime = sabrePnrs[10];
+
+			pSabreEntity.setId(id);
+			pSabreEntity.setAirlineComName(airCompName);
+			pSabreEntity.setFlightNum(flightNum);
+			pSabreEntity.setAirLeavelDate(airLeavelDate);
+			pSabreEntity.setAirLine(airLine);
+			pSabreEntity.setAirSeats(airSeats);
+			pSabreEntity.setAirDepartureTime(airDepartureTime);
+			pSabreEntity.setAirLandingTime(airLandingTime);
+
+			//arrayList.add(pSabreEntity);
+			//}
 		}
 
-		pSabreEntity.setId(id);
-		pSabreEntity.setAirlineComName(airCompName);
-		pSabreEntity.setFlightNum(flightNum);
-		pSabreEntity.setAirLine(airLine);
-		pSabreEntity.setAirSeats(airSeats);
-		pSabreEntity.setAirDepartureTime(airDepartureTime);
-		pSabreEntity.setAirLandingTime(airLandingTime);
+		if (parsingType == "1") {
 
-		//arrayList.add(pSabreEntity);
-		//}
+		}
 
 		return pSabreEntity;
 	}
