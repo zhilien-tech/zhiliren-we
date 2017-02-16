@@ -491,12 +491,10 @@
 								<button type="button" onclick="clearParsingText()"
 									class="btn btn-primary input-sm parsingBtn">清除</button>
 								<table id="sabreTable" class="table table-bordered table-hover">
-									<thead id="pnrThread">
-
-									</thead>
-									<tbody id="pnrtbody">
-
-									</tbody>
+									<!-- 表头 -->
+									<thead id="pnrThread"></thead>
+									<!-- 表内容 -->
+									<tbody id="pnrtbody"></tbody>
 								</table>
 							</div>
 
