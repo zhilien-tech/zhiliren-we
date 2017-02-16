@@ -52,7 +52,7 @@ public class ParsingSabreEntity implements Serializable {
 	private String airLandingTime;
 
 	//座位数 
-	private int airSeatNum;
+	private String airSeatNum;
 
 	//价格
 	private String airTicketPrice;
