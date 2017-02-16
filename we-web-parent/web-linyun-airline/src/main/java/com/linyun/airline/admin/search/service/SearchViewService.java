@@ -486,7 +486,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 	/**
 	 * 
-	 * TODO(解析 PNR)
+	 * TODO(解析 sabre)
 	 * <p>
 	 * TODO(这里描述这个方法详情– 可选)
 	 *
@@ -512,7 +512,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 		if (parsingType == "1") {
 			//分割sabre组
-			//(?s)表示开启跨行匹配，\\d{1}一位数字，[A-Za-z]{2}两位字母，/斜线，\\s空白字符,.+任意字符出现1到多次，最后以\n换行结束
+			//(?s)表示开启跨行匹配，\\d{1}一位数字，[A-Za-z]{2}两位字母，/斜线，\\s空白字符,.+任意字符出现1到多次，?非贪婪模式，最后以\n换行结束
 			String regex = "(?s)\\d{1}[A-Za-z]{2}/.{2}\\s.+?\\d\n";
 			Pattern pattern = Pattern.compile(regex);
 			Matcher m = pattern.matcher(sabrePNR);
@@ -610,6 +610,68 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			arrayList.add(pSabreEntity);
 			map.put("parsingType", "00v0");
 			map.put("arrayList", arrayList);
+		}
+
+		return map;
+	}
+
+	/**
+	 * 
+	 * TODO(解析etem)
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param etemStr
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object parsingEtem(String etemStr) {
+		//判断以哪种格式解析
+		String parsingType = "";
+		String[] etemPnrs = etemStr.split("\\s+");
+		String etem = etemPnrs[0];
+		if (etem.contains("avh/")) {
+			parsingType = "1";
+		} else if (etem.contains("SD")) {
+			parsingType = "2";
+		} else if (etem.contains("QTE:/")) {
+			parsingType = "3";
+		}
+
+		ArrayList<Object> arrayList = Lists.newArrayList();
+		HashMap<String, Object> map = Maps.newHashMap();
+
+		/***********************黑屏查询：AVH/AKLSYD/28FEB/EK**************************/
+		if (parsingType == "1") {
+
+		}
+		/************************输入SD5Q9来预订********************************/
+		if (parsingType == "2") {
+			ParsingSabreEntity pEtemEntity = new ParsingSabreEntity();
+			int id = Integer.parseInt(etemPnrs[1].substring(0, 1));
+			String flightNum = etemPnrs[2];
+			String airSeats = etemPnrs[3];
+			String presetDate = etemPnrs[4];
+			String airLine = etemPnrs[5];
+			String airSeatNum = etemPnrs[6];
+			String airDepartureTime = etemPnrs[7];
+			String airLandingTime = etemPnrs[8];
+
+			pEtemEntity.setId(id);
+			pEtemEntity.setFlightNum(flightNum);
+			pEtemEntity.setAirSeats(airSeats);
+			pEtemEntity.setPresetDate(presetDate);
+			pEtemEntity.setAirLine(airLine);
+			pEtemEntity.setAirSeatNum(airSeatNum);
+			pEtemEntity.setAirDepartureTime(airDepartureTime);
+			pEtemEntity.setAirLandingTime(airLandingTime);
+
+			arrayList.add(pEtemEntity);
+			map.put("parsingType", "SD0Q0");
+			map.put("arrayList", arrayList);
+		}
+		/*********************输入QTE:/EK来查询价格*****************************/
+		if (parsingType == "3") {
+			ParsingSabreEntity pEtemEntity = new ParsingSabreEntity();
 		}
 
 		return map;

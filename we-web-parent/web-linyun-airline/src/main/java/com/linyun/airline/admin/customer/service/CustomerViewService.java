@@ -35,9 +35,13 @@ import com.linyun.airline.admin.Company.service.CompanyViewService;
 import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.operationsArea.service.RemindMessageService;
 import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
+import com.linyun.airline.common.enums.MessageLevelEnum;
+import com.linyun.airline.common.enums.MessageTypeEnum;
+import com.linyun.airline.common.enums.MessageUserEnum;
 import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
@@ -69,6 +73,9 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 	@Inject
 	private UploadService fdfsUploadService;
+
+	@Inject
+	private RemindMessageService remindService;
 
 	//负责人
 	public Object agent(HttpSession session) {
@@ -221,6 +228,22 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 			invoiceEntities.add(invoiceEntity);
 		}
 		dbDao.insert(invoiceEntities);
+
+		//客户信息添加成功， 根据结算方式在消息表添加数据
+		String msgContent = "今天财务结算";
+		int msgType = MessageTypeEnum.PROCESSMSG.intKey(); //消息类型
+		int msgLevel = MessageLevelEnum.MSGLEVEL2.intKey(); //消息优先级
+		long payType = addForm.getPayType(); //结算方式
+		int reminderMode = 0; //提醒方式
+		if (payType == 1) {
+			reminderMode = 1;
+		} else if (payType == 2) {
+			reminderMode = 2;
+		}
+		int userType = MessageUserEnum.PERSONAL.intKey(); //接收方用户类型
+		int msgSourceType = MessageUserEnum.PERSONAL.intKey(); //发送方用户类型
+
+		remindService.addMessageEvent(msgContent, msgType, msgLevel, reminderMode, userType, msgSourceType, session);
 
 		return null;
 	}
@@ -486,6 +509,22 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		List<TCustomerInvoiceEntity> invioceBefore = dbDao.query(TCustomerInvoiceEntity.class,
 				Cnd.where("infoId", "=", updateForm.getId()), null);
 		dbDao.updateRelations(invioceBefore, invoicesAfter);
+
+		//客户信息添加成功， 根据结算方式在消息表添加数据
+		String msgContent = "今天财务结算";
+		int msgType = MessageTypeEnum.PROCESSMSG.intKey(); //消息类型
+		int msgLevel = MessageLevelEnum.MSGLEVEL2.intKey(); //消息优先级
+		long payType = updateForm.getPayType(); //结算方式
+		int reminderMode = 0; //提醒方式
+		if (payType == 1) {
+			reminderMode = 1;
+		} else if (payType == 2) {
+			reminderMode = 2;
+		}
+		int userType = MessageUserEnum.PERSONAL.intKey(); //接收方用户类型
+		int msgSourceType = MessageUserEnum.PERSONAL.intKey(); //发送方用户类型
+
+		remindService.addMessageEvent(msgContent, msgType, msgLevel, reminderMode, userType, msgSourceType, session);
 
 		return null;
 	}

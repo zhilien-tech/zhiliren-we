@@ -483,7 +483,7 @@
 								</div>
 							</div>
 
-							<!-- PNR解析 -->
+							<!-- sabre解析 -->
 							<div class="tab-pane" id="tab_4">
 								<textarea id="sabreTextArea" class="form-control sabreTextatea"></textarea>
 								<button type="button" onclick="parsingText()"
@@ -498,8 +498,20 @@
 								</table>
 							</div>
 
-							<!-- PNR解析 -->
-							<div class="tab-pane" id="tab_5">etem</div>
+							<!-- etem解析 -->
+							<div class="tab-pane" id="tab_5">
+								<textarea id="etemTextArea" class="form-control sabreTextatea"></textarea>
+								<button type="button" onclick="parsingEtemText()"
+									class="btn btn-primary input-sm parsingBtn">解析</button>
+								<button type="button" onclick="clearParsingEtemText()"
+									class="btn btn-primary input-sm parsingBtn">清除</button>
+								<table id="etemTable" class="table table-bordered table-hover">
+									<!-- 表头 -->
+									<thead id="etemThread"></thead>
+									<!-- 表内容 -->
+									<tbody id="etemTbody"></tbody>
+								</table>
+							</div>
 
 							<!-- CA跳转 -->
 							<div class="tab-pane" id="tab_6">
@@ -546,7 +558,7 @@
 		<!-- 多条件查询 -->
 		<script src="${base}/admin/searchTicket/searchMoreOrderLines.js"></script>
 
-		<!-- 解析PNR -->
+		<!-- 解析sabre -->
 		<script type="text/javascript">
 			function parsingText() {
 				$.ajax({
@@ -616,6 +628,52 @@
 			function clearParsingText(){
 				$("#pnrThread").html("");
 				$("#pnrtbody").html("");
+			}
+		</script>
+		
+		<!-- 解析etem -->
+		<script type="text/javascript">
+			function parsingEtemText() {
+				$.ajax({
+					url : BASE_PATH + "/admin/search/parsingEtem.html",
+					dataType : 'json',
+					type : 'post',
+					async : false,
+					data : {
+						"etemStr" : $('#etemTextArea').val()
+					},
+					success : function(result) {
+						
+						if(result.parsingType == "SD0Q0"){
+							var pnrThread = '<tr>' + '<th>序号</th>'
+												+ '<th>航班号</th>' + '<th>预定舱位</th>'
+												+ '<th>预定日期</th>' + '<th>航段</th>'
+												+ '<th>预定座位数</th>' + '<th>航程时间</th>' + 
+											'</tr>';
+							var pnrBody = '';
+							var obj = result.arrayList;
+							for (var i=0;i<obj.length;i++){
+								pnrBody += '<tr>' + 
+												'<td>' + obj[i].id + '</td>'+
+												'<td>' + obj[i].flightNum +'</td>'+
+												'<td>' + obj[i].airSeats +'</td>' + 
+												'<td>' + obj[i].presetDate +'</td>' + 
+												'<td>' + obj[i].airLine +'</td>' +
+												'<td>' + obj[i].airSeatNum +'</td>' +
+												'<td>' + obj[i].airDepartureTime + '-'+ obj[i].airLandingTime +'</td>'+ 
+											'</tr>';
+							}
+						}
+						$("#etemThread").html(pnrThread);
+						$("#etemTbody").append(pnrBody);
+					}
+				});
+			}
+			
+			//清除解析内容
+			function clearParsingEtemText(){
+				$("#etemThread").html("");
+				$("#etemTbody").html("");
 			}
 		</script>
 

@@ -152,12 +152,21 @@ public class SearchModule {
 	}
 
 	/**
-	 * 解析PNR
+	 * 解析sbare
 	 */
 	@At
 	@POST
 	public Object parsingPNR(@Param("sabrePNR") String sabrePNR) {
 		return searchViewService.parsingPNR(sabrePNR);
+	}
+
+	/**
+	 * 解析etem
+	 */
+	@At
+	@POST
+	public Object parsingEtem(@Param("etemStr") String etemStr) {
+		return searchViewService.parsingEtem(etemStr);
 	}
 
 }

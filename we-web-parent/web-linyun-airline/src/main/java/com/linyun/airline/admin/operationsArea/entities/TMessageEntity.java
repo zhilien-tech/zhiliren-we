@@ -30,6 +30,14 @@ public class TMessageEntity implements Serializable {
 	private Long msgType;
 
 	@Column
+	@Comment("提醒类型")
+	private Long reminderMode;
+
+	@Column
+	@Comment("是否提醒")
+	private Long isRemind;
+
+	@Column
 	@Comment("消息状态")
 	private Long msgStatus;
 
