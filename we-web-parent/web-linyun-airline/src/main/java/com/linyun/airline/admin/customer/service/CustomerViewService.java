@@ -511,7 +511,8 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		dbDao.updateRelations(invioceBefore, invoicesAfter);
 
 		//客户信息添加成功， 根据结算方式在消息表添加数据
-		String msgContent = "今天财务结算";
+		String compName = upcompany.getName();
+		String msgContent = "今天 " + compName + " 需要财务结算";
 		int msgType = MessageTypeEnum.PROCESSMSG.intKey(); //消息类型
 		int msgLevel = MessageLevelEnum.MSGLEVEL2.intKey(); //消息优先级
 		long payType = updateForm.getPayType(); //结算方式
