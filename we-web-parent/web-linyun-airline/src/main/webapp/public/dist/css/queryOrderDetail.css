@@ -1,0 +1,20 @@
+.content-wrapper, .right-side, .main-footer {margin-left: 0px;}
+.content {padding-right: 0px;}
+.rightRemind{padding-right: 0px;width: 26%;}
+table.remindSet{margin-left: 10px;margin-right: 10px;}
+.editBtn{position:relative;left:75px;}
+.infoTopContent input:nth-child(2) {display:none;}
+.infoTopContent input:nth-child(4) {display:none;}
+.tdBtn{width: 60px;}
+.cloTable {margin-right: 10px;}
+.sw{display: inline-block;}
+.dis{display:block;}
+
+
+
+
+
+
+
+
+
