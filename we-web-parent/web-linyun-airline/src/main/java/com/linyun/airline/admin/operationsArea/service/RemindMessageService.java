@@ -9,10 +9,10 @@ import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.operationsArea.entities.TMessageEntity;
 import com.linyun.airline.admin.operationsArea.form.TMessageAddForm;
 import com.linyun.airline.common.enums.MessageIsRemindEnum;
 import com.linyun.airline.common.enums.MessageStatusEnum;
-import com.linyun.airline.entities.TMessageEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.entities.TUserMsgEntity;
 import com.uxuexi.core.common.util.DateUtil;
@@ -42,14 +42,14 @@ public class RemindMessageService extends BaseService<TMessageEntity> {
 	 * @param msgContent  	//消息内容
 	 * @param msgType     	//消息类型
 	 * @param msgLevel    	//消息优先级
-	 * @param reminderMode 	//提醒方式    自然月号   每周一   自定义提醒...
+	 * @param reminderMode 	//提醒方式    自然月号   每周一  每天   每小时   每分钟提醒...
 	 * @param userType    	//接受方用户类型
 	 * @param msgSourceType //来源方用户类型
 	 * @param session     	//获取当前登陆用户
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object addMessageEvent(String msgContent, int msgType, int msgLevel, long reminderMode, long userType,
-			long msgSourceType, HttpSession session) {
+	public Object addMessageEvent(String msgContent, int msgType, int msgLevel, int msgStatus, long reminderMode,
+			long userType, long msgSourceType, HttpSession session) {
 
 		//当前用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
@@ -62,7 +62,7 @@ public class RemindMessageService extends BaseService<TMessageEntity> {
 		//消息类型
 		addForm.setMsgType(msgType);
 		//消息状态默认为 （1：表示未删除）
-		addForm.setMsgStatus(1);
+		addForm.setMsgStatus(msgStatus);
 		//消息优先级  MSGLEVEL1.intKey()表示等级最低 ， 由小到大
 		addForm.setPriorityLevel(msgLevel);
 		//消息生成日期
@@ -70,7 +70,7 @@ public class RemindMessageService extends BaseService<TMessageEntity> {
 		if (!Util.isEmpty(nowDate)) {
 			addForm.setGenerateTime(nowDate);
 		}
-		//消息 提醒模式
+		//消息  
 		addForm.setReminderMode(reminderMode);
 		//消息是否提醒  （默认为为提醒）
 		addForm.setIsRemind(Long.valueOf(MessageIsRemindEnum.YES.intKey()));

@@ -36,7 +36,9 @@ SELECT
 	m.generateTime,
   	c.comName, 
 	u.userName,
-	m.msgContent
+	m.msgContent,
+	m.msgType,
+	m.reminderMode
 FROM
  	t_message m,
  	t_user_msg um,
@@ -58,8 +60,6 @@ AND
 	u.id=@userId
 AND
 	m.msgStatus=@msgStatus
-AND 
-	m.generateTime<@now
 ORDER BY m.generateTime DESC
 
 

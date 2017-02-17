@@ -11,7 +11,7 @@ import com.uxuexi.core.common.enums.IEnum;
  * @Date	 2016年12月07日
  */
 public enum MessageTypeEnum implements IEnum {
-	NOTICEMSG(1, "告知型消息"), PROCESSMSG(2, "用户处理型消息");
+	NOTICEMSG(1, "告知型消息"), PROCESSMSG(2, "用户处理型消息"), CUSTOMMSG(3, "自定义型消息");
 
 	private int key;
 	private String value;

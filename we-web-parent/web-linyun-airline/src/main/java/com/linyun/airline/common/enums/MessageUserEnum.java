@@ -11,7 +11,7 @@ import com.uxuexi.core.common.enums.IEnum;
  * @Date	 2016年12月07日
  */
 public enum MessageUserEnum implements IEnum {
-	PERSONAL(1, "个人"), COMPANY(2, "公司");
+	PERSONAL(1, "个人"), COMPANY(2, "公司"), SYSTEM(3, "系统");
 
 	private int key;
 	private String value;

@@ -628,6 +628,7 @@
 			function clearParsingText(){
 				$("#pnrThread").html("");
 				$("#pnrtbody").html("");
+				$('#sabreTextArea').val("");
 			}
 		</script>
 		
@@ -643,7 +644,6 @@
 						"etemStr" : $('#etemTextArea').val()
 					},
 					success : function(result) {
-						
 						if(result.parsingType == "SD0Q0"){
 							var pnrThread = '<tr>' + '<th>序号</th>'
 												+ '<th>航班号</th>' + '<th>预定舱位</th>'
@@ -674,6 +674,7 @@
 			function clearParsingEtemText(){
 				$("#etemThread").html("");
 				$("#etemTbody").html("");
+				$('#etemTextArea').val("");
 			}
 		</script>
 

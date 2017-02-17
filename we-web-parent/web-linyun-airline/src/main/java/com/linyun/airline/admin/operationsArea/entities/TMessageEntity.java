@@ -27,7 +27,7 @@ public class TMessageEntity implements Serializable {
 
 	@Column
 	@Comment("消息类型")
-	private Long msgType;
+	private Long msgType; //定义提醒方式
 
 	@Column
 	@Comment("提醒类型")

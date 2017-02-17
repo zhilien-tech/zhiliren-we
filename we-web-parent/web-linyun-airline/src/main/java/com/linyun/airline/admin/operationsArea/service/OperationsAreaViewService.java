@@ -15,20 +15,25 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
+import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
 import com.google.common.base.Splitter;
+import com.linyun.airline.admin.customer.service.CustomerViewService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.form.TMessageAddForm;
 import com.linyun.airline.admin.operationsArea.form.TMessageUpdateForm;
+import com.linyun.airline.common.enums.MessageIsRemindEnum;
 import com.linyun.airline.common.enums.MessageLevelEnum;
+import com.linyun.airline.common.enums.MessageRemindEnum;
 import com.linyun.airline.common.enums.MessageSourceEnum;
 import com.linyun.airline.common.enums.MessageStatusEnum;
 import com.linyun.airline.common.enums.MessageTypeEnum;
 import com.linyun.airline.common.enums.MessageUserEnum;
 import com.linyun.airline.entities.TCheckboxStatusEntity;
+import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TMessageEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.entities.TUserMsgEntity;
@@ -41,6 +46,12 @@ import com.uxuexi.core.web.base.service.BaseService;
 @IocBean
 public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	private static final Log log = Logs.get();
+
+	/**
+	 * 注入容器中的Service对象
+	 */
+	@Inject
+	private CustomerViewService customerViewService;
 
 	/**
 	 * 
@@ -57,11 +68,16 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		long id = loginUser.getId();
 
 		//消息类型
-		addForm.setMsgType(MessageTypeEnum.PROCESSMSG.intKey());
+		addForm.setMsgType(MessageTypeEnum.CUSTOMMSG.intKey());
 		//消息状态默认为 （1：表示未删除）
 		addForm.setMsgStatus(1);
 		//消息优先级  MSGLEVEL1.intKey()表示等级最低
 		addForm.setPriorityLevel(MessageLevelEnum.MSGLEVEL1.intKey());
+		//消息是否提醒
+		addForm.setIsRemind(Long.valueOf(MessageIsRemindEnum.YES.intKey()));
+		//消息提醒模式
+		addForm.setReminderMode(Long.valueOf(MessageRemindEnum.TIMED.intKey()));
+
 		//格式化日期
 		String generateTimeStr = addForm.getGenerateTimeString();
 		if (!Util.isEmpty(generateTimeStr)) {
@@ -121,8 +137,12 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		TMessageEntity tMessage = dbDao.fetch(TMessageEntity.class, messageUpdateForm.getId());
 		tMessage.setMsgContent(messageUpdateForm.getMsgContent());
 		tMessage.setGenerateTime(DateUtil.string2Date(messageUpdateForm.getGenerateTimeString(), "yyyy-MM-dd hh:mm:ss"));
-		messageUpdateForm.setMsgType(MessageTypeEnum.PROCESSMSG.intKey());
+		messageUpdateForm.setMsgType(MessageTypeEnum.CUSTOMMSG.intKey());
 		messageUpdateForm.setPriorityLevel(MessageLevelEnum.MSGLEVEL1.intKey());
+		//消息是否提醒
+		messageUpdateForm.setIsRemind(Long.valueOf(MessageIsRemindEnum.YES.intKey()));
+		//消息提醒模式
+		messageUpdateForm.setReminderMode(Long.valueOf(MessageRemindEnum.TIMED.intKey()));
 		return dbDao.update(tMessage);
 	}
 
@@ -190,15 +210,73 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		millis += 30 * 60 * 1000;
 		DateTime dateTime = DateUtil.dateTime(new Date(millis));*/
 
-		sql.params().set("now", DateTimeUtil.now());
+		//sql.params().set("now", DateTimeUtil.now());
 		sql.setCallback(Sqls.callback.records());
-		List<Record> records = dbDao.query(sql, null, null);
-		int size = records.size();
-		for (Record record : records) {
-			record.set("num", size);
+		List<Record> records = dbDao.query(sql, null, null); //查询自定义的结果
+
+		//查询当前用户下所有的用户
+		List<TCustomerInfoEntity> customerList = customerViewService.getCustomerList(session);
+		//查询客户管理消息
+		Sql customerSql = Sqls.create(sqlManager.get("msg_user_company_task"));
+		if (!Util.isEmpty(id)) {
+			customerSql.params().set("userId", id);
+		}
+		customerSql.params().set("msgStatus", 3);
+		customerSql.setCallback(Sqls.callback.records());
+
+		Record customerRecord = dbDao.fetch(customerSql);
+		//表示月结和周结的客户
+		String nowStr = DateTimeUtil.format(DateTimeUtil.nowDateTime()); //当前时间
+		for (TCustomerInfoEntity tCustomerInfoEntity : customerList) {
+			int payType = tCustomerInfoEntity.getPayType();
+			if (payType == 1) {
+				//月结
+				customerRecord.set("reminderMode", 1);
+			}
+			if (payType == 2) {
+				//周结
+				customerRecord.set("reminderMode", 2);
+			}
+			customerRecord.set("generatetime", nowStr);
+			records.add(customerRecord);
 		}
 
-		return JsonUtil.toJson(records);
+		//根据提醒模式，筛选结果集    1 月  2周 3天 4小时 5分 6定时提醒
+		List<Record> recordsByCondition = new ArrayList<Record>();
+		for (Record record : records) {
+			String reminderMode = record.getString("reminderMode"); //当前消息的提醒模式
+			Date nowDate = DateUtil.nowDate();
+			if ("1".equals(reminderMode)) {
+				//每自然月1号提醒
+				int day = DateUtil.getDay(nowDate);
+				if (day == 1) {
+					recordsByCondition.add(record);
+				}
+			}
+			if ("2".equals(reminderMode)) {
+				//每自然周一提醒
+				Date firstWeekDay = DateUtil.getFirstWeekDay(nowDate);
+				if (firstWeekDay == nowDate) {
+					recordsByCondition.add(record);
+				}
+			}
+			if ("6".equals(reminderMode)) {
+				//自定义提醒
+				String generatetime = record.getString("generatetime");
+				long generateMillis = DateTimeUtil.string2DateTime(generatetime, "").getMillis();
+				long nowMillis = DateTimeUtil.now().getMillis();
+				long a = generateMillis - nowMillis;
+				if (a < 0) {
+					recordsByCondition.add(record);
+				}
+			}
+		}
+
+		int size = recordsByCondition.size();
+		for (Record record : recordsByCondition) {
+			record.set("num", size);
+		}
+		return JsonUtil.toJson(recordsByCondition);
 	}
 
 	/**

@@ -266,7 +266,13 @@
 	                	var cName = element.comname;
 	                	var agent = element.username;
 	                	var msgC = element.msgcontent;
-	                	content += '<li><a href="javascript:;"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;自定义事件：'+msgC+'</a></li>';
+	                	var msgT = element.msgtype;
+	                	if(msgT == 3){
+	                		msgT = "自定义事件";
+	                	}else if(msgT==2){
+	                		msgT = "系统提醒";
+	                	}
+	                	content += '<li><a href="javascript:;"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +'：'+msgC+'</a></li>';
 		            });
 					if(num){
 						$("#remindMsg").html(num);

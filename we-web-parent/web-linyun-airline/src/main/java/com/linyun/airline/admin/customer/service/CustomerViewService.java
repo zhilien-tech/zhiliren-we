@@ -40,6 +40,8 @@ import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.common.enums.MessageLevelEnum;
+import com.linyun.airline.common.enums.MessageRemindEnum;
+import com.linyun.airline.common.enums.MessageSourceEnum;
 import com.linyun.airline.common.enums.MessageTypeEnum;
 import com.linyun.airline.common.enums.MessageUserEnum;
 import com.linyun.airline.common.result.Select2Option;
@@ -51,6 +53,7 @@ import com.linyun.airline.entities.TCustomerLineEntity;
 import com.linyun.airline.entities.TCustomerOutcityEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
+import com.linyun.airline.entities.TUserMsgEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
 import com.linyun.airline.forms.TCustomerInfoUpdateForm;
 import com.uxuexi.core.common.util.DateUtil;
@@ -229,21 +232,28 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		}
 		dbDao.insert(invoiceEntities);
 
-		//客户信息添加成功， 根据结算方式在消息表添加数据
-		String msgContent = "今天财务结算";
-		int msgType = MessageTypeEnum.PROCESSMSG.intKey(); //消息类型
-		int msgLevel = MessageLevelEnum.MSGLEVEL2.intKey(); //消息优先级
-		long payType = addForm.getPayType(); //结算方式
-		int reminderMode = 0; //提醒方式
-		if (payType == 1) {
-			reminderMode = 1;
-		} else if (payType == 2) {
-			reminderMode = 2;
-		}
-		int userType = MessageUserEnum.PERSONAL.intKey(); //接收方用户类型
-		int msgSourceType = MessageUserEnum.PERSONAL.intKey(); //发送方用户类型
+		TUserMsgEntity userMsgEntity = dbDao.fetch(TUserMsgEntity.class,
+				Cnd.where("msgSource", "=", MessageSourceEnum.CUSTOMERMSG.intKey()));
 
-		remindService.addMessageEvent(msgContent, msgType, msgLevel, reminderMode, userType, msgSourceType, session);
+		//如果消息表中没有客户管理的消息提醒， 自动添加
+		if (Util.isEmpty(userMsgEntity)) {
+			//客户信息添加成功， 根据结算方式在消息表添加数据
+			String msgContent = "今天 需要进行财务结算";
+			int msgType = MessageTypeEnum.PROCESSMSG.intKey(); //消息类型
+			int msgLevel = MessageLevelEnum.MSGLEVEL2.intKey(); //消息优先级
+			long payType = addForm.getPayType(); //结算方式
+			long reminderMode = 0; //提醒方式
+			if (payType == 1) {
+				reminderMode = MessageRemindEnum.MOUTH.intKey();
+			} else if (payType == 2) {
+				reminderMode = MessageRemindEnum.WEEK.intKey();
+			}
+			int userType = MessageUserEnum.PERSONAL.intKey(); //接收方用户类型
+			int msgSourceType = MessageSourceEnum.CUSTOMERMSG.intKey(); //发送方类型   来自客户管理系统
+			int msgStatus = 0;
+			remindService.addMessageEvent(msgContent, msgType, msgLevel, msgStatus, reminderMode, userType,
+					msgSourceType, session);
+		}
 
 		return null;
 	}
@@ -510,22 +520,27 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 				Cnd.where("infoId", "=", updateForm.getId()), null);
 		dbDao.updateRelations(invioceBefore, invoicesAfter);
 
-		//客户信息添加成功， 根据结算方式在消息表添加数据
-		String compName = upcompany.getName();
-		String msgContent = "今天 " + compName + " 需要财务结算";
-		int msgType = MessageTypeEnum.PROCESSMSG.intKey(); //消息类型
-		int msgLevel = MessageLevelEnum.MSGLEVEL2.intKey(); //消息优先级
-		long payType = updateForm.getPayType(); //结算方式
-		int reminderMode = 0; //提醒方式
-		if (payType == 1) {
-			reminderMode = 1;
-		} else if (payType == 2) {
-			reminderMode = 2;
+		//如果消息表中没有   客户管理的消息提醒， 自动添加
+		TUserMsgEntity userMsgEntity = dbDao.fetch(TUserMsgEntity.class,
+				Cnd.where("msgSource", "=", MessageSourceEnum.CUSTOMERMSG.intKey()));
+		if (Util.isEmpty(userMsgEntity)) {
+			//客户信息添加成功， 根据结算方式在消息表添加数据
+			String msgContent = "今天 需要进行财务结算";
+			int msgType = MessageTypeEnum.PROCESSMSG.intKey(); //消息类型
+			int msgLevel = MessageLevelEnum.MSGLEVEL2.intKey(); //消息优先级
+			long payType = updateForm.getPayType(); //结算方式
+			long reminderMode = 0; //提醒方式
+			if (payType == 1) {
+				reminderMode = MessageRemindEnum.MOUTH.intKey();
+			} else if (payType == 2) {
+				reminderMode = MessageRemindEnum.WEEK.intKey();
+			}
+			int userType = MessageUserEnum.PERSONAL.intKey(); //接收方用户类型
+			int msgSourceType = MessageSourceEnum.CUSTOMERMSG.intKey(); //发送方类型   来自客户管理系统
+			int msgStatus = 0; //操作台不显示
+			remindService.addMessageEvent(msgContent, msgType, msgLevel, msgStatus, reminderMode, userType,
+					msgSourceType, session);
 		}
-		int userType = MessageUserEnum.PERSONAL.intKey(); //接收方用户类型
-		int msgSourceType = MessageUserEnum.PERSONAL.intKey(); //发送方用户类型
-
-		remindService.addMessageEvent(msgContent, msgType, msgLevel, reminderMode, userType, msgSourceType, session);
 
 		return null;
 	}
@@ -936,4 +951,21 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		}));
 		return obj;
 	}
+
+	/**
+	 * 
+	 * (查询当前用户所有的客户)
+	 * <p>
+	 * @param session
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public List<TCustomerInfoEntity> getCustomerList(HttpSession session) {
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();//得到公司关系表comId
+		TUpcompanyEntity up = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
+		List<TCustomerInfoEntity> customerList = dbDao.query(TCustomerInfoEntity.class,
+				Cnd.where("upComId", "=", up.getId()), null);
+		return customerList;
+	}
+
 }
