@@ -59,7 +59,7 @@ AND
 AND 
 	u.id=@userId
 AND
-	m.msgStatus=@msgStatus
+	um.msgSource=@msgSource
 ORDER BY m.generateTime DESC
 
 

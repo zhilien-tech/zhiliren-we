@@ -203,7 +203,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		if (!Util.isEmpty(id)) {
 			sql.params().set("userId", id);
 		}
-		sql.params().set("msgStatus", 1);
+		sql.params().set("msgSource", 1);
 		/*
 		 * 当前时间+30分钟
 		long millis = DateTimeUtil.millis();
@@ -221,7 +221,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		if (!Util.isEmpty(id)) {
 			customerSql.params().set("userId", id);
 		}
-		customerSql.params().set("msgStatus", 3);
+		customerSql.params().set("msgSource", 3);
 		customerSql.setCallback(Sqls.callback.records());
 
 		Record customerRecord = dbDao.fetch(customerSql);
