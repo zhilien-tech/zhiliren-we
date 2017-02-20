@@ -235,9 +235,12 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 		TUserMsgEntity userMsgEntity = dbDao.fetch(TUserMsgEntity.class,
 				Cnd.where("msgSource", "=", MessageSourceEnum.CUSTOMERMSG.intKey()));
+		Long userMsgId = userMsgEntity.getUserId();
 
-		//如果消息表中没有客户管理的消息提醒， 自动添加
-		if (Util.isEmpty(userMsgEntity)) {
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long userId = loginUser.getId();
+
+		if (userId != userMsgId) {
 			//客户信息添加成功， 根据结算方式在消息表添加数据
 			String msgContent = "今天 需要进行财务结算";
 			int msgType = MessageTypeEnum.PROCESSMSG.intKey(); //消息类型
@@ -452,7 +455,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		if (!Util.isEmpty(updateForm.getContractTimeString())) {
 			updateForm.setContractTime(DateUtil.string2Date(updateForm.getContractTimeString(), "yyyy-MM-dd"));
 		}
-		//updateForm.setCreateTime(DateUtil.nowDate());
+		updateForm.setCreateTime(DateUtil.nowDate());
 		//得到当前用户所在公司的id
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
@@ -525,7 +528,12 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		//如果消息表中没有   客户管理的消息提醒， 自动添加
 		TUserMsgEntity userMsgEntity = dbDao.fetch(TUserMsgEntity.class,
 				Cnd.where("msgSource", "=", MessageSourceEnum.CUSTOMERMSG.intKey()));
-		if (Util.isEmpty(userMsgEntity)) {
+		Long userMsgId = userMsgEntity.getUserId();
+
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long userId = loginUser.getId();
+
+		if (userId != userMsgId) {
 			//客户信息添加成功， 根据结算方式在消息表添加数据
 			String msgContent = "今天 需要进行财务结算";
 			int msgType = MessageTypeEnum.PROCESSMSG.intKey(); //消息类型

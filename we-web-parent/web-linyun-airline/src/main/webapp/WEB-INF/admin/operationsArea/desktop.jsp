@@ -295,7 +295,6 @@
 		}
 		
 		/* 任务 */
-		/* 我的提醒 */
 		function taskNoticeList() {
 			//获取当前日期
 			var d = new Date();
@@ -309,13 +308,12 @@
 					var dateStr = month+1 +"-"+ day;
 					var yesterdayStr = month+1 +"-"+ (day-1);
 				}
-				
 				dateStr = "0" + dateStr;
 				yesterdayStr = "0" + yesterdayStr;
 			}else{
 				var dateStr = month+1 +"-"+ day;
 				var yesterdayStr = month+1 +"-"+ (day-1);
-			}
+			} 
 			//获取当前时间
 			var timeStr = d.getHours() +":"+ d.getMinutes();
 			
