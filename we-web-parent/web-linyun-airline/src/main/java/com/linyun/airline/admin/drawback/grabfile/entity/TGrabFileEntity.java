@@ -28,6 +28,10 @@ public class TGrabFileEntity implements Serializable {
 	private Integer parentId;
 
 	@Column
+	@Comment("文件夹名称")
+	private String folderName;
+
+	@Column
 	@Comment("文件名称")
 	private String fileName;
 
@@ -62,5 +66,9 @@ public class TGrabFileEntity implements Serializable {
 	@Column
 	@Comment("完整路径")
 	private String fullPath;
+
+	@Column
+	@Comment("序号")
+	private Integer sort;
 
 }

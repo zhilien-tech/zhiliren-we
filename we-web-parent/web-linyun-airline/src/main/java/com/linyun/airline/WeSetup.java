@@ -1,19 +1,24 @@
 package com.linyun.airline;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletContext;
 
 import org.nutz.dao.entity.annotation.Table;
 import org.nutz.dao.impl.NutDao;
 import org.nutz.ioc.Ioc;
+import org.nutz.lang.Tasks;
 import org.nutz.mvc.NutConfig;
 import org.nutz.mvc.Setup;
 import org.nutz.resource.Scans;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.linyun.airline.admin.drawback.grabfile.timer.MailScrabService;
 import com.uxuexi.core.common.enums.IEnum;
 import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.web.config.KvConfig;
@@ -76,8 +81,36 @@ public class WeSetup implements Setup {
 		registerObserver(ioc);
 		createTableIfNotExists(config);
 
-		//启动定时任务
-		//		startTasks(ioc) ;
+		//初始化时启动定时任务
+		startTasks(ioc);
+	}
+
+	private void startTasks(Ioc ioc) {
+		taskOfGrabMail(ioc);
+	}
+
+	//邮件抓取定时任务
+	private void taskOfGrabMail(Ioc ioc) {
+		final MailScrabService grabMailService = ioc.get(MailScrabService.class, "grabMailService");
+		//定时每天某个时间执行
+		Date now = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String startTime = sdf.format(now) + "00:00:00";
+		try {
+			Tasks.scheduleAtFixedRate(new Runnable() {
+				public void run() {
+					logger.info("邮件抓取定时任务启动----------");
+					try {
+						grabMailService.receivePop3();
+					} catch (Exception e) {
+						e.printStackTrace();
+
+					}
+				}
+			}, startTime, 1, TimeUnit.DAYS);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	private void initWebGlobalConfig(final KvConfig config, final ServletContext sc) {
@@ -149,6 +182,7 @@ public class WeSetup implements Setup {
 
 	@Override
 	public void destroy(final NutConfig config) {
+
 	}
 
 	private Map<String, Map<String, String>> getValues(final KvConfig config) {
