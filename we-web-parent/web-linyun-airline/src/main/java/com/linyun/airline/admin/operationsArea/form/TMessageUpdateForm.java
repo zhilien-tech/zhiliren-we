@@ -22,6 +22,12 @@ public class TMessageUpdateForm extends ModForm implements Serializable {
 	/**消息类型*/
 	private Integer msgType;
 
+	/**提醒类型*/
+	private Long reminderMode;
+
+	/**是否提醒*/
+	private Long isRemind;
+
 	/**生成日期*/
 	private Date generateTime;
 	private String generateTimeString;

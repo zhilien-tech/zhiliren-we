@@ -108,7 +108,7 @@ function clearTicketHtml(){
 	$("#returnDatepicker0").val("");
 }
 
-//清除跨海内陆 列表项
+//清除跨海内陆 国际 列表项
 function clearSearchHtml(){
 	document.getElementById('travelArea').innerHTML="";
 	document.getElementById('travelTypeNum').innerHTML="";
@@ -120,6 +120,15 @@ function clearSearchHtml(){
 	$("#babySelect").val("0");
 	$("#airLevel").val("1");
 }
+
+//清除检索结果
+function clearSearchResult(){
+	document.getElementById('travelArea').innerHTML="";
+	document.getElementById('travelTypeNum').innerHTML="";
+	document.getElementById('travelDateNum').innerHTML="";
+	document.getElementById('paragraphListInfo').innerHTML="";
+}
+
 //清除机票库 列表项
 function clearSearchTeamHtml(){
 	$("#teamAirline").val(null).trigger("change");
@@ -127,7 +136,6 @@ function clearSearchTeamHtml(){
 	document.getElementById('datatable2_info').innerHTML="";
 	document.getElementById('datatable2_paginate').innerHTML="";
 	document.getElementById('datatable2').innerHTML="";
-	document.getElementsByName("voyageType1")[1].checked="checked";//radio 默认 选中往返
 	$("#teamAirLevel").val("1");
 }
 
@@ -153,10 +161,10 @@ cardDate = function(obj){
 	searchInlandOrder();
 }
 getDateCard =function(){
-	var dateNumHtml = "";
-	var outStr = $("#departureCardDate").val();
+	var dateNumHtml = null;
+	var outStr = $("#departuredate").val();
 	var outDate = new Date(outStr.replace(/-/g,"/"));
-	var returnStr = $("#returnCardDate").val();
+	var returnStr = $("#returndate").val();
 	var returnDate = new Date(returnStr.replace(/-/g,"/"));
 	/* 出发前的日期 */
 	var time = outDate.getTime() - new Date().getTime() ; //日期的long型值之差
@@ -166,8 +174,8 @@ getDateCard =function(){
 		for(var i=days; i>=1; i--){
 			var beforeDate= outDate.getTime()- 1000*60*60*24*i;
 			var changeDate=new Date(beforeDate);
-			var formatDate = getNowFormatDate(changeDate).substring(0, 5);
-			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="'+formatDate+'">'+formatDate+'</li>';
+			var formatDate = getNowFormatDate(changeDate);
+			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="card'+formatDate+'">'+formatDate+'</li>';
 		}
 	}else{
 		var dataCardHtml = "";
@@ -176,11 +184,11 @@ getDateCard =function(){
 			var changeDate=new Date(beforeDate);
 			var formatDate = getNowFormatDate(changeDate).substring(0, 5);
 			
-			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="'+formatDate+'">'+getNowFormatDate(changeDate)+'</li>';
+			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="card'+formatDate+'">'+getNowFormatDate(changeDate)+'</li>';
 		}
 	}
 	/* 出发日期 */
-	dataCardHtml += '<li onclick="cardDate(this);" value="'+outDate+'" id="'+getNowFormatDate(outDate).substring(0, 5)+'" class="btnStyle">'+getNowFormatDate(outDate)+'</li>';
+	dataCardHtml += '<li onclick="cardDate(this);" class="btnStyle" value="'+outDate+'" id="card'+getNowFormatDate(outDate).substring(0, 5)+'">'+getNowFormatDate(outDate)+'</li>';
 	/* 出发后的日期 */
 	var travelTime = returnDate.getTime() - outDate.getTime();
 	var travelDays = Math.floor(travelTime/(24*60*60*1000))+1;
@@ -190,7 +198,7 @@ getDateCard =function(){
 			afterDate+=1000*60*60*24;
 			var changeDate=new Date(afterDate);
 			var formatDate = getNowFormatDate(changeDate).substring(0, 5);
-			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="'+formatDate+'">'+getNowFormatDate(changeDate)+'</li>';
+			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="card'+formatDate+'">'+getNowFormatDate(changeDate)+'</li>';
 		}
 	}else{
 		var afterDate = outDate.getTime();
@@ -198,10 +206,20 @@ getDateCard =function(){
 			afterDate+=1000*60*60*24;
 			var changeDate=new Date(afterDate);
 			var formatDate = getNowFormatDate(changeDate).substring(0, 5);
-			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="'+formatDate+'">'+getNowFormatDate(changeDate)+'</li>';
+			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="card'+formatDate+'">'+getNowFormatDate(changeDate)+'</li>';
+		}
+	}
+	if(!returnDate.getTime()){
+		var afterDate = outDate.getTime();
+		for(var i=1; i<=3; i++){
+			afterDate+=1000*60*60*24;
+			var changeDate=new Date(afterDate);
+			var formatDate = getNowFormatDate(changeDate).substring(0, 5);
+			dataCardHtml += '<li onclick="cardDate(this);" value="'+changeDate+'" id="card'+formatDate+'">'+getNowFormatDate(changeDate)+'</li>';
 		}
 	}
 	document.getElementById('travelDateNum').innerHTML=dataCardHtml;
+	
 }
 /* -------------------------日期小卡片 end------------------------------- */
 
@@ -306,6 +324,7 @@ function clearBtnClass(){
 		btn.setAttribute("class", "btnStyle");
 	}
 }
+
 
 
 /*直飞勾选*/

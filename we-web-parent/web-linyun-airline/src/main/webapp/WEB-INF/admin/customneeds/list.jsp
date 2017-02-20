@@ -122,7 +122,7 @@
                         <div class="form-group row">
                           <label class="col-sm-1 text-right padding marTop5">状态：</label>
                           <div class="col-md-1 padding">
-                            <select class="form-control select1" id="teamtype">
+                            <select class="form-control select1" id="teamtype" onchange="changeType();">
                               <option value="1">系列团</option>
                               <option value="2">临时团</option>
                             </select>
@@ -197,15 +197,17 @@
                             <div class="col-sm-1 padding">
                               <select id="leaveairline0" name="leaveairline" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
                             </div>
-                            <label class="col-sm-1 text-right padding">出发日期：</label>
-                            <div class="col-sm-1 padding">
-                              <input id="setoffdate0" name="setoffdate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d'})" class="form-control input-sm inputdatestr" placeholder=""/>
+                            <div name="teamtypehide">
+	                            <label class="col-sm-1 text-right padding">出发日期：</label>
+	                            <div class="col-sm-1 padding">
+	                              <input id="setoffdate0" name="setoffdate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d'})" class="form-control input-sm inputdatestr" placeholder=""/>
+	                            </div>
+	                            <label class="col-sm-1 text-right padding">时间：</label>
+	                            <div class="col-sm-1 padding">
+	                              <input id="setofftime" name="setofftime" type="text" class="form-control input-sm inputtime" placeholder=""/>
+	                            </div>
+	                            <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addNeeds"></a><!--添加div按钮-->
                             </div>
-                            <label class="col-sm-1 text-right padding">时间：</label>
-                            <div class="col-sm-1 padding">
-                              <input id="setofftime" name="setofftime" type="text" class="form-control input-sm inputtime" placeholder=""/>
-                            </div>
-                            <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addNeeds"></a><!--添加div按钮-->
                           </div><!--end 起飞城市/降落城市/联运城市 text-->
 
                           <!--time 选择-->
@@ -225,7 +227,7 @@
 	                            </div>
                             </div>
                             <div class="col-sm-2 padding cf">
-                              <select class="form-control selectMargin cf dateAddHeng" id="weekSelect" onchange="select_change(this)">
+                              <select class="form-control selectMargin cf dateAddHeng" id="weekSelect" name="weekSelect" onchange="select_change(this)">
                                 <option value="1">每周</option>
                                 <option value="2">自由</option>
                               </select>
@@ -336,7 +338,7 @@
                           
                           <label class="col-sm-1 text-right padding cf">从：</label>
                             <div class="col-sm-3 padding">
-                              <input type="text" class="form-control input-sm timeWid inputdatestr" id="startdate1" name="startdate1" placeholder="2016-11-05" onkeypress="onEnterSearch();" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'enddate1\')}'})"> - <input type="text" id="enddate1" name="enddate1" class="form-control input-sm timeWid inputdatestr" placeholder="2016-12-01" onkeypress="onEnterSearch();" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startdate1\')}'})">
+                              <input type="text" class="form-control input-sm timeWid inputdatestr" id="startdate1" name="startdate1" placeholder="2016-11-05" onkeypress="onEnterSearch();" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'enddate1\')}'})"> - <input type="text" id="enddate1" name="enddate1" class="form-control input-sm timeWid inputdatestr" placeholder="2016-12-01" onkeypress="onEnterSearch();" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startdate1\')}'})">
                             </div>
                           <label class="col-sm-1 text-right padding">起飞城市：</label>
                           <div class="col-sm-1 padding">

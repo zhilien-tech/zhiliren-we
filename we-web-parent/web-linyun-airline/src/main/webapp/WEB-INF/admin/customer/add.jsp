@@ -301,6 +301,56 @@
 								</div>
 							</div>
 						</div>
+						
+<!--------------------------------------------新添加 内容   财务信息 start-------------------------------------------------->
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-2 text-right padding">信用额度：</label>
+	                            <div class="col-sm-2 padding">
+	                              <input id="creditLine" name="creditLine" type="text" class="form-control input-sm">
+	                            </div>
+							</div>
+                            <label class="col-sm-1 text-right padding">已欠款：</label>
+                            <div class="col-sm-2 padding">
+                            	<input id="arrears" name="arrears" type="text" readonly="readonly" class="form-control input-sm">
+                            </div>
+							<div class="form-group">
+								<label class="col-sm-1 text-right padding">预收款：</label>
+	                            <div class="col-sm-1 padding">
+	                              <input id="preDeposit" name="preDeposit" type="text" class="form-control input-sm">
+	                            </div>
+							</div>
+                        </div>
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-2 text-right padding">票价折扣：</label>
+	                            <div class="col-sm-2 padding">
+	                              <input id="discountFare" name="discountFare" type="text" class="form-control input-sm discountText">
+	                              <span>%</span>
+	                            </div>
+							</div>
+                          	<div class="form-group">
+                          		<label class="col-sm-1 text-right padding">手续费：</label>
+	                            <div class="col-sm-2 padding">
+	                            	<input id="fees" name="fees" type="text" class="form-control input-sm discountText" placeholder="每张票">
+	                            	<span>￥</span>
+	                            </div>
+                          	</div>
+							<div class="form-group">
+								<label class="col-sm-1 text-right padding">汇率：</label>
+	                            <div class="col-sm-1 padding">
+	                              <input id="exchangeRates" name="exchangeRates" type="text" class="form-control input-sm">
+	                            </div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-1 text-right padding">退税：</label>
+	                            <div class="col-sm-2 padding">
+	                              <input id="taxRefund" name="taxRefund" type="text" class="form-control input-sm taxText" placeholder="每张票">
+	                            </div>
+							</div>
+                        </div>
+<!--------------------------------------------新添加 内容   财务信息  end-------------------------------------------------->
+
 					</div>
 				</div>
 			</div>
@@ -339,7 +389,7 @@
 				'buttonText' : '上传',
 				'fileSizeLimit' : '3000MB',
 				'fileTypeDesc' : '文件',
-				'fileTypeExts' : '*.png; *.txt; *.doc; *.pdf; *.xls; *.jpg; *.docx; *.xlsx;',//文件类型过滤
+				'fileTypeExts' : '*.png; *.txt; *.doc; *.docx; *.pdf; *.xls; *.xlsx; *.jpg; *.bmp; *.tiff; *.pcx; *.exif; *.fpx; *.svg; *.psd; *.cdr; *.pcd; *.dxf; *.eps; *.ai; *.raw; *.WMF; ',//文件类型过滤
 				'swf' : '${base}/public/plugins/uploadify/uploadify.swf',
 				'multi' : false,
 				'successTimeout' : 1800,
@@ -401,7 +451,7 @@
 						validators : {
 							notEmpty : {
 								message : '公司名称不能为空'
-							},
+							}/* ,
 							remote : {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
 								url : '${base}/admin/customer/checkComNameExist.html',//验证地址
 								message : '公司名称已存在，请重新输入!',//提示消息
@@ -414,7 +464,7 @@
 										cid : $("#companyId").select2("val")
 									};
 								}
-							}
+							} */
 						}
 					},
 					shortName : {
@@ -482,6 +532,54 @@
 							regexp : {
 								regexp : /^[+]{0,1}(\d){1,3}[ ]?([-]?((\d)|[ ]){1,12})+$/,
 								message : '传真格式错误'
+							}
+						}
+					},
+					creditLine : {
+						validators : {
+							regexp : {
+								regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/,
+								message : '信用额度格式错误'
+							}
+						}
+					},
+					preDeposit  : {
+						validators : {
+							regexp : {
+								regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/,
+								message : '预收款格式错误'
+							}
+						}
+					},
+					discountFare : {
+						validators : {
+							regexp : {
+								regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/,
+								message : '票价折扣格式错误'
+							}
+						}
+					},
+					fees : {
+						validators : {
+							regexp : {
+								regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/,
+								message : '手续费格式错误'
+							}
+						}
+					},
+					exchangeRates : {
+						validators : {
+							regexp : {
+								regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/,
+								message : '汇率格式错误'
+							}
+						}
+					},
+					taxRefund : {
+						validators : {
+							regexp : {
+								regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/,
+								message : '退税格式错误'
 							}
 						}
 					}

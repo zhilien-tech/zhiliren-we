@@ -87,22 +87,6 @@ $("#linkNameId").on('select2:select', function (evt) {
 		success : function(data) {
 			var dataJson = jQuery.parseJSON(data); 
 			var phoneNum = dataJson.customerInfoEntity.telephone;
-			var payType = dataJson.customerInfoEntity.payType;
-			var id = dataJson.customerInfoEntity.id;
-			$("#addressId").val(dataJson.customerInfoEntity.address);
-			$("#shortNameId").val(dataJson.customerInfoEntity.shortName);
-			$("#responsibleId").val(dataJson.responsibleName);
-			$("#siteUrlId").val(dataJson.customerInfoEntity.siteUrl);
-			$("#faxId").val(dataJson.customerInfoEntity.fax);
-			if(payType == 1){
-				$("#payTypeId").html("月结");
-			}else if(payType == 2){
-				$("#payTypeId").html("周结");
-			}else if(payType == 3){
-				$("#payTypeId").html("单结");
-			}else if(payType == 4){
-				$("#payTypeId").html(dataJson.customerInfoEntity.paytypeName);
-			}
 			/* 电话补全 */
 			$("#phoneNumId").append('<option selected="true" value='+ id +'>'+phoneNum+'</option>'); 
 			/* 出发城市补全 */
@@ -112,6 +96,54 @@ $("#linkNameId").on('select2:select', function (evt) {
 					callback(data);
 				}
 			});
+		
+			if(dataJson.isArrearsRed){
+				$('#fontLSqk').css("color","red");
+				$("#custInfoName").css("color","red");
+			}
+			
+			var id = dataJson.customerInfoEntity.id;
+			var payType = dataJson.customerInfoEntity.payType;
+			var creditLine = dataJson.customerInfoEntity.creditLine;
+			var arrears = dataJson.customerInfoEntity.arrears;
+			var preDeposit = dataJson.customerInfoEntity.preDeposit;
+			$("#addressId").val(dataJson.customerInfoEntity.address);
+			$("#shortNameId").val(dataJson.customerInfoEntity.shortName);
+			$("#responsibleId").val(dataJson.responsibleName);
+			$("#siteUrlId").val(dataJson.customerInfoEntity.siteUrl);
+			$("#faxId").val(dataJson.customerInfoEntity.fax);
+			
+			/*票价折扣*/
+			$("#discountHidden").val(dataJson.customerInfoEntity.discountFare);
+			/*手续费*/
+			$("#feeHidden").val(dataJson.customerInfoEntity.fees);
+			/*汇率*/
+			$("#ratesHidden").val(dataJson.customerInfoEntity.exchangeRates);
+			
+			if(payType == 1){
+				$("#payTypeId").html("月结");
+			}else if(payType == 2){
+				$("#payTypeId").html("周结");
+			}else if(payType == 3){
+				$("#payTypeId").html("单结");
+			}else if(payType == 4){
+				$("#payTypeId").html(dataJson.customerInfoEntity.paytypeName);
+			}
+			if(creditLine){
+				$("#creditLineId").html(dataJson.customerInfoEntity.creditLine);
+			}else{
+				$("#creditLineId").html("0.00");
+			}
+			if(arrears){
+				$("#arrearsId").html(dataJson.customerInfoEntity.arrears);
+			}else{
+				$("#arrearsId").html("0.00");
+			}
+			if(preDeposit){
+				$("#preDepositId").html(dataJson.customerInfoEntity.preDeposit);
+			}else{
+				$("#preDepositId").html("0.00");
+			}
 		},
 		error : function() {
 		}
@@ -131,24 +163,7 @@ $("#phoneNumId").on('select2:select', function (evt) {
 		url : BASE_PATH+'/admin/search/getCustomerById.html',
 		success : function(data) {
 			var dataJson = jQuery.parseJSON(data); 
-			var dataJson = jQuery.parseJSON(data); 
 			var linkName = dataJson.customerInfoEntity.linkMan;
-			var id = dataJson.customerInfoEntity.id;
-			var payType = dataJson.customerInfoEntity.payType;
-			$("#addressId").val(dataJson.customerInfoEntity.address);
-			$("#shortNameId").val(dataJson.customerInfoEntity.shortName);
-			$("#responsibleId").val(dataJson.responsibleName);
-			$("#siteUrlId").val(dataJson.customerInfoEntity.siteUrl);
-			$("#faxId").val(dataJson.customerInfoEntity.fax);
-			if(payType == 1){
-				$("#payTypeId").html("月结");
-			}else if(payType == 2){
-				$("#payTypeId").html("周结");
-			}else if(payType == 3){
-				$("#payTypeId").html("单结");
-			}else if(payType == 4){
-				$("#payTypeId").html(dataJson.customerInfoEntity.paytypeName);
-			}
 			/* 客户名称补全 */
 			$("#linkNameId").append('<option selected="true" value='+ id +'>'+linkName+'</option>'); 
 			/* 出发城市补全 */
@@ -158,6 +173,54 @@ $("#phoneNumId").on('select2:select', function (evt) {
 					callback(data);
 				}
 			});
+			
+			if(dataJson.isArrearsRed){
+				$('#fontLSqk').css("color","red");
+				$("#custInfoName").css("color","red");
+			}
+			
+			var id = dataJson.customerInfoEntity.id;
+			var payType = dataJson.customerInfoEntity.payType;
+			var creditLine = dataJson.customerInfoEntity.creditLine;
+			var arrears = dataJson.customerInfoEntity.arrears;
+			var preDeposit = dataJson.customerInfoEntity.preDeposit;
+			$("#addressId").val(dataJson.customerInfoEntity.address);
+			$("#shortNameId").val(dataJson.customerInfoEntity.shortName);
+			$("#responsibleId").val(dataJson.responsibleName);
+			$("#siteUrlId").val(dataJson.customerInfoEntity.siteUrl);
+			$("#faxId").val(dataJson.customerInfoEntity.fax);
+			
+			/*票价折扣*/
+			$("#discountHidden").val(dataJson.customerInfoEntity.discountFare);
+			/*手续费*/
+			$("#feeHidden").val(dataJson.customerInfoEntity.fees);
+			/*汇率*/
+			$("#ratesHidden").val(dataJson.customerInfoEntity.exchangeRates);
+			
+			if(payType == 1){
+				$("#payTypeId").html("月结");
+			}else if(payType == 2){
+				$("#payTypeId").html("周结");
+			}else if(payType == 3){
+				$("#payTypeId").html("单结");
+			}else if(payType == 4){
+				$("#payTypeId").html(dataJson.customerInfoEntity.paytypeName);
+			}
+			if(creditLine){
+				$("#creditLineId").html(dataJson.customerInfoEntity.creditLine);
+			}else{
+				$("#creditLineId").html("0.00");
+			}
+			if(arrears){
+				$("#arrearsId").html(dataJson.customerInfoEntity.arrears);
+			}else{
+				$("#arrearsId").html("0.00");
+			}
+			if(preDeposit){
+				$("#preDepositId").html(dataJson.customerInfoEntity.preDeposit);
+			}else{
+				$("#preDepositId").html("0.00");
+			}
 		},
 		error : function() {
 		}
@@ -170,6 +233,7 @@ $("#linkNameId").on('select2:unselect', function (evt) {
 $("#phoneNumId").on('select2:unselect', function (evt) {
 	clearText();
 });
+
 
 /* 清除按钮 */
 $("#clearBtn").click(function(){
@@ -191,6 +255,17 @@ function clearText(){
 	$("#siteUrlId").val("");
 	$("#faxId").val("");
 	//付款方式清除
-	$("#payTypeId").html("");
+	$("#payTypeId").html("不限");
+	//信用额度清除
+	$("#creditLineId").html("0.00");
+	//历史欠款清除
+	$("#arrearsId").html("0.00");
+	$('#fontLSqk').css("color","");
+	//预存款
+	$("#preDepositId").html("0.00");
+	//客户名称
+	$("#custInfoName").css("color","");
+	
+	
 }
 

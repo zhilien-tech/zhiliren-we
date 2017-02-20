@@ -3,7 +3,11 @@ package com.linyun.airline.admin.search.service;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
 
@@ -17,11 +21,17 @@ import org.nutz.lang.Strings;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.linyun.airline.admin.customer.service.CustomerViewService;
 import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.entities.TMessageEntity;
+import com.linyun.airline.admin.search.entities.ParsingSabreEntity;
+import com.linyun.airline.admin.search.form.SearchTicketSqlForm;
+import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.common.sabre.dto.FlightSegment;
 import com.linyun.airline.common.sabre.dto.InstalFlightAirItinerary;
 import com.linyun.airline.common.sabre.dto.SabreExResponse;
@@ -30,12 +40,16 @@ import com.linyun.airline.common.sabre.form.InstaFlightsSearchForm;
 import com.linyun.airline.common.sabre.service.SabreService;
 import com.linyun.airline.common.sabre.service.impl.SabreServiceImpl;
 import com.linyun.airline.entities.DictInfoEntity;
+import com.linyun.airline.entities.TAirlineInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
+import com.linyun.airline.entities.TFlightInfoEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.DateTimeUtil;
+import com.uxuexi.core.common.util.JsonUtil;
 import com.uxuexi.core.common.util.Util;
+import com.uxuexi.core.db.util.DbSqlUtil;
 import com.uxuexi.core.web.base.service.BaseService;
 
 @IocBean
@@ -119,11 +133,84 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object getCustomerById(Long id) {
-		return customerViewService.getCustomerById(id);
+		Map<String, Object> obj = new HashMap<String, Object>();
+
+		TCustomerInfoEntity customerInfoEntity = dbDao.fetch(TCustomerInfoEntity.class, id);
+		long responsibleId = customerInfoEntity.getResponsibleId();
+		TUserEntity userEntity = dbDao.fetch(TUserEntity.class, Cnd.where("id", "=", responsibleId));
+		String responsibleName = userEntity.getUserName();
+
+		Sql citySql = Sqls.create(sqlManager.get("customer_cityOption_list"));
+		Cnd cityCnd = Cnd.NEW();
+		cityCnd.and("c.infoId", "=", id);
+		cityCnd.orderBy("d.dictCode", "desc");
+		citySql.setCondition(cityCnd);
+		List<TDepartureCityEntity> outcityEntities = DbSqlUtil.query(dbDao, TDepartureCityEntity.class, citySql);
+		//出发城市id 拼串
+		String outcityIds = "";
+		for (TDepartureCityEntity outcityEntity : outcityEntities) {
+			outcityIds += outcityEntity.getId() + ",";
+		}
+		if (outcityIds.length() > 0) {
+			outcityIds = outcityIds.substring(0, outcityIds.length() - 1);
+		}
+		obj.put("outcityIds", outcityIds);
+		obj.put("outcitylist", Lists.transform(outcityEntities, new Function<TDepartureCityEntity, Select2Option>() {
+			@Override
+			public Select2Option apply(TDepartureCityEntity record) {
+				Select2Option op = new Select2Option();
+				String text = record.getDictCode() + " - " + record.getEnglishName() + " - " + record.getCountryName();
+				op.setId(record.getId());
+				op.setText(text);
+				return op;
+			}
+		}));
+
+		obj.put("responsibleName", responsibleName);
+		obj.put("customerInfoEntity", customerInfoEntity);
+		Double arrears = customerInfoEntity.getArrears();//历史欠款
+		Double creditLine = customerInfoEntity.getCreditLine();//信用额度
+		if (Util.isEmpty(arrears)) {
+			arrears = 0.0;
+		}
+		if (Util.isEmpty(creditLine)) {
+			creditLine = 0.0;
+		}
+		double subNum = creditLine - arrears;
+		if (subNum < 10000) {
+			obj.put("isArrearsRed", "true");
+		}
+		return JsonUtil.toJson(obj);
 	}
 
 	public Object getCitys(Long id) {
-		return customerViewService.getOutCitys(id);
+		Map<String, Object> obj = new HashMap<String, Object>();
+		Sql citySql = Sqls.create(sqlManager.get("customer_cityOption_list"));
+		Cnd cityCnd = Cnd.NEW();
+		cityCnd.and("c.infoId", "=", id);
+		cityCnd.orderBy("d.dictCode", "desc");
+		citySql.setCondition(cityCnd);
+		List<TDepartureCityEntity> outcityEntities = DbSqlUtil.query(dbDao, TDepartureCityEntity.class, citySql);
+		//出发城市id 拼串
+		String outcityIds = "";
+		for (TDepartureCityEntity outcityEntity : outcityEntities) {
+			outcityIds += outcityEntity.getId() + ",";
+		}
+		if (outcityIds.length() > 0) {
+			outcityIds = outcityIds.substring(0, outcityIds.length() - 1);
+		}
+		obj.put("outcityIds", outcityIds);
+		obj.put("outcitylist", Lists.transform(outcityEntities, new Function<TDepartureCityEntity, Select2Option>() {
+			@Override
+			public Select2Option apply(TDepartureCityEntity record) {
+				Select2Option op = new Select2Option();
+				String text = record.getDictCode() + " - " + record.getEnglishName() + " - " + record.getCountryName();
+				op.setId(record.getId());
+				op.setText(text);
+				return op;
+			}
+		}));
+		return obj;
 	}
 
 	/**
@@ -259,6 +346,9 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			if (message.contains("Date range in 'departuredate' and 'returndate' exceeds the maximum allowed")) {
 				sabreExResponse.setMessage("出发日期和返回日期之差不超过15天");
 			}
+			if (message.contains("Parameter 'passengercount' must be between 0 and 10")) {
+				sabreExResponse.setMessage("乘客数量必须是 0 到 10 之间");
+			}
 		}
 		if (resp.getStatusCode() == 404) {
 			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
@@ -271,49 +361,319 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	}
 
 	/**
-	 * 查询国际飞机票
+	 * 查询飞机库
 	 */
-	public Object searchTeamTickets(InstaFlightsSearchForm searchForm) {
-		String origin = searchForm.getOrigin(); //起飞机场/出发城市
-		String destination = searchForm.getDestination();//降落机场/到达城市
-		String departuredate = searchForm.getDeparturedate();//出发日期
-		String returndate = searchForm.getReturndate();//返回日期
-		String airLevel = searchForm.getAirLevel();//舱位等级
-		String includedcarriers = searchForm.getIncludedcarriers();//航空公司名称
-		Sql sql = Sqls.create(sqlManager.get("team_ticket_list"));
-		Cnd cnd = Cnd.NEW();
-		cnd.and("tt.travelname", "=", "");
-		if (!Util.isEmpty(origin)) {
-			cnd.and("tt.leavescity", "=", origin);
-		}
-		if (!Util.isEmpty(destination)) {
-			cnd.and("tt.backscity", "=", destination);
-		}
-		if (!Util.isEmpty(departuredate)) {
-			cnd.and("date_format(tt.leavesdate,'%Y-%m-%d')", "like", departuredate);
-		}
-		if (!Util.isEmpty(returndate)) {
-			cnd.and("date_format(tt.backsdate,'%Y-%m-%d')", "like", returndate);
-		}
-		if (!Util.isEmpty(includedcarriers)) {
-			cnd.and("tt.airlinename", "=", includedcarriers);
-		}
-		List<Record> list = dbDao.query(sql, cnd, null);
+	public Object listPage4Datatables(SearchTicketSqlForm sqlForm, HttpSession session) {
+		//获得当前公司id
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		sqlForm.setCompanyId(companyId);
+		Map<String, Object> listPageData = this.listPage4Datatables(sqlForm);
+		List<Record> list = (List<Record>) listPageData.get("data");
+		boolean isOrigin = !Util.isEmpty(sqlForm.getOrigin());
+		boolean isDestination = !Util.isEmpty(sqlForm.getDestination());
+		boolean isDeparturedate = !Util.isEmpty(sqlForm.getDeparturedate());
+		boolean isReturndate = !Util.isEmpty(sqlForm.getReturndate());
 		for (Record record : list) {
-			String id = record.getString("opid");
-			TUserEntity userEntity = dbDao.fetch(TUserEntity.class, Long.valueOf(id));
-			record.set("opid", userEntity.getUserName());
-			record.set("leavesdate", record.getString("leavesdate").substring(0, 10));
-			record.set("orderstime", record.getString("orderstime").substring(0, 10));
-			if (Util.isEmpty(record.getString("price"))) {
-				record.set("price", "");
+			Cnd cnd = Cnd.NEW();
+			cnd.and("planid", "=", record.get("id"));
+			if (isOrigin || isDestination) {
+				if (isOrigin) {
+					cnd.and("leavecity", "=", sqlForm.getOrigin());
+				}
+				if (isDestination) {
+					cnd.and("arrvicity", "=", sqlForm.getDestination());
+				}
 			}
-			if (Util.isEmpty(record.getString("amount"))) {
-				record.set("amount", "");
-			}
+			cnd.orderBy("leavedate", "asc");
+			List<TAirlineInfoEntity> query = dbDao.query(TAirlineInfoEntity.class, cnd, null);
+			record.put("airinfo", query);
 		}
-
-		return list;
+		listPageData.remove("data");
+		List<Record> list2 = new ArrayList<Record>();
+		if (isOrigin || isDestination) {
+			for (Record record : list) {
+				Object obj = record.get("airinfo");
+				if (!Util.isEmpty(obj)) {
+					list2.add(record);
+				}
+			}
+			listPageData.put("data", list2);
+			listPageData.put("recordsFiltered", list2.size());
+		} else {
+			listPageData.put("data", list);
+		}
+		return listPageData;
 	}
 
+	/**
+	 * 获取城市下拉
+	 * <p>
+	 * 获取城市下拉
+	 *
+	 * @param cityname
+	 * @return 返回城市下拉列表
+	 */
+	public Object getCustomerCitySelect(String cityname, String exname) {
+		List<TDepartureCityEntity> citySelect = new ArrayList<TDepartureCityEntity>();
+		try {
+			citySelect = externalInfoService.findCityByCode(cityname, CITYCODE);
+			//移除的城市
+			TDepartureCityEntity removeinfo = new TDepartureCityEntity();
+			for (TDepartureCityEntity dictInfoEntity : citySelect) {
+				if (!Util.isEmpty(exname) && dictInfoEntity.getDictCode().equals(exname)) {
+					removeinfo = dictInfoEntity;
+				}
+			}
+			citySelect.remove(removeinfo);
+			if (citySelect.size() > 5) {
+				citySelect = citySelect.subList(0, 5);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return citySelect;
+	}
+
+	/**
+	 * 
+	 * 获取航班号下拉框
+	 * <p>
+	 * 获取航班号下拉框
+	 *
+	 * @param airlinename
+	 * @param exname 
+	 * @return 获取航班号下拉框
+	 */
+	public Object getCAirNumSelect(String airlinename, String exname) {
+		//List<DictInfoEntity> airlineSelect = new ArrayList<DictInfoEntity>();
+		List<TFlightInfoEntity> airlineSelect = new ArrayList<TFlightInfoEntity>();
+		try {
+			//airlineSelect = externalInfoService.findDictInfoByName(airlinename, this.AIRLINECODE);
+			airlineSelect = dbDao.query(TFlightInfoEntity.class,
+					Cnd.where("airlinenum", "like", Strings.trim(airlinename) + "%"), null);
+			TFlightInfoEntity exinfo = new TFlightInfoEntity();
+			for (TFlightInfoEntity tFlightInfoEntity : airlineSelect) {
+				if (!Util.isEmpty(exname) && tFlightInfoEntity.getAirlinenum().equals(exname)) {
+					exinfo = tFlightInfoEntity;
+				}
+			}
+			airlineSelect.remove(exinfo);
+			if (airlineSelect.size() > 5) {
+				airlineSelect = airlineSelect.subList(0, 5);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return airlineSelect;
+	}
+
+	/**
+	 * 
+	 * TODO(根据航空公司代码，查询其对应的名称)
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param airCompCode
+	 * @param typeCode
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public String getCAirNameByCode(String airCompCode, String typeCode) {
+		DictInfoEntity dictInfo = dbDao.fetch(DictInfoEntity.class,
+				Cnd.where("dictCode", "=", airCompCode).and("typeCode", "=", typeCode));
+		return dictInfo.getDictName();
+	}
+
+	/**
+	 * 
+	 * TODO(解析 sabre)
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param sabreText
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object parsingPNR(String sabrePNR) {
+
+		//判断以哪种格式解析
+		String parsingType = "";
+		String[] sabrePnrs = sabrePNR.split("\\s+");
+		String sabrePnrsStr = sabrePnrs[0];
+		if (sabrePnrsStr.contains("/D￥") && sabrePnrsStr.contains("<<")) {
+			parsingType = "1";
+		} else if (sabrePnrsStr.contains("WP<<")) {
+			parsingType = "3";
+		} else {
+			parsingType = "2";
+		}
+
+		ArrayList<Object> arrayList = Lists.newArrayList();
+		HashMap<String, Object> map = Maps.newHashMap();
+
+		if (parsingType == "1") {
+			//分割sabre组
+			//(?s)表示开启跨行匹配，\\d{1}一位数字，[A-Za-z]{2}两位字母，/斜线，\\s空白字符,.+任意字符出现1到多次，?非贪婪模式，最后以\n换行结束
+			String regex = "(?s)\\d{1}[A-Za-z]{2}/.{2}\\s.+?\\d\n";
+			Pattern pattern = Pattern.compile(regex);
+			Matcher m = pattern.matcher(sabrePNR);
+			ArrayList<String> sabreGroup = Lists.newArrayList();
+			while (m.find()) {
+				sabreGroup.add(m.group());
+			}
+
+			for (String pnrs : sabreGroup) {
+				/***********************根据 128FEBAKLSYD/D￥VA<< 解析***********************/
+				//序号
+				int id = 0;
+				//航空公司
+				String airCompName = "";
+				//航班号 
+				String flightNum = "";
+				//航段
+				String airLine = "";
+				//起飞日期
+				String airLeavelDate = "";
+				//起飞时间
+				String airDepartureTime = "";
+				//降落时间
+				String airLandingTime = "";
+				//舱位
+				String airSeats = "";
+				ParsingSabreEntity pSabreEntity = new ParsingSabreEntity();
+
+				String[] pnr = pnrs.split(" ");
+				id = Integer.parseInt(pnr[0].substring(0, 1));
+				airCompName = pnr[0].substring(1);
+				flightNum = pnr[1];
+				airLeavelDate = sabrePnrs[1];
+				String containStr = pnr[7];
+				if (containStr.contains("*")) {
+					String[] seatLine = containStr.split("[*]");
+					for (String seat : pnr) {
+						if (!seat.contains("/E") && seat.length() == 2) {
+							airSeats += (" " + seat);
+						}
+					}
+					airLine = seatLine[1];
+					airSeats += (" " + seatLine[0]);
+					airDepartureTime = pnr[8];
+					airLandingTime = pnr[9];
+				} else {
+					for (String seat : pnr) {
+						if (!seat.contains("/E") && seat.length() == 2) {
+							airSeats += (" " + seat);
+						}
+					}
+					airLine = pnr[8];
+					airDepartureTime = pnr[9];
+					airLandingTime = pnr[10];
+				}
+				pSabreEntity.setId(id);
+				pSabreEntity.setAirlineComName(airCompName);
+				pSabreEntity.setFlightNum(flightNum);
+				pSabreEntity.setAirLeavelDate(airLeavelDate);
+				pSabreEntity.setAirLine(airLine);
+				pSabreEntity.setAirSeats(airSeats);
+				pSabreEntity.setAirDepartureTime(airDepartureTime);
+				pSabreEntity.setAirLandingTime(airLandingTime);
+
+				arrayList.add(pSabreEntity);
+				map.put("parsingType", "D￥");
+				map.put("arrayList", arrayList);
+			}
+		}
+
+		//根据07v4解析
+		if (parsingType == "2") {
+			ParsingSabreEntity pSabreEntity = new ParsingSabreEntity();
+			int id = Integer.parseInt(sabrePnrs[1]);
+			String airCompName = sabrePnrs[2];
+			String flightNum = sabrePnrs[3].split("[a-zA-Z]")[0];
+			int seatL = sabrePnrs[3].length();
+			String airSeat = sabrePnrs[3].substring(seatL - 1, seatL);
+			String airLeavelDate = sabrePnrs[4] + "(" + sabrePnrs[5] + ")";
+			String airLine = sabrePnrs[6];
+			String airDepartureTime = sabrePnrs[8];
+			String airLandingTime = sabrePnrs[9];
+			String airSeatNum = sabrePnrs[7];
+
+			pSabreEntity.setId(id); //序号
+			pSabreEntity.setAirlineComName(airCompName); //航空公司
+			pSabreEntity.setFlightNum(flightNum); //航班号
+			pSabreEntity.setAirSeats(airSeat); //舱位
+			pSabreEntity.setAirLeavelDate(airLeavelDate); //起飞日期
+			pSabreEntity.setAirLine(airLine); //航段
+			pSabreEntity.setAirSeatNum(airSeatNum); //座位数
+			pSabreEntity.setAirDepartureTime(airDepartureTime); //起飞时间
+			pSabreEntity.setAirLandingTime(airLandingTime); //降落时间
+
+			arrayList.add(pSabreEntity);
+			map.put("parsingType", "00v0");
+			map.put("arrayList", arrayList);
+		}
+
+		return map;
+	}
+
+	/**
+	 * 
+	 * TODO(解析etem)
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param etemStr
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object parsingEtem(String etemStr) {
+		//判断以哪种格式解析
+		String parsingType = "";
+		String[] etemPnrs = etemStr.split("\\s+");
+		String etem = etemPnrs[0];
+		if (etem.contains("avh/")) {
+			parsingType = "1";
+		} else if (etem.contains("SD")) {
+			parsingType = "2";
+		} else if (etem.contains("QTE:/")) {
+			parsingType = "3";
+		}
+
+		ArrayList<Object> arrayList = Lists.newArrayList();
+		HashMap<String, Object> map = Maps.newHashMap();
+
+		/***********************黑屏查询：AVH/AKLSYD/28FEB/EK**************************/
+		if (parsingType == "1") {
+
+		}
+		/************************输入SD5Q9来预订********************************/
+		if (parsingType == "2") {
+			ParsingSabreEntity pEtemEntity = new ParsingSabreEntity();
+			int id = Integer.parseInt(etemPnrs[1].substring(0, 1));
+			String flightNum = etemPnrs[2];
+			String airSeats = etemPnrs[3];
+			String presetDate = etemPnrs[4];
+			String airLine = etemPnrs[5];
+			String airSeatNum = etemPnrs[6];
+			String airDepartureTime = etemPnrs[7];
+			String airLandingTime = etemPnrs[8];
+
+			pEtemEntity.setId(id);
+			pEtemEntity.setFlightNum(flightNum);
+			pEtemEntity.setAirSeats(airSeats);
+			pEtemEntity.setPresetDate(presetDate);
+			pEtemEntity.setAirLine(airLine);
+			pEtemEntity.setAirSeatNum(airSeatNum);
+			pEtemEntity.setAirDepartureTime(airDepartureTime);
+			pEtemEntity.setAirLandingTime(airLandingTime);
+
+			arrayList.add(pEtemEntity);
+			map.put("parsingType", "SD0Q0");
+			map.put("arrayList", arrayList);
+		}
+		/*********************输入QTE:/EK来查询价格*****************************/
+		if (parsingType == "3") {
+			ParsingSabreEntity pEtemEntity = new ParsingSabreEntity();
+		}
+
+		return map;
+	}
 }

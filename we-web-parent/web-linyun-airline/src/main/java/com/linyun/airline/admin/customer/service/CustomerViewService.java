@@ -35,9 +35,15 @@ import com.linyun.airline.admin.Company.service.CompanyViewService;
 import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.operationsArea.service.RemindMessageService;
 import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
+import com.linyun.airline.common.enums.MessageLevelEnum;
+import com.linyun.airline.common.enums.MessageRemindEnum;
+import com.linyun.airline.common.enums.MessageSourceEnum;
+import com.linyun.airline.common.enums.MessageTypeEnum;
+import com.linyun.airline.common.enums.MessageUserEnum;
 import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
@@ -47,6 +53,7 @@ import com.linyun.airline.entities.TCustomerLineEntity;
 import com.linyun.airline.entities.TCustomerOutcityEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
+import com.linyun.airline.entities.TUserMsgEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
 import com.linyun.airline.forms.TCustomerInfoUpdateForm;
 import com.uxuexi.core.common.util.DateUtil;
@@ -69,6 +76,9 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 	@Inject
 	private UploadService fdfsUploadService;
+
+	@Inject
+	private RemindMessageService remindService;
 
 	//负责人
 	public Object agent(HttpSession session) {
@@ -157,6 +167,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		if (!Util.isEmpty(addForm.getContractTimeString())) {
 			addForm.setContractTime(DateUtil.string2Date(addForm.getContractTimeString(), "yyyy-MM-dd"));
 		}
+		addForm.setCreateTime(DateUtil.nowDate());
 		//得到当前用户所在公司的id
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
@@ -221,6 +232,32 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 			invoiceEntities.add(invoiceEntity);
 		}
 		dbDao.insert(invoiceEntities);
+
+		TUserMsgEntity userMsgEntity = dbDao.fetch(TUserMsgEntity.class,
+				Cnd.where("msgSource", "=", MessageSourceEnum.CUSTOMERMSG.intKey()));
+		Long userMsgId = userMsgEntity.getUserId();
+
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long userId = loginUser.getId();
+
+		if (userId != userMsgId) {
+			//客户信息添加成功， 根据结算方式在消息表添加数据
+			String msgContent = "今天 需要进行财务结算";
+			int msgType = MessageTypeEnum.PROCESSMSG.intKey(); //消息类型
+			int msgLevel = MessageLevelEnum.MSGLEVEL2.intKey(); //消息优先级
+			long payType = addForm.getPayType(); //结算方式
+			long reminderMode = 0; //提醒方式
+			if (payType == 1) {
+				reminderMode = MessageRemindEnum.MOUTH.intKey();
+			} else if (payType == 2) {
+				reminderMode = MessageRemindEnum.WEEK.intKey();
+			}
+			int userType = MessageUserEnum.PERSONAL.intKey(); //接收方用户类型
+			int msgSourceType = MessageSourceEnum.CUSTOMERMSG.intKey(); //发送方类型   来自客户管理系统
+			int msgStatus = 0;
+			remindService.addMessageEvent(msgContent, msgType, msgLevel, msgStatus, reminderMode, userType,
+					msgSourceType, session);
+		}
 
 		return null;
 	}
@@ -418,6 +455,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		if (!Util.isEmpty(updateForm.getContractTimeString())) {
 			updateForm.setContractTime(DateUtil.string2Date(updateForm.getContractTimeString(), "yyyy-MM-dd"));
 		}
+		updateForm.setCreateTime(DateUtil.nowDate());
 		//得到当前用户所在公司的id
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
@@ -486,6 +524,33 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		List<TCustomerInvoiceEntity> invioceBefore = dbDao.query(TCustomerInvoiceEntity.class,
 				Cnd.where("infoId", "=", updateForm.getId()), null);
 		dbDao.updateRelations(invioceBefore, invoicesAfter);
+
+		//如果消息表中没有   客户管理的消息提醒， 自动添加
+		TUserMsgEntity userMsgEntity = dbDao.fetch(TUserMsgEntity.class,
+				Cnd.where("msgSource", "=", MessageSourceEnum.CUSTOMERMSG.intKey()));
+		Long userMsgId = userMsgEntity.getUserId();
+
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long userId = loginUser.getId();
+
+		if (userId != userMsgId) {
+			//客户信息添加成功， 根据结算方式在消息表添加数据
+			String msgContent = "今天 需要进行财务结算";
+			int msgType = MessageTypeEnum.PROCESSMSG.intKey(); //消息类型
+			int msgLevel = MessageLevelEnum.MSGLEVEL2.intKey(); //消息优先级
+			long payType = updateForm.getPayType(); //结算方式
+			long reminderMode = 0; //提醒方式
+			if (payType == 1) {
+				reminderMode = MessageRemindEnum.MOUTH.intKey();
+			} else if (payType == 2) {
+				reminderMode = MessageRemindEnum.WEEK.intKey();
+			}
+			int userType = MessageUserEnum.PERSONAL.intKey(); //接收方用户类型
+			int msgSourceType = MessageSourceEnum.CUSTOMERMSG.intKey(); //发送方类型   来自客户管理系统
+			int msgStatus = 0; //操作台不显示
+			remindService.addMessageEvent(msgContent, msgType, msgLevel, msgStatus, reminderMode, userType,
+					msgSourceType, session);
+		}
 
 		return null;
 	}
@@ -595,7 +660,6 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 */
 	public Object isLine(String lineName, String ids) throws Exception {
 		Set<DictInfoEntity> set = Sets.newTreeSet();
-
 		Sql sql = Sqls.create(sqlManager.get("customer_line_list"));
 		Cnd cnd = Cnd.NEW();
 		cnd.and("d.typeCode", "=", "GJNL");
@@ -603,7 +667,6 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		cnd.orderBy("d.dictName", "desc");
 		sql.setCondition(cnd);
 		List<DictInfoEntity> localLineList = DbSqlUtil.query(dbDao, DictInfoEntity.class, sql);
-
 		if (localLineList.size() >= 5) {
 			for (int i = 0; i < 5; i++) {
 				DictInfoEntity info = localLineList.get(i);
@@ -611,7 +674,6 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 			}
 		} else {
 			set.addAll(localLineList);
-
 			//数据字典表中查找出发城市
 			List<DictInfoEntity> dictLineList = externalInfoService.findDictInfoByName(lineName, "GJNL");
 			int needmore = 5 - localLineList.size();
@@ -899,4 +961,21 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		}));
 		return obj;
 	}
+
+	/**
+	 * 
+	 * (查询当前用户所有的客户)
+	 * <p>
+	 * @param session
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public List<TCustomerInfoEntity> getCustomerList(HttpSession session) {
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();//得到公司关系表comId
+		TUpcompanyEntity up = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
+		List<TCustomerInfoEntity> customerList = dbDao.query(TCustomerInfoEntity.class,
+				Cnd.where("upComId", "=", up.getId()), null);
+		return customerList;
+	}
+
 }

@@ -100,6 +100,27 @@ public class TCustomerInfoForm implements SQLParamForm, Serializable {
 	/**是否禁用*/
 	private long forbid;
 
+	/**信用额度*/
+	private Double creditLine;
+
+	/**票价折扣*/
+	private Double discountFare;
+
+	/**已欠款*/
+	private Double arrears;
+
+	/**预存款*/
+	private Double preDeposit;
+
+	/**手续费*/
+	private Double fees;
+
+	/**汇率*/
+	private Double exchangeRates;
+
+	/**退税*/
+	private Double taxRefund;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**

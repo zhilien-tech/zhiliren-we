@@ -85,4 +85,73 @@ public class TAirlineInfoEntity implements Serializable {
 	@Comment("航班号")
 	private String ailinenum;
 
+	/**
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TAirlineInfoEntity other = (TAirlineInfoEntity) obj;
+		if (ailinenum == null) {
+			if (other.ailinenum != null)
+				return false;
+		} else if (!ailinenum.equals(other.ailinenum))
+			return false;
+		if (arrivetime == null) {
+			if (other.arrivetime != null)
+				return false;
+		} else if (!arrivetime.equals(other.arrivetime))
+			return false;
+		if (arrvicity == null) {
+			if (other.arrvicity != null)
+				return false;
+		} else if (!arrvicity.equals(other.arrvicity))
+			return false;
+		if (leavecity == null) {
+			if (other.leavecity != null)
+				return false;
+		} else if (!leavecity.equals(other.leavecity))
+			return false;
+		if (leavedate == null) {
+			if (other.leavedate != null)
+				return false;
+		} else if (!leavedate.equals(other.leavedate))
+			return false;
+		if (leavetime == null) {
+			if (other.leavetime != null)
+				return false;
+		} else if (!leavetime.equals(other.leavetime))
+			return false;
+		if (planid == null) {
+			if (other.planid != null)
+				return false;
+		} else if (!planid.equals(other.planid))
+			return false;
+		return true;
+	}
+
+	/**
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((ailinenum == null) ? 0 : ailinenum.hashCode());
+		result = prime * result + ((arrivetime == null) ? 0 : arrivetime.hashCode());
+		result = prime * result + ((arrvicity == null) ? 0 : arrvicity.hashCode());
+		result = prime * result + ((leavecity == null) ? 0 : leavecity.hashCode());
+		result = prime * result + ((leavedate == null) ? 0 : leavedate.hashCode());
+		result = prime * result + ((leavetime == null) ? 0 : leavetime.hashCode());
+		result = prime * result + ((planid == null) ? 0 : planid.hashCode());
+		return result;
+	}
+
 }

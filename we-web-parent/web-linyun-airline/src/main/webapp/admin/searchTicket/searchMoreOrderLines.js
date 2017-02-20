@@ -5,9 +5,13 @@ function searchInlandOrder(){
 	var outCity = $('#outCity0').find("option:selected").text();
 	var arriveCity = $('#singleArriveCity0').find("option:selected").text();
 	var outDatepicker = $("#outDatepicker0").val();
-	if(!(linkName || phoneNum)){
-		layer.msg("客户姓名不能为空", "", 2000);
-		return;
+	var ariaStr = $('#tab_3Id').attr("aria-expanded");
+	//国际不需要验证 客户名称
+	if(ariaStr != "true"){
+		if(!(linkName || phoneNum)){
+			layer.msg("客户姓名不能为空", "", 2000);
+			return;
+		}
 	}
 	if(outCity==""){
 		layer.msg('出发城市不能为空');
@@ -23,8 +27,8 @@ function searchInlandOrder(){
 	}
 	var msgIndex = layer.msg('查询中...',{time:0});
 	//显示区间
-	var area = $("#origin").val()+' --- '+$("#destination").val();
-	document.getElementById('travelArea').innerHTML=area;
+	/*var area = $("#origin").val()+' --- '+$("#destination").val();
+	document.getElementById('travelArea').innerHTML=area;*/
 	
 	$.ajax({
 		type : 'POST',
@@ -37,9 +41,9 @@ function searchInlandOrder(){
 			if ("200" == resp.statusCode) {
 				/* 日期小卡片  */
 				getDateCard();
-				
+
 				/*清除按钮样式*/
-				clearBtnClass();
+				//clearBtnClass();
 				
 				var duanshu = $("#duanshuId").val();
 				if(duanshu != ""){
@@ -91,7 +95,7 @@ function searchInlandOrder(){
 					
 					/*是否直飞*/
 					var isNonstop = $("#nonstopType").val();
-					if(isNonstop){
+					if(isNonstop == "true"){
 						outList = outNonstopList;
 						returnList = returnNonstopList;
 					}
@@ -107,10 +111,17 @@ function searchInlandOrder(){
 						var ElapsedTime = outList[foot].ElapsedTime;
 						var totalAmount = resp.data[i].priceInfo.totalAmount;
 						outLiList += '<li>'+
+						'<p class="lineCode" hidden>'+airlineCode+'</p>'+
 						'<p class="p">'+airlineCode+FlightNumber+'</p></div>'+
-						'<div class="distanceTimeDiv"><span class="chufaCS"><b>'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
-						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b>'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
-						'<div class="moneyDiv"><i class="fa fa-cny"></i>'+totalAmount+'</div>'+
+						'<div class="distanceTimeDiv"><span class="chufaCS"><b class="DepartureDateTime">'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
+						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b class="ArrivalDateTime">'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
+						'<div class="moneyDiv"><i class="fa fa-usd"></i><i class="airTotalMoney">'+totalAmount+'</i></div>'+
+						'<div class="btn-group xuanzeBtn">'+
+							'<button class="btn chooseLineBtn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
+							'<ul class="dropdown-menu">'+
+							
+							'</ul>'+
+						'</div>'+
 						'</li>';
 					}
 					/* 返程列表 */
@@ -124,10 +135,17 @@ function searchInlandOrder(){
 						var ElapsedTime = returnList[foot].ElapsedTime;
 						var totalAmount = resp.data[i].priceInfo.totalAmount;
 						returnLiList += '<li>'+
+						'<p class="lineCode" hidden>'+airlineCode+'</p>'+
 						'<p class="p">'+airlineCode+FlightNumber+'</p></div>'+
-						'<div class="distanceTimeDiv"><span class="chufaCS"><b>'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
-						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b>'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
-						'<div class="moneyDiv"><i class="fa fa-cny"></i>'+totalAmount+'</div>'+
+						'<div class="distanceTimeDiv"><span class="chufaCS"><b class="DepartureDateTime">'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
+						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b class="ArrivalDateTime">'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
+						'<div class="moneyDiv"><i class="fa fa-usd"></i><i class="airTotalMoney">'+totalAmount+'</i></div>'+
+							'<div class="btn-group xuanzeBtn">'+
+							'<button class="btn chooseLineBtn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
+							'<ul class="dropdown-menu">'+
+							
+							'</ul>'+
+						'</div>'+
 						'</li>';
 					}
 				}
@@ -136,7 +154,6 @@ function searchInlandOrder(){
 				}else{
 					document.getElementById('paragraphListInfo').innerHTML=returnLiList;
 				}
-				
 			} else {
 				layer.msg(resp.data.message, "", 2000);
 			}

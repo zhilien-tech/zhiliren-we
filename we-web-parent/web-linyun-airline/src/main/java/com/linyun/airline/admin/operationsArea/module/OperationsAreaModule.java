@@ -104,12 +104,21 @@ public class OperationsAreaModule {
 	}
 
 	/**
-	 * 任务栏事件显示
+	 * 任务栏事件    我的提醒显示
 	 */
 	@At
 	@POST
 	public Object getTaskEvents(HttpSession session) {
 		return operationsAreaViewService.getTaskEvents(session);
+	}
+
+	/**
+	 * 任务栏事件   任务
+	 */
+	@At
+	@POST
+	public Object getTaskNotices(HttpSession session) {
+		return operationsAreaViewService.getTaskNotices(session);
 	}
 
 	/**

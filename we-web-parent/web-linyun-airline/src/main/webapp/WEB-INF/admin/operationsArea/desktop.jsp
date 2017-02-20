@@ -52,6 +52,7 @@
 			                  <li><a href="#tab_2" data-toggle="tab">订单(10)</a></li>
 			                  <li><a href="#tab_3" data-toggle="tab">我的提醒(<span id="remindMsg"></span>)</a></li>
 			                  <li><a href="#tab_4" data-toggle="tab">账期(2)</a></li>
+			                  <li><a href="#tab_5" data-toggle="tab">任务(<span id="taskNoticeMsg"></span>)</a></li>
 			                </ul>
 			                <div class="tab-content">
 				                  <div class="tab-pane active" id="tab_1">
@@ -76,6 +77,11 @@
 				                    <ul class="taskInfo">
 				                      <li><a href=""><span>今天</span><span>07：00</span>聚美优品孙先哲向你发送一个预售订单</a></li>
 				                      <li><a href=""><span>昨天</span><span>09：23</span>爱我行&nbsp;&nbsp;&nbsp;王行&nbsp;&nbsp;&nbsp;0494573团需要支付一订</a></li>
+				                    </ul>
+				                  </div>
+				                  <!-- 通知 任务 -->
+				                  <div class="tab-pane" id="tab_5">
+				                   	<ul id="taskNoticeId" class="taskInfo">
 				                    </ul>
 				                  </div>
 				            </div>
@@ -187,16 +193,14 @@
 	<!-- end 小日历js -->
 	<script type="text/javascript">
 		$(function() {
-			$('div[data-cal-index="2"]').prepend('<i class="month-i1"></i>');//小日历 top 显示月份
-			$('div[data-cal-index="1"]').prepend('<i class="month-i2"></i>');//小日历 center 显示月份
-			$('div[data-cal-index="0"]').prepend('<i class="month-i3"></i>');//小日历 buttom 显示月份
-			$('.k-out-of-month').click(function(){
-		      return false;
-		    });
+			/* 小日历背景*/
+			minCalendarbackground();
 			/* 大日历 */
 			calendarInit();
-			/* 任务提醒 */
+			/* 我的提醒 */
 			taskEventList();
+			/*任务*/
+			taskNoticeList();
 			/*自定义界面选择*/
 			customInterfaces();
 			/*模块展示页面*/
@@ -232,8 +236,9 @@
 	  	}
 	  </script>
 
-	<!-- 任务事件提醒 -->
+	<!-- 任务栏事件提醒 -->
 	<script type="text/javascript">
+		/* 我的提醒 */
 		function taskEventList() {
 			//获取当前日期
 			var d = new Date();
@@ -270,7 +275,13 @@
 	                	var cName = element.comname;
 	                	var agent = element.username;
 	                	var msgC = element.msgcontent;
-	                	content += '<li><a href="javascript:;"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;自定义事件：'+msgC+'</a></li>';
+	                	var msgT = element.msgtype;
+	                	if(msgT == 3){
+	                		msgT = "自定义事件";
+	                	}else if(msgT==2){
+	                		msgT = "系统提醒";
+	                	}
+	                	content += '<li><a href="javascript:;"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +'：'+msgC+'</a></li>';
 		            });
 					if(num){
 						$("#remindMsg").html(num);
@@ -282,6 +293,70 @@
 				}
 			});
 		}
+		
+		/* 任务 */
+		function taskNoticeList() {
+			//获取当前日期
+			var d = new Date();
+			var month = d.getMonth();
+			var day = d.getDate();
+			if(month < 10){
+				if(day<10){
+					var dateStr = month+1 +"-0"+ day;
+					var yesterdayStr = month+1 +"-0"+ (day-1);
+				}else{
+					var dateStr = month+1 +"-"+ day;
+					var yesterdayStr = month+1 +"-"+ (day-1);
+				}
+				dateStr = "0" + dateStr;
+				yesterdayStr = "0" + yesterdayStr;
+			}else{
+				var dateStr = month+1 +"-"+ day;
+				var yesterdayStr = month+1 +"-"+ (day-1);
+			} 
+			//获取当前时间
+			var timeStr = d.getHours() +":"+ d.getMinutes();
+			
+			$.ajax({
+				type : 'POST',
+				dataType : 'json',
+				url : '${base}/admin/operationsArea/getTaskNotices.html',
+				success : function(data){
+					var content = "";
+					var num = "";
+					$.each(eval(data),function(index, element){
+	                	var datetimeStr = element.generatetime;
+	                	var dStr = datetimeStr.substr(5, 5);
+	                	var tStr = datetimeStr.substr(11, 5);
+	                	if(dStr == dateStr){
+	                		dStr="今天";
+	                	}
+	                	if(dStr == yesterdayStr){
+	                		dStr="昨天";
+	                	}
+	                	num = element.num;
+	                	var cName = element.comname;
+	                	var agent = element.username;
+	                	var msgC = element.msgcontent;
+	                	var msgT = element.msgtype;
+	                	if(msgT == 3){
+	                		msgT = "自定义事件";
+	                	}else if(msgT==2){
+	                		msgT = "系统提醒";
+	                	}
+	                	content += '<li><a href="javascript:;"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +'：'+msgC+'</a></li>';
+		            });
+					if(num){
+						$("#taskNoticeMsg").html(num);
+					}else{
+						$("#taskNoticeMsg").html(0);
+					}
+		            
+					$("#taskNoticeId").html(content);
+				}
+			});
+		}
+		
 	</script>
 
 	<!-- 大日历 -->
@@ -452,6 +527,17 @@
 
 	<!-- 小日历 -->
 	<script type="text/javascript">
+	
+		/* 小日历背景*/
+		function minCalendarbackground(){
+			$('div[data-cal-index="2"]').prepend('<i class="month-i1"></i>');//小日历 top 显示月份
+			$('div[data-cal-index="1"]').prepend('<i class="month-i2"></i>');//小日历 center 显示月份
+			$('div[data-cal-index="0"]').prepend('<i class="month-i3"></i>');//小日历 buttom 显示月份
+			$('.k-out-of-month').click(function(){
+		      return false;
+		    });
+		}
+		/* 小日历*/
 		function minCalendarInit(){
 			$('#box-min .kalendae').attr('id','minCalen');//给小日历添加ID
 		    /*---------------------------------小日历 节假日------------------------------------*/
@@ -618,7 +704,6 @@
 		}
 		//-------------------小日历背景 添加 月份显示-----------------------
 		function backgroundMonth(){
-			/* alert("显示月份"); */
 		    var monthVal1= $('div[data-cal-index="2"] .k-title .k-caption').text();//获取top月份
 		    var DXmonth1=monthVal1.substring((monthVal1.length-1),(monthVal1.length-3));//倒序截取月份
 		    $('.month-i1').text(DXmonth1);
@@ -680,7 +765,6 @@
 	                }); 
 	            }
 	       });
-		   
 		}
 	    
 	    
@@ -718,7 +802,6 @@
   					        time: 1500
   					     }
       			    );
-    				
     			}
 			}
 	    });

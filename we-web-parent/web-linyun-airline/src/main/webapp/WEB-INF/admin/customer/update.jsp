@@ -1,5 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java"
-	pageEncoding="UTF-8" errorPage="/WEB-INF/common/500.jsp"%>
+<%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" errorPage="/WEB-INF/common/500.jsp"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
 
 <!DOCTYPE HTML>
@@ -319,6 +318,56 @@
 								</div>
 							</div>
 						</div>
+						
+<!--------------------------------------------新编辑 内容   财务信息 start-------------------------------------------------->
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-2 text-right padding">信用额度：</label>
+	                            <div class="col-sm-2 padding">
+	                              <input name="creditLine" value="${obj.customer.creditLine}" type="text" class="form-control input-sm">
+	                            </div>
+							</div>
+                            <label class="col-sm-1 text-right padding">已欠款：</label>
+                            <div class="col-sm-2 padding">
+                            	<input name="arrears" value="${obj.customer.arrears}" type="text" readonly="readonly" class="form-control input-sm">
+                            </div>
+							<div class="form-group">
+                          		 <label class="col-sm-1 text-right padding">预收款：</label>
+	                            <div class="col-sm-1 padding">
+	                              <input name="preDeposit" value="${obj.customer.preDeposit}" type="text" class="form-control input-sm">
+	                            </div>
+                          	</div>
+                        </div>
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-2 text-right padding">票价折扣：</label>
+	                            <div class="col-sm-2 padding">
+	                              <input name="discountFare" value="${obj.customer.discountFare}" type="text" class="form-control input-sm discountText">
+	                              <span>%</span>
+	                            </div>
+							</div>
+                            <div class="form-group">
+                            	<label class="col-sm-1 text-right padding">手续费：</label>
+	                            <div class="col-sm-2 padding">
+	                            	<input name="fees" value="${obj.customer.fees}" type="text" class="form-control input-sm discountText" placeholder="每张票">
+	                            	<span>￥</span>
+	                            </div>
+                          	</div>
+							<div class="form-group">
+								<label class="col-sm-1 text-right padding">汇率：</label>
+	                            <div class="col-sm-1 padding">
+	                              <input name="exchangeRates" value="${obj.customer.exchangeRates}" type="text" class="form-control input-sm">
+	                            </div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-1 text-right padding">退税：</label>
+	                            <div class="col-sm-2 padding">
+	                              <input name="taxRefund" value="${obj.customer.taxRefund}" type="text" class="form-control input-sm taxText" placeholder="每张票">
+	                            </div>
+							</div>
+                        </div>
+<!--------------------------------------------新编辑 内容   财务信息  end-------------------------------------------------->
+						
 					</div>
 				</div>
 			</div>
@@ -451,7 +500,7 @@
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
 				maximumSelectionLength : 1, //设置最多可以选择多少项
-				tags : true, //设置必须存在的选项 才能选中
+				tags : false, //设置必须存在的选项 才能选中
 			});
 			_comSelect.val([${obj.comIds}]).trigger("change");
 			
@@ -484,7 +533,7 @@
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
 				maximumSelectionLength : 5, //设置最多可以选择多少项
-				tags : true, //设置必须存在的选项 才能选中
+				tags : false, //设置必须存在的选项 才能选中
 			});
 			_citySelect.val([${obj.outcityIds}]).trigger("change");
 			
@@ -518,7 +567,7 @@
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
 				maximumSelectionLength : 5, //设置最多可以选择多少项
-				tags : true, //设置必须存在的选项 才能选中
+				tags : false, //设置必须存在的选项 才能选中
 			});
 			_innerLineSelect.val([${obj.innerCityIds}]).trigger("change");
 			
@@ -552,7 +601,7 @@
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
 				maximumSelectionLength : 5, //设置最多可以选择多少项
-				tags : true, //设置必须存在的选项 才能选中
+				tags : false, //设置必须存在的选项 才能选中
 			});
 			_interLineSelect.val([${obj.interLineIds}]).trigger("change");
 			
@@ -586,7 +635,7 @@
 				maximumInputLength : 20,
 				language : "zh-CN", //设置 提示语言
 				maximumSelectionLength : 5, //设置最多可以选择多少项
-				tags : true, //设置必须存在的选项 才能选中
+				tags : false, //设置必须存在的选项 才能选中
 			});
 			_invioceSelect.val([${obj.invioceIds}]).trigger("change");
 			
@@ -608,7 +657,7 @@
 						validators : {
 							notEmpty : {
 								message : '公司名称不能为空'
-							},
+							}/* ,
 		                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
 		                         url: '${base}/admin/customer/checkComNameExist.html',//验证地址
 		                         message: '公司名称已存在，请重新输入!',//提示消息
@@ -621,7 +670,7 @@
 		                            	cid:'${obj.customer.id}'
 		                            };
 		                         }
-		                     }
+		                     } */
 						}
 					},
 					shortName : {
@@ -689,6 +738,54 @@
 							regexp : {
 								regexp : /^[+]{0,1}(\d){1,3}[ ]?([-]?((\d)|[ ]){1,12})+$/,
 								message : '传真格式错误'
+							}
+						}
+					},
+					creditLine : {
+						validators : {
+							regexp : {
+								regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/,
+								message : '信用额度格式错误'
+							}
+						}
+					},
+					preDeposit  : {
+						validators : {
+							regexp : {
+								regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/,
+								message : '预收款格式错误'
+							}
+						}
+					},
+					discountFare : {
+						validators : {
+							regexp : {
+								regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/,
+								message : '票价折扣格式错误'
+							}
+						}
+					},
+					fees : {
+						validators : {
+							regexp : {
+								regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/,
+								message : '手续费格式错误'
+							}
+						}
+					},
+					exchangeRates : {
+						validators : {
+							regexp : {
+								regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/,
+								message : '汇率格式错误'
+							}
+						}
+					},
+					taxRefund : {
+						validators : {
+							regexp : {
+								regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/,
+								message : '退税格式错误'
 							}
 						}
 					}
