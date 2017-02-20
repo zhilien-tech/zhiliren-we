@@ -230,7 +230,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long id = loginUser.getId();
 
-		List<Record> records = new ArrayList<Record>(); //查询自定义的结果
+		List<Record> records = new ArrayList<Record>();
 
 		//查询当前用户下所有的用户
 		List<TCustomerInfoEntity> customerList = customerViewService.getCustomerList(session);
@@ -247,6 +247,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		for (TCustomerInfoEntity tCustomerInfoEntity : customerList) {
 			Record customerRecord = dbDao.fetch(customerSql);
 			int payType = tCustomerInfoEntity.getPayType();
+			long customerId = tCustomerInfoEntity.getId();
+			Date createTime = tCustomerInfoEntity.getCreateTime();
 			String compShortName = tCustomerInfoEntity.getShortName();
 			if (payType == 1) {
 				//月结
@@ -256,8 +258,9 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 				//周结
 				customerRecord.set("reminderMode", 2);
 			}
-			customerRecord.set("generatetime", nowStr);
-			String msgContent = "今天 " + compShortName + " 需要进行财务结算";
+			customerRecord.set("id", customerId);
+			customerRecord.set("generatetime", createTime);
+			String msgContent = compShortName + " 财务需要结算";
 			customerRecord.set("msgcontent", msgContent);
 			records.add(customerRecord);
 		}
@@ -299,6 +302,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		for (Record record : recordsByCondition) {
 			record.set("num", size);
 		}
+
 		return JsonUtil.toJson(recordsByCondition);
 	}
 

@@ -299,14 +299,22 @@
 		function taskNoticeList() {
 			//获取当前日期
 			var d = new Date();
-			if(d.getDate() < 10){
-				var dateStr = d.getMonth()+1 +"-0"+ d.getDate();
-				var yesterdayStr = d.getMonth()+1 +"-0"+ (d.getDate()-1);
+			var month = d.getMonth();
+			var day = d.getDate();
+			if(month < 10){
+				if(day<10){
+					var dateStr = month+1 +"-0"+ day;
+					var yesterdayStr = month+1 +"-0"+ (day-1);
+				}else{
+					var dateStr = month+1 +"-"+ day;
+					var yesterdayStr = month+1 +"-"+ (day-1);
+				}
+				
 				dateStr = "0" + dateStr;
 				yesterdayStr = "0" + yesterdayStr;
 			}else{
-				var dateStr = d.getMonth()+1 +"-"+ d.getDate();
-				var yesterdayStr = d.getMonth()+1 +"-"+ (d.getDate()-1);
+				var dateStr = month+1 +"-"+ day;
+				var yesterdayStr = month+1 +"-"+ (day-1);
 			}
 			//获取当前时间
 			var timeStr = d.getHours() +":"+ d.getMinutes();

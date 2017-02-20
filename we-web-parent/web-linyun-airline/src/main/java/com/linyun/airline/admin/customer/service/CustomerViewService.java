@@ -167,6 +167,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		if (!Util.isEmpty(addForm.getContractTimeString())) {
 			addForm.setContractTime(DateUtil.string2Date(addForm.getContractTimeString(), "yyyy-MM-dd"));
 		}
+		addForm.setCreateTime(DateUtil.nowDate());
 		//得到当前用户所在公司的id
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
@@ -451,6 +452,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		if (!Util.isEmpty(updateForm.getContractTimeString())) {
 			updateForm.setContractTime(DateUtil.string2Date(updateForm.getContractTimeString(), "yyyy-MM-dd"));
 		}
+		//updateForm.setCreateTime(DateUtil.nowDate());
 		//得到当前用户所在公司的id
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
