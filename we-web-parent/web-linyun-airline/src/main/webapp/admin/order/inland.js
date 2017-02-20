@@ -20,22 +20,24 @@ function initDatatable() {
                     {"data": "ordersnum", "bSortable": false},
                     {"data": "pnr", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		var result = '<ul>';
+                    		var result = '<ul> ';
                     		$.each(row.pnrinfo, function(name, value) {
                     			if(value){
                     				result += '<li style="list-style:none;">'+value.pnr+'</li>';
                     			}
                     		});
                     		result += '</ul>';
+                    		return result;
                     	}
                     },
                     {"data": "date", "bSortable": false,
                     	render:function(data, type, row, meta) {
                     		var result = '<ul>';
-                    		$.each(row.airinfo, function(name, value) {
-                    			result += '<li style="list-style:none;">'+value.leavedate+'</li>';
+                    		$.each(row.customerinfo, function(name, value) {
+                    			result += '<li style="list-style:none;">'+value.leavetdate+'</li>';
                     		});
                     		result += '</ul>';
+                    		return result;
                     	}
                     },
                     {"data": "airnum", "bSortable": false,
@@ -45,15 +47,17 @@ function initDatatable() {
                     			result += '<li style="list-style:none;">'+value.ailinenum+'</li>';
                     		});
                     		result += '</ul>';
+                    		return result;
                     	}
                     },
                     {"data": "airsag", "bSortable": false,
                     	render:function(data, type, row, meta) {
                     		var result = '<ul>';
-                    		$.each(row.airinfo, function(name, value) {
-                    			result += '<li style="list-style:none;">'+value.leavecity+"-"+value.arrvicity+'</li>';
+                    		$.each(row.customerinfo, function(name, value) {
+                    			result += '<li style="list-style:none;">'+value.leavecity+"-"+value.arrivecity+'</li>';
                     		});
                     		result += '</ul>';
+                    		return result;
                     	}
                     },
                     {"data": "airtime", "bSortable": false,
@@ -63,6 +67,7 @@ function initDatatable() {
                     			result += '<li style="list-style:none;">'+value.leavetime+"-"+value.arrivetime+'</li>';
                     		});
                     		result += '</ul>';
+                    		return result;
                     	}
                     },
                     {"data": "salesprice", "bSortable": false,
@@ -72,11 +77,40 @@ function initDatatable() {
                     			result += '<li style="list-style:none;">'+value.price+'</li>';
                     		});
                     		result += '</ul>';
+                    		return result; 
                     	}
                     },
-                    {"data": "receivable", "bSortable": false},
-                    {"data": "personcount", "bSortable": false},
-                    {"data": "ordersstatus", "bSortable": false},
+                    {"data": "receivable", "bSortable": false,
+                    	render:function(data, type, row, meta) {
+                    		var result = '';
+                    		if(row.receivable){
+                    			result = row.receivable;
+                    		}
+                    		return result; 
+                    	}
+                    },
+                    {"data": "personcount", "bSortable": false,
+                    	render:function(data, type, row, meta) {
+                    		var result = '';
+                    		if(row.personcount){
+                    			result = row.personcount;
+                    		}
+                    		return result; 
+                    	}
+                    },
+                    {"data": "ordersstatus", "bSortable": false,
+                    	render:function(data, type, row, meta) {
+                    		var result = '';
+                    		if(row.ordersstatus == 1){
+                    			result = '查询';
+                    		}else if(row.ordersstatus == 2){
+                    			result = '预定';
+                    		}else if(row.ordersstatus == 5){
+                    			result = '关闭';
+                    		}
+                    		return result; 
+                    	}
+                    },
                     {"data": "username", "bSortable": false},
                     {"data": "telephone", "bSortable": false},
                     {"data": "action", "bSortable": false}
@@ -91,6 +125,13 @@ function initDatatable() {
     });
 }
 
+	function loadDataTable(status){
+		var param = {
+				ordersstatus:status
+		};
+		inlandCrossTable.settings()[0].ajax.data = param;
+		inlandCrossTable.ajax.reload();
+	}
 	$("#searchBtn").on('click', function () {
 		var companyName = $("#companyName").val();
 		var comType = $('#comType').val();
@@ -111,7 +152,7 @@ function edit(id,status){
 	if(status == 1){
 		url += '/admin/inland/queryDetail.html?id='+id;
 	}else{
-		url = '';
+		url = '/admin/inland/bookingDetail.html?id='+id;
 	}
 	window.open(url);
 	/*layer.open({

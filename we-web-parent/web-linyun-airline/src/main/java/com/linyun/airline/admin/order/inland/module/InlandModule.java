@@ -85,4 +85,13 @@ public class InlandModule {
 	public Object saveOrderInfo(@Param("data") String data) {
 		return inlandService.saveOrderInfo(data);
 	}
+
+	/**
+	 * 跳转到查询订单详情页面
+	 */
+	@At
+	@Ok("jsp")
+	public Object bookingDetail(@Param("id") Integer id) {
+		return inlandService.bookingDetail(id);
+	}
 }

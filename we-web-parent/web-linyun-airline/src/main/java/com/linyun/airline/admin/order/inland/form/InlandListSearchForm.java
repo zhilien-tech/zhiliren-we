@@ -11,6 +11,7 @@ import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
@@ -23,9 +24,13 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
  */
 public class InlandListSearchForm extends DataTablesParamForm {
 
+	private Integer ordersstatus;
+
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
-
+		if (!Util.isEmpty(ordersstatus) && ordersstatus != 0) {
+			cnd.and("ordersstatus", "=", ordersstatus);
+		}
 		return cnd;
 	}
 

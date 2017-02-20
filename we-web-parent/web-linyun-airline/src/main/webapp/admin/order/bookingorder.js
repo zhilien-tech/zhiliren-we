@@ -222,7 +222,9 @@ function initAirInfoSelect2(obj){
 $(function(){
 	var firstDemandDiv = $('.DemandDiv').first();
 	initCitySelect2(firstDemandDiv);
-	initAirInfoSelect2(firstDemandDiv.find('[name=airlineinfo]'));
+	firstDemandDiv.find('[name=airlineinfo]').each(function(i){
+		initAirInfoSelect2($(this));
+	});
     $('.UnderIcon').on('click',function(){//客户信息 显示/隐藏
         $('.hideTable').toggle('400');
       });
@@ -231,8 +233,11 @@ $(function(){
         var divTest = $(this).parent().parent().parent().find('[name=airlineinfo]').last(); 
         var newDiv = divTest.clone(false,true);
         divTest.after(newDiv);
+        newDiv.find('[name=airlineid]').val('');
         newDiv.find('[name=aircom]').next().remove();
+        newDiv.find('[name=aircom]').empty();
         newDiv.find('[name=ailinenum]').next().remove();
+        newDiv.find('[name=ailinenum]').empty();
         newDiv.find('[name=leavetime]').val('');
         newDiv.find('[name=arrivetime]').val('');
         newDiv.find('[name=formprice]').val('');
@@ -240,7 +245,7 @@ $(function(){
 		initAirInfoSelect2(newDiv);
         var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
         newDiv.find("p").html(No); 
-        newDiv.find('.addIcon').remove();
+        newDiv.find('.tdBtn').remove();
         newDiv.find('.removeIconTd').remove();
         newDiv.append('<td class="removeIconTd"><i class="glyphicon glyphicon-minus removIcon"></i></td>');
     });
@@ -253,8 +258,11 @@ $(function(){
     $('.addDemand').click(function(){
         var divTest = $(this).parent(); 
         var newDiv = divTest.clone(false,true);
+        newDiv.find('[name=customneedid]').val('');
         newDiv.find('[name=leavecity]').next().remove();
+        newDiv.find('[name=leavecity]').empty();
         newDiv.find('[name=arrivecity]').next().remove();
+        newDiv.find('[name=arrivecity]').empty();
         //清空出发日期
         newDiv.find('[name=leavedate]').val('');
         //清空人数
@@ -274,8 +282,11 @@ $(function(){
         	if(i > 0){
         		$(this).remove();
         	}else{
+        		$(this).find('[name=airlineid]').val('');
         		$(this).find('[name=aircom]').next().remove();
+        		$(this).find('[name=aircom]').empty();
         		$(this).find('[name=ailinenum]').next().remove();
+        		$(this).find('[name=ailinenum]').empty();
         		$(this).find('[name=leavetime]').val('');
         		$(this).find('[name=arrivetime]').val('');
         		$(this).find('[name=formprice]').val('');

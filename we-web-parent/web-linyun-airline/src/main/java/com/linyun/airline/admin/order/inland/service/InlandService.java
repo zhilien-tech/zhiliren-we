@@ -63,16 +63,25 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		@SuppressWarnings("unchecked")
 		List<Record> data = (List<Record>) listdata.get("data");
 		for (Record record : data) {
-			int customid = record.getInt("customsid");
-			List<TAirlineInfoEntity> airinfo = dbDao.query(TAirlineInfoEntity.class,
-					Cnd.where("needid", "=", customid), null);
-			record.put("airinfo", airinfo);
+			//
+			List<TOrderCustomneedEntity> customerinfo = dbDao.query(TOrderCustomneedEntity.class,
+					Cnd.where("ordernum", "=", record.getInt("id")), null);
+			record.put("customerinfo", customerinfo);
+			//航班信息
+			List<TAirlineInfoEntity> airinfo = new ArrayList<TAirlineInfoEntity>();
+			//PNR信息
 			List<TPnrInfoEntity> pnrinfo = new ArrayList<TPnrInfoEntity>();
-			for (TAirlineInfoEntity AirlineInfoEntity : airinfo) {
-				List<TPnrInfoEntity> pnrs = dbDao.query(TPnrInfoEntity.class,
-						Cnd.where("airinfoid", "=", AirlineInfoEntity.getId()), null);
-				pnrinfo.addAll(pnrs);
+			for (TOrderCustomneedEntity tOrderCustomneedEntity : customerinfo) {
+				List<TAirlineInfoEntity> airinfo1 = dbDao.query(TAirlineInfoEntity.class,
+						Cnd.where("needid", "=", tOrderCustomneedEntity.getId()), null);
+				airinfo.addAll(airinfo1);
+				for (TAirlineInfoEntity AirlineInfoEntity : airinfo1) {
+					List<TPnrInfoEntity> pnrs = dbDao.query(TPnrInfoEntity.class,
+							Cnd.where("airinfoid", "=", AirlineInfoEntity.getId()), null);
+					pnrinfo.addAll(pnrs);
+				}
 			}
+			record.put("airinfo", airinfo);
 			record.put("pnrinfo", pnrinfo);
 		}
 		listdata.remove("data");
@@ -335,5 +344,53 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		}
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/**
+	 * 为预定订单详情准备数据
+	 * <p>
+	 *
+	 * @param id
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object bookingDetail(Integer id) {
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		TUpOrderEntity orderinfo = this.fetch(id);
+		result.put("orderinfo", orderinfo);
+		//客户信息
+		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(orderinfo.getUserid()));
+		result.put("custominfo", custominfo);
+		//客户负责人
+		result.put("responsible", dbDao.fetch(TUserEntity.class, custominfo.getResponsibleId()).getUserName());
+		//客户需求信息、航班信息集合
+		List<Map<String, Object>> customneedinfo = new ArrayList<Map<String, Object>>();
+		//查询客户需求信息
+		List<TOrderCustomneedEntity> customs = dbDao.query(TOrderCustomneedEntity.class,
+				Cnd.where("ordernum", "=", id), null);
+		for (TOrderCustomneedEntity custom : customs) {
+			//客户需求信息
+			Map<String, Object> cusmap = new HashMap<String, Object>();
+			cusmap.put("cusinfo", custom);
+			//航班信息
+			List<TAirlineInfoEntity> ailines = dbDao.query(TAirlineInfoEntity.class,
+					Cnd.where("needid", "=", custom.getId()), null);
+			cusmap.put("ailines", ailines);
+			customneedinfo.add(cusmap);
+		}
+		//添加客户需求、航班信息
+		result.put("customneedinfo", customneedinfo);
+		//准备客户姓名下拉
+		List<TCustomerInfoEntity> customerInfos = dbDao.query(TCustomerInfoEntity.class, null, null);
+		result.put("customerInfos", customerInfos);
+		//准备航班号下拉
+		result.put("airline", dbDao.query(TFlightInfoEntity.class, null, null));
+		//准备城市下拉
+		List<TDepartureCityEntity> city = externalInfoService.findCityByCode("", CITYCODE);
+		result.put("city", city);
+		//准备航空公司下拉
+		result.put("aircom", dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", AIRCOMCODE), null));
+		return result;
+
 	}
 }

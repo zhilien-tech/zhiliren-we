@@ -8,7 +8,7 @@
 	</appender>
 	<root>
 
-		<level value="DUBUG" />
+		<level value="INFO" />
 		<appender-ref ref="CONSOLE" />
 	</root>
 </log4j:configuration>

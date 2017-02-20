@@ -61,15 +61,6 @@
                      <option value="4">开票</option>
                      <option value="5">关闭</option>
                    </select>
-                   <label>提醒：</label>
-                   <select class="form-control input-sm timSelect">
-                     <option>每15分</option>
-                     <option>每30分</option>
-                     <option>每1小时</option>
-                     <option>每天</option>
-                     <option>每周</option>
-                     <option>每月</option>
-                   </select>
                    <button type="button" class="btn btn-primary input-sm btnSave none">保存</button>
                    <button type="button" class="btn btn-primary input-sm btnCancel none">取消</button>
                    <button type="button" class="btn btn-primary input-sm editBtn">编辑</button>
@@ -614,7 +605,7 @@
 	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 	<!--layer -->
 	<script src="${base}/common/js/layer/layer.js"></script>
-	<script src="${base }/admin/order/queryorder.js"></script><!-- AdminLTE App -->
+	<script src="${base }/admin/order/bookingorder.js"></script><!-- AdminLTE App -->
   <script type="text/javascript">
       $(function(){
         //编辑按钮 click事件

@@ -12,12 +12,12 @@
           
           <div class="nav-tabs-custom">
               <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab_1" data-toggle="tab">全部</a></li>
-                <li><a href="#tab_1" data-toggle="tab">查询</a></li>
-                <li><a href="#tab_1" data-toggle="tab">预订</a></li>
+                <li class="active"><a href="#tab_1" onclick="loadDataTable(0)" data-toggle="tab">全部</a></li>
+                <li><a href="#tab_1" onclick="loadDataTable(1)" data-toggle="tab">查询</a></li>
+                <li><a href="#tab_1" onclick="loadDataTable(2)" data-toggle="tab">预订</a></li>
                 <li><a href="#tab_4" data-toggle="tab">出票</a></li>
                 <li><a href="#tab_5" data-toggle="tab">收/付款</a></li>
-                <li><a href="#tab_1" data-toggle="tab">关闭</a></li>
+                <li><a href="#tab_1" onclick="loadDataTable(5)" data-toggle="tab">关闭</a></li>
                 <li class="orderLi"><button type="button" id="addOrder" class="btn btn-primary btn-sm right">添加订单</button></li>
               </ul>
               <div class="tab-content"><!--全部-->
@@ -208,4 +208,18 @@
 	        content: '${base}/admin/inland/addOrder.html'
 	      });
 	  });
+	  
+	//他页面回调
+	  function successCallback(id){
+		  inlandCrossTable.ajax.reload(null,false);
+		  if(id == '1'){
+			  layer.alert("添加成功",{time: 2000, icon:1});
+		  }else if(id == '2'){
+			  layer.alert("修改成功",{time: 2000, icon:1});
+		  }else if(id == '3'){
+			  layer.alert("关闭成功",{time: 2000, icon:1});
+		  }else if(id == '4'){
+			  layer.alert("启用成功",{time: 2000, icon:1});
+		  }
+	  }
 </script>

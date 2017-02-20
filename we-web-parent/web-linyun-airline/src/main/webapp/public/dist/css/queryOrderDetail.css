@@ -1,3 +1,4 @@
+/*查询订单详情*/
 .content-wrapper, .right-side, .main-footer {margin-left: 0px;}
 .content {padding-right: 0px;}
 .rightRemind{padding-right: 0px;width: 26%;}
@@ -9,12 +10,5 @@ table.remindSet{margin-left: 10px;margin-right: 10px;}
 .cloTable {margin-right: 10px;}
 .sw{display: inline-block;}
 .dis{display:block;}
-
-
-
-
-
-
-
-
-
+.infoTopContent {width: 350px;}
+.infoTopContent .conSelect {width: 85px;margin: 0 0 0 15px;}
