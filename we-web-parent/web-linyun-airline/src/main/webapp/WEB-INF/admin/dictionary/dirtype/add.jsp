@@ -31,7 +31,7 @@
 					<div class="form-group row">
 						<label class="col-sm-3 text-right padding">字典类型编码：</label>
 						<div class="col-sm-8 padding">
-							<input name="typeCode" class="form-control input-sm inpImpWid"
+							<input name="typeCode" class="form-control input-sm inpImpWid" oninput="this.value=this.value.toUpperCase().replace(/(^\s*)|(\s*$)/g, '')"
 								placeholder="请输入字典类型编码" /><span class="prompt">*</span>
 						</div>
 					</div>

@@ -100,7 +100,7 @@
     	    fix: false,
     	    maxmin: false,
     	    shadeClose: false,
-    	    area: ['900px', '500px'],
+    	    area: ['400px', '200px'],
     	    content: '${base}/admin/user/add.html',
     	    end: function(){//添加完页面点击返回的时候自动加载表格数据
     	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
