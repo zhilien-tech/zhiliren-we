@@ -22,6 +22,12 @@ public class TMessageAddForm extends AddForm implements Serializable {
 	/**消息类型*/
 	private Integer msgType;
 
+	/**提醒类型*/
+	private Long reminderMode;
+
+	/**是否提醒*/
+	private Long isRemind;
+
 	/**消息状态*/
 	private Integer msgStatus;
 

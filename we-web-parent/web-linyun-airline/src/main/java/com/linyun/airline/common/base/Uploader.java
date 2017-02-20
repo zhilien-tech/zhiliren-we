@@ -50,7 +50,7 @@ public class Uploader {
 	private String[] allowFiles = { ".rar", ".doc", ".docx", ".zip", ".pdf", ".txt", ".swf", ".wmv", ".gif", ".png",
 			".jpg", ".jpeg", ".bmp" };
 	// 文件大小限制，单位KB
-	private int maxSize = 10000;
+	private int maxSize = 100000;
 
 	private HashMap<String, String> errorInfo = new HashMap<String, String>();
 

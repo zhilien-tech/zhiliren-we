@@ -106,6 +106,16 @@ public class SearchModule {
 	}
 
 	/**
+	 * 根据代码 获取航空公司名称
+	 */
+	@At
+	@POST
+	public String getCAirNameByCode(@Param("airCompCode") String airCompCode) {
+		String typeCode = "HKGS";
+		return searchViewService.getCAirNameByCode(airCompCode, typeCode);
+	}
+
+	/**
 	 * 获取航班号下拉
 	 */
 	@At
@@ -139,6 +149,24 @@ public class SearchModule {
 	@POST
 	public Object getCustomerCitySelect(@Param("cityname") String cityname, @Param("exname") String exname) {
 		return searchViewService.getCustomerCitySelect(cityname, exname);
+	}
+
+	/**
+	 * 解析sbare
+	 */
+	@At
+	@POST
+	public Object parsingPNR(@Param("sabrePNR") String sabrePNR) {
+		return searchViewService.parsingPNR(sabrePNR);
+	}
+
+	/**
+	 * 解析etem
+	 */
+	@At
+	@POST
+	public Object parsingEtem(@Param("etemStr") String etemStr) {
+		return searchViewService.parsingEtem(etemStr);
 	}
 
 }

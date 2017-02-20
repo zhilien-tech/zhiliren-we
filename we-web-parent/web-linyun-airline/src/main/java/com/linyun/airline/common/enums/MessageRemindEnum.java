@@ -4,19 +4,19 @@ import com.uxuexi.core.common.enums.IEnum;
 
 /**
  * 
- * 消息中的  用户类型
+ * 消息中的  消息状态
  * <p>
  * 
  * @author   彭辉
  * @Date	 2016年12月07日
  */
-public enum MessageUserEnum implements IEnum {
-	PERSONAL(1, "个人"), COMPANY(2, "公司"), SYSTEM(3, "系统");
+public enum MessageRemindEnum implements IEnum {
+	MOUTH(1, "自然月1日"), WEEK(2, "自然每周一"), DAY(3, "每天"), HOUR(4, "每小时"), MINUTE(5, "每分钟"), TIMED(6, "定时");
 
 	private int key;
 	private String value;
 
-	private MessageUserEnum(final int key, final String value) {
+	private MessageRemindEnum(final int key, final String value) {
 		this.value = value;
 		this.key = key;
 	}

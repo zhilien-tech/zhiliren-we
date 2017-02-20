@@ -166,10 +166,16 @@ $("#searchSingleTicketsBtn").click(function() {
 	var outDatepicker = $("#outDatepicker0").val();
 	var returnDatepicker = $("#returnDatepicker0").val();
 	var airType = $("input[name='voyageType']:checked").val();
-	if(!(linkName || phoneNum)){
-		layer.msg("客户姓名不能为空", "", 2000);
-		return;
+	
+	var ariaStr = $('#tab_3Id').attr("aria-expanded");
+	//国际不需要验证 客户名称
+	if(ariaStr != "true"){
+		if(!(linkName || phoneNum)){
+			layer.msg("客户姓名不能为空", "", 2000);
+			return;
+		}
 	}
+	
 	if(outCity==""){
 		layer.msg('出发城市不能为空');
 		return;
@@ -305,12 +311,13 @@ $("#searchSingleTicketsBtn").click(function() {
 						var ElapsedTime = outList[foot].ElapsedTime;
 						var totalAmount = resp.data[i].priceInfo.totalAmount;
 						outLiList += '<li class="ticketsLi">'+
+						'<p class="lineCode" hidden>'+airlineCode+'</p>'+
 						'<p class="p">'+airlineCode+FlightNumber+'</p>'+
-						'<div class="distanceTimeDiv"><span class="chufaCS"><b>'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
-						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b>'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
-						'<div class="moneyDiv"><i class="fa fa-usd"></i>'+totalAmount+'</div>'+
+						'<div class="distanceTimeDiv"><span class="chufaCS"><b class="DepartureDateTime">'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
+						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b  class="ArrivalDateTime">'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
+						'<div class="moneyDiv"><i class="fa fa-usd"></i><i class="airTotalMoney">'+totalAmount+'</i></div>'+
 						'<div class="btn-group xuanzeBtn">'+
-							'<button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
+							'<button class="btn chooseLineBtn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
 							'<ul class="dropdown-menu">'+
 							
 							'</ul>'+
@@ -329,12 +336,13 @@ $("#searchSingleTicketsBtn").click(function() {
 						var ElapsedTime = returnList[foot].ElapsedTime;
 						var totalAmount = resp.data[i].priceInfo.totalAmount;
 						returnLiList += '<li class="ticketsLi">'+
+						'<p class="lineCode" hidden>'+airlineCode+'</p>'+
 						'<p class="p">'+airlineCode+FlightNumber+'</p>'+
-						'<div class="distanceTimeDiv"><span class="chufaCS"><b>'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
-						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b>'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
-						'<div class="moneyDiv"><i class="fa fa-usd"></i>'+totalAmount+'</div>'+
+						'<div class="distanceTimeDiv"><span class="chufaCS"><b class="DepartureDateTime">'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
+						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b class="ArrivalDateTime">'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
+						'<div class="moneyDiv"><i class="fa fa-usd"></i><i class="airTotalMoney">'+totalAmount+'</i></div>'+
 						'<div class="btn-group xuanzeBtn">'+
-							'<button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
+							'<button class="btn chooseLineBtn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
 							'<ul class="dropdown-menu">'+
 							
 							'</ul>'+
@@ -347,14 +355,6 @@ $("#searchSingleTicketsBtn").click(function() {
 				}else{
 					document.getElementById('paragraphListInfo').innerHTML=returnLiList;
 				}
-				
-				/*var custLines = '';
-				for(var i=0; i<$(".DemandDiv").length; i++){
-					var custNeedNum = $(".DemandDiv .titleNum").eq(i).html()
-					var custLine = custNeedNum +'.北京 - 布利斯';
-					custLines += '<li><a href="javascript:;">'+ custLine +'</a></li>';
-				}*/
-				$(".dropdown-menu").append(custLines);
 				
 			} else {
 				layer.msg(resp.data.message, "", 2000);
