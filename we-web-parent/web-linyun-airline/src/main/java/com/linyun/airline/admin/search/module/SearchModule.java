@@ -106,6 +106,25 @@ public class SearchModule {
 	}
 
 	/**
+	 * 根据代码 获取航空公司名称
+	 */
+	@At
+	@POST
+	public String getCAirNameByCode(@Param("airCompCode") String airCompCode) {
+		String typeCode = "HKGS";
+		return searchViewService.getCAirNameByCode(airCompCode, typeCode);
+	}
+
+	/**
+	 * 获取航班号下拉
+	 */
+	@At
+	@POST
+	public Object getCAirNumSelect(@Param("airlinename") String airlinename, @Param("exname") String exname) {
+		return searchViewService.getCAirNumSelect(airlinename, exname);
+	}
+
+	/**
 	 * 查询跨海内陆机票
 	 */
 	@At
@@ -121,6 +140,33 @@ public class SearchModule {
 	@POST
 	public Object searchTeamTickets(@Param("..") SearchTicketSqlForm sqlForm, HttpSession session) {
 		return searchViewService.listPage4Datatables(sqlForm, session);
+	}
+
+	/**
+	 * 获取客户需求 城市下拉
+	 */
+	@At
+	@POST
+	public Object getCustomerCitySelect(@Param("cityname") String cityname, @Param("exname") String exname) {
+		return searchViewService.getCustomerCitySelect(cityname, exname);
+	}
+
+	/**
+	 * 解析sbare
+	 */
+	@At
+	@POST
+	public Object parsingPNR(@Param("sabrePNR") String sabrePNR) {
+		return searchViewService.parsingPNR(sabrePNR);
+	}
+
+	/**
+	 * 解析etem
+	 */
+	@At
+	@POST
+	public Object parsingEtem(@Param("etemStr") String etemStr) {
+		return searchViewService.parsingEtem(etemStr);
 	}
 
 }
