@@ -11,6 +11,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
 import com.linyun.airline.admin.drawback.grabfile.entity.TGrabFileEntity;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
@@ -25,6 +26,9 @@ public class TGrabFileSqlForm extends DataTablesParamForm {
 
 	/**上级id*/
 	private Integer parentId;
+
+	/**文件夹名称*/
+	private String folderName;
 
 	/**文件名称*/
 	private String fileName;
@@ -53,6 +57,9 @@ public class TGrabFileSqlForm extends DataTablesParamForm {
 	/**完整路径*/
 	private String fullPath;
 
+	/**序号*/
+	private Integer sort;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**
@@ -68,6 +75,9 @@ public class TGrabFileSqlForm extends DataTablesParamForm {
 	//TODO 添加自定义查询条件（可选）
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
+		if (!Util.isEmpty(parentId)) {
+			cnd.and("parentId", "=", parentId);
+		}
 		return cnd;
 	}
 }

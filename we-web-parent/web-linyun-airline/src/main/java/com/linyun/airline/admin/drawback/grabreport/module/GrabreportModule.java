@@ -13,11 +13,10 @@ import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportAddForm;
 import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportSqlForm;
 import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportUpdateForm;
 import com.linyun.airline.admin.drawback.grabreport.service.GrabreportViewService;
-import com.uxuexi.core.web.base.page.Pagination;
 import com.uxuexi.core.web.chain.support.JsonResult;
 
 @IocBean
-@At("/admin/grabreport")
+@At("/admin/drawback/grabreport")
 public class GrabreportModule {
 
 	@Inject
@@ -25,11 +24,22 @@ public class GrabreportModule {
 
 	/**
 	 * 分页查询
+	 * @param sqlForm
+	 * @param pager
 	 */
+
 	@At
 	@Ok("jsp")
-	public Pagination list(@Param("..") final TGrabReportSqlForm sqlParamForm, @Param("..") final Pager pager) {
-		return grabreportViewService.listPage(sqlParamForm, pager);
+	public Object list(@Param("..") final TGrabReportSqlForm sqlForm, @Param("..") final Pager pager) {
+		return null;
+	}
+
+	/**
+	 * 服务端分页查询
+	 */
+	@At
+	public Object listData(@Param("..") final TGrabReportSqlForm sqlForm) {
+		return grabreportViewService.listPage4Datatables(sqlForm);
 	}
 
 	/**
