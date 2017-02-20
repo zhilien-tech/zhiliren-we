@@ -214,6 +214,24 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		sql.setCallback(Sqls.callback.records());
 		List<Record> records = dbDao.query(sql, null, null); //查询自定义的结果
 
+		int size = records.size();
+		for (Record record : records) {
+			record.set("num", size);
+		}
+		return JsonUtil.toJson(records);
+	}
+
+	/**
+	 * 查询 任务事件
+	 */
+	public Object getTaskNotices(HttpSession session) {
+
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long id = loginUser.getId();
+
+		List<Record> records = new ArrayList<Record>(); //查询自定义的结果
+
 		//查询当前用户下所有的用户
 		List<TCustomerInfoEntity> customerList = customerViewService.getCustomerList(session);
 		//查询客户管理消息

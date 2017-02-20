@@ -11,7 +11,10 @@ import com.uxuexi.core.common.enums.IEnum;
  * @Date	 2016年12月07日
  */
 public enum MessageTypeEnum implements IEnum {
-	NOTICEMSG(1, "告知型消息"), PROCESSMSG(2, "用户处理型消息"), CUSTOMMSG(3, "自定义型消息");
+
+	CLOSEMSG(0, "关闭"), NOTICEMSG(1, "系统通知消息"), PROCESSMSG(2, "客户管理消息"), CUSTOMMSG(3, "自定义型消息"), SEARCHMSG(4, "查询"), BOOKMSG(
+			5, "预定"), BOOKONEMSG(6, "一订"), BOOKSECMSG(7, "二订"), FINALPAYMSG(8, "尾款"), DRAWBILLMSG(9, "出票"), MAKEOUTBILLMSG(
+			10, "开票");
 
 	private int key;
 	private String value;

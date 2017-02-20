@@ -52,6 +52,7 @@
 			                  <li><a href="#tab_2" data-toggle="tab">订单(10)</a></li>
 			                  <li><a href="#tab_3" data-toggle="tab">我的提醒(<span id="remindMsg"></span>)</a></li>
 			                  <li><a href="#tab_4" data-toggle="tab">账期(2)</a></li>
+			                  <li><a href="#tab_5" data-toggle="tab">任务(<span id="taskNoticeMsg"></span>)</a></li>
 			                </ul>
 			                <div class="tab-content">
 				                  <div class="tab-pane active" id="tab_1">
@@ -76,6 +77,11 @@
 				                    <ul class="taskInfo">
 				                      <li><a href=""><span>今天</span><span>07：00</span>聚美优品孙先哲向你发送一个预售订单</a></li>
 				                      <li><a href=""><span>昨天</span><span>09：23</span>爱我行&nbsp;&nbsp;&nbsp;王行&nbsp;&nbsp;&nbsp;0494573团需要支付一订</a></li>
+				                    </ul>
+				                  </div>
+				                  <!-- 通知 任务 -->
+				                  <div class="tab-pane" id="tab_5">
+				                   	<ul id="taskNoticeId" class="taskInfo">
 				                    </ul>
 				                  </div>
 				            </div>
@@ -191,8 +197,10 @@
 			minCalendarbackground();
 			/* 大日历 */
 			calendarInit();
-			/* 任务提醒 */
+			/* 我的提醒 */
 			taskEventList();
+			/*任务*/
+			taskNoticeList();
 			/*自定义界面选择*/
 			customInterfaces();
 			/*模块展示页面*/
@@ -228,8 +236,9 @@
 	  	}
 	  </script>
 
-	<!-- 任务事件提醒 -->
+	<!-- 任务栏事件提醒 -->
 	<script type="text/javascript">
+		/* 我的提醒 */
 		function taskEventList() {
 			//获取当前日期
 			var d = new Date();
@@ -284,6 +293,64 @@
 				}
 			});
 		}
+		
+		/* 任务 */
+		/* 我的提醒 */
+		function taskNoticeList() {
+			//获取当前日期
+			var d = new Date();
+			if(d.getDate() < 10){
+				var dateStr = d.getMonth()+1 +"-0"+ d.getDate();
+				var yesterdayStr = d.getMonth()+1 +"-0"+ (d.getDate()-1);
+				dateStr = "0" + dateStr;
+				yesterdayStr = "0" + yesterdayStr;
+			}else{
+				var dateStr = d.getMonth()+1 +"-"+ d.getDate();
+				var yesterdayStr = d.getMonth()+1 +"-"+ (d.getDate()-1);
+			}
+			//获取当前时间
+			var timeStr = d.getHours() +":"+ d.getMinutes();
+			
+			$.ajax({
+				type : 'POST',
+				dataType : 'json',
+				url : '${base}/admin/operationsArea/getTaskNotices.html',
+				success : function(data){
+					var content = "";
+					var num = "";
+					$.each(eval(data),function(index, element){
+	                	var datetimeStr = element.generatetime;
+	                	var dStr = datetimeStr.substr(5, 5);
+	                	var tStr = datetimeStr.substr(11, 5);
+	                	if(dStr == dateStr){
+	                		dStr="今天";
+	                	}
+	                	if(dStr == yesterdayStr){
+	                		dStr="昨天";
+	                	}
+	                	num = element.num;
+	                	var cName = element.comname;
+	                	var agent = element.username;
+	                	var msgC = element.msgcontent;
+	                	var msgT = element.msgtype;
+	                	if(msgT == 3){
+	                		msgT = "自定义事件";
+	                	}else if(msgT==2){
+	                		msgT = "系统提醒";
+	                	}
+	                	content += '<li><a href="javascript:;"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +'：'+msgC+'</a></li>';
+		            });
+					if(num){
+						$("#taskNoticeMsg").html(num);
+					}else{
+						$("#taskNoticeMsg").html(0);
+					}
+		            
+					$("#taskNoticeId").html(content);
+				}
+			});
+		}
+		
 	</script>
 
 	<!-- 大日历 -->
