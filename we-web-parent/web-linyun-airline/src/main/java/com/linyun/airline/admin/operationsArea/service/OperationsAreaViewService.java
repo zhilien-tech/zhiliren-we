@@ -224,11 +224,12 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		customerSql.params().set("msgSource", 3);
 		customerSql.setCallback(Sqls.callback.records());
 
-		Record customerRecord = dbDao.fetch(customerSql);
 		//表示月结和周结的客户
 		String nowStr = DateTimeUtil.format(DateTimeUtil.nowDateTime()); //当前时间
 		for (TCustomerInfoEntity tCustomerInfoEntity : customerList) {
+			Record customerRecord = dbDao.fetch(customerSql);
 			int payType = tCustomerInfoEntity.getPayType();
+			String compShortName = tCustomerInfoEntity.getShortName();
 			if (payType == 1) {
 				//月结
 				customerRecord.set("reminderMode", 1);
@@ -238,6 +239,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 				customerRecord.set("reminderMode", 2);
 			}
 			customerRecord.set("generatetime", nowStr);
+			String msgContent = "今天 " + compShortName + " 需要进行财务结算";
+			customerRecord.set("msgcontent", msgContent);
 			records.add(customerRecord);
 		}
 
@@ -245,6 +248,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		List<Record> recordsByCondition = new ArrayList<Record>();
 		for (Record record : records) {
 			String reminderMode = record.getString("reminderMode"); //当前消息的提醒模式
+			String generateDate = record.getString("generatetime"); //当前消息的时间
 			Date nowDate = DateUtil.nowDate();
 			if ("1".equals(reminderMode)) {
 				//每自然月1号提醒
@@ -256,7 +260,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			if ("2".equals(reminderMode)) {
 				//每自然周一提醒
 				Date firstWeekDay = DateUtil.getFirstWeekDay(nowDate);
-				if (firstWeekDay == nowDate) {
+				long millisBetween = DateUtil.millisBetween(firstWeekDay, nowDate);
+				if (millisBetween == 0) {
 					recordsByCondition.add(record);
 				}
 			}
