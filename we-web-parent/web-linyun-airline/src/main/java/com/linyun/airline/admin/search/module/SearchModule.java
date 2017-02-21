@@ -169,4 +169,13 @@ public class SearchModule {
 		return searchViewService.parsingEtem(etemStr);
 	}
 
+	/**
+	 * 保存查询结果
+	 */
+	@At
+	@POST
+	public Object saveCustomerNeeds(@Param("data") String data) {
+		return searchViewService.saveCustomerNeeds(data);
+	}
+
 }

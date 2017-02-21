@@ -27,8 +27,9 @@
 					<div class="infoTop">
 						<p>客户信息</p>
 						<div class="infoTopContent">
-							<input type="checkbox" class="conCheckInput" checked="checked"><label>生成订单</label>
-							<select class="form-control input-sm conSelect cf">
+							<input id="generateOrder" type="checkbox" class="conCheckInput" checked="checked">
+							<label>生成订单</label>
+							<select id="orderType" class="form-control input-sm conSelect cf">
 								<option value="1" selected="selected">查询</option>
 								<option value="2">预定</option>
 								<option value="3">一订</option>
@@ -37,28 +38,29 @@
 								<option value="6">出票</option>
 								<option value="7">开票</option>
 								<option value="8">关闭</option>
-							</select> <label>提醒：</label> <select
-								class="form-control input-sm timSelect">
+							</select> 
+							<label>提醒：</label> 
+							<select id="remindType" class="form-control input-sm timSelect">
 								<option value="0">每15分</option>
 								<option value="1">每30分</option>
 								<option value="2">每1小时</option>
 								<option value="3">每天</option>
 								<option value="4">每周</option>
 								<option value="5">每月</option>
-							</select> <input id="datepicker" name="datepicker" type="text"
-								class="form-control input-sm conTimeInput"
-								onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
-								placeholder="请选择提醒日期"> <input type="button"
-								class="btn btn-primary btn-sm" value="保存"> <input
-								type="button" class="btn btn-primary btn-sm" value="取消">
+							</select> 
+							<input id="datepicker" name="datepicker" type="text" class="form-control input-sm conTimeInput" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" placeholder="请选择提醒日期"> 
+							<input type="button" class="btn btn-primary btn-sm" onclick="saveOrderInfo();" value="保存"> 
+							<input type="button" class="btn btn-primary btn-sm" onclick="closewindow();" value="取消">
 						</div>
 					</div>
 					<div class="infofooter">
 						<form id="customerCheckForm" method="post">
 							<table>
 								<tr>
-									<td><label><p id="custInfoName">客户姓名：
-											<p></label></td>
+									<td>
+										<label>
+											<p id="custInfoName">客户姓名：<p>
+										</label></td>
 									<td>
 										<!-- <input type="text" class="form-control input-sm" placeholder="请输入客户姓名"> -->
 										<select id="linkNameId" name="linkName"
@@ -144,9 +146,9 @@
 					<div id="infofooter" class="infofooter">
 						<div class="DemandDiv">
 							<!-- 隐藏域   控制第一次添加航空段数时，只添加内容 -->
-							<input name="airLineClickHidden" value="1" type="hidden" /> <span
-								class="titleNum">1</span> <a href="javascript:;"
-								class="btn btn-primary btn-sm addDemand"><b>+</b>&nbsp;&nbsp;需求</a>
+							<input name="airLineClickHidden" value="1" type="hidden" /> 
+							<span class="titleNum">1</span> 
+							<a href="javascript:;" class="btn btn-primary btn-sm addDemand"><b>+</b>&nbsp;&nbsp;需求</a>
 							<table class="cloTable">
 								<tr>
 									<td><label>出发城市：</label></td>
@@ -169,19 +171,18 @@
 										class="form-control input-sm timeWid inputdatestr startdatestr"
 										placeholder="2020-01-01"></td>
 									<td><label>人数：</label></td>
-									<td><input id="cPersonAmount" name="cPersonAmount"
-										type="text" onkeyup="this.value=this.value.replace(/\D/g,'')"
-										onafterpaste="this.value=this.value.replace(/\D/g,'')"
-										class="form-control input-sm" placeholder=""></td>
+									<td>
+										<input id="cPersonAmount" name="cPersonAmount" type="text" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" class="form-control input-sm" placeholder="">
+									</td>
 									<td><label class="labelWid">早中晚：</label></td>
-									<td><select id="morningDay"
-										class="form-control input-sm textWid">
-											<option value="morning">早</option>
-											<option value="nooning">中</option>
-											<option value="evening">晚</option>
+									<td>
+										<select id="tickettype" name="tickettype" class="form-control input-sm textWid">
+											<option value="1">早</option>
+											<option value="2">中</option>
+											<option value="3">晚</option>
 									</select></td>
 								</tr>
-								<tr class="addCustomerAirline">
+								<tr name="airLineInfo" class="addCustomerAirline">
 									<td></span><label>航空公司：</label></td>
 									<td><select id="cAirlineCompany" name="cAirlineCompany"
 										class="form-control select2" multiple="multiple"
@@ -557,6 +558,8 @@
 		<script src="${base}/admin/searchTicket/searchTeamMoreLine.js"></script>
 		<!-- 多条件查询 -->
 		<script src="${base}/admin/searchTicket/searchMoreOrderLines.js"></script>
+		<!-- 保存查询 js -->
+		<script src="${base}/admin/searchTicket/saveCustomerNeeds.js"></script>
 
 		<!-- 解析sabre -->
 		<script type="text/javascript">

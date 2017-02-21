@@ -258,7 +258,6 @@ $("#searchSingleTicketsBtn").click(function() {
 				/*直飞的*/
 				var outNonstopList = new Array();
 				var returnNonstopList = new Array();
-				
 				for (var i=0; i<resp.data.length; i++){
 					var list = resp.data[i].list;
 					var returnIdx = 0 ;
