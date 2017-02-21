@@ -292,8 +292,6 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
 		String dateStr = format.format(new Date());
 		//查询当前天订单号最大的一条
-		String sqlStr = sqlManager.get("select_max_order_num");
-		Sql sql = Sqls.create(sqlStr);
 		Iterable<String> split = Splitter.on(",").split(planIds);
 		for (String str : split) {
 			long planId = Long.valueOf(str);
@@ -305,38 +303,48 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 			if (Util.isEmpty(planinfo.getOrdernumber())) {
 				//获取计划信息
 				TPlanInfoEntity planInfo = this.fetch(planId);
-				//查询最大的订单号数据
-				List<Record> orders = dbDao.query(sql, Cnd.where("SUBSTR(ordersnum,1,8)", "=", dateStr), null);
 				//如果当前天最大值存在
 				TUpOrderEntity insertOrder = new TUpOrderEntity();
-				if (!Util.isEmpty(orders.get(0).get("maxnum"))) {
-					TUpOrderEntity upOrderEntity = new TUpOrderEntity();
-					upOrderEntity.setAmount(planInfo.getPrice());
-					upOrderEntity.setCurrencyCode(planInfo.getCurrencycode());
-					upOrderEntity.setCustomid(company.getId());
-					String maxnum = (String) orders.get(0).get("maxnum");
-					//maxnum = maxnum.substring(8, maxnum.length());
-					upOrderEntity.setOrdersnum(dateStr + zeroize((Integer.valueOf(maxnum) + 1), 5));
-					upOrderEntity.setOrdersstatus(0);
-					upOrderEntity.setOrderstime(new Date());
-					upOrderEntity.setOrderstype(0);
-					insertOrder = dbDao.insert(upOrderEntity);
-				} else {
-					TUpOrderEntity upOrderEntity = new TUpOrderEntity();
-					upOrderEntity.setAmount(planInfo.getPrice());
-					upOrderEntity.setCurrencyCode(planInfo.getCurrencycode());
-					upOrderEntity.setCustomid(company.getId());
-					upOrderEntity.setOrdersnum(dateStr + zeroize(1, 5));
-					upOrderEntity.setOrdersstatus(0);
-					upOrderEntity.setOrderstime(new Date());
-					upOrderEntity.setOrderstype(0);
-					insertOrder = dbDao.insert(upOrderEntity);
-				}
+				//订单信息
+				TUpOrderEntity upOrderEntity = new TUpOrderEntity();
+				upOrderEntity.setAmount(planInfo.getPrice());
+				upOrderEntity.setCurrencyCode(planInfo.getCurrencycode());
+				upOrderEntity.setCustomid(company.getId());
+				upOrderEntity.setOrdersnum(generateOrderNum());
+				upOrderEntity.setOrdersstatus(0);
+				upOrderEntity.setOrderstime(new Date());
+				upOrderEntity.setOrderstype(0);
+				insertOrder = dbDao.insert(upOrderEntity);
+				//设置订单ID
 				planinfo.setOrdernumber(String.valueOf(insertOrder.getId()));
 				dbDao.update(planinfo);
 			}
 		}
 		return 1;
+	}
+
+	/**
+	 * 获取订单号
+	 * TODO(这里用一句话描述这个方法的作用)
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public String generateOrderNum() {
+		String ordernum = "";
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+		String dateStr = format.format(new Date());
+		String sqlStr = sqlManager.get("select_max_order_num");
+		Sql sql = Sqls.create(sqlStr);
+		List<Record> orders = dbDao.query(sql, Cnd.where("SUBSTR(ordersnum,1,8)", "=", dateStr), null);
+		if (!Util.isEmpty(orders.get(0).get("maxnum"))) {
+			String maxnum = (String) orders.get(0).get("maxnum");
+			ordernum = dateStr + zeroize((Integer.valueOf(maxnum) + 1), 5);
+		} else {
+			ordernum = dateStr + zeroize(1, 5);
+		}
+		return ordernum;
 	}
 
 	/**

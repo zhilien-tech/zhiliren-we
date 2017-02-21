@@ -75,8 +75,11 @@
 											<tr>
 												<td>${one.typeCode}</td>
 												<td>${one.typeName }</td>
-												<td><span data-toggle="tooltip" data-placement="right"
-													title="${one.description }">${one.description }<span></td>
+												<td>
+													<span data-toggle="tooltip" data-placement="right" title="${one.description }">
+														${one.description }
+													<span>
+												</td>
 												<td><we:enum key="${one.status }"
 														className="com.linyun.airline.common.enums.DataStatusEnum" /></td>
 												<td><fmt:formatDate value="${one.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>

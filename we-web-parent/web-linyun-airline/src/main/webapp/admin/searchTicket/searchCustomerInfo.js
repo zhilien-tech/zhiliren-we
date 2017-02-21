@@ -96,9 +96,10 @@ $("#linkNameId").on('select2:select', function (evt) {
 					callback(data);
 				}
 			});
-			
+		
 			if(dataJson.isArrearsRed){
 				$('#fontLSqk').css("color","red");
+				$("#custInfoName").css("color","red");
 			}
 			
 			var id = dataJson.customerInfoEntity.id;
@@ -111,6 +112,14 @@ $("#linkNameId").on('select2:select', function (evt) {
 			$("#responsibleId").val(dataJson.responsibleName);
 			$("#siteUrlId").val(dataJson.customerInfoEntity.siteUrl);
 			$("#faxId").val(dataJson.customerInfoEntity.fax);
+			
+			/*票价折扣*/
+			$("#discountHidden").val(dataJson.customerInfoEntity.discountFare);
+			/*手续费*/
+			$("#feeHidden").val(dataJson.customerInfoEntity.fees);
+			/*汇率*/
+			$("#ratesHidden").val(dataJson.customerInfoEntity.exchangeRates);
+			
 			if(payType == 1){
 				$("#payTypeId").html("月结");
 			}else if(payType == 2){
@@ -165,6 +174,11 @@ $("#phoneNumId").on('select2:select', function (evt) {
 				}
 			});
 			
+			if(dataJson.isArrearsRed){
+				$('#fontLSqk').css("color","red");
+				$("#custInfoName").css("color","red");
+			}
+			
 			var id = dataJson.customerInfoEntity.id;
 			var payType = dataJson.customerInfoEntity.payType;
 			var creditLine = dataJson.customerInfoEntity.creditLine;
@@ -175,6 +189,14 @@ $("#phoneNumId").on('select2:select', function (evt) {
 			$("#responsibleId").val(dataJson.responsibleName);
 			$("#siteUrlId").val(dataJson.customerInfoEntity.siteUrl);
 			$("#faxId").val(dataJson.customerInfoEntity.fax);
+			
+			/*票价折扣*/
+			$("#discountHidden").val(dataJson.customerInfoEntity.discountFare);
+			/*手续费*/
+			$("#feeHidden").val(dataJson.customerInfoEntity.fees);
+			/*汇率*/
+			$("#ratesHidden").val(dataJson.customerInfoEntity.exchangeRates);
+			
 			if(payType == 1){
 				$("#payTypeId").html("月结");
 			}else if(payType == 2){
@@ -241,6 +263,9 @@ function clearText(){
 	$('#fontLSqk').css("color","");
 	//预存款
 	$("#preDepositId").html("0.00");
+	//客户名称
+	$("#custInfoName").css("color","");
+	
 	
 }
 

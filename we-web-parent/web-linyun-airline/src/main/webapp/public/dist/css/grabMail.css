@@ -8,6 +8,7 @@ table.dataTable thead .sorting:after{content: "";}
 .text-left{text-align:left !important;}
 .checkTh input{position: relative;left: 11px;}
 #rebatesReportTable thead tr th{padding: 0;}
+.breadcrumb {margin-bottom: 30px;}
 
 
 
