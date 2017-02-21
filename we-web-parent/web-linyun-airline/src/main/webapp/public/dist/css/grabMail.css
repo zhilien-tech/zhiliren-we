@@ -9,7 +9,8 @@ table.dataTable thead .sorting:after{content: "";}
 .checkTh input{position: relative;left: 11px;}
 #rebatesReportTable thead tr th{padding: 0;}
 .breadcrumb {margin-bottom: 30px;}
-
+#rebatesEamilTable tbody tr .sorting_1 input {margin: 0 auto;}
+#rebatesEamilTable thead > tr > th {padding-right: 8px;}
 
 
 
