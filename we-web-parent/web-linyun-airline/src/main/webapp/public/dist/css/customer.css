@@ -25,3 +25,5 @@
 table.dataTable thead .sorting_asc:after {display: none;}
 .discountText{width: 88%;display: inline-block;}
 .taxText{width:78%;}
+.help-block{width: 100px;}
+.addAirPlan,.removeAirPlan{top: -10px;left: 5px;}
