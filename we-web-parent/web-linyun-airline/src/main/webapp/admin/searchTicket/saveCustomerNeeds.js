@@ -49,7 +49,7 @@ function saveOrderInfo(){
 	});
 	customdata.customdata=row;
 	console.log(JSON.stringify(customdata));
-	alert(JSON.stringify(customdata));
+	//alert(JSON.stringify(customdata));
 	$.ajax({
 		dataType : 'json',
 		type: 'POST', 
@@ -60,6 +60,7 @@ function saveOrderInfo(){
 		url : BASE_PATH  + "/admin/search/saveCustomerNeeds.html",
 		success: function (data) { 
 			layer.msg("添加成功","",3000);
+			
 		},
 		error: function (xhr) {
 			layer.msg("添加失败","",3000);

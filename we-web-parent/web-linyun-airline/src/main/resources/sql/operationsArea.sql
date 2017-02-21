@@ -139,4 +139,21 @@ FROM
 WHERE
 	t.userId =@userid
 
-
+/*operationsArea_taskList_customerInfo*/
+SELECT
+	cInfo.id,
+	cInfo.createTime generatetime,
+	cInfo.shortName comname,
+	cInfo.linkMan username,
+	m.msgContent,
+	m.msgType,
+	cInfo.payType remindermode
+FROM
+	t_message m
+INNER JOIN t_user_msg um ON um.msgId = m.id
+INNER JOIN t_customer_info cInfo ON cInfo.id = um.customerInfoId
+WHERE
+	um.userId = @userId
+AND m.msgType = @msgType
+ORDER BY
+	cInfo.createTime DESC
