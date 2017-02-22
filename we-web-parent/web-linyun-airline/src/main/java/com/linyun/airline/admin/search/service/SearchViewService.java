@@ -771,12 +771,19 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			String arrivecity = (String) map.get("arrivecity");
 			//日期
 			String leavedate = (String) map.get("leavedate");
-			Integer peoplecount = Integer.valueOf((String) map.get("peoplecount"));
+			String pCount = (String) map.get("peoplecount");
+			Integer peoplecount = 0;
+			if (!Util.eq(pCount, "")) {
+				peoplecount = Integer.valueOf(pCount);
+			}
+
 			Integer tickettype = Integer.valueOf((String) map.get("tickettype"));
 			TOrderCustomneedEntity customneedEntity = new TOrderCustomneedEntity();
 			customneedEntity.setLeavecity(leavecity);
 			customneedEntity.setArrivecity(arrivecity);
-			customneedEntity.setLeavetdate(leavedate);
+			if (!Util.eq(leavedate, "")) {
+				customneedEntity.setLeavetdate(leavedate);
+			}
 			customneedEntity.setPeoplecount(peoplecount);
 			customneedEntity.setTickettype(tickettype);
 			//与订单相关
@@ -798,7 +805,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				//销售价
 				Double price = Double.valueOf((String) airmap.get("price"));
 				TAirlineInfoEntity airlineEntity = new TAirlineInfoEntity();
-				airlineEntity.setAircom(aircom);
+				airlineEntity.setAircom(aircom.split("-")[0]);
 				airlineEntity.setAilinenum(ailinenum);
 				airlineEntity.setLeavetime(leavetime);
 				airlineEntity.setArrivetime(arrivetime);

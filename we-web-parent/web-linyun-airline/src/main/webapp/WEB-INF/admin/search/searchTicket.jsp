@@ -85,10 +85,12 @@
 												&nbsp;历史欠款：<span id="arrearsId">0.00</span> 
 											</font>  
 											&nbsp;预存款：<span id="preDepositId">0.00</span> 
-										</pre></td>
+										</pre>
+									</td>
 									<td><input id="clearBtn" type="button" value="清空"
 										class="btn btn-primary btn-sm"> <i
-										class="UnderIcon fa fa-chevron-circle-down"></i></td>
+										class="UnderIcon fa fa-chevron-circle-down"></i>
+									</td>
 								</tr>
 							</table>
 
