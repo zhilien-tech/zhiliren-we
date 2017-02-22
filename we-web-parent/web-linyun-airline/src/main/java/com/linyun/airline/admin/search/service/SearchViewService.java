@@ -649,7 +649,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		/***********************黑屏查询：AVH/AKLSYD/28FEB/EK**************************/
 		if (parsingType == "1") {
 			//(?s)表示开启跨行匹配，\\d{1}一位数字，[A-Za-z]{2}两位字母，/斜线，\\s空白字符,.+任意字符出现1到多次，?非贪婪模式，最后以\n换行结束
-			String regex = "(?s)\\d{1}.{2}[*][A-Za-z]{2}\\d{4}\\s.+?\\d\n";
+			String regex = "(?s)\\d{1}.{2}[*][A-Za-z]{2}\\d+\\s.+?\\d\n";
 			Pattern pattern = Pattern.compile(regex);
 			Matcher m = pattern.matcher(etemStr);
 			ArrayList<String> etemGroup = Lists.newArrayList();
