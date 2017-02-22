@@ -647,6 +647,30 @@
 						"etemStr" : $('#etemTextArea').val()
 					},
 					success : function(result) {
+						if(result.parsingType == "avh/"){
+							var pnrThread = '<tr>' 
+												+ '<th>序号</th>'
+												+ '<th>航空公司</th>' 
+												+ '<th>航班号</th>' 
+												+ '<th>航段</th>'
+												+ '<th>舱位</th>'
+												+ '<th>航程日期</th>'
+												+ '<th>航程时间</th>' 
+												+ '</tr>';
+							var pnrBody = '';
+							var obj = result.arrayList;
+							for (var i=0;i<obj.length;i++){
+								pnrBody += '<tr>' + 
+												'<td>' + obj[i].id + '</td>'+
+												'<td>' + obj[i].airlineComName +'</td>'+
+												'<td>' + obj[i].flightNum +'</td>'+
+												'<td>' + obj[i].airLine +'</td>' + 
+												'<td>' + obj[i].airSeats +'</td>' +
+												'<td>' + obj[i].airLeavelDate +'</td>' + 
+												'<td>' + obj[i].airDepartureTime + '-'+ obj[i].airLandingTime +'</td>'+ 
+											'</tr>';
+							}
+						}
 						if(result.parsingType == "SD0Q0"){
 							var pnrThread = '<tr>' + '<th>序号</th>'
 												+ '<th>航班号</th>' + '<th>预定舱位</th>'
