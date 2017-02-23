@@ -1,0 +1,32 @@
+/*--------------邮件抓取----------------*/
+.rebatesBtn{width: 75%;height: 30px;float: right;position: relative;top: -47px;right: -10px;}
+.rebatesBtn .btn{padding: 5px 10px;}
+#rebatesEamilTable{position: relative;top: -30px;}
+table.dataTable thead .sorting_desc:after{content: " ";}
+table.dataTable thead .sorting_asc:after{content: "";}
+table.dataTable thead .sorting:after{content: "";}
+.text-left{text-align:left !important;}
+.checkTh input{position: relative;left: 11px;}
+#rebatesReportTable thead tr th{padding: 0;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
