@@ -55,11 +55,10 @@
                  <p>客户信息</p>
                  <div class="infoTopContent">
                    <span>${obj.orderinfo.ordersnum }</span>
-                   <select class="form-control input-sm conSelect cf">
-                     <option value="1">查询</option>
+                   <select id="orderType" name="orderType" class="form-control input-sm conSelect cf">
                      <option value="2">预定</option>
                      <option value="3">出票</option>
-                     <option value="4">开票</option>
+                     <option value="4">开票</option> 
                      <option value="5">关闭</option>
                    </select>
                    <button type="button" class="btn btn-primary input-sm btnSave none">保存</button>
@@ -84,7 +83,8 @@
                      	</c:forEach>
                      	</select>
                      	<input id="customerId" name="customerId" type="hidden" value="${obj.custominfo.id }"/>
-                     	<input id="id" name="id" type="hidden" value="${obj.orderinfo.id }"></td>
+                     	<!-- 订单id -->
+                     	<input id="orderedid" name="orderedid" type="hidden" value="${obj.orderinfo.id }"></td>
                      <td><label style="position: relative;top: 4px;">结算方式：</label></td>
                      <td colspan="3"><pre class="preTxt">不限 信用额度：0  临时额度：0  历史欠款：0  预存款：0</pre></td>
                      <td><input type="button" value="清空" class="btn btn-primary btn-sm clearBtn"><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
@@ -116,18 +116,28 @@
                </div>
           </div><!--客户信息-->
 
-
+			<iframe name='hidden_frame' id='hidden_frame' style="display: none"></iframe>
           <div class="customerInfo"><!--客户需求-->
                <div class="infoTop">
                  <p>客户需求</p>
                </div>
-               <c:forEach var="customneed" items="${obj.customneedinfo }">
+               <c:forEach var="customneed" items="${obj.customneedinfo }" varStatus="varstatus">
                <div id="infofooter" class="infofooter">
                 <div class="DemandDiv">
                  <span class="titleNum">1</span>
-                 <a href="javascript:;" class="btn btn-primary btn-sm addDemand none">游客模板</a>
-                 <a href="javascript:;" class="btn btn-primary btn-sm addDemand none">上传游客</a>
-                 <a href="javascript:;" class="btn btn-primary btn-sm addDemand none"><b>+</b>&nbsp;&nbsp;需求</a>
+                 <c:choose>
+	                 <c:when test="${varstatus.index eq 0 }">
+		                 <a href="${base }/admin/inland/downloadVisitorTemplate.html" class="btn btn-primary btn-sm addDemand none" target="hidden_frame">游客模板</a>
+		                 <!-- <a href="javascript:;" class="btn btn-primary btn-sm addDemand none">上传游客</a> -->
+		                 <form id="uploadExcelForm" action="${base}/admin/inland/importVisitor.html?dingdanid=${obj.orderinfo.id }" name="form3" enctype="multipart/form-data" method="post" target="hidden_frame" style="display: inline;">
+		                     <p class="flie_A btn btn-primary btn-sm addDemand none">上传游客<input name="excelFile" id="excelFile" onchange="javascript:onfileChange();" type="file"/></p>
+						</form>
+		                 <a href="javascript:;" class="btn btn-primary btn-sm addDemand none addXuQiu"><b>+</b>&nbsp;&nbsp;需求</a>
+	                 </c:when>
+	                 <c:otherwise>
+	                 	<a href="javascript:;" class="btn btn-primary btn-sm removeDemand"><b>-</b>&nbsp;&nbsp;需求</a>
+	                 </c:otherwise>
+                 </c:choose>
                  <input type="hidden" id="customneedid" name="customneedid" value="${customneed.cusinfo.id }">
                  <table class="cloTable">
                    <tr>
@@ -159,7 +169,7 @@
 							</c:forEach>
 	                     </select></td>
                      <td><label>出发日期：</label></td>
-                     <td><input id="leavedate" name="leavedate" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:'%y-%M-%d'})" value="${customneed.cusinfo.leavetdate }"/></td>
+                     <td><input id="leavedate" name="leavedate" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:'${customneed.cusinfo.leavetdate }'})" value="${customneed.cusinfo.leavetdate }"/></td>
                      <td><label>人数：</label></td>
                      <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm textWid" value="${customneed.cusinfo.peoplecount }"/></td>
                      <td><label class="labelWid">早中晚：</label></td>
@@ -246,6 +256,35 @@
 			                   </tr>
 	                   		</c:otherwise>
 	                   </c:choose>
+	               <tr>
+                     <td><label>实时汇率：</label></td>
+                     <td><input id="realtimexrate" name="realtimexrate" type="text" class="form-control input-sm textWid" value="${customneed.cusinfo.realtimexrate }"/>
+	                 </td>
+                     <td><label>平均汇率：</label></td>
+                     <td><input id="avgexrate" name="avgexrate" type="text" class="form-control input-sm textWid" value="${customneed.cusinfo.avgexrate }"/></td>
+                     <td><label>币种：</label></td>
+                     <td colspan="3"><select id="paycurrency" name="paycurrency" class="form-control input-sm">
+                            <c:forEach items="${obj.bzcode }" var="one"> 
+                        	<c:choose>
+                        		<c:when test="${customneed.cusinfo.paycurrency eq one.dictCode }">
+				                     <option value="${one.dictCode }" selected="selected">${one.dictCode }</option>
+                        		</c:when>
+                        		<c:otherwise>
+				                     <option value="${one.dictCode }">${one.dictCode }</option>
+                        		</c:otherwise>
+                        	</c:choose>
+                     	</c:forEach>
+                        </select>
+                     </td>
+                     <td><label>付款方式：</label></td>
+                     <td colspan="3">
+						<select id="paymethod" name="paymethod" class="form-control input-sm">
+                            <option value="">请选择</option>
+                            <option value="1">第三方支付</option>
+                            <option value="2">国际段专用卡</option>
+                        </select>
+					 </td>
+                   </tr>
                    <tr>
                      <td colspan="12" class="addPNR">
                         <table class="table table-bordered table-hover">
@@ -261,7 +300,7 @@
                             <td>操作</td>
                           </tr>
                          </thead>
-                         <tbody>
+                         <tbody id="pnrinfodata" name="pnrinfodata">
                           <tr>
                             <td> </td>
                             <td> </td>
@@ -294,47 +333,34 @@
                  <p>信息</p>
             </div>
             <div class="infofooter">
+            	<form id="financeForm">
+            		<input id="id" name="id" type="hidden" value="${obj.finance.id }" >
+            		<input id="orderid" name="orderid" type="hidden" value="${obj.orderinfo.id }"/>
                  <table>
                    <tr>
                      <td><label>客户团号：</label></td>
-                     <td><input id="cusgroupnum" name="cusgroupnum" type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="cusgroupnum" name="cusgroupnum" type="text" class="form-control input-sm disab" disabled="disabled" value="${obj.finance.cusgroupnum }"></td>
                      <td><label>类型：</label></td>
                      <td>
                         <select id="teamtype" name="teamtype" class="form-control input-sm">
-                            <option>请选择</option>
+                            <option value="">请选择</option>
                             <option value="1">散</option>
                             <option value="2">团</option>
                         </select>
                      </td>
                      <td><label>内陆跨海：</label></td>
                      <td>
-                        <select class="form-control input-sm">
-                            <option>请选择</option>
-                            <option>跨海</option>
-                            <option>新西兰内陆</option>
-                            <option>澳洲内陆</option>
+                        <select id="neilu" name="neilu" class="form-control input-sm">
+                            <option value="">请选择</option>
+                            <option value="1">跨海</option>
+                            <option value="2">新西兰内陆</option>
+                            <option value="3">澳洲内陆</option>
                         </select>
                      </td>
                      <td><label>开票日期：</label></td>
-                     <td><input id="billingdate" name="billingdate" type="text" class="form-control input-sm" disabled="disabled"></td>
+                     <td><input id="billingdate" name="billingdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" type="text" class="form-control input-sm" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
-                     <td><label>付款币种：</label></td>
-                     <td>
-                        <select id="paycurrency" name="paycurrency" class="form-control input-sm">
-                            <option>请选择</option>
-                            <option></option>
-                            <option></option>
-                        </select>
-                     </td>
-                     <td><label>付款方式：</label></td>
-                     <td>
-                        <select id="paymethod" name="paymethod" class="form-control input-sm">
-                            <option>请选择</option>
-                            <option>第三方支付</option>
-                            <option>国际段专用卡</option>
-                        </select>
-                     </td>
                      <td><label>销售：</label></td>
                      <td><input id="salesperson" name="salesperson" type="text" class="form-control input-sm" disabled="disabled"></td>
                      <td><label>开票人：</label></td>
@@ -351,9 +377,9 @@
                         </select>
                      </td>
                      <td><label>进澳时间：</label></td>
-                     <td><input id="enterausdate" name="enterausdate" type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="enterausdate" name="enterausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" type="text" class="form-control input-sm disab" disabled="disabled"></td>
                      <td><label>出澳时间：</label></td>
-                     <td><input id="outausdate" name="outausdate" type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="outausdate" name="outausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" type="text" class="form-control input-sm disab" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>应收：</label></td>
@@ -372,6 +398,7 @@
                      <td><input id="profittotal" name="profittotal" type="text" class="form-control input-sm disab" disabled="disabled"></td>
                    </tr>
                  </table>
+                </form>
             </div>
           </div><!--end 信息-->
           
@@ -384,11 +411,6 @@
                  <table class="remindSet">
                    <tr>
                      <td>
-                       <select class="form-control input-sm">
-                         <option>询单</option>
-                         <option>账单</option>
-                         <option>账期</option>
-                       </select>
                      </td>
                      <td><input type="text" class="form-control input-sm" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" placeholder="2017-02-15 09:30" disabled="disabled"></td>
                      <td>
@@ -473,10 +495,6 @@
           $('.PNRbtnTD').addClass('none');//+PNR 按钮 隐藏
         });
 
-        $('.UnderIcon').on('click',function(){//客户信息 显示/隐藏
-          $('.hideTable').toggle('400');
-        });
-
         $('.clearBtn').click(function(){//清楚按钮 隐藏
           $('.hideTable').hide('400');
         });
@@ -498,19 +516,6 @@
         //删除 .addMore
         $(document).on('click','.removeMore',function(){
             $(this).parent().parent().remove(); 
-        });
-
-        //点击 +PNR 弹框
-        $('.PNRbtn').click(function(){
-            layer.open({
-                type: 2,
-                title:false,
-                skin: false, //加上边框
-                closeBtn:false,//默认 右上角关闭按钮 是否显示
-                shadeClose:true,
-                area: ['830px', '385px'],
-                content: ['bookingOrderDetail-+PNR.html','no']
-              });
         });
 
         //点击 详情 弹框
@@ -548,10 +553,8 @@
 		var customdata = {};
 		var customerId = $('#customerId').val();
 		customdata.customerId = customerId;
-		var id = $('#id').val();
+		var id = $('#orderedid').val();
 		customdata.id = id;
-		var generateOrder = $('#generateOrder').val();
-		customdata.generateOrder = $("#generateOrder").is(':checked');
 		var orderType = $('#orderType').val();
 		customdata.orderType = orderType;
 		var row = [];
@@ -573,6 +576,10 @@
 			row1.leavedate = $(this).find('[name=leavedate]').val();
 			row1.peoplecount = $(this).find('[name=peoplecount]').val();
 			row1.tickettype = $(this).find('[name=tickettype]').val();
+			row1.realtimexrate = $(this).find('[name=realtimexrate]').val();
+			row1.avgexrate = $(this).find('[name=avgexrate]').val();
+			row1.paycurrency = $(this).find('[name=paycurrency]').val();
+			row1.paymethod = $(this).find('[name=paymethod]').val();
 			row1.remark = $(this).find('[name=remark]').val();
 			var airrows = [];
 			$(this).find('[name=airlineinfo]').each(function(i){
@@ -602,21 +609,101 @@
 		//alert(JSON.stringify(data));
 		console.log(JSON.stringify(customdata));
 		layer.load(1);
+		//开票日期
+		var billingdate = $('#billingdate').val();
+		//销售
+		var salesperson = $('#salesperson').val();
+		//开票人
+		var issuer = $('#issuer').val();
+		//减免
+		var relief = $('#relief').val();
+		var financeForm = getFormJson('#financeForm');
+		financeForm.billingdate = billingdate;
+		financeForm.salesperson = salesperson;
+		financeForm.issuer = issuer;
+		financeForm.relief = relief;
 		$.ajax({ 
 			type: 'POST', 
-			data: {data:JSON.stringify(customdata)}, 
-			url: '${base}/admin/inland/saveOrderInfo.html',
+			data: {data:JSON.stringify(customdata),financeData:JSON.stringify(financeForm)}, 
+			url: '${base}/admin/inland/saveBookingOrderInfo.html',
           success: function (data) { 
           	//alert("添加成功");
           	//location.reload();
           	layer.closeAll('loading');
-          	layer.msg("保存成功",{time: 2000, icon:1});
+          	window.location.reload();
+          	//layer.msg("保存成功",{time: 2000, icon:1});
           },
           error: function (xhr) {
           	layer.msg("保存失败","",3000);
           } 
       });
   }); 
+  //获取form下所有值
+  function getFormJson(form) {
+	  var o = {};
+	  var a = $(form).serializeArray();
+	  $.each(a, function (){
+		  if (o[this.name] != undefined) {
+		  	if (!o[this.name].push) {
+	  	  		o[this.name] = [o[this.name]];
+	  		}
+	  		o[this.name].push(this.value || '');
+	  	  } else {
+	  	  	o[this.name] = this.value || '';
+	  	  }
+	  });
+	  return o;
+  }
+  //选中后开始导入
+  function onfileChange() {
+	   uploadfile();
+  }
+  //导入Excel
+  function uploadfile() {
+  		var filepath = document.getElementById("excelFile").value;
+  		var extStart = filepath.lastIndexOf(".");
+  		var ext = filepath.substring(extStart, filepath.length).toUpperCase();
+  		if (ext != ".XLS" && ext != ".XLSX") {
+  			layer.alert("请选择正确的Excel文件");
+  			return;
+  		}
+  		document.getElementById("uploadExcelForm").submit();
+  		layer.load(1);
+  	}
+  	
+  function callback(){
+	  layer.alert("导入成功",{time: 2000, icon:1});
+	  layer.closeAll('loading');
+  }
+  //打开添加pnr页面
+  	$(document).on("click",".PNRbtn",function(){
+  		var xuqiuDiv = $(this).parent().parent().parent().parent().parent();
+		  var needid = xuqiuDiv.find('[name=customneedid]').val();
+		 if(needid){
+			 layer.open({
+		         type: 2,
+		         title:false,
+		         skin: false, //加上边框
+		         closeBtn:false,//默认 右上角关闭按钮 是否显示
+		         shadeClose:true,
+		         area: ['830px', '475px'],
+		         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+needid
+		       });
+		 }else{
+			 layer.alert("需求未保存",{time: 2000, icon:1});
+		 } 
+    });
+  //其他页面回调
+ function successCallback(id){
+	 loadPNRdata();
+	  if(id == '1'){
+		  layer.msg("添加成功",{time: 2000, icon:1});
+	  }else if(id == '2'){
+		  layer.msg("修改成功",{time: 2000, icon:1});
+	  }else if(id == '3'){
+		  layer.msg("删除成功",{time: 2000, icon:1});
+	  }
+ }
   </script>
 </body>
 </html>

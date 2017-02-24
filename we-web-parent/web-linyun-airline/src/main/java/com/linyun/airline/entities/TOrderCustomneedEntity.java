@@ -72,4 +72,19 @@ public class TOrderCustomneedEntity implements Serializable {
 	@Comment("备注")
 	private String remark;
 
+	@Column
+	@Comment("实时汇率")
+	private Double realtimexrate;
+
+	@Column
+	@Comment("平均汇率")
+	private Double avgexrate;
+
+	@Column
+	@Comment("付款币种")
+	private String paycurrency;
+
+	@Column
+	@Comment("付款方式")
+	private Integer paymethod;
 }
