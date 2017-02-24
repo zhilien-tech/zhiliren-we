@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.nutz.dao.Sqls;
+import org.nutz.dao.entity.Record;
+import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
@@ -16,6 +19,7 @@ import com.linyun.airline.common.enums.MessageStatusEnum;
 import com.linyun.airline.entities.TUserMsgEntity;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.Util;
+import com.uxuexi.core.db.util.DbSqlUtil;
 import com.uxuexi.core.web.base.service.BaseService;
 
 @IocBean
@@ -43,19 +47,25 @@ public class RemindMessageService extends BaseService<TMessageEntity> {
 		Integer msgStatus = (Integer) msgData.get("msgStatus");
 		//提醒模式
 		Long reminderMode = (Long) msgData.get("reminderMode");
-
 		//消息来源id
 		Long SourceUserId = (Long) msgData.get("SourceUserId");
 		//消息来源类型（个人、公司、系统）
 		Long sourceUserType = Long.valueOf((Integer) msgData.get("sourceUserType"));
-
-		//消息接收方id
+		//消息接收方id 
 		List<Long> receiveUserIds = (List<Long>) msgData.get("receiveUserIds");
 		//消息接收方类型（个人、公司、系统）
 		Long receiveUserType = Long.valueOf((Integer) msgData.get("receiveUserType"));
-
-		//客户消息表id
+		//客户消息表id  查询id
 		Long customerInfoId = (Long) msgData.get("customerInfoId");
+
+		//判断消息是否存在， 不存在则添加
+		Sql sql = Sqls.create(sqlManager.get("operationsArea_existMsg"));
+		sql.params().set("msgType", msgType);
+		sql.params().set("infoId", customerInfoId);
+		List<Record> query = DbSqlUtil.query(dbDao, sql, null, null);
+		if (!Util.isEmpty(query)) {
+			return "消息已存在，请勿重复添加！！！";
+		}
 
 		/*******************************操作  消息表**************************************/
 		TMessageAddForm addForm = new TMessageAddForm();

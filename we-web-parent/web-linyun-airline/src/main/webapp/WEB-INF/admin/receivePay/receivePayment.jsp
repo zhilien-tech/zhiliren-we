@@ -329,6 +329,11 @@
 	<!-- 内陆跨海js -->
 	<script src="${base}/admin/receivePayment/inlandReceivePay.js"></script>
 	<!-- 国际js -->
-	<script src="${base}/admin/receivePayment/internationPayment.js"></script>
+	<%-- <script src="${base}/admin/receivePayment/internationPayment.js"></script> --%>
+	
+	<!-- ./wrapper -->
+	<script type="text/javascript">
+		var BASE_PATH = '${base}';
+	</script>
 </body>
 </html>

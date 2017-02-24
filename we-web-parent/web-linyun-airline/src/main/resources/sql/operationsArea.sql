@@ -157,3 +157,15 @@ WHERE
 AND m.msgType = @msgType
 ORDER BY
 	cInfo.createTime DESC
+	
+	
+	
+/*operationsArea_existMsg*/
+SELECT
+	*
+FROM
+	t_message m
+INNER JOIN t_user_msg um ON m.id = um.msgId
+WHERE
+	m.msgType = @msgType
+AND um.customerInfoId =@infoId

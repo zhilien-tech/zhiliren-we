@@ -619,11 +619,9 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	}
 
 	/**
-	 * 
 	 * TODO 线路查询
 	 * <p>
 	 * TODO根据参数不同， 分别查询国境内陆和国际线路
-	 *
 	 * @param customerId 客户id
 	 * @param typeCode   线路类型
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
@@ -643,8 +641,6 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 * 
 	 * TODO出发城市
 	 * <p>
-	 * TODO出发城市
-	 *
 	 * @param outcityName
 	 * @return
 	 * @throws Exception TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
