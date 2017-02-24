@@ -23,11 +23,11 @@ public class QiniuUploadServiceImpl extends BaseUploadService {
 
 	protected Logger logger = LoggerFactory.getLogger(QiniuUploadServiceImpl.class);
 
-	private static final String ACCESS_KEY = "E4FOUZHf_lITTdE-FYq-Kw3Bt3OvjUHxDneYQ8sh";
+	private static final String ACCESS_KEY = "ejKizudKcR-SDr-LhGfKUSJ8ykPuPxEFdum1m87d";
 
-	private static final String SECRET_KEY = "lQYs0jN8gkK210dluxXQ9X-X04vjpR1Mdlo8VG5n";
+	private static final String SECRET_KEY = "Hz0wETTJHwbpfpLBJ25Agf2it3m70dhwdoRZDR7T";
 
-	private static final String BUCKET = "xiaoka";
+	private static final String BUCKET = "ticket-file";
 
 	private Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
 
