@@ -72,31 +72,28 @@ public class IpUtil {
 		}
 		return ips;
 	}
-	
+
 	public static String getIpAddr(HttpServletRequest req) {
 		String ipAddress = null;
 		// ipAddress = this.getRequest().getRemoteAddr();
 		ipAddress = req.getHeader("x-forwarded-for");
-		if (ipAddress == null || ipAddress.length() == 0
-				|| "unknown".equalsIgnoreCase(ipAddress)) {
+		if (ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
 			ipAddress = req.getHeader("Proxy-Client-IP");
 		}
-		if (ipAddress == null || ipAddress.length() == 0
-				|| "unknown".equalsIgnoreCase(ipAddress)) {
+		if (ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
 			ipAddress = req.getHeader("WL-Proxy-Client-IP");
 		}
-		if (ipAddress == null || ipAddress.length() == 0
-				|| "unknown".equalsIgnoreCase(ipAddress)) {
+		if (ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
 			ipAddress = req.getRemoteAddr();
 			if (ipAddress.equals("127.0.0.1")) {
 				// 根据网卡取本机配置的IP
 				InetAddress inet = null;
 				try {
 					inet = InetAddress.getLocalHost();
+					ipAddress = inet.getHostAddress();
 				} catch (UnknownHostException e) {
 					e.printStackTrace();
 				}
-				ipAddress = inet.getHostAddress();
 			}
 
 		}
@@ -142,5 +139,5 @@ public class IpUtil {
 		s.bind(new InetSocketAddress(host, port));
 		s.close();
 	}
-	
+
 }
