@@ -75,7 +75,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	private CompanyViewService companyViewService;
 
 	@Inject
-	private UploadService fdfsUploadService;
+	private UploadService qiniuUploadService;
 
 	@Inject
 	private RemindMessageService remindService;
@@ -139,7 +139,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		try {
 			String ext = Files.getSuffix(file);
 			FileInputStream fileInputStream = new FileInputStream(file);
-			String url = fdfsUploadService.uploadImage(fileInputStream, ext, null);
+			String url = qiniuUploadService.uploadImage(fileInputStream, ext, null);
 			//文件存储地址
 			System.out.println(url);
 			return url;
