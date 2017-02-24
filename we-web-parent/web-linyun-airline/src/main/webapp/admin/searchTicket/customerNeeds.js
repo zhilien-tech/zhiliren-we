@@ -524,19 +524,21 @@ $(document).on("click",".custLineChoose",function(){
 
 			//字典填充航空段数
 			$(demandE).find('[class=addCustomerAirline]').last().find('td').each(function(i, tdE){
-				//航空公司回显
-				$.ajax({  
-					url : BASE_PATH + "/admin/search/getCAirNameByCode.html",
-					dataType : 'json',
-					type : 'post',
-					async: false,
-					data : {  
-						"airCompCode" : airCompName  
-					},
-					success : function(obj) {
-						airCompName = airCompName +'-'+ obj;
-					}  
-				});  
+				if(airCompName.indexOf("-")<0){
+					//航空公司回显
+					$.ajax({  
+						url : BASE_PATH + "/admin/search/getCAirNameByCode.html",
+						dataType : 'json',
+						type : 'post',
+						async: false,
+						data : {  
+							"airCompCode" : airCompName  
+						},
+						success : function(obj) {
+							airCompName = airCompName +'-'+ obj;
+						}  
+					}); 
+				}
 				$(tdE).find('[name=cAirlineCompany]').append('<option class="autoAddairLineName" selected="true">'+airCompName+'</option>'); 
 				//航班号回显
 				$(tdE).find('[name=cAirlineNum]').append('<option class="autoAddairLineNum" selected="true">'+airLineNum+'</option>'); 

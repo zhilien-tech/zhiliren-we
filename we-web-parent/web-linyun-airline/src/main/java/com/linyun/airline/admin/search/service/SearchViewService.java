@@ -25,6 +25,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.linyun.airline.admin.customer.service.CustomerViewService;
+import com.linyun.airline.admin.customneeds.service.EditPlanService;
 import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
@@ -44,6 +45,8 @@ import com.linyun.airline.entities.TAirlineInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TFlightInfoEntity;
+import com.linyun.airline.entities.TOrderCustomneedEntity;
+import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.DateTimeUtil;
@@ -61,6 +64,9 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 	@Inject
 	private externalInfoService externalInfoService;
+
+	@Inject
+	private EditPlanService editPlanService;
 
 	private static final String CITYCODE = "CFCS";
 	private static final String AIRCOMCODE = "HKGS";
@@ -642,7 +648,63 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 		/***********************黑屏查询：AVH/AKLSYD/28FEB/EK**************************/
 		if (parsingType == "1") {
+			//(?s)表示开启跨行匹配，\\d{1}一位数字，[A-Za-z]{2}两位字母，/斜线，\\s空白字符,.+任意字符出现1到多次，?非贪婪模式，最后以\n换行结束
+			String regex = "(?s)\\d{1}.{2}[*][A-Za-z]{2}\\d+\\s.+?\\d\n";
+			Pattern pattern = Pattern.compile(regex);
+			Matcher m = pattern.matcher(etemStr);
+			ArrayList<String> etemGroup = Lists.newArrayList();
+			while (m.find()) {
+				etemGroup.add(m.group());
+			}
 
+			String[] etemStrs = etemStr.split("\\s+");
+			//航空公司
+			String airCompName = etemStrs[4];
+			//起飞日期
+			String airLeavelDate = etemStrs[1];
+
+			for (String pnrs : etemGroup) {
+				/***********************根据 avh/aklsyd/28feb/ek\n 解析***********************/
+				//序号
+				int id = 0;
+
+				//航班号 
+				String flightNum = "";
+				//航段
+				String airLine = "";
+				//起飞时间
+				String airDepartureTime = "";
+				//降落时间
+				String airLandingTime = "";
+				//舱位
+				String airSeats = "";
+				ParsingSabreEntity pSabreEntity = new ParsingSabreEntity();
+
+				String[] pnr = pnrs.split("\\s+");
+				id = Integer.parseInt(pnr[0].substring(0, 1));
+				flightNum = pnr[1];
+				airLine = pnr[13];
+				airDepartureTime = pnr[14];
+				airLandingTime = pnr[15];
+				for (String seat : pnr) {
+					if (!seat.contains("-") && !seat.contains("+") && seat.length() == 2) {
+						airSeats += (" " + seat);
+					}
+				}
+
+				pSabreEntity.setId(id);
+				pSabreEntity.setAirlineComName(airCompName);
+				pSabreEntity.setFlightNum(flightNum);
+				pSabreEntity.setAirLeavelDate(airLeavelDate);
+				pSabreEntity.setAirLine(airLine);
+				pSabreEntity.setAirSeats(airSeats);
+				pSabreEntity.setAirDepartureTime(airDepartureTime);
+				pSabreEntity.setAirLandingTime(airLandingTime);
+
+				arrayList.add(pSabreEntity);
+				map.put("parsingType", "avh/");
+				map.put("arrayList", arrayList);
+			}
 		}
 		/************************输入SD5Q9来预订********************************/
 		if (parsingType == "2") {
@@ -675,5 +737,87 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		}
 
 		return map;
+	}
+
+	/**
+	 * 添加查询结果
+	 * TODO(这里用一句话描述这个方法的作用)
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param data
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	@SuppressWarnings({ "unchecked", "unused" })
+	public Object saveCustomerNeeds(String data) {
+
+		Map<String, Object> fromJson = JsonUtil.fromJson(data, Map.class);
+		Integer customerId = Integer.valueOf((String) fromJson.get("customerId"));
+		boolean generateOrder = (boolean) fromJson.get("generateOrder");
+		Integer orderType = Integer.valueOf((String) fromJson.get("orderType"));
+		TUpOrderEntity orderinfo = new TUpOrderEntity();
+		orderinfo.setUserid(customerId);
+		orderinfo.setOrdersstatus(orderType);
+		//生成订单号
+		if (generateOrder) {
+			orderinfo.setOrdersnum(editPlanService.generateOrderNum());
+		}
+		TUpOrderEntity insertOrder = dbDao.insert(orderinfo);
+		List<Map<String, Object>> customdata = (List<Map<String, Object>>) fromJson.get("customdata");
+		for (Map<String, Object> map : customdata) {
+			//客户需求出发城市
+			String leavecity = (String) map.get("leavecity");
+			//客户需求抵达城市
+			String arrivecity = (String) map.get("arrivecity");
+			//日期
+			String leavedate = (String) map.get("leavedate");
+			String pCount = (String) map.get("peoplecount");
+			Integer peoplecount = 0;
+			if (!Util.eq(pCount, "")) {
+				peoplecount = Integer.valueOf(pCount);
+			}
+
+			Integer tickettype = Integer.valueOf((String) map.get("tickettype"));
+			TOrderCustomneedEntity customneedEntity = new TOrderCustomneedEntity();
+			customneedEntity.setLeavecity(leavecity);
+			customneedEntity.setArrivecity(arrivecity);
+			if (!Util.eq(leavedate, "")) {
+				customneedEntity.setLeavetdate(leavedate);
+			}
+			customneedEntity.setPeoplecount(peoplecount);
+			customneedEntity.setTickettype(tickettype);
+			//与订单相关
+			customneedEntity.setOrdernum(insertOrder.getId());
+			TOrderCustomneedEntity insertCus = dbDao.insert(customneedEntity);
+			//航班信息
+			List<Map<String, Object>> airinfo = (List<Map<String, Object>>) map.get("airinfo");
+			for (Map<String, Object> airmap : airinfo) {
+				//航空公司
+				String aircom = (String) airmap.get("aircom");
+				//航班号
+				String ailinenum = (String) airmap.get("ailinenum");
+				//出发时间
+				String leavetime = (String) airmap.get("leavetime");
+				//抵达时间
+				String arrivetime = (String) airmap.get("arrivetime");
+				//成本价
+				Double formprice = Double.valueOf((String) airmap.get("formprice"));
+				//销售价
+				Double price = Double.valueOf((String) airmap.get("price"));
+				TAirlineInfoEntity airlineEntity = new TAirlineInfoEntity();
+				airlineEntity.setAircom(aircom.split("-")[0]);
+				airlineEntity.setAilinenum(ailinenum);
+				airlineEntity.setLeavetime(leavetime);
+				airlineEntity.setArrivetime(arrivetime);
+				airlineEntity.setFormprice(formprice);
+				airlineEntity.setPrice(price);
+				airlineEntity.setNeedid(insertCus.getId());
+				//添加航班信息
+				dbDao.insert(airlineEntity);
+			}
+		}
+		// TODO Auto-generated method stub
+		return null;
+
 	}
 }

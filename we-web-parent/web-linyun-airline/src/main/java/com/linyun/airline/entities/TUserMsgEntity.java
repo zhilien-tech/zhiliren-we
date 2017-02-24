@@ -49,4 +49,8 @@ public class TUserMsgEntity implements Serializable {
 	@Comment("发送时间")
 	private Date sendTime;
 
+	@Column
+	@Comment("客户消息id")
+	private Long customerInfoId;
+
 }

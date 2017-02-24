@@ -130,3 +130,27 @@ SELECT 	i.id,
 t_customer_info i INNER JOIN t_upCompany uc ON i.upComId=uc.id
 INNER JOIN t_user u ON i.responsibleId=u.id
 $condition
+
+/*customer_search_accounter*/
+SELECT
+	uj.userid userId
+FROM
+	(
+		t_company_job cj
+		INNER JOIN t_user_job uj ON cj.posid = uj.companyJobId
+	)
+INNER JOIN t_job j ON cj.posid = j.id
+WHERE
+	j.`name` = @jobName
+AND cj.comId = @compId
+
+/*customer_search__msg*/
+SELECT
+	*
+FROM
+	t_message m
+INNER JOIN t_user_msg um ON um.msgId = m.id
+WHERE
+	um.userId = @userId
+AND m.msgType = @msgType
+AND um.customerInfoId = @customerInfoId

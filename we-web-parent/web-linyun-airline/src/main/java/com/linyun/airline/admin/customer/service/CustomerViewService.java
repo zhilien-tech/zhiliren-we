@@ -30,6 +30,7 @@ import org.nutz.mvc.upload.UploadAdaptor;
 import com.google.common.base.Function;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.linyun.airline.admin.Company.service.CompanyViewService;
 import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
@@ -42,8 +43,8 @@ import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.common.enums.MessageLevelEnum;
 import com.linyun.airline.common.enums.MessageRemindEnum;
 import com.linyun.airline.common.enums.MessageSourceEnum;
+import com.linyun.airline.common.enums.MessageStatusEnum;
 import com.linyun.airline.common.enums.MessageTypeEnum;
-import com.linyun.airline.common.enums.MessageUserEnum;
 import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
@@ -53,7 +54,6 @@ import com.linyun.airline.entities.TCustomerLineEntity;
 import com.linyun.airline.entities.TCustomerOutcityEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
-import com.linyun.airline.entities.TUserMsgEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
 import com.linyun.airline.forms.TCustomerInfoUpdateForm;
 import com.uxuexi.core.common.util.DateUtil;
@@ -75,7 +75,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	private CompanyViewService companyViewService;
 
 	@Inject
-	private UploadService fdfsUploadService;
+	private UploadService qiniuUploadService;
 
 	@Inject
 	private RemindMessageService remindService;
@@ -139,7 +139,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		try {
 			String ext = Files.getSuffix(file);
 			FileInputStream fileInputStream = new FileInputStream(file);
-			String url = fdfsUploadService.uploadImage(fileInputStream, ext, null);
+			String url = qiniuUploadService.uploadImage(fileInputStream, ext, null);
 			//文件存储地址
 			System.out.println(url);
 			return url;
@@ -233,30 +233,62 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		}
 		dbDao.insert(invoiceEntities);
 
-		TUserMsgEntity userMsgEntity = dbDao.fetch(TUserMsgEntity.class,
-				Cnd.where("msgSource", "=", MessageSourceEnum.CUSTOMERMSG.intKey()));
-		Long userMsgId = userMsgEntity.getUserId();
-
+		/*******************************操作台添加消息  提醒事件************************************/
+		//当前用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long userId = loginUser.getId();
+		//新添加客户id
+		long customerInfoId = customerInfo.getId();
 
-		if (userId != userMsgId) {
-			//客户信息添加成功， 根据结算方式在消息表添加数据
-			String msgContent = "今天 需要进行财务结算";
-			int msgType = MessageTypeEnum.PROCESSMSG.intKey(); //消息类型
-			int msgLevel = MessageLevelEnum.MSGLEVEL2.intKey(); //消息优先级
-			long payType = addForm.getPayType(); //结算方式
-			long reminderMode = 0; //提醒方式
-			if (payType == 1) {
-				reminderMode = MessageRemindEnum.MOUTH.intKey();
-			} else if (payType == 2) {
-				reminderMode = MessageRemindEnum.WEEK.intKey();
+		//查询当前公司下 会计id
+		TCompanyEntity companyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Sql accountSql = Sqls.create(sqlManager.get("customer_search_accounter"));
+		accountSql.setParam("jobName", "会计");
+		accountSql.setParam("compId", companyEntity.getId());
+		List<Record> accountingIds = dbDao.query(accountSql, null, null);
+
+		String msgContent = "今天 需要进行财务结算";
+		int msgType = MessageTypeEnum.PROCESSMSG.intKey(); //消息类型
+		int msgLevel = MessageLevelEnum.MSGLEVEL2.intKey(); //消息优先级
+		int msgStatus = MessageStatusEnum.UNREAD.intKey(); //消息状态
+		long reminderMode = MessageRemindEnum.MOUTH.intKey(); //消息提醒模式
+		long SourceUserId = userId;//消息来源id
+		int sourceUserType = MessageSourceEnum.SYSTEMMSG.intKey(); //消息来源方类型
+		//消息接收方类型（个人、公司、系统）
+		int receiveUserType = MessageSourceEnum.PERSONALMSG.intKey();
+		//消息接收方ids
+		ArrayList<Long> receiveUserIds = Lists.newArrayList();
+		if (!Util.isEmpty(accountingIds)) {
+			for (Record record : accountingIds) {
+				long accountingId = Long.parseLong(record.getString("userId"));
+				receiveUserIds.add(accountingId);
 			}
-			int userType = MessageUserEnum.PERSONAL.intKey(); //接收方用户类型
-			int msgSourceType = MessageSourceEnum.CUSTOMERMSG.intKey(); //发送方类型   来自客户管理系统
-			int msgStatus = 0;
-			remindService.addMessageEvent(msgContent, msgType, msgLevel, msgStatus, reminderMode, userType,
-					msgSourceType, session);
+		}
+		receiveUserIds.add(userId);
+
+		/*添加的消息 存放到map中*/
+		Map<String, Object> map = Maps.newHashMap();
+		map.put("msgContent", msgContent);
+		map.put("msgType", msgType);
+		map.put("msgLevel", msgLevel);
+		map.put("msgStatus", msgStatus);
+		map.put("reminderMode", reminderMode);
+		map.put("SourceUserId", SourceUserId);
+		map.put("sourceUserType", sourceUserType);
+		map.put("receiveUserIds", receiveUserIds);
+		map.put("receiveUserIds", receiveUserIds);
+		map.put("receiveUserType", receiveUserType);
+		map.put("customerInfoId", customerInfoId);
+
+		/****************************查询 消息表中是否有 当前客户的消息*********************/
+		Sql sql = Sqls.create(sqlManager.get("customer_search__msg"));
+		sql.params().set("userId", userId);
+		sql.params().set("msgType", msgType);
+		sql.params().set("customerInfoId", customerInfoId);
+		sql.setCallback(Sqls.callback.records());
+		List<Record> records = dbDao.query(sql, null, null); //查询自定义的结果
+		if (Util.isEmpty(records)) {
+			remindService.addMessageEvent(map);
 		}
 
 		return null;
@@ -525,42 +557,71 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 				Cnd.where("infoId", "=", updateForm.getId()), null);
 		dbDao.updateRelations(invioceBefore, invoicesAfter);
 
-		//如果消息表中没有   客户管理的消息提醒， 自动添加
-		TUserMsgEntity userMsgEntity = dbDao.fetch(TUserMsgEntity.class,
-				Cnd.where("msgSource", "=", MessageSourceEnum.CUSTOMERMSG.intKey()));
-		Long userMsgId = userMsgEntity.getUserId();
-
+		/*******************************操作台添加消息  提醒事件************************************/
+		//当前用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long userId = loginUser.getId();
+		//新添加客户id
+		long customerInfoId = updateForm.getId();
 
-		if (userId != userMsgId) {
-			//客户信息添加成功， 根据结算方式在消息表添加数据
-			String msgContent = "今天 需要进行财务结算";
-			int msgType = MessageTypeEnum.PROCESSMSG.intKey(); //消息类型
-			int msgLevel = MessageLevelEnum.MSGLEVEL2.intKey(); //消息优先级
-			long payType = updateForm.getPayType(); //结算方式
-			long reminderMode = 0; //提醒方式
-			if (payType == 1) {
-				reminderMode = MessageRemindEnum.MOUTH.intKey();
-			} else if (payType == 2) {
-				reminderMode = MessageRemindEnum.WEEK.intKey();
+		//查询当前公司下 会计id
+		TCompanyEntity companyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Sql accountSql = Sqls.create(sqlManager.get("customer_search_accounter"));
+		accountSql.setParam("jobName", "会计");
+		accountSql.setParam("compId", companyEntity.getId());
+		List<Record> accountingIds = dbDao.query(accountSql, null, null);
+
+		String msgContent = "今天 需要进行财务结算";
+		int msgType = MessageTypeEnum.PROCESSMSG.intKey(); //消息类型
+		int msgLevel = MessageLevelEnum.MSGLEVEL2.intKey(); //消息优先级
+		int msgStatus = MessageStatusEnum.UNREAD.intKey(); //消息状态
+		long reminderMode = MessageRemindEnum.MOUTH.intKey(); //消息提醒模式
+		long SourceUserId = userId;//消息来源id
+		int sourceUserType = MessageSourceEnum.SYSTEMMSG.intKey(); //消息来源方类型
+		//消息接收方类型（个人、公司、系统）
+		int receiveUserType = MessageSourceEnum.PERSONALMSG.intKey();
+		//消息接收方ids
+		ArrayList<Long> receiveUserIds = Lists.newArrayList();
+		if (!Util.isEmpty(accountingIds)) {
+			for (Record record : accountingIds) {
+				long accountingId = Long.parseLong(record.getString("userId"));
+				receiveUserIds.add(accountingId);
 			}
-			int userType = MessageUserEnum.PERSONAL.intKey(); //接收方用户类型
-			int msgSourceType = MessageSourceEnum.CUSTOMERMSG.intKey(); //发送方类型   来自客户管理系统
-			int msgStatus = 0; //操作台不显示
-			remindService.addMessageEvent(msgContent, msgType, msgLevel, msgStatus, reminderMode, userType,
-					msgSourceType, session);
+		}
+		receiveUserIds.add(userId);
+
+		/*添加的消息 存放到map中*/
+		Map<String, Object> map = Maps.newHashMap();
+		map.put("msgContent", msgContent);
+		map.put("msgType", msgType);
+		map.put("msgLevel", msgLevel);
+		map.put("msgStatus", msgStatus);
+		map.put("reminderMode", reminderMode);
+		map.put("SourceUserId", SourceUserId);
+		map.put("sourceUserType", sourceUserType);
+		map.put("receiveUserIds", receiveUserIds);
+		map.put("receiveUserIds", receiveUserIds);
+		map.put("receiveUserType", receiveUserType);
+		map.put("customerInfoId", customerInfoId);
+
+		/****************************查询 消息表中是否有 当前客户的消息*********************/
+		Sql sql = Sqls.create(sqlManager.get("customer_search__msg"));
+		sql.params().set("userId", userId);
+		sql.params().set("msgType", msgType);
+		sql.params().set("customerInfoId", customerInfoId);
+		sql.setCallback(Sqls.callback.records());
+		List<Record> records = dbDao.query(sql, null, null); //查询自定义的结果
+		if (Util.isEmpty(records)) {
+			remindService.addMessageEvent(map);
 		}
 
 		return null;
 	}
 
 	/**
-	 * 
 	 * TODO 线路查询
 	 * <p>
 	 * TODO根据参数不同， 分别查询国境内陆和国际线路
-	 *
 	 * @param customerId 客户id
 	 * @param typeCode   线路类型
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
@@ -580,8 +641,6 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 * 
 	 * TODO出发城市
 	 * <p>
-	 * TODO出发城市
-	 *
 	 * @param outcityName
 	 * @return
 	 * @throws Exception TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)

@@ -1,0 +1,61 @@
+.labelClas{width: 0;position: relative;top: 8px;}
+.TimeInput {padding: 4px 10px 5px 10px;}
+table.dataTable thead .sorting_asc:after{display: none;}
+table.dataTable thead .sorting:after {display: none;}
+table.dataTable thead .sorting_desc:after {display: none;}
+table.dataTable thead > tr > th {padding-right: 0px;}
+.nlkhUL{border-bottom-color: #ececec !important;}
+.nlkhUL li a{color: #adadad !important;padding: 5px 15px;}
+.nlkhUL li.active{border-top: solid 1px rgba(53, 65, 72, 0) !important;border-bottom: solid 1px #e4e4e4;}
+.nlkhUL li.active a{color: #3c8dbc !important;border: solid 1px #ececec !important;border-bottom: solid 1px #f9f9f9 !important;border-radius: 3px 3px 0 0;background-color: #fbfbfb !important;box-shadow: 0px 4px 10px #e8e8e8;}
+.padding0{padding: 0 !important;background-color: rgba(249, 249, 249, 0.71) !important;border-left: solid 1px #ececec;border-right: solid 1px #ececec;}
+.sorting_1 input {margin: 0 auto;}
+.ckBtn{margin-left:10px;}
+/*-----------------------表格列 多行style--------------------*/
+	#payTable tbody tr td{padding:0;}
+	.table-bordered tbody tr td ul{padding-left: 0;margin-bottom: 0;}
+	.table-bordered tbody tr td ul li{list-style:none;border-bottom: solid 2px #f4f4f4;}
+	.table-bordered tbody tr td ul li:last-child{border-bottom: 0;}
+	.table-bordered thead tr td input{width: 15px;height: 15px;}
+	.table-bordered tbody tr .sorting_1 input{width: 15px;height: 15px;}
+	/*内陆跨海 收款*/
+	#payTable tbody tr td:nth-child(5){padding-top: 2%;}
+	#payTable tbody tr td:nth-child(6){padding-top: 2%;}
+	#payTable tbody tr td:nth-child(7){padding-top: 2%;}
+	#payTable tbody tr td:nth-child(8){padding-top: 2%;}
+	#payTable tbody tr td:nth-child(9){padding-top: 2%;}
+	#payTable tbody tr td:nth-child(10){padding-top: 2%;}
+	/*国际 收款*/
+	#GJpayTable tbody tr td:nth-child(5){padding-top: 2%;}
+	#GJpayTable tbody tr td:nth-child(6){padding-top: 2%;}
+	#GJpayTable tbody tr td:nth-child(7){padding-top: 2%;}
+	#GJpayTable tbody tr td:nth-child(8){padding-top: 2%;}
+	#GJpayTable tbody tr td:nth-child(9){padding-top: 2%;}
+	#GJpayTable tbody tr td:nth-child(10){padding-top: 2%;}
+/*---------------------end 表格列 多行style------------------*/
+
+/*国际*/
+.paymentUl{margin: 5px 0 10px 0;padding: 0;}
+.paymentUl li{display: inline-block;list-style: none;background-color: rgba(239, 239, 239, 0.34);padding: 5px 15px;font-size: 13px;cursor: pointer;color: #8c8c8c;border: solid 1px #dcdcdc;border-radius: 2px;}
+.btnStyle{background-color: #3c8dbc !important;color: #fff !important;border: solid 1px #2e7096 !important;}
+#GJpayTable tbody tr td{padding:0;}
+.fuKuanBtn,.fuKuanBtn1{float: right;position: relative;left: 60px;}
+
+/*付款 弹框页面*/
+#receivablesTable{margin-bottom: 8px;}
+.bankSlipImg {background-color: rgba(238, 238, 238, 0.26);width: 100%;min-height: 200px;margin-top: 10px;border: solid 1px rgba(204, 204, 204, 0.41);border-radius: 3px;}
+.selectTable,.payTable2{width: 100%;}
+.selectTable tbody tr td:nth-child(odd){text-align: right;}
+.selectTableTr td{padding-top: 10px;}
+.payTable2 {margin-top: 15px;}
+.payTable2 tbody tr td:nth-child(odd){text-align: right;}
+.payTable2 tbody tr td:nth-child(even){width: 115px;}
+.payTable2 tbody tr td:nth-child(1){width: 57px;}
+.payTable2 tbody tr td:nth-child(3){width: 67px;}
+.payTable2 tbody tr td:nth-child(5){width: 75px;}
+.payTable2 tbody tr td:nth-child(7){width: 75px;}
+.payTable2 tbody tr td{padding-bottom: 8px;}
+.textIpnu{width: 96.5%; margin-left: 7px;}
+.bj{width: 75px !important;text-align: right;}
+.labelShuidan{ margin-top: 15px;font-size: 16px !important;}
+.SDdiv{margin-top: 0;}

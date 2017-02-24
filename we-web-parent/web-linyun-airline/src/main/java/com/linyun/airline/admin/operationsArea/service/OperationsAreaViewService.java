@@ -33,11 +33,9 @@ import com.linyun.airline.common.enums.MessageStatusEnum;
 import com.linyun.airline.common.enums.MessageTypeEnum;
 import com.linyun.airline.common.enums.MessageUserEnum;
 import com.linyun.airline.entities.TCheckboxStatusEntity;
-import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TMessageEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.entities.TUserMsgEntity;
-import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.JsonUtil;
 import com.uxuexi.core.common.util.Util;
@@ -222,48 +220,21 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	}
 
 	/**
-	 * 查询 任务事件
+	 * 查询任务栏    **********************任务******************
 	 */
 	public Object getTaskNotices(HttpSession session) {
 
 		//当前用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
-		long id = loginUser.getId();
-
-		List<Record> records = new ArrayList<Record>();
-
-		//查询当前用户下所有的用户
-		List<TCustomerInfoEntity> customerList = customerViewService.getCustomerList(session);
-		//查询客户管理消息
-		Sql customerSql = Sqls.create(sqlManager.get("msg_user_company_task"));
-		if (!Util.isEmpty(id)) {
-			customerSql.params().set("userId", id);
+		long loginUserId = loginUser.getId();
+		int msgType = MessageTypeEnum.PROCESSMSG.intKey(); //消息类型
+		Sql sql = Sqls.create(sqlManager.get("operationsArea_taskList_customerInfo"));
+		if (!Util.isEmpty(loginUserId)) {
+			sql.params().set("userId", loginUserId);
 		}
-		customerSql.params().set("msgSource", 3);
-		customerSql.setCallback(Sqls.callback.records());
-
-		//表示月结和周结的客户
-		String nowStr = DateTimeUtil.format(DateTimeUtil.nowDateTime()); //当前时间
-		for (TCustomerInfoEntity tCustomerInfoEntity : customerList) {
-			Record customerRecord = dbDao.fetch(customerSql);
-			int payType = tCustomerInfoEntity.getPayType();
-			long customerId = tCustomerInfoEntity.getId();
-			Date createTime = tCustomerInfoEntity.getCreateTime();
-			String compShortName = tCustomerInfoEntity.getShortName();
-			if (payType == 1) {
-				//月结
-				customerRecord.set("reminderMode", 1);
-			}
-			if (payType == 2) {
-				//周结
-				customerRecord.set("reminderMode", 2);
-			}
-			customerRecord.set("id", customerId);
-			customerRecord.set("generatetime", createTime);
-			String msgContent = compShortName + " 财务需要结算";
-			customerRecord.set("msgcontent", msgContent);
-			records.add(customerRecord);
-		}
+		sql.params().set("msgType", msgType);
+		sql.setCallback(Sqls.callback.records());
+		List<Record> records = dbDao.query(sql, null, null); //查询自定义的结果
 
 		//根据提醒模式，筛选结果集    1 月  2周 3天 4小时 5分 6定时提醒
 		List<Record> recordsByCondition = new ArrayList<Record>();
@@ -286,7 +257,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 					recordsByCondition.add(record);
 				}
 			}
-			if ("6".equals(reminderMode)) {
+			/*if ("6".equals(reminderMode)) {
 				//自定义提醒
 				String generatetime = record.getString("generatetime");
 				long generateMillis = DateTimeUtil.string2DateTime(generatetime, "").getMillis();
@@ -295,15 +266,15 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 				if (a < 0) {
 					recordsByCondition.add(record);
 				}
-			}
+			}*/
 		}
 
 		int size = recordsByCondition.size();
 		for (Record record : recordsByCondition) {
 			record.set("num", size);
 		}
-
 		return JsonUtil.toJson(recordsByCondition);
+
 	}
 
 	/**
