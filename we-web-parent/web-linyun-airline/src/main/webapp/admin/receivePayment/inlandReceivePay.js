@@ -37,7 +37,7 @@ function initPayDataTable(){
 		            {"data": "orderstatus", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var s = '';
-		            		if(row.orderstatus == '1'){
+		            		if(data == '1'){
 		            			s = '已付款';
 		            		}else{
 		            			s = '付款中';
