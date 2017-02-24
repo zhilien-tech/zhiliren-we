@@ -66,7 +66,7 @@ import com.uxuexi.core.web.base.service.BaseService;
 public class MailScrabService extends BaseService {
 
 	@Inject
-	private UploadService uploadService;
+	private UploadService qiniuUploadService;
 
 	private Logger logger = LoggerFactory.getLogger(MailScrabService.class);
 
@@ -591,7 +591,7 @@ public class MailScrabService extends BaseService {
 	 * @return 文件URL地址
 	 */
 	private String uploadFile(InputStream is, String fileName) {
-		String fileURL = CommonConstants.IMAGES_SERVER_ADDR + uploadService.uploadImage(is, fileName, fileName);
+		String fileURL = CommonConstants.IMAGES_SERVER_ADDR + qiniuUploadService.uploadImage(is, fileName, fileName);
 		//文件存储地址
 		logger.info("文件存储地址:" + fileURL);
 		return fileURL;

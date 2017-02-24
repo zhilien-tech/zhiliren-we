@@ -51,7 +51,7 @@ public class GrabfileModule {
 	private GrabfileViewService grabfileViewService;//邮件抓取
 
 	@Inject
-	private UploadService fdfsUploadService;//文件上传
+	private UploadService qiniuUploadService;//文件上传
 
 	@Inject
 	private MailScrabService grabMailService;//邮件抓取
@@ -84,13 +84,27 @@ public class GrabfileModule {
 	 */
 	@At
 	@Ok("json")
-	public String uploadFile(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public Object uploadFile(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		request.setCharacterEncoding(CommonConstants.CHARACTER_ENCODING_PROJECT);//字符编码为utf-8
 		response.setCharacterEncoding(CommonConstants.CHARACTER_ENCODING_PROJECT);
-		Uploader uploader = new Uploader(request, fdfsUploadService);
+		Uploader uploader = new Uploader(request, qiniuUploadService);
 		uploader.upload();
 		String url = CommonConstants.IMAGES_SERVER_ADDR + uploader.getUrl();
 		return url;
+	}
+
+	/**
+	 * 保存上传文件
+	 * @param addForm
+	 */
+	@At
+	public Object saveUploadFile(@Param("..") TGrabFileAddForm addForm) {
+		addForm.setCreateTime(new Date());
+		addForm.setStatus(DataStatusEnum.ENABLE.intKey());
+		addForm.setUrl(addForm.getUrl());
+		addForm.setFileName(addForm.getFileName());
+		addForm.setParentId(addForm.getId());
+		return grabfileViewService.add(addForm);
 	}
 
 	/**
@@ -100,7 +114,8 @@ public class GrabfileModule {
 	 * @throws IOException TODO
 	 */
 	@At
-	public void downLoadZipFile(List<TGrabFileEntity> fileList, HttpServletResponse response) throws IOException {
+	public void downLoadZipFile(List<TGrabFileEntity> fileList, HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		String zipName = "myfile.zip";
 		response.setContentType("application/zip");// 设置response内容的类型
 		response.setHeader("Content-Disposition", "attachment; filename=" + zipName);// 设置头部信息  
@@ -116,33 +131,37 @@ public class GrabfileModule {
 		} finally {
 			out.close();
 		}
-		;
-	}
-
-	/**
-	 * 下载单个文件
-	 * @param response TODO
-	 */
-	/*@At
-	public void downloadFile(HttpServletResponse response) {
-		OutputStream os = null;
+		/*OutputStream os = null;
 		try {
-			os = response.getOutputStream();
-			File file = new File("D:/项目特殊资料/修改财务核算账簿启用日期.txt");
-			// Spring工具获取项目resources里的文件
-			if (!file.exists()) {
-				return;
-			}
+			String filepath = request.getServletContext().getRealPath("EXCEL_PATH");
+			String path = filepath + File.separator + "FILE_EXCEL_NAME";
+			File file = new File(path);// path是根据日志路径和文件名拼接出来的
+			String filename = file.getName();// 获取日志文件名称
+			InputStream fis = new BufferedInputStream(new FileInputStream(path));
+			byte[] buffer = new byte[fis.available()];
+			fis.read(buffer);
+			fis.close();
 			response.reset();
-			response.setHeader("Content-Disposition", "attachment;filename=修改财务核算账簿启用日期.txt");
-			response.setContentType("application/octet-stream; charset=utf-8");
-			os.write(FileUtils.readFileToByteArray(file));
+			// 先去掉文件名称中的空格,然后转换编码格式为utf-8,保证不出现乱码,这个文件名称用于浏览器的下载框中自动显示的文件名
+			response.addHeader("Content-Disposition", "attachment;filename="
+					+ new String(filename.replaceAll(" ", "").getBytes("utf-8"), "iso8859-1"));
+			response.addHeader("Content-Length", "" + file.length());
+			response.setContentType("application/zip");
+			os = new BufferedOutputStream(response.getOutputStream());
+			os.write(buffer);// 输出文件
+			os.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			IOUtils.closeQuietly(os);
+			try {
+				os.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-	}*/
+		return null;*/
+	}
+
 	/**
 	 * 跳转到'添加操作'的录入数据页面
 	 */
@@ -240,7 +259,6 @@ public class GrabfileModule {
 	@POST
 	public Object fileMove(@Param("id") final int id) {
 		//将文件移动到新目录
-
 		return dbDao.update(TGrabFileEntity.class, Chain.make("parentId", id), null);
 	}
 

@@ -42,6 +42,8 @@
                    </div>
                    
                    <input id="currentDirId" type="hidden" value="0"/>
+                   <input type="hidden" name="fileName" id="fileName" />
+				   <input type="hidden" id="url">
                    <ol class="breadcrumb">
                         <li><a href="${base}/admin/drawback/grabfile/list.html"><i class="fa fa-folder-open"></i> 全部文件</a></li>
                    </ol>
@@ -118,7 +120,6 @@ $(function () {
         $('.checkTd').toggle();
     });
   	//复选框选择点击操作
-    //控制复选框
 //控制复选框
 $(".checkTh").click(function () {
     var check = $(this).prop("checked");
@@ -190,10 +191,32 @@ $(".checkTh").click(function () {
     		//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
     		//下面的例子演示如何获取到vid
     		'onUploadSuccess' : function(file, data, response) {
-    			$("#completeFileName").html("");
     			var jsonobj = eval('(' + data + ')');
-    			$("#fileUrl").val(data);
-    			$("#fileName").val(file.name);
+    			var url  = jsonobj;//地址
+    			var fileName = file.name;//文件名称
+    			var id = $("input#currentDirId").val();//文件pid
+    			$.ajax({
+    				cache : false,
+    				type : "POST",
+    				data : {
+    					url : url,
+    					fileName : fileName,
+    					id:id
+    				},
+    				dataType : 'json',
+    				url : '${base}/admin/drawback/grabfile/saveUploadFile.html',
+    				error : function(request) {
+    					layer.msg('上传失败!');
+    				},
+    				success : function(data) {
+    					layer.load(1, {
+    						 shade: [0.1,'#fff'] //0.1透明度的白色背景
+    					});
+    				    window.parent.successCallback('6');
+    				    parent.location.reload(); // 父页面刷新
+    				}
+    			});
+    			
     			var innerHtml = "";
                 if (response) {
                     innerHtml = "<div><a id='downloadA' href='#' download='"+file.name+"' onclick='downloadFile("
@@ -330,6 +353,8 @@ function successCallback(id){
 		  layer.msg("移动成功!",{time: 1000, icon:1});
 	  }else if(id == '5'){
 		  layer.msg("抓取成功!",{time: 1000, icon:1});
+	  }else if(id == '6'){
+		  layer.msg("上传成功!",{time: 1000, icon:1});
 	  }
   }
 </script>
@@ -434,11 +459,48 @@ var dataSet = [
 		//rebatesEamilTable.ajax.reload(null,false);
 		rebatesEamilTable.settings()[0].ajax.data = param;
 		rebatesEamilTable.ajax.reload();
-		$("input#currentDirId").val(pid);
-		$("ol.breadcrumb").find("li").each(function(){
-			$(this).removeClass("active");
+		var exist=false;
+		$("ol.breadcrumb").find("li").each(function(index){
+			var currenuId = $(this).attr("id");
+			if(currenuId == pid){
+				exist = true ;
+				return false;
+			}
 		});
-		$("ol.breadcrumb").append('<li class="active"><a href="${base}/admin/drawback/grabfile/list.html?parentId='+pid+'">'+filename+'</a></li>');
+		
+		if(!exist){
+			$("ol.breadcrumb").find("li").each(function(){
+				$(this).removeClass("active");
+			});
+			$("ol.breadcrumb").append('<li id=\''+pid+'\' class="active"><a onclick="javascript:createFodler(\''+pid+'\',\''+filename+'\');"  href="#">'+filename+'</a></li>');
+		}else{
+			//找到指定元素的下标
+			var selectIndex = 0;
+			$("ol.breadcrumb").find("li").each(function(index){
+				var currenuId = $(this).attr("id");
+				if(currenuId == pid){
+					selectIndex=index;
+					return false;
+				}
+			});
+			
+			//删除大于该下标的其他元素
+			$("ol.breadcrumb").find("li").each(function(index){
+				if(index > selectIndex){
+					$(this).remove(); 
+				}
+			});
+			var length = $("ol.breadcrumb").find("li").length;
+			$("ol.breadcrumb").find("li").each(function(index){
+				if(index != (length-1)){
+					$(this).removeClass("active");
+				}
+			});
+		}
+		
+		
+		//修改当前所在文件夹id
+		$("input#currentDirId").val(pid);
 	}
 	
 	//新建子文件夹
