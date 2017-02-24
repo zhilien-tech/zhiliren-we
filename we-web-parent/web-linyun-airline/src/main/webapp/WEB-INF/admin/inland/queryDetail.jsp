@@ -53,7 +53,7 @@
                <div class="infoTop">
                  <p>客户信息</p>
                  <div class="infoTopContent">
-                   <input id="generateOrder" type="checkbox" checked="checked" class="conCheckInput"/><label>生成订单</label>
+                   <span>${obj.orderinfo.ordersnum }</span>
                    <select id="orderType" name="orderType" class="form-control input-sm conSelect cf">
                      <option value="1">查询</option>
                      <option value="2">预定</option>
@@ -158,7 +158,7 @@
 							</c:forEach>
 	                     </select></td>
 	                     <td><label>出发日期：</label></td>
-	                     <td><input id="leavedate" name="leavedate" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:'%y-%M-%d'})" value="${customneed.cusinfo.leavetdate }"/></td>
+	                     <td><input id="leavedate" name="leavedate" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:'${customneed.cusinfo.leavetdate }'})" value="${customneed.cusinfo.leavetdate }"/></td>
 	                     <td><label>人数：</label></td>
 	                     <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm textWid" value="${customneed.cusinfo.peoplecount }"/></td>
 	                     <td><label class="labelWid">早中晚：</label></td>
@@ -548,13 +548,6 @@
             <div class="infofooter">
                  <table class="remindSet">
                    <tr>
-                     <td>
-                       <select class="form-control input-sm">
-                         <option>询单</option>
-                         <option>账单</option>
-                         <option>账期</option>
-                       </select>
-                     </td>
                      <td><input type="text" class="form-control input-sm" placeholder="2017-02-15 09:30" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" disabled="disabled"/></td>
                      <td>
                        <select class="form-control input-sm">
@@ -605,7 +598,7 @@
 	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 	<!--layer -->
 	<script src="${base}/common/js/layer/layer.js"></script>
-	<script src="${base }/admin/order/bookingorder.js"></script><!-- AdminLTE App -->
+	<script src="${base }/admin/order/queryorder.js"></script><!-- AdminLTE App -->
   <script type="text/javascript">
       $(function(){
         //编辑按钮 click事件

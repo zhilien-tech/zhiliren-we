@@ -49,4 +49,8 @@ public class TUpOrderEntity implements Serializable {
 	@Comment("订单状态")
 	private Integer ordersstatus;
 
+	@Column
+	@Comment("当前登录用户id")
+	private Integer loginUserId;
+
 }
