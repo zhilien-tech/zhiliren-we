@@ -220,10 +220,12 @@ function initAirInfoSelect2(obj){
 	});
 }
 $(function(){
-	var firstDemandDiv = $('.DemandDiv').first();
-	initCitySelect2(firstDemandDiv);
-	firstDemandDiv.find('[name=airlineinfo]').each(function(i){
-		initAirInfoSelect2($(this));
+	//var firstDemandDiv = $('.DemandDiv').first();
+	$('.DemandDiv').each(function(i){
+		initCitySelect2($(this));
+		$(this).find('[name=airlineinfo]').each(function(i){
+			initAirInfoSelect2($(this));
+		});
 	});
     $('.UnderIcon').on('click',function(){//客户信息 显示/隐藏
         $('.hideTable').toggle('400');

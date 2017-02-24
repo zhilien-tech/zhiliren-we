@@ -23,7 +23,7 @@ function initDatatable() {
                     		var result = '<ul> ';
                     		$.each(row.pnrinfo, function(name, value) {
                     			if(value){
-                    				result += '<li style="list-style:none;">'+value.pnr+'</li>';
+                    				result += '<li style="list-style:none;">'+value.pNR+'</li>';
                     			}
                     		});
                     		result += '</ul>';
