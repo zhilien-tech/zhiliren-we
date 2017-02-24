@@ -254,7 +254,19 @@ public class GrabfileModule {
 		return dbDao.update(updatelist);
 	}
 
-	//文件的移动
+	/**
+	 * 移动到页面
+	 */
+	@At
+	@GET
+	@Ok("jsp")
+	public Object move() {
+		return null;
+	}
+
+	/**
+	 * 文件的移动操作
+	 */
 	@At
 	@POST
 	public Object fileMove(@Param("id") final int id) {

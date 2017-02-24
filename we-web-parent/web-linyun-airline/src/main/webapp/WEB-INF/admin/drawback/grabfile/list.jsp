@@ -321,6 +321,23 @@ $(function() {
 	$("[data-toggle='tooltip']").tooltip();
 });
 
+//移动到
+function move(){
+      layer.open({
+    	    type: 2,
+    	    title:false,
+    	    closeBtn:false,
+    	    fix: false,
+    	    maxmin: false,
+    	    shadeClose: false,
+    	    area: ['800px', '500px'],
+    	    content: '${base}/admin/drawback/grabfile/move.html',
+    	    end: function(){//添加完页面点击返回的时候自动加载表格数据
+    	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+    			parent.layer.close(index);
+    	    }
+   	 	 });
+	}
 //邮件抓取入口
 $('#grabMailId').click(function(){
 	$.ajax({
@@ -438,7 +455,7 @@ var dataSet = [
 	                render: function(data, type, row, meta) {
 	                	var editFolder = '<a href="javascript:editFolder('+row.id+');" style="cursor:pointer;">编辑&nbsp;&nbsp;&nbsp;</a>';
 	                	var download = '<a href="${base}/admin/drawback/grabfile/downLoadZipFile.html" style="cursor:pointer;">&nbsp;&nbsp;下载&nbsp;&nbsp;&nbsp;</a>';
-	                	var move  = '<a href="javascript:fileMove('+row.id+');" style="cursor:pointer;">&nbsp;&nbsp;移动到&nbsp;&nbsp;</a>';
+	                	var move  = '<a href="javascript:move();" style="cursor:pointer;">&nbsp;&nbsp;移动到&nbsp;&nbsp;</a>';
                    		if(1==row.status){
                    			var judge = '<a href="javascript:physicalDelete('+row.id+',2);" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
                    		}else{
@@ -497,8 +514,6 @@ var dataSet = [
 				}
 			});
 		}
-		
-		
 		//修改当前所在文件夹id
 		$("input#currentDirId").val(pid);
 	}
