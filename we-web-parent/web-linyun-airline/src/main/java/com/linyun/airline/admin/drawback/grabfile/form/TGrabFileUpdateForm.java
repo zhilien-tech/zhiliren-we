@@ -16,5 +16,5 @@ public class TGrabFileUpdateForm extends ModForm {
 	private Integer status;
 
 	/**文件夹名称*/
-	private String folderName;
+	private String fileName;
 }

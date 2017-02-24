@@ -30,7 +30,7 @@ public class TGrabMailSqlForm extends DataTablesParamForm {
 	private String addressee;
 
 	/**发送时间*/
-	private Date sendTime;
+	private String sendTime;
 
 	/**抓取时间*/
 	private Date grabTime;

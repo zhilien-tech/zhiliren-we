@@ -107,6 +107,12 @@
 		    <version>1.4.7</version>
 		</dependency>
 		
+		<!-- https://mvnrepository.com/artifact/ant/ant -->
+		<dependency>
+		    <groupId>ant</groupId>
+		    <artifactId>ant</artifactId>
+		    <version>1.7.0</version>
+		</dependency>
 
 	</dependencies>
 

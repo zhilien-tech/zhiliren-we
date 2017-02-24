@@ -61,7 +61,7 @@ public class TGrabFileEntity implements Serializable {
 
 	@Column
 	@Comment("层级")
-	private Integer naval;
+	private Integer level;
 
 	@Column
 	@Comment("完整路径")
@@ -70,5 +70,9 @@ public class TGrabFileEntity implements Serializable {
 	@Column
 	@Comment("序号")
 	private Integer sort;
+
+	@Column
+	@Comment("散团类型")
+	private Integer groupType;
 
 }
