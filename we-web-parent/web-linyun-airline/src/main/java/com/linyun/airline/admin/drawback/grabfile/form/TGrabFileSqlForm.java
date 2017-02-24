@@ -52,13 +52,16 @@ public class TGrabFileSqlForm extends DataTablesParamForm {
 	private Date updateTime;
 
 	/**层级*/
-	private Integer naval;
+	private Integer level;
 
 	/**完整路径*/
 	private String fullPath;
 
 	/**序号*/
 	private Integer sort;
+
+	/**散团类型*/
+	private Integer groupType;
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {

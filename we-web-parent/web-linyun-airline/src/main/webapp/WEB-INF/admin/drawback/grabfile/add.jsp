@@ -28,7 +28,7 @@
 					<div class="form-group row">
 						<div class="col-sm-8 padding">
 						<label class="col-sm-3 text-right padding">上级文件夹：</label>
-							<input id="parentId" name="parentId" value="${obj.dirfolder.folderName }" class="form-control input-sm inpImpWid" style="width:200px;" disabled/>
+							<input id="parentId" name="parentId" value="${obj.dirfolder.fileName }" class="form-control input-sm inpImpWid" style="width:200px;" disabled/>
 						</div>
 					</div>
 				</div> --%>
@@ -36,7 +36,7 @@
 					<div class="form-group row">
 						<div class="col-sm-8 padding">
 						<label class="col-sm-3 text-right padding">文件名：</label>
-							<input id="folderId" name="folderName" class="form-control input-sm inpImpWid" style="width:200px;"
+							<input id="folderId" name="fileName" class="form-control input-sm inpImpWid" style="width:200px;"
 								placeholder="请输入文件夹名称" /><span class="prompt">*</span>
 						</div>
 					</div>
@@ -55,7 +55,7 @@ $(document).ready(function(){
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-        	folderName: {
+        	fileName: {
                 validators: {
                     notEmpty: {
                         message: '文件夹名称不能为空!'
@@ -68,7 +68,7 @@ $(document).ready(function(){
                          //自定义提交数据，默认值提交当前input value
                          data: function(validator) {
                             return {
-                            	typeCode:$('input[name="folderName"]').val()
+                            	typeCode:$('input[name="fileName"]').val()
                             };
                          }
                      }
@@ -89,7 +89,7 @@ $("#submit").click(function() {
 			data : 
 			{
 				parentId:'${obj.dirfolder.id}',
-				folderName:$('input[name="folderName"]').val()
+				fileName:$('input[name="fileName"]').val()
 			},
 			error : function(request) {
 				layer.msg('添加失败!');

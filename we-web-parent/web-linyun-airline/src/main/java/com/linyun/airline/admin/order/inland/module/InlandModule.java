@@ -7,13 +7,17 @@
 package com.linyun.airline.admin.order.inland.module;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
+import org.nutz.mvc.upload.TempFile;
+import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.linyun.airline.admin.order.inland.form.InlandListSearchForm;
 import com.linyun.airline.admin.order.inland.service.InlandService;
@@ -64,8 +68,8 @@ public class InlandModule {
 	 */
 	@At
 	@POST
-	public Object addOrderInfo(@Param("data") String data) {
-		return inlandService.addOrderInfo(data);
+	public Object addOrderInfo(@Param("data") String data, HttpServletRequest request) {
+		return inlandService.addOrderInfo(data, request);
 	}
 
 	/**
@@ -82,8 +86,8 @@ public class InlandModule {
 	 */
 	@At
 	@POST
-	public Object saveOrderInfo(@Param("data") String data) {
-		return inlandService.saveOrderInfo(data);
+	public Object saveOrderInfo(@Param("data") String data, HttpServletRequest request) {
+		return inlandService.saveOrderInfo(data, request);
 	}
 
 	/**
@@ -93,5 +97,96 @@ public class InlandModule {
 	@Ok("jsp")
 	public Object bookingDetail(@Param("id") Integer id) {
 		return inlandService.bookingDetail(id);
+	}
+
+	/**
+	 *保存预定订单数据
+	 */
+	@At
+	@POST
+	public Object saveBookingOrderInfo(@Param("data") String data, HttpServletRequest request) {
+		return inlandService.saveBookingOrderInfo(data, request);
+	}
+
+	/**
+	 * 下载游客模板
+	 */
+	@At
+	public Object downloadVisitorTemplate(HttpServletRequest request, HttpServletResponse response) {
+		return inlandService.downloadVisitorTemplate(request, response);
+	}
+
+	/**
+	 * 上传游客
+	 */
+	@At
+	@POST
+	@Ok("jsp")
+	@AdaptBy(type = UploadAdaptor.class)
+	public Object importVisitor(@Param("excelFile") TempFile file, HttpServletRequest request) {
+		return inlandService.importVisitor(file, request);
+	}
+
+	/**
+	 * 跳转到添加PNR页面
+	 */
+	@At
+	@Ok("jsp")
+	public Object addPnr(HttpServletRequest request) {
+		return inlandService.addPnr(request);
+	}
+
+	/**
+	 * 添加PNR页面
+	 */
+	@At
+	@POST
+	public Object addPnrInfo(HttpServletRequest request) {
+		return inlandService.addPnrInfo(request);
+	}
+
+	/**
+	 * 异步加载pnr数据
+	 */
+	@At
+	@POST
+	public Object loadPNRdata(HttpServletRequest request) {
+		return inlandService.loadPNRdata(request);
+	}
+
+	/**
+	 * 打开PNR页面
+	 */
+	@At
+	@Ok("jsp")
+	public Object pnrDetailPage(HttpServletRequest request) {
+		return inlandService.pnrDetailPage(request);
+	}
+
+	/**
+	 * 显示游客的详细信息
+	 */
+	@At
+	@POST
+	public Object showVisitorInfo(Long id) {
+		return inlandService.showVisitorInfo(id);
+	}
+
+	/**
+	 * 跳转到编辑PNR信息页面
+	 */
+	@At
+	@Ok("jsp")
+	public Object editPnr(HttpServletRequest request) {
+		return inlandService.editPnr(request);
+	}
+
+	/**
+	 * 保存编辑PNR页面
+	 */
+	@At
+	@POST
+	public Object editPnrInfo(HttpServletRequest request) {
+		return inlandService.editPnrInfo(request);
 	}
 }

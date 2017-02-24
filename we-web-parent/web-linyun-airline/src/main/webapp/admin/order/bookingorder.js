@@ -220,14 +220,18 @@ function initAirInfoSelect2(obj){
 	});
 }
 $(function(){
-	var firstDemandDiv = $('.DemandDiv').first();
-	initCitySelect2(firstDemandDiv);
-	firstDemandDiv.find('[name=airlineinfo]').each(function(i){
-		initAirInfoSelect2($(this));
+	//var firstDemandDiv = $('.DemandDiv').first();
+	$('.DemandDiv').each(function(i){
+		initCitySelect2($(this)); 
+		$(this).find('[name=airlineinfo]').each(function(i){
+			initAirInfoSelect2($(this));
+		});
 	});
     $('.UnderIcon').on('click',function(){//客户信息 显示/隐藏
         $('.hideTable').toggle('400');
       });
+    //加载pnr表格
+    loadPNRdata();
     //客户需求的 + 按钮
     $(document).on("click",".addIcon",function(){
         var divTest = $(this).parent().parent().parent().find('[name=airlineinfo]').last(); 
@@ -255,8 +259,8 @@ $(function(){
     });
 
     //客户需求的 +需求 按钮
-    $('.addDemand').click(function(){
-        var divTest = $(this).parent(); 
+    $('.addXuQiu').click(function(){
+        var divTest = $(this).parent().parent(); 
         var newDiv = divTest.clone(false,true);
         newDiv.find('[name=customneedid]').val('');
         newDiv.find('[name=leavecity]').next().remove();
@@ -269,13 +273,19 @@ $(function(){
         newDiv.find('[name=peoplecount]').val('');
         //清空票务类型
         newDiv.find('[name=tickettype]').val('');
+        newDiv.find('[name=realtimexrate]').val('');
+        newDiv.find('[name=avgexrate]').val('');
+        newDiv.find('[name=paycurrency]').val('');
+        newDiv.find('[name=paymethod]').val('');
+        newDiv.find('[name=remark]').val('');
+        newDiv.find('[name=pnrinfodata]').html('');
         initCitySelect2(newDiv);
         //divTest.after(newDiv);
-        $('#infofooter').append(newDiv);
+        $('#infofooter').last().after(newDiv);
         var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
         newDiv.find("p").html(No); 
         newDiv.find('.addDemand').remove();
-        newDiv.prepend('<a href="javascript:;" class="btn btn-primary btn-sm removeDemand"><b>-</b>&nbsp;&nbsp;需求</a>');
+        newDiv.find('[name=customneedid]').before('<a href="javascript:;" class="btn btn-primary btn-sm removeDemand"><b>-</b>&nbsp;&nbsp;需求</a>');
         var divId=document.getElementById('infofooter').getElementsByTagName('div');
         newDiv.find('.titleNum').text(divId.length);
         newDiv.find('[name=airlineinfo]').each(function(i){
@@ -297,6 +307,64 @@ $(function(){
     });
     //客户需求的 -需求 按钮
     $(document).on("click",".removeDemand",function(){
-        $(this).parent().remove();
+        $(this).parent().parent().remove(); 
     });
   });
+//加载pnr信息数据
+function loadPNRdata(){
+	$('.DemandDiv').each(function(i){
+		var customDiv = $(this);
+		var customneedid = customDiv.find('[name=customneedid]').val();
+		$.ajax({ 
+			type: 'POST', 
+			data: {customneedid:customneedid}, 
+			dataType:'json',
+			url: BASE_PATH + '/admin/inland/loadPNRdata.html',
+            success: function (data) { 
+            	var result = '';
+            	for(var i=0 ; i<data.length ; i++){
+            		result += '<tr>';
+            		result +='<td>'+data[i].pNR+'</td>';
+            		result +='<td>'+data[i].costprice+'</td>';
+            		result +='<td>'+data[i].costpricesum+'</td>';
+            		result +='<td>'+data[i].salesprice+'</td>';
+            		result +='<td>'+data[i].salespricesum+'</td>';
+            		if(data[i].peoplecount != undefined){
+            			result +='<td>'+data[i].peoplecount+'</td>';
+            		}else{
+            			result +='<td></td>';
+            		}
+            		result +='<td>'+data[i].loginid+'</td>';
+            		result +='<td><a href="javascript:openDetailPage('+data[i].id+');" class="PNRdetails">详情</a></td>';
+            		result += '</tr>';
+            	}
+            	/*data.each(function(index,value){
+            		result +='<td>'+value.pNR+'</td>';
+            		result +='<td>'+value.costprice+'</td>';
+            		result +='<td>'+value.costpricesum+'</td>';
+            		result +='<td>'+value.salesprice+'</td>';
+            		result +='<td>'+value.salespricesum+'</td>';
+            		result +='<td>'+value.peoplecount+'</td>';
+            		result +='<td>'+value.loginid+'</td>';
+            		result +='<td><a href="javascript:openDetailPage('+value.id+');" class="PNRdetails">详情</a></td>';
+            	});*/
+            	customDiv.find('[name=pnrinfodata]').html(result);
+            },
+            error: function (xhr) {
+          	
+            } 
+         });
+	});
+}
+
+function openDetailPage(id){
+	layer.open({
+        type: 2,
+        title:false,
+        skin: false, //加上边框
+        closeBtn:false,//默认 右上角关闭按钮 是否显示
+        shadeClose:false,
+        area: ['900px', '500px'],
+        content: BASE_PATH + '/admin/inland/pnrDetailPage.html?pnrid='+id
+      });
+}

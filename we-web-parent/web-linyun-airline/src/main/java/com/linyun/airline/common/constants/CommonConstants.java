@@ -40,7 +40,7 @@ public class CommonConstants {
 	/**
 	 * 图片服务器地址
 	 */
-	public static final String IMAGES_SERVER_ADDR = "http://123.57.46.249/";
+	public static final String IMAGES_SERVER_ADDR = "http://oluwc01ms.bkt.clouddn.com/";
 
 	/**无效数据id*/
 	public static final int INVALID_DATA_ID = -1;

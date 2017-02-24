@@ -10,10 +10,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 
 import javax.mail.Address;
 import javax.mail.BodyPart;
@@ -30,16 +32,26 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
 
-import org.nutz.dao.Chain;
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
+import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.linyun.airline.admin.drawback.grabfile.entity.MailStatusBean;
+import com.google.common.collect.Lists;
 import com.linyun.airline.admin.drawback.grabfile.entity.TGrabFileEntity;
+import com.linyun.airline.admin.drawback.grabfile.enums.FileNavalEnum;
+import com.linyun.airline.admin.drawback.grabfile.enums.FileTypeEnum;
+import com.linyun.airline.admin.drawback.grabfile.enums.GrabTypeEnum;
 import com.linyun.airline.admin.drawback.grabmail.entity.TGrabMailEntity;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.constants.CommonConstants;
+import com.linyun.airline.common.enums.DataStatusEnum;
+import com.uxuexi.core.common.util.BeanUtil;
+import com.uxuexi.core.common.util.DateTimeUtil;
+import com.uxuexi.core.common.util.FileUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.DbSqlUtil;
 import com.uxuexi.core.web.base.service.BaseService;
@@ -49,10 +61,14 @@ import com.uxuexi.core.web.base.service.BaseService;
  * @author   崔建斌
  * @Date	 2017年2月8日 	 
  */
+@SuppressWarnings("rawtypes")
 @IocBean(name = "grabMailService")
 public class MailScrabService extends BaseService {
 
-	private UploadService uploadService;
+	@Inject
+	private UploadService qiniuUploadService;
+
+	private Logger logger = LoggerFactory.getLogger(MailScrabService.class);
 
 	public MailScrabService() {
 
@@ -111,21 +127,198 @@ public class MailScrabService extends BaseService {
 	/** 
 	 * 解析邮件 
 	 * @param messages 要解析的邮件列表 
+	 * @throws ParseException 
 	 */
-	@SuppressWarnings("unused")
 	public void parseMessage(Message... messages) throws MessagingException, IOException {
-		if (messages == null || messages.length < 1)
+		if (messages == null || messages.length < 1) {
 			throw new MessagingException("未找到要解析的邮件!");
-
+		}
 		// 解析所有邮件  
 		for (int i = 0, count = messages.length; i < count; i++) {
 			MimeMessage msg = (MimeMessage) messages[i];
-
+			eachHandler(msg);
 			boolean isRead = isRead(msg);
 			if (isRead) {
 				continue;
 			}
 		}
+	}
+
+	/**
+	 * 解析每一封邮件
+	 * @throws MessagingException 
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
+	 * @throws ParseException 
+	 */
+	private void eachHandler(MimeMessage msg) throws MessagingException, FileNotFoundException, IOException {
+		//TODO 
+		//1、从邮件获取能直接保存的数据
+		String theme = getSubject(msg);//主题
+		String sender = getFrom(msg);//发件人
+		String addressee = getReceiveAddress(msg, null);//收件人
+		String sendTime = getSentDate(msg, null);//发送时间
+		String fileSize = Integer.toString(msg.getSize());//邮件大小
+		logger.info("邮件的主题是:" + theme);
+		logger.info("发件人:" + sender);
+		logger.info("收件人:" + addressee);
+		logger.info("发送时间:" + sendTime);
+		logger.info("邮件大小:" + fileSize + "k");
+		//2、查询数据库判断是否已存在某条数据，如果存在直接返回，不存在则解析
+		Sql sql = Sqls.create(sqlManager.get("grab_mail_file_level"));
+		sql.params().set("theme", theme);
+		sql.params().set("sender", sender);
+		sql.params().set("addressee", addressee);
+		sql.params().set("sendTime", sendTime);
+		int count = DbSqlUtil.fetchInt(dbDao, sql);
+		int grabRecordId = 0;
+		if (count > 0) {
+			return;
+		} else {
+			//3-1、保存邮件抓取记录
+			TGrabMailEntity mailEntity = new TGrabMailEntity();
+			mailEntity.setTheme(theme);
+			mailEntity.setSender(sender);
+			mailEntity.setAddressee(addressee);
+			mailEntity.setSendTime(sendTime);
+			mailEntity.setGrabTime(new Date());//抓取时间
+			mailEntity.setGrabStatus(GrabTypeEnum.ALREADYGRAB.intKey());//已抓
+			mailEntity = dbDao.insert(mailEntity);
+			grabRecordId = mailEntity.getId();
+		}
+		//3-2、保存抓取文件
+		FileNavalEnum structureType = structureType();
+		TGrabFileEntity rootFile = getRootFile(sender);
+		int rootId = rootFile.getId();
+		switch (structureType) {
+		case FITDTJQTT:
+			//时间
+
+			//父id
+			TGrabFileEntity timeFile = new TGrabFileEntity();
+			timeFile.setParentId(rootId);
+
+			//创建时间
+			Date createTime = DateTimeUtil.nowDate();
+			timeFile.setCreateTime(createTime);
+
+			//名称
+			SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
+			timeFile.setFileName(format.format(createTime));
+			//类型
+			timeFile.setType(FileTypeEnum.FOLDER.intKey());
+
+			//抓取记录id
+			timeFile.setMailId(grabRecordId);
+			//启用
+			timeFile.setStatus(DataStatusEnum.ENABLE.intKey());
+			timeFile.setLevel(2);
+			timeFile.setSort(0);
+			//TODO 
+			timeFile.setGroupType(1);
+			timeFile = dbDao.insert(timeFile);
+
+			/**************************时间结束***************************/
+
+			//客户团号
+			int sort = getSort(timeFile.getId());
+
+			String cusgroupnum = getcusGroupnum();//得到客户团号
+			if (Util.isEmpty(cusgroupnum)) {
+				sort += 1;
+				cusgroupnum = "客户团号" + sort;
+			}
+
+			TGrabFileEntity groupNumFile = new TGrabFileEntity();
+
+			//父id
+			groupNumFile.setParentId(timeFile.getId());
+
+			groupNumFile.setCreateTime(createTime);
+
+			//名称
+			groupNumFile.setFileName(cusgroupnum);
+			//类型
+			groupNumFile.setType(FileTypeEnum.FOLDER.intKey());
+
+			//抓取记录id
+			groupNumFile.setMailId(grabRecordId);
+			//启用
+			groupNumFile.setStatus(DataStatusEnum.ENABLE.intKey());
+			groupNumFile.setLevel(3);
+
+			groupNumFile.setSort(sort);
+			//TODO 
+			groupNumFile.setGroupType(3);
+			groupNumFile = dbDao.insert(groupNumFile);
+
+			/**********************客户团号结束**********************/
+
+			/**************文件开始*************/
+
+			//父id
+			TGrabFileEntity fileProps = new TGrabFileEntity();
+			fileProps.setParentId(groupNumFile.getId());
+
+			//创建时间
+			fileProps.setCreateTime(createTime);
+
+			//类型
+			fileProps.setType(FileTypeEnum.FOLDER.intKey());
+
+			fileProps.setFileSize(fileSize);
+			//抓取记录id
+			fileProps.setMailId(grabRecordId);
+			//启用
+			fileProps.setStatus(DataStatusEnum.ENABLE.intKey());
+			fileProps.setLevel(4);
+
+			//TODO 
+			fileProps.setGroupType(1);
+			//文件url
+			List<TGrabFileEntity> grabFileList = Lists.newArrayList();
+			saveAttachment(msg, grabFileList, fileProps);
+			if (!Util.isEmpty(grabFileList)) {
+				dbDao.insert(grabFileList);
+			} else {
+				logger.info("没有抓取到附件!");
+			}
+			break;
+		case FITQF:
+			//TODO
+			break;
+		case FITVA:
+			//TODO
+			break;
+		case TEAMJQTT:
+			//TODO
+			break;
+		case TEAMVA:
+			//TODO
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	/**
+	 * 获取客户团号
+	 */
+	private String getcusGroupnum() {
+		//TODO
+		return null;
+	}
+
+	/**
+	 * 获取序号
+	 * @param parentId
+	 */
+	private int getSort(int parentId) {
+		Sql mailsql = Sqls.create(sqlManager.get("grab_mail_max_sort"));
+		mailsql.params().set("pid", parentId);
+		int sort = DbSqlUtil.fetchInt(dbDao, mailsql);
+		return sort;
 	}
 
 	/** 
@@ -327,9 +520,10 @@ public class MailScrabService extends BaseService {
 	 * @throws FileNotFoundException  
 	 * @throws IOException  
 	 */
-	public void saveAttachment(Part part) throws UnsupportedEncodingException, MessagingException,
-			FileNotFoundException, IOException {
+	private void saveAttachment(Part part, List<TGrabFileEntity> grabFileLst, TGrabFileEntity fileProps)
+			throws UnsupportedEncodingException, MessagingException, FileNotFoundException, IOException {
 		if (part.isMimeType("multipart/*")) {
+			//TODO
 			Multipart multipart = (Multipart) part.getContent(); //复杂体邮件  
 			//复杂体邮件包含多个邮件体  
 			int partCount = multipart.getCount();
@@ -337,25 +531,56 @@ public class MailScrabService extends BaseService {
 				//获得复杂体邮件中其中一个邮件体  
 				BodyPart bodyPart = multipart.getBodyPart(i);
 
-				InputStream is = bodyPart.getInputStream();
 				String fileName = bodyPart.getFileName();
-
+				String fileExt = FileUtil.getSuffix(fileName);//获取附件后缀名
 				//某一个邮件体也有可能是由多个邮件体组成的复杂体  
 				String disp = bodyPart.getDisposition();
 				if (disp != null && (disp.equalsIgnoreCase(Part.ATTACHMENT) || disp.equalsIgnoreCase(Part.INLINE))) {
 					//向网络上上传一个文件，然后返回一个地址存储到数据库中
-					uploadFile(is, fileName);
+					InputStream is = bodyPart.getInputStream();
+					String fileUrl = uploadFile(is, fileExt);
+
+					TGrabFileEntity newFile = new TGrabFileEntity();
+					BeanUtil.copyProperties(fileProps, newFile);
+					String attachmentName = fileName;
+					int fileSort = 0;
+					if (Util.isEmpty(attachmentName)) {
+						fileSort = getSort(fileProps.getParentId());
+						fileSort += 1;
+						attachmentName = "PNR" + fileSort;
+					}
+					//文件名和序号
+					newFile.setFileName(attachmentName);
+					fileProps.setSort(fileSort);
+					newFile.setUrl(fileUrl);
+					grabFileLst.add(newFile);
 				} else if (bodyPart.isMimeType("multipart/*")) {
-					saveAttachment(bodyPart);
+					saveAttachment(bodyPart, grabFileLst, fileProps);
 				} else {
 					String contentType = bodyPart.getContentType();
 					if (contentType.indexOf("name") != -1 || contentType.indexOf("application") != -1) {
-						uploadFile(is, fileName);
+						InputStream is = bodyPart.getInputStream();
+						String fileUrl = uploadFile(is, fileExt);
+
+						TGrabFileEntity newFile = new TGrabFileEntity();
+						BeanUtil.copyProperties(fileProps, newFile);
+						String attachmentName = fileName;
+						int fileSort = 0;
+						if (Util.isEmpty(attachmentName)) {
+							fileSort = getSort(fileProps.getParentId());
+							fileSort += 1;
+							attachmentName = "PNR" + fileSort;
+						}
+						//文件名和序号
+						newFile.setFileName(attachmentName);
+						fileProps.setSort(fileSort);
+						newFile.setUrl(fileUrl);
+						grabFileLst.add(newFile);
 					}
 				}
 			}
 		} else if (part.isMimeType("message/rfc822")) {
-			saveAttachment((Part) part.getContent());
+			saveAttachment((Part) part.getContent(), grabFileLst, fileProps);
 		}
 	}
 
@@ -366,53 +591,35 @@ public class MailScrabService extends BaseService {
 	 * @return 文件URL地址
 	 */
 	private String uploadFile(InputStream is, String fileName) {
-		String fileURL = CommonConstants.IMAGES_SERVER_ADDR + uploadService.uploadImage(is, fileName, fileName);
+		String fileURL = CommonConstants.IMAGES_SERVER_ADDR + qiniuUploadService.uploadImage(is, fileName, fileName);
 		//文件存储地址
-		System.out.println("文件存储地址:" + fileURL);
+		logger.info("文件存储地址:" + fileURL);
 		return fileURL;
 	}
 
-	/**
-	 * 保存抓取邮件信息
-	 * @param statusBean
-	 * @param listURL
-	 * @param msg
-	 * @return
-	 * @throws UnsupportedEncodingException
-	 * @throws MessagingException 
-	 */
-	@SuppressWarnings("unused")
-	private boolean saveMailInfo(MailStatusBean statusBean, List<String> listURL, MimeMessage msg, int parentId)
-			throws UnsupportedEncodingException, MessagingException {
-		String theme = getSubject(msg);//主题
-		String sender = getFrom(msg);//发件人
-		String addressee = getReceiveAddress(msg, null);//收件人
-		String sendTime = getSentDate(msg, null);//发送时间
-		String fileSize = Integer.toString(msg.getSize());//文件大小
-		//TODO 
-		//如果抓取到的邮件解析之后获取不到PNR或者获取不到附件的名称则需要自动创建文件夹层级结构
-		if (Util.isEmpty(theme)) {
-			//1、根据前端传来的父id和同级文件夹下面的序号sort查出同级最大的序号值
-			Sql mailsql = Sqls.create(sqlManager.get("grab_file_list"));
-			mailsql.params().set("pid", parentId);
-			List<TGrabFileEntity> folderList = DbSqlUtil.query(dbDao, TGrabFileEntity.class, mailsql);
-			//2、如果序号为0,则文件夹或者文件命名为邮件解析所获取到的信息，向数据库中添加数据;
+	//通过发件人确定顶层目录文件夹
+	private TGrabFileEntity getRootFile(String sender) {
+		//TODO
+		TGrabFileEntity singleFile = dbDao.fetch(TGrabFileEntity.class, Cnd.where("id", "=", 1));
+		return singleFile;
+	}
 
-			/**3、如果序号不为0,系统自动创建文件夹,向数据库中添加数据，并且定义一个规则
-				(例如:同级目录下文件夹命名为【客户团号1、客户团号2....】,文件命名为【PNR1、PNR2...】)*/
+	//判断文件结构类型
+	private FileNavalEnum structureType() {
+		//TODO
+		return FileNavalEnum.FITDTJQTT;
+	}
 
+	//根据邮件附件名获取PNR
+	private String getAttachmentName() {
+		//TODO
+		Random random = new Random();
+		int ss = random.nextInt();
+		if (ss % 2 == 0) {
+			return "X4WRZ8";
+		} else {
+			return null;
 		}
-		if (!("").equals(theme) || !("").equals(sender) || !("").equals(addressee) || !("").equals(sendTime)) {
-			//向抓取邮件的表中插入抓取到数据
-			dbDao.insert(
-					TGrabMailEntity.class,
-					Chain.make("theme", theme).add("sender", sender).add("addressee", addressee)
-							.add("sendTime", sendTime));
-		}
-		//向抓取文件的表中插入文件名称、文件大小和返回的路径
-		dbDao.insert(TGrabFileEntity.class,
-				Chain.make("fullPath", listURL).add("fileSize", fileSize).add("fileName", theme));
-		return true;
 	}
 
 	/** 
@@ -428,5 +635,4 @@ public class MailScrabService extends BaseService {
 			return MimeUtility.decodeText(encodeText);
 		}
 	}
-
 }

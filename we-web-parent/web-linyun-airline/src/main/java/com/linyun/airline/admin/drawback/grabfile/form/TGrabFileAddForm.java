@@ -45,12 +45,15 @@ public class TGrabFileAddForm extends AddForm {
 	private Date updateTime;
 
 	/**层级*/
-	private Integer naval;
+	private Integer level;
 
 	/**完整路径*/
 	private String fullPath;
 
 	/**序号*/
 	private Integer sort;
+
+	/**序号*/
+	private Integer groupType;
 
 }

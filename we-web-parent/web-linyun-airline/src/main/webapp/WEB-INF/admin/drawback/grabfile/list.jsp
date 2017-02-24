@@ -35,12 +35,15 @@
                      <button type="button" class="btn btn-primary btn-sm right noneBtn none">移动到</button>
                      <button type="button" class="btn btn-primary btn-sm right batchBtn">批量操作</button>
                      <button id="folderId" name="createFolder" onclick='newFolder();' type="button" class="btn btn-primary btn-sm right carrynews">新建文件夹</button>
+                     <button id="grabMailId" name="grabMailName" type="button" class="btn btn-primary btn-sm right">邮件抓取</button>
                      <button id="uploadFile" name="fileID" type="file" class="btn btn-primary btn-sm right">上传</button>
                      <button type="button" class="btn btn-primary btn-sm right returnBtn none">返回上一级</button>
                      <button type="button" class="btn btn-primary btn-sm right indexBtn none">返回首页</button>
                    </div>
                    
                    <input id="currentDirId" type="hidden" value="0"/>
+                   <input type="hidden" name="fileName" id="fileName" />
+				   <input type="hidden" id="url">
                    <ol class="breadcrumb">
                         <li><a href="${base}/admin/drawback/grabfile/list.html"><i class="fa fa-folder-open"></i> 全部文件</a></li>
                    </ol>
@@ -83,7 +86,7 @@
                             <th>退税状态</th>
                             <th>实收单价(含操作费)</th>
                             <th>实收合计(含操作费)</th>
-                            <th>代理费(与前一个不同?)</th>
+                            <th>代理费</th>
                             <th>入澳时间</th>
                             <th>出澳时间</th>
                             <th>操作</th>
@@ -117,7 +120,6 @@ $(function () {
         $('.checkTd').toggle();
     });
   	//复选框选择点击操作
-    //控制复选框
 //控制复选框
 $(".checkTh").click(function () {
     var check = $(this).prop("checked");
@@ -189,10 +191,32 @@ $(".checkTh").click(function () {
     		//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
     		//下面的例子演示如何获取到vid
     		'onUploadSuccess' : function(file, data, response) {
-    			$("#completeFileName").html("");
     			var jsonobj = eval('(' + data + ')');
-    			$("#fileUrl").val(data);
-    			$("#fileName").val(file.name);
+    			var url  = jsonobj;//地址
+    			var fileName = file.name;//文件名称
+    			var id = $("input#currentDirId").val();//文件pid
+    			$.ajax({
+    				cache : false,
+    				type : "POST",
+    				data : {
+    					url : url,
+    					fileName : fileName,
+    					id:id
+    				},
+    				dataType : 'json',
+    				url : '${base}/admin/drawback/grabfile/saveUploadFile.html',
+    				error : function(request) {
+    					layer.msg('上传失败!');
+    				},
+    				success : function(data) {
+    					layer.load(1, {
+    						 shade: [0.1,'#fff'] //0.1透明度的白色背景
+    					});
+    				    window.parent.successCallback('6');
+    				    parent.location.reload(); // 父页面刷新
+    				}
+    			});
+    			
     			var innerHtml = "";
                 if (response) {
                     innerHtml = "<div><a id='downloadA' href='#' download='"+file.name+"' onclick='downloadFile("
@@ -200,7 +224,6 @@ $(".checkTh").click(function () {
                             + ");' >"
                             + file.name
                             + "</a>&nbsp;&nbsp;<span>上传成功</span>&nbsp;&nbsp;&nbsp;&nbsp;"
-                            + "<input type='button' class='delete' onclick='deleteFile();' value='删除'><input type='hidden' name='${attachIds}' value='"
                             + data + "'></div>";
                 } else {
                     innerHtml = "<div>该附件上传失败，请重新上传</div>";
@@ -297,6 +320,25 @@ function batchDelete(){
 $(function() {
 	$("[data-toggle='tooltip']").tooltip();
 });
+
+//邮件抓取入口
+$('#grabMailId').click(function(){
+	$.ajax({
+		cache : false,
+		type : "POST",
+		url : '${base}/admin/drawback/grabfile/grabMail.html',
+		error : function(request) {
+			layer.msg('抓取失败!');
+		},
+		success : function(data) {
+			layer.load(1, {
+				 shade: [0.1,'#fff'] //0.1透明度的白色背景
+			});
+		    window.parent.successCallback('5');
+		    parent.location.reload(); // 父页面刷新
+		}
+	});
+});
 //事件提示
 function successCallback(id){
 	  rebatesEamilTable.ajax.reload(null,false);
@@ -307,6 +349,12 @@ function successCallback(id){
 		  layer.msg("修改文件夹名称成功!",{time: 1000, icon:1});
 	  }else if(id == '3'){
 		  layer.msg("删除成功!",{time: 1000, icon:1});
+	  }else if(id == '4'){
+		  layer.msg("移动成功!",{time: 1000, icon:1});
+	  }else if(id == '5'){
+		  layer.msg("抓取成功!",{time: 1000, icon:1});
+	  }else if(id == '6'){
+		  layer.msg("上传成功!",{time: 1000, icon:1});
 	  }
   }
 </script>
@@ -357,13 +405,13 @@ var dataSet = [
 	                    		//return '<td class="checkchild"><input type="checkbox" value='+row.id+'></td>';
 	                    	}
 						},
-	                    {"data": "foldername", "bSortable": false,
+	                    {"data": "filename", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var foldername = row.foldername;
-	                    		if(null==foldername || ""==foldername){
+	                    		var filename = row.filename;
+	                    		if(null==filename || ""==filename){
 	                    			return null;
 	                    		}
-	                    		return '<a href="javascript:createFodler('+row.id+',\''+foldername+'\');">'+foldername+'</a>';
+	                    		return '<a href="javascript:createFodler('+row.id+',\''+filename+'\');">'+filename+'</a>';
 	                    	}
 	                    },
 	                    {"data": "createtime", "bSortable": true,
@@ -380,7 +428,7 @@ var dataSet = [
 	                    		if(null==filesize || ""==filesize){
 	                    			return null;
 	                    		}
-	                    		return filesize;
+	                    		return filesize+"k";
 	                    	}	
 	                    }
 	            ],
@@ -390,7 +438,7 @@ var dataSet = [
 	                render: function(data, type, row, meta) {
 	                	var editFolder = '<a href="javascript:editFolder('+row.id+');" style="cursor:pointer;">编辑&nbsp;&nbsp;&nbsp;</a>';
 	                	var download = '<a href="${base}/admin/drawback/grabfile/downLoadZipFile.html" style="cursor:pointer;">&nbsp;&nbsp;下载&nbsp;&nbsp;&nbsp;</a>';
-	                	var move  = '<a href="javascript:move();" style="cursor:pointer;">&nbsp;&nbsp;移动到&nbsp;&nbsp;</a>';
+	                	var move  = '<a href="javascript:fileMove('+row.id+');" style="cursor:pointer;">&nbsp;&nbsp;移动到&nbsp;&nbsp;</a>';
                    		if(1==row.status){
                    			var judge = '<a href="javascript:physicalDelete('+row.id+',2);" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
                    		}else{
@@ -404,18 +452,55 @@ var dataSet = [
 		rebatesEamilTable = $('#rebatesEamilTable').DataTable(options);
 	}
 	//当点击进入下一级的时候重新加载表格
-	function createFodler(pid,foldername){
+	function createFodler(pid,filename){
 		options.ajax.data.parentId=pid;
 		var param = {parentId:pid};
 		//$('#rebatesEamilTable').empty(); 
 		//rebatesEamilTable.ajax.reload(null,false);
 		rebatesEamilTable.settings()[0].ajax.data = param;
 		rebatesEamilTable.ajax.reload();
-		$("input#currentDirId").val(pid);
-		$("ol.breadcrumb").find("li").each(function(){
-			$(this).removeClass("active");
+		var exist=false;
+		$("ol.breadcrumb").find("li").each(function(index){
+			var currenuId = $(this).attr("id");
+			if(currenuId == pid){
+				exist = true ;
+				return false;
+			}
 		});
-		$("ol.breadcrumb").append('<li class="active"><a href="${base}/admin/drawback/grabfile/list.html?parentId='+pid+'">'+foldername+'</a></li>');
+		
+		if(!exist){
+			$("ol.breadcrumb").find("li").each(function(){
+				$(this).removeClass("active");
+			});
+			$("ol.breadcrumb").append('<li id=\''+pid+'\' class="active"><a onclick="javascript:createFodler(\''+pid+'\',\''+filename+'\');"  href="#">'+filename+'</a></li>');
+		}else{
+			//找到指定元素的下标
+			var selectIndex = 0;
+			$("ol.breadcrumb").find("li").each(function(index){
+				var currenuId = $(this).attr("id");
+				if(currenuId == pid){
+					selectIndex=index;
+					return false;
+				}
+			});
+			
+			//删除大于该下标的其他元素
+			$("ol.breadcrumb").find("li").each(function(index){
+				if(index > selectIndex){
+					$(this).remove(); 
+				}
+			});
+			var length = $("ol.breadcrumb").find("li").length;
+			$("ol.breadcrumb").find("li").each(function(index){
+				if(index != (length-1)){
+					$(this).removeClass("active");
+				}
+			});
+		}
+		
+		
+		//修改当前所在文件夹id
+		$("input#currentDirId").val(pid);
 	}
 	
 	//新建子文件夹
@@ -460,8 +545,25 @@ var dataSet = [
 	}
 	
 	//移动到
-	function move(){
-		
+	function fileMove(id){
+		$.ajax({
+			cache : false,
+			type : "POST",
+			url : '${base}/admin/drawback/grabfile/fileMove.html',
+			data : {
+				id:id
+			},
+			error : function(request) {
+				layer.msg('移动失败!');
+			},
+			success : function(data) {
+				layer.load(1, {
+					 shade: [0.1,'#fff'] //0.1透明度的白色背景
+				});
+			    window.parent.successCallback('4');
+			    parent.location.reload(); // 父页面刷新
+			}
+		});
 	}
 	$(function() {
 		initDatatable();

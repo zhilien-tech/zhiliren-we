@@ -25,7 +25,7 @@
 									<div class="form-group row">
 										<div class="col-sm-8 padding">
 										<label class="col-sm-3 text-right padding">上级文件夹：</label>
-											<input id="parentId" name="parentId" value="${obj.dirfolder.folderName }" class="form-control input-sm inpImpWid" style="width:200px;"/>
+											<input id="parentId" name="parentId" value="${obj.dirfolder.fileName }" class="form-control input-sm inpImpWid" style="width:200px;"/>
 										</div>
 									</div>
 								</div> --%>
@@ -33,7 +33,7 @@
                         <div class="form-group row">
                             <div class="col-sm-8 padding">
                         		<label class="col-sm-3 text-right padding">文件名：</label>
-                            	<input id="folderId" name="folderName" class="form-control input-sm inpImpWid" style="width:200px;" value="${obj.dirfolder.folderName}"/><span class="prompt">*</span>
+                            	<input id="folderId" name="fileName" class="form-control input-sm inpImpWid" style="width:200px;" value="${obj.dirfolder.fileName}"/><span class="prompt">*</span>
                             </div>
                         </div>
                     </div>
@@ -56,7 +56,7 @@ function submitInfo(){
 		data : 
 		{
 			id:'${obj.dirfolder.id}',
-			folderName:$('input[name="folderName"]').val()
+			fileName:$('input[name="fileName"]').val()
 		},
 		url: '${base}/admin/drawback/grabfile/update.html',
            success: function (data) { 
