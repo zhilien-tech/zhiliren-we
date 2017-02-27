@@ -19,6 +19,7 @@ import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.receivePayment.form.InlandPayListSearchSqlForm;
+import com.linyun.airline.admin.receivePayment.form.TSaveInlandPayAddFrom;
 import com.linyun.airline.admin.receivePayment.service.ReceivePayService;
 import com.linyun.airline.entities.TUserEntity;
 
@@ -30,6 +31,8 @@ public class ReceivePayModule {
 
 	@Inject
 	private ReceivePayService receivePayService;
+
+	private Long payCurrency;
 
 	/**
 	 * 跳转到 收付款页面
@@ -76,7 +79,16 @@ public class ReceivePayModule {
 
 	/**
 	 * 
-	 *會計付款分页
+	 * 确认付款
+	 */
+	@At
+	public Object saveInlandPay(@Param("..") final TSaveInlandPayAddFrom form) {
+		return receivePayService.saveInlandPay(form);
+	}
+
+	/**
+	 * 
+	 *會計收款分页
 	 */
 	@At
 	public Object inlandRecList(HttpSession session) {

@@ -205,7 +205,7 @@ $("#inlandPaySearchBtn").on('click', function () {
 			        "orderStatus":orderStatus,
 			        "leaveBeginDate":inlandPayBeginDate,
 			        "leaveEndDate":inlandPayEndDate,
-			"name": inlandPayInput
+					"name": inlandPayInput
 			    };
 	    inlandPayTable.settings()[0].ajax.data = param;
 	inlandPayTable.ajax.reload();

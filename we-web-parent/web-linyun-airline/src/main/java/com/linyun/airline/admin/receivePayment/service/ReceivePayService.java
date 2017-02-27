@@ -9,9 +9,11 @@ package com.linyun.airline.admin.receivePayment.service;
 import static com.uxuexi.core.common.util.ExceptionUtil.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
 import org.nutz.dao.pager.Pager;
@@ -22,7 +24,9 @@ import org.nutz.json.Json;
 
 import com.google.common.base.Splitter;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
+import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
 import com.linyun.airline.admin.receivePayment.form.InlandPayListSearchSqlForm;
+import com.linyun.airline.admin.receivePayment.form.TSaveInlandPayAddFrom;
 import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.web.base.page.OffsetPager;
 import com.uxuexi.core.web.base.service.BaseService;
@@ -79,5 +83,59 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		}
 
 		return Json.toJson(list);
+	}
+
+	/**
+	 * (保存  确认付款页面)
+	 *
+	 * @param inlandPayIds
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object saveInlandPay(TSaveInlandPayAddFrom form) {
+
+		List<TPayEntity> payList = new ArrayList<TPayEntity>();
+
+		Integer bankComp = form.getBankComp();
+		Integer cardName = form.getCardName();
+		Integer cardNum = form.getCardNum();
+		Integer payAddress = form.getPayAddress();
+		Integer purpose = form.getPurpose();
+		Integer fundType = form.getFundType();
+		Date payDate = form.getPayDate();
+		Double payFees = form.getPayFees();
+		Double payMoney = form.getPayMoney();
+		Integer currency = form.getPayCurrency();
+		Integer isInvioce = form.getIsInvioce();
+		String receiptUrl = form.getReceiptUrl();
+		String payIds = form.getPayIds();
+		String payIdStr = payIds.substring(0, payIds.length() - 1);
+
+		//付款水单 集合
+		List<TPayReceiptEntity> payReceiptList = new ArrayList<TPayReceiptEntity>();
+		TPayReceiptEntity payReceiptEntity = new TPayReceiptEntity();
+
+		//付款集合
+		List<TPayEntity> updateList = new ArrayList<TPayEntity>();
+		List<TPayEntity> payEntityList = dbDao.query(TPayEntity.class, Cnd.where("id", "in", payIdStr), null);
+		for (TPayEntity payEntity : payEntityList) {
+			payEntity.setPayAddress(payAddress);
+			payEntity.setProposer(purpose);
+			payEntity.setFundType(fundType);
+			payEntity.setPayDate(payDate);
+			payEntity.setPayFees(payFees);
+			payEntity.setPayMoney(payMoney);
+			payEntity.setPayCurrency(currency);
+			payEntity.setIsInvioce(isInvioce);
+			updateList.add(payEntity);
+
+			payReceiptEntity.setId(payEntity.getId());
+			payReceiptEntity.setReceiptUrl(receiptUrl);
+			payReceiptList.add(payReceiptEntity);
+		}
+
+		//添加水单表
+		dbDao.insert(payReceiptList);
+
+		return dbDao.update(updateList);
 	}
 }

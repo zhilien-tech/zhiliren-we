@@ -30,7 +30,7 @@ ORDER BY
 	
 /*receivePay_pay_Ids*/
 SELECT
-	pi.id,
+	p.id,
 	uo.ordersnum orderNum,
 	pi.PNR pnrNum,
 	fi.cusgroupnum custGroupNum,
