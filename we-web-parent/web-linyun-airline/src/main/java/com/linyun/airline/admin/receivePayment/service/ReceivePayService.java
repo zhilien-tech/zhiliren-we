@@ -8,6 +8,7 @@ package com.linyun.airline.admin.receivePayment.service;
 
 import static com.uxuexi.core.common.util.ExceptionUtil.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,9 @@ import org.nutz.dao.pager.Pager;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.Daos;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.json.Json;
 
+import com.google.common.base.Splitter;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.form.InlandPayListSearchSqlForm;
 import com.uxuexi.core.common.util.MapUtil;
@@ -56,5 +59,25 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		map.put("recordsTotal", pager.getPageSize());
 		map.put("recordsFiltered", pager.getRecordCount());
 		return map;
+	}
+
+	/**
+	 * (确认付款页面)
+	 *
+	 * @param inlandPayIds
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object toConfirmPay(String inlandPayIds) {
+		Sql sql = Sqls.create(sqlManager.get("receivePay_pay_Ids"));
+		List<Record> list = new ArrayList<Record>();
+		Iterable<String> split = Splitter.on(",").split(inlandPayIds);
+		Record record = new Record();
+		for (String pnrId : split) {
+			sql.params().set("pnrId", pnrId);
+			record = dbDao.fetch(sql);
+			list.add(record);
+		}
+
+		return Json.toJson(list);
 	}
 }

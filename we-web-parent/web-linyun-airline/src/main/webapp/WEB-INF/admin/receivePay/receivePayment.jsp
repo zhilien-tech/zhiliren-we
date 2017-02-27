@@ -132,16 +132,17 @@
 															</div>
 															<div class="col-md-3">
 																<!-- 付款 按钮 -->
-																<button type="button" class="btn btn-primary btn-sm fuKuanBtn1">付款</button>
+																<button id="inlandPayClick" type="button" class="btn btn-primary btn-sm fuKuanBtn1">付款</button>
 															</div>
 														</div>
 													</form>
 												</div>
 												<div class="box-body">
 													<table id="inlandPayTable" class="table table-bordered table-hover">
+														<input id="checkedboxPayValue" name="checkedboxPayValue" type="hidden">
 														<thead>
 															<tr>
-																<td class="checkTh"><input type="checkbox"></td>
+																<td class="checkTh"><input type="checkbox" class="checkBoxPayAll"></td>
 																<th>订单号</th>
 																<th>PNR</th>
 																<th>出发日期</th>

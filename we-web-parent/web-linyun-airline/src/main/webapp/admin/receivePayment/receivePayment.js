@@ -116,45 +116,6 @@ $(".TabUL li").click(function(){
 	$(this).addClass("tabStyle").siblings().removeClass('tabStyle');
 });
 
-//内陆跨海 收款 弹框
-$('.fuKuanBtn1').click(function(){
-	layer.open({
-		type: 2,
-		title:false,
-		skin: false, //加上边框
-		closeBtn:false,//默认 右上角关闭按钮 是否显示
-		shadeClose:true,
-		area: ['850px', '650px'],
-		content: ['${base}/admin/receivePay/confirmReceive.html','no']
-	});
-});
-
-//内陆跨海 付款 弹框
-$('.fuKuanBtn').click(function(){
-	layer.open({
-		type: 2,
-		title:false,
-		skin: false, //加上边框
-		closeBtn:false,//默认 右上角关闭按钮 是否显示
-		shadeClose:true,
-		area: ['850px', '650px'],
-		content: ['confirmPay.html','no']
-	});
-});
-
-
-//内陆跨海 收款 弹框
-$('.invoiceA').click(function(){
-	layer.open({
-		type: 2,
-		title:false,
-		skin: false, //加上边框
-		closeBtn:false,//默认 右上角关闭按钮 是否显示
-		shadeClose:true,
-		area: ['850px', '525px'],
-		content: ['confirmReceive.html','no']
-	});
-});
 
 //内陆跨海 table下checkbox全选 点击操作
 $(".checkTh input").click(function() {

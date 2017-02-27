@@ -57,8 +57,8 @@ public class ReceivePayModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object confirmPay() {
-		return null;
+	public Object confirmPay(@Param("inlandPayIds") String inlandPayIds) {
+		return receivePayService.toConfirmPay(inlandPayIds);
 	}
 
 	/**

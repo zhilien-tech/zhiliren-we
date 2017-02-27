@@ -15,49 +15,24 @@
 		<div class="modal-header boderButt">
 			<button type="button" class="btn btn-primary right btn-sm">取消</button>
 			<input type="submit" id="submit" class="btn btn-primary right btn-sm" value="提交" />
-			<h4>收款</h4>
+			<h4>付款</h4>
 		</div>
 		<div class="modal-body" style="height: 483px; overflow-y: auto;">
-			<table id="receivablesTable" class="table table-bordered table-hover">
+			<table id="inlandConfirmPayTable" class="table table-bordered table-hover">
 				<thead>
 					<tr>
 						<th>订单号</th>
-						<th>开票日期</th>
+						<th>PNR</th>
 						<th>客户团号</th>
-						<th>客户</th>
-						<th>联系人</th>
+						<th>收款单位</th>
+						<th>开票日期</th>
+						<th>人数</th>
 						<th>开票人</th>
 						<th>金额</th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr>
-						<td>2016121200001</td>
-						<td>05Aug26</td>
-						<td>JCH-161210</td>
-						<td>JQ</td>
-						<td>吕超容</td>
-						<td>周勇</td>
-						<td>9650.00</td>
-					</tr>
-					<tr>
-						<td>2016121200001</td>
-						<td>05Aug26</td>
-						<td>JCH-161210</td>
-						<td>JQ</td>
-						<td>吕超容</td>
-						<td>周勇</td>
-						<td>9650.00</td>
-					</tr>
-					<tr>
-						<td>2016121200001</td>
-						<td>05Aug26</td>
-						<td>JCH-161210</td>
-						<td>JQ</td>
-						<td>吕超容</td>
-						<td>周勇</td>
-						<td>9650.00</td>
-					</tr>
+				<tbody id="inlandConfirmPayTbody">
+				
 				</tbody>
 			</table>
 			<table border="0" class="selectTable">
@@ -82,8 +57,71 @@
 					<td>3333.33</td>
 				</tr>
 			</table>
-			<label class="labelShuidan">水单</label>
-			<div class="bankSlipImg SDdiv"></div>
+			<table class="payTable2">
+                <tr>
+                  <td>国内外：</td>
+                  <td>
+                    <select class="form-control input-sm">
+                        <option>国内</option>
+                        <option>境外</option>
+                    </select>
+                  </td>
+                  <td>用途：</td>
+                  <td>
+                    <select class="form-control input-sm">
+                        <option>预付机票款</option>
+                        <option>机票款</option>
+                        <option>ETEM使用费</option>
+                        <option>反税款</option>
+                        <option>押金</option>
+                    </select>
+                  </td>
+                  <td>资金种类：</td>
+                  <td>
+                     <select class="form-control input-sm">
+                        <option>对公</option>
+                        <option>现金</option>
+                        <option>银行卡</option>
+                        <option>POS</option>
+                     </select>
+                  </td>
+                  <td>付款时间：</td>
+                  <td><input type="text" class="form-control input-sm"></td>
+                </tr>
+                <tr>
+                  <td>手续费：</td>
+                  <td><input type="text" class="form-control input-sm"></td>
+                  <td>金额：</td>
+                  <td><input type="text" class="form-control input-sm"></td>
+                  <td colspan="2"><input type="text" class="form-control input-sm textIpnu"  disabled="disabled"></td>
+                  <td class="bj">币种：</td>
+                  <td>
+                      <select class="form-control input-sm">
+                      	<option>CNY</option>
+                      	<option>USD</option>
+                     	<option>AOB</option>
+                      	<option>AUD</option>
+                      </select>
+				  </td>
+                </tr>
+                <tr>
+                  <td>发票：</td>
+                  <td>
+                    <select class="form-control input-sm">
+                        <option>有</option>
+                        <option>无</option>
+                    </select>
+                  </td>
+                  <td>申请人：</td>
+                  <td><input type="text" class="form-control input-sm" disabled="disabled"></td>
+                  <td>审批人：</td>
+                  <td><input type="text" class="form-control input-sm" disabled="disabled" value="侯小凌"></td>
+                  <td>审批结果：</td>
+                  <td><input type="text" class="form-control input-sm" disabled="disabled"></td>
+                </tr>
+              </table>
+		      <button type="button" class="btn btn-primary btn-sm bankSlipBtn">上传水单</button>
+              <div class="bankSlipImg"></div>
 		</div>
 	</div>
 	<!--JS 文件-->
@@ -96,5 +134,14 @@
 	<!-- FastClick -->
 	<script src="${base}/public/dist/js/app.min.js"></script>
 	<!-- AdminLTE App -->
+	<script type="text/javascript">
+		var tbodyHtml = "";
+		$.each(${obj}, function (index, obj) {
+			var trs = "";
+			trs = '<tr><td>'+ obj.ordernum +'</td><td>'+ obj.pnrnum +'</td><td>'+ obj.custgroupnum +'</td><td></td><td>'+ obj.billdate +'</td><td>'+ obj.peoplecount +'</td><td>'+ obj.drawer +'</td><td>'+ obj.saleprice +'</td></tr>';
+			tbodyHtml += trs;
+		});
+		$("#inlandConfirmPayTbody").append(tbodyHtml);
+	</script>
 </body>
 </html>
