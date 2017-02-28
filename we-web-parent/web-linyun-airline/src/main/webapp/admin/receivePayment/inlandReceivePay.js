@@ -1,4 +1,4 @@
-//会计   付款datatable
+//会计   未付款datatable
 var inlandPayTable;
 function initPayDataTable(){
 	inlandPayTable = $("#inlandPayTable").DataTable({
@@ -51,11 +51,11 @@ function initPayDataTable(){
 		            {"data": "peoplecount", "bSortable": false},
 		            {"data": "saleprice", "bSortable": false},
 		            {"data": "currency", "bSortable": false},
-		            {"data": "currency", "bSortable": false},
+		            {"data": "", "bSortable": false},
 		            {"data": "orderstatus", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var s = '';
-		            		if(data == '1'){
+		            		if(data == '3'){
 		            			s = '已付款';
 		            		}else{
 		            			s = '付款中';
@@ -64,7 +64,7 @@ function initPayDataTable(){
 		            	}
 		            },
 		            {"data": "drawer", "bSortable": false}
-
+		            
 		            ],
 		            "infoCallback": function (settings, start, end, max, total, pre) {
 		            	var length = $(".checkBoxPayChild:checked").length;
@@ -78,6 +78,96 @@ function initPayDataTable(){
 		            }
 
 	});
+}
+
+
+//会计   已付款datatable
+var inlandPayEdTable;
+function initPayEdDataTable(){
+	inlandPayEdTable = $("#inlandPayEdTable").DataTable({
+		"searching":false,
+		"lengthChange": false,
+		"processing": true,
+		"serverSide": true,
+		"stripeClasses": [ 'strip1','strip2' ],
+		"language": {
+			"url": BASE_PATH + "/public/plugins/datatables/cn.json"
+		},
+		"ajax": {
+			"url": BASE_PATH + "/admin/receivePay/inlandPayList.html",
+			"type": "post",
+			"data": function (d) {
+
+			}
+		},
+		"columns": [
+		            {"data": "ordernum", "bSortable": false},
+		            {"data": "pnrnum", "bSortable": false},
+		            {"data": "leavedate", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
+		            		var week = ['MO','TU','WE','TH','FR','SA','SU'];
+		            		var ldate = new Date(data);
+		            		var result = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
+		            		return result;
+		            	}
+		            },
+		            {"data": "peoplecount", "bSortable": false},
+		            {"data": "saleprice", "bSortable": false},
+		            {"data": "currency", "bSortable": false},
+		            {"data": "", "bSortable": false},
+		            {"data": "orderstatus", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var s = '';
+		            		if(data == '3'){
+		            			s = '已付款';
+		            		}else{
+		            			s = '付款中';
+		            		}
+		            		return s;
+		            	}
+		            },
+		            {"data": "drawer", "bSortable": false},
+		            {"data": "", "bSortable": false},
+		            {"data": "", "bSortable": false}
+		            ],
+		            "infoCallback": function (settings, start, end, max, total, pre) {
+		            	var length = $(".checkBoxPayChild:checked").length;
+		            	if(inlandPayEdTable.page.len() == length){
+		            		$(".checkBoxPayAll").prop("checked", true);
+		            	}else{
+		            		$(".checkBoxPayAll").prop("checked", false);
+
+		            	}
+		            	return '显示第 '+start+' 至 '+end+' 条结果，共'+total+' 条 (每页显示 '+max+' 条)'
+		            }
+
+	});
+}
+
+$("#inlandPaySelect").change(function(){
+	var selectEd = $(this).val();
+	$("#box-body").html("");
+	if(selectEd == 2){
+		destroyDatetable($("#inlandPayEdTable"));
+		$("#inlandPayTable").show();
+		$("#inlandPayEdTable").hide();
+		initPayDataTable();
+	}else{
+		destroyDatetable($("#inlandPayTable"));
+		$("#inlandPayClick").hide();
+		$("#inlandPayTable").hide();
+		$("#inlandPayEdTable").show();
+		initPayEdDataTable();
+	}
+	$('#inlandPaySearchBtn').click();
+});
+
+//销毁datatable
+function destroyDatetable(obj){
+	var datatable = obj.dataTable()
+	datatable.fnClearTable(); //清空一下table
+	datatable.fnDestroy(); //还原初始化了的datatable
 }
 
 
@@ -225,7 +315,17 @@ $("#inlandPaySearchBtn").on('click', function () {
 });*/
 
 $(function () {
-	initPayDataTable();
+	var selectEd = $('#inlandPaySelect').val();
+	if(selectEd == 2){
+		$("#inlandPayTable").show();
+		$("#inlandPayEdTable").hide();
+		initPayDataTable();
+	}else{
+		$("#inlandPayTable").hide();
+		$("#inlandPayEdTable").show();
+		initPayEdDataTable();
+	}
+	$('#inlandPaySearchBtn').click();
 });
 
 

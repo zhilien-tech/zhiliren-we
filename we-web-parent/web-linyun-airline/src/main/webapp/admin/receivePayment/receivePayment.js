@@ -1,4 +1,4 @@
-$('#payTable').dataTable({//内陆跨海 收款 table
+/*$('#payTable').dataTable({//内陆跨海 收款 table
 	"paging": true,
 	"lengthChange": false,
 	"searching": false,
@@ -53,7 +53,7 @@ $('#receiveTable').dataTable({//内陆跨海 付款 table
 	            		   "sLast": "尾页"  
 	            	   }   
 	               }    
-});
+});*/
 
 $('#GJpayTable').dataTable({//国际 收款 table
 	"paging": true,

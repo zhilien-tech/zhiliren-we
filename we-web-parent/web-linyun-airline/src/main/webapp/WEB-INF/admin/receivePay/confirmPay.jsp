@@ -6,19 +6,18 @@
 <head>
 <meta charset="UTF-8">
 <title>确认付款</title>
-<link rel="stylesheet"
-	href="${base}/public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
-<link rel="stylesheet" type="text/css"
-	href="${base}/public/dist/css/receivePayment.css">
+<link rel="stylesheet" type="text/css" href="${base}/public/dist/css/receivePayment.css">
+<link href="${base }/public/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
 <!--本页面style-->
 </head>
 <body>
 <form id="confirmInlandPayForm">
 	<div class="modal-top">
 		<div class="modal-header boderButt">
-			<button type="button" class="btn btn-primary right btn-sm">取消</button>
-			<input type="submit" id="submit" onclick="confirmPayClick();" class="btn btn-primary right btn-sm" value="确定付款" />
+			<button type="button" id="closePayWindow" class="btn btn-primary right btn-sm">取消</button>
+			<input type="button" id="submit" onclick="confirmPayClick();" class="btn btn-primary right btn-sm" value="确定付款" />
 			<h4>付款</h4>
 		</div>
 		<div class="modal-body" style="height: 600px; overflow-y: auto;">
@@ -85,7 +84,7 @@
 							<option value=4>POS</option>
 					</select></td>
 					<td>付款时间：</td>
-					<td><input id="payDate" name="payDate" type="text" class="form-control input-sm"></td>
+					<td><input id="payDate" name="payDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" placeholder="2017-02-20" class="form-control input-sm"></td>
 				</tr>
 				<tr>
 					<td>手续费：</td>
@@ -93,7 +92,7 @@
 					<td>金额：</td>
 					<td><input id="payMoney" name="payMoney" type="text" class="form-control input-sm"></td>
 					<td colspan="2">
-						<input type="text" class="form-control input-sm textIpnu" disabled="disabled"></td>
+						<input id="chineseMoney" type="text" class="form-control input-sm textIpnu" disabled="disabled"></td>
 					<td class="bj">币种：</td>
 					<td><select id="payCurrency" name="payCurrency" class="form-control input-sm">
 							<option value=1>CNY</option>
@@ -115,7 +114,7 @@
 					<td><input id="approveResult" name="approveResult" type="text" class="form-control input-sm" disabled="disabled"></td>
 				</tr>
 			</table>
-			<button type="button" class="btn btn-primary btn-sm bankSlipBtn">上传水单</button>
+			<button id="payIds" name="payIds" type="file" class="btn btn-primary btn-sm bankSlipBtn">上传水单</button>
 			<input id="receiptUrl" name="receiptUrl" type="hidden" ><!-- 水单url -->
 			<div class="bankSlipImg"></div>
 		</div>
@@ -126,13 +125,18 @@
 	<script type="text/javascript">
 		var BASE_PATH = '${base}';
 	</script>
+	<!-- My97DatePicker -->
+	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
+	<script src="${base}/admin/receivePayment/receivePayment.js"></script>
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
 	<script src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 	<!-- SlimScroll -->
 	<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
+	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
 	<!-- FastClick -->
 	<script src="${base}/public/dist/js/app.min.js"></script>
+	<script src="${base}/common/js/layer/layer.js"></script>
 	
 	<!-- 确认付款列表 -->
 	<script type="text/javascript">

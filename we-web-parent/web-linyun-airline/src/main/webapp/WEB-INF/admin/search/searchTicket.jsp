@@ -305,7 +305,7 @@
 												<input id="returnDatepicker0" name="returndate0"
 												onkeypress="onkeyEnter();" type="text"
 												class="form-control input-sm"
-												onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'outDatepicker0\')}',maxDate:'#F{$dp.$D(\'outDatepicker0\',{d:15})}'})"
+												onFocus="WdatePicker({startDate:'%y', dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'outDatepicker0\')}',maxDate:'#F{$dp.$D(\'outDatepicker0\',{d:15})}'})"
 												placeholder="2017-01-15">
 											</td>
 											<td class="addIconTd addSingleIconTd none gjAdd"><i
