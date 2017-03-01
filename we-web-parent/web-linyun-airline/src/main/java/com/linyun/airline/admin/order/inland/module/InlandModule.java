@@ -216,4 +216,13 @@ public class InlandModule {
 	public Object listPayData(@Param("..") PayApplyListForm sqlform) {
 		return inlandService.listPage4Datatables(sqlform);
 	}
+
+	/**
+	 * 保存收款信息
+	 */
+	@At
+	@POST
+	public Object saveSeaInvoice(HttpServletRequest request) {
+		return inlandService.saveSeaInvoice(request);
+	}
 }

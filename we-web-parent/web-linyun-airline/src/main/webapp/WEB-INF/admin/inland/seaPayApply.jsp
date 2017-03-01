@@ -34,6 +34,18 @@
                     </tr>
                   </thead>
                   <tbody>
+                  	<c:forEach var="one" items="${obj.orders }">
+                		<tr>
+                			<td>${one.ordersnum }</td>
+                			<td>${one.pnr }</td>
+                			<td>${one.cusgroupnum }</td>
+                			<td>${one.shortName }</td>
+                			<td>${one.billingdate }</td>
+                			<td>${one.peoplecount }</td>
+                			<td>${one.issuer }</td>
+                			<td>${one.salespricesum }</td>
+                		</tr>
+                	</c:forEach>
                   </tbody>
          </table>
          <div class="form-group row"><!--用途/币种-->
@@ -50,10 +62,9 @@
                   <label class="col-sm-1 text-right padding">币种：</label>
                   <div class="col-sm-2 padding">
                     <select class="form-control input-sm">
-                      <option>人民币</option>
-                      <option>澳币</option>
-                      <option>欧币</option>
-                      <option>美元币</option>
+                      <c:forEach var="one" items="${obj.bzSelect }">
+                        	<option value="${one.dictCode }">${one.dictName }</option>
+                        </c:forEach>
                     </select>
                   </div>
          </div><!--end 用途/币种-->

@@ -8,16 +8,18 @@
     <title>收款</title>
 	<link rel="stylesheet" href="${base }/public/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/AdminLTE.css">
+	<link href="${base }/public/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="${base }/public/dist/css/inlandCross.css"><!--本页style-->
 </head>
 <body>
 	<div class="modal-top">
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
-            <input type="submit" id="submit" class="btn btn-primary right btn-sm" value="提交"/>
+            <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="commitInvoice();" value="提交"/>
             <h4>收款</h4>
           </div>
           <div class="modal-body" style="height: 483px;overflow-y:auto; ">
+          	<input type="hidden" id="ids"  name="ids" value="${obj.ids }" >
               <table id="receivablesTable" class="table table-bordered table-hover">
                 <thead>
                   <tr>
@@ -48,31 +50,33 @@
                 <tr>
                   <td>银行：</td>
                   <td>
-                    <select class="form-control input-sm">
+                    <select id="bankcardid" name="bankcardid" class="form-control input-sm">
                         <c:forEach var="one" items="${obj.yhkSelect }">
-                        	<option value="${one.dictCode }">${one.dictName }</option>
+                        	<option value="${one.id }">${one.dictName }</option>
                         </c:forEach>
                     </select>
                   </td>
                   <td>银行卡名称：</td>
                   <td>
-                    <select class="form-control input-sm">
+                    <select id="bankcardname" name="bankcardname" class="form-control input-sm">
                         <option>国际专用卡</option>
                         <option>内陆专用卡</option>
                     </select>
                   </td>
                   <td>卡号：</td>
                   <td>
-                     <select class="form-control input-sm">
+                     <select id="bankcardnum" name="bankcardnum" class="form-control input-sm">
                         <option>6352 7463 3647 756</option>
                      </select>
                   </td>
                   <td>合计：</td>
-                  <td>3333.33</td>
+                  <td id="heji">${obj.sumincome }</td>
                 </tr>
               </table>
-              <button type="button" class="btn btn-primary btn-sm bankSlipBtn">上传水单</button>
-              <div class="bankSlipImg"></div>
+              <input type="hidden" id="sumincome" name="sumincome" value="${obj.sumincome }">
+              <button type="button" id="uploadFile" class="btn btn-primary btn-sm bankSlipBtn">上传水单</button>
+              <input type="hidden" id="billurl" name="billurl" value="">
+              <div class="bankSlipImg" align="center"><img id="shuidanimg" width="400" height="300" alt="" src=""></div>
           </div>
 	</div>
    <!--JS 文件-->
@@ -84,12 +88,81 @@
 	<script src="${base }/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
 	<!--layer -->
     <script src="${base}/common/js/layer/layer.js"></script>
+    <script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
 	<script type="text/javascript">
 	//关闭窗口
     function closewindow(){
 		var index = parent.parent.layer.getFrameIndex(window.name); //获取窗口索引
 		parent.layer.close(index);
 	}
+	//提交订单
+	function commitInvoice(){
+		var ids = $('#ids').val();
+		var bankcardid = $('#bankcardid').val();
+		var bankcardname = $('#bankcardname').val();
+		var bankcardnum = $('#bankcardnum').val();
+		var billurl = $('#billurl').val();
+		var sumincome = $('#sumincome').val();
+		$.ajax({
+	        type: "post",
+	        url: '${base}/admin/inland/saveSeaInvoice.html',
+	        data: {ids:ids,bankcardid:bankcardid,bankcardname:bankcardname,bankcardnum:bankcardnum,billurl:billurl,sumincome:sumincome},
+	        cache: false,
+	        async : false,
+	        success: function (data ,textStatus, jqXHR){
+	        	layer.msg("提交成功！",{time: 2000, icon:1});
+	        	closewindow();
+	        },
+	        error:function (XMLHttpRequest, textStatus, errorThrown) {      
+	            layer.msg("请求失败！",{time: 2000, icon:1});
+	        }
+	     });
+	}
+	
+	//文件上传
+    $('#uploadFile').click(function(){
+    	$.fileupload1 = $('#uploadFile').uploadify({
+    		'auto' : true,//选择文件后自动上传
+    		'formData' : {
+    			'fcharset' : 'uft-8',
+    			'action' : 'uploadimage'
+    		},
+    		'buttonText' : '上传',//按钮显示的文字
+    		'fileSizeLimit' : '3000MB',
+    		'fileTypeDesc' : '文件',//在浏览窗口底部的文件类型下拉菜单中显示的文本
+    		'fileTypeExts' : '*.png; *.jpg; *.bmp; *.gif; *.jpeg;',//上传文件的类型
+    		'swf' : '${base}/public/plugins/uploadify/uploadify.swf',//指定swf文件
+    		'multi' : false,//multi设置为true将允许多文件上传
+    		'successTimeout' : 1800,
+    		'queueSizeLimit' : 100,
+    		'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html',//后台处理的页面
+    		//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
+    		//下面的例子演示如何获取到vid
+    		'onUploadSuccess' : function(file, data, response) {
+    			var jsonobj = eval('(' + data + ')');
+    			var url  = jsonobj;//地址
+    			var fileName = file.name;//文件名称
+    			$('#billurl').val(url);
+    			$('#shuidanimg').attr('src',url);
+    		},
+            //加上此句会重写onSelectError方法【需要重写的事件】
+            'overrideEvents': ['onSelectError', 'onDialogClose'],
+            //返回一个错误，选择文件的时候触发
+            'onSelectError':function(file, errorCode, errorMsg){
+                switch(errorCode) {
+                    case -110:
+                        alert("文件 ["+file.name+"] 大小超出系统限制！");
+                        break;
+                    case -120:
+                        alert("文件 ["+file.name+"] 大小异常！");
+                        break;
+                    case -130:
+                        alert("文件 ["+file.name+"] 类型不正确！");
+                        break;
+                }
+            }
+    	});
+    });
 	</script>
 </body>
 </html>	

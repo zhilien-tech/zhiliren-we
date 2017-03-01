@@ -48,7 +48,10 @@ import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TFinanceInfoEntity;
 import com.linyun.airline.entities.TFlightInfoEntity;
 import com.linyun.airline.entities.TOrderCustomneedEntity;
+import com.linyun.airline.entities.TOrderReceiveEntity;
 import com.linyun.airline.entities.TPnrInfoEntity;
+import com.linyun.airline.entities.TReceiveBillEntity;
+import com.linyun.airline.entities.TReceiveEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.entities.TVisitorInfoEntity;
@@ -1062,6 +1065,14 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.FIT.intKey());
 		cnd.and("tuo.id", "in", ids);
 		List<Record> orders = dbDao.query(sql, cnd, null);
+		//计算合计金额
+		double sumincome = 0;
+		for (Record record : orders) {
+			if (!Util.isEmpty(record.get("incometotal"))) {
+				Double incometotal = (Double) record.get("incometotal");
+				sumincome += incometotal;
+			}
+		}
 		result.put("orders", orders);
 		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
 		try {
@@ -1070,6 +1081,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			e.printStackTrace();
 		}
 		result.put("yhkSelect", yhkSelect);
+		result.put("ids", ids);
+		result.put("sumincome", sumincome);
 		return result;
 
 	}
@@ -1085,7 +1098,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	public Object seaPayApply(HttpServletRequest request) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		String ids = request.getParameter("ids");
-		String sqlString = sqlManager.get("get_sea_payapply_list");
+		String sqlString = sqlManager.get("get_sea_payapply_table_data");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.limit();
 		cnd.and("tuo.ordersstatus", "=", OrderStatusEnum.TICKETING.intKey());
@@ -1100,6 +1113,52 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			e.printStackTrace();
 		}
 		result.put("bzSelect", bzSelect);
+		result.put("ids", ids);
 		return result;
+	}
+
+	/**
+	 * TODO提交收款信息
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object saveSeaInvoice(HttpServletRequest request) {
+		String ids = request.getParameter("ids");
+		String bankcardid = request.getParameter("bankcardid");
+		String bankcardname = request.getParameter("bankcardname");
+		String bankcardnum = request.getParameter("bankcardnum");
+		String billurl = request.getParameter("billurl");
+		String sumincome = request.getParameter("sumincome");
+		TReceiveEntity receiveEntity = new TReceiveEntity();
+		receiveEntity.setBankcardid(Integer.valueOf(bankcardid));
+		receiveEntity.setBankcardname(bankcardname);
+		receiveEntity.setBankcardnum(bankcardnum);
+		receiveEntity.setReceivedate(new Date());
+		if (!Util.isEmpty(sumincome)) {
+			receiveEntity.setSum(Double.valueOf(sumincome));
+		}
+		//保存收款信息
+		TReceiveEntity insert = dbDao.insert(receiveEntity);
+		Iterable<String> split = Splitter.on(",").split(ids);
+		List<TOrderReceiveEntity> orderreceives = new ArrayList<TOrderReceiveEntity>();
+		for (String str : split) {
+			TOrderReceiveEntity orderreceive = new TOrderReceiveEntity();
+			orderreceive.setReceiveid(insert.getId());
+			orderreceive.setOrderid(Integer.valueOf(str));
+			orderreceive.setReceivestatus(0);
+			orderreceives.add(orderreceive);
+		}
+		//更新订单收款表
+		dbDao.insert(orderreceives);
+		TReceiveBillEntity receiveBill = new TReceiveBillEntity();
+		receiveBill.setReceiptUrl(billurl);
+		receiveBill.setReceiveid(insert.getId());
+		//更新水单表
+		dbDao.insert(receiveBill);
+		return null;
+
 	}
 }

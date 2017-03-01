@@ -56,3 +56,23 @@ FROM
 INNER JOIN t_customer_info tci ON tuo.userid = tci.id
 LEFT JOIN t_finance_info tfi ON tuo.id = tfi.orderid
 $condition
+/*get_sea_payapply_table_data*/
+SELECT
+	tpi.*, toc.arrivecity,
+	toc.leavecity,
+	toc.leavetdate,
+	tuo.ordersstatus,
+	tuo.ordersnum,
+	tci.linkMan,
+	tci.telephone,
+	tfi.cusgroupnum,
+	tfi.issuer,
+	tfi.incometotal,
+	tfi.billingdate
+FROM
+	t_pnr_info tpi
+INNER JOIN t_order_customneed toc ON tpi.needid = toc.id
+INNER JOIN t_up_order tuo ON toc.ordernum = tuo.id
+INNER JOIN t_customer_info tci ON tuo.userid = tci.id
+INNER JOIN t_finance_info tfi on tuo.id = tfi.orderid
+$condition
