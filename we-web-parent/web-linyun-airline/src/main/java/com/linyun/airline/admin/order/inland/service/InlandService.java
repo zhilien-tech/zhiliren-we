@@ -39,6 +39,8 @@ import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEn
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.inland.form.InlandListSearchForm;
+import com.linyun.airline.common.enums.OrderStatusEnum;
+import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.ExcelReader;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAirlineInfoEntity;
@@ -46,7 +48,10 @@ import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TFinanceInfoEntity;
 import com.linyun.airline.entities.TFlightInfoEntity;
 import com.linyun.airline.entities.TOrderCustomneedEntity;
+import com.linyun.airline.entities.TOrderReceiveEntity;
 import com.linyun.airline.entities.TPnrInfoEntity;
+import com.linyun.airline.entities.TReceiveBillEntity;
+import com.linyun.airline.entities.TReceiveEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.entities.TVisitorInfoEntity;
@@ -74,7 +79,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	private static final String CITYCODE = "CFCS";
 	//航空公司字典代码
 	private static final String AIRCOMCODE = "HKGS";
+	//币种
 	private static final String BIZHONGCODE = "BZ";
+	//银行卡类型
+	private static final String YHCODE = "YH";
 	private static final String EXCEL_PATH = "download";
 	private static final String FILE_EXCEL_NAME = "客户需求游客模板.xlsx";
 	@Inject
@@ -141,6 +149,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		if (generateOrder) {
 			orderinfo.setOrdersnum(editPlanService.generateOrderNum());
 		}
+		orderinfo.setOrderstype(OrderTypeEnum.FIT.intKey());
 		TUpOrderEntity insertOrder = dbDao.insert(orderinfo);
 		List<Map<String, Object>> customdata = (List<Map<String, Object>>) fromJson.get("customdata");
 		for (Map<String, Object> map : customdata) {
@@ -844,15 +853,23 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		String visitor = request.getParameter("visitor");
 		TPnrInfoEntity pnrinfo = new TPnrInfoEntity();
 		pnrinfo.setPNR(pnr);
-		pnrinfo.setCostprice(Double.valueOf(costprice));
-		pnrinfo.setCostpricesum(Double.valueOf(costpricesum));
+		if (!Util.isEmpty(costprice)) {
+			pnrinfo.setCostprice(Double.valueOf(costprice));
+		}
+		if (!Util.isEmpty(costpricesum)) {
+			pnrinfo.setCostpricesum(Double.valueOf(costpricesum));
+		}
 		pnrinfo.setCurrency(currency);
 		pnrinfo.setLoginid(loginid);
 		if (!Util.isEmpty(peoplecount)) {
 			pnrinfo.setPeoplecount(Integer.valueOf(peoplecount));
 		}
-		pnrinfo.setSalesprice(Double.valueOf(salesprice));
-		pnrinfo.setSalespricesum(Double.valueOf(salespricesum));
+		if (!Util.isEmpty(salesprice)) {
+			pnrinfo.setSalesprice(Double.valueOf(salesprice));
+		}
+		if (!Util.isEmpty(salespricesum)) {
+			pnrinfo.setSalespricesum(Double.valueOf(salespricesum));
+		}
 		pnrinfo.setNeedid(Integer.valueOf(needid));
 		TPnrInfoEntity insert = dbDao.insert(pnrinfo);
 		Iterable<String> visitors = Splitter.on(",").split(visitor);
@@ -1026,6 +1043,121 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		}
 		//更新游客信息
 		dbDao.updateRelations(before, after);
+		return null;
+
+	}
+
+	/**
+	 * 跳转到内陆跨海出票收款页面
+	 * <p>
+	 * TODO跳转到内陆跨海出票收款页面
+	 *
+	 * @param request
+	 * @return 
+	 */
+	public Object seaInvoice(HttpServletRequest request) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String ids = request.getParameter("ids");
+		String sqlString = sqlManager.get("get_sea_invoce_table_data");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.limit();
+		cnd.and("tuo.ordersstatus", "=", OrderStatusEnum.TICKETING.intKey());
+		cnd.and("tuo.orderstype", "=", OrderTypeEnum.FIT.intKey());
+		cnd.and("tuo.id", "in", ids);
+		List<Record> orders = dbDao.query(sql, cnd, null);
+		//计算合计金额
+		double sumincome = 0;
+		for (Record record : orders) {
+			if (!Util.isEmpty(record.get("incometotal"))) {
+				Double incometotal = (Double) record.get("incometotal");
+				sumincome += incometotal;
+			}
+		}
+		result.put("orders", orders);
+		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
+		try {
+			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		result.put("yhkSelect", yhkSelect);
+		result.put("ids", ids);
+		result.put("sumincome", sumincome);
+		return result;
+
+	}
+
+	/**
+	 * 跳转到内陆跨海出票付款页面
+	 * <p>
+	 * TODO跳转到内陆跨海出票付款页面
+	 *
+	 * @param request
+	 * @return TODO
+	 */
+	public Object seaPayApply(HttpServletRequest request) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String ids = request.getParameter("ids");
+		String sqlString = sqlManager.get("get_sea_payapply_table_data");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.limit();
+		cnd.and("tuo.ordersstatus", "=", OrderStatusEnum.TICKETING.intKey());
+		cnd.and("tuo.orderstype", "=", OrderTypeEnum.FIT.intKey());
+		cnd.and("tpi.id", "in", ids);
+		List<Record> orders = dbDao.query(sql, cnd, null);
+		result.put("orders", orders);
+		List<DictInfoEntity> bzSelect = new ArrayList<DictInfoEntity>();
+		try {
+			bzSelect = externalInfoService.findDictInfoByName("", BIZHONGCODE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		result.put("bzSelect", bzSelect);
+		result.put("ids", ids);
+		return result;
+	}
+
+	/**
+	 * TODO提交收款信息
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object saveSeaInvoice(HttpServletRequest request) {
+		String ids = request.getParameter("ids");
+		String bankcardid = request.getParameter("bankcardid");
+		String bankcardname = request.getParameter("bankcardname");
+		String bankcardnum = request.getParameter("bankcardnum");
+		String billurl = request.getParameter("billurl");
+		String sumincome = request.getParameter("sumincome");
+		TReceiveEntity receiveEntity = new TReceiveEntity();
+		receiveEntity.setBankcardid(Integer.valueOf(bankcardid));
+		receiveEntity.setBankcardname(bankcardname);
+		receiveEntity.setBankcardnum(bankcardnum);
+		receiveEntity.setReceivedate(new Date());
+		if (!Util.isEmpty(sumincome)) {
+			receiveEntity.setSum(Double.valueOf(sumincome));
+		}
+		//保存收款信息
+		TReceiveEntity insert = dbDao.insert(receiveEntity);
+		Iterable<String> split = Splitter.on(",").split(ids);
+		List<TOrderReceiveEntity> orderreceives = new ArrayList<TOrderReceiveEntity>();
+		for (String str : split) {
+			TOrderReceiveEntity orderreceive = new TOrderReceiveEntity();
+			orderreceive.setReceiveid(insert.getId());
+			orderreceive.setOrderid(Integer.valueOf(str));
+			orderreceive.setReceivestatus(0);
+			orderreceives.add(orderreceive);
+		}
+		//更新订单收款表
+		dbDao.insert(orderreceives);
+		TReceiveBillEntity receiveBill = new TReceiveBillEntity();
+		receiveBill.setReceiptUrl(billurl);
+		receiveBill.setReceiveid(insert.getId());
+		//更新水单表
+		dbDao.insert(receiveBill);
 		return null;
 
 	}

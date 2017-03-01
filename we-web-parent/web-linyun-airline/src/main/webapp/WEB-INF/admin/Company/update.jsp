@@ -75,7 +75,7 @@
                           	<div class="form-group form-group1">
 	                            <label class="col-sm-2 text-right padding">联系邮箱：</label>
 	                            <div class="col-sm-3 padding">
-	                              <input name="email" type="tel" class="form-control input-sm" placeholder="请输入联系邮箱" value="${obj.company.email }"/>
+	                              <input name="email" type="tel" class="form-control input-sm inpImportant" placeholder="请输入联系邮箱" value="${obj.company.email }"/>
 	                            </div>
 	                        </div>
                         </div>
@@ -84,7 +84,7 @@
                         	<div class="form-group">
 	                          <label class="col-sm-3 text-right padding">座机电话：</label>
 	                            <div class="col-sm-3 padding">
-	                              <input name="phonenumber" type="tel" class="form-control input-sm" placeholder="请输入公司座机号" value="${obj.company.phonenumber }"/>
+	                              <input name="phonenumber" type="tel" class="form-control input-sm inpImportant" placeholder="请输入公司座机号" value="${obj.company.phonenumber }"/>
 	                            </div>
                         	</div>
                           	<div class="form-group form-group1">
@@ -140,7 +140,7 @@
 		if($("#uploader_00").length>0){
 			inituploader("","00",urllist);
 		}
-		$('#comType').attr("disabled",true);
+		//$('#comType').attr("disabled",true);
 		$('#companyUpdateForm').bootstrapValidator({
 			 message: 'This value is not valid',
 	        feedbackIcons: {
