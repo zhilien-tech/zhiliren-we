@@ -20,6 +20,7 @@ import org.nutz.mvc.upload.TempFile;
 import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.linyun.airline.admin.order.inland.form.InlandListSearchForm;
+import com.linyun.airline.admin.order.inland.form.PayApplyListForm;
 import com.linyun.airline.admin.order.inland.service.InlandService;
 
 /**
@@ -188,5 +189,31 @@ public class InlandModule {
 	@POST
 	public Object editPnrInfo(HttpServletRequest request) {
 		return inlandService.editPnrInfo(request);
+	}
+
+	/**
+	 * 跳转到出票收款页面
+	 */
+	@At
+	@Ok("jsp")
+	public Object seaInvoice(HttpServletRequest request) {
+		return inlandService.seaInvoice(request);
+	}
+
+	/**
+	 * 跳转到出票付款页面
+	 */
+	@At
+	@Ok("jsp")
+	public Object seaPayApply(HttpServletRequest request) {
+		return inlandService.seaPayApply(request);
+	}
+
+	/**
+	 * 内陆跨海出票收款列表数据
+	 */
+	@At
+	public Object listPayData(@Param("..") PayApplyListForm sqlform) {
+		return inlandService.listPage4Datatables(sqlform);
 	}
 }

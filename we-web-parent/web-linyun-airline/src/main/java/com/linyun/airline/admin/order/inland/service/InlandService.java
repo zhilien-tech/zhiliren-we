@@ -39,6 +39,8 @@ import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEn
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.inland.form.InlandListSearchForm;
+import com.linyun.airline.common.enums.OrderStatusEnum;
+import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.ExcelReader;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAirlineInfoEntity;
@@ -74,7 +76,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	private static final String CITYCODE = "CFCS";
 	//航空公司字典代码
 	private static final String AIRCOMCODE = "HKGS";
+	//币种
 	private static final String BIZHONGCODE = "BZ";
+	//银行卡类型
+	private static final String YHCODE = "YH";
 	private static final String EXCEL_PATH = "download";
 	private static final String FILE_EXCEL_NAME = "客户需求游客模板.xlsx";
 	@Inject
@@ -141,6 +146,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		if (generateOrder) {
 			orderinfo.setOrdersnum(editPlanService.generateOrderNum());
 		}
+		orderinfo.setOrderstype(OrderTypeEnum.FIT.intKey());
 		TUpOrderEntity insertOrder = dbDao.insert(orderinfo);
 		List<Map<String, Object>> customdata = (List<Map<String, Object>>) fromJson.get("customdata");
 		for (Map<String, Object> map : customdata) {
@@ -844,15 +850,23 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		String visitor = request.getParameter("visitor");
 		TPnrInfoEntity pnrinfo = new TPnrInfoEntity();
 		pnrinfo.setPNR(pnr);
-		pnrinfo.setCostprice(Double.valueOf(costprice));
-		pnrinfo.setCostpricesum(Double.valueOf(costpricesum));
+		if (!Util.isEmpty(costprice)) {
+			pnrinfo.setCostprice(Double.valueOf(costprice));
+		}
+		if (!Util.isEmpty(costpricesum)) {
+			pnrinfo.setCostpricesum(Double.valueOf(costpricesum));
+		}
 		pnrinfo.setCurrency(currency);
 		pnrinfo.setLoginid(loginid);
 		if (!Util.isEmpty(peoplecount)) {
 			pnrinfo.setPeoplecount(Integer.valueOf(peoplecount));
 		}
-		pnrinfo.setSalesprice(Double.valueOf(salesprice));
-		pnrinfo.setSalespricesum(Double.valueOf(salespricesum));
+		if (!Util.isEmpty(salesprice)) {
+			pnrinfo.setSalesprice(Double.valueOf(salesprice));
+		}
+		if (!Util.isEmpty(salespricesum)) {
+			pnrinfo.setSalespricesum(Double.valueOf(salespricesum));
+		}
 		pnrinfo.setNeedid(Integer.valueOf(needid));
 		TPnrInfoEntity insert = dbDao.insert(pnrinfo);
 		Iterable<String> visitors = Splitter.on(",").split(visitor);
@@ -1028,5 +1042,64 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		dbDao.updateRelations(before, after);
 		return null;
 
+	}
+
+	/**
+	 * 跳转到内陆跨海出票收款页面
+	 * <p>
+	 * TODO跳转到内陆跨海出票收款页面
+	 *
+	 * @param request
+	 * @return 
+	 */
+	public Object seaInvoice(HttpServletRequest request) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String ids = request.getParameter("ids");
+		String sqlString = sqlManager.get("get_sea_invoce_table_data");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.limit();
+		cnd.and("tuo.ordersstatus", "=", OrderStatusEnum.TICKETING.intKey());
+		cnd.and("tuo.orderstype", "=", OrderTypeEnum.FIT.intKey());
+		cnd.and("tuo.id", "in", ids);
+		List<Record> orders = dbDao.query(sql, cnd, null);
+		result.put("orders", orders);
+		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
+		try {
+			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		result.put("yhkSelect", yhkSelect);
+		return result;
+
+	}
+
+	/**
+	 * 跳转到内陆跨海出票付款页面
+	 * <p>
+	 * TODO跳转到内陆跨海出票付款页面
+	 *
+	 * @param request
+	 * @return TODO
+	 */
+	public Object seaPayApply(HttpServletRequest request) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String ids = request.getParameter("ids");
+		String sqlString = sqlManager.get("get_sea_payapply_list");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.limit();
+		cnd.and("tuo.ordersstatus", "=", OrderStatusEnum.TICKETING.intKey());
+		cnd.and("tuo.orderstype", "=", OrderTypeEnum.FIT.intKey());
+		cnd.and("tpi.id", "in", ids);
+		List<Record> orders = dbDao.query(sql, cnd, null);
+		result.put("orders", orders);
+		List<DictInfoEntity> bzSelect = new ArrayList<DictInfoEntity>();
+		try {
+			bzSelect = externalInfoService.findDictInfoByName("", BIZHONGCODE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		result.put("bzSelect", bzSelect);
+		return result;
 	}
 }
