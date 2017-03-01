@@ -125,7 +125,7 @@ public class SabreTokenFactory {
 		log.debug("encodedSecret:" + encodedSecret);
 
 		String authorization = Base64.encode((encodedCid + ":" + encodedSecret).getBytes(SabreConfig.CHARSET));
-		String authUrl = SabreConfig.test_environment + SabreConfig.AUTH_URI;
+		String authUrl = SabreConfig.environment + SabreConfig.AUTH_URI;
 
 		String respTxt = null;
 		HttpPost httpPost = new HttpPost(authUrl);
@@ -138,6 +138,7 @@ public class SabreTokenFactory {
 
 		log.debug("executing request " + httpPost.getRequestLine());
 		respTxt = HttpClientUtil.httpsPost(httpPost).getResult();
+		log.info("get token response: " + respTxt);
 		SabreAccessToken accessToken = Json.fromJson(SabreAccessToken.class, respTxt);
 		return accessToken;
 	}
