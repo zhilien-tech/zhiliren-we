@@ -91,8 +91,8 @@
 											<div class="form-group row marginBott5 cf">
 												<div class="col-md-1 textPadding">
 													<select id="inlandPaySelect" class="form-control TimeInput">
-														<option value=0>付款中</option>
-														<option value=1>已付款</option>
+														<option value=2>付款中</option>
+														<option value=3>已付款</option>
 													</select>
 												</div>
 												<div class="col-md-1 textPadding">
