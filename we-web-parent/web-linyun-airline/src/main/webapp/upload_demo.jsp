@@ -54,38 +54,25 @@
 <script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script type="text/javascript">
 	window.PROJECT_CONTEXT = "${base}";
-	//要传输的数据
+	//除了文件以外需要额外传输的数据
 	var formData = new FormData() ;
 	//接收数据的服务端地址
-	var serverUrl = "";
+	var serverUrl = "${base}/multiupload/demo.html";
 	
-	function deleteImage(_id){
-		/*自定义confirm*/
-		$dialog.confirm({
-			title:'是否删除',
-			ok:function(){
-				$.ajax({ 
-		            type: "POST",//提交类型  
-		            dataType: "json",//返回结果格式  
-		            url: "${base}/",//请求地址  
-		            async: true  ,
-		          	//请求数据  
-		            data:{
-		            	id:_id
-		            },
-		            success: function (obj) {//请求成功后的函数  
-		            	var status = obj.status;
-		            	if( status == 200 ){
-		            		$("p#"+_id).remove();
-		            	}
-		            },  
-		            error: function (obj) {
-		            	
-		            }
-		    	});  // end of ajaxSubmit
-			},
-			cancel:function(){}
-		});
+	/*
+	        后台的写法
+		@At
+		@POST
+		@AdaptBy(type = UploadAdaptor.class, args = { "ioc:imgUpload" })
+		@Ok("json")
+		public Object addHandouts(@Param("::form.") final ChapterQueryForm form,@Param("file") final TempFile[] fts) {
+			return chapterService.addHandouts(form,fts); 
+		}
+	 */
+	 
+	/*删除图片*/ 
+	function deleteImage(_id){ 
+		
 	}
 </script>
 <script type="text/javascript" src="${base}/plugin/webuploader/js/webuploader.js"></script>
