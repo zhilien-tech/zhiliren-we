@@ -10,8 +10,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>收/付款</title>
-<meta
-	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
 	name="viewport">
 <!--会计 收付款 CSS-->
 <link rel="stylesheet" type="text/css"
@@ -110,8 +109,8 @@
 														<div class="form-group row marginBott5 cf">
 															<div class="col-md-1 textPadding">
 																<select id="inlandPaySelect" class="form-control TimeInput">
-																	<option value="0">付款中</option>
-																	<option value="1">已付款</option>
+																	<option value="2">付款中</option>
+																	<option value="3">已付款</option>
 																</select>
 															</div>
 															<div class="col-md-1 textPadding">
@@ -132,16 +131,17 @@
 															</div>
 															<div class="col-md-3">
 																<!-- 付款 按钮 -->
-																<button type="button" class="btn btn-primary btn-sm fuKuanBtn1">付款</button>
+																<button id="inlandPayClick" type="button" class="btn btn-primary btn-sm fuKuanBtn1">付款</button>
 															</div>
 														</div>
 													</form>
 												</div>
 												<div class="box-body">
 													<table id="inlandPayTable" class="table table-bordered table-hover">
-														<thead>
+														<input id="checkedboxPayValue" name="checkedboxPayValue" type="hidden">
+														<thead id="inlandPayThead">
 															<tr>
-																<td class="checkTh"><input type="checkbox"></td>
+																<td class="checkTh"><input type="checkbox" class="checkBoxPayAll"></td>
 																<th>订单号</th>
 																<th>PNR</th>
 																<th>出发日期</th>
@@ -153,7 +153,27 @@
 																<th>开票人</th>
 															</tr>
 														</thead>
-														<tbody>
+														<tbody id="inlandPayTbody">
+														</tbody>
+													</table>
+													
+													<table id="inlandPayEdTable" style="display:none" class="table table-bordered table-hover">
+														<thead id="inlandPayEdThead" >
+															<tr>
+																<th>订单号</th>
+																<th>PNR</th>
+																<th>出发日期</th>
+																<th>人数</th>
+																<th>应付金额</th>
+																<th>币种</th>
+																<th>收款单位</th>
+																<th>状态</th>
+																<th>开票人</th>
+																<th>备注</th>
+																<th>操作</th>
+															</tr>
+														</thead>
+														<tbody id="inlandPayEdTbody">
 														</tbody>
 													</table>
 												</div>

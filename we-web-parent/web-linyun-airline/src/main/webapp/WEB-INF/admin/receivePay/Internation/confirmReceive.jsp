@@ -21,14 +21,13 @@
 			<table id="receivablesTable" class="table table-bordered table-hover">
 				<thead>
 					<tr>
-						<th>订单号</th>
-						<th>PNR</th>
-						<th>客户团号</th>
-						<th>收款单位</th>
-						<th>开票日期</th>
-						<th>人数</th>
-						<th>开票人</th>
-						<th>金额</th>
+						 <th>订单号</th>
+	                    <th>开票日期</th>
+	                    <th>客户团号</th>
+	                    <th>客户</th>
+	                    <th>联系人</th>
+	                    <th>开票人</th>
+	                    <th>金额</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -154,11 +153,12 @@
 	<!--JS 文件-->
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
-	<script src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 	<!-- SlimScroll -->
-	<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
+	<script src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 	<!-- FastClick -->
-	<script src="${base}/public/dist/js/app.min.js"></script>
+	<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
 	<!-- AdminLTE App -->
+	<script src="${base}/public/dist/js/app.min.js"></script>
+	
 </body>
 </html>
