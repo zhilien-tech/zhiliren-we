@@ -8,10 +8,14 @@ package com.linyun.airline.admin.receivePayment.service;
 
 import static com.uxuexi.core.common.util.ExceptionUtil.*;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
@@ -22,6 +26,11 @@ import org.nutz.dao.util.Daos;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.json.Json;
+import org.nutz.lang.Files;
+import org.nutz.mvc.annotation.AdaptBy;
+import org.nutz.mvc.annotation.Ok;
+import org.nutz.mvc.annotation.POST;
+import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.google.common.base.Splitter;
 import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
@@ -29,6 +38,7 @@ import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
 import com.linyun.airline.admin.receivePayment.form.InlandPayListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.TSaveInlandPayAddFrom;
+import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.uxuexi.core.common.util.MapUtil;
@@ -166,6 +176,24 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//更新Pnr状态
 
 		return dbDao.update(updateList);
+	}
+
+	//水单上传 返回值文件存储地址
+	@POST
+	@AdaptBy(type = UploadAdaptor.class, args = { "ioc:imgUpload" })
+	@Ok("json")
+	public Object upload(File file, HttpSession session) {
+		try {
+			String ext = Files.getSuffix(file);
+			FileInputStream fileInputStream = new FileInputStream(file);
+			String url = qiniuUploadService.uploadImage(fileInputStream, ext, null);
+			//水单存储地址
+			System.out.println(url);
+			return url;
+			//业务
+		} catch (Exception e) {
+			return MobileResult.error("操作失败", null);
+		}
 	}
 
 }

@@ -150,6 +150,7 @@ $("#inlandPaySelect").change(function(){
 	$("#box-body").html("");
 	if(selectEd == 2){
 		destroyDatetable($("#inlandPayEdTable"));
+		$("#inlandPayClick").show();
 		$("#inlandPayTable").show();
 		$("#inlandPayEdTable").hide();
 		initPayDataTable();
@@ -178,7 +179,6 @@ $('#inlandPayClick').click(function(){
 	if(!ids){
 		layer.msg("请至少选中一条记录", "", 2000);
 	}else{
-
 		layer.open({
 			type: 2,
 			title:false,
