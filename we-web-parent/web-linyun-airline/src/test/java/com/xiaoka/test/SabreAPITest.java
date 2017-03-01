@@ -85,7 +85,7 @@ public class SabreAPITest {
 	 */
 	@Test
 	public static void flightTo() {
-		String searchUrl = SabreConfig.test_environment + "/v1/shop/flights/cheapest/fares/SYD";
+		String searchUrl = SabreConfig.environment + "/v1/shop/flights/cheapest/fares/SYD";
 		//		String searchUrl = test_environment + "/v1/shop/flights/cheapest/fares/BJS";
 
 		String result = null;
@@ -104,8 +104,8 @@ public class SabreAPITest {
 		InstaFlightsSearchForm form = new InstaFlightsSearchForm();
 		form.setOrigin("ATL");
 		form.setDestination("LAS");
-		form.setDeparturedate("2017-01-30");
-		form.setReturndate("2017-02-15");
+		form.setDeparturedate("2017-03-05");
+		form.setReturndate("2017-03-15");
 		form.setPointofsalecountry("US");
 		form.setOffset(1);
 		form.setLimit(10);
@@ -119,7 +119,7 @@ public class SabreAPITest {
 	public static void macLookup() {
 		MACLookupForm form = new MACLookupForm();
 		form.setCountry("CN");
-		String searchUrl = SabreConfig.test_environment + SabreConfig.MAC_LOOKUP_URI + HttpClientUtil.getParams(form);
+		String searchUrl = SabreConfig.environment + SabreConfig.MAC_LOOKUP_URI + HttpClientUtil.getParams(form);
 		String result = null;
 		HttpGet httpget = new HttpGet(searchUrl);
 
