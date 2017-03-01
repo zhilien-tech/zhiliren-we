@@ -29,7 +29,7 @@ import com.linyun.airline.admin.receivePayment.service.ReceivePayService;
 import com.linyun.airline.entities.TUserEntity;
 
 @IocBean
-@At("/admin/receivePay")
+@At("/admin/receivePay/inland")
 public class ReceivePayModule {
 
 	private static final Log log = Logs.get();

@@ -1,81 +1,88 @@
 //会计   未付款datatable
 var inlandPayTable;
 function initPayDataTable(){
-	inlandPayTable = $("#inlandPayTable").DataTable({
-		"searching":false,
+	inlandPayTable = $('#inlandPayEdTable').dataTable({//内陆跨海 付款 table
+		"paging": true,
 		"lengthChange": false,
+		"searching": false,
+		"ordering": true,
+		"info": true,
+		"autoWidth": false,
 		"processing": true,
 		"serverSide": true,
 		"stripeClasses": [ 'strip1','strip2' ],
-		"language": {
-			"url": BASE_PATH + "/public/plugins/datatables/cn.json"
-		},
-		"ajax": {
-			"url": BASE_PATH + "/admin/receivePay/inlandPayList.html",
-			"type": "post",
-			"data": function (d) {
+		"columnDefs": [
+		               {"sWidth": "4.33%","aTargets": [0] },
+		               {"sWidth": "8.33%","aTargets": [1] },
+		               {"sWidth": "5.33%","aTargets": [2] },
+		               {"sWidth": "5.33%","aTargets": [3] },
+		               {"sWidth": "4.33%","aTargets": [4] },
+		               {"sWidth": "6.33%","aTargets": [5] },
+		               {"sWidth": "5.33%","aTargets": [6] },
+		               {"sWidth": "12.33%","aTargets": [7] },
+		               {"sWidth": "5.33%","aTargets": [8] },
+		               {"sWidth": "5.33%","aTargets": [9] }
+       ],
+       "oLanguage": {                          //汉化   
+    	   "sSearch": ["one","two"],  
+    	   "oPaginate":{   
+    		   "sFirst": "首页",   
+    		   "sPrevious": "上一页",   
+    		   "sNext": "下一页",   
+    		   "sLast": "尾页"  
+    	   }   
+       },
+       "language": {
+    	   "url": BASE_PATH + "/public/plugins/datatables/cn.json"
+       },
+       "ajax": {
+    	   "url": BASE_PATH + "/admin/receivePay/inland/inlandPayList.html",
+    	   "type": "post",
+    	   "data": function (d) {
 
-			}
-		},
-		"columns": [
-		            {"data": "id", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var result = '';
-		            		var hiddenValue = $('#checkedboxPayValue').val();
-		            		var splits = hiddenValue.split(',');
-		            		var flag = false;
-		            		for(var i=0;i<splits.length;i++){
-		            			if(splits[i] == data){
-		            				flag = true;
-		            			}
-		            		}	
-		            		if(flag){
-		            			result = '<input type="checkbox"  class="checkBoxPayChild" checked="true" value="' + data + '" />';
-		            		}else{
-		            			result = '<input type="checkbox"  class="checkBoxPayChild" value="' + data + '" />';
-		            		}
-		            		return result;
-		            	}
-		            },
-		            {"data": "ordernum", "bSortable": false},
-		            {"data": "pnrnum", "bSortable": false},
-		            {"data": "leavedate", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
-		            		var week = ['MO','TU','WE','TH','FR','SA','SU'];
-		            		var ldate = new Date(data);
-		            		var result = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
-		            		return result;
-		            	}
-		            },
-		            {"data": "peoplecount", "bSortable": false},
-		            {"data": "saleprice", "bSortable": false},
-		            {"data": "currency", "bSortable": false},
-		            {"data": "", "bSortable": false},
-		            {"data": "orderstatus", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var s = '';
-		            		if(data == '3'){
-		            			s = '已付款';
-		            		}else{
-		            			s = '付款中';
-		            		}
-		            		return s;
-		            	}
-		            },
-		            {"data": "drawer", "bSortable": false}
-		            
-		            ],
-		            "infoCallback": function (settings, start, end, max, total, pre) {
-		            	var length = $(".checkBoxPayChild:checked").length;
-		            	if(inlandPayTable.page.len() == length){
-		            		$(".checkBoxPayAll").prop("checked", true);
-		            	}else{
-		            		$(".checkBoxPayAll").prop("checked", false);
+    	   }
+       },
+       "columns": [
+                   {"data": "ordernum", "bSortable": false},
+                   {"data": "pnrnum", "bSortable": false},
+                   {"data": "leavedate", "bSortable": false,
+                	   render: function(data, type, row, meta) {
+                		   var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
+                		   var week = ['MO','TU','WE','TH','FR','SA','SU'];
+                		   var ldate = new Date(data);
+                		   var result = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
+                		   return result;
+                	   }
+                   },
+                   {"data": "peoplecount", "bSortable": false},
+                   {"data": "saleprice", "bSortable": false},
+                   {"data": "currency", "bSortable": false},
+                   {"data": "", "bSortable": false},
+                   {"data": "orderstatus", "bSortable": false,
+                	   render: function(data, type, row, meta) {
+                		   var s = '';
+                		   if(data == '3'){
+                			   s = '已付款';
+                		   }else{
+                			   s = '付款中';
+                		   }
+                		   return s;
+                	   }
+                   },
+                   {"data": "drawer", "bSortable": false},
+                   {"data": "", "bSortable": false},
+                   {"data": "", "bSortable": false}
+       ],
+       "infoCallback": function (settings, start, end, max, total, pre) {
+    	   var length = $(".checkBoxPayChild:checked").length;
+    	   if(inlandPayEdTable.page.len() == length){
+    		   $(".checkBoxPayAll").prop("checked", true);
+    	   }else{
+    		   $(".checkBoxPayAll").prop("checked", false);
 
-		            	}
-		            	return '显示第 '+start+' 至 '+end+' 条结果，共'+total+' 条 (每页显示 '+max+' 条)'
-		            }
+    	   }
+    	   return '显示第 '+start+' 至 '+end+' 条结果，共'+total+' 条 (每页显示 '+max+' 条)'
+       }
 
 	});
 }
@@ -94,7 +101,7 @@ function initPayEdDataTable(){
 			"url": BASE_PATH + "/public/plugins/datatables/cn.json"
 		},
 		"ajax": {
-			"url": BASE_PATH + "/admin/receivePay/inlandPayList.html",
+			"url": BASE_PATH + "/admin/receivePay/inland/inlandPayList.html",
 			"type": "post",
 			"data": function (d) {
 
@@ -291,13 +298,13 @@ $("#inlandPaySearchBtn").on('click', function () {
 	var inlandPayBeginDate = $("#inlandPayBeginDate").val();
 	var inlandPayEndDate = $("#inlandPayEndDate").val();
 	var inlandPayInput = $("#inlandPayInput").val();
-	    var param = {
-			        "orderStatus":orderStatus,
-			        "leaveBeginDate":inlandPayBeginDate,
-			        "leaveEndDate":inlandPayEndDate,
-					"name": inlandPayInput
-			    };
-	    inlandPayTable.settings()[0].ajax.data = param;
+    var param = {
+		        "orderStatus":orderStatus,
+		        "leaveBeginDate":inlandPayBeginDate,
+		        "leaveEndDate":inlandPayEndDate,
+		"name": inlandPayInput
+	};
+    inlandPayTable.settings().ajax.data = param;
 	inlandPayTable.ajax.reload();
 });
 
@@ -315,8 +322,9 @@ $("#inlandPaySearchBtn").on('click', function () {
 });*/
 
 $(function () {
+	initPayDataTable();
 	var selectEd = $('#inlandPaySelect').val();
-	if(selectEd == 2){
+	if(selectEd == 0){
 		$("#inlandPayTable").show();
 		$("#inlandPayEdTable").hide();
 		initPayDataTable();
@@ -330,18 +338,41 @@ $(function () {
 
 
 
+
+
 //会计   收款datatable
 /*var inlandRecTable;
 function initRecDataTable(){
-	inlandRecTable = $("#inlandRecTable").DataTable({
-		"searching":false,
-		"lengthChange": false,
-		"processing": true,
+	inlandRecTable = $('#inlandRecTable').dataTable({//内陆跨海 收款 table
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "processing": true,
 		"serverSide": true,
 		"stripeClasses": [ 'strip1','strip2' ],
-		"language": {
-			"url": BASE_PATH + "/public/plugins/datatables/cn.json"
-		},
+        "columnDefs": [
+            {"sWidth": "11.33%","aTargets": [0] },
+            {"sWidth": "8.33%","aTargets": [1] },
+            {"sWidth": "4.33%","aTargets": [2] },
+            {"sWidth": "6.33%","aTargets": [3] },
+            {"sWidth": "5.33%","aTargets": [4] },
+            {"sWidth": "15.33%","aTargets": [5] },
+            {"sWidth": "5.33%","aTargets": [6] },
+            {"sWidth": "5.33%","aTargets": [7] },
+            {"sWidth": "8.33%","aTargets": [8] }
+        ],
+        "oLanguage": {//汉化   
+          "sSearch": ["one","two"],  
+          "oPaginate":{   
+                "sFirst": "首页",   
+                "sPrevious": "上一页",   
+                "sNext": "下一页",   
+                "sLast": "尾页"  
+          }
+        },
 		"ajax": {
 			"url": BASE_PATH + "/admin/receivePay/inlandRecList.html",
 			"type": "post",
@@ -352,8 +383,8 @@ function initRecDataTable(){
 		"columns": [
 		            {"data": "ordersnum", "bSortable": false}
 		            ]
-
-	});
+    });
+	
 }
  */
 

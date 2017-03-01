@@ -11,8 +11,7 @@
 <title>查询</title>
 <!-- Bootstrap 3.3.6 -->
 <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
-<link rel="stylesheet"
-	href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
+<link rel="stylesheet" href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
 <link rel="stylesheet" href="${base}/public/dist/css/query.css">
 <!--本页面styleFlie-->
 </head>
@@ -234,8 +233,9 @@
 				<div class="listInfo">
 					<div class="nav-tabs-custom">
 						<ul class="nav nav-tabs query-style">
-							<li class="active"><a id="tab_1Id" href="#tab_1"
-								data-toggle="tab">内陆跨海</a></li>
+							<li class="active">
+								<a id="tab_1Id" href="#tab_1" data-toggle="tab">内陆跨海</a>
+							</li>
 							<li><a id="tab_3Id" href="#tab_1" data-toggle="tab">国际</a></li>
 							<li><a id="tab_2Id" href="#tab_2" data-toggle="tab">机票库</a>
 							</li>

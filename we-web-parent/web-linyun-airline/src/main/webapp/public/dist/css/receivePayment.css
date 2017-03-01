@@ -35,7 +35,7 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 /*---------------------end 表格列 多行style------------------*/
 
 /*国际*/
-.paymentUl{margin: 5px 0 10px 0;padding: 0;}
+.paymentUl{margin: 0px 0px 10px 10px;padding: 0; padding-top: 10px;}
 .paymentUl li{display: inline-block;list-style: none;background-color: rgba(239, 239, 239, 0.34);padding: 5px 15px;font-size: 13px;cursor: pointer;color: #8c8c8c;border: solid 1px #dcdcdc;border-radius: 2px;}
 .btnStyle{background-color: #3c8dbc !important;color: #fff !important;border: solid 1px #2e7096 !important;}
 #GJpayTable tbody tr td{padding:0;}
@@ -59,3 +59,19 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 .bj{width: 75px !important;text-align: right;}
 .labelShuidan{ margin-top: 15px;font-size: 16px !important;}
 .SDdiv{margin-top: 0;}
+.imgInfo tr td:nth-child(odd){text-align: right;width: 75px;}
+.imgInfo tr td{padding-top: 10px;}
+.modal-bod{padding:10px;}
+.imgYulan{width: 100%;height: 100%;}
+.tabConte{margin: 0 10px;}
+.nav-tabs-custom > .tab-content {padding: 0px;}
+
+
+
+
+
+
+
+
+
+
