@@ -55,11 +55,11 @@ public class TPayEntity implements Serializable {
 
 	@Column
 	@Comment("付款币种")
-	private String payCurrency;
+	private Integer payCurrency;
 
 	@Column
 	@Comment("是否发票")
-	private String isInvioce;
+	private Integer isInvioce;
 
 	@Column
 	@Comment("申请人")

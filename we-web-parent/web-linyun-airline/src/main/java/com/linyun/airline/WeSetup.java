@@ -86,7 +86,7 @@ public class WeSetup implements Setup {
 	}
 
 	private void startTasks(Ioc ioc) {
-		taskOfGrabMail(ioc);
+		//taskOfGrabMail(ioc);
 	}
 
 	//邮件抓取定时任务
