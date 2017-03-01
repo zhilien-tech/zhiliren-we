@@ -24,10 +24,10 @@ public class SabreConfig {
 
 	/**
 	 * API环境分为测试环境和生产环境，测试的时候使用测试环境
+	 * test_environment:https://api.test.sabre.com
+	 * prod_environment:https://api.sabre.com
 	 */
-	public static final String test_environment = "https://api.test.sabre.com";
-
-	public static final String prod_environment = "https://api.sabre.com";
+	public static final String environment = "https://api.test.sabre.com";
 
 	/**
 	 * 航班查询
@@ -43,9 +43,13 @@ public class SabreConfig {
 
 	protected static final String AUTH_URI = "/v2/auth/token";
 
-	protected static final String Client_ID = "V1:mq2kolgs7tunkpe0:DEVCENTER:EXT";
+	//测试账号
+	//V1:mq2kolgs7tunkpe0:DEVCENTER:EXT
+	protected static final String Client_ID = "V1:0iy2egmnsj2r8ctx:DEVCENTER:EXT";
 
-	protected static final String Secret = "satULB47";
+	//测试账号
+	//satULB47
+	protected static final String Secret = "c0pYTHf9";
 
 	protected static final String contentType = "application/x-www-form-urlencoded";
 

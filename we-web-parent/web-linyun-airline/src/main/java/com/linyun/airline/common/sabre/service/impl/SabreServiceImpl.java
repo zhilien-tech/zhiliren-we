@@ -47,7 +47,7 @@ public class SabreServiceImpl implements SabreService {
 	public SabreResponse instaFlightsSearch(InstaFlightsSearchForm paramForm) {
 		SabreResponse resp = new SabreResponse();
 
-		String searchUrl = SabreConfig.test_environment + SabreConfig.INSTAL_FLIGHTS_URl
+		String searchUrl = SabreConfig.environment + SabreConfig.INSTAL_FLIGHTS_URl
 				+ HttpClientUtil.getParams(paramForm);
 
 		HttpGet httpget = new HttpGet(searchUrl);
