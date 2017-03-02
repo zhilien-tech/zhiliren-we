@@ -91,8 +91,8 @@
 											<div class="form-group row marginBott5 cf">
 												<div class="col-md-1 textPadding">
 													<select id="inlandPaySelect" class="form-control TimeInput">
-														<option value=2>付款中</option>
-														<option value=3>已付款</option>
+														<option value=3>付款中</option>
+														<option value=2>已付款</option>
 													</select>
 												</div>
 												<div class="col-md-1 textPadding">
@@ -103,7 +103,6 @@
 													<input id="inlandPayEndDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'inlandPayBeginDate\')}'})" class="form-control TimeInput" placeholder="2017-02-22">
 												</div>
 												<div class="col-md-3 textPadding">
-													<!-- 客户名称/订单号/联系人/PNR 搜索框 -->
 													<!-- 客户名称/订单号/联系人/PNR 搜索框 -->
 													<input id="inlandPayInput" type="text" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
 												</div>
@@ -122,8 +121,7 @@
 									</div>
 									<div class="box-body">
 										<!-- ---------------------------------- 收款中   列表 ------------------------------------- -->
-										<table id="inlandPayTable"
-											class="table table-bordered table-hover">
+										<table id="inlandPayTable" class="table table-bordered table-hover">
 											<input id="checkedboxPayValue" name="checkedboxPayValue" type="hidden">
 											<thead id="inlandPayThead">
 												<tr>
@@ -188,7 +186,6 @@
 	</script>
 	<!-- My97DatePicker -->
 	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
-	<script src="${base}/admin/receivePayment/receivePayment.js"></script>
 	<!-- 内陆跨海js -->
 	<script src="${base}/admin/receivePayment/inlandReceivePay.js"></script>
 	<!-- 国际js -->

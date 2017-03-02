@@ -51,7 +51,15 @@ function initPayDataTable(){
 		            {"data": "peoplecount", "bSortable": false},
 		            {"data": "saleprice", "bSortable": false},
 		            {"data": "currency", "bSortable": false},
-		            {"data": "", "bSortable": false},
+		            {"data": "abc", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var abc = row.abc;
+		            		if(null == abc || ""== abc){
+		            			return "";
+		            		}
+		            		return abc;
+		            	}
+		            },
 		            {"data": "orderstatus", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var s = '';
@@ -315,13 +323,13 @@ $("#inlandPaySearchBtn").on('click', function () {
 	var inlandPayBeginDate = $("#inlandPayBeginDate").val();
 	var inlandPayEndDate = $("#inlandPayEndDate").val();
 	var inlandPayInput = $("#inlandPayInput").val();
-	    var param = {
-			        "orderStatus":orderStatus,
-			        "leaveBeginDate":inlandPayBeginDate,
-			        "leaveEndDate":inlandPayEndDate,
-					"name": inlandPayInput
-			    };
-	    inlandPayTable.settings()[0].ajax.data = param;
+    var param = {
+		        "orderStatus":orderStatus,
+		        "leaveBeginDate":inlandPayBeginDate,
+		        "leaveEndDate":inlandPayEndDate,
+				"name": inlandPayInput
+		    };
+    inlandPayTable.settings()[0].ajax.data = param;
 	inlandPayTable.ajax.reload();
 });
 
@@ -340,7 +348,7 @@ $("#inlandPaySearchBtn").on('click', function () {
 
 $(function () {
 	var selectEd = $('#inlandPaySelect').val();
-	if(selectEd == 2){
+	if(selectEd == 3){
 		$("#inlandPayTable").show();
 		$("#inlandPayEdTable").hide();
 		initPayDataTable();
@@ -389,4 +397,57 @@ $('#inlandRecClearBtn').click(function(){
 /*清除 内陆跨海 付款的   检索项*/
 $('#inlandPayClearBtn').click(function(){
 	clearSearchTxt("inlandPaySelect", "inlandPayBeginDate", "inlandPayEndDate", "inlandPayInput");
+});
+
+//清空搜索项函数
+function clearSearchTxt(selectId, beginDateId, endDateId, inputId){
+	$("#"+selectId).val(0);
+	$("#"+beginDateId).val("");
+	$("#"+endDateId).val("");
+	$("#"+inputId).val("");
+}
+
+//文件上传
+$('#uploadFile').click(function(){
+	$.fileupload1 = $('#uploadFile').uploadify({
+		'auto' : true,//选择文件后自动上传
+		'formData' : {
+			'fcharset' : 'uft-8',
+			'action' : 'uploadimage'
+		},
+		'buttonText' : '上传',//按钮显示的文字
+		'fileSizeLimit' : '3000MB',
+		'fileTypeDesc' : '文件',//在浏览窗口底部的文件类型下拉菜单中显示的文本
+		'fileTypeExts' : '*.png; *.jpg; *.bmp; *.gif; *.jpeg;',//上传文件的类型
+		'swf' : '${base}/public/plugins/uploadify/uploadify.swf',//指定swf文件
+		'multi' : false,//multi设置为true将允许多文件上传
+		'successTimeout' : 1800,
+		'queueSizeLimit' : 100,
+		'uploader' : '${base}/admin/receivePay/inland/uploadFile.html',//后台处理的页面
+		//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
+		//下面的例子演示如何获取到vid
+		'onUploadSuccess' : function(file, data, response) {
+			var jsonobj = eval('(' + data + ')');
+			var url  = jsonobj;//地址
+			var fileName = file.name;//文件名称
+			$('#billurl').val(url);
+			$('#shuidanimg').attr('src',url);
+		},
+        //加上此句会重写onSelectError方法【需要重写的事件】
+        'overrideEvents': ['onSelectError', 'onDialogClose'],
+        //返回一个错误，选择文件的时候触发
+        'onSelectError':function(file, errorCode, errorMsg){
+            switch(errorCode) {
+                case -110:
+                    alert("文件 ["+file.name+"] 大小超出系统限制！");
+                    break;
+                case -120:
+                    alert("文件 ["+file.name+"] 大小异常！");
+                    break;
+                case -130:
+                    alert("文件 ["+file.name+"] 类型不正确！");
+                    break;
+            }
+        }
+	});
 });

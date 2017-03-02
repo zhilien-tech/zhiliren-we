@@ -4,7 +4,7 @@ function confirmPayClick(){
 		type : 'POST',
 		data : $("#confirmInlandPayForm").serialize(),
 		async: false,
-		url: BASE_PATH + '/admin/receivePay/saveInlandPay.html',
+		url: BASE_PATH + '/admin/receivePay/inland/saveInlandPay.html',
 		success : function(data) {
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			parent.layer.close(index);
@@ -14,9 +14,10 @@ function confirmPayClick(){
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			parent.layer.close(index);
 			parent.layer.msg("付款失败", "", 2000);
-        }
+		}
 	});
 }
+
 
 //金额输入框
 $("#payMoney").keyup(function(){

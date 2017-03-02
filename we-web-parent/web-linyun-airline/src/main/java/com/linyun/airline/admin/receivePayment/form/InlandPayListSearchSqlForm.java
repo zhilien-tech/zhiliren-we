@@ -17,6 +17,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.cri.SqlExpressionGroup;
 
+import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
@@ -65,6 +66,7 @@ public class InlandPayListSearchSqlForm extends DataTablesParamForm {
 			cnd.and("oc.leavetdate", "=", leaveBeginDate);
 		}
 
+		cnd.and("uo.orderstype", "=", OrderTypeEnum.FIT.intKey()); //散客
 		cnd.and("uo.loginUserId", "=", loginUserId);
 
 		return cnd;

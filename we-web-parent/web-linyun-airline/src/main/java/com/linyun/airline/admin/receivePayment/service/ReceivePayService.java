@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,14 +26,13 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.Daos;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.json.Json;
 import org.nutz.lang.Files;
 import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.upload.UploadAdaptor;
 
-import com.google.common.base.Splitter;
+import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
@@ -40,6 +40,7 @@ import com.linyun.airline.admin.receivePayment.form.InlandPayListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.TSaveInlandPayAddFrom;
 import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
+import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.common.util.Util;
@@ -49,8 +50,17 @@ import com.uxuexi.core.web.base.service.BaseService;
 @IocBean
 public class ReceivePayService extends BaseService<TPayEntity> {
 
+	//银行卡类型
+	private static final String YHCODE = "YH";
+
+	//付款用途
+	private static final String YTCODE = "FKYT";
+
 	@Inject
 	private UploadService qiniuUploadService;
+
+	@Inject
+	private externalInfoService externalInfoService;
 
 	/**
 	 * bootstrap插件Datatables分页查询
@@ -90,17 +100,45 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object toConfirmPay(String inlandPayIds) {
-		Sql sql = Sqls.create(sqlManager.get("receivePay_pay_Ids"));
-		List<Record> list = new ArrayList<Record>();
-		Iterable<String> split = Splitter.on(",").split(inlandPayIds);
-		Record record = new Record();
-		for (String pnrId : split) {
-			sql.params().set("pnrId", pnrId);
-			record = dbDao.fetch(sql);
-			list.add(record);
-		}
+		Map<String, Object> map = new HashMap<String, Object>();
 
-		return Json.toJson(list);
+		Sql sql = Sqls.create(sqlManager.get("receivePay_pay_Ids"));
+		/*String inlandPayIdStr = inlandPayIds.substring(0, inlandPayIds.length() - 1);*/
+		Cnd cnd = Cnd.limit();
+		cnd.and("pi.id", "in", inlandPayIds);
+		List<Record> orders = dbDao.query(sql, cnd, null);
+		map.put("orders", orders);
+
+		//计算合计金额
+		double totalMoney = 0;
+		for (Record record : orders) {
+			if (!Util.isEmpty(record.get("salePrice"))) {
+				Double incometotal = (Double) record.get("salePrice");
+				totalMoney += incometotal;
+			}
+		}
+		map.put("totalMoney", totalMoney);
+
+		//银行卡
+		List<DictInfoEntity> bankList = new ArrayList<DictInfoEntity>();
+		try {
+			bankList = externalInfoService.findDictInfoByName("", YHCODE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		map.put("bankList", bankList);
+
+		//付款用途
+		List<DictInfoEntity> fkytList = new ArrayList<DictInfoEntity>();
+		try {
+			fkytList = externalInfoService.findDictInfoByName("", YTCODE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		map.put("fkytList", fkytList);
+
+		map.put("ids", inlandPayIds);
+		return map;
 	}
 
 	/**
@@ -126,7 +164,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		Integer isInvioce = form.getIsInvioce();
 		String receiptUrl = form.getReceiptUrl();
 		String payIds = form.getPayIds();
-		String payIdStr = payIds.substring(0, payIds.length() - 1);
+		Double totalMoney = form.getTotalMoney();
+
+		/*String payIdStr = payIds.substring(0, payIds.length() - 1);*/
 
 		//付款水单 集合
 		List<TPayReceiptEntity> payReceiptList = new ArrayList<TPayReceiptEntity>();
@@ -145,7 +185,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 
 		//付款集合
 		List<TPayEntity> updateList = new ArrayList<TPayEntity>();
-		List<TPayEntity> payEntityList = dbDao.query(TPayEntity.class, Cnd.where("id", "in", payIdStr), null);
+		List<TPayEntity> payEntityList = dbDao.query(TPayEntity.class, Cnd.where("id", "in", payIds), null);
 		for (TPayEntity payEntity : payEntityList) {
 			payEntity.setBankId(bankId);
 			payEntity.setPayAddress(payAddress);
@@ -157,6 +197,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			}
 			if (!Util.eq(null, payMoney)) {
 				payEntity.setPayMoney(payMoney);
+			}
+			if (!Util.eq(null, totalMoney)) {
+				payEntity.setTotalMoney(totalMoney);
 			}
 			payEntity.setPayCurrency(currency);
 			payEntity.setIsInvioce(isInvioce);

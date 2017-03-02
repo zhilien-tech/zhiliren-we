@@ -99,7 +99,6 @@ FROM
 		INNER JOIN t_user u ON fi.`issuer` = u.id
 	)
 INNER JOIN t_customer_info ci ON ci.id = uo.userid
-WHERE
-	pi.id=@pnrId
+$condition
 ORDER BY
 	leaveDate DESC

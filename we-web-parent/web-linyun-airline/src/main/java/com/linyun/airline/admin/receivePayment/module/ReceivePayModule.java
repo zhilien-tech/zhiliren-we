@@ -50,7 +50,7 @@ public class ReceivePayModule {
 	}
 
 	/**
-	 * 跳转到 收款页面
+	 * 跳转到 确认收款页面
 	 */
 	@At
 	@GET
@@ -60,7 +60,7 @@ public class ReceivePayModule {
 	}
 
 	/**
-	 * 跳转到 付款页面
+	 * 跳转到 确认付款页面
 	 */
 	@At
 	@GET

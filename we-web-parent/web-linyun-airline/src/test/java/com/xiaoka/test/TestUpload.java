@@ -24,7 +24,7 @@ import com.linyun.airline.common.base.impl.QiniuUploadServiceImpl;
 public class TestUpload {
 
 	public static void main(String[] args) throws Exception {
-		String path = "D:\\ITextTest.pdf";
+		String path = "F:\\青春记忆\\psb.jpg";
 		File f = new File(path);
 
 		UploadService uploadService = new QiniuUploadServiceImpl();
