@@ -29,6 +29,6 @@ public class TGrabMailUpdateForm extends ModForm implements Serializable {
 	private Date grabTime;
 
 	/**抓取状态(1-已抓;2-未抓;)*/
-	private Integer grabStatus;
+	private long grabStatus;
 
 }

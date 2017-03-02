@@ -13,6 +13,9 @@ import com.uxuexi.core.web.form.AddForm;
 public class TGrabMailAddForm extends AddForm implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	/**主键*/
+	private long id;
+
 	/**主题*/
 	private String theme;
 
@@ -29,6 +32,6 @@ public class TGrabMailAddForm extends AddForm implements Serializable {
 	private Date grabTime;
 
 	/**抓取状态(1-已抓;2-未抓;)*/
-	private Integer grabStatus;
+	private long grabStatus;
 
 }

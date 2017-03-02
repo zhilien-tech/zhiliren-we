@@ -24,3 +24,24 @@ SELECT
 FROM
 	t_grab_file f
 $condition
+
+/*grab_mail_move*/
+/*SELECT
+	f.id,
+	f.mailId,
+	f.parentId,
+	f.folderName,
+	f.fileName,
+	f.url,
+	f.fileSize,
+	f.type,
+	f.`status`,
+	f.createTime,
+	f.updateTime,
+	f.`level`,
+	f.fullPath,
+	f.sort,
+	f.groupType
+FROM
+	t_grab_file f
+WHERE f.id=@id*/

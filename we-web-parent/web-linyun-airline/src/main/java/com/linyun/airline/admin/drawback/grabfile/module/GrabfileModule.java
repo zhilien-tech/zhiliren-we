@@ -1,11 +1,9 @@
 package com.linyun.airline.admin.drawback.grabfile.module;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.zip.ZipOutputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,7 +31,6 @@ import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.base.Uploader;
 import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.common.enums.DataStatusEnum;
-import com.linyun.airline.common.util.ZipUtils;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
 
@@ -104,6 +101,7 @@ public class GrabfileModule {
 		addForm.setUrl(addForm.getUrl());
 		addForm.setFileName(addForm.getFileName());
 		addForm.setParentId(addForm.getId());
+		addForm.setMailId(addForm.getId());
 		return grabfileViewService.add(addForm);
 	}
 
@@ -111,17 +109,19 @@ public class GrabfileModule {
 	 * 打包压缩下载文件
 	 * @param fileList
 	 * @param response
-	 * @throws IOException TODO
+	 * @throws Exception 
 	 */
+	@SuppressWarnings("static-access")
 	@At
-	public void downLoadZipFile(List<TGrabFileEntity> fileList, HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
-		String zipName = "myfile.zip";
+	public void downLoadZipFile(List<File> files, @Param("url") String tempFilePath, HttpServletResponse response,
+			HttpServletRequest request) throws Exception {
+		grabfileViewService.downLoadZipFiles(tempFilePath, files, request, response);
+		/*String zipName = "myfile.zip";
 		response.setContentType("application/zip");// 设置response内容的类型
 		response.setHeader("Content-Disposition", "attachment; filename=" + zipName);// 设置头部信息  
 		ZipOutputStream out = new ZipOutputStream(response.getOutputStream());
 		try {
-			for (Iterator<TGrabFileEntity> it = fileList.iterator(); it.hasNext();) {
+			for (Iterator<TGrabFileEntity> it = files.iterator(); it.hasNext();) {
 				TGrabFileEntity file = it.next();
 				ZipUtils.doCompress(file.getUrl() + file.getFileName(), out);
 				response.flushBuffer();
@@ -130,36 +130,7 @@ public class GrabfileModule {
 			e.printStackTrace();
 		} finally {
 			out.close();
-		}
-		/*OutputStream os = null;
-		try {
-			String filepath = request.getServletContext().getRealPath("EXCEL_PATH");
-			String path = filepath + File.separator + "FILE_EXCEL_NAME";
-			File file = new File(path);// path是根据日志路径和文件名拼接出来的
-			String filename = file.getName();// 获取日志文件名称
-			InputStream fis = new BufferedInputStream(new FileInputStream(path));
-			byte[] buffer = new byte[fis.available()];
-			fis.read(buffer);
-			fis.close();
-			response.reset();
-			// 先去掉文件名称中的空格,然后转换编码格式为utf-8,保证不出现乱码,这个文件名称用于浏览器的下载框中自动显示的文件名
-			response.addHeader("Content-Disposition", "attachment;filename="
-					+ new String(filename.replaceAll(" ", "").getBytes("utf-8"), "iso8859-1"));
-			response.addHeader("Content-Length", "" + file.length());
-			response.setContentType("application/zip");
-			os = new BufferedOutputStream(response.getOutputStream());
-			os.write(buffer);// 输出文件
-			os.flush();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				os.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return null;*/
+		}*/
 	}
 
 	/**
@@ -168,7 +139,7 @@ public class GrabfileModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object add(@Param("parentId") final int pid) {
+	public Object add(@Param("parentId") final long pid) {
 		return grabfileViewService.superFolder(pid);
 	}
 
@@ -176,10 +147,11 @@ public class GrabfileModule {
 	 * 添加
 	 */
 	@At
-	public Object add(@Param("..") TGrabFileAddForm addForm) {
-		addForm.setCreateTime(new Date());
-		addForm.setStatus(DataStatusEnum.ENABLE.intKey());
-		return grabfileViewService.add(addForm);
+	public Object add(@Param("..") TGrabFileAddForm fileAddForm) {
+		fileAddForm.setCreateTime(new Date());
+		fileAddForm.setStatus(DataStatusEnum.ENABLE.intKey());
+		fileAddForm.setMailId(fileAddForm.getId());
+		return grabfileViewService.add(fileAddForm);
 	}
 
 	/**
@@ -188,7 +160,7 @@ public class GrabfileModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object update(@Param("id") final int id) {
+	public Object update(@Param("id") final long id) {
 		return grabfileViewService.superFolder(id);
 	}
 
@@ -260,8 +232,8 @@ public class GrabfileModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object move() {
-		return null;
+	public Object move(@Param("id") final long id) {
+		return grabfileViewService.getFileId(id);
 	}
 
 	/**
@@ -269,9 +241,9 @@ public class GrabfileModule {
 	 */
 	@At
 	@POST
-	public Object fileMove(@Param("id") final int id) {
+	public Object fileMove(@Param("id") final long id, @Param("parentId") final long parentId) {
 		//将文件移动到新目录
-		return dbDao.update(TGrabFileEntity.class, Chain.make("parentId", id), null);
+		return dbDao.update(TGrabFileEntity.class, Chain.make("parentId", id), Cnd.where("id", "=", parentId));
 	}
 
 	//邮件抓取按钮

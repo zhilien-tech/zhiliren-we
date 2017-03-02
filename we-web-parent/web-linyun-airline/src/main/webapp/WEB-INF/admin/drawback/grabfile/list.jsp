@@ -209,11 +209,9 @@ $(".checkTh").click(function () {
     					layer.msg('上传失败!');
     				},
     				success : function(data) {
-    					layer.load(1, {
-    						 shade: [0.1,'#fff'] //0.1透明度的白色背景
-    					});
     				    window.parent.successCallback('6');
-    				    parent.location.reload(); // 父页面刷新
+    					var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+    				    parent.layer.close(index);
     				}
     			});
     			
@@ -263,7 +261,7 @@ function physicalDelete(did, status) {
 	    shade: false //不显示遮罩
 	}, function(){
 		// 点击确定之后
-		var url = '${base}/admin/drawback/grabfile/updateDeleteStatus.html';
+		var url = '${base}/admin/drawback/grabfile/delete.html';
 		$.ajax({
 			type : 'POST',
 			data : {
@@ -274,8 +272,7 @@ function physicalDelete(did, status) {
 			url : url,
 			success : function(data) {
 				if ("200" == data.status) {
-					layer.msg("操作成功!", "", 3000);
-					window.location.reload(true);
+					window.parent.successCallback('3');
 				} else {
 					layer.msg("操作失败!", "", 3000);
 				}
@@ -302,7 +299,7 @@ function batchDelete(){
 			$.ajax({
 				type: 'POST', 
 				data: {ids:ids}, 
-				url: '${base}/admin/drawback/grabfile/updateBetchStatus.html',
+				url: '${base}/admin/drawback/grabfile/batchDelete.html',
 				success: function (data) { 
 					layer.msg("批量删除成功!", "", 1000);
 					$('#checkedboxval').val('');
@@ -322,22 +319,22 @@ $(function() {
 });
 
 //移动到
-function move(){
-      layer.open({
-    	    type: 2,
-    	    title:false,
-    	    closeBtn:false,
-    	    fix: false,
-    	    maxmin: false,
-    	    shadeClose: false,
-    	    area: ['800px', '500px'],
-    	    content: '${base}/admin/drawback/grabfile/move.html',
-    	    end: function(){//添加完页面点击返回的时候自动加载表格数据
-    	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-    			parent.layer.close(index);
-    	    }
-   	 	 });
-	}
+function move(id){
+     layer.open({
+   	    type: 2,
+   	    title:false,
+   	    closeBtn:false,
+   	    fix: false,
+   	    maxmin: false,
+   	    shadeClose: false,
+   	    area: ['800px', '500px'],
+   	    content: '${base}/admin/drawback/grabfile/move.html?id='+id,
+   	    end: function(){//添加完页面点击返回的时候自动加载表格数据
+   	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+   			parent.layer.close(index);
+   	    }
+  	});
+}
 //邮件抓取入口
 $('#grabMailId').click(function(){
 	$.ajax({
@@ -372,22 +369,24 @@ function successCallback(id){
 		  layer.msg("抓取成功!",{time: 1000, icon:1});
 	  }else if(id == '6'){
 		  layer.msg("上传成功!",{time: 1000, icon:1});
+	  }else if(id == '7'){
+		  layer.msg("文件下载成功!",{time: 1000, icon:1});
 	  }
   }
 </script>
 <!---------------------------------------------------- 邮件抓取分页显示 ----------------------------------------------------->
 <script type="text/javascript">
-//数据集
-var dataSet = [
-    [ "2017.10", "System Architect", "Edinburgh", "5421" ]
-];
+	//初始化表格
+	$(function() {
+		initDatatable();
+	});
 	var rebatesEamilTable;
 	var options = {
 			"searching" : false,
 			"processing" : true,
 			"serverSide" : true,//左下角括号中页数的显示
-			"bPaginate":false,//左下角分页显示
-			"info":false,//右下角分页显示
+			"bPaginate":true,//左下角分页显示
+			"info":true,//右下角分页显示
 			"bLengthChange" : false,
 			"stripeClasses": [ 'strip1','strip2' ],//斑马线
 			"bJQueryUI": true,
@@ -419,7 +418,6 @@ var dataSet = [
 	                    			result = '<input type="checkbox"  class="checkchild" value="' + row.id + '" />';
 	                    		}
 	                            return result;
-	                    		//return '<td class="checkchild"><input type="checkbox" value='+row.id+'></td>';
 	                    	}
 						},
 	                    {"data": "filename", "bSortable": false,
@@ -454,8 +452,8 @@ var dataSet = [
 	                targets: 4,
 	                render: function(data, type, row, meta) {
 	                	var editFolder = '<a href="javascript:editFolder('+row.id+');" style="cursor:pointer;">编辑&nbsp;&nbsp;&nbsp;</a>';
-	                	var download = '<a href="${base}/admin/drawback/grabfile/downLoadZipFile.html" style="cursor:pointer;">&nbsp;&nbsp;下载&nbsp;&nbsp;&nbsp;</a>';
-	                	var move  = '<a href="javascript:move();" style="cursor:pointer;">&nbsp;&nbsp;移动到&nbsp;&nbsp;</a>';
+	                	var download = '<a href="javascript:downFiles('+row.url+');" style="cursor:pointer;">&nbsp;&nbsp;下载&nbsp;&nbsp;&nbsp;</a>';
+	                	var move  = '<a href="javascript:move('+row.id+');" style="cursor:pointer;">&nbsp;&nbsp;移动到&nbsp;&nbsp;</a>';
                    		if(1==row.status){
                    			var judge = '<a href="javascript:physicalDelete('+row.id+',2);" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
                    		}else{
@@ -541,6 +539,29 @@ var dataSet = [
 	  	    }
 	 	});
 	}
+	//文件下载
+	function downFiles(filename){
+		var pid = $("input#currentDirId").val();
+		alert(filename);
+		$.ajax({
+			cache : false,
+			type : "POST",
+			url : '${base}/admin/drawback/grabfile/downLoadZipFile.html',
+			data : 
+			{
+				parentId:pid
+			},
+			error : function(request) {
+				layer.msg('下载失败!');
+			},
+			success : function(data) {
+				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+			    parent.layer.close(index);
+				window.parent.successCallback('7');
+			}
+		});
+	}
+	
 	//修改文件夹名称
 	function editFolder(id){
 		layer.open({
@@ -558,48 +579,6 @@ var dataSet = [
 	  	    }
 	 	});
 	}
-	
-	//移动到
-	function fileMove(id){
-		$.ajax({
-			cache : false,
-			type : "POST",
-			url : '${base}/admin/drawback/grabfile/fileMove.html',
-			data : {
-				id:id
-			},
-			error : function(request) {
-				layer.msg('移动失败!');
-			},
-			success : function(data) {
-				layer.load(1, {
-					 shade: [0.1,'#fff'] //0.1透明度的白色背景
-				});
-			    window.parent.successCallback('4');
-			    parent.location.reload(); // 父页面刷新
-			}
-		});
-	}
-	$(function() {
-		initDatatable();
-	});
-	//单行选中
-	/* $(document).ready(function() {
-	    var table = $('#rebatesEamilTable').DataTable();
-	    $('#rebatesEamilTable tbody').on( 'click', 'tr', function () {
-	        if ($(this).hasClass('selected') ) {
-	        	console.info("this",this);
-	            $(this).removeClass('selected');
-	        }
-	        else {
-	            table.$('tr.selected').removeClass('selected');
-	            $(this).addClass('selected');
-	        }
-	    } );
-	    $('#button').click( function () {
-	        table.row('.selected').remove().draw( false );
-	    });
-	}); */
 </script>
 
 <!------------------------------------------------------------ 报表分页显示 ---------------------------------------------------->
