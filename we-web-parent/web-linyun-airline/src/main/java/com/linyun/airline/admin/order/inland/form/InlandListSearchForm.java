@@ -11,6 +11,7 @@ import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
+import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
@@ -28,6 +29,7 @@ public class InlandListSearchForm extends DataTablesParamForm {
 
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
+		cnd.and("orderstype", "=", OrderTypeEnum.FIT.intKey());
 		if (!Util.isEmpty(ordersstatus) && ordersstatus != 0) {
 			cnd.and("ordersstatus", "=", ordersstatus);
 		}
