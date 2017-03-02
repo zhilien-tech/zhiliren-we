@@ -37,8 +37,8 @@
 											<div class="form-group row marginBott5 cf">
 												<div class="col-md-1 textPadding">
 													<select id="inlandRecSelect" class="form-control TimeInput">
-														<option value="0">收款中</option>
-														<option value="1">已收款</option>
+														<option value="3">收款中</option>
+														<option value="4">已收款</option>
 													</select>
 												</div>
 												<div class="col-md-1 textPadding">
@@ -61,8 +61,7 @@
 										</form>
 									</div>
 									<div class="box-body">
-										<table id="inlandRecTable"
-											class="table table-bordered table-hover">
+										<table id="inlandRecTable" class="table table-bordered table-hover">
 											<thead>
 												<tr>
 													<th>订单号</th>
@@ -187,7 +186,8 @@
 	<!-- My97DatePicker -->
 	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 	<!-- 内陆跨海js -->
-	<script src="${base}/admin/receivePayment/inlandReceivePay.js"></script>
+	<script src="${base}/admin/receivePayment/inlandPay.js"></script>
+	<script src="${base}/admin/receivePayment/inlandReceive.js"></script>
 	<!-- 国际js -->
 	<%-- <script src="${base}/admin/receivePayment/internationPayment.js"></script> --%>
 

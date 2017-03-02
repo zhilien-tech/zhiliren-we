@@ -333,21 +333,9 @@ $("#inlandPaySearchBtn").on('click', function () {
 	inlandPayTable.ajax.reload();
 });
 
-//内陆跨海 收款 弹框
-/*$('.fuKuanBtn').click(function(){
-	layer.open({
-		type: 2,
-		title:false,
-		skin: false, //加上边框
-		closeBtn:false,//默认 右上角关闭按钮 是否显示
-		shadeClose:true,
-		area: ['850px', '650px'],
-		content: ['confirmReceive.html','no']
-	});
-});*/
 
 $(function () {
-	var selectEd = $('#inlandPaySelect').val();
+/*	var selectEd = $('#inlandPaySelect').val();
 	if(selectEd == 3){
 		$("#inlandPayTable").show();
 		$("#inlandPayEdTable").hide();
@@ -357,7 +345,9 @@ $(function () {
 		$("#inlandPayEdTable").show();
 		initPayEdDataTable();
 	}
-	$('#inlandPaySearchBtn').click();
+	$('#inlandPaySearchBtn').click();*/
+	initRecDataTable();
+	$('#inlandRecSearchBtn').click();
 });
 
 
@@ -401,7 +391,7 @@ $('#inlandPayClearBtn').click(function(){
 
 //清空搜索项函数
 function clearSearchTxt(selectId, beginDateId, endDateId, inputId){
-	$("#"+selectId).val(0);
+	$("#"+selectId).val(3);
 	$("#"+beginDateId).val("");
 	$("#"+endDateId).val("");
 	$("#"+inputId).val("");

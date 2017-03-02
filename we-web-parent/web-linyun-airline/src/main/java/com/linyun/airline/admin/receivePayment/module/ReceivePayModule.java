@@ -24,6 +24,7 @@ import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.receivePayment.form.InlandPayListSearchSqlForm;
+import com.linyun.airline.admin.receivePayment.form.InlandRecListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.TSaveInlandPayAddFrom;
 import com.linyun.airline.admin.receivePayment.service.ReceivePayService;
 import com.linyun.airline.entities.TUserEntity;
@@ -55,8 +56,8 @@ public class ReceivePayModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object confirmReceive() {
-		return null;
+	public Object confirmReceive(@Param("inlandRecId") String inlandRecId, HttpSession session) {
+		return receivePayService.toConfirmRec(inlandRecId, session);
 	}
 
 	/**
@@ -96,11 +97,12 @@ public class ReceivePayModule {
 	 *會計收款分页
 	 */
 	@At
-	public Object inlandRecList(HttpSession session) {
+	public Object inlandRecList(@Param("..") final InlandRecListSearchSqlForm form, HttpSession session) {
 		//当前用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long id = loginUser.getId();
-		return null;
+		form.setLoginUserId(id);
+		return receivePayService.listRecData(form);
 	}
 
 	//水单上传 返回值文件存储地址
