@@ -178,9 +178,9 @@ function initPayEdDataTable(){
 }
 
 $("#inlandPaySelect").change(function(){
-	var selectEd = $(this).val();
+	var selectEd = $("#inlandPaySelect option:first").prop("selected");
 	$("#box-body").html("");
-	if(selectEd == 2){
+	if(selectEd){
 		destroyDatetable($("#inlandPayEdTable"));
 		$("#inlandPayClick").show();
 		$("#inlandPayTable").show();
@@ -334,51 +334,6 @@ $("#inlandPaySearchBtn").on('click', function () {
 });
 
 
-$(function () {
-/*	var selectEd = $('#inlandPaySelect').val();
-	if(selectEd == 3){
-		$("#inlandPayTable").show();
-		$("#inlandPayEdTable").hide();
-		initPayDataTable();
-	}else{
-		$("#inlandPayTable").hide();
-		$("#inlandPayEdTable").show();
-		initPayEdDataTable();
-	}
-	$('#inlandPaySearchBtn').click();*/
-	initRecDataTable();
-	$('#inlandRecSearchBtn').click();
-});
-
-
-
-//会计   收款datatable
-/*var inlandRecTable;
-function initRecDataTable(){
-	inlandRecTable = $("#inlandRecTable").DataTable({
-		"searching":false,
-		"lengthChange": false,
-		"processing": true,
-		"serverSide": true,
-		"stripeClasses": [ 'strip1','strip2' ],
-		"language": {
-			"url": BASE_PATH + "/public/plugins/datatables/cn.json"
-		},
-		"ajax": {
-			"url": BASE_PATH + "/admin/receivePay/inlandRecList.html",
-			"type": "post",
-			"data": function (data) {
-
-			}
-		},
-		"columns": [
-		            {"data": "ordersnum", "bSortable": false}
-		            ]
-
-	});
-}
- */
-
 /*清除 内陆跨海 收款的   检索项*/
 $('#inlandRecClearBtn').click(function(){
 	clearSearchTxt("inlandRecSelect", "inlandRecBeginDate", "inlandRecEndDate", "inlandRecInput");
@@ -391,7 +346,7 @@ $('#inlandPayClearBtn').click(function(){
 
 //清空搜索项函数
 function clearSearchTxt(selectId, beginDateId, endDateId, inputId){
-	$("#"+selectId).val(3);
+	$("#"+selectId+" option:first").prop("selected", 'selected');  
 	$("#"+beginDateId).val("");
 	$("#"+endDateId).val("");
 	$("#"+inputId).val("");
