@@ -11,9 +11,9 @@ table.dataTable thead .sorting:after{content: "";}
 #rebatesEamilTable tbody tr .sorting_1 input {margin: 0 auto;}
 #rebatesEamilTable thead > tr > th {padding-right: 8px;}
 #rebatesReportTable thead > tr > th{padding-right: 5px;}
-
-
-
+div#uploadFile{width: 46px !important;float: right;margin-right: 10px;border-radius: 3px;}
+object#SWFUpload_0 {width: 46px;border-radius: 3px;}
+div#uploadFile-button {width: 46px !important;}
 
 
 
