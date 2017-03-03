@@ -1,6 +1,5 @@
 package com.linyun.airline.admin.drawback.grabfile.module;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -111,11 +110,9 @@ public class GrabfileModule {
 	 * @param response
 	 * @throws Exception 
 	 */
-	@SuppressWarnings("static-access")
 	@At
-	public void downLoadZipFile(List<File> files, @Param("url") String tempFilePath, HttpServletResponse response,
-			HttpServletRequest request) throws Exception {
-		grabfileViewService.downLoadZipFiles(tempFilePath, files, request, response);
+	public void downLoadZipFile(HttpServletResponse response, HttpServletRequest request) throws Exception {
+		grabfileViewService.downLoadZipFiles(request, response);
 		/*String zipName = "myfile.zip";
 		response.setContentType("application/zip");// 设置response内容的类型
 		response.setHeader("Content-Disposition", "attachment; filename=" + zipName);// 设置头部信息  

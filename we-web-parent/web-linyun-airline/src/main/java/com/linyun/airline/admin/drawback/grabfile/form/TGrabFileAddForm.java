@@ -33,10 +33,10 @@ public class TGrabFileAddForm extends AddForm {
 	private String fileSize;
 
 	/**文件类型(1-文件夹;2-文件;)*/
-	private long type;
+	private int type;
 
 	/**状态(1-已删除;2-已启用;)*/
-	private long status;
+	private int status;
 
 	/**创建时间*/
 	private Date createTime;
@@ -51,9 +51,9 @@ public class TGrabFileAddForm extends AddForm {
 	private String fullPath;
 
 	/**序号*/
-	private long sort;
+	private int sort;
 
 	/**序号*/
-	private long groupType;
+	private int groupType;
 
 }

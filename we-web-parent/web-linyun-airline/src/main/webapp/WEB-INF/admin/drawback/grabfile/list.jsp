@@ -452,7 +452,7 @@ function successCallback(id){
 	                targets: 4,
 	                render: function(data, type, row, meta) {
 	                	var editFolder = '<a href="javascript:editFolder('+row.id+');" style="cursor:pointer;">编辑&nbsp;&nbsp;&nbsp;</a>';
-	                	var download = '<a href="javascript:downFiles('+row.url+');" style="cursor:pointer;">&nbsp;&nbsp;下载&nbsp;&nbsp;&nbsp;</a>';
+	                	var download = '<a href="javascript:downFiles();" style="cursor:pointer;">&nbsp;&nbsp;下载&nbsp;&nbsp;&nbsp;</a>';
 	                	var move  = '<a href="javascript:move('+row.id+');" style="cursor:pointer;">&nbsp;&nbsp;移动到&nbsp;&nbsp;</a>';
                    		if(1==row.status){
                    			var judge = '<a href="javascript:physicalDelete('+row.id+',2);" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
@@ -540,9 +540,8 @@ function successCallback(id){
 	 	});
 	}
 	//文件下载
-	function downFiles(filename){
+	function downFiles(){
 		var pid = $("input#currentDirId").val();
-		alert(filename);
 		$.ajax({
 			cache : false,
 			type : "POST",

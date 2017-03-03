@@ -203,7 +203,8 @@ public class MailScrabService extends BaseService {
 
 			//名称
 			SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
-			timeFile.setFileName(format.format(createTime));
+			String fileName = format.format(createTime);
+			timeFile.setFileName(fileName);
 			//类型
 			timeFile.setType(FileTypeEnum.FOLDER.intKey());
 
@@ -215,11 +216,15 @@ public class MailScrabService extends BaseService {
 			timeFile.setSort(0);
 			//TODO 
 			timeFile.setGroupType(1);
-			timeFile = dbDao.insert(timeFile);
-
+			List<TGrabFileEntity> list = existFile(rootId, fileName);
+			if (!Util.isEmpty(list)) {
+				timeFile = list.get(0);
+			} else {
+				timeFile = dbDao.insert(timeFile);
+			}
 			/**************************时间结束***************************/
 
-			//客户团号
+			/**************************客户团号***************************/
 			long sort = getSort(timeFile.getId());
 
 			String cusgroupnum = getcusGroupnum();//得到客户团号
@@ -249,6 +254,7 @@ public class MailScrabService extends BaseService {
 			groupNumFile.setSort(sort);
 			//TODO 
 			groupNumFile.setGroupType(3);
+
 			groupNumFile = dbDao.insert(groupNumFile);
 
 			/**********************客户团号结束**********************/
@@ -299,6 +305,14 @@ public class MailScrabService extends BaseService {
 		default:
 			break;
 		}
+	}
+
+	private List<TGrabFileEntity> existFile(long rootId, String fileName) {
+		Sql sqlCount = Sqls.create(sqlManager.get("grab_mail_count"));
+		sqlCount.params().set("fileName", fileName);
+		sqlCount.params().set("parentId", rootId);
+		List<TGrabFileEntity> list = DbSqlUtil.query(dbDao, TGrabFileEntity.class, sqlCount);
+		return list;
 	}
 
 	/**

@@ -45,11 +45,11 @@ public class TGrabFileEntity implements Serializable {
 
 	@Column
 	@Comment("文件类型(1-文件夹;2-文件;)")
-	private long type;
+	private int type;
 
 	@Column
 	@Comment("状态(1-已删除;2-已启用;)")
-	private long status;
+	private int status;
 
 	@Column
 	@Comment("创建时间")
@@ -73,6 +73,6 @@ public class TGrabFileEntity implements Serializable {
 
 	@Column
 	@Comment("散团类型")
-	private long groupType;
+	private int groupType;
 
 }

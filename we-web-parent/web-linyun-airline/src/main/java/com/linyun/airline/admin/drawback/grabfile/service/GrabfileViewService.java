@@ -1,14 +1,9 @@
 package com.linyun.airline.admin.drawback.grabfile.service;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,14 +11,16 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tools.zip.ZipEntry;
-import org.apache.tools.zip.ZipOutputStream;
 import org.nutz.dao.Cnd;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.linyun.airline.admin.drawback.grabfile.entity.TGrabFileEntity;
+import com.linyun.airline.admin.drawback.grabfile.enums.FileTypeEnum;
 import com.linyun.airline.common.enums.DataStatusEnum;
+import com.linyun.airline.common.util.ZipUtil;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.base.service.BaseService;
 
 @IocBean
@@ -47,10 +44,35 @@ public class GrabfileViewService extends BaseService<TGrabFileEntity> {
 		return obj;
 	}
 
-	//文件打包下载
+	/** 
+	 * 递归获取当前节点下面的所有子节点
+	 */
+	private void getChildFiles(List<TGrabFileEntity> fileList, long parentId) {
+		// 获取直接子节点
+		List<TGrabFileEntity> chidren = dbDao.query(TGrabFileEntity.class, Cnd.where("parentId", "=", parentId), null);
+		if (!Util.isEmpty(chidren)) {
+			fileList.addAll(chidren);
+			for (TGrabFileEntity f : chidren) {
+				//递归子节点
+				getChildFiles(fileList, f.getId());
+			}
+		}
+	}
+
+	private void getChidrenFiles(List<TGrabFileEntity> fileList, long parentId) {
+		//添加当前节点
+		TGrabFileEntity current = dbDao.fetch(TGrabFileEntity.class, Cnd.where("id", "=", parentId));
+		fileList.add(current);
+		getChildFiles(fileList, parentId);
+
+	}
+
+	/**
+	 * 向下递归查询文件的完整路径
+	 */
+
 	/**
 	 * 文件打包下载
-	 *
 	 * @param tempFilePath 待创建临时压缩文件
 	 * @param files        待压缩文件集合
 	 * @param request      请求
@@ -58,127 +80,49 @@ public class GrabfileViewService extends BaseService<TGrabFileEntity> {
 	 * @return response
 	 * @throws Exception 异常
 	 */
-	public static HttpServletResponse downLoadZipFiles(String tempFilePath, List<File> files,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void downLoadZipFiles(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		OutputStream os = null;
 		try {
-			/**这个集合就是想要打包的所有文件，
-			 * 这里假设已经准备好了所要打包的文件*/
-			files = new ArrayList<File>();
+			//1、把多个文件打包成一个文件
+			List<TGrabFileEntity> pathList = Lists.newArrayList();
+			long parentId = 2l;
+			getChidrenFiles(pathList, parentId);
+			//把1中得到的路径(pathList)转为文件(file)
+			List<File> fileLst = Lists.newArrayList();
+			for (TGrabFileEntity dfile : pathList) {
+				//判断文件类型
+				int fileType = dfile.getType();
+				if (FileTypeEnum.FOLDER.intKey() == fileType) {//文件夹
+					File d = new File("");
+					d.mkdirs();
 
-			/**创建一个临时压缩文件，
-			 * 把文件流全部注入到这个文件中
-			 * 这里的文件可以自定义是.rar还是.zip*/
-			File file = new File(tempFilePath);
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-			response.reset();
-
-			response.getWriter();
-			//创建文件输出流
-			FileOutputStream fous = new FileOutputStream(file);
-			/**打包的方法会用到ZipOutputStream这样一个输出流,
-			 * 所以这里把输出流转换一下*/
-			ZipOutputStream zipOut = new ZipOutputStream(fous);
-			zipOut.setEncoding(System.getProperty("sun.jnu.encoding"));//设置文件名编码方式
-			/**这个方法接收的就是一个所要打包文件的集合，
-			 * 还有一个ZipOutputStream*/
-			zipFile(files, zipOut);
-			zipOut.close();
-			fous.close();
-			return downloadZip(file, response, request);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		/**直到文件的打包已经成功了，
-		 * 文件的打包过程封装在FileUtil.zipFile这个静态方法中，
-		 * 接下来的就是往客户端写数据了*/
-		return response;
-	}
-
-	/**
-	 * 把接受的全部文件打成压缩包
-	 *
-	 * @param files
-	 * @param outputStream org.apache.tools.zip.ZipOutputStream
-	 */
-	public static void zipFile(List files, ZipOutputStream outputStream) {
-		int size = files.size();
-		for (int i = 0; i < size; i++) {
-			File file = (File) files.get(i);
-			zipFile(file, outputStream);
-		}
-	}
-
-	public static HttpServletResponse downloadZip(File file, HttpServletResponse response, HttpServletRequest request) {
-		try {
-			// 以流的形式下载文件。
-			InputStream fis = new BufferedInputStream(new FileInputStream(file.getPath()));
-			byte[] buffer = new byte[fis.available()];
-			fis.read(buffer);
-			fis.close();
-			// 清空response
-			response.reset();
-
-			OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
-			response.setContentType("application/x-msdownload");
-
-			//如果输出的是中文名的文件，解决乱码
-			response.setHeader("Content-Disposition",
-					"attachment;filename=\"" + new String(file.getName().getBytes("gbk"), "iso-8859-1") + "\"");
-			toClient.write(buffer);
-			toClient.flush();
-			toClient.close();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			try {
-				File f = new File(file.getPath());
-				f.delete();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return response;
-	}
-
-	/**
-	 * 根据输入的文件与输出流对文件进行打包
-	 *
-	 * @param inputFile   File
-	 * @param ouputStream org.apache.tools.zip.ZipOutputStream
-	 */
-	public static void zipFile(File inputFile, ZipOutputStream ouputStream) {
-		try {
-			if (inputFile.exists()) {
-				/**如果是目录的话这里是不采取操作的*/
-				if (inputFile.isFile()) {
-					FileInputStream IN = new FileInputStream(inputFile);
-					BufferedInputStream bins = new BufferedInputStream(IN, 512);
-					//org.apache.tools.zip.ZipEntry
-					ZipEntry entry = new ZipEntry(inputFile.getName());
-					//                    ZipEntry entry = new ZipEntry(new String(inputFile.getName().getBytes(), "utf-8"));
-					ouputStream.putNextEntry(entry);
-					// 向压缩文件中输出数据
-					int nNumber;
-					byte[] buffer = new byte[512];
-					while ((nNumber = bins.read(buffer)) != -1) {
-						ouputStream.write(buffer, 0, nNumber);
-					}
-					// 关闭创建的流对象
-					bins.close();
-					IN.close();
-				} else {
-					try {
-						File[] files = inputFile.listFiles();
-						for (int i = 0; i < files.length; i++) {
-							zipFile(files[i], ouputStream);
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+				} else if (FileTypeEnum.FILE.intKey() == fileType) {//文件
+					fileLst.add(new File(""));
 				}
 			}
+			//2,下载1中得到的文件
+			File inputFile = new File("");
+			FileInputStream fis = new FileInputStream(inputFile);
+
+			byte[] buffer = new byte[fis.available()];
+			String filename = "myfile.zip";
+
+			//将文件进行打包
+			ZipUtil.zipFiles(fileLst, new File(filename));
+
+			fis.read(buffer);
+			fis.close();
+
+			response.reset();
+			// 先去掉文件名称中的空格,然后转换编码格式为utf-8,保证不出现乱码,这个文件名称用于浏览器的下载框中自动显示的文件名
+			response.addHeader("Content-Disposition", "attachment;filename="
+					+ new String(filename.replaceAll(" ", "").getBytes("utf-8"), "iso8859-1"));
+			response.addHeader("Content-Length", "" + inputFile.length());
+			response.setContentType("application/octet-stream");
+			os = new BufferedOutputStream(response.getOutputStream());
+			os.write(buffer);// 输出文件
+			os.flush();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
