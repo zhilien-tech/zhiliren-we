@@ -18,6 +18,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
@@ -60,6 +61,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	//付款用途
 	private static final String YTCODE = "FKYT";
 
+	//付款 由收款中改为已收款
+	private static final int ReceiveStatus = 1;
+
 	@Inject
 	private UploadService qiniuUploadService;
 
@@ -89,6 +93,30 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		listdata.remove("data");
 		listdata.put("data", data);
 		return listdata;
+	}
+
+	/**
+	 * (保存  确认收款)
+	 *
+	 * @param inlandPayIds
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object saveInlandRec(String recId) {
+		Sql sql = Sqls.create(sqlManager.get("receivePay_rec_order_id"));
+		Cnd cnd = Cnd.limit();
+		cnd.and("r.id", "=", recId);
+		List<Record> orders = dbDao.query(sql, cnd, null);
+		String ids = "";
+		for (Record record : orders) {
+			ids += record.getString("id") + ',';
+		}
+		if (ids.length() > 1) {
+			ids = ids.substring(0, (ids.length() - 1));
+		}
+
+		dbDao.update(TUpOrderEntity.class, Chain.make("ordersstatus", ReceiveStatus), Cnd.where("id", "in", ids));
+
+		return null;
 	}
 
 	/**
@@ -147,35 +175,13 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		return listdata;
 	}
 
-	/*public Map<String, Object> listPage4PayEdDatatables(final InlandPayEdListSearchSqlForm sqlParamForm) {
-		checkNull(sqlParamForm, "sqlParamForm不能为空");
-		Sql sql = sqlParamForm.sql(sqlManager);
-
-		Pager pager = new OffsetPager(sqlParamForm.getStart(), sqlParamForm.getLength());
-		pager.setRecordCount((int) Daos.queryCount(nutDao, sql.toString()));
-
-		sql.setPager(pager);
-		sql.setCallback(Sqls.callback.records());
-		nutDao.execute(sql);
-
-		@SuppressWarnings("unchecked")
-		List<Record> list = (List<Record>) sql.getResult();
-
-		Map<String, Object> map = MapUtil.map();
-		map.put("data", list);
-		map.put("draw", sqlParamForm.getDraw());
-		map.put("recordsTotal", pager.getPageSize());
-		map.put("recordsFiltered", pager.getRecordCount());
-		return map;
-	}*/
-
 	/**
-	 * (确认付款页面)
+	 * (确认收款页面)
 	 *
 	 * @param inlandPayIds
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object toConfirmRec(String inlandPayId, HttpSession session) {
+	public Object toConfirmRec(String inlandRecId, HttpSession session) {
 		//当前登录用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long loginUserId = loginUser.getId();
@@ -185,7 +191,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		Sql sql = Sqls.create(sqlManager.get("receivePay_rec_id"));
 		/*String inlandPayIdStr = inlandPayIds.substring(0, inlandPayIds.length() - 1);*/
 		Cnd cnd = Cnd.limit();
-		cnd.and("r.id", "=", inlandPayId);
+		cnd.and("r.id", "=", inlandRecId);
 		cnd.and("uo.loginUserId", "=", loginUserId);
 		List<Record> orders = dbDao.query(sql, cnd, null);
 
@@ -211,6 +217,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		map.put("receipturl", receipturl);
 		map.put("sum", sum);
 		map.put("orders", orders);
+		map.put("inlandRecId", inlandRecId);
 
 		return map;
 	}

@@ -38,7 +38,7 @@
 												<div class="col-md-1 textPadding">
 													<select id="inlandRecSelect" class="form-control TimeInput">
 														<option value="3">收款中</option>
-														<option value="4">已收款</option>
+														<option value="1">已收款</option>
 													</select>
 												</div>
 												<div class="col-md-1 textPadding">
@@ -90,8 +90,8 @@
 											<div class="form-group row marginBott5 cf">
 												<div class="col-md-1 textPadding">
 													<select id="inlandPaySelect" class="form-control TimeInput">
-														<option value=3>付款中</option>
-														<option value=2>已付款</option>
+														<option value=0>付款中</option>
+														<option value=1>已付款</option>
 													</select>
 												</div>
 												<div class="col-md-1 textPadding">
@@ -119,7 +119,7 @@
 										</form>
 									</div>
 									<div class="box-body">
-										<!-- ---------------------------------- 收款中   列表 ------------------------------------- -->
+										<!-- ---------------------------------- 付款中   列表 ------------------------------------- -->
 										<table id="inlandPayTable" class="table table-bordered table-hover">
 											<input id="checkedboxPayValue" name="checkedboxPayValue" type="hidden">
 											<thead id="inlandPayThead">

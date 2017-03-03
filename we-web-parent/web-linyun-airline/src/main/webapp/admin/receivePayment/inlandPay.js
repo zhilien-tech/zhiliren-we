@@ -63,10 +63,10 @@ function initPayDataTable(){
 		            {"data": "orderstatus", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var s = '';
-		            		if(data == '3'){
-		            			s = '已付款';
-		            		}else{
+		            		if(data == '1'){
 		            			s = '付款中';
+		            		}else{
+		            			s = '已付款';
 		            		}
 		            		return s;
 		            	}

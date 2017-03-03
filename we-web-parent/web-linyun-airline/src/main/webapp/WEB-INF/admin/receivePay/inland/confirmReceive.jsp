@@ -13,8 +13,8 @@
 <body>
 	<div class="modal-top">
     <div class="modal-header boderButt">
-            <button type="button" class="btn btn-primary right btn-sm">取消</button>
-            <input type="submit" id="submit" class="btn btn-primary right btn-sm" value="提交"/>
+            <button type="button" id="closeRecWindow" class="btn btn-primary right btn-sm">取消</button>
+            <input type="button" id="confirmRecClick" class="btn btn-primary right btn-sm" value="提交"/>
             <h4>收款</h4>
           </div>
           <div class="modal-body" style="height: 483px;overflow-y:auto; ">
@@ -31,7 +31,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <input id="recIds" name="recIds" type="hidden" value="${obj.ids }"><!-- 水单url -->
+                  <input id="recIds" name="recIds" type="hidden" value="${obj.inlandRecId }"><!-- 水单url -->
 					<c:forEach var="one" items="${obj.orders}">
                 		<tr>
                 			<td>${one.ordersnum }</td>
@@ -40,7 +40,7 @@
                 			<td>${one.shortname }</td>
                 			<td>${one.linkman }</td>
                 			<td>${one.username }</td>
-                			<td>${one.amount }</td>
+                			<td>${one.incometotal }</td>
                 		</tr>
                 	</c:forEach>
                 </tbody>
@@ -76,6 +76,9 @@
           </div>
 	</div>
 	<!--JS 文件-->
+	<script type="text/javascript">
+		var BASE_PATH = '${base}';
+	</script>
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
 	<!-- SlimScroll -->
@@ -84,6 +87,8 @@
 	<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
 	<!-- AdminLTE App -->
 	<script src="${base}/public/dist/js/app.min.js"></script>
+	<!-- 確認收款js -->
+	<script src="${base}/admin/receivePayment/inlandReceive.js"></script>
 	
 </body>
 </html>

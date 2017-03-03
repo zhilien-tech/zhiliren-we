@@ -54,11 +54,9 @@ function initRecDataTable() {
 								if(value){
 									var pCount = value.personcount;
 									if(pCount == null || pCount == undefined || pCount==""){
-										pCount = " ";
+										pCount = '';
 									}
 									result += '<li style="list-style:none;">'+pCount+'</li>';
-								}else{
-									result += '<li style="list-style:none;"> </li>';
 								}
 							});
 							result += '</ul>';
@@ -132,6 +130,37 @@ function initRecDataTable() {
 	});
 }
 
+//確認收款
+$("#confirmRecClick").click(function(){
+	$.ajax({
+		type : 'POST',
+		data : {
+			id:$("#recIds").val()
+		},
+		async: false,
+		url: BASE_PATH + '/admin/receivePay/inland/saveInlandRec.html',
+		success : function(data) {
+			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+			parent.layer.close(index);
+			parent.layer.msg("收款成功", "", 2000);
+			initRecDataTable.ajax.reload();
+		},
+		error: function () {
+			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+			parent.layer.close(index);
+			parent.layer.msg("收款失败", "", 2000);
+		}
+	});
+});
+
+
+//关闭确认付款窗口
+$("#closeRecWindow").click(function(){
+	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	parent.layer.close(index);
+});
+
+
 function confirmReceive(id){
 	layer.open({
 		type: 2,
@@ -146,7 +175,7 @@ function confirmReceive(id){
 
 //付款检索
 $("#inlandRecSelect").change(function(){
-	
+	$("#inlandRecSearchBtn").click();
 });
 
 
