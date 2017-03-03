@@ -38,7 +38,12 @@ import com.linyun.airline.admin.customneeds.service.EditPlanService;
 import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.order.inland.form.FuKuanParamForm;
 import com.linyun.airline.admin.order.inland.form.InlandListSearchForm;
+import com.linyun.airline.admin.order.inland.form.ShouKuanParamFrom;
+import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
+import com.linyun.airline.admin.receivePayment.entities.TPayPnrEntity;
+import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
 import com.linyun.airline.common.enums.OrderStatusEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.ExcelReader;
@@ -83,6 +88,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	private static final String BIZHONGCODE = "BZ";
 	//银行卡类型
 	private static final String YHCODE = "YH";
+	//付款用途
+	private static final String FKYTCODE = "FKYT";
 	private static final String EXCEL_PATH = "download";
 	private static final String FILE_EXCEL_NAME = "客户需求游客模板.xlsx";
 	@Inject
@@ -1095,7 +1102,11 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	 * @param request
 	 * @return TODO
 	 */
+	@SuppressWarnings("deprecation")
 	public Object seaPayApply(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		Map<String, Object> result = new HashMap<String, Object>();
 		String ids = request.getParameter("ids");
 		String sqlString = sqlManager.get("get_sea_payapply_table_data");
@@ -1106,13 +1117,16 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		cnd.and("tpi.id", "in", ids);
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		result.put("orders", orders);
-		List<DictInfoEntity> bzSelect = new ArrayList<DictInfoEntity>();
 		try {
-			bzSelect = externalInfoService.findDictInfoByName("", BIZHONGCODE);
+			result.put("bzSelect", externalInfoService.findDictInfoByName("", BIZHONGCODE));
+			result.put("ytSelect", externalInfoService.findDictInfoByName("", FKYTCODE));
 		} catch (Exception e) {
+
+			// TODO Auto-generated catch block
 			e.printStackTrace();
+
 		}
-		result.put("bzSelect", bzSelect);
+		result.put("user", user);
 		result.put("ids", ids);
 		return result;
 	}
@@ -1159,6 +1173,202 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		//更新水单表
 		dbDao.insert(receiveBill);
 		return null;
+
+	}
+
+	/**
+	 * 保存付款信息
+	 * <p>
+	 * TODO保存付款信息
+	 *
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object saveSeaPayApply(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		String ids = request.getParameter("ids");
+		String purpose = request.getParameter("purpose");
+		String payCurrency = request.getParameter("payCurrency");
+		String approver = request.getParameter("approver");
+		TPayEntity payEntity = new TPayEntity();
+		payEntity.setPurpose(Integer.valueOf(purpose));
+		payEntity.setPayCurrency(Integer.valueOf(payCurrency));
+		payEntity.setProposer(new Long(user.getId()).intValue());
+		payEntity.setApprover(approver);
+		TPayEntity insert = dbDao.insert(payEntity);
+		Iterable<String> split = Splitter.on(",").split(ids);
+		List<TPayPnrEntity> paypnrs = new ArrayList<TPayPnrEntity>();
+		for (String str : split) {
+			TPayPnrEntity paypnr = new TPayPnrEntity();
+			paypnr.setPayId(insert.getId());
+			paypnr.setPnrId(Integer.valueOf(str));
+			paypnrs.add(paypnr);
+		}
+		dbDao.insert(paypnrs);
+		return null;
+
+	}
+
+	/**
+	 * 收付款（收款）列表数据
+	 * <p>
+	 * T收付款（收款）列表数据
+	 *
+	 * @param sqlParamForm
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object listShouFuKuanData(ShouKuanParamFrom sqlParamForm, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		Integer userid = Long.valueOf(user.getId()).intValue();
+		sqlParamForm.setUserid(userid);
+		Map<String, Object> datatabledata = this.listPage4Datatables(sqlParamForm);
+		@SuppressWarnings("unchecked")
+		List<Record> list = (List<Record>) datatabledata.get("data");
+		for (Record record : list) {
+			record.put("username", user.getUserName());
+			String sqlString = sqlManager.get("get_shoukuan_order_list");
+			Sql sql = Sqls.create(sqlString);
+			Cnd cnd = Cnd.limit();
+			cnd.and("tr.id", "=", record.get("id"));
+			List<Record> orders = dbDao.query(sql, cnd, null);
+			record.put("orders", orders);
+		}
+		datatabledata.remove("data");
+		datatabledata.put("data", list);
+		return datatabledata;
+
+	}
+
+	/**
+	 * TODO打开开发票页面
+	 * <p>
+	 * TODO(打开开发票页面
+	 *
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object openInvoice(HttpServletRequest request) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		//付款id
+		String id = request.getParameter("id");
+		//付款信息
+		TReceiveEntity fetch = dbDao.fetch(TReceiveEntity.class, Long.valueOf(id));
+		List<TOrderReceiveEntity> query = dbDao.query(TOrderReceiveEntity.class, Cnd.where("receiveid", "=", id), null);
+		String ids = "";
+		for (TOrderReceiveEntity tOrderReceiveEntity : query) {
+			ids += tOrderReceiveEntity.getOrderid() + ",";
+		}
+		ids = ids.substring(0, ids.length() - 1);
+		String sqlString = sqlManager.get("get_sea_invoce_table_data");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.limit();
+		cnd.and("tuo.id", "in", ids);
+		List<Record> orders = dbDao.query(sql, cnd, null);
+		//计算合计金额
+		double sumincome = 0;
+		for (Record record : orders) {
+			if (!Util.isEmpty(record.get("incometotal"))) {
+				Double incometotal = (Double) record.get("incometotal");
+				sumincome += incometotal;
+			}
+		}
+		//订单信息
+		result.put("orders", orders);
+		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
+		try {
+			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		//水单信息
+		List<TReceiveBillEntity> query2 = dbDao.query(TReceiveBillEntity.class, Cnd.where("receiveid", "=", id), null);
+		//银行卡下拉
+		result.put("yhkSelect", yhkSelect);
+		//订单信息id
+		result.put("ids", ids);
+		result.put("id", id);
+		result.put("receive", fetch);
+		if (query2.size() > 0)
+			result.put("bill", query2.get(0));
+
+		return result;
+
+	}
+
+	/**
+	 * 
+	 * 付款列表数据
+	 * <p>
+	 * TODO付款列表数据
+	 *
+	 * @param sqlParamForm
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object listFuKuanData(FuKuanParamForm sqlParamForm, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		Integer userid = Long.valueOf(user.getId()).intValue();
+		sqlParamForm.setUserid(userid);
+		Map<String, Object> datatabledata = this.listPage4Datatables(sqlParamForm);
+		@SuppressWarnings("unchecked")
+		List<Record> list = (List<Record>) datatabledata.get("data");
+		for (Record record : list) {
+			record.put("username", user.getUserName());
+		}
+		datatabledata.remove("data");
+		datatabledata.put("data", list);
+		return datatabledata;
+	}
+
+	/**
+	 * 
+	 * 打开收发票页面
+	 * <p>
+	 * TODO打开收发票页面
+	 *
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object receiveInvoice(HttpServletRequest request) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String id = request.getParameter("id");
+		String sqlString = sqlManager.get("get_fukuan_info_list");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.limit();
+		cnd.and("tpi.id", "=", id);
+		List<Record> pnrinfo = dbDao.query(sql, cnd, null);
+		result.put("pnrinfo", pnrinfo);
+		List<TPayPnrEntity> query = dbDao.query(TPayPnrEntity.class, Cnd.where("pnrId", "=", id), null);
+		TPayEntity payinfo = new TPayEntity();
+		String billurl = "";
+		if (query.size() > 0) {
+			payinfo = dbDao.fetch(TPayEntity.class, query.get(0).getId().longValue());
+			if (!Util.isEmpty(payinfo)) {
+				List<TPayReceiptEntity> query2 = dbDao.query(TPayReceiptEntity.class,
+						Cnd.where("payId", "=", payinfo.getId()), null);
+				if (query2.size() > 0) {
+					billurl = query2.get(0).getReceiptUrl();
+				}
+			}
+		}
+		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
+		try {
+			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		result.put("id", id);
+		result.put("billurl", billurl);
+		result.put("yhkSelect", yhkSelect);
+		result.put("payinfo", payinfo);
+		return result;
 
 	}
 }

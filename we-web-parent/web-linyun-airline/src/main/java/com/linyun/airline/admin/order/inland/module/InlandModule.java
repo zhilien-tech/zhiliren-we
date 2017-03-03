@@ -19,8 +19,10 @@ import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.upload.TempFile;
 import org.nutz.mvc.upload.UploadAdaptor;
 
+import com.linyun.airline.admin.order.inland.form.FuKuanParamForm;
 import com.linyun.airline.admin.order.inland.form.InlandListSearchForm;
 import com.linyun.airline.admin.order.inland.form.PayApplyListForm;
+import com.linyun.airline.admin.order.inland.form.ShouKuanParamFrom;
 import com.linyun.airline.admin.order.inland.service.InlandService;
 
 /**
@@ -224,5 +226,54 @@ public class InlandModule {
 	@POST
 	public Object saveSeaInvoice(HttpServletRequest request) {
 		return inlandService.saveSeaInvoice(request);
+	}
+
+	/**
+	 * 保存付款信息
+	 */
+	@At
+	@POST
+	public Object saveSeaPayApply(HttpServletRequest request) {
+		return inlandService.saveSeaPayApply(request);
+	}
+
+	/**
+	 * 收付款（收款）列表数据
+	 */
+	@At
+	@POST
+	public Object listShouFuKuanData(@Param("..") ShouKuanParamFrom sqlParamForm, HttpServletRequest request) {
+		return inlandService.listShouFuKuanData(sqlParamForm, request);
+	}
+
+	/**
+	 * 打开开发票页面
+	 */
+	@At
+	@Ok("jsp")
+	public Object openInvoice(HttpServletRequest request) {
+		return inlandService.openInvoice(request);
+	}
+
+	/**
+	 * 收付款（付款）页面数据
+	 */
+	@At
+	@POST
+	public Object listFuKuanData(@Param("..") FuKuanParamForm sqlParamForm, HttpServletRequest request) {
+		return inlandService.listFuKuanData(sqlParamForm, request);
+	}
+
+	/**
+	 * 保存开发票数据
+	 */
+
+	/**
+	 * 收发票
+	 */
+	@At
+	@Ok("jsp")
+	public Object receiveInvoice(HttpServletRequest request) {
+		return inlandService.receiveInvoice(request);
 	}
 }

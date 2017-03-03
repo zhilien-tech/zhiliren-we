@@ -37,4 +37,11 @@ public class TReceiveEntity implements Serializable {
 	@Comment("收款时间")
 	private Date receivedate;
 
+	@Column
+	@Comment("客户名称")
+	private String customename;
+
+	@Column
+	@Comment("操作人")
+	private Integer userid;
 }

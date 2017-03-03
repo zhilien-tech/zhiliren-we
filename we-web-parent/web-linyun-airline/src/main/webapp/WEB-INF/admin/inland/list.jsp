@@ -184,7 +184,7 @@
                      <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs nlkhUL">
                           <li class="active"><a href="#tab1_a" data-toggle="tab">收款</a></li>
-                          <li><a href="#tab1_b" data-toggle="tab">付款</a></li>
+                          <li><a href="#tab1_b" data-toggle="tab" onclick="shoufukuanPay();">付款</a></li>
                         </ul>
                         <div class="tab-content padding0">
                             <div class="tab-pane pane-content active" id="tab1_a"><!--收/付款 收款-->
@@ -271,7 +271,7 @@
                                   <thead>
                                     <tr>
                                       <th>订单号</th>
-                                      <th>日期</th>
+                                      <th>PNR</th>
                                       <th>航班号</th>
                                       <th>航段</th>
                                       <th>日期</th>
@@ -425,7 +425,8 @@
 <script src="${base}/admin/order/inland.js"></script>
 <script src="${base}/admin/order/ticketing.js"></script>
 <script src="${base}/admin/order/ticketingpay.js"></script>
-<script type="text/javascript">
+<script src="${base}/admin/order/shouFuKuan.js"></script>
+<script type="text/javascript"> 
 //添加订单 弹框
 	$('#addOrder').click(function(){
 	    layer.open({
@@ -442,6 +443,8 @@
 	//他页面回调
 	  function successCallback(id){
 		  inlandCrossTable.ajax.reload(null,false);
+		  shouFuKuanPayTable.ajax.reload();
+		  shouFuKuanGatheringTable.ajax.reload();
 		  if(id == '1'){
 			  layer.alert("添加成功",{time: 2000, icon:1});
 		  }else if(id == '2'){
@@ -450,6 +453,8 @@
 			  layer.alert("关闭成功",{time: 2000, icon:1});
 		  }else if(id == '4'){
 			  layer.alert("启用成功",{time: 2000, icon:1});
+		  }else if(id == '5'){
+			  layer.alert("提交成功",{time: 2000, icon:1});
 		  }
 	  }
 </script>

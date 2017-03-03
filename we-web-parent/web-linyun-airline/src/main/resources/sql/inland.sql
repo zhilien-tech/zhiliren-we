@@ -76,3 +76,57 @@ INNER JOIN t_up_order tuo ON toc.ordernum = tuo.id
 INNER JOIN t_customer_info tci ON tuo.userid = tci.id
 INNER JOIN t_finance_info tfi on tuo.id = tfi.orderid
 $condition
+/*get_shoufukuan_shoukuan_list*/
+select tor.* 
+from t_receive tr,t_order_receive tor
+$condition
+
+/*get_shoukuan_order_list*/
+SELECT
+	tuo.ordersnum,tfi.personcount,tfi.incometotal
+FROM
+	t_up_order tuo
+INNER JOIN t_finance_info tfi ON tuo.id = tfi.orderid
+INNER JOIN t_order_receive tor ON tuo.id = tor.orderid
+INNER JOIN t_receive tr ON tor.receiveid = tr.id
+$condition
+
+/*get_pay_fukuan_list*/
+SELECT
+	tuo.ordersnum, tpi.*,
+	toc.leavecity,
+	toc.arrivecity,
+	toc.leavetdate,
+	tci.name customename,
+	tpp.orderPnrStatus status
+FROM
+	t_pnr_info tpi
+INNER JOIN t_pay_pnr tpp ON tpi.id = tpp.pnrId
+INNER JOIN t_order_customneed toc ON tpi.needid = toc.id
+INNER JOIN t_up_order tuo ON toc.ordernum = tuo.id
+LEFT JOIN t_customer_info tci ON tci.id = tuo.userid
+INNER JOIN t_finance_info tfi ON tuo.id = tfi.orderid
+$condition
+
+/*get_fukuan_info_list*/
+SELECT
+	tpi.*, tuo.ordersnum,
+	tfi.billingdate,
+	tfi.cusgroupnum,
+	tci. NAME customename,
+	tci.linkMan,
+	(
+		SELECT
+			username
+		FROM
+			t_user
+		WHERE
+			id = tfi. ISSUER
+	) ISSUER
+FROM
+	t_pnr_info tpi
+INNER JOIN t_order_customneed toc ON tpi.needid = toc.id
+INNER JOIN t_up_order tuo ON toc.ordernum = tuo.id
+INNER JOIN t_finance_info tfi ON tuo.id = tfi.orderid
+LEFT JOIN t_customer_info tci ON tuo.userid = tci.id
+$condition
