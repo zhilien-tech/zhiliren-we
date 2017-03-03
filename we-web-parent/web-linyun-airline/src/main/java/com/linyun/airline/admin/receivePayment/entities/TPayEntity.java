@@ -73,4 +73,8 @@ public class TPayEntity implements Serializable {
 	@Comment("审批结果")
 	private Integer approveResult;
 
+	@Column
+	@Comment("付款订单合计")
+	private Double totalMoney;
+
 }
