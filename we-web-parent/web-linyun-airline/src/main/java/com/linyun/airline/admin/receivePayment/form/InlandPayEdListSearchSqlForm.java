@@ -31,7 +31,7 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class InlandPayListSearchSqlForm extends DataTablesParamForm {
+public class InlandPayEdListSearchSqlForm extends DataTablesParamForm {
 
 	/**客户名称 订单号 PNR 联系人*/
 	private String name;
@@ -74,7 +74,7 @@ public class InlandPayListSearchSqlForm extends DataTablesParamForm {
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {
-		String sqlString = sqlManager.get("receivePay_pay_list");
+		String sqlString = sqlManager.get("receivePay_pay_id_list");
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;

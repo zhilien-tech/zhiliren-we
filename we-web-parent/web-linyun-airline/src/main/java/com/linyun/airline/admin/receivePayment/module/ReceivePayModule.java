@@ -23,7 +23,9 @@ import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.receivePayment.form.InlandPayEdListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.InlandPayListSearchSqlForm;
+import com.linyun.airline.admin.receivePayment.form.InlandRecListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.TSaveInlandPayAddFrom;
 import com.linyun.airline.admin.receivePayment.service.ReceivePayService;
 import com.linyun.airline.entities.TUserEntity;
@@ -50,17 +52,17 @@ public class ReceivePayModule {
 	}
 
 	/**
-	 * 跳转到 收款页面
+	 * 跳转到 确认收款页面
 	 */
 	@At
 	@GET
 	@Ok("jsp")
-	public Object confirmReceive() {
-		return null;
+	public Object confirmReceive(@Param("inlandRecId") String inlandRecId, HttpSession session) {
+		return receivePayService.toConfirmRec(inlandRecId, session);
 	}
 
 	/**
-	 * 跳转到 付款页面
+	 * 跳转到 确认付款页面
 	 */
 	@At
 	@GET
@@ -71,7 +73,7 @@ public class ReceivePayModule {
 
 	/**
 	 * 
-	 *會計付款分页
+	 *會計付款中   分页
 	 */
 	@At
 	public Object inlandPayList(@Param("..") final InlandPayListSearchSqlForm form, HttpSession session) {
@@ -80,6 +82,19 @@ public class ReceivePayModule {
 		long id = loginUser.getId();
 		form.setLoginUserId(id);
 		return receivePayService.listPage4Datatables(form);
+	}
+
+	/**
+	 * 
+	 *會計   已付款分页
+	 */
+	@At
+	public Object inlandPayEdList(@Param("..") final InlandPayEdListSearchSqlForm form, HttpSession session) {
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long id = loginUser.getId();
+		form.setLoginUserId(id);
+		return receivePayService.listPayEdData(form);
 	}
 
 	/**
@@ -96,11 +111,21 @@ public class ReceivePayModule {
 	 *會計收款分页
 	 */
 	@At
-	public Object inlandRecList(HttpSession session) {
+	public Object inlandRecList(@Param("..") final InlandRecListSearchSqlForm form, HttpSession session) {
 		//当前用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long id = loginUser.getId();
-		return null;
+		form.setLoginUserId(id);
+		return receivePayService.listRecData(form);
+	}
+
+	/**
+	 * 
+	 * 确认收款
+	 */
+	@At
+	public Object saveInlandRec(@Param("id") final String id) {
+		return receivePayService.saveInlandRec(id);
 	}
 
 	//水单上传 返回值文件存储地址

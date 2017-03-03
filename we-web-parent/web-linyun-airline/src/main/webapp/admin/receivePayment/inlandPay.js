@@ -51,14 +51,22 @@ function initPayDataTable(){
 		            {"data": "peoplecount", "bSortable": false},
 		            {"data": "saleprice", "bSortable": false},
 		            {"data": "currency", "bSortable": false},
-		            {"data": "", "bSortable": false},
+		            {"data": "abc", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var abc = row.abc;
+		            		if(null == abc || ""== abc){
+		            			return "";
+		            		}
+		            		return abc;
+		            	}
+		            },
 		            {"data": "orderstatus", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var s = '';
-		            		if(data == '3'){
-		            			s = '已付款';
-		            		}else{
+		            		if(data == '1'){
 		            			s = '付款中';
+		            		}else{
+		            			s = '已付款';
 		            		}
 		            		return s;
 		            	}
@@ -94,27 +102,96 @@ function initPayEdDataTable(){
 			"url": BASE_PATH + "/public/plugins/datatables/cn.json"
 		},
 		"ajax": {
-			"url": BASE_PATH + "/admin/receivePay/inland/inlandPayList.html",
+			"url": BASE_PATH + "/admin/receivePay/inland/inlandPayEdList.html",
 			"type": "post",
 			"data": function (d) {
 
 			}
 		},
 		"columns": [
-		            {"data": "ordernum", "bSortable": false},
-		            {"data": "pnrnum", "bSortable": false},
+					{"data": "ordernum", "bSortable": false,
+						render:function(data, type, row, meta) {
+							var result = '<ul> ';
+							$.each(row.orders, function(name, value) {
+								if(value){
+									result += '<li style="list-style:none;">'+value.ordernum+'</li>';
+								}
+							});
+							result += '</ul>';
+							return result;
+						}
+					},
+		            {"data": "pnrnum", "bSortable": false,
+						render:function(data, type, row, meta) {
+							var result = '<ul> ';
+							$.each(row.orders, function(name, value) {
+								if(value){
+									result += '<li style="list-style:none;">'+value.pnrnum+'</li>';
+								}
+							});
+							result += '</ul>';
+							return result;
+						}
+					},
 		            {"data": "leavedate", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
-		            		var week = ['MO','TU','WE','TH','FR','SA','SU'];
-		            		var ldate = new Date(data);
-		            		var result = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
+		            		var result = '<ul> ';
+							$.each(row.orders, function(name, value) {
+								if(value){
+									var date = value.leavedate;
+				            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
+				            		var week = ['MO','TU','WE','TH','FR','SA','SU'];
+				            		var ldate = new Date(date);
+				            		var dateFormat = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
+									result += '<li style="list-style:none;">'+dateFormat+'</li>';
+								}
+							});
+							result += '</ul>';
 		            		return result;
 		            	}
 		            },
-		            {"data": "peoplecount", "bSortable": false},
-		            {"data": "saleprice", "bSortable": false},
-		            {"data": "currency", "bSortable": false},
+		            {"data": "personcount", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var result = '<ul> ';
+							$.each(row.orders, function(name, value) {
+								if(value){
+									var pCount = value.personcount;
+									if(pCount == null || pCount == undefined || pCount==""){
+										pCount = " ";
+									}
+									result += '<li style="list-style:none;">'+pCount+'</li>';
+								}else{
+									result += '<li style="list-style:none;"> </li>';
+								}
+							});
+							result += '</ul>';
+							return result;
+		            	}
+		            },
+		            {"data": "saleprice", "bSortable": false,
+						render:function(data, type, row, meta) {
+							var result = '<ul> ';
+							$.each(row.orders, function(name, value) {
+								if(value){
+									result += '<li style="list-style:none;">'+value.saleprice+'</li>';
+								}
+							});
+							result += '</ul>';
+							return result;
+						}
+					},
+		            {"data": "currency", "bSortable": false,
+						render:function(data, type, row, meta) {
+							var result = '<ul> ';
+							$.each(row.orders, function(name, value) {
+								if(value){
+									result += '<li style="list-style:none;">'+value.currency+'</li>';
+								}
+							});
+							result += '</ul>';
+							return result;
+						}
+					},
 		            {"data": "abc", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var abc = row.abc;
@@ -135,7 +212,15 @@ function initPayEdDataTable(){
 		            		return s;
 		            	}
 		            },
-		            {"data": "drawer", "bSortable": false},
+		            {"data": "username", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var username = row.username;
+		            		if(null == username || ""== username){
+		            			return "";
+		            		}
+		            		return username;
+		            	}
+		            },
 		            {"data": "asd", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var asd = row.asd;
@@ -170,9 +255,9 @@ function initPayEdDataTable(){
 }
 
 $("#inlandPaySelect").change(function(){
-	var selectEd = $(this).val();
+	var selectEd = $("#inlandPaySelect option:first").prop("selected");
 	$("#box-body").html("");
-	if(selectEd == 2){
+	if(selectEd){
 		destroyDatetable($("#inlandPayEdTable"));
 		$("#inlandPayClick").show();
 		$("#inlandPayTable").show();
@@ -315,71 +400,16 @@ $("#inlandPaySearchBtn").on('click', function () {
 	var inlandPayBeginDate = $("#inlandPayBeginDate").val();
 	var inlandPayEndDate = $("#inlandPayEndDate").val();
 	var inlandPayInput = $("#inlandPayInput").val();
-	    var param = {
-			        "orderStatus":orderStatus,
-			        "leaveBeginDate":inlandPayBeginDate,
-			        "leaveEndDate":inlandPayEndDate,
-					"name": inlandPayInput
-			    };
-	    inlandPayTable.settings()[0].ajax.data = param;
+    var param = {
+		        "orderStatus":orderStatus,
+		        "leaveBeginDate":inlandPayBeginDate,
+		        "leaveEndDate":inlandPayEndDate,
+				"name": inlandPayInput
+		    };
+    inlandPayTable.settings()[0].ajax.data = param;
 	inlandPayTable.ajax.reload();
 });
 
-//内陆跨海 收款 弹框
-/*$('.fuKuanBtn').click(function(){
-	layer.open({
-		type: 2,
-		title:false,
-		skin: false, //加上边框
-		closeBtn:false,//默认 右上角关闭按钮 是否显示
-		shadeClose:true,
-		area: ['850px', '650px'],
-		content: ['confirmReceive.html','no']
-	});
-});*/
-
-$(function () {
-	var selectEd = $('#inlandPaySelect').val();
-	if(selectEd == 2){
-		$("#inlandPayTable").show();
-		$("#inlandPayEdTable").hide();
-		initPayDataTable();
-	}else{
-		$("#inlandPayTable").hide();
-		$("#inlandPayEdTable").show();
-		initPayEdDataTable();
-	}
-	$('#inlandPaySearchBtn').click();
-});
-
-
-
-//会计   收款datatable
-/*var inlandRecTable;
-function initRecDataTable(){
-	inlandRecTable = $("#inlandRecTable").DataTable({
-		"searching":false,
-		"lengthChange": false,
-		"processing": true,
-		"serverSide": true,
-		"stripeClasses": [ 'strip1','strip2' ],
-		"language": {
-			"url": BASE_PATH + "/public/plugins/datatables/cn.json"
-		},
-		"ajax": {
-			"url": BASE_PATH + "/admin/receivePay/inlandRecList.html",
-			"type": "post",
-			"data": function (data) {
-
-			}
-		},
-		"columns": [
-		            {"data": "ordersnum", "bSortable": false}
-		            ]
-
-	});
-}
- */
 
 /*清除 内陆跨海 收款的   检索项*/
 $('#inlandRecClearBtn').click(function(){
@@ -389,4 +419,57 @@ $('#inlandRecClearBtn').click(function(){
 /*清除 内陆跨海 付款的   检索项*/
 $('#inlandPayClearBtn').click(function(){
 	clearSearchTxt("inlandPaySelect", "inlandPayBeginDate", "inlandPayEndDate", "inlandPayInput");
+});
+
+//清空搜索项函数
+function clearSearchTxt(selectId, beginDateId, endDateId, inputId){
+	$("#"+selectId+" option:first").prop("selected", 'selected');  
+	$("#"+beginDateId).val("");
+	$("#"+endDateId).val("");
+	$("#"+inputId).val("");
+}
+
+//文件上传
+$('#uploadFile').click(function(){
+	$.fileupload1 = $('#uploadFile').uploadify({
+		'auto' : true,//选择文件后自动上传
+		'formData' : {
+			'fcharset' : 'uft-8',
+			'action' : 'uploadimage'
+		},
+		'buttonText' : '上传',//按钮显示的文字
+		'fileSizeLimit' : '3000MB',
+		'fileTypeDesc' : '文件',//在浏览窗口底部的文件类型下拉菜单中显示的文本
+		'fileTypeExts' : '*.png; *.jpg; *.bmp; *.gif; *.jpeg;',//上传文件的类型
+		'swf' : '${base}/public/plugins/uploadify/uploadify.swf',//指定swf文件
+		'multi' : false,//multi设置为true将允许多文件上传
+		'successTimeout' : 1800,
+		'queueSizeLimit' : 100,
+		'uploader' : '${base}/admin/receivePay/inland/uploadFile.html',//后台处理的页面
+		//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
+		//下面的例子演示如何获取到vid
+		'onUploadSuccess' : function(file, data, response) {
+			var jsonobj = eval('(' + data + ')');
+			var url  = jsonobj;//地址
+			var fileName = file.name;//文件名称
+			$('#billurl').val(url);
+			$('#shuidanimg').attr('src',url);
+		},
+        //加上此句会重写onSelectError方法【需要重写的事件】
+        'overrideEvents': ['onSelectError', 'onDialogClose'],
+        //返回一个错误，选择文件的时候触发
+        'onSelectError':function(file, errorCode, errorMsg){
+            switch(errorCode) {
+                case -110:
+                    alert("文件 ["+file.name+"] 大小超出系统限制！");
+                    break;
+                case -120:
+                    alert("文件 ["+file.name+"] 大小异常！");
+                    break;
+                case -130:
+                    alert("文件 ["+file.name+"] 类型不正确！");
+                    break;
+            }
+        }
+	});
 });
