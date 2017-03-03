@@ -171,7 +171,7 @@ public class MailScrabService extends BaseService {
 		sql.params().set("addressee", addressee);
 		sql.params().set("sendTime", sendTime);
 		int count = DbSqlUtil.fetchInt(dbDao, sql);
-		int grabRecordId = 0;
+		long grabRecordId = 0;
 		if (count > 0) {
 			return;
 		} else {
@@ -189,11 +189,10 @@ public class MailScrabService extends BaseService {
 		//3-2、保存抓取文件
 		FileNavalEnum structureType = structureType();
 		TGrabFileEntity rootFile = getRootFile(sender);
-		int rootId = rootFile.getId();
+		long rootId = rootFile.getId();
 		switch (structureType) {
 		case FITDTJQTT:
-			//时间
-
+			/**************************时间开始***************************/
 			//父id
 			TGrabFileEntity timeFile = new TGrabFileEntity();
 			timeFile.setParentId(rootId);
@@ -204,7 +203,8 @@ public class MailScrabService extends BaseService {
 
 			//名称
 			SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
-			timeFile.setFileName(format.format(createTime));
+			String fileName = format.format(createTime);
+			timeFile.setFileName(fileName);
 			//类型
 			timeFile.setType(FileTypeEnum.FOLDER.intKey());
 
@@ -216,12 +216,16 @@ public class MailScrabService extends BaseService {
 			timeFile.setSort(0);
 			//TODO 
 			timeFile.setGroupType(1);
-			timeFile = dbDao.insert(timeFile);
-
+			List<TGrabFileEntity> list = existFile(rootId, fileName);
+			if (!Util.isEmpty(list)) {
+				timeFile = list.get(0);
+			} else {
+				timeFile = dbDao.insert(timeFile);
+			}
 			/**************************时间结束***************************/
 
-			//客户团号
-			int sort = getSort(timeFile.getId());
+			/**************************客户团号***************************/
+			long sort = getSort(timeFile.getId());
 
 			String cusgroupnum = getcusGroupnum();//得到客户团号
 			if (Util.isEmpty(cusgroupnum)) {
@@ -250,6 +254,7 @@ public class MailScrabService extends BaseService {
 			groupNumFile.setSort(sort);
 			//TODO 
 			groupNumFile.setGroupType(3);
+
 			groupNumFile = dbDao.insert(groupNumFile);
 
 			/**********************客户团号结束**********************/
@@ -302,6 +307,14 @@ public class MailScrabService extends BaseService {
 		}
 	}
 
+	private List<TGrabFileEntity> existFile(long rootId, String fileName) {
+		Sql sqlCount = Sqls.create(sqlManager.get("grab_mail_count"));
+		sqlCount.params().set("fileName", fileName);
+		sqlCount.params().set("parentId", rootId);
+		List<TGrabFileEntity> list = DbSqlUtil.query(dbDao, TGrabFileEntity.class, sqlCount);
+		return list;
+	}
+
 	/**
 	 * 获取客户团号
 	 */
@@ -314,7 +327,7 @@ public class MailScrabService extends BaseService {
 	 * 获取序号
 	 * @param parentId
 	 */
-	private int getSort(int parentId) {
+	private int getSort(long parentId) {
 		Sql mailsql = Sqls.create(sqlManager.get("grab_mail_max_sort"));
 		mailsql.params().set("pid", parentId);
 		int sort = DbSqlUtil.fetchInt(dbDao, mailsql);

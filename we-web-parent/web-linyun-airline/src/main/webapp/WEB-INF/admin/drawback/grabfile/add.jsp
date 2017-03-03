@@ -83,7 +83,7 @@ $("#submit").click(function() {
 	var bootstrapValidator = $("#addForm").data('bootstrapValidator');
 	if(bootstrapValidator.isValid()){
 		$.ajax({
-			cache : true,
+			cache : false,
 			type : "POST",
 			url : '${base}/admin/drawback/grabfile/add.html',
 			data : 
@@ -92,7 +92,7 @@ $("#submit").click(function() {
 				fileName:$('input[name="fileName"]').val()
 			},
 			error : function(request) {
-				layer.msg('添加失败!');
+				layer.msg('新建文件夹失败!');
 			},
 			success : function(data) {
 				layer.load(1, {

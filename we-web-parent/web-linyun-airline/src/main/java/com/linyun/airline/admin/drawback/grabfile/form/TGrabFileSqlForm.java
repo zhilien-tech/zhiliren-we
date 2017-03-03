@@ -19,13 +19,13 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
 @EqualsAndHashCode(callSuper = true)
 public class TGrabFileSqlForm extends DataTablesParamForm {
 	/**主键*/
-	private Integer id;
+	private long id;
 
 	/**抓取邮件id*/
-	private Integer mailId;
+	private long mailId;
 
 	/**上级id*/
-	private Integer parentId;
+	private long parentId;
 
 	/**文件夹名称*/
 	private String folderName;
@@ -40,10 +40,10 @@ public class TGrabFileSqlForm extends DataTablesParamForm {
 	private String fileSize;
 
 	/**文件类型(1-文件夹;2-文件;)*/
-	private Integer type;
+	private int type;
 
 	/**状态(1-已删除;2-已启用;)*/
-	private Integer status;
+	private int status;
 
 	/**创建时间*/
 	private Date createTime;
@@ -52,16 +52,16 @@ public class TGrabFileSqlForm extends DataTablesParamForm {
 	private Date updateTime;
 
 	/**层级*/
-	private Integer level;
+	private long level;
 
 	/**完整路径*/
 	private String fullPath;
 
 	/**序号*/
-	private Integer sort;
+	private long sort;
 
 	/**散团类型*/
-	private Integer groupType;
+	private int groupType;
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {

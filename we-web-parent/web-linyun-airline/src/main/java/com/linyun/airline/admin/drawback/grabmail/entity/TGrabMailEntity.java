@@ -15,7 +15,7 @@ import org.nutz.dao.entity.annotation.Table;
 public class TGrabMailEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id(auto = true)
-	private Integer id;
+	private Long id;
 
 	@Column
 	@Comment("主题")
@@ -39,6 +39,6 @@ public class TGrabMailEntity implements Serializable {
 
 	@Column
 	@Comment("抓取状态(1-已抓;2-未抓;)")
-	private Integer grabStatus;
+	private long grabStatus;
 
 }
