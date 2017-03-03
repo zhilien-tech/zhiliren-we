@@ -23,6 +23,7 @@ import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.receivePayment.form.InlandPayEdListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.InlandPayListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.InlandRecListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.TSaveInlandPayAddFrom;
@@ -72,7 +73,7 @@ public class ReceivePayModule {
 
 	/**
 	 * 
-	 *會計付款分页
+	 *會計付款中   分页
 	 */
 	@At
 	public Object inlandPayList(@Param("..") final InlandPayListSearchSqlForm form, HttpSession session) {
@@ -81,6 +82,19 @@ public class ReceivePayModule {
 		long id = loginUser.getId();
 		form.setLoginUserId(id);
 		return receivePayService.listPage4Datatables(form);
+	}
+
+	/**
+	 * 
+	 *會計   已付款分页
+	 */
+	@At
+	public Object inlandPayEdList(@Param("..") final InlandPayEdListSearchSqlForm form, HttpSession session) {
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long id = loginUser.getId();
+		form.setLoginUserId(id);
+		return receivePayService.listPayEdData(form);
 	}
 
 	/**

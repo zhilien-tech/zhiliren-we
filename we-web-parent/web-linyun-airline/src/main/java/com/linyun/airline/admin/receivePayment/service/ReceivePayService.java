@@ -37,6 +37,7 @@ import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
+import com.linyun.airline.admin.receivePayment.form.InlandPayEdListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.InlandPayListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.InlandRecListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.TSaveInlandPayAddFrom;
@@ -79,7 +80,11 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		@SuppressWarnings("unchecked")
 		List<Record> data = (List<Record>) listdata.get("data");
 		for (Record record : data) {
-
+			Sql sql = Sqls.create(sqlManager.get("receivePay_rec_list"));
+			Cnd cnd = Cnd.limit();
+			cnd.and("r.id", "=", record.getString("recid"));
+			List<Record> orders = dbDao.query(sql, cnd, null);
+			record.put("orders", orders);
 		}
 		listdata.remove("data");
 		listdata.put("data", data);
@@ -116,6 +121,53 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		map.put("recordsFiltered", pager.getRecordCount());
 		return map;
 	}
+
+	/**
+	 * 
+	 * TODO(会计已付款查询)
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param sqlParamForm
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object listPayEdData(InlandPayEdListSearchSqlForm form) {
+		Map<String, Object> listdata = this.listPage4Datatables(form);
+		@SuppressWarnings("unchecked")
+		List<Record> data = (List<Record>) listdata.get("data");
+		for (Record record : data) {
+			Sql sql = Sqls.create(sqlManager.get("receivePay_pay_list"));
+			Cnd cnd = Cnd.limit();
+			cnd.and("p.id", "=", record.getString("pid"));
+			List<Record> orders = dbDao.query(sql, cnd, null);
+			record.put("orders", orders);
+		}
+		listdata.remove("data");
+		listdata.put("data", data);
+		return listdata;
+	}
+
+	/*public Map<String, Object> listPage4PayEdDatatables(final InlandPayEdListSearchSqlForm sqlParamForm) {
+		checkNull(sqlParamForm, "sqlParamForm不能为空");
+		Sql sql = sqlParamForm.sql(sqlManager);
+
+		Pager pager = new OffsetPager(sqlParamForm.getStart(), sqlParamForm.getLength());
+		pager.setRecordCount((int) Daos.queryCount(nutDao, sql.toString()));
+
+		sql.setPager(pager);
+		sql.setCallback(Sqls.callback.records());
+		nutDao.execute(sql);
+
+		@SuppressWarnings("unchecked")
+		List<Record> list = (List<Record>) sql.getResult();
+
+		Map<String, Object> map = MapUtil.map();
+		map.put("data", list);
+		map.put("draw", sqlParamForm.getDraw());
+		map.put("recordsTotal", pager.getPageSize());
+		map.put("recordsFiltered", pager.getRecordCount());
+		return map;
+	}*/
 
 	/**
 	 * (确认付款页面)

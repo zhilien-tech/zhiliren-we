@@ -102,27 +102,96 @@ function initPayEdDataTable(){
 			"url": BASE_PATH + "/public/plugins/datatables/cn.json"
 		},
 		"ajax": {
-			"url": BASE_PATH + "/admin/receivePay/inland/inlandPayList.html",
+			"url": BASE_PATH + "/admin/receivePay/inland/inlandPayEdList.html",
 			"type": "post",
 			"data": function (d) {
 
 			}
 		},
 		"columns": [
-		            {"data": "ordernum", "bSortable": false},
-		            {"data": "pnrnum", "bSortable": false},
+					{"data": "ordernum", "bSortable": false,
+						render:function(data, type, row, meta) {
+							var result = '<ul> ';
+							$.each(row.orders, function(name, value) {
+								if(value){
+									result += '<li style="list-style:none;">'+value.ordernum+'</li>';
+								}
+							});
+							result += '</ul>';
+							return result;
+						}
+					},
+		            {"data": "pnrnum", "bSortable": false,
+						render:function(data, type, row, meta) {
+							var result = '<ul> ';
+							$.each(row.orders, function(name, value) {
+								if(value){
+									result += '<li style="list-style:none;">'+value.pnrnum+'</li>';
+								}
+							});
+							result += '</ul>';
+							return result;
+						}
+					},
 		            {"data": "leavedate", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
-		            		var week = ['MO','TU','WE','TH','FR','SA','SU'];
-		            		var ldate = new Date(data);
-		            		var result = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
+		            		var result = '<ul> ';
+							$.each(row.orders, function(name, value) {
+								if(value){
+									var date = value.leavedate;
+				            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
+				            		var week = ['MO','TU','WE','TH','FR','SA','SU'];
+				            		var ldate = new Date(date);
+				            		var dateFormat = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
+									result += '<li style="list-style:none;">'+dateFormat+'</li>';
+								}
+							});
+							result += '</ul>';
 		            		return result;
 		            	}
 		            },
-		            {"data": "peoplecount", "bSortable": false},
-		            {"data": "saleprice", "bSortable": false},
-		            {"data": "currency", "bSortable": false},
+		            {"data": "personcount", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var result = '<ul> ';
+							$.each(row.orders, function(name, value) {
+								if(value){
+									var pCount = value.personcount;
+									if(pCount == null || pCount == undefined || pCount==""){
+										pCount = " ";
+									}
+									result += '<li style="list-style:none;">'+pCount+'</li>';
+								}else{
+									result += '<li style="list-style:none;"> </li>';
+								}
+							});
+							result += '</ul>';
+							return result;
+		            	}
+		            },
+		            {"data": "saleprice", "bSortable": false,
+						render:function(data, type, row, meta) {
+							var result = '<ul> ';
+							$.each(row.orders, function(name, value) {
+								if(value){
+									result += '<li style="list-style:none;">'+value.saleprice+'</li>';
+								}
+							});
+							result += '</ul>';
+							return result;
+						}
+					},
+		            {"data": "currency", "bSortable": false,
+						render:function(data, type, row, meta) {
+							var result = '<ul> ';
+							$.each(row.orders, function(name, value) {
+								if(value){
+									result += '<li style="list-style:none;">'+value.currency+'</li>';
+								}
+							});
+							result += '</ul>';
+							return result;
+						}
+					},
 		            {"data": "abc", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var abc = row.abc;
@@ -143,7 +212,15 @@ function initPayEdDataTable(){
 		            		return s;
 		            	}
 		            },
-		            {"data": "drawer", "bSortable": false},
+		            {"data": "username", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var username = row.username;
+		            		if(null == username || ""== username){
+		            			return "";
+		            		}
+		            		return username;
+		            	}
+		            },
 		            {"data": "asd", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var asd = row.asd;

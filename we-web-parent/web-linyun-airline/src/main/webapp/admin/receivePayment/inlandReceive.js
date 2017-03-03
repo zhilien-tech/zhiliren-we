@@ -14,30 +14,71 @@ function initRecDataTable() {
 			"url": BASE_PATH + "/admin/receivePay/inland/inlandRecList.html",
 			"type": "post",
 			"data": function (d) {
-
+				
 			}
 		},
 		"columns": [
-		            {"data": "ordersnum", "bSortable": false},
+					{"data": "ordersnum", "bSortable": false,
+						render:function(data, type, row, meta) {
+							var result = '<ul> ';
+							$.each(row.orders, function(name, value) {
+								if(value){
+									result += '<li style="list-style:none;">'+value.ordersnum+'</li>';
+								}
+							});
+							result += '</ul>';
+							return result;
+						}
+					},
 		            {"data": "leavedate", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
-		            		var week = ['MO','TU','WE','TH','FR','SA','SU'];
-		            		var ldate = new Date(data);
-		            		var result = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
+		            		var result = '<ul> ';
+							$.each(row.orders, function(name, value) {
+								if(value){
+									var date = value.leavedate;
+				            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
+				            		var week = ['MO','TU','WE','TH','FR','SA','SU'];
+				            		var ldate = new Date(date);
+				            		var dateFormat = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
+									result += '<li style="list-style:none;">'+dateFormat+'</li>';
+								}
+							});
+							result += '</ul>';
 		            		return result;
 		            	}
 		            },
 		            {"data": "personcount", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		var personcount = row.personcount;
-		            		if(null == personcount || ""== personcount){
-		            			return "";
-		            		}
-		            		return personcount;
+		            		var result = '<ul> ';
+							$.each(row.orders, function(name, value) {
+								if(value){
+									var pCount = value.personcount;
+									if(pCount == null || pCount == undefined || pCount==""){
+										pCount = " ";
+									}
+									result += '<li style="list-style:none;">'+pCount+'</li>';
+								}else{
+									result += '<li style="list-style:none;"> </li>';
+								}
+							});
+							result += '</ul>';
+							return result;
 		            	}
 		            },
-		            {"data": "incometotal", "bSortable": false},
+		            {"data": "incometotal", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var result = '<ul> ';
+							$.each(row.orders, function(name, value) {
+								if(value){
+									result += '<li style="list-style:none;">'+value.incometotal+'</li>';
+								}else{
+									result += '<li style="list-style:none;"> </li>';
+								}
+							});
+							result += '</ul>';
+							return result;
+		            	}
+		            },
 		            {"data": "sum", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		return '<a href="javascript:confirmReceive('+row.recid+');">'+row.sum+'</a>';
@@ -126,7 +167,7 @@ $("#inlandRecSearchBtn").on('click', function () {
 });
 
 $(function () {
-	/*	var selectEd = $('#inlandPaySelect').val();
+	/*var selectEd = $('#inlandPaySelect').val();
 		if(selectEd == 3){
 			$("#inlandPayTable").show();
 			$("#inlandPayEdTable").hide();
