@@ -18,7 +18,7 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
 @EqualsAndHashCode(callSuper = true)
 public class TGrabMailSqlForm extends DataTablesParamForm {
 	/**主键*/
-	private Integer id;
+	private long id;
 
 	/**主题*/
 	private String theme;
@@ -36,7 +36,7 @@ public class TGrabMailSqlForm extends DataTablesParamForm {
 	private Date grabTime;
 
 	/**抓取状态(1-已抓;2-未抓;)*/
-	private Integer grabStatus;
+	private long grabStatus;
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {

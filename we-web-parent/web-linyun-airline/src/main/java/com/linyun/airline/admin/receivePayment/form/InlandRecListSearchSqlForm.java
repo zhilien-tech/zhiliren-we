@@ -31,7 +31,7 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class InlandPayListSearchSqlForm extends DataTablesParamForm {
+public class InlandRecListSearchSqlForm extends DataTablesParamForm {
 
 	/**客户名称 订单号 PNR 联系人*/
 	private String name;
@@ -58,7 +58,7 @@ public class InlandPayListSearchSqlForm extends DataTablesParamForm {
 			cnd.and(group);
 		}
 		if (!Util.isEmpty(orderStatus)) {
-			cnd.and("pp.orderPnrStatus", "=", orderStatus);
+			cnd.and("uo.ordersstatus", "=", orderStatus);
 		}
 
 		//TODO 出发日期
@@ -74,7 +74,7 @@ public class InlandPayListSearchSqlForm extends DataTablesParamForm {
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {
-		String sqlString = sqlManager.get("receivePay_pay_list");
+		String sqlString = sqlManager.get("receivePay_rec_id_list");
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;

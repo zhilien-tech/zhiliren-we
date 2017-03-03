@@ -17,15 +17,15 @@ public class TGrabFileEntity implements Serializable {
 	@Id(auto = true)
 	@Column
 	@Comment("主键")
-	private Integer id;
+	private long id;
 
 	@Column
 	@Comment("抓取邮件id")
-	private Integer mailId;
+	private long mailId;
 
 	@Column
 	@Comment("上级id")
-	private Integer parentId;
+	private long parentId;
 
 	@Column
 	@Comment("文件夹名称")
@@ -45,11 +45,11 @@ public class TGrabFileEntity implements Serializable {
 
 	@Column
 	@Comment("文件类型(1-文件夹;2-文件;)")
-	private Integer type;
+	private int type;
 
 	@Column
 	@Comment("状态(1-已删除;2-已启用;)")
-	private Integer status;
+	private int status;
 
 	@Column
 	@Comment("创建时间")
@@ -61,7 +61,7 @@ public class TGrabFileEntity implements Serializable {
 
 	@Column
 	@Comment("层级")
-	private Integer level;
+	private long level;
 
 	@Column
 	@Comment("完整路径")
@@ -69,10 +69,10 @@ public class TGrabFileEntity implements Serializable {
 
 	@Column
 	@Comment("序号")
-	private Integer sort;
+	private long sort;
 
 	@Column
 	@Comment("散团类型")
-	private Integer groupType;
+	private int groupType;
 
 }

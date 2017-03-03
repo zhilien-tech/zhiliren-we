@@ -48,4 +48,7 @@ public class TSaveInlandPayAddFrom implements Serializable {
 	/**水单url*/
 	private String receiptUrl;
 
+	/**合计*/
+	private Double totalMoney;
+
 }

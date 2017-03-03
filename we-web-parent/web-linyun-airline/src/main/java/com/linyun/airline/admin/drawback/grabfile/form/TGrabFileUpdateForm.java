@@ -13,7 +13,7 @@ public class TGrabFileUpdateForm extends ModForm {
 	private String ids;
 
 	/**状态(1-已删除;2-已启用;)*/
-	private Integer status;
+	private int status;
 
 	/**文件夹名称*/
 	private String fileName;
