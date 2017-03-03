@@ -16,10 +16,11 @@
 	<div class="modal-top">
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
-            <input type="submit" id="submit" class="btn btn-primary right btn-sm" value="提交"/>
+            <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="commitPayApply();" value="提交"/>
             <h4 class="invoiceH4">付款申请</h4>
     </div>
       <div class="modal-body">
+      	 <input type="hidden" id="ids" name="ids" value="${obj.ids }">
          <table id="receivablesTable" class="table table-bordered table-hover">
                   <thead>
                     <tr>
@@ -51,30 +52,28 @@
          <div class="form-group row"><!--用途/币种-->
                   <label class="col-sm-2 text-right padding">用途：</label>
                   <div class="col-sm-2 padding">
-                    <select class="form-control input-sm">
-                      <option>预付机票款</option>
-                      <option>机票款</option>
-                      <option>ETEM使用费</option>
-                      <option>反税款</option>
-                      <option>押金</option>
+                    <select id="purpose" name="purpose" class="form-control input-sm">
+                      <c:forEach var="one" items="${obj.ytSelect }">
+                        	<option value="${one.id }">${one.dictName }</option>
+                        </c:forEach>
                     </select>
                   </div>
                   <label class="col-sm-1 text-right padding">币种：</label>
                   <div class="col-sm-2 padding">
-                    <select class="form-control input-sm">
+                    <select id="payCurrency" name="payCurrency" class="form-control input-sm">
                       <c:forEach var="one" items="${obj.bzSelect }">
-                        	<option value="${one.dictCode }">${one.dictName }</option>
+                        	<option value="${one.id }">${one.dictName }</option>
                         </c:forEach>
                     </select>
                   </div>
          </div><!--end 用途/币种-->
          <div class="form-group row"><!--申请人/审批人/审批结果-->
-                  <label class="col-sm-2 text-right padding">申请人：</label>
-                  <div class="col-sm-2 padding"><input type="text" class="form-control input-sm" disabled="disabled"></div>
-                  <label class="col-sm-1 text-right padding">审批人：</label>
-                  <div class="col-sm-2 padding"><input type="text" class="form-control input-sm" disabled="disabled" value="侯小凌"></div>
-                  <label class="col-sm-1 text-right padding">审批结果：</label>
-                  <div class="col-sm-2 padding"><input type="text" class="form-control input-sm"></div>
+         <label class="col-sm-2 text-right padding">申请人：</label>
+         <div class="col-sm-2 padding"><input type="text" class="form-control input-sm" disabled="disabled" value="${obj.user.userName }"></div>
+         <label class="col-sm-1 text-right padding">审批人：</label>
+         <div class="col-sm-2 padding"><input id="approver" name="approver" type="text" class="form-control input-sm" disabled="disabled" value="侯小凌"></div>
+         <label class="col-sm-1 text-right padding">审批结果：</label>
+         <div class="col-sm-2 padding"><input id="approveResult" name="approveResult" type="text" class="form-control input-sm"></div>
       </div>
 	</div>
    <!--JS 文件-->
@@ -91,6 +90,28 @@
     function closewindow(){
 		var index = parent.parent.layer.getFrameIndex(window.name); //获取窗口索引
 		parent.layer.close(index);
+	}
+	
+	function commitPayApply(){
+		var ids = $('#ids').val();
+		var purpose = $('#purpose').val();
+		var payCurrency = $('#payCurrency').val();
+		var approver = $('#approver').val();
+		var approveResult = $('#approveResult').val();
+		$.ajax({
+	        type: "post",
+	        url: '${base}/admin/inland/saveSeaPayApply.html',
+	        data: {ids:ids,purpose:purpose,payCurrency:payCurrency,approver:approver,approveResult:approveResult},
+	        cache: false,
+	        async : false,
+	        success: function (data ,textStatus, jqXHR){
+	        	layer.msg("提交成功！",{time: 2000, icon:1});
+	        	closewindow();
+	        },
+	        error:function (XMLHttpRequest, textStatus, errorThrown) {      
+	            layer.msg("请求失败！",{time: 2000, icon:1});
+	        }
+	     });
 	}
 	</script>
 </body>

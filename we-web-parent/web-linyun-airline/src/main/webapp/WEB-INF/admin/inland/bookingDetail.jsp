@@ -344,8 +344,22 @@
                      <td>
                         <select id="teamtype" name="teamtype" class="form-control input-sm">
                             <option value="">请选择</option>
-                            <option value="1">散</option>
-                            <option value="2">团</option>
+                            <c:choose>
+                            	<c:when test="${obj.finance.teamtype eq 1}">
+		                            <option value="1" selected="selected">散</option>
+                            	</c:when>
+                            	<c:otherwise>
+		                            <option value="1">散</option>
+                            	</c:otherwise>
+                            </c:choose>
+                            <c:choose>
+                            	<c:when test="${obj.finance.teamtype eq 2}">
+		                            <option value="2" selected="selected">团</option>
+                            	</c:when>
+                            	<c:otherwise>
+		                            <option value="2">团</option>
+                            	</c:otherwise>
+                            </c:choose>
                         </select>
                      </td>
                      <td><label>内陆跨海：</label></td>
@@ -358,17 +372,17 @@
                         </select>
                      </td>
                      <td><label>开票日期：</label></td>
-                     <td><input id="billingdate" name="billingdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" type="text" class="form-control input-sm" disabled="disabled"></td>
+                     <td><input id="billingdate" name="billingdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" type="text" class="form-control input-sm" value="<fmt:formatDate value="${obj.finance.billingdate }" pattern="yyyy-MM-dd" />" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>销售：</label></td>
-                     <td><input id="salesperson" name="salesperson" type="text" class="form-control input-sm" disabled="disabled"></td>
+                     <td><input id="salesperson" name="salesperson" value="${obj.finance.salesperson }" type="text" class="form-control input-sm" disabled="disabled"></td>
                      <td><label>开票人：</label></td>
-                     <td><input id="issuer" name="issuer" type="text" class="form-control input-sm" disabled="disabled"></td>
+                     <td><input id="issuer" name="issuer" type="text" value="${obj.finance.issuer }" class="form-control input-sm" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>人头数：</label></td>
-                     <td><input id="personcount" name="personcount" type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="personcount" name="personcount" value="${obj.finance.personcount }" type="text" class="form-control input-sm disab" disabled="disabled"></td>
                      <td><label>是否结算：</label></td>
                      <td>
                         <select id="billingstatus" name="billingstatus" class="form-control input-sm">
@@ -377,25 +391,25 @@
                         </select>
                      </td>
                      <td><label>进澳时间：</label></td>
-                     <td><input id="enterausdate" name="enterausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="enterausdate" name="enterausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.enterausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
                      <td><label>出澳时间：</label></td>
-                     <td><input id="outausdate" name="outausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="outausdate" name="outausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.outausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>应收：</label></td>
-                     <td><input id="receivable" name="receivable" type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="receivable" name="receivable" type="text" class="form-control input-sm disab" value="${obj.finance.receivable }" disabled="disabled"></td>
                      <td><label><a href="javascript:;" class="jianMian">减免</a>：</label></td>
-                     <td><input id="relief" name="relief" type="text" class="form-control input-sm" disabled="disabled"></td>
+                     <td><input id="relief" name="relief" type="text" class="form-control input-sm" disabled="disabled" value="${obj.finance.relief }"></td>
                      <td><label>实收合计：</label></td>
-                     <td><input id="incometotal" name="incometotal" type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="incometotal" name="incometotal" type="text" class="form-control input-sm disab" disabled="disabled" value="${obj.finance.incometotal }"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>成本合计：</label></td>
-                     <td><input id="costtotal" name="costtotal" type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="costtotal" name="costtotal" type="text" class="form-control input-sm disab" disabled="disabled" value="${obj.finance.costtotal }"></td>
                      <td><label>应返：</label></td>
-                     <td><input id="returntotal" name="returntotal" type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="returntotal" name="returntotal" type="text" class="form-control input-sm disab" disabled="disabled" value="${obj.finance.returntotal }"></td>
                      <td><label>利润合计：</label></td>
-                     <td><input id="profittotal" name="profittotal" type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="profittotal" name="profittotal" type="text" class="form-control input-sm disab" disabled="disabled" value="${obj.finance.profittotal }"></td>
                    </tr>
                  </table>
                 </form>
