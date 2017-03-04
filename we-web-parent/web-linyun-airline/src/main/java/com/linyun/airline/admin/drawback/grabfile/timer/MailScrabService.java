@@ -236,7 +236,8 @@ public class MailScrabService extends BaseService {
 			TGrabFileEntity groupNumFile = new TGrabFileEntity();
 
 			//父id
-			groupNumFile.setParentId(timeFile.getId());
+			long pid = timeFile.getId();
+			groupNumFile.setParentId(pid);
 
 			groupNumFile.setCreateTime(createTime);
 
@@ -255,7 +256,12 @@ public class MailScrabService extends BaseService {
 			//TODO 
 			groupNumFile.setGroupType(3);
 
-			groupNumFile = dbDao.insert(groupNumFile);
+			List<TGrabFileEntity> lst = existGroupNumFile(pid, cusgroupnum);
+			if (!Util.isEmpty(lst)) {
+				groupNumFile = lst.get(0);
+			} else {
+				groupNumFile = dbDao.insert(groupNumFile);
+			}
 
 			/**********************客户团号结束**********************/
 
@@ -307,12 +313,30 @@ public class MailScrabService extends BaseService {
 		}
 	}
 
+	/**
+	 * 【时间文件夹】根据父级id和文件名称查询此文件是否已存在
+	 * @param rootId 父级id【此时的父id为最顶层文件夹的id】
+	 * @param fileName
+	 */
 	private List<TGrabFileEntity> existFile(long rootId, String fileName) {
 		Sql sqlCount = Sqls.create(sqlManager.get("grab_mail_count"));
 		sqlCount.params().set("fileName", fileName);
 		sqlCount.params().set("parentId", rootId);
 		List<TGrabFileEntity> list = DbSqlUtil.query(dbDao, TGrabFileEntity.class, sqlCount);
 		return list;
+	}
+
+	/**
+	 * 【客户团号文件夹】根据父级id和文件名称查询此文件是否已存在
+	 * @param pid  父级id【此时的父id为上级时间文件夹的id】
+	 * @param cusgroupnum 文件名
+	 */
+	private List<TGrabFileEntity> existGroupNumFile(long pid, String cusgroupnum) {
+		Sql sqlCount = Sqls.create(sqlManager.get("grab_mail_count"));
+		sqlCount.params().set("fileName", cusgroupnum);
+		sqlCount.params().set("parentId", pid);
+		List<TGrabFileEntity> lst = DbSqlUtil.query(dbDao, TGrabFileEntity.class, sqlCount);
+		return lst;
 	}
 
 	/**

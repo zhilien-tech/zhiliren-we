@@ -32,7 +32,7 @@
                   <div class="tab-pane pane-content active" id="tab_1">
                    <div class="rebatesBtn">
                      <button type="button" onclick="batchDelete();" class="btn btn-primary btn-sm right noneBtn none">批量删除</button>
-                     <button type="button" class="btn btn-primary btn-sm right noneBtn none">移动到</button>
+                     <!-- <button type="button" class="btn btn-primary btn-sm right noneBtn none">移动到</button> -->
                      <button type="button" class="btn btn-primary btn-sm right batchBtn">批量操作</button>
                      <button id="folderId" name="createFolder" onclick='newFolder();' type="button" class="btn btn-primary btn-sm right carrynews">新建文件夹</button>
                      <button id="grabMailId" name="grabMailName" type="button" class="btn btn-primary btn-sm right">邮件抓取</button>
@@ -69,7 +69,7 @@
                    <input id="checkedboxval" name="checkedboxval" type="hidden">
                   </div><!--end 邮件抓取-->
 
-                  <!--报表-->
+                  <!------------------------------------------报表开始---------------------------------------------->
                   <div class="tab-pane pane-content" id="tab_2">
                         <table id="rebatesReportTable" class="table table-bordered table-hover">
                           <thead>
@@ -170,7 +170,46 @@ $(".checkTh").click(function () {
 	}
 	$('#checkedboxval').val(hiddenval);
 });
-    
+//点击之后给隐藏域赋值
+$(document).on('click', '.checkchild', function(e) {
+	var hiddenval = $('#checkedboxval').val();
+	var thisval = $(this).val();
+	var check = $(this).prop("checked");
+	if(check){
+		if(!hiddenval){
+			$('#checkedboxval').val(thisval);
+		}else{
+			$('#checkedboxval').val(hiddenval+','+thisval);
+		}
+	}else{
+		var splits = hiddenval.split(',');
+		var flag = false;
+		for(var i=0;i<splits.length;i++){
+			if(splits[i] == thisval){
+				flag = true;
+			}
+		}
+		//如果存在则删掉当前值
+		if(flag){
+			var ids = [];
+			for(var i=0;i<splits.length;i++){
+				if(splits[i] != thisval){
+					ids.push(splits[i]);
+				}
+			}
+			ids = ids.join(',');
+			$('#checkedboxval').val(ids);
+		}else{
+			$('#checkedboxval').val(hiddenval);
+		}
+	}
+	var length = $(".checkchild:checked").length;
+	if(rebatesEamilTable.page.len() == length){
+		$(".checkTh").prop("checked", true);
+	}else{
+		$(".checkTh").prop("checked", false);
+	}
+});
     //文件上传
     $('#uploadFile').click(function(){
     	$.fileupload1 = $('#uploadFile').uploadify({
