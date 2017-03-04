@@ -28,8 +28,7 @@ select[multiple="multiple"]{height: 180px;}
 .infoCentext div{width: 100%;height: 100%;text-align: center;line-height: 300px;}
 .infoShow{display: block;}
 .actionInfo{background-color: #3c8dbc;padding: 4px 12px !important;color: #fff !important;}
-
-
+form#financeForm table {margin-bottom: 10px;}
 
 
 
