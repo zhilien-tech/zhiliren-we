@@ -14,7 +14,7 @@
 .PNRtable tr:nth-child(even) td{position: relative;top: 10px;}
 .multiselectDiv {margin-top:20px;}
 .multiselectP {text-align: center;font-size: 14px;line-height: 30px;}
-.multiselectDiv .row .col-sm-2{margin-top:47px;}
+.multiselectDiv .row .col-sm-2{margin-top:65px;}
 .multiselectDiv .row .col-sm-5 .form-control{padding: 6px 0px;}
 .multiselectDiv .row .col-sm-5 .form-control option{padding: 5px 10px;}
 select[multiple="multiple"]{height: 180px;}
