@@ -491,7 +491,7 @@ function successCallback(id){
 	                targets: 4,
 	                render: function(data, type, row, meta) {
 	                	var editFolder = '<a href="javascript:editFolder('+row.id+');" style="cursor:pointer;">编辑&nbsp;&nbsp;&nbsp;</a>';
-	                	var download = '<a href="javascript:downFiles();" style="cursor:pointer;">&nbsp;&nbsp;下载&nbsp;&nbsp;&nbsp;</a>';
+	                	var download = '<a href="${base}/admin/drawback/grabfile/downLoadZipFile.html?parentId='+row.id+'" style="cursor:pointer;">&nbsp;&nbsp;下载&nbsp;&nbsp;&nbsp;</a>';
 	                	var move  = '<a href="javascript:move('+row.id+');" style="cursor:pointer;">&nbsp;&nbsp;移动到&nbsp;&nbsp;</a>';
                    		if(1==row.status){
                    			var judge = '<a href="javascript:physicalDelete('+row.id+',2);" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
@@ -577,27 +577,6 @@ function successCallback(id){
 				rebatesEamilTable.ajax.reload();
 	  	    }
 	 	});
-	}
-	//文件下载
-	function downFiles(){
-		var pid = $("input#currentDirId").val();
-		$.ajax({
-			cache : false,
-			type : "POST",
-			url : '${base}/admin/drawback/grabfile/downLoadZipFile.html',
-			data : 
-			{
-				parentId:pid
-			},
-			error : function(request) {
-				layer.msg('下载失败!');
-			},
-			success : function(data) {
-				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-			    parent.layer.close(index);
-				window.parent.successCallback('7');
-			}
-		});
 	}
 	
 	//修改文件夹名称

@@ -1,17 +1,18 @@
 package com.linyun.airline.admin.drawback.grabfile.service;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.OutputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.nutz.dao.Cnd;
+import org.nutz.dao.Sqls;
+import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.google.common.collect.Lists;
@@ -19,8 +20,10 @@ import com.google.common.collect.Maps;
 import com.linyun.airline.admin.drawback.grabfile.entity.TGrabFileEntity;
 import com.linyun.airline.admin.drawback.grabfile.enums.FileTypeEnum;
 import com.linyun.airline.common.enums.DataStatusEnum;
-import com.linyun.airline.common.util.ZipUtil;
+import com.linyun.airline.common.util.ZFile;
+import com.linyun.airline.common.util.ZipUtils;
 import com.uxuexi.core.common.util.Util;
+import com.uxuexi.core.db.util.DbSqlUtil;
 import com.uxuexi.core.web.base.service.BaseService;
 
 @IocBean
@@ -59,6 +62,41 @@ public class GrabfileViewService extends BaseService<TGrabFileEntity> {
 		}
 	}
 
+	/**
+	 * 根据文件id获取文件所在目录路径
+	 */
+	private String getFileFullPath(long fileId) {
+		String path = "";
+		List<String> pathLst = Lists.newArrayList();
+		recursiveGetPath(pathLst, fileId);
+		if (!Util.isEmpty(pathLst)) {
+			List<String> reverse = Lists.reverse(pathLst);
+			for (int i = 0; i < reverse.size(); i++) {
+				String p = reverse.get(i);
+				if (i == 0) {
+					path += p;
+				} else {
+					path += (File.separator + p);
+				}
+
+			}
+		}
+		return path + (File.separator);
+	}
+
+	/**
+	 * 递归查询文件路径，将每一级路径保存到集合中
+	 */
+	private void recursiveGetPath(List<String> pathLst, long fileId) {
+		Sql sql = Sqls.create(sqlManager.get("grab_mail_filepath"));
+		sql.params().set("fileId", fileId);
+		TGrabFileEntity parent = DbSqlUtil.fetchEntity(dbDao, TGrabFileEntity.class, sql);
+		if (!Util.isEmpty(parent)) {
+			pathLst.add(parent.getFileName());
+			recursiveGetPath(pathLst, parent.getId());
+		}
+	}
+
 	private void getChidrenFiles(List<TGrabFileEntity> fileList, long parentId) {
 		//添加当前节点
 		TGrabFileEntity current = dbDao.fetch(TGrabFileEntity.class, Cnd.where("id", "=", parentId));
@@ -80,49 +118,37 @@ public class GrabfileViewService extends BaseService<TGrabFileEntity> {
 	 * @return response
 	 * @throws Exception 异常
 	 */
-	public void downLoadZipFiles(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		OutputStream os = null;
+	public void downLoadZipFiles(long id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String downloadName = "myfile.zip";
+		ZipOutputStream zos = new ZipOutputStream(response.getOutputStream());
+		response.reset();
+		// 先去掉文件名称中的空格,然后转换编码格式为utf-8,保证不出现乱码,这个文件名称用于浏览器的下载框中自动显示的文件名
+		response.addHeader("Content-Disposition", "attachment;filename="
+				+ new String(downloadName.replaceAll(" ", "").getBytes("utf-8"), "iso8859-1"));
+		response.setContentType("application/octet-stream");
 		try {
 			//1、把多个文件打包成一个文件
-			List<TGrabFileEntity> pathList = Lists.newArrayList();
-			long parentId = 2l;
-			getChidrenFiles(pathList, parentId);
+			List<TGrabFileEntity> gFiles = Lists.newArrayList();
+			getChidrenFiles(gFiles, id);
 			//把1中得到的路径(pathList)转为文件(file)
-			List<File> fileLst = Lists.newArrayList();
-			for (TGrabFileEntity dfile : pathList) {
+			List<ZFile> files = Lists.newArrayList();
+			for (TGrabFileEntity gf : gFiles) {
 				//判断文件类型
-				int fileType = dfile.getType();
-				if (FileTypeEnum.FOLDER.intKey() == fileType) {//文件夹
-					File d = new File("");
-					d.mkdirs();
-
-				} else if (FileTypeEnum.FILE.intKey() == fileType) {//文件
-					fileLst.add(new File(""));
+				int fileType = gf.getType();
+				if (FileTypeEnum.FILE.intKey() == fileType) {//文件
+					ZFile zf = new ZFile();
+					URL url = new URL(gf.getUrl());
+					zf.setInput(url.openStream());
+					zf.setFileName(gf.getFileName());
+					String fileFullPath = getFileFullPath(gf.getId());
+					zf.setRelativePathInZip(fileFullPath);
+					files.add(zf);
 				}
 			}
-			//2,下载1中得到的文件
-			File inputFile = new File("");
-			FileInputStream fis = new FileInputStream(inputFile);
-
-			byte[] buffer = new byte[fis.available()];
-			String filename = "myfile.zip";
-
-			//将文件进行打包
-			ZipUtil.zipFiles(fileLst, new File(filename));
-
-			fis.read(buffer);
-			fis.close();
-
-			response.reset();
-			// 先去掉文件名称中的空格,然后转换编码格式为utf-8,保证不出现乱码,这个文件名称用于浏览器的下载框中自动显示的文件名
-			response.addHeader("Content-Disposition", "attachment;filename="
-					+ new String(filename.replaceAll(" ", "").getBytes("utf-8"), "iso8859-1"));
-			response.addHeader("Content-Length", "" + inputFile.length());
-			response.setContentType("application/octet-stream");
-			os = new BufferedOutputStream(response.getOutputStream());
-			os.write(buffer);// 输出文件
-			os.flush();
-
+			//将文件进行打包(将数据写入zos)
+			ZipUtils.zipFile(files, zos);
+			zos.flush();
+			zos.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -590,6 +590,7 @@ public class MailScrabService extends BaseService {
 					newFile.setFileName(attachmentName);
 					fileProps.setSort(fileSort);
 					newFile.setUrl(fileUrl);
+					newFile.setType(FileTypeEnum.FILE.intKey());//文件
 					grabFileLst.add(newFile);
 				} else if (bodyPart.isMimeType("multipart/*")) {
 					saveAttachment(bodyPart, grabFileLst, fileProps);
@@ -612,6 +613,7 @@ public class MailScrabService extends BaseService {
 						newFile.setFileName(attachmentName);
 						fileProps.setSort(fileSort);
 						newFile.setUrl(fileUrl);
+						newFile.setType(FileTypeEnum.FILE.intKey());//文件
 						grabFileLst.add(newFile);
 					}
 				}

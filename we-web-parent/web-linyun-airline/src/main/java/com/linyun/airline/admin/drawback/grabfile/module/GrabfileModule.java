@@ -111,23 +111,9 @@ public class GrabfileModule {
 	 * @throws Exception 
 	 */
 	@At
-	public void downLoadZipFile(HttpServletResponse response, HttpServletRequest request) throws Exception {
-		grabfileViewService.downLoadZipFiles(request, response);
-		/*String zipName = "myfile.zip";
-		response.setContentType("application/zip");// 设置response内容的类型
-		response.setHeader("Content-Disposition", "attachment; filename=" + zipName);// 设置头部信息  
-		ZipOutputStream out = new ZipOutputStream(response.getOutputStream());
-		try {
-			for (Iterator<TGrabFileEntity> it = files.iterator(); it.hasNext();) {
-				TGrabFileEntity file = it.next();
-				ZipUtils.doCompress(file.getUrl() + file.getFileName(), out);
-				response.flushBuffer();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			out.close();
-		}*/
+	public void downLoadZipFile(@Param("parentId") long id, HttpServletResponse response, HttpServletRequest request)
+			throws Exception {
+		grabfileViewService.downLoadZipFiles(id, request, response);
 	}
 
 	/**
