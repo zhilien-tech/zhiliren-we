@@ -6,7 +6,8 @@
 .PNRbtn{padding: 4px 5px !important;margin-left: 10px !important;position: relative;top: -16px;}
 .addDemand{left: 70.5%; margin-left: 8px;}
 .addIcon {top: 0px;float: left;left: 10px;}
-.removIcon {margin-right: 39px;}
+.removIcon {float: left;left: 27px;}
+.scykP{padding-top: 0;line-height: 27px;font-size: 12px;}
 /*+PNR*/
 .PNRtable tr td:nth-child(odd){text-align: right;width: 9%;}
 .PNRtable tr td:nth-child(even){width: 15%;}
