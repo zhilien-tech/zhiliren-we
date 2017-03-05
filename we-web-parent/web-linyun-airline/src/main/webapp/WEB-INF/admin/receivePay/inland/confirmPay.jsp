@@ -41,10 +41,11 @@
                 		<tr>
                 			<td>${one.ordernum }</td>
                 			<td>${one.pnrnum }</td>
-                			<td>${one.custgroupnum }</td>
+                			<td>${one.cusgroupnum }</td>
+                			<td>${one.shortname }</td>
                 			<td>${one.billdate }</td>
                 			<td>${one.peoplecount }</td>
-                			<td>${one.drawer }</td>
+                			<td>${one.approver }</td>
                 			<td>${one.saleprice }</td>
                 		</tr>
                 	</c:forEach>

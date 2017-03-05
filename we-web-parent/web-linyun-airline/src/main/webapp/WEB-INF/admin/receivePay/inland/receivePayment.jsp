@@ -26,8 +26,8 @@
 
 						<div class="nav-tabs-custom">
 							<ul class="nav nav-tabs">
-								<li class="active"><a href="#tab_1" data-toggle="tab">收款</a></li>
-								<li><a href="#tab_2" data-toggle="tab">付款</a></li>
+								<li class="active"><a href="#tab_1"  onclick="toConfirmRecPage();" data-toggle="tab">收款</a></li>
+								<li><a href="#tab_2" onclick="toConfirmPayPage();" data-toggle="tab">付款</a></li>
 							</ul>
 							<div class="tab-content">
 								<!-- ---------------------------start 收款------------------------------- -->
@@ -37,8 +37,8 @@
 											<div class="form-group row marginBott5 cf">
 												<div class="col-md-1 textPadding">
 													<select id="inlandRecSelect" class="form-control TimeInput">
-														<option value="3">收款中</option>
-														<option value="1">已收款</option>
+														<option value=0>收款中</option>
+														<option value=1>已收款</option>
 													</select>
 												</div>
 												<div class="col-md-1 textPadding">
@@ -90,8 +90,8 @@
 											<div class="form-group row marginBott5 cf">
 												<div class="col-md-1 textPadding">
 													<select id="inlandPaySelect" class="form-control TimeInput">
-														<option value=0>付款中</option>
-														<option value=1>已付款</option>
+														<option value=1>付款中</option>
+														<option value=2>已付款</option>
 													</select>
 												</div>
 												<div class="col-md-1 textPadding">
@@ -150,6 +150,7 @@
 													<th>人数</th>
 													<th>应付金额</th>
 													<th>币种</th>
+													<th>总额</th>
 													<th>收款单位</th>
 													<th>状态</th>
 													<th>开票人</th>
@@ -190,6 +191,11 @@
 	<script src="${base}/admin/receivePayment/inlandReceive.js"></script>
 	<!-- 国际js -->
 	<%-- <script src="${base}/admin/receivePayment/internationPayment.js"></script> --%>
-
+	<script type="text/javascript">
+		$(function(){
+			toConfirmRecPage();
+		});
+	</script>
+	
 </body>
 </html>
