@@ -21,7 +21,7 @@ table.dataTable thead .sorting:after{display: none;}
 #inlandCrossTable tbody tr td:nth-child(13){line-height: 60px;}
 #inlandCrossTable_wrapper{margin-top: -15px;}
 .row-top {background-color: #ecf0f5;}
-#tab_1,#tab7_a,#tab7_b,#tab1_1,#tab1_2{margin-top: 10px;}
+#tab_1,#tab7_a,#tab7_b,#tab1_1,#tab1_2,#tab1_a,#tab1_b{padding-top: 10px;}
 /*添加订单*/
 .orderSelect{width: 100px;}
 .orderLabel{line-height: 30px;}

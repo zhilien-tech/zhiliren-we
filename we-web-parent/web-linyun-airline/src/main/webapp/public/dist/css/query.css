@@ -123,3 +123,4 @@ table.dataTable thead .sorting_asc:after {display: none;}
 table.dataTable thead .sorting:after {display: none;}
 table.dataTable thead .sorting_desc:after {display: none;}
 table.dataTable thead > tr > th {padding-right:0px;}
+.parsingBtn {margin-left: 10px;font-size: 12px;border-radius: 3px;}
