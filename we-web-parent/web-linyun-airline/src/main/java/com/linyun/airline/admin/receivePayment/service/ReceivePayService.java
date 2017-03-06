@@ -44,7 +44,10 @@ import com.linyun.airline.admin.receivePayment.form.InlandRecListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.TSaveInlandPayAddFrom;
 import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
+import com.linyun.airline.common.enums.AccountPayEnum;
+import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.entities.DictInfoEntity;
+import com.linyun.airline.entities.TPnrInfoEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.MapUtil;
@@ -61,8 +64,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	//付款用途
 	private static final String YTCODE = "FKYT";
 
-	//付款 由收款中改为已收款
-	private static final int ReceiveStatus = 1;
+	private static final int RECEIVESTATUS = AccountReceiveEnum.RECEIVEDONEY.intKey();
+
+	private static final int APPROVALPAYED = AccountPayEnum.APPROVALPAYED.intKey();
 
 	@Inject
 	private UploadService qiniuUploadService;
@@ -85,7 +89,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		List<Record> data = (List<Record>) listdata.get("data");
 		for (Record record : data) {
 			Sql sql = Sqls.create(sqlManager.get("receivePay_rec_list"));
-			Cnd cnd = Cnd.limit();
+			Cnd cnd = Cnd.NEW();
 			cnd.and("r.id", "=", record.getString("recid"));
 			List<Record> orders = dbDao.query(sql, cnd, null);
 			record.put("orders", orders);
@@ -103,7 +107,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 */
 	public Object saveInlandRec(String recId) {
 		Sql sql = Sqls.create(sqlManager.get("receivePay_rec_order_id"));
-		Cnd cnd = Cnd.limit();
+		Cnd cnd = Cnd.NEW();
 		cnd.and("r.id", "=", recId);
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		String ids = "";
@@ -114,9 +118,11 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			ids = ids.substring(0, (ids.length() - 1));
 		}
 
-		dbDao.update(TUpOrderEntity.class, Chain.make("ordersstatus", ReceiveStatus), Cnd.where("id", "in", ids));
+		int orderRecEd = AccountReceiveEnum.RECEIVEDONEY.intKey();
+		int updateNum = dbDao.update(TUpOrderEntity.class, Chain.make("ordersstatus", orderRecEd),
+				Cnd.where("id", "in", ids));
 
-		return null;
+		return updateNum;
 	}
 
 	/**
@@ -164,8 +170,8 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		@SuppressWarnings("unchecked")
 		List<Record> data = (List<Record>) listdata.get("data");
 		for (Record record : data) {
-			Sql sql = Sqls.create(sqlManager.get("receivePay_pay_list"));
-			Cnd cnd = Cnd.limit();
+			Sql sql = Sqls.create(sqlManager.get("receivePay_payed_list"));
+			Cnd cnd = Cnd.NEW();
 			cnd.and("p.id", "=", record.getString("pid"));
 			List<Record> orders = dbDao.query(sql, cnd, null);
 			record.put("orders", orders);
@@ -190,7 +196,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 
 		Sql sql = Sqls.create(sqlManager.get("receivePay_rec_id"));
 		/*String inlandPayIdStr = inlandPayIds.substring(0, inlandPayIds.length() - 1);*/
-		Cnd cnd = Cnd.limit();
+		Cnd cnd = Cnd.NEW();
 		cnd.and("r.id", "=", inlandRecId);
 		cnd.and("uo.loginUserId", "=", loginUserId);
 		List<Record> orders = dbDao.query(sql, cnd, null);
@@ -233,9 +239,13 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 
 		Sql sql = Sqls.create(sqlManager.get("receivePay_pay_Ids"));
 		/*String inlandPayIdStr = inlandPayIds.substring(0, inlandPayIds.length() - 1);*/
-		Cnd cnd = Cnd.limit();
+		Cnd cnd = Cnd.NEW();
 		cnd.and("pi.id", "in", inlandPayIds);
 		List<Record> orders = dbDao.query(sql, cnd, null);
+		String payIds = "";
+		for (Record record : orders) {
+			payIds += record.getString("id") + ",";
+		}
 		map.put("orders", orders);
 
 		//计算合计金额
@@ -277,7 +287,6 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object saveInlandPay(TSaveInlandPayAddFrom form) {
-
 		List<TPayEntity> payList = new ArrayList<TPayEntity>();
 
 		Integer bankComp = form.getBankComp();
@@ -306,8 +315,8 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		companyBankCard.setCardName(String.valueOf(form.getCardName()));
 		companyBankCard.setCardNum(String.valueOf(form.getCardNum()));
 		//添加银行卡
-		TCompanyBankCardEntity insert = dbDao.insert(companyBankCard);
-		Integer bankId = insert.getId();
+		TCompanyBankCardEntity companyBankCardEntity = dbDao.insert(companyBankCard);
+		Integer bankId = companyBankCardEntity.getId();
 
 		//订单
 		TUpOrderEntity upOrder = new TUpOrderEntity();
@@ -316,11 +325,22 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		List<TPayEntity> updateList = new ArrayList<TPayEntity>();
 		List<TPayEntity> payEntityList = dbDao.query(TPayEntity.class, Cnd.where("id", "in", payIds), null);
 		for (TPayEntity payEntity : payEntityList) {
-			payEntity.setBankId(bankId);
-			payEntity.setPayAddress(payAddress);
-			payEntity.setPurpose(purpose);
-			payEntity.setFundType(fundType);
-			payEntity.setPayDate(payDate);
+
+			if (!Util.eq(null, bankId)) {
+				payEntity.setBankId(bankId);
+			}
+			if (!Util.eq(null, payAddress)) {
+				payEntity.setPayAddress(payAddress);
+			}
+			if (!Util.eq(null, purpose)) {
+				payEntity.setPurpose(purpose);
+			}
+			if (!Util.eq(null, fundType)) {
+				payEntity.setFundType(fundType);
+			}
+			if (!Util.eq(null, payDate)) {
+				payEntity.setPayDate(payDate);
+			}
 			if (!Util.eq(null, payFees)) {
 				payEntity.setPayFees(payFees);
 			}
@@ -330,24 +350,39 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			if (!Util.eq(null, totalMoney)) {
 				payEntity.setTotalMoney(totalMoney);
 			}
-			payEntity.setPayCurrency(currency);
-			payEntity.setIsInvioce(isInvioce);
+			if (!Util.eq(null, currency)) {
+				payEntity.setPayCurrency(currency);
+			}
+			if (!Util.eq(null, isInvioce)) {
+				payEntity.setIsInvioce(isInvioce);
+			}
 			updateList.add(payEntity);
 
 			//添加水单
-			payReceiptEntity.setId(payEntity.getId());
-			if (!Util.eq(null, receiptUrl)) {
+			if (!Util.isEmpty(receiptUrl)) {
 				payReceiptEntity.setReceiptUrl(receiptUrl);
+				payReceiptEntity.setId(payEntity.getId());
 			}
 			payReceiptList.add(payReceiptEntity);
 		}
 
 		//添加水单表
-		dbDao.insert(payReceiptList);
+		if (!Util.isEmpty(payReceiptList)) {
+			dbDao.insert(payReceiptList);
+		}
 
-		//更新Pnr状态
+		//更新Pnr表中對應的状态
+		List<TPnrInfoEntity> pnrInfoList = dbDao.query(TPnrInfoEntity.class, Cnd.where("id", "in", payIds), null);
+		if (!Util.eq(null, payIds)) {
+			dbDao.update(TPnrInfoEntity.class, Chain.make("orderPnrStatus", APPROVALPAYED),
+					Cnd.where("id", "in", payIds));
+		}
 
-		return dbDao.update(updateList);
+		if (!Util.isEmpty(updateList)) {
+			dbDao.update(updateList);
+		}
+
+		return null;
 	}
 
 	//水单上传 返回值文件存储地址
