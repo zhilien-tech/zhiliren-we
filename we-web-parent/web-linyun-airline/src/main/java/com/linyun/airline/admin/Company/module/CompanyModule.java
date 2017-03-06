@@ -55,7 +55,7 @@ public class CompanyModule {
 	@At
 	@Ok("jsp")
 	public Object list() {
-		return companyViewService.getUpCompanyAndAgentCount(sqlManager);
+		return companyViewService.getUpCompanyAndAgentCount();
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class CompanyModule {
 	public Object userList(@Param("..") final TCompanyUserSqlForm sqlForm, @Param("..") final Pager pager) {
 		Map<String, Object> obj = MapUtil.map();
 		obj.put("companyuser", sqlForm);
-		List<Record> deplist = companyViewService.getCompanyDepartment(sqlManager, sqlForm.getId());
+		List<Record> deplist = companyViewService.getCompanyDepartment(sqlForm.getId());
 		obj.put("deplist", deplist);
 		return obj;
 	}
@@ -203,7 +203,7 @@ public class CompanyModule {
 	@At
 	@POST
 	public Object loadCompanyCount() {
-		return companyViewService.getUpCompanyAndAgentCount(sqlManager);
+		return companyViewService.getUpCompanyAndAgentCount();
 	}
 
 	/**

@@ -113,7 +113,7 @@ SELECT
 	tpi.*, tuo.ordersnum,
 	tfi.billingdate,
 	tfi.cusgroupnum,
-	tci. NAME customename,
+	tci.NAME customename,
 	tci.linkMan,
 	(
 		SELECT
