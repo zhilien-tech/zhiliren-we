@@ -1,120 +1,94 @@
 /*receivePay_pay_id_list*/
 SELECT
-	p.id pid,
-	p.totalMoney,
-	u.userName,
-	pp.orderPnrStatus
+  p.id pid,
+  p.totalMoney,
+  ci.shortName,
+  fi.`issuer` userName,
+  pi.orderPnrStatus
 FROM
 	t_pay p
-LEFT JOIN t_pay_pnr pp ON p.id = pp.payId
+LEFT JOIN t_pay_pnr pp ON pp.payId = p.id
 LEFT JOIN t_pnr_info pi ON pi.id = pp.pnrId
 LEFT JOIN t_order_customneed oc ON oc.id = pi.needid
 LEFT JOIN t_up_order uo ON uo.id = oc.ordernum
-LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
-LEFT JOIN t_user u ON u.id = fi. ISSUER
+LEFT JOIN t_finance_info fi ON fi.orderid=uo.id
+LEFT JOIN t_customer_info ci ON ci.id=uo.userid
 $condition
 GROUP BY
-	pid
+	p.id
+ORDER BY
+	oc.leavetdate DESC
 
 /*receivePay_pay_list*/
 SELECT
-	p.id pid,
-	uo.ordersnum orderNum,
-	pi.PNR pnrNum,
-	oc.leavetdate leaveDate,
-	oc.peoplecount peopleCount,
-	pi.salesprice salePrice,
-	oc.paycurrency currency
-FROM
-	t_pnr_info pi
-INNER JOIN t_order_customneed oc ON pi.needid = oc.id
-INNER JOIN t_up_order uo ON oc.ordernum = uo.id
-INNER JOIN t_finance_info fi ON fi.orderid = uo.id
-INNER JOIN t_user u ON fi.`issuer` = u.id
-INNER JOIN t_customer_info ci ON ci.id = uo.userid
-INNER JOIN t_pay_pnr pp ON pp.pnrId = pi.id
-INNER JOIN t_pay p ON p.id = pp.payId
-$condition
-ORDER BY
-	leaveDate DESC
-	
-	
-/*receivePay_payed_list*/
-SELECT
-	p.id,
+	pi.id pid,
 	uo.ordersnum orderNum,
 	pi.PNR pnrNum,
 	oc.leavetdate leaveDate,
 	oc.peoplecount peopleCount,
 	pi.salesprice salePrice,
 	oc.paycurrency currency,
-	u.userName drawer,
-	pp.orderPnrStatus orderStatus
+	ci.shortName,
+	pi.orderPnrStatus,
+	fi.`issuer` drawer
 FROM
-	(
-		(
-			(
-				(
-					(
-						(
-							t_pnr_info pi
-							INNER JOIN t_order_customneed oc ON pi.needid = oc.id
-						)
-						INNER JOIN t_pay_pnr pp ON pp.pnrId = pi.id
-					)
-					INNER JOIN t_pay p ON p.id = pp.payId
-				)
-				INNER JOIN t_up_order uo ON oc.ordernum = uo.id
-			)
-			INNER JOIN t_finance_info fi ON fi.orderid = uo.id
-		)
-		INNER JOIN t_user u ON fi.`issuer` = u.id
-	)
-INNER JOIN t_customer_info ci ON ci.id = uo.userid
+	t_pnr_info pi
+LEFT JOIN t_order_customneed oc ON oc.id = pi.needid
+LEFT JOIN t_up_order uo ON uo.id = oc.ordernum
+LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
+LEFT JOIN t_customer_info ci ON ci.id = uo.userid
+$condition
+ORDER BY
+	oc.leavetdate DESC
+	
+	
+/*receivePay_payed_list*/
+SELECT
+  p.id,
+	uo.ordersnum ordernum,
+	pi.PNR pnrNum,
+	oc.leavetdate leaveDate,
+	oc.peoplecount peopleCount,
+	pi.salesprice salePrice,
+	oc.paycurrency currency
+FROM
+	t_pay p
+LEFT JOIN t_pay_pnr pp on pp.payId=p.id
+LEFT JOIN t_pnr_info pi on pi.id=pp.pnrId
+LEFT JOIN t_order_customneed oc ON oc.id=pi.needid
+LEFT JOIN t_up_order uo ON uo.id=oc.ordernum
 $condition
 ORDER BY
 	leaveDate DESC
 	
 /*receivePay_pay_Ids*/
 SELECT
-	p.id,
+    p.id id,
+	pi.id pid,
 	uo.ordersnum orderNum,
 	pi.PNR pnrNum,
-	fi.cusgroupnum custGroupNum,
-	fi.billingdate billDate,
-	oc.leavetdate leaveDate,
+	fi.cusgroupnum,
+	ci.shortName,
+	fi.billingdate billdate,
 	oc.peoplecount peopleCount,
-	u.userName drawer,
+	u.userName proposer,
 	pi.salesprice salePrice,
-	p.proposer,
 	p.approver,
 	p.approveResult
 FROM
-	(
-		(
-			(
-				(
-					(
-						(
-							t_pnr_info pi
-							INNER JOIN t_order_customneed oc ON pi.needid = oc.id
-						)
-						INNER JOIN t_pay_pnr pp ON pp.pnrId = pi.id
-					)
-					INNER JOIN t_pay p ON p.id = pp.payId
-				)
-				INNER JOIN t_up_order uo ON oc.ordernum = uo.id
-			)
-			INNER JOIN t_finance_info fi ON fi.orderid = uo.id
-		)
-		INNER JOIN t_user u ON fi.`issuer` = u.id
-	)
-INNER JOIN t_customer_info ci ON ci.id = uo.userid
+	t_pnr_info pi
+LEFT JOIN t_order_customneed oc ON oc.id = pi.needid
+LEFT JOIN t_up_order uo ON uo.id = oc.ordernum
+LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
+LEFT JOIN t_customer_info ci ON ci.id = uo.userid
+LEFT JOIN t_pay_pnr pp ON pp.pnrId = pi.id
+LEFT JOIN t_pay p ON p.id = pp.payId
+LEFT JOIN t_user u ON u.id = p.proposer
 $condition
 ORDER BY
-	leaveDate DESC
+	oc.leavetdate DESC
 
-	/*receivePay_rec_id_list*/
+/*receivePay_rec_id_list*/
 SELECT
 	r.id recid,
 	r.sum,

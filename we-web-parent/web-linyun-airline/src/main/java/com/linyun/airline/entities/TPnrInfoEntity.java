@@ -56,4 +56,8 @@ public class TPnrInfoEntity implements Serializable {
 	@Comment("客户需求id")
 	private Integer needid;
 
+	@Column
+	@Comment("订单pnr状态")
+	private Integer orderPnrStatus;
+
 }

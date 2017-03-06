@@ -58,7 +58,7 @@ public class InlandPayEdListSearchSqlForm extends DataTablesParamForm {
 			cnd.and(group);
 		}
 		if (!Util.isEmpty(orderStatus)) {
-			cnd.and("pp.orderPnrStatus", "=", orderStatus);
+			cnd.and("pi.orderPnrStatus", "=", orderStatus);
 		}
 
 		//TODO 出发日期
