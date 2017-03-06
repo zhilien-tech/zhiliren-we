@@ -402,5 +402,4 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			return MobileResult.error("操作失败", null);
 		}
 	}
-
 }

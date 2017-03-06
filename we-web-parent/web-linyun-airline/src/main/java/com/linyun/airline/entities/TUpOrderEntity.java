@@ -54,7 +54,19 @@ public class TUpOrderEntity implements Serializable {
 	private Integer loginUserId;
 
 	@Column
-	@Comment("订单pnr状态")
-	private Integer orderPnrStatus;
+	@Comment("收款状态")
+	private Integer receivestatus;
+
+	@Column
+	@Comment("付款状态")
+	private Integer paystatus;
+
+	@Column
+	@Comment("发票状态")
+	private Integer invoicestatus;
+
+	@Column
+	@Comment("国际订单支付状态")
+	private Integer interOrderStatus;
 
 }
