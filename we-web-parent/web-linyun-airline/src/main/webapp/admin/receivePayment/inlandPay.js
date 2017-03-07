@@ -456,6 +456,12 @@ $('#inlandPayClearBtn').click(function(){
 	clearSearchTxt("inlandPaySelect", "inlandPayBeginDate", "inlandPayEndDate", "inlandPayInput");
 });
 
+//内陆跨海 取消所有勾选
+$('#inlandPayCancelBtn').click(function(){
+	$('#checkedboxPayValue').val("");
+}
+
+
 //清空搜索项函数
 function clearSearchTxt(selectId, beginDateId, endDateId, inputId){
 	$("#"+selectId+" option:first").prop("selected", 'selected');  

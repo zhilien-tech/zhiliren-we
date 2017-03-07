@@ -31,12 +31,9 @@
 							<select id="orderType" class="form-control input-sm conSelect cf">
 								<option value="1" selected="selected">查询</option>
 								<option value="2">预定</option>
-								<option value="3">一订</option>
-								<option value="4">二订</option>
-								<option value="5">尾款</option>
-								<option value="6">出票</option>
-								<option value="7">开票</option>
-								<option value="8">关闭</option>
+								<option value="3">出票</option>
+								<option value="4">开票</option>
+								<option value="5">关闭</option>
 							</select> 
 							<label>提醒：</label> 
 							<select id="remindType" class="form-control input-sm timSelect">
@@ -47,7 +44,7 @@
 								<option value="4">每周</option>
 								<option value="5">每月</option>
 							</select> 
-							<input id="datepicker" name="datepicker" type="text" class="form-control input-sm conTimeInput" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" placeholder="请选择提醒日期"> 
+							<input id="datepicker" name="datepicker" type="text" class="form-control input-sm conTimeInput" onFocus="WdatePicker({minDate:'%y-%M-%d', dateFmt:'yyyy-MM-dd HH:mm:ss'})" placeholder="请选择提醒日期"> 
 							<input type="button" class="btn btn-primary btn-sm" onclick="saveOrderInfo();" value="保存"> 
 							<input type="button" class="btn btn-primary btn-sm" onclick="closewindow();" value="取消">
 						</div>

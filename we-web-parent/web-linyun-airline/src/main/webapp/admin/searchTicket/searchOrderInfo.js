@@ -340,14 +340,45 @@ $('#nonstopType').click(function(){
 $("#tab_1Id").click(function(){
 	clearTicketHtml();
 	radioFunct();
+	$("#orderType option").remove();
+	addOtherSelectOpt($("#orderType"));
 });
 /*点击国际tab*/
 $("#tab_3Id").click(function(){
 	clearTicketHtml();
 	radioFunct();
+	$("#orderType option").remove();
+	addInterSelectOpt($("#orderType"));
 });
-/*点击国际tab*/
+/*点击机票库tab*/
 $("#tab_2Id").click(function(){
+	$("#orderType option").remove();
+	addOtherSelectOpt($("#orderType"));
 	document.getElementsByName("voyageType1")[1].checked="checked";
 	radioFunct1();
 });
+
+//国际   订单下拉选项状态
+function addInterSelectOpt(obj){
+	var optionStr = '<option value="1" selected="selected">查询</option>'+
+					'<option value="2">预定</option>'+
+					'<option class="interOption" value="6">一订</option>'+
+					'<option class="interOption" value="7">二订</option>'+
+					'<option class="interOption" value="8">三订</option>'+
+					'<option class="interOption" value="10">全款</option>'+
+					'<option class="interOption" value="9">尾款</option>'+
+					'<option value="3">出票</option>'+
+					'<option value="4">开票</option>'+
+					'<option value="5">关闭</option>';
+	obj.append(optionStr);
+}
+
+//内陆跨海等   订单下拉选项状态
+function addOtherSelectOpt(obj){
+	var optionStr = '<option value="1" selected="selected">查询</option>'+
+					'<option value="2">预定</option>'+
+					'<option value="3">出票</option>'+
+					'<option value="4">开票</option>'+
+					'<option value="5">关闭</option>';
+	obj.append(optionStr);
+}

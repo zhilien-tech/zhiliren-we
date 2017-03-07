@@ -5,8 +5,16 @@ function saveOrderInfo(){
 	customdata.customerId = customerId;
 	var generateOrder = $('#generateOrder').val();
 	customdata.generateOrder = $("#generateOrder").is(':checked');
+	//订单状态
 	var orderType = $('#orderType').val();
 	customdata.orderType = orderType;
+	//提醒方式
+	var remindType = $("#remindType").val();
+	customdata.remindType = remindType;
+	//提醒日期
+	var remindDate = $("#datepicker").val();
+	customdata.remindDate = remindDate;
+	
 	var row = [];
 	$('.DemandDiv').each(function(i){
 		var row1 = {};

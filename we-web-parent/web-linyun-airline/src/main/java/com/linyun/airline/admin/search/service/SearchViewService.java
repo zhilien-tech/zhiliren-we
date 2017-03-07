@@ -772,6 +772,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			//日期
 			String leavedate = (String) map.get("leavedate");
 			String pCount = (String) map.get("peoplecount");
+			//人数
 			Integer peoplecount = 0;
 			if (!Util.eq(pCount, "")) {
 				peoplecount = Integer.valueOf(pCount);
@@ -816,6 +817,11 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				dbDao.insert(airlineEntity);
 			}
 		}
+
+		//添加订单状态
+
+		//添加消息提醒机制
+
 		// TODO Auto-generated method stub
 		return null;
 
