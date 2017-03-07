@@ -22,8 +22,8 @@
                 <li><a href="#tab_1" onclick="loadDataTable(5)" data-toggle="tab">关闭</a></li>
                 <li class="orderLi"><button type="button" id="addOrder" class="btn btn-primary btn-sm right">添加订单</button></li>
               </ul>
-              <div class="tab-content"><!--全部-->
-                  <div class="tab-pane pane-content active" id="tab_1">
+              <div class="tab-content">
+                  <div class="tab-pane pane-content active" id="tab_1"><!--全部-->
                     <div class="box-header">
                        <form role="form" class="form-horizontal">
                         <div class="form-group row marginBott cf">
@@ -63,7 +63,7 @@
                           <th>操作</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tableTbody">
                         </tbody>
                       </table>
                     </div>
@@ -410,15 +410,11 @@
               </div><!-- end tab-content -->
           </div><!-- end nav-tabs-custom -->
         </div>
-        <!-- /.col -->
       </div>
     </section>
-    <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
   <%@include file="/WEB-INF/public/footer.jsp"%>
 </div>
-<!-- ./wrapper -->
 <script type="text/javascript">
 	var BASE_PATH = '${base}';
 </script>
@@ -458,3 +454,40 @@
 		  }
 	  }
 </script>
+
+<script type="text/javascript">
+/* 	$(function(){
+		
+		var trList=document.getElementById("tableTbody").getElementsByTagName('tr');
+			alert(trList.length);
+		  for (var i=0;i<trList.length;i++) {
+			  
+		    var tdArr = trList.eq(i).find("td");
+		    alert(tdArr);
+		    var a = tdArr.eq(0).find("input").val();
+		    var b = tdArr.eq(1).find("input").val();
+		    var c = tdArr.eq(2).find("input").val();
+		  }
+
+	}); */
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
