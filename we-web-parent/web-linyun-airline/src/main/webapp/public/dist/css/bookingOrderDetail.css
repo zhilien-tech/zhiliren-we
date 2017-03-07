@@ -3,17 +3,18 @@
 .addPNR .table-bordered {border: 1px solid #cccccc;margin-bottom: 5px;background-color: #e4e4e4;}
 .addPNR .table-bordered > thead > tr > th,.addPNR .table-bordered > tbody > tr > th,.addPNR .table-bordered > thead > tr > td,.addPNR .table-bordered > tbody > tr > td{ border: 1px solid #cccccc;text-align: center;padding:4px;}
 .addPNR table tr{height: 30px;}
-.PNRbtn{padding: 4px 5px !important;margin-left: 10px !important;position: relative;top: -16px;}
+.PNRbtn{padding: 4px 5px !important;margin-left: 10px !important;}
 .addDemand{left: 70.5%; margin-left: 8px;}
 .addIcon {top: 0px;float: left;left: 10px;}
-.removIcon {margin-right: 39px;}
+.removIcon {float: left;left: 27px;}
+.scykP{padding-top: 0;line-height: 27px;font-size: 12px;}
 /*+PNR*/
 .PNRtable tr td:nth-child(odd){text-align: right;width: 9%;}
 .PNRtable tr td:nth-child(even){width: 15%;}
 .PNRtable tr:nth-child(even) td{position: relative;top: 10px;}
 .multiselectDiv {margin-top:20px;}
 .multiselectP {text-align: center;font-size: 14px;line-height: 30px;}
-.multiselectDiv .row .col-sm-2{margin-top:47px;}
+.multiselectDiv .row .col-sm-2{margin-top:65px;}
 .multiselectDiv .row .col-sm-5 .form-control{padding: 6px 0px;}
 .multiselectDiv .row .col-sm-5 .form-control option{padding: 5px 10px;}
 select[multiple="multiple"]{height: 180px;}
@@ -27,8 +28,7 @@ select[multiple="multiple"]{height: 180px;}
 .infoCentext div{width: 100%;height: 100%;text-align: center;line-height: 300px;}
 .infoShow{display: block;}
 .actionInfo{background-color: #3c8dbc;padding: 4px 12px !important;color: #fff !important;}
-
-
+form#financeForm table {margin-bottom: 10px;}
 
 
 

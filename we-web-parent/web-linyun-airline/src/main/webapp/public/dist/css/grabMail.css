@@ -1,5 +1,5 @@
 /*--------------邮件抓取----------------*/
-.rebatesBtn{width: 75%;height: 30px;float: right;position: relative;top: -47px;right: -10px;}
+.rebatesBtn{width: 75%;height: 30px;float: right;position: relative;right: -10px;margin-top: -47px;}
 .rebatesBtn .btn{padding: 5px 10px;}
 #rebatesEamilTable{position: relative;top: -30px;}
 table.dataTable thead .sorting_desc:after{content: " ";}
@@ -7,7 +7,7 @@ table.dataTable thead .sorting_asc:after{content: "";}
 table.dataTable thead .sorting:after{content: "";}
 .text-left{text-align:left !important;}
 .checkTh input{position: relative;left: 11px;}
-.breadcrumb {margin-bottom: 30px;}
+.breadcrumb {margin-bottom: 30px;clear: both;}
 #rebatesEamilTable tbody tr .sorting_1 input {margin: 0 auto;}
 #rebatesEamilTable thead > tr > th {padding-right: 8px;}
 #rebatesReportTable thead > tr > th{padding-right: 5px;}
