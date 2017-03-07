@@ -42,7 +42,11 @@ function initpayTable() {
                     {"data": "leavetdate", "bSortable": false},
                     {"data": "airnum", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		return '';
+                    		var result = '';
+                    		if(row.ailinenum && row.ailinenum != undefined){
+                    			result = row.ailinenum;
+                    		}
+                    		return result;
                     	}
                     },
                     {"data": "airsag", "bSortable": false,
@@ -59,12 +63,17 @@ function initpayTable() {
                     {"data": "salesprice", "bSortable": false},
                     {"data": "receivable", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		return ''; 
+                    		var result = row.leavetime + '/' + row.arrivetime;;
+                    		return result; 
                     	}
                     },
                     {"data": "peoplecount", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		return ''; 
+                    		var result = '';
+                    		if(row.peoplecount){
+                    			result = row.peoplecount;
+                    		}
+                    		return result; 
                     	}
                     },
                     {"data": "ordersstatus", "bSortable": false,

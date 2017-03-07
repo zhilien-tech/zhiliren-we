@@ -10,6 +10,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
+import org.nutz.dao.util.cri.SqlExpressionGroup;
 
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.uxuexi.core.common.util.Util;
@@ -27,11 +28,18 @@ public class InlandListSearchForm extends DataTablesParamForm {
 
 	private Integer ordersstatus;
 
+	private Integer ticketing;
+
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		cnd.and("orderstype", "=", OrderTypeEnum.FIT.intKey());
 		if (!Util.isEmpty(ordersstatus) && ordersstatus != 0) {
 			cnd.and("ordersstatus", "=", ordersstatus);
+		}
+		if (!Util.isEmpty(ticketing)) {
+			SqlExpressionGroup sqlex = new SqlExpressionGroup();
+			sqlex.and("receivestatus", "=", "").or("receivestatus", "is", null);
+			cnd.and(sqlex);
 		}
 		return cnd;
 	}

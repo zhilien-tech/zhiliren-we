@@ -215,8 +215,8 @@ public class InlandModule {
 	 * 内陆跨海出票收款列表数据
 	 */
 	@At
-	public Object listPayData(@Param("..") PayApplyListForm sqlform) {
-		return inlandService.listPage4Datatables(sqlform);
+	public Object listPayData(@Param("..") PayApplyListForm sqlform, HttpServletRequest request) {
+		return inlandService.listPayData(sqlform, request);
 	}
 
 	/**

@@ -42,7 +42,7 @@ function initdrawerPayTable() {
                     	render:function(data, type, row, meta) {
                     		var result = '<ul> ';
                     		$.each(row.pnrinfo, function(name, value) {
-                    			if(value){
+                    			if(value && value.pNR != undefined){
                     				result += '<li style="list-style:none;">'+value.pNR+'</li>';
                     			}
                     		});
@@ -54,7 +54,9 @@ function initdrawerPayTable() {
                     	render:function(data, type, row, meta) {
                     		var result = '<ul>';
                     		$.each(row.customerinfo, function(name, value) {
-                    			result += '<li style="list-style:none;">'+value.leavetdate+'</li>';
+                    			if(value && value.leavetdate != undefined){
+                    				result += '<li style="list-style:none;">'+value.leavetdate+'</li>';
+                    			}
                     		});
                     		result += '</ul>';
                     		return result;
@@ -64,7 +66,9 @@ function initdrawerPayTable() {
                     	render:function(data, type, row, meta) {
                     		var result = '<ul>';
                     		$.each(row.airinfo, function(name, value) {
-                    			result += '<li style="list-style:none;">'+value.ailinenum+'</li>';
+                    			if(value && value.ailinenum != undefined){
+                    				result += '<li style="list-style:none;">'+value.ailinenum+'</li>';
+                    			}
                     		});
                     		result += '</ul>';
                     		return result;
@@ -74,7 +78,17 @@ function initdrawerPayTable() {
                     	render:function(data, type, row, meta) {
                     		var result = '<ul>';
                     		$.each(row.customerinfo, function(name, value) {
-                    			result += '<li style="list-style:none;">'+value.leavecity+"-"+value.arrivecity+'</li>';
+                    			if(value){
+                    				result += '<li style="list-style:none;">';
+                    				if(value.leavecity != undefined){
+                    					result += value.leavecity;
+                    				}
+                    				result += '-';
+                    				if(value.arrivecity != undefined){
+                    					result += value.arrivecity;
+                    				}
+                    				result += '</li>';
+                    			}
                     		});
                     		result += '</ul>';
                     		return result;
@@ -84,7 +98,17 @@ function initdrawerPayTable() {
                     	render:function(data, type, row, meta) {
                     		var result = '<ul>';
                     		$.each(row.airinfo, function(name, value) {
-                    			result += '<li style="list-style:none;">'+value.leavetime+"-"+value.arrivetime+'</li>';
+                    			if(value){
+                    				result += '<li style="list-style:none;">';
+                    				if(value.leavetime != undefined){
+                    					result += value.leavetime;
+                    				}
+                    				result += '-';
+                    				if(value.arrivetime != undefined){
+                    					result += value.arrivetime;
+                    				}
+                    				result += '</li>';
+                    			}
                     		});
                     		result += '</ul>';
                     		return result;
@@ -94,7 +118,9 @@ function initdrawerPayTable() {
                     	render:function(data, type, row, meta) {
                     		var result = '<ul>';
                     		$.each(row.airinfo, function(name, value) {
-                    			result += '<li style="list-style:none;">'+value.price+'</li>';
+                    			if(value && value.price != undefined){
+                    				result += '<li style="list-style:none;">'+value.price+'</li>';
+                    			}
                     		});
                     		result += '</ul>';
                     		return result; 
@@ -121,13 +147,17 @@ function initdrawerPayTable() {
                     {"data": "ordersstatus", "bSortable": false,
                     	render:function(data, type, row, meta) {
                     		var result = '';
-                    		if(row.ordersstatus == 1){
-                    			result = '查询';
-                    		}else if(row.ordersstatus == 2){
-                    			result = '预定';
-                    		}else if(row.ordersstatus == 5){
-                    			result = '关闭';
-                    		}
+                    		$.ajax({ 
+                    			type: 'POST', 
+                    			data: {status:row.ordersstatus}, 
+                    			async:false,
+                    			url: BASE_PATH + '/admin/inland/formatOrderStatus.html',
+                                success: function (data) { 
+                                	result = data;
+                                },
+                                error: function (xhr) {
+                                } 
+                            });
                     		return result; 
                     	}
                     },
@@ -236,7 +266,8 @@ $(document).on('click', '.checkchild', function(e) {
 //点击出票加载出票表格
 function loadTicking(){
 	var param = {
-			ordersstatus:3
+			ordersstatus:3,
+			ticketing:1
 	};
 	drawerPayTable.settings()[0].ajax.data = param;
 	drawerPayTable.ajax.reload();

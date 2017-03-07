@@ -6,6 +6,8 @@
 
 package com.linyun.airline.admin.order.inland.form;
 
+import lombok.Data;
+
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
@@ -23,12 +25,16 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
  * @author   刘旭利
  * @Date	 2017年2月28日 	 
  */
+@Data
 public class PayApplyListForm extends DataTablesParamForm {
+
+	private Integer userId;
 
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		cnd.and("tuo.ordersstatus", "=", OrderStatusEnum.TICKETING.intKey());
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.FIT.intKey());
+		cnd.and("tuo.loginUserId", "=", userId);
 		cnd.and("toc.paymethod", "=", 1);
 		return cnd;
 	}

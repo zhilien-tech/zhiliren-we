@@ -35,12 +35,16 @@ SELECT
 	tuo.ordersstatus,
 	tuo.ordersnum,
 	tci.linkMan,
-	tci.telephone
+	tci.telephone,
+	tai.ailinenum,
+	tai.leavetime,
+	tai.arrivetime
 FROM
 	t_pnr_info tpi
 INNER JOIN t_order_customneed toc ON tpi.needid = toc.id
 INNER JOIN t_up_order tuo ON toc.ordernum = tuo.id
 INNER JOIN t_customer_info tci ON tuo.userid = tci.id
+LEFT JOIN (select * from  t_airline_info GROUP BY needid) tai ON tai.needid = tci.id
 $condition
 
 /*get_sea_invoce_table_data*/

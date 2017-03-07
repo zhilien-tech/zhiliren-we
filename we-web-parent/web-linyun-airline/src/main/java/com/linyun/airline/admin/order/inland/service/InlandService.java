@@ -40,10 +40,13 @@ import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.inland.form.FuKuanParamForm;
 import com.linyun.airline.admin.order.inland.form.InlandListSearchForm;
+import com.linyun.airline.admin.order.inland.form.PayApplyListForm;
 import com.linyun.airline.admin.order.inland.form.ShouKuanParamFrom;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayPnrEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
+import com.linyun.airline.common.enums.AccountPayEnum;
+import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.OrderStatusEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.ExcelReader;
@@ -1157,14 +1160,23 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		//保存收款信息
 		TReceiveEntity insert = dbDao.insert(receiveEntity);
 		Iterable<String> split = Splitter.on(",").split(ids);
+		//组装订单收款表list
 		List<TOrderReceiveEntity> orderreceives = new ArrayList<TOrderReceiveEntity>();
+		//更新订单收款状态List
+		List<TUpOrderEntity> orders = new ArrayList<TUpOrderEntity>();
 		for (String str : split) {
 			TOrderReceiveEntity orderreceive = new TOrderReceiveEntity();
 			orderreceive.setReceiveid(insert.getId());
 			orderreceive.setOrderid(Integer.valueOf(str));
 			orderreceive.setReceivestatus(0);
 			orderreceives.add(orderreceive);
+			//订单信息
+			TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(str));
+			order.setReceivestatus(AccountReceiveEnum.RECEIVINGMONEY.intKey());
+			orders.add(order);
 		}
+		//更新订单状态
+		dbDao.update(orders);
 		//更新订单收款表
 		dbDao.insert(orderreceives);
 		TReceiveBillEntity receiveBill = new TReceiveBillEntity();
@@ -1200,12 +1212,20 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		TPayEntity insert = dbDao.insert(payEntity);
 		Iterable<String> split = Splitter.on(",").split(ids);
 		List<TPayPnrEntity> paypnrs = new ArrayList<TPayPnrEntity>();
+		//更新PNR付款状态List
+		List<TPnrInfoEntity> pnrinfos = new ArrayList<TPnrInfoEntity>();
 		for (String str : split) {
 			TPayPnrEntity paypnr = new TPayPnrEntity();
 			paypnr.setPayId(insert.getId());
 			paypnr.setPnrId(Integer.valueOf(str));
 			paypnrs.add(paypnr);
+			//PNR更新状态
+			TPnrInfoEntity pnrinfo = dbDao.fetch(TPnrInfoEntity.class, Long.valueOf(str));
+			pnrinfo.setOrderPnrStatus(AccountPayEnum.APPROVAL.intKey());
+			pnrinfos.add(pnrinfo);
 		}
+		//更新pnr状态
+		dbDao.update(pnrinfos);
 		dbDao.insert(paypnrs);
 		return null;
 
@@ -1369,6 +1389,27 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		result.put("yhkSelect", yhkSelect);
 		result.put("payinfo", payinfo);
 		return result;
+
+	}
+
+	/**
+	 * 内陆跨海出票收款列表数据
+	 * <p>
+	 * TODO内陆跨海出票收款列表数据
+	 *
+	 * @param sqlform
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	@SuppressWarnings("unchecked")
+	public Object listPayData(PayApplyListForm sqlform, HttpServletRequest request) {
+
+		//获取当前登录用户
+		HttpSession session = request.getSession();
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		sqlform.setUserId(new Long(user.getId()).intValue());
+		Map<String, Object> listData = this.listPage4Datatables(sqlform);
+		return listData;
 
 	}
 }
