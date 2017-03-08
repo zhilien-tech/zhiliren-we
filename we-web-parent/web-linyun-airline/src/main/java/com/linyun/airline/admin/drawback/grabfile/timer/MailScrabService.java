@@ -41,6 +41,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
+import com.linyun.airline.admin.drawback.grabfile.commonmail.GrabMailConstants;
 import com.linyun.airline.admin.drawback.grabfile.entity.TGrabFileEntity;
 import com.linyun.airline.admin.drawback.grabfile.enums.FileNavalEnum;
 import com.linyun.airline.admin.drawback.grabfile.enums.FileTypeEnum;
@@ -152,7 +153,6 @@ public class MailScrabService extends BaseService {
 	 * @throws ParseException 
 	 */
 	private void eachHandler(MimeMessage msg) throws MessagingException, FileNotFoundException, IOException {
-		//TODO 
 		//1、从邮件获取能直接保存的数据
 		String theme = getSubject(msg);//主题
 		String sender = getFrom(msg);//发件人
@@ -191,7 +191,7 @@ public class MailScrabService extends BaseService {
 		TGrabFileEntity rootFile = getRootFile(sender);
 		long rootId = rootFile.getId();
 		switch (structureType) {
-		case FITDTJQTT:
+		case FITD7JQTT:
 			/**************************时间开始***************************/
 			//父id
 			TGrabFileEntity timeFile = new TGrabFileEntity();
@@ -206,7 +206,7 @@ public class MailScrabService extends BaseService {
 			String fileName = format.format(createTime);
 			timeFile.setFileName(fileName);
 			//类型
-			timeFile.setType(FileTypeEnum.FOLDER.intKey());
+			timeFile.setType(FileTypeEnum.FOLDER.intKey());//文件类型
 
 			//抓取记录id
 			timeFile.setMailId(grabRecordId);
@@ -214,7 +214,6 @@ public class MailScrabService extends BaseService {
 			timeFile.setStatus(DataStatusEnum.ENABLE.intKey());
 			timeFile.setLevel(2);
 			timeFile.setSort(0);
-			//TODO 
 			timeFile.setGroupType(1);
 			List<TGrabFileEntity> list = existFile(rootId, fileName);
 			if (!Util.isEmpty(list)) {
@@ -253,8 +252,7 @@ public class MailScrabService extends BaseService {
 			groupNumFile.setLevel(3);
 
 			groupNumFile.setSort(sort);
-			//TODO 
-			groupNumFile.setGroupType(3);
+			groupNumFile.setGroupType(3);//散团类型
 
 			List<TGrabFileEntity> lst = existGroupNumFile(pid, cusgroupnum);
 			if (!Util.isEmpty(lst)) {
@@ -265,8 +263,7 @@ public class MailScrabService extends BaseService {
 
 			/**********************客户团号结束**********************/
 
-			/**************文件开始*************/
-
+			/**********************************文件开始****************************************/
 			//父id
 			TGrabFileEntity fileProps = new TGrabFileEntity();
 			fileProps.setParentId(groupNumFile.getId());
@@ -297,17 +294,319 @@ public class MailScrabService extends BaseService {
 			break;
 		case FITQF:
 			//TODO
+			/**************************客户团号***************************/
+			long sort1 = getSort(rootId);
+
+			String cusgroupnum1 = getcusGroupnum();//得到客户团号
+			if (Util.isEmpty(cusgroupnum1)) {
+				sort1 += 1;
+				cusgroupnum1 = "客户团号" + sort1;
+			}
+
+			TGrabFileEntity groupNumFile1 = new TGrabFileEntity();
+
+			//父id
+			groupNumFile1.setParentId(rootId);
+
+			//创建时间
+			Date createTime1 = DateTimeUtil.nowDate();//当前时间
+			groupNumFile1.setCreateTime(createTime1);
+
+			//名称
+			groupNumFile1.setFileName(cusgroupnum1);
+			//类型
+			groupNumFile1.setType(FileTypeEnum.FOLDER.intKey());//文件类型
+
+			//抓取记录id
+			groupNumFile1.setMailId(grabRecordId);
+			//启用
+			groupNumFile1.setStatus(DataStatusEnum.ENABLE.intKey());//删除状态
+			groupNumFile1.setLevel(2);//层级
+
+			groupNumFile1.setSort(sort1);
+			groupNumFile1.setGroupType(2);//散团类型
+
+			List<TGrabFileEntity> lst1 = existGroupNumFile(rootId, cusgroupnum1);
+			if (!Util.isEmpty(lst1)) {
+				groupNumFile1 = lst1.get(0);
+			} else {
+				groupNumFile1 = dbDao.insert(groupNumFile1);
+			}
+
+			/**********************************客户团号结束*************************************/
+			/**********************************文件开始****************************************/
+			//父id
+			TGrabFileEntity fileProps1 = new TGrabFileEntity();
+			fileProps1.setParentId(groupNumFile1.getId());
+
+			//创建时间
+			fileProps1.setCreateTime(createTime1);
+
+			//类型
+			fileProps1.setType(FileTypeEnum.FOLDER.intKey());
+
+			fileProps1.setFileSize(fileSize);
+			//抓取记录id
+			fileProps1.setMailId(grabRecordId);
+			//启用
+			fileProps1.setStatus(DataStatusEnum.ENABLE.intKey());
+			//层级
+			fileProps1.setLevel(3);
+			//TODO 
+			fileProps1.setGroupType(1);
+			//文件url
+			List<TGrabFileEntity> grabFileList1 = Lists.newArrayList();
+			saveAttachment(msg, grabFileList1, fileProps1);
+			if (!Util.isEmpty(grabFileList1)) {
+				dbDao.insert(grabFileList1);
+			} else {
+				logger.info("没有抓取到附件!");
+			}
 			break;
 		case FITVA:
 			//TODO
+			/**************************时间开始***************************/
+			//父id
+			TGrabFileEntity timeFile2 = new TGrabFileEntity();
+			timeFile2.setParentId(rootId);
+
+			//创建时间
+			Date createTime2 = DateTimeUtil.nowDate();
+			timeFile2.setCreateTime(createTime2);
+
+			//名称
+			SimpleDateFormat format2 = new SimpleDateFormat("yyyy.MM.dd");
+			String fileName2 = format2.format(createTime2);
+			timeFile2.setFileName(fileName2);
+			//类型
+			timeFile2.setType(FileTypeEnum.FOLDER.intKey());//文件类型
+
+			//抓取记录id
+			timeFile2.setMailId(grabRecordId);
+			//启用
+			timeFile2.setStatus(DataStatusEnum.ENABLE.intKey());
+			timeFile2.setLevel(2);
+			timeFile2.setSort(0);
+			timeFile2.setGroupType(1);
+			List<TGrabFileEntity> list2 = existFile(rootId, fileName2);
+			if (!Util.isEmpty(list2)) {
+				timeFile2 = list2.get(0);
+			} else {
+				timeFile2 = dbDao.insert(timeFile2);
+			}
+			/**************************时间结束***************************/
+
+			/**************************客户团号***************************/
+			long sort2 = getSort(timeFile2.getId());
+
+			String cusgroupnum2 = getcusGroupnum();//得到客户团号
+			if (Util.isEmpty(cusgroupnum2)) {
+				sort2 += 1;
+				cusgroupnum2 = "客户团号" + sort2;
+			}
+
+			TGrabFileEntity groupNumFile2 = new TGrabFileEntity();
+
+			//父id
+			long pid2 = timeFile2.getId();
+			groupNumFile2.setParentId(pid2);
+
+			groupNumFile2.setCreateTime(createTime2);
+
+			//名称
+			groupNumFile2.setFileName(cusgroupnum2);
+			//类型
+			groupNumFile2.setType(FileTypeEnum.FOLDER.intKey());
+
+			//抓取记录id
+			groupNumFile2.setMailId(grabRecordId);
+			//启用
+			groupNumFile2.setStatus(DataStatusEnum.ENABLE.intKey());
+			//层级
+			groupNumFile2.setLevel(3);
+
+			groupNumFile2.setSort(sort2);
+			groupNumFile2.setGroupType(3);//散团类型
+
+			List<TGrabFileEntity> lst2 = existGroupNumFile(pid2, cusgroupnum2);
+			if (!Util.isEmpty(lst2)) {
+				groupNumFile2 = lst2.get(0);
+			} else {
+				groupNumFile2 = dbDao.insert(groupNumFile2);
+			}
+			/**************************************************客户团号结束**************************************************/
+
+			/**************************************************PNR开始**************************************************/
+			//得到PNR
+			String PNR = getAttachmentName();
+			if (Util.isEmpty(PNR)) {
+				sort2 += 1;
+				PNR = "PNR" + sort2;
+			}
+			TGrabFileEntity pnrFile = new TGrabFileEntity();
+
+			//父id
+			long pid3 = groupNumFile2.getId();
+			pnrFile.setParentId(pid3);
+
+			pnrFile.setCreateTime(createTime2);
+
+			//名称
+			pnrFile.setFileName(PNR);
+			//类型
+			pnrFile.setType(FileTypeEnum.FOLDER.intKey());
+
+			//抓取记录id
+			pnrFile.setMailId(grabRecordId);
+			//启用
+			pnrFile.setStatus(DataStatusEnum.ENABLE.intKey());
+			//层级
+			pnrFile.setLevel(4);
+
+			pnrFile.setSort(sort2);
+			pnrFile.setGroupType(2);//散团类型
+
+			List<TGrabFileEntity> lst3 = existGroupNumFile(pid3, PNR);
+			if (!Util.isEmpty(lst3)) {
+				pnrFile = lst3.get(0);
+			} else {
+				pnrFile = dbDao.insert(pnrFile);
+			}
+
+			/*************************************************PNR结束*******************************************************/
+
+			/*************************************************文件开始*******************************************************/
+			//父id
+			TGrabFileEntity fileProps3 = new TGrabFileEntity();
+			fileProps3.setParentId(pnrFile.getId());
+
+			//创建时间
+			fileProps3.setCreateTime(createTime2);
+
+			//类型
+			fileProps3.setType(FileTypeEnum.FOLDER.intKey());
+
+			fileProps3.setFileSize(fileSize);
+			//抓取记录id
+			fileProps3.setMailId(grabRecordId);
+			//启用
+			fileProps3.setStatus(DataStatusEnum.ENABLE.intKey());
+			//层级
+			fileProps3.setLevel(5);
+			//TODO 散团类别
+			fileProps3.setGroupType(1);
+			//文件url
+			List<TGrabFileEntity> grabFileList3 = Lists.newArrayList();
+			saveAttachment(msg, grabFileList3, fileProps3);
+			if (!Util.isEmpty(grabFileList3)) {
+				dbDao.insert(grabFileList3);
+			} else {
+				logger.info("没有抓取到附件!");
+			}
 			break;
 		case TEAMJQTT:
 			//TODO
+			/*************************************************文件开始*******************************************************/
+			//父id
+			TGrabFileEntity fileProps4 = new TGrabFileEntity();
+			fileProps4.setParentId(rootId);
+
+			//创建时间
+			Date createTime4 = DateTimeUtil.nowDate();
+			fileProps4.setCreateTime(createTime4);
+
+			//类型
+			fileProps4.setType(FileTypeEnum.FOLDER.intKey());
+
+			fileProps4.setFileSize(fileSize);
+			//抓取记录id
+			fileProps4.setMailId(grabRecordId);
+			//启用
+			fileProps4.setStatus(DataStatusEnum.ENABLE.intKey());
+			//层级
+			fileProps4.setLevel(2);
+			//TODO 散团类别
+			fileProps4.setGroupType(1);
+			//文件url
+			List<TGrabFileEntity> grabFileList4 = Lists.newArrayList();
+			saveAttachment(msg, grabFileList4, fileProps4);
+			if (!Util.isEmpty(grabFileList4)) {
+				dbDao.insert(grabFileList4);
+			} else {
+				logger.info("没有抓取到附件!");
+			}
 			break;
 		case TEAMVA:
 			//TODO
-			break;
+			/**************************************************PNR开始**************************************************/
+			long sort3 = getSort(rootId);
+			//得到PNR
+			String PNR2 = getAttachmentName();
+			if (Util.isEmpty(PNR2)) {
+				sort3 += 1;
+				PNR2 = "PNR" + sort3;
+			}
+			TGrabFileEntity pnrFile2 = new TGrabFileEntity();
 
+			//父id
+			pnrFile2.setParentId(rootId);
+
+			Date createTime5 = DateTimeUtil.nowDate();
+			pnrFile2.setCreateTime(createTime5);
+
+			//名称
+			pnrFile2.setFileName(PNR2);
+			//类型
+			pnrFile2.setType(FileTypeEnum.FOLDER.intKey());
+
+			//抓取记录id
+			pnrFile2.setMailId(grabRecordId);
+			//启用
+			pnrFile2.setStatus(DataStatusEnum.ENABLE.intKey());
+			//层级
+			pnrFile2.setLevel(3);
+
+			pnrFile2.setSort(sort3);
+			pnrFile2.setGroupType(2);//散团类型
+
+			List<TGrabFileEntity> lst4 = existGroupNumFile(rootId, PNR2);
+			if (!Util.isEmpty(lst4)) {
+				pnrFile2 = lst4.get(0);
+			} else {
+				pnrFile2 = dbDao.insert(pnrFile2);
+			}
+
+			/*************************************************PNR结束*******************************************************/
+
+			/*************************************************文件开始*******************************************************/
+			//父id
+			TGrabFileEntity fileProps5 = new TGrabFileEntity();
+			fileProps5.setParentId(pnrFile2.getId());
+
+			//创建时间
+			fileProps5.setCreateTime(createTime5);
+
+			//类型
+			fileProps5.setType(FileTypeEnum.FOLDER.intKey());
+
+			fileProps5.setFileSize(fileSize);
+			//抓取记录id
+			fileProps5.setMailId(grabRecordId);
+			//启用
+			fileProps5.setStatus(DataStatusEnum.ENABLE.intKey());
+			//层级
+			fileProps5.setLevel(3);
+			//TODO 散团类别
+			fileProps5.setGroupType(1);
+			//文件url
+			List<TGrabFileEntity> grabFileList5 = Lists.newArrayList();
+			saveAttachment(msg, grabFileList5, fileProps5);
+			if (!Util.isEmpty(grabFileList5)) {
+				dbDao.insert(grabFileList5);
+			} else {
+				logger.info("没有抓取到附件!");
+			}
+			break;
 		default:
 			break;
 		}
@@ -646,7 +945,20 @@ public class MailScrabService extends BaseService {
 	//判断文件结构类型
 	private FileNavalEnum structureType() {
 		//TODO
-		return FileNavalEnum.FITDTJQTT;
+		TGrabFileEntity rootFile = getRootFile("");
+		if (rootFile.equals(GrabMailConstants.FIT_D7) || rootFile.equals(GrabMailConstants.FIT_JQ)
+				|| rootFile.equals(GrabMailConstants.FIT_TT)) {
+			return FileNavalEnum.FITD7JQTT;
+		} else if (rootFile.equals(GrabMailConstants.FIT_QF)) {
+			return FileNavalEnum.FITQF;
+		} else if (rootFile.equals(GrabMailConstants.FIT_VA)) {
+			return FileNavalEnum.FITVA;
+		} else if (rootFile.equals(GrabMailConstants.TEAM_JQ) || rootFile.equals(GrabMailConstants.TEAM_TT)) {
+			return FileNavalEnum.TEAMJQTT;
+		} else if (rootFile.equals(GrabMailConstants.TEAM_VA)) {
+			return FileNavalEnum.TEAMVA;
+		}
+		return FileNavalEnum.FITD7JQTT;
 	}
 
 	//根据邮件附件名获取PNR

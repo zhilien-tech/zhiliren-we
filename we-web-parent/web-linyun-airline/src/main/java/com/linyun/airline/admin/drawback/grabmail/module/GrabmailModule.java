@@ -17,7 +17,7 @@ import com.uxuexi.core.web.base.page.Pagination;
 import com.uxuexi.core.web.chain.support.JsonResult;
 
 @IocBean
-@At("/admin/grabmail")
+@At("/admin/drawback/grabmail")
 public class GrabmailModule {
 
 	@Inject

@@ -14,7 +14,7 @@ import com.uxuexi.core.common.enums.IEnum;
  * @Date	 2017年2月21日 	 
  */
 public enum FileNavalEnum implements IEnum {
-	FITDTJQTT(1, "DT(JQ,TT)/时间/客户团号/文件"), FITQF(2, "QF/客户团号/文件"), FITVA(3, "VA/时间/客户团号/PNR/文件"), TEAMJQTT(4,
+	FITD7JQTT(1, "D7(JQ,TT)/时间/客户团号/文件"), FITQF(2, "QF/客户团号/文件"), FITVA(3, "VA/时间/客户团号/PNR/文件"), TEAMJQTT(4,
 			"JQ(TT)/文件"), TEAMVA(5, "VA/PNR/文件");
 	private int key;
 	private String value;

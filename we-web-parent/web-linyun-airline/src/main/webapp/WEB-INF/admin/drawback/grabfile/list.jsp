@@ -410,6 +410,8 @@ function successCallback(id){
 		  layer.msg("上传成功!",{time: 1000, icon:1});
 	  }else if(id == '7'){
 		  layer.msg("文件下载成功!",{time: 1000, icon:1});
+	  }else if(id == '8'){
+		  layer.msg("添加成功!",{time: 1000, icon:1});
 	  }
   }
 </script>
@@ -462,10 +464,12 @@ function successCallback(id){
 	                    {"data": "filename", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var filename = row.filename;
+	                    		var fileId  = row.id;
+	                    		var filetype = row.type;
 	                    		if(null==filename || ""==filename){
 	                    			return null;
 	                    		}
-	                    		return '<a href="javascript:createFodler('+row.id+',\''+filename+'\');">'+filename+'</a>';
+	                    		return  '<a id="'+fileId+'" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+');">'+filename+'</a>';
 	                    	}
 	                    },
 	                    {"data": "createtime", "bSortable": true,
@@ -506,13 +510,40 @@ function successCallback(id){
 		rebatesEamilTable = $('#rebatesEamilTable').DataTable(options);
 	}
 	//当点击进入下一级的时候重新加载表格
-	function createFodler(pid,filename){
+	function createFodler(pid,filename,filetype){
+		$.ajax({
+			cache : false,
+			type : "POST",
+			url : '${base}/admin/drawback/grabfile/filePreview.html',
+			data : {
+				id : pid
+			},
+			success : function(data) {
+				var fid = JSON.stringify(data.filepre.id);
+				if(filetype == 2){
+					layer.open({
+				  	    type: 2,
+				  	    title:false,
+				  	    closeBtn:false,
+				  	    fix: false,
+				  	    maxmin: false,
+				  	    shadeClose: false,
+				  	    area: ['1000px', '600px'],
+				  	    content: '${base}/admin/drawback/grabreport/filePreview.html'
+				 	});
+				} 
+					
+			},
+			error : function(request) {
+				layer.msg("操作失败", "", 3000);
+			}
+		});
 		options.ajax.data.parentId=pid;
 		var param = {parentId:pid};
-		//$('#rebatesEamilTable').empty(); 
-		//rebatesEamilTable.ajax.reload(null,false);
 		rebatesEamilTable.settings()[0].ajax.data = param;
-		rebatesEamilTable.ajax.reload();
+		if(filetype==1){
+			rebatesEamilTable.ajax.reload();
+		}
 		var exist=false;
 		$("ol.breadcrumb").find("li").each(function(index){
 			var currenuId = $(this).attr("id");
@@ -571,7 +602,6 @@ function successCallback(id){
 	  	    end: function(){//添加完页面点击返回的时候自动加载表格数据
 	  	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 	  			parent.layer.close(index);
-	  			//rebatesEamilTable.ajax.url("${base}/admin/drawback/grabfile/listData.html?parntId="+pid).load();
 	  			var param = {parentId:pid};
 				rebatesEamilTable.settings()[0].ajax.data = param;
 				rebatesEamilTable.ajax.reload();

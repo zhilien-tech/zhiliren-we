@@ -3,6 +3,7 @@ package com.linyun.airline.admin.drawback.grabfile.module;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +21,9 @@ import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.linyun.airline.admin.drawback.grabfile.entity.TGrabFileEntity;
+import com.linyun.airline.admin.drawback.grabfile.enums.FileTypeEnum;
 import com.linyun.airline.admin.drawback.grabfile.form.TGrabFileAddForm;
 import com.linyun.airline.admin.drawback.grabfile.form.TGrabFileSqlForm;
 import com.linyun.airline.admin.drawback.grabfile.form.TGrabFileUpdateForm;
@@ -134,6 +137,7 @@ public class GrabfileModule {
 		fileAddForm.setCreateTime(new Date());
 		fileAddForm.setStatus(DataStatusEnum.ENABLE.intKey());
 		fileAddForm.setMailId(fileAddForm.getId());
+		fileAddForm.setType(FileTypeEnum.FOLDER.intKey());//文件夹
 		return grabfileViewService.add(fileAddForm);
 	}
 
@@ -234,5 +238,16 @@ public class GrabfileModule {
 	@POST
 	public void grabMail() throws Exception {
 		grabMailService.receivePop3();
+	}
+
+	//文件预览
+	@At
+	@POST
+	public Object filePreview(@Param("id") final long pid) {
+		Map<String, Object> obj = Maps.newHashMap();
+		TGrabFileEntity fileSingle = dbDao.fetch(TGrabFileEntity.class,
+				Cnd.where("id", "=", pid).and("type", "=", FileTypeEnum.FILE.intKey()));
+		obj.put("filepre", fileSingle);
+		return obj;
 	}
 }

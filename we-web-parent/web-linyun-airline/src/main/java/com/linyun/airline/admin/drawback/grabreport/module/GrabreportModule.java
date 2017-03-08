@@ -48,7 +48,7 @@ public class GrabreportModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object add() {
+	public Object filePreview() {
 		return null;
 	}
 

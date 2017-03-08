@@ -70,7 +70,7 @@ public class GrabfileViewService extends BaseService<TGrabFileEntity> {
 		List<String> pathLst = Lists.newArrayList();
 		recursiveGetPath(pathLst, fileId);
 		if (!Util.isEmpty(pathLst)) {
-			List<String> reverse = Lists.reverse(pathLst);
+			List<String> reverse = Lists.reverse(pathLst);//排序
 			for (int i = 0; i < reverse.size(); i++) {
 				String p = reverse.get(i);
 				if (i == 0) {
