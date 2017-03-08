@@ -131,7 +131,7 @@
 	                 <table class="cloTable">
 	                   <tr>
 	                     <td><label>出发城市：</label></td>
-	                     <td><select id="leavecity" name="leavecity" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
+	                     <td><select id="leavecity" name="leavecity" disabled="false" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
 	                     	<c:forEach var="one" items="${obj.city }">
 	                    		<c:choose>
 	                    			<c:when test="${customneed.cusinfo.leavecity eq one.dictCode }">
@@ -145,7 +145,7 @@
 	                     	</select>
 	                     </td>
 	                     <td><label>抵达城市：</label></td>
-	                     <td><select id="arrivecity" name="arrivecity" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
+	                     <td><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
 	                     	<c:forEach var="one" items="${obj.city }">
 	                    		<c:choose>
 	                    			<c:when test="${customneed.cusinfo.arrivecity eq one.dictCode }">
@@ -158,12 +158,12 @@
 							</c:forEach>
 	                     </select></td>
 	                     <td><label>出发日期：</label></td>
-	                     <td><input id="leavedate" name="leavedate" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:'${customneed.cusinfo.leavetdate }'})" value="${customneed.cusinfo.leavetdate }"/></td>
+	                     <td><input id="leavedate" name="leavedate" disabled="disabled" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:'${customneed.cusinfo.leavetdate }'})" value="${customneed.cusinfo.leavetdate }"/></td>
 	                     <td><label>人数：</label></td>
-	                     <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm textWid" value="${customneed.cusinfo.peoplecount }"/></td>
+	                     <td><input id="peoplecount" name="peoplecount" disabled="disabled" type="text" class="form-control input-sm textWid" value="${customneed.cusinfo.peoplecount }"/></td>
 	                     <td><label class="labelWid">早中晚：</label></td>
 	                     <td>
-	                       <select id="tickettype" name="tickettype" class="form-control input-sm textWid" value="${customneed.cusinfo.tickettype }">
+	                       <select id="tickettype" name="tickettype" disabled="disabled" class="form-control input-sm textWid" value="${customneed.cusinfo.tickettype }">
 	                         <option value="1">早</option>
 	                         <option value="2">中</option>
 	                         <option value="3">晚</option>
@@ -176,7 +176,7 @@
 			                   
 			                   <tr name="airlineinfo">
 			                     <td></span><label>航空公司：</label></td>
-			                     <td><select id="aircom" name="aircom" class="form-control input-sm"  multiple="multiple" placeholder="">
+			                     <td><select id="aircom" name="aircom" disabled="disabled" class="form-control input-sm"  multiple="multiple" placeholder="">
 			                     	   <c:forEach items="${obj.aircom }" var="one"> 
 				                   			<c:choose>
 					                   			<c:when test="${airline.aircom  eq one.dictCode  }">
@@ -192,7 +192,7 @@
 			                     	<input type="hidden"  id="airlineid" name="airlineid" value="${airline.id }">
 			                     	</td>
 			                     <td><label>航班号：</label></td>
-			                     <td><select id="ailinenum" name="ailinenum" class="form-control input-sm"  multiple="multiple" placeholder="SYD(悉尼)">
+			                     <td><select id="ailinenum" name="ailinenum" disabled="disabled" class="form-control input-sm"  multiple="multiple" placeholder="SYD(悉尼)">
 			                     	<c:forEach items="${obj.airline }" var="one"> 
 				                   			<c:choose>
 					                   			<c:when test="${airline.ailinenum  eq one.airlinenum  }">
@@ -205,13 +205,13 @@
 				                     	</c:forEach>
 			                     	</select></td>
 			                     <td><label>出发时间：</label></td>
-			                     <td><input id="leavetime" name="leavetime" type="text" class="form-control input-sm textWid" placeholder="" value="${airline.leavetime }"/></td>
+			                     <td><input id="leavetime" name="leavetime" disabled="disabled" type="text" class="form-control input-sm textWid" placeholder="" value="${airline.leavetime }"/></td>
 			                     <td><label>抵达时间：</label></td>
-			                     <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm textWid" value="${airline.arrivetime }"/></td>
+			                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid" value="${airline.arrivetime }"/></td>
 			                     <td><label class="labelWid">成本价：</label></td>
-			                     <td><input id="formprice" name="formprice" type="text" class="form-control input-sm textWid" value="${airline.formprice }"/></td>
+			                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" value="${airline.formprice }"/></td>
 			                     <td><label class="labelWid">销售价：</label></td>
-			                     <td><input id="price" name="price" type="text" class="form-control input-sm textWid" value="${airline.price }"/></td>
+			                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid" value="${airline.price }"/></td>
 			                     <c:choose>
 			                     	<c:when test="${status.index eq 0 }">
 					                     <td class="tdBtn">
@@ -247,7 +247,7 @@
 	                   </c:choose>
 	                   <tr>
 	                     <td></span><label>备注：</label></td>
-	                     <td colspan="11"><input id="remark" name="remark" type="text" class="form-control input-sm noteText" placeholder="" value="${customneed.cusinfo.remark }"/></td>
+	                     <td colspan="11"><input id="remark" name="remark" disabled="disabled" type="text" class="form-control input-sm noteText" placeholder="" value="${customneed.cusinfo.remark }"/></td>
 	                   </tr>
 	                 </table>
 	                </div>
@@ -616,6 +616,23 @@
               $('.removIcon').toggle();//显示 圆圈- 按钮
               $(".listInfo").toggle();//选项卡 显示
               $('.remindSet tbody tr td input').removeAttr("disabled");//删除 提醒设置 input 禁止编辑的状态
+              $('.DemandDiv').each(function(i){
+            	  $(this).find('[name=leavecity]').removeAttr('disabled');
+            	  $(this).find('[name=arrivecity]').removeAttr('disabled');
+                  $(this).find('[name=leavedate]').removeAttr('disabled');
+                  $(this).find('[name=peoplecount]').removeAttr('disabled');
+                  $(this).find('[name=tickettype]').removeAttr('disabled');
+                  $(this).find('[name=remark]').removeAttr('disabled');
+                  $(this).find('[name=airlineinfo]').each(function(i){
+                	$(this).find('[name=airlineid]').removeAttr('disabled');
+              		$(this).find('[name=aircom]').removeAttr('disabled');
+              		$(this).find('[name=ailinenum]').removeAttr('disabled');
+              		$(this).find('[name=leavetime]').removeAttr('disabled');
+              		$(this).find('[name=arrivetime]').removeAttr('disabled');
+              		$(this).find('[name=formprice]').removeAttr('disabled');
+              		$(this).find('[name=price]').removeAttr('disabled');
+                  });
+              });
         }); 
         //取消按钮 click事件
         $('.btnCancel').click(function(){
@@ -628,6 +645,28 @@
           $('.removIcon').toggle();//圆圈- 按钮 隐藏
           $(".listInfo").toggle();//选项卡 隐藏
           $('.remindSet tbody tr td input').attr("disabled",'disabled');//提醒设置 input 添加 不可编辑属性
+          $('.DemandDiv').each(function(i){
+        	  var customneedid = $(this).find('[name=customneedid]').val();
+        	  if(customneedid){
+	        	  $(this).find('[name=leavecity]').attr('disabled','disabled');
+	        	  $(this).find('[name=arrivecity]').attr('disabled','disabled');
+	              $(this).find('[name=leavedate]').attr('disabled','disabled');
+	              $(this).find('[name=peoplecount]').attr('disabled','disabled');
+	              $(this).find('[name=tickettype]').attr('disabled','disabled');
+	              $(this).find('[name=remark]').attr('disabled','disabled');
+	              $(this).find('[name=airlineinfo]').each(function(i){
+	            	$(this).find('[name=airlineid]').attr('disabled','disabled');
+	          		$(this).find('[name=aircom]').attr('disabled','disabled');
+	          		$(this).find('[name=ailinenum]').attr('disabled','disabled');
+	          		$(this).find('[name=leavetime]').attr('disabled','disabled');
+	          		$(this).find('[name=arrivetime]').attr('disabled','disabled');
+	          		$(this).find('[name=formprice]').attr('disabled','disabled');
+	          		$(this).find('[name=price]').attr('disabled','disabled');
+	              });
+        	  }else{
+        		  $(this).remove();
+        	  }
+          });
         });
 
 
@@ -769,7 +808,7 @@
   			row.push(row1);
   		});
   		customdata.customdata=row;
-  		//data.push(customdata);
+  		//data.push(customdata);"C:/Users/ui/AppData/Roaming/Tencent/QQ/Temp/{TZ}2SS28JMJX{P}(C[]2ZS.jpg"
   		//alert(JSON.stringify(data));
   		console.log(JSON.stringify(customdata));
   		layer.load(1);
@@ -782,12 +821,29 @@
             	//location.reload();
             	layer.closeAll('loading');
             	layer.msg("保存成功",{time: 2000, icon:1});
+            	window.location.reload();
             },
             error: function (xhr) {
             	layer.msg("保存失败","",3000);
             } 
         });
-    }); 
+    });
+  	//oninput事件
+    $(document).on('input', '.costPrice', function(e) {
+    	$(this).val($(this).val().replace(/[^.\d]/g,''));
+    	var fromprice = $(this).val();
+    	//票价折扣
+    	var discountFare = '${obj.custominfo.discountFare}';
+    	//手续费
+    	var fees = '${obj.custominfo.fees}'; 
+    	//alert("值："+fromprice + " 折扣："+discountFare + " 手续费：" + fees);
+    	var price = parseFloat(fromprice * discountFare / 100) + parseFloat(fees);
+    	if(fromprice){
+    		$(this).parent().parent().find('[name=price]').val(price);
+    	}else{
+    		$(this).parent().parent().find('[name=price]').val('');
+    	}
+    });
   </script>
 </body>
 </html>

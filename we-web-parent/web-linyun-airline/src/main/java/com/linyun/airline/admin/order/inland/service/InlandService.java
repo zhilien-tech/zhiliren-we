@@ -280,7 +280,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		//订单id   从页面隐藏域获取
 		Integer id = Integer.valueOf((String) fromJson.get("id"));
 		//客户信息id，从页面隐藏域获取
-		Integer customerId = Integer.valueOf((String) fromJson.get("customerId"));
+		Integer customerId = null;
+		if (!Util.isEmpty(fromJson.get("customerId"))) {
+			customerId = Integer.valueOf((String) fromJson.get("customerId"));
+		}
 		//是否生成订单
 		boolean generateOrder = (boolean) fromJson.get("generateOrder");
 		//订单状态（查询、预定、出票......）
@@ -312,8 +315,14 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			String arrivecity = (String) map.get("arrivecity");
 			//日期
 			String leavedate = (String) map.get("leavedate");
-			Integer peoplecount = Integer.valueOf((String) map.get("peoplecount"));
-			Integer tickettype = Integer.valueOf((String) map.get("tickettype"));
+			Integer peoplecount = null;
+			if (!Util.isEmpty(map.get("peoplecount"))) {
+				peoplecount = Integer.valueOf((String) map.get("peoplecount"));
+			}
+			Integer tickettype = null;
+			if (!Util.isEmpty(map.get("tickettype"))) {
+				tickettype = Integer.valueOf((String) map.get("tickettype"));
+			}
 			TOrderCustomneedEntity customneedEntity = new TOrderCustomneedEntity();
 			customneedEntity.setLeavecity(leavecity);
 			customneedEntity.setArrivecity(arrivecity);
@@ -348,9 +357,15 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				//抵达时间
 				String arrivetime = (String) airmap.get("arrivetime");
 				//成本价
-				Double formprice = Double.valueOf((String) airmap.get("formprice"));
+				Double formprice = null;
+				if (!Util.isEmpty(airmap.get("formprice"))) {
+					formprice = Double.valueOf((String) airmap.get("formprice"));
+				}
 				//销售价
-				Double price = Double.valueOf((String) airmap.get("price"));
+				Double price = null;
+				if (!Util.isEmpty(airmap.get("price"))) {
+					price = Double.valueOf((String) airmap.get("price"));
+				}
 				TAirlineInfoEntity airlineEntity = new TAirlineInfoEntity();
 				airlineEntity.setAircom(aircom);
 				airlineEntity.setAilinenum(ailinenum);
