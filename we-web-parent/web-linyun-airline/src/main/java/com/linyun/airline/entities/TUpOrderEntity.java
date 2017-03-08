@@ -66,7 +66,7 @@ public class TUpOrderEntity implements Serializable {
 	private Integer invoicestatus;
 
 	@Column
-	@Comment("国际订单支付状态")
+	@Comment("国际订单状态")
 	private Integer interOrderStatus;
 
 }

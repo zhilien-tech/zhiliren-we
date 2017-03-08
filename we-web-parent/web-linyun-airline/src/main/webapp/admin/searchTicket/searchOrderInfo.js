@@ -340,21 +340,24 @@ $('#nonstopType').click(function(){
 $("#tab_1Id").click(function(){
 	clearTicketHtml();
 	radioFunct();
-	$("#orderType option").remove();
-	addOtherSelectOpt($("#orderType"));
+	$("#orderStatus option").remove();
+	addOtherSelectOpt($("#orderStatus"));
+	$("#orderType").val("inlandOrderType");
 });
 /*点击国际tab*/
 $("#tab_3Id").click(function(){
 	clearTicketHtml();
 	radioFunct();
-	$("#orderType option").remove();
-	addInterSelectOpt($("#orderType"));
+	$("#orderStatus option").remove();
+	addInterSelectOpt($("#orderStatus"));
+	$("#orderType").val("interOrderType");
 });
 /*点击机票库tab*/
 $("#tab_2Id").click(function(){
-	$("#orderType option").remove();
-	addOtherSelectOpt($("#orderType"));
+	$("#orderStatus option").remove();
+	addOtherSelectOpt($("#orderStatus"));
 	document.getElementsByName("voyageType1")[1].checked="checked";
+	$("#orderType").val("inlandOrderType");
 	radioFunct1();
 });
 

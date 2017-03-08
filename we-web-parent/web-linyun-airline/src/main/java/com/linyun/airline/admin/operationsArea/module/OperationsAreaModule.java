@@ -104,6 +104,15 @@ public class OperationsAreaModule {
 	}
 
 	/**
+	 * 任务栏事件   询单、订单、任务 TODO
+	 */
+	@At
+	@POST
+	public Object getOrderMsgs(@Param("orderType") final String orderType, HttpSession session) {
+		return operationsAreaViewService.getOrderMsgs(orderType, session);
+	}
+
+	/**
 	 * 任务栏事件    我的提醒显示
 	 */
 	@At
@@ -113,12 +122,12 @@ public class OperationsAreaModule {
 	}
 
 	/**
-	 * 任务栏事件   任务
+	 * 任务栏事件   账期
 	 */
 	@At
 	@POST
-	public Object getTaskNotices(HttpSession session) {
-		return operationsAreaViewService.getTaskNotices(session);
+	public Object getPayTypeTerm(HttpSession session) {
+		return operationsAreaViewService.getPayTypeTerm(session);
 	}
 
 	/**

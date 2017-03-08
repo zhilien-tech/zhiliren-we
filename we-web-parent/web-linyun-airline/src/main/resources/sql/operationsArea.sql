@@ -169,3 +169,24 @@ INNER JOIN t_user_msg um ON m.id = um.msgId
 WHERE
 	m.msgType = @msgType
 AND um.customerInfoId =@infoId
+
+/*operationsArea_order_msg*/
+SELECT
+	m.id,
+	m.generateTime,
+	c.comName,
+	u.userName,
+	m.msgContent,
+	m.msgType,
+	m.reminderMode
+FROM
+	t_user_msg um
+LEFT JOIN t_message m ON m.id = um.msgId
+LEFT JOIN t_user u ON u.id = um.fromId
+LEFT JOIN t_user_job uj ON uj.userid = u.id
+LEFT JOIN t_company_job cj ON cj.posid = uj.companyJobId
+LEFT JOIN t_company c ON c.id = cj.comId
+LEFT JOIN t_upCompany uc ON uc.comId = c.id
+$condition
+ORDER BY
+	m.generateTime DESC

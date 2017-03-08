@@ -18,11 +18,14 @@ public enum MessageTypeEnum implements IEnum {
 	CUSTOMMSG(3, "自定义型消息"), 
 	SEARCHMSG(4, "查询"), 
 	BOOKMSG(5, "预定"),
-	BOOKONEMSG(6, "一订"),
-	BOOKSECMSG(7, "二订"), 
-	FINALPAYMSG(8, "尾款"), 
-	DRAWBILLMSG(9, "出票"), 
-	MAKEOUTBILLMSG(10, "开票");
+	DRAWBILLMSG(6, "出票"), 
+	MAKEOUTBILLMSG(7, "开票"),
+	FIRBOOKMSG(8, "一订"),
+	SECBOOKMSG(9, "二订"), 
+	THRBOOKMSG(10, "三订"), 
+	ALLBOOKMSG(11, "全款"), 
+	LASTBOOKMSG(12, "尾款"); 
+	
 
 	private int key;
 	private String value;
