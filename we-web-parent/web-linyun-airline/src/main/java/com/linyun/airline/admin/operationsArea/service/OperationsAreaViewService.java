@@ -57,6 +57,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	private static final int THRBOOK = MessageTypeEnum.THRBOOKMSG.intKey();
 	private static final int ALLBOOK = MessageTypeEnum.ALLBOOKMSG.intKey();
 	private static final int LASTBOOK = MessageTypeEnum.LASTBOOKMSG.intKey();
+	private static final int BOOKMSG = MessageTypeEnum.BOOKMSG.intKey();
 	//TODO 任务消息状态
 
 	//消息提醒模式
@@ -275,24 +276,12 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 					recordsByCondition.add(record);
 				}
 			}
-			/*if (String.valueOf(TIMED).equals(reminderMode)) {
-				//自定义提醒
-				String generatetime = record.getString("generatetime");
-				long generateMillis = DateTimeUtil.string2DateTime(generatetime, "").getMillis();
-				long nowMillis = DateTimeUtil.now().getMillis();
-				long a = generateMillis - nowMillis;
-				if (a < 0) {
-					recordsByCondition.add(record);
-				}
-			}*/
 		}
-
 		int size = recordsByCondition.size();
 		for (Record record : recordsByCondition) {
 			record.set("num", size);
 		}
 		return JsonUtil.toJson(recordsByCondition);
-
 	}
 
 	/**
@@ -304,7 +293,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	 * @param orderType  订单状态 
 	 * 							queryOrders		询单： 查询
 	 * 				 值可能为：	bookOrders		订单： 一订、二订、三订、全款、尾款
-	 *                   	    taskNoticeId    任务： 
+	 *                   	    taskNotice    任务： 
 	 * 
 	 * @param session    获取当前登陆用户
 	 * @return 
@@ -340,10 +329,10 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			break;
 		case "bookOrders":
 			//订单
-			msgType = String.valueOf(FIRBOOK) + "," + String.valueOf(SECBOOK) + "," + String.valueOf(THRBOOK) + ","
-					+ String.valueOf(ALLBOOK) + "," + String.valueOf(LASTBOOK);
+			msgType = String.valueOf(BOOKMSG) + "," + String.valueOf(FIRBOOK) + "," + String.valueOf(SECBOOK) + ","
+					+ String.valueOf(THRBOOK) + "," + String.valueOf(ALLBOOK) + "," + String.valueOf(LASTBOOK);
 			break;
-		case "taskNoticeId":
+		case "taskNotice":
 			//任务 TODO
 			break;
 		}

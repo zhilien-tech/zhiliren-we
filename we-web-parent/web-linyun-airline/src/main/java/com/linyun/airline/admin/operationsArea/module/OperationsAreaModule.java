@@ -108,7 +108,7 @@ public class OperationsAreaModule {
 	 */
 	@At
 	@POST
-	public Object getOrderMsgs(@Param("orderType") final String orderType, HttpSession session) {
+	public Object getOrderMsgs(@Param("data") final String orderType, HttpSession session) {
 		return operationsAreaViewService.getOrderMsgs(orderType, session);
 	}
 
@@ -117,7 +117,7 @@ public class OperationsAreaModule {
 	 */
 	@At
 	@POST
-	public Object getTaskEvents(HttpSession session) {
+	public Object getTaskEvents(@Param("data") final String str, HttpSession session) {
 		return operationsAreaViewService.getTaskEvents(session);
 	}
 
@@ -126,7 +126,7 @@ public class OperationsAreaModule {
 	 */
 	@At
 	@POST
-	public Object getPayTypeTerm(HttpSession session) {
+	public Object getPayTypeTerm(@Param("data") final String str, HttpSession session) {
 		return operationsAreaViewService.getPayTypeTerm(session);
 	}
 

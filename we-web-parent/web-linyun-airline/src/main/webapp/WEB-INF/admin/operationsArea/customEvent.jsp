@@ -94,7 +94,7 @@
 						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						parent.layer.close(index);
 						//添加成功 刷新各个模块
-						window.parent.taskEventList();
+						window.parent.taskBarFunctions();
 						window.parent.reload();
 						window.parent.getTimeStr();
 						window.parent.checkBoxShow();

@@ -75,7 +75,7 @@
 				                    </ul>
 				                  </div>
 				                  <div class="tab-pane" id="tab_5"><!-- 通知 任务 -->
-				                   	<ul id="taskNoticeId" class="taskInfo">
+				                   	<ul id="taskNoticeList" class="taskInfo">
 				                    </ul>
 				                  </div>
 				            </div>
@@ -191,10 +191,8 @@
 			minCalendarbackground();
 			/* 大日历 */
 			calendarInit();
-			/* 我的提醒 */
-			taskEventList();
-			/*账期*/
-			accountPayTypeList();
+			/* 任务栏事件 */
+			taskBarFunctions();
 			/*自定义界面选择*/
 			customInterfaces();
 			/*模块展示页面*/
@@ -232,133 +230,42 @@
 
 	<!-- 任务栏事件提醒 -->
 	<script type="text/javascript">
-		/* 我的提醒 */
-		function taskEventList() {
-			//获取当前日期
-			var d = new Date();
-			if(d.getDate() < 10){
-				var dateStr = d.getMonth()+1 +"-0"+ d.getDate();
-				var yesterdayStr = d.getMonth()+1 +"-0"+ (d.getDate()-1);
-				dateStr = "0" + dateStr;
-				yesterdayStr = "0" + yesterdayStr;
-			}else{
-				var dateStr = d.getMonth()+1 +"-"+ d.getDate();
-				var yesterdayStr = d.getMonth()+1 +"-"+ (d.getDate()-1);
-			}
-			//获取当前时间
-			var timeStr = d.getHours() +":"+ d.getMinutes();
-			
-			$.ajax({
-				type : 'POST',
-				dataType : 'json',
-				url : '${base}/admin/operationsArea/getTaskEvents.html',
-				success : function(data){
-					var content = "";
-					var num = "";
-					$.each(eval(data),function(index, element){
-	                	var datetimeStr = element.generatetime;
-	                	var dStr = datetimeStr.substr(5, 5);
-	                	var tStr = datetimeStr.substr(11, 5);
-	                	if(dStr == dateStr){
-	                		dStr="今天";
-	                	}
-	                	if(dStr == yesterdayStr){
-	                		dStr="昨天";
-	                	}
-	                	num = element.num;
-	                	var cName = element.comname;
-	                	var agent = element.username;
-	                	var msgC = element.msgcontent;
-	                	var msgT = element.msgtype;
-	                	if(msgT == 3){
-	                		msgT = "自定义事件";
-	                	}else if(msgT==2){
-	                		msgT = "系统提醒";
-	                	}
-	                	content += '<li><a href="javascript:;"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +'：'+msgC+'</a></li>';
-		            });
-					if(num){
-						$("#remindMsgNum").html(num);
-					}else{
-						$("#remindMsgNum").html(0);
-					}
-		            
-					$("#taskListId").html(content);
-				}
-			});
-		}
 		
-		/* 账期 */
-		function accountPayTypeList() {
-			//获取当前日期
-			var d = new Date();
-			var month = d.getMonth();
-			var day = d.getDate();
-			if(month < 10){
-				if(day<10){
-					var dateStr = month+1 +"-0"+ day;
-					var yesterdayStr = month+1 +"-0"+ (day-1);
-				}else{
-					var dateStr = month+1 +"-"+ day;
-					var yesterdayStr = month+1 +"-"+ (day-1);
-				}
-				dateStr = "0" + dateStr;
-				yesterdayStr = "0" + yesterdayStr;
-			}else{
-				var dateStr = month+1 +"-"+ day;
-				var yesterdayStr = month+1 +"-"+ (day-1);
-			} 
-			//获取当前时间
-			var timeStr = d.getHours() +":"+ d.getMinutes();
-			
-			$.ajax({
-				type : 'POST',
-				dataType : 'json',
-				url : '${base}/admin/operationsArea/getPayTypeTerm.html',
-				success : function(data){
-					var content = "";
-					var num = "";
-					$.each(eval(data),function(index, element){
-	                	var datetimeStr = element.generatetime;
-	                	var dStr = datetimeStr.substr(5, 5);
-	                	var tStr = datetimeStr.substr(11, 5);
-	                	if(dStr == dateStr){
-	                		dStr="今天";
-	                	}
-	                	if(dStr == yesterdayStr){
-	                		dStr="昨天";
-	                	}
-	                	num = element.num;
-	                	var cName = element.comname;
-	                	var agent = element.username;
-	                	var msgC = element.msgcontent;
-	                	var msgT = element.msgtype;
-	                	if(msgT == 3){
-	                		msgT = "自定义事件";
-	                	}else if(msgT==2){
-	                		msgT = "系统提醒";
-	                	}
-	                	content += '<li><a href="javascript:;"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +'：'+msgC+'</a></li>';
-		            });
-					if(num){
-						$("#accountPayTypeMsgNum").html(num);
-					}else{
-						$("#accountPayTypeMsgNum").html(0);
-					}
-		            
-					$("#accountPayType").html(content);
-				}
-			});
+		//任务栏事件
+		function taskBarFunctions(){
+			searchOrderMsgs();
+			bookOrderMsgs();
+			taskEventList();
+			accountPayTypeList();
+			ataskNoticeList();
 		}
-		
+	
 		//询单
 		function searchOrderMsgs(){
-			var urlStr = '${base}/admin/operationsArea/getPayTypeTerm.html';
+			var urlStr = '${base}/admin/operationsArea/getOrderMsgs.html';
 			remindMsgList("queryOrders", $("#searchOrderNum"), $("#queryOrders"),urlStr);
 		}
+		//订单
+		function bookOrderMsgs(){
+			var urlStr = '${base}/admin/operationsArea/getOrderMsgs.html';
+			remindMsgList("bookOrders", $("#bookOrderMsgNum"), $("#bookOrders"),urlStr);
+		}
+		//我的提醒
+		function taskEventList() {
+			var urlStr = '${base}/admin/operationsArea/getTaskEvents.html';
+			remindMsgList("", $("#remindMsgNum"), $("#taskListId"),urlStr);
+		}
+		//账期
+		function accountPayTypeList() {
+			var urlStr = '${base}/admin/operationsArea/getPayTypeTerm.html';
+			remindMsgList("", $("#accountPayTypeMsgNum"), $("#accountPayType"),urlStr);
+		}
+		//任务
+		function ataskNoticeList() {
+			var urlStr = '${base}/admin/operationsArea/getPayTypeTerm.html';
+			remindMsgList("taskNotice", $("#taskNoticeMsgNum"), $("#taskNoticeList"),urlStr);
+		} 
 		
-		
-		//抽取函数
 		//typeStr: queryOrders(询单)  bookOrders(订单) taskNoticeId(任务)
 		//msgNumObj:$("#accountPayTypeMsg")
 		//msgContentObj: $("#accountPayType")
@@ -388,8 +295,8 @@
 				type : 'POST',
 				dataType : 'json',
 				url : urlStr,
-				data:{
-					"orderType":typeStr
+				data: {
+					"data": typeStr
 				},
 				success : function(data){
 					var content = "";
@@ -410,11 +317,13 @@
 	                	var msgC = element.msgcontent;
 	                	var msgT = element.msgtype;
 	                	if(msgT == 3){
-	                		msgT = "自定义事件";
+	                		msgT = "自定义事件：";
 	                	}else if(msgT==2){
-	                		msgT = "系统提醒";
+	                		msgT = "系统提醒：";
+	                	}else{
+	                		msgT = "";
 	                	}
-	                	content += '<li><a href="javascript:;"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +'：'+msgC+'</a></li>';
+	                	content += '<li><a href="javascript:;"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +''+msgC+'</a></li>';
 		            });
 					if(num){
 						msgNumObj.html(num);
