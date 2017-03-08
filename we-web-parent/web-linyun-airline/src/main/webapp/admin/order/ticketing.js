@@ -40,7 +40,7 @@ function initdrawerPayTable() {
                     {"data": "ordersnum", "bSortable": false},
                     {"data": "pnr", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		var result = '<ul> ';
+                    		var result = '<ul id="tableUl"> ';
                     		$.each(row.pnrinfo, function(name, value) {
                     			if(value && value.pNR != undefined){
                     				result += '<li style="list-style:none;">'+value.pNR+'</li>';
@@ -52,7 +52,7 @@ function initdrawerPayTable() {
                     },
                     {"data": "date", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		var result = '<ul>';
+                    		var result = '<ul id="tableUl">';
                     		$.each(row.customerinfo, function(name, value) {
                     			if(value && value.leavetdate != undefined){
                     				result += '<li style="list-style:none;">'+value.leavetdate+'</li>';
@@ -64,7 +64,7 @@ function initdrawerPayTable() {
                     },
                     {"data": "airnum", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		var result = '<ul>';
+                    		var result = '<ul id="tableUl">';
                     		$.each(row.airinfo, function(name, value) {
                     			if(value && value.ailinenum != undefined){
                     				result += '<li style="list-style:none;">'+value.ailinenum+'</li>';
@@ -76,7 +76,7 @@ function initdrawerPayTable() {
                     },
                     {"data": "airsag", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		var result = '<ul>';
+                    		var result = '<ul id="tableUl">';
                     		$.each(row.customerinfo, function(name, value) {
                     			if(value){
                     				result += '<li style="list-style:none;">';
@@ -96,7 +96,7 @@ function initdrawerPayTable() {
                     },
                     {"data": "airtime", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		var result = '<ul>';
+                    		var result = '<ul id="tableUl">';
                     		$.each(row.airinfo, function(name, value) {
                     			if(value){
                     				result += '<li style="list-style:none;">';
@@ -116,7 +116,7 @@ function initdrawerPayTable() {
                     },
                     {"data": "salesprice", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		var result = '<ul>';
+                    		var result = '<ul id="tableUl">';
                     		$.each(row.airinfo, function(name, value) {
                     			if(value && value.price != undefined){
                     				result += '<li style="list-style:none;">'+value.price+'</li>';

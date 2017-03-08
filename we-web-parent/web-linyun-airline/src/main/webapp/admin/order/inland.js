@@ -20,7 +20,7 @@ function initDatatable() {
                     {"data": "ordersnum", "bSortable": false},
                     {"data": "pnr", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		var result = '<ul> ';
+                    		var result = '<ul id="tableUl"> ';
                     		$.each(row.pnrinfo, function(name, value) {
                     			if(value && value.pNR != undefined){
                     				result += '<li style="list-style:none;">'+value.pNR+'</li>';

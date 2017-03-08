@@ -326,7 +326,7 @@
 		                 <a href="${base }/admin/inland/downloadVisitorTemplate.html" class="btn btn-primary btn-sm addDemand none" target="hidden_frame">游客模板</a>
 		                 <!-- <a href="javascript:;" class="btn btn-primary btn-sm addDemand none">上传游客</a> -->
 		                 <form id="uploadExcelForm" action="${base}/admin/inland/importVisitor.html?dingdanid=${obj.orderinfo.id }" name="form3" enctype="multipart/form-data" method="post" target="hidden_frame" style="display: inline;">
-		                     <p class="flie_A btn btn-primary btn-sm addDemand none">上传游客<input name="excelFile" id="excelFile" onchange="javascript:onfileChange();" type="file"/></p>
+		                     <p class="flie_A btn btn-primary btn-sm addDemand none scykP">上传游客<input name="excelFile" id="excelFile" onchange="javascript:onfileChange();" type="file"/></p>
 						</form>
 		                 <a href="javascript:;" class="btn btn-primary btn-sm addDemand none addXuQiu"><b>+</b>&nbsp;&nbsp;需求</a>
 		                 <input type="hidden" id="customneedid" name="customneedid">
