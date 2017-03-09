@@ -7,6 +7,21 @@ function initdrawerPayTable() {
     	"bLengthChange": false,
         "processing": true,
         "serverSide": true,
+        "initComplete": function( settings, json ) {
+        	$(this).find('tr').each(function () {//出票 table 自适应高度      
+        	       $(this).children('td').each(function(){
+        	          var liLength = $(this).children('ul').find("li").length;
+        	          if(liLength==1){
+        	            $(this).children('ul').find("li").addClass('eq');
+        	          }else if(liLength==2){
+        	            $(this).children('ul').find("li").eq(1).addClass('eq1');
+        	            $(this).children('ul').find("li").eq(0).addClass('eq0');
+        	          }else if(liLength==2){
+        	            $(this).children('ul').find("li").eq(2).addClass('eq2');
+        	          }
+        	       });
+        	});
+        },
         "stripeClasses": [ 'strip1','strip2' ],
         "language": {
             "url": BASE_PATH + "/public/plugins/datatables/cn.json"
