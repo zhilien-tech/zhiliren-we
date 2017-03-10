@@ -1,6 +1,7 @@
 package com.linyun.airline.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 
@@ -30,11 +31,11 @@ public class TOrderCustomneedEntity implements Serializable {
 
 	@Column
 	@Comment("去程日期")
-	private String leavetdate;
+	private Date leavetdate;
 
 	@Column
 	@Comment("回程日期")
-	private String backdate;
+	private Date backdate;
 
 	@Column
 	@Comment("原价(单价)")

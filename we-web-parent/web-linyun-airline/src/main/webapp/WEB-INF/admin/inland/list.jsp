@@ -18,7 +18,7 @@
                 <li><a href="#tab_1" onclick="loadDataTable(4)" data-toggle="tab">开票</a></li>
                 <li><a href="#tab_5" onclick="loadTicking()" data-toggle="tab">出票</a></li>
                 <li><a href="#tab_6" data-toggle="tab">收/付款</a></li>
-                <li><a href="#tab_7" data-toggle="tab">发票</a></li>
+                <li><a href="#tab_7" data-toggle="tab" onclick="kaiInvoiceLoad();">发票</a></li>
                 <li><a href="#tab_1" onclick="loadDataTable(5)" data-toggle="tab">关闭</a></li>
                 <li class="orderLi"><button type="button" id="addOrder" class="btn btn-primary btn-sm right">添加订单</button></li>
               </ul>
@@ -297,8 +297,8 @@
                   <div class="tab-pane pane-content" id="tab_7">
                      <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs nlkhUL">
-                          <li class="active"><a href="#tab7_a" data-toggle="tab">开发票</a></li>
-                          <li><a href="#tab7_b" data-toggle="tab">收发票</a></li>
+                          <li class="active"><a href="#tab7_a" data-toggle="tab" onclick="kaiInvoiceLoad()">开发票</a></li>
+                          <li><a href="#tab7_b" data-toggle="tab" onclick="shouInvoiceLoad()">收发票</a></li>
                         </ul>
                         <div class="tab-content padding0">
                             <div class="tab-pane pane-content active" id="tab7_a"><!--发票 开发票-->
@@ -422,6 +422,7 @@
 <script src="${base}/admin/order/ticketing.js"></script>
 <script src="${base}/admin/order/ticketingpay.js"></script>
 <script src="${base}/admin/order/shouFuKuan.js"></script>
+<script src="${base}/admin/order/invoice.js"></script>
 <script type="text/javascript"> 
 //添加订单 弹框
 	$('#addOrder').click(function(){

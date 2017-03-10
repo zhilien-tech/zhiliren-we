@@ -43,13 +43,13 @@
                   </tr>
                   <tr>
                     <td>成本单价：</td>
-                    <td><input id="costprice" name="costprice" type="text" class="form-control input-sm"></td>
+                    <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint"></td>
                     <td>成本总价：</td>
-                    <td><input id="costpricesum" name="costpricesum" type="text" class="form-control input-sm"></td></td>
+                    <td><input id="costpricesum" name="costpricesum" type="text" class="form-control input-sm mustNumberPoint"></td></td>
                     <td>销售单价：</td>
-                    <td><input id="salesprice" name="salesprice" type="text" class="form-control input-sm"></td></td>
+                    <td><input id="salesprice" name="salesprice" type="text" class="form-control input-sm mustNumberPoint"></td></td>
                     <td>销售总价：</td>
-                    <td><input id="salespricesum" name="salespricesum" type="text" class="form-control input-sm"></td></td>
+                    <td><input id="salespricesum" name="salespricesum" type="text" class="form-control input-sm mustNumberPoint"></td></td>
                   </tr>
                 </table>
 
@@ -90,6 +90,7 @@
 	<script src="${base }/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
     <script src="${base }/public/dist/js/multiselect.min.js"></script>
     <script src="${base }/public/dist/js/prettify.min.js"></script>
+    <script src="${base }/admin/order/ordercommon.js"></script>
     <!--layer -->
   <script src="${base}/common/js/layer/layer.js"></script>
     <script type="text/javascript">
@@ -156,6 +157,7 @@
 		   $('#peoplecount').val(count);
 	   }
    }
+   
   </script>
 </body>
 </html>	

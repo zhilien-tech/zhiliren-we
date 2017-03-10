@@ -40,7 +40,9 @@ function initshouFuKuanGatheringTable() {
                   	render:function(data, type, row, meta) {
                   		var result = '<ul>';
                   		$.each(row.orders, function(name, value) {
-                  			result += '<li style="list-style:none;">'+value.personcount+'</li>';
+                  			if(value && value.personcount != undefined){
+                  				result += '<li style="list-style:none;">'+value.personcount+'</li>';
+                  			}
                   		});
                   		result += '</ul>';
                   		return result;
@@ -50,7 +52,9 @@ function initshouFuKuanGatheringTable() {
                   	render:function(data, type, row, meta) {
                   		var result = '<ul>';
                   		$.each(row.orders, function(name, value) {
-                  			result += '<li style="list-style:none;">'+value.incometotal+'</li>';
+                  			if(value && value.incometotal != undefined){
+                  				result += '<li style="list-style:none;">'+value.incometotal+'</li>';
+                  			}
                   		});
                   		result += '</ul>';
                   		return result;
@@ -70,11 +74,17 @@ function initshouFuKuanGatheringTable() {
                   {"data": "status", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                   		var result = '';
-                  		if(row.status){
-                  			result = row.status;
-                  		}
+                  		$.each(row.receiveenum, function(name, value) {
+                  			if(row.status == name){
+                  				result = value;
+                  			}
+                  		});
                   		return result;
-                  	}
+                  	  }
+                  },{"data": "remark", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                		  return '';
+                	  }
                   }
           ],
       columnDefs: [{
