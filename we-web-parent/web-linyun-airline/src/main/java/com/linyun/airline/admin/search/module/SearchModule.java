@@ -174,8 +174,8 @@ public class SearchModule {
 	 */
 	@At
 	@POST
-	public Object saveCustomerNeeds(@Param("data") String data) {
-		return searchViewService.saveCustomerNeeds(data);
+	public Object saveCustomerNeeds(@Param("data") String data, HttpSession session) {
+		return searchViewService.saveCustomerNeeds(data, session);
 	}
 
 }

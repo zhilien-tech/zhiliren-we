@@ -154,3 +154,13 @@ WHERE
 	um.userId = @userId
 AND m.msgType = @msgType
 AND um.customerInfoId = @customerInfoId
+
+
+/*customer_arrearsMoney_byId*/
+SELECT
+	SUM(pi.salesprice) arrears
+FROM
+	t_pnr_info pi
+LEFT JOIN t_order_customneed oc ON oc.id = pi.needid
+LEFT JOIN t_up_order uo ON uo.id=oc.ordernum
+$condition

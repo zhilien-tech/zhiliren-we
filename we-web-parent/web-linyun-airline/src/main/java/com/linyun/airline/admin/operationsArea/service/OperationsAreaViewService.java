@@ -1,6 +1,7 @@
 package com.linyun.airline.admin.operationsArea.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,10 +22,12 @@ import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
 import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 import com.linyun.airline.admin.customer.service.CustomerViewService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.form.TMessageAddForm;
 import com.linyun.airline.admin.operationsArea.form.TMessageUpdateForm;
+import com.linyun.airline.common.enums.MessageIsReadEnum;
 import com.linyun.airline.common.enums.MessageIsRemindEnum;
 import com.linyun.airline.common.enums.MessageLevelEnum;
 import com.linyun.airline.common.enums.MessageRemindEnum;
@@ -33,9 +36,11 @@ import com.linyun.airline.common.enums.MessageStatusEnum;
 import com.linyun.airline.common.enums.MessageTypeEnum;
 import com.linyun.airline.common.enums.MessageUserEnum;
 import com.linyun.airline.entities.TCheckboxStatusEntity;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TMessageEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.entities.TUserMsgEntity;
+import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.JsonUtil;
 import com.uxuexi.core.common.util.Util;
@@ -44,6 +49,40 @@ import com.uxuexi.core.web.base.service.BaseService;
 @IocBean
 public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	private static final Log log = Logs.get();
+
+	//询单消息状态
+	private static final int SEARCHORDERS = MessageTypeEnum.SEARCHMSG.intKey();
+	//订单消息状态
+	private static final int BOOKORDERS = MessageTypeEnum.BOOKMSG.intKey();
+	private static final int FIRBOOK = MessageTypeEnum.FIRBOOKMSG.intKey();
+	private static final int SECBOOK = MessageTypeEnum.SECBOOKMSG.intKey();
+	private static final int THRBOOK = MessageTypeEnum.THRBOOKMSG.intKey();
+	private static final int ALLBOOK = MessageTypeEnum.ALLBOOKMSG.intKey();
+	private static final int LASTBOOK = MessageTypeEnum.LASTBOOKMSG.intKey();
+	private static final int BOOKMSG = MessageTypeEnum.BOOKMSG.intKey();
+	//TODO 任务消息状态
+
+	//消息提醒模式
+	private static final int MOUTH = MessageRemindEnum.MOUTH.intKey();
+	private static final int WEEK = MessageRemindEnum.WEEK.intKey();
+	private static final int DAY = MessageRemindEnum.DAY.intKey();
+	private static final int HOUR = MessageRemindEnum.HOUR.intKey();
+	private static final int FIFTEENM = MessageRemindEnum.FIFTEENM.intKey();
+	private static final int THIRTYM = MessageRemindEnum.THIRTYM.intKey();
+	private static final int TIMED = MessageRemindEnum.TIMED.intKey();
+
+	//15分钟
+	private static final int FIFTEENMINS = 15;
+	//30分钟
+	private static final int THIRTYMINS = 30;
+	//60分钟
+	private static final int ONEHOURMINS = 60;
+	//一天的分钟数
+	private static final int ONEDAYMINS = 60 * 24;
+
+	//消息是否可读
+	private static final int UNREAD = MessageIsReadEnum.UNREAD.intKey();
+	private static final int READ = MessageIsReadEnum.READ.intKey();
 
 	/**
 	 * 注入容器中的Service对象
@@ -55,10 +94,9 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	 * 
 	 * 添加自定义事件
 	 * <p>
-	 * TODO(这里描述这个方法详情– 可选)
 	 *
 	 * @param addForm
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public Object addCustomEvent(TMessageAddForm addForm, HttpSession session) {
 		//当前用户id
@@ -92,7 +130,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		tUserMsgEntity.setUserId(id);
 		//用户类型
 		tUserMsgEntity.setUserType(Long.valueOf(MessageUserEnum.PERSONAL.intKey()));
-		//来源方ID  TODO 
+		//来源方ID   
 		tUserMsgEntity.setFromId(id);
 		//来源方类型  自定义事件
 		tUserMsgEntity.setMsgSource(Long.valueOf(MessageSourceEnum.PERSONALMSG.intKey()));
@@ -107,12 +145,11 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 
 	/**
 	 * 
-	 * TODO(到更新自定义事件)
+	 * 到更新自定义事件
 	 * <p>
-	 * TODO(这里描述这个方法详情– 可选)
 	 *
 	 * @param id
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public Object toUpdateCustomEvent(Long id) {
 		Map<String, Object> obj = new HashMap<String, Object>();
@@ -124,12 +161,10 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 
 	/**
 	 * 
-	 * TODO(更新自定义事件)
+	 * 更新自定义事件
 	 * <p>
-	 * TODO(这里描述这个方法详情– 可选)
-	 *
 	 * @param messageUpdateForm
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public Object updateCustom(TMessageUpdateForm messageUpdateForm) {
 		TMessageEntity tMessage = dbDao.fetch(TMessageEntity.class, messageUpdateForm.getId());
@@ -154,10 +189,9 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	 * 
 	 * 查询自定义事件
 	 * <p>
-	 * TODO(这里描述这个方法详情– 可选)
 	 *
 	 * @param addForm
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public Object getCustomEvent(HttpSession session, String start, String end) {
 		//当前用户id
@@ -220,9 +254,9 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	}
 
 	/**
-	 * 查询任务栏    **********************任务******************
+	 ***********************账期******************
 	 */
-	public Object getTaskNotices(HttpSession session) {
+	public Object getPayTypeTerm(HttpSession session) {
 
 		//当前用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
@@ -242,14 +276,14 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			String reminderMode = record.getString("reminderMode"); //当前消息的提醒模式
 			String generateDate = record.getString("generatetime"); //当前消息的时间
 			Date nowDate = DateUtil.nowDate();
-			if ("1".equals(reminderMode)) {
+			if (String.valueOf(MOUTH).equals(reminderMode)) {
 				//每自然月1号提醒
 				int day = DateUtil.getDay(nowDate);
 				if (day == 1) {
 					recordsByCondition.add(record);
 				}
 			}
-			if ("2".equals(reminderMode)) {
+			if (String.valueOf(WEEK).equals(reminderMode)) {
 				//每自然周一提醒
 				Date firstWeekDay = DateUtil.getFirstWeekDay(nowDate);
 				long millisBetween = DateUtil.millisBetween(firstWeekDay, nowDate);
@@ -257,7 +291,150 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 					recordsByCondition.add(record);
 				}
 			}
-			/*if ("6".equals(reminderMode)) {
+		}
+		int size = recordsByCondition.size();
+		for (Record record : recordsByCondition) {
+			record.set("num", size);
+		}
+		return JsonUtil.toJson(recordsByCondition);
+	}
+
+	/**
+	 * 
+	 * 任务栏 询单、订单、任务提醒事件
+	 * <p>
+	 * 
+	 *
+	 * @param orderType  订单状态 
+	 * 							queryOrders		询单： 查询
+	 * 				 值可能为：	bookOrders		订单： 一订、二订、三订、全款、尾款
+	 *                   	    taskNotice    任务： 
+	 * 
+	 * @param session    获取当前登陆用户
+	 * @return 
+	 */
+	public Object getOrderMsgs(String orderType, HttpSession session) {
+
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long loginUserId = loginUser.getId();
+
+		//查询当前公司下 会计id
+		TCompanyEntity companyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Sql accountSql = Sqls.create(sqlManager.get("customer_search_accounter"));
+		accountSql.setParam("jobName", "会计");
+		accountSql.setParam("compId", companyEntity.getId());
+		List<Record> accountingIds = dbDao.query(accountSql, null, null);
+		//消息展示方id
+		ArrayList<Long> sendUserIds = Lists.newArrayList();
+		if (!Util.isEmpty(accountingIds)) {
+			for (Record record : accountingIds) {
+				long accountingId = Long.parseLong(record.getString("userId"));
+				sendUserIds.add(accountingId);
+			}
+		}
+		sendUserIds.add(loginUserId); //TODO
+
+		//消息类型(默认为关闭状态)
+		String msgType = "0";
+		switch (orderType) {
+		case "queryOrders":
+			//询单
+			msgType = String.valueOf(SEARCHORDERS);
+			break;
+		case "bookOrders":
+			//订单
+			msgType = String.valueOf(BOOKMSG) + "," + String.valueOf(FIRBOOK) + "," + String.valueOf(SECBOOK) + ","
+					+ String.valueOf(THRBOOK) + "," + String.valueOf(ALLBOOK) + "," + String.valueOf(LASTBOOK);
+			break;
+		case "taskNotice":
+			//任务 TODO
+			break;
+		}
+
+		/***********************************任务栏 消息列表******************************************/
+		Sql sql = Sqls.create(sqlManager.get("operationsArea_order_msg"));
+		Cnd cnd = Cnd.NEW();
+		cnd.and("um.userId", "=", loginUserId);
+		cnd.and("m.msgType", "in", msgType);
+		List<Record> records = dbDao.query(sql, cnd, null);
+		List<Record> recordsByCondition = new ArrayList<Record>();
+
+		for (Record record : records) {
+			String reminderMode = record.getString("reminderMode"); //当前消息的提醒模式
+			String generateDate = record.getString("generatetime"); //当前消息的时间
+			String isReadMsg = record.getString("isread"); //消息是否已读
+			String lastReadTime = record.getString("readtime"); //上次读取消息的时间、
+			Date nowDate = DateUtil.nowDate();
+			if (String.valueOf(MOUTH).equals(reminderMode)) {
+				//每自然月1号提醒
+				int day = DateUtil.getDay(nowDate);
+				if (day == 1) {
+					recordsByCondition.add(record);
+				}
+			}
+			if (String.valueOf(WEEK).equals(reminderMode)) {
+				//每自然周一提醒
+				Date firstWeekDay = DateUtil.getFirstWeekDay(nowDate);
+				long millisBetween = DateUtil.millisBetween(firstWeekDay, nowDate);
+				if (millisBetween == 0) {
+					recordsByCondition.add(record);
+				}
+			}
+			if (String.valueOf(DAY).equals(reminderMode)) {
+				if (Util.eq(isReadMsg, UNREAD)) {
+					//每1天提醒 TODO
+					recordsByCondition.add(record);
+				} else {
+					if (!Util.isEmpty(lastReadTime)) {
+						//当前时间减去下一次最近提醒时间的毫秒值之差
+						long subMs = getNextRemindTime(lastReadTime, generateDate, ONEDAYMINS);
+						if (subMs > 0) {
+							recordsByCondition.add(record);
+						}
+					}
+				}
+			}
+			if (String.valueOf(HOUR).equals(reminderMode)) {
+				if (Util.eq(isReadMsg, UNREAD)) {
+					//每1小时提醒 TODO
+					recordsByCondition.add(record);
+				} else {
+					if (!Util.isEmpty(lastReadTime)) {
+						long subMs = getNextRemindTime(lastReadTime, generateDate, ONEHOURMINS);
+						if (subMs > 0) {
+							recordsByCondition.add(record);
+						}
+					}
+				}
+			}
+			if (String.valueOf(THIRTYM).equals(reminderMode)) {
+				if (Util.eq(isReadMsg, UNREAD)) {
+					//每30分钟提醒 TODO
+					recordsByCondition.add(record);
+				} else {
+					if (!Util.isEmpty(lastReadTime)) {
+						long subMs = getNextRemindTime(lastReadTime, generateDate, THIRTYMINS);
+						if (subMs > 0) {
+							recordsByCondition.add(record);
+						}
+					}
+				}
+			}
+			if (String.valueOf(FIFTEENM).equals(reminderMode)) {
+				if (Util.eq(isReadMsg, UNREAD)) {
+					//每15分钟提醒 TODO
+					recordsByCondition.add(record);
+				} else {
+					if (!Util.isEmpty(lastReadTime)) {
+						long subMs = getNextRemindTime(lastReadTime, generateDate, FIFTEENMINS);
+						if (subMs > 0) {
+							recordsByCondition.add(record);
+						}
+					}
+				}
+			}
+			if (String.valueOf(TIMED).equals(reminderMode)) {
 				//自定义提醒
 				String generatetime = record.getString("generatetime");
 				long generateMillis = DateTimeUtil.string2DateTime(generatetime, "").getMillis();
@@ -266,7 +443,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 				if (a < 0) {
 					recordsByCondition.add(record);
 				}
-			}*/
+			}
 		}
 
 		int size = recordsByCondition.size();
@@ -274,7 +451,6 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			record.set("num", size);
 		}
 		return JsonUtil.toJson(recordsByCondition);
-
 	}
 
 	/**
@@ -342,18 +518,42 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		TCheckboxStatusEntity checkBoxEntity = dbDao.fetch(TCheckboxStatusEntity.class,
 				Cnd.where("userId", "=", userId));
 		obj.put("checkBox", checkBoxEntity);
+		//统计当前用户是否拥有 “内陆跨海”和“国际”的功能
+		int functionNum = getFunctionNum(userId);
+		if (functionNum > 0) {
+			obj.put("funNums", true);
+		} else {
+			obj.put("funNums", false);
+		}
 		return obj;
 	}
 
 	/**
 	 * 
-	 * TODO(查询指定月 每天的自定义事件数)
+	 * 统计当前用户是否有 “内陆跨海”和“国际”的功能
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param session
+	 * @return 对应功能的个数
+	 */
+	public int getFunctionNum(long userId) {
+		Sql sql = Sqls.create(sqlManager.get("operationsArea_function_nums"));
+		sql.setParam("userId", userId);
+		Record record = dbDao.fetch(sql);
+		int funNums = Integer.valueOf(record.getString("funnum"));
+		return funNums;
+	}
+
+	/**
+	 * 
+	 * 查询指定月 每天的自定义事件数
 	 * <p>
 	 * TODO(以后查询 飞机票相关的事件)
 	 *
 	 * @param id
 	 * @param timeStr   格式"2016-10","2016-12","2017-11"
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public Object getMinCalList(HttpSession session, String timeStr) {
 		//当前用户id
@@ -398,13 +598,13 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 
 	/**
 	 * 
-	 * TODO(查询当天的自定义事件)
+	 * 查询当天的自定义事件
 	 * <p>
 	 * TODO(以后查询 飞机票相关的事件)
 	 *
 	 * @param id
 	 * @param timeStr   格式"2016-10"
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public Object getMinCal(HttpSession session, String timeStr) {
 		//当前用户id
@@ -439,4 +639,57 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		}
 		return JsonUtil.toJson(resultlist);
 	}
+
+	/**
+	 * 
+	 * 根据上次阅读时间，计算下一次提醒时间
+	 * <p>
+	 * TODO
+	 * @param lastReadTime 上次阅读时间
+	 * @param firRemindTime 第一次提醒时间
+	 * @param remindInterval 提醒时间间隔， 单位分钟
+	 * @return  当前时间和下一次最近提醒时间点的时间 毫秒差
+	 */
+	public long getNextRemindTime(String lastReadTime, String firRemindTime, long remindInterval) {
+
+		//获取当前时间的时间戳
+		Calendar nowC = DateUtil.parse2Calendar(new Date());
+		Calendar lastReadC = DateUtil.parse2Calendar(lastReadTime);
+		Calendar firRemindC = DateUtil.parse2Calendar(firRemindTime);
+
+		//上次阅读时间毫秒值
+		long timeLastRead = lastReadC.getTimeInMillis();
+		//第一次提醒毫秒值
+		long timeFirstRemind = firRemindC.getTimeInMillis();
+		//相差分钟数
+		long minutes = (timeLastRead - timeFirstRemind) / (1000 * 60);
+		//上次阅读时间，计算下次提醒点的 分钟数
+		int ss = new Long(remindInterval - (minutes % remindInterval)).intValue();
+
+		//获取下次提醒时间的时间戳
+		lastReadC.add(Calendar.MINUTE, +ss);//当前时间加指定分钟
+		Date nextRemindTime = lastReadC.getTime();
+		Calendar nextRemindC = DateUtil.parse2Calendar(nextRemindTime);
+
+		//当前时间和下次提醒时间的时间戳
+		long subMillis = DateUtil.millisBetween(nextRemindC, nowC);
+
+		return subMillis;
+	}
+
+	/**
+	 * 
+	 * 更新消息表 上次读取时间和消息为已读
+	 * <p>
+	 *
+	 * @param userMsgId  用户消息表id
+	 * @return 更新的记录数
+	 */
+	public Object updateMsgStatus(int userMsgId) {
+		TUserMsgEntity userMsgEntity = dbDao.fetch(TUserMsgEntity.class, userMsgId);
+		userMsgEntity.setIsRead(Long.valueOf(READ));
+		userMsgEntity.setReadTime(DateUtil.nowDate());
+		return dbDao.update(userMsgEntity);
+	}
+
 }

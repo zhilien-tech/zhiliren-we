@@ -5,8 +5,22 @@ function saveOrderInfo(){
 	customdata.customerId = customerId;
 	var generateOrder = $('#generateOrder').val();
 	customdata.generateOrder = $("#generateOrder").is(':checked');
-	var orderType = $('#orderType').val();
+	//订单类型
+	var orderType = $("#orderType").val();
 	customdata.orderType = orderType;
+	//订单状态
+	var orderStatus = $('#orderStatus').val();
+	customdata.orderStatus = orderStatus;
+	//提醒方式
+	var remindType = $("#remindType").val();
+	customdata.remindType = remindType;
+	//提醒日期
+	var remindDate = $("#datepicker").val();
+	customdata.remindDate = remindDate;
+	//客户信息id
+	/*var customerInfoId = $('#linkManId').val();
+	customdata.customerInfoId = customerInfoId;*/
+	
 	var row = [];
 	$('.DemandDiv').each(function(i){
 		var row1 = {};
@@ -25,6 +39,7 @@ function saveOrderInfo(){
 		row1.leavedate = $(this).find('[name=cOutDate]').val();
 		row1.peoplecount = $(this).find('[name=cPersonAmount]').val();
 		row1.tickettype = $(this).find('[name=tickettype]').val();
+		row1.cRemark = $(this).find('[name=cRemark]').val();
 		var airrows = [];
 		$(this).find('[name=airLineInfo]').each(function(i){
 			var airrow = {};
@@ -49,7 +64,6 @@ function saveOrderInfo(){
 	});
 	customdata.customdata=row;
 	console.log(JSON.stringify(customdata));
-	//alert(JSON.stringify(customdata));
 	$.ajax({
 		dataType : 'json',
 		type: 'POST', 
@@ -59,8 +73,9 @@ function saveOrderInfo(){
 		}, 
 		url : BASE_PATH  + "/admin/search/saveCustomerNeeds.html",
 		success: function (data) { 
+			//刷新页面
+			window.location.reload();
 			layer.msg("添加成功","",3000);
-			
 		},
 		error: function (xhr) {
 			layer.msg("添加失败","",3000);

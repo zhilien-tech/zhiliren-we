@@ -6,16 +6,21 @@ function confirmPayClick(){
 		async: false,
 		url: BASE_PATH + '/admin/receivePay/inland/saveInlandPay.html',
 		success : function(data) {
-			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-			parent.layer.close(index);
-			initPayDataTable.ajax.reload();
-			parent.layer.msg("付款成功", "", 2000);
+			if(data === false){
+				parent.layer.msg("收款单位不一致，付款失败", "", 2000);
+			}else{
+				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				parent.layer.close(index);
+				parent.layer.msg("付款成功", "", 1000);
+				parent.inlandPayTable.ajax.reload();
+			}
+			
 			
 		},
 		error: function () {
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			parent.layer.close(index);
-			parent.layer.msg("付款失败", "", 2000);
+			parent.layer.msg("付款失败", "", 1000);
 		}
 	});
 }

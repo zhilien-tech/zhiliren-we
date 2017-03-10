@@ -169,3 +169,47 @@ INNER JOIN t_user_msg um ON m.id = um.msgId
 WHERE
 	m.msgType = @msgType
 AND um.customerInfoId =@infoId
+
+/*operationsArea_order_msg*/
+SELECT
+	m.id,
+	um.id umid,
+	m.generateTime,
+	c.comName,
+	u.userName,
+	m.msgContent,
+	m.msgType,
+	m.reminderMode,
+	m.upOrderId,
+	um.readTime,
+	um.isRead
+FROM
+	t_user_msg um
+LEFT JOIN t_message m ON m.id = um.msgId
+LEFT JOIN t_user u ON u.id = um.fromId
+LEFT JOIN t_user_job uj ON uj.userid = u.id
+LEFT JOIN t_company_job cj ON cj.posid = uj.companyJobId
+LEFT JOIN t_company c ON c.id = cj.comId
+LEFT JOIN t_upCompany uc ON uc.comId = c.id
+$condition
+ORDER BY
+	m.generateTime DESC
+	
+/*operationsArea_function_nums*/
+SELECT
+  uj.userid,
+  COUNT(f.`name`) funNum
+FROM
+	t_function f
+LEFT JOIN t_company_function_map cfm ON cfm.funId = f.id
+LEFT JOIN t_com_fun_pos_map cfpm ON cfpm.companyFunId = cfm.id
+LEFT JOIN t_job j ON j.id = cfpm.jobId
+LEFT JOIN t_company_job cj ON cj.posid = j.id
+LEFT JOIN t_user_job uj ON uj.companyJobId = cj.id
+WHERE
+	f.parentId = 0
+AND (
+	f.`name` = '国际'
+	OR f.`name` = '内陆跨海'
+)
+AND uj.userid = @userId

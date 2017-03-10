@@ -42,6 +42,9 @@ public class TMessageForm implements SQLParamForm, Serializable {
 	/**优先级*/
 	private Integer priorityLevel;
 
+	/**跳转订单id*/
+	private Long upOrderId;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**

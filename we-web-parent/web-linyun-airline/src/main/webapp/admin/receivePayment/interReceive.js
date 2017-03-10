@@ -1,7 +1,7 @@
 //内陆跨海 收款 弹框
-var inlandRecTable;
+var internationalRecTable;
 function initRecDataTable() {
-	inlandRecTable = $('#inlandRecTable').DataTable({
+	internationalRecTable = $('#internationalRecTable').DataTable({
 		"searching":false,
 		"bLengthChange": false,
 		"processing": true,
@@ -11,70 +11,70 @@ function initRecDataTable() {
 			"url": BASE_PATH + "/public/plugins/datatables/cn.json"
 		},
 		"ajax": {
-			"url": BASE_PATH + "/admin/receivePay/inland/inlandRecList.html",
+			"url": BASE_PATH + "/admin/receivePay/inter/interRecList.html",
 			"type": "post",
 			"data": function (d) {
-				
+
 			}
 		},
 		"columns": [
-					{"data": "ordersnum", "bSortable": false,
-						render:function(data, type, row, meta) {
-							var result = '<ul> ';
-							$.each(row.orders, function(name, value) {
-								if(value){
-									result += '<li style="list-style:none;">'+value.ordersnum+'</li>';
-								}
-							});
-							result += '</ul>';
-							return result;
-						}
-					},
+		            {"data": "ordersnum", "bSortable": false,
+		            	render:function(data, type, row, meta) {
+		            		var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value){
+		            				result += '<li style="list-style:none;">'+value.ordersnum+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
+		            	}
+		            },
 		            {"data": "leavedate", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
-							$.each(row.orders, function(name, value) {
-								if(value){
-									var date = value.leavedate;
-				            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
-				            		var week = ['MO','TU','WE','TH','FR','SA','SU'];
-				            		var ldate = new Date(date);
-				            		var dateFormat = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
-									result += '<li style="list-style:none;">'+dateFormat+'</li>';
-								}
-							});
-							result += '</ul>';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value){
+		            				var date = value.leavedate;
+		            				var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
+		            				var week = ['MO','TU','WE','TH','FR','SA','SU'];
+		            				var ldate = new Date(date);
+		            				var dateFormat = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
+		            				result += '<li style="list-style:none;">'+dateFormat+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
 		            		return result;
 		            	}
 		            },
 		            {"data": "personcount", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
-							$.each(row.orders, function(name, value) {
-								if(value){
-									var pCount = value.personcount;
-									if(pCount == null || pCount == undefined || pCount==""){
-										pCount = '';
-									}
-									result += '<li style="list-style:none;">'+pCount+'</li>';
-								}
-							});
-							result += '</ul>';
-							return result;
+		            		$.each(row.orders, function(name, value) {
+		            			if(value){
+		            				var pCount = value.personcount;
+		            				if(pCount == null || pCount == undefined || pCount==""){
+		            					pCount = '';
+		            				}
+		            				result += '<li style="list-style:none;">'+pCount+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
 		            	}
 		            },
 		            {"data": "incometotal", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
-							$.each(row.orders, function(name, value) {
-								if(value){
-									result += '<li style="list-style:none;">'+value.incometotal+'</li>';
-								}else{
-									result += '<li style="list-style:none;"> </li>';
-								}
-							});
-							result += '</ul>';
-							return result;
+		            		$.each(row.orders, function(name, value) {
+		            			if(value){
+		            				result += '<li style="list-style:none;">'+value.incometotal+'</li>';
+		            			}else{
+		            				result += '<li style="list-style:none;"> </li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
 		            	}
 		            },
 		            {"data": "sum", "bSortable": false,
@@ -139,17 +139,17 @@ $("#confirmRecClick").click(function(){
 			id:$("#recIds").val()
 		},
 		async: false,
-		url: BASE_PATH + '/admin/receivePay/inland/saveInlandRec.html',
+		url: BASE_PATH + '/admin/receivePay/inter/saveInternationalRec.html',
 		success : function(data) {
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			parent.layer.close(index);
-			parent.layer.msg("收款成功", "", 2000);
-			initRecDataTable.ajax.reload();
+			parent.layer.msg("收款成功", "", 1000);
+			parent.initRecDataTable.ajax.reload();
 		},
 		error: function () {
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			parent.layer.close(index);
-			parent.layer.msg("收款失败", "", 2000);
+			parent.layer.msg("收款失败", "", 1000);
 		}
 	});
 });
@@ -175,39 +175,39 @@ function confirmReceive(id){
 }
 
 //付款检索
-$("#inlandRecSelect").change(function(){
-	$("#inlandRecSearchBtn").click();
+$("#internationalRecSelect").change(function(){
+	$("#internationalRecSearchBtn").click();
 });
 
 
-//内陆跨海收款  搜索按钮
-$("#inlandRecSearchBtn").on('click', function () {
-	var orderStatus = $("#inlandRecSelect").val();
-	var inlandRecBeginDate = $("#inlandRecBeginDate").val();
-	var inlandRecEndDate = $("#inlandRecEndDate").val();
-	var inlandRecInput = $("#inlandRecInput").val();
-    var param = {
-        "orderStatus":orderStatus,
-        "leaveBeginDate":inlandRecBeginDate,
-        "leaveEndDate":inlandRecEndDate,
-		"name": inlandRecInput
+//收付款  搜索按钮
+$("#internationalRecSearchBtn").on('click', function () {
+	var interOrderStatus = $(".paymentUl li[class='btnStyle']").attr("id");
+	var orderStatus = $("#internationalRecSelect").val();
+	var inlandRecBeginDate = $("#internationalRecBeginDate").val();
+	var inlandRecEndDate = $("#internationalRecEndDate").val();
+	var inlandRecInput = $("#internationalRecInput").val();
+	    var param = {
+					"interOrderStatus":interOrderStatus,
+			        "orderStatus":orderStatus,
+			        "leaveBeginDate":internationalRecBeginDate,
+			        "leaveEndDate":internationalRecEndDate,
+					"name": internationalRecInput
 	};
-    inlandRecTable.settings()[0].ajax.data = param;
-	inlandRecTable.ajax.reload();
+	internationalRecTable.settings()[0].ajax.data = param;
+	internationalRecTable.ajax.reload();
 });
 
-$(function () {
-	/*var selectEd = $('#inlandPaySelect').val();
-		if(selectEd == 3){
-			$("#inlandPayTable").show();
-			$("#inlandPayEdTable").hide();
-			initPayDataTable();
-		}else{
-			$("#inlandPayTable").hide();
-			$("#inlandPayEdTable").show();
-			initPayEdDataTable();
-		}
-		$('#inlandPaySearchBtn').click();*/
-	/*initRecDataTable();
-	$('#inlandRecSearchBtn').click();*/
+
+//国际Tab  一订、二订、三订、全款状态 js-----------------------------------------------
+$(".paymentUl li").click(function(){
+	$(this).addClass("btnStyle").siblings().removeClass('btnStyle');
+	var bookId = $(this).attr("id");
+	var orderStatus = $("#internationalRecSelect").val();
+	var param = {
+			"orderStatus":orderStatus,
+			"interOrderStatus":bookId
+	};
+	internationalRecTable.settings()[0].ajax.data = param;
+	internationalRecTable.ajax.reload();
 });

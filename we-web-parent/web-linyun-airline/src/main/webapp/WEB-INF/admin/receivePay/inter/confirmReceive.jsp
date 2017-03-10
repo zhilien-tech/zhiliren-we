@@ -88,7 +88,7 @@
 	<!-- AdminLTE App -->
 	<script src="${base}/public/dist/js/app.min.js"></script>
 	<!-- 確認收款js -->
-	<script src="${base}/admin/receivePayment/inlandReceive.js"></script>
+	<script src="${base}/admin/receivePayment/interReceive.js"></script>
 	
 </body>
 </html>

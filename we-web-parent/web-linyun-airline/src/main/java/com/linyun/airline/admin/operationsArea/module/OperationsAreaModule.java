@@ -104,21 +104,30 @@ public class OperationsAreaModule {
 	}
 
 	/**
+	 * 任务栏事件   询单、订单、任务 TODO
+	 */
+	@At
+	@POST
+	public Object getOrderMsgs(@Param("data") final String orderType, HttpSession session) {
+		return operationsAreaViewService.getOrderMsgs(orderType, session);
+	}
+
+	/**
 	 * 任务栏事件    我的提醒显示
 	 */
 	@At
 	@POST
-	public Object getTaskEvents(HttpSession session) {
+	public Object getTaskEvents(@Param("data") final String str, HttpSession session) {
 		return operationsAreaViewService.getTaskEvents(session);
 	}
 
 	/**
-	 * 任务栏事件   任务
+	 * 任务栏事件   账期
 	 */
 	@At
 	@POST
-	public Object getTaskNotices(HttpSession session) {
-		return operationsAreaViewService.getTaskNotices(session);
+	public Object getPayTypeTerm(@Param("data") final String str, HttpSession session) {
+		return operationsAreaViewService.getPayTypeTerm(session);
 	}
 
 	/**
@@ -220,5 +229,19 @@ public class OperationsAreaModule {
 	@Ok("jsp")
 	public Pagination list(@Param("..") final TMessageForm sqlParamForm, @Param("..") final Pager pager) {
 		return operationsAreaViewService.listPage(sqlParamForm, pager);
+	}
+
+	/**
+	 * 
+	 * 更新消息表 上次读取时间和消息为已读
+	 * <p>
+	 *
+	 * @param userMsgId  用户消息表id
+	 * @return 
+	 */
+	@At
+	@GET
+	public Object updateMsgStatus(@Param("userMsgId") final int userMsgId) {
+		return operationsAreaViewService.updateMsgStatus(userMsgId);
 	}
 }

@@ -30,8 +30,15 @@ import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEn
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.entities.TMessageEntity;
+import com.linyun.airline.admin.operationsArea.service.RemindMessageService;
 import com.linyun.airline.admin.search.entities.ParsingSabreEntity;
 import com.linyun.airline.admin.search.form.SearchTicketSqlForm;
+import com.linyun.airline.common.enums.MessageLevelEnum;
+import com.linyun.airline.common.enums.MessageRemindEnum;
+import com.linyun.airline.common.enums.MessageSourceEnum;
+import com.linyun.airline.common.enums.MessageStatusEnum;
+import com.linyun.airline.common.enums.MessageTypeEnum;
+import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.common.sabre.dto.FlightSegment;
 import com.linyun.airline.common.sabre.dto.InstalFlightAirItinerary;
@@ -62,22 +69,26 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 	@Inject
 	private CustomerViewService customerViewService;
-
 	@Inject
 	private externalInfoService externalInfoService;
-
 	@Inject
 	private EditPlanService editPlanService;
+	@Inject
+	private RemindMessageService remindService;
 
+	private static final int INLAND = OrderTypeEnum.FIT.intKey();
+	private static final int INTER = OrderTypeEnum.TEAM.intKey();
+	private static final String INLANDTYPE = "inlandOrderType";
+	private static final String INTERTYPE = "interOrderType";
 	private static final String CITYCODE = "CFCS";
 	private static final String AIRCOMCODE = "HKGS";
 
 	/**
 	 * 
-	 * TODO(获取客户姓名下拉列表)
+	 *获取客户姓名下拉列表
 	 *
 	 * @param linkname
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public Object getLinkNameSelect(String linkname, HttpSession session) {
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
@@ -104,10 +115,10 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 	/**
 	 * 
-	 * TODO(获取联系电话下拉列表)
+	 *获取联系电话下拉列表
 	 *
 	 * @param linkname
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public Object getPhoneNumSelect(String phonenum, HttpSession session) {
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
@@ -134,10 +145,10 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 	/**
 	 * 
-	 * TODO(获取id查询客户信息)
+	 * 获取id查询客户信息
 	 *
 	 * @param linkname
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public Object getCustomerById(Long id) {
 		Map<String, Object> obj = new HashMap<String, Object>();
@@ -477,13 +488,12 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 	/**
 	 * 
-	 * TODO(根据航空公司代码，查询其对应的名称)
+	 * 根据航空公司代码，查询其对应的名称
 	 * <p>
-	 * TODO(这里描述这个方法详情– 可选)
 	 *
 	 * @param airCompCode
 	 * @param typeCode
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public String getCAirNameByCode(String airCompCode, String typeCode) {
 		DictInfoEntity dictInfo = dbDao.fetch(DictInfoEntity.class,
@@ -493,12 +503,11 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 	/**
 	 * 
-	 * TODO(解析 sabre)
+	 * 解析 sabre
 	 * <p>
-	 * TODO(这里描述这个方法详情– 可选)
 	 *
 	 * @param sabreText
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public Object parsingPNR(String sabrePNR) {
 
@@ -624,12 +633,11 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 	/**
 	 * 
-	 * TODO(解析etem)
+	 *解析etem
 	 * <p>
-	 * TODO(这里描述这个方法详情– 可选)
 	 *
 	 * @param etemStr
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public Object parsingEtem(String etemStr) {
 		//判断以哪种格式解析
@@ -742,29 +750,79 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 	/**
 	 * 添加查询结果
-	 * TODO(这里用一句话描述这个方法的作用)
 	 * <p>
-	 * TODO(这里描述这个方法详情– 可选)
 	 *
-	 * @param data
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @param data  JSON数据
+	 * @return 
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
-	public Object saveCustomerNeeds(String data) {
+	public Object saveCustomerNeeds(String data, HttpSession session) {
 
 		Map<String, Object> fromJson = JsonUtil.fromJson(data, Map.class);
+		List<Map<String, Object>> customdata = (List<Map<String, Object>>) fromJson.get("customdata");
+
+		/**************************添加 订单查询信息*****************************/
 		Integer customerId = Integer.valueOf((String) fromJson.get("customerId"));
 		boolean generateOrder = (boolean) fromJson.get("generateOrder");
-		Integer orderType = Integer.valueOf((String) fromJson.get("orderType"));
+
+		//订单类型
+		String orderTypeStr = (String) fromJson.get("orderType");
+		Integer orderType = 0;
+		if (Util.eq(INLANDTYPE, orderTypeStr)) {
+			orderType = INLAND;
+		}
+		if (Util.eq(INTERTYPE, orderTypeStr)) {
+			orderType = INTER;
+		}
+		//订单状态
+		Integer orderStatus = Integer.valueOf((String) fromJson.get("orderStatus"));
 		TUpOrderEntity orderinfo = new TUpOrderEntity();
 		orderinfo.setUserid(customerId);
-		orderinfo.setOrdersstatus(orderType);
+		//订单号
+		String generateOrderNum = "";
 		//生成订单号
 		if (generateOrder) {
-			orderinfo.setOrdersnum(editPlanService.generateOrderNum());
+			generateOrderNum = editPlanService.generateOrderNum();
+			orderinfo.setOrdersnum(generateOrderNum);
+		}
+		//订单类型
+		orderinfo.setOrderstype(orderType);
+		//订单状态
+		switch (orderTypeStr) {
+		case INLANDTYPE:
+			//跨海内陆订单状态
+			orderinfo.setOrdersstatus(orderStatus);
+			break;
+		case INTERTYPE:
+			//国际订单状态
+			orderinfo.setInterOrderStatus(orderStatus);
+			break;
+		default:
+			orderinfo.setOrdersstatus(orderStatus);
+			break;
 		}
 		TUpOrderEntity insertOrder = dbDao.insert(orderinfo);
-		List<Map<String, Object>> customdata = (List<Map<String, Object>>) fromJson.get("customdata");
+		int upOrderId = insertOrder.getId();
+
+		/***************************操作台 消息提醒************************/
+		addRemindMsg(fromJson, generateOrderNum, upOrderId, orderStatus, session);
+
+		/****************************客户需求数据*************************/
+		addCustomerNeed(customdata, insertOrder);
+
+		return "订单保存成功";
+
+	}
+
+	/**
+	 * 
+	 * ****************************添加客户需求数据*******************************
+	 *
+	 * @param customdata 客户需求数据
+	 * @param insertOrder 订单实体
+	 * @return 
+	 */
+	public String addCustomerNeed(List<Map<String, Object>> customdata, TUpOrderEntity insertOrder) {
 		for (Map<String, Object> map : customdata) {
 			//客户需求出发城市
 			String leavecity = (String) map.get("leavecity");
@@ -773,12 +831,15 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			//日期
 			String leavedate = (String) map.get("leavedate");
 			String pCount = (String) map.get("peoplecount");
+			//人数
 			Integer peoplecount = 0;
 			if (!Util.eq(pCount, "")) {
 				peoplecount = Integer.valueOf(pCount);
 			}
-
 			Integer tickettype = Integer.valueOf((String) map.get("tickettype"));
+			//备注
+			String cRemark = (String) map.get("cRemark");
+
 			TOrderCustomneedEntity customneedEntity = new TOrderCustomneedEntity();
 			customneedEntity.setLeavecity(leavecity);
 			customneedEntity.setArrivecity(arrivecity);
@@ -787,8 +848,10 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			}
 			customneedEntity.setPeoplecount(peoplecount);
 			customneedEntity.setTickettype(tickettype);
+			customneedEntity.setRemark(cRemark);
 			//与订单相关
-			customneedEntity.setOrdernum(insertOrder.getId());
+			Integer upOrderId = insertOrder.getId();
+			customneedEntity.setOrdernum(upOrderId);
 			TOrderCustomneedEntity insertCus = dbDao.insert(customneedEntity);
 			//航班信息
 			List<Map<String, Object>> airinfo = (List<Map<String, Object>>) map.get("airinfo");
@@ -817,8 +880,181 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				dbDao.insert(airlineEntity);
 			}
 		}
-		// TODO Auto-generated method stub
-		return null;
-
+		return "客户需求添加成功";
 	}
+
+	/**
+	 * 
+	 * ******************************************添加消息提醒*************************************************
+	 * <p>
+	 *
+	 * @param data Json数据
+	 * @param generateOrderNum  订单号
+	 * @param orderStatus  订单状态
+	 * @param session
+	 * @return 
+	 */
+	public String addRemindMsg(Map<String, Object> fromJson, String generateOrderNum, int upOrderId, int orderStatus,
+			HttpSession session) {
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long userId = loginUser.getId();
+		//查询当前公司下 会计id
+		TCompanyEntity companyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Sql accountSql = Sqls.create(sqlManager.get("customer_search_accounter"));
+		accountSql.setParam("jobName", "会计");
+		accountSql.setParam("compId", companyEntity.getId());
+		List<Record> accountingIds = dbDao.query(accountSql, null, null);
+
+		//消息接收方ids
+		ArrayList<Long> receiveUserIds = Lists.newArrayList();
+		if (!Util.isEmpty(accountingIds)) {
+			for (Record record : accountingIds) {
+				long accountingId = Long.parseLong(record.getString("userId"));
+				receiveUserIds.add(accountingId);
+			}
+		}
+		receiveUserIds.add(userId);
+		//消息来源id
+		long SourceUserId = userId;
+		//消息来源方类型
+		int sourceUserType = MessageSourceEnum.SYSTEMMSG.intKey();
+		//消息接收方类型（个人、公司、系统）
+		int receiveUserType = MessageSourceEnum.PERSONALMSG.intKey();
+		//消息状态
+		int msgStatus = MessageStatusEnum.UNREAD.intKey();
+
+		//提醒日期 TODO
+		String remindDateStr = (String) fromJson.get("remindDate");
+		//客户信息id
+		String customerInfoId = (String) fromJson.get("customerInfoId");
+		//消息提醒日期
+		Date remindDateTime = DateUtil.nowDate();
+		if (!Util.isEmpty(remindDateStr)) {
+			remindDateTime = DateUtil.string2Date(remindDateStr);
+		}
+
+		//消息提醒方式
+		Integer remindType = Integer.valueOf((String) fromJson.get("remindType"));
+		switch (remindType) {
+		case 0:
+			//每15Min  消息表：5
+			remindType = MessageRemindEnum.FIFTEENM.intKey();
+			break;
+		case 1:
+			//每30Min  消息表：7
+			remindType = MessageRemindEnum.THIRTYM.intKey();
+			break;
+		case 2:
+			//每1H 消息表：4
+			remindType = MessageRemindEnum.HOUR.intKey();
+			break;
+		case 3:
+			//每一天 消息表：3
+			remindType = MessageRemindEnum.DAY.intKey();
+			break;
+		case 4:
+			//每一周 消息表：2
+			remindType = MessageRemindEnum.WEEK.intKey();
+			break;
+		case 5:
+			//每一月 消息表：1
+			remindType = MessageRemindEnum.MOUTH.intKey();
+			break;
+		default:
+			//自定义 消息表：6
+			remindType = MessageRemindEnum.TIMED.intKey();
+			break;
+		}
+		long reminderMode = remindType;
+
+		//消息类型和订单状态 orderStatus有关
+		int msgType = MessageTypeEnum.NOTICEMSG.intKey(); //消息类型---默认为"系统通知消息"
+		int msgLevel = MessageLevelEnum.MSGLEVEL1.intKey(); //消息优先级---默认为"优先级一"
+		String msgContent = ""; //消息内容
+		switch (orderStatus) {
+		case 1:
+			//查询 4
+			msgType = MessageTypeEnum.SEARCHMSG.intKey();
+			//消息等级2
+			msgLevel = MessageLevelEnum.MSGLEVEL2.intKey();
+			//消息内容
+			msgContent = "向你发送一个查询询单";
+			break;
+		case 2:
+			//预定 5
+			msgType = MessageTypeEnum.BOOKMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL2.intKey();
+			msgContent = "向你发送一个预售订单";
+			break;
+		case 3:
+			//出票 (暂时没有消息提醒) 6
+			msgType = MessageTypeEnum.DRAWBILLMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL3.intKey();
+			msgContent = "";
+			break;
+		case 4:
+			//开票 (暂时没有消息提醒) 7
+			msgType = MessageTypeEnum.MAKEOUTBILLMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL3.intKey();
+			msgContent = "";
+			break;
+		case 5:
+			//关闭 (暂时没有消息提醒) 0
+			msgType = MessageTypeEnum.CLOSEMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL1.intKey();
+			msgContent = "";
+			break;
+		case 6:
+			//一订 8
+			msgType = MessageTypeEnum.FIRBOOKMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
+			msgContent = generateOrderNum + "订单需要支付一订";
+			break;
+		case 7:
+			//二订 9
+			msgType = MessageTypeEnum.SECBOOKMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
+			msgContent = generateOrderNum + "订单需要支付二订";
+			break;
+		case 8:
+			//三订 10
+			msgType = MessageTypeEnum.THRBOOKMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
+			msgContent = generateOrderNum + "订单需要支付三订";
+			break;
+		case 9:
+			//尾款 12
+			msgType = MessageTypeEnum.LASTBOOKMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
+			msgContent = generateOrderNum + "订单需要结清尾款";
+			break;
+		case 10:
+			//全款 11
+			msgType = MessageTypeEnum.ALLBOOKMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
+			msgContent = generateOrderNum + "订单需要支付全款";
+			break;
+		}
+		/*添加的消息 存放到map中*/
+		Map<String, Object> mapMsg = Maps.newHashMap();
+		mapMsg.put("msgContent", msgContent);
+		mapMsg.put("msgType", msgType);
+		mapMsg.put("msgLevel", msgLevel);
+		mapMsg.put("msgStatus", msgStatus);
+		mapMsg.put("reminderMode", reminderMode);
+		mapMsg.put("SourceUserId", SourceUserId);
+		mapMsg.put("sourceUserType", sourceUserType);
+		mapMsg.put("receiveUserIds", receiveUserIds);
+		mapMsg.put("receiveUserIds", receiveUserIds);
+		mapMsg.put("receiveUserType", receiveUserType);
+		mapMsg.put("customerInfoId", customerInfoId);
+		mapMsg.put("remindMsgDate", remindDateTime);
+		mapMsg.put("upOrderId", upOrderId);
+
+		remindService.addMessageEvent(mapMsg);
+
+		return "消息添加成功";
+	}
+
 }

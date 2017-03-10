@@ -47,40 +47,35 @@
 						<a href="javascript:;" class="customInterface">自定义界面</a>
 						<div class="nav-tabs-custom" id="taskId" style="display: none">
 						 	<ul class="nav nav-tabs custome">
-			                  <li class="active"><a href="#tab_1" data-toggle="tab">询单(6)</a></li>
-			                  <li><a href="#tab_2" data-toggle="tab">订单(10)</a></li>
-			                  <li><a href="#tab_3" data-toggle="tab">我的提醒(<span id="remindMsg"></span>)</a></li>
-			                  <li><a href="#tab_4" data-toggle="tab">账期(2)</a></li>
-			                  <li><a href="#tab_5" data-toggle="tab">任务(<span id="taskNoticeMsg"></span>)</a></li>
+			                  <li id="searchLi" class="active"><a href="#tab_1" data-toggle="tab">询单(<span id="searchOrderNum"></span>)</a></li>
+			                  <li id="bookLi"><a href="#tab_2" data-toggle="tab">订单(<span id="bookOrderMsgNum"></span>)</a></li>
+			                  <li id="remindLi"><a href="#tab_3" data-toggle="tab">我的提醒(<span id="remindMsgNum"></span>)</a></li>
+			                  <li id="accountLI"><a href="#tab_4" data-toggle="tab">账期(<span id="accountPayTypeMsgNum"></span>)</a></li>
+			                  <li id="taskLi"><a id="taskAClick" href="#tab_5" data-toggle="tab">任务(<span id="taskNoticeMsgNum"></span>)</a></li>
 			                </ul>
 			                <div class="tab-content">
-				                  <div class="tab-pane active" id="tab_1">
-				                    <ul class="taskInfo">
-				                      <li><a href=""><span>今天</span><span>07：23</span>聚美优品张三向你发送一个预售订单</a></li>
-				                      <li><a href=""><span>昨天</span><span>09：03</span>爱我行&nbsp;&nbsp;&nbsp;王行&nbsp;&nbsp;&nbsp;0494573团需要支付一订</a></li>
-				                      <li><a href=""><span>12-22</span><span>07：23</span>聚美优品孙先哲向你发送一个预售订单</a></li>
+				                  <div class="tab-pane active" id="tab_1"><!-- 询单 -->
+				                    <ul id="queryOrders" class="taskInfo">
+				                      
 				                    </ul>
 				                  </div>
-				                  <div class="tab-pane" id="tab_2">
-				                    <ul class="taskInfo">
-				                      <li><a href=""><span>今天</span><span>07：23</span>聚美优品孙先哲向你发送一个预售订单</a></li>
-				                      <li><a href=""><span>昨天</span><span>07：23</span>爱我行&nbsp;&nbsp;&nbsp;王行&nbsp;&nbsp;&nbsp;0494573团需要支付一订</a></li>
-				                      <li><a href=""><span>11-12</span><span>07：23</span>聚美优品孙先哲向你发送一个预售订单</a></li>
+				                  <div class="tab-pane" id="tab_2"><!-- 订单 -->
+				                    <ul id="bookOrders" class="taskInfo">
+				                      
 				                    </ul>
 				                  </div>
-				                  <div class="tab-pane" id="tab_3">
+				                  <div class="tab-pane" id="tab_3"><!-- 我的提醒 -->
 				                    <ul id="taskListId" class="taskInfo">
+				                    
 				                    </ul>
 				                  </div>
-				                  <div class="tab-pane" id="tab_4">
-				                    <ul class="taskInfo">
-				                      <li><a href=""><span>今天</span><span>07：00</span>聚美优品孙先哲向你发送一个预售订单</a></li>
-				                      <li><a href=""><span>昨天</span><span>09：23</span>爱我行&nbsp;&nbsp;&nbsp;王行&nbsp;&nbsp;&nbsp;0494573团需要支付一订</a></li>
+				                  <div class="tab-pane" id="tab_4"><!-- 账期 -->
+				                    <ul id="accountPayType" class="taskInfo">
+				                      
 				                    </ul>
 				                  </div>
-				                  <!-- 通知 任务 -->
-				                  <div class="tab-pane" id="tab_5">
-				                   	<ul id="taskNoticeId" class="taskInfo">
+				                  <div class="tab-pane" id="tab_5"><!-- 通知 任务 -->
+				                   	<ul id="taskNoticeList" class="taskInfo">
 				                    </ul>
 				                  </div>
 				            </div>
@@ -196,10 +191,8 @@
 			minCalendarbackground();
 			/* 大日历 */
 			calendarInit();
-			/* 我的提醒 */
-			taskEventList();
-			/*任务*/
-			taskNoticeList();
+			/* 任务栏事件 */
+			taskBarFunctions();
 			/*自定义界面选择*/
 			customInterfaces();
 			/*模块展示页面*/
@@ -207,7 +200,7 @@
 			/*小日历*/
 			minCalendarInit();
 			/* 定时刷新任务栏 */
-			setInterval(taskEventList,1000*30);
+			setInterval(taskBarFunctions,1000*30);
 		});
 	</script>
 
@@ -216,9 +209,20 @@
 	  		var taskShow = ${obj.checkBox.taskShow};
 	  		var maxCShow = ${obj.checkBox.maxCShow};
 	  		var minCShow = ${obj.checkBox.minCShow};
+	  		var taskTagShow = ${obj.funNums};
 	  		if(taskShow){
 	  			$("#taskId").css('display','block');
 	  			$("#taskBoxId").attr('checked','checked');
+	  			if(taskTagShow == true){
+	  				//隐藏任务标签
+	  				$("#taskLi").hide();
+	  			}else{
+	  				//只显示 我的提醒 + 任务
+	  				$("#searchLi").hide();
+	  				$("#bookLi").hide();
+	  				$("#accountLI").hide();
+	  				$("#taskLi").attr("class", "active");
+	  			}
 	  			taskEventList();
 	  		}
 	  		if(maxCShow){
@@ -237,64 +241,46 @@
 
 	<!-- 任务栏事件提醒 -->
 	<script type="text/javascript">
-		/* 我的提醒 */
-		function taskEventList() {
-			//获取当前日期
-			var d = new Date();
-			if(d.getDate() < 10){
-				var dateStr = d.getMonth()+1 +"-0"+ d.getDate();
-				var yesterdayStr = d.getMonth()+1 +"-0"+ (d.getDate()-1);
-				dateStr = "0" + dateStr;
-				yesterdayStr = "0" + yesterdayStr;
-			}else{
-				var dateStr = d.getMonth()+1 +"-"+ d.getDate();
-				var yesterdayStr = d.getMonth()+1 +"-"+ (d.getDate()-1);
-			}
-			//获取当前时间
-			var timeStr = d.getHours() +":"+ d.getMinutes();
-			
-			$.ajax({
-				type : 'POST',
-				dataType : 'json',
-				url : '${base}/admin/operationsArea/getTaskEvents.html',
-				success : function(data){
-					var content = "";
-					var num = "";
-					$.each(eval(data),function(index, element){
-	                	var datetimeStr = element.generatetime;
-	                	var dStr = datetimeStr.substr(5, 5);
-	                	var tStr = datetimeStr.substr(11, 5);
-	                	if(dStr == dateStr){
-	                		dStr="今天";
-	                	}
-	                	if(dStr == yesterdayStr){
-	                		dStr="昨天";
-	                	}
-	                	num = element.num;
-	                	var cName = element.comname;
-	                	var agent = element.username;
-	                	var msgC = element.msgcontent;
-	                	var msgT = element.msgtype;
-	                	if(msgT == 3){
-	                		msgT = "自定义事件";
-	                	}else if(msgT==2){
-	                		msgT = "系统提醒";
-	                	}
-	                	content += '<li><a href="javascript:;"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +'：'+msgC+'</a></li>';
-		            });
-					if(num){
-						$("#remindMsg").html(num);
-					}else{
-						$("#remindMsg").html(0);
-					}
-		            
-					$("#taskListId").html(content);
-				}
-			});
-		}
 		
-		/* 任务 */
-		function taskNoticeList() {
+		//任务栏事件
+		function taskBarFunctions(){
+			searchOrderMsgs();
+			bookOrderMsgs();
+			taskEventList();
+			accountPayTypeList();
+			ataskNoticeList();
+		}
+	
+		//询单
+		function searchOrderMsgs(){
+			var urlStr = '${base}/admin/operationsArea/getOrderMsgs.html';
+			remindMsgList("queryOrders", $("#searchOrderNum"), $("#queryOrders"),urlStr);
+		}
+		//订单
+		function bookOrderMsgs(){
+			var urlStr = '${base}/admin/operationsArea/getOrderMsgs.html';
+			remindMsgList("bookOrders", $("#bookOrderMsgNum"), $("#bookOrders"),urlStr);
+		}
+		//我的提醒
+		function taskEventList() {
+			var urlStr = '${base}/admin/operationsArea/getTaskEvents.html';
+			remindMsgList("", $("#remindMsgNum"), $("#taskListId"),urlStr);
+		}
+		//账期
+		function accountPayTypeList() {
+			var urlStr = '${base}/admin/operationsArea/getPayTypeTerm.html';
+			remindMsgList("", $("#accountPayTypeMsgNum"), $("#accountPayType"),urlStr);
+		}
+		//任务
+		function ataskNoticeList() {
+			var urlStr = '${base}/admin/operationsArea/getPayTypeTerm.html';
+			remindMsgList("taskNotice", $("#taskNoticeMsgNum"), $("#taskNoticeList"),urlStr);
+		} 
+		
+		//typeStr: queryOrders(询单)  bookOrders(订单) taskNoticeId(任务)
+		//msgNumObj:$("#accountPayTypeMsg")
+		//msgContentObj: $("#accountPayType")
+		function remindMsgList(typeStr, msgNumObj, msgContentObj, urlStr) {
 			//获取当前日期
 			var d = new Date();
 			var month = d.getMonth();
@@ -319,7 +305,10 @@
 			$.ajax({
 				type : 'POST',
 				dataType : 'json',
-				url : '${base}/admin/operationsArea/getTaskNotices.html',
+				url : urlStr,
+				data: {
+					"data": typeStr
+				},
 				success : function(data){
 					var content = "";
 					var num = "";
@@ -338,22 +327,53 @@
 	                	var agent = element.username;
 	                	var msgC = element.msgcontent;
 	                	var msgT = element.msgtype;
+	                	var orderId = element.uporderid;
+	                	var userMsgId = element.umid;
+	                	var orderType = msgT;
 	                	if(msgT == 3){
-	                		msgT = "自定义事件";
+	                		msgT = "自定义事件：";
 	                	}else if(msgT==2){
-	                		msgT = "系统提醒";
+	                		msgT = "系统提醒：";
+	                	}else{
+	                		msgT = "";
 	                	}
-	                	content += '<li><a href="javascript:;"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +'：'+msgC+'</a></li>';
+	                	content += '<li><a href="javascript:;" onclick="openOrderById('+orderId+','+orderType+','+userMsgId+');"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +''+msgC+'</a></li>';
 		            });
 					if(num){
-						$("#taskNoticeMsg").html(num);
+						msgNumObj.html(num);
 					}else{
-						$("#taskNoticeMsg").html(0);
+						msgNumObj.html(0);
 					}
 		            
-					$("#taskNoticeId").html(content);
+					msgContentObj.html(content);
 				}
 			});
+		}
+		
+		//打开新页面
+		function openOrderById(orderId, orderType, userMsgId){
+			var url = "";
+			if(orderType==4){
+				//查询详情跳转
+				url = '${base}/admin/inland/queryDetail.html?id='+orderId;
+			}
+			if(orderType==5 || orderType==8 || orderType==9 || orderType==10 || orderType==11 || orderType==12){
+				//预定订单详情跳转
+				url = '${base}/admin/inland/bookingDetail.html?id='+orderId;
+			}
+			window.open(url);
+			
+			//后台更新上次读取时间， 更改消息为已读状态
+			$.ajax({
+	            url: '/admin/operationsArea/updateMsgStatus.html',
+	            dataType: 'json',
+	            data: {
+	            	userMsgId: userMsgId
+	            },
+	            success: function(data) {
+	            	layer.msg("消息已查看", "", 2000);
+	            }
+	        });
 		}
 		
 	</script>

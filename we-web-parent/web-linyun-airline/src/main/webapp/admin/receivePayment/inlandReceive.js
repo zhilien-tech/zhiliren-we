@@ -144,12 +144,14 @@ $("#confirmRecClick").click(function(){
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			parent.layer.close(index);
 			parent.layer.msg("收款成功", "", 2000);
-			initRecDataTable.ajax.reload();
+			inlandRecTable.ajax.reload();
+			$("#recIds").val("");
 		},
 		error: function () {
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			parent.layer.close(index);
 			parent.layer.msg("收款失败", "", 2000);
+			$("#recIds").val("");
 		}
 	});
 });

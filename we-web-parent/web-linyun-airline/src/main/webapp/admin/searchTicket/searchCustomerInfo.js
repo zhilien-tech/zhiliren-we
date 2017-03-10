@@ -77,6 +77,7 @@ $("#city").select2({});
 $("#linkNameId").on('select2:select', function (evt) {
 	var customerId = $(this).select2("val");
 	$("#linkManId").val(customerId);
+	$("#phoneId").val(customerId);
 	$.ajax({
 		type : 'POST',
 		data : {
@@ -154,6 +155,7 @@ $("#linkNameId").on('select2:select', function (evt) {
 $("#phoneNumId").on('select2:select', function (evt) {
 	var _customerId = $(this).select2("val");
 	$("#phoneId").val(_customerId);
+	$("#linkManId").val(_customerId);
 	$.ajax({
 		type : 'POST',
 		data : {
@@ -245,7 +247,6 @@ function clearText(){
 	$("#linkNameId").val(null).trigger("change");
 	//电话清空
 	$("#phoneNumId").val(null).trigger("change");
-	
 	//出发城市清空
 	$("#city").val(null).trigger("change");
 	//文本框清空
@@ -265,7 +266,9 @@ function clearText(){
 	$("#preDepositId").html("0.00");
 	//客户名称
 	$("#custInfoName").css("color","");
-	
+	//清空客户信息隐藏域
+	$('#linkManId').val("");
+	$("#phoneId").val("");
 	
 }
 

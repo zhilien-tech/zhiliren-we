@@ -4,7 +4,7 @@ import com.uxuexi.core.common.enums.IEnum;
 
 /**
  * 
- * 消息中的  是否可读
+ * 消息中的  是否提醒
  * <p>
  * 
  * @author   彭辉

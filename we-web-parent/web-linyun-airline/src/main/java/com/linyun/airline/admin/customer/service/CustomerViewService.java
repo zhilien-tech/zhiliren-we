@@ -39,6 +39,7 @@ import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.service.RemindMessageService;
 import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
+import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.common.enums.MessageLevelEnum;
 import com.linyun.airline.common.enums.MessageRemindEnum;
@@ -67,6 +68,9 @@ import com.uxuexi.core.web.util.FormUtil;
 @IocBean
 public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	private static final Log log = Logs.get();
+
+	//付款中订单状态
+	private static final int APPROVALPAYING = AccountPayEnum.APPROVALPAYING.intKey();
 
 	@Inject
 	private externalInfoService externalInfoService;
@@ -150,13 +154,9 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	}
 
 	/**
-	 * 
-	 * TODO添加信息
-	 * <p>
-	 * TODO添加信息
-	 *
+	 * 添加信息
 	 * @param addForm
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public Object addCustomInfo(HttpSession session, TCustomerInfoAddForm addForm) {
 
@@ -296,12 +296,12 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 	/**
 	 * 
-	 * TODO跳转到update 
+	 * 跳转到update 
 	 * <p>
-	 * TODO为更新页面准备数据
+	 * 更新页面准备数据
 	 *
 	 * @param id
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public Object toUpdatePage(HttpSession session, long id) throws Exception {
 
@@ -311,6 +311,24 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		TCustomerInfoEntity tCustomerInfoEntity = dbDao.fetch(TCustomerInfoEntity.class, id);
 		Date contractTime = tCustomerInfoEntity.getContractTime();
 		Date contractDueTime = tCustomerInfoEntity.getContractDueTime();
+
+		//根据客户订单， 查询已欠款
+		Sql arrearsSql = Sqls.create(sqlManager.get("customer_arrearsMoney_byId"));
+		arrearsSql.setCallback(Sqls.callback.records());
+		Cnd arrearsCnd = Cnd.NEW();
+		arrearsCnd.and("uo.userid", "=", id);
+		arrearsCnd.and("pi.orderPnrStatus", "=", APPROVALPAYING);
+		arrearsSql.setCondition(arrearsCnd);
+
+		Double arrears = 0.0;
+		if (!Util.isEmpty(id)) {
+			Record arrearsRecord = dbDao.fetch(arrearsSql);
+			String arrearsStr = arrearsRecord.getString("arrears");
+			if (!Util.isEmpty(arrearsStr)) {
+				arrears = Double.valueOf(arrearsStr);
+			}
+		}
+		tCustomerInfoEntity.setArrears(arrears);
 
 		//日期格式转换
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -324,7 +342,6 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 			contractDueTimeStr = sdf.format(contractDueTime);
 			tCustomerInfoEntity.setContractDueTimeString(contractDueTimeStr);
 		}
-
 		obj.put("customer", tCustomerInfoEntity);
 
 		//负责人查询
@@ -473,11 +490,11 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 	/**
 	 * 
-	 * TODO客户信息更新
+	 * 客户信息更新
 	 *
 	 * @param customerId
 	 * @param typeCode
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public Object updateCustomInfo(HttpSession session, TCustomerInfoUpdateForm updateForm) {
 		if (!Util.isEmpty(updateForm.getContractDueTimeString())) {
@@ -619,12 +636,12 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	}
 
 	/**
-	 * TODO 线路查询
+	 * 线路查询
 	 * <p>
-	 * TODO根据参数不同， 分别查询国境内陆和国际线路
+	 * 根据参数不同， 分别查询国境内陆和国际线路
 	 * @param customerId 客户id
 	 * @param typeCode   线路类型
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return
 	 */
 	private List<DictInfoEntity> getLineList(long customerId, String typeCode) {
 		Sql sql = Sqls.create(sqlManager.get("customer_line_list"));
@@ -643,7 +660,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 * <p>
 	 * @param outcityName
 	 * @return
-	 * @throws Exception TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @throws Exception
 	 */
 	public Object goCity(String outcityCode, String ids) throws Exception {
 
@@ -715,7 +732,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 *
 	 * @param lineName
 	 * @return
-	 * @throws Exception TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @throws Exception
 	 */
 	public Object isLine(String lineName, String ids) throws Exception {
 		Set<DictInfoEntity> set = Sets.newTreeSet();
@@ -779,11 +796,9 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 * 
 	 * TODO查询发票项
 	 * <p>
-	 * TODO(这里描述这个方法详情– 可选)
-	 *
 	 * @param invioceName
 	 * @return
-	 * @throws Exception TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @throws Exception 
 	 */
 	public Object isInvioce(String invioceName, String ids) throws Exception {
 		Set<DictInfoEntity> set = Sets.newTreeSet();
@@ -854,7 +869,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 *
 	 * @param lineName
 	 * @return
-	 * @throws Exception TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @throws Exception 
 	 */
 	public Object international(String lineName, String ids) throws Exception {
 		Set<DictInfoEntity> set = Sets.newTreeSet();
@@ -922,11 +937,11 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 	/**
 	 * 
-	 * TODO(根据客户姓名查询客户信息)
+	 * 根据客户姓名查询客户信息
 	 * <p>
 	 *
 	 * @param linkname
-	 * @return TODO(客户信息列表)
+	 * @return 客户信息列表
 	 */
 	public List<TCustomerInfoEntity> getCustomerInfoByLinkName(String linkname) {
 		List<TCustomerInfoEntity> customerInfos = new ArrayList<TCustomerInfoEntity>();
@@ -944,11 +959,11 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 	/**
 	 * 
-	 * TODO(根据客户电话查询客户信息)
+	 * 根据客户电话查询客户信息
 	 * <p>
 	 *
 	 * @param linkname
-	 * @return TODO(客户信息列表)
+	 * @return 客户信息列表
 	 */
 	public List<TCustomerInfoEntity> getCustomerInfoByPhone(String phonenum) {
 		List<TCustomerInfoEntity> customerInfos = new ArrayList<TCustomerInfoEntity>();
@@ -966,11 +981,11 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 	/**
 	 * 
-	 * TODO(根据id查询客户信息)
+	 * 根据id查询客户信息
 	 * <p>
 	 *
 	 * @param id
-	 * @return TODO(客户信息)
+	 * @return 客户信息
 	 */
 	public Object getCustomerById(Long id) {
 		TCustomerInfoEntity customerInfoEntity = dbDao.fetch(TCustomerInfoEntity.class, id);
@@ -985,12 +1000,10 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 	/**
 	 * 
-	 * TODO(根据客户id查询出发城市)
+	 * 根据客户id查询出发城市
 	 * <p>
-	 * TODO(这里描述这个方法详情– 可选)
-	 *
 	 * @param id
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public Map<String, Object> getOutCitys(Long id) {
 		Map<String, Object> obj = new HashMap<String, Object>();
@@ -1026,7 +1039,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	 * (查询当前用户所有的客户)
 	 * <p>
 	 * @param session
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public List<TCustomerInfoEntity> getCustomerList(HttpSession session) {
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);

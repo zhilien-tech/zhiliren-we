@@ -49,6 +49,8 @@ public class RemindMessageService extends BaseService<TMessageEntity> {
 		Long reminderMode = (Long) msgData.get("reminderMode");
 		//消息来源id
 		Long SourceUserId = (Long) msgData.get("SourceUserId");
+		//消息提醒日期
+		Date remindMsgDate = (Date) msgData.get("remindMsgDate");
 		//消息来源类型（个人、公司、系统）
 		Long sourceUserType = Long.valueOf((Integer) msgData.get("sourceUserType"));
 		//消息接收方id 
@@ -57,6 +59,8 @@ public class RemindMessageService extends BaseService<TMessageEntity> {
 		Long receiveUserType = Long.valueOf((Integer) msgData.get("receiveUserType"));
 		//客户消息表id  查询id
 		Long customerInfoId = (Long) msgData.get("customerInfoId");
+		//相关订单id
+		Long upOrderId = (Long) msgData.get("upOrderId");
 
 		//判断消息是否存在， 不存在则添加
 		Sql sql = Sqls.create(sqlManager.get("operationsArea_existMsg"));
@@ -78,10 +82,20 @@ public class RemindMessageService extends BaseService<TMessageEntity> {
 		//消息   默认为删除(用 0 表示)
 		addForm.setMsgStatus(msgStatus);
 		//消息生成日期
-		Date nowDate = DateUtil.nowDate();
-		if (!Util.isEmpty(nowDate)) {
-			addForm.setGenerateTime(nowDate);
+		if (Util.isEmpty(remindMsgDate)) {
+			Date nowDate = DateUtil.nowDate();
+			if (!Util.isEmpty(nowDate)) {
+				addForm.setGenerateTime(nowDate);
+			}
+		} else {
+			addForm.setGenerateTime(remindMsgDate);
 		}
+
+		//箱单订单id
+		if (!Util.isEmpty(upOrderId)) {
+			addForm.setUpOrderId(upOrderId);
+		}
+
 		//消息提醒模式
 		addForm.setReminderMode(reminderMode);
 		//消息是否提醒  （默认为为提醒）

@@ -13,7 +13,7 @@
 <!--本页面style-->
 </head>
 <body>
-<form id="confirmInlandPayForm">
+<form id="confirmInternationalPayForm">
 	<div class="modal-top">
 		<div class="modal-header boderButt">
 			<button type="button" id="closePayWindow" class="btn btn-primary right btn-sm">取消</button>
@@ -35,7 +35,7 @@
 						<th>金额</th>
 					</tr>
 				</thead>
-				<tbody id="inlandConfirmPayTbody">
+				<tbody id="internationalConfirmPayTbody">
 					<input id="payIds" name="payIds" type="hidden" value="${obj.ids }"><!-- 水单url -->
 					<c:forEach var="one" items="${obj.orders}">
                 		<tr>
@@ -154,7 +154,7 @@
 	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
 	
 	<!-- 確認付款js -->
-	<script src="${base}/admin/receivePayment/internationConfirmPay.js"></script>
+	<script src="${base}/admin/receivePayment/interConfirmPay.js"></script>
 	
 	<script type="text/javascript">
 	//文件上传

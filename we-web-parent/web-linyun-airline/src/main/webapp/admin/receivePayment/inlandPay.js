@@ -269,7 +269,7 @@ function initPayEdDataTable(){
 
 //付款页切换
 function  toConfirmPayPage(){
-	destroyDatetable($("#initRecDataTable"));
+	destroyDatetable($("#inlandRecTable"));
 	initPayDataTable();
 	$('#inlandPaySearchBtn').click();
 }
@@ -312,6 +312,7 @@ function destroyDatetable(obj){
 //内陆跨海 付款 弹框
 $('#inlandPayClick').click(function(){
 	var ids = $('#checkedboxPayValue').val();
+	$('#checkedboxPayValue').val("");
 	var length = $(".checkBoxPayChild:checked").length;
 	if(!ids){
 		layer.msg("请至少选中一条记录", "", 2000);
@@ -327,7 +328,6 @@ $('#inlandPayClick').click(function(){
 		});
 
 	}
-
 });
 
 //内路跨海付款 复选框 全选
@@ -455,6 +455,12 @@ $('#inlandRecClearBtn').click(function(){
 $('#inlandPayClearBtn').click(function(){
 	clearSearchTxt("inlandPaySelect", "inlandPayBeginDate", "inlandPayEndDate", "inlandPayInput");
 });
+
+//内陆跨海 取消所有勾选
+$('#inlandPayCancelBtn').click(function(){
+	$('#checkedboxPayValue').val("");
+});
+
 
 //清空搜索项函数
 function clearSearchTxt(selectId, beginDateId, endDateId, inputId){

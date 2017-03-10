@@ -38,6 +38,9 @@ public class TMessageAddForm extends AddForm implements Serializable {
 	/**优先级*/
 	private Integer priorityLevel;
 
+	/**跳转订单id*/
+	private Long upOrderId;
+
 	//用户id
 	private Integer recUserId;
 	//用户类型

@@ -2,9 +2,9 @@
 function confirmPayClick(){
 	$.ajax({
 		type : 'POST',
-		data : $("#confirmInlandPayForm").serialize(),
+		data : $("#confirmInternationalPayForm").serialize(),
 		async: false,
-		url: BASE_PATH + '/admin/receivePay/inland/saveInlandPay.html',
+		url: BASE_PATH + '/admin/receivePay/inter/saveInternationalPay.html',
 		success : function(data) {
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			parent.layer.close(index);

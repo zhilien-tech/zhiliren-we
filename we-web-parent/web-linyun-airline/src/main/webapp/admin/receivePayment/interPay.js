@@ -1,7 +1,7 @@
 //会计   未付款datatable
-var inlandPayTable;
+var internationalPayTable;
 function initPayDataTable(){
-	inlandPayTable = $("#inlandPayTable").DataTable({
+	internationalPayTable = $("#internationalPayTable").DataTable({
 		"searching":false,
 		"lengthChange": false,
 		"processing": true,
@@ -11,7 +11,7 @@ function initPayDataTable(){
 			"url": BASE_PATH + "/public/plugins/datatables/cn.json"
 		},
 		"ajax": {
-			"url": BASE_PATH + "/admin/receivePay/inland/inlandPayList.html",
+			"url": BASE_PATH + "/admin/receivePay/inter/internationalPayList.html",
 			"type": "post",
 			"data": function (d) {
 
@@ -77,7 +77,7 @@ function initPayDataTable(){
 		            ],
 		            "infoCallback": function (settings, start, end, max, total, pre) {
 		            	var length = $(".checkBoxPayChild:checked").length;
-		            	if(inlandPayTable.page.len() == length){
+		            	if(internationalPayTable.page.len() == length){
 		            		$(".checkBoxPayAll").prop("checked", true);
 		            	}else{
 		            		$(".checkBoxPayAll").prop("checked", false);
@@ -91,9 +91,9 @@ function initPayDataTable(){
 
 
 //会计   已付款datatable
-var inlandPayEdTable;
+var internationalPayEdTable;
 function initPayEdDataTable(){
-	inlandPayEdTable = $("#inlandPayEdTable").DataTable({
+	internationalPayEdTable = $("#internationalPayEdTable").DataTable({
 		"searching":false,
 		"lengthChange": false,
 		"processing": true,
@@ -103,7 +103,7 @@ function initPayEdDataTable(){
 			"url": BASE_PATH + "/public/plugins/datatables/cn.json"
 		},
 		"ajax": {
-			"url": BASE_PATH + "/admin/receivePay/inland/inlandPayEdList.html",
+			"url": BASE_PATH + "/admin/receivePay/inter/internationalPayEdList.html",
 			"type": "post",
 			"data": function (d) {
 
@@ -244,7 +244,7 @@ function initPayEdDataTable(){
 		            ],
 		            "infoCallback": function (settings, start, end, max, total, pre) {
 		            	var length = $(".checkBoxPayChild:checked").length;
-		            	if(inlandPayEdTable.page.len() == length){
+		            	if(internationalPayEdTable.page.len() == length){
 		            		$(".checkBoxPayAll").prop("checked", true);
 		            	}else{
 		            		$(".checkBoxPayAll").prop("checked", false);
@@ -269,36 +269,36 @@ function initPayEdDataTable(){
 
 //付款页切换
 function  toConfirmPayPage(){
-	destroyDatetable($("#initRecDataTable"));
+	destroyDatetable($("#internationalRecTable"));
 	initPayDataTable();
-	$('#inlandPaySearchBtn').click();
+	$('#internationalPaySearchBtn').click();
 }
 //收款页切换
 function  toConfirmRecPage(){
-	destroyDatetable($("#inlandPayTable"));
-	destroyDatetable($("#inlandPayEdTable"));
+	destroyDatetable($("#internationalPayTable"));
+	destroyDatetable($("#internationalPayEdTable"));
 	initRecDataTable();
-	$('#inlandRecSearchBtn').click();
+	$('#internationalRecSearchBtn').click();
 }
 
 //状态选择按钮
-$("#inlandPaySelect").change(function(){
-	var selectEd = $("#inlandPaySelect option:first").prop("selected");
+$("#internationalPaySelect").change(function(){
+	var selectEd = $("#internationalPaySelect option:first").prop("selected");
 	$("#box-body").html("");
 	if(selectEd){
-		destroyDatetable($("#inlandPayEdTable"));
-		$("#inlandPayClick").show();
-		$("#inlandPayTable").show();
-		$("#inlandPayEdTable").hide();
+		destroyDatetable($("#internationalPayEdTable"));
+		$("#internationalPayClick").show();
+		$("#internationalPayTable").show();
+		$("#internationalPayEdTable").hide();
 		initPayDataTable();
 	}else{
-		destroyDatetable($("#inlandPayTable"));
-		$("#inlandPayClick").hide();
-		$("#inlandPayTable").hide();
-		$("#inlandPayEdTable").show();
+		destroyDatetable($("#internationalPayTable"));
+		$("#internationalPayClick").hide();
+		$("#internationalPayTable").hide();
+		$("#internationalPayEdTable").show();
 		initPayEdDataTable();
 	}
-	$('#inlandPaySearchBtn').click();
+	$('#internationalPaySearchBtn').click();
 });
 
 //销毁datatable
@@ -310,8 +310,9 @@ function destroyDatetable(obj){
 
 
 //内陆跨海 付款 弹框
-$('#inlandPayClick').click(function(){
+$('#internationalPayClick').click(function(){
 	var ids = $('#checkedboxPayValue').val();
+	 $('#checkedboxPayValue').val("");
 	var length = $(".checkBoxPayChild:checked").length;
 	if(!ids){
 		layer.msg("请至少选中一条记录", "", 2000);
@@ -415,7 +416,7 @@ $(document).on('click', '.checkBoxPayChild', function(e) {
 		}
 	}
 	var length = $(".checkBoxPayChild:checked").length;
-	if(inlandPayTable.page.len() == length){
+	if(internationalPayTable.page.len() == length){
 		$(".checkBoxPayAll").prop("checked", true);
 	}else{
 		$(".checkBoxPayAll").prop("checked", false);
@@ -423,37 +424,37 @@ $(document).on('click', '.checkBoxPayChild', function(e) {
 });
 
 //内陆跨海付款 搜索按钮
-$("#inlandPaySearchBtn").on('click', function () {
-	var orderStatus = $("#inlandPaySelect").val();
-	var inlandPayBeginDate = $("#inlandPayBeginDate").val();
-	var inlandPayEndDate = $("#inlandPayEndDate").val();
-	var inlandPayInput = $("#inlandPayInput").val();
+$("#internationalPaySearchBtn").on('click', function () {
+	var orderStatus = $("#internationalPaySelect").val();
+	var internationalPayBeginDate = $("#internationalPayBeginDate").val();
+	var internationalPayEndDate = $("#internationalPayEndDate").val();
+	var internationalPayInput = $("#internationalPayInput").val();
     var param = {
 		        "orderStatus":orderStatus,
-		        "leaveBeginDate":inlandPayBeginDate,
-		        "leaveEndDate":inlandPayEndDate,
-				"name": inlandPayInput
+		        "leaveBeginDate":internationalPayBeginDate,
+		        "leaveEndDate":internationalPayEndDate,
+				"name": internationalPayInput
 		    };
     if(orderStatus==1){
-    	inlandPayTable.settings()[0].ajax.data = param;
-    	inlandPayTable.ajax.reload();
+    	internationalPayTable.settings()[0].ajax.data = param;
+    	internationalPayTable.ajax.reload();
     }
     if(orderStatus==2){
-    	inlandPayEdTable.settings()[0].ajax.data = param;
-    	inlandPayEdTable.ajax.reload();
+    	internationalPayEdTable.settings()[0].ajax.data = param;
+    	internationalPayEdTable.ajax.reload();
     }
     
 });
 
 
 /*清除 内陆跨海 收款的   检索项*/
-$('#inlandRecClearBtn').click(function(){
-	clearSearchTxt("inlandRecSelect", "inlandRecBeginDate", "inlandRecEndDate", "inlandRecInput");
+$('#internationalRecClearBtn').click(function(){
+	clearSearchTxt("internationalRecSelect", "internationalRecBeginDate", "internationalRecEndDate", "internationalRecInput");
 });
 
 /*清除 内陆跨海 付款的   检索项*/
-$('#inlandPayClearBtn').click(function(){
-	clearSearchTxt("inlandPaySelect", "inlandPayBeginDate", "inlandPayEndDate", "inlandPayInput");
+$('#internationalPayClearBtn').click(function(){
+	clearSearchTxt("internationalPaySelect", "internationalPayBeginDate", "internationalPayEndDate", "internationalPayInput");
 });
 
 //清空搜索项函数
@@ -462,6 +463,11 @@ function clearSearchTxt(selectId, beginDateId, endDateId, inputId){
 	$("#"+beginDateId).val("");
 	$("#"+endDateId).val("");
 	$("#"+inputId).val("");
+}
+
+//内陆跨海 取消所有勾选
+$('#internationalPayCancelBtn').click(function(){
+	$('#checkedboxPayValue').val("");
 }
 
 //文件上传
@@ -480,7 +486,7 @@ $('#uploadFile').click(function(){
 		'multi' : false,//multi设置为true将允许多文件上传
 		'successTimeout' : 1800,
 		'queueSizeLimit' : 100,
-		'uploader' : '${base}/admin/receivePay/inland/uploadFile.html',//后台处理的页面
+		'uploader' : '${base}/admin/receivePay/inter/uploadFile.html',//后台处理的页面
 		//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
 		//下面的例子演示如何获取到vid
 		'onUploadSuccess' : function(file, data, response) {
