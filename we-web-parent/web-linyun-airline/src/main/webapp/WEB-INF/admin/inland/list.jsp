@@ -63,7 +63,7 @@
                           <th>操作</th>
                         </tr>
                         </thead>
-                        <tbody id="tableTbody">
+                        <tbody class="tableTbody">
                         </tbody>
                       </table>
                     </div>
@@ -457,20 +457,28 @@
 </script>
 
 <script type="text/javascript">
-/* 	$(function(){
-		
-		var trList=document.getElementById("tableTbody").getElementsByTagName('tr');
-			alert(trList.length);
-		  for (var i=0;i<trList.length;i++) {
-			  
-		    var tdArr = trList.eq(i).find("td");
-		    alert(tdArr);
-		    var a = tdArr.eq(0).find("input").val();
-		    var b = tdArr.eq(1).find("input").val();
-		    var c = tdArr.eq(2).find("input").val();
-		  }
+//table 内容  垂直居中
+  $(function(){
+	 /* $.each($(".tableTbody tr"),function(){
+		 alert("ljashgdfb");
+	 }) */
+    
 
-	}); */
+   $('.tableTbody tr').each(function () {//出票 table      
+       $(this).children('td').each(function(){
+          var liLength = $(this).children('ul').find("li").length;
+          if(liLength==1){
+            $(this).children('ul').find("li").addClass('eq');
+          }else if(liLength==2){
+            $(this).children('ul').find("li").eq(1).addClass('eq1');
+            $(this).children('ul').find("li").eq(0).addClass('eq0');
+          }else if(liLength==2){
+            $(this).children('ul').find("li").eq(2).addClass('eq2');
+          }
+       });
+    });
+
+  });
 </script>
 
 
