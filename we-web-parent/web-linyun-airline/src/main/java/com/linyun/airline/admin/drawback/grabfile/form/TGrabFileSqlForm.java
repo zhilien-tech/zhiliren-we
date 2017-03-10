@@ -70,6 +70,7 @@ public class TGrabFileSqlForm extends DataTablesParamForm {
 		 * 请使用sqlManager获取自定义的sql，并设置查询条件
 		 */
 		String sqlString = EntityUtil.entityCndSql(TGrabFileEntity.class);
+		sqlString += " AND (CASE WHEN TYPE=2 AND url NOT LIKE '%pdf' THEN 0 ELSE 1 END )=1";
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;

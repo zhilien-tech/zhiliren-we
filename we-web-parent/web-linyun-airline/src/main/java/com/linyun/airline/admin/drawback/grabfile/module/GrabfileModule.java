@@ -3,6 +3,7 @@ package com.linyun.airline.admin.drawback.grabfile.module;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +21,9 @@ import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.linyun.airline.admin.drawback.grabfile.entity.TGrabFileEntity;
+import com.linyun.airline.admin.drawback.grabfile.enums.FileTypeEnum;
 import com.linyun.airline.admin.drawback.grabfile.form.TGrabFileAddForm;
 import com.linyun.airline.admin.drawback.grabfile.form.TGrabFileSqlForm;
 import com.linyun.airline.admin.drawback.grabfile.form.TGrabFileUpdateForm;
@@ -101,6 +104,8 @@ public class GrabfileModule {
 		addForm.setFileName(addForm.getFileName());
 		addForm.setParentId(addForm.getId());
 		addForm.setMailId(addForm.getId());
+		addForm.setFileSize(addForm.getFileSize());//文件大小
+		addForm.setType(FileTypeEnum.FILE.intKey());//文件类型
 		return grabfileViewService.add(addForm);
 	}
 
@@ -111,23 +116,9 @@ public class GrabfileModule {
 	 * @throws Exception 
 	 */
 	@At
-	public void downLoadZipFile(HttpServletResponse response, HttpServletRequest request) throws Exception {
-		grabfileViewService.downLoadZipFiles(request, response);
-		/*String zipName = "myfile.zip";
-		response.setContentType("application/zip");// 设置response内容的类型
-		response.setHeader("Content-Disposition", "attachment; filename=" + zipName);// 设置头部信息  
-		ZipOutputStream out = new ZipOutputStream(response.getOutputStream());
-		try {
-			for (Iterator<TGrabFileEntity> it = files.iterator(); it.hasNext();) {
-				TGrabFileEntity file = it.next();
-				ZipUtils.doCompress(file.getUrl() + file.getFileName(), out);
-				response.flushBuffer();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			out.close();
-		}*/
+	public void downLoadZipFile(@Param("parentId") long id, HttpServletResponse response, HttpServletRequest request)
+			throws Exception {
+		grabfileViewService.downLoadZipFiles(id, request, response);
 	}
 
 	/**
@@ -148,6 +139,7 @@ public class GrabfileModule {
 		fileAddForm.setCreateTime(new Date());
 		fileAddForm.setStatus(DataStatusEnum.ENABLE.intKey());
 		fileAddForm.setMailId(fileAddForm.getId());
+		fileAddForm.setType(FileTypeEnum.FOLDER.intKey());//文件夹
 		return grabfileViewService.add(fileAddForm);
 	}
 
@@ -248,5 +240,16 @@ public class GrabfileModule {
 	@POST
 	public void grabMail() throws Exception {
 		grabMailService.receivePop3();
+	}
+
+	//文件预览
+	@At
+	@POST
+	public Object filePreview(@Param("id") final long pid) {
+		Map<String, Object> obj = Maps.newHashMap();
+		TGrabFileEntity fileSingle = dbDao.fetch(TGrabFileEntity.class,
+				Cnd.where("id", "=", pid).and("type", "=", FileTypeEnum.FILE.intKey()));
+		obj.put("filepre", fileSingle);
+		return obj;
 	}
 }

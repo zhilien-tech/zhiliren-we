@@ -1,5 +1,7 @@
 package com.linyun.airline.admin.drawback.grabfile.form;
 
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -17,4 +19,7 @@ public class TGrabFileUpdateForm extends ModForm {
 
 	/**文件夹名称*/
 	private String fileName;
+
+	/**修改时间*/
+	private Date updateTime;
 }

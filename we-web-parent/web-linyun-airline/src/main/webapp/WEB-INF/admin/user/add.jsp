@@ -257,7 +257,7 @@ function formValidator(){
 //部门职位联动查询
 function selectDeptName(){
 	$.ajax({
-		cache : true,
+		cache : false,
 		type : "POST",
 		url : '${base}/admin/user/selectDeptName.html',
 		data : {

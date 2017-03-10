@@ -40,10 +40,10 @@ public class TGrabReportSqlForm extends DataTablesParamForm {
 	private Double exciseTax1;
 
 	/**代理费*/
-	private String agencyFee;
+	private Double agencyFee;
 
 	/**税返点*/
-	private String taxRebate;
+	private Double taxRebate;
 
 	/**退税状态*/
 	private Integer backStatus;
@@ -55,13 +55,22 @@ public class TGrabReportSqlForm extends DataTablesParamForm {
 	private Double realTotal;
 
 	/**代理费2*/
-	private String agencyFee2;
+	private Double agencyFee2;
+
+	/**代理返点*/
+	private Double agentRebate;
 
 	/**入澳时间*/
 	private String inAustralianTime;
 
 	/**出澳时间*/
 	private String outAustralianTime;
+
+	/**pnrInfoId*/
+	private Integer pnrInfoId;
+
+	/**PNR*/
+	private String PNR;
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {
