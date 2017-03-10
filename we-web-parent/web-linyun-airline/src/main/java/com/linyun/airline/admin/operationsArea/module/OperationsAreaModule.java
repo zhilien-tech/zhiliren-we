@@ -230,4 +230,18 @@ public class OperationsAreaModule {
 	public Pagination list(@Param("..") final TMessageForm sqlParamForm, @Param("..") final Pager pager) {
 		return operationsAreaViewService.listPage(sqlParamForm, pager);
 	}
+
+	/**
+	 * 
+	 * 更新消息表 上次读取时间和消息为已读
+	 * <p>
+	 *
+	 * @param userMsgId  用户消息表id
+	 * @return 
+	 */
+	@At
+	@GET
+	public Object updateMsgStatus(@Param("userMsgId") final int userMsgId) {
+		return operationsAreaViewService.updateMsgStatus(userMsgId);
+	}
 }

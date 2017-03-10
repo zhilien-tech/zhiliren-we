@@ -1,6 +1,7 @@
 package com.linyun.airline.admin.operationsArea.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,6 +27,7 @@ import com.linyun.airline.admin.customer.service.CustomerViewService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.form.TMessageAddForm;
 import com.linyun.airline.admin.operationsArea.form.TMessageUpdateForm;
+import com.linyun.airline.common.enums.MessageIsReadEnum;
 import com.linyun.airline.common.enums.MessageIsRemindEnum;
 import com.linyun.airline.common.enums.MessageLevelEnum;
 import com.linyun.airline.common.enums.MessageRemindEnum;
@@ -68,6 +70,19 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	private static final int FIFTEENM = MessageRemindEnum.FIFTEENM.intKey();
 	private static final int THIRTYM = MessageRemindEnum.THIRTYM.intKey();
 	private static final int TIMED = MessageRemindEnum.TIMED.intKey();
+
+	//15分钟
+	private static final int FIFTEENMINS = 15;
+	//30分钟
+	private static final int THIRTYMINS = 30;
+	//60分钟
+	private static final int ONEHOURMINS = 60;
+	//一天的分钟数
+	private static final int ONEDAYMINS = 60 * 24;
+
+	//消息是否可读
+	private static final int UNREAD = MessageIsReadEnum.UNREAD.intKey();
+	private static final int READ = MessageIsReadEnum.READ.intKey();
 
 	/**
 	 * 注入容器中的Service对象
@@ -348,6 +363,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		for (Record record : records) {
 			String reminderMode = record.getString("reminderMode"); //当前消息的提醒模式
 			String generateDate = record.getString("generatetime"); //当前消息的时间
+			String isReadMsg = record.getString("isread"); //消息是否已读
+			String lastReadTime = record.getString("readtime"); //上次读取消息的时间、
 			Date nowDate = DateUtil.nowDate();
 			if (String.valueOf(MOUTH).equals(reminderMode)) {
 				//每自然月1号提醒
@@ -365,20 +382,57 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 				}
 			}
 			if (String.valueOf(DAY).equals(reminderMode)) {
-				//每1天提醒 TODO
-				recordsByCondition.add(record);
+				if (Util.eq(isReadMsg, UNREAD)) {
+					//每1天提醒 TODO
+					recordsByCondition.add(record);
+				} else {
+					if (!Util.isEmpty(lastReadTime)) {
+						//当前时间减去下一次最近提醒时间的毫秒值之差
+						long subMs = getNextRemindTime(lastReadTime, generateDate, ONEDAYMINS);
+						if (subMs > 0) {
+							recordsByCondition.add(record);
+						}
+					}
+				}
 			}
 			if (String.valueOf(HOUR).equals(reminderMode)) {
-				//每1小时提醒 TODO
-				recordsByCondition.add(record);
+				if (Util.eq(isReadMsg, UNREAD)) {
+					//每1小时提醒 TODO
+					recordsByCondition.add(record);
+				} else {
+					if (!Util.isEmpty(lastReadTime)) {
+						long subMs = getNextRemindTime(lastReadTime, generateDate, ONEHOURMINS);
+						if (subMs > 0) {
+							recordsByCondition.add(record);
+						}
+					}
+				}
 			}
 			if (String.valueOf(THIRTYM).equals(reminderMode)) {
-				//每30分钟提醒 TODO
-				recordsByCondition.add(record);
+				if (Util.eq(isReadMsg, UNREAD)) {
+					//每30分钟提醒 TODO
+					recordsByCondition.add(record);
+				} else {
+					if (!Util.isEmpty(lastReadTime)) {
+						long subMs = getNextRemindTime(lastReadTime, generateDate, THIRTYMINS);
+						if (subMs > 0) {
+							recordsByCondition.add(record);
+						}
+					}
+				}
 			}
 			if (String.valueOf(FIFTEENM).equals(reminderMode)) {
-				//每15分钟提醒 TODO
-				recordsByCondition.add(record);
+				if (Util.eq(isReadMsg, UNREAD)) {
+					//每15分钟提醒 TODO
+					recordsByCondition.add(record);
+				} else {
+					if (!Util.isEmpty(lastReadTime)) {
+						long subMs = getNextRemindTime(lastReadTime, generateDate, FIFTEENMINS);
+						if (subMs > 0) {
+							recordsByCondition.add(record);
+						}
+					}
+				}
 			}
 			if (String.valueOf(TIMED).equals(reminderMode)) {
 				//自定义提醒
@@ -561,4 +615,57 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		}
 		return JsonUtil.toJson(resultlist);
 	}
+
+	/**
+	 * 
+	 * 根据上次阅读时间，计算下一次提醒时间
+	 * <p>
+	 * TODO
+	 * @param lastReadTime 上次阅读时间
+	 * @param firRemindTime 第一次提醒时间
+	 * @param remindInterval 提醒时间间隔， 单位分钟
+	 * @return  当前时间和下一次最近提醒时间点的时间 毫秒差
+	 */
+	public long getNextRemindTime(String lastReadTime, String firRemindTime, long remindInterval) {
+
+		//获取当前时间的时间戳
+		Calendar nowC = DateUtil.parse2Calendar(new Date());
+		Calendar lastReadC = DateUtil.parse2Calendar(lastReadTime);
+		Calendar firRemindC = DateUtil.parse2Calendar(firRemindTime);
+
+		//上次阅读时间毫秒值
+		long timeLastRead = lastReadC.getTimeInMillis();
+		//第一次提醒毫秒值
+		long timeFirstRemind = firRemindC.getTimeInMillis();
+		//相差分钟数
+		long minutes = (timeLastRead - timeFirstRemind) / (1000 * 60);
+		//上次阅读时间，计算下次提醒点的 分钟数
+		int ss = new Long(remindInterval - (minutes % remindInterval)).intValue();
+
+		//获取下次提醒时间的时间戳
+		lastReadC.add(Calendar.MINUTE, +ss);//当前时间加指定分钟
+		Date nextRemindTime = lastReadC.getTime();
+		Calendar nextRemindC = DateUtil.parse2Calendar(nextRemindTime);
+
+		//当前时间和下次提醒时间的时间戳
+		long subMillis = DateUtil.millisBetween(nextRemindC, nowC);
+
+		return subMillis;
+	}
+
+	/**
+	 * 
+	 * 更新消息表 上次读取时间和消息为已读
+	 * <p>
+	 *
+	 * @param userMsgId  用户消息表id
+	 * @return 更新的记录数
+	 */
+	public Object updateMsgStatus(int userMsgId) {
+		TUserMsgEntity userMsgEntity = dbDao.fetch(TUserMsgEntity.class, userMsgId);
+		userMsgEntity.setIsRead(Long.valueOf(READ));
+		userMsgEntity.setReadTime(DateUtil.nowDate());
+		return dbDao.update(userMsgEntity);
+	}
+
 }

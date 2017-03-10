@@ -200,7 +200,7 @@
 			/*小日历*/
 			minCalendarInit();
 			/* 定时刷新任务栏 */
-			setInterval(taskEventList,1000*30);
+			setInterval(taskBarFunctions,1000*30);
 		});
 	</script>
 
@@ -316,6 +316,9 @@
 	                	var agent = element.username;
 	                	var msgC = element.msgcontent;
 	                	var msgT = element.msgtype;
+	                	var orderId = element.uporderid;
+	                	var userMsgId = element.umid;
+	                	var orderType = msgT;
 	                	if(msgT == 3){
 	                		msgT = "自定义事件：";
 	                	}else if(msgT==2){
@@ -323,7 +326,7 @@
 	                	}else{
 	                		msgT = "";
 	                	}
-	                	content += '<li><a href="javascript:;"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +''+msgC+'</a></li>';
+	                	content += '<li><a href="javascript:;" onclick="openOrderById('+orderId+','+orderType+','+userMsgId+');"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +''+msgC+'</a></li>';
 		            });
 					if(num){
 						msgNumObj.html(num);
@@ -335,6 +338,33 @@
 				}
 			});
 		}
+		
+		//打开新页面
+		function openOrderById(orderId, orderType, userMsgId){
+			var url = "";
+			if(orderType==4){
+				//查询详情跳转
+				url = '${base}/admin/inland/queryDetail.html?id='+orderId;
+			}
+			if(orderType==5 || orderType==8 || orderType==9 || orderType==10 || orderType==11 || orderType==12){
+				//预定订单详情跳转
+				url = '${base}/admin/inland/bookingDetail.html?id='+orderId;
+			}
+			window.open(url);
+			
+			//后台更新上次读取时间， 更改消息为已读状态
+			$.ajax({
+	            url: '/admin/operationsArea/updateMsgStatus.html',
+	            dataType: 'json',
+	            data: {
+	            	userMsgId: userMsgId
+	            },
+	            success: function(data) {
+	            	layer.msg("设置失败", "", 2000);
+	            }
+	        });
+		}
+		
 	</script>
 
 	<!-- 大日历 -->

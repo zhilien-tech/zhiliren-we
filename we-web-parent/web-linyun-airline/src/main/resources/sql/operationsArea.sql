@@ -173,12 +173,16 @@ AND um.customerInfoId =@infoId
 /*operationsArea_order_msg*/
 SELECT
 	m.id,
+	um.id umid,
 	m.generateTime,
 	c.comName,
 	u.userName,
 	m.msgContent,
 	m.msgType,
-	m.reminderMode
+	m.reminderMode,
+	m.upOrderId,
+	um.readTime,
+	um.isRead
 FROM
 	t_user_msg um
 LEFT JOIN t_message m ON m.id = um.msgId

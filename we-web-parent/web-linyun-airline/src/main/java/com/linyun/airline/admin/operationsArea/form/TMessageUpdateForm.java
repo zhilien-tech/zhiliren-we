@@ -40,4 +40,7 @@ public class TMessageUpdateForm extends ModForm implements Serializable {
 
 	/**生成日期*/
 	private Date redDivDate;
+
+	/**跳转订单id*/
+	private Long upOrderId;
 }

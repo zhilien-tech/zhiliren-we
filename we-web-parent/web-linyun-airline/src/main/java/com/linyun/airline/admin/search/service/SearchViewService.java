@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
 
-import org.joda.time.DateTime;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
@@ -58,6 +57,7 @@ import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.DateTimeUtil;
+import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.JsonUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.DbSqlUtil;
@@ -802,9 +802,10 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			break;
 		}
 		TUpOrderEntity insertOrder = dbDao.insert(orderinfo);
+		int upOrderId = insertOrder.getId();
 
 		/***************************操作台 消息提醒************************/
-		addRemindMsg(fromJson, generateOrderNum, orderStatus, session);
+		addRemindMsg(fromJson, generateOrderNum, upOrderId, orderStatus, session);
 
 		/****************************客户需求数据*************************/
 		addCustomerNeed(customdata, insertOrder);
@@ -849,7 +850,8 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			customneedEntity.setTickettype(tickettype);
 			customneedEntity.setRemark(cRemark);
 			//与订单相关
-			customneedEntity.setOrdernum(insertOrder.getId());
+			Integer upOrderId = insertOrder.getId();
+			customneedEntity.setOrdernum(upOrderId);
 			TOrderCustomneedEntity insertCus = dbDao.insert(customneedEntity);
 			//航班信息
 			List<Map<String, Object>> airinfo = (List<Map<String, Object>>) map.get("airinfo");
@@ -892,7 +894,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * @param session
 	 * @return 
 	 */
-	public String addRemindMsg(Map<String, Object> fromJson, String generateOrderNum, int orderStatus,
+	public String addRemindMsg(Map<String, Object> fromJson, String generateOrderNum, int upOrderId, int orderStatus,
 			HttpSession session) {
 		//当前用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
@@ -926,9 +928,10 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		String remindDateStr = (String) fromJson.get("remindDate");
 		//客户信息id
 		String customerInfoId = (String) fromJson.get("customerInfoId");
-		DateTime remindDateTime = DateTimeUtil.now();
+		//消息提醒日期
+		Date remindDateTime = DateUtil.nowDate();
 		if (!Util.isEmpty(remindDateStr)) {
-			remindDateTime = DateTimeUtil.string2DateTime(remindDateStr, null);
+			remindDateTime = DateUtil.string2Date(remindDateStr);
 		}
 
 		//消息提醒方式
@@ -1009,7 +1012,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			msgContent = generateOrderNum + "订单需要支付一订";
 			break;
 		case 7:
-			//二订 8
+			//二订 9
 			msgType = MessageTypeEnum.SECBOOKMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
 			msgContent = generateOrderNum + "订单需要支付二订";
@@ -1046,6 +1049,9 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		mapMsg.put("receiveUserIds", receiveUserIds);
 		mapMsg.put("receiveUserType", receiveUserType);
 		mapMsg.put("customerInfoId", customerInfoId);
+		mapMsg.put("remindMsgDate", remindDateTime);
+		mapMsg.put("upOrderId", upOrderId);
+
 		remindService.addMessageEvent(mapMsg);
 
 		return "消息添加成功";
