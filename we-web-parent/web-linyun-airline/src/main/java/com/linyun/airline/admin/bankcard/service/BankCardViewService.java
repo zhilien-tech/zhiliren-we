@@ -31,6 +31,7 @@ import com.linyun.airline.common.enums.BankCardStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TBankCardEntity;
 import com.linyun.airline.entities.TCompanyEntity;
+import com.linyun.airline.forms.TBankCardAddForm;
 import com.linyun.airline.forms.TBankCardForm;
 import com.uxuexi.core.common.util.BeanUtil;
 import com.uxuexi.core.common.util.MapUtil;
