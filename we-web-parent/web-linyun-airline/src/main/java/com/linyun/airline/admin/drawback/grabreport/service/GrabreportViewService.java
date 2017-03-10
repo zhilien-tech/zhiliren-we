@@ -44,10 +44,16 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		DecimalFormat df = new DecimalFormat("#.00");
 		String pnr = addForm.getPNR();
 		TPnrInfoEntity fetchPnr = dbDao.fetch(TPnrInfoEntity.class, Cnd.where("PNR", "=", pnr));
-		Double costprice = fetchPnr.getCostprice();//成本单价
-		Integer peoplecount = fetchPnr.getPeoplecount();//人数
-		Double salesprice = fetchPnr.getSalesprice();//销售单价
-		Double salespricesum = fetchPnr.getSalespricesum();//销售总价
+		Double costprice = 0.0;
+		Integer peoplecount = 0;
+		Double salesprice = 0.0;
+		Double salespricesum = 0.0;
+		if (!Util.isEmpty(fetchPnr)) {
+			costprice = fetchPnr.getCostprice();//成本单价
+			peoplecount = fetchPnr.getPeoplecount();//人数
+			salesprice = fetchPnr.getSalesprice();//销售单价
+			salespricesum = fetchPnr.getSalespricesum();//销售总价
+		}
 		report.setPNR(pnr);//PNR
 		report.setExciseTax1(Double.parseDouble(df.format(addForm.getExciseTax1())));//消费税
 		report.setBackStatus(addForm.getBackStatus());//退税状态
@@ -62,6 +68,9 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		if (!Util.isEmpty(costprice)) {
 			//1、备用金额=[(税金/杂项)+汇款-(人数*成本单价)]
 			Double depositBalance = Double.parseDouble(df.format((tax + remit) - (peoplecount * costprice)));
+			report.setDepositBalance(depositBalance);
+		} else {
+			Double depositBalance = Double.parseDouble(df.format((tax + remit)));
 			report.setDepositBalance(depositBalance);
 		}
 		//2、代理费=SUM(票价<含行李>*代理返点)
@@ -89,6 +98,9 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 			 * 消费税2=SUM[实收合计(含操作费)/11]
 			 */
 			Double agencyFee2 = (realTotal - (salespricesum / 11) - tax) * agentRebate;//代理费2
+			report.setAgencyFee2(agencyFee2);
+		} else {
+			Double agencyFee2 = (realTotal - tax) * agentRebate;//代理费2
 			report.setAgencyFee2(agencyFee2);
 		}
 		return dbDao.insert(report);
