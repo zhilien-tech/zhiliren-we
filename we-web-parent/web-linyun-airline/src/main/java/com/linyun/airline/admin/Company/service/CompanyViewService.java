@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.nutz.dao.Cnd;
-import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
@@ -56,7 +55,7 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 	 * @param sqlManagerm
 	 * @return 返回上游公司、代理商、总数 封装到map中
 	 */
-	public Map<String, Object> getUpCompanyAndAgentCount(@SuppressWarnings("unused") SqlManager sqlManagerm) {
+	public Map<String, Object> getUpCompanyAndAgentCount() {
 		Map<String, Object> map = MapUtil.map();
 		long upconpany = getCompanyCount(CompanyTypeEnum.UPCOMPANY.intKey());
 		long agent = getCompanyCount(CompanyTypeEnum.AGENT.intKey());
@@ -147,7 +146,7 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	@SuppressWarnings("hiding")
-	public List<Record> getCompanyDepartment(SqlManager sqlManager, long comId) {
+	public List<Record> getCompanyDepartment(long comId) {
 		String sqlString = sqlManager.get("company_department_list");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();

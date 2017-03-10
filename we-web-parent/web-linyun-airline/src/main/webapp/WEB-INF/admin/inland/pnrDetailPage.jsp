@@ -22,14 +22,14 @@
                 <table class="PNRtable">
                   <tr>
                     <td>PNR：</td>
-                    <td><input type="text" class="form-control input-sm" value="${obj.pnrinfo.PNR }"></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="${obj.pnrinfo.PNR }"></td>
                     <td>登录帐号：</td>
-                    <td><input type="text" class="form-control input-sm" value="${obj.pnrinfo.loginid }"></td></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="${obj.pnrinfo.loginid }"></td></td>
                     <td>人数：</td>
-                    <td><input type="text" class="form-control input-sm" disabled="disabled" value="${obj.pnrinfo.peoplecount }"></td></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" disabled="disabled" value="${obj.pnrinfo.peoplecount }"></td></td>
                     <td>币种：</td>
                     <td>
-                      <select class="form-control input-sm" >
+                      <select disabled="disabled" class="form-control input-sm" >
                         <c:forEach items="${obj.bzcode }" var="one"> 
                         	<c:choose>
                         		<c:when test="${obj.pnrinfo.currency eq one.dictCode }">
@@ -46,13 +46,13 @@
                   </tr>
                   <tr>
                     <td>成本单价：</td>
-                    <td><input type="text" class="form-control input-sm" value="${obj.pnrinfo.costprice }"></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="${obj.pnrinfo.costprice }"></td>
                     <td>成本总价：</td>
-                    <td><input type="text" class="form-control input-sm" value="${obj.pnrinfo.costpricesum }"></td></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="${obj.pnrinfo.costpricesum }"></td></td>
                     <td>销售单价：</td>
-                    <td><input type="text" class="form-control input-sm" value="${obj.pnrinfo.salesprice }"></td></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="${obj.pnrinfo.salesprice }"></td></td>
                     <td>销售总价：</td>
-                    <td><input type="text" class="form-control input-sm" value="${obj.pnrinfo.salespricesum }"></td></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="${obj.pnrinfo.salespricesum }"></td></td>
                   </tr>
                 </table>
                 <div class="touristsInfo">

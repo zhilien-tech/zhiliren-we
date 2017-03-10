@@ -1,0 +1,16 @@
+.backcard .form-control{padding-right: 0;}
+.box-header {padding: 10px 0 0 0px;}
+.textareaHeight{height: 107px !important;resize:none;}
+table#bankCardTable {margin-top: 0px !important;}
+table.dataTable thead .sorting_asc:after {display: none;}
+table.dataTable thead > tr > th {padding-right: 12px;}
+.form-control-feedback {position: absolute;top: 0px;right: -20px;}
+
+
+
+
+
+
+
+
+

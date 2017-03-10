@@ -14,6 +14,7 @@ import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
+import com.linyun.airline.common.enums.AccountPayEnum;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
@@ -32,6 +33,8 @@ public class FuKuanParamForm extends DataTablesParamForm {
 
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
+		cnd.and("tpi.userid", "=", userid);
+		cnd.and("tpi.orderPnrStatus", "=", AccountPayEnum.APPROVALPAYED.intKey());
 		return cnd;
 	}
 

@@ -15,7 +15,7 @@ import com.uxuexi.core.common.enums.IEnum;
  * @Date	 2017年3月4日 	 
  */
 public enum AccountReceiveEnum implements IEnum {
-	RECEIVINGMONEY(0, "收款中"), RECEIVEDONEY(1, "已收款");
+	RECEIVINGMONEY(1, "收款中"), RECEIVEDONEY(2, "已收款");
 
 	private int key;
 	private String value;
