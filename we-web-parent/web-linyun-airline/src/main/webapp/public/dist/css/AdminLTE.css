@@ -421,15 +421,10 @@ a:focus {
   margin: 0;
   padding: 0;
 }
-.sidebar-menu > li > a {
-  padding: 12px 5px 12px 15px;
-  display: block;
-}
+.sidebar-menu > li > a {padding: 10px 5px 10px 15px;display: block;}
 .sidebar-menu > li > a > .fa,
 .sidebar-menu > li > a > .glyphicon,
-.sidebar-menu > li > a > .ion {
-  width: 20px;
-}
+.sidebar-menu > li > a > .ion {width: 20px;}
 .sidebar-menu > li .label,
 .sidebar-menu > li .badge {
   margin-right: 5px;
@@ -4979,3 +4974,9 @@ p{margin: 0 0 0px 10px;}
 .table-hover>tbody>tr:hover a {color: #f5f292;text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.35);}
 .select2-dropdown--below{width: 150px !important;}
 .sorting_1 input{display: block;margin: 30% auto;}
+/*---table 内容 垂直居中 style---*/
+.eq{border-bottom: 0 !important;height: 60px !important;line-height:60px;}
+.eq0{height: 30px !important;line-height: 29px;}
+.eq1{border-bottom: 0 !important;height: 30px !important;line-height: 29px;}
+.eq2{border-bottom: 0 !important;}
+/*---end table 内容 垂直居中 style---*/

@@ -228,7 +228,7 @@ $(function(){
 		});
 	});
     $('.UnderIcon').on('click',function(){//客户信息 显示/隐藏
-        $('.hideTable').toggle('400');
+        $('.hideTable').toggle();
       });
     //加载pnr表格
     loadPNRdata();

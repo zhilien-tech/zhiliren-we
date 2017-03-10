@@ -7,7 +7,7 @@ table.remindSet{margin-left: 10px;margin-right: 10px;}
 .infoTopContent input:nth-child(2) {display:none;}
 .infoTopContent input:nth-child(4) {display:none;}
 .tdBtn{width: 60px;}
-.cloTable {margin-right: 10px;}
+.cloTable {margin-right: 10px;clear: both;}
 .sw{display: inline-block;}
 .dis{display:block;}
 .infoTopContent {width: 350px;}

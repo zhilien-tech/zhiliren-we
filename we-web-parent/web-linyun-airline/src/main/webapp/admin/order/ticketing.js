@@ -7,6 +7,21 @@ function initdrawerPayTable() {
     	"bLengthChange": false,
         "processing": true,
         "serverSide": true,
+        "initComplete": function( settings, json ) {
+        	$(this).find('tr').each(function () {//出票 table 自适应高度      
+        	       $(this).children('td').each(function(){
+        	          var liLength = $(this).children('ul').find("li").length;
+        	          if(liLength==1){
+        	            $(this).children('ul').find("li").addClass('eq');
+        	          }else if(liLength==2){
+        	            $(this).children('ul').find("li").eq(1).addClass('eq1');
+        	            $(this).children('ul').find("li").eq(0).addClass('eq0');
+        	          }else if(liLength==2){
+        	            $(this).children('ul').find("li").eq(2).addClass('eq2');
+        	          }
+        	       });
+        	});
+        },
         "stripeClasses": [ 'strip1','strip2' ],
         "language": {
             "url": BASE_PATH + "/public/plugins/datatables/cn.json"
@@ -40,7 +55,7 @@ function initdrawerPayTable() {
                     {"data": "ordersnum", "bSortable": false},
                     {"data": "pnr", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		var result = '<ul> ';
+                    		var result = '<ul id="tableUl"> ';
                     		$.each(row.pnrinfo, function(name, value) {
                     			if(value){
                     				result += '<li style="list-style:none;">'+value.pNR+'</li>';
@@ -52,7 +67,7 @@ function initdrawerPayTable() {
                     },
                     {"data": "date", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		var result = '<ul>';
+                    		var result = '<ul id="tableUl">';
                     		$.each(row.customerinfo, function(name, value) {
                     			result += '<li style="list-style:none;">'+value.leavetdate+'</li>';
                     		});
@@ -62,7 +77,7 @@ function initdrawerPayTable() {
                     },
                     {"data": "airnum", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		var result = '<ul>';
+                    		var result = '<ul id="tableUl">';
                     		$.each(row.airinfo, function(name, value) {
                     			result += '<li style="list-style:none;">'+value.ailinenum+'</li>';
                     		});
@@ -72,7 +87,7 @@ function initdrawerPayTable() {
                     },
                     {"data": "airsag", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		var result = '<ul>';
+                    		var result = '<ul id="tableUl">';
                     		$.each(row.customerinfo, function(name, value) {
                     			result += '<li style="list-style:none;">'+value.leavecity+"-"+value.arrivecity+'</li>';
                     		});
@@ -82,7 +97,7 @@ function initdrawerPayTable() {
                     },
                     {"data": "airtime", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		var result = '<ul>';
+                    		var result = '<ul id="tableUl">';
                     		$.each(row.airinfo, function(name, value) {
                     			result += '<li style="list-style:none;">'+value.leavetime+"-"+value.arrivetime+'</li>';
                     		});
@@ -92,7 +107,7 @@ function initdrawerPayTable() {
                     },
                     {"data": "salesprice", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		var result = '<ul>';
+                    		var result = '<ul id="tableUl">';
                     		$.each(row.airinfo, function(name, value) {
                     			result += '<li style="list-style:none;">'+value.price+'</li>';
                     		});

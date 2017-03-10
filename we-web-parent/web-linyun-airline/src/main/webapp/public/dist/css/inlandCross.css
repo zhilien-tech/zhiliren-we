@@ -20,7 +20,8 @@ table.dataTable thead .sorting:after{display: none;}
 #inlandCrossTable tbody tr td:nth-child(12){line-height: 60px;}
 #inlandCrossTable tbody tr td:nth-child(13){line-height: 60px;}
 #inlandCrossTable_wrapper{margin-top: -15px;}
-
+.row-top {background-color: #ecf0f5;}
+#tab_1,#tab7_a,#tab7_b,#tab1_1,#tab1_2,#tab1_a,#tab1_b{padding-top: 10px;}
 /*添加订单*/
 .orderSelect{width: 100px;}
 .orderLabel{line-height: 30px;}
@@ -87,12 +88,12 @@ table.dataTable thead > tr > th {padding-right: 5px;}
 table.dataTable thead .sorting_desc:after {display: none;}
 #drawerPayTable tbody tr td{padding:0;}
 #drawerPayTable tbody tr td:nth-child(1) input{display: block;margin: 45% auto;}
-#drawerPayTable tbody tr td:nth-child(2){padding-top:20px;}
-#drawerPayTable tbody tr td:nth-child(9){padding-top:20px;}
-#drawerPayTable tbody tr td:nth-child(10){padding-top:20px;}
-#drawerPayTable tbody tr td:nth-child(11){padding-top:20px;}
-#drawerPayTable tbody tr td:nth-child(12){padding-top:20px;}
-#drawerPayTable tbody tr td:nth-child(13){padding-top:20px;}
+#drawerPayTable tbody tr td:nth-child(2){line-height:60px;}
+#drawerPayTable tbody tr td:nth-child(9){line-height:60px;}
+#drawerPayTable tbody tr td:nth-child(10){line-height:60px;}
+#drawerPayTable tbody tr td:nth-child(11){line-height:60px;}
+#drawerPayTable tbody tr td:nth-child(12){line-height:60px;}
+#drawerPayTable tbody tr td:nth-child(13){line-height:60px;}
 /*出票 付款*/
 #payTable tbody tr td ul li{list-style: none;border-bottom: solid 2px #f4f4f4;}
 #payTable tbody tr td ul{padding-left: 0;margin-bottom:0;}
