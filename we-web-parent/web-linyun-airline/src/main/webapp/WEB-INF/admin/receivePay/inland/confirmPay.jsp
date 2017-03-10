@@ -156,6 +156,7 @@
 	
 	<!-- 確認付款js -->
 	<script src="${base}/admin/receivePayment/confirmPay.js"></script>
+	<script src="${base}/admin/receivePayment/inlandPay.js"></script>
 	
 	<script type="text/javascript">
 	//文件上传

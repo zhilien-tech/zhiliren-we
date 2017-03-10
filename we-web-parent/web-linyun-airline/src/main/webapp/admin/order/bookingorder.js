@@ -324,30 +324,44 @@ function loadPNRdata(){
             	var result = '';
             	for(var i=0 ; i<data.length ; i++){
             		result += '<tr>';
-            		result +='<td>'+data[i].pNR+'</td>';
-            		result +='<td>'+data[i].costprice+'</td>';
-            		result +='<td>'+data[i].costpricesum+'</td>';
-            		result +='<td>'+data[i].salesprice+'</td>';
-            		result +='<td>'+data[i].salespricesum+'</td>';
+            		if(data[i].pNR != undefined){
+            			result +='<td>'+data[i].pNR+'</td>';
+            		}else{
+            			result +='<td></td>';
+            		}
+            		if(data[i].costprice != undefined){
+            			result +='<td>'+data[i].costprice+'</td>';
+            		}else{
+            			result +='<td></td>';
+            		}
+            		if(data[i].costprice != undefined){
+            			result +='<td>'+data[i].costpricesum+'</td>';
+            		}else{
+            			result +='<td></td>';
+            		}
+            		if(data[i].salesprice != undefined){
+            			result +='<td>'+data[i].salesprice+'</td>';
+            		}else{
+            			result +='<td></td>';
+            		}
+            		if(data[i].salespricesum != undefined){
+            			result +='<td>'+data[i].salespricesum+'</td>';
+            		}else{
+            			result +='<td></td>';
+            		}
             		if(data[i].peoplecount != undefined){
             			result +='<td>'+data[i].peoplecount+'</td>';
             		}else{
             			result +='<td></td>';
             		}
-            		result +='<td>'+data[i].loginid+'</td>';
+            		if(data[i].loginid != undefined){
+            			result +='<td>'+data[i].loginid+'</td>';
+            		}else{
+            			result +='<td></td>';
+            		}
             		result +='<td><a href="javascript:openDetailPage('+data[i].id+');" class="PNRdetails">详情</a></td>';
             		result += '</tr>';
             	}
-            	/*data.each(function(index,value){
-            		result +='<td>'+value.pNR+'</td>';
-            		result +='<td>'+value.costprice+'</td>';
-            		result +='<td>'+value.costpricesum+'</td>';
-            		result +='<td>'+value.salesprice+'</td>';
-            		result +='<td>'+value.salespricesum+'</td>';
-            		result +='<td>'+value.peoplecount+'</td>';
-            		result +='<td>'+value.loginid+'</td>';
-            		result +='<td><a href="javascript:openDetailPage('+value.id+');" class="PNRdetails">详情</a></td>';
-            	});*/
             	customDiv.find('[name=pnrinfodata]').html(result);
             },
             error: function (xhr) {

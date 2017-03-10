@@ -312,6 +312,7 @@ function destroyDatetable(obj){
 //内陆跨海 付款 弹框
 $('#internationalPayClick').click(function(){
 	var ids = $('#checkedboxPayValue').val();
+	 $('#checkedboxPayValue').val("");
 	var length = $(".checkBoxPayChild:checked").length;
 	if(!ids){
 		layer.msg("请至少选中一条记录", "", 2000);

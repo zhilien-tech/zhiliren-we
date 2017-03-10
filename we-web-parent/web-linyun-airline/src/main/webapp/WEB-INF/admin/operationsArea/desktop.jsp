@@ -54,27 +54,27 @@
 			                  <li id="taskLi"><a id="taskAClick" href="#tab_5" data-toggle="tab">任务(<span id="taskNoticeMsgNum"></span>)</a></li>
 			                </ul>
 			                <div class="tab-content">
-				                  <div id="searchDiv" class="tab-pane active" id="tab_1"><!-- 询单 -->
+				                  <div class="tab-pane active" id="tab_1"><!-- 询单 -->
 				                    <ul id="queryOrders" class="taskInfo">
 				                      
 				                    </ul>
 				                  </div>
-				                  <div id="bookDiv" class="tab-pane" id="tab_2"><!-- 订单 -->
+				                  <div class="tab-pane" id="tab_2"><!-- 订单 -->
 				                    <ul id="bookOrders" class="taskInfo">
 				                      
 				                    </ul>
 				                  </div>
-				                  <div id="remindDiv" class="tab-pane" id="tab_3"><!-- 我的提醒 -->
+				                  <div class="tab-pane" id="tab_3"><!-- 我的提醒 -->
 				                    <ul id="taskListId" class="taskInfo">
 				                    
 				                    </ul>
 				                  </div>
-				                  <div id="accountDiv" class="tab-pane" id="tab_4"><!-- 账期 -->
+				                  <div class="tab-pane" id="tab_4"><!-- 账期 -->
 				                    <ul id="accountPayType" class="taskInfo">
 				                      
 				                    </ul>
 				                  </div>
-				                  <div id="taskDiv" class="tab-pane" id="tab_5"><!-- 通知 任务 -->
+				                  <div class="tab-pane" id="tab_5"><!-- 通知 任务 -->
 				                   	<ul id="taskNoticeList" class="taskInfo">
 				                    </ul>
 				                  </div>
@@ -222,9 +222,6 @@
 	  				$("#bookLi").hide();
 	  				$("#accountLI").hide();
 	  				$("#taskLi").attr("class", "active");
-	  				$("#taskDiv").addClass("active");
-	  				$("#searchDiv").removeClass("active");
-	  				
 	  			}
 	  			taskEventList();
 	  		}

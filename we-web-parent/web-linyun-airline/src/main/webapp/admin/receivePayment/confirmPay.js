@@ -11,8 +11,8 @@ function confirmPayClick(){
 			}else{
 				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 				parent.layer.close(index);
-				//initPayDataTable.ajax.reload();
-				parent.layer.msg("付款成功", "", 2000);
+				parent.layer.msg("付款成功", "", 1000);
+				parent.inlandPayTable.ajax.reload();
 			}
 			
 			
@@ -20,7 +20,7 @@ function confirmPayClick(){
 		error: function () {
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			parent.layer.close(index);
-			parent.layer.msg("付款失败", "", 2000);
+			parent.layer.msg("付款失败", "", 1000);
 		}
 	});
 }

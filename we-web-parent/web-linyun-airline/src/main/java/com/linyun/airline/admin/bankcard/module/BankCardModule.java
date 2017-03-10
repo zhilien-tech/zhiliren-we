@@ -20,7 +20,6 @@ import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.bankcard.service.BankCardViewService;
 import com.linyun.airline.entities.DictInfoEntity;
-import com.linyun.airline.forms.TBankCardAddForm;
 import com.linyun.airline.forms.TBankCardForm;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;

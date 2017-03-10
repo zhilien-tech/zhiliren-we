@@ -16,7 +16,7 @@ import com.uxuexi.core.common.enums.IEnum;
  */
 public enum AccountPayEnum implements IEnum {
 
-	APPROVAL(0, "审批中"), APPROVALPAYING(1, "付款中"), APPROVALPAYED(2, "已付款"), APPROVALRefuse(3, "拒绝");
+	APPROVAL(1, "审批中"), APPROVALPAYING(2, "付款中"), APPROVALPAYED(3, "已付款");
 
 	private int key;
 	private String value;

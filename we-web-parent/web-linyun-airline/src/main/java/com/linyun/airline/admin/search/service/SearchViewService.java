@@ -844,7 +844,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			customneedEntity.setLeavecity(leavecity);
 			customneedEntity.setArrivecity(arrivecity);
 			if (!Util.eq(leavedate, "")) {
-				customneedEntity.setLeavetdate(leavedate);
+				customneedEntity.setLeavetdate(DateUtil.string2Date(leavedate, DateUtil.FORMAT_YYYY_MM_DD));
 			}
 			customneedEntity.setPeoplecount(peoplecount);
 			customneedEntity.setTickettype(tickettype);
