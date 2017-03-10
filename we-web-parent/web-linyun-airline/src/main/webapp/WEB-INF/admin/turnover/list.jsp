@@ -84,7 +84,7 @@
               </form>
             </div>
             <!-- /.box-header -->
-            <div class="box-body">
+            <div class="box-body" style="margin-top:-5px;">
               <table id="turnOverTable" class="table table-bordered table-hover">
                 <thead>
                 <tr>

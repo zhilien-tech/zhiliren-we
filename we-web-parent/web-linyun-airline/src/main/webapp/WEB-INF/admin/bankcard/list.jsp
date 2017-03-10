@@ -96,7 +96,7 @@
             skin: false, //加上边框
             closeBtn:false,//默认 右上角关闭按钮 是否显示
             shadeClose:true,
-            area: ['770px', '305px'],
+            area: ['870px', '320px'],
             content: ['${url}/add.html','no']
           });
       });
@@ -177,7 +177,7 @@
 		    fix: false,
 		    maxmin: false,
 		    shadeClose: false,
-		    area: ['900px', '400px'],
+		    area: ['900px', '320px'],
 		    content: '${base}/admin/bankcard/update.html?id='+id
 		  });
 	}
