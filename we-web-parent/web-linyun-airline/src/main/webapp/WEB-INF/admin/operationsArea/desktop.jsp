@@ -47,11 +47,11 @@
 						<a href="javascript:;" class="customInterface">自定义界面</a>
 						<div class="nav-tabs-custom" id="taskId" style="display: none">
 						 	<ul class="nav nav-tabs custome">
-			                  <li class="active"><a href="#tab_1" data-toggle="tab">询单(<span id="searchOrderNum"></span>)</a></li>
-			                  <li><a href="#tab_2" data-toggle="tab">订单(<span id="bookOrderMsgNum"></span>)</a></li>
-			                  <li><a href="#tab_3" data-toggle="tab">我的提醒(<span id="remindMsgNum"></span>)</a></li>
-			                  <li><a href="#tab_4" data-toggle="tab">账期(<span id="accountPayTypeMsgNum"></span>)</a></li>
-			                  <li><a href="#tab_5" data-toggle="tab">任务(<span id="taskNoticeMsgNum"></span>)</a></li>
+			                  <li id="searchLi" class="active"><a href="#tab_1" data-toggle="tab">询单(<span id="searchOrderNum"></span>)</a></li>
+			                  <li id="bookLi"><a href="#tab_2" data-toggle="tab">订单(<span id="bookOrderMsgNum"></span>)</a></li>
+			                  <li id="remindLi"><a href="#tab_3" data-toggle="tab">我的提醒(<span id="remindMsgNum"></span>)</a></li>
+			                  <li id="accountLI"><a href="#tab_4" data-toggle="tab">账期(<span id="accountPayTypeMsgNum"></span>)</a></li>
+			                  <li id="taskLi"><a href="#tab_5" data-toggle="tab">任务(<span id="taskNoticeMsgNum"></span>)</a></li>
 			                </ul>
 			                <div class="tab-content">
 				                  <div class="tab-pane active" id="tab_1"><!-- 询单 -->
@@ -209,9 +209,19 @@
 	  		var taskShow = ${obj.checkBox.taskShow};
 	  		var maxCShow = ${obj.checkBox.maxCShow};
 	  		var minCShow = ${obj.checkBox.minCShow};
+	  		var taskTagShow = ${obj.funNums};
 	  		if(taskShow){
 	  			$("#taskId").css('display','block');
 	  			$("#taskBoxId").attr('checked','checked');
+	  			if(taskTagShow == true){
+	  				//隐藏任务标签
+	  				$("#taskLi").hide();
+	  			}else{
+	  				//只显示 我的提醒 + 任务
+	  				$("#searchLi").hide();
+	  				$("#bookLi").hide();
+	  				$("#accountLI").hide();
+	  			}
 	  			taskEventList();
 	  		}
 	  		if(maxCShow){

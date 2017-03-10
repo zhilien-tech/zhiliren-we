@@ -518,7 +518,31 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		TCheckboxStatusEntity checkBoxEntity = dbDao.fetch(TCheckboxStatusEntity.class,
 				Cnd.where("userId", "=", userId));
 		obj.put("checkBox", checkBoxEntity);
+		//统计当前用户是否拥有 “内陆跨海”和“国际”的功能
+		int functionNum = getFunctionNum(userId);
+		if (functionNum > 0) {
+			obj.put("funNums", true);
+		} else {
+			obj.put("funNums", false);
+		}
 		return obj;
+	}
+
+	/**
+	 * 
+	 * 统计当前用户是否有 “内陆跨海”和“国际”的功能
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param session
+	 * @return 对应功能的个数
+	 */
+	public int getFunctionNum(long userId) {
+		Sql sql = Sqls.create(sqlManager.get("operationsArea_function_nums"));
+		sql.setParam("userId", userId);
+		Record record = dbDao.fetch(sql);
+		int funNums = Integer.valueOf(record.getString("funnum"));
+		return funNums;
 	}
 
 	/**
