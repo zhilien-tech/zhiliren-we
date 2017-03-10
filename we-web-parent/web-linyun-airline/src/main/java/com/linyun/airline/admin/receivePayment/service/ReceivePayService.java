@@ -234,17 +234,29 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 * @param inlandPayIds
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object toConfirmPay(String inlandPayIds) {
+	public Object toConfirmPay(String inlandPnrIds) {
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		Sql sql = Sqls.create(sqlManager.get("receivePay_pay_Ids"));
 		/*String inlandPayIdStr = inlandPayIds.substring(0, inlandPayIds.length() - 1);*/
 		Cnd cnd = Cnd.NEW();
-		cnd.and("pi.id", "in", inlandPayIds);
+		cnd.and("pi.id", "in", inlandPnrIds);
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		String payIds = "";
-		for (Record record : orders) {
-			payIds += record.getString("id") + ",";
+		if (!Util.isEmpty(orders)) {
+			String shortname = orders.get(0).getString("shortname");
+			for (Record record : orders) {
+				String everyShortName = record.getString("shortname");
+				String id = record.getString("id");
+				if (!Util.eq(shortname, everyShortName)) {
+					map.put("sameName", false);
+				} else {
+					map.put("sameName", true);
+				}
+				if (!Util.isEmpty(id)) {
+					payIds += record.getString("id") + ",";
+				}
+			}
 		}
 		map.put("orders", orders);
 
@@ -276,7 +288,8 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		}
 		map.put("fkytList", fkytList);
 
-		map.put("ids", inlandPayIds);
+		map.put("ids", inlandPnrIds);
+
 		return map;
 	}
 
@@ -303,6 +316,12 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		String receiptUrl = form.getReceiptUrl();
 		String payIds = form.getPayIds();
 		Double totalMoney = form.getTotalMoney();
+
+		String payNames = form.getPayNames();
+		if (Util.eq("false", payNames)) {
+			//收款单位不一致，不能付款
+			return false;
+		}
 
 		/*String payIdStr = payIds.substring(0, payIds.length() - 1);*/
 

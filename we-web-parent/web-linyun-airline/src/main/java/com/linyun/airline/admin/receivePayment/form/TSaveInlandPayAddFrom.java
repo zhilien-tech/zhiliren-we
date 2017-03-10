@@ -12,6 +12,9 @@ public class TSaveInlandPayAddFrom implements Serializable {
 	/**付款订单pay ids */
 	private String payIds;
 
+	/**收款单位是否一致*/
+	private String payNames;
+
 	/**银行名称*/
 	private Integer bankComp;
 

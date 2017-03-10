@@ -459,7 +459,7 @@ $('#inlandPayClearBtn').click(function(){
 //内陆跨海 取消所有勾选
 $('#inlandPayCancelBtn').click(function(){
 	$('#checkedboxPayValue').val("");
-}
+});
 
 
 //清空搜索项函数

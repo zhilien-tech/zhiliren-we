@@ -17,7 +17,7 @@
 	<div class="modal-top">
 		<div class="modal-header boderButt">
 			<button type="button" id="closePayWindow" class="btn btn-primary right btn-sm">取消</button>
-			<input type="button" id="submit" onclick="confirmPayClick();" class="btn btn-primary right btn-sm" value="确定付款" />
+			<button  type="button" id="submit" onclick="confirmPayClick();" class="btn btn-primary right btn-sm">确认付款</button>
 			<h4>付款</h4>
 		</div>
 		<div class="modal-body" style="height: 600px; overflow-y: auto;">
@@ -37,6 +37,7 @@
 				</thead>
 				<tbody id="inlandConfirmPayTbody">
 					<input id="payIds" name="payIds" type="hidden" value="${obj.ids }"><!-- 水单url -->
+					<input id="payNames" name="payNames" type="hidden" value="${obj.sameName }"><!-- 水单url -->
 					<c:forEach var="one" items="${obj.orders}">
                 		<tr>
                 			<td>${one.ordernum }</td>

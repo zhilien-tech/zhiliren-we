@@ -51,30 +51,30 @@
 			                  <li id="bookLi"><a href="#tab_2" data-toggle="tab">订单(<span id="bookOrderMsgNum"></span>)</a></li>
 			                  <li id="remindLi"><a href="#tab_3" data-toggle="tab">我的提醒(<span id="remindMsgNum"></span>)</a></li>
 			                  <li id="accountLI"><a href="#tab_4" data-toggle="tab">账期(<span id="accountPayTypeMsgNum"></span>)</a></li>
-			                  <li id="taskLi"><a href="#tab_5" data-toggle="tab">任务(<span id="taskNoticeMsgNum"></span>)</a></li>
+			                  <li id="taskLi"><a id="taskAClick" href="#tab_5" data-toggle="tab">任务(<span id="taskNoticeMsgNum"></span>)</a></li>
 			                </ul>
 			                <div class="tab-content">
-				                  <div class="tab-pane active" id="tab_1"><!-- 询单 -->
+				                  <div id="searchDiv" class="tab-pane active" id="tab_1"><!-- 询单 -->
 				                    <ul id="queryOrders" class="taskInfo">
 				                      
 				                    </ul>
 				                  </div>
-				                  <div class="tab-pane" id="tab_2"><!-- 订单 -->
+				                  <div id="bookDiv" class="tab-pane" id="tab_2"><!-- 订单 -->
 				                    <ul id="bookOrders" class="taskInfo">
 				                      
 				                    </ul>
 				                  </div>
-				                  <div class="tab-pane" id="tab_3"><!-- 我的提醒 -->
+				                  <div id="remindDiv" class="tab-pane" id="tab_3"><!-- 我的提醒 -->
 				                    <ul id="taskListId" class="taskInfo">
 				                    
 				                    </ul>
 				                  </div>
-				                  <div class="tab-pane" id="tab_4"><!-- 账期 -->
+				                  <div id="accountDiv" class="tab-pane" id="tab_4"><!-- 账期 -->
 				                    <ul id="accountPayType" class="taskInfo">
 				                      
 				                    </ul>
 				                  </div>
-				                  <div class="tab-pane" id="tab_5"><!-- 通知 任务 -->
+				                  <div id="taskDiv" class="tab-pane" id="tab_5"><!-- 通知 任务 -->
 				                   	<ul id="taskNoticeList" class="taskInfo">
 				                    </ul>
 				                  </div>
@@ -221,6 +221,10 @@
 	  				$("#searchLi").hide();
 	  				$("#bookLi").hide();
 	  				$("#accountLI").hide();
+	  				$("#taskLi").attr("class", "active");
+	  				$("#taskDiv").addClass("active");
+	  				$("#searchDiv").removeClass("active");
+	  				
 	  			}
 	  			taskEventList();
 	  		}
@@ -370,7 +374,7 @@
 	            	userMsgId: userMsgId
 	            },
 	            success: function(data) {
-	            	layer.msg("设置失败", "", 2000);
+	            	layer.msg("消息已查看", "", 2000);
 	            }
 	        });
 		}
