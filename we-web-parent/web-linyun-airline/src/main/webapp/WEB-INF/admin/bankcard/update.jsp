@@ -15,6 +15,7 @@
 <%-- <link rel="stylesheet" href="${base}/public/dist/css/user.css"> --%>
 <link rel="stylesheet"
 	href="${base }/public/dist/css/bootstrapValidator.css" />
+<link rel="stylesheet" href="${base}/public/dist/css/bankcardManage.css"><!-- 本页面style -->
 </head>
 <body>
 	<div class="modal-top">
@@ -30,7 +31,7 @@
 				<%-- 	            <button type="button" class="btn right btn-sm" onclick="physicalDelete('${obj.bankCardInfo.id}');">删除</button> --%>
 				<h4>添加银行卡</h4>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" style="height: 252px; overflow-y: auto;">
 				<div class="tab-content backcard">
 					<div class="row">
 						<!--银行卡名称/卡号/类型-->

@@ -20,7 +20,7 @@
 	            <input type="submit" id="submit" class="btn btn-primary right btn-sm" value="保存" onclick="addTurnOverOne();"/>
 	            <h4>记一笔</h4>
 	          </div>
-	          <div class="modal-body">
+	          <div class="modal-body" style="height: 237px;overflow-y: auto;">
 	            <div class="tab-content backcard">
 	                <div class="row">
 	                	<div class="form-group">
