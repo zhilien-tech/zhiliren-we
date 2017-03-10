@@ -55,11 +55,9 @@
                  <div class="infoTopContent">
                    <span>${obj.orderinfo.ordersnum }</span>
                    <select id="orderType" name="orderType" class="form-control input-sm conSelect cf">
-                     <option value="1">查询</option>
-                     <option value="2">预定</option>
-                     <option value="3">出票</option>
-                     <option value="4">开票</option>
-                     <option value="5">关闭</option>
+                     <c:forEach var="map" items="${obj.orderstatusenum}" >
+				   		<option value="${map.key}">${map.value}</option>
+					 </c:forEach>
                    </select>
                    <button type="button" class="btn btn-primary input-sm btnSave none">保存</button>
                    <button type="button" class="btn btn-primary input-sm btnCancel none">取消</button>
@@ -158,9 +156,9 @@
 							</c:forEach>
 	                     </select></td>
 	                     <td><label>出发日期：</label></td>
-	                     <td><input id="leavedate" name="leavedate" disabled="disabled" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:'${customneed.cusinfo.leavetdate }'})" value="${customneed.cusinfo.leavetdate }"/></td>
+	                     <td><input id="leavedate" name="leavedate" disabled="disabled" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:'${customneed.cusinfo.leavetdate }'})" value="<fmt:formatDate value="${customneed.cusinfo.leavetdate }" pattern="yyyy-MM-dd" />"/></td>
 	                     <td><label>人数：</label></td>
-	                     <td><input id="peoplecount" name="peoplecount" disabled="disabled" type="text" class="form-control input-sm textWid" value="${customneed.cusinfo.peoplecount }"/></td>
+	                     <td><input id="peoplecount" name="peoplecount" disabled="disabled" type="text" class="form-control input-sm textWid mustNumber" value="${customneed.cusinfo.peoplecount }"/></td>
 	                     <td><label class="labelWid">早中晚：</label></td>
 	                     <td>
 	                       <select id="tickettype" name="tickettype" disabled="disabled" class="form-control input-sm textWid" value="${customneed.cusinfo.tickettype }">
@@ -205,9 +203,9 @@
 				                     	</c:forEach>
 			                     	</select></td>
 			                     <td><label>出发时间：</label></td>
-			                     <td><input id="leavetime" name="leavetime" disabled="disabled" type="text" class="form-control input-sm textWid" placeholder="" value="${airline.leavetime }"/></td>
+			                     <td><input id="leavetime" name="leavetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" placeholder="" value="${airline.leavetime }"/></td>
 			                     <td><label>抵达时间：</label></td>
-			                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid" value="${airline.arrivetime }"/></td>
+			                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" value="${airline.arrivetime }"/></td>
 			                     <td><label class="labelWid">成本价：</label></td>
 			                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" value="${airline.formprice }"/></td>
 			                     <td><label class="labelWid">销售价：</label></td>
@@ -232,9 +230,9 @@
 			                     <td><label>航班号：</label></td>
 			                     <td><select id="ailinenum" name="ailinenum" class="form-control input-sm"  multiple="multiple" placeholder="SYD(悉尼)"></select></td>
 			                     <td><label>出发时间：</label></td>
-			                     <td><input id="leavetime" name="leavetime" type="text" class="form-control input-sm textWid" placeholder=""/></td>
+			                     <td><input id="leavetime" name="leavetime" type="text" class="form-control input-sm textWid mustTimes" placeholder=""/></td>
 			                     <td><label>抵达时间：</label></td>
-			                     <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm textWid" /></td>
+			                     <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm textWid mustTimes" /></td>
 			                     <td><label class="labelWid">销售价：</label></td>
 			                     <td><input id="formprice" name="formprice" type="text" class="form-control input-sm textWid" /></td>
 			                     <td><label class="labelWid">成本价：</label></td>
@@ -562,7 +560,7 @@
             <div class="infoTop">
               <p>日志</p>
             </div>
-            <div class="infofooter">
+            <div class="infofooter" id="orderlog">
                  
             </div>
         </div>
@@ -598,7 +596,8 @@
 	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 	<!--layer -->
 	<script src="${base}/common/js/layer/layer.js"></script>
-	<script src="${base }/admin/order/queryorder.js"></script><!-- AdminLTE App -->
+	<script src="${base }/admin/order/queryorder.js"></script>
+	<script src="${base }/admin/order/ordercommon.js"></script>
   <script type="text/javascript">
       $(function(){
         //编辑按钮 click事件
@@ -839,11 +838,17 @@
     	//alert("值："+fromprice + " 折扣："+discountFare + " 手续费：" + fees);
     	var price = parseFloat(fromprice * discountFare / 100) + parseFloat(fees);
     	if(fromprice){
-    		$(this).parent().parent().find('[name=price]').val(price);
-    	}else{
-    		$(this).parent().parent().find('[name=price]').val('');
-    	}
+     		if(isNaN(price)){
+     			$(this).parent().parent().find('[name=price]').val('');
+     		}else{
+    	 		$(this).parent().parent().find('[name=price]').val(price);
+     		}
+     	}else{
+     		$(this).parent().parent().find('[name=price]').val('');
+     	}
     });
+  	//加载日志
+    loadOrderLog('${obj.orderinfo.id }');
   </script>
 </body>
 </html>

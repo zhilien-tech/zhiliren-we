@@ -41,6 +41,7 @@ public class InlandListSearchForm extends DataTablesParamForm {
 			sqlex.and("receivestatus", "=", "").or("receivestatus", "is", null);
 			cnd.and(sqlex);
 		}
+		cnd.orderBy("tuo.ordersnum", "desc");
 		return cnd;
 	}
 

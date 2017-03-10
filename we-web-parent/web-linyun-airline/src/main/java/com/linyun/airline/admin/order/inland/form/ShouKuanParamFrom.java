@@ -14,6 +14,7 @@ import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
+import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.entities.TReceiveEntity;
 import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.form.DataTablesParamForm;
@@ -35,6 +36,7 @@ public class ShouKuanParamFrom extends DataTablesParamForm {
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		cnd.and("userid", "=", userid);
+		cnd.and("status", "=", AccountReceiveEnum.RECEIVEDONEY.intKey());
 		return cnd;
 	}
 

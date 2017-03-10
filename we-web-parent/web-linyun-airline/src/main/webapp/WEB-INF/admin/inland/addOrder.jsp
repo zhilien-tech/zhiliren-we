@@ -18,11 +18,9 @@
           <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">取消</button>
           <button type="submit" class="btn btn-primary right btn-sm" onclick="saveOrderInfo();">保存</button>
           <select id="orderType" class="form-control input-sm orderSelect right">
-            <option value="1">查询</option>
-            <option value="2">预定</option>
-            <option value="3">出票</option>
-            <option value="4">开票</option>
-            <option value="5">关闭</option>
+            <c:forEach var="map" items="${obj.orderstatusenum}" >
+		   		<option value="${map.key}">${map.value}</option>
+			 </c:forEach>
           </select>
           <label class="right orderLabel">生成订单</label>
           <input id="generateOrder" class="right orderInput" type="checkbox" checked="checked" readonly="true">

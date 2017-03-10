@@ -6,6 +6,9 @@
 
 package com.linyun.airline.admin.order.inland.module;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -24,6 +27,8 @@ import com.linyun.airline.admin.order.inland.form.InlandListSearchForm;
 import com.linyun.airline.admin.order.inland.form.PayApplyListForm;
 import com.linyun.airline.admin.order.inland.form.ShouKuanParamFrom;
 import com.linyun.airline.admin.order.inland.service.InlandService;
+import com.linyun.airline.common.enums.OrderStatusEnum;
+import com.uxuexi.core.common.util.EnumUtil;
 
 /**
  * TODO内陆跨海module
@@ -63,7 +68,9 @@ public class InlandModule {
 	@At
 	@Ok("jsp")
 	public Object addOrder(HttpServletRequest request) {
-		return null;
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("orderstatusenum", EnumUtil.enum2(OrderStatusEnum.class));
+		return result;
 	}
 
 	/**

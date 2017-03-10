@@ -1,6 +1,7 @@
 package com.linyun.airline.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 
@@ -59,5 +60,13 @@ public class TPnrInfoEntity implements Serializable {
 	@Column
 	@Comment("订单pnr状态")
 	private Integer orderPnrStatus;
+
+	@Column
+	@Comment("操作人")
+	private Integer userid;
+
+	@Column
+	@Comment("操作时间")
+	private Date optime;
 
 }

@@ -44,7 +44,7 @@ FROM
 INNER JOIN t_order_customneed toc ON tpi.needid = toc.id
 INNER JOIN t_up_order tuo ON toc.ordernum = tuo.id
 INNER JOIN t_customer_info tci ON tuo.userid = tci.id
-LEFT JOIN (select * from  t_airline_info GROUP BY needid) tai ON tai.needid = tci.id
+LEFT JOIN (select * from  t_airline_info GROUP BY needid) tai ON tai.needid = tpi.needid
 $condition
 
 /*get_sea_invoce_table_data*/
@@ -90,7 +90,7 @@ SELECT
 	tuo.ordersnum,tfi.personcount,tfi.incometotal
 FROM
 	t_up_order tuo
-INNER JOIN t_finance_info tfi ON tuo.id = tfi.orderid
+LEFT JOIN t_finance_info tfi ON tuo.id = tfi.orderid
 INNER JOIN t_order_receive tor ON tuo.id = tor.orderid
 INNER JOIN t_receive tr ON tor.receiveid = tr.id
 $condition
@@ -133,4 +133,33 @@ INNER JOIN t_order_customneed toc ON tpi.needid = toc.id
 INNER JOIN t_up_order tuo ON toc.ordernum = tuo.id
 INNER JOIN t_finance_info tfi ON tuo.id = tfi.orderid
 LEFT JOIN t_customer_info tci ON tuo.userid = tci.id
+$condition
+
+/*get_kai_invoice_list_order*/
+select tuo.* FROM
+t_up_order tuo
+INNER JOIN t_order_receive tor ON tuo.id = tor.orderid
+INNER JOIN t_receive tr ON tor.receiveid = tr.id
+INNER JOIN t_invoice_info tii ON tr.id = tii.receiveid
+$condition
+
+/*get_shou_invoice_list_order*/
+SELECT
+	tpi.*, tii.invoicedate,
+	tii.invoiceitem,
+	tii.paymentunit,
+	tii.id invoiceid,
+	(
+		SELECT
+			count(*)
+		FROM
+			t_invoice_detail
+		WHERE
+			invoiceinfoid = tii.id
+	) invoicecount,
+	tu.userName
+FROM
+	t_pnr_info tpi
+INNER JOIN t_invoice_info tii ON tii.pnrid = tpi.id
+LEFT JOIN t_user tu ON tii.billuserid = tu.id
 $condition

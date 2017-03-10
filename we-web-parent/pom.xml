@@ -177,5 +177,6 @@
 	<modules>
 		<module>web-template</module>
 		<module>dlws-we-game</module>
+		<module>web-linyun-airline</module>
   </modules>
 </project>

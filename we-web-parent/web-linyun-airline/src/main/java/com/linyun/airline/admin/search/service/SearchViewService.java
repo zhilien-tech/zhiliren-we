@@ -50,6 +50,7 @@ import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.DateTimeUtil;
+import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.JsonUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.DbSqlUtil;
@@ -782,7 +783,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			customneedEntity.setLeavecity(leavecity);
 			customneedEntity.setArrivecity(arrivecity);
 			if (!Util.eq(leavedate, "")) {
-				customneedEntity.setLeavetdate(leavedate);
+				customneedEntity.setLeavetdate(DateUtil.string2Date(leavedate, DateUtil.FORMAT_YYYY_MM_DD));
 			}
 			customneedEntity.setPeoplecount(peoplecount);
 			customneedEntity.setTickettype(tickettype);

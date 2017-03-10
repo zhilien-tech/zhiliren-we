@@ -39,7 +39,15 @@ function initpayTable() {
 			        },
                     {"data": "ordersnum", "bSortable": false},
                     {"data": "pnr", "bSortable": false},
-                    {"data": "leavetdate", "bSortable": false},
+                    {"data": "leavetdate", "bSortable": false,
+                    	render:function(data, type, row, meta) {
+                    		var result = '';
+                    		if(row.leavetdate && row.leavetdate != undefined){
+                    			result = row.leavetdate;
+                    		}
+                    		return result;
+                    	}
+                    },
                     {"data": "airnum", "bSortable": false,
                     	render:function(data, type, row, meta) {
                     		var result = '';
@@ -57,13 +65,31 @@ function initpayTable() {
                     },
                     {"data": "airtime", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		return '';
+                    		//var result = row.leavetime + '/' + row.arrivetime;
+            				var result = '';
+            				if(row.leavetime != undefined){
+            					result += row.leavetime;
+            				}
+            				result += '/';
+            				if(row.arrivetime != undefined){
+            					result += row.arrivetime;
+            				}
+                    		return result;
                     	}
                     },
-                    {"data": "salesprice", "bSortable": false},
-                    {"data": "receivable", "bSortable": false,
+                    {"data": "costprice", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		var result = row.leavetime + '/' + row.arrivetime;;
+                    		if(row.costprice && row.costprice != undefined){
+                    			result = row.costprice;
+                    		}
+                    		return result; 
+                    	}
+                    },
+                    {"data": "costpricesum", "bSortable": false,
+                    	render:function(data, type, row, meta) {
+                    		if(row.costpricesum && row.costpricesum != undefined){
+                    			result = row.costpricesum;
+                    		}
                     		return result; 
                     	}
                     },
