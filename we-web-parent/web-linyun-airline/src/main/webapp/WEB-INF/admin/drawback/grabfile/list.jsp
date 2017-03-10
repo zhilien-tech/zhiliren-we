@@ -89,7 +89,7 @@
                             <th>代理费</th>
                             <th>入澳时间</th>
                             <th>出澳时间</th>
-                            <th>操作</th>
+                            <!-- <th>操作</th> -->
                           </tr>
                           </thead>
                           <tbody>
@@ -412,6 +412,8 @@ function successCallback(id){
 		  layer.msg("文件下载成功!",{time: 1000, icon:1});
 	  }else if(id == '8'){
 		  layer.msg("添加成功!",{time: 1000, icon:1});
+	  }else if(id == '9'){
+		  layer.msg("编辑成功!",{time: 1000, icon:1});
 	  }
   }
 </script>
@@ -469,7 +471,7 @@ function successCallback(id){
 	                    		if(null==filename || ""==filename){
 	                    			return null;
 	                    		}
-	                    		return  '<a id="'+fileId+'" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+');">'+filename+'</a>';
+	                    		return  '<a id="'+fileId+'" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
 	                    	}
 	                    },
 	                    {"data": "createtime", "bSortable": true,
@@ -510,80 +512,83 @@ function successCallback(id){
 		rebatesEamilTable = $('#rebatesEamilTable').DataTable(options);
 	}
 	//当点击进入下一级的时候重新加载表格
-	function createFodler(pid,filename,filetype){
-		$.ajax({
-			cache : false,
-			type : "POST",
-			url : '${base}/admin/drawback/grabfile/filePreview.html',
-			data : {
-				id : pid
-			},
-			success : function(data) {
-				var fid = JSON.stringify(data.filepre.id);
-				if(filetype == 2){
-					layer.open({
-				  	    type: 2,
-				  	    title:false,
-				  	    closeBtn:false,
-				  	    fix: false,
-				  	    maxmin: false,
-				  	    shadeClose: false,
-				  	    area: ['1000px', '600px'],
-				  	    content: '${base}/admin/drawback/grabreport/filePreview.html'
-				 	});
-				} 
-					
-			},
-			error : function(request) {
-				layer.msg("操作失败", "", 3000);
-			}
-		});
-		options.ajax.data.parentId=pid;
-		var param = {parentId:pid};
-		rebatesEamilTable.settings()[0].ajax.data = param;
-		if(filetype==1){
-			rebatesEamilTable.ajax.reload();
-		}
-		var exist=false;
-		$("ol.breadcrumb").find("li").each(function(index){
-			var currenuId = $(this).attr("id");
-			if(currenuId == pid){
-				exist = true ;
-				return false;
-			}
-		});
-		
-		if(!exist){
-			$("ol.breadcrumb").find("li").each(function(){
-				$(this).removeClass("active");
+	var clickFlag = 1;
+	function createFodler(pid,filename,filetype,clickFlag){
+		if(clickFlag===1 && filetype===2){
+			$.ajax({
+				cache : false,
+				type : "POST",
+				url : '${base}/admin/drawback/grabfile/filePreview.html',
+				data : {
+					id : pid
+				},
+				success : function(data) {
+					if(filetype == 2){
+						layer.open({
+					  	    type: 2,
+					  	    title:false,
+					  	    closeBtn:false,
+					  	    fix: false,
+					  	    maxmin: false,
+					  	    shadeClose: false,
+					  	    area: ['1000px', '600px'],
+					  	    content: '${base}/admin/drawback/grabreport/filePreview.html?id='+pid
+					 	});
+					} 
+						
+				},
+				error : function(request) {
+					layer.msg("操作失败", "", 3000);
+				}
 			});
-			$("ol.breadcrumb").append('<li id=\''+pid+'\' class="active"><a onclick="javascript:createFodler(\''+pid+'\',\''+filename+'\');"  href="#">'+filename+'</a></li>');
 		}else{
-			//找到指定元素的下标
-			var selectIndex = 0;
+			options.ajax.data.parentId=pid;
+			var param = {parentId:pid};
+			rebatesEamilTable.settings()[0].ajax.data = param;
+			rebatesEamilTable.ajax.reload();
+			var exist=false;
 			$("ol.breadcrumb").find("li").each(function(index){
 				var currenuId = $(this).attr("id");
 				if(currenuId == pid){
-					selectIndex=index;
+					exist = true ;
 					return false;
 				}
 			});
 			
-			//删除大于该下标的其他元素
-			$("ol.breadcrumb").find("li").each(function(index){
-				if(index > selectIndex){
-					$(this).remove(); 
+			if(!exist){
+				if(filetype == 1){
+					$("ol.breadcrumb").find("li").each(function(){
+						$(this).removeClass("active");
+					});
+					$("ol.breadcrumb").append('<li id=\''+pid+'\' class="active"><a onclick="javascript:createFodler(\''+pid+'\',\''+filename+'\');"  href="#">'+filename+'</a></li>');
 				}
-			});
-			var length = $("ol.breadcrumb").find("li").length;
-			$("ol.breadcrumb").find("li").each(function(index){
-				if(index != (length-1)){
-					$(this).removeClass("active");
-				}
-			});
+			}else{
+				//找到指定元素的下标
+				var selectIndex = 0;
+				$("ol.breadcrumb").find("li").each(function(index){
+					var currenuId = $(this).attr("id");
+					if(currenuId == pid){
+						selectIndex=index;
+						return false;
+					}
+				});
+				
+				//删除大于该下标的其他元素
+				$("ol.breadcrumb").find("li").each(function(index){
+					if(index > selectIndex){
+						$(this).remove(); 
+					}
+				});
+				var length = $("ol.breadcrumb").find("li").length;
+				$("ol.breadcrumb").find("li").each(function(index){
+					if(index != (length-1)){
+						$(this).removeClass("active");
+					}
+				});
+			}
+			//修改当前所在文件夹id
+			$("input#currentDirId").val(pid);
 		}
-		//修改当前所在文件夹id
-		$("input#currentDirId").val(pid);
 	}
 	
 	//新建子文件夹
@@ -654,7 +659,7 @@ function successCallback(id){
 	                    	render: function(data, type, row, meta) {
 	                    		var remark = row.remark;
 	                    		if(null==remark || ""==remark){
-	                    			return null;
+	                    			return "";
 	                    		}
 	                    		var result = '<span data-toggle="tooltip" data-placement="right" title="'+row.remark+'">'+row.remark+'<span>';
 	                    		return result;
@@ -664,25 +669,25 @@ function successCallback(id){
 	                    	render: function(data, type, row, meta) {
 	                    		var remit = row.remit;
 	                    		if(null==remit || ""==remit){
-	                    			return null;
+	                    			return "";
 	                    		}
 	                    		return remit;
 	                    	}
 	                    },
-	                    {"data": "depositBalance", "bSortable": false,
+	                    {"data": "depositbalance", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var depositBalance = row.depositBalance;
+	                    		var depositBalance = row.depositbalance;
 	                    		if(null==depositBalance || ""==depositBalance){
-	                    			return null;
+	                    			return "";
 	                    		}
 	                    		return depositBalance;
 	                    	}	
 	                    },
-	                    {"data": "ticketPrice", "bSortable": false,
+	                    {"data": "ticketprice", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var ticketPrice = row.ticketPrice;
+	                    		var ticketPrice = row.ticketprice;
 	                    		if(null==ticketPrice || ""==ticketPrice){
-	                    			return null;
+	                    			return "";
 	                    		}
 	                    		return ticketPrice;
 	                    	}
@@ -691,7 +696,7 @@ function successCallback(id){
 	                    	render: function(data, type, row, meta) {
 	                    		var swipe = row.swipe;
 	                    		if(null==swipe || ""==swipe){
-	                    			return null;
+	                    			return "";
 	                    		}
 	                    		return swipe;
 	                    	}
@@ -700,88 +705,90 @@ function successCallback(id){
 	                    	render: function(data, type, row, meta) {
 	                    		var tax = row.tax;
 	                    		if(null==tax || ""==tax){
-	                    			return null;
+	                    			return "";
 	                    		}
 	                    		return tax;
 	                    	}
 	                    },
-	                    {"data": "exciseTax1", "bSortable": false,
+	                    {"data": "excisetax1", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var exciseTax1 = row.exciseTax1;
+	                    		var exciseTax1 = row.excisetax1;
 	                    		if(null==exciseTax1 || ""==exciseTax1){
-	                    			return null;
+	                    			return "";
 	                    		}
 	                    		return exciseTax1;
 	                    	}
 	                    },
-	                    {"data": "agencyFee", "bSortable": false,
+	                    {"data": "agencyfee", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var agencyFee = row.agencyFee;
+	                    		var agencyFee = row.agencyfee;
 	                    		if(null==agencyFee || ""==agencyFee){
-	                    			return null;
+	                    			return "";
 	                    		}
 	                    		return agencyFee;
 	                    	}
 	                    },
-	                    {"data": "taxRebate", "bSortable": false,
+	                    {"data": "taxrebate", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var taxRebate = row.taxRebate;
+	                    		var taxRebate = row.taxrebate;
 	                    		if(null==taxRebate || ""==taxRebate){
-	                    			return null;
+	                    			return "";
 	                    		}
 	                    		return taxRebate;
 	                    	}
 	                    },
-	                    {"data": "backStatus", "bSortable": false,
+	                    {"data": "backstatus", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var backStatus = row.backStatus;
+	                    		var backStatus = row.backstatus;
 	                    		if(null==backStatus || ""==backStatus){
-	                    			return null;
+	                    			return "";
+	                    		}else if(backStatus==0){
+	                    			return "已退"
 	                    		}
-	                    		return backStatus;
+	                    		return "未退";
 	                    	}
 	                    },
-	                    {"data": "realIncome", "bSortable": false,
+	                    {"data": "realincome", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var realIncome = row.realIncome;
+	                    		var realIncome = row.realincome;
 	                    		if(null==realIncome || ""==realIncome){
-	                    			return null;
+	                    			return "";
 	                    		}
 	                    		return realIncome;
 	                    	}
 	                    },
-	                    {"data": "realTotal", "bSortable": false,
+	                    {"data": "realtotal", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var realTotal = row.realTotal;
+	                    		var realTotal = row.realtotal;
 	                    		if(null==realTotal || ""==realTotal){
-	                    			return null;
+	                    			return "";
 	                    		}
 	                    		return realTotal;
 	                    	}
 	                    },
-	                    {"data": "agencyFee2", "bSortable": false,
+	                    {"data": "agencyfee2", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var agencyFee2 = row.agencyFee2;
+	                    		var agencyFee2 = row.agencyfee2;
 	                    		if(null==agencyFee2 || ""==agencyFee2){
-	                    			return null;
+	                    			return "";
 	                    		}
 	                    		return agencyFee2;
 	                    	}
 	                    },
-	                    {"data": "inAustralianTime", "bSortable": false,
+	                    {"data": "inaustraliantime", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var inAustralianTime = row.inAustralianTime;
+	                    		var inAustralianTime = row.inaustraliantime;
 	                    		if(null==inAustralianTime || ""==inAustralianTime){
-	                    			return null;
+	                    			return "";
 	                    		}
 	                    		return inAustralianTime;
 	                    	}
 	                    },
-	                    {"data": "outAustralianTime", "bSortable": false,
+	                    {"data": "outaustraliantime", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var outAustralianTime = row.outAustralianTime;
+	                    		var outAustralianTime = row.outaustraliantime;
 	                    		if(null==outAustralianTime || ""==outAustralianTime){
-	                    			return null;
+	                    			return "";
 	                    		}
 	                    		return outAustralianTime;
 	                    	}
@@ -789,14 +796,28 @@ function successCallback(id){
 	            ],
 	            "columnDefs": [{
 	                //   指定第一列，从0开始，0表示第一列，1表示第二列……
-	                targets: 15,
+	                targets: 14,
 	                render: function(data, type, row, meta) {
-	                	var details = '<a style="cursor:pointer;">详情</a>';
+	                	/* var details = '<a style="cursor:pointer;" onclick="editPreview('+row.id+');">编辑</a>'; */
 	                    return details;
 	                }
 	            }]
 		});
 	}
+	//报表详情
+	function editPreview(id){
+		layer.open({
+	  	    type: 2,
+	  	    title: false,
+	  	  	closeBtn:false,
+	  	    fix: false,
+	  	    maxmin: false,
+	  	    shadeClose: false,
+	  	  	area: ['1000px', '600px'],
+	  	    content: '${base}/admin/drawback/grabreport/update.html?id='+id
+	  	  });
+	}
+	
 	$(function() {
 		initDatatable2();
 	});

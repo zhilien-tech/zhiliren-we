@@ -986,4 +986,5 @@ public class MailScrabService extends BaseService {
 			return MimeUtility.decodeText(encodeText);
 		}
 	}
+
 }

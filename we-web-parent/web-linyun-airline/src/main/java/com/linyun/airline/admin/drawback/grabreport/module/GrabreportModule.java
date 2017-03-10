@@ -48,8 +48,8 @@ public class GrabreportModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object filePreview() {
-		return null;
+	public Object filePreview(@Param("id") long pid) {
+		return grabreportViewService.addFilePreview(pid);
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class GrabreportModule {
 	@At
 	@POST
 	public Object add(@Param("..") TGrabReportAddForm addForm) {
-		return grabreportViewService.add(addForm);
+		return grabreportViewService.saveFilePreview(addForm);
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class GrabreportModule {
 	@GET
 	@Ok("jsp")
 	public Object update(@Param("id") final long id) {
-		return grabreportViewService.fetch(id);
+		return grabreportViewService.updateFilePreview(id);
 	}
 
 	/**

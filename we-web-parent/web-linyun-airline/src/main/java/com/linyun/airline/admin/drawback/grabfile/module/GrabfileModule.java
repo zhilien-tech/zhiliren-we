@@ -104,6 +104,8 @@ public class GrabfileModule {
 		addForm.setFileName(addForm.getFileName());
 		addForm.setParentId(addForm.getId());
 		addForm.setMailId(addForm.getId());
+		addForm.setFileSize(addForm.getFileSize());//文件大小
+		addForm.setType(FileTypeEnum.FILE.intKey());//文件类型
 		return grabfileViewService.add(addForm);
 	}
 
