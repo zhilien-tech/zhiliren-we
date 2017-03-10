@@ -46,11 +46,11 @@ public class TGrabReportEntity implements Serializable {
 
 	@Column
 	@Comment("代理费")
-	private String agencyFee;
+	private Double agencyFee;
 
 	@Column
 	@Comment("税返点")
-	private String taxRebate;
+	private Double taxRebate;
 
 	@Column
 	@Comment("退税状态")
@@ -66,7 +66,11 @@ public class TGrabReportEntity implements Serializable {
 
 	@Column
 	@Comment("代理费2")
-	private String agencyFee2;
+	private Double agencyFee2;
+
+	@Column
+	@Comment("代理返点")
+	private Double agentRebate;
 
 	@Column
 	@Comment("入澳时间")
@@ -75,5 +79,13 @@ public class TGrabReportEntity implements Serializable {
 	@Column
 	@Comment("出澳时间")
 	private String outAustralianTime;
+
+	@Column
+	@Comment("pnrInfoId")
+	private Integer pnrInfoId;
+
+	@Column
+	@Comment("PNR")
+	private String PNR;
 
 }

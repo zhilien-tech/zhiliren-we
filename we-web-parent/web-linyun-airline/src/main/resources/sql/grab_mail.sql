@@ -58,3 +58,32 @@ FROM
 WHERE
 	f.url IS NOT NULL
 $condition
+
+/*grab_mail_filepath*/
+SELECT
+	f.id,
+	f.mailId,
+	f.parentId,
+	f.folderName,
+	f.fileName,
+	f.url,
+	f.fileSize,
+	f.type,
+	f.`status`,
+	f.createTime,
+	f.updateTime,
+	f.`level`,
+	f.fullPath,
+	f.sort,
+	f.groupType
+FROM
+	t_grab_file f
+WHERE
+	id = (
+		SELECT
+			f.parentId
+		FROM
+			t_grab_file f
+		WHERE
+			id =@fileId
+	)
