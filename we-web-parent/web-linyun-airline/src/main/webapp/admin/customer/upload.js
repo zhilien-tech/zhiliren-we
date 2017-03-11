@@ -1,4 +1,4 @@
-function fileupload() {
+/*function fileupload() {
 	if ($("#fileID").val() == "") {
 		layer.msg("上传文件不能为空", "", 2000);
 		return false;
@@ -39,4 +39,4 @@ function dataURLtoBlob(dataurl) {
         u8arr[n] = bstr.charCodeAt(n);
     }
     return new Blob([u8arr], {type:mime});
-}
+}*/

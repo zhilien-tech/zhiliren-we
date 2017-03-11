@@ -93,7 +93,7 @@ function initSelect2(){
 $(function () {
 	//客户信息 显示/隐藏
 	$('.UnderIcon').on('click',function(){
-		$('.hideTable').toggle('400');
+		$('.hideTable').toggle();
 	});
 	//清楚按钮 隐藏
 	$('#clearBtn').click(function(){

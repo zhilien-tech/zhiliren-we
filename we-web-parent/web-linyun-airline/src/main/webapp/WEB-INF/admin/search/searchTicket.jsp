@@ -11,8 +11,7 @@
 <title>查询</title>
 <!-- Bootstrap 3.3.6 -->
 <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
-<link rel="stylesheet"
-	href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
+<link rel="stylesheet" href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
 <link rel="stylesheet" href="${base}/public/dist/css/query.css">
 <!--本页面styleFlie-->
 </head>
@@ -27,33 +26,31 @@
 					<div class="infoTop">
 						<p>客户信息</p>
 						<div class="infoTopContent">
-							<input id="generateOrder" type="checkbox" class="conCheckInput"
-								checked="checked"> <input id="orderType" type="hidden"
-								value="inlandOrderType">
+							<input id="generateOrder" type="checkbox" class="conCheckInput" checked="checked"> 
+							<input id="orderType" type="hidden" value="inlandOrderType">
 							<!-- 订单类型： 内陆跨海和国际 -->
-							<label>生成订单</label> <select id="orderStatus"
-								class="form-control input-sm conSelect cf">
+							<label>生成订单</label> 
+							<select id="orderStatus" class="form-control input-sm conSelect cf">
 								<option value="1" selected="selected">查询</option>
 								<option value="2">预定</option>
 								<option value="3">出票</option>
 								<option value="4">开票</option>
 								<option value="5">关闭</option>
-							</select> <label>提醒：</label> <select id="remindType"
-								class="form-control input-sm timSelect">
+							</select> <label>提醒：</label> 
+							<select id="remindType" class="form-control input-sm timSelect">
 								<option value="0">每15分</option>
 								<option value="1">每30分</option>
 								<option value="2">每1小时</option>
 								<option value="3">每天</option>
 								<option value="4">每周</option>
 								<option value="5">每月</option>
-							</select> <input id="datepicker" name="datepicker" type="text"
+							</select> 
+							<input id="datepicker" name="datepicker" type="text"
 								class="form-control input-sm conTimeInput"
 								onFocus="WdatePicker({minDate:'%y-%M-%d', dateFmt:'yyyy-MM-dd HH:mm:ss'})"
-								placeholder="请选择提醒日期"> <input type="button"
-								class="btn btn-primary btn-sm" onclick="saveOrderInfo();"
-								value="保存"> <input type="button"
-								class="btn btn-primary btn-sm" onclick="closewindow();"
-								value="取消">
+								placeholder="请选择提醒日期"> 
+							<input type="button" class="btn btn-primary btn-sm" onclick="saveOrderInfo();" value="保存"> 
+							<input type="button" class="btn btn-primary btn-sm" onclick="closewindow();" value="取消">
 						</div>
 					</div>
 					<div class="infofooter">
@@ -61,16 +58,13 @@
 							<table>
 								<tr>
 									<td><label>
-											<p id="custInfoName">
-												客户姓名：
-												<p>
-										
+											<p id="custInfoName">客户姓名：
+											<p>
 									</label></td>
 									<td>
 										<!-- <input type="text" class="form-control input-sm" placeholder="请输入客户姓名"> -->
-										<select id="linkNameId" name="linkName"
-										onchange="linkNameOpt()" class="form-control input-sm"
-										multiple="multiple" data-placeholder="请输入客户姓名"></select>
+										<select id="linkNameId" name="linkName" onchange="linkNameOpt()" class="form-control input-sm" multiple="multiple" data-placeholder="请输入客户姓名">
+										</select>
 									</td>
 									<!-- 联系人 -->
 									<input type="hidden" id="linkManId">
@@ -90,11 +84,10 @@
 												&nbsp;历史欠款：<span id="arrearsId">0.00</span> 
 											</font>  
 											&nbsp;预存款：<span id="preDepositId">0.00</span> 
-										</pre>
-									</td>
-									<td><input id="clearBtn" type="button" value="清空"
-										class="btn btn-primary btn-sm"> <i
-										class="UnderIcon fa fa-chevron-circle-down"></i>
+										</pre></td>
+									<td>
+										<input id="clearBtn" type="button" value="清空" class="btn btn-primary btn-sm"> 
+										<i class="UnderIcon fa fa-chevron-circle-down"></i>
 									</td>
 								</tr>
 							</table>
@@ -153,9 +146,9 @@
 					<div id="infofooter" class="infofooter">
 						<div class="DemandDiv">
 							<!-- 隐藏域   控制第一次添加航空段数时，只添加内容 -->
-							<input name="airLineClickHidden" value="1" type="hidden" /> 
-							<span class="titleNum">1</span> 
-							<a href="javascript:;" class="btn btn-primary btn-sm addDemand"><b>+</b>&nbsp;&nbsp;需求</a>
+							<input name="airLineClickHidden" value="1" type="hidden" /> <span
+								class="titleNum">1</span> <a href="javascript:;"
+								class="btn btn-primary btn-sm addDemand"><b>+</b>&nbsp;&nbsp;需求</a>
 							<table class="cloTable">
 								<tr>
 									<td><label>出发城市：</label></td>
@@ -178,21 +171,17 @@
 										class="form-control input-sm timeWid inputdatestr startdatestr"
 										placeholder="2020-01-01"></td>
 									<td><label>人数：</label></td>
-									<td>
-										<input id="cPersonAmount" name="cPersonAmount" type="text"
-										onkeyup="this.value=this.value.replace(/\D/g,'')"
+									<td><input id="cPersonAmount" name="cPersonAmount"
+										type="text" onkeyup="this.value=this.value.replace(/\D/g,'')"
 										onafterpaste="this.value=this.value.replace(/\D/g,'')"
-										class="form-control input-sm" placeholder="">
-									</td>
+										class="form-control input-sm" placeholder=""></td>
 									<td><label class="labelWid">早中晚：</label></td>
-									<td>
-										<select id="tickettype" name="tickettype"
+									<td><select id="tickettype" name="tickettype"
 										class="form-control input-sm textWid">
 											<option value="1">早</option>
 											<option value="2">中</option>
 											<option value="3">晚</option>
-										</select>
-									</td>
+									</select></td>
 								</tr>
 								<tr name="airLineInfo" class="addCustomerAirline">
 									<td></span><label>航空公司：</label></td>
@@ -220,23 +209,19 @@
 										onafterpaste="this.value=this.value.replace(/\D/g,'')">
 									</td>
 									<td><label class="labelWid">销售价：</label></td>
-									<td>
-										<input id="cAirPretium" name="cAirPretium" type="text"
+									<td><input id="cAirPretium" name="cAirPretium" type="text"
 										class="form-control input-sm textWid"
 										onkeyup="this.value=this.value.replace(/\D/g,'')"
 										onafterpaste="this.value=this.value.replace(/\D/g,'')">
 									</td>
-									<td>
-										<a href="javascript:;" name="addButton"
-										class="glyphicon glyphicon-plus addIcon removAddMake"></a>
-									</td>
+									<td><a href="javascript:;" name="addButton"
+										class="glyphicon glyphicon-plus addIcon removAddMake"></a></td>
 								</tr>
 								<tr name="cRemarkTr">
 									<td></span><label>备注：</label></td>
-									<td colspan="11">
-										<input id="cRemark" name="cRemark" type="text"
-										class="form-control input-sm noteText" placeholder=" ">
-									</td>
+									<td colspan="11"><input id="cRemark" name="cRemark"
+										type="text" class="form-control input-sm noteText"
+										placeholder=" "></td>
 								</tr>
 							</table>
 						</div>
@@ -248,9 +233,8 @@
 				<div class="listInfo">
 					<div class="nav-tabs-custom">
 						<ul class="nav nav-tabs query-style">
-							<li class="active">
-								<a id="tab_1Id" href="#tab_1" data-toggle="tab">内陆跨海</a>
-							</li>
+							<li class="active"><a id="tab_1Id" href="#tab_1"
+								data-toggle="tab">内陆跨海</a></li>
 							<li><a id="tab_3Id" href="#tab_1" data-toggle="tab">国际</a></li>
 							<li><a id="tab_2Id" href="#tab_2" data-toggle="tab">机票库</a>
 							</li>
@@ -651,7 +635,7 @@
 			}
 		</script>
 
-												<!-- 解析etem -->
+		<!-- 解析etem -->
 		<script type="text/javascript">
 			function parsingEtemText() {
 				$.ajax({
@@ -892,10 +876,5 @@
 			}
 		</script>
 
-		<!-- CA链接 -->
-		<script type="text/javascript">
-			
-		</script>
-
-											</body>
+</body>
 </html>

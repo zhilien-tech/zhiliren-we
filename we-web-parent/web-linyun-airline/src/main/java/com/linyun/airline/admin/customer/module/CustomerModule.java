@@ -65,7 +65,7 @@ public class CustomerModule {
 	private CustomerViewService customerViewService;
 
 	@Inject
-	private UploadService fdfsUploadService;
+	private UploadService qiniuUploadService;//文件上传
 
 	/**
 	 * 跳转到'添加操作'的录入数据页面
@@ -198,10 +198,10 @@ public class CustomerModule {
 	 */
 	@At
 	@Ok("json")
-	public String uploadFile(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		request.setCharacterEncoding("utf-8");
-		response.setCharacterEncoding("utf-8");
-		Uploader uploader = new Uploader(request, fdfsUploadService);
+	public Object uploadFile(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding(CommonConstants.CHARACTER_ENCODING_PROJECT);//字符编码为utf-8
+		response.setCharacterEncoding(CommonConstants.CHARACTER_ENCODING_PROJECT);
+		Uploader uploader = new Uploader(request, qiniuUploadService);
 		uploader.upload();
 		String url = CommonConstants.IMAGES_SERVER_ADDR + uploader.getUrl();
 		return url;
