@@ -49,7 +49,7 @@
   <!--right Content-->
   <div class="content-wrapper">
     <section class="content">
-        <div class="row col-sm-9">
+        <div class="row col-sm-10">
           <div class="customerInfo"><!--客户信息-->
                <div class="infoTop">
                  <p>客户信息</p>
@@ -525,15 +525,13 @@
           </div><!--end 信息-->
           
         </div>
-        <div class="col-sm-3 rightRemind">
+        <div class="col-sm-2 rightRemind">
             <div class="infoTop">
               <p>提醒设置</p>
             </div>
             <div class="infofooter">
                  <table class="remindSet">
                    <tr>
-                     <td>
-                     </td>
                      <td><input type="text" class="form-control input-sm" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" placeholder="2017-02-15 09:30" disabled="disabled"></td>
                      <td>
                        <select class="form-control input-sm">
@@ -698,7 +696,7 @@
                 skin: false, //加上边框
                 closeBtn:false,//默认 右上角关闭按钮 是否显示
                 shadeClose:true,
-                area: ['840px', '300px'],
+                area: ['770px', '240px'],
                 content: '${base}/admin/inland/mitigate.html?id=${obj.orderinfo.id }&customeid=${obj.custominfo.id }'
               });
         });
@@ -845,7 +843,7 @@
 		         skin: false, //加上边框
 		         closeBtn:false,//默认 右上角关闭按钮 是否显示
 		         shadeClose:true,
-		         area: ['830px', '475px'],
+		         area: ['880px', '425px'],
 		         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+needid
 		       });
 		 }else{

@@ -1,7 +1,7 @@
 /*查询订单详情*/
 .content-wrapper, .right-side, .main-footer {margin-left: 0px;}
 .content {padding-right: 0px;}
-.rightRemind{padding-right: 0px;width: 26%;}
+.rightRemind{padding-right: 0px;width: 18%;}
 table.remindSet{margin-left: 10px;margin-right: 10px;}
 .editBtn{position:relative;left:75px;}
 .infoTopContent input:nth-child(2) {display:none;}
@@ -12,3 +12,9 @@ table.remindSet{margin-left: 10px;margin-right: 10px;}
 .dis{display:block;}
 .infoTopContent {width: 350px;}
 .infoTopContent .conSelect {width: 85px;margin: 0 0 0 15px;}
+.remindSet tr td:nth-child(1){width: 65%;}
+.remindSet tr td:nth-child(1) input{padding: 0 5px;}
+.remindSet tr td:nth-child(2){width: 35%;}
+.remindSet tr td:nth-child(2) select{padding: 0 5px;font-size: 11px;}
+div#orderlog ul {padding-left: 0;}
+div#orderlog ul li{text-align: center;}
