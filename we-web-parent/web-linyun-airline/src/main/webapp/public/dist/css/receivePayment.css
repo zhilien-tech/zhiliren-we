@@ -64,7 +64,7 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 /* .modal-bod{padding:10px;} */
 .imgYulan{width: 100%;height: 100%;}
 .tabConte{margin: 0 10px;}
-.nav-tabs-custom > .tab-content {padding: 0px;}
+.nav-tabs-custom > .tab-content {padding: 10px 0 0 0px;}
 
 
 
