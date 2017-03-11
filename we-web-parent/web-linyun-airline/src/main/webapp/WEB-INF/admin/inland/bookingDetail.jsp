@@ -55,7 +55,7 @@
                  <p>客户信息</p>
                  <div class="infoTopContent">
                    <span>${obj.orderinfo.ordersnum }</span>
-                   <select id="orderType" name="orderType" class="form-control input-sm conSelect cf">
+                   <select id="orderType" name="orderType" class="form-control input-sm conSelect cf" disabled="disabled">
                      <c:forEach var="map" items="${obj.orderstatusenum}" >
                      	<c:if test="${obj.querystatus != map.key }">
                      		<c:choose>
@@ -78,24 +78,13 @@
                  <table>
                    <tr>
                      <td><label>客户姓名：</label></td>
-                     <td><select id="linkName" name="linkName" disabled="disabled" type="text" class="form-control input-sm" multiple="multiple" placeholder="请输入客户姓名">
-                     	<c:forEach items="${obj.customerInfos }" var="one"> 
-                   			<c:choose>
-	                   			<c:when test="${obj.orderinfo.userid  eq one.id  }">
-									<option value="${one.id }" selected="selected">${one.linkMan }</option>
-	                   			</c:when>
-	                   			<c:otherwise>
-		                     		<option value="${one.id }">${one.linkMan }</option>
-	                   			</c:otherwise>
-                    		</c:choose>
-                     	</c:forEach>
-                     	</select>
+                     <td><input id="linkName" name="linkName" disabled="disabled" type="text" class="form-control input-sm" value="${obj.custominfo.linkMan }">
                      	<input id="customerId" name="customerId" type="hidden" value="${obj.custominfo.id }"/>
                      	<!-- 订单id -->
                      	<input id="orderedid" name="orderedid" type="hidden" value="${obj.orderinfo.id }"></td>
                      <td><label style="position: relative;top: 4px;">结算方式：</label></td>
                      <td colspan="3"><pre class="preTxt">不限 信用额度：0  临时额度：0  历史欠款：0  预存款：0</pre></td>
-                     <td><input type="button" value="清空" class="btn btn-primary btn-sm clearBtn"><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
+                     <td><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
                    </tr>
                  </table>
 
@@ -274,6 +263,7 @@
 		                     <td><input id="avgexrate" name="avgexrate" disabled="disabled" type="text" class="form-control input-sm textWid" value="${customneed.cusinfo.avgexrate }"/></td>
 		                     <td><label>币种：</label></td>
 		                     <td colspan="3"><select id="paycurrency" name="paycurrency" disabled="disabled" class="form-control input-sm">
+		                     		<option value="">请选择</option>
 		                            <c:forEach items="${obj.bzcode }" var="one"> 
 		                        	<c:choose>
 		                        		<c:when test="${customneed.cusinfo.paycurrency eq one.dictCode }">
@@ -291,7 +281,14 @@
 								<select id="paymethod" name="paymethod" disabled="disabled" class="form-control input-sm">
 		                            <option value="">请选择</option>
 		                            <c:forEach var="map" items="${obj.paymethodenum}" >
-								   		<option value="${map.key}">${map.value}</option>
+		                            	<c:choose>
+		                            		<c:when test="${customneed.cusinfo.paymethod eq map.key }">
+		                            			<option value="${map.key}" selected="selected">${map.value}</option>
+		                            		</c:when>
+		                            		<c:otherwise>
+										   		<option value="${map.key}">${map.value}</option>
+		                            		</c:otherwise>
+		                            	</c:choose>
 									 </c:forEach>
 		                        </select>
 							 </td>
@@ -506,7 +503,7 @@
                    <tr class="KHinfo">
                      <td><label>应收：</label></td>
                      <td><input id="receivable" name="receivable" type="text" class="form-control input-sm disab" value="${obj.finance.receivable }" disabled="disabled"></td>
-                     <td><label><a href="javascript:;" class="jianMian">减免</a>：</label></td>
+                     <td><label><a href="javascript:;" class="" id="jianMian" disabled="disabled">减免</a>：</label></td>
                      <td><input id="relief" name="relief" type="text" class="form-control input-sm" disabled="disabled" value="${obj.finance.relief }"></td>
                      <td><label>实收合计：</label></td>
                      <td><input id="incometotal" name="incometotal" type="text" class="form-control input-sm disab loadprofit" disabled="disabled" value="${obj.finance.incometotal }"></td>
@@ -602,6 +599,8 @@
           $('.remindSet tbody tr td input').removeAttr("disabled");//删除 提醒设置 input 禁止编辑的状态
           $('.disab').removeAttr("disabled");//信息模块 input 禁止编辑的状态
           $('.PNRbtnTD').removeClass('none');//+PNR 按钮 显示
+          $('#orderType').removeAttr("disabled");//订单状态禁止编辑的状态
+          $('#jianMian').addClass("jianMian");//减免禁止编辑的状态
           //页面不可编辑
           $('.DemandDiv').each(function(i){
         	  $(this).find('[name=leavecity]').removeAttr('disabled');
@@ -638,10 +637,12 @@
           $('.remindSet tbody tr td input').attr("disabled",'disabled');//提醒设置 input 添加 不可编辑属性
           $('.disab').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
           $('.PNRbtnTD').addClass('none');//+PNR 按钮 隐藏
+          $('#orderType').attr("disabled",'disabled');//订单状态添加 不可编辑属性
+          $('#jianMian').removeClass("jianMian");//减免添加 不可编辑属性
           //页面可以编辑
           $('.DemandDiv').each(function(i){
         	  var customneedid = $(this).find('[name=customneedid]').val();
-        	  if(i>0 && !customneedid){
+        	  if(i>0 && !customneedid){ 
         		  $(this).parent().remove();
         	  }else{
 	        	  $(this).find('[name=leavecity]').attr('disabled','disabled');
@@ -691,7 +692,7 @@
         });
 
         //点击 减免 弹框
-        $('.jianMian').click(function(){
+        $(document).on("click",".jianMian",function(){
             layer.open({
                 type: 2,
                 title:false,

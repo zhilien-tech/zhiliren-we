@@ -418,6 +418,7 @@
 <script type="text/javascript">
 	var BASE_PATH = '${base}';
 </script>
+<script src="${base }/admin/order/ordercommon.js"></script>
 <script src="${base}/admin/order/inland.js"></script>
 <script src="${base}/admin/order/ticketing.js"></script>
 <script src="${base}/admin/order/ticketingpay.js"></script>

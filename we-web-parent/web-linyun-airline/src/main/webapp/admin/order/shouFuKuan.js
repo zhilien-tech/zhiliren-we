@@ -91,22 +91,34 @@ function initshouFuKuanGatheringTable() {
     	//   指定第一列，从0开始，0表示第一列，1表示第二列……
           targets: 9,
           render: function(data, type, row, meta) {
-              return '<a style="cursor:pointer;" onclick="openInvoice('+row.id+');">开发票</a>'
+              return '<a style="cursor:pointer;" onclick="openInvoice('+row.id+','+row.invoiceid+');">开发票</a>'
           }
       }],
   });
 }
 //打开开发票页面
-function openInvoice(id){
-	layer.open({
-        type: 2,
-        title:false,
-        skin: false, //加上边框
-        closeBtn:false,//默认 右上角关闭按钮 是否显示
-        shadeClose:true,
-        area: ['987px', '620px'],
-        content: BASE_PATH + '/admin/inland/openInvoice.html?id='+id
-      });
+function openInvoice(id,invoiceid){
+	if(invoiceid){
+		layer.open({
+	        type: 2,
+	        title:false,
+	        skin: false, //加上边框
+	        closeBtn:false,//默认 右上角关闭按钮 是否显示
+	        shadeClose:true,
+	        area: ['987px', '620px'],
+	        content: BASE_PATH + '/admin/inland/kaiInvoice.html?id='+invoiceid
+	      });
+	}else{
+		layer.open({
+			type: 2,
+			title:false,
+			skin: false, //加上边框
+			closeBtn:false,//默认 右上角关闭按钮 是否显示
+			shadeClose:true,
+			area: ['987px', '620px'],
+			content: BASE_PATH + '/admin/inland/openInvoice.html?id='+id
+		});
+	}
 }
 //付款表格
 var shouFuKuanPayTable;

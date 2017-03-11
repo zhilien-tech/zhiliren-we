@@ -79,6 +79,7 @@ function initpayTable() {
                     },
                     {"data": "costprice", "bSortable": false,
                     	render:function(data, type, row, meta) {
+                    		var result = '';
                     		if(row.costprice && row.costprice != undefined){
                     			result = row.costprice;
                     		}
@@ -87,6 +88,7 @@ function initpayTable() {
                     },
                     {"data": "costpricesum", "bSortable": false,
                     	render:function(data, type, row, meta) {
+                    		var result = '';
                     		if(row.costpricesum && row.costpricesum != undefined){
                     			result = row.costpricesum;
                     		}

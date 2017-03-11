@@ -6,19 +6,7 @@ function initDatatable() {
         "processing": true,
         "serverSide": true,
         "initComplete": function( settings, json ) {
-				        	$(this).find('tr').each(function () {//全部 table 自适应高度      
-				        	       $(this).children('td').each(function(){
-				        	          var liLength = $(this).children('ul').find("li").length;
-				        	          if(liLength==1){
-				        	            $(this).children('ul').find("li").addClass('eq');
-				        	          }else if(liLength==2){
-				        	            $(this).children('ul').find("li").eq(1).addClass('eq1');
-				        	            $(this).children('ul').find("li").eq(0).addClass('eq0');
-				        	          }else if(liLength==2){
-				        	            $(this).children('ul').find("li").eq(2).addClass('eq2');
-				        	          }
-				        	       });
-				        	});
+        	autoHighLoad($(this));
           },
         "stripeClasses": [ 'strip1','strip2' ],
         "language": {
@@ -175,7 +163,9 @@ function initDatatable() {
 				ordersstatus:status
 		};
 		inlandCrossTable.settings()[0].ajax.data = param;
-		inlandCrossTable.ajax.reload();
+		inlandCrossTable.ajax.reload(function(json){
+			autoHighLoad($('#inlandCrossTable'));
+		});
 	}
 	$("#searchBtn").on('click', function () {
 		var companyName = $("#companyName").val();

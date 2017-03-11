@@ -257,9 +257,6 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		}
 		//添加客户需求、航班信息
 		result.put("customneedinfo", customneedinfo);
-		//准备客户姓名下拉
-		List<TCustomerInfoEntity> customerInfos = dbDao.query(TCustomerInfoEntity.class, null, null);
-		result.put("customerInfos", customerInfos);
 		//准备航班号下拉
 		result.put("airline", dbDao.query(TFlightInfoEntity.class, null, null));
 		//准备城市下拉
@@ -476,9 +473,6 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		}
 		//添加客户需求、航班信息
 		result.put("customneedinfo", customneedinfo);
-		//准备客户姓名下拉
-		List<TCustomerInfoEntity> customerInfos = dbDao.query(TCustomerInfoEntity.class, null, null);
-		result.put("customerInfos", customerInfos);
 		//准备航班号下拉
 		result.put("airline", dbDao.query(TFlightInfoEntity.class, null, null));
 		//准备城市下拉
@@ -560,8 +554,14 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			String arrivecity = (String) map.get("arrivecity");
 			//日期
 			String leavedate = (String) map.get("leavedate");
-			Integer peoplecount = Integer.valueOf((String) map.get("peoplecount"));
-			Integer tickettype = Integer.valueOf((String) map.get("tickettype"));
+			Integer peoplecount = null;
+			if (!Util.isEmpty(map.get("peoplecount"))) {
+				peoplecount = Integer.valueOf((String) map.get("peoplecount"));
+			}
+			Integer tickettype = null;
+			if (!Util.isEmpty(map.get("tickettype"))) {
+				tickettype = Integer.valueOf((String) map.get("tickettype"));
+			}
 			Double realtimexrate = null;
 			if (!Util.isEmpty(map.get("realtimexrate"))) {
 				realtimexrate = Double.valueOf((String) map.get("realtimexrate"));
@@ -617,9 +617,15 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				//抵达时间
 				String arrivetime = (String) airmap.get("arrivetime");
 				//成本价
-				Double formprice = Double.valueOf((String) airmap.get("formprice"));
+				Double formprice = null;
+				if (!Util.isEmpty(airmap.get("formprice"))) {
+					formprice = Double.valueOf((String) airmap.get("formprice"));
+				}
 				//销售价
-				Double price = Double.valueOf((String) airmap.get("price"));
+				Double price = null;
+				if (!Util.isEmpty(airmap.get("price"))) {
+					price = Double.valueOf((String) airmap.get("price"));
+				}
 				TAirlineInfoEntity airlineEntity = new TAirlineInfoEntity();
 				airlineEntity.setAircom(aircom);
 				airlineEntity.setAilinenum(ailinenum);

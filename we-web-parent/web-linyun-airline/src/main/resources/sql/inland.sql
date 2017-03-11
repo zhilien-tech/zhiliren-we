@@ -81,8 +81,9 @@ INNER JOIN t_customer_info tci ON tuo.userid = tci.id
 INNER JOIN t_finance_info tfi on tuo.id = tfi.orderid
 $condition
 /*get_shoufukuan_shoukuan_list*/
-select tor.* 
-from t_receive tr,t_order_receive tor
+select tr.*,tii.id invoiceid
+ from t_receive tr
+left JOIN t_invoice_info tii ON tr.id = tii.receiveid
 $condition
 
 /*get_shoukuan_order_list*/
