@@ -17,7 +17,7 @@
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" value="保存"/>
             <h4>减免申请</h4>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" style="padding:0;">
             <div class="tab-content backcard">
             	<form id="mitigateForm">
                 <div class="form-group row">
@@ -37,7 +37,7 @@
                   <div class="col-sm-3 padding">
                       <input id="accountupper" name="accountupper" type="text" class="form-control input-sm" disabled="disabled" />
                   </div>
-                  <label class="col-sm-1 text-right padding">币种：</label>
+                  <label class="col-sm-2 text-right padding">币种：</label>
                   <div class="col-sm-2 padding">
                     <select id="currency" name="currency" class="form-control input-sm">
                       <c:forEach items="${obj.bzcode }" var="one"> 
@@ -52,7 +52,7 @@
                   <div class="col-sm-2 padding"><input id="applyid" name="applyid" type="text" class="form-control input-sm" disabled="disabled" value="${obj.user.userName }"/></div>
                   <label class="col-sm-1 text-right padding">审批人：</label>
                   <div class="col-sm-2 padding"><input id="approvelid" name="approvelid" type="text" class="form-control input-sm" disabled="disabled" value="候小凌"/></div>
-                  <label class="col-sm-1 text-right padding">申请结果：</label>
+                  <label class="col-sm-2 text-right padding">申请结果：</label>
                   <div class="col-sm-2 padding"><input id="applyResult" name="applyResult" type="text" class="form-control input-sm" disabled="disabled" /></div>
                 </div><!--end 银行/币种-->
                 </form>

@@ -21,7 +21,7 @@
   <div class="content-wrapper">
     <!-- Main content -->
     <section class="content">
-    <div class="row row-top">
+    <div class="row">
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header LiuSuiNum">
