@@ -3,15 +3,17 @@ package com.linyun.airline.admin.drawback.grabreport.service;
 import java.text.DecimalFormat;
 import java.util.Map;
 
-import org.nutz.dao.Cnd;
+import org.nutz.dao.Sqls;
+import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.google.common.collect.Maps;
 import com.linyun.airline.admin.drawback.grabfile.entity.TGrabFileEntity;
 import com.linyun.airline.admin.drawback.grabreport.entity.TGrabReportEntity;
+import com.linyun.airline.admin.drawback.grabreport.entity.TReportDto;
 import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportAddForm;
-import com.linyun.airline.entities.TPnrInfoEntity;
 import com.uxuexi.core.common.util.Util;
+import com.uxuexi.core.db.util.DbSqlUtil;
 import com.uxuexi.core.web.base.service.BaseService;
 
 @IocBean
@@ -38,21 +40,37 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		return obj;
 	}
 
+	/**
+	 * 报表数据保存
+	 * @param addForm
+	 */
 	public Object saveFilePreview(TGrabReportAddForm addForm) {
 		//double数据四舍五入保留小数点后两位
 		TGrabReportEntity report = new TGrabReportEntity();
 		DecimalFormat df = new DecimalFormat("#.00");
 		String pnr = addForm.getPNR();
-		TPnrInfoEntity fetchPnr = dbDao.fetch(TPnrInfoEntity.class, Cnd.where("PNR", "=", pnr));
-		Double costprice = 0.0;
-		Integer peoplecount = 0;
-		Double salesprice = 0.0;
-		Double salespricesum = 0.0;
+		Sql sql = Sqls.create(sqlManager.get("grab_report_list"));
+		sql.params().set("pnr", pnr);
+		TReportDto fetchPnr = DbSqlUtil.fetchEntity(dbDao, TReportDto.class, sql);
+		Double costprice = 0.0;//成本单价
+		Integer peoplecount = 0;//人数
+		Double price = 0.0;//实收单价(销售价)
 		if (!Util.isEmpty(fetchPnr)) {
-			costprice = fetchPnr.getCostprice();//成本单价
-			peoplecount = fetchPnr.getPeoplecount();//人数
-			salesprice = fetchPnr.getSalesprice();//销售单价
-			salespricesum = fetchPnr.getSalespricesum();//销售总价
+			if (!Util.isEmpty(costprice)) {
+				costprice = fetchPnr.getCostprice();//成本单价
+			} else {
+				costprice = 0.0;
+			}
+			if (!Util.isEmpty(peoplecount)) {
+				peoplecount = fetchPnr.getPeoplecount();//人数
+			} else {
+				peoplecount = 0;
+			}
+			if (!Util.isEmpty(price)) {
+				price = fetchPnr.getPrice();//实收单价(销售价)
+			} else {
+				price = 0.0;
+			}
 		}
 		report.setPNR(pnr);//PNR
 		report.setExciseTax1(Double.parseDouble(df.format(addForm.getExciseTax1())));//消费税
@@ -83,24 +101,31 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		//3、税返点=SUM(代理费*10%)
 		Double taxRebate = Double.parseDouble(df.format(agencyFee * 0.1));//税返点
 		report.setTaxRebate(taxRebate);
-		//TODO
-		//4、实收单价(含操作费)=SUM(实收单价)
-		Double realIncome = salesprice;//实收单价(含操作费)
-		report.setRealIncome(realIncome);
-		//TODO
-		//5、实收合计(含操作费)=SUM[实收单价(含操作费)*人数]
-		Double realTotal = (realIncome * peoplecount);//实收合计(含操作费)
-		report.setRealTotal(realTotal);
-		if (!Util.isEmpty(salespricesum)) {
-			//TODO
-			/**6、代理费2=实收票价(含行李)*代理返点
-			 * 实收票价(含行李)=实收合计(含操作费)-消费税2-税金/杂项 (realTotal-(salespricesum/11)-tax)*agentRebate
-			 * 消费税2=SUM[实收合计(含操作费)/11]
+		if (!Util.isEmpty(price) && !Util.isEmpty(peoplecount)) {
+			//4、实收单价(含操作费)=SUM(实收单价)
+			Double realIncome = price;//实收单价(含操作费)
+			report.setRealIncome(realIncome);
+			//5、实收合计(含操作费)=SUM[实收单价(含操作费)*人数]
+			Double realTotal = (realIncome * peoplecount);//实收合计(含操作费)
+			report.setRealTotal(realTotal);
+			/**6、代理费2=实收票价(含行李)*代理返点(realTotal-(realTotal/11)-tax)*agentRebate
+			 * 实收票价(含行李)=实收合计(含操作费)-消费税2-税金/杂项 =realTotal-(realTotal/11)-tax
+			 * 消费税2=SUM[实收合计(含操作费)/11]=(realTotal/11)
 			 */
-			Double agencyFee2 = (realTotal - (salespricesum / 11) - tax) * agentRebate;//代理费2
+			Double agencyFee2 = Double.parseDouble(df.format((realTotal - (realTotal / 11) - tax) * agentRebate));//代理费2
 			report.setAgencyFee2(agencyFee2);
 		} else {
-			Double agencyFee2 = (realTotal - tax) * agentRebate;//代理费2
+			//4、实收单价(含操作费)=SUM(实收单价)
+			Double realIncome = 0.0;//实收单价(含操作费)
+			report.setRealIncome(realIncome);
+			//5、实收合计(含操作费)=SUM[实收单价(含操作费)*人数]
+			Double realTotal = 0.0;//实收合计(含操作费)
+			report.setRealTotal(realTotal);
+			/**6、代理费2=实收票价(含行李)*代理返点(realTotal-(realTotal/11)-tax)*agentRebate
+			 * 实收票价(含行李)=实收合计(含操作费)-消费税2-税金/杂项 =realTotal-(realTotal/11)-tax
+			 * 消费税2=SUM[实收合计(含操作费)/11]=(realTotal/11)
+			 */
+			Double agencyFee2 = Double.parseDouble(df.format((realTotal - (realTotal / 11) - tax) * agentRebate));//代理费2
 			report.setAgencyFee2(agencyFee2);
 		}
 		return dbDao.insert(report);

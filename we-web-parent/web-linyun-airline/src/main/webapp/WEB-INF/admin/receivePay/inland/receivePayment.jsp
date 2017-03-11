@@ -105,13 +105,13 @@
 													<!-- 客户名称/订单号/联系人/PNR 搜索框 -->
 													<input id="inlandPayInput" type="text" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
 												</div>
-												<div class="col-md-3">
+												<div class="col-md-4">
 													<!-- 搜索 按钮 -->
 													<button id="inlandPaySearchBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
 													<button id="inlandPayClearBtn" type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
 													<button id="inlandPayCancelBtn" type="button" class="btn btn-primary btn-sm ckBtn">取消所有勾选</button>
 												</div>
-												<div class="col-md-2">
+												<div class="col-md-1">
 													<!-- 付款 按钮 -->
 													<button id="inlandPayClick" type="button" class="btn btn-primary btn-sm fuKuanBtn1">付款</button>
 												</div>

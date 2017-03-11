@@ -74,18 +74,18 @@
                         <table id="rebatesReportTable" class="table table-bordered table-hover">
                           <thead>
                           <tr>
-                            <th>备注</th>
+                          	<th>PNR</th>
                             <th>汇款</th>
-                            <th>blance(备用金余额)</th>
-                            <th>票价(含行李)</th>
+                            <th>备用金余额</th>
+                            <th>票价</th>
                             <th>刷卡费</th>
                             <th>税金/杂项</th>
-                            <th>消费税(GST)</th>
+                            <th>消费税</th>
                             <th>代理费</th>
                             <th>税返点</th>
                             <th>退税状态</th>
-                            <th>实收单价(含操作费)</th>
-                            <th>实收合计(含操作费)</th>
+                            <th>实收单价</th>
+                            <th>实收合计</th>
                             <th>代理费</th>
                             <th>入澳时间</th>
                             <th>出澳时间</th>
@@ -655,13 +655,13 @@ function successCallback(id){
 	            }
 	        },
 	        "columns": [
-	                    {"data": "remark", "bSortable": false,
+	                    {"data": "pnr", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var remark = row.remark;
-	                    		if(null==remark || ""==remark){
+	                    		var pnr = row.pnr;
+	                    		if(null==pnr || ""==pnr){
 	                    			return "";
 	                    		}
-	                    		var result = '<span data-toggle="tooltip" data-placement="right" title="'+row.remark+'">'+row.remark+'<span>';
+	                    		var result = '<span data-toggle="tooltip" data-placement="right" title="'+row.pnr+'">'+row.pnr+'<span>';
 	                    		return result;
 	                    	}
 	                    },
