@@ -70,14 +70,36 @@ where cj.comId=@comid
 
 /*customer_comOption_list*/
 SELECT
-a.id,
-c.comName
+	c.id,
+	c.comName,
+	c.comType,
+	c.deletestatus
 FROM
-t_agent a
-INNER JOIN t_company c ON a.comId = c.id
+	t_company c
 $condition
 LIMIT 0,5
 
+/*customer_agOption_list*/
+SELECT
+	a.id,
+	c.comName,
+	c.comType,
+	c.deletestatus
+FROM
+	t_agent a
+INNER JOIN t_company c ON a.comId = c.id
+	$condition
+
+/*customer_upOption_list*/
+SELECT
+	a.id,
+	c.comName,
+	c.comType,
+	c.deletestatus
+FROM
+	t_upcompany a
+INNER JOIN t_company c ON a.comId = c.id
+	$condition
 
 /*customer_islineOption_list*/
 select 

@@ -17,7 +17,7 @@ import com.uxuexi.core.common.enums.IEnum;
  * @Date	 2017年2月27日 	 
  */
 public enum OrderStatusEnum implements IEnum {
-	SEARCH(1, "查询"), BOOKING(2, "预定"), TICKETING(3, "出票"), BILLING(4, "开票"), CLOSE(5, "关闭");
+	SEARCH(1, "查询"), BOOKING(2, "预定"), BILLING(4, "开票"), TICKETING(3, "出票"), CLOSE(5, "关闭");
 
 	private int key;
 	private String value;

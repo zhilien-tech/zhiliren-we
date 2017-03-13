@@ -26,7 +26,7 @@
                 <table class="PNRtable">
                   <tr>
                     <td>PNR：</td>
-                    <td><input id="pnr" name="pnr" type="text" class="form-control input-sm" value="${obj.pnrinfo.PNR }"></td>
+                    <td><input id="pnr" name="pnr" type="text" class="form-control input-sm PNRlength" value="${obj.pnrinfo.PNR }"></td>
                     <td>登录帐号：</td>
                     <td><input id="loginid" name="loginid" type="text" class="form-control input-sm" value="${obj.pnrinfo.loginid }"></td></td>
                     <td>人数：</td>
@@ -50,13 +50,13 @@
                   </tr>
                   <tr>
                     <td>成本单价：</td>
-                    <td><input id="costprice" name="costprice" type="text" class="form-control input-sm" value="${obj.pnrinfo.costprice }"></td>
+                    <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.costprice }"></td>
                     <td>成本总价：</td>
-                    <td><input id="costpricesum" name="costpricesum" type="text" class="form-control input-sm" value="${obj.pnrinfo.costpricesum }"></td></td>
+                    <td><input id="costpricesum" name="costpricesum" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.costpricesum }"></td></td>
                     <td>销售单价：</td>
-                    <td><input id="salesprice" name="salesprice" type="text" class="form-control input-sm" value="${obj.pnrinfo.salesprice }"></td></td>
+                    <td><input id="salesprice" name="salesprice" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.salesprice }"></td></td>
                     <td>销售总价：</td>
-                    <td><input id="salespricesum" name="salespricesum" type="text" class="form-control input-sm" value="${obj.pnrinfo.salespricesum }"></td></td>
+                    <td><input id="salespricesum" name="salespricesum" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.salespricesum }"></td></td>
                   </tr>
                 </table>
 
@@ -101,6 +101,7 @@
 	<script src="${base }/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
     <script src="${base }/public/dist/js/multiselect.min.js"></script>
     <script src="${base }/public/dist/js/prettify.min.js"></script>
+    <script src="${base }/admin/order/ordercommon.js"></script>
     <!--layer -->
   <script src="${base}/common/js/layer/layer.js"></script>
     <script type="text/javascript">

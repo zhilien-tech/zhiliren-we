@@ -69,7 +69,6 @@
 									&nbsp;&nbsp;<i class="fa fa-user-secret"></i> 客户管理
 								</h3> -->
 									<div class="form-group row form-right">
-
 										<div class="col-md-2">
 											<!--是否签约 下拉框-->
 											<select id="contract" class="form-control select"
@@ -120,7 +119,9 @@
 										<tr>
 											<th>序号</th>
 											<th>公司名称</th>
+											<th>公司简称</th>
 											<th>负责人</th>
+											<th>联系人</th>
 											<th>联系电话</th>
 											<th>签约状态</th>
 											<th>签约到期日</th>
@@ -202,7 +203,9 @@ function initDatatable() {
         "columns": [
                     {"data": "id", "bSortable": false},
                     {"data": "name", "bSortable": false},
+                    {"data": "shortname", "bSortable": false},
                     {"data": "username", "bSortable": false},
+                    {"data": "linkman", "bSortable": false},
                     {"data": "telephone", "bSortable": false},
                     {"data": "contract", "bSortable": false,
                     	render: function(data, type, row, meta) {
@@ -234,7 +237,7 @@ function initDatatable() {
             ],
         columnDefs: [{
             //   指定第一列，从0开始，0表示第一列，1表示第二列……
-            targets: 6,
+            targets: 8,
             render: function(data, type, row, meta) {
                 return '<a onclick="edit('+row.id+')" id="updateBtn" class="btn_mini btn_modify eti_a">编辑</a>';
             }

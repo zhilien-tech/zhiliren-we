@@ -26,7 +26,11 @@ public class TCompanyBankCardEntity implements Serializable {
 
 	@Column
 	@Comment("公司id")
-	private Integer companyId;
+	private long companyId;
+
+	@Column
+	@Comment("银行名称")
+	private String bankComp;
 
 	@Column
 	@Comment("银行卡名称")

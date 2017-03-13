@@ -56,21 +56,23 @@
 				<tr>
 					<td>银行：</td>
 					<td>
-						<select id="bankComp" name="bankComp" class="form-control input-sm">
+						<select id="bankComp" name="bankComp" onchange="bankSelect();" class="form-control input-sm">
+							<option>--请选择--</option>
 							<c:forEach var="one" items="${obj.bankList}">
 	                        	<option value="${one.id }">${one.dictName }</option>
 	                        </c:forEach>
 						</select>
 					</td>
 					<td>银行卡名称：</td>
-					<td><select id="cardName" name="cardName" class="form-control input-sm">
-							<option value="1">国际专用卡</option>
-							<option value="2">内陆专用卡</option>
+					<td><select id="cardName" name="cardName" onchange="cardSelect();" class="form-control input-sm">
+							<option>--请选择--</option>
 					</select></td>
 					<td>卡号：</td>
-					<td><select id="cardNum" name="cardNum" class="form-control input-sm">
-							<option value="1">6352 7463 3647 756</option>
-					</select></td>
+					<td>
+						<select id="cardNum" name="cardNum" class="form-control input-sm">
+							<option>--请选择--</option>
+						</select>
+					</td>
 					<td>合计：</td>
 					<td id="totalMoney">${obj.totalMoney }</td>
 					<input id="totalMoney" name="totalMoney" type="hidden" value="${obj.totalMoney }">
@@ -203,6 +205,50 @@
 				}
 			});
 		});
+	
+	//银行名称改变
+	function bankSelect(){
+		$.ajax({
+			cache : false,
+			type : "POST",
+			data : {
+				bankId:$('#bankComp').val()
+			},
+			url : '${base}/admin/receivePay/inland/getCardNames.html',
+			success : function(data) {
+				var str = "<option>--请选择--</option>";
+				for(var i=0;i< data.length;i++){
+					str += '<option value="'+data[i]+'">'+data[i]+'</option>';
+				}
+				document.getElementById("cardName").innerHTML=str;
+			},
+			error : function(request) {
+				
+			}
+		});
+	}
+	
+	//银行卡名称改变
+	function cardSelect(){
+		$.ajax({
+			cache : false,
+			type : "POST",
+			data : {
+				cardName:$('#cardName').val()
+			},
+			url : '${base}/admin/receivePay/inland/getCardNums.html',
+			success : function(data) {
+				var str = "<option>--请选择--</option>";
+				for(var i=0;i< data.length;i++){
+					str += '<option value="'+data[i]+'">'+data[i]+'</option>';
+				}
+				document.getElementById("cardNum").innerHTML=str;
+			},
+			error : function(request) {
+				
+			}
+		});
+	}
 	</script>
 </body>
 </html>

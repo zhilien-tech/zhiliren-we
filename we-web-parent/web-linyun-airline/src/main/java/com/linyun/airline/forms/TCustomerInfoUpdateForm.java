@@ -16,8 +16,11 @@ public class TCustomerInfoUpdateForm extends ModForm implements Serializable {
 	/**上游公司id*/
 	private long upComId;
 
-	/**代理商id*/
+	/**客户id*/
 	private long agentId;
+
+	/**客户类型*/
+	private long customerType;
 
 	/**名称*/
 	private String name;

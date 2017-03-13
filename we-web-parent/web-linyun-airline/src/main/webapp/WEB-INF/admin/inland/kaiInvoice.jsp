@@ -117,7 +117,7 @@
                   <td>差额：</td>
                   <td><input id="difference" name="difference" type="text" class="form-control input-sm" value="${obj.invoiceinfo.difference }"></td>
                   <td>余额：</td>
-                  <td><label>3333.33</label>
+                  <td><label>${obj.receive.sum }</label>
                   	<input id="balance" name="balance" type="hidden" value="" value="${obj.invoiceinfo.balance }">
                   </td>
           </tr>

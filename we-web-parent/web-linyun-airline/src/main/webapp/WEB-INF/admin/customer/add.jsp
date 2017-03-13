@@ -18,12 +18,10 @@
 	width: 95.5% !important;
 	display: inline-block;
 }
-
 .seleSpanWid .select2-container {
 	width: 98.5% !important;
 	display: inline-block;
 }
-
 </style>
 </head>
 
@@ -62,6 +60,8 @@
 									<input id="agentId" type="hidden" name="agentId" />
 									<!-- 公司名称 -->
 									<input id="comName" type="hidden" name="name" />
+									<!-- 公司类型 -->
+									<input id="comType" type="hidden" name="customerType" />
 								</div>
 							</div>
 						</div>
@@ -76,6 +76,9 @@
 								//公司名称
 								var selectedcompanyName = $('#companyId').find("option:selected").text();
 								$("#comName").val(selectedcompanyName);
+								//公司类型
+								var res = $("#companyId").select2("data");
+								$("#comType").val(res[0].comType);
 							}
 						</script>
 
@@ -381,24 +384,24 @@
 		var base = "${base}";
 		$(function() {
 			$.fileupload1 = $('#uploadify').uploadify({
-				'auto' : true,
-				'formData' : {
-					'fcharset' : 'uft-8',
-					'action' : 'uploadimage'
-				},
-				'buttonText' : '上传',
-				'fileSizeLimit' : '3000MB',
-				'fileTypeDesc' : '文件',
-				'fileTypeExts' : '*.png; *.txt; *.doc; *.docx; *.pdf; *.xls; *.xlsx; *.jpg; *.bmp; *.tiff; *.pcx; *.exif; *.fpx; *.svg; *.psd; *.cdr; *.pcd; *.dxf; *.eps; *.ai; *.raw; *.WMF; ',//文件类型过滤
-				'swf' : '${base}/public/plugins/uploadify/uploadify.swf',
-				'multi' : false,
-				'successTimeout' : 1800,
-				'queueSizeLimit' : 100,
-				'uploader' : '${base}/admin/customer/uploadFile.html',
-				//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
-				//下面的例子演示如何获取到vid
-				'onUploadSuccess' : function(file, data, response) {
-					$("#completeFileName").html("");
+	            'auto' : true,
+	            'formData' : {
+	            	'fcharset' : 'uft-8',
+	                'action' : 'uploadimage'
+	            },
+	            'buttonText': '上传',
+	            'fileSizeLimit' : '3000MB',
+	            'fileTypeDesc' : '文件',
+	            'fileTypeExts' : '*.png; *.txt; *.doc; *.pdf; *.xls; *.jpg; *.docx; *.xlsx;',//文件类型过滤
+	            'swf'      : '${base}/public/plugins/uploadify/uploadify.swf',
+	            'multi':false,
+	            'successTimeout':1800,
+	            'queueSizeLimit':100,
+	            'uploader' : '${base}/admin/customer/uploadFile.html',
+	            //onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
+	            //下面的例子演示如何获取到vid
+	            'onUploadSuccess':function(file,data,response){
+	            	$("#completeFileName").html("");
 					var jsonobj = eval('(' + data + ')');
 					$('#appendix').val(data);
 					$("#fileUrl").val(data);
@@ -416,7 +419,7 @@
                         innerHtml = "<div>该附件上传失败，请重新上传</div>";
                     }
                     $("#completeFileName").html($("#completeFileName").html() + innerHtml);
-				},
+	            },
                 //加上此句会重写onSelectError方法【需要重写的事件】
                 'overrideEvents': ['onSelectError', 'onDialogClose'],
                 //返回一个错误，选择文件的时候触发
@@ -433,11 +436,10 @@
                             break;
                     }
                 }
-			});
-
+	        });
+			
 			//页面加载时 执行
 			angentList();
-
 			//校验
 			$('#customerAddForm').bootstrapValidator({
 				message : '验证不通过',
@@ -610,7 +612,6 @@
 				}
 			});
 		}
-
 		//结算方式 add input
 		function paytypeSelect_change(obj) {
 			var seleValue = $(".sele").find("option:selected").attr("value");
@@ -620,7 +621,6 @@
 				document.getElementById("paytypeDivId").style.display = "none";
 			}
 		}
-
 		//付款方式 add input
 		function paywaySelect_change(obj) {
 			var payValue = $(".paySele").find("option:selected").attr("value");
@@ -793,7 +793,6 @@
 		/* $('#addBtn').click(function() {
 			$('#customerAddForm').bootstrapValidator('validate');
 		}); */
-
 		//显示或隐藏发票项
 		function gaveInvioce() {
 			var s = document.getElementById("invoiceID").value;
@@ -804,7 +803,6 @@
 				document.getElementById("invioceType").style.display = "none";
 			}
 		}
-
 		//返回 
 		function closeWindow() {
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
@@ -821,7 +819,6 @@
 			$("#downloadA").attr("href", url);
 	    }
 	</script>
-
 
 </body>
 </html>

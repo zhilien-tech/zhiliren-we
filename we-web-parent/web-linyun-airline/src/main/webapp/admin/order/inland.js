@@ -6,19 +6,7 @@ function initDatatable() {
         "processing": true,
         "serverSide": true,
         "initComplete": function( settings, json ) {
-				        	$(this).find('tr').each(function () {//全部 table 自适应高度      
-				        	       $(this).children('td').each(function(){
-				        	          var liLength = $(this).children('ul').find("li").length;
-				        	          if(liLength==1){
-				        	            $(this).children('ul').find("li").addClass('eq');
-				        	          }else if(liLength==2){
-				        	            $(this).children('ul').find("li").eq(1).addClass('eq1');
-				        	            $(this).children('ul').find("li").eq(0).addClass('eq0');
-				        	          }else if(liLength==2){
-				        	            $(this).children('ul').find("li").eq(2).addClass('eq2');
-				        	          }
-				        	       });
-				        	});
+        	autoHighLoad($(this));
           },
         "stripeClasses": [ 'strip1','strip2' ],
         "language": {
@@ -175,7 +163,9 @@ function initDatatable() {
 				ordersstatus:status
 		};
 		inlandCrossTable.settings()[0].ajax.data = param;
-		inlandCrossTable.ajax.reload();
+		inlandCrossTable.ajax.reload(function(json){
+			autoHighLoad($('#inlandCrossTable'));
+		});
 	}
 	$("#searchBtn").on('click', function () {
 		var companyName = $("#companyName").val();
@@ -191,7 +181,16 @@ function initDatatable() {
 $(function () {
     initDatatable();
 });
-
+$("tbody",$('#inlandCrossTable')).on("click","tr",function(event) {
+	var item = inlandCrossTable.row($(this).closest('tr')).data();
+	var url = BASE_PATH;
+	if(item.ordersstatus == 1){
+		url += '/admin/inland/queryDetail.html?id='+item.id;
+	}else{
+		url = '/admin/inland/bookingDetail.html?id='+item.id;
+	}
+	window.open(url);
+});
 function edit(id,status){ 
 	var url = BASE_PATH;
 	if(status == 1){
@@ -200,13 +199,4 @@ function edit(id,status){
 		url = '/admin/inland/bookingDetail.html?id='+id;
 	}
 	window.open(url);
-	/*layer.open({
-        type: 2,
-        title:false,
-        skin: false, //加上边框
-        closeBtn:true,//默认 右上角关闭按钮 是否显示
-        shadeClose:true,
-        area: ['100%', '100%'],
-        content: url
-      });*/
 }
