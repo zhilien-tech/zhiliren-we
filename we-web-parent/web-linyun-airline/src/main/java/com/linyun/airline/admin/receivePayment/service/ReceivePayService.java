@@ -63,6 +63,8 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 
 	//银行卡类型
 	private static final String YHCODE = "YH";
+	//币种类型
+	private static final String BZCODE = "BZ";
 
 	//银行卡状态
 	private static final int ENABLE = BankCardStatusEnum.ENABLE.intKey();
@@ -285,15 +287,14 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		}
 		map.put("bankList", bankList);
 
-		//银行卡名称
-		/*List<TBankCardEntity> bankCardList = dbDao.query(TBankCardEntity.class, Cnd.where("status", "=", ENABLE)
-				.groupBy("cardName"), null);
-		List<String> cardNames = new ArrayList<String>();
-		for (TBankCardEntity bankCardEntity : bankCardList) {
-			cardNames.add(bankCardEntity.getCardName());
+		//银行名称
+		List<DictInfoEntity> BZList = new ArrayList<DictInfoEntity>();
+		try {
+			BZList = externalInfoService.findDictInfoByName("", BZCODE);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		map.put("cardNames", cardNames);*/
-		//银行卡卡号
+		map.put("bzList", BZList);
 
 		//付款用途
 		List<DictInfoEntity> fkytList = new ArrayList<DictInfoEntity>();
