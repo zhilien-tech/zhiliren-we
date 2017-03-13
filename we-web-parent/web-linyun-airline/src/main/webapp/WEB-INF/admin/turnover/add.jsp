@@ -8,6 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <title>记一笔</title>
+   	 	<link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
     	<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
       	<link rel="stylesheet" href="${base}/public/dist/css/swiftNumber.css"><!--本页style-->
@@ -27,7 +28,7 @@
 	                	
 			                  <label class="col-sm-2 text-right padding">交易日期：</label>
 			                  <div class="col-sm-2 padding">
-			                    <input name="tradeDate" type="text" class="form-control input-sm"/>
+			                    <input name="tradeDate" id="tradeDate" type="text" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'tradeDate\')}'})"/>
 			                  </div>
 	                	</div>
 	                	<div class="form-group form-group1">
@@ -92,6 +93,7 @@
 		                	<label class="col-sm-2 text-right padding">币种：</label>
 		                  <div class="col-sm-2 padding">
 		                      <select class="form-control input-sm" name="currency">
+		                      		<option value="">请选择</option>
 			                      <c:forEach items="${obj.currencyList }" var="each">
 			                    		<option value="${each.dictCode }">${each.dictCode }</option>
 				                  </c:forEach>
@@ -119,7 +121,19 @@
 	                	</div>
 	                  
 	                </div><!--end 备注-->
+	                <div id="div1" >
+	                <label class="col-sm-3 text-right padding">单位名称：</label>
+	                	<select id="findCompany" name="findCompany" onchange="setSelectedAreaIds()" class="form-control select2 inpImpWid" multiple="multiple" ></select>
+		               <input name="companyNameId" id="companyNameId"  type="hidden" placeholder="单位名称" />
+	                </div>
 	            </div>
+	            <!-- 设置已选中的项 -->
+					<script type="text/javascript">
+						function setSelectedAreaIds() {
+							var _selectedAreaIds = $("#findCompany").select2("val");
+							$("#companyNameId").val(_selectedAreaIds);
+						}
+					</script>
 	          </div>
           </form>
 	</div>
@@ -129,7 +143,14 @@
 	<script src="${base}/common/js/layer/layer.js"></script>
 	<script src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script><!-- SlimScroll -->
 	<script src="${base}/public/plugins/fastclick/fastclick.js"></script><!-- FastClick -->
+	<script type="text/javascript" src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 	<script src="${base}/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
+	<!-- Select2 -->
+	<script src="${base}/public/plugins/select2/select2.full.min.js"></script>
+	<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
+	<script type="text/javascript">
+		var BASE_PATH = '${base}';
+	</script>
 	<script type="text/javascript">
 	//验证输入内容不能为空
 	 $(document).ready(function(){
@@ -152,18 +173,7 @@
 	            validating: 'glyphicon glyphicon-refresh'
 	        },
 	        fields: {
-	        	tradeDate: {
-	                validators: {
-	                    notEmpty: {
-	                        message: '交易日期不能为空!'
-	                    },
-	                    regexp: {
-	                	 	regexp: /^((((1[6-9]|[2-9]\d)\d{2})-(0?[13578]|1[02])-(0?[1-9]|[12]\d|3[01]))|(((1[6-9]|[2-9]\d)\d{2})-(0?[13456789]|1[012])-(0?[1-9]|[12]\d|30))|(((1[6-9]|[2-9]\d)\d{2})-0?2-(0?[1-9]|1\d|2[0-8]))|(((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))-0?2-29-))$/,
-	                        message: '交易日期格式不正确!'
-	                    }
-	                }
-	            },
-	            bankName: {
+	           bankName: {
 	            	validators: {
 	                    notEmpty: {
 	                        message: '银行卡名称不能为空!'
@@ -186,9 +196,6 @@
 	            },
 	            averageRate: {
 	            	validators: {
-	                    notEmpty: {
-	                        message: '平均汇率不能为空!'
-	                    },
 	                    regexp: {
 	                	 	regexp: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
 	                        message: '平均汇率必须为数字!'
@@ -234,7 +241,7 @@
 	                     }
 	                }
 	            }
-	        }
+	         } 
 		});
 	}
 	
@@ -304,12 +311,103 @@
 		$('#submit').click(function() {
 		    $('#addTurnOver').bootstrapValidator('validate');
 		});
+		/* 控制单位的隐藏和金额 */
+		$(check());
 		function check(){
+			var text=$("#purpose").val();
+			if(text=="支出"){
+				$("#div1").show();
+			}else if(text=="收入"){
+				$("#div1").hide();
+			}
+			// $("#div1").hide();
+			 //$("#div1").show();
 			$('#money').val("");
 			
 		}
-		
-		
+		/* 设置公司的下拉框 */
+		//initAddSelect2();
+		//function initAddSelect2(){
+			/* $("#findCompany").select2({
+				ajax : {
+					url : BASE_PATH + "/admin/turnover/selectCompanys.html",
+					dataType : 'json',
+					delay : 250,
+					type : 'post',
+					data : function(params) {
+						return {
+							aircom : params.term, // search term
+							page : params.page,
+							companyName:$('#companyName').val()
+							
+						};
+					},
+					processResults : function(data, params) {
+						params.page = params.page || 1;
+						var selectdata = $.map(data, function (obj) {
+							obj.id =  obj.comName; // replace pk with your identifier
+							obj.text =  obj.comName; // replace pk with your identifier
+							return obj;
+						});
+						return {
+							results : selectdata
+						};
+					},
+					cache : false
+				},
+				
+				escapeMarkup : function(markup) {
+					return markup;
+				}, // let our custom formatter work
+				minimumInputLength : 1,
+				maximumInputLength : 20,
+				language : "zh-CN", //设置 提示语言
+				maximumSelectionLength : 1, //设置最多可以选择多少项
+				tags : false //设置必须存在的选项 才能选中
+			}); */
+			$("#findCompany").select2({
+				ajax : {
+					url : BASE_PATH + "/admin/turnover/selectCompanys.html",
+					dataType : 'json',
+					delay : 250,
+					type : 'post',
+					data : function(params) {
+						return {
+							p : params.term, // search term
+							companyName:$("#companyNameId").val(),
+							page : params.page
+						};
+					},
+					processResults : function(data, params) {
+						params.page = params.page || 1;
+
+						return {
+							results : data
+						};
+					},
+					cache : false
+				},
+				escapeMarkup : function(markup) {
+					return markup;
+				}, // let our custom formatter work
+				minimumInputLength : 1,
+				maximumInputLength : 20,
+				language : "zh-CN", //设置 提示语言
+				maximumSelectionLength : 1, //设置最多可以选择多少项
+				tags : false, //设置必须存在的选项 才能选中
+			});
+		//}
+		/* $(editInput());
+		function editInput() {
+			var opt = $("#findCompany").html();
+			//代理商公司ID
+			var selectedcompanyId = $("#findCompany").select2("val");
+			$("#companyName").val(selectedcompanyId);
+			//公司名称
+			var selectedcompanyName = $('#findCompany').find("option:selected").text();
+			$("#companyName").val(selectedcompanyName);
+			//$("#comName").val(selectedcompanyName);
+		} */
 	</script>
 </body>
 </html>	

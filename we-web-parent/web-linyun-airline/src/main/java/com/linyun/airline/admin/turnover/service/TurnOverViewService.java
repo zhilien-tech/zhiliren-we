@@ -22,10 +22,15 @@ import org.nutz.dao.pager.Pager;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.Daos;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
 import org.nutz.mvc.annotation.Param;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.linyun.airline.common.enums.BankCardStatusEnum;
 import com.linyun.airline.common.enums.TurnOverStatusEnum;
+import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TBankCardEntity;
 import com.linyun.airline.entities.TCompanyEntity;
@@ -47,7 +52,7 @@ import com.uxuexi.core.web.util.FormUtil;
  * @author   孙斌
  * @Date	 2017年3月4日 	 
  */
-@IocBean
+@IocBean(name = "turnOverViewService")
 public class TurnOverViewService extends BaseService<TTurnOverEntity> {
 
 	/**
@@ -77,45 +82,39 @@ public class TurnOverViewService extends BaseService<TTurnOverEntity> {
 		String currency = findForm.getCurrency();
 		Date tradeDate = findForm.getTradeDate();
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
-		String companyName = company.getComName();
+		String companyName = findForm.getCompanyName();
 		if (!Util.isEmpty(status)) {
 			/*cnd.and("companyId", "=", companyId);*/
 			cnd.and("tu.status", "=", status);
-			//sql.setCondition(cnd);
 		} else {
 
 			cnd.and("tu.status", "=", TurnOverStatusEnum.ENABLE.intKey());
 		}
-		if (!Util.isEmpty(bankCardName)) {
 
-			/*cnd.and("companyId", "=", companyId);*/
+		cnd.and("tb.companyId", "=", company.getId());
+		if (!Util.isEmpty(companyName)) {
+			cnd.and("tu.companyName", "like", "%" + companyName + "%");
+		}
+		if (!Util.isEmpty(bankCardName)) {
 			cnd.and("tu.bankName", "=", bankCardName);
-			//sql.setCondition(cnd);
 		}
 		if (!Util.isEmpty(projectName)) {
 
-			/*cnd.and("companyId", "=", companyId);*/
 			cnd.and("tu.projectName", "=", projectName);
-			//sql.setCondition(cnd);
 		}
 		if (!Util.isEmpty(operation)) {
 
-			/*cnd.and("companyId", "=", companyId);*/
 			cnd.and("tu.purpose", "=", operation);
-			//sql.setCondition(cnd);
 		}
 		if (!Util.isEmpty(currency)) {
 
-			/*cnd.and("companyId", "=", companyId);*/
 			cnd.and("tu.currency", "=", currency);
-			//sql.setCondition(cnd);
 		}
 		if (!Util.isEmpty(tradeDate)) {
 
-			/*cnd.and("companyId", "=", companyId);*/
 			cnd.and("tu.tradeDate", "=", tradeDate);
 		}
-		cnd.and("tu.companyName", "=", companyName);
+		/*cnd.and("tu.companyName", "=", companyName);*/
 		/*cnd.orderBy("updateTime", "DESC");*/
 		sql.setCondition(cnd);
 		Pager pager = new OffsetPager(sqlParamForm.getStart(), sqlParamForm.getLength());
@@ -157,6 +156,8 @@ public class TurnOverViewService extends BaseService<TTurnOverEntity> {
 		List<DictInfoEntity> currencyList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "BZ"), null);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("companyId", "=", companyId);
+		cnd.and("status", "=", BankCardStatusEnum.ENABLE.intKey());
+		cnd.groupBy("cardName");
 		List<TBankCardEntity> bankNameList = dbDao.query(TBankCardEntity.class, cnd, null);
 		maps.put("bankCardTypeList", bankCardTypeList);
 		maps.put("projectList", projectList);
@@ -175,7 +176,17 @@ public class TurnOverViewService extends BaseService<TTurnOverEntity> {
 		Long companyId = company.getId();
 
 		/*Long companyId = 23l;*/
-		String companyName = company.getComName();
+		//String companyName = company.getComName();
+		Long companyNameId = addForm.getCompanyNameId();
+		String companyName = null;
+		if (!Util.isEmpty(companyNameId)) {
+
+			TCompanyEntity companyAdd = dbDao.fetch(TCompanyEntity.class, companyNameId);
+			companyName = companyAdd.getComName();
+		} else {
+			companyName = company.getComName();
+
+		}
 		String cardNum = addForm.getCardNum();
 		String bankName = addForm.getBankName();
 		String purpose = addForm.getPurpose();
@@ -224,6 +235,8 @@ public class TurnOverViewService extends BaseService<TTurnOverEntity> {
 		List<DictInfoEntity> projectList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "FKYT"), null);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("companyId", "=", companyId);
+		cnd.and("status", "=", BankCardStatusEnum.ENABLE.intKey());
+		cnd.groupBy("cardName");
 		List<TBankCardEntity> bankNameList = dbDao.query(TBankCardEntity.class, cnd, null);
 		maps.put("currencyList", currencyList);
 		maps.put("projectList", projectList);
@@ -243,10 +256,16 @@ public class TurnOverViewService extends BaseService<TTurnOverEntity> {
 		String projectName = findForm.getProjectName();
 		String operation = findForm.getOperation();
 		String currency = findForm.getCurrency();
+		String companyName = findForm.getCompanyName();
 		Date tradeDate = findForm.getTradeDate();
 		if (!Util.isEmpty(status)) {
 			/*cnd.and("companyId", "=", companyId);*/
 			cnd.and("tu.status", "=", status);
+			//sql.setCondition(cnd);
+		}
+		if (!Util.isEmpty(companyName)) {
+			/*cnd.and("companyId", "=", companyId);*/
+			cnd.and("tu.companyName", "like", "%" + companyName + "%");
 			//sql.setCondition(cnd);
 		}
 		if (!Util.isEmpty(bankCardName)) {
@@ -321,6 +340,56 @@ public class TurnOverViewService extends BaseService<TTurnOverEntity> {
 		map.put("valid", flag);
 		return map;
 
+	}
+
+	/*public Object selectCompanys(String findCompany, String companyName) {
+
+		List<TCompanyEntity> list = new ArrayList<TCompanyEntity>();
+		if (!Util.isEmpty(companyName)) {
+
+			list = dbDao.query(TCompanyEntity.class, Cnd.where("comName", "like", "%" + companyName + "%"), null);
+		}
+
+		return list;
+
+	}*/
+	//
+	public Object selectCompanys(String findCompany, String companyName) {
+		List<Record> companyNameList = getCompanyNameList(findCompany, companyName);
+		List<Select2Option> result = transform2SelectOptions(companyNameList);
+		return result;
+	}
+
+	private List<Select2Option> transform2SelectOptions(List<Record> companyNameList) {
+		return Lists.transform(companyNameList, new Function<Record, Select2Option>() {
+			@Override
+			public Select2Option apply(Record record) {
+				Select2Option op = new Select2Option();
+				op.setId(record.getInt("id"));
+				op.setText(record.getString("comName"));
+				return op;
+			}
+		});
+	}
+
+	/**
+	 * 获取公司名称下拉框
+	 * @param dictName
+	 */
+	public List<Record> getCompanyNameList(String findCompany, final String companyName) {
+		String sqlString = sqlManager.get("turnoverlist_select2_comName");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("c.comName", "like", Strings.trim(findCompany) + "%");
+		if (!Util.isEmpty(companyName)) {
+			cnd.and("c.id", "NOT IN", companyName);
+		}
+		sql.setCondition(cnd);
+		sql.setCallback(Sqls.callback.records());
+		nutDao.execute(sql);
+		@SuppressWarnings("unchecked")
+		List<Record> list = (List<Record>) sql.getResult();
+		return list;
 	}
 
 }

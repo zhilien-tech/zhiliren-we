@@ -1,0 +1,17 @@
+/*--------------------------------------------航空公司政策管理-----------------------------------------*/
+.mar{margin: 15px 0 5px 15px;}
+/*--------------表格排序图标 隐藏---------------*/
+table.dataTable thead .sorting_asc:after {display: none;}
+table.dataTable thead .sorting_desc:after {display: none;}
+table.dataTable thead .sorting:after {display: none;}
+table.dataTable thead > tr > th {padding-right: 10px;}
+/*--------------end 表格排序图标 隐藏---------------*/
+.tdA a{margin-left: 5px;}
+.padRight{padding-right: 5px;}
+
+
+
+
+
+
+

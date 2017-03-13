@@ -32,7 +32,7 @@ import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TBankCardEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.forms.TBankCardAddForm;
-import com.linyun.airline.forms.TBankCardForm;
+import com.linyun.airline.forms.TBankCardUpdateForm;
 import com.uxuexi.core.common.util.BeanUtil;
 import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.common.util.Util;
@@ -136,19 +136,20 @@ public class BankCardViewService extends BaseService<TBankCardEntity> {
 		addForm.setCreateTime(new Date());
 		addForm.setUpdateTime(new Date());
 		addForm.setCompanyId(companyId);
+		addForm.setInitialAmount(addForm.getBalance());
 		addForm.setStatus(BankCardStatusEnum.ENABLE.intKey());
 		FormUtil.add(dbDao, addForm, TBankCardEntity.class);
 		return null;
 	}
 
-	public Object updateData(TBankCardForm updateForm, HttpSession session) {
+	public Object updateData(TBankCardUpdateForm updateForm, HttpSession session) {
 
 		Map<String, Object> obj = Maps.newHashMap();
 		if (!Util.isEmpty(updateForm)) {
 			updateForm.setStatus(BankCardStatusEnum.ENABLE.intKey());
 			updateForm.setUpdateTime(new Date());
 		}
-		TBankCardEntity bankCard = new TBankCardEntity();
+		TBankCardEntity bankCard = dbDao.fetch(TBankCardEntity.class, updateForm.getId());
 		BeanUtil.copyProperties(updateForm, bankCard);
 		updateIgnoreNull(bankCard);//更新银行卡表中的数据
 		return obj;

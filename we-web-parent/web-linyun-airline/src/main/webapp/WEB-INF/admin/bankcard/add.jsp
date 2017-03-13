@@ -30,13 +30,13 @@
 		                <div class="form-group"><!--银行卡名称/卡号/类型-->
 			                  <label class="col-sm-2 text-right padding">银行卡名称：</label>
 			                  <div class="col-sm-2 padding">
-			                    <input name="cardName" type="text" class="form-control input-sm"/>
+			                    <input name="cardName" type="text" class="form-control input-sm" onblur="formValidator();"/>
 			                  </div>
 			            </div>
 			            <div class="form-group form-group1">
 		                  <label class="col-sm-1 text-right padding">卡号：</label>
 		                  <div class="col-sm-2 padding">
-		                    <input name="cardNum" type="text" class="form-control input-sm"/>
+		                    <input name="cardNum" type="text" class="form-control input-sm" id="cardNum" onkeyup="this.value=this.value.replace(/\D/g,'').replace(/....(?!$)/g,'$& ')" />
 		                  </div>
 		                </div>
 		                <div class="form-group form-group1">
@@ -106,9 +106,9 @@
 	<script src="${base }/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
 	<script type="text/javascript">
 	//验证输入内容不能为空
-	$(document).ready(function(){
+ 	 $(document).ready(function(){
 		formValidator();
-	});
+	});  
 	//点击取消
 	function closewindow(){
 		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
@@ -132,32 +132,9 @@
 	                    },
 	                     stringLength: {/*长度提示*/
 	                   	    min: 1,
-	                   	    max: 6,
-	                   	    message: '银行卡名长度不得超出6个汉字!'
+	                   	    max: 8,
+	                   	    message: '银行卡名长度不得超出8个汉字!'
 	                   	  }
-	                }
-	            },
-	            cardNum: {
-	            	validators: {
-	                    notEmpty: {
-	                        message: '银行卡号不能为空!'
-	                    },
-	                    regexp: {
-	                	 	regexp: /^(\d{16}|\d{17}|\d{18}|\d{19})$/,
-	                        message: '银行卡号必须为16-19位!'
-	                    },
-	                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
-	                         url: '${base}/admin/bankcard/checkBankCardNumExist.html',//验证地址
-	                         message: '银行卡号已存在，请重新输入!',//提示消息
-	                         delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
-	                         type: 'POST',//请求方式
-	                         //自定义提交数据，默认值提交当前input value
-	                         data: function(validator) {
-	                            return {
-	                            	cardNum:$('input[name="cardNum"]').val()
-	                            };
-	                         }
-	                     }
 	                }
 	            },
 	            bankCardType: {
@@ -190,6 +167,29 @@
 	                	 	regexp: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
 	                        message: '金额必须为数字!'
 	                    }
+	                }
+	            },
+	            cardNum: {
+	            	validators: {
+	                    notEmpty: {
+	                        message: '银行卡号不能为空!'
+	                    } ,
+	                    regexp: {
+	                	 	regexp: /^[\d\s]{19,23}$/,
+	                        message: '银行卡号为16-19位!'
+	                    },
+	                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
+	                         url: '${base}/admin/bankcard/checkBankCardNumExist.html',//验证地址
+	                         message: '银行卡号已存在，请重新输入!',//提示消息
+	                         delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+	                         type: 'POST',//请求方式
+	                         //自定义提交数据，默认值提交当前input value
+	                         data: function(validator) {
+	                            return {
+	                            	cardNum:$('input[name="cardNum"]').val()
+	                            };
+	                         }
+	                     }
 	                }
 	            }
 	        }
@@ -224,10 +224,51 @@
 		}
 	});
 	//提交时开始验证
-	$('#submit').click(function() {
+	/* $('#submit').click(function() {
 	    $('#addBankCard').bootstrapValidator('validate');
-	});
+	    //checkCardNum();
+	}); */
 	
+	function checkCardNum(){
+		
+
+		$('#addBankCard').bootstrapValidator({
+			message: '验证不通过!',
+	        feedbackIcons: {
+	            valid: 'glyphicon glyphicon-ok',
+	            invalid: 'glyphicon glyphicon-remove',
+	            validating: 'glyphicon glyphicon-refresh'
+	        },
+	        fields: {
+	        	cardNum: {
+	            	validators: {
+	                    notEmpty: {
+	                        message: '银行卡号不能为空!'
+	                    } ,
+	                    stringLength: {/*长度提示*/
+	                   	    min: 19,
+	                   	    max: 23,
+	                   	    message: '银行卡号长度为19-23!'
+	                   	  } ,
+	                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
+	                         url: '${base}/admin/bankcard/checkBankCardNumExist.html',//验证地址
+	                         message: '银行卡号已存在，请重新输入!',//提示消息
+	                         delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+	                         type: 'POST',//请求方式
+	                         //自定义提交数据，默认值提交当前input value
+	                         data: function(validator) {
+	                            return {
+	                            	cardNum:$('input[name="cardNum"]').val()
+	                            };
+	                         }
+	                     }
+	                }
+	            }
+	        	
+	        }
+		});
+	}
+		
 	
 	
 	

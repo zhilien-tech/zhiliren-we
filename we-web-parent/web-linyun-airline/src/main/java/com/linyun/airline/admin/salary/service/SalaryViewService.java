@@ -6,8 +6,11 @@
 
 package com.linyun.airline.admin.salary.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
@@ -19,12 +22,14 @@ import org.nutz.mvc.annotation.Param;
 
 import com.google.common.collect.Maps;
 import com.linyun.airline.entities.TSalaryEntity;
+import com.linyun.airline.forms.TSalaryAddForm;
 import com.linyun.airline.forms.TSalaryFindForm;
 import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.base.page.OffsetPager;
 import com.uxuexi.core.web.base.service.BaseService;
 import com.uxuexi.core.web.form.DataTablesParamForm;
+import com.uxuexi.core.web.util.FormUtil;
 
 /**
  * TODO(这里用一句话描述这个类的作用)
@@ -104,6 +109,41 @@ public class SalaryViewService extends BaseService<TSalaryEntity> {
 		re.put("monthsList", monthsList);
 		return re;
 
+	}
+
+	public void addSalary(TSalaryAddForm addForm, HttpSession session) {
+
+		/**
+		 * 获取公司的id
+		 * 
+		 */
+		/*TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
+		Long companyId = company.getId();*/
+		Long companyId = 23l;
+		addForm.setCreateTime(new Date());
+		addForm.setUpdateTime(new Date());
+		double actualCommission = 124563;
+		addForm.setActualCommission(actualCommission);
+		double basePay = 0;
+		addForm.setBasePay(basePay);
+		String commission = null;
+		addForm.setCommission(commission);
+		double costTotal = 0;
+		addForm.setCostTotal(costTotal);
+		String drawer = null;
+		addForm.setDrawer(drawer);
+		int groupNumber = 0;
+		addForm.setGroupNumber(groupNumber);
+		int headCount = 0;
+		addForm.setHeadCount(headCount);
+		double incomeTotal = 0;
+		addForm.setIncomeTotal(incomeTotal);
+		String remark = null;
+		addForm.setRemark(remark);
+		double salaryTotal = 0;
+		addForm.setSalaryTotal(salaryTotal);
+
+		FormUtil.add(dbDao, addForm, TSalaryEntity.class);
 	}
 
 }

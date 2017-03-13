@@ -6,13 +6,13 @@ import java.util.Date;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import com.uxuexi.core.web.form.AddForm;
+import com.uxuexi.core.web.form.ModForm;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class TBankCardAddForm extends AddForm implements Serializable {
+public class TBankCardUpdateForm extends ModForm implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	/*private Integer id;*/
 	/**银行卡名称*/
 	private String cardName;
 
@@ -28,9 +28,6 @@ public class TBankCardAddForm extends AddForm implements Serializable {
 	/**币种*/
 	private String currency;
 
-	/**创建时间*/
-	private Date createTime;
-
 	/**修改时间*/
 	private Date updateTime;
 
@@ -39,11 +36,5 @@ public class TBankCardAddForm extends AddForm implements Serializable {
 
 	/**备注*/
 	private String remark;
-	/**公司id*/
-	private Long companyId;
-	/**账户余额*/
-	private double balance;
-	/**账户初始金额*/
-	private double initialAmount;
 
 }
