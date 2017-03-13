@@ -203,13 +203,13 @@
 										<!-- <input id="cAirArrivalDate0" name="cAirArrivalDate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'cAirOutDate0\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2020-01-01"> -->
 									</td>
 									<td><label class="labelWid">成本价：</label></td>
-									<td><input id="cAirCost" name="cAirCost" type="text"
-										class="form-control input-sm textWid"
+									<td><input name="cAirCost" type="text"
+										class="form-control input-sm textWid costPrice"
 										onkeyup="this.value=this.value.replace(/\D/g,'')"
 										onafterpaste="this.value=this.value.replace(/\D/g,'')">
 									</td>
 									<td><label class="labelWid">销售价：</label></td>
-									<td><input id="cAirPretium" name="cAirPretium" type="text"
+									<td><input name="cAirPretium" type="text"
 										class="form-control input-sm textWid"
 										onkeyup="this.value=this.value.replace(/\D/g,'')"
 										onafterpaste="this.value=this.value.replace(/\D/g,'')">
@@ -874,7 +874,27 @@
 					}
 				}
 			}
+			
+			$(document).on('input', '.costPrice', function(e) {
+		    	$(this).val($(this).val().replace(/[^.\d]/g,''));
+		    	var fromprice = $(this).val();
+		    	//票价折扣
+		    	var discountFare = $("#discountHidden").val();
+		    	//手续费
+		    	var fees = $("#feeHidden").val(); 
+		    	var price = parseFloat(fromprice * discountFare / 100) + parseFloat(fees);
+		    	if(fromprice){
+		     		if(isNaN(price)){
+		     			$(this).parent().parent().find('[name=cAirPretium]').val('');
+		     		}else{
+		    	 		$(this).parent().parent().find('[name=cAirPretium]').val(price);
+		     		}
+		     	}else{
+		     		$(this).parent().parent().find('[name=cAirPretium]').val('');
+		     	}
+		    });
 		</script>
+		
 
 </body>
 </html>
