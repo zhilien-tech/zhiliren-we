@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%@include file="/WEB-INF/public/footer.jsp"%>
 <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
@@ -18,7 +19,7 @@
 				   		</a>
 				   </c:when>
 				   <c:otherwise>
-				   		<a href="javascript:;">
+				   		<a href="javascript:;" class="menu1">
 				   			<i class="fa fa-th-large"></i>
 				   			<span>${menu.name}</span>
 				   			<span class="pull-right-container">
@@ -26,13 +27,26 @@
 				            </span>
 				   		</a>
 				   		<%--子菜单 --%>
-				   		<ul class="treeview-menu">
+				   		<ul class="none menu-ul" style="padding-left: 22px;">
 							<c:forEach var="function" items="${functionMap[menu.id]}">
-								<li>
+								<li style="line-height: 30px;">
 									<a href="${base}${function.url}?currentPageIndex=${stat.index}" style="margin-left: 15px;"><i class="fa fa-circle-o"></i> ${function.name}</a>
 								</li>
 							</c:forEach>
 						</ul>
+						<script>
+							$(function(){
+								 $('.menu1').click(function(){
+									$(this).next('ul').toggle();
+								}); 
+								
+								if($('.menu1').parent().hasClass('active')){
+									$(this).find('.menu-ul').show();
+								}else{
+									$(this).find('.menu-ul').hide();
+								}
+							});
+						</script>
 				   </c:otherwise>
 			    </c:choose>
 			    
