@@ -27,6 +27,7 @@ import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.common.enums.AirlinePolicyEnum;
 import com.linyun.airline.forms.TAirlinePolicyAddForm;
 import com.linyun.airline.forms.TAirlinePolicyForm;
+import com.uxuexi.core.web.chain.support.JsonResult;
 
 /**
  * TODO(这里用一句话描述这个类的作用)
@@ -58,7 +59,8 @@ public class AirlinePolicyModule {
 		List<Record> deplist = grabfileViewService.getFolderInfo(sqlManager);
 		map.put("deplist", deplist);
 		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));*/
-		return null;
+		/*airlinePolicyService.findConditionList()*/
+		return airlinePolicyService.findConditionList();
 	}
 
 	/**
@@ -99,4 +101,12 @@ public class AirlinePolicyModule {
 		return airlinePolicyService.add(addForm);
 	}
 
+	/**
+	 * 删除记录
+	 */
+	@At
+	public Object delete(@Param("id") final long id) {
+		airlinePolicyService.deleteById(id);
+		return JsonResult.success("删除成功");
+	}
 }

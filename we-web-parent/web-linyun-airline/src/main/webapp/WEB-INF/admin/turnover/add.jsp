@@ -123,6 +123,14 @@
 	                	</div>
 	                  
 	                </div><!--end 备注-->
+	                <div>
+	                	<label class="col-sm-3 text-right padding">开/收发票：</label>
+	                	<select class="form-control input-sm" name="invoiceStatus" id="invoiceStatus" onchange="check();">
+		                      <option value="">请选择</option>
+		                      <option>已开发票</option>
+		                      <option>已收发票</option>
+		                 </select>
+	                </div>
 	                <div id="div1" >
 	                <label class="col-sm-3 text-right padding">单位名称：</label>
 	                	<select id="findCompany" name="findCompany" onchange="setSelectedAreaIds()" class="form-control select2 inpImpWid" multiple="multiple" ></select>

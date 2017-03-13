@@ -20,7 +20,9 @@ import org.nutz.dao.pager.Pager;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.Daos;
 
+import com.google.common.collect.Maps;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
+import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAirlinePolicyEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.uxuexi.core.common.util.MapUtil;
@@ -68,6 +70,19 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 		re.put("recordsTotal", pager.getPageSize());
 		re.put("recordsFiltered", pager.getRecordCount());
 		return re;
+
+	}
+
+	public Map<String, Object> findConditionList() {
+
+		Map<String, Object> map = Maps.newHashMap();
+		/*查询航空公司*/
+		List<DictInfoEntity> airlineCompanyList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "HKGS"),
+				null);
+
+		/*List<DictInfoEntity> areaList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "HKGS"), null);*/
+		map.put("airlineCompanyList", airlineCompanyList);
+		return map;
 
 	}
 

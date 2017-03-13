@@ -29,8 +29,12 @@
                 <div class="form-group row mar cf">
                   <div class="col-md-1 padRight">
                     <select class="form-control input-sm">
-                      <option>VR</option>
-                      <option>JQ</option>
+                      <!-- <option>VR</option>
+                      <option>JQ</option> -->
+                      <option value="">请选择</option>
+                      <c:forEach items="${obj.airlineCompanyList }" var="each">
+                      	<option value="${each.dictCode }">${each.dictCode }</option>
+                      </c:forEach>
                     </select>
                   </div>
                   <div class="col-md-1 padding">
@@ -149,7 +153,7 @@
 	            	var modify1 = '<a style="cursor:pointer;" onclick="editUser('+row.id+');">预览</a>';
 	            	var modify2 = '<a style="cursor:pointer;" onclick="editUser('+row.id+');">编辑</a>';
 	            	var modify3 = '<a style="cursor:pointer;" href="'+row.url+'">下载</a>';
-	            	var modify4 = '<a style="cursor:pointer;" onclick="editUser('+row.id+');">删除</a>';
+	            	var modify4 = '<a style="cursor:pointer;" onclick="deleteFile('+row.id+');">删除</a>';
 	                return modify1+"&nbsp; &nbsp; &nbsp;"+modify2+"&nbsp; &nbsp; &nbsp;"+modify3+"&nbsp; &nbsp; &nbsp;"+modify4;
 	            }
 	        }]
@@ -258,6 +262,39 @@
 			  layer.msg("编辑成功!",{time: 1000, icon:1});
 		  }
 	  }
+	
+	//删除
+	function deleteFile(id){
+		alert(id);
+		layer.confirm("您确认删除信息吗？", {
+		    btn: ["是","否"], //按钮
+		    shade: false //不显示遮罩
+		}, function(){
+			// 点击确定之后
+			var url = '${base}/admin/drawback/grabfile/delete.html';
+			$.ajax({
+				type : 'POST',
+				data : {
+					id : id,
+					status : status
+				},
+				dataType : 'json',
+				url : url,
+				success : function(data) {
+					if ("200" == data.status) {
+						window.parent.successCallback('3');
+					} else {
+						layer.msg("操作失败!", "", 3000);
+					}
+				},
+				error : function(xhr) {
+					layer.msg("操作失败", "", 3000);
+				}
+			});
+		}, function(){
+		    // 取消之后不用处理
+		});
+	}
 </script>
 </body>
 </html>
