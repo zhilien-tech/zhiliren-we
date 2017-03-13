@@ -60,7 +60,6 @@
 			                  <label class="col-sm-2 text-right padding">银行：</label>
 			                  <div class="col-sm-2 padding">
 			                    <select id="findBank" class="form-control input-sm" onchange="selectBankName();" name="bankName">
-			               			
 			               			<c:forEach items="${obj.bankList }" var="each">
 			               				<option value="${each.dictName }">${each.dictName }</option>
 			               			</c:forEach>

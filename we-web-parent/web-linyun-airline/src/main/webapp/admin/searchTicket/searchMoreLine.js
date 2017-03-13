@@ -97,7 +97,7 @@ $(function () {
 	});
 	//清楚按钮 隐藏
 	$('#clearBtn').click(function(){
-		$('.hideTable').hide('400');
+		$('.hideTable').hide();
 	});
 	//散客
 	document.getElementsByName("voyageType")[1].checked="checked";//radio 默认 选中往返

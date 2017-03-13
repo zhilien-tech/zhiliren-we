@@ -289,9 +289,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	public Object saveInternationalPay(TSaveInlandPayAddFrom form) {
 		List<TPayEntity> payList = new ArrayList<TPayEntity>();
 
-		Integer bankComp = form.getBankComp();
-		Integer cardName = form.getCardName();
-		Integer cardNum = form.getCardNum();
+		String bankComp = form.getBankComp();
+		String cardName = form.getCardName();
+		String cardNum = form.getCardNum();
 		Integer payAddress = form.getPayAddress();
 		Integer purpose = form.getPurpose();
 		Integer fundType = form.getFundType();
@@ -312,8 +312,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 
 		//银行卡
 		TCompanyBankCardEntity companyBankCard = new TCompanyBankCardEntity();
-		companyBankCard.setCardName(String.valueOf(form.getCardName()));
-		companyBankCard.setCardNum(String.valueOf(form.getCardNum()));
+		companyBankCard.setCardName(cardName);
+		companyBankCard.setCardNum(cardNum);
+		companyBankCard.setBankComp(bankComp);
 		//添加银行卡
 		TCompanyBankCardEntity companyBankCardEntity = dbDao.insert(companyBankCard);
 		Integer bankId = companyBankCardEntity.getId();

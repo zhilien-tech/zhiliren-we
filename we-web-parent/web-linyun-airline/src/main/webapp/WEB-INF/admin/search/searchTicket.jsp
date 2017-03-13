@@ -156,14 +156,14 @@
 										<!-- <input id="cOutcity" name="cOutcity" type="text" class="form-control input-sm" placeholder="PEK(北京)"> -->
 										<select id="cOutcity" name="cOutcity"
 										class="form-control select2" multiple="multiple"
-										data-placeholder="PEK(北京)"></select>
+										data-placeholder="PEK-BeiJing-China"></select>
 									</td>
 									<td><label>抵达城市：</label></td>
 									<td>
 										<!-- <input id="cArrivalcity" type="text" class="form-control input-sm" placeholder="SYD(悉尼)"> -->
 										<select id="cArrivalcity" name="cArrivalcity"
 										class="form-control select2" multiple="multiple"
-										data-placeholder="SHA(上海)"></select>
+										data-placeholder="SHA-ShangHai-China"></select>
 									</td>
 									<td><label>出发日期：</label></td>
 									<td><input id="cOutDate" name="cOutDate" type="text"
