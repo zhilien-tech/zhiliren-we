@@ -68,6 +68,7 @@
 		                  <label class="col-sm-2 text-right padding">用途：</label>
 		                  <div class="col-sm-2 padding">
 		                      <select class="form-control input-sm" name="purpose" id="purpose" onchange="check();">
+		                      <option value="">请选择</option>
 		                      <option>收入</option>
 		                      <option>支出</option>
 		                    </select>

@@ -43,6 +43,7 @@
 		                  <label class="col-sm-1 text-right padding">类型：</label>
 		                  <div class="col-sm-2 padding">
 		                    <select class="form-control input-sm" name="bankCardType" id="findBankCardType">
+		                    	<option value="">请选择</option>
 		                      <c:forEach items="${obj.bankCardTypeList }" var="each">
 		               				<option value="${each.dictName }">${each.dictName }</option>
 		               			</c:forEach>
@@ -60,7 +61,7 @@
 			                  <label class="col-sm-2 text-right padding">银行：</label>
 			                  <div class="col-sm-2 padding">
 			                    <select id="findBank" class="form-control input-sm" onchange="selectBankName();" name="bankName">
-			               			
+			               			<option value="">请选择</option>
 			               			<c:forEach items="${obj.bankList }" var="each">
 			               				<option value="${each.dictName }">${each.dictName }</option>
 			               			</c:forEach>
@@ -71,6 +72,7 @@
 			                  <label class="col-sm-1 text-right padding">币种：</label>
 			                  <div class="col-sm-2 padding">
 			                    <select class="form-control input-sm" name="currency" id="findCurrency">
+			                     	<option value="">请选择</option>
 			                      <c:forEach items="${obj.moneyTypeList }" var="each">
 			               				<option value="${each.dictCode }">${each.dictCode }</option>
 			               			</c:forEach>
