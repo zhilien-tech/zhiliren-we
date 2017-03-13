@@ -40,6 +40,7 @@
                   <th>卡类型</th>
                   <th>银行</th>
                   <th>余额</th>
+                  <th>初始金额</th>
                   <th>币种</th>
                   <th>备注</th>
                   <th>操作</th>
@@ -142,6 +143,7 @@
 	                    		return depositBalance;
 	                    	}
 						},
+						{"data": "initialamount", "bSortable": false},
 	                    {"data": "currency", "bSortable": false},
 	                    {"data": "remark", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
@@ -149,13 +151,17 @@
 	                    		if(null==depositBalance || ""==depositBalance){
 	                    			return "";
 	                    		}
+	                    		if(depositBalance.length>4){
+	                    			var res=depositBalance.substring(0,4); 
+	                    			return res+"...";
+	                    		}
 	                    		return depositBalance;
 	                    	}	
 	                    }
 	            ],
 	        columnDefs: [{
 	            //   指定第一列，从0开始，0表示第一列，1表示第二列……
-	            targets: 7,
+	            targets: 8,
 	            render: function(data, type, row, meta) {
 	            	var modify = '<a style="cursor:pointer;" onclick="editUser('+row.id+');">编辑</a>';
 	                return modify;

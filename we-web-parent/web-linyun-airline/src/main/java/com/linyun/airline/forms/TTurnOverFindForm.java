@@ -36,6 +36,8 @@ public class TTurnOverFindForm extends AddForm implements Serializable {
 	private String operation;
 	//币种
 	private String currency;
+	//公司名称
+	private String companyName;
 
 	//日期
 	private Date tradeDate;

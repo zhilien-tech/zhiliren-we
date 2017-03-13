@@ -60,6 +60,7 @@
                   </div>
                   <div class="col-md-2 padding">
                     <button type="button" class="btn btn-primary btn-sm suBtn" onclick="select();">搜索</button>
+                    <!-- <button type="button" class="btn btn-primary btn-sm suBtn" onclick="add();">添加</button> -->
                   </div>
                 </div>
               </form>
@@ -210,6 +211,30 @@ function select()
     };
     empTable.settings()[0].ajax.data = param;
 	empTable.ajax.reload();
+}
+function add(){
+	$.ajax({
+		cache : false,
+		type : "POST",
+		url : '${base}/admin/salary/add.html',
+		data : function(){
+			
+		},// 你的formid
+		error : function(request) {
+			layer.msg('添加失败!');
+		},
+		success : function(data) {
+			layer.load(1, {
+				 shade: [0.1,'#fff'] //0.1透明度的白色背景
+			});
+			formValidator();
+			 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+		    parent.layer.close(index);
+		    window.parent.successCallback('1'); 
+			
+		    
+		}
+	});
 }
 </script>
 </body>
