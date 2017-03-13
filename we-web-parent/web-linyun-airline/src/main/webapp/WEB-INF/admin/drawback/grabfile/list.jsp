@@ -538,7 +538,7 @@ function successCallback(id){
 					  	    fix: false,
 					  	    maxmin: false,
 					  	    shadeClose: false,
-					  	    area: ['1000px', '600px'],
+					  	    area: ['1300px', '800px'],
 					  	    content: '${base}/admin/drawback/grabreport/filePreview.html?id='+pid
 					 	});
 					} 
