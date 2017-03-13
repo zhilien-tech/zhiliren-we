@@ -781,6 +781,7 @@ function successCallback(id){
 	                    		if(null==inAustralianTime || ""==inAustralianTime){
 	                    			return "";
 	                    		}
+	                    		var inAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+inAustralianTime+'">'+inAustralianTime+'<span>';
 	                    		return inAustralianTime;
 	                    	}
 	                    },
@@ -790,6 +791,7 @@ function successCallback(id){
 	                    		if(null==outAustralianTime || ""==outAustralianTime){
 	                    			return "";
 	                    		}
+	                    		var outAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+outAustralianTime+'">'+outAustralianTime+'<span>';
 	                    		return outAustralianTime;
 	                    	}
 	                    }
