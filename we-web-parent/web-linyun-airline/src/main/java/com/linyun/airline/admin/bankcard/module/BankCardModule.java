@@ -22,6 +22,7 @@ import com.linyun.airline.admin.bankcard.service.BankCardViewService;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.forms.TBankCardAddForm;
 import com.linyun.airline.forms.TBankCardForm;
+import com.linyun.airline.forms.TBankCardUpdateForm;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
 
@@ -136,7 +137,7 @@ public class BankCardModule {
 	 */
 	@At
 	@POST
-	public Object update(@Param("..") final TBankCardForm updateForm, final HttpSession session) {
+	public Object update(@Param("..") final TBankCardUpdateForm updateForm, final HttpSession session) {
 		bankCardViewService.updateData(updateForm, session);
 		return JsonResult.success("修改成功!");
 	}

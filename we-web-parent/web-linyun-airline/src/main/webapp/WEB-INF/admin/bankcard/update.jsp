@@ -170,10 +170,6 @@
 	                    notEmpty: {
 	                        message: '银行卡号不能为空!'
 	                    },
-	                    regexp: {
-	                	 	regexp: /^(\d{16}|\d{17}|\d{18}|\d{19})$/,
-	                        message: '银行卡号必须为16-19位!'
-	                    },
 	                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
 	                         url: '${base}/admin/bankcard/checkBankCardNumExist.html',//验证地址
 	                         message: '银行卡号已存在，请重新输入!',//提示消息

@@ -71,11 +71,14 @@
 	                    </select>
 	                  </div>
 	                  <div class="col-md-1 padding">
-	                     <input type="text" class="form-control" placeholder="2017-02-22" name="tradeDate" id="tradeDate" value="">
+	                     <input type="text" class="form-control" placeholder="2017-02-22" name="tradeDate" id="tradeDate" value="" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'tradeDate\')}'})" oninput="select();" >
+	                  </div>
+	                  <div class="col-md-1 padding">
+	                     <input type="text" class="form-control"  name="companyName" id="companyName" value=""  >
 	                  </div>
 	                  <div class="col-md-2 padding">
 	                    <button type="button" class="btn btn-primary btn-sm suBtn" onclick="select();" >搜索</button>
-	                    <button type="button" class="btn btn-primary btn-sm suBtn" onclick="clearSelect();">清空</button>
+	                    <button type="button" class="btn btn-primary btn-sm suBtn" onclick="clearSelect();select();">清空</button>
 	                  </div>
 	                  <div class="col-md-1col-md-offset-3">
 	                    <button type="button" class="btn btn-primary btn-sm right jyb" id="addTurnOver">记一笔</button>
@@ -135,9 +138,12 @@
 </div>
 <!-- ./wrapper -->
 <%@include file="/WEB-INF/public/footer.jsp"%>
-
+<!-- My97DatePicker -->
 <!-- REQUIRED JS SCRIPTS -->
-
+<script type="text/javascript">
+		var BASE_PATH = '${base}';
+	</script>
+<script type="text/javascript" src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 
 <script>
  /*  $(function () {
@@ -224,6 +230,10 @@
 	                    		if(null==depositBalance || ""==depositBalance){
 	                    			return "";
 	                    		}
+	                    		if(depositBalance.length>4){
+	                    			var res=depositBalance.substring(0,4); 
+	                    			return res+"...";
+	                    		}
 	                    		return depositBalance;
 	                    	}	
 	                    }
@@ -268,14 +278,16 @@
 		var bankCardName = $('#bankCardName').val();
 		var projectName = $('#projectName').val();
 		var currency = $('#currency').val();
-		
+		var companyName = $('#companyName').val();
 	    var param = {
 	        "status": status,
 	        "operation": operation,
 	        "bankCardName": bankCardName,
 	        "projectName": projectName,
 	        "currency": currency,
-			"tradeDate" : tradeDate
+			"tradeDate" : tradeDate,
+			"companyName" : companyName
+			
 	    };
 	    empTable.settings()[0].ajax.data = param;
 		empTable.ajax.reload();
@@ -312,6 +324,7 @@
 		$('#bankCardName').val("");
 		$('#projectName').val("");
 		$('#currency').val("");
+		$('#companyName').val("");
 	}
 </script>
 </html>
