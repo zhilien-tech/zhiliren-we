@@ -101,6 +101,7 @@ public class TurnOverModule {
 	public Object selectCardNum(@Param("bankName") final String bankName) {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("cardName", "=", bankName);
+		cnd.and("status", "=", TurnOverStatusEnum.ENABLE.intKey());
 		dbDao.query(TBankCardEntity.class, cnd, null);
 		return dbDao.query(TBankCardEntity.class, cnd, null);
 	}
@@ -143,4 +144,16 @@ public class TurnOverModule {
 		}
 		return JsonResult.success("关闭失败!");
 	}
+
+	/**
+	 * 
+	 * 根据输入显示公司名称
+	 */
+	@At
+	@POST
+	public Object selectCompanys(@Param("p") final String findCompany, @Param("companyName") final String companyName) {
+
+		return this.turnOverViewService.selectCompanys(findCompany, companyName);
+	}
+
 }

@@ -48,7 +48,7 @@
   <!--right Content-->
   <div class="content-wrapper">
     <section class="content">
-        <div class="row col-sm-9">
+        <div class="row col-sm-10">
           <div class="customerInfo"><!--客户信息-->
                <div class="infoTop">
                  <p>客户信息</p>
@@ -539,7 +539,7 @@
                   </div>
           </div><!--购票查询 列表-->
         </div>
-        <div class="col-sm-3 rightRemind">
+        <div class="col-sm-2 rightRemind">
             <div class="infoTop">
               <p>提醒设置</p>
             </div>

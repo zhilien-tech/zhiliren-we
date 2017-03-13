@@ -87,7 +87,7 @@ public class TGrabReportSqlForm extends DataTablesParamForm {
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		//TODO 添加自定义查询条件（可选）
-
+		cnd.groupBy("id");
 		return cnd;
 	}
 }
