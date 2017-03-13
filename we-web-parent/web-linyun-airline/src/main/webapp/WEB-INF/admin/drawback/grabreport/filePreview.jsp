@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
     <link rel="stylesheet" type="text/css" href="${base}/public/dist/css/receivePayment.css"><!--本页面style-->
+    <link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
 </head>
 <body>
 	<div class="modal-top">
@@ -119,26 +120,109 @@
 <script src="${base}/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
 <script src="${base}/common/js/layer/layer.js"></script>
 <script type="text/javascript">
+//验证
+$(document).ready(function(){
+	$('#addForm').bootstrapValidator({
+		message: '验证不通过!',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+        	PNR: {
+                validators: {
+                    notEmpty: {
+                        message: 'PNR不能为空!'
+                    },
+                    stringLength: {/*长度提示*/
+                   	    min: 1,
+                   	    max: 13,
+                   	    message: 'PNR长度不得超出13位!'
+                   	  }
+                }
+            },
+            agentRebate: {
+                validators: {
+                	regexp: {
+                        regexp: /^(\d+(\.\d{1,20})?)?$/,
+                        message: '代理返点只能输入整数或者小数!'
+                    }
+                }
+            },
+            remit: {
+                validators: {
+                	regexp: {
+                        regexp: /^(\d+(\.\d{1,20})?)?$/,
+                        message: '汇款只能输入整数或者小数!'
+                    }
+                }
+            },
+            swipe: {
+                validators: {
+                	regexp: {
+                        regexp: /^(\d+(\.\d{1,20})?)?$/,
+                        message: '刷卡费只能输入整数或者小数!'
+                    }
+                }
+            },
+            ticketPrice: {
+                validators: {
+                	regexp: {
+                        regexp: /^(\d+(\.\d{1,20})?)?$/,
+                        message: '票价只能输入整数或者小数!'
+                    }
+                }
+            },
+            exciseTax1: {
+                validators: {
+                	regexp: {
+                        regexp: /^(\d+(\.\d{1,20})?)?$/,
+                        message: '消费税只能输入整数或者小数!'
+                    }
+                }
+            },
+            tax: {
+                validators: {
+                	regexp: {
+                        regexp: /^(\d+(\.\d{1,20})?)?$/,
+                        message: '税金/杂项只能输入整数或者小数!'
+                    }
+                }
+            }
+        }
+	});
+});
+</script>
+<script type="text/javascript">
 //提交保存
 $("#submit").click(function() {
-	$.ajax({
-		cache : false,
-		type : "POST",
-		url : '${base}/admin/drawback/grabreport/add.html',
-		data : $('#addForm').serialize(),
-		error : function(request) {
-			layer.msg('添加失败!');
-		},
-		success : function(data) {
-			layer.load(1, {
-				shade : [ 0.1, '#fff' ]
-			//0.1透明度的白色背景
-			});
-			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-			parent.layer.close(index);
-			window.parent.successCallback('8');
-		}
-	});
+	$('#addForm').bootstrapValidator('validate');
+	var bootstrapValidator = $("#addForm").data('bootstrapValidator');
+	if(bootstrapValidator.isValid()){
+		$.ajax({
+			cache : false,
+			type : "POST",
+			url : '${base}/admin/drawback/grabreport/add.html',
+			data : $('#addForm').serialize(),
+			error : function(request) {
+				layer.msg('添加失败!');
+			},
+			success : function(data) {
+				layer.load(1, {
+					shade : [ 0.1, '#fff' ]
+				//0.1透明度的白色背景
+				});
+				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				parent.layer.close(index);
+				window.parent.successCallback('8');
+			}
+		});
+	}
+});
+//提交时开始验证
+$('#submit').click(function() {
+    $('#addForm').bootstrapValidator('validate');
 });
 //点击取消
 function closewindow(){

@@ -788,7 +788,7 @@ function successCallback(id){
 	                    		if(null==inAustralianTime || ""==inAustralianTime){
 	                    			return "";
 	                    		}
-	                    		var inAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+row.inaustraliantime+'">'+row.inaustraliantime+'<span>';
+	                    		var inAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+inAustralianTime+'">'+inAustralianTime+'<span>';
 	                    		return inAustralianTime;
 	                    	}
 	                    },
@@ -798,27 +798,12 @@ function successCallback(id){
 	                    		if(null==outAustralianTime || ""==outAustralianTime){
 	                    			return "";
 	                    		}
-	                    		var outAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+row.outaustraliantime+'">'+row.outaustraliantime+'<span>';
+	                    		var outAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+outAustralianTime+'">'+outAustralianTime+'<span>';
 	                    		return outAustralianTime;
 	                    	}
 	                    }
 	            ],
 	            "columnDefs": [
-	                           /* {"sWidth": "6.66%","aTargets": [0] },
-							   {"sWidth": "3.66%","aTargets": [1] },
-							   {"sWidth": "6.66%","aTargets": [2] },
-							   {"sWidth": "6.66%","aTargets": [3] },
-							   {"sWidth": "6.66%","aTargets": [4] },
-							   {"sWidth": "6.66%","aTargets": [5] },
-							   {"sWidth": "6.66%","aTargets": [6] },
-						       {"sWidth": "6.66%","aTargets": [7] },
-							   {"sWidth": "6.66%","aTargets": [8] },
-						       {"sWidth": "6.66%","aTargets": [9] },
-						   	   {"sWidth": "6.66%","aTargets": [10] },
-						   	   {"sWidth": "6.66%","aTargets": [11] },
-						   	   {"sWidth": "6.66%","aTargets": [12] },
-						       {"sWidth": "6.66%","aTargets": [13] },
-							   {"sWidth": "6.66%","aTargets": [14] }, */
 							   {
 					                //   指定第一列，从0开始，0表示第一列，1表示第二列……
 					                targets: 14,
