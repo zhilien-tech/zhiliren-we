@@ -194,12 +194,12 @@
 										data-placeholder="MU8876"></select></td>
 									<td><label>出发时间：</label></td>
 									<td><input name="cAirOutDate" type="text"
-										class="form-control input-sm textWid" placeholder="08:00">
+										class="form-control input-sm textWid mustTimes" placeholder="08:00">
 										<!-- <input id="cAirOutDate0" name="cAirOutDate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'cAirArrivalDate0\')}'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2020-01-01"> -->
 									</td>
 									<td><label>抵达时间：</label></td>
 									<td><input name="cAirArrivalDate" type="text"
-										class="form-control input-sm textWid" placeholder="14:00">
+										class="form-control input-sm textWid mustTimes" placeholder="14:00">
 										<!-- <input id="cAirArrivalDate0" name="cAirArrivalDate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'cAirOutDate0\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2020-01-01"> -->
 									</td>
 									<td><label class="labelWid">成本价：</label></td>
@@ -561,6 +561,8 @@
 		<script src="${base}/admin/searchTicket/searchMoreOrderLines.js"></script>
 		<!-- 保存查询 js -->
 		<script src="${base}/admin/searchTicket/saveCustomerNeeds.js"></script>
+		<!-- 时间格式化 -->
+		<script src="${base}/admin/order/ordercommon.js"></script>
 
 		<!-- 解析sabre -->
 		<script type="text/javascript">
@@ -875,6 +877,7 @@
 				}
 			}
 			
+			//客户需求 价格联动
 			$(document).on('input', '.costPrice', function(e) {
 		    	$(this).val($(this).val().replace(/[^.\d]/g,''));
 		    	var fromprice = $(this).val();

@@ -485,7 +485,7 @@ var DepartureDateTime = "";
 var ArrivalDateTime = "";
 //成本价
 var airTotalMoney = "";
-$(document).on("click",".chooseLineBtn",function(){
+$(document).on("click",".chooseAirLineBtn",function(){
 	$(".chooseLi").remove();
 	var clickedLi = $(this).parent().parent();
 	clickedLi.each(function(i){
@@ -504,7 +504,7 @@ $(document).on("click",".chooseLineBtn",function(){
 		var custLine = custNeedNum +'. '+ custOutCity +' - '+ custArrivalCity;
 		custLines += '<li class="chooseLi"><a href="javascript:;" class="custLineChoose" value='+custNeedNum+' onclick="custLineChoose()">'+ custLine +'</a></li>';
 	});
-	$(".dropdown-menu").append(custLines);
+	$(".airLineCity").append(custLines);
 });
 
 /************************************飞机票 选择项点击事件  start ************************************/
