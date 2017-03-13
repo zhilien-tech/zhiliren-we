@@ -12,8 +12,15 @@ $("#companyId").select2({
 		},
 		processResults : function(data, params) {
 			params.page = params.page || 1;
+			var selectdata = $.map(data, function (obj) {
+				obj.id = obj.id; 
+				obj.text = obj.text; 
+				obj.comType = obj.comType; 
+				return obj;
+			});
+			/*alert(JSON.stringify(selectdata));*/
 			return {
-				results : data
+				results : selectdata
 			};
 		},
 		cache : false

@@ -14,7 +14,7 @@ function initPayDataTable(){
 			"url": BASE_PATH + "/admin/receivePay/inland/inlandPayList.html",
 			"type": "post",
 			"data": function (d) {
-
+				
 			}
 		},
 		"columns": [
@@ -48,9 +48,33 @@ function initPayDataTable(){
 		            		return result;
 		            	}
 		            },
-		            {"data": "peoplecount", "bSortable": false},
-		            {"data": "saleprice", "bSortable": false},
-		            {"data": "currency", "bSortable": false},
+		            {"data": "peoplecount", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var peoplecount = row.peoplecount;
+		            		if(null == peoplecount || ""== peoplecount){
+		            			return "";
+		            		}
+		            		return peoplecount;
+		            	}
+		            },
+		            {"data": "saleprice", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var saleprice = row.saleprice;
+		            		if(null == saleprice || ""== saleprice){
+		            			return "";
+		            		}
+		            		return saleprice;
+		            	}
+		            },
+		            {"data": "currency", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var currency = row.currency;
+		            		if(null == currency || ""== currency){
+		            			return "";
+		            		}
+		            		return currency;
+		            	}
+		            },
 		            {"data": "shortname", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var shortname = row.shortname;

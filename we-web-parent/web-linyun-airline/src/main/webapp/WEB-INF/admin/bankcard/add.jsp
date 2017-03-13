@@ -62,6 +62,7 @@
 			                  <div class="col-sm-2 padding">
 			                    <select id="findBank" class="form-control input-sm" onchange="selectBankName();" name="bankName">
 			               			<option value="">请选择</option>
+
 			               			<c:forEach items="${obj.bankList }" var="each">
 			               				<option value="${each.dictName }">${each.dictName }</option>
 			               			</c:forEach>

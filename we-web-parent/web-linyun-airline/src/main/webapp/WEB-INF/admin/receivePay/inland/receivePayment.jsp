@@ -37,7 +37,7 @@
 											<div class="form-group row marginBott5 cf">
 												<div class="col-md-1 textPadding">
 													<select id="inlandRecSelect" class="form-control TimeInput">
-														<option value=1>收款中</option>
+														<option value=3>收款中</option>
 														<option value=2>已收款</option>
 													</select>
 												</div>

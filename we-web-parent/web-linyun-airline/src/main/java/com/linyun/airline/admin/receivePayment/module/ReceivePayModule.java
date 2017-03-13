@@ -72,6 +72,24 @@ public class ReceivePayModule {
 	}
 
 	/**
+	 * 根据银行id查询 银行卡
+	 */
+	@At
+	public Object getCardNames(@Param("bankId") final Long bankId, HttpSession session) {
+		//根据前端传过来的部门id查询出职位
+		return receivePayService.getCardNames(bankId, session);
+	}
+
+	/**
+	 * 根据银行名称 银行卡卡号
+	 */
+	@At
+	public Object getCardNums(@Param("cardName") final String cardName, HttpSession session) {
+		//根据前端传过来的部门id查询出职位
+		return receivePayService.getCardNums(cardName, session);
+	}
+
+	/**
 	 * 
 	 *會計付款中   分页
 	 */
@@ -102,8 +120,8 @@ public class ReceivePayModule {
 	 * 确认付款
 	 */
 	@At
-	public Object saveInlandPay(@Param("..") final TSaveInlandPayAddFrom form) {
-		return receivePayService.saveInlandPay(form);
+	public Object saveInlandPay(@Param("..") final TSaveInlandPayAddFrom form, HttpSession session) {
+		return receivePayService.saveInlandPay(form, session);
 	}
 
 	/**

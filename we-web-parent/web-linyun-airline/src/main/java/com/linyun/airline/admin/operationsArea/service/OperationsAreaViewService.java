@@ -61,6 +61,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	private static final int LASTBOOK = MessageTypeEnum.LASTBOOKMSG.intKey();
 	private static final int BOOKMSG = MessageTypeEnum.BOOKMSG.intKey();
 	//TODO 任务消息状态
+	private static final int NOTICEMSG = MessageTypeEnum.NOTICEMSG.intKey();
 
 	//消息提醒模式
 	private static final int MOUTH = MessageRemindEnum.MOUTH.intKey();
@@ -236,6 +237,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			sql.params().set("userId", id);
 		}
 		sql.params().set("msgSource", 1);
+		sql.params().set("msgStatus", 1);
 		/*
 		 * 当前时间+30分钟
 		long millis = DateTimeUtil.millis();
@@ -349,6 +351,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			break;
 		case "taskNotice":
 			//任务 TODO
+			msgType = String.valueOf(NOTICEMSG);
 			break;
 		}
 
@@ -532,7 +535,6 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	 * 
 	 * 统计当前用户是否有 “内陆跨海”和“国际”的功能
 	 * <p>
-	 * TODO(这里描述这个方法详情– 可选)
 	 *
 	 * @param session
 	 * @return 对应功能的个数

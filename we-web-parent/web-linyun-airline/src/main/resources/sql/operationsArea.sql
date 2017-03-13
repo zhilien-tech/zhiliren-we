@@ -60,6 +60,8 @@ AND
 	u.id=@userId
 AND
 	um.msgSource=@msgSource
+AND
+    m.msgStatus=@msgStatus
 ORDER BY m.generateTime DESC
 
 
