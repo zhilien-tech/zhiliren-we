@@ -5,7 +5,7 @@ table#bankCardTable {margin-top: 0px !important;}
 table.dataTable thead .sorting_asc:after {display: none;}
 table.dataTable thead > tr > th {padding-right: 12px;}
 .form-control-feedback {position: absolute;top: 0px;right: -20px;}
-
+button#addBackCard {position: relative;right: 10px;}
 
 
 

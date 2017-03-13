@@ -74,18 +74,18 @@
                         <table id="rebatesReportTable" class="table table-bordered table-hover">
                           <thead>
                           <tr>
-                            <th>备注</th>
+                          	<th>PNR</th>
                             <th>汇款</th>
-                            <th>blance(备用金余额)</th>
-                            <th>票价(含行李)</th>
+                            <th>备用金余额</th>
+                            <th>票价</th>
                             <th>刷卡费</th>
                             <th>税金/杂项</th>
-                            <th>消费税(GST)</th>
+                            <th>消费税</th>
                             <th>代理费</th>
                             <th>税返点</th>
                             <th>退税状态</th>
-                            <th>实收单价(含操作费)</th>
-                            <th>实收合计(含操作费)</th>
+                            <th>实收单价</th>
+                            <th>实收合计</th>
                             <th>代理费</th>
                             <th>入澳时间</th>
                             <th>出澳时间</th>
@@ -444,6 +444,7 @@ function successCallback(id){
 	            }
 	        },
 	        "columns": [
+						/*  */
 						{"data": "id", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var result = '';
@@ -490,9 +491,15 @@ function successCallback(id){
 	                    		}
 	                    		return filesize+"k";
 	                    	}	
-	                    }
+	                    },
 	            ],
-	            "columnDefs": [{
+	            "columnDefs": [
+							   {"sWidth": "5%","aTargets": [0] },
+							   {"sWidth": "55%","aTargets": [1] },
+							   {"sWidth": "15%","aTargets": [2] },
+							   {"sWidth": "10%","aTargets": [3] },
+							   {"sWidth": "15%","aTargets": [4] },
+	                           {
 	                //   指定第一列，从0开始，0表示第一列，1表示第二列……
 	                targets: 4,
 	                render: function(data, type, row, meta) {
@@ -602,7 +609,7 @@ function successCallback(id){
 	  	    fix: false,
 	  	    maxmin: false,
 	  	    shadeClose: false,
-	  	    area: ['400px', '200px'],
+	  	    area: ['400px', '170px'],
 	  	    content: '${base}/admin/drawback/grabfile/add.html?parentId='+pid,
 	  	    end: function(){//添加完页面点击返回的时候自动加载表格数据
 	  	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
@@ -623,7 +630,7 @@ function successCallback(id){
 	  	    fix: false,
 	  	    maxmin: false,
 	  	    shadeClose: false,
-	  	    area: ['400px', '200px'],
+	  	    area: ['400px', '170px'],
 	  	    content: '${base}/admin/drawback/grabfile/update.html?id='+id,
 	  	    end: function(){//添加完页面点击返回的时候自动加载表格数据
 	  	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
@@ -655,14 +662,14 @@ function successCallback(id){
 	            }
 	        },
 	        "columns": [
-	                    {"data": "remark", "bSortable": false,
+	                    {"data": "pnr", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var remark = row.remark;
-	                    		if(null==remark || ""==remark){
+	                    		var pnr = row.pnr;
+	                    		if(null==pnr || ""==pnr){
 	                    			return "";
 	                    		}
-	                    		var result = '<span data-toggle="tooltip" data-placement="right" title="'+row.remark+'">'+row.remark+'<span>';
-	                    		return result;
+	                    		// var pnr = '<span data-toggle="tooltip" data-placement="right" title="'+row.pnr+'">'+row.pnr+'<span>';
+	                    		return pnr;
 	                    	}
 	                    },
 	                    {"data": "remit", "bSortable": false,
@@ -781,6 +788,7 @@ function successCallback(id){
 	                    		if(null==inAustralianTime || ""==inAustralianTime){
 	                    			return "";
 	                    		}
+	                    		var inAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+row.inaustraliantime+'">'+row.inaustraliantime+'<span>';
 	                    		return inAustralianTime;
 	                    	}
 	                    },
@@ -790,18 +798,35 @@ function successCallback(id){
 	                    		if(null==outAustralianTime || ""==outAustralianTime){
 	                    			return "";
 	                    		}
+	                    		var outAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+row.outaustraliantime+'">'+row.outaustraliantime+'<span>';
 	                    		return outAustralianTime;
 	                    	}
 	                    }
 	            ],
-	            "columnDefs": [{
-	                //   指定第一列，从0开始，0表示第一列，1表示第二列……
-	                targets: 14,
-	                render: function(data, type, row, meta) {
-	                	/* var details = '<a style="cursor:pointer;" onclick="editPreview('+row.id+');">编辑</a>'; */
-	                    return details;
-	                }
-	            }]
+	            "columnDefs": [
+	                           /* {"sWidth": "6.66%","aTargets": [0] },
+							   {"sWidth": "3.66%","aTargets": [1] },
+							   {"sWidth": "6.66%","aTargets": [2] },
+							   {"sWidth": "6.66%","aTargets": [3] },
+							   {"sWidth": "6.66%","aTargets": [4] },
+							   {"sWidth": "6.66%","aTargets": [5] },
+							   {"sWidth": "6.66%","aTargets": [6] },
+						       {"sWidth": "6.66%","aTargets": [7] },
+							   {"sWidth": "6.66%","aTargets": [8] },
+						       {"sWidth": "6.66%","aTargets": [9] },
+						   	   {"sWidth": "6.66%","aTargets": [10] },
+						   	   {"sWidth": "6.66%","aTargets": [11] },
+						   	   {"sWidth": "6.66%","aTargets": [12] },
+						       {"sWidth": "6.66%","aTargets": [13] },
+							   {"sWidth": "6.66%","aTargets": [14] }, */
+							   {
+					                //   指定第一列，从0开始，0表示第一列，1表示第二列……
+					                targets: 14,
+					                render: function(data, type, row, meta) {
+					                	/* var details = '<a style="cursor:pointer;" onclick="editPreview('+row.id+');">编辑</a>'; */
+					                    return details;
+					                }
+				               }]
 		});
 	}
 	//报表详情

@@ -9,6 +9,11 @@
 	<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
 	<link rel="stylesheet" href="${base}/public/dist/css/dict.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
+	<style type="text/css">
+	.newfile{display: inline-block;width: 260px;}
+	.newfile input {width: 96%;display: inline-block;}
+	.contextFrom{width: 90%;margin:17px auto;}
+	</style>
 </head>
 <body onresize=hero();>
           <div class="modal-top">
@@ -18,7 +23,7 @@
                   <input type="button" id="submitButton" class="btn btn-primary right btn-sm" onclick="submitInfo();" value="保存"/>
                   <h4>修改文件夹名称</h4>
               </div>
-                <div class="modal-body" style="height:360px;overflow-y: auto;">
+                <div class="modal-body" style="height:100px;overflow-y: auto;">
                  <div class="tab-content">
                         <div class="form-group row">
                             <%-- <div class="tab-content">
@@ -30,11 +35,11 @@
 									</div>
 								</div> --%>
                         </div>
-                        <div class="form-group row">
-                            <div class="col-sm-8 padding">
+                        <div class="form-group row contextFrom">
                         		<label class="col-sm-3 text-right padding">文件名：</label>
-                            	<input id="folderId" name="fileName" class="form-control input-sm inpImpWid" style="width:200px;" value="${obj.dirfolder.fileName}"/><span class="prompt">*</span>
-                            </div>
+                        		<div class="newfile">
+                        			<input id="folderId" name="fileName" class="form-control input-sm" value="${obj.dirfolder.fileName}"/><span class="prompt">*</span>
+                        		</div>
                         </div>
                     </div>
                 </div>

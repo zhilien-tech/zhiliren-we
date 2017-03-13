@@ -4,7 +4,7 @@
 .addPNR .table-bordered > thead > tr > th,.addPNR .table-bordered > tbody > tr > th,.addPNR .table-bordered > thead > tr > td,.addPNR .table-bordered > tbody > tr > td{ border: 1px solid #cccccc;text-align: center;padding:4px;}
 .addPNR table tr{height: 30px;}
 .PNRbtn{padding: 4px 5px !important;margin-left: 10px !important;}
-.addDemand{left: 70.5%; margin-left: 8px;}
+.addDemand{left: 72.5%; margin-left: 8px;line-height: 18px;font-size: 12px;}
 .addIcon {top: 0px;float: left;left: 10px;}
 .removIcon {float: left;left: 27px;}
 .scykP{padding-top: 0;line-height: 27px;font-size: 12px;}
@@ -31,9 +31,10 @@ select[multiple="multiple"]{height: 180px;}
 form#financeForm table {margin-bottom: 10px;}
 
 
-
-
-
-
+/*select2 内容style 隐藏*/
+.select2-container--default .select2-selection--multiple .select2-selection__choice {background-color:rgba(255, 255, 255, 0);border-color:rgba(255, 255, 255, 0);padding: 2px 0px;color: #555;font-size: 11px;}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {margin-right: 0px;display: none;color: rgba(255, 255, 255, 0.7);}
+.select2-container--default .select2-search--inline .select2-search__field {margin-left: 0px;}
+/*end select2 内容style 隐藏*/
 
 
