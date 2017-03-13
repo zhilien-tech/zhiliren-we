@@ -10,6 +10,7 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -19,11 +20,13 @@ import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
-import com.linyun.airline.admin.drawback.grabfile.form.TGrabFileAddForm;
+import com.linyun.airline.admin.airlinepolicy.service.AirlinePolicyService;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.base.Uploader;
 import com.linyun.airline.common.constants.CommonConstants;
-import com.linyun.airline.common.enums.DataStatusEnum;
+import com.linyun.airline.common.enums.AirlinePolicyEnum;
+import com.linyun.airline.forms.TAirlinePolicyAddForm;
+import com.linyun.airline.forms.TAirlinePolicyForm;
 
 /**
  * TODO(这里用一句话描述这个类的作用)
@@ -40,6 +43,8 @@ public class AirlinePolicyModule {
 
 	@Inject
 	private UploadService qiniuUploadService;//文件上传
+	@Inject
+	private AirlinePolicyService airlinePolicyService;
 
 	/**
 	 * 跳转到list页面
@@ -54,6 +59,14 @@ public class AirlinePolicyModule {
 		map.put("deplist", deplist);
 		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));*/
 		return null;
+	}
+
+	/**
+	 * 列表查询
+	 */
+	@At
+	public Object listData(@Param("..") final TAirlinePolicyForm sqlForm, final HttpSession session) {
+		return airlinePolicyService.listPage4Datatables(sqlForm);
 	}
 
 	/**
@@ -76,13 +89,14 @@ public class AirlinePolicyModule {
 	 * @param addForm
 	 */
 	@At
-	public Object saveUploadFile(@Param("..") TGrabFileAddForm addForm) {
+	public Object saveUploadFile(@Param("..") TAirlinePolicyAddForm addForm) {
 		addForm.setCreateTime(new Date());
-		addForm.setStatus(DataStatusEnum.ENABLE.intKey());
+		addForm.setUpdateTime(new Date());
+		addForm.setStatus(AirlinePolicyEnum.ENABLE.intKey());
 		addForm.setUrl(addForm.getUrl());
 		addForm.setFileName(addForm.getFileName());
-		addForm.setParentId(addForm.getId());
-		return null;
+		addForm.setFileSize(addForm.getFileSize());
+		return airlinePolicyService.add(addForm);
 	}
 
 }

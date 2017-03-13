@@ -6,17 +6,22 @@
 
 package com.linyun.airline.admin.salary.module;
 
+import javax.servlet.http.HttpSession;
+
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
+import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.salary.service.SalaryViewService;
+import com.linyun.airline.forms.TSalaryAddForm;
 import com.linyun.airline.forms.TSalaryFindForm;
 import com.linyun.airline.forms.TSalaryForm;
+import com.uxuexi.core.web.chain.support.JsonResult;
 
 /**
  * TODO(这里用一句话描述这个类的作用)
@@ -52,6 +57,17 @@ public class SalaryModule {
 	public Object listData(@Param("..") final TSalaryFindForm findForm, @Param("..") final TSalaryForm sqlForm) {
 
 		return salaryViewService.listPage4Datatables(findForm, sqlForm);
+	}
+
+	/**
+	 * 添加工资
+	 * 
+	 */
+	@At
+	@POST
+	public Object add(@Param("..") TSalaryAddForm addForm, final HttpSession session) {
+		salaryViewService.addSalary(addForm, session);
+		return JsonResult.success("添加成功!");
 	}
 
 }

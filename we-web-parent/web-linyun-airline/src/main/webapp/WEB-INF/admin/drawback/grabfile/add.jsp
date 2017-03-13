@@ -14,6 +14,11 @@
 <script src="${base}/public/bootstrap/js/bootstrap.js"></script>
 <script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 <script src="${base}/common/js/layer/layer.js"></script>
+<style type="text/css">
+	.newfile{display: inline-block;width: 260px;}
+	.newfile input {width: 96%;display: inline-block;}
+	.contextFrom{width: 90%;margin:17px auto;}
+</style>
 </head>
 <body onresize=hero();>
 	<div class="modal-top">
@@ -23,7 +28,7 @@
                 <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
 				<h4>添加文件夹</h4>
 			</div>
-			<div class="modal-body" style="height:310px;overflow-y: auto;">
+			<div class="modal-body" style="height:100px;overflow-y: auto;">
 				<%-- <div class="tab-content">
 					<div class="form-group row">
 						<div class="col-sm-8 padding">
@@ -33,12 +38,12 @@
 					</div>
 				</div> --%>
 				<div class="tab-content">
-					<div class="form-group row">
-						<div class="col-sm-8 padding">
+					<div class="form-group row contextFrom">
 						<label class="col-sm-3 text-right padding">文件名：</label>
-							<input id="folderId" name="fileName" class="form-control input-sm inpImpWid" style="width:200px;"
-								placeholder="请输入文件夹名称" /><span class="prompt">*</span>
+						<div class="newfile">
+							<input id="folderId" name="fileName" class="form-control input-sm" placeholder="请输入文件夹名称" /><span class="prompt">*</span>
 						</div>
+							
 					</div>
 				</div>
 			</div>
