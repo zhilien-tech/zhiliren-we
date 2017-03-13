@@ -224,7 +224,7 @@ $(function(){
 	initCitySelect2(firstDemandDiv);
 	initAirInfoSelect2(firstDemandDiv.find('[name=airlineinfo]'));
     $('.UnderIcon').on('click',function(){//客户信息 显示/隐藏
-        $('.hideTable').toggle('400');
+        $('.hideTable').toggle();
       });
     //客户需求的 + 按钮
     $(document).on("click",".addIcon",function(){

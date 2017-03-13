@@ -55,7 +55,7 @@
                  <p>客户信息</p>
                  <div class="infoTopContent">
                    <span>${obj.orderinfo.ordersnum }</span>
-                   <select id="orderType" name="orderType" class="form-control input-sm conSelect cf">
+                   <select id="orderType" name="orderType" class="form-control input-sm conSelect cf" disabled="disabled">
                      <c:forEach var="map" items="${obj.orderstatusenum}" >
                      	<c:if test="${obj.querystatus != map.key }">
                      		<c:choose>
@@ -78,24 +78,13 @@
                  <table>
                    <tr>
                      <td><label>客户姓名：</label></td>
-                     <td><select id="linkName" name="linkName" disabled="disabled" type="text" class="form-control input-sm" multiple="multiple" placeholder="请输入客户姓名">
-                     	<c:forEach items="${obj.customerInfos }" var="one"> 
-                   			<c:choose>
-	                   			<c:when test="${obj.orderinfo.userid  eq one.id  }">
-									<option value="${one.id }" selected="selected">${one.linkMan }</option>
-	                   			</c:when>
-	                   			<c:otherwise>
-		                     		<option value="${one.id }">${one.linkMan }</option>
-	                   			</c:otherwise>
-                    		</c:choose>
-                     	</c:forEach>
-                     	</select>
+                     <td><input id="linkName" name="linkName" disabled="disabled" type="text" class="form-control input-sm" value="${obj.custominfo.linkMan }">
                      	<input id="customerId" name="customerId" type="hidden" value="${obj.custominfo.id }"/>
                      	<!-- 订单id -->
                      	<input id="orderedid" name="orderedid" type="hidden" value="${obj.orderinfo.id }"></td>
                      <td><label style="position: relative;top: 4px;">结算方式：</label></td>
                      <td colspan="3"><pre class="preTxt">不限 信用额度：0  临时额度：0  历史欠款：0  预存款：0</pre></td>
-                     <td><input type="button" value="清空" class="btn btn-primary btn-sm clearBtn"><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
+                     <td><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
                    </tr>
                  </table>
 
@@ -134,7 +123,7 @@
 		               <c:forEach var="customneed" items="${obj.customneedinfo }" varStatus="varstatus">
 		               <div id="infofooter" class="infofooter">
 		                <div class="DemandDiv">
-		                 <span class="titleNum">1</span>
+		                 <span class="titleNum">${varstatus.index+1 }</span>
 		                 <c:choose>
 			                 <c:when test="${varstatus.index eq 0 }">
 				                 <a href="${base }/admin/inland/downloadVisitorTemplate.html" class="btn btn-primary btn-sm addDemand none" target="hidden_frame">游客模板</a>
@@ -145,7 +134,7 @@
 				                 <a href="javascript:;" class="btn btn-primary btn-sm addDemand none addXuQiu"><b>+</b>&nbsp;&nbsp;需求</a>
 			                 </c:when>
 			                 <c:otherwise>
-			                 	<a href="javascript:;" class="btn btn-primary btn-sm removeDemand"><b>-</b>&nbsp;&nbsp;需求</a>
+			                 	<a href="javascript:;" class="btn btn-primary btn-sm removeDemand none"><b>-</b>&nbsp;&nbsp;需求</a>
 			                 </c:otherwise>
 		                 </c:choose>
 		                 <input type="hidden" id="customneedid" name="customneedid" value="${customneed.cusinfo.id }">
@@ -274,6 +263,7 @@
 		                     <td><input id="avgexrate" name="avgexrate" disabled="disabled" type="text" class="form-control input-sm textWid" value="${customneed.cusinfo.avgexrate }"/></td>
 		                     <td><label>币种：</label></td>
 		                     <td colspan="3"><select id="paycurrency" name="paycurrency" disabled="disabled" class="form-control input-sm">
+		                     		<option value="">请选择</option>
 		                            <c:forEach items="${obj.bzcode }" var="one"> 
 		                        	<c:choose>
 		                        		<c:when test="${customneed.cusinfo.paycurrency eq one.dictCode }">
@@ -291,7 +281,14 @@
 								<select id="paymethod" name="paymethod" disabled="disabled" class="form-control input-sm">
 		                            <option value="">请选择</option>
 		                            <c:forEach var="map" items="${obj.paymethodenum}" >
-								   		<option value="${map.key}">${map.value}</option>
+		                            	<c:choose>
+		                            		<c:when test="${customneed.cusinfo.paymethod eq map.key }">
+		                            			<option value="${map.key}" selected="selected">${map.value}</option>
+		                            		</c:when>
+		                            		<c:otherwise>
+										   		<option value="${map.key}">${map.value}</option>
+		                            		</c:otherwise>
+		                            	</c:choose>
 									 </c:forEach>
 		                        </select>
 							 </td>
@@ -506,7 +503,7 @@
                    <tr class="KHinfo">
                      <td><label>应收：</label></td>
                      <td><input id="receivable" name="receivable" type="text" class="form-control input-sm disab" value="${obj.finance.receivable }" disabled="disabled"></td>
-                     <td><label><a href="javascript:;" class="jianMian">减免</a>：</label></td>
+                     <td><label><a href="javascript:;" class="" id="jianMian" disabled="disabled">减免</a>：</label></td>
                      <td><input id="relief" name="relief" type="text" class="form-control input-sm" disabled="disabled" value="${obj.finance.relief }"></td>
                      <td><label>实收合计：</label></td>
                      <td><input id="incometotal" name="incometotal" type="text" class="form-control input-sm disab loadprofit" disabled="disabled" value="${obj.finance.incometotal }"></td>
@@ -600,6 +597,8 @@
           $('.remindSet tbody tr td input').removeAttr("disabled");//删除 提醒设置 input 禁止编辑的状态
           $('.disab').removeAttr("disabled");//信息模块 input 禁止编辑的状态
           $('.PNRbtnTD').removeClass('none');//+PNR 按钮 显示
+          $('#orderType').removeAttr("disabled");//订单状态禁止编辑的状态
+          $('#jianMian').addClass("jianMian");//减免禁止编辑的状态
           //页面不可编辑
           $('.DemandDiv').each(function(i){
         	  $(this).find('[name=leavecity]').removeAttr('disabled');
@@ -636,10 +635,12 @@
           $('.remindSet tbody tr td input').attr("disabled",'disabled');//提醒设置 input 添加 不可编辑属性
           $('.disab').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
           $('.PNRbtnTD').addClass('none');//+PNR 按钮 隐藏
+          $('#orderType').attr("disabled",'disabled');//订单状态添加 不可编辑属性
+          $('#jianMian').removeClass("jianMian");//减免添加 不可编辑属性
           //页面可以编辑
           $('.DemandDiv').each(function(i){
         	  var customneedid = $(this).find('[name=customneedid]').val();
-        	  if(i>0 && !customneedid){
+        	  if(i>0 && !customneedid){ 
         		  $(this).parent().remove();
         	  }else{
 	        	  $(this).find('[name=leavecity]').attr('disabled','disabled');
@@ -689,7 +690,7 @@
         });
 
         //点击 减免 弹框
-        $('.jianMian').click(function(){
+        $(document).on("click",".jianMian",function(){
             layer.open({
                 type: 2,
                 title:false,
@@ -836,19 +837,75 @@
   	$(document).on("click",".PNRbtn",function(){
   		var xuqiuDiv = $(this).parent().parent().parent().parent().parent();
 		  var needid = xuqiuDiv.find('[name=customneedid]').val();
-		 if(needid){
-			 layer.open({
-		         type: 2,
-		         title:false,
-		         skin: false, //加上边框
-		         closeBtn:false,//默认 右上角关闭按钮 是否显示
-		         shadeClose:true,
-		         area: ['880px', '425px'],
-		         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+needid
-		       });
-		 }else{
-			 layer.alert("需求未保存",{time: 2000, icon:1});
-		 } 
+		  //先保存需求信息
+		 if(!needid){
+			var row1 = {};
+			var leavecity = xuqiuDiv.find('[name=leavecity]').val();
+			//出发城市
+			if (leavecity) {
+				leavecity = leavecity.join(',');
+			}
+			row1.leavecity = leavecity;
+			//抵达城市
+			var arrivecity = xuqiuDiv.find('[name=arrivecity]').val();
+			if (arrivecity) {
+				arrivecity = arrivecity.join(',');
+			}
+			row1.arrivecity = arrivecity;
+			row1.orderid = '${obj.orderinfo.id }';
+			row1.customneedid = xuqiuDiv.find('[name=customneedid]').val();
+			row1.leavedate = xuqiuDiv.find('[name=leavedate]').val();
+			row1.peoplecount = xuqiuDiv.find('[name=peoplecount]').val();
+			row1.tickettype = xuqiuDiv.find('[name=tickettype]').val();
+			row1.realtimexrate = xuqiuDiv.find('[name=realtimexrate]').val();
+			row1.avgexrate = xuqiuDiv.find('[name=avgexrate]').val();
+			row1.paycurrency = xuqiuDiv.find('[name=paycurrency]').val();
+			row1.paymethod = xuqiuDiv.find('[name=paymethod]').val();
+			row1.remark = xuqiuDiv.find('[name=remark]').val();
+			var airrows = [];
+			$(this).find('[name=airlineinfo]').each(function(i){
+				var airrow = {};
+				var aircom = $(this).find('[name=aircom]').val();
+				if (aircom) {
+					aircom = aircom.join(',');
+	  			}
+				airrow.aircom = aircom;
+				var ailinenum = $(this).find('[name=ailinenum]').val();
+				if (ailinenum) {
+					ailinenum = ailinenum.join(',');
+	  			}
+				airrow.ailinenum = ailinenum;
+				airrow.airlineid = $(this).find('[name=airlineid]').val();
+				airrow.leavetime = $(this).find('[name=leavetime]').val();
+				airrow.arrivetime = $(this).find('[name=arrivetime]').val();
+				airrow.formprice = $(this).find('[name=formprice]').val();
+				airrow.price = $(this).find('[name=price]').val();
+				airrows.push(airrow);
+			});
+			row1.airinfo = airrows;
+			//保存客户需求信息
+			$.ajax({ 
+				type: 'POST', 
+				data: {data:JSON.stringify(row1)}, 
+				url: '${base}/admin/inland/saveCustomeneedInfo.html',
+	            success: function (data) { 
+	            	xuqiuDiv.find('[name=customneedid]').val(data.id);
+		         },
+		         error: function (xhr) {
+		          	layer.msg("保存失败","",3000);
+		         } 
+	      });
+		 }
+		 needid = xuqiuDiv.find('[name=customneedid]').val();
+		 layer.open({
+	         type: 2,
+	         title:false,
+	         skin: false, //加上边框
+	         closeBtn:false,//默认 右上角关闭按钮 是否显示
+	         shadeClose:true,
+	         area: ['880px', '425px'],
+	         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+needid
+	       });
     });
   //其他页面回调
  function successCallback(id){

@@ -9,8 +9,7 @@
     <section class="content">
     <div class="row row-top">
         <div class="col-xs-12">
-          
-          <div class="nav-tabs-custom">
+         <div class="nav-tabs-custom">
               <ul class="nav nav-tabs">
                 <li class="active"><a href="#tab_1" onclick="loadDataTable(0)" data-toggle="tab">全部</a></li>
                 <li><a href="#tab_1" onclick="loadDataTable(1)" data-toggle="tab">查询</a></li>
@@ -418,6 +417,7 @@
 <script type="text/javascript">
 	var BASE_PATH = '${base}';
 </script>
+<script src="${base }/admin/order/ordercommon.js"></script>
 <script src="${base}/admin/order/inland.js"></script>
 <script src="${base}/admin/order/ticketing.js"></script>
 <script src="${base}/admin/order/ticketingpay.js"></script>
