@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<%@include file="/WEB-INF/public/footer.jsp"%>
+<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
