@@ -33,6 +33,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.linyun.airline.admin.Company.service.CompanyViewService;
+import com.linyun.airline.admin.customer.base.Select2Option2;
 import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
@@ -72,6 +73,10 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	//付款中订单状态
 	private static final int APPROVALPAYING = AccountPayEnum.APPROVALPAYING.intKey();
 
+	//公司类型
+	private static final int UPCOMPANY = CompanyTypeEnum.UPCOMPANY.intKey();
+	private static final int AGENT = CompanyTypeEnum.AGENT.intKey();
+
 	@Inject
 	private externalInfoService externalInfoService;
 
@@ -98,32 +103,71 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 	//客户公司
 	public Object company(String comName, HttpSession session) {
+
+		List<Record> records = new ArrayList<Record>();
+
 		//得到当前用户所在公司的id
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
 		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
-		long upRelationId = upcompany.getId();
+
 		Sql sql = Sqls.create(sqlManager.get("customer_comOption_list"));
-		sql.setParam("comtype", CompanyTypeEnum.AGENT.intKey());
-		sql.setParam("deletestatus", 0);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("comName", "like", Strings.trim(comName) + "%");
-		//cnd.and("upComId", "=", upRelationId);
-		sql.setCondition(cnd);
-		List<Record> agentCompanyList = dbDao.query(sql, null, null);
-		List<Select2Option> result = transform2SelectOptions(agentCompanyList);
+		cnd.and("deletestatus", "=", 0);
+		List<Record> agentCompanyList = dbDao.query(sql, cnd, null);
+		String upCustomerId = "";
+		String agCustomerId = "";
+		for (Record record : agentCompanyList) {
+			int comType = Integer.valueOf(record.getString("comType"));
+			if (Util.eq(UPCOMPANY, comType)) {
+				upCustomerId += record.getString("id") + ",";
+			}
+			if (Util.eq(AGENT, comType)) {
+				agCustomerId += record.getString("id") + ",";
+			}
+		}
+
+		//上游公司
+		if (upCustomerId.length() > 1) {
+			upCustomerId = upCustomerId.substring(0, upCustomerId.length() - 1);
+			Sql upSql = Sqls.create(sqlManager.get("customer_upOption_list"));
+			Cnd upCnd = Cnd.NEW();
+			upCnd.and("deletestatus", "=", 0);
+			upCnd.and("c.id", "in", upCustomerId);
+			List<Record> upRecord = dbDao.query(upSql, upCnd, null);
+			for (Record record : upRecord) {
+				records.add(record);
+			}
+		}
+
+		//代理商
+		if (agCustomerId.length() > 1) {
+			agCustomerId = agCustomerId.substring(0, agCustomerId.length() - 1);
+			Sql agSql = Sqls.create(sqlManager.get("customer_agOption_list"));
+			Cnd agCnd = Cnd.NEW();
+			agCnd.and("deletestatus", "=", 0);
+			agCnd.and("c.id", "in", agCustomerId);
+			List<Record> agRecord = dbDao.query(agSql, agCnd, null);
+			for (Record record : agRecord) {
+				records.add(record);
+			}
+		}
+
+		List<Select2Option2> result = transform2SelectOptions(records);
 		return result;
 	}
 
-	private List<Select2Option> transform2SelectOptions(List<Record> companyList) {
-		return Lists.transform(companyList, new Function<Record, Select2Option>() {
+	private List<Select2Option2> transform2SelectOptions(List<Record> companyList) {
+		return Lists.transform(companyList, new Function<Record, Select2Option2>() {
 
 			@Override
-			public Select2Option apply(Record record) {
-				Select2Option op = new Select2Option();
+			public Select2Option2 apply(Record record) {
+				Select2Option2 op = new Select2Option2();
 
 				op.setId(record.getInt("id"));
 				op.setText(record.getString("comName"));
+				op.setComType(record.getInt("comtype"));
 				return op;
 			}
 		});
@@ -353,26 +397,45 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		obj.put("userlist", record);
 
 		//查询公司名称
-		Sql comSql = Sqls.create(sqlManager.get("customer_comOption_list"));
-		Cnd comCnd = Cnd.NEW();
-		comCnd.and("a.id", "=", tCustomerInfoEntity.getAgentId());
-		comSql.setCondition(comCnd);
-		//只有一个
-		List<Record> agentCompanyList = dbDao.query(comSql, null, null);
+		long agentId = tCustomerInfoEntity.getAgentId();
+		long customerInfoId = tCustomerInfoEntity.getId();
+		TCustomerInfoEntity customerInfo = dbDao.fetch(TCustomerInfoEntity.class, customerInfoId);
+		long customerType = customerInfo.getCustomerType();
+
+		List<Record> agentCompanyList = new ArrayList<Record>();
+		if (Util.eq(UPCOMPANY, customerType)) {
+			//上游公司
+			Sql upSql = Sqls.create(sqlManager.get("customer_upOption_list"));
+			Cnd upCnd = Cnd.NEW();
+			upCnd.and("deletestatus", "=", 0);
+			upCnd.and("a.id", "in", agentId);
+			agentCompanyList = dbDao.query(upSql, upCnd, null);
+		}
+		if (Util.eq(AGENT, customerType)) {
+			//代理商
+			Sql agSql = Sqls.create(sqlManager.get("customer_agOption_list"));
+			Cnd agCnd = Cnd.NEW();
+			agCnd.and("deletestatus", "=", 0);
+			agCnd.and("a.id", "in", agentId);
+			agentCompanyList = dbDao.query(agSql, agCnd, null);
+		}
 		//公司名称id 拼串
 		String comIds = "";
 		String comName = "";
+		String comType = "";
 		for (Record r : agentCompanyList) {
 			comIds = r.getString("id") + "";
 			comName = r.getString("name");
+			comType = r.getString("type");
 		}
 		obj.put("comIds", comIds);
-		obj.put("comEntity", Lists.transform(agentCompanyList, new Function<Record, Select2Option>() {
+		obj.put("comEntity", Lists.transform(agentCompanyList, new Function<Record, Select2Option2>() {
 			@Override
-			public Select2Option apply(Record record) {
-				Select2Option op = new Select2Option();
+			public Select2Option2 apply(Record record) {
+				Select2Option2 op = new Select2Option2();
 				op.setId(Long.valueOf(record.getString("id")));
 				op.setText(record.getString("comname"));
+				op.setComType(Long.valueOf(record.getString("comtype")));
 				return op;
 			}
 		}));

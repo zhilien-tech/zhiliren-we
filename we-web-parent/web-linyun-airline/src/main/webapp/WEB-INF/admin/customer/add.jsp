@@ -60,6 +60,8 @@
 									<input id="agentId" type="hidden" name="agentId" />
 									<!-- 公司名称 -->
 									<input id="comName" type="hidden" name="name" />
+									<!-- 公司类型 -->
+									<input id="comType" type="hidden" name="customerType" />
 								</div>
 							</div>
 						</div>
@@ -74,6 +76,9 @@
 								//公司名称
 								var selectedcompanyName = $('#companyId').find("option:selected").text();
 								$("#comName").val(selectedcompanyName);
+								//公司类型
+								var res = $("#companyId").select2("data");
+								$("#comType").val(res[0].comType);
 							}
 						</script>
 

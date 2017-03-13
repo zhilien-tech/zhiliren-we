@@ -24,8 +24,12 @@ public class TCustomerInfoEntity implements Serializable {
 	private long upComId;
 
 	@Column
-	@Comment("代理商id")
+	@Comment("客户id")
 	private long agentId;
+
+	@Column
+	@Comment("客户类型")
+	private long customerType;
 
 	@Column
 	@Comment("名称")
