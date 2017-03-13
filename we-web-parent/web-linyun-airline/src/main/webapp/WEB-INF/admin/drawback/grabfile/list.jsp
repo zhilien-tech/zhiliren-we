@@ -444,6 +444,7 @@ function successCallback(id){
 	            }
 	        },
 	        "columns": [
+						/*  */
 						{"data": "id", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var result = '';
@@ -490,9 +491,15 @@ function successCallback(id){
 	                    		}
 	                    		return filesize+"k";
 	                    	}	
-	                    }
+	                    },
 	            ],
-	            "columnDefs": [{
+	            "columnDefs": [
+							   {"sWidth": "5%","aTargets": [0] },
+							   {"sWidth": "55%","aTargets": [1] },
+							   {"sWidth": "15%","aTargets": [2] },
+							   {"sWidth": "10%","aTargets": [3] },
+							   {"sWidth": "15%","aTargets": [4] },
+	                           {
 	                //   指定第一列，从0开始，0表示第一列，1表示第二列……
 	                targets: 4,
 	                render: function(data, type, row, meta) {
@@ -602,7 +609,7 @@ function successCallback(id){
 	  	    fix: false,
 	  	    maxmin: false,
 	  	    shadeClose: false,
-	  	    area: ['400px', '200px'],
+	  	    area: ['400px', '170px'],
 	  	    content: '${base}/admin/drawback/grabfile/add.html?parentId='+pid,
 	  	    end: function(){//添加完页面点击返回的时候自动加载表格数据
 	  	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
@@ -623,7 +630,7 @@ function successCallback(id){
 	  	    fix: false,
 	  	    maxmin: false,
 	  	    shadeClose: false,
-	  	    area: ['400px', '200px'],
+	  	    area: ['400px', '170px'],
 	  	    content: '${base}/admin/drawback/grabfile/update.html?id='+id,
 	  	    end: function(){//添加完页面点击返回的时候自动加载表格数据
 	  	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
@@ -661,8 +668,8 @@ function successCallback(id){
 	                    		if(null==pnr || ""==pnr){
 	                    			return "";
 	                    		}
-	                    		var result = '<span data-toggle="tooltip" data-placement="right" title="'+row.pnr+'">'+row.pnr+'<span>';
-	                    		return result;
+	                    		// var pnr = '<span data-toggle="tooltip" data-placement="right" title="'+row.pnr+'">'+row.pnr+'<span>';
+	                    		return pnr;
 	                    	}
 	                    },
 	                    {"data": "remit", "bSortable": false,
@@ -796,14 +803,15 @@ function successCallback(id){
 	                    	}
 	                    }
 	            ],
-	            "columnDefs": [{
-	                //   指定第一列，从0开始，0表示第一列，1表示第二列……
-	                targets: 14,
-	                render: function(data, type, row, meta) {
-	                	/* var details = '<a style="cursor:pointer;" onclick="editPreview('+row.id+');">编辑</a>'; */
-	                    return details;
-	                }
-	            }]
+	            "columnDefs": [
+							   {
+					                //   指定第一列，从0开始，0表示第一列，1表示第二列……
+					                targets: 14,
+					                render: function(data, type, row, meta) {
+					                	/* var details = '<a style="cursor:pointer;" onclick="editPreview('+row.id+');">编辑</a>'; */
+					                    return details;
+					                }
+				               }]
 		});
 	}
 	//报表详情
