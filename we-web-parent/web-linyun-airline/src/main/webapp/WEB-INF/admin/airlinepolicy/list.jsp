@@ -179,11 +179,10 @@
 			//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
 			//下面的例子演示如何获取到vid
 			 'onUploadSuccess' : function(file, data, response) {
-				 alert(data);
+				 
 				var jsonobj = eval('(' + data + ')');
 				var url  = jsonobj;//地址
 				var fileName = file.name;//文件名称
-				 alert(fileName);
 				//var id = $("input#currentDirId").val();//文件pid
 				 $.ajax({
 					cache : false,
@@ -196,11 +195,9 @@
 					dataType : 'json',
 					url : '${base}/admin/airlinepolicy/saveUploadFile.html',
 					error : function(request) {
-						alert(111);
 						layer.msg('上传失败!');
 					},
 					success : function(data) {
-						alert(2222);
 					    window.parent.successCallback('6');
 						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 					    parent.layer.close(index);

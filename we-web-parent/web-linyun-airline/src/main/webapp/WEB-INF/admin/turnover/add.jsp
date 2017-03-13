@@ -106,6 +106,7 @@
 		                	<label class="col-sm-2 text-right padding">项目：</label>
 		                  <div class="col-sm-2 padding">
 		                      <select class="form-control input-sm" name="projectName">
+		                      		<option value="">请选择</option>
 			                      <c:forEach items="${obj.projectList }" var="each">
 			                    		<option value="${each.dictName }">${each.dictName }</option>
 				                  </c:forEach>
