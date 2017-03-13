@@ -54,21 +54,27 @@
                     <td>
                       <select class="form-control input-sm">
                            <c:forEach var="one" items="${obj.yhkSelect }">
-                        	<option value="${one.id }">${one.dictName }</option>
+                             <c:choose>
+                             	<c:when test="${one.id eq obj.receive.bankcardid }">
+                             		<option value="${one.id }" selected="selected">${one.dictName }</option>
+                             	</c:when>
+                             	<c:otherwise>
+		                        	<option value="${one.id }">${one.dictName }</option>
+                             	</c:otherwise>
+                             </c:choose>
                            </c:forEach>
                       </select>
                     </td>
                     <td>银行卡名称：</td>
                     <td>
                       <select class="form-control input-sm">
-                          <option>国际专用卡</option>
-                          <option>内陆专用卡</option>
+                          <option>${obj.receive.bankcardname }</option>
                       </select>
                     </td>
                     <td>卡号：</td>
                     <td>
                        <select class="form-control input-sm">
-                          <option>6352 7463 3647 756</option>
+                          <option>${obj.receive.bankcardnum }</option>
                        </select>
                     </td>
                     <td>合计：</td>
@@ -117,7 +123,7 @@
                   <td>差额：</td>
                   <td><input id="difference" name="difference" type="text" class="form-control input-sm"></td>
                   <td>余额：</td>
-                  <td><label>3333.33</label>
+                  <td><label>${obj.receive.sum }</label>
                   	<input id="balance" name="balance" type="hidden" value="">
                   </td>
           </tr>
@@ -131,10 +137,10 @@
                       <li>
                         <a href="javascript:;" class="FileDiv">
                           上传
-                          <input type="file" class="sc" id="sc" onchange="handleFile()">
+                          <input type="file" class="sc" id="sc" name="sc" onchange="handleFile()">
                         </a>
                       </li>
-                      <li><a href="javascript:;" id="fileName">未选择文件</a></li>
+                      <li><a href="javascript:;" id="fileName" name="fileName">未选择文件</a></li>
                       <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
                     </ul>
                     <input id="invoiceurl" name="invoiceurl" type="hidden" value="">
@@ -147,7 +153,7 @@
 
   <div id="light" class="white_content">
         <i class="fa fa-times-circle" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'"></i>
-        <img src="u=277362801,688017294&fm=76.jpg">
+        <img id="fapiaoid" src="">
   </div> 
    <!--JS 文件-->
 	<script src="${base }/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -158,6 +164,7 @@
 	<script src="${base }/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
 	<!-- My97DatePicker -->
 	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
+	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
   <script type="text/javascript">
      /*-----收付款>收款>开发票-----*/
      var sc = document.getElementById("sc");
@@ -182,10 +189,14 @@
       $(document).on("click",".removIcon",function(){
           $(this).parents('.cloneTR').remove();
       });
-
-      $("#fileName").click(function(){
-          document.getElementById('light').style.display='block';
-          document.getElementById('fade').style.display='block';
+      $('.cloneTR').each(function(i){
+	      $(this).find('[name=fileName]').click(function(){
+    	  	  var invoiceurl = $(this).parent().parent().parent().find('[name=invoiceurl]').val();
+    	  	  //alert(invoiceurl);
+	          document.getElementById('light').style.display='block';
+	          //document.getElementById('fade').style.display='block';
+	          document.getElementById('fapiaoid').src=invoiceurl; 
+	      });
       });
      
 
@@ -240,6 +251,57 @@
            	layer.msg("提交失败","",3000);
            } 
        });
+   }
+   loadUpload();
+   function loadUpload(){
+	   $('.cloneTR').each(function(i){
+		   $(this).find('[name=sc]').click(function(){
+		    	$.fileupload1 = $(this).find('[name=sc]').uploadify({
+		    		'auto' : true,//选择文件后自动上传
+		    		'formData' : {
+		    			'fcharset' : 'uft-8',
+		    			'action' : 'uploadimage'
+		    		},
+		    		'buttonText' : '上传',//按钮显示的文字
+		    		'fileSizeLimit' : '3000MB',
+		    		'fileTypeDesc' : '文件',//在浏览窗口底部的文件类型下拉菜单中显示的文本
+		    		'fileTypeExts' : '*.png; *.jpg; *.bmp; *.gif; *.jpeg;',//上传文件的类型
+		    		'swf' : '${base}/public/plugins/uploadify/uploadify.swf',//指定swf文件
+		    		'multi' : false,//multi设置为true将允许多文件上传
+		    		'successTimeout' : 1800,
+		    		'queueSizeLimit' : 100,
+		    		'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html',//后台处理的页面
+		    		//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
+		    		//下面的例子演示如何获取到vid
+		    		'onUploadSuccess' : function(file, data, response) {
+		    			var jsonobj = eval('(' + data + ')');
+		    			var url  = jsonobj;//地址
+		    			var fileName = file.name;//文件名称
+		    			var parentdom = $(this).parent().parent().parent().parent();
+		    			consolt.log(JSON.stringify(parentdom));
+		    			parentdom.find('[name=fileName]').html(fileName);
+		    			parentdom.find('[name=invoiceurl]').val(url);
+		    		},
+		            //加上此句会重写onSelectError方法【需要重写的事件】
+		            'overrideEvents': ['onSelectError', 'onDialogClose'],
+		            //返回一个错误，选择文件的时候触发
+		            'onSelectError':function(file, errorCode, errorMsg){
+		                switch(errorCode) {
+		                    case -110:
+		                        alert("文件 ["+file.name+"] 大小超出系统限制！");
+		                        break;
+		                    case -120:
+		                        alert("文件 ["+file.name+"] 大小异常！");
+		                        break;
+		                    case -130:
+		                        alert("文件 ["+file.name+"] 类型不正确！");
+		                        break;
+		                }
+		            }
+		    	});
+		    });
+		   
+	   });
    }
   </script>
 </body>

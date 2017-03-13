@@ -6,6 +6,8 @@
 
 package com.linyun.airline.admin.order.inland.module;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
@@ -36,5 +38,32 @@ public class InlandListModule {
 	@POST
 	public Object formatOrderStatus(@Param("status") Integer status) {
 		return inlandListService.formatOrderStatus(status);
+	}
+
+	/**
+	 * 保存需求信息
+	 */
+	@At
+	@POST
+	public Object saveCustomeneedInfo(HttpServletRequest request) {
+		return inlandListService.saveCustomeneedInfo(request);
+	}
+
+	/**
+	 * 加载银行卡名称下拉
+	 */
+	@At
+	@POST
+	public Object loadBankCardNameSelect(HttpServletRequest request) {
+		return inlandListService.loadBankCardNameSelect(request);
+	}
+
+	/**
+	 * 加载银行卡号
+	 */
+	@At
+	@POST
+	public Object loadBankCardNumSelect(HttpServletRequest request) {
+		return inlandListService.loadBankCardNumSelect(request);
 	}
 }

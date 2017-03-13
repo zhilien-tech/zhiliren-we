@@ -54,9 +54,16 @@
                  <p>客户信息</p>
                  <div class="infoTopContent">
                    <span>${obj.orderinfo.ordersnum }</span>
-                   <select id="orderType" name="orderType" class="form-control input-sm conSelect cf">
+                   <select id="orderType" name="orderType" class="form-control input-sm conSelect cf" disabled="disabled">
                      <c:forEach var="map" items="${obj.orderstatusenum}" >
-				   		<option value="${map.key}">${map.value}</option>
+				   		<c:choose>
+                   			<c:when test="${obj.orderinfo.ordersstatus eq map.key }">
+                   				<option value="${map.key}" selected="selected">${map.value}</option>
+                   			</c:when>
+                   			<c:otherwise>
+					   			<option value="${map.key}">${map.value}</option>
+                   			</c:otherwise>
+                   		</c:choose>
 					 </c:forEach>
                    </select>
                    <button type="button" class="btn btn-primary input-sm btnSave none">保存</button>
@@ -68,24 +75,13 @@
                  <table>
                    <tr>
                      <td><label>客户姓名：</label></td>
-                     <td><select id="linkName" name="linkName" type="text" class="form-control input-sm" multiple="multiple" placeholder="请输入客户姓名">
-                     	<c:forEach items="${obj.customerInfos }" var="one"> 
-                   			<c:choose>
-	                   			<c:when test="${obj.orderinfo.userid  eq one.id  }">
-									<option value="${one.id }" selected="selected">${one.linkMan }</option>
-	                   			</c:when>
-	                   			<c:otherwise>
-		                     		<option value="${one.id }">${one.linkMan }</option>
-	                   			</c:otherwise>
-                    		</c:choose>
-                     	</c:forEach>
-                     	</select>
+                     <td><input type="text" id="linkName" name="linkName" class="form-control input-sm" value="${obj.custominfo.linkMan }" disabled="disabled">
                      	<input id="customerId" name="customerId" type="hidden" value="${obj.custominfo.id }"/>
                      	<input id="id" name="id" type="hidden" value="${obj.orderinfo.id }">
                      </td>
                      <td><label style="position: relative;top: 4px;">结算方式：</label></td>
                      <td colspan="3"><pre class="preTxt">不限 信用额度：0  临时额度：0  历史欠款：0  预存款：0</pre></td>
-                     <td><input type="button" value="清空" class="btn btn-primary btn-sm clearBtn"/><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
+                     <td><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
                    </tr>
                  </table>
 
@@ -119,138 +115,195 @@
                <div class="infoTop">
                  <p>客户需求</p>
                </div>
-               <c:forEach var="customneed" items="${obj.customneedinfo }">
-	               <div id="infofooter" name="infofooter" class="infofooter">
-	                <div class="DemandDiv">
-	                 <span class="titleNum">1</span>
-	                 <a href="javascript:;" class="btn btn-primary btn-sm addDemand none"><b>+</b>&nbsp;&nbsp;需求</a>
-	                 <!-- 客户需求隐藏域 -->
-	                 <input type="hidden" id="customneedid" name="customneedid" value="${customneed.cusinfo.id }">
-	                 <table class="cloTable">
-	                   <tr>
-	                     <td><label>出发城市：</label></td>
-	                     <td><select id="leavecity" name="leavecity" disabled="false" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
-	                     	<c:forEach var="one" items="${obj.city }">
-	                    		<c:choose>
-	                    			<c:when test="${customneed.cusinfo.leavecity eq one.dictCode }">
-										<option value="${one.dictCode }" selected="selected">${one.dictCode}-${one.englishName }-${one.countryName }</option>
-	                    			</c:when>
-	                    			<c:otherwise>
-										<option value="${one.dictCode }">${one.dictCode}-${one.englishName }-${one.countryName }</option>
-	                    			</c:otherwise>
-	                    		</c:choose>
-							</c:forEach>
-	                     	</select>
-	                     </td>
-	                     <td><label>抵达城市：</label></td>
-	                     <td><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
-	                     	<c:forEach var="one" items="${obj.city }">
-	                    		<c:choose>
-	                    			<c:when test="${customneed.cusinfo.arrivecity eq one.dictCode }">
-										<option value="${one.dictCode }" selected="selected">${one.dictCode}-${one.englishName }-${one.countryName }</option>
-	                    			</c:when>
-	                    			<c:otherwise>
-										<option value="${one.dictCode }">${one.dictCode}-${one.englishName }-${one.countryName }</option>
-	                    			</c:otherwise>
-	                    		</c:choose>
-							</c:forEach>
-	                     </select></td>
-	                     <td><label>出发日期：</label></td>
-	                     <td><input id="leavedate" name="leavedate" disabled="disabled" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:'${customneed.cusinfo.leavetdate }'})" value="<fmt:formatDate value="${customneed.cusinfo.leavetdate }" pattern="yyyy-MM-dd" />"/></td>
-	                     <td><label>人数：</label></td>
-	                     <td><input id="peoplecount" name="peoplecount" disabled="disabled" type="text" class="form-control input-sm textWid mustNumber" value="${customneed.cusinfo.peoplecount }"/></td>
-	                     <td><label class="labelWid">早中晚：</label></td>
-	                     <td>
-	                       <select id="tickettype" name="tickettype" disabled="disabled" class="form-control input-sm textWid" value="${customneed.cusinfo.tickettype }">
-	                         <option value="1">早</option>
-	                         <option value="2">中</option>
-	                         <option value="3">晚</option>
-	                       </select>
-	                     </td>
-	                   </tr>
-	                   <c:choose>
-	                   		<c:when test="${fn:length(customneed.ailines)>0}">
-			                   <c:forEach var="airline" items="${customneed.ailines }" varStatus="status">
-			                   
-			                   <tr name="airlineinfo">
-			                     <td></span><label>航空公司：</label></td>
-			                     <td><select id="aircom" name="aircom" disabled="disabled" class="form-control input-sm"  multiple="multiple" placeholder="">
-			                     	   <c:forEach items="${obj.aircom }" var="one"> 
-				                   			<c:choose>
-					                   			<c:when test="${airline.aircom  eq one.dictCode  }">
-													<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.dictName }</option>
-					                   			</c:when>
-					                   			<c:otherwise>
-						                     		<option value="${one.dictCode }">${one.dictCode }-${one.dictName }</option>
-					                   			</c:otherwise>
-				                    		</c:choose>
-				                     	</c:forEach>
+               <c:choose>
+               		<c:when test="${fn:length(obj.customneedinfo)>0}">
+		               <c:forEach var="customneed" items="${obj.customneedinfo }">
+			               <div id="infofooter" name="infofooter" class="infofooter">
+			                <div class="DemandDiv">
+			                 <span class="titleNum">1</span>
+			                 <a href="javascript:;" class="btn btn-primary btn-sm addDemand none"><b>+</b>&nbsp;&nbsp;需求</a>
+			                 <!-- 客户需求隐藏域 -->
+			                 <input type="hidden" id="customneedid" name="customneedid" value="${customneed.cusinfo.id }">
+			                 <table class="cloTable">
+			                   <tr>
+			                     <td><label>出发城市：</label></td>
+			                     <td><select id="leavecity" name="leavecity" disabled="false" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
+			                     	<c:forEach var="one" items="${obj.city }">
+			                    		<c:choose>
+			                    			<c:when test="${customneed.cusinfo.leavecity eq one.dictCode }">
+												<option value="${one.dictCode }" selected="selected">${one.dictCode}-${one.englishName }-${one.countryName }</option>
+			                    			</c:when>
+			                    			<c:otherwise>
+												<option value="${one.dictCode }">${one.dictCode}-${one.englishName }-${one.countryName }</option>
+			                    			</c:otherwise>
+			                    		</c:choose>
+									</c:forEach>
 			                     	</select>
-			                     	<!-- 航班信息隐藏域 -->
-			                     	<input type="hidden"  id="airlineid" name="airlineid" value="${airline.id }">
-			                     	</td>
-			                     <td><label>航班号：</label></td>
-			                     <td><select id="ailinenum" name="ailinenum" disabled="disabled" class="form-control input-sm"  multiple="multiple" placeholder="SYD(悉尼)">
-			                     	<c:forEach items="${obj.airline }" var="one"> 
-				                   			<c:choose>
-					                   			<c:when test="${airline.ailinenum  eq one.airlinenum  }">
-													<option value="${one.airlinenum }" selected="selected">${one.airlinenum }</option>
-					                   			</c:when>
-					                   			<c:otherwise>
-						                     		<option value="${one.airlinenum }">${one.airlinenum }</option>
-					                   			</c:otherwise>
-				                    		</c:choose>
-				                     	</c:forEach>
-			                     	</select></td>
-			                     <td><label>出发时间：</label></td>
-			                     <td><input id="leavetime" name="leavetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" placeholder="" value="${airline.leavetime }"/></td>
-			                     <td><label>抵达时间：</label></td>
-			                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" value="${airline.arrivetime }"/></td>
-			                     <td><label class="labelWid">成本价：</label></td>
-			                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" value="${airline.formprice }"/></td>
-			                     <td><label class="labelWid">销售价：</label></td>
-			                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid" value="${airline.price }"/></td>
-			                     <c:choose>
-			                     	<c:when test="${status.index eq 0 }">
+			                     </td>
+			                     <td><label>抵达城市：</label></td>
+			                     <td><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
+			                     	<c:forEach var="one" items="${obj.city }">
+			                    		<c:choose>
+			                    			<c:when test="${customneed.cusinfo.arrivecity eq one.dictCode }">
+												<option value="${one.dictCode }" selected="selected">${one.dictCode}-${one.englishName }-${one.countryName }</option>
+			                    			</c:when>
+			                    			<c:otherwise>
+												<option value="${one.dictCode }">${one.dictCode}-${one.englishName }-${one.countryName }</option>
+			                    			</c:otherwise>
+			                    		</c:choose>
+									</c:forEach>
+			                     </select></td>
+			                     <td><label>出发日期：</label></td>
+			                     <td><input id="leavedate" name="leavedate" disabled="disabled" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:'${customneed.cusinfo.leavetdate }'})" value="<fmt:formatDate value="${customneed.cusinfo.leavetdate }" pattern="yyyy-MM-dd" />"/></td>
+			                     <td><label>人数：</label></td>
+			                     <td><input id="peoplecount" name="peoplecount" disabled="disabled" type="text" class="form-control input-sm textWid mustNumber" value="${customneed.cusinfo.peoplecount }"/></td>
+			                     <td><label class="labelWid">早中晚：</label></td>
+			                     <td>
+			                       <select id="tickettype" name="tickettype" disabled="disabled" class="form-control input-sm textWid" value="${customneed.cusinfo.tickettype }">
+			                         <option value="1">早</option>
+			                         <option value="2">中</option>
+			                         <option value="3">晚</option>
+			                       </select>
+			                     </td>
+			                   </tr>
+			                   <c:choose>
+			                   		<c:when test="${fn:length(customneed.ailines)>0}">
+					                   <c:forEach var="airline" items="${customneed.ailines }" varStatus="status">
+					                   
+					                   <tr name="airlineinfo">
+					                     <td></span><label>航空公司：</label></td>
+					                     <td><select id="aircom" name="aircom" disabled="disabled" class="form-control input-sm"  multiple="multiple" placeholder="">
+					                     	   <c:forEach items="${obj.aircom }" var="one"> 
+						                   			<c:choose>
+							                   			<c:when test="${airline.aircom  eq one.dictCode  }">
+															<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.dictName }</option>
+							                   			</c:when>
+							                   			<c:otherwise>
+								                     		<option value="${one.dictCode }">${one.dictCode }-${one.dictName }</option>
+							                   			</c:otherwise>
+						                    		</c:choose>
+						                     	</c:forEach>
+					                     	</select>
+					                     	<!-- 航班信息隐藏域 -->
+					                     	<input type="hidden"  id="airlineid" name="airlineid" value="${airline.id }">
+					                     	</td>
+					                     <td><label>航班号：</label></td>
+					                     <td><select id="ailinenum" name="ailinenum" disabled="disabled" class="form-control input-sm"  multiple="multiple" placeholder="SYD(悉尼)">
+					                     	<c:forEach items="${obj.airline }" var="one"> 
+						                   			<c:choose>
+							                   			<c:when test="${airline.ailinenum  eq one.airlinenum  }">
+															<option value="${one.airlinenum }" selected="selected">${one.airlinenum }</option>
+							                   			</c:when>
+							                   			<c:otherwise>
+								                     		<option value="${one.airlinenum }">${one.airlinenum }</option>
+							                   			</c:otherwise>
+						                    		</c:choose>
+						                     	</c:forEach>
+					                     	</select></td>
+					                     <td><label>出发时间：</label></td>
+					                     <td><input id="leavetime" name="leavetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" placeholder="" value="${airline.leavetime }"/></td>
+					                     <td><label>抵达时间：</label></td>
+					                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" value="${airline.arrivetime }"/></td>
+					                     <td><label class="labelWid">成本价：</label></td>
+					                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" value="${airline.formprice }"/></td>
+					                     <td><label class="labelWid">销售价：</label></td>
+					                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid" value="${airline.price }"/></td>
+					                     <c:choose>
+					                     	<c:when test="${status.index eq 0 }">
+							                     <td class="tdBtn">
+							                      <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake none"></a>
+							                     </td>
+					                     	</c:when>
+					                     	<c:otherwise>
+												<td class="removeIconTd"><i class="glyphicon glyphicon-minus removIcon none"></i></td>			                     	
+					                     	</c:otherwise>
+					                     </c:choose>
+					                   </tr>
+					                   </c:forEach>
+			                   		</c:when>
+			                   		<c:otherwise>
+					                   <tr name="airlineinfo">
+					                     <td></span><label>航空公司：</label></td>
+					                     <td><select id="aircom" name="aircom" class="form-control input-sm"  multiple="multiple" placeholder="" ></select></td>
+					                     <td><label>航班号：</label></td>
+					                     <td><select id="ailinenum" name="ailinenum" class="form-control input-sm"  multiple="multiple" placeholder="SYD(悉尼)"></select></td>
+					                     <td><label>出发时间：</label></td>
+					                     <td><input id="leavetime" name="leavetime" type="text" class="form-control input-sm textWid mustTimes" placeholder=""/></td>
+					                     <td><label>抵达时间：</label></td>
+					                     <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm textWid mustTimes" /></td>
+					                     <td><label class="labelWid">销售价：</label></td>
+					                     <td><input id="formprice" name="formprice" type="text" class="form-control input-sm textWid" /></td>
+					                     <td><label class="labelWid">成本价：</label></td>
+					                     <td><input id="price" name="price" type="text" class="form-control input-sm textWid"/></td>
 					                     <td class="tdBtn">
 					                      <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake none"></a>
 					                     </td>
-			                     	</c:when>
-			                     	<c:otherwise>
-										<td class="removeIconTd"><i class="glyphicon glyphicon-minus removIcon none"></i></td>			                     	
-			                     	</c:otherwise>
-			                     </c:choose>
+					                   </tr>
+			                   		</c:otherwise>
+			                   </c:choose>
+			                   <tr>
+			                     <td></span><label>备注：</label></td>
+			                     <td colspan="11"><input id="remark" name="remark" disabled="disabled" type="text" class="form-control input-sm noteText" placeholder="" value="${customneed.cusinfo.remark }"/></td>
 			                   </tr>
-			                   </c:forEach>
-	                   		</c:when>
-	                   		<c:otherwise>
-			                   <tr name="airlineinfo">
-			                     <td></span><label>航空公司：</label></td>
-			                     <td><select id="aircom" name="aircom" class="form-control input-sm"  multiple="multiple" placeholder="" ></select></td>
-			                     <td><label>航班号：</label></td>
-			                     <td><select id="ailinenum" name="ailinenum" class="form-control input-sm"  multiple="multiple" placeholder="SYD(悉尼)"></select></td>
-			                     <td><label>出发时间：</label></td>
-			                     <td><input id="leavetime" name="leavetime" type="text" class="form-control input-sm textWid mustTimes" placeholder=""/></td>
-			                     <td><label>抵达时间：</label></td>
-			                     <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm textWid mustTimes" /></td>
-			                     <td><label class="labelWid">销售价：</label></td>
-			                     <td><input id="formprice" name="formprice" type="text" class="form-control input-sm textWid" /></td>
-			                     <td><label class="labelWid">成本价：</label></td>
-			                     <td><input id="price" name="price" type="text" class="form-control input-sm textWid"/></td>
-			                     <td class="tdBtn">
-			                      <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake none"></a>
-			                     </td>
-			                   </tr>
-	                   		</c:otherwise>
-	                   </c:choose>
-	                   <tr>
-	                     <td></span><label>备注：</label></td>
-	                     <td colspan="11"><input id="remark" name="remark" disabled="disabled" type="text" class="form-control input-sm noteText" placeholder="" value="${customneed.cusinfo.remark }"/></td>
-	                   </tr>
-	                 </table>
-	                </div>
-	               </div>
-               </c:forEach>
+			                 </table>
+			                </div>
+			               </div>
+		               </c:forEach>
+		             </c:when>
+		             <c:otherwise>
+		             	<div id="infofooter" class="infofooter">
+		                <div class="DemandDiv">
+		                 <span class="titleNum">1</span>
+		                 <a href="javascript:;" class="btn btn-primary btn-sm addDemand none addXuQiu"><b>+</b>&nbsp;&nbsp;需求</a>
+		                 <input type="hidden" id="customneedid" name="customneedid">
+		                 <table class="cloTable">
+		                   <tr>
+		                     <td><label>出发城市：</label></td>
+		                     <td><select id="leavecity" name="leavecity" disabled="disabled" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
+			                     </select>
+			                 </td>
+		                     <td><label>抵达城市：</label></td>
+		                     <td><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
+			                     </select></td>
+		                     <td><label>出发日期：</label></td>
+		                     <td><input id="leavedate" name="leavedate" disabled="disabled" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:''})"/></td>
+		                     <td><label>人数：</label></td>
+		                     <td><input id="peoplecount" name="peoplecount" disabled="disabled" type="text" class="form-control input-sm textWid mustNumber"/></td>
+		                     <td><label class="labelWid">早中晚：</label></td>
+		                     <td>
+		                       <select id="tickettype" name="tickettype" disabled="disabled" class="form-control input-sm textWid">
+			                         <option value="1">早</option>
+			                         <option value="2">中</option>
+			                         <option value="3">晚</option>
+			                       </select>
+		                     </td>
+		                   </tr>
+		                   <tr name="airlineinfo">
+		                     <td></span><label>航空公司：</label></td>
+		                     <td><select id="aircom" name="aircom" disabled="disabled" class="form-control input-sm"  multiple="multiple" placeholder="" ></select></td>
+		                     <td><label>航班号：</label></td>
+		                     <td><select id="ailinenum" name="ailinenum" disabled="disabled" class="form-control input-sm"  multiple="multiple" placeholder="SYD(悉尼)"></select></td>
+		                     <td><label>出发时间：</label></td>
+		                     <td><input id="leavetime" name="leavetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" placeholder=""/></td>
+		                     <td><label>抵达时间：</label></td>
+		                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" /></td>
+		                     <td><label class="labelWid">成本价：</label></td>
+		                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" /></td>
+		                     <td><label class="labelWid">销售价：</label></td>
+		                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid xiaoShouCls"/></td>
+		                     <td class="tdBtn">
+		                      <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake none"></a>
+		                     </td>
+		                   </tr>
+		                   <tr>
+		                     <td></span><label>备注：</label></td>
+		                     <td colspan="11"><input type="text" id="remark" name="remark" class="form-control input-sm noteText" placeholder=" " value="${customneed.cusinfo.remark }"></td>
+		                   </tr>
+		                 </table>
+		                </div>
+		               </div>
+		             </c:otherwise>
+		          </c:choose>
           </div><!--end 客户需求-->
 
 
@@ -615,6 +668,7 @@
               $('.removIcon').toggle();//显示 圆圈- 按钮
               $(".listInfo").toggle();//选项卡 显示
               $('.remindSet tbody tr td input').removeAttr("disabled");//删除 提醒设置 input 禁止编辑的状态
+              $('#orderType').removeAttr("disabled");//状态可编辑
               $('.DemandDiv').each(function(i){
             	  $(this).find('[name=leavecity]').removeAttr('disabled');
             	  $(this).find('[name=arrivecity]').removeAttr('disabled');
@@ -640,13 +694,16 @@
           $('.btnCancel').toggle();//取消 按钮 隐藏
           $('.addDemand').removeClass('sw');//+需求 隐藏
           $('.removeDemand').addClass('none');//-需求 隐藏
-          $('.removAddMake').toggle();//圆圈+ 按钮 隐藏
+          $('.removAddMake').toggle();//圆圈+ 按钮 隐藏 
           $('.removIcon').toggle();//圆圈- 按钮 隐藏
           $(".listInfo").toggle();//选项卡 隐藏
           $('.remindSet tbody tr td input').attr("disabled",'disabled');//提醒设置 input 添加 不可编辑属性
+          $('#orderType').attr("disabled",'disabled');//状态 不可编辑属性
           $('.DemandDiv').each(function(i){
         	  var customneedid = $(this).find('[name=customneedid]').val();
-        	  if(customneedid){
+        	  if(i>0 && !customneedid){
+        		  $(this).remove(); 
+        	  }else{
 	        	  $(this).find('[name=leavecity]').attr('disabled','disabled');
 	        	  $(this).find('[name=arrivecity]').attr('disabled','disabled');
 	              $(this).find('[name=leavedate]').attr('disabled','disabled');
@@ -662,8 +719,6 @@
 	          		$(this).find('[name=formprice]').attr('disabled','disabled');
 	          		$(this).find('[name=price]').attr('disabled','disabled');
 	              });
-        	  }else{
-        		  $(this).remove();
         	  }
           });
         });

@@ -1,66 +1,3 @@
-//客户姓名下拉
-$("#linkName").select2({
-	ajax : {
-		url : BASE_PATH+'/admin/search/getLinkNameSelect.html',
-		dataType : 'json',
-		delay : 250,
-		type : 'post',
-		data : function(params) {
-			return {
-				linkname : params.term, // search term
-				page : params.page
-			};
-		},
-		processResults : function(data, params) {
-			params.page = params.page || 1;
-			var selectdata = $.map(data, function (obj) {
-				obj.id = obj.id; // replace pk with your identifier
-				obj.text = obj.linkMan; // replace pk with your identifier
-				  return obj;
-			});
-			return {
-				results : selectdata
-			};
-		},
-		cache : false
-	},
-	
-	escapeMarkup : function(markup) {
-		return markup;
-	}, // let our custom formatter work
-	minimumInputLength : 1,
-	maximumInputLength : 20,
-	language : "zh-CN", //设置 提示语言
-	maximumSelectionLength : 1, //设置最多可以选择多少项
-	tags : false //设置必须存在的选项 才能选中
-});
-//选中客户姓名之后，其他信息自动填充
-/* 选中客户名称 */
-$("#linkName").on('select2:select', function (evt) {
-	var customerId = $(this).select2("val");
-	$("#customerId").val(customerId);
-	$.ajax({
-		type : 'POST',
-		data : {
-			"id":$("#customerId").val()
-		},
-		dataType:'json',
-		url : BASE_PATH+'/admin/search/getCustomerById.html',
-		success : function(data) {
-			var dataJson = jQuery.parseJSON(data); 
-			$("#shortName").val(dataJson.customerInfoEntity.shortName);
-			$("#telephone").val(dataJson.customerInfoEntity.telephone);
-			$("#address").val(dataJson.customerInfoEntity.address);
-			$("#responsible").val(dataJson.responsibleName);
-			$("#siteUrl").val(dataJson.customerInfoEntity.siteUrl);
-			$("#fax").val(dataJson.customerInfoEntity.fax);
-			/* 出发城市补全 */
-			$("#departureCity").val(dataJson.customerInfoEntity.departureCity);
-		},
-		error : function() {
-		}
-	});
-});
 function initCitySelect2(obj){
 	//加载起飞城市下拉
 	obj.find('[name=leavecity]').select2({
@@ -228,7 +165,7 @@ $(function(){
 		});
 	});
     $('.UnderIcon').on('click',function(){//客户信息 显示/隐藏
-        $('.hideTable').toggle('400');
+        $('.hideTable').toggle();
       });
     //客户需求的 + 按钮
     $(document).on("click",".addIcon",function(){

@@ -129,4 +129,22 @@ public class InlandInvoiceModule {
 	public Object loadOrderLog(HttpServletRequest request) {
 		return inlandInvoiceService.loadOrderLog(request);
 	}
+
+	/**
+	 * 检验是否是收款是否是同一个公司
+	 */
+	@At
+	@POST
+	public Object checkIsCommonCompany(HttpServletRequest request) {
+		return inlandInvoiceService.checkIsCommonCompany(request);
+	}
+
+	/**
+	 * 检验是否是付款是否是同一个公司
+	 */
+	@At
+	@POST
+	public Object checkPayIsCommonCompany(HttpServletRequest request) {
+		return inlandInvoiceService.checkPayIsCommonCompany(request);
+	}
 }
