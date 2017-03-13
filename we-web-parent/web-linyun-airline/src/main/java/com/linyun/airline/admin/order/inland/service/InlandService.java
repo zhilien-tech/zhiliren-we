@@ -1423,6 +1423,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		List<Record> list = (List<Record>) datatabledata.get("data");
 		for (Record record : list) {
 			record.put("username", user.getUserName());
+			record.put("paystatusenum", EnumUtil.enum2(AccountPayEnum.class));
 		}
 		datatabledata.remove("data");
 		datatabledata.put("data", list);
@@ -1446,6 +1447,13 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		Cnd cnd = Cnd.limit();
 		cnd.and("tpi.id", "=", id);
 		List<Record> pnrinfo = dbDao.query(sql, cnd, null);
+		double sumjine = 0;
+		for (Record record : pnrinfo) {
+			if (!Util.isEmpty(record.get("salespricesum"))) {
+				Double salespricesum = (Double) record.get("salespricesum");
+				sumjine += Double.valueOf(salespricesum);
+			}
+		}
 		result.put("pnrinfo", pnrinfo);
 		List<TPayPnrEntity> query = dbDao.query(TPayPnrEntity.class, Cnd.where("pnrId", "=", id), null);
 		TPayEntity payinfo = new TPayEntity();
@@ -1470,6 +1478,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		result.put("billurl", billurl);
 		result.put("yhkSelect", yhkSelect);
 		result.put("payinfo", payinfo);
+		//总金额
+		result.put("sumjine", sumjine);
 		return result;
 
 	}

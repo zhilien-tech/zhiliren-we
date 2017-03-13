@@ -123,7 +123,7 @@
 		               <c:forEach var="customneed" items="${obj.customneedinfo }" varStatus="varstatus">
 		               <div id="infofooter" class="infofooter">
 		                <div class="DemandDiv">
-		                 <span class="titleNum">1</span>
+		                 <span class="titleNum">${varstatus.index+1 }</span>
 		                 <c:choose>
 			                 <c:when test="${varstatus.index eq 0 }">
 				                 <a href="${base }/admin/inland/downloadVisitorTemplate.html" class="btn btn-primary btn-sm addDemand none" target="hidden_frame">游客模板</a>
@@ -134,7 +134,7 @@
 				                 <a href="javascript:;" class="btn btn-primary btn-sm addDemand none addXuQiu"><b>+</b>&nbsp;&nbsp;需求</a>
 			                 </c:when>
 			                 <c:otherwise>
-			                 	<a href="javascript:;" class="btn btn-primary btn-sm removeDemand"><b>-</b>&nbsp;&nbsp;需求</a>
+			                 	<a href="javascript:;" class="btn btn-primary btn-sm removeDemand none"><b>-</b>&nbsp;&nbsp;需求</a>
 			                 </c:otherwise>
 		                 </c:choose>
 		                 <input type="hidden" id="customneedid" name="customneedid" value="${customneed.cusinfo.id }">
@@ -837,19 +837,75 @@
   	$(document).on("click",".PNRbtn",function(){
   		var xuqiuDiv = $(this).parent().parent().parent().parent().parent();
 		  var needid = xuqiuDiv.find('[name=customneedid]').val();
-		 if(needid){
-			 layer.open({
-		         type: 2,
-		         title:false,
-		         skin: false, //加上边框
-		         closeBtn:false,//默认 右上角关闭按钮 是否显示
-		         shadeClose:true,
-		         area: ['880px', '425px'],
-		         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+needid
-		       });
-		 }else{
-			 layer.alert("需求未保存",{time: 2000, icon:1});
-		 } 
+		  //先保存需求信息
+		 if(!needid){
+			var row1 = {};
+			var leavecity = xuqiuDiv.find('[name=leavecity]').val();
+			//出发城市
+			if (leavecity) {
+				leavecity = leavecity.join(',');
+			}
+			row1.leavecity = leavecity;
+			//抵达城市
+			var arrivecity = xuqiuDiv.find('[name=arrivecity]').val();
+			if (arrivecity) {
+				arrivecity = arrivecity.join(',');
+			}
+			row1.arrivecity = arrivecity;
+			row1.orderid = '${obj.orderinfo.id }';
+			row1.customneedid = xuqiuDiv.find('[name=customneedid]').val();
+			row1.leavedate = xuqiuDiv.find('[name=leavedate]').val();
+			row1.peoplecount = xuqiuDiv.find('[name=peoplecount]').val();
+			row1.tickettype = xuqiuDiv.find('[name=tickettype]').val();
+			row1.realtimexrate = xuqiuDiv.find('[name=realtimexrate]').val();
+			row1.avgexrate = xuqiuDiv.find('[name=avgexrate]').val();
+			row1.paycurrency = xuqiuDiv.find('[name=paycurrency]').val();
+			row1.paymethod = xuqiuDiv.find('[name=paymethod]').val();
+			row1.remark = xuqiuDiv.find('[name=remark]').val();
+			var airrows = [];
+			$(this).find('[name=airlineinfo]').each(function(i){
+				var airrow = {};
+				var aircom = $(this).find('[name=aircom]').val();
+				if (aircom) {
+					aircom = aircom.join(',');
+	  			}
+				airrow.aircom = aircom;
+				var ailinenum = $(this).find('[name=ailinenum]').val();
+				if (ailinenum) {
+					ailinenum = ailinenum.join(',');
+	  			}
+				airrow.ailinenum = ailinenum;
+				airrow.airlineid = $(this).find('[name=airlineid]').val();
+				airrow.leavetime = $(this).find('[name=leavetime]').val();
+				airrow.arrivetime = $(this).find('[name=arrivetime]').val();
+				airrow.formprice = $(this).find('[name=formprice]').val();
+				airrow.price = $(this).find('[name=price]').val();
+				airrows.push(airrow);
+			});
+			row1.airinfo = airrows;
+			//保存客户需求信息
+			$.ajax({ 
+				type: 'POST', 
+				data: {data:JSON.stringify(row1)}, 
+				url: '${base}/admin/inland/saveCustomeneedInfo.html',
+	            success: function (data) { 
+	            	xuqiuDiv.find('[name=customneedid]').val(data.id);
+		         },
+		         error: function (xhr) {
+		          	layer.msg("保存失败","",3000);
+		         } 
+	      });
+		 }
+		 needid = xuqiuDiv.find('[name=customneedid]').val();
+		 layer.open({
+	         type: 2,
+	         title:false,
+	         skin: false, //加上边框
+	         closeBtn:false,//默认 右上角关闭按钮 是否显示
+	         shadeClose:true,
+	         area: ['880px', '425px'],
+	         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+needid
+	       });
     });
   //其他页面回调
  function successCallback(id){

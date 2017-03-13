@@ -43,7 +43,6 @@ function loadOrderLog(orderid){
 }
 //datatables自动高度
 function autoHighLoad(obj){
-	console.log(obj.html());
 	obj.find('tr').each(function () {//全部 table 自适应高度      
        $(this).children('td').each(function(){
           var liLength = $(this).children('ul').find("li").length;

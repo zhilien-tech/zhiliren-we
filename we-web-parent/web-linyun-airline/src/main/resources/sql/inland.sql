@@ -3,11 +3,12 @@ SELECT
 	tuo.*, tfi.receivable,
 	tfi.personcount,
 	tci.linkMan userName,
-	tci.telephone
+	tci.telephone,
+	tci.id customeid
 FROM
 	t_up_order tuo
 left JOIN t_finance_info tfi ON tuo.id = tfi.orderid
-inner JOIN t_customer_info tci ON tuo.userid = tci.id
+left JOIN t_customer_info tci ON tuo.userid = tci.id
 $condition
 
 /*get_pnr_visitor_info*/
@@ -163,4 +164,14 @@ FROM
 	t_pnr_info tpi
 INNER JOIN t_invoice_info tii ON tii.pnrid = tpi.id
 LEFT JOIN t_user tu ON tii.billuserid = tu.id
+$condition
+
+
+/*get_check_pnr_order_sql*/
+SELECT
+	tuo.*
+FROM
+	t_pnr_info tpi
+INNER JOIN t_order_customneed toc ON tpi.needid = toc.id
+INNER JOIN t_up_order tuo ON toc.ordernum = tuo.id
 $condition

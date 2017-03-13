@@ -73,7 +73,7 @@
                        </select>
                     </td>
                     <td>合计：</td>
-                    <td>3333.33</td>
+                    <td>${obj.sumjine }</td>
                   </tr>
          </table>
          <div class="bankSlipImg" align="center"><img id="shuidanimg" width="400" height="300" alt="" src="${obj.billurl }"></div>
@@ -118,7 +118,7 @@
                   <td>差额：</td>
                   <td><input id="difference" name="difference" type="text" class="form-control input-sm"></td>
                   <td>余额：</td>
-                  <td><label id="balance" name="balance">3333.33</label></td>
+                  <td><label id="balance" name="balance">${obj.sumjine }</label></td>
           </tr>
           <tr class="cloneTR">
                   <td>发票号：</td>

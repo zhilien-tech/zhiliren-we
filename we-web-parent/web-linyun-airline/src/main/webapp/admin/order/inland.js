@@ -181,7 +181,16 @@ function initDatatable() {
 $(function () {
     initDatatable();
 });
-
+$("tbody",$('#inlandCrossTable')).on("click","tr",function(event) {
+	var item = inlandCrossTable.row($(this).closest('tr')).data();
+	var url = BASE_PATH;
+	if(item.ordersstatus == 1){
+		url += '/admin/inland/queryDetail.html?id='+item.id;
+	}else{
+		url = '/admin/inland/bookingDetail.html?id='+item.id;
+	}
+	window.open(url);
+});
 function edit(id,status){ 
 	var url = BASE_PATH;
 	if(status == 1){
@@ -190,13 +199,4 @@ function edit(id,status){
 		url = '/admin/inland/bookingDetail.html?id='+id;
 	}
 	window.open(url);
-	/*layer.open({
-        type: 2,
-        title:false,
-        skin: false, //加上边框
-        closeBtn:true,//默认 右上角关闭按钮 是否显示
-        shadeClose:true,
-        area: ['100%', '100%'],
-        content: url
-      });*/
 }

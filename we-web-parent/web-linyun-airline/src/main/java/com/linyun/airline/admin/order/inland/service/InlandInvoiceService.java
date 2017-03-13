@@ -39,6 +39,7 @@ import com.linyun.airline.entities.TOrderLogEntity;
 import com.linyun.airline.entities.TOrderReceiveEntity;
 import com.linyun.airline.entities.TReceiveBillEntity;
 import com.linyun.airline.entities.TReceiveEntity;
+import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.JsonUtil;
@@ -530,6 +531,52 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		result.put("logs", orderlogs);
 		return result;
 
+	}
+
+	/**
+	 * 检验收款方是否是同一家公司
+	 * <p>
+	 * TODO检验收款方是否是同一家公司
+	 *
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object checkIsCommonCompany(HttpServletRequest request) {
+		boolean result = true;
+		String ids = request.getParameter("ids");
+		List<TUpOrderEntity> orders = dbDao.query(TUpOrderEntity.class, Cnd.where("id", "in", ids), null);
+		for (int i = 0; i < orders.size(); i++) {
+			for (int j = 0; j < i; j++) {
+				if (!orders.get(j).getUserid().equals(orders.get(i).getUserid())) {
+					result = false;
+				}
+			}
+		}
+		return result;
+
+	}
+
+	/**
+	 * 检验付款方是否是同一家公司
+	 * <p>
+	 * TODO检验付款方是否是同一家公司
+	 *
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object checkPayIsCommonCompany(HttpServletRequest request) {
+		boolean result = true;
+		String ids = request.getParameter("ids");
+		String sqlString = sqlManager.get("get_check_pnr_order_sql");
+		List<Record> query = dbDao.query(Sqls.create(sqlString), Cnd.where("tpi.id", "in", ids), null);
+		for (int i = 0; i < query.size(); i++) {
+			for (int j = 0; j < i; j++) {
+				if (!query.get(j).get("userid").equals(query.get(i).get("userid"))) {
+					result = false;
+				}
+			}
+		}
+		return result;
 	}
 
 }

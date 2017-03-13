@@ -7,6 +7,9 @@ function initshouFuKuanGatheringTable() {
   	"bLengthChange": false,
       "processing": true,
       "serverSide": true,
+      "initComplete": function( settings, json ) {
+      	 autoHighLoad($(this));
+       },
       "stripeClasses": [ 'strip1','strip2' ],
       "language": {
           "url": BASE_PATH + "/public/plugins/datatables/cn.json"
@@ -143,7 +146,15 @@ function initshouFuKuanPayTable() {
     },
     "columns": [
                 {"data": "ordersnum", "bSortable": false},
-                {"data": "pnr", "bSortable": false},
+                {"data": "pnr", "bSortable": false,
+                	render:function(data, type, row, meta) {
+                		var result = '';
+                		if(row.pnr && row.pnr != undefined){
+                			result = row.pnr;
+                		}
+                		return result;
+                	}
+                },
                 {"data": "personcount", "bSortable": false,
                 	render:function(data, type, row, meta) {
                 		var result = '<ul>';
@@ -160,14 +171,38 @@ function initshouFuKuanPayTable() {
                 		return result;
                 	}
                 },
-                {"data": "leavetdate", "bSortable": false},
+                {"data": "leavetdate", "bSortable": false,
+                	render:function(data, type, row, meta) {
+                		var result = '';
+                		if(row.leavetdate && row.leavetdate != undefined){
+                			result = row.leavetdate;
+                		}
+                		return result;
+                	}
+                },
                 {"data": "time", "bSortable": false,
                 	render:function(data, type, row, meta) {
                 		return '';
                 	}
                 },
-                {"data": "customename", "bSortable": false},
-                {"data": "salesprice", "bSortable": false},
+                {"data": "customename", "bSortable": false,
+                	render:function(data, type, row, meta) {
+                		var result = '';
+                		if(row.customename && row.customename != undefined){
+                			result = row.customename;
+                		}
+                		return result;
+                	}
+                },
+                {"data": "salesprice", "bSortable": false,
+                	render:function(data, type, row, meta) {
+                		var result = '';
+                		if(row.salesprice && row.salesprice != undefined){
+                			result = row.salesprice;
+                		}
+                		return result;
+                	}
+                },
                 {"data": "peoplecount", "bSortable": false,
                 	render:function(data, type, row, meta) {
                   		var result = '';
@@ -180,9 +215,11 @@ function initshouFuKuanPayTable() {
                 {"data": "status", "bSortable": false,
                 	render:function(data, type, row, meta) {
                   		var result = '';
-                  		if(row.status){
-                  			result = row.status;
-                  		}
+                  		$.each(row.paystatusenum, function(name, value) {
+                  			if(row.orderpnrstatus == name){
+                  				result = value;
+                  			}
+                  		});
                   		return result;
                   	}
                 },
