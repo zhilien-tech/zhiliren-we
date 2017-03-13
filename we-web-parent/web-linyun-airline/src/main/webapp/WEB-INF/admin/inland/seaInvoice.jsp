@@ -50,7 +50,7 @@
                 <tr>
                   <td>银行：</td>
                   <td>
-                    <select id="bankcardid" name="bankcardid" class="form-control input-sm">
+                    <select id="bankcardid" name="bankcardid" class="form-control input-sm" onchange="loadbankcardname();">
                         <c:forEach var="one" items="${obj.yhkSelect }">
                         	<option value="${one.id }">${one.dictName }</option>
                         </c:forEach>
@@ -58,15 +58,12 @@
                   </td>
                   <td>银行卡名称：</td>
                   <td>
-                    <select id="bankcardname" name="bankcardname" class="form-control input-sm">
-                        <option>国际专用卡</option>
-                        <option>内陆专用卡</option>
+                    <select id="bankcardname" name="bankcardname" class="form-control input-sm" onchange="loadbankcardnum();">
                     </select>
                   </td>
                   <td>卡号：</td>
                   <td>
                      <select id="bankcardnum" name="bankcardnum" class="form-control input-sm">
-                        <option>6352 7463 3647 756</option>
                      </select>
                   </td>
                   <td>合计：</td>
@@ -99,7 +96,7 @@
 	function commitInvoice(){
 		var ids = $('#ids').val();
 		var bankcardid = $('#bankcardid').val();
-		var bankcardname = $('#bankcardname').val();
+		var bankcardname = $('#bankcardname').find("option:selected").text();
 		var bankcardnum = $('#bankcardnum').val();
 		var billurl = $('#billurl').val();
 		var sumincome = $('#sumincome').val();
@@ -163,6 +160,43 @@
             }
     	});
     });
+	//加载银行卡名称下拉
+	function loadbankcardname(){
+		var bankcardid = $('#bankcardid').val();
+		$.ajax({
+	        type: "post",
+	        url: '${base}/admin/inland/loadBankCardNameSelect.html',
+	        data: {bankcardid:bankcardid},
+	        cache: false,
+	        async : false,
+	        success: function (data ,textStatus, jqXHR){
+	        	var html = '';
+	        	$.each(data, function(name, value) {
+	        		html += '<option value="'+value.id+'">'+value.cardName+'</option>';
+	        	});
+	        	$('#bankcardname').html(html);
+	        },
+	        error:function (XMLHttpRequest, textStatus, errorThrown) {      
+	        }
+	     });
+	}
+	//加载银行卡号
+	function loadbankcardnum(){
+		var bankcardname = $('#bankcardname').val();
+		$.ajax({
+	        type: "post",
+	        url: '${base}/admin/inland/loadBankCardNumSelect.html',
+	        data: {bankcardname:bankcardname},
+	        cache: false,
+	        async : false,
+	        success: function (data ,textStatus, jqXHR){
+	        	var html = '<option>'+data.cardNum+'</option>';
+	        	$('#bankcardnum').html(html);
+	        },
+	        error:function (XMLHttpRequest, textStatus, errorThrown) {      
+	        }
+	     });
+	}
 	</script>
 </body>
 </html>	

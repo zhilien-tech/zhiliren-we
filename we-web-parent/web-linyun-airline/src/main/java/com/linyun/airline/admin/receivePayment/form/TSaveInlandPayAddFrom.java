@@ -16,13 +16,13 @@ public class TSaveInlandPayAddFrom implements Serializable {
 	private String payNames;
 
 	/**银行名称*/
-	private Integer bankComp;
+	private String bankComp;
 
 	/**银行卡名称*/
-	private Integer cardName;
+	private String cardName;
 
 	/**银行卡卡号*/
-	private Integer cardNum;
+	private String cardNum;
 
 	/**支付地址*/
 	private Integer payAddress;

@@ -46,7 +46,10 @@ import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
+import com.linyun.airline.common.enums.BankCardStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
+import com.linyun.airline.entities.TBankCardEntity;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TPnrInfoEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUserEntity;
@@ -60,6 +63,11 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 
 	//银行卡类型
 	private static final String YHCODE = "YH";
+	//币种类型
+	private static final String BZCODE = "BZ";
+
+	//银行卡状态
+	private static final int ENABLE = BankCardStatusEnum.ENABLE.intKey();
 
 	//付款用途
 	private static final String YTCODE = "FKYT";
@@ -270,7 +278,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		}
 		map.put("totalMoney", totalMoney);
 
-		//银行卡
+		//银行名称
 		List<DictInfoEntity> bankList = new ArrayList<DictInfoEntity>();
 		try {
 			bankList = externalInfoService.findDictInfoByName("", YHCODE);
@@ -278,6 +286,15 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			e.printStackTrace();
 		}
 		map.put("bankList", bankList);
+
+		//银行名称
+		List<DictInfoEntity> BZList = new ArrayList<DictInfoEntity>();
+		try {
+			BZList = externalInfoService.findDictInfoByName("", BZCODE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		map.put("bzList", BZList);
 
 		//付款用途
 		List<DictInfoEntity> fkytList = new ArrayList<DictInfoEntity>();
@@ -299,12 +316,15 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 * @param inlandPayIds
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object saveInlandPay(TSaveInlandPayAddFrom form) {
+	public Object saveInlandPay(TSaveInlandPayAddFrom form, HttpSession session) {
 		List<TPayEntity> payList = new ArrayList<TPayEntity>();
+		//当前公司id
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
+		Long companyId = company.getId();
 
-		Integer bankComp = form.getBankComp();
-		Integer cardName = form.getCardName();
-		Integer cardNum = form.getCardNum();
+		String bankComp = form.getBankComp();
+		String cardName = form.getCardName();
+		String cardNum = form.getCardNum();
 		Integer payAddress = form.getPayAddress();
 		Integer purpose = form.getPurpose();
 		Integer fundType = form.getFundType();
@@ -331,8 +351,10 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 
 		//银行卡
 		TCompanyBankCardEntity companyBankCard = new TCompanyBankCardEntity();
-		companyBankCard.setCardName(String.valueOf(form.getCardName()));
-		companyBankCard.setCardNum(String.valueOf(form.getCardNum()));
+		companyBankCard.setCompanyId(companyId);
+		companyBankCard.setCardName(cardName);
+		companyBankCard.setBankComp(bankComp);
+		companyBankCard.setCardNum(cardNum);
 		//添加银行卡
 		TCompanyBankCardEntity companyBankCardEntity = dbDao.insert(companyBankCard);
 		Integer bankId = companyBankCardEntity.getId();
@@ -421,4 +443,36 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			return MobileResult.error("操作失败", null);
 		}
 	}
+
+	//根据银行id查询银行卡名称
+	public Object getCardNames(long bankId, HttpSession session) {
+		List<String> cardNames = new ArrayList<String>();
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long companyId = company.getId();
+		DictInfoEntity bankEntity = dbDao.fetch(DictInfoEntity.class, Cnd.where("id", "=", bankId));
+		if (!Util.isEmpty(bankEntity)) {
+			String bankName = bankEntity.getDictName();
+			List<TBankCardEntity> bankCardList = dbDao.query(TBankCardEntity.class, Cnd.where("status", "=", ENABLE)
+					.and("bankName", "=", bankName).and("companyId", "=", companyId).groupBy("cardName"), null);
+			for (TBankCardEntity bankCardEntity : bankCardList) {
+				cardNames.add(bankCardEntity.getCardName());
+			}
+		}
+		return cardNames;
+	}
+
+	//根据银行卡名称查询银行卡  卡号
+	public Object getCardNums(String cardName, HttpSession session) {
+		List<String> cardNums = new ArrayList<String>();
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long companyId = company.getId();
+		List<TBankCardEntity> bankCardList = dbDao.query(TBankCardEntity.class,
+				Cnd.where("status", "=", ENABLE).and("cardName", "=", cardName).and("companyId", "=", companyId), null);
+		for (TBankCardEntity bankCardEntity : bankCardList) {
+			cardNums.add(bankCardEntity.getCardNum());
+		}
+
+		return cardNums;
+	}
+
 }

@@ -93,11 +93,11 @@ function initSelect2(){
 $(function () {
 	//客户信息 显示/隐藏
 	$('.UnderIcon').on('click',function(){
-		$('.hideTable').toggle('400');
+		$('.hideTable').toggle();
 	});
 	//清楚按钮 隐藏
 	$('#clearBtn').click(function(){
-		$('.hideTable').hide('400');
+		$('.hideTable').hide();
 	});
 	//散客
 	document.getElementsByName("voyageType")[1].checked="checked";//radio 默认 选中往返

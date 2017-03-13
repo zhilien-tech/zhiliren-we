@@ -49,7 +49,7 @@
 						 	<ul class="nav nav-tabs custome">
 			                  <li id="searchLi" class="active"><a href="#tab_1" data-toggle="tab">询单(<span id="searchOrderNum"></span>)</a></li>
 			                  <li id="bookLi"><a href="#tab_2" data-toggle="tab">订单(<span id="bookOrderMsgNum"></span>)</a></li>
-			                  <li id="remindLi"><a href="#tab_3" data-toggle="tab">我的提醒(<span id="remindMsgNum"></span>)</a></li>
+			                  <li id="remindLi"><a id="myRemindClick" href="#tab_3" data-toggle="tab">我的提醒(<span id="remindMsgNum"></span>)</a></li>
 			                  <li id="accountLI"><a href="#tab_4" data-toggle="tab">账期(<span id="accountPayTypeMsgNum"></span>)</a></li>
 			                  <li id="taskLi"><a id="taskAClick" href="#tab_5" data-toggle="tab">任务(<span id="taskNoticeMsgNum"></span>)</a></li>
 			                </ul>
@@ -215,13 +215,19 @@
 	  			$("#taskBoxId").attr('checked','checked');
 	  			if(taskTagShow == true){
 	  				//隐藏任务标签
-	  				$("#taskLi").hide();
+	  				$("#taskLi").remove();
+	  				$("#tab_5").remove();
 	  			}else{
 	  				//只显示 我的提醒 + 任务
-	  				$("#searchLi").hide();
-	  				$("#bookLi").hide();
-	  				$("#accountLI").hide();
-	  				$("#taskLi").attr("class", "active");
+	  				$("#searchLi").remove();
+	  				$("#tab_1").remove();
+	  				$("#bookLi").remove();
+	  				$("#tab_2").remove();
+	  				$("#accountLI").remove();
+	  				$("#tab_4").remove();
+	  				$("#tab_3").addClass("active");
+	  				$("#remindLi").addClass("active");
+	  				
 	  			}
 	  			taskEventList();
 	  		}
@@ -273,7 +279,7 @@
 		}
 		//任务
 		function ataskNoticeList() {
-			var urlStr = '${base}/admin/operationsArea/getPayTypeTerm.html';
+			var urlStr = '${base}/admin/operationsArea/getOrderMsgs.html';
 			remindMsgList("taskNotice", $("#taskNoticeMsgNum"), $("#taskNoticeList"),urlStr);
 		} 
 		

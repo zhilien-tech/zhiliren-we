@@ -1,11 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<head>
+<style type="text/css">
+	.sidebar-mini .wrapper .wrapper footer:nth-child(even){display:none;} 
+</style>
+</head>
 <%@include file="/WEB-INF/public/footer.jsp"%>
 <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
         <c:forEach items="${menus}" var="menu" varStatus="stat">
@@ -34,19 +38,7 @@
 								</li>
 							</c:forEach>
 						</ul>
-						<script>
-							$(function(){
-								 $('.menu1').click(function(){
-									$(this).next('ul').toggle();
-								}); 
-								
-								if($('.menu1').parent().hasClass('active')){
-									$(this).find('.menu-ul').show();
-								}else{
-									$(this).find('.menu-ul').hide();
-								}
-							});
-						</script>
+						
 				   </c:otherwise>
 			    </c:choose>
 			    
@@ -60,3 +52,16 @@
     </section>
     <!-- /.sidebar -->
   </aside>
+<script>
+	$(function(){
+		 $('.menu1').click(function(){
+			$(this).next('ul').toggle();
+		}); 
+		
+		if($('.menu1').parent().hasClass('active')){
+			$(this).find('.menu-ul').show();
+		}else{
+			$(this).find('.menu-ul').hide();
+		}
+	});
+</script>

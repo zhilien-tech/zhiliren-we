@@ -26,7 +26,7 @@
                 <table class="PNRtable">
                   <tr>
                     <td>PNR：</td>
-                    <td><input id="pnr" name="pnr" type="text" class="form-control input-sm"></td>
+                    <td><input id="pnr" name="pnr" type="text" class="form-control input-sm PNRlength"></td>
                     <td>登录帐号：</td>
                     <td><input id="loginid" name="loginid" type="text" class="form-control input-sm"></td></td>
                     <td>人数：</td>
