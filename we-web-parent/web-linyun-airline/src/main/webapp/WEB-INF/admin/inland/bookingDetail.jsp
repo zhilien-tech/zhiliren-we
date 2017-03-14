@@ -141,7 +141,7 @@
 		                 <table class="cloTable">
 		                   <tr>
 		                     <td><label>出发城市：</label></td>
-		                     <td><select id="leavecity" name="leavecity" disabled="disabled" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
+		                     <td colspan="2"><select id="leavecity" name="leavecity" disabled="disabled" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
 			                     	<c:forEach var="one" items="${obj.city }">
 			                    		<c:choose>
 			                    			<c:when test="${customneed.cusinfo.leavecity eq one.dictCode }">
@@ -155,7 +155,7 @@
 			                     </select>
 			                 </td>
 		                     <td><label>抵达城市：</label></td>
-		                     <td><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
+		                     <td colspan="2"><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
 			                     	<c:forEach var="one" items="${obj.city }">
 			                    		<c:choose>
 			                    			<c:when test="${customneed.cusinfo.arrivecity eq one.dictCode }">

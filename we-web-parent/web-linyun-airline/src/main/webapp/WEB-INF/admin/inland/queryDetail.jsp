@@ -259,11 +259,11 @@
 		                 <table class="cloTable">
 		                   <tr>
 		                     <td><label>出发城市：</label></td>
-		                     <td><select id="leavecity" name="leavecity" disabled="disabled" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
+		                     <td colspan="2"><select id="leavecity" name="leavecity" disabled="disabled" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
 			                     </select>
 			                 </td>
 		                     <td><label>抵达城市：</label></td>
-		                     <td><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
+		                     <td colspan="2"><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
 			                     </select></td>
 		                     <td><label>出发日期：</label></td>
 		                     <td><input id="leavedate" name="leavedate" disabled="disabled" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:''})"/></td>

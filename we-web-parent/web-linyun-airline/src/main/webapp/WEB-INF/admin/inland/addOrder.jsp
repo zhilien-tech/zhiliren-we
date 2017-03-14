@@ -75,10 +75,10 @@
                  <p>客户需求</p>
                </div>
                <div id="infofooter" class="infofooter">
-                <div class="DemandDiv">
+                <div class="DemandDiv addOrderKHXQ">
                  <span class="titleNum">1</span>
                  <a href="javascript:;" class="btn btn-primary btn-sm addDemand"><b>+</b>&nbsp;&nbsp;需求</a>
-                 <table>
+                 <table class="table1">
                    <tr>
                      <td><label>出发城市：</label></td>
                      <td><select id="leavecity" name="leavecity" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)"></select></td>
