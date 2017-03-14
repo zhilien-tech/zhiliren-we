@@ -173,3 +173,23 @@ FROM
 LEFT JOIN t_order_receive orec ON orec.receiveid = r.id
 LEFT JOIN t_up_order uo ON uo.id=orec.orderid
 $condition
+
+/*receivePay_rec_invioce_list*/
+SELECT
+	r.*, ii.id invoiceid
+FROM
+	t_receive r
+LEFT JOIN t_invoice_info ii ON r.id = ii.receiveid
+$condition
+
+/*get_receive_order_list*/
+SELECT
+	uo.ordersnum,
+	fi.personcount,
+	fi.incometotal
+FROM
+	t_up_order uo
+LEFT JOIN t_finance_info fi ON uo.id = fi.orderid
+INNER JOIN t_order_receive ore ON uo.id = ore.orderid
+INNER JOIN t_receive r ON ore.receiveid = r.id
+$condition

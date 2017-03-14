@@ -8,6 +8,7 @@ package com.linyun.airline.admin.receivePayment.module;
 
 import java.io.File;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.nutz.ioc.loader.annotation.Inject;
@@ -22,13 +23,11 @@ import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.upload.UploadAdaptor;
 
-import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.receivePayment.form.InlandPayEdListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.InlandPayListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.InlandRecListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.TSaveInlandPayAddFrom;
 import com.linyun.airline.admin.receivePayment.service.ReceivePayService;
-import com.linyun.airline.entities.TUserEntity;
 
 @IocBean
 @At("/admin/receivePay/inland")
@@ -121,12 +120,9 @@ public class ReceivePayModule {
 	 *會計收款分页
 	 */
 	@At
-	public Object inlandRecList(@Param("..") final InlandRecListSearchSqlForm form, HttpSession session) {
-		//当前用户id
-		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
-		long id = loginUser.getId();
-		form.setLoginUserId(id);
-		return receivePayService.listRecData(form);
+	public Object inlandRecList(@Param("..") final InlandRecListSearchSqlForm form, HttpSession session,
+			HttpServletRequest request) {
+		return receivePayService.listRecData(form, session, request);
 	}
 
 	/**

@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Chain;
@@ -92,19 +93,25 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 * @param form
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object listRecData(InlandRecListSearchSqlForm form) {
+	public Object listRecData(InlandRecListSearchSqlForm form, HttpSession session, HttpServletRequest request) {
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long id = loginUser.getId();
+		form.setLoginUserId(id);
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
-		List<Record> data = (List<Record>) listdata.get("data");
-		for (Record record : data) {
-			Sql sql = Sqls.create(sqlManager.get("receivePay_rec_list"));
-			Cnd cnd = Cnd.NEW();
-			cnd.and("r.id", "=", record.getString("recid"));
+		List<Record> list = (List<Record>) listdata.get("data");
+		for (Record record : list) {
+			record.put("username", loginUser.getUserName());
+			String sqlString = sqlManager.get("get_receive_order_list");
+			Sql sql = Sqls.create(sqlString);
+			Cnd cnd = Cnd.limit();
+			cnd.and("r.id", "=", record.get("id"));
 			List<Record> orders = dbDao.query(sql, cnd, null);
 			record.put("orders", orders);
 		}
 		listdata.remove("data");
-		listdata.put("data", data);
+		listdata.put("data", list);
 		return listdata;
 	}
 
