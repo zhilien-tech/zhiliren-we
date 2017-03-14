@@ -6,6 +6,8 @@
 
 package com.linyun.airline.admin.order.inland.form;
 
+import lombok.Data;
+
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
@@ -24,11 +26,20 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
  * @author   刘旭利
  * @Date	 2017年2月13日 	 
  */
+@Data
 public class InlandListSearchForm extends DataTablesParamForm {
+
+	private String startdate;
+
+	private String enddate;
+
+	private String searchInfo;
 
 	private Integer ordersstatus;
 
 	private Integer ticketing;
+
+	private Integer userid;
 
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
@@ -41,7 +52,17 @@ public class InlandListSearchForm extends DataTablesParamForm {
 			sqlex.and("receivestatus", "=", "").or("receivestatus", "is", null);
 			cnd.and(sqlex);
 		}
+		if (!Util.isEmpty(userid)) {
+			cnd.and("tuo.loginUserId", "=", userid);
+		}
 		cnd.orderBy("tuo.ordersnum", "desc");
+		if (!Util.isEmpty(searchInfo)) {
+			SqlExpressionGroup sqlex = new SqlExpressionGroup();
+			sqlex.and("tuo.ordersnum", "like", "%" + searchInfo + "%")
+					.or("tci.shortName", "like", "%" + searchInfo + "%")
+					.or("tci.linkMan", "like", "%" + searchInfo + "%");
+			cnd.and(sqlex);
+		}
 		return cnd;
 	}
 

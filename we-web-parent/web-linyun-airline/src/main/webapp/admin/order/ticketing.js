@@ -300,6 +300,7 @@ $('.fuKuanBtn').click(function(){
         					drawerPayTable.ajax.reload(function(json){
         						autoHighLoad($('#drawerPayTable'));
         					},false);
+        					$('#checkedboxval').val('');
         		  	    }
         			});
         	   }else{
