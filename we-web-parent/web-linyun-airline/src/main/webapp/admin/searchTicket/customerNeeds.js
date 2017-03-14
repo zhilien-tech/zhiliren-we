@@ -485,7 +485,7 @@ var DepartureDateTime = "";
 var ArrivalDateTime = "";
 //成本价
 var airTotalMoney = "";
-$(document).on("click",".chooseLineBtn",function(){
+$(document).on("click",".chooseAirLineBtn",function(){
 	$(".chooseLi").remove();
 	var clickedLi = $(this).parent().parent();
 	clickedLi.each(function(i){
@@ -502,9 +502,9 @@ $(document).on("click",".chooseLineBtn",function(){
 		var custOutCity = $(this).find('[name=cOutcity]').select2("val");
 		var custArrivalCity = $(this).find('[name=cArrivalcity]').select2("val");
 		var custLine = custNeedNum +'. '+ custOutCity +' - '+ custArrivalCity;
-		custLines += '<li class="chooseLi"><a href="javascript:;" class="custLineChoose" value='+custNeedNum+' onclick="custLineChoose()">'+ custLine +'</a></li>';
+		custLines += '<li class="chooseLi"><a href="javascript:;" class="custLineChoose" value='+custNeedNum+'>'+ custLine +'</a></li>';
 	});
-	$(".dropdown-menu").append(custLines);
+	$(".airLineCity").append(custLines);
 });
 
 /************************************飞机票 选择项点击事件  start ************************************/
@@ -546,17 +546,13 @@ $(document).on("click",".custLineChoose",function(){
 				$(tdE).find('[name=cAirArrivalDate]').val(ArrivalDateTime);
 				//成本
 				var costRMB = airTotalMoney;
-				if($("#ratesHidden").val() != ""){
-					costRMB = airTotalMoney * ($("#ratesHidden").attr("value"));
-				}
-				var PretiumRMB = "";
-				if($("#discountHidden").val() != ""){
-					PretiumRMB = costRMB * ($("#discountHidden").val())*0.01 + ($("#feeHidden").val());
-				}else{
-					PretiumRMB = costRMB + ($("#feeHidden").val());
-				}
-				$(tdE).find('[name=cAirCost]').val(costRMB);
+		    	//票价折扣
+		    	var discountFare = $("#discountHidden").val();
+		    	//手续费
+		    	var fees = $("#feeHidden").val(); 
+		    	var PretiumRMB = parseFloat(costRMB * discountFare / 100) + parseFloat(fees);
 				$(tdE).find('[name=cAirPretium]').val(PretiumRMB);
+				$(tdE).find('[name=cAirCost]').val(costRMB);
 			});
 		}
 
