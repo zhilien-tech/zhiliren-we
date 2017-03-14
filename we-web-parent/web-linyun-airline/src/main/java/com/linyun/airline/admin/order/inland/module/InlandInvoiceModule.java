@@ -6,14 +6,18 @@
 
 package com.linyun.airline.admin.order.inland.module;
 
+import java.io.File;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
+import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.linyun.airline.admin.order.inland.form.KaiInvoiceParamForm;
 import com.linyun.airline.admin.order.inland.form.ShouInvoiceParamForm;
@@ -146,5 +150,15 @@ public class InlandInvoiceModule {
 	@POST
 	public Object checkPayIsCommonCompany(HttpServletRequest request) {
 		return inlandInvoiceService.checkPayIsCommonCompany(request);
+	}
+
+	/**
+	 * 上传发票
+	 */
+	@At
+	@POST
+	@AdaptBy(type = UploadAdaptor.class)
+	public Object uploadInvoice(@Param("image") File file, HttpServletRequest request) {
+		return inlandInvoiceService.uploadInvoice(file, request);
 	}
 }

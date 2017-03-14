@@ -112,6 +112,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
 		List<Record> data = (List<Record>) listdata.get("data");
+		List<Record> searchremove = new ArrayList<Record>();
 		for (Record record : data) {
 			//
 			List<TOrderCustomneedEntity> customerinfo = dbDao.query(TOrderCustomneedEntity.class,
@@ -134,6 +135,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			record.put("airinfo", airinfo);
 			record.put("pnrinfo", pnrinfo);
 		}
+		data.removeAll(searchremove);
 		listdata.remove("data");
 		listdata.put("data", data);
 		return listdata;

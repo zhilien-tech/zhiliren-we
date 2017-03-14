@@ -123,23 +123,23 @@
           </tr>
           <c:forEach items="${obj.invoicedetail }" var="invoiceDetail">
 	          <tr class="cloneTR">
-	                  <td>发票号：</td>
-	                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm" value="${invoiceDetail.invoicenum }"></td>
-	                  <td>金额：</td>
-	                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm" value="${invoiceDetail.invoicebalance }"></td>
-	                  <td colspan="4">
-	                    <ul class="fileUL">
-	                      <li>
-	                        <a href="javascript:;" class="FileDiv">
-	                          上传
-	                          <input type="file" class="sc" id="sc" onchange="handleFile()">
-	                        </a>
-	                      </li>
-	                      <li><a href="javascript:;" id="fileName">未选择文件</a></li>
-	                      <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
-	                    </ul>
-	                    <input id="invoiceurl" name="invoiceurl" type="hidden" value="${invoiceDetail.invoiceurl }">
-	                  </td>
+                  <td>发票号：</td>
+                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm" value="${invoiceDetail.invoicenum }"></td>
+                  <td>金额：</td>
+                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm" value="${invoiceDetail.invoicebalance }"></td>
+                  <td colspan="4">
+                    <ul class="fileUL">
+                      <li>
+                        <a href="javascript:;" class="FileDiv">
+                          		上传
+                          <input type="file" class="sc" id="sc" name="sc">
+                        </a>
+                      </li>
+                      <li><a href="javascript:;" id="fileName" name="fileName">${invoiceDetail.imagename }</a></li>
+                      <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
+                    </ul>
+                    <input id="invoiceurl" name="invoiceurl" type="hidden" value="${invoiceDetail.invoiceurl }">
+                  </td>
 	          </tr>
           </c:forEach>
         </table>
@@ -149,9 +149,12 @@
 
   <div id="light" class="white_content">
         <i class="fa fa-times-circle" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'"></i>
-        <img src="u=277362801,688017294&fm=76.jpg">
+        <img id="fapiaoid" src="">
   </div> 
    <!--JS 文件-->
+   <script type="text/javascript">
+   		var BASE_PATH = '${base}';
+   </script>
 	<script src="${base }/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script src="${base }/public/bootstrap/js/bootstrap.min.js"></script>
 
@@ -160,37 +163,37 @@
 	<script src="${base }/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
 	<!-- My97DatePicker -->
 	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
+	<script src="${base }/admin/order/invoiceupload.js"></script>
   <script type="text/javascript">
-     /*-----收付款>收款>开发票-----*/
-     var sc = document.getElementById("sc");
-     var fileName = document.getElementById("fileName");
-     function handleFile(){
-            var reg = /[^\\\/]*[\\\/]+/g;
-            var nameValue=sc.value.replace(reg, '');
-            fileName.innerHTML=nameValue;
-     }
      $(function(){
-      /*-----收付款>收款>开发票 + 按钮-----*/
-      $('.addIcon').click(function(){
-          var divTest = $(this).parents('.cloneTR'); 
-          var newDiv = divTest.clone(true);
-          divTest.after(newDiv);
-          var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
-          newDiv.find("p").html(No); 
-          newDiv.find('.addIcon').parent().remove();
-          newDiv.find('.fileUL').append('<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>');
-      });
-      /*-----收付款>收款>开发票 - 按钮-----*/
-      $(document).on("click",".removIcon",function(){
-          $(this).parents('.cloneTR').remove();
-      });
-
-      $("#fileName").click(function(){
-          document.getElementById('light').style.display='block';
-          document.getElementById('fade').style.display='block';
-      });
-     
-
+    	 /*-----收付款>收款>开发票 + 按钮-----*/
+	      $('.addIcon').click(function(){
+	          var divTest = $(this).parents('.cloneTR'); 
+	          var lastDiv = $('.cloneTR').last();
+	          var newDiv = divTest.clone(false,true);
+	          //newDiv.find('.FileDiv').html('<input type="file" class="sc" id="sc" name="sc" onchange="handleFile()">');
+	          newDiv.find('[name=invoicenum]').val('');
+	          newDiv.find('[name=invoicebalance]').val(''); 
+	          newDiv.find('[name=fileName]').html('未选择文件');
+	          newDiv.find('[name=invoiceurl]').val('');
+	          lastDiv.after(newDiv);
+	          var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
+	          newDiv.find("p").html(No); 
+	          newDiv.find('.addIcon').parent().remove();
+	          newDiv.find('.fileUL').append('<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>');
+	      });
+	      /*-----收付款>收款>开发票 - 按钮-----*/
+	      $(document).on("click",".removIcon",function(){
+	          $(this).parents('.cloneTR').remove();
+	      });
+	      
+	      $(document).on('click','#fileName',function(){
+	   	  	  var invoiceurl = $(this).parent().parent().parent().find('[name=invoiceurl]').val();
+	   	  	  //alert(invoiceurl);
+	          document.getElementById('light').style.display='block';
+	          //document.getElementById('fade').style.display='block';
+	          document.getElementById('fapiaoid').src=invoiceurl; 
+	      });
      });
    //关闭窗口
      function closewindow(){
@@ -225,6 +228,8 @@
 		   detail.invoicenum = invoicenum;
 		   var invoicebalance = $(this).find('[name=invoicebalance]').val();
 		   detail.invoicebalance = invoicebalance;
+		   var fileName = $(this).find('[name=fileName]').html();
+		   detail.filename = fileName;
 		   var invoiceurl = $(this).find('[name=invoiceurl]').val();
 		   detail.invoiceurl = invoiceurl;
 		   invoicedetails.push(detail);

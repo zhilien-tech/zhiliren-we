@@ -16,6 +16,8 @@
 <script src="${base}/public/dist/js/demo.js"></script>
 <!--layer -->
 <script src="${base}/common/js/layer/layer.js"></script>
+<!-- My97DatePicker --> 
+<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
  <!-- Main Footer -->
   <footer class="main-footer">
     <!-- To the right -->

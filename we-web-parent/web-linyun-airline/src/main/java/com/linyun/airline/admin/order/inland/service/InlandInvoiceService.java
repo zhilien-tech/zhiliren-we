@@ -6,6 +6,7 @@
 
 package com.linyun.airline.admin.order.inland.service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,6 +31,8 @@ import com.linyun.airline.admin.order.inland.form.ShouInvoiceParamForm;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayPnrEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
+import com.linyun.airline.common.base.UploadService;
+import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TInvoiceDetailEntity;
@@ -63,6 +66,9 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 
 	@Inject
 	private externalInfoService externalInfoService;
+
+	@Inject
+	private UploadService qiniuUploadService;
 
 	/**
 	 * 保存付款发票信息
@@ -117,6 +123,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			invoiceDetailEntity.setInvoicenum(map.get("invoicenum"));
 			invoiceDetailEntity.setInvoicebalance(Double.valueOf(map.get("invoicebalance")));
 			invoiceDetailEntity.setInvoiceurl(map.get("invoiceurl"));
+			invoiceDetailEntity.setImagename(map.get("filename"));
 			invoiceDetailEntity.setInvoiceinfoid(insert.getId());
 			invoicedetails.add(invoiceDetailEntity);
 		}
@@ -172,6 +179,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			invoiceDetailEntity.setInvoicenum(map.get("invoicenum"));
 			invoiceDetailEntity.setInvoicebalance(Double.valueOf(map.get("invoicebalance")));
 			invoiceDetailEntity.setInvoiceurl(map.get("invoiceurl"));
+			invoiceDetailEntity.setImagename(map.get("filename"));
 			invoiceDetailEntity.setInvoiceinfoid(insert.getId());
 			invoicedetails.add(invoiceDetailEntity);
 		}
@@ -457,6 +465,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			invoiceDetailEntity.setInvoicenum(map.get("invoicenum"));
 			invoiceDetailEntity.setInvoicebalance(Double.valueOf(map.get("invoicebalance")));
 			invoiceDetailEntity.setInvoiceurl(map.get("invoiceurl"));
+			invoiceDetailEntity.setImagename(map.get("filename"));
 			invoiceDetailEntity.setInvoiceinfoid(Integer.valueOf(id));
 			invoicedetails.add(invoiceDetailEntity);
 		}
@@ -509,6 +518,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			invoiceDetailEntity.setInvoicenum(map.get("invoicenum"));
 			invoiceDetailEntity.setInvoicebalance(Double.valueOf(map.get("invoicebalance")));
 			invoiceDetailEntity.setInvoiceurl(map.get("invoiceurl"));
+			invoiceDetailEntity.setImagename(map.get("filename"));
 			invoiceDetailEntity.setInvoiceinfoid(Integer.valueOf(id));
 			invoicedetails.add(invoiceDetailEntity);
 		}
@@ -579,4 +589,20 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		return result;
 	}
 
+	/**
+	 * 上传发票
+	 * <p>
+	 * TODO上传发票
+	 *
+	 * @param file
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object uploadInvoice(File file, HttpServletRequest request) {
+		Map<String, Object> result = qiniuUploadService.ajaxUploadImage(file);
+		file.delete();
+		result.put("data", CommonConstants.IMAGES_SERVER_ADDR + result.get("data"));
+		return result;
+
+	}
 }
