@@ -484,7 +484,7 @@
   $('#searchOrder').click(function(){
 		var div = $(this).parent().parent();
 		var startdate = div.find('[name=startdate]').val();
-		var enddate = div.find('[name=startdate]').val();
+		var enddate = div.find('[name=enddate]').val();
 		var searchInfo = div.find('[name=searchInfo]').val();
 		var status = $('#status').val();
 		var param = {
