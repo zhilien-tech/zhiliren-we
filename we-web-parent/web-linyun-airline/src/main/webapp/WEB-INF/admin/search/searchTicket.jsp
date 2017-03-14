@@ -152,14 +152,14 @@
 							<table class="cloTable">
 								<tr>
 									<td><label>出发城市：</label></td>
-									<td>
+									<td colspan="2">
 										<!-- <input id="cOutcity" name="cOutcity" type="text" class="form-control input-sm" placeholder="PEK(北京)"> -->
 										<select id="cOutcity" name="cOutcity"
 										class="form-control select2" multiple="multiple"
 										data-placeholder="PEK-BeiJing-China"></select>
 									</td>
 									<td><label>抵达城市：</label></td>
-									<td>
+									<td colspan="2">
 										<!-- <input id="cArrivalcity" type="text" class="form-control input-sm" placeholder="SYD(悉尼)"> -->
 										<select id="cArrivalcity" name="cArrivalcity"
 										class="form-control select2" multiple="multiple"
