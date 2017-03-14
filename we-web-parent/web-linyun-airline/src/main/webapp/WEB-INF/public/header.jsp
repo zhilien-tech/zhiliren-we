@@ -35,12 +35,12 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
   <link rel="stylesheet" href="${base}/public/css/pikaday.css">
-  
+	
+  <!-- jQuery 2.2.3 -->
+  <script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper">
-
 <div class="wrapper">
 
   <!-- Main Header -->

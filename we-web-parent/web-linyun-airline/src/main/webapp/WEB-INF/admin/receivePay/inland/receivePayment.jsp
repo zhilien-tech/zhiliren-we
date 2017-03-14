@@ -4,19 +4,8 @@
 <%@include file="/WEB-INF/public/header.jsp"%>
 <%@include file="/WEB-INF/public/aside.jsp"%>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>收付款-内陆跨海</title>
-<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-<!--本页面 CSS样式-->
-<link rel="stylesheet" type="text/css" href="${base}/public/dist/css/receivePayment.css">
-</head>
-<body class="hold-transition skin-blue sidebar-mini">
-	<div class="wrapper">
-
+		<!--本页面 CSS样式-->
+		<link rel="stylesheet" type="text/css" href="${base}/public/dist/css/receivePayment.css">
 		<!-- Content-->
 		<div class="content-wrapper">
 			<!-- Main content -->
@@ -175,9 +164,8 @@
 			</section>
 		</div>
 
-		<!-- Footer -->
-		<%@include file="/WEB-INF/public/footer.jsp"%>
-	</div>
+	<!-- Footer -->
+	<%@include file="/WEB-INF/public/footer.jsp"%>
 
 	<!-- REQUIRED JS SCRIPTS -->
 	<!-- 引入js文件 -->
@@ -196,6 +184,3 @@
 			toConfirmRecPage();
 		});
 	</script>
-	
-</body>
-</html>
