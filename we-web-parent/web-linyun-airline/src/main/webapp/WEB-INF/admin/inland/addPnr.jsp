@@ -94,6 +94,10 @@
     <!--layer -->
   <script src="${base}/common/js/layer/layer.js"></script>
     <script type="text/javascript">
+  //票价折扣
+ 	var discountFare = '${obj.custominfo.discountFare}';
+ 	//手续费
+ 	var fees = '${obj.custominfo.fees}'; 
       $(function(){
           $('#multiselect').multiselect();
       });
@@ -158,6 +162,29 @@
 	   }
    }
    
+   $('#costprice').on('input',function(){
+	   //成本单价
+	   var costprice = $('#costprice').val();
+	   //人数
+	   var peoplecount = $('#peoplecount').val();
+	   //自动填充销售单价
+	   var salesprice = parseFloat(costprice) * parseFloat(discountFare) + parseFloat(fees);
+	   if(costprice){
+	 		if(isNaN(salesprice)){
+	 			$('#salesprice').val('');
+	 		}else if(){
+	 			$('#salesprice').val(costprice);
+	 		}
+	 	}else{
+	 		$('#salesprice').val('');
+	 	}
+	   if(peoplecount){
+		   var costpricesum = parseFloat(costprice) * parseFloat(peoplecount);
+		   $('#costpricesum').val(costpricesum);
+		   var salespricesum = parseFloat(salesprice) * parseFloat(peoplecount);
+		   $('salespricesum').val(salespricesum);
+	   }
+   })
   </script>
 </body>
 </html>	

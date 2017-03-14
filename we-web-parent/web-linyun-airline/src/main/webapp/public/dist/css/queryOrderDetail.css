@@ -18,3 +18,5 @@ table.remindSet{margin-left: 10px;margin-right: 10px;}
 .remindSet tr td:nth-child(2) select{padding: 0 5px;font-size: 11px;}
 div#orderlog ul {padding-left: 0;}
 div#orderlog ul li{text-align: center;}
+.cloTable tbody tr:nth-child(1) td:nth-child(2) .select2-container .selection .select2-selection{width:192px;}
+.cloTable tbody tr:nth-child(1) td:nth-child(4) .select2-container .selection .select2-selection{width:186px;}

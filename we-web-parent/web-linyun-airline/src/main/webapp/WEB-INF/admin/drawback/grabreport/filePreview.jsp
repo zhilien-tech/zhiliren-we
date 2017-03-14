@@ -9,6 +9,9 @@
 	<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
     <link rel="stylesheet" type="text/css" href="${base}/public/dist/css/receivePayment.css"><!--本页面style-->
     <link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
+    <style type="text/css">
+    	.form-control-feedback {position: absolute;top: 1px;right: 10px;}
+    </style>
 </head>
 <body>
 	<div class="modal-top">
@@ -18,7 +21,7 @@
 	            <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
 	            <h4>附件预览</h4>
           	</div>
-          	<div class="modal-body modal-bod" style="height: 532px;overflow-y:auto; ">
+          	<div class="modal-body modal-bod" style="height:632px;overflow-y:auto; ">
               <div class="row"><!--PNR/代理返点/汇款金额-->
               	<div class="form-group inline">
                   <label class="col-sm-2 text-right padding">PNR：</label>

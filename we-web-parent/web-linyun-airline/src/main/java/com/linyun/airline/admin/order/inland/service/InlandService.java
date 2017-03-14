@@ -440,9 +440,12 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	 * @param id
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object bookingDetail(Integer id) {
-
+	public Object bookingDetail(Integer id, HttpServletRequest request) {
 		Map<String, Object> result = new HashMap<String, Object>();
+		HttpSession session = request.getSession();
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		result.put("user", user);
 		TUpOrderEntity orderinfo = this.fetch(id);
 		result.put("orderinfo", orderinfo);
 		//客户信息
@@ -896,6 +899,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				removevisitor.add(visitor);
 			}
 		}
+		TOrderCustomneedEntity customneed = dbDao.fetch(TOrderCustomneedEntity.class, Long.valueOf(needid));
+		TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, customneed.getOrdernum().longValue());
+		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, order.getUserid().longValue());
 		visitors.removeAll(removevisitor);
 		//币种下拉
 		List<DictInfoEntity> bzcode = new ArrayList<DictInfoEntity>();
@@ -910,6 +916,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		result.put("visitors", visitors);
 		result.put("bzcode", bzcode);
 		result.put("needid", needid);
+		result.put("custominfo", custominfo);
 		return result;
 	}
 
