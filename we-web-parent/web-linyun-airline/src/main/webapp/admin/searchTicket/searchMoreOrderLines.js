@@ -116,9 +116,9 @@ function searchInlandOrder(){
 						'<div class="distanceTimeDiv"><span class="chufaCS"><b class="DepartureDateTime">'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
 						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b class="ArrivalDateTime">'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
 						'<div class="moneyDiv"><i class="fa fa-usd"></i><i class="airTotalMoney">'+totalAmount+'</i></div>'+
-						'<div class="btn-group xuanzeBtn">'+
-							'<button class="btn chooseLineBtn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
-							'<ul class="dropdown-menu">'+
+						'<div class="btn-group xuanzeBtn dropdown">'+
+							'<button class="btn chooseAirLineBtn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
+							'<ul class="dropdown-menu airLineCity">'+
 							
 							'</ul>'+
 						'</div>'+
@@ -140,9 +140,9 @@ function searchInlandOrder(){
 						'<div class="distanceTimeDiv"><span class="chufaCS"><b class="DepartureDateTime">'+DepartureDateTime+'</b><p>'+DepartureAirport+'</p>'+
 						'</span><span class="shiDuan">'+toHourMinute(ElapsedTime)+'</span><span class="daodaCS"><b class="ArrivalDateTime">'+ArrivalDateTime+'</b><p>'+ArrivalAirport+'</p></span></div>'+
 						'<div class="moneyDiv"><i class="fa fa-usd"></i><i class="airTotalMoney">'+totalAmount+'</i></div>'+
-							'<div class="btn-group xuanzeBtn">'+
-							'<button class="btn chooseLineBtn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
-							'<ul class="dropdown-menu">'+
+							'<div class="btn-group xuanzeBtn dropdown">'+
+							'<button class="btn chooseAirLineBtn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">选择<span class="caret"></span></button>'+
+							'<ul class="dropdown-menu airLineCity">'+
 							
 							'</ul>'+
 						'</div>'+

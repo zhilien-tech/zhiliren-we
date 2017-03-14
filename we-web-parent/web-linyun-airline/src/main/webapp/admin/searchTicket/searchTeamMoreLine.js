@@ -348,7 +348,15 @@ function initDatatable2() {
 		            	}
 		            },
 		            {"data": "dayscount", "bSortable": false},
-		            {"data": "travelname", "bSortable": false},
+		            {"data": "travelname", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var travelname = row.travelname;
+		            		if(null == travelname || ""== travelname){
+		            			return "";
+		            		}
+		            		return travelname;
+		            	}
+		            },
 		            {"data": "unioncity", "bSortable": false}
 		            ],
 		            columnDefs: [{

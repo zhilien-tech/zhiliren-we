@@ -94,7 +94,7 @@ SELECT
 	r.sum,
 	ci.shortName,
 	ci.linkMan,
-	u.userName,
+	fi.`issuer` userName,
 	uo.ordersstatus orderstatus
 FROM
 	t_finance_info fi
@@ -104,7 +104,6 @@ LEFT JOIN t_order_receive orec ON orec.orderid = uo.id
 LEFT JOIN t_receive r ON orec.receiveid = r.id
 LEFT JOIN t_receive_bill rb ON r.id = rb.receiveid
 LEFT JOIN t_customer_info ci ON ci.id = uo.userid
-LEFT JOIN t_user u ON u.id = fi.`issuer`
 $condition
 GROUP BY
 	r.id
