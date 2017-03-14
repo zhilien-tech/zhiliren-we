@@ -91,7 +91,7 @@
                     </select>
                   </td>
                   <td>发票日期：</td>
-                  <td><input id="invoicedate" name="invoicedate" type="text" onFocus="WdatePicker()" class="form-control input-sm" value="${obj.invoiceinfo.invoicedate }"></td>
+                  <td><input id="invoicedate" name="invoicedate" type="text" onFocus="WdatePicker()" class="form-control input-sm" value="<fmt:formatDate value="${obj.invoiceinfo.invoicedate }" pattern="yyyy-MM-dd" />"></td>
                   <td>开票人：</td>
                   <td>
                      <select id="billuserid" name="billuserid" value="${obj.invoiceinfo.billuserid }" class="form-control input-sm">
@@ -130,7 +130,7 @@
 	                  <td colspan="4">
 	                      <li>
 	                        <a href="javascript:;" class="FileDiv">
-	                          上传
+	                      上传
 	                          <input type="file" class="sc" id="sc" name="sc">
 	                        </a>
 	                      </li>

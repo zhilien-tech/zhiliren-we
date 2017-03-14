@@ -32,7 +32,7 @@ public class ShouInvoiceParamForm extends DataTablesParamForm {
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("opid", "=", userid);
-		cnd.and("invoicetype", "=", PayReceiveTypeEnum.RECEIVE.intKey());
+		cnd.and("invoicetype", "=", PayReceiveTypeEnum.PAY.intKey());
 		return cnd;
 	}
 

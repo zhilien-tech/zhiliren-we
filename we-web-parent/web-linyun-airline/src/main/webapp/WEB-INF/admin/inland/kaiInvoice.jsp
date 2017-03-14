@@ -89,7 +89,7 @@
                     </select>
                   </td>
                   <td>发票日期：</td>
-                  <td><input id="invoicedate" name="invoicedate" type="text" onFocus="WdatePicker()" class="form-control input-sm" value="${obj.invoiceinfo.invoicedate }"></td>
+                  <td><input id="invoicedate" name="invoicedate" type="text" onFocus="WdatePicker()" class="form-control input-sm" value="<fmt:formatDate value="${obj.invoiceinfo.invoicedate }" pattern="yyyy-MM-dd" />"></td>
                   <td>开票人：</td>
                   <td>
                      <select id="billuserid" name="billuserid" value="${obj.invoiceinfo.billuserid }" class="form-control input-sm">
@@ -107,7 +107,7 @@
           </tr>
           <tr>
                   <td>付款单位：</td>
-                  <td colspan="3"><input id="paymentunit" name="paymentunit" type="text" class="form-control input-sm" value="JQ" disabled="disabled" value="${obj.invoiceinfo.paymentunit }"></td>
+                  <td colspan="3"><input id="paymentunit" name="paymentunit" type="text" class="form-control input-sm" disabled="disabled" value="${obj.invoiceinfo.paymentunit }"></td>
           </tr>
           <tr>
                   <td>备注：</td>

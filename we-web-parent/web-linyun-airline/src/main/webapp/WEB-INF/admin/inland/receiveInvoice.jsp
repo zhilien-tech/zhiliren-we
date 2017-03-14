@@ -108,7 +108,7 @@
           </tr>
           <tr>
                   <td>付款单位：</td>
-                  <td colspan="3"><input id="paymentunit" name="paymentunit" type="text" class="form-control input-sm" value="JQ" disabled="disabled"></td>
+                  <td colspan="3"><input id="paymentunit" name="paymentunit" type="text" class="form-control input-sm" value="${obj.customename }" disabled="disabled"></td>
           </tr>
           <tr>
                   <td>备注：</td>

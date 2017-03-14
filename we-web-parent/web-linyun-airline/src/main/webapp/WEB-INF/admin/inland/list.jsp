@@ -83,17 +83,17 @@
                                  <form role="form" class="form-horizontal">
                                   <div class="form-group row marginBott5 cf">
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" name="startdate" class="form-control TimeInput" placeholder="2017-02-20"> 
+                                      <input type="text" name="startdate" class="form-control TimeInput" placeholder="2017-02-20" onFocus="WdatePicker()" onkeypress="onkeyTicketingEnter()"> 
                                     </div>
                                     <label class="col-md-1 labelClas">至</label>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22">
+                                      <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22" onFocus="WdatePicker()" onkeypress="onkeyTicketingEnter()">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR" onkeypress="onkeyTicketingEnter()">
                                     </div>
                                     <div class="col-md-2"><!-- 搜索 按钮 -->
-                                      <button type="button" class="btn btn-primary btn-sm">搜索</button>
+                                      <button type="button" id="ticketingSearch" class="btn btn-primary btn-sm">搜索</button>
                                       <button type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
                                     </div>
                                     <div class="col-md-4"><!-- 收款 按钮 -->
@@ -395,7 +395,7 @@
                                       <th>收款单位</th>
                                       <th>开票人</th>
                                       <th>状态</th>
-                                      <th>开票人</th>
+                                      <th>备注</th>
                                       <th>操作</th>
                                     </tr>
                                   </thead>

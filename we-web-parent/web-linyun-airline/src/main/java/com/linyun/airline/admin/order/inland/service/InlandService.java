@@ -1373,6 +1373,11 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		Cnd cnd = Cnd.limit();
 		cnd.and("tuo.id", "in", ids);
 		List<Record> orders = dbDao.query(sql, cnd, null);
+		String customename = "";
+		if (orders.size() > 0) {
+			customename = (String) orders.get(0).get("customename");
+		}
+		result.put("customename", customename);
 		//计算合计金额
 		double sumincome = 0;
 		for (Record record : orders) {
@@ -1449,6 +1454,12 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		Cnd cnd = Cnd.limit();
 		cnd.and("tpi.id", "=", id);
 		List<Record> pnrinfo = dbDao.query(sql, cnd, null);
+		//客户名称
+		String customename = "";
+		if (pnrinfo.size() > 0) {
+			customename = (String) pnrinfo.get(0).get("customename");
+		}
+		result.put("customename", customename);
 		double sumjine = 0;
 		for (Record record : pnrinfo) {
 			if (!Util.isEmpty(record.get("salespricesum"))) {
