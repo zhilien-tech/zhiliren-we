@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!-- REQUIRED JS SCRIPTS -->
-
-<!-- jQuery 2.2.3 -->
-<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
 <!-- DataTables -->
@@ -30,6 +27,7 @@
   </footer>
   <div class="control-sidebar-bg"></div>
   
+  </div>
   </body>
 <script type="text/javascript">
 $(document).ready(function(){
