@@ -19,7 +19,7 @@
 	            <h4>附件预览</h4>
           	</div>
           	<div class="modal-body modal-bod" style="height: 532px;overflow-y:auto; ">
-          		<div class="row">
+          		<!-- <div class="row">
                   	<div class="form-group">
                   		<label class="col-sm-3 text-right padding">PNR：</label>
                       	<div class="col-sm-3 padding">
@@ -103,7 +103,37 @@
 		                 	<input id="remarkId" name="remark" type="text" class="form-control input-sm inputWidth" placeholder="请输入备注" />
 	               		</div>
                     </div>
-                 </div>
+                 </div>	
+               -->
+              <div class="row"><!--PNR/代理返点/汇款金额-->
+              	<div class="form-group inline">
+                  <label class="col-sm-2 text-right padding">PNR：</label>
+                  <div class="col-sm-2 padding"><input id="pnrInfoId" name="PNR" type="text" class="form-control input-sm inputWidth" placeholder="请输入PNR" /></div>
+                </div> 
+                <div class="form-group inline">
+                  <label class="col-sm-1 text-right padding">代理返点：</label>
+                  <div class="col-sm-2 padding"><input id="agentRebateId" name="agentRebate" type="text" class="form-control input-sm inputWidth" placeholder="请输入代理返点"/></div>
+                </div>  
+                <div class="form-group inline"> 
+                  <label class="col-sm-1 text-right padding">汇款金额：</label>
+                  <div class="col-sm-2 padding"><input type="text" class="form-control input-sm"></div>
+         	 	</div>
+         	  </div><!--end PNR/代理返点/汇款金额-->
+         	  
+              <div class="row"><!--刷卡费/代理返点/汇款金额-->
+              	<div class="form-group inline">
+                  <label class="col-sm-2 text-right padding">刷卡费：</label>
+                  <div class="col-sm-2 padding"><input id="pnrInfoId" name="PNR" type="text" class="form-control input-sm inputWidth" placeholder="请输入PNR" /></div>
+                </div> 
+                <div class="form-group inline">
+                  <label class="col-sm-1 text-right padding">代理返点：</label>
+                  <div class="col-sm-2 padding"><input id="agentRebateId" name="agentRebate" type="text" class="form-control input-sm inputWidth" placeholder="请输入代理返点"/></div>
+                </div>  
+                <div class="form-group inline"> 
+                  <label class="col-sm-1 text-right padding">汇款金额：</label>
+                  <div class="col-sm-2 padding"><input type="text" class="form-control input-sm"></div>
+         	 	</div>
+         	  </div><!--end PNR/代理返点/汇款金额-->
               <div class="bankSlipImg">
               	  <iframe id="zhuce" style="height:350px; width:100%;" name="main" src="${obj.fileurl.url}" frameBorder="0" scrolling="no"></iframe>
               </div>
