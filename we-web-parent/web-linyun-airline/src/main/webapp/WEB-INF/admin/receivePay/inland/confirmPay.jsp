@@ -218,11 +218,14 @@
 			},
 			url : '${base}/admin/receivePay/inland/getCardNames.html',
 			success : function(data) {
-				var str = "<option>--请选择--</option>";
+				var option = "<option>--请选择--</option>";
+				var nameNtr = option;
+				var numStr = option;
 				for(var i=0;i< data.length;i++){
-					str += '<option value="'+data[i]+'">'+data[i]+'</option>';
+					nameNtr += '<option value="'+data[i]+'">'+data[i]+'</option>';
 				}
-				document.getElementById("cardName").innerHTML=str;
+				document.getElementById("cardName").innerHTML = nameNtr;
+				document.getElementById("cardNum").innerHTML = numStr;
 			},
 			error : function(request) {
 				

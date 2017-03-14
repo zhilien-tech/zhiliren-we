@@ -205,14 +205,14 @@
 									<td><label class="labelWid">成本价：</label></td>
 									<td><input name="cAirCost" type="text"
 										class="form-control input-sm textWid costPrice"
-										onkeyup="this.value=this.value.replace(/\D/g,'')"
-										onafterpaste="this.value=this.value.replace(/\D/g,'')">
+										onkeyup="this.value=this.value.replace(^(\d+(\.\d{1,20})?)?$,'')"
+										onafterpaste="this.value=this.value.replace(^(\d+(\.\d{1,20})?)?$,'')">
 									</td>
 									<td><label class="labelWid">销售价：</label></td>
 									<td><input name="cAirPretium" type="text"
 										class="form-control input-sm textWid"
-										onkeyup="this.value=this.value.replace(/\D/g,'')"
-										onafterpaste="this.value=this.value.replace(/\D/g,'')">
+										onkeyup="this.value=this.value.replace(^(\d+(\.\d{1,20})?)?$,'')"
+										onafterpaste="this.value=this.value.replace(^(\d+(\.\d{1,20})?)?$,'')">
 									</td>
 									<td><a href="javascript:;" name="addButton"
 										class="glyphicon glyphicon-plus addIcon removAddMake"></a></td>
@@ -543,10 +543,10 @@
 		<!-- Validator -->
 		<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 		<!-- DataTables -->
-		<script
-			src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
-		<script
-			src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
+		<script src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
+		<!-- boostrap -->
+		<script src="${base}/public/plugins/bootstrap/bootstrap.min.js"></script>
 		<!-- 客户信息 js -->
 		<script src="${base}/admin/searchTicket/searchCustomerInfo.js"></script>
 		<!-- 客户需求 js -->
