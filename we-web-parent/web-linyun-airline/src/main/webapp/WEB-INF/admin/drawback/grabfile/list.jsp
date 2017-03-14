@@ -36,7 +36,7 @@
                      <button type="button" class="btn btn-primary btn-sm right batchBtn">批量操作</button>
                      <button id="folderId" name="createFolder" onclick='newFolder();' type="button" class="btn btn-primary btn-sm right carrynews">新建文件夹</button>
                      <button id="grabMailId" name="grabMailName" type="button" class="btn btn-primary btn-sm right">邮件抓取</button>
-                     <button id="uploadFile" name="fileID" type="file" class="btn btn-primary btn-sm right">上传</button>
+                     <button id="uploadFile" onclick="uploadFile();" name="fileID" type="file" class="btn btn-primary btn-sm right">上传</button>
                      <button type="button" class="btn btn-primary btn-sm right returnBtn none">返回上一级</button>
                      <button type="button" class="btn btn-primary btn-sm right indexBtn none">返回首页</button>
                    </div>
@@ -211,7 +211,8 @@ $(document).on('click', '.checkchild', function(e) {
 	}
 });
     //文件上传
-    $('#uploadFile').click(function(){
+    $(uploadFile());
+    function uploadFile(){
     	$.fileupload1 = $('#uploadFile').uploadify({
     		'auto' : true,//选择文件后自动上传
     		'formData' : {
@@ -284,7 +285,10 @@ $(document).on('click', '.checkchild', function(e) {
                 }
             }
     	});
-    });
+    }
+    /* $('#uploadFile').click(function(){
+    	
+    }); */
 });
 </script>
 <script type="text/javascript">
@@ -538,7 +542,7 @@ function successCallback(id){
 					  	    fix: false,
 					  	    maxmin: false,
 					  	    shadeClose: false,
-					  	    area: ['1300px', '800px'],
+					  	    area: ['1000px', '600px'],
 					  	    content: '${base}/admin/drawback/grabreport/filePreview.html?id='+pid
 					 	});
 					} 
