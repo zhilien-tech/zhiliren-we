@@ -235,6 +235,7 @@ $('.fuKuanBtn1').click(function(){
         				content:  BASE_PATH + '/admin/inland/seaPayApply.html?ids='+ids,
         				end:function(){
         					payTable.ajax.reload(null,false);
+        					$('#checkedboxval1').val('');
         		  	    }
         			});
         	   }else{

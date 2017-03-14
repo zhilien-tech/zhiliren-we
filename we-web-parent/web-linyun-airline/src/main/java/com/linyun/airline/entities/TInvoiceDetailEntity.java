@@ -34,6 +34,10 @@ public class TInvoiceDetailEntity implements Serializable {
 	private String invoiceurl;
 
 	@Column
+	@Comment("发票图片名称")
+	private String imagename;
+
+	@Column
 	@Comment("操作人")
 	private Integer opid;
 
@@ -54,6 +58,11 @@ public class TInvoiceDetailEntity implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		TInvoiceDetailEntity other = (TInvoiceDetailEntity) obj;
+		if (imagename == null) {
+			if (other.imagename != null)
+				return false;
+		} else if (!imagename.equals(other.imagename))
+			return false;
 		if (invoicebalance == null) {
 			if (other.invoicebalance != null)
 				return false;
@@ -95,6 +104,7 @@ public class TInvoiceDetailEntity implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((imagename == null) ? 0 : imagename.hashCode());
 		result = prime * result + ((invoicebalance == null) ? 0 : invoicebalance.hashCode());
 		result = prime * result + ((invoiceinfoid == null) ? 0 : invoiceinfoid.hashCode());
 		result = prime * result + ((invoicenum == null) ? 0 : invoicenum.hashCode());

@@ -35,7 +35,7 @@ table.dataTable thead .sorting:after{display: none;}
 .infoTopContent .infoTopContent input{display: inline-block;}
 .infoTopContent .conTimeInput{width: 125px;height: 28px;position: relative;top: -2px;}
 .infoTopContent .btn{margin-left: 12px;padding: 4px 15px;position: relative;top: -3px;}
-.infofooter{min-height:50px;border: solid 1px #e0e0e0;border-top: 0; padding: 20px 0px 10px 0px;background-color: #fcfcfc;border-radius: 0 4px 4px 4px;}
+.infofooter{margin-bottom: 10px;min-height:50px;border: solid 1px #e0e0e0;border-top: 0; padding: 20px 0px 0px 0px;background-color: #fcfcfc;border-radius: 0 4px 4px 4px;}
 .infofooter table tr td label{width: 70px;text-align: right;padding-top: 3px;}
 .infofooter table tr td .form-control{width: 115px;}
 .addressInput{width: 300px !important;}
@@ -100,6 +100,7 @@ table.dataTable thead .sorting_desc:after {display: none;}
 #payTable tbody tr td{padding:0;}
 #payTable tbody tr td ul li:last-child{border-bottom: 0;}
 #payTable tbody tr .sorting_1 ul li{height: 22px;padding-top: 4px;}
+td.sorting_1 input {position: relative;top: 5px;}
 /*---收/付款 付款---*/
 #shouFuKuanGatheringTable tbody tr td ul li{list-style: none;border-bottom: solid 2px #f4f4f4;}
 #shouFuKuanGatheringTable tbody tr td ul{padding-left: 0;margin-bottom:0;}
@@ -133,17 +134,23 @@ table.dataTable thead .sorting_desc:after {display: none;}
 .white_content {display: none;position: absolute;top: 25%;left: 25%;width: 55%;height: 55%;padding:15px;border: 1px solid #efefef;border-radius: 5px;box-shadow: 0 0 31px #dadada;background-color: white;z-index: 1002;overflow: auto;} 
 .fa-times-circle {position: absolute;top: 3px;font-size: 18px;left: 520px;cursor: pointer;color: rgb(59, 134, 177);}
 .white_content img{width: 100%;height: 100%;}
+/*---添加订单 style---*/
+.infofooter table tbody tr td:nth-child(2){width:115px;}
+.table1 tbody tr td:nth-child(2) .select2-container {width: 190px !important;}
+.addOrderKHXQ a.addDemand{left: 920px;padding: 3px 7px;margin-bottom: 7px;}
+.addOrderKHXQ a.removeDemand{left: 920px;padding: 3px 7px;margin-bottom: 7px;}
+.table1 tbody tr td:nth-child(2){width: 192px !important;}
+.table1 tbody tr td:nth-child(4){width: 192px !important;}
+.table1 tbody tr td:nth-child(4) .select2-container{width: 190px !important;}
+[name="airlineinfo"] td:nth-child(4){width: 115px !important;}
+.table1 tbody tr td:nth-child(7) label{width:58px;}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {background-color: rgba(60, 141, 188, 0);border-color: rgba(54, 127, 169, 0);padding: 0px 10px; color: #555;}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {padding: 0 !important;margin-right: 0px;}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {display:none;}
+.select2-container .select2-search--inline {float: none;}
+form#customaddform { width: 100%;}
 
-
-
-
-
-
-
-
-
-
-
+/*---end 添加订单 style---*/
 /*发票*/
 #tab_7 .nav-tabs-custom{padding: 10px;}
 #kaiInvoiceTable tbody tr td ul li{list-style: none;border-bottom: solid 2px #f4f4f4;}

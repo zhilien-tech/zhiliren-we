@@ -4980,3 +4980,7 @@ p{margin: 0 0 0px 10px;}
 .eq1{border-bottom: 0 !important;height: 30px !important;line-height: 29px;}
 .eq2{border-bottom: 0 !important;}
 /*---end table 内容 垂直居中 style---*/
+
+/*--input 禁用图标不显示--*/
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {pointer-events: none;}
+/*--end input 禁用图标不显示--*/
