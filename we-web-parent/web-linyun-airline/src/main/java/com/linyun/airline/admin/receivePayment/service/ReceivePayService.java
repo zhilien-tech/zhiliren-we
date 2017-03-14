@@ -51,7 +51,10 @@ import com.linyun.airline.common.enums.BankCardStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TBankCardEntity;
 import com.linyun.airline.entities.TCompanyEntity;
+import com.linyun.airline.entities.TOrderReceiveEntity;
 import com.linyun.airline.entities.TPnrInfoEntity;
+import com.linyun.airline.entities.TReceiveBillEntity;
+import com.linyun.airline.entities.TReceiveEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.MapUtil;
@@ -122,7 +125,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object saveInlandRec(String recId) {
-		Sql sql = Sqls.create(sqlManager.get("receivePay_rec_order_id"));
+		/*Sql sql = Sqls.create(sqlManager.get("receivePay_rec_order_id"));
 		Cnd cnd = Cnd.NEW();
 		cnd.and("r.id", "=", recId);
 		List<Record> orders = dbDao.query(sql, cnd, null);
@@ -132,11 +135,11 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		}
 		if (ids.length() > 1) {
 			ids = ids.substring(0, (ids.length() - 1));
-		}
+		}*/
 
 		int orderRecEd = AccountReceiveEnum.RECEIVEDONEY.intKey();
-		int updateNum = dbDao.update(TUpOrderEntity.class, Chain.make("ordersstatus", orderRecEd),
-				Cnd.where("id", "in", ids));
+		int updateNum = dbDao.update(TReceiveEntity.class, Chain.make("status", orderRecEd),
+				Cnd.where("id", "in", recId));
 
 		return updateNum;
 	}
@@ -216,45 +219,58 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 * @param inlandPayIds
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object toConfirmRec(String inlandRecId, HttpSession session) {
+	public Object toConfirmRec(String id, HttpSession session) {
 		//当前登录用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long loginUserId = loginUser.getId();
 
 		Map<String, Object> map = new HashMap<String, Object>();
 
-		Sql sql = Sqls.create(sqlManager.get("receivePay_rec_id"));
-		/*String inlandPayIdStr = inlandPayIds.substring(0, inlandPayIds.length() - 1);*/
+		//收款信息
+		TReceiveEntity fetch = dbDao.fetch(TReceiveEntity.class, Long.valueOf(id));
+		List<TOrderReceiveEntity> query = dbDao.query(TOrderReceiveEntity.class, Cnd.where("receiveid", "=", id), null);
+		String ids = "";
+		for (TOrderReceiveEntity tOrderReceiveEntity : query) {
+			ids += tOrderReceiveEntity.getOrderid() + ",";
+		}
+		ids = ids.substring(0, ids.length() - 1);
+		String sqlString = sqlManager.get("receivePay_toRec_table_data");
+		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
-		cnd.and("r.id", "=", inlandRecId);
-		cnd.and("uo.loginUserId", "=", loginUserId);
+		cnd.and("uo.id", "in", ids);
 		List<Record> orders = dbDao.query(sql, cnd, null);
-
-		int bankcardid = 0;
-		String bankcardname = "";
-		String bankcardnum = "";
-		String receipturl = "";
-		String uoIds = "";
+		//计算合计金额
 		Double sum = 0.0;
 		for (Record record : orders) {
-			bankcardid = Integer.valueOf(record.getString("bankcardid"));
-			bankcardname = record.getString("bankcardname");
-			bankcardnum = record.getString("bankcardnum");
-			receipturl = record.getString("receipturl");
-			sum = Double.valueOf(record.getString("sum"));
-			uoIds += record.getString("uoid");
+			if (!Util.isEmpty(record.get("incometotal"))) {
+				Double incometotal = (Double) record.get("incometotal");
+				sum += incometotal;
+			}
 		}
-
-		DictInfoEntity dictInfoEntity = dbDao.fetch(DictInfoEntity.class, bankcardid);
-		map.put("bankComp", dictInfoEntity.getDictName());
-		map.put("bankcardname", bankcardname);
-		map.put("bankcardnum", bankcardnum);
-		map.put("receipturl", receipturl);
 		map.put("sum", sum);
-		map.put("orders", orders);
-		map.put("inlandRecId", inlandRecId);
 
+		//订单信息
+		map.put("orders", orders);
+		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
+		try {
+			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		//水单信息
+		List<TReceiveBillEntity> receipts = dbDao
+				.query(TReceiveBillEntity.class, Cnd.where("receiveid", "=", id), null);
+		//银行卡下拉
+		map.put("yhkSelect", yhkSelect);
+		//订单信息id
+		map.put("ids", ids);
+		map.put("id", id);
+		map.put("receive", fetch);
+		if (receipts.size() > 0) {
+			map.put("receipturl", receipts.get(0));
+		}
 		return map;
+
 	}
 
 	/**

@@ -31,7 +31,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <input id="recIds" name="recIds" type="hidden" value="${obj.inlandRecId }"><!-- 水单url -->
+                  <input id="recIds" name="recIds" type="hidden" value="${obj.id }"><!-- 水单url -->
 					<c:forEach var="one" items="${obj.orders}">
                 		<tr>
                 			<td>${one.ordersnum }</td>
@@ -50,19 +50,19 @@
                   <td>银行：</td>
                   <td>
                     <select disabled="disabled" class="form-control input-sm">
-                        <option selected = "selected">${obj.bankComp}</option>
+                        <option selected = "selected">${obj.receive.bankcardname}</option>
                     </select>
                   </td>
                   <td>银行卡名称：</td>
                   <td>
                     <select disabled="disabled" class="form-control input-sm">
-                         <option selected = "selected">${obj.bankcardname}</option>
+                         <option selected = "selected">${obj.yhkSelect[0].dictName}</option>
                     </select>
                   </td>
                   <td>卡号：</td>
                   <td>
                      <select disabled="disabled" class="form-control input-sm">
-                         <option selected = "selected">${obj.bankcardnum}</option>
+                         <option selected = "selected">${obj.receive.bankcardnum}</option>
                      </select>
                   </td>
                   <td>合计：</td>
@@ -71,7 +71,7 @@
               </table>
               <label class="labelShuidan">水单</label>
               <div class="bankSlipImg SDdiv"  align="center">
-              	<img width="400" height="300" alt="" src="${obj.receipturl }">
+              	<img width="400" height="300" alt="" src="${obj.receipturl.receiptUrl }">
               </div>
           </div>
 	</div>
@@ -79,6 +79,7 @@
 	<script type="text/javascript">
 		var BASE_PATH = '${base}';
 	</script>
+	<script src="${base }/admin/order/ordercommon.js"></script>
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
 	<!-- SlimScroll -->

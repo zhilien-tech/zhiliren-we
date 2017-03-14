@@ -60,7 +60,7 @@ function initPayDataTable(){
 		            {"data": "saleprice", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var saleprice = row.saleprice;
-		            		if(null == saleprice || ""== saleprice){
+		            		if(null == saleprice || ""== saleprice || undefined==saleprice){
 		            			return "";
 		            		}
 		            		return saleprice;
@@ -197,7 +197,7 @@ function initPayEdDataTable(){
 						render:function(data, type, row, meta) {
 							var result = '<ul> ';
 							$.each(row.orders, function(name, value) {
-								if(value){
+								if(value && value.saleprice!=undefined){
 									result += '<li style="list-style:none;">'+value.saleprice+'</li>';
 								}
 							});

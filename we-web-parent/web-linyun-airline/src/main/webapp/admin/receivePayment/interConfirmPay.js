@@ -8,7 +8,9 @@ function confirmPayClick(){
 		success : function(data) {
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			parent.layer.close(index);
-			initPayDataTable.ajax.reload();
+			initPayDataTable.ajax.reload(function(json){
+				autoHighLoad($('#inlandCrossTable'));
+			});
 			parent.layer.msg("付款成功", "", 2000);
 			
 		},

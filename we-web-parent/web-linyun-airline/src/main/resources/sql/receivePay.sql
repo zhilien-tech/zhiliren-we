@@ -193,3 +193,18 @@ LEFT JOIN t_finance_info fi ON uo.id = fi.orderid
 INNER JOIN t_order_receive ore ON uo.id = ore.orderid
 INNER JOIN t_receive r ON ore.receiveid = r.id
 $condition
+
+/*receivePay_toRec_table_data*/
+SELECT
+	uo.*, 
+	fi.billingdate,
+	fi.cusgroupnum,
+	ci.shortName,
+	ci.linkMan,
+	fi. ISSUER,
+	fi.incometotal
+FROM
+	t_up_order uo
+INNER JOIN t_customer_info ci ON uo.userid = ci.id
+LEFT JOIN t_finance_info fi ON uo.id = fi.orderid
+$condition

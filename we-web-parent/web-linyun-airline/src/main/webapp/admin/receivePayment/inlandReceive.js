@@ -67,7 +67,7 @@ function initRecDataTable() {
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
 							$.each(row.orders, function(name, value) {
-								if(value){
+								if(value && value.incometotal!=undefined){
 									result += '<li style="list-style:none;">'+value.incometotal+'</li>';
 								}else{
 									result += '<li style="list-style:none;"> </li>';
@@ -79,12 +79,20 @@ function initRecDataTable() {
 		            },
 		            {"data": "sum", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		return row.sum;
+		            		var sum = row.sum;
+		            		if(null == sum || ""== sum){
+		            			return "";
+		            		}
+		            		return sum;
 		            	}
 		            },
 		            {"data": "shortname", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		return row.shortname;
+		            		var shortname = row.shortname;
+		            		if(null == shortname || ""== shortname){
+		            			return "";
+		            		}
+		            		return shortname;
 		            	}
 		            },
 		            {"data": "username", "bSortable": false,
@@ -135,7 +143,7 @@ function initRecDataTable() {
 $("tbody",$('#inlandRecTable')).on("click","tr",function(event){
     //获取当前行的数据
 	var row = inlandRecTable.row($(this).closest('tr')).data();
-	confirmReceive(row.recid);
+	confirmReceive(row.id);
 });
 
 //確認收款
@@ -151,7 +159,7 @@ $("#confirmRecClick").click(function(){
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			parent.layer.close(index);
 			parent.layer.msg("收款成功", "", 2000);
-			inlandRecTable.ajax.reload();
+			parent.inlandRecTable.ajax.reload();
 			$("#recIds").val("");
 		},
 		error: function () {
