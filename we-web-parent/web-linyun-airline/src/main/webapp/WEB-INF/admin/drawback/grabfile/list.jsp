@@ -542,7 +542,7 @@ function successCallback(id){
 					  	    fix: false,
 					  	    maxmin: false,
 					  	    shadeClose: false,
-					  	    area: ['1300px', '800px'],
+					  	    area: ['1000px', '600px'],
 					  	    content: '${base}/admin/drawback/grabreport/filePreview.html?id='+pid
 					 	});
 					} 
