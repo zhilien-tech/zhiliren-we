@@ -12,7 +12,17 @@
 .infofooter{min-height:50px;border: solid 1px #e0e0e0;border-top: 0; padding: 10px 0px 0px 0px;background-color: #fff;border-radius: 0 4px 4px 4px;}
 .infofooter table tr td label{width: 78px;text-align: right;position: relative;top: 3px;}
 /* .infofooter table tbody tr td .form-control{width: 115px;}*/
-.cloTable tr td:nth-of-type(even){ width: 10%;}
+.cloTable tr td:nth-of-type(3) label{width: 70px;}
+.cloTable tr td:nth-of-type(5) label{width: 70px;}
+.cloTable tr td:nth-of-type(7) label{width: 70px;}
+.cloTable tr td:nth-of-type(9) label{width: 60px;}
+.cloTable tr:nth-of-type(1) td:nth-of-type(10) select{padding-left: 3px;}
+.cloTable tr:nth-of-type(1) td:nth-of-type(2) span.select2-container{width:185px !important;}
+.cloTable tr:nth-of-type(1) td:nth-of-type(3) label{position: relative;left: 45px;}
+.cloTable tr:nth-of-type(1) td:nth-of-type(4) span.select2-container{width:185px !important;}
+.cloTable tr:nth-of-type(1) td:nth-of-type(7) label{width: 60px;}
+.cloTable tr:nth-of-type(2) td:nth-of-type(11) label{width: 60px;}
+.select2-dropdown--below {width: 185px !important;}
 .addressInput{width: 231px !important;}
 .infofooter  table tr td .btn{margin-left: 17px;padding: 4px 15px;}
 .infofooter  table tr td .UnderIcon{font-size: 20px;cursor: pointer;color: #5d6a7b;position: relative;top: 3px;left: 15px;}
@@ -129,3 +139,22 @@ table.dataTable thead > tr > th {padding-right:0px;}
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {margin-right: 0px;display: none;color: rgba(255, 255, 255, 0.7);}
 .select2-container--default .select2-search--inline .select2-search__field {margin-left: 0px;}
 /*end select2 内容style 隐藏*/
+
+/*----出发城市/到达城市 style-----*/
+.setMore td:nth-child(2){width: 211.5px;}
+.setMore td:nth-child(2) .select2-container{width:208px !important;}
+.setMore td:nth-child(5){width: 211.5px;}
+.setMore td:nth-child(5) .select2-container{width:208px !important;}
+.setTeamMore  td:nth-child(2){width: 210px;}
+.setTeamMore td:nth-child(2) .select2-container{width:208px !important;}
+.setTeamMore td:nth-child(5){width: 210px;}
+.setTeamMore td:nth-child(5) .select2-container{width:208px !important;}
+
+
+
+
+
+
+
+
+/*----end 出发城市/到达城市 style-----*/

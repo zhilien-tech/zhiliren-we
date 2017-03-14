@@ -152,14 +152,14 @@
 							<table class="cloTable">
 								<tr>
 									<td><label>出发城市：</label></td>
-									<td>
+									<td colspan="2">
 										<!-- <input id="cOutcity" name="cOutcity" type="text" class="form-control input-sm" placeholder="PEK(北京)"> -->
 										<select id="cOutcity" name="cOutcity"
 										class="form-control select2" multiple="multiple"
 										data-placeholder="PEK-BeiJing-China"></select>
 									</td>
 									<td><label>抵达城市：</label></td>
-									<td>
+									<td colspan="2">
 										<!-- <input id="cArrivalcity" type="text" class="form-control input-sm" placeholder="SYD(悉尼)"> -->
 										<select id="cArrivalcity" name="cArrivalcity"
 										class="form-control select2" multiple="multiple"
@@ -194,25 +194,25 @@
 										data-placeholder="MU8876"></select></td>
 									<td><label>出发时间：</label></td>
 									<td><input name="cAirOutDate" type="text"
-										class="form-control input-sm textWid" placeholder="08:00">
+										class="form-control input-sm textWid mustTimes" placeholder="08:00">
 										<!-- <input id="cAirOutDate0" name="cAirOutDate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'cAirArrivalDate0\')}'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2020-01-01"> -->
 									</td>
 									<td><label>抵达时间：</label></td>
 									<td><input name="cAirArrivalDate" type="text"
-										class="form-control input-sm textWid" placeholder="14:00">
+										class="form-control input-sm textWid mustTimes" placeholder="14:00">
 										<!-- <input id="cAirArrivalDate0" name="cAirArrivalDate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'cAirOutDate0\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2020-01-01"> -->
 									</td>
 									<td><label class="labelWid">成本价：</label></td>
-									<td><input id="cAirCost" name="cAirCost" type="text"
-										class="form-control input-sm textWid"
-										onkeyup="this.value=this.value.replace(/\D/g,'')"
-										onafterpaste="this.value=this.value.replace(/\D/g,'')">
+									<td><input name="cAirCost" type="text"
+										class="form-control input-sm textWid costPrice"
+										onkeyup="this.value=this.value.replace('/^(\d+(\.\d{1,20})?)?$','')"
+										onafterpaste="this.value=this.value.replace('/^(\d+(\.\d{1,20})?)?$','')">
 									</td>
 									<td><label class="labelWid">销售价：</label></td>
-									<td><input id="cAirPretium" name="cAirPretium" type="text"
+									<td><input name="cAirPretium" type="text"
 										class="form-control input-sm textWid"
-										onkeyup="this.value=this.value.replace(/\D/g,'')"
-										onafterpaste="this.value=this.value.replace(/\D/g,'')">
+										onkeyup="this.value=this.value.replace('/^(\d+(\.\d{1,20})?)?$','')"
+										onafterpaste="this.value=this.value.replace('/^(\d+(\.\d{1,20})?)?$','')">
 									</td>
 									<td><a href="javascript:;" name="addButton"
 										class="glyphicon glyphicon-plus addIcon removAddMake"></a></td>
@@ -543,10 +543,10 @@
 		<!-- Validator -->
 		<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 		<!-- DataTables -->
-		<script
-			src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
-		<script
-			src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
+		<script src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
+		<!-- boostrap -->
+		<script src="${base}/public/plugins/bootstrap/bootstrap.min.js"></script>
 		<!-- 客户信息 js -->
 		<script src="${base}/admin/searchTicket/searchCustomerInfo.js"></script>
 		<!-- 客户需求 js -->
@@ -561,6 +561,8 @@
 		<script src="${base}/admin/searchTicket/searchMoreOrderLines.js"></script>
 		<!-- 保存查询 js -->
 		<script src="${base}/admin/searchTicket/saveCustomerNeeds.js"></script>
+		<!-- 时间格式化 -->
+		<script src="${base}/admin/order/ordercommon.js"></script>
 
 		<!-- 解析sabre -->
 		<script type="text/javascript">
@@ -874,7 +876,28 @@
 					}
 				}
 			}
+			
+			//客户需求 价格联动
+			$(document).on('input', '.costPrice', function(e) {
+		    	$(this).val($(this).val().replace(/[^.\d]/g,''));
+		    	var costprice = $(this).val();
+		    	//票价折扣
+		    	var discountFare = $("#discountHidden").val();
+		    	//手续费
+		    	var fees = $("#feeHidden").val(); 
+		    	var price = parseFloat(costprice * discountFare / 100) + parseFloat(fees);
+		    	if(costprice){
+		     		if(isNaN(price)){
+		     			$(this).parent().parent().find('[name=cAirPretium]').val('');
+		     		}else{
+		    	 		$(this).parent().parent().find('[name=cAirPretium]').val(price);
+		     		}
+		     	}else{
+		     		$(this).parent().parent().find('[name=cAirPretium]').val('');
+		     	}
+		    });
 		</script>
+		
 
 </body>
 </html>

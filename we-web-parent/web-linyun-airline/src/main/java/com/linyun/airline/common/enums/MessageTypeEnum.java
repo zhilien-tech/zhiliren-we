@@ -12,20 +12,9 @@ import com.uxuexi.core.common.enums.IEnum;
  */
 public enum MessageTypeEnum implements IEnum {
 
-	CLOSEMSG(0, "关闭"), 
-	NOTICEMSG(1, "系统通知消息"), 
-	PROCESSMSG(2, "客户管理消息"), 
-	CUSTOMMSG(3, "自定义型消息"), 
-	SEARCHMSG(4, "查询"), 
-	BOOKMSG(5, "预定"),
-	DRAWBILLMSG(6, "出票"), 
-	MAKEOUTBILLMSG(7, "开票"),
-	FIRBOOKMSG(8, "一订"),
-	SECBOOKMSG(9, "二订"), 
-	THRBOOKMSG(10, "三订"), 
-	ALLBOOKMSG(11, "全款"), 
-	LASTBOOKMSG(12, "尾款"); 
-	
+	CLOSEMSG(0, "关闭"), NOTICEMSG(1, "系统通知消息"), PROCESSMSG(2, "客户管理消息"), CUSTOMMSG(3, "自定义型消息"), SEARCHMSG(4, "查询"), BOOKMSG(
+			5, "预定"), DRAWBILLMSG(6, "出票"), MAKEOUTBILLMSG(7, "开票"), FIRBOOKMSG(8, "一订"), SECBOOKMSG(9, "二订"), THRBOOKMSG(
+			10, "三订"), ALLBOOKMSG(11, "全款"), LASTBOOKMSG(12, "尾款"), FINANCIALMSG(13, "财务相关");
 
 	private int key;
 	private String value;
