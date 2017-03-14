@@ -205,14 +205,14 @@
 									<td><label class="labelWid">成本价：</label></td>
 									<td><input name="cAirCost" type="text"
 										class="form-control input-sm textWid costPrice"
-										onkeyup="this.value=this.value.replace(^(\d+(\.\d{1,20})?)?$,'')"
-										onafterpaste="this.value=this.value.replace(^(\d+(\.\d{1,20})?)?$,'')">
+										onkeyup="this.value=this.value.replace('/^(\d+(\.\d{1,20})?)?$','')"
+										onafterpaste="this.value=this.value.replace('/^(\d+(\.\d{1,20})?)?$','')">
 									</td>
 									<td><label class="labelWid">销售价：</label></td>
 									<td><input name="cAirPretium" type="text"
 										class="form-control input-sm textWid"
-										onkeyup="this.value=this.value.replace(^(\d+(\.\d{1,20})?)?$,'')"
-										onafterpaste="this.value=this.value.replace(^(\d+(\.\d{1,20})?)?$,'')">
+										onkeyup="this.value=this.value.replace('/^(\d+(\.\d{1,20})?)?$','')"
+										onafterpaste="this.value=this.value.replace('/^(\d+(\.\d{1,20})?)?$','')">
 									</td>
 									<td><a href="javascript:;" name="addButton"
 										class="glyphicon glyphicon-plus addIcon removAddMake"></a></td>
@@ -880,13 +880,13 @@
 			//客户需求 价格联动
 			$(document).on('input', '.costPrice', function(e) {
 		    	$(this).val($(this).val().replace(/[^.\d]/g,''));
-		    	var fromprice = $(this).val();
+		    	var costprice = $(this).val();
 		    	//票价折扣
 		    	var discountFare = $("#discountHidden").val();
 		    	//手续费
 		    	var fees = $("#feeHidden").val(); 
-		    	var price = parseFloat(fromprice * discountFare / 100) + parseFloat(fees);
-		    	if(fromprice){
+		    	var price = parseFloat(costprice * discountFare / 100) + parseFloat(fees);
+		    	if(costprice){
 		     		if(isNaN(price)){
 		     			$(this).parent().parent().find('[name=cAirPretium]').val('');
 		     		}else{
