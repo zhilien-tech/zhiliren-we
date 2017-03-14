@@ -48,6 +48,9 @@ public class InlandPayEdListSearchSqlForm extends DataTablesParamForm {
 	/**当前登陆用户id*/
 	private long loginUserId;
 
+	/**订单状态*/
+	private long orderPnrStatus;
+
 	public Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		//添加自定义查询条件（可选）
@@ -67,7 +70,8 @@ public class InlandPayEdListSearchSqlForm extends DataTablesParamForm {
 		}
 
 		cnd.and("uo.orderstype", "=", OrderTypeEnum.FIT.intKey()); //散客
-		cnd.and("uo.loginUserId", "=", loginUserId);
+		cnd.and("pi.orderPnrStatus", "=", orderPnrStatus);
+		cnd.and("pi.userid", "=", loginUserId);
 
 		return cnd;
 	}

@@ -79,12 +79,12 @@ function initRecDataTable() {
 		            },
 		            {"data": "sum", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		return '<a href="javascript:confirmReceive('+row.recid+');">'+row.sum+'</a>';
+		            		return row.sum;
 		            	}
 		            },
 		            {"data": "shortname", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		return '<a href="javascript:confirmReceive('+row.recid+');">'+row.shortname+'</a>';
+		            		return row.shortname;
 		            	}
 		            },
 		            {"data": "username", "bSortable": false,
@@ -93,7 +93,7 @@ function initRecDataTable() {
 		            		if(null == username || ""== username){
 		            			return "";
 		            		}
-		            		return '<a href="javascript:confirmReceive('+row.recid+');">'+row.username+'</a>';
+		            		return username;
 		            	}
 		            },
 		            {"data": "orderstatus", "bSortable": false,
@@ -105,7 +105,7 @@ function initRecDataTable() {
 		            		if(data == 4 ){
 		            			s = '已收款';
 		            		}
-		            		return '<a href="javascript:confirmReceive('+row.recid+');">'+s+'</a>';
+		            		return s;
 		            	}
 		            },
 		            {"data": "notes", "bSortable": false,

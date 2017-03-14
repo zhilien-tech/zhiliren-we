@@ -87,10 +87,10 @@ function initPayDataTable(){
 		            {"data": "orderpnrstatus", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var s = '';
-		            		if(data == '1'){
+		            		if(data == '2'){
 		            			s = '付款中';
 		            		}
-		            		if(data == '2'){
+		            		if(data == '3'){
 		            			s = '已付款';
 		            		}
 		            		return s;
@@ -235,6 +235,18 @@ function initPayEdDataTable(){
 		            		return shortname;
 		            	}
 		            },
+		            {"data": "orderpnrstatus", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var s = '';
+		            		if(data == '2'){
+		            			s = '付款中';
+		            		}
+		            		if(data == '3'){
+		            			s = '已付款';
+		            		}
+		            		return s;
+		            	}
+		            },
 		            {"data": "username", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var username = row.username;
@@ -242,18 +254,6 @@ function initPayEdDataTable(){
 		            			return "";
 		            		}
 		            		return username;
-		            	}
-		            },
-		            {"data": "orderpnrstatus", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var s = '';
-		            		if(data == '2'){
-		            			s = '已付款';
-		            		}
-		            		if(data == '1'){
-		            			s = '付款中';
-		            		}
-		            		return s;
 		            	}
 		            },
 		            {"data": "asd", "bSortable": false,

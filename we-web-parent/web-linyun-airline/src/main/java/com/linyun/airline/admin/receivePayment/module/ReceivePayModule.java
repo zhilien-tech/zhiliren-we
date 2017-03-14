@@ -95,11 +95,7 @@ public class ReceivePayModule {
 	 */
 	@At
 	public Object inlandPayList(@Param("..") final InlandPayListSearchSqlForm form, HttpSession session) {
-		//当前用户id
-		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
-		long id = loginUser.getId();
-		form.setLoginUserId(id);
-		return receivePayService.listPage4Datatables(form);
+		return receivePayService.listPage4Datatables(form, session);
 	}
 
 	/**
@@ -108,11 +104,7 @@ public class ReceivePayModule {
 	 */
 	@At
 	public Object inlandPayEdList(@Param("..") final InlandPayEdListSearchSqlForm form, HttpSession session) {
-		//当前用户id
-		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
-		long id = loginUser.getId();
-		form.setLoginUserId(id);
-		return receivePayService.listPayEdData(form);
+		return receivePayService.listPayEdData(form, session);
 	}
 
 	/**

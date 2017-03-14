@@ -75,6 +75,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	private static final int RECEIVESTATUS = AccountReceiveEnum.RECEIVEDONEY.intKey();
 
 	private static final int APPROVALPAYED = AccountPayEnum.APPROVALPAYED.intKey();
+	private static final int APPROVALPAYING = AccountPayEnum.APPROVALPAYING.intKey();
 
 	@Inject
 	private UploadService qiniuUploadService;
@@ -142,7 +143,14 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 * @param length  查询多少条
 	 * @param draw    当前查询序号
 	 */
-	public Map<String, Object> listPage4Datatables(final InlandPayListSearchSqlForm sqlParamForm) {
+	public Map<String, Object> listPage4Datatables(final InlandPayListSearchSqlForm sqlParamForm, HttpSession session) {
+
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long id = loginUser.getId();
+		sqlParamForm.setLoginUserId(id);
+		sqlParamForm.setOrderPnrStatus(APPROVALPAYING);
+
 		checkNull(sqlParamForm, "sqlParamForm不能为空");
 		Sql sql = sqlParamForm.sql(sqlManager);
 
@@ -173,7 +181,13 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 * @param sqlParamForm
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object listPayEdData(InlandPayEdListSearchSqlForm form) {
+	public Object listPayEdData(InlandPayEdListSearchSqlForm form, HttpSession session) {
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long id = loginUser.getId();
+		form.setLoginUserId(id);
+		form.setOrderPnrStatus(APPROVALPAYED);
+
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
 		List<Record> data = (List<Record>) listdata.get("data");
