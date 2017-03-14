@@ -318,7 +318,7 @@
 		                   </tr>
 		                   <tr>
 		                     <td></span><label>备注：</label></td>
-		                     <td colspan="11"><input type="text" id="remark" name="remark" class="form-control input-sm noteText" placeholder=" " value="${customneed.cusinfo.remark }"></td>
+		                     <td colspan="11"><input type="text" id="remark" name="remark" disabled="disabled" class="form-control input-sm noteText" placeholder=" " value="${customneed.cusinfo.remark }"></td>
 		                   </tr>
 		                 </table>
 		                </div>
@@ -423,7 +423,7 @@
 		                   </tr>
 		                   <tr>
 		                     <td></span><label>备注：</label></td>
-		                     <td colspan="11"><input type="text" id="remark" name="remark" class="form-control input-sm noteText" placeholder=" " value="${customneed.cusinfo.remark }"></td>
+		                     <td colspan="11"><input type="text" id="remark" name="remark" disabled="disabled" class="form-control input-sm noteText" placeholder=" " value="${customneed.cusinfo.remark }"></td>
 		                   </tr>
 		                 </table>
 		                </div>
