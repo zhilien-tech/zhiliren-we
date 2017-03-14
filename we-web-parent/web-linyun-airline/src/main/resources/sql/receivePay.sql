@@ -185,13 +185,20 @@ $condition
 /*get_receive_order_list*/
 SELECT
 	uo.ordersnum,
+	oc.leavetdate,
 	fi.personcount,
-	fi.incometotal
+	fi.incometotal,
+	ci.shortName,
+	fi.billingdate,
+	fi. ISSUER,
+	r.`status`
 FROM
 	t_up_order uo
 LEFT JOIN t_finance_info fi ON uo.id = fi.orderid
 INNER JOIN t_order_receive ore ON uo.id = ore.orderid
 INNER JOIN t_receive r ON ore.receiveid = r.id
+INNER JOIN t_order_customneed oc ON oc.ordernum = uo.id
+INNER JOIN t_customer_info ci ON ci.id = uo.userid
 $condition
 
 /*receivePay_toRec_table_data*/

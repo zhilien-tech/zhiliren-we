@@ -34,8 +34,8 @@ function initRecDataTable() {
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
 							$.each(row.orders, function(name, value) {
-								if(value){
-									var date = value.leavedate;
+								if(value && value.leavetdate != undefined ){
+									var date = value.leavetdate;
 				            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
 				            		var week = ['MO','TU','WE','TH','FR','SA','SU'];
 				            		var ldate = new Date(date);
@@ -88,11 +88,16 @@ function initRecDataTable() {
 		            },
 		            {"data": "shortname", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		var shortname = row.shortname;
-		            		if(null == shortname || ""== shortname){
-		            			return "";
-		            		}
-		            		return shortname;
+		            		var result = '<ul> ';
+							$.each(row.orders, function(name, value) {
+								if(value && value.shortname!=undefined){
+									result += '<li style="list-style:none;">'+value.shortname+'</li>';
+								}else{
+									result += '<li style="list-style:none;"> </li>';
+								}
+							});
+							result += '</ul>';
+							return result;
 		            	}
 		            },
 		            {"data": "username", "bSortable": false,
@@ -106,11 +111,11 @@ function initRecDataTable() {
 		            },
 		            {"data": "orderstatus", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		var s = '';
-		            		if(data == 0){
+		            		var s = row.status;
+		            		if(s == 1){
 		            			s = '收款中';
 		            		}
-		            		if(data == 4 ){
+		            		if(s == 2 ){
 		            			s = '已收款';
 		            		}
 		            		return s;
