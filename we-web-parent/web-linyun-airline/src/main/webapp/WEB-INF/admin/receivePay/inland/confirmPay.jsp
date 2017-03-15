@@ -110,7 +110,7 @@
 						<input id="chineseMoney" type="text" class="form-control input-sm textIpnu" disabled="disabled"></td>
 					<td class="bj">币种：</td>
 					<td><select id="payCurrency" name="payCurrency" class="form-control input-sm">
-							<option>--请选择--</option>
+							<option value="0">--请选择--</option>
 							<c:forEach var="one" items="${obj.bzList}">
 	                        	<option value="${one.id }">${one.dictCode }</option>
 	                        </c:forEach>

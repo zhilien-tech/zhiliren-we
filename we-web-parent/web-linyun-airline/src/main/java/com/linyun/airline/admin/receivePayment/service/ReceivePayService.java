@@ -435,7 +435,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				payEntity.setTotalMoney(totalMoney);
 			}
 			if (!Util.eq(null, currency)) {
-				if (!Util.eq("--请选择--", cardNum)) {
+				if (!Util.eq("--请选择--", currency)) {
 					payEntity.setPayCurrency(currency);
 				}
 			}
