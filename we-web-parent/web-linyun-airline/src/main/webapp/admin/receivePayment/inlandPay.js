@@ -206,9 +206,9 @@ function initPayEdDataTable(){
 					},
 		            {"data": "currency", "bSortable": false,
 						render:function(data, type, row, meta) {
-							var result = '<ul> ';
+							var result = '<ul>';
 							$.each(row.orders, function(name, value) {
-								if(value){
+								if(value && value.currency!=undefined){
 									result += '<li style="list-style:none;">'+value.currency+'</li>';
 								}
 							});
@@ -262,6 +262,15 @@ function initPayEdDataTable(){
 		            			return "";
 		            		}
 		            		return asd;
+		            	}
+		            },
+		            {"data": "abc", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var abc = row.abc;
+		            		if(null == abc || ""== abc){
+		            			return "";
+		            		}
+		            		return abc;
 		            	}
 		            }
 		            ],
