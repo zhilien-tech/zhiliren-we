@@ -206,9 +206,9 @@ function initPayEdDataTable(){
 					},
 		            {"data": "currency", "bSortable": false,
 						render:function(data, type, row, meta) {
-							var result = '<ul> ';
+							var result = '<ul>';
 							$.each(row.orders, function(name, value) {
-								if(value){
+								if(value && value.currency!=undefined){
 									result += '<li style="list-style:none;">'+value.currency+'</li>';
 								}
 							});
@@ -262,6 +262,15 @@ function initPayEdDataTable(){
 		            			return "";
 		            		}
 		            		return asd;
+		            	}
+		            },
+		            {"data": "abc", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var abc = row.abc;
+		            		if(null == abc || ""== abc){
+		            			return "";
+		            		}
+		            		return abc;
 		            	}
 		            }
 		            ],
@@ -379,7 +388,7 @@ $(".checkBoxPayAll").click(function () {
 			}
 		});
 	}else{
-		$(".checkBoxPayChild").each(function(){
+		 $(".checkBoxPayChild").each(function(){
 			var thisval = $(this).val();
 			var flag = false;
 			var splits = hiddenval.split(',');
@@ -490,6 +499,8 @@ $('#inlandPayClearBtn').click(function(){
 //内陆跨海 取消所有勾选
 $('#inlandPayCancelBtn').click(function(){
 	$('#checkedboxPayValue').val("");
+	$(".checkBoxPayAll").prop("checked", false);
+	$(".checkBoxPayChild").prop("checked", false);
 });
 
 
