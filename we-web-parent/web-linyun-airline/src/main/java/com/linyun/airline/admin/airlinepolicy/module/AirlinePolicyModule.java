@@ -6,27 +6,29 @@
 
 package com.linyun.airline.admin.airlinepolicy.module;
 
-import java.util.Date;
+import java.io.File;
+import java.io.FileInputStream;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
+import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
+import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.linyun.airline.admin.airlinepolicy.service.AirlinePolicyService;
 import com.linyun.airline.common.base.UploadService;
-import com.linyun.airline.common.base.Uploader;
 import com.linyun.airline.common.constants.CommonConstants;
-import com.linyun.airline.common.enums.AirlinePolicyEnum;
 import com.linyun.airline.forms.TAirlinePolicyAddForm;
 import com.linyun.airline.forms.TAirlinePolicyForm;
+import com.uxuexi.core.common.util.FileUtil;
 import com.uxuexi.core.web.chain.support.JsonResult;
 
 /**
@@ -75,13 +77,15 @@ public class AirlinePolicyModule {
 	 * 上传文件
 	 */
 	@At
+	@POST
+	@AdaptBy(type = UploadAdaptor.class)
 	@Ok("json")
-	public Object uploadFile(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		request.setCharacterEncoding(CommonConstants.CHARACTER_ENCODING_PROJECT);//字符编码为utf-8
-		response.setCharacterEncoding(CommonConstants.CHARACTER_ENCODING_PROJECT);
-		Uploader uploader = new Uploader(request, qiniuUploadService);
-		uploader.upload();
-		String url = CommonConstants.IMAGES_SERVER_ADDR + uploader.getUrl();
+	public Object uploadFile(@Param("Filedata") final File file, HttpServletRequest request) throws Exception {
+		FileInputStream is = new FileInputStream(file);
+		String ext = FileUtil.getSuffix(file);
+		/*String str = file.getName();*/
+		String shortUrl = qiniuUploadService.uploadImage(is, ext, null);
+		String url = CommonConstants.IMAGES_SERVER_ADDR + shortUrl;
 		System.out.println(url);
 		return url;
 	}
@@ -92,13 +96,8 @@ public class AirlinePolicyModule {
 	 */
 	@At
 	public Object saveUploadFile(@Param("..") TAirlinePolicyAddForm addForm) {
-		addForm.setCreateTime(new Date());
-		addForm.setUpdateTime(new Date());
-		addForm.setStatus(AirlinePolicyEnum.ENABLE.intKey());
-		addForm.setUrl(addForm.getUrl());
-		addForm.setFileName(addForm.getFileName());
-		addForm.setFileSize(addForm.getFileSize());
-		return airlinePolicyService.add(addForm);
+
+		return airlinePolicyService.addFile(addForm);
 	}
 
 	/**

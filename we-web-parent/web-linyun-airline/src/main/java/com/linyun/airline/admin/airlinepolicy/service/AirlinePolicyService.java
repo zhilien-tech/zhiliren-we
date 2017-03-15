@@ -8,6 +8,9 @@ package com.linyun.airline.admin.airlinepolicy.service;
 
 import static com.uxuexi.core.common.util.ExceptionUtil.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -19,12 +22,21 @@ import org.nutz.dao.entity.Record;
 import org.nutz.dao.pager.Pager;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.Daos;
+import org.nutz.ioc.loader.annotation.Inject;
 
 import com.google.common.collect.Maps;
+import com.linyun.airline.common.base.UploadService;
+import com.linyun.airline.common.constants.CommonConstants;
+import com.linyun.airline.common.enums.AirlinePolicyEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
+import com.linyun.airline.common.util.HtmlToPdf;
+import com.linyun.airline.common.util.POIReadExcelToHtml;
+import com.linyun.airline.common.util.Word2Html;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAirlinePolicyEntity;
+import com.linyun.airline.entities.TAreaEntity;
 import com.linyun.airline.entities.TCompanyEntity;
+import com.linyun.airline.forms.TAirlinePolicyAddForm;
 import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.web.base.page.OffsetPager;
 import com.uxuexi.core.web.base.service.BaseService;
@@ -39,6 +51,8 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
  * @Date	 2017年3月8日 	 
  */
 public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
+	@Inject
+	private UploadService qiniuUploadService;//文件上传
 
 	public Map<String, Object> listPage4Datatables(DataTablesParamForm sqlParamForm, HttpSession session) {
 
@@ -79,10 +93,77 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 		/*查询航空公司*/
 		List<DictInfoEntity> airlineCompanyList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "HKGS"),
 				null);
-
-		/*List<DictInfoEntity> areaList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "HKGS"), null);*/
+		/*查询地区*/
+		Cnd cnd = Cnd.NEW();
+		List<TAreaEntity> areaList = dbDao.query(TAreaEntity.class, cnd, null);
 		map.put("airlineCompanyList", airlineCompanyList);
+		map.put("areaList", areaList);
 		return map;
+
+	}
+
+	public TAirlinePolicyEntity addFile(TAirlinePolicyAddForm addForm) {
+
+		addForm.setCreateTime(new Date());
+		addForm.setUpdateTime(new Date());
+		addForm.setStatus(AirlinePolicyEnum.ENABLE.intKey());
+		String url = addForm.getUrl();
+		addForm.setUrl(url);
+		addForm.setFileName(addForm.getFileName());
+		addForm.setFileSize(addForm.getFileSize());
+		String extendName = url.substring(url.lastIndexOf(".") + 1, url.length());
+		Word2Html word2Html = new Word2Html();
+		HtmlToPdf htmlToPdf = new HtmlToPdf();
+		if ("doc".equalsIgnoreCase(extendName)) {
+			try {
+				word2Html.docToHtml(url, "D:\\12.html");
+				htmlToPdf.htmlConvertToPdf("D:\\12.html", "D:\\12.pdf");
+				File file = new File("D:\\12.pdf");
+				String pdfUrl = CommonConstants.IMAGES_SERVER_ADDR
+						+ qiniuUploadService.uploadImage(new FileInputStream(file), "pdf", null);
+				addForm.setPdfUrl(pdfUrl);
+			} catch (Exception e) {
+
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+
+			} finally {
+				File file1 = new File("D:\\12.html");
+				File file2 = new File("D:\\12.pdf");
+				if (file1.exists()) {
+					file1.delete();
+				}
+				if (file2.exists()) {
+					file2.delete();
+				}
+			}
+		} else if ("xls".equalsIgnoreCase(extendName) || "xlsx".equalsIgnoreCase(extendName)) {
+			try {
+				POIReadExcelToHtml poiReadExcelToHtml = new POIReadExcelToHtml();
+				poiReadExcelToHtml.excelConvertToPdf(url, "D:\\12.html");
+
+				htmlToPdf.htmlConvertToPdf("D:\\12.html", "D:\\12.pdf");
+				File file = new File("D:\\12.pdf");
+				String pdfUrl = CommonConstants.IMAGES_SERVER_ADDR
+						+ qiniuUploadService.uploadImage(new FileInputStream(file), "pdf", null);
+				addForm.setPdfUrl(pdfUrl);
+			} catch (Exception e) {
+
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+
+			} finally {
+				File file1 = new File("D:\\12.html");
+				File file2 = new File("D:\\12.pdf");
+				if (file1.exists()) {
+					file1.delete();
+				}
+				if (file2.exists()) {
+					file2.delete();
+				}
+			}
+		}
+		return this.add(addForm);
 
 	}
 

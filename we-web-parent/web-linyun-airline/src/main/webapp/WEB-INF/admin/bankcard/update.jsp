@@ -235,6 +235,7 @@
 						 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 					     parent.layer.close(index);
 					     window.parent.successCallback('2');
+					     
 				 	} else {
 						layer.msg("修改失败!", "", 3000);
 					} 
