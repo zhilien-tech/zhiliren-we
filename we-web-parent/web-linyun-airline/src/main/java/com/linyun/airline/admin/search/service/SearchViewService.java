@@ -856,6 +856,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			//航班信息
 			List<Map<String, Object>> airinfo = (List<Map<String, Object>>) map.get("airinfo");
 			for (Map<String, Object> airmap : airinfo) {
+				TAirlineInfoEntity airlineEntity = new TAirlineInfoEntity();
 				//航空公司
 				String aircom = (String) airmap.get("aircom");
 				//航班号
@@ -864,17 +865,31 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				String leavetime = (String) airmap.get("leavetime");
 				//抵达时间
 				String arrivetime = (String) airmap.get("arrivetime");
-				//成本价
-				Double formprice = Double.valueOf((String) airmap.get("formprice"));
-				//销售价
-				Double price = Double.valueOf((String) airmap.get("price"));
-				TAirlineInfoEntity airlineEntity = new TAirlineInfoEntity();
-				airlineEntity.setAircom(aircom.split("-")[0]);
-				airlineEntity.setAilinenum(ailinenum);
-				airlineEntity.setLeavetime(leavetime);
-				airlineEntity.setArrivetime(arrivetime);
-				airlineEntity.setFormprice(formprice);
-				airlineEntity.setPrice(price);
+				String fPrice = (String) airmap.get("formprice");
+				if (!Util.isEmpty(fPrice)) {
+					//成本价
+					Double formprice = Double.valueOf(fPrice);
+					airlineEntity.setFormprice(formprice);
+				}
+				String priceStr = (String) airmap.get("price");
+				if (!Util.isEmpty(priceStr)) {
+					//销售价
+					Double price = Double.valueOf(priceStr);
+					airlineEntity.setPrice(price);
+				}
+				if (!Util.isEmpty(aircom)) {
+					airlineEntity.setAircom(aircom.split("-")[0]);
+				}
+				if (!Util.isEmpty(ailinenum)) {
+					airlineEntity.setAilinenum(ailinenum);
+				}
+				if (!Util.isEmpty(leavetime)) {
+					airlineEntity.setLeavetime(leavetime);
+				}
+				if (!Util.isEmpty(arrivetime)) {
+					airlineEntity.setArrivetime(arrivetime);
+				}
+
 				airlineEntity.setNeedid(insertCus.getId());
 				//添加航班信息
 				dbDao.insert(airlineEntity);
@@ -927,7 +942,8 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		//提醒日期 TODO
 		String remindDateStr = (String) fromJson.get("remindDate");
 		//客户信息id
-		String customerInfoId = (String) fromJson.get("customerInfoId");
+		/*String customerInfoId = (String) fromJson.get("customerInfoId");*/
+		String customerInfoId = null;
 		//消息提醒日期
 		Date remindDateTime = DateUtil.nowDate();
 		if (!Util.isEmpty(remindDateStr)) {

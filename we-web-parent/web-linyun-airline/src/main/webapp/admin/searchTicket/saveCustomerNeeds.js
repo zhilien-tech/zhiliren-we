@@ -18,8 +18,8 @@ function saveOrderInfo(){
 	var remindDate = $("#datepicker").val();
 	customdata.remindDate = remindDate;
 	//客户信息id
-	/*var customerInfoId = $('#linkManId').val();
-	customdata.customerInfoId = customerInfoId;*/
+	var customerInfoId = $('#linkManId').val();
+	customdata.customerInfoId = customerInfoId;
 	
 	var row = [];
 	$('.DemandDiv').each(function(i){
