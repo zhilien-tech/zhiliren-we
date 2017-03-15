@@ -12,10 +12,14 @@ function confirmPayClick(){
 				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 				parent.layer.close(index);
 				parent.layer.msg("付款成功", "", 1000);
-				parent.inlandPayTable.ajax.reload();
+				parent.inlandPayTable.ajax.reload(
+						function(json){
+							autoHighLoad($('#inlandPayTable'));
+						}
+				);
 			}
-			
-			
+
+
 		},
 		error: function () {
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引

@@ -269,7 +269,7 @@ $(document).on('click', '.checkchild', function(e) {
 //点击出票加载出票表格
 function loadTicking(){
 	var param = {
-			ordersstatus:3,
+			ordersstatus:4,
 			ticketing:1
 	};
 	drawerPayTable.settings()[0].ajax.data = param;
@@ -300,6 +300,7 @@ $('.fuKuanBtn').click(function(){
         					drawerPayTable.ajax.reload(function(json){
         						autoHighLoad($('#drawerPayTable'));
         					},false);
+        					$('#checkedboxval').val('');
         		  	    }
         			});
         	   }else{
@@ -313,3 +314,28 @@ $('.fuKuanBtn').click(function(){
 		
 	}
 });
+
+$('#ticketingSearch').click(function(){
+	var div = $(this).parent().parent();
+	var startdate = div.find('[name=startdate]').val();
+	var enddate = div.find('[name=enddate]').val();
+	var searchInfo = div.find('[name=searchInfo]').val();
+	var status = 4;
+	var param = {
+			ordersstatus:status,
+			startdate:startdate,
+			enddate:enddate,
+			searchInfo:searchInfo,
+			ticketing:1
+	};
+	drawerPayTable.settings()[0].ajax.data = param;
+	drawerPayTable.ajax.reload(function(json){
+		autoHighLoad($('#drawerPayTable'));
+	});
+});
+function onkeyTicketingEnter(){
+	 var e = window.event || arguments.callee.caller.arguments[0];
+    if(e && e.keyCode == 13){
+ 		$('#ticketingSearch').click();
+    }
+ }

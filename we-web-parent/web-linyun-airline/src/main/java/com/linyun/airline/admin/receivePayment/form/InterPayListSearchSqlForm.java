@@ -37,7 +37,7 @@ public class InterPayListSearchSqlForm extends DataTablesParamForm {
 	private String name;
 
 	/**订单状态*/
-	private String orderStatus;
+	private long orderStatus;
 
 	/**出发日期 -- 开始出发日期*/
 	private Date leaveBeginDate;

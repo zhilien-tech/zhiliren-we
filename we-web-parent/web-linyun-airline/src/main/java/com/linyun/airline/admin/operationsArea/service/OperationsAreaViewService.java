@@ -60,6 +60,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	private static final int ALLBOOK = MessageTypeEnum.ALLBOOKMSG.intKey();
 	private static final int LASTBOOK = MessageTypeEnum.LASTBOOKMSG.intKey();
 	private static final int BOOKMSG = MessageTypeEnum.BOOKMSG.intKey();
+	private static final int FINANCIALMSG = MessageTypeEnum.FINANCIALMSG.intKey();
 	//TODO 任务消息状态
 	private static final int NOTICEMSG = MessageTypeEnum.NOTICEMSG.intKey();
 
@@ -310,7 +311,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	 * @param orderType  订单状态 
 	 * 							queryOrders		询单： 查询
 	 * 				 值可能为：	bookOrders		订单： 一订、二订、三订、全款、尾款
-	 *                   	    taskNotice    任务： 
+	 *                   	    taskNotice      任务： 
 	 * 
 	 * @param session    获取当前登陆用户
 	 * @return 
@@ -351,7 +352,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			break;
 		case "taskNotice":
 			//任务 TODO
-			msgType = String.valueOf(NOTICEMSG);
+			msgType = String.valueOf(NOTICEMSG) + "," + String.valueOf(FINANCIALMSG);
 			break;
 		}
 

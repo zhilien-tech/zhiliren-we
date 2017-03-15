@@ -58,17 +58,20 @@ public class RemindMessageService extends BaseService<TMessageEntity> {
 		//消息接收方类型（个人、公司、系统）
 		Long receiveUserType = Long.valueOf((Integer) msgData.get("receiveUserType"));
 		//客户消息表id  查询id
-		Long customerInfoId = (Long) msgData.get("customerInfoId");
+		Long custId = (Long) msgData.get("customerInfoId");
+		Long customerInfoId = custId;
 		//相关订单id
-		Long upOrderId = (Long) msgData.get("upOrderId");
+		Long upOrderId = ((Integer) msgData.get("upOrderId")).longValue();
 
 		//判断消息是否存在， 不存在则添加
-		Sql sql = Sqls.create(sqlManager.get("operationsArea_existMsg"));
-		sql.params().set("msgType", msgType);
-		sql.params().set("infoId", customerInfoId);
-		List<Record> query = DbSqlUtil.query(dbDao, sql, null, null);
-		if (!Util.isEmpty(query)) {
-			return "消息已存在，请勿重复添加！！！";
+		if (!Util.isEmpty(customerInfoId)) {
+			Sql sql = Sqls.create(sqlManager.get("operationsArea_existMsg"));
+			sql.params().set("msgType", msgType);
+			sql.params().set("infoId", customerInfoId);
+			List<Record> query = DbSqlUtil.query(dbDao, sql, null, null);
+			if (!Util.isEmpty(query)) {
+				return "消息已存在，请勿重复添加！！！";
+			}
 		}
 
 		/*******************************操作  消息表**************************************/
@@ -91,11 +94,8 @@ public class RemindMessageService extends BaseService<TMessageEntity> {
 			addForm.setGenerateTime(remindMsgDate);
 		}
 
-		//箱单订单id
-		if (!Util.isEmpty(upOrderId)) {
-			addForm.setUpOrderId(upOrderId);
-		}
-
+		//订单id
+		addForm.setUpOrderId(upOrderId);
 		//消息提醒模式
 		addForm.setReminderMode(reminderMode);
 		//消息是否提醒  （默认为为提醒）

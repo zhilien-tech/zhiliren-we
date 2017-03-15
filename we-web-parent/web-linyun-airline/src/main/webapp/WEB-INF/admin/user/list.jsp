@@ -17,12 +17,11 @@
   <div class="content-wrapper">
     <!-- Main content -->
     <section class="content">
-    <div class="row row-top">
+    <div class="row">
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-               <h3 class="box-title">&nbsp;&nbsp; <!-- 员工管理 --></h3> 
-	              <div class="form-group row marginBott cf">
+	              <div class="form-group row marginBott cf marDiv" style="margin-top: 10px;margin-bottom: 5px;">
 	                <div class="col-md-2"><!--部门 下拉框-->
 	                  <select id="deptName" name="deptName" onchange="selectDeptName();" class="form-control selePadd5">
 	                    <option value="">==请选择==</option>
@@ -100,7 +99,7 @@
     	    fix: false,
     	    maxmin: false,
     	    shadeClose: false,
-    	    area: ['400px', '200px'],
+    	    area: ['800px', '400px'],
     	    content: '${base}/admin/user/add.html',
     	    end: function(){//添加完页面点击返回的时候自动加载表格数据
     	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引

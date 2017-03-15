@@ -1,11 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<head>
 <style type="text/css">
 	.sidebar-mini .wrapper .wrapper footer:nth-child(even){display:none;} 
 </style>
-</head>
-<%@include file="/WEB-INF/public/footer.jsp"%>
 <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
@@ -39,6 +35,7 @@
 							</c:forEach>
 						</ul>
 						
+						
 				   </c:otherwise>
 			    </c:choose>
 			    
@@ -52,16 +49,34 @@
     </section>
     <!-- /.sidebar -->
   </aside>
-<script>
-	$(function(){
-		 $('.menu1').click(function(){
-			$(this).next('ul').toggle();
-		}); 
-		
-		if($('.menu1').parent().hasClass('active')){
+	<script>
+	
+	$(document).ready(function(){
+		var _index = '${currentPageIndex}';//当前下标
+		$(".sidebar-menu > li").click(function(){
+			 $(".sidebar-menu > li").removeClass('active');
+	         $(this).addClass("active");//同时 添加记录样式
+	      });
+		 //cookie记录已点击的index
+	    if(_index!=null && undefined != _index && _index != ""){
+	    	
+	    	$(".sidebar-menu > li").eq(_index).siblings().removeClass('active');
+	    	$(".sidebar-menu > li").eq(_index).addClass("active");//当前下标的元素添加样式
+	    }else{
+	    	$(".sidebar-menu > li").eq(0).siblings().removeClass('active');
+	    	$(".sidebar-menu > li").eq(0).addClass("active");//当前下标的元素添加样式
+	    }
+		 
+	  //二级菜单 显示隐藏
+		if($('.menu1').parent().is('.active')){
 			$(this).find('.menu-ul').show();
 		}else{
 			$(this).find('.menu-ul').hide();
 		}
+		
+		$('.menu1').click(function(){//点击一级菜单 二级显示/隐藏
+			$(this).next('ul').toggle();
+		}); 
+		
 	});
-</script>
+	</script>

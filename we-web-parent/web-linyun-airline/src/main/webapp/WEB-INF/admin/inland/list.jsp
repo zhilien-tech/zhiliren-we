@@ -14,30 +14,32 @@
                 <li class="active"><a href="#tab_1" onclick="loadDataTable(0)" data-toggle="tab">全部</a></li>
                 <li><a href="#tab_1" onclick="loadDataTable(1)" data-toggle="tab">查询</a></li>
                 <li><a href="#tab_1" onclick="loadDataTable(2)" data-toggle="tab">预订</a></li>
-                <li><a href="#tab_1" onclick="loadDataTable(4)" data-toggle="tab">开票</a></li>
+                <li><a href="#tab_1" onclick="loadDataTable(3)" data-toggle="tab">开票</a></li>
                 <li><a href="#tab_5" onclick="loadTicking()" data-toggle="tab">出票</a></li>
                 <li><a href="#tab_6" data-toggle="tab">收/付款</a></li>
                 <li><a href="#tab_7" data-toggle="tab" onclick="kaiInvoiceLoad();">发票</a></li>
                 <li><a href="#tab_1" onclick="loadDataTable(5)" data-toggle="tab">关闭</a></li>
                 <li class="orderLi"><button type="button" id="addOrder" class="btn btn-primary btn-sm right">添加订单</button></li>
               </ul>
+                <!-- 当前所在的tab页 -->
+                <input type="hidden" id="status" name="status" value="">
               <div class="tab-content">
                   <div class="tab-pane pane-content active" id="tab_1"><!--全部-->
                     <div class="box-header">
                        <form role="form" class="form-horizontal">
                         <div class="form-group row marginBott cf">
                           <div class="col-md-1">
-                            <input type="text" class="form-control TimeInput" placeholder="2017-02-20"> 
+                            <input type="text" name="startdate" class="form-control TimeInput" placeholder="2017-02-20" onFocus="WdatePicker()"> 
                           </div>
                           <label class="col-md-1 labelClas">至</label>
                           <div class="col-md-1">
-                            <input type="text" class="form-control TimeInput" placeholder="2017-02-22">
+                            <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22" onFocus="WdatePicker()">
                           </div>
                           <div class="col-md-3"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                            <input type="text" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+                            <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR" onkeypress="onkeyEnter();">
                           </div>
                           <div class="col-md-1"><!-- 搜索 按钮 -->
-                            <button type="button" class="btn btn-primary btn-sm">搜索</button>
+                            <button id="searchOrder" type="button" class="btn btn-primary btn-sm">搜索</button>
                           </div>
                           
                         </div>
@@ -81,17 +83,17 @@
                                  <form role="form" class="form-horizontal">
                                   <div class="form-group row marginBott5 cf">
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" class="form-control TimeInput" placeholder="2017-02-20"> 
+                                      <input type="text" name="startdate" class="form-control TimeInput" placeholder="2017-02-20" onFocus="WdatePicker()" onkeypress="onkeyTicketingEnter()"> 
                                     </div>
                                     <label class="col-md-1 labelClas">至</label>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" class="form-control TimeInput" placeholder="2017-02-22">
+                                      <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22" onFocus="WdatePicker()" onkeypress="onkeyTicketingEnter()">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                                      <input type="text" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR" onkeypress="onkeyTicketingEnter()">
                                     </div>
                                     <div class="col-md-2"><!-- 搜索 按钮 -->
-                                      <button type="button" class="btn btn-primary btn-sm">搜索</button>
+                                      <button type="button" id="ticketingSearch" class="btn btn-primary btn-sm">搜索</button>
                                       <button type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
                                     </div>
                                     <div class="col-md-4"><!-- 收款 按钮 -->
@@ -393,7 +395,7 @@
                                       <th>收款单位</th>
                                       <th>开票人</th>
                                       <th>状态</th>
-                                      <th>开票人</th>
+                                      <th>备注</th>
                                       <th>操作</th>
                                     </tr>
                                   </thead>
@@ -479,24 +481,28 @@
     });
 
   });
+  $('#searchOrder').click(function(){
+		var div = $(this).parent().parent();
+		var startdate = div.find('[name=startdate]').val();
+		var enddate = div.find('[name=enddate]').val();
+		var searchInfo = div.find('[name=searchInfo]').val();
+		var status = $('#status').val();
+		var param = {
+				ordersstatus:status,
+				startdate:startdate,
+				enddate:enddate,
+				searchInfo:searchInfo
+		};
+		inlandCrossTable.settings()[0].ajax.data = param;
+		inlandCrossTable.ajax.reload(function(json){
+			autoHighLoad($('#inlandCrossTable'));
+		});
+  });
+  
+  function onkeyEnter(){
+	 var e = window.event || arguments.callee.caller.arguments[0];
+     if(e && e.keyCode == 13){
+  		$('#searchOrder').click();
+     }
+  }
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

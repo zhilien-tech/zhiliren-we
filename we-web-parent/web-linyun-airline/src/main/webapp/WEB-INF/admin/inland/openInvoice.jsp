@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="${base }/public/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" type="text/css" href="${base }/public/ionicons/css/ionicons.min.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/AdminLTE.css">
+	<link href="${base }/public/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="${base }/public/dist/css/inlandCross.css"><!--本页style-->
 </head>
 <body>
@@ -113,7 +114,7 @@
           </tr>
           <tr>
                   <td>付款单位：</td>
-                  <td colspan="3"><input id="paymentunit" name="paymentunit" type="text" class="form-control input-sm" value="JQ" disabled="disabled"></td>
+                  <td colspan="3"><input id="paymentunit" name="paymentunit" type="text" class="form-control input-sm" value="${obj.customename }" disabled="disabled"></td>
           </tr>
           <tr>
                   <td>备注：</td>
@@ -135,10 +136,10 @@
                   <td colspan="4">
                     <ul class="fileUL">
                       <li>
-                        <a href="javascript:;" class="FileDiv">
-                          上传
-                          <input type="file" class="sc" id="sc" name="sc" onchange="handleFile()">
-                        </a>
+                      	<a href="javascript:;" class="FileDiv">
+                      		上传
+                          <input type="file" class="sc" id="sc" name="sc">
+                        </a> 
                       </li>
                       <li><a href="javascript:;" id="fileName" name="fileName">未选择文件</a></li>
                       <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
@@ -155,6 +156,9 @@
         <i class="fa fa-times-circle" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'"></i>
         <img id="fapiaoid" src="">
   </div> 
+  	<script type="text/javascript">
+  		var BASE_PATH = '${base}';
+  	</script>
    <!--JS 文件-->
 	<script src="${base }/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script src="${base }/public/bootstrap/js/bootstrap.min.js"></script>
@@ -165,48 +169,53 @@
 	<!-- My97DatePicker -->
 	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
+	<script src="${base }/admin/order/invoiceupload.js"></script>
   <script type="text/javascript">
      /*-----收付款>收款>开发票-----*/
-     var sc = document.getElementById("sc");
+/*      var sc = document.getElementById("sc");
      var fileName = document.getElementById("fileName");
      function handleFile(){
             var reg = /[^\\\/]*[\\\/]+/g;
             var nameValue=sc.value.replace(reg, '');
             fileName.innerHTML=nameValue;
-     }
-     $(function(){
-      /*-----收付款>收款>开发票 + 按钮-----*/
-      $('.addIcon').click(function(){
-          var divTest = $(this).parents('.cloneTR'); 
-          var newDiv = divTest.clone(true);
-          divTest.after(newDiv);
-          var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
-          newDiv.find("p").html(No); 
-          newDiv.find('.addIcon').parent().remove();
-          newDiv.find('.fileUL').append('<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>');
-      });
-      /*-----收付款>收款>开发票 - 按钮-----*/
-      $(document).on("click",".removIcon",function(){
-          $(this).parents('.cloneTR').remove();
-      });
-      $('.cloneTR').each(function(i){
-	      $(this).find('[name=fileName]').click(function(){
-    	  	  var invoiceurl = $(this).parent().parent().parent().find('[name=invoiceurl]').val();
-    	  	  //alert(invoiceurl);
-	          document.getElementById('light').style.display='block';
-	          //document.getElementById('fade').style.display='block';
-	          document.getElementById('fapiaoid').src=invoiceurl; 
-	      });
-      });
+     } 
+ */     $(function(){
+		      /*-----收付款>收款>开发票 + 按钮-----*/
+		      $('.addIcon').click(function(){
+		          var divTest = $(this).parents('.cloneTR'); 
+		          var lastDiv = $('.cloneTR').last();
+		          var newDiv = divTest.clone(false,true);
+		          //newDiv.find('.FileDiv').html('<input type="file" class="sc" id="sc" name="sc" onchange="handleFile()">');
+		          newDiv.find('[name=invoicenum]').val('');
+		          newDiv.find('[name=invoicebalance]').val(''); 
+		          newDiv.find('[name=fileName]').html('未选择文件');
+		          newDiv.find('[name=invoiceurl]').val('');
+		          lastDiv.after(newDiv);
+		          var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
+		          newDiv.find("p").html(No); 
+		          newDiv.find('.addIcon').parent().remove();
+		          newDiv.find('.fileUL').append('<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>');
+		      });
+		      /*-----收付款>收款>开发票 - 按钮-----*/
+		      $(document).on("click",".removIcon",function(){
+		          $(this).parents('.cloneTR').remove();
+		      });
+		      
+		      $(document).on('click','#fileName',function(){
+		   	  	  var invoiceurl = $(this).parent().parent().parent().find('[name=invoiceurl]').val();
+		   	  	  //alert(invoiceurl);
+		          document.getElementById('light').style.display='block';
+		          //document.getElementById('fade').style.display='block';
+		          document.getElementById('fapiaoid').src=invoiceurl; 
+		      });
      
-
      });
    //关闭窗口
      function closewindow(){
  		var index = parent.parent.layer.getFrameIndex(window.name); //获取窗口索引
  		parent.layer.close(index);
  	}
-   
+   $('#fileindex').val($('.cloneTR').length + 1);
    function saveInvoiceInfo(){
 	   var formdata = {};
 	   var id = $('#id').val();
@@ -234,6 +243,8 @@
 		   detail.invoicenum = invoicenum;
 		   var invoicebalance = $(this).find('[name=invoicebalance]').val();
 		   detail.invoicebalance = invoicebalance;
+		   var fileName = $(this).find('[name=fileName]').html();
+		   detail.filename = fileName;
 		   var invoiceurl = $(this).find('[name=invoiceurl]').val();
 		   detail.invoiceurl = invoiceurl;
 		   invoicedetails.push(detail);
@@ -251,57 +262,6 @@
            	layer.msg("提交失败","",3000);
            } 
        });
-   }
-   loadUpload();
-   function loadUpload(){
-	   $('.cloneTR').each(function(i){
-		   $(this).find('[name=sc]').click(function(){
-		    	$.fileupload1 = $(this).find('[name=sc]').uploadify({
-		    		'auto' : true,//选择文件后自动上传
-		    		'formData' : {
-		    			'fcharset' : 'uft-8',
-		    			'action' : 'uploadimage'
-		    		},
-		    		'buttonText' : '上传',//按钮显示的文字
-		    		'fileSizeLimit' : '3000MB',
-		    		'fileTypeDesc' : '文件',//在浏览窗口底部的文件类型下拉菜单中显示的文本
-		    		'fileTypeExts' : '*.png; *.jpg; *.bmp; *.gif; *.jpeg;',//上传文件的类型
-		    		'swf' : '${base}/public/plugins/uploadify/uploadify.swf',//指定swf文件
-		    		'multi' : false,//multi设置为true将允许多文件上传
-		    		'successTimeout' : 1800,
-		    		'queueSizeLimit' : 100,
-		    		'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html',//后台处理的页面
-		    		//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
-		    		//下面的例子演示如何获取到vid
-		    		'onUploadSuccess' : function(file, data, response) {
-		    			var jsonobj = eval('(' + data + ')');
-		    			var url  = jsonobj;//地址
-		    			var fileName = file.name;//文件名称
-		    			var parentdom = $(this).parent().parent().parent().parent();
-		    			consolt.log(JSON.stringify(parentdom));
-		    			parentdom.find('[name=fileName]').html(fileName);
-		    			parentdom.find('[name=invoiceurl]').val(url);
-		    		},
-		            //加上此句会重写onSelectError方法【需要重写的事件】
-		            'overrideEvents': ['onSelectError', 'onDialogClose'],
-		            //返回一个错误，选择文件的时候触发
-		            'onSelectError':function(file, errorCode, errorMsg){
-		                switch(errorCode) {
-		                    case -110:
-		                        alert("文件 ["+file.name+"] 大小超出系统限制！");
-		                        break;
-		                    case -120:
-		                        alert("文件 ["+file.name+"] 大小异常！");
-		                        break;
-		                    case -130:
-		                        alert("文件 ["+file.name+"] 类型不正确！");
-		                        break;
-		                }
-		            }
-		    	});
-		    });
-		   
-	   });
    }
   </script>
 </body>

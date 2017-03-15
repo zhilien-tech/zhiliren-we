@@ -18,8 +18,8 @@ function saveOrderInfo(){
 	var remindDate = $("#datepicker").val();
 	customdata.remindDate = remindDate;
 	//客户信息id
-	/*var customerInfoId = $('#linkManId').val();
-	customdata.customerInfoId = customerInfoId;*/
+	var customerInfoId = $('#linkManId').val();
+	customdata.customerInfoId = customerInfoId;
 	
 	var row = [];
 	$('.DemandDiv').each(function(i){
@@ -75,10 +75,10 @@ function saveOrderInfo(){
 		success: function (data) { 
 			//刷新页面
 			window.location.reload();
-			layer.msg("添加成功","",3000);
+			layer.msg("添加成功","",4000);
 		},
 		error: function (xhr) {
-			layer.msg("添加失败","",3000);
+			layer.msg("添加失败","",4000);
 		} 
 	});
 }

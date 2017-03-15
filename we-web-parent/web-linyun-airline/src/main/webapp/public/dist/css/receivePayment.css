@@ -14,7 +14,7 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 /*-----------------------表格列 多行style--------------------*/
 	#payTable tbody tr td{padding:0;}
 	.table-bordered tbody tr td ul{padding-left: 0;margin-bottom: 0;}
-	.table-bordered tbody tr td ul li{list-style:none;border-bottom: solid 2px #f4f4f4;}
+	.table-bordered tbody tr td ul li{list-style:none;border-bottom: solid 1px #f4f4f4;}
 	.table-bordered tbody tr td ul li:last-child{border-bottom: 0;}
 	.table-bordered thead tr td input{width: 15px;height: 15px;}
 	.table-bordered tbody tr .sorting_1 input{width: 15px;height: 15px;}
@@ -64,14 +64,13 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 /* .modal-bod{padding:10px;} */
 .imgYulan{width: 100%;height: 100%;}
 .tabConte{margin: 0 10px;}
-.nav-tabs-custom > .tab-content {padding: 10px 0 0 0px;}
+.nav-tabs-custom > .tab-content {padding: 10px 0 10px 0px;}
+.paddingBottom{padding-bottom: 10px;}
 
-
-
-
-
-
-
-
-
-
+/*--内陆跨海 收款 table style--*/
+#inlandRecTable tbody tr td:nth-child(5){line-height:60px;}
+#inlandRecTable tbody tr td:nth-child(6){line-height:60px;}
+#inlandRecTable tbody tr td:nth-child(7){line-height:60px;}
+#inlandRecTable tbody tr td:nth-child(8){line-height:60px;}
+#inlandRecTable tbody tr td:nth-child(9){line-height:60px;}
+#inlandRecTable tbody tr td{padding:0;}

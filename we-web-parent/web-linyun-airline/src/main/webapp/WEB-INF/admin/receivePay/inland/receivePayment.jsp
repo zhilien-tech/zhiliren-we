@@ -21,7 +21,7 @@
 		<div class="content-wrapper">
 			<!-- Main content -->
 			<section class="content">
-				<div class="row row-top">
+				<div class="row">
 					<div class="col-xs-12">
 
 						<div class="nav-tabs-custom">
@@ -90,8 +90,8 @@
 											<div class="form-group row marginBott5 cf">
 												<div class="col-md-1 textPadding">
 													<select id="inlandPaySelect" class="form-control TimeInput">
-														<option value=1>付款中</option>
-														<option value=2>已付款</option>
+														<option value=2>付款中</option>
+														<option value=3>已付款</option>
 													</select>
 												</div>
 												<div class="col-md-1 textPadding">
@@ -184,6 +184,7 @@
 	<script type="text/javascript">
 		var BASE_PATH = '${base}';
 	</script>
+	<script src="${base }/admin/order/ordercommon.js"></script>
 	<!-- My97DatePicker -->
 	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 	<!-- 内陆跨海js -->
@@ -193,9 +194,11 @@
 	<%-- <script src="${base}/admin/receivePayment/internationPayment.js"></script> --%>
 	<script type="text/javascript">
 		$(function(){
-			toConfirmRecPage();
+			$('.menu-ul li:eq(0) a').css("color","rgb(245, 245, 245)");//二级菜单 高亮style
+			toConfirmRecPage();			
 		});
 	</script>
 	
 </body>
 </html>
+

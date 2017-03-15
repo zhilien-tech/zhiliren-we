@@ -13,6 +13,9 @@ import com.uxuexi.core.web.form.AddForm;
 public class TCompanyAddForm extends AddForm implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	/**公司id*/
+	private long id;
+
 	/**管理员账号id*/
 	private long adminId;
 

@@ -105,8 +105,8 @@ public class InlandModule {
 	 */
 	@At
 	@Ok("jsp")
-	public Object bookingDetail(@Param("id") Integer id) {
-		return inlandService.bookingDetail(id);
+	public Object bookingDetail(@Param("id") Integer id, HttpServletRequest request) {
+		return inlandService.bookingDetail(id, request);
 	}
 
 	/**
