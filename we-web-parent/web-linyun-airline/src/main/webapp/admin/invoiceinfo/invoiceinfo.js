@@ -121,7 +121,7 @@ function openkaiInvoiceEdit(id){
         content: BASE_PATH + '/admin/inland/kaiInvoice.html?id='+id
       });
 }
-//付款表格
+/*//付款表格
 var shouInvoiceTable1;
 //初始化表格
 initshouInvoiceTable1();
@@ -241,5 +241,5 @@ function openshouInvoiceEdit(id){
         area: ['987px', '620px'],
         content: BASE_PATH + '/admin/inland/shouInvoice.html?id='+id
     });
-}
+}*/
 

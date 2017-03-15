@@ -107,7 +107,7 @@
                         </form>
                     </div>
                     <div class="box-body">
-                         <table id="shouInvoiceTable1" class="table table-bordered table-hover">
+                         <table id="shouInvoiceTable" class="table table-bordered table-hover">
                            <thead>
                            <tr>
                              <th>订单号</th>
@@ -141,4 +141,5 @@
 <script type="text/javascript">
 	var BASE_PATH = '${base}';
 </script>
+<script src="${base}/admin/order/invoice.js"></script>
 <script src="${base}/admin/invoiceinfo/invoiceinfo.js"></script>
