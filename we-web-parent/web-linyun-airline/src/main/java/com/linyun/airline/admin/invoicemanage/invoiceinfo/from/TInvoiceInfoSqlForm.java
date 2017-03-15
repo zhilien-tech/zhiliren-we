@@ -1,8 +1,7 @@
-package com.linyun.airline.forms;
-
-import java.io.Serializable;
+package com.linyun.airline.admin.invoicemanage.invoiceinfo.from;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
@@ -11,11 +10,11 @@ import org.nutz.dao.sql.Sql;
 
 import com.linyun.airline.entities.TInvoiceInfoEntity;
 import com.uxuexi.core.db.util.EntityUtil;
-import com.uxuexi.core.web.form.SQLParamForm;
+import com.uxuexi.core.web.form.DataTablesParamForm;
 
 @Data
-public class TInvoiceInfoForm implements SQLParamForm, Serializable {
-	private static final long serialVersionUID = 1L;
+@EqualsAndHashCode(callSuper = true)
+public class TInvoiceInfoSqlForm extends DataTablesParamForm {
 	/**id*/
 	private Integer id;
 

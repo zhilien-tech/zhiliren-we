@@ -11,13 +11,8 @@ import com.uxuexi.core.common.enums.IEnum;
  * @Date	 2016年12月07日
  */
 public enum MessageRemindEnum implements IEnum {
-	MOUTH(1, "自然月1日"), 
-	WEEK(2, "自然每周一"), 
-	DAY(3, "每天"), 
-	HOUR(4, "每小时"), 
-	FIFTEENM(5, "每15分钟"),
-	THIRTYM(7, "每30分钟"), 
-	TIMED(6, "定时");
+	MOUTH(1, "自然月1日"), WEEK(2, "自然每周一"), DAY(3, "每天"), HOUR(4, "每小时"), FIFTEENM(5, "每15分钟"), THIRTYM(7, "每30分钟"), TIMED(
+			6, "定时"), UNREPEAT(8, "不重复");
 
 	private int key;
 	private String value;
