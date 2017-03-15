@@ -50,4 +50,8 @@ public class TMessageEntity implements Serializable {
 	@Comment("优先级")
 	private Long priorityLevel;
 
+	@Column
+	@Comment("订单id")
+	private Long upOrderId;
+
 }

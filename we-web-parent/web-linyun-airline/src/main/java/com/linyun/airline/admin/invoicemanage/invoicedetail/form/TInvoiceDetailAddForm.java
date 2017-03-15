@@ -1,4 +1,4 @@
-package com.linyun.airline.forms;
+package com.linyun.airline.admin.invoicemanage.invoicedetail.form;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

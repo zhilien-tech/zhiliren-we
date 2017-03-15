@@ -107,11 +107,16 @@ public class LoginServiceImpl extends BaseService<TUserEntity> implements LoginS
 			} else {
 				allUserFunction = userService.findUserFunctions(user.getId());
 			}
-			List<TFunctionEntity> meunSingle = dbDao.query(TFunctionEntity.class,
-					Cnd.where("id", "=", CommonConstants.PERSON_ID).or("id", "=", CommonConstants.DESKTOP_ID), null);
-			for (TFunctionEntity tf : meunSingle) {
-				if (!allUserFunction.contains(tf)) {
-					allUserFunction.add(tf);
+			if (UserTypeEnum.PLAT.intKey() != userType || UserTypeEnum.UP_MANAGER.intKey() == userType
+					|| UserTypeEnum.AGENT_MANAGER.intKey() == userType) {
+				List<TFunctionEntity> meunSingle = dbDao
+						.query(TFunctionEntity.class,
+								Cnd.where("id", "=", CommonConstants.PERSON_ID).or("id", "=",
+										CommonConstants.DESKTOP_ID), null);
+				for (TFunctionEntity tf : meunSingle) {
+					if (!allUserFunction.contains(tf)) {
+						allUserFunction.add(tf);
+					}
 				}
 			}
 			//1级菜单
