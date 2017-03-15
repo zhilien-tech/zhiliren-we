@@ -229,7 +229,7 @@ function initshouFuKuanPayTable() {
   	//   指定第一列，从0开始，0表示第一列，1表示第二列……
         targets: 11,
         render: function(data, type, row, meta) {
-            return '<a style="cursor:pointer;" onclick="receiveInvoice('+row.id+');">收发票</a>'
+            return '<a style="cursor:pointer;" onclick="receiveInvoice('+row.id+','+row.invoiceid+');">收发票</a>'
         }
     }],
 });
@@ -237,14 +237,26 @@ function initshouFuKuanPayTable() {
 function shoufukuanPay(){
 	shouFuKuanPayTable.ajax.reload();
 }
-function receiveInvoice(id){
-	layer.open({
-        type: 2,
-        title:false,
-        skin: false, //加上边框
-        closeBtn:false,//默认 右上角关闭按钮 是否显示
-        shadeClose:true,
-        area: ['987px', '620px'],
-        content: BASE_PATH + '/admin/inland/receiveInvoice.html?id='+id
-      });
+function receiveInvoice(id,invoiceid){
+	if(invoiceid){
+		layer.open({
+	        type: 2,
+	        title:false,
+	        skin: false, //加上边框
+	        closeBtn:false,//默认 右上角关闭按钮 是否显示
+	        shadeClose:true,
+	        area: ['987px', '620px'],
+	        content: BASE_PATH + '/admin/inland/shouInvoice.html?id='+invoiceid
+	    });
+	}else {
+		layer.open({
+			type: 2,
+			title:false,
+			skin: false, //加上边框
+			closeBtn:false,//默认 右上角关闭按钮 是否显示
+			shadeClose:true,
+			area: ['987px', '620px'],
+			content: BASE_PATH + '/admin/inland/receiveInvoice.html?id='+id
+		});
+	}
 }

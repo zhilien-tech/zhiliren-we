@@ -58,7 +58,7 @@ public class RemindMessageService extends BaseService<TMessageEntity> {
 		//消息接收方类型（个人、公司、系统）
 		Long receiveUserType = Long.valueOf((Integer) msgData.get("receiveUserType"));
 		//客户消息表id  查询id
-		Long customerInfoId = (Long) msgData.get("customerInfoId");
+		Long customerInfoId = Long.valueOf((String) msgData.get("customerInfoId"));
 		//相关订单id
 		Long upOrderId = ((Integer) msgData.get("upOrderId")).longValue();
 
