@@ -38,6 +38,9 @@ public class TAirlinePolicyEntity implements Serializable {
 	@Column
 	@Comment("文件路径")
 	private String url;
+	@Column
+	@Comment("文件pdf路径")
+	private String pdfUrl;
 
 	@Column
 	@Comment("文件大小")

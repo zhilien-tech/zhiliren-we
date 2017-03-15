@@ -14,19 +14,19 @@ public class TSalaryAddForm extends AddForm implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**成本合计*/
-	private double costTotal;
+	private Double costTotal;
 
 	/**收入合计*/
-	private double incomeTotal;
+	private Double incomeTotal;
 
 	/**提成*/
 	private String commission;
 
 	/**实发提成*/
-	private double actualCommission;
+	private Double actualCommission;
 
 	/**基本工资*/
-	private double basePay;
+	private Double basePay;
 
 	/**创建时间*/
 	private Date createTime;
@@ -35,7 +35,7 @@ public class TSalaryAddForm extends AddForm implements Serializable {
 	private Date updateTime;
 
 	/**工资合计*/
-	private double salaryTotal;
+	private Double salaryTotal;
 
 	/**备注*/
 	private String remark;
@@ -45,5 +45,19 @@ public class TSalaryAddForm extends AddForm implements Serializable {
 	private int groupNumber;
 	/**人头数*/
 	private int headCount;
+
+	/**奖金*/
+	private String welfare;
+	/**五险一金*/
+	private String bonus;
+
+	/**纳税*/
+	private String ratePaying;
+
+	/**罚款*/
+	private Double fine;
+
+	/**人头数*/
+	private String other;
 
 }

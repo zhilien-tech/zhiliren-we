@@ -123,12 +123,20 @@
 	                	</div>
 	                  
 	                </div><!--end 备注-->
-	                <!-- <div id="div1" >
-	                <label class="col-sm-2 text-right padding">单位名称：</label>
+	                <div>
+	                	<label class="col-sm-3 text-right padding">开/收发票：</label>
+	                	<select class="form-control input-sm" name="invoiceStatus" id="invoiceStatus" onchange="check();">
+		                      <option value="">请选择</option>
+		                      <option>已开发票</option>
+		                      <option>已收发票</option>
+		                 </select>
+	                </div>
+	                <div id="div1" >
+	                <label class="col-sm-3 text-right padding">单位名称：</label>
 	                	<select id="findCompany" name="findCompany" onchange="setSelectedAreaIds()" class="form-control select2 inpImpWid" multiple="multiple" ></select>
 		               <input name="companyNameId" id="companyNameId"  type="hidden" placeholder="单位名称" />
-	                </div> -->
-	                <div class="row">
+	                </div>
+	                <!-- <div class="row">
 		                <div class="form-group" id="div1">
 		                   <label class="col-sm-2 text-right padding">单位名称：</label>
 			               <div class="col-sm-9 padding">
@@ -136,7 +144,7 @@
 			               		<input name="companyNameId" id="companyNameId"  type="hidden" placeholder="单位名称" />
 			               </div>
 		                </div>
-	                </div>
+	                </div> -->
 	            </div>
 	            <!-- 设置已选中的项 -->
 					<script type="text/javascript">
