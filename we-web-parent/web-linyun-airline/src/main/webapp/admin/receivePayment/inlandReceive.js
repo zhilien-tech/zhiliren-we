@@ -55,8 +55,9 @@ function initRecDataTable() {
 		            				var pCount = value.personcount;
 		            				if(pCount == null || pCount == undefined || pCount==""){
 		            					pCount = '';
+		            				}else{
+		            					result += '<li style="list-style:none;">'+pCount+'</li>';
 		            				}
-		            				result += '<li style="list-style:none;">'+pCount+'</li>';
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -69,8 +70,6 @@ function initRecDataTable() {
 		            		$.each(row.orders, function(name, value) {
 		            			if(value && value.incometotal!=undefined){
 		            				result += '<li style="list-style:none;">'+value.incometotal+'</li>';
-		            			}else{
-		            				result += '<li style="list-style:none;"> </li>';
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -212,12 +211,16 @@ $("#inlandRecSearchBtn").on('click', function () {
 	var inlandRecBeginDate = $("#inlandRecBeginDate").val();
 	var inlandRecEndDate = $("#inlandRecEndDate").val();
 	var inlandRecInput = $("#inlandRecInput").val();
-	    var param = {
-			        "orderStatus":orderStatus,
-			        "leaveBeginDate":inlandRecBeginDate,
-			        "leaveEndDate":inlandRecEndDate,
-			"name": inlandRecInput
+    var param = {
+		"orderStatus":orderStatus,
+		"leaveBeginDate":inlandRecBeginDate,
+		"leaveEndDate":inlandRecEndDate,
+		"name": inlandRecInput
 	};
-	    inlandRecTable.settings()[0].ajax.data = param;
-	inlandRecTable.ajax.reload();
+	inlandRecTable.settings()[0].ajax.data = param;
+	inlandRecTable.ajax.reload(
+			function(json){
+				autoHighLoad($('#inlandRecTable'));
+			}
+	);
 });

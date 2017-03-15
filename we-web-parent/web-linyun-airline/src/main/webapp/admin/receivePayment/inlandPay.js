@@ -183,10 +183,9 @@ function initPayEdDataTable(){
 									var pCount = value.peoplecount;
 									if(pCount == null || pCount == undefined || pCount==""){
 										pCount = " ";
+									}else{
+										result += '<li style="list-style:none;">'+pCount+'</li>';
 									}
-									result += '<li style="list-style:none;">'+pCount+'</li>';
-								}else{
-									result += '<li style="list-style:none;"> </li>';
 								}
 							});
 							result += '</ul>';
@@ -460,11 +459,19 @@ $("#inlandPaySearchBtn").on('click', function () {
 		    };
     if(orderStatus==1){
     	inlandPayTable.settings()[0].ajax.data = param;
-    	inlandPayTable.ajax.reload();
+    	inlandPayTable.ajax.reload(
+    			function(json){
+    				autoHighLoad($('#inlandPayTable'));
+    			}
+    	);
     }
     if(orderStatus==2){
     	inlandPayEdTable.settings()[0].ajax.data = param;
-    	inlandPayEdTable.ajax.reload();
+    	inlandPayEdTable.ajax.reload(
+    			function(json){
+    				autoHighLoad($('#inlandPayEdTable'));
+    			}
+    	);
     }
     
 });

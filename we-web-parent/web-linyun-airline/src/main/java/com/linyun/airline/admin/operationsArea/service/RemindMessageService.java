@@ -60,7 +60,7 @@ public class RemindMessageService extends BaseService<TMessageEntity> {
 		//客户消息表id  查询id
 		Long customerInfoId = (Long) msgData.get("customerInfoId");
 		//相关订单id
-		Long upOrderId = (Long) msgData.get("upOrderId");
+		Long upOrderId = ((Integer) msgData.get("upOrderId")).longValue();
 
 		//判断消息是否存在， 不存在则添加
 		Sql sql = Sqls.create(sqlManager.get("operationsArea_existMsg"));
