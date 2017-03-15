@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="${base}/public/dist/css/receivePayment.css"><!--本页面style-->
     <link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
     <style type="text/css">
-    	.form-control-feedback {position: absolute;top: 1px;right: 10px;}
+    	.form-control-feedback {position: absolute;top: 1px;right: -10px;}
     </style>
 </head>
 <body>
@@ -104,7 +104,7 @@
          	  </div><!--end 退税状态/备注-->
          	  
               <div class="bankSlipImg">
-              	  <iframe id="zhuce" style="height:350px; width:100%;" name="main" src="${obj.fileurl.url}" frameBorder="0" scrolling="no"></iframe>
+              	  <iframe id="zhuce" style="height:445px; width:100%;" name="main" src="${obj.fileurl.url}" frameBorder="0" scrolling="no"></iframe>
               </div>
           </div>
         </form>  
