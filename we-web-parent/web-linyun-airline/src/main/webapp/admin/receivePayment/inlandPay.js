@@ -490,6 +490,8 @@ $('#inlandPayClearBtn').click(function(){
 //内陆跨海 取消所有勾选
 $('#inlandPayCancelBtn').click(function(){
 	$('#checkedboxPayValue').val("");
+	$(".checkBoxPayAll").prop("checked", false);
+	$(".checkBoxPayChild").prop("checked", false);
 });
 
 
