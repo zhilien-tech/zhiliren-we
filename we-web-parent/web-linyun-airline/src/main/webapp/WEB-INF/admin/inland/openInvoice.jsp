@@ -79,7 +79,7 @@
                        </select>
                     </td>
                     <td>合计：</td>
-                    <td>${obj.receive.sum }</td>
+                    <td id="sumjine">${obj.receive.sum }</td>
                   </tr>
          </table>
          <div class="bankSlipImg" align="center"><img id="shuidanimg" width="400" height="300" alt="" src="${obj.bill.receiptUrl }"></div>
@@ -122,17 +122,16 @@
           </tr>
           <tr>
                   <td>差额：</td>
-                  <td><input id="difference" name="difference" type="text" class="form-control input-sm"></td>
+                  <td><input id="difference" name="difference" type="text" class="form-control input-sm mustNumberPoint"></td>
                   <td>余额：</td>
-                  <td><label>${obj.receive.sum }</label>
-                  	<input id="balance" name="balance" type="hidden" value="">
+                  <td><label id="balance" name="balance">${obj.receive.sum }</label>
                   </td>
           </tr>
           <tr class="cloneTR">
                   <td>发票号：</td>
                   <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm"></td>
                   <td>金额：</td>
-                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm"></td>
+                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm mustNumberPoint"></td>
                   <td colspan="4">
                     <ul class="fileUL">
                       <li>
@@ -170,6 +169,7 @@
 	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
 	<script src="${base }/admin/order/invoiceupload.js"></script>
+	<script src="${base }/admin/order/ordercommon.js"></script>
   <script type="text/javascript">
      /*-----收付款>收款>开发票-----*/
 /*      var sc = document.getElementById("sc");

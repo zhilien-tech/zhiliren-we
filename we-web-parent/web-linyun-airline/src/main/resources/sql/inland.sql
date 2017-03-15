@@ -163,11 +163,14 @@ SELECT
 		WHERE
 			invoiceinfoid = tii.id
 	) invoicecount,
-	tu.userName
+	tu.userName,
+	tuo.ordersnum
 FROM
 	t_pnr_info tpi
 INNER JOIN t_invoice_info tii ON tii.pnrid = tpi.id
 LEFT JOIN t_user tu ON tii.billuserid = tu.id
+INNER JOIN t_order_customneed toc ON tpi.needid = toc.id
+INNER JOIN t_up_order tuo ON toc.ordernum = tuo.id
 $condition
 
 
@@ -178,4 +181,11 @@ FROM
 	t_pnr_info tpi
 INNER JOIN t_order_customneed toc ON tpi.needid = toc.id
 INNER JOIN t_up_order tuo ON toc.ordernum = tuo.id
+$condition
+
+/*get_fukuan_invoice_page_data*/
+select tcb.* FROM
+t_pay_pnr tpp
+LEFT JOIN t_pay tp ON tpp.payId = tp.id
+left JOIN t_company_bank_card tcb ON tp.bankId = tcb.id
 $condition

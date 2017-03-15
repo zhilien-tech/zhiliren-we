@@ -143,11 +143,20 @@ function initshouInvoiceTable() {
         }
     },
     "columns": [
+                {"data": "ordersnum", "bSortable": false,
+                	render:function(data, type, row, meta) {
+                		var result = '';
+                		if(row.ordersnum && row.ordersnum!= undefined){
+                			result = row.ordersnum;
+                		}
+                		return result;
+                	}
+                },
                 {"data": "pNR", "bSortable": false,
                 	render:function(data, type, row, meta) {
                 		var result = '';
-                		if(row.pNR && row.pNR!= undefined){
-                			result = row.pNR;
+                		if(row.pnr && row.pnr!= undefined){
+                			result = row.pnr;
                 		}
                 		return result;
                 	}
@@ -228,7 +237,7 @@ function initshouInvoiceTable() {
         ],
     columnDefs: [{
   	//   指定第一列，从0开始，0表示第一列，1表示第二列……
-        targets: 10,
+        targets: 11,
         render: function(data, type, row, meta) {
             return '<a style="cursor:pointer;" onclick="openshouInvoiceEdit('+row.invoiceid+');">收发票</a>'
         }
