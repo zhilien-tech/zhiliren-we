@@ -379,7 +379,7 @@ $(".checkBoxPayAll").click(function () {
 			}
 		});
 	}else{
-		$(".checkBoxPayChild").each(function(){
+		 $(".checkBoxPayChild").each(function(){
 			var thisval = $(this).val();
 			var flag = false;
 			var splits = hiddenval.split(',');
