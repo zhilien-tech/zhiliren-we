@@ -8,8 +8,6 @@ import org.nutz.dao.entity.Record;
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.log.Log;
-import org.nutz.log.Logs;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
@@ -32,8 +30,6 @@ import com.uxuexi.core.web.chain.support.JsonResult;
 @IocBean
 @At("/admin/Company")
 public class CompanyModule {
-
-	private static final Log log = Logs.get();
 
 	@Inject
 	private CompanyViewService companyViewService;

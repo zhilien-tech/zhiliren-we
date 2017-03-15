@@ -1,14 +1,14 @@
-package com.linyun.airline.forms;
+package com.linyun.airline.admin.invoicemanage.invoiceinfo.from;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import com.uxuexi.core.web.form.AddForm;
+import com.uxuexi.core.web.form.ModForm;
 
 import java.io.Serializable;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class TInvoiceInfoAddForm extends AddForm implements Serializable{
+public class TInvoiceInfoUpdateForm extends ModForm implements Serializable{
 	private static final long serialVersionUID = 1L;
 		
 	/**发票项目*/
