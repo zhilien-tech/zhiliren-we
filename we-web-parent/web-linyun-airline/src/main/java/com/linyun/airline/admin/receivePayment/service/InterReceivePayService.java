@@ -63,10 +63,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 
 	//付款用途
 	private static final String YTCODE = "FKYT";
-
 	private static final int RECEIVESTATUS = AccountReceiveEnum.RECEIVEDONEY.intKey();
-
 	private static final int APPROVALPAYED = AccountPayEnum.APPROVALPAYED.intKey();
+	private static final int APPROVALPAYING = AccountPayEnum.APPROVALPAYING.intKey();
 
 	@Inject
 	private UploadService qiniuUploadService;
@@ -134,7 +133,14 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 * @param length  查询多少条
 	 * @param draw    当前查询序号
 	 */
-	public Map<String, Object> listPage4Datatables(final InterPayListSearchSqlForm sqlParamForm) {
+	public Map<String, Object> listPage4Datatables(final InterPayListSearchSqlForm sqlParamForm, HttpSession session) {
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long id = loginUser.getId();
+		sqlParamForm.setLoginUserId(id);
+		//订单状态 付款中
+		sqlParamForm.setOrderStatus(Long.valueOf(APPROVALPAYING));
+
 		checkNull(sqlParamForm, "sqlParamForm不能为空");
 		Sql sql = sqlParamForm.sql(sqlManager);
 

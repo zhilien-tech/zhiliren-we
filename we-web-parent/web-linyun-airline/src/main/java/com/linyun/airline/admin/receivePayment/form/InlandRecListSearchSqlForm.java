@@ -15,9 +15,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
-import org.nutz.dao.util.cri.SqlExpressionGroup;
 
-import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
@@ -51,30 +49,32 @@ public class InlandRecListSearchSqlForm extends DataTablesParamForm {
 	public Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		//添加自定义查询条件（可选）
-		SqlExpressionGroup group = new SqlExpressionGroup();
+		/*SqlExpressionGroup group = new SqlExpressionGroup();
 		group.and("ci.shortName", "LIKE", "%" + name + "%").or("uo.ordersnum", "LIKE", "%" + name + "%")
 				.or("ci.linkMan", "LIKE", "%" + name + "%").or("pi.PNR", "LIKE", "%" + name + "%");
 		if (!Util.isEmpty(name)) {
 			cnd.and(group);
-		}
+		}*/
 		if (!Util.isEmpty(orderStatus)) {
-			cnd.and("uo.ordersstatus", "=", orderStatus);
+			cnd.and("r.`status`", "=", orderStatus);
 		}
 
 		//TODO 出发日期
-		if (!Util.isEmpty(leaveBeginDate)) {
+		/*if (!Util.isEmpty(leaveBeginDate)) {
 			cnd.and("oc.leavetdate", "=", leaveBeginDate);
-		}
+		}*/
 
-		cnd.and("uo.orderstype", "=", OrderTypeEnum.FIT.intKey()); //散客
-		cnd.and("uo.loginUserId", "=", loginUserId);
+		/*
+		 * cnd.and("uo.orderstype", "=", OrderTypeEnum.FIT.intKey()); //散客
+		 */
+		cnd.and("r.userid", "=", loginUserId);
 
 		return cnd;
 	}
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {
-		String sqlString = sqlManager.get("receivePay_rec_id_list");
+		String sqlString = sqlManager.get("receivePay_rec_invioce_list");
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;
