@@ -39,6 +39,8 @@
                      <td><select id="linkName" name="linkName" class="form-control input-sm" multiple="multiple" placeholder="请输入客户姓名">
                      	</select>
                      	<input id="customerId" name="customerId" type="hidden">
+                     	<input id="discountFare" name="discountFare" type="hidden">
+                     	<input id="fees" name="fees" type="hidden">
                      	</td>
                      <td><label style="position: relative;top: 4px;">结算方式：</label></td>
                      <td colspan="3"><pre class="preTxt">不限 信用额度：0  临时额度：0  历史欠款：0  预存款：0</pre></td>
@@ -109,7 +111,7 @@
                      <td><label>抵达时间：</label></td>
                      <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm textWid"></td>
                      <td><label class="labelWid">成本价：</label></td>
-                     <td><input id="formprice" name="formprice" type="text" class="form-control input-sm textWid"></td>
+                     <td><input id="formprice" name="formprice" type="text" class="form-control input-sm textWid costPrice"></td>
                      <td><label class="labelWid">销售价：</label></td>
                      <td><input id="price" name="price" type="text" class="form-control input-sm textWid"></td>
                      <td>
@@ -225,6 +227,27 @@
             } 
         });
   	}
+  	
+  //oninput事件
+    $(document).on('input', '.costPrice', function(e) {
+    	$(this).val($(this).val().replace(/[^.\d]/g,''));
+    	var fromprice = $(this).val();
+    	//票价折扣
+    	var discountFare = $('#discountFare').val();
+    	//手续费
+    	var fees = $('#fees').val(); 
+    	//alert("值："+fromprice + " 折扣："+discountFare + " 手续费：" + fees);
+    	var price = parseFloat(fromprice * discountFare / 100) + parseFloat(fees);
+    	if(fromprice){
+     		if(isNaN(price)){
+     			$(this).parent().parent().find('[name=price]').val('');
+     		}else{
+    	 		$(this).parent().parent().find('[name=price]').val(price);
+     		}
+     	}else{
+     		$(this).parent().parent().find('[name=price]').val('');
+     	}
+    });
   </script>
 </body>
 </html>	
