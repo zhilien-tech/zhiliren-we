@@ -10,11 +10,11 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.Daos;
+import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
-import org.nutz.log.Log;
-import org.nutz.log.Logs;
 
+import com.linyun.airline.admin.authority.authoritymanage.publicservice.AuthorityPublicService;
 import com.linyun.airline.admin.authority.job.entity.TJobEntity;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.common.enums.UserTypeEnum;
@@ -37,7 +37,6 @@ import com.uxuexi.core.web.util.FormUtil;
 
 @IocBean
 public class CompanyViewService extends BaseService<TCompanyEntity> {
-	private static final Log log = Logs.get();
 
 	//管理员所在的部门
 	private static final String MANAGE_DEPART = "公司管理部";
@@ -45,6 +44,9 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 	private static final String MANAGE_POSITION = "公司管理员";
 	//公司管理员账号初始密码
 	private static final String MANAGE_PASSWORD = "000000";
+
+	@Inject
+	private AuthorityPublicService authorityPublicService;
 
 	/**
 	 * 
@@ -220,7 +222,9 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 			agent.setComId(company.getId());
 			dbDao.insert(agent);
 		}
-		return dbDao.insert(userJobEntity);
+		//新增完公司自动配上权限
+		dbDao.insert(userJobEntity);
+		return authorityPublicService.companyFunction(addForm);
 	}
 
 	/**
