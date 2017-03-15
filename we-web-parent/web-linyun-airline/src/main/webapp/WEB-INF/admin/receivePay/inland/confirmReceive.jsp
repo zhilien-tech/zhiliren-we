@@ -90,6 +90,14 @@
 	<script src="${base}/public/dist/js/app.min.js"></script>
 	<!-- 確認收款js -->
 	<script src="${base}/admin/receivePayment/inlandReceive.js"></script>
-	
+	<!-- 防止订单重复提交 -->
+	<script type="text/javascript">
+		$(function(){
+			var recStatus = $("#inlandRecSelect option:selected",window.parent.document).val();
+			if(recStatus==2){
+				$("#confirmRecClick").attr('disabled',true);
+			}
+		});
+	</script>
 </body>
 </html>

@@ -389,9 +389,15 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//银行卡
 		TCompanyBankCardEntity companyBankCard = new TCompanyBankCardEntity();
 		companyBankCard.setCompanyId(companyId);
-		companyBankCard.setCardName(cardName);
-		companyBankCard.setBankComp(bankComp);
-		companyBankCard.setCardNum(cardNum);
+		if (!Util.eq("--请选择--", cardName)) {
+			companyBankCard.setCardName(cardName);
+		}
+		if (!Util.eq("--请选择--", bankComp)) {
+			companyBankCard.setBankComp(bankComp);
+		}
+		if (!Util.eq("--请选择--", cardNum)) {
+			companyBankCard.setCardNum(cardNum);
+		}
 		//添加银行卡
 		TCompanyBankCardEntity companyBankCardEntity = dbDao.insert(companyBankCard);
 		Integer bankId = companyBankCardEntity.getId();

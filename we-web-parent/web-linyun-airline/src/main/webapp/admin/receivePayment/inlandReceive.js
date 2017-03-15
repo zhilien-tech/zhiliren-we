@@ -14,67 +14,67 @@ function initRecDataTable() {
 			"url": BASE_PATH + "/admin/receivePay/inland/inlandRecList.html",
 			"type": "post",
 			"data": function (d) {
-				
+
 			}
 		},
 		"columns": [
-					{"data": "ordersnum", "bSortable": false,
-						render:function(data, type, row, meta) {
-							var result = '<ul> ';
-							$.each(row.orders, function(name, value) {
-								if(value){
-									result += '<li style="list-style:none;">'+value.ordersnum+'</li>';
-								}
-							});
-							result += '</ul>';
-							return result;
-						}
-					},
+		            {"data": "ordersnum", "bSortable": false,
+		            	render:function(data, type, row, meta) {
+		            		var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value){
+		            				result += '<li style="list-style:none;">'+value.ordersnum+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
+		            	}
+		            },
 		            {"data": "leavedate", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
-							$.each(row.orders, function(name, value) {
-								if(value && value.leavetdate != undefined ){
-									var date = value.leavetdate;
-				            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
-				            		var week = ['MO','TU','WE','TH','FR','SA','SU'];
-				            		var ldate = new Date(date);
-				            		var dateFormat = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
-									result += '<li style="list-style:none;">'+dateFormat+'</li>';
-								}
-							});
-							result += '</ul>';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.leavetdate != undefined ){
+		            				var date = value.leavetdate;
+		            				var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
+		            				var week = ['MO','TU','WE','TH','FR','SA','SU'];
+		            				var ldate = new Date(date);
+		            				var dateFormat = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
+		            				result += '<li style="list-style:none;">'+dateFormat+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
 		            		return result;
 		            	}
 		            },
 		            {"data": "personcount", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
-							$.each(row.orders, function(name, value) {
-								if(value){
-									var pCount = value.personcount;
-									if(pCount == null || pCount == undefined || pCount==""){
-										pCount = '';
-									}
-									result += '<li style="list-style:none;">'+pCount+'</li>';
-								}
-							});
-							result += '</ul>';
-							return result;
+		            		$.each(row.orders, function(name, value) {
+		            			if(value){
+		            				var pCount = value.personcount;
+		            				if(pCount == null || pCount == undefined || pCount==""){
+		            					pCount = '';
+		            				}
+		            				result += '<li style="list-style:none;">'+pCount+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
 		            	}
 		            },
 		            {"data": "incometotal", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
-							$.each(row.orders, function(name, value) {
-								if(value && value.incometotal!=undefined){
-									result += '<li style="list-style:none;">'+value.incometotal+'</li>';
-								}else{
-									result += '<li style="list-style:none;"> </li>';
-								}
-							});
-							result += '</ul>';
-							return result;
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.incometotal!=undefined){
+		            				result += '<li style="list-style:none;">'+value.incometotal+'</li>';
+		            			}else{
+		            				result += '<li style="list-style:none;"> </li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
 		            	}
 		            },
 		            {"data": "sum", "bSortable": false,
@@ -88,16 +88,13 @@ function initRecDataTable() {
 		            },
 		            {"data": "shortname", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		var result = '<ul> ';
-							$.each(row.orders, function(name, value) {
-								if(value && value.shortname!=undefined){
-									result += '<li style="list-style:none;">'+value.shortname+'</li>';
-								}else{
-									result += '<li style="list-style:none;"> </li>';
-								}
-							});
-							result += '</ul>';
-							return result;
+		            		var result = '';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.shortname!=undefined){
+		            				result = value.shortname;
+		            			}
+		            		});
+		            		return result;
 		            	}
 		            },
 		            {"data": "username", "bSortable": false,
@@ -146,36 +143,43 @@ function initRecDataTable() {
 
 //datatable行点击事件
 $("tbody",$('#inlandRecTable')).on("click","tr",function(event){
-    //获取当前行的数据
+	//获取当前行的数据
 	var row = inlandRecTable.row($(this).closest('tr')).data();
 	confirmReceive(row.id);
 });
 
 //確認收款
 $("#confirmRecClick").click(function(){
-	$.ajax({
-		type : 'POST',
-		data : {
-			id:$("#recIds").val()
-		},
-		async: false,
-		url: BASE_PATH + '/admin/receivePay/inland/saveInlandRec.html',
-		success : function(data) {
-			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-			parent.layer.close(index);
-			parent.layer.msg("收款成功", "", 2000);
-			parent.inlandRecTable.ajax.reload();
-			$("#recIds").val("");
-		},
-		error: function () {
-			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-			parent.layer.close(index);
-			parent.layer.msg("收款失败", "", 2000);
-			$("#recIds").val("");
-		}
-	});
+	var recStatus = $("#inlandRecSelect option:selected",window.parent.document).val();
+	if(recStatus==1){
+		$.ajax({
+			type : 'POST',
+			data : {
+				id:$("#recIds").val()
+			},
+			async: false,
+			url: BASE_PATH + '/admin/receivePay/inland/saveInlandRec.html',
+			success : function(data) {
+				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				parent.layer.close(index);
+				parent.layer.msg("收款成功", "", 2000);
+				parent.inlandRecTable.ajax.reload();
+				$("#recIds").val("");
+			},
+			error: function () {
+				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				parent.layer.close(index);
+				parent.layer.msg("收款失败", "", 2000);
+				$("#recIds").val("");
+			}
+		});
+	}else{
+		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+		parent.layer.close(index);
+		parent.layer.msg("该订单已收款，请勿重复收款", "", 2000);
+	}
+	
 });
-
 
 //关闭确认付款窗口
 $("#closeRecWindow").click(function(){
@@ -183,7 +187,7 @@ $("#closeRecWindow").click(function(){
 	parent.layer.close(index);
 });
 
-
+//打开确认付款页面
 function confirmReceive(id){
 	layer.open({
 		type: 2,
@@ -208,28 +212,12 @@ $("#inlandRecSearchBtn").on('click', function () {
 	var inlandRecBeginDate = $("#inlandRecBeginDate").val();
 	var inlandRecEndDate = $("#inlandRecEndDate").val();
 	var inlandRecInput = $("#inlandRecInput").val();
-    var param = {
-        "orderStatus":orderStatus,
-        "leaveBeginDate":inlandRecBeginDate,
-        "leaveEndDate":inlandRecEndDate,
-		"name": inlandRecInput
+	    var param = {
+			        "orderStatus":orderStatus,
+			        "leaveBeginDate":inlandRecBeginDate,
+			        "leaveEndDate":inlandRecEndDate,
+			"name": inlandRecInput
 	};
-    inlandRecTable.settings()[0].ajax.data = param;
+	    inlandRecTable.settings()[0].ajax.data = param;
 	inlandRecTable.ajax.reload();
-});
-
-$(function () {
-	/*var selectEd = $('#inlandPaySelect').val();
-		if(selectEd == 3){
-			$("#inlandPayTable").show();
-			$("#inlandPayEdTable").hide();
-			initPayDataTable();
-		}else{
-			$("#inlandPayTable").hide();
-			$("#inlandPayEdTable").show();
-			initPayEdDataTable();
-		}
-		$('#inlandPaySearchBtn').click();*/
-	/*initRecDataTable();
-	$('#inlandRecSearchBtn').click();*/
 });
