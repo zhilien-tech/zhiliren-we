@@ -82,7 +82,7 @@ table.dataTable thead .sorting:after{display: none;}
 .ckBtn{margin-left:10px;}
 #tab_5,#tab_6{padding: 10px;}
 table.dataTable thead > tr > th {padding-right: 5px;}
-#drawerPayTable tbody tr td ul li{list-style: none;border-bottom: solid 2px #f4f4f4;}
+#drawerPayTable tbody tr td ul li{list-style: none;border-bottom: solid 1px #f4f4f4;}
 #drawerPayTable tbody tr td ul li:last-child{border-bottom: 0;}
 #drawerPayTable tbody tr td ul{padding-left: 0;margin-bottom: 0;}
 table.dataTable thead .sorting_desc:after {display: none;}
@@ -102,7 +102,7 @@ table.dataTable thead .sorting_desc:after {display: none;}
 #payTable tbody tr .sorting_1 ul li{height: 22px;padding-top: 4px;}
 td.sorting_1 input {position: relative;top: 5px;}
 /*---收/付款 付款---*/
-#shouFuKuanGatheringTable tbody tr td ul li{list-style: none;border-bottom: solid 2px #f4f4f4;}
+#shouFuKuanGatheringTable tbody tr td ul li{list-style: none;border-bottom: solid 1px #f4f4f4;}
 #shouFuKuanGatheringTable tbody tr td ul{padding-left: 0;margin-bottom:0;}
 #shouFuKuanGatheringTable tbody tr td{padding:0;}
 #shouFuKuanGatheringTable tbody tr td ul li:last-child{border-bottom: 0;}
@@ -153,18 +153,18 @@ form#customaddform { width: 100%;}
 /*---end 添加订单 style---*/
 /*发票*/
 #tab_7 .nav-tabs-custom{padding: 10px;}
-#kaiInvoiceTable tbody tr td ul li{list-style: none;border-bottom: solid 2px #f4f4f4;}
+#kaiInvoiceTable tbody tr td ul li{list-style: none;border-bottom: solid 1px #f4f4f4;}
 #kaiInvoiceTable tbody tr td ul li:last-child{border-bottom:0;}
 #kaiInvoiceTable tbody tr td ul{padding-left: 0;margin-bottom:0;}
 #kaiInvoiceTable tbody tr td{padding:0;}
 
 #kaiInvoiceTable tbody tr td:nth-child(1) ul li{line-height: 27px;}
-#kaiInvoiceTable tbody tr td:nth-child(4){padding-top:30px;}
-#kaiInvoiceTable tbody tr td:nth-child(5){padding-top:30px;}
-#kaiInvoiceTable tbody tr td:nth-child(6){padding-top:30px;}
-#kaiInvoiceTable tbody tr td:nth-child(7){padding-top:30px;}
-#kaiInvoiceTable tbody tr td:nth-child(8){padding-top:30px;}
-#kaiInvoiceTable tbody tr td:nth-child(9){padding-top:30px;}
-#kaiInvoiceTable tbody tr td:nth-child(10){padding-top:30px;}
-#kaiInvoiceTable tbody tr td:nth-child(11){padding-top:30px;}
+#kaiInvoiceTable tbody tr td:nth-child(4){line-height: 60px;}
+#kaiInvoiceTable tbody tr td:nth-child(5){line-height: 60px;}
+#kaiInvoiceTable tbody tr td:nth-child(6){line-height: 60px;}
+#kaiInvoiceTable tbody tr td:nth-child(7){line-height: 60px;}
+#kaiInvoiceTable tbody tr td:nth-child(8){line-height: 60px;}
+#kaiInvoiceTable tbody tr td:nth-child(9){line-height: 60px;}
+#kaiInvoiceTable tbody tr td:nth-child(10){line-height: 60px;}
+#kaiInvoiceTable tbody tr td:nth-child(11){line-height: 60px;}
 .fuKuanBtn, .fuKuanBtn1 {float: right;position: relative;left: 60px;}

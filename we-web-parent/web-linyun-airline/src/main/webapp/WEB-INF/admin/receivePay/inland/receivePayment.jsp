@@ -21,7 +21,7 @@
 		<div class="content-wrapper">
 			<!-- Main content -->
 			<section class="content">
-				<div class="row row-top">
+				<div class="row">
 					<div class="col-xs-12">
 
 						<div class="nav-tabs-custom">
@@ -193,7 +193,9 @@
 	<%-- <script src="${base}/admin/receivePayment/internationPayment.js"></script> --%>
 	<script type="text/javascript">
 		$(function(){
+			$('.menu-ul li:eq(0) a').css("color","rgb(245, 245, 245)");//二级菜单 高亮style
 			toConfirmRecPage();
+			
 		});
 	</script>
 	

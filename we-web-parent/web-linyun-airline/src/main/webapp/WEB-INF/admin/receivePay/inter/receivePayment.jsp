@@ -21,9 +21,9 @@
 		<div class="content-wrapper">
 			<!-- Main content -->
 			<section class="content">
-				<div class="row row-top">
+				<div class="row">
 					<div class="col-xs-12">
-						<div class="box">
+						<div class="box paddingBottom">
 					        <ul class="paymentUl">
 		                        <li id="firBooking" class="btnStyle">一订</li>
 		                        <li id="secBooking" >二订</li>
@@ -204,7 +204,9 @@
 	<%-- <script src="${base}/admin/receivePayment/interPayment.js"></script> --%>
 	<script type="text/javascript">
 		$(function(){
+			$('.menu-ul li:eq(1) a').css("color","rgb(245, 245, 245)");//二级菜单 高亮style
 			toConfirmRecPage();
+			
 		});
 	</script>
 	
