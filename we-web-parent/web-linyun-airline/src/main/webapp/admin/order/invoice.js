@@ -216,7 +216,15 @@ function initshouInvoiceTable() {
                   		return result;
                   	}
                 },
-                {"data": "remark", "bSortable": false}
+                {"data": "remark", "bSortable": false,
+                	render:function(data, type, row, meta) {
+                  		var result = '';
+                  		if(row.remark){
+                  			result = row.remark;
+                  		}
+                  		return result;
+                  	}
+                }
         ],
     columnDefs: [{
   	//   指定第一列，从0开始，0表示第一列，1表示第二列……

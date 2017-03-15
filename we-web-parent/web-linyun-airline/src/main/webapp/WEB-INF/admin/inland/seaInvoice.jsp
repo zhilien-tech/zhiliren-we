@@ -197,6 +197,8 @@
 	        }
 	     });
 	}
+	loadbankcardname();
+	loadbankcardnum();
 	</script>
 </body>
 </html>	
