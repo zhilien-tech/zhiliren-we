@@ -75,5 +75,8 @@ public class TTurnOverEntity implements Serializable {
 	@Column
 	@Comment("项目名称")
 	private String projectName;
+	@Column
+	@Comment("发票状态")
+	private String invoiceStatus;
 
 }

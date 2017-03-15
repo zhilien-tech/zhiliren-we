@@ -12,7 +12,7 @@
   <link href="${base }/public/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="${base}/public/dist/css/policyManage.css"><!--本页面Style-->
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<!-- <body class="hold-transition skin-blue sidebar-mini"> -->
 <div class="wrapper">
 
  
@@ -29,18 +29,27 @@
                 <div class="form-group row mar cf">
                   <div class="col-md-1 padRight">
                     <select class="form-control input-sm">
-                      <option>VR</option>
-                      <option>JQ</option>
+                      <!-- <option>VR</option>
+                      <option>JQ</option> -->
+                      <option value="">请选择</option>
+                      <c:forEach items="${obj.airlineCompanyList }" var="each">
+                      	<option value="${each.dictCode }">${each.dictCode }</option>
+                      </c:forEach>
                     </select>
                   </div>
                   <div class="col-md-1 padding">
                      <select class="form-control input-sm">
-                      <option>澳洲</option>
-                      <option>亚洲</option>
+                      <!-- <option>澳洲</option>
+                      <option>亚洲</option> -->
+                       <option value="">请选择</option>
+                      <c:forEach items="${obj.areaList }" var="each">
+                      	<option value="${each.areaName}">${each.areaName }</option>
+                      </c:forEach>
                     </select>
                   </div>
                   <div class="col-md-1 padding">
                      <select class="form-control input-sm">
+                     
                       <option>团</option>
                       <option>散</option>
                     </select>
@@ -53,8 +62,11 @@
                   </div>
                   <div class="col-md-7 padding">
                    <!--  <a href="javascript:;" class="btn btn-primary btn-sm right">上传</a> -->
-                     <button id="uploadFiles" name="fileID" type="file" class="btn btn-primary btn-sm right">上传</button> 
-                  	
+                     <button id="file" name="file" type="file" class="btn btn-primary btn-sm right" >上传</button>
+                  	<%-- <form action="${base}/admin/airlinepolicy/uploadFile.html" method="post" id="uploadForm" enctype="multipart/form-data">
+                  		<input name="file" id="file"  type="file"/>
+                  		<input type="submit" onclick="onfileChange();" value="提交">
+                  	</form> --%>
                   </div>
                 </div>
               </form>
@@ -84,7 +96,7 @@
   <!-- /.content-wrapper -->
 
  
-  <div class="control-sidebar-bg"></div>
+  <!-- <div class="control-sidebar-bg"></div> -->
 </div>
 <!-- ./wrapper -->
 
@@ -146,10 +158,11 @@
 	            //   指定第一列，从0开始，0表示第一列，1表示第二列……
 	            targets: 1,
 	            render: function(data, type, row, meta) {
-	            	var modify1 = '<a style="cursor:pointer;" onclick="editUser('+row.id+');">预览</a>';
-	            	var modify2 = '<a style="cursor:pointer;" onclick="editUser('+row.id+');">编辑</a>';
+	            	
+	            	var modify1 = '<a style="cursor:pointer;" href="'+row.pdfurl+'" target="_blank">预览</a>';
+	            	var modify2 = '<a style="cursor:pointer;" onclick="previewFile('+row.id+');">编辑</a>';
 	            	var modify3 = '<a style="cursor:pointer;" href="'+row.url+'">下载</a>';
-	            	var modify4 = '<a style="cursor:pointer;" onclick="editUser('+row.id+');">删除</a>';
+	            	var modify4 = '<a style="cursor:pointer;" onclick="deleteFile('+row.id+');">删除</a>';
 	                return modify1+"&nbsp; &nbsp; &nbsp;"+modify2+"&nbsp; &nbsp; &nbsp;"+modify3+"&nbsp; &nbsp; &nbsp;"+modify4;
 	            }
 	        }]
@@ -158,10 +171,11 @@
 	$(function() {
 		initDatatable();
 		//selectDeptName();
+		uploadFile();
 	});
 	//文件上传
-	$('#uploadFiles').click(function(){
-		$.fileupload1 = $('#uploadFiles').uploadify({
+	 function uploadFile(){
+		$.fileupload1 = $('#file').uploadify({
 			'auto' : true,//选择文件后自动上传
 			'formData' : {
 				'fcharset' : 'uft-8',
@@ -170,7 +184,7 @@
 			'buttonText' : '上传',//按钮显示的文字
 			'fileSizeLimit' : '3000MB',
 			'fileTypeDesc' : '文件',//在浏览窗口底部的文件类型下拉菜单中显示的文本
-			'fileTypeExts' : '*.png; *.txt; *.doc; *.pdf; *.xls; *.jpg; *.docx; *.xlsx;',//上传文件的类型
+			'fileTypeExts' : '*.doc; *.xls; *.xlsx;',//上传文件的类型
 			'swf' : '${base}/public/plugins/uploadify/uploadify.swf',//指定swf文件
 			'multi' : false,//multi设置为true将允许多文件上传
 			'successTimeout' : 1800,
@@ -198,13 +212,13 @@
 						layer.msg('上传失败!');
 					},
 					success : function(data) {
-					    window.parent.successCallback('6');
+					     window.parent.successCallback('6');
 						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-					    parent.layer.close(index);
+					    parent.layer.close(index); 
 					}
 				}); 
 				
-				var innerHtml = "";
+				/* var innerHtml = "";
 	            if (response) {
 	                innerHtml = "<div><a id='downloadA' href='#' download='"+file.name+"' onclick='downloadFile("
 	                        + data
@@ -214,7 +228,7 @@
 	                        + data + "'></div>";
 	            } else {
 	                innerHtml = "<div>该附件上传失败，请重新上传</div>";
-	            }
+	            } */
 	           // $("#completeFileName").html($("#completeFileName").html() + innerHtml);
 			},
 	        //加上此句会重写onSelectError方法【需要重写的事件】
@@ -234,10 +248,11 @@
 	            }
 	        }
 		});
-	});
+	}
 	function successCallback(id){
 		 // rebatesEamilTable.ajax.reload(null,false);
 		  //rebatesReportTable.ajax.reload(null,false);
+		  empTable.ajax.reload(null,false);
 		  if(id == '1'){
 			  layer.msg("新建文件夹成功!",{time: 1000, icon:1});
 		  }else if(id == '2'){
@@ -258,6 +273,43 @@
 			  layer.msg("编辑成功!",{time: 1000, icon:1});
 		  }
 	  }
+	
+	//删除
+	function deleteFile(id){
+		layer.confirm("您确认删除信息吗？", {
+		    btn: ["是","否"], //按钮
+		    shade: false //不显示遮罩
+		}, function(){
+			// 点击确定之后
+			var url = '${base}/admin/airlinepolicy/delete.html';
+			$.ajax({
+				type : 'POST',
+				data : {
+					id : id
+				},
+				dataType : 'json',
+				url : url,
+				success : function(data) {
+					if ("200" == data.status) {
+						layer.msg("删除成功!", "", 3000);
+						window.parent.successCallback('3');
+						/* window.location.reload();  */
+						
+					} else {
+						layer.msg("删除失败!", "", 3000);
+					}
+				},
+				error : function(xhr) {
+					layer.msg("删除失败!", "", 3000);
+				}
+			});
+		}, function(){
+		    // 取消之后不用处理
+		});
+	}
+	
+	
+	
 </script>
-</body>
+<!-- </body> -->
 </html>
