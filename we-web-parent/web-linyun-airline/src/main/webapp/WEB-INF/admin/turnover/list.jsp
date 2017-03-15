@@ -223,7 +223,7 @@
 	                    {"data": "currency", "bSortable": false},
 	                    {"data": "averagerate", "bSortable": false},
 	                    {"data": "companyname", "bSortable": false},//单位
-	                    {"data": "averagerate", "bSortable": false},//发票
+	                    {"data": "invoicestatus", "bSortable": false},//发票
 	                    {"data": "remark", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var depositBalance = row.remark;

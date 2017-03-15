@@ -69,4 +69,19 @@ public class TSalaryEntity implements Serializable {
 	@Comment("人头数")
 	private Integer headCount;
 
+	@Column
+	@Comment("奖金")
+	private String welfare;
+	@Column
+	@Comment("五险一金")
+	private String bonus;
+	@Column
+	@Comment("纳税")
+	private String ratePaying;
+	@Column
+	@Comment("罚款")
+	private double fine;
+	@Column
+	@Comment("人头数")
+	private String other;
 }
