@@ -53,25 +53,31 @@
                     <td>
                       <select class="form-control input-sm">
                            <c:forEach var="one" items="${obj.yhkSelect }">
-                        	<option value="${one.id }">${one.dictName }</option>
+                           	<c:choose>
+                           		<c:when test="${obj.receive.bankcardid eq one.id }">
+		                        	<option value="${one.id }" selected="selected">${one.dictName }</option>
+                           		</c:when>
+                           		<c:otherwise>
+		                        	<option value="${one.id }">${one.dictName }</option>
+                           		</c:otherwise>
+                           	</c:choose>
                            </c:forEach>
                       </select>
                     </td>
                     <td>银行卡名称：</td>
                     <td>
                       <select class="form-control input-sm">
-                          <option>国际专用卡</option>
-                          <option>内陆专用卡</option>
+                          <option>${obj.receive.bankcardname }</option>
                       </select>
                     </td>
                     <td>卡号：</td>
                     <td>
                        <select class="form-control input-sm">
-                          <option>6352 7463 3647 756</option>
+                          <option>${obj.receive.bankcardnum }</option>
                        </select>
                     </td>
                     <td>合计：</td>
-                    <td>${obj.receive.sum }</td>
+                    <td id="sumjine">${obj.receive.sum }</td>
                   </tr>
          </table>
          <div class="bankSlipImg" align="center"><img id="shuidanimg" width="400" height="300" alt="" src="${obj.bill.receiptUrl }"></div>
@@ -117,11 +123,10 @@
                   <td>差额：</td>
                   <td><input id="difference" name="difference" type="text" class="form-control input-sm" value="${obj.invoiceinfo.difference }"></td>
                   <td>余额：</td>
-                  <td><label>${obj.receive.sum }</label>
-                  	<input id="balance" name="balance" type="hidden" value="" value="${obj.invoiceinfo.balance }">
+                  <td><label id="balance" name="balance">${obj.invoicebalance }</label>
                   </td>
           </tr>
-          <c:forEach items="${obj.invoicedetail }" var="invoiceDetail">
+          <c:forEach items="${obj.invoicedetail }" var="invoiceDetail" varStatus="status">
 	          <tr class="cloneTR">
                   <td>发票号：</td>
                   <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm" value="${invoiceDetail.invoicenum }"></td>
@@ -136,7 +141,14 @@
                         </a>
                       </li>
                       <li><a href="javascript:;" id="fileName" name="fileName">${invoiceDetail.imagename }</a></li>
-                      <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
+                      <c:choose>
+                      	<c:when test="${status.index eq 0 }">
+		                      <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
+                      	</c:when>
+                      	<c:otherwise>
+		                      <li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>
+                      	</c:otherwise>
+                      </c:choose>
                     </ul>
                     <input id="invoiceurl" name="invoiceurl" type="hidden" value="${invoiceDetail.invoiceurl }">
                   </td>

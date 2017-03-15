@@ -66,5 +66,7 @@ public class TTurnOverAddForm extends AddForm implements Serializable {
 	private Long companyNameId;
 	/**项目名称*/
 	private String projectName;
+	/**发票状态*/
+	private String invoiceStatus;
 
 }

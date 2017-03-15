@@ -320,6 +320,14 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 				Cnd.where("invoiceinfoid", "=", invoiceinfo.getId()), null);
 		//付款信息
 		TReceiveEntity fetch = dbDao.fetch(TReceiveEntity.class, Long.valueOf(invoiceinfo.getReceiveid()));
+		double invoicebalance = fetch.getSum();
+		for (TInvoiceDetailEntity detail : invoicedetail) {
+			if (!Util.isEmpty(detail.getInvoicebalance())) {
+				invoicebalance -= detail.getInvoicebalance();
+			}
+		}
+		result.put("invoicebalance", invoicebalance);
+
 		List<TOrderReceiveEntity> query = dbDao.query(TOrderReceiveEntity.class,
 				Cnd.where("receiveid", "=", fetch.getId()), null);
 		String ids = "";
@@ -382,6 +390,21 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		cnd.and("tpi.id", "=", invoiceinfo.getPnrid());
 		List<Record> pnrinfo = dbDao.query(sql, cnd, null);
 		result.put("pnrinfo", pnrinfo);
+		double sumjine = 0;
+		for (Record record : pnrinfo) {
+			if (!Util.isEmpty(record.get("salespricesum"))) {
+				Double salespricesum = (Double) record.get("salespricesum");
+				sumjine += Double.valueOf(salespricesum);
+			}
+		}
+		result.put("sumjine", sumjine);
+		double invoicebalance = sumjine;
+		for (TInvoiceDetailEntity detail : invoiceDetail) {
+			if (!Util.isEmpty(detail.getInvoicebalance())) {
+				invoicebalance -= detail.getInvoicebalance();
+			}
+		}
+		result.put("invoicebalance", invoicebalance);
 		List<TPayPnrEntity> query = dbDao.query(TPayPnrEntity.class, Cnd.where("pnrId", "=", invoiceinfo.getPnrid()),
 				null);
 		TPayEntity payinfo = new TPayEntity();
@@ -402,6 +425,17 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		//付款银行卡信息
+		Record companybank = new Record();
+		String pagesqlStr = sqlManager.get("get_fukuan_invoice_page_data");
+		Sql pagesql = Sqls.create(sqlString);
+		Cnd pagecnd = Cnd.limit();
+		cnd.and("tpp.pnrId", "=", id);
+		List<Record> banks = dbDao.query(pagesql, pagecnd, null);
+		if (banks.size() > 0) {
+			companybank = banks.get(0);
+		}
+		result.put("companybank", companybank);
 		result.put("id", id);
 		result.put("billurl", billurl);
 		result.put("yhkSelect", yhkSelect);

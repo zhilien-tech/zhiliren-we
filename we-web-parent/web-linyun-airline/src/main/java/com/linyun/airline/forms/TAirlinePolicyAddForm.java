@@ -30,6 +30,8 @@ public class TAirlinePolicyAddForm extends AddForm {
 	private String fileName;
 	/**文件路径*/
 	private String url;
+	/**文件pdf路径*/
+	private String pdfUrl;
 	/**文件大小*/
 	private String fileSize;
 	/**状态*/

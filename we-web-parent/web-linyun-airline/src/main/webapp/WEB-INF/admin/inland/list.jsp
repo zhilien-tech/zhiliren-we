@@ -386,6 +386,7 @@
                                 <table id="shouInvoiceTable" class="table table-bordered table-hover">
                                   <thead>
                                     <tr>
+                                      <th>订单号</th>
                                       <th>PNR</th>
                                       <th>人数</th>
                                       <th>发票数</th>
