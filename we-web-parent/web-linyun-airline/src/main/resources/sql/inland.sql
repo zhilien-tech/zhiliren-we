@@ -53,6 +53,7 @@ SELECT
 	 tuo.*, tfi.billingdate,
 	 tfi.cusgroupnum,
 	 tci.shortName,
+	 tci.NAME customename,
 	 tci.linkMan,
 	 tfi.issuer,
 	 tfi.incometotal
@@ -104,7 +105,8 @@ SELECT
 	toc.arrivecity,
 	toc.leavetdate,
 	tci.name customename,
-	tpp.orderPnrStatus status
+	tpp.orderPnrStatus status,
+	tii.id invoiceid
 FROM
 	t_pnr_info tpi
 INNER JOIN t_pay_pnr tpp ON tpi.id = tpp.pnrId
@@ -112,6 +114,7 @@ INNER JOIN t_order_customneed toc ON tpi.needid = toc.id
 INNER JOIN t_up_order tuo ON toc.ordernum = tuo.id
 LEFT JOIN t_customer_info tci ON tci.id = tuo.userid
 INNER JOIN t_finance_info tfi ON tuo.id = tfi.orderid
+LEFT JOIN t_invoice_info tii ON tii.pnrid = tpi.id
 $condition
 
 /*get_fukuan_info_list*/
@@ -151,6 +154,7 @@ SELECT
 	tii.invoiceitem,
 	tii.paymentunit,
 	tii.id invoiceid,
+	tii.remark,
 	(
 		SELECT
 			count(*)
