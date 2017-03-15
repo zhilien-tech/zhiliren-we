@@ -115,11 +115,7 @@ public class InterReceivePayModule {
 	 */
 	@At
 	public Object internationalPayList(@Param("..") final InterPayListSearchSqlForm form, HttpSession session) {
-		//当前用户id
-		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
-		long id = loginUser.getId();
-		form.setLoginUserId(id);
-		return interReceivePayService.listPage4Datatables(form);
+		return interReceivePayService.listPage4Datatables(form, session);
 	}
 
 	/**

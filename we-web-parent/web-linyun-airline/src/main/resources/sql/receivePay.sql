@@ -33,10 +33,11 @@ SELECT
 	fi.`issuer` drawer
 FROM
 	t_pnr_info pi
-LEFT JOIN t_order_customneed oc ON oc.id = pi.needid
-LEFT JOIN t_up_order uo ON uo.id = oc.ordernum
-LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
+INNER JOIN t_pay_pnr pp ON pi.id = pp.pnrId
+INNER JOIN t_order_customneed oc ON pi.needid = oc.id
+INNER JOIN t_up_order uo ON oc.ordernum = uo.id
 LEFT JOIN t_customer_info ci ON ci.id = uo.userid
+INNER JOIN t_finance_info fi ON uo.id = fi.orderid
 $condition
 ORDER BY
 	oc.leavetdate DESC
@@ -44,7 +45,7 @@ ORDER BY
 	
 /*receivePay_payed_list*/
 SELECT
-  p.id,
+  	p.id,
 	uo.ordersnum ordernum,
 	pi.PNR pnrNum,
 	oc.leavetdate leaveDate,
@@ -120,7 +121,7 @@ SELECT
 	r.sum,
 	ci.shortName,
 	ci.linkMan,
-	u.userName,
+	fi.`issuer` userName,
 	fi.billingdate billdate,
 	fi.cusgroupnum,
 	uo.ordersstatus orderstatus
@@ -132,7 +133,6 @@ LEFT JOIN t_order_receive orec ON orec.orderid = uo.id
 LEFT JOIN t_receive r ON orec.receiveid = r.id
 LEFT JOIN t_receive_bill rb ON r.id = rb.receiveid
 LEFT JOIN t_customer_info ci ON ci.id = uo.userid
-LEFT JOIN t_user u ON u.id = fi.`issuer`
 $condition
 ORDER BY
 	oc.leavetdate DESC
@@ -146,7 +146,7 @@ SELECT
 	fi.cusgroupnum,
 	ci.shortName,
 	ci.linkMan,
-	u.userName,
+	fi.'issuer' userName,
 	fi.incometotal,
 	r.sum,
 	r.bankcardid,
@@ -160,7 +160,6 @@ LEFT JOIN t_customer_info ci ON ci.id = uo.userid
 LEFT JOIN t_order_receive orec ON orec.orderid = uo.id
 LEFT JOIN t_receive r ON r.id = orec.receiveid
 LEFT JOIN t_receive_bill rb ON rb.receiveid = r.id
-LEFT JOIN t_user u ON u.id = fi. ISSUER
 $condition
 ORDER BY
 	r.receivedate DESC
@@ -173,4 +172,46 @@ FROM
 	t_receive r
 LEFT JOIN t_order_receive orec ON orec.receiveid = r.id
 LEFT JOIN t_up_order uo ON uo.id=orec.orderid
+$condition
+
+/*receivePay_rec_invioce_list*/
+SELECT
+	r.*, ii.id invoiceid
+FROM
+	t_receive r
+LEFT JOIN t_invoice_info ii ON r.id = ii.receiveid
+$condition
+
+/*get_receive_order_list*/
+SELECT
+	uo.ordersnum,
+	oc.leavetdate,
+	fi.personcount,
+	fi.incometotal,
+	ci.shortName,
+	fi.billingdate,
+	fi. ISSUER,
+	r.`status`
+FROM
+	t_up_order uo
+LEFT JOIN t_finance_info fi ON uo.id = fi.orderid
+INNER JOIN t_order_receive ore ON uo.id = ore.orderid
+INNER JOIN t_receive r ON ore.receiveid = r.id
+INNER JOIN t_order_customneed oc ON oc.ordernum = uo.id
+INNER JOIN t_customer_info ci ON ci.id = uo.userid
+$condition
+
+/*receivePay_toRec_table_data*/
+SELECT
+	uo.*, 
+	fi.billingdate,
+	fi.cusgroupnum,
+	ci.shortName,
+	ci.linkMan,
+	fi. ISSUER,
+	fi.incometotal
+FROM
+	t_up_order uo
+INNER JOIN t_customer_info ci ON uo.userid = ci.id
+LEFT JOIN t_finance_info fi ON uo.id = fi.orderid
 $condition

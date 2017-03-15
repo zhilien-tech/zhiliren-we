@@ -60,7 +60,7 @@ function initPayDataTable(){
 		            {"data": "saleprice", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var saleprice = row.saleprice;
-		            		if(null == saleprice || ""== saleprice){
+		            		if(null == saleprice || ""== saleprice || undefined==saleprice){
 		            			return "";
 		            		}
 		            		return saleprice;
@@ -87,10 +87,10 @@ function initPayDataTable(){
 		            {"data": "orderpnrstatus", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var s = '';
-		            		if(data == '1'){
+		            		if(data == '2'){
 		            			s = '付款中';
 		            		}
-		            		if(data == '2'){
+		            		if(data == '3'){
 		            			s = '已付款';
 		            		}
 		            		return s;
@@ -183,10 +183,9 @@ function initPayEdDataTable(){
 									var pCount = value.peoplecount;
 									if(pCount == null || pCount == undefined || pCount==""){
 										pCount = " ";
+									}else{
+										result += '<li style="list-style:none;">'+pCount+'</li>';
 									}
-									result += '<li style="list-style:none;">'+pCount+'</li>';
-								}else{
-									result += '<li style="list-style:none;"> </li>';
 								}
 							});
 							result += '</ul>';
@@ -197,7 +196,7 @@ function initPayEdDataTable(){
 						render:function(data, type, row, meta) {
 							var result = '<ul> ';
 							$.each(row.orders, function(name, value) {
-								if(value){
+								if(value && value.saleprice!=undefined){
 									result += '<li style="list-style:none;">'+value.saleprice+'</li>';
 								}
 							});
@@ -235,6 +234,18 @@ function initPayEdDataTable(){
 		            		return shortname;
 		            	}
 		            },
+		            {"data": "orderpnrstatus", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var s = '';
+		            		if(data == '2'){
+		            			s = '付款中';
+		            		}
+		            		if(data == '3'){
+		            			s = '已付款';
+		            		}
+		            		return s;
+		            	}
+		            },
 		            {"data": "username", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var username = row.username;
@@ -242,18 +253,6 @@ function initPayEdDataTable(){
 		            			return "";
 		            		}
 		            		return username;
-		            	}
-		            },
-		            {"data": "orderpnrstatus", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var s = '';
-		            		if(data == '2'){
-		            			s = '已付款';
-		            		}
-		            		if(data == '1'){
-		            			s = '付款中';
-		            		}
-		            		return s;
 		            	}
 		            },
 		            {"data": "asd", "bSortable": false,
@@ -460,11 +459,19 @@ $("#inlandPaySearchBtn").on('click', function () {
 		    };
     if(orderStatus==1){
     	inlandPayTable.settings()[0].ajax.data = param;
-    	inlandPayTable.ajax.reload();
+    	inlandPayTable.ajax.reload(
+    			function(json){
+    				autoHighLoad($('#inlandPayTable'));
+    			}
+    	);
     }
     if(orderStatus==2){
     	inlandPayEdTable.settings()[0].ajax.data = param;
-    	inlandPayEdTable.ajax.reload();
+    	inlandPayEdTable.ajax.reload(
+    			function(json){
+    				autoHighLoad($('#inlandPayEdTable'));
+    			}
+    	);
     }
     
 });
