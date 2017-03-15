@@ -73,3 +73,4 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 #inlandRecTable tbody tr td:nth-child(7){line-height:60px;}
 #inlandRecTable tbody tr td:nth-child(8){line-height:60px;}
 #inlandRecTable tbody tr td:nth-child(9){line-height:60px;}
+#inlandRecTable tbody tr td{padding:0;}
