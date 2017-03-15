@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
@@ -127,19 +128,29 @@
                   <td>余额：</td>
                   <td><label id="balance" name="balance">${obj.invoicebalance }</label></td>
           </tr>
-          <c:forEach items="${obj.invoiceDetail }" var="invoiceDetail">
+          <c:forEach items="${obj.invoiceDetail }" var="invoiceDetail" varStatus="status">
 	          <tr class="cloneTR">
 	                  <td>发票号：</td>
 	                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm" value="${invoiceDetail.invoicenum }"></td>
 	                  <td>金额：</td>
 	                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm" value="${invoiceDetail.invoicebalance }"></td>
 	                  <td colspan="4">
+	                  	<ul class="fileUL">
 	                      <li>
-	                        <a href="javascript:;" class="FileDiv">上传<input type="file" class="sc" id="sc" name="sc">
-	                        </a>
-	                      </li>
+                        <a href="javascript:;" class="FileDiv">
+                          		上传
+                          <input type="file" class="sc" id="sc" name="sc">
+                        </a>
+                      </li>
 	                      <li><a href="javascript:;" id="fileName" name="fileName">${invoiceDetail.imagename }</a></li>
-	                      <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
+	                      <c:choose>
+	                      	<c:when test="${status.index eq 0 }">
+		                      <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
+	                      	</c:when>
+	                      	<c:otherwise>
+	                      		<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>
+	                      	</c:otherwise>
+	                      </c:choose>
 	                    </ul>
 	                    <input id="invoiceurl" name="invoiceurl" type="hidden" value="${invoiceDetail.invoiceurl }">
 	                  </td>
