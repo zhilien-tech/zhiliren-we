@@ -57,7 +57,7 @@
                    <span>${obj.orderinfo.ordersnum }</span>
                    <select id="orderType" name="orderType" class="form-control input-sm conSelect cf" disabled="disabled">
                      <c:forEach var="map" items="${obj.orderstatusenum}" >
-                     	<c:if test="${obj.querystatus != map.key }">
+                     	<c:if test="${obj.orderinfo.ordersstatus <= map.key }">
                      		<c:choose>
                      			<c:when test="${obj.orderinfo.ordersstatus eq map.key }">
                      				<option value="${map.key}" selected="selected">${map.value}</option>
@@ -542,11 +542,11 @@
             <div class="infofooter">
                  <table class="remindSet">
                    <tr>
-                     <td><input type="text" class="form-control input-sm" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" placeholder="2017-02-15 09:30" disabled="disabled"></td>
+                     <td><input id="remindTime" type="text" class="form-control input-sm" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" placeholder="2017-02-15 09:30" disabled="disabled"></td>
                      <td>
-                       <select class="form-control input-sm">
-                         <option>不重复</option>
-                         <option>重复</option>
+                       <select id="remindType" class="form-control input-sm">
+                         <option value="6">不重复</option>
+                         <option value="3">重复</option>
                        </select>
                      </td>
                    </tr>
@@ -726,6 +726,10 @@
 		customdata.customerId = customerId;
 		var id = $('#orderedid').val();
 		customdata.id = id;
+		var remindTime = $('#remindTime').val();
+		customdata.remindTime = remindTime;
+		var remindType = $('#remindType').val();
+		customdata.remindType = remindType;
 		var orderType = $('#orderType').val();
 		customdata.orderType = orderType;
 		var row = [];
@@ -949,7 +953,7 @@
 	 	if(fromprice){
 	 		if(isNaN(price)){
 	 			$(this).parent().parent().find('[name=price]').val('');
-	 		}else if(){
+	 		}else{
 		 		$(this).parent().parent().find('[name=price]').val(price);
 	 		}
 	 	}else{

@@ -47,13 +47,16 @@ import com.linyun.airline.admin.order.inland.form.ShouKuanParamFrom;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayPnrEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
+import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
+import com.linyun.airline.common.enums.BankCardStatusEnum;
 import com.linyun.airline.common.enums.OrderStatusEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.ExcelReader;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAirlineInfoEntity;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TFinanceInfoEntity;
 import com.linyun.airline.entities.TFlightInfoEntity;
@@ -100,12 +103,16 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	private static final String NLKHCODE = "NLKH";
 	private static final String EXCEL_PATH = "download";
 	private static final String FILE_EXCEL_NAME = "客户需求游客模板.xlsx";
+
+	private static final int ENABLE = BankCardStatusEnum.ENABLE.intKey();
 	@Inject
 	private EditPlanService editPlanService;
 	@Inject
 	private externalInfoService externalInfoService;
 	@Inject
 	private OrderLogService orderLogService;
+	@Inject
+	private SearchViewService searchViewService;
 
 	public Object listData(InlandListSearchForm form) {
 
@@ -311,6 +318,13 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		}
 		//更新订单信息
 		dbDao.update(orderinfo);
+		//消息提醒
+		String remindTime = (String) fromJson.get("remindTime");
+		fromJson.put("remindDate", remindTime);
+		fromJson.put("customerInfoId", orderinfo.getUserid().toString());
+		int upOrderid = id;
+		searchViewService.addRemindMsg(fromJson, orderinfo.getOrdersnum(), upOrderid, orderType, session);
+
 		String logcontent = "";
 		for (OrderStatusEnum statusenum : OrderStatusEnum.values()) {
 			if (orderType == statusenum.intKey()) {
@@ -538,6 +552,12 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		orderinfo.setLoginUserId(new Long(user.getId()).intValue());
 		//更新订单信息
 		dbDao.update(orderinfo);
+		//消息提醒
+		String remindTime = (String) fromJson.get("remindTime");
+		fromJson.put("remindDate", remindTime);
+		fromJson.put("customerInfoId", orderinfo.getUserid().toString());
+		int upOrderid = id;
+		searchViewService.addRemindMsg(fromJson, orderinfo.getOrdersnum(), upOrderid, orderType, session);
 		String logcontent = "";
 		for (OrderStatusEnum statusenum : OrderStatusEnum.values()) {
 			if (orderType == statusenum.intKey()) {
@@ -1149,6 +1169,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	 * @return 
 	 */
 	public Object seaInvoice(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Map<String, Object> result = new HashMap<String, Object>();
 		String ids = request.getParameter("ids");
 		String sqlString = sqlManager.get("get_sea_invoce_table_data");

@@ -154,7 +154,7 @@
      }
    //给人数赋值
    function assignment(){
-	   var count = $('#multiselect_to option').length;
+	   var count = $('#multiselect_to option').length; 
 	   if(count == 0){
 		   $('#peoplecount').val('');
 	   }else{
@@ -172,7 +172,7 @@
 	   if(costprice){
 	 		if(isNaN(salesprice)){
 	 			$('#salesprice').val('');
-	 		}else if(){
+	 		}else{
 	 			$('#salesprice').val(costprice);
 	 		}
 	 	}else{

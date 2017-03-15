@@ -14,7 +14,7 @@
                 <li class="active"><a href="#tab_1" onclick="loadDataTable(0)" data-toggle="tab">全部</a></li>
                 <li><a href="#tab_1" onclick="loadDataTable(1)" data-toggle="tab">查询</a></li>
                 <li><a href="#tab_1" onclick="loadDataTable(2)" data-toggle="tab">预订</a></li>
-                <li><a href="#tab_1" onclick="loadDataTable(4)" data-toggle="tab">开票</a></li>
+                <li><a href="#tab_1" onclick="loadDataTable(3)" data-toggle="tab">开票</a></li>
                 <li><a href="#tab_5" onclick="loadTicking()" data-toggle="tab">出票</a></li>
                 <li><a href="#tab_6" data-toggle="tab">收/付款</a></li>
                 <li><a href="#tab_7" data-toggle="tab" onclick="kaiInvoiceLoad();">发票</a></li>
