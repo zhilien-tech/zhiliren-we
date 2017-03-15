@@ -1511,12 +1511,22 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				}
 			}
 		}
+		Record companybank = new Record();
+		String pagesqlStr = sqlManager.get("get_fukuan_invoice_page_data");
+		Sql pagesql = Sqls.create(sqlString);
+		Cnd pagecnd = Cnd.limit();
+		cnd.and("tpp.pnrId", "=", id);
+		List<Record> banks = dbDao.query(pagesql, pagecnd, null);
+		if (banks.size() > 0) {
+			companybank = banks.get(0);
+		}
 		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
 		try {
 			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		result.put("companybank", companybank);
 		result.put("id", id);
 		result.put("billurl", billurl);
 		result.put("yhkSelect", yhkSelect);

@@ -55,25 +55,31 @@
                     <td>
                       <select class="form-control input-sm">
                           <c:forEach var="one" items="${obj.yhkSelect }">
-                        	 <option value="${one.id }">${one.dictName }</option>
+                          	<c:choose>
+                          		<c:when test="${obj.companybank.bankComp eq one.id }">
+		                        	 <option value="${one.id }" selected="selected">${one.dictName }</option>
+                          		</c:when>
+                          		<c:otherwise>
+	                        	 <option value="${one.id }">${one.dictName }</option>
+                          		</c:otherwise>
+                          	</c:choose>
                           </c:forEach>
                       </select>
                     </td>
-                    <td>银行卡名称：</td>
+                    <td>银行卡名称：</td> 
                     <td>
                       <select class="form-control input-sm">
-                          <option>国际专用卡</option>
-                          <option>内陆专用卡</option>
+                          <option>${obj.companybank.cardName }</option>
                       </select>
                     </td>
                     <td>卡号：</td>
                     <td>
                        <select class="form-control input-sm">
-                          <option>6352 7463 3647 756</option>
+                          <option>${obj.companybank.cardNum }</option>
                        </select>
                     </td>
                     <td>合计：</td>
-                    <td>${obj.sumjine }</td>
+                    <td id="sumjine">${obj.sumjine }</td>
                   </tr>
          </table>
          <div class="bankSlipImg" align="center"><img id="shuidanimg" width="400" height="300" alt="" src="${obj.billurl }"></div>

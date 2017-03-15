@@ -39,3 +39,17 @@ $(document).on('change','.sc', function(){
 	};
 	reader.readAsDataURL(file);
 });
+
+$(document).on('input','#invoicebalance', function(){
+	var banlanceyue = parseFloat($('#sumjine').html());
+	$('.cloneTR').each(function(i){
+		var invoicebalance = $(this).find('[name=invoicebalance]').val();
+		if(invoicebalance){
+			banlanceyue = banlanceyue - parseFloat(invoicebalance);
+		}
+	});
+	if(!isNaN(banlanceyue)){
+		$('#balance').html(banlanceyue);
+	}
+});
+

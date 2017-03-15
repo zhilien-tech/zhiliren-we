@@ -79,7 +79,7 @@
                        </select>
                     </td>
                     <td>合计：</td>
-                    <td>${obj.receive.sum }</td>
+                    <td id="sumjine">${obj.receive.sum }</td>
                   </tr>
          </table>
          <div class="bankSlipImg" align="center"><img id="shuidanimg" width="400" height="300" alt="" src="${obj.bill.receiptUrl }"></div>
@@ -124,8 +124,7 @@
                   <td>差额：</td>
                   <td><input id="difference" name="difference" type="text" class="form-control input-sm mustNumberPoint"></td>
                   <td>余额：</td>
-                  <td><label>${obj.receive.sum }</label>
-                  	<input id="balance" name="balance" type="hidden" value="">
+                  <td><label id="balance" name="balance">${obj.receive.sum }</label>
                   </td>
           </tr>
           <tr class="cloneTR">
