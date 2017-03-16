@@ -98,11 +98,14 @@ function initRecDataTable() {
 		            },
 		            {"data": "username", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		var username = row.username;
-		            		if(null == username || ""== username){
-		            			return "";
-		            		}
-		            		return username;
+		            		var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.issuer!=undefined && value.issuer!=null && value.issuer!=""){
+		            				result += '<li style="list-style:none;">'+value.issuer+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
 		            	}
 		            },
 		            {"data": "orderstatus", "bSortable": false,

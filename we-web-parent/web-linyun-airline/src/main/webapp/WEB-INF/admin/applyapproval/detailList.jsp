@@ -15,7 +15,7 @@
 <body>
   <header class="header">
 	<ul class="list-ul">
-		<li><a href="${base}/admin/applyapproval/dataList.html"><i class="fa fa-angle-left"></i>返回</a></li>
+		<li><a href="${base}/admin/applyapproval/dataList.html?operation=${obj.operation}"><i class="fa fa-angle-left"></i>返回</a></li>
 		<li><h3>审批详情</h3></li>
 		<li> </li>
 	</ul>
@@ -24,50 +24,97 @@
 		<ul class="content-ul">
 			<li>
 				<span>订单号</span>
-				<span>2016121377643</span>
+				<span>${obj.detaillist.ordersnum }</span>
 			</li>
 			<li>
 				<span>支付对象</span>
-				<span>北京神舟国际旅行社集团有限公司</span>
+				<span>${obj.detaillist.name }</span>
 			</li>
 			<li>
 				<span>用途</span>
-				<span>代订机票款</span>
+				<span>${obj.detaillist.purpose }</span>
 			</li>
 			<li>
 				<span>资金种类</span>
-				<span>对公</span>
+				<span>${obj.detaillist.fundType }</span>
 			</li>
 			<li>
 				<span>金额</span>
-				<span>9000</span>
+				<span>${obj.detaillist.payMoney }</span>
 			</li>
 			<li>
 				<span>手续费</span>
-				<span>12</span>
+				<span>${obj.detaillist.payFees }</span>
 			</li>
 			<li>
 				<span>币种</span>
-				<span>人民币</span>
+				<span>${obj.detaillist.payCurrency }</span>
 			</li>
 			<li>
 				<span>发票</span>
-				<span>有</span>
+				<span>${obj.detaillist.isInvioce }</span>
 			</li>
 			<li>
 				<span>签收时间</span>
-				<span>2017-03-10</span>
+				<span>${obj.detaillist.approveTime }</span>
 			</li>
 			<li>
 				<span>申请人</span>
-				<span>宋淑美</span>
+				<span>${obj.detaillist.proposer }</span>
 			</li>
 		</ul>
+		
   </content>
+  <input name="id" id="id" value="${obj.detaillist.id }" type="hidden">
+  <input name="usingId" id="usingId" value="${obj.detaillist.usingId }" type="hidden">
+  <input name="status" id="status" value="${obj.detaillist.orderPnrStatus }" type="hidden">
   <footer>
-	<button type="button">同意</button>
+  	
+	<button type="button" onclick="agree();">同意</button>
 	<button type="button">拒绝</button>
   </footer>
 <script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!--layer -->
+<script src="${base}/common/js/layer/layer.js"></script>
+<script type="text/javascript">
+
+//删除提示
+function agree() {
+	layer.confirm("您确认同意吗？", {
+	    btn: ["是","否"], //按钮
+	    shade: false //不显示遮罩
+	}, function(){
+		// 点击确定之后
+		var url = "${base}/admin/applyapproval/agree.html";
+		$.ajax({
+			type : 'POST',
+			data : {
+				id : $('#id').val(),
+				usingId : $('#usingId').val(),
+				status:$('#status').val()
+				
+			},
+			dataType : 'json',
+			url : url,
+			success : function(data) {
+				alert(data.status);
+				if ("200" == data.status) {
+					layer.msg("审核成功!", "", 3000);
+					 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				     parent.layer.close(index);
+				     window.parent.successCallback('3');
+				} else {
+					layer.msg("审核失败!", "", 3000);
+				}
+			},
+			error : function(xhr) {
+				layer.msg("审核失败", "", 3000);
+			}
+		});
+	}, function(){
+	    // 取消之后不用处理
+	});
+}
+</script>
 </body>
 </html>

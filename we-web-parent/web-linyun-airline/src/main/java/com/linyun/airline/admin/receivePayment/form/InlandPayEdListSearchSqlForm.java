@@ -2,7 +2,7 @@
  * InlandPayListSearchForm.java
  * com.linyun.airline.admin.receivePayment.form
  * Copyright (c) 2017, 北京科技有限公司版权所有.
-*/
+ */
 
 package com.linyun.airline.admin.receivePayment.form;
 
@@ -45,8 +45,8 @@ public class InlandPayEdListSearchSqlForm extends DataTablesParamForm {
 	/**出发日期 -- 截止出发日期*/
 	private Date leaveEndDate;
 
-	/**当前登陆用户id*/
-	private long loginUserId;
+	/**当前公司下用户 ids*/
+	private String loginUserId;
 
 	/**订单状态*/
 	private long orderPnrStatus;
@@ -66,7 +66,11 @@ public class InlandPayEdListSearchSqlForm extends DataTablesParamForm {
 
 		//TODO 出发日期
 		if (!Util.isEmpty(leaveBeginDate)) {
-			cnd.and("oc.leavetdate", "=", leaveBeginDate);
+			cnd.and("oc.leavetdate", ">", leaveBeginDate);
+		}
+		// 返回日期
+		if (!Util.isEmpty(leaveEndDate)) {
+			cnd.and("oc.leavetdate", "<", leaveEndDate);
 		}
 
 		cnd.and("uo.orderstype", "=", OrderTypeEnum.FIT.intKey()); //散客

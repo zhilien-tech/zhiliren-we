@@ -146,6 +146,23 @@ public class TurnOverModule {
 	}
 
 	/**
+	 * 执行'修改操作',将流水状态变为关闭
+	 */
+	@At
+	@POST
+	public Object open(@Param("id") final int id) {
+		if (!Util.isEmpty(id)) {
+			//更新用户表中状态
+			dbDao.update(TTurnOverEntity.class, Chain.make("status", TurnOverStatusEnum.ENABLE.intKey()),
+
+			Cnd.where("id", "=", id));//禁用
+
+			return JsonResult.success("开启成功");
+		}
+		return JsonResult.success("开启失败!");
+	}
+
+	/**
 	 * 
 	 * 根据输入显示公司名称
 	 */
