@@ -5,7 +5,7 @@
 <html lang="en-US">
 <head>
 <meta charset="UTF-8">
-<title>修改银行卡</title>
+<title>编辑银行卡</title>
 <link rel="stylesheet"
 	href="${base }/public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="${base }/public/dist/css/AdminLTE.css">
@@ -26,10 +26,10 @@
 				<input type="submit" id="submit"
 					class="btn btn-primary right btn-sm" value="保存"
 					onclick="saveSubmit('${obj.bankCardInfo.id}');" />
-				<button type="button" class="btn btn-primary right btn-sm"
+				<button type="button" class="btn right btn-sm"
 					" onclick="physicalDelete('${obj.bankCardInfo.id}');">删除</button>
 				<%-- 	            <button type="button" class="btn right btn-sm" onclick="physicalDelete('${obj.bankCardInfo.id}');">删除</button> --%>
-				<h4>添加银行卡</h4>
+				<h4>编辑银行卡</h4>
 			</div>
 			<div class="modal-body" style="height: 252px; overflow-y: auto;">
 				<div class="tab-content backcard">
