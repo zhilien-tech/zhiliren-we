@@ -45,8 +45,8 @@ public class InlandPayListSearchSqlForm extends DataTablesParamForm {
 	/**出发日期 -- 截止出发日期*/
 	private Date leaveEndDate;
 
-	/**当前登陆用户id*/
-	private long loginUserId;
+	/**当前公司下的用户ids*/
+	private String loginUserId;
 
 	/**订单状态*/
 	private long orderPnrStatus;
@@ -64,9 +64,13 @@ public class InlandPayListSearchSqlForm extends DataTablesParamForm {
 			cnd.and("pi.orderPnrStatus", "=", orderStatus);
 		}
 
-		//TODO 出发日期
+		//出发日期
 		if (!Util.isEmpty(leaveBeginDate)) {
-			cnd.and("oc.leavetdate", "=", leaveBeginDate);
+			cnd.and("oc.leavetdate", ">", leaveBeginDate);
+		}
+		// 返回日期
+		if (!Util.isEmpty(leaveEndDate)) {
+			cnd.and("oc.leavetdate", "<", leaveEndDate);
 		}
 
 		cnd.and("uo.orderstype", "=", OrderTypeEnum.FIT.intKey()); //散客
