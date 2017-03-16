@@ -118,7 +118,18 @@
   	    content: '${base}/admin/authority/authoritymanage/update.html?id='+id
   	  });
 	}
-	
+	//事件提示
+	function successCallback(id){
+		deptDatatable.ajax.reload(null,false);
+		areaDatatable.ajax.reload(null,false);
+		  if(id == '1'){
+			  layer.msg("添加成功",{time: 2000, icon:1});
+		  }else if(id == '2'){
+			  layer.msg("修改成功",{time: 2000, icon:1});
+		  }else if(id == '3'){
+			  layer.msg("删除成功",{time: 2000, icon:1});
+		  }
+	  }
 	//描述提示信息弹出层Tooltip
 	$(function() {
 		$("[data-toggle='tooltip']").tooltip();
@@ -264,18 +275,6 @@ function editArea(id){
 			$("li#area_button").addClass("active");
 		}
 	});
-	//事件提示
-	function successCallback(id){
-		deptDatatable.ajax.reload(null,false);
-		areaDatatable.ajax.reload(null,false);
-		  if(id == '1'){
-			  layer.msg("添加成功",{time: 2000, icon:1});
-		  }else if(id == '2'){
-			  layer.msg("修改成功",{time: 2000, icon:1});
-		  }else if(id == '3'){
-			  layer.msg("删除成功",{time: 2000, icon:1});
-		  }
-	  }
 </script>
 </body>
 </html>

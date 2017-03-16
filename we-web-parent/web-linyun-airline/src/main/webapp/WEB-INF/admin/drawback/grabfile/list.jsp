@@ -473,10 +473,19 @@ function successCallback(id){
 	                    		var filename = row.filename;
 	                    		var fileId  = row.id;
 	                    		var filetype = row.type;
+	                    		var fileExtension = filename.substring(filename.lastIndexOf('.') + 1);
 	                    		if(null==filename || ""==filename){
 	                    			return null;
 	                    		}
-	                    		return  '<a id="'+fileId+'" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
+	                    		if(filetype===1){
+	                    			return '<a id="'+fileId+'" class="fa fa-folder" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
+	                    		}else if(filetype===2 && fileExtension==="pdf"){
+	                    			return  '<a id="'+fileId+'" class="fa fa-file-pdf-o" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
+	                    		}else if(filetype===2 && fileExtension==="PNG"){
+	                    			return  '<a id="'+fileId+'" class="fa fa-area-chart" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
+	                    		}else{
+	                    			return  '<a id="'+fileId+'" class="fa fa-file-text" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
+	                    		}
 	                    	}
 	                    },
 	                    {"data": "createtime", "bSortable": true,
@@ -571,7 +580,7 @@ function successCallback(id){
 					$("ol.breadcrumb").find("li").each(function(){
 						$(this).removeClass("active");
 					});
-					$("ol.breadcrumb").append('<li id=\''+pid+'\' class="active"><a onclick="javascript:createFodler(\''+pid+'\',\''+filename+'\');"  href="#">'+filename+'</a></li>');
+					$("ol.breadcrumb").append('<li id=\''+pid+'\' class="active"><a class="fa fa-folder-open" onclick="javascript:createFodler(\''+pid+'\',\''+filename+'\');"  href="#">'+filename+'</a></li>');
 				}
 			}else{
 				//找到指定元素的下标

@@ -99,15 +99,11 @@ public class UserModule {
 		//通过session获取当前登录用户的id
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long userType = user.getUserType();//得到用户类型
-		long userId = user.getId();
 		if (UserTypeEnum.UPCOM.intKey() == userType || UserTypeEnum.AGENT.intKey() == userType
 				|| UserTypeEnum.UP_MANAGER.intKey() == userType || UserTypeEnum.AGENT_MANAGER.intKey() == userType) {
 			//如果当前用户是普通用户,登录到系统中只能显示出自己的数据，不可以看到管理员的账户
 			sqlForm.setAdminId(adminId);
-			sqlForm.setUserId(userId);
-			sqlForm.setUserType(userType);
 		}
-		Map<String, Object> listPage4Datatables = userViewService.listPage4Datatables(sqlForm);
 		return userViewService.listPage4Datatables(sqlForm);
 	}
 

@@ -467,8 +467,8 @@ $("#inlandPaySearchBtn").on('click', function () {
 	var inlandPayInput = $("#inlandPayInput").val();
     var param = {
 		        "orderStatus":orderStatus,
-		        "leaveBeginDate":inlandPayBeginDate,
-		        "leaveEndDate":inlandPayEndDate,
+		        "leavetdate":inlandPayBeginDate,
+		        "backdate":inlandPayEndDate,
 				"name": inlandPayInput
 		    };
     if(orderStatus==1){

@@ -21,30 +21,30 @@
                           <form role="form" class="form-horizontal">
                            <div class="form-group row marginBott5 cf">
                              <div class="col-md-1 textPadding">
-                               <select class="form-control TimeInput">
-                                   <option>全部</option>
-                                   <option>收发票中</option>
-                                   <option>已开发票</option>
+                               <select id="kaiInvoiceSelect" class="form-control TimeInput">
+                                   <option value=" ">全部</option>
+                                   <option value="0">开发票中</option>
+                                   <option value="1">已开发票</option>
                                </select>
                              </div>
                              <div class="col-md-1 textPadding">
-                               <select class="form-control TimeInput">
+                               <select id="kaiDrawer" class="form-control TimeInput">
                                    <option>开票人</option>
                                    <option>张三</option>
                                </select>
                              </div>
                              <div class="col-md-1 textPadding">
-                               <input type="text" class="form-control TimeInput" placeholder="2017-02-20"> 
+                               <input id="kaiInvoiceBeginDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'kaiInvoiceBeginDate\')}'})" class="form-control TimeInput" placeholder="2017-02-20"> 
                              </div>
                              <label class="col-md-1 labelClas">至</label>
                              <div class="col-md-1 textPadding">
-                               <input type="text" class="form-control TimeInput" placeholder="2017-02-22">
+                               <input id="kaiInvoiceEndDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'kaiInvoiceEndDate\')}'})" class="form-control TimeInput" placeholder="2017-02-22">
                              </div>
-                             <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                               <input type="text" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+                             <div class="col-md-3 textPadding"><!-- 发票号/单位 搜索框 -->
+                               <input id="invoicenumId" name="invoicenum" type="text" class="form-control" placeholder="发票号/单位">
                              </div>
                              <div class="col-md-2"><!-- 搜索 按钮 -->
-                               <button type="button" class="btn btn-primary btn-sm">搜索</button>
+                               <button id="kaiSearchInvoiceBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
                                <button type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
                              </div>
                            </div>
@@ -78,9 +78,9 @@
                           <div class="form-group row marginBott5 cf">
                             <div class="col-md-1 textPadding">
                               <select class="form-control TimeInput">
-                                  <option>全部</option>
-                                  <option>收发票中</option>
-                                  <option>已开发票</option>
+                                  <option value=" ">全部</option>
+                                  <option value="2">收发票中</option>
+                                  <option value="3">已收发票</option>
                               </select>
                             </div>
                             <div class="col-md-1 textPadding">
@@ -90,14 +90,14 @@
                               </select>
                             </div>
                             <div class="col-md-1 textPadding">
-                              <input type="text" class="form-control TimeInput" placeholder="2017-02-20"> 
+                              <input id="shouInvoiceBeginDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'shouInvoiceBeginDate\')}'})" class="form-control TimeInput" placeholder="2017-02-20"> 
                             </div>
                             <label class="col-md-1 labelClas">至</label>
                             <div class="col-md-1 textPadding">
-                              <input type="text" class="form-control TimeInput" placeholder="2017-02-22">
+                              <input id="shouInvoiceEndDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'shouInvoiceEndDate\')}'})"  class="form-control TimeInput" placeholder="2017-02-22">
                             </div>
-                            <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                              <input type="text" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+                            <div class="col-md-3 textPadding"><!-- PNR/单位 搜索框 -->
+                              <input type="text" class="form-control" placeholder="PNR/单位">
                             </div>
                             <div class="col-md-2"><!-- 搜索 按钮 -->
                               <button type="button" class="btn btn-primary btn-sm">搜索</button>
@@ -143,3 +143,5 @@
 </script>
 <script src="${base}/admin/order/invoice.js"></script>
 <script src="${base}/admin/invoiceinfo/invoiceinfo.js"></script>
+<!-- My97DatePicker -->
+<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>

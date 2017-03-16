@@ -18,7 +18,6 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.cri.SqlExpressionGroup;
 
 import com.linyun.airline.common.enums.UserJobStatusEnum;
-import com.linyun.airline.common.enums.UserTypeEnum;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
@@ -106,10 +105,6 @@ public class TUserSqlForm extends DataTablesParamForm {
 		}
 		cnd.and("u.status", "=", UserJobStatusEnum.ON.intKey());
 		cnd.and("u.id", "!=", adminId);
-		if (!Util.isEmpty(userType)
-				&& (userType == UserTypeEnum.UP_MANAGER.intKey() || userType == UserTypeEnum.AGENT_MANAGER.intKey())) {
-			cnd.and("u.id", "=", userId);
-		}
 		cnd.and("cj.comId", "=", comId);
 		cnd.orderBy("u.createTime", "DESC");
 		return cnd;
