@@ -100,10 +100,12 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		@SuppressWarnings("unchecked")
 		List<Record> list = (List<Record>) listdata.get("data");
 		for (Record record : list) {
+			String id = record.get("id").toString();
+
 			String sqlString = sqlManager.get("get_receive_order_list");
 			Sql sql = Sqls.create(sqlString);
 			Cnd cnd = Cnd.NEW();
-			cnd.and("r.id", "=", record.get("id"));
+			cnd.and("r.id", "in", record.get("id"));
 			List<Record> orders = dbDao.query(sql, cnd, null);
 			record.put("orders", orders);
 		}
