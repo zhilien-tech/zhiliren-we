@@ -114,8 +114,11 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	@Inject
 	private SearchViewService searchViewService;
 
-	public Object listData(InlandListSearchForm form) {
-
+	public Object listData(InlandListSearchForm form, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		form.setUserid(new Long(user.getId()).intValue());
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
 		List<Record> data = (List<Record>) listdata.get("data");

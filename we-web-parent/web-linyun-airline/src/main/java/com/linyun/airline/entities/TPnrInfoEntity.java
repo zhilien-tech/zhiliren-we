@@ -19,7 +19,7 @@ public class TPnrInfoEntity implements Serializable {
 
 	@Column
 	@Comment("PNR")
-	private String pNR;
+	private String pNR; 
 
 	@Column
 	@Comment("成本单价")
@@ -68,5 +68,13 @@ public class TPnrInfoEntity implements Serializable {
 	@Column
 	@Comment("操作时间")
 	private Date optime;
+
+	@Column
+	@Comment("是否主航段")
+	private Integer mainsection;
+
+	@Column
+	@Comment("订单id（国际用）")
+	private Integer orderid;
 
 }

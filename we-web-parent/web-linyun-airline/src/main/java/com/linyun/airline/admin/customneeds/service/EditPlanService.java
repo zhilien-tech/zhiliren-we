@@ -34,6 +34,8 @@ import com.linyun.airline.admin.customneeds.form.EditPlanSqlForm;
 import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
+import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.ExportExcel;
 import com.linyun.airline.entities.TAirlineInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
@@ -297,6 +299,9 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 			long planId = Long.valueOf(str);
 			//查询当前记录
 			TPlanInfoEntity planinfo = this.fetch(planId);
+			//客户信息
+			List<TCustomerInfoEntity> customInfo = dbDao.query(TCustomerInfoEntity.class,
+					Cnd.where("shortName", "=", planinfo.getTravelname()), null);
 			List<TUpOrderTicketEntity> query = dbDao.query(TUpOrderTicketEntity.class,
 					Cnd.where("ticketid", "=", planId), null);
 			//如果不存在订单号则生成
@@ -311,13 +316,21 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 				upOrderEntity.setCurrencyCode(planInfo.getCurrencycode());
 				upOrderEntity.setCustomid(company.getId());
 				upOrderEntity.setOrdersnum(generateOrderNum());
-				upOrderEntity.setOrdersstatus(0);
+				upOrderEntity.setOrdersstatus(InternationalStatusEnum.SEARCH.intKey());
 				upOrderEntity.setOrderstime(new Date());
-				upOrderEntity.setOrderstype(0);
+				upOrderEntity.setOrderstype(OrderTypeEnum.TEAM.intKey());
+				if (!Util.isEmpty(customInfo))
+					upOrderEntity.setUserid(new Long(customInfo.get(0).getId()).intValue());
 				insertOrder = dbDao.insert(upOrderEntity);
 				//设置订单ID
 				planinfo.setOrdernumber(String.valueOf(insertOrder.getId()));
 				dbDao.update(planinfo);
+			} else {
+				TUpOrderEntity fetch = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(planinfo.getOrdernumber()));
+				if (!Util.isEmpty(customInfo)) {
+					fetch.setUserid(new Long(customInfo.get(0).getId()).intValue());
+				}
+				dbDao.update(fetch);
 			}
 		}
 		return 1;
