@@ -3,7 +3,7 @@
 .addPNR .table-bordered {border: 1px solid #cccccc;margin-bottom: 5px;background-color: #e4e4e4;}
 .addPNR .table-bordered > thead > tr > th,.addPNR .table-bordered > tbody > tr > th,.addPNR .table-bordered > thead > tr > td,.addPNR .table-bordered > tbody > tr > td{ border: 1px solid #cccccc;text-align: center;padding:4px;}
 .addPNR table tr{height: 30px;}
-.PNRbtn{padding: 4px 5px !important;margin-left: 10px !important;}
+.PNRbtn{padding: 4px 5px !important;margin-left: 10px !important;position: relative;top: -15px;}
 .addDemand{left: 72.5%; margin-left: 8px;line-height: 18px;font-size: 12px;}
 .addIcon {top: 0px;float: left;left: 10px;}
 .removIcon {float: left;left: 27px;}
