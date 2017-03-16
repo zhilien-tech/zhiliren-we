@@ -545,8 +545,6 @@
 		<!-- DataTables -->
 		<script src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
 		<script src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
-		<!-- boostrap -->
-		<script src="${base}/public/plugins/bootstrap/bootstrap.min.js"></script>
 		<!-- 客户信息 js -->
 		<script src="${base}/admin/searchTicket/searchCustomerInfo.js"></script>
 		<!-- 客户需求 js -->
