@@ -43,8 +43,8 @@ public class InlandRecListSearchSqlForm extends DataTablesParamForm {
 	/**出发日期 -- 截止出发日期*/
 	private Date leaveEndDate;
 
-	/**当前登陆用户id*/
-	private long loginUserId;
+	/**当前公司用户id*/
+	private String loginUserId;
 
 	public Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
@@ -67,7 +67,7 @@ public class InlandRecListSearchSqlForm extends DataTablesParamForm {
 		/*
 		 * cnd.and("uo.orderstype", "=", OrderTypeEnum.FIT.intKey()); //散客
 		 */
-		cnd.and("r.userid", "=", loginUserId);
+		cnd.and("r.userid", "in", loginUserId);
 
 		return cnd;
 	}

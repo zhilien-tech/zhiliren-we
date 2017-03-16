@@ -215,3 +215,11 @@ FROM
 INNER JOIN t_customer_info ci ON uo.userid = ci.id
 LEFT JOIN t_finance_info fi ON uo.id = fi.orderid
 $condition
+
+/*receivePay_loginComp_user_ids*/
+SELECT
+	uj.userid
+FROM
+	t_user_job uj
+INNER JOIN t_company_job cj ON cj.posid = uj.companyJobId
+$condition

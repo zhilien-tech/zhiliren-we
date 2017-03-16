@@ -48,6 +48,7 @@ import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
+import com.linyun.airline.common.enums.UserJobStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TBankCardEntity;
 import com.linyun.airline.entities.TCompanyEntity;
@@ -65,21 +66,14 @@ import com.uxuexi.core.web.base.service.BaseService;
 @IocBean
 public class ReceivePayService extends BaseService<TPayEntity> {
 
-	//银行卡类型
 	private static final String YHCODE = "YH";
-	//币种类型
 	private static final String BZCODE = "BZ";
-
-	//银行卡状态
 	private static final int ENABLE = BankCardStatusEnum.ENABLE.intKey();
-
-	//付款用途
 	private static final String YTCODE = "FKYT";
-
 	private static final int RECEIVESTATUS = AccountReceiveEnum.RECEIVEDONEY.intKey();
-
 	private static final int APPROVALPAYED = AccountPayEnum.APPROVALPAYED.intKey();
 	private static final int APPROVALPAYING = AccountPayEnum.APPROVALPAYING.intKey();
+	private static final int ONJOB = UserJobStatusEnum.ON.intKey();
 
 	@Inject
 	private UploadService qiniuUploadService;
@@ -97,10 +91,27 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object listRecData(InlandRecListSearchSqlForm form, HttpSession session, HttpServletRequest request) {
-		//当前用户id
+		//当前登陆用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
-		long id = loginUser.getId();
-		form.setLoginUserId(id);
+		long loginUserIdd = loginUser.getId();
+		//当前公司所有用户id
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		String str = sqlManager.get("receivePay_loginComp_user_ids");
+		Sql userSql = Sqls.create(str);
+		Cnd userCnd = Cnd.NEW();
+		userCnd.and("uj.`status`", "=", ONJOB);
+		userCnd.and("cj.comId", "=", companyId);
+		List<Record> userList = dbDao.query(userSql, userCnd, null);
+		String userIds = "";
+		for (Record user : userList) {
+			userIds += user.getString("userid") + ",";
+		}
+		if (userIds.length() > 1) {
+			userIds = userIds.substring(0, userIds.length() - 1);
+		}
+
+		form.setLoginUserId(userIds);
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
 		List<Record> list = (List<Record>) listdata.get("data");
@@ -108,7 +119,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			record.put("username", loginUser.getUserName());
 			String sqlString = sqlManager.get("get_receive_order_list");
 			Sql sql = Sqls.create(sqlString);
-			Cnd cnd = Cnd.limit();
+			Cnd cnd = Cnd.NEW();
 			cnd.and("r.id", "=", record.get("id"));
 			List<Record> orders = dbDao.query(sql, cnd, null);
 			record.put("orders", orders);
