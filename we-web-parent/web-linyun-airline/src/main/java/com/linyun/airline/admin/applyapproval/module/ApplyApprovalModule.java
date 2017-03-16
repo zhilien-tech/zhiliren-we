@@ -101,13 +101,13 @@ public class ApplyApprovalModule {
 	@At
 	@Ok("json")
 	public Object agree(@Param("..") final Pager pager, final HttpSession session,
-			@Param("usingId") final Long usingId, @Param("id") final Long id, @Param("status") final Long status) {
+			@Param("usingId") final Long usingId, @Param("id") final Long id, @Param("status") final Long status,
+			@Param("temp") final String temp, @Param("orderId") final Long orderId) {
 		/*Map<String, Object> map = Maps.newHashMap();
 		List<Record> deplist = grabfileViewService.getFolderInfo(sqlManager);
 		map.put("deplist", deplist);
 		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));*/
 		/*airlinePolicyService.findConditionList()*/
-
-		return applyApprovalService.doAgree(session, usingId, id, status);
+		return applyApprovalService.doAgree(session, usingId, id, status, temp, orderId);
 	}
 }
