@@ -465,6 +465,9 @@ $(document).on('click', '.checkBoxPayChild', function(e) {
 
 //内陆跨海付款 搜索按钮
 $("#inlandPaySearchBtn").on('click', function () {
+	var inlandPayStatus = 2;
+	var inlandPayEdStatus = 3;
+	
 	var orderStatus = $("#inlandPaySelect").val();
 	var inlandPayBeginDate = $("#inlandPayBeginDate").val();
 	var inlandPayEndDate = $("#inlandPayEndDate").val();
@@ -475,7 +478,7 @@ $("#inlandPaySearchBtn").on('click', function () {
 		        "leaveEndDate":inlandPayEndDate,
 				"name": inlandPayInput
 		    };
-    if(orderStatus==2){
+    if(orderStatus==inlandPayStatus){
     	inlandPayTable.settings()[0].ajax.data = param;
     	inlandPayTable.ajax.reload(
     			function(json){
@@ -483,7 +486,7 @@ $("#inlandPaySearchBtn").on('click', function () {
     			}
     	);
     }
-    if(orderStatus==3){
+    if(orderStatus==inlandPayEdStatus){
     	inlandPayEdTable.settings()[0].ajax.data = param;
     	inlandPayEdTable.ajax.reload(
     			function(json){
