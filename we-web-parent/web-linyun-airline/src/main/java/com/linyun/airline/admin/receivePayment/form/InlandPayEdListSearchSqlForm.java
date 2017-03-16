@@ -45,8 +45,8 @@ public class InlandPayEdListSearchSqlForm extends DataTablesParamForm {
 	/**出发日期 -- 截止出发日期*/
 	private Date leaveEndDate;
 
-	/**当前登陆用户id*/
-	private long loginUserId;
+	/**当前公司下用户 ids*/
+	private String loginUserId;
 
 	/**订单状态*/
 	private long orderPnrStatus;

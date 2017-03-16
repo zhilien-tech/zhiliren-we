@@ -35,11 +35,11 @@
 					<c:forEach var="one" items="${obj.orders}">
                 		<tr>
                 			<td>${one.ordersnum }</td>
-                			<td>${one.billdate }</td>
+                			<td>${one.billingdate }</td>
                 			<td>${one.cusgroupnum }</td>
                 			<td>${one.shortname }</td>
                 			<td>${one.linkman }</td>
-                			<td>${one.username }</td>
+                			<td>${one.issuer }</td>
                 			<td>${one.incometotal }</td>
                 		</tr>
                 	</c:forEach>
