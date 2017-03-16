@@ -304,6 +304,7 @@ function  toConfirmPayPage(){
 	destroyDatetable($("#inlandRecTable"));
 	initPayDataTable();
 	$('#inlandPaySearchBtn').click();
+	$("#inlandRecSelect option:first").prop("selected", true);
 }
 //收款页切换
 function  toConfirmRecPage(){
@@ -311,6 +312,10 @@ function  toConfirmRecPage(){
 	destroyDatetable($("#inlandPayEdTable"));
 	initRecDataTable();
 	$('#inlandRecSearchBtn').click();
+	$("#inlandPayClick").show();
+	$("#inlandPayTable").show();
+	$("#inlandPayEdTable").hide();
+	$("#inlandPaySelect option:first").prop("selected", true);
 }
 
 //状态选择按钮
