@@ -48,27 +48,10 @@ public class InlandRecListSearchSqlForm extends DataTablesParamForm {
 
 	public Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
-		//添加自定义查询条件（可选）
-		/*SqlExpressionGroup group = new SqlExpressionGroup();
-		group.and("ci.shortName", "LIKE", "%" + name + "%").or("uo.ordersnum", "LIKE", "%" + name + "%")
-				.or("ci.linkMan", "LIKE", "%" + name + "%").or("pi.PNR", "LIKE", "%" + name + "%");
-		if (!Util.isEmpty(name)) {
-			cnd.and(group);
-		}*/
 		if (!Util.isEmpty(orderStatus)) {
 			cnd.and("r.`status`", "=", orderStatus);
 		}
-
-		//TODO 出发日期
-		/*if (!Util.isEmpty(leaveBeginDate)) {
-			cnd.and("oc.leavetdate", "=", leaveBeginDate);
-		}*/
-
-		/*
-		 * cnd.and("uo.orderstype", "=", OrderTypeEnum.FIT.intKey()); //散客
-		 */
 		cnd.and("r.userid", "in", loginUserId);
-
 		return cnd;
 	}
 

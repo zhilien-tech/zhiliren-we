@@ -26,6 +26,7 @@ import org.nutz.dao.entity.Record;
 import org.nutz.dao.pager.Pager;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.Daos;
+import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Files;
@@ -93,24 +94,62 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object listRecData(InlandRecListSearchSqlForm form, HttpSession session, HttpServletRequest request) {
+
+		//付款列表检索
+		String name = form.getName();
+		Date leaveBeginDate = form.getLeaveBeginDate();
+		Date leaveEndDate = form.getLeaveEndDate();
+		String sqlStr = sqlManager.get("get_receive_list_by_condition");
+		Sql sql = Sqls.create(sqlStr);
+		Cnd cnd = Cnd.NEW();
+		SqlExpressionGroup group = new SqlExpressionGroup();
+		group.and("ci.shortName", "LIKE", "%" + name + "%").or("uo.ordersnum", "LIKE", "%" + name + "%")
+				.or("ci.linkMan", "LIKE", "%" + name + "%");
+		if (!Util.isEmpty(name)) {
+			cnd.and(group);
+		}
+		//出发日期
+		if (!Util.isEmpty(leaveBeginDate)) {
+			cnd.and("oc.leavetdate", ">", leaveBeginDate);
+		}
+		// 返回日期
+		if (!Util.isEmpty(leaveEndDate)) {
+			cnd.and("oc.leavetdate", "<", leaveEndDate);
+		}
+		List<Record> orders = dbDao.query(sql, cnd, null);
+
 		//当前公司下的用户
 		String userIds = userInComp(session);
 		form.setLoginUserId(userIds);
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
 		List<Record> list = (List<Record>) listdata.get("data");
-		for (Record record : list) {
-			String id = record.get("id").toString();
 
-			String sqlString = sqlManager.get("get_receive_order_list");
-			Sql sql = Sqls.create(sqlString);
-			Cnd cnd = Cnd.NEW();
-			cnd.and("r.id", "in", record.get("id"));
-			List<Record> orders = dbDao.query(sql, cnd, null);
-			record.put("orders", orders);
+		for (Record record : list) {
+			//收款id
+			String id = record.get("id").toString();
+			List<Record> rList = new ArrayList<Record>();
+			for (Record r : orders) {
+				String rid = r.getString("id");
+				if (Util.eq(id, rid)) {
+					rList.add(r);
+				}
+			}
+			if (!Util.isEmpty(rList)) {
+				record.put("orders", rList);
+			}
 		}
+		List<Record> ordersBC = new ArrayList<Record>();
+		for (Record r : list) {
+			String oStr = r.getString("orders");
+			if (!Util.isEmpty(oStr)) {
+				ordersBC.add(r);
+			}
+
+		}
+
 		listdata.remove("data");
-		listdata.put("data", list);
+		listdata.put("data", ordersBC);
 		return listdata;
 	}
 
