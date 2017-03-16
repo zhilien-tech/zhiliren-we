@@ -44,7 +44,11 @@ function initPayDataTable(){
 		            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
 		            		var week = ['MO','TU','WE','TH','FR','SA','SU'];
 		            		var ldate = new Date(data);
-		            		var result = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
+		            		var result = "";
+		            		if(ldate != undefined){
+		            			result = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
+		            		}
+		            		
 		            		return result;
 		            	}
 		            },
@@ -162,7 +166,7 @@ function initPayEdDataTable(){
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
 							$.each(row.orders, function(name, value) {
-								if(value){
+								if(value && value.leavedate != undefined){
 									var date = value.leavedate;
 				            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
 				            		var week = ['MO','TU','WE','TH','FR','SA','SU'];
@@ -206,9 +210,9 @@ function initPayEdDataTable(){
 					},
 		            {"data": "currency", "bSortable": false,
 						render:function(data, type, row, meta) {
-							var result = '<ul> ';
+							var result = '<ul>';
 							$.each(row.orders, function(name, value) {
-								if(value){
+								if(value && value.currency!=undefined){
 									result += '<li style="list-style:none;">'+value.currency+'</li>';
 								}
 							});
@@ -263,6 +267,15 @@ function initPayEdDataTable(){
 		            		}
 		            		return asd;
 		            	}
+		            },
+		            {"data": "abc", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var abc = row.abc;
+		            		if(null == abc || ""== abc){
+		            			return "";
+		            		}
+		            		return abc;
+		            	}
 		            }
 		            ],
 		            "infoCallback": function (settings, start, end, max, total, pre) {
@@ -295,6 +308,7 @@ function  toConfirmPayPage(){
 	destroyDatetable($("#inlandRecTable"));
 	initPayDataTable();
 	$('#inlandPaySearchBtn').click();
+	$("#inlandRecSelect option:first").prop("selected", true);
 }
 //收款页切换
 function  toConfirmRecPage(){
@@ -302,6 +316,10 @@ function  toConfirmRecPage(){
 	destroyDatetable($("#inlandPayEdTable"));
 	initRecDataTable();
 	$('#inlandRecSearchBtn').click();
+	$("#inlandPayClick").show();
+	$("#inlandPayTable").show();
+	$("#inlandPayEdTable").hide();
+	$("#inlandPaySelect option:first").prop("selected", true);
 }
 
 //状态选择按钮
@@ -379,7 +397,7 @@ $(".checkBoxPayAll").click(function () {
 			}
 		});
 	}else{
-		$(".checkBoxPayChild").each(function(){
+		 $(".checkBoxPayChild").each(function(){
 			var thisval = $(this).val();
 			var flag = false;
 			var splits = hiddenval.split(',');
@@ -447,6 +465,9 @@ $(document).on('click', '.checkBoxPayChild', function(e) {
 
 //内陆跨海付款 搜索按钮
 $("#inlandPaySearchBtn").on('click', function () {
+	var inlandPayStatus = 2;
+	var inlandPayEdStatus = 3;
+	
 	var orderStatus = $("#inlandPaySelect").val();
 	var inlandPayBeginDate = $("#inlandPayBeginDate").val();
 	var inlandPayEndDate = $("#inlandPayEndDate").val();
@@ -457,7 +478,7 @@ $("#inlandPaySearchBtn").on('click', function () {
 		        "leaveEndDate":inlandPayEndDate,
 				"name": inlandPayInput
 		    };
-    if(orderStatus==1){
+    if(orderStatus==inlandPayStatus){
     	inlandPayTable.settings()[0].ajax.data = param;
     	inlandPayTable.ajax.reload(
     			function(json){
@@ -465,7 +486,7 @@ $("#inlandPaySearchBtn").on('click', function () {
     			}
     	);
     }
-    if(orderStatus==2){
+    if(orderStatus==inlandPayEdStatus){
     	inlandPayEdTable.settings()[0].ajax.data = param;
     	inlandPayEdTable.ajax.reload(
     			function(json){
@@ -490,6 +511,8 @@ $('#inlandPayClearBtn').click(function(){
 //内陆跨海 取消所有勾选
 $('#inlandPayCancelBtn').click(function(){
 	$('#checkedboxPayValue').val("");
+	$(".checkBoxPayAll").prop("checked", false);
+	$(".checkBoxPayChild").prop("checked", false);
 });
 
 

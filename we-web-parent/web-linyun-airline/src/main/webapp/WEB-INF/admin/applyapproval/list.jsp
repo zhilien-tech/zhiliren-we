@@ -17,19 +17,19 @@
   <content class="content-body">
 	<ul>
 	  <li>
-	  	<a href="${base}/admin/applyapproval/dataList.html">
+	  	<a href="${base}/admin/applyapproval/dataList.html?operation=international">
 			&nbsp;&nbsp;国际
 			<span><font>${obj.internationalNum }</font><i class="fa fa-angle-right"></i></span>
 	  	</a>
 	  </li>
 	  <li>
-		<a href="${base}/admin/applyapproval/dataList.html">
+		<a href="${base}/admin/applyapproval/dataList.html?operation=inlandNum">
 			&nbsp;&nbsp;内陆
 			<span><font>${obj.inlandNum }</font><i class="fa fa-angle-right"></i></span>
 	  	</a>
 	  </li>
 	  <li>
-		<a href="${base}/admin/applyapproval/dataList.html">
+		<a href="${base}/admin/applyapproval/dataList.html?operation=others">
 			&nbsp;&nbsp;其他
 			<span><font>3</font><i class="fa fa-angle-right"></i></span>
 	  	</a>

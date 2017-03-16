@@ -8,7 +8,7 @@
 .dataTable thead .sorting_asc:after {display: none !important;}
 .dataTable thead .sorting_desc:after {display: none !important;}
 .dataTable thead .sorting:after {display: none !important;}
-.tab-content{padding: 0 !important;}
+.tab-content{padding: 0 !important;padding-top: 10px !important;}
 #KaiInvoiceTable1 tbody tr td:nth-child(4) {line-height:80px;}
 #KaiInvoiceTable1 tbody tr td:nth-child(5) {line-height:80px;}
 #KaiInvoiceTable1 tbody tr td:nth-child(6) {line-height:80px;}

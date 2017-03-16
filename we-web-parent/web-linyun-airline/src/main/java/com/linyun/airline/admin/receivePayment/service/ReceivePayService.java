@@ -26,6 +26,7 @@ import org.nutz.dao.entity.Record;
 import org.nutz.dao.pager.Pager;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.Daos;
+import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Files;
@@ -47,7 +48,9 @@ import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
+import com.linyun.airline.common.enums.ApprovalResultEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
+import com.linyun.airline.common.enums.UserJobStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TBankCardEntity;
 import com.linyun.airline.entities.TCompanyEntity;
@@ -65,21 +68,15 @@ import com.uxuexi.core.web.base.service.BaseService;
 @IocBean
 public class ReceivePayService extends BaseService<TPayEntity> {
 
-	//银行卡类型
 	private static final String YHCODE = "YH";
-	//币种类型
 	private static final String BZCODE = "BZ";
-
-	//银行卡状态
 	private static final int ENABLE = BankCardStatusEnum.ENABLE.intKey();
-
-	//付款用途
 	private static final String YTCODE = "FKYT";
-
 	private static final int RECEIVESTATUS = AccountReceiveEnum.RECEIVEDONEY.intKey();
-
 	private static final int APPROVALPAYED = AccountPayEnum.APPROVALPAYED.intKey();
 	private static final int APPROVALPAYING = AccountPayEnum.APPROVALPAYING.intKey();
+	private static final int APPROVALENABLE = ApprovalResultEnum.ENABLE.intKey();
+	private static final int ONJOB = UserJobStatusEnum.ON.intKey();
 
 	@Inject
 	private UploadService qiniuUploadService;
@@ -97,24 +94,62 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object listRecData(InlandRecListSearchSqlForm form, HttpSession session, HttpServletRequest request) {
-		//当前用户id
-		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
-		long id = loginUser.getId();
-		form.setLoginUserId(id);
+
+		//付款列表检索
+		String name = form.getName();
+		Date leaveBeginDate = form.getLeaveBeginDate();
+		Date leaveEndDate = form.getLeaveEndDate();
+		String sqlStr = sqlManager.get("get_receive_list_by_condition");
+		Sql sql = Sqls.create(sqlStr);
+		Cnd cnd = Cnd.NEW();
+		SqlExpressionGroup group = new SqlExpressionGroup();
+		group.and("ci.shortName", "LIKE", "%" + name + "%").or("uo.ordersnum", "LIKE", "%" + name + "%")
+				.or("ci.linkMan", "LIKE", "%" + name + "%");
+		if (!Util.isEmpty(name)) {
+			cnd.and(group);
+		}
+		//出发日期
+		if (!Util.isEmpty(leaveBeginDate)) {
+			cnd.and("oc.leavetdate", ">", leaveBeginDate);
+		}
+		// 返回日期
+		if (!Util.isEmpty(leaveEndDate)) {
+			cnd.and("oc.leavetdate", "<", leaveEndDate);
+		}
+		List<Record> orders = dbDao.query(sql, cnd, null);
+
+		//当前公司下的用户
+		String userIds = userInComp(session);
+		form.setLoginUserId(userIds);
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
 		List<Record> list = (List<Record>) listdata.get("data");
+
 		for (Record record : list) {
-			record.put("username", loginUser.getUserName());
-			String sqlString = sqlManager.get("get_receive_order_list");
-			Sql sql = Sqls.create(sqlString);
-			Cnd cnd = Cnd.limit();
-			cnd.and("r.id", "=", record.get("id"));
-			List<Record> orders = dbDao.query(sql, cnd, null);
-			record.put("orders", orders);
+			//收款id
+			String id = record.get("id").toString();
+			List<Record> rList = new ArrayList<Record>();
+			for (Record r : orders) {
+				String rid = r.getString("id");
+				if (Util.eq(id, rid)) {
+					rList.add(r);
+				}
+			}
+			if (!Util.isEmpty(rList)) {
+				record.put("orders", rList);
+			}
 		}
+		List<Record> ordersBC = new ArrayList<Record>();
+		for (Record r : list) {
+			String oStr = r.getString("orders");
+			if (!Util.isEmpty(oStr)) {
+				ordersBC.add(r);
+			}
+
+		}
+
 		listdata.remove("data");
-		listdata.put("data", list);
+		listdata.put("data", ordersBC);
 		return listdata;
 	}
 
@@ -145,22 +180,13 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	}
 
 	/**
-	 * bootstrap插件Datatables分页查询
-	 * <p>
-	 *
-	 * @param sqlParamForm   Sql查询参数封装
-	 * @param start   起始记录(页面是从0开始算的)
-	 * @param length  查询多少条
-	 * @param draw    当前查询序号
+	 * 付款中列表
 	 */
-	public Map<String, Object> listPage4Datatables(final InlandPayListSearchSqlForm sqlParamForm, HttpSession session) {
-
-		//当前用户id
-		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
-		long id = loginUser.getId();
-		sqlParamForm.setLoginUserId(id);
+	public Map<String, Object> listPayData(final InlandPayListSearchSqlForm sqlParamForm, HttpSession session) {
+		//当前公司下的用户
+		String userIds = userInComp(session);
+		sqlParamForm.setLoginUserId(userIds);
 		sqlParamForm.setOrderPnrStatus(APPROVALPAYING);
-
 		checkNull(sqlParamForm, "sqlParamForm不能为空");
 		Sql sql = sqlParamForm.sql(sqlManager);
 
@@ -192,10 +218,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object listPayEdData(InlandPayEdListSearchSqlForm form, HttpSession session) {
-		//当前用户id
-		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
-		long id = loginUser.getId();
-		form.setLoginUserId(id);
+		//当前公司下的用户
+		String userIds = userInComp(session);
+		form.setLoginUserId(userIds);
 		form.setOrderPnrStatus(APPROVALPAYED);
 
 		Map<String, Object> listdata = this.listPage4Datatables(form);
@@ -307,13 +332,29 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 
 		//计算合计金额
 		double totalMoney = 0;
+		//申请人
+		String proposer = "";
+		//审批人
+		String approver = "";
+		//审批结果
+		String approveresult = "";
 		for (Record record : orders) {
 			if (!Util.isEmpty(record.get("salePrice"))) {
 				Double incometotal = (Double) record.get("salePrice");
 				totalMoney += incometotal;
 			}
+			proposer = record.getString("proposer");
+			approver = record.getString("approver");
+			approveresult = record.getString("approveresult");
 		}
 		map.put("totalMoney", totalMoney);
+		map.put("proposer", proposer);
+		map.put("approver", approver);
+		if (Util.eq(APPROVALENABLE, approveresult)) {
+			map.put("approveresult", "同意");
+		} else {
+			map.put("approveresult", "拒绝");
+		}
 
 		//银行名称
 		List<DictInfoEntity> bankList = new ArrayList<DictInfoEntity>();
@@ -435,7 +476,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				payEntity.setTotalMoney(totalMoney);
 			}
 			if (!Util.eq(null, currency)) {
-				if (!Util.eq("--请选择--", cardNum)) {
+				if (!Util.eq("--请选择--", currency)) {
 					payEntity.setPayCurrency(currency);
 				}
 			}
@@ -518,6 +559,30 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		}
 
 		return cardNums;
+	}
+
+	//当前公司所有的用户 id
+	public String userInComp(HttpSession session) {
+		//当前登陆用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long loginUserIdd = loginUser.getId();
+		//当前公司所有用户id
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		String str = sqlManager.get("receivePay_loginComp_user_ids");
+		Sql userSql = Sqls.create(str);
+		Cnd userCnd = Cnd.NEW();
+		userCnd.and("uj.`status`", "=", ONJOB);
+		userCnd.and("cj.comId", "=", companyId);
+		List<Record> userList = dbDao.query(userSql, userCnd, null);
+		String userIds = "";
+		for (Record user : userList) {
+			userIds += user.getString("userid") + ",";
+		}
+		if (userIds.length() > 1) {
+			userIds = userIds.substring(0, userIds.length() - 1);
+		}
+		return userIds;
 	}
 
 }

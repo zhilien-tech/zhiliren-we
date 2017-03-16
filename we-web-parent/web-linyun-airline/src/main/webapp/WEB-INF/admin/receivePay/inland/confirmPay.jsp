@@ -110,7 +110,7 @@
 						<input id="chineseMoney" type="text" class="form-control input-sm textIpnu" disabled="disabled"></td>
 					<td class="bj">币种：</td>
 					<td><select id="payCurrency" name="payCurrency" class="form-control input-sm">
-							<option>--请选择--</option>
+							<option value="0">--请选择--</option>
 							<c:forEach var="one" items="${obj.bzList}">
 	                        	<option value="${one.id }">${one.dictCode }</option>
 	                        </c:forEach>
@@ -123,12 +123,11 @@
 							<option value=0>无</option>
 					</select></td>
 					<td>申请人：</td>
-					<td><input id="proposer" name="proposer" type="text" class="form-control input-sm"
-						disabled="disabled"></td>
+					<td><input id="proposer" name="proposer" type="text" class="form-control input-sm" disabled="disabled" value="${obj.proposer}"></td>
 					<td>审批人：</td>
-					<td><input id="approver" name="approver" type="text" class="form-control input-sm" disabled="disabled" value="侯小凌"></td>
+					<td><input id="approver" name="approver" type="text" class="form-control input-sm" disabled="disabled" value="${obj.approver}"></td>
 					<td>审批结果：</td>
-					<td><input id="approveResult" name="approveResult" type="text" class="form-control input-sm" disabled="disabled"></td>
+					<td><input id="approveResult" name="approveResult" type="text" class="form-control input-sm" disabled="disabled" value="${obj.approveresult}"></td>
 				</tr>
 			</table>
 			

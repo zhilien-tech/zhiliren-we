@@ -21,7 +21,7 @@
 	    	<div class="modal-header boderButt">
 	            <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">取消</button>
 	            <input type="submit" id="submit" class="btn btn-primary right btn-sm" value="保存"/>
-	            <button type="button" class="btn right btn-sm">删除</button>
+	            <!-- <button type="button" class="btn right btn-sm">删除</button> -->
 	            <h4>添加银行卡</h4>
 	          </div>
 	          <div class="modal-body" style="height:252px; overflow-y: auto;">

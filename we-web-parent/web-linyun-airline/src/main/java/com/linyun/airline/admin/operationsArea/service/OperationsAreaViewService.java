@@ -72,6 +72,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	private static final int FIFTEENM = MessageRemindEnum.FIFTEENM.intKey();
 	private static final int THIRTYM = MessageRemindEnum.THIRTYM.intKey();
 	private static final int TIMED = MessageRemindEnum.TIMED.intKey();
+	private static final int UNREPEAT = MessageRemindEnum.UNREPEAT.intKey();
 
 	//15分钟
 	private static final int FIFTEENMINS = 15;
@@ -445,6 +446,12 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 				long nowMillis = DateTimeUtil.now().getMillis();
 				long a = generateMillis - nowMillis;
 				if (a < 0) {
+					recordsByCondition.add(record);
+				}
+			}
+			if (String.valueOf(UNREPEAT).equals(reminderMode)) {
+				//不重复 提醒 （即只提醒一次）TODO
+				if (Util.eq(isReadMsg, UNREAD)) {
 					recordsByCondition.add(record);
 				}
 			}

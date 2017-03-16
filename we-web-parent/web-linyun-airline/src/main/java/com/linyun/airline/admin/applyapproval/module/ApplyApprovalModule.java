@@ -35,7 +35,7 @@ public class ApplyApprovalModule {
 	private ApplyApprovalService applyApprovalService;
 
 	/**
-	 * 跳转到list页面
+	 * 跳转到类型页面
 	 * @param sqlForm
 	 * @param pager
 	 */
@@ -47,7 +47,7 @@ public class ApplyApprovalModule {
 		map.put("deplist", deplist);
 		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));*/
 		/*airlinePolicyService.findConditionList()*/
-		return applyApprovalService.listPage4Datatables(session);
+		return applyApprovalService.findNums(session);
 	}
 
 	/**
@@ -60,34 +60,54 @@ public class ApplyApprovalModule {
 	}
 
 	/**
-	 * 跳转到list页面
+	 * 跳转到列表页面
 	 * @param sqlForm
 	 * @param pager
 	 */
 	@At
 	@Ok("jsp")
-	public Object dataList(@Param("..") final Pager pager) {
+	public Object dataList(@Param("..") final Pager pager, final HttpSession session,
+			@Param("operation") final String operation) {
 		/*Map<String, Object> map = Maps.newHashMap();
 		List<Record> deplist = grabfileViewService.getFolderInfo(sqlManager);
 		map.put("deplist", deplist);
 		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));*/
 		/*airlinePolicyService.findConditionList()*/
-		return null;
+		return applyApprovalService.findData(session, operation);
 	}
 
 	/**
-	 * 跳转到list页面
+	 * 跳转到细节页面
 	 * @param sqlForm
 	 * @param pager
 	 */
 	@At
 	@Ok("jsp")
-	public Object detailList(@Param("..") final Pager pager) {
+	public Object detailList(@Param("..") final Pager pager, final HttpSession session,
+			@Param("operation") final String operation, @Param("id") final String id) {
 		/*Map<String, Object> map = Maps.newHashMap();
 		List<Record> deplist = grabfileViewService.getFolderInfo(sqlManager);
 		map.put("deplist", deplist);
 		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));*/
 		/*airlinePolicyService.findConditionList()*/
-		return null;
+		return applyApprovalService.findDetail(session, operation, id);
+	}
+
+	/**
+	 * 审批同意
+	 * @param sqlForm
+	 * @param pager
+	 */
+	@At
+	@Ok("json")
+	public Object agree(@Param("..") final Pager pager, final HttpSession session,
+			@Param("usingId") final Long usingId, @Param("id") final Long id, @Param("status") final Long status,
+			@Param("temp") final String temp, @Param("orderId") final Long orderId) {
+		/*Map<String, Object> map = Maps.newHashMap();
+		List<Record> deplist = grabfileViewService.getFolderInfo(sqlManager);
+		map.put("deplist", deplist);
+		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));*/
+		/*airlinePolicyService.findConditionList()*/
+		return applyApprovalService.doAgree(session, usingId, id, status, temp, orderId);
 	}
 }
