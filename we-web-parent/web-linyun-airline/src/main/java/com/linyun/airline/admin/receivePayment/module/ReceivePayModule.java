@@ -94,7 +94,7 @@ public class ReceivePayModule {
 	 */
 	@At
 	public Object inlandPayList(@Param("..") final InlandPayListSearchSqlForm form, HttpSession session) {
-		return receivePayService.listPage4Datatables(form, session);
+		return receivePayService.listPayData(form, session);
 	}
 
 	/**

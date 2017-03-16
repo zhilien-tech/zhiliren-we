@@ -201,6 +201,39 @@ INNER JOIN t_order_customneed oc ON oc.ordernum = uo.id
 INNER JOIN t_customer_info ci ON ci.id = uo.userid
 $condition
 
+/*get_receive_list_by_condition*/
+SELECT
+	r.id,
+	uo.ordersnum,
+	oc.leavetdate,
+	fi.personcount,
+	fi.incometotal,
+	ci.shortName,
+	fi.billingdate,
+	fi. ISSUER,
+	r.`status`
+FROM
+	t_receive r
+INNER JOIN t_order_receive ore ON ore.receiveid = r.id
+INNER JOIN t_up_order uo ON uo.id = ore.orderid
+LEFT JOIN t_finance_info fi ON uo.id = fi.orderid
+INNER JOIN t_order_customneed oc ON oc.ordernum = uo.id
+INNER JOIN t_customer_info ci ON ci.id = uo.userid
+WHERE
+	r.id IN (
+		SELECT
+			r.id
+		FROM
+			t_receive r
+		INNER JOIN t_order_receive ore ON ore.receiveid = r.id
+		INNER JOIN t_up_order uo ON uo.id = ore.orderid
+		LEFT JOIN t_finance_info fi ON uo.id = fi.orderid
+		INNER JOIN t_order_customneed oc ON oc.ordernum = uo.id
+		INNER JOIN t_customer_info ci ON ci.id = uo.userid
+		$condition
+	)
+
+	
 /*receivePay_toRec_table_data*/
 SELECT
 	uo.*, 
@@ -214,4 +247,12 @@ FROM
 	t_up_order uo
 INNER JOIN t_customer_info ci ON uo.userid = ci.id
 LEFT JOIN t_finance_info fi ON uo.id = fi.orderid
+$condition
+
+/*receivePay_loginComp_user_ids*/
+SELECT
+	uj.userid
+FROM
+	t_user_job uj
+INNER JOIN t_company_job cj ON cj.posid = uj.companyJobId
 $condition
