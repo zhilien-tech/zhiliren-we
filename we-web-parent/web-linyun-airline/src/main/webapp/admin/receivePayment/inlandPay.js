@@ -44,7 +44,11 @@ function initPayDataTable(){
 		            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
 		            		var week = ['MO','TU','WE','TH','FR','SA','SU'];
 		            		var ldate = new Date(data);
-		            		var result = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
+		            		var result = "";
+		            		if(ldate != undefined){
+		            			result = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
+		            		}
+		            		
 		            		return result;
 		            	}
 		            },
@@ -162,7 +166,7 @@ function initPayEdDataTable(){
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
 							$.each(row.orders, function(name, value) {
-								if(value){
+								if(value && value.leavedate != undefined){
 									var date = value.leavedate;
 				            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
 				            		var week = ['MO','TU','WE','TH','FR','SA','SU'];

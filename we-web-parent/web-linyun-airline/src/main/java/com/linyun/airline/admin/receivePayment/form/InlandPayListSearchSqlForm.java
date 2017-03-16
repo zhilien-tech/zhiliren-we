@@ -64,9 +64,13 @@ public class InlandPayListSearchSqlForm extends DataTablesParamForm {
 			cnd.and("pi.orderPnrStatus", "=", orderStatus);
 		}
 
-		//TODO 出发日期
+		//出发日期
 		if (!Util.isEmpty(leaveBeginDate)) {
-			cnd.and("oc.leavetdate", "=", leaveBeginDate);
+			cnd.and("oc.leavetdate", ">", leaveBeginDate);
+		}
+		// 返回日期
+		if (!Util.isEmpty(leaveEndDate)) {
+			cnd.and("oc.leavetdate", "<", leaveEndDate);
 		}
 
 		cnd.and("uo.orderstype", "=", OrderTypeEnum.FIT.intKey()); //散客
