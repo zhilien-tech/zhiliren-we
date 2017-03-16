@@ -60,7 +60,7 @@
 			</li>
 			<li>
 				<span>申请人</span>
-				<span>${obj.detaillist.proposer }</span>
+				<span>${obj.detaillist.userName }</span>
 			</li>
 		</ul>
 		

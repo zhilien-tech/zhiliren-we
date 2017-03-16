@@ -115,7 +115,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
 		Long companyId = company.getId();
 		//国际
-		cnd.and("companyId", "=", 43);
+		cnd.and("companyId", "=", companyId);
 		/*cnd.and("orderstype", "=", orderType);*/
 		/*cnd.and("(orderPnrStatus", "=", AccountPayEnum.APPROVAL.intKey());*/
 
