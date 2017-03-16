@@ -373,16 +373,6 @@ $(document).on("click",".addIcon",function(){
 	newDiv.find('.addIcon').parent().remove();
 	newDiv.append('<td class="removeIconTd"><i class="glyphicon glyphicon-minus removIcon"></i></td>');
 
-	//循环设置每段 出发、抵达日期的id
-	/*newDiv.find('.addCustomerAirline').each(function(i){
-		if($('.addCustomerAirline').length - 1 == i){
-			//出发日期设置id
-			$(this).find('[name=cAirOutDate]').attr("id","cAirOutDate"+i);
-			//抵达日期设置id
-			$(this).find('[name=cAirArrivalDate]').attr("id","cAirArrivalDate"+i);
-		}
-	});*/
-
 	/**************************************设置新的航空公司**************************************/
 	newDiv.find('[name=cAirlineCompany]').next().remove();
 	newDiv.find('[class=autoAddairLineName]').remove();
@@ -497,14 +487,39 @@ $(document).on("click",".chooseAirLineBtn",function(){
 	});
 	//选择项
 	var custLines = '';
+	var msgFlag = false;
 	$('.DemandDiv').each(function(i){
 		var custNeedNum = $(this).find('[class=titleNum]').html();
 		var custOutCity = $(this).find('[name=cOutcity]').select2("val");
 		var custArrivalCity = $(this).find('[name=cArrivalcity]').select2("val");
+		var outFlag = true;
+		var arrFlag = true;
+		if(null==custOutCity || ""==custOutCity){
+			custOutCity = "无";
+			outFlag = false;
+		}
+		if(null==custArrivalCity || ""==custArrivalCity){
+			custArrivalCity = "无";
+			arrFlag = false;
+		}
+		if("无"==custOutCity && "无"==custArrivalCity){
+			msgFlag=true;
+		}
+		
 		var custLine = custNeedNum +'. '+ custOutCity +' - '+ custArrivalCity;
-		custLines += '<li class="chooseLi"><a href="javascript:;" class="custLineChoose" value='+custNeedNum+'>'+ custLine +'</a></li>';
+		//如果out和arr都为空，则不添加选项
+		if(outFlag || arrFlag){
+			custLines += '<li class="chooseLi"><a href="javascript:;" class="custLineChoose" value='+custNeedNum+'>'+ custLine +'</a></li>';
+		}
 	});
-	$(".airLineCity").append(custLines);
+	if(msgFlag){
+		layer.msg("客户需求需填一个城市", "", 3000);
+		$(".airLineCity").hide();
+	}else{
+		$(".airLineCity").removeAttr("style");
+		$(".airLineCity").append(custLines);
+	}
+	
 });
 
 /************************************飞机票 选择项点击事件  start ************************************/
