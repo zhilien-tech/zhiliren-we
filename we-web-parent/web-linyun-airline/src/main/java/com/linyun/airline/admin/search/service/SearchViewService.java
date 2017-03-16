@@ -977,6 +977,10 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			//每一月 消息表：1
 			remindType = MessageRemindEnum.MOUTH.intKey();
 			break;
+		case 6:
+			//不重复（只提醒一次） 消息表：8
+			remindType = MessageRemindEnum.UNREPEAT.intKey();
+			break;
 		default:
 			//自定义 消息表：6
 			remindType = MessageRemindEnum.TIMED.intKey();

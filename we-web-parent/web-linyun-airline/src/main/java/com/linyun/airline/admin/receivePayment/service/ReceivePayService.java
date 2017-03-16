@@ -307,13 +307,25 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 
 		//计算合计金额
 		double totalMoney = 0;
+		//申请人
+		String proposer = "";
+		//审批人
+		String approver = "";
+		//审批结果
+		String approveresult = "";
 		for (Record record : orders) {
 			if (!Util.isEmpty(record.get("salePrice"))) {
 				Double incometotal = (Double) record.get("salePrice");
 				totalMoney += incometotal;
 			}
+			proposer = record.getString("proposer");
+			approver = record.getString("approver");
+			approveresult = record.getString("approveresult");
 		}
 		map.put("totalMoney", totalMoney);
+		map.put("proposer", proposer);
+		map.put("approver", approver);
+		map.put("approveresult", approveresult);
 
 		//银行名称
 		List<DictInfoEntity> bankList = new ArrayList<DictInfoEntity>();
@@ -435,7 +447,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				payEntity.setTotalMoney(totalMoney);
 			}
 			if (!Util.eq(null, currency)) {
-				if (!Util.eq("--请选择--", cardNum)) {
+				if (!Util.eq("--请选择--", currency)) {
 					payEntity.setPayCurrency(currency);
 				}
 			}
