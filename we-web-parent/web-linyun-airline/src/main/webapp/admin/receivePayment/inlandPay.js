@@ -471,7 +471,7 @@ $("#inlandPaySearchBtn").on('click', function () {
 		        "leaveEndDate":inlandPayEndDate,
 				"name": inlandPayInput
 		    };
-    if(orderStatus==1){
+    if(orderStatus==2){
     	inlandPayTable.settings()[0].ajax.data = param;
     	inlandPayTable.ajax.reload(
     			function(json){
@@ -479,7 +479,7 @@ $("#inlandPaySearchBtn").on('click', function () {
     			}
     	);
     }
-    if(orderStatus==2){
+    if(orderStatus==3){
     	inlandPayEdTable.settings()[0].ajax.data = param;
     	inlandPayEdTable.ajax.reload(
     			function(json){
