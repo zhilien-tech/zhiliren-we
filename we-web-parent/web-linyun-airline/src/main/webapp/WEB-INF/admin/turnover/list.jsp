@@ -248,7 +248,7 @@
 		            	var modify = '<a style="cursor:pointer;" onclick="selectClose('+row.id+');">关闭</a>';
 	            	}else{
 	            		
-		            	var modify = '<a style="cursor:pointer;" >已关闭</a>';
+		            	var modify = '<a style="cursor:pointer;" onclick="selectOpen('+row.id+');">启用</a>';
 	            	}
 	                return modify;
 	            }
@@ -294,27 +294,75 @@
 	}
 	function selectClose(id){
 		
-		$.ajax({
-			type : "POST",
-			url : '${base}/admin/turnover/update.html',
-			data :{
-				id : id
-			},
-			error : function(request) {
-				layer.msg('关闭失败!');
-			},
-			success : function(data) {
-				if ("200" == data.status) {
-					
-					layer.msg("关闭成功!", "", 3000);
-					 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-				     parent.layer.close(index);
-				     window.parent.successCallback('2');
-			 	} else {
-					layer.msg("关闭失败!", "", 3000);
-				} 
-			}
+		
+		layer.confirm("您确认关闭吗？", {
+		    btn: ["是","否"], //按钮
+		    shade: false //不显示遮罩
+		}, function(){
+			// 点击确定之后
+			var url = '${base}/admin/bankcard/delete.html';
+			$.ajax({
+				type : "POST",
+				url : '${base}/admin/turnover/update.html',
+				data :{
+					id : id
+				},
+				error : function(request) {
+					layer.msg('关闭失败!');
+				},
+				success : function(data) {
+					if ("200" == data.status) {
+						
+						layer.msg("关闭成功!", "", 3000);
+						 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+					     parent.layer.close(index);
+					     window.parent.successCallback('2');
+				 	} else {
+						layer.msg("关闭失败!", "", 3000);
+					} 
+				}
+			});
+		}, function(){
+		    // 取消之后不用处理
 		});
+		
+		
+		
+	}
+	function selectOpen(id){
+		
+		
+		layer.confirm("您确认开启吗？", {
+		    btn: ["是","否"], //按钮
+		    shade: false //不显示遮罩
+		}, function(){
+			// 点击确定之后
+			$.ajax({
+				type : "POST",
+				url : '${base}/admin/turnover/open.html',
+				data :{
+					id : id
+				},
+				error : function(request) {
+					layer.msg('关闭失败!');
+				},
+				success : function(data) {
+					if ("200" == data.status) {
+						
+						layer.msg("关闭成功!", "", 3000);
+						 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+					     parent.layer.close(index);
+					     window.parent.successCallback('2');
+				 	} else {
+						layer.msg("关闭失败!", "", 3000);
+					} 
+				}
+			});
+		}, function(){
+		    // 取消之后不用处理
+		});
+		
+		
 		
 	}
 	function clearSelect(){

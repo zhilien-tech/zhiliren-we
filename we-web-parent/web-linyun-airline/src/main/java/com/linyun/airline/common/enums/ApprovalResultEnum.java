@@ -9,19 +9,19 @@ package com.linyun.airline.common.enums;
 import com.uxuexi.core.common.enums.IEnum;
 
 /**
- * 会计 付款订单状态
+ * 审批结果
  * <p>
- * @author   彭辉
+ * @author   孙斌
  * @Date	 2017年3月4日 	 
  */
-public enum AccountPayEnum implements IEnum {
+public enum ApprovalResultEnum implements IEnum {
 
-	APPROVAL(1, "审批中"), APPROVALPAYING(2, "付款中"), APPROVALPAYED(3, "已付款"), REFUSE(4, "已拒绝");
+	ENABLE(1, "通过"), DISABLE(0, "拒绝");
 
 	private int key;
 	private String value;
 
-	private AccountPayEnum(final int key, final String value) {
+	private ApprovalResultEnum(final int key, final String value) {
 		this.value = value;
 		this.key = key;
 	}
