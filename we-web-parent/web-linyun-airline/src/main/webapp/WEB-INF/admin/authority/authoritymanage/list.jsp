@@ -8,9 +8,6 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>权限管理</title>
-    <style type="text/css">
-    	#deptDatatable{width:100% !important;}
-    </style>
   </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">

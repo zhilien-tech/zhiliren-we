@@ -114,16 +114,15 @@
 		                  </div>
 	                	</div>
 	                	<div class="form-group form-group1">
-	                	
 		                  <label class="col-sm-1 text-right padding">备注：</label>
 		                  <div class="col-sm-2 padding">
 		                  	<input  type="text" class="form-control input-sm" name="remark"/>
 		                    <!-- <textarea class="form-control input-sm textareaHeight" name="remark"></textarea> -->
 		                  </div>
 	                	</div>
-	                  
-	                </div><!--end 备注-->
-	                <div>
+
+	                </div><!--end 备注/币种/项目-->
+	                <!-- <div>
 	                	<label class="col-sm-3 text-right padding">开/收发票：</label>
 	                	<select class="form-control input-sm" name="invoiceStatus" id="invoiceStatus" onchange="check();">
 		                      <option value="">请选择</option>
@@ -135,16 +134,26 @@
 	                <label class="col-sm-3 text-right padding">单位名称：</label>
 	                	<select id="findCompany" name="findCompany" onchange="setSelectedAreaIds()" class="form-control select2 inpImpWid" multiple="multiple" ></select>
 		               <input name="companyNameId" id="companyNameId"  type="hidden" placeholder="单位名称" />
-	                </div>
-	                <!-- <div class="row">
-		                <div class="form-group" id="div1">
-		                   <label class="col-sm-2 text-right padding">单位名称：</label>
-			               <div class="col-sm-9 padding">
-			                    <select id="findCompany" name="findCompany" onchange="setSelectedAreaIds()" class="form-control select2 inpImpWid" multiple="multiple" ></select>
-			               		<input name="companyNameId" id="companyNameId"  type="hidden" placeholder="单位名称" />
-			               </div>
-		                </div>
 	                </div> -->
+	                <div class="row"><!--备注/币种/项目-->
+	                	<div class="form-group">
+		                	<label class="col-sm-2 text-right padding">开/收发票：</label>
+		                	<div class="col-sm-2 padding">
+			                	<select class="form-control input-sm" name="invoiceStatus" id="invoiceStatus" onchange="check();">
+				                      <option value="">请选择</option>
+				                      <option>已开发票</option>
+				                      <option>已收发票</option>
+				                 </select>
+			                 </div>
+	                	</div>
+	                	<div id="div1" class="form-group form-group1">
+	                		<label class="col-sm-2 text-right padding">单位名称：</label>
+	                		<div class="col-sm-5 padding">
+			                	<select id="findCompany" name="findCompany" onchange="setSelectedAreaIds()" class="form-control select2 inpImpWid" multiple="multiple" ></select>
+				               	<input name="companyNameId" id="companyNameId"  type="hidden" placeholder="单位名称" />
+	                		</div>
+	                	</div>
+	                </div><!--end 备注/币种/项目-->
 	            </div>
 	            <!-- 设置已选中的项 -->
 					<script type="text/javascript">
