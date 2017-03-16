@@ -44,7 +44,7 @@
 			</li>
 			<li>
 				<span>${each.PNR }</span>
-				<span>${each.proposer }</span>
+				<span>${each.userName }</span>
 			</li>
 			<%-- <li>
 				<span>${each.purpose }</span>
@@ -95,6 +95,14 @@
 <script src="${base}/public/dist/js/iscroll.js"></script>
 <script src="${base}/public/dist/js/iosSelect.js"></script>
 <script type="text/javascript">
+	/* $(function(){
+		var aa=$('.color1').html();
+		if(aa==' 同意 '){
+			$(this).css('color','green !important');
+		}else{
+			alert('拒绝');
+		}
+	}); */
 	var selectDateDom = $('#selectDate');
 	var showDateDom = $('#showDate');
 	// 初始化时间
