@@ -46,7 +46,7 @@
 		<ul class="content-a-ul">
 			<li>
 				<span>${each.shortName }</span>
-				<span>${each.salespricesum }</span>
+				<span>${each.costpricesum }</span>
 			</li>
 			<li>
 				<span>${each.ordersnum }</span>

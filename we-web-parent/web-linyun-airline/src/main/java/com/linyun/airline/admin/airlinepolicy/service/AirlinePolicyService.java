@@ -25,6 +25,7 @@ import org.nutz.dao.util.Daos;
 import org.nutz.ioc.loader.annotation.Inject;
 
 import com.google.common.collect.Maps;
+import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.common.enums.AirlinePolicyEnum;
@@ -62,7 +63,7 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		/*Long companyId = 23l;*/
-		TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Long companyId = company.getId();
 		cnd.and("companyId", "=", companyId);
 		cnd.and("status", "=", BankCardStatusEnum.ENABLE.intKey());
