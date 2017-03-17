@@ -18,7 +18,7 @@ function initInternationalTable(){
         "fnDrawCallback" : function(){
         	var api = this.api();
         	var startIndex= api.context[0]._iDisplayStart;
-   	       　　  api.column(1).nodes().each(function(cell, i) {
+   	       　　  api.column(0).nodes().each(function(cell, i) {
    	       　　　　cell.innerHTML = startIndex + i + 1; 
    	       　　});
       	},
@@ -106,11 +106,6 @@ function initInternationalTable(){
             render: function(data, type, row, meta) {
                 return null
             }
-    	},{
-    		targets: 1,
-            render: function(data, type, row, meta) {
-                return null
-            }
     	}]
     });
 }
@@ -121,9 +116,7 @@ function loadDataTable(status){
 			ordersstatus:status
 	};
 	internationalTable.settings()[0].ajax.data = param;
-	internationalTable.ajax.reload(function(json){
-		autoHighLoad($('#internationalTable'));
-	});
+	internationalTable.ajax.reload();
 	$('#status').val(status);
 }
 //点击行跳转到详情页
