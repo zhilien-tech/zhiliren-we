@@ -40,11 +40,11 @@
 			</li>
 			<li>
 				<span>${each.ordersnum }</span>
-				<span>${each.purpose }</span>
+				<span>${each.purposeStr }</span>
 			</li>
 			<li>
 				<span>${each.PNR }</span>
-				<span>${each.proposer }</span>
+				<span>${each.userName }</span>
 			</li>
 			<%-- <li>
 				<span>${each.purpose }</span>
