@@ -94,8 +94,7 @@ function saveOrderInfo(){
 				url = '/admin/inland/bookingDetail.html?id='+item.orderId;
 			}
 			window.open(url);
-			
-			
+			window.location.reload();
 		},
 		error: function (xhr) {
 			layer.msg("添加失败","",4000);
