@@ -1,12 +1,12 @@
 package com.linyun.airline.admin.invoicemanage.invoiceinfo.module;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
@@ -23,7 +23,6 @@ import com.uxuexi.core.web.chain.support.JsonResult;
 
 @IocBean
 @At("/admin/invoicemanage/invoiceinfo")
-@Filters
 public class InvoiceinfoModule {
 
 	@Inject
@@ -39,9 +38,9 @@ public class InvoiceinfoModule {
 	 */
 	@At
 	@Ok("jsp")
-	public Object list(@Param("..") final TInvoiceInfoSqlForm sqlForm, @Param("..") final Pager pager) {
-		//return invoiceinfoViewService.listPage(sqlForm, null);
-		return null;
+	public Object list(@Param("..") final TInvoiceInfoSqlForm sqlForm, @Param("..") final Pager pager,
+			final HttpSession session) {
+		return invoiceinfoViewService.getIssuerBycompany(session);
 	}
 
 	/**

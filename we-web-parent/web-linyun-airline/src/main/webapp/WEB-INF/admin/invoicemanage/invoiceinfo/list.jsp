@@ -29,8 +29,12 @@
                              </div>
                              <div class="col-md-1 textPadding">
                                <select id="kaiDrawer" class="form-control TimeInput">
-                                   <option>开票人</option>
-                                   <option>张三</option>
+                                   <option value="">开票人</option>
+				                    <c:forEach items="${obj.listIssuer}" var="one">
+				                    	<option value="${one.issuer }">
+			                            	${one.issuer }
+			                            </option>
+			                        </c:forEach>
                                </select>
                              </div>
                              <div class="col-md-1 textPadding">
@@ -85,8 +89,12 @@
                             </div>
                             <div class="col-md-1 textPadding">
                               <select class="form-control TimeInput">
-                                  <option>开票人</option>
-                                  <option>张三</option>
+                                  <option value="">==请选择==</option>
+				                    <c:forEach items="${obj.listIssuer}" var="one" varStatus="indexs">
+				                    	<option value="${one.issuer }">
+			                            	${one.issuer }
+			                            </option>
+			                        </c:forEach>
                               </select>
                             </div>
                             <div class="col-md-1 textPadding">

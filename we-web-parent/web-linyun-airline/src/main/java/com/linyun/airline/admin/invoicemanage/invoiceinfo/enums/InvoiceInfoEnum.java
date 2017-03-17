@@ -14,7 +14,7 @@ import com.uxuexi.core.common.enums.IEnum;
  * @Date	 2017年3月16日 	 
  */
 public enum InvoiceInfoEnum implements IEnum {
-	INVOIC_ING(0, "开发票中"), INVOIC_ED(1, "已开发票"), RECEIPT_INVOIC_ING(2, "收发票中"), Already_INVOICe(3, "已收发票");
+	INVOIC_ING(1, "开发票中"), INVOIC_ED(2, "已开发票"), RECEIPT_INVOIC_ING(3, "收发票中"), Already_INVOICe(4, "已收发票");
 	private int key;
 	private String value;
 
