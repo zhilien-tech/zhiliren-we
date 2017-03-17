@@ -62,6 +62,8 @@ AND
 	um.msgSource=@msgSource
 AND
     m.msgStatus=@msgStatus
+AND
+    m.generateTime<@generateTime
 ORDER BY m.generateTime DESC
 
 
