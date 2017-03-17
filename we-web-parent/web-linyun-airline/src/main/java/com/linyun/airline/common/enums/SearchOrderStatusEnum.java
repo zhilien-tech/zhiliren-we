@@ -18,7 +18,7 @@ import com.uxuexi.core.common.enums.IEnum;
  */
 public enum SearchOrderStatusEnum implements IEnum {
 	SEARCH(1, "查询"), BOOKING(2, "预定"), TICKETING(3, "出票"), BILLING(4, "开票"), CLOSE(5, "关闭"), FIRBOOKING(6, "一订"), SECBOOKING(
-			7, "二订"), THRBOOKING(8, "三订"), ALLBOOKING(9, "全款"), LASTBOOKING(10, "尾款"), ;
+			7, "二订"), THRBOOKING(8, "三订"), ALLBOOKING(9, "全款"), LASTBOOKING(10, "尾款");
 
 	private int key;
 	private String value;

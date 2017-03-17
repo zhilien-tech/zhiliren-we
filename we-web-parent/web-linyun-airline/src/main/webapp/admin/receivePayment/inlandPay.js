@@ -524,6 +524,14 @@ function clearSearchTxt(selectId, beginDateId, endDateId, inputId){
 	$("#"+inputId).val("");
 }
 
+//回车搜索
+function recOnkeyEnter(){
+	 if(event.keyCode==13){
+		 $("#inlandRecSearchBtn").click();
+	 }
+}
+
+
 //文件上传
 $('#uploadFile').click(function(){
 	$.fileupload1 = $('#uploadFile').uploadify({
