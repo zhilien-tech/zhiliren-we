@@ -95,10 +95,11 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 */
 	public Object listRecData(InlandRecListSearchSqlForm form, HttpSession session, HttpServletRequest request) {
 
-		//付款列表检索
+		//检索条件
 		String name = form.getName();
 		Date leaveBeginDate = form.getLeaveBeginDate();
 		Date leaveEndDate = form.getLeaveEndDate();
+
 		String sqlStr = sqlManager.get("get_receive_list_by_condition");
 		Sql sql = Sqls.create(sqlStr);
 		Cnd cnd = Cnd.NEW();
@@ -124,7 +125,6 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
 		List<Record> list = (List<Record>) listdata.get("data");
-
 		for (Record record : list) {
 			//收款id
 			String id = record.get("id").toString();
@@ -145,7 +145,6 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			if (!Util.isEmpty(oStr)) {
 				ordersBC.add(r);
 			}
-
 		}
 
 		listdata.remove("data");
@@ -160,18 +159,6 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object saveInlandRec(String recId) {
-		/*Sql sql = Sqls.create(sqlManager.get("receivePay_rec_order_id"));
-		Cnd cnd = Cnd.NEW();
-		cnd.and("r.id", "=", recId);
-		List<Record> orders = dbDao.query(sql, cnd, null);
-		String ids = "";
-		for (Record record : orders) {
-			ids += record.getString("id") + ',';
-		}
-		if (ids.length() > 1) {
-			ids = ids.substring(0, (ids.length() - 1));
-		}*/
-
 		int orderRecEd = AccountReceiveEnum.RECEIVEDONEY.intKey();
 		int updateNum = dbDao.update(TReceiveEntity.class, Chain.make("status", orderRecEd),
 				Cnd.where("id", "in", recId));
@@ -248,9 +235,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//当前登录用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long loginUserId = loginUser.getId();
-
 		Map<String, Object> map = new HashMap<String, Object>();
-
 		//收款信息
 		TReceiveEntity fetch = dbDao.fetch(TReceiveEntity.class, Long.valueOf(id));
 		List<TOrderReceiveEntity> query = dbDao.query(TOrderReceiveEntity.class, Cnd.where("receiveid", "=", id), null);
@@ -338,18 +323,28 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		String approver = "";
 		//审批结果
 		String approveresult = "";
+		//操作人
+		String operator = "";
+		String operatorList = "";
 		for (Record record : orders) {
 			if (!Util.isEmpty(record.get("salePrice"))) {
 				Double incometotal = (Double) record.get("salePrice");
 				totalMoney += incometotal;
 			}
 			proposer = record.getString("proposer");
-			approver = record.getString("approver");
+			approver = record.getString("approver"); //审批人
+			String opr = record.getString("operator"); //操作人
+			if (!Util.eq(operator, opr)) {
+				operator = opr;
+				operatorList += opr + ",";
+			}
+
 			approveresult = record.getString("approveresult");
 		}
 		map.put("totalMoney", totalMoney);
 		map.put("proposer", proposer);
 		map.put("approver", approver);
+		map.put("operators", operatorList);
 		if (Util.eq(APPROVALENABLE, approveresult)) {
 			map.put("approveresult", "同意");
 		} else {
@@ -382,7 +377,6 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			e.printStackTrace();
 		}
 		map.put("fkytList", fkytList);
-
 		map.put("ids", inlandPnrIds);
 
 		return map;
