@@ -25,6 +25,7 @@ import com.linyun.airline.entities.ApplyApprovalEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TPnrInfoEntity;
 import com.uxuexi.core.common.util.MapUtil;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.base.service.BaseService;
 import com.uxuexi.core.web.chain.support.JsonResult;
 
@@ -66,7 +67,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 
 	}
 
-	public Object findData(HttpSession session, String operation) {
+	public Object findData(HttpSession session, String operation, String date) {
 		Integer orderType = null;
 		if ("international".equalsIgnoreCase(operation)) {
 			orderType = PassengerTypeEnum.TEAM.intKey();
@@ -85,19 +86,23 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		Long companyId = company.getId();
 		//国际
 		cnd.and("companyId", "=", companyId);
+		Map<String, Object> re = MapUtil.map();
+		if (!Util.isEmpty(date)) {
+			cnd.and("date(optime)", "=", date);
+			re.put("date", date);
+		}
 		/*cnd.and("(orderPnrStatus", "=", AccountPayEnum.APPROVAL.intKey());
 		cnd.or("orderPnrStatus", "=", AccountPayEnum.APPROVALPAYING.intKey());
 		cnd.or("orderPnrStatus", "=", AccountPayEnum.REFUSE.intKey());*/
 		sql.setCondition(cnd);
 		List<Record> datalist = dbDao.query(sql, cnd, null);
-		Map<String, Object> re = MapUtil.map();
 		re.put("datalist", datalist);
 		re.put("operation", operation);
 		return re;
 
 	}
 
-	public Object findDetail(HttpSession session, String operation, String id) {
+	public Object findDetail(HttpSession session, String operation, String id, String date) {
 
 		Integer orderType = null;
 		if ("international".equalsIgnoreCase(operation)) {
@@ -123,6 +128,9 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		sql.setCondition(cnd);
 		List<Record> datalist = dbDao.query(sql, cnd, null);
 		Map<String, Object> re = MapUtil.map();
+		if (!Util.isEmpty(date)) {
+			re.put("date", date);
+		}
 		re.put("detaillist", datalist.get(0));
 		re.put("operation", operation);
 		return re;

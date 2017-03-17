@@ -197,6 +197,8 @@
 				var jsonobj = eval('(' + data + ')');
 				var url  = jsonobj;//地址
 				var fileName = file.name;//文件名称
+				/* 解决办法，上传成功后，将文件名字和路径添加到form表单的隐藏域中，点击保存的时候将其一起提交到后台进行保存，
+				保存的时候判断文件名字是否存在从而判断需不需要再次进行预览格式的转换*/
 				//var id = $("input#currentDirId").val();//文件pid
 				 $.ajax({
 					cache : false,
