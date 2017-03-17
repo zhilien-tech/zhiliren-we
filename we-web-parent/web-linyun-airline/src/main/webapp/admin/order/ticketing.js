@@ -334,8 +334,8 @@ $('#ticketingSearch').click(function(){
 	});
 });
 function onkeyTicketingEnter(){
-	 var e = window.event || arguments.callee.caller.arguments[0];
+	var e = window.event || arguments.callee.caller.arguments[0];
     if(e && e.keyCode == 13){
  		$('#ticketingSearch').click();
     }
- }
+}

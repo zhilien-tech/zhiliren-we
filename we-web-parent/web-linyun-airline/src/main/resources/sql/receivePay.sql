@@ -66,6 +66,7 @@ ORDER BY
 SELECT
     p.id id,
 	pi.id pid,
+	pi.userid operator,
 	uo.ordersnum orderNum,
 	pi.PNR pnrNum,
 	fi.cusgroupnum,
