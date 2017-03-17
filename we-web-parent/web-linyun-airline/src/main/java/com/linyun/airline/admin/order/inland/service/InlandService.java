@@ -326,7 +326,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		fromJson.put("remindDate", remindTime);
 		fromJson.put("customerInfoId", orderinfo.getUserid().toString());
 		int upOrderid = id;
-		searchViewService.addRemindMsg(fromJson, orderinfo.getOrdersnum(), upOrderid, orderType, session);
+		searchViewService.addRemindMsg(fromJson, orderinfo.getOrdersnum(), "", upOrderid, orderType, session);
 
 		String logcontent = "";
 		for (OrderStatusEnum statusenum : OrderStatusEnum.values()) {
@@ -560,7 +560,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		fromJson.put("remindDate", remindTime);
 		fromJson.put("customerInfoId", orderinfo.getUserid().toString());
 		int upOrderid = id;
-		searchViewService.addRemindMsg(fromJson, orderinfo.getOrdersnum(), upOrderid, orderType, session);
+		searchViewService.addRemindMsg(fromJson, orderinfo.getOrdersnum(), "", upOrderid, orderType, session);
 		String logcontent = "";
 		for (OrderStatusEnum statusenum : OrderStatusEnum.values()) {
 			if (orderType == statusenum.intKey()) {

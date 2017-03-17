@@ -36,8 +36,9 @@
 					</tr>
 				</thead>
 				<tbody id="inlandConfirmPayTbody">
-					<input id="payIds" name="payIds" type="hidden" value="${obj.ids }"><!-- 水单url -->
-					<input id="payNames" name="payNames" type="hidden" value="${obj.sameName }"><!-- 水单url -->
+					<input id="payIds" name="payIds" type="hidden" value="${obj.ids }">
+					<input id="payNames" name="payNames" type="hidden" value="${obj.sameName }">
+					<input id="operators" name="operators" type="hidden" value="${obj.operators }"><!-- 水单url -->
 					<c:forEach var="one" items="${obj.orders}">
                 		<tr>
                 			<td>${one.ordernum }</td>

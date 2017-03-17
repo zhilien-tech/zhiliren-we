@@ -44,12 +44,15 @@ import com.linyun.airline.admin.receivePayment.form.InlandPayEdListSearchSqlForm
 import com.linyun.airline.admin.receivePayment.form.InlandPayListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.InlandRecListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.TSaveInlandPayAddFrom;
+import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.ApprovalResultEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
+import com.linyun.airline.common.enums.MessageRemindEnum;
+import com.linyun.airline.common.enums.MessageWealthStatusEnum;
 import com.linyun.airline.common.enums.UserJobStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TBankCardEntity;
@@ -60,6 +63,7 @@ import com.linyun.airline.entities.TReceiveBillEntity;
 import com.linyun.airline.entities.TReceiveEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUserEntity;
+import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.base.page.OffsetPager;
@@ -78,11 +82,19 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	private static final int APPROVALENABLE = ApprovalResultEnum.ENABLE.intKey();
 	private static final int ONJOB = UserJobStatusEnum.ON.intKey();
 
+	//款项已收
+	private static final int RECEDMSGTYPE = MessageWealthStatusEnum.RECEIVED.intKey();
+	//款项已付
+	private static final int PAYEDMSGTYPE = MessageWealthStatusEnum.PAYED.intKey();
+
 	@Inject
 	private UploadService qiniuUploadService;
 
 	@Inject
 	private externalInfoService externalInfoService;
+
+	@Inject
+	private SearchViewService searchViewService;
 
 	/**
 	 * 
@@ -159,10 +171,29 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 * @param inlandPayIds
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object saveInlandRec(String recId) {
+	public Object saveInlandRec(String recId, HttpSession session) {
 		int orderRecEd = AccountReceiveEnum.RECEIVEDONEY.intKey();
 		int updateNum = dbDao.update(TReceiveEntity.class, Chain.make("status", orderRecEd),
 				Cnd.where("id", "in", recId));
+
+		//收款成功添加消息提醒
+		if (updateNum > 0) {
+			//TODO  ******************************************添加消息提醒***********************************************
+			String sqlS = sqlManager.get("receivePay_order_rec_rids");
+			Sql sql = Sqls.create(sqlS);
+			Cnd cnd = Cnd.NEW();
+			cnd.and("r.id", "in", recId);
+			List<Record> orderPnrList = dbDao.query(sql, cnd, null);
+			for (Record record : orderPnrList) {
+				int uid = Integer.valueOf(record.getString("id"));
+				String ordernum = record.getString("ordersnum");
+				String pnr = "";
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
+				map.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
+				searchViewService.addRemindMsg(map, ordernum, pnr, uid, RECEDMSGTYPE, session);
+			}
+		}
 
 		return updateNum;
 	}
@@ -304,6 +335,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			for (Record record : orders) {
 				String everyShortName = record.getString("shortname");
 				String id = record.getString("id");
+				String uid = record.getString("uid");
 				if (!Util.eq(shortname, everyShortName)) {
 					map.put("sameName", false);
 				} else {
@@ -394,7 +426,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//当前公司id
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
 		Long companyId = company.getId();
-
+		//当前登陆用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long loginUserId = loginUser.getId();
 		String bankComp = form.getBankComp();
 		String cardName = form.getCardName();
 		String cardNum = form.getCardNum();
@@ -409,19 +443,16 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		String receiptUrl = form.getReceiptUrl();
 		String payIds = form.getPayIds();
 		Double totalMoney = form.getTotalMoney();
-
 		String payNames = form.getPayNames();
+		//操作人
+		String operators = form.getOperators();
 		if (Util.eq("false", payNames)) {
 			//收款单位不一致，不能付款
 			return false;
 		}
-
-		/*String payIdStr = payIds.substring(0, payIds.length() - 1);*/
-
 		//付款水单 集合
 		List<TPayReceiptEntity> payReceiptList = new ArrayList<TPayReceiptEntity>();
 		TPayReceiptEntity payReceiptEntity = new TPayReceiptEntity();
-
 		//银行卡
 		TCompanyBankCardEntity companyBankCard = new TCompanyBankCardEntity();
 		companyBankCard.setCompanyId(companyId);
@@ -437,15 +468,12 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//添加银行卡
 		TCompanyBankCardEntity companyBankCardEntity = dbDao.insert(companyBankCard);
 		Integer bankId = companyBankCardEntity.getId();
-
 		//订单
 		TUpOrderEntity upOrder = new TUpOrderEntity();
-
 		//付款集合
 		List<TPayEntity> updateList = new ArrayList<TPayEntity>();
 		List<TPayEntity> payEntityList = dbDao.query(TPayEntity.class, Cnd.where("id", "in", payIds), null);
 		for (TPayEntity payEntity : payEntityList) {
-
 			if (!Util.eq(null, bankId)) {
 				payEntity.setBankId(bankId);
 			}
@@ -479,7 +507,6 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				payEntity.setIsInvioce(isInvioce);
 			}
 			updateList.add(payEntity);
-
 			//添加水单
 			if (!Util.isEmpty(receiptUrl)) {
 				payReceiptEntity.setReceiptUrl(receiptUrl);
@@ -487,21 +514,35 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			}
 			payReceiptList.add(payReceiptEntity);
 		}
-
 		//添加水单表
 		if (!Util.isEmpty(payReceiptList)) {
 			dbDao.insert(payReceiptList);
 		}
-
 		//更新Pnr表中對應的状态
 		List<TPnrInfoEntity> pnrInfoList = dbDao.query(TPnrInfoEntity.class, Cnd.where("id", "in", payIds), null);
+		int updatenum = 0;
 		if (!Util.eq(null, payIds)) {
-			dbDao.update(TPnrInfoEntity.class, Chain.make("orderPnrStatus", APPROVALPAYED),
+			updatenum = dbDao.update(TPnrInfoEntity.class, Chain.make("orderPnrStatus", APPROVALPAYED),
 					Cnd.where("id", "in", payIds));
 		}
 
-		if (!Util.isEmpty(updateList)) {
-			dbDao.update(updateList);
+		//付款成功 操作台添加消息
+		if (updatenum > 0) {
+			//TODO  ******************************************添加消息提醒***********************************************
+			String sqlS = sqlManager.get("receivePay_order_pnr_pids");
+			Sql sql = Sqls.create(sqlS);
+			Cnd cnd = Cnd.NEW();
+			cnd.and("pi.id", "in", payIds);
+			List<Record> orderPnrList = dbDao.query(sql, cnd, null);
+			for (Record record : orderPnrList) {
+				int uid = Integer.valueOf(record.getString("id"));
+				String ordernum = record.getString("ordersnum");
+				String pnr = record.getString("PNR");
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
+				map.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
+				searchViewService.addRemindMsg(map, ordernum, pnr, uid, PAYEDMSGTYPE, session);
+			}
 		}
 
 		return null;

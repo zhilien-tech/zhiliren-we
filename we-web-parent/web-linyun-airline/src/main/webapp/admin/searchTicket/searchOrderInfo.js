@@ -368,8 +368,8 @@ function addInterSelectOpt(obj){
 					'<option class="interOption" value="6">一订</option>'+
 					'<option class="interOption" value="7">二订</option>'+
 					'<option class="interOption" value="8">三订</option>'+
-					'<option class="interOption" value="10">全款</option>'+
-					'<option class="interOption" value="9">尾款</option>'+
+					'<option class="interOption" value="9">全款</option>'+
+					'<option class="interOption" value="10">尾款</option>'+
 					'<option value="3">出票</option>'+
 					'<option value="4">开票</option>'+
 					'<option value="5">关闭</option>';
