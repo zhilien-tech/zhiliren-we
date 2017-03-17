@@ -234,6 +234,8 @@
 			}); */
 		$(function() {
 			initDatatable();
+			$('.menu-ul:eq(0)').hide();//隐藏收付款的二级菜单
+			$('.menu-ul li a:eq(2)').css("color","rgb(245, 245, 245)");//二级菜单 数据字典 高亮style
 		});
 	//搜索
 	$("#searchBtn").on('click', function () {
