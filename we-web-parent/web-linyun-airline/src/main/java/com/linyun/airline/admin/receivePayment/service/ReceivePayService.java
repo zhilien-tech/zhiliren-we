@@ -149,6 +149,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 
 		listdata.remove("data");
 		listdata.put("data", ordersBC);
+		listdata.put("recordsFiltered", ordersBC.size());
 		return listdata;
 	}
 
