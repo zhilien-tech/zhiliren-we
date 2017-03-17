@@ -227,3 +227,11 @@ $("#inlandRecSearchBtn").on('click', function () {
 			}
 	);
 });
+
+//回车搜索
+//回车搜索
+function payOnkeyEnter(){
+	 if(event.keyCode==13){
+		 $("#inlandPaySearchBtn").click();
+	 }
+}
