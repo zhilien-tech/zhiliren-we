@@ -20,8 +20,8 @@
                   <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
                       <li class="active"><a href="#tab_1" data-toggle="tab">客户需求</a></li>
-                      <li><a href="#tab_2" data-toggle="tab">计划制作</a></li>
-                      <li><a href="#tab_3" data-toggle="tab">编辑计划</a></li>
+                      <!-- <li><a href="#tab_2" data-toggle="tab">计划制作</a></li>
+                      <li><a href="#tab_3" data-toggle="tab">编辑计划</a></li> -->
                     </ul>
                     <div class="tab-content">
 
@@ -116,7 +116,7 @@
                       </div><!--end 客户需求-->
 
                       <!--计划制作-->
-                      <div class="tab-pane pane-content labelMar" id="tab_2">
+                      <%-- <div class="tab-pane pane-content labelMar" id="tab_2">
                         
                         <!--系列团/临时团 select and 按钮（导出、保存计划）-->
                         <div class="form-group row">
@@ -375,7 +375,7 @@
                           </tbody>
                         </table>
                         <input id="checkedboxval" name="checkedboxval" type="hidden">
-                      </div><!--end 编辑计划-->
+                      </div><!--end 编辑计划--> --%>
 
                     </div><!-- end tab-content -->
                   </div><!-- end nav-tabs-custom -->
@@ -400,8 +400,8 @@
 <script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 <!--小日历-->
 <script src="${base}/public/build/kalendae.standalone.js" type="text/javascript" charset="utf-8"></script>
-<script src="${base}/public/build/calendar.js" type="text/javascript"></script>
-<!-- select2 -->
+<%-- <script src="${base}/public/build/calendar.js" type="text/javascript"></script> --%>
+<!-- select2 --> 
 <script src="${base}/public/plugins/select2/select2.full.min.js"></script>
 <script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
 <script src="${base}/admin/airline/planmake.js"></script>

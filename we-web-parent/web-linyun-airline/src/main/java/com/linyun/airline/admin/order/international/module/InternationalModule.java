@@ -24,6 +24,7 @@ import org.nutz.mvc.upload.UploadAdaptor;
 import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.order.international.form.InternationalParamForm;
 import com.linyun.airline.admin.order.international.service.InternationalService;
+import com.linyun.airline.entities.TPayReceiveRecordEntity;
 import com.uxuexi.core.common.util.EnumUtil;
 
 /**
@@ -176,17 +177,35 @@ public class InternationalModule {
 	 */
 	@At
 	@POST
-	public Object saveRecord(HttpServletRequest request) {
-		return internationalService.saveRecord(request);
+	public Object saveRecord(HttpServletRequest request, @Param("..") TPayReceiveRecordEntity payreceive) {
+		return internationalService.saveRecord(request, payreceive);
 	}
 
 	/**
-	 * 跳转到编辑记录页面
+	 * 跳转到编辑预收款记录页面
 	 */
 	@At
 	@Ok("jsp")
-	public Object editRecord(HttpServletRequest request) {
+	public Object editReceiveRecord(HttpServletRequest request) {
 		return internationalService.editRecord(request);
+	}
+
+	/**
+	 * 跳转到编辑预付款记录页面
+	 */
+	@At
+	@Ok("jsp")
+	public Object editPayRecord(HttpServletRequest request) {
+		return internationalService.editRecord(request);
+	}
+
+	/**
+	 * 保存编辑记录
+	 */
+	@At
+	@POST
+	public Object saveEditRecord(HttpServletRequest request, @Param("..") TPayReceiveRecordEntity payreceive) {
+		return internationalService.saveEditRecord(request, payreceive);
 	}
 
 	/**
@@ -223,5 +242,32 @@ public class InternationalModule {
 	@Ok("jsp")
 	public Object orderRemind(HttpServletRequest request) {
 		return null;
+	}
+
+	/**
+	 * 编辑游客信息页面
+	 */
+	@At
+	@Ok("jsp")
+	public Object editVisitorInfo(HttpServletRequest request) {
+		return internationalService.editVisitorInfo(request);
+	}
+
+	/**
+	 * 保存编辑游客信息页面
+	 */
+	@At
+	@POST
+	public Object saveEditVisitorInfo(HttpServletRequest request) {
+		return internationalService.saveEditVisitorInfo(request);
+	}
+
+	/**
+	 * 打开退票页面
+	 */
+	@At
+	@Ok("jsp")
+	public Object backTicket(HttpServletRequest request) {
+		return internationalService.backTicket(request);
 	}
 }
