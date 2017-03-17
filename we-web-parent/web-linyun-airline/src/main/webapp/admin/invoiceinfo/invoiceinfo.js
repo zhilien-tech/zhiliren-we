@@ -121,7 +121,7 @@ function openkaiInvoiceEdit(id){
         content: BASE_PATH + '/admin/inland/kaiInvoice.html?id='+id
       });
 }
-//付款表格
+/*//付款表格
 var shouInvoiceTable1;
 //初始化表格
 initshouInvoiceTable1();
@@ -241,5 +241,48 @@ function openshouInvoiceEdit(id){
         area: ['987px', '620px'],
         content: BASE_PATH + '/admin/inland/shouInvoice.html?id='+id
     });
-}
+}*/
 
+//开发票 搜索按钮
+$("#kaiSearchInvoiceBtn").on('click', function () {
+	var status = $("#kaiInvoiceSelect").val();
+	var kaiDrawer = $("#kaiDrawer").val();
+	var kaiInvoiceBeginDate = $("#kaiInvoiceBeginDate").val();
+	var kaiInvoiceEndDate = $("#kaiInvoiceEndDate").val();
+	var invoicenum = $("#invoicenumId").val();
+    var param = {
+		        "status":status,
+		        "kaiDrawer":kaiDrawer,
+		        "kaiInvoiceBeginDate":kaiInvoiceBeginDate,
+		        "kaiInvoiceEndDate":kaiInvoiceEndDate,
+				"invoicenum": invoicenum
+		    };
+    if(status==1){
+    	KaiInvoiceTable1.settings()[0].ajax.data = param;
+    	KaiInvoiceTable1.ajax.reload(
+    			function(json){
+    				autoHighLoad($('#KaiInvoiceTable1'));
+    			}
+    	);
+    }
+    if(status==2){
+    	inlandPayEdTable.settings()[0].ajax.data = param;
+    	inlandPayEdTable.ajax.reload(
+    			function(json){
+    				autoHighLoad($('#inlandPayEdTable'));
+    			}
+    	);
+    }
+    
+});
+
+
+/*清除 内陆跨海 收款的   检索项*/
+$('#inlandRecClearBtn').click(function(){
+	clearSearchTxt("inlandRecSelect", "inlandRecBeginDate", "inlandRecEndDate", "inlandRecInput");
+});
+
+/*清除 内陆跨海 付款的   检索项*/
+$('#inlandPayClearBtn').click(function(){
+	clearSearchTxt("inlandPaySelect", "inlandPayBeginDate", "inlandPayEndDate", "inlandPayInput");
+});

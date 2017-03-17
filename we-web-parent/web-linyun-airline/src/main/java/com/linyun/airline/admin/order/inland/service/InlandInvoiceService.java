@@ -256,6 +256,14 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 	 */
 	@SuppressWarnings("unchecked")
 	public Object listKaiInvoiceData(KaiInvoiceParamForm paramForm, HttpServletRequest request) {
+
+		//检索条件
+		/*Date kaiInvoiceBeginDate = paramForm.getKaiInvoiceBeginDate();
+		Date kaiInvoiceEndDate = paramForm.getKaiInvoiceEndDate();
+		String kaiDrawer = paramForm.getKaiDrawer();
+		String paymentunit = paramForm.getPaymentunit();
+		String invoicenum = paramForm.getInvoicenum();*/
+
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);

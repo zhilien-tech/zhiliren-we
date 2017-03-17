@@ -32,11 +32,11 @@
 			</li>
 			<li>
 				<span>用途</span>
-				<span>${obj.detaillist.purpose }</span>
+				<span>${obj.detaillist.purposeStr }</span>
 			</li>
 			<li>
 				<span>资金种类</span>
-				<span>${obj.detaillist.fundType }</span>
+				<span>${obj.detaillist.fundTypeStr }</span>
 			</li>
 			<li>
 				<span>金额</span>
@@ -48,7 +48,7 @@
 			</li>
 			<li>
 				<span>币种</span>
-				<span>${obj.detaillist.payCurrency }</span>
+				<span>${obj.detaillist.currencyStr }</span>
 			</li>
 			<li>
 				<span>发票</span>

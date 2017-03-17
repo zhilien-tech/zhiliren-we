@@ -74,6 +74,7 @@ public class UserViewService extends BaseService<TUserEntity> {
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("comId", "=", companyId);
+		cnd.and("deptName", "!=", "公司管理部");
 		sql.setCondition(cnd);
 		sql.setCallback(Sqls.callback.records());
 		nutDao.execute(sql);
