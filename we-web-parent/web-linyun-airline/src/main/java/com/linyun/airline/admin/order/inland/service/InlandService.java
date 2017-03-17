@@ -118,7 +118,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		form.setUserid(new Long(user.getId()).intValue());
+		form.setCompanyId(new Long(company.getId()).intValue());
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
 		List<Record> data = (List<Record>) listdata.get("data");
@@ -166,6 +169,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Map<String, Object> fromJson = JsonUtil.fromJson(data, Map.class);
 		Integer customerId = Integer.valueOf((String) fromJson.get("customerId"));
 		boolean generateOrder = (boolean) fromJson.get("generateOrder");
@@ -174,6 +179,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		orderinfo.setUserid(customerId);
 		orderinfo.setOrdersstatus(orderType);
 		orderinfo.setLoginUserId(new Long(user.getId()).intValue());
+		orderinfo.setCompanyId(new Long(company.getId()).intValue());
 		//生成订单号
 		if (generateOrder) {
 			orderinfo.setOrdersnum(editPlanService.generateOrderNum());
