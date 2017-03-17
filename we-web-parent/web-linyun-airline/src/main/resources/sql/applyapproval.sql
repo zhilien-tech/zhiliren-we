@@ -1,9 +1,11 @@
 /*applyapproval_list*/
 select * from(
 select uo.orderstype,ti.id,ti.PNR,ti.orderPnrStatus,ti.salespricesum,uo.ordersnum,ti.optime,p.purpose,
+
 p.proposer,ci.shortName,p.fundType,p.payFees,p.payCurrency,p.isInvioce,p.approveTime,p.approveResult,p.id as 'usingId',uo.id as 'orderId',
 u.userName,(select dictName from dict_info where id=p.payCurrency) as 'currencyStr',(select dictName from dict_info where id=p.purpose) as 'purposeStr',
 (select dictName from dict_info where id=p.fundType) as 'fundTypeStr',p.companyId
+
 FROM t_pnr_info  ti
 LEFT JOIN t_order_customneed oc on ti.needid=oc.id
 LEFT JOIN t_up_order uo on oc.ordernum =uo.id
