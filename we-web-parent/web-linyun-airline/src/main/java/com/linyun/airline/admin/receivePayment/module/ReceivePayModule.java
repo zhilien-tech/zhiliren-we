@@ -130,8 +130,8 @@ public class ReceivePayModule {
 	 * 确认收款
 	 */
 	@At
-	public Object saveInlandRec(@Param("id") final String id) {
-		return receivePayService.saveInlandRec(id);
+	public Object saveInlandRec(@Param("id") final String recId, HttpSession session) {
+		return receivePayService.saveInlandRec(recId, session);
 	}
 
 	//水单上传 返回值文件存储地址

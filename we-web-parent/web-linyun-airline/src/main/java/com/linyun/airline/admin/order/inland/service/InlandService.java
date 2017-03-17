@@ -326,7 +326,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		fromJson.put("remindDate", remindTime);
 		fromJson.put("customerInfoId", orderinfo.getUserid().toString());
 		int upOrderid = id;
-		searchViewService.addRemindMsg(fromJson, orderinfo.getOrdersnum(), upOrderid, orderType, session);
+		searchViewService.addRemindMsg(fromJson, orderinfo.getOrdersnum(), "", upOrderid, orderType, session);
 
 		String logcontent = "";
 		for (OrderStatusEnum statusenum : OrderStatusEnum.values()) {
@@ -560,7 +560,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		fromJson.put("remindDate", remindTime);
 		fromJson.put("customerInfoId", orderinfo.getUserid().toString());
 		int upOrderid = id;
-		searchViewService.addRemindMsg(fromJson, orderinfo.getOrdersnum(), upOrderid, orderType, session);
+		searchViewService.addRemindMsg(fromJson, orderinfo.getOrdersnum(), "", upOrderid, orderType, session);
 		String logcontent = "";
 		for (OrderStatusEnum statusenum : OrderStatusEnum.values()) {
 			if (orderType == statusenum.intKey()) {
@@ -1316,6 +1316,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		String ids = request.getParameter("ids");
 		String purpose = request.getParameter("purpose");
 		String payCurrency = request.getParameter("payCurrency");
@@ -1325,6 +1327,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		payEntity.setPayCurrency(Integer.valueOf(payCurrency));
 		payEntity.setProposer(new Long(user.getId()).intValue());
 		payEntity.setApprover(approver);
+		payEntity.setCompanyId(new Long(company.getId()).intValue());
 		TPayEntity insert = dbDao.insert(payEntity);
 		Iterable<String> split = Splitter.on(",").split(ids);
 		List<TPayPnrEntity> paypnrs = new ArrayList<TPayPnrEntity>();

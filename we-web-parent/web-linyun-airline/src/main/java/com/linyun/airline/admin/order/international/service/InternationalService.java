@@ -30,6 +30,7 @@ import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.inland.enums.PassengerTypeEnum;
 import com.linyun.airline.admin.order.inland.enums.PayMethodEnum;
+import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
 import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.order.international.form.InternationalParamForm;
 import com.linyun.airline.common.enums.OrderTypeEnum;
@@ -230,6 +231,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		}
 		result.put("bzcode", bzcode);
 		result.put("paymethodenum", EnumUtil.enum2(PayMethodEnum.class));
+		result.put("receivestatus", PayReceiveTypeEnum.RECEIVE.intKey());
+		result.put("paystatus", PayReceiveTypeEnum.PAY.intKey());
 		return result;
 	}
 
@@ -415,7 +418,9 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			TAirlineInfoEntity airline = new TAirlineInfoEntity();
 			airline.setLeavecity(map.get("leavecity"));
 			airline.setArrvicity(map.get("arrivecity"));
-			airline.setLeavedate(DateUtil.string2Date(map.get("leavedate"), DateUtil.FORMAT_YYYY_MM_DD));
+			if (!Util.isEmpty(map.get("leavedate"))) {
+				airline.setLeavedate(DateUtil.string2Date(map.get("leavedate"), DateUtil.FORMAT_YYYY_MM_DD));
+			}
 			airline.setLeavetime(map.get("leavetime"));
 			airline.setArrivetime(map.get("arrivetime"));
 			airline.setAilinenum(map.get("ailinenum"));
@@ -481,7 +486,9 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			TAirlineInfoEntity airline = new TAirlineInfoEntity();
 			airline.setLeavecity(map.get("leavecity"));
 			airline.setArrvicity(map.get("arrivecity"));
-			airline.setLeavedate(DateUtil.string2Date(map.get("leavedate"), DateUtil.FORMAT_YYYY_MM_DD));
+			if (!Util.isEmpty(map.get("leavedate"))) {
+				airline.setLeavedate(DateUtil.string2Date(map.get("leavedate"), DateUtil.FORMAT_YYYY_MM_DD));
+			}
 			airline.setLeavetime(map.get("leavetime"));
 			airline.setArrivetime(map.get("arrivetime"));
 			airline.setAilinenum(map.get("ailinenum"));
@@ -562,6 +569,21 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	 */
 	public Object addRecord(HttpServletRequest request) {
 		Map<String, Object> result = new HashMap<String, Object>();
+		String orderid = request.getParameter("orderid");
+		String payreceivestatus = request.getParameter("payreceivestatus");
+		String ordersstatus = request.getParameter("ordersstatus");
+		result.put("orderid", orderid);
+		result.put("recordtype", payreceivestatus);
+		result.put("ordersstatus", ordersstatus);
+		//币种下拉
+		List<DictInfoEntity> bzcode = new ArrayList<DictInfoEntity>();
+		try {
+			bzcode = externalInfoService.findDictInfoByName("", BIZHONGCODE);
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		result.put("bzcode", bzcode);
 		return result;
 	}
 
@@ -572,9 +594,19 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	 * @param request
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object saveRecord(HttpServletRequest request) {
-
-		return null;
+	public Object saveRecord(HttpServletRequest request, TPayReceiveRecordEntity payreceive) {
+		HttpSession session = request.getSession();
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		payreceive.setOpid(new Long(user.getId()).intValue());
+		payreceive.setOptime(new Date());
+		for (InternationalStatusEnum payenum : InternationalStatusEnum.values()) {
+			if (Integer.valueOf(payreceive.getOrderstatus()).equals(payenum.intKey())) {
+				payreceive.setOrderstatus(payenum.value());
+				break;
+			}
+		}
+		return dbDao.insert(payreceive);
 	}
 
 	/**
@@ -587,6 +619,18 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	 */
 	public Object editRecord(HttpServletRequest request) {
 		Map<String, Object> result = new HashMap<String, Object>();
+		String recordid = request.getParameter("recordid");
+		TPayReceiveRecordEntity recordinfo = dbDao.fetch(TPayReceiveRecordEntity.class, Long.valueOf(recordid));
+		result.put("recordinfo", recordinfo);
+		//币种下拉
+		List<DictInfoEntity> bzcode = new ArrayList<DictInfoEntity>();
+		try {
+			bzcode = externalInfoService.findDictInfoByName("", BIZHONGCODE);
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		result.put("bzcode", bzcode);
 		return result;
 	}
 
@@ -621,10 +665,77 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object loadPayReceiveRecord(HttpServletRequest request) {
+		Map<String, Object> result = new HashMap<String, Object>();
 		String orderid = request.getParameter("orderid");
-		List<TPayReceiveRecordEntity> query = dbDao.query(TPayReceiveRecordEntity.class,
+		List<TPayReceiveRecordEntity> record = dbDao.query(TPayReceiveRecordEntity.class,
 				Cnd.where("orderid", "=", orderid), null);
-		return query;
+		result.put("receivestatus", PayReceiveTypeEnum.RECEIVE.intKey());
+		result.put("paystatus", PayReceiveTypeEnum.PAY.intKey());
+		result.put("record", record);
+		return result;
 	}
 
+	/**
+	 * 保存编辑记录
+	 * <p>
+	 * TODO保存编辑记录
+	 *
+	 * @param request
+	 * @param payreceive
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object saveEditRecord(HttpServletRequest request, TPayReceiveRecordEntity payreceive) {
+		HttpSession session = request.getSession();
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		payreceive.setOpid(new Long(user.getId()).intValue());
+		payreceive.setOptime(new Date());
+		return dbDao.update(payreceive);
+	}
+
+	/**
+	 *编辑游客信息页面
+	 * <p>
+	 * TODO编辑游客信息页面
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object editVisitorInfo(HttpServletRequest request) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String visitorid = request.getParameter("visitorid");
+		TVisitorInfoEntity visitorinfo = dbDao.fetch(TVisitorInfoEntity.class, Long.valueOf(visitorid));
+		result.put("visitorinfo", visitorinfo);
+		return result;
+	}
+
+	/**
+	 * 保存编辑游客信息
+	 * <p>
+	 * TODO保存编辑游客信息
+	 *
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object saveEditVisitorInfo(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		TVisitorInfoEntity visitorinfo = dbDao.fetch(TVisitorInfoEntity.class, Long.valueOf(id));
+		visitorinfo.setVisitorname(request.getParameter("visitorname"));
+		visitorinfo.setCardtype(request.getParameter("cardtype"));
+		visitorinfo.setGender(request.getParameter("gender"));
+		visitorinfo.setCardnum(request.getParameter("cardnum"));
+		visitorinfo.setVisitortype(request.getParameter("visitortype"));
+		return dbDao.update(visitorinfo);
+	}
+
+	/**
+	 * 打开退票页面
+	 * <p>
+	 * TODO打开退票页面
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object backTicket(HttpServletRequest request) {
+
+		return null;
+	}
 }

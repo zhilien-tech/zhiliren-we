@@ -41,8 +41,8 @@
 	                       <td>${visitor.cardtype }</td>
 	                       <td>${visitor.cardnum }</td>
 	                       <td>
-	                          <a href="javascript:;">编辑</a>
-	                          <a href="javascript:;" class="refund">退票</a>
+	                          <a href="javascript:editVisitor(${visitor.id });">编辑</a>
+	                          <a href="javascript:backTicket(${visitor.id });" class="refund">退票</a>
 	                       </td>
 	                      </tr>
                       </c:forEach>
@@ -60,24 +60,44 @@
   <script src="${base}/common/js/layer/layer.js"></script>
   <script type="text/javascript">
   $(function(){
-        //点击 退票 弹框
-        $('.refund').click(function(){
-            layer.open({
-                type: 2,
-                title:false,
-                skin: false, //加上边框
-                closeBtn:false,//默认 右上角关闭按钮 是否显示
-                shadeClose:true,
-                area: ['850px', '254px'],
-                content: ['internationOrderDetail-YKinfo-refund.html','no']
-              });
-        });
   });
+   //点击 退票 弹框
+   function editVisitor(id){
+       layer.open({
+           type: 2,
+           title:false,
+           skin: false, //加上边框
+           closeBtn:false,//默认 右上角关闭按钮 是否显示
+           shadeClose:true,
+           area: ['900px', '254px'],
+           content: '${base}/admin/international/editVisitorInfo.html?visitorid='+id
+         });
+   }
+   //退票
+   function backTicket(id){
+	   layer.open({
+           type: 2,
+           title:false,
+           skin: false, //加上边框
+           closeBtn:false,//默认 右上角关闭按钮 是否显示
+           shadeClose:true,
+           area: ['850px', '254px'],
+           content: '${base}/admin/international/backTicket.html?visitorid='+id
+         });
+   }
 //关闭窗口
   function closewindow(){
 		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 		parent.layer.close(index);
   }
+  
+  function successCallback(id){
+	  if(id == '1'){
+		  layer.alert("添加成功",{time: 2000, icon:1});
+	  }else if(id == '2'){
+		  layer.alert("修改成功",{time: 2000, icon:1});
+	  }
+	}
   </script>
 </body>
 </html>	

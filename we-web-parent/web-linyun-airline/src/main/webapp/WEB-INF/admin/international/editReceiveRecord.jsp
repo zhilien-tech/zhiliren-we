@@ -17,9 +17,10 @@
     	<div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" value="保存" onclick="saveData()"/>
-            <input id="orderid" name="orderid" type="hidden" value="${obj.orderid }">
-            <input id="recordtype" name="recordtype" type="hidden" value="${obj.recordtype }">
-            <input id="orderstatus" name="orderstatus" type="hidden" value="${obj.ordersstatus }">
+            <input id="id" name="id" type="hidden" value="${obj.recordinfo.id }">
+            <input id="orderid" name="orderid" type="hidden" value="${obj.recordinfo.orderid }">
+            <input id="recordtype" name="recordtype" type="hidden" value="${obj.recordinfo.recordtype }">
+            <input id="orderstatus" name="orderstatus" type="hidden" value="${obj.recordinfo.orderstatus }">
             <h4>预收款</h4>
           </div>
           <div class="modal-body" style="height:481px;overflow-y:auto; ">
@@ -27,29 +28,35 @@
                 <tbody>
                       <tr>
                         <td><label>成本单价：</label></td>
-                        <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint"></td>
+                        <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint" value="${obj.recordinfo.costprice }"></td>
                         <td><label>预收款比例 ：</label></td>
-                        <td><input id="prepayratio" name="prepayratio" type="text" class="form-control input-sm mustNumberPoint"></td>
+                        <td><input id="prepayratio" name="prepayratio" type="text" class="form-control input-sm mustNumberPoint" value="${obj.recordinfo.prepayratio }"></td>
                         <td><label>实际人数：</label></td>
-                        <td><input id="actualnumber" name="actualnumber" type="text" class="form-control input-sm mustNumber"></td>
+                        <td><input id="actualnumber" name="actualnumber" type="text" class="form-control input-sm mustNumber" value="${obj.recordinfo.actualnumber }"></td>
                         <td colspan="2"><label>免罚金可减人数：</label></td>
-                        <td colspan="2"><input id="freenumber" name="freenumber" type="text" class="form-control input-sm mustNumber"></td>
+                        <td colspan="2"><input id="freenumber" name="freenumber" type="text" class="form-control input-sm mustNumber" value="${obj.recordinfo.freenumber }"></td>
                       </tr>
                       <tr>
                         <td><label>本期罚金：</label></td>
-                        <td><input id="currentfine" name="currentfine" type="text" class="form-control input-sm mustNumberPoint"></td>
+                        <td><input id="currentfine" name="currentfine" type="text" class="form-control input-sm mustNumberPoint" value="${obj.recordinfo.currentfine }"></td>
                         <td><label>本期应付：</label></td>
-                        <td><input id="currentdue" name="currentdue" type="text" class="form-control input-sm mustNumberPoint"></td>
+                        <td><input id="currentdue" name="currentdue" type="text" class="form-control input-sm mustNumberPoint" value="${obj.recordinfo.currentdue }"></td>
                         <td><label>税金单价：</label></td>
-                        <td><input id="ataxprice" name="ataxprice" type="text" class="form-control input-sm mustNumberPoint"></td>
+                        <td><input id="ataxprice" name="ataxprice" type="text" class="form-control input-sm mustNumberPoint" value="${obj.recordinfo.ataxprice }"></td>
                         <td><label>本期实付：</label></td>
-                        <td><input id="currentpay" name="currentpay" type="text" class="form-control input-sm mustNumberPoint"></td>
+                        <td><input id="currentpay" name="currentpay" type="text" class="form-control input-sm mustNumberPoint" value="${obj.recordinfo.currentpay }"></td>
                         <td><label>币种：</label></td>
                         <td>
                           <select id="currency" name="currency" class="form-control input-sm">
-                            <option value="">请选择</option>
                             <c:forEach items="${obj.bzcode }" var="one"> 
-			                     <option value="${one.id }">${one.dictCode }</option>
+                            	<c:choose>
+                            		<c:when test="${obj.recordinfo.currency eq one.id }">
+					                     <option value="${one.id }" selected="selected">${one.dictCode }</option>
+                            		</c:when>
+                            		<c:otherwise>
+					                     <option value="${one.id }">${one.dictCode }</option>
+                            		</c:otherwise>
+                            	</c:choose>
 	                     	</c:forEach>
                           </select>
                         </td>
@@ -80,15 +87,15 @@
 		$.ajax({
 			type: 'POST', 
 			data: $("#addForm").serialize(), 
-			url: '${base}/admin/international/saveRecord.html',
+			url: '${base}/admin/international/saveEditRecord.html',
 			async:false,
             success: function (data) {
             	layer.closeAll('loading');
             	closewindow();
-            	window.parent.successCallback('1');
+            	window.parent.successCallback('2');
             },
             error: function (xhr) {
-            	layer.alert("添加失败",{time: 2000, icon:1});
+            	layer.alert("修改失败",{time: 2000, icon:1});
             } 
       });
 	}

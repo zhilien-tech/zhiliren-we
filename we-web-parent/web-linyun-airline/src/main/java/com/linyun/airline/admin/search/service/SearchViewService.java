@@ -74,7 +74,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	@Inject
 	private EditPlanService editPlanService;
 	@Inject
-	private RemindMessageService remindService;
+	private RemindMessageService remindMessageService;
 
 	private static final int INLAND = OrderTypeEnum.FIT.intKey();
 	private static final int INTER = OrderTypeEnum.TEAM.intKey();
@@ -805,7 +805,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		int upOrderId = insertOrder.getId();
 
 		/***************************操作台 消息提醒************************/
-		addRemindMsg(fromJson, generateOrderNum, upOrderId, orderStatus, session);
+		addRemindMsg(fromJson, generateOrderNum, "", upOrderId, orderStatus, session);
 
 		/****************************客户需求数据*************************/
 		addCustomerNeed(customdata, insertOrder);
@@ -905,12 +905,13 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 *
 	 * @param data Json数据
 	 * @param generateOrderNum  订单号
+	 * @param pnr  pnr号
 	 * @param orderStatus  订单状态
 	 * @param session
 	 * @return 
 	 */
-	public String addRemindMsg(Map<String, Object> fromJson, String generateOrderNum, int upOrderId, int orderStatus,
-			HttpSession session) {
+	public String addRemindMsg(Map<String, Object> fromJson, String generateOrderNum, String pnr, int upOrderId,
+			int orderStatus, HttpSession session) {
 		//当前用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long userId = loginUser.getId();
@@ -951,7 +952,11 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		}
 
 		//消息提醒方式
-		Integer remindType = Integer.valueOf((String) fromJson.get("remindType"));
+		String remindStr = fromJson.get("remindType").toString();
+		if (Util.isEmpty(remindStr)) {
+			remindStr = "6";
+		}
+		Integer remindType = Integer.valueOf(remindStr);
 		switch (remindType) {
 		case 0:
 			//每15Min  消息表：5
@@ -1029,33 +1034,70 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			//一订 8
 			msgType = MessageTypeEnum.FIRBOOKMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
-			msgContent = generateOrderNum + "订单需要支付一订";
+			msgContent = generateOrderNum + "订单需支付一订";
 			break;
 		case 7:
 			//二订 9
 			msgType = MessageTypeEnum.SECBOOKMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
-			msgContent = generateOrderNum + "订单需要支付二订";
+			msgContent = generateOrderNum + "订单需支付二订";
 			break;
 		case 8:
 			//三订 10
 			msgType = MessageTypeEnum.THRBOOKMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
-			msgContent = generateOrderNum + "订单需要支付三订";
+			msgContent = generateOrderNum + "订单需支付三订";
 			break;
 		case 9:
-			//尾款 12
-			msgType = MessageTypeEnum.LASTBOOKMSG.intKey();
-			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
-			msgContent = generateOrderNum + "订单需要结清尾款";
-			break;
-		case 10:
 			//全款 11
 			msgType = MessageTypeEnum.ALLBOOKMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
 			msgContent = generateOrderNum + "订单需要支付全款";
 			break;
+		case 10:
+			//尾款 12
+			msgType = MessageTypeEnum.LASTBOOKMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
+			msgContent = generateOrderNum + "订单需结清尾款";
+			break;
+		case 11:
+			//已收款 14
+			msgType = MessageTypeEnum.RECEIVEDMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = generateOrderNum + "订单款项已收";
+			break;
+		case 12:
+			//已付款 15
+			msgType = MessageTypeEnum.PAYEDMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = generateOrderNum + " " + pnr + "款项已付";
+			break;
+		case 13:
+			//收款款已开发票 16
+			msgType = MessageTypeEnum.INVIOCEMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = generateOrderNum + "订单" + pnr + "发票已开";
+			break;
+		case 14:
+			//付款已收发票 17
+			msgType = MessageTypeEnum.RECINVIOCEMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = generateOrderNum + "订单中PNR：" + pnr + "发票已收";
+			break;
+		case 15:
+			//付款 已审批18
+			msgType = MessageTypeEnum.RECINVIOCEMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = generateOrderNum + "订单中PNR：" + pnr + "审批已通过";
+			break;
+		case 16:
+			//付款已收发票 19
+			msgType = MessageTypeEnum.RECINVIOCEMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = generateOrderNum + "订单中PNR：" + pnr + "审批已拒绝";
+			break;
 		}
+
 		/*添加的消息 存放到map中*/
 		Map<String, Object> mapMsg = Maps.newHashMap();
 		mapMsg.put("msgContent", msgContent);
@@ -1066,13 +1108,12 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		mapMsg.put("SourceUserId", SourceUserId);
 		mapMsg.put("sourceUserType", sourceUserType);
 		mapMsg.put("receiveUserIds", receiveUserIds);
-		mapMsg.put("receiveUserIds", receiveUserIds);
 		mapMsg.put("receiveUserType", receiveUserType);
 		mapMsg.put("customerInfoId", customerInfoId);
 		mapMsg.put("remindMsgDate", remindDateTime);
 		mapMsg.put("upOrderId", upOrderId);
 
-		remindService.addMessageEvent(mapMsg);
+		remindMessageService.addMessageEvent(mapMsg);
 
 		return "消息添加成功";
 	}
