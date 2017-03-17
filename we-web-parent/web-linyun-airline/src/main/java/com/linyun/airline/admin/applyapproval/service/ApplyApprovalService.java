@@ -44,7 +44,6 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		String sqlString = sqlManager.get("applyapproval_list");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
-		/*Long companyId = 23l;*/
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
 		Long companyId = company.getId();
 		//国际
@@ -55,7 +54,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		List<Record> list = dbDao.query(sql, cnd, null);
 		int internationalNum = list.size();
 		Cnd cnd1 = Cnd.NEW();
-		cnd1.and("companyId", "=", 43);
+		cnd1.and("companyId", "=", companyId);
 		cnd1.and("orderstype", "=", PassengerTypeEnum.FIT.intKey());
 		cnd1.and("orderPnrStatus", "=", AccountPayEnum.APPROVAL.intKey());
 		List<Record> list1 = dbDao.query(sql, cnd1, null);
@@ -80,15 +79,15 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		String sqlString = sqlManager.get("applyapproval_list");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
-		/*Long companyId = 23l;*/
+		//国际
+		cnd.and("orderstype", "=", orderType);
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
 		Long companyId = company.getId();
 		//国际
 		cnd.and("companyId", "=", companyId);
-		cnd.and("orderstype", "=", orderType);
-		cnd.and("orderPnrStatus", "=", AccountPayEnum.APPROVAL.intKey());
+		/*cnd.and("(orderPnrStatus", "=", AccountPayEnum.APPROVAL.intKey());
 		cnd.or("orderPnrStatus", "=", AccountPayEnum.APPROVALPAYING.intKey());
-		cnd.or("orderPnrStatus", "=", AccountPayEnum.REFUSE.intKey());
+		cnd.or("orderPnrStatus", "=", AccountPayEnum.REFUSE.intKey());*/
 		sql.setCondition(cnd);
 		List<Record> datalist = dbDao.query(sql, cnd, null);
 		Map<String, Object> re = MapUtil.map();
@@ -113,12 +112,12 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		/*Long companyId = 23l;*/
-		/*TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
-		Long companyId = company.getId();*/
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
+		Long companyId = company.getId();
 		//国际
-		/*cnd.and("companyId", "=", 43);
-		cnd.and("orderstype", "=", orderType);
-		cnd.and("orderPnrStatus", "=", AccountPayEnum.APPROVAL.intKey());*/
+		cnd.and("companyId", "=", companyId);
+		/*cnd.and("orderstype", "=", orderType);*/
+		/*cnd.and("(orderPnrStatus", "=", AccountPayEnum.APPROVAL.intKey());*/
 
 		cnd.and("id", "=", id);
 		sql.setCondition(cnd);
@@ -130,23 +129,59 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 
 	}
 
-	public Map<String, String> doAgree(HttpSession session, Long usingId, Long id, Long status) {
-		TPayEntity pay = dbDao.fetch(TPayEntity.class, id);
-		if (status == AccountPayEnum.APPROVAL.intKey()) {
+	public Map<String, String> doAgree(HttpSession session, Long usingId, Long id, Long status, String temp,
+			Long orderId) {
 
+		Integer approvalResult = null;
+		Integer approvalStatus = null;
+		if ("agree".equalsIgnoreCase(temp)) {
+			approvalResult = ApprovalResultEnum.ENABLE.intKey();
+			approvalStatus = AccountPayEnum.APPROVALPAYING.intKey();
+		} else if ("refuse".equalsIgnoreCase(temp)) {
+			approvalResult = ApprovalResultEnum.DISABLE.intKey();
+			approvalStatus = AccountPayEnum.REFUSE.intKey();
+
+		}
+		/*pay.setApproveResult(approvalResult);
+		pay.setApproveTime(new Date());
+		int res = this.updateIgnoreNull(pay);*/
+		TPnrInfoEntity pnrInfo = dbDao.fetch(TPnrInfoEntity.class, id);
+		pnrInfo.setOrderPnrStatus(approvalStatus);
+		int res1 = this.updateIgnoreNull(pnrInfo);
+		//验证一个订单的pnr是否全部审核通过
+		boolean flag = orderTrueOrFalse(orderId);
+		if (flag) {
+			TPayEntity pay = dbDao.fetch(TPayEntity.class, usingId);
 			pay.setApproveResult(ApprovalResultEnum.ENABLE.intKey());
 			pay.setApproveTime(new Date());
 			int res = this.updateIgnoreNull(pay);
-			TPnrInfoEntity pnrInfo = dbDao.fetch(TPnrInfoEntity.class, usingId);
-			pnrInfo.setOrderPnrStatus(AccountPayEnum.APPROVALPAYING.intKey());
-			int res1 = this.updateIgnoreNull(pnrInfo);
-			if (res > 0 && res1 > 0) {
+		}
+		if (res1 > 0) {
 
-				return JsonResult.success("审核通过");
-			}
+			return JsonResult.success("审核通过");
 		}
 
-		return null;
+		return JsonResult.error("审核失败");
+
+	}
+
+	private boolean orderTrueOrFalse(Long orderId) {
+		boolean flag = true;
+		String sqlString = sqlManager.get("applyapproval_list");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		//国际
+		cnd.and("orderId", "=", orderId);
+		sql.setCondition(cnd);
+		List<Record> datalist = dbDao.query(sql, cnd, null);
+		for (Record record : datalist) {
+			Integer status = (Integer) record.get("orderPnrStatus");
+			if (status == AccountPayEnum.APPROVAL.intKey()) {
+				flag = false;
+				break;
+			}
+		}
+		return flag;
 
 	}
 

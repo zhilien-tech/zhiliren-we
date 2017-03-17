@@ -35,13 +35,21 @@
   	<a href="${base}/admin/applyapproval/detailList.html?id=${each.id}&operation=${obj.operation}">
 		<ul class="content-a-ul">
 			<li>
-				<span>${each.name }</span>
-				<span>${each.payMoney }</span>
+				<span>${each.shortName }</span>
+				<span>${each.salespricesum }</span>
 			</li>
 			<li>
+				<span>${each.ordersnum }</span>
+				<span>${each.purpose }</span>
+			</li>
+			<li>
+				<span>${each.PNR }</span>
+				<span>${each.userName }</span>
+			</li>
+			<%-- <li>
 				<span>${each.purpose }</span>
 				<span>${each.proposer }</span>
-			</li>
+			</li> --%>
 			<li>
 				<span class="color1">
 					<c:if test="${each.orderPnrStatus==1 }">
@@ -52,6 +60,9 @@
 					</c:if>
 					<c:if test="${each.orderPnrStatus==4 }">
 						拒绝
+					</c:if>
+					<c:if test="${each.orderPnrStatus==3 }">
+						同意
 					</c:if>
 				</span>
 				<span><fmt:formatDate value="${each.payDate }" pattern="yyyy:MM:dd HH:mm:ss"/></span>
@@ -84,6 +95,14 @@
 <script src="${base}/public/dist/js/iscroll.js"></script>
 <script src="${base}/public/dist/js/iosSelect.js"></script>
 <script type="text/javascript">
+	/* $(function(){
+		var aa=$('.color1').html();
+		if(aa==' 同意 '){
+			$(this).css('color','green !important');
+		}else{
+			alert('拒绝');
+		}
+	}); */
 	var selectDateDom = $('#selectDate');
 	var showDateDom = $('#showDate');
 	// 初始化时间

@@ -19,7 +19,7 @@
             <input type="button" id="submit" class="btn btn-primary right btn-sm" onclick="savePnrInfo();" value="保存"/>
             <h4>+PNR</h4>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" style="padding-top:0;">
             <div class="tab-content backcard">
             	<form id="addPnrForm">
             	<input id="pnrid" name="pnrid" type="hidden" value="${obj.pnrinfo.id }" >
