@@ -820,7 +820,15 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		/****************************客户需求数据*************************/
 		addCustomerNeed(customdata, insertOrder);
 
-		return "订单保存成功";
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("orderId", upOrderId);
+		if (Util.eq("1", orderStatus)) {
+			map.put("orderStatus", orderStatus);
+		} else {
+			map.put("orderStatus", orderStatus);
+		}
+
+		return map;
 
 	}
 

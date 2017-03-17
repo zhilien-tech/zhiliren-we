@@ -36,7 +36,7 @@
 								<option value="3">出票</option>
 								<option value="4">开票</option>
 								<option value="5">关闭</option>
-							</select> <label>提醒：</label> 
+							<!-- </select> <label>提醒：</label> 
 							<select id="remindType" class="form-control input-sm timSelect">
 								<option value="0">每15分</option>
 								<option value="1">每30分</option>
@@ -48,7 +48,7 @@
 							<input id="datepicker" name="datepicker" type="text"
 								class="form-control input-sm conTimeInput"
 								onFocus="WdatePicker({minDate:'%y-%M-%d', dateFmt:'yyyy-MM-dd HH:mm:ss'})"
-								placeholder="请选择提醒日期"> 
+								placeholder="请选择提醒日期">  -->
 							<input type="button" class="btn btn-primary btn-sm" onclick="saveOrderInfo();" value="保存"> 
 							<input type="button" class="btn btn-primary btn-sm" onclick="closewindow();" value="取消">
 						</div>
