@@ -197,7 +197,7 @@
                         <th>操作</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="receiverecord">
 
                     </tbody>
                   </table>
@@ -218,7 +218,7 @@
                         <th>操作</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="payrecord">
                     </tbody>
                   </table>
                  </div>
@@ -429,6 +429,7 @@
         });
         //点击 添加记录-预收款 弹框
         $('.addYSK').click(function(){
+        	var orderType = $('#orderType').val();
             layer.open({
                 type: 2,
                 title:false,
@@ -436,12 +437,13 @@
                 closeBtn:false,//默认 右上角关闭按钮 是否显示
                 shadeClose:true,
                 area: ['900px', '200px'],
-                content: '${base}/admin/international/addReceiveRecord.html?orderid=${obj.orderinfo.id }'
+                content: '${base}/admin/international/addReceiveRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.receivestatus}&ordersstatus='+orderType
               });
         });
 
         //点击 添加记录-预付款 弹框
         $('.addYFK').click(function(){
+        	var orderType = $('#orderType').val();
             layer.open({
                 type: 2,
                 title:false,
@@ -449,7 +451,7 @@
                 closeBtn:false,//默认 右上角关闭按钮 是否显示
                 shadeClose:true,
                 area: ['900px', '200px'],
-                content: '${base}/admin/international/addPayRecord.html?orderid=${obj.orderinfo.id }'
+                content: '${base}/admin/international/addPayRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.paystatus}&ordersstatus='+orderType
               });
         });
         $('.recordParent p:eq(0)').click(function(){//预收款记录 切换tab
@@ -464,6 +466,7 @@
           $('.recordDiu:eq(0)').hide();
         });
     });
+    //加载航段信息
     loadAirlineInfo();
     function loadAirlineInfo(){
     	$.ajax({
@@ -537,9 +540,61 @@
             } 
       });
     }
-    
+    //加载收付款记录信息
+    loadpayAndReceiveRecord();
+    function loadpayAndReceiveRecord(){
+    	$.ajax({
+			type: 'POST', 
+			data: {orderid:'${obj.orderinfo.id}'}, 
+			url: '${base}/admin/international/loadPayReceiveRecord.html',
+			async:false,
+			dataType:'json',
+            success: function (data) { 
+            	var receivestatus = data.receivestatus;
+            	var paystatus = data.paystatus;
+            	var receivehtml = '';
+            	var payhtml = '';
+            	$.each(data.record, function(name, value) {
+            		if(value.recordtype === receivestatus){
+            			receivehtml += '<tr>';
+            			receivehtml +='<td>'+value.orderstatus+'</td>';
+                        receivehtml += '<td>'+value.prepayratio+'</td>';
+                        receivehtml += '<td>'+value.freenumber+'</td>';
+                        receivehtml += '<td>'+value.actualnumber+'</td>';
+                        receivehtml += '<td>'+value.currentfine+'</td>';
+                        receivehtml += '<td>'+value.currentdue+'</td>';
+                        receivehtml += '<td>'+value.ataxprice+'</td>';
+                        receivehtml += '<td>'+value.currentpay+'</td>';
+                        receivehtml += '<td>';
+                        receivehtml += '<a href="javascript:editRecord('+value.id+','+value.recordtype+');">编辑</a>';
+                        receivehtml += '</td>';
+                        receivehtml += '</tr>';
+            		}else{
+            			payhtml += '<tr>';
+            			payhtml +='<td>'+value.orderstatus+'</td>';
+                        payhtml += '<td>'+value.prepayratio+'</td>';
+                        payhtml += '<td>'+value.freenumber+'</td>';
+                        payhtml += '<td>'+value.actualnumber+'</td>';
+                        payhtml += '<td>'+value.currentfine+'</td>';
+                        payhtml += '<td>'+value.currentdue+'</td>';
+                        payhtml += '<td>'+value.ataxprice+'</td>';
+                        payhtml += '<td>'+value.currentpay+'</td>';
+                        payhtml += '<td>';
+                        payhtml += '<a href="javascript:editRecord('+value.id+','+value.recordtype+');">编辑</a>';
+                        payhtml += '</td>';
+                        payhtml += '</tr>';
+            		}
+        		});
+            	$('#receiverecord').html(receivehtml);
+            	$('#payrecord').html(payhtml);
+            },
+            error: function (xhr) {
+            } 
+      });
+    }
     function successCallback(id){
 	  loadAirlineInfo();
+	  loadpayAndReceiveRecord();
 	  if(id == '1'){
 		  layer.alert("添加成功",{time: 2000, icon:1});
 	  }else if(id == '2'){
@@ -569,6 +624,24 @@
             area: ['900px', '550px'],
             content: '${base}/admin/international/visitorInfo.html?pnrid='+pnrid
           });
+    }
+    //编辑预收款、付款
+    function editRecord(id,type){
+    	var url = '';
+    	if(type == '${obj.receivestatus}'){
+    		url = '${base}/admin/international/editReceiveRecord.html?recordid='+id
+    	}else{
+    		url = '${base}/admin/international/editPayRecord.html?recordid='+id
+    	}
+       layer.open({
+           type: 2,
+           title:false,
+           skin: false, //加上边框
+           closeBtn:false,//默认 右上角关闭按钮 是否显示
+           shadeClose:true,
+           area: ['900px', '200px'],
+           content: url
+         });
     }
   </script>
 </body>
