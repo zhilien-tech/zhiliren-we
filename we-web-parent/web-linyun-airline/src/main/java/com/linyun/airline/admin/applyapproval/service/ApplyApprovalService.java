@@ -147,6 +147,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		int res = this.updateIgnoreNull(pay);*/
 		TPnrInfoEntity pnrInfo = dbDao.fetch(TPnrInfoEntity.class, id);
 		pnrInfo.setOrderPnrStatus(approvalStatus);
+		pnrInfo.setOptime(new Date());
 		int res1 = this.updateIgnoreNull(pnrInfo);
 		//验证一个订单的pnr是否全部审核通过
 		boolean flag = orderTrueOrFalse(orderId);

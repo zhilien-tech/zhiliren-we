@@ -51,20 +51,29 @@
 				<span>${each.proposer }</span>
 			</li> --%>
 			<li>
-				<span class="color1">
 					<c:if test="${each.orderPnrStatus==1 }">
-						待审批
+						<span class="color1">
+							待审批
+						</span>
+						
 					</c:if>
 					<c:if test="${each.orderPnrStatus==2 }">
-						同意
+						<span class="color2">
+							同意
+						</span>
 					</c:if>
 					<c:if test="${each.orderPnrStatus==4 }">
-						拒绝
+						<span class="color1">
+							拒绝
+						</span>
+						
 					</c:if>
 					<c:if test="${each.orderPnrStatus==3 }">
-						同意
+						<span class="color2">
+							同意
+						</span>
+						
 					</c:if>
-				</span>
 				<span><fmt:formatDate value="${each.payDate }" pattern="yyyy:MM:dd HH:mm:ss"/></span>
 			</li>
 		</ul>
