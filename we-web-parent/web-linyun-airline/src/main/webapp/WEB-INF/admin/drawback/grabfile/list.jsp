@@ -478,7 +478,7 @@ function successCallback(id){
 	                    			return null;
 	                    		}
 	                    		if(filetype===1){
-	                    			return '<a id="'+fileId+'" class="fa fa-folder" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
+	                    			return '<a id="'+fileId+'" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
 	                    		}else if(filetype===2 && fileExtension==="pdf"){
 	                    			return  '<a id="'+fileId+'" class="fa fa-file-pdf-o" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
 	                    		}else if(filetype===2 && fileExtension==="PNG"){
