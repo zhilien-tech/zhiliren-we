@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@include file="/WEB-INF/common/tld.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en-US">
 <head>
@@ -214,7 +213,7 @@
 		$.ajax({ 
 			type: 'POST', 
 			data: {data:JSON.stringify(customdata)}, 
-			url: '${base}/admin/inland/addOrderInfo.html',
+			url: '${base}/admin/international/saveAddOrder.html',
             success: function (data) { 
             	//alert("添加成功");
             	//location.reload();
