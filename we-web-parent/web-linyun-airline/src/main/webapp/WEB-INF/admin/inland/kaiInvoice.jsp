@@ -96,7 +96,7 @@
                   </td>
                   <td>发票日期：</td>
                   <td><input id="invoicedate" name="invoicedate" type="text" onFocus="WdatePicker()" class="form-control input-sm" value="<fmt:formatDate value="${obj.invoiceinfo.invoicedate }" pattern="yyyy-MM-dd" />"></td>
-                  <td>开票人：</td>
+                  <%-- <td>开票人：</td>
                   <td>
                      <select id="billuserid" name="billuserid" value="${obj.invoiceinfo.billuserid }" class="form-control input-sm">
                         <option value="1">林俊杰</option>
@@ -109,7 +109,7 @@
                         <option value="1">国际部</option>
                         <option value="2">内陆部</option>
                      </select>
-                  </td>
+                  </td> --%>
           </tr>
           <tr>
                   <td>付款单位：</td>
