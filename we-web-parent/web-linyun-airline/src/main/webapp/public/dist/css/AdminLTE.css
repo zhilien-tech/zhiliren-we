@@ -4970,7 +4970,7 @@ p{margin: 0 0 0px 10px;}
 .strip1{background-color: #ffffff;}
 .strip2{background-color: #e9f1f5;}
 .has-feedback .form-control{padding-right: 10px !important;}
-.table-hover>tbody>tr:hover {background-color: rgba(0, 166, 90, 0.62) !important; color: #f5f5f5; text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.58);}/*table 滑动效果*/
+.table-hover>tbody>tr:hover {background-color: rgba(0, 166, 90, 0.62) !important; color: #f5f5f5;}/*table 滑动效果*/
 .table-hover>tbody>tr:hover a {color: #f5f292;text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.35);}
 .select2-dropdown--below{width: 150px !important;}
 .sorting_1 input{display: block;margin: 30% auto;}

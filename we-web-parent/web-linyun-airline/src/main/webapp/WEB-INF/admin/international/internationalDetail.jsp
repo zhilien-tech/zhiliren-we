@@ -18,10 +18,6 @@
   <link rel="stylesheet" href="${base }/public/plugins/datatables/dataTables.bootstrap.css">
   <link rel="stylesheet" href="${base }/public/dist/css/query.css">
   <link rel="stylesheet" href="${base }/public/dist/css/internationOrderDetail.css"><!--本页面styleFlie-->
-  <style type="text/css">
-  	.FileDiv{border: solid 1px #2f7298;height: 29px;line-height: 28px;width:74px;border-radius: 3px;background: #3c8dbc;color: #fff;text-align: center;display: block;}
-.FileDiv:hover{color: #fff;background-color:#367da7;}
-  </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -175,55 +171,57 @@
                </div>
           </div><!--end 航程信息-->
           
-          <div class="customerInfo"><!--预收款记录/预付款记录-->
-               <div class="recordParent">
-                 <p class="record recStyle">预收款记录</p>
-                 <p class="record">预付款记录</p>
-               </div>
-               <div class="infofooter">
-                 <div class="recordDiu"><!--预收款记录-->
-                  <button type="button" class="btn btn-primary right recordBtn addYSK">添加记录</button>
-                  <table class="table table-bordered table-hover main">
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th>预收款比例</th>
-                        <th>免罚金可减人数</th>
-                        <th>实际减少人数</th>
-                        <th>本期罚金</th>
-                        <th>本期应付</th>
-                        <th>本期税金</th>
-                        <th>本期实付</th>
-                        <th>操作</th>
-                      </tr>
-                    </thead>
-                    <tbody id="receiverecord">
-
-                    </tbody>
-                  </table>
-                 </div>
-                 <div class="recordDiu none"><!--预付款记录-->
-                  <button type="button" class="btn btn-primary right recordBtn addYFK">添加记录</button>
-                  <table class="table table-bordered table-hover main">
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th>预付款比例</th>
-                        <th>免罚金可减人数</th>
-                        <th>实际减少人数</th>
-                        <th>本期罚金</th>
-                        <th>本期应付</th>
-                        <th>本期税金</th>
-                        <th>本期实付</th>
-                        <th>操作</th>
-                      </tr>
-                    </thead>
-                    <tbody id="payrecord">
-                    </tbody>
-                  </table>
-                 </div>
-               </div>
-          </div><!--end 预收款记录/预付款记录-->
+    	  <div class="listInfo"><!-- 预收款记录/预付款记录 -->
+			<div class="nav-tabs-custom">
+				<ul class="nav nav-tabs query-style">
+					<li class="active"><a href="#tab_1" data-toggle="tab">预收款记录</a></li>
+					<li><a href="#tab_2" data-toggle="tab">预付款记录</a></li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="tab_1">
+						<button type="button" class="btn btn-primary right recordBtn addYSK">添加记录</button>
+		                <table class="table table-bordered table-hover main">
+		                    <thead>
+		                      <tr>
+		                        <th></th>
+		                        <th>预收款比例</th>
+		                        <th>免罚金可减人数</th>
+		                        <th>实际减少人数</th>
+		                        <th>本期罚金</th>
+		                        <th>本期应付</th>
+		                        <th>本期税金</th>
+		                        <th>本期实付</th>
+		                        <th>操作</th>
+		                      </tr>
+		                    </thead>
+		                    <tbody id="receiverecord">
+		
+		                    </tbody>
+		                </table>
+					</div>
+					<div class="tab-pane" id="tab_2">
+						<button type="button" class="btn btn-primary right recordBtn addYFK">添加记录</button>
+		                <table class="table table-bordered table-hover main">
+		                    <thead>
+		                      <tr>
+		                        <th></th>
+		                        <th>预付款比例</th>
+		                        <th>免罚金可减人数</th>
+		                        <th>实际减少人数</th>
+		                        <th>本期罚金</th>
+		                        <th>本期应付</th>
+		                        <th>本期税金</th>
+		                        <th>本期实付</th>
+		                        <th>操作</th>
+		                      </tr>
+		                    </thead>
+		                    <tbody id="payrecord">
+		                    </tbody>
+		                 </table>		
+					</div>
+				</div>
+			</div>
+		 </div><!--end 预收款记录/预付款记录 -->
 
           <div class="customerInfo"><!--信息-->
             <div class="infoTop">
@@ -321,7 +319,7 @@
                    </tr>
                    <tr class="KHinfo">
                      <td><label>成本合计：</label></td>
-                     <td><<input id="costtotal" name="costtotal" type="text" class="form-control input-sm disab loadprofit mustNumberPoint" disabled="disabled" value="${obj.finance.costtotal }"></td>
+                     <td><input id="costtotal" name="costtotal" type="text" class="form-control input-sm disab loadprofit mustNumberPoint" disabled="disabled" value="${obj.finance.costtotal }"></td>
                      <td><label>应返：</label></td>
                      <td><input id="returntotal" name="returntotal" type="text" class="form-control input-sm disab loadprofit mustNumberPoint" disabled="disabled" value="${obj.finance.returntotal }"></td>
                      <td><label>利润合计：</label></td>
@@ -436,7 +434,7 @@
                 skin: false, //加上边框
                 closeBtn:false,//默认 右上角关闭按钮 是否显示
                 shadeClose:true,
-                area: ['900px', '200px'],
+                area: ['1000px', '450px'],
                 content: '${base}/admin/international/addReceiveRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.receivestatus}&ordersstatus='+orderType
               });
         });
@@ -450,7 +448,7 @@
                 skin: false, //加上边框
                 closeBtn:false,//默认 右上角关闭按钮 是否显示
                 shadeClose:true,
-                area: ['900px', '200px'],
+                area: ['1000px', '450px'],
                 content: '${base}/admin/international/addPayRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.paystatus}&ordersstatus='+orderType
               });
         });
@@ -503,8 +501,8 @@
             			mainhtml += '</ul></td>'; 
             			mainhtml += '<td>'+data[i].pnrinfo.peoplecount+'</td>';
             			mainhtml += '<td><a href="javascript:editAirlineInfo('+data[i].pnrinfo.id+');">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;';
-            			mainhtml += '<a href="javascript:visitorInfo('+data[i].pnrinfo.id+');" class="YKinfo">游客信息</a></td>';
-            			mainhtml += '<td><a href="javascript:;" class="FileDiv">上传游客<input type="file" class="uploadVisitors" style="opacity:0;"><input type="hidden" id="pnrid" name="pnrid" value="'+data[i].pnrinfo.id+'"></a></td>';
+            			mainhtml += '<a href="javascript:visitorInfo('+data[i].pnrinfo.id+');" class="YKinfo">游客信息</a>';
+            			mainhtml += '<a href="javascript:;" class="FileDiv">上传游客<input type="file" class="uploadVisitors"><input type="hidden" id="pnrid" name="pnrid" value="'+data[i].pnrinfo.id+'"></a></td>';
             		}else{
             			zihtml += '<tr><td>'+data[i].pnrinfo.pNR+'</td>';
             			zihtml += '<td><ul>';
@@ -529,8 +527,8 @@
             			zihtml += '</ul></td>'; 
             			zihtml += '<td>'+data[i].pnrinfo.peoplecount+'</td>';
             			zihtml += '<td><a href="javascript:editAirlineInfo('+data[i].pnrinfo.id+');">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;';
-            			zihtml += '<a href="javascript:visitorInfo('+data[i].pnrinfo.id+');" class="YKinfo">游客信息</a></td>';
-            			zihtml += '<td><a href="javascript:;" class="FileDiv">上传游客<input type="file" class="uploadVisitors" style="opacity:0;"><input type="hidden" id="pnrid" name="pnrid" value="'+data[i].pnrinfo.id+'"></a></td>';
+            			zihtml += '<a href="javascript:visitorInfo('+data[i].pnrinfo.id+');" class="YKinfo">游客信息</a>';
+            			zihtml += '<a href="javascript:;" class="FileDiv">上传游客<input type="file" class="uploadVisitors"><input type="hidden" id="pnrid" name="pnrid" value="'+data[i].pnrinfo.id+'"></a></td>';
             		}
             	}
             	$('#mainsection').html(mainhtml);

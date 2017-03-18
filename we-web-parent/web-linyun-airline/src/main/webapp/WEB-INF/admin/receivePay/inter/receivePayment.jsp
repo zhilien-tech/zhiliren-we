@@ -115,13 +115,13 @@
 														<!-- 客户名称/订单号/联系人/PNR 搜索框 -->
 														<input id="internationalPayInput" type="text" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
 													</div>
-													<div class="col-md-3">
+													<div class="col-md-4">
 														<!-- 搜索 按钮 -->
 														<button id="internationalPaySearchBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
 														<button id="internationalPayClearBtn" type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
 														<button id="internationalPayCancelBtn" type="button" class="btn btn-primary btn-sm ckBtn">取消所有勾选</button>
 													</div>
-													<div class="col-md-2">
+													<div class="col-md-1">
 														<!-- 付款 按钮 -->
 														<button id="internationalPayClick" type="button" class="btn btn-primary btn-sm fuKuanBtn1">付款</button>
 													</div>
