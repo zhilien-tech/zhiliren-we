@@ -6,6 +6,7 @@
 <link rel="stylesheet" type="text/css" href="${base }/public/build/kalendae.css">
 <link rel="stylesheet" type="text/css" href="${base }/public/dist/css/airlinesModule.css">
 <link rel="stylesheet" type="text/css" href="${base }/public/dist/css/inlandCross.css">
+<link rel="stylesheet" type="text/css" href="${base }/public/dist/css/internation.css"><!-- 本页面style -->
 <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Main content -->
