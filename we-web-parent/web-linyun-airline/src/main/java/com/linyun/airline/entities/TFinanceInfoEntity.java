@@ -22,6 +22,10 @@ public class TFinanceInfoEntity implements Serializable {
 	private Integer orderid;
 
 	@Column
+	@Comment("公司id")
+	private Integer comId;
+
+	@Column
 	@Comment("客户团号")
 	private String cusgroupnum;
 
