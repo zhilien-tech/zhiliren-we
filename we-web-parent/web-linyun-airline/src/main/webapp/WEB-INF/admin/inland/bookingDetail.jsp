@@ -138,7 +138,7 @@
 			                 </c:otherwise>
 		                 </c:choose>
 		                 <input type="hidden" id="customneedid" name="customneedid" value="${customneed.cusinfo.id }">
-		                 <table class="cloTable">
+		                 <table class="cloTable" id="tableWid">
 		                   <tr>
 		                     <td><label>出发城市：</label></td>
 		                     <td colspan="2"><select id="leavecity" name="leavecity" disabled="disabled" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
@@ -322,9 +322,9 @@
 		                         <tbody id="pnrinfodata" name="pnrinfodata">
 		                         </tbody>
 		                        </table>
-		                     </td>
-		                     <td class="PNRbtnTD none">
-		                        <a href="javascript:;" class="btn btn-primary btn-sm PNRbtn"><b>+</b>&nbsp;&nbsp;PNR</a>
+		                        <div class="PNRbtnTD none">
+		                        	<a href="javascript:;" class="btn btn-primary btn-sm PNRbtn"><b>+</b>&nbsp;PNR</a>
+		                     	</div>
 		                     </td>
 		                   </tr>
 		                   <tr>
@@ -361,7 +361,7 @@
 		                     <td><label>人数：</label></td>
 		                     <td><input id="peoplecount" name="peoplecount" disabled="disabled" type="text" class="form-control input-sm textWid mustNumber"/></td>
 		                     <td><label class="labelWid">早中晚：</label></td>
-		                     <td>
+		                     <td colspan="2">
 		                       <select id="tickettype" name="tickettype" disabled="disabled" class="form-control input-sm textWid">
 			                         <option value="1">早</option>
 			                         <option value="2">中</option>
