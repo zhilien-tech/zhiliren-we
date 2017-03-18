@@ -205,14 +205,14 @@
 									<td><label class="labelWid">成本价：</label></td>
 									<td><input name="cAirCost" type="text"
 										class="form-control input-sm textWid costPrice"
-										onkeyup="this.value=this.value.replace('/^(\d+(\.\d{1,20})?)?$','')"
-										onafterpaste="this.value=this.value.replace('/^(\d+(\.\d{1,20})?)?$','')">
+										onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
+										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
 									</td>
 									<td><label class="labelWid">销售价：</label></td>
 									<td><input name="cAirPretium" type="text"
 										class="form-control input-sm textWid"
-										onkeyup="this.value=this.value.replace('/^(\d+(\.\d{1,20})?)?$','')"
-										onafterpaste="this.value=this.value.replace('/^(\d+(\.\d{1,20})?)?$','')">
+										onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
+										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
 									</td>
 									<td><a href="javascript:;" name="addButton"
 										class="glyphicon glyphicon-plus addIcon removAddMake"></a></td>
@@ -884,6 +884,7 @@
 		    	//手续费
 		    	var fees = $("#feeHidden").val(); 
 		    	var price = parseFloat(costprice * discountFare / 100) + parseFloat(fees);
+		    	
 		    	if(costprice){
 		     		if(isNaN(price)){
 		     			$(this).parent().parent().find('[name=cAirPretium]').val('');

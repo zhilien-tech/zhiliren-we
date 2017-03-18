@@ -6,6 +6,7 @@ $(document).on("input",".mustNumber",function(){
 $(document).on("input",".mustNumberPoint",function(){
 	$(this).val($(this).val().replace(/[^.\d]/g,''));
 });
+
 //只能输入时间 （例如12:00）
 $(document).on("input",".mustTimes",function(){
 	$(this).val($(this).val().replace(/[^((1|0?)[0-9]|2[0-3]):\d]/g,''));
