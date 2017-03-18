@@ -41,6 +41,8 @@ public class InlandListSearchForm extends DataTablesParamForm {
 
 	private Integer userid;
 
+	private Integer companyId;
+
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		cnd.and("orderstype", "=", OrderTypeEnum.FIT.intKey());
@@ -52,8 +54,11 @@ public class InlandListSearchForm extends DataTablesParamForm {
 			sqlex.and("receivestatus", "=", "").or("receivestatus", "is", null);
 			cnd.and(sqlex);
 		}
-		if (!Util.isEmpty(userid)) {
+		/*if (!Util.isEmpty(userid)) {
 			cnd.and("tuo.loginUserId", "=", userid);
+		}*/
+		if (!Util.isEmpty(companyId)) {
+			cnd.and("tuo.companyId", "=", companyId);
 		}
 		cnd.orderBy("tuo.ordersnum", "desc");
 		if (!Util.isEmpty(searchInfo)) {

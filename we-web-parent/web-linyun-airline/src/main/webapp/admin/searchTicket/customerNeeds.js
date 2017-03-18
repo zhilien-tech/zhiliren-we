@@ -494,6 +494,7 @@ $(document).on("click",".chooseAirLineBtn",function(){
 		var custArrivalCity = $(this).find('[name=cArrivalcity]').select2("val");
 		var outFlag = true;
 		var arrFlag = true;
+		
 		if(null==custOutCity || ""==custOutCity){
 			custOutCity = "无";
 			outFlag = false;
@@ -502,8 +503,10 @@ $(document).on("click",".chooseAirLineBtn",function(){
 			custArrivalCity = "无";
 			arrFlag = false;
 		}
-		if("无"==custOutCity && "无"==custArrivalCity){
-			msgFlag=true;
+		if(i==0){
+			if("无"==custOutCity && "无"==custArrivalCity){
+				msgFlag=true;
+			}
 		}
 		
 		var custLine = custNeedNum +'. '+ custOutCity +' - '+ custArrivalCity;
@@ -513,7 +516,8 @@ $(document).on("click",".chooseAirLineBtn",function(){
 		}
 	});
 	if(msgFlag){
-		layer.msg("客户需求需填一个城市", "", 3000);
+		/*layer.msg("客户需求需填一个城市", "", 3000);*/
+		
 		$(".airLineCity").hide();
 	}else{
 		$(".airLineCity").removeAttr("style");

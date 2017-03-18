@@ -252,7 +252,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		millis += 30 * 60 * 1000;
 		DateTime dateTime = DateUtil.dateTime(new Date(millis));*/
 
-		//sql.params().set("now", DateTimeUtil.now());
+		sql.params().set("generateTime", DateTimeUtil.now());
 		sql.setCallback(Sqls.callback.records());
 		List<Record> records = dbDao.query(sql, null, null); //查询自定义的结果
 

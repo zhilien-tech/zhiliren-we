@@ -69,4 +69,8 @@ public class TUpOrderEntity implements Serializable {
 	@Comment("国际订单状态")
 	private Integer interOrderStatus;
 
+	@Column
+	@Comment("公司id")
+	private Integer companyId;
+
 }
