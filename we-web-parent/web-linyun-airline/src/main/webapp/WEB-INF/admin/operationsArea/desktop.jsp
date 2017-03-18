@@ -200,7 +200,7 @@
 			/*小日历*/
 			minCalendarInit();
 			/* 定时刷新任务栏 */
-			setInterval(taskBarFunctions,1000*30);
+			setInterval("taskBarFunctions()",1000*59);
 		});
 	</script>
 
@@ -227,7 +227,6 @@
 	  				$("#tab_4").remove();
 	  				$("#tab_3").addClass("active");
 	  				$("#remindLi").addClass("active");
-	  				
 	  			}
 	  			taskEventList();
 	  		}
@@ -363,7 +362,7 @@
 				//查询详情跳转
 				url = '${base}/admin/inland/queryDetail.html?id='+orderId;
 			}
-			if(orderType==5 || orderType==8 || orderType==9 || orderType==10 || orderType==11 || orderType==12){
+			if(orderType==5 || orderType==8 || orderType==9 || orderType==10 || orderType==11 || orderType==12 || orderType==14 || orderType==15 || orderType==16 || orderType==17 || orderType==18 || orderType==19){
 				//预定订单详情跳转
 				url = '${base}/admin/inland/bookingDetail.html?id='+orderId;
 			}

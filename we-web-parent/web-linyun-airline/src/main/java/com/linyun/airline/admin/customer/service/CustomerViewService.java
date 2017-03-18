@@ -216,8 +216,10 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
 		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
+		TCompanyEntity company = dbDao.fetch(TCompanyEntity.class, Cnd.where("id", "=", companyId));
 		if (!Util.isEmpty(upcompany)) {
 			addForm.setUpComId(upcompany.getId());
+			addForm.setCustomerType(Integer.valueOf(company.getComType()));
 		}
 		TCustomerInfoEntity customerInfo = this.add(addForm);
 

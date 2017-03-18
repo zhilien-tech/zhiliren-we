@@ -204,6 +204,7 @@
 	<%-- <script src="${base}/admin/receivePayment/interPayment.js"></script> --%>
 	<script type="text/javascript">
 		$(function(){
+			$('.menu-ul:eq(1)').hide();//隐藏数据字典的二级菜单
 			$('.menu-ul li:eq(1) a').css("color","rgb(245, 245, 245)");//二级菜单 高亮style
 			toConfirmRecPage();
 			

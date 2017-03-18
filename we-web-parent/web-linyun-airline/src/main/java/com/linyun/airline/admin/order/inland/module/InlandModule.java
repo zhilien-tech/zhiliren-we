@@ -58,8 +58,8 @@ public class InlandModule {
 	 * 查询内陆跨海列表数据
 	 */
 	@At
-	public Object listData(@Param("..") InlandListSearchForm form) {
-		return inlandService.listData(form);
+	public Object listData(@Param("..") InlandListSearchForm form, HttpServletRequest request) {
+		return inlandService.listData(form, request);
 	}
 
 	/**

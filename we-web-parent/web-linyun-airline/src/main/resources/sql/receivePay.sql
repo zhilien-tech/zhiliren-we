@@ -66,6 +66,8 @@ ORDER BY
 SELECT
     p.id id,
 	pi.id pid,
+	uo.id uid,
+	pi.userid operator,
 	uo.ordersnum orderNum,
 	pi.PNR pnrNum,
 	fi.cusgroupnum,
@@ -255,4 +257,26 @@ SELECT
 FROM
 	t_user_job uj
 INNER JOIN t_company_job cj ON cj.posid = uj.companyJobId
+$condition
+
+/*receivePay_order_pnr_pids*/
+SELECT
+	uo.id,
+	uo.ordersnum,
+	pi.PNR
+FROM
+	t_pnr_info pi
+INNER JOIN t_pay_pnr pp ON pi.id = pp.pnrId
+INNER JOIN t_order_customneed oc ON oc.id = pi.needid
+INNER JOIN t_up_order uo ON uo.id = oc.ordernum
+$condition
+
+/*receivePay_order_rec_rids*/
+SELECT
+	uo.id,
+	uo.ordersnum
+FROM
+	t_up_order uo
+INNER JOIN t_order_receive ore ON ore.orderid=uo.id 
+INNER JOIN t_receive r ON r.id=ore.receiveid
 $condition

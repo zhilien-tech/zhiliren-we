@@ -1,5 +1,14 @@
 //保存订单
 function saveOrderInfo(){
+	
+	var linkName = $("#linkNameId").select2("val");
+	var phoneNum = $("#phoneNumId").select2("val");
+	//国际不需要验证 客户名称
+	if(!(linkName || phoneNum)){
+		layer.msg("客户姓名不能为空", "", 2000);
+		return;
+	}
+	
 	var customdata = {};
 	var customerId = $('#linkManId').val();
 	customdata.customerId = customerId;
@@ -73,9 +82,19 @@ function saveOrderInfo(){
 		}, 
 		url : BASE_PATH  + "/admin/search/saveCustomerNeeds.html",
 		success: function (data) { 
-			//刷新页面
+			/*//刷新页面
 			window.location.reload();
 			layer.msg("添加成功","",4000);
+			*/
+			//跳转新的标签页
+			var url = BASE_PATH;
+			if(data.orderStatus == 1){
+				url += '/admin/inland/queryDetail.html?id='+data.orderId;
+			}else{
+				url = '/admin/inland/bookingDetail.html?id='+item.orderId;
+			}
+			window.open(url);
+			window.location.reload();
 		},
 		error: function (xhr) {
 			layer.msg("添加失败","",4000);

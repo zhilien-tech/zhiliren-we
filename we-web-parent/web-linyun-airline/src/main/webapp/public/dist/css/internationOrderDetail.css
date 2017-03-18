@@ -1,0 +1,67 @@
+/*国际订单详情*/
+li{list-style:none;}
+ul{padding-left: 0; margin-bottom: 0px;}
+.content-wrapper, .right-side, .main-footer {margin-left:0px;}
+.padding0{padding-right: 0;    margin-right: 0;}
+.content{padding-right: 0;}
+.infoTopContent {width: 526px;}
+.tableDuan{margin:10px;}
+.tableDuan span{width: 3%;float: left;text-align: center;border: solid 1px #3c8dbc;color: #3c8dbc;line-height: 24px;font-size: 11px;border-radius: 4px;}
+.tableDuan .main{width: 96%;margin-left:4%;}
+.tableDuan .main tbody tr td{padding: 0;}
+.tableDuan .main tbody tr td ul li{border-bottom: solid 1px #f4f4f4;}
+.tableDuan .main tbody tr td ul li:last-child{border-bottom:0;}
+.tableDuan .main tbody tr td:nth-child(1){line-height: 60px;}
+.tableDuan .main tbody tr td:nth-child(6){line-height: 60px;}
+.tableDuan .main tbody tr td:nth-child(7){line-height: 60px;}
+.HCinfoInp{margin-left: 4%;}
+.recordDiu{padding: 0 10px;}
+.recordParent{margin-top: 15px;}
+.record{cursor: pointer;background-color: #fff;color:#b5b5b5; margin: 0px;border: solid 1px #e0e0e0;display: inline-block; width: 85px;text-align: center;line-height: 30px; border-top: solid 2px #bdbdbd;border-radius: 3px 3px 0 0;border-bottom: solid 1px #e8e8e8;}
+.recStyle{border-top: solid 2px #3c8dbc;color: #333;}
+.recordParent p:nth-child(2){position:relative;left: -4px;}
+.recordBtn{padding: 4px 15px; position: relative;top: -45px;}
+
+/*------提醒设置------*/
+.remindTable{width: 310px; margin: 0 auto;}
+.remindLabel{position: relative;top: 4px;left: -10px;}
+.remindData{width: 95%;}
+.remindTable tbody tr td{padding-bottom: 10px;}
+/*------end 提醒设置------*/
+
+/*------日志------*/
+table.dataTable thead .sorting_asc:after {display: none;}
+table.dataTable thead .sorting:after {display: none;}
+table.dataTable thead .sorting_desc:after {display: none;}
+table.dataTable thead > tr > th {padding-right: 5px;}
+/*------end 日志------*/
+
+/*------添加航段------*/
+.addHDtable{width: 100%;}
+.addHDtable tr td{padding-bottom:10px;}
+.numTd{width: 38.9%;}
+.addHDtable tr td label{position: relative;left: 6px;}
+.addHD-tr td input{padding-left:5px;padding-right: 5px;}
+.addHD-tr td label{margin-bottom: 0;}
+.addHD-tr td:nth-child(2){width:150px;}
+.addHD-tr td:nth-child(4){width:150px;}
+.addHD-tr td:nth-child(6){width:80px;}
+.addHD-tr td:nth-child(8){width:60px;}
+.addHD-tr td:nth-child(10){width:80px;}
+.addHD-tr td:nth-child(12){width:80px;}
+.addHD-tr td:nth-child(13){width:30px !important;}
+.addHD-tr td:nth-child(odd){width: 70px;}
+.addHDIcon,.removHDIcon{color: #3c8dbc;border: solid 1px #22516d;padding: 4px;border-radius: 13px;position: relative;left: 10px;}
+/*------end 添加航段------*/
+/*------添加记录------*/
+.addYSKtable tbody tr td{padding-bottom:10px;}
+.addYSKtable tbody tr td label{float: right; margin-bottom: 0;}
+.addYSKtable tbody tr td:nth-child(1){width: 65px;}
+.addYSKtable tbody tr td:nth-child(2){width: 110px;}
+.addYSKtable tbody tr td:nth-child(3){width: 85px;}
+.addYSKtable tbody tr td:nth-child(4){width: 110px;}
+.addYSKtable tbody tr td:nth-child(5){width: 70px;}
+.addYSKtable tbody tr td:nth-child(6){width: 110px;}
+.addYSKtable tbody tr:nth-child(1) td:nth-child(7){width:105px;}
+.addYSKtable tbody tr:nth-child(2) td:nth-child(7){width:65px;}
+/*------end 添加记录------*/
