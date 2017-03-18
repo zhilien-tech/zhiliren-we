@@ -882,9 +882,9 @@
 		    	//票价折扣
 		    	var discountFare = $("#discountHidden").val();
 		    	//手续费
-		    	var fees = $("#feeHidden").val(); 
-		    	var price = parseFloat(costprice * discountFare / 100) + parseFloat(fees);
-		    	
+		    	var fees = $("#feeHidden").val();
+		    	var priceStr="";
+		    	var price = parseFloat((costprice * discountFare)/ 100) + parseFloat(fees);
 		    	if(costprice){
 		     		if(isNaN(price)){
 		     			$(this).parent().parent().find('[name=cAirPretium]').val('');
