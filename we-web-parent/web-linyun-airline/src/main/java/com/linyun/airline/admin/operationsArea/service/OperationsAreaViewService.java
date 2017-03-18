@@ -67,6 +67,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	private static final int RECINVIOCEMSG = MessageTypeEnum.RECINVIOCEMSG.intKey();
 	private static final int APPROVALEDMSG = MessageTypeEnum.APPROVALEDMSG.intKey();
 	private static final int UNAPPROVALMSG = MessageTypeEnum.UNAPPROVALMSG.intKey();
+	private static final int MAKEOUTBILLMSG = MessageTypeEnum.MAKEOUTBILLMSG.intKey();
+	private static final int DRAWBILLMSG = MessageTypeEnum.DRAWBILLMSG.intKey();
 	//TODO 任务消息状态
 	private static final int NOTICEMSG = MessageTypeEnum.NOTICEMSG.intKey();
 
@@ -358,7 +360,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 					+ String.valueOf(THRBOOK) + "," + String.valueOf(ALLBOOK) + "," + String.valueOf(LASTBOOK) + ","
 					+ String.valueOf(RECEIVEDMSG) + "," + String.valueOf(PAYEDMSG) + "," + String.valueOf(INVIOCEMSG)
 					+ "," + String.valueOf(RECINVIOCEMSG) + "," + String.valueOf(APPROVALEDMSG) + ","
-					+ String.valueOf(UNAPPROVALMSG);
+					+ String.valueOf(UNAPPROVALMSG) + "," + String.valueOf(MAKEOUTBILLMSG) + ","
+					+ String.valueOf(DRAWBILLMSG);
 			break;
 		case "taskNotice":
 			//任务 TODO

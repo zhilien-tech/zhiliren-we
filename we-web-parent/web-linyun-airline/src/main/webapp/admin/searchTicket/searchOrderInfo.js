@@ -357,7 +357,7 @@ $("#tab_2Id").click(function(){
 	$("#orderStatus option").remove();
 	addOtherSelectOpt($("#orderStatus"));
 	document.getElementsByName("voyageType1")[1].checked="checked";
-	$("#orderType").val("inlandOrderType");
+	$("#orderType").val("interOrderType");
 	radioFunct1();
 });
 

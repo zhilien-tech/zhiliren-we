@@ -468,7 +468,7 @@ function clearSearchTxt(selectId, beginDateId, endDateId, inputId){
 //内陆跨海 取消所有勾选
 $('#internationalPayCancelBtn').click(function(){
 	$('#checkedboxPayValue').val("");
-}
+});
 
 //文件上传
 $('#uploadFile').click(function(){
