@@ -6,14 +6,17 @@
 
 package com.linyun.airline.admin.order.inland.form;
 
+import java.util.Date;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
-import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
+import com.linyun.airline.admin.invoicemanage.invoiceinfo.enums.InvoiceInfoEnum;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
@@ -25,14 +28,22 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
  * @Date	 2017年3月9日 	 
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class ShouInvoiceParamForm extends DataTablesParamForm {
 
 	private Integer userid;
 
+	private Integer status;//开票状态
+	private Integer billuserid;//收票人
+	private Date shouInvoiceBeginDate;//收票日期
+	private Date shouInvoiceEndDate;//收票日期
+	private String PNR;//pnr
+	private String paymentunit;//收款单位
+
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("opid", "=", userid);
-		cnd.and("invoicetype", "=", PayReceiveTypeEnum.PAY.intKey());
+		cnd.and("invoicetype", "=", InvoiceInfoEnum.Already_INVOICe.intKey());
 		return cnd;
 	}
 
