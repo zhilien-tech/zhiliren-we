@@ -15,9 +15,8 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
-import org.nutz.dao.util.cri.SqlExpressionGroup;
 
-import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
+import com.linyun.airline.admin.invoicemanage.invoiceinfo.enums.InvoiceInfoEnum;
 import com.linyun.airline.entities.TInvoiceInfoEntity;
 import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.form.DataTablesParamForm;
@@ -35,20 +34,17 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
 public class KaiInvoiceParamForm extends DataTablesParamForm {
 
 	private Integer userid;
-	private Integer status;//发票状态
-	private String kaiDrawer;//开票人
-	private Date kaiInvoiceBeginDate;//开票起始日期
-	private Date kaiInvoiceEndDate;//截止日期
+	private Integer status;//开票状态
+	private String username;//开票人
+	private Date kaiInvoiceBeginDate;//开票日期
+	private Date kaiInvoiceEndDate;//开票日期
 	private String invoicenum;//发票号
 	private String paymentunit;//付款单位
 
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
-		SqlExpressionGroup group = new SqlExpressionGroup();
-		group.and("ci.shortName", "LIKE", "%" + kaiDrawer + "%").or("uo.ordersnum", "LIKE", "%" + kaiDrawer + "%")
-				.or("ci.linkMan", "LIKE", "%" + kaiDrawer + "%").or("pi.PNR", "LIKE", "%" + kaiDrawer + "%");
 		cnd.and("opid", "=", userid);
-		cnd.and("invoicetype", "=", PayReceiveTypeEnum.RECEIVE.intKey());
+		cnd.and("invoicetype", "=", InvoiceInfoEnum.INVOIC_ING.intKey());//开发票中
 		return cnd;
 	}
 
@@ -57,8 +53,9 @@ public class KaiInvoiceParamForm extends DataTablesParamForm {
 		String sqlString = EntityUtil.entityCndSql(TInvoiceInfoEntity.class);
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
+		/*String sqlString = sqlManager.get("invoicemanage_search_list");
+		Sql sql = Sqls.create(sqlString);
+		sql.setCondition(cnd());*/
 		return sql;
-
 	}
-
 }

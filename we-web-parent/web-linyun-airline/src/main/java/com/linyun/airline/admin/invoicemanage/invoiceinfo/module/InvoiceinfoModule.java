@@ -17,7 +17,6 @@ import com.linyun.airline.admin.invoicemanage.invoiceinfo.from.TInvoiceInfoSqlFo
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.from.TInvoiceInfoUpdateForm;
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.service.InvoiceinfoViewService;
 import com.linyun.airline.admin.order.inland.form.KaiInvoiceParamForm;
-import com.linyun.airline.admin.order.inland.form.ShouInvoiceParamForm;
 import com.linyun.airline.admin.order.inland.service.InlandInvoiceService;
 import com.uxuexi.core.web.chain.support.JsonResult;
 
@@ -38,7 +37,7 @@ public class InvoiceinfoModule {
 	 */
 	@At
 	@Ok("jsp")
-	public Object list(@Param("..") final TInvoiceInfoSqlForm sqlForm, @Param("..") final Pager pager,
+	public Object list(@Param("..") final KaiInvoiceParamForm sqlForm, @Param("..") final Pager pager,
 			final HttpSession session) {
 		return invoiceinfoViewService.getIssuerBycompany(session);
 	}
@@ -56,8 +55,8 @@ public class InvoiceinfoModule {
 	 */
 	@At
 	@POST
-	public Object listShouInvoiceData(@Param("..") ShouInvoiceParamForm sqlForm, HttpServletRequest request) {
-		return inlandInvoiceService.listShouInvoiceData(sqlForm, request);
+	public Object listShouInvoiceData(@Param("..") TInvoiceInfoSqlForm sqlForm, HttpServletRequest request) {
+		return invoiceinfoViewService.listShouInvoiceData(sqlForm, request);
 	}
 
 	/**

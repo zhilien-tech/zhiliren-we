@@ -259,4 +259,46 @@ function openshouInvoiceEdit(id){
         content: BASE_PATH + '/admin/inland/shouInvoice.html?id='+id
     });
 }
+/*//收发票 搜索按钮
+$("#shouSearchInvoiceBtn").on('click', function () {
+	alert(111);
+	var status = $("#shouInvoiceSelect").val();
+	var username = $("#username").val();
+	var shouInvoiceBeginDate = $("#shouInvoiceBeginDate").val();
+	var shouInvoiceEndDate = $("#shouInvoiceEndDate").val();
+	var PNR = $("#paymentunitId").val();
+	var paymentunit = $("#paymentunitId").val();
+    var param = {
+		        "status":status,
+		        "username":username,
+		        "shouInvoiceBeginDate":shouInvoiceBeginDate,
+		        "shouInvoiceEndDate":shouInvoiceEndDate,
+				"PNR": PNR,
+				"paymentunit": paymentunit
+		    };
+	alert(status);
+    if(status==3 || status==4){
+    	shouInvoiceTable.settings()[0].ajax.data = param;
+    	shouInvoiceTable.ajax.reload(
+    			function(json){
+    				autoHighLoad($('#shouInvoiceTable'));
+    			}
+    	);
+    }
+    
+});
 
+
+清除 开发票   检索项
+$('#shouEmptyBtn').click(function(){
+	clearSearchTxt("shouInvoiceSelect","username", "shouInvoiceBeginDate", "shouInvoiceEndDate", "paymentunitId");
+});
+
+//清空搜索项函数
+function clearSearchTxt(selectId,selectUsername ,beginDateId, endDateId, inputId){
+	$("#"+selectId+" option:first").prop("selected", 'selected');  
+	$("#"+selectUsername+" option:first").prop("selected", 'selected');  
+	$("#"+beginDateId).val("");
+	$("#"+endDateId).val("");
+	$("#"+inputId).val("");
+}*/

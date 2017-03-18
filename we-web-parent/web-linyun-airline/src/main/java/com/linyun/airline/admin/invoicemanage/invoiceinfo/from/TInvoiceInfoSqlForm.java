@@ -1,5 +1,7 @@
 package com.linyun.airline.admin.invoicemanage.invoiceinfo.from;
 
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -7,9 +9,9 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
+import org.nutz.dao.util.cri.SqlExpressionGroup;
 
-import com.linyun.airline.entities.TInvoiceInfoEntity;
-import com.uxuexi.core.db.util.EntityUtil;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
 @Data
@@ -24,14 +26,8 @@ public class TInvoiceInfoSqlForm extends DataTablesParamForm {
 	/**发票日期*/
 	private String invoicedate;
 
-	/**开票人*/
-	private Integer billuserid;
-
 	/**部门*/
 	private Integer deptid;
-
-	/**付款单位*/
-	private String paymentunit;
 
 	/**备注*/
 	private String remark;
@@ -51,13 +47,22 @@ public class TInvoiceInfoSqlForm extends DataTablesParamForm {
 	/**pnrid*/
 	private Integer pnrid;
 
+	private Integer userid;
+
+	private Integer status;//开票状态
+	private Integer billuserid;//收票人
+	private Date shouInvoiceBeginDate;//收票日期
+	private Date shouInvoiceEndDate;//收票日期
+	private String PNR;//pnr
+	private String paymentunit;//收款单位
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**
 		 * 默认使用了当前form关联entity的单表查询sql,如果是多表复杂sql，
 		 * 请使用sqlManager获取自定义的sql，并设置查询条件
 		 */
-		String sqlString = EntityUtil.entityCndSql(TInvoiceInfoEntity.class);
+		String sqlString = sqlManager.get("get_shou_invoice_list_order");
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;
@@ -65,8 +70,26 @@ public class TInvoiceInfoSqlForm extends DataTablesParamForm {
 
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
-		//TODO 添加自定义查询条件（可选）
-
+		SqlExpressionGroup group = new SqlExpressionGroup();
+		group.and("tpi.PNR", "LIKE", "%" + PNR + "%").or("tii.paymentunit", "LIKE", "%" + paymentunit + "%");
+		if (!Util.isEmpty(PNR)) {
+			cnd.and(group);
+		}
+		//开票日期
+		if (!Util.isEmpty(shouInvoiceBeginDate)) {
+			cnd.and("tii.invoicedate", ">=", shouInvoiceBeginDate);
+		}
+		//开票日期
+		if (!Util.isEmpty(shouInvoiceEndDate)) {
+			cnd.and("tii.invoicedate", "<=", shouInvoiceEndDate);
+		}
+		if (!Util.isEmpty(status)) {
+			cnd.and("tii.status", "=", status);
+		}
+		if (!Util.isEmpty(billuserid)) {
+			cnd.and("ii.billuserid", "=", billuserid);
+		}
+		cnd.and("opid", "=", userid);
 		return cnd;
 	}
 }
