@@ -1031,22 +1031,22 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			msgContent = "向你发送一个预售订单";
 			break;
 		case 3:
-			//出票 (暂时没有消息提醒) 6
+			//开票 (暂时没有消息提醒) 6
 			msgType = MessageTypeEnum.DRAWBILLMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL3.intKey();
-			msgContent = "";
+			msgContent = generateOrderNum + "订单为开票状态";
 			break;
 		case 4:
-			//开票 (暂时没有消息提醒) 7
+			//出票 (暂时没有消息提醒) 7
 			msgType = MessageTypeEnum.MAKEOUTBILLMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL3.intKey();
-			msgContent = "";
+			msgContent = generateOrderNum + "订单为出票状态";
 			break;
 		case 5:
 			//关闭 (暂时没有消息提醒) 0
 			msgType = MessageTypeEnum.CLOSEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL1.intKey();
-			msgContent = "";
+			msgContent = generateOrderNum + "订单为关闭状态";
 			break;
 		case 6:
 			//一订 8

@@ -17,8 +17,8 @@ import com.uxuexi.core.common.enums.IEnum;
  * @Date	 2017年2月27日 	 
  */
 public enum OrderRemindEnum implements IEnum {
-	FIFTEENM(0, "每15分钟"), THIRTYM(1, "每30分钟"), HOUR(2, "每小时"), DAY(3, "每天"), WEEK(4, "自然每周一"), MOUTH(5, "自然月1日"), UNREPEAT(
-			6, "不重复");
+	UNREPEAT(6, "不重复"), FIFTEENM(0, "每15分钟"), THIRTYM(1, "每30分钟"), HOUR(2, "每小时"), DAY(3, "每天"), WEEK(4, "每周"), MOUTH(
+			5, "每月");
 
 	private int key;
 	private String value;
