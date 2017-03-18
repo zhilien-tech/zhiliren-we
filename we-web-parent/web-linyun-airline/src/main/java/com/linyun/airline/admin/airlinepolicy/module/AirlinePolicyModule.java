@@ -18,6 +18,7 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Filters;
+import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
@@ -27,7 +28,9 @@ import com.linyun.airline.admin.airlinepolicy.service.AirlinePolicyService;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.forms.TAirlinePolicyAddForm;
+import com.linyun.airline.forms.TAirlinePolicyFindForm;
 import com.linyun.airline.forms.TAirlinePolicyForm;
+import com.linyun.airline.forms.TAirlinePolicyUpdateForm;
 import com.uxuexi.core.common.util.FileUtil;
 import com.uxuexi.core.web.chain.support.JsonResult;
 
@@ -69,7 +72,9 @@ public class AirlinePolicyModule {
 	 * 列表查询
 	 */
 	@At
-	public Object listData(@Param("..") final TAirlinePolicyForm sqlForm, final HttpSession session) {
+	public Object listData(@Param("..") final TAirlinePolicyForm sqlForm, final HttpSession session,
+			TAirlinePolicyFindForm findForm) {
+
 		return airlinePolicyService.listPage4Datatables(sqlForm);
 	}
 
@@ -94,11 +99,11 @@ public class AirlinePolicyModule {
 	 * 保存上传文件
 	 * @param addForm
 	 */
-	@At
-	public Object saveUploadFile(@Param("..") TAirlinePolicyAddForm addForm) {
+	/*	@At
+		public Object saveUploadFile(@Param("..") TAirlinePolicyAddForm addForm) {
 
-		return airlinePolicyService.addFile(addForm);
-	}
+			return airlinePolicyService.addFile(addForm);
+		}*/
 
 	/**
 	 * 删除记录
@@ -108,4 +113,73 @@ public class AirlinePolicyModule {
 		airlinePolicyService.deleteById(id);
 		return JsonResult.success("删除成功");
 	}
+
+	/**
+	 * 跳转到'添加操作'的录入数据页面
+	 */
+	@At
+	@GET
+	@Ok("jsp")
+	public Object add() {
+		return this.airlinePolicyService.goAdd();
+	}
+
+	/**
+	 * 添加文件信息
+	 * 
+	 * 
+	 */
+	@At
+	@POST
+	public Object add(@Param("..") TAirlinePolicyAddForm addForm, final HttpSession session) {
+		airlinePolicyService.addFileInfo(addForm, session);
+		return JsonResult.success("添加成功!");
+	}
+
+	/**
+	 * 
+	 * 根据输入显示航空公司名称
+	 */
+	@At
+	@POST
+	public Object selectAirlineCompanys(@Param("p") final String findCompany,
+			@Param("companyName") final String companyName) {
+
+		return this.airlinePolicyService.selectAirlineCompanys(findCompany, companyName);
+	}
+
+	/**
+	 * 
+	 * 根据输入显示地区名称
+	 */
+	@At
+	@POST
+	public Object selectArea(@Param("p") final String findCompany, @Param("companyName") final String companyName) {
+
+		return this.airlinePolicyService.selectArea(findCompany, companyName);
+	}
+
+	/**
+	 * 跳转到'编辑操作'的录入数据页面
+	 */
+	@At
+	@GET
+	@Ok("jsp")
+	public Object update(@Param("id") Long id) {
+		return this.airlinePolicyService.goUpdate(id);
+	}
+
+	/**
+	 * 添加文件信息
+	 * 
+	 * 
+	 */
+	@At
+	@POST
+	public Object update(@Param("..") TAirlinePolicyUpdateForm updateForm, final HttpSession session,
+			@Param("id") Long id) {
+		airlinePolicyService.updateFileInfo(updateForm, session, id);
+		return JsonResult.success("更新成功!");
+	}
+
 }

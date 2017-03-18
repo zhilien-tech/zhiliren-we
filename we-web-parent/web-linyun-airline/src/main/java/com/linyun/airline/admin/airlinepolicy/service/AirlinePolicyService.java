@@ -6,8 +6,6 @@
 
 package com.linyun.airline.admin.airlinepolicy.service;
 
-import static com.uxuexi.core.common.util.ExceptionUtil.*;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Date;
@@ -16,20 +14,22 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
-import org.nutz.dao.pager.Pager;
 import org.nutz.dao.sql.Sql;
-import org.nutz.dao.util.Daos;
 import org.nutz.ioc.loader.annotation.Inject;
+import org.nutz.lang.Strings;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.common.enums.AirlinePolicyEnum;
-import com.linyun.airline.common.enums.BankCardStatusEnum;
+import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.common.util.HtmlToPdf;
 import com.linyun.airline.common.util.POIReadExcelToHtml;
 import com.linyun.airline.common.util.Word2Html;
@@ -38,10 +38,9 @@ import com.linyun.airline.entities.TAirlinePolicyEntity;
 import com.linyun.airline.entities.TAreaEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.forms.TAirlinePolicyAddForm;
-import com.uxuexi.core.common.util.MapUtil;
-import com.uxuexi.core.web.base.page.OffsetPager;
+import com.linyun.airline.forms.TAirlinePolicyUpdateForm;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.base.service.BaseService;
-import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
  * TODO(这里用一句话描述这个类的作用)
@@ -54,39 +53,6 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
 public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 	@Inject
 	private UploadService qiniuUploadService;//文件上传
-
-	public Map<String, Object> listPage4Datatables(DataTablesParamForm sqlParamForm, HttpSession session) {
-
-		checkNull(sqlParamForm, "sqlParamForm不能为空");
-
-		String sqlString = sqlManager.get("bankcardmanager_find_money");
-		Sql sql = Sqls.create(sqlString);
-		Cnd cnd = Cnd.NEW();
-		/*Long companyId = 23l;*/
-		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		Long companyId = company.getId();
-		cnd.and("companyId", "=", companyId);
-		cnd.and("status", "=", BankCardStatusEnum.ENABLE.intKey());
-		sql.setCondition(cnd);
-		Pager pager = new OffsetPager(sqlParamForm.getStart(), sqlParamForm.getLength());
-		pager.setRecordCount((int) Daos.queryCount(nutDao, sql.toString()));
-
-		sql.setPager(pager);
-
-		sql.setCallback(Sqls.callback.records());
-		nutDao.execute(sql);
-
-		@SuppressWarnings("unchecked")
-		List<Record> list = (List<Record>) sql.getResult();
-
-		Map<String, Object> re = MapUtil.map();
-		re.put("data", list);
-		re.put("draw", sqlParamForm.getDraw());
-		re.put("recordsTotal", pager.getPageSize());
-		re.put("recordsFiltered", pager.getRecordCount());
-		return re;
-
-	}
 
 	public Map<String, Object> findConditionList() {
 
@@ -103,11 +69,15 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 
 	}
 
-	public TAirlinePolicyEntity addFile(TAirlinePolicyAddForm addForm) {
+	public TAirlinePolicyEntity addFile(TAirlinePolicyAddForm addForm, HttpSession session) {
 
 		addForm.setCreateTime(new Date());
 		addForm.setUpdateTime(new Date());
 		addForm.setStatus(AirlinePolicyEnum.ENABLE.intKey());
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long companyId = company.getId();
+		addForm.setCompanyId(companyId);
+
 		String url = addForm.getUrl();
 		addForm.setUrl(url);
 		addForm.setFileName(addForm.getFileName());
@@ -165,6 +135,199 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 			}
 		}
 		return this.add(addForm);
+
+	}
+
+	public Object goAdd() {
+
+		// TODO Auto-generated method stub
+		return null;
+
+	}
+
+	public void addFileInfo(TAirlinePolicyAddForm addForm, HttpSession session) {
+		this.addFile(addForm, session);
+	}
+
+	/**
+	 * 根据输入显示航空公司
+	 */
+	//
+	public Object selectAirlineCompanys(String findCompany, String companyName) {
+		List<Record> companyNameList = getCompanyNameList(findCompany, companyName);
+		List<Select2Option> result = transform2SelectOptions(companyNameList);
+		return result;
+	}
+
+	private List<Select2Option> transform2SelectOptions(List<Record> companyNameList) {
+		return Lists.transform(companyNameList, new Function<Record, Select2Option>() {
+			@Override
+			public Select2Option apply(Record record) {
+				Select2Option op = new Select2Option();
+				op.setId(record.getInt("id"));
+				op.setText(record.getString("dictName"));
+				return op;
+			}
+		});
+	}
+
+	/**
+	 * 获取公司名称下拉框
+	 * @param dictName
+	 */
+	public List<Record> getCompanyNameList(String findCompany, final String companyName) {
+		String sqlString = sqlManager.get("airlinepolicy_select2_airlinecompany");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("dictName", "like", Strings.trim(findCompany) + "%");
+		cnd.and("typeCode", "=", "HKGS");
+		if (!Util.isEmpty(companyName)) {
+			cnd.and("id", "NOT IN", companyName);
+		}
+		sql.setCondition(cnd);
+		sql.setCallback(Sqls.callback.records());
+		nutDao.execute(sql);
+		@SuppressWarnings("unchecked")
+		List<Record> list = (List<Record>) sql.getResult();
+		return list;
+	}
+
+	/**
+	 * 根据输入显示地区
+	 */
+	//
+	public Object selectArea(String findCompany, String companyName) {
+		List<Record> companyNameList = getAreaList(findCompany, companyName);
+		List<Select2Option> result = transform2SelectOptions1(companyNameList);
+		return result;
+	}
+
+	private List<Select2Option> transform2SelectOptions1(List<Record> companyNameList) {
+		return Lists.transform(companyNameList, new Function<Record, Select2Option>() {
+			@Override
+			public Select2Option apply(Record record) {
+				Select2Option op = new Select2Option();
+				op.setId(record.getInt("id"));
+				op.setText(record.getString("areaName"));
+				return op;
+			}
+		});
+	}
+
+	/**
+	 * 获取公司名称下拉框
+	 * @param dictName
+	 */
+	public List<Record> getAreaList(String findCompany, final String companyName) {
+		String sqlString = sqlManager.get("airlinepolicy_select2_area");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("areaName", "like", Strings.trim(findCompany) + "%");
+		if (!Util.isEmpty(companyName)) {
+			cnd.and("id", "NOT IN", companyName);
+		}
+		sql.setCondition(cnd);
+		sql.setCallback(Sqls.callback.records());
+		nutDao.execute(sql);
+		@SuppressWarnings("unchecked")
+		List<Record> list = (List<Record>) sql.getResult();
+		return list;
+	}
+
+	public Object goUpdate(Long id) {
+		Map<String, Object> map = Maps.newHashMap();
+		TAirlinePolicyEntity airlinePolicy = dbDao.fetch(TAirlinePolicyEntity.class, id);
+		if (!Util.isEmpty(airlinePolicy.getAirlineCompanyId())) {
+
+			DictInfoEntity dictInfo = dbDao.fetch(DictInfoEntity.class,
+					Long.valueOf(airlinePolicy.getAirlineCompanyId()));
+			map.put("dictInfo", dictInfo);
+		}
+		if (!Util.isEmpty(airlinePolicy.getAreaId())) {
+			TAreaEntity areaInfo = dbDao.fetch(TAreaEntity.class, Long.valueOf(airlinePolicy.getAreaId()));
+			map.put("areaInfo", areaInfo);
+		}
+		map.put("airlinePolicy", airlinePolicy);
+		return map;
+
+	}
+
+	public void updateFileInfo(TAirlinePolicyUpdateForm updateForm, HttpSession session, Long id) {
+		String fileName = updateForm.getFileName();
+		String url = updateForm.getUrl();
+		String type = updateForm.getType();
+		Long areaId = updateForm.getAreaId();
+		Long airlineCompanyId = updateForm.getAirlineCompanyId();
+		TAirlinePolicyEntity airlinePolicy = dbDao.fetch(TAirlinePolicyEntity.class, id);
+		Chain chain = Chain.make("updateTime", new Date());
+		if (!Util.isEmpty(url)) {
+			chain.add("url", url);
+			String extendName = url.substring(url.lastIndexOf(".") + 1, url.length());
+			Word2Html word2Html = new Word2Html();
+			HtmlToPdf htmlToPdf = new HtmlToPdf();
+			if ("doc".equalsIgnoreCase(extendName)) {
+				try {
+					word2Html.docToHtml(url, "D:\\12.html");
+					htmlToPdf.htmlConvertToPdf("D:\\12.html", "D:\\12.pdf");
+					File file = new File("D:\\12.pdf");
+					String pdfUrl = CommonConstants.IMAGES_SERVER_ADDR
+							+ qiniuUploadService.uploadImage(new FileInputStream(file), "pdf", null);
+					chain.add("pdfUrl", pdfUrl);
+				} catch (Exception e) {
+
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+
+				} finally {
+					File file1 = new File("D:\\12.html");
+					File file2 = new File("D:\\12.pdf");
+					if (file1.exists()) {
+						file1.delete();
+					}
+					if (file2.exists()) {
+						file2.delete();
+					}
+				}
+			} else if ("xls".equalsIgnoreCase(extendName) || "xlsx".equalsIgnoreCase(extendName)) {
+				try {
+					POIReadExcelToHtml poiReadExcelToHtml = new POIReadExcelToHtml();
+					poiReadExcelToHtml.excelConvertToPdf(url, "D:\\12.html");
+
+					htmlToPdf.htmlConvertToPdf("D:\\12.html", "D:\\12.pdf");
+					File file = new File("D:\\12.pdf");
+					String pdfUrl = CommonConstants.IMAGES_SERVER_ADDR
+							+ qiniuUploadService.uploadImage(new FileInputStream(file), "pdf", null);
+					chain.add("pdfUrl", pdfUrl);
+				} catch (Exception e) {
+
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+
+				} finally {
+					File file1 = new File("D:\\12.html");
+					File file2 = new File("D:\\12.pdf");
+					if (file1.exists()) {
+						file1.delete();
+					}
+					if (file2.exists()) {
+						file2.delete();
+					}
+				}
+			}
+		}
+		if (!Util.isEmpty(fileName)) {
+			chain.add("fileName", fileName);
+		}
+		if (!Util.isEmpty(type)) {
+			chain.add("type", type);
+		}
+		if (!Util.isEmpty(areaId)) {
+			chain.add("areaId", areaId);
+		}
+		if (!Util.isEmpty(airlineCompanyId)) {
+			chain.add("airlineCompanyId", airlineCompanyId);
+		}
+		dbDao.update(TAirlinePolicyEntity.class, chain, Cnd.where("id", "=", id));
 
 	}
 

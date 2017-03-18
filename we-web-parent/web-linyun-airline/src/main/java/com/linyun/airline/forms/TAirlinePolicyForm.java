@@ -18,6 +18,7 @@ import org.nutz.dao.sql.Sql;
 
 import com.linyun.airline.common.enums.AirlinePolicyEnum;
 import com.linyun.airline.entities.TAirlinePolicyEntity;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
@@ -33,7 +34,7 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
 @EqualsAndHashCode(callSuper = true)
 public class TAirlinePolicyForm extends DataTablesParamForm {
 	/**id*/
-	private long id;
+	private Long id;
 	/**文件名字*/
 	private String fileName;
 	/**文件路径*/
@@ -41,11 +42,23 @@ public class TAirlinePolicyForm extends DataTablesParamForm {
 	/**文件大小*/
 	private String fileSize;
 	/**状态*/
-	private int status;
+	private Integer status;
 	/**创建时间*/
 	private Date createTime;
 	/**更新时间*/
 	private Date updateTime;
+	/**公司id*/
+	private Long companyId;
+	//航空公司id
+	private Long airlineCompanyId;
+	//区域id
+	private Long areaId;
+	//类型
+	private String type;
+	//开始时间
+	private Date beginTime;
+	//结束时间
+	private Date endTime;
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {
@@ -61,6 +74,27 @@ public class TAirlinePolicyForm extends DataTablesParamForm {
 		Cnd cnd = Cnd.NEW();
 		//TODO 添加自定义查询条件（可选）
 		cnd.and("status", "=", AirlinePolicyEnum.ENABLE.intKey());
+		if (!Util.isEmpty(airlineCompanyId)) {
+
+			cnd.and("airlineCompanyId", "=", airlineCompanyId);
+		}
+		if (!Util.isEmpty(areaId)) {
+
+			cnd.and("areaId", "=", areaId);
+		}
+		if (!Util.isEmpty(type)) {
+
+			cnd.and("type", "=", type);
+		}
+		if (!Util.isEmpty(beginTime)) {
+
+			cnd.and("updateTime", ">", beginTime);
+		}
+		if (!Util.isEmpty(endTime)) {
+
+			cnd.and("updateTime", "<", endTime);
+		}
+
 		return cnd;
 	}
 }
