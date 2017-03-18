@@ -200,7 +200,7 @@
 			/*小日历*/
 			minCalendarInit();
 			/* 定时刷新任务栏 */
-			setInterval(taskBarFunctions,1000*30);
+			setInterval("taskBarFunctions()",1000*59);
 		});
 	</script>
 
@@ -227,7 +227,6 @@
 	  				$("#tab_4").remove();
 	  				$("#tab_3").addClass("active");
 	  				$("#remindLi").addClass("active");
-	  				
 	  			}
 	  			taskEventList();
 	  		}

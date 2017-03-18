@@ -761,6 +761,11 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		Map<String, Object> fromJson = JsonUtil.fromJson(data, Map.class);
 		List<Map<String, Object>> customdata = (List<Map<String, Object>>) fromJson.get("customdata");
 
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+
 		/**************************添加 订单查询信息*****************************/
 		Integer customerId = Integer.valueOf((String) fromJson.get("customerId"));
 		boolean generateOrder = (boolean) fromJson.get("generateOrder");
@@ -787,6 +792,11 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		}
 		//订单类型
 		orderinfo.setOrderstype(orderType);
+		//用户id
+		orderinfo.setLoginUserId(new Long(user.getId()).intValue());
+		//公司id
+		orderinfo.setCompanyId(new Long(company.getId()).intValue());
+
 		//订单状态
 		switch (orderTypeStr) {
 		case INLANDTYPE:
@@ -805,12 +815,20 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		int upOrderId = insertOrder.getId();
 
 		/***************************操作台 消息提醒************************/
-		addRemindMsg(fromJson, generateOrderNum, "", upOrderId, orderStatus, session);
+		/*addRemindMsg(fromJson, generateOrderNum, "", upOrderId, orderStatus, session);*/
 
 		/****************************客户需求数据*************************/
 		addCustomerNeed(customdata, insertOrder);
 
-		return "订单保存成功";
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("orderId", upOrderId);
+		if (Util.eq("1", orderStatus)) {
+			map.put("orderStatus", orderStatus);
+		} else {
+			map.put("orderStatus", orderStatus);
+		}
+
+		return map;
 
 	}
 
@@ -1114,7 +1132,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		mapMsg.put("upOrderId", upOrderId);
 
 		remindMessageService.addMessageEvent(mapMsg);
-
 		return "消息添加成功";
 	}
 
