@@ -250,6 +250,8 @@
 		$(function() {
 			initDatatable();
 			selectTypeName();
+			$('.menu-ul:eq(0)').hide();//隐藏收付款的二级菜单
+			$('.menu-ul li a:eq(3)').css("color","rgb(245, 245, 245)");//二级菜单 数据字典 高亮style
 		});
 		//判断如果是出发城市则隐藏掉其他内容
 		$('#typeCode').change(function(){
