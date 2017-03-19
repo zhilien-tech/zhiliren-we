@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
@@ -49,6 +50,15 @@ public class InterPayReceiveModule {
 	@POST
 	public Object listFuKuanData(@Param("..") InterPaymentSqlForm sqlForm, HttpServletRequest request) {
 		return interPayReceiveService.listFuKuanData(sqlForm, request);
+	}
+
+	/**
+	 *打开开发票页面 
+	 */
+	@At
+	@Ok("jsp")
+	public Object openInvoice(HttpServletRequest request) {
+		return interPayReceiveService.openInvoice(request);
 	}
 
 }
