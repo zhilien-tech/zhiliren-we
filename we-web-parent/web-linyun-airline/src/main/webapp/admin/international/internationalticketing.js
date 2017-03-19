@@ -31,7 +31,7 @@ function initdrawerPayTable() {
         "columns": [{"data": "id", "bSortable": false,
 			        	"render": function (data, type, row, meta) {
 			        		var result = '';
-			        		var hiddenval = $('#checkedboxval').val();
+			        		var hiddenval = $('#checkedboxval2').val();
 			        		var splits = hiddenval.split(',');
 			        		var flag = false;
 			        		for(var i=0;i<splits.length;i++){
@@ -40,9 +40,9 @@ function initdrawerPayTable() {
 			        			}
 			        		}	
 			        		if(flag){
-			        			result = '<input type="checkbox"  class="checkchild" checked="true" value="' + row.ordernumber + '" />';
+			        			result = '<input type="checkbox"  class="checkchild2" checked="true" value="' + row.ordernumber + '" />';
 			        		}else{
-			        			result = '<input type="checkbox"  class="checkchild" value="' + row.ordernumber + '" />';
+			        			result = '<input type="checkbox"  class="checkchild2" value="' + row.ordernumber + '" />';
 			        		}
 			                return result;
 			            }
@@ -133,11 +133,11 @@ function initdrawerPayTable() {
             }
         }],
         "infoCallback": function (settings, start, end, max, total, pre) {
-    		var length = $(".checkchild:checked").length;
+    		var length = $(".checkchild2:checked").length;
     		if(drawerPayTable.page.len() == length){
-    			$(".checkall").prop("checked", true);
+    			$(".checkall2").prop("checked", true);
     		}else{
-    			$(".checkall").prop("checked", false);
+    			$(".checkall2").prop("checked", false);
     			
     		}
     		return '显示第 '+start+' 至 '+end+' 条结果，共'+total+' 条 (每页显示 '+max+' 条)'
@@ -145,14 +145,14 @@ function initdrawerPayTable() {
     });
 }
 //控制复选框
-$(".checkall").click(function () {
+$(".checkall2").click(function () {
     var check = $(this).prop("checked");
-    $(".checkchild").prop("checked", check);
+    $(".checkchild2").prop("checked", check);
     //隐藏域的值
-    var hiddenval = $('#checkedboxval').val();
+    var hiddenval = $('#checkedboxval2').val();
 	if(check){
 		var splits = hiddenval.split(',');
-		$(".checkchild:checked").each(function(){
+		$(".checkchild2:checked").each(function(){
 			var thisvals = $(this).val();
 			var flag = false;
 			for(var i=0;i<splits.length;i++){
@@ -170,7 +170,7 @@ $(".checkall").click(function () {
 			}
 		});
 	}else{
-		$(".checkchild").each(function(){
+		$(".checkchild2").each(function(){
 			var thisval = $(this).val();
 			var flag = false;
 			var splits = hiddenval.split(',');
@@ -192,18 +192,18 @@ $(".checkall").click(function () {
 			}
 		});
 	}
-	$('#checkedboxval').val(hiddenval);
+	$('#checkedboxval2').val(hiddenval);
 });
 //点击之后给隐藏域赋值
-$(document).on('click', '.checkchild', function(e) {
-	var hiddenval = $('#checkedboxval').val();
+$(document).on('click', '.checkchild2', function(e) {
+	var hiddenval = $('#checkedboxval2').val();
 	var thisval = $(this).val();
 	var check = $(this).prop("checked");
 	if(check){
 		if(!hiddenval){
-			$('#checkedboxval').val(thisval);
+			$('#checkedboxval2').val(thisval);
 		}else{
-			$('#checkedboxval').val(hiddenval+','+thisval);
+			$('#checkedboxval2').val(hiddenval+','+thisval);
 		}
 	}else{
 		var splits = hiddenval.split(',');
@@ -222,9 +222,9 @@ $(document).on('click', '.checkchild', function(e) {
 				}
 			}
 			ids = ids.join(',');
-			$('#checkedboxval').val(ids);
+			$('#checkedboxval2').val(ids);
 		}else{
-			$('#checkedboxval').val(hiddenval);
+			$('#checkedboxval2').val(hiddenval);
 		}
 	}
 });
@@ -240,7 +240,7 @@ function loadTicking(){
 	});
 }
 $('.fuKuanBtn').click(function(){
-	var ids = $('#checkedboxval').val();
+	var ids = $('#checkedboxval2').val();
 	if(!ids){
 		layer.msg("请至少选中一条记录",{time: 2000, icon:1});
 	}else{
@@ -262,7 +262,7 @@ $('.fuKuanBtn').click(function(){
         					drawerPayTable.ajax.reload(function(json){
         						autoHighLoad($('#drawerPayTable'));
         					},false);
-        					$('#checkedboxval').val('');
+        					$('#checkedboxval2').val('');
         		  	    }
         			});
         	   }else{
