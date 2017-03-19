@@ -1296,6 +1296,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		receiveEntity.setReceivedate(new Date());
 		receiveEntity.setUserid(new Long(user.getId()).intValue());
 		receiveEntity.setStatus(AccountReceiveEnum.RECEIVINGMONEY.intKey());
+		receiveEntity.setOrderstype(PassengerTypeEnum.FIT.intKey());
 		//客户名称还未填写
 		receiveEntity.setCustomename("");
 		if (!Util.isEmpty(sumincome)) {
@@ -1356,6 +1357,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		payEntity.setProposer(new Long(user.getId()).intValue());
 		payEntity.setApprover(approver);
 		payEntity.setCompanyId(new Long(company.getId()).intValue());
+		payEntity.setOrdertype(PassengerTypeEnum.FIT.intKey());
 		TPayEntity insert = dbDao.insert(payEntity);
 		Iterable<String> split = Splitter.on(",").split(ids);
 		List<TPayPnrEntity> paypnrs = new ArrayList<TPayPnrEntity>();
