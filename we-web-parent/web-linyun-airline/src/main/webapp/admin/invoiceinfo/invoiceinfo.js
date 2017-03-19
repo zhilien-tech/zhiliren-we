@@ -55,7 +55,7 @@ function initKaiInvoiceTable1() {
                   		return result;
                   	}
                   },
-                  {"data": "incometotal", "bSortable": false,
+                  {"data": "invoicetotal", "bSortable": false,
                   	render:function(data, type, row, meta) {
                   		var result = 0;
                   		$.each(row.invoiceDetail, function(name, value) {
@@ -84,18 +84,39 @@ function initKaiInvoiceTable1() {
                     		return result;
                     	}
                   },
-                  {"data": "paymentunit", "bSortable": false},
+                  {"data": "paymentunit", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                    		var paymentunit = row.paymentunit;
+                    		if(paymentunit == "" || paymentunit == null){
+                    			return "";
+                    		}
+                    		return paymentunit;
+                    	}
+                  },
                   {"data": "username", "bSortable": false},
                   {"data": "status", "bSortable": false,
                 	  render:function(data, type, row, meta) {
-                  		var result = '';
-                  		if(row.status && row.status != undefined){
-                  			result = row.status;
+                  		var status = row.status;
+                  		if(status ==null || status==""){
+                  			return "";
+                  		}else{
+                  			if(status===1){
+                  				return "开发票中";
+                  			}else if(status===2){
+                  				return "已开发票";
+                  			}
                   		}
-                  		return result;
                   	}
                   },
-                  {"data": "remark", "bSortable": false}
+                  {"data": "remark", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                  		var remark = row.remark;
+                  		if(remark == "" || remark == null){
+                  			return "";
+                  		}
+                  		return remark;
+                  	}
+                  }
           ],
       columnDefs: [{
     	//   指定第一列，从0开始，0表示第一列，1表示第二列……
@@ -121,7 +142,7 @@ function openkaiInvoiceEdit(id){
         content: BASE_PATH + '/admin/inland/kaiInvoice.html?id='+id
       });
 }
-/*//付款表格
+//付款表格
 var shouInvoiceTable1;
 //初始化表格
 initshouInvoiceTable1();
@@ -143,11 +164,20 @@ function initshouInvoiceTable1() {
         }
     },
     "columns": [
+                {"data": "ordersnum", "bSortable": false,
+                	render:function(data, type, row, meta) {
+                		var result = '';
+                		if(row.ordersnum && row.ordersnum!= undefined){
+                			result = row.ordersnum;
+                		}
+                		return result;
+                	}
+                },
                 {"data": "pNR", "bSortable": false,
                 	render:function(data, type, row, meta) {
                 		var result = '';
-                		if(row.pNR && row.pNR!= undefined){
-                			result = row.pNR;
+                		if(row.pnr && row.pnr!= undefined){
+                			result = row.pnr;
                 		}
                 		return result;
                 	}
@@ -206,7 +236,15 @@ function initshouInvoiceTable1() {
                 		return result;
                 	}
                 },
-                {"data": "username", "bSortable": false},
+                {"data": "username", "bSortable": false,
+                	render:function(data, type, row, meta) {
+                		var username = row.username;
+                		if(username===null ||  username===""){
+                			return "";
+                		}
+                		return username;
+                	}
+                },
                 {"data": "status", "bSortable": false,
                 	render:function(data, type, row, meta) {
                   		var result = '';
@@ -216,7 +254,15 @@ function initshouInvoiceTable1() {
                   		return result;
                   	}
                 },
-                {"data": "remark", "bSortable": false}
+                {"data": "remark", "bSortable": false,
+                	render:function(data, type, row, meta) {
+                  		var result = '';
+                  		if(row.remark){
+                  			result = row.remark;
+                  		}
+                  		return result;
+                  	}
+                }
         ],
     columnDefs: [{
   	//   指定第一列，从0开始，0表示第一列，1表示第二列……
@@ -241,23 +287,25 @@ function openshouInvoiceEdit(id){
         area: ['987px', '620px'],
         content: BASE_PATH + '/admin/inland/shouInvoice.html?id='+id
     });
-}*/
+}
 
 //开发票 搜索按钮
 $("#kaiSearchInvoiceBtn").on('click', function () {
 	var status = $("#kaiInvoiceSelect").val();
-	var kaiDrawer = $("#kaiDrawer").val();
+	var username = $("#username").val();
 	var kaiInvoiceBeginDate = $("#kaiInvoiceBeginDate").val();
 	var kaiInvoiceEndDate = $("#kaiInvoiceEndDate").val();
 	var invoicenum = $("#invoicenumId").val();
+	var paymentunit = $("#invoicenumId").val();
     var param = {
 		        "status":status,
-		        "kaiDrawer":kaiDrawer,
+		        "username":username,
 		        "kaiInvoiceBeginDate":kaiInvoiceBeginDate,
 		        "kaiInvoiceEndDate":kaiInvoiceEndDate,
-				"invoicenum": invoicenum
+				"invoicenum": invoicenum,
+				"paymentunit": paymentunit
 		    };
-    if(status==1){
+    if(status==1 ||　status==2){
     	KaiInvoiceTable1.settings()[0].ajax.data = param;
     	KaiInvoiceTable1.ajax.reload(
     			function(json){
@@ -265,24 +313,65 @@ $("#kaiSearchInvoiceBtn").on('click', function () {
     			}
     	);
     }
-    if(status==2){
-    	inlandPayEdTable.settings()[0].ajax.data = param;
-    	inlandPayEdTable.ajax.reload(
+});
+
+//收发票 搜索按钮
+$("#shouSearchInvoiceBtn").on('click', function () {
+	var status = $("#shouInvoiceSelect").val();
+	var username = $("#billuserid").val();
+	var shouInvoiceBeginDate = $("#shouInvoiceBeginDate").val();
+	var shouInvoiceEndDate = $("#shouInvoiceEndDate").val();
+	var PNR = $("#paymentunitId").val();
+	var paymentunit = $("#paymentunitId").val();
+    var param = {
+		        "status":status,
+		        "username":username,
+		        "shouInvoiceBeginDate":shouInvoiceBeginDate,
+		        "shouInvoiceEndDate":shouInvoiceEndDate,
+				"PNR": PNR,
+				"paymentunit": paymentunit
+		    };
+    if(status==3 || status==4){
+    	shouInvoiceTable1.settings()[0].ajax.data = param;
+    	shouInvoiceTable1.ajax.reload(
     			function(json){
-    				autoHighLoad($('#inlandPayEdTable'));
+    				autoHighLoad($('#shouInvoiceTable1'));
     			}
     	);
     }
     
 });
 
-
-/*清除 内陆跨海 收款的   检索项*/
-$('#inlandRecClearBtn').click(function(){
-	clearSearchTxt("inlandRecSelect", "inlandRecBeginDate", "inlandRecEndDate", "inlandRecInput");
+/*清除 开发票   检索项*/
+$('#kaiEmptyBtn').click(function(){
+	clearSearchTxt("kaiInvoiceSelect","username", "kaiInvoiceBeginDate", "kaiInvoiceEndDate", "invoicenumId");
 });
 
-/*清除 内陆跨海 付款的   检索项*/
-$('#inlandPayClearBtn').click(function(){
-	clearSearchTxt("inlandPaySelect", "inlandPayBeginDate", "inlandPayEndDate", "inlandPayInput");
+/*清除 收发票   检索项*/
+$('#shouEmptyBtn').click(function(){
+	clearSearchTxt("shouInvoiceSelect","billuserid", "shouInvoiceBeginDate", "shouInvoiceEndDate", "paymentunitId");
+});
+
+//清空搜索项函数
+function clearSearchTxt(selectId,selectUsername ,beginDateId, endDateId, inputId){
+	$("#"+selectId+" option:first").prop("selected", 'selected');  
+	$("#"+selectUsername+" option:first").prop("selected", 'selected');  
+	$("#"+beginDateId).val("");
+	$("#"+endDateId).val("");
+	$("#"+inputId).val("");
+}
+//开发票状态选择按钮
+$("#kaiInvoiceSelect").change(function(){
+	$('#kaiSearchInvoiceBtn').click();
+});
+$("#username").change(function(){
+	$('#kaiSearchInvoiceBtn').click();
+});
+
+//收发票状态选择按钮
+$("#shouInvoiceSelect").change(function(){
+	$('#shouSearchInvoiceBtn').click();
+});
+$("#billuserid").change(function(){
+	$('#shouSearchInvoiceBtn').click();
 });

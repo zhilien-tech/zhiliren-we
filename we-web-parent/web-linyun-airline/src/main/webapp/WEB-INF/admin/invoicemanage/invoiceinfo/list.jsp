@@ -22,17 +22,17 @@
                            <div class="form-group row marginBott5 cf">
                              <div class="col-md-1 textPadding">
                                <select id="kaiInvoiceSelect" class="form-control TimeInput">
-                                   <option value=" ">全部</option>
-                                   <option value="0">开发票中</option>
-                                   <option value="1">已开发票</option>
+                                   <!-- <option value=" ">全部</option> -->
+                                   <option value="1">开发票中</option>
+                                   <option value="2">已开发票</option>
                                </select>
                              </div>
                              <div class="col-md-1 textPadding">
-                               <select id="kaiDrawer" class="form-control TimeInput">
+                               <select id="username" class="form-control TimeInput">
                                    <option value="">开票人</option>
 				                    <c:forEach items="${obj.listIssuer}" var="one">
-				                    	<option value="${one.issuer }">
-			                            	${one.issuer }
+				                    	<option value="${one.userName }">
+			                            	${one.userName }
 			                            </option>
 			                        </c:forEach>
                                </select>
@@ -49,7 +49,7 @@
                              </div>
                              <div class="col-md-2"><!-- 搜索 按钮 -->
                                <button id="kaiSearchInvoiceBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
-                               <button type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
+                               <button id="kaiEmptyBtn" type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
                              </div>
                            </div>
                          </form>
@@ -81,18 +81,18 @@
                         <form role="form" class="form-horizontal">
                           <div class="form-group row marginBott5 cf">
                             <div class="col-md-1 textPadding">
-                              <select class="form-control TimeInput">
-                                  <option value=" ">全部</option>
-                                  <option value="2">收发票中</option>
-                                  <option value="3">已收发票</option>
+                              <select id="shouInvoiceSelect" class="form-control TimeInput">
+                                  <!-- <option value=" ">全部</option> -->
+                                  <option value="3">收发票中</option>
+                                  <option value="4">已收发票</option>
                               </select>
                             </div>
                             <div class="col-md-1 textPadding">
-                              <select class="form-control TimeInput">
-                                  <option value="">==请选择==</option>
+                              <select id="billuserid" name="username" class="form-control TimeInput">
+                                  <option value="">收票人</option>
 				                    <c:forEach items="${obj.listIssuer}" var="one" varStatus="indexs">
-				                    	<option value="${one.issuer }">
-			                            	${one.issuer }
+				                    	<option value="${one.billuserid }">
+			                            	${one.userName }
 			                            </option>
 			                        </c:forEach>
                               </select>
@@ -105,17 +105,17 @@
                               <input id="shouInvoiceEndDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'shouInvoiceEndDate\')}'})"  class="form-control TimeInput" placeholder="2017-02-22">
                             </div>
                             <div class="col-md-3 textPadding"><!-- PNR/单位 搜索框 -->
-                              <input type="text" class="form-control" placeholder="PNR/单位">
+                              <input id="paymentunitId" type="text" class="form-control" placeholder="PNR/单位">
                             </div>
                             <div class="col-md-2"><!-- 搜索 按钮 -->
-                              <button type="button" class="btn btn-primary btn-sm">搜索</button>
-                              <button type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
+                              <button id="shouSearchInvoiceBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
+                              <button id="shouEmptyBtn" type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
                             </div>
                           </div>
                         </form>
                     </div>
                     <div class="box-body">
-                         <table id="shouInvoiceTable" class="table table-bordered table-hover">
+                         <table id="shouInvoiceTable1" class="table table-bordered table-hover">
                            <thead>
                            <tr>
                              <th>订单号</th>
@@ -126,7 +126,7 @@
                              <th>收发票日期</th>
                              <th>发票开具项目</th>
                              <th>收款单位</th>
-                             <th>开票人</th>
+                             <th>收票人</th>
                              <th>状态</th>
                              <th>备注</th>
                              <th>操作</th>
@@ -149,7 +149,8 @@
 <script type="text/javascript">
 	var BASE_PATH = '${base}';
 </script>
-<script src="${base}/admin/order/invoice.js"></script>
+<%-- <script src="${base}/admin/order/invoice.js"></script> --%>
 <script src="${base}/admin/invoiceinfo/invoiceinfo.js"></script>
 <!-- My97DatePicker -->
 <script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
+<script src="${base }/admin/order/ordercommon.js"></script>
