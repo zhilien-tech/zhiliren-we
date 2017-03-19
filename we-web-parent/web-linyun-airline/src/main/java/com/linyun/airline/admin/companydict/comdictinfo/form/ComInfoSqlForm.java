@@ -31,7 +31,7 @@ public class ComInfoSqlForm extends DataTablesParamForm {
 	//主键
 	private long id;
 	//公司id
-	private long comId;
+	private Long comId;
 	//字典类型id
 	private long dictTypeId;
 	//字典类别编码
@@ -67,6 +67,9 @@ public class ComInfoSqlForm extends DataTablesParamForm {
 		}
 		if (!Util.isEmpty(comDictName)) {
 			cnd.and("cmd.comDictName", "LIKE", "%" + comDictName + "%");
+		}
+		if (!Util.isEmpty(comId)) {
+			cnd.and("cmd.comId", "=", comId);
 		}
 		cnd.orderBy("cmd.createtime", "desc");
 		return cnd;

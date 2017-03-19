@@ -32,7 +32,7 @@ public class ComTypeSqlForm extends DataTablesParamForm {
 	private long id;
 
 	//公司id
-	private long comId;
+	private Long comId;
 
 	//公司名称
 	private String comName;
@@ -71,6 +71,9 @@ public class ComTypeSqlForm extends DataTablesParamForm {
 		}
 		if (!Util.isEmpty(comTypeName)) {
 			cnd.and("cd.comTypeName", "LIKE", "%" + comTypeName + "%");
+		}
+		if (!Util.isEmpty(comId)) {
+			cnd.and("cd.comId", "=", comId);
 		}
 		cnd.orderBy("cd.createtime", "desc");
 		return cnd;
