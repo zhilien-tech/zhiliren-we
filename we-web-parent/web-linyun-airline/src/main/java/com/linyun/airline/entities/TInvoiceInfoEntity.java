@@ -69,4 +69,8 @@ public class TInvoiceInfoEntity implements Serializable {
 	@Comment("optime")
 	private Date optime;
 
+	@Column
+	@Comment("付款id")
+	private Integer payid;
+
 }
