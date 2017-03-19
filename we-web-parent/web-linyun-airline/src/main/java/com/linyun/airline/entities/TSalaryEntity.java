@@ -30,6 +30,11 @@ public class TSalaryEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id(auto = true)
 	private Integer id;
+
+	@Column
+	@Comment("公司id")
+	private Integer comId;
+
 	@Column
 	@Comment("成本合计")
 	private double costTotal;
