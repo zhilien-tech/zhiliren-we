@@ -52,6 +52,15 @@ function initPayDataTable(){
 		            		return result;
 		            	}
 		            },
+		            {"data": "bookcount", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var bookcount = row.bookcount;
+		            		if(null == bookcount || ""== bookcount){
+		            			return "";
+		            		}
+		            		return bookcount;
+		            	}
+		            },
 		            {"data": "peoplecount", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var peoplecount = row.peoplecount;
@@ -59,6 +68,15 @@ function initPayDataTable(){
 		            			return "";
 		            		}
 		            		return peoplecount;
+		            	}
+		            },
+		            {"data": "saleprice", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var saleprice = row.saleprice;
+		            		if(null == saleprice || ""== saleprice || undefined==saleprice){
+		            			return "";
+		            		}
+		            		return saleprice;
 		            	}
 		            },
 		            {"data": "saleprice", "bSortable": false,

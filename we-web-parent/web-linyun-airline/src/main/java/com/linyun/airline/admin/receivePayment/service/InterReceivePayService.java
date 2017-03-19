@@ -233,7 +233,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 * @param inlandPayIds
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object saveInlandRec(String recId, HttpSession session) {
+	public Object saveInterRec(String recId, HttpSession session) {
 		int orderRecEd = AccountReceiveEnum.RECEIVEDONEY.intKey();
 		int updateNum = dbDao.update(TReceiveEntity.class, Chain.make("status", orderRecEd),
 				Cnd.where("id", "in", recId));

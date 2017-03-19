@@ -131,7 +131,7 @@ public class InterReceivePayModule {
 	 */
 	@At
 	public Object saveInterRec(@Param("id") final String recId, HttpSession session) {
-		return interReceivePayService.saveInlandRec(recId, session);
+		return interReceivePayService.saveInterRec(recId, session);
 	}
 
 	//水单上传 返回值文件存储地址
