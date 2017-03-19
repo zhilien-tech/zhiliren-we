@@ -2,9 +2,9 @@
  * InlandPayListSearchForm.java
  * com.linyun.airline.admin.receivePayment.form
  * Copyright (c) 2017, 北京科技有限公司版权所有.
-*/
+ */
 
-package com.linyun.airline.admin.receivePayment.form;
+package com.linyun.airline.admin.receivePayment.form.inland;
 
 import java.util.Date;
 
@@ -31,7 +31,7 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class InlandPayListSearchSqlForm extends DataTablesParamForm {
+public class InlandPayEdListSearchSqlForm extends DataTablesParamForm {
 
 	/**客户名称 订单号 PNR 联系人*/
 	private String name;
@@ -45,7 +45,7 @@ public class InlandPayListSearchSqlForm extends DataTablesParamForm {
 	/**出发日期 -- 截止出发日期*/
 	private Date leaveEndDate;
 
-	/**当前公司下的用户ids*/
+	/**当前公司下用户 ids*/
 	private String loginUserId;
 
 	/**订单状态*/
@@ -64,7 +64,7 @@ public class InlandPayListSearchSqlForm extends DataTablesParamForm {
 			cnd.and("pi.orderPnrStatus", "=", orderStatus);
 		}
 
-		//出发日期
+		//TODO 出发日期
 		if (!Util.isEmpty(leaveBeginDate)) {
 			cnd.and("oc.leavetdate", ">", leaveBeginDate);
 		}
@@ -82,7 +82,7 @@ public class InlandPayListSearchSqlForm extends DataTablesParamForm {
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {
-		String sqlString = sqlManager.get("receivePay_pay_list");
+		String sqlString = sqlManager.get("receivePay_pay_id_list");
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;

@@ -145,7 +145,6 @@
 	<script type="text/javascript">
 		var BASE_PATH = '${base}';
 	</script>
-	<script src="${base }/admin/order/ordercommon.js"></script>
 	<!-- My97DatePicker -->
 	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -160,8 +159,10 @@
 	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
 	
 	<!-- 確認付款js -->
-	<script src="${base}/admin/receivePayment/confirmPay.js"></script>
-	<script src="${base}/admin/receivePayment/inlandPay.js"></script>
+	<script src="${base}/admin/receivePayment/inland/confirmPay.js"></script>
+	<script src="${base}/admin/receivePayment/inland/inlandPay.js"></script>
+	<!-- 收付款Common js -->
+	<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
 	
 	<script type="text/javascript">
 	//文件上传
