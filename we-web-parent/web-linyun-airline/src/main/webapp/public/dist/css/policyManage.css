@@ -15,7 +15,6 @@ table.dataTable thead > tr > th {padding-right: 10px;}
 .policyTable tr td:nth-child(1){width: 70px;}
 .policyTable tr td:nth-child(2){width:300px;}
 .policyTable tr td input{width: 95%;display: inline-block;}
-.policyTable tr td select{width: 85%;display: inline-block;}
 .policyTable tr td span{color: red;display: inline-block;}
 .policyTable tr td .select2-container .selection{width: 100% !important;}
 .select2-container {width: 97% !important;}
@@ -26,7 +25,11 @@ span.uploadify-button-text{background: #3c8dbc;color: #fff !important;border-rad
 .sp {position: relative;top: 4px;left: 2px;}
 input.select2-search__field {color: #555;}
 .modal-body {padding-top: 0px;}
-
+.policyTable tbody tr td:nth-child(2) i{right: -25px;}
+.policyTable tbody tr td:nth-child(4) i{right: -3px;}
+.has-feedback{margin-bottom: 0px;}
+.wi{display: inline-block;width: 96%;}
+.wi i{right: -30px;}
 /*end 弹框 style*/
 
 
