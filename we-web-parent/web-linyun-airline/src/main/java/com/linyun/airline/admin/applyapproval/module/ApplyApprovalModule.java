@@ -42,11 +42,7 @@ public class ApplyApprovalModule {
 	@At
 	@Ok("jsp")
 	public Object list(@Param("..") final Pager pager, HttpSession session) {
-		/*Map<String, Object> map = Maps.newHashMap();
-		List<Record> deplist = grabfileViewService.getFolderInfo(sqlManager);
-		map.put("deplist", deplist);
-		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));*/
-		/*airlinePolicyService.findConditionList()*/
+
 		return applyApprovalService.findNums(session);
 	}
 
@@ -68,11 +64,7 @@ public class ApplyApprovalModule {
 	@Ok("jsp")
 	public Object dataList(@Param("..") final Pager pager, final HttpSession session,
 			@Param("operation") final String operation, @Param("date") final String date) {
-		/*Map<String, Object> map = Maps.newHashMap();
-		List<Record> deplist = grabfileViewService.getFolderInfo(sqlManager);
-		map.put("deplist", deplist);
-		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));*/
-		/*airlinePolicyService.findConditionList()*/
+
 		return applyApprovalService.findData(session, operation, date);
 	}
 
@@ -102,12 +94,13 @@ public class ApplyApprovalModule {
 	@Ok("json")
 	public Object agree(@Param("..") final Pager pager, final HttpSession session,
 			@Param("usingId") final Long usingId, @Param("id") final Long id, @Param("status") final Long status,
-			@Param("temp") final String temp, @Param("orderId") final Long orderId) {
+			@Param("temp") final String temp, @Param("orderId") final Long orderId,
+			@Param("operation") final String operation) {
 		/*Map<String, Object> map = Maps.newHashMap();
 		List<Record> deplist = grabfileViewService.getFolderInfo(sqlManager);
 		map.put("deplist", deplist);
 		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));*/
 		/*airlinePolicyService.findConditionList()*/
-		return applyApprovalService.doAgree(session, usingId, id, status, temp, orderId);
+		return applyApprovalService.doAgree(session, usingId, id, status, temp, orderId, operation);
 	}
 }

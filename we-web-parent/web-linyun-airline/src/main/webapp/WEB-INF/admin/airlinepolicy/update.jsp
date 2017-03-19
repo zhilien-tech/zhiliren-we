@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="${base }/public/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="${base }/public/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/AdminLTE.css">
+	<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
   <link rel="stylesheet" href="${base }/public/dist/css/policyManage.css"><!--本页面Style-->
 </head>
 <body>
@@ -21,12 +22,13 @@
             <h4 class="invoiceH4">编辑</h4>
     </div>
       <div class="modal-body" style="height:140px;overflow-y: auto;">
-      <form id="addFileInfo">
+      <form id="updateFileInfoForm">
       
         <table class="policyTable">
           <tr>
             <td><label>航空公司:</label></td>
             <td>
+            <div class="form-group">
               <select id="findAirlineCompany" name="findAirlineCompany"  onchange="setSelectedAirlineCompanyId()" class="form-control select2 inpImpWid" multiple="multiple" >
               	<c:if test="${obj.dictInfo.id !=null}">
               	
@@ -36,6 +38,7 @@
               </select>
               <input id="airlineCompanyId" type="hidden" class="form-control input-sm" placeholder="请输入要添加的航空公司名称" name="airlineCompanyId" value="${obj.airlinePolicy.airlineCompanyId }">
               <span>*</span>
+              </div>
             </td>
             <!-- 设置已选中的项 -->
 			<script type="text/javascript">
@@ -46,26 +49,29 @@
 			</script>
             <td><label>类型：</label></td>
             <td>
-              <select class="form-control input-sm" name="type">
-              	<option value="">请选择</option>
-                <c:if test="${obj.airlinePolicy.type == '团'}">
-                <option selected="selected">团</option>
-                <option >散</option>
-                
-                </c:if>
-                <c:if test="${obj.airlinePolicy.type == '散'}">
-                
-                <option >团</option>
-                <option selected="selected">散</option>
-                </c:if>
-              </select>
-              
-              <span>*</span>
+            	<div class="form-group">
+	              <select class="form-control input-sm" name="type">
+	              	<option value="">请选择</option>
+	                <c:if test="${obj.airlinePolicy.type == '团'}">
+	                <option selected="selected">团</option>
+	                <option >散</option>
+	                
+	                </c:if>
+	                <c:if test="${obj.airlinePolicy.type == '散'}">
+	                
+	                <option >团</option>
+	                <option selected="selected">散</option>
+	                </c:if>
+	              </select>
+	              
+	              <span>*</span>
+              </div>
             </td>
           </tr>
           <tr>
             <td><label>地区：</label></td>
             <td>
+            	<div class="form-group">
               <select id="findArea" name="findArea"  onchange="setSelectedfindArea()" class="form-control select2 inpImpWid" multiple="multiple" >
               	<c:if test="${obj.areaInfo.id != null}">
               	
@@ -75,6 +81,7 @@
               <input type="hidden" class="form-control input-sm" placeholder="请输入要添加地区名称" name="areaId" id="areaId" value="${obj.airlinePolicy.areaId }">
              
               <span>*</span>
+              </div>
             </td>
             <!-- 设置已选中的项 -->
 			<script type="text/javascript">
@@ -108,10 +115,56 @@
 	<!-- Select2 -->
 	<script src="${base}/public/plugins/select2/select2.full.min.js"></script>
 	<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
+		<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 		<script type="text/javascript">
 		var BASE_PATH = '${base}';
 	</script>
 	<script type="text/javascript">
+	 //验证输入内容不能为空
+	  $(document).ready(function (){
+		
+		
+		formValidator();  
+		
+	});
+	/* $(formValidator()); */
+	//表单验证
+	function formValidator(){
+		$('#updateFileInfoForm').bootstrapValidator({
+			message: '验证不通过!',
+	        feedbackIcons: {
+	            valid: 'glyphicon glyphicon-ok',
+	            invalid: 'glyphicon glyphicon-remove',
+	            validating: 'glyphicon glyphicon-refresh'
+	        },
+	        fields: {
+	           type: {
+	            	validators: {
+	                    notEmpty: {
+	                        message: '类型不能为空!'
+	                    }
+	                }
+	            },
+	            findAirlineCompany: {
+	            	validators: {
+	                    notEmpty: {
+	                        message: '航空公司不能为空!'
+	                    }
+	                }
+	            },
+	            findArea: {
+	            	validators: {
+	                    notEmpty: {
+	                        message: '地区不能为空!'
+	                    }
+	                }
+	            }
+	         } 
+		});
+	}
+	
+	
+	
 		//点击取消
 		function closewindow(){
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
@@ -210,26 +263,30 @@
 		//执行添加的操作、
 		
 		function addFileInfo(id){
-			$.ajax({
-				cache : false,
-				type : "POST",
-				url : '${base}/admin/airlinepolicy/update.html?id='+id,
-				data : $('#addFileInfo').serialize(),// 你的formid
-				error : function(request) {
-					layer.msg('编辑失败!');
-				},
-				success : function(data) {
-					layer.load(1, {
-						 shade: [0.1,'#fff'] //0.1透明度的白色背景
-					});
-					
-					 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-				    parent.layer.close(index);
-				    window.parent.successCallback('2'); 
-					
-				    
-				}
-			});
+			$('#updateFileInfoForm').bootstrapValidator('validate');
+			var bootstrapValidator = $("#updateFileInfoForm").data('bootstrapValidator');
+			if(bootstrapValidator.isValid()){
+				$.ajax({
+					cache : false,
+					type : "POST",
+					url : '${base}/admin/airlinepolicy/update.html?id='+id,
+					data : $('#updateFileInfoForm').serialize(),// 你的formid
+					error : function(request) {
+						layer.msg('编辑失败!');
+					},
+					success : function(data) {
+						layer.load(1, {
+							 shade: [0.1,'#fff'] //0.1透明度的白色背景
+						});
+						
+						 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+					    parent.layer.close(index);
+					    window.parent.successCallback('2'); 
+						
+					    
+					}
+				});
+			}
 		}
 		
 		//select2(航空公司)
