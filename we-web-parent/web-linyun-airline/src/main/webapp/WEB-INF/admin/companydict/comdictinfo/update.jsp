@@ -25,7 +25,7 @@
                         	<input name="id" type="hidden" value="${obj.single[0].id}"/>
                             <label class="col-sm-3 text-right padding">字典类型编码：</label>
                             <div class="col-sm-8 padding">
-                            	<select id="comTypeCode" name="comTypeCode" class="form-control input-sm">
+                            	<select id="comTypeCode" name="comTypeCode" class="form-control input-sm inpImpWid">
 			                    	<option value="">--请选择--</option>
 										<c:forEach var="one" items="${obj.single }">
 											<option value='${one.comtypecode}' ${one.comtypecode==obj.single[0].comtypecode?'selected':''}>
@@ -39,21 +39,21 @@
                         <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">字典代码：</label>
                             <div class="col-sm-8 padding">
-                              	<input name="comDdictCode" id="comDdictCode" type="text" class="form-control input-sm" oninput="this.value=this.value.toUpperCase().replace(/(^\s*)|(\s*$)/g, '')"  value="${obj.single[0].comDdictCode}"/>
+                              	<input name="comDdictCode" id="comDdictCode" type="text" class="form-control input-sm inpImpWid" oninput="this.value=this.value.toUpperCase().replace(/(^\s*)|(\s*$)/g, '')"  value="${obj.single[0].comDdictCode}"/>
                               	<span class="prompt">*</span>
                             </div>
                         </div>
                         <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">字典信息：</label>
                             <div class="col-sm-8 padding">
-                              	<input name="comDictName" id="comDictName" type="text" class="form-control input-sm"  value="${obj.single[0].comDictName}"/>
+                              	<input name="comDictName" id="comDictName" type="text" class="form-control input-sm inpImpWid"  value="${obj.single[0].comDictName}"/>
                             	<span class="prompt">*</span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 text-right padding">状态：</label>
                             <div class="col-sm-8 padding">
-                              	<select id="status" name="status" class="form-control input-sm">
+                              	<select id="status" name="status" class="form-control input-sm inpImpWid">
 									<c:forEach var="map" items="${obj.dataStatusEnum}" >
 										<c:choose>
 										   <c:when test="${map.key == obj.single[0].status}">

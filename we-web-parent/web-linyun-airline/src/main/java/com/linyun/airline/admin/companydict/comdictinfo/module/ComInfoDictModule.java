@@ -125,7 +125,6 @@ public class ComInfoDictModule {
 	@POST
 	public Object update(@Param("..") final ComInfoUpdateForm modForm) {
 		modForm.setUpdateTime(new Date());
-		//comInfoDictService.update(modForm);
 		return comInfoDictService.update(modForm);
 	}
 

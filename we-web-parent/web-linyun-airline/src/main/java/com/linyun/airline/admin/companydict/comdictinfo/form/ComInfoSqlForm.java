@@ -66,7 +66,7 @@ public class ComInfoSqlForm extends DataTablesParamForm {
 			cnd.and("cmd.comTypeCode", "=", comTypeCode);
 		}
 		if (!Util.isEmpty(comDictName)) {
-			cnd.and("cmd.comTypeName", "LIKE", "%" + comDictName + "%");
+			cnd.and("cmd.comDictName", "LIKE", "%" + comDictName + "%");
 		}
 		cnd.orderBy("cmd.createtime", "desc");
 		return cnd;

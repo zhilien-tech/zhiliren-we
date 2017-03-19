@@ -170,12 +170,18 @@ public class ComTypeDictModule {
 	 */
 	@At
 	@POST
-	public Object checkTypeCodeExist(@Param("comTypeCode") final String Code) {
+	public Object checkTypeCodeExist(@Param("comTypeCode") final String Code, @Param("id") final long id) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<ComDictTypeEntity> listCode = dbDao.query(ComDictTypeEntity.class, Cnd.where("comTypeCode", "=", Code),
 				null);
+		List<ComDictTypeEntity> listCode2 = dbDao.query(ComDictTypeEntity.class, Cnd.where("comTypeCode", "=", Code)
+				.and("id", "=", id), null);
 		if (!Util.isEmpty(listCode)) {
-			map.put("valid", false);
+			if (Util.isEmpty(id)) {
+				map.put("valid", false);
+			} else if (!Util.isEmpty(listCode2)) {
+				map.put("valid", true);
+			}
 		} else {
 			map.put("valid", true);
 		}
@@ -187,12 +193,18 @@ public class ComTypeDictModule {
 	 */
 	@At
 	@POST
-	public Object checkTypeNameExist(@Param("comTypeName") final String Name) {
+	public Object checkTypeNameExist(@Param("comTypeName") final String Name, @Param("id") final long id) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<ComDictTypeEntity> listName = dbDao.query(ComDictTypeEntity.class, Cnd.where("comTypeName", "=", Name),
 				null);
+		List<ComDictTypeEntity> listName2 = dbDao.query(ComDictTypeEntity.class, Cnd.where("comTypeName", "=", Name)
+				.and("id", "=", id), null);
 		if (!Util.isEmpty(listName)) {
-			map.put("valid", false);
+			if (Util.isEmpty(id)) {
+				map.put("valid", false);
+			} else if (!Util.isEmpty(listName2)) {
+				map.put("valid", true);
+			}
 		} else {
 			map.put("valid", true);
 		}

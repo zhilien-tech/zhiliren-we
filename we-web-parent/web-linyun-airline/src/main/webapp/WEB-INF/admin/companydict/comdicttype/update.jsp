@@ -79,8 +79,8 @@
 <script src="${base}/common/js/layer/layer.js"></script>
 <script type="text/javascript">
 	//验证输入内容不能为空
-	$(document).ready(function(){
-		$('#addForm').bootstrapValidator({
+function validateParams(){
+	var options = {
 			message: '验证不通过!',
 	        feedbackIcons: {
 	            valid: 'glyphicon glyphicon-ok',
@@ -101,7 +101,8 @@
 	                         //自定义提交数据，默认值提交当前input value
 	                         data: function(validator) {
 	                            return {
-	                            	comTypeCode:$('input[name="comTypeCode"]').val()
+	                            	comTypeCode:$('input[name="comTypeCode"]').val(),
+	                            	id:'${obj.dirtype.id}'
 	                            };
 	                         }
 	                     },
@@ -124,24 +125,23 @@
 	                         //自定义提交数据，默认值提交当前input value
 	                         data: function(validator) {
 	                            return {
-	                            	comTypeName:$('input[name="comTypeName"]').val()
+	                            	comTypeName:$('input[name="comTypeName"]').val(),
+	                            	id:'${obj.dirtype.id}'
 	                            };
 	                         }
 	                     }
 	                }
 	            }
-	        }
-		});
-	});
-	//更新保存验证
-	$('#submitButton').click(function() {
-        $('#updateForm').bootstrapValidator('validate');
-    });
-	
+	      }
+	};
+	$("#updateForm").bootstrapValidator(options);  
+	$("#updateForm").data('bootstrapValidator').validate();
+	return $("#updateForm").data('bootstrapValidator').isValid();
+}
+validateParams();
 	function submitType(){
-		$('#updateForm').bootstrapValidator('validate');
-		var bootstrapValidator = $("#updateForm").data('bootstrapValidator');
-		if(bootstrapValidator.isValid()){
+		var valid = validateParams();
+		if(valid){
 			$.ajax({
 				type : "POST",
 				data : $('#updateForm').serialize(),// 你的formid 

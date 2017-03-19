@@ -10,7 +10,6 @@
 <link rel="stylesheet" href="${base}/public/dist/css/dict.css">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>公司字典类型</title>
-<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
@@ -75,7 +74,6 @@
 		<!-- /.content-wrapper -->
 		<%@include file="/WEB-INF/public/footer.jsp"%>
 	</div>
-<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 <script src="${base }/admin/order/ordercommon.js"></script>
 <script type="text/javascript">
 //添加
@@ -162,6 +160,10 @@ $(function() {
 });
 </script>
 <script type="text/javascript">
+$(function() {
+	$('.menu-ul:eq(0)').hide();//隐藏收付款的二级菜单
+	$('.menu-ul li a:eq(2)').css("color","rgb(245, 245, 245)");//二级菜单 数据字典 高亮style
+});
 $(function() {
 	initDatatable();
 });
@@ -289,11 +291,6 @@ function onkeyEnter(){
 		 $("#comTypeSearchBtn").click();
 	 }
 }
-$(function() {
-	initDatatable();
-	$('.menu-ul:eq(0)').hide();//隐藏收付款的二级菜单
-	$('.menu-ul li a:eq(2)').css("color","rgb(245, 245, 245)");//二级菜单 数据字典 高亮style
-});
 </script>
 </body>
 </html>

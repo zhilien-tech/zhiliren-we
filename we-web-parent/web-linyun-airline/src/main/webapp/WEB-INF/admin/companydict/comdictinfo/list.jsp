@@ -179,7 +179,6 @@ $(function() {
 	$('.menu-ul li a:eq(3)').css("color","rgb(245, 245, 245)");//二级菜单 数据字典 高亮style
 });
 
-//出发城市dataTable
 var comcomdatatableInfo;
 function initDatatable() {
 	comcomdatatableInfo = $('#comcomdatatableInfo').DataTable({
