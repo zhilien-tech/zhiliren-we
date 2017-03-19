@@ -72,10 +72,10 @@
                     </div>
                     
                     <div class="col-sm-2">
-                      <button type="button" id="multiselect_rightAll" class="btn btn-block"><i class="fa fa-angle-double-right"></i></button>
-                      <button type="button" id="multiselect_rightSelected" class="btn btn-block"><i class="fa fa-angle-right"></i></button>
-                      <button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="fa fa-angle-left"></i></button>
-                      <button type="button" id="multiselect_leftAll" class="btn btn-block"><i class="fa fa-angle-double-left"></i></button>
+                      <button type="button" id="multiselect_rightAll" class="btn btn-block" onmouseout="assignment();"><i class="fa fa-angle-double-right"></i></button>
+                      <button type="button" id="multiselect_rightSelected" class="btn btn-block" onmouseout="assignment();"><i class="fa fa-angle-right"></i></button>
+                      <button type="button" id="multiselect_leftSelected" class="btn btn-block" onmouseout="assignment();"><i class="fa fa-angle-left"></i></button>
+                      <button type="button" id="multiselect_leftAll" class="btn btn-block" onmouseout="assignment();"><i class="fa fa-angle-double-left"></i></button>
                     </div>
                     
                     <div class="col-sm-5">
@@ -108,6 +108,10 @@
       $(function(){
           $('#multiselect').multiselect();
       });
+    //票价折扣
+  	var discountFare = '${obj.custominfo.discountFare}';
+  	//手续费
+  	var fees = '${obj.custominfo.fees}'; 
       //关闭窗口
       function closewindow(){
   		var index = parent.parent.layer.getFrameIndex(window.name); //获取窗口索引
@@ -159,6 +163,38 @@
    	  });
    	  return o;
      }
+     //给人数赋值
+     function assignment(){
+  	   var count = $('#multiselect_to option').length; 
+  	   if(count == 0){
+  		   $('#peoplecount').val('');
+  	   }else{
+  		   $('#peoplecount').val(count);
+  	   }
+     }
+     $('#costprice').on('input',function(){
+  	   //成本单价
+  	   var costprice = $('#costprice').val();
+  	   //人数
+  	   var peoplecount = $('#peoplecount').val();
+  	   //自动填充销售单价
+  	   var salesprice = parseFloat(costprice) * parseFloat(discountFare)/100 + parseFloat(fees);
+  	   if(costprice){
+  	 		if(isNaN(salesprice)){
+  	 			$('#salesprice').val('');
+  	 		}else{
+  	 			$('#salesprice').val(salesprice);
+  	 		}
+  	 	}else{
+  	 		$('#salesprice').val('');
+  	 	}
+  	   if(peoplecount){
+  		   var costpricesum = parseFloat(costprice) * parseFloat(peoplecount);
+  		   $('#costpricesum').val(costpricesum);
+  		   var salespricesum = parseFloat(salesprice) * parseFloat(peoplecount);
+  		   $('salespricesum').val(salespricesum);
+  	   }
+     });
   </script>
 </body>
 </html>	

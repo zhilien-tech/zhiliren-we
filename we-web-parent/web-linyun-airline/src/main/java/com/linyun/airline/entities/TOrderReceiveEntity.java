@@ -1,10 +1,10 @@
 package com.linyun.airline.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 
-import org.joda.time.DateTime;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Comment;
 import org.nutz.dao.entity.annotation.Id;
@@ -34,6 +34,6 @@ public class TOrderReceiveEntity implements Serializable {
 	private Integer receivestatus;
 	@Column
 	@Comment("收款时间")
-	private DateTime receiveDate;
+	private Date receiveDate;
 
 }
