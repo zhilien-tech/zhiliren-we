@@ -112,11 +112,11 @@
                                 </form>
                               </div>
                               <div class="box-body">
-                              	<input type="hidden" id="checkedboxval" name="checkedboxval">
+                              	<input type="hidden" id="checkedboxval2" name="checkedboxval2" value="">
                                 <table id="drawerPayTable" class="table table-bordered table-hover">
                                   <thead>
                                   <tr>
-                                      <th class="checkTh"><input class="checkall" type="checkbox"></th>
+                                      <th class="checkTh"><input class="checkall2" type="checkbox"></th>
                                    	  <th>序号</th>
 			                          <th>订单号</th>
 			                          <th>日期</th>

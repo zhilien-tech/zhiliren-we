@@ -197,6 +197,7 @@ $(".checkall1").click(function () {
 //点击之后给隐藏域赋值
 $(document).on('click', '.checkchild1', function(e) {
 	var hiddenval = $('#checkedboxval1').val();
+	alert(hiddenval);
 	var thisval = $(this).val();
 	var check = $(this).prop("checked");
 	if(check){
@@ -241,6 +242,7 @@ function loadFukuanTable(){
 }
 $('.fuKuanBtn1').click(function(){
 	var ids = $('#checkedboxval1').val();
+	alert(ids);
 	if(!ids){
 		layer.msg("请至少选中一条记录",{time: 2000, icon:1});
 	}else{
