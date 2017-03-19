@@ -123,11 +123,11 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		}
 		//出发日期
 		if (!Util.isEmpty(leaveBeginDate)) {
-			cnd.and("oc.leavetdate", ">", leaveBeginDate);
+			cnd.and("oc.leavetdate", ">=", leaveBeginDate);
 		}
 		// 返回日期
 		if (!Util.isEmpty(leaveEndDate)) {
-			cnd.and("oc.leavetdate", "<", leaveEndDate);
+			cnd.and("oc.leavetdate", "<=", leaveEndDate);
 		}
 		List<Record> orders = dbDao.query(sql, cnd, null);
 

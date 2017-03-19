@@ -20,6 +20,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
+import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
@@ -258,11 +259,12 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 	public Object listKaiInvoiceData(KaiInvoiceParamForm paramForm, HttpServletRequest request) {
 
 		//检索条件
-		/*Date kaiInvoiceBeginDate = paramForm.getKaiInvoiceBeginDate();
-		Date kaiInvoiceEndDate = paramForm.getKaiInvoiceEndDate();
-		String kaiDrawer = paramForm.getKaiDrawer();
-		String paymentunit = paramForm.getPaymentunit();
-		String invoicenum = paramForm.getInvoicenum();*/
+		Integer status = paramForm.getStatus();//状态
+		String username = paramForm.getUsername();//开票人
+		Date kaiInvoiceBeginDate = paramForm.getKaiInvoiceBeginDate();//起始时间
+		Date kaiInvoiceEndDate = paramForm.getKaiInvoiceEndDate();//结束时间
+		String invoicenum = paramForm.getInvoicenum();//发票号
+		String paymentunit = paramForm.getPaymentunit();//付款单位
 
 		HttpSession session = request.getSession();
 		//获取当前登录用户
@@ -275,16 +277,46 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			List<TInvoiceDetailEntity> invoiceDetail = dbDao.query(TInvoiceDetailEntity.class,
 					Cnd.where("invoiceinfoid", "=", record.getInt("id")), null);
 			record.put("invoiceDetail", invoiceDetail);
-			String sqlString = sqlManager.get("get_kai_invoice_list_order");
+			String sqlString = sqlManager.get("get_kai_invoice_search_list");
 			Sql sql = Sqls.create(sqlString);
+			Cnd cnd = Cnd.NEW();
+			SqlExpressionGroup group = new SqlExpressionGroup();
+			group.and("idd.invoicenum", "LIKE", "%" + invoicenum + "%").or("ii.paymentunit", "LIKE",
+					"%" + paymentunit + "%");
+			if (!Util.isEmpty(invoicenum)) {
+				cnd.and(group);
+			}
+			//开票日期
+			if (!Util.isEmpty(kaiInvoiceBeginDate)) {
+				cnd.and("ii.invoicedate", ">=", kaiInvoiceBeginDate);
+			}
+			//开票日期
+			if (!Util.isEmpty(kaiInvoiceEndDate)) {
+				cnd.and("ii.invoicedate", "<=", kaiInvoiceEndDate);
+			}
+			if (!Util.isEmpty(status)) {
+				cnd.and("ii.status", "=", status);
+			}
+			if (!Util.isEmpty(username)) {
+				cnd.and("u.userName", "=", username);
+			}
+			cnd.and("ii.id", "=", record.getInt("id"));
+			cnd.groupBy("tuo.ordersnum");
 			//订单信息
-			List<Record> orders = dbDao.query(sql, Cnd.where("tii.id", "=", record.getInt("id")), null);
+			List<Record> orders = dbDao.query(sql, cnd, null);
 			record.put("orders", orders);
 			record.put("username", dbDao.fetch(TUserEntity.class, Long.valueOf(record.getInt("billuserid")))
 					.getUserName());
 		}
+		List<Record> listdataNew = new ArrayList<Record>();
+		for (Record record : listdata) {
+			String orders = record.getString("orders");
+			if (orders.contains("id")) {
+				listdataNew.add(record);
+			}
+		}
 		DatatablesData.remove("data");
-		DatatablesData.put("data", listdata);
+		DatatablesData.put("data", listdataNew);
 		return DatatablesData;
 
 	}
@@ -299,6 +331,15 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object listShouInvoiceData(ShouInvoiceParamForm paramForm, HttpServletRequest request) {
+
+		//检索条件
+		/*Integer status = paramForm.getStatus();//状态
+		String username = paramForm.getUsername();//收票人
+		Date kaiInvoiceBeginDate = paramForm.getShouInvoiceBeginDate();//起始时间
+		Date kaiInvoiceEndDate = paramForm.getShouInvoiceEndDate();//结束时间
+		String invoicenum = paramForm.getPNR();//发票号
+		String paymentunit = paramForm.getPaymentunit();//收款单位
+		*/
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);

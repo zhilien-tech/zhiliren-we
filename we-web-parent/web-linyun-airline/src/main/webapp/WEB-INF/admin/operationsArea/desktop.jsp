@@ -96,10 +96,10 @@
 					<div id="minCId" style="display: none" class="col-md-3 minCelender">
 						<!--小日历-->
 						<div class="box box-primary" id="box-min">
-							<p>
+							<!-- <p>
 								<input id="checkShow" type="checkbox" class="checkShow" checked="checked">
 								显示提醒
-							</p>
+							</p> -->
 						</div>
 					</div>
 					<!--end 小日历-->
@@ -165,7 +165,7 @@
 	<script src="${base}/common/js/layer/layer.js"></script>
 	<script type="text/javascript">
 	   function createMinCanlender(){
-		   $('#box-min').html('<p><input id="checkShow" type="checkbox" class="checkShow" checked="checked">显示提醒</p>');
+		  // $('#box-min').html('<p><input id="checkShow" type="checkbox" class="checkShow" checked="checked">显示提醒</p>');
 		   new Kalendae({//小日历 创建
 		        attachTo:document.getElementById("box-min"),
 		        months:4,
@@ -200,7 +200,7 @@
 			/*小日历*/
 			minCalendarInit();
 			/* 定时刷新任务栏 */
-			setInterval(taskBarFunctions,1000*30);
+			setInterval("taskBarFunctions()",1000*59);
 		});
 	</script>
 
@@ -227,7 +227,6 @@
 	  				$("#tab_4").remove();
 	  				$("#tab_3").addClass("active");
 	  				$("#remindLi").addClass("active");
-	  				
 	  			}
 	  			taskEventList();
 	  		}

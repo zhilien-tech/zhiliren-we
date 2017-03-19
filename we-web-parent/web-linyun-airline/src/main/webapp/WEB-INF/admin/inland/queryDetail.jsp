@@ -599,11 +599,12 @@
             <div class="infofooter">
                  <table class="remindSet">
                    <tr>
-                     <td><input id="remindTime" type="text" class="form-control input-sm" placeholder="2017-02-15 09:30" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" disabled="disabled"/></td>
+                     <td><input id="remindTime" type="text" class="form-control input-sm" placeholder="2020-01-01 00:00:00" onfocus="WdatePicker({minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></td>
                      <td>
                        <select id="remindType" class="form-control input-sm">
-                         <option value="6">不重复</option>
-                         <option value="3">重复</option>
+                         <c:forEach var="map" items="${obj.orderRemindEnum}" >
+					   		<option value="${map.key}">${map.value}</option>
+						 </c:forEach>
                        </select>
                      </td>
                    </tr>

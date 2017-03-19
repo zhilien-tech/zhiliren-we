@@ -59,7 +59,7 @@ SELECT
 	 tfi.incometotal
 FROM
 	t_up_order tuo
-INNER JOIN t_customer_info tci ON tuo.userid = tci.id
+left JOIN t_customer_info tci ON tuo.userid = tci.id
 LEFT JOIN t_finance_info tfi ON tuo.id = tfi.orderid
 $condition
 /*get_sea_payapply_table_data*/
@@ -148,9 +148,39 @@ INNER JOIN t_receive tr ON tor.receiveid = tr.id
 INNER JOIN t_invoice_info tii ON tr.id = tii.receiveid
 $condition
 
+/*get_kai_invoice_search_list*/
+SELECT
+	tuo.*, ii.billuserid,
+	ii.`status`,
+	ii.invoicedate,
+	ii.invoicedate,
+	ii.invoiceitem,
+	ii.paymentunit,
+	ii.remark,
+	idd.invoicenum,
+	idd.invoicebalance,
+	idd.invoicetotal,
+	u.id AS userIds,
+	u.userName,
+	up.comId
+FROM
+	t_up_order tuo
+LEFT JOIN t_order_receive ore ON tuo.id = ore.orderid
+LEFT JOIN t_invoice_info ii ON ii.receiveid = ore.receiveid
+LEFT JOIN t_invoice_detail idd ON idd.invoiceinfoid = ii.id
+LEFT JOIN t_customer_info cus ON cus.id = tuo.userid
+LEFT JOIN t_upcompany up ON up.id = cus.upComId
+LEFT JOIN t_agent ag ON ag.id = cus.agentId
+LEFT JOIN t_user u ON u.id = ii.billuserid
+LEFT JOIN dict_info info ON info.id = ii.invoiceitem
+$condition
+
 /*get_shou_invoice_list_order*/
 SELECT
-	tpi.*, tii.invoicedate,
+	tuo.ordersnum,
+	tpi.*,
+	tii.invoicedate,
+	tii.`status`,
 	tii.invoiceitem,
 	tii.paymentunit,
 	tii.id invoiceid,
@@ -163,8 +193,7 @@ SELECT
 		WHERE
 			invoiceinfoid = tii.id
 	) invoicecount,
-	tu.userName,
-	tuo.ordersnum
+	tu.userName
 FROM
 	t_pnr_info tpi
 INNER JOIN t_invoice_info tii ON tii.pnrid = tpi.id
