@@ -20,10 +20,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Cnd;
+import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
+import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.google.common.base.Splitter;
 import com.linyun.airline.admin.customneeds.service.EditPlanService;
 import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
@@ -33,6 +36,10 @@ import com.linyun.airline.admin.order.inland.enums.PayMethodEnum;
 import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
 import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.order.international.form.InternationalParamForm;
+import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
+import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
+import com.linyun.airline.common.enums.AccountPayEnum;
+import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.ExcelReader;
 import com.linyun.airline.entities.DictInfoEntity;
@@ -42,8 +49,11 @@ import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TFinanceInfoEntity;
 import com.linyun.airline.entities.TFlightInfoEntity;
 import com.linyun.airline.entities.TOrderCustomneedEntity;
+import com.linyun.airline.entities.TOrderReceiveEntity;
 import com.linyun.airline.entities.TPayReceiveRecordEntity;
 import com.linyun.airline.entities.TPnrInfoEntity;
+import com.linyun.airline.entities.TReceiveBillEntity;
+import com.linyun.airline.entities.TReceiveEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.entities.TVisitorInfoEntity;
@@ -72,6 +82,10 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	private static final String NLKHCODE = "NLKH";
 	//币种
 	private static final String BIZHONGCODE = "BZ";
+	//银行卡类型
+	private static final String YHCODE = "YH";
+	//付款用途
+	private static final String FKYTCODE = "FKYT";
 	@Inject
 	private EditPlanService editPlanService;
 	@Inject
@@ -736,6 +750,190 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	 */
 	public Object backTicket(HttpServletRequest request) {
 
+		return null;
+	}
+
+	/**
+	 * 打开收款页面
+	 * <p>
+	 * TODO 打开收款页面
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object openReceipt(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Map<String, Object> result = new HashMap<String, Object>();
+		String ids = request.getParameter("ids");
+		String sqlString = sqlManager.get("get_sea_invoce_table_data");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.limit();
+		cnd.and("tuo.ordersstatus", "=", InternationalStatusEnum.TICKETING.intKey());
+		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
+		cnd.and("tuo.id", "in", ids);
+		List<Record> orders = dbDao.query(sql, cnd, null);
+		//计算合计金额
+		double sumincome = 0;
+		for (Record record : orders) {
+			if (!Util.isEmpty(record.get("incometotal"))) {
+				Double incometotal = (Double) record.get("incometotal");
+				sumincome += incometotal;
+			}
+		}
+		result.put("orders", orders);
+		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
+		try {
+			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		result.put("yhkSelect", yhkSelect);
+		result.put("ids", ids);
+		result.put("sumincome", sumincome);
+		return result;
+	}
+
+	/**
+	 *保存收款信息
+	 * <p>
+	 * TODO保存收款信息
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object saveReceipt(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		String ids = request.getParameter("ids");
+		String bankcardid = request.getParameter("bankcardid");
+		String bankcardname = request.getParameter("bankcardname");
+		String bankcardnum = request.getParameter("bankcardnum");
+		String billurl = request.getParameter("billurl");
+		String sumincome = request.getParameter("sumincome");
+		TReceiveEntity receiveEntity = new TReceiveEntity();
+		receiveEntity.setBankcardid(Integer.valueOf(bankcardid));
+		receiveEntity.setBankcardname(bankcardname);
+		receiveEntity.setBankcardnum(bankcardnum);
+		receiveEntity.setReceivedate(new Date());
+		receiveEntity.setUserid(new Long(user.getId()).intValue());
+		receiveEntity.setStatus(AccountReceiveEnum.RECEIVINGMONEY.intKey());
+		receiveEntity.setOrderstype(PassengerTypeEnum.TEAM.intKey());
+		//客户名称还未填写
+		receiveEntity.setCustomename("");
+		if (!Util.isEmpty(sumincome)) {
+			receiveEntity.setSum(Double.valueOf(sumincome));
+		}
+		//保存收款信息
+		TReceiveEntity insert = dbDao.insert(receiveEntity);
+		Iterable<String> split = Splitter.on(",").split(ids);
+		//组装订单收款表list
+		List<TOrderReceiveEntity> orderreceives = new ArrayList<TOrderReceiveEntity>();
+		//更新订单收款状态List
+		List<TUpOrderEntity> orders = new ArrayList<TUpOrderEntity>();
+		for (String str : split) {
+			TOrderReceiveEntity orderreceive = new TOrderReceiveEntity();
+			orderreceive.setReceiveid(insert.getId());
+			orderreceive.setOrderid(Integer.valueOf(str));
+			orderreceive.setReceivestatus(0);
+			orderreceives.add(orderreceive);
+			//订单信息
+			TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(str));
+			order.setReceivestatus(AccountReceiveEnum.RECEIVINGMONEY.intKey());
+			orders.add(order);
+		}
+		//更新订单状态
+		dbDao.update(orders);
+		//更新订单收款表
+		dbDao.insert(orderreceives);
+		TReceiveBillEntity receiveBill = new TReceiveBillEntity();
+		receiveBill.setReceiptUrl(billurl);
+		receiveBill.setReceiveid(insert.getId());
+		//更新水单表
+		dbDao.insert(receiveBill);
+		return null;
+	}
+
+	/**
+	 * 打开付款页面
+	 * <p>
+	 * TODO打开付款页面
+	 *
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object openPayment(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		Map<String, Object> result = new HashMap<String, Object>();
+		String ids = request.getParameter("ids");
+		String sqlString = sqlManager.get("get_sea_invoce_table_data");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.limit();
+		cnd.and("tuo.ordersstatus", "=", InternationalStatusEnum.TICKETING.intKey());
+		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
+		cnd.and("tuo.id", "in", ids);
+		List<Record> orders = dbDao.query(sql, cnd, null);
+		result.put("orders", orders);
+		try {
+			result.put("bzSelect", externalInfoService.findDictInfoByName("", BIZHONGCODE));
+			result.put("ytSelect", externalInfoService.findDictInfoByName("", FKYTCODE));
+		} catch (Exception e) {
+
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		}
+		result.put("user", user);
+		result.put("ids", ids);
+		return result;
+	}
+
+	/**
+	 * 保存付款信息
+	 * <p>
+	 * TODO保存付款信息
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object savePayment(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		String ids = request.getParameter("ids");
+		String purpose = request.getParameter("purpose");
+		String payCurrency = request.getParameter("payCurrency");
+		String approver = request.getParameter("approver");
+		TPayEntity payEntity = new TPayEntity();
+		payEntity.setPurpose(Integer.valueOf(purpose));
+		payEntity.setPayCurrency(Integer.valueOf(payCurrency));
+		payEntity.setProposer(new Long(user.getId()).intValue());
+		payEntity.setApprover(approver);
+		payEntity.setCompanyId(new Long(company.getId()).intValue());
+		payEntity.setOrdertype(PassengerTypeEnum.TEAM.intKey());
+		TPayEntity insert = dbDao.insert(payEntity);
+		Iterable<String> split = Splitter.on(",").split(ids);
+		List<TPayOrderEntity> payorders = new ArrayList<TPayOrderEntity>();
+		//更新PNR付款状态List
+		List<TUpOrderEntity> orders = new ArrayList<TUpOrderEntity>();
+		for (String str : split) {
+			TPayOrderEntity payorder = new TPayOrderEntity();
+			payorder.setPayid(insert.getId());
+			payorder.setOrderid(Integer.valueOf(str));
+			payorders.add(payorder);
+			//PNR更新状态
+			TUpOrderEntity pnrinfo = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(str));
+			pnrinfo.setPaystatus(AccountPayEnum.APPROVAL.intKey());
+			orders.add(pnrinfo);
+		}
+		//更新pnr状态
+		dbDao.update(orders);
+		dbDao.insert(payorders);
 		return null;
 	}
 }

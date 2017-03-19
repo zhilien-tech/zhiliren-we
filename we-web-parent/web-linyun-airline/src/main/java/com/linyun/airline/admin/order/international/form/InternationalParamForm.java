@@ -12,6 +12,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
+import org.nutz.dao.util.cri.SqlExpressionGroup;
 
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.uxuexi.core.common.util.Util;
@@ -32,6 +33,10 @@ public class InternationalParamForm extends DataTablesParamForm {
 
 	private Integer ordersstatus;
 
+	private String ticketing;
+
+	private String ticketingpay;
+
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
@@ -40,6 +45,16 @@ public class InternationalParamForm extends DataTablesParamForm {
 		}
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("tpi.companyid", "=", companyid);
+		}
+		if (!Util.isEmpty(ticketing)) {
+			SqlExpressionGroup sqlex = new SqlExpressionGroup();
+			sqlex.and("tuo.receivestatus", "=", "").or("tuo.receivestatus", "is", null);
+			cnd.and(sqlex);
+		}
+		if (!Util.isEmpty(ticketingpay)) {
+			SqlExpressionGroup sqlex = new SqlExpressionGroup();
+			sqlex.and("tuo.paystatus", "=", "").or("tuo.paystatus", "is", null);
+			cnd.and(sqlex);
 		}
 		return cnd;
 	}

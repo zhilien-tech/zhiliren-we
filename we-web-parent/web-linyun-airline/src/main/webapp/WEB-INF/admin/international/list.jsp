@@ -115,19 +115,19 @@
                                 <table id="drawerPayTable" class="table table-bordered table-hover">
                                   <thead>
                                   <tr>
-                                    <th class="checkTh"><input class="checkall" type="checkbox"></th>
-                                    <th>订单号</th>
-                                    <th>PNR</th>
-                                    <th>日期</th>
-                                    <th>航班号</th>
-                                    <th>航段</th>
-                                    <th>时间</th>
-                                    <th>销售单价</th>
-                                    <th>销售总价</th>
-                                    <th>数量</th>
-                                    <th>状态</th>
-                                    <th>联系人</th>
-                                    <th>电话</th>
+                                      <th class="checkTh"><input class="checkall" type="checkbox"></th>
+                                   	  <th>序号</th>
+			                          <th>订单号</th>
+			                          <th>日期</th>
+			                          <th>航班号</th>
+			                          <th>航段</th>
+			                          <th>时间</th>
+			                          <th>人数</th>
+			                          <th>FOC</th>
+			                          <th>天数</th>
+			                          <th>状态</th>
+			                          <th>旅行社名称</th>
+			                          <th>联运要求</th>
                                   </tr>
                                   </thead>
                                   <tbody>
@@ -438,6 +438,9 @@
 <script src="${base}/admin/airline/planmake.js"></script>
 <script src="${base}/admin/airline/editplan.js"></script>
 <script src="${base}/admin/international/international.js"></script>
+<script src="${base}/admin/international/internationalticketing.js"></script>
+<script src="${base}/admin/international/internationalticketingpay.js"></script>
+<script src="${base}/admin/international/internationalpayreceive.js"></script>
 <script type="text/javascript"> 
 //添加订单 弹框
 	$('#addOrder').click(function(){
@@ -454,9 +457,7 @@
 	  
 	//他页面回调
 	  function successCallback(id){
-		  inlandCrossTable.ajax.reload(null,false);
-		  shouFuKuanPayTable.ajax.reload();
-		  shouFuKuanGatheringTable.ajax.reload();
+
 		  if(id == '1'){
 			  layer.alert("添加成功",{time: 2000, icon:1});
 		  }else if(id == '2'){
