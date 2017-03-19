@@ -388,9 +388,9 @@
 	function calendarInit(){
 		  $('#calendar').fullCalendar({
 			    header: {
-			      left: 'prev, next',
+			      left: 'prevYear,prev,today',
 			      center: 'title',
-			      right: 'today'
+			      right: 'next,nextYear'
 			    },
 			    events: function(start, end,callback) {
 			    	
