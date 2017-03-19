@@ -44,7 +44,7 @@
 			</script>
             <td><label>类型：</label></td>
             <td>
-            	<div class="form-group">
+            	<div class="form-group wi">
 	              <select class="form-control input-sm" name="type" id="type" >
 	              	<option value="">请选择</option>
 	                <option>团</option>
