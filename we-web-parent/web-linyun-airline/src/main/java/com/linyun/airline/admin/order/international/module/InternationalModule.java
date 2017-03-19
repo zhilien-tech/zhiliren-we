@@ -270,4 +270,40 @@ public class InternationalModule {
 	public Object backTicket(HttpServletRequest request) {
 		return internationalService.backTicket(request);
 	}
+
+	/**
+	 * 打开收款页面
+	 */
+	@At
+	@Ok("jsp")
+	public Object openReceipt(HttpServletRequest request) {
+		return internationalService.openReceipt(request);
+	}
+
+	/**
+	 * 保存收款信息
+	 */
+	@At
+	@POST
+	public Object saveReceipt(HttpServletRequest request) {
+		return internationalService.saveReceipt(request);
+	}
+
+	/**
+	 * 打开付款页面
+	 */
+	@At
+	@Ok("jsp")
+	public Object openPayment(HttpServletRequest request) {
+		return internationalService.openPayment(request);
+	}
+
+	/**
+	 * 保存付款信息
+	 */
+	@At
+	@POST
+	public Object savePayment(HttpServletRequest request) {
+		return internationalService.savePayment(request);
+	}
 }

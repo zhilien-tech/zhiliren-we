@@ -83,4 +83,8 @@ public class TPayEntity implements Serializable {
 	@Comment("付款订单合计")
 	private Double totalMoney;
 
+	@Column
+	@Comment("订单类型（国际、内陆跨海）")
+	private Integer ordertype;
+
 }

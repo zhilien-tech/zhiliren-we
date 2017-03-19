@@ -59,7 +59,7 @@ SELECT
 	 tfi.incometotal
 FROM
 	t_up_order tuo
-INNER JOIN t_customer_info tci ON tuo.userid = tci.id
+left JOIN t_customer_info tci ON tuo.userid = tci.id
 LEFT JOIN t_finance_info tfi ON tuo.id = tfi.orderid
 $condition
 /*get_sea_payapply_table_data*/

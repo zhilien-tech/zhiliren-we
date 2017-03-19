@@ -102,13 +102,14 @@
 		var sumincome = $('#sumincome').val();
 		$.ajax({
 	        type: "post",
-	        url: '${base}/admin/inland/saveSeaInvoice.html',
+	        url: '${base}/admin/international/saveReceipt.html',
 	        data: {ids:ids,bankcardid:bankcardid,bankcardname:bankcardname,bankcardnum:bankcardnum,billurl:billurl,sumincome:sumincome},
 	        cache: false,
 	        async : false,
 	        success: function (data ,textStatus, jqXHR){
 	        	layer.msg("提交成功！",{time: 2000, icon:1});
 	        	closewindow();
+	        	window.parent.successCallback('5');
 	        },
 	        error:function (XMLHttpRequest, textStatus, errorThrown) {      
 	            layer.msg("请求失败！",{time: 2000, icon:1});
@@ -199,7 +200,7 @@
 	     });
 	}
 	loadbankcardname();
-	loadbankcardnum();
+	//loadbankcardnum();
 	</script>
 </body>
 </html>	
