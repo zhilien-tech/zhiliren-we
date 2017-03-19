@@ -130,7 +130,7 @@ function openInvoice(id,invoiceid){
 	        closeBtn:false,//默认 右上角关闭按钮 是否显示
 	        shadeClose:true,
 	        area: ['987px', '620px'],
-	        content: BASE_PATH + '/admin/international/payreceive/kaiInvoice.html?id='+invoiceid
+	        content: BASE_PATH + '/admin/international/invoice/kaiInvoice.html?id='+invoiceid
 	      });
 	}else{
 		layer.open({
@@ -272,7 +272,7 @@ function receiveInvoice(id,invoiceid){
 	        closeBtn:false,//默认 右上角关闭按钮 是否显示
 	        shadeClose:true,
 	        area: ['987px', '620px'],
-	        content: BASE_PATH + '/admin/international/payreceive/shouInvoice.html?id='+invoiceid
+	        content: BASE_PATH + '/admin/international/invoice/shouInvoice.html?id='+invoiceid
 	    });
 	}else {
 		layer.open({

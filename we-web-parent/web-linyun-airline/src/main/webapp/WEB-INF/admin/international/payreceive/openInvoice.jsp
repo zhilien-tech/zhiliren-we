@@ -55,14 +55,9 @@
                     <td>
                       <select class="form-control input-sm">
                            <c:forEach var="one" items="${obj.yhkSelect }">
-                             <c:choose>
-                             	<c:when test="${one.id eq obj.receive.bankcardid }">
+                             	<c:if test="${one.id eq obj.receive.bankcardid }">
                              		<option value="${one.id }" selected="selected">${one.dictName }</option>
-                             	</c:when>
-                             	<c:otherwise>
-		                        	<option value="${one.id }">${one.dictName }</option>
-                             	</c:otherwise>
-                             </c:choose>
+                             	</c:if>
                            </c:forEach>
                       </select>
                     </td>
@@ -219,7 +214,7 @@
    function saveInvoiceInfo(){
 	   var formdata = {};
 	   var id = $('#id').val();
-	   formdata.pnrid = id;
+	   formdata.receiveid = id;
 	   var invoiceitem = $('#invoiceitem').val();
 	   formdata.invoiceitem = invoiceitem;
 	   var invoicedate = $('#invoicedate').val();
@@ -253,7 +248,7 @@
 	   $.ajax({ 
 			type: 'POST', 
 			data: {data:JSON.stringify(formdata)}, 
-			url: '${base}/admin/inland/saveReceiveInvoiceInfo.html',
+			url: '${base}/admin/international/payreceive/saveOpenInvoiceInfo.html',
            success: function (data) { 
            	closewindow();
            	window.parent.successCallback('5');
