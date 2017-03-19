@@ -31,15 +31,15 @@
                   </tr>
                 </thead>
                 <tbody id="interConfirmRecTbody">
-                  <input id="recIds" name="recIds" type="hidden" value="${obj.inlandRecId }"><!-- 水单url -->
+                  <input id="recIds" name="recIds" type="hidden" value="${obj.id }"><!-- 水单url -->
 					<c:forEach var="one" items="${obj.orders}">
                 		<tr>
                 			<td>${one.ordersnum }</td>
-                			<td>${one.billdate }</td>
+                			<td>${one.billingdate }</td>
                 			<td>${one.cusgroupnum }</td>
                 			<td>${one.shortname }</td>
                 			<td>${one.linkman }</td>
-                			<td>${one.username }</td>
+                			<td>${one.issuer }</td>
                 			<td>${one.incometotal }</td>
                 		</tr>
                 	</c:forEach>
@@ -50,19 +50,19 @@
                   <td>银行：</td>
                   <td>
                     <select disabled="disabled" class="form-control input-sm">
-                        <option selected = "selected">${obj.bankComp}</option>
+                        <option selected = "selected">${obj.receive.bankcardname}</option>
                     </select>
                   </td>
                   <td>银行卡名称：</td>
                   <td>
                     <select disabled="disabled" class="form-control input-sm">
-                         <option selected = "selected">${obj.bankcardname}</option>
+                         <option selected = "selected">${obj.yhkSelect[0].dictName}</option>
                     </select>
                   </td>
                   <td>卡号：</td>
                   <td>
                      <select disabled="disabled" class="form-control input-sm">
-                         <option selected = "selected">${obj.bankcardnum}</option>
+                         <option selected = "selected">${obj.receive.bankcardnum}</option>
                      </select>
                   </td>
                   <td>合计：</td>
@@ -71,7 +71,7 @@
               </table>
               <label class="labelShuidan">水单</label>
               <div class="bankSlipImg SDdiv"  align="center">
-              	<img width="400" height="300" alt="" src="${obj.receipturl }">
+              	<img width="400" height="300" alt="" src="${obj.receipturl.receiptUrl }">
               </div>
           </div>
 	</div>
@@ -89,6 +89,14 @@
 	<script src="${base}/public/dist/js/app.min.js"></script>
 	<!-- 確認收款js -->
 	<script src="${base}/admin/receivePayment/inter/interReceive.js"></script>
-	
+	<!-- 防止订单重复提交 -->
+	<script type="text/javascript">
+		$(function(){
+			var recStatus = $("#innterRecSelect option:selected",window.parent.document).val();
+			if(recStatus==2){
+				$("#confirmRecClick").attr('disabled',true);
+			}
+		});
+	</script>
 </body>
 </html>

@@ -165,7 +165,11 @@ $("#confirmRecClick").click(function(){
 				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 				parent.layer.close(index);
 				parent.layer.msg("收款成功", "", 2000);
-				parent.interRecTable.ajax.reload();
+				parent.interRecTable.ajax.reload(
+						function(json){
+							autoHighLoad($('#interRecTable'));
+						}
+				);
 				$("#recIds").val("");
 			},
 			error: function () {
@@ -238,12 +242,16 @@ $(".paymentUl li").click(function(){
 			"interOrderStatus":bookId
 	};
 	interRecTable.settings()[0].ajax.data = param;
-	interRecTable.ajax.reload();
+	interRecTable.ajax.reload(
+			function(json){
+				autoHighLoad($('#interRecTable'));
+			}		
+	);
 });
 
 //回车搜索
-function payOnkeyEnter(){
+function recOnkeyEnter(){
 	 if(event.keyCode==13){
-		 $("#interPaySearchBtn").click();
+		 $("#interRecSearchBtn").click();
 	 }
 }

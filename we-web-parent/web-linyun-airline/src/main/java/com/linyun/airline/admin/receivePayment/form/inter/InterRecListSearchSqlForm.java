@@ -53,7 +53,7 @@ public class InterRecListSearchSqlForm extends DataTablesParamForm {
 			cnd.and("r.`status`", "=", orderStatus);
 		}
 		cnd.and("r.userid", "in", loginUserId);
-		cnd.and("r.orderstype", "=", OrderTypeEnum.FIT.intKey()); //散客
+		cnd.and("r.orderstype", "=", OrderTypeEnum.TEAM.intKey()); //团队（国际）
 		return cnd;
 	}
 

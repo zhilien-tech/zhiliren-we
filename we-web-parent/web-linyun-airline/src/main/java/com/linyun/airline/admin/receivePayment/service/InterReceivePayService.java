@@ -166,6 +166,64 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	}
 
 	/**
+	 * (确认收款页面)
+	 *
+	 * @param inlandPayIds
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object toConfirmRec(String id, HttpSession session) {
+		//当前登录用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long loginUserId = loginUser.getId();
+		Map<String, Object> map = new HashMap<String, Object>();
+		//收款信息
+		TReceiveEntity fetch = dbDao.fetch(TReceiveEntity.class, Long.valueOf(id));
+		List<TOrderReceiveEntity> query = dbDao.query(TOrderReceiveEntity.class, Cnd.where("receiveid", "=", id), null);
+		String ids = "";
+		for (TOrderReceiveEntity tOrderReceiveEntity : query) {
+			ids += tOrderReceiveEntity.getOrderid() + ",";
+		}
+		ids = ids.substring(0, ids.length() - 1);
+		String sqlString = sqlManager.get("receivePay_toRec_table_data");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("uo.id", "in", ids);
+		List<Record> orders = dbDao.query(sql, cnd, null);
+		//计算合计金额
+		Double sum = 0.0;
+		for (Record record : orders) {
+			if (!Util.isEmpty(record.get("incometotal"))) {
+				Double incometotal = (Double) record.get("incometotal");
+				sum += incometotal;
+			}
+		}
+		map.put("sum", sum);
+
+		//订单信息
+		map.put("orders", orders);
+		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
+		try {
+			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		//水单信息
+		List<TReceiveBillEntity> receipts = dbDao
+				.query(TReceiveBillEntity.class, Cnd.where("receiveid", "=", id), null);
+		//银行卡下拉
+		map.put("yhkSelect", yhkSelect);
+		//订单信息id
+		map.put("ids", ids);
+		map.put("id", id);
+		map.put("receive", fetch);
+		if (receipts.size() > 0) {
+			map.put("receipturl", receipts.get(0));
+		}
+		return map;
+
+	}
+
+	/**
 	 * (保存  确认收款)
 	 *
 	 * @param inlandPayIds
@@ -255,64 +313,6 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		listdata.remove("data");
 		listdata.put("data", data);
 		return listdata;
-	}
-
-	/**
-	 * (确认收款页面)
-	 *
-	 * @param inlandPayIds
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
-	 */
-	public Object toConfirmRec(String id, HttpSession session) {
-		//当前登录用户id
-		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
-		long loginUserId = loginUser.getId();
-		Map<String, Object> map = new HashMap<String, Object>();
-		//收款信息
-		TReceiveEntity fetch = dbDao.fetch(TReceiveEntity.class, Long.valueOf(id));
-		List<TOrderReceiveEntity> query = dbDao.query(TOrderReceiveEntity.class, Cnd.where("receiveid", "=", id), null);
-		String ids = "";
-		for (TOrderReceiveEntity tOrderReceiveEntity : query) {
-			ids += tOrderReceiveEntity.getOrderid() + ",";
-		}
-		ids = ids.substring(0, ids.length() - 1);
-		String sqlString = sqlManager.get("receivePay_toRec_table_data");
-		Sql sql = Sqls.create(sqlString);
-		Cnd cnd = Cnd.NEW();
-		cnd.and("uo.id", "in", ids);
-		List<Record> orders = dbDao.query(sql, cnd, null);
-		//计算合计金额
-		Double sum = 0.0;
-		for (Record record : orders) {
-			if (!Util.isEmpty(record.get("incometotal"))) {
-				Double incometotal = (Double) record.get("incometotal");
-				sum += incometotal;
-			}
-		}
-		map.put("sum", sum);
-
-		//订单信息
-		map.put("orders", orders);
-		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
-		try {
-			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		//水单信息
-		List<TReceiveBillEntity> receipts = dbDao
-				.query(TReceiveBillEntity.class, Cnd.where("receiveid", "=", id), null);
-		//银行卡下拉
-		map.put("yhkSelect", yhkSelect);
-		//订单信息id
-		map.put("ids", ids);
-		map.put("id", id);
-		map.put("receive", fetch);
-		if (receipts.size() > 0) {
-			map.put("receipturl", receipts.get(0));
-		}
-		return map;
-
 	}
 
 	/**

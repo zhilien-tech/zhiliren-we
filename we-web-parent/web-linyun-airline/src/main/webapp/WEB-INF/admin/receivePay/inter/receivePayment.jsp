@@ -60,10 +60,10 @@
 													</div>
 													<div class="col-md-3 textPadding">
 														<!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-														<input id="interRecInput" type="text" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+														<input id="interRecInput" type="text" onkeypress="recOnkeyEnter();"  class="form-control" placeholder="客户名称/订单号/联系人/PNR">
 													</div>
 													<div class="col-md-2">
-														<!-- 搜索 按钮 -->
+														<!-- 搜索 按钮 --> 
 														<button id="interRecSearchBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
 														<button id="interRecClearBtn" type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
 													</div>
@@ -200,6 +200,7 @@
 	<!-- 国际js -->
 	<script src="${base}/admin/receivePayment/inter/interPay.js"></script>
 	<script src="${base}/admin/receivePayment/inter/interReceive.js"></script>
+	<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
 	<script type="text/javascript">
 		$(function(){
 			$('.menu-ul:eq(1)').hide();//隐藏数据字典的二级菜单

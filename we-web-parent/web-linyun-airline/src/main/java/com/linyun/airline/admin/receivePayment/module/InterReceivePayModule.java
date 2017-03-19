@@ -56,8 +56,8 @@ public class InterReceivePayModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object confirmReceive(@Param("inlandRecId") String inlandRecId, HttpSession session) {
-		return interReceivePayService.toConfirmRec(inlandRecId, session);
+	public Object confirmReceive(@Param("interRecId") String interRecId, HttpSession session) {
+		return interReceivePayService.toConfirmRec(interRecId, session);
 	}
 
 	/**
