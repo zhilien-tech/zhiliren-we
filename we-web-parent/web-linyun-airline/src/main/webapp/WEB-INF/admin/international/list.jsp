@@ -26,7 +26,7 @@
                 <li><a href="#tab_1" onclick="loadDataTable(6)" data-toggle="tab">全款</a></li>
                 <li><a href="#tab_1" onclick="loadDataTable(7)" data-toggle="tab">尾款</a></li>
                 <li><a href="#tab_5" onclick="loadTicking()" data-toggle="tab">出票</a></li>
-                <li><a href="#tab_6" data-toggle="tab">收/付款</a></li>
+                <li><a href="#tab_6" data-toggle="tab" onclick="loadreceivedata();">收/付款</a></li>
                 <li><a href="#tab_7" data-toggle="tab" onclick="kaiInvoiceLoad();">发票</a></li>
                 <li><a href="#tab_1" onclick="loadDataTable(9)" data-toggle="tab">关闭</a></li>
                 <!-- <li class="orderLi"><button type="button" id="addOrder" class="btn btn-primary btn-sm right">添加订单</button></li> -->
@@ -112,23 +112,23 @@
                                 </form>
                               </div>
                               <div class="box-body">
-                              	<input type="hidden" id="checkedboxval" name="checkedboxval">
+                              	<input type="hidden" id="checkedboxval2" name="checkedboxval2" value="">
                                 <table id="drawerPayTable" class="table table-bordered table-hover">
                                   <thead>
                                   <tr>
-                                    <th class="checkTh"><input class="checkall" type="checkbox"></th>
-                                    <th>订单号</th>
-                                    <th>PNR</th>
-                                    <th>日期</th>
-                                    <th>航班号</th>
-                                    <th>航段</th>
-                                    <th>时间</th>
-                                    <th>销售单价</th>
-                                    <th>销售总价</th>
-                                    <th>数量</th>
-                                    <th>状态</th>
-                                    <th>联系人</th>
-                                    <th>电话</th>
+                                      <th class="checkTh"><input class="checkall2" type="checkbox"></th>
+                                   	  <th>序号</th>
+			                          <th>订单号</th>
+			                          <th>日期</th>
+			                          <th>航班号</th>
+			                          <th>航段</th>
+			                          <th>时间</th>
+			                          <th>人数</th>
+			                          <th>FOC</th>
+			                          <th>天数</th>
+			                          <th>状态</th>
+			                          <th>旅行社名称</th>
+			                          <th>联运要求</th>
                                   </tr>
                                   </thead>
                                   <tbody>
@@ -166,18 +166,18 @@
                                   <thead>
                                   <tr>
                                     <td class="FukuanCheckTh"><input class="checkall1" type="checkbox"></td>
-                                    <th>订单号</th>
-                                    <th>PNR</th>
-                                    <th>日期</th>
-                                    <th>航班号</th>
-                                    <th>航段</th>
-                                    <th>时间</th>
-                                    <th>成本单价</th>
-                                    <th>成本总价</th>
-                                    <th>数量</th>
-                                    <th>状态</th>
-                                    <th>联系人</th>
-                                    <th>电话</th>
+                                      <th>序号</th>
+			                          <th>订单号</th>
+			                          <th>日期</th>
+			                          <th>航班号</th>
+			                          <th>航段</th>
+			                          <th>时间</th>
+			                          <th>人数</th>
+			                          <th>FOC</th>
+			                          <th>天数</th>
+			                          <th>状态</th>
+			                          <th>旅行社名称</th>
+			                          <th>联运要求</th>
                                   </tr>
                                   </thead>
                                   <tbody>
@@ -280,18 +280,16 @@
                                 <table id="shouFuKuanPayTable" class="table table-bordered table-hover">
                                   <thead>
                                     <tr>
-                                      <th>订单号</th>
-                                      <th>PNR</th>
-                                      <th>航班号</th>
-                                      <th>航段</th>
-                                      <th>日期</th>
-                                      <th>时间</th>
-                                      <th>收款单位</th>
-                                      <th>单价</th>
-                                      <th>人数</th>
-                                      <th>状态</th>
-                                      <th>开票人</th>
-                                      <th>操作</th>
+	                                    <th>订单号</th>
+	                                    <th>出发日期</th>
+	                                    <th>人数</th>
+	                                    <th>销售金额</th>
+	                                    <th>总额</th>
+	                                    <th>客户名称</th>
+	                                    <th>开票人</th>
+	                                    <th>状态</th>
+	                                    <th>备注</th>
+	                                    <th>操作</th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -439,6 +437,9 @@
 <script src="${base}/admin/airline/planmake.js"></script>
 <script src="${base}/admin/airline/editplan.js"></script>
 <script src="${base}/admin/international/international.js"></script>
+<script src="${base}/admin/international/internationalticketing.js"></script>
+<script src="${base}/admin/international/internationalticketingpay.js"></script>
+<script src="${base}/admin/international/internationalpayreceive.js"></script>
 <script type="text/javascript"> 
 //添加订单 弹框
 	$('#addOrder').click(function(){
@@ -455,9 +456,7 @@
 	  
 	//他页面回调
 	  function successCallback(id){
-		  inlandCrossTable.ajax.reload(null,false);
-		  shouFuKuanPayTable.ajax.reload();
-		  shouFuKuanGatheringTable.ajax.reload();
+
 		  if(id == '1'){
 			  layer.alert("添加成功",{time: 2000, icon:1});
 		  }else if(id == '2'){

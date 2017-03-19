@@ -54,5 +54,7 @@ public class CommonConstants {
 
 	/**操作台id，不可随意更改，必须与数据库保持一致*/
 	public static final int DESKTOP_ID = 44;
+	/**操作台id，不可随意更改，必须与数据库保持一致*/
+	public static final int UPCOMPANY_ID = 43;
 
 }

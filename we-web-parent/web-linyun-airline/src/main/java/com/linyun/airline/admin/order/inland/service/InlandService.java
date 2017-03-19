@@ -51,6 +51,8 @@ import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
+import com.linyun.airline.common.enums.MessageTypeEnum;
+import com.linyun.airline.common.enums.OrderRemindEnum;
 import com.linyun.airline.common.enums.OrderStatusEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.ExcelReader;
@@ -105,6 +107,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	private static final String FILE_EXCEL_NAME = "客户需求游客模板.xlsx";
 
 	private static final int ENABLE = BankCardStatusEnum.ENABLE.intKey();
+
+	private static final int SEARCHMSG = MessageTypeEnum.SEARCHMSG.intKey();
+
 	@Inject
 	private EditPlanService editPlanService;
 	@Inject
@@ -283,6 +288,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		//准备航空公司下拉
 		result.put("aircom", dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", AIRCOMCODE), null));
 		result.put("orderstatusenum", EnumUtil.enum2(OrderStatusEnum.class));
+		result.put("orderRemindEnum", EnumUtil.enum2(OrderRemindEnum.class));
 		return result;
 
 	}
@@ -326,13 +332,21 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			}
 		}
 		//更新订单信息
-		dbDao.update(orderinfo);
+		int updateNum = dbDao.update(orderinfo);
+
 		//消息提醒
 		String remindTime = (String) fromJson.get("remindTime");
-		fromJson.put("remindDate", remindTime);
-		fromJson.put("customerInfoId", orderinfo.getUserid().toString());
-		int upOrderid = id;
-		searchViewService.addRemindMsg(fromJson, orderinfo.getOrdersnum(), "", upOrderid, orderType, session);
+		if (!Util.isEmpty(remindTime)) {
+			String remindType = (String) fromJson.get("remindType");
+			int upOrderid = id; //订单id
+			String ordersnum = orderinfo.getOrdersnum();//订单号
+			Map<String, Object> remindMap = new HashMap<String, Object>();
+			remindMap.put("remindDate", remindTime);
+			remindMap.put("remindType", remindType);
+			if (updateNum > 0) {
+				searchViewService.addRemindMsg(remindMap, ordersnum, "", upOrderid, orderType, session);
+			}
+		}
 
 		String logcontent = "";
 		for (OrderStatusEnum statusenum : OrderStatusEnum.values()) {
@@ -520,6 +534,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		result.put("querystatus", OrderStatusEnum.SEARCH.intKey());
 		//团队类型
 		result.put("passengertypeenum", EnumUtil.enum2(PassengerTypeEnum.class));
+		result.put("orderRemindEnum", EnumUtil.enum2(OrderRemindEnum.class));
 		//内陆跨海下拉
 		//币种下拉
 		List<DictInfoEntity> nlkhcode = new ArrayList<DictInfoEntity>();
@@ -560,13 +575,21 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		orderinfo.setOrdersstatus(orderType);
 		orderinfo.setLoginUserId(new Long(user.getId()).intValue());
 		//更新订单信息
-		dbDao.update(orderinfo);
+		int updateNum = dbDao.update(orderinfo);
 		//消息提醒
 		String remindTime = (String) fromJson.get("remindTime");
-		fromJson.put("remindDate", remindTime);
-		fromJson.put("customerInfoId", orderinfo.getUserid().toString());
-		int upOrderid = id;
-		searchViewService.addRemindMsg(fromJson, orderinfo.getOrdersnum(), "", upOrderid, orderType, session);
+		if (!Util.isEmpty(remindTime)) {
+			String remindType = (String) fromJson.get("remindType");
+			int upOrderid = id; //订单id
+			String ordersnum = orderinfo.getOrdersnum();//订单号
+			Map<String, Object> remindMap = new HashMap<String, Object>();
+			remindMap.put("remindDate", remindTime);
+			remindMap.put("remindType", remindType);
+			if (updateNum > 0) {
+				searchViewService.addRemindMsg(remindMap, ordersnum, "", upOrderid, orderType, session);
+			}
+		}
+
 		String logcontent = "";
 		for (OrderStatusEnum statusenum : OrderStatusEnum.values()) {
 			if (orderType == statusenum.intKey()) {
@@ -669,7 +692,6 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				airlineEntity.setPrice(price);
 				airlineEntity.setNeedid(Integer.valueOf(customneedid));
 				if (Util.isEmpty(airlineid)) {
-					//插入
 					dbDao.insert(airlineEntity);
 				} else {
 					//更新
@@ -1261,6 +1283,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		String ids = request.getParameter("ids");
 		String bankcardid = request.getParameter("bankcardid");
 		String bankcardname = request.getParameter("bankcardname");
@@ -1274,6 +1298,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		receiveEntity.setReceivedate(new Date());
 		receiveEntity.setUserid(new Long(user.getId()).intValue());
 		receiveEntity.setStatus(AccountReceiveEnum.RECEIVINGMONEY.intKey());
+		receiveEntity.setOrderstype(OrderTypeEnum.FIT.intKey());
+		receiveEntity.setCompanyid(new Long(company.getId()).intValue());
 		//客户名称还未填写
 		receiveEntity.setCustomename("");
 		if (!Util.isEmpty(sumincome)) {
@@ -1334,6 +1360,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		payEntity.setProposer(new Long(user.getId()).intValue());
 		payEntity.setApprover(approver);
 		payEntity.setCompanyId(new Long(company.getId()).intValue());
+		payEntity.setOrdertype(OrderTypeEnum.FIT.intKey());
 		TPayEntity insert = dbDao.insert(payEntity);
 		Iterable<String> split = Splitter.on(",").split(ids);
 		List<TPayPnrEntity> paypnrs = new ArrayList<TPayPnrEntity>();

@@ -40,7 +40,15 @@
 			</li>
 			<li>
 				<span>金额</span>
-				<span>${obj.detaillist.payMoney }</span>
+				
+				<c:if test="${obj.operation=='inlandNum'}">
+				
+					<span>${each.costpricesum }</span>
+				</c:if>
+				<c:if test="${obj.operation=='international'}">
+				
+					<span>${each.amount }</span>
+				</c:if>
 			</li>
 			<li>
 				<span>手续费</span>
@@ -68,7 +76,14 @@
   <input name="id" id="id" value="${obj.detaillist.id }" type="hidden">
   <input name="usingId" id="usingId" value="${obj.detaillist.usingId }" type="hidden">
   <input name="orderId" id="orderId" value="${obj.detaillist.orderId }" type="hidden">
-  <input name="status" id="status" value="${obj.detaillist.orderPnrStatus }" type="hidden">
+
+<c:if test="${obj.operation=='inlandNum'}">
+<input name="status" id="status" value="${obj.detaillist.orderPnrStatus }" type="hidden">
+</c:if>
+<c:if test="${obj.operation=='international'}">
+<input name="status" id="status" value="${obj.detaillist.paystatus }" type="hidden">
+</c:if>
+  
   <input name="operation" id="operation" value="${obj.operation}" type="hidden">
   <footer>
   	
@@ -115,6 +130,7 @@ function agree(temp) {
 	}, function(){
 		// 点击确定之后
 		var url = "${base}/admin/applyapproval/agree.html";
+		
 		$.ajax({
 			type : 'POST',
 			data : {
@@ -122,7 +138,8 @@ function agree(temp) {
 				usingId : $('#usingId').val(),
 				status:$('#status').val(),
 				temp:temp,
-				orderId:$("#orderId").val()
+				orderId:$("#orderId").val(),
+				operation:$("#operation").val()
 			},
 			dataType : 'json',
 			url : url,

@@ -46,14 +46,28 @@
 		<ul class="content-a-ul">
 			<li>
 				<span>${each.shortName }</span>
-				<span>${each.salespricesum }</span>
+				<c:if test="${obj.operation=='inlandNum'}">
+				
+					<span>${each.costpricesum }</span>
+				</c:if>
+				<c:if test="${obj.operation=='international'}">
+				
+					<span>${each.amount }</span>
+				</c:if>
 			</li>
 			<li>
 				<span>${each.ordersnum }</span>
 				<span>${each.purposeStr }</span>
 			</li>
 			<li>
-				<span>${each.PNR }</span>
+				<c:if test="${obj.operation=='inlandNum'}">
+				
+					<span>${each.PNR }</span>
+				</c:if>
+				<c:if test="${obj.operation=='international'}">
+				
+					<span></span>
+				</c:if>
 				<span>${each.userName }</span>
 			</li>
 			<%-- <li>
@@ -61,30 +75,37 @@
 				<span>${each.proposer }</span>
 			</li> --%>
 			<li>
-					<c:if test="${each.orderPnrStatus==1 }">
+					<c:if test="${each.orderPnrStatus==1||each.paystatus==1 }">
 						<span class="color1">
 							待审批
 						</span>
 						
 					</c:if>
-					<c:if test="${each.orderPnrStatus==2 }">
+					<c:if test="${each.orderPnrStatus==2 ||each.paystatus==2}">
 						<span class="color2">
 							同意
 						</span>
 					</c:if>
-					<c:if test="${each.orderPnrStatus==4 }">
+					<c:if test="${each.orderPnrStatus==4 ||each.paystatus==4}">
 						<span class="color1">
 							拒绝
 						</span>
 						
 					</c:if>
-					<c:if test="${each.orderPnrStatus==3 }">
+					<c:if test="${each.orderPnrStatus==3 ||each.paystatus==3}">
 						<span class="color2">
 							同意
 						</span>
 						
 					</c:if>
-				<span><fmt:formatDate value="${each.payDate }" pattern="yyyy:MM:dd HH:mm:ss"/></span>
+					<c:if test="${obj.operation=='inlandNum'}">
+						<span><fmt:formatDate value="${each.optime }" pattern="yyyy:MM:dd HH:mm:ss"/></span>
+						
+					</c:if>
+					<c:if test="${obj.operation=='international'}">
+						<span><fmt:formatDate value="${each.orderstime }" pattern="yyyy:MM:dd HH:mm:ss"/></span>
+					</c:if>
+				
 			</li>
 		</ul>
 	</a>

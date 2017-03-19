@@ -53,3 +53,4 @@
 .skrqInput{width: 30%;float: left;margin-right: 6px;}
 .aicon{top:2px;left: 10px;}
 .ricon{top:-12px;left: 7px;}
+#shouInvoiceTable tbody tr td{line-height:35px;}

@@ -2,14 +2,12 @@
 .addIcon {top: 15px;margin-right: 11.8%;}
 #tab_2,#tab_3 {padding: 0 10px;}
 #tab_1 .box-header{position: relative;top: 5px;}
-
-
-
-
-
-
-
-
-
-
-
+tbody.tableTbody tr td ul {padding-left: 0 !important;margin-bottom: 0px !important;}
+#internationalTable .tableTbody tr td:nth-child(1){line-height:60px;}
+#internationalTable .tableTbody tr td:nth-child(2){line-height:60px;}
+#internationalTable .tableTbody tr td:nth-child(7){line-height:60px;}
+#internationalTable .tableTbody tr td:nth-child(8){line-height:60px;}
+#internationalTable .tableTbody tr td:nth-child(9){line-height:60px;}
+#internationalTable .tableTbody tr td:nth-child(10){line-height:60px;}
+#internationalTable .tableTbody tr td:nth-child(11){line-height:60px;}
+#internationalTable .tableTbody tr td:nth-child(12){line-height:60px;}

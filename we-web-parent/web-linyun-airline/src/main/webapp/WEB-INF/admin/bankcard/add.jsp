@@ -36,7 +36,7 @@
 			            <div class="form-group form-group1">
 		                  <label class="col-sm-1 text-right padding">卡号：</label>
 		                  <div class="col-sm-2 padding">
-		                    <input name="cardNum" type="text" class="form-control input-sm" id="cardNum" onkeyup="this.value=this.value.replace(/\D/g,'').replace(/....(?!$)/g,'$& ')" />
+		                    <input name="cardNum" type="text" class="form-control input-sm" id="cardNum" onkeyup="this.value=this.value.replace(/\D/g,'').replace(/....(?!$)/g,'$& ')" maxlength="23"/>
 		                  </div>
 		                </div>
 		                <div class="form-group form-group1">
