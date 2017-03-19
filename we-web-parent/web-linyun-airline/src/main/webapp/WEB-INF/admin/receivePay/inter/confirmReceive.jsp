@@ -18,7 +18,7 @@
             <h4>收款</h4>
           </div>
           <div class="modal-body" style="height: 483px;overflow-y:auto; ">
-              <table id="receivablesTable" class="table table-bordered table-hover">
+              <table id="interConfirmRecTable" class="table table-bordered table-hover">
                 <thead>
                   <tr>
                     <th>订单号</th>
@@ -30,7 +30,7 @@
                     <th>金额</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="interConfirmRecTbody">
                   <input id="recIds" name="recIds" type="hidden" value="${obj.inlandRecId }"><!-- 水单url -->
 					<c:forEach var="one" items="${obj.orders}">
                 		<tr>

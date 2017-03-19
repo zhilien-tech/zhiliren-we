@@ -79,7 +79,6 @@
 	<script type="text/javascript">
 		var BASE_PATH = '${base}';
 	</script>
-	<script src="${base }/admin/order/ordercommon.js"></script>
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
 	<!-- SlimScroll -->
@@ -89,7 +88,9 @@
 	<!-- AdminLTE App -->
 	<script src="${base}/public/dist/js/app.min.js"></script>
 	<!-- 確認收款js -->
-	<script src="${base}/admin/receivePayment/inlandReceive.js"></script>
+	<script src="${base}/admin/receivePayment/inland/inlandReceive.js"></script>
+	<!-- 收付款Common js -->
+	<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
 	<!-- 防止订单重复提交 -->
 	<script type="text/javascript">
 		$(function(){

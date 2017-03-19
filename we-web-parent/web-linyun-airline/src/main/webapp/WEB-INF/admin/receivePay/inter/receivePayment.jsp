@@ -46,32 +46,32 @@
 											<form role="form" class="form-horizontal">
 												<div class="form-group row marginBott5 cf">
 													<div class="col-md-1 textPadding">
-														<select id="internationalRecSelect" class="form-control TimeInput">
+														<select id="interRecSelect" class="form-control TimeInput">
 															<option value=0>收款中</option>
 															<option value=1>已收款</option>
 														</select>
 													</div>
 													<div class="col-md-1 textPadding">
-														<input id="internationalRecBeginDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'internationalRecEndDate\')}'})" class="form-control TimeInput" placeholder="2017-02-20">
+														<input id="interRecBeginDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'interRecEndDate\')}'})" class="form-control TimeInput" placeholder="2017-02-20">
 													</div>
 													<label class="col-md-1 labelClas">至</label>
 													<div class="col-md-1 textPadding">
-														<input id="internationalRecEndDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'internationalRecBeginDate\')}'})" class="form-control TimeInput" placeholder="2017-02-22">
+														<input id="interRecEndDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'interRecBeginDate\')}'})" class="form-control TimeInput" placeholder="2017-02-22">
 													</div>
 													<div class="col-md-3 textPadding">
 														<!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-														<input id="internationalRecInput" type="text" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+														<input id="interRecInput" type="text" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
 													</div>
 													<div class="col-md-2">
 														<!-- 搜索 按钮 -->
-														<button id="internationalRecSearchBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
-														<button id="internationalRecClearBtn" type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
+														<button id="interRecSearchBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
+														<button id="interRecClearBtn" type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
 													</div>
 												</div>
 											</form>
 										</div>
 										<div class="box-body">
-											<table id="internationalRecTable" class="table table-bordered table-hover">
+											<table id="interRecTable" class="table table-bordered table-hover">
 												<thead>
 													<tr>
 														<th>订单号</th>
@@ -99,40 +99,40 @@
 											<form role="form" class="form-horizontal">
 												<div class="form-group row marginBott5 cf">
 													<div class="col-md-1 textPadding">
-														<select id="internationalPaySelect" class="form-control TimeInput">
+														<select id="interPaySelect" class="form-control TimeInput">
 															<option value=1>付款中</option>
 															<option value=2>已付款</option>
 														</select>
 													</div>
 													<div class="col-md-1 textPadding">
-														<input id="internationalPayBeginDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'internationalPayEndDate\')}'})" class="form-control TimeInput" placeholder="2017-02-20">
+														<input id="interPayBeginDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'interPayEndDate\')}'})" class="form-control TimeInput" placeholder="2017-02-20">
 													</div>
 													<label class="col-md-1 labelClas">至</label>
 													<div class="col-md-1 textPadding">
-														<input id="internationalPayEndDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'internationalPayBeginDate\')}'})" class="form-control TimeInput" placeholder="2017-02-22">
+														<input id="interPayEndDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'interPayBeginDate\')}'})" class="form-control TimeInput" placeholder="2017-02-22">
 													</div>
 													<div class="col-md-3 textPadding">
 														<!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-														<input id="internationalPayInput" type="text" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+														<input id="interPayInput" type="text" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
 													</div>
 													<div class="col-md-4">
 														<!-- 搜索 按钮 -->
-														<button id="internationalPaySearchBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
-														<button id="internationalPayClearBtn" type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
-														<button id="internationalPayCancelBtn" type="button" class="btn btn-primary btn-sm ckBtn">取消所有勾选</button>
+														<button id="interPaySearchBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
+														<button id="interPayClearBtn" type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
+														<button id="interPayCancelBtn" type="button" class="btn btn-primary btn-sm ckBtn">取消所有勾选</button>
 													</div>
 													<div class="col-md-1">
 														<!-- 付款 按钮 -->
-														<button id="internationalPayClick" type="button" class="btn btn-primary btn-sm fuKuanBtn1">付款</button>
+														<button id="interPayClick" type="button" class="btn btn-primary btn-sm fuKuanBtn1">付款</button>
 													</div>
 												</div>
 											</form>
 										</div>
 										<div class="box-body">
 											<!-- ---------------------------------- 付款中   列表 ------------------------------------- -->
-											<table id="internationalPayTable" class="table table-bordered table-hover">
+											<table id="interPayTable" class="table table-bordered table-hover">
 												<input id="checkedboxPayValue" name="checkedboxPayValue" type="hidden">
-												<thead id="internationalPayThead">
+												<thead id="interPayThead">
 													<tr>
 														<td class="checkTh"><input type="checkbox" class="checkBoxPayAll"></td>
 														<th>订单号</th>
@@ -146,13 +146,13 @@
 														<th>开票人</th>
 													</tr>
 												</thead>
-												<tbody id="internationalPayTbody">
+												<tbody id="interPayTbody">
 	
 												</tbody>
 											</table>
 											<!-- ---------------------------------- 已收款    列表 ------------------------------------ -->
-											<table id="internationalPayEdTable" style="display: none" class="table table-bordered table-hover">
-												<thead id="internationalPayEdThead">
+											<table id="interPayEdTable" style="display: none" class="table table-bordered table-hover">
+												<thead id="interPayEdThead">
 													<tr>
 														<th>订单号</th>
 														<th>PNR</th>
@@ -168,7 +168,7 @@
 														<th>操作</th>
 													</tr>
 												</thead>
-												<tbody id="internationalPayEdTbody">
+												<tbody id="interPayEdTbody">
 												</tbody>
 											</table>
 	
