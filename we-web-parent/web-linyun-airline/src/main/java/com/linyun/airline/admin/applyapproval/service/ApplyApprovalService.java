@@ -19,10 +19,10 @@ import org.nutz.dao.sql.Sql;
 
 import com.linyun.airline.admin.order.inland.enums.PassengerTypeEnum;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
+import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.ApprovalResultEnum;
 import com.linyun.airline.entities.ApplyApprovalEntity;
-import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TPnrInfoEntity;
 import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.common.util.Util;
@@ -45,17 +45,17 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		String sqlString = sqlManager.get("applyapproval_list");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
-		TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
-		Long companyId = company.getId();
+		/*TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
+		Long companyId = company.getId();*/
 		//国际
-		cnd.and("companyId", "=", companyId);
+		cnd.and("companyId", "=", CommonConstants.UPCOMPANY_ID);
 		cnd.and("orderstype", "=", PassengerTypeEnum.TEAM.intKey());
 		cnd.and("orderPnrStatus", "=", AccountPayEnum.APPROVAL.intKey());
 		sql.setCondition(cnd);
 		List<Record> list = dbDao.query(sql, cnd, null);
 		int internationalNum = list.size();
 		Cnd cnd1 = Cnd.NEW();
-		cnd1.and("companyId", "=", companyId);
+		cnd1.and("companyId", "=", CommonConstants.UPCOMPANY_ID);
 		cnd1.and("orderstype", "=", PassengerTypeEnum.FIT.intKey());
 		cnd1.and("orderPnrStatus", "=", AccountPayEnum.APPROVAL.intKey());
 		List<Record> list1 = dbDao.query(sql, cnd1, null);
@@ -82,10 +82,10 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		Cnd cnd = Cnd.NEW();
 		//国际
 		cnd.and("orderstype", "=", orderType);
-		TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
-		Long companyId = company.getId();
+		/*TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
+		Long companyId = company.getId();*/
 		//国际
-		cnd.and("companyId", "=", companyId);
+		cnd.and("companyId", "=", CommonConstants.UPCOMPANY_ID);
 		Map<String, Object> re = MapUtil.map();
 		if (!Util.isEmpty(date)) {
 			cnd.and("date(optime)", "=", date);
@@ -117,10 +117,10 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		/*Long companyId = 23l;*/
-		TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
-		Long companyId = company.getId();
+		/*TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
+		Long companyId = company.getId();*/
 		//国际
-		cnd.and("companyId", "=", companyId);
+		cnd.and("companyId", "=", CommonConstants.UPCOMPANY_ID);
 		/*cnd.and("orderstype", "=", orderType);*/
 		/*cnd.and("(orderPnrStatus", "=", AccountPayEnum.APPROVAL.intKey());*/
 

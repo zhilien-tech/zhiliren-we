@@ -40,7 +40,7 @@
 			</li>
 			<li>
 				<span>金额</span>
-				<span>${obj.detaillist.payMoney }</span>
+				<span>${obj.detaillist.costpricesum }</span>
 			</li>
 			<li>
 				<span>手续费</span>
