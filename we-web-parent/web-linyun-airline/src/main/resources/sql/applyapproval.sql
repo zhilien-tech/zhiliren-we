@@ -1,6 +1,6 @@
 /*applyapproval_list*/
 select * from(
-select uo.orderstype,ti.id,ti.PNR,ti.orderPnrStatus,ti.salespricesum,uo.ordersnum,ti.optime,p.purpose,
+select uo.orderstype,ti.id,ti.PNR,ti.orderPnrStatus,ti.costpricesum,uo.ordersnum,ti.optime,p.purpose,
 
 p.proposer,ci.shortName,p.fundType,p.payFees,p.payCurrency,p.isInvioce,p.approveTime,p.approveResult,p.id as 'usingId',uo.id as 'orderId',
 u.userName,(select dictName from dict_info where id=p.payCurrency) as 'currencyStr',(select dictName from dict_info where id=p.purpose) as 'purposeStr',
