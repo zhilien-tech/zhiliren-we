@@ -218,6 +218,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 
 		@SuppressWarnings("unchecked")
 		List<Record> list = (List<Record>) sql.getResult();
+		String orderIds = "";
 
 		Map<String, Object> map = MapUtil.map();
 		map.put("data", list);
