@@ -30,12 +30,12 @@ function initRecDataTable() {
 		            		return result;
 		            	}
 		            },
-		            {"data": "leavedate", "bSortable": false,
+		            {"data": "leavesdate,", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
 		            		$.each(row.orders, function(name, value) {
-		            			if(value && value.leavetdate != undefined ){
-		            				var date = value.leavetdate;
+		            			if(value && value.leavesdate != undefined ){
+		            				var date = value.leavesdate;
 		            				var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
 		            				var week = ['MO','TU','WE','TH','FR','SA','SU'];
 		            				var ldate = new Date(date);
@@ -236,6 +236,7 @@ $("#interRecSearchBtn").on('click', function () {
 $(".paymentUl li").click(function(){
 	$(this).addClass("btnStyle").siblings().removeClass('btnStyle');
 	var bookId = $(this).attr("id");
+	alert(bookId);
 	var orderStatus = $("#interRecSelect").val();
 	var param = {
 			"orderStatus":orderStatus,

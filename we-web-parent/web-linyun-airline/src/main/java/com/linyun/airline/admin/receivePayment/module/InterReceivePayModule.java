@@ -93,7 +93,7 @@ public class InterReceivePayModule {
 	 *會計付款中   分页
 	 */
 	@At
-	public Object inlandPayList(@Param("..") final InterPayListSearchSqlForm form, HttpSession session) {
+	public Object interPayList(@Param("..") final InterPayListSearchSqlForm form, HttpSession session) {
 		return interReceivePayService.listPayData(form, session);
 	}
 
@@ -102,7 +102,7 @@ public class InterReceivePayModule {
 	 *會計   已付款分页
 	 */
 	@At
-	public Object inlandPayEdList(@Param("..") final InterPayEdListSearchSqlForm form, HttpSession session) {
+	public Object interPayEdList(@Param("..") final InterPayEdListSearchSqlForm form, HttpSession session) {
 		return interReceivePayService.listPayEdData(form, session);
 	}
 
@@ -111,7 +111,7 @@ public class InterReceivePayModule {
 	 * 确认付款
 	 */
 	@At
-	public Object saveInlandPay(@Param("..") final TSaveInterPayAddFrom form, HttpSession session) {
+	public Object saveInterPay(@Param("..") final TSaveInterPayAddFrom form, HttpSession session) {
 		return interReceivePayService.saveInterPay(form, session);
 	}
 
@@ -130,7 +130,7 @@ public class InterReceivePayModule {
 	 * 确认收款
 	 */
 	@At
-	public Object saveInlandRec(@Param("id") final String recId, HttpSession session) {
+	public Object saveInterRec(@Param("id") final String recId, HttpSession session) {
 		return interReceivePayService.saveInlandRec(recId, session);
 	}
 

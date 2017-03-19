@@ -53,6 +53,7 @@ import com.linyun.airline.common.enums.ApprovalResultEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
 import com.linyun.airline.common.enums.MessageRemindEnum;
 import com.linyun.airline.common.enums.MessageWealthStatusEnum;
+import com.linyun.airline.common.enums.SearchOrderStatusEnum;
 import com.linyun.airline.common.enums.UserJobStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TBankCardEntity;
@@ -87,6 +88,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	//款项已付
 	private static final int PAYEDMSGTYPE = MessageWealthStatusEnum.PAYED.intKey();
 
+	//订单状态
+	private static final int FIRBOOKING = SearchOrderStatusEnum.FIRBOOKING.intKey(); //一订
+
 	@Inject
 	private UploadService qiniuUploadService;
 
@@ -112,7 +116,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		Date leaveBeginDate = form.getLeaveBeginDate();
 		Date leaveEndDate = form.getLeaveEndDate();
 
-		String sqlStr = sqlManager.get("get_receive_list_by_condition");
+		String sqlStr = sqlManager.get("receivePay_inter_rec_order_list");
 		Sql sql = Sqls.create(sqlStr);
 		Cnd cnd = Cnd.NEW();
 		SqlExpressionGroup group = new SqlExpressionGroup();
@@ -123,11 +127,11 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		}
 		//出发日期
 		if (!Util.isEmpty(leaveBeginDate)) {
-			cnd.and("oc.leavetdate", ">=", leaveBeginDate);
+			cnd.and("pi.leavesdate", ">=", leaveBeginDate);
 		}
 		// 返回日期
 		if (!Util.isEmpty(leaveEndDate)) {
-			cnd.and("oc.leavetdate", "<=", leaveEndDate);
+			cnd.and("pi.leavesdate", "<=", leaveEndDate);
 		}
 		List<Record> orders = dbDao.query(sql, cnd, null);
 
@@ -260,10 +264,10 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 * 付款中列表
 	 */
 	public Map<String, Object> listPayData(final InterPayListSearchSqlForm sqlParamForm, HttpSession session) {
-		//当前公司下的用户
-		String userIds = userInComp(session);
-		sqlParamForm.setLoginUserId(userIds);
-		sqlParamForm.setOrderPnrStatus(APPROVALPAYING);
+		//当前公司id
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		sqlParamForm.setCompanyId(companyId);
 		checkNull(sqlParamForm, "sqlParamForm不能为空");
 		Sql sql = sqlParamForm.sql(sqlManager);
 
@@ -424,8 +428,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	public Object saveInterPay(TSaveInterPayAddFrom form, HttpSession session) {
 		List<TPayEntity> payList = new ArrayList<TPayEntity>();
 		//当前公司id
-		TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
-		Long companyId = company.getId();
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
 		//当前登陆用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long loginUserId = loginUser.getId();

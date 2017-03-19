@@ -2,7 +2,7 @@
  * InlandPayListSearchForm.java
  * com.linyun.airline.admin.receivePayment.form
  * Copyright (c) 2017, 北京科技有限公司版权所有.
-*/
+ */
 
 package com.linyun.airline.admin.receivePayment.form.inter;
 
@@ -53,13 +53,14 @@ public class InterRecListSearchSqlForm extends DataTablesParamForm {
 			cnd.and("r.`status`", "=", orderStatus);
 		}
 		cnd.and("r.userid", "in", loginUserId);
+
 		cnd.and("r.orderstype", "=", OrderTypeEnum.TEAM.intKey()); //团队（国际）
 		return cnd;
 	}
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {
-		String sqlString = sqlManager.get("receivePay_rec_invioce_list");
+		String sqlString = sqlManager.get("receivePay_inter_rec_invioce_list");
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;
