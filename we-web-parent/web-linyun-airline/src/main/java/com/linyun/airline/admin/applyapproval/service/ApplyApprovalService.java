@@ -85,7 +85,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 			cnd.and("companyId", "=", CommonConstants.UPCOMPANY_ID);
 			Map<String, Object> re = MapUtil.map();
 			if (!Util.isEmpty(date)) {
-				cnd.and("date(optime)", "=", date);
+				cnd.and("date(orderstime)", "=", date);
 				re.put("date", date);
 			}
 			/*cnd.and("(orderPnrStatus", "=", AccountPayEnum.APPROVAL.intKey());
