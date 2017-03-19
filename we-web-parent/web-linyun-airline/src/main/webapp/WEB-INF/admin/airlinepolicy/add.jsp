@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="${base }/public/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="${base }/public/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/AdminLTE.css">
+	<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
   <link rel="stylesheet" href="${base }/public/dist/css/policyManage.css"><!--本页面Style-->
 </head>
 <body>
@@ -21,15 +22,18 @@
             <h4 class="invoiceH4">添加</h4>
     </div>
       <div class="modal-body" style="height:140px;overflow-y: auto;">
-      <form id="addFileInfoForm">
+      <form id="addFileInfoForm" method="post">
       
         <table class="policyTable">
           <tr>
             <td><label>航空公司：</label></td>
             <td>
-              <select id="findAirlineCompany" name="findAirlineCompany"  onchange="setSelectedAirlineCompanyId()" class="form-control select2 inpImpWid" multiple="multiple" ></select>
-              <input id="airlineCompanyId" type="hidden" class="form-control input-sm" placeholder="请输入要添加的航空公司名称" name="airlineCompanyId">
-              <span>*</span>
+            	<div class="form-group">
+            	
+		              <select id="findAirlineCompany" name="findAirlineCompany"  onchange="setSelectedAirlineCompanyId()" class="form-control select2 inpImpWid" multiple="multiple" ></select>
+		              <input id="airlineCompanyId" type="hidden" class="form-control input-sm" placeholder="请输入要添加的航空公司名称" name="airlineCompanyId">
+		              <span>*</span>
+            	</div>
             </td>
             <!-- 设置已选中的项 -->
 			<script type="text/javascript">
@@ -40,20 +44,25 @@
 			</script>
             <td><label>类型：</label></td>
             <td>
-              <select class="form-control input-sm" name="type">
-              	<option value="">请选择</option>
-                <option>团</option>
-                <option>散</option>
-              </select>
+            	<div class="form-group">
+	              <select class="form-control input-sm" name="type" id="type" >
+	              	<option value="">请选择</option>
+	                <option>团</option>
+	                <option>散</option>
+	              </select>
+              </div>
               <span>*</span>
             </td>
           </tr>
           <tr>
             <td><label>地区：</label></td>
             <td>
-              <select id="findArea" name="findArea"  onchange="setSelectedfindArea()" class="form-control select2 inpImpWid" multiple="multiple" ></select>
-              <input type="hidden" class="form-control input-sm" placeholder="请输入要添加地区名称" name="areaId" id="areaId">
-              <span>*</span>
+            	<div class="form-group">
+            	
+	              <select id="findArea" name="findArea"  onchange="setSelectedfindArea()" class="form-control select2 inpImpWid" multiple="multiple" ></select>
+	              <input type="hidden" class="form-control input-sm" placeholder="请输入要添加地区名称" name="areaId" id="areaId">
+	              <span>*</span>
+            	</div>
             </td>
             <!-- 设置已选中的项 -->
 			<script type="text/javascript">
@@ -83,7 +92,7 @@
 	<script src="${base }/public/plugins/fastclick/fastclick.js"></script><!-- FastClick -->
 	<script src="${base }/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
 	<script src="${base}/common/js/layer/layer.js"></script>
-	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
+	<script src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
 	<!-- Select2 -->
 	<script src="${base}/public/plugins/select2/select2.full.min.js"></script>
 	<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
@@ -93,10 +102,14 @@
 	</script>
 	<script type="text/javascript">
 	
-	/* //验证输入内容不能为空
-	 $(document).ready(function(){
-		formValidator();
+	 //验证输入内容不能为空
+ 	  $(document).ready(function (){
+		
+		uploadFile();
+		formValidator();  
+		
 	}); 
+	/* $(formValidator()); */
 	//表单验证
 	function formValidator(){
 		$('#addFileInfoForm').bootstrapValidator({
@@ -107,23 +120,30 @@
 	            validating: 'glyphicon glyphicon-refresh'
 	        },
 	        fields: {
-	        	findAirlineCompany: {
+	           type: {
 	            	validators: {
 	                    notEmpty: {
-	                        message: '航空公司名称不能为空!'
+	                        message: '类型不能为空!'
 	                    }
 	                }
 	            },
-	            type: {
+	            findAirlineCompany: {
 	            	validators: {
 	                    notEmpty: {
-	                        message: '航空公司名称不能为空!'
+	                        message: '航空公司不能为空!'
+	                    }
+	                }
+	            },
+	            findArea: {
+	            	validators: {
+	                    notEmpty: {
+	                        message: '地区不能为空!'
 	                    }
 	                }
 	            }
 	         } 
 		});
-	} */
+	}
 	
 	
 	
@@ -133,7 +153,7 @@
 			parent.layer.close(index);
 		}
 	
-		 $(uploadFile()); 
+		
 		//文件上传
 		 function uploadFile(){
 			$.fileupload1 = $('#file').uploadify({
@@ -218,9 +238,9 @@
 		//执行添加的操作、
 		
 		function addFileInfo(){
-			/*  $('#addFileInfoForm').bootstrapValidator('validate');
+			  $('#addFileInfoForm').bootstrapValidator('validate');
 				var bootstrapValidator = $("#addFileInfoForm").data('bootstrapValidator');
-				if(bootstrapValidator.isValid()){ */
+				if(bootstrapValidator.isValid()){ 
 					$.ajax({
 						cache : false,
 						type : "POST",
@@ -233,7 +253,7 @@
 							layer.load(1, {
 								 shade: [0.1,'#fff'] //0.1透明度的白色背景
 							});
-							/* formValidator(); */
+							formValidator(); 
 							 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						    parent.layer.close(index);
 						    window.parent.successCallback('1'); 
@@ -241,7 +261,7 @@
 						    
 						}
 					});
-				/* } */
+				 } 
 		}
 		
 		//select2(航空公司)
