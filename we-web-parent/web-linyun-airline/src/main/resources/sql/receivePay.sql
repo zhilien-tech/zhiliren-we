@@ -280,3 +280,57 @@ FROM
 INNER JOIN t_order_receive ore ON ore.orderid=uo.id 
 INNER JOIN t_receive r ON r.id=ore.receiveid
 $condition
+
+/*receivePay_inter_rec_invioce_list*/
+SELECT
+	r.*, 
+	ii.id invoiceid,
+	u.userName
+FROM
+	t_receive r
+LEFT JOIN t_invoice_info ii ON r.id = ii.receiveid
+INNER JOIN t_user u ON r.userid = u.id
+$condition
+
+/*receivePay_inter_rec_order_list*/
+SELECT
+	r.id,
+	uo.ordersnum,
+	fi.personcount,
+	fi.incometotal,
+	orec.orderstatus,
+	orec.receivestatus,
+	ci.shortName,
+	ci.linkMan,
+	pi.leavesdate
+FROM
+	t_up_order uo
+LEFT JOIN t_finance_info fi ON uo.id = fi.orderid
+INNER JOIN t_order_receive orec ON uo.id = orec.orderid
+INNER JOIN t_receive r ON orec.receiveid = r.id
+INNER JOIN t_plan_info pi ON uo.id = pi.ordernumber
+LEFT JOIN t_customer_info ci ON ci.id = uo.userid
+WHERE
+	r.id IN (
+		SELECT
+			r.id
+		FROM
+			t_up_order uo
+		LEFT JOIN t_finance_info fi ON uo.id = fi.orderid
+		INNER JOIN t_order_receive orec ON uo.id = orec.orderid
+		INNER JOIN t_receive r ON orec.receiveid = r.id
+		INNER JOIN t_plan_info pi ON uo.id = pi.ordernumber
+		LEFT JOIN t_customer_info ci ON ci.id = uo.userid
+		$condition
+	)
+
+/*receivePay_inter_pay_invioce_list*/
+SELECT
+	uo.id,
+	uo.ordersnum,
+	po.orderpaystatus
+FROM
+	t_up_order uo
+INNER JOIN t_pay_order po ON po.orderid = uo.id
+INNER JOIN t_pay p ON p.id = po.payid
+$condition

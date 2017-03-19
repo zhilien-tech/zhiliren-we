@@ -28,15 +28,23 @@ public class TPayOrderEntity {
 	@Id(auto = true)
 	private Integer id;
 
-	@Column 
-	@Comment("payid")
+	@Column
+	@Comment("付款id")
 	private Integer payid;
 
 	@Column
-	@Comment("orderid")
+	@Comment("订单id")
 	private Integer orderid;
 
 	@Column
-	@Comment("orderpaystatus")
-	private Integer orderpaystatus;
+	@Comment("订单状态")
+	private Integer orderstatus;
+
+	@Column
+	@Comment("付款状态")
+	private Integer paystauts;
+
+	@Column
+	@Comment("付款时间")
+	private Integer payDate;
 }

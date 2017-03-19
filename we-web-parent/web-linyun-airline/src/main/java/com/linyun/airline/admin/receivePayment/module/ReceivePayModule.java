@@ -23,10 +23,10 @@ import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.upload.UploadAdaptor;
 
-import com.linyun.airline.admin.receivePayment.form.InlandPayEdListSearchSqlForm;
-import com.linyun.airline.admin.receivePayment.form.InlandPayListSearchSqlForm;
-import com.linyun.airline.admin.receivePayment.form.InlandRecListSearchSqlForm;
-import com.linyun.airline.admin.receivePayment.form.TSaveInlandPayAddFrom;
+import com.linyun.airline.admin.receivePayment.form.inland.InlandPayEdListSearchSqlForm;
+import com.linyun.airline.admin.receivePayment.form.inland.InlandPayListSearchSqlForm;
+import com.linyun.airline.admin.receivePayment.form.inland.InlandRecListSearchSqlForm;
+import com.linyun.airline.admin.receivePayment.form.inland.TSaveInlandPayAddFrom;
 import com.linyun.airline.admin.receivePayment.service.ReceivePayService;
 
 @IocBean
