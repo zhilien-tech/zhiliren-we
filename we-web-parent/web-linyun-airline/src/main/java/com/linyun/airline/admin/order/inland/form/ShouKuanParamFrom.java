@@ -14,6 +14,7 @@ import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
+import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
@@ -30,9 +31,13 @@ public class ShouKuanParamFrom extends DataTablesParamForm {
 
 	private Integer userid;
 
+	private Integer companyid;
+
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		cnd.and("tr.userid", "=", userid);
+		cnd.and("tr.companyid", "=", companyid);
+		cnd.and("tr.orderstype", "=", OrderTypeEnum.FIT.intKey());
 		//cnd.and("tr.status", "=", AccountReceiveEnum.RECEIVEDONEY.intKey());
 		return cnd;
 	}

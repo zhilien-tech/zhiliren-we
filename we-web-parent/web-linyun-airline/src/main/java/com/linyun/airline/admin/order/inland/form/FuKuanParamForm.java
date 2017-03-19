@@ -14,6 +14,7 @@ import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
@@ -30,9 +31,14 @@ public class FuKuanParamForm extends DataTablesParamForm {
 
 	private Integer userid;
 
+	private Integer companyid;
+
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
-		cnd.and("tpi.userid", "=", userid);
+		//cnd.and("tpi.userid", "=", userid);
+		if (!Util.isEmpty(companyid)) {
+			cnd.and("tuo.companyid", "=", companyid);
+		}
 		//cnd.and("tpi.orderPnrStatus", "=", AccountPayEnum.APPROVALPAYED.intKey());
 		return cnd;
 	}

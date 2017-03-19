@@ -853,7 +853,7 @@
   }
   //打开添加pnr页面
   	$(document).on("click",".PNRbtn",function(){
-  		var xuqiuDiv = $(this).parent().parent().parent().parent().parent();
+  		var xuqiuDiv = $(this).parent().parent().parent().parent().parent().parent();
 		  var needid = xuqiuDiv.find('[name=customneedid]').val();
 		  //先保存需求信息
 		 if(!needid){

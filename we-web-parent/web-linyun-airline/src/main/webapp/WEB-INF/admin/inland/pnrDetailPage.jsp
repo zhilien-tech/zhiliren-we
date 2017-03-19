@@ -79,6 +79,7 @@
 	<script src="${base }/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
     <script src="${base}/common/js/layer/layer.js"></script>
   <script type="text/javascript">
+
 //关闭窗口
   function closewindow(){
 		var index = parent.parent.layer.getFrameIndex(window.name); //获取窗口索引

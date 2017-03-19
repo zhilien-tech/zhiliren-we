@@ -6,6 +6,8 @@
 
 package com.linyun.airline.admin.receivePayment.entities;
 
+import java.util.Date;
+
 import lombok.Data;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -46,5 +48,5 @@ public class TPayOrderEntity {
 
 	@Column
 	@Comment("付款时间")
-	private Integer payDate;
+	private Date payDate;
 }
