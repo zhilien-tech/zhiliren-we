@@ -187,9 +187,12 @@
 	<script src="${base }/admin/order/ordercommon.js"></script>
 	<!-- My97DatePicker -->
 	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
+	<!-- 收付款Common js -->
+	<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
 	<!-- 内陆跨海js -->
-	<script src="${base}/admin/receivePayment/inlandPay.js"></script>
-	<script src="${base}/admin/receivePayment/inlandReceive.js"></script>
+	<script src="${base}/admin/receivePayment/inland/inlandPay.js"></script>
+	<script src="${base}/admin/receivePayment/inland/inlandReceive.js"></script>
+	
 	<!-- 国际js -->
 	<%-- <script src="${base}/admin/receivePayment/internationPayment.js"></script> --%>
 	<script type="text/javascript">

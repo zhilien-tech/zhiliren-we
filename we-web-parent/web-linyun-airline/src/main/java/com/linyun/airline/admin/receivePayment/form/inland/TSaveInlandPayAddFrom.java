@@ -1,4 +1,4 @@
-package com.linyun.airline.admin.receivePayment.form;
+package com.linyun.airline.admin.receivePayment.form.inland;
 
 import java.io.Serializable;
 import java.util.Date;

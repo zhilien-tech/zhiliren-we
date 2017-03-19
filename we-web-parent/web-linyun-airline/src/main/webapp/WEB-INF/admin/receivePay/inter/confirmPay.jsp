@@ -22,7 +22,7 @@
 		</div>
 		<div class="modal-body" style="height: 600px; overflow-y: auto;">
 			
-			<table id="receivablesTable" class="table table-bordered table-hover">
+			<table id="interConfirmPayTable" class="table table-bordered table-hover">
 				<thead>
 					<tr>
 						<th>订单号</th>
@@ -35,7 +35,7 @@
 						<th>金额</th>
 					</tr>
 				</thead>
-				<tbody id="internationalConfirmPayTbody">
+				<tbody id="interConfirmPayTbody">
 					<input id="payIds" name="payIds" type="hidden" value="${obj.ids }"><!-- 水单url -->
 					<c:forEach var="one" items="${obj.orders}">
                 		<tr>
@@ -154,7 +154,7 @@
 	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
 	
 	<!-- 確認付款js -->
-	<script src="${base}/admin/receivePayment/interConfirmPay.js"></script>
+	<script src="${base}/admin/receivePayment/inter/interConfirmPay.js"></script>
 	
 	<script type="text/javascript">
 	//文件上传

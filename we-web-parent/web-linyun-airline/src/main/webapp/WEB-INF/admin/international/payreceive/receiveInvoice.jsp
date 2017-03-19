@@ -25,7 +25,6 @@
                   <thead>
                     <tr>
                       <th>订单号</th>
-                      <th>PNR</th>
                       <th>开票日期</th>
                       <th>客户团号</th>
                       <th>客户公司名称</th>
@@ -35,18 +34,17 @@
                     </tr>
                   </thead>
                   <tbody>
-                  	<c:forEach var="one" items="${obj.pnrinfo }">
-                  		<tr>
-                  			<td>${one.ordersnum }</td>
-                  			<td>${one.pnr }</td>
-                  			<td>${one.billingdate }</td>
-                  			<td>${one.cusgroupnum }</td>
-                  			<td>${one.customename }</td>
-                  			<td>${one.linkMan }</td>
-                  			<td>${one.issuer }</td>
-                  			<td>${one.salespricesum }</td>
-                  		</tr>
-                  	</c:forEach>
+                    <c:forEach var="one" items="${obj.orders }">
+                		<tr>
+                			<td>${one.ordersnum }</td>
+                			<td>${one.billingdate }</td>
+                			<td>${one.cusgroupnum }</td>
+                			<td>${one.shortName }</td>
+                			<td>${one.linkMan }</td>
+                			<td>${one.issuer }</td>
+                			<td>${one.incometotal }</td>
+                		</tr>
+                	</c:forEach>
                   </tbody>
          </table>
          <table border="0" class="selectTable">
@@ -55,14 +53,9 @@
                     <td>
                       <select class="form-control input-sm">
                           <c:forEach var="one" items="${obj.yhkSelect }">
-                          	<c:choose>
-                          		<c:when test="${obj.companybank.bankComp eq one.id }">
+                          		<c:if test="${obj.companybank.bankComp eq one.id }">
 		                        	 <option value="${one.id }" selected="selected">${one.dictName }</option>
-                          		</c:when>
-                          		<c:otherwise>
-	                        	 <option value="${one.id }">${one.dictName }</option>
-                          		</c:otherwise>
-                          	</c:choose>
+                          		</c:if>
                           </c:forEach>
                       </select>
                     </td>
@@ -98,8 +91,8 @@
                   <td>发票日期：</td>
                   <td><input id="invoicedate" name="invoicedate" type="text" onFocus="WdatePicker()" class="form-control input-sm"></td>
                   <td><!-- 开票人： --></td>
-                  <td>
-                     <<!-- select id="billuserid" name="billuserid" class="form-control input-sm">
+                   <td>
+                     <!-- <select id="billuserid" name="billuserid" class="form-control input-sm">
                         <option value="1">林俊杰</option>
                         <option value="2">王力宏</option>
                      </select> -->
@@ -210,7 +203,7 @@
    function saveInvoiceInfo(){
 	   var formdata = {};
 	   var id = $('#id').val();
-	   formdata.pnrid = id;
+	   formdata.payid = id;
 	   var invoiceitem = $('#invoiceitem').val();
 	   formdata.invoiceitem = invoiceitem;
 	   var invoicedate = $('#invoicedate').val();
@@ -244,7 +237,7 @@
 	   $.ajax({ 
 			type: 'POST', 
 			data: {data:JSON.stringify(formdata)}, 
-			url: '${base}/admin/inland/saveInvoiceInfo.html',
+			url: '${base}/admin/international/payreceive/saveInvoiceInfo.html',
            success: function (data) { 
            	closewindow();
            	window.parent.successCallback('5');
