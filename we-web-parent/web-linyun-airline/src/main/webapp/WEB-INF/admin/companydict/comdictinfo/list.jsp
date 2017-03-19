@@ -18,15 +18,13 @@
 			<section class="content">
 				<div class="row row-top">
 					<div class="col-xs-12">
-						<div class="box" style="padding-top:10px;">
+						<div class="box" style="padding:10px;">
 								<div class="col-md-2">
 									<!--状态名称 搜索框-->
-									<div class="col-sm-12 padding">
 										<select id="statusId" name="status" class="form-control input-sm">
 											<option value="1">启用中</option>
                                    			<option value="2">已删除</option>
 										</select>
-									</div>
 								</div>
 								<div class="col-md-3 dictInfoSousuo" style="float:left;">
 									<!--字典类别名称 搜索下拉框-->
