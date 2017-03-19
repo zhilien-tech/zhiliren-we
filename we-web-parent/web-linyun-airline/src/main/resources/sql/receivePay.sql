@@ -247,7 +247,7 @@ SELECT
 	fi.incometotal
 FROM
 	t_up_order uo
-INNER JOIN t_customer_info ci ON uo.userid = ci.id
+LEFT JOIN t_customer_info ci ON uo.userid = ci.id
 LEFT JOIN t_finance_info fi ON uo.id = fi.orderid
 $condition
 
@@ -302,7 +302,8 @@ SELECT
 	orec.receivestatus,
 	ci.shortName,
 	ci.linkMan,
-	pi.leavesdate
+	pi.leavesdate,
+	pi.peoplecount
 FROM
 	t_up_order uo
 LEFT JOIN t_finance_info fi ON uo.id = fi.orderid
@@ -328,7 +329,7 @@ WHERE
 SELECT
 	uo.id,
 	uo.ordersnum,
-	po.orderpaystatus
+	po.orderstatus
 FROM
 	t_up_order uo
 INNER JOIN t_pay_order po ON po.orderid = uo.id
