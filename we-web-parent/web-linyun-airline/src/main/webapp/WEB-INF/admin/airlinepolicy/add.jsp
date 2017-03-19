@@ -21,7 +21,7 @@
             <h4 class="invoiceH4">添加</h4>
     </div>
       <div class="modal-body" style="height:140px;overflow-y: auto;">
-      <form id="addFileInfo">
+      <form id="addFileInfoForm">
       
         <table class="policyTable">
           <tr>
@@ -88,10 +88,46 @@
 	<!-- Select2 -->
 	<script src="${base}/public/plugins/select2/select2.full.min.js"></script>
 	<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
+	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 		<script type="text/javascript">
 		var BASE_PATH = '${base}';
 	</script>
 	<script type="text/javascript">
+	
+	/* //验证输入内容不能为空
+	 $(document).ready(function(){
+		formValidator();
+	}); 
+	//表单验证
+	function formValidator(){
+		$('#addFileInfoForm').bootstrapValidator({
+			message: '验证不通过!',
+	        feedbackIcons: {
+	            valid: 'glyphicon glyphicon-ok',
+	            invalid: 'glyphicon glyphicon-remove',
+	            validating: 'glyphicon glyphicon-refresh'
+	        },
+	        fields: {
+	        	findAirlineCompany: {
+	            	validators: {
+	                    notEmpty: {
+	                        message: '航空公司名称不能为空!'
+	                    }
+	                }
+	            },
+	            type: {
+	            	validators: {
+	                    notEmpty: {
+	                        message: '航空公司名称不能为空!'
+	                    }
+	                }
+	            }
+	         } 
+		});
+	} */
+	
+	
+	
 		//点击取消
 		function closewindow(){
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
@@ -183,26 +219,30 @@
 		//执行添加的操作、
 		
 		function addFileInfo(){
-			$.ajax({
-				cache : false,
-				type : "POST",
-				url : '${base}/admin/airlinepolicy/add.html',
-				data : $('#addFileInfo').serialize(),// 你的formid
-				error : function(request) {
-					layer.msg('添加失败!');
-				},
-				success : function(data) {
-					layer.load(1, {
-						 shade: [0.1,'#fff'] //0.1透明度的白色背景
+			/*  $('#addFileInfoForm').bootstrapValidator('validate');
+				var bootstrapValidator = $("#addFileInfoForm").data('bootstrapValidator');
+				if(bootstrapValidator.isValid()){ */
+					$.ajax({
+						cache : false,
+						type : "POST",
+						url : '${base}/admin/airlinepolicy/add.html',
+						data : $('#addFileInfoForm').serialize(),// 你的formid
+						error : function(request) {
+							layer.msg('添加失败!');
+						},
+						success : function(data) {
+							layer.load(1, {
+								 shade: [0.1,'#fff'] //0.1透明度的白色背景
+							});
+							/* formValidator(); */
+							 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+						    parent.layer.close(index);
+						    window.parent.successCallback('1'); 
+							
+						    
+						}
 					});
-					
-					 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-				    parent.layer.close(index);
-				    window.parent.successCallback('1'); 
-					
-				    
-				}
-			});
+				/* } */
 		}
 		
 		//select2(航空公司)
@@ -269,7 +309,6 @@
 			maximumSelectionLength : 1, //设置最多可以选择多少项
 			tags : false, //设置必须存在的选项 才能选中
 		});
-		
 		
 	</script>
 </body>

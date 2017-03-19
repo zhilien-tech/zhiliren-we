@@ -237,6 +237,13 @@
 	                    }
 	                }
 	            },
+	            invoiceStatus: {
+	            	validators: {
+	                    notEmpty: {
+	                        message: '发票状态不能为空!'
+	                    }
+	                }
+	            },
 	            purpose: {
 	            	validators: {
 	                    notEmpty: {
