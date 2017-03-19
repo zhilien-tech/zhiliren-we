@@ -368,13 +368,13 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 * @param inlandPayIds
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object toConfirmPay(String inlandPnrIds) {
+	public Object toConfirmPay(String orderIds) {
 		Map<String, Object> map = new HashMap<String, Object>();
 
-		Sql sql = Sqls.create(sqlManager.get("receivePay_pay_Ids"));
+		Sql sql = Sqls.create(sqlManager.get("receivePay_inter_pay_order_ids"));
 		/*String inlandPayIdStr = inlandPayIds.substring(0, inlandPayIds.length() - 1);*/
 		Cnd cnd = Cnd.NEW();
-		cnd.and("pi.id", "in", inlandPnrIds);
+		cnd.and("uo.id", "in", orderIds);
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		String payIds = "";
 		if (!Util.isEmpty(orders)) {
@@ -457,7 +457,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			e.printStackTrace();
 		}
 		map.put("fkytList", fkytList);
-		map.put("ids", inlandPnrIds);
+		map.put("ids", orderIds);
 
 		return map;
 	}

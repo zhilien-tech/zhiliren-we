@@ -377,3 +377,24 @@ WHERE
 		LEFT JOIN t_customer_info ci ON ci.id = uo.userid
 		$condition
 	)
+	
+/*receivePay_inter_pay_order_ids*/
+SELECT
+	uo.id,
+	uo.ordersnum,
+	pi.pnr,
+	fi.cusgroupnum,
+	ci.shortName,
+	fi.billingdate,
+	prr.actualnumber,
+	ci. NAME customename,
+	ci.linkMan,
+	fi. ISSUER,
+	fi.incometotal
+FROM
+	t_up_order uo
+LEFT JOIN t_customer_info ci ON uo.userid = ci.id
+LEFT JOIN t_finance_info fi ON uo.id = fi.orderid
+LEFT JOIN t_pnr_info pi ON pi.orderid = uo.id
+LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
+$condition

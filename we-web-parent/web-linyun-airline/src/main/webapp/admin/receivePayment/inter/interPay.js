@@ -410,10 +410,9 @@ function destroyDatetable(obj){
 }
 
 
-//内陆跨海 付款 弹框
+//付款 弹框
 $('#interPayClick').click(function(){
 	var ids = $('#checkedboxPayValue').val();
-	alert(ids);
 	$('#checkedboxPayValue').val("");
 	var length = $(".checkBoxPayChild:checked").length;
 	if(!ids){
@@ -426,7 +425,7 @@ $('#interPayClick').click(function(){
 			closeBtn:false,//默认 右上角关闭按钮 是否显示
 			shadeClose:true,
 			area: ['850px', '650px'],
-			content: ['confirmPay.html?interPayIds='+ ids,'no'],
+			content: ['confirmPay.html?orderIds='+ ids,'no'],
 		});
 
 	}
