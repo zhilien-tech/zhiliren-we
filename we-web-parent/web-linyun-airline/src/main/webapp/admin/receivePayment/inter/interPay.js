@@ -18,7 +18,7 @@ function initPayDataTable(){
 			}
 		},
 		"columns": [
-		            {"data": "pid", "bSortable": false,
+		            {"data": "id", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var result = '';
 		            		var hiddenValue = $('#checkedboxPayValue').val();
@@ -37,38 +37,61 @@ function initPayDataTable(){
 		            		return result;
 		            	}
 		            },
-		            {"data": "ordernum", "bSortable": false},
-		            {"data": "pnrnum", "bSortable": false},
-		            {"data": "leavedate", "bSortable": false,
+		            {"data": "ordersnum", "bSortable": false},
+		            {"data": "pnrnum", "bSortable": false,
+		            	render:function(data, type, row, meta) {
+		            		var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.pnr!=undefined){
+		            				result += '<li style="list-style:none;">'+value.pnr+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
+		            	}	
+		            },
+		            {"data": "leavesdate", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
 		            		var week = ['MO','TU','WE','TH','FR','SA','SU'];
-		            		var ldate = new Date(data);
-		            		var result = "";
-		            		if(ldate != undefined){
-		            			result = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
-		            		}
-		            		
+		            		var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.leavesdate!=undefined){
+		            				var formatDate = "";
+		            				var ldate = new Date(value.leavesdate);
+		            				if(ldate != undefined){
+		            					formatDate = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
+				            		}
+		            				result += '<li style="list-style:none;">'+formatDate+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
 		            		return result;
 		            	}
 		            },
-		            {"data": "bookcount", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var bookcount = row.bookcount;
-		            		if(null == bookcount || ""== bookcount){
-		            			return "";
-		            		}
-		            		return bookcount;
-		            	}
-		            },
 		            {"data": "peoplecount", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var peoplecount = row.peoplecount;
-		            		if(null == peoplecount || ""== peoplecount){
-		            			return "";
-		            		}
-		            		return peoplecount;
+		            	render:function(data, type, row, meta) {
+		            		var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.peoplecount!=undefined){
+		            				result += '<li style="list-style:none;">'+value.peoplecount+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
 		            	}
+		            },
+		            {"data": "actualnumber", "bSortable": false,
+		            	render:function(data, type, row, meta) {
+		            		var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.actualnumber!=undefined){
+		            				result += '<li style="list-style:none;">'+value.actualnumber+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
+		            	}	
 		            },
 		            {"data": "saleprice", "bSortable": false,
 		            	render: function(data, type, row, meta) {
@@ -79,34 +102,43 @@ function initPayDataTable(){
 		            		return saleprice;
 		            	}
 		            },
-		            {"data": "saleprice", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var saleprice = row.saleprice;
-		            		if(null == saleprice || ""== saleprice || undefined==saleprice){
-		            			return "";
-		            		}
-		            		return saleprice;
+		            {"data": "currentpay", "bSortable": false,
+		            	render:function(data, type, row, meta) {
+		            		var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.currentpay!=undefined){
+		            				result += '<li style="list-style:none;">'+value.currentpay+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
 		            	}
 		            },
-		            {"data": "currency", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var currency = row.currency;
-		            		if(null == currency || ""== currency){
-		            			return "";
-		            		}
-		            		return currency;
+		            {"data": "paycurrency", "bSortable": false,
+		            	render:function(data, type, row, meta) {
+		            		var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.paycurrency!=undefined){
+		            				result += '<li style="list-style:none;">'+value.paycurrency+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
 		            	}
 		            },
 		            {"data": "shortname", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var shortname = row.shortname;
-		            		if(null == shortname || ""== shortname){
-		            			return "";
-		            		}
-		            		return shortname;
+		            	render:function(data, type, row, meta) {
+		            		var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.shortname!=undefined){
+		            				result += '<li style="list-style:none;">'+value.shortname+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
 		            	}
 		            },
-		            {"data": "orderpnrstatus", "bSortable": false,
+		            {"data": "orderstatus", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var s = '';
 		            		if(data == '2'){
@@ -118,8 +150,18 @@ function initPayDataTable(){
 		            		return s;
 		            	}
 		            },
-		            {"data": "drawer", "bSortable": false}
-		            
+		            {"data": "issuer", "bSortable": false,
+			            render:function(data, type, row, meta) {
+		            		var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.issuer!=undefined){
+		            				result += '<li style="list-style:none;">'+value.issuer+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
+		            	}
+		            }
 		            ],
 		            "infoCallback": function (settings, start, end, max, total, pre) {
 		            	var length = $(".checkBoxPayChild:checked").length;
@@ -371,6 +413,7 @@ function destroyDatetable(obj){
 //内陆跨海 付款 弹框
 $('#interPayClick').click(function(){
 	var ids = $('#checkedboxPayValue').val();
+	alert(ids);
 	$('#checkedboxPayValue').val("");
 	var length = $(".checkBoxPayChild:checked").length;
 	if(!ids){

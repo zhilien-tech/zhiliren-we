@@ -65,7 +65,6 @@ import com.linyun.airline.entities.TReceiveEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.DateTimeUtil;
-import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.base.page.OffsetPager;
 import com.uxuexi.core.web.base.service.BaseService;
@@ -263,30 +262,74 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	/**
 	 * 付款中列表
 	 */
-	public Map<String, Object> listPayData(final InterPayListSearchSqlForm sqlParamForm, HttpSession session) {
+	public Map<String, Object> listPayData(final InterPayListSearchSqlForm form, HttpSession session) {
+
+		//检索条件
+		String name = form.getName();
+		Date leaveBeginDate = form.getLeaveBeginDate();
+		Date leaveEndDate = form.getLeaveEndDate();
+
 		//当前公司id
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
-		sqlParamForm.setCompanyId(companyId);
-		checkNull(sqlParamForm, "sqlParamForm不能为空");
-		Sql sql = sqlParamForm.sql(sqlManager);
-
-		Pager pager = new OffsetPager(sqlParamForm.getStart(), sqlParamForm.getLength());
+		form.setCompanyId(companyId);
+		checkNull(form, "sqlParamForm不能为空");
+		Sql sql = form.sql(sqlManager);
+		Pager pager = new OffsetPager(form.getStart(), form.getLength());
 		pager.setRecordCount((int) Daos.queryCount(nutDao, sql.toString()));
-
 		sql.setPager(pager);
 		sql.setCallback(Sqls.callback.records());
 		nutDao.execute(sql);
-
 		@SuppressWarnings("unchecked")
-		List<Record> list = (List<Record>) sql.getResult();
+		List<Record> payList = (List<Record>) sql.getResult();
 
-		Map<String, Object> map = MapUtil.map();
-		map.put("data", list);
-		map.put("draw", sqlParamForm.getDraw());
-		map.put("recordsTotal", pager.getPageSize());
-		map.put("recordsFiltered", pager.getRecordCount());
-		return map;
+		Map<String, Object> listdata = this.listPage4Datatables(form);
+
+		//查询订单
+		String sqlStr = sqlManager.get("receivePay_inter_pay_order_list");
+		Sql conSql = Sqls.create(sqlStr);
+		Cnd cnd = Cnd.NEW();
+		SqlExpressionGroup group = new SqlExpressionGroup();
+		group.and("ci.shortName", "LIKE", "%" + name + "%").or("uo.ordersnum", "LIKE", "%" + name + "%")
+				.or("ci.linkMan", "LIKE", "%" + name + "%").or("pi.PNR", "LIKE", "%" + name + "%");
+		if (!Util.isEmpty(name)) {
+			cnd.and(group);
+		}
+		//出发日期
+		if (!Util.isEmpty(leaveBeginDate)) {
+			cnd.and("tpi.leavesdate", ">=", leaveBeginDate);
+		}
+		// 返回日期
+		if (!Util.isEmpty(leaveEndDate)) {
+			cnd.and("tpi.leavesdate", "<=", leaveEndDate);
+		}
+		List<Record> orders = dbDao.query(conSql, cnd, null);
+
+		for (Record record : payList) {
+			String payId = record.getString("id");
+			List<Record> orderList = new ArrayList<Record>();
+			for (Record r : orders) {
+				String orderId = r.getString("id");
+				if (Util.eq(payId, orderId)) {
+					orderList.add(r);
+				}
+			}
+			if (!Util.isEmpty(orderList)) {
+				record.put("orders", orderList);
+			}
+		}
+		List<Record> ordersBC = new ArrayList<Record>();
+		for (Record r : payList) {
+			String oStr = r.getString("orders");
+			if (!Util.isEmpty(oStr)) {
+				ordersBC.add(r);
+			}
+		}
+
+		listdata.remove("data");
+		listdata.put("data", ordersBC);
+		listdata.put("recordsFiltered", ordersBC.size());
+		return listdata;
 	}
 
 	/**
