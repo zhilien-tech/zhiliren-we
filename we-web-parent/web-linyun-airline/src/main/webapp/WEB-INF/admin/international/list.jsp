@@ -393,18 +393,17 @@
                                 <table id="shouInvoiceTable" class="table table-bordered table-hover">
                                   <thead>
                                     <tr>
-                                      <th>订单号</th>
-                                      <th>PNR</th>
-                                      <th>人数</th>
-                                      <th>发票数</th>
-                                      <th>总金额</th>
-                                      <th>收发票日期</th>
-                                      <th>发票开具项目</th>
-                                      <th>收款单位</th>
-                                      <th>开票人</th>
-                                      <th>状态</th>
-                                      <th>备注</th>
-                                      <th>操作</th>
+	                                    <th>订单号</th>
+	                                    <th>发票号</th>
+	                                    <th>发票金额</th>
+	                                    <th>总额</th>
+	                                    <th>开发票日期</th>
+	                                    <th>发票开具项目</th>
+	                                    <th>付款单位</th>
+	                                    <th>开票人</th>
+	                                    <th>状态</th>
+	                                    <th>备注</th>
+	                                    <th>操作</th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -440,6 +439,7 @@
 <script src="${base}/admin/international/internationalticketing.js"></script>
 <script src="${base}/admin/international/internationalticketingpay.js"></script>
 <script src="${base}/admin/international/internationalpayreceive.js"></script>
+<script src="${base}/admin/international/internationalinvoice.js"></script>
 <script type="text/javascript"> 
 //添加订单 弹框
 	$('#addOrder').click(function(){

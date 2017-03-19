@@ -61,4 +61,31 @@ public class InterPayReceiveModule {
 		return interPayReceiveService.openInvoice(request);
 	}
 
+	/**
+	 * 保存开发票信息
+	 */
+	@At
+	@POST
+	public Object saveOpenInvoiceInfo(HttpServletRequest request) {
+		return interPayReceiveService.saveOpenInvoiceInfo(request);
+	}
+
+	/**
+	 * 打开收发票页面
+	 */
+	@At
+	@Ok("jsp")
+	public Object receiveInvoice(HttpServletRequest request) {
+		return interPayReceiveService.receiveInvoice(request);
+	}
+
+	/**
+	 * 保存收发票信息
+	 */
+	@At
+	@POST
+	public Object saveInvoiceInfo(HttpServletRequest request) {
+		return interPayReceiveService.saveInvoiceInfo(request);
+	}
+
 }

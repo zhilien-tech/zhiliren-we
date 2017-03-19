@@ -305,8 +305,8 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			//订单信息
 			List<Record> orders = dbDao.query(sql, cnd, null);
 			record.put("orders", orders);
-			record.put("username", dbDao.fetch(TUserEntity.class, Long.valueOf(record.getInt("billuserid")))
-					.getUserName());
+			/*record.put("username", dbDao.fetch(TUserEntity.class, Long.valueOf(record.getInt("billuserid")))
+					.getUserName());*/
 		}
 		List<Record> listdataNew = new ArrayList<Record>();
 		for (Record record : listdata) {
