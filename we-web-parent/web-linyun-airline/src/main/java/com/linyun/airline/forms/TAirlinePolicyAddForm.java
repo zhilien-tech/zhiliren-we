@@ -40,4 +40,12 @@ public class TAirlinePolicyAddForm extends AddForm {
 	private Date createTime;
 	/**更新时间*/
 	private Date updateTime;
+	/**类型*/
+	private String type;
+	/**航空公司id*/
+	private long airlineCompanyId;
+	/**地区id*/
+	private long areaId;
+	/**公司id*/
+	private long companyId;
 }
