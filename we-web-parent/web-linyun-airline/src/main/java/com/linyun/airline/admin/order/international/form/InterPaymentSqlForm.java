@@ -13,6 +13,8 @@ import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
+import com.linyun.airline.common.enums.OrderTypeEnum;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
@@ -32,7 +34,7 @@ public class InterPaymentSqlForm extends DataTablesParamForm {
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {
-		String sqlString = sqlManager.get("get_international_list_sql");
+		String sqlString = sqlManager.get("get_international_pay_list");
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;
@@ -40,6 +42,10 @@ public class InterPaymentSqlForm extends DataTablesParamForm {
 
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
+		cnd.and("tp.ordertype", "=", OrderTypeEnum.TEAM.intKey());
+		if (!Util.isEmpty(companyid)) {
+			cnd.and("tp.companyid", "=", companyid);
+		}
 		return cnd;
 	}
 

@@ -6,15 +6,27 @@
 
 package com.linyun.airline.admin.order.international.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.nutz.dao.Cnd;
+import org.nutz.dao.Sqls;
+import org.nutz.dao.entity.Record;
+import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.international.form.InterPaymentSqlForm;
 import com.linyun.airline.admin.order.international.form.InterReceiptSqlForm;
+import com.linyun.airline.common.enums.AccountPayEnum;
+import com.linyun.airline.common.enums.AccountReceiveEnum;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TReceiveEntity;
+import com.linyun.airline.entities.TUserEntity;
+import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.web.base.service.BaseService;
 
 /**
@@ -35,8 +47,25 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 	 * @param request
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
+	@SuppressWarnings("unchecked")
 	public Object listShouFuKuanData(InterReceiptSqlForm sqlForm, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		sqlForm.setCompanyid(new Long(company.getId()).intValue());
 		Map<String, Object> listData = this.listPage4Datatables(sqlForm);
+		List<Record> data = (List<Record>) listData.get("data");
+		for (Record record : data) {
+			String sqlString = sqlManager.get("get_international_receive_list_order");
+			Sql sql = Sqls.create(sqlString);
+			Cnd cnd = Cnd.limit();
+			cnd.and("tr.id", "=", record.get("id"));
+			List<Record> orders = dbDao.query(sql, cnd, null);
+			record.put("orders", orders);
+			record.put("receiveenum", EnumUtil.enum2(AccountReceiveEnum.class));
+		}
 		return listData;
 	}
 
@@ -48,11 +77,26 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 	 * @param request
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
+	@SuppressWarnings("unchecked")
 	public Object listFuKuanData(InterPaymentSqlForm sqlForm, HttpServletRequest request) {
-
-		// TODO Auto-generated method stub
-		return null;
-
+		HttpSession session = request.getSession();
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		sqlForm.setCompanyid(new Long(company.getId()).intValue());
+		Map<String, Object> listData = this.listPage4Datatables(sqlForm);
+		List<Record> data = (List<Record>) listData.get("data");
+		for (Record record : data) {
+			String sqlString = sqlManager.get("get_international_pay_list_order");
+			Sql sql = Sqls.create(sqlString);
+			Cnd cnd = Cnd.limit();
+			cnd.and("tp.id", "=", record.get("id"));
+			List<Record> orders = dbDao.query(sql, cnd, null);
+			record.put("orders", orders);
+			record.put("receiveenum", EnumUtil.enum2(AccountPayEnum.class));
+		}
+		return listData;
 	}
 
 }

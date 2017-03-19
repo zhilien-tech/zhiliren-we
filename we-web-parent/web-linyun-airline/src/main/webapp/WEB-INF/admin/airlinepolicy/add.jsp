@@ -53,7 +53,6 @@
             <td>
               <select id="findArea" name="findArea"  onchange="setSelectedfindArea()" class="form-control select2 inpImpWid" multiple="multiple" ></select>
               <input type="hidden" class="form-control input-sm" placeholder="请输入要添加地区名称" name="areaId" id="areaId">
-             
               <span>*</span>
             </td>
             <!-- 设置已选中的项 -->
@@ -67,7 +66,7 @@
             <td>
               <!-- <button type="button" class="btn btn-primary btn-sm">上传文件</button> -->
               <button id="file" name="file" type="file" class="btn btn-primary btn-sm" >上传文件</button>
-              <span>*</span>
+              <span class="sp">*</span>
             </td>
           </tr>
           

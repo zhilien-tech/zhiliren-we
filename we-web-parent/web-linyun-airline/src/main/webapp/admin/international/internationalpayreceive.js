@@ -36,15 +36,22 @@ function initshouFuKuanGatheringTable() {
                   },
                   {"data": "leavedate", "bSortable": false,
                   	render:function(data, type, row, meta) {
-                  		return '';
+                  		var result = '<ul> ';
+                		$.each(row.orders, function(name, value) {
+                			if(value){
+                				result += '<li style="list-style:none;">'+value.leavesdate+'</li>';
+                			}
+                		});
+                		result += '</ul>';
+                		return result;
                   	}
                   },
                   {"data": "personcount", "bSortable": false,
                   	render:function(data, type, row, meta) {
                   		var result = '<ul>';
                   		$.each(row.orders, function(name, value) {
-                  			if(value && value.personcount != undefined){
-                  				result += '<li style="list-style:none;">'+value.personcount+'</li>';
+                  			if(value && value.peoplecount != undefined){
+                  				result += '<li style="list-style:none;">'+value.peoplecount+'</li>';
                   			}
                   		});
                   		result += '</ul>';
@@ -63,7 +70,17 @@ function initshouFuKuanGatheringTable() {
                   		return result;
                   	}
                   },
-                  {"data": "sum", "bSortable": false},
+                  {"data": "sum", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                    		var result = 0;
+                    		$.each(row.orders, function(name, value) {
+                    			if(value && value.incometotal != undefined){
+                    				result += value.incometotal;
+                    			}
+                    		});
+                    		return result;
+                    	}
+                  },
                   {"data": "customename", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                     		var result = '';
@@ -98,6 +115,10 @@ function initshouFuKuanGatheringTable() {
           }
       }],
   });
+}
+
+function loadreceivedata(){
+	shouFuKuanGatheringTable.ajax.reload();
 }
 //打开开发票页面
 function openInvoice(id,invoiceid){
@@ -145,89 +166,94 @@ function initshouFuKuanPayTable() {
         }
     },
     "columns": [
-                {"data": "ordersnum", "bSortable": false},
-                {"data": "pnr", "bSortable": false,
-                	render:function(data, type, row, meta) {
-                		var result = '';
-                		if(row.pnr && row.pnr != undefined){
-                			result = row.pnr;
-                		}
-                		return result;
-                	}
-                },
-                {"data": "personcount", "bSortable": false,
-                	render:function(data, type, row, meta) {
-                		var result = '<ul>';
+                {"data": "ordersnum", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                    		var result = '<ul> ';
+                    		$.each(row.orders, function(name, value) {
+                    			if(value){
+                    				result += '<li style="list-style:none;">'+value.ordersnum+'</li>';
+                    			}
+                    		});
+                    		result += '</ul>';
+                    		return result;
+                    	}
+                  },
+                  {"data": "leavedate", "bSortable": false,
+                  	render:function(data, type, row, meta) {
+                  		var result = '<ul> ';
                 		$.each(row.orders, function(name, value) {
-                			result += '<li style="list-style:none;">'+value.personcount+'</li>';
+                			if(value){
+                				result += '<li style="list-style:none;">'+value.leavesdate+'</li>';
+                			}
                 		});
                 		result += '</ul>';
                 		return result;
-                	}
-                },
-                {"data": "hangduan", "bSortable": false,
-                	render:function(data, type, row, meta) {
-                		var result = row.leavecity + '/' + row.leavecity;
-                		return result;
-                	}
-                },
-                {"data": "leavetdate", "bSortable": false,
-                	render:function(data, type, row, meta) {
-                		var result = '';
-                		if(row.leavetdate && row.leavetdate != undefined){
-                			result = row.leavetdate;
-                		}
-                		return result;
-                	}
-                },
-                {"data": "time", "bSortable": false,
-                	render:function(data, type, row, meta) {
-                		return '';
-                	}
-                },
-                {"data": "customename", "bSortable": false,
-                	render:function(data, type, row, meta) {
-                		var result = '';
-                		if(row.customename && row.customename != undefined){
-                			result = row.customename;
-                		}
-                		return result;
-                	}
-                },
-                {"data": "salesprice", "bSortable": false,
-                	render:function(data, type, row, meta) {
-                		var result = '';
-                		if(row.salesprice && row.salesprice != undefined){
-                			result = row.salesprice;
-                		}
-                		return result;
-                	}
-                },
-                {"data": "peoplecount", "bSortable": false,
-                	render:function(data, type, row, meta) {
-                  		var result = '';
-                  		if(row.peoplecount){
-                  			result = row.peoplecount;
-                  		}
+                  	}
+                  },
+                  {"data": "personcount", "bSortable": false,
+                  	render:function(data, type, row, meta) {
+                  		var result = '<ul>';
+                  		$.each(row.orders, function(name, value) {
+                  			if(value && value.peoplecount != undefined){
+                  				result += '<li style="list-style:none;">'+value.peoplecount+'</li>';
+                  			}
+                  		});
+                  		result += '</ul>';
                   		return result;
                   	}
-                },
-                {"data": "status", "bSortable": false,
-                	render:function(data, type, row, meta) {
+                  },
+                  {"data": "incometotal", "bSortable": false,
+                  	render:function(data, type, row, meta) {
+                  		var result = '<ul>';
+                  		$.each(row.orders, function(name, value) {
+                  			if(value && value.incometotal != undefined){
+                  				result += '<li style="list-style:none;">'+value.incometotal+'</li>';
+                  			}
+                  		});
+                  		result += '</ul>';
+                  		return result;
+                  	}
+                  },
+                  {"data": "sum", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                    		var result = 0;
+                    		$.each(row.orders, function(name, value) {
+                    			if(value && value.incometotal != undefined){
+                    				result += value.incometotal;
+                    			}
+                    		});
+                    		return result;
+                    	}
+                  },
+                  {"data": "customename", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                    		var result = '';
+                    		if(row.customename){
+                    			result = row.customename;
+                    		}
+                    		return result;
+                    	}
+                  },
+                  {"data": "username", "bSortable": false},
+                  {"data": "status", "bSortable": false,
+                	  render:function(data, type, row, meta) {
                   		var result = '';
-                  		$.each(row.paystatusenum, function(name, value) {
-                  			if(row.orderpnrstatus == name){
+                  		$.each(row.receiveenum, function(name, value) {
+                  			if(row.status == name){
                   				result = value;
                   			}
                   		});
                   		return result;
-                  	}
-                },
-                {"data": "username", "bSortable": false}
+                  	  }
+                  },{"data": "remark", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                		  return '';
+                	  }
+                  }
         ],
     columnDefs: [{
   	//   指定第一列，从0开始，0表示第一列，1表示第二列……
-        targets: 11,
+        targets: 9,
         render: function(data, type, row, meta) {
             return '<a style="cursor:pointer;" onclick="receiveInvoice('+row.id+','+row.invoiceid+');">收发票</a>'
         }

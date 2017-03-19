@@ -8,6 +8,26 @@ table.dataTable thead > tr > th {padding-right: 10px;}
 /*--------------end 表格排序图标 隐藏---------------*/
 .tdA a{margin-left: 5px;}
 .padRight{padding-right: 5px;}
+/*弹框 style*/
+.policyTable{ width: 80%;margin: 0 auto;}
+.policyTable tr td{padding-bottom: 10px;}
+.policyTable tr td label{float: right;position: relative;top: 3px;}
+.policyTable tr td:nth-child(1){width: 70px;}
+.policyTable tr td:nth-child(2){width:300px;}
+.policyTable tr td input{width: 95%;display: inline-block;}
+.policyTable tr td select{width: 85%;display: inline-block;}
+.policyTable tr td span{color: red;display: inline-block;}
+.policyTable tr td .select2-container .selection{width: 100% !important;}
+.select2-container {width: 97% !important;}
+span.uploadify-button-text{background: #3c8dbc;color: #fff !important;border-radius: 3px;padding: 0 15px;font-size: 12px;}
+#SWFUpload_0,#file-button,#file{width: 54px !important;}
+#file{float: left;}
+.policyTable tbody tr:nth-child(2) td:nth-child(4) sapn{}
+.sp {position: relative;top: 4px;left: 2px;}
+input.select2-search__field {color: #555;}
+.modal-body {padding-top: 0px;}
+
+/*end 弹框 style*/
 
 
 
