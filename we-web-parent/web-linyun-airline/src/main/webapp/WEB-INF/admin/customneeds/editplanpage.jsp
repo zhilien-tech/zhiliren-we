@@ -279,23 +279,37 @@
 					data: {planids:'${obj.planinfo.id}'}, 
 					url: '${base}/admin/customneeds/generateOrderNum.html',
 		            success: function (data) { 
+		            	$.ajax({ 
+		    				type: 'POST', 
+		    				data: $("#editPlanForm").serialize()+'&cityairlinejson='+cityairlinejson, 
+		    				url: '${base}/admin/customneeds/updateEditPlan.html',
+		    	            success: function (data) { 
+		    	            	closewindow();
+		    	            	window.parent.successCallback('2');
+		    	            },
+		    	            error: function (xhr) {
+		    	            	layer.alert("编辑失败","",3000);
+		    	            } 
+		    	        });
 		            },
 		            error: function (xhr) {
 		            } 
 		        });
+			}else{
+				$.ajax({ 
+    				type: 'POST', 
+    				data: $("#editPlanForm").serialize()+'&cityairlinejson='+cityairlinejson, 
+    				url: '${base}/admin/customneeds/updateEditPlan.html',
+    	            success: function (data) { 
+    	            	closewindow();
+    	            	window.parent.successCallback('2');
+    	            },
+    	            error: function (xhr) {
+    	            	layer.alert("编辑失败","",3000);
+    	            } 
+    	        });
 			}
-			$.ajax({ 
-				type: 'POST', 
-				data: $("#editPlanForm").serialize()+'&cityairlinejson='+cityairlinejson, 
-				url: '${base}/admin/customneeds/updateEditPlan.html',
-	            success: function (data) { 
-	            	closewindow();
-	            	window.parent.successCallback('2');
-	            },
-	            error: function (xhr) {
-	            	layer.alert("编辑失败","",3000);
-	            } 
-	        });
+			
 		}
 	}
 	//关闭编辑计划

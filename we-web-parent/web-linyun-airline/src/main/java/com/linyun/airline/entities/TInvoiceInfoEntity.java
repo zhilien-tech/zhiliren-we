@@ -70,7 +70,19 @@ public class TInvoiceInfoEntity implements Serializable {
 	private Date optime;
 
 	@Column
+	@Comment("状态")
+	private Integer status;
+
+	@Column
+	@Comment("公司id")
+	private Integer comId;
+
+	@Column
 	@Comment("付款id")
 	private Integer payid;
+
+	@Column
+	@Comment("状态类别（内陆跨海、国际）")
+	private Integer ordertype;
 
 }
