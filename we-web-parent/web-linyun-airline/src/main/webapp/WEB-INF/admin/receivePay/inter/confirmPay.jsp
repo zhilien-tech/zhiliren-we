@@ -154,7 +154,7 @@
 	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
 	
 	<!-- 確認付款js -->
-	<script src="${base}/admin/receivePayment/interConfirmPay.js"></script>
+	<script src="${base}/admin/receivePayment/inter/interConfirmPay.js"></script>
 	
 	<script type="text/javascript">
 	//文件上传

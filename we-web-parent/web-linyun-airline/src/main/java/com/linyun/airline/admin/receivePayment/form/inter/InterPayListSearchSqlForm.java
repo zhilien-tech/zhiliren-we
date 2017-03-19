@@ -4,7 +4,7 @@
  * Copyright (c) 2017, 北京科技有限公司版权所有.
 */
 
-package com.linyun.airline.admin.receivePayment.form;
+package com.linyun.airline.admin.receivePayment.form.inter;
 
 import java.util.Date;
 
@@ -31,7 +31,7 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class InlandPayListSearchSqlForm extends DataTablesParamForm {
+public class InterPayListSearchSqlForm extends DataTablesParamForm {
 
 	/**客户名称 订单号 PNR 联系人*/
 	private String name;

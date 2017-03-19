@@ -47,8 +47,8 @@
 												<div class="form-group row marginBott5 cf">
 													<div class="col-md-1 textPadding">
 														<select id="interRecSelect" class="form-control TimeInput">
-															<option value=0>收款中</option>
-															<option value=1>已收款</option>
+															<option value=1>收款中</option>
+															<option value=2>已收款</option>
 														</select>
 													</div>
 													<div class="col-md-1 textPadding">
@@ -198,16 +198,13 @@
 	<!-- My97DatePicker -->
 	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 	<!-- 国际js -->
-	<script src="${base}/admin/receivePayment/interPay.js"></script>
-	<script src="${base}/admin/receivePayment/interReceive.js"></script>
-	<!-- 国际js -->
-	<%-- <script src="${base}/admin/receivePayment/interPayment.js"></script> --%>
+	<script src="${base}/admin/receivePayment/inter/interPay.js"></script>
+	<script src="${base}/admin/receivePayment/inter/interReceive.js"></script>
 	<script type="text/javascript">
 		$(function(){
 			$('.menu-ul:eq(1)').hide();//隐藏数据字典的二级菜单
 			$('.menu-ul li:eq(1) a').css("color","rgb(245, 245, 245)");//二级菜单 高亮style
 			toConfirmRecPage();
-			
 		});
 	</script>
 	

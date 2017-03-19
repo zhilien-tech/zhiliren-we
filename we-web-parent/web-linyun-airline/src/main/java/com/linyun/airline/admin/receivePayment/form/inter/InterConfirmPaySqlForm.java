@@ -4,7 +4,7 @@
  * Copyright (c) 2017, 北京科技有限公司版权所有.
 */
 
-package com.linyun.airline.admin.receivePayment.form;
+package com.linyun.airline.admin.receivePayment.form.inter;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,7 +26,7 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class InlandConfirmPaySqlForm extends DataTablesParamForm {
+public class InterConfirmPaySqlForm extends DataTablesParamForm {
 
 	/**当前登陆用户id*/
 	private long pnrId;

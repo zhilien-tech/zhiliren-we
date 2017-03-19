@@ -1,5 +1,5 @@
 /**
- * InternationalReceivePayModule.java
+ * ReceivePayModule.java
  * com.linyun.airline.admin.receivePayment.module
  * Copyright (c) 2017, 北京科技有限公司版权所有.
  */
@@ -8,10 +8,13 @@ package com.linyun.airline.admin.receivePayment.module;
 
 import java.io.File;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.log.Log;
+import org.nutz.log.Logs;
 import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.GET;
@@ -20,20 +23,22 @@ import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.upload.UploadAdaptor;
 
-import com.linyun.airline.admin.login.service.LoginService;
-import com.linyun.airline.admin.receivePayment.form.InterPayEdListSearchSqlForm;
-import com.linyun.airline.admin.receivePayment.form.InterPayListSearchSqlForm;
-import com.linyun.airline.admin.receivePayment.form.InterRecListSearchSqlForm;
-import com.linyun.airline.admin.receivePayment.form.TSaveInlandPayAddFrom;
+import com.linyun.airline.admin.receivePayment.form.inter.InterPayEdListSearchSqlForm;
+import com.linyun.airline.admin.receivePayment.form.inter.InterPayListSearchSqlForm;
+import com.linyun.airline.admin.receivePayment.form.inter.InterRecListSearchSqlForm;
+import com.linyun.airline.admin.receivePayment.form.inter.TSaveInterPayAddFrom;
 import com.linyun.airline.admin.receivePayment.service.InterReceivePayService;
-import com.linyun.airline.entities.TUserEntity;
 
 @IocBean
 @At("/admin/receivePay/inter")
 public class InterReceivePayModule {
 
+	private static final Log log = Logs.get();
+
 	@Inject
 	private InterReceivePayService interReceivePayService;
+
+	private Long payCurrency;
 
 	/**
 	 * 跳转到 收付款页面
@@ -66,12 +71,48 @@ public class InterReceivePayModule {
 	}
 
 	/**
+	 * 根据银行id查询 银行卡
+	 */
+	@At
+	public Object getCardNames(@Param("bankId") final Long bankId, HttpSession session) {
+		//根据前端传过来的部门id查询出职位
+		return interReceivePayService.getCardNames(bankId, session);
+	}
+
+	/**
+	 * 根据银行名称 银行卡卡号
+	 */
+	@At
+	public Object getCardNums(@Param("cardName") final String cardName, HttpSession session) {
+		//根据前端传过来的部门id查询出职位
+		return interReceivePayService.getCardNums(cardName, session);
+	}
+
+	/**
+	 * 
+	 *會計付款中   分页
+	 */
+	@At
+	public Object inlandPayList(@Param("..") final InterPayListSearchSqlForm form, HttpSession session) {
+		return interReceivePayService.listPayData(form, session);
+	}
+
+	/**
+	 * 
+	 *會計   已付款分页
+	 */
+	@At
+	public Object inlandPayEdList(@Param("..") final InterPayEdListSearchSqlForm form, HttpSession session) {
+		return interReceivePayService.listPayEdData(form, session);
+	}
+
+	/**
 	 * 
 	 * 确认付款
 	 */
 	@At
-	public Object saveInternationalPay(@Param("..") final TSaveInlandPayAddFrom form) {
-		return interReceivePayService.saveInternationalPay(form);
+	public Object saveInlandPay(@Param("..") final TSaveInterPayAddFrom form, HttpSession session) {
+		return interReceivePayService.saveInterPay(form, session);
 	}
 
 	/**
@@ -79,12 +120,9 @@ public class InterReceivePayModule {
 	 *會計收款分页
 	 */
 	@At
-	public Object interRecList(@Param("..") final InterRecListSearchSqlForm form, HttpSession session) {
-		//当前用户id
-		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
-		long id = loginUser.getId();
-		form.setLoginUserId(id);
-		return interReceivePayService.listRecData(form);
+	public Object interRecList(@Param("..") final InterRecListSearchSqlForm form, HttpSession session,
+			HttpServletRequest request) {
+		return interReceivePayService.listRecData(form, session, request);
 	}
 
 	/**
@@ -92,8 +130,8 @@ public class InterReceivePayModule {
 	 * 确认收款
 	 */
 	@At
-	public Object saveInternationalRec(@Param("id") final String id) {
-		return interReceivePayService.saveInternationalRec(id);
+	public Object saveInlandRec(@Param("id") final String recId, HttpSession session) {
+		return interReceivePayService.saveInlandRec(recId, session);
 	}
 
 	//水单上传 返回值文件存储地址
@@ -103,28 +141,6 @@ public class InterReceivePayModule {
 	@Ok("json")
 	public Object upload(final @Param("fileId") File file, HttpSession session) {
 		return interReceivePayService.upload(file, session);
-	}
-
-	/**
-	 * 
-	 *會計付款国际   付款中分页
-	 */
-	@At
-	public Object internationalPayList(@Param("..") final InterPayListSearchSqlForm form, HttpSession session) {
-		return interReceivePayService.listPage4Datatables(form, session);
-	}
-
-	/**
-	 * 
-	 *會計付款国际   已付款分页
-	 */
-	@At
-	public Object internationalPayEdList(@Param("..") final InterPayEdListSearchSqlForm form, HttpSession session) {
-		//当前用户id
-		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
-		long id = loginUser.getId();
-		form.setLoginUserId(id);
-		return interReceivePayService.internationalListPayEdData(form);
 	}
 
 }

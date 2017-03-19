@@ -1,7 +1,7 @@
-//内陆跨海 收款 弹框
-var internationalRecTable;
+//国际 收款 弹框
+var interRecTable;
 function initRecDataTable() {
-	internationalRecTable = $('#internationalRecTable').DataTable({
+	interRecTable = $('#interRecTable').DataTable({
 		"searching":false,
 		"bLengthChange": false,
 		"processing": true,
@@ -34,8 +34,8 @@ function initRecDataTable() {
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
 		            		$.each(row.orders, function(name, value) {
-		            			if(value){
-		            				var date = value.leavedate;
+		            			if(value && value.leavetdate != undefined ){
+		            				var date = value.leavetdate;
 		            				var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
 		            				var week = ['MO','TU','WE','TH','FR','SA','SU'];
 		            				var ldate = new Date(date);
@@ -55,8 +55,9 @@ function initRecDataTable() {
 		            				var pCount = value.personcount;
 		            				if(pCount == null || pCount == undefined || pCount==""){
 		            					pCount = '';
+		            				}else{
+		            					result += '<li style="list-style:none;">'+pCount+'</li>';
 		            				}
-		            				result += '<li style="list-style:none;">'+pCount+'</li>';
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -67,10 +68,8 @@ function initRecDataTable() {
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
 		            		$.each(row.orders, function(name, value) {
-		            			if(value){
+		            			if(value && value.incometotal!=undefined){
 		            				result += '<li style="list-style:none;">'+value.incometotal+'</li>';
-		            			}else{
-		            				result += '<li style="list-style:none;"> </li>';
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -79,33 +78,46 @@ function initRecDataTable() {
 		            },
 		            {"data": "sum", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		return '<a href="javascript:confirmReceive('+row.recid+');">'+row.sum+'</a>';
+		            		var sum = row.sum;
+		            		if(null == sum || ""== sum){
+		            			return "";
+		            		}
+		            		return sum;
 		            	}
 		            },
 		            {"data": "shortname", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		return '<a href="javascript:confirmReceive('+row.recid+');">'+row.shortname+'</a>';
+		            		var result = '';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.shortname!=undefined){
+		            				result = value.shortname;
+		            			}
+		            		});
+		            		return result;
 		            	}
 		            },
 		            {"data": "username", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		var username = row.username;
-		            		if(null == username || ""== username){
-		            			return "";
-		            		}
-		            		return '<a href="javascript:confirmReceive('+row.recid+');">'+row.username+'</a>';
+		            		var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.issuer!=undefined && value.issuer!=null && value.issuer!=""){
+		            				result += '<li style="list-style:none;">'+value.issuer+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
 		            	}
 		            },
 		            {"data": "orderstatus", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		var s = '';
-		            		if(data == 0){
+		            		var s = row.status;
+		            		if(s == 1){
 		            			s = '收款中';
 		            		}
-		            		if(data == 4 ){
+		            		if(s == 2 ){
 		            			s = '已收款';
 		            		}
-		            		return '<a href="javascript:confirmReceive('+row.recid+');">'+s+'</a>';
+		            		return s;
 		            	}
 		            },
 		            {"data": "notes", "bSortable": false,
@@ -131,29 +143,45 @@ function initRecDataTable() {
 	});
 }
 
-//確認收款
-$("#confirmRecClick").click(function(){
-	$.ajax({
-		type : 'POST',
-		data : {
-			id:$("#recIds").val()
-		},
-		async: false,
-		url: BASE_PATH + '/admin/receivePay/inter/saveInternationalRec.html',
-		success : function(data) {
-			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-			parent.layer.close(index);
-			parent.layer.msg("收款成功", "", 1000);
-			parent.initRecDataTable.ajax.reload();
-		},
-		error: function () {
-			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-			parent.layer.close(index);
-			parent.layer.msg("收款失败", "", 1000);
-		}
-	});
+//datatable行点击事件
+$("tbody",$('#interRecTable')).on("click","tr",function(event){
+	//获取当前行的数据
+	var row = interRecTable.row($(this).closest('tr')).data();
+	confirmReceive(row.id);
 });
 
+//確認收款
+$("#confirmRecClick").click(function(){
+	var recStatus = $("#interRecSelect option:selected",window.parent.document).val();
+	if(recStatus==1){
+		$.ajax({
+			type : 'POST',
+			data : {
+				id:$("#recIds").val()
+			},
+			async: false,
+			url: BASE_PATH + '/admin/receivePay/inter/saveInlandRec.html',
+			success : function(data) {
+				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				parent.layer.close(index);
+				parent.layer.msg("收款成功", "", 2000);
+				parent.interRecTable.ajax.reload();
+				$("#recIds").val("");
+			},
+			error: function () {
+				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				parent.layer.close(index);
+				parent.layer.msg("收款失败", "", 2000);
+				$("#recIds").val("");
+			}
+		});
+	}else{
+		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+		parent.layer.close(index);
+		parent.layer.msg("该订单已收款，请勿重复收款", "", 2000);
+	}
+	
+});
 
 //关闭确认付款窗口
 $("#closeRecWindow").click(function(){
@@ -161,7 +189,7 @@ $("#closeRecWindow").click(function(){
 	parent.layer.close(index);
 });
 
-
+//打开确认付款页面
 function confirmReceive(id){
 	layer.open({
 		type: 2,
@@ -170,44 +198,52 @@ function confirmReceive(id){
 		closeBtn:false,//默认 右上角关闭按钮 是否显示
 		shadeClose:true,
 		area: ['850px', '650px'],
-		content: ['confirmReceive.html?inlandRecId='+ id,'no'],
+		content: ['confirmReceive.html?interRecId='+ id,'no'],
 	});
 }
 
 //付款检索
-$("#internationalRecSelect").change(function(){
-	$("#internationalRecSearchBtn").click();
+$("#interRecSelect").change(function(){
+	$("#interRecSearchBtn").click();
 });
 
 
-//收付款  搜索按钮
-$("#internationalRecSearchBtn").on('click', function () {
-	var interOrderStatus = $(".paymentUl li[class='btnStyle']").attr("id");
-	var orderStatus = $("#internationalRecSelect").val();
-	var inlandRecBeginDate = $("#internationalRecBeginDate").val();
-	var inlandRecEndDate = $("#internationalRecEndDate").val();
-	var inlandRecInput = $("#internationalRecInput").val();
-	    var param = {
-					"interOrderStatus":interOrderStatus,
-			        "orderStatus":orderStatus,
-			        "leaveBeginDate":internationalRecBeginDate,
-			        "leaveEndDate":internationalRecEndDate,
-					"name": internationalRecInput
+//收款  搜索按钮
+$("#interRecSearchBtn").on('click', function () {
+	var orderStatus = $("#interRecSelect").val();
+	var inlandRecBeginDate = $("#interRecBeginDate").val();
+	var inlandRecEndDate = $("#interRecEndDate").val();
+	var inlandRecInput = $("#interRecInput").val();
+    var param = {
+		"orderStatus":orderStatus,
+		"leaveBeginDate":inlandRecBeginDate,
+		"leaveEndDate":inlandRecEndDate,
+		"name": inlandRecInput
 	};
-	internationalRecTable.settings()[0].ajax.data = param;
-	internationalRecTable.ajax.reload();
+	interRecTable.settings()[0].ajax.data = param;
+	interRecTable.ajax.reload(
+			function(json){
+				autoHighLoad($('#interRecTable'));
+			}
+	);
 });
-
 
 //国际Tab  一订、二订、三订、全款状态 js-----------------------------------------------
 $(".paymentUl li").click(function(){
 	$(this).addClass("btnStyle").siblings().removeClass('btnStyle');
 	var bookId = $(this).attr("id");
-	var orderStatus = $("#internationalRecSelect").val();
+	var orderStatus = $("#interRecSelect").val();
 	var param = {
 			"orderStatus":orderStatus,
 			"interOrderStatus":bookId
 	};
-	internationalRecTable.settings()[0].ajax.data = param;
-	internationalRecTable.ajax.reload();
+	interRecTable.settings()[0].ajax.data = param;
+	interRecTable.ajax.reload();
 });
+
+//回车搜索
+function payOnkeyEnter(){
+	 if(event.keyCode==13){
+		 $("#interPaySearchBtn").click();
+	 }
+}
