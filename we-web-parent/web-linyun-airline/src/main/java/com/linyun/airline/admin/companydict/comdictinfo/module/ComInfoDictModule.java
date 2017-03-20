@@ -74,7 +74,11 @@ public class ComInfoDictModule {
 	 */
 	@At
 	@POST
-	public Object comInfoListData(@Param("..") final ComInfoSqlForm sqlForm) {
+	public Object comInfoListData(@Param("..") final ComInfoSqlForm sqlForm, final HttpSession session) {
+		//从session中得到公司id
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long comId = company.getId();//得到公司的id
+		sqlForm.setComId(comId);
 		return comInfoDictService.listPage4Datatables(sqlForm);
 	}
 
