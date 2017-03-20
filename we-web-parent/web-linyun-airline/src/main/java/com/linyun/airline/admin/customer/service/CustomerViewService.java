@@ -199,7 +199,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 	/**
 	 * 添加信息
-	 * @param addForm
+	 * @param  Form
 	 * @return 
 	 */
 	public Object addCustomInfo(HttpSession session, TCustomerInfoAddForm addForm) {
@@ -215,12 +215,13 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		//得到当前用户所在公司的id
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
+
 		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
 		TCompanyEntity company = dbDao.fetch(TCompanyEntity.class, Cnd.where("id", "=", companyId));
 		if (!Util.isEmpty(upcompany)) {
 			addForm.setUpComId(upcompany.getId());
-			addForm.setCustomerType(Integer.valueOf(company.getComType()));
 		}
+
 		TCustomerInfoEntity customerInfo = this.add(addForm);
 
 		//出发城市城市截取
