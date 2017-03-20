@@ -30,7 +30,7 @@
                        
                         <!--默认/关闭 下拉框 and 按钮（添加、导入、导出....）-->
                         <div class="form-group row">
-                          <div class="col-md-12">
+                          <div class="col-md-12 btnTop">
                             <button type="button" class="btn btn-primary btn-sm right" onclick="add();">添加</button>
                             
                             <a class="btn btn-primary btn-sm right" id="exportExcelId" target="hidden_frame" href="${base}/admin/customneeds/exportCustomNeedsExcel.html">导出excel</a>
@@ -45,9 +45,9 @@
 					<form id="searchForm">
                         <!--航空公司/旅行社/人数/天数 文本框-->
                         <div class="form-group row">
-                          <label class="col-sm-1 text-right padding marTop5">状态：</label>
+                          <label class="col-sm-1 text-right padding">状态：</label>
                           <div class="col-md-1 padding">
-                            <select class="form-control select1" id="isclose" onchange="selectDept();">
+                            <select class="form-control" id="isclose" onchange="selectDept();">
                               <option value="0">默认</option>
                               <option value="1">关闭</option>
                             </select>
