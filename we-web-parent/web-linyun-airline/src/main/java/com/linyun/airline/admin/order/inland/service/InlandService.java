@@ -467,7 +467,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			}
 		}
 		// TODO Auto-generated method stub
-		return null;
+		return orderinfo;
 	}
 
 	/**
@@ -1101,7 +1101,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		String pnrid = request.getParameter("id");
 		//PNR信息
 		TPnrInfoEntity pnrinfo = dbDao.fetch(TPnrInfoEntity.class, Long.valueOf(pnrid));
-		//客户信息
+		//客户需求信息
 		TOrderCustomneedEntity custom = dbDao.fetch(TOrderCustomneedEntity.class, Long.valueOf(pnrinfo.getNeedid()));
 		Map<String, Object> result = new HashMap<String, Object>();
 		String sqlString = sqlManager.get("get_pnr_visitor_info");
@@ -1138,6 +1138,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			e.printStackTrace();
 
 		}
+		//客户信息
+		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, custom.getOrdernum().longValue());
+		result.put("custominfo", custominfo);
 		result.put("include", include);
 		result.put("pnrinfo", pnrinfo);
 		result.put("visitors", visitors);
@@ -1175,15 +1178,18 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		pnrinfo.setCostpricesum(Double.valueOf(costpricesum));
 		pnrinfo.setSalesprice(Double.valueOf(salesprice));
 		pnrinfo.setSalespricesum(Double.valueOf(salespricesum));
+		dbDao.update(pnrinfo);
 		Iterable<String> visitors = Splitter.on(",").split(visitor);
 		List<TVisitorsPnrEntity> before = dbDao.query(TVisitorsPnrEntity.class,
 				Cnd.where("pNRid", "=", pnrinfo.getId()), null);
 		List<TVisitorsPnrEntity> after = new ArrayList<TVisitorsPnrEntity>();
-		for (String Str : visitors) {
-			TVisitorsPnrEntity visitoepnrs = new TVisitorsPnrEntity();
-			visitoepnrs.setPNRid(pnrinfo.getId());
-			visitoepnrs.setVisitorslistid(Integer.valueOf(Str));
-			after.add(visitoepnrs);
+		if (!Util.isEmpty(visitor)) {
+			for (String Str : visitors) {
+				TVisitorsPnrEntity visitoepnrs = new TVisitorsPnrEntity();
+				visitoepnrs.setPNRid(pnrinfo.getId());
+				visitoepnrs.setVisitorslistid(Integer.valueOf(Str));
+				after.add(visitoepnrs);
+			}
 		}
 		//更新游客信息
 		dbDao.updateRelations(before, after);
@@ -1313,14 +1319,16 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		//更新订单收款状态List
 		List<TUpOrderEntity> orders = new ArrayList<TUpOrderEntity>();
 		for (String str : split) {
+			TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(str));
 			TOrderReceiveEntity orderreceive = new TOrderReceiveEntity();
 			orderreceive.setReceiveid(insert.getId());
 			orderreceive.setOrderid(Integer.valueOf(str));
-			orderreceive.setReceivestatus(0);
+			orderreceive.setReceivestatus(order.getOrdersstatus());
 			orderreceives.add(orderreceive);
 			//订单信息
-			TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(str));
 			order.setReceivestatus(AccountReceiveEnum.RECEIVINGMONEY.intKey());
+			orderreceive.setReceiveDate(new Date());
+			orderreceive.setReceivestatus(AccountReceiveEnum.RECEIVINGMONEY.intKey());
 			orders.add(order);
 		}
 		//更新订单状态

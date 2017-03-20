@@ -66,8 +66,8 @@ public class InterReceivePayModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object confirmPay(@Param("inlandPayIds") String inlandPayIds) {
-		return interReceivePayService.toConfirmPay(inlandPayIds);
+	public Object confirmPay(@Param("orderIds") String orderIds) {
+		return interReceivePayService.toConfirmPay(orderIds);
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class InterReceivePayModule {
 	 */
 	@At
 	public Object saveInterRec(@Param("id") final String recId, HttpSession session) {
-		return interReceivePayService.saveInlandRec(recId, session);
+		return interReceivePayService.saveInterRec(recId, session);
 	}
 
 	//水单上传 返回值文件存储地址

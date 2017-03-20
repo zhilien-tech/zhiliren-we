@@ -835,13 +835,15 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		//更新订单收款状态List
 		List<TUpOrderEntity> orders = new ArrayList<TUpOrderEntity>();
 		for (String str : split) {
+			TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(str));
 			TOrderReceiveEntity orderreceive = new TOrderReceiveEntity();
 			orderreceive.setReceiveid(insert.getId());
 			orderreceive.setOrderid(Integer.valueOf(str));
-			orderreceive.setReceivestatus(0);
+			orderreceive.setOrderstatus(order.getOrdersstatus());
+			orderreceive.setReceiveDate(new Date());
+			orderreceive.setReceivestatus(AccountReceiveEnum.RECEIVINGMONEY.intKey());
 			orderreceives.add(orderreceive);
 			//订单信息
-			TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(str));
 			order.setReceivestatus(AccountReceiveEnum.RECEIVINGMONEY.intKey());
 			orders.add(order);
 		}
@@ -926,14 +928,18 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		//更新PNR付款状态List
 		List<TUpOrderEntity> orders = new ArrayList<TUpOrderEntity>();
 		for (String str : split) {
+			TUpOrderEntity orderifo = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(str));
 			TPayOrderEntity payorder = new TPayOrderEntity();
 			payorder.setPayid(insert.getId());
 			payorder.setOrderid(Integer.valueOf(str));
+			payorder.setPayDate(new Date());
+			payorder.setOrderstatus(orderifo.getOrdersstatus());
+			payorder.setPaystauts(AccountPayEnum.APPROVAL.intKey());
 			payorders.add(payorder);
-			//PNR更新状态
-			TUpOrderEntity pnrinfo = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(str));
-			pnrinfo.setPaystatus(AccountPayEnum.APPROVAL.intKey());
-			orders.add(pnrinfo);
+
+			//更新订单状态
+			orderifo.setPaystatus(AccountPayEnum.APPROVAL.intKey());
+			orders.add(orderifo);
 		}
 		//更新pnr状态
 		dbDao.update(orders);

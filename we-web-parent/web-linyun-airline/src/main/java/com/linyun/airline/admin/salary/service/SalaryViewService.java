@@ -21,6 +21,8 @@ import org.nutz.dao.util.Daos;
 import org.nutz.mvc.annotation.Param;
 
 import com.google.common.collect.Maps;
+import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TSalaryEntity;
 import com.linyun.airline.forms.TSalaryAddForm;
 import com.linyun.airline.forms.TSalaryFindForm;
@@ -42,8 +44,10 @@ import com.uxuexi.core.web.util.FormUtil;
 public class SalaryViewService extends BaseService<TSalaryEntity> {
 
 	public Map<String, Object> listPage4Datatables(@Param("..") final TSalaryFindForm findForm,
-			DataTablesParamForm sqlParamForm) {
-
+			DataTablesParamForm sqlParamForm, final HttpSession session) {
+		//从session中得到当前登录公司id
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long comId = company.getId();//得到公司的id
 		String sqlString = sqlManager.get("salary_list");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
@@ -68,6 +72,7 @@ public class SalaryViewService extends BaseService<TSalaryEntity> {
 			cnd.and("drawer", "=", drawer);
 			//sql.setCondition(cnd);
 		}
+		cnd.and("comId", "=", comId);
 		cnd.orderBy("updateTime", "DESC");
 
 		sql.setCondition(cnd);

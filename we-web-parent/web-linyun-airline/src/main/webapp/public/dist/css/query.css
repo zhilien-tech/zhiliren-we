@@ -2,7 +2,7 @@
 .box{min-height: 500px;}
 .infoTop{margin-top:15px;border-bottom:solid 1px #f1f1f1;}
 .infoTop p{background-color: #fff;margin: 0px;border: solid 1px #e0e0e0;display:inline-block;width: 85px;text-align: center;line-height: 30px;border-top: solid 2px #3c8dbc;border-radius: 3px 3px 0 0;border-bottom: 0;}
-.infoTopContent{width: 583px;height: 30px;float: right;}
+.infoTopContent{width:305px;height: 30px;float: right;}
 .infoTopContent input{display: inline-block;}
 .infoTopContent .conCheckInput{width: 15px;height: 15px;position: relative;top: 3px;right: 3px;}
 .infoTopContent .conSelect{width: 70px; height: 28px;display: inline-block;margin:0 15px; }

@@ -54,9 +54,9 @@ public class SalaryModule {
 	 * 列表查询
 	 */
 	@At
-	public Object listData(@Param("..") final TSalaryFindForm findForm, @Param("..") final TSalaryForm sqlForm) {
-
-		return salaryViewService.listPage4Datatables(findForm, sqlForm);
+	public Object listData(@Param("..") final TSalaryFindForm findForm, @Param("..") final TSalaryForm sqlForm,
+			final HttpSession session) {
+		return salaryViewService.listPage4Datatables(findForm, sqlForm, session);
 	}
 
 	/**

@@ -29,6 +29,7 @@
 		                        <li id="secBooking" >二订</li>
 		                        <li id="thrBooking" >三订</li>
 		                        <li id="allBooking" >全款</li>
+		                        <li id="lastBooking" >尾款</li>
 					        </ul>
 							<div class="nav-tabs-custom tabConte">
 								<ul class="nav nav-tabs">
@@ -78,7 +79,7 @@
 														<th>出发日期</th>
 														<th>人数</th>
 														<th>销售金额</th>
-														<th>总价</th>
+														<th>总额</th>
 														<th>客户名称</th>
 														<th>开票人</th>
 														<th>状态</th>
@@ -138,8 +139,10 @@
 														<th>订单号</th>
 														<th>PNR</th>
 														<th>出发日期</th>
-														<th>人数</th>
-														<th>应付金额</th>
+														<th>预定人数</th>
+														<th>实际人数</th>
+														<th>本期税金</th>
+														<th>本期实付</th>
 														<th>币种</th>
 														<th>收款单位</th>
 														<th>状态</th>

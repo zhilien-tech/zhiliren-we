@@ -39,14 +39,14 @@
 					<input id="payIds" name="payIds" type="hidden" value="${obj.ids }"><!-- 水单url -->
 					<c:forEach var="one" items="${obj.orders}">
                 		<tr>
-                			<td>${one.ordernum }</td>
-                			<td>${one.pnrnum }</td>
+                			<td>${one.ordersnum }</td>
+                			<td>${one.pnr }</td>
                 			<td>${one.cusgroupnum }</td>
                 			<td>${one.shortname }</td>
-                			<td>${one.billdate }</td>
-                			<td>${one.peoplecount }</td>
-                			<td>${one.approver }</td>
-                			<td>${one.saleprice }</td>
+                			<td>${one.billingdate }</td>
+                			<td>${one.actualnumber }</td>
+                			<td>${one.issuer }</td>
+                			<td>${one.incometotal }</td>
                 		</tr>
                 	</c:forEach>
 				</tbody>

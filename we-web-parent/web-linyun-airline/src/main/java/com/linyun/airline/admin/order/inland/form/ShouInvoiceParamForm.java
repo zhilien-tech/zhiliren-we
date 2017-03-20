@@ -17,6 +17,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.enums.InvoiceInfoEnum;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
@@ -40,10 +41,15 @@ public class ShouInvoiceParamForm extends DataTablesParamForm {
 	private String PNR;//pnr
 	private String paymentunit;//收款单位
 
+	private Long companyid;
+
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("opid", "=", userid);
 		cnd.and("invoicetype", "=", InvoiceInfoEnum.Already_INVOICe.intKey());
+		if (!Util.isEmpty(companyid)) {
+			cnd.and("tii.comId", "=", companyid);
+		}
 		return cnd;
 	}
 

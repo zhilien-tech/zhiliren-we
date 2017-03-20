@@ -168,12 +168,12 @@
 	   //人数
 	   var peoplecount = $('#peoplecount').val();
 	   //自动填充销售单价
-	   var salesprice = parseFloat(costprice) * parseFloat(discountFare) + parseFloat(fees);
+	   var salesprice = parseFloat(costprice) * parseFloat(discountFare)/100 + parseFloat(fees);
 	   if(costprice){
 	 		if(isNaN(salesprice)){
 	 			$('#salesprice').val('');
 	 		}else{
-	 			$('#salesprice').val(costprice);
+	 			$('#salesprice').val(salesprice);
 	 		}
 	 	}else{
 	 		$('#salesprice').val('');
@@ -184,7 +184,7 @@
 		   var salespricesum = parseFloat(salesprice) * parseFloat(peoplecount);
 		   $('salespricesum').val(salespricesum);
 	   }
-   })
+   });
   </script>
 </body>
 </html>	

@@ -47,12 +47,12 @@ function initRecDataTable() {
 		            		return result;
 		            	}
 		            },
-		            {"data": "personcount", "bSortable": false,
+		            {"data": "peoplecount", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
 		            		$.each(row.orders, function(name, value) {
 		            			if(value){
-		            				var pCount = value.personcount;
+		            				var pCount = value.peoplecount;
 		            				if(pCount == null || pCount == undefined || pCount==""){
 		            					pCount = '';
 		            				}else{
@@ -98,14 +98,11 @@ function initRecDataTable() {
 		            },
 		            {"data": "username", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		var result = '<ul> ';
-		            		$.each(row.orders, function(name, value) {
-		            			if(value && value.issuer!=undefined && value.issuer!=null && value.issuer!=""){
-		            				result += '<li style="list-style:none;">'+value.issuer+'</li>';
-		            			}
-		            		});
-		            		result += '</ul>';
-		            		return result;
+		            		var username = row.username;
+		            		if(null == username || ""== username){
+		            			return "";
+		            		}
+		            		return username;
 		            	}
 		            },
 		            {"data": "orderstatus", "bSortable": false,
@@ -160,7 +157,7 @@ $("#confirmRecClick").click(function(){
 				id:$("#recIds").val()
 			},
 			async: false,
-			url: BASE_PATH + '/admin/receivePay/inter/saveInlandRec.html',
+			url: BASE_PATH + '/admin/receivePay/inter/saveInterRec.html',
 			success : function(data) {
 				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 				parent.layer.close(index);
@@ -236,7 +233,6 @@ $("#interRecSearchBtn").on('click', function () {
 $(".paymentUl li").click(function(){
 	$(this).addClass("btnStyle").siblings().removeClass('btnStyle');
 	var bookId = $(this).attr("id");
-	alert(bookId);
 	var orderStatus = $("#interRecSelect").val();
 	var param = {
 			"orderStatus":orderStatus,

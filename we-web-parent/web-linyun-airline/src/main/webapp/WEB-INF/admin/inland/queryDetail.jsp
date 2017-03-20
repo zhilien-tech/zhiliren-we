@@ -880,7 +880,11 @@
             	//location.reload();
             	layer.closeAll('loading');
             	layer.msg("保存成功",{time: 2000, icon:1});
-            	window.location.reload();
+            	if(data.ordersstatus ===1){
+	            	window.location.reload();
+            	}else{
+            		window.location.href = "${base}/admin/inland/bookingDetail.html?id=" + data.id;
+            	}
             },
             error: function (xhr) {
             	layer.msg("保存失败","",3000);
