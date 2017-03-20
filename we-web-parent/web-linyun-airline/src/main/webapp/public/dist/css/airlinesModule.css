@@ -47,4 +47,5 @@ div[data-cal-index="2"] .k-title{width: 120px;margin: 0 auto;}
 #datatable2 thead .sorting_asc:after {display:none;}
 .select2-dropdown--below{width: 150px !important;}
 .sorting_1 input{display: block;margin: 30% auto;}
-
+.btnTop{position: relative;margin-top: -57px;}
+form#searchForm {margin-top: -15px;}
