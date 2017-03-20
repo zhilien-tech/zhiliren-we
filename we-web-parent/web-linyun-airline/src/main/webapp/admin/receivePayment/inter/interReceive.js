@@ -233,7 +233,6 @@ $("#interRecSearchBtn").on('click', function () {
 $(".paymentUl li").click(function(){
 	$(this).addClass("btnStyle").siblings().removeClass('btnStyle');
 	var bookId = $(this).attr("id");
-	alert(bookId);
 	var orderStatus = $("#interRecSelect").val();
 	var param = {
 			"orderStatus":orderStatus,

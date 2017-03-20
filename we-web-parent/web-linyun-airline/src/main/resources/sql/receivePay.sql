@@ -335,3 +335,66 @@ FROM
 INNER JOIN t_pay_order po ON po.orderid = uo.id
 INNER JOIN t_pay p ON p.id = po.payid
 $condition
+
+
+/*receivePay_inter_pay_order_list*/
+SELECT
+	uo.id,
+	uo.ordersnum,
+	po.orderstatus,
+	(SELECT dictCode FROM dict_info WHERE id = p.payCurrency ) AS 'payCurrency',
+	pi.PNR,
+	tpi.leavesdate,
+	tpi.peoplecount,
+	prr.actualnumber,
+	prr.currentpay,
+	fi.`issuer`,
+	ci.shortName,
+	ci.linkMan
+FROM
+	t_up_order uo
+INNER JOIN t_pay_order po ON po.orderid = uo.id
+INNER JOIN t_pay p ON p.id = po.payid
+LEFT JOIN t_pay_pnr pp ON pp.payId = p.id
+LEFT JOIN t_pnr_info pi ON pi.id = pp.pnrId
+LEFT JOIN t_plan_info tpi ON tpi.ordernumber = uo.ordersnum
+LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
+LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
+LEFT JOIN t_customer_info ci ON ci.id = uo.userid
+WHERE
+	uo.id IN (
+		SELECT
+			uo.id
+		FROM
+			t_up_order uo
+		INNER JOIN t_pay_order po ON po.orderid = uo.id
+		INNER JOIN t_pay p ON p.id = po.payid
+		LEFT JOIN t_pay_pnr pp ON pp.payId = p.id
+		LEFT JOIN t_pnr_info pi ON pi.id = pp.pnrId
+		LEFT JOIN t_plan_info tpi ON tpi.ordernumber = uo.ordersnum
+		LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
+		LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
+		LEFT JOIN t_customer_info ci ON ci.id = uo.userid
+		$condition
+	)
+	
+/*receivePay_inter_pay_order_ids*/
+SELECT
+	uo.id,
+	uo.ordersnum,
+	pi.pnr,
+	fi.cusgroupnum,
+	ci.shortName,
+	fi.billingdate,
+	prr.actualnumber,
+	ci. NAME customename,
+	ci.linkMan,
+	fi. ISSUER,
+	fi.incometotal
+FROM
+	t_up_order uo
+LEFT JOIN t_customer_info ci ON uo.userid = ci.id
+LEFT JOIN t_finance_info fi ON uo.id = fi.orderid
+LEFT JOIN t_pnr_info pi ON pi.orderid = uo.id
+LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
+$condition

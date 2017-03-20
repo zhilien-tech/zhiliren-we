@@ -85,11 +85,12 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 		String extendName = url.substring(url.lastIndexOf(".") + 1, url.length());
 		Word2Html word2Html = new Word2Html();
 		HtmlToPdf htmlToPdf = new HtmlToPdf();
+		String str = System.getProperty("java.io.tmpdir");
 		if ("doc".equalsIgnoreCase(extendName)) {
 			try {
-				word2Html.docToHtml(url, "D:\\12.html");
-				htmlToPdf.htmlConvertToPdf("D:\\12.html", "D:\\12.pdf");
-				File file = new File("D:\\12.pdf");
+				word2Html.docToHtml(url, str + File.separator + "12.html");
+				htmlToPdf.htmlConvertToPdf(str + File.separator + "12.html", str + File.separator + "12.pdf");
+				File file = new File(str + File.separator + "12.pdf");
 				String pdfUrl = CommonConstants.IMAGES_SERVER_ADDR
 						+ qiniuUploadService.uploadImage(new FileInputStream(file), "pdf", null);
 				addForm.setPdfUrl(pdfUrl);
@@ -99,8 +100,8 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 				e.printStackTrace();
 
 			} finally {
-				File file1 = new File("D:\\12.html");
-				File file2 = new File("D:\\12.pdf");
+				File file1 = new File(str + File.separator + "12.html");
+				File file2 = new File(str + File.separator + "12.pdf");
 				if (file1.exists()) {
 					file1.delete();
 				}
@@ -111,10 +112,10 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 		} else if ("xls".equalsIgnoreCase(extendName) || "xlsx".equalsIgnoreCase(extendName)) {
 			try {
 				POIReadExcelToHtml poiReadExcelToHtml = new POIReadExcelToHtml();
-				poiReadExcelToHtml.excelConvertToPdf(url, "D:\\12.html");
+				poiReadExcelToHtml.excelConvertToPdf(url, str + File.separator + "12.html");
 
-				htmlToPdf.htmlConvertToPdf("D:\\12.html", "D:\\12.pdf");
-				File file = new File("D:\\12.pdf");
+				htmlToPdf.htmlConvertToPdf(str + File.separator + "12.html", str + File.separator + "12.pdf");
+				File file = new File(str + File.separator + "12.pdf");
 				String pdfUrl = CommonConstants.IMAGES_SERVER_ADDR
 						+ qiniuUploadService.uploadImage(new FileInputStream(file), "pdf", null);
 				addForm.setPdfUrl(pdfUrl);
@@ -124,8 +125,8 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 				e.printStackTrace();
 
 			} finally {
-				File file1 = new File("D:\\12.html");
-				File file2 = new File("D:\\12.pdf");
+				File file1 = new File(str + File.separator + "12.html");
+				File file2 = new File(str + File.separator + "12.pdf");
 				if (file1.exists()) {
 					file1.delete();
 				}
@@ -260,6 +261,7 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 		Long airlineCompanyId = updateForm.getAirlineCompanyId();
 		TAirlinePolicyEntity airlinePolicy = dbDao.fetch(TAirlinePolicyEntity.class, id);
 		Chain chain = Chain.make("updateTime", new Date());
+		String str = System.getProperty("java.io.tmpdir");
 		if (!Util.isEmpty(url)) {
 			chain.add("url", url);
 			String extendName = url.substring(url.lastIndexOf(".") + 1, url.length());
@@ -267,9 +269,9 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 			HtmlToPdf htmlToPdf = new HtmlToPdf();
 			if ("doc".equalsIgnoreCase(extendName)) {
 				try {
-					word2Html.docToHtml(url, "D:\\12.html");
-					htmlToPdf.htmlConvertToPdf("D:\\12.html", "D:\\12.pdf");
-					File file = new File("D:\\12.pdf");
+					word2Html.docToHtml(url, str + File.separator + "12.html");
+					htmlToPdf.htmlConvertToPdf(str + File.separator + "12.html", str + File.separator + "12.pdf");
+					File file = new File(str + File.separator + "12.pdf");
 					String pdfUrl = CommonConstants.IMAGES_SERVER_ADDR
 							+ qiniuUploadService.uploadImage(new FileInputStream(file), "pdf", null);
 					chain.add("pdfUrl", pdfUrl);
@@ -279,8 +281,8 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 					e.printStackTrace();
 
 				} finally {
-					File file1 = new File("D:\\12.html");
-					File file2 = new File("D:\\12.pdf");
+					File file1 = new File(str + File.separator + "12.html");
+					File file2 = new File(str + File.separator + "12.pdf");
 					if (file1.exists()) {
 						file1.delete();
 					}
@@ -291,10 +293,10 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 			} else if ("xls".equalsIgnoreCase(extendName) || "xlsx".equalsIgnoreCase(extendName)) {
 				try {
 					POIReadExcelToHtml poiReadExcelToHtml = new POIReadExcelToHtml();
-					poiReadExcelToHtml.excelConvertToPdf(url, "D:\\12.html");
+					poiReadExcelToHtml.excelConvertToPdf(url, str + File.separator + "12.html");
 
-					htmlToPdf.htmlConvertToPdf("D:\\12.html", "D:\\12.pdf");
-					File file = new File("D:\\12.pdf");
+					htmlToPdf.htmlConvertToPdf(str + File.separator + "12.html", str + File.separator + "12.pdf");
+					File file = new File(str + File.separator + "12.pdf");
 					String pdfUrl = CommonConstants.IMAGES_SERVER_ADDR
 							+ qiniuUploadService.uploadImage(new FileInputStream(file), "pdf", null);
 					chain.add("pdfUrl", pdfUrl);
@@ -304,8 +306,8 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 					e.printStackTrace();
 
 				} finally {
-					File file1 = new File("D:\\12.html");
-					File file2 = new File("D:\\12.pdf");
+					File file1 = new File(str + File.separator + "12.html");
+					File file2 = new File(str + File.separator + "12.pdf");
 					if (file1.exists()) {
 						file1.delete();
 					}
@@ -331,4 +333,8 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 
 	}
 
+	public static void main(String[] args) {
+		String str = System.getProperty("java.io.tmpdir");
+		System.out.println(File.separator);
+	}
 }
