@@ -542,9 +542,9 @@
             <div class="infofooter">
                  <table class="remindSet">
                    <tr>
-                     <td><input id="remindTime" type="text" class="form-control input-sm" placeholder="2020-01-01 00:00:00" onfocus="WdatePicker({minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></td>
+                     <td><input id="remindTime" disabled="disabled" type="text" class="form-control input-sm" placeholder="2020-01-01 00:00:00" onfocus="WdatePicker({minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></td>
                      <td>
-                       <select id="remindType" class="form-control input-sm">
+                       <select id="remindType" disabled="disabled" class="form-control input-sm">
                          <c:forEach var="map" items="${obj.orderRemindEnum}" >
 					   		<option value="${map.key}">${map.value}</option>
 						 </c:forEach>
@@ -612,6 +612,8 @@
           $('.disab').removeAttr("disabled");//信息模块 input 禁止编辑的状态
           $('.PNRbtnTD').removeClass('none');//+PNR 按钮 显示
           $('#orderType').removeAttr("disabled");//订单状态禁止编辑的状态
+          $('#remindTime').removeAttr("disabled");//订单状态禁止编辑的状态
+          $('#remindType').removeAttr("disabled");//订单状态禁止编辑的状态
           $('#jianMian').addClass("jianMian");//减免禁止编辑的状态
           //页面不可编辑
           $('.DemandDiv').each(function(i){
@@ -650,6 +652,8 @@
           $('.disab').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
           $('.PNRbtnTD').addClass('none');//+PNR 按钮 隐藏
           $('#orderType').attr("disabled",'disabled');//订单状态添加 不可编辑属性
+          $('#remindTime').attr("disabled",'disabled');//提醒时间添加 不可编辑属性
+          $('#remindType').attr("disabled",'disabled');//提醒状态添加 不可编辑属性
           $('#jianMian').removeClass("jianMian");//减免添加 不可编辑属性
           //页面可以编辑
           $('.DemandDiv').each(function(i){
@@ -922,7 +926,19 @@
 	         closeBtn:false,//默认 右上角关闭按钮 是否显示
 	         shadeClose:true,
 	         area: ['880px', '425px'],
-	         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+needid
+	         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+needid,
+	         end:function(){
+	        	 //设置财务信息
+	        	 $.ajax({ 
+	 				type: 'POST', 
+	 				data: {orderid:'${obj.orderinfo.id }'}, 
+	 				url: '${base}/admin/inland/setFinanceInfo.html',
+	 	            success: function (data) { 
+	 		         },
+	 		         error: function (xhr) {
+	 		         } 
+	 	      });
+	         }
 	       });
     });
   //其他页面回调
@@ -961,7 +977,7 @@
 	 		$(this).parent().parent().find('[name=price]').val('');
 	 	}
  	}
- 	//成本合计
+ 	/* //成本合计
  	var sumformprice = 0;
  	//应收
  	var sumsale = 0;
@@ -982,7 +998,7 @@
  	//应收
  	if(sumsale > 0 ){
  		$('#receivable').val(sumsale);
- 	}
+ 	} */
  });
  //销售价自动统计应收
  $(document).on('input', '.xiaoShouCls', function(e) {
@@ -1006,7 +1022,6 @@
 	 	var relief = $('#relief').val();
 	 	var incometotal  = '';
 	 	if(relief){
-	 		alert('dsda');
 	 		incometotal  = parseFloat(yingshou) - parseFloat(relief);
 	 	}else{
 	 		incometotal = yingshou;

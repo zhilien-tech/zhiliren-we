@@ -1138,8 +1138,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			e.printStackTrace();
 
 		}
+		TUpOrderEntity orderinfo = dbDao.fetch(TUpOrderEntity.class, custom.getOrdernum().longValue());
 		//客户信息
-		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, custom.getOrdernum().longValue());
+		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, orderinfo.getUserid().longValue());
 		result.put("custominfo", custominfo);
 		result.put("include", include);
 		result.put("pnrinfo", pnrinfo);
@@ -1404,8 +1405,11 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Integer userid = Long.valueOf(user.getId()).intValue();
 		sqlParamForm.setUserid(userid);
+		sqlParamForm.setCompanyid(new Long(company.getId()).intValue());
 		Map<String, Object> datatabledata = this.listPage4Datatables(sqlParamForm);
 		@SuppressWarnings("unchecked")
 		List<Record> list = (List<Record>) datatabledata.get("data");

@@ -123,6 +123,9 @@ function openInvoice(id,invoiceid){
 		});
 	}
 }
+function loadshouFuKuanGatheringTable(){
+	shouFuKuanGatheringTable.ajax.reload();
+}
 //付款表格
 var shouFuKuanPayTable;
 //初始化表格
