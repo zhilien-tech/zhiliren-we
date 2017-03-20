@@ -66,4 +66,13 @@ public class InlandListModule {
 	public Object loadBankCardNumSelect(HttpServletRequest request) {
 		return inlandListService.loadBankCardNumSelect(request);
 	}
+
+	/**
+	 * 设置财务信息
+	 */
+	@At
+	@POST
+	public Object setFinanceInfo(HttpServletRequest request) {
+		return inlandListService.setFinanceInfo(request);
+	}
 }

@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Cnd;
+import org.nutz.dao.Sqls;
+import org.nutz.dao.entity.Record;
+import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.linyun.airline.admin.login.service.LoginService;
@@ -196,6 +199,29 @@ public class InlandListService extends BaseService<TUpOrderEntity> {
 		// TODO Auto-generated method stub
 		return fetch;
 
+	}
+
+	/**
+	 * 设置财务信息
+	 * <p>
+	 * TODO设置财务信息
+	 *
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object setFinanceInfo(HttpServletRequest request) {
+		String orderid = request.getParameter("orderid");
+		String sqlstring = sqlManager.get("select_order_pnrs_info");
+		Sql sql = Sqls.create(sqlstring);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("toc.ordernum", "=", orderid);
+		List<Record> query = dbDao.query(sql, cnd, null);
+		double yingshousum = 0;
+		double chengbensum = 0;
+		for (Record record : query) {
+			record.get("costpricesum");
+		}
+		return null;
 	}
 
 }

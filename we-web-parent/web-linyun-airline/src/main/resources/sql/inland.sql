@@ -218,3 +218,10 @@ t_pay_pnr tpp
 LEFT JOIN t_pay tp ON tpp.payId = tp.id
 left JOIN t_company_bank_card tcb ON tp.bankId = tcb.id
 $condition
+/*select_order_pnrs_info*/
+SELECT
+	tpi.*
+FROM
+	t_order_customneed toc
+INNER JOIN t_pnr_info tpi ON toc.id = tpi.needid
+$condition
