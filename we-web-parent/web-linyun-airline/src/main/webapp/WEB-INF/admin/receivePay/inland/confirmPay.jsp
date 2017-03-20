@@ -58,7 +58,7 @@
 					<td>银行：</td>
 					<td>
 						<select id="bankComp" name="bankComp" onchange="bankSelect();" class="form-control input-sm">
-							<option>--请选择--</option>
+							<!-- <option>--请选择--</option> -->
 							<c:forEach var="one" items="${obj.bankList}">
 	                        	<option value="${one.id }">${one.dictName }</option>
 	                        </c:forEach>
@@ -66,12 +66,12 @@
 					</td>
 					<td>银行卡名称：</td>
 					<td><select id="cardName" name="cardName" onchange="cardSelect();" class="form-control input-sm">
-							<option>--请选择--</option>
+							<!-- <option>--请选择--</option> -->
 					</select></td>
 					<td>卡号：</td>
 					<td>
 						<select id="cardNum" name="cardNum" class="form-control input-sm">
-							<option>--请选择--</option>
+							<!-- <option>--请选择--</option> -->
 						</select>
 					</td>
 					<td>合计：</td>
@@ -220,7 +220,8 @@
 			},
 			url : '${base}/admin/receivePay/inland/getCardNames.html',
 			success : function(data) {
-				var option = "<option>--请选择--</option>";
+				/* var option = "<option>--请选择--</option>"; */
+				var option = "";
 				var nameNtr = option;
 				var numStr = option;
 				for(var i=0;i< data.length;i++){
@@ -245,7 +246,8 @@
 			},
 			url : '${base}/admin/receivePay/inland/getCardNums.html',
 			success : function(data) {
-				var str = "<option>--请选择--</option>";
+				/* var str = "<option>--请选择--</option>"; */
+				var str = "";
 				for(var i=0;i< data.length;i++){
 					str += '<option value="'+data[i]+'">'+data[i]+'</option>';
 				}

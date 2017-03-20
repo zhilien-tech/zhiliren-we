@@ -94,6 +94,7 @@
 						window.parent.createMinCanlender();
 						window.parent.minCalendarbackground();
 						window.parent.minCalendarInit();
+						window.parent.removeClass();
 					},
 					error : function(xhr) {
 						layer.msg("更新失败", "", 2000);
@@ -146,6 +147,7 @@
 						window.parent.createMinCanlender();
 						window.parent.minCalendarbackground();
 						window.parent.minCalendarInit();
+						window.parent.removeClass();
 					},
 					error : function() {
 						layer.msg("删除失败", "", 3000);
