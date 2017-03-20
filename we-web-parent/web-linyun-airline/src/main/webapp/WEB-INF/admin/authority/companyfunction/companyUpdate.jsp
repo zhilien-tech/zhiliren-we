@@ -160,11 +160,12 @@
 		}
 		//默认选中个人信息和操作台
 		function zTreeBeforeCheck(treeId, treeNode) {
-			if((treeNode.id == 43 || treeNode.id == 44) && treeNode.checked){
+			/* if((treeNode.id == 43 || treeNode.id == 44) && treeNode.checked){
 				return false ;
 			}else{
 				return true;
-			}
+			} */
+			return true;
 		};
 		//遍历得到的对象
 		var zNodes =[

@@ -17,7 +17,9 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.enums.InvoiceInfoEnum;
+import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.entities.TInvoiceInfoEntity;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
@@ -41,9 +43,15 @@ public class KaiInvoiceParamForm extends DataTablesParamForm {
 	private String invoicenum;//发票号
 	private String paymentunit;//付款单位
 
+	private Long companyid;
+
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("opid", "=", userid);
+		if (!Util.isEmpty(companyid)) {
+			cnd.and("comId", "=", companyid);
+		}
+		cnd.and("ordertype", "=", OrderTypeEnum.FIT.intKey());
 		cnd.and("invoicetype", "=", InvoiceInfoEnum.INVOIC_ING.intKey());//开发票中
 		return cnd;
 	}

@@ -34,7 +34,9 @@ import com.linyun.airline.admin.receivePayment.entities.TPayPnrEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.constants.CommonConstants;
+import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.entities.DictInfoEntity;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TInvoiceDetailEntity;
 import com.linyun.airline.entities.TInvoiceInfoEntity;
@@ -115,6 +117,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		}
 		invoiceinfo.setOpid(new Long(user.getId()).intValue());
 		invoiceinfo.setOptime(new Date());
+		invoiceinfo.setOrdertype(OrderTypeEnum.FIT.intKey());
 		//保存发票信息
 		TInvoiceInfoEntity insert = dbDao.insert(invoiceinfo);
 		List<Map<String, String>> details = (List<Map<String, String>>) fromJson.get("invoicedetails");
@@ -171,6 +174,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		}
 		invoiceinfo.setOpid(new Long(user.getId()).intValue());
 		invoiceinfo.setOptime(new Date());
+		invoiceinfo.setOrdertype(OrderTypeEnum.FIT.intKey());
 		//保存发票信息
 		TInvoiceInfoEntity insert = dbDao.insert(invoiceinfo);
 		List<Map<String, String>> details = (List<Map<String, String>>) fromJson.get("invoicedetails");
@@ -257,7 +261,6 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 	 */
 	@SuppressWarnings("unchecked")
 	public Object listKaiInvoiceData(KaiInvoiceParamForm paramForm, HttpServletRequest request) {
-
 		//检索条件
 		Integer status = paramForm.getStatus();//状态
 		String username = paramForm.getUsername();//开票人
@@ -269,7 +272,10 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		paramForm.setUserid(new Long(user.getId()).intValue());
+		paramForm.setCompanyid(company.getId());
 		Map<String, Object> DatatablesData = this.listPage4Datatables(paramForm);
 		List<Record> listdata = (List<Record>) DatatablesData.get("data");
 		for (Record record : listdata) {
@@ -343,7 +349,10 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		paramForm.setUserid(new Long(user.getId()).intValue());
+		paramForm.setCompanyid(company.getId());
 		Map<String, Object> datatableData = this.listPage4Datatables(paramForm);
 
 		return datatableData;
