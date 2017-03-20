@@ -90,8 +90,8 @@ public class Word2Html {
 	 */
 	public void docToHtml(String sourceFileName, String targetFileName) throws Exception {
 		initFolder(targetFileName);
-
-		String imagePathStr = "D:\\image\\";
+		String str = System.getProperty("java.io.tmpdir");
+		String imagePathStr = str + File.separator + "\\image\\";
 		File file = new File(imagePathStr);
 		if (!file.exists()) {
 			file.mkdir();
@@ -111,7 +111,7 @@ public class Word2Html {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			return "image/" + name;
+			return "image" + File.separator + name;
 		});
 		wordToHtmlConverter.processDocument(wordDocument);
 		Document htmlDocument = wordToHtmlConverter.getDocument();
