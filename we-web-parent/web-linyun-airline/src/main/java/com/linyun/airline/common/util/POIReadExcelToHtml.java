@@ -81,8 +81,7 @@ public class POIReadExcelToHtml {
 			}
 			System.out.println(htmlExcel);
 			writeFile(htmlExcel, "E://123.html");
-			HtmlToPdf htmlToPdf = new HtmlToPdf();
-			htmlToPdf.htmlConvertToPdf("E://123.html", "E://123.pdf");
+			HtmlToPdf.htmlConvertToPdf("E://123.html", "E://123.pdf");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
