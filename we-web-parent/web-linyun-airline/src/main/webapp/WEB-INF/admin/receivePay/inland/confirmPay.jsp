@@ -89,7 +89,7 @@
 					<td>用途：</td>
 					<td><select id="purpose" name="purpose" class="form-control input-sm">
 							<c:forEach var="one" items="${obj.fkytList}">
-	                        	<option value="${one.id }">${one.dictName }</option>
+	                        	<option value="${one.id }">${one.comDictName }</option>
 	                        </c:forEach>
 					</select></td>
 					<td>资金种类：</td>

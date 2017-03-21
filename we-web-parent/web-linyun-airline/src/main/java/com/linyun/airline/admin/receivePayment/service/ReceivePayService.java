@@ -396,6 +396,15 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		return result;
 	}
 
+	//查询用途 公司字典
+	public List<ComDictInfoEntity> findYTByName(String name, String typeCode) throws Exception {
+		Cnd cnd = Cnd.NEW();
+		cnd.and("comDictName", "like", Strings.trim(name) + "%").and("status", "=", DataStatusEnum.ENABLE.intKey())
+				.and("comTypeCode", "=", typeCode);
+		List<ComDictInfoEntity> query = dbDao.query(ComDictInfoEntity.class, cnd, null);
+		return query;
+	}
+
 	/**
 	 * (确认收款页面)
 	 *
@@ -452,16 +461,6 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		}
 		return map;
 
-	}
-
-	//查询用途 公司字典
-	public List<ComDictInfoEntity> findYTByName(String name, String typeCode) throws Exception {
-		List<ComDictInfoEntity> infoList = dbDao.query(
-				ComDictInfoEntity.class,
-				Cnd.where("comDictName", "like", Strings.trim(name) + "%")
-						.and("status", "=", DataStatusEnum.ENABLE.intKey()).and("comTypeCode", "=", typeCode), null);
-
-		return infoList;
 	}
 
 	/**
@@ -551,6 +550,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		}
 		map.put("bzList", BZList);
 
+		//付款用途
 		//付款用途
 		List<ComDictInfoEntity> fkytList = new ArrayList<ComDictInfoEntity>();
 		try {

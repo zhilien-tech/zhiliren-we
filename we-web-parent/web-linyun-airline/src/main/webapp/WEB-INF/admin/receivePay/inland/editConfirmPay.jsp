@@ -107,10 +107,10 @@
 	                        	<%-- <option value="${one.id }">${one.dictName }</option> --%>
 	                        	<c:choose>
 	                          		<c:when test="${obj.payList[0].purpose eq one.id }">
-			                        	 <option value="${one.id }" selected="selected">${one.dictName }</option>
+			                        	 <option value="${one.id }" selected="selected">${one.comDictName }</option>
 	                          		</c:when>
 	                          		<c:otherwise>
-		                        	 <option value="${one.id }">${one.dictName }</option>
+		                        	 <option value="${one.id }">${one.comDictName }</option>
 	                          		</c:otherwise>
 	                          	</c:choose>  
 	                        </c:forEach>
