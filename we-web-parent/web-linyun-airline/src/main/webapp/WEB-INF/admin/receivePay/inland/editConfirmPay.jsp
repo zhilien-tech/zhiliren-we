@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
-
 <!DOCTYPE HTML>
 <html lang="en-US">
 <head>
@@ -17,8 +16,8 @@
 	<div class="modal-top">
 		<div class="modal-header boderButt">
 			<button type="button" id="closePayWindow" class="btn btn-primary right btn-sm">取消</button>
-			<button  type="button" id="submit" onclick="confirmPayClick();" class="btn btn-primary right btn-sm">确认付款</button>
-			<h4>付款</h4>
+			<button  type="button" id="submit" onclick="confirmPayClick();" class="btn btn-primary right btn-sm">保存</button>
+			<h4>编辑付款</h4>
 		</div>
 		<div class="modal-body" style="height: 600px; overflow-y: auto;">
 			
@@ -39,16 +38,16 @@
 					<input id="payIds" name="payIds" type="hidden" value="${obj.ids }">
 					<input id="payNames" name="payNames" type="hidden" value="${obj.sameName }">
 					<input id="operators" name="operators" type="hidden" value="${obj.operators }"><!-- 水单url -->
-					<c:forEach var="one" items="${obj.orders}">
+					<c:forEach var="one" items="${obj.payList}">
                 		<tr>
-                			<td>${one.ordernum }</td>
-                			<td>${one.pnrnum }</td>
+                			<td>${one.ordersnum }</td>
+                			<td>${one.pnr }</td>
                 			<td>${one.cusgroupnum }</td>
                 			<td>${one.shortname }</td>
-                			<td>${one.billdate }</td>
+                			<td>${one.billingdate }</td>
                 			<td>${one.peoplecount }</td>
                 			<td>${one.approver }</td>
-                			<td>${one.saleprice }</td>
+                			<td>${one.salesprice }</td>
                 		</tr>
                 	</c:forEach>
 				</tbody>
@@ -60,18 +59,28 @@
 						<select id="bankComp" name="bankComp" onchange="bankSelect();" class="form-control input-sm">
 							<!-- <option>--请选择--</option> -->
 							<c:forEach var="one" items="${obj.bankList}">
-	                        	<option value="${one.id }">${one.dictName }</option>
+	                 			<c:choose>
+	                          		<c:when test="${obj.companybank.bankComp eq one.id }">
+			                        	 <option value="${one.id }" selected="selected">${one.bankName }</option>
+	                          		</c:when>
+	                          		<c:otherwise>
+		                        	 <option value="${one.id }">${one.bankName }</option>
+	                          		</c:otherwise>
+	                          	</c:choose>       	
 	                        </c:forEach>
+	                       
 						</select>
 					</td>
 					<td>银行卡名称：</td>
 					<td><select id="cardName" name="cardName" onchange="cardSelect();" class="form-control input-sm">
 							<!-- <option>--请选择--</option> -->
+							<option>${obj.companybank.cardName }</option>
 					</select></td>
 					<td>卡号：</td>
 					<td>
 						<select id="cardNum" name="cardNum" class="form-control input-sm">
 							<!-- <option>--请选择--</option> -->
+							<option>${obj.companybank.cardNum }</option>
 						</select>
 					</td>
 					<td>合计：</td>
@@ -83,13 +92,27 @@
 				<tr>
 					<td>国内外：</td>
 					<td><select id="payAddress" name="payAddress" class="form-control input-sm">
+						<c:if test='${obj.payList[0].payaddress eq 1}'>
 							<option value=1 selected="selected">国内</option>
 							<option value=2>境外</option>
+						</c:if>
+						<c:if test='${obj.payList[0].payaddress eq 2}'>
+							<option value=1>国内</option>
+							<option value=2 selected="selected">境外</option>
+						</c:if>
 					</select></td>
 					<td>用途：</td>
 					<td><select id="purpose" name="purpose" class="form-control input-sm">
 							<c:forEach var="one" items="${obj.fkytList}">
-	                        	<option value="${one.id }">${one.dictName }</option>
+	                        	<%-- <option value="${one.id }">${one.dictName }</option> --%>
+	                        	<c:choose>
+	                          		<c:when test="${obj.payList[0].purpose eq one.id }">
+			                        	 <option value="${one.id }" selected="selected">${one.dictName }</option>
+	                          		</c:when>
+	                          		<c:otherwise>
+		                        	 <option value="${one.id }">${one.dictName }</option>
+	                          		</c:otherwise>
+	                          	</c:choose>  
 	                        </c:forEach>
 					</select></td>
 					<td>资金种类：</td>
@@ -100,28 +123,42 @@
 							<option value=4>POS</option>
 					</select></td>
 					<td>付款时间：</td>
-					<td><input id="payDate" name="payDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" placeholder="2017-02-20" class="form-control input-sm"></td>
+					<td><input id="payDate" name="payDate" value="${obj.payList[0].payDate}" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" placeholder="2017-02-20" class="form-control input-sm"></td>
 				</tr>
 				<tr>
 					<td>手续费：</td>
-					<td><input id="payFees" name="payFees" type="text" class="form-control input-sm"></td>
+					<td><input id="payFees" name="payFees" value="${obj.payList[0].payfees}" type="text" class="form-control input-sm"></td>
 					<td>金额：</td>
-					<td><input id="payMoney" name="payMoney" type="text" class="form-control input-sm"></td>
+					<td><input id="payMoney" name="payMoney" value="${obj.payList[0].paymoney}"  type="text" class="form-control input-sm"></td>
 					<td colspan="2">
 						<input id="chineseMoney" type="text" class="form-control input-sm textIpnu" disabled="disabled"></td>
 					<td class="bj">币种：</td>
 					<td><select id="payCurrency" name="payCurrency" class="form-control input-sm">
 							<option value="0">--请选择--</option>
 							<c:forEach var="one" items="${obj.bzList}">
-	                        	<option value="${one.id }">${one.dictCode }</option>
+	                        	<%-- <option value="${one.id }">${one.dictCode }</option> --%>
+	                        	<c:choose>
+	                          		<c:when test="${obj.payList[0].paycurrency eq one.id }">
+			                        	 <option value="${one.id }" selected="selected">${one.dictCode }</option>
+	                          		</c:when>
+	                          		<c:otherwise>
+		                        	 <option value="${one.id }">${one.dictCode }</option>
+	                          		</c:otherwise>
+	                          	</c:choose>  
 	                        </c:forEach>
 					</select></td>
 				</tr>
 				<tr>
 					<td>发票：</td>
 					<td><select id="isInvioce" name="isInvioce" class="form-control input-sm">
-							<option value=1>有</option>
+						<c:if test='${obj.payList[0].isinvioce eq "1"}'>
+							<option value=1 selected="selected">有</option>
 							<option value=0>无</option>
+						</c:if>
+						<c:if test='${obj.payList[0].isinvioce eq "0"}'>
+							<option value=1>有</option>
+							<option value=0 selected="selected">无</option>
+						</c:if>
 					</select></td>
 					<td>申请人：</td>
 					<td><input id="proposer" name="proposer" type="text" class="form-control input-sm" disabled="disabled" value="${obj.proposer}"></td>
@@ -133,9 +170,9 @@
 			</table>
 			
 			<input type="text" name="uploadFile" id="uploadFile" />
-			<input id="receiptUrl" name="receiptUrl" type="hidden" ><!-- 水单url -->
+			<input id="receiptUrl" name="receiptUrl" value="${obj.receiptUrl }" type="hidden" ><!-- 水单url -->
 			<div class="bankSlipImg"  align="center">
-				<img id="receiptImg" width="400" height="300" alt="" src="">
+				<img id="receiptImg" width="400" height="300" alt="" src="{obj.receiptUrl}">
 			</div>
 		</div>
 	</div>
@@ -228,7 +265,8 @@
 						nameNtr += '<option value="'+data[i]+'">'+data[i]+'</option>';
 					}
 					document.getElementById("cardName").innerHTML = nameNtr;
-					document.getElementById("cardNum").innerHTML = numStr;
+					/* document.getElementById("cardNum").innerHTML = numStr; */
+					cardSelect();
 				},
 				error : function(request) {
 					

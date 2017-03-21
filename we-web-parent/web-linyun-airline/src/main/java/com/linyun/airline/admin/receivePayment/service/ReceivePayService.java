@@ -245,16 +245,142 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
 		List<Record> data = (List<Record>) listdata.get("data");
+		String pids = "";
 		for (Record record : data) {
-			Sql sql = Sqls.create(sqlManager.get("receivePay_payed_list"));
-			Cnd cnd = Cnd.NEW();
-			cnd.and("p.id", "=", record.getString("pid"));
-			List<Record> orders = dbDao.query(sql, cnd, null);
-			record.put("orders", orders);
+			pids += record.getString("pid") + ",";
 		}
+		if (pids.length() > 1) {
+			pids = pids.substring(0, pids.length() - 1);
+		}
+		Sql sql = Sqls.create(sqlManager.get("receivePay_payed_list"));
+		Cnd cnd = Cnd.NEW();
+		cnd.and("p.id", "in", pids);
+		cnd.and("pi.orderPnrStatus", "=", APPROVALPAYED);
+		List<Record> orders = dbDao.query(sql, cnd, null);
+
+		for (Record record : data) {
+			String pid = record.getString("pid");
+			String payId = "";
+			List<Record> newOrders = new ArrayList<Record>();
+			for (Record r : orders) {
+				String id = r.getString("id");
+				/*String piid = r.getString("piid");*/
+				payId += id + ",";
+				if (Util.eq(pid, id)) {
+					newOrders.add(r);
+				}
+			}
+			if (payId.length() > 1) {
+				payId = payId.substring(0, payId.length() - 1);
+			}
+			record.put("orders", newOrders);
+			record.put("payid", payId);
+		}
+
 		listdata.remove("data");
 		listdata.put("data", data);
 		return listdata;
+	}
+
+	/**
+	 * 
+	 * 编辑已付款
+	 * <p>
+	 *
+	 * @param request
+	 * @return 
+	 */
+	public Object editConfirmPay(HttpServletRequest request, HttpSession session) {
+
+		//当前公司所有用户id
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		String payId = request.getParameter("payid");
+		String sqlString = sqlManager.get("receivePay_payed_edit");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("p.id", "in", payId);
+		cnd.and("pi.orderPnrStatus", "=", APPROVALPAYED);
+		List<Record> payList = dbDao.query(sql, cnd, null);
+
+		//总金额
+		double totalMoney = 0;
+		//申请人
+		String proposer = "";
+		//审批人
+		String approver = "";
+		//审批结果
+		String approveresult = "";
+		//操作人
+		String operator = "";
+		for (Record record : payList) {
+			if (!Util.isEmpty(record.get("salespricesum"))) {
+				Double salespricesum = (Double) record.get("salespricesum");
+				totalMoney += Double.valueOf(salespricesum);
+			}
+			proposer = record.getString("proposerman");
+			approver = record.getString("approver"); //审批人
+			String opr = record.getString("operator"); //操作人
+			if (!Util.eq(operator, opr)) {
+				operator = opr;
+			}
+			approveresult = record.getString("approveresult");
+		}
+		result.put("proposer", proposer);
+		result.put("approver", approver);
+		if (Util.eq(APPROVALENABLE, approveresult)) {
+			result.put("approveresult", "同意");
+		} else {
+			result.put("approveresult", "拒绝");
+		}
+		result.put("payList", payList);
+		//总金额
+		result.put("totalMoney", totalMoney);
+
+		//付款的水单信息
+		TPayReceiptEntity receiptEntity = dbDao.fetch(TPayReceiptEntity.class, Cnd.where("payId", "in", payId));
+		if (!Util.isEmpty(receiptEntity)) {
+			result.put("receiptUrl", receiptEntity.getReceiptUrl());
+		}
+
+		//银行名称
+		List<TBankCardEntity> bankList = new ArrayList<TBankCardEntity>();
+		try {
+			bankList = dbDao.query(TBankCardEntity.class, Cnd.NEW().and("companyid", "=", companyId)
+					.groupBy("bankName"), null);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		result.put("bankList", bankList);
+		//币种
+		List<DictInfoEntity> BZList = new ArrayList<DictInfoEntity>();
+		try {
+			BZList = externalInfoService.findDictInfoByName("", BZCODE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		result.put("bzList", BZList);
+		//付款用途
+		List<DictInfoEntity> fkytList = new ArrayList<DictInfoEntity>();
+		try {
+			fkytList = externalInfoService.findDictInfoByName("", YTCODE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		result.put("fkytList", fkytList);
+		result.put("payId", payId);
+
+		//付款的银行卡信息
+		String bankSqlStr = sqlManager.get("receivePay_payed_bank");
+		Sql bankSql = Sqls.create(bankSqlStr);
+		bankSql.setParam("PayId", payId);
+		Record bank = dbDao.fetch(bankSql);
+		result.put("companybank", bank);
+		result.put("payId", payId);
+		return result;
 	}
 
 	/**
@@ -571,9 +697,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		List<String> cardNames = new ArrayList<String>();
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Long companyId = company.getId();
-		DictInfoEntity bankEntity = dbDao.fetch(DictInfoEntity.class, Cnd.where("id", "=", bankId));
+		TBankCardEntity bankEntity = dbDao.fetch(TBankCardEntity.class, Cnd.where("id", "=", bankId));
 		if (!Util.isEmpty(bankEntity)) {
-			String bankName = bankEntity.getDictName();
+			String bankName = bankEntity.getBankCardType();
 			List<TBankCardEntity> bankCardList = dbDao.query(TBankCardEntity.class, Cnd.where("status", "=", ENABLE)
 					.and("bankName", "=", bankName).and("companyId", "=", companyId).groupBy("cardName"), null);
 			for (TBankCardEntity bankCardEntity : bankCardList) {
