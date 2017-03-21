@@ -150,4 +150,16 @@ public class BankCardModule {
 		bankCardViewService.deleteUserInfo(bankCardId);
 		return JsonResult.success("删除成功!");
 	}
+
+	/**
+	 * 
+	 * 根据输入显示公司名称
+	 */
+	@At
+	@POST
+	public Object selectBankCardNames(@Param("p") final String findCompany,
+			@Param("companyName") final String companyName) {
+
+		return this.bankCardViewService.selectBankCardNames(findCompany, companyName);
+	}
 }

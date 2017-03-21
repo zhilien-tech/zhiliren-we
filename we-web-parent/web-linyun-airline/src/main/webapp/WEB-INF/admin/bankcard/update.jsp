@@ -16,6 +16,7 @@
 <link rel="stylesheet"
 	href="${base }/public/dist/css/bootstrapValidator.css" />
 <link rel="stylesheet" href="${base}/public/dist/css/bankcardManage.css"><!-- 本页面style -->
+<link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
 </head>
 <body>
 	<div class="modal-top">
@@ -71,16 +72,30 @@
 						
 							<label class="col-sm-2 text-right padding">银行：</label>
 							<div class="col-sm-2 padding">
-								<select id="findBank" class="form-control input-sm"
+								<%-- <select id="findBank" class="form-control input-sm"
 									name="bankName">
 									<c:forEach items="${obj.bankList }" var="each">
 		               					<option value="${each.dictName }" <c:if test="${each.dictName eq obj.bankCardInfo.bankName}">selected</c:if>>
 		               					${each.dictName }</option>
 		               				</c:forEach>
 	
+								</select> --%>
+								<select id="findBank" name="findBank" onchange="setSelectedAreaIds()" class="form-control select2 inpImpWid" multiple="multiple" >
+									
+									<option value="${obj.bankCardInfo.bankName }" selected="selected">${obj.bankCardInfo.bankName }</option>
 								</select>
+				               	<input name="bankName" id="bankNameId"  type="hidden" placeholder="单位名称" />
 							</div>
 						</div>
+						<!-- 设置已选中的项 -->
+							<script type="text/javascript">
+								$(setSelectedAreaIds());
+								function setSelectedAreaIds() {
+									var _selectedAreaIds = $("#findBank").select2("val");
+									alert(_selectedAreaIds);
+									$("#bankNameId").val(_selectedAreaIds);
+								}
+							</script>
 						<div class="form-group form-group1">
 						
 							<label class="col-sm-1 text-right padding">币种：</label>
@@ -124,6 +139,12 @@
 	<!-- AdminLTE App -->
 	<script src="${base}/common/js/layer/layer.js"></script>
 	<!-- layer -->
+	<!-- Select2 -->
+	<script src="${base}/public/plugins/select2/select2.full.min.js"></script>
+	<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
+	<script type="text/javascript">
+		var BASE_PATH = '${base}';
+	</script>
 	<script type="text/javascript">
 	//验证输入内容不能为空
 	$(document).ready(function(){
@@ -160,8 +181,8 @@
 	                    },
 	                     stringLength: {/*长度提示*/
 	                   	    min: 1,
-	                   	    max: 6,
-	                   	    message: '银行卡名长度不得超出6个汉字!'
+	                   	    max: 8,
+	                   	    message: '银行卡名长度不得超出8个汉字!'
 	                   	  }
 	                }
 	            },
@@ -192,7 +213,7 @@
 	                    }
 	                }
 	            },
-	            bankName: {
+	            findBank: {
 	            	validators: {
 	            		notEmpty: {
 	                        message: '请选择银行!'
@@ -277,6 +298,41 @@
 		    // 取消之后不用处理
 		});
 	}
+
+	
+	
+	//银行名称select2
+	$("#findBank").select2({
+			ajax : {
+				url : BASE_PATH + "/admin/bankcard/selectBankCardNames.html",
+				dataType : 'json',
+				delay : 250,
+				type : 'post',
+				data : function(params) {
+					return {
+						p : params.term, // search term
+						companyName:$("#bankNameId").val(),
+						page : params.page
+					};
+				},
+				processResults : function(data, params) {
+					params.page = params.page || 1;
+
+					return {
+						results : data
+					};
+				},
+				cache : false
+			},
+			escapeMarkup : function(markup) {
+				return markup;
+			}, // let our custom formatter work
+			minimumInputLength : 1,
+			maximumInputLength : 20,
+			language : "zh-CN", //设置 提示语言
+			maximumSelectionLength : 1, //设置最多可以选择多少项
+			tags : false, //设置必须存在的选项 才能选中
+		});
 
 	</script>
 
