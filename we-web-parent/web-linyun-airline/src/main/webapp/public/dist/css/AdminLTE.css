@@ -3131,7 +3131,7 @@ table.text-center th {
     border-radius: 3px;
     border: solid 1px #eaeaea;
     box-shadow: 0px 0px 5px #dedede;
-    width: 350px;
+    /* width: 350px; */
     margin: 0 auto;
 }
 .login-box-body .form-control-feedback,
@@ -4959,9 +4959,9 @@ p{margin: 0 0 0px 10px;}
 .marginBott5{margin-bottom: 5px;}
 .LoginBtn{position: relative;top: 18px;margin-bottom: 35px;}
 .authText{width: 40%;}
-.authImg{    margin-right: 10px;width: 47%;background-color: #e47365;float: right;position: relative;margin-top: -28px;border-radius: 3px;}
+.authImg{margin-right: 10px;width: 47%;float: right;position: relative;margin-top: -28px;}
 .loginTitle{color: #367fa9; font-weight: 200;font-family: "HanHei SC","PingHei","PingFang SC","STHeitiSC-Light","Helvetica Neue","Helvetica","Arial",sans-serif !important;}
-.form-control-feedback {position: absolute;top: -2px;right:242px;}
+.form-control-feedback {position: absolute;top: -2px;width: 100%;text-align: left;left: 10px;}
 .loginpaddingrig{padding-left:30px;}
 .login-p{font-size: 12px;color:#ccc;text-align: center;line-height: 67px;}
 .toolText{position: relative;top: -306px;color:#ca2e2e !important;}
@@ -4984,3 +4984,7 @@ p{margin: 0 0 0px 10px;}
 /*--input 禁用图标不显示--*/
 .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {pointer-events: none;}
 /*--end input 禁用图标不显示--*/
+table.dataTable thead .sorting_asc:after {display:none;}
+table.dataTable thead > tr > th {padding-right: 5px;}
+table.dataTable thead .sorting:after {display:none;}
+table.dataTable thead .sorting_desc:after {display:none;}
