@@ -21,5 +21,6 @@ public class LoginForm {
 
 	/**登录成功的返回页*/
 	private String returnUrl;
-
+	/**判断是否为手机端登录*/
+	private String flag;
 }

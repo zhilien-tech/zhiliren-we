@@ -8,11 +8,11 @@
     <title>添加银行卡</title>
 	<link rel="stylesheet" href="${base }/public/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/AdminLTE.css">
-  <%-- <link rel="stylesheet" href="${base }/public/dist/css/bankcardManage.css"> --%>
-<link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
-<%-- <link rel="stylesheet" href="${base}/public/dist/css/user.css"> --%>
-<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
-<link rel="stylesheet" href="${base}/public/dist/css/bankcardManage.css"><!-- 本页面style -->
+    <%-- <link rel="stylesheet" href="${base }/public/dist/css/bankcardManage.css"> --%>
+	<link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
+	<%-- <link rel="stylesheet" href="${base}/public/dist/css/user.css"> --%>
+	<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
+	<link rel="stylesheet" href="${base}/public/dist/css/bankcardManage.css"><!-- 本页面style -->
 </head>
 <body>
 	<div class="modal-top">
@@ -60,15 +60,25 @@
 			                
 			                  <label class="col-sm-2 text-right padding">银行：</label>
 			                  <div class="col-sm-2 padding">
-			                    <select id="findBank" class="form-control input-sm" onchange="selectBankName();" name="bankName">
+			                    <%-- <select id="findBank" class="form-control input-sm" onchange="selectBankName();" name="bankName">
 			               			<option value="">请选择</option>
 
 			               			<c:forEach items="${obj.bankList }" var="each">
 			               				<option value="${each.dictName }">${each.dictName }</option>
 			               			</c:forEach>
-			                    </select>
+			                    </select> --%>
+			                    <select id="findBank" name="findBank" onchange="setSelectedAreaIds()" class="form-control select2 inpImpWid" multiple="multiple" ></select>
+				               	<input name="bankName" id="bankNameId"  type="hidden" placeholder="单位名称" />
 			                  </div>
 			                </div>
+			                <!-- 设置已选中的项 -->
+							<script type="text/javascript">
+								function setSelectedAreaIds() {
+									var _selectedAreaIds = $("#findBank").select2("val");
+									
+									$("#bankNameId").val(_selectedAreaIds);
+								}
+							</script>
 			                <div class="form-group form-group1">
 			                  <label class="col-sm-1 text-right padding">币种：</label>
 			                  <div class="col-sm-2 padding">
@@ -107,6 +117,12 @@
 	<script src="${base }/public/plugins/slimScroll/jquery.slimscroll.min.js"></script><!-- SlimScroll -->
 	<script src="${base }/public/plugins/fastclick/fastclick.js"></script><!-- FastClick -->
 	<script src="${base }/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
+	<!-- Select2 -->
+	<script src="${base}/public/plugins/select2/select2.full.min.js"></script>
+	<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
+	<script type="text/javascript">
+		var BASE_PATH = '${base}';
+	</script>
 	<script type="text/javascript">
 	//验证输入内容不能为空
  	 $(document).ready(function(){
@@ -147,10 +163,10 @@
 	                    }
 	                }
 	            },
-	            bankName: {
+	            findBank: {
 	            	validators: {
 	            		notEmpty: {
-	                        message: '请选择银行!'
+	                        message: '银行不能为空!'
 	                    }
 	                }
 	            },
@@ -272,8 +288,38 @@
 		});
 	}
 		
-	
-	
+	//银行名称select2
+		$("#findBank").select2({
+				ajax : {
+					url : BASE_PATH + "/admin/bankcard/selectBankCardNames.html",
+					dataType : 'json',
+					delay : 250,
+					type : 'post',
+					data : function(params) {
+						return {
+							p : params.term, // search term
+							companyName:$("#bankNameId").val(),
+							page : params.page
+						};
+					},
+					processResults : function(data, params) {
+						params.page = params.page || 1;
+
+						return {
+							results : data
+						};
+					},
+					cache : false
+				},
+				escapeMarkup : function(markup) {
+					return markup;
+				}, // let our custom formatter work
+				minimumInputLength : 1,
+				maximumInputLength : 20,
+				language : "zh-CN", //设置 提示语言
+				maximumSelectionLength : 1, //设置最多可以选择多少项
+				tags : false, //设置必须存在的选项 才能选中
+			});
 	
 	
 	

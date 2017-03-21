@@ -17,9 +17,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
 import com.linyun.airline.common.enums.AirlinePolicyEnum;
-import com.linyun.airline.entities.TAirlinePolicyEntity;
 import com.uxuexi.core.common.util.Util;
-import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
@@ -63,7 +61,8 @@ public class TAirlinePolicyForm extends DataTablesParamForm {
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 
-		String sqlString = EntityUtil.entityCndSql(TAirlinePolicyEntity.class);
+		/*String sqlString = EntityUtil.entityCndSql(TAirlinePolicyEntity.class);*/
+		String sqlString = sqlManager.get("airlinepolicy_datalist");
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;
@@ -94,7 +93,10 @@ public class TAirlinePolicyForm extends DataTablesParamForm {
 
 			cnd.and("updateTime", "<", endTime);
 		}
-
+		/*if (!Util.isEmpty(updateTime)) {
+			cnd.orderBy("updateTime", "desc");
+		}*/
+		cnd.orderBy("updateTime", "desc");
 		return cnd;
 	}
 }

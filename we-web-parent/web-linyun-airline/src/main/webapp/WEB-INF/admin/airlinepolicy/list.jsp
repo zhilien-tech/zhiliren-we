@@ -34,7 +34,7 @@
                       <option>JQ</option> -->
                       <option value="">请选择</option>
                       <c:forEach items="${obj.airlineCompanyList }" var="each">
-                      	<option value="${each.id }">${each.dictCode }</option>
+                      	<option value="${each.airlineCompanyId }">${each.airlineCompanyName }</option>
                       </c:forEach>
                     </select>
                   </div>
@@ -44,7 +44,7 @@
                       <option>亚洲</option> -->
                        <option value="">请选择</option>
                       <c:forEach items="${obj.areaList }" var="each">
-                      	<option value="${each.id}">${each.areaName }</option>
+                      	<option value="${each.areaId}">${each.areaName }</option>
                       </c:forEach>
                     </select>
                   </div>
@@ -81,6 +81,10 @@
                 <thead>
                 <tr>
                   <th>文件名</th>
+                  <th>航空公司</th>
+                  <th>地区</th>
+                  <th>修改日期</th>
+                  <th>类型</th>
                   <th>操作</th>
                 </tr>
                 </thead>
@@ -157,11 +161,23 @@
 	        },
 	        "columns": [
 	                    {"data": "filename", "bSortable": false},
+	                    {"data": "airlinecompanyname", "bSortable": false},
+	                    {"data": "areaname", "bSortable": false},
+	                    {"data": "updatetime", "bSortable": false,
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.updatetime;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance.substring(0,depositBalance.lastIndexOf(' '));
+	                    	}	
+	                    },
+	                    {"data": "type", "bSortable": false}
 	                   
 	            ],
 	        columnDefs: [{
 	            //   指定第一列，从0开始，0表示第一列，1表示第二列……
-	            targets: 1,
+	            targets: 5,
 	            render: function(data, type, row, meta) {
 	            	
 	            	var modify1 = '<a style="cursor:pointer;" href="'+row.pdfurl+'" target="_blank">预览</a>';
