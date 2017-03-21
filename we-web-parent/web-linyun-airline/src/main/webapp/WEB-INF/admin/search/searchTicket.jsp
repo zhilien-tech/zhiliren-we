@@ -560,7 +560,7 @@
 		<!-- 保存查询 js -->
 		<script src="${base}/admin/searchTicket/saveCustomerNeeds.js"></script>
 		<!-- 时间格式化 -->
-		<script src="${base}/admin/order/ordercommon.js"></script>
+		<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
 
 		<!-- 解析sabre -->
 		<script type="text/javascript">

@@ -263,18 +263,27 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			String pid = record.getString("pid");
 			String payId = "";
 			List<Record> newOrders = new ArrayList<Record>();
+			double totalmoney = 0.0;
 			for (Record r : orders) {
 				String id = r.getString("id");
+				String priceStr = r.getString("saleprice");
+				if (!Util.isEmpty(priceStr)) {
+					double price = Double.valueOf(priceStr);
+					totalmoney += price;
+				}
+
 				/*String piid = r.getString("piid");*/
 				payId += id + ",";
 				if (Util.eq(pid, id)) {
 					newOrders.add(r);
 				}
+
 			}
 			if (payId.length() > 1) {
 				payId = payId.substring(0, payId.length() - 1);
 			}
 			record.put("orders", newOrders);
+			record.put("totalmoney", totalmoney);
 			record.put("payid", payId);
 		}
 
