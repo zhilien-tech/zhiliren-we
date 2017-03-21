@@ -43,11 +43,17 @@ function saveOrderInfo(){
 		//出发城市
 		if (leavecity) {
 			leavecity = leavecity.join(',');
+			lenthcustom += leavecity;
+		}else{
+			lenthcustom += '';
 		}
 		row1.leavecity = leavecity;
 		//抵达城市
 		if (arrivecity) {
 			arrivecity = arrivecity.join(',');
+			lenthcustom += arrivecity;
+		}else{
+			lenthcustom += '';
 		}
 		row1.arrivecity = arrivecity;
 		row1.leavedate = cOutDate;
@@ -55,11 +61,8 @@ function saveOrderInfo(){
 		row1.tickettype = tickettype;
 		row1.cRemark = cRemark;
 		
-		lenthcustom += $(this).find('[name=cOutcity]').val();
-		lenthcustom += $(this).find('[name=cArrivalcity]').val();
 		lenthcustom += $(this).find('[name=cOutDate]').val();
 		lenthcustom += $(this).find('[name=cPersonAmount]').val();
-		lenthcustom += $(this).find('[name=tickettype]').val();
 		lenthcustom += $(this).find('[name=cRemark]').val();
 		
 		var airrows = [];
@@ -74,10 +77,16 @@ function saveOrderInfo(){
 			var cAirPretium = $(this).find('[name=cAirPretium]').val();
 			if (aircom) {
 				aircom = aircom.join(',');
+				lengthAir += aircom;
+			}else{
+				lengthAir += '';
 			}
 			airrow.aircom = aircom;
 			if (ailinenum) {
 				ailinenum = ailinenum.join(',');
+				lengthAir += ailinenum;
+			}else{
+				lengthAir += '';
 			}
 			airrow.ailinenum = ailinenum;
 			airrow.leavetime = cAirOutDate;
@@ -85,8 +94,6 @@ function saveOrderInfo(){
 			airrow.formprice = cAirCost;
 			airrow.price = cAirPretium;
 			
-			lengthAir += $(this).find('[name=cAirlineCompany]').val();
-			lengthAir += $(this).find('[name=cAirlineNum]').val();
 			lengthAir += $(this).find('[name=cAirOutDate]').val();
 			lengthAir += $(this).find('[name=cAirArrivalDate]').val();
 			lengthAir += $(this).find('[name=cAirCost]').val();
@@ -98,7 +105,6 @@ function saveOrderInfo(){
 			lenthcustom += lengthAir;
 		});
 		row1.airinfo = airrows;
-		
 		if(lenthcustom.length > 0){
 			row.push(row1);
 		}
