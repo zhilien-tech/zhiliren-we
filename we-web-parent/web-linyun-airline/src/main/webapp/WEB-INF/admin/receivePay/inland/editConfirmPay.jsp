@@ -35,7 +35,7 @@
 					</tr>
 				</thead>
 				<tbody id="inlandConfirmPayTbody">
-					<input id="payIds" name="payIds" type="hidden" value="${obj.ids }">
+					<input id="payIds" name="payIds" type="hidden" value="${obj.payId }">
 					<input id="payNames" name="payNames" type="hidden" value="${obj.sameName }">
 					<input id="operators" name="operators" type="hidden" value="${obj.operators }"><!-- 水单url -->
 					<c:forEach var="one" items="${obj.payList}">
@@ -172,7 +172,7 @@
 			<input type="text" name="uploadFile" id="uploadFile" />
 			<input id="receiptUrl" name="receiptUrl" value="${obj.receiptUrl }" type="hidden" ><!-- 水单url -->
 			<div class="bankSlipImg"  align="center">
-				<img id="receiptImg" width="400" height="300" alt="" src="{obj.receiptUrl}">
+				<img id="receiptImg" width="400" height="300" alt="" src="${obj.receiptUrl}">
 			</div>
 		</div>
 	</div>
@@ -210,20 +210,14 @@
 				async: false,
 				url: BASE_PATH + '/admin/receivePay/inland/updateInlandPay.html',
 				success : function(data) {
-					if(data === false){
-						parent.layer.msg("收款单位不一致，付款失败", "", 2000);
-					}else{
-						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-						parent.layer.close(index);
-						parent.layer.msg("付款成功", "", 1000);
-						parent.inlandPayTable.ajax.reload(
-								function(json){
-									autoHighLoad($('#inlandPayTable'));
-								}
-						);
-					}
-
-
+					var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+					parent.layer.close(index);
+					parent.layer.msg("编辑成功", "", 1000);
+					parent.inlandPayTable.ajax.reload(
+							function(json){
+								autoHighLoad($('#inlandPayTable'));
+							}
+					);
 				},
 				error: function () {
 					var index = parent.layer.getFrameIndex(window.name); //获取窗口索引

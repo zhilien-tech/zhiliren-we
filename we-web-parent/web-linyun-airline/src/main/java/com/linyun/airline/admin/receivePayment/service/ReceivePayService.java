@@ -44,6 +44,7 @@ import com.linyun.airline.admin.receivePayment.form.inland.InlandPayEdListSearch
 import com.linyun.airline.admin.receivePayment.form.inland.InlandPayListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.inland.InlandRecListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.inland.TSaveInlandPayAddFrom;
+import com.linyun.airline.admin.receivePayment.form.inland.TUpdateInlandPayAddFrom;
 import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
@@ -670,6 +671,97 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				searchViewService.addRemindMsg(map, ordernum, pnr, uid, PAYEDMSGTYPE, session);
 			}
 		}
+
+		return null;
+	}
+
+	/**
+	 * 
+	 * 编辑 付款
+	 * <p>
+	 *
+	 * @param form
+	 * @param session
+	 * @return 
+	 */
+	public Object updateInlandPay(TUpdateInlandPayAddFrom form, HttpSession session) {
+		List<TPayEntity> payList = new ArrayList<TPayEntity>();
+		//当前公司id
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
+		Long companyId = company.getId();
+		//当前登陆用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long loginUserId = loginUser.getId();
+
+		//付款订单id
+		String payIds = form.getPayIds();
+		//订单信息
+		Integer payAddress = form.getPayAddress();
+		Integer purpose = form.getPurpose();
+		Integer fundType = form.getFundType();
+		Date payDate = form.getPayDate();
+		Double payFees = form.getPayFees();
+		Double payMoney = form.getPayMoney();
+		Integer currency = form.getPayCurrency();
+		Integer isInvioce = form.getIsInvioce();
+		//银行卡信息
+		String bankComp = form.getBankComp();
+		String cardName = form.getCardName();
+		String cardNum = form.getCardNum();
+		//水单地址
+		String receiptUrl = form.getReceiptUrl();
+
+		TPayEntity payEntity = dbDao.fetch(TPayEntity.class, Cnd.where("id", "in", payIds));
+		payEntity.setPayAddress(payAddress);
+		payEntity.setPurpose(purpose);
+		payEntity.setFundType(fundType);
+		payEntity.setPayDate(payDate);
+		payEntity.setPayFees(payFees);
+		payEntity.setPayMoney(payMoney);
+		payEntity.setPayCurrency(currency);
+		payEntity.setIsInvioce(isInvioce);
+		dbDao.update(payEntity);
+
+		//更新银行卡信息
+		Integer bankId = payEntity.getBankId();
+		TCompanyBankCardEntity bankEntity = dbDao.fetch(TCompanyBankCardEntity.class, Cnd.where("id", "=", bankId));
+		bankEntity.setBankComp(bankComp);
+		bankEntity.setCardName(cardName);
+		bankEntity.setCardNum(cardNum);
+		dbDao.update(bankEntity);
+
+		//更新水单信息
+		TPayReceiptEntity payReceipt = dbDao.fetch(TPayReceiptEntity.class, Cnd.where("payId", "in", payIds));
+		if (!Util.isEmpty(receiptUrl)) {
+			if (!Util.isEmpty(payReceipt)) {
+				payReceipt.setReceiptUrl(receiptUrl);
+				dbDao.update(payReceipt);
+			} else {
+				TPayReceiptEntity payReceiptEntity = new TPayReceiptEntity();
+				payReceiptEntity.setPayId(payEntity.getId());
+				payReceiptEntity.setReceiptUrl(receiptUrl);
+				dbDao.insert(payReceiptEntity);
+			}
+		}
+
+		//付款成功 操作台添加消息
+		/*if (updatenum > 0) {
+			//TODO  ******************************************添加消息提醒***********************************************
+			String sqlS = sqlManager.get("receivePay_order_pnr_pids");
+			Sql sql = Sqls.create(sqlS);
+			Cnd cnd = Cnd.NEW();
+			cnd.and("pi.id", "in", payIds);
+			List<Record> orderPnrList = dbDao.query(sql, cnd, null);
+			for (Record record : orderPnrList) {
+				int uid = Integer.valueOf(record.getString("id"));
+				String ordernum = record.getString("ordersnum");
+				String pnr = record.getString("PNR");
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
+				map.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
+				searchViewService.addRemindMsg(map, ordernum, pnr, uid, PAYEDMSGTYPE, session);
+			}
+		}*/
 
 		return null;
 	}

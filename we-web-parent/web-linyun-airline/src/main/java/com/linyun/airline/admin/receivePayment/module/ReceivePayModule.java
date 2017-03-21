@@ -27,6 +27,7 @@ import com.linyun.airline.admin.receivePayment.form.inland.InlandPayEdListSearch
 import com.linyun.airline.admin.receivePayment.form.inland.InlandPayListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.inland.InlandRecListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.inland.TSaveInlandPayAddFrom;
+import com.linyun.airline.admin.receivePayment.form.inland.TUpdateInlandPayAddFrom;
 import com.linyun.airline.admin.receivePayment.service.ReceivePayService;
 
 @IocBean
@@ -128,10 +129,10 @@ public class ReceivePayModule {
 	 * 
 	 * 编辑付款
 	 */
-	/*@At
+	@At
 	public Object updateInlandPay(@Param("..") final TUpdateInlandPayAddFrom form, HttpSession session) {
 		return receivePayService.updateInlandPay(form, session);
-	}*/
+	}
 
 	/**
 	 * 
