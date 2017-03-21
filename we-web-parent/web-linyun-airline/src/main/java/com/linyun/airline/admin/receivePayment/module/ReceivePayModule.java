@@ -116,13 +116,22 @@ public class ReceivePayModule {
 	}
 
 	/**
-	 * 编辑已付款
+	 * 到编辑已付款
 	 */
 	@At
 	@Ok("jsp")
 	public Object editConfirmPay(HttpServletRequest request, HttpSession session) {
 		return receivePayService.editConfirmPay(request, session);
 	}
+
+	/**
+	 * 
+	 * 编辑付款
+	 */
+	/*@At
+	public Object updateInlandPay(@Param("..") final TUpdateInlandPayAddFrom form, HttpSession session) {
+		return receivePayService.updateInlandPay(form, session);
+	}*/
 
 	/**
 	 * 

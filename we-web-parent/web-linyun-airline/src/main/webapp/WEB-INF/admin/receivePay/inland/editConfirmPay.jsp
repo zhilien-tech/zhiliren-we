@@ -16,7 +16,7 @@
 	<div class="modal-top">
 		<div class="modal-header boderButt">
 			<button type="button" id="closePayWindow" class="btn btn-primary right btn-sm">取消</button>
-			<button  type="button" id="submit" onclick="confirmPayClick();" class="btn btn-primary right btn-sm">保存</button>
+			<button  type="button" id="submit" onclick="updateConfirmPay();" class="btn btn-primary right btn-sm">保存</button>
 			<h4>编辑付款</h4>
 		</div>
 		<div class="modal-body" style="height: 600px; overflow-y: auto;">
@@ -202,100 +202,130 @@
 	<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
 	
 	<script type="text/javascript">
-	//文件上传
-	$(function(){
-		$.fileupload1 = $('#uploadFile').uploadify({
-			'auto' : true,//选择文件后自动上传
-			'formData' : {
-				'fcharset' : 'uft-8',
-				'action' : 'uploadimage'
-			},
-			'buttonText' : '上传水单',//按钮显示的文字
-			'fileSizeLimit' : '3000MB',
-			'fileTypeDesc' : '文件',//在浏览窗口底部的文件类型下拉菜单中显示的文本
-			'fileTypeExts' : '*.png; *.jpg; *.bmp; *.gif; *.jpeg;',//上传文件的类型
-			'swf' : '${base}/public/plugins/uploadify/uploadify.swf',//指定swf文件
-			'multi' : false,//multi设置为true将允许多文件上传
-			'successTimeout' : 1800,
-			'queueSizeLimit' : 100,
-			'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html',//后台处理的页面
-			//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
-			//下面的例子演示如何获取到vid
-			'onUploadSuccess' : function(file, data, response) {
-				var jsonobj = eval('(' + data + ')');
-				var url  = jsonobj;//地址
-				var fileName = file.name;//文件名称
-				$('#receiptUrl').val(url);
-				$('#receiptImg').attr('src',url);
-			},
-			//加上此句会重写onSelectError方法【需要重写的事件】
-			'overrideEvents': ['onSelectError', 'onDialogClose'],
-			//返回一个错误，选择文件的时候触发
-			'onSelectError':function(file, errorCode, errorMsg){
-					switch(errorCode) {
-					case -110:
-						alert("文件 ["+file.name+"] 大小超出系统限制！");
-						break;
-					case -120:
-						alert("文件 ["+file.name+"] 大小异常！");
-						break;
-					case -130:
-						alert("文件 ["+file.name+"] 类型不正确！");
-						break;
-					}
-				}
-			});
-		});
 	
-		//银行名称改变
-		function bankSelect(){
+		function updateConfirmPay(){
 			$.ajax({
-				cache : false,
-				type : "POST",
-				data : {
-					bankId:$('#bankComp').val()
-				},
-				url : '${base}/admin/receivePay/inland/getCardNames.html',
+				type : 'POST',
+				data : $("#confirmInlandPayForm").serialize(),
+				async: false,
+				url: BASE_PATH + '/admin/receivePay/inland/updateInlandPay.html',
 				success : function(data) {
-					/* var option = "<option>--请选择--</option>"; */
-					var option = "";
-					var nameNtr = option;
-					var numStr = option;
-					for(var i=0;i< data.length;i++){
-						nameNtr += '<option value="'+data[i]+'">'+data[i]+'</option>';
+					if(data === false){
+						parent.layer.msg("收款单位不一致，付款失败", "", 2000);
+					}else{
+						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+						parent.layer.close(index);
+						parent.layer.msg("付款成功", "", 1000);
+						parent.inlandPayTable.ajax.reload(
+								function(json){
+									autoHighLoad($('#inlandPayTable'));
+								}
+						);
 					}
-					document.getElementById("cardName").innerHTML = nameNtr;
-					/* document.getElementById("cardNum").innerHTML = numStr; */
-					cardSelect();
+
+
 				},
-				error : function(request) {
-					
+				error: function () {
+					var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+					parent.layer.close(index);
+					parent.layer.msg("付款失败", "", 1000);
 				}
 			});
 		}
+		//文件上传
+		$(function(){
+			$.fileupload1 = $('#uploadFile').uploadify({
+				'auto' : true,//选择文件后自动上传
+				'formData' : {
+					'fcharset' : 'uft-8',
+					'action' : 'uploadimage'
+				},
+				'buttonText' : '上传水单',//按钮显示的文字
+				'fileSizeLimit' : '3000MB',
+				'fileTypeDesc' : '文件',//在浏览窗口底部的文件类型下拉菜单中显示的文本
+				'fileTypeExts' : '*.png; *.jpg; *.bmp; *.gif; *.jpeg;',//上传文件的类型
+				'swf' : '${base}/public/plugins/uploadify/uploadify.swf',//指定swf文件
+				'multi' : false,//multi设置为true将允许多文件上传
+				'successTimeout' : 1800,
+				'queueSizeLimit' : 100,
+				'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html',//后台处理的页面
+				//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
+				//下面的例子演示如何获取到vid
+				'onUploadSuccess' : function(file, data, response) {
+					var jsonobj = eval('(' + data + ')');
+					var url  = jsonobj;//地址
+					var fileName = file.name;//文件名称
+					$('#receiptUrl').val(url);
+					$('#receiptImg').attr('src',url);
+				},
+				//加上此句会重写onSelectError方法【需要重写的事件】
+				'overrideEvents': ['onSelectError', 'onDialogClose'],
+				//返回一个错误，选择文件的时候触发
+				'onSelectError':function(file, errorCode, errorMsg){
+						switch(errorCode) {
+						case -110:
+							alert("文件 ["+file.name+"] 大小超出系统限制！");
+							break;
+						case -120:
+							alert("文件 ["+file.name+"] 大小异常！");
+							break;
+						case -130:
+							alert("文件 ["+file.name+"] 类型不正确！");
+							break;
+						}
+					}
+				});
+			});
 		
-		//银行卡名称改变
-		function cardSelect(){
-			$.ajax({
-				cache : false,
-				type : "POST",
-				data : {
-					cardName:$('#cardName').val()
-				},
-				url : '${base}/admin/receivePay/inland/getCardNums.html',
-				success : function(data) {
-					/* var str = "<option>--请选择--</option>"; */
-					var str = "";
-					for(var i=0;i< data.length;i++){
-						str += '<option value="'+data[i]+'">'+data[i]+'</option>';
+			//银行名称改变
+			function bankSelect(){
+				$.ajax({
+					cache : false,
+					type : "POST",
+					data : {
+						bankId:$('#bankComp').val()
+					},
+					url : '${base}/admin/receivePay/inland/getCardNames.html',
+					success : function(data) {
+						/* var option = "<option>--请选择--</option>"; */
+						var option = "";
+						var nameNtr = option;
+						var numStr = option;
+						for(var i=0;i< data.length;i++){
+							nameNtr += '<option value="'+data[i]+'">'+data[i]+'</option>';
+						}
+						document.getElementById("cardName").innerHTML = nameNtr;
+						/* document.getElementById("cardNum").innerHTML = numStr; */
+						cardSelect();
+					},
+					error : function(request) {
+						
 					}
-					document.getElementById("cardNum").innerHTML=str;
-				},
-				error : function(request) {
-					
-				}
-			});
-		}
-	</script>
+				});
+			}
+			
+			//银行卡名称改变
+			function cardSelect(){
+				$.ajax({
+					cache : false,
+					type : "POST",
+					data : {
+						cardName:$('#cardName').val()
+					},
+					url : '${base}/admin/receivePay/inland/getCardNums.html',
+					success : function(data) {
+						/* var str = "<option>--请选择--</option>"; */
+						var str = "";
+						for(var i=0;i< data.length;i++){
+							str += '<option value="'+data[i]+'">'+data[i]+'</option>';
+						}
+						document.getElementById("cardNum").innerHTML=str;
+					},
+					error : function(request) {
+						
+					}
+				});
+			}
+		</script>
 </body>
 </html>

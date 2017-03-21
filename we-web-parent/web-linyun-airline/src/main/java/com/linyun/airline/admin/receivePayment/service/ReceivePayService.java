@@ -699,7 +699,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		Long companyId = company.getId();
 		TBankCardEntity bankEntity = dbDao.fetch(TBankCardEntity.class, Cnd.where("id", "=", bankId));
 		if (!Util.isEmpty(bankEntity)) {
-			String bankName = bankEntity.getBankCardType();
+			String bankName = bankEntity.getBankName();
 			List<TBankCardEntity> bankCardList = dbDao.query(TBankCardEntity.class, Cnd.where("status", "=", ENABLE)
 					.and("bankName", "=", bankName).and("companyId", "=", companyId).groupBy("cardName"), null);
 			for (TBankCardEntity bankCardEntity : bankCardList) {
