@@ -4984,3 +4984,7 @@ p{margin: 0 0 0px 10px;}
 /*--input 禁用图标不显示--*/
 .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {pointer-events: none;}
 /*--end input 禁用图标不显示--*/
+table.dataTable thead .sorting_asc:after {display:none;}
+table.dataTable thead > tr > th {padding-right: 5px;}
+table.dataTable thead .sorting:after {display:none;}
+table.dataTable thead .sorting_desc:after {display:none;}

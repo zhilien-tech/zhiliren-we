@@ -18,15 +18,8 @@
 				<div class="row row-top">
 					<div class="col-xs-12">
 						<div class="box">
-							<div class="box-header">
-								<h3 class="box-title">
-									&nbsp;&nbsp;<!-- <i class="fa fa-user-secret"></i>功能管理 -->
-								</h3>
-							</div>
-							<form id="functionForm" method="post">
-								<div class="col-md-2">
-									<!--上级功能 搜索框-->
-									<div class="col-sm-12 padding">
+							<form id="functionForm" style="padding-top: 13px;" method="post">
+								<div class="col-md-2"><!--上级功能 搜索框-->
 										<select name="parentId" onchange="selectFunName();" class="form-control input-sm">
 											<option value="-1">--不限--</option>
 											<c:forEach items="${obj.functions}" var="pro">
@@ -40,7 +33,6 @@
 												</c:choose>
 											</c:forEach>
 										</select>
-									</div> 
 								</div>
 								<div class="col-md-3 dictInfoSousuo" style="float: left;">
 									<!--功能名称 搜索框-->
@@ -53,8 +45,8 @@
 									<button id="searchBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
 								</div>
 							</form>
-							<div class="col-md-1 col-md-offset-10">
-								<a id="addDeptBtn" class="btn btn-primary btn-sm" onclick="addFunction();">添加功能</a>
+							<div class="col-md-5">
+								<a id="addDeptBtn" class="btn btn-primary btn-sm right" onclick="addFunction();">添加功能</a>
 						 	</div>
 							<!-- /.box-header -->
 							<div class="box-body">
@@ -172,7 +164,16 @@ function initDatatable() {
                     {"data": "remark", "bSortable": false},
                     {"data": "sort", "bSortable": false}
             ],
-        columnDefs: [{
+        columnDefs: [
+					{ "sWidth": "8%", "aTargets": [0] },
+					{ "sWidth": "12%", "aTargets": [1] },
+					{ "sWidth": "9%", "aTargets": [2] },
+					{ "sWidth": "12%", "aTargets": [3] },
+					{ "sWidth": "12%", "aTargets": [4] },
+					{ "sWidth": "12%", "aTargets": [5] },
+					{ "sWidth": "11%", "aTargets": [6] },
+					{ "sWidth": "10%", "aTargets": [7] },
+                    {
             //   指定第一列，从0开始，0表示第一列，1表示第二列……
             targets: 7,
             render: function(data, type, row, meta) {
