@@ -884,7 +884,16 @@
 		    	//手续费
 		    	var fees = $("#feeHidden").val();
 		    	var priceStr="";
+		    	if(null==discountFare || undefined==discountFare || ""==discountFare){
+		    		discountFare=0;
+		    	}
+		    	if(null==fees || undefined==fees || ""==fees){
+		    		fees=0;
+		    	}
 		    	var price = parseFloat((costprice * discountFare)/100) + parseFloat(fees);
+		    	price = price+'';
+		    	price=price.substring(0, price.lastIndexOf(".", price.length)+3);
+
 		    	if(costprice){
 		     		if(isNaN(price)){
 		     			$(this).parent().parent().find('[name=cAirPretium]').val('');

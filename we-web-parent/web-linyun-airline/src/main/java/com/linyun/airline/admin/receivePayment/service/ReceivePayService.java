@@ -30,11 +30,13 @@ import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Files;
+import org.nutz.lang.Strings;
 import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.upload.UploadAdaptor;
 
+import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
@@ -52,6 +54,7 @@ import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.ApprovalResultEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
+import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.common.enums.MessageRemindEnum;
 import com.linyun.airline.common.enums.MessageWealthStatusEnum;
 import com.linyun.airline.common.enums.UserJobStatusEnum;
@@ -374,9 +377,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		}
 		result.put("bzList", BZList);
 		//付款用途
-		List<DictInfoEntity> fkytList = new ArrayList<DictInfoEntity>();
+		List<ComDictInfoEntity> fkytList = new ArrayList<ComDictInfoEntity>();
 		try {
-			fkytList = externalInfoService.findDictInfoByName("", YTCODE);
+			fkytList = findYTByName("", YTCODE);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -449,6 +452,16 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		}
 		return map;
 
+	}
+
+	//查询用途 公司字典
+	public List<ComDictInfoEntity> findYTByName(String name, String typeCode) throws Exception {
+		List<ComDictInfoEntity> infoList = dbDao.query(
+				ComDictInfoEntity.class,
+				Cnd.where("comDictName", "like", Strings.trim(name) + "%")
+						.and("status", "=", DataStatusEnum.ENABLE.intKey()).and("comTypeCode", "=", typeCode), null);
+
+		return infoList;
 	}
 
 	/**
@@ -539,9 +552,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		map.put("bzList", BZList);
 
 		//付款用途
-		List<DictInfoEntity> fkytList = new ArrayList<DictInfoEntity>();
+		List<ComDictInfoEntity> fkytList = new ArrayList<ComDictInfoEntity>();
 		try {
-			fkytList = externalInfoService.findDictInfoByName("", YTCODE);
+			fkytList = findYTByName("", YTCODE);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
