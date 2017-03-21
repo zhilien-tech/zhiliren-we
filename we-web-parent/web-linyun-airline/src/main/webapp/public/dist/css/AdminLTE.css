@@ -4961,10 +4961,11 @@ p{margin: 0 0 0px 10px;}
 .authText{width: 40%;}
 .authImg{margin-right: 10px;width: 47%;float: right;position: relative;margin-top: -28px;}
 .loginTitle{color: #367fa9; font-weight: 200;font-family: "HanHei SC","PingHei","PingFang SC","STHeitiSC-Light","Helvetica Neue","Helvetica","Arial",sans-serif !important;}
-.form-control-feedback {position: absolute;top: -2px;width: 100%;text-align: left;left: 10px;}
+.form-control-feedback {position: absolute;top: -2px;text-align:center;}
 .loginpaddingrig{padding-left:30px;}
 .login-p{font-size: 12px;color:#ccc;text-align: center;line-height: 67px;}
 .toolText{position: relative;top: -306px;color:#ca2e2e !important;}
+.userIcon{width: 100%;text-align: left;left: 10px;}
 /*-------form-group1----*/
 .form-group1{position: relative;top: -15px;}
 .strip1{background-color: #ffffff;}
