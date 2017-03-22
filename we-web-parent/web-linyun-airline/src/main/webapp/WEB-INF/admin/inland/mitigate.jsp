@@ -14,7 +14,7 @@
 	<div class="modal-top">
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
-            <input type="submit" id="submit" class="btn btn-primary right btn-sm" value="保存"/>
+            <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveData()" value="保存"/>
             <h4>减免申请</h4>
           </div>
           <div class="modal-body" style="padding:0;">
