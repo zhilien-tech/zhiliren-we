@@ -175,7 +175,13 @@
 	                    {"data": "type", "bSortable": false}
 	                   
 	            ],
-	        columnDefs: [{
+	        columnDefs: [{ "sWidth": "26.66%",  "targets": [0] },
+	     				{ "sWidth": "10.66%",  "targets": [1] },
+	    				{ "sWidth": "16.66%",  "targets": [2] },
+	    				{ "sWidth": "12.66%",  "targets": [3] },
+	    				{ "sWidth": "10.66%",  "targets": [4] },
+	    				{ "sWidth": "22.66%",  "targets": [5] },
+	                    {
 	            //   指定第一列，从0开始，0表示第一列，1表示第二列……
 	            targets: 5,
 	            render: function(data, type, row, meta) {
