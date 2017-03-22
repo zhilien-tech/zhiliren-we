@@ -671,9 +671,9 @@
 						}
 						if (result.parsingType == "SD0Q0") {
 							var pnrThread = '<tr>' + '<th>序号</th>'
-									+ '<th>航班号</th>' + '<th>预定舱位</th>'
-									+ '<th>预定日期</th>' + '<th>航段</th>'
-									+ '<th>预定座位数</th>' + '<th>航程时间</th>'
+									+ '<th>航班号</th>' + '<th>预订舱位</th>'
+									+ '<th>预订日期</th>' + '<th>航段</th>'
+									+ '<th>预订座位数</th>' + '<th>航程时间</th>'
 									+ '</tr>';
 							var pnrBody = '';
 							var obj = result.arrayList;

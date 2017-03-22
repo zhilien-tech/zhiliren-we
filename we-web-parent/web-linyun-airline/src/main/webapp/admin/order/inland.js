@@ -40,9 +40,9 @@ function initDatatable() {
                     {"data": "date", "bSortable": false,
                     	render:function(data, type, row, meta) {
                     		var result = '<ul>';
-                    		$.each(row.customerinfo, function(name, value) {
-                    			if(value && value.leavetdate != undefined){
-                    				result += '<li style="list-style:none;">'+value.leavetdate+'</li>';
+                    		$.each(row.leavedates, function(name, value) {
+                    			if(value && value != undefined){
+                    				result += '<li style="list-style:none;">'+value+'</li>';
                     			}
                     		});
                     		result += '</ul>';

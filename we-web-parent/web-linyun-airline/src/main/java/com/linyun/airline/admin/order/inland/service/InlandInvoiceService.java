@@ -31,6 +31,7 @@ import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
 import com.linyun.airline.admin.order.inland.form.KaiInvoiceParamForm;
 import com.linyun.airline.admin.order.inland.form.ShouInvoiceParamForm;
+import com.linyun.airline.admin.order.inland.util.FormatDateUtil;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayPnrEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
@@ -230,6 +231,9 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		String customeid = request.getParameter("customeid");
 		TCustomerInfoEntity fetch = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(customeid));
 		result.put("customeinfo", fetch);
+		TMitigateInfoEntity mitigate = dbDao.fetch(TMitigateInfoEntity.class,
+				Cnd.where("orderid", "=", request.getParameter("id")));
+		result.put("mitigate", mitigate);
 		//币种下拉
 		List<DictInfoEntity> bzcode = new ArrayList<DictInfoEntity>();
 		try {
@@ -313,6 +317,8 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 					.getUserName());
 			record.put("invoiceinfoenum", EnumUtil.enum2(InvoiceInfoEnum.class));
 			record.put("ytselect", ytselect);
+			String invoicedate = FormatDateUtil.dateToOrderDate((Date) record.get("invoicedate"));
+			record.put("invoicedate", invoicedate);
 		}
 		List<Record> listdataNew = new ArrayList<Record>();
 		for (Record record : listdata) {
@@ -352,6 +358,8 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		for (Record record : listdata) {
 			record.put("ytselect", ytselect);
 			record.put("invoiceinfoenum", EnumUtil.enum2(InvoiceInfoEnum.class));
+			String invoicedate = FormatDateUtil.dateToOrderDate((Date) record.get("invoicedate"));
+			record.put("invoicedate", invoicedate);
 		}
 		return datatableData;
 
@@ -403,12 +411,10 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//订单信息
 		result.put("orders", orders);
-		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
-		try {
-			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Sql create = Sqls.create(sqlManager.get("get_bank_info_select"));
+		create.setParam("companyId", company.getId());
+		create.setParam("typeCode", YHCODE);
+		List<Record> yhkSelect = dbDao.query(create, null, null);
 		//水单信息
 		List<TReceiveBillEntity> query2 = dbDao.query(TReceiveBillEntity.class,
 				Cnd.where("receiveid", "=", fetch.getId()), null);
@@ -458,8 +464,8 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		result.put("pnrinfo", pnrinfo);
 		double sumjine = 0;
 		for (Record record : pnrinfo) {
-			if (!Util.isEmpty(record.get("salespricesum"))) {
-				Double salespricesum = (Double) record.get("salespricesum");
+			if (!Util.isEmpty(record.get("costpricesum"))) {
+				Double salespricesum = (Double) record.get("costpricesum");
 				sumjine += Double.valueOf(salespricesum);
 			}
 		}
@@ -485,12 +491,10 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 				}
 			}
 		}
-		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
-		try {
-			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Sql create = Sqls.create(sqlManager.get("get_bank_info_select"));
+		create.setParam("companyId", company.getId());
+		create.setParam("typeCode", YHCODE);
+		List<Record> yhkSelect = dbDao.query(create, null, null);
 		//付款银行卡信息
 		Record companybank = new Record();
 		String pagesqlStr = sqlManager.get("get_fukuan_invoice_page_data");

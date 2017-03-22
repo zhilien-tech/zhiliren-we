@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>预定订单详情</title>
+  <title>预订订单详情</title>
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="${base }/public/bootstrap/css/bootstrap.css">
   <!-- 图标 -->
@@ -973,9 +973,9 @@
 	 	            	var relief = $('#relief').val();
 		 	       	 	var incometotal  = '';
 		 	       	 	if(relief){
-		 	       	 		incometotal  = parseFloat(data.chengbensum) - parseFloat(relief);
+		 	       	 		incometotal  = parseFloat(data.yingshousum) - parseFloat(relief);
 		 	       	 	}else{
-		 	       	 		incometotal = data.chengbensum;
+		 	       	 		incometotal = data.yingshousum;
 		 	       	 	}
 		 	       	 	if(!isNaN(incometotal)){
 	 	       		 		$('#incometotal').val(incometotal);

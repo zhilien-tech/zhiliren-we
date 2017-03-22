@@ -30,7 +30,7 @@
                     <td>登录帐号：</td>
                     <td><input id="loginid" name="loginid" type="text" class="form-control input-sm"></td></td>
                     <td>人数：</td>
-                    <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm" disabled="disabled"></td></td>
+                    <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm"></td></td>
                     <td>币种：</td>
                     <td>
                       <select id="currency" name="currency" class="form-control input-sm">
@@ -65,10 +65,10 @@
                     </div>
                     
                     <div class="col-sm-2">
-                      <button type="button" id="multiselect_rightAll" class="btn btn-block" onmouseout="assignment();"><i class="fa fa-angle-double-right"></i></button>
-                      <button type="button" id="multiselect_rightSelected" class="btn btn-block" onmouseout="assignment();"><i class="fa fa-angle-right"></i></button>
-                      <button type="button" id="multiselect_leftSelected" class="btn btn-block" onmouseout="assignment();"><i class="fa fa-angle-left"></i></button>
-                      <button type="button" id="multiselect_leftAll" class="btn btn-block" onmouseout="assignment();"><i class="fa fa-angle-double-left"></i></button>
+                      <button type="button" id="multiselect_rightAll" class="btn btn-block"><i class="fa fa-angle-double-right"></i></button>
+                      <button type="button" id="multiselect_rightSelected" class="btn btn-block"><i class="fa fa-angle-right"></i></button>
+                      <button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="fa fa-angle-left"></i></button>
+                      <button type="button" id="multiselect_leftAll" class="btn btn-block"><i class="fa fa-angle-double-left"></i></button>
                     </div>
                     
                     <div class="col-sm-5">

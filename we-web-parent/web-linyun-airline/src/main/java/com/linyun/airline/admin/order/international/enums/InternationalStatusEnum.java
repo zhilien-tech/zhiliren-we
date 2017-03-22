@@ -18,7 +18,7 @@ import com.uxuexi.core.common.enums.IEnum;
  */
 public enum InternationalStatusEnum implements IEnum {
 
-	SEARCH(1, "查询"), BOOKING(2, "预定"), ONEBOOK(3, "一订"), TWOBOOK(4, "二订"), THREEBOOK(5, "三订"), FULLAMOUNT(6, "全款"), TAILMONEY(
+	SEARCH(1, "查询"), BOOKING(2, "预订"), ONEBOOK(3, "一订"), TWOBOOK(4, "二订"), THREEBOOK(5, "三订"), FULLAMOUNT(6, "全款"), TAILMONEY(
 			7, "尾款"), TICKETING(8, "出票"), CLOSE(9, "关闭");
 	private int key;
 	private String value;
