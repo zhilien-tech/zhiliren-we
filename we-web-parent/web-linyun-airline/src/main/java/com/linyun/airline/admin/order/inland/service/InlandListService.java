@@ -6,7 +6,9 @@
 
 package com.linyun.airline.admin.order.inland.service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -87,11 +89,11 @@ public class InlandListService extends BaseService<TUpOrderEntity> {
 		}
 		Double realtimexrate = null;
 		if (!Util.isEmpty(fromJson.get("realtimexrate"))) {
-			realtimexrate = Double.valueOf((String) fromJson.get("realtimexrate"));
+			realtimexrate = formatDouble(Double.valueOf((String) fromJson.get("realtimexrate")));
 		}
 		Double avgexrate = null;
 		if (!Util.isEmpty(fromJson.get("avgexrate"))) {
-			avgexrate = Double.valueOf((String) fromJson.get("avgexrate"));
+			avgexrate = formatDouble(Double.valueOf((String) fromJson.get("avgexrate")));
 		}
 		String paycurrency = (String) fromJson.get("paycurrency");
 		Integer paymethod = null;
@@ -132,12 +134,12 @@ public class InlandListService extends BaseService<TUpOrderEntity> {
 			//成本价
 			Double formprice = null;
 			if (!Util.isEmpty(airmap.get("formprice"))) {
-				formprice = Double.valueOf((String) airmap.get("formprice"));
+				formprice = formatDouble(Double.valueOf((String) airmap.get("formprice")));
 			}
 			//销售价
 			Double price = null;
 			if (!Util.isEmpty(airmap.get("price"))) {
-				price = Double.valueOf((String) airmap.get("price"));
+				price = formatDouble(Double.valueOf((String) airmap.get("price")));
 			}
 			TAirlineInfoEntity airlineEntity = new TAirlineInfoEntity();
 			airlineEntity.setAircom(aircom);
@@ -210,6 +212,7 @@ public class InlandListService extends BaseService<TUpOrderEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object setFinanceInfo(HttpServletRequest request) {
+		Map<String, Object> result = new HashMap<String, Object>();
 		String orderid = request.getParameter("orderid");
 		String sqlstring = sqlManager.get("select_order_pnrs_info");
 		Sql sql = Sqls.create(sqlstring);
@@ -219,9 +222,25 @@ public class InlandListService extends BaseService<TUpOrderEntity> {
 		double yingshousum = 0;
 		double chengbensum = 0;
 		for (Record record : query) {
-			record.get("costpricesum");
+			chengbensum += Double.valueOf((Double) record.get("costpricesum"));
+			yingshousum += Double.valueOf((Double) record.get("salespricesum"));
 		}
-		return null;
+		result.put("chengbensum", formatDouble(chengbensum));
+		result.put("yingshousum", formatDouble(yingshousum));
+		return result;
 	}
 
+	/**
+	 * 保留两位小数
+	 */
+	@SuppressWarnings("unused")
+	private Double formatDouble(Double doublenum) {
+		Double result = null;
+		DecimalFormat decimalFormat = new DecimalFormat("#.00");
+		if (!Util.isEmpty(doublenum)) {
+			String format = decimalFormat.format(doublenum);
+			result = Double.valueOf(format);
+		}
+		return result;
+	}
 }

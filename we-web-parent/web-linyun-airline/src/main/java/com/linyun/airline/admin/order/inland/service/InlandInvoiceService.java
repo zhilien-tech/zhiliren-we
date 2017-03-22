@@ -7,6 +7,7 @@
 package com.linyun.airline.admin.order.inland.service;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.enums.InvoiceInfoEnum;
 import com.linyun.airline.admin.login.service.LoginService;
@@ -48,6 +50,7 @@ import com.linyun.airline.entities.TReceiveEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.DateUtil;
+import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.JsonUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.base.service.BaseService;
@@ -66,6 +69,8 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 	private static final String BIZHONGCODE = "BZ";
 	//银行卡类型
 	private static final String YHCODE = "YH";
+	//付款用途
+	private static final String FPXMCODE = "FPXM";
 
 	@Inject
 	private externalInfoService externalInfoService;
@@ -86,6 +91,8 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		String jsondata = request.getParameter("data");
 		Map<String, Object> fromJson = JsonUtil.fromJson(jsondata, Map.class);
 		TInvoiceInfoEntity invoiceinfo = new TInvoiceInfoEntity();
@@ -96,9 +103,9 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			invoiceinfo.setInvoicedate(DateUtil.string2Date((String) fromJson.get("invoicedate"),
 					DateUtil.FORMAT_YYYY_MM_DD));
 		}
-		if (!Util.isEmpty(fromJson.get("billuserid"))) {
-			invoiceinfo.setBilluserid(Integer.valueOf((String) fromJson.get("billuserid")));
-		}
+		//if (!Util.isEmpty(fromJson.get("billuserid"))) {
+		invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
+		//}
 		if (!Util.isEmpty(fromJson.get("deptid"))) {
 			invoiceinfo.setDeptid(Integer.valueOf((String) fromJson.get("deptid")));
 		}
@@ -106,18 +113,21 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		invoiceinfo.setRemark((String) fromJson.get("remark"));
 		invoiceinfo.setPaymentunit((String) fromJson.get("paymentunit"));
 		if (!Util.isEmpty(fromJson.get("difference"))) {
-			invoiceinfo.setDifference(Double.valueOf((String) fromJson.get("difference")));
+			invoiceinfo.setDifference(formatDouble(Double.valueOf((String) fromJson.get("difference"))));
 		}
 		if (!Util.isEmpty(fromJson.get("balance"))) {
-			invoiceinfo.setBalance(Double.valueOf((String) fromJson.get("balance")));
+			invoiceinfo.setBalance(formatDouble(Double.valueOf((String) fromJson.get("balance"))));
 		}
 		invoiceinfo.setInvoicetype(PayReceiveTypeEnum.PAY.intKey());
 		if (!Util.isEmpty(fromJson.get("pnrid"))) {
 			invoiceinfo.setPnrid(Integer.valueOf((String) fromJson.get("pnrid")));
 		}
 		invoiceinfo.setOpid(new Long(user.getId()).intValue());
+		invoiceinfo.setComId(new Long(company.getId()).intValue());
 		invoiceinfo.setOptime(new Date());
 		invoiceinfo.setOrdertype(OrderTypeEnum.FIT.intKey());
+		invoiceinfo.setInvoicedate(new Date());
+		invoiceinfo.setStatus(InvoiceInfoEnum.RECEIPT_INVOIC_ING.intKey());
 		//保存发票信息
 		TInvoiceInfoEntity insert = dbDao.insert(invoiceinfo);
 		List<Map<String, String>> details = (List<Map<String, String>>) fromJson.get("invoicedetails");
@@ -125,7 +135,9 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		for (Map<String, String> map : details) {
 			TInvoiceDetailEntity invoiceDetailEntity = new TInvoiceDetailEntity();
 			invoiceDetailEntity.setInvoicenum(map.get("invoicenum"));
-			invoiceDetailEntity.setInvoicebalance(Double.valueOf(map.get("invoicebalance")));
+			if (!Util.isEmpty(map.get("invoicebalance"))) {
+				invoiceDetailEntity.setInvoicebalance(formatDouble(Double.valueOf(map.get("invoicebalance"))));
+			}
 			invoiceDetailEntity.setInvoiceurl(map.get("invoiceurl"));
 			invoiceDetailEntity.setImagename(map.get("filename"));
 			invoiceDetailEntity.setInvoiceinfoid(insert.getId());
@@ -143,6 +155,8 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		String jsondata = request.getParameter("data");
 		Map<String, Object> fromJson = JsonUtil.fromJson(jsondata, Map.class);
 		TInvoiceInfoEntity invoiceinfo = new TInvoiceInfoEntity();
@@ -153,9 +167,9 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			invoiceinfo.setInvoicedate(DateUtil.string2Date((String) fromJson.get("invoicedate"),
 					DateUtil.FORMAT_YYYY_MM_DD));
 		}
-		if (!Util.isEmpty(fromJson.get("billuserid"))) {
-			invoiceinfo.setBilluserid(Integer.valueOf((String) fromJson.get("billuserid")));
-		}
+		/*if (!Util.isEmpty(fromJson.get("billuserid"))) {
+		}*/
+		invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
 		if (!Util.isEmpty(fromJson.get("deptid"))) {
 			invoiceinfo.setDeptid(Integer.valueOf((String) fromJson.get("deptid")));
 		}
@@ -163,18 +177,20 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		invoiceinfo.setRemark((String) fromJson.get("remark"));
 		invoiceinfo.setPaymentunit((String) fromJson.get("paymentunit"));
 		if (!Util.isEmpty(fromJson.get("difference"))) {
-			invoiceinfo.setDifference(Double.valueOf((String) fromJson.get("difference")));
+			invoiceinfo.setDifference(formatDouble(Double.valueOf((String) fromJson.get("difference"))));
 		}
 		if (!Util.isEmpty(fromJson.get("balance"))) {
-			invoiceinfo.setBalance(Double.valueOf((String) fromJson.get("balance")));
+			invoiceinfo.setBalance(formatDouble(Double.valueOf((String) fromJson.get("balance"))));
 		}
 		invoiceinfo.setInvoicetype(PayReceiveTypeEnum.RECEIVE.intKey());
 		if (!Util.isEmpty(fromJson.get("pnrid"))) {
 			invoiceinfo.setReceiveid(Integer.valueOf((String) fromJson.get("pnrid")));
 		}
 		invoiceinfo.setOpid(new Long(user.getId()).intValue());
+		invoiceinfo.setComId(new Long(company.getId()).intValue());
 		invoiceinfo.setOptime(new Date());
 		invoiceinfo.setOrdertype(OrderTypeEnum.FIT.intKey());
+		invoiceinfo.setStatus(InvoiceInfoEnum.INVOIC_ING.intKey());
 		//保存发票信息
 		TInvoiceInfoEntity insert = dbDao.insert(invoiceinfo);
 		List<Map<String, String>> details = (List<Map<String, String>>) fromJson.get("invoicedetails");
@@ -182,7 +198,9 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		for (Map<String, String> map : details) {
 			TInvoiceDetailEntity invoiceDetailEntity = new TInvoiceDetailEntity();
 			invoiceDetailEntity.setInvoicenum(map.get("invoicenum"));
-			invoiceDetailEntity.setInvoicebalance(Double.valueOf(map.get("invoicebalance")));
+			if (!Util.isEmpty(map.get("invoicebalance"))) {
+				invoiceDetailEntity.setInvoicebalance(formatDouble(Double.valueOf(map.get("invoicebalance"))));
+			}
 			invoiceDetailEntity.setInvoiceurl(map.get("invoiceurl"));
 			invoiceDetailEntity.setImagename(map.get("filename"));
 			invoiceDetailEntity.setInvoiceinfoid(insert.getId());
@@ -242,7 +260,9 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		mitigateInfoEntity.setCustomeid(Integer.valueOf(customeid));
 		mitigateInfoEntity.setCustomname(customname);
 		mitigateInfoEntity.setApplyid(new Long(user.getId()).intValue());
-		mitigateInfoEntity.setAccount(Double.valueOf(account));
+		if (!Util.isEmpty(account)) {
+			mitigateInfoEntity.setAccount(formatDouble(Double.valueOf(account)));
+		}
 		mitigateInfoEntity.setAccountupper(accountupper);
 		mitigateInfoEntity.setCurrency(currency);
 		mitigateInfoEntity.setApprovelid(approvelid);
@@ -266,6 +286,9 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		//检索条件
+		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class, Cnd.where("comTypeCode", "=", FPXMCODE)
+				.and("comId", "=", company.getId()), null);
 		paramForm.setUserid(new Long(user.getId()).intValue());
 		paramForm.setCompanyid(company.getId());
 		Long comId = company.getId();//得到公司的id
@@ -286,8 +309,10 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			//订单信息
 			List<Record> orders = dbDao.query(sql, cnd, null);
 			record.put("orders", orders);
-			/*record.put("username", dbDao.fetch(TUserEntity.class, Long.valueOf(record.getInt("billuserid")))
-					.getUserName());*/
+			record.put("username", dbDao.fetch(TUserEntity.class, Long.valueOf(record.getInt("billuserid")))
+					.getUserName());
+			record.put("invoiceinfoenum", EnumUtil.enum2(InvoiceInfoEnum.class));
+			record.put("ytselect", ytselect);
 		}
 		List<Record> listdataNew = new ArrayList<Record>();
 		for (Record record : listdata) {
@@ -321,7 +346,13 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		paramForm.setUserid(new Long(user.getId()).intValue());
 		paramForm.setCompanyid(company.getId());
 		Map<String, Object> datatableData = this.listPage4Datatables(paramForm);
-
+		List<Record> listdata = (List<Record>) datatableData.get("data");
+		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class, Cnd.where("comTypeCode", "=", FPXMCODE)
+				.and("comId", "=", company.getId()), null);
+		for (Record record : listdata) {
+			record.put("ytselect", ytselect);
+			record.put("invoiceinfoenum", EnumUtil.enum2(InvoiceInfoEnum.class));
+		}
 		return datatableData;
 
 	}
@@ -335,6 +366,9 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object kaiInvoice(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Map<String, Object> result = new HashMap<String, Object>();
 		//发票id
 		String id = request.getParameter("id");
@@ -351,8 +385,10 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 				invoicebalance -= detail.getInvoicebalance();
 			}
 		}
-		result.put("invoicebalance", invoicebalance);
-
+		result.put("invoicebalance", formatDouble(invoicebalance));
+		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class, Cnd.where("comTypeCode", "=", FPXMCODE)
+				.and("comId", "=", company.getId()), null);
+		result.put("ytselect", ytselect);
 		List<TOrderReceiveEntity> query = dbDao.query(TOrderReceiveEntity.class,
 				Cnd.where("receiveid", "=", fetch.getId()), null);
 		String ids = "";
@@ -401,6 +437,11 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object shouInvoice(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class, Cnd.where("comTypeCode", "=", FPXMCODE)
+				.and("comId", "=", company.getId()), null);
 		Map<String, Object> result = new HashMap<String, Object>();
 		//发票id
 		String id = request.getParameter("id");
@@ -422,14 +463,14 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 				sumjine += Double.valueOf(salespricesum);
 			}
 		}
-		result.put("sumjine", sumjine);
+		result.put("sumjine", formatDouble(sumjine));
 		double invoicebalance = sumjine;
 		for (TInvoiceDetailEntity detail : invoiceDetail) {
 			if (!Util.isEmpty(detail.getInvoicebalance())) {
 				invoicebalance -= detail.getInvoicebalance();
 			}
 		}
-		result.put("invoicebalance", invoicebalance);
+		result.put("invoicebalance", formatDouble(invoicebalance));
 		List<TPayPnrEntity> query = dbDao.query(TPayPnrEntity.class, Cnd.where("pnrId", "=", invoiceinfo.getPnrid()),
 				null);
 		TPayEntity payinfo = new TPayEntity();
@@ -460,6 +501,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		if (banks.size() > 0) {
 			companybank = banks.get(0);
 		}
+		result.put("ytselect", ytselect);
 		result.put("companybank", companybank);
 		result.put("id", id);
 		result.put("billurl", billurl);
@@ -504,12 +546,16 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		invoiceinfo.setPaymentunit((String) fromJson.get("paymentunit"));
 		invoiceinfo.setRemark((String) fromJson.get("remark"));
 		invoiceinfo.setPaymentunit((String) fromJson.get("paymentunit"));
+		Double difference = null;
 		if (!Util.isEmpty(fromJson.get("difference"))) {
-			invoiceinfo.setDifference(Double.valueOf((String) fromJson.get("difference")));
+			difference = formatDouble(Double.valueOf((String) fromJson.get("difference")));
 		}
+		invoiceinfo.setDifference(difference);
+		Double balance = null;
 		if (!Util.isEmpty(fromJson.get("balance"))) {
-			invoiceinfo.setBalance(Double.valueOf((String) fromJson.get("balance")));
+			balance = formatDouble(Double.valueOf((String) fromJson.get("balance")));
 		}
+		invoiceinfo.setBalance(balance);
 		invoiceinfo.setOpid(new Long(user.getId()).intValue());
 		invoiceinfo.setOptime(new Date());
 		//保存发票信息
@@ -520,13 +566,17 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 				Cnd.where("invoiceinfoid", "=", id), null);
 		List<TInvoiceDetailEntity> invoicedetails = new ArrayList<TInvoiceDetailEntity>();
 		for (Map<String, String> map : details) {
-			TInvoiceDetailEntity invoiceDetailEntity = new TInvoiceDetailEntity();
-			invoiceDetailEntity.setInvoicenum(map.get("invoicenum"));
-			invoiceDetailEntity.setInvoicebalance(Double.valueOf(map.get("invoicebalance")));
-			invoiceDetailEntity.setInvoiceurl(map.get("invoiceurl"));
-			invoiceDetailEntity.setImagename(map.get("filename"));
-			invoiceDetailEntity.setInvoiceinfoid(Integer.valueOf(id));
-			invoicedetails.add(invoiceDetailEntity);
+			TInvoiceDetailEntity entity = new TInvoiceDetailEntity();
+			entity.setInvoicenum(map.get("invoicenum"));
+			Double invoicebalance = null;
+			if (!Util.isEmpty(map.get("invoicebalance"))) {
+				invoicebalance = Double.valueOf(map.get("invoicebalance"));
+			}
+			entity.setInvoicebalance(formatDouble(invoicebalance));
+			entity.setInvoiceurl(map.get("invoiceurl"));
+			entity.setImagename(map.get("filename"));
+			entity.setInvoiceinfoid(Integer.valueOf(id));
+			invoicedetails.add(entity);
 		}
 		dbDao.updateRelations(before, invoicedetails);
 		return null;
@@ -558,12 +608,16 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		invoiceinfo.setPaymentunit((String) fromJson.get("paymentunit"));
 		invoiceinfo.setRemark((String) fromJson.get("remark"));
 		invoiceinfo.setPaymentunit((String) fromJson.get("paymentunit"));
+		Double difference = null;
 		if (!Util.isEmpty(fromJson.get("difference"))) {
-			invoiceinfo.setDifference(Double.valueOf((String) fromJson.get("difference")));
+			difference = formatDouble(Double.valueOf((String) fromJson.get("difference")));
 		}
+		invoiceinfo.setDifference(difference);
+		Double balance = null;
 		if (!Util.isEmpty(fromJson.get("balance"))) {
-			invoiceinfo.setBalance(Double.valueOf((String) fromJson.get("balance")));
+			balance = formatDouble(Double.valueOf((String) fromJson.get("balance")));
 		}
+		invoiceinfo.setBalance(balance);
 		invoiceinfo.setOpid(new Long(user.getId()).intValue());
 		invoiceinfo.setOptime(new Date());
 		//保存发票信息
@@ -575,7 +629,11 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		for (Map<String, String> map : details) {
 			TInvoiceDetailEntity invoiceDetailEntity = new TInvoiceDetailEntity();
 			invoiceDetailEntity.setInvoicenum(map.get("invoicenum"));
-			invoiceDetailEntity.setInvoicebalance(Double.valueOf(map.get("invoicebalance")));
+			Double invoicebalance = null;
+			if (!Util.isEmpty(map.get("invoicebalance"))) {
+				invoicebalance = formatDouble(Double.valueOf(map.get("invoicebalance")));
+			}
+			invoiceDetailEntity.setInvoicebalance(invoicebalance);
 			invoiceDetailEntity.setInvoiceurl(map.get("invoiceurl"));
 			invoiceDetailEntity.setImagename(map.get("filename"));
 			invoiceDetailEntity.setInvoiceinfoid(Integer.valueOf(id));
@@ -663,5 +721,19 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		result.put("data", CommonConstants.IMAGES_SERVER_ADDR + result.get("data"));
 		return result;
 
+	}
+
+	/**
+	 * 保留两位小数
+	 */
+	@SuppressWarnings("unused")
+	private Double formatDouble(Double doublenum) {
+		Double result = null;
+		DecimalFormat decimalFormat = new DecimalFormat("#.00");
+		if (!Util.isEmpty(doublenum)) {
+			String format = decimalFormat.format(doublenum);
+			result = Double.valueOf(format);
+		}
+		return result;
 	}
 }

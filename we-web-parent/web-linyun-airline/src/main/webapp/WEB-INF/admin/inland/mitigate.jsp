@@ -165,7 +165,7 @@
 			data: $("#mitigateForm").serialize(), 
 			url: '${base}/admin/inland/saveMitigateData.html',
             success: function (data) { 
-            	layer.msg("添加成功",{time: 2000, icon:1});
+            	layer.msg("添加成功",{time: 2000});
             },
             error: function (xhr) {
             	layer.msg("添加失败","",3000);

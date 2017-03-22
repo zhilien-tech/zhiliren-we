@@ -446,15 +446,15 @@
 		  shouFuKuanPayTable.ajax.reload();
 		  shouFuKuanGatheringTable.ajax.reload();
 		  if(id == '1'){
-			  layer.alert("添加成功",{time: 2000, icon:1});
+			  layer.msg("添加成功",{time: 2000});
 		  }else if(id == '2'){
-			  layer.alert("修改成功",{time: 2000, icon:1});
+			  layer.msg("修改成功",{time: 2000});
 		  }else if(id == '3'){
-			  layer.alert("关闭成功",{time: 2000, icon:1});
+			  layer.msg("关闭成功",{time: 2000});
 		  }else if(id == '4'){
-			  layer.alert("启用成功",{time: 2000, icon:1});
+			  layer.msg("启用成功",{time: 2000});
 		  }else if(id == '5'){
-			  layer.alert("提交成功",{time: 2000, icon:1});
+			  layer.msg("提交成功",{time: 2000});
 		  }
 	  }
 </script>

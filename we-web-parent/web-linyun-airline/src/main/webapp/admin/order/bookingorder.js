@@ -271,7 +271,7 @@ function loadPNRdata(){
             		}else{
             			result +='<td></td>';
             		}
-            		if(data[i].costprice != undefined){
+            		if(data[i].costpricesum != undefined){
             			result +='<td>'+data[i].costpricesum+'</td>';
             		}else{
             			result +='<td></td>';
@@ -316,6 +316,32 @@ function openDetailPage(id){
         closeBtn:false,//默认 右上角关闭按钮 是否显示
         shadeClose:false,
         area: ['900px', '500px'],
-        content: BASE_PATH + '/admin/inland/pnrDetailPage.html?pnrid='+id
+        content: BASE_PATH + '/admin/inland/pnrDetailPage.html?pnrid='+id,
+        end:function(){
+	       	 //设置财务信息
+	       	 $.ajax({ 
+				type: 'POST', 
+				data: {orderid:'${obj.orderinfo.id }'}, 
+				url: '${base}/admin/inland/setFinanceInfo.html',
+	            success: function (data) { 
+	            	//成本合计
+	            	$('#costtotal').val(data.chengbensum);
+	            	//应收
+	            	$('#receivable').val(data.yingshousum);
+	            	var relief = $('#relief').val();
+	 	       	 	var incometotal  = '';
+	 	       	 	if(relief){
+	 	       	 		incometotal  = parseFloat(data.chengbensum) - parseFloat(relief);
+	 	       	 	}else{
+	 	       	 		incometotal = data.chengbensum;
+	 	       	 	}
+	 	       	 	if(!isNaN(incometotal)){
+	       		 		$('#incometotal').val(incometotal);
+	 	       	 	}
+		         },
+		         error: function (xhr) {
+		         } 
+	         });
+        }
       });
 }

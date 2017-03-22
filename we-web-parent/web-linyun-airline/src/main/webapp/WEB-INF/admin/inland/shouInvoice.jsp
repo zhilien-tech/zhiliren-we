@@ -93,8 +93,16 @@
                   <td>发票项目：</td>
                   <td>
                     <select id="invoiceitem" name="invoiceitem" class="form-control input-sm">
-                        <option value="1">团款</option>
-                        <option value="2">代订机票费用</option>
+                        <c:forEach items="${obj.ytselect }" var="one">
+                        	<c:choose>
+                        		<c:when test="${obj.invoiceinfo.invoiceitem eq one.id}">
+                        			<option value="${one.id }" selected="selected">${one.comDictName }</option>
+                        		</c:when>
+                        		<c:otherwise>
+		                    		<option value="${one.id }">${one.comDictName }</option>
+                        		</c:otherwise>
+                        	</c:choose>
+                    	</c:forEach>
                     </select>
                   </td>
                   <td>发票日期：</td>
@@ -128,34 +136,63 @@
                   <td>余额：</td>
                   <td><label id="balance" name="balance">${obj.invoicebalance }</label></td>
           </tr>
-          <c:forEach items="${obj.invoiceDetail }" var="invoiceDetail" varStatus="status">
-	          <tr class="cloneTR">
-	                  <td>发票号：</td>
-	                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm" value="${invoiceDetail.invoicenum }"></td>
-	                  <td>金额：</td>
-	                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm" value="${invoiceDetail.invoicebalance }"></td>
-	                  <td colspan="4">
-	                  	<ul class="fileUL">
-	                      <li>
+          <c:choose>
+          	<c:when test="${fn:length(obj.invoiceDetail)>0}">
+		          <c:forEach items="${obj.invoiceDetail }" var="invoiceDetail" varStatus="status">
+			          <tr class="cloneTR">
+			                  <td>发票号：</td>
+			                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm" value="${invoiceDetail.invoicenum }"></td>
+			                  <td>金额：</td>
+			                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm" value="${invoiceDetail.invoicebalance }"></td>
+			                  <td colspan="4">
+			                  	<ul class="fileUL">
+			                      <li>
+		                        <a href="javascript:;" class="FileDiv">
+		                          		上传
+		                          <input type="file" class="sc" id="sc" name="sc">
+		                        </a>
+		                      </li>
+			                      <li><a href="javascript:;" id="fileName" name="fileName">${invoiceDetail.imagename }</a></li>
+			                      <li><a href="javascript:;" class="fileDelete deleteInvoice" >删除</a></li>
+		                      	  <li><a href="javascript:;" id="preView" class="fileDelete">预览</a></li>
+			                      <c:choose>
+			                      	<c:when test="${status.index eq 0 }">
+				                      <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
+			                      	</c:when>
+			                      	<c:otherwise>
+			                      		<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>
+			                      	</c:otherwise>
+			                      </c:choose>
+			                    </ul>
+			                    <input id="invoiceurl" name="invoiceurl" type="hidden" value="${invoiceDetail.invoiceurl }">
+			                  </td>
+			          </tr>
+		          </c:forEach>
+          	</c:when>
+          	<c:otherwise>
+          		<tr class="cloneTR">
+                  <td>发票号：</td>
+                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm"></td>
+                  <td>金额：</td>
+                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm"></td>
+                  <td colspan="4">
+                    <ul class="fileUL">
+                      <li>
                         <a href="javascript:;" class="FileDiv">
-                          		上传
+                         	 上传
                           <input type="file" class="sc" id="sc" name="sc">
                         </a>
                       </li>
-	                      <li><a href="javascript:;" id="fileName" name="fileName">${invoiceDetail.imagename }</a></li>
-	                      <c:choose>
-	                      	<c:when test="${status.index eq 0 }">
-		                      <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
-	                      	</c:when>
-	                      	<c:otherwise>
-	                      		<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>
-	                      	</c:otherwise>
-	                      </c:choose>
-	                    </ul>
-	                    <input id="invoiceurl" name="invoiceurl" type="hidden" value="${invoiceDetail.invoiceurl }">
-	                  </td>
-	          </tr>
-          </c:forEach>
+                      <li><a id="fileName" name="fileName">未选择文件</a></li>
+                      <li><a href="javascript:;" class="fileDelete deleteInvoice" >删除</a></li>
+                      <li><a href="javascript:;" id="preView" class="fileDelete">预览</a></li>
+                      <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
+                    </ul>
+                    <input id="invoiceurl" name="invoiceurl" type="hidden" value="">
+                  </td>
+          </tr>
+          	</c:otherwise>
+          </c:choose>
         </table>
       </div>
     </div>
@@ -201,12 +238,21 @@
 	          $(this).parents('.cloneTR').remove();
 	      });
 	      
-	      $(document).on('click','#fileName',function(){
+	      $(document).on('click','#preView',function(){
 	   	  	  var invoiceurl = $(this).parent().parent().parent().find('[name=invoiceurl]').val();
 	   	  	  //alert(invoiceurl);
 	          document.getElementById('light').style.display='block';
 	          //document.getElementById('fade').style.display='block';
 	          document.getElementById('fapiaoid').src=invoiceurl; 
+	      });
+	      $(document).on('click','.deleteInvoice',function(){
+	   	  	  var invoicedetaildiv = $(this).parent().parent().parent();
+	   	  	  invoicedetaildiv.find('[name=invoiceurl]').val('');
+	   	  	  invoicedetaildiv.find('[name=fileName]').html('未选择文件');
+	   	  	  //alert(invoiceurl);
+	          //document.getElementById('light').style.display='block';
+	          //document.getElementById('fade').style.display='block';
+	          document.getElementById('fapiaoid').src=''; 
 	      });
      });
    //关闭窗口
