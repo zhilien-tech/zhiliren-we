@@ -34,7 +34,7 @@
         <label>用户名</label>
       </div>
       <div class="form-group marginBott5 has-feedback cf">
-      	<span class="glyphicon glyphicon-user form-control-feedback"></span>
+      	<span class="glyphicon glyphicon-user form-control-feedback userIcon"></span>
         <input id="loginName" name="loginName" value="${obj.loginName}" type="text" class="form-control loginpaddingrig" autofocus placeholder="用户名/手机号" 
         data-bv-notempty
         data-bv-notempty-message="请输入用户名/手机号"/>
@@ -44,7 +44,7 @@
         <label>密码</label>
       </div>
       <div class="form-group marginBott5 has-feedback cf">
-      	<span class="fa fa-unlock-alt form-control-feedback"></span>
+      	<span class="fa fa-unlock-alt form-control-feedback userIcon"></span>
         <input id="password" name="password" value="${obj.password}" type="password" class="form-control loginpaddingrig" placeholder="密码"
         data-bv-notempty
         data-bv-notempty-message="请输入密码"/>

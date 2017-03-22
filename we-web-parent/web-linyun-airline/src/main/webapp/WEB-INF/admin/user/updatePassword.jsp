@@ -50,8 +50,9 @@ $("#submit").click(function() {
 		url: '${base}/admin/user/updatePassword.html',
         success: function (data) { 
         	if(data.status == '200'){
-				layer.close(loadLayer);
-				window.parent.location.href="${base}/admin/logout.html";//密码修改成功跳到登录页
+       			layer.close(loadLayer);
+       			alert("修改成功!");
+        		window.parent.location.href="${base}/admin/logout.html";//密码修改成功跳到登录页
 			}else{
 				layer.close(loadLayer) ;
 				layer.msg(data.message) ;

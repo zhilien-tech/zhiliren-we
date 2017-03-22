@@ -2,6 +2,8 @@ package com.linyun.airline.admin.area.module;
 
 import java.util.Date;
 
+import javax.servlet.http.HttpSession;
+
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -12,6 +14,8 @@ import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.area.service.AreaViewService;
+import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.forms.TAreaAddForm;
 import com.linyun.airline.forms.TAreaForm;
 import com.linyun.airline.forms.TAreaUpdateForm;
@@ -36,7 +40,10 @@ public class AreaModule {
 	 * 服务端分页查询
 	 */
 	@At
-	public Object listAreaData(@Param("..") final TAreaForm sqlForm) {
+	public Object listAreaData(@Param("..") final TAreaForm sqlForm, final HttpSession session) {
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long comId = company.getId();//得到公司的id
+		sqlForm.setComId(comId);
 		return areaViewService.listPage4Datatables(sqlForm);
 	}
 
@@ -55,9 +62,14 @@ public class AreaModule {
 	 */
 	@At
 	@POST
-	public Object add(@Param("..") TAreaAddForm addForm) {
+	public Object add(@Param("..") TAreaAddForm addForm, final HttpSession session) {
+		//查询该公司拥有的所有功能
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long comId = company.getId();//得到公司的id
+		addForm.setComId(comId);
 		addForm.setCreateTime(new Date());
 		return areaViewService.add(addForm);
+		//return areaViewService.addAreaName(addForm, session);
 	}
 
 	/**
@@ -94,7 +106,8 @@ public class AreaModule {
 	 */
 	@At
 	@POST
-	public Object checkAreaNameExist(@Param("areaName") final String areaName, @Param("id") final Long areaId) {
-		return areaViewService.checkAreaNameExist(areaName, areaId);
+	public Object checkAreaNameExist(@Param("areaName") final String areaName, @Param("id") final Long areaId,
+			final HttpSession session) {
+		return areaViewService.checkAreaNameExist(areaName, areaId, session);
 	}
 }

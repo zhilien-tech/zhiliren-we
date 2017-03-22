@@ -13,11 +13,17 @@ import com.uxuexi.core.web.form.AddForm;
 public class TAreaAddForm extends AddForm implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	/**区域id*/
+	private Long id;
+
 	/**用户id*/
-	private long userId;
+	private Long userId;
+
+	/**公司id*/
+	private Long comId;
 
 	/**区域id*/
-	private long areaId;
+	private Long areaId;
 
 	/**区域名称*/
 	private String areaName;

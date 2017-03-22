@@ -93,7 +93,15 @@ function initKaiInvoiceTable1() {
                     		return paymentunit;
                     	}
                   },
-                  {"data": "username", "bSortable": false},
+                  {"data": "username", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                  		var username = row.username;
+                  		if(username == "" || username == null){
+                  			return "";
+                  		}
+                  		return username;
+                  	}
+                  },
                   {"data": "status", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                   		var status = row.status;
@@ -142,7 +150,45 @@ function openkaiInvoiceEdit(id){
         content: BASE_PATH + '/admin/inland/kaiInvoice.html?id='+id
       });
 }
-//付款表格
+//开发票 搜索按钮
+$("#kaiSearchInvoiceBtn").on('click', function () {
+	var status = $("#kaiInvoiceSelect").val();
+	var username = $("#username").val();
+	var kaiInvoiceBeginDate = $("#kaiInvoiceBeginDate").val();
+	var kaiInvoiceEndDate = $("#kaiInvoiceEndDate").val();
+	var invoicenum = $("#invoicenumId").val();
+	var paymentunit = $("#invoicenumId").val();
+    var param = {
+		        "status":status,
+		        "username":username,
+		        "kaiInvoiceBeginDate":kaiInvoiceBeginDate,
+		        "kaiInvoiceEndDate":kaiInvoiceEndDate,
+				"invoicenum": invoicenum,
+				"paymentunit": paymentunit
+		    };
+    if(status==1 ||　status==2){
+    	KaiInvoiceTable1.settings()[0].ajax.data = param;
+    	KaiInvoiceTable1.ajax.reload(
+    			function(json){
+    				autoHighLoad($('#KaiInvoiceTable1'));
+    			}
+    	);
+    }
+});
+/*清除 开发票   检索项*/
+$('#kaiEmptyBtn').click(function(){
+	clearSearchTxt("kaiInvoiceSelect","username", "kaiInvoiceBeginDate", "kaiInvoiceEndDate", "invoicenumId");
+});
+//开发票状态选择按钮
+$("#kaiInvoiceSelect").change(function(){
+	$('#kaiSearchInvoiceBtn').click();
+});
+//开发票开票人选择按钮
+$("#username").change(function(){
+	$('#kaiSearchInvoiceBtn').click();
+});
+/*******************************************************收发票表格*****************************************************************/
+//收发票表格
 var shouInvoiceTable1;
 //初始化表格
 initshouInvoiceTable1();
@@ -289,31 +335,7 @@ function openshouInvoiceEdit(id){
     });
 }
 
-//开发票 搜索按钮
-$("#kaiSearchInvoiceBtn").on('click', function () {
-	var status = $("#kaiInvoiceSelect").val();
-	var username = $("#username").val();
-	var kaiInvoiceBeginDate = $("#kaiInvoiceBeginDate").val();
-	var kaiInvoiceEndDate = $("#kaiInvoiceEndDate").val();
-	var invoicenum = $("#invoicenumId").val();
-	var paymentunit = $("#invoicenumId").val();
-    var param = {
-		        "status":status,
-		        "username":username,
-		        "kaiInvoiceBeginDate":kaiInvoiceBeginDate,
-		        "kaiInvoiceEndDate":kaiInvoiceEndDate,
-				"invoicenum": invoicenum,
-				"paymentunit": paymentunit
-		    };
-    if(status==1 ||　status==2){
-    	KaiInvoiceTable1.settings()[0].ajax.data = param;
-    	KaiInvoiceTable1.ajax.reload(
-    			function(json){
-    				autoHighLoad($('#KaiInvoiceTable1'));
-    			}
-    	);
-    }
-});
+
 
 //收发票 搜索按钮
 $("#shouSearchInvoiceBtn").on('click', function () {
@@ -342,11 +364,6 @@ $("#shouSearchInvoiceBtn").on('click', function () {
     
 });
 
-/*清除 开发票   检索项*/
-$('#kaiEmptyBtn').click(function(){
-	clearSearchTxt("kaiInvoiceSelect","username", "kaiInvoiceBeginDate", "kaiInvoiceEndDate", "invoicenumId");
-});
-
 /*清除 收发票   检索项*/
 $('#shouEmptyBtn').click(function(){
 	clearSearchTxt("shouInvoiceSelect","billuserid", "shouInvoiceBeginDate", "shouInvoiceEndDate", "paymentunitId");
@@ -360,14 +377,6 @@ function clearSearchTxt(selectId,selectUsername ,beginDateId, endDateId, inputId
 	$("#"+endDateId).val("");
 	$("#"+inputId).val("");
 }
-//开发票状态选择按钮
-$("#kaiInvoiceSelect").change(function(){
-	$('#kaiSearchInvoiceBtn').click();
-});
-$("#username").change(function(){
-	$('#kaiSearchInvoiceBtn').click();
-});
-
 //收发票状态选择按钮
 $("#shouInvoiceSelect").change(function(){
 	$('#shouSearchInvoiceBtn').click();

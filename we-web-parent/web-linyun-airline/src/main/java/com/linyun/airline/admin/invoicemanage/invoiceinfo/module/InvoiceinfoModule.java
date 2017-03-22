@@ -47,8 +47,16 @@ public class InvoiceinfoModule {
 	 */
 	@At
 	public Object listData(@Param("..") final KaiInvoiceParamForm sqlForm, HttpServletRequest request) {
-		return inlandInvoiceService.listKaiInvoiceData(sqlForm, request);
+		return invoiceinfoViewService.listKaiInvoiceData(sqlForm, request);
 	}
+
+	/**
+	 * 开发票分页查询
+	 */
+	/*@At
+	public Object listData(final HttpSession session) {
+		return invoiceinfoViewService.kaiQueryInvoiceDate(session);
+	}*/
 
 	/**
 	 * 收发票列表

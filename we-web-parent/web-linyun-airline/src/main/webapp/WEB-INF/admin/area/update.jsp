@@ -38,44 +38,48 @@
 	<script src="${base}/common/js/layer/layer.js"></script>
 <script type="text/javascript">
 //验证
-$(document).ready(function(){
-	$('#editAreaForm').bootstrapValidator({
-		message: '验证不通过!',
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-        	areaName: {
-                validators: {
-                    notEmpty: {
-                        message: '区域名称不能为空!'
-                    },
-                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
-                         url: '${base}/admin/area/checkAreaNameExist.html',//验证地址
-                         message: '区域名称已存在，请重新输入!',//提示消息
-                         delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
-                         type: 'POST',//请求方式
-                         //自定义提交数据，默认值提交当前input value
-                         data: function(validator) {
-                            return {
-                            	areaName:$('input#areaName').val(),
-                            	id:'${obj.id}'
-                            };
-                         }
-                     }
-                }
-            }
-        }
-	});
-});
+function validateParams(){
+	var options = {
+			message: '验证不通过!',
+	        feedbackIcons: {
+	            valid: 'glyphicon glyphicon-ok',
+	            invalid: 'glyphicon glyphicon-remove',
+	            validating: 'glyphicon glyphicon-refresh'
+	        },
+	        fields: {
+	        	areaName: {
+	                validators: {
+	                    notEmpty: {
+	                        message: '区域名称不能为空!'
+	                    },
+	                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
+	                         url: '${base}/admin/area/checkAreaNameExist.html',//验证地址
+	                         message: '区域名称已存在，请重新输入!',//提示消息
+	                         delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+	                         type: 'POST',//请求方式
+	                         //自定义提交数据，默认值提交当前input value
+	                         data: function(validator) {
+	                            return {
+	                            	areaName:$('input#areaName').val(),
+	                            	id:'${obj.id}'
+	                            };
+	                         }
+	                     }
+	                }
+	            }
+	        }
+	};
+	$("#editAreaForm").bootstrapValidator(options);  
+	$("#editAreaForm").data('bootstrapValidator').validate();
+	return $("#editAreaForm").data('bootstrapValidator').isValid();
+}
+validateParams();
 //编辑保存
 $("#submit").click(function(){
-	$('#editAreaForm').bootstrapValidator('validate');
+	var valid = validateParams();
 	var bootstrapValidator = $("#editAreaForm").data('bootstrapValidator');
 	var _areaName = $("input#areaName").val();
-	if(bootstrapValidator.isValid()){
+	if(valid){
 		$.ajax({
            cache: true,
            type: "POST",
@@ -98,7 +102,6 @@ $("#submit").click(function(){
            }
        });
 	}
-	 $(".Mymodal-lg").modal('hide');
 });
 //提交时开始验证
 $('#submit').click(function() {

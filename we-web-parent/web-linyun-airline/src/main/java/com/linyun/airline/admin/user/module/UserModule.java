@@ -214,8 +214,8 @@ public class UserModule {
 	@At
 	@POST
 	public Object areaSelect2(@Param("area") final String dictAreaName,
-			@Param("selectedAreaIds") final String selectedAreaIds) {
-		return areaViewService.areaSelect2(dictAreaName, selectedAreaIds);
+			@Param("selectedAreaIds") final String selectedAreaIds, final HttpSession session) {
+		return areaViewService.areaSelect2(dictAreaName, selectedAreaIds, session);
 	}
 
 	/**

@@ -91,8 +91,9 @@
                   <td>发票项目：</td>
                   <td>
                     <select id="invoiceitem" name="invoiceitem" class="form-control input-sm">
-                        <option value="1">团款</option>
-                        <option value="2">代订机票费用</option>
+                    	<c:forEach items="${obj.ytselect }" var="one">
+                    		<option value="${one.id }">${one.comDictName }</option>
+                    	</c:forEach>
                     </select>
                   </td>
                   <td>发票日期：</td>
@@ -141,6 +142,8 @@
                         </a> 
                       </li>
                       <li><a href="javascript:;" id="fileName" name="fileName">未选择文件</a></li>
+                      <li><a href="javascript:;" class="fileDelete deleteInvoice" >删除</a></li>
+                      <li><a href="javascript:;" id="preView" class="fileDelete">预览</a></li>
                       <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
                     </ul>
                     <input id="invoiceurl" name="invoiceurl" type="hidden" value="">
@@ -201,12 +204,21 @@
 		          $(this).parents('.cloneTR').remove();
 		      });
 		      
-		      $(document).on('click','#fileName',function(){
+		      $(document).on('click','#preView',function(){
 		   	  	  var invoiceurl = $(this).parent().parent().parent().find('[name=invoiceurl]').val();
 		   	  	  //alert(invoiceurl);
 		          document.getElementById('light').style.display='block';
 		          //document.getElementById('fade').style.display='block';
 		          document.getElementById('fapiaoid').src=invoiceurl; 
+		      });
+		      $(document).on('click','.deleteInvoice',function(){
+		   	  	  var invoicedetaildiv = $(this).parent().parent().parent();
+		   	  	  invoicedetaildiv.find('[name=invoiceurl]').val('');
+		   	  	  invoicedetaildiv.find('[name=fileName]').html('未选择文件');
+		   	  	  //alert(invoiceurl);
+		          //document.getElementById('light').style.display='block';
+		          //document.getElementById('fade').style.display='block';
+		          document.getElementById('fapiaoid').src=''; 
 		      });
      
      });
