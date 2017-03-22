@@ -130,7 +130,7 @@ function saveOrderInfo(){
 			if(data.orderStatus == 1){
 				url += '/admin/inland/queryDetail.html?id='+data.orderId;
 			}else{
-				url = '/admin/inland/bookingDetail.html?id='+item.orderId;
+				url += '/admin/inland/bookingDetail.html?id='+item.orderId;
 			}
 			window.open(url);
 			window.location.reload();
