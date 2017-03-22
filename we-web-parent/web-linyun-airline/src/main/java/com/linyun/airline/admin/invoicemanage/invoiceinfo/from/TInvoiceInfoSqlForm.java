@@ -20,6 +20,9 @@ public class TInvoiceInfoSqlForm extends DataTablesParamForm {
 	/**id*/
 	private Integer id;
 
+	/**公司id*/
+	private Long comId;
+
 	/**发票项目*/
 	private Integer invoiceitem;
 
@@ -87,9 +90,8 @@ public class TInvoiceInfoSqlForm extends DataTablesParamForm {
 			cnd.and("tii.status", "=", status);
 		}
 		if (!Util.isEmpty(billuserid)) {
-			cnd.and("ii.billuserid", "=", billuserid);
+			cnd.and("tii.billuserid", "=", billuserid);
 		}
-		cnd.and("opid", "=", userid);
 		return cnd;
 	}
 }
