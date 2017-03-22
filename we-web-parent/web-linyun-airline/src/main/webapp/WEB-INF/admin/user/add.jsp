@@ -82,7 +82,7 @@
                       <div class="col-sm-3 padding">
                         <select id="deptId" name="deptId" onchange="selectDeptName();" class="form-control input-sm inputWidth">
                          	<option value="">--请选择--</option>
-                         	<c:forEach items="${obj}" var="one">
+                         	<c:forEach items="${obj.queryList}" var="one">
 	                           	<option value="${one.id }">
 	                           		${one.deptName }
 	                           	</option>

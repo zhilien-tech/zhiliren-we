@@ -149,7 +149,7 @@
 <script type="text/javascript">
 	var BASE_PATH = '${base}';
 </script>
-<%-- <script src="${base}/admin/order/invoice.js"></script> --%>
+<!-- <script src="${base}/admin/order/invoice.js"></script> -->
 <script src="${base}/admin/invoiceinfo/invoiceinfo.js"></script>
 <!-- My97DatePicker -->
 <script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>

@@ -232,7 +232,7 @@ function initDatatable() {
                     		return comdictname;
                     	}		
                     },
-                    {"data": "status", "bSortable": true,
+                    {"data": "status", "bSortable": false,
                     	render: function(data, type, row, meta) {
                     		var status = row.status;
                     		if(null==status || ""==status){
@@ -245,7 +245,7 @@ function initDatatable() {
                     		}
                     	}	
                     }, 
-                    {"data": "createtime", "bSortable": true,
+                    {"data": "createtime", "bSortable": false,
                     	 render: function(data, type, row, meta) {
                     		 var createtime = new Date(row.createtime);
                     		 if(null==createtime || ""==createtime){

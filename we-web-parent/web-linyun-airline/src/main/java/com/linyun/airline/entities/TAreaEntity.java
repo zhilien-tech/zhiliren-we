@@ -17,7 +17,11 @@ public class TAreaEntity implements Serializable {
 	@Column
 	@Id(auto = true)
 	@Comment("主键")
-	private long id;
+	private Long id;
+
+	@Column
+	@Comment("公司id")
+	private Long comId;
 
 	@Column
 	@Comment("区域名称")

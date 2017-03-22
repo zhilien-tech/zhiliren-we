@@ -174,12 +174,16 @@ public class ComInfoDictModule {
 	 */
 	@At
 	@POST
-	public Object checkTypeCodeExist(@Param("comDdictCode") final String Code, @Param("id") final long id) {
+	public Object checkTypeCodeExist(@Param("comTypeCode") final String comTypeCode,
+			@Param("comDdictCode") final String Code, @Param("id") final long id, final HttpSession session) {
+		//从session中得到公司id
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long comId = company.getId();//得到公司的id
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<ComDictInfoEntity> listCode = dbDao.query(ComDictInfoEntity.class, Cnd.where("comDdictCode", "=", Code),
-				null);
+		List<ComDictInfoEntity> listCode = dbDao.query(ComDictInfoEntity.class, Cnd.where("comDdictCode", "=", Code)
+				.and("comId", "=", comId).and("comTypeCode", "=", comTypeCode), null);
 		List<ComDictInfoEntity> listCode2 = dbDao.query(ComDictInfoEntity.class, Cnd.where("comDdictCode", "=", Code)
-				.and("id", "=", id), null);
+				.and("comId", "=", comId).and("comTypeCode", "=", comTypeCode).and("id", "=", id), null);
 		if (!Util.isEmpty(listCode)) {
 			if (Util.isEmpty(id)) {
 				map.put("valid", false);
@@ -197,12 +201,16 @@ public class ComInfoDictModule {
 	 */
 	@At
 	@POST
-	public Object checkDictNameExist(@Param("comDictName") final String Name, @Param("id") final long id) {
+	public Object checkDictNameExist(@Param("comTypeCode") final String comTypeCode,
+			@Param("comDictName") final String Name, @Param("id") final long id, final HttpSession session) {
+		//从session中得到公司id
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long comId = company.getId();//得到公司的id
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<ComDictInfoEntity> listName = dbDao.query(ComDictInfoEntity.class, Cnd.where("comDictName", "=", Name),
-				null);
+		List<ComDictInfoEntity> listName = dbDao.query(ComDictInfoEntity.class, Cnd.where("comDictName", "=", Name)
+				.and("comId", "=", comId).and("comTypeCode", "=", comTypeCode), null);
 		List<ComDictInfoEntity> listName2 = dbDao.query(ComDictInfoEntity.class, Cnd.where("comDictName", "=", Name)
-				.and("id", "=", id), null);
+				.and("comId", "=", comId).and("comTypeCode", "=", comTypeCode).and("id", "=", id), null);
 		if (!Util.isEmpty(listName)) {
 			if (Util.isEmpty(id)) {
 				map.put("valid", false);

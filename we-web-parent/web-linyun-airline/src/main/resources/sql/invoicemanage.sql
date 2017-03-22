@@ -39,3 +39,27 @@ LEFT JOIN t_invoice_detail de ON ice.id = de.invoiceinfoid
 $condition
 GROUP BY
 	u.userName
+	
+/*invoicemanage_kaiinvoice_list*/
+SELECT
+	id,
+	invoiceitem,
+	invoicedate,
+	billuserid,
+	deptid,
+	paymentunit,
+	remark,
+	difference,
+	balance,
+	invoicetype,
+	receiveid,
+	pnrid,
+	opid,
+	optime,
+	STATUS,
+	comId,
+	payid,
+	ordertype
+FROM
+	t_invoice_info ii
+$condition
