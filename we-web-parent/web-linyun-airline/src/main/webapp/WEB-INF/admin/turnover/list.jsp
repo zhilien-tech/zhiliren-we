@@ -267,6 +267,8 @@
 			  layer.msg("关闭成功",{time: 2000, icon:1});
 		  }else if(id == '3'){
 			  layer.msg("删除成功",{time: 2000, icon:1});
+		  }else if(id == '4'){
+			  layer.msg("开启成功",{time: 2000, icon:1});
 		  }
 	  }
 	//根据不同的条件进行搜索
@@ -344,17 +346,17 @@
 					id : id
 				},
 				error : function(request) {
-					layer.msg('关闭失败!');
+					layer.msg('开启失败!');
 				},
 				success : function(data) {
 					if ("200" == data.status) {
 						
-						layer.msg("关闭成功!", "", 3000);
+						layer.msg("开启成功!", "", 3000);
 						 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 					     parent.layer.close(index);
-					     window.parent.successCallback('2');
+					     window.parent.successCallback('4');
 				 	} else {
-						layer.msg("关闭失败!", "", 3000);
+						layer.msg("开启失败!", "", 3000);
 					} 
 				}
 			});

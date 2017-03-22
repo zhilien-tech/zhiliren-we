@@ -22,7 +22,6 @@ import org.nutz.ioc.loader.annotation.Inject;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.search.service.SearchViewService;
-import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.ApprovalResultEnum;
 import com.linyun.airline.common.enums.MessageRemindEnum;
@@ -68,7 +67,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		String sqlString = sqlManager.get("applyapproval_list");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd1 = Cnd.NEW();
-		cnd1.and("companyId", "=", CommonConstants.UPCOMPANY_ID);
+		cnd1.and("companyId", "=", companyId);
 		cnd1.and("orderstype", "=", OrderTypeEnum.FIT.intKey());
 		cnd1.and("orderPnrStatus", "=", AccountPayEnum.APPROVAL.intKey());
 		List<Record> list1 = dbDao.query(sql, cnd1, null);
