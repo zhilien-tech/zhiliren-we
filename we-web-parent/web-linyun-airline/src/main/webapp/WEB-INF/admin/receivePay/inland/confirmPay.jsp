@@ -183,13 +183,16 @@
 			'queueSizeLimit' : 100,
 			'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html',//后台处理的页面
 			//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
-			//下面的例子演示如何获取到vid
+			'onUploadStart' : function(file) {
+				$("#submit").attr('disabled',true);
+			},
 			'onUploadSuccess' : function(file, data, response) {
 				var jsonobj = eval('(' + data + ')');
 				var url  = jsonobj;//地址
 				var fileName = file.name;//文件名称
 				$('#receiptUrl').val(url);
 				$('#receiptImg').attr('src',url);
+				$("#submit").attr('disabled',false);
 			},
 			//加上此句会重写onSelectError方法【需要重写的事件】
 			'overrideEvents': ['onSelectError', 'onDialogClose'],
