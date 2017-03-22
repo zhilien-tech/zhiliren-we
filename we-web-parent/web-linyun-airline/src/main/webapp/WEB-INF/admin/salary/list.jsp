@@ -59,7 +59,7 @@
                     </select>
                   </div>
                   <div class="col-md-2 padding">
-                    <button type="button" class="btn btn-primary btn-sm suBtn" onclick="select();">搜索</button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="select();">搜索</button>
                     <!-- <button type="button" class="btn btn-primary btn-sm suBtn" onclick="add();">添加</button> -->
                   </div>
                 </div>

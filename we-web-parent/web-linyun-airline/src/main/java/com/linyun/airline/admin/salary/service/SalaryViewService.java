@@ -20,7 +20,6 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.Daos;
 import org.nutz.mvc.annotation.Param;
 
-import com.google.common.collect.Maps;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TSalaryEntity;
@@ -97,7 +96,6 @@ public class SalaryViewService extends BaseService<TSalaryEntity> {
 	}
 
 	public Map<String, Object> selectCondition(HttpSession session) {
-		Map<String, Object> maps = Maps.newHashMap();
 		String drawerString = sqlManager.get("salary_drawer");
 		Sql drawerSql = Sqls.create(drawerString);
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
@@ -105,6 +103,7 @@ public class SalaryViewService extends BaseService<TSalaryEntity> {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("comId", "=", companyId);
 		drawerSql.setCondition(cnd);
+
 		List<Record> drawerList = dbDao.query(drawerSql, cnd, null);
 		String yearsString = sqlManager.get("salary_years");
 		Sql yearsSql = Sqls.create(yearsString);
