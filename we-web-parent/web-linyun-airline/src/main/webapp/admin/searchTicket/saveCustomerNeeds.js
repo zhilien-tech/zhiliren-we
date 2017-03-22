@@ -1,6 +1,6 @@
 //保存订单
 function saveOrderInfo(){
-	
+
 	var linkName = $("#linkNameId").select2("val");
 	var phoneNum = $("#phoneNumId").select2("val");
 	//国际不需要验证 客户名称
@@ -8,7 +8,7 @@ function saveOrderInfo(){
 		layer.msg("客户姓名不能为空", "", 2000);
 		return;
 	}
-	
+
 	var customdata = {};
 	var customerId = $('#linkManId').val();
 	customdata.customerId = customerId;
@@ -29,7 +29,7 @@ function saveOrderInfo(){
 	//客户信息id
 	var customerInfoId = $('#linkManId').val();
 	customdata.customerInfoId = customerInfoId;
-	
+
 	var row = [];
 	$('.DemandDiv').each(function(i){
 		var lenthcustom = '';
@@ -60,11 +60,11 @@ function saveOrderInfo(){
 		row1.peoplecount = cPersonAmount;
 		row1.tickettype = tickettype;
 		row1.cRemark = cRemark;
-		
+
 		lenthcustom += $(this).find('[name=cOutDate]').val();
 		lenthcustom += $(this).find('[name=cPersonAmount]').val();
 		lenthcustom += $(this).find('[name=cRemark]').val();
-		
+
 		var airrows = [];
 		$(this).find('[name=airLineInfo]').each(function(i){
 			var airrow = {};
@@ -93,12 +93,12 @@ function saveOrderInfo(){
 			airrow.arrivetime = cAirArrivalDate;
 			airrow.formprice = cAirCost;
 			airrow.price = cAirPretium;
-			
+
 			lengthAir += $(this).find('[name=cAirOutDate]').val();
 			lengthAir += $(this).find('[name=cAirArrivalDate]').val();
 			lengthAir += $(this).find('[name=cAirCost]').val();
 			lengthAir += $(this).find('[name=cAirPretium]').val();
-			
+
 			if(lengthAir.length > 0){
 				airrows.push(airrow);
 			}
@@ -108,10 +108,12 @@ function saveOrderInfo(){
 		if(lenthcustom.length > 0){
 			row.push(row1);
 		}
-		
+
 	});
 	customdata.customdata=row;
 	console.log(JSON.stringify(customdata));
+	//保存中
+	var layerIndex =  layer.load(1, {shade: "#000"});
 	$.ajax({
 		dataType : 'json',
 		type: 'POST', 
@@ -120,20 +122,29 @@ function saveOrderInfo(){
 			"data":JSON.stringify(customdata)
 		}, 
 		url : BASE_PATH  + "/admin/search/saveCustomerNeeds.html",
-		success: function (data) { 
-			/*//刷新页面
-			window.location.reload();
-			layer.msg("添加成功","",4000);
-			*/
-			//跳转新的标签页
-			var url = BASE_PATH;
-			if(data.orderStatus == 1){
-				url += '/admin/inland/queryDetail.html?id='+data.orderId;
+		success: function (result) { 
+			if(result.status==200){
+
+				layer.msg('添加成功', {time:1000}, function(){
+					//跳转新的标签页
+					var url = BASE_PATH;
+					var data = result.data;
+					if(data.orderStatus == 1){
+						url += '/admin/inland/queryDetail.html?id='+data.orderId;
+					}else{
+						url += '/admin/inland/bookingDetail.html?id='+data.orderId;
+					}
+					window.open(url);
+					//重新刷新页面
+					window.location.reload();
+					//关闭加载层
+					layer.close(layerIndex);
+				}); 
+
 			}else{
-				url += '/admin/inland/bookingDetail.html?id='+item.orderId;
+				layer.msg("添加失败","",4000);
 			}
-			window.open(url);
-			window.location.reload();
+
 		},
 		error: function (xhr) {
 			layer.msg("添加失败","",4000);
