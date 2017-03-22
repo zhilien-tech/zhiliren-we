@@ -20,8 +20,54 @@
 		<li> </li>
 	</ul>
   </header>
-  <content class="content-list">
-		<ul class="content-ul">
+  <c:if test="${obj.reduce=='reduce' }">
+  		<ul class="content-ul">
+			<li>
+				<span>订单号</span>
+				<span>${obj.reduceList.ordersnum }</span>
+			</li>
+			<li>
+				<span>减免对象</span>
+				<span>${obj.reduceList.customname }</span>
+			</li>
+			<li>
+				<span>用途</span>
+				<span></span>
+			</li>
+			<li>
+				<span>资金种类</span>
+				<span></span>
+			</li>
+			<li>
+				<span>金额</span>
+				
+			
+				<span>${obj.reduceList.account }</span>
+			</li>
+			<li>
+				<span>手续费</span>
+				<span></span>
+			</li>
+			<li>
+				<span>币种</span>
+				<span>${obj.reduceList.currency }</span>
+			</li>
+			<li>
+				<span>发票</span>
+				<span></span>
+			</li>
+			<li>
+				<span>签收时间</span>
+				<span><fmt:formatDate value="${obj.reduceList.optime }" pattern="yyy:MM:dd HH:mm:ss"/></span>
+			</li>
+			<li>
+				<span>申请人</span>
+				<span>${obj.reduceList.userName }</span>
+			</li>
+		</ul>
+  </c:if>
+  <c:if test="${obj.reduce=='reduceno' }">
+  		<ul class="content-ul">
 			<li>
 				<span>订单号</span>
 				<span>${obj.detaillist.ordersnum }</span>
@@ -64,13 +110,16 @@
 			</li>
 			<li>
 				<span>签收时间</span>
-				<span>${obj.detaillist.approveTime }</span>
+				<span><fmt:formatDate value="${obj.detaillist.approveTime }" pattern="yyy:MM:dd HH:mm:ss"/></span>
 			</li>
 			<li>
 				<span>申请人</span>
 				<span>${obj.detaillist.userName }</span>
 			</li>
 		</ul>
+  </c:if>
+  <content class="content-list">
+		
 		
   </content>
   <input name="id" id="id" value="${obj.detaillist.id }" type="hidden">
@@ -80,6 +129,15 @@
 <c:if test="${obj.operation=='inlandNum'}">
 <input name="status" id="status" value="${obj.detaillist.orderPnrStatus }" type="hidden">
 </c:if>
+
+<!-- ***********减免需要的参数************* -->
+<input name="reduceStatus" id="reduceStatus" value="${obj.reduceList.applyResult }" type="hidden">
+
+<input name="reduceId" id="reduceId" value="${obj.reduceList.id }" type="hidden">
+<input name="reduce" id="reduce" value="${obj.reduce }" type="hidden">
+
+
+
 <c:if test="${obj.operation=='international'}">
 <input name="status" id="status" value="${obj.detaillist.paystatus }" type="hidden">
 </c:if>
@@ -96,6 +154,7 @@
 <script type="text/javascript">
 function control(flag){
 	var status=$("#status").val();
+	var reduceStatus=$("#reduceStatus").val();
 	
 	if(status==1){
 		if(flag=="agree"){
@@ -116,6 +175,29 @@ function control(flag){
 		}
 		
 	}
+	if(reduceStatus==1){
+		if(flag=="agree"){
+			agree("agree");
+			
+		}
+		if(flag=="refuse"){
+			agree("refuse");
+			
+		}
+		
+	}else if(reduceStatus==2){
+		
+	}else if(reduceStatus==3){
+		if(flag=="agree"){
+			agree("agree");
+			
+		}
+		
+	}
+	
+	
+	
+	
 }
 //删除提示
 function agree(temp) {
@@ -139,17 +221,23 @@ function agree(temp) {
 				status:$('#status').val(),
 				temp:temp,
 				orderId:$("#orderId").val(),
-				operation:$("#operation").val()
+				operation:$("#operation").val(),
+				reduce:$("#reduce").val(),
+				reduceId:$("#reduceId").val(),
+				reduceStatus:$("#reduceStatus").val()
 			},
 			dataType : 'json',
 			url : url,
 			success : function(data) {
 				if ("200" == data.status) {
-					layer.msg("审核成功!", "", 3000);
+					layer.msg("审核成功!", "", 4000);
 					/*  var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 				     parent.layer.close(index);
 				     window.parent.successCallback('3'); */
-				     window.location.href="${base}/admin/applyapproval/dataList.html?operation=${obj.operation}"; 
+				     
+					     window.location.href="${base}/admin/applyapproval/dataList.html?operation=${obj.operation}"; 
+				    
+				      
 				     
 				} else {
 					layer.msg("审核失败!", "", 3000);
