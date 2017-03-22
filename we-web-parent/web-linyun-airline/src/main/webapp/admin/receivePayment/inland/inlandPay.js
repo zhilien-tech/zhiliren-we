@@ -43,12 +43,11 @@ function initPayDataTable(){
 		            	render: function(data, type, row, meta) {
 		            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
 		            		var week = ['MO','TU','WE','TH','FR','SA','SU'];
-		            		var ldate = new Date(data);
 		            		var result = "";
-		            		if(ldate != undefined){
+		            		if(data && data != undefined){
+		            			var ldate = new Date(data);
 		            			result = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
 		            		}
-
 		            		return result;
 		            	}
 		            },
