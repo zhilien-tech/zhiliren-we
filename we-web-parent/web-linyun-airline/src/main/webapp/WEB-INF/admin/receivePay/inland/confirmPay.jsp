@@ -197,7 +197,7 @@
 			'onSelectError':function(file, errorCode, errorMsg){
 					switch(errorCode) {
 					case -110:
-						alert("文件 ["+file.name+"] 大小超出系统限制！");
+						alert("文件 ["+file.name+"] 大小超出系统限制");
 						break;
 					case -120:
 						alert("文件 ["+file.name+"] 大小异常！");
