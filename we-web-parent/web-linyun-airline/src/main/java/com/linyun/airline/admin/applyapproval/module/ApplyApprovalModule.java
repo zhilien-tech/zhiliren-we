@@ -12,7 +12,6 @@ import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 
@@ -29,7 +28,6 @@ import com.linyun.airline.forms.ApplyApprovalForm;
  */
 @IocBean
 @At("/admin/applyapproval")
-@Filters
 public class ApplyApprovalModule {
 	@Inject
 	private ApplyApprovalService applyApprovalService;
@@ -76,13 +74,14 @@ public class ApplyApprovalModule {
 	@At
 	@Ok("jsp")
 	public Object detailList(@Param("..") final Pager pager, final HttpSession session,
-			@Param("operation") final String operation, @Param("id") final String id, @Param("date") final String date) {
+			@Param("operation") final String operation, @Param("id") final String id, @Param("date") final String date,
+			@Param("reduce") final String reduce) {
 		/*Map<String, Object> map = Maps.newHashMap();
 		List<Record> deplist = grabfileViewService.getFolderInfo(sqlManager);
 		map.put("deplist", deplist);
 		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));*/
 		/*airlinePolicyService.findConditionList()*/
-		return applyApprovalService.findDetail(session, operation, id, date);
+		return applyApprovalService.findDetail(session, operation, id, date, reduce);
 	}
 
 	/**
@@ -95,12 +94,10 @@ public class ApplyApprovalModule {
 	public Object agree(@Param("..") final Pager pager, final HttpSession session,
 			@Param("usingId") final Long usingId, @Param("id") final Long id, @Param("status") final Long status,
 			@Param("temp") final String temp, @Param("orderId") final Long orderId,
-			@Param("operation") final String operation) {
-		/*Map<String, Object> map = Maps.newHashMap();
-		List<Record> deplist = grabfileViewService.getFolderInfo(sqlManager);
-		map.put("deplist", deplist);
-		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));*/
-		/*airlinePolicyService.findConditionList()*/
-		return applyApprovalService.doAgree(session, usingId, id, status, temp, orderId, operation);
+			@Param("operation") final String operation, @Param("reduceId") final Long reduceId,
+			@Param("reduce") final String reduce, @Param("reduceStatus") final Integer reduceStatus) {
+
+		return applyApprovalService.doAgree(session, usingId, id, status, temp, orderId, operation, reduceId, reduce,
+				reduceStatus);
 	}
 }

@@ -893,7 +893,7 @@
 		    	var price = parseFloat((costprice * discountFare)/100) + parseFloat(fees);
 		    	price = price+'';
 		    	price=price.substring(0, price.lastIndexOf(".", price.length)+3);
-
+				console.log(price);
 		    	if(costprice){
 		     		if(isNaN(price)){
 		     			$(this).parent().parent().find('[name=cAirPretium]').val('');
