@@ -20,7 +20,7 @@ public class TCustomerInfoUpdateForm extends ModForm implements Serializable {
 	private long agentId;
 
 	/**客户类型*/
-	private long customerType;
+	private long comType;
 
 	/**名称*/
 	private String name;

@@ -429,19 +429,12 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		for (Record r : agentCompanyList) {
 			comIds = r.getString("id") + "";
 			comName = r.getString("name");
-			comType = r.getString("type");
+			comType = r.getString("comtype");
 		}
 		obj.put("comIds", comIds);
-		obj.put("comEntity", Lists.transform(agentCompanyList, new Function<Record, Select2Option2>() {
-			@Override
-			public Select2Option2 apply(Record record) {
-				Select2Option2 op = new Select2Option2();
-				op.setId(Long.valueOf(record.getString("id")));
-				op.setText(record.getString("comname"));
-				op.setComType(Long.valueOf(record.getString("comtype")));
-				return op;
-			}
-		}));
+		obj.put("comType", comType);
+		List<Select2Option2> result = transform2SelectOptions(agentCompanyList);
+		obj.put("comEntity", result);
 
 		//查询出发城市
 		Sql citySql = Sqls.create(sqlManager.get("customer_cityOption_list"));

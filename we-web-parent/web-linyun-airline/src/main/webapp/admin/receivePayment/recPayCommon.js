@@ -6,7 +6,6 @@ $(document).on("input",".mustNumber",function(){
 $(document).on("input",".mustNumberPoint",function(){
 	$(this).val($(this).val().replace(/[^.\d]/g,''));
 });
-
 //只能输入时间 （例如12:00）
 $(document).on("input",".mustTimes",function(){
 	$(this).val($(this).val().replace(/[^:\d]/g,''));
@@ -14,6 +13,15 @@ $(document).on("input",".mustTimes",function(){
 		$(this).val($(this).val()+':');
 	}else if($(this).val().length > 5){	
 		$(this).val($(this).val().substr(0,5));
+	}
+});
+//只能输入时间 （例如12:00）
+$(document).on("input",".mustArriveTimes",function(){
+	$(this).val($(this).val().replace(/[^:\d]/g,''));
+	if($(this).val().length == 2){
+		$(this).val($(this).val()+':');
+	}else if($(this).val().length > 7){	
+		$(this).val($(this).val().substr(0,7));
 	}
 });
 //PNR最多输入13位

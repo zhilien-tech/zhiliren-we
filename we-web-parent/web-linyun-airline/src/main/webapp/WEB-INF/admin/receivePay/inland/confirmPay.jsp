@@ -58,7 +58,7 @@
 					<td>银行：</td>
 					<td>
 						<select id="bankComp" name="bankComp" onchange="bankSelect();" class="form-control input-sm">
-							<option>--请选择--</option>
+							<!-- <option>--请选择--</option> -->
 							<c:forEach var="one" items="${obj.bankList}">
 	                        	<option value="${one.id }">${one.dictName }</option>
 	                        </c:forEach>
@@ -66,12 +66,12 @@
 					</td>
 					<td>银行卡名称：</td>
 					<td><select id="cardName" name="cardName" onchange="cardSelect();" class="form-control input-sm">
-							<option>--请选择--</option>
+							<!-- <option>--请选择--</option> -->
 					</select></td>
 					<td>卡号：</td>
 					<td>
 						<select id="cardNum" name="cardNum" class="form-control input-sm">
-							<option>--请选择--</option>
+							<!-- <option>--请选择--</option> -->
 						</select>
 					</td>
 					<td>合计：</td>
@@ -89,7 +89,7 @@
 					<td>用途：</td>
 					<td><select id="purpose" name="purpose" class="form-control input-sm">
 							<c:forEach var="one" items="${obj.fkytList}">
-	                        	<option value="${one.id }">${one.dictName }</option>
+	                        	<option value="${one.id }">${one.comDictName }</option>
 	                        </c:forEach>
 					</select></td>
 					<td>资金种类：</td>
@@ -210,52 +210,54 @@
 			});
 		});
 	
-	//银行名称改变
-	function bankSelect(){
-		$.ajax({
-			cache : false,
-			type : "POST",
-			data : {
-				bankId:$('#bankComp').val()
-			},
-			url : '${base}/admin/receivePay/inland/getCardNames.html',
-			success : function(data) {
-				var option = "<option>--请选择--</option>";
-				var nameNtr = option;
-				var numStr = option;
-				for(var i=0;i< data.length;i++){
-					nameNtr += '<option value="'+data[i]+'">'+data[i]+'</option>';
+		//银行名称改变
+		function bankSelect(){
+			$.ajax({
+				cache : false,
+				type : "POST",
+				data : {
+					bankId:$('#bankComp').val()
+				},
+				url : '${base}/admin/receivePay/inland/getCardNames.html',
+				success : function(data) {
+					/* var option = "<option>--请选择--</option>"; */
+					var option = "";
+					var nameNtr = option;
+					var numStr = option;
+					for(var i=0;i< data.length;i++){
+						nameNtr += '<option value="'+data[i]+'">'+data[i]+'</option>';
+					}
+					document.getElementById("cardName").innerHTML = nameNtr;
+					document.getElementById("cardNum").innerHTML = numStr;
+				},
+				error : function(request) {
+					
 				}
-				document.getElementById("cardName").innerHTML = nameNtr;
-				document.getElementById("cardNum").innerHTML = numStr;
-			},
-			error : function(request) {
-				
-			}
-		});
-	}
-	
-	//银行卡名称改变
-	function cardSelect(){
-		$.ajax({
-			cache : false,
-			type : "POST",
-			data : {
-				cardName:$('#cardName').val()
-			},
-			url : '${base}/admin/receivePay/inland/getCardNums.html',
-			success : function(data) {
-				var str = "<option>--请选择--</option>";
-				for(var i=0;i< data.length;i++){
-					str += '<option value="'+data[i]+'">'+data[i]+'</option>';
+			});
+		}
+		
+		//银行卡名称改变
+		function cardSelect(){
+			$.ajax({
+				cache : false,
+				type : "POST",
+				data : {
+					cardName:$('#cardName').val()
+				},
+				url : '${base}/admin/receivePay/inland/getCardNums.html',
+				success : function(data) {
+					/* var str = "<option>--请选择--</option>"; */
+					var str = "";
+					for(var i=0;i< data.length;i++){
+						str += '<option value="'+data[i]+'">'+data[i]+'</option>';
+					}
+					document.getElementById("cardNum").innerHTML=str;
+				},
+				error : function(request) {
+					
 				}
-				document.getElementById("cardNum").innerHTML=str;
-			},
-			error : function(request) {
-				
-			}
-		});
-	}
+			});
+		}
 	</script>
 </body>
 </html>

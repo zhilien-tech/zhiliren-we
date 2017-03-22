@@ -194,12 +194,12 @@
 										data-placeholder="MU8876"></select></td>
 									<td><label>出发时间：</label></td>
 									<td><input name="cAirOutDate" type="text"
-										class="form-control input-sm textWid mustTimes" placeholder="08:00">
+										class="form-control mustTimes input-sm textWid" placeholder="08:00">
 										<!-- <input id="cAirOutDate0" name="cAirOutDate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'cAirArrivalDate0\')}'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2020-01-01"> -->
 									</td>
 									<td><label>抵达时间：</label></td>
 									<td><input name="cAirArrivalDate" type="text"
-										class="form-control input-sm textWid mustTimes" placeholder="14:00">
+										class="form-control mustArriveTimes input-sm textWid" placeholder="14:00">
 										<!-- <input id="cAirArrivalDate0" name="cAirArrivalDate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'cAirOutDate0\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2020-01-01"> -->
 									</td>
 									<td><label class="labelWid">成本价：</label></td>
@@ -560,7 +560,7 @@
 		<!-- 保存查询 js -->
 		<script src="${base}/admin/searchTicket/saveCustomerNeeds.js"></script>
 		<!-- 时间格式化 -->
-		<script src="${base}/admin/order/ordercommon.js"></script>
+		<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
 
 		<!-- 解析sabre -->
 		<script type="text/javascript">
@@ -884,7 +884,16 @@
 		    	//手续费
 		    	var fees = $("#feeHidden").val();
 		    	var priceStr="";
-		    	var price = parseFloat((costprice * discountFare)/100).toFixed(2) + parseFloat(fees).toFixed(2);
+		    	if(null==discountFare || undefined==discountFare || ""==discountFare){
+		    		discountFare=0;
+		    	}
+		    	if(null==fees || undefined==fees || ""==fees){
+		    		fees=0;
+		    	}
+		    	var price = parseFloat((costprice * discountFare)/100) + parseFloat(fees);
+		    	price = price+'';
+		    	price=price.substring(0, price.lastIndexOf(".", price.length)+3);
+
 		    	if(costprice){
 		     		if(isNaN(price)){
 		     			$(this).parent().parent().find('[name=cAirPretium]').val('');

@@ -14,7 +14,7 @@ function initPayDataTable(){
 			"url": BASE_PATH + "/admin/receivePay/inland/inlandPayList.html",
 			"type": "post",
 			"data": function (d) {
-				
+
 			}
 		},
 		"columns": [
@@ -48,7 +48,7 @@ function initPayDataTable(){
 		            		if(ldate != undefined){
 		            			result = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
 		            		}
-		            		
+
 		            		return result;
 		            	}
 		            },
@@ -101,7 +101,7 @@ function initPayDataTable(){
 		            	}
 		            },
 		            {"data": "drawer", "bSortable": false}
-		            
+
 		            ],
 		            "infoCallback": function (settings, start, end, max, total, pre) {
 		            	var length = $(".checkBoxPayChild:checked").length;
@@ -138,170 +138,170 @@ function initPayEdDataTable(){
 			}
 		},
 		"columns": [
-					{"data": "ordernum", "bSortable": false,
-						render:function(data, type, row, meta) {
-							var result = '<ul> ';
-							$.each(row.orders, function(name, value) {
-								if(value){
-									result += '<li style="list-style:none;">'+value.ordernum+'</li>';
-								}
-							});
-							result += '</ul>';
-							return result;
-						}
-					},
-		            {"data": "pnrnum", "bSortable": false,
-						render:function(data, type, row, meta) {
-							var result = '<ul> ';
-							$.each(row.orders, function(name, value) {
-								if(value){
-									result += '<li style="list-style:none;">'+value.pnrnum+'</li>';
-								}
-							});
-							result += '</ul>';
-							return result;
-						}
-					},
-		            {"data": "leavedate", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var result = '<ul> ';
-							$.each(row.orders, function(name, value) {
-								if(value && value.leavedate != undefined){
-									var date = value.leavedate;
-				            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
-				            		var week = ['MO','TU','WE','TH','FR','SA','SU'];
-				            		var ldate = new Date(date);
-				            		var dateFormat = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
-									result += '<li style="list-style:none;">'+dateFormat+'</li>';
-								}
-							});
-							result += '</ul>';
-		            		return result;
-		            	}
-		            },
-		            {"data": "peoplecount", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var result = '<ul> ';
-							$.each(row.orders, function(name, value) {
-								if(value){
-									var pCount = value.peoplecount;
-									if(pCount == null || pCount == undefined || pCount==""){
-										pCount = " ";
-									}else{
-										result += '<li style="list-style:none;">'+pCount+'</li>';
-									}
-								}
-							});
-							result += '</ul>';
-							return result;
-		            	}
-		            },
-		            {"data": "saleprice", "bSortable": false,
-						render:function(data, type, row, meta) {
-							var result = '<ul> ';
-							$.each(row.orders, function(name, value) {
-								if(value && value.saleprice!=undefined){
-									result += '<li style="list-style:none;">'+value.saleprice+'</li>';
-								}
-							});
-							result += '</ul>';
-							return result;
-						}
-					},
-		            {"data": "currency", "bSortable": false,
-						render:function(data, type, row, meta) {
-							var result = '<ul>';
-							$.each(row.orders, function(name, value) {
-								if(value && value.currency!=undefined){
-									result += '<li style="list-style:none;">'+value.currency+'</li>';
-								}
-							});
-							result += '</ul>';
-							return result;
-						}
-					},
-		            {"data": "totalmoney", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var totalmoney = row.totalmoney;
-		            		if(null == totalmoney || ""== totalmoney){
-		            			return "";
-		            		}
-		            		return totalmoney;
-		            	}
-		            },
-		            {"data": "shortname", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var shortname = row.shortname;
-		            		if(null == shortname || ""== shortname){
-		            			return "";
-		            		}
-		            		return shortname;
-		            	}
-		            },
-		            {"data": "orderpnrstatus", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var s = '';
-		            		if(data == '2'){
-		            			s = '付款中';
-		            		}
-		            		if(data == '3'){
-		            			s = '已付款';
-		            		}
-		            		return s;
-		            	}
-		            },
-		            {"data": "username", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var username = row.username;
-		            		if(null == username || ""== username){
-		            			return "";
-		            		}
-		            		return username;
-		            	}
-		            },
-		            {"data": "asd", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var asd = row.asd;
-		            		if(null == asd || ""== asd){
-		            			return "";
-		            		}
-		            		return asd;
-		            	}
-		            },
-		            {"data": "abc", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var abc = row.abc;
-		            		if(null == abc || ""== abc){
-		            			return "";
-		            		}
-		            		return abc;
-		            	}
-		            }
-		            ],
-		            "infoCallback": function (settings, start, end, max, total, pre) {
-		            	var length = $(".checkBoxPayChild:checked").length;
-		            	if(inlandPayEdTable.page.len() == length){
-		            		$(".checkBoxPayAll").prop("checked", true);
-		            	}else{
-		            		$(".checkBoxPayAll").prop("checked", false);
+        {"data": "ordernum", "bSortable": false,
+        	render:function(data, type, row, meta) {
+        		var result = '<ul> ';
+        		$.each(row.orders, function(name, value) {
+        			if(value){
+        				result += '<li style="list-style:none;">'+value.ordernum+'</li>';
+        			}
+        		});
+        		result += '</ul>';
+        		return result;
+        	}
+        },
+        {"data": "pnrnum", "bSortable": false,
+        	render:function(data, type, row, meta) {
+        		var result = '<ul> ';
+        		$.each(row.orders, function(name, value) {
+        			if(value){
+        				result += '<li style="list-style:none;">'+value.pnrnum+'</li>';
+        			}
+        		});
+        		result += '</ul>';
+        		return result;
+        	}
+        },
+        {"data": "leavedate", "bSortable": false,
+        	render: function(data, type, row, meta) {
+        		var result = '<ul> ';
+        		$.each(row.orders, function(name, value) {
+        			if(value && value.leavedate != undefined){
+        				var date = value.leavedate;
+        				var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
+        				var week = ['MO','TU','WE','TH','FR','SA','SU'];
+        				var ldate = new Date(date);
+        				var dateFormat = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
+        				result += '<li style="list-style:none;">'+dateFormat+'</li>';
+        			}
+        		});
+        		result += '</ul>';
+        		return result;
+        	}
+        },
+        {"data": "peoplecount", "bSortable": false,
+        	render: function(data, type, row, meta) {
+        		var result = '<ul> ';
+        		$.each(row.orders, function(name, value) {
+        			if(value){
+        				var pCount = value.peoplecount;
+        				if(pCount == null || pCount == undefined || pCount==""){
+        					pCount = " ";
+        				}else{
+        					result += '<li style="list-style:none;">'+pCount+'</li>';
+        				}
+        			}
+        		});
+        		result += '</ul>';
+        		return result;
+        	}
+        },
+        {"data": "saleprice", "bSortable": false,
+        	render:function(data, type, row, meta) {
+        		var result = '<ul> ';
+        		$.each(row.orders, function(name, value) {
+        			if(value && value.saleprice!=undefined){
+        				result += '<li style="list-style:none;">'+value.saleprice+'</li>';
+        			}
+        		});
+        		result += '</ul>';
+        		return result;
+        	}
+        },
+        {"data": "currency", "bSortable": false,
+        	render:function(data, type, row, meta) {
+        		var result = '<ul>';
+        		$.each(row.orders, function(name, value) {
+        			if(value && value.currency!=undefined){
+        				result += '<li style="list-style:none;">'+value.currency+'</li>';
+        			}
+        		});
+        		result += '</ul>';
+        		return result;
+        	}
+        },
+        {"data": "totalmoney", "bSortable": false,
+        	render: function(data, type, row, meta) {
+        		var totalmoney = row.totalmoney;
+        		if(null == totalmoney || ""== totalmoney){
+        			return "";
+        		}
+        		return totalmoney;
+        	}
+        },
+        {"data": "shortname", "bSortable": false,
+        	render: function(data, type, row, meta) {
+        		var shortname = row.shortname;
+        		if(null == shortname || ""== shortname){
+        			return "";
+        		}
+        		return shortname;
+        	}
+        },
+        {"data": "orderpnrstatus", "bSortable": false,
+        	render: function(data, type, row, meta) {
+        		var s = '';
+        		if(data == '2'){
+        			s = '付款中';
+        		}
+        		if(data == '3'){
+        			s = '已付款';
+        		}
+        		return s;
+        	}
+        },
+        {"data": "username", "bSortable": false,
+        	render: function(data, type, row, meta) {
+        		var username = row.username;
+        		if(null == username || ""== username){
+        			return "";
+        		}
+        		return username;
+        	}
+        },
+        {"data": "asd", "bSortable": false,
+        	render: function(data, type, row, meta) {
+        		var asd = row.asd;
+        		if(null == asd || ""== asd){
+        			return "";
+        		}
+        		return asd;
+        	}
+        }
+        ],
+        "infoCallback": function (settings, start, end, max, total, pre) {
+        	var length = $(".checkBoxPayChild:checked").length;
+        	if(inlandPayEdTable.page.len() == length){
+        		$(".checkBoxPayAll").prop("checked", true);
+        	}else{
+        		$(".checkBoxPayAll").prop("checked", false);
 
-		            	}
-		            	return '显示第 '+start+' 至 '+end+' 条结果，共'+total+' 条 (每页显示 '+max+' 条)'
-		            },
-		            columnDefs: [{
-		                //   指定第一列，从0开始，0表示第一列，1表示第二列……
-		                targets: 10,
-		                render: function(data, type, row, meta) {
-		                	/*var modify = '<a style="cursor:pointer;" onclick="editUser('+row.userid+');">编辑</a>';
-		                    return modify;*/
-		                	return "";
-		                }
-		            }]
+        	}
+        	return '显示第 '+start+' 至 '+end+' 条结果，共'+total+' 条 (每页显示 '+max+' 条)'
+        },
+        columnDefs: [{
+        	//   指定第一列，从0开始，0表示第一列，1表示第二列……
+        	targets: 11,
+        	render: function(data, type, row, meta){
+        		var edit = '<a style="cursor:pointer;" onclick="editPay('+row.payid+');">编辑</a>';
+        		return edit;
+        	}
+        }]
 
 	});
 }
 
-
+function editPay(ids){
+	layer.open({
+		type: 2,
+		title:false,
+		skin: false, //加上边框
+		closeBtn:false,//默认 右上角关闭按钮 是否显示
+		shadeClose:true,
+		area: ['850px', '650px'],
+		content: ['editConfirmPay.html?payid='+ ids,'no'],
+	});
+}
 
 //付款页切换
 function  toConfirmPayPage(){
@@ -397,7 +397,7 @@ $(".checkBoxPayAll").click(function () {
 			}
 		});
 	}else{
-		 $(".checkBoxPayChild").each(function(){
+		$(".checkBoxPayChild").each(function(){
 			var thisval = $(this).val();
 			var flag = false;
 			var splits = hiddenval.split(',');
@@ -467,34 +467,34 @@ $(document).on('click', '.checkBoxPayChild', function(e) {
 $("#inlandPaySearchBtn").on('click', function () {
 	var inlandPayStatus = 2;
 	var inlandPayEdStatus = 3;
-	
+
 	var orderStatus = $("#inlandPaySelect").val();
 	var inlandPayBeginDate = $("#inlandPayBeginDate").val();
 	var inlandPayEndDate = $("#inlandPayEndDate").val();
 	var inlandPayInput = $("#inlandPayInput").val();
-    var param = {
-		        "orderStatus":orderStatus,
-		        "leavetdate":inlandPayBeginDate,
-		        "backdate":inlandPayEndDate,
-				"name": inlandPayInput
-		    };
-    if(orderStatus==inlandPayStatus){
-    	inlandPayTable.settings()[0].ajax.data = param;
-    	inlandPayTable.ajax.reload(
-    			function(json){
-    				autoHighLoad($('#inlandPayTable'));
-    			}
-    	);
-    }
-    if(orderStatus==inlandPayEdStatus){
-    	inlandPayEdTable.settings()[0].ajax.data = param;
-    	inlandPayEdTable.ajax.reload(
-    			function(json){
-    				autoHighLoad($('#inlandPayEdTable'));
-    			}
-    	);
-    }
-    
+	    var param = {
+			        "orderStatus":orderStatus,
+			        "leavetdate":inlandPayBeginDate,
+			        "backdate":inlandPayEndDate,
+			"name": inlandPayInput
+			    };
+	if(orderStatus==inlandPayStatus){
+		inlandPayTable.settings()[0].ajax.data = param;
+		inlandPayTable.ajax.reload(
+				function(json){
+					autoHighLoad($('#inlandPayTable'));
+				}
+		);
+	}
+	if(orderStatus==inlandPayEdStatus){
+		inlandPayEdTable.settings()[0].ajax.data = param;
+		inlandPayEdTable.ajax.reload(
+				function(json){
+					autoHighLoad($('#inlandPayEdTable'));
+				}
+		);
+	}
+	    
 });
 
 
@@ -526,9 +526,9 @@ function clearSearchTxt(selectId, beginDateId, endDateId, inputId){
 
 //回车搜索
 function recOnkeyEnter(){
-	 if(event.keyCode==13){
-		 $("#inlandRecSearchBtn").click();
-	 }
+	if(event.keyCode==13){
+		$("#inlandRecSearchBtn").click();
+	}
 }
 
 
@@ -558,21 +558,21 @@ $('#uploadFile').click(function(){
 			$('#billurl').val(url);
 			$('#shuidanimg').attr('src',url);
 		},
-        //加上此句会重写onSelectError方法【需要重写的事件】
-        'overrideEvents': ['onSelectError', 'onDialogClose'],
-        //返回一个错误，选择文件的时候触发
-        'onSelectError':function(file, errorCode, errorMsg){
-            switch(errorCode) {
-                case -110:
-                    alert("文件 ["+file.name+"] 大小超出系统限制！");
-                    break;
-                case -120:
-                    alert("文件 ["+file.name+"] 大小异常！");
-                    break;
-                case -130:
-                    alert("文件 ["+file.name+"] 类型不正确！");
-                    break;
-            }
-        }
+		//加上此句会重写onSelectError方法【需要重写的事件】
+		'overrideEvents': ['onSelectError', 'onDialogClose'],
+		//返回一个错误，选择文件的时候触发
+		'onSelectError':function(file, errorCode, errorMsg){
+			switch(errorCode) {
+			case -110:
+				alert("文件 ["+file.name+"] 大小超出系统限制！");
+				break;
+			case -120:
+				alert("文件 ["+file.name+"] 大小异常！");
+				break;
+			case -130:
+				alert("文件 ["+file.name+"] 类型不正确！");
+				break;
+			}
+		}
 	});
 });

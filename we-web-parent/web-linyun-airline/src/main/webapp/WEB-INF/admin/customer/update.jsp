@@ -61,7 +61,7 @@
 									<!-- 公司名称 -->
 									<input id="comName" type="hidden" name="name" />
 									<!-- 公司类型 -->
-									<input id="comType" type="hidden" name="customerType" />
+									<input id="comType" type="hidden" value="${obj.comType}" name="comType" />
 								</div>
 							</div>
 						</div>

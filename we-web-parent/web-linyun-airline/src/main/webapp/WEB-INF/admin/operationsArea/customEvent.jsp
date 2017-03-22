@@ -98,6 +98,7 @@
 						window.parent.reload();
 						window.parent.getTimeStr();
 						window.parent.checkBoxShow();
+						window.parent.removeClass();
 						layer.msg("添加成功", "", 2000);
 					},
 					error : function(xhr) {

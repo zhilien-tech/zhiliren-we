@@ -14,7 +14,7 @@
 	<div class="modal-top">
     <div class="modal-header boderButt">
             <button type="button" id="closeRecWindow" class="btn btn-primary right btn-sm">取消</button>
-            <input type="button" id="confirmRecClick" class="btn btn-primary right btn-sm" value="提交"/>
+            <input type="button" id="confirmRecClick" class="btn btn-primary right btn-sm" value="确认收款"/>
             <h4>收款</h4>
           </div>
           <div class="modal-body" style="height: 483px;overflow-y:auto; ">
