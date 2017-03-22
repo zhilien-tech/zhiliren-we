@@ -32,7 +32,7 @@
 							<label>生成订单</label> 
 							<select id="orderStatus" class="form-control input-sm conSelect cf">
 								<option value="1" selected="selected">查询</option>
-								<option value="2">预定</option>
+								<option value="2">预订</option>
 								<option value="3">出票</option>
 								<option value="4">开票</option>
 								<option value="5">关闭</option>
