@@ -181,8 +181,7 @@
 			'multi' : false,//multi设置为true将允许多文件上传
 			'successTimeout' : 1800,
 			'queueSizeLimit' : 100,
-			'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html',//后台处理的页面
-			//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
+			'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html',
 			'onUploadStart' : function(file) {
 				$("#submit").attr('disabled',true);
 			},
