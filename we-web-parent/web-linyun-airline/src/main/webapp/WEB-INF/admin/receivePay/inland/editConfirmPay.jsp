@@ -117,13 +117,20 @@
 					</select></td>
 					<td>资金种类：</td>
 					<td><select id="fundType" name="fundType" class="form-control input-sm">
-							<option value=1>对公</option>
-							<option value=2>现金</option>
-							<option value=3>银行卡</option>
-							<option value=4>POS</option>
+							<!-- <option value="0">--请选择--</option> -->
+							<c:forEach var="one" items="${obj.zjzlList}">
+	                        	<c:choose>
+	                          		<c:when test="${obj.payList[0].fundtype eq one.id }">
+			                        	 <option value="${one.id }" selected="selected">${one.comDictName }</option>
+	                          		</c:when>
+	                          		<c:otherwise>
+		                        	 <option value="${one.id }">${one.comDictName }</option>
+	                          		</c:otherwise>
+	                          	</c:choose>  
+	                        </c:forEach>
 					</select></td>
 					<td>付款时间：</td>
-					<td><input id="payDate" name="payDate" value="${obj.payList[0].payDate}" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" placeholder="2017-02-20" class="form-control input-sm"></td>
+					<td><input id="payDate" name="payDate" value="${obj.payList[0].payDate}" type="text" onFocus="WdatePicker({maxDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd'})" placeholder="2017-02-20" class="form-control input-sm"></td>
 				</tr>
 				<tr>
 					<td>手续费：</td>
@@ -131,7 +138,7 @@
 					<td>金额：</td>
 					<td><input id="payMoney" name="payMoney" value="${obj.payList[0].paymoney}"  type="text" class="form-control input-sm"></td>
 					<td colspan="2">
-						<input id="chineseMoney" type="text" class="form-control input-sm textIpnu" disabled="disabled"></td>
+						<input id="chineseMoney" name="payChineseMoney" value="${obj.payList[0].paychinesemoney}" type="text" class="form-control input-sm textIpnu" readonly="readonly"></td>
 					<td class="bj">币种：</td>
 					<td><select id="payCurrency" name="payCurrency" class="form-control input-sm">
 							<option value="0">--请选择--</option>
@@ -244,6 +251,9 @@
 				'queueSizeLimit' : 100,
 				'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html',//后台处理的页面
 				//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
+				'onUploadStart' : function(file) {
+					$("#submit").attr('disabled',true);
+				},
 				//下面的例子演示如何获取到vid
 				'onUploadSuccess' : function(file, data, response) {
 					var jsonobj = eval('(' + data + ')');
@@ -251,6 +261,7 @@
 					var fileName = file.name;//文件名称
 					$('#receiptUrl').val(url);
 					$('#receiptImg').attr('src',url);
+					$("#submit").attr('disabled',false);
 				},
 				//加上此句会重写onSelectError方法【需要重写的事件】
 				'overrideEvents': ['onSelectError', 'onDialogClose'],

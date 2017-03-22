@@ -82,6 +82,8 @@
 					url : '${base}/admin/operationsArea/updateCustom.html',
 					data : $("#customEventForm").serialize(),
 					success : function(data) {
+						//日志
+						console.log(data);
 						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						parent.layer.close(index);
 						//添加成功 刷新各个模块

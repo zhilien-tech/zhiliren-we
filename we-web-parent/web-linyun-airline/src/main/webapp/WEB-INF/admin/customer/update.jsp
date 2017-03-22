@@ -419,8 +419,9 @@
 	            'successTimeout':1800,
 	            'queueSizeLimit':100,
 	            'uploader' : '${base}/admin/customer/uploadFile.html',
-	            //onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
-	            //下面的例子演示如何获取到vid
+	            'onUploadStart' : function(file) {
+					$("#updateBtn").attr('disabled',true);
+				},
 	            'onUploadSuccess':function(file,data,response){
 	            	$("#completeFileName").html("");
 					var jsonobj = eval('(' + data + ')');
@@ -440,6 +441,7 @@
                         innerHtml = "<div>该附件上传失败，请重新上传</div>";
                     }
                     $("#completeFileName").html($("#completeFileName").html() + innerHtml);
+                    $("#updateBtn").attr('disabled',false);
 	            },
                 //加上此句会重写onSelectError方法【需要重写的事件】
                 'overrideEvents': ['onSelectError', 'onDialogClose'],

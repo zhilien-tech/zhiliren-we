@@ -26,7 +26,7 @@ SELECT
 	pi.PNR pnrNum,
 	oc.leavetdate leaveDate,
 	oc.peoplecount peopleCount,
-	pi.salesprice salePrice,
+	pi.costpricesum salePrice,
 	oc.paycurrency currency,
 	ci.shortName,
 	pi.orderPnrStatus,
@@ -51,7 +51,7 @@ SELECT
 	pi.PNR pnrNum,
 	oc.leavetdate leaveDate,
 	oc.peoplecount peopleCount,
-	pi.salesprice salePrice,
+	pi.costpricesum salePrice,
 	oc.paycurrency currency
 FROM
 	t_pay p
@@ -80,7 +80,7 @@ SELECT
 	ci.shortName,
 	fi.billingdate,
 	pi.peoplecount,
-    pi.salesprice,
+    pi.costpricesum salesprice,
     pi.salespricesum,
 	ci.linkMan,
 	(
@@ -128,7 +128,7 @@ SELECT
 	fi.billingdate billdate,
 	oc.peoplecount peopleCount,
 	u.userName proposer,
-	pi.salesprice salePrice,
+	pi.costpricesum salePrice,
 	p.approver,
 	p.approveResult
 FROM

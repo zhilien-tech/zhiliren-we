@@ -67,8 +67,8 @@ public class ReceivePayModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object confirmPay(@Param("inlandPayIds") String inlandPayIds) {
-		return receivePayService.toConfirmPay(inlandPayIds);
+	public Object confirmPay(@Param("inlandPayIds") String inlandPayIds, HttpSession session) {
+		return receivePayService.toConfirmPay(inlandPayIds, session);
 	}
 
 	/**
