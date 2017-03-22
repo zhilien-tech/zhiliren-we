@@ -328,7 +328,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		}
 		//是否生成订单
 		boolean generateOrder = (boolean) fromJson.get("generateOrder");
-		//订单状态（查询、implements SQLParamForm,Serializable、出票......）
+		//订单状态（查询、预订、出票......）
 		Integer orderType = Integer.valueOf((String) fromJson.get("orderType"));
 		TUpOrderEntity orderinfo = this.fetch(id);
 		orderinfo.setId(id);
@@ -483,7 +483,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	}
 
 	/**
-	 * 为implements SQLParamForm,Serializable订单详情准备数据
+	 * 为预订订单详情准备数据
 	 * <p>
 	 *
 	 * @param id
@@ -561,9 +561,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	}
 
 	/**
-	 * 保存implements SQLParamForm,Serializable订单详情
+	 * 保存预订订单详情
 	 * <p>
-	 * TODO保存implements SQLParamForm,Serializable订单详情
+	 * TODO保存预订订单详情
 	 *
 	 * @param data
 	 * @param request 
@@ -579,7 +579,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		Integer id = Integer.valueOf((String) fromJson.get("id"));
 		//客户信息id，从页面隐藏域获取
 		Integer customerId = Integer.valueOf((String) fromJson.get("customerId"));
-		//订单状态（查询、implements SQLParamForm,Serializable、出票......）
+		//订单状态（查询、预订、出票......）
 		Integer orderType = Integer.valueOf((String) fromJson.get("orderType"));
 		TUpOrderEntity orderinfo = this.fetch(id);
 		orderinfo.setId(id);

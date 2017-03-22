@@ -43,12 +43,11 @@ function initPayDataTable(){
 		            	render: function(data, type, row, meta) {
 		            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
 		            		var week = ['MO','TU','WE','TH','FR','SA','SU'];
-		            		var ldate = new Date(data);
 		            		var result = "";
-		            		if(ldate != undefined){
+		            		if(data && data != undefined){
+		            			var ldate = new Date(data);
 		            			result = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
 		            		}
-
 		            		return result;
 		            	}
 		            },
@@ -297,7 +296,7 @@ function editPay(ids){
 		title:false,
 		skin: false, //加上边框
 		closeBtn:false,//默认 右上角关闭按钮 是否显示
-		shadeClose:true,
+		shadeClose:false,
 		area: ['850px', '650px'],
 		content: ['editConfirmPay.html?payid='+ ids,'no'],
 	});
@@ -363,7 +362,7 @@ $('#inlandPayClick').click(function(){
 			title:false,
 			skin: false, //加上边框
 			closeBtn:false,//默认 右上角关闭按钮 是否显示
-			shadeClose:true,
+			shadeClose:false,
 			area: ['850px', '650px'],
 			content: ['confirmPay.html?inlandPayIds='+ ids,'no'],
 		});
@@ -509,6 +508,9 @@ $('#inlandPayClearBtn').click(function(){
 });
 
 //内陆跨海 取消所有勾选
+function clearGou(){
+	$('#inlandPayCancelBtn').click();
+}
 $('#inlandPayCancelBtn').click(function(){
 	$('#checkedboxPayValue').val("");
 	$(".checkBoxPayAll").prop("checked", false);

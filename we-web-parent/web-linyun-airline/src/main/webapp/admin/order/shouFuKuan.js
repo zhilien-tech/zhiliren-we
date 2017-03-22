@@ -262,15 +262,28 @@ function initshouFuKuanPayTable() {
                   		return result;
                   	}
                 },
-                {"data": "username", "bSortable": false}
+                {"data": "username","bSortable": false}
         ],
-    columnDefs: [{
+    "columnDefs": [
+				/*{ "sWidth": "8.33%",  "aTargets": [0] },
+				{ "sWidth": "8.33%", "aTargets": [1] },
+				{ "sWidth": "8.33%", "aTargets": [2] },
+				{ "sWidth": "8.33%", "aTargets": [3] },
+				{ "sWidth": "8.33%", "aTargets": [4] },
+				{ "sWidth": "8.33%", "aTargets": [5] }, 
+				{ "sWidth": "8.33%",  "aTargets": [6] },
+				{ "sWidth": "8.33%", "aTargets": [7] },
+				{ "sWidth": "8.33%", "aTargets": [8] },
+				{ "sWidth": "8.33%", "aTargets": [9] },
+				{ "sWidth": "8.33%", "aTargets": [10] },
+				{ "sWidth": "8.33%", "aTargets": [11] }, */
+                {
   	//   指定第一列，从0开始，0表示第一列，1表示第二列……
         targets: 11,
         render: function(data, type, row, meta) {
             return '<a style="cursor:pointer;" onclick="receiveInvoice('+row.id+','+row.invoiceid+');">收发票</a>'
         }
-    }],
+    }]
 });
 }
 function shoufukuanPay(){

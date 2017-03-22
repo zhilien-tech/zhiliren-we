@@ -508,10 +508,10 @@ function successCallback(id){
 	            ],
 	            "columnDefs": [
 							   {"sWidth": "5%","aTargets": [0] },
-							   {"sWidth": "55%","aTargets": [1] },
+							   {"sWidth": "50%","aTargets": [1] },
 							   {"sWidth": "15%","aTargets": [2] },
 							   {"sWidth": "10%","aTargets": [3] },
-							   {"sWidth": "15%","aTargets": [4] },
+							   {"sWidth": "20%","aTargets": [4] },
 	                           {
 	                //   指定第一列，从0开始，0表示第一列，1表示第二列……
 	                targets: 4,

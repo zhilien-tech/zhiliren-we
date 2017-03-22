@@ -54,6 +54,10 @@ public class TPayEntity implements Serializable {
 	private Double payMoney;
 
 	@Column
+	@Comment("付款金额大写")
+	private String payChineseMoney;
+
+	@Column
 	@Comment("付款币种")
 	private Integer payCurrency;
 

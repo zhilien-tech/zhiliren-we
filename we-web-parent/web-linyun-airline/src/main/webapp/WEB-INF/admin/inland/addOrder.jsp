@@ -33,7 +33,7 @@
                <div class="infoTop">
                  <p>客户信息</p>
                </div>
-               <div class="infofooter">
+               <div class="infofooter" style="padding-bottom: 10px;">
                  <table>
                    <tr>
                      <td><label>客户姓名：</label></td> 

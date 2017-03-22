@@ -1,4 +1,4 @@
-/*implements SQLParamForm,Serializable订单详情*/
+/*预订订单详情*/
 .addPNR{padding-left: 13px;padding-top: 5px;}
 .addPNR .table-bordered {border: 1px solid #cccccc;margin-bottom: 5px;background-color: #e4e4e4;}
 .addPNR .table-bordered > thead > tr > th,.addPNR .table-bordered > tbody > tr > th,.addPNR .table-bordered > thead > tr > td,.addPNR .table-bordered > tbody > tr > td{ border: 1px solid #cccccc;text-align: center;padding:4px;}

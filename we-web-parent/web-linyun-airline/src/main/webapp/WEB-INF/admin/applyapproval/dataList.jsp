@@ -110,7 +110,115 @@
 		</ul>
 	</a>
   </c:forEach>
+  
+  
+  
+  
+  
+  
+  <!-- ***************************内陆处理开始****************************** -->
+  <c:if test="${obj.operation=='inlandNum' }">
+  
+	  <c:forEach items="${obj.reduceInlandList }" var="each">
+  		<a href="${base}/admin/applyapproval/detailList.html?id=${each.id}&operation=${obj.operation}&date=${obj.date}&reduce=reduce">
+			<ul class="content-a-ul">
+				<li>
+					<span>${each.customname }</span>
+					
+					<span>${each.account }</span>
+				</li>
+				<li>
+					<span>${each.ordersnum }</span>
+					<span>减免申请</span>
+				</li>
+				<li>
+						<span></span>
+				
+					<span>${each.userName }</span>
+				</li>
+				<%-- <li>
+					<span>${each.purpose }</span>
+					<span>${each.proposer }</span>
+				</li> --%>
+				<li>
+						<c:if test="${each.applyResult==1}">
+							<span class="color1">
+								待审批
+							</span>
+							
+						</c:if>
+						<c:if test="${each.applyResult==2}">
+							<span class="color2">
+								同意
+							</span>
+						</c:if>
+						<c:if test="${each.applyResult==3}">
+							<span class="color1">
+								拒绝
+							</span>
+							
+						</c:if>
+						<span><fmt:formatDate value="${each.optime }" pattern="yyyy:MM:dd HH:mm:ss"/></span>
+						
+					
+				</li>
+			</ul>
+		</a>
+	  </c:forEach>
+  </c:if>
+  <!-- ***************************内陆处理结束****************************** -->
+	  <!-- ***************************国际处理开始****************************** -->
+	  <c:if test="${obj.operation=='international' }">
+	  	<c:forEach items="${obj.reduceInteList }" var="each">
+	  		<a href="${base}/admin/applyapproval/detailList.html?id=${each.id}&operation=${obj.operation}&date=${obj.date}&reduce=reduce">
+				<ul class="content-a-ul">
+					<li>
+						<span>${each.customname }</span>
+						
+						<span>${each.account }</span>
+					</li>
+					<li>
+						<span>${each.ordersnum }</span>
+						<span>减免申请</span>
+					</li>
+					<li>
+							<span></span>
+					
+						<span>${each.userName }</span>
+					</li>
+					<%-- <li>
+						<span>${each.purpose }</span>
+						<span>${each.proposer }</span>
+					</li> --%>
+					<li>
+							<c:if test="${each.applyResult==1}">
+								<span class="color1">
+									待审批
+								</span>
+								
+							</c:if>
+							<c:if test="${each.applyResult==2}">
+								<span class="color2">
+									同意
+								</span>
+							</c:if>
+							<c:if test="${each.applyResult==3}">
+								<span class="color1">
+									拒绝
+								</span>
+								
+							</c:if>
+							<span><fmt:formatDate value="${each.optime }" pattern="yyyy:MM:dd HH:mm:ss"/></span>
+							
+						
+					</li>
+				</ul>
+			</a>
+	  	</c:forEach>
+	  </c:if>
+	  <!-- ***************************国际处理结束****************************** -->
   </content>
+  	
   <%-- <content class="content-list">
   	
 	<a href="${base}/admin/applyapproval/detailList.html">

@@ -364,7 +364,7 @@ $("#tab_2Id").click(function(){
 //国际   订单下拉选项状态
 function addInterSelectOpt(obj){
 	var optionStr = '<option value="1" selected="selected">查询</option>'+
-					'<option value="2">implements SQLParamForm,Serializable</option>'+
+					'<option value="2">预订</option>'+
 					'<option class="interOption" value="6">一订</option>'+
 					'<option class="interOption" value="7">二订</option>'+
 					'<option class="interOption" value="8">三订</option>'+
@@ -379,7 +379,7 @@ function addInterSelectOpt(obj){
 //内陆跨海等   订单下拉选项状态
 function addOtherSelectOpt(obj){
 	var optionStr = '<option value="1" selected="selected">查询</option>'+
-					'<option value="2">implements SQLParamForm,Serializable</option>'+
+					'<option value="2">预订</option>'+
 					'<option value="3">出票</option>'+
 					'<option value="4">开票</option>'+
 					'<option value="5">关闭</option>';

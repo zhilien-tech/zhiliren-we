@@ -1025,7 +1025,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			msgContent = "向你发送一个查询询单：" + generateOrderNum;
 			break;
 		case 2:
-			//implements SQLParamForm,Serializable 5
+			//预订 5
 			msgType = MessageTypeEnum.BOOKMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL2.intKey();
 			msgContent = "向你发送一个预售订单：" + generateOrderNum;

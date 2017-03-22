@@ -139,7 +139,7 @@
 														<th>订单号</th>
 														<th>PNR</th>
 														<th>出发日期</th>
-														<th>implements SQLParamForm,Serializable人数</th>
+														<th>预订人数</th>
 														<th>实际人数</th>
 														<th>本期税金</th>
 														<th>本期实付</th>

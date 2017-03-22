@@ -20,7 +20,7 @@
 			<button  type="button" id="submit" onclick="confirmPayClick();" class="btn btn-primary right btn-sm">确认付款</button>
 			<h4>付款</h4>
 		</div>
-		<div class="modal-body" style="height: 600px; overflow-y: auto;">
+		<div class="modal-body" style="height:580px; overflow-y: auto;">
 			
 			<table id="receivablesTable" class="table table-bordered table-hover">
 				<thead>
@@ -53,14 +53,14 @@
                 	</c:forEach>
 				</tbody>
 			</table>
-			<table class="selectTable">
+			<table class="selectTable txtTable">
 				<tr>
 					<td>银行：</td>
 					<td>
 						<select id="bankComp" name="bankComp" onchange="bankSelect();" class="form-control input-sm">
 							<!-- <option>--请选择--</option> -->
 							<c:forEach var="one" items="${obj.bankList}">
-	                        	<option value="${one.id }">${one.dictName }</option>
+	                        	<option value="${one.id }">${one.bankName }</option>
 	                        </c:forEach>
 						</select>
 					</td>
@@ -94,13 +94,13 @@
 					</select></td>
 					<td>资金种类：</td>
 					<td><select id="fundType" name="fundType" class="form-control input-sm">
-							<option value=1>对公</option>
-							<option value=2>现金</option>
-							<option value=3>银行卡</option>
-							<option value=4>POS</option>
+							<!-- <option value="0">--请选择--</option> -->
+							<c:forEach var="one" items="${obj.zjzlList}">
+	                        	<option value="${one.id }">${one.comDictName }</option>
+	                        </c:forEach>
 					</select></td>
 					<td>付款时间：</td>
-					<td><input id="payDate" name="payDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" placeholder="2017-02-20" class="form-control input-sm"></td>
+					<td><input id="payDate" name="payDate" type="text" onFocus="WdatePicker({maxDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd'})" placeholder="2017-02-20" class="form-control input-sm"></td>
 				</tr>
 				<tr>
 					<td>手续费：</td>
@@ -108,7 +108,7 @@
 					<td>金额：</td>
 					<td><input id="payMoney" name="payMoney" type="text" class="form-control input-sm"></td>
 					<td colspan="2">
-						<input id="chineseMoney" type="text" class="form-control input-sm textIpnu" disabled="disabled"></td>
+						<input id="chineseMoney" name="payChineseMoney" type="text" class="form-control input-sm textIpnu" readonly="readonly"></td>
 					<td class="bj">币种：</td>
 					<td><select id="payCurrency" name="payCurrency" class="form-control input-sm">
 							<option value="0">--请选择--</option>
@@ -135,7 +135,7 @@
 			<input type="text" name="uploadFile" id="uploadFile" />
 			<input id="receiptUrl" name="receiptUrl" type="hidden" ><!-- 水单url -->
 			<div class="bankSlipImg"  align="center">
-				<img id="receiptImg" width="400" height="300" alt="" src="">
+				<img id="receiptImg" width="100%" height="305" alt="" src="">
 			</div>
 		</div>
 	</div>
@@ -181,15 +181,17 @@
 			'multi' : false,//multi设置为true将允许多文件上传
 			'successTimeout' : 1800,
 			'queueSizeLimit' : 100,
-			'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html',//后台处理的页面
-			//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
-			//下面的例子演示如何获取到vid
+			'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html',
+			'onUploadStart' : function(file) {
+				$("#submit").attr('disabled',true);
+			},
 			'onUploadSuccess' : function(file, data, response) {
 				var jsonobj = eval('(' + data + ')');
 				var url  = jsonobj;//地址
 				var fileName = file.name;//文件名称
 				$('#receiptUrl').val(url);
 				$('#receiptImg').attr('src',url);
+				$("#submit").attr('disabled',false);
 			},
 			//加上此句会重写onSelectError方法【需要重写的事件】
 			'overrideEvents': ['onSelectError', 'onDialogClose'],
@@ -197,7 +199,7 @@
 			'onSelectError':function(file, errorCode, errorMsg){
 					switch(errorCode) {
 					case -110:
-						alert("文件 ["+file.name+"] 大小超出系统限制！");
+						alert("文件 ["+file.name+"] 大小超出系统限制");
 						break;
 					case -120:
 						alert("文件 ["+file.name+"] 大小异常！");
@@ -228,7 +230,7 @@
 						nameNtr += '<option value="'+data[i]+'">'+data[i]+'</option>';
 					}
 					document.getElementById("cardName").innerHTML = nameNtr;
-					document.getElementById("cardNum").innerHTML = numStr;
+					cardSelect();
 				},
 				error : function(request) {
 					

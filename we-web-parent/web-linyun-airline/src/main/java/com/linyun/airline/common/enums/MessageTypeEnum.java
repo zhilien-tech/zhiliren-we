@@ -13,7 +13,7 @@ import com.uxuexi.core.common.enums.IEnum;
 public enum MessageTypeEnum implements IEnum {
 
 	CLOSEMSG(0, "关闭"), NOTICEMSG(1, "系统通知消息"), PROCESSMSG(2, "客户管理消息"), CUSTOMMSG(3, "自定义型消息"), SEARCHMSG(4, "查询"), BOOKMSG(
-			5, "implements SQLParamForm,Serializable"), DRAWBILLMSG(6, "出票"), MAKEOUTBILLMSG(7, "开票"), FIRBOOKMSG(8, "一订"), SECBOOKMSG(9, "二订"), THRBOOKMSG(
+			5, "预订"), DRAWBILLMSG(6, "出票"), MAKEOUTBILLMSG(7, "开票"), FIRBOOKMSG(8, "一订"), SECBOOKMSG(9, "二订"), THRBOOKMSG(
 			10, "三订"), ALLBOOKMSG(11, "全款"), LASTBOOKMSG(12, "尾款"), FINANCIALMSG(13, "财务"), RECEIVEDMSG(14, "已收款"), PAYEDMSG(
 			15, "已付款"), INVIOCEMSG(16, "已开发票"), RECINVIOCEMSG(17, "已收发票"), APPROVALEDMSG(18, "已审批"), UNAPPROVALMSG(19,
 			"已拒绝");
