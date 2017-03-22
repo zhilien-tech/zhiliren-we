@@ -132,17 +132,17 @@
                                  <form role="form" class="form-horizontal">
                                   <div class="form-group row marginBott5 cf">
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" class="form-control TimeInput" placeholder="2017-02-20"> 
+                                      <input type="text" name="startdate" class="form-control TimeInput" placeholder="2017-02-20"> 
                                     </div>
                                     <label class="col-md-1 labelClas">至</label>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" class="form-control TimeInput" placeholder="2017-02-22">
+                                      <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                                      <input type="text" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
                                     </div>
                                     <div class="col-md-2"><!-- 搜索 按钮 -->
-                                      <button type="button" class="btn btn-primary btn-sm">搜索</button>
+                                      <button type="button" class="btn btn-primary btn-sm ticketpaysearch">搜索</button>
                                       <button type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
                                     </div>
                                     <div class="col-md-4"><!-- 付款 按钮 -->
@@ -193,25 +193,24 @@
                                  <form role="form" class="form-horizontal">
                                   <div class="form-group row marginBott5 cf">
                                     <div class="col-md-1 textPadding">
-                                      <select class="form-control TimeInput">
-                                          <option>全部</option>
-                                          <option>已出票</option>
-                                          <option>收款中</option>
-                                          <option>付款中</option>
+                                      <select class="form-control TimeInput" name="status">
+                                          <option value="">全部</option>
+                                          <option value="1">收款中</option>
+                                          <option value="2">已收款</option>
                                       </select>
                                     </div>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" class="form-control TimeInput" placeholder="2017-02-20"> 
+                                      <input type="text" name="startdate" class="form-control TimeInput" placeholder="2017-02-20"> 
                                     </div>
                                     <label class="col-md-1 labelClas">至</label>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" class="form-control TimeInput" placeholder="2017-02-22">
+                                      <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                                      <input type="text" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
                                     </div>
                                     <div class="col-md-2"><!-- 搜索 按钮 -->
-                                      <button type="button" class="btn btn-primary btn-sm">搜索</button>
+                                      <button type="button" class="btn btn-primary btn-sm shoukuansearch">搜索</button>
                                       <button type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
                                     </div>
                                   </div>
@@ -243,25 +242,25 @@
                                  <form role="form" class="form-horizontal">
                                   <div class="form-group row marginBott5 cf">
                                      <div class="col-md-1 textPadding">
-                                      <select class="form-control TimeInput">
-                                          <option>全部</option>
-                                          <option>已出票</option>
-                                          <option>收款中</option>
-                                          <option>付款中</option>
+                                      <select class="form-control TimeInput" name="status">
+                                          <option value="">全部</option>
+                                          <option value="1">审批中</option>
+                                          <option value="2">付款中</option>
+                                          <option value="3">已付款</option>
                                       </select>
                                     </div>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" class="form-control TimeInput" placeholder="2017-02-20"> 
+                                      <input type="text" name="startdate" class="form-control TimeInput" placeholder="2017-02-20"> 
                                     </div>
                                     <label class="col-md-1 labelClas">至</label>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" class="form-control TimeInput" placeholder="2017-02-22">
+                                      <input name="enddate" type="text" class="form-control TimeInput" placeholder="2017-02-22">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                                      <input type="text" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
                                     </div>
                                     <div class="col-md-2"><!-- 搜索 按钮 -->
-                                      <button type="button" class="btn btn-primary btn-sm">搜索</button>
+                                      <button type="button" class="btn btn-primary btn-sm fukuansearch">搜索</button>
                                       <button type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
                                     </div>
                                   </div>
@@ -278,7 +277,7 @@
                                       <th>日期</th>
                                       <th>时间</th>
                                       <th>收款单位</th>
-                                      <th>单价</th>
+                                      <th>成本总价</th>
                                       <th>人数</th>
                                       <th>状态</th>
                                       <th>开票人</th>
@@ -307,25 +306,24 @@
                                  <form role="form" class="form-horizontal">
                                   <div class="form-group row marginBott5 cf">
                                     <div class="col-md-1 textPadding">
-                                      <select class="form-control TimeInput">
-                                          <option>全部</option>
-                                          <option>已出票</option>
-                                          <option>收款中</option>
-                                          <option>付款中</option>
+                                      <select class="form-control TimeInput" name="status">
+                                          <option value="">全部</option>
+                                          <option value="1">开发票中</option>
+                                          <option value="2">已开发票</option>
                                       </select>
                                     </div>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" class="form-control TimeInput" placeholder="2017-02-20"> 
+                                      <input type="text" name="startdate" class="form-control TimeInput" placeholder="2017-02-20"> 
                                     </div>
                                     <label class="col-md-1 labelClas">至</label>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" class="form-control TimeInput" placeholder="2017-02-22">
+                                      <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                                      <input type="text" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
                                     </div>
                                     <div class="col-md-2"><!-- 搜索 按钮 -->
-                                      <button type="button" class="btn btn-primary btn-sm">搜索</button>
+                                      <button type="button" class="btn btn-primary btn-sm openinvoicesearch">搜索</button>
                                       <button type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
                                     </div>
                                   </div>
@@ -358,25 +356,24 @@
                                  <form role="form" class="form-horizontal">
                                   <div class="form-group row marginBott5 cf">
                                      <div class="col-md-1 textPadding">
-                                      <select class="form-control TimeInput">
-                                          <option>全部</option>
-                                          <option>已出票</option>
-                                          <option>收款中</option>
-                                          <option>付款中</option>
+                                      <select class="form-control TimeInput" name="status">
+                                          <option value="">全部</option>
+                                          <option value="3">收发票中</option>
+                                          <option value="4">已收发票</option>
                                       </select>
                                     </div>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" class="form-control TimeInput" placeholder="2017-02-20"> 
+                                      <input type="text" name="startdate" class="form-control TimeInput" placeholder="2017-02-20"> 
                                     </div>
                                     <label class="col-md-1 labelClas">至</label>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" class="form-control TimeInput" placeholder="2017-02-22">
+                                      <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                                      <input type="text" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
                                     </div>
                                     <div class="col-md-2"><!-- 搜索 按钮 -->
-                                      <button type="button" class="btn btn-primary btn-sm">搜索</button>
+                                      <button type="button" class="btn btn-primary btn-sm receiveinvoicesearch">搜索</button>
                                       <button type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
                                     </div>
                                   </div>
