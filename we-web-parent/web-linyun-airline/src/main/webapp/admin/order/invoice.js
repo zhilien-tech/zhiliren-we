@@ -34,7 +34,7 @@ function initkaiInvoiceTable() {
                   {"data": "invoicenum", "bSortable": false,
                   	render:function(data, type, row, meta) {
                   		var result = '<ul> ';
-                		$.each(row.invoiceDetail, function(name, value) {
+                		$.each(row.invoicedetail, function(name, value) {
                 			if(value && value.invoicenum != undefined){
                 				result += '<li style="list-style:none;">'+value.invoicenum+'</li>';
                 			}
@@ -46,7 +46,7 @@ function initkaiInvoiceTable() {
                   {"data": "invoicebalance", "bSortable": false,
                   	render:function(data, type, row, meta) {
                   		var result = '<ul>';
-                  		$.each(row.invoiceDetail, function(name, value) {
+                  		$.each(row.invoicedetail, function(name, value) {
                   			if(value && value.invoicebalance != undefined){
                   				result += '<li style="list-style:none;">'+value.invoicebalance+'</li>';
                   			}
@@ -58,7 +58,7 @@ function initkaiInvoiceTable() {
                   {"data": "incometotal", "bSortable": false,
                   	render:function(data, type, row, meta) {
                   		var result = 0;
-                  		$.each(row.invoiceDetail, function(name, value) {
+                  		$.each(row.invoicedetail, function(name, value) {
                   			if(value && value.invoicebalance != undefined){
                   				result = parseFloat(result) + parseFloat(value.invoicebalance);
                   			}
@@ -78,9 +78,11 @@ function initkaiInvoiceTable() {
                   {"data": "invoiceitem", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                     		var result = '';
-                    		if(row.invoiceitem){
-                    			result = row.invoiceitem;
-                    		}
+                    		$.each(row.ytselect, function(name, value) {
+                    			if(value.id === row.invoiceitem){
+                    				result = value.comDictName;
+                    			}
+                    		});
                     		return result;
                     	}
                   },
@@ -89,9 +91,11 @@ function initkaiInvoiceTable() {
                   {"data": "status", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                   		var result = '';
-                  		if(row.status && row.status != undefined){
-                  			result = row.status;
-                  		}
+                  		$.each(row.invoiceinfoenum, function(name, value) {
+                  			if(row.status == name){
+                  				result = value;
+                  			}
+                  		});
                   		return result;
                   	}
                   },
@@ -200,9 +204,11 @@ function initshouInvoiceTable() {
                 {"data": "invoiceitem", "bSortable": false,
                 	render:function(data, type, row, meta) {
                 		var result = '';
-                		if(row.invoiceitem && row.invoiceitem != undefined) {
-                			result =row.invoiceitem;
-                		}
+                		$.each(row.ytselect, function(name, value) {
+                			if(value.id === row.invoiceitem){
+                				result = value.comDictName;
+                			}
+                		});
                 		return result;
                 	}
                 },
@@ -219,9 +225,11 @@ function initshouInvoiceTable() {
                 {"data": "status", "bSortable": false,
                 	render:function(data, type, row, meta) {
                   		var result = '';
-                  		if(row.status){
-                  			result = row.status;
-                  		}
+                  		$.each(row.invoiceinfoenum, function(name, value) {
+                  			if(row.status == name){
+                  				result = value;
+                  			}
+                  		});
                   		return result;
                   	}
                 },

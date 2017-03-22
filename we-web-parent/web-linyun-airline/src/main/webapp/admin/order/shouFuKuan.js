@@ -36,7 +36,14 @@ function initshouFuKuanGatheringTable() {
                   },
                   {"data": "leavedate", "bSortable": false,
                   	render:function(data, type, row, meta) {
-                  		return '';
+                  		var result = '<ul>';
+                  		$.each(row.customs, function(name, value) {
+                  			if(value && value.leavetdate != undefined){
+                  				result += '<li style="list-style:none;">'+value.leavetdate+'</li>';
+                  			}
+                  		});
+                  		result += '</ul>';
+                  		return result;
                   	}
                   },
                   {"data": "personcount", "bSortable": false,
@@ -160,11 +167,10 @@ function initshouFuKuanPayTable() {
                 },
                 {"data": "personcount", "bSortable": false,
                 	render:function(data, type, row, meta) {
-                		var result = '<ul>';
-                		$.each(row.orders, function(name, value) {
-                			result += '<li style="list-style:none;">'+value.personcount+'</li>';
-                		});
-                		result += '</ul>';
+                		var result = '';
+                		if(row.ailinenum && row.ailinenum != undefined){
+                			result = row.ailinenum;
+                		}
                 		return result;
                 	}
                 },
@@ -185,7 +191,8 @@ function initshouFuKuanPayTable() {
                 },
                 {"data": "time", "bSortable": false,
                 	render:function(data, type, row, meta) {
-                		return '';
+                		var result = row.leavetime + '/' + row.arrivetime;
+                		return result;
                 	}
                 },
                 {"data": "customename", "bSortable": false,

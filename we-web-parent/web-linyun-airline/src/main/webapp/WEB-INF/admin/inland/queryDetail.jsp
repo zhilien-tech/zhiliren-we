@@ -203,7 +203,7 @@
 					                     <td><label>出发时间：</label></td>
 					                     <td><input id="leavetime" name="leavetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" placeholder="" value="${airline.leavetime }"/></td>
 					                     <td><label>抵达时间：</label></td>
-					                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" value="${airline.arrivetime }"/></td>
+					                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustArriveTimes" value="${airline.arrivetime }"/></td>
 					                     <td><label class="labelWid">成本价：</label></td>
 					                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" value="${airline.formprice }"/></td>
 					                     <td><label class="labelWid">销售价：</label></td>
@@ -230,7 +230,7 @@
 					                     <td><label>出发时间：</label></td>
 					                     <td><input id="leavetime" name="leavetime" type="text" class="form-control input-sm textWid mustTimes" placeholder=""/></td>
 					                     <td><label>抵达时间：</label></td>
-					                     <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm textWid mustTimes" /></td>
+					                     <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm textWid mustArriveTimes" /></td>
 					                     <td><label class="labelWid">销售价：</label></td>
 					                     <td><input id="formprice" name="formprice" type="text" class="form-control input-sm textWid" /></td>
 					                     <td><label class="labelWid">成本价：</label></td>
@@ -286,7 +286,7 @@
 		                     <td><label>出发时间：</label></td>
 		                     <td><input id="leavetime" name="leavetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" placeholder=""/></td>
 		                     <td><label>抵达时间：</label></td>
-		                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" /></td>
+		                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustArriveTimes" /></td>
 		                     <td><label class="labelWid">成本价：</label></td>
 		                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" /></td>
 		                     <td><label class="labelWid">销售价：</label></td>
@@ -599,9 +599,9 @@
             <div class="infofooter">
                  <table class="remindSet">
                    <tr>
-                     <td><input id="remindTime" type="text" class="form-control input-sm" placeholder="2020-01-01 00:00:00" onfocus="WdatePicker({minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></td>
+                     <td><input id="remindTime" type="text" class="form-control input-sm" disabled="disabled" placeholder="2020-01-01 00:00:00" onfocus="WdatePicker({minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></td>
                      <td>
-                       <select id="remindType" class="form-control input-sm">
+                       <select id="remindType" disabled="disabled" class="form-control input-sm">
                          <c:forEach var="map" items="${obj.orderRemindEnum}" >
 					   		<option value="${map.key}">${map.value}</option>
 						 </c:forEach>
@@ -670,6 +670,7 @@
               $(".listInfo").toggle();//选项卡 显示
               $('.remindSet tbody tr td input').removeAttr("disabled");//删除 提醒设置 input 禁止编辑的状态
               $('#orderType').removeAttr("disabled");//状态可编辑
+              $('#remindType').removeAttr("disabled");//提醒状态可编辑
               $('.DemandDiv').each(function(i){
             	  $(this).find('[name=leavecity]').removeAttr('disabled');
             	  $(this).find('[name=arrivecity]').removeAttr('disabled');
@@ -700,6 +701,7 @@
           $(".listInfo").toggle();//选项卡 隐藏
           $('.remindSet tbody tr td input').attr("disabled",'disabled');//提醒设置 input 添加 不可编辑属性
           $('#orderType').attr("disabled",'disabled');//状态 不可编辑属性
+          $('#remindType').attr("disabled",'disabled');//提醒状态 不可编辑属性
           $('.DemandDiv').each(function(i){
         	  var customneedid = $(this).find('[name=customneedid]').val();
         	  if(i>0 && !customneedid){
@@ -825,17 +827,24 @@
   		customdata.orderType = orderType;
 		var row = [];
   		$('.DemandDiv').each(function(i){
+  			var lenthcustom = '';
   			var row1 = {};
   			var leavecity = $(this).find('[name=leavecity]').val();
   			//出发城市
   			if (leavecity) {
   				leavecity = leavecity.join(',');
+	  			lenthcustom += leavecity;
+  			}else{
+  				lenthcustom += '';
   			}
   			row1.leavecity = leavecity;
   			//抵达城市
   			var arrivecity = $(this).find('[name=arrivecity]').val();
   			if (arrivecity) {
   				arrivecity = arrivecity.join(',');
+	  			lenthcustom += arrivecity;
+  			}else{
+  				lenthcustom += '';
   			}
   			row1.arrivecity = arrivecity;
   			row1.customneedid = $(this).find('[name=customneedid]').val();
@@ -843,17 +852,28 @@
   			row1.peoplecount = $(this).find('[name=peoplecount]').val();
   			row1.tickettype = $(this).find('[name=tickettype]').val();
   			row1.remark = $(this).find('[name=remark]').val();
+  			lenthcustom += $(this).find('[name=customneedid]').val();
+  			lenthcustom += $(this).find('[name=leavedate]').val();
+  			lenthcustom += $(this).find('[name=peoplecount]').val();
+  			lenthcustom += $(this).find('[name=remark]').val();
   			var airrows = [];
   			$(this).find('[name=airlineinfo]').each(function(i){
+  				var lengthAir = '';
   				var airrow = {};
   				var aircom = $(this).find('[name=aircom]').val();
   				if (aircom) {
   					aircom = aircom.join(',');
+	  				lengthAir += aircom;
+  	  			}else{
+  	  				lengthAir += '';
   	  			}
   				airrow.aircom = aircom;
   				var ailinenum = $(this).find('[name=ailinenum]').val();
   				if (ailinenum) {
   					ailinenum = ailinenum.join(',');
+	  				lengthAir += ailinenum;
+  	  			}else{
+  	  				lengthAir += '';
   	  			}
   				airrow.ailinenum = ailinenum;
   				airrow.airlineid = $(this).find('[name=airlineid]').val();
@@ -861,10 +881,19 @@
   				airrow.arrivetime = $(this).find('[name=arrivetime]').val();
   				airrow.formprice = $(this).find('[name=formprice]').val();
   				airrow.price = $(this).find('[name=price]').val();
-  				airrows.push(airrow);
+  				lengthAir += $(this).find('[name=leavetime]').val();
+  				lengthAir += $(this).find('[name=arrivetime]').val();
+  				lengthAir += $(this).find('[name=formprice]').val();
+  				lengthAir += $(this).find('[name=price]').val();
+  				if(lengthAir.length > 0){
+	  				airrows.push(airrow);
+  				}
+  				lenthcustom += lengthAir;
   			});
   			row1.airinfo = airrows;
-  			row.push(row1);
+  			if(lenthcustom.length > 0){
+	  			row.push(row1);
+  			}
   		});
   		customdata.customdata=row;
   		//data.push(customdata);"C:/Users/ui/AppData/Roaming/Tencent/QQ/Temp/{TZ}2SS28JMJX{P}(C[]2ZS.jpg"

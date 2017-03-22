@@ -62,7 +62,7 @@
                   <div class="col-sm-2 padding">
                     <select id="payCurrency" name="payCurrency" class="form-control input-sm">
                       <c:forEach var="one" items="${obj.bzSelect }">
-                        	<option value="${one.id }">${one.dictName }</option>
+                        	<option value="${one.id }">${one.dictCode }</option>
                         </c:forEach>
                     </select>
                   </div>
@@ -73,7 +73,7 @@
          <label class="col-sm-1 text-right padding">审批人：</label>
          <div class="col-sm-2 padding"><input id="approver" name="approver" type="text" class="form-control input-sm" disabled="disabled" value="侯小凌"></div>
          <label class="col-sm-1 text-right padding">审批结果：</label>
-         <div class="col-sm-2 padding"><input id="approveResult" name="approveResult" type="text" class="form-control input-sm"></div>
+         <div class="col-sm-2 padding"><input id="approveResult" name="approveResult" type="text" class="form-control input-sm" disabled="disabled"></div>
       </div>
 	</div>
    <!--JS 文件-->
@@ -105,11 +105,11 @@
 	        cache: false,
 	        async : false,
 	        success: function (data ,textStatus, jqXHR){
-	        	layer.msg("提交成功！",{time: 2000, icon:1});
+	        	layer.msg("提交成功！",{time: 2000});
 	        	closewindow();
 	        },
 	        error:function (XMLHttpRequest, textStatus, errorThrown) {      
-	            layer.msg("请求失败！",{time: 2000, icon:1});
+	            layer.msg("请求失败！",{time: 2000});
 	        }
 	     });
 	}

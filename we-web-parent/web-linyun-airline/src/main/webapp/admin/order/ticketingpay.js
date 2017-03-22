@@ -106,7 +106,11 @@ function initpayTable() {
                     },
                     {"data": "ordersstatus", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		return '已出票'; 
+                    		var result = '已出票';
+                    		if(row.orderpnrstatus === 4){
+                    			result = '已拒绝';
+                    		}
+                    		return result; 
                     	}
                     },
                     {"data": "linkman", "bSortable": false},
@@ -217,7 +221,7 @@ function loadFukuanTable(){
 $('.fuKuanBtn1').click(function(){
 	var ids = $('#checkedboxval1').val();
 	if(!ids){
-		layer.msg("请至少选中一条记录",{time: 2000, icon:1});
+		layer.msg("请至少选中一条记录",{time: 2000});
 	}else{
 		$.ajax({ 
 			type: 'POST', 

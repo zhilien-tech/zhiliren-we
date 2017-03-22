@@ -217,7 +217,7 @@
 					                     <td><label>出发时间：</label></td>
 					                     <td><input id="leavetime" name="leavetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" placeholder="" value="${airline.leavetime }"/></td>
 					                     <td><label>抵达时间：</label></td>
-					                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" value="${airline.arrivetime }"/></td>
+					                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustArriveTimes" value="${airline.arrivetime }"/></td>
 					                     <td><label class="labelWid">成本价：</label></td>
 					                     <td><input id="formprice" name="formprice" type="text" disabled="disabled" class="form-control input-sm textWid costPrice" value="${airline.formprice }"/></td>
 					                     <td><label class="labelWid">销售价：</label></td>
@@ -253,7 +253,7 @@
 					                     <td><label>出发时间：</label></td>
 					                     <td><input id="leavetime" name="leavetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" placeholder=""/></td>
 					                     <td><label>抵达时间：</label></td>
-					                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" /></td>
+					                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustArriveTimes" /></td>
 					                     <td><label class="labelWid">成本价：</label></td>
 					                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" /></td>
 					                     <td><label class="labelWid">销售价：</label></td>
@@ -377,7 +377,7 @@
 		                     <td><label>出发时间：</label></td>
 		                     <td><input id="leavetime" name="leavetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" placeholder=""/></td>
 		                     <td><label>抵达时间：</label></td>
-		                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" /></td>
+		                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustArriveTimes" /></td>
 		                     <td><label class="labelWid">成本价：</label></td>
 		                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" /></td>
 		                     <td><label class="labelWid">销售价：</label></td>
@@ -739,17 +739,25 @@
 		customdata.orderType = orderType;
 		var row = [];
 		$('.DemandDiv').each(function(i){
+			//临时变量判断客户需求是否为空
+			var lenthcustom = '';
 			var row1 = {};
 			var leavecity = $(this).find('[name=leavecity]').val();
 			//出发城市
 			if (leavecity) {
 				leavecity = leavecity.join(',');
+				lenthcustom += leavecity;
+			}else{
+				lenthcustom += '';
 			}
 			row1.leavecity = leavecity;
 			//抵达城市
 			var arrivecity = $(this).find('[name=arrivecity]').val();
 			if (arrivecity) {
 				arrivecity = arrivecity.join(',');
+				lenthcustom += arrivecity;
+			}else{
+				lenthcustom += '';
 			}
 			row1.arrivecity = arrivecity;
 			row1.customneedid = $(this).find('[name=customneedid]').val();
@@ -761,17 +769,32 @@
 			row1.paycurrency = $(this).find('[name=paycurrency]').val();
 			row1.paymethod = $(this).find('[name=paymethod]').val();
 			row1.remark = $(this).find('[name=remark]').val();
+			lenthcustom += $(this).find('[name=customneedid]').val();
+			lenthcustom += $(this).find('[name=leavedate]').val();
+			lenthcustom += $(this).find('[name=peoplecount]').val();
+			lenthcustom += $(this).find('[name=realtimexrate]').val();
+			lenthcustom += $(this).find('[name=avgexrate]').val();
+			lenthcustom += $(this).find('[name=paycurrency]').val();
+			lenthcustom += $(this).find('[name=paymethod]').val();
+			lenthcustom += $(this).find('[name=remark]').val();
 			var airrows = [];
 			$(this).find('[name=airlineinfo]').each(function(i){
+				var lengthAir = '';
 				var airrow = {};
 				var aircom = $(this).find('[name=aircom]').val();
 				if (aircom) {
 					aircom = aircom.join(',');
+					lengthAir += aircom;
+	  			}else{
+	  				lengthAir += ''
 	  			}
 				airrow.aircom = aircom;
 				var ailinenum = $(this).find('[name=ailinenum]').val();
 				if (ailinenum) {
 					ailinenum = ailinenum.join(',');
+					lengthAir += ailinenum;
+	  			}else{
+	  				lengthAir += '';
 	  			}
 				airrow.ailinenum = ailinenum;
 				airrow.airlineid = $(this).find('[name=airlineid]').val();
@@ -779,10 +802,19 @@
 				airrow.arrivetime = $(this).find('[name=arrivetime]').val();
 				airrow.formprice = $(this).find('[name=formprice]').val();
 				airrow.price = $(this).find('[name=price]').val();
-				airrows.push(airrow);
+				lengthAir += $(this).find('[name=leavetime]').val();
+				lengthAir += $(this).find('[name=arrivetime]').val();
+				lengthAir += $(this).find('[name=formprice]').val(); 
+				lengthAir += $(this).find('[name=price]').val();
+				if(lengthAir.length > 0){
+					airrows.push(airrow);
+				}
+				lenthcustom += lengthAir;
 			});
 			row1.airinfo = airrows;
-			row.push(row1);
+			if(lenthcustom.length > 0){
+				row.push(row1);
+			}
 		});
 		customdata.customdata=row;
 		//data.push(customdata);
@@ -934,10 +966,24 @@
 	 				data: {orderid:'${obj.orderinfo.id }'}, 
 	 				url: '${base}/admin/inland/setFinanceInfo.html',
 	 	            success: function (data) { 
+	 	            	//成本合计
+	 	            	$('#costtotal').val(data.chengbensum);
+	 	            	//应收
+	 	            	$('#receivable').val(data.yingshousum);
+	 	            	var relief = $('#relief').val();
+		 	       	 	var incometotal  = '';
+		 	       	 	if(relief){
+		 	       	 		incometotal  = parseFloat(data.chengbensum) - parseFloat(relief);
+		 	       	 	}else{
+		 	       	 		incometotal = data.chengbensum;
+		 	       	 	}
+		 	       	 	if(!isNaN(incometotal)){
+	 	       		 		$('#incometotal').val(incometotal);
+		 	       	 	}
 	 		         },
 	 		         error: function (xhr) {
 	 		         } 
-	 	      });
+	 	         });
 	         }
 	       });
     });
@@ -945,11 +991,11 @@
  function successCallback(id){
 	 loadPNRdata();
 	  if(id == '1'){
-		  layer.msg("添加成功",{time: 2000, icon:1});
+		  layer.msg("添加成功",{time: 2000});
 	  }else if(id == '2'){
-		  layer.msg("修改成功",{time: 2000, icon:1});
+		  layer.msg("修改成功",{time: 2000});
 	  }else if(id == '3'){
-		  layer.msg("删除成功",{time: 2000, icon:1});
+		  layer.msg("删除成功",{time: 2000});
 	  }
  }
   
