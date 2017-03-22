@@ -45,9 +45,9 @@ public class SalaryModule {
 	 */
 	@At
 	@Ok("jsp")
-	public Object list(@Param("..") final Pager pager) {
+	public Object list(@Param("..") final Pager pager, final HttpSession session) {
 
-		return salaryViewService.selectCondition();
+		return salaryViewService.selectCondition(session);
 	}
 
 	/**

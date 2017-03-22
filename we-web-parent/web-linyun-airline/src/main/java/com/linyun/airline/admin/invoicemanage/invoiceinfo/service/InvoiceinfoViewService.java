@@ -96,8 +96,12 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		cnd.and("ii.ordertype", "=", OrderTypeEnum.FIT.intKey());
 		sql.setCondition(cnd);
 		List<Record> listinvodata = dbDao.query(sql, cnd, null);
-		int billuserid = listinvodata.get(0).getInt("billuserid");
-		sqlForm.setUserid(billuserid);
+		if (listinvodata.size() > 0) {
+			int billuserid = listinvodata.get(0).getInt("billuserid");
+			sqlForm.setUserid(billuserid);
+		} else {
+			sqlForm.setUserid(0);
+		}
 		Map<String, Object> DatatablesData = this.listPage4Datatables(sqlForm);
 		List<Record> listdata = (List<Record>) DatatablesData.get("data");
 		for (Record record : listdata) {

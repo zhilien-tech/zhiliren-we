@@ -93,9 +93,9 @@ public class TAirlinePolicyForm extends DataTablesParamForm {
 
 			cnd.and("updateTime", "<", endTime);
 		}
-		/*if (!Util.isEmpty(updateTime)) {
-			cnd.orderBy("updateTime", "desc");
-		}*/
+		if (!Util.isEmpty(companyId)) {
+			cnd.and("companyId", "=", companyId);
+		}
 		cnd.orderBy("updateTime", "desc");
 		return cnd;
 	}
