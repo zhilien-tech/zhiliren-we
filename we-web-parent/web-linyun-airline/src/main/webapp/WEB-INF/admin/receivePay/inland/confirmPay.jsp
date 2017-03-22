@@ -60,7 +60,7 @@
 						<select id="bankComp" name="bankComp" onchange="bankSelect();" class="form-control input-sm">
 							<!-- <option>--请选择--</option> -->
 							<c:forEach var="one" items="${obj.bankList}">
-	                        	<option value="${one.id }">${one.dictName }</option>
+	                        	<option value="${one.id }">${one.bankName }</option>
 	                        </c:forEach>
 						</select>
 					</td>
@@ -94,13 +94,13 @@
 					</select></td>
 					<td>资金种类：</td>
 					<td><select id="fundType" name="fundType" class="form-control input-sm">
-							<option value=1>对公</option>
-							<option value=2>现金</option>
-							<option value=3>银行卡</option>
-							<option value=4>POS</option>
+							<!-- <option value="0">--请选择--</option> -->
+							<c:forEach var="one" items="${obj.zjzlList}">
+	                        	<option value="${one.id }">${one.comDictName }</option>
+	                        </c:forEach>
 					</select></td>
 					<td>付款时间：</td>
-					<td><input id="payDate" name="payDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" placeholder="2017-02-20" class="form-control input-sm"></td>
+					<td><input id="payDate" name="payDate" type="text" onFocus="WdatePicker({maxDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd'})" placeholder="2017-02-20" class="form-control input-sm"></td>
 				</tr>
 				<tr>
 					<td>手续费：</td>
@@ -108,7 +108,7 @@
 					<td>金额：</td>
 					<td><input id="payMoney" name="payMoney" type="text" class="form-control input-sm"></td>
 					<td colspan="2">
-						<input id="chineseMoney" type="text" class="form-control input-sm textIpnu" disabled="disabled"></td>
+						<input id="chineseMoney" name="payChineseMoney" type="text" class="form-control input-sm textIpnu" readonly="readonly"></td>
 					<td class="bj">币种：</td>
 					<td><select id="payCurrency" name="payCurrency" class="form-control input-sm">
 							<option value="0">--请选择--</option>
@@ -228,7 +228,7 @@
 						nameNtr += '<option value="'+data[i]+'">'+data[i]+'</option>';
 					}
 					document.getElementById("cardName").innerHTML = nameNtr;
-					document.getElementById("cardNum").innerHTML = numStr;
+					cardSelect();
 				},
 				error : function(request) {
 					

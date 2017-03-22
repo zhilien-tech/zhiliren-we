@@ -80,6 +80,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	private static final String BZCODE = "BZ";
 	private static final int ENABLE = BankCardStatusEnum.ENABLE.intKey();
 	private static final String YTCODE = "FKYT";
+	private static final String ZJZLCODE = "ZJZL";
 	private static final int RECEIVESTATUS = AccountReceiveEnum.RECEIVEDONEY.intKey();
 	private static final int APPROVALPAYED = AccountPayEnum.APPROVALPAYED.intKey();
 	private static final int APPROVALPAYING = AccountPayEnum.APPROVALPAYING.intKey();
@@ -269,15 +270,13 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			double totalmoney = 0.0;
 			for (Record r : orders) {
 				String id = r.getString("id");
-				String priceStr = r.getString("saleprice");
-				if (!Util.isEmpty(priceStr)) {
-					double price = Double.valueOf(priceStr);
-					totalmoney += price;
-				}
-
-				/*String piid = r.getString("piid");*/
-				payId += id + ",";
 				if (Util.eq(pid, id)) {
+					payId += id + ",";
+					String priceStr = r.getString("saleprice");
+					if (!Util.isEmpty(priceStr)) {
+						double price = Double.valueOf(priceStr);
+						totalmoney += price;
+					}
 					newOrders.add(r);
 				}
 
@@ -297,7 +296,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 
 	/**
 	 * 
-	 * 编辑已付款
+	 * 到编辑已付款页面
 	 * <p>
 	 *
 	 * @param request
@@ -329,9 +328,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//操作人
 		String operator = "";
 		for (Record record : payList) {
-			if (!Util.isEmpty(record.get("salespricesum"))) {
-				Double salespricesum = (Double) record.get("salespricesum");
-				totalMoney += Double.valueOf(salespricesum);
+			if (!Util.isEmpty(record.get("salesprice"))) {
+				Double costpricesum = (Double) record.get("salesprice");
+				totalMoney += Double.valueOf(costpricesum);
 			}
 			proposer = record.getString("proposerman");
 			approver = record.getString("approver"); //审批人
@@ -340,6 +339,12 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				operator = opr;
 			}
 			approveresult = record.getString("approveresult");
+			String payDateStr = record.getString("payDate");
+			if (!Util.isEmpty(payDateStr)) {
+				String payDateFormat = DateTimeUtil.format(DateTimeUtil.string2Date(payDateStr, null));
+				record.put("payDate", payDateFormat);
+			}
+
 		}
 		result.put("proposer", proposer);
 		result.put("approver", approver);
@@ -361,13 +366,17 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//银行名称
 		List<TBankCardEntity> bankList = new ArrayList<TBankCardEntity>();
 		try {
-			bankList = dbDao.query(TBankCardEntity.class, Cnd.NEW().and("companyid", "=", companyId)
-					.groupBy("bankName"), null);
+			Cnd cnd2 = Cnd.NEW();
+			cnd2.and("companyid", "=", companyId);
+			cnd2.and("bankName", "!=", "");
+			cnd2.groupBy("bankName");
+			bankList = dbDao.query(TBankCardEntity.class, cnd2, null);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		result.put("bankList", bankList);
+
 		//币种
 		List<DictInfoEntity> BZList = new ArrayList<DictInfoEntity>();
 		try {
@@ -379,11 +388,20 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//付款用途
 		List<ComDictInfoEntity> fkytList = new ArrayList<ComDictInfoEntity>();
 		try {
-			fkytList = findYTByName("", YTCODE);
+			fkytList = findCodeByName("", YTCODE);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		result.put("fkytList", fkytList);
+		//资金种类
+		List<ComDictInfoEntity> zjzlList = new ArrayList<ComDictInfoEntity>();
+		try {
+			zjzlList = findCodeByName("", ZJZLCODE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		result.put("zjzlList", zjzlList);
+
 		result.put("payId", payId);
 
 		//付款的银行卡信息
@@ -397,7 +415,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	}
 
 	//查询用途 公司字典
-	public List<ComDictInfoEntity> findYTByName(String name, String typeCode) throws Exception {
+	public List<ComDictInfoEntity> findCodeByName(String name, String typeCode) throws Exception {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("comDictName", "like", Strings.trim(name) + "%").and("status", "=", DataStatusEnum.ENABLE.intKey())
 				.and("comTypeCode", "=", typeCode);
@@ -469,9 +487,11 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 * @param inlandPayIds
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object toConfirmPay(String inlandPnrIds) {
+	public Object toConfirmPay(String inlandPnrIds, HttpSession session) {
 		Map<String, Object> map = new HashMap<String, Object>();
-
+		//当前公司所有用户id
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
 		Sql sql = Sqls.create(sqlManager.get("receivePay_pay_Ids"));
 		/*String inlandPayIdStr = inlandPayIds.substring(0, inlandPayIds.length() - 1);*/
 		Cnd cnd = Cnd.NEW();
@@ -533,15 +553,28 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		}
 
 		//银行名称
-		List<DictInfoEntity> bankList = new ArrayList<DictInfoEntity>();
+		/*List<DictInfoEntity> bankList = new ArrayList<DictInfoEntity>();
 		try {
 			bankList = externalInfoService.findDictInfoByName("", YHCODE);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		map.put("bankList", bankList);*/
+		//银行名称
+		List<TBankCardEntity> bankList = new ArrayList<TBankCardEntity>();
+		try {
+			Cnd cnd2 = Cnd.NEW();
+			cnd2.and("companyid", "=", companyId);
+			cnd2.and("bankName", "!=", "");
+			cnd2.groupBy("bankName");
+			bankList = dbDao.query(TBankCardEntity.class, cnd2, null);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		map.put("bankList", bankList);
 
-		//银行名称
+		//币种
 		List<DictInfoEntity> BZList = new ArrayList<DictInfoEntity>();
 		try {
 			BZList = externalInfoService.findDictInfoByName("", BZCODE);
@@ -551,14 +584,21 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		map.put("bzList", BZList);
 
 		//付款用途
-		//付款用途
 		List<ComDictInfoEntity> fkytList = new ArrayList<ComDictInfoEntity>();
 		try {
-			fkytList = findYTByName("", YTCODE);
+			fkytList = findCodeByName("", YTCODE);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		map.put("fkytList", fkytList);
+		//资金种类
+		List<ComDictInfoEntity> zjzlList = new ArrayList<ComDictInfoEntity>();
+		try {
+			zjzlList = findCodeByName("", ZJZLCODE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		map.put("zjzlList", zjzlList);
 		map.put("ids", inlandPnrIds);
 
 		return map;
@@ -587,6 +627,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		Date payDate = form.getPayDate();
 		Double payFees = form.getPayFees();
 		Double payMoney = form.getPayMoney();
+		String payChineseMoney = form.getPayChineseMoney();
 		Integer currency = form.getPayCurrency();
 		Integer isInvioce = form.getIsInvioce();
 		String receiptUrl = form.getReceiptUrl();
@@ -654,6 +695,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			}
 			if (!Util.eq(null, isInvioce)) {
 				payEntity.setIsInvioce(isInvioce);
+			}
+			if (!Util.eq(null, payChineseMoney)) {
+				payEntity.setPayChineseMoney(payChineseMoney);
 			}
 			updateList.add(payEntity);
 			//添加水单
@@ -724,6 +768,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		Date payDate = form.getPayDate();
 		Double payFees = form.getPayFees();
 		Double payMoney = form.getPayMoney();
+		String payChineseMoney = form.getPayChineseMoney();
 		Integer currency = form.getPayCurrency();
 		Integer isInvioce = form.getIsInvioce();
 		//银行卡信息
@@ -734,23 +779,64 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		String receiptUrl = form.getReceiptUrl();
 
 		TPayEntity payEntity = dbDao.fetch(TPayEntity.class, Cnd.where("id", "in", payIds));
-		payEntity.setPayAddress(payAddress);
-		payEntity.setPurpose(purpose);
-		payEntity.setFundType(fundType);
-		payEntity.setPayDate(payDate);
-		payEntity.setPayFees(payFees);
-		payEntity.setPayMoney(payMoney);
-		payEntity.setPayCurrency(currency);
-		payEntity.setIsInvioce(isInvioce);
+		if (!Util.isEmpty(payAddress)) {
+			payEntity.setPayAddress(payAddress);
+		}
+		if (!Util.isEmpty(purpose)) {
+			payEntity.setPurpose(purpose);
+		}
+		if (!Util.isEmpty(fundType)) {
+			payEntity.setFundType(fundType);
+		}
+		if (!Util.isEmpty(payDate)) {
+			payEntity.setPayDate(payDate);
+		}
+		if (!Util.isEmpty(payFees)) {
+			payEntity.setPayFees(payFees);
+		}
+		if (!Util.isEmpty(payMoney)) {
+			payEntity.setPayMoney(payMoney);
+		}
+		if (!Util.isEmpty(currency)) {
+			payEntity.setPayCurrency(currency);
+		}
+		if (!Util.isEmpty(isInvioce)) {
+			payEntity.setIsInvioce(isInvioce);
+		}
+		if (!Util.isEmpty(payChineseMoney)) {
+			payEntity.setPayChineseMoney(payChineseMoney);
+		}
 		dbDao.update(payEntity);
 
 		//更新银行卡信息
 		Integer bankId = payEntity.getBankId();
 		TCompanyBankCardEntity bankEntity = dbDao.fetch(TCompanyBankCardEntity.class, Cnd.where("id", "=", bankId));
-		bankEntity.setBankComp(bankComp);
-		bankEntity.setCardName(cardName);
-		bankEntity.setCardNum(cardNum);
-		dbDao.update(bankEntity);
+		if (!Util.isEmpty(bankEntity)) {
+			if (!Util.isEmpty(bankComp)) {
+				bankEntity.setBankComp(bankComp);
+			}
+			if (!Util.isEmpty(cardName)) {
+				bankEntity.setCardName(cardName);
+			}
+			if (!Util.isEmpty(cardNum)) {
+				bankEntity.setCardNum(cardNum);
+			}
+			dbDao.update(bankEntity);
+		} else {
+			TCompanyBankCardEntity comBankCard = new TCompanyBankCardEntity();
+			if (!Util.isEmpty(bankComp)) {
+				comBankCard.setBankComp(bankComp);
+			}
+			if (!Util.isEmpty(cardName)) {
+				comBankCard.setCardName(cardName);
+			}
+			if (!Util.isEmpty(cardNum)) {
+				comBankCard.setCardNum(cardNum);
+			}
+			TCompanyBankCardEntity insert = dbDao.insert(comBankCard);
+			Integer id = insert.getId();
+			dbDao.update(TPayEntity.class, Chain.make("bankId", id), Cnd.where("id", "in", payIds));
+		}
 
 		//更新水单信息
 		TPayReceiptEntity payReceipt = dbDao.fetch(TPayReceiptEntity.class, Cnd.where("payId", "in", payIds));
