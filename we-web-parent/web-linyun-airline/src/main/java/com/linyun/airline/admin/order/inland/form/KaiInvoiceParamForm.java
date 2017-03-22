@@ -37,7 +37,7 @@ public class KaiInvoiceParamForm extends DataTablesParamForm {
 
 	private Integer userid;
 	private Integer status;//开票状态
-	private String username;//开票人
+	private Integer billuserid;//开票人
 	private Date kaiInvoiceBeginDate;//开票日期
 	private Date kaiInvoiceEndDate;//开票日期
 	private String invoicenum;//发票号
