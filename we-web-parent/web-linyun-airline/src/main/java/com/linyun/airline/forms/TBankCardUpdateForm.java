@@ -12,7 +12,7 @@ import com.uxuexi.core.web.form.ModForm;
 @EqualsAndHashCode(callSuper = true)
 public class TBankCardUpdateForm extends ModForm implements Serializable {
 	private static final long serialVersionUID = 1L;
-	/*private Integer id;*/
+
 	/**银行卡名称*/
 	private String cardName;
 

@@ -50,7 +50,7 @@
             <td><label>类型：</label></td>
             <td>
             	<div class="form-group">
-	              <select class="form-control input-sm" name="type">
+	              <select class="form-control wi input-sm" name="type">
 	              	<option value="">请选择</option>
 	                <c:if test="${obj.airlinePolicy.type == '团'}">
 	                <option selected="selected">团</option>
@@ -162,7 +162,7 @@
 	         } 
 		});
 	}
-	
+	$(formValidator());
 	
 	
 		//点击取消

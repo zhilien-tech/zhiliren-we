@@ -15,6 +15,7 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.cri.SqlExpressionGroup;
 
 import com.linyun.airline.admin.order.inland.enums.PayMethodEnum;
+import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.OrderStatusEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.uxuexi.core.web.form.DataTablesParamForm;
@@ -39,7 +40,8 @@ public class PayApplyListForm extends DataTablesParamForm {
 		cnd.and("tuo.loginUserId", "=", userId);
 		cnd.and("toc.paymethod", "=", PayMethodEnum.THIRDPART.intKey());
 		SqlExpressionGroup exp = new SqlExpressionGroup();
-		exp.and("tpi.orderPnrStatus", "=", "").or("tpi.orderPnrStatus", "is", null);
+		exp.and("tpi.orderPnrStatus", "=", "").or("tpi.orderPnrStatus", "is", null)
+				.or("tpi.orderPnrStatus", "=", AccountPayEnum.REFUSE.intKey());
 		cnd.and(exp);
 		return cnd;
 	}

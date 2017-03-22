@@ -107,24 +107,23 @@
 	        cache: false,
 	        async : false,
 	        success: function (data ,textStatus, jqXHR){
-	        	layer.msg("提交成功！",{time: 2000, icon:1});
+	        	layer.msg("提交成功！",{time: 2000});
 	        	closewindow();
 	        },
 	        error:function (XMLHttpRequest, textStatus, errorThrown) {      
-	            layer.msg("请求失败！",{time: 2000, icon:1});
+	            layer.msg("请求失败！",{time: 2000});
 	        }
 	     });
 	}
 	
 	//文件上传
-    $('#uploadFile').click(function(){
     	$.fileupload1 = $('#uploadFile').uploadify({
     		'auto' : true,//选择文件后自动上传
     		'formData' : {
     			'fcharset' : 'uft-8',
     			'action' : 'uploadimage'
     		},
-    		'buttonText' : '上传',//按钮显示的文字
+    		'buttonText' : '上传水单',//按钮显示的文字
     		'fileSizeLimit' : '3000MB',
     		'fileTypeDesc' : '文件',//在浏览窗口底部的文件类型下拉菜单中显示的文本
     		'fileTypeExts' : '*.png; *.jpg; *.bmp; *.gif; *.jpeg;',//上传文件的类型
@@ -159,7 +158,6 @@
                 }
             }
     	});
-    });
 	//加载银行卡名称下拉
 	function loadbankcardname(){
 		var bankcardid = $('#bankcardid').val();

@@ -51,7 +51,7 @@
          </table>
          <table border="0" class="selectTable">
                   <tr>
-                    <td>银行：</td>
+                    <td><label>银行：</label></td>
                     <td>
                       <select class="form-control input-sm">
                           <c:forEach var="one" items="${obj.yhkSelect }">
@@ -66,40 +66,41 @@
                           </c:forEach>
                       </select>
                     </td>
-                    <td>银行卡名称：</td> 
+                    <td><label>银行卡名称：</label></td> 
                     <td>
                       <select class="form-control input-sm">
                           <option>${obj.companybank.cardName }</option>
                       </select>
                     </td>
-                    <td>卡号：</td>
+                    <td><label>卡号：</label></td>
                     <td>
                        <select class="form-control input-sm">
                           <option>${obj.companybank.cardNum }</option>
                        </select>
                     </td>
-                    <td>合计：</td>
+                    <td><label>合计：</label></td>
                     <td id="sumjine">${obj.sumjine }</td>
                   </tr>
          </table>
          <div class="bankSlipImg" align="center"><img id="shuidanimg" width="400" height="300" alt="" src="${obj.billurl }"></div>
       </div>
-      <span class="invoiceInfo-header">发票信息</span>
+      <span class="invoiceInfo-header"><label>发票信息</label></span>
       <div class="invoiceInfo-body">
         <table class="payTable2">
           <tr>
-                  <td>发票项目：</td>
+                  <td><label>发票项目：</label></td>
                   <td>
                     <select id="invoiceitem" name="invoiceitem" class="form-control input-sm">
-                        <option value="1">团款</option>
-                        <option value="2">代订机票费用</option>
+                        <c:forEach items="${obj.ytselect }" var="one">
+                    		<option value="${one.id }">${one.comDictName }</option>
+                    	</c:forEach>
                     </select>
                   </td>
-                  <td>发票日期：</td>
+                  <td><label>发票日期：</label></td>
                   <td><input id="invoicedate" name="invoicedate" type="text" onFocus="WdatePicker()" class="form-control input-sm"></td>
                   <td><!-- 开票人： --></td>
                   <td>
-                     <<!-- select id="billuserid" name="billuserid" class="form-control input-sm">
+                     <!-- select id="billuserid" name="billuserid" class="form-control input-sm">
                         <option value="1">林俊杰</option>
                         <option value="2">王力宏</option>
                      </select> -->
@@ -113,23 +114,23 @@
                   </td>
           </tr>
           <tr>
-                  <td>付款单位：</td>
+                  <td><label>付款单位：</label></td>
                   <td colspan="3"><input id="paymentunit" name="paymentunit" type="text" class="form-control input-sm" value="${obj.customename }" disabled="disabled"></td>
           </tr>
           <tr>
-                  <td>备注：</td>
+                  <td><label>备注：</label></td>
                   <td colspan="3"><input id="remark" name="remark" type="text" class="form-control input-sm"></td>
           </tr>
           <tr>
-                  <td>差额：</td>
+                  <td><label>差额：</label></td>
                   <td><input id="difference" name="difference" type="text" class="form-control input-sm"></td>
-                  <td>余额：</td>
+                  <td><label>余额：</label></td>
                   <td><label id="balance" name="balance">${obj.sumjine }</label></td>
           </tr>
           <tr class="cloneTR">
-                  <td>发票号：</td>
+                  <td><label>发票号：</label></td>
                   <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm"></td>
-                  <td>金额：</td>
+                  <td><label>金额：</label></td>
                   <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm"></td>
                   <td colspan="4">
                     <ul class="fileUL">
@@ -139,8 +140,9 @@
                           <input type="file" class="sc" id="sc" name="sc">
                         </a>
                       </li>
-                      <li><a href="javascript:;" id="fileName" name="fileName">未选择文件</a></li>
-                      <li><a href="javascript:;" class="fileDelete">删除</a></li>
+                      <li><a id="fileName" name="fileName">未选择文件</a></li>
+                      <li><a href="javascript:;" class="fileDelete deleteInvoice" >删除</a></li>
+                      <li><a href="javascript:;" id="preView" class="fileDelete">预览</a></li>
                       <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
                     </ul>
                     <input id="invoiceurl" name="invoiceurl" type="hidden" value="">
@@ -192,12 +194,21 @@
 	          $(this).parents('.cloneTR').remove();
 	      });
 	      
-	      $(document).on('click','#fileName',function(){
+	      $(document).on('click','#preView',function(){
 	   	  	  var invoiceurl = $(this).parent().parent().parent().find('[name=invoiceurl]').val();
 	   	  	  //alert(invoiceurl);
 	          document.getElementById('light').style.display='block';
 	          //document.getElementById('fade').style.display='block';
 	          document.getElementById('fapiaoid').src=invoiceurl; 
+	      });
+	      $(document).on('click','.deleteInvoice',function(){
+	   	  	  var invoicedetaildiv = $(this).parent().parent().parent();
+	   	  	  invoicedetaildiv.find('[name=invoiceurl]').val('');
+	   	  	  invoicedetaildiv.find('[name=fileName]').html('未选择文件');
+	   	  	  //alert(invoiceurl);
+	          //document.getElementById('light').style.display='block';
+	          //document.getElementById('fade').style.display='block';
+	          document.getElementById('fapiaoid').src=''; 
 	      });
 
      });

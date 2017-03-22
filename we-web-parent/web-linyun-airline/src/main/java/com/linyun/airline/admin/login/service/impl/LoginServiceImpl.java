@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
+import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -161,6 +162,28 @@ public class LoginServiceImpl extends BaseService<TUserEntity> implements LoginS
 			session.setAttribute(LOGINUSER, user);
 			session.setAttribute(IS_LOGIN_KEY, true);
 			session.setAttribute("currentPageIndex", 0);
+		}
+		if ("phone".equalsIgnoreCase(form.getFlag())) {
+			boolean flag = false;
+			String sqlString = sqlManager.get("login_test_authority");
+			Sql sql = Sqls.create(sqlString);
+			Cnd cnd = Cnd.NEW();
+			cnd.and("uj.userid", "=", user.getId());
+			List<Record> list = dbDao.query(sql, cnd, null);
+			for (Record record : list) {
+				if ("/admin/applyapproval/list.html".equalsIgnoreCase(record.getString("url"))) {
+					flag = true;
+					break;
+				}
+			}
+			if (flag) {
+
+				form.setReturnUrl(">>:/admin/applyapproval/list.html");
+				return true;
+			} else {
+				form.setErrMsg("权限不足，请联系管理员");
+				return false;
+			}
 		}
 		if (UserTypeEnum.PLAT.intKey() == user.getUserType()) {
 			form.setReturnUrl(">>:/admin/Company/list.html");

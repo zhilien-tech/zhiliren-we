@@ -66,6 +66,17 @@ table.dataTable thead .sorting:after{display: none;}
 #receivablesTable{margin-top: 10px;}
 .selectTable{width: 100%;}
 .selectTable tbody tr td:nth-child(odd){text-align: right;}
+.selectTable tbody tr td:nth-child(1){width:45px;}
+.selectTable tbody tr td:nth-child(2){width:150px;}
+.selectTable tbody tr td:nth-child(3){width:95px;}
+
+.selectTable tbody tr td:nth-child(5){width:50px;}
+.selectTable tbody tr td:nth-child(6){width:240px;}
+.selectTable tbody tr td:nth-child(7){width:50px;}
+
+
+
+
 .bankSlipBtn{margin-top: 20px;}
 .bankSlipImg{background-color: rgba(238, 238, 238, 0.26);width: 100%;min-height: 200px;margin-top: 10px;border: solid 1px rgba(204, 204, 204, 0.41);border-radius: 3px;}
 .selectTableTr td{padding-top: 10px;}
@@ -118,8 +129,8 @@ td.sorting_1 input {position: relative;top: 5px;}
 .payTable2 {margin-top: 10px;width: 100%;}
 .payTable2 tbody tr td:nth-child(odd){text-align: right;}
 .payTable2 tbody tr td:nth-child(even){width: 115px;}
-.payTable2 tbody tr td:nth-child(1){width:70px;}
-.payTable2 tbody tr td:nth-child(3){width:70px;}
+.payTable2 tbody tr td:nth-child(1){width:48px;}
+.payTable2 tbody tr td:nth-child(3){width:28px;}
 .payTable2 tbody tr td:nth-child(5){width: 75px;}
 .payTable2 tbody tr td:nth-child(7){width: 75px;}
 .payTable2 tbody tr td{padding-bottom: 8px;}
@@ -158,7 +169,6 @@ form#customaddform { width: 100%;}
 #kaiInvoiceTable tbody tr td ul li:last-child{border-bottom:0;}
 #kaiInvoiceTable tbody tr td ul{padding-left: 0;margin-bottom:0;}
 #kaiInvoiceTable tbody tr td{padding:0;}
-
 #kaiInvoiceTable tbody tr td:nth-child(1) ul li{line-height: 27px;}
 #kaiInvoiceTable tbody tr td:nth-child(4){line-height: 60px;}
 #kaiInvoiceTable tbody tr td:nth-child(5){line-height: 60px;}
@@ -169,3 +179,4 @@ form#customaddform { width: 100%;}
 #kaiInvoiceTable tbody tr td:nth-child(10){line-height: 60px;}
 #kaiInvoiceTable tbody tr td:nth-child(11){line-height: 60px;}
 .fuKuanBtn, .fuKuanBtn1 {float: right;position: relative;left: 60px;}
+
