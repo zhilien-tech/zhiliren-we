@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>预定订单详情</title>
+  <title>implements SQLParamForm,Serializable订单详情</title>
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="${base }/public/bootstrap/css/bootstrap.css">
   <!-- 图标 -->

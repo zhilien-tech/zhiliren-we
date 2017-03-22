@@ -6,6 +6,8 @@
 
 package com.linyun.airline.admin.order.inland.form;
 
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,8 +15,11 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
+import org.nutz.dao.util.cri.SqlExpressionGroup;
 
 import com.linyun.airline.common.enums.OrderTypeEnum;
+import com.uxuexi.core.common.util.DateUtil;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
@@ -33,12 +38,36 @@ public class ShouKuanParamFrom extends DataTablesParamForm {
 
 	private Integer companyid;
 
+	private String startdate;
+
+	private String enddate;
+
+	private String searchInfo;
+
+	private Integer status;
+
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		cnd.and("tr.userid", "=", userid);
 		cnd.and("tr.companyid", "=", companyid);
 		cnd.and("tr.orderstype", "=", OrderTypeEnum.FIT.intKey());
 		//cnd.and("tr.status", "=", AccountReceiveEnum.RECEIVEDONEY.intKey());
+		if (!Util.isEmpty(startdate)) {
+			Date startdates = DateUtil.string2Date(startdate, DateUtil.FORMAT_YYYY_MM_DD);
+			cnd.and("tr.receivedate", ">=", startdates);
+		}
+		if (!Util.isEmpty(enddate)) {
+			Date enddates = DateUtil.string2Date(enddate, DateUtil.FORMAT_YYYY_MM_DD);
+			cnd.and("tr.receivedate", "<=", enddates);
+		}
+		if (!Util.isEmpty(searchInfo)) {
+			SqlExpressionGroup exp = new SqlExpressionGroup();
+			exp.and("tr.customename", "like", "%" + searchInfo + "%");
+			cnd.and(exp);
+		}
+		if (!Util.isEmpty(status)) {
+			cnd.and("tr.status", "=", status);
+		}
 		return cnd;
 	}
 

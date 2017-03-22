@@ -57,7 +57,7 @@ public class ParsingSabreEntity implements Serializable {
 	//价格
 	private String airTicketPrice;
 
-	//预定时间
+	//implements SQLParamForm,Serializable时间
 	private String presetDate;
 
 	//舱位价格

@@ -32,7 +32,7 @@
 							<label>生成订单</label> 
 							<select id="orderStatus" class="form-control input-sm conSelect cf">
 								<option value="1" selected="selected">查询</option>
-								<option value="2">预定</option>
+								<option value="2">implements SQLParamForm,Serializable</option>
 								<option value="3">出票</option>
 								<option value="4">开票</option>
 								<option value="5">关闭</option>
@@ -671,9 +671,9 @@
 						}
 						if (result.parsingType == "SD0Q0") {
 							var pnrThread = '<tr>' + '<th>序号</th>'
-									+ '<th>航班号</th>' + '<th>预定舱位</th>'
-									+ '<th>预定日期</th>' + '<th>航段</th>'
-									+ '<th>预定座位数</th>' + '<th>航程时间</th>'
+									+ '<th>航班号</th>' + '<th>implements SQLParamForm,Serializable舱位</th>'
+									+ '<th>implements SQLParamForm,Serializable日期</th>' + '<th>航段</th>'
+									+ '<th>implements SQLParamForm,Serializable座位数</th>' + '<th>航程时间</th>'
 									+ '</tr>';
 							var pnrBody = '';
 							var obj = result.arrayList;

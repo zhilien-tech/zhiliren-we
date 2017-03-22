@@ -110,7 +110,7 @@ public class InlandModule {
 	}
 
 	/**
-	 *保存预定订单数据
+	 *保存implements SQLParamForm,Serializable订单数据
 	 */
 	@At
 	@POST

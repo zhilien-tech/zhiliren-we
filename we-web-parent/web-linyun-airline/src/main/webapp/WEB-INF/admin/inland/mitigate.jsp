@@ -32,16 +32,23 @@
                 <div class="form-group row">
                   <label class="col-sm-2 text-right padding">金额：</label>
                   <div class="col-sm-2 padding">
-                    <input id="account" name="account" type="text" class="form-control input-sm account"/>
+                    <input id="account" name="account" type="text" class="form-control input-sm account" value="${obj.mitigate.account }"/>
                   </div>
                   <div class="col-sm-3 padding">
-                      <input id="accountupper" name="accountupper" type="text" class="form-control input-sm" disabled="disabled" />
+                      <input id="accountupper" name="accountupper" type="text" class="form-control input-sm" value="${obj.mitigate.accountupper }" disabled="disabled" />
                   </div>
                   <label class="col-sm-2 text-right padding">币种：</label>
                   <div class="col-sm-2 padding">
                     <select id="currency" name="currency" class="form-control input-sm">
                       <c:forEach items="${obj.bzcode }" var="one"> 
-	                     <option value="${one.dictCode }">${one.dictCode }</option>
+                      	 <c:choose>
+                      	 	<c:when test="${one.dictCode eq obj.mitigate.currency}">
+			                     <option value="${one.dictCode }" selected="selected">${one.dictCode }</option>
+                      	 	</c:when>
+                      	 	<c:otherwise>
+			                     <option value="${one.dictCode }">${one.dictCode }</option>
+                      	 	</c:otherwise>
+                      	 </c:choose>
 	                  </c:forEach>
                     </select>
                   </div>
@@ -49,11 +56,11 @@
 
                 <div class="form-group row">
                   <label class="col-sm-2 text-right padding">申请人：</label>
-                  <div class="col-sm-2 padding"><input id="applyid" name="applyid" type="text" class="form-control input-sm" disabled="disabled" value="${obj.user.userName }"/></div>
+                  <div class="col-sm-2 padding"><input id="applyid" name="applyid" type="text" class="form-control input-sm" disabled="disabled" value="${empty obj.mitigate.applyid ? obj.user.userName : obj.mitigate.applyid }"/></div>
                   <label class="col-sm-1 text-right padding">审批人：</label>
                   <div class="col-sm-2 padding"><input id="approvelid" name="approvelid" type="text" class="form-control input-sm" disabled="disabled" value="候小凌"/></div>
                   <label class="col-sm-2 text-right padding">申请结果：</label>
-                  <div class="col-sm-2 padding"><input id="applyResult" name="applyResult" type="text" class="form-control input-sm" disabled="disabled" /></div>
+                  <div class="col-sm-2 padding"><input id="applyResult" name="applyResult" type="text" class="form-control input-sm" disabled="disabled" value="${obj.mitigate.applyResult }"/></div>
                 </div><!--end 银行/币种-->
                 </form>
             </div>
@@ -81,7 +88,7 @@
 		　　var IntegerNum; //金额整数部分  
 		　　var DecimalNum; //金额小数部分  
 		　　var ChineseStr = ""; //输出的中文金额字符串  
-		　　var parts; //分离金额后用的数组，预定义  
+		　　var parts; //分离金额后用的数组，implements SQLParamForm,Serializable义  
 		　　if (money == "") {  
 		　　return "";  
 		　　}  
@@ -171,7 +178,12 @@
             	layer.msg("添加失败","",3000);
             } 
         });
-		 
+	 }
+	 function isShowSave(){
+		 var mitigateid = '${obj.mitigate.id}';
+		 if(mitigateid){
+			 $('#submit').hide();
+		 }
 	 }
 	</script>
 </body>

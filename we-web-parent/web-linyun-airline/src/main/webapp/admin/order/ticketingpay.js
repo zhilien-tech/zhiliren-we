@@ -59,7 +59,14 @@ function initpayTable() {
                     },
                     {"data": "airsag", "bSortable": false,
                     	render:function(data, type, row, meta) {
-                    		var result = row.leavecity + '/' + row.arrivecity;
+                    		var result = '';
+            				if(row.leavecity != undefined){
+            					result += row.leavecity;
+            				}
+            				result += '/';
+            				if(row.arrivecity != undefined){
+            					result += row.arrivecity;
+            				}
                     		return result;
                     	}
                     },
@@ -251,4 +258,17 @@ $('.fuKuanBtn1').click(function(){
            } 
 		});
 	}
+});
+$('#ticketpaysearch').click(function(){
+	var div = $(this).parent().parent();
+	var startdate = div.find('[name=startdate]').val();
+	var enddate = div.find('[name=enddate]').val();
+	var searchInfo = div.find('[name=searchInfo]').val();
+	var param = {
+			startdate:startdate,
+			enddate:enddate,
+			searchInfo:searchInfo
+	};
+	payTable.settings()[0].ajax.data = param;
+	payTable.ajax.reload();
 });
