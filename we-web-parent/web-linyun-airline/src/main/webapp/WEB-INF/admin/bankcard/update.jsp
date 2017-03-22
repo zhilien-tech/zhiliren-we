@@ -92,7 +92,7 @@
 								$(setSelectedAreaIds());
 								function setSelectedAreaIds() {
 									var _selectedAreaIds = $("#findBank").select2("val");
-									alert(_selectedAreaIds);
+									
 									$("#bankNameId").val(_selectedAreaIds);
 								}
 							</script>

@@ -96,17 +96,23 @@ public class SalaryViewService extends BaseService<TSalaryEntity> {
 
 	}
 
-	public Map<String, Object> selectCondition() {
+	public Map<String, Object> selectCondition(HttpSession session) {
 		Map<String, Object> maps = Maps.newHashMap();
 		String drawerString = sqlManager.get("salary_drawer");
 		Sql drawerSql = Sqls.create(drawerString);
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long companyId = company.getId();
 		Cnd cnd = Cnd.NEW();
+		cnd.and("comId", "=", companyId);
+		drawerSql.setCondition(cnd);
 		List<Record> drawerList = dbDao.query(drawerSql, cnd, null);
 		String yearsString = sqlManager.get("salary_years");
 		Sql yearsSql = Sqls.create(yearsString);
+		yearsSql.setCondition(cnd);
 		List<Record> yearsList = dbDao.query(yearsSql, cnd, null);
 		String monthsString = sqlManager.get("salary_months");
 		Sql monthsSql = Sqls.create(monthsString);
+		monthsSql.setCondition(cnd);
 		List<Record> monthsList = dbDao.query(monthsSql, cnd, null);
 		Map<String, Object> re = MapUtil.map();
 		re.put("drawerList", drawerList);

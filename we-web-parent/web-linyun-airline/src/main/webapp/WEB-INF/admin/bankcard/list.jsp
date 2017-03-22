@@ -182,6 +182,7 @@
 	$(function() {
 		initDatatable();
 		//selectDeptName();
+		
 	});
 
 	//编辑
@@ -207,6 +208,11 @@
 			  layer.msg("删除成功",{time: 2000, icon:1});
 		  }
 	  }
+	/* $(function(){
+		var a=215434131.21313135351;
+		var b=a.substring(0, a.lastIndexOf(".")+3)
+		alert(b);
+	}); */
 </script>
 <!-- </body> -->
 </html>
