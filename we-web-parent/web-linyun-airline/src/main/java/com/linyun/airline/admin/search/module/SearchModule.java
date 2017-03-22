@@ -14,7 +14,9 @@ import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.search.form.SearchTicketSqlForm;
 import com.linyun.airline.admin.search.service.SearchViewService;
+import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.sabre.form.InstaFlightsSearchForm;
+import com.uxuexi.core.web.chain.support.JsonResult;
 
 @IocBean
 @At("/admin/search")
@@ -175,7 +177,13 @@ public class SearchModule {
 	@At
 	@POST
 	public Object saveCustomerNeeds(@Param("data") String data, HttpSession session) {
-		return searchViewService.saveCustomerNeeds(data, session);
+		try {
+			Object map = searchViewService.saveCustomerNeeds(data, session);
+			return MobileResult.success("修改成功", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JsonResult.error("修改失败");
+		}
 	}
 
 }

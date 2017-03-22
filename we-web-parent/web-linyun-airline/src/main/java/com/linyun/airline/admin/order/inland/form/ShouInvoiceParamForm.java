@@ -15,8 +15,10 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
+import org.nutz.dao.util.cri.SqlExpressionGroup;
 
 import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
+import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
@@ -41,6 +43,12 @@ public class ShouInvoiceParamForm extends DataTablesParamForm {
 	private String PNR;//pnr
 	private String paymentunit;//收款单位
 
+	private String startdate;
+
+	private String enddate;
+
+	private String searchInfo;
+
 	private Long companyid;
 
 	private Cnd cnd() {
@@ -49,6 +57,24 @@ public class ShouInvoiceParamForm extends DataTablesParamForm {
 		cnd.and("invoicetype", "=", PayReceiveTypeEnum.PAY.intKey());
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("tii.comId", "=", companyid);
+		}
+		if (!Util.isEmpty(startdate)) {
+			Date startdates = DateUtil.string2Date(startdate, DateUtil.FORMAT_YYYY_MM_DD);
+			cnd.and("tii.invoicedate", ">=", startdates);
+		}
+		if (!Util.isEmpty(enddate)) {
+			Date enddates = DateUtil.string2Date(enddate, DateUtil.FORMAT_YYYY_MM_DD);
+			cnd.and("tii.invoicedate", "<=", enddates);
+		}
+		if (!Util.isEmpty(searchInfo)) {
+			SqlExpressionGroup exp = new SqlExpressionGroup();
+			exp.and("tpi.PNR", "like", "%" + searchInfo + "%").or("tii.paymentunit", "like", "%" + searchInfo + "%")
+					.or("tuo.ordersnum", "like", "%" + searchInfo + "%")
+					.or("tu.userName", "like", "%" + searchInfo + "%");
+			cnd.and(exp);
+		}
+		if (!Util.isEmpty(status)) {
+			cnd.and("tii.status", "=", status);
 		}
 		return cnd;
 	}

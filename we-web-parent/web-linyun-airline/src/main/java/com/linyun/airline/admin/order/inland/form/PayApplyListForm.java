@@ -6,6 +6,8 @@
 
 package com.linyun.airline.admin.order.inland.form;
 
+import java.util.Date;
+
 import lombok.Data;
 
 import org.nutz.dao.Cnd;
@@ -18,6 +20,8 @@ import com.linyun.airline.admin.order.inland.enums.PayMethodEnum;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.OrderStatusEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
+import com.uxuexi.core.common.util.DateUtil;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
@@ -33,12 +37,34 @@ public class PayApplyListForm extends DataTablesParamForm {
 
 	private Integer userId;
 
+	private Long companyid;
+
+	private String startdate;
+
+	private String enddate;
+
+	private String searchInfo;
+
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		cnd.and("tuo.ordersstatus", "=", OrderStatusEnum.TICKETING.intKey());
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.FIT.intKey());
-		cnd.and("tuo.loginUserId", "=", userId);
+		//cnd.and("tuo.loginUserId", "=", userId);
 		cnd.and("toc.paymethod", "=", PayMethodEnum.THIRDPART.intKey());
+		if (!Util.isEmpty(startdate)) {
+			Date startdates = DateUtil.string2Date(startdate, DateUtil.FORMAT_YYYY_MM_DD);
+			cnd.and("tpi.optime", ">=", startdates);
+		}
+		if (!Util.isEmpty(enddate)) {
+			Date enddates = DateUtil.string2Date(enddate, DateUtil.FORMAT_YYYY_MM_DD);
+			cnd.and("tpi.optime", "<=", enddates);
+		}
+		if (!Util.isEmpty(searchInfo)) {
+			SqlExpressionGroup exp1 = new SqlExpressionGroup();
+			exp1.and("tci.linkMan", "like", "%" + searchInfo + "%").or("tpi.PNR", "like", "%" + searchInfo + "%")
+					.or("tuo.ordersnum", "like", "%" + searchInfo + "%");
+			cnd.and(exp1);
+		}
 		SqlExpressionGroup exp = new SqlExpressionGroup();
 		exp.and("tpi.orderPnrStatus", "=", "").or("tpi.orderPnrStatus", "is", null)
 				.or("tpi.orderPnrStatus", "=", AccountPayEnum.REFUSE.intKey());

@@ -296,7 +296,7 @@ function editPay(ids){
 		title:false,
 		skin: false, //加上边框
 		closeBtn:false,//默认 右上角关闭按钮 是否显示
-		shadeClose:true,
+		shadeClose:false,
 		area: ['850px', '650px'],
 		content: ['editConfirmPay.html?payid='+ ids,'no'],
 	});
@@ -362,7 +362,7 @@ $('#inlandPayClick').click(function(){
 			title:false,
 			skin: false, //加上边框
 			closeBtn:false,//默认 右上角关闭按钮 是否显示
-			shadeClose:true,
+			shadeClose:false,
 			area: ['850px', '650px'],
 			content: ['confirmPay.html?inlandPayIds='+ ids,'no'],
 		});
@@ -508,6 +508,9 @@ $('#inlandPayClearBtn').click(function(){
 });
 
 //内陆跨海 取消所有勾选
+function clearGou(){
+	$('#inlandPayCancelBtn').click();
+}
 $('#inlandPayCancelBtn').click(function(){
 	$('#checkedboxPayValue').val("");
 	$(".checkBoxPayAll").prop("checked", false);
