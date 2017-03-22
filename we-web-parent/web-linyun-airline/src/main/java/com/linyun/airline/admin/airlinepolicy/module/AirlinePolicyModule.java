@@ -24,8 +24,10 @@ import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.linyun.airline.admin.airlinepolicy.service.AirlinePolicyService;
+import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.constants.CommonConstants;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.forms.TAirlinePolicyAddForm;
 import com.linyun.airline.forms.TAirlinePolicyFindForm;
 import com.linyun.airline.forms.TAirlinePolicyForm;
@@ -57,13 +59,13 @@ public class AirlinePolicyModule {
 	 */
 	@At
 	@Ok("jsp")
-	public Object list(@Param("..") final Pager pager) {
+	public Object list(@Param("..") final Pager pager, final HttpSession session) {
 		/*Map<String, Object> map = Maps.newHashMap();
 		List<Record> deplist = grabfileViewService.getFolderInfo(sqlManager);
 		map.put("deplist", deplist);
 		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));*/
 		/*airlinePolicyService.findConditionList()*/
-		return airlinePolicyService.findConditionList();
+		return airlinePolicyService.findConditionList(session);
 	}
 
 	/**
@@ -72,7 +74,9 @@ public class AirlinePolicyModule {
 	@At
 	public Object listData(@Param("..") final TAirlinePolicyForm sqlForm, final HttpSession session,
 			TAirlinePolicyFindForm findForm) {
-
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long companyId = company.getId();
+		sqlForm.setCompanyId(companyId);
 		return airlinePolicyService.listPage4Datatables(sqlForm);
 	}
 

@@ -50,7 +50,7 @@
                   	</c:forEach>
                   </tbody>
          </table>
-         <table border="0" class="selectTable">
+         <table border="0" class="selectTable tdOddWidth">
                   <tr>
                     <td>银行：</td>
                     <td>

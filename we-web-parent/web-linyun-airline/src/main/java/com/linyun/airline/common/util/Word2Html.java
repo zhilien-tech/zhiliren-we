@@ -91,11 +91,9 @@ public class Word2Html {
 	public void docToHtml(String sourceFileName, String targetFileName) throws Exception {
 		initFolder(targetFileName);
 		String str = System.getProperty("java.io.tmpdir");
-		String imagePathStr = str + File.separator + "\\image\\";
-		File file = new File(imagePathStr);
-		if (!file.exists()) {
-			file.mkdir();
-		}
+		String imagePathStr = str + File.separator;
+		/*		String imagePathStr = str + File.separator + "image";
+		*/
 		// 指定网上的word的文档路径
 		URL url = new URL(sourceFileName);// 生成url对象
 		URLConnection urlConnection = url.openConnection();
@@ -111,7 +109,8 @@ public class Word2Html {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			return "image" + File.separator + name;
+			System.out.println(str + File.separator + name);
+			return name;
 		});
 		wordToHtmlConverter.processDocument(wordDocument);
 		Document htmlDocument = wordToHtmlConverter.getDocument();

@@ -159,7 +159,17 @@
 	                    	}	
 	                    }
 	            ],
-	        columnDefs: [{
+	        columnDefs: [
+						{"sWidth": "11.33%","aTargets": [0] },
+						{"sWidth": "22.33%","aTargets": [1] },
+						{"sWidth": "7%","aTargets": [2] },
+						{"sWidth": "11%","aTargets": [3] },
+						{"sWidth": "8%","aTargets": [4] },
+						{"sWidth": "8%","aTargets": [5] },
+						{"sWidth": "6%","aTargets": [6] },
+						{"sWidth": "11%","aTargets": [7] },
+						{"sWidth": "11%","aTargets": [8] },
+	                    {
 	            //   指定第一列，从0开始，0表示第一列，1表示第二列……
 	            targets: 8,
 	            render: function(data, type, row, meta) {
