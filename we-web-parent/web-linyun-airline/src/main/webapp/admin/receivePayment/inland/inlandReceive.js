@@ -21,9 +21,12 @@ function initRecDataTable() {
 		            {"data": "ordersnum", "bSortable": false,
 		            	render:function(data, type, row, meta) {
 		            		var result = '<ul> ';
+		            		var orderNum = "";
 		            		$.each(row.orders, function(name, value) {
-		            			if(value){
+		            			var num = value.ordersnum;
+		            			if(value && (num!=orderNum)){
 		            				result += '<li style="list-style:none;">'+value.ordersnum+'</li>';
+		            				orderNum = num;
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -50,14 +53,17 @@ function initRecDataTable() {
 		            {"data": "personcount", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
+		            		var orderNum = "";
 		            		$.each(row.orders, function(name, value) {
-		            			if(value){
+		            			var num = value.ordersnum;
+		            			if(value && (num!=orderNum)){
 		            				var pCount = value.personcount;
 		            				if(pCount == null || pCount == undefined || pCount==""){
 		            					pCount = '';
 		            				}else{
 		            					result += '<li style="list-style:none;">'+pCount+'</li>';
 		            				}
+		            				orderNum = num;
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -67,10 +73,13 @@ function initRecDataTable() {
 		            {"data": "incometotal", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
+		            		var orderNum = "";
 		            		$.each(row.orders, function(name, value) {
-		            			if(value && value.incometotal!=undefined){
+		            			var num = value.ordersnum;
+		            			if(value && value.incometotal!=undefined && (num!=orderNum)){
 		            				result += '<li style="list-style:none;">'+value.incometotal+'</li>';
 		            			}
+		            			orderNum = num;
 		            		});
 		            		result += '</ul>';
 		            		return result;
@@ -99,10 +108,13 @@ function initRecDataTable() {
 		            {"data": "username", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
+		            		var orderNum = "";
 		            		$.each(row.orders, function(name, value) {
-		            			if(value && value.issuer!=undefined && value.issuer!=null && value.issuer!=""){
+		            			var num = value.ordersnum;
+		            			if(value && value.issuer!=undefined && value.issuer!=null && value.issuer!="" && (num!=orderNum)){
 		            				result += '<li style="list-style:none;">'+value.issuer+'</li>';
 		            			}
+		            			orderNum = num;
 		            		});
 		            		result += '</ul>';
 		            		return result;

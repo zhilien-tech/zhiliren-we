@@ -87,13 +87,14 @@
 						//添加成功 刷新各个模块
 						window.parent.backgroundMonth();
 						window.parent.taskBarFunctions();
+						window.parent.minCalendarInit();
 						window.parent.reload();
 						window.parent.getTimeStr();
 						window.parent.backgroundMonth();
 						window.parent.checkBoxShow();
 						window.parent.createMinCanlender();
 						window.parent.minCalendarbackground();
-						window.parent.minCalendarInit();
+						window.parent.removeClass();
 					},
 					error : function(xhr) {
 						layer.msg("更新失败", "", 2000);
@@ -141,11 +142,12 @@
 						window.parent.taskEventList();
 						window.parent.reload();
 						window.parent.getTimeStr();
+						window.parent.minCalendarInit();
 						window.parent.backgroundMonth();
 						window.parent.checkBoxShow();
 						window.parent.createMinCanlender();
 						window.parent.minCalendarbackground();
-						window.parent.minCalendarInit();
+						window.parent.removeClass();
 					},
 					error : function() {
 						layer.msg("删除失败", "", 3000);

@@ -49,9 +49,9 @@
 						 	<ul class="nav nav-tabs custome">
 			                  <li id="searchLi" class="active"><a href="#tab_1" data-toggle="tab">询单(<span id="searchOrderNum"></span>)</a></li>
 			                  <li id="bookLi"><a href="#tab_2" data-toggle="tab">订单(<span id="bookOrderMsgNum"></span>)</a></li>
+			                   <li id="taskLi"><a id="taskAClick" href="#tab_5" data-toggle="tab">任务(<span id="taskNoticeMsgNum"></span>)</a></li>
 			                  <li id="remindLi"><a id="myRemindClick" href="#tab_3" data-toggle="tab">我的提醒(<span id="remindMsgNum"></span>)</a></li>
 			                  <li id="accountLI"><a href="#tab_4" data-toggle="tab">账期(<span id="accountPayTypeMsgNum"></span>)</a></li>
-			                  <li id="taskLi"><a id="taskAClick" href="#tab_5" data-toggle="tab">任务(<span id="taskNoticeMsgNum"></span>)</a></li>
 			                </ul>
 			                <div class="tab-content">
 				                  <div class="tab-pane active" id="tab_1"><!-- 询单 -->
@@ -64,6 +64,10 @@
 				                      
 				                    </ul>
 				                  </div>
+				                  <div class="tab-pane" id="tab_5"><!-- 通知 任务 -->
+				                   	<ul id="taskNoticeList" class="taskInfo">
+				                    </ul>
+				                  </div>
 				                  <div class="tab-pane" id="tab_3"><!-- 我的提醒 -->
 				                    <ul id="taskListId" class="taskInfo">
 				                    
@@ -74,10 +78,7 @@
 				                      
 				                    </ul>
 				                  </div>
-				                  <div class="tab-pane" id="tab_5"><!-- 通知 任务 -->
-				                   	<ul id="taskNoticeList" class="taskInfo">
-				                    </ul>
-				                  </div>
+				                  
 				            </div>
 						 </div>
 
@@ -225,10 +226,10 @@
 	  				$("#tab_2").remove();
 	  				$("#accountLI").remove();
 	  				$("#tab_4").remove();
-	  				$("#tab_3").addClass("active");
-	  				$("#remindLi").addClass("active");
+	  				$("#tab_5").addClass("active");
+	  				$("#taskLi").addClass("active");
 	  			}
-	  			taskEventList();
+	  			ataskNoticeList();
 	  		}
 	  		if(maxCShow){
 	  			$("#maxCId").css('display','block');
@@ -241,6 +242,22 @@
 	  			$("#minCalenderId").attr('checked','checked');
 	  			minCalendarInit();
 	  		}
+	  	}
+	  	
+	  	//移除任务 active样式
+	  	function removeClass(){
+	  		if($("#taskLi").attr("class")=="active"){
+	  			$("#tab_5").addClass("active");
+  				$("#taskLi").addClass("active");
+  				$("#tab_3").removeClass("active");
+  				$("#remindLi").removeClass("active");
+	  		}else{
+	  			$("#tab_5").removeClass("active");
+				$("#taskLi").removeClass("active");
+				$("#tab_3").addClass("active");
+  				$("#remindLi").addClass("active");
+	  		}
+	  		
 	  	}
 	  </script>
 

@@ -46,6 +46,7 @@ ORDER BY
 /*receivePay_payed_list*/
 SELECT
   	p.id,
+  	pi.id piid,
 	uo.ordersnum ordernum,
 	pi.PNR pnrNum,
 	oc.leavetdate leaveDate,
@@ -61,7 +62,59 @@ LEFT JOIN t_up_order uo ON uo.id=oc.ordernum
 $condition
 ORDER BY
 	leaveDate DESC
-	
+
+/*receivePay_payed_edit*/
+SELECT
+	p.*,
+	(
+		SELECT
+			username
+		FROM
+			t_user u
+		WHERE
+			u.id = p.proposer
+	) proposerMan,
+	uo.ordersnum,
+	pi.pnr,
+	fi.cusgroupnum,
+	ci.shortName,
+	fi.billingdate,
+	pi.peoplecount,
+    pi.salesprice,
+    pi.salespricesum,
+	ci.linkMan,
+	(
+		SELECT
+			username
+		FROM
+			t_user u
+		WHERE
+			u.id = fi. ISSUER
+	) ISSUER
+FROM
+	t_pay p
+INNER JOIN t_pay_pnr pp ON pp.payId = p.id
+INNER JOIN t_pnr_info pi ON pi.id = pp.pnrId
+INNER JOIN t_order_customneed oc ON pi.needid = oc.id
+INNER JOIN t_up_order uo ON oc.ordernum = uo.id
+INNER JOIN t_finance_info fi ON uo.id = fi.orderid
+LEFT JOIN t_customer_info ci ON uo.userid = ci.id	
+$condition
+
+/*receivePay_payed_bank*/
+SELECT
+	cbc.bankComp bankCompId,
+    di.dictName bankCompName,
+    cbc.cardName,
+    cbc.cardNum
+FROM
+	t_company_bank_card cbc
+LEFT JOIN t_pay p ON p.bankId = cbc.id
+LEFT JOIN dict_info di ON di.id=cbc.bankComp
+where p.id IN (@PayId)
+
+
+
 /*receivePay_pay_Ids*/
 SELECT
     p.id id,
