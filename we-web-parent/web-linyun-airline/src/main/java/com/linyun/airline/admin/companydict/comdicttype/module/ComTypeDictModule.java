@@ -174,12 +174,16 @@ public class ComTypeDictModule {
 	 */
 	@At
 	@POST
-	public Object checkTypeCodeExist(@Param("comTypeCode") final String Code, @Param("id") final long id) {
+	public Object checkTypeCodeExist(@Param("comTypeCode") final String Code, @Param("id") final long id,
+			final HttpSession session) {
+		//从session中得到公司id
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long comId = company.getId();//得到公司的id
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<ComDictTypeEntity> listCode = dbDao.query(ComDictTypeEntity.class, Cnd.where("comTypeCode", "=", Code),
-				null);
+		List<ComDictTypeEntity> listCode = dbDao.query(ComDictTypeEntity.class, Cnd.where("comTypeCode", "=", Code)
+				.and("comId", "=", comId), null);
 		List<ComDictTypeEntity> listCode2 = dbDao.query(ComDictTypeEntity.class, Cnd.where("comTypeCode", "=", Code)
-				.and("id", "=", id), null);
+				.and("comId", "=", comId).and("id", "=", id), null);
 		if (!Util.isEmpty(listCode)) {
 			if (Util.isEmpty(id)) {
 				map.put("valid", false);
@@ -197,12 +201,16 @@ public class ComTypeDictModule {
 	 */
 	@At
 	@POST
-	public Object checkTypeNameExist(@Param("comTypeName") final String Name, @Param("id") final long id) {
+	public Object checkTypeNameExist(@Param("comTypeName") final String Name, @Param("id") final long id,
+			final HttpSession session) {
+		//从session中得到公司id
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long comId = company.getId();//得到公司的id
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<ComDictTypeEntity> listName = dbDao.query(ComDictTypeEntity.class, Cnd.where("comTypeName", "=", Name),
-				null);
+		List<ComDictTypeEntity> listName = dbDao.query(ComDictTypeEntity.class, Cnd.where("comTypeName", "=", Name)
+				.and("comId", "=", comId), null);
 		List<ComDictTypeEntity> listName2 = dbDao.query(ComDictTypeEntity.class, Cnd.where("comTypeName", "=", Name)
-				.and("id", "=", id), null);
+				.and("comId", "=", comId).and("id", "=", id), null);
 		if (!Util.isEmpty(listName)) {
 			if (Util.isEmpty(id)) {
 				map.put("valid", false);

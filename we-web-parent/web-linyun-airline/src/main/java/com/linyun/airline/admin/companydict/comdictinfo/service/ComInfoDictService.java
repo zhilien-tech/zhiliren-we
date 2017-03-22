@@ -49,6 +49,7 @@ public class ComInfoDictService extends BaseService<ComDictInfoEntity> {
 		Sql sql = Sqls.create(sqlManager.get("company_select_dicttypename"));
 		Cnd cnd = Cnd.NEW();
 		cnd.and("cty.comId", "=", companyId);
+		cnd.and("cty.status", "=", DataStatusEnum.ENABLE.intKey());
 		List<Record> query = dbDao.query(sql, cnd, null);
 		obj.put("listTypeName", query);
 		return obj;

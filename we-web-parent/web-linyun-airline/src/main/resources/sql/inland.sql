@@ -150,27 +150,15 @@ $condition
 
 /*get_kai_invoice_search_list*/
 SELECT
-	tuo.*, ii.billuserid,
-	ii.`status`,
-	ii.invoicedate,
-	ii.invoicedate,
-	ii.invoiceitem,
-	ii.paymentunit,
-	ii.remark,
-	idd.invoicenum,
-	idd.invoicebalance,
-	idd.invoicetotal,
+	tuo.ordersnum,
+	ii.*, 
 	u.id AS userIds,
-	u.userName,
-	up.comId
+	u.userName
 FROM
-	t_up_order tuo
-LEFT JOIN t_order_receive ore ON tuo.id = ore.orderid
-LEFT JOIN t_invoice_info ii ON ii.receiveid = ore.receiveid
-LEFT JOIN t_invoice_detail idd ON idd.invoiceinfoid = ii.id
+	t_invoice_info ii
+LEFT JOIN t_order_receive ore ON ii.receiveid = ore.receiveid
+LEFT JOIN t_up_order tuo ON tuo.id = ore.orderid
 LEFT JOIN t_customer_info cus ON cus.id = tuo.userid
-LEFT JOIN t_upcompany up ON up.id = cus.upComId
-LEFT JOIN t_agent ag ON ag.id = cus.agentId
 LEFT JOIN t_user u ON u.id = ii.billuserid
 LEFT JOIN dict_info info ON info.id = ii.invoiceitem
 $condition

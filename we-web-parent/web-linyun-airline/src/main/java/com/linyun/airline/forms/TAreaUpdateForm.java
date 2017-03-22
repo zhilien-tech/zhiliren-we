@@ -14,7 +14,13 @@ public class TAreaUpdateForm extends ModForm implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**用户id*/
-	private long userId;
+	private Long userId;
+
+	/**公司id*/
+	private Long comId;
+
+	/**区域id*/
+	private Long areaId;
 
 	/**区域名称*/
 	private String areaName;

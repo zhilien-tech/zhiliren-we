@@ -18,6 +18,7 @@ $condition
 /*employee_area_list*/
 SELECT
 	ta.id AS areaId,
+	ta.comId,
 	ta.areaName,
 	ta.createTime,
 	ta.remark
@@ -47,13 +48,15 @@ AND uj.`status` =@statusId
 /*employee_update_area*/
 SELECT
 	a.id,
+	a.comId,
 	a.createTime,
 	a.areaName,
 	a.remark
 FROM
 	t_area a
 INNER JOIN t_user_area_map am ON a.id = am.areaId
-AND am.userId=@userId
+$condition
+LIMIT 0,5
 
 /*employee_update_data*/
 SELECT
@@ -135,3 +138,14 @@ INNER JOIN t_department d ON d.id = j.deptId
 INNER JOIN t_user_area_map am ON u.id = am.userId
 INNER JOIN t_area a ON a.id = am.areaId
 WHERE u.id =@userId
+
+/*employee_select_dept_list*/
+SELECT
+	d.id,
+	d.comId,
+	d.deptName,
+	d.remark
+FROM
+	t_department d
+LEFT JOIN t_company c ON c.id = d.comId
+$condition
