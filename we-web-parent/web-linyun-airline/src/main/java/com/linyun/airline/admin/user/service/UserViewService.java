@@ -17,7 +17,6 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.lang.Strings;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Function;
@@ -86,13 +85,19 @@ public class UserViewService extends BaseService<TUserEntity> {
 	 * 获取区域名称下拉框
 	 * @param dictName
 	 */
-	public List<Record> getAreaNameList(String areaName, final String selectedAreaIds) {
+	public List<Record> getAreaNameList(String areaName, final String selectedAreaIds, final HttpSession session) {
+		//查询该公司拥有的所有功能
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long comId = company.getId();//得到公司的id
 		String sqlString = sqlManager.get("employee_area_list");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
-		cnd.and("ta.areaName", "like", Strings.trim(areaName) + "%");
+		//cnd.and("ta.areaName", "like", Strings.trim(areaName) + "%");
 		if (!Util.isEmpty(selectedAreaIds)) {
 			cnd.and("ta.id", "NOT IN", selectedAreaIds);
+		}
+		if (!Util.isEmpty(comId)) {
+			cnd.and("ta.comId", "=", comId);
 		}
 		sql.setCondition(cnd);
 		sql.setCallback(Sqls.callback.records());
@@ -175,11 +180,18 @@ public class UserViewService extends BaseService<TUserEntity> {
 		Record updateUser = dbDao.fetch(sql);
 		//通过session获取公司的id
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		List<TDepartmentEntity> userDeptList = dbDao.query(TDepartmentEntity.class,
-				Cnd.where("comId", "=", company.getId()), null);
+		Long comId = company.getId();//获得公司id
+		Sql sql1 = Sqls.create(sqlManager.get("employee_select_dept_list"));
+		Cnd cnd = Cnd.NEW();
+		cnd.and("comId", "=", comId);
+		cnd.and("deptName", "!=", "公司管理部");
+		List<Record> userDeptList = dbDao.query(sql1, cnd, null);
 		//查询区域
 		Sql sql2 = Sqls.create(sqlManager.get("employee_update_area"));
-		sql2.params().set("userId", userId);
+		Cnd cnd2 = Cnd.NEW();
+		cnd2.and("a.comId", "=", comId);
+		cnd2.and("am.userId", "=", userId);
+		sql2.setCondition(cnd2);
 		List<TAreaEntity> areaList = DbSqlUtil.query(dbDao, TAreaEntity.class, sql2);
 		//区域id 拼串
 		String areaIds = "";
@@ -310,9 +322,17 @@ public class UserViewService extends BaseService<TUserEntity> {
 
 	//根据公司id查询出部门
 	public Object queryDept(final HttpSession session) {
+		Map<String, Object> obj = Maps.newHashMap();
 		//通过session获取公司的id
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		return dbDao.query(TDepartmentEntity.class, Cnd.where("comId", "=", company.getId()), null);
+		Long comId = company.getId();//获得公司id
+		Sql sql = Sqls.create(sqlManager.get("employee_select_dept_list"));
+		Cnd cnd = Cnd.NEW();
+		cnd.and("comId", "=", comId);
+		cnd.and("deptName", "!=", "公司管理部");
+		List<Record> queryList = dbDao.query(sql, cnd, null);
+		obj.put("queryList", queryList);
+		return obj;
 	}
 
 	//用户名称唯一性校验

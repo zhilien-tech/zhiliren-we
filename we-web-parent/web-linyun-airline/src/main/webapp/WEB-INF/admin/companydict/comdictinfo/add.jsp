@@ -104,7 +104,8 @@
 	                         //自定义提交数据，默认值提交当前input value
 	                         data: function(validator) {
 	                            return {
-	                            	comDdictCode:$('#comDdictCode').val()
+	                            	comDdictCode:$('#comDdictCode').val(),
+	                            	comTypeCode:$('#comTypeCode').val()
 	                            };
 	                         }
 	                     },
@@ -127,7 +128,8 @@
 		                         //自定义提交数据，默认值提交当前input value
 		                         data: function(validator) {
 		                            return {
-		                            	comDictName:$('input[name="comDictName"]').val()
+		                            	comDictName:$('input[name="comDictName"]').val(),
+		                            	comTypeCode:$('#comTypeCode').val()
 		                            };
 		                         }
 		                   }
