@@ -71,6 +71,7 @@ SELECT
 	tuo.ordersnum,
 	tci.linkMan,
 	tci.telephone,
+	tci.shortName,
 	tfi.cusgroupnum,
 	tfi.issuer,
 	tfi.incometotal,
@@ -90,7 +91,10 @@ $condition
 
 /*get_shoukuan_order_list*/
 SELECT
-	tuo.ordersnum,tfi.personcount,tfi.incometotal
+	tuo.ordersnum,
+	tfi.personcount,
+	tfi.incometotal,
+	tuo.id orderid
 FROM
 	t_up_order tuo
 LEFT JOIN t_finance_info tfi ON tuo.id = tfi.orderid
@@ -106,8 +110,12 @@ SELECT
 	toc.leavetdate,
 	tci.name customename,
 	tpp.orderPnrStatus status,
-	tii.id invoiceid
+	tii.id invoiceid,
+  tai.ailinenum,
+  tai.leavetime,
+  tai.arrivetime
 FROM
+
 	t_pnr_info tpi
 INNER JOIN t_pay_pnr tpp ON tpi.id = tpp.pnrId
 INNER JOIN t_order_customneed toc ON tpi.needid = toc.id
@@ -115,6 +123,7 @@ INNER JOIN t_up_order tuo ON toc.ordernum = tuo.id
 LEFT JOIN t_customer_info tci ON tci.id = tuo.userid
 INNER JOIN t_finance_info tfi ON tuo.id = tfi.orderid
 LEFT JOIN t_invoice_info tii ON tii.pnrid = tpi.id
+LEFT JOIN (select * from t_airline_info GROUP BY needid) tai ON tai.needid = toc.id
 $condition
 
 /*get_fukuan_info_list*/
