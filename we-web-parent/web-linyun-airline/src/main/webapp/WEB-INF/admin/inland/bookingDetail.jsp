@@ -973,9 +973,9 @@
 	 	            	var relief = $('#relief').val();
 		 	       	 	var incometotal  = '';
 		 	       	 	if(relief){
-		 	       	 		incometotal  = parseFloat(data.chengbensum) - parseFloat(relief);
+		 	       	 		incometotal  = parseFloat(data.yingshousum) - parseFloat(relief);
 		 	       	 	}else{
-		 	       	 		incometotal = data.chengbensum;
+		 	       	 		incometotal = data.yingshousum;
 		 	       	 	}
 		 	       	 	if(!isNaN(incometotal)){
 	 	       		 		$('#incometotal').val(incometotal);
