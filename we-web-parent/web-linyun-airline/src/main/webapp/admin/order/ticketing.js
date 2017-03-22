@@ -301,7 +301,7 @@ $('.fuKuanBtn').click(function(){
         				skin: false, //加上边框
         				closeBtn:false,//默认 右上角关闭按钮 是否显示
         				shadeClose:true,
-        				area: ['850px', '550px'],
+        				area: ['850px', '570px'],
         				content: BASE_PATH + '/admin/inland/seaInvoice.html?ids='+ids,
         				end:function(){
         					drawerPayTable.ajax.reload(function(json){
