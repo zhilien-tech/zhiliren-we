@@ -54,17 +54,31 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 	@Inject
 	private UploadService qiniuUploadService;//文件上传
 
-	public Map<String, Object> findConditionList() {
+	public Map<String, Object> findConditionList(HttpSession session) {
 
 		Map<String, Object> map = Maps.newHashMap();
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long companyId = company.getId();
+		String sqlString = sqlManager.get("airlinepolicy_datalist");
+		Sql sql = Sqls.create(sqlString);
 		/*查询航空公司*/
-		List<DictInfoEntity> airlineCompanyList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "HKGS"),
-				null);
-		/*查询地区*/
 		Cnd cnd = Cnd.NEW();
-		List<TAreaEntity> areaList = dbDao.query(TAreaEntity.class, cnd, null);
-		map.put("airlineCompanyList", airlineCompanyList);
-		map.put("areaList", areaList);
+		cnd.and("companyId", "=", companyId);
+		cnd.groupBy("airlineCompanyId");
+
+		sql.setCondition(cnd);
+		List<Record> list = dbDao.query(sql, cnd, null);
+
+		//查询地区
+		String sqlString1 = sqlManager.get("airlinepolicy_datalist");
+		Sql sql1 = Sqls.create(sqlString1);
+		Cnd cnd1 = Cnd.NEW();
+		cnd1.groupBy("areaId");
+		cnd1.and("companyId", "=", companyId);
+		sql1.setCondition(cnd1);
+		List<Record> list1 = dbDao.query(sql1, cnd1, null);
+		map.put("airlineCompanyList", list);
+		map.put("areaList", list1);
 		return map;
 
 	}
@@ -84,12 +98,11 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 		addForm.setFileSize(addForm.getFileSize());
 		String extendName = url.substring(url.lastIndexOf(".") + 1, url.length());
 		Word2Html word2Html = new Word2Html();
-		HtmlToPdf htmlToPdf = new HtmlToPdf();
 		String str = System.getProperty("java.io.tmpdir");
 		if ("doc".equalsIgnoreCase(extendName)) {
 			try {
 				word2Html.docToHtml(url, str + File.separator + "12.html");
-				htmlToPdf.htmlConvertToPdf(str + File.separator + "12.html", str + File.separator + "12.pdf");
+				HtmlToPdf.htmlConvertToPdf(str + File.separator + "12.html", str + File.separator + "12.pdf");
 				File file = new File(str + File.separator + "12.pdf");
 				String pdfUrl = CommonConstants.IMAGES_SERVER_ADDR
 						+ qiniuUploadService.uploadImage(new FileInputStream(file), "pdf", null);
@@ -114,7 +127,7 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 				POIReadExcelToHtml poiReadExcelToHtml = new POIReadExcelToHtml();
 				poiReadExcelToHtml.excelConvertToPdf(url, str + File.separator + "12.html");
 
-				htmlToPdf.htmlConvertToPdf(str + File.separator + "12.html", str + File.separator + "12.pdf");
+				HtmlToPdf.htmlConvertToPdf(str + File.separator + "12.html", str + File.separator + "12.pdf");
 				File file = new File(str + File.separator + "12.pdf");
 				String pdfUrl = CommonConstants.IMAGES_SERVER_ADDR
 						+ qiniuUploadService.uploadImage(new FileInputStream(file), "pdf", null);

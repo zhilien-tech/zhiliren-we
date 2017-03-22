@@ -24,10 +24,14 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.Daos;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
 import org.nutz.mvc.annotation.Param;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
+import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TBankCardEntity;
 import com.linyun.airline.entities.TCompanyEntity;
@@ -130,6 +134,8 @@ public class BankCardViewService extends BaseService<TBankCardEntity> {
 		 * 获取公司的id
 		 * 
 		 */
+		String bankNameId = addForm.getBankName();
+		DictInfoEntity di = dbDao.fetch(DictInfoEntity.class, Long.valueOf(bankNameId));
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
 		Long companyId = company.getId();
 		//Long companyId = 23l;
@@ -138,18 +144,22 @@ public class BankCardViewService extends BaseService<TBankCardEntity> {
 		addForm.setCompanyId(companyId);
 		addForm.setInitialAmount(addForm.getBalance());
 		addForm.setStatus(BankCardStatusEnum.ENABLE.intKey());
+		addForm.setBankName(di.getDictName());
 		FormUtil.add(dbDao, addForm, TBankCardEntity.class);
 		return null;
 	}
 
 	public Object updateData(TBankCardUpdateForm updateForm, HttpSession session) {
 
+		TBankCardEntity bankCard = dbDao.fetch(TBankCardEntity.class, updateForm.getId());
 		Map<String, Object> obj = Maps.newHashMap();
 		if (!Util.isEmpty(updateForm)) {
 			updateForm.setStatus(BankCardStatusEnum.ENABLE.intKey());
 			updateForm.setUpdateTime(new Date());
 		}
-		TBankCardEntity bankCard = dbDao.fetch(TBankCardEntity.class, updateForm.getId());
+		if (Util.isEmpty(updateForm.getBankName())) {
+			updateForm.setBankName(bankCard.getBankName());
+		}
 		BeanUtil.copyProperties(updateForm, bankCard);
 		updateIgnoreNull(bankCard);//更新银行卡表中的数据
 		return obj;
@@ -184,6 +194,46 @@ public class BankCardViewService extends BaseService<TBankCardEntity> {
 		}
 		map.put("valid", count <= 0);
 		return map;
+	}
+
+	//银行名称select2
+	public Object selectBankCardNames(String findCompany, String companyName) {
+		List<Record> companyNameList = getCompanyNameList(findCompany, companyName);
+		List<Select2Option> result = transform2SelectOptions(companyNameList);
+		return result;
+	}
+
+	private List<Select2Option> transform2SelectOptions(List<Record> companyNameList) {
+		return Lists.transform(companyNameList, new Function<Record, Select2Option>() {
+			@Override
+			public Select2Option apply(Record record) {
+				Select2Option op = new Select2Option();
+				op.setId(record.getInt("id"));
+				op.setText(record.getString("dictName"));
+				return op;
+			}
+		});
+	}
+
+	/**
+	 * 获取公司名称下拉框
+	 * @param dictName
+	 */
+	public List<Record> getCompanyNameList(String findCompany, final String companyName) {
+		String sqlString = sqlManager.get("bankcardmanager_find_bankName");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("dictName", "like", "%" + Strings.trim(findCompany) + "%");
+		cnd.and("typeCode", "=", "YH");
+		if (!Util.isEmpty(companyName)) {
+			cnd.and("id", "NOT IN", companyName);
+		}
+		sql.setCondition(cnd);
+		sql.setCallback(Sqls.callback.records());
+		nutDao.execute(sql);
+		@SuppressWarnings("unchecked")
+		List<Record> list = (List<Record>) sql.getResult();
+		return list;
 	}
 
 }

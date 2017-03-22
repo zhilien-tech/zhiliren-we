@@ -7,6 +7,7 @@
 package com.linyun.airline.admin.applyapproval.service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,15 +17,22 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
+import org.nutz.ioc.loader.annotation.Inject;
 
+import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
+import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.ApprovalResultEnum;
+import com.linyun.airline.common.enums.MessageRemindEnum;
+import com.linyun.airline.common.enums.MessageWealthStatusEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.entities.ApplyApprovalEntity;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TPnrInfoEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
+import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.base.service.BaseService;
@@ -40,15 +48,17 @@ import com.uxuexi.core.web.chain.support.JsonResult;
  */
 
 public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
+	@Inject
+	private SearchViewService searchViewService;
 
 	public Map<String, Object> findNums(HttpSession session) {
 		String sqlStringInter = sqlManager.get("applyapproval_list_international");
 		Sql sqlInter = Sqls.create(sqlStringInter);
 		Cnd cnd = Cnd.NEW();
-		/*TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
-		Long companyId = company.getId();*/
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long companyId = company.getId();
 		//国际
-		cnd.and("companyId", "=", CommonConstants.UPCOMPANY_ID);
+		cnd.and("companyId", "=", companyId);
 		cnd.and("orderstype", "=", OrderTypeEnum.TEAM.intKey());
 		cnd.and("paystatus", "=", AccountPayEnum.APPROVAL.intKey());
 		sqlInter.setCondition(cnd);
@@ -66,6 +76,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		Map<String, Object> re = MapUtil.map();
 		re.put("internationalNum", internationalNum);
 		re.put("inlandNum", inlandNum);
+
 		return re;
 
 	}
@@ -79,10 +90,10 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 			Cnd cnd = Cnd.NEW();
 			//国际
 			cnd.and("orderstype", "=", orderType);
-			/*TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
-			Long companyId = company.getId();*/
+			TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+			Long companyId = company.getId();
 			//国际
-			cnd.and("companyId", "=", CommonConstants.UPCOMPANY_ID);
+			cnd.and("companyId", "=", companyId);
 			Map<String, Object> re = MapUtil.map();
 			if (!Util.isEmpty(date)) {
 				cnd.and("date(orderstime)", "=", date);
@@ -103,10 +114,10 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 			Cnd cnd = Cnd.NEW();
 			//国际
 			cnd.and("orderstype", "=", orderType);
-			/*TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
-			Long companyId = company.getId();*/
+			TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+			Long companyId = company.getId();
 			//国际
-			cnd.and("companyId", "=", CommonConstants.UPCOMPANY_ID);
+			cnd.and("companyId", "=", companyId);
 			Map<String, Object> re = MapUtil.map();
 			if (!Util.isEmpty(date)) {
 				cnd.and("date(optime)", "=", date);
@@ -136,10 +147,10 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 			Sql sql = Sqls.create(sqlString);
 			Cnd cnd = Cnd.NEW();
 			/*Long companyId = 23l;*/
-			/*TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
-			Long companyId = company.getId();*/
+			TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+			Long companyId = company.getId();
 			//国际
-			cnd.and("companyId", "=", CommonConstants.UPCOMPANY_ID);
+			cnd.and("companyId", "=", companyId);
 			/*cnd.and("orderstype", "=", orderType);*/
 			/*cnd.and("(orderPnrStatus", "=", AccountPayEnum.APPROVAL.intKey());*/
 
@@ -159,10 +170,10 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 			Sql sql = Sqls.create(sqlString);
 			Cnd cnd = Cnd.NEW();
 			/*Long companyId = 23l;*/
-			/*TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
-			Long companyId = company.getId();*/
+			TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+			Long companyId = company.getId();
 			//国际
-			cnd.and("companyId", "=", CommonConstants.UPCOMPANY_ID);
+			cnd.and("companyId", "=", companyId);
 			/*cnd.and("orderstype", "=", orderType);*/
 			/*cnd.and("(orderPnrStatus", "=", AccountPayEnum.APPROVAL.intKey());*/
 
@@ -188,17 +199,35 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 
 		Integer approvalResult = null;
 		Integer approvalStatus = null;
+		Integer orderType = null;
+		Integer upOrderid = null;
+		String ordersnum = null;
+		String pnr = null;
 		if ("agree".equalsIgnoreCase(temp)) {
 			approvalResult = ApprovalResultEnum.ENABLE.intKey();
 			approvalStatus = AccountPayEnum.APPROVALPAYING.intKey();
+			orderType = MessageWealthStatusEnum.APPROVAL.intKey();
 		} else if ("refuse".equalsIgnoreCase(temp)) {
 			approvalResult = ApprovalResultEnum.DISABLE.intKey();
 			approvalStatus = AccountPayEnum.REFUSE.intKey();
+			orderType = MessageWealthStatusEnum.UNAPPROVAL.intKey();
 
 		}
 		if ("inlandNum".equalsIgnoreCase(operation)) {
-
 			TPnrInfoEntity pnrInfo = dbDao.fetch(TPnrInfoEntity.class, id);
+			String sqlString = sqlManager.get("applyapproval_message_reminder");
+			Sql sql = Sqls.create(sqlString);
+			Cnd cnd = Cnd.NEW();
+			cnd.and("pi.id", "=", pnrInfo.getId());
+			List<Record> list = dbDao.query(sql, cnd, null);
+			//订单id
+
+			upOrderid = Integer.valueOf(list.get(0).getString("id"));
+			//pnr
+			pnr = pnrInfo.getPNR();
+			//订单号
+
+			ordersnum = list.get(0).getString("ordersnum");
 			pnrInfo.setOrderPnrStatus(approvalStatus);
 			pnrInfo.setOptime(new Date());
 			int res1 = this.updateIgnoreNull(pnrInfo);
@@ -211,11 +240,21 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 				int res = this.updateIgnoreNull(pay);
 			}
 			if (res1 > 0) {
+				Map<String, Object> remindMap = new HashMap<String, Object>();
+				remindMap.put("remindDate", DateUtil.Date2String(new Date()));
+				remindMap.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
+				searchViewService.addRemindMsg(remindMap, ordersnum, pnr, upOrderid, orderType, session);
 
 				return JsonResult.success("审核通过");
 			}
 		} else if ("international".equalsIgnoreCase(operation)) {
 			TUpOrderEntity upOrderInfo = dbDao.fetch(TUpOrderEntity.class, id);
+			//订单id
+			upOrderid = upOrderInfo.getId();
+			//pnr
+
+			//订单号
+			ordersnum = upOrderInfo.getOrdersnum();
 			upOrderInfo.setPaystatus(approvalStatus);
 			int res2 = this.updateIgnoreNull(upOrderInfo);
 			boolean flag = orderInterTrueOrFalse(usingId);
@@ -226,14 +265,18 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 				int res = this.updateIgnoreNull(pay);
 			}
 			if (res2 > 0) {
+				Map<String, Object> remindMap = new HashMap<String, Object>();
+				remindMap.put("remindDate", DateUtil.Date2String(new Date()));
+				remindMap.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
+				searchViewService.addRemindMsg(remindMap, ordersnum, pnr, upOrderid, orderType, session);
 
 				return JsonResult.success("审核通过");
 			}
 		}
-		/*pay.setApproveResult(approvalResult);
-		pay.setApproveTime(new Date());
-		int res = this.updateIgnoreNull(pay);*/
-
+		//String remindType = (String) fromJson.get("remindType");
+		/*int upOrderid = id; //订单id
+		String ordersnum = orderinfo.getOrdersnum();//订单号
+		*/
 		return JsonResult.error("审核失败");
 
 	}

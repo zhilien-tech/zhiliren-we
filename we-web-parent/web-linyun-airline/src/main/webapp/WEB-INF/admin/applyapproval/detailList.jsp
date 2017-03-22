@@ -43,11 +43,11 @@
 				
 				<c:if test="${obj.operation=='inlandNum'}">
 				
-					<span>${each.costpricesum }</span>
+					<span>${obj.detaillist.costpricesum }</span>
 				</c:if>
 				<c:if test="${obj.operation=='international'}">
 				
-					<span>${each.amount }</span>
+					<span>${obj.detaillist.amount }</span>
 				</c:if>
 			</li>
 			<li>
