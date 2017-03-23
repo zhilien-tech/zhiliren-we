@@ -389,7 +389,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//付款用途
 		List<ComDictInfoEntity> fkytList = new ArrayList<ComDictInfoEntity>();
 		try {
-			fkytList = findCodeByName("", YTCODE);
+			fkytList = findCodeByName("", YTCODE, companyId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -397,7 +397,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//资金种类
 		List<ComDictInfoEntity> zjzlList = new ArrayList<ComDictInfoEntity>();
 		try {
-			zjzlList = findCodeByName("", ZJZLCODE);
+			zjzlList = findCodeByName("", ZJZLCODE, companyId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -416,10 +416,10 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	}
 
 	//查询用途 公司字典
-	public List<ComDictInfoEntity> findCodeByName(String name, String typeCode) throws Exception {
+	public List<ComDictInfoEntity> findCodeByName(String name, String typeCode, long companyId) throws Exception {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("comDictName", "like", Strings.trim(name) + "%").and("status", "=", DataStatusEnum.ENABLE.intKey())
-				.and("comTypeCode", "=", typeCode).groupBy("comDictName");
+				.and("comTypeCode", "=", typeCode).and("comId", "=", companyId).groupBy("comDictName");
 		List<ComDictInfoEntity> query = dbDao.query(ComDictInfoEntity.class, cnd, null);
 		return query;
 	}
@@ -525,6 +525,10 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		String approver = "";
 		//审批结果
 		String approveresult = "";
+		//用途
+		String purpose = "";
+		//币种
+		String payCurrency = "";
 		//操作人
 		String operator = "";
 		String operatorList = "";
@@ -542,25 +546,20 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			}
 
 			approveresult = record.getString("approveresult");
+			purpose = record.getString("purpose");
+			payCurrency = record.getString("paycurrency");
 		}
 		map.put("totalMoney", totalMoney);
 		map.put("proposer", proposer);
 		map.put("approver", approver);
+		map.put("purpose", purpose);
+		map.put("payCurreny", payCurrency);
 		map.put("operators", operatorList);
 		if (Util.eq(APPROVALENABLE, approveresult)) {
 			map.put("approveresult", "同意");
 		} else {
 			map.put("approveresult", "拒绝");
 		}
-
-		//银行名称
-		/*List<DictInfoEntity> bankList = new ArrayList<DictInfoEntity>();
-		try {
-			bankList = externalInfoService.findDictInfoByName("", YHCODE);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		map.put("bankList", bankList);*/
 		//银行名称
 		List<TBankCardEntity> bankList = new ArrayList<TBankCardEntity>();
 		try {
@@ -587,7 +586,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//付款用途
 		List<ComDictInfoEntity> fkytList = new ArrayList<ComDictInfoEntity>();
 		try {
-			fkytList = findCodeByName("", YTCODE);
+			fkytList = findCodeByName("", YTCODE, companyId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -595,7 +594,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//资金种类
 		List<ComDictInfoEntity> zjzlList = new ArrayList<ComDictInfoEntity>();
 		try {
-			zjzlList = findCodeByName("", ZJZLCODE);
+			zjzlList = findCodeByName("", ZJZLCODE, companyId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

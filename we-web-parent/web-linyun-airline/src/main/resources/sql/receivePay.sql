@@ -130,7 +130,9 @@ SELECT
 	u.userName proposer,
 	pi.costpricesum salePrice,
 	p.approver,
-	p.approveResult
+	p.approveResult,
+	p.purpose,
+	p.payCurrency
 FROM
 	t_pnr_info pi
 LEFT JOIN t_order_customneed oc ON oc.id = pi.needid
