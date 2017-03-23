@@ -348,7 +348,6 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		DatatablesData.remove("data");
 		DatatablesData.put("data", listdataNew);
 		return DatatablesData;
-
 	}
 
 	/**
