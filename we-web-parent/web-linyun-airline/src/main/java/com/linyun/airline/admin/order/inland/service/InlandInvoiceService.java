@@ -232,8 +232,10 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		String customeid = request.getParameter("customeid");
 		TCustomerInfoEntity fetch = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(customeid));
 		result.put("customeinfo", fetch);
-		TMitigateInfoEntity mitigate = dbDao.fetch(TMitigateInfoEntity.class,
-				Cnd.where("orderid", "=", request.getParameter("id")));
+		TMitigateInfoEntity mitigate = dbDao.fetch(
+				TMitigateInfoEntity.class,
+				Cnd.where("orderid", "=", request.getParameter("id")).and("applyResult", "!=",
+						ReductionStatusEnum.REFUSE.intKey()));
 		result.put("mitigate", mitigate);
 		//币种下拉
 		List<DictInfoEntity> bzcode = new ArrayList<DictInfoEntity>();
