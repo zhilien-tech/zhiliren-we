@@ -60,7 +60,7 @@
 							<!-- <option>--请选择--</option> -->
 							<c:forEach var="one" items="${obj.bankList}">
 	                 			<c:choose>
-	                          		<c:when test="${obj.companybank.bankComp eq one.id }">
+	                          		<c:when test="${obj.companybank.bankcompid eq one.id }">
 			                        	 <option value="${one.id }" selected="selected">${one.bankName }</option>
 	                          		</c:when>
 	                          		<c:otherwise>

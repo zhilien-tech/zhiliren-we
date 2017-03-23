@@ -418,7 +418,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	public List<ComDictInfoEntity> findCodeByName(String name, String typeCode) throws Exception {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("comDictName", "like", Strings.trim(name) + "%").and("status", "=", DataStatusEnum.ENABLE.intKey())
-				.and("comTypeCode", "=", typeCode);
+				.and("comTypeCode", "=", typeCode).groupBy("comDictName");
 		List<ComDictInfoEntity> query = dbDao.query(ComDictInfoEntity.class, cnd, null);
 		return query;
 	}
