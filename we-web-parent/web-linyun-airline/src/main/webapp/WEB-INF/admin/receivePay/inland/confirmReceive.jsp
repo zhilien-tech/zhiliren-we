@@ -50,13 +50,13 @@
                   <td>银行：</td>
                   <td>
                     <select disabled="disabled" class="form-control input-sm">
-                        <option selected = "selected">${obj.receive.bankcardname}</option>
+                   		<option selected = "selected">${obj.yhkSelect[0].dictName}</option>
                     </select>
                   </td>
                   <td>银行卡名称：</td>
                   <td>
                     <select disabled="disabled" class="form-control input-sm">
-                         <option selected = "selected">${obj.yhkSelect[0].dictName}</option>
+                          <option selected = "selected">${obj.receive.bankcardname}</option>
                     </select>
                   </td>
                   <td>卡号：</td>
