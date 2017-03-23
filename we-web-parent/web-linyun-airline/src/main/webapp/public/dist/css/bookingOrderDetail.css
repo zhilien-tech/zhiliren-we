@@ -37,6 +37,7 @@ form#financeForm table {margin-bottom: 10px;}
 .select2-container--default .select2-search--inline .select2-search__field {margin-left: 0px;}
 /*end select2 内容style 隐藏*/
 .cloTable tbody tr:nth-child(1) td:nth-child(2) .select2-container .selection .select2-selection {width:100%;}
+.PNRbtnTD {float: right;position: relative;top: -50px;left:40px;}
 .airlineinfo td:nth-child(4){width:70px;}
 input#leavedate {width: 75px;}
 input#arrivetime {width: 75px;}

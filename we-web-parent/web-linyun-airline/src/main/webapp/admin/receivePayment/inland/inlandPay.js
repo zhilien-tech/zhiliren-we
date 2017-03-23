@@ -363,7 +363,7 @@ $('#inlandPayClick').click(function(){
 			skin: false, //加上边框
 			closeBtn:false,//默认 右上角关闭按钮 是否显示
 			shadeClose:false,
-			area: ['850px', '650px'],
+			area: ['850px', '690px'],
 			content: ['confirmPay.html?inlandPayIds='+ ids,'no'],
 		});
 

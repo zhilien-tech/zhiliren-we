@@ -19,7 +19,7 @@
 			<button  type="button" id="submit" onclick="updateConfirmPay();" class="btn btn-primary right btn-sm">保存</button>
 			<h4>编辑付款</h4>
 		</div>
-		<div class="modal-body" style="height: 600px; overflow-y: auto;">
+		<div class="modal-body" style="height: 622px; overflow-y: auto;">
 			
 			<table id="receivablesTable" class="table table-bordered table-hover">
 				<thead>
@@ -179,7 +179,7 @@
 			<input type="text" name="uploadFile" id="uploadFile" />
 			<input id="receiptUrl" name="receiptUrl" value="${obj.receiptUrl }" type="hidden" ><!-- 水单url -->
 			<div class="bankSlipImg"  align="center">
-				<img id="receiptImg" width="400" height="300" alt="" src="${obj.receiptUrl}">
+				<img id="receiptImg" width="100%" height="305" alt="" src="${obj.receiptUrl}">
 			</div>
 		</div>
 	</div>
