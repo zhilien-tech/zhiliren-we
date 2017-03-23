@@ -222,8 +222,12 @@ public class InlandListService extends BaseService<TUpOrderEntity> {
 		double yingshousum = 0;
 		double chengbensum = 0;
 		for (Record record : query) {
-			chengbensum += Double.valueOf((Double) record.get("costpricesum"));
-			yingshousum += Double.valueOf((Double) record.get("salespricesum"));
+			if (!Util.isEmpty(record.get("costpricesum"))) {
+				chengbensum += Double.valueOf((Double) record.get("costpricesum"));
+			}
+			if (!Util.isEmpty(record.get("salespricesum"))) {
+				yingshousum += Double.valueOf((Double) record.get("salespricesum"));
+			}
 		}
 		result.put("chengbensum", formatDouble(chengbensum));
 		result.put("yingshousum", formatDouble(yingshousum));
