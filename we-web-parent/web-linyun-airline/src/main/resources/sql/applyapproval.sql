@@ -46,7 +46,7 @@ t_mitigate_info mi
 LEFT JOIN t_up_order uo on mi.orderid=uo.id
 LEFT JOIN t_user u on mi.applyid=u.id
 $condition 
-
+ORDER BY orderstime desc
 
 
 

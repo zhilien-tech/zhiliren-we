@@ -20,7 +20,7 @@
 		<li> </li>
 	</ul>
   </header>
-  <c:if test="${obj.reduce=='reduce' }">
+  <c:if test="${obj.reduce=='YES' }">
   		<ul class="content-ul">
 			<li>
 				<span>订单号</span>
@@ -58,7 +58,7 @@
 			</li>
 			<li>
 				<span>签收时间</span>
-				<span><fmt:formatDate value="${obj.reduceList.optime }" pattern="yyy:MM:dd HH:mm:ss"/></span>
+				<span><fmt:formatDate value="${obj.reduceList.optime }" pattern="yyy-MM-dd HH:mm:ss"/></span>
 			</li>
 			<li>
 				<span>申请人</span>
@@ -66,7 +66,7 @@
 			</li>
 		</ul>
   </c:if>
-  <c:if test="${obj.reduce=='reduceno' }">
+  <c:if test="${obj.reduce=='reduceno'}">
   		<ul class="content-ul">
 			<li>
 				<span>订单号</span>
@@ -110,7 +110,7 @@
 			</li>
 			<li>
 				<span>签收时间</span>
-				<span><fmt:formatDate value="${obj.detaillist.approveTime }" pattern="yyy:MM:dd HH:mm:ss"/></span>
+				<span><fmt:formatDate value="${obj.detaillist.approveTime }" pattern="yyy-MM-dd HH:mm:ss"/></span>
 			</li>
 			<li>
 				<span>申请人</span>
@@ -187,7 +187,7 @@ function control(flag){
 		
 	}else if(reduceStatus==2){
 		
-	}else if(reduceStatus==3){
+	}else if(reduceStatus==4){
 		if(flag=="agree"){
 			agree("agree");
 			

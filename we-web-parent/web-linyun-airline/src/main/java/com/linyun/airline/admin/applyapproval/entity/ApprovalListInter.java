@@ -1,5 +1,5 @@
 /**
- * ApprovalList.java
+ * ApprovalListInter.java
  * com.linyun.airline.admin.applyapproval.entity
  * Copyright (c) 2017, 北京科技有限公司版权所有.
 */
@@ -14,14 +14,12 @@ import java.util.Date;
  * TODO(这里描述这个类补充说明 – 可选)
  *
  * @author   孙斌
- * @Date	 2017年3月22日 	 
+ * @Date	 2017年3月23日 	 
  */
-
-public class ApprovalList {
-
+public class ApprovalListInter {
 	private Integer id;
 	private Integer orderstype;
-	private String PNR;
+	/*private String PNR;*/
 	private Integer orderPnrStatus;
 	private Double costpricesum;
 	private String ordersnum;
@@ -36,12 +34,16 @@ public class ApprovalList {
 	private Date approveTime;
 	private Integer approveResult;
 	private Integer usingId;
-	private Integer orderId;
+	/*private Integer orderId;*/
 	private String userName;
 	private String currencyStr;
 	private String purposeStr;
 	private String fundTypeStr;
 	private Integer companyId;
+	private Integer paystatus;
+	private Double amount;
+	private Date orderstime;
+	/****以下为减免需要处理的字段***/
 	private String customname;
 	private Integer customeid;
 	private Double account;
@@ -63,94 +65,6 @@ public class ApprovalList {
 		this.isReduce = isReduce;
 	}
 
-	public String getOrdersnum() {
-		return ordersnum;
-	}
-
-	public void setOrdersnum(String ordersnum) {
-		this.ordersnum = ordersnum;
-	}
-
-	public String getCustomname() {
-		return customname;
-	}
-
-	public void setCustomname(String customname) {
-		this.customname = customname;
-	}
-
-	public Integer getCustomeid() {
-		return customeid;
-	}
-
-	public void setCustomeid(Integer customeid) {
-		this.customeid = customeid;
-	}
-
-	public Double getAccount() {
-		return account;
-	}
-
-	public void setAccount(Double account) {
-		this.account = account;
-	}
-
-	public String getAccountupper() {
-		return accountupper;
-	}
-
-	public void setAccountupper(String accountupper) {
-		this.accountupper = accountupper;
-	}
-
-	public String getCurrency() {
-		return currency;
-	}
-
-	public void setCurrency(String currency) {
-		this.currency = currency;
-	}
-
-	public Integer getApplyid() {
-		return applyid;
-	}
-
-	public void setApplyid(Integer applyid) {
-		this.applyid = applyid;
-	}
-
-	public Integer getApprovelid() {
-		return approvelid;
-	}
-
-	public void setApprovelid(Integer approvelid) {
-		this.approvelid = approvelid;
-	}
-
-	public Integer getApplyResult() {
-		return applyResult;
-	}
-
-	public void setApplyResult(Integer applyResult) {
-		this.applyResult = applyResult;
-	}
-
-	public Integer getOrderid() {
-		return orderid;
-	}
-
-	public void setOrderid(Integer orderid) {
-		this.orderid = orderid;
-	}
-
-	public Integer getOrdertype() {
-		return ordertype;
-	}
-
-	public void setOrdertype(Integer ordertype) {
-		this.ordertype = ordertype;
-	}
-
 	public Integer getId() {
 		return id;
 	}
@@ -165,14 +79,6 @@ public class ApprovalList {
 
 	public void setOrderstype(Integer orderstype) {
 		this.orderstype = orderstype;
-	}
-
-	public String getPNR() {
-		return PNR;
-	}
-
-	public void setPNR(String pNR) {
-		PNR = pNR;
 	}
 
 	public Integer getOrderPnrStatus() {
@@ -191,11 +97,11 @@ public class ApprovalList {
 		this.costpricesum = costpricesum;
 	}
 
-	public String getOrdernum() {
+	public String getOrdersnum() {
 		return ordersnum;
 	}
 
-	public void setOrdernum(String ordersnum) {
+	public void setOrdersnum(String ordersnum) {
 		this.ordersnum = ordersnum;
 	}
 
@@ -287,14 +193,6 @@ public class ApprovalList {
 		this.usingId = usingId;
 	}
 
-	public Integer getOrderId() {
-		return orderId;
-	}
-
-	public void setOrderId(Integer orderId) {
-		this.orderId = orderId;
-	}
-
 	public String getUserName() {
 		return userName;
 	}
@@ -335,19 +233,108 @@ public class ApprovalList {
 		this.companyId = companyId;
 	}
 
-	/**
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "ApprovalList [id=" + id + ", orderstype=" + orderstype + ", PNR=" + PNR + ", orderPnrStatus="
-				+ orderPnrStatus + ", costpricesum=" + costpricesum + ", ordersnum=" + ordersnum + ", optime=" + optime
-				+ ", purpose=" + purpose + ", purposer=" + purposer + ", shortName=" + shortName + ", fundType="
-				+ fundType + ", payFees=" + payFees + ", payCurrency=" + payCurrency + ", isInvioce=" + isInvioce
-				+ ", approveTime=" + approveTime + ", approveResult=" + approveResult + ", usingId=" + usingId
-				+ ", orderId=" + orderId + ", userName=" + userName + ", currencyStr=" + currencyStr + ", purposeStr="
-				+ purposeStr + ", fundTypeStr=" + fundTypeStr + ", companyId=" + companyId + "]";
+	public Integer getPaystatus() {
+		return paystatus;
+	}
+
+	public void setPaystatus(Integer paystatus) {
+		this.paystatus = paystatus;
+	}
+
+	public Double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
+
+	public Date getOrderstime() {
+		return orderstime;
+	}
+
+	public void setOrderstime(Date orderstime) {
+		this.orderstime = orderstime;
+	}
+
+	public String getCustomname() {
+		return customname;
+	}
+
+	public void setCustomname(String customname) {
+		this.customname = customname;
+	}
+
+	public Integer getCustomeid() {
+		return customeid;
+	}
+
+	public void setCustomeid(Integer customeid) {
+		this.customeid = customeid;
+	}
+
+	public Double getAccount() {
+		return account;
+	}
+
+	public void setAccount(Double account) {
+		this.account = account;
+	}
+
+	public String getAccountupper() {
+		return accountupper;
+	}
+
+	public void setAccountupper(String accountupper) {
+		this.accountupper = accountupper;
+	}
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+
+	public Integer getApplyid() {
+		return applyid;
+	}
+
+	public void setApplyid(Integer applyid) {
+		this.applyid = applyid;
+	}
+
+	public Integer getApprovelid() {
+		return approvelid;
+	}
+
+	public void setApprovelid(Integer approvelid) {
+		this.approvelid = approvelid;
+	}
+
+	public Integer getApplyResult() {
+		return applyResult;
+	}
+
+	public void setApplyResult(Integer applyResult) {
+		this.applyResult = applyResult;
+	}
+
+	public Integer getOrderid() {
+		return orderid;
+	}
+
+	public void setOrderid(Integer orderid) {
+		this.orderid = orderid;
+	}
+
+	public Integer getOrdertype() {
+		return ordertype;
+	}
+
+	public void setOrdertype(Integer ordertype) {
+		this.ordertype = ordertype;
 	}
 
 }
