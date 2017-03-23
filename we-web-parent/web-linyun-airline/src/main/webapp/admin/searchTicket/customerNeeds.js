@@ -536,7 +536,35 @@ $(document).on("click",".custLineChoose",function(){
 			//第一次 不加航空段数
 			var ClickHiddenInput =  $(this).find('[name=airLineClickHidden]').val();
 			if(ClickHiddenInput == "1"){
+				var lengthAir = '';
 				$(demandE).find('[name=airLineClickHidden]').val("0");
+				
+				var aircom = $(this).find('[name=cAirlineCompany]').val();
+				var ailinenum = $(this).find('[name=cAirlineNum]').val();
+				var cAirOutDate = $(this).find('[name=cAirOutDate]').val();
+				var cAirArrivalDate = $(this).find('[name=cAirArrivalDate]').val();
+				var cAirCost = $(this).find('[name=cAirCost]').val();
+				var cAirPretium = $(this).find('[name=cAirPretium]').val();
+				
+				if (aircom) {
+					aircom = aircom.join(',');
+					lengthAir += aircom;
+				}else{
+					lengthAir += '';
+				}
+				if (ailinenum) {
+					ailinenum = ailinenum.join(',');
+					lengthAir += ailinenum;
+				}else{
+					lengthAir += '';
+				}
+				lengthAir += $(this).find('[name=cAirOutDate]').val();
+				lengthAir += $(this).find('[name=cAirArrivalDate]').val();
+				lengthAir += $(this).find('[name=cAirCost]').val();
+				lengthAir += $(this).find('[name=cAirPretium]').val();
+				if(lengthAir.length > 0){
+					$(demandE).find('[name=addButton]').click();
+				}
 			}else{
 				$(demandE).find('[name=addButton]').click();
 			}
