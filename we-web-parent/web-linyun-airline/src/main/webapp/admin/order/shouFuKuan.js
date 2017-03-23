@@ -89,6 +89,11 @@ function initshouFuKuanGatheringTable() {
                   				result = value;
                   			}
                   		});
+                  		$.each(row.invoiceenum, function(name, value) {
+                  			if(row.invoicestatus == name){
+                  				result += '/'+value;
+                  			}
+                  		});
                   		return result;
                   	  }
                   },{"data": "remark", "bSortable": false,
@@ -133,7 +138,7 @@ function openInvoice(id,invoiceid){
 function loadshouFuKuanGatheringTable(){
 	shouFuKuanGatheringTable.ajax.reload();
 }
-$('#shoukuansearch').click(function(){
+$('.shoukuansearch').click(function(){
 	var div = $(this).parent().parent();
 	var status = div.find('[name=status]').val();
 	var startdate = div.find('[name=startdate]').val();
@@ -259,6 +264,11 @@ function initshouFuKuanPayTable() {
                   				result = value;
                   			}
                   		});
+                  		$.each(row.invoiceenum, function(name, value) {
+                  			if(row.invoicestatus == name){
+                  				result += '/'+value;
+                  			}
+                  		});
                   		return result;
                   	}
                 },
@@ -289,7 +299,7 @@ function initshouFuKuanPayTable() {
 function shoufukuanPay(){
 	shouFuKuanPayTable.ajax.reload();
 }
-$('#fukuansearch').click(function(){
+$('.fukuansearch').click(function(){
 	var div = $(this).parent().parent();
 	var status = div.find('[name=status]').val();
 	var startdate = div.find('[name=startdate]').val();
