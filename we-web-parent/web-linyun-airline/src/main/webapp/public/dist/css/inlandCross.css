@@ -128,10 +128,10 @@ td.sorting_1 input {position: relative;top: 5px;}
 .payTable2 {margin-top: 10px;width: 100%;}
 .payTable2 tbody tr td:nth-child(odd){text-align: right;}
 .payTable2 tbody tr td:nth-child(even){width: 115px;}
-.payTable2 tbody tr td:nth-child(1){width:75px;}
-.payTable2 tbody tr td:nth-child(3){width:75px;}
-.payTable2 tbody tr td:nth-child(5){width: 75px;}
-.payTable2 tbody tr td:nth-child(7){width: 75px;}
+.payTable2 tbody tr td:nth-child(1){width:75px; font-size:14px;}
+.payTable2 tbody tr td:nth-child(3){width:75px; font-size:14px;}
+.payTable2 tbody tr td:nth-child(5){width: 75px; font-size:14px;}
+.payTable2 tbody tr td:nth-child(7){width: 75px; font-size:14px;}
 .payTable2 tbody tr td{padding-bottom: 8px;}
 .invoiceInfo-body {padding: 0 15px;}
 .sc{position: relative;top: -28px;width: 74px;opacity: 0;cursor: pointer;}
