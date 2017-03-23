@@ -46,6 +46,13 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 .bankSlipImg {background-color: rgba(238, 238, 238, 0.26);width: 100%;min-height: 200px;margin-top: 10px;border: solid 1px rgba(204, 204, 204, 0.41);border-radius: 3px;}
 .selectTable,.payTable2{width: 100%;}
 .selectTable tbody tr td:nth-child(odd){text-align: right;}
+.selectTable tbody tr td:nth-child(1){width: 62px;}
+.selectTable tbody tr td:nth-child(2){width: 125px;}
+.selectTable tbody tr td:nth-child(3){width: 90px;}
+.selectTable tbody tr td:nth-child(4){width: 130px;}
+.selectTable tbody tr td:nth-child(5){width: 50px;}
+.selectTable tbody tr td:nth-child(6){width: 210px;}
+.selectTable tbody tr td:nth-child(7){width: 50px;}
 .selectTableTr td{padding-top: 10px;}
 .payTable2 {margin-top: 15px;}
 .payTable2 tbody tr td:nth-child(odd){text-align: right;}
@@ -73,7 +80,7 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 #inlandRecTable tbody tr td:nth-child(7){line-height:60px;}
 #inlandRecTable tbody tr td:nth-child(8){line-height:60px;}
 #inlandRecTable tbody tr td:nth-child(9){line-height:60px;}
-
+#inlandRecSelect,#inlandPaySelect{padding-left: 3px;padding-right: 3px;}
 /* 付款居中 */
 #inlandRecTable tbody tr td{padding:0;}
 #inlandPayEdTbody tr td{padding:0;}
