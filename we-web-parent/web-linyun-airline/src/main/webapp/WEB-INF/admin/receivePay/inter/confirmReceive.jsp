@@ -17,7 +17,7 @@
             <input type="button" id="confirmRecClick" class="btn btn-primary right btn-sm" value="确认收款"/>
             <h4>收款</h4>
           </div>
-          <div class="modal-body" style="height: 483px;overflow-y:auto; ">
+          <div class="modal-body" style="height:580px;overflow-y:auto; ">
               <table id="interConfirmRecTable" class="table table-bordered table-hover">
                 <thead>
                   <tr>
@@ -71,7 +71,7 @@
               </table>
               <label class="labelShuidan">水单</label>
               <div class="bankSlipImg SDdiv"  align="center">
-              	<img width="400" height="300" alt="" src="${obj.receipturl.receiptUrl }">
+              	<img width="100%" height="305" alt="" src="${obj.receipturl.receiptUrl }">
               </div>
           </div>
 	</div>

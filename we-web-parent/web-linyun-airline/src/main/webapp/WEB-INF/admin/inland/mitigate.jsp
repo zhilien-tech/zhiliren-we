@@ -56,11 +56,11 @@
 
                 <div class="form-group row">
                   <label class="col-sm-2 text-right padding">申请人：</label>
-                  <div class="col-sm-2 padding"><input id="applyid" name="applyid" type="text" class="form-control input-sm" disabled="disabled" value="${empty obj.mitigate.applyid ? obj.user.userName : obj.mitigate.applyid }"/></div>
+                  <div class="col-sm-2 padding"><input id="applyid" name="applyid" type="text" class="form-control input-sm" disabled="disabled" value="${empty obj.mitigate.applyid ? obj.user.userName : obj.applyuser.userName }"/></div>
                   <label class="col-sm-1 text-right padding">审批人：</label>
                   <div class="col-sm-2 padding"><input id="approvelid" name="approvelid" type="text" class="form-control input-sm" disabled="disabled" value="候小凌"/></div>
                   <label class="col-sm-2 text-right padding">申请结果：</label>
-                  <div class="col-sm-2 padding"><input id="applyResult" name="applyResult" type="text" class="form-control input-sm" disabled="disabled" value="${obj.mitigate.applyResult }"/></div>
+                  <div class="col-sm-2 padding"><input id="applyResult" name="applyResult" type="text" class="form-control input-sm" disabled="disabled" value="${obj.applyresult }"/></div>
                 </div><!--end 银行/币种-->
                 </form>
             </div>

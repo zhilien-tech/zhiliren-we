@@ -55,7 +55,7 @@ public class KaiInvoiceParamForm extends DataTablesParamForm {
 
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
-		cnd.and("opid", "=", userid);
+		//cnd.and("opid", "=", userid);
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("comId", "=", companyid);
 		}

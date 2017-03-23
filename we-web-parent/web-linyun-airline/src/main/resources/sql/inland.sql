@@ -84,7 +84,7 @@ INNER JOIN t_customer_info tci ON tuo.userid = tci.id
 INNER JOIN t_finance_info tfi on tuo.id = tfi.orderid
 $condition
 /*get_shoufukuan_shoukuan_list*/
-select tr.*,tii.id invoiceid
+select tr.*,tii.id invoiceid,tii.status invoicestatus
  from t_receive tr
 left JOIN t_invoice_info tii ON tr.id = tii.receiveid
 $condition
@@ -111,13 +111,30 @@ SELECT
 	tci.name customename,
 	tpp.orderPnrStatus status,
 	tii.id invoiceid,
+	tii.status invoicestatus,
   tai.ailinenum,
   tai.leavetime,
   tai.arrivetime
 FROM
 
 	t_pnr_info tpi
-INNER JOIN t_pay_pnr tpp ON tpi.id = tpp.pnrId
+INNER JOIN (
+			SELECT
+				paypnr1.*
+			FROM
+				t_pay_pnr paypnr1,
+				(
+					SELECT
+						max(optime) optime,
+						id
+					FROM
+						t_pay_pnr
+					GROUP BY
+						pnrId
+				) paypnr
+			WHERE
+				paypnr1.id = paypnr.id
+		) tpp ON tpi.id = tpp.pnrId
 INNER JOIN t_order_customneed toc ON tpi.needid = toc.id
 INNER JOIN t_up_order tuo ON toc.ordernum = tuo.id
 LEFT JOIN t_customer_info tci ON tci.id = tuo.userid
