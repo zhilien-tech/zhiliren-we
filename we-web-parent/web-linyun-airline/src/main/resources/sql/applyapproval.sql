@@ -9,7 +9,23 @@ u.userName,(select dictCode from dict_info where id=p.payCurrency) as 'currencyS
 FROM t_pnr_info  ti
 LEFT JOIN t_order_customneed oc on ti.needid=oc.id
 LEFT JOIN t_up_order uo on oc.ordernum =uo.id
-LEFT JOIN t_pay_pnr pp on pp.pnrId=ti.id
+LEFT JOIN (
+			SELECT
+				paypnr1.*
+			FROM
+				t_pay_pnr paypnr1,
+				(
+					SELECT
+						max(optime) optime,
+						id
+					FROM
+						t_pay_pnr
+					GROUP BY
+						pnrId
+				) paypnr
+			WHERE
+				paypnr1.id = paypnr.id
+		) pp on pp.pnrId=ti.id
 LEFT JOIN t_pay p on p.id = pp.payId
 LEFT JOIN t_customer_info ci on ci.id=uo.userid
 LEFT JOIN t_user u on u.id=p.proposer

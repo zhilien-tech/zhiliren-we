@@ -7,6 +7,7 @@
 package com.linyun.airline.admin.receivePayment.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Data;
 
@@ -38,4 +39,8 @@ public class TPayPnrEntity implements Serializable {
 	@Column
 	@Comment("pnrId")
 	private Integer pnrId;
+
+	@Column
+	@Comment("操作时间")
+	private Date optime;
 }
