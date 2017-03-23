@@ -152,7 +152,7 @@ validateParams();
 	            	window.parent.successCallback('2');
 				},
 				error : function(request) {
-					layer.msg('修改失败!');
+					layer.msg('修改失败!',{time:2000});
 				}
 			});
 		}

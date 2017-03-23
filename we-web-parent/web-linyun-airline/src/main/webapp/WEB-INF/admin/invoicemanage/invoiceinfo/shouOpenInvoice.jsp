@@ -52,9 +52,9 @@
          </table>
          <table border="0" class="selectTable tdOddWidth">
                   <tr>
-                    <td>银行：</td>
+                    <td><label>银行：</label></td>
                     <td>
-                      <select class="form-control input-sm">
+                      <select class="form-control input-sm" disabled="disabled">
                           <c:forEach var="one" items="${obj.yhkSelect }">
                         	 <c:choose>
                           		<c:when test="${obj.companybank.bankComp eq one.id }">
@@ -67,15 +67,15 @@
                           </c:forEach>
                       </select>
                     </td>
-                    <td>银行卡名称：</td>
+                    <td><label>银行卡名称：</label></td>
                     <td>
-                      <select class="form-control input-sm">
+                      <select class="form-control input-sm" disabled="disabled">
                           <option>${obj.companybank.cardName }</option>
                       </select>
                     </td>
-                    <td>卡号：</td>
+                    <td><label>卡号：</label></td>
                     <td>
-                       <select class="form-control input-sm">
+                       <select class="form-control input-sm" disabled="disabled">
                           <option>${obj.companybank.cardNum }</option>
                        </select>
                     </td>
@@ -137,13 +137,13 @@
                   <td><label id="balance" name="balance">${obj.invoicebalance }</label></td>
           </tr>
           <c:choose>
-          	<c:when test="${fn:length(obj.invoicedetail)>0}">
-		          <c:forEach items="${obj.invoicedetail }" var="invoiceDetail" varStatus="status">
+          	<c:when test="${fn:length(obj.invoiceDetail)>0}">
+		          <c:forEach items="${obj.invoiceDetail }" var="invoiceDetail" varStatus="status">
 			          <tr class="cloneTR">
 			                  <td>发票号：</td>
-			                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm" value="${invoicedetail.invoicenum }"></td>
+			                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm" value="${invoiceDetail.invoicenum }"></td>
 			                  <td>金额：</td>
-			                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm" value="${invoicedetail.invoicebalance }"></td>
+			                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm" value="${invoiceDetail.invoicebalance }"></td>
 			                  <td colspan="4">
 			                  	<ul class="fileUL">
 			                      <li>
@@ -152,7 +152,7 @@
 		                          <input type="file" class="sc" id="sc" name="sc">
 		                        </a>
 		                      </li>
-			                      <li><a href="javascript:;" id="fileName" name="fileName">${invoicedetail.imagename }</a></li>
+			                      <li><a href="javascript:;" id="fileName" name="fileName">${invoiceDetail.imagename }</a></li>
 			                      <li><a href="javascript:;" class="fileDelete deleteInvoice" >删除</a></li>
 		                      	  <li><a href="javascript:;" id="preView" class="fileDelete">预览</a></li>
 			                      <c:choose>
@@ -164,7 +164,7 @@
 			                      	</c:otherwise>
 			                      </c:choose>
 			                    </ul>
-			                    <input id="invoiceurl" name="invoiceurl" type="hidden" value="${invoicedetail.invoiceurl }">
+			                    <input id="invoiceurl" name="invoiceurl" type="hidden" value="${invoiceDetail.invoiceurl }">
 			                  </td>
 			          </tr>
 		          </c:forEach>

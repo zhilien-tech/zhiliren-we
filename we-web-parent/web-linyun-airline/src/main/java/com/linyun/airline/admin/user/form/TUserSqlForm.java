@@ -35,8 +35,11 @@ public class TUserSqlForm extends DataTablesParamForm {
 	/**主键*/
 	private long userId;
 
-	/**用户姓名*/
+	/**用户名*/
 	private String userName;
+
+	/**用户姓名*/
+	private String fullName;
 
 	/**部门名称*/
 	private String deptName;
@@ -96,8 +99,8 @@ public class TUserSqlForm extends DataTablesParamForm {
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		SqlExpressionGroup group = new SqlExpressionGroup();
-		group.and("u.userName", "LIKE", "%" + userName + "%").or("u.telephone", "LIKE", "%" + userName + "%");
-		if (!Util.isEmpty(userName)) {
+		group.and("u.fullName", "LIKE", "%" + fullName + "%").or("u.telephone", "LIKE", "%" + fullName + "%");
+		if (!Util.isEmpty(fullName)) {
 			cnd.and(group);
 		}
 		if (!Util.isEmpty(deptName)) {
