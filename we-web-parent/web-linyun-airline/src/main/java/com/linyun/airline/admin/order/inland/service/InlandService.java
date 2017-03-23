@@ -210,8 +210,14 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			String arrivecity = (String) map.get("arrivecity");
 			//日期
 			String leavedate = (String) map.get("leavedate");
-			Integer peoplecount = Integer.valueOf((String) map.get("peoplecount"));
-			Integer tickettype = Integer.valueOf((String) map.get("tickettype"));
+			Integer peoplecount = null;
+			if (!Util.isEmpty(map.get("peoplecount"))) {
+				peoplecount = Integer.valueOf((String) map.get("peoplecount"));
+			}
+			Integer tickettype = null;
+			if (!Util.isEmpty(map.get("tickettype"))) {
+				tickettype = Integer.valueOf((String) map.get("tickettype"));
+			}
 			TOrderCustomneedEntity customneedEntity = new TOrderCustomneedEntity();
 			customneedEntity.setLeavecity(leavecity);
 			customneedEntity.setArrivecity(arrivecity);

@@ -237,6 +237,21 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 				Cnd.where("orderid", "=", request.getParameter("id")).and("applyResult", "!=",
 						ReductionStatusEnum.REFUSE.intKey()));
 		result.put("mitigate", mitigate);
+		TUserEntity applyuser = new TUserEntity();
+		if (!Util.isEmpty(mitigate.getApplyid())) {
+			applyuser = dbDao.fetch(TUserEntity.class, mitigate.getApplyid().longValue());
+		}
+		//申请人
+		result.put("applyuser", applyuser);
+		String applyresult = "";
+		if (!Util.isEmpty(mitigate.getApplyResult())) {
+			for (ReductionStatusEnum statusenum : ReductionStatusEnum.values()) {
+				if (mitigate.getApplyResult().equals(statusenum.intKey())) {
+					applyresult = statusenum.value();
+				}
+			}
+		}
+		result.put("applyresult", applyresult);
 		//币种下拉
 		List<DictInfoEntity> bzcode = new ArrayList<DictInfoEntity>();
 		try {
