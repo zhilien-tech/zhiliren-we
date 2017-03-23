@@ -249,12 +249,10 @@
 				'multi' : false,//multi设置为true将允许多文件上传
 				'successTimeout' : 1800,
 				'queueSizeLimit' : 100,
-				'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html',//后台处理的页面
-				//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
+				'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html',
 				'onUploadStart' : function(file) {
 					$("#submit").attr('disabled',true);
 				},
-				//下面的例子演示如何获取到vid
 				'onUploadSuccess' : function(file, data, response) {
 					var jsonobj = eval('(' + data + ')');
 					var url  = jsonobj;//地址
@@ -269,7 +267,7 @@
 				'onSelectError':function(file, errorCode, errorMsg){
 						switch(errorCode) {
 						case -110:
-							alert("文件 ["+file.name+"] 大小超出系统限制！");
+							alert("文件 ["+file.name+"] 大小超出系统限制");
 							break;
 						case -120:
 							alert("文件 ["+file.name+"] 大小异常！");

@@ -41,6 +41,7 @@ import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
+import com.linyun.airline.admin.receivePayment.entities.TPayPnrEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
 import com.linyun.airline.admin.receivePayment.form.inland.InlandPayEdListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.inland.InlandPayListSearchSqlForm;
@@ -631,7 +632,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		Integer currency = form.getPayCurrency();
 		Integer isInvioce = form.getIsInvioce();
 		String receiptUrl = form.getReceiptUrl();
-		String payIds = form.getPayIds();
+		String pnrIds = form.getPayIds();
 		Double totalMoney = form.getTotalMoney();
 		String payNames = form.getPayNames();
 		//操作人
@@ -662,7 +663,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		TUpOrderEntity upOrder = new TUpOrderEntity();
 		//付款集合
 		List<TPayEntity> updateList = new ArrayList<TPayEntity>();
-		List<TPayEntity> payEntityList = dbDao.query(TPayEntity.class, Cnd.where("id", "in", payIds), null);
+		TPayPnrEntity payPnrEntity = dbDao.fetch(TPayPnrEntity.class, Cnd.where("pnrId", "in", pnrIds));
+		List<TPayEntity> payEntityList = dbDao.query(TPayEntity.class, Cnd.where("id", "in", payPnrEntity.getPayId()),
+				null);
 		for (TPayEntity payEntity : payEntityList) {
 			if (!Util.eq(null, bankId)) {
 				payEntity.setBankId(bankId);
@@ -712,11 +715,11 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			dbDao.insert(payReceiptList);
 		}
 		//更新Pnr表中對應的状态
-		List<TPnrInfoEntity> pnrInfoList = dbDao.query(TPnrInfoEntity.class, Cnd.where("id", "in", payIds), null);
+		List<TPnrInfoEntity> pnrInfoList = dbDao.query(TPnrInfoEntity.class, Cnd.where("id", "in", pnrIds), null);
 		int updatenum = 0;
-		if (!Util.eq(null, payIds)) {
+		if (!Util.eq(null, pnrIds)) {
 			updatenum = dbDao.update(TPnrInfoEntity.class, Chain.make("orderPnrStatus", APPROVALPAYED),
-					Cnd.where("id", "in", payIds));
+					Cnd.where("id", "in", pnrIds));
 		}
 
 		//付款成功 操作台添加消息
@@ -725,7 +728,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			String sqlS = sqlManager.get("receivePay_order_pnr_pids");
 			Sql sql = Sqls.create(sqlS);
 			Cnd cnd = Cnd.NEW();
-			cnd.and("pi.id", "in", payIds);
+			cnd.and("pi.id", "in", pnrIds);
 			List<Record> orderPnrList = dbDao.query(sql, cnd, null);
 			for (Record record : orderPnrList) {
 				int uid = Integer.valueOf(record.getString("id"));
