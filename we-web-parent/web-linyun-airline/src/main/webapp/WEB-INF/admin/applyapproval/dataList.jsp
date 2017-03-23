@@ -40,76 +40,131 @@
 	
   </header>
   	<input type="hidden" id="operation" value="${obj.operation}">
+  	
   <content class="content-list">
-  <c:forEach items="${obj.datalist }" var="each">
-  	<a href="${base}/admin/applyapproval/detailList.html?id=${each.id}&operation=${obj.operation}&date=${obj.date}">
-		<ul class="content-a-ul">
-			<li>
-				<span>${each.shortName }</span>
-				<c:if test="${obj.operation=='inlandNum'}">
-				
-					<span>${each.costpricesum }</span>
-				</c:if>
-				<c:if test="${obj.operation=='international'}">
-				
-					<span>${each.amount }</span>
-				</c:if>
-			</li>
-			<li>
-				<span>${each.ordersnum }</span>
-				<span>${each.purposeStr }</span>
-			</li>
-			<li>
-				<c:if test="${obj.operation=='inlandNum'}">
-				
-					<span>${each.PNR }</span>
-				</c:if>
-				<c:if test="${obj.operation=='international'}">
-				
-					<span></span>
-				</c:if>
-				<span>${each.userName }</span>
-			</li>
-			<%-- <li>
-				<span>${each.purpose }</span>
-				<span>${each.proposer }</span>
-			</li> --%>
-			<li>
-					<c:if test="${each.orderPnrStatus==1||each.paystatus==1 }">
-						<span class="color1">
-							待审批
-						</span>
+  
+  	<c:if test="${obj.operation=='international' }">
+  		<c:forEach items="${obj.query }" var="each">
+		  	<a href="${base}/admin/applyapproval/detailList.html?id=${each.id}&operation=${obj.operation}&date=${obj.date}&reduce=${each.isReduce}">
+				<ul class="content-a-ul">
+					<li>
+						<span>${each.shortName }</span>
 						
-					</c:if>
-					<c:if test="${each.orderPnrStatus==2 ||each.paystatus==2}">
-						<span class="color2">
-							同意
-						</span>
-					</c:if>
-					<c:if test="${each.orderPnrStatus==4 ||each.paystatus==4}">
-						<span class="color1">
-							拒绝
-						</span>
+						<span><fmt:formatNumber type="number" value="${each.amount }" maxFractionDigits="2"></fmt:formatNumber></span>
+							
+					<%-- 	<c:if test="${obj.operation=='international'}">
 						
-					</c:if>
-					<c:if test="${each.orderPnrStatus==3 ||each.paystatus==3}">
-						<span class="color2">
-							同意
-						</span>
+							<span>${each.amount }</span>
+						</c:if> --%>
+					</li>
+					<li>
+						<span>${each.ordersnum }</span>
+						<span>${each.purposeStr }</span>
+					</li>
+					<li>
 						
-					</c:if>
-					<c:if test="${obj.operation=='inlandNum'}">
-						<span><fmt:formatDate value="${each.optime }" pattern="yyyy:MM:dd HH:mm:ss"/></span>
+						<span><%-- ${each.PNR } --%></span>
 						
-					</c:if>
-					<c:if test="${obj.operation=='international'}">
-						<span><fmt:formatDate value="${each.orderstime }" pattern="yyyy:MM:dd HH:mm:ss"/></span>
-					</c:if>
-				
-			</li>
-		</ul>
-	</a>
-  </c:forEach>
+						<span>${each.userName }</span>
+					</li>
+					<%-- <li>
+						<span>${each.purpose }</span>
+						<span>${each.proposer }</span>
+					</li> --%>
+					<li>
+							<c:if test="${each.paystatus==1 }">
+								<span class="color1">
+									待审批
+								</span>
+								
+							</c:if>
+							<c:if test="${each.paystatus==2 }">
+								<span class="color2">
+									同意
+								</span>
+							</c:if>
+							<c:if test="${each.paystatus==4 }">
+								<span class="color1">
+									拒绝
+								</span>
+								
+							</c:if>
+							<c:if test="${each.paystatus==3}">
+								<span class="color2">
+									同意
+								</span>
+								
+							</c:if>
+		
+							<span><fmt:formatDate value="${each.orderstime }" pattern="yyyy-MM-dd HH:mm:ss"/></span>
+							
+						
+					</li>
+				</ul>
+			</a>
+	  </c:forEach>
+  	</c:if>
+  	<c:if test="${obj.operation=='inlandNum' }">
+ 		<c:forEach items="${obj.query }" var="each">
+		  	<a href="${base}/admin/applyapproval/detailList.html?id=${each.id}&operation=${obj.operation}&date=${obj.date}&reduce=${each.isReduce}">
+				<ul class="content-a-ul">
+					<li>
+						<span>${each.shortName }</span>
+						
+						<span><fmt:formatNumber type="number" value="${each.costpricesum }" maxFractionDigits="2"></fmt:formatNumber></span>
+							
+					<%-- 	<c:if test="${obj.operation=='international'}">
+						
+							<span>${each.amount }</span>
+						</c:if> --%>
+					</li>
+					<li>
+						<span>${each.ordersnum }</span>
+						<span>${each.purposeStr }</span>
+					</li>
+					<li>
+						
+							<span>${each.PNR }</span>
+						
+						<span>${each.userName }</span>
+					</li>
+					<%-- <li>
+						<span>${each.purpose }</span>
+						<span>${each.proposer }</span>
+					</li> --%>
+					<li>
+							<c:if test="${each.orderPnrStatus==1 }">
+								<span class="color1">
+									待审批
+								</span>
+								
+							</c:if>
+							<c:if test="${each.orderPnrStatus==2 }">
+								<span class="color2">
+									同意
+								</span>
+							</c:if>
+							<c:if test="${each.orderPnrStatus==4 }">
+								<span class="color1">
+									拒绝
+								</span>
+								
+							</c:if>
+							<c:if test="${each.orderPnrStatus==3}">
+								<span class="color2">
+									同意
+								</span>
+								
+							</c:if>
+		
+								<span><fmt:formatDate value="${each.optime }" pattern="yyyy-MM-dd HH:mm:ss"/></span>
+							
+						
+					</li>
+				</ul>
+			</a>
+	  </c:forEach>
+  	</c:if>
   
   
   
@@ -117,7 +172,7 @@
   
   
   <!-- ***************************内陆处理开始****************************** -->
-  <c:if test="${obj.operation=='inlandNum' }">
+ <%--  <c:if test="${obj.operation=='inlandNum' }">
   
 	  <c:forEach items="${obj.reduceInlandList }" var="each">
   		<a href="${base}/admin/applyapproval/detailList.html?id=${each.id}&operation=${obj.operation}&date=${obj.date}&reduce=reduce">
@@ -136,10 +191,10 @@
 				
 					<span>${each.userName }</span>
 				</li>
-				<%-- <li>
+				<li>
 					<span>${each.purpose }</span>
 					<span>${each.proposer }</span>
-				</li> --%>
+				</li>
 				<li>
 						<c:if test="${each.applyResult==1}">
 							<span class="color1">
@@ -186,10 +241,10 @@
 					
 						<span>${each.userName }</span>
 					</li>
-					<%-- <li>
+					<li>
 						<span>${each.purpose }</span>
 						<span>${each.proposer }</span>
-					</li> --%>
+					</li>
 					<li>
 							<c:if test="${each.applyResult==1}">
 								<span class="color1">
@@ -215,7 +270,7 @@
 				</ul>
 			</a>
 	  	</c:forEach>
-	  </c:if>
+	  </c:if> --%>
 	  <!-- ***************************国际处理结束****************************** -->
   </content>
   	
