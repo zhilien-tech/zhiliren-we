@@ -1,7 +1,7 @@
 var KaiInvoiceTable1;
 //初始化表格
 initKaiInvoiceTable1();
-aaa();
+kaiInvoiceSelectData();
 function initKaiInvoiceTable1() {
 	KaiInvoiceTable1 = $('#KaiInvoiceTable1').DataTable({
   	"searching":false,
@@ -178,15 +178,8 @@ function openkaiInvoiceEdit(id){
     	);
 }
 );*/
-
-
-
-
-$("#kaiSearchInvoiceBtn").on('click',aaa());
-
-
-
-function aaa() {
+$("#kaiSearchInvoiceBtn").on('click',kaiInvoiceSelectData());
+function kaiInvoiceSelectData() {
 	var status = $("#kaiInvoiceSelect").val();
 	var billuserid = $("#kaibilluserid").val();
 	var kaiInvoiceBeginDate = $("#kaiInvoiceBeginDate").val();
@@ -209,23 +202,15 @@ function aaa() {
 			}
     	);
 }
-
-
-
-
-
-
-
-
-
-
 //开发票状态选择按钮
 $("#kaiInvoiceSelect").change(function(){
-	$('#kaiSearchInvoiceBtn').click();
+	//$('#kaiSearchInvoiceBtn').click();
+	kaiInvoiceSelectData();
 });
 //开发票开票人选择按钮
 $("#kaibilluserid").change(function(){
-	$('#kaiSearchInvoiceBtn').click();
+	//$('#kaiSearchInvoiceBtn').click();
+	kaiInvoiceSelectData();
 });
 /*清除 开发票   检索项*/
 $('#kaiEmptyBtn').click(function(){

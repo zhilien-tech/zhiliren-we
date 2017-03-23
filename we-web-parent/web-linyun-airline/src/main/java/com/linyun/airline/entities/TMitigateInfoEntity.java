@@ -60,7 +60,7 @@ public class TMitigateInfoEntity {
 
 	@Column
 	@Comment("审批结果")
-	private String applyResult;
+	private Integer applyResult;
 
 	@Column
 	@Comment("订单id")
@@ -69,4 +69,8 @@ public class TMitigateInfoEntity {
 	@Column
 	@Comment("操作时间")
 	private Date optime;
+
+	@Column
+	@Comment("订单类型")
+	private Integer ordertype;
 }

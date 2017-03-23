@@ -48,7 +48,7 @@
                                <input id="invoicenumId" name="invoicenum" type="text" class="form-control" placeholder="发票号/单位">
                              </div>
                              <div class="col-md-2"><!-- 搜索 按钮 -->
-                               <button id="kaiSearchInvoiceBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
+                               <button id="kaiSearchInvoiceBtn" onclick="kaiInvoiceSelectData();" type="button" class="btn btn-primary btn-sm">搜索</button>
                                <button id="kaiEmptyBtn" type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
                              </div>
                            </div>
