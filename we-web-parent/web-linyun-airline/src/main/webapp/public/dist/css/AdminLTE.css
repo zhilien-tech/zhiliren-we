@@ -4980,6 +4980,8 @@ p{margin: 0 0 0px 10px;}
 .eq0{height: 30px !important;line-height: 29px;}
 .eq1{border-bottom: 0 !important;height: 30px !important;line-height: 29px;}
 .eq2{border-bottom: 0 !important;}
+.eq3{height: 15px !important;line-height: 15px;}
+.eq4{border-bottom: solid 1px #f4f4f4;}
 /*---end table 内容 垂直居中 style---*/
 
 /*--input 禁用图标不显示--*/
