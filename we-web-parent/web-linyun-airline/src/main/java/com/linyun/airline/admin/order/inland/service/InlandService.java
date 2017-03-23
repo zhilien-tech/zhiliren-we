@@ -1033,7 +1033,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		for (String str : visitors) {
 			TVisitorsPnrEntity visitorpnr = new TVisitorsPnrEntity();
 			visitorpnr.setPNRid(insert.getId());
-			visitorpnr.setVisitorslistid(Integer.valueOf(str));
+			if (!Util.isEmpty(str)) {
+				visitorpnr.setVisitorslistid(Integer.valueOf(str));
+			}
 			visitorpnrs.add(visitorpnr);
 
 		}
@@ -1420,6 +1422,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			//PNR更新状态
 			TPnrInfoEntity pnrinfo = dbDao.fetch(TPnrInfoEntity.class, Long.valueOf(str));
 			pnrinfo.setOrderPnrStatus(AccountPayEnum.APPROVAL.intKey());
+			paypnr.setOptime(new Date());
 			pnrinfos.add(pnrinfo);
 		}
 		//更新pnr状态
@@ -1558,8 +1561,11 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Integer userid = Long.valueOf(user.getId()).intValue();
 		sqlParamForm.setUserid(userid);
+		sqlParamForm.setCompanyid(company.getId());
 		Map<String, Object> datatabledata = this.listPage4Datatables(sqlParamForm);
 		@SuppressWarnings("unchecked")
 		List<Record> list = (List<Record>) datatabledata.get("data");

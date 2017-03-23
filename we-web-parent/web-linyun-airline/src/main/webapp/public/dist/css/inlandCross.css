@@ -160,7 +160,9 @@ td.sorting_1 input {position: relative;top: 5px;}
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {display:none;}
 .select2-container .select2-search--inline {float: none;}
 form#customaddform { width: 100%;}
-
+select.form-control.TimeInput { padding-left: 3px; padding-right: 3px;}
+[name="startdate"]{padding-left: 3px; padding-right: 3px;}
+[name="enddate"]{padding-left: 3px; padding-right: 3px;}
 /*---end 添加订单 style---*/
 /*发票*/
 #tab_7 .nav-tabs-custom{padding: 10px;}

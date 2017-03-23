@@ -75,7 +75,7 @@ public class InlandPayListSearchSqlForm extends DataTablesParamForm {
 
 		cnd.and("uo.orderstype", "=", OrderTypeEnum.FIT.intKey()); //散客
 		cnd.and("pi.orderPnrStatus", "=", orderPnrStatus);
-		cnd.and("pi.userid", "=", loginUserId);
+		cnd.and("pi.userid", "in", loginUserId);
 
 		return cnd;
 	}
