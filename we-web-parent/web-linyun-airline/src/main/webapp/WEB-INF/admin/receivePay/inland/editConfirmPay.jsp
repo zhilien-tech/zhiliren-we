@@ -145,7 +145,7 @@
 							<c:forEach var="one" items="${obj.bzList}">
 	                        	<%-- <option value="${one.id }">${one.dictCode }</option> --%>
 	                        	<c:choose>
-	                          		<c:when test="${obj.payList[0].payCurrenty eq one.id }">
+	                          		<c:when test="${obj.payList[0].paycurrency eq one.id }">
 			                        	 <option value="${one.id }" selected="selected">${one.dictCode }</option>
 	                          		</c:when>
 	                          		<c:otherwise>
