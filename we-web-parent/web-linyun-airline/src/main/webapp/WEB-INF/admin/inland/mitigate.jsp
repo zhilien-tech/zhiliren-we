@@ -167,18 +167,22 @@
 	}
 	
 	 function saveData(){
+		 var accountupper = $('#accountupper').val();
 		 $.ajax({ 
 			type: 'POST', 
-			data: $("#mitigateForm").serialize(), 
+			data: $("#mitigateForm").serialize()+'&accountupper='+accountupper, 
 			url: '${base}/admin/inland/saveMitigateData.html',
             success: function (data) { 
-            	layer.msg("添加成功",{time: 2000});
+            	layer.msg("提交成功",{time: 2000});
+            	closewindow();
+            	window.parent.successCallback('4');
             },
             error: function (xhr) {
-            	layer.msg("添加失败","",3000);
+            	layer.msg("提交失败","",3000);
             } 
         });
 	 }
+	 isShowSave();
 	 function isShowSave(){
 		 var mitigateid = '${obj.mitigate.id}';
 		 if(mitigateid){
