@@ -208,7 +208,10 @@
 						alert("文件 ["+file.name+"] 类型不正确！");
 						break;
 					}
-				}
+				},
+				onError: function(event, queueID, fileObj) {　
+					$("#submit").attr('disabled',false);
+		        }
 			});
 		});
 	
