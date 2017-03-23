@@ -38,8 +38,8 @@ public class AuthorityPublicService extends BaseService<TCompanyFunctionMapEntit
 		String comType = fetchType.getComType();//得到公司类型
 		int parseComType = Integer.parseInt(comType);//类型转换
 		//上游公司功能ID
-		int[] function = { 43, 44, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 68,
-				69, 75, 79, 81, 84, 85, 86, 87, 88, 89, 91, 92, 93, 94, 95 };
+		int[] function = { 43, 44, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 57, 58, 59, 60, 61, 62, 63, 66, 68, 69, 75,
+				79, 80, 81, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95 };
 		List<TCompanyFunctionMapEntity> functionList = Lists.newArrayList();
 		if (parseComType == CompanyTypeEnum.UPCOMPANY.intKey()) {
 			for (int i = 0; i < function.length; i++) {

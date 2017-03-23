@@ -17,7 +17,7 @@ import com.uxuexi.core.common.enums.IEnum;
  * @Date	 2017年3月22日 	 
  */
 public enum ReductionStatusEnum implements IEnum {
-	APPROVALING(1, "待审批"), AGREE(2, "通过"), REFUSE(3, "拒绝");
+	APPROVALING(1, "待审批"), AGREE(2, "通过"), REFUSE(4, "拒绝");
 
 	private int key;
 	private String value;

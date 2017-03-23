@@ -6,6 +6,9 @@
 
 package com.linyun.airline.admin.applyapproval.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +23,8 @@ import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 
+import com.linyun.airline.admin.applyapproval.entity.ApprovalList;
+import com.linyun.airline.admin.applyapproval.entity.ApprovalListInter;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.search.service.SearchViewService;
@@ -38,6 +43,7 @@ import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.common.util.Util;
+import com.uxuexi.core.db.util.DbSqlUtil;
 import com.uxuexi.core.web.base.service.BaseService;
 import com.uxuexi.core.web.chain.support.JsonResult;
 
@@ -65,6 +71,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		cnd.and("orderstype", "=", OrderTypeEnum.TEAM.intKey());
 		cnd.and("paystatus", "=", AccountPayEnum.APPROVAL.intKey());
 		sqlInter.setCondition(cnd);
+
 		List<Record> list = dbDao.query(sqlInter, cnd, null);
 		int internationalNum = list.size();
 		/********国际减免的处理开始**********/
@@ -74,6 +81,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		reduceInteCnd.and("uo.companyId", "=", companyId);
 		reduceInteCnd.and("mi.ordertype", "=", OrderTypeEnum.TEAM.intKey());
 		reduceInteCnd.and("mi.applyResult", "=", ReductionStatusEnum.APPROVALING.intKey());
+
 		List<Record> reduceInteList = dbDao.query(reduceInteSql, reduceInteCnd, null);
 		int reduceInteNum = reduceInteList.size();
 		/********国际减免的处理结束**********/
@@ -132,11 +140,55 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 			reduceInteCnd.and("uo.companyId", "=", companyId);
 			reduceInteCnd.and("mi.ordertype", "=", OrderTypeEnum.TEAM.intKey());
 			/*dbDao.query(clazz, reduceInteCnd, pager)*/
+			reduceInteSql.setCondition(reduceInteCnd);
 			List<Record> reduceInteList = dbDao.query(reduceInteSql, reduceInteCnd, null);
 			/********国际减免的处理结束**********/
 
 			sql.setCondition(cnd);
 			List<Record> datalist = dbDao.query(sql, cnd, null);
+			/******主数据*******/
+			List<ApprovalListInter> query = DbSqlUtil.query(dbDao, ApprovalListInter.class, sql);
+			/******主数据*******/
+			/******副数据*******/
+			List<ApprovalListInter> query1 = DbSqlUtil.query(dbDao, ApprovalListInter.class, reduceInteSql);
+			for (ApprovalListInter approvalList : query1) {
+				approvalList.setPaystatus(approvalList.getApplyResult());
+				approvalList.setAmount(approvalList.getAccount());
+				approvalList.setShortName(approvalList.getCustomname());
+				approvalList.setIsReduce("YES");
+			}
+			query.addAll(query1);
+			Collections.sort(query, new Comparator<ApprovalListInter>() {
+
+				@Override
+				public int compare(ApprovalListInter o1, ApprovalListInter o2) {
+
+					if (o1.getPaystatus() > o2.getPaystatus()) {
+						return 1;
+					} else if (o1.getPaystatus() == o2.getPaystatus()) {
+						if (!Util.isEmpty(o1.getOrderstime()) || !Util.isEmpty(o1.getOrderstime())) {
+
+							if (o1.getOrderstime().getTime() < o2.getOrderstime().getTime()) {
+								return 1;
+							} else if (o1.getOrderstime() == o2.getOrderstime()) {
+
+								return 0;
+							} else if (o1.getOrderstime().getTime() > o2.getOrderstime().getTime()) {
+								return -1;
+							}
+						}
+						return 0;
+					} else if (o1.getPaystatus() < o2.getPaystatus()) {
+						return -1;
+					}
+
+					return 0;
+
+				}
+
+			});
+			/******副数据*******/
+			re.put("query", query);
 			re.put("datalist", datalist);
 			re.put("operation", operation);
 			re.put("reduceInteList", reduceInteList);
@@ -146,11 +198,11 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 			String sqlString = sqlManager.get("applyapproval_list");
 			Sql sql = Sqls.create(sqlString);
 			Cnd cnd = Cnd.NEW();
-			//国际
+			//内陆
 			cnd.and("orderstype", "=", orderType);
 			TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 			Long companyId = company.getId();
-			//国际
+			//内陆
 			cnd.and("companyId", "=", companyId);
 			Map<String, Object> re = MapUtil.map();
 			if (!Util.isEmpty(date)) {
@@ -166,13 +218,56 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 			Cnd reduceInlandCnd = Cnd.NEW();
 			reduceInlandCnd.and("uo.companyId", "=", companyId);
 			reduceInlandCnd.and("mi.ordertype", "=", OrderTypeEnum.FIT.intKey());
+			reduceInlandSql.setCondition(reduceInlandCnd);
 			List<Record> reduceInlandList = dbDao.query(reduceInlandSql, reduceInlandCnd, null);
 			/********内陆减免的处理结束**********/
 			sql.setCondition(cnd);
 			List<Record> datalist = dbDao.query(sql, cnd, null);
+			/******主数据*******/
+			List<ApprovalList> query = DbSqlUtil.query(dbDao, ApprovalList.class, sql);
+			/******主数据*******/
+			/******副数据*******/
+			List<ApprovalList> query1 = DbSqlUtil.query(dbDao, ApprovalList.class, reduceInlandSql);
+			for (ApprovalList approvalList : query1) {
+				approvalList.setOrderPnrStatus(approvalList.getApplyResult());
+				approvalList.setCostpricesum(approvalList.getAccount());
+				approvalList.setShortName(approvalList.getCustomname());
+				approvalList.setIsReduce("YES");
+			}
+			query.addAll(query1);
+			Collections.sort(query, new Comparator<ApprovalList>() {
+
+				@Override
+				public int compare(ApprovalList o1, ApprovalList o2) {
+
+					if (o1.getOrderPnrStatus() > o2.getOrderPnrStatus()) {
+						return 1;
+					} else if (o1.getOrderPnrStatus() == o2.getOrderPnrStatus()) {
+						if (!Util.isEmpty(o1.getOptime()) || !Util.isEmpty(o1.getOptime())) {
+							if (o1.getOptime().getTime() < o2.getOptime().getTime()) {
+								return 1;
+							} else if (o1.getOptime() == o2.getOptime()) {
+
+								return 0;
+							} else if (o1.getOptime().getTime() > o2.getOptime().getTime()) {
+								return -1;
+							}
+						}
+						return 0;
+					} else if (o1.getOrderPnrStatus() < o2.getOrderPnrStatus()) {
+						return -1;
+					}
+
+					return 0;
+
+				}
+
+			});
+			/******副数据*******/
 			re.put("datalist", datalist);
 			re.put("operation", operation);
 			re.put("reduceInlandList", reduceInlandList);
+			re.put("query", query);
 			return re;
 		} else if ("others".equalsIgnoreCase(operation)) {
 
@@ -239,7 +334,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		}
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Long companyId = company.getId();
-		if ("reduce".equalsIgnoreCase(reduce)) {
+		if ("YES".equalsIgnoreCase(reduce)) {
 
 			/********内陆减免的处理开始**********/
 			String reduceInlandString = sqlManager.get("applyapproval_reduce_inland");
@@ -347,7 +442,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 				}
 			}
 		}
-		if ("reduce".equalsIgnoreCase(reduce)) {
+		if ("YES".equalsIgnoreCase(reduce)) {
 			int doingOperation = 0;
 			if ("agree".equalsIgnoreCase(temp)) {
 				doingOperation = ReductionStatusEnum.AGREE.intKey();
@@ -421,4 +516,12 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 
 	}
 
+	public List<ApprovalList> megerList(List<Record> datalist, List<Record> reduceInteList) {
+		List<ApprovalList> listResult = new ArrayList<ApprovalList>();
+		for (Record datarecord : datalist) {
+			ApprovalList app = new ApprovalList();
+			/*app.setApproveResult(datarecord.g);*/
+		}
+		return null;
+	}
 }
