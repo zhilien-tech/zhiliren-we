@@ -38,6 +38,7 @@ import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.common.enums.OrderTypeEnum;
+import com.linyun.airline.common.enums.ReductionStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
@@ -258,19 +259,19 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		String accountupper = request.getParameter("accountupper");
 		String currency = request.getParameter("currency");
 		String approvelid = request.getParameter("approvelid");
-		String applyResult = request.getParameter("applyResult");
 		TMitigateInfoEntity mitigateInfoEntity = new TMitigateInfoEntity();
 		mitigateInfoEntity.setOrderid(Integer.valueOf(orderid));
 		mitigateInfoEntity.setCustomeid(Integer.valueOf(customeid));
 		mitigateInfoEntity.setCustomname(customname);
 		mitigateInfoEntity.setApplyid(new Long(user.getId()).intValue());
+		mitigateInfoEntity.setApplyResult(ReductionStatusEnum.APPROVALING.intKey());
 		if (!Util.isEmpty(account)) {
 			mitigateInfoEntity.setAccount(formatDouble(Double.valueOf(account)));
 		}
 		mitigateInfoEntity.setAccountupper(accountupper);
 		mitigateInfoEntity.setCurrency(currency);
 		mitigateInfoEntity.setApprovelid(approvelid);
-		mitigateInfoEntity.setApplyResult(applyResult);
+		mitigateInfoEntity.setOrdertype(OrderTypeEnum.FIT.intKey());
 		return dbDao.insert(mitigateInfoEntity);
 
 	}
@@ -738,6 +739,30 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			String format = decimalFormat.format(doublenum);
 			result = Double.valueOf(format);
 		}
+		return result;
+	}
+
+	/**
+	 * 加载减免信息
+	 * <p>
+	 * TODO加载减免信息
+	 *
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object loadJianMianAccount(HttpServletRequest request) {
+		TMitigateInfoEntity result = new TMitigateInfoEntity();
+		String orderid = request.getParameter("orderid");
+		List<TMitigateInfoEntity> mitigates = dbDao.query(TMitigateInfoEntity.class,
+				Cnd.where("orderid", "=", orderid), null);
+		if (mitigates.size() > 0) {
+			for (TMitigateInfoEntity tMitigateInfoEntity : mitigates) {
+				if (tMitigateInfoEntity.getApplyResult().equals(ReductionStatusEnum.AGREE.intKey())) {
+					result = tMitigateInfoEntity;
+				}
+			}
+		}
+
 		return result;
 	}
 }

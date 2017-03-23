@@ -80,7 +80,7 @@
                     <td id="sumjine">${obj.receive.sum }</td>
                   </tr>
          </table>
-         <div class="bankSlipImg" align="center"><img id="shuidanimg" width="400" height="300" alt="" src="${obj.bill.receiptUrl }"></div>
+         <div class="bankSlipImg" align="center"><img id="shuidanimg" width="100%" height="305" alt="" src="${obj.bill.receiptUrl }"></div>
       </div>
       <span class="invoiceInfo-header">发票信息</span>
       <div class="invoiceInfo-body">

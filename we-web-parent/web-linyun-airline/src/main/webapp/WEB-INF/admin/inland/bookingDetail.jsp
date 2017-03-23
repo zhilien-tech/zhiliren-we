@@ -1092,6 +1092,21 @@
 	 });
  //加载日志
  loadOrderLog('${obj.orderinfo.id }');
+ loadJianMianAccount('${obj.orderinfo.id }');
+ function loadJianMianAccount(orderid){
+	 $.ajax({ 
+			type: 'POST', 
+			data: {orderid:orderid}, 
+			dataType:'json',
+			url: BASE_PATH + '/admin/inland/loadJianMianAccount.html',
+         success: function (data) { 
+         	$('#relief').val(data.account);
+         },
+         error: function (xhr) {
+       		
+         } 
+      });
+ }
   </script>
 </body>
 </html>

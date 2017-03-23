@@ -61,7 +61,7 @@ function autoHighLoad(obj){
           }else if(liLength==2){
             $(this).children('ul').find("li").eq(1).addClass('eq1');
             $(this).children('ul').find("li").eq(0).addClass('eq0');
-          }else if(liLength==2){
+          }else if(liLength==3){
             $(this).children('ul').find("li").eq(2).addClass('eq2');
           }
        });

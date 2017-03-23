@@ -161,4 +161,13 @@ public class InlandInvoiceModule {
 	public Object uploadInvoice(@Param("image") File file, HttpServletRequest request) {
 		return inlandInvoiceService.uploadInvoice(file, request);
 	}
+
+	/**
+	 * 加载减免信息
+	 */
+	@At
+	@POST
+	public Object loadJianMianAccount(HttpServletRequest request) {
+		return inlandInvoiceService.loadJianMianAccount(request);
+	}
 }

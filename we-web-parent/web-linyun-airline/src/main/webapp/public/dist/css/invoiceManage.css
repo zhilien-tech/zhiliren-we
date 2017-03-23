@@ -1,7 +1,7 @@
 /*-------------------------发票管理--------------------------*/
 .labelClas {width: 0;position: relative;top: 8px;}
 .table-bordered tbody tr td ul {padding-left: 0;margin-bottom: 0;}
-.table-bordered tbody tr td ul li {list-style: none;border-bottom: solid 2px #f4f4f4;}
+.table-bordered tbody tr td ul li {list-style: none;border-bottom: solid 1px #f4f4f4;}
 .table-bordered tbody tr td ul li:last-child {border-bottom: 0;}
 .table-bordered tbody tr td {padding: 0;}
 .table-bordered thead > tr > th {padding-right:5px !important;}
@@ -9,14 +9,14 @@
 .dataTable thead .sorting_desc:after {display: none !important;}
 .dataTable thead .sorting:after {display: none !important;}
 .tab-content{padding: 0 !important;padding-top: 10px !important;}
-#KaiInvoiceTable1 tbody tr td:nth-child(4) {line-height:80px;}
-#KaiInvoiceTable1 tbody tr td:nth-child(5) {line-height:80px;}
-#KaiInvoiceTable1 tbody tr td:nth-child(6) {line-height:80px;}
-#KaiInvoiceTable1 tbody tr td:nth-child(7) {line-height:80px;}
-#KaiInvoiceTable1 tbody tr td:nth-child(8) {line-height:80px;}
-#KaiInvoiceTable1 tbody tr td:nth-child(9) {line-height:80px;}
-#KaiInvoiceTable1 tbody tr td:nth-child(10) {line-height:80px;}
-#KaiInvoiceTable1 tbody tr td:nth-child(11) {line-height:80px;}
+#KaiInvoiceTable1 tbody tr td:nth-child(4) {line-height:60px;}
+#KaiInvoiceTable1 tbody tr td:nth-child(5) {line-height:60px;}
+#KaiInvoiceTable1 tbody tr td:nth-child(6) {line-height:60px;}
+#KaiInvoiceTable1 tbody tr td:nth-child(7) {line-height:60px;}
+#KaiInvoiceTable1 tbody tr td:nth-child(8) {line-height:60px;}
+#KaiInvoiceTable1 tbody tr td:nth-child(9) {line-height:60px;}
+#KaiInvoiceTable1 tbody tr td:nth-child(10) {line-height:60px;}
+#KaiInvoiceTable1 tbody tr td:nth-child(11) {line-height:60px;}
 #KaiInvoiceTable1 tbody tr .sorting_1 ul li{line-height: 27px;}
 .TimeInput {padding-left: 4px;padding-right: 0px;}
 .ckBtn {margin-left: 10px;}

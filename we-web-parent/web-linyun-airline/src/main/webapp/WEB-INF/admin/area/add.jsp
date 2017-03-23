@@ -57,7 +57,6 @@ $(document).ready(function(){
                          type: 'POST',//请求方式
                          //自定义提交数据，默认值提交当前input value
                          data: function(validator) {
-                        	 alert(('input#areaName').val());
                             return {
                             	areaName:$('input#areaName').val()
                             };
