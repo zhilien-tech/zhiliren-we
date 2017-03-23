@@ -36,7 +36,7 @@ public class FuKuanParamForm extends DataTablesParamForm {
 
 	private Integer userid;
 
-	private Integer companyid;
+	private Long companyid;
 
 	private String startdate;
 
