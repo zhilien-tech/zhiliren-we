@@ -56,9 +56,9 @@ function initdrawerPayTable() {
                     {"data": "date", "bSortable": false,
                     	render:function(data, type, row, meta) {
                     		var result = '<ul id="tableUl">';
-                    		$.each(row.customerinfo, function(name, value) {
-                    			if(value && value.leavetdate != undefined){
-                    				result += '<li style="list-style:none;">'+value.leavetdate+'</li>';
+                    		$.each(row.leavedates, function(name, value) {
+                    			if(value && value != undefined){
+                    				result += '<li style="list-style:none;">'+value+'</li>';
                     			}
                     		});
                     		result += '</ul>';
@@ -301,7 +301,7 @@ $('.fuKuanBtn').click(function(){
         				skin: false, //加上边框
         				closeBtn:false,//默认 右上角关闭按钮 是否显示
         				shadeClose:true,
-        				area: ['850px', '550px'],
+        				area: ['850px', '570px'],
         				content: BASE_PATH + '/admin/inland/seaInvoice.html?ids='+ids,
         				end:function(){
         					drawerPayTable.ajax.reload(function(json){

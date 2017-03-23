@@ -46,6 +46,7 @@ import com.linyun.airline.admin.order.inland.form.FuKuanParamForm;
 import com.linyun.airline.admin.order.inland.form.InlandListSearchForm;
 import com.linyun.airline.admin.order.inland.form.PayApplyListForm;
 import com.linyun.airline.admin.order.inland.form.ShouKuanParamFrom;
+import com.linyun.airline.admin.order.inland.util.FormatDateUtil;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayPnrEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
@@ -141,6 +142,11 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			List<TOrderCustomneedEntity> customerinfo = dbDao.query(TOrderCustomneedEntity.class,
 					Cnd.where("ordernum", "=", record.getInt("id")), null);
 			record.put("customerinfo", customerinfo);
+			List<String> leavedates = new ArrayList<String>();
+			for (TOrderCustomneedEntity tOrderCustomneedEntity : customerinfo) {
+				leavedates.add(FormatDateUtil.dateToOrderDate(tOrderCustomneedEntity.getLeavetdate()));
+			}
+			record.put("leavedates", leavedates);
 			//航班信息
 			List<TAirlineInfoEntity> airinfo = new ArrayList<TAirlineInfoEntity>();
 			//PNR信息
@@ -322,7 +328,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		}
 		//是否生成订单
 		boolean generateOrder = (boolean) fromJson.get("generateOrder");
-		//订单状态（查询、预定、出票......）
+		//订单状态（查询、预订、出票......）
 		Integer orderType = Integer.valueOf((String) fromJson.get("orderType"));
 		TUpOrderEntity orderinfo = this.fetch(id);
 		orderinfo.setId(id);
@@ -477,7 +483,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	}
 
 	/**
-	 * 为预定订单详情准备数据
+	 * 为预订订单详情准备数据
 	 * <p>
 	 *
 	 * @param id
@@ -555,9 +561,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	}
 
 	/**
-	 * 保存预定订单详情
+	 * 保存预订订单详情
 	 * <p>
-	 * TODO保存预定订单详情
+	 * TODO保存预订订单详情
 	 *
 	 * @param data
 	 * @param request 
@@ -573,7 +579,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		Integer id = Integer.valueOf((String) fromJson.get("id"));
 		//客户信息id，从页面隐藏域获取
 		Integer customerId = Integer.valueOf((String) fromJson.get("customerId"));
-		//订单状态（查询、预定、出票......）
+		//订单状态（查询、预订、出票......）
 		Integer orderType = Integer.valueOf((String) fromJson.get("orderType"));
 		TUpOrderEntity orderinfo = this.fetch(id);
 		orderinfo.setId(id);
@@ -1252,12 +1258,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			}
 		}
 		result.put("orders", orders);
-		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
-		try {
-			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Sql create = Sqls.create(sqlManager.get("get_bank_info_select"));
+		create.setParam("companyId", company.getId());
+		create.setParam("typeCode", YHCODE);
+		List<Record> yhkSelect = dbDao.query(create, null, null);
 		result.put("yhkSelect", yhkSelect);
 		result.put("ids", ids);
 		result.put("sumincome", formatDouble(sumincome));
@@ -1454,11 +1458,17 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			cnd.and("tr.id", "=", record.get("id"));
 			List<Record> orders = dbDao.query(sql, cnd, null);
 			List<TOrderCustomneedEntity> customs = new ArrayList<TOrderCustomneedEntity>();
+			List<String> leavetdates = new ArrayList<String>();
 			for (Record record2 : orders) {
 				List<TOrderCustomneedEntity> custom = dbDao.query(TOrderCustomneedEntity.class,
 						Cnd.where("ordernum", "=", record2.get("orderid")), null);
+				for (TOrderCustomneedEntity tOrderCustomneedEntity : custom) {
+					String leavetdate = FormatDateUtil.dateToOrderDate(tOrderCustomneedEntity.getLeavetdate());
+					leavetdates.add(leavetdate);
+				}
 				customs.addAll(custom);
 			}
+			record.put("leavedates", leavetdates);
 			record.put("customs", customs);
 			record.put("orders", orders);
 			record.put("receiveenum", EnumUtil.enum2(AccountReceiveEnum.class));
@@ -1514,12 +1524,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		}
 		//订单信息
 		result.put("orders", orders);
-		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
-		try {
-			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Sql create = Sqls.create(sqlManager.get("get_bank_info_select"));
+		create.setParam("companyId", company.getId());
+		create.setParam("typeCode", YHCODE);
+		List<Record> yhkSelect = dbDao.query(create, null, null);
 		//水单信息
 		List<TReceiveBillEntity> query2 = dbDao.query(TReceiveBillEntity.class, Cnd.where("receiveid", "=", id), null);
 		//银行卡下拉
@@ -1558,6 +1566,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		for (Record record : list) {
 			record.put("username", user.getUserName());
 			record.put("paystatusenum", EnumUtil.enum2(AccountPayEnum.class));
+			String leavetdate = FormatDateUtil.dateToOrderDate((Date) record.get("leavetdate"));
+			record.put("leavetdate", leavetdate);
 		}
 		datatabledata.remove("data");
 		datatabledata.put("data", list);
@@ -1594,8 +1604,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		result.put("customename", customename);
 		double sumjine = 0;
 		for (Record record : pnrinfo) {
-			if (!Util.isEmpty(record.get("salespricesum"))) {
-				Double salespricesum = (Double) record.get("salespricesum");
+			if (!Util.isEmpty(record.get("costpricesum"))) {
+				Double salespricesum = (Double) record.get("costpricesum");
 				sumjine += Double.valueOf(salespricesum);
 			}
 		}
@@ -1622,12 +1632,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		if (banks.size() > 0) {
 			companybank = banks.get(0);
 		}
-		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
-		try {
-			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Sql create = Sqls.create(sqlManager.get("get_bank_info_select"));
+		create.setParam("companyId", company.getId());
+		create.setParam("typeCode", YHCODE);
+		List<Record> yhkSelect = dbDao.query(create, null, null);
 		result.put("companybank", companybank);
 		result.put("id", id);
 		result.put("billurl", billurl);
@@ -1657,6 +1665,11 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		sqlform.setUserId(new Long(user.getId()).intValue());
 		Map<String, Object> listData = this.listPage4Datatables(sqlform);
+		List<Record> data = (List<Record>) listData.get("data");
+		for (Record record : data) {
+			String leavetdate = FormatDateUtil.dateToOrderDate((Date) record.get("leavetdate"));
+			record.put("leavetdate", leavetdate);
+		}
 		return listData;
 
 	}

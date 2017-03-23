@@ -44,7 +44,7 @@
                   			<td>${one.customename }</td>
                   			<td>${one.linkMan }</td>
                   			<td>${one.issuer }</td>
-                  			<td>${one.salespricesum }</td>
+                  			<td>${one.costpricesum }</td>
                   		</tr>
                   	</c:forEach>
                   </tbody>
@@ -82,7 +82,7 @@
                     <td id="sumjine">${obj.sumjine }</td>
                   </tr>
          </table>
-         <div class="bankSlipImg" align="center"><img id="shuidanimg" width="400" height="300" alt="" src="${obj.billurl }"></div>
+         <div class="bankSlipImg" align="center"><img id="shuidanimg" width="100%" height="305" alt="" src="${obj.billurl }"></div>
       </div>
       <span class="invoiceInfo-header"><label>发票信息</label></span>
       <div class="invoiceInfo-body">
@@ -125,7 +125,7 @@
                   <td><label>差额：</label></td>
                   <td><input id="difference" name="difference" type="text" class="form-control input-sm"></td>
                   <td><label>余额：</label></td>
-                  <td><label id="balance" name="balance">${obj.sumjine }</label></td>
+                  <td><label name="balance">${obj.sumjine }</label></td>
           </tr>
           <tr class="cloneTR">
                   <td><label>发票号：</label></td>

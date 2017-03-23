@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
@@ -16,7 +16,7 @@
 	<div class="modal-top">
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
-            <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo()" value="提交"/>
+            <input type="button" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo()" value="确认收发票"/>
             <h4 class="invoiceH4">收款信息</h4>
     </div>
     <div style="height:550px; overflow-y:auto;">
@@ -45,7 +45,7 @@
                   			<td>${one.customename }</td>
                   			<td>${one.linkMan }</td>
                   			<td>${one.issuer }</td>
-                  			<td>${one.costpricesum }</td>
+                  			<td>${one.salespricesum }</td>
                   		</tr>
                   	</c:forEach>
                   </tbody>
@@ -137,13 +137,13 @@
                   <td><label id="balance" name="balance">${obj.invoicebalance }</label></td>
           </tr>
           <c:choose>
-          	<c:when test="${fn:length(obj.invoiceDetail)>0}">
-		          <c:forEach items="${obj.invoiceDetail }" var="invoiceDetail" varStatus="status">
+          	<c:when test="${fn:length(obj.invoicedetail)>0}">
+		          <c:forEach items="${obj.invoicedetail }" var="invoiceDetail" varStatus="status">
 			          <tr class="cloneTR">
 			                  <td>发票号：</td>
-			                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm" value="${invoiceDetail.invoicenum }"></td>
+			                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm" value="${invoicedetail.invoicenum }"></td>
 			                  <td>金额：</td>
-			                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm" value="${invoiceDetail.invoicebalance }"></td>
+			                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm" value="${invoicedetail.invoicebalance }"></td>
 			                  <td colspan="4">
 			                  	<ul class="fileUL">
 			                      <li>
@@ -152,7 +152,7 @@
 		                          <input type="file" class="sc" id="sc" name="sc">
 		                        </a>
 		                      </li>
-			                      <li><a href="javascript:;" id="fileName" name="fileName">${invoiceDetail.imagename }</a></li>
+			                      <li><a href="javascript:;" id="fileName" name="fileName">${invoicedetail.imagename }</a></li>
 			                      <li><a href="javascript:;" class="fileDelete deleteInvoice" >删除</a></li>
 		                      	  <li><a href="javascript:;" id="preView" class="fileDelete">预览</a></li>
 			                      <c:choose>
@@ -164,7 +164,7 @@
 			                      	</c:otherwise>
 			                      </c:choose>
 			                    </ul>
-			                    <input id="invoiceurl" name="invoiceurl" type="hidden" value="${invoiceDetail.invoiceurl }">
+			                    <input id="invoiceurl" name="invoiceurl" type="hidden" value="${invoicedetail.invoiceurl }">
 			                  </td>
 			          </tr>
 		          </c:forEach>
@@ -295,10 +295,11 @@
 		   invoicedetails.push(detail);
 	   });
 	   formdata.invoicedetails = invoicedetails;
+	   
 	   $.ajax({ 
 			type: 'POST', 
 			data: {data:JSON.stringify(formdata)}, 
-			url: '${base}/admin/inland/saveShouInvoiceInfo.html',
+			url: '${base}/admin/invoicemanage/invoiceinfo/saveShouInvoiceInfo.html',
            success: function (data) { 
            	closewindow();
            	window.parent.successCallback('5');

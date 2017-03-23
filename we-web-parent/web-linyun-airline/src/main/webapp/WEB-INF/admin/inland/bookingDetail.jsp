@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>预定订单详情</title>
+  <title>预订订单详情</title>
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="${base }/public/bootstrap/css/bootstrap.css">
   <!-- 图标 -->
@@ -350,11 +350,11 @@
 		                 <table class="cloTable">
 		                   <tr>
 		                     <td><label>出发城市：</label></td>
-		                     <td><select id="leavecity" name="leavecity" disabled="disabled" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
+		                     <td colspan="2"><select id="leavecity" name="leavecity" disabled="disabled" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
 			                     </select>
 			                 </td>
 		                     <td><label>抵达城市：</label></td>
-		                     <td><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
+		                     <td colspan="2"><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
 			                     </select></td>
 		                     <td><label>出发日期：</label></td>
 		                     <td><input id="leavedate" name="leavedate" disabled="disabled" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:''})"/></td>
@@ -973,9 +973,9 @@
 	 	            	var relief = $('#relief').val();
 		 	       	 	var incometotal  = '';
 		 	       	 	if(relief){
-		 	       	 		incometotal  = parseFloat(data.chengbensum) - parseFloat(relief);
+		 	       	 		incometotal  = parseFloat(data.yingshousum) - parseFloat(relief);
 		 	       	 	}else{
-		 	       	 		incometotal = data.chengbensum;
+		 	       	 		incometotal = data.yingshousum;
 		 	       	 	}
 		 	       	 	if(!isNaN(incometotal)){
 	 	       		 		$('#incometotal').val(incometotal);
@@ -996,6 +996,8 @@
 		  layer.msg("修改成功",{time: 2000});
 	  }else if(id == '3'){
 		  layer.msg("删除成功",{time: 2000});
+	  }else if(id == '4'){
+		  layer.msg("提交成功",{time: 2000});
 	  }
  }
   
@@ -1092,6 +1094,21 @@
 	 });
  //加载日志
  loadOrderLog('${obj.orderinfo.id }');
+ loadJianMianAccount('${obj.orderinfo.id }');
+ function loadJianMianAccount(orderid){
+	 $.ajax({ 
+			type: 'POST', 
+			data: {orderid:orderid}, 
+			dataType:'json',
+			url: BASE_PATH + '/admin/inland/loadJianMianAccount.html',
+         success: function (data) { 
+         	$('#relief').val(data.account);
+         },
+         error: function (xhr) {
+       		
+         } 
+      });
+ }
   </script>
 </body>
 </html>

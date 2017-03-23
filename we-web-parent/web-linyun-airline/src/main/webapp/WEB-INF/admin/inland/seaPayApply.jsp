@@ -44,7 +44,7 @@
                 			<td>${one.billingdate }</td>
                 			<td>${one.peoplecount }</td>
                 			<td>${one.issuer }</td>
-                			<td>${one.salespricesum }</td>
+                			<td>${one.costpricesum }</td>
                 		</tr>
                 	</c:forEach>
                   </tbody>

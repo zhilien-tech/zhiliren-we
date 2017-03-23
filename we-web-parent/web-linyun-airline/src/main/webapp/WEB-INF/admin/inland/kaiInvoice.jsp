@@ -80,7 +80,7 @@
                     <td id="sumjine">${obj.receive.sum }</td>
                   </tr>
          </table>
-         <div class="bankSlipImg" align="center"><img id="shuidanimg" width="400" height="300" alt="" src="${obj.bill.receiptUrl }"></div>
+         <div class="bankSlipImg" align="center"><img id="shuidanimg" width="100%" height="305" alt="" src="${obj.bill.receiptUrl }"></div>
       </div>
       <span class="invoiceInfo-header">发票信息</span>
       <div class="invoiceInfo-body">
@@ -135,7 +135,7 @@
                   </td>
           </tr>
           <c:choose>
-          	<c:when test="${fn:length(obj.invoiceDetail)>0}">
+          	<c:when test="${fn:length(obj.invoicedetail)>0}">
 		          <c:forEach items="${obj.invoicedetail }" var="invoiceDetail" varStatus="status">
 			          <tr class="cloneTR">
 		                  <td>发票号：</td>
@@ -150,7 +150,7 @@
 		                          <input type="file" class="sc" id="sc" name="sc">
 		                        </a>
 		                      </li>
-		                      <li><a href="javascript:;" id="fileName" name="fileName">${invoiceDetail.imagename }</a></li>
+		                      <li><a id="fileName" name="fileName">${invoiceDetail.imagename }</a></li>
 		                      <li><a href="javascript:;" class="fileDelete deleteInvoice" >删除</a></li>
 		                      <li><a href="javascript:;" id="preView" class="fileDelete">预览</a></li>
 		                      <c:choose>

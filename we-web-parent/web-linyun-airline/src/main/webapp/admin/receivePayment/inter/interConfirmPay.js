@@ -55,7 +55,7 @@ function changeMoneyToChinese( money ){
 	var IntegerNum; //金额整数部分
 	var DecimalNum; //金额小数部分
 	var ChineseStr=""; //输出的中文金额字符串
-	var parts; //分离金额后用的数组，预定义
+	var parts; //分离金额后用的数组，预订义
 
 	if( money == "" ){
 		return "";

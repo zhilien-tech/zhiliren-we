@@ -16,8 +16,10 @@ import com.linyun.airline.admin.invoicemanage.invoiceinfo.from.TInvoiceInfoAddFo
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.from.TInvoiceInfoSqlForm;
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.from.TInvoiceInfoUpdateForm;
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.service.InvoiceinfoViewService;
+import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.inland.form.KaiInvoiceParamForm;
 import com.linyun.airline.admin.order.inland.service.InlandInvoiceService;
+import com.linyun.airline.entities.TCompanyEntity;
 import com.uxuexi.core.web.chain.support.JsonResult;
 
 @IocBean
@@ -51,20 +53,53 @@ public class InvoiceinfoModule {
 	}
 
 	/**
-	 * 开发票分页查询
-	 */
-	/*@At
-	public Object listData(final HttpSession session) {
-		return invoiceinfoViewService.kaiQueryInvoiceDate(session);
-	}*/
-
-	/**
 	 * 收发票列表
 	 */
 	@At
 	@POST
 	public Object listShouInvoiceData(@Param("..") TInvoiceInfoSqlForm sqlForm, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long comId = company.getId();//得到公司id
+		sqlForm.setComId(comId);
 		return invoiceinfoViewService.listShouInvoiceData(sqlForm, request);
+	}
+
+	/**
+	 * 打开开发票页面
+	 */
+	@At
+	@Ok("jsp")
+	public Object kaiOpenInvoice(HttpServletRequest request) {
+		return invoiceinfoViewService.kaiInvoice(request);
+	}
+
+	/**
+	 * 保存开发票数据
+	 */
+	@At
+	@POST
+	public Object saveKaiInvoiceInfo(HttpServletRequest request) {
+		return invoiceinfoViewService.saveKaiInvoiceInfo(request);
+	}
+
+	/**
+	 * 打开收发票页面
+	 */
+	@At
+	@Ok("jsp")
+	public Object shouOpenInvoice(HttpServletRequest request) {
+		return invoiceinfoViewService.shouInvoice(request);
+	}
+
+	/**
+	 * 保存收发票数据
+	 */
+	@At
+	@POST
+	public Object saveShouInvoiceInfo(HttpServletRequest request) {
+		return invoiceinfoViewService.saveShouInvoiceInfo(request);
 	}
 
 	/**

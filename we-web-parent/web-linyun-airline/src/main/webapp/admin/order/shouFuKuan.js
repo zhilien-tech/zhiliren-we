@@ -37,11 +37,11 @@ function initshouFuKuanGatheringTable() {
                   {"data": "leavedate", "bSortable": false,
                   	render:function(data, type, row, meta) {
                   		var result = '<ul>';
-                  		$.each(row.customs, function(name, value) {
-                  			if(value && value.leavetdate != undefined){
-                  				result += '<li style="list-style:none;">'+value.leavetdate+'</li>';
-                  			}
-                  		});
+                  		$.each(row.leavedates, function(name, value) {
+                			if(value && value != undefined){
+                				result += '<li style="list-style:none;">'+value+'</li>';
+                			}
+                		});
                   		result += '</ul>';
                   		return result;
                   	}
@@ -133,6 +133,21 @@ function openInvoice(id,invoiceid){
 function loadshouFuKuanGatheringTable(){
 	shouFuKuanGatheringTable.ajax.reload();
 }
+$('#shoukuansearch').click(function(){
+	var div = $(this).parent().parent();
+	var status = div.find('[name=status]').val();
+	var startdate = div.find('[name=startdate]').val();
+	var enddate = div.find('[name=enddate]').val();
+	var searchInfo = div.find('[name=searchInfo]').val();
+	var param = {
+			status:status,
+			startdate:startdate,
+			enddate:enddate,
+			searchInfo:searchInfo
+	};
+	shouFuKuanGatheringTable.settings()[0].ajax.data = param;
+	shouFuKuanGatheringTable.ajax.reload();
+});
 //付款表格
 var shouFuKuanPayTable;
 //初始化表格
@@ -176,7 +191,14 @@ function initshouFuKuanPayTable() {
                 },
                 {"data": "hangduan", "bSortable": false,
                 	render:function(data, type, row, meta) {
-                		var result = row.leavecity + '/' + row.leavecity;
+                		var result = '';
+        				if(row.leavecity != undefined){
+        					result += row.leavecity;
+        				}
+        				result += '/';
+        				if(row.arrivecity != undefined){
+        					result += row.arrivecity;
+        				}
                 		return result;
                 	}
                 },
@@ -191,7 +213,14 @@ function initshouFuKuanPayTable() {
                 },
                 {"data": "time", "bSortable": false,
                 	render:function(data, type, row, meta) {
-                		var result = row.leavetime + '/' + row.arrivetime;
+                		var result = '';
+        				if(row.leavetime != undefined){
+        					result += row.leavetime;
+        				}
+        				result += '/';
+        				if(row.arrivetime != undefined){
+        					result += row.arrivetime;
+        				}
                 		return result;
                 	}
                 },
@@ -204,11 +233,11 @@ function initshouFuKuanPayTable() {
                 		return result;
                 	}
                 },
-                {"data": "salesprice", "bSortable": false,
+                {"data": "costpricesum", "bSortable": false,
                 	render:function(data, type, row, meta) {
                 		var result = '';
-                		if(row.salesprice && row.salesprice != undefined){
-                			result = row.salesprice;
+                		if(row.costpricesum && row.costpricesum != undefined){
+                			result = row.costpricesum;
                 		}
                 		return result;
                 	}
@@ -233,20 +262,48 @@ function initshouFuKuanPayTable() {
                   		return result;
                   	}
                 },
-                {"data": "username", "bSortable": false}
+                {"data": "username","bSortable": false}
         ],
-    columnDefs: [{
+    "columnDefs": [
+				/*{ "sWidth": "8.33%",  "aTargets": [0] },
+				{ "sWidth": "8.33%", "aTargets": [1] },
+				{ "sWidth": "8.33%", "aTargets": [2] },
+				{ "sWidth": "8.33%", "aTargets": [3] },
+				{ "sWidth": "8.33%", "aTargets": [4] },
+				{ "sWidth": "8.33%", "aTargets": [5] }, 
+				{ "sWidth": "8.33%",  "aTargets": [6] },
+				{ "sWidth": "8.33%", "aTargets": [7] },
+				{ "sWidth": "8.33%", "aTargets": [8] },
+				{ "sWidth": "8.33%", "aTargets": [9] },
+				{ "sWidth": "8.33%", "aTargets": [10] },
+				{ "sWidth": "8.33%", "aTargets": [11] }, */
+                {
   	//   指定第一列，从0开始，0表示第一列，1表示第二列……
         targets: 11,
         render: function(data, type, row, meta) {
             return '<a style="cursor:pointer;" onclick="receiveInvoice('+row.id+','+row.invoiceid+');">收发票</a>'
         }
-    }],
+    }]
 });
 }
 function shoufukuanPay(){
 	shouFuKuanPayTable.ajax.reload();
 }
+$('#fukuansearch').click(function(){
+	var div = $(this).parent().parent();
+	var status = div.find('[name=status]').val();
+	var startdate = div.find('[name=startdate]').val();
+	var enddate = div.find('[name=enddate]').val();
+	var searchInfo = div.find('[name=searchInfo]').val();
+	var param = {
+			status:status,
+			startdate:startdate,
+			enddate:enddate,
+			searchInfo:searchInfo
+	};
+	shouFuKuanPayTable.settings()[0].ajax.data = param;
+	shouFuKuanPayTable.ajax.reload();
+});
 function receiveInvoice(id,invoiceid){
 	if(invoiceid){
 		layer.open({

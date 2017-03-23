@@ -33,7 +33,7 @@
                <div class="infoTop">
                  <p>客户信息</p>
                </div>
-               <div class="infofooter">
+               <div class="infofooter" style="padding-bottom: 10px;">
                  <table>
                    <tr>
                      <td><label>客户姓名：</label></td> 
@@ -121,7 +121,7 @@
                    </tr>
                    <tr>
                      <td></span><label>备注：</label></td>
-                     <td colspan="11"><input type="text" class="form-control input-sm noteText" placeholder=" "></td>
+                     <td colspan="11"><input name="remark" id="remark" type="text" class="form-control input-sm noteText" placeholder=" "></td>
                    </tr>
                  </table>
                 </div>
@@ -169,42 +169,69 @@
 		var row = [];
   		$('.DemandDiv').each(function(i){
   			var row1 = {};
+  			var lenthcustom = '';
   			var leavecity = $(this).find('[name=leavecity]').val();
   			//出发城市
   			if (leavecity) {
   				leavecity = leavecity.join(',');
+  				lenthcustom += leavecity;
+  			}else{
+  				lenthcustom += '';
   			}
   			row1.leavecity = leavecity;
   			//抵达城市
   			var arrivecity = $(this).find('[name=arrivecity]').val();
   			if (arrivecity) {
   				arrivecity = arrivecity.join(',');
+  				lenthcustom += arrivecity;
+  			}else{
+  				lenthcustom += '';
   			}
   			row1.arrivecity = arrivecity;
   			row1.leavedate = $(this).find('[name=leavedate]').val();
+  			lenthcustom += $(this).find('[name=leavedate]').val();
   			row1.peoplecount = $(this).find('[name=peoplecount]').val();
+  			lenthcustom += $(this).find('[name=peoplecount]').val();
   			row1.tickettype = $(this).find('[name=tickettype]').val();
+  			row1.remark = $(this).find('[name=remark]').val();
+  			lenthcustom += $(this).find('[name=remark]').val();
   			var airrows = [];
   			$(this).find('[name=airlineinfo]').each(function(i){
+  				var lengthAir = '';
   				var airrow = {};
   				var aircom = $(this).find('[name=aircom]').val();
   				if (aircom) {
   					aircom = aircom.join(',');
+  					lengthAir += aircom;
+  	  			}else{
+  	  				lengthAir += '';
   	  			}
   				airrow.aircom = aircom;
   				var ailinenum = $(this).find('[name=ailinenum]').val();
   				if (ailinenum) {
   					ailinenum = ailinenum.join(',');
+  					lengthAir += ailinenum;
+  	  			}else{
+  	  				lengthAir += '';
   	  			}
   				airrow.ailinenum = ailinenum;
   				airrow.leavetime = $(this).find('[name=leavetime]').val();
   				airrow.arrivetime = $(this).find('[name=arrivetime]').val();
   				airrow.formprice = $(this).find('[name=formprice]').val();
   				airrow.price = $(this).find('[name=price]').val();
-  				airrows.push(airrow);
+  				lengthAir += $(this).find('[name=leavetime]').val();
+  				lengthAir += $(this).find('[name=arrivetime]').val();
+  				lengthAir += $(this).find('[name=formprice]').val();
+  				lengthAir += $(this).find('[name=price]').val();
+  				if(lengthAir.length > 0){
+	  				airrows.push(airrow);
+  				}
+  				lenthcustom += lengthAir;
   			});
   			row1.airinfo = airrows;
-  			row.push(row1);
+  			if(lenthcustom.length > 0){
+	  			row.push(row1);
+  			}
   		});
   		customdata.customdata=row;
   		//data.push(customdata);

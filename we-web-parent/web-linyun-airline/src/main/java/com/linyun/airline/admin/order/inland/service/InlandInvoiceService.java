@@ -31,12 +31,14 @@ import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
 import com.linyun.airline.admin.order.inland.form.KaiInvoiceParamForm;
 import com.linyun.airline.admin.order.inland.form.ShouInvoiceParamForm;
+import com.linyun.airline.admin.order.inland.util.FormatDateUtil;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayPnrEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.common.enums.OrderTypeEnum;
+import com.linyun.airline.common.enums.ReductionStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
@@ -230,6 +232,11 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		String customeid = request.getParameter("customeid");
 		TCustomerInfoEntity fetch = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(customeid));
 		result.put("customeinfo", fetch);
+		TMitigateInfoEntity mitigate = dbDao.fetch(
+				TMitigateInfoEntity.class,
+				Cnd.where("orderid", "=", request.getParameter("id")).and("applyResult", "!=",
+						ReductionStatusEnum.REFUSE.intKey()));
+		result.put("mitigate", mitigate);
 		//币种下拉
 		List<DictInfoEntity> bzcode = new ArrayList<DictInfoEntity>();
 		try {
@@ -254,19 +261,19 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		String accountupper = request.getParameter("accountupper");
 		String currency = request.getParameter("currency");
 		String approvelid = request.getParameter("approvelid");
-		String applyResult = request.getParameter("applyResult");
 		TMitigateInfoEntity mitigateInfoEntity = new TMitigateInfoEntity();
 		mitigateInfoEntity.setOrderid(Integer.valueOf(orderid));
 		mitigateInfoEntity.setCustomeid(Integer.valueOf(customeid));
 		mitigateInfoEntity.setCustomname(customname);
 		mitigateInfoEntity.setApplyid(new Long(user.getId()).intValue());
+		mitigateInfoEntity.setApplyResult(ReductionStatusEnum.APPROVALING.intKey());
 		if (!Util.isEmpty(account)) {
 			mitigateInfoEntity.setAccount(formatDouble(Double.valueOf(account)));
 		}
 		mitigateInfoEntity.setAccountupper(accountupper);
 		mitigateInfoEntity.setCurrency(currency);
 		mitigateInfoEntity.setApprovelid(approvelid);
-		mitigateInfoEntity.setApplyResult(applyResult);
+		mitigateInfoEntity.setOrdertype(OrderTypeEnum.FIT.intKey());
 		return dbDao.insert(mitigateInfoEntity);
 
 	}
@@ -313,6 +320,8 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 					.getUserName());
 			record.put("invoiceinfoenum", EnumUtil.enum2(InvoiceInfoEnum.class));
 			record.put("ytselect", ytselect);
+			String invoicedate = FormatDateUtil.dateToOrderDate((Date) record.get("invoicedate"));
+			record.put("invoicedate", invoicedate);
 		}
 		List<Record> listdataNew = new ArrayList<Record>();
 		for (Record record : listdata) {
@@ -352,6 +361,8 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		for (Record record : listdata) {
 			record.put("ytselect", ytselect);
 			record.put("invoiceinfoenum", EnumUtil.enum2(InvoiceInfoEnum.class));
+			String invoicedate = FormatDateUtil.dateToOrderDate((Date) record.get("invoicedate"));
+			record.put("invoicedate", invoicedate);
 		}
 		return datatableData;
 
@@ -403,12 +414,10 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//订单信息
 		result.put("orders", orders);
-		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
-		try {
-			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Sql create = Sqls.create(sqlManager.get("get_bank_info_select"));
+		create.setParam("companyId", company.getId());
+		create.setParam("typeCode", YHCODE);
+		List<Record> yhkSelect = dbDao.query(create, null, null);
 		//水单信息
 		List<TReceiveBillEntity> query2 = dbDao.query(TReceiveBillEntity.class,
 				Cnd.where("receiveid", "=", fetch.getId()), null);
@@ -458,8 +467,8 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		result.put("pnrinfo", pnrinfo);
 		double sumjine = 0;
 		for (Record record : pnrinfo) {
-			if (!Util.isEmpty(record.get("salespricesum"))) {
-				Double salespricesum = (Double) record.get("salespricesum");
+			if (!Util.isEmpty(record.get("costpricesum"))) {
+				Double salespricesum = (Double) record.get("costpricesum");
 				sumjine += Double.valueOf(salespricesum);
 			}
 		}
@@ -485,12 +494,10 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 				}
 			}
 		}
-		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
-		try {
-			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Sql create = Sqls.create(sqlManager.get("get_bank_info_select"));
+		create.setParam("companyId", company.getId());
+		create.setParam("typeCode", YHCODE);
+		List<Record> yhkSelect = dbDao.query(create, null, null);
 		//付款银行卡信息
 		Record companybank = new Record();
 		String pagesqlStr = sqlManager.get("get_fukuan_invoice_page_data");
@@ -734,6 +741,30 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			String format = decimalFormat.format(doublenum);
 			result = Double.valueOf(format);
 		}
+		return result;
+	}
+
+	/**
+	 * 加载减免信息
+	 * <p>
+	 * TODO加载减免信息
+	 *
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object loadJianMianAccount(HttpServletRequest request) {
+		TMitigateInfoEntity result = new TMitigateInfoEntity();
+		String orderid = request.getParameter("orderid");
+		List<TMitigateInfoEntity> mitigates = dbDao.query(TMitigateInfoEntity.class,
+				Cnd.where("orderid", "=", orderid), null);
+		if (mitigates.size() > 0) {
+			for (TMitigateInfoEntity tMitigateInfoEntity : mitigates) {
+				if (tMitigateInfoEntity.getApplyResult().equals(ReductionStatusEnum.AGREE.intKey())) {
+					result = tMitigateInfoEntity;
+				}
+			}
+		}
+
 		return result;
 	}
 }

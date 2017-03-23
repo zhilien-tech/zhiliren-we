@@ -113,6 +113,21 @@ function initkaiInvoiceTable() {
 function kaiInvoiceLoad(){
 	kaiInvoiceTable.ajax.reload();
 }
+$('#openinvoicesearch').click(function(){
+	var div = $(this).parent().parent();
+	var status = div.find('[name=status]').val();
+	var startdate = div.find('[name=startdate]').val();
+	var enddate = div.find('[name=enddate]').val();
+	var searchInfo = div.find('[name=searchInfo]').val();
+	var param = {
+			status:status,
+			startdate:startdate,
+			enddate:enddate,
+			searchInfo:searchInfo
+	};
+	kaiInvoiceTable.settings()[0].ajax.data = param;
+	kaiInvoiceTable.ajax.reload();
+});
 //打开开发票页面
 function openkaiInvoiceEdit(id){
 	layer.open({
@@ -183,11 +198,11 @@ function initshouInvoiceTable() {
                 		return result;
                 	}
                 },
-                {"data": "salespricesum", "bSortable": false,
+                {"data": "costpricesum", "bSortable": false,
                 	render:function(data, type, row, meta) {
                 		var result = '';
-                		if(row.salespricesum && row.salespricesum != undefined) {
-                			result =row.salespricesum;
+                		if(row.costpricesum && row.costpricesum != undefined) {
+                			result =row.costpricesum;
                 		}
                 		return result;
                 	}
@@ -255,7 +270,21 @@ function initshouInvoiceTable() {
 function shouInvoiceLoad(){
 	shouInvoiceTable.ajax.reload();
 }
-
+$('#receiveinvoicesearch').click(function(){
+	var div = $(this).parent().parent();
+	var status = div.find('[name=status]').val();
+	var startdate = div.find('[name=startdate]').val();
+	var enddate = div.find('[name=enddate]').val();
+	var searchInfo = div.find('[name=searchInfo]').val();
+	var param = {
+			status:status,
+			startdate:startdate,
+			enddate:enddate,
+			searchInfo:searchInfo
+	};
+	shouInvoiceTable.settings()[0].ajax.data = param;
+	shouInvoiceTable.ajax.reload();
+});
 function openshouInvoiceEdit(id){
 	layer.open({
         type: 2,

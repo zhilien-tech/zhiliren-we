@@ -21,34 +21,34 @@
                           <form role="form" class="form-horizontal">
                            <div class="form-group row marginBott5 cf">
                              <div class="col-md-1 textPadding">
-                               <select id="kaiInvoiceSelect" class="form-control TimeInput">
-                                   <!-- <option value=" ">全部</option> -->
+                               <select id="kaiInvoiceSelect" name="status" class="form-control TimeInput">
+                                   <option value=" ">全部</option>
                                    <option value="1">开发票中</option>
                                    <option value="2">已开发票</option>
                                </select>
                              </div>
                              <div class="col-md-1 textPadding">
-                               <select id="username" class="form-control TimeInput">
+                               <select id="kaibilluserid" name="billuserid" class="form-control TimeInput">
                                    <option value="">开票人</option>
 				                    <c:forEach items="${obj.listIssuer}" var="one">
-				                    	<option value="${one.userName }">
+				                    	<option value="${one.billuserid }">
 			                            	${one.userName }
 			                            </option>
 			                        </c:forEach>
                                </select>
                              </div>
                              <div class="col-md-1 textPadding">
-                               <input id="kaiInvoiceBeginDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'kaiInvoiceBeginDate\')}'})" class="form-control TimeInput" placeholder="2017-02-20"> 
+                               <input id="kaiInvoiceBeginDate" name="invoicedate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'kaiInvoiceBeginDate\')}'})" class="form-control TimeInput" placeholder="2017-02-20"> 
                              </div>
                              <label class="col-md-1 labelClas">至</label>
                              <div class="col-md-1 textPadding">
-                               <input id="kaiInvoiceEndDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'kaiInvoiceEndDate\')}'})" class="form-control TimeInput" placeholder="2017-02-22">
+                               <input id="kaiInvoiceEndDate" name="invoicedate"  type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'kaiInvoiceEndDate\')}'})" class="form-control TimeInput" placeholder="2017-02-22">
                              </div>
                              <div class="col-md-3 textPadding"><!-- 发票号/单位 搜索框 -->
                                <input id="invoicenumId" name="invoicenum" type="text" class="form-control" placeholder="发票号/单位">
                              </div>
                              <div class="col-md-2"><!-- 搜索 按钮 -->
-                               <button id="kaiSearchInvoiceBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
+                               <button id="kaiSearchInvoiceBtn" onclick="kaiInvoiceSelectData();" type="button" class="btn btn-primary btn-sm">搜索</button>
                                <button id="kaiEmptyBtn" type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
                              </div>
                            </div>
@@ -76,19 +76,21 @@
                          </table>
                     </div>
                   </div><!--end 开发票-->
-                  <div class="tab-pane pane-content" id="tab_2"><!--收发票-->
+                  
+ <!-----------------------------------------------------------------------收发票----------------------------------------------------------------------------------------------------------->
+                  <div class="tab-pane pane-content" id="tab_2">
                     <div class="box-header">
                         <form role="form" class="form-horizontal">
                           <div class="form-group row marginBott5 cf">
                             <div class="col-md-1 textPadding">
                               <select id="shouInvoiceSelect" class="form-control TimeInput">
-                                  <!-- <option value=" ">全部</option> -->
+                                  <option value=" ">全部</option>
                                   <option value="3">收发票中</option>
                                   <option value="4">已收发票</option>
                               </select>
                             </div>
                             <div class="col-md-1 textPadding">
-                              <select id="billuserid" name="username" class="form-control TimeInput">
+                              <select id="shoubilluserid" name="billuserid" class="form-control TimeInput">
                                   <option value="">收票人</option>
 				                    <c:forEach items="${obj.listIssuer}" var="one" varStatus="indexs">
 				                    	<option value="${one.billuserid }">
@@ -149,8 +151,19 @@
 <script type="text/javascript">
 	var BASE_PATH = '${base}';
 </script>
-<!-- <script src="${base}/admin/order/invoice.js"></script> -->
+<script src="${base }/admin/order/ordercommon.js"></script>
 <script src="${base}/admin/invoiceinfo/invoiceinfo.js"></script>
 <!-- My97DatePicker -->
 <script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
-<script src="${base }/admin/order/ordercommon.js"></script>
+<script type="text/javascript">
+//他页面回调
+function successCallback(id){
+	  KaiInvoiceTable1.ajax.reload(null,false);
+	  shouInvoiceTable1.ajax.reload(null,false);
+	  if(id == '1'){
+		  layer.msg("确认开发票成功!",{time: 2000});
+	  }else if(id == '2'){
+		  layer.msg("确认收发票成功!",{time: 2000});
+	  }
+}
+</script>

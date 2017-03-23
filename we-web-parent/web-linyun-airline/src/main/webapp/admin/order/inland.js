@@ -40,9 +40,9 @@ function initDatatable() {
                     {"data": "date", "bSortable": false,
                     	render:function(data, type, row, meta) {
                     		var result = '<ul>';
-                    		$.each(row.customerinfo, function(name, value) {
-                    			if(value && value.leavetdate != undefined){
-                    				result += '<li style="list-style:none;">'+value.leavetdate+'</li>';
+                    		$.each(row.leavedates, function(name, value) {
+                    			if(value && value != undefined){
+                    				result += '<li style="list-style:none;">'+value+'</li>';
                     			}
                     		});
                     		result += '</ul>';
@@ -152,13 +152,26 @@ function initDatatable() {
                     {"data": "telephone", "bSortable": false},
                     {"data": "action", "bSortable": false}
             ],
-        columnDefs: [{
+        "columnDefs": [/*{ "sWidth": "8.33%",  "targets": [0] },
+						{ "sWidth": "3.33%",  "targets": [1] },
+						{ "sWidth": "8.33%",  "targets": [2] },
+						{ "sWidth": "8.33%",  "targets": [3] },
+						{ "sWidth": "8.33%",  "targets": [4] },
+						{ "sWidth": "8.33%",  "targets": [5] },
+						{ "sWidth": "8.33%",  "targets": [6] },
+						{ "sWidth": "8.33%",  "targets": [7] },
+						{ "sWidth": "8.33%",  "targets": [8] },
+						{ "sWidth": "8.33%",  "targets": [9] },
+						{ "sWidth": "8.33%",  "targets": [10] },
+						{ "sWidth": "8.33%",  "targets": [11] },
+						{ "sWidth": "10.33%",  "targets": [12] },*/
+                        {
             //   指定第一列，从0开始，0表示第一列，1表示第二列……
             targets: 12,
             render: function(data, type, row, meta) {
                 return '<a style="cursor:pointer;" onclick="edit('+row.id+','+row.ordersstatus+');">编辑</a>'
             }
-        }]
+        },]
     });
 }
 

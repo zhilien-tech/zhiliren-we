@@ -222,3 +222,18 @@ FROM
 	t_order_customneed toc
 INNER JOIN t_pnr_info tpi ON toc.id = tpi.needid
 $condition
+/*get_bank_info_select*/
+SELECT
+	*
+FROM
+	dict_info
+WHERE
+	dictname IN (
+		SELECT DISTINCT
+			bankName
+		FROM
+			t_bankcard
+		WHERE
+			companyId = @companyId
+	)
+AND typecode = @typeCode

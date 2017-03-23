@@ -32,9 +32,9 @@
 							<label>生成订单</label> 
 							<select id="orderStatus" class="form-control input-sm conSelect cf">
 								<option value="1" selected="selected">查询</option>
-								<option value="2">预定</option>
-								<option value="3">出票</option>
+								<option value="2">预订</option>
 								<option value="4">开票</option>
+								<option value="3">出票</option>
 								<option value="5">关闭</option>
 							<!-- </select> <label>提醒：</label> 
 							<select id="remindType" class="form-control input-sm timSelect">
@@ -671,9 +671,9 @@
 						}
 						if (result.parsingType == "SD0Q0") {
 							var pnrThread = '<tr>' + '<th>序号</th>'
-									+ '<th>航班号</th>' + '<th>预定舱位</th>'
-									+ '<th>预定日期</th>' + '<th>航段</th>'
-									+ '<th>预定座位数</th>' + '<th>航程时间</th>'
+									+ '<th>航班号</th>' + '<th>预订舱位</th>'
+									+ '<th>预订日期</th>' + '<th>航段</th>'
+									+ '<th>预订座位数</th>' + '<th>航程时间</th>'
 									+ '</tr>';
 							var pnrBody = '';
 							var obj = result.arrayList;
@@ -733,87 +733,86 @@
 		</script>
 		<script type="text/javascript">
 			/* 段数按钮点击事件 */
-			$(document)
-					.click(
-							function(e) {
-								var num_id = $(e.target).attr('id');
-								if (num_id == null || num_id == undefined) {
-									return;
-								}
-								/* 点击 散客每段提醒事件 */
-								var moreNum = num_id.indexOf("moreNum");
-								if (moreNum == 0) {
-									document
-											.getElementById('paragraphListInfo').innerHTML = "";
-									var index = num_id.substring(7,
-											num_id.length) - 1;
-									var outCityI = $("#outCity" + index)
-											.select2("val");
-									var ArriveCityI = $(
-											"#singleArriveCity" + index)
-											.select2("val");
-									var outDateI = $("#outDatepicker" + index)
-											.val();
-									var returnDateI = $(
-											"#returnDatepicker" + index).val();
+			$(document).click(
+			function(e) {
+				var num_id = $(e.target).attr('id');
+				if (num_id == null || num_id == undefined) {
+					return;
+				}
+				/* 点击 散客每段提醒事件 */
+				var moreNum = num_id.indexOf("moreNum");
+				if (moreNum == 0) {
+					document
+							.getElementById('paragraphListInfo').innerHTML = "";
+					var index = num_id.substring(7,
+							num_id.length) - 1;
+					var outCityI = $("#outCity" + index)
+							.select2("val");
+					var ArriveCityI = $(
+							"#singleArriveCity" + index)
+							.select2("val");
+					var outDateI = $("#outDatepicker" + index)
+							.val();
+					var returnDateI = $(
+							"#returnDatepicker" + index).val();
 
-									$("#duanshuId").val(index);
-									$("#origin").val(outCityI);
-									$("#destination").val(ArriveCityI);
-									$("#departuredate").val(outDateI);
-									$("#returndate").val(returnDateI);
-									$("#departureCardDate").val(outDateI);
-									$("#returnCardDate").val(returnDateI);
-									//获取去程数据 
-									$("#airInfoList").val(1);
-									searchInlandOrder();
-									/* 点击不同段落 切换按钮样式 */
-									var styleIndex = index + 1;
-									$("#moreNum" + styleIndex).attr("class",
-											"btnStyle");
-								}
-								/* 点击 机票库 每段提醒事件 */
-								if (num_id != null) {
-									var num_id = $(e.target).attr('id');
-									if (num_id == null || num_id == undefined) {
-										return;
-									}
-									var teamNumMore = num_id
-											.indexOf("teamNumMore");
-									if (teamNumMore == 0) {
-										/* 去程数据 */
-										var index = num_id.substring(11,
-												num_id.length) - 1;
-										var teamOutCityI = $(
-												"#teamOutCity" + index)
-												.select2("val");
-										var teamArriveCityI = $(
-												"#teamArriveCity" + index)
-												.select2("val");
-										var teamOutDateI = $(
-												"#teamOutDatepicker" + index)
-												.val();
-										var teamReturnDateI = $(
-												"#teamReturnDatepicker" + index)
-												.val();
-										$("#teamorigin").val(teamOutCityI);
-										$("#teamdestination").val(
-												teamArriveCityI);
-										$("#teamdeparturedate").val(
-												teamOutDateI);
-										$("#teamreturndate").val(
-												teamReturnDateI);
-										searchInternetOrders();
-										/* 点击不同段落 切换按钮样式 */
-										var styleIndex = index + 1;
-										$("#travelTeamTypeNum li").attr(
-												"class", "");
-										$("#teamNumMore" + styleIndex).attr(
-												"class", "btnStyle");
+					$("#duanshuId").val(index);
+					$("#origin").val(outCityI);
+					$("#destination").val(ArriveCityI);
+					$("#departuredate").val(outDateI);
+					$("#returndate").val(returnDateI);
+					$("#departureCardDate").val(outDateI);
+					$("#returnCardDate").val(returnDateI);
+					//获取去程数据 
+					$("#airInfoList").val(1);
+					searchInlandOrder();
+					/* 点击不同段落 切换按钮样式 */
+					var styleIndex = index + 1;
+					$("#moreNum" + styleIndex).attr("class",
+							"btnStyle");
+				}
+				/* 点击 机票库 每段提醒事件 */
+				if (num_id != null) {
+					var num_id = $(e.target).attr('id');
+					if (num_id == null || num_id == undefined) {
+						return;
+					}
+					var teamNumMore = num_id
+							.indexOf("teamNumMore");
+					if (teamNumMore == 0) {
+						/* 去程数据 */
+						var index = num_id.substring(11,
+								num_id.length) - 1;
+						var teamOutCityI = $(
+								"#teamOutCity" + index)
+								.select2("val");
+						var teamArriveCityI = $(
+								"#teamArriveCity" + index)
+								.select2("val");
+						var teamOutDateI = $(
+								"#teamOutDatepicker" + index)
+								.val();
+						var teamReturnDateI = $(
+								"#teamReturnDatepicker" + index)
+								.val();
+						$("#teamorigin").val(teamOutCityI);
+						$("#teamdestination").val(
+								teamArriveCityI);
+						$("#teamdeparturedate").val(
+								teamOutDateI);
+						$("#teamreturndate").val(
+								teamReturnDateI);
+						searchInternetOrders();
+						/* 点击不同段落 切换按钮样式 */
+						var styleIndex = index + 1;
+						$("#travelTeamTypeNum li").attr(
+								"class", "");
+						$("#teamNumMore" + styleIndex).attr(
+								"class", "btnStyle");
 
-									}
-								}
-							});
+					}
+				}
+			});
 
 			/* ------------------------内陆跨海 航程类型 点击事件-------------------------*/
 			function radioFunct() {
@@ -891,9 +890,12 @@
 		    		fees=0;
 		    	}
 		    	var price = parseFloat((costprice * discountFare)/100) + parseFloat(fees);
-		    	price = price+'';
-		    	price=price.substring(0, price.lastIndexOf(".", price.length)+3);
-
+		        price = price+'';
+		        if(price.indexOf(".")>0){
+		        	price=price.substring(0, price.lastIndexOf(".", price.length)+3);
+		        }
+		        console.log(price);
+				
 		    	if(costprice){
 		     		if(isNaN(price)){
 		     			$(this).parent().parent().find('[name=cAirPretium]').val('');
