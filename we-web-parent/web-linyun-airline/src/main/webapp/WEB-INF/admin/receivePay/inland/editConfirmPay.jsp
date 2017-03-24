@@ -47,7 +47,9 @@
                 			<td>${one.billingdate }</td>
                 			<td>${one.peoplecount }</td>
                 			<td>${one.approver }</td>
-                			<td>${one.salesprice }</td>
+                			<td>
+                				<fmt:formatNumber type="number" value="${one.salesprice }" pattern="0.00" maxFractionDigits="2"/>
+                			</td>
                 		</tr>
                 	</c:forEach>
 				</tbody>
@@ -84,7 +86,9 @@
 						</select>
 					</td>
 					<td>合计：</td>
-					<td id="totalMoney">${obj.totalMoney }</td>
+					<td id="totalMoney">
+						<fmt:formatNumber type="number" value="${obj.totalMoney }" pattern="0.00" maxFractionDigits="2"/>
+					</td>
 					<input id="totalMoney" name="totalMoney" type="hidden" value="${obj.totalMoney }">
 				</tr>
 			</table>
