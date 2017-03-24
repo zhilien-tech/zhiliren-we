@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.pager.Pager;
@@ -184,4 +185,13 @@ public class AirlinePolicyModule {
 		return JsonResult.success("更新成功!");
 	}
 
+	/**
+	 * 删除记录
+	 */
+	@At
+	public Object download(@Param("id") final long id, final HttpServletResponse response) {
+
+		airlinePolicyService.downloadById(id, response);
+		return null;
+	}
 }

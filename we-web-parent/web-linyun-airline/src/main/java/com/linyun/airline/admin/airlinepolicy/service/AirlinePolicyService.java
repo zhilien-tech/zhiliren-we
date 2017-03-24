@@ -8,10 +8,19 @@ package com.linyun.airline.admin.airlinepolicy.service;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Chain;
@@ -84,9 +93,17 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 	}
 
 	public TAirlinePolicyEntity addFile(TAirlinePolicyAddForm addForm, HttpSession session) {
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
-		addForm.setCreateTime(new Date());
-		addForm.setUpdateTime(new Date());
+		try {
+			addForm.setCreateTime(df.parse(df.format(new Date())));
+			addForm.setUpdateTime(df.parse(df.format(new Date())));
+		} catch (ParseException e1) {
+
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+
+		}
 		addForm.setStatus(AirlinePolicyEnum.ENABLE.intKey());
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Long companyId = company.getId();
@@ -349,5 +366,59 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 	public static void main(String[] args) {
 		String str = System.getProperty("java.io.tmpdir");
 		System.out.println(File.separator);
+	}
+
+	public void downloadById(long id, HttpServletResponse response) {
+		TAirlinePolicyEntity airlinePolicy = dbDao.fetch(TAirlinePolicyEntity.class, id);
+		String resourceFile = airlinePolicy.getUrl();
+		String fileName = airlinePolicy.getFileName();
+		/*String fileName = "下载吧";*/
+		InputStream is = null;
+		OutputStream out = null;
+		try {
+
+			URL url = new URL(resourceFile);
+			URLConnection connection = url.openConnection();
+			is = connection.getInputStream();
+
+			out = response.getOutputStream();
+			response.reset();
+			response.setContentType("application/octet-stream");
+			response.setHeader("Content-Disposition", "attachment;filename=\""
+					+ new String(fileName.getBytes("utf-8"), "ISO8859-1") + "\"");
+			byte[] buffer = new byte[4096];
+			int count = 0;
+			while ((count = is.read(buffer)) > 0) {
+				out.write(buffer, 0, count);
+			}
+			out.flush();
+			response.flushBuffer();
+			out.close();
+			is.close();
+
+		} catch (Exception e) {
+
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		} finally {
+			try {
+				is.close();
+			} catch (IOException e) {
+
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+
+			}
+			try {
+				out.close();
+			} catch (IOException e) {
+
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+
+			}
+		}
+
 	}
 }
