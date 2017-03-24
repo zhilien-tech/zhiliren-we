@@ -149,6 +149,7 @@
 			"stripeClasses": [ 'strip1','strip2' ],//斑马线
 			"bLengthChange" : false,
 			"bSort": true, //排序功能 
+			"autoWidth": false,
 			"language" : {
 				"url" : "${base}/public/plugins/datatables/cn.json"
 			},
@@ -172,27 +173,22 @@
 	                    		return depositBalance.substring(0,depositBalance.lastIndexOf(' '));
 	                    	}	
 	                    },
-	                    {"data": "type", "bSortable": false}
-	                   
-	            ],
-	        columnDefs: [{ "sWidth": "26.66%",  "targets": [0] },
-	     				{ "sWidth": "10.66%",  "targets": [1] },
+	                    {"data": "type", "bSortable": false},
+	                    {"data": "active", "bSortable": false,
+	                    	render: function(data, type, row, meta) {
+	        	            	var modify1 = '<a style="cursor:pointer;" href="'+row.pdfurl+'" target="_blank">预览</a>';
+	        	            	var modify2 = '<a style="cursor:pointer;" onclick="update('+row.id+');">编辑</a>';
+	        	            	var modify3 = '<a style="cursor:pointer;" href="'+row.url+'">下载</a>';
+	        	            	var modify4 = '<a style="cursor:pointer;" onclick="deleteFile('+row.id+');">删除</a>';
+	        	                return modify1+"&nbsp; &nbsp; &nbsp;"+modify2+"&nbsp; &nbsp; &nbsp;"+modify3+"&nbsp; &nbsp; &nbsp;"+modify4;
+	        	            }
+	                    }],
+	        "columnDefs": [{ "sWidth": "34.66%",  "targets": [0] },
+	     				{ "sWidth": "8.66%",  "targets": [1] },
 	    				{ "sWidth": "16.66%",  "targets": [2] },
 	    				{ "sWidth": "12.66%",  "targets": [3] },
-	    				{ "sWidth": "10.66%",  "targets": [4] },
-	    				{ "sWidth": "22.66%",  "targets": [5] },
-	                    {
-	            //   指定第一列，从0开始，0表示第一列，1表示第二列……
-	            targets: 5,
-	            render: function(data, type, row, meta) {
-	            	
-	            	var modify1 = '<a style="cursor:pointer;" href="'+row.pdfurl+'" target="_blank">预览</a>';
-	            	var modify2 = '<a style="cursor:pointer;" onclick="update('+row.id+');">编辑</a>';
-	            	var modify3 = '<a style="cursor:pointer;" href="'+row.url+'">下载</a>';
-	            	var modify4 = '<a style="cursor:pointer;" onclick="deleteFile('+row.id+');">删除</a>';
-	                return modify1+"&nbsp; &nbsp; &nbsp;"+modify2+"&nbsp; &nbsp; &nbsp;"+modify3+"&nbsp; &nbsp; &nbsp;"+modify4;
-	            }
-	        }]
+	    				{ "sWidth": "6.66%",  "targets": [4] },
+	    				{ "sWidth": "20.66%",  "targets": [5] }]
 		});
 	}
 	$(function() {
