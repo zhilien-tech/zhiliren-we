@@ -107,6 +107,7 @@
 	        success: function (data ,textStatus, jqXHR){
 	        	layer.msg("提交成功！",{time: 2000});
 	        	closewindow();
+	        	window.parent.successCallback('5');
 	        },
 	        error:function (XMLHttpRequest, textStatus, errorThrown) {      
 	            layer.msg("请求失败！",{time: 2000});
