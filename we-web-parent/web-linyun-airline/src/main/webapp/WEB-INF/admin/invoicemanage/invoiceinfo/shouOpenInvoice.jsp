@@ -17,7 +17,7 @@
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
             <input type="button" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo()" value="确认收发票"/>
-            <h4 class="invoiceH4">收款信息</h4>
+            <h4 class="invoiceH4">收发票信息</h4>
     </div>
     <div style="height:550px; overflow-y:auto;">
       <div class="modal-body">
@@ -45,7 +45,7 @@
                   			<td>${one.customename }</td>
                   			<td>${one.linkMan }</td>
                   			<td>${one.issuer }</td>
-                  			<td>${one.salespricesum }</td>
+                  			<td>${one.costpricesum }</td>
                   		</tr>
                   	</c:forEach>
                   </tbody>

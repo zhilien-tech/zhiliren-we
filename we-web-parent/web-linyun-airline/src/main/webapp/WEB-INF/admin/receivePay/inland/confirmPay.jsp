@@ -48,7 +48,9 @@
                 			<td>${one.billdate }</td>
                 			<td>${one.peoplecount }</td>
                 			<td>${one.approver }</td>
-                			<td>${one.saleprice }</td>
+                			<td>
+                				<fmt:formatNumber type="number" value="${one.saleprice }" pattern="0.00" maxFractionDigits="2"/>
+                			</td>
                 		</tr>
                 	</c:forEach>
 				</tbody>
@@ -75,7 +77,9 @@
 						</select>
 					</td>
 					<td>合计：</td>
-					<td id="totalMoney">${obj.totalMoney }</td>
+					<td id="totalMoney">
+						<fmt:formatNumber type="number" value="${obj.totalMoney }" pattern="0.00" maxFractionDigits="2"/>
+					</td>
 					<input id="totalMoney" name="totalMoney" type="hidden" value="${obj.totalMoney }">
 				</tr>
 			</table>
@@ -86,10 +90,17 @@
 							<option value=1 selected="selected">国内</option>
 							<option value=2>境外</option>
 					</select></td>
-					<td>用途：</td>
+					<td>项目用途：</td>
 					<td><select id="purpose" name="purpose" class="form-control input-sm">
 							<c:forEach var="one" items="${obj.fkytList}">
-	                        	<option value="${one.id }">${one.comDictName }</option>
+								<c:choose>
+	                          		<c:when test="${obj.purpose eq one.id }">
+			                        	 <option value="${one.id }" selected="selected">${one.comDictName }</option>
+	                          		</c:when>
+	                          		<c:otherwise>
+		                        	 <option value="${one.id }">${one.comDictName }</option>
+	                          		</c:otherwise>
+	                          	</c:choose>
 	                        </c:forEach>
 					</select></td>
 					<td>资金种类：</td>
@@ -113,7 +124,15 @@
 					<td><select id="payCurrency" name="payCurrency" class="form-control input-sm">
 							<option value="0">--请选择--</option>
 							<c:forEach var="one" items="${obj.bzList}">
-	                        	<option value="${one.id }">${one.dictCode }</option>
+	                        	<%-- <option value="${one.id }">${one.dictCode }</option> --%>
+	                        	<c:choose>
+	                          		<c:when test="${obj.payCurreny eq one.id }">
+			                        	 <option value="${one.id }" selected="selected">${one.dictCode }</option>
+	                          		</c:when>
+	                          		<c:otherwise>
+		                        	 <option value="${one.id }">${one.dictCode }</option>
+	                          		</c:otherwise>
+	                          	</c:choose>
 	                        </c:forEach>
 					</select></td>
 				</tr>
@@ -181,7 +200,7 @@
 			'multi' : false,//multi设置为true将允许多文件上传
 			'successTimeout' : 1800,
 			'queueSizeLimit' : 100,
-			'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html',
+			'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html;jsessionid=${pageContext.session.id}',
 			'onUploadStart' : function(file) {
 				$("#submit").attr('disabled',true);
 			},
@@ -208,7 +227,10 @@
 						alert("文件 ["+file.name+"] 类型不正确！");
 						break;
 					}
-				}
+				},
+				onError: function(event, queueID, fileObj) {　
+					$("#submit").attr('disabled',false);
+		        }
 			});
 		});
 	

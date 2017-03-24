@@ -47,7 +47,9 @@
                 			<td>${one.billingdate }</td>
                 			<td>${one.peoplecount }</td>
                 			<td>${one.approver }</td>
-                			<td>${one.salesprice }</td>
+                			<td>
+                				<fmt:formatNumber type="number" value="${one.salesprice }" pattern="0.00" maxFractionDigits="2"/>
+                			</td>
                 		</tr>
                 	</c:forEach>
 				</tbody>
@@ -84,7 +86,9 @@
 						</select>
 					</td>
 					<td>合计：</td>
-					<td id="totalMoney">${obj.totalMoney }</td>
+					<td id="totalMoney">
+						<fmt:formatNumber type="number" value="${obj.totalMoney }" pattern="0.00" maxFractionDigits="2"/>
+					</td>
 					<input id="totalMoney" name="totalMoney" type="hidden" value="${obj.totalMoney }">
 				</tr>
 			</table>
@@ -101,7 +105,7 @@
 							<option value=2 selected="selected">境外</option>
 						</c:if>
 					</select></td>
-					<td>用途：</td>
+					<td>项目用途：</td>
 					<td><select id="purpose" name="purpose" class="form-control input-sm">
 							<c:forEach var="one" items="${obj.fkytList}">
 	                        	<%-- <option value="${one.id }">${one.dictName }</option> --%>
@@ -249,7 +253,7 @@
 				'multi' : false,//multi设置为true将允许多文件上传
 				'successTimeout' : 1800,
 				'queueSizeLimit' : 100,
-				'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html',
+				'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html;jsessionid=${pageContext.session.id}',
 				'onUploadStart' : function(file) {
 					$("#submit").attr('disabled',true);
 				},
@@ -276,7 +280,10 @@
 							alert("文件 ["+file.name+"] 类型不正确！");
 							break;
 						}
-					}
+					},
+					onError: function(event, queueID, fileObj) {　
+						$("#submit").attr('disabled',false);
+			        }  
 				});
 			});
 		
