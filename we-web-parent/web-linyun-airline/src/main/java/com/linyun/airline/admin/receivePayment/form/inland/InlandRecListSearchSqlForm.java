@@ -54,6 +54,7 @@ public class InlandRecListSearchSqlForm extends DataTablesParamForm {
 		}
 		cnd.and("r.userid", "in", loginUserId);
 		cnd.and("r.orderstype", "=", OrderTypeEnum.FIT.intKey()); //散客
+		cnd.orderBy("r.receivedate", "DESC");
 		return cnd;
 	}
 

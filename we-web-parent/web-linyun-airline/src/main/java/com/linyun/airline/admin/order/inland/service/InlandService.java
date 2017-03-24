@@ -39,6 +39,7 @@ import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity
 import com.linyun.airline.admin.customneeds.service.EditPlanService;
 import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
+import com.linyun.airline.admin.invoicemanage.invoiceinfo.enums.InvoiceInfoEnum;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.inland.enums.PassengerTypeEnum;
 import com.linyun.airline.admin.order.inland.enums.PayMethodEnum;
@@ -210,8 +211,14 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			String arrivecity = (String) map.get("arrivecity");
 			//日期
 			String leavedate = (String) map.get("leavedate");
-			Integer peoplecount = Integer.valueOf((String) map.get("peoplecount"));
-			Integer tickettype = Integer.valueOf((String) map.get("tickettype"));
+			Integer peoplecount = null;
+			if (!Util.isEmpty(map.get("peoplecount"))) {
+				peoplecount = Integer.valueOf((String) map.get("peoplecount"));
+			}
+			Integer tickettype = null;
+			if (!Util.isEmpty(map.get("tickettype"))) {
+				tickettype = Integer.valueOf((String) map.get("tickettype"));
+			}
 			TOrderCustomneedEntity customneedEntity = new TOrderCustomneedEntity();
 			customneedEntity.setLeavecity(leavecity);
 			customneedEntity.setArrivecity(arrivecity);
@@ -1284,6 +1291,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Map<String, Object> result = new HashMap<String, Object>();
 		String ids = request.getParameter("ids");
 		String sqlString = sqlManager.get("get_sea_payapply_table_data");
@@ -1294,15 +1303,18 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		cnd.and("tpi.id", "in", ids);
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		result.put("orders", orders);
+		//检索条件
+		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class, Cnd.where("comTypeCode", "=", FKYTCODE)
+				.and("comId", "=", company.getId()), null);
 		try {
 			result.put("bzSelect", externalInfoService.findDictInfoByName("", BIZHONGCODE));
-			result.put("ytSelect", externalInfoService.findDictInfoByName("", FKYTCODE));
 		} catch (Exception e) {
 
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 
 		}
+		result.put("ytSelect", ytselect);
 		result.put("user", user);
 		result.put("ids", ids);
 		return result;
@@ -1475,6 +1487,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			record.put("customs", customs);
 			record.put("orders", orders);
 			record.put("receiveenum", EnumUtil.enum2(AccountReceiveEnum.class));
+			record.put("invoiceenum", EnumUtil.enum2(InvoiceInfoEnum.class));
 		}
 		datatabledata.remove("data");
 		datatabledata.put("data", list);
@@ -1574,6 +1587,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			record.put("paystatusenum", EnumUtil.enum2(AccountPayEnum.class));
 			String leavetdate = FormatDateUtil.dateToOrderDate((Date) record.get("leavetdate"));
 			record.put("leavetdate", leavetdate);
+			record.put("invoiceenum", EnumUtil.enum2(InvoiceInfoEnum.class));
 		}
 		datatabledata.remove("data");
 		datatabledata.put("data", list);

@@ -60,7 +60,7 @@ function saveOrderInfo(){
 		row1.peoplecount = cPersonAmount;
 		row1.tickettype = tickettype;
 		row1.cRemark = cRemark;
-
+		console.log(tickettype);
 		lenthcustom += $(this).find('[name=cOutDate]').val();
 		lenthcustom += $(this).find('[name=cPersonAmount]').val();
 		lenthcustom += $(this).find('[name=cRemark]').val();
@@ -118,14 +118,16 @@ function saveOrderInfo(){
 		dataType : 'json',
 		type: 'POST', 
 		delay : 250,
+		ansyc : false,
 		data: {
 			"data":JSON.stringify(customdata)
 		}, 
 		url : BASE_PATH  + "/admin/search/saveCustomerNeeds.html",
 		success: function (result) { 
-			if(result.status==200){
-
-				layer.msg('添加成功', {time:1000}, function(){
+			if(200==result.status){
+				//关闭加载层
+				layer.close(layerIndex);
+				layer.msg('添加成功', {time:1500}, function(){
 					//跳转新的标签页
 					var url = BASE_PATH;
 					var data = result.data;
@@ -137,8 +139,6 @@ function saveOrderInfo(){
 					window.open(url);
 					//重新刷新页面
 					window.location.reload();
-					//关闭加载层
-					layer.close(layerIndex);
 				}); 
 
 			}else{

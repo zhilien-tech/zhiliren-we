@@ -174,9 +174,30 @@
 		                     <td><label class="labelWid">早中晚：</label></td>
 		                     <td>
 		                       <select id="tickettype" name="tickettype" disabled="disabled" class="form-control input-sm textWid" value="${customneed.cusinfo.tickettype }">
-			                         <option value="1">早</option>
-			                         <option value="2">中</option>
-			                         <option value="3">晚</option>
+			                         <c:choose>
+			                       	 	<c:when test="${customneed.cusinfo.tickettype eq 1 }">
+					                         <option value="1" selected="selected">早</option>
+			                       	 	</c:when>
+			                       	 	<c:otherwise>
+				                         <option value="1">早</option>
+			                       	 	</c:otherwise>
+			                       	 </c:choose>
+			                       	 <c:choose>
+			                       	 	<c:when test="${customneed.cusinfo.tickettype eq 2 }">
+					                         <option value="2" selected="selected">中</option>
+			                       	 	</c:when>
+			                       	 	<c:otherwise>
+				                         	<option value="2">中</option>
+			                       	 	</c:otherwise>
+			                       	 </c:choose>
+			                       	 <c:choose>
+			                       	 	<c:when test="${customneed.cusinfo.tickettype eq 3 }">
+					                         <option value="3" selected="selected">晚</option>
+			                       	 	</c:when>
+			                       	 	<c:otherwise>
+				                         	<option value="3">晚</option>
+			                       	 	</c:otherwise>
+			                       	 </c:choose>
 			                       </select>
 		                     </td>
 		                   </tr>

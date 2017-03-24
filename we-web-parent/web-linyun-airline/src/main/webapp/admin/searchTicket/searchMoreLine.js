@@ -195,7 +195,8 @@ $("#searchSingleTicketsBtn").click(function() {
 		}
 	}
 	
-	var msgIndex = layer.msg('查询中...',{time:0});
+	/*var msgIndex = layer.msg('查询中...',{time:0});*/
+	var layerIndex =  layer.load(1, {shade: "#000"});
 	
 	$("#origin").val($("#outCity0").select2("val"));
 	$("#destination").val($("#singleArriveCity0").select2("val"));
@@ -245,7 +246,8 @@ $("#searchSingleTicketsBtn").click(function() {
 		success : function(resp) {
 			var outLiList = "";
 			var returnLiList = "";
-			layer.close(msgIndex);
+			/*layer.close(msgIndex);*/
+			layer.close(layerIndex);
 			if ("200" == resp.statusCode) {
 				/* 日期小卡片  */
 				getDateCard();

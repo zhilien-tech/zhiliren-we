@@ -34,13 +34,14 @@ SELECT
 FROM
 	t_pnr_info pi
 INNER JOIN t_pay_pnr pp ON pi.id = pp.pnrId
+INNER JOIN t_pay p ON p.id = pp.payId
 INNER JOIN t_order_customneed oc ON pi.needid = oc.id
 INNER JOIN t_up_order uo ON oc.ordernum = uo.id
 LEFT JOIN t_customer_info ci ON ci.id = uo.userid
 INNER JOIN t_finance_info fi ON uo.id = fi.orderid
 $condition
 ORDER BY
-	oc.leavetdate DESC
+	p.approveTime DESC
 	
 	
 /*receivePay_payed_list*/
@@ -61,7 +62,7 @@ LEFT JOIN t_order_customneed oc ON oc.id=pi.needid
 LEFT JOIN t_up_order uo ON uo.id=oc.ordernum
 $condition
 ORDER BY
-	leaveDate DESC
+	p.confirmDate DESC
 
 /*receivePay_payed_edit*/
 SELECT
@@ -130,7 +131,9 @@ SELECT
 	u.userName proposer,
 	pi.costpricesum salePrice,
 	p.approver,
-	p.approveResult
+	p.approveResult,
+	p.purpose,
+	p.payCurrency
 FROM
 	t_pnr_info pi
 LEFT JOIN t_order_customneed oc ON oc.id = pi.needid

@@ -374,6 +374,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("um.userId", "=", loginUserId);
 		cnd.and("m.msgType", "in", msgType);
+		/*cnd.and("um.isRead", "=", READ);*/
 		List<Record> records = dbDao.query(sql, cnd, null);
 		List<Record> recordsByCondition = new ArrayList<Record>();
 
