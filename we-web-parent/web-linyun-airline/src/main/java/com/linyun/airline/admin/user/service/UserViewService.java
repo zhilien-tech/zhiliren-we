@@ -118,7 +118,7 @@ public class UserViewService extends BaseService<TUserEntity> {
 	public Map<String, String> saveEmployeeData(TUserAddForm addForm, Long areaId, Long jobId, final HttpSession session) {
 		//先添加用户数据
 		TUserEntity userEntity = new TUserEntity();
-		userEntity.setUserName(addForm.getUserName());
+		userEntity.setFullName(addForm.getFullName());//用户姓名
 		userEntity.setTelephone(addForm.getTelephone());
 		userEntity.setPassword(CommonConstants.INITIAL_PASSWORD);
 		userEntity.setQq(addForm.getQq());
@@ -336,19 +336,19 @@ public class UserViewService extends BaseService<TUserEntity> {
 	}
 
 	//用户名称唯一性校验
-	public Object checkDeptNameExist(final String userName, final Long userId) {
+	/*public Object checkDeptNameExist(final String fullName, final Long userId) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		int count = 0;
 		if (Util.isEmpty(userId)) {
 			//添加时校验
-			count = nutDao.count(TUserEntity.class, Cnd.where("userName", "=", userName));
+			count = nutDao.count(TUserEntity.class, Cnd.where("fullName", "=", fullName));
 		} else {
 			//更新时校验
-			count = nutDao.count(TUserEntity.class, Cnd.where("userName", "=", userName).and("id", "!=", userId));
+			count = nutDao.count(TUserEntity.class, Cnd.where("fullName", "=", fullName).and("id", "!=", userId));
 		}
 		map.put("valid", count <= 0);
 		return map;
-	}
+	}*/
 
 	//联系电话唯一性校验
 	public Object checkTelephoneExist(final String telephone, final Long userId) {
@@ -374,7 +374,7 @@ public class UserViewService extends BaseService<TUserEntity> {
 		Sql sql = Sqls.create(sqlManager.get("employee_personalInfo_list"));
 		sql.params().set("userId", userId);
 		List<Record> personalList = dbDao.query(sql, null, null);
-		personalList.get(0).getString("userName");
+		personalList.get(0).getString("fullName");
 		personalList.get(0).getString("telephone");
 		personalList.get(0).getString("landline");
 		personalList.get(0).getString("qq");

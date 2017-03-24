@@ -39,11 +39,14 @@ public class TUserModForm extends ModForm {
 	/*select2 id字符串*/
 	private String selectedAreaIds;
 
-	/**用户姓名*/
+	/**用户名*/
 	private String userName;
 
 	/**密码*/
 	private String password;
+
+	/**用户姓名*/
+	private String fullName;
 
 	/**新密码*/
 	private String newPass;

@@ -119,7 +119,7 @@
           <li class="dropdown user user-menu">
              <a href="#" class="dropdown-toggle" style= "cursor:default">
               <!-- 登录的当前用户-->
-               <span class="hidden-xs">${loginuser.userName}</span>
+               <span class="hidden-xs">${loginuser.fullName}</span>
             </a>
           </li>
           <li>

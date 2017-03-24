@@ -53,9 +53,9 @@
 						<input name="id" type="hidden" value='${obj.userInfo.id}' /> <label
 							class="col-sm-3 text-right padding">用户姓名：</label>
 						<div class="col-sm-3 padding">
-							<input id="userName" name="userName" type="text"
+							<input id="fullName" name="fullName" type="text"
 								class="form-control input-sm inputWidth"
-								value="${obj.userInfo.userName}" /> <span class="prompt">*</span>
+								value="${obj.userInfo.fullName}" /> <span class="prompt">*</span>
 						</div>
 					</div>
 					<div class="form-group form-group1">
@@ -222,12 +222,12 @@ function validateParams(){
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-        	userName: {
+        	fullName: {
                 validators: {
                     notEmpty: {
-                        message: '用户名不能为空!'
+                        message: '用户姓名不能为空!'
                     },
-                    remote: {  
+                    /* remote: {  
                          url: '${base}/admin/user/checkUserNameExist.html',//验证地址
                          message: '用户名称已存在，请重新输入!',//提示消息
                          delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
@@ -235,11 +235,11 @@ function validateParams(){
                          //自定义提交数据，默认值提交当前input value
                          data: function(validator) {
                             return {
-                            	userName:$('input[name="userName"]').val(),
+                            	fullName:$('input[name="fullName"]').val(),
                             	id:'${obj.userInfo.id}'
                             };
                          }
-                     },
+                     }, */
                      stringLength: {/*长度提示*/
                    	    min: 1,
                    	    max: 6,
@@ -319,7 +319,6 @@ function validateParams(){
 //部门职位联动查询
 function selectDeptName(){
 	$.ajax({
-		cache : true,
 		type : "POST",
 		url : '${base}/admin/user/selectDeptName.html',
 		data : {
@@ -377,7 +376,6 @@ function passwordInit(userId){
 				layer.load(1, {
 					 shade: [0.1,'#fff'] //0.1透明度的白色背景
 				});
-	            layer.msg('初始化成功!',{time: 5000, icon:6});
 				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			    parent.layer.close(index);
 			    window.parent.successCallback('4');

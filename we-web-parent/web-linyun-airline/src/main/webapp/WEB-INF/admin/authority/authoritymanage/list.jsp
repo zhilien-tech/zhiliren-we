@@ -120,11 +120,11 @@
 		deptDatatable.ajax.reload(null,false);
 		areaDatatable.ajax.reload(null,false);
 		  if(id == '1'){
-			  layer.msg("添加成功",{time: 2000, icon:1});
+			  layer.msg("添加成功",{time:2000});
 		  }else if(id == '2'){
-			  layer.msg("修改成功",{time: 2000, icon:1});
+			  layer.msg("修改成功",{time:2000});
 		  }else if(id == '3'){
-			  layer.msg("删除成功",{time: 2000, icon:1});
+			  layer.msg("删除成功",{time:2000});
 		  }
 	  }
 	//描述提示信息弹出层Tooltip

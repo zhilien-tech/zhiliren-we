@@ -257,14 +257,13 @@ public class UserModule {
 	}
 
 	/**
-	 * 校验部门名称
+	 * 校验用户姓名唯一性
 	 */
-	@At
+	/*@At
 	@POST
-	public Object checkUserNameExist(@Param("userName") final String userName, @Param("id") final Long userId) {
-		return userViewService.checkDeptNameExist(userName, userId);
-	}
-
+	public Object checkUserNameExist(@Param("fullName") final String fullName, @Param("id") final Long userId) {
+		return userViewService.checkDeptNameExist(fullName, userId);
+	}*/
 	/**
 	 * 校验联系电话
 	 */

@@ -25,8 +25,12 @@ public class TUserEntity implements Serializable {
 	private long id;
 
 	@Column
-	@Comment("用户姓名")
+	@Comment("用户名")
 	private String userName;
+
+	@Column
+	@Comment("用户姓名")
+	private String fullName;
 
 	@Column
 	@Comment("密码")
