@@ -61,7 +61,7 @@ LEFT JOIN t_order_customneed oc ON oc.id=pi.needid
 LEFT JOIN t_up_order uo ON uo.id=oc.ordernum
 $condition
 ORDER BY
-	leaveDate DESC
+	p.confirmDate DESC
 
 /*receivePay_payed_edit*/
 SELECT

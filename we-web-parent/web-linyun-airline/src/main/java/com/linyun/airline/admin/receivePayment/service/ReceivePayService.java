@@ -698,6 +698,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		if (!Util.eq(null, payChineseMoney)) {
 			payEntity.setPayChineseMoney(payChineseMoney);
 		}
+		payEntity.setConfirmDate(DateTimeUtil.nowDate());
 		updateList.add(payEntity);
 		//更新付款订单信息
 		if (!Util.isEmpty(updateList)) {
