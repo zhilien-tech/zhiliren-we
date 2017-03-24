@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="${base }/public/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/AdminLTE.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
+	<link href="${base }/public/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="${base }/public/dist/css/policyManage.css"><!--本页面Style-->
 </head>
 <body>
@@ -85,6 +86,7 @@
         </form>
       </div>
 	</div>
+
    <!--JS 文件-->
 	<script src="${base }/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script src="${base }/public/bootstrap/js/bootstrap.min.js"></script>
@@ -99,6 +101,7 @@
 	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 		<script type="text/javascript">
 		var BASE_PATH = '${base}';
+	
 	</script>
 	<script type="text/javascript">
 	
@@ -169,9 +172,8 @@
 				'swf' : '${base}/public/plugins/uploadify/uploadify.swf',//指定swf文件
 				'multi' : false,//multi设置为true将允许多文件上传
 				'successTimeout' : 1800,
-				'queueSizeLimit' : 100,
-				'uploader' : '${base}/admin/airlinepolicy/uploadFile.html',//后台处理的页面
-				//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
+				/* 'queueSizeLimit' : 100, */
+				'uploader' : '${base}/admin/airlinepolicy/uploadFile.html;jsessionid=${pageContext.session.id}',
 				//下面的例子演示如何获取到vid
 				 'onUploadSuccess' : function(file, data, response) {
 					 
@@ -203,7 +205,7 @@
 						}
 					});  */
 					
-					/* var innerHtml = "";
+					var innerHtml = "";
 		            if (response) {
 		                innerHtml = "<div><a id='downloadA' href='#' download='"+file.name+"' onclick='downloadFile("
 		                        + data
@@ -213,7 +215,7 @@
 		                        + data + "'></div>";
 		            } else {
 		                innerHtml = "<div>该附件上传失败，请重新上传</div>";
-		            } */
+		            }
 		           // $("#completeFileName").html($("#completeFileName").html() + innerHtml);
 				},
 		        //加上此句会重写onSelectError方法【需要重写的事件】

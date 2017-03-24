@@ -28,7 +28,7 @@
 	                	
 			                  <label class="col-sm-2 text-right padding">交易日期：</label>
 			                  <div class="col-sm-2 padding">
-			                    <input name="tradeDate" id="tradeDate" type="text" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'tradeDate\')}'})"/>
+			                    <input name="tradeDate" id="tradeDate" type="text" class="form-control input-sm" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"/>
 			                  </div>
 	                	</div>
 	                	<div class="form-group form-group1">
@@ -257,8 +257,8 @@
 	                        message: '金额不能为空'
 	                    },
 	                    regexp: {
-	                	 	regexp: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
-	                        message: '请填写正确的金额!'
+	                	 	regexp: /^(([1-9]+)|([0-9]+\.[0-9]{1,2}))$/,
+	                        message: '金额必须为数字(小数点后只能保留两位)!'
 	                    },
 	                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
 	                         url: '${base}/admin/turnover/checkBankCardNumEnough.html',//验证地址

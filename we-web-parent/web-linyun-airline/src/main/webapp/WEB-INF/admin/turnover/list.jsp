@@ -71,7 +71,7 @@
 	                    </select>
 	                  </div>
 	                  <div class="col-md-1 padding">
-	                     <input type="text" class="form-control" placeholder="2017-02-22" name="tradeDate" id="tradeDate" value="" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'tradeDate\')}'})" oninput="select();" >
+	                     <input type="text" class="form-control" placeholder="2017-02-22" name="tradeDate" id="tradeDate" value="" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" oninput="select();" >
 	                  </div>
 	                  <div class="col-md-1 padding">
 	                     <input type="text" class="form-control"  name="companyName" id="companyName" value=""  >

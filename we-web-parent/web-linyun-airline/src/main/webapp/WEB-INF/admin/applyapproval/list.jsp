@@ -13,8 +13,17 @@
   <title>审批手机-分类</title>
 </head>
 <body>
-  <header class="header">分类</header>
+  <header class="header">
+	  <ul class="list-ul">
+	  	<c:if test="${param.phone != 'phone'  }">
+	  	
+		 	<li><a href="${base}/admin/operationsArea/desktop.html"><i class="fa fa-angle-left"></i>返回</a></li> 
+	  	</c:if>
+		 <li><h3>审批列表</h3></li> 
+	 </ul>
+  </header>
   <content class="content-body">
+  
 	<ul>
 	  <li>
 	  	<a href="${base}/admin/applyapproval/dataList.html?operation=international">

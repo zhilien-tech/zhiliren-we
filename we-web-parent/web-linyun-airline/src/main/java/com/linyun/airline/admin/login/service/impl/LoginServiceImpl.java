@@ -178,7 +178,7 @@ public class LoginServiceImpl extends BaseService<TUserEntity> implements LoginS
 			}
 			if (flag) {
 
-				form.setReturnUrl(">>:/admin/applyapproval/list.html");
+				form.setReturnUrl(">>:/admin/applyapproval/list.html?phone=phone");
 				return true;
 			} else {
 				form.setErrMsg("权限不足，请联系管理员");
