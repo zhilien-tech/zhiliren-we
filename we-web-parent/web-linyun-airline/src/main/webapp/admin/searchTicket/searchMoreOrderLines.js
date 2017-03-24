@@ -25,7 +25,8 @@ function searchInlandOrder(){
 		layer.msg('出发日期不能为空');
 		return;
 	}
-	var msgIndex = layer.msg('查询中...',{time:0});
+	/*var msgIndex = layer.msg('查询中...',{time:0});*/
+	var layerIndex =  layer.load(1, {shade: "#000"});
 	//显示区间
 	/*var area = $("#origin").val()+' --- '+$("#destination").val();
 	document.getElementById('travelArea').innerHTML=area;*/
@@ -37,7 +38,8 @@ function searchInlandOrder(){
 		success : function(resp) {
 			var outLiList = "";
 			var returnLiList = "";
-			layer.close(msgIndex);
+			/*layer.close(msgIndex);*/
+			layer.close(layerIndex);
 			if ("200" == resp.statusCode) {
 				/* 日期小卡片  */
 				getDateCard();

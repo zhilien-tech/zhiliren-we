@@ -227,7 +227,7 @@ function saveSubmit(){
            url:'${base}/admin/dictionary/dirinfo/updateDepartureCity.html',
            data:$('#updateForm').serialize(),// 你的formid
            error: function(request) {
-              layer.msg("修改失败!","",3000);
+              layer.msg("修改失败!",{time:2000});
            },
             success: function(data) {
 				layer.load(1, {

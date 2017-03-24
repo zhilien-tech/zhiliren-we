@@ -458,7 +458,10 @@
                             alert("文件 ["+file.name+"] 类型不正确！");
                             break;
                     }
-                }
+                },
+				onError: function(event, queueID, fileObj) {　
+					$("#updateBtn").attr('disabled',false);
+		        }
 	        });
 			
 			//页面加载时 执行

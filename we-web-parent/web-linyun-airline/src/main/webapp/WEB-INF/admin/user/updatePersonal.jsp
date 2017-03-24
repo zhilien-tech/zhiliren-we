@@ -24,7 +24,7 @@
 	          	<table class="editInfo">
 	          		<tr>
 	          			<td><label>用户名称：</label></td>
-	          			<td><input id="userName" name="userName" type="text" value="${obj.personalInfo[0].userName}" class="form-control input-sm" disabled></td>
+	          			<td><input id="fullName" name="fullName" type="text" value="${obj.personalInfo[0].fullName}" class="form-control input-sm" disabled></td>
 	          			<td><label>用户名/手机号码：</label></td>
 	          			<td><input id="telephone" name="telephone" type="text" value="${obj.personalInfo[0].telephone }" class="form-control input-sm" disabled></td>
 	          		</tr>
@@ -130,7 +130,7 @@ $("#submit").click(function() {
 			    window.parent.location.reload();
 				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			    parent.layer.close(index);
-              	layer.msg('修改成功!',{time: 5000, icon:6});
+              	layer.msg('修改成功!',{time:2000});
 			}
 		});
 	}

@@ -19,7 +19,7 @@
 			<button  type="button" id="submit" onclick="updateConfirmPay();" class="btn btn-primary right btn-sm">保存</button>
 			<h4>编辑付款</h4>
 		</div>
-		<div class="modal-body" style="height: 600px; overflow-y: auto;">
+		<div class="modal-body" style="height: 622px; overflow-y: auto;">
 			
 			<table id="receivablesTable" class="table table-bordered table-hover">
 				<thead>
@@ -47,7 +47,9 @@
                 			<td>${one.billingdate }</td>
                 			<td>${one.peoplecount }</td>
                 			<td>${one.approver }</td>
-                			<td>${one.salesprice }</td>
+                			<td>
+                				<fmt:formatNumber type="number" value="${one.salesprice }" pattern="0.00" maxFractionDigits="2"/>
+                			</td>
                 		</tr>
                 	</c:forEach>
 				</tbody>
@@ -60,7 +62,7 @@
 							<!-- <option>--请选择--</option> -->
 							<c:forEach var="one" items="${obj.bankList}">
 	                 			<c:choose>
-	                          		<c:when test="${obj.companybank.bankComp eq one.id }">
+	                          		<c:when test="${obj.companybank.bankcompid eq one.id }">
 			                        	 <option value="${one.id }" selected="selected">${one.bankName }</option>
 	                          		</c:when>
 	                          		<c:otherwise>
@@ -84,7 +86,9 @@
 						</select>
 					</td>
 					<td>合计：</td>
-					<td id="totalMoney">${obj.totalMoney }</td>
+					<td id="totalMoney">
+						<fmt:formatNumber type="number" value="${obj.totalMoney }" pattern="0.00" maxFractionDigits="2"/>
+					</td>
 					<input id="totalMoney" name="totalMoney" type="hidden" value="${obj.totalMoney }">
 				</tr>
 			</table>
@@ -101,7 +105,7 @@
 							<option value=2 selected="selected">境外</option>
 						</c:if>
 					</select></td>
-					<td>用途：</td>
+					<td>项目用途：</td>
 					<td><select id="purpose" name="purpose" class="form-control input-sm">
 							<c:forEach var="one" items="${obj.fkytList}">
 	                        	<%-- <option value="${one.id }">${one.dictName }</option> --%>
@@ -179,7 +183,7 @@
 			<input type="text" name="uploadFile" id="uploadFile" />
 			<input id="receiptUrl" name="receiptUrl" value="${obj.receiptUrl }" type="hidden" ><!-- 水单url -->
 			<div class="bankSlipImg"  align="center">
-				<img id="receiptImg" width="400" height="300" alt="" src="${obj.receiptUrl}">
+				<img id="receiptImg" width="100%" height="305" alt="" src="${obj.receiptUrl}">
 			</div>
 		</div>
 	</div>
@@ -249,12 +253,10 @@
 				'multi' : false,//multi设置为true将允许多文件上传
 				'successTimeout' : 1800,
 				'queueSizeLimit' : 100,
-				'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html',//后台处理的页面
-				//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
+				'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html;jsessionid=${pageContext.session.id}',
 				'onUploadStart' : function(file) {
 					$("#submit").attr('disabled',true);
 				},
-				//下面的例子演示如何获取到vid
 				'onUploadSuccess' : function(file, data, response) {
 					var jsonobj = eval('(' + data + ')');
 					var url  = jsonobj;//地址
@@ -269,7 +271,7 @@
 				'onSelectError':function(file, errorCode, errorMsg){
 						switch(errorCode) {
 						case -110:
-							alert("文件 ["+file.name+"] 大小超出系统限制！");
+							alert("文件 ["+file.name+"] 大小超出系统限制");
 							break;
 						case -120:
 							alert("文件 ["+file.name+"] 大小异常！");
@@ -278,7 +280,10 @@
 							alert("文件 ["+file.name+"] 类型不正确！");
 							break;
 						}
-					}
+					},
+					onError: function(event, queueID, fileObj) {　
+						$("#submit").attr('disabled',false);
+			        }  
 				});
 			});
 		

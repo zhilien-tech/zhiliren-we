@@ -179,10 +179,10 @@
 	 		$('#salesprice').val('');
 	 	}
 	   if(peoplecount){
-		   var costpricesum = parseFloat(costprice) * parseFloat(peoplecount);
+		   var costpricesum = parseFloat(costprice) * parseInt(peoplecount);
 		   $('#costpricesum').val(costpricesum);
-		   var salespricesum = parseFloat(salesprice) * parseFloat(peoplecount);
-		   $('salespricesum').val(salespricesum);
+		   var salespricesum = parseFloat(salesprice) * parseInt(peoplecount);
+		   $('#salespricesum').val(salespricesum);
 	   }
    });
   </script>

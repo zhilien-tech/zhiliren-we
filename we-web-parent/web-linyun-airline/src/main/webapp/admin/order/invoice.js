@@ -113,7 +113,7 @@ function initkaiInvoiceTable() {
 function kaiInvoiceLoad(){
 	kaiInvoiceTable.ajax.reload();
 }
-$('#openinvoicesearch').click(function(){
+$('.openinvoicesearch').click(function(){
 	var div = $(this).parent().parent();
 	var status = div.find('[name=status]').val();
 	var startdate = div.find('[name=startdate]').val();
@@ -270,7 +270,7 @@ function initshouInvoiceTable() {
 function shouInvoiceLoad(){
 	shouInvoiceTable.ajax.reload();
 }
-$('#receiveinvoicesearch').click(function(){
+$('.receiveinvoicesearch').click(function(){
 	var div = $(this).parent().parent();
 	var status = div.find('[name=status]').val();
 	var startdate = div.find('[name=startdate]').val();

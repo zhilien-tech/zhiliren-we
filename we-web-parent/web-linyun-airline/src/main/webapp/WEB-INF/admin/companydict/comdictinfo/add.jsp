@@ -27,26 +27,29 @@
                 <div class="modal-body" style="height:360px;overflow-y: auto;">
                  <div class="tab-content">
                         <div class="form-group row">
-                            <label class="col-sm-3 text-right padding">字典类型编码：</label>
+                            <label class="col-sm-3 text-right padding">字典类别名称：</label>
                             <div class="col-sm-8 padding">
                             	<select id="comTypeCode" name="comTypeCode" class="form-control input-sm inpImpWid">
-			                    	<option value=" ">--请选择--</option>
-										<c:forEach items="${obj.listTypeName}" var="one">
-					                    	<option value="${one.comTypeCode }">
-				                            	${one.comTypeName }
-				                            </option>
-					                    </c:forEach>
+                            		<option value=" ">==请选择==</option>
+                            		<c:forEach var="map" items="${obj.dicttypelist}">
+										<option value="${map.key}">${map.value}</option>
+									</c:forEach>
+									<%-- <c:forEach items="${obj.listTypeName}" var="one">
+				                    	<option value="${one.comTypeCode }">
+			                            	${one.comTypeName }
+			                            </option>
+				                    </c:forEach> --%>
                     			</select>
                     			<span class="prompt">*</span>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">字典代码：</label>
                             <div class="col-sm-8 padding">
                               <input id="comDdictCode" name="comDdictCode" class="form-control input-sm inpImpWid" oninput="this.value=this.value.toUpperCase().replace(/(^\s*)|(\s*$)/g, '')" placeholder="请输入字典代码" />
                               <span class="prompt">*</span>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">字典信息：</label>
                             <div class="col-sm-8 padding">
@@ -87,11 +90,11 @@
 	        	comTypeCode: {
 	                validators: {
 	                    notEmpty: {
-	                        message: '字典类型代码不能为空!'
+	                        message: '字典类别名称不能为空!'
 	                    }
 	                }
 	            },
-	        	comDdictCode: {
+	        	/* comDdictCode: {
 	                validators: {
 	                    notEmpty: {
 	                        message: '字典代码不能为空!'
@@ -114,7 +117,7 @@
 	                        message: '字典代码只能为英文字母!'
 	                    }
 	                }
-	            },
+	            }, */
 	            comDictName: {
 	            	validators: {
 	                    notEmpty: {
@@ -135,13 +138,6 @@
 		                   }
 	                }
 	            },
-	            typeCode: {
-	            	validators: {
-	            		notEmpty: {
-	                        message: '字典类型编码不能为空!'
-	                    }
-	                }
-	            }
 	        }
 		});
 	});
@@ -156,7 +152,7 @@
 	           url:'${base}/admin/companydict/comdictinfo/add.html',
 	           data:$('#addForm').serialize(),// 你的formid
 	           error: function(request) {
-	              layer.msg('添加失败!');
+	              layer.msg('添加失败!',{time:2000});
 	           },
 	            success: function(data) {
 					layer.load(1, {

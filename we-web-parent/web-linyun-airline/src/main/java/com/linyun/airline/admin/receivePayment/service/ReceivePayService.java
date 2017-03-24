@@ -41,12 +41,14 @@ import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
+import com.linyun.airline.admin.receivePayment.entities.TPayPnrEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
 import com.linyun.airline.admin.receivePayment.form.inland.InlandPayEdListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.inland.InlandPayListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.inland.InlandRecListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.inland.TSaveInlandPayAddFrom;
 import com.linyun.airline.admin.receivePayment.form.inland.TUpdateInlandPayAddFrom;
+import com.linyun.airline.admin.receivePayment.util.FormatDateUtil;
 import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
@@ -344,7 +346,11 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				String payDateFormat = DateTimeUtil.format(DateTimeUtil.string2Date(payDateStr, null));
 				record.put("payDate", payDateFormat);
 			}
-
+			String billDateStr = record.getString("billingdate");
+			if (!Util.isEmpty(billDateStr)) {
+				String formatBillDate = FormatDateUtil.dateToOrderDate(DateTimeUtil.string2Date(billDateStr, null));
+				record.set("billingdate", formatBillDate);
+			}
 		}
 		result.put("proposer", proposer);
 		result.put("approver", approver);
@@ -388,7 +394,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//付款用途
 		List<ComDictInfoEntity> fkytList = new ArrayList<ComDictInfoEntity>();
 		try {
-			fkytList = findCodeByName("", YTCODE);
+			fkytList = findCodeByName("", YTCODE, companyId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -396,7 +402,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//资金种类
 		List<ComDictInfoEntity> zjzlList = new ArrayList<ComDictInfoEntity>();
 		try {
-			zjzlList = findCodeByName("", ZJZLCODE);
+			zjzlList = findCodeByName("", ZJZLCODE, companyId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -415,10 +421,10 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	}
 
 	//查询用途 公司字典
-	public List<ComDictInfoEntity> findCodeByName(String name, String typeCode) throws Exception {
+	public List<ComDictInfoEntity> findCodeByName(String name, String typeCode, long companyId) throws Exception {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("comDictName", "like", Strings.trim(name) + "%").and("status", "=", DataStatusEnum.ENABLE.intKey())
-				.and("comTypeCode", "=", typeCode);
+				.and("comTypeCode", "=", typeCode).and("comId", "=", companyId).groupBy("comDictName");
 		List<ComDictInfoEntity> query = dbDao.query(ComDictInfoEntity.class, cnd, null);
 		return query;
 	}
@@ -454,6 +460,12 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				Double incometotal = (Double) record.get("incometotal");
 				sum += incometotal;
 			}
+			String billDateStr = record.getString("billingdate");
+			if (!Util.isEmpty(billDateStr)) {
+				String formatBillDate = FormatDateUtil.dateToOrderDate(DateTimeUtil.string2Date(billDateStr, null));
+				record.set("billingdate", formatBillDate);
+			}
+
 		}
 		map.put("sum", sum);
 
@@ -512,6 +524,11 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				if (!Util.isEmpty(id)) {
 					payIds += record.getString("id") + ",";
 				}
+				String billDateStr = record.getString("billdate");
+				if (!Util.isEmpty(billDateStr)) {
+					String formatBillDate = FormatDateUtil.dateToOrderDate(DateTimeUtil.string2Date(billDateStr, null));
+					record.set("billdate", formatBillDate);
+				}
 			}
 		}
 		map.put("orders", orders);
@@ -524,6 +541,10 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		String approver = "";
 		//审批结果
 		String approveresult = "";
+		//用途
+		String purpose = "";
+		//币种
+		String payCurrency = "";
 		//操作人
 		String operator = "";
 		String operatorList = "";
@@ -539,27 +560,21 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				operator = opr;
 				operatorList += opr + ",";
 			}
-
 			approveresult = record.getString("approveresult");
+			purpose = record.getString("purpose");
+			payCurrency = record.getString("paycurrency");
 		}
 		map.put("totalMoney", totalMoney);
 		map.put("proposer", proposer);
 		map.put("approver", approver);
+		map.put("purpose", purpose);
+		map.put("payCurreny", payCurrency);
 		map.put("operators", operatorList);
 		if (Util.eq(APPROVALENABLE, approveresult)) {
 			map.put("approveresult", "同意");
 		} else {
 			map.put("approveresult", "拒绝");
 		}
-
-		//银行名称
-		/*List<DictInfoEntity> bankList = new ArrayList<DictInfoEntity>();
-		try {
-			bankList = externalInfoService.findDictInfoByName("", YHCODE);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		map.put("bankList", bankList);*/
 		//银行名称
 		List<TBankCardEntity> bankList = new ArrayList<TBankCardEntity>();
 		try {
@@ -586,7 +601,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//付款用途
 		List<ComDictInfoEntity> fkytList = new ArrayList<ComDictInfoEntity>();
 		try {
-			fkytList = findCodeByName("", YTCODE);
+			fkytList = findCodeByName("", YTCODE, companyId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -594,7 +609,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//资金种类
 		List<ComDictInfoEntity> zjzlList = new ArrayList<ComDictInfoEntity>();
 		try {
-			zjzlList = findCodeByName("", ZJZLCODE);
+			zjzlList = findCodeByName("", ZJZLCODE, companyId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -631,7 +646,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		Integer currency = form.getPayCurrency();
 		Integer isInvioce = form.getIsInvioce();
 		String receiptUrl = form.getReceiptUrl();
-		String payIds = form.getPayIds();
+		String pnrIds = form.getPayIds();
 		Double totalMoney = form.getTotalMoney();
 		String payNames = form.getPayNames();
 		//操作人
@@ -641,7 +656,6 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			return false;
 		}
 		//付款水单 集合
-		List<TPayReceiptEntity> payReceiptList = new ArrayList<TPayReceiptEntity>();
 		TPayReceiptEntity payReceiptEntity = new TPayReceiptEntity();
 		//银行卡
 		TCompanyBankCardEntity companyBankCard = new TCompanyBankCardEntity();
@@ -662,61 +676,65 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		TUpOrderEntity upOrder = new TUpOrderEntity();
 		//付款集合
 		List<TPayEntity> updateList = new ArrayList<TPayEntity>();
-		List<TPayEntity> payEntityList = dbDao.query(TPayEntity.class, Cnd.where("id", "in", payIds), null);
-		for (TPayEntity payEntity : payEntityList) {
-			if (!Util.eq(null, bankId)) {
-				payEntity.setBankId(bankId);
-			}
-			if (!Util.eq(null, payAddress)) {
-				payEntity.setPayAddress(payAddress);
-			}
-			if (!Util.eq(null, purpose)) {
-				payEntity.setPurpose(purpose);
-			}
-			if (!Util.eq(null, fundType)) {
-				payEntity.setFundType(fundType);
-			}
-			if (!Util.eq(null, payDate)) {
-				payEntity.setPayDate(payDate);
-			}
-			if (!Util.eq(null, payFees)) {
-				payEntity.setPayFees(payFees);
-			}
-			if (!Util.eq(null, payMoney)) {
-				payEntity.setPayMoney(payMoney);
-			}
-			if (!Util.eq(null, totalMoney)) {
-				payEntity.setTotalMoney(totalMoney);
-			}
-			if (!Util.eq(null, currency)) {
-				if (!Util.eq("--请选择--", currency)) {
-					payEntity.setPayCurrency(currency);
-				}
-			}
-			if (!Util.eq(null, isInvioce)) {
-				payEntity.setIsInvioce(isInvioce);
-			}
-			if (!Util.eq(null, payChineseMoney)) {
-				payEntity.setPayChineseMoney(payChineseMoney);
-			}
-			updateList.add(payEntity);
-			//添加水单
-			if (!Util.isEmpty(receiptUrl)) {
-				payReceiptEntity.setReceiptUrl(receiptUrl);
-				payReceiptEntity.setId(payEntity.getId());
-			}
-			payReceiptList.add(payReceiptEntity);
+		TPayPnrEntity payPnrEntity = dbDao.fetch(TPayPnrEntity.class, Cnd.where("pnrId", "in", pnrIds));
+		TPayEntity payEntity = dbDao.fetch(TPayEntity.class, Cnd.where("id", "=", payPnrEntity.getPayId()));
+		if (!Util.eq(null, bankId)) {
+			payEntity.setBankId(bankId);
 		}
-		//添加水单表
-		if (!Util.isEmpty(payReceiptList)) {
-			dbDao.insert(payReceiptList);
+		if (!Util.eq(null, payAddress)) {
+			payEntity.setPayAddress(payAddress);
 		}
+		if (!Util.eq(null, purpose)) {
+			payEntity.setPurpose(purpose);
+		}
+		if (!Util.eq(null, fundType)) {
+			payEntity.setFundType(fundType);
+		}
+		if (!Util.eq(null, payDate)) {
+			payEntity.setPayDate(payDate);
+		}
+		if (!Util.eq(null, payFees)) {
+			payEntity.setPayFees(payFees);
+		}
+		if (!Util.eq(null, payMoney)) {
+			payEntity.setPayMoney(payMoney);
+		}
+		if (!Util.eq(null, totalMoney)) {
+			payEntity.setTotalMoney(totalMoney);
+		}
+		if (!Util.eq(null, currency)) {
+			if (!Util.eq("--请选择--", currency)) {
+				payEntity.setPayCurrency(currency);
+			}
+		}
+		if (!Util.eq(null, isInvioce)) {
+			payEntity.setIsInvioce(isInvioce);
+		}
+		if (!Util.eq(null, payChineseMoney)) {
+			payEntity.setPayChineseMoney(payChineseMoney);
+		}
+		payEntity.setConfirmDate(DateTimeUtil.nowDate());
+		updateList.add(payEntity);
+		//更新付款订单信息
+		if (!Util.isEmpty(updateList)) {
+			dbDao.update(updateList);
+		} else {
+			dbDao.insert(updateList);
+		}
+
+		//添加水单
+		if (!Util.isEmpty(receiptUrl)) {
+			payReceiptEntity.setReceiptUrl(receiptUrl);
+			payReceiptEntity.setPayId(payEntity.getId());
+			dbDao.insert(payReceiptEntity);
+		}
+
 		//更新Pnr表中對應的状态
-		List<TPnrInfoEntity> pnrInfoList = dbDao.query(TPnrInfoEntity.class, Cnd.where("id", "in", payIds), null);
+		List<TPnrInfoEntity> pnrInfoList = dbDao.query(TPnrInfoEntity.class, Cnd.where("id", "in", pnrIds), null);
 		int updatenum = 0;
-		if (!Util.eq(null, payIds)) {
+		if (!Util.eq(null, pnrIds)) {
 			updatenum = dbDao.update(TPnrInfoEntity.class, Chain.make("orderPnrStatus", APPROVALPAYED),
-					Cnd.where("id", "in", payIds));
+					Cnd.where("id", "in", pnrIds));
 		}
 
 		//付款成功 操作台添加消息
@@ -725,7 +743,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			String sqlS = sqlManager.get("receivePay_order_pnr_pids");
 			Sql sql = Sqls.create(sqlS);
 			Cnd cnd = Cnd.NEW();
-			cnd.and("pi.id", "in", payIds);
+			cnd.and("pi.id", "in", pnrIds);
 			List<Record> orderPnrList = dbDao.query(sql, cnd, null);
 			for (Record record : orderPnrList) {
 				int uid = Integer.valueOf(record.getString("id"));

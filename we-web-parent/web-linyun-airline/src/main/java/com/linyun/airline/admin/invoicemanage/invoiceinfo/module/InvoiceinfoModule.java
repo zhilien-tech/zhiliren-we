@@ -13,11 +13,11 @@ import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.from.TInvoiceInfoAddForm;
-import com.linyun.airline.admin.invoicemanage.invoiceinfo.from.TInvoiceInfoSqlForm;
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.from.TInvoiceInfoUpdateForm;
+import com.linyun.airline.admin.invoicemanage.invoiceinfo.from.TKaiInvoiceInfoSqlForm;
+import com.linyun.airline.admin.invoicemanage.invoiceinfo.from.TShouInvoiceInfoSqlForm;
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.service.InvoiceinfoViewService;
 import com.linyun.airline.admin.login.service.LoginService;
-import com.linyun.airline.admin.order.inland.form.KaiInvoiceParamForm;
 import com.linyun.airline.admin.order.inland.service.InlandInvoiceService;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.uxuexi.core.web.chain.support.JsonResult;
@@ -39,16 +39,16 @@ public class InvoiceinfoModule {
 	 */
 	@At
 	@Ok("jsp")
-	public Object list(@Param("..") final KaiInvoiceParamForm sqlForm, @Param("..") final Pager pager,
+	public Object list(@Param("..") final TKaiInvoiceInfoSqlForm sqlForm, @Param("..") final Pager pager,
 			final HttpSession session) {
 		return invoiceinfoViewService.getIssuerBycompany(session);
 	}
 
 	/**
-	 * 开发票分页查询
+	 * 开发票列表
 	 */
 	@At
-	public Object listData(@Param("..") final KaiInvoiceParamForm sqlForm, HttpServletRequest request) {
+	public Object listData(@Param("..") final TKaiInvoiceInfoSqlForm sqlForm, HttpServletRequest request) {
 		return invoiceinfoViewService.listKaiInvoiceData(sqlForm, request);
 	}
 
@@ -57,7 +57,7 @@ public class InvoiceinfoModule {
 	 */
 	@At
 	@POST
-	public Object listShouInvoiceData(@Param("..") TInvoiceInfoSqlForm sqlForm, HttpServletRequest request) {
+	public Object listShouInvoiceData(@Param("..") TShouInvoiceInfoSqlForm sqlForm, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);

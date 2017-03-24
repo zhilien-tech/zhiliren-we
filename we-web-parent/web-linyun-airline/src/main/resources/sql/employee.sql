@@ -2,6 +2,7 @@
 SELECT
 	u.id AS userId,
 	u.userName,
+	u.fullName,
 	u.telephone,
 	d.id AS deptId,
 	d.deptName,
@@ -62,6 +63,7 @@ LIMIT 0,5
 SELECT
 	u.id,
 	u.userName,
+	u.fullName,
 	j.deptId,
 	j.`name` AS jobName,
 	am.areaId,
@@ -113,6 +115,7 @@ AND u.`status` =@userStatus
 SELECT
 	u.id,
 	u.userName,
+	u.fullName,
 	u.`password`,
 	u.telephone,
 	u.landline,

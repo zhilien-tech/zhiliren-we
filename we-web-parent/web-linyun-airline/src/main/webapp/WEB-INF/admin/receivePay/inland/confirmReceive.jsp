@@ -17,7 +17,7 @@
             <input type="button" id="confirmRecClick" class="btn btn-primary right btn-sm" value="确认收款"/>
             <h4>收款</h4>
           </div>
-          <div class="modal-body" style="height: 483px;overflow-y:auto; ">
+          <div class="modal-body" style="height: 580px;overflow-y:auto; ">
               <table id="receivablesTable" class="table table-bordered table-hover">
                 <thead>
                   <tr>
@@ -40,7 +40,9 @@
                 			<td>${one.shortname }</td>
                 			<td>${one.linkman }</td>
                 			<td>${one.issuer }</td>
-                			<td>${one.incometotal }</td>
+                			<td>
+                				<fmt:formatNumber type="number" value="${one.incometotal }" pattern="0.00" maxFractionDigits="2"/>
+                			</td>
                 		</tr>
                 	</c:forEach>
                 </tbody>
@@ -50,13 +52,13 @@
                   <td>银行：</td>
                   <td>
                     <select disabled="disabled" class="form-control input-sm">
-                        <option selected = "selected">${obj.receive.bankcardname}</option>
+                   		<option selected = "selected">${obj.yhkSelect[0].dictName}</option>
                     </select>
                   </td>
                   <td>银行卡名称：</td>
                   <td>
                     <select disabled="disabled" class="form-control input-sm">
-                         <option selected = "selected">${obj.yhkSelect[0].dictName}</option>
+                          <option selected = "selected">${obj.receive.bankcardname}</option>
                     </select>
                   </td>
                   <td>卡号：</td>
@@ -66,12 +68,14 @@
                      </select>
                   </td>
                   <td>合计：</td>
-                  <td>${obj.sum}</td>
+                  <td>
+                  	<fmt:formatNumber type="number" value="${obj.sum}" pattern="0.00" maxFractionDigits="2"/>
+                  </td>
                 </tr>
               </table>
               <label class="labelShuidan">水单</label>
               <div class="bankSlipImg SDdiv"  align="center">
-              	<img width="400" height="300" alt="" src="${obj.receipturl.receiptUrl }">
+              	<img width="100%" height="305" alt="" src="${obj.receipturl.receiptUrl }">
               </div>
           </div>
 	</div>

@@ -53,7 +53,7 @@
                   <tr>
                     <td><label>银行：</label></td>
                     <td>
-                      <select class="form-control input-sm">
+                      <select class="form-control input-sm" disabled="disabled">
                           <c:forEach var="one" items="${obj.yhkSelect }">
                           	<c:choose>
                           		<c:when test="${obj.companybank.bankComp eq one.id }">
@@ -68,13 +68,13 @@
                     </td>
                     <td><label>银行卡名称：</label></td> 
                     <td>
-                      <select class="form-control input-sm">
+                      <select class="form-control input-sm" disabled="disabled">
                           <option>${obj.companybank.cardName }</option>
                       </select>
                     </td>
                     <td><label>卡号：</label></td>
                     <td>
-                       <select class="form-control input-sm">
+                       <select class="form-control input-sm" disabled="disabled">
                           <option>${obj.companybank.cardNum }</option>
                        </select>
                     </td>

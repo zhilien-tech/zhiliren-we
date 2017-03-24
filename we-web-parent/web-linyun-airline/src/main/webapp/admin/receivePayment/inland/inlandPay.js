@@ -66,7 +66,7 @@ function initPayDataTable(){
 		            		if(null == saleprice || ""== saleprice || undefined==saleprice){
 		            			return "";
 		            		}
-		            		return saleprice;
+		            		return saleprice.toFixed(2);
 		            	}
 		            },
 		            {"data": "currency", "bSortable": false,
@@ -200,7 +200,7 @@ function initPayEdDataTable(){
         		var result = '<ul> ';
         		$.each(row.orders, function(name, value) {
         			if(value && value.saleprice!=undefined){
-        				result += '<li style="list-style:none;">'+value.saleprice+'</li>';
+        				result += '<li style="list-style:none;">'+(value.saleprice).toFixed(2)+'</li>';
         			}
         		});
         		result += '</ul>';
@@ -225,7 +225,7 @@ function initPayEdDataTable(){
         		if(null == totalmoney || ""== totalmoney){
         			return "";
         		}
-        		return totalmoney;
+        		return totalmoney.toFixed(2);
         	}
         },
         {"data": "shortname", "bSortable": false,
@@ -363,7 +363,7 @@ $('#inlandPayClick').click(function(){
 			skin: false, //加上边框
 			closeBtn:false,//默认 右上角关闭按钮 是否显示
 			shadeClose:false,
-			area: ['850px', '650px'],
+			area: ['850px', '690px'],
 			content: ['confirmPay.html?inlandPayIds='+ ids,'no'],
 		});
 

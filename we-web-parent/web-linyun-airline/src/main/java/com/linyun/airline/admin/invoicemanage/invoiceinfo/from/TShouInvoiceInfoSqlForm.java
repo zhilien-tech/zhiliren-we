@@ -16,7 +16,7 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class TInvoiceInfoSqlForm extends DataTablesParamForm {
+public class TShouInvoiceInfoSqlForm extends DataTablesParamForm {
 	/**id*/
 	private Integer id;
 
@@ -65,7 +65,7 @@ public class TInvoiceInfoSqlForm extends DataTablesParamForm {
 		 * 默认使用了当前form关联entity的单表查询sql,如果是多表复杂sql，
 		 * 请使用sqlManager获取自定义的sql，并设置查询条件
 		 */
-		String sqlString = sqlManager.get("get_shou_invoice_list_order");
+		String sqlString = sqlManager.get("invoicemanage_shou_invoice_list");
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;
@@ -92,6 +92,11 @@ public class TInvoiceInfoSqlForm extends DataTablesParamForm {
 		if (!Util.isEmpty(billuserid)) {
 			cnd.and("tii.billuserid", "=", billuserid);
 		}
+		if (!Util.isEmpty(comId)) {
+			cnd.and("tii.comId", "=", comId);
+		}
+		cnd.orderBy("tii.status", "DESC");
+		cnd.orderBy("tii.invoicedate", "DESC");
 		return cnd;
 	}
 }

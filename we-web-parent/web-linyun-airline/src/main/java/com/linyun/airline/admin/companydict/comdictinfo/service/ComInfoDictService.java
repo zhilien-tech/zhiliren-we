@@ -21,10 +21,12 @@ import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.google.common.collect.Maps;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
+import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.companydict.comdictinfo.form.ComInfoUpdateForm;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.entities.TCompanyEntity;
+import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.base.service.BaseService;
 import com.uxuexi.core.web.util.FormUtil;
@@ -41,7 +43,7 @@ public class ComInfoDictService extends BaseService<ComDictInfoEntity> {
 	 * 公司字典类别名称查询
 	 * @param session
 	 */
-	public Object getComDictTypeName(final HttpSession session) {
+	/*public Object getComDictTypeName(final HttpSession session) {
 		Map<String, Object> obj = Maps.newHashMap();
 		//从session中得到当前登录公司id
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
@@ -52,6 +54,15 @@ public class ComInfoDictService extends BaseService<ComDictInfoEntity> {
 		cnd.and("cty.status", "=", DataStatusEnum.ENABLE.intKey());
 		List<Record> query = dbDao.query(sql, cnd, null);
 		obj.put("listTypeName", query);
+		return obj;
+	}*/
+
+	/**
+	 * 根据枚举类型得到公司字典类别名称
+	 */
+	public Object getDictTypeName() {
+		Map<String, Object> obj = Maps.newHashMap();
+		obj.put("dicttypelist", EnumUtil.enum2(ComDictTypeEnum.class));
 		return obj;
 	}
 

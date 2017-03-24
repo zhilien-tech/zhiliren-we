@@ -17,7 +17,7 @@
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo();" value="确认开发票"/>
-            <h4 class="invoiceH4">收款信息</h4>
+            <h4 class="invoiceH4">开发票信息</h4>
     </div>
     <div style="height:550px; overflow-y:auto; ">
       <div class="modal-body">
@@ -49,9 +49,9 @@
          </table>
          <table border="0" class="selectTable">
                   <tr>
-                    <td>银行：</td>
+                    <td><label>银行：</label></td>
                     <td>
-                      <select class="form-control input-sm">
+                      <select class="form-control input-sm" disabled="disabled">
                            <c:forEach var="one" items="${obj.yhkSelect }">
                            	<c:choose>
                            		<c:when test="${obj.receive.bankcardid eq one.id }">
@@ -64,15 +64,15 @@
                            </c:forEach>
                       </select>
                     </td>
-                    <td>银行卡名称：</td>
+                    <td><label>银行卡名称：</label></td>
                     <td>
-                      <select class="form-control input-sm">
+                      <select class="form-control input-sm" disabled="disabled">
                           <option>${obj.receive.bankcardname }</option>
                       </select>
                     </td>
                     <td>卡号：</td>
                     <td>
-                       <select class="form-control input-sm">
+                       <select class="form-control input-sm" disabled="disabled">
                           <option>${obj.receive.bankcardnum }</option>
                        </select>
                     </td>

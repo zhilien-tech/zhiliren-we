@@ -100,7 +100,7 @@
 
 				},
 				error : function(xhr) {
-					layer.msg("保存失败", "", 3000);
+					layer.msg("保存失败",{time:2000});
 				}
 			});
 		}
@@ -122,7 +122,7 @@
 						parent.layer.close(index);
 					},
 					error : function(xhr) {
-						layer.msg("删除失败", "", 3000);
+						layer.msg("删除失败",{time:2000});
 					}
 				});
 			});
