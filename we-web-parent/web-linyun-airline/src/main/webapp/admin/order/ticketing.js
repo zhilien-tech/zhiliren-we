@@ -183,11 +183,6 @@ function initdrawerPayTable() {
     });
 }
 
-$("tbody",$('#drawerPayTable')).on("click","tr",function(event) {
-	var item = drawerPayTable.row($(this).closest('tr')).data();
-	var url = BASE_PATH + '/admin/inland/bookingDetail.html?id='+item.id;
-	window.open(url);
-});
 
 //控制复选框
 $(".checkall").click(function () {
