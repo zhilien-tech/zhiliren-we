@@ -132,11 +132,11 @@
                                  <form role="form" class="form-horizontal">
                                   <div class="form-group row marginBott5 cf">
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" name="startdate" class="form-control TimeInput" placeholder="2017-02-20"> 
+                                      <input type="text" name="startdate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-20"> 
                                     </div>
                                     <label class="col-md-1 labelClas">至</label>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22">
+                                      <input type="text" name="enddate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-22">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
                                       <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
@@ -200,11 +200,11 @@
                                       </select>
                                     </div>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" name="startdate" class="form-control TimeInput" placeholder="2017-02-20"> 
+                                      <input type="text" name="startdate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-20"> 
                                     </div>
                                     <label class="col-md-1 labelClas">至</label>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22">
+                                      <input type="text" name="enddate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-22">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
                                       <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
@@ -250,11 +250,11 @@
                                       </select>
                                     </div>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" name="startdate" class="form-control TimeInput" placeholder="2017-02-20"> 
+                                      <input type="text" name="startdate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-20"> 
                                     </div>
                                     <label class="col-md-1 labelClas">至</label>
                                     <div class="col-md-1 textPadding">
-                                      <input name="enddate" type="text" class="form-control TimeInput" placeholder="2017-02-22">
+                                      <input name="enddate" type="text" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-22">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
                                       <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
@@ -313,11 +313,11 @@
                                       </select>
                                     </div>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" name="startdate" class="form-control TimeInput" placeholder="2017-02-20"> 
+                                      <input type="text" name="startdate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-20"> 
                                     </div>
                                     <label class="col-md-1 labelClas">至</label>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22">
+                                      <input type="text" name="enddate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-22">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
                                       <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
@@ -363,11 +363,11 @@
                                       </select>
                                     </div>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" name="startdate" class="form-control TimeInput" placeholder="2017-02-20"> 
+                                      <input type="text" name="startdate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-20"> 
                                     </div>
                                     <label class="col-md-1 labelClas">至</label>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22">
+                                      <input type="text" name="enddate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-22">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
                                       <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR">

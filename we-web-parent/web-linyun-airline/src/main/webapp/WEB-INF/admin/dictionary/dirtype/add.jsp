@@ -129,16 +129,12 @@
 					url : '${base}/admin/dictionary/dirtype/add.html',
 					data : $('#addForm').serialize(),// 你的formid
 					error : function(request) {
-						layer.msg('添加失败!');
+						layer.msg('添加失败!',{time:2000});
 					},
 					success : function(data) {
 						layer.load(1, {
 							shade : [ 0.1, '#fff' ]
 						//0.1透明度的白色背景
-						});
-						layer.msg('添加成功!', {
-							time : 5000,
-							icon : 6
 						});
 						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						parent.layer.close(index);

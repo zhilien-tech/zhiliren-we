@@ -29,7 +29,7 @@
                 <tbody>
                   <tr class="strip1">
                     <td>用户名称</td>
-                    <td>${obj.personalInfo[0].userName}</td>
+                    <td>${obj.personalInfo[0].fullName}</td>
                   </tr>
                   <tr class="strip2">
                     <td>用户名/手机号码</td>
@@ -104,9 +104,9 @@ function editPersonal(userId){
 function successCallback(id){
 	PersonDatatable.ajax.reload(null,false);
 	  if(id == '1'){
-		  layer.msg("密码修改成功!",{time: 2000, icon:1});
+		  layer.msg("密码修改成功",{time:2000});
 	  }else if(id == '2'){
-		  layer.msg("修改成功!",{time: 2000, icon:1});
+		  layer.msg("修改成功",{time:2000});
 	  }
   }
 </script>

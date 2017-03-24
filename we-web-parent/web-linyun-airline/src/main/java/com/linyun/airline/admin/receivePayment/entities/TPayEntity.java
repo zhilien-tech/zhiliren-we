@@ -46,6 +46,10 @@ public class TPayEntity implements Serializable {
 	private Date payDate;
 
 	@Column
+	@Comment("确认付款时间")
+	private Date confirmDate;
+
+	@Column
 	@Comment("付款手续费")
 	private Double payFees;
 

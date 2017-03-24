@@ -24,8 +24,11 @@ public class TUserAddForm extends AddForm {
 	/*select2 id字符串*/
 	private String selectedAreaIds;
 
-	/**用户姓名*/
+	/**用户名*/
 	private String userName;
+
+	/**用户姓名*/
+	private String fullName;
 
 	/**密码*/
 	private String password;

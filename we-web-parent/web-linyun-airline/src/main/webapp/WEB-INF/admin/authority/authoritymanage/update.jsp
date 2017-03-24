@@ -264,7 +264,7 @@ formValidator();
 					deptId:"${obj.dept.id}"
 			   },
 	           error: function(request) {
-	              layer.msg('编辑失败!');
+	              layer.msg('编辑失败!',{time:2000});
 	           },
 	           success: function(data) {
 					if(data.status == '200'){

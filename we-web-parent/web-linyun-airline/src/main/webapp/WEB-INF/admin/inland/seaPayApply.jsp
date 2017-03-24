@@ -54,7 +54,7 @@
                   <div class="col-sm-2 padding">
                     <select id="purpose" name="purpose" class="form-control input-sm">
                       <c:forEach var="one" items="${obj.ytSelect }">
-                        	<option value="${one.id }">${one.dictName }</option>
+                        	<option value="${one.id }">${one.comDictName }</option>
                         </c:forEach>
                     </select>
                   </div>
@@ -107,6 +107,7 @@
 	        success: function (data ,textStatus, jqXHR){
 	        	layer.msg("提交成功！",{time: 2000});
 	        	closewindow();
+	        	window.parent.successCallback('5');
 	        },
 	        error:function (XMLHttpRequest, textStatus, errorThrown) {      
 	            layer.msg("请求失败！",{time: 2000});

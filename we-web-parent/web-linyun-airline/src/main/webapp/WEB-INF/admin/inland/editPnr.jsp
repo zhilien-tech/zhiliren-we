@@ -192,7 +192,7 @@
   		   var costpricesum = parseFloat(costprice) * parseFloat(peoplecount);
   		   $('#costpricesum').val(costpricesum);
   		   var salespricesum = parseFloat(salesprice) * parseFloat(peoplecount);
-  		   $('salespricesum').val(salespricesum);
+  		   $('#salespricesum').val(salespricesum);
   	   }
      });
   </script>
