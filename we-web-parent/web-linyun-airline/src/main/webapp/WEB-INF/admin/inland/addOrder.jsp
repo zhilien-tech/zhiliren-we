@@ -108,9 +108,9 @@
                      <td><label>航班号：</label></td>
                      <td><select id="ailinenum" name="ailinenum" class="form-control input-sm"  multiple="multiple" placeholder="SYD(悉尼)"></select></td>
                      <td><label>出发时间：</label></td>
-                     <td><input id="leavetime" name="leavetime" type="text" class="form-control input-sm textWid" placeholder=""></td>
+                     <td><input id="leavetime" name="leavetime" type="text" class="form-control input-sm textWid mustTimes" placeholder=""></td>
                      <td><label>抵达时间：</label></td>
-                     <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm textWid"></td>
+                     <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm textWid mustArriveTimes"></td>
                      <td><label class="labelWid">成本价：</label></td>
                      <td><input id="formprice" name="formprice" type="text" class="form-control input-sm textWid costPrice"></td>
                      <td><label class="labelWid">销售价：</label></td>
@@ -150,6 +150,7 @@
 	<!--layer -->
 	<script src="${base}/common/js/layer/layer.js"></script>
 	<script src="${base }/admin/order/addorder.js"></script><!-- AdminLTE App -->
+	<script src="${base }/admin/order/ordercommon.js"></script>
   <script type="text/javascript">
   //关闭弹框,关闭当前窗口
 	function closewindow(){
@@ -270,7 +271,7 @@
      		if(isNaN(price)){
      			$(this).parent().parent().find('[name=price]').val('');
      		}else{
-    	 		$(this).parent().parent().find('[name=price]').val(price);
+    	 		$(this).parent().parent().find('[name=price]').val(price.toFixed(2));
      		}
      	}else{
      		$(this).parent().parent().find('[name=price]').val('');

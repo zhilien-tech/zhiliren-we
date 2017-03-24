@@ -238,13 +238,13 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 						ReductionStatusEnum.REFUSE.intKey()));
 		result.put("mitigate", mitigate);
 		TUserEntity applyuser = new TUserEntity();
-		if (!Util.isEmpty(mitigate.getApplyid())) {
+		if (!Util.isEmpty(mitigate) && !Util.isEmpty(mitigate.getApplyid())) {
 			applyuser = dbDao.fetch(TUserEntity.class, mitigate.getApplyid().longValue());
 		}
 		//申请人
 		result.put("applyuser", applyuser);
 		String applyresult = "";
-		if (!Util.isEmpty(mitigate.getApplyResult())) {
+		if (!Util.isEmpty(mitigate) && !Util.isEmpty(mitigate.getApplyResult())) {
 			for (ReductionStatusEnum statusenum : ReductionStatusEnum.values()) {
 				if (mitigate.getApplyResult().equals(statusenum.intKey())) {
 					applyresult = statusenum.value();
@@ -499,7 +499,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		TPayEntity payinfo = new TPayEntity();
 		String billurl = "";
 		if (query.size() > 0) {
-			payinfo = dbDao.fetch(TPayEntity.class, query.get(0).getId().longValue());
+			payinfo = dbDao.fetch(TPayEntity.class, query.get(0).getPayId().longValue());
 			if (!Util.isEmpty(payinfo)) {
 				List<TPayReceiptEntity> query2 = dbDao.query(TPayReceiptEntity.class,
 						Cnd.where("payId", "=", payinfo.getId()), null);
@@ -515,9 +515,9 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		//付款银行卡信息
 		Record companybank = new Record();
 		String pagesqlStr = sqlManager.get("get_fukuan_invoice_page_data");
-		Sql pagesql = Sqls.create(sqlString);
-		Cnd pagecnd = Cnd.limit();
-		cnd.and("tpp.pnrId", "=", id);
+		Sql pagesql = Sqls.create(pagesqlStr);
+		Cnd pagecnd = Cnd.NEW();
+		pagecnd.and("tpp.pnrId", "=", invoiceinfo.getPnrid());
 		List<Record> banks = dbDao.query(pagesql, pagecnd, null);
 		if (banks.size() > 0) {
 			companybank = banks.get(0);

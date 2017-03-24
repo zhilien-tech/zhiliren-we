@@ -44,7 +44,7 @@
                 			<td>${one.billingdate }</td>
                 			<td>${one.peoplecount }</td>
                 			<td>${one.issuer }</td>
-                			<td>${one.costpricesum }</td>
+                			<td><fmt:formatNumber type="number" value="${one.costpricesum }" pattern="0.00" maxFractionDigits="2"/></td>
                 		</tr>
                 	</c:forEach>
                   </tbody>

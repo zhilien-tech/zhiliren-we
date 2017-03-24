@@ -267,22 +267,22 @@ function loadPNRdata(){
             			result +='<td></td>';
             		}
             		if(data[i].costprice != undefined){
-            			result +='<td>'+data[i].costprice+'</td>';
+            			result +='<td>'+data[i].costprice.toFixed(2)+'</td>';
             		}else{
             			result +='<td></td>';
             		}
             		if(data[i].costpricesum != undefined){
-            			result +='<td>'+data[i].costpricesum+'</td>';
+            			result +='<td>'+data[i].costpricesum.toFixed(2)+'</td>';
             		}else{
             			result +='<td></td>';
             		}
             		if(data[i].salesprice != undefined){
-            			result +='<td>'+data[i].salesprice+'</td>';
+            			result +='<td>'+data[i].salesprice.toFixed(2)+'</td>';
             		}else{
             			result +='<td></td>';
             		}
             		if(data[i].salespricesum != undefined){
-            			result +='<td>'+data[i].salespricesum+'</td>';
+            			result +='<td>'+data[i].salespricesum.toFixed(2)+'</td>';
             		}else{
             			result +='<td></td>';
             		}

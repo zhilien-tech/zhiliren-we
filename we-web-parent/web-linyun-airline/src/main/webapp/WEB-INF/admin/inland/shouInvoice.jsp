@@ -17,7 +17,7 @@
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo()" value="提交"/>
-            <h4 class="invoiceH4">收款信息</h4>
+            <h4 class="invoiceH4">付款信息</h4>
     </div>
     <div style="height:550px; overflow-y:auto;">
       <div class="modal-body">
@@ -45,7 +45,7 @@
                   			<td>${one.customename }</td>
                   			<td>${one.linkMan }</td>
                   			<td>${one.issuer }</td>
-                  			<td>${one.costpricesum }</td>
+                  			<td><fmt:formatNumber type="number" value="${one.costpricesum }" pattern="0.00" maxFractionDigits="2"/></td>
                   		</tr>
                   	</c:forEach>
                   </tbody>
@@ -80,7 +80,7 @@
                        </select>
                     </td>
                     <td>合计：</td>
-                    <td id="sumjine">${obj.sumjine }</td>
+                    <td id="sumjine"><fmt:formatNumber type="number" value="${obj.sumjine }" pattern="0.00" maxFractionDigits="2"/></td>
                   </tr>
          </table>
          <div class="bankSlipImg" align="center"><img id="shuidanimg" width="100%" height="305" alt="" src="${obj.billurl }"></div>
@@ -132,9 +132,9 @@
           </tr>
           <tr>
                   <td>差额：</td>
-                  <td><input id="difference" name="difference" type="text" class="form-control input-sm" value="${obj.invoiceinfo.difference }"></td>
+                  <td><input id="difference" name="difference" type="text" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.invoiceinfo.difference }" pattern="0.00" maxFractionDigits="2"/>"></td>
                   <td>余额：</td>
-                  <td><label id="balance" name="balance">${obj.invoicebalance }</label></td>
+                  <td><label id="balance" name="balance"><fmt:formatNumber type="number" value="${obj.invoicebalance }" pattern="0.00" maxFractionDigits="2"/></label></td>
           </tr>
           <c:choose>
           	<c:when test="${fn:length(obj.invoiceDetail)>0}">
@@ -143,7 +143,7 @@
 			                  <td>发票号：</td>
 			                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm" value="${invoiceDetail.invoicenum }"></td>
 			                  <td>金额：</td>
-			                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm" value="${invoiceDetail.invoicebalance }"></td>
+			                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${invoiceDetail.invoicebalance }" pattern="0.00" maxFractionDigits="2"/>"></td>
 			                  <td colspan="4">
 			                  	<ul class="fileUL">
 			                      <li>

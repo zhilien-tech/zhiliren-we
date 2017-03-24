@@ -42,7 +42,7 @@
                 			<td>${one.shortName }</td>
                 			<td>${one.linkMan }</td>
                 			<td>${one.issuer }</td>
-                			<td>${one.incometotal }</td>
+                			<td><fmt:formatNumber type="number" value="${one.incometotal }" pattern="0.00" maxFractionDigits="2"/></td>
                 		</tr>
                 	</c:forEach>
                   </tbody>
@@ -77,7 +77,7 @@
                        </select>
                     </td>
                     <td>合计：</td>
-                    <td id="sumjine">${obj.receive.sum }</td>
+                    <td id="sumjine"><fmt:formatNumber type="number" value="${obj.receive.sum }" pattern="0.00" maxFractionDigits="2"/></td>
                   </tr>
          </table>
          <div class="bankSlipImg" align="center"><img id="shuidanimg" width="100%" height="305" alt="" src="${obj.bill.receiptUrl }"></div>
@@ -129,9 +129,9 @@
           </tr>
           <tr>
                   <td>差额：</td>
-                  <td><input id="difference" name="difference" type="text" class="form-control input-sm" value="${obj.invoiceinfo.difference }"></td>
+                  <td><input id="difference" name="difference" type="text" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.invoiceinfo.difference }" pattern="0.00" maxFractionDigits="2"/>"></td>
                   <td>余额：</td>
-                  <td><label id="balance" name="balance">${obj.invoicebalance }</label>
+                  <td><label id="balance" name="balance"><fmt:formatNumber type="number" value="${obj.invoicebalance }" pattern="0.00" maxFractionDigits="2"/></label>
                   </td>
           </tr>
           <c:choose>
@@ -141,7 +141,7 @@
 		                  <td>发票号：</td>
 		                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm" value="${invoiceDetail.invoicenum }"></td>
 		                  <td>金额：</td>
-		                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm" value="${invoiceDetail.invoicebalance }"></td>
+		                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${invoiceDetail.invoicebalance }" pattern="0.00" maxFractionDigits="2"/>"></td>
 		                  <td colspan="4">
 		                    <ul class="fileUL">
 		                      <li>

@@ -41,7 +41,7 @@
                 			<td>${one.shortName }</td>
                 			<td>${one.linkMan }</td>
                 			<td>${one.issuer }</td>
-                			<td>${one.incometotal }</td>
+                			<td><fmt:formatNumber type="number" value="${one.incometotal }" pattern="0.00" maxFractionDigits="2"/></td>
                 		</tr>
                 	</c:forEach>
                 </tbody>
@@ -67,7 +67,7 @@
                      </select>
                   </td>
                   <td>合计：</td>
-                  <td id="heji">${obj.sumincome }</td>
+                  <td id="heji"><fmt:formatNumber type="number" value="${obj.sumincome }" pattern="0.00" maxFractionDigits="2"/></td>
                 </tr>
               </table>
               <input type="hidden" id="sumincome" name="sumincome" value="${obj.sumincome }">

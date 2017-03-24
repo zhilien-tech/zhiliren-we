@@ -240,9 +240,9 @@
 					                     <td><label>抵达时间：</label></td>
 					                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustArriveTimes" value="${airline.arrivetime }"/></td>
 					                     <td><label class="labelWid">成本价：</label></td>
-					                     <td><input id="formprice" name="formprice" type="text" disabled="disabled" class="form-control input-sm textWid costPrice" value="${airline.formprice }"/></td>
+					                     <td><input id="formprice" name="formprice" type="text" disabled="disabled" class="form-control input-sm textWid costPrice" value="<fmt:formatNumber type="number" value="${airline.formprice }" pattern="0.00" maxFractionDigits="2"/>"/></td>
 					                     <td><label class="labelWid">销售价：</label></td>
-					                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid xiaoShouCls" value="${airline.price }"/>
+					                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid mustNumberPoint xiaoShouCls" value="<fmt:formatNumber type="number" value="${airline.price }" pattern="0.00" maxFractionDigits="2"/>"/>
 					                     	 <c:choose>
 					                     	 	<c:when test="${empty airline.price } ">
 					                     	 		<input type="hidden" id="ispriceempty" name="ispriceempty" value="1">
@@ -278,7 +278,7 @@
 					                     <td><label class="labelWid">成本价：</label></td>
 					                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" /></td>
 					                     <td><label class="labelWid">销售价：</label></td>
-					                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid xiaoShouCls"/>
+					                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid mustNumberPoint xiaoShouCls"/>
 					                     	 <input type="hidden" id="ispriceempty" name="ispriceempty">
 					                     </td>
 					                     <td class="tdBtn">
@@ -402,7 +402,7 @@
 		                     <td><label class="labelWid">成本价：</label></td>
 		                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" /></td>
 		                     <td><label class="labelWid">销售价：</label></td>
-		                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid xiaoShouCls"/>
+		                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid mustNumberPoint xiaoShouCls"/>
 		                     	 <input type="hidden" id="ispriceempty" name="ispriceempty">
 		                     </td>
 		                     <td class="tdBtn">
@@ -536,19 +536,19 @@
                    </tr>
                    <tr class="KHinfo">
                      <td><label>应收：</label></td>
-                     <td><input id="receivable" name="receivable" type="text" class="form-control input-sm disab mustNumberPoint" value="${obj.finance.receivable }" disabled="disabled"></td>
+                     <td><input id="receivable" name="receivable" type="text" class="form-control input-sm disab mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.finance.receivable }" pattern="0.00" maxFractionDigits="2"/>" disabled="disabled"></td>
                      <td><label><a href="javascript:;" class="" id="jianMian" disabled="disabled">减免</a>：</label></td>
-                     <td><input id="relief" name="relief" type="text" class="form-control input-sm" disabled="disabled" value="${obj.finance.relief }"></td>
+                     <td><input id="relief" name="relief" type="text" class="form-control input-sm" disabled="disabled" value="<fmt:formatNumber type="number" value="${obj.finance.relief }" pattern="0.00" maxFractionDigits="2"/>"></td>
                      <td><label>实收合计：</label></td>
-                     <td><input id="incometotal" name="incometotal" type="text" class="form-control input-sm disab loadprofit mustNumberPoint" disabled="disabled" value="${obj.finance.incometotal }"></td>
+                     <td><input id="incometotal" name="incometotal" type="text" class="form-control input-sm disab loadprofit mustNumberPoint" disabled="disabled" value="<fmt:formatNumber type="number" value="${obj.finance.incometotal }" pattern="0.00" maxFractionDigits="2"/>"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>成本合计：</label></td>
-                     <td><input id="costtotal" name="costtotal" type="text" class="form-control input-sm disab loadprofit mustNumberPoint" disabled="disabled" value="${obj.finance.costtotal }"></td>
+                     <td><input id="costtotal" name="costtotal" type="text" class="form-control input-sm disab loadprofit mustNumberPoint" disabled="disabled" value="<fmt:formatNumber type="number" value="${obj.finance.costtotal }" pattern="0.00" maxFractionDigits="2"/>"></td>
                      <td><label>应返：</label></td>
-                     <td><input id="returntotal" name="returntotal" type="text" class="form-control input-sm disab loadprofit mustNumberPoint" disabled="disabled" value="${obj.finance.returntotal }"></td>
+                     <td><input id="returntotal" name="returntotal" type="text" class="form-control input-sm disab loadprofit mustNumberPoint" disabled="disabled" value="<fmt:formatNumber type="number" value="${obj.finance.returntotal }" pattern="0.00" maxFractionDigits="2"/>"></td>
                      <td><label>利润合计：</label></td>
-                     <td><input id="profittotal" name="profittotal" type="text" class="form-control input-sm disab mustNumberPoint" disabled="disabled" value="${obj.finance.profittotal }"></td>
+                     <td><input id="profittotal" name="profittotal" type="text" class="form-control input-sm disab mustNumberPoint" disabled="disabled" value="<fmt:formatNumber type="number" value="${obj.finance.profittotal }" pattern="0.00" maxFractionDigits="2"/>"></td>
                    </tr>
                  </table>
                 </form>
@@ -1001,6 +1001,16 @@
 		 	       	 	if(!isNaN(incometotal)){
 	 	       		 		$('#incometotal').val(incometotal);
 		 	       	 	}
+		 	       	 	var returntotal = 0;
+			 	       	//应返合计
+			 	       	if($('#returntotal').val()){
+				 	   	 	returntotal = $('#returntotal').val();
+			 	       	}
+			 	   	    //利润合计
+			 	   	 	var profittotal  = parseFloat(incometotal) - parseFloat(data.chengbensum) - parseFloat(returntotal);
+			 	   	 	if(!isNaN(profittotal)){
+			 	   		 	$('#profittotal').val(profittotal.toFixed(2));
+			 	   	 	}
 	 		         },
 	 		         error: function (xhr) {
 	 		         } 
@@ -1033,14 +1043,14 @@
  	var fees = '${obj.custominfo.fees}'; 
  	//alert("值："+fromprice + " 折扣："+discountFare + " 手续费：" + fees);
  	var price = parseFloat(fromprice * discountFare / 100) + parseFloat(fees);
- 	//是否可以修改的标志
+ 	//是否可以修改的标志	
  	var ispriceempty = $(this).parent().parent().find('[name=ispriceempty]').val();
  	if(ispriceempty){
 	 	if(fromprice){
 	 		if(isNaN(price)){
 	 			$(this).parent().parent().find('[name=price]').val('');
 	 		}else{
-		 		$(this).parent().parent().find('[name=price]').val(price);
+		 		$(this).parent().parent().find('[name=price]').val(price.toFixed(2));
 	 		}
 	 	}else{
 	 		$(this).parent().parent().find('[name=price]').val('');
@@ -1081,7 +1091,7 @@
 	 	});
 	 	//应收
 	 	if(sumsale > 0 ){
-	 		$('#receivable').val(sumsale);
+	 		$('#receivable').val(sumsale.toFixed(2));
 	 	}
 	 });
 
@@ -1096,7 +1106,7 @@
 	 		incometotal = yingshou;
 	 	}
 	 	if(!isNaN(incometotal)){
-		 	$('#incometotal').val(incometotal);
+		 	$('#incometotal').val(incometotal.toFixed(2));
 	 	}
 	 });
  //自动加载利润合计
@@ -1110,7 +1120,7 @@
 	    //利润合计
 	 	var profittotal  = parseFloat(incometotal) - parseFloat(costtotal) - parseFloat(returntotal);
 	 	if(!isNaN(profittotal)){
-		 	$('#profittotal').val(profittotal);
+		 	$('#profittotal').val(profittotal.toFixed(2));
 	 	}
 	 });
  //加载日志
@@ -1123,7 +1133,7 @@
 			dataType:'json',
 			url: BASE_PATH + '/admin/inland/loadJianMianAccount.html',
          success: function (data) { 
-         	$('#relief').val(data.account);
+         	$('#relief').val(data.account.toFixed(2));
          },
          error: function (xhr) {
        		

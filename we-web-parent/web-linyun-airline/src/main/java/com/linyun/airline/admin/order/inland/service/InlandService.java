@@ -219,6 +219,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			if (!Util.isEmpty(map.get("tickettype"))) {
 				tickettype = Integer.valueOf((String) map.get("tickettype"));
 			}
+			String remark = (String) map.get("remark");
 			TOrderCustomneedEntity customneedEntity = new TOrderCustomneedEntity();
 			customneedEntity.setLeavecity(leavecity);
 			customneedEntity.setArrivecity(arrivecity);
@@ -227,6 +228,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			}
 			customneedEntity.setPeoplecount(peoplecount);
 			customneedEntity.setTickettype(tickettype);
+			customneedEntity.setRemark(remark);
 			//与订单相关
 			customneedEntity.setOrdernum(insertOrder.getId());
 			TOrderCustomneedEntity insertCus = dbDao.insert(customneedEntity);
@@ -243,9 +245,15 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				//抵达时间
 				String arrivetime = (String) airmap.get("arrivetime");
 				//成本价
-				Double formprice = Double.valueOf((String) airmap.get("formprice"));
+				Double formprice = null;
+				if (!Util.isEmpty(airmap.get("formprice"))) {
+					formprice = Double.valueOf((String) airmap.get("formprice"));
+				}
 				//销售价
-				Double price = Double.valueOf((String) airmap.get("price"));
+				Double price = null;
+				if (!Util.isEmpty(airmap.get("price"))) {
+					price = Double.valueOf((String) airmap.get("price"));
+				}
 				TAirlineInfoEntity airlineEntity = new TAirlineInfoEntity();
 				airlineEntity.setAircom(aircom);
 				airlineEntity.setAilinenum(ailinenum);
@@ -1634,7 +1642,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		TPayEntity payinfo = new TPayEntity();
 		String billurl = "";
 		if (query.size() > 0) {
-			payinfo = dbDao.fetch(TPayEntity.class, query.get(0).getId().longValue());
+			payinfo = dbDao.fetch(TPayEntity.class, query.get(0).getPayId().longValue());
 			if (!Util.isEmpty(payinfo)) {
 				List<TPayReceiptEntity> query2 = dbDao.query(TPayReceiptEntity.class,
 						Cnd.where("payId", "=", payinfo.getId()), null);
@@ -1645,9 +1653,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		}
 		Record companybank = new Record();
 		String pagesqlStr = sqlManager.get("get_fukuan_invoice_page_data");
-		Sql pagesql = Sqls.create(sqlString);
-		Cnd pagecnd = Cnd.limit();
-		cnd.and("tpp.pnrId", "=", id);
+		Sql pagesql = Sqls.create(pagesqlStr);
+		Cnd pagecnd = Cnd.NEW();
+		pagecnd.and("tpp.pnrId", "=", id);
 		List<Record> banks = dbDao.query(pagesql, pagecnd, null);
 		if (banks.size() > 0) {
 			companybank = banks.get(0);

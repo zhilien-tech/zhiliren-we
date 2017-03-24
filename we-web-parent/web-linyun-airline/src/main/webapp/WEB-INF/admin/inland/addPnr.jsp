@@ -173,16 +173,16 @@
 	 		if(isNaN(salesprice)){
 	 			$('#salesprice').val('');
 	 		}else{
-	 			$('#salesprice').val(salesprice);
+	 			$('#salesprice').val(salesprice.toFixed(2));
 	 		}
 	 	}else{
 	 		$('#salesprice').val('');
 	 	}
 	   if(peoplecount){
 		   var costpricesum = parseFloat(costprice) * parseInt(peoplecount);
-		   $('#costpricesum').val(costpricesum);
+		   $('#costpricesum').val(costpricesum.toFixed(2));
 		   var salespricesum = parseFloat(salesprice) * parseInt(peoplecount);
-		   $('#salespricesum').val(salespricesum);
+		   $('#salespricesum').val(salespricesum.toFixed(2));
 	   }
    });
   </script>
