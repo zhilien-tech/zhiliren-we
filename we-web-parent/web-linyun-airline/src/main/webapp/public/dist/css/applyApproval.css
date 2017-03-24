@@ -34,6 +34,7 @@ body{background-color:#ecf0f5;}
 .content-a-ul li:nth-child(3) span:nth-child(1){font-size:.6rem;}
 /*-----end 审批列表-----*/
 /*-----审批详情-----*/
+ul.content-ul {position: relative;top: 2.9rem;}
 .content-ul li{width: 100%;clear: both;display: block;height:2.6rem;font-size: 0.9rem;border-bottom: solid 1px #ecf0f5;background-color: #fff;}
 .content-ul li span{font-size: .8rem;position: relative;top: 0.8rem;}
 .content-ul li span:nth-child(1){float: left;margin-left: .6rem;color: #696969;}

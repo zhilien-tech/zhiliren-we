@@ -5,13 +5,14 @@ function initDatatable() {
     	"bLengthChange": false,
         "processing": true,
         "serverSide": true,
+        "autoWidth": false,
         "initComplete": function( settings, json ) {
         	autoHighLoad($(this));
           },
-          "infoCallback": function( settings, start, end, max, total, pre ) {
+        "infoCallback": function( settings, start, end, max, total, pre ) {
           	autoHighLoad($(this));
   			return '显示第 '+start+' 至 '+end+' 条结果，共 '+total+' 条 (每页显示 '+max+' 条)';
-          },
+        },
         "stripeClasses": [ 'strip1','strip2' ],
         "language": {
             "url": BASE_PATH + "/public/plugins/datatables/cn.json"
@@ -150,28 +151,31 @@ function initDatatable() {
                     },
                     {"data": "username", "bSortable": false},
                     {"data": "telephone", "bSortable": false},
-                    {"data": "action", "bSortable": false}
+                    {"data": "action", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                        return '<a style="cursor:pointer;" onclick="edit('+row.id+','+row.ordersstatus+');">编辑</a>'
+                    }}
             ],
-        "columnDefs": [/*{ "sWidth": "8.33%",  "targets": [0] },
-						{ "sWidth": "3.33%",  "targets": [1] },
+        "columnDefs": [{ "sWidth": "10.33%",  "targets": [0] },
+						{ "sWidth": "7.33%",  "targets": [1] },
 						{ "sWidth": "8.33%",  "targets": [2] },
 						{ "sWidth": "8.33%",  "targets": [3] },
-						{ "sWidth": "8.33%",  "targets": [4] },
+						{ "sWidth": "6.33%",  "targets": [4] },
 						{ "sWidth": "8.33%",  "targets": [5] },
 						{ "sWidth": "8.33%",  "targets": [6] },
 						{ "sWidth": "8.33%",  "targets": [7] },
 						{ "sWidth": "8.33%",  "targets": [8] },
-						{ "sWidth": "8.33%",  "targets": [9] },
-						{ "sWidth": "8.33%",  "targets": [10] },
-						{ "sWidth": "8.33%",  "targets": [11] },
-						{ "sWidth": "10.33%",  "targets": [12] },*/
-                        {
+						{ "sWidth": "5.33%",  "targets": [9] },
+						{ "sWidth": "6.33%",  "targets": [10] },
+						{ "sWidth": "9.33%",  "targets": [11] },
+						{ "sWidth": "10.33%",  "targets": [12] }
+                        /*{
             //   指定第一列，从0开始，0表示第一列，1表示第二列……
             targets: 12,
             render: function(data, type, row, meta) {
                 return '<a style="cursor:pointer;" onclick="edit('+row.id+','+row.ordersstatus+');">编辑</a>'
             }
-        },]
+        }*/]
     });
 }
 
