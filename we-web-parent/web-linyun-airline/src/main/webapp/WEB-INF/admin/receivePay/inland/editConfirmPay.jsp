@@ -101,7 +101,7 @@
 							<option value=2 selected="selected">境外</option>
 						</c:if>
 					</select></td>
-					<td>用途：</td>
+					<td>项目用途：</td>
 					<td><select id="purpose" name="purpose" class="form-control input-sm">
 							<c:forEach var="one" items="${obj.fkytList}">
 	                        	<%-- <option value="${one.id }">${one.dictName }</option> --%>
