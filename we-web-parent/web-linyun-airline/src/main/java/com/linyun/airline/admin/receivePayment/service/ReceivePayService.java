@@ -389,7 +389,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//付款用途
 		List<ComDictInfoEntity> fkytList = new ArrayList<ComDictInfoEntity>();
 		try {
-			fkytList = findCodeByName("", YTCODE);
+			fkytList = findCodeByName("", YTCODE, companyId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -397,7 +397,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//资金种类
 		List<ComDictInfoEntity> zjzlList = new ArrayList<ComDictInfoEntity>();
 		try {
-			zjzlList = findCodeByName("", ZJZLCODE);
+			zjzlList = findCodeByName("", ZJZLCODE, companyId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -416,10 +416,10 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	}
 
 	//查询用途 公司字典
-	public List<ComDictInfoEntity> findCodeByName(String name, String typeCode) throws Exception {
+	public List<ComDictInfoEntity> findCodeByName(String name, String typeCode, long companyId) throws Exception {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("comDictName", "like", Strings.trim(name) + "%").and("status", "=", DataStatusEnum.ENABLE.intKey())
-				.and("comTypeCode", "=", typeCode).groupBy("comDictName");
+				.and("comTypeCode", "=", typeCode).and("comId", "=", companyId).groupBy("comDictName");
 		List<ComDictInfoEntity> query = dbDao.query(ComDictInfoEntity.class, cnd, null);
 		return query;
 	}
@@ -525,6 +525,10 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		String approver = "";
 		//审批结果
 		String approveresult = "";
+		//用途
+		String purpose = "";
+		//币种
+		String payCurrency = "";
 		//操作人
 		String operator = "";
 		String operatorList = "";
@@ -542,25 +546,20 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			}
 
 			approveresult = record.getString("approveresult");
+			purpose = record.getString("purpose");
+			payCurrency = record.getString("paycurrency");
 		}
 		map.put("totalMoney", totalMoney);
 		map.put("proposer", proposer);
 		map.put("approver", approver);
+		map.put("purpose", purpose);
+		map.put("payCurreny", payCurrency);
 		map.put("operators", operatorList);
 		if (Util.eq(APPROVALENABLE, approveresult)) {
 			map.put("approveresult", "同意");
 		} else {
 			map.put("approveresult", "拒绝");
 		}
-
-		//银行名称
-		/*List<DictInfoEntity> bankList = new ArrayList<DictInfoEntity>();
-		try {
-			bankList = externalInfoService.findDictInfoByName("", YHCODE);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		map.put("bankList", bankList);*/
 		//银行名称
 		List<TBankCardEntity> bankList = new ArrayList<TBankCardEntity>();
 		try {
@@ -587,7 +586,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//付款用途
 		List<ComDictInfoEntity> fkytList = new ArrayList<ComDictInfoEntity>();
 		try {
-			fkytList = findCodeByName("", YTCODE);
+			fkytList = findCodeByName("", YTCODE, companyId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -595,7 +594,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//资金种类
 		List<ComDictInfoEntity> zjzlList = new ArrayList<ComDictInfoEntity>();
 		try {
-			zjzlList = findCodeByName("", ZJZLCODE);
+			zjzlList = findCodeByName("", ZJZLCODE, companyId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -642,7 +641,6 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			return false;
 		}
 		//付款水单 集合
-		List<TPayReceiptEntity> payReceiptList = new ArrayList<TPayReceiptEntity>();
 		TPayReceiptEntity payReceiptEntity = new TPayReceiptEntity();
 		//银行卡
 		TCompanyBankCardEntity companyBankCard = new TCompanyBankCardEntity();
@@ -664,56 +662,58 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//付款集合
 		List<TPayEntity> updateList = new ArrayList<TPayEntity>();
 		TPayPnrEntity payPnrEntity = dbDao.fetch(TPayPnrEntity.class, Cnd.where("pnrId", "in", pnrIds));
-		List<TPayEntity> payEntityList = dbDao.query(TPayEntity.class, Cnd.where("id", "in", payPnrEntity.getPayId()),
-				null);
-		for (TPayEntity payEntity : payEntityList) {
-			if (!Util.eq(null, bankId)) {
-				payEntity.setBankId(bankId);
-			}
-			if (!Util.eq(null, payAddress)) {
-				payEntity.setPayAddress(payAddress);
-			}
-			if (!Util.eq(null, purpose)) {
-				payEntity.setPurpose(purpose);
-			}
-			if (!Util.eq(null, fundType)) {
-				payEntity.setFundType(fundType);
-			}
-			if (!Util.eq(null, payDate)) {
-				payEntity.setPayDate(payDate);
-			}
-			if (!Util.eq(null, payFees)) {
-				payEntity.setPayFees(payFees);
-			}
-			if (!Util.eq(null, payMoney)) {
-				payEntity.setPayMoney(payMoney);
-			}
-			if (!Util.eq(null, totalMoney)) {
-				payEntity.setTotalMoney(totalMoney);
-			}
-			if (!Util.eq(null, currency)) {
-				if (!Util.eq("--请选择--", currency)) {
-					payEntity.setPayCurrency(currency);
-				}
-			}
-			if (!Util.eq(null, isInvioce)) {
-				payEntity.setIsInvioce(isInvioce);
-			}
-			if (!Util.eq(null, payChineseMoney)) {
-				payEntity.setPayChineseMoney(payChineseMoney);
-			}
-			updateList.add(payEntity);
-			//添加水单
-			if (!Util.isEmpty(receiptUrl)) {
-				payReceiptEntity.setReceiptUrl(receiptUrl);
-				payReceiptEntity.setId(payEntity.getId());
-			}
-			payReceiptList.add(payReceiptEntity);
+		TPayEntity payEntity = dbDao.fetch(TPayEntity.class, Cnd.where("id", "=", payPnrEntity.getPayId()));
+		if (!Util.eq(null, bankId)) {
+			payEntity.setBankId(bankId);
 		}
-		//添加水单表
-		if (!Util.isEmpty(payReceiptList)) {
-			dbDao.insert(payReceiptList);
+		if (!Util.eq(null, payAddress)) {
+			payEntity.setPayAddress(payAddress);
 		}
+		if (!Util.eq(null, purpose)) {
+			payEntity.setPurpose(purpose);
+		}
+		if (!Util.eq(null, fundType)) {
+			payEntity.setFundType(fundType);
+		}
+		if (!Util.eq(null, payDate)) {
+			payEntity.setPayDate(payDate);
+		}
+		if (!Util.eq(null, payFees)) {
+			payEntity.setPayFees(payFees);
+		}
+		if (!Util.eq(null, payMoney)) {
+			payEntity.setPayMoney(payMoney);
+		}
+		if (!Util.eq(null, totalMoney)) {
+			payEntity.setTotalMoney(totalMoney);
+		}
+		if (!Util.eq(null, currency)) {
+			if (!Util.eq("--请选择--", currency)) {
+				payEntity.setPayCurrency(currency);
+			}
+		}
+		if (!Util.eq(null, isInvioce)) {
+			payEntity.setIsInvioce(isInvioce);
+		}
+		if (!Util.eq(null, payChineseMoney)) {
+			payEntity.setPayChineseMoney(payChineseMoney);
+		}
+		payEntity.setConfirmDate(DateTimeUtil.nowDate());
+		updateList.add(payEntity);
+		//更新付款订单信息
+		if (!Util.isEmpty(updateList)) {
+			dbDao.update(updateList);
+		} else {
+			dbDao.insert(updateList);
+		}
+
+		//添加水单
+		if (!Util.isEmpty(receiptUrl)) {
+			payReceiptEntity.setReceiptUrl(receiptUrl);
+			payReceiptEntity.setPayId(payEntity.getId());
+			dbDao.insert(payReceiptEntity);
+		}
+
 		//更新Pnr表中對應的状态
 		List<TPnrInfoEntity> pnrInfoList = dbDao.query(TPnrInfoEntity.class, Cnd.where("id", "in", pnrIds), null);
 		int updatenum = 0;

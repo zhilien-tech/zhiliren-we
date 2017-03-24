@@ -249,7 +249,7 @@
 				'multi' : false,//multi设置为true将允许多文件上传
 				'successTimeout' : 1800,
 				'queueSizeLimit' : 100,
-				'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html',
+				'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html;jsessionid=${pageContext.session.id}',
 				'onUploadStart' : function(file) {
 					$("#submit").attr('disabled',true);
 				},
@@ -276,7 +276,10 @@
 							alert("文件 ["+file.name+"] 类型不正确！");
 							break;
 						}
-					}
+					},
+					onError: function(event, queueID, fileObj) {　
+						$("#submit").attr('disabled',false);
+			        }  
 				});
 			});
 		
