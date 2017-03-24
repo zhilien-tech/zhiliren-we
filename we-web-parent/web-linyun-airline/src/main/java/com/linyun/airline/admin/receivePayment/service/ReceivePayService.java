@@ -48,6 +48,7 @@ import com.linyun.airline.admin.receivePayment.form.inland.InlandPayListSearchSq
 import com.linyun.airline.admin.receivePayment.form.inland.InlandRecListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.inland.TSaveInlandPayAddFrom;
 import com.linyun.airline.admin.receivePayment.form.inland.TUpdateInlandPayAddFrom;
+import com.linyun.airline.admin.receivePayment.util.FormatDateUtil;
 import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
@@ -345,7 +346,11 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				String payDateFormat = DateTimeUtil.format(DateTimeUtil.string2Date(payDateStr, null));
 				record.put("payDate", payDateFormat);
 			}
-
+			String billDateStr = record.getString("billingdate");
+			if (!Util.isEmpty(billDateStr)) {
+				String formatBillDate = FormatDateUtil.dateToOrderDate(DateTimeUtil.string2Date(billDateStr, null));
+				record.set("billingdate", formatBillDate);
+			}
 		}
 		result.put("proposer", proposer);
 		result.put("approver", approver);
@@ -455,6 +460,12 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				Double incometotal = (Double) record.get("incometotal");
 				sum += incometotal;
 			}
+			String billDateStr = record.getString("billingdate");
+			if (!Util.isEmpty(billDateStr)) {
+				String formatBillDate = FormatDateUtil.dateToOrderDate(DateTimeUtil.string2Date(billDateStr, null));
+				record.set("billingdate", formatBillDate);
+			}
+
 		}
 		map.put("sum", sum);
 
@@ -513,6 +524,11 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				if (!Util.isEmpty(id)) {
 					payIds += record.getString("id") + ",";
 				}
+				String billDateStr = record.getString("billdate");
+				if (!Util.isEmpty(billDateStr)) {
+					String formatBillDate = FormatDateUtil.dateToOrderDate(DateTimeUtil.string2Date(billDateStr, null));
+					record.set("billdate", formatBillDate);
+				}
 			}
 		}
 		map.put("orders", orders);
@@ -544,7 +560,6 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				operator = opr;
 				operatorList += opr + ",";
 			}
-
 			approveresult = record.getString("approveresult");
 			purpose = record.getString("purpose");
 			payCurrency = record.getString("paycurrency");

@@ -77,12 +77,13 @@ function initRecDataTable() {
 		            		$.each(row.orders, function(name, value) {
 		            			var num = value.ordersnum;
 		            			if(value && value.incometotal!=undefined && (num!=orderNum)){
-		            				result += '<li style="list-style:none;">'+value.incometotal+'</li>';
+		            				result += '<li style="list-style:none;">'+(value.incometotal).toFixed(2)+'</li>';
 		            			}
 		            			orderNum = num;
 		            		});
 		            		result += '</ul>';
 		            		return result;
+		            		
 		            	}
 		            },
 		            {"data": "sum", "bSortable": false,
@@ -91,7 +92,7 @@ function initRecDataTable() {
 		            		if(null == sum || ""== sum){
 		            			return "";
 		            		}
-		            		return sum;
+		            		return sum.toFixed(2);
 		            	}
 		            },
 		            {"data": "shortname", "bSortable": false,
