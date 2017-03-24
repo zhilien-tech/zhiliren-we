@@ -87,11 +87,13 @@ public class TAirlinePolicyForm extends DataTablesParamForm {
 		}
 		if (!Util.isEmpty(beginTime)) {
 
-			cnd.and("updateTime", ">", beginTime);
+			cnd.and("updateTime", ">=", beginTime);
+
 		}
 		if (!Util.isEmpty(endTime)) {
 
-			cnd.and("updateTime", "<", endTime);
+			cnd.and("updateTime", "<=", endTime);
+
 		}
 		if (!Util.isEmpty(companyId)) {
 			cnd.and("companyId", "=", companyId);

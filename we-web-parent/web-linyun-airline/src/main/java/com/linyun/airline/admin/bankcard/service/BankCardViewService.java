@@ -152,13 +152,15 @@ public class BankCardViewService extends BaseService<TBankCardEntity> {
 	public Object updateData(TBankCardUpdateForm updateForm, HttpSession session) {
 
 		TBankCardEntity bankCard = dbDao.fetch(TBankCardEntity.class, updateForm.getId());
+		String bankNameId = updateForm.getBankName();
+		DictInfoEntity di = dbDao.fetch(DictInfoEntity.class, Long.valueOf(bankNameId));
 		Map<String, Object> obj = Maps.newHashMap();
 		if (!Util.isEmpty(updateForm)) {
 			updateForm.setStatus(BankCardStatusEnum.ENABLE.intKey());
 			updateForm.setUpdateTime(new Date());
 		}
-		if (Util.isEmpty(updateForm.getBankName())) {
-			updateForm.setBankName(bankCard.getBankName());
+		if (!Util.isEmpty(updateForm.getBankName())) {
+			updateForm.setBankName(di.getDictName());
 		}
 		BeanUtil.copyProperties(updateForm, bankCard);
 		updateIgnoreNull(bankCard);//更新银行卡表中的数据

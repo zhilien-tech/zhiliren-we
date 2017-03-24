@@ -6,7 +6,6 @@
 
 package com.linyun.airline.admin.applyapproval.service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -141,11 +140,11 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 			reduceInteCnd.and("mi.ordertype", "=", OrderTypeEnum.TEAM.intKey());
 			/*dbDao.query(clazz, reduceInteCnd, pager)*/
 			reduceInteSql.setCondition(reduceInteCnd);
-			List<Record> reduceInteList = dbDao.query(reduceInteSql, reduceInteCnd, null);
+			//List<Record> reduceInteList = dbDao.query(reduceInteSql, reduceInteCnd, null);
 			/********国际减免的处理结束**********/
 
 			sql.setCondition(cnd);
-			List<Record> datalist = dbDao.query(sql, cnd, null);
+			//List<Record> datalist = dbDao.query(sql, cnd, null);
 			/******主数据*******/
 			List<ApprovalListInter> query = DbSqlUtil.query(dbDao, ApprovalListInter.class, sql);
 			/******主数据*******/
@@ -163,25 +162,17 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 				@Override
 				public int compare(ApprovalListInter o1, ApprovalListInter o2) {
 
-					if (o1.getPaystatus() > o2.getPaystatus()) {
-						return 1;
-					} else if (o1.getPaystatus() == o2.getPaystatus()) {
-						if (!Util.isEmpty(o1.getOrderstime()) || !Util.isEmpty(o1.getOrderstime())) {
+					if (!Util.isEmpty(o1.getOrderstime()) || !Util.isEmpty(o1.getOrderstime())) {
 
-							if (o1.getOrderstime().getTime() < o2.getOrderstime().getTime()) {
-								return 1;
-							} else if (o1.getOrderstime() == o2.getOrderstime()) {
+						if (o1.getOrderstime().getTime() < o2.getOrderstime().getTime()) {
+							return 1;
+						} else if (o1.getOrderstime() == o2.getOrderstime()) {
 
-								return 0;
-							} else if (o1.getOrderstime().getTime() > o2.getOrderstime().getTime()) {
-								return -1;
-							}
+							return 0;
+						} else if (o1.getOrderstime().getTime() > o2.getOrderstime().getTime()) {
+							return -1;
 						}
-						return 0;
-					} else if (o1.getPaystatus() < o2.getPaystatus()) {
-						return -1;
 					}
-
 					return 0;
 
 				}
@@ -189,9 +180,9 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 			});
 			/******副数据*******/
 			re.put("query", query);
-			re.put("datalist", datalist);
+			//re.put("datalist", datalist);
 			re.put("operation", operation);
-			re.put("reduceInteList", reduceInteList);
+			//re.put("reduceInteList", reduceInteList);
 			return re;
 		} else if ("inlandNum".equalsIgnoreCase(operation)) {
 			orderType = OrderTypeEnum.FIT.intKey();
@@ -219,10 +210,10 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 			reduceInlandCnd.and("uo.companyId", "=", companyId);
 			reduceInlandCnd.and("mi.ordertype", "=", OrderTypeEnum.FIT.intKey());
 			reduceInlandSql.setCondition(reduceInlandCnd);
-			List<Record> reduceInlandList = dbDao.query(reduceInlandSql, reduceInlandCnd, null);
+			//List<Record> reduceInlandList = dbDao.query(reduceInlandSql, reduceInlandCnd, null);
 			/********内陆减免的处理结束**********/
 			sql.setCondition(cnd);
-			List<Record> datalist = dbDao.query(sql, cnd, null);
+			//List<Record> datalist = dbDao.query(sql, cnd, null);
 			/******主数据*******/
 			List<ApprovalList> query = DbSqlUtil.query(dbDao, ApprovalList.class, sql);
 			/******主数据*******/
@@ -240,33 +231,25 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 				@Override
 				public int compare(ApprovalList o1, ApprovalList o2) {
 
-					if (o1.getOrderPnrStatus() > o2.getOrderPnrStatus()) {
-						return 1;
-					} else if (o1.getOrderPnrStatus() == o2.getOrderPnrStatus()) {
-						if (!Util.isEmpty(o1.getOptime()) || !Util.isEmpty(o1.getOptime())) {
-							if (o1.getOptime().getTime() < o2.getOptime().getTime()) {
-								return 1;
-							} else if (o1.getOptime() == o2.getOptime()) {
+					if (!Util.isEmpty(o1.getOptime()) || !Util.isEmpty(o1.getOptime())) {
+						if (o1.getOptime().getTime() < o2.getOptime().getTime()) {
+							return 1;
+						} else if (o1.getOptime() == o2.getOptime()) {
 
-								return 0;
-							} else if (o1.getOptime().getTime() > o2.getOptime().getTime()) {
-								return -1;
-							}
+							return 0;
+						} else if (o1.getOptime().getTime() > o2.getOptime().getTime()) {
+							return -1;
 						}
-						return 0;
-					} else if (o1.getOrderPnrStatus() < o2.getOrderPnrStatus()) {
-						return -1;
 					}
-
 					return 0;
 
 				}
 
 			});
 			/******副数据*******/
-			re.put("datalist", datalist);
+			//re.put("datalist", datalist);
 			re.put("operation", operation);
-			re.put("reduceInlandList", reduceInlandList);
+			//re.put("reduceInlandList", reduceInlandList);
 			re.put("query", query);
 			return re;
 		} else if ("others".equalsIgnoreCase(operation)) {
@@ -516,12 +499,4 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 
 	}
 
-	public List<ApprovalList> megerList(List<Record> datalist, List<Record> reduceInteList) {
-		List<ApprovalList> listResult = new ArrayList<ApprovalList>();
-		for (Record datarecord : datalist) {
-			ApprovalList app = new ApprovalList();
-			/*app.setApproveResult(datarecord.g);*/
-		}
-		return null;
-	}
 }

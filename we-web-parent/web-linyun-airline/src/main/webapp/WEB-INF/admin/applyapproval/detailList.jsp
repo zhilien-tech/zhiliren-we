@@ -18,7 +18,7 @@
 		<li><a href="${base}/admin/applyapproval/dataList.html?operation=${obj.operation}&date=${obj.date}" id="return"><i class="fa fa-angle-left"></i>返回</a></li>
 		<li><h3>审批详情</h3></li>
 		<li> </li>
-	</ul>
+	</ul>     
   </header>
   <c:if test="${obj.reduce=='YES' }">
   		<ul class="content-ul">

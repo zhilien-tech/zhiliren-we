@@ -58,11 +58,11 @@
                   </div>
                   <div class="col-md-1 padding">
                      
-                  	 <input type="text" class="form-control input-sm" placeholder="2017-02-22" name="beginTime" id="beginTime" value="" onFocus="WdatePicker({onpicked:pickedFunc,oncleared:pickedFunc,el:'beginTime',dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'beginTime\')}'})"  >
+                  	 <input type="text" class="form-control input-sm" placeholder="2017-02-22" name="beginTime" id="beginTime" value="" onFocus="WdatePicker({onpicked:pickedFunc,oncleared:pickedFunc,el:'beginTime',dateFmt:'yyyy-MM-dd'})"  >
                   </div>
                   <div class="col-md-1 padding">
                     
-                  	  <input type="text" class="form-control input-sm" placeholder="2017-02-22" name="endTime" id="endTime" value="" onFocus="WdatePicker({onpicked:pickedFunc,oncleared:pickedFunc,dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'endTime\')}'})"  >
+                  	  <input type="text" class="form-control input-sm" placeholder="2017-02-22" name="endTime" id="endTime" value="" onFocus="WdatePicker({onpicked:pickedFunc,oncleared:pickedFunc,dateFmt:'yyyy-MM-dd'})"  >
                   </div>
                   <div class="col-md-7 padding">
                    <%-- <a href="${base}/admin/airlinepolicy/add.html" class="btn btn-primary btn-sm right">上传</a> --%>
@@ -188,7 +188,7 @@
 	            	
 	            	var modify1 = '<a style="cursor:pointer;" href="'+row.pdfurl+'" target="_blank">预览</a>';
 	            	var modify2 = '<a style="cursor:pointer;" onclick="update('+row.id+');">编辑</a>';
-	            	var modify3 = '<a style="cursor:pointer;" href="'+row.url+'">下载</a>';
+	            	var modify3 = '<a style="cursor:pointer;" href="${base}/admin/airlinepolicy/download.html?id='+row.id+'">下载</a>';
 	            	var modify4 = '<a style="cursor:pointer;" onclick="deleteFile('+row.id+');">删除</a>';
 	                return modify1+"&nbsp; &nbsp; &nbsp;"+modify2+"&nbsp; &nbsp; &nbsp;"+modify3+"&nbsp; &nbsp; &nbsp;"+modify4;
 	            }
@@ -287,6 +287,33 @@
 		            area: ['870px', '420px'],
 		            content: '${url}/update.html?id='+id
 		          });
+		      
+		  }
+	 function downloadFile(id) {
+		    //更新 弹框
+				var url = '${base}/admin/airlinepolicy/download.html';
+				$.ajax({
+					type : 'POST',
+					data : {
+						id : id
+					},
+					dataType : 'json',
+					url : url,
+					success : function(data) {
+						if ("200" == data.status) {
+							layer.msg("下载成功!", "", 3000);
+							window.parent.successCallback('3');
+							/* window.location.reload();  */
+							
+						} else {
+							layer.msg("下载失败!", "", 3000);
+						}
+					},
+					error : function(xhr) {
+						layer.msg("下载失败!", "", 3000);
+					}
+				});
+			
 		      
 		  }
 	 
