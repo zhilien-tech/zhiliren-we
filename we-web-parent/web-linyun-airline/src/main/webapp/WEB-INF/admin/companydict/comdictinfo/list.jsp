@@ -205,11 +205,14 @@ function initDatatable() {
                     }, */
                     {"data": "comtypename", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		var comtypename = row.comtypename;
-                    		if(null==comtypename || ""==comtypename){
-                    			return "";
-                    		}
-                    		return comtypename;
+                    		//var comtypename = row.comtypename;
+                    		var result = '';
+                      		$.each(row.comdicttypeenum, function(name, value) {
+                      			if(row.comtypecode == name){
+                      				result = value;
+                      			}
+                      		});
+                    		return result;
                     	}		
                     },
                     /* {"data": "comddictcode", "bSortable": false,

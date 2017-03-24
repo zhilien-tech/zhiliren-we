@@ -79,7 +79,7 @@ public class ComInfoDictModule {
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Long comId = company.getId();//得到公司的id
 		sqlForm.setComId(comId);
-		return comInfoDictService.listPage4Datatables(sqlForm);
+		return comInfoDictService.comInfoListData(sqlForm);
 	}
 
 	/**

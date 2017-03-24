@@ -16,24 +16,10 @@ $condition
 
 /*company_dictinfo_list*/
 SELECT
-	cmd.id,
-	cmd.dictTypeId,
-	cty.comTypeName,
-	cmd.comId,
-	c.comName,
-	cmd.comTypeCode,
-	cmd.comDdictCode,
-	cmd.comDictName,
-	cmd.`status`,
-	cmd.quanPin,
-	cmd.jianPin,
-	cmd.createTime,
-	cmd.updateTime,
-	cmd.remark
+	cmd.*
 FROM
 	t_company_dictinfo cmd
-INNER JOIN t_company_dicttype cty ON cty.comTypeCode = cmd.comTypeCode
-LEFT JOIN t_company c ON c.id = cmd.comId
+INNER JOIN t_company c ON c.id = cmd.comId
 $condition
 
 /*company_select_dicttypename*/

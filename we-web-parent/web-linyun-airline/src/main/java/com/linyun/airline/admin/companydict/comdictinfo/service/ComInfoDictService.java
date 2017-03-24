@@ -22,6 +22,7 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import com.google.common.collect.Maps;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
+import com.linyun.airline.admin.companydict.comdictinfo.form.ComInfoSqlForm;
 import com.linyun.airline.admin.companydict.comdictinfo.form.ComInfoUpdateForm;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.enums.DataStatusEnum;
@@ -125,5 +126,17 @@ public class ComInfoDictService extends BaseService<ComDictInfoEntity> {
 		@SuppressWarnings("unchecked")
 		List<Record> list = (List<Record>) sql.getResult();
 		return list;
+	}
+
+	public Object comInfoListData(ComInfoSqlForm sqlForm) {
+		Map<String, Object> datatablesdata = this.listPage4Datatables(sqlForm);
+		List<Record> listdata = (List<Record>) datatablesdata.get("data");
+		for (Record record : listdata) {
+			record.put("comdicttypeenum", EnumUtil.enum2(ComDictTypeEnum.class));
+		}
+		datatablesdata.remove("data");
+		datatablesdata.put("data", listdata);
+		return datatablesdata;
+
 	}
 }
