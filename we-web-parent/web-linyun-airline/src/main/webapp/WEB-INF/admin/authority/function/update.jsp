@@ -150,7 +150,7 @@ $("#submit").click(function(){
 	           url:'${base}/admin/authority/function/update.html',
 	           data:$('#functionEditForm').serialize(),// 你的formid
 	           error: function(request) {
-	              layer.msg('修改失败!');
+	              layer.msg('修改失败!',{time:2000});
 	           },
 	           success: function(data) {
 					layer.load(1, {

@@ -42,7 +42,7 @@
                   	<div class="form-group">
                   		<label class="col-sm-3 text-right padding">用户姓名：</label>
                       	<div class="col-sm-3 padding">
-                        	<input id="userName" name="userName" type="text" class="form-control input-sm inputWidth" placeholder="请输入用户姓名" />
+                        	<input id="fullName" name="fullName" type="text" class="form-control input-sm inputWidth" placeholder="请输入用户姓名" />
                         	<span class="prompt">*</span>
                       	</div>
                   	</div>
@@ -167,12 +167,12 @@ function formValidator(){
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-        	userName: {
+        	fullName: {
                 validators: {
                     notEmpty: {
-                        message: '用户名不能为空!'
+                        message: '用户姓名不能为空!'
                     },
-                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
+                    /* remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
                          url: '${base}/admin/user/checkUserNameExist.html',//验证地址
                          message: '用户名称已存在，请重新输入!',//提示消息
                          delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
@@ -180,10 +180,10 @@ function formValidator(){
                          //自定义提交数据，默认值提交当前input value
                          data: function(validator) {
                             return {
-                            	userName:$('input[name="userName"]').val()
+                            	fullName:$('input[name="fullName"]').val()
                             };
                          }
-                     },
+                     }, */
                      stringLength: {/*长度提示*/
                    	    min: 1,
                    	    max: 6,
@@ -281,7 +281,6 @@ $("#submit").click(function() {
 	var bootstrapValidator = $("#addUserForm").data('bootstrapValidator');
 	if(bootstrapValidator.isValid()){
 		$.ajax({
-			cache : true,
 			type : "POST",
 			url : '${base}/admin/user/add.html',
 			data : $('#addUserForm').serialize(),// 你的formid

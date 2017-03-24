@@ -78,12 +78,14 @@ function initKaiInvoiceTable1() {
                   },
                   {"data": "invoiceitem", "bSortable": false,
                 	  render:function(data, type, row, meta) {
-                    		var result = '';
-                    		if(row.invoiceitem){
-                    			result = row.invoiceitem;
-                    		}
-                    		return result;
-                    	}
+                  		var result = '';
+                  		$.each(row.ytselect, function(name, value) {
+                  			if(value.id === row.invoiceitem){
+                  				result = value.comDictName;
+                  			}
+                  		});
+                  		return result;
+                  	}
                   },
                   {"data": "paymentunit", "bSortable": false,
                 	  render:function(data, type, row, meta) {
@@ -297,9 +299,11 @@ function initshouInvoiceTable1() {
                 {"data": "invoiceitem", "bSortable": false,
                 	render:function(data, type, row, meta) {
                 		var result = '';
-                		if(row.invoiceitem && row.invoiceitem != undefined) {
-                			result =row.invoiceitem;
-                		}
+                		$.each(row.ytselect, function(name, value) {
+                			if(value.id === row.invoiceitem){
+                				result = value.comDictName;
+                			}
+                		});
                 		return result;
                 	}
                 },
