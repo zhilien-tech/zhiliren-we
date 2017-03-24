@@ -36,6 +36,7 @@ import org.nutz.mvc.upload.TempFile;
 
 import com.google.common.base.Splitter;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
+import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.customneeds.service.EditPlanService;
 import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
@@ -1312,8 +1313,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		result.put("orders", orders);
 		//检索条件
-		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class, Cnd.where("comTypeCode", "=", FKYTCODE)
-				.and("comId", "=", company.getId()), null);
+		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
+				null);
 		try {
 			result.put("bzSelect", externalInfoService.findDictInfoByName("", BIZHONGCODE));
 		} catch (Exception e) {
@@ -1516,8 +1518,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		HttpSession session = request.getSession();
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class, Cnd.where("comTypeCode", "=", FPXMCODE)
-				.and("comId", "=", company.getId()), null);
+		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
+				null);
 		//付款id
 		String id = request.getParameter("id");
 		//付款信息
@@ -1616,8 +1619,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		HttpSession session = request.getSession();
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class, Cnd.where("comTypeCode", "=", FPXMCODE)
-				.and("comId", "=", company.getId()), null);
+		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
+				null);
 		String id = request.getParameter("id");
 		String sqlString = sqlManager.get("get_fukuan_info_list");
 		Sql sql = Sqls.create(sqlString);

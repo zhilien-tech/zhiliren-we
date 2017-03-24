@@ -88,7 +88,7 @@
       <div class="invoiceInfo-body">
         <table class="payTable2">
           <tr>
-                  <td><label>发票项目：</label></td>
+                  <td><label>项目用途：</label></td>
                   <td>
                     <select id="invoiceitem" name="invoiceitem" class="form-control input-sm">
                         <c:forEach items="${obj.ytselect }" var="one">
