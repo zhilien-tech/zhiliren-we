@@ -240,7 +240,7 @@ $(document).ready(function(){
 					jobJson:_jobJson
 			   },
 	           error: function(request) {
-	              layer.msg('添加失败!');
+	              layer.msg('添加失败!',{time:2000});
 	           },
 	            success: function(data) {
 				layer.load(1, {

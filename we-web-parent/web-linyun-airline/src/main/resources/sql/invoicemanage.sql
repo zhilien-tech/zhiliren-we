@@ -63,3 +63,47 @@ SELECT
 FROM
 	t_invoice_info ii
 $condition
+
+/*invoicemanage_kaiinvoice_search_list*/
+SELECT
+	tuo.ordersnum,
+	ii.*, 
+	u.id AS userIds,
+	idd.invoicenum,
+	u.userName
+FROM
+	t_invoice_info ii
+LEFT JOIN t_order_receive ore ON ii.receiveid = ore.receiveid
+LEFT JOIN t_up_order tuo ON tuo.id = ore.orderid
+LEFT JOIN t_customer_info cus ON cus.id = tuo.userid
+LEFT JOIN t_user u ON u.id = ii.billuserid
+LEFT JOIN dict_info info ON info.id = ii.invoiceitem
+LEFT JOIN t_invoice_detail idd ON ii.id=idd.invoiceinfoid
+$condition
+
+/*invoicemanage_shou_invoice_list*/
+SELECT
+	tii.comId,
+	tuo.ordersnum,
+	tpi.*, tii.invoicedate,
+	tii.`status`,
+	tii.invoiceitem,
+	tii.paymentunit,
+	tii.id invoiceid,
+	tii.remark,
+	(
+		SELECT
+			count(*)
+		FROM
+			t_invoice_detail
+		WHERE
+			invoiceinfoid = tii.id
+	) invoicecount,
+	tu.userName
+FROM
+	t_pnr_info tpi
+INNER JOIN t_invoice_info tii ON tii.pnrid = tpi.id
+LEFT JOIN t_user tu ON tii.billuserid = tu.id
+INNER JOIN t_order_customneed toc ON tpi.needid = toc.id
+INNER JOIN t_up_order tuo ON toc.ordernum = tuo.id
+$condition

@@ -14,11 +14,14 @@ import com.uxuexi.core.web.form.ModForm;
 public class TUserUpdateForm extends ModForm implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	/**用户姓名*/
+	/**用户名*/
 	private String userName;
 
 	/**密码*/
 	private String password;
+
+	/**用户姓名*/
+	private String fullName;
 
 	/**用户名/手机号码*/
 	private String telephone;

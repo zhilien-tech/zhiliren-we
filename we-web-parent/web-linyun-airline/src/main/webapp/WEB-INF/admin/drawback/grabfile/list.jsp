@@ -246,7 +246,7 @@ $(document).on('click', '.checkchild', function(e) {
     				dataType : 'json',
     				url : '${base}/admin/drawback/grabfile/saveUploadFile.html',
     				error : function(request) {
-    					layer.msg('上传失败!');
+    					layer.msg('上传失败!',{time:2000});
     				},
     				success : function(data) {
     				    window.parent.successCallback('6');
@@ -317,11 +317,11 @@ function physicalDelete(did, status) {
 				if ("200" == data.status) {
 					window.parent.successCallback('3');
 				} else {
-					layer.msg("操作失败!", "", 3000);
+					layer.msg("操作失败!",{time:2000});
 				}
 			},
 			error : function(xhr) {
-				layer.msg("操作失败", "", 3000);
+				layer.msg("操作失败",{time:2000});
 			}
 		});
 	}, function(){
@@ -401,23 +401,23 @@ function successCallback(id){
 	  rebatesEamilTable.ajax.reload(null,false);
 	  rebatesReportTable.ajax.reload(null,false);
 	  if(id == '1'){
-		  layer.msg("新建文件夹成功!",{time: 1000, icon:1});
+		  layer.msg("新建文件夹成功!",{time:2000});
 	  }else if(id == '2'){
-		  layer.msg("修改文件夹名称成功!",{time: 1000, icon:1});
+		  layer.msg("修改文件夹名称成功!",{time:2000});
 	  }else if(id == '3'){
-		  layer.msg("删除成功!",{time: 1000, icon:1});
+		  layer.msg("删除成功!",{time:2000});
 	  }else if(id == '4'){
-		  layer.msg("移动成功!",{time: 1000, icon:1});
+		  layer.msg("移动成功!",{time:2000});
 	  }else if(id == '5'){
-		  layer.msg("抓取成功!",{time: 1000, icon:1});
+		  layer.msg("抓取成功!",{time:2000});
 	  }else if(id == '6'){
-		  layer.msg("上传成功!",{time: 1000, icon:1});
+		  layer.msg("上传成功!",{time:2000});
 	  }else if(id == '7'){
-		  layer.msg("文件下载成功!",{time: 1000, icon:1});
+		  layer.msg("文件下载成功!",{time:2000});
 	  }else if(id == '8'){
-		  layer.msg("添加成功!",{time: 1000, icon:1});
+		  layer.msg("添加成功!",{time:2000});
 	  }else if(id == '9'){
-		  layer.msg("编辑成功!",{time: 1000, icon:1});
+		  layer.msg("编辑成功!",{time:2000});
 	  }
   }
 </script>

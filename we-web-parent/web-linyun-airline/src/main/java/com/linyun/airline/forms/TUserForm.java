@@ -20,11 +20,14 @@ public class TUserForm implements SQLParamForm, Serializable {
 	/**主键*/
 	private long id;
 
-	/**用户姓名*/
+	/**用户名*/
 	private String userName;
 
 	/**密码*/
 	private String password;
+
+	/**用户姓名*/
+	private String fullName;
 
 	/**用户名/手机号码*/
 	private String telephone;

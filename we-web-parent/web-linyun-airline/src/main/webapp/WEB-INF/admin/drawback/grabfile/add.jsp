@@ -97,7 +97,7 @@ $("#submit").click(function() {
 				fileName:$('input[name="fileName"]').val()
 			},
 			error : function(request) {
-				layer.msg('新建文件夹失败!');
+				layer.msg('新建文件夹失败!',{time:2000});
 			},
 			success : function(data) {
 				layer.load(1, {

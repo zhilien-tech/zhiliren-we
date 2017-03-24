@@ -174,11 +174,11 @@ $(function () {
   function successCallback(id){
 	  datatable.ajax.reload(null,false);
 	  if(id == '1'){
-		  layer.msg("添加成功",{time: 2000, icon:1});
+		  layer.msg("添加成功",{time:2000});
 	  }else if(id == '2'){
-		  layer.msg("权限分配成功!",{time: 2000, icon:1});
+		  layer.msg("权限分配成功",{time:2000});
 	  }else if(id == '3'){
-		  layer.msg("删除成功",{time: 2000, icon:1});
+		  layer.msg("删除成功",{time:2000});
 	  }
   }
 </script>

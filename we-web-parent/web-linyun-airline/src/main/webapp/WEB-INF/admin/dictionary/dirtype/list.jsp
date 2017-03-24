@@ -150,11 +150,11 @@
 	function successCallback(id){
 		  datatableType.ajax.reload();
 		  if(id == '1'){
-			  layer.msg("添加成功",{time: 2000, icon:1});
+			  layer.msg("添加成功",{time:2000});
 		  }else if(id == '2'){
-			  layer.msg("修改成功",{time: 2000, icon:1});
+			  layer.msg("修改成功",{time:2000});
 		  }else if(id == '3'){
-			  layer.msg("删除成功",{time: 2000, icon:1});
+			  layer.msg("删除成功",{time:2000});
 		  }
 	  }
 		//删除提示
@@ -180,14 +180,14 @@
 					},
 					success :function(data) {
 						if ("200" == data.status) {
-							layer.msg("操作成功!", "", 3000);
+							layer.msg("操作成功!",{time:2000});
 							// 重新加载
 							setTimeout("location.reload()",1000);
 						} else {
-							layer.msg("操作失败!", "", 3000);
+							layer.msg("操作失败!",{time:2000});
 						}
 					},error : function(xhr) {
-						layer.msg("操作失败", "", 3000);
+						layer.msg("操作失败",{time:2000});
 					}
 				});
 			}, function(){

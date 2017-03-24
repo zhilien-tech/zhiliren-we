@@ -213,7 +213,7 @@ $("#submit").click(function(){
            url:'${base}/admin/dictionary/dirinfo/addDepartureCity.html',
            data:$('#addForm').serialize(),// 你的formid
            error: function(request) {
-              layer.msg('添加失败!');
+              layer.msg('添加失败!',{time:2000});
            },
             success: function(data) {
 				layer.load(1, {

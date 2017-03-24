@@ -40,8 +40,11 @@ public class TPersonalSqlForm extends DataTablesParamForm {
 	/**区域id*/
 	private long areaId;
 
-	/**用户姓名*/
+	/**用户名*/
 	private String userName;
+
+	/**用户姓名*/
+	private String fullName;
 
 	/**部门名称*/
 	private String deptName;

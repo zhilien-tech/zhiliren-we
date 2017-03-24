@@ -161,13 +161,13 @@ $("#submit").click(function(){
 			data : $("#functionAddForm").serialize(),
 			url : '${base}/admin/authority/function/add.html',
 			success : function(data) {
-				layer.msg("添加成功", "", 3000);
+				layer.msg("添加成功",{time:2000});
 				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 				parent.layer.close(index);
 				window.parent.successCallback('1');
 			},
 			error : function(xhr) {
-				layer.msg("添加失败", "", 3000);
+				layer.msg("添加失败",{time:2000});
 			}
 		});
 	}
