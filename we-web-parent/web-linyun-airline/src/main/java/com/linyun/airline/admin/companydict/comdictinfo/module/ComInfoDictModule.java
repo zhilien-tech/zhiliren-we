@@ -65,8 +65,8 @@ public class ComInfoDictModule {
 	 */
 	@At
 	@Ok("jsp")
-	public Object list(@Param("..") final ComInfoSqlForm sqlForm, final HttpSession session) {
-		return comInfoDictService.getComDictTypeName(session);
+	public Object list(@Param("..") final ComInfoSqlForm sqlForm) {
+		return comInfoDictService.getDictTypeName();
 	}
 
 	/**
@@ -88,8 +88,8 @@ public class ComInfoDictModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object add(final HttpSession session) {
-		return comInfoDictService.getComDictTypeName(session);
+	public Object add() {
+		return comInfoDictService.getDictTypeName();
 	}
 
 	/**

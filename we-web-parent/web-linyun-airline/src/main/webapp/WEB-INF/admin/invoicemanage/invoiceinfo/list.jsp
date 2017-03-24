@@ -38,11 +38,11 @@
                                </select>
                              </div>
                              <div class="col-md-1 textPadding">
-                               <input id="kaiInvoiceBeginDate" name="invoicedate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'kaiInvoiceBeginDate\')}'})" class="form-control TimeInput" placeholder="2017-02-20"> 
+                               <input id="kaiInvoiceBeginDate" name="invoicedate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'kaiInvoiceEndDate\')}'})" class="form-control TimeInput" placeholder="2017-02-20"> 
                              </div>
                              <label class="col-md-1 labelClas">至</label>
                              <div class="col-md-1 textPadding">
-                               <input id="kaiInvoiceEndDate" name="invoicedate"  type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'kaiInvoiceEndDate\')}'})" class="form-control TimeInput" placeholder="2017-02-22">
+                               <input id="kaiInvoiceEndDate" name="invoicedate"  type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'kaiInvoiceBeginDate\')}'})" class="form-control TimeInput" placeholder="2017-02-22">
                              </div>
                              <div class="col-md-3 textPadding"><!-- 发票号/单位 搜索框 -->
                                <input id="invoicenumId" name="invoicenum" type="text" class="form-control" placeholder="发票号/单位">
@@ -100,11 +100,11 @@
                               </select>
                             </div>
                             <div class="col-md-1 textPadding">
-                              <input id="shouInvoiceBeginDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'shouInvoiceBeginDate\')}'})" class="form-control TimeInput" placeholder="2017-02-20"> 
+                              <input id="shouInvoiceBeginDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'shouInvoiceEndDate\')}'})" class="form-control TimeInput" placeholder="2017-02-20"> 
                             </div>
                             <label class="col-md-1 labelClas">至</label>
                             <div class="col-md-1 textPadding">
-                              <input id="shouInvoiceEndDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'shouInvoiceEndDate\')}'})"  class="form-control TimeInput" placeholder="2017-02-22">
+                              <input id="shouInvoiceEndDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'shouInvoiceBeginDate\')}'})"  class="form-control TimeInput" placeholder="2017-02-22">
                             </div>
                             <div class="col-md-3 textPadding"><!-- PNR/单位 搜索框 -->
                               <input id="paymentunitId" type="text" class="form-control" placeholder="PNR/单位">

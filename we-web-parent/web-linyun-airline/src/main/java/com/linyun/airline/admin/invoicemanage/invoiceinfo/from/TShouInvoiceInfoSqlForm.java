@@ -95,6 +95,8 @@ public class TShouInvoiceInfoSqlForm extends DataTablesParamForm {
 		if (!Util.isEmpty(comId)) {
 			cnd.and("tii.comId", "=", comId);
 		}
+		cnd.orderBy("tii.status", "DESC");
+		cnd.orderBy("tii.invoicedate", "DESC");
 		return cnd;
 	}
 }
