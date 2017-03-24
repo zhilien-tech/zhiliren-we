@@ -32,11 +32,9 @@
 		                            <div class="col-sm-8 padding">
 		                            	<select id="comTypeCode" name="comTypeName" class="form-control input-sm inpImpWid">
 											<option value=" ">==请选择==</option>
-											<c:forEach items="${obj.listTypeName}" var="one">
-						                    	<option value="${one.comTypeCode }">
-					                            	${one.comTypeName }
-					                            </option>
-					                        </c:forEach>
+		                            		<c:forEach var="map" items="${obj.dicttypelist}">
+												<option value="${map.key}">${map.value}</option>
+											</c:forEach>
 		                    			</select>
 		                            </div>
 								</div>
@@ -56,9 +54,9 @@
 							<table id="comcomdatatableInfo" class="table table-bordered table-hover">
 								<thead>
 									<tr>
-										<th>公司名称</th>
+										<!-- <th>公司名称</th> -->
 										<th>类别名称</th>
-										<th>字典代码</th>
+										<!-- <th>字典代码</th> -->
 										<th>字典信息</th>
 										<th>状态</th>
 										<th>创建时间</th>
@@ -196,7 +194,7 @@ function initDatatable() {
             }
         },
         "columns": [
-                    {"data": "comname", "bSortable": false,
+                    /* {"data": "comname", "bSortable": false,
                     	render: function(data, type, row, meta) {
                     		var comname = row.comname;
                     		if(null==comname || ""==comname){
@@ -204,7 +202,7 @@ function initDatatable() {
                     		}
                     		return comname;
                     	}	
-                    },
+                    }, */
                     {"data": "comtypename", "bSortable": false,
                     	render: function(data, type, row, meta) {
                     		var comtypename = row.comtypename;
@@ -214,7 +212,7 @@ function initDatatable() {
                     		return comtypename;
                     	}		
                     },
-                    {"data": "comddictcode", "bSortable": false,
+                    /* {"data": "comddictcode", "bSortable": false,
                     	render: function(data, type, row, meta) {
                     		var comddictcode = row.comddictcode;
                     		if(null==comddictcode || ""==comddictcode){
@@ -222,7 +220,7 @@ function initDatatable() {
                     		}
                     		return comddictcode;
                     	}		
-                    },
+                    }, */
                     {"data": "comdictname", "bSortable": false,
                     	render: function(data, type, row, meta) {
                     		var comdictname = row.comdictname;
@@ -269,7 +267,7 @@ function initDatatable() {
             ],
             "columnDefs": [{
                 //   指定第一列，从0开始，0表示第一列，1表示第二列……
-                targets: 7,
+                targets: 5,
                 render: function(data, type, row, meta) {
                 	var modify = '<a style="cursor:pointer;" onclick="edit('+row.id+');">编辑</a>';
                   		if(1==row.status){

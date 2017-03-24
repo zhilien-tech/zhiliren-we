@@ -14,8 +14,8 @@ import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.from.TInvoiceInfoAddForm;
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.from.TInvoiceInfoUpdateForm;
-import com.linyun.airline.admin.invoicemanage.invoiceinfo.from.TShouInvoiceInfoSqlForm;
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.from.TKaiInvoiceInfoSqlForm;
+import com.linyun.airline.admin.invoicemanage.invoiceinfo.from.TShouInvoiceInfoSqlForm;
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.service.InvoiceinfoViewService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.inland.service.InlandInvoiceService;
@@ -45,7 +45,7 @@ public class InvoiceinfoModule {
 	}
 
 	/**
-	 * 开发票分页查询
+	 * 开发票列表
 	 */
 	@At
 	public Object listData(@Param("..") final TKaiInvoiceInfoSqlForm sqlForm, HttpServletRequest request) {
