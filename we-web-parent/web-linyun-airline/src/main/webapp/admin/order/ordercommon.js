@@ -9,7 +9,7 @@ $(document).on("input",".mustNumberPoint",function(){
 
 //只能输入时间 （例如12:00）
 $(document).on("input",".mustTimes",function(){
-	$(this).val($(this).val().replace(/[^:\d]/g,''));
+	$(this).val($(this).val().replace(/[^+:\d]/g,''));
 	if($(this).val().length == 2){
 		$(this).val($(this).val()+':');
 	}else if($(this).val().length > 5){	

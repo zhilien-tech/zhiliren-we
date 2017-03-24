@@ -16,7 +16,7 @@
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo()" value="提交"/>
-            <h4 class="invoiceH4">收款信息</h4>
+            <h4 class="invoiceH4">付款信息</h4>
     </div>
     <div style="height:550px; overflow-y:auto;">
       <div class="modal-body">
@@ -44,7 +44,7 @@
                   			<td>${one.customename }</td>
                   			<td>${one.linkMan }</td>
                   			<td>${one.issuer }</td>
-                  			<td>${one.costpricesum }</td>
+                  			<td><fmt:formatNumber type="number" value="${one.costpricesum }" pattern="0.00" maxFractionDigits="2"/></td>
                   		</tr>
                   	</c:forEach>
                   </tbody>
@@ -79,7 +79,7 @@
                        </select>
                     </td>
                     <td><label>合计：</label></td>
-                    <td id="sumjine">${obj.sumjine }</td>
+                    <td id="sumjine"><fmt:formatNumber type="number" value="${obj.sumjine }" pattern="0.00" maxFractionDigits="2"/></td>
                   </tr>
          </table>
          <div class="bankSlipImg" align="center"><img id="shuidanimg" width="100%" height="305" alt="" src="${obj.billurl }"></div>
@@ -88,7 +88,7 @@
       <div class="invoiceInfo-body">
         <table class="payTable2">
           <tr>
-                  <td><label>发票项目：</label></td>
+                  <td><label>项目用途：</label></td>
                   <td>
                     <select id="invoiceitem" name="invoiceitem" class="form-control input-sm">
                         <c:forEach items="${obj.ytselect }" var="one">
@@ -125,7 +125,7 @@
                   <td><label>差额：</label></td>
                   <td><input id="difference" name="difference" type="text" class="form-control input-sm"></td>
                   <td><label>余额：</label></td>
-                  <td><label name="balance">${obj.sumjine }</label></td>
+                  <td><label id="balance" name="balance"><fmt:formatNumber type="number" value="${obj.sumjine }" pattern="0.00" maxFractionDigits="2"/></label></td>
           </tr>
           <tr class="cloneTR">
                   <td><label>发票号：</label></td>

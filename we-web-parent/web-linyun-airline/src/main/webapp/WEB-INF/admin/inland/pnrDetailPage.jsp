@@ -46,13 +46,13 @@
                   </tr>
                   <tr>
                     <td>成本单价：</td>
-                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="${obj.pnrinfo.costprice }"></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.costprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
                     <td>成本总价：</td>
-                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="${obj.pnrinfo.costpricesum }"></td></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.costpricesum }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
                     <td>销售单价：</td>
-                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="${obj.pnrinfo.salesprice }"></td></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.salesprice }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
                     <td>销售总价：</td>
-                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="${obj.pnrinfo.salespricesum }"></td></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.salespricesum }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
                   </tr>
                 </table>
                 <div class="touristsInfo">

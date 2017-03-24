@@ -50,13 +50,13 @@
                   </tr>
                   <tr>
                     <td>成本单价：</td>
-                    <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.costprice }"></td>
+                    <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.costprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
                     <td>成本总价：</td>
-                    <td><input id="costpricesum" name="costpricesum" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.costpricesum }"></td></td>
+                    <td><input id="costpricesum" name="costpricesum" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.costpricesum }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
                     <td>销售单价：</td>
-                    <td><input id="salesprice" name="salesprice" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.salesprice }"></td></td>
+                    <td><input id="salesprice" name="salesprice" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.salesprice }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
                     <td>销售总价：</td>
-                    <td><input id="salespricesum" name="salespricesum" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.salespricesum }"></td></td>
+                    <td><input id="salespricesum" name="salespricesum" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.salespricesum }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
                   </tr>
                 </table>
 
@@ -183,16 +183,16 @@
   	 		if(isNaN(salesprice)){
   	 			$('#salesprice').val('');
   	 		}else{
-  	 			$('#salesprice').val(salesprice);
+  	 			$('#salesprice').val(salesprice.toFixed(2));
   	 		}
   	 	}else{
   	 		$('#salesprice').val('');
   	 	}
   	   if(peoplecount){
   		   var costpricesum = parseFloat(costprice) * parseFloat(peoplecount);
-  		   $('#costpricesum').val(costpricesum);
+  		   $('#costpricesum').val(costpricesum.toFixed(2));
   		   var salespricesum = parseFloat(salesprice) * parseFloat(peoplecount);
-  		   $('#salespricesum').val(salespricesum);
+  		   $('#salespricesum').val(salespricesum.toFixed(2));
   	   }
      });
   </script>

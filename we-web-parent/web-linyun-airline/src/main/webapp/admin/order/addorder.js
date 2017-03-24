@@ -56,8 +56,16 @@ $("#linkName").on('select2:select', function (evt) {
 			$("#fax").val(dataJson.customerInfoEntity.fax);
 			/* 出发城市补全 */
 			$("#departureCity").val(dataJson.customerInfoEntity.departureCity);
-			$("#discountFare").val(dataJson.customerInfoEntity.discountFare);
-			$("#fees").val(dataJson.customerInfoEntity.fees);
+			var discountFare = 0;
+			if(dataJson.customerInfoEntity.discountFare){
+				discountFare = dataJson.customerInfoEntity.discountFare;
+			}
+			$("#discountFare").val(discountFare);
+			var fees = 0;
+			if(dataJson.customerInfoEntity.fees){
+				fees = dataJson.customerInfoEntity.fees;
+			}
+			$("#fees").val(fees);
 		},
 		error : function() {
 		}
