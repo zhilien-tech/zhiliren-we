@@ -37,6 +37,7 @@ import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
@@ -110,10 +111,44 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 */
 	public Object listRecData(InterRecListSearchSqlForm form, HttpSession session, HttpServletRequest request) {
 
+		//当前公司下的用户
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+
 		//检索条件
 		String name = form.getName();
 		Date leaveBeginDate = form.getLeaveBeginDate();
 		Date leaveEndDate = form.getLeaveEndDate();
+		String orderStatus = form.getOrderStatus();
+		if (Util.isEmpty(orderStatus)) {
+			orderStatus = "3";
+		} else {
+			if (Util.eq("firBooking", orderStatus)) {
+				//一订
+				orderStatus = InternationalStatusEnum.ONEBOOK.intKey() + "";
+			}
+			if (Util.eq("secBooking", orderStatus)) {
+				//二订
+				orderStatus = InternationalStatusEnum.TWOBOOK.intKey() + "";
+			}
+			if (Util.eq("thrBooking", orderStatus)) {
+				//三订
+				orderStatus = InternationalStatusEnum.THREEBOOK.intKey() + "";
+			}
+			if (Util.eq("allBooking", orderStatus)) {
+				//全款
+				orderStatus = InternationalStatusEnum.FULLAMOUNT.intKey() + "";
+			}
+			if (Util.eq("lastBooking", orderStatus)) {
+				//尾款
+				orderStatus = InternationalStatusEnum.TAILMONEY.intKey() + "";
+			}
+		}
+		form.setOrderStatus(orderStatus);
+		form.setCompanyId(companyId);
+		Map<String, Object> listdata = this.listPage4Datatables(form);
+		@SuppressWarnings("unchecked")
+		List<Record> list = (List<Record>) listdata.get("data");
 
 		String sqlStr = sqlManager.get("receivePay_inter_rec_order_list");
 		Sql sql = Sqls.create(sqlStr);
@@ -134,12 +169,6 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		}
 		List<Record> orders = dbDao.query(sql, cnd, null);
 
-		//当前公司下的用户
-		String userIds = userInComp(session);
-		form.setLoginUserId(userIds);
-		Map<String, Object> listdata = this.listPage4Datatables(form);
-		@SuppressWarnings("unchecked")
-		List<Record> list = (List<Record>) listdata.get("data");
 		for (Record record : list) {
 			//收款id
 			String id = record.get("id").toString();
@@ -234,8 +263,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 */
 	public Object saveInterRec(String recId, HttpSession session) {
 		int orderRecEd = AccountReceiveEnum.RECEIVEDONEY.intKey();
-		int updateNum = dbDao.update(TReceiveEntity.class, Chain.make("status", orderRecEd),
-				Cnd.where("id", "in", recId));
+		int updateNum = dbDao.update(TOrderReceiveEntity.class, Chain.make("receivestatus", orderRecEd),
+				Cnd.where("receiveid", "in", recId));
 
 		//收款成功添加消息提醒
 		if (updateNum > 0) {
@@ -303,6 +332,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		if (!Util.isEmpty(leaveEndDate)) {
 			cnd.and("tpi.leavesdate", "<=", leaveEndDate);
 		}
+		/*cnd.and("tpi.orderPnrStatus", "=", APPROVALPAYED);*/
 		List<Record> orders = dbDao.query(conSql, cnd, null);
 
 		for (Record record : payList) {

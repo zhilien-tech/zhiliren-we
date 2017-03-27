@@ -40,7 +40,9 @@
                 			<td>${one.shortname }</td>
                 			<td>${one.linkman }</td>
                 			<td>${one.issuer }</td>
-                			<td>${one.incometotal }</td>
+                			<td>
+                				<fmt:formatNumber type="number" value="${one.incometotal }" pattern="0.00" maxFractionDigits="2"/>
+                			</td>
                 		</tr>
                 	</c:forEach>
                 </tbody>
@@ -66,7 +68,9 @@
                      </select>
                   </td>
                   <td>合计：</td>
-                  <td>${obj.sum}</td>
+                  <td>
+						<fmt:formatNumber type="number" value="${obj.sum}" pattern="0.00" maxFractionDigits="2"/>
+				  </td>
                 </tr>
               </table>
               <label class="labelShuidan">水单</label>
@@ -92,7 +96,7 @@
 	<!-- 防止订单重复提交 -->
 	<script type="text/javascript">
 		$(function(){
-			var recStatus = $("#innterRecSelect option:selected",window.parent.document).val();
+			var recStatus = $("#interRecSelect option:selected",window.parent.document).val();
 			if(recStatus==2){
 				$("#confirmRecClick").attr('disabled',true);
 			}
