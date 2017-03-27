@@ -69,7 +69,7 @@ function initRecDataTable() {
 		            		var result = '<ul> ';
 		            		$.each(row.orders, function(name, value) {
 		            			if(value && value.incometotal!=undefined){
-		            				result += '<li style="list-style:none;">'+value.incometotal+'</li>';
+		            				result += '<li style="list-style:none;">'+(value.incometotal).toFixed(2)+'</li>';
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -82,7 +82,7 @@ function initRecDataTable() {
 		            		if(null == sum || ""== sum){
 		            			return "";
 		            		}
-		            		return sum;
+		            		return sum.toFixed(2);
 		            	}
 		            },
 		            {"data": "shortname", "bSortable": false,
@@ -107,7 +107,7 @@ function initRecDataTable() {
 		            },
 		            {"data": "orderstatus", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		var s = row.status;
+		            		var s = row.receivestatus;
 		            		if(s == 1){
 		            			s = '收款中';
 		            		}
@@ -246,6 +246,7 @@ $(".paymentUl li").click(function(){
 				autoHighLoad($('#interRecTable'));
 			}		
 	);
+	
 });
 
 //回车搜索

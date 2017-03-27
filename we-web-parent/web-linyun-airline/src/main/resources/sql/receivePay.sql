@@ -340,6 +340,7 @@ $condition
 /*receivePay_inter_rec_invioce_list*/
 SELECT
 	r.*, 
+	orec.receivestatus,
 	ii.id invoiceid,
 	u.userName
 FROM
