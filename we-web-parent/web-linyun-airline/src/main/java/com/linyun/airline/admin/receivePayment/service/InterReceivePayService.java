@@ -263,8 +263,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 */
 	public Object saveInterRec(String recId, HttpSession session) {
 		int orderRecEd = AccountReceiveEnum.RECEIVEDONEY.intKey();
-		int updateNum = dbDao.update(TReceiveEntity.class, Chain.make("status", orderRecEd),
-				Cnd.where("id", "in", recId));
+		int updateNum = dbDao.update(TOrderReceiveEntity.class, Chain.make("receivestatus", orderRecEd),
+				Cnd.where("receiveid", "in", recId));
 
 		//收款成功添加消息提醒
 		if (updateNum > 0) {

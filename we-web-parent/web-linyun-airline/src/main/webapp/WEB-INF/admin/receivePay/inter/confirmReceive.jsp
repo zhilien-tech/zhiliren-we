@@ -96,7 +96,7 @@
 	<!-- 防止订单重复提交 -->
 	<script type="text/javascript">
 		$(function(){
-			var recStatus = $("#innterRecSelect option:selected",window.parent.document).val();
+			var recStatus = $("#interRecSelect option:selected",window.parent.document).val();
 			if(recStatus==2){
 				$("#confirmRecClick").attr('disabled',true);
 			}
