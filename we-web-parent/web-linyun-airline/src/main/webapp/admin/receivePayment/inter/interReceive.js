@@ -211,11 +211,13 @@ $("#interRecSelect").change(function(){
 
 //收款  搜索按钮
 $("#interRecSearchBtn").on('click', function () {
-	var orderStatus = $("#interRecSelect").val();
+	var receiveStatus = $("#interRecSelect").val();
 	var inlandRecBeginDate = $("#interRecBeginDate").val();
 	var inlandRecEndDate = $("#interRecEndDate").val();
 	var inlandRecInput = $("#interRecInput").val();
+	var orderStatus = $("li.btnStyle").attr("id");
     var param = {
+		"receiveStatus":receiveStatus,
 		"orderStatus":orderStatus,
 		"leaveBeginDate":inlandRecBeginDate,
 		"leaveEndDate":inlandRecEndDate,
@@ -233,10 +235,10 @@ $("#interRecSearchBtn").on('click', function () {
 $(".paymentUl li").click(function(){
 	$(this).addClass("btnStyle").siblings().removeClass('btnStyle');
 	var bookId = $(this).attr("id");
-	var orderStatus = $("#interRecSelect").val();
+	var receiveStatus = $("#interRecSelect").val();
 	var param = {
-			"orderStatus":orderStatus,
-			"interOrderStatus":bookId
+			"receiveStatus":receiveStatus,
+			"orderStatus":bookId
 	};
 	interRecTable.settings()[0].ajax.data = param;
 	interRecTable.ajax.reload(
