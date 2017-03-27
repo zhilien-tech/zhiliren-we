@@ -154,32 +154,6 @@ function openkaiInvoiceEdit(id){
       });
 }
 //开发票 搜索按钮
-/*$("#kaiSearchInvoiceBtn").on('click', function () {
-	var status = $("#kaiInvoiceSelect").val();
-	var billuserid = $("#kaibilluserid").val();
-	var kaiInvoiceBeginDate = $("#kaiInvoiceBeginDate").val();
-	var kaiInvoiceEndDate = $("#kaiInvoiceEndDate").val();
-	var invoicenum = $("#invoicenumId").val();
-	var paymentunit = $("#invoicenumId").val();
-	
-    var param = {
-		        "status":status,
-		        "billuserid":billuserid,
-		        "kaiInvoiceBeginDate":kaiInvoiceBeginDate,
-		        "kaiInvoiceEndDate":kaiInvoiceEndDate,
-				"invoicenum": invoicenum,
-				"paymentunit": paymentunit
-		    };
-    	KaiInvoiceTable1.settings()[0].ajax.data = param;
-    	KaiInvoiceTable1.ajax.reload(
-			function(json){
-				alert($('#KaiInvoiceTable1'));
-				autoHighLoad($('#KaiInvoiceTable1'));
-				
-			}
-    	);
-}
-);*/
 $("#kaiSearchInvoiceBtn").on('click',kaiInvoiceSelectData());
 function kaiInvoiceSelectData() {
 	var status = $("#kaiInvoiceSelect").val();
