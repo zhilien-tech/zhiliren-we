@@ -43,7 +43,6 @@ SELECT
 	cin.dictTypeId,
 	cin.comId,
 	cin.comTypeCode,
-	cty.comTypeName,
 	cin.comDdictCode,
 	cin.comDictName,
 	cin.`status`,
@@ -55,5 +54,4 @@ SELECT
 FROM
 	t_company_dictinfo cin
 LEFT JOIN t_company c ON c.id = cin.comId
-LEFT JOIN t_company_dicttype cty ON cty.comTypeCode = cin.comTypeCode
 $condition
