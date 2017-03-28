@@ -18,7 +18,7 @@ table.dataTable thead > tr > th {padding-right: 10px;}
 .policyTable tr td span{color: red;display: inline-block;}
 .policyTable tr td .select2-container .selection{width: 100% !important;}
 .select2-container {width: 97% !important;}
-span.uploadify-button-text{background: #3c8dbc;color: #fff !important;border-radius: 3px;padding: 0 15px;font-size: 12px;}
+span.uploadify-button-text{color: #fff !important;border-radius: 3px;padding: 0 15px;font-size: 12px;}
 #SWFUpload_0,#file-button,#file{width: 54px !important;}
 #file{float: left;}
 .policyTable tbody tr:nth-child(2) td:nth-child(4) sapn{}
@@ -30,6 +30,14 @@ input.select2-search__field {color: #555;}
 .has-feedback{margin-bottom: 0px;}
 .wi{display: inline-block;width: 96%;}
 .wi i{right: -30px;}
+.filetext{width: 96%;}
+label.lab {float: none !important;display: inline-block;}
+#updateFileInfoForm .row:nth-child(2){padding-top: 10px;}
+#updateFileInfoForm .row .form-group:nth-child(1) div .glyphicon{left: 254px;}
+.iconStyle div .glyphicon{left:193px;}
+#addFileInfoForm .row:nth-child(2){padding-top: 10px;}
+#addFileInfoForm .row .form-group:nth-child(1) div .glyphicon{left: 254px;}
+.red{color:red;}
 /*end 弹框 style*/
 
 
