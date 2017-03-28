@@ -124,7 +124,8 @@ public class UserViewService extends BaseService<TUserEntity> {
 		//先添加用户数据
 		TUserEntity userEntity = new TUserEntity();
 		userEntity.setFullName(addForm.getFullName());//用户姓名
-		userEntity.setTelephone(addForm.getTelephone());
+		userEntity.setUserName(addForm.getTelephone());//用户名
+		userEntity.setTelephone(addForm.getTelephone());//手机号
 		userEntity.setPassword(CommonConstants.INITIAL_PASSWORD);
 		userEntity.setQq(addForm.getQq());
 		userEntity.setLandline(addForm.getLandline());
