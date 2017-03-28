@@ -6,6 +6,7 @@
 
 package com.linyun.airline.forms;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import lombok.Data;
@@ -90,9 +91,16 @@ public class TAirlinePolicyForm extends DataTablesParamForm {
 			cnd.and("updateTime", ">=", beginTime);
 
 		}
-		if (!Util.isEmpty(endTime)) {
 
-			cnd.and("updateTime", "<=", endTime);
+		if (!Util.isEmpty(endTime)) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(endTime);
+			calendar.set(Calendar.HOUR_OF_DAY, 23);
+			calendar.set(Calendar.MINUTE, 59);
+			calendar.set(Calendar.SECOND, 59);
+			Date ccTime = calendar.getTime();
+
+			cnd.and("updateTime", "<=", ccTime);
 
 		}
 		if (!Util.isEmpty(companyId)) {

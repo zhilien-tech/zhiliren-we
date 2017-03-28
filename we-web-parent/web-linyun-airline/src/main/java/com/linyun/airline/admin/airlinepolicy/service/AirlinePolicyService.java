@@ -13,9 +13,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +36,7 @@ import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.common.enums.AirlinePolicyEnum;
 import com.linyun.airline.common.result.Select2Option;
-import com.linyun.airline.common.util.HtmlToPdf;
-import com.linyun.airline.common.util.POIReadExcelToHtml;
+import com.linyun.airline.common.util.Office2PDF;
 import com.linyun.airline.common.util.Word2Html;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAirlinePolicyEntity;
@@ -93,17 +89,10 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 	}
 
 	public TAirlinePolicyEntity addFile(TAirlinePolicyAddForm addForm, HttpSession session) {
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
-		try {
-			addForm.setCreateTime(df.parse(df.format(new Date())));
-			addForm.setUpdateTime(df.parse(df.format(new Date())));
-		} catch (ParseException e1) {
+		addForm.setCreateTime(new Date());
+		addForm.setUpdateTime(new Date());
 
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-
-		}
 		addForm.setStatus(AirlinePolicyEnum.ENABLE.intKey());
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Long companyId = company.getId();
@@ -111,15 +100,33 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 
 		String url = addForm.getUrl();
 		addForm.setUrl(url);
-		addForm.setFileName(addForm.getFileName());
+		String extend = null;
+		if (!Util.isEmpty(url)) {
+			extend = url.substring(url.lastIndexOf("."), url.length());
+
+		}
+		if (!Util.isEmpty(addForm.getFileRealName())) {
+			if (!Util.isEmpty(extend)) {
+
+				addForm.setFileName(addForm.getFileRealName() + extend);
+			} else {
+
+				addForm.setFileName(addForm.getFileRealName());
+			}
+
+		} else {
+
+			addForm.setFileName(addForm.getFileName());
+		}
 		addForm.setFileSize(addForm.getFileSize());
 		String extendName = url.substring(url.lastIndexOf(".") + 1, url.length());
 		Word2Html word2Html = new Word2Html();
 		String str = System.getProperty("java.io.tmpdir");
-		if ("doc".equalsIgnoreCase(extendName)) {
+		if ("doc".equalsIgnoreCase(extendName) || "docx".equalsIgnoreCase(extendName)) {
 			try {
-				word2Html.docToHtml(url, str + File.separator + "12.html");
-				HtmlToPdf.htmlConvertToPdf(str + File.separator + "12.html", str + File.separator + "12.pdf");
+				/*word2Html.docToHtml(url, str + File.separator + "12.html");
+				HtmlToPdf.htmlConvertToPdf(str + File.separator + "12.html", str + File.separator + "12.pdf");*/
+				Office2PDF.urlToFile(url, str + File.separator + "12.pdf");
 				File file = new File(str + File.separator + "12.pdf");
 				String pdfUrl = CommonConstants.IMAGES_SERVER_ADDR
 						+ qiniuUploadService.uploadImage(new FileInputStream(file), "pdf", null);
@@ -141,10 +148,11 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 			}
 		} else if ("xls".equalsIgnoreCase(extendName) || "xlsx".equalsIgnoreCase(extendName)) {
 			try {
-				POIReadExcelToHtml poiReadExcelToHtml = new POIReadExcelToHtml();
-				poiReadExcelToHtml.excelConvertToPdf(url, str + File.separator + "12.html");
+				/*POIReadExcelToHtml poiReadExcelToHtml = new POIReadExcelToHtml();
+				poiReadExcelToHtml.excelConvertToPdf(url, str + File.separator + "12.html");*/
 
-				HtmlToPdf.htmlConvertToPdf(str + File.separator + "12.html", str + File.separator + "12.pdf");
+				/*HtmlToPdf.htmlConvertToPdf(str + File.separator + "12.html", str + File.separator + "12.pdf");*/
+				Office2PDF.urlToFile(url, str + File.separator + "12.pdf");
 				File file = new File(str + File.separator + "12.pdf");
 				String pdfUrl = CommonConstants.IMAGES_SERVER_ADDR
 						+ qiniuUploadService.uploadImage(new FileInputStream(file), "pdf", null);
@@ -284,24 +292,46 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 	}
 
 	public void updateFileInfo(TAirlinePolicyUpdateForm updateForm, HttpSession session, Long id) {
-		String fileName = updateForm.getFileName();
+		String fileName = null;
 		String url = updateForm.getUrl();
+		String extend = null;
+		TAirlinePolicyEntity airlinePolicy = dbDao.fetch(TAirlinePolicyEntity.class, id);
+		if (!Util.isEmpty(url)) {
+			extend = url.substring(url.lastIndexOf("."), url.length());
+
+		} else if (!Util.isEmpty(airlinePolicy.getUrl())) {
+			extend = airlinePolicy.getUrl().substring(airlinePolicy.getUrl().lastIndexOf("."),
+					airlinePolicy.getUrl().length());
+
+		}
+		if (!Util.isEmpty(updateForm.getFileRealName())) {
+			if (!Util.isEmpty(extend)) {
+
+				fileName = updateForm.getFileRealName() + extend;
+			} else {
+				fileName = updateForm.getFileRealName();
+
+			}
+		} else {
+
+			fileName = updateForm.getFileName();
+
+		}
 		String type = updateForm.getType();
 		Long areaId = updateForm.getAreaId();
 		Long airlineCompanyId = updateForm.getAirlineCompanyId();
-		TAirlinePolicyEntity airlinePolicy = dbDao.fetch(TAirlinePolicyEntity.class, id);
 		Chain chain = Chain.make("updateTime", new Date());
 		String str = System.getProperty("java.io.tmpdir");
 		if (!Util.isEmpty(url)) {
 			chain.add("url", url);
 			String extendName = url.substring(url.lastIndexOf(".") + 1, url.length());
-			Word2Html word2Html = new Word2Html();
-			HtmlToPdf htmlToPdf = new HtmlToPdf();
-			if ("doc".equalsIgnoreCase(extendName)) {
+			if ("doc".equalsIgnoreCase(extendName) || "docx".equalsIgnoreCase(extendName)) {
 				try {
-					word2Html.docToHtml(url, str + File.separator + "12.html");
-					htmlToPdf.htmlConvertToPdf(str + File.separator + "12.html", str + File.separator + "12.pdf");
+					/*word2Html.docToHtml(url, str + File.separator + "12.html");
+					htmlToPdf.htmlConvertToPdf(str + File.separator + "12.html", str + File.separator + "12.pdf");*/
+					Office2PDF.urlToFile(url, str + File.separator + "12.pdf");
 					File file = new File(str + File.separator + "12.pdf");
+					/*File file = new File(str + File.separator + "12.pdf");*/
 					String pdfUrl = CommonConstants.IMAGES_SERVER_ADDR
 							+ qiniuUploadService.uploadImage(new FileInputStream(file), "pdf", null);
 					chain.add("pdfUrl", pdfUrl);
@@ -322,10 +352,10 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 				}
 			} else if ("xls".equalsIgnoreCase(extendName) || "xlsx".equalsIgnoreCase(extendName)) {
 				try {
-					POIReadExcelToHtml poiReadExcelToHtml = new POIReadExcelToHtml();
-					poiReadExcelToHtml.excelConvertToPdf(url, str + File.separator + "12.html");
-
-					htmlToPdf.htmlConvertToPdf(str + File.separator + "12.html", str + File.separator + "12.pdf");
+					/*POIReadExcelToHtml poiReadExcelToHtml = new POIReadExcelToHtml();
+					poiReadExcelToHtml.excelConvertToPdf(url, str + File.separator + "12.html");*/
+					Office2PDF.urlToFile(url, str + File.separator + "12.pdf");
+					/*htmlToPdf.htmlConvertToPdf(str + File.separator + "12.html", str + File.separator + "12.pdf");*/
 					File file = new File(str + File.separator + "12.pdf");
 					String pdfUrl = CommonConstants.IMAGES_SERVER_ADDR
 							+ qiniuUploadService.uploadImage(new FileInputStream(file), "pdf", null);
@@ -361,11 +391,6 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 		}
 		dbDao.update(TAirlinePolicyEntity.class, chain, Cnd.where("id", "=", id));
 
-	}
-
-	public static void main(String[] args) {
-		String str = System.getProperty("java.io.tmpdir");
-		System.out.println(File.separator);
 	}
 
 	public void downloadById(long id, HttpServletResponse response) {

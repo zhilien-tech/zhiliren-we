@@ -49,7 +49,7 @@ function initKaiInvoiceTable1() {
                   		var result = '<ul>';
                   		$.each(row.invoicedetail, function(name, value) {
                   			if(value && value.invoicebalance != undefined){
-                  				result += '<li style="list-style:none;">'+value.invoicebalance+'</li>';
+                  				result += '<li style="list-style:none;">'+value.invoicebalance.toFixed(2)+'</li>';
                   			}
                   		});
                   		result += '</ul>';
@@ -61,7 +61,7 @@ function initKaiInvoiceTable1() {
                   		var result = 0;
                   		$.each(row.invoicedetail, function(name, value) {
                   			if(value && value.invoicebalance != undefined){
-                  				result = parseFloat(result) + parseFloat(value.invoicebalance);
+                  				result = (parseFloat(result) + parseFloat(value.invoicebalance)).toFixed(2);
                   			}
                   		});
                   		return result;
@@ -154,32 +154,6 @@ function openkaiInvoiceEdit(id){
       });
 }
 //开发票 搜索按钮
-/*$("#kaiSearchInvoiceBtn").on('click', function () {
-	var status = $("#kaiInvoiceSelect").val();
-	var billuserid = $("#kaibilluserid").val();
-	var kaiInvoiceBeginDate = $("#kaiInvoiceBeginDate").val();
-	var kaiInvoiceEndDate = $("#kaiInvoiceEndDate").val();
-	var invoicenum = $("#invoicenumId").val();
-	var paymentunit = $("#invoicenumId").val();
-	
-    var param = {
-		        "status":status,
-		        "billuserid":billuserid,
-		        "kaiInvoiceBeginDate":kaiInvoiceBeginDate,
-		        "kaiInvoiceEndDate":kaiInvoiceEndDate,
-				"invoicenum": invoicenum,
-				"paymentunit": paymentunit
-		    };
-    	KaiInvoiceTable1.settings()[0].ajax.data = param;
-    	KaiInvoiceTable1.ajax.reload(
-			function(json){
-				alert($('#KaiInvoiceTable1'));
-				autoHighLoad($('#KaiInvoiceTable1'));
-				
-			}
-    	);
-}
-);*/
 $("#kaiSearchInvoiceBtn").on('click',kaiInvoiceSelectData());
 function kaiInvoiceSelectData() {
 	var status = $("#kaiInvoiceSelect").val();
@@ -282,7 +256,7 @@ function initshouInvoiceTable1() {
                 	render:function(data, type, row, meta) {
                 		var result = '';
                 		if(row.costpricesum && row.costpricesum != undefined) {
-                			result =row.costpricesum;
+                			result =row.costpricesum.toFixed(2);
                 		}
                 		return result;
                 	}

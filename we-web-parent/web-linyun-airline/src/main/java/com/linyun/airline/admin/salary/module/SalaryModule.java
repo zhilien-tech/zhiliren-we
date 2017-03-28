@@ -12,7 +12,6 @@ import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
@@ -33,7 +32,6 @@ import com.uxuexi.core.web.chain.support.JsonResult;
  */
 @IocBean
 @At("/admin/salary")
-@Filters
 public class SalaryModule {
 	@Inject
 	private SalaryViewService salaryViewService;
@@ -66,7 +64,7 @@ public class SalaryModule {
 	@At
 	@POST
 	public Object add(@Param("..") TSalaryAddForm addForm, final HttpSession session) {
-		salaryViewService.addSalary(addForm, session);
+		salaryViewService.addSalary();
 		return JsonResult.success("添加成功!");
 	}
 

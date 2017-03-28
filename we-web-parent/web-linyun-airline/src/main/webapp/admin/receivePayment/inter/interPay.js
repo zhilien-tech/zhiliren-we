@@ -14,7 +14,7 @@ function initPayDataTable(){
 			"url": BASE_PATH + "/admin/receivePay/inter/interPayList.html",
 			"type": "post",
 			"data": function (d) {
-				
+
 			}
 		},
 		"columns": [
@@ -61,7 +61,7 @@ function initPayDataTable(){
 		            				var ldate = new Date(value.leavesdate);
 		            				if(ldate != undefined){
 		            					formatDate = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
-				            		}
+		            				}
 		            				result += '<li style="list-style:none;">'+formatDate+'</li>';
 		            			}
 		            		});
@@ -151,7 +151,7 @@ function initPayDataTable(){
 		            	}
 		            },
 		            {"data": "issuer", "bSortable": false,
-			            render:function(data, type, row, meta) {
+		            	render:function(data, type, row, meta) {
 		            		var result = '<ul> ';
 		            		$.each(row.orders, function(name, value) {
 		            			if(value && value.issuer!=undefined){
@@ -198,88 +198,88 @@ function initPayEdDataTable(){
 			}
 		},
 		"columns": [
-					{"data": "ordernum", "bSortable": false,
-						render:function(data, type, row, meta) {
-							var result = '<ul> ';
-							$.each(row.orders, function(name, value) {
-								if(value){
-									result += '<li style="list-style:none;">'+value.ordernum+'</li>';
-								}
-							});
-							result += '</ul>';
-							return result;
-						}
-					},
+		            {"data": "ordernum", "bSortable": false,
+		            	render:function(data, type, row, meta) {
+		            		var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value){
+		            				result += '<li style="list-style:none;">'+value.ordernum+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
+		            	}
+		            },
 		            {"data": "pnrnum", "bSortable": false,
-						render:function(data, type, row, meta) {
-							var result = '<ul> ';
-							$.each(row.orders, function(name, value) {
-								if(value){
-									result += '<li style="list-style:none;">'+value.pnrnum+'</li>';
-								}
-							});
-							result += '</ul>';
-							return result;
-						}
-					},
+		            	render:function(data, type, row, meta) {
+		            		var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value){
+		            				result += '<li style="list-style:none;">'+value.pnrnum+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
+		            	}
+		            },
 		            {"data": "leavedate", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
-							$.each(row.orders, function(name, value) {
-								if(value && value.leavedate != undefined){
-									var date = value.leavedate;
-				            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
-				            		var week = ['MO','TU','WE','TH','FR','SA','SU'];
-				            		var ldate = new Date(date);
-				            		var dateFormat = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
-									result += '<li style="list-style:none;">'+dateFormat+'</li>';
-								}
-							});
-							result += '</ul>';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.leavedate != undefined){
+		            				var date = value.leavedate;
+		            				var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
+		            				var week = ['MO','TU','WE','TH','FR','SA','SU'];
+		            				var ldate = new Date(date);
+		            				var dateFormat = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
+		            				result += '<li style="list-style:none;">'+dateFormat+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
 		            		return result;
 		            	}
 		            },
 		            {"data": "peoplecount", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
-							$.each(row.orders, function(name, value) {
-								if(value){
-									var pCount = value.peoplecount;
-									if(pCount == null || pCount == undefined || pCount==""){
-										pCount = " ";
-									}else{
-										result += '<li style="list-style:none;">'+pCount+'</li>';
-									}
-								}
-							});
-							result += '</ul>';
-							return result;
+		            		$.each(row.orders, function(name, value) {
+		            			if(value){
+		            				var pCount = value.peoplecount;
+		            				if(pCount == null || pCount == undefined || pCount==""){
+		            					pCount = " ";
+		            				}else{
+		            					result += '<li style="list-style:none;">'+pCount+'</li>';
+		            				}
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
 		            	}
 		            },
 		            {"data": "saleprice", "bSortable": false,
-						render:function(data, type, row, meta) {
-							var result = '<ul> ';
-							$.each(row.orders, function(name, value) {
-								if(value && value.saleprice!=undefined){
-									result += '<li style="list-style:none;">'+value.saleprice+'</li>';
-								}
-							});
-							result += '</ul>';
-							return result;
-						}
-					},
+		            	render:function(data, type, row, meta) {
+		            		var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.saleprice!=undefined){
+		            				result += '<li style="list-style:none;">'+value.saleprice+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
+		            	}
+		            },
 		            {"data": "currency", "bSortable": false,
-						render:function(data, type, row, meta) {
-							var result = '<ul>';
-							$.each(row.orders, function(name, value) {
-								if(value && value.currency!=undefined){
-									result += '<li style="list-style:none;">'+value.currency+'</li>';
-								}
-							});
-							result += '</ul>';
-							return result;
-						}
-					},
+		            	render:function(data, type, row, meta) {
+		            		var result = '<ul>';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.currency!=undefined){
+		            				result += '<li style="list-style:none;">'+value.currency+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
+		            	}
+		            },
 		            {"data": "totalmoney", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var totalmoney = row.totalmoney;
@@ -319,22 +319,13 @@ function initPayEdDataTable(){
 		            		return username;
 		            	}
 		            },
-		            {"data": "asd", "bSortable": false,
+		            {"data": "remark", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		var asd = row.asd;
-		            		if(null == asd || ""== asd){
+		            		var remark = row.remark;
+		            		if(null == remark || ""== remark){
 		            			return "";
 		            		}
-		            		return asd;
-		            	}
-		            },
-		            {"data": "abc", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var abc = row.abc;
-		            		if(null == abc || ""== abc){
-		            			return "";
-		            		}
-		            		return abc;
+		            		return remark;
 		            	}
 		            }
 		            ],
@@ -349,13 +340,12 @@ function initPayEdDataTable(){
 		            	return '显示第 '+start+' 至 '+end+' 条结果，共'+total+' 条 (每页显示 '+max+' 条)'
 		            },
 		            columnDefs: [{
-		                //   指定第一列，从0开始，0表示第一列，1表示第二列……
-		                targets: 10,
-		                render: function(data, type, row, meta) {
-		                	/*var modify = '<a style="cursor:pointer;" onclick="editUser('+row.userid+');">编辑</a>';
-		                    return modify;*/
-		                	return "";
-		                }
+		            	//   指定第一列，从0开始，0表示第一列，1表示第二列……
+		            	targets: 11,
+		            	render: function(data, type, row, meta) {
+		            		var modify = '<a style="cursor:pointer;" onclick="editPay('+row.payid+');">编辑</a>';
+		            		return modify;
+		            	}
 		            }]
 
 	});
@@ -431,7 +421,7 @@ $('#interPayClick').click(function(){
 	}
 });
 
-//内路跨海付款 复选框 全选
+//国际付款 复选框 全选
 $(".checkBoxPayAll").click(function () {
 	var check = $(this).prop("checked");
 	$(".checkBoxPayChild").prop("checked", check);
@@ -457,7 +447,7 @@ $(".checkBoxPayAll").click(function () {
 			}
 		});
 	}else{
-		 $(".checkBoxPayChild").each(function(){
+		$(".checkBoxPayChild").each(function(){
 			var thisval = $(this).val();
 			var flag = false;
 			var splits = hiddenval.split(',');
@@ -482,7 +472,7 @@ $(".checkBoxPayAll").click(function () {
 	$('#checkedboxPayValue').val(hiddenval);
 });
 
-//会计内陆跨海付款 复选框 单选
+//会计 国际付款 复选框 单选
 $(document).on('click', '.checkBoxPayChild', function(e) {
 	var hiddenval = $('#checkedboxPayValue').val();
 	var thisval = $(this).val();
@@ -523,52 +513,56 @@ $(document).on('click', '.checkBoxPayChild', function(e) {
 	}
 });
 
-//内陆跨海付款 搜索按钮
+//国际付款 搜索按钮
 $("#interPaySearchBtn").on('click', function () {
-	var interPayStatus = 2;
-	var interPayEdStatus = 3;
-	
-	var orderStatus = $("#interPaySelect").val();
+	var interPayStatus = 2;   //付款中
+	var interPayEdStatus = 3; //已付款
+	var payStatus = $("#interPaySelect").val();
 	var interPayBeginDate = $("#interPayBeginDate").val();
 	var interPayEndDate = $("#interPayEndDate").val();
 	var interPayInput = $("#interPayInput").val();
-    var param = {
-		        "orderStatus":orderStatus,
-		        "leavetdate":interPayBeginDate,
-		        "backdate":interPayEndDate,
-				"name": interPayInput
-		    };
-    if(orderStatus==interPayStatus){
-    	interPayTable.settings()[0].ajax.data = param;
-    	interPayTable.ajax.reload(
-    			function(json){
-    				autoHighLoad($('#interPayTable'));
-    			}
-    	);
-    }
-    if(orderStatus==interPayEdStatus){
-    	interPayEdTable.settings()[0].ajax.data = param;
-    	interPayEdTable.ajax.reload(
-    			function(json){
-    				autoHighLoad($('#interPayEdTable'));
-    			}
-    	);
-    }
-    
+	var orderStatus = $("li.btnStyle").attr("id");
+	var param = {
+			        "orderStatus":orderStatus,
+					"payStatus":payStatus,
+			        "leavetdate":interPayBeginDate,
+			        "backdate":interPayEndDate,
+					"name": interPayInput
+			    };
+	if(payStatus==interPayStatus){
+		interPayTable.settings()[0].ajax.data = param;
+		interPayTable.ajax.reload(
+				function(json){
+					autoHighLoad($('#interPayTable'));
+				}
+		);
+	}
+	if(payStatus==interPayEdStatus){
+		interPayEdTable.settings()[0].ajax.data = param;
+		interPayEdTable.ajax.reload(
+				function(json){
+					autoHighLoad($('#interPayEdTable'));
+				}
+		);
+	}
+	    
 });
 
 
-/*清除 内陆跨海 收款的   检索项*/
+/*清除 国际收款的   检索项*/
 $('#interRecClearBtn').click(function(){
 	clearSearchTxt("interRecSelect", "interRecBeginDate", "interRecEndDate", "interRecInput");
 });
 
-/*清除 内陆跨海 付款的   检索项*/
+/*清除 国际 付款的   检索项*/
 $('#interPayClearBtn').click(function(){
 	clearSearchTxt("interPaySelect", "interPayBeginDate", "interPayEndDate", "interPayInput");
 });
 
-//内陆跨海 取消所有勾选
+//国际 取消所有勾选
+function clearGou(){
+	$('#interPayCancelBtn').click();
+}
 $('#interPayCancelBtn').click(function(){
 	$('#checkedboxPayValue').val("");
 	$(".checkBoxPayAll").prop("checked", false);
@@ -585,9 +579,9 @@ function clearSearchTxt(selectId, beginDateId, endDateId, inputId){
 }
 
 //回车搜索
-function recOnkeyEnter(){
+function payOnkeyEnter(){
 	 if(event.keyCode==13){
-		 $("#interRecSearchBtn").click();
+		 $("#interPaySearchBtn").click();
 	 }
 }
 
@@ -608,7 +602,7 @@ $('#uploadFile').click(function(){
 		'multi' : false,//multi设置为true将允许多文件上传
 		'successTimeout' : 1800,
 		'queueSizeLimit' : 100,
-		'uploader' : '${base}/admin/receivePay/inter/uploadFile.html',//后台处理的页面
+		'uploader' : '${base}/admin/receivePay/inland/uploadFile.html',//后台处理的页面
 		//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
 		//下面的例子演示如何获取到vid
 		'onUploadSuccess' : function(file, data, response) {
@@ -618,21 +612,21 @@ $('#uploadFile').click(function(){
 			$('#billurl').val(url);
 			$('#shuidanimg').attr('src',url);
 		},
-        //加上此句会重写onSelectError方法【需要重写的事件】
-        'overrideEvents': ['onSelectError', 'onDialogClose'],
-        //返回一个错误，选择文件的时候触发
-        'onSelectError':function(file, errorCode, errorMsg){
-            switch(errorCode) {
-                case -110:
-                    alert("文件 ["+file.name+"] 大小超出系统限制！");
-                    break;
-                case -120:
-                    alert("文件 ["+file.name+"] 大小异常！");
-                    break;
-                case -130:
-                    alert("文件 ["+file.name+"] 类型不正确！");
-                    break;
-            }
-        }
+		//加上此句会重写onSelectError方法【需要重写的事件】
+		'overrideEvents': ['onSelectError', 'onDialogClose'],
+		//返回一个错误，选择文件的时候触发
+		'onSelectError':function(file, errorCode, errorMsg){
+			switch(errorCode) {
+			case -110:
+				alert("文件 ["+file.name+"] 大小超出系统限制！");
+				break;
+			case -120:
+				alert("文件 ["+file.name+"] 大小异常！");
+				break;
+			case -130:
+				alert("文件 ["+file.name+"] 类型不正确！");
+				break;
+			}
+		}
 	});
 });

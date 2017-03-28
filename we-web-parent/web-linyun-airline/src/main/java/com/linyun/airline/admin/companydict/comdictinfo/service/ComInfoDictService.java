@@ -128,6 +128,11 @@ public class ComInfoDictService extends BaseService<ComDictInfoEntity> {
 		return list;
 	}
 
+	/**
+	 * 字典信息列表，得到字典类别名称
+	 * @param sqlForm
+	 */
+	@SuppressWarnings("unchecked")
 	public Object comInfoListData(ComInfoSqlForm sqlForm) {
 		Map<String, Object> datatablesdata = this.listPage4Datatables(sqlForm);
 		List<Record> listdata = (List<Record>) datatablesdata.get("data");

@@ -40,6 +40,7 @@ $("#payMoney").keyup(function(){
 $("#closePayWindow").click(function(){
 	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 	parent.layer.close(index);
+	parent.clearGou();
 });
 
 //自动转换数字金额为大小写中文字符,返回大小写中文字符串，最大处理到999兆
