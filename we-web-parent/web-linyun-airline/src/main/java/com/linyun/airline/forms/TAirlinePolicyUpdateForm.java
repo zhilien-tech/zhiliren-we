@@ -33,6 +33,8 @@ public class TAirlinePolicyUpdateForm extends ModForm implements Serializable {
 	private long areaId;
 	/**文件名字*/
 	private String fileName;
+	/**手填的文件名字，以此为准*/
+	private String fileRealName;
 	/**文件路径*/
 	private String url;
 	/**文件pdf路径*/
