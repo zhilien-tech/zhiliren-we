@@ -35,6 +35,7 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.upload.UploadAdaptor;
 
+import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
@@ -76,18 +77,17 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	private static final String YHCODE = "YH";
 	private static final String BZCODE = "BZ";
 	private static final int ENABLE = BankCardStatusEnum.ENABLE.intKey();
-	private static final String YTCODE = "FKYT";
+	private static final String YTCODE = ComDictTypeEnum.DICTTYPE_XMYT.key();
+	private static final String ZJZLCODE = ComDictTypeEnum.DICTTYPE_ZJZL.key();
 	private static final int RECEIVESTATUS = AccountReceiveEnum.RECEIVEDONEY.intKey();
 	private static final int APPROVALPAYED = AccountPayEnum.APPROVALPAYED.intKey();
 	private static final int APPROVALPAYING = AccountPayEnum.APPROVALPAYING.intKey();
 	private static final int APPROVALENABLE = ApprovalResultEnum.ENABLE.intKey();
 	private static final int ONJOB = UserJobStatusEnum.ON.intKey();
-
 	//款项已收
 	private static final int RECEDMSGTYPE = MessageWealthStatusEnum.RECEIVED.intKey();
 	//款项已付
 	private static final int PAYEDMSGTYPE = MessageWealthStatusEnum.PAYED.intKey();
-
 	//订单状态
 	private static final int FIRBOOKING = SearchOrderStatusEnum.FIRBOOKING.intKey(); //一订
 
