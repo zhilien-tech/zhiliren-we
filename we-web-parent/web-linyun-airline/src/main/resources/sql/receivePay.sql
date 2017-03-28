@@ -388,7 +388,8 @@ WHERE
 SELECT
 	uo.id,
 	uo.ordersnum,
-	po.orderstatus
+	po.orderstatus,
+	po.paystauts
 FROM
 	t_up_order uo
 INNER JOIN t_pay_order po ON po.orderid = uo.id

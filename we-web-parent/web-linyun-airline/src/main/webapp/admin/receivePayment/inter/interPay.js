@@ -37,7 +37,7 @@ function initPayDataTable(){
 		            		return result;
 		            	}
 		            },
-		            {"data": "ordernum", "bSortable": false},
+		            {"data": "ordersnum", "bSortable": false},
 		            {"data": "pnrnum", "bSortable": false,
 		            	render:function(data, type, row, meta) {
 		            		var result = '<ul> ';
@@ -421,7 +421,7 @@ $('#interPayClick').click(function(){
 	}
 });
 
-//内路跨海付款 复选框 全选
+//国际付款 复选框 全选
 $(".checkBoxPayAll").click(function () {
 	var check = $(this).prop("checked");
 	$(".checkBoxPayChild").prop("checked", check);
@@ -472,7 +472,7 @@ $(".checkBoxPayAll").click(function () {
 	$('#checkedboxPayValue').val(hiddenval);
 });
 
-//会计内陆跨海付款 复选框 单选
+//会计 国际付款 复选框 单选
 $(document).on('click', '.checkBoxPayChild', function(e) {
 	var hiddenval = $('#checkedboxPayValue').val();
 	var thisval = $(this).val();
@@ -513,22 +513,23 @@ $(document).on('click', '.checkBoxPayChild', function(e) {
 	}
 });
 
-//内陆跨海付款 搜索按钮
+//国际付款 搜索按钮
 $("#interPaySearchBtn").on('click', function () {
-	var interPayStatus = 2;
-	var interPayEdStatus = 3;
-
-	var orderStatus = $("#interPaySelect").val();
+	var interPayStatus = 2;   //付款中
+	var interPayEdStatus = 3; //已付款
+	var payStatus = $("#interPaySelect").val();
 	var interPayBeginDate = $("#interPayBeginDate").val();
 	var interPayEndDate = $("#interPayEndDate").val();
 	var interPayInput = $("#interPayInput").val();
+	var orderStatus = $("li.btnStyle").attr("id");
 	var param = {
 			        "orderStatus":orderStatus,
+					"payStatus":payStatus,
 			        "leavetdate":interPayBeginDate,
 			        "backdate":interPayEndDate,
 					"name": interPayInput
 			    };
-	if(orderStatus==interPayStatus){
+	if(payStatus==interPayStatus){
 		interPayTable.settings()[0].ajax.data = param;
 		interPayTable.ajax.reload(
 				function(json){
@@ -536,7 +537,7 @@ $("#interPaySearchBtn").on('click', function () {
 				}
 		);
 	}
-	if(orderStatus==interPayEdStatus){
+	if(payStatus==interPayEdStatus){
 		interPayEdTable.settings()[0].ajax.data = param;
 		interPayEdTable.ajax.reload(
 				function(json){
@@ -548,17 +549,20 @@ $("#interPaySearchBtn").on('click', function () {
 });
 
 
-/*清除 内陆跨海 收款的   检索项*/
+/*清除 国际收款的   检索项*/
 $('#interRecClearBtn').click(function(){
 	clearSearchTxt("interRecSelect", "interRecBeginDate", "interRecEndDate", "interRecInput");
 });
 
-/*清除 内陆跨海 付款的   检索项*/
+/*清除 国际 付款的   检索项*/
 $('#interPayClearBtn').click(function(){
 	clearSearchTxt("interPaySelect", "interPayBeginDate", "interPayEndDate", "interPayInput");
 });
 
-//内陆跨海 取消所有勾选
+//国际 取消所有勾选
+function clearGou(){
+	$('#interPayCancelBtn').click();
+}
 $('#interPayCancelBtn').click(function(){
 	$('#checkedboxPayValue').val("");
 	$(".checkBoxPayAll").prop("checked", false);
