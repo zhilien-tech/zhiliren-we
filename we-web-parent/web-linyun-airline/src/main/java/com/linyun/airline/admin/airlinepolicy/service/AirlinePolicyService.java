@@ -36,7 +36,6 @@ import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.common.enums.AirlinePolicyEnum;
 import com.linyun.airline.common.result.Select2Option;
-import com.linyun.airline.common.util.HtmlToPdf;
 import com.linyun.airline.common.util.Office2PDF;
 import com.linyun.airline.common.util.POIReadExcelToHtml;
 import com.linyun.airline.common.util.Word2Html;
@@ -102,7 +101,24 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 
 		String url = addForm.getUrl();
 		addForm.setUrl(url);
-		addForm.setFileName(addForm.getFileName());
+		String extend = null;
+		if (!Util.isEmpty(url)) {
+			extend = url.substring(url.lastIndexOf("."), url.length());
+
+		}
+		if (!Util.isEmpty(addForm.getFileRealName())) {
+			if (!Util.isEmpty(extend)) {
+
+				addForm.setFileName(addForm.getFileRealName() + extend);
+			} else {
+
+				addForm.setFileName(addForm.getFileRealName());
+			}
+
+		} else {
+
+			addForm.setFileName(addForm.getFileName());
+		}
 		addForm.setFileSize(addForm.getFileSize());
 		String extendName = url.substring(url.lastIndexOf(".") + 1, url.length());
 		Word2Html word2Html = new Word2Html();
@@ -276,19 +292,39 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 	}
 
 	public void updateFileInfo(TAirlinePolicyUpdateForm updateForm, HttpSession session, Long id) {
-		String fileName = updateForm.getFileName();
+		String fileName = null;
 		String url = updateForm.getUrl();
+		String extend = null;
+		TAirlinePolicyEntity airlinePolicy = dbDao.fetch(TAirlinePolicyEntity.class, id);
+		if (!Util.isEmpty(url)) {
+			extend = url.substring(url.lastIndexOf("."), url.length());
+
+		} else if (!Util.isEmpty(airlinePolicy.getUrl())) {
+			extend = airlinePolicy.getUrl().substring(airlinePolicy.getUrl().lastIndexOf("."),
+					airlinePolicy.getUrl().length());
+
+		}
+		if (!Util.isEmpty(updateForm.getFileRealName())) {
+			if (!Util.isEmpty(extend)) {
+
+				fileName = updateForm.getFileRealName() + extend;
+			} else {
+				fileName = updateForm.getFileRealName();
+
+			}
+		} else {
+
+			fileName = updateForm.getFileName();
+
+		}
 		String type = updateForm.getType();
 		Long areaId = updateForm.getAreaId();
 		Long airlineCompanyId = updateForm.getAirlineCompanyId();
-		TAirlinePolicyEntity airlinePolicy = dbDao.fetch(TAirlinePolicyEntity.class, id);
 		Chain chain = Chain.make("updateTime", new Date());
 		String str = System.getProperty("java.io.tmpdir");
 		if (!Util.isEmpty(url)) {
 			chain.add("url", url);
 			String extendName = url.substring(url.lastIndexOf(".") + 1, url.length());
-			Word2Html word2Html = new Word2Html();
-			HtmlToPdf htmlToPdf = new HtmlToPdf();
 			if ("doc".equalsIgnoreCase(extendName)) {
 				try {
 					/*word2Html.docToHtml(url, str + File.separator + "12.html");
@@ -355,11 +391,6 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 		}
 		dbDao.update(TAirlinePolicyEntity.class, chain, Cnd.where("id", "=", id));
 
-	}
-
-	public static void main(String[] args) {
-		String str = System.getProperty("java.io.tmpdir");
-		System.out.println(File.separator);
 	}
 
 	public void downloadById(long id, HttpServletResponse response) {

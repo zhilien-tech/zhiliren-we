@@ -204,7 +204,9 @@
 	function successCallback(id){
 		 // rebatesEamilTable.ajax.reload(null,false);
 		  //rebatesReportTable.ajax.reload(null,false);
-		  empTable.ajax.reload(null,false);
+		  /* empTable.ajax.reload(null,false); */
+		  window.location.href="${base}/admin/airlinepolicy/list.html"; 
+		  location=location;
 		  if(id == '1'){
 			  layer.msg("添加成功!",{time: 1000, icon:1});
 		  }else if(id == '2'){
@@ -270,7 +272,7 @@
 		            skin: false, //加上边框
 		            closeBtn:false,//默认 右上角关闭按钮 是否显示
 		            shadeClose:true,
-		            area: ['870px', '270px'],
+		            area: ['870px', '320px'],
 		            content: ['${url}/add.html','no']
 		          });
 		      });

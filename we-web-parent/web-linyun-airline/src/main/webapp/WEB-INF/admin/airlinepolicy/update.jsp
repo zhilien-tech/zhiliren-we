@@ -87,7 +87,7 @@
       			<div class="form-group iconStyle">
       				<label class="col-sm-1 text-right padding">文件名：</label>
       				<div class="col-sm-3 padding">
-      				 	<input type="text" class="form-control input-sm filetext" placeholder="请输入文件名称">
+      				 	<input type="text" class="form-control input-sm filetext" placeholder="请输入文件名称" name="fileRealName">
 					</div>
       			</div>
       		</div>
@@ -265,6 +265,7 @@
 			$('#updateFileInfoForm').bootstrapValidator('validate');
 			var bootstrapValidator = $("#updateFileInfoForm").data('bootstrapValidator');
 			if(bootstrapValidator.isValid()){
+				var index = layer.load(1, {shade: [0.1,'#fff']});//0.1透明度的白色背景 
 				$.ajax({
 					cache : false,
 					type : "POST",
@@ -274,9 +275,7 @@
 						layer.msg('编辑失败!');
 					},
 					success : function(data) {
-						layer.load(1, {
-							 shade: [0.1,'#fff'] //0.1透明度的白色背景
-						});
+						layer.close(index);
 						
 						 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 					    parent.layer.close(index);

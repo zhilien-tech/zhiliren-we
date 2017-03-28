@@ -22,7 +22,7 @@
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" value="保存" onclick="addFileInfo();"/>
             <h4 class="invoiceH4">添加</h4>
     </div>
-      <div class="modal-body" style="height:200px;overflow-y:auto;">
+      <div class="modal-body" style="height:251px;overflow-y:auto;">
       <form id="addFileInfoForm" method="post">
       <div class="row">
       			<div class="form-group">
@@ -70,7 +70,7 @@
       			<div class="form-group iconStyle">
       				<label class="col-sm-1 text-right padding">文件名：</label>
       				<div class="col-sm-3 padding">
-      				 	<input type="text" class="form-control input-sm filetext" placeholder="请输入文件名称">
+      				 	<input type="text" class="form-control input-sm filetext" placeholder="请输入文件名称" name="fileRealName">
 					</div>
       			</div>
       		</div>
@@ -78,7 +78,6 @@
       			<div class="form-group">
       				<label class="col-sm-3 text-right padding"></label>
       				<button id="file" name="file" type="file" class="btn btn-primary btn-sm" >上传文件</button>
-             	    <span class="sp red">*</span>
       			</div>
       		</div>
         <input type="hidden" name="url" value="" id="url"/>
@@ -240,9 +239,11 @@
 		//执行添加的操作、
 		
 		function addFileInfo(){
+			
 			  $('#addFileInfoForm').bootstrapValidator('validate');
 				var bootstrapValidator = $("#addFileInfoForm").data('bootstrapValidator');
 				if(bootstrapValidator.isValid()){ 
+					var index = layer.load(1, {shade: [0.1,'#fff']});//0.1透明度的白色背景 
 					$.ajax({
 						cache : false,
 						type : "POST",
@@ -252,14 +253,13 @@
 							layer.msg('添加失败!');
 						},
 						success : function(data) {
-							layer.load(1, {
-								 shade: [0.1,'#fff'] //0.1透明度的白色背景
-							});
-							formValidator(); 
-							 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+							layer.close(index);
+							/* formValidator();  */
+							var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						    parent.layer.close(index);
-						    window.parent.successCallback('1'); 
-							
+						   window.parent.successCallback('1');
+						  
+						    
 						    
 						}
 					});
