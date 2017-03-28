@@ -26,6 +26,10 @@ import com.google.common.collect.Maps;
 import com.linyun.airline.admin.area.service.AreaViewService;
 import com.linyun.airline.admin.authority.function.entity.TFunctionEntity;
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.user.entity.TSalaryIncreaseEntity;
+import com.linyun.airline.admin.user.enums.SalaryEnum;
+import com.linyun.airline.admin.user.form.TSalaryIncreaseAddForm;
+import com.linyun.airline.admin.user.form.TSalaryIncreaseUpdateForm;
 import com.linyun.airline.common.access.AccessConfig;
 import com.linyun.airline.common.access.sign.MD5;
 import com.linyun.airline.common.constants.CommonConstants;
@@ -115,7 +119,8 @@ public class UserViewService extends BaseService<TUserEntity> {
 	 * 员工管理表单数据保存
 	 */
 	@Aop("txDb")
-	public Map<String, String> saveEmployeeData(TUserAddForm addForm, Long areaId, Long jobId, final HttpSession session) {
+	public Map<String, String> saveEmployeeData(TUserAddForm addForm, TSalaryIncreaseAddForm addSalaryForm,
+			Long areaId, Long jobId, final HttpSession session) {
 		//先添加用户数据
 		TUserEntity userEntity = new TUserEntity();
 		userEntity.setFullName(addForm.getFullName());//用户姓名
@@ -166,6 +171,20 @@ public class UserViewService extends BaseService<TUserEntity> {
 			areaEntities.add(userAreaMapEntity);
 		}
 		dbDao.insert(areaEntities);
+		//向员工的工资表中添加数据
+		TSalaryIncreaseEntity insertSalary = new TSalaryIncreaseEntity();
+		insertSalary.setComId(companyId);//公司id
+		insertSalary.setUserId(userId);
+		insertSalary.setBaseWages(addSalaryForm.getBaseWages());//基本工资
+		insertSalary.setWuXianYiJin(addSalaryForm.getWuXianYiJin());//五险一金
+		insertSalary.setBonus(addSalaryForm.getBonus());//奖金
+		insertSalary.setCommission(addSalaryForm.getCommission());//提成
+		insertSalary.setCreateTime(new Date());
+		insertSalary.setForfeit(addSalaryForm.getForfeit());//罚款
+		insertSalary.setRatepaying(addSalaryForm.getRatepaying());//纳税
+		insertSalary.setRemark(addSalaryForm.getRemark());//
+		insertSalary.setStatus(SalaryEnum.ALREADY_WAGES.intKey());//已发工资
+		dbDao.insert(insertSalary);
 		return JsonResult.success("添加成功!");
 	}
 
@@ -201,6 +220,10 @@ public class UserViewService extends BaseService<TUserEntity> {
 		if (areaIds.length() > 0) {
 			areaIds = areaIds.substring(0, areaIds.length() - 1);
 		}
+		//查询用户工资
+		List<TSalaryIncreaseEntity> salaryList = dbDao.query(TSalaryIncreaseEntity.class, Cnd
+				.where("comId", "=", comId).and("userId", "=", userId), null);
+		obj.put("salaryList", salaryList);
 		obj.put("areaIds", areaIds);
 		obj.put("userInfo", updateUser);//用户信息
 		obj.put("deptInfo", userDeptList);//部门职位信息
@@ -240,7 +263,7 @@ public class UserViewService extends BaseService<TUserEntity> {
 	 * @param form
 	 * 修改保存
 	 */
-	public Object updateData(TUserModForm updateForm, final HttpSession session) {
+	public Object updateData(TUserModForm updateForm, TSalaryIncreaseUpdateForm salUpdateForm, final HttpSession session) {
 		Map<String, Object> obj = Maps.newHashMap();
 		if (!Util.isEmpty(updateForm)) {
 			updateForm.setStatus(UserJobStatusEnum.ON.intKey());
@@ -262,6 +285,25 @@ public class UserViewService extends BaseService<TUserEntity> {
 		dbDao.update(TUserJobEntity.class, Chain.make("companyJobId", companyJobId),
 				Cnd.where("userid", "=", updateForm.getId()));
 
+		//更新员工工资数据
+		if (!Util.isEmpty(salUpdateForm)) {
+			salUpdateForm.setUpdateTime(new Date());
+		}
+		Chain make = Chain.make("updateTime", new Date());
+		if (!Util.isEmpty(salUpdateForm.getBaseWages())) {
+			make.add("baseWages", salUpdateForm.getBaseWages());
+		}
+		if (!Util.isEmpty(salUpdateForm.getCommission())) {
+			make.add("commission", salUpdateForm.getCommission());
+		}
+		make.add("wuXianYiJin", salUpdateForm.getWuXianYiJin());
+		make.add("bonus", salUpdateForm.getBonus());
+		make.add("forfeit", salUpdateForm.getForfeit());
+		make.add("ratepaying", salUpdateForm.getRatepaying());
+		make.add("remark", salUpdateForm.getRemark());
+		make.add("status", salUpdateForm.getStatus());
+		dbDao.update(TSalaryIncreaseEntity.class, make,
+				Cnd.where("comId", "=", companyId).and("userId", "=", updateForm.getId()));
 		//查询出用户区域关系表之前添加好的数据
 		List<TUserAreaMapEntity> before = dbDao.query(TUserAreaMapEntity.class,
 				Cnd.where("userId", "=", updateForm.getId()), null);

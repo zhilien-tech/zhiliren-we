@@ -687,7 +687,7 @@ function successCallback(id){
 	                    },
 	                    {"data": "remit", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var remit = row.remit;
+	                    		var remit = (row.remit).toFixed(2);
 	                    		if(null==remit || ""==remit){
 	                    			return "";
 	                    		}
@@ -696,7 +696,7 @@ function successCallback(id){
 	                    },
 	                    {"data": "depositbalance", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var depositBalance = row.depositbalance;
+	                    		var depositBalance = (row.depositbalance).toFixed(2);
 	                    		if(null==depositBalance || ""==depositBalance){
 	                    			return "";
 	                    		}
@@ -705,7 +705,7 @@ function successCallback(id){
 	                    },
 	                    {"data": "ticketprice", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var ticketPrice = row.ticketprice;
+	                    		var ticketPrice = (row.ticketprice).toFixed(2);
 	                    		if(null==ticketPrice || ""==ticketPrice){
 	                    			return "";
 	                    		}
@@ -714,7 +714,7 @@ function successCallback(id){
 	                    },
 	                    {"data": "swipe", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var swipe = row.swipe;
+	                    		var swipe = (row.swipe).toFixed(2);
 	                    		if(null==swipe || ""==swipe){
 	                    			return "";
 	                    		}
@@ -723,7 +723,7 @@ function successCallback(id){
 	                    },
 	                    {"data": "tax", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var tax = row.tax;
+	                    		var tax = (row.tax).toFixed(2);
 	                    		if(null==tax || ""==tax){
 	                    			return "";
 	                    		}
@@ -732,7 +732,7 @@ function successCallback(id){
 	                    },
 	                    {"data": "excisetax1", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var exciseTax1 = row.excisetax1;
+	                    		var exciseTax1 = (row.excisetax1).toFixed(2);
 	                    		if(null==exciseTax1 || ""==exciseTax1){
 	                    			return "";
 	                    		}
@@ -741,7 +741,7 @@ function successCallback(id){
 	                    },
 	                    {"data": "agencyfee", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var agencyFee = row.agencyfee;
+	                    		var agencyFee = (row.agencyfee).toFixed(2);
 	                    		if(null==agencyFee || ""==agencyFee){
 	                    			return "";
 	                    		}
@@ -750,7 +750,7 @@ function successCallback(id){
 	                    },
 	                    {"data": "taxrebate", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var taxRebate = row.taxrebate;
+	                    		var taxRebate = (row.taxrebate).toFixed(2);
 	                    		if(null==taxRebate || ""==taxRebate){
 	                    			return "";
 	                    		}
@@ -770,7 +770,7 @@ function successCallback(id){
 	                    },
 	                    {"data": "realincome", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var realIncome = row.realincome;
+	                    		var realIncome = (row.realincome).toFixed(2);
 	                    		if(null==realIncome || ""==realIncome){
 	                    			return "";
 	                    		}
@@ -779,7 +779,7 @@ function successCallback(id){
 	                    },
 	                    {"data": "realtotal", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var realTotal = row.realtotal;
+	                    		var realTotal = (row.realtotal).toFixed(2);
 	                    		if(null==realTotal || ""==realTotal){
 	                    			return "";
 	                    		}
@@ -788,7 +788,7 @@ function successCallback(id){
 	                    },
 	                    {"data": "agencyfee2", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var agencyFee2 = row.agencyfee2;
+	                    		var agencyFee2 = (row.agencyfee2).toFixed(2);
 	                    		if(null==agencyFee2 || ""==agencyFee2){
 	                    			return "";
 	                    		}

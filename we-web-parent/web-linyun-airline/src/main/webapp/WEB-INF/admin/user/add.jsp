@@ -1,143 +1,198 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
 <!DOCTYPE HTML>
-<html>
+<html lang="en-US">
 <head>
 <meta charset="UTF-8">
-<title>添加</title>
+<title>员工管理</title>
 <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
 <link rel="stylesheet" href="${base}/public/dist/css/user.css">
 <link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
 <style type="text/css">
-.select2-container {
-	width: 98.5% !important;
-	display: inline-block;
-}
-
-.seleSpanWid .select2-container {
-	width: 98.5% !important;
-	display: inline-block;
-}
-
-.inpNone .select2 .selection span ul li+li {
-	display: none;
-}
-/**验证时对勾的位置*/
-.form-control-feedback {position: absolute;top: -2px;right: -25px;}
+	.modal-header {border-bottom:0;}
+	.tab-content {margin-top: 15px;}
+	.TCinput{width: 84%;}
+	.TC{display: inline-block;}
 </style>
-
 </head>
-<body onresize=hero();>
-    <div class="modal-header">
-        <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">返回</button>
-     	<button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
-        <h4>基本资料</h4>
-    </div>
-    	<form id="addUserForm" method="post">
-           <div class="modal-body">
-              <div class="tab-content">
-                  <div class="row">
-                  	<div class="form-group">
-                  		<label class="col-sm-3 text-right padding">用户姓名：</label>
-                      	<div class="col-sm-3 padding">
-                        	<input id="fullName" name="fullName" type="text" class="form-control input-sm inputWidth" placeholder="请输入用户姓名" />
-                        	<span class="prompt">*</span>
-                      	</div>
-                  	</div>
-	               	<div class="form-group form-group1">
-	                   <label class="col-sm-2 text-right padding">用户名/手机号码：</label>
-	                   <div class="col-sm-3 padding">
-	                     <input id="telephone" name="telephone" type="text" class="form-control input-sm inputWidth" placeholder="请输入用户名/手机号码" />
-	                     <span class="prompt">*</span>
-	                   </div>
-                    </div>
-                  </div>
+<body>
+	<div class="modal-content">
+		<form id="addUserForm" method="post">
+			<div class="modal-header">
+				<button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">返回</button>
+     			<button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#tabs_1" data-toggle="tab">基本资料</a></li>
+					<li><a href="#tabs_2" data-toggle="tab">工资</a></li>
+				</ul>
+			</div>
+			<div class="modal-body">
+				<div class="tab-content">
+					<div class="tab-pane active" id="tabs_1">
+						<div class="tab-content">
+		                  <div class="row">
+		                  	<div class="form-group">
+		                  		<label class="col-sm-3 text-right padding">用户姓名：</label>
+		                      	<div class="col-sm-3 padding">
+		                        	<input id="fullName" name="fullName" type="text" class="form-control input-sm inputWidth" placeholder="请输入用户姓名" />
+		                        	<span class="prompt">*</span>
+		                      	</div>
+		                  	</div>
+			               	<div class="form-group form-group1">
+			                   <label class="col-sm-2 text-right padding">用户名/手机号码：</label>
+			                   <div class="col-sm-3 padding">
+			                     <input id="telephone" name="telephone" type="text" class="form-control input-sm inputWidth" placeholder="请输入用户名/手机号码" />
+			                     <span class="prompt">*</span>
+			                   </div>
+		                    </div>
+		                  </div>
 
-                  <div class="row">
-                  	<div class="form-group">
-                      <label class="col-sm-3 text-right padding">联系QQ：</label>
-                      <div class="col-sm-3 padding">
-                        <input id="qq" name="qq" type="text" class="form-control input-sm inputWidth" placeholder="请输入联系QQ" />
-                      </div>
-                    </div>
-                    <div class="form-group form-group1">
-                      <label class="col-sm-2 text-right padding">座机号码：</label>
-                      <div class="col-sm-3 padding">
-                        <input id="landline" name="landline" type="text" class="form-control input-sm inputWidth" placeholder="请输入座机号码" />
-                      </div>
-                     </div>
-                  </div>
+		                  <div class="row">
+		                  	<div class="form-group">
+		                      <label class="col-sm-3 text-right padding">联系QQ：</label>
+		                      <div class="col-sm-3 padding">
+		                        <input id="qq" name="qq" type="text" class="form-control input-sm inputWidth" placeholder="请输入联系QQ" />
+		                      </div>
+		                    </div>
+		                    <div class="form-group form-group1">
+		                      <label class="col-sm-2 text-right padding">座机号码：</label>
+		                      <div class="col-sm-3 padding">
+		                        <input id="landline" name="landline" type="text" class="form-control input-sm inputWidth" placeholder="请输入座机号码" />
+		                      </div>
+		                     </div>
+		                  </div>
 
-                  <div class="row">
-                  	<div class="form-group">
-                      <label class="col-sm-3 text-right padding">电子邮箱：</label>
-                      <div class="col-sm-3 padding">
-                        <input id="email" name="email" type="eamil" class="form-control input-sm inputWidth" placeholder="请输入邮箱" />
-                      </div>
-                    </div>
-                    <div class="form-group form-group1">
-                     <label class="col-sm-2 text-right padding">所属部门：</label>
-                      <div class="col-sm-3 padding">
-                        <select id="deptId" name="deptId" onchange="selectDeptName();" class="form-control input-sm inputWidth">
-                         	<option value="">--请选择--</option>
-                         	<c:forEach items="${obj.queryList}" var="one">
-	                           	<option value="${one.id }">
-	                           		${one.deptName }
-	                           	</option>
-							</c:forEach>
-                        </select>
-                        <span class="prompt">*</span>
-                      </div>
-                     </div>
-                  </div>
+		                  <div class="row">
+		                  	<div class="form-group">
+		                      <label class="col-sm-3 text-right padding">电子邮箱：</label>
+		                      <div class="col-sm-3 padding">
+		                        <input id="email" name="email" type="eamil" class="form-control input-sm inputWidth" placeholder="请输入邮箱" />
+		                      </div>
+		                    </div>
+		                    <div class="form-group form-group1">
+		                     <label class="col-sm-2 text-right padding">所属部门：</label>
+		                      <div class="col-sm-3 padding">
+		                        <select id="deptId" name="deptId" onchange="selectDeptName();" class="form-control input-sm inputWidth">
+		                         	<option value=" ">--请选择--</option>
+		                         	<c:forEach items="${obj.queryList}" var="one">
+			                           	<option value="${one.id }">${one.deptName }</option>
+									</c:forEach>
+		                        </select>
+		                        <span class="prompt">*</span>
+		                      </div>
+		                     </div>
+		                  </div>
 
-                  <div class="row">
-                  	<div class="form-group">
-                      <label class="col-sm-3 text-right padding">用户职位：</label>
-                      <div class="col-sm-3 padding">
-                         <select id="jobId" name="jobId" class="form-control input-sm inputWidth">
-                 			<option value="">--请选择--</option>
-              			 </select>
-                        <span class="prompt">*</span>
-                      </div>
-                    </div>
-					<div class="form-group form-group1">
-                      <label class="col-sm-2 text-right padding">用户是否禁用：</label>
-                      <div class="col-sm-3 padding">
-                        <select id="disableStatus" name="disableStatus" class="form-control input-sm inputWidth">
-                          <option value="0" selected="selected">否</option>
-                          <option value="1">是</option>
-                        </select>
-                      </div>
-                     </div>
-                  </div>
-				
-                  <div class="row">
-                  	<div class="form-group">
-                      <label class="col-sm-3 text-right padding">负责区域：</label>
-                      <div class="col-sm-8 padding">
-                         <select id="areaSelect" name="dictAreaName" onchange="setSelectedAreaIds();"
-							class="form-control select2 inpImpWid" multiple="multiple"
-							data-placeholder="请输入区域名称">
-						 </select>
-						 <!-- 区域ID -->
-						 <input id="selectedAreaIds" name="selectedAreaIds" type="hidden"/>
-                         <span class="prompt">*</span>
-                      </div>
-                     </div>
-                  </div>
-                  	<!-- 设置已选中的项 -->
-					<script type="text/javascript">
-						function setSelectedAreaIds() {
-							var _selectedAreaIds = $("#areaSelect").select2("val");
-							$("#selectedAreaIds").val(_selectedAreaIds);
-						}
-					</script>
-            </div>
-        </div>
-      </form>
+		                  <div class="row">
+		                  	<div class="form-group">
+		                      <label class="col-sm-3 text-right padding">用户职位：</label>
+		                      <div class="col-sm-3 padding">
+		                         <select id="jobId" name="jobId" class="form-control input-sm inputWidth">
+		                 			<option value="">--请选择--</option>
+		              			 </select>
+		                        <span class="prompt">*</span>
+		                      </div>
+		                    </div>
+							<div class="form-group form-group1">
+		                      <label class="col-sm-2 text-right padding">用户是否禁用：</label>
+		                      <div class="col-sm-3 padding">
+		                        <select id="disableStatus" name="disableStatus" class="form-control input-sm inputWidth">
+		                          <option value="0" selected="selected">否</option>
+		                          <option value="1">是</option>
+		                        </select>
+		                      </div>
+		                     </div>
+		                  </div>
+						
+		                  	<div class="row">
+			                  	<div class="form-group">
+				                      <label class="col-sm-3 text-right padding">负责区域：</label>
+				                      <div class="col-sm-8 padding iconCla">
+				                         <select id="areaSelect" name="dictAreaName" onchange="setSelectedAreaIds();"
+											class="form-control select2 inputWidth" multiple="multiple"
+											data-placeholder="请输入区域名称">
+										 </select>
+										 <!-- 区域ID -->
+										 <input id="selectedAreaIds" name="selectedAreaIds" type="hidden"/>
+				                         <span class="prompt">*</span>
+				                      </div>
+			                     </div>
+                  			</div>
+                  			<!-- 设置已选中的项 -->
+							<script type="text/javascript">
+								function setSelectedAreaIds() {
+									var _selectedAreaIds = $("#areaSelect").select2("val");
+									$("#selectedAreaIds").val(_selectedAreaIds);
+								}
+							</script>
+            			</div>
+					</div>
+					<div class="tab-pane" id="tabs_2">
+						<div class="tab-content">
+		                  <div class="row">
+		                  	<div class="form-group">
+		                  		<label class="col-sm-3 text-right padding">基本工资：</label>
+		                      	<div class="col-sm-3 padding">
+		                        	<input id="baseWagesId" name="baseWages" type="text" class="form-control input-sm inputWidth" placeholder="请输入基本工资"/>
+		                        	<span class="prompt">*</span>
+		                      	</div>
+		                  	</div>
+			               	<div class="form-group form-group1">
+			                   <label class="col-sm-2 text-right padding">纳税：</label>
+			                   <div class="col-sm-3 padding">
+			                     <input id="ratepayingId" name="ratepaying" type="text" class="form-control input-sm inputWidth" placeholder="请输入纳税金额"/>
+			                   </div>
+		                    </div>
+		                  </div>
+		
+		                  <div class="row">
+		                  	<div class="form-group">
+		                      <label class="col-sm-3 text-right padding">五险一金：</label>
+		                      <div class="col-sm-3 padding">
+		                        <input id="wuXianYiJinId" name="wuXianYiJin" type="text" class="form-control input-sm inputWidth" placeholder="请输入五险一金"/>
+		                      </div>
+		                    </div>
+		                    <div class="form-group form-group1">
+		                      <label class="col-sm-2 text-right padding">提成：</label>
+		                      <div class="col-sm-3 padding">
+		                        <input id="commissionId" name="commission" type="text" class="form-control input-sm inputWidth TCinput" placeholder="请输入提成"/>
+		                        <p class="TC">%</p>
+		                        <span class="prompt">*</span>
+		                      </div>
+		                     </div>
+		                  </div>
+		
+		                  <div class="row">
+		                  	<div class="form-group">
+		                      <label class="col-sm-3 text-right padding">奖金：</label>
+		                      <div class="col-sm-3 padding">
+		                        <input id="bonusId" name="bonus" type="eamil" class="form-control input-sm inputWidth" placeholder="请输入奖金"/>
+		                      </div>
+		                    </div>
+		                    <div class="form-group form-group1">
+		                     <label class="col-sm-2 text-right padding">罚款：</label>
+		                      <div class="col-sm-3 padding">
+		                        <input id="forfeitId" name="forfeit" type="text" class="form-control input-sm inputWidth" placeholder="请输入罚款金额">
+		                      </div>
+		                     </div>
+		                  </div>
+						
+		                  <div class="row">
+		                  	<div class="form-group">
+		                      <label class="col-sm-3 text-right padding">其他：</label>
+		                      <div class="col-sm-8 padding">
+		                         <input id="remarkId" name="remark" type="text" class="form-control input-sm inpImpWid" placeholder="备注">
+		                      </div>
+		                     </div>
+		                  </div>
+            			</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
 <!--JS 文件-->
 <script type="text/javascript">
 	var BASE_PATH = '${base}';
@@ -146,6 +201,9 @@
 <script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="${base}/public/bootstrap/js/bootstrap.js"></script>
 <script src="${base}/public/dist/js/bootstrapValidator.js"></script>
+<script src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script><!-- SlimScroll -->
+<script src="${base}/public/plugins/fastclick/fastclick.js"></script><!-- FastClick -->
+<script src="${base}/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
 <!-- Select2 -->
 <script src="${base}/public/plugins/select2/select2.full.min.js"></script>
 <script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
@@ -250,6 +308,20 @@ function formValidator(){
                         message: '区域不能为空!'
                     }
                 }
+            },
+            baseWages: {
+            	validators: {
+                    notEmpty: {
+                        message: '基本工资不能为空!'
+                    }
+                }
+            },
+            commission: {
+            	validators: {
+                    notEmpty: {
+                        message: '提成不能为空!'
+                    }
+                }
             }
         }
 	});
@@ -257,7 +329,6 @@ function formValidator(){
 //部门职位联动查询
 function selectDeptName(){
 	$.ajax({
-		cache : false,
 		type : "POST",
 		url : '${base}/admin/user/selectDeptName.html',
 		data : {
@@ -280,6 +351,42 @@ $("#submit").click(function() {
 	$('#addUserForm').bootstrapValidator('validate');
 	var bootstrapValidator = $("#addUserForm").data('bootstrapValidator');
 	if(bootstrapValidator.isValid()){
+		//获取必填项信息
+		var selectedAreaIds = $('#areaSelect').find("option:selected").text();
+		var fullName = $("#fullName").val();
+		var telephone = $("#telephone").val();
+		var deptId = $("#deptId").val();
+		var jobId = $("#jobId").val();
+		var baseWages = $("#baseWagesId").val();
+		var commission = $("#commissionId").val();
+		if(selectedAreaIds=="" || selectedAreaIds==null){
+			layer.msg('区域不能为空');
+			return;
+		}
+		if(fullName=="" || fullName==null){
+			layer.msg('用户姓名不能为空');
+			return;
+		}
+		if(telephone=="" || telephone==null){
+			layer.msg('用户名/手机号不能为空');
+			return;
+		}
+		if(deptId=="" || deptId==null){
+			layer.msg('部门不能为空');
+			return;
+		}
+		if(jobId=="" || jobId==null){
+			layer.msg('职位不能为空');
+			return;
+		}
+		if(baseWages=="" || baseWages==null){
+			layer.msg('基本工资不能为空');
+			return;
+		}
+		if(commission=="" || commission==null){
+			layer.msg('提成不能为空');
+			return;
+		}
 		$.ajax({
 			type : "POST",
 			url : '${base}/admin/user/add.html',
