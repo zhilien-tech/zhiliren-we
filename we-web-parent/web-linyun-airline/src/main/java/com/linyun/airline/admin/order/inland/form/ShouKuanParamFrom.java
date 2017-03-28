@@ -68,6 +68,7 @@ public class ShouKuanParamFrom extends DataTablesParamForm {
 		if (!Util.isEmpty(status)) {
 			cnd.and("tr.status", "=", status);
 		}
+		cnd.orderBy("tr.receivedate", "desc");
 		return cnd;
 	}
 

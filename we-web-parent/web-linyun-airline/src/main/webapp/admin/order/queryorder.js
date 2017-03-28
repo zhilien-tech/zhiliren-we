@@ -239,3 +239,18 @@ $(function(){
         $(this).parent().remove();
     });
   });
+loadCustominfo();
+function loadCustominfo(){
+	var creditLinenum = 0;
+	if(creditLine){
+		creditLinenum = parseFloat(creditLine);
+	}
+	var arrearsnum = 0;
+	if(arrears){
+		arrearsnum = parseFloat(arrears);
+	}
+	if(creditLinenum - arrearsnum < 10000){
+		$('#customeidcolor').attr('color','red');
+		$('#historyqiancolor').attr('color','red');
+	}
+}

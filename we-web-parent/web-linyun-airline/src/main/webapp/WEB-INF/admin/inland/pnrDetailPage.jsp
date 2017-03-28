@@ -24,7 +24,20 @@
                     <td>PNR：</td>
                     <td><input type="text" disabled="disabled" class="form-control input-sm" value="${obj.pnrinfo.PNR }"></td>
                     <td>登录帐号：</td>
-                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="${obj.pnrinfo.loginid }"></td></td>
+                    <td>
+                    	<select disabled="disabled" class="form-control input-sm">
+                    		<c:forEach items="${obj.loginselect }" var="one">
+	                    		<c:choose>
+	                        		<c:when test="${obj.pnrinfo.loginid eq one.comDictName}">
+	                        			<option value="${one.comDictName }" selected="selected">${one.comDictName }</option>
+	                        		</c:when>
+	                        		<c:otherwise>
+			                    		<option value="${one.comDictName }">${one.comDictName }</option>
+	                        		</c:otherwise>
+	                        	</c:choose>
+	                    	</c:forEach>
+                    	</select>
+                    </td>
                     <td>人数：</td>
                     <td><input type="text" disabled="disabled" class="form-control input-sm" disabled="disabled" value="${obj.pnrinfo.peoplecount }"></td></td>
                     <td>币种：</td>

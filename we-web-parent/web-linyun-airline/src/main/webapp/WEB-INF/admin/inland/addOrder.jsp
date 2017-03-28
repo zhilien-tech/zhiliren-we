@@ -36,7 +36,7 @@
                <div class="infofooter" style="padding-bottom: 10px;">
                  <table>
                    <tr>
-                     <td><label>客户姓名：</label></td> 
+                     <td><label><font id="custInfoName">客户姓名：</font></label></td> 
                      <td><select id="linkName" name="linkName" class="form-control input-sm" multiple="multiple" placeholder="请输入客户姓名">
                      	</select>
                      	<input id="customerId" name="customerId" type="hidden">
@@ -44,8 +44,15 @@
                      	<input id="fees" name="fees" type="hidden">
                      	</td>
                      <td><label style="position: relative;top: 4px;">结算方式：</label></td>
-                     <td colspan="3"><pre class="preTxt">不限 信用额度：0  临时额度：0  历史欠款：0  预存款：0</pre></td>
-                     <td><input type="button" value="清空" class="btn btn-primary btn-sm clearBtn"><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
+                     <td colspan="3"><pre class="preTxt">
+							<span id="payTypeId">不限</span> 
+								&nbsp;信用额度：<span id="creditLineId">0.00</span>   
+								<font id="fontLSqk">
+									&nbsp;历史欠款：<span id="arrearsId">0.00</span> 
+								</font>  
+								&nbsp;预存款：<span id="preDepositId">0.00</span> 
+						</pre></td>
+                     <td><input type="button"  id="clearBtn" value="清空" class="btn btn-primary btn-sm clearBtn"><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
                    </tr>
                  </table>
 

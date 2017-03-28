@@ -69,6 +69,7 @@ public class PayApplyListForm extends DataTablesParamForm {
 		exp.and("tpi.orderPnrStatus", "=", "").or("tpi.orderPnrStatus", "is", null)
 				.or("tpi.orderPnrStatus", "=", AccountPayEnum.REFUSE.intKey());
 		cnd.and(exp);
+		cnd.orderBy("tpi.optime", "desc");
 		return cnd;
 	}
 

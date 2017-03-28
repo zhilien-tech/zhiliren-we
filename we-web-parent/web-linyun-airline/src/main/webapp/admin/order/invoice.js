@@ -8,6 +8,9 @@ function initkaiInvoiceTable() {
       "processing": true,
       "serverSide": true,
       "stripeClasses": [ 'strip1','strip2' ],
+      "initComplete": function( settings, json ) {
+      	autoHighLoad($(this));
+      },
       "language": {
           "url": BASE_PATH + "/public/plugins/datatables/cn.json"
       },
@@ -48,7 +51,7 @@ function initkaiInvoiceTable() {
                   		var result = '<ul>';
                   		$.each(row.invoicedetail, function(name, value) {
                   			if(value && value.invoicebalance != undefined){
-                  				result += '<li style="list-style:none;">'+value.invoicebalance+'</li>';
+                  				result += '<li style="list-style:none;">'+value.invoicebalance.toFixed(2)+'</li>';
                   			}
                   		});
                   		result += '</ul>';
@@ -63,7 +66,7 @@ function initkaiInvoiceTable() {
                   				result = parseFloat(result) + parseFloat(value.invoicebalance);
                   			}
                   		});
-                  		return result;
+                  		return result.toFixed(2);
                   	}
                   },
                   {"data": "invoicedate", "bSortable": false,
@@ -111,7 +114,9 @@ function initkaiInvoiceTable() {
   });
 }
 function kaiInvoiceLoad(){
-	kaiInvoiceTable.ajax.reload();
+	kaiInvoiceTable.ajax.reload(function(json){
+		autoHighLoad($('#inlandCrossTable'));
+	});
 }
 $('.openinvoicesearch').click(function(){
 	var div = $(this).parent().parent();
@@ -126,7 +131,9 @@ $('.openinvoicesearch').click(function(){
 			searchInfo:searchInfo
 	};
 	kaiInvoiceTable.settings()[0].ajax.data = param;
-	kaiInvoiceTable.ajax.reload();
+	kaiInvoiceTable.ajax.reload(function(json){
+		autoHighLoad($('#inlandCrossTable'));
+	});
 });
 //打开开发票页面
 function openkaiInvoiceEdit(id){
@@ -204,7 +211,7 @@ function initshouInvoiceTable() {
                 		if(row.costpricesum && row.costpricesum != undefined) {
                 			result =row.costpricesum;
                 		}
-                		return result;
+                		return result.toFixed(2);
                 	}
                 },
                 {"data": "invoicedate", "bSortable": false,
