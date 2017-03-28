@@ -130,7 +130,22 @@ public class Office2PDF {
 
 	public static void urlToFile(String inputFilePath, String outputFilePath) {
 		String str = System.getProperty("java.io.tmpdir");
-		File file11 = new File(str + File.separator + "12.doc");
+		String extendName = null;
+		String extend = inputFilePath.substring(inputFilePath.lastIndexOf("."), inputFilePath.length());
+		if (".doc".equalsIgnoreCase(extend)) {
+			extendName = ".doc";
+		}
+		if (".docx".equalsIgnoreCase(extend)) {
+			extendName = ".docx";
+		}
+		if (".xls".equalsIgnoreCase(extend)) {
+			extendName = ".xls";
+		}
+		if (".xlsx".equalsIgnoreCase(extend)) {
+			extendName = ".xlsx";
+		}
+
+		File file11 = new File(str + File.separator + "12" + extendName);
 		InputStream is = null;
 		OutputStream os = null;
 		try {
@@ -146,7 +161,7 @@ public class Office2PDF {
 
 			}
 			os.flush();
-			Office2PDF.converterFile(str + File.separator + "12.doc", outputFilePath);
+			Office2PDF.converterFile(str + File.separator + "12" + extendName, outputFilePath);
 		} catch (Exception e) {
 
 			// TODO Auto-generated catch block
@@ -183,6 +198,6 @@ public class Office2PDF {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Office2PDF.urlToFile("http://oluwc01ms.bkt.clouddn.com/90b3aefa-71c2-480f-9773-c0dde826a1ff.doc", "E:/aew.pdf");
+		Office2PDF.converterFile("C:/Users/Administrator/Desktop/项目计划20170319(二阶段).xlsx", "E:/aew.pdf");
 	}
 }
