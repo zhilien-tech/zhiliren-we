@@ -6,8 +6,6 @@
 
 package com.linyun.airline.admin.receivePayment.service;
 
-import static com.uxuexi.core.common.util.ExceptionUtil.*;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -23,9 +21,7 @@ import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
-import org.nutz.dao.pager.Pager;
 import org.nutz.dao.sql.Sql;
-import org.nutz.dao.util.Daos;
 import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -35,6 +31,7 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.upload.UploadAdaptor;
 
+import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
@@ -68,7 +65,6 @@ import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.Util;
-import com.uxuexi.core.web.base.page.OffsetPager;
 import com.uxuexi.core.web.base.service.BaseService;
 
 @IocBean
@@ -99,6 +95,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 
 	@Inject
 	private SearchViewService searchViewService;
+
+	@Inject
+	private ReceivePayService receivePayService;
 
 	/**
 	 * 
@@ -301,18 +300,36 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//当前公司id
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
+		String orderStatus = form.getOrderStatus();
+		if (Util.isEmpty(orderStatus)) {
+			orderStatus = "3";
+		} else {
+			if (Util.eq("firBooking", orderStatus)) {
+				//一订
+				orderStatus = InternationalStatusEnum.ONEBOOK.intKey() + "";
+			}
+			if (Util.eq("secBooking", orderStatus)) {
+				//二订
+				orderStatus = InternationalStatusEnum.TWOBOOK.intKey() + "";
+			}
+			if (Util.eq("thrBooking", orderStatus)) {
+				//三订
+				orderStatus = InternationalStatusEnum.THREEBOOK.intKey() + "";
+			}
+			if (Util.eq("allBooking", orderStatus)) {
+				//全款
+				orderStatus = InternationalStatusEnum.FULLAMOUNT.intKey() + "";
+			}
+			if (Util.eq("lastBooking", orderStatus)) {
+				//尾款
+				orderStatus = InternationalStatusEnum.TAILMONEY.intKey() + "";
+			}
+		}
+		form.setOrderStatus(orderStatus);
 		form.setCompanyId(companyId);
-		checkNull(form, "sqlParamForm不能为空");
-		Sql sql = form.sql(sqlManager);
-		Pager pager = new OffsetPager(form.getStart(), form.getLength());
-		pager.setRecordCount((int) Daos.queryCount(nutDao, sql.toString()));
-		sql.setPager(pager);
-		sql.setCallback(Sqls.callback.records());
-		nutDao.execute(sql);
-		@SuppressWarnings("unchecked")
-		List<Record> payList = (List<Record>) sql.getResult();
-
 		Map<String, Object> listdata = this.listPage4Datatables(form);
+		@SuppressWarnings("unchecked")
+		List<Record> payList = (List<Record>) listdata.get("data");
 
 		//查询订单
 		String sqlStr = sqlManager.get("receivePay_inter_pay_order_list");
@@ -398,9 +415,12 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 * @param inlandPayIds
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object toConfirmPay(String orderIds) {
-		Map<String, Object> map = new HashMap<String, Object>();
+	public Object toConfirmPay(String orderIds, HttpSession session) {
+		//当前公司id
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
 
+		Map<String, Object> map = new HashMap<String, Object>();
 		Sql sql = Sqls.create(sqlManager.get("receivePay_inter_pay_order_ids"));
 		/*String inlandPayIdStr = inlandPayIds.substring(0, inlandPayIds.length() - 1);*/
 		Cnd cnd = Cnd.NEW();
@@ -433,6 +453,10 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		String approver = "";
 		//审批结果
 		String approveresult = "";
+		//用途
+		String purpose = "";
+		//币种
+		String payCurrency = "";
 		//操作人
 		String operator = "";
 		String operatorList = "";
@@ -448,12 +472,15 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				operator = opr;
 				operatorList += opr + ",";
 			}
-
 			approveresult = record.getString("approveresult");
+			purpose = record.getString("purpose");
+			payCurrency = record.getString("paycurrency");
 		}
 		map.put("totalMoney", totalMoney);
 		map.put("proposer", proposer);
 		map.put("approver", approver);
+		map.put("purpose", purpose);
+		map.put("payCurreny", payCurrency);
 		map.put("operators", operatorList);
 		if (Util.eq(APPROVALENABLE, approveresult)) {
 			map.put("approveresult", "同意");
@@ -462,15 +489,20 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		}
 
 		//银行名称
-		List<DictInfoEntity> bankList = new ArrayList<DictInfoEntity>();
+		List<TBankCardEntity> bankList = new ArrayList<TBankCardEntity>();
 		try {
-			bankList = externalInfoService.findDictInfoByName("", YHCODE);
+			Cnd cnd2 = Cnd.NEW();
+			cnd2.and("companyid", "=", companyId);
+			cnd2.and("bankName", "!=", "");
+			cnd2.groupBy("bankName");
+			bankList = dbDao.query(TBankCardEntity.class, cnd2, null);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		map.put("bankList", bankList);
 
-		//银行名称
+		//币种
 		List<DictInfoEntity> BZList = new ArrayList<DictInfoEntity>();
 		try {
 			BZList = externalInfoService.findDictInfoByName("", BZCODE);
@@ -480,13 +512,21 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		map.put("bzList", BZList);
 
 		//付款用途
-		List<DictInfoEntity> fkytList = new ArrayList<DictInfoEntity>();
+		List<ComDictInfoEntity> fkytList = new ArrayList<ComDictInfoEntity>();
 		try {
-			fkytList = externalInfoService.findDictInfoByName("", YTCODE);
+			fkytList = receivePayService.findCodeByName("", YTCODE, companyId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		map.put("fkytList", fkytList);
+		//资金种类
+		List<ComDictInfoEntity> zjzlList = new ArrayList<ComDictInfoEntity>();
+		try {
+			zjzlList = receivePayService.findCodeByName("", ZJZLCODE, companyId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		map.put("zjzlList", zjzlList);
 		map.put("ids", orderIds);
 
 		return map;

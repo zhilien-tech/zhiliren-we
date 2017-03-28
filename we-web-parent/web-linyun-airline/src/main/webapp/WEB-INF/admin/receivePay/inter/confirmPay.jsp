@@ -46,7 +46,9 @@
                 			<td>${one.billingdate }</td>
                 			<td>${one.actualnumber }</td>
                 			<td>${one.issuer }</td>
-                			<td>${one.incometotal }</td>
+                			<td>
+                				<fmt:formatNumber type="number" value="${one.saleprice }" pattern="0.00" maxFractionDigits="2"/>
+                			</td>
                 		</tr>
                 	</c:forEach>
 				</tbody>
@@ -55,23 +57,24 @@
 				<tr>
 					<td>银行：</td>
 					<td>
-						<select id="bankComp" name="bankComp" class="form-control input-sm">
+						<select id="bankComp" name="bankComp" onchange="bankSelect();" class="form-control input-sm">
 							<c:forEach var="one" items="${obj.bankList}">
-	                        	<option value="${one.id }">${one.dictName }</option>
+	                        	<option value="${one.id }">${one.bankName }</option>
 	                        </c:forEach>
 						</select>
 					</td>
 					<td>银行卡名称：</td>
-					<td><select id="cardName" name="cardName" class="form-control input-sm">
-							<option value="1">国际专用卡</option>
-							<option value="2">内陆专用卡</option>
+					<td><select id="cardName" onchange="cardSelect();" name="cardName" class="form-control input-sm">
+							
 					</select></td>
 					<td>卡号：</td>
 					<td><select id="cardNum" name="cardNum" class="form-control input-sm">
-							<option value="1">6352 7463 3647 756</option>
+							
 					</select></td>
 					<td>合计：</td>
-					<td id="totalMoney">${obj.totalMoney }</td>
+					<td id="totalMoney">
+						<fmt:formatNumber type="number" value="${obj.totalMoney }" pattern="0.00" maxFractionDigits="2"/>
+					</td>
 					<input id="totalMoney" name="totalMoney" type="hidden" value="${obj.totalMoney }">
 				</tr>
 			</table>
@@ -85,18 +88,24 @@
 					<td>用途：</td>
 					<td><select id="purpose" name="purpose" class="form-control input-sm">
 							<c:forEach var="one" items="${obj.fkytList}">
-	                        	<option value="${one.id }">${one.dictName }</option>
+								<c:choose>
+	                          		<c:when test="${obj.purpose eq one.id }">
+			                        	 <option value="${one.id }" selected="selected">${one.comDictName }</option>
+	                          		</c:when>
+	                          		<c:otherwise>
+		                        	 <option value="${one.id }">${one.comDictName }</option>
+	                          		</c:otherwise>
+	                          	</c:choose>
 	                        </c:forEach>
 					</select></td>
 					<td>资金种类：</td>
 					<td><select id="fundType" name="fundType" class="form-control input-sm">
-							<option value=1>对公</option>
-							<option value=2>现金</option>
-							<option value=3>银行卡</option>
-							<option value=4>POS</option>
+							<c:forEach var="one" items="${obj.zjzlList}">
+	                        	<option value="${one.id }">${one.comDictName }</option>
+	                        </c:forEach>
 					</select></td>
 					<td>付款时间：</td>
-					<td><input id="payDate" name="payDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" placeholder="2017-02-20" class="form-control input-sm"></td>
+					<td><input id="payDate" name="payDate" type="text" onFocus="WdatePicker({maxDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd'})" placeholder="2017-02-20" class="form-control input-sm"></td>
 				</tr>
 				<tr>
 					<td>手续费：</td>
@@ -104,12 +113,24 @@
 					<td>金额：</td>
 					<td><input id="payMoney" name="payMoney" type="text" class="form-control input-sm"></td>
 					<td colspan="2">
-						<input id="chineseMoney" type="text" class="form-control input-sm textIpnu" disabled="disabled"></td>
+						<input id="chineseMoney" name="payChineseMoney" type="text" class="form-control input-sm textIpnu" readonly="readonly"></td>
 					<td class="bj">币种：</td>
-					<td><select id="payCurrency" name="payCurrency" class="form-control input-sm">
-							<option value=1>CNY</option>
-							<option value=2>AOB</option>
-					</select></td>
+					<td>
+						<select id="payCurrency" name="payCurrency" class="form-control input-sm">
+							<option value="0">--请选择--</option>
+							<c:forEach var="one" items="${obj.bzList}">
+	                        	<%-- <option value="${one.id }">${one.dictCode }</option> --%>
+	                        	<c:choose>
+	                          		<c:when test="${obj.payCurreny eq one.id }">
+			                        	 <option value="${one.id }" selected="selected">${one.dictCode }</option>
+	                          		</c:when>
+	                          		<c:otherwise>
+		                        	 <option value="${one.id }">${one.dictCode }</option>
+	                          		</c:otherwise>
+	                          	</c:choose>
+	                        </c:forEach>
+						</select>
+					</td>
 				</tr>
 				<tr>
 					<td>发票：</td>
@@ -157,9 +178,9 @@
 	<script src="${base}/admin/receivePayment/inter/interConfirmPay.js"></script>
 	
 	<script type="text/javascript">
-	//文件上传
-	$(function(){
-		$.fileupload1 = $('#uploadFile').uploadify({
+		//文件上传
+		$(function(){
+			$.fileupload1 = $('#uploadFile').uploadify({
 			'auto' : true,//选择文件后自动上传
 			'formData' : {
 				'fcharset' : 'uft-8',
@@ -201,6 +222,55 @@
 				}
 			});
 		});
+		//银行名称改变
+		function bankSelect(){
+			$.ajax({
+				cache : false,
+				type : "POST",
+				data : {
+					bankId:$('#bankComp').val()
+				},
+				url : '${base}/admin/receivePay/inland/getCardNames.html',
+				success : function(data) {
+					/* var option = "<option>--请选择--</option>"; */
+					var option = "";
+					var nameNtr = option;
+					var numStr = option;
+					for(var i=0;i< data.length;i++){
+						nameNtr += '<option value="'+data[i]+'">'+data[i]+'</option>';
+					}
+					document.getElementById("cardName").innerHTML = nameNtr;
+					cardSelect();
+				},
+				error : function(request) {
+					
+				}
+			});
+		}
+		
+		//银行卡名称改变
+		function cardSelect(){
+			$.ajax({
+				cache : false,
+				type : "POST",
+				data : {
+					cardName:$('#cardName').val()
+				},
+				url : '${base}/admin/receivePay/inland/getCardNums.html',
+				success : function(data) {
+					/* var str = "<option>--请选择--</option>"; */
+					var str = "";
+					for(var i=0;i< data.length;i++){
+						str += '<option value="'+data[i]+'">'+data[i]+'</option>';
+					}
+					document.getElementById("cardNum").innerHTML=str;
+				},
+				error : function(request) {
+					
+				}
+			});
+		}
+	
 	</script>
 </body>
 </html>
