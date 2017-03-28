@@ -114,11 +114,13 @@ function saveOrderInfo(){
 	console.log(JSON.stringify(customdata));
 	//保存中
 	var layerIndex =  layer.load(1, {shade: "#000"});
+	//新窗口对象
+	var tempwindow = window.open();
 	$.ajax({
 		dataType : 'json',
 		type: 'POST', 
 		delay : 250,
-		ansyc : false,
+		async:false,
 		data: {
 			"data":JSON.stringify(customdata)
 		}, 
@@ -136,7 +138,7 @@ function saveOrderInfo(){
 					}else{
 						url += '/admin/inland/bookingDetail.html?id='+data.orderId;
 					}
-					window.open(url);
+					tempwindow.location = url;
 					//重新刷新页面
 					window.location.reload();
 				}); 

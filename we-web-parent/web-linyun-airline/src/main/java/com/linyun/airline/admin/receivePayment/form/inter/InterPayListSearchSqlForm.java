@@ -16,7 +16,8 @@ import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
-import com.linyun.airline.common.enums.AccountPayEnum;
+import com.linyun.airline.common.enums.OrderTypeEnum;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
@@ -37,6 +38,9 @@ public class InterPayListSearchSqlForm extends DataTablesParamForm {
 	/**订单状态*/
 	private String orderStatus;
 
+	/**付款状态*/
+	private String payStatus;
+
 	/**出发日期 -- 开始出发日期*/
 	private Date leaveBeginDate;
 
@@ -48,10 +52,14 @@ public class InterPayListSearchSqlForm extends DataTablesParamForm {
 
 	public Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
-
-		cnd.and("uo.paystatus", "=", AccountPayEnum.APPROVALPAYING.intKey()); //付款中
+		if (!Util.isEmpty(payStatus)) {
+			cnd.and("po.paystauts", "=", payStatus); //收款状态 收款中、已收款
+		}
+		if (!Util.isEmpty(orderStatus)) {
+			cnd.and("po.orderstatus", "=", orderStatus); //订单状态 一订、二订。。。
+		}
+		cnd.and("p.ordertype", "=", OrderTypeEnum.TEAM.intKey()); //团队（国际）
 		cnd.and("p.companyId", "=", companyId);
-
 		return cnd;
 	}
 
