@@ -529,7 +529,7 @@ $("#interPaySearchBtn").on('click', function () {
 			        "backdate":interPayEndDate,
 					"name": interPayInput
 			    };
-	if(orderStatus==interPayStatus){
+	if(payStatus==interPayStatus){
 		interPayTable.settings()[0].ajax.data = param;
 		interPayTable.ajax.reload(
 				function(json){
@@ -537,7 +537,7 @@ $("#interPaySearchBtn").on('click', function () {
 				}
 		);
 	}
-	if(orderStatus==interPayEdStatus){
+	if(payStatus==interPayEdStatus){
 		interPayEdTable.settings()[0].ajax.data = param;
 		interPayEdTable.ajax.reload(
 				function(json){
