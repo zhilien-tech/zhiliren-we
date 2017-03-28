@@ -22,7 +22,7 @@
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" value="保存" onclick="addFileInfo();"/>
             <h4 class="invoiceH4">添加</h4>
     </div>
-      <div class="modal-body" style="height:200px;overflow-y:auto;">
+      <div class="modal-body" style="height:251px;overflow-y:auto;">
       <form id="addFileInfoForm" method="post">
       <div class="row">
       			<div class="form-group">
@@ -70,7 +70,7 @@
       			<div class="form-group iconStyle">
       				<label class="col-sm-1 text-right padding">文件名：</label>
       				<div class="col-sm-3 padding">
-      				 	<input type="text" class="form-control input-sm filetext" placeholder="请输入文件名称">
+      				 	<input type="text" class="form-control input-sm filetext" placeholder="请输入文件名称" name="fileRealName">
 					</div>
       			</div>
       		</div>
@@ -78,11 +78,11 @@
       			<div class="form-group">
       				<label class="col-sm-3 text-right padding"></label>
       				<button id="file" name="file" type="file" class="btn btn-primary btn-sm" >上传文件</button>
-             	    <span class="sp red">*</span>
       			</div>
       		</div>
         <input type="hidden" name="url" value="" id="url"/>
         <input type="hidden" name="fileName" value="" id="fileName"/>
+        <input type="hidden" name="uploading" value="" id="uploading"/>
         </form>
       </div>
 	</div>
@@ -159,6 +159,7 @@
 		
 		//文件上传
 		 function uploadFile(){
+			 var index=null;
 			$.fileupload1 = $('#file').uploadify({
 				'auto' : true,//选择文件后自动上传
 				'formData' : {
@@ -168,13 +169,16 @@
 				'buttonText' : '上传',//按钮显示的文字
 				'fileSizeLimit' : '3000MB',
 				'fileTypeDesc' : '文件',//在浏览窗口底部的文件类型下拉菜单中显示的文本
-				'fileTypeExts' : '*.doc; *.xls; *.xlsx;',//上传文件的类型
+				'fileTypeExts' : '*.doc; *.xls; *.xlsx;*.docx;',//上传文件的类型
 				'swf' : '${base}/public/plugins/uploadify/uploadify.swf',//指定swf文件
 				'multi' : false,//multi设置为true将允许多文件上传
 				'successTimeout' : 1800,
 				/* 'queueSizeLimit' : 100, */
 				'uploader' : '${base}/admin/airlinepolicy/uploadFile.html;jsessionid=${pageContext.session.id}',
 				//下面的例子演示如何获取到vid
+				'onUploadStart':function(file){
+					index = layer.load(1, {shade: [0.1,'#fff']});//0.1透明度的白色背景 
+				},
 				 'onUploadSuccess' : function(file, data, response) {
 					 
 					var jsonobj = eval('(' + data + ')');
@@ -182,6 +186,11 @@
 					var fileName = file.name;//文件名称
 					$("#url").val(url);
 					$("#fileName").val(fileName);
+					$("#uploading").val(3);
+					if(index!=null){
+						
+					layer.close(index);
+					}
 					/* 解决办法，上传成功后，将文件名字和路径添加到form表单的隐藏域中，点击保存的时候将其一起提交到后台进行保存，
 					保存的时候判断文件名字是否存在从而判断需不需要再次进行预览格式的转换*/
 					//var id = $("input#currentDirId").val();//文件pid
@@ -240,9 +249,11 @@
 		//执行添加的操作、
 		
 		function addFileInfo(){
+			
 			  $('#addFileInfoForm').bootstrapValidator('validate');
 				var bootstrapValidator = $("#addFileInfoForm").data('bootstrapValidator');
 				if(bootstrapValidator.isValid()){ 
+					var index = layer.load(1, {shade: [0.1,'#fff']});//0.1透明度的白色背景 
 					$.ajax({
 						cache : false,
 						type : "POST",
@@ -252,14 +263,13 @@
 							layer.msg('添加失败!');
 						},
 						success : function(data) {
-							layer.load(1, {
-								 shade: [0.1,'#fff'] //0.1透明度的白色背景
-							});
-							formValidator(); 
-							 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+							layer.close(index);
+							/* formValidator();  */
+							var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						    parent.layer.close(index);
-						    window.parent.successCallback('1'); 
-							
+						   window.parent.successCallback('1');
+						  
+						    
 						    
 						}
 					});

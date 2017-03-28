@@ -109,7 +109,7 @@ public class Word2Html {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			System.out.println(str + File.separator + name);
+
 			return name;
 		});
 		wordToHtmlConverter.processDocument(wordDocument);

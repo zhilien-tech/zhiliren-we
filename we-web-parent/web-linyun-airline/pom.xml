@@ -161,6 +161,13 @@
 			<artifactId>core-renderer</artifactId>
 			<version>R8</version>
 		</dependency>
+		<!-- jodconverter -->
+		<dependency>
+		    <groupId>com.github.livesense</groupId>
+		    <artifactId>jodconverter-core</artifactId>
+		    <version>1.0.5</version>
+		</dependency>
+		
 		<!--  新增结束-->
 	</dependencies>
 

@@ -60,7 +60,7 @@
                   </div>
                   <div class="col-md-2 padding">
                     <button type="button" class="btn btn-primary btn-sm" onclick="select();">搜索</button>
-                    <!-- <button type="button" class="btn btn-primary btn-sm suBtn" onclick="add();">添加</button> -->
+                   <button type="button" class="btn btn-primary btn-sm suBtn" onclick="add();">添加</button>
                   </div>
                 </div>
               </form>
@@ -76,7 +76,7 @@
                   <th>成本合计</th>
                   <th>实收合计</th>
                   <th>提成</th>
-                  <th>现发提成</th>
+                  <th>实发提成</th>
                   <th>基本工资</th>
                   <th>工资合计</th>
                 </tr>
@@ -182,13 +182,49 @@ function initDatatable() {
                     {"data": "drawer", "bSortable": false},//开票人
                     {"data": "groupnumber", "bSortable": false},//团数
                     {"data": "headcount", "bSortable": false},//人头数
-                    {"data": "createtime", "bSortable": false},//时间
-                    {"data": "costtotal", "bSortable": false},//成本合计
-                    {"data": "incometotal", "bSortable": false},//实收合计
-                    {"data": "commission", "bSortable": false},//提成
-                    {"data": "actualcommission", "bSortable": false},//实发提成
-                    {"data": "basepay", "bSortable": false},//基本工资
-                    {"data": "salarytotal", "bSortable": false}//工资合计
+                    {"data": "updatetime", "bSortable": false},//时间
+                    {"data": "costtotal", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var depositBalance = row.costtotal;
+                    		
+                    		return depositBalance.toFixed(2);
+                    	}		
+                    },//成本合计
+                    {"data": "incometotal", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var depositBalance = row.incometotal;
+                    		
+                    		return depositBalance.toFixed(2);
+                    	}	
+                    },//实收合计
+                    {"data": "commission", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var depositBalance = row.commission/100;
+                    		
+                    		return depositBalance.toFixed(2)+"%";
+                    	}		
+                    },//提成
+                    {"data": "actualcommission", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var depositBalance = row.actualcommission;
+                    		
+                    		return depositBalance.toFixed(2);
+                    	}	
+                    },//实发提成
+                    {"data": "basepay", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var depositBalance = row.basepay;
+                    		
+                    		return depositBalance.toFixed(2);
+                    	}		
+                    },//基本工资
+                    {"data": "salarytotal", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var depositBalance = row.salarytotal;
+                    		
+                    		return depositBalance.toFixed(2);
+                    	}		
+                    }//工资合计
             ]
 	});
 }

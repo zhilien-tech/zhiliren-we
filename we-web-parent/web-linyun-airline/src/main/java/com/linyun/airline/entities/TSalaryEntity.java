@@ -34,6 +34,9 @@ public class TSalaryEntity implements Serializable {
 	@Column
 	@Comment("公司id")
 	private Integer comId;
+	@Column
+	@Comment("开票人id")
+	private Integer drawerId;
 
 	@Column
 	@Comment("成本合计")
@@ -45,7 +48,7 @@ public class TSalaryEntity implements Serializable {
 
 	@Column
 	@Comment("提成")
-	private String commission;
+	private double commission;
 	@Column
 	@Comment("实发提成")
 	private double actualCommission;
@@ -72,7 +75,7 @@ public class TSalaryEntity implements Serializable {
 	private Integer groupNumber;
 	@Column
 	@Comment("人头数")
-	private Integer headCount;
+	private int headCount;
 
 	@Column
 	@Comment("奖金")

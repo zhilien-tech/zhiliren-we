@@ -20,6 +20,8 @@ import org.nutz.mvc.annotation.Param;
 import com.linyun.airline.admin.area.service.AreaViewService;
 import com.linyun.airline.admin.authority.job.entity.TJobEntity;
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.user.form.TSalaryIncreaseAddForm;
+import com.linyun.airline.admin.user.form.TSalaryIncreaseUpdateForm;
 import com.linyun.airline.admin.user.form.TUserSqlForm;
 import com.linyun.airline.admin.user.service.UserViewService;
 import com.linyun.airline.common.constants.CommonConstants;
@@ -122,9 +124,9 @@ public class UserModule {
 	 */
 	@At
 	@POST
-	public Object add(@Param("..") final TUserAddForm addForm, @Param("areaId") final Long areaId,
-			@Param("jobId") final Long jobId, final HttpSession session) {
-		userViewService.saveEmployeeData(addForm, areaId, jobId, session);
+	public Object add(@Param("..") final TUserAddForm addForm, @Param("..") final TSalaryIncreaseAddForm addSalaryForm,
+			@Param("areaId") final Long areaId, @Param("jobId") final Long jobId, final HttpSession session) {
+		userViewService.saveEmployeeData(addForm, addSalaryForm, areaId, jobId, session);
 		return JsonResult.success("添加成功!");
 	}
 
@@ -233,8 +235,9 @@ public class UserModule {
 	 */
 	@At
 	@POST
-	public Object update(@Param("..") final TUserModForm updateForm, final HttpSession session) {
-		userViewService.updateData(updateForm, session);
+	public Object update(@Param("..") final TUserModForm updateForm,
+			@Param("..") final TSalaryIncreaseUpdateForm salUpdateForm, final HttpSession session) {
+		userViewService.updateData(updateForm, salUpdateForm, session);
 		return JsonResult.success("修改成功!");
 	}
 
