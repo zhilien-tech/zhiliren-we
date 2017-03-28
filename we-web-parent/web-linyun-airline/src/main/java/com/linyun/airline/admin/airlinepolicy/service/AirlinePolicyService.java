@@ -37,7 +37,6 @@ import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.common.enums.AirlinePolicyEnum;
 import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.common.util.Office2PDF;
-import com.linyun.airline.common.util.POIReadExcelToHtml;
 import com.linyun.airline.common.util.Word2Html;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAirlinePolicyEntity;
@@ -123,7 +122,7 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 		String extendName = url.substring(url.lastIndexOf(".") + 1, url.length());
 		Word2Html word2Html = new Word2Html();
 		String str = System.getProperty("java.io.tmpdir");
-		if ("doc".equalsIgnoreCase(extendName)) {
+		if ("doc".equalsIgnoreCase(extendName) || "docx".equalsIgnoreCase(extendName)) {
 			try {
 				/*word2Html.docToHtml(url, str + File.separator + "12.html");
 				HtmlToPdf.htmlConvertToPdf(str + File.separator + "12.html", str + File.separator + "12.pdf");*/
@@ -149,13 +148,14 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 			}
 		} else if ("xls".equalsIgnoreCase(extendName) || "xlsx".equalsIgnoreCase(extendName)) {
 			try {
-				POIReadExcelToHtml poiReadExcelToHtml = new POIReadExcelToHtml();
-				poiReadExcelToHtml.excelConvertToPdf(url, str + File.separator + "12.html");
+				/*POIReadExcelToHtml poiReadExcelToHtml = new POIReadExcelToHtml();
+				poiReadExcelToHtml.excelConvertToPdf(url, str + File.separator + "12.html");*/
 
 				/*HtmlToPdf.htmlConvertToPdf(str + File.separator + "12.html", str + File.separator + "12.pdf");*/
-				File file = new File(str + File.separator + "12.html");
+				Office2PDF.urlToFile(url, str + File.separator + "12.pdf");
+				File file = new File(str + File.separator + "12.pdf");
 				String pdfUrl = CommonConstants.IMAGES_SERVER_ADDR
-						+ qiniuUploadService.uploadImage(new FileInputStream(file), "html", null);
+						+ qiniuUploadService.uploadImage(new FileInputStream(file), "pdf", null);
 				addForm.setPdfUrl(pdfUrl);
 			} catch (Exception e) {
 
@@ -325,7 +325,7 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 		if (!Util.isEmpty(url)) {
 			chain.add("url", url);
 			String extendName = url.substring(url.lastIndexOf(".") + 1, url.length());
-			if ("doc".equalsIgnoreCase(extendName)) {
+			if ("doc".equalsIgnoreCase(extendName) || "docx".equalsIgnoreCase(extendName)) {
 				try {
 					/*word2Html.docToHtml(url, str + File.separator + "12.html");
 					htmlToPdf.htmlConvertToPdf(str + File.separator + "12.html", str + File.separator + "12.pdf");*/
@@ -352,13 +352,13 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 				}
 			} else if ("xls".equalsIgnoreCase(extendName) || "xlsx".equalsIgnoreCase(extendName)) {
 				try {
-					POIReadExcelToHtml poiReadExcelToHtml = new POIReadExcelToHtml();
-					poiReadExcelToHtml.excelConvertToPdf(url, str + File.separator + "12.html");
-
+					/*POIReadExcelToHtml poiReadExcelToHtml = new POIReadExcelToHtml();
+					poiReadExcelToHtml.excelConvertToPdf(url, str + File.separator + "12.html");*/
+					Office2PDF.urlToFile(url, str + File.separator + "12.pdf");
 					/*htmlToPdf.htmlConvertToPdf(str + File.separator + "12.html", str + File.separator + "12.pdf");*/
-					File file = new File(str + File.separator + "12.html");
+					File file = new File(str + File.separator + "12.pdf");
 					String pdfUrl = CommonConstants.IMAGES_SERVER_ADDR
-							+ qiniuUploadService.uploadImage(new FileInputStream(file), "html", null);
+							+ qiniuUploadService.uploadImage(new FileInputStream(file), "pdf", null);
 					chain.add("pdfUrl", pdfUrl);
 				} catch (Exception e) {
 

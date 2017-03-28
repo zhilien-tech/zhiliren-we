@@ -61,11 +61,12 @@
                   	 <input type="text" class="form-control input-sm" placeholder="2017-02-22" name="beginTime" id="beginTime" value="" onFocus="WdatePicker({onpicked:pickedFunc,oncleared:pickedFunc,el:'beginTime',dateFmt:'yyyy-MM-dd'})"  >
                   </div>
                   <div class="col-md-1 padding">
-                    
                   	  <input type="text" class="form-control input-sm" placeholder="2017-02-22" name="endTime" id="endTime" value="" onFocus="WdatePicker({onpicked:pickedFunc,oncleared:pickedFunc,dateFmt:'yyyy-MM-dd'})"  >
                   </div>
-                  <button type="button" class="btn btn-primary btn-sm suBtn" onclick="clearSelect();pickedFunc();">清空</button>
-                  <div class="col-md-7 padding">
+                  <div class="col-md-1 padding">
+                  	  <button type="button" class="btn btn-primary btn-sm suBtn" onclick="clearSelect();pickedFunc();">清空</button>
+                  </div>
+                  <div class="col-md-6 padding">
                    <%-- <a href="${base}/admin/airlinepolicy/add.html" class="btn btn-primary btn-sm right">上传</a> --%>
                     <!--  <button id="file" name="file" type="file" class="btn btn-primary btn-sm right" >上传</button> -->
                      <button id="addFile" name="add" type="button" class="btn btn-primary btn-sm right" >添加</button>

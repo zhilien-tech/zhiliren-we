@@ -75,7 +75,7 @@ public class TSalaryEntity implements Serializable {
 	private Integer groupNumber;
 	@Column
 	@Comment("人头数")
-	private Integer headCount;
+	private int headCount;
 
 	@Column
 	@Comment("奖金")
