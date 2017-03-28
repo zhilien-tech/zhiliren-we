@@ -60,8 +60,8 @@
 														<input id="interRecEndDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'interRecBeginDate\')}'})" class="form-control TimeInput" placeholder="2017-02-22">
 													</div>
 													<div class="col-md-3 textPadding">
-														<!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-														<input id="interRecInput" type="text" onkeypress="recOnkeyEnter();"  class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+														<!-- 客户名称/订单号/联系人 搜索框 -->
+														<input id="interRecInput" type="text" onkeypress="recOnkeyEnter();"  class="form-control" placeholder="客户名称/订单号/联系人">
 													</div>
 													<div class="col-md-2">
 														<!-- 搜索 按钮 --> 
@@ -114,7 +114,7 @@
 													</div>
 													<div class="col-md-3 textPadding">
 														<!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-														<input id="interPayInput" type="text" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+														<input id="interPayInput" type="text" onkeypress="payOnkeyEnter();" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
 													</div>
 													<div class="col-md-4">
 														<!-- 搜索 按钮 -->
@@ -208,7 +208,7 @@
 		$(function(){
 			$('.menu-ul:eq(1)').hide();//隐藏数据字典的二级菜单
 			$('.menu-ul li:eq(1) a').css("color","rgb(245, 245, 245)");//二级菜单 高亮style
-			toConfirmRecPage();
+			toConfirmRecPage(); 
 		});
 	</script>
 	

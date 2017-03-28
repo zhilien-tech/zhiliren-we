@@ -23,26 +23,30 @@
                         <div class="form-group row">
                         	<%-- 字典类别id --%>
                         	<input name="id" type="hidden" value="${obj.single[0].id}"/>
-                            <label class="col-sm-3 text-right padding">字典类型编码：</label>
+                            <label class="col-sm-3 text-right padding">字典类别名称：</label>
                             <div class="col-sm-8 padding">
                             	<select id="comTypeCode" name="comTypeCode" class="form-control input-sm inpImpWid">
-			                    	<option value="">--请选择--</option>
-										<c:forEach var="one" items="${obj.single }">
-											<option value='${one.comtypecode}' ${one.comtypecode==obj.single[0].comtypecode?'selected':''}>
-												${one.comtypename}
-											</option>
-										</c:forEach> 
+									<c:forEach var="one" items="${obj.comdicttypeenum }">
+										<c:choose>
+										   <c:when test="${one.key == obj.single[0].comtypecode}">
+										   		<option value="${one.key}" selected="selected">${one.value}</option>
+										   </c:when>
+										   <c:otherwise>
+										   		<option value="${one.key}">${one.value}</option>
+										   </c:otherwise>
+										</c:choose>
+									</c:forEach> 
 								</select>
 								<span class="prompt">*</span>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <%-- <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">字典代码：</label>
                             <div class="col-sm-8 padding">
                               	<input name="comDdictCode" id="comDdictCode" type="text" class="form-control input-sm inpImpWid" oninput="this.value=this.value.toUpperCase().replace(/(^\s*)|(\s*$)/g, '')"  value="${obj.single[0].comDdictCode}"/>
                               	<span class="prompt">*</span>
                             </div>
-                        </div>
+                        </div> --%>
                         <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">字典信息：</label>
                             <div class="col-sm-8 padding">
@@ -99,11 +103,11 @@ function validateParams(){
         	comTypeCode: {
                 validators: {
                     notEmpty: {
-                        message: '字典类型代码不能为空!'
+                        message: '字典类别名称不能为空!'
                     }
                 }
             },
-        	comDdictCode: {
+        	/* comDdictCode: {
                 validators: {
                     notEmpty: {
                         message: '字典代码不能为空!'
@@ -126,7 +130,7 @@ function validateParams(){
                         message: '字典代码只能为英文字母!'
                     }
                 }
-            },
+            }, */
             comDictName: {
             	validators: {
                     notEmpty: {
@@ -145,13 +149,6 @@ function validateParams(){
 	                            };
 	                         }
 	                   }
-                }
-            },
-            typeCode: {
-            	validators: {
-            		notEmpty: {
-                        message: '字典类型编码不能为空!'
-                    }
                 }
             }
         }

@@ -44,7 +44,7 @@
                 			<td>${one.shortName }</td>
                 			<td>${one.linkMan }</td>
                 			<td>${one.issuer }</td>
-                			<td>${one.incometotal }</td>
+                			<td><fmt:formatNumber type="number" value="${one.incometotal }" pattern="0.00" maxFractionDigits="2"/></td>
                 		</tr>
                 	</c:forEach>
                   </tbody>
@@ -79,7 +79,7 @@
                        </select>
                     </td>
                     <td>合计：</td>
-                    <td id="sumjine">${obj.receive.sum }</td>
+                    <td id="sumjine"><fmt:formatNumber type="number" value="${obj.receive.sum }" pattern="0.00" maxFractionDigits="2"/></td>
                   </tr>
          </table>
          <div class="bankSlipImg" align="center"><img id="shuidanimg" width="100%" height="305" alt="" src="${obj.bill.receiptUrl }"></div>
@@ -88,7 +88,7 @@
       <div class="invoiceInfo-body">
         <table class="payTable2">
           <tr>
-                  <td>发票项目：</td>
+                  <td>项目用途：</td>
                   <td>
                     <select id="invoiceitem" name="invoiceitem" class="form-control input-sm">
                     	<c:forEach items="${obj.ytselect }" var="one">
@@ -125,7 +125,7 @@
                   <td>差额：</td>
                   <td><input id="difference" name="difference" type="text" class="form-control input-sm mustNumberPoint"></td>
                   <td>余额：</td>
-                  <td><label id="balance" name="balance">${obj.receive.sum }</label>
+                  <td><label id="balance" name="balance"><fmt:formatNumber type="number" value="${obj.receive.sum }" pattern="0.00" maxFractionDigits="2"/></label>
                   </td>
           </tr>
           <tr class="cloneTR">

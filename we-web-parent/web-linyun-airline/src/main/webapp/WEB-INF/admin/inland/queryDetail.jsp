@@ -226,9 +226,9 @@
 					                     <td><label>抵达时间：</label></td>
 					                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustArriveTimes" value="${airline.arrivetime }"/></td>
 					                     <td><label class="labelWid">成本价：</label></td>
-					                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" value="${airline.formprice }"/></td>
+					                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" value="<fmt:formatNumber type="number" value="${airline.formprice }" pattern="0.00" maxFractionDigits="2"/>"/></td>
 					                     <td><label class="labelWid">销售价：</label></td>
-					                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid" value="${airline.price }"/></td>
+					                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid mustNumberPoint" value="<fmt:formatNumber type="number" value="${airline.price }" pattern="0.00" maxFractionDigits="2"/>"/></td>
 					                     <c:choose>
 					                     	<c:when test="${status.index eq 0 }">
 							                     <td class="tdBtn">
@@ -252,10 +252,10 @@
 					                     <td><input id="leavetime" name="leavetime" type="text" class="form-control input-sm textWid mustTimes" placeholder=""/></td>
 					                     <td><label>抵达时间：</label></td>
 					                     <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm textWid mustArriveTimes" /></td>
-					                     <td><label class="labelWid">销售价：</label></td>
-					                     <td><input id="formprice" name="formprice" type="text" class="form-control input-sm textWid" /></td>
 					                     <td><label class="labelWid">成本价：</label></td>
-					                     <td><input id="price" name="price" type="text" class="form-control input-sm textWid"/></td>
+					                     <td><input id="formprice" name="formprice" type="text" class="form-control input-sm textWid costPrice" /></td>
+					                     <td><label class="labelWid">销售价：</label></td>
+					                     <td><input id="price" name="price" type="text" class="form-control input-sm textWid mustNumberPoint"/></td>
 					                     <td class="tdBtn">
 					                      <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake none"></a>
 					                     </td>
@@ -311,7 +311,7 @@
 		                     <td><label class="labelWid">成本价：</label></td>
 		                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" /></td>
 		                     <td><label class="labelWid">销售价：</label></td>
-		                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid xiaoShouCls"/></td>
+		                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid mustNumberPoint"/></td>
 		                     <td class="tdBtn">
 		                      <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake none"></a>
 		                     </td>
@@ -955,7 +955,7 @@
      		if(isNaN(price)){
      			$(this).parent().parent().find('[name=price]').val('');
      		}else{
-    	 		$(this).parent().parent().find('[name=price]').val(price);
+    	 		$(this).parent().parent().find('[name=price]').val(price.toFixed(2));
      		}
      	}else{
      		$(this).parent().parent().find('[name=price]').val('');

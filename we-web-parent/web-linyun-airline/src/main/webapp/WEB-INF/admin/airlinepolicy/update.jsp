@@ -22,84 +22,82 @@
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" value="保存" onclick="addFileInfo('${obj.airlinePolicy.id}');"/>
             <h4 class="invoiceH4">编辑</h4>
     </div>
-      <div class="modal-body" style="height:140px;overflow-y: auto;">
+      <div class="modal-body" style="height:200px;overflow-y: auto;">
       <form id="updateFileInfoForm">
-      
-        <table class="policyTable">
-          <tr>
-            <td><label>航空公司:</label></td>
-            <td>
-            <div class="form-group">
-              <select id="findAirlineCompany" name="findAirlineCompany"  onchange="setSelectedAirlineCompanyId()" class="form-control select2 inpImpWid" multiple="multiple" >
-              	<c:if test="${obj.dictInfo.id !=null}">
-              	
-					<option value="${obj.dictInfo.id }" selected="selected">${obj.dictInfo.dictCode }</option>
-              	</c:if>
-				
-              </select>
-              <input id="airlineCompanyId" type="hidden" class="form-control input-sm" placeholder="请输入要添加的航空公司名称" name="airlineCompanyId" value="${obj.airlinePolicy.airlineCompanyId }">
-              <span>*</span>
-              </div>
-            </td>
-            <!-- 设置已选中的项 -->
-			<script type="text/javascript">
-				function setSelectedAirlineCompanyId() {
-					var _selectedAreaIds = $("#findAirlineCompany").select2("val");
-					$("#airlineCompanyId").val(_selectedAreaIds);
-				}
-			</script>
-            <td><label>类型：</label></td>
-            <td>
-            	<div class="form-group">
-	              <select class="form-control wi input-sm" name="type">
-	              	<option value="">请选择</option>
-	                <c:if test="${obj.airlinePolicy.type == '团'}">
-	                <option selected="selected">团</option>
-	                <option >散</option>
-	                
-	                </c:if>
-	                <c:if test="${obj.airlinePolicy.type == '散'}">
-	                
-	                <option >团</option>
-	                <option selected="selected">散</option>
-	                </c:if>
-	              </select>
-	              
-	              <span>*</span>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td><label>地区：</label></td>
-            <td>
-            	<div class="form-group">
-              <select id="findArea" name="findArea"  onchange="setSelectedfindArea()" class="form-control select2 inpImpWid" multiple="multiple" >
-              	<c:if test="${obj.areaInfo.id != null}">
-              	
-	              	<option value="${obj.areaInfo.id }" selected="selected">${obj.areaInfo.areaName }</option>
-              	</c:if>
-              </select>
-              <input type="hidden" class="form-control input-sm" placeholder="请输入要添加地区名称" name="areaId" id="areaId" value="${obj.airlinePolicy.areaId }">
-             
-              <span>*</span>
-              </div>
-            </td>
-            <!-- 设置已选中的项 -->
-			<script type="text/javascript">
-				function setSelectedfindArea() {
-					var _selectedAreaIds = $("#findArea").select2("val");
-					$("#areaId").val(_selectedAreaIds);
-				}
-			</script>
-            <td><label></label></td>
-            <td>
-              <!-- <button type="button" class="btn btn-primary btn-sm">上传文件</button> -->
-              <button id="file" name="file" type="file" class="btn btn-primary btn-sm" >上传文件</button>
-              <span>*</span>
-            </td>
-          </tr>
-          
-        </table>
+      		<div class="row">
+      			<div class="form-group">
+      				<label class="col-sm-3 text-right padding">航空公司：</label>
+      				<div class="col-sm-4 padding">
+      					<select id="findAirlineCompany" name="findAirlineCompany"  onchange="setSelectedAirlineCompanyId()" class="form-control select2 inpImpWid" multiple="multiple" >
+			              	<c:if test="${obj.dictInfo.id !=null}">
+			              	
+								<option value="${obj.dictInfo.id }" selected="selected">${obj.dictInfo.dictCode }</option>
+			              	</c:if>
+			            </select>
+			            <input id="airlineCompanyId" type="hidden" class="form-control input-sm" placeholder="请输入要添加的航空公司名称" name="airlineCompanyId" value="${obj.airlinePolicy.airlineCompanyId }">
+			            <span  class="red">*</span>
+					</div>
+      			</div>
+      			<!-- 设置已选中的项 -->
+				<script type="text/javascript">
+					function setSelectedAirlineCompanyId() {
+						var _selectedAreaIds = $("#findAirlineCompany").select2("val");
+						$("#airlineCompanyId").val(_selectedAreaIds);
+					}
+				</script>
+      			<div class="form-group iconStyle">
+      				<label class="col-sm-1 text-right padding">类型：</label>
+      				<div class="col-sm-3 padding">
+      				  <select class="form-control wi input-sm" name="type">
+		              	<option value="">请选择</option>
+		                <c:if test="${obj.airlinePolicy.type == '团'}">
+			                <option selected="selected">团</option>
+			                <option >散</option>
+		                </c:if>
+		                <c:if test="${obj.airlinePolicy.type == '散'}">
+			                <option >团</option>
+			                <option selected="selected">散</option>
+		                </c:if>
+			         </select>
+			            <span class="red">*</span>
+					</div>
+      			</div>
+      		</div>
+      		<div class="row">
+      			<div class="form-group">
+      				<label class="col-sm-3 text-right padding">地区：</label>
+      				<div class="col-sm-4 padding">
+      					<select id="findArea" name="findArea"  onchange="setSelectedfindArea()" class="form-control select2 inpImpWid" multiple="multiple" >
+			              	<c:if test="${obj.areaInfo.id != null}">
+			              	
+				              	<option value="${obj.areaInfo.id }" selected="selected">${obj.areaInfo.areaName }</option>
+			              	</c:if>
+			           </select>
+			           	<input type="hidden" class="form-control input-sm" placeholder="请输入要添加地区名称" name="areaId" id="areaId" value="${obj.airlinePolicy.areaId }">
+			           <span  class="red">*</span>
+					</div>
+      			</div>
+      			<!-- 设置已选中的项 -->
+				<script type="text/javascript">
+					function setSelectedfindArea() {
+						var _selectedAreaIds = $("#findArea").select2("val");
+						$("#areaId").val(_selectedAreaIds);
+					}
+				</script>
+      			<div class="form-group iconStyle">
+      				<label class="col-sm-1 text-right padding">文件名：</label>
+      				<div class="col-sm-3 padding">
+      				 	<input type="text" class="form-control input-sm filetext" placeholder="请输入文件名称">
+					</div>
+      			</div>
+      		</div>
+      		<div class="row">
+      			<div class="form-group">
+      				<label class="col-sm-3 text-right padding"></label>
+      				<button id="file" name="file" type="file" class="btn btn-primary btn-sm" >上传文件</button>
+              		<span  class="red">*</span>
+      			</div>
+      		</div>
         <input type="hidden" name="url" value="" id="url"/>
         <input type="hidden" name="fileName" value="" id="fileName"/>
         </form>

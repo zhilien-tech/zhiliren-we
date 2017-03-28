@@ -24,6 +24,7 @@ import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
+import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.companydict.comdictinfo.form.ComInfoAddForm;
 import com.linyun.airline.admin.companydict.comdictinfo.form.ComInfoSqlForm;
 import com.linyun.airline.admin.companydict.comdictinfo.form.ComInfoUpdateForm;
@@ -79,7 +80,7 @@ public class ComInfoDictModule {
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Long comId = company.getId();//得到公司的id
 		sqlForm.setComId(comId);
-		return comInfoDictService.listPage4Datatables(sqlForm);
+		return comInfoDictService.comInfoListData(sqlForm);
 	}
 
 	/**
@@ -119,6 +120,7 @@ public class ComInfoDictModule {
 	public Object update(@Param("id") final long id, final HttpSession session) {
 		Map<String, Object> map = comInfoDictService.findDirinfo(id, session);
 		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));
+		map.put("comdicttypeenum", EnumUtil.enum2(ComDictTypeEnum.class));
 		return map;
 	}
 

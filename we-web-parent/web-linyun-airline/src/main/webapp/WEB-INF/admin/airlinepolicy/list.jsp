@@ -270,7 +270,7 @@
 		            skin: false, //加上边框
 		            closeBtn:false,//默认 右上角关闭按钮 是否显示
 		            shadeClose:true,
-		            area: ['870px', '420px'],
+		            area: ['870px', '270px'],
 		            content: ['${url}/add.html','no']
 		          });
 		      });
@@ -284,7 +284,7 @@
 		            skin: false, //加上边框
 		            closeBtn:false,//默认 右上角关闭按钮 是否显示
 		            shadeClose:true,
-		            area: ['870px', '420px'],
+		            area: ['870px', '270px'],
 		            content: '${url}/update.html?id='+id
 		          });
 		      

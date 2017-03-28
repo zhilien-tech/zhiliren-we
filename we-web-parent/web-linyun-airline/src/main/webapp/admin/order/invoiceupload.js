@@ -49,7 +49,7 @@ $(document).on('input','#invoicebalance', function(){
 		}
 	});
 	if(!isNaN(banlanceyue)){
-		$('#balance').html(banlanceyue);
+		$('#balance').html(banlanceyue.toFixed(2));
 	}
 });
 

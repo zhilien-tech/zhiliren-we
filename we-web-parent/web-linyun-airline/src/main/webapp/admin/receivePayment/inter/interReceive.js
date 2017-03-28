@@ -69,7 +69,7 @@ function initRecDataTable() {
 		            		var result = '<ul> ';
 		            		$.each(row.orders, function(name, value) {
 		            			if(value && value.incometotal!=undefined){
-		            				result += '<li style="list-style:none;">'+value.incometotal+'</li>';
+		            				result += '<li style="list-style:none;">'+(value.incometotal).toFixed(2)+'</li>';
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -82,7 +82,7 @@ function initRecDataTable() {
 		            		if(null == sum || ""== sum){
 		            			return "";
 		            		}
-		            		return sum;
+		            		return sum.toFixed(2);
 		            	}
 		            },
 		            {"data": "shortname", "bSortable": false,
@@ -107,7 +107,7 @@ function initRecDataTable() {
 		            },
 		            {"data": "orderstatus", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		var s = row.status;
+		            		var s = row.receivestatus;
 		            		if(s == 1){
 		            			s = '收款中';
 		            		}
@@ -211,11 +211,13 @@ $("#interRecSelect").change(function(){
 
 //收款  搜索按钮
 $("#interRecSearchBtn").on('click', function () {
-	var orderStatus = $("#interRecSelect").val();
+	var receiveStatus = $("#interRecSelect").val();
 	var inlandRecBeginDate = $("#interRecBeginDate").val();
 	var inlandRecEndDate = $("#interRecEndDate").val();
 	var inlandRecInput = $("#interRecInput").val();
+	var orderStatus = $("li.btnStyle").attr("id");
     var param = {
+		"receiveStatus":receiveStatus,
 		"orderStatus":orderStatus,
 		"leaveBeginDate":inlandRecBeginDate,
 		"leaveEndDate":inlandRecEndDate,
@@ -233,10 +235,10 @@ $("#interRecSearchBtn").on('click', function () {
 $(".paymentUl li").click(function(){
 	$(this).addClass("btnStyle").siblings().removeClass('btnStyle');
 	var bookId = $(this).attr("id");
-	var orderStatus = $("#interRecSelect").val();
+	var receiveStatus = $("#interRecSelect").val();
 	var param = {
-			"orderStatus":orderStatus,
-			"interOrderStatus":bookId
+			"receiveStatus":receiveStatus,
+			"orderStatus":bookId
 	};
 	interRecTable.settings()[0].ajax.data = param;
 	interRecTable.ajax.reload(
@@ -244,6 +246,7 @@ $(".paymentUl li").click(function(){
 				autoHighLoad($('#interRecTable'));
 			}		
 	);
+	
 });
 
 //回车搜索
