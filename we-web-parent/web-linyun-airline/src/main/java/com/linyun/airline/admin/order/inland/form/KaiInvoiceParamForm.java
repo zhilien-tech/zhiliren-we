@@ -77,6 +77,7 @@ public class KaiInvoiceParamForm extends DataTablesParamForm {
 		if (!Util.isEmpty(status)) {
 			cnd.and("status", "=", status);
 		}
+		cnd.orderBy("optime", "desc");
 		return cnd;
 	}
 

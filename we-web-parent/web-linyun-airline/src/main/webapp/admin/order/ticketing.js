@@ -165,7 +165,12 @@ function initdrawerPayTable() {
                     	}
                     },
                     {"data": "username", "bSortable": false},
-                    {"data": "telephone", "bSortable": false}
+                    {"data": "telephone", "bSortable": false},
+                    {"data": "telephone", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                            return '<a style="cursor:pointer;" onclick="edit('+row.id+','+row.ordersstatus+');">编辑</a>';
+                    	}
+                    }
             ],
         columnDefs: [{
             //   指定第一列，从0开始，0表示第一列，1表示第二列……
