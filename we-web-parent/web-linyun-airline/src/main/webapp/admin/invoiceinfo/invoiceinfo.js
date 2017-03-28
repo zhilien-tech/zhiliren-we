@@ -49,7 +49,7 @@ function initKaiInvoiceTable1() {
                   		var result = '<ul>';
                   		$.each(row.invoicedetail, function(name, value) {
                   			if(value && value.invoicebalance != undefined){
-                  				result += '<li style="list-style:none;">'+value.invoicebalance+'</li>';
+                  				result += '<li style="list-style:none;">'+value.invoicebalance.toFixed(2)+'</li>';
                   			}
                   		});
                   		result += '</ul>';
@@ -61,7 +61,7 @@ function initKaiInvoiceTable1() {
                   		var result = 0;
                   		$.each(row.invoicedetail, function(name, value) {
                   			if(value && value.invoicebalance != undefined){
-                  				result = parseFloat(result) + parseFloat(value.invoicebalance);
+                  				result = (parseFloat(result) + parseFloat(value.invoicebalance)).toFixed(2);
                   			}
                   		});
                   		return result;
@@ -256,7 +256,7 @@ function initshouInvoiceTable1() {
                 	render:function(data, type, row, meta) {
                 		var result = '';
                 		if(row.costpricesum && row.costpricesum != undefined) {
-                			result =row.costpricesum;
+                			result =row.costpricesum.toFixed(2);
                 		}
                 		return result;
                 	}

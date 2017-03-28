@@ -149,6 +149,12 @@
 	    	nodes.push(root) ;
 	    	$.fn.zTree.init(treeContainer, setting, nodes);
 	    });
+	  	//删除按钮
+	    $('.jobName').on("click","#deleteBtn",function() {
+	      $(this).parent().parent().next().remove();
+	      $(this).closest('.job_container').remove();
+	
+	    });
 	    //设置权限 按钮
 	    $('.jobName').on("click","#settingsPermis",function() {
 		    $(this).parents('.marHei').next().toggle('500');
