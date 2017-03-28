@@ -64,6 +64,7 @@
                     
                   	  <input type="text" class="form-control input-sm" placeholder="2017-02-22" name="endTime" id="endTime" value="" onFocus="WdatePicker({onpicked:pickedFunc,oncleared:pickedFunc,dateFmt:'yyyy-MM-dd'})"  >
                   </div>
+                  <button type="button" class="btn btn-primary btn-sm suBtn" onclick="clearSelect();pickedFunc();">清空</button>
                   <div class="col-md-7 padding">
                    <%-- <a href="${base}/admin/airlinepolicy/add.html" class="btn btn-primary btn-sm right">上传</a> --%>
                     <!--  <button id="file" name="file" type="file" class="btn btn-primary btn-sm right" >上传</button> -->
@@ -203,7 +204,9 @@
 	function successCallback(id){
 		 // rebatesEamilTable.ajax.reload(null,false);
 		  //rebatesReportTable.ajax.reload(null,false);
-		  empTable.ajax.reload(null,false);
+		  /* empTable.ajax.reload(null,false); */
+		  window.location.href="${base}/admin/airlinepolicy/list.html"; 
+		  location=location;
 		  if(id == '1'){
 			  layer.msg("添加成功!",{time: 1000, icon:1});
 		  }else if(id == '2'){
@@ -269,7 +272,7 @@
 		            skin: false, //加上边框
 		            closeBtn:false,//默认 右上角关闭按钮 是否显示
 		            shadeClose:true,
-		            area: ['870px', '270px'],
+		            area: ['870px', '320px'],
 		            content: ['${url}/add.html','no']
 		          });
 		      });
@@ -340,7 +343,14 @@
 		empTable.ajax.reload();
 		/* alert("==========="); */
 	}
-	 
+	function clearSelect(){
+		$('#selectCompany').val("");
+		$('#selectArea').val("");
+		$('#selectType').val("");
+		$('#beginTime').val("");
+		$('#endTime').val("");
+		
+	}
 </script>
 <!-- </body> -->
 </html>
