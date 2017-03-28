@@ -29,8 +29,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
@@ -495,8 +493,9 @@ public class POIReadExcelToHtml {
 		BufferedWriter bw = null;
 		org.jsoup.nodes.Document doc = Jsoup.parse(content);
 		content = doc.html();
+		System.out.println(content);
 		// 将所有字体改变成simsum
-		Pattern pattern = Pattern.compile("font-family:['\\w|\\s|\u4e00-\u9fa5]+;");
+		/*Pattern pattern = Pattern.compile("font-family:['\\w|\\s|\u4e00-\u9fa5]+;");
 		Matcher matcher = pattern.matcher(content);
 		if (matcher.find()) {
 			content = matcher.replaceAll("font-family:SimSun;");
@@ -511,12 +510,12 @@ public class POIReadExcelToHtml {
 		// 修改边距[A-Za-z0-9.\\s]表示大写字母小写字母小数点或空格中的任意一个
 		Pattern pattern2 = Pattern.compile("margin[a-z\\-]{0,}:[A-Za-z0-9.\\s]+;");
 		Matcher matcher2 = pattern2.matcher(content);
-		content = matcher2.replaceAll("margin:auto;");
+		content = matcher2.replaceAll("margin:auto;");*/
 		// System.out.println(content);
 		try {
 			File file = new File(path);
 			fos = new FileOutputStream(file);
-			bw = new BufferedWriter(new OutputStreamWriter(fos, "UTF-8"));
+			bw = new BufferedWriter(new OutputStreamWriter(fos, "Unicode"));
 			bw.write(content);
 		} catch (FileNotFoundException fnfe) {
 			fnfe.printStackTrace();

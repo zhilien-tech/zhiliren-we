@@ -64,6 +64,7 @@
                     
                   	  <input type="text" class="form-control input-sm" placeholder="2017-02-22" name="endTime" id="endTime" value="" onFocus="WdatePicker({onpicked:pickedFunc,oncleared:pickedFunc,dateFmt:'yyyy-MM-dd'})"  >
                   </div>
+                  <button type="button" class="btn btn-primary btn-sm suBtn" onclick="clearSelect();pickedFunc();">清空</button>
                   <div class="col-md-7 padding">
                    <%-- <a href="${base}/admin/airlinepolicy/add.html" class="btn btn-primary btn-sm right">上传</a> --%>
                     <!--  <button id="file" name="file" type="file" class="btn btn-primary btn-sm right" >上传</button> -->
@@ -340,7 +341,14 @@
 		empTable.ajax.reload();
 		/* alert("==========="); */
 	}
-	 
+	function clearSelect(){
+		$('#selectCompany').val("");
+		$('#selectArea').val("");
+		$('#selectType').val("");
+		$('#beginTime').val("");
+		$('#endTime').val("");
+		
+	}
 </script>
 <!-- </body> -->
 </html>
