@@ -38,6 +38,7 @@ import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
+import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
 import com.linyun.airline.admin.receivePayment.form.inter.InterPayEdListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.inter.InterPayListSearchSqlForm;
@@ -58,7 +59,6 @@ import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TBankCardEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TOrderReceiveEntity;
-import com.linyun.airline.entities.TPnrInfoEntity;
 import com.linyun.airline.entities.TReceiveBillEntity;
 import com.linyun.airline.entities.TReceiveEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
@@ -635,16 +635,16 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		if (!Util.isEmpty(payReceiptList)) {
 			dbDao.insert(payReceiptList);
 		}
-		//更新Pnr表中對應的状态
-		List<TPnrInfoEntity> pnrInfoList = dbDao.query(TPnrInfoEntity.class, Cnd.where("id", "in", payIds), null);
-		int updatenum = 0;
+		//更新订单状态
+		List<TPayOrderEntity> payOrderList = dbDao.query(TPayOrderEntity.class, Cnd.where("payid", "in", payIds), null);
+		int updateNum = 0;
 		if (!Util.eq(null, payIds)) {
-			updatenum = dbDao.update(TPnrInfoEntity.class, Chain.make("orderPnrStatus", APPROVALPAYED),
-					Cnd.where("id", "in", payIds));
+			updateNum = dbDao.update(TPayOrderEntity.class, Chain.make("paystatus", APPROVALPAYED),
+					Cnd.where("payid", "in", payIds));
 		}
 
 		//付款成功 操作台添加消息
-		if (updatenum > 0) {
+		if (updateNum > 0) {
 			//TODO  ******************************************添加消息提醒***********************************************
 			String sqlS = sqlManager.get("receivePay_order_pnr_pids");
 			Sql sql = Sqls.create(sqlS);
@@ -658,7 +658,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 				map.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
-				searchViewService.addRemindMsg(map, ordernum, pnr, uid, PAYEDMSGTYPE, session);
+				searchViewService.addRemindMsg(map, ordernum, "", uid, PAYEDMSGTYPE, session);
 			}
 		}
 
