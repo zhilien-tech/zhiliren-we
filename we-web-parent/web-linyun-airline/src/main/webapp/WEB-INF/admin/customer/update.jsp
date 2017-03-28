@@ -291,7 +291,7 @@
 							</div>
 							<div class="col-sm-8" style="display: none;" id="paytypeDivId">
 								<div class="col-sm-12 padding inpAdd">
-									<input type="text" name="paytypeName" value="${obj.customer.paytypeName}"  class="paytext form-control input-sm" placeholder="请输入结算方式">
+									<input type="text" id="paytypeName" name="paytypeName" value="${obj.customer.paytypeName}"  class="paytext form-control input-sm" placeholder="请输入结算方式">
 								</div>
 							</div>
 						</div>
@@ -849,6 +849,7 @@
 				document.getElementById("paytypeDivId").style.display = "block";
 			}else{
 				document.getElementById("paytypeDivId").style.display = "none";	
+				$("#paytypeName").val("");
 			}
 		}
 		//付款方式 add input
@@ -858,6 +859,7 @@
 				document.getElementById("paywayDivId").style.display = "block";
 			}else{
 				document.getElementById("paywayDivId").style.display = "none";	
+				$("#paywayId").val("");
 			}
 		}
 	</script>
