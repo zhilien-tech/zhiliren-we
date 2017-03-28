@@ -509,7 +509,7 @@
 							notEmpty : {
 								message : '联系电话不能为空'
 							},
-							remote : {
+							/* remote : {
 								url : '${base}/admin/customer/checkTelephoneExist.html',
 								message : '联系电话已存在，请重新输入!',
 								delay : 2000,
@@ -520,7 +520,7 @@
 										aId : '${obj.customer.id}'
 									};
 								}
-							},
+							}, */
 							regexp : {
 								regexp : /^[1][34578][0-9]{9}$/,
 								message : '联系电话格式错误'
