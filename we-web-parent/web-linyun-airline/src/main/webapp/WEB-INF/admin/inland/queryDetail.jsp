@@ -121,10 +121,10 @@
                </div>
                <c:choose>
                		<c:when test="${fn:length(obj.customneedinfo)>0}">
-		               <c:forEach var="customneed" items="${obj.customneedinfo }">
+		               <c:forEach var="customneed" items="${obj.customneedinfo }" varStatus="status">
 			               <div id="infofooter" name="infofooter" class="infofooter">
 			                <div class="DemandDiv">
-			                 <span class="titleNum">1</span>
+			                 <span class="titleNum">${status.index + 1 }</span>
 			                 <a href="javascript:;" class="btn btn-primary btn-sm addDemand none"><b>+</b>&nbsp;&nbsp;需求</a>
 			                 <!-- 客户需求隐藏域 -->
 			                 <input type="hidden" id="customneedid" name="customneedid" value="${customneed.cusinfo.id }">
@@ -373,15 +373,15 @@
 										<td><label>出发城市：</label></td>
 										<td>
 											<!-- <input type="text" class="form-control input-sm" placeholder="拼音/三字代码"> -->
-											<select id="outCity0" name="origin0"
+											<input id="outCity0" name="origin0"
 											class="form-control input-sm" multiple="multiple"
-											data-placeholder="拼音/三字代码"></select>
+											data-placeholder="拼音/三字代码">
 										</td>
 										<td class="untilTd"><i class="fa fa-minus"></i></td>
 										<td><label>到达城市：</label></td>
-										<td><select id="singleArriveCity0" name="destination0"
+										<td><input id="singleArriveCity0" name="destination0"
 											onkeypress="onkeyEnter();" class="form-control input-sm"
-											multiple="multiple" data-placeholder="拼音/三字代码"></select></td>
+											multiple="multiple" data-placeholder="拼音/三字代码"></td>
 										<td class="untilTd1"></td>
 										<!--空白处 可以忽略-->
 										<td><label>出发日期：</label></td>
@@ -433,10 +433,10 @@
 										<td><label>航空公司：</label></td>
 										<td>
 											<!-- <input type="text" class="form-control input-sm" placeholder="(选填)中文/二字代码"> -->
-											<select id="airline" name="includedcarriers"
+											<input id="airline" name="includedcarriers"
 											onkeypress="onkeyEnter();" onchange="airlineNameOpt()"
 											class="form-control input-sm" multiple="multiple"
-											data-placeholder="(选填)中文/二字代码"></select>
+											data-placeholder="(选填)中文/二字代码"> 
 										</td>
 										<td>
 											<button id="searchSingleTicketsBtn" type="button"
@@ -565,7 +565,7 @@
 	<script src="${base}/common/js/layer/layer.js"></script>
 	<script src="${base }/admin/order/queryorder.js"></script>
 	<script src="${base }/admin/order/ordercommon.js"></script>
-	<!-- 订单信息 js -->
+	<%-- <!-- 订单信息 js -->
 	<script src="${base}/admin/order/searchOrderInfo.js"></script>
 	<!-- 多程信息 js -->
 	<script src="${base}/admin/order/searchMoreLine.js"></script>
@@ -574,7 +574,7 @@
 	<!-- 多条件查询 -->
 	<script src="${base}/admin/order/searchMoreOrderLines.js"></script>
 	<!-- 时间格式化 -->
-	<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
+	<script src="${base}/admin/receivePayment/recPayCommon.js"></script> --%>
   <script type="text/javascript">
       $(function(){
         //编辑按钮 click事件
@@ -831,7 +831,7 @@
             	//alert("添加成功");
             	//location.reload();
             	layer.closeAll('loading');
-            	layer.msg("保存成功",{time: 2000, icon:1});
+            	layer.msg("保存成功",{time: 2000});
             	if(data.ordersstatus ===1){
 	            	window.location.reload();
             	}else{
@@ -848,9 +848,17 @@
     	$(this).val($(this).val().replace(/[^.\d]/g,''));
     	var fromprice = $(this).val();
     	//票价折扣
-    	var discountFare = '${obj.custominfo.discountFare}';
+    	var discountFare = 1;
+    	var countfare = '${obj.custominfo.discountFare}';
+    	if(countfare){
+    		discountFare = countfare;
+    	}
     	//手续费
-    	var fees = '${obj.custominfo.fees}'; 
+    	var fees = 0;
+    	var feescount = '${obj.custominfo.fees}'; 
+    	if(feescount){
+    		fees = feescount;
+    	}
     	//alert("值："+fromprice + " 折扣："+discountFare + " 手续费：" + fees);
     	var price = parseFloat(fromprice * discountFare / 100) + parseFloat(fees);
     	if(fromprice){

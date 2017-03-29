@@ -334,7 +334,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			List<Record> orders = dbDao.query(sql, cnd, null);
 			record.put("orders", orders);
 			record.put("username", dbDao.fetch(TUserEntity.class, Long.valueOf(record.getInt("billuserid")))
-					.getUserName());
+					.getFullName());
 			record.put("invoiceinfoenum", EnumUtil.enum2(InvoiceInfoEnum.class));
 			record.put("ytselect", ytselect);
 			String invoicedate = FormatDateUtil.dateToOrderDate((Date) record.get("invoicedate"));

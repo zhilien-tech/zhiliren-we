@@ -9,7 +9,7 @@ function initkaiInvoiceTable() {
       "serverSide": true,
       "stripeClasses": [ 'strip1','strip2' ],
       "initComplete": function( settings, json ) {
-      	autoHighLoad($(this));
+      	 autoHighLoad($(this));
       },
       "language": {
           "url": BASE_PATH + "/public/plugins/datatables/cn.json"
@@ -115,7 +115,7 @@ function initkaiInvoiceTable() {
 }
 function kaiInvoiceLoad(){
 	kaiInvoiceTable.ajax.reload(function(json){
-		autoHighLoad($('#inlandCrossTable'));
+		autoHighLoad($('#kaiInvoiceTable'));
 	});
 }
 $('.openinvoicesearch').click(function(){
@@ -132,7 +132,7 @@ $('.openinvoicesearch').click(function(){
 	};
 	kaiInvoiceTable.settings()[0].ajax.data = param;
 	kaiInvoiceTable.ajax.reload(function(json){
-		autoHighLoad($('#inlandCrossTable'));
+		autoHighLoad($('#kaiInvoiceTable'));
 	});
 });
 //打开开发票页面
@@ -187,11 +187,11 @@ function initshouInvoiceTable() {
                 		return result;
                 	}
                 },
-                {"data": "personcount", "bSortable": false,
+                {"data": "peoplecount", "bSortable": false,
                 	render:function(data, type, row, meta) {
                 		var result = '';
-                		if(row.personcount && row.personcount != undefined) {
-                			result =row.personcount;
+                		if(row.peoplecount && row.peoplecount != undefined) {
+                			result =row.peoplecount;
                 		}
                 		return result;
                 	}
@@ -243,7 +243,7 @@ function initshouInvoiceTable() {
                 		return result;
                 	}
                 },
-                {"data": "username", "bSortable": false},
+                {"data": "fullname", "bSortable": false},
                 {"data": "status", "bSortable": false,
                 	render:function(data, type, row, meta) {
                   		var result = '';

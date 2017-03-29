@@ -84,9 +84,16 @@ INNER JOIN t_customer_info tci ON tuo.userid = tci.id
 INNER JOIN t_finance_info tfi on tuo.id = tfi.orderid
 $condition
 /*get_shoufukuan_shoukuan_list*/
-select tr.*,tii.id invoiceid,tii.status invoicestatus
- from t_receive tr
-left JOIN t_invoice_info tii ON tr.id = tii.receiveid
+SELECT
+	tr.*, tii.id invoiceid,
+	tii. STATUS invoicestatus,
+	tfi.issuer
+FROM
+	t_receive tr
+LEFT JOIN t_invoice_info tii ON tr.id = tii.receiveid
+LEFT JOIN t_order_receive tor ON tr.id = tor.receiveid
+LEFT JOIN t_up_order tuo ON tor.orderid = tuo.id
+LEFT JOIN t_finance_info tfi ON tfi.orderid = tuo.id
 $condition
 
 /*get_shoukuan_order_list*/
@@ -114,7 +121,8 @@ SELECT
 	tii.status invoicestatus,
   tai.ailinenum,
   tai.leavetime,
-  tai.arrivetime
+  tai.arrivetime,
+  tfi.issuer
 FROM
 
 	t_pnr_info tpi
@@ -148,16 +156,16 @@ SELECT
 	tpi.*, tuo.ordersnum,
 	tfi.billingdate,
 	tfi.cusgroupnum,
-	tci.NAME customename,
+	tci. NAME customename,
 	tci.linkMan,
 	(
 		SELECT
-			username
+			fullName
 		FROM
 			t_user
 		WHERE
-			id = tfi. ISSUER
-	) ISSUER
+			id = tfi.ISSUERid
+	) issuer
 FROM
 	t_pnr_info tpi
 INNER JOIN t_order_customneed toc ON tpi.needid = toc.id
@@ -207,7 +215,8 @@ SELECT
 		WHERE
 			invoiceinfoid = tii.id
 	) invoicecount,
-	tu.userName
+	tu.userName,
+	tu.fullName
 FROM
 	t_pnr_info tpi
 INNER JOIN t_invoice_info tii ON tii.pnrid = tpi.id

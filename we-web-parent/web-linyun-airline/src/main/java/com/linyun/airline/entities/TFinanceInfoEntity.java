@@ -99,6 +99,6 @@ public class TFinanceInfoEntity implements Serializable {
 
 	@Column
 	@Comment("开票人id")
-	private Integer issuserid;
+	private Integer issuerid;
 
 }
