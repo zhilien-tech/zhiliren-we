@@ -279,7 +279,7 @@
 							</div>
 							<div class="col-sm-8" style="display: none;" id="paytypeDivId">
 								<div class="col-sm-12 padding inpAdd">
-									<input type="text" name="paytypeName" class="paytext form-control input-sm" placeholder="请输入结算方式">
+									<input type="text" id="paytypeName" name="paytypeName" class="paytext form-control input-sm" placeholder="请输入结算方式">
 								</div>
 							</div>
 						</div>
@@ -509,7 +509,7 @@
 							notEmpty : {
 								message : '联系电话不能为空'
 							},
-							remote : {
+							/* remote : {
 								url : '${base}/admin/customer/checkTelephoneExist.html',
 								message : '联系电话已存在，请重新输入!',
 								delay : 2000,
@@ -520,7 +520,7 @@
 										aId : '${obj.customer.id}'
 									};
 								}
-							},
+							}, */
 							regexp : {
 								regexp : /^[1][34578][0-9]{9}$/,
 								message : '联系电话格式错误'
@@ -624,6 +624,7 @@
 				document.getElementById("paytypeDivId").style.display = "block";
 			} else {
 				document.getElementById("paytypeDivId").style.display = "none";
+				$("#paytypeName").val("");
 			}
 		}
 		//付款方式 add input
@@ -633,6 +634,7 @@
 				document.getElementById("paywayDivId").style.display = "block";
 			} else {
 				document.getElementById("paywayDivId").style.display = "none";
+				$("#paywayId").val("");
 			}
 		}
 	</script>
