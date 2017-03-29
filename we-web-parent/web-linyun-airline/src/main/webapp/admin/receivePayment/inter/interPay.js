@@ -379,12 +379,14 @@ $("#interPaySelect").change(function(){
 	if(selectEd){
 		destroyDatetable($("#interPayEdTable"));
 		$("#interPayClick").show();
+		$("#interPayCancelBtn").show();
 		$("#interPayTable").show();
 		$("#interPayEdTable").hide();
 		initPayDataTable();
 	}else{
 		destroyDatetable($("#interPayTable"));
 		$("#interPayClick").hide();
+		$("#interPayCancelBtn").hide();
 		$("#interPayTable").hide();
 		$("#interPayEdTable").show();
 		initPayEdDataTable();

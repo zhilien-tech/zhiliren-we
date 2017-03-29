@@ -486,7 +486,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		for (TOrderCustomneedEntity cus : querycusneed) {
 			boolean flag = true;
 			for (Map<String, Object> map : customdata) {
-				if (cus.getId().equals(Integer.valueOf((String) map.get("customneedid")))) {
+				if (!Util.isEmpty(map.get("customneedid"))
+						&& cus.getId().equals(Integer.valueOf((String) map.get("customneedid")))) {
 					flag = false;
 				}
 			}
