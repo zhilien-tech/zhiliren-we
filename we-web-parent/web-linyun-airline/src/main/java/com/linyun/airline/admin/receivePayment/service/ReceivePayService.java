@@ -11,6 +11,8 @@ import static com.uxuexi.core.common.util.ExceptionUtil.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -292,6 +294,15 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			record.put("payid", payId);
 		}
 
+		//已付款结果集排序
+		Collections.sort(data, new Comparator() {
+			public int compare(Object a, Object b) {
+				Long one = Long.valueOf(((Record) a).getString("pid"));
+				Long two = Long.valueOf(((Record) b).getString("pid"));
+				return (int) (two - one);
+			}
+		});
+
 		listdata.remove("data");
 		listdata.put("data", data);
 		return listdata;
@@ -376,6 +387,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			Cnd cnd2 = Cnd.NEW();
 			cnd2.and("companyid", "=", companyId);
 			cnd2.and("bankName", "!=", "");
+			cnd2.and("status", "=", BankCardStatusEnum.ENABLE.intKey());
 			cnd2.groupBy("bankName");
 			bankList = dbDao.query(TBankCardEntity.class, cnd2, null);
 
