@@ -70,7 +70,7 @@ public class sss {
 			 * 注意pdf中域的大小，这里设置的值太长，pdf中会显示不全
 			 */
 			// 设置为true/false在点击生成的pdf文档的填充域时有区别，
-			String[] str = new String[200];
+			/*String[] str = new String[200];
 			for (int i = 0; i < str.length; i++) {
 				str[i] = i + "气门";
 			}
@@ -80,15 +80,16 @@ public class sss {
 				String name = it.next().toString();
 				System.out.println(name);
 				s.setField(name, str[j++]);
-			}
-			/*s.setField("xing11", "张");
+			}*/
+			s.setField("xing11", "张");
 			s.setField("birthxing", "张");
 			s.setField("name", "三");
 			s.setField("birthdate", "1989-02-15");
 			s.setField("birtharea", "台湾");
 			s.setField("birthcountry", "中国");
 			s.setField("nowcountry", "中国");
-			s.setField("qitahuangyin", "无");*/
+			s.setField("qitahuangyin", "无");
+			s.setField("qitahuangyin", "无");
 
 			//Document document = new Document();
 			//document.open();
