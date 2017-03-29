@@ -165,12 +165,7 @@ function initdrawerPayTable() {
                     	}
                     },
                     {"data": "username", "bSortable": false},
-                    {"data": "telephone", "bSortable": false},
-                    {"data": "telephone", "bSortable": false,
-                    	render: function(data, type, row, meta) {
-                            return '<a style="cursor:pointer;" onclick="edit('+row.id+','+row.ordersstatus+');">编辑</a>';
-                    	}
-                    }
+                    {"data": "telephone", "bSortable": false}
             ],
         columnDefs: [{
             //   指定第一列，从0开始，0表示第一列，1表示第二列……
@@ -187,7 +182,16 @@ function initdrawerPayTable() {
     	}
     });
 }
-
+$("tbody",$('#drawerPayTable')).on("dblclick","tr",function(event) {
+	var item = drawerPayTable.row($(this).closest('tr')).data();
+	var url = BASE_PATH;
+	if(item.ordersstatus == 1){
+		url += '/admin/inland/queryDetail.html?id='+item.id;
+	}else{
+		url = '/admin/inland/bookingDetail.html?id='+item.id;
+	}
+	window.open(url);
+});
 
 //控制复选框
 $(".checkall").click(function () {
