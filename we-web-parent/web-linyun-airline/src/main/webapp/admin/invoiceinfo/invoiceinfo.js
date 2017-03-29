@@ -234,11 +234,11 @@ function initshouInvoiceTable1() {
                 		return result;
                 	}
                 },
-                {"data": "personcount", "bSortable": false,
+                {"data": "peoplecount", "bSortable": false,
                 	render:function(data, type, row, meta) {
                 		var result = '';
-                		if(row.personcount && row.personcount != undefined) {
-                			result =row.personcount;
+                		if(row.peoplecount && row.peoplecount != undefined) {
+                			result =row.peoplecount;
                 		}
                 		return result;
                 	}
