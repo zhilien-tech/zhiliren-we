@@ -42,7 +42,7 @@
 .scatteredTable1 tr td input[type="radio"]{width: 14px;height: 14px; margin:2px 0 0;}
 .scatteredTable2{margin-top: 5px;}
 .scatteredTable2 tr{height: 45px;}
-.scatteredTable2 tr td .form-control {width: 115px;}
+.scatteredTable2 tr td .form-control {width: 115px;color: #555;font-weight: 500;}
 .scatteredTable2 tr td label{position: relative;top: 2px;}
 .scatteredTable2 tr .untilTd i{width:20px;position: relative;top:-1px;left: 12px;color: #777;font-size: 12px;}
 .scatteredTable2 tr .untilTd1{width: 45px;}
@@ -137,19 +137,19 @@ table.dataTable thead > tr > th {padding-right:0px;}
 #customerCheckForm .hideTable tbody tr td:nth-child(4) .select2-container{width: 100% !important;}
 #customerCheckForm .hideTable tbody .KHinfo td .select2-container {width:100% !important;}
 #custInfoName {position: relative;top: 5px;}
-
+#cOutDate {padding-left: 3px;padding-right: 3px;}
+[name="cAirArrivalDate"]{padding-left: 3px;padding-right: 3px;}
 /*select2 内容style 隐藏*/
 .select2-container--default .select2-selection--multiple .select2-selection__choice {background-color:rgba(255, 255, 255, 0);border-color:rgba(255, 255, 255, 0);padding: 2px 0px;color: #555;font-size: 11px;}
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {margin-right: 0px;display: none;color: rgba(255, 255, 255, 0.7);}
 .select2-container--default .select2-search--inline .select2-search__field {margin-left: 0px;}
 /*end select2 内容style 隐藏*/
-
 /*----出发城市/到达城市 style-----*/
 .setMore td:nth-child(2){width: 211.5px;}
 .setMore td:nth-child(2) .select2-container{width:208px !important;}
 .setMore td:nth-child(5){width: 211.5px;}
 .setMore td:nth-child(5) .select2-container{width:208px !important;}
-.setTeamMore  td:nth-child(2){width: 210px;}
+.setTeamMore td:nth-child(2){width: 210px;}
 .setTeamMore td:nth-child(2) .select2-container{width:208px !important;}
 .setTeamMore td:nth-child(5){width: 210px;}
 .setTeamMore td:nth-child(5) .select2-container{width:208px !important;}
