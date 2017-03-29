@@ -20,10 +20,6 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-
- 
- 
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Main content -->
@@ -60,7 +56,7 @@
                   </div>
                   <div class="col-md-2 padding">
                     <button type="button" class="btn btn-primary btn-sm" onclick="select();">搜索</button>
-                   <button type="button" class="btn btn-primary btn-sm suBtn" onclick="add();">添加</button>
+                   <button type="button" class="btn btn-primary btn-sm" style="margin-left:6px;" onclick="add();">添加</button>
                   </div>
                 </div>
               </form>
@@ -82,30 +78,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                <!--   <tr>
-                    <td>王五五</td>
-                    <td>42</td>
-                    <td>366</td>
-                    <td>2017-03-08</td>
-                    <td>1111.11</td>
-                    <td>2222.22</td>
-                    <td>12%</td>
-                    <td>111.11</td>
-                    <td>3500</td>
-                    <td>3100</td>
-                  </tr>
-                  <tr>
-                    <td>张飞</td>
-                    <td>22</td>
-                    <td>19</td>
-                    <td>2017-02-12</td>
-                    <td>1111.11</td>
-                    <td>2222.22</td>
-                    <td>12%</td>
-                    <td>111.11</td>
-                    <td>3500</td>
-                    <td>3100</td>
-                  </tr> -->
                 </tbody>
               </table>
             </div>
@@ -119,15 +91,12 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-
- 
   <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
 <%@include file="/WEB-INF/public/footer.jsp"%>
 
 <!-- REQUIRED JS SCRIPTS -->
-
 
 <script>
   /* $(function () {
