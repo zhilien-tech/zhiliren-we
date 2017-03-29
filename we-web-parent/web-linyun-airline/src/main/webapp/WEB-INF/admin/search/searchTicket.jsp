@@ -890,17 +890,16 @@
 		    		fees=0;
 		    	}
 		    	var price = parseFloat((costprice * discountFare)/100) + parseFloat(fees);
-		        price = price+'';
+		       /*  price = price+'';
 		        if(price.indexOf(".")>0){
 		        	price=price.substring(0, price.lastIndexOf(".", price.length)+3);
 		        }
-		        console.log(price);
-				
+		        console.log(price); */
 		    	if(costprice){
 		     		if(isNaN(price)){
 		     			$(this).parent().parent().find('[name=cAirPretium]').val('');
 		     		}else{
-		    	 		$(this).parent().parent().find('[name=cAirPretium]').val(price);
+		    	 		$(this).parent().parent().find('[name=cAirPretium]').val(price.toFixed(2));
 		     		}
 		     	}else{
 		     		$(this).parent().parent().find('[name=cAirPretium]').val('');
