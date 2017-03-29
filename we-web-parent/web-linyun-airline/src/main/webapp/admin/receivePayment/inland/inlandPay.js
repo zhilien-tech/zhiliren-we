@@ -328,12 +328,14 @@ $("#inlandPaySelect").change(function(){
 	if(selectEd){
 		destroyDatetable($("#inlandPayEdTable"));
 		$("#inlandPayClick").show();
+		$("#inlandPayCancelBtn").show();
 		$("#inlandPayTable").show();
 		$("#inlandPayEdTable").hide();
 		initPayDataTable();
 	}else{
 		destroyDatetable($("#inlandPayTable"));
 		$("#inlandPayClick").hide();
+		$("#inlandPayCancelBtn").hide();
 		$("#inlandPayTable").hide();
 		$("#inlandPayEdTable").show();
 		initPayEdDataTable();
