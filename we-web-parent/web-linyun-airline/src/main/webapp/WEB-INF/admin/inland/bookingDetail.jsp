@@ -77,13 +77,17 @@
                <div class="infofooter">
                  <table>
                    <tr>
-                     <td><label>客户姓名：</label></td>
+                     <td><label>
+                     	<font id="customeidcolor"> 客户姓名：</font>
+                     </label></td>
                      <td><input id="linkName" name="linkName" disabled="disabled" type="text" class="form-control input-sm" value="${obj.custominfo.linkMan }">
                      	<input id="customerId" name="customerId" type="hidden" value="${obj.custominfo.id }"/>
                      	<!-- 订单id -->
                      	<input id="orderedid" name="orderedid" type="hidden" value="${obj.orderinfo.id }"></td>
                      <td><label style="position: relative;top: 4px;">结算方式：</label></td>
-                     <td colspan="3"><pre class="preTxt">不限 信用额度：0  临时额度：0  历史欠款：0  预存款：0</pre></td>
+                     <td colspan="3"><pre class="preTxt">不限 信用额度：<fmt:formatNumber type="number" value="${empty obj.custominfo.creditLine?0:obj.custominfo.creditLine}" pattern="0.00" maxFractionDigits="2"/>  
+                     		<font id="historyqiancolor"> 历史欠款：<fmt:formatNumber type="number" value="${empty obj.custominfo.arrears? 0.00:obj.custominfo.arrears}" pattern="0.00" maxFractionDigits="2"/></font>　
+                   		 预存款：<fmt:formatNumber type="number" value="${empty obj.custominfo.preDeposit?0:obj.custominfo.preDeposit}" pattern="0.00" maxFractionDigits="2"/></pre></td>
                      <td><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
                    </tr>
                  </table>
@@ -517,7 +521,7 @@
                      <td><label>销售：</label></td>
                      <td><input id="salesperson" name="salesperson" value="候小凌" type="text" class="form-control input-sm" disabled="disabled"></td>
                      <td><label>开票人：</label></td>
-                     <td><input id="issuer" name="issuer" type="text" value="${empty obj.finance.issuer?obj.user.userName:obj.finance.issuer }" class="form-control input-sm" disabled="disabled"></td>
+                     <td><input id="issuer" name="issuer" type="text" value="${empty obj.finance.issuer?obj.user.fullName:obj.finance.issuer }" class="form-control input-sm" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>人头数：</label></td>
@@ -595,6 +599,8 @@
   <!--end footer-->
   <script type="text/javascript">
 	 var BASE_PATH = '${base}';
+	 var creditLine = '${obj.custominfo.creditLine}';
+	 var arrears = '${obj.custominfo.arrears}';
   </script>
   <!--Javascript Flie-->
   <script src="${base }/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -737,7 +743,10 @@
                 closeBtn:false,//默认 右上角关闭按钮 是否显示
                 shadeClose:true,
                 area: ['770px', '240px'],
-                content: '${base}/admin/inland/mitigate.html?id=${obj.orderinfo.id }&customeid=${obj.custominfo.id }'
+                content: '${base}/admin/inland/mitigate.html?id=${obj.orderinfo.id }&customeid=${obj.custominfo.id }',
+                end:function(){
+                	loadJianMianAccount('${obj.orderinfo.id }');
+                }
               });
         });
     });
@@ -982,42 +991,50 @@
 	         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+needid,
 	         end:function(){
 	        	 //设置财务信息
-	        	 $.ajax({ 
-	 				type: 'POST', 
-	 				data: {orderid:'${obj.orderinfo.id }'}, 
-	 				url: '${base}/admin/inland/setFinanceInfo.html',
-	 	            success: function (data) { 
-	 	            	//成本合计
-	 	            	$('#costtotal').val(data.chengbensum);
-	 	            	//应收
-	 	            	$('#receivable').val(data.yingshousum);
-	 	            	var relief = $('#relief').val();
-		 	       	 	var incometotal  = '';
-		 	       	 	if(relief){
-		 	       	 		incometotal  = parseFloat(data.yingshousum) - parseFloat(relief);
-		 	       	 	}else{
-		 	       	 		incometotal = data.yingshousum;
-		 	       	 	}
-		 	       	 	if(!isNaN(incometotal)){
-	 	       		 		$('#incometotal').val(incometotal);
-		 	       	 	}
-		 	       	 	var returntotal = 0;
-			 	       	//应返合计
-			 	       	if($('#returntotal').val()){
-				 	   	 	returntotal = $('#returntotal').val();
-			 	       	}
-			 	   	    //利润合计
-			 	   	 	var profittotal  = parseFloat(incometotal) - parseFloat(data.chengbensum) - parseFloat(returntotal);
-			 	   	 	if(!isNaN(profittotal)){
-			 	   		 	$('#profittotal').val(profittotal.toFixed(2));
-			 	   	 	}
-	 		         },
-	 		         error: function (xhr) {
-	 		         } 
-	 	         });
+	        	 setFinanceInfo();
 	         }
 	       });
     });
+  	setFinanceInfo();
+  function setFinanceInfo(){
+	//设置财务信息
+ 	 $.ajax({ 
+			type: 'POST', 
+			data: {orderid:'${obj.orderinfo.id }'}, 
+			url: '${base}/admin/inland/setFinanceInfo.html',
+          success: function (data) { 
+          	//成本合计
+          	$('#costtotal').val(data.chengbensum.toFixed(2));
+          	//应收
+          	$('#receivable').val(data.yingshousum.toFixed(2));
+          	$('#personcount').val(data.renshusum);
+          	var relief = $('#relief').val();
+	       	 	var incometotal  = '';
+	       	 	if(relief){
+	       	 		incometotal  = parseFloat(data.yingshousum) - parseFloat(relief);
+	       	 	}else{
+	       	 		incometotal = data.yingshousum;
+	       	 	}
+	       	 	var incometotalval = $('#incometotal').val();
+	       	 	if(!isNaN(incometotal) && !incometotalval){
+     		 		$('#incometotal').val(incometotal);
+	       	 	}
+	       	 	var returntotal = 0;
+	 	       	//应返合计
+	 	       	if($('#returntotal').val()){
+		 	   	 	returntotal = $('#returntotal').val();
+	 	       	}
+	 	   	    //利润合计
+	 	   	 	var profittotal  = parseFloat(incometotal) - parseFloat(data.chengbensum) - parseFloat(returntotal);
+	 	   	    var profittotalval = $('#profittotal').val();
+	 	   	 	if(!isNaN(profittotal) && !profittotalval){
+	 	   		 	$('#profittotal').val(profittotal.toFixed(2));
+	 	   	 	}
+	         },
+	         error: function (xhr) {
+	         } 
+       });
+  }
   //其他页面回调
  function successCallback(id){
 	 loadPNRdata();
@@ -1038,9 +1055,17 @@
  	//成本价
  	var fromprice = $(this).val();
  	//票价折扣
- 	var discountFare = '${obj.custominfo.discountFare}';
- 	//手续费
- 	var fees = '${obj.custominfo.fees}'; 
+	var discountFare = 1;
+	var countfare = '${obj.custominfo.discountFare}';
+	if(countfare){
+		discountFare = countfare;
+	}
+	//手续费
+	var fees = 0;
+	var feescount = '${obj.custominfo.fees}'; 
+	if(feescount){
+		fees = feescount;
+	}
  	//alert("值："+fromprice + " 折扣："+discountFare + " 手续费：" + fees);
  	var price = parseFloat(fromprice * discountFare / 100) + parseFloat(fees);
  	//是否可以修改的标志	
@@ -1125,6 +1150,7 @@
 	 });
  //加载日志
  loadOrderLog('${obj.orderinfo.id }');
+ //加载减免信息
  loadJianMianAccount('${obj.orderinfo.id }');
  function loadJianMianAccount(orderid){
 	 $.ajax({ 
@@ -1133,7 +1159,9 @@
 			dataType:'json',
 			url: BASE_PATH + '/admin/inland/loadJianMianAccount.html',
          success: function (data) { 
-         	$('#relief').val(data.account.toFixed(2));
+        	 if(data.account){
+	         	$('#relief').val(data.account.toFixed(2));
+        	 }
          },
          error: function (xhr) {
        		

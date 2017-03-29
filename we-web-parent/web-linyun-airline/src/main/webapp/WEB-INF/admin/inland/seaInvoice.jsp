@@ -133,6 +133,9 @@
     		'successTimeout' : 1800,
     		'queueSizeLimit' : 100,
     		'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html',//后台处理的页面
+    		'onUploadStart' : function(file) {
+				$("#submit").attr('disabled',true);
+			},
     		//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
     		//下面的例子演示如何获取到vid
     		'onUploadSuccess' : function(file, data, response) {
@@ -141,6 +144,7 @@
     			var fileName = file.name;//文件名称
     			$('#billurl').val(url);
     			$('#shuidanimg').attr('src',url);
+    			$("#submit").attr('disabled',false);
     		},
             //加上此句会重写onSelectError方法【需要重写的事件】
             'overrideEvents': ['onSelectError', 'onDialogClose'],
@@ -157,7 +161,10 @@
                         alert("文件 ["+file.name+"] 类型不正确！");
                         break;
                 }
-            }
+            },
+            onError: function(event, queueID, fileObj) {　
+				$("#submit").attr('disabled',false);
+	        }
     	});
 	//加载银行卡名称下拉
 	function loadbankcardname(){

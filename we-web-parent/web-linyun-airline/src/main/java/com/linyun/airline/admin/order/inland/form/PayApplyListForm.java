@@ -49,6 +49,7 @@ public class PayApplyListForm extends DataTablesParamForm {
 		Cnd cnd = Cnd.limit();
 		cnd.and("tuo.ordersstatus", "=", OrderStatusEnum.TICKETING.intKey());
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.FIT.intKey());
+		cnd.and("tuo.companyId", "=", companyid);
 		//cnd.and("tuo.loginUserId", "=", userId);
 		cnd.and("toc.paymethod", "=", PayMethodEnum.THIRDPART.intKey());
 		if (!Util.isEmpty(startdate)) {
@@ -69,6 +70,7 @@ public class PayApplyListForm extends DataTablesParamForm {
 		exp.and("tpi.orderPnrStatus", "=", "").or("tpi.orderPnrStatus", "is", null)
 				.or("tpi.orderPnrStatus", "=", AccountPayEnum.REFUSE.intKey());
 		cnd.and(exp);
+		cnd.orderBy("tpi.optime", "desc");
 		return cnd;
 	}
 

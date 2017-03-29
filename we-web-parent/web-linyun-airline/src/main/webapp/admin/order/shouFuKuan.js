@@ -63,14 +63,22 @@ function initshouFuKuanGatheringTable() {
                   		var result = '<ul>';
                   		$.each(row.orders, function(name, value) {
                   			if(value && value.incometotal != undefined){
-                  				result += '<li style="list-style:none;">'+value.incometotal+'</li>';
+                  				result += '<li style="list-style:none;">'+value.incometotal.toFixed(2)+'</li>';
                   			}
                   		});
                   		result += '</ul>';
                   		return result;
                   	}
                   },
-                  {"data": "sum", "bSortable": false},
+                  {"data": "sum", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                  		var result = '';
+                  		if(row.sum && row.sum != undefined){
+                  			result = row.sum.toFixed(2);
+                  		}
+                  		return result;
+                  	}
+                  },
                   {"data": "customename", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                     		var result = '';
@@ -80,7 +88,7 @@ function initshouFuKuanGatheringTable() {
                     		return result;
                     	}
                   },
-                  {"data": "username", "bSortable": false},
+                  {"data": "issuer", "bSortable": false},
                   {"data": "status", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                   		var result = '';
@@ -136,7 +144,9 @@ function openInvoice(id,invoiceid){
 	}
 }
 function loadshouFuKuanGatheringTable(){
-	shouFuKuanGatheringTable.ajax.reload();
+	shouFuKuanGatheringTable.ajax.reload(function(json){
+		autoHighLoad($('#shouFuKuanGatheringTable'));
+	});
 }
 $('.shoukuansearch').click(function(){
 	var div = $(this).parent().parent();
@@ -151,7 +161,9 @@ $('.shoukuansearch').click(function(){
 			searchInfo:searchInfo
 	};
 	shouFuKuanGatheringTable.settings()[0].ajax.data = param;
-	shouFuKuanGatheringTable.ajax.reload();
+	shouFuKuanGatheringTable.ajax.reload(function(json){
+		autoHighLoad($('#shouFuKuanGatheringTable'));
+	});
 });
 //付款表格
 var shouFuKuanPayTable;
@@ -242,7 +254,7 @@ function initshouFuKuanPayTable() {
                 	render:function(data, type, row, meta) {
                 		var result = '';
                 		if(row.costpricesum && row.costpricesum != undefined){
-                			result = row.costpricesum;
+                			result = row.costpricesum.toFixed(2);
                 		}
                 		return result;
                 	}
@@ -272,7 +284,7 @@ function initshouFuKuanPayTable() {
                   		return result;
                   	}
                 },
-                {"data": "username","bSortable": false}
+                {"data": "issuer","bSortable": false}
         ],
     "columnDefs": [
 				/*{ "sWidth": "8.33%",  "aTargets": [0] },

@@ -221,6 +221,7 @@ public class InlandListService extends BaseService<TUpOrderEntity> {
 		List<Record> query = dbDao.query(sql, cnd, null);
 		double yingshousum = 0;
 		double chengbensum = 0;
+		int renshusum = 0;
 		for (Record record : query) {
 			if (!Util.isEmpty(record.get("costpricesum"))) {
 				chengbensum += Double.valueOf((Double) record.get("costpricesum"));
@@ -228,9 +229,13 @@ public class InlandListService extends BaseService<TUpOrderEntity> {
 			if (!Util.isEmpty(record.get("salespricesum"))) {
 				yingshousum += Double.valueOf((Double) record.get("salespricesum"));
 			}
+			if (!Util.isEmpty(record.get("peoplecount"))) {
+				renshusum += (Integer) record.get("peoplecount");
+			}
 		}
 		result.put("chengbensum", formatDouble(chengbensum));
 		result.put("yingshousum", formatDouble(yingshousum));
+		result.put("renshusum", renshusum);
 		return result;
 	}
 

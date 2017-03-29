@@ -120,9 +120,9 @@ function initdrawerPayTable() {
                     {"data": "salesprice", "bSortable": false,
                     	render:function(data, type, row, meta) {
                     		var result = '<ul id="tableUl">';
-                    		$.each(row.airinfo, function(name, value) {
-                    			if(value && value.price != undefined){
-                    				result += '<li style="list-style:none;">'+value.price+'</li>';
+                    		$.each(row.pnrinfo, function(name, value) {
+                    			if(value && value.salespricesum != undefined){
+                    				result += '<li style="list-style:none;">'+value.salespricesum.toFixed(2)+'</li>';
                     			}
                     		});
                     		result += '</ul>';
@@ -133,7 +133,7 @@ function initdrawerPayTable() {
                     	render:function(data, type, row, meta) {
                     		var result = '';
                     		if(row.receivable){
-                    			result = row.receivable;
+                    			result = row.receivable.toFixed(2);
                     		}
                     		return result; 
                     	}
@@ -165,7 +165,12 @@ function initdrawerPayTable() {
                     	}
                     },
                     {"data": "username", "bSortable": false},
-                    {"data": "telephone", "bSortable": false}
+                    {"data": "telephone", "bSortable": false},
+                    {"data": "telephone", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                            return '<a style="cursor:pointer;" onclick="edit('+row.id+','+row.ordersstatus+');">编辑</a>';
+                    	}
+                    }
             ],
         columnDefs: [{
             //   指定第一列，从0开始，0表示第一列，1表示第二列……

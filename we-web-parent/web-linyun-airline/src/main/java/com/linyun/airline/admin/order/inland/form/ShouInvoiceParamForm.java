@@ -76,6 +76,7 @@ public class ShouInvoiceParamForm extends DataTablesParamForm {
 		if (!Util.isEmpty(status)) {
 			cnd.and("tii.status", "=", status);
 		}
+		cnd.orderBy("tii.optime", "desc");
 		return cnd;
 	}
 

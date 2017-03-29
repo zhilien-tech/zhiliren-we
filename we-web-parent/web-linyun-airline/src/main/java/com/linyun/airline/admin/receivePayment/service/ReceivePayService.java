@@ -37,6 +37,7 @@ import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
+import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
@@ -81,8 +82,8 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	private static final String YHCODE = "YH";
 	private static final String BZCODE = "BZ";
 	private static final int ENABLE = BankCardStatusEnum.ENABLE.intKey();
-	private static final String YTCODE = "FKYT";
-	private static final String ZJZLCODE = "ZJZL";
+	private static final String YTCODE = ComDictTypeEnum.DICTTYPE_XMYT.key();
+	private static final String ZJZLCODE = ComDictTypeEnum.DICTTYPE_ZJZL.key();
 	private static final int RECEIVESTATUS = AccountReceiveEnum.RECEIVEDONEY.intKey();
 	private static final int APPROVALPAYED = AccountPayEnum.APPROVALPAYED.intKey();
 	private static final int APPROVALPAYING = AccountPayEnum.APPROVALPAYING.intKey();

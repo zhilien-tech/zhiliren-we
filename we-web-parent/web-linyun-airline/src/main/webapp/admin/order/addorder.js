@@ -66,6 +66,39 @@ $("#linkName").on('select2:select', function (evt) {
 				fees = dataJson.customerInfoEntity.fees;
 			}
 			$("#fees").val(fees);
+			
+			if(dataJson.isArrearsRed){
+				$('#fontLSqk').css("color","red");
+				$("#custInfoName").css("color","red");
+			}
+			var payType = dataJson.customerInfoEntity.payType;
+			if(payType == 1){
+				$("#payTypeId").html("月结");
+			}else if(payType == 2){
+				$("#payTypeId").html("周结");
+			}else if(payType == 3){
+				$("#payTypeId").html("单结");
+			}else if(payType == 4){
+				$("#payTypeId").html(dataJson.customerInfoEntity.paytypeName);
+			}
+			var creditLine = dataJson.customerInfoEntity.creditLine;
+			var arrears = dataJson.customerInfoEntity.arrears;
+			var preDeposit = dataJson.customerInfoEntity.preDeposit;
+			if(creditLine){
+				$("#creditLineId").html(dataJson.customerInfoEntity.creditLine);
+			}else{
+				$("#creditLineId").html("0.00");
+			}
+			if(arrears){
+				$("#arrearsId").html(dataJson.customerInfoEntity.arrears);
+			}else{
+				$("#arrearsId").html("0.00");
+			}
+			if(preDeposit){
+				$("#preDepositId").html(dataJson.customerInfoEntity.preDeposit);
+			}else{
+				$("#preDepositId").html("0.00");
+			}
 		},
 		error : function() {
 		}
@@ -299,3 +332,43 @@ $(function(){
         $(this).parent().remove();
     });
   });
+$("#linkName").on('select2:unselect', function (evt) {
+	clearText();
+});
+
+
+/* 清除按钮 */
+$("#clearBtn").click(function(){
+	clearText();
+});
+/*客户信息 清除回显内容*/
+function clearText(){
+	//客户姓名清空
+	$("#linkName").val(null).trigger("change");
+	//文本框清空
+	$("#telephone").val("");
+	$("#discountFare").val("");
+	$("#fees").val("");
+	$("#shortName").val("");
+	$("#telephone").val("");
+	$("#address").val("");
+	$("#responsible").val("");
+	$("#siteUrl").val("");
+	$("#fax").val("");
+	$("#departureCity").val("");
+	//付款方式清除
+	$("#payTypeId").html("不限");
+	//信用额度清除
+	$("#creditLineId").html("0.00");
+	//历史欠款清除
+	$("#arrearsId").html("0.00");
+	$('#fontLSqk').css("color","");
+	//预存款
+	$("#preDepositId").html("0.00");
+	//客户名称
+	$("#custInfoName").css("color","");
+	//清空客户信息隐藏域
+	$('#linkManId').val("");
+	$("#phoneId").val("");
+	
+}

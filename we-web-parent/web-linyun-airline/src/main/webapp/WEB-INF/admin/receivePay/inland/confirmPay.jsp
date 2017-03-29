@@ -67,9 +67,11 @@
 						</select>
 					</td>
 					<td>银行卡名称：</td>
-					<td><select id="cardName" name="cardName" onchange="cardSelect();" class="form-control input-sm">
+					<td>
+						<select id="cardName" name="cardName" onchange="cardSelect();" class="form-control input-sm">
 							<!-- <option>--请选择--</option> -->
-					</select></td>
+						</select>
+					</td>
 					<td>卡号：</td>
 					<td>
 						<select id="cardNum" name="cardNum" class="form-control input-sm">

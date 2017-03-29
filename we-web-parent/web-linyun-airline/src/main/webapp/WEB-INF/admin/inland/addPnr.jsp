@@ -28,7 +28,12 @@
                     <td>PNR：</td>
                     <td><input id="pnr" name="pnr" type="text" class="form-control input-sm PNRlength"></td>
                     <td>登录帐号：</td>
-                    <td><input id="loginid" name="loginid" type="text" class="form-control input-sm"></td></td>
+                    <td><select id="loginid" name="loginid" class="form-control input-sm">
+	                    	<c:forEach items="${obj.loginselect }" var="one">
+		                    		<option value="${one.comDictName }">${one.comDictName }</option>
+	                    	</c:forEach>
+                    	</select>
+                    </td>
                     <td>人数：</td>
                     <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm"></td></td>
                     <td>币种：</td>

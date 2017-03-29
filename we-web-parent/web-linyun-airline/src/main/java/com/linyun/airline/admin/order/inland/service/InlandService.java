@@ -756,7 +756,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		}
 		//获取财务信息
 		String financeData = request.getParameter("financeData");
-		saveFinanceData(financeData, orderType);
+		saveFinanceData(financeData, orderType, user);
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -765,7 +765,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	 * 保存财务信息
 	 */
 	@SuppressWarnings("unchecked")
-	private Object saveFinanceData(String financeData, Integer orderType) {
+	private Object saveFinanceData(String financeData, Integer orderType, TUserEntity user) {
 		Map<String, String> financeMap = JsonUtil.fromJson(financeData, Map.class);
 		//财务信息id
 		String id = financeMap.get("id");
@@ -834,17 +834,20 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			relief = Double.valueOf(financeMap.get("relief"));
 		}
 		//开票日期
+		TFinanceInfoEntity financeInfo = new TFinanceInfoEntity();
 		Date billingdate = null;
 		if (!Util.isEmpty(financeMap.get("billingdate"))) {
 			billingdate = DateUtil.string2Date(financeMap.get("billingdate"), DateUtil.FORMAT_YYYY_MM_DD);
-		} else if (orderType.equals(OrderStatusEnum.TICKETING.intKey())) {
+		}
+		if (orderType.equals(OrderStatusEnum.TICKETING.intKey())) {
 			billingdate = new Date();
+			financeInfo.setIssuer(user.getFullName());
+			financeInfo.setIssuerid(new Long(user.getId()).intValue());
+
 		}
 		//销售人员
 		String salesperson = financeMap.get("salesperson");
 		//开票人
-		String issuer = financeMap.get("issuer");
-		TFinanceInfoEntity financeInfo = new TFinanceInfoEntity();
 		financeInfo.setOrderid(orderid);
 		financeInfo.setCusgroupnum(cusgroupnum);
 		financeInfo.setTeamtype(teamtype);
@@ -861,7 +864,6 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		financeInfo.setRelief(formatDouble(relief));
 		financeInfo.setBillingdate(billingdate);
 		financeInfo.setSalesperson(salesperson);
-		financeInfo.setIssuer(issuer);
 		if (Util.isEmpty(id)) {
 			dbDao.insert(financeInfo);
 		} else {
@@ -955,6 +957,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	}
 
 	public Object addPnr(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		String dingdanid = request.getParameter("dingdanid");
 		String needid = request.getParameter("needid");
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -992,6 +997,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			e.printStackTrace();
 
 		}
+		List<ComDictInfoEntity> loginselect = dbDao.query(ComDictInfoEntity.class,
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_DLZH.key()).and("comId", "=", company.getId()),
+				null);
+		result.put("loginselect", loginselect);
 		result.put("visitors", visitors);
 		result.put("bzcode", bzcode);
 		result.put("needid", needid);
@@ -1081,6 +1090,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object pnrDetailPage(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Map<String, Object> result = new HashMap<String, Object>();
 		String pnrid = request.getParameter("pnrid");
 		//PNR信息
@@ -1099,6 +1111,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			e.printStackTrace();
 
 		}
+		List<ComDictInfoEntity> loginselect = dbDao.query(ComDictInfoEntity.class,
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_DLZH.key()).and("comId", "=", company.getId()),
+				null);
+		result.put("loginselect", loginselect);
 		result.put("pnrinfo", pnrinfo);
 		result.put("visitors", visitors);
 		result.put("bzcode", bzcode);
@@ -1128,6 +1144,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object editPnr(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		String pnrid = request.getParameter("id");
 		//PNR信息
 		TPnrInfoEntity pnrinfo = dbDao.fetch(TPnrInfoEntity.class, Long.valueOf(pnrid));
@@ -1171,6 +1190,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		TUpOrderEntity orderinfo = dbDao.fetch(TUpOrderEntity.class, custom.getOrdernum().longValue());
 		//客户信息
 		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, orderinfo.getUserid().longValue());
+		List<ComDictInfoEntity> loginselect = dbDao.query(ComDictInfoEntity.class,
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_DLZH.key()).and("comId", "=", company.getId()),
+				null);
+		result.put("loginselect", loginselect);
 		result.put("custominfo", custominfo);
 		result.put("include", include);
 		result.put("pnrinfo", pnrinfo);
@@ -1695,7 +1718,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		//获取当前登录用户
 		HttpSession session = request.getSession();
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		sqlform.setUserId(new Long(user.getId()).intValue());
+		sqlform.setCompanyid(company.getId());
 		Map<String, Object> listData = this.listPage4Datatables(sqlform);
 		List<Record> data = (List<Record>) listData.get("data");
 		for (Record record : data) {

@@ -97,4 +97,8 @@ public class TFinanceInfoEntity implements Serializable {
 	@Comment("内陆跨海")
 	private String neilu;
 
+	@Column
+	@Comment("开票人id")
+	private Integer issuerid;
+
 }

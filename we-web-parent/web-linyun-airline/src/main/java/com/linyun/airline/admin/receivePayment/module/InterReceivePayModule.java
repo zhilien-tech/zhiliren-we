@@ -66,8 +66,8 @@ public class InterReceivePayModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object confirmPay(@Param("orderIds") String orderIds) {
-		return interReceivePayService.toConfirmPay(orderIds);
+	public Object confirmPay(@Param("orderIds") String orderIds, HttpSession session) {
+		return interReceivePayService.toConfirmPay(orderIds, session);
 	}
 
 	/**
