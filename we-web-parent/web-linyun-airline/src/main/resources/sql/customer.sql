@@ -66,7 +66,12 @@ FROM
 		INNER JOIN t_user u ON uj.userid = u.id
 	)
 INNER JOIN t_company_job cj ON uj.companyJobId = cj.id
-where cj.comId=@comid
+WHERE
+	cj.comId = @comid
+AND userName IS NOT NULL
+ORDER BY
+	u.userName
+
 
 /*customer_comOption_list*/
 SELECT

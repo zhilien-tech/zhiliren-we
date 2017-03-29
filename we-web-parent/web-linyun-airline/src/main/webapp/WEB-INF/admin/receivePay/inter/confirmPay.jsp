@@ -180,6 +180,7 @@
 	<script type="text/javascript">
 		//文件上传
 		$(function(){
+			bankSelect();
 			$.fileupload1 = $('#uploadFile').uploadify({
 			'auto' : true,//选择文件后自动上传
 			'formData' : {

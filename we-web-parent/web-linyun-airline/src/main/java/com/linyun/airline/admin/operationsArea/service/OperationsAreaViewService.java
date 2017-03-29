@@ -15,6 +15,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
+import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -94,6 +95,11 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	//消息是否可读
 	private static final int UNREAD = MessageIsReadEnum.UNREAD.intKey();
 	private static final int READ = MessageIsReadEnum.READ.intKey();
+
+	//左侧菜单栏
+	private static final int FUNCTION_PARENT_ID = 0;
+	private static final String INLAND_ORDER = "内陆订单";
+	private static final String INTERNATIONAL_ORDER = "国际订单";
 
 	/**
 	 * 注入容器中的Service对象
@@ -562,7 +568,12 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	 */
 	public int getFunctionNum(long userId) {
 		Sql sql = Sqls.create(sqlManager.get("operationsArea_function_nums"));
-		sql.setParam("userId", userId);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("f.parentId", "=", FUNCTION_PARENT_ID);
+		cnd.and("uj.userid", "=", userId);
+		SqlExpressionGroup group = new SqlExpressionGroup();
+		group.and("f.`name`", "LIKE", "%" + INLAND_ORDER + "%").or("f.`name`", "LIKE", "%" + INTERNATIONAL_ORDER + "%");
+		cnd.and(group);
 		Record record = dbDao.fetch(sql);
 		int funNums = Integer.valueOf(record.getString("funnum"));
 		return funNums;

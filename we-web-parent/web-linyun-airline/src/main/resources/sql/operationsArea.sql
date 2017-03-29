@@ -210,10 +210,4 @@ LEFT JOIN t_com_fun_pos_map cfpm ON cfpm.companyFunId = cfm.id
 LEFT JOIN t_job j ON j.id = cfpm.jobId
 LEFT JOIN t_company_job cj ON cj.posid = j.id
 LEFT JOIN t_user_job uj ON uj.companyJobId = cj.id
-WHERE
-	f.parentId = 0
-AND (
-	f.`name` = '国际'
-	OR f.`name` = '内陆跨海'
-)
-AND uj.userid = @userId
+$condition

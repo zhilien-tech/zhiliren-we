@@ -326,17 +326,20 @@
 							<div class="form-group">
 								<label class="col-sm-2 text-right padding">信用额度：</label>
 	                            <div class="col-sm-2 padding">
-	                              <input name="creditLine" value="<fmt:formatNumber type="number" value="${obj.customer.creditLine}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm">
+	                              <input name="creditLine" value="<fmt:formatNumber type="number" value="${obj.customer.creditLine}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
+										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
 	                            </div>
 							</div>
                             <label class="col-sm-1 text-right padding">已欠款：</label>
                             <div class="col-sm-2 padding">
-                            	<input name="arrears" value="<fmt:formatNumber type="number" value="${obj.customer.arrears}" pattern="0.00" maxFractionDigits="2"/>" type="text" readonly="readonly" class="form-control input-sm">
+                            	<input name="arrears" value="<fmt:formatNumber type="number" value="${obj.customer.arrears}" pattern="0.00" maxFractionDigits="2"/>" type="text" readonly="readonly" class="form-control input-sm" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
+										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
                             </div>
 							<div class="form-group">
                           		 <label class="col-sm-1 text-right padding">预收款：</label>
 	                            <div class="col-sm-1 padding">
-	                              <input name="preDeposit" value="<fmt:formatNumber type="number" value="${obj.customer.preDeposit}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm">
+	                              <input name="preDeposit" value="<fmt:formatNumber type="number" value="${obj.customer.preDeposit}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
+										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
 	                            </div>
                           	</div>
                         </div>
@@ -344,27 +347,31 @@
 							<div class="form-group">
 								<label class="col-sm-2 text-right padding">票价折扣：</label>
 	                            <div class="col-sm-2 padding">
-	                              <input name="discountFare" value="<fmt:formatNumber type="number" value="${obj.customer.discountFare}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm discountText">
+	                              <input name="discountFare" value="<fmt:formatNumber type="number" value="${obj.customer.discountFare}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm discountText" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
+										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
 	                              <span>%</span>
 	                            </div>
 							</div>
                             <div class="form-group">
                             	<label class="col-sm-1 text-right padding">手续费：</label>
 	                            <div class="col-sm-2 padding">
-	                            	<input name="fees" value="<fmt:formatNumber type="number" value="${obj.customer.fees}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm discountText" placeholder="每张票">
+	                            	<input name="fees" value="<fmt:formatNumber type="number" value="${obj.customer.fees}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm discountText" placeholder="每张票" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
+										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
 	                            	<span>￥</span>
 	                            </div>
                           	</div>
 							<div class="form-group">
 								<label class="col-sm-1 text-right padding">汇率：</label>
 	                            <div class="col-sm-1 padding">
-	                              <input name="exchangeRates" value="<fmt:formatNumber type="number" value="${obj.customer.exchangeRates}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm">
+	                              <input name="exchangeRates" value="<fmt:formatNumber type="number" value="${obj.customer.exchangeRates}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
+										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
 	                            </div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-1 text-right padding">退税：</label>
 	                            <div class="col-sm-2 padding">
-	                              <input name="taxRefund" value="<fmt:formatNumber type="number" value="${obj.customer.taxRefund}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm taxText" placeholder="每张票">
+	                              <input name="taxRefund" value="<fmt:formatNumber type="number" value="${obj.customer.taxRefund}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm taxText" placeholder="每张票" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
+										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
 	                            </div>
 							</div>
                         </div>
@@ -747,7 +754,7 @@
 								message : '传真格式错误'
 							}
 						}
-					},
+					}/* ,
 					creditLine : {
 						validators : {
 							regexp : {
@@ -795,7 +802,7 @@
 								message : '退税格式错误'
 							}
 						}
-					}
+					} */
 				}
 			});
 		}
