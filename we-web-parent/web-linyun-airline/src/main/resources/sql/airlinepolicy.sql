@@ -1,7 +1,8 @@
 /*airlinepolicy_select2_airlinecompany*/
 SELECT
 	id,
-	dictName
+	dictName,
+	dictCode
 FROM
 	dict_info 
 $condition

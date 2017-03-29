@@ -199,7 +199,7 @@ function initDatatable() {
                     },//实收合计
                     {"data": "commission", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                    		var depositBalance = row.commission/100;
+                    		var depositBalance = row.commission;
                     		
                     		return depositBalance.toFixed(2)+"%";
                     	}		
