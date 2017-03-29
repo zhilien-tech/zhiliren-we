@@ -56,7 +56,7 @@
 	                      <option>预付机票款</option>-->
 	                      <option value="">项目</option> 
 	                       <c:forEach items="${obj.projectList }" var="each">
-	                    		<option value="${each.dictName }">${each.dictName }</option>
+	                    		<option value="${each.comDictName }">${each.comDictName }</option>
 		                  </c:forEach>	        
 	                    </select>
 	                  </div>
@@ -262,13 +262,13 @@
 	function successCallback(id){
 		empTable.ajax.reload(null,false);
 		  if(id == '1'){
-			  layer.msg("添加成功",{time: 2000, icon:1});
+			  layer.msg("添加成功",{time: 2000});
 		  }else if(id == '2'){
-			  layer.msg("关闭成功",{time: 2000, icon:1});
+			  layer.msg("关闭成功",{time: 2000});
 		  }else if(id == '3'){
-			  layer.msg("删除成功",{time: 2000, icon:1});
+			  layer.msg("删除成功",{time: 2000});
 		  }else if(id == '4'){
-			  layer.msg("开启成功",{time: 2000, icon:1});
+			  layer.msg("开启成功",{time: 2000});
 		  }
 	  }
 	//根据不同的条件进行搜索

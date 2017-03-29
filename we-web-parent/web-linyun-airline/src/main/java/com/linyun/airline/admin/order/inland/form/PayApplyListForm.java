@@ -49,6 +49,7 @@ public class PayApplyListForm extends DataTablesParamForm {
 		Cnd cnd = Cnd.limit();
 		cnd.and("tuo.ordersstatus", "=", OrderStatusEnum.TICKETING.intKey());
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.FIT.intKey());
+		cnd.and("tuo.companyId", "=", companyid);
 		//cnd.and("tuo.loginUserId", "=", userId);
 		cnd.and("toc.paymethod", "=", PayMethodEnum.THIRDPART.intKey());
 		if (!Util.isEmpty(startdate)) {

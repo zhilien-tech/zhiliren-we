@@ -105,9 +105,9 @@ function initDatatable() {
                     {"data": "salesprice", "bSortable": false,
                     	render:function(data, type, row, meta) {
                     		var result = '<ul>';
-                    		$.each(row.airinfo, function(name, value) {
-                    			if(value && value.price != undefined){
-                    				result += '<li style="list-style:none;">'+value.price+'</li>';
+                    		$.each(row.pnrinfo, function(name, value) {
+                    			if(value && value.salespricesum != undefined){
+                    				result += '<li style="list-style:none;">'+value.salespricesum.toFixed(2)+'</li>';
                     			}
                     		});
                     		result += '</ul>';
@@ -118,7 +118,7 @@ function initDatatable() {
                     	render:function(data, type, row, meta) {
                     		var result = '';
                     		if(row.receivable){
-                    			result = row.receivable;
+                    			result = row.receivable.toFixed(2);
                     		}
                     		return result; 
                     	}

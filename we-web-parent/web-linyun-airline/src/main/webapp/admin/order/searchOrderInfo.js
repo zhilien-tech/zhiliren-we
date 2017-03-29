@@ -516,8 +516,8 @@ $(document).on("click",".custLineChoose",function(){
 		    	var discountFare = discountFare;
 		    	//手续费
 		    	var fees = $("#fee").val(); */
-		    	var PretiumRMB = parseFloat(costRMB * discountFare / 100) + parseFloat(fees);
-				$(tdE).find('[name=price]').val(PretiumRMB);
+		    	var PretiumRMB = parseFloat((costRMB * discountFare)/100) + parseFloat(fees);
+				$(tdE).find('[name=price]').val(PretiumRMB.toFixed(2));
 				$(tdE).find('[name=formprice]').val(costRMB);
 			});
 		}

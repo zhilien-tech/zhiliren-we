@@ -207,10 +207,11 @@ $(function(){
         //清空人数
         newDiv.find('[name=peoplecount]').val('');
         //清空票务类型
-        newDiv.find('[name=tickettype]').val('');
+        newDiv.find('[name=tickettype]').val('1');
+        newDiv.find('[name=remark]').val('');
         initCitySelect2(newDiv);
         //divTest.after(newDiv);
-        $('#infofooter').append(newDiv);
+        $('#infofooter').last().append(newDiv);
         var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
         newDiv.find("p").html(No); 
         newDiv.find('.addDemand').remove();

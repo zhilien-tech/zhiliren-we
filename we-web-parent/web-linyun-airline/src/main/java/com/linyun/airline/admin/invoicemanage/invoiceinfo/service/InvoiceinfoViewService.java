@@ -366,9 +366,9 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		//付款银行卡信息
 		Record companybank = new Record();
 		String pagesqlStr = sqlManager.get("get_fukuan_invoice_page_data");
-		Sql pagesql = Sqls.create(sqlString);
+		Sql pagesql = Sqls.create(pagesqlStr);
 		Cnd pagecnd = Cnd.NEW();
-		cnd.and("tpp.pnrId", "=", id);
+		pagecnd.and("tpp.pnrId", "=", invoiceinfo.getPnrid());
 		List<Record> banks = dbDao.query(pagesql, pagecnd, null);
 		if (banks.size() > 0) {
 			companybank = banks.get(0);

@@ -95,7 +95,7 @@
       			<div class="form-group">
       				<label class="col-sm-3 text-right padding"></label>
       				<button id="file" name="file" type="file" class="btn btn-primary btn-sm" >上传文件</button>
-              		
+              		<span id="completeFileName"></span>
       			</div>
       		</div>
         <input type="hidden" name="url" value="" id="url"/>
@@ -235,18 +235,17 @@
 						}
 					});  */
 					
-					/* var innerHtml = "";
-		            if (response) {
-		                innerHtml = "<div><a id='downloadA' href='#' download='"+file.name+"' onclick='downloadFile("
-		                        + data
-		                        + ");' >"
-		                        + file.name
-		                        + "</a>&nbsp;&nbsp;<span>上传成功</span>&nbsp;&nbsp;&nbsp;&nbsp;"
-		                        + data + "'></div>";
-		            } else {
-		                innerHtml = "<div>该附件上传失败，请重新上传</div>";
-		            } */
-		           // $("#completeFileName").html($("#completeFileName").html() + innerHtml);
+					var innerHtml = "";
+                    if (response) {
+                        innerHtml = "<div><a id='downloadA' href='${base}/admin/airlinepolicy/download.html?url="+url+"&fileName="+fileName+"'>"
+                                + file.name
+                                + "</a>&nbsp;&nbsp;<span>上传成功</span>&nbsp;&nbsp;&nbsp;&nbsp;"
+                                + "<input type='button' class='delete' onclick='deleteFile();' value='删除'>";
+                    } else {
+                        innerHtml = "<div>该附件上传失败，请重新上传</div>";
+                    }
+                    $("#completeFileName").html("");
+                    $("#completeFileName").html($("#completeFileName").html() + innerHtml);
 				},
 		        //加上此句会重写onSelectError方法【需要重写的事件】
 		        'overrideEvents': ['onSelectError', 'onDialogClose'],
@@ -360,7 +359,11 @@
 			tags : false, //设置必须存在的选项 才能选中
 		});
 		
-		
+		function deleteFile(){
+			$("#url").val("");
+			$("#fileName").val("");
+			$("#completeFileName").html("");
+		}
 	</script>
 </body>
 </html>	

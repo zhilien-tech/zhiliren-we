@@ -209,23 +209,23 @@
 		  window.location.href="${base}/admin/airlinepolicy/list.html"; 
 		  location=location;
 		  if(id == '1'){
-			  layer.msg("添加成功!",{time: 1000, icon:1});
+			  layer.msg("添加成功!",{time: 1000});
 		  }else if(id == '2'){
-			  layer.msg("编辑成功!",{time: 1000, icon:1});
+			  layer.msg("编辑成功!",{time: 1000});
 		  }else if(id == '3'){
-			  layer.msg("删除成功!",{time: 1000, icon:1});
+			  layer.msg("删除成功!",{time: 1000});
 		  }else if(id == '4'){
-			  layer.msg("移动成功!",{time: 1000, icon:1});
+			  layer.msg("移动成功!",{time: 1000});
 		  }else if(id == '5'){
-			  layer.msg("抓取成功!",{time: 1000, icon:1});
+			  layer.msg("抓取成功!",{time: 1000});
 		  }else if(id == '6'){
-			  layer.msg("上传成功!",{time: 1000, icon:1});
+			  layer.msg("上传成功!",{time: 1000});
 		  }else if(id == '7'){
-			  layer.msg("文件下载成功!",{time: 1000, icon:1});
+			  layer.msg("文件下载成功!",{time: 1000});
 		  }else if(id == '8'){
-			  layer.msg("添加成功!",{time: 1000, icon:1});
+			  layer.msg("添加成功!",{time: 1000});
 		  }else if(id == '9'){
-			  layer.msg("编辑成功!",{time: 1000, icon:1});
+			  layer.msg("编辑成功!",{time: 1000});
 		  }
 	  }
 	
