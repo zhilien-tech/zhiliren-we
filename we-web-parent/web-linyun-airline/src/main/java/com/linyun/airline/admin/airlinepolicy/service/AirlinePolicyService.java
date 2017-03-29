@@ -40,7 +40,6 @@ import com.linyun.airline.common.util.Office2PDF;
 import com.linyun.airline.common.util.Word2Html;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAirlinePolicyEntity;
-import com.linyun.airline.entities.TAreaEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.forms.TAirlinePolicyAddForm;
 import com.linyun.airline.forms.TAirlinePolicyUpdateForm;
@@ -78,8 +77,9 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 		String sqlString1 = sqlManager.get("airlinepolicy_datalist");
 		Sql sql1 = Sqls.create(sqlString1);
 		Cnd cnd1 = Cnd.NEW();
-		cnd1.groupBy("areaId");
+		/*cnd1.groupBy("areaId");*/
 		cnd1.and("companyId", "=", companyId);
+		cnd1.and("areaName", "is not", null);
 		sql1.setCondition(cnd1);
 		List<Record> list1 = dbDao.query(sql1, cnd1, null);
 		map.put("airlineCompanyList", list);
@@ -219,6 +219,7 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("dictName", "like", Strings.trim(findCompany) + "%");
+		cnd.or("dictCode", "like", "%" + Strings.trim(findCompany) + "%");
 		cnd.and("typeCode", "=", "HKGS");
 		if (!Util.isEmpty(companyName)) {
 			cnd.and("id", "NOT IN", companyName);
@@ -258,7 +259,7 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 	 * @param dictName
 	 */
 	public List<Record> getAreaList(String findCompany, final String companyName) {
-		String sqlString = sqlManager.get("airlinepolicy_select2_area");
+		String sqlString = sqlManager.get("airlinepolicy_select2_newarea");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("areaName", "like", Strings.trim(findCompany) + "%");
@@ -282,10 +283,10 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 					Long.valueOf(airlinePolicy.getAirlineCompanyId()));
 			map.put("dictInfo", dictInfo);
 		}
-		if (!Util.isEmpty(airlinePolicy.getAreaId())) {
+		/*if (!Util.isEmpty(airlinePolicy.getAreaId())) {
 			TAreaEntity areaInfo = dbDao.fetch(TAreaEntity.class, Long.valueOf(airlinePolicy.getAreaId()));
 			map.put("areaInfo", areaInfo);
-		}
+		}*/
 		map.put("airlinePolicy", airlinePolicy);
 		return map;
 
@@ -318,7 +319,7 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 
 		}
 		String type = updateForm.getType();
-		Long areaId = updateForm.getAreaId();
+		String areaName = updateForm.getAreaName();
 		Long airlineCompanyId = updateForm.getAirlineCompanyId();
 		Chain chain = Chain.make("updateTime", new Date());
 		String str = System.getProperty("java.io.tmpdir");
@@ -383,8 +384,8 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 		if (!Util.isEmpty(type)) {
 			chain.add("type", type);
 		}
-		if (!Util.isEmpty(areaId)) {
-			chain.add("areaId", areaId);
+		if (!Util.isEmpty(areaName)) {
+			chain.add("areaName", areaName);
 		}
 		if (!Util.isEmpty(airlineCompanyId)) {
 			chain.add("airlineCompanyId", airlineCompanyId);

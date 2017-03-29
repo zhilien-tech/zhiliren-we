@@ -48,6 +48,8 @@ public class TAirlinePolicyAddForm extends AddForm {
 	private long airlineCompanyId;
 	/**地区id*/
 	private long areaId;
+	/**地区名称*/
+	private String areaName;
 	/**公司id*/
 	private long companyId;
 }

@@ -56,8 +56,10 @@
       			<div class="form-group">
       				<label class="col-sm-3 text-right padding">地区：</label>
       				<div class="col-sm-4 padding">
-      					<select id="findArea" name="findArea"  onchange="setSelectedfindArea()" class="form-control select2 inpImpWid" multiple="multiple" ></select>
-			            <input type="hidden" class="form-control input-sm" placeholder="请输入要添加地区名称" name="areaId" id="areaId">
+      					<select id="findArea" name="findArea"  onchange="setSelectedfindArea()" class="form-control select2 inpImpWid" multiple="multiple" >
+      						
+      					</select>
+			            <input type="hidden" class="form-control input-sm" placeholder="请输入要添加地区名称" name="areaName" id="areaId">
 			            <span class="red">*</span>
 					</div>
       			</div>
@@ -294,7 +296,7 @@
 				},
 				processResults : function(data, params) {
 					params.page = params.page || 1;
-
+					
 					return {
 						results : data
 					};
@@ -318,6 +320,7 @@
 				delay : 250,
 				type : 'post',
 				data : function(params) {
+					
 					return {
 						p : params.term, // search term
 						companyName:$("#areaId").val(),
@@ -326,7 +329,6 @@
 				},
 				processResults : function(data, params) {
 					params.page = params.page || 1;
-
 					return {
 						results : data
 					};
@@ -340,7 +342,7 @@
 			maximumInputLength : 20,
 			language : "zh-CN", //设置 提示语言
 			maximumSelectionLength : 1, //设置最多可以选择多少项
-			tags : false, //设置必须存在的选项 才能选中
+			tags : true, //设置必须存在的选项 才能选中
 		});
 		function deleteFile(){
 			$("#url").val("");

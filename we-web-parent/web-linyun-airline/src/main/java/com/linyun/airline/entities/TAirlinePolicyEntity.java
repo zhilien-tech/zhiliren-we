@@ -61,6 +61,9 @@ public class TAirlinePolicyEntity implements Serializable {
 	@Comment("散或团")
 	private String type;
 	@Column
+	@Comment("地区名称")
+	private String areaName;
+	@Column
 	@Comment("航空公司id")
 	private Integer airlineCompanyId;
 	@Column

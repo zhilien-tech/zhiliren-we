@@ -52,6 +52,8 @@ public class TAirlinePolicyForm extends DataTablesParamForm {
 	private Long airlineCompanyId;
 	//区域id
 	private Long areaId;
+	//区域名称
+	private String areaName;
 	//类型
 	private String type;
 	//开始时间
@@ -78,9 +80,9 @@ public class TAirlinePolicyForm extends DataTablesParamForm {
 
 			cnd.and("airlineCompanyId", "=", airlineCompanyId);
 		}
-		if (!Util.isEmpty(areaId)) {
+		if (!Util.isEmpty(areaName)) {
 
-			cnd.and("areaId", "=", areaId);
+			cnd.and("areaName", "=", areaName);
 		}
 		if (!Util.isEmpty(type)) {
 

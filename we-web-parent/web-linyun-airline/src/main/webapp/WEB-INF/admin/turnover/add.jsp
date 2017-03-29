@@ -84,7 +84,7 @@
 	                	<div class="form-group form-group1">
 		                  <label class="col-sm-1 text-right padding">金额：</label>
 		                  <div class="col-sm-2 padding">
-		                      <input name="money" type="text" class="form-control input-sm" id="money"/>
+		                      <input name="money" type="text" class="form-control input-sm" id="money" oninput="checkLength(this);"/>
 		                  </div>
 	                	</div>
 	                </div><!--end 银行/币种-->
@@ -257,8 +257,8 @@
 	                        message: '金额不能为空'
 	                    },
 	                    regexp: {
-	                	 	regexp: /^(([1-9]+)|([0-9]+\.[0-9]{1,2}))$/,
-	                        message: '金额必须为数字(小数点后只能保留两位)!'
+	                	 	regexp: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
+	                        message: '金额必须为数字!'
 	                    },
 	                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
 	                         url: '${base}/admin/turnover/checkBankCardNumEnough.html',//验证地址
@@ -443,6 +443,16 @@
 			$("#companyName").val(selectedcompanyName);
 			//$("#comName").val(selectedcompanyName);
 		} */
+		function checkLength(obj){
+			obj.value = obj.value.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符  
+		    obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的  
+		    obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$","."); 
+		    obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');//只能输入两个小数  
+		    if(obj.value.indexOf(".")< 0 && obj.value !=""){//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额 
+		        obj.value= parseFloat(obj.value); 
+		    } 
+			
+		}
 	</script>
 </body>
 </html>	
