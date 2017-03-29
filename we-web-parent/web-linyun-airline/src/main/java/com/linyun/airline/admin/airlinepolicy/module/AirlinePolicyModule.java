@@ -189,9 +189,10 @@ public class AirlinePolicyModule {
 	 * 删除记录
 	 */
 	@At
-	public Object download(@Param("id") final long id, final HttpServletResponse response) {
+	public Object download(@Param("id") final long id, final HttpServletResponse response,
+			@Param("url") final String url, @Param("fileName") final String fileName) {
 
-		airlinePolicyService.downloadById(id, response);
+		airlinePolicyService.downloadById(id, response, url, fileName);
 		return null;
 	}
 }

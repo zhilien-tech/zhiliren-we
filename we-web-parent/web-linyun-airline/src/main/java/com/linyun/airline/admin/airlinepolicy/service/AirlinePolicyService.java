@@ -204,7 +204,7 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 			public Select2Option apply(Record record) {
 				Select2Option op = new Select2Option();
 				op.setId(record.getInt("id"));
-				op.setText(record.getString("dictName"));
+				op.setText(record.getString("dictCode") + "-" + record.getString("dictName"));
 				return op;
 			}
 		});
@@ -393,10 +393,18 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 
 	}
 
-	public void downloadById(long id, HttpServletResponse response) {
-		TAirlinePolicyEntity airlinePolicy = dbDao.fetch(TAirlinePolicyEntity.class, id);
-		String resourceFile = airlinePolicy.getUrl();
-		String fileName = airlinePolicy.getFileName();
+	public void downloadById(long id, HttpServletResponse response, String url2, String fileName2) {
+		String resourceFile = null;
+		String fileName = null;
+		if (Util.isEmpty(url2) && Util.isEmpty(fileName2)) {
+
+			TAirlinePolicyEntity airlinePolicy = dbDao.fetch(TAirlinePolicyEntity.class, id);
+			resourceFile = airlinePolicy.getUrl();
+			fileName = airlinePolicy.getFileName();
+		} else {
+			resourceFile = url2;
+			fileName = fileName2;
+		}
 		/*String fileName = "下载吧";*/
 		InputStream is = null;
 		OutputStream out = null;

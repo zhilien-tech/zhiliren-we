@@ -108,7 +108,7 @@
 		                      <select class="form-control input-sm" name="projectName">
 		                      		<option value="">请选择</option>
 			                      <c:forEach items="${obj.projectList }" var="each">
-			                    		<option value="${each.dictName }">${each.dictName }</option>
+			                    		<option value="${each.comDictName }">${each.comDictName }</option>
 				                  </c:forEach>
 		                    </select>
 		                  </div>
@@ -139,7 +139,7 @@
 	                	<div class="form-group">
 		                	<label class="col-sm-2 text-right padding">开/收发票：</label>
 		                	<div class="col-sm-2 padding">
-			                	<select class="form-control input-sm" name="invoiceStatus" id="invoiceStatus" onchange="check();">
+			                	<select class="form-control input-sm" name="invoiceStatus" id="invoiceStatus" >
 				                      <option value="">请选择</option>
 				                      <option>已开发票</option>
 				                      <option>已收发票</option>

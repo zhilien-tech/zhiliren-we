@@ -84,7 +84,10 @@ public class BankCardViewService extends BaseService<TBankCardEntity> {
 		//按id查询
 		Map<String, Object> obj = this.list();
 		TBankCardEntity bankCardInfo = dbDao.fetch(TBankCardEntity.class, userId);
+		DictInfoEntity dictInfoEntity = dbDao.fetch(DictInfoEntity.class,
+				Cnd.where("dictName", "=", bankCardInfo.getBankName()));
 		obj.put("bankCardInfo", bankCardInfo);
+		obj.put("dictInfoEntity", dictInfoEntity);
 		return obj;
 
 	}
@@ -153,7 +156,11 @@ public class BankCardViewService extends BaseService<TBankCardEntity> {
 
 		TBankCardEntity bankCard = dbDao.fetch(TBankCardEntity.class, updateForm.getId());
 		String bankNameId = updateForm.getBankName();
-		DictInfoEntity di = dbDao.fetch(DictInfoEntity.class, Long.valueOf(bankNameId));
+		DictInfoEntity di = null;
+		if (!Util.isEmpty(bankNameId)) {
+
+			di = dbDao.fetch(DictInfoEntity.class, Long.valueOf(bankNameId));
+		}
 		Map<String, Object> obj = Maps.newHashMap();
 		if (!Util.isEmpty(updateForm)) {
 			updateForm.setStatus(BankCardStatusEnum.ENABLE.intKey());
