@@ -157,7 +157,7 @@ function initRecDataTable() {
 }
 
 //datatable行点击事件
-$("tbody",$('#inlandRecTable')).on("click","tr",function(event){
+$("tbody",$('#inlandRecTable')).on("dblclick","tr",function(event){
 	//获取当前行的数据
 	var row = inlandRecTable.row($(this).closest('tr')).data();
 	confirmReceive(row.id);
