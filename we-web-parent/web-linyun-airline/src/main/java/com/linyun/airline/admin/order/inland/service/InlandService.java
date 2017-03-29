@@ -838,10 +838,11 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		Date billingdate = null;
 		if (!Util.isEmpty(financeMap.get("billingdate"))) {
 			billingdate = DateUtil.string2Date(financeMap.get("billingdate"), DateUtil.FORMAT_YYYY_MM_DD);
-		} else if (orderType.equals(OrderStatusEnum.TICKETING.intKey())) {
+		}
+		if (orderType.equals(OrderStatusEnum.TICKETING.intKey())) {
 			billingdate = new Date();
 			financeInfo.setIssuer(user.getFullName());
-			financeInfo.setIssuserid(new Long(user.getId()).intValue());
+			financeInfo.setIssuerid(new Long(user.getId()).intValue());
 		}
 		//销售人员
 		String salesperson = financeMap.get("salesperson");
@@ -1716,7 +1717,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		//获取当前登录用户
 		HttpSession session = request.getSession();
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		sqlform.setUserId(new Long(user.getId()).intValue());
+		sqlform.setCompanyid(company.getId());
 		Map<String, Object> listData = this.listPage4Datatables(sqlform);
 		List<Record> data = (List<Record>) listData.get("data");
 		for (Record record : data) {

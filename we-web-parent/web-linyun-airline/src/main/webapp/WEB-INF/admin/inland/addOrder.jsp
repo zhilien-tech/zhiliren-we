@@ -269,9 +269,17 @@
     	$(this).val($(this).val().replace(/[^.\d]/g,''));
     	var fromprice = $(this).val();
     	//票价折扣
-    	var discountFare = $('#discountFare').val();
+    	var discountFare = 1;
+    	var countfare = '${obj.custominfo.discountFare}';
+    	if(countfare){
+    		discountFare = countfare;
+    	}
     	//手续费
-    	var fees = $('#fees').val(); 
+    	var fees = 0;
+    	var feescount = '${obj.custominfo.fees}'; 
+    	if(feescount){
+    		fees = feescount;
+    	}
     	//alert("值："+fromprice + " 折扣："+discountFare + " 手续费：" + fees);
     	var price = parseFloat(fromprice * discountFare / 100) + parseFloat(fees);
     	if(fromprice){
