@@ -25,9 +25,9 @@ SELECT
 	uo.ordersnum orderNum,
 	pi.PNR pnrNum,
 	oc.leavetdate leaveDate,
-	oc.peoplecount peopleCount,
+	pi.peoplecount peopleCount,
 	pi.costpricesum salePrice,
-	oc.paycurrency currency,
+	pi.currency currency,
 	ci.shortName,
 	pi.orderPnrStatus,
 	fi.`issuer` drawer
