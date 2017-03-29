@@ -35,17 +35,17 @@
 									<div class="box-header">
 										<form role="form" class="form-horizontal">
 											<div class="form-group row marginBott5 cf">
-												<div class="col-md-1 textPadding">
+												<div class="col-md-1">
 													<select id="inlandRecSelect" class="form-control TimeInput">
 														<option value=1>收款中</option>
 														<option value=2>已收款</option>
 													</select>
 												</div>
-												<div class="col-md-1 textPadding">
+												<div class="col-md-1 padding">
 													<input id="inlandRecBeginDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'inlandRecEndDate\')}'})" class="form-control TimeInput" placeholder="2017-02-20">
 												</div>
 												<label class="col-md-1 labelClas">至</label>
-												<div class="col-md-1 textPadding">
+												<div class="col-md-1 padding">
 													<input id="inlandRecEndDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'inlandRecBeginDate\')}'})" class="form-control TimeInput" placeholder="2017-02-22">
 												</div>
 												<div class="col-md-3 textPadding">
@@ -88,17 +88,17 @@
 									<div class="box-header">
 										<form role="form" class="form-horizontal">
 											<div class="form-group row marginBott5 cf">
-												<div class="col-md-1 textPadding">
+												<div class="col-md-1">
 													<select id="inlandPaySelect" class="form-control TimeInput">
 														<option value=2>付款中</option>
 														<option value=3>已付款</option>
 													</select>
 												</div>
-												<div class="col-md-1 textPadding">
+												<div class="col-md-1 padding">
 													<input id="inlandPayBeginDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'inlandPayEndDate\')}'})" class="form-control TimeInput" placeholder="2017-02-20">
 												</div>
 												<label class="col-md-1 labelClas">至</label>
-												<div class="col-md-1 textPadding">
+												<div class="col-md-1 padding">
 													<input id="inlandPayEndDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'inlandPayBeginDate\')}'})" class="form-control TimeInput" placeholder="2017-02-22">
 												</div>
 												<div class="col-md-3 textPadding">
