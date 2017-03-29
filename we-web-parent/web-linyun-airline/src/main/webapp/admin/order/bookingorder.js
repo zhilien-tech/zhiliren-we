@@ -319,29 +319,7 @@ function openDetailPage(id){
         content: BASE_PATH + '/admin/inland/pnrDetailPage.html?pnrid='+id,
         end:function(){
 	       	 //设置财务信息
-	       	 $.ajax({ 
-				type: 'POST', 
-				data: {orderid:'${obj.orderinfo.id }'}, 
-				url: '${base}/admin/inland/setFinanceInfo.html',
-	            success: function (data) { 
-	            	//成本合计
-	            	$('#costtotal').val(data.chengbensum);
-	            	//应收
-	            	$('#receivable').val(data.yingshousum);
-	            	var relief = $('#relief').val();
-	 	       	 	var incometotal  = '';
-	 	       	 	if(relief){
-	 	       	 		incometotal  = parseFloat(data.yingshousum) - parseFloat(relief);
-	 	       	 	}else{
-	 	       	 		incometotal = data.yingshousum;
-	 	       	 	}
-	 	       	 	if(!isNaN(incometotal)){
-	       		 		$('#incometotal').val(incometotal);
-	 	       	 	}
-		         },
-		         error: function (xhr) {
-		         } 
-	         });
+        	setFinanceInfo();
         }
       });
 }

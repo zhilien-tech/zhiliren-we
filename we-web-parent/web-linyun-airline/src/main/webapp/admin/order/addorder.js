@@ -71,6 +71,7 @@ $("#linkName").on('select2:select', function (evt) {
 				$('#fontLSqk').css("color","red");
 				$("#custInfoName").css("color","red");
 			}
+			var payType = dataJson.customerInfoEntity.payType;
 			if(payType == 1){
 				$("#payTypeId").html("月结");
 			}else if(payType == 2){

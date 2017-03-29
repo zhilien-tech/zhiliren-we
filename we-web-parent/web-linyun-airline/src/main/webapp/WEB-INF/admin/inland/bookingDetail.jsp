@@ -521,7 +521,7 @@
                      <td><label>销售：</label></td>
                      <td><input id="salesperson" name="salesperson" value="候小凌" type="text" class="form-control input-sm" disabled="disabled"></td>
                      <td><label>开票人：</label></td>
-                     <td><input id="issuer" name="issuer" type="text" value="${empty obj.finance.issuer?obj.user.userName:obj.finance.issuer }" class="form-control input-sm" disabled="disabled"></td>
+                     <td><input id="issuer" name="issuer" type="text" value="${empty obj.finance.issuer?obj.user.fullName:obj.finance.issuer }" class="form-control input-sm" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>人头数：</label></td>
@@ -991,42 +991,50 @@
 	         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+needid,
 	         end:function(){
 	        	 //设置财务信息
-	        	 $.ajax({ 
-	 				type: 'POST', 
-	 				data: {orderid:'${obj.orderinfo.id }'}, 
-	 				url: '${base}/admin/inland/setFinanceInfo.html',
-	 	            success: function (data) { 
-	 	            	//成本合计
-	 	            	$('#costtotal').val(data.chengbensum);
-	 	            	//应收
-	 	            	$('#receivable').val(data.yingshousum);
-	 	            	var relief = $('#relief').val();
-		 	       	 	var incometotal  = '';
-		 	       	 	if(relief){
-		 	       	 		incometotal  = parseFloat(data.yingshousum) - parseFloat(relief);
-		 	       	 	}else{
-		 	       	 		incometotal = data.yingshousum;
-		 	       	 	}
-		 	       	 	if(!isNaN(incometotal)){
-	 	       		 		$('#incometotal').val(incometotal);
-		 	       	 	}
-		 	       	 	var returntotal = 0;
-			 	       	//应返合计
-			 	       	if($('#returntotal').val()){
-				 	   	 	returntotal = $('#returntotal').val();
-			 	       	}
-			 	   	    //利润合计
-			 	   	 	var profittotal  = parseFloat(incometotal) - parseFloat(data.chengbensum) - parseFloat(returntotal);
-			 	   	 	if(!isNaN(profittotal)){
-			 	   		 	$('#profittotal').val(profittotal.toFixed(2));
-			 	   	 	}
-	 		         },
-	 		         error: function (xhr) {
-	 		         } 
-	 	         });
+	        	 setFinanceInfo();
 	         }
 	       });
     });
+  	setFinanceInfo();
+  function setFinanceInfo(){
+	//设置财务信息
+ 	 $.ajax({ 
+			type: 'POST', 
+			data: {orderid:'${obj.orderinfo.id }'}, 
+			url: '${base}/admin/inland/setFinanceInfo.html',
+          success: function (data) { 
+          	//成本合计
+          	$('#costtotal').val(data.chengbensum.toFixed(2));
+          	//应收
+          	$('#receivable').val(data.yingshousum.toFixed(2));
+          	$('#personcount').val(data.renshusum);
+          	var relief = $('#relief').val();
+	       	 	var incometotal  = '';
+	       	 	if(relief){
+	       	 		incometotal  = parseFloat(data.yingshousum) - parseFloat(relief);
+	       	 	}else{
+	       	 		incometotal = data.yingshousum;
+	       	 	}
+	       	 	var incometotalval = $('#incometotal').val();
+	       	 	if(!isNaN(incometotal) && !incometotalval){
+     		 		$('#incometotal').val(incometotal);
+	       	 	}
+	       	 	var returntotal = 0;
+	 	       	//应返合计
+	 	       	if($('#returntotal').val()){
+		 	   	 	returntotal = $('#returntotal').val();
+	 	       	}
+	 	   	    //利润合计
+	 	   	 	var profittotal  = parseFloat(incometotal) - parseFloat(data.chengbensum) - parseFloat(returntotal);
+	 	   	    var profittotalval = $('#profittotal').val();
+	 	   	 	if(!isNaN(profittotal) && !profittotalval){
+	 	   		 	$('#profittotal').val(profittotal.toFixed(2));
+	 	   	 	}
+	         },
+	         error: function (xhr) {
+	         } 
+       });
+  }
   //其他页面回调
  function successCallback(id){
 	 loadPNRdata();
@@ -1047,9 +1055,17 @@
  	//成本价
  	var fromprice = $(this).val();
  	//票价折扣
- 	var discountFare = '${obj.custominfo.discountFare}';
- 	//手续费
- 	var fees = '${obj.custominfo.fees}'; 
+	var discountFare = 1;
+	var countfare = '${obj.custominfo.discountFare}';
+	if(countfare){
+		discountFare = countfare;
+	}
+	//手续费
+	var fees = 0;
+	var feescount = '${obj.custominfo.fees}'; 
+	if(feescount){
+		fees = feescount;
+	}
  	//alert("值："+fromprice + " 折扣："+discountFare + " 手续费：" + fees);
  	var price = parseFloat(fromprice * discountFare / 100) + parseFloat(fees);
  	//是否可以修改的标志	
