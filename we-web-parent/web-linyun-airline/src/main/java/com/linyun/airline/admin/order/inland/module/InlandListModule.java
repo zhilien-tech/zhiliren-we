@@ -75,4 +75,22 @@ public class InlandListModule {
 	public Object setFinanceInfo(HttpServletRequest request) {
 		return inlandListService.setFinanceInfo(request);
 	}
+
+	/**
+	 * 加载客户下拉
+	 */
+	@At
+	@POST
+	public Object loadCustomeSelect(HttpServletRequest request) {
+		return inlandListService.loadCustomeSelect(request);
+	}
+
+	/**
+	 * 加载国际专用卡支付余额
+	 */
+	@At
+	@POST
+	public Object loadBalance(HttpServletRequest request) {
+		return inlandListService.loadBalance(request);
+	}
 }

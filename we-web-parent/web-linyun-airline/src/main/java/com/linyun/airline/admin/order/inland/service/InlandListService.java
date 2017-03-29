@@ -22,6 +22,7 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.order.inland.enums.PayMethodEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
 import com.linyun.airline.common.enums.OrderStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
@@ -249,6 +250,45 @@ public class InlandListService extends BaseService<TUpOrderEntity> {
 		if (!Util.isEmpty(doublenum)) {
 			String format = decimalFormat.format(doublenum);
 			result = Double.valueOf(format);
+		}
+		return result;
+	}
+
+	/**
+	 * 加载客户下拉
+	 * <p>
+	 * TODO加载客户下拉
+	 *
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object loadCustomeSelect(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		String sqlString = sqlManager.get("customer_list_info");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("uc.comId", "=", company.getId());
+		List<Record> query = dbDao.query(sql, cnd, null);
+		return query;
+	}
+
+	/**
+	 * 加载国际专用卡支付余额
+	 * <p>
+	 * TODO加载国际专用卡支付余额
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object loadBalance(HttpServletRequest request) {
+		TBankCardEntity result = new TBankCardEntity();
+		HttpSession session = request.getSession();
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		List<TBankCardEntity> query = dbDao.query(TBankCardEntity.class,
+				Cnd.where("companyId", "=", company.getId()).and("status", "=", BankCardStatusEnum.ENABLE.intKey())
+						.and("cardName", "=", PayMethodEnum.INTERNATIONAL.value()), null);
+		if (query.size() > 0) {
+			result = query.get(0);
 		}
 		return result;
 	}

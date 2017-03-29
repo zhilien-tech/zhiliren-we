@@ -125,7 +125,14 @@
 			               <div id="infofooter" name="infofooter" class="infofooter">
 			                <div class="DemandDiv">
 			                 <span class="titleNum">${status.index + 1 }</span>
-			                 <a href="javascript:;" class="btn btn-primary btn-sm addDemand none"><b>+</b>&nbsp;&nbsp;需求</a>
+			                 <c:choose>
+			                 	<c:when test="${status.index eq 0 }">
+					                 <a href="javascript:;" class="btn btn-primary btn-sm addDemand none"><b>+</b>&nbsp;&nbsp;需求</a>
+			                 	</c:when>
+			                 	<c:otherwise>
+			                 		<a href="javascript:;" class="btn btn-primary btn-sm removeDemand none"><b>-</b>&nbsp;&nbsp;需求</a>
+			                 	</c:otherwise>
+			                 </c:choose>
 			                 <!-- 客户需求隐藏域 -->
 			                 <input type="hidden" id="customneedid" name="customneedid" value="${customneed.cusinfo.id }">
 			                 <table class="cloTable">

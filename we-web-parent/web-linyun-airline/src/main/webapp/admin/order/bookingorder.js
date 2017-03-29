@@ -225,6 +225,7 @@ $(function(){
         newDiv.find('[name=customneedid]').before('<a href="javascript:;" class="btn btn-primary btn-sm removeDemand"><b>-</b>&nbsp;&nbsp;需求</a>');
         var divId=document.getElementById('infofooter').getElementsByTagName('div');
         newDiv.find('.titleNum').text(divId.length);
+        newDiv.find('.paymethod').trigger("change");
         newDiv.find('[name=airlineinfo]').each(function(i){
         	if(i > 0){
         		$(this).remove();
@@ -338,4 +339,58 @@ function loadCustominfo(){
 		$('#customeidcolor').attr('color','red');
 		$('#historyqiancolor').attr('color','red');
 	}
+}
+//设置付款方式
+$(document).on("change",".paymethod",function(){
+	var paymethod = $(this).val();
+	var parentDiv = $(this).parent().parent().parent();
+	if(paymethod == 1){
+		parentDiv.find('[name=threepaytd]').show();
+		parentDiv.find('[name=threepaymethod]').show();
+		parentDiv.find('[name=internationalcard]').hide();
+		$.ajax({ 
+			type: 'POST', 
+			data: {}, 
+			dataType:'json',
+			url: BASE_PATH + '/admin/inland/loadCustomeSelect.html',
+            success: function (data) { 
+            	var result = '';
+            	for(var i=0 ; i<data.length ; i++){
+            		result += '<option value="'+data[i].id+'">'+data[i].shortname+'</option>';
+            	}
+            	parentDiv.find('[name=thirdcustomid]').html(result);
+            },
+            error: function (xhr) {
+          	
+            } 
+         });
+	}else if(paymethod == 2){
+		parentDiv.find('[name=threepaytd]').hide();
+		parentDiv.find('[name=threepaymethod]').hide();
+		parentDiv.find('[name=internationalcard]').show();
+		$.ajax({
+			type: 'POST', 
+			data: {}, 
+			dataType:'json',
+			url: BASE_PATH + '/admin/inland/loadBalance.html',
+            success: function (data) { 
+            	parentDiv.find('[name=internationalcard]').html('<label>余额：'+data.balance+'</label>');
+            },
+            error: function (xhr) {
+          	
+            } 
+         });
+	}else{
+		parentDiv.find('[name=threepaytd]').hide();
+		parentDiv.find('[name=threepaymethod]').hide();
+		parentDiv.find('[name=internationalcard]').hide();
+	}
+    //$(this).parent().parent().remove();
+});
+//自动触发付款方式select事件
+triggerSelect();
+function triggerSelect(){
+	$('.DemandDiv').each(function(i){
+		$(this).find('.paymethod').trigger("change");
+	});
 }
