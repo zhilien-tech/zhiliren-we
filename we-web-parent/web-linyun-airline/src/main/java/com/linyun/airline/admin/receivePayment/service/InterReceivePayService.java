@@ -494,6 +494,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			Cnd cnd2 = Cnd.NEW();
 			cnd2.and("companyid", "=", companyId);
 			cnd2.and("bankName", "!=", "");
+			cnd2.and("status", "=", BankCardStatusEnum.ENABLE.intKey());
 			cnd2.groupBy("bankName");
 			bankList = dbDao.query(TBankCardEntity.class, cnd2, null);
 

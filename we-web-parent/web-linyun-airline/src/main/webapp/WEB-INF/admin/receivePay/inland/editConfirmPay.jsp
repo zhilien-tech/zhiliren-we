@@ -237,8 +237,11 @@
 				}
 			});
 		}
-		//文件上传
+		
 		$(function(){
+			//银行名称
+			bankSelect();
+			//文件上传
 			$.fileupload1 = $('#uploadFile').uploadify({
 				'auto' : true,//选择文件后自动上传
 				'formData' : {
