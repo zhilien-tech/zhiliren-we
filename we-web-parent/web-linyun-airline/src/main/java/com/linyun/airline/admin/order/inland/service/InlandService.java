@@ -843,6 +843,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			billingdate = new Date();
 			financeInfo.setIssuer(user.getFullName());
 			financeInfo.setIssuerid(new Long(user.getId()).intValue());
+
 		}
 		//销售人员
 		String salesperson = financeMap.get("salesperson");
