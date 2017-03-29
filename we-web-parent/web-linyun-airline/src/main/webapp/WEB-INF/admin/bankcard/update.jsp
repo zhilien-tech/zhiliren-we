@@ -82,9 +82,9 @@
 								</select> --%>
 								<select id="findBank" name="findBank" onchange="setSelectedAreaIds()" class="form-control select2 inpImpWid" multiple="multiple" >
 									
-									<option value="${obj.bankCardInfo.bankName }" selected="selected">${obj.bankCardInfo.bankName }</option>
+									<option value="${obj.dictInfoEntity.id }" selected="selected">${obj.bankCardInfo.bankName }</option>
 								</select>
-				               	<input name="bankName" id="bankNameId"  type="hidden" placeholder="单位名称" />
+				               	<input name="bankName" id="bankNameId"  type="hidden" placeholder="单位名称" value="${obj.dictInfoEntity.id }"/>
 							</div>
 						</div>
 						<!-- 设置已选中的项 -->

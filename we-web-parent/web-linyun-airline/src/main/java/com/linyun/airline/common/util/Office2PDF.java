@@ -71,6 +71,7 @@ public class Office2PDF {
 		}
 
 		DefaultOfficeManagerConfiguration config = new DefaultOfficeManagerConfiguration();
+
 		// 获取OpenOffice 的安装目录
 		String officeHome = getOfficeHome();
 		config.setOfficeHome(officeHome);
@@ -198,6 +199,6 @@ public class Office2PDF {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Office2PDF.converterFile("C:/Users/Administrator/Desktop/项目计划20170319(二阶段).xlsx", "E:/aew.pdf");
+		Office2PDF.converterFile("C:/Users/Administrator/Desktop/新建 Microsoft Word 文档.docx", "E:/aew.pdf");
 	}
 }

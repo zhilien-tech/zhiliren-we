@@ -28,6 +28,8 @@ import org.nutz.mvc.annotation.Param;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
+import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
 import com.linyun.airline.common.enums.TurnOverStatusEnum;
 import com.linyun.airline.common.result.Select2Option;
@@ -151,7 +153,10 @@ public class TurnOverViewService extends BaseService<TTurnOverEntity> {
 		List<DictInfoEntity> bankCardTypeList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "YHKLX"),
 				null);
 		//查询有哪些项目
-		List<DictInfoEntity> projectList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "FKYT"), null);
+		/*	List<DictInfoEntity> projectList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "FKYT"), null);*/
+		List<ComDictInfoEntity> projectList = dbDao.query(ComDictInfoEntity.class,
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
+				null);
 		//查询有哪些币种类型
 		List<DictInfoEntity> currencyList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "BZ"), null);
 		Cnd cnd = Cnd.NEW();
@@ -232,7 +237,10 @@ public class TurnOverViewService extends BaseService<TTurnOverEntity> {
 		/*Long id = 23L;*/
 		//查询有哪些币种
 		List<DictInfoEntity> currencyList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "BZ"), null);
-		List<DictInfoEntity> projectList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "FKYT"), null);
+		/*List<DictInfoEntity> projectList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "FKYT"), null);*/
+		List<ComDictInfoEntity> projectList = dbDao.query(ComDictInfoEntity.class,
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
+				null);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("companyId", "=", companyId);
 		cnd.and("status", "=", BankCardStatusEnum.ENABLE.intKey());

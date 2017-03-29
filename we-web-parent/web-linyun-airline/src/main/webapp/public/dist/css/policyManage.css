@@ -39,8 +39,12 @@ label.lab {float: none !important;display: inline-block;}
 #addFileInfoForm .row .form-group:nth-child(1) div .glyphicon{left: 254px;}
 .red{color:red;}
 .fileName{display: inline-block;}
-#SWFUpload_0_0{margin-left:265px;background-color: #fff;}
+.uploadify-queue-item{margin-left:265px;background-color: #fff;}
 #file{position: relative;top: 11px;}
+.deleteBtn{background-color: #3c8dbc;border: solid 1px #367fa9;color: #fff;padding: 5px 13px;border-radius: 3px;font-size: 11px;}
+.SCbtn{width: 68%;position: relative;left: 32%;top: 11px;}
+
+
 /*end 弹框 style*/
 
 
