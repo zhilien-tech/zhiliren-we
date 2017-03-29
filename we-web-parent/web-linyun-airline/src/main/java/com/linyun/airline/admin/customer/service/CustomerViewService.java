@@ -47,6 +47,7 @@ import com.linyun.airline.common.enums.MessageRemindEnum;
 import com.linyun.airline.common.enums.MessageSourceEnum;
 import com.linyun.airline.common.enums.MessageStatusEnum;
 import com.linyun.airline.common.enums.MessageTypeEnum;
+import com.linyun.airline.common.enums.UserTypeEnum;
 import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
@@ -77,6 +78,13 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	private static final int UPCOMPANY = CompanyTypeEnum.UPCOMPANY.intKey();
 	private static final int AGENT = CompanyTypeEnum.AGENT.intKey();
 
+	//普通用户类型
+	private static final int UPCOM_USER = UserTypeEnum.UPCOM.intKey();
+	private static final int AGENT_USER = UserTypeEnum.AGENT.intKey();
+	//管理员用户类型
+	private static final int UP_MANAGER = UserTypeEnum.UP_MANAGER.intKey();
+	private static final int AGENT_MANAGER = UserTypeEnum.AGENT_MANAGER.intKey();
+
 	@Inject
 	private externalInfoService externalInfoService;
 
@@ -92,12 +100,30 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	//负责人
 	public Object agent(HttpSession session) {
 		Map<String, Object> obj = new HashMap<String, Object>();
-		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		long companyId = tCompanyEntity.getId();
-		Sql sql = Sqls.create(sqlManager.get("customer_agent_list"));
-		sql.setParam("comid", companyId);
-		List<Record> record = dbDao.query(sql, null, null);
-		obj.put("userlist", record);
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		int userType = loginUser.getUserType(); //用户类型
+		long userId = loginUser.getId();
+
+		//管理员
+		if (Util.eq(UP_MANAGER, userType) || Util.eq(AGENT_MANAGER, userType)) {
+			//当前公司id
+			TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+			long companyId = tCompanyEntity.getId();
+			Sql sql = Sqls.create(sqlManager.get("customer_agent_list"));
+			sql.setParam("comid", companyId);
+			/*sql.setParam("userid", userId);*/
+			List<Record> record = dbDao.query(sql, null, null);
+			obj.put("userlist", record);
+		}
+
+		//普通用户
+		if (Util.eq(UPCOM_USER, userType) || Util.eq(AGENT_USER, userType)) {
+			List<TUserEntity> record = new ArrayList<TUserEntity>();
+			record.add(loginUser);
+			obj.put("userlist", record);
+		}
+
 		return obj;
 	}
 
