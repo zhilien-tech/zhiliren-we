@@ -121,7 +121,7 @@
 					</select></td>
 					<td>资金种类：</td>
 					<td><select id="fundType" name="fundType" class="form-control input-sm">
-							<!-- <option value="0">--请选择--</option> -->
+							<option value="0">--请选择--</option>
 							<c:forEach var="one" items="${obj.zjzlList}">
 	                        	<c:choose>
 	                          		<c:when test="${obj.payList[0].fundtype eq one.id }">
@@ -237,8 +237,11 @@
 				}
 			});
 		}
-		//文件上传
+		
 		$(function(){
+			//银行名称
+			bankSelect();
+			//文件上传
 			$.fileupload1 = $('#uploadFile').uploadify({
 				'auto' : true,//选择文件后自动上传
 				'formData' : {

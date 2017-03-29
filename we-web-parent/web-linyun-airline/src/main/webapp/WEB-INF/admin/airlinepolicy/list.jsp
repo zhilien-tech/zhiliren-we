@@ -15,9 +15,6 @@
 <c:set var="url" value="${base}/admin/airlinepolicy" />
 <!-- <body class="hold-transition skin-blue sidebar-mini"> -->
 <div class="wrapper">
-
- 
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Main content -->
@@ -188,9 +185,9 @@
 	        "columnDefs": [{ "sWidth": "34.66%",  "targets": [0] },
 	     				{ "sWidth": "8.66%",  "targets": [1] },
 	    				{ "sWidth": "16.66%",  "targets": [2] },
-	    				{ "sWidth": "12.66%",  "targets": [3] },
-	    				{ "sWidth": "10.66%",  "targets": [4] },
-	    				{ "sWidth": "22.66%",  "targets": [5] },
+	    				{ "sWidth": "11.66%",  "targets": [3] },
+	    				{ "sWidth": "7.66%",  "targets": [4] },
+	    				{ "sWidth": "26.66%",  "targets": [5] },
 	                    {
 	            //   指定第一列，从0开始，0表示第一列，1表示第二列……
 	            targets: 5,

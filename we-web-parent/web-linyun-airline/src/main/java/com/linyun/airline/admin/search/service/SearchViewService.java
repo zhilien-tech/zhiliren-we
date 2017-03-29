@@ -332,11 +332,11 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 					departureDateTime = flight.getDepartureDateTime();
 					arrivalDateTime = flight.getArrivalDateTime();
 					if (!Util.isEmpty(departureDateTime) || "" != departureDateTime) {
-						departureDateTime = departureDateTime.substring(11, 16);
+						departureDateTime = departureDateTime.substring(11, 13) + departureDateTime.substring(14, 16);
 						flight.setDepartureDateTime(departureDateTime);
 					}
 					if (!Util.isEmpty(arrivalDateTime) || "" != arrivalDateTime) {
-						arrivalDateTime = arrivalDateTime.substring(11, 16);
+						arrivalDateTime = arrivalDateTime.substring(11, 13) + arrivalDateTime.substring(14, 16);
 						flight.setArrivalDateTime(arrivalDateTime);
 					}
 				}

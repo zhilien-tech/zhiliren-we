@@ -186,6 +186,8 @@
 	          lastDiv.after(newDiv);
 	          var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
 	          newDiv.find("p").html(No); 
+	          newDiv.find('#preView').parent().remove();
+	          newDiv.find('.deleteInvoice').parent().remove();
 	          newDiv.find('.addIcon').parent().remove();
 	          newDiv.find('.fileUL').append('<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>');
 	      });
@@ -205,6 +207,8 @@
 	   	  	  var invoicedetaildiv = $(this).parent().parent().parent();
 	   	  	  invoicedetaildiv.find('[name=invoiceurl]').val('');
 	   	  	  invoicedetaildiv.find('[name=fileName]').html('未选择文件');
+	   	  	  invoicedetaildiv.find('#preView').remove();
+	   	  	  invoicedetaildiv.find('.deleteInvoice').remove();
 	   	  	  //alert(invoiceurl);
 	          //document.getElementById('light').style.display='block';
 	          //document.getElementById('fade').style.display='block';

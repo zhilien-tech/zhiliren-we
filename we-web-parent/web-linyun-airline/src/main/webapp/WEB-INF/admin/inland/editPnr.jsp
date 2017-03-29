@@ -30,6 +30,7 @@
                     <td>登录帐号：</td>
                     <td>
                     	<select id="loginid" name="loginid" class="form-control input-sm">
+                    		<option value="">请选择</option>
                     		<c:forEach items="${obj.loginselect }" var="one">
 	                    		<c:choose>
 	                        		<c:when test="${obj.pnrinfo.loginid eq one.comDictName}">
@@ -43,7 +44,7 @@
                     	</select>
                     </td>
                     <td>人数：</td>
-                    <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm" value="${obj.pnrinfo.peoplecount }"></td></td>
+                    <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm mustNumber" value="${obj.pnrinfo.peoplecount }"></td></td>
                     <td>币种：</td>
                     <td>
                       <select id="currency" name="currency" class="form-control input-sm">

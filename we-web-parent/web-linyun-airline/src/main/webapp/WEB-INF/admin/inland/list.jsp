@@ -61,7 +61,7 @@
                           <th>状态</th>
                           <th>联系人</th>
                           <th>电话</th>
-                          <th>操作</th>
+                          <!-- <th>操作</th> -->
                         </tr>
                         </thead>
                         <tbody class="tableTbody">
@@ -120,7 +120,6 @@
                                     <th>状态</th>
                                     <th>联系人</th>
                                     <th>电话</th>
-                                    <th>操作</th>
                                   </tr>
                                   </thead>
                                   <tbody>

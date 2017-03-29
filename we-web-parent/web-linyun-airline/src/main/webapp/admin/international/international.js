@@ -120,7 +120,7 @@ function loadDataTable(status){
 	$('#status').val(status);
 }
 //点击行跳转到详情页
-$("tbody",$('#internationalTable')).on("click","tr",function(event) {
+$("tbody",$('#internationalTable')).on("dblclick","tr",function(event) {
 	var item = internationalTable.row($(this).closest('tr')).data();
 	var url = BASE_PATH + '/admin/international/internationalDetail.html?orderid='+item.ordernumber;
 	window.open(url);

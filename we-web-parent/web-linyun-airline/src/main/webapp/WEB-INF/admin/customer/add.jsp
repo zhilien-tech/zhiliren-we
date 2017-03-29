@@ -310,17 +310,20 @@
 							<div class="form-group">
 								<label class="col-sm-2 text-right padding">信用额度：</label>
 	                            <div class="col-sm-2 padding">
-	                              <input id="creditLine" name="creditLine" type="text" class="form-control input-sm">
+	                              <input id="creditLine" name="creditLine" type="text" class="form-control input-sm" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
+										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
 	                            </div>
 							</div>
                             <label class="col-sm-1 text-right padding">已欠款：</label>
                             <div class="col-sm-2 padding">
-                            	<input id="arrears" name="arrears" type="text" readonly="readonly" class="form-control input-sm">
+                            	<input id="arrears" name="arrears" type="text" readonly="readonly" class="form-control input-sm" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
+										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
                             </div>
 							<div class="form-group">
 								<label class="col-sm-1 text-right padding">预收款：</label>
 	                            <div class="col-sm-1 padding">
-	                              <input id="preDeposit" name="preDeposit" type="text" class="form-control input-sm">
+	                              <input id="preDeposit" name="preDeposit" type="text" class="form-control input-sm" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
+										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
 	                            </div>
 							</div>
                         </div>
@@ -328,27 +331,31 @@
 							<div class="form-group">
 								<label class="col-sm-2 text-right padding">票价折扣：</label>
 	                            <div class="col-sm-2 padding">
-	                              <input id="discountFare" name="discountFare" type="text" class="form-control input-sm discountText">
+	                              <input id="discountFare" name="discountFare" type="text" class="form-control input-sm discountText" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
+										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
 	                              <span>%</span>
 	                            </div>
 							</div>
                           	<div class="form-group">
                           		<label class="col-sm-1 text-right padding">手续费：</label>
 	                            <div class="col-sm-2 padding">
-	                            	<input id="fees" name="fees" type="text" class="form-control input-sm discountText" placeholder="每张票">
+	                            	<input id="fees" name="fees" type="text" class="form-control input-sm discountText" placeholder="每张票" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
+										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
 	                            	<span>￥</span>
 	                            </div>
                           	</div>
 							<div class="form-group">
 								<label class="col-sm-1 text-right padding">汇率：</label>
 	                            <div class="col-sm-1 padding">
-	                              <input id="exchangeRates" name="exchangeRates" type="text" class="form-control input-sm">
+	                              <input id="exchangeRates" name="exchangeRates" type="text" class="form-control input-sm" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
+										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
 	                            </div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-1 text-right padding">退税：</label>
 	                            <div class="col-sm-2 padding">
-	                              <input id="taxRefund" name="taxRefund" type="text" class="form-control input-sm taxText" placeholder="每张票">
+	                              <input id="taxRefund" name="taxRefund" type="text" class="form-control input-sm taxText" placeholder="每张票" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
+										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
 	                            </div>
 							</div>
                         </div>
@@ -541,7 +548,7 @@
 								message : '传真格式错误'
 							}
 						}
-					},
+					}/* ,
 					creditLine : {
 						validators : {
 							regexp : {
@@ -589,7 +596,7 @@
 								message : '退税格式错误'
 							}
 						}
-					}
+					} */
 				}
 			});
 		});
