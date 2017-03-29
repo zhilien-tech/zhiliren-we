@@ -121,7 +121,7 @@
 					</select></td>
 					<td>资金种类：</td>
 					<td><select id="fundType" name="fundType" class="form-control input-sm">
-							<!-- <option value="0">--请选择--</option> -->
+							<option value="0">--请选择--</option>
 							<c:forEach var="one" items="${obj.zjzlList}">
 	                        	<c:choose>
 	                          		<c:when test="${obj.payList[0].fundtype eq one.id }">

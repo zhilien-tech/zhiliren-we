@@ -107,7 +107,7 @@
 					</select></td>
 					<td>资金种类：</td>
 					<td><select id="fundType" name="fundType" class="form-control input-sm">
-							<!-- <option value="0">--请选择--</option> -->
+							<option value="0">--请选择--</option>
 							<c:forEach var="one" items="${obj.zjzlList}">
 	                        	<option value="${one.id }">${one.comDictName }</option>
 	                        </c:forEach>
