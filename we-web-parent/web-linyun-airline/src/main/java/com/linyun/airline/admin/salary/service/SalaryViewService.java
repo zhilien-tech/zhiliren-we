@@ -179,6 +179,8 @@ public class SalaryViewService extends BaseService<TSalaryEntity> {
 					chain.add("commission", tSalaryEntity.getCommission());
 					chain.add("comId", tSalaryEntity.getComId());
 					chain.add("drawerId", tSalaryEntity.getDrawerId());
+					chain.add("actualCommission", tSalaryEntity.getActualCommission());
+					chain.add("salaryTotal", tSalaryEntity.getSalaryTotal());
 					chain.add("updateTime", new Date());
 
 					dbDao.update(TSalaryEntity.class, chain, Cnd.where("id", "=", s.getId()));

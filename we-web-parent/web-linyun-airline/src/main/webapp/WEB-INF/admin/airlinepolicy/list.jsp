@@ -41,7 +41,7 @@
                       <option>亚洲</option> -->
                        <option value="">请选择</option>
                       <c:forEach items="${obj.areaList }" var="each">
-                      	<option value="${each.areaId}">${each.areaName }</option>
+                      	<option value="${each.areaName}">${each.areaName }</option>
                       </c:forEach>
                     </select>
                   </div>
@@ -162,7 +162,15 @@
 	        "columns": [
 	                    {"data": "filename", "bSortable": false},
 	                    {"data": "airlinecompanyname", "bSortable": false},
-	                    {"data": "areaname", "bSortable": false},
+	                    {"data": "areaname", "bSortable": false,
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.areaname;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance;
+	                    	}		
+	                    },
 	                    {"data": "updatetime", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var depositBalance = row.updatetime;
@@ -321,7 +329,7 @@
 	function pickedFunc(){
 		
 		var airlineCompanyId = $('#selectCompany').val();
-		var areaId = $('#selectArea').val();
+		var areaName = $('#selectArea').val();
 		var type = $('#selectType').val();
 		var beginTime = $('#beginTime').val();
 		var endTime = $('#endTime').val();
@@ -331,7 +339,7 @@
 		var companyName = $('#companyName').val(); */
 	    var param = {
 	        "airlineCompanyId": airlineCompanyId,
-	        "areaId": areaId,
+	        "areaName": areaName,
 	        "type": type,
 			"endTime":endTime,
 			"beginTime":beginTime

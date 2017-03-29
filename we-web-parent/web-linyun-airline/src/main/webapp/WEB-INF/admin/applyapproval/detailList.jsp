@@ -31,8 +31,8 @@
 				<span>${obj.reduceList.customname }</span>
 			</li>
 			<li>
-				<span>用途</span>
-				<span></span>
+				<span>项目用途</span>
+				<span>减免</span>
 			</li>
 			<li>
 				<span>资金种类</span>
@@ -77,7 +77,7 @@
 				<span>${obj.detaillist.shortName }</span>
 			</li>
 			<li>
-				<span>用途</span>
+				<span>项目用途</span>
 				<span>${obj.detaillist.purposeStr }</span>
 			</li>
 			<li>
