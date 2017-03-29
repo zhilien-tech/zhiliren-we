@@ -51,9 +51,9 @@ SELECT
 	uo.ordersnum ordernum,
 	pi.PNR pnrNum,
 	oc.leavetdate leaveDate,
-	oc.peoplecount peopleCount,
+	pi.peoplecount peopleCount,
 	pi.costpricesum salePrice,
-	oc.paycurrency currency
+	pi.currency currency
 FROM
 	t_pay p
 LEFT JOIN t_pay_pnr pp on pp.payId=p.id
