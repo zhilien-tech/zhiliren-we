@@ -112,9 +112,6 @@ function initInternationalTable(){
 initInternationalTable();
 //加载列表数据
 function loadDataTable(status){
-	if(!status){
-		status = $('#status').val();
-	}
 	var param = {
 			ordersstatus:status
 	};
