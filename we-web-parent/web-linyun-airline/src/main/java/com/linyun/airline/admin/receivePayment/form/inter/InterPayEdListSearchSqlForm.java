@@ -17,7 +17,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.cri.SqlExpressionGroup;
 
-import com.linyun.airline.common.enums.OrderTypeEnum;
+import com.linyun.airline.common.enums.AccountPayEnum;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
@@ -45,44 +45,35 @@ public class InterPayEdListSearchSqlForm extends DataTablesParamForm {
 	/**出发日期 -- 截止出发日期*/
 	private Date leaveEndDate;
 
-	/**当前公司下用户 ids*/
-	private String loginUserId;
-
-	/**订单状态*/
-	private long orderPnrStatus;
+	/**当前公司id公司id*/
+	private long companyId;
 
 	public Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		//添加自定义查询条件（可选）
 		SqlExpressionGroup group = new SqlExpressionGroup();
 		group.and("ci.shortName", "LIKE", "%" + name + "%").or("uo.ordersnum", "LIKE", "%" + name + "%")
-				.or("ci.linkMan", "LIKE", "%" + name + "%").or("pi.PNR", "LIKE", "%" + name + "%");
+				.or("ci.linkMan", "LIKE", "%" + name + "%");
 		if (!Util.isEmpty(name)) {
 			cnd.and(group);
-		}
-		if (!Util.isEmpty(orderStatus)) {
-			cnd.and("pi.orderPnrStatus", "=", orderStatus);
 		}
 
 		//TODO 出发日期
 		if (!Util.isEmpty(leaveBeginDate)) {
-			cnd.and("oc.leavetdate", ">=", leaveBeginDate);
+			cnd.and("pi.leavesdate", ">=", leaveBeginDate);
 		}
 		// 返回日期
 		if (!Util.isEmpty(leaveEndDate)) {
-			cnd.and("oc.leavetdate", "<=", leaveEndDate);
+			cnd.and("pi.leavesdate", "<=", leaveEndDate);
 		}
-
-		cnd.and("uo.orderstype", "=", OrderTypeEnum.TEAM.intKey()); //国际
-		cnd.and("pi.orderPnrStatus", "=", orderPnrStatus);
-		cnd.and("pi.userid", "=", loginUserId);
-
+		cnd.and("po.paystauts", "=", AccountPayEnum.APPROVALPAYED.intKey()); //已收款
+		cnd.and("p.companyId", "=", companyId);
 		return cnd;
 	}
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {
-		String sqlString = sqlManager.get("receivePay_pay_id_list");
+		String sqlString = sqlManager.get("receivePay_inter_payed_orders");
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;

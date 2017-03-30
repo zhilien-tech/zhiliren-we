@@ -418,21 +418,46 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 * @return 
 	 */
 	public Object listPayEdData(InterPayEdListSearchSqlForm form, HttpSession session) {
-		//当前公司下的用户
-		String userIds = userInComp(session);
-		form.setLoginUserId(userIds);
-		form.setOrderPnrStatus(APPROVALPAYED);
-
+		//当前公司id
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		form.setCompanyId(companyId);
+		String orderStatus = form.getOrderStatus();
+		if (Util.isEmpty(orderStatus)) {
+			orderStatus = "3";
+		} else {
+			if (Util.eq("firBooking", orderStatus)) {
+				//一订
+				orderStatus = InternationalStatusEnum.ONEBOOK.intKey() + "";
+			}
+			if (Util.eq("secBooking", orderStatus)) {
+				//二订
+				orderStatus = InternationalStatusEnum.TWOBOOK.intKey() + "";
+			}
+			if (Util.eq("thrBooking", orderStatus)) {
+				//三订
+				orderStatus = InternationalStatusEnum.THREEBOOK.intKey() + "";
+			}
+			if (Util.eq("allBooking", orderStatus)) {
+				//全款
+				orderStatus = InternationalStatusEnum.FULLAMOUNT.intKey() + "";
+			}
+			if (Util.eq("lastBooking", orderStatus)) {
+				//尾款
+				orderStatus = InternationalStatusEnum.TAILMONEY.intKey() + "";
+			}
+			if (Util.eq("outTicket", orderStatus)) {
+				//出票
+				orderStatus = InternationalStatusEnum.TICKETING.intKey() + "";
+			}
+		}
+		form.setOrderStatus(orderStatus);
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
 		List<Record> data = (List<Record>) listdata.get("data");
-		for (Record record : data) {
-			Sql sql = Sqls.create(sqlManager.get("receivePay_payed_list"));
-			Cnd cnd = Cnd.NEW();
-			cnd.and("p.id", "=", record.getString("pid"));
-			List<Record> orders = dbDao.query(sql, cnd, null);
-			record.put("orders", orders);
-		}
+
+		//TODO
+
 		listdata.remove("data");
 		listdata.put("data", data);
 		return listdata;
