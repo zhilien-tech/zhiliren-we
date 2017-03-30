@@ -20,12 +20,12 @@
                 <li class="active"><a href="#tab_1" onclick="loadDataTable(0)" data-toggle="tab">全部</a></li>
                 <li><a href="#tab_1" onclick="loadDataTable(1)" data-toggle="tab">查询</a></li>
                 <li><a href="#tab_1" onclick="loadDataTable(2)" data-toggle="tab">预订</a></li>
-                <li><a href="#tab_1" onclick="loadDataTable(3)" data-toggle="tab">一订</a></li>
-                <li><a href="#tab_1" onclick="loadDataTable(4)" data-toggle="tab">二订</a></li>
-                <li><a href="#tab_1" onclick="loadDataTable(5)" data-toggle="tab">三订</a></li>
-                <li><a href="#tab_1" onclick="loadDataTable(6)" data-toggle="tab">全款</a></li>
-                <li><a href="#tab_1" onclick="loadDataTable(7)" data-toggle="tab">尾款</a></li>
-                <li><a href="#tab_5" onclick="loadTicking()" data-toggle="tab">出票</a></li>
+                <li><a href="#tab_5" onclick="loadTicking(3)" data-toggle="tab">一订</a></li>
+                <li><a href="#tab_5" onclick="loadTicking(4)" data-toggle="tab">二订</a></li>
+                <li><a href="#tab_5" onclick="loadTicking(5)" data-toggle="tab">三订</a></li>
+                <li><a href="#tab_5" onclick="loadTicking(6)" data-toggle="tab">全款</a></li>
+                <li><a href="#tab_5" onclick="loadTicking(7)" data-toggle="tab">尾款</a></li>
+                <li><a href="#tab_5" onclick="loadTicking(8)" data-toggle="tab">出票</a></li>
                 <li><a href="#tab_6" data-toggle="tab" onclick="loadreceivedata();">收/付款</a></li>
                 <li><a href="#tab_7" data-toggle="tab" onclick="kaiInvoiceLoad();">发票</a></li>
                 <li><a href="#tab_1" onclick="loadDataTable(9)" data-toggle="tab">关闭</a></li>
@@ -83,7 +83,7 @@
                   <div class="tab-pane pane-content" id="tab_5">
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs nlkhUL">
-                          <li class="active"><a href="#tab1_1" data-toggle="tab">收款</a></li>
+                          <li class="active"><a href="#tab1_1" data-toggle="tab" onclick="loadTicking()">收款</a></li>
                           <li><a href="#tab1_2" data-toggle="tab" onclick="loadFukuanTable();">付款</a></li>
                         </ul>
                         <div class="tab-content padding0">
@@ -237,6 +237,7 @@
                                     <th>总额</th>
                                     <th>客户名称</th>
                                     <th>开票人</th>
+                                    <th>订单状态</th>
                                     <th>状态</th>
                                     <th>备注</th>
                                     <th>操作</th>
@@ -281,12 +282,12 @@
                                   <thead>
                                     <tr>
 	                                    <th>订单号</th>
-	                                    <th>出发日期</th>
+	                                    <th>付款日期</th>
 	                                    <th>人数</th>
-	                                    <th>销售金额</th>
-	                                    <th>总额</th>
+	                                    <th>金额</th>
 	                                    <th>客户名称</th>
 	                                    <th>开票人</th>
+	                                    <th>订单状态</th>
 	                                    <th>状态</th>
 	                                    <th>备注</th>
 	                                    <th>操作</th>

@@ -229,21 +229,29 @@ $(document).on('click', '.checkchild2', function(e) {
 	}
 });
 //点击出票加载出票表格
-function loadTicking(){
+function loadTicking(status){
+	if(!status){
+		status = $('#status').val();
+	}
+	$('#checkedboxval2').val('');
+	$(".checkall2").prop("checked", false);
 	var param = {
-			ordersstatus:8,
+			ordersstatus:status,
 			ticketing:1
 	};
 	drawerPayTable.settings()[0].ajax.data = param;
 	drawerPayTable.ajax.reload(function(json){
 		autoHighLoad($('#drawerPayTable'));
 	});
+	$('#status').val(status);
+	loadFukuanTable();
 }
 $('.fuKuanBtn').click(function(){
 	var ids = $('#checkedboxval2').val();
 	if(!ids){
 		layer.msg("请至少选中一条记录",{time: 2000, icon:1});
 	}else{
+		var status = $('#status').val();
 		$.ajax({ 
 			type: 'POST', 
 			data: {ids:ids}, 
@@ -257,7 +265,7 @@ $('.fuKuanBtn').click(function(){
         				closeBtn:false,//默认 右上角关闭按钮 是否显示
         				shadeClose:true,
         				area: ['850px', '550px'],
-        				content: BASE_PATH + '/admin/international/openReceipt.html?ids='+ids,
+        				content: BASE_PATH + '/admin/international/openReceipt.html?ids='+ids+'&orderstatus='+status,
         				end:function(){
         					drawerPayTable.ajax.reload(function(json){
         						autoHighLoad($('#drawerPayTable'));

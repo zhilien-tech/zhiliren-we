@@ -117,7 +117,7 @@ function loadDataTable(status){
 	};
 	internationalTable.settings()[0].ajax.data = param;
 	internationalTable.ajax.reload();
-	$('#status').val(status);
+	
 }
 //点击行跳转到详情页
 $("tbody",$('#internationalTable')).on("dblclick","tr",function(event) {

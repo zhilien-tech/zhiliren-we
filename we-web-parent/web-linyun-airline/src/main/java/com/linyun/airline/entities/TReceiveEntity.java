@@ -56,4 +56,8 @@ public class TReceiveEntity implements Serializable {
 	@Column
 	@Comment("公司id")
 	private Integer companyid;
+
+	@Column
+	@Comment("订单状态")
+	private Integer orderstatus;
 }

@@ -30,6 +30,7 @@
 		                        <li id="thrBooking" >三订</li>
 		                        <li id="allBooking" >全款</li>
 		                        <li id="lastBooking" >尾款</li>
+		                        <li id="outTicket" >出票</li>
 					        </ul>
 							<div class="nav-tabs-custom tabConte">
 								<ul class="nav nav-tabs">

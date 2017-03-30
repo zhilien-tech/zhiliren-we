@@ -93,6 +93,7 @@
 	<script src="${base}/public/dist/js/app.min.js"></script>
 	<!-- 確認收款js -->
 	<script src="${base}/admin/receivePayment/inter/interReceive.js"></script>
+	<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
 	<!-- 防止订单重复提交 -->
 	<script type="text/javascript">
 		$(function(){

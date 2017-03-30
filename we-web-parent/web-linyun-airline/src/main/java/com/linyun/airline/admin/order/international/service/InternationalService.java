@@ -27,6 +27,8 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.google.common.base.Splitter;
+import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
+import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.customneeds.service.EditPlanService;
 import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
@@ -766,10 +768,11 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Map<String, Object> result = new HashMap<String, Object>();
 		String ids = request.getParameter("ids");
+		String orderstatus = request.getParameter("orderstatus");
 		String sqlString = sqlManager.get("get_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.limit();
-		cnd.and("tuo.ordersstatus", "=", InternationalStatusEnum.TICKETING.intKey());
+		//cnd.and("tuo.ordersstatus", "=", InternationalStatusEnum.TICKETING.intKey());
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
 		cnd.and("tuo.id", "in", ids);
 		List<Record> orders = dbDao.query(sql, cnd, null);
@@ -782,15 +785,15 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			}
 		}
 		result.put("orders", orders);
-		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
-		try {
-			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Sql create = Sqls.create(sqlManager.get("get_bank_info_select"));
+		create.setParam("companyId", company.getId());
+		create.setParam("typeCode", YHCODE);
+		List<Record> yhkSelect = dbDao.query(create, null, null);
 		result.put("yhkSelect", yhkSelect);
 		result.put("ids", ids);
 		result.put("sumincome", sumincome);
+		//订单状态
+		result.put("orderstatus", orderstatus);
 		return result;
 	}
 
@@ -813,6 +816,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		String bankcardnum = request.getParameter("bankcardnum");
 		String billurl = request.getParameter("billurl");
 		String sumincome = request.getParameter("sumincome");
+		String orderstatus = request.getParameter("orderstatus");
 		TReceiveEntity receiveEntity = new TReceiveEntity();
 		receiveEntity.setBankcardid(Integer.valueOf(bankcardid));
 		receiveEntity.setBankcardname(bankcardname);
@@ -822,10 +826,22 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		receiveEntity.setStatus(AccountReceiveEnum.RECEIVINGMONEY.intKey());
 		receiveEntity.setOrderstype(OrderTypeEnum.TEAM.intKey());
 		receiveEntity.setCompanyid(new Long(company.getId()).intValue());
+		String customeName = "";
+		if (!Util.isEmpty(ids)) {
+			String orderid = ids.split(",")[0];
+			TUpOrderEntity fetch = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(orderid));
+			if (!Util.isEmpty(fetch.getUserid())) {
+				TCustomerInfoEntity customeinfo = dbDao.fetch(TCustomerInfoEntity.class, fetch.getUserid().longValue());
+				customeName = customeinfo.getShortName();
+			}
+		}
 		//客户名称还未填写
-		receiveEntity.setCustomename("");
+		receiveEntity.setCustomename(customeName);
 		if (!Util.isEmpty(sumincome)) {
 			receiveEntity.setSum(Double.valueOf(sumincome));
+		}
+		if (!Util.isEmpty(orderstatus)) {
+			receiveEntity.setOrderstatus(Integer.valueOf(orderstatus));
 		}
 		//保存收款信息
 		TReceiveEntity insert = dbDao.insert(receiveEntity);
@@ -875,25 +891,28 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		Map<String, Object> result = new HashMap<String, Object>();
 		String ids = request.getParameter("ids");
+		String orderstatus = request.getParameter("orderstatus");
 		String sqlString = sqlManager.get("get_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.limit();
-		cnd.and("tuo.ordersstatus", "=", InternationalStatusEnum.TICKETING.intKey());
+		//cnd.and("tuo.ordersstatus", "=", InternationalStatusEnum.TICKETING.intKey());
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
 		cnd.and("tuo.id", "in", ids);
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		result.put("orders", orders);
 		try {
 			result.put("bzSelect", externalInfoService.findDictInfoByName("", BIZHONGCODE));
-			result.put("ytSelect", externalInfoService.findDictInfoByName("", FKYTCODE));
+			//result.put("ytSelect", externalInfoService.findDictInfoByName("", FKYTCODE));
 		} catch (Exception e) {
-
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-
 		}
+		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
+				null);
+		result.put("ytSelect", ytselect);
 		result.put("user", user);
 		result.put("ids", ids);
+		result.put("orderstatus", orderstatus);
 		return result;
 	}
 
@@ -914,6 +933,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		String purpose = request.getParameter("purpose");
 		String payCurrency = request.getParameter("payCurrency");
 		String approver = request.getParameter("approver");
+		String orderstatus = request.getParameter("orderstatus");
 		TPayEntity payEntity = new TPayEntity();
 		payEntity.setPurpose(Integer.valueOf(purpose));
 		payEntity.setPayCurrency(Integer.valueOf(payCurrency));
@@ -922,6 +942,9 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		payEntity.setCompanyId(new Long(company.getId()).intValue());
 		payEntity.setOrdertype(OrderTypeEnum.TEAM.intKey());
 		payEntity.setStatus(AccountPayEnum.APPROVAL.intKey());
+		if (!Util.isEmpty(orderstatus)) {
+			payEntity.setOrderstatus(Integer.valueOf(orderstatus));
+		}
 		TPayEntity insert = dbDao.insert(payEntity);
 		Iterable<String> split = Splitter.on(",").split(ids);
 		List<TPayOrderEntity> payorders = new ArrayList<TPayOrderEntity>();

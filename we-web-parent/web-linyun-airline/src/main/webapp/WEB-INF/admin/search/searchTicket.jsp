@@ -240,7 +240,7 @@
 							</li>
 							<li><a href="#tab_4" data-toggle="tab">sabre</a></li>
 							<li><a href="#tab_5" data-toggle="tab">etem</a></li>
-							<li><a href="#tab_6" data-toggle="tab">CA</a></li>
+							<!-- <li><a href="#tab_6" data-toggle="tab">CA</a></li> -->
 						</ul>
 						<div class="tab-content">
 							<div class="tab-pane active" id="tab_1">
@@ -516,10 +516,10 @@
 							</div>
 
 							<!-- CA跳转 -->
-							<div class="tab-pane" id="tab_6">
+							<!-- <div class="tab-pane" id="tab_6">
 								<iframe class="ifea" src="http://www.jdair.net/" frameborder="0"
 									scrolling="no"></iframe>
-							</div>
+							</div> -->
 
 						</div>
 					</div>

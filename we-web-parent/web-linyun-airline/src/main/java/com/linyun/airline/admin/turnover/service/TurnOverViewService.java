@@ -344,6 +344,8 @@ public class TurnOverViewService extends BaseService<TTurnOverEntity> {
 			}
 		} else if ("收入".equalsIgnoreCase(purpose)) {
 			flag = true;
+		} else {
+			flag = true;
 		}
 		map.put("valid", flag);
 		return map;
