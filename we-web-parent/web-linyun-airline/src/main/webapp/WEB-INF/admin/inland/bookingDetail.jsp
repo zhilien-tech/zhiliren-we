@@ -332,8 +332,8 @@
 							 <td name="threepaytd"></td>
 							 <td name="threepaymethod" style="display: none;"><select name="thirdcustomid" class="form-control input-sm"></select></td>
 		                   </tr>
-		                   <tr>
-		                     <td colspan="12" class="addPNR">
+		                   <tr class="pnrTr">
+		                     <td colspan="13" class="addPNR">
 		                        <table class="table table-bordered table-hover">
 		                         <thead>
 		                          <tr>
@@ -355,7 +355,7 @@
 		                     	</div>
 		                     </td>
 		                   </tr>
-		                   <tr>
+		                   <tr class="remarkTr">
 		                     <td></span><label>备注：</label></td>
 		                     <td colspan="11"><input type="text" id="remark" name="remark" disabled="disabled" class="form-control input-sm noteText" placeholder=" " value="${customneed.cusinfo.remark }"></td>
 		                   </tr>
@@ -443,7 +443,7 @@
 							 <td name="threepaymethod" style="display: none;"><select name="thirdcustomid" class="form-control input-sm"></select></td>
 		                   </tr>
 		                   <tr>
-		                     <td colspan="12" class="addPNR">
+		                     <td colspan="13" class="addPNR">
 		                        <table class="table table-bordered table-hover">
 		                         <thead>
 		                          <tr>
