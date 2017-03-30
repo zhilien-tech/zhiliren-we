@@ -194,12 +194,12 @@
 										data-placeholder="MU8876"></select></td>
 									<td><label>出发时间：</label></td>
 									<td><input name="cAirOutDate" type="text"
-										class="form-control mustTimes input-sm textWid" placeholder="08:00">
+										class="form-control mustTimes input-sm textWid" placeholder="0800">
 										<!-- <input id="cAirOutDate0" name="cAirOutDate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'cAirArrivalDate0\')}'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2020-01-01"> -->
 									</td>
 									<td><label>抵达时间：</label></td>
 									<td><input name="cAirArrivalDate" type="text"
-										class="form-control mustArriveTimes input-sm textWid" placeholder="14:00">
+										class="form-control mustArriveTimes input-sm textWid" placeholder="1400">
 										<!-- <input id="cAirArrivalDate0" name="cAirArrivalDate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'cAirOutDate0\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2020-01-01"> -->
 									</td>
 									<td><label class="labelWid">成本价：</label></td>
@@ -240,7 +240,7 @@
 							</li>
 							<li><a href="#tab_4" data-toggle="tab">sabre</a></li>
 							<li><a href="#tab_5" data-toggle="tab">etem</a></li>
-							<li><a href="#tab_6" data-toggle="tab">CA</a></li>
+							<!-- <li><a href="#tab_6" data-toggle="tab">CA</a></li> -->
 						</ul>
 						<div class="tab-content">
 							<div class="tab-pane active" id="tab_1">
@@ -516,10 +516,10 @@
 							</div>
 
 							<!-- CA跳转 -->
-							<div class="tab-pane" id="tab_6">
+							<!-- <div class="tab-pane" id="tab_6">
 								<iframe class="ifea" src="http://www.jdair.net/" frameborder="0"
 									scrolling="no"></iframe>
-							</div>
+							</div> -->
 
 						</div>
 					</div>

@@ -173,13 +173,14 @@
 	<script src="${base}/common/js/layer/layer.js"></script>
 	<!-- uploadify -->
 	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
-	
+	<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
 	<!-- 確認付款js -->
 	<script src="${base}/admin/receivePayment/inter/interConfirmPay.js"></script>
 	
 	<script type="text/javascript">
 		//文件上传
 		$(function(){
+			bankSelect();
 			$.fileupload1 = $('#uploadFile').uploadify({
 			'auto' : true,//选择文件后自动上传
 			'formData' : {

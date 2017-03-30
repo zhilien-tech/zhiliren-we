@@ -113,12 +113,12 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 			List<TInvoiceDetailEntity> invoiceDetail = dbDao.query(TInvoiceDetailEntity.class,
 					Cnd.where("invoiceinfoid", "=", record.getInt("id")), null);
 			record.put("invoiceDetail", invoiceDetail);
-			String sqlString = sqlManager.get("get_inter_shou_invoice_list_order");
+			/*String sqlString = sqlManager.get("get_inter_shou_invoice_list_order");
 			Sql sql = Sqls.create(sqlString);
 			Cnd cnd = Cnd.NEW();
 			cnd.and("tii.id", "=", record.getInt("id"));
-			List<Record> orders = dbDao.query(sql, cnd, null);
-			record.put("orders", orders);
+			List<Record> orders = dbDao.query(sql, cnd, null);*/
+			//record.put("orders", orders);
 			String username = "";
 			TUserEntity billuser = dbDao.fetch(TUserEntity.class, record.getInt("billuserid"));
 			if (!Util.isEmpty(billuser)) {
@@ -213,8 +213,10 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 		//发票明细
 		List<TInvoiceDetailEntity> invoicedetail = dbDao.query(TInvoiceDetailEntity.class,
 				Cnd.where("invoiceinfoid", "=", invoiceinfo.getId()), null);
+		//付款订单表信息
+		TPayOrderEntity payorder = dbDao.fetch(TPayOrderEntity.class, invoiceinfo.getOrderpayid().longValue());
 		//付款信息
-		TPayEntity fetch = dbDao.fetch(TPayEntity.class, Long.valueOf(invoiceinfo.getPayid()));
+		TPayEntity fetch = dbDao.fetch(TPayEntity.class, Long.valueOf(payorder.getPayid()));
 		double invoicebalance = 0;
 		if (!Util.isEmpty(fetch.getPayMoney())) {
 			invoicebalance = fetch.getPayMoney();
@@ -228,10 +230,11 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 
 		List<TPayOrderEntity> query = dbDao.query(TPayOrderEntity.class, Cnd.where("payid", "=", fetch.getId()), null);
 		String ids = "";
-		for (TPayOrderEntity tPayOrderEntity : query) {
+		/*for (TPayOrderEntity tPayOrderEntity : query) {
 			ids += tPayOrderEntity.getOrderid() + ",";
-		}
-		ids = ids.substring(0, ids.length() - 1);
+		}*/
+		//ids = ids.substring(0, ids.length() - 1);
+		ids += payorder.getOrderid();
 		String sqlString = sqlManager.get("get_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
@@ -262,7 +265,7 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 		double sumjine = 0;
 		for (Record record : orders) {
 			if (!Util.isEmpty(record.get("incometotal"))) {
-				sumjine += Double.valueOf((String) record.get("incometotal"));
+				sumjine += Double.valueOf((Double) record.get("incometotal"));
 			}
 		}
 		result.put("sumjine", sumjine);

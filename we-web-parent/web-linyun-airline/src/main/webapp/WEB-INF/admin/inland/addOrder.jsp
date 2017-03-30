@@ -270,13 +270,13 @@
     	var fromprice = $(this).val();
     	//票价折扣
     	var discountFare = 1;
-    	var countfare = '${obj.custominfo.discountFare}';
+    	var countfare = $('#discountFare').val();
     	if(countfare){
     		discountFare = countfare;
     	}
     	//手续费
     	var fees = 0;
-    	var feescount = '${obj.custominfo.fees}'; 
+    	var feescount = $('#fees').val(); 
     	if(feescount){
     		fees = feescount;
     	}

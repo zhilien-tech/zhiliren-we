@@ -150,11 +150,11 @@ function initDatatable() {
                     	}
                     },
                     {"data": "username", "bSortable": false},
-                    {"data": "telephone", "bSortable": false},
-                    {"data": "action", "bSortable": false,
+                    {"data": "telephone", "bSortable": false}
+                    /*{"data": "action", "bSortable": false,
                     	render: function(data, type, row, meta) {
                         return '<a style="cursor:pointer;" onclick="edit('+row.id+','+row.ordersstatus+');">编辑</a>'
-                    }}
+                    }}*/
             ],
         "columnDefs": [{ "sWidth": "10.33%",  "targets": [0] },
 						{ "sWidth": "7.33%",  "targets": [1] },
@@ -167,8 +167,8 @@ function initDatatable() {
 						{ "sWidth": "8.33%",  "targets": [8] },
 						{ "sWidth": "5.33%",  "targets": [9] },
 						{ "sWidth": "6.33%",  "targets": [10] },
-						{ "sWidth": "9.33%",  "targets": [11] },
-						{ "sWidth": "10.33%",  "targets": [12] }
+						{ "sWidth": "9.33%",  "targets": [11] }
+						//{ "sWidth": "10.33%",  "targets": [12] }
                         /*{
             //   指定第一列，从0开始，0表示第一列，1表示第二列……
             targets: 12,
@@ -203,7 +203,7 @@ function initDatatable() {
 $(function () {
     initDatatable();
 });
-$("tbody",$('#inlandCrossTable')).on("click","tr",function(event) {
+$("tbody",$('#inlandCrossTable')).on("dblclick","tr",function(event) {
 	var item = inlandCrossTable.row($(this).closest('tr')).data();
 	var url = BASE_PATH;
 	if(item.ordersstatus == 1){

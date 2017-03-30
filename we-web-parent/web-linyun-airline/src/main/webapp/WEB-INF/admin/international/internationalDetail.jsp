@@ -369,7 +369,7 @@
           $('.btnCancel').toggle();//取消按钮 显示
           $(".btnRemind").toggle();//提醒设置按钮 显示
           $(".btnLog").toggle();//日志按钮 显示
-          $(".listInfo").toggle();//选项卡 显示
+          //$(".listInfo").toggle();//选项卡 显示
           $('.disab').removeAttr("disabled");//信息模块 input 禁止编辑的状态
         });
         //取消按钮 click事件
@@ -379,7 +379,7 @@
           $('.btnCancel').toggle();//取消 按钮 隐藏
           $('.btnRemind').toggle();//提醒设置 按钮 隐藏
           $('.btnLog').toggle();//日志 按钮 隐藏
-          $(".listInfo").toggle();//选项卡 隐藏
+          //$(".listInfo").toggle();//选项卡 隐藏
           $('.disab').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
         });
 

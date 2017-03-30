@@ -31,6 +31,9 @@ $(document).on('change','.sc', function(){
             		thisDiv.find('[name=invoiceurl]').val(obj.data);
             		thisDiv.find('[name=fileName]').html(file.name);
             		thisDiv.find('[name=imagename]').val(file.name);
+            		var deletepreview = '<li><a href="javascript:;" class="fileDelete deleteInvoice" >删除</a></li>';
+            		deletepreview += '<li><a href="javascript:;" id="preView" class="fileDelete">预览</a></li>';
+            		thisDiv.find('[name=fileName]').parent().after(deletepreview);
             	}
             },  
             error: function (obj) {

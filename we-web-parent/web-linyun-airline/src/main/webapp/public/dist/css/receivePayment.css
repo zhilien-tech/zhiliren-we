@@ -1,4 +1,4 @@
-.labelClas{width: 0;position: relative;top: 8px;}
+.labelClas{width: 0;position: relative;top: 8px;left: -8px;}
 .TimeInput {padding: 4px 10px 5px 10px;}
 table.dataTable thead .sorting_asc:after{display: none;}
 table.dataTable thead .sorting:after {display: none;}
@@ -97,7 +97,7 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 .txtTable tbody tr td:nth-child(5) {width:45px;}
 .txtTable tbody tr td:nth-child(6) {width: 210px;}
 .txtTable tbody tr td:nth-child(7) {width: 50px;}
-
+#inlandPayBeginDate,#inlandPayEndDate,#inlandRecBeginDate,#inlandRecEndDate {padding-left: 3px;padding-right: 3px;}
 
 
 

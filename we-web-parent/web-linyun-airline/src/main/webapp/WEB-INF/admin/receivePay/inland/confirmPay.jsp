@@ -107,7 +107,7 @@
 					</select></td>
 					<td>资金种类：</td>
 					<td><select id="fundType" name="fundType" class="form-control input-sm">
-							<!-- <option value="0">--请选择--</option> -->
+							<option value="0">--请选择--</option>
 							<c:forEach var="one" items="${obj.zjzlList}">
 	                        	<option value="${one.id }">${one.comDictName }</option>
 	                        </c:forEach>
@@ -186,8 +186,10 @@
 	<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
 	
 	<script type="text/javascript">
-	//文件上传
+	
 	$(function(){
+		bankSelect();
+		//文件上传
 		$.fileupload1 = $('#uploadFile').uploadify({
 			'auto' : true,//选择文件后自动上传
 			'formData' : {
