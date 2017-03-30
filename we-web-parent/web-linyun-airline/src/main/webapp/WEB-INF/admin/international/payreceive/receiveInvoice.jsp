@@ -21,6 +21,7 @@
     <div style="height:550px; overflow-y:auto;">
       <div class="modal-body">
       	<input id="id" name="id" type="hidden" value="${obj.id }" > 
+      	<input id="orderstatus" name="orderstatus" type="hidden" value="${obj.payorders.orderstatus }" > 
          <table id="receivablesTable" class="table table-bordered table-hover">
                   <thead>
                     <tr>
@@ -203,7 +204,9 @@
    function saveInvoiceInfo(){
 	   var formdata = {};
 	   var id = $('#id').val();
-	   formdata.payid = id;
+	   formdata.orderpayid = id;
+	   var orderstatus = $('#orderstatus').val();
+	   formdata.orderstatus = orderstatus;
 	   var invoiceitem = $('#invoiceitem').val();
 	   formdata.invoiceitem = invoiceitem;
 	   var invoicedate = $('#invoicedate').val();
@@ -238,12 +241,12 @@
 			type: 'POST', 
 			data: {data:JSON.stringify(formdata)}, 
 			url: '${base}/admin/international/payreceive/saveInvoiceInfo.html',
-           success: function (data) { 
-           	closewindow();
-           	window.parent.successCallback('5');
-           },
-           error: function (xhr) {
-           	layer.msg("提交失败","",3000);
+            success: function (data) { 
+	           	closewindow();
+	           	window.parent.successCallback('5');
+            },
+            error: function (xhr) {
+           		layer.msg("提交失败","",3000);
            } 
        });
    }

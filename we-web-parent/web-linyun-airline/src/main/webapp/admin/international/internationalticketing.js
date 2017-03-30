@@ -230,6 +230,9 @@ $(document).on('click', '.checkchild2', function(e) {
 });
 //点击出票加载出票表格
 function loadTicking(status){
+	if(!status){
+		status = $('#status').val();
+	}
 	$('#checkedboxval2').val('');
 	$(".checkall2").prop("checked", false);
 	var param = {
@@ -241,6 +244,7 @@ function loadTicking(status){
 		autoHighLoad($('#drawerPayTable'));
 	});
 	$('#status').val(status);
+	loadFukuanTable();
 }
 $('.fuKuanBtn').click(function(){
 	var ids = $('#checkedboxval2').val();

@@ -25,6 +25,7 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.enums.InvoiceInfoEnum;
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.order.international.form.InterPaymentSqlForm;
 import com.linyun.airline.admin.order.international.form.InterReceiptSqlForm;
 import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
@@ -90,6 +91,7 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 			List<Record> orders = dbDao.query(sql, cnd, null);
 			record.put("orders", orders);
 			record.put("receiveenum", EnumUtil.enum2(AccountReceiveEnum.class));
+			record.put("internationalstatusenum", EnumUtil.enum2(InternationalStatusEnum.class));
 		}
 		return listData;
 	}
@@ -118,8 +120,10 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 			Cnd cnd = Cnd.limit();
 			cnd.and("tp.id", "=", record.get("id"));
 			List<Record> orders = dbDao.query(sql, cnd, null);
+			record.put("username", user.getFullName());
 			record.put("orders", orders);
 			record.put("receiveenum", EnumUtil.enum2(AccountPayEnum.class));
+			record.put("internationalstatusenum", EnumUtil.enum2(InternationalStatusEnum.class));
 		}
 		return listData;
 	}
@@ -196,6 +200,8 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		String jsondata = request.getParameter("data");
 		Map<String, Object> fromJson = JsonUtil.fromJson(jsondata, Map.class);
 		TInvoiceInfoEntity invoiceinfo = new TInvoiceInfoEntity();
@@ -223,9 +229,14 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		if (!Util.isEmpty(fromJson.get("receiveid"))) {
 			invoiceinfo.setReceiveid(Integer.valueOf((String) fromJson.get("receiveid")));
 		}
+		if (!Util.isEmpty(fromJson.get("orderstatus"))) {
+			invoiceinfo.setOrderstatus(Integer.valueOf((String) fromJson.get("orderstatus")));
+		}
 		invoiceinfo.setOpid(new Long(user.getId()).intValue());
 		invoiceinfo.setOptime(new Date());
 		invoiceinfo.setOrdertype(OrderTypeEnum.TEAM.intKey());
+		invoiceinfo.setComId(new Long(company.getId()).intValue());
+		invoiceinfo.setStatus(InvoiceInfoEnum.INVOIC_ING.intKey());
 		//保存发票信息
 		TInvoiceInfoEntity insert = dbDao.insert(invoiceinfo);
 		List<Map<String, String>> details = (List<Map<String, String>>) fromJson.get("invoicedetails");
@@ -255,12 +266,13 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 	public Object receiveInvoice(HttpServletRequest request) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		String id = request.getParameter("id");
-		List<TPayOrderEntity> payorders = dbDao.query(TPayOrderEntity.class, Cnd.where("payid", "=", id), null);
+		TPayOrderEntity payorders = dbDao.fetch(TPayOrderEntity.class, Long.valueOf(id));
 		String ids = "";
-		for (TPayOrderEntity tPayOrderEntity : payorders) {
+		/*for (TPayOrderEntity tPayOrderEntity : payorders) {
 			ids += tPayOrderEntity.getOrderid() + ",";
-		}
-		ids = ids.substring(0, ids.length() - 1);
+		}*/
+		ids += payorders.getOrderid();
+		//ids = ids.substring(0, ids.length() - 1);
 		String sqlString = sqlManager.get("get_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.limit();
@@ -282,13 +294,13 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		//订单信息
 		result.put("orders", orders);
 		//付款信息
-		TPayEntity payinfo = dbDao.fetch(TPayEntity.class, Long.valueOf(id));
+		TPayEntity payinfo = dbDao.fetch(TPayEntity.class, payorders.getPayid().longValue());
 		TCompanyBankCardEntity companybank = new TCompanyBankCardEntity();
 		if (!Util.isEmpty(payinfo.getBankId())) {
 			companybank = dbDao.fetch(TCompanyBankCardEntity.class, payinfo.getBankId().longValue());
 		}
 		List<TPayReceiptEntity> payReceipt = new ArrayList<TPayReceiptEntity>();
-		payReceipt = dbDao.query(TPayReceiptEntity.class, Cnd.where("payId", "=", id), null);
+		payReceipt = dbDao.query(TPayReceiptEntity.class, Cnd.where("payId", "=", payorders.getPayid()), null);
 		TPayReceiptEntity billurl = new TPayReceiptEntity();
 		if (payReceipt.size() > 0) {
 			billurl = payReceipt.get(0);
@@ -304,6 +316,7 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		result.put("billurl", billurl);
 		result.put("yhkSelect", yhkSelect);
 		result.put("payinfo", payinfo);
+		result.put("payorders", payorders);
 		//总金额
 		result.put("sumjine", sumincome);
 		return result;
@@ -321,6 +334,8 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		String jsondata = request.getParameter("data");
 		Map<String, Object> fromJson = JsonUtil.fromJson(jsondata, Map.class);
 		TInvoiceInfoEntity invoiceinfo = new TInvoiceInfoEntity();
@@ -345,12 +360,17 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 			invoiceinfo.setBalance(Double.valueOf((String) fromJson.get("balance")));
 		}
 		invoiceinfo.setInvoicetype(InvoiceInfoEnum.RECEIPT_INVOIC_ING.intKey());
-		if (!Util.isEmpty(fromJson.get("payid"))) {
-			invoiceinfo.setPayid(Integer.valueOf((String) fromJson.get("payid")));
+		if (!Util.isEmpty(fromJson.get("orderpayid"))) {
+			invoiceinfo.setOrderpayid(Integer.valueOf((String) fromJson.get("orderpayid")));
 		}
+		if (!Util.isEmpty(fromJson.get("orderstatus"))) {
+			invoiceinfo.setOrderstatus(Integer.valueOf((String) fromJson.get("orderstatus")));
+		}
+		invoiceinfo.setComId(new Long(company.getId()).intValue());
 		invoiceinfo.setOpid(new Long(user.getId()).intValue());
 		invoiceinfo.setOptime(new Date());
 		invoiceinfo.setOrdertype(OrderTypeEnum.TEAM.intKey());
+		invoiceinfo.setStatus(InvoiceInfoEnum.RECEIPT_INVOIC_ING.intKey());
 		//保存发票信息
 		TInvoiceInfoEntity insert = dbDao.insert(invoiceinfo);
 		List<Map<String, String>> details = (List<Map<String, String>>) fromJson.get("invoicedetails");

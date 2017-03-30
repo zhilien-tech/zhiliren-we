@@ -83,7 +83,7 @@
                   <div class="tab-pane pane-content" id="tab_5">
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs nlkhUL">
-                          <li class="active"><a href="#tab1_1" data-toggle="tab" onclick="loadDataTable()">收款</a></li>
+                          <li class="active"><a href="#tab1_1" data-toggle="tab" onclick="loadTicking()">收款</a></li>
                           <li><a href="#tab1_2" data-toggle="tab" onclick="loadFukuanTable();">付款</a></li>
                         </ul>
                         <div class="tab-content padding0">
@@ -237,6 +237,7 @@
                                     <th>总额</th>
                                     <th>客户名称</th>
                                     <th>开票人</th>
+                                    <th>订单状态</th>
                                     <th>状态</th>
                                     <th>备注</th>
                                     <th>操作</th>
@@ -281,12 +282,12 @@
                                   <thead>
                                     <tr>
 	                                    <th>订单号</th>
-	                                    <th>出发日期</th>
+	                                    <th>付款日期</th>
 	                                    <th>人数</th>
-	                                    <th>销售金额</th>
-	                                    <th>总额</th>
+	                                    <th>金额</th>
 	                                    <th>客户名称</th>
 	                                    <th>开票人</th>
+	                                    <th>订单状态</th>
 	                                    <th>状态</th>
 	                                    <th>备注</th>
 	                                    <th>操作</th>
