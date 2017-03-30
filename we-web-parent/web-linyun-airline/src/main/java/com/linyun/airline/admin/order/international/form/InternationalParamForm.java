@@ -14,6 +14,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.cri.SqlExpressionGroup;
 
+import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
@@ -46,15 +47,17 @@ public class InternationalParamForm extends DataTablesParamForm {
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("tpi.companyid", "=", companyid);
 		}
-		if (!Util.isEmpty(ticketing)) {
-			SqlExpressionGroup sqlex = new SqlExpressionGroup();
-			sqlex.and("tuo.receivestatus", "=", "").or("tuo.receivestatus", "is", null);
-			cnd.and(sqlex);
-		}
-		if (!Util.isEmpty(ticketingpay)) {
-			SqlExpressionGroup sqlex = new SqlExpressionGroup();
-			sqlex.and("tuo.paystatus", "=", "").or("tuo.paystatus", "is", null);
-			cnd.and(sqlex);
+		if (ordersstatus.equals(InternationalStatusEnum.TICKETING)) {
+			if (!Util.isEmpty(ticketing)) {
+				SqlExpressionGroup sqlex = new SqlExpressionGroup();
+				sqlex.and("tuo.receivestatus", "=", "").or("tuo.receivestatus", "is", null);
+				cnd.and(sqlex);
+			}
+			if (!Util.isEmpty(ticketingpay)) {
+				SqlExpressionGroup sqlex = new SqlExpressionGroup();
+				sqlex.and("tuo.paystatus", "=", "").or("tuo.paystatus", "is", null);
+				cnd.and(sqlex);
+			}
 		}
 		return cnd;
 	}

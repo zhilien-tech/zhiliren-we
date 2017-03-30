@@ -17,6 +17,7 @@
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="commitPayApply();" value="提交"/>
+            <input type="hidden" id="orderstatus" name="orderstatus" value="${obj.orderstatus }">
             <h4 class="invoiceH4">付款申请</h4>
     </div>
       <div class="modal-body">
@@ -96,10 +97,11 @@
 		var payCurrency = $('#payCurrency').val();
 		var approver = $('#approver').val();
 		var approveResult = $('#approveResult').val();
+		var orderstatus = $('#orderstatus').val();
 		$.ajax({
 	        type: "post",
 	        url: '${base}/admin/international/savePayment.html',
-	        data: {ids:ids,purpose:purpose,payCurrency:payCurrency,approver:approver,approveResult:approveResult},
+	        data: {ids:ids,purpose:purpose,payCurrency:payCurrency,approver:approver,approveResult:approveResult,orderstatus:orderstatus},
 	        cache: false,
 	        async : false,
 	        success: function (data ,textStatus, jqXHR){

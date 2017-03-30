@@ -230,8 +230,11 @@ $(document).on('click', '.checkchild1', function(e) {
 });
 //点击出票加载出票表格
 function loadFukuanTable(){
+	var status = $('#status').val();
+	$('#checkedboxval1').val('');
+	$(".checkall1").prop("checked", false);
 	var param = {
-			ordersstatus:8,
+			ordersstatus:status,
 			ticketingpay:1
 	};
 	payTable.settings()[0].ajax.data = param;
@@ -250,6 +253,7 @@ $('.fuKuanBtn1').click(function(){
 			url: BASE_PATH + '/admin/inland/checkIsCommonCompany.html',
            success: function (data) { 
         	   if(data){
+        		   var status = $('#status').val();
         		   layer.open({
         				type: 2,
         				title:false,
@@ -257,7 +261,7 @@ $('.fuKuanBtn1').click(function(){
         				closeBtn:false,//默认 右上角关闭按钮 是否显示
         				shadeClose:true,
         				area: ['850px', '550px'],
-        				content: BASE_PATH + '/admin/international/openPayment.html?ids='+ids,
+        				content: BASE_PATH + '/admin/international/openPayment.html?ids='+ids+'&orderstatus='+status,
         				end:function(){
         					payTable.ajax.reload(function(json){
         						autoHighLoad($('#payTable'));
