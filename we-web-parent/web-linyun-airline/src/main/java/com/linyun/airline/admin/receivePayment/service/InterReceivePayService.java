@@ -64,6 +64,7 @@ import com.linyun.airline.entities.TReceiveEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.DateTimeUtil;
+import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.base.service.BaseService;
 
@@ -141,6 +142,10 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			if (Util.eq("lastBooking", orderStatus)) {
 				//尾款
 				orderStatus = InternationalStatusEnum.TAILMONEY.intKey() + "";
+			}
+			if (Util.eq("outTicket", orderStatus)) {
+				//出票
+				orderStatus = InternationalStatusEnum.TICKETING.intKey() + "";
 			}
 		}
 		form.setOrderStatus(orderStatus);
@@ -261,9 +266,19 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object saveInterRec(String recId, HttpSession session) {
+
+		int updateNum = 0;
 		int orderRecEd = AccountReceiveEnum.RECEIVEDONEY.intKey();
-		int updateNum = dbDao.update(TOrderReceiveEntity.class, Chain.make("receivestatus", orderRecEd),
+
+		TOrderReceiveEntity orderReceiveEntity = dbDao.fetch(TOrderReceiveEntity.class,
 				Cnd.where("receiveid", "in", recId));
+		if (!Util.isEmpty(orderReceiveEntity)) {
+			orderReceiveEntity.setReceivestatus(orderRecEd);
+			orderReceiveEntity.setReceiveDate(DateUtil.nowDate());
+			updateNum = dbDao.update(orderReceiveEntity);
+			int rId = orderReceiveEntity.getReceiveid();
+			dbDao.update(TReceiveEntity.class, Chain.make("status", orderRecEd), Cnd.where("id", "=", rId));
+		}
 
 		//收款成功添加消息提醒
 		if (updateNum > 0) {
@@ -323,6 +338,10 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			if (Util.eq("lastBooking", orderStatus)) {
 				//尾款
 				orderStatus = InternationalStatusEnum.TAILMONEY.intKey() + "";
+			}
+			if (Util.eq("outTicket", orderStatus)) {
+				//出票
+				orderStatus = InternationalStatusEnum.TICKETING.intKey() + "";
 			}
 		}
 		form.setOrderStatus(orderStatus);
