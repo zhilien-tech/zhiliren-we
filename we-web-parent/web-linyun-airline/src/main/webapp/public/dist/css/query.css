@@ -155,3 +155,4 @@ table.dataTable thead > tr > th {padding-right:0px;}
 .setTeamMore td:nth-child(5) .select2-container{width:208px !important;}
 /*----end 出发城市/到达城市 style-----*/
 .addCustomerAirline td:nth-child(12) input{padding-left:3px;padding-right: 3px;}
+.remarkTextarea{}
