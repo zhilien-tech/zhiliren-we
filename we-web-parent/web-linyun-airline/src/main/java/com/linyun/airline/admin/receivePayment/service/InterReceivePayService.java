@@ -174,6 +174,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		List<Record> orders = dbDao.query(sql, cnd, null);
 
 		for (Record record : list) {
+			//计算合计金额
+			Double sum = 0.0;
 			//收款id
 			String id = record.get("id").toString();
 			List<Record> rList = new ArrayList<Record>();
@@ -181,12 +183,18 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				String rid = r.getString("id");
 				if (Util.eq(id, rid)) {
 					rList.add(r);
+					if (!Util.isEmpty(r.get("incometotal"))) {
+						Double incometotal = (Double) r.get("incometotal");
+						sum += incometotal;
+					}
 				}
 			}
 			if (!Util.isEmpty(rList)) {
 				record.put("orders", rList);
 			}
+			record.put("sum", sum);
 		}
+
 		List<Record> ordersBC = new ArrayList<Record>();
 		for (Record r : list) {
 			String oStr = r.getString("orders");
