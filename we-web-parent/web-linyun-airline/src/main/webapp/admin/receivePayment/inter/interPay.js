@@ -138,7 +138,7 @@ function initPayDataTable(){
 		            		return result;
 		            	}
 		            },
-		            {"data": "orderstatus", "bSortable": false,
+		            {"data": "paystauts", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var s = '';
 		            		if(data == '2'){
