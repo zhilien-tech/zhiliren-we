@@ -53,7 +53,7 @@
                   <div class="col-sm-2 padding">
                     <select id="purpose" name="purpose" class="form-control input-sm">
                       <c:forEach var="one" items="${obj.ytSelect }">
-                        	<option value="${one.id }">${one.dictName }</option>
+                        	<option value="${one.id }">${one.comDictName }</option>
                         </c:forEach>
                     </select>
                   </div>
@@ -61,7 +61,7 @@
                   <div class="col-sm-2 padding">
                     <select id="payCurrency" name="payCurrency" class="form-control input-sm">
                       <c:forEach var="one" items="${obj.bzSelect }">
-                        	<option value="${one.id }">${one.dictName }</option>
+                        	<option value="${one.id }">${one.dictCode }</option>
                         </c:forEach>
                     </select>
                   </div>

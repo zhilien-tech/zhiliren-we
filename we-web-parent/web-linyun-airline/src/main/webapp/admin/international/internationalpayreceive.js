@@ -91,6 +91,17 @@ function initshouFuKuanGatheringTable() {
                     	}
                   },
                   {"data": "username", "bSortable": false},
+                  {"data": "orderstatus", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                  		var result = '';
+                  		$.each(row.internationalstatusenum, function(name, value) {
+                  			if(row.orderstatus == name){
+                  				result = value;
+                  			}
+                  		});
+                  		return result;
+                  	  }
+                  },
                   {"data": "status", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                   		var result = '';
@@ -109,7 +120,7 @@ function initshouFuKuanGatheringTable() {
           ],
       columnDefs: [{
     	//   指定第一列，从0开始，0表示第一列，1表示第二列……
-          targets: 9,
+          targets: 10,
           render: function(data, type, row, meta) {
               return '<a style="cursor:pointer;" onclick="openInvoice('+row.id+','+row.invoiceid+');">开发票</a>'
           }
@@ -168,53 +179,41 @@ function initshouFuKuanPayTable() {
     "columns": [
                 {"data": "ordersnum", "bSortable": false,
                 	  render:function(data, type, row, meta) {
-                    		var result = '<ul> ';
-                    		$.each(row.orders, function(name, value) {
-                    			if(value){
-                    				result += '<li style="list-style:none;">'+value.ordersnum+'</li>';
-                    			}
-                    		});
-                    		result += '</ul>';
-                    		return result;
-                    	}
+                		  var result = '';
+                  		  if(row.ordersnum && row.ordersnum != undefined){
+                  			 result = row.ordersnum;
+                  		  }
+                    	  return result;
+                	  }
                   },
                   {"data": "leavedate", "bSortable": false,
                   	render:function(data, type, row, meta) {
-                  		var result = '<ul> ';
-                		$.each(row.orders, function(name, value) {
-                			if(value){
-                				result += '<li style="list-style:none;">'+value.leavesdate+'</li>';
-                			}
-                		});
-                		result += '</ul>';
-                		return result;
+                  		var result = '';
+                		if(row.paydate && row.paydate != undefined){
+                			result = row.paydate;
+                		}
+                  		return result;
                   	}
                   },
-                  {"data": "personcount", "bSortable": false,
+                  {"data": "peoplecount", "bSortable": false,
                   	render:function(data, type, row, meta) {
-                  		var result = '<ul>';
-                  		$.each(row.orders, function(name, value) {
-                  			if(value && value.peoplecount != undefined){
-                  				result += '<li style="list-style:none;">'+value.peoplecount+'</li>';
-                  			}
-                  		});
-                  		result += '</ul>';
+                  		var result = '';
+                		if(row.peoplecount && row.peoplecount != undefined){
+                			result = row.peoplecount;
+                		}
                   		return result;
                   	}
                   },
                   {"data": "incometotal", "bSortable": false,
                   	render:function(data, type, row, meta) {
-                  		var result = '<ul>';
-                  		$.each(row.orders, function(name, value) {
-                  			if(value && value.incometotal != undefined){
-                  				result += '<li style="list-style:none;">'+value.incometotal+'</li>';
-                  			}
-                  		});
-                  		result += '</ul>';
+                  		var result = '';
+                		if(row.costtotal && row.costtotal != undefined){
+                			result = row.costtotal;
+                		}
                   		return result;
                   	}
                   },
-                  {"data": "sum", "bSortable": false,
+                  /*{"data": "sum", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                     		var result = 0;
                     		$.each(row.orders, function(name, value) {
@@ -224,22 +223,33 @@ function initshouFuKuanPayTable() {
                     		});
                     		return result;
                     	}
-                  },
+                  },*/
                   {"data": "customename", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                     		var result = '';
-                    		if(row.customename){
+                    		if(row.customename && row.customename != undefined){
                     			result = row.customename;
                     		}
                     		return result;
                     	}
                   },
                   {"data": "username", "bSortable": false},
-                  {"data": "status", "bSortable": false,
+                  {"data": "orderstatus", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                    		var result = '';
+                    		$.each(row.internationalstatusenum, function(name, value) {
+                    			if(row.orderstatus == name){
+                    				result = value;
+                    			}
+                    		});
+                    		return result;
+                	  }
+                  },
+                  {"data": "paystatus", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                   		var result = '';
                   		$.each(row.receiveenum, function(name, value) {
-                  			if(row.status == name){
+                  			if(row.paystauts == name){
                   				result = value;
                   			}
                   		});
@@ -247,7 +257,11 @@ function initshouFuKuanPayTable() {
                   	  }
                   },{"data": "remark", "bSortable": false,
                 	  render:function(data, type, row, meta) {
-                		  return '';
+                		  var result = '';
+                  		  if(row.remark && row.remark != undefined){
+                  		  	 result = row.remark;
+                  		  }
+                  		  return result;
                 	  }
                   }
         ],

@@ -122,7 +122,7 @@ public class WeSetup implements Setup {
 		//定时每天某个时间执行
 		Date now = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String startTime = sdf.format(now) + "00:00:00";
+		String startTime = sdf.format(now) + "23:58:00";
 		try {
 			Tasks.scheduleAtFixedRate(new Runnable() {
 				public void run() {

@@ -15,7 +15,6 @@
 <link rel="stylesheet" href="${base}/public/dist/css/query.css">
 <!--本页面styleFlie-->
 </head>
-
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
 		<!--right Content-->
@@ -217,11 +216,12 @@
 									<td><a href="javascript:;" name="addButton"
 										class="glyphicon glyphicon-plus addIcon removAddMake"></a></td>
 								</tr>
-								<tr name="cRemarkTr">
+								<tr name="cRemarkTr" class="remarkTr">
 									<td></span><label>备注：</label></td>
-									<td colspan="11"><input id="cRemark" name="cRemark"
-										type="text" class="form-control input-sm noteText"
-										placeholder=" "></td>
+									<td colspan="11">
+										<input id="cRemark" name="cRemark" type="text" class="form-control input-sm noteText" placeholder=" ">
+										<!--<textarea id="cRemark" name="cRemark" class="form-control remarkTextarea"></textarea>-->
+									</td>
 								</tr>
 							</table>
 						</div>

@@ -23,6 +23,7 @@
     <div style="height:550px; overflow-y:auto; ">
       <div class="modal-body">
       	 <input type="hidden" id="id" name="id" value="${obj.id }" >
+      	 <input type="hidden" id="orderstatus" name="orderstatus" value="${obj.receive.orderstatus }" >
          <table id="receivablesTable" class="table table-bordered table-hover">
                   <thead>
                     <tr>
@@ -234,6 +235,8 @@
 	   var formdata = {};
 	   var id = $('#id').val();
 	   formdata.pnrid = id;
+	   var orderstatus = $('#orderstatus').val();
+	   formdata.orderstatus = orderstatus;
 	   var invoiceitem = $('#invoiceitem').val();
 	   formdata.invoiceitem = invoiceitem;
 	   var invoicedate = $('#invoicedate').val();
