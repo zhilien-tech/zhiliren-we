@@ -766,6 +766,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Map<String, Object> result = new HashMap<String, Object>();
 		String ids = request.getParameter("ids");
+		String orderstatus = request.getParameter("orderstatus");
 		String sqlString = sqlManager.get("get_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.limit();
@@ -782,15 +783,15 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			}
 		}
 		result.put("orders", orders);
-		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
-		try {
-			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Sql create = Sqls.create(sqlManager.get("get_bank_info_select"));
+		create.setParam("companyId", company.getId());
+		create.setParam("typeCode", YHCODE);
+		List<Record> yhkSelect = dbDao.query(create, null, null);
 		result.put("yhkSelect", yhkSelect);
 		result.put("ids", ids);
 		result.put("sumincome", sumincome);
+		//订单状态
+		result.put("orderstatus", orderstatus);
 		return result;
 	}
 
@@ -813,6 +814,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		String bankcardnum = request.getParameter("bankcardnum");
 		String billurl = request.getParameter("billurl");
 		String sumincome = request.getParameter("sumincome");
+		String orderstatus = request.getParameter("orderstatus");
 		TReceiveEntity receiveEntity = new TReceiveEntity();
 		receiveEntity.setBankcardid(Integer.valueOf(bankcardid));
 		receiveEntity.setBankcardname(bankcardname);
@@ -822,10 +824,22 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		receiveEntity.setStatus(AccountReceiveEnum.RECEIVINGMONEY.intKey());
 		receiveEntity.setOrderstype(OrderTypeEnum.TEAM.intKey());
 		receiveEntity.setCompanyid(new Long(company.getId()).intValue());
+		String customeName = "";
+		if (!Util.isEmpty(ids)) {
+			String orderid = ids.split(",")[0];
+			TUpOrderEntity fetch = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(orderid));
+			if (!Util.isEmpty(fetch.getUserid())) {
+				TCustomerInfoEntity customeinfo = dbDao.fetch(TCustomerInfoEntity.class, fetch.getUserid().longValue());
+				customeName = customeinfo.getShortName();
+			}
+		}
 		//客户名称还未填写
-		receiveEntity.setCustomename("");
+		receiveEntity.setCustomename(customeName);
 		if (!Util.isEmpty(sumincome)) {
 			receiveEntity.setSum(Double.valueOf(sumincome));
+		}
+		if (!Util.isEmpty(orderstatus)) {
+			receiveEntity.setOrderstatus(Integer.valueOf(orderstatus));
 		}
 		//保存收款信息
 		TReceiveEntity insert = dbDao.insert(receiveEntity);
@@ -875,6 +889,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		Map<String, Object> result = new HashMap<String, Object>();
 		String ids = request.getParameter("ids");
+		String orderstatus = request.getParameter("orderstatus");
 		String sqlString = sqlManager.get("get_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.limit();
@@ -894,6 +909,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		}
 		result.put("user", user);
 		result.put("ids", ids);
+		result.put("orderstatus", orderstatus);
 		return result;
 	}
 
@@ -914,6 +930,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		String purpose = request.getParameter("purpose");
 		String payCurrency = request.getParameter("payCurrency");
 		String approver = request.getParameter("approver");
+		String orderstatus = request.getParameter("orderstatus");
 		TPayEntity payEntity = new TPayEntity();
 		payEntity.setPurpose(Integer.valueOf(purpose));
 		payEntity.setPayCurrency(Integer.valueOf(payCurrency));
@@ -922,6 +939,9 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		payEntity.setCompanyId(new Long(company.getId()).intValue());
 		payEntity.setOrdertype(OrderTypeEnum.TEAM.intKey());
 		payEntity.setStatus(AccountPayEnum.APPROVAL.intKey());
+		if (!Util.isEmpty(orderstatus)) {
+			payEntity.setOrderstatus(Integer.valueOf(orderstatus));
+		}
 		TPayEntity insert = dbDao.insert(payEntity);
 		Iterable<String> split = Splitter.on(",").split(ids);
 		List<TPayOrderEntity> payorders = new ArrayList<TPayOrderEntity>();
