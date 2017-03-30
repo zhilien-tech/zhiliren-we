@@ -145,14 +145,11 @@ function initshouInvoiceTable() {
     "columns": [
                 {"data": "ordersnum", "bSortable": false,
                 	  render:function(data, type, row, meta) {
-                    		var result = '<ul> ';
-                    		$.each(row.orders, function(name, value) {
-                    			if(value){
-                    				result += '<li style="list-style:none;">'+value.ordersnum+'</li>';
-                    			}
-                    		});
-                    		result += '</ul>';
-                    		return result;
+                    		var result = '';
+                      		if(row.ordersnum && row.ordersnum != undefined){
+                      			result = row.ordersnum;
+                      		}
+                      		return result;
                     	}
                   },
                   {"data": "invoicenum", "bSortable": false,

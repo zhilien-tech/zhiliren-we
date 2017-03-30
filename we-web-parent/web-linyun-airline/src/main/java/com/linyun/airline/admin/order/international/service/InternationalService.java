@@ -27,6 +27,8 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.google.common.base.Splitter;
+import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
+import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.customneeds.service.EditPlanService;
 import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
@@ -770,7 +772,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		String sqlString = sqlManager.get("get_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.limit();
-		cnd.and("tuo.ordersstatus", "=", InternationalStatusEnum.TICKETING.intKey());
+		//cnd.and("tuo.ordersstatus", "=", InternationalStatusEnum.TICKETING.intKey());
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
 		cnd.and("tuo.id", "in", ids);
 		List<Record> orders = dbDao.query(sql, cnd, null);
@@ -893,20 +895,21 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		String sqlString = sqlManager.get("get_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.limit();
-		cnd.and("tuo.ordersstatus", "=", InternationalStatusEnum.TICKETING.intKey());
+		//cnd.and("tuo.ordersstatus", "=", InternationalStatusEnum.TICKETING.intKey());
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
 		cnd.and("tuo.id", "in", ids);
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		result.put("orders", orders);
 		try {
 			result.put("bzSelect", externalInfoService.findDictInfoByName("", BIZHONGCODE));
-			result.put("ytSelect", externalInfoService.findDictInfoByName("", FKYTCODE));
+			//result.put("ytSelect", externalInfoService.findDictInfoByName("", FKYTCODE));
 		} catch (Exception e) {
-
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-
 		}
+		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
+				null);
+		result.put("ytSelect", ytselect);
 		result.put("user", user);
 		result.put("ids", ids);
 		result.put("orderstatus", orderstatus);

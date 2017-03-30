@@ -111,7 +111,7 @@
 		   </div>
 		   <div name="congcong">
 		    <label class="col-sm-1 text-right padding cf">从：</label>
-		    <div class="col-sm-3 padding" name="startenddate">
+		    <div class="col-sm-3 padding CSdiv" name="startenddate">
 		      <input id="startdate0" name="startdate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'enddate0\')}'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2016-11-05"> 
 		      - <input id="enddate0" name="enddate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startdate0\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2016-12-01">
 		    </div>
@@ -227,7 +227,7 @@
 		<div class="form-group row">
 		  
 		  <label class="col-sm-1 text-right padding cf">从：</label>
-		    <div class="col-sm-3 padding">
+		    <div class="col-sm-3 padding CSdiv">
 		      <input type="text" class="form-control input-sm timeWid inputdatestr" id="startdate1" name="startdate1" placeholder="2016-11-05" onkeypress="onEnterSearch();" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'enddate1\')}'})"> - <input type="text" id="enddate1" name="enddate1" class="form-control input-sm timeWid inputdatestr" placeholder="2016-12-01" onkeypress="onEnterSearch();" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startdate1\')}'})">
 		   </div>
 		 <label class="col-sm-1 text-right padding">起飞城市：</label>

@@ -47,7 +47,7 @@ public class InternationalParamForm extends DataTablesParamForm {
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("tpi.companyid", "=", companyid);
 		}
-		if (ordersstatus.equals(InternationalStatusEnum.TICKETING)) {
+		if (!Util.isEmpty(ordersstatus) && ordersstatus.equals(InternationalStatusEnum.TICKETING)) {
 			if (!Util.isEmpty(ticketing)) {
 				SqlExpressionGroup sqlex = new SqlExpressionGroup();
 				sqlex.and("tuo.receivestatus", "=", "").or("tuo.receivestatus", "is", null);
@@ -66,6 +66,9 @@ public class InternationalParamForm extends DataTablesParamForm {
 	public Sql sql(SqlManager sqlManager) {
 		String sqlString = sqlManager.get("get_international_list_sql");
 		Sql sql = Sqls.create(sqlString);
+		if (!Util.isEmpty(ordersstatus) && ordersstatus != 0) {
+			sql.setParam("ordersstatus", ordersstatus);
+		}
 		sql.setCondition(cnd());
 		return sql;
 	}
