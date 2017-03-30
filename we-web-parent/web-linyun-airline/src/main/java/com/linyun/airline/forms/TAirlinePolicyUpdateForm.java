@@ -31,6 +31,8 @@ public class TAirlinePolicyUpdateForm extends ModForm implements Serializable {
 	private long airlineCompanyId;
 	/**地区id*/
 	private long areaId;
+	/**地区名称*/
+	private String areaName;
 	/**文件名字*/
 	private String fileName;
 	/**手填的文件名字，以此为准*/
