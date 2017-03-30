@@ -20,6 +20,7 @@ import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.html.simpleparser.StyleSheet;
 import com.itextpdf.text.pdf.AcroFields;
 import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfReader;
@@ -40,7 +41,7 @@ public class sss {
 	 * Excel单元格格式最好设置成文本，否则pdf填充值时可能中文无法显示
 	 */
 	public static void fromPDFTempletToPdfWithValue() {
-		String fileName = "E:/德国中英签证表测试1.pdf"; // 
+		String fileName = "E:/德国中英签证表15.pdf"; // 
 		try {
 			PdfReader reader = new PdfReader(fileName);
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -81,26 +82,47 @@ public class sss {
 				System.out.println(name);
 				s.setField(name, str[j++]);
 			}*/
-			s.setField("xing11", "张");
-			s.setField("birthxing", "张");
-			s.setField("name", "三");
-			s.setField("birthdate", "1989-02-15");
+			s.setField("xing", "柳");
+			s.setField("birthxing", "柳");
+			s.setField("name", "柳晗儿");
+			s.setField("birthname", "晗儿");
+			s.setField("birthtime", "1997-12-25");
 			s.setField("birtharea", "台湾");
 			s.setField("birthcountry", "中国");
 			s.setField("nowcountry", "中国");
-			s.setField("qitahuangyin", "无");
-			s.setField("qitahuangyin", "无");
-
-			//Document document = new Document();
-			//document.open();
-			/*	Image gif = Image.getInstance("d:\\图片.jpg");
-				gif.setDpi(100, 100);
-				gif.setBorderWidth(200);
-				gif.scaleAbsolute(80, 100);
-				gif.setAbsolutePosition(400, 700);
-				PdfContentByte over = ps.getOverContent(1);
-				over.addImage(gif);
+			s.setField("sexwomen", "On");
+			/*s.setField("toggle_1", "On");//x
 			*/
+			s.setField("marriage1", "On");
+			s.setField("vormundnameandaddress", "柳大郞   台湾省高雄市");
+			s.setField("identitycard", "121211 1997 1225 2222");
+			s.setField("travel1", "On");
+			s.setField("travelnum", "T00342399");
+			s.setField("issuetime", "2017-3-30");
+			s.setField("effectivetime", "2017-5-30");
+			s.setField("issueoffice", "北京市直立人");
+			s.setField("applicantaddressandemail", "北京市海淀区学知园   123455689@qq.com");
+			s.setField("phonenumber", "010-74747412");
+			s.setField("permitnumber", "G12345678");
+			s.setField("effectivetimeofcountry", "2017-5-30");
+			s.setField("applicanttime", "2017-3-30");
+			s.setField("a1", "On");
+			s.setField("b1", "On");
+			s.setField("v1", "On");
+			s.setField("people1", "On");
+			s.setField("country1", "On");
+			s.setField("daynumber", "60");
+
+			Document document = new Document();
+			document.open();
+			Image gif = Image.getInstance("e:/13.jpg");
+			gif.setDpi(100, 100);
+			gif.setBorderWidth(200);
+			gif.scaleAbsolute(80, 100);
+			gif.setAbsolutePosition(493, 735);
+			PdfContentByte over = ps.getOverContent(1);
+			over.addImage(gif);
+
 			ps.setFormFlattening(true);
 			ps.close();
 			FileOutputStream fos = new FileOutputStream("E:/11.pdf");
