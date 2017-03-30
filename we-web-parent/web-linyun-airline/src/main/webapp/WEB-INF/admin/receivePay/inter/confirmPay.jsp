@@ -162,6 +162,9 @@
 	<script type="text/javascript">
 		var BASE_PATH = '${base}';
 	</script>
+	
+	<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
+	
 	<!-- My97DatePicker -->
 	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -174,7 +177,7 @@
 	<script src="${base}/common/js/layer/layer.js"></script>
 	<!-- uploadify -->
 	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
-	<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
+	
 	<!-- 確認付款js -->
 	<script src="${base}/admin/receivePayment/inter/interConfirmPay.js"></script>
 	

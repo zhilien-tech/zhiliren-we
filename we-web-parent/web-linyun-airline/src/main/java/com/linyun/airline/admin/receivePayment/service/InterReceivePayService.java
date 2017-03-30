@@ -588,7 +588,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		Integer currency = form.getPayCurrency();
 		Integer isInvioce = form.getIsInvioce();
 		String receiptUrl = form.getReceiptUrl();
-		String payIds = form.getPayIds();
+		String orderIds = form.getPayIds();
 		Double totalMoney = form.getTotalMoney();
 		String payNames = form.getPayNames();
 		//操作人
@@ -619,6 +619,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		TUpOrderEntity upOrder = new TUpOrderEntity();
 		//付款集合
 		List<TPayEntity> updateList = new ArrayList<TPayEntity>();
+		TPayOrderEntity payOrder = dbDao.fetch(TPayOrderEntity.class, Cnd.where("orderid", "in", orderIds));
+		Integer payIds = payOrder.getPayid();
 		List<TPayEntity> payEntityList = dbDao.query(TPayEntity.class, Cnd.where("id", "in", payIds), null);
 		for (TPayEntity payEntity : payEntityList) {
 			if (!Util.eq(null, bankId)) {
@@ -630,7 +632,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			if (!Util.eq(null, purpose)) {
 				payEntity.setPurpose(purpose);
 			}
-			if ((!Util.eq(null, fundType)) && (!Util.eq("--请选择--", fundType))) {
+			if (!Util.eq(null, fundType)) {
 				payEntity.setFundType(fundType);
 			}
 			if (!Util.eq(null, payDate)) {
@@ -645,10 +647,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			if (!Util.eq(null, totalMoney)) {
 				payEntity.setTotalMoney(totalMoney);
 			}
-			if ((!Util.eq(null, currency)) && (!Util.eq("--请选择--", currency))) {
-				if (!Util.eq("--请选择--", currency)) {
-					payEntity.setPayCurrency(currency);
-				}
+			if (!Util.eq(null, currency)) {
+				payEntity.setPayCurrency(currency);
 			}
 			if (!Util.eq(null, isInvioce)) {
 				payEntity.setIsInvioce(isInvioce);
@@ -668,7 +668,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		int updateNum = 0;
 		//更新付款订单表状态
 		List<TPayOrderEntity> newPayOrderList = new ArrayList<TPayOrderEntity>();
-		List<TPayOrderEntity> payOrderList = dbDao.query(TPayOrderEntity.class, Cnd.where("payid", "in", payIds), null);
+		List<TPayOrderEntity> payOrderList = dbDao.query(TPayOrderEntity.class, Cnd.where("orderid", "in", orderIds),
+				null);
 		if (!Util.isEmpty(payOrderList)) {
 			for (TPayOrderEntity payOrderEntity : payOrderList) {
 				payOrderEntity.setPaystauts(APPROVALPAYED);
@@ -677,7 +678,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			}
 			updateNum = dbDao.update(newPayOrderList);
 		}
-		//更新付款表状态   TODO
+		//更新付款表状态   TODO payIds
+		/*dbDao.update(TPayEntity.class, Chain.make("status", APPROVALPAYED), Cnd.where("id", "in", payIds));*/
 
 		//付款成功 操作台添加消息
 		if (updateNum > 0) {
@@ -698,7 +700,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			}
 		}
 
-		return null;
+		return "success";
 	}
 
 	//水单上传 返回值文件存储地址
