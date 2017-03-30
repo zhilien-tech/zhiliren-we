@@ -26,6 +26,7 @@ import com.linyun.airline.admin.applyapproval.entity.ApprovalList;
 import com.linyun.airline.admin.applyapproval.entity.ApprovalListInter;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
+import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
 import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.ApprovalResultEnum;
@@ -408,14 +409,19 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 				ordersnum = upOrderInfo.getOrdersnum();
 				upOrderInfo.setPaystatus(approvalStatus);
 				int res2 = this.updateIgnoreNull(upOrderInfo);
+				TPayOrderEntity payoOrderEntity = dbDao.fetch(TPayOrderEntity.class,
+						Cnd.where("orderid", "=", upOrderid));
+				payoOrderEntity.setPaystauts(approvalStatus);
+				int res3 = this.updateIgnoreNull(payoOrderEntity);
 				boolean flag = orderInterTrueOrFalse(usingId);
 				if (flag) {
 					TPayEntity pay = dbDao.fetch(TPayEntity.class, usingId);
 					pay.setApproveResult(ApprovalResultEnum.ENABLE.intKey());
 					pay.setApproveTime(new Date());
+					pay.setStatus(approvalStatus);
 					int res = this.updateIgnoreNull(pay);
 				}
-				if (res2 > 0) {
+				if (res2 > 0 && res3 > 0) {
 					Map<String, Object> remindMap = new HashMap<String, Object>();
 					remindMap.put("remindDate", DateUtil.Date2String(new Date()));
 					remindMap.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
