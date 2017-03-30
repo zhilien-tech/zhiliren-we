@@ -10,6 +10,43 @@ LEFT JOIN t_order_receive tor ON tor.orderid = tuo.id
 AND tor.orderstatus = @ordersstatus
 $condition
 
+/*get_international_receive_list_sql*/
+SELECT
+	tpi.*, tuo.ordersnum,
+	tuo.ordersstatus,
+	tr.orderstatus receiveorderstatus
+FROM
+	t_up_order tuo
+INNER JOIN t_plan_info tpi ON tpi.ordernumber = tuo.id
+LEFT JOIN (
+	SELECT
+		*
+	FROM
+		t_order_receive
+	WHERE
+		orderstatus = @ordersstatus
+) tor ON tor.orderid = tuo.id
+LEFT JOIN t_receive tr ON tor.receiveid = tr.id
+$condition
+
+/*get_international_pay_list_sql*/
+SELECT
+	tpi.*, tuo.ordersnum,
+	tuo.ordersstatus,
+	tp.orderstatus receiveorderstatus
+FROM
+	t_up_order tuo
+INNER JOIN t_plan_info tpi ON tpi.ordernumber = tuo.id
+LEFT JOIN (
+	SELECT
+		*
+	FROM
+		t_pay_order
+	WHERE
+		orderstatus = @ordersstatus
+) tpo ON tpo.orderid = tuo.id
+LEFT JOIN t_pay tp ON tp.id = tpo.payid
+$condition
 
 /*get_international_receive_list*/
 SELECT

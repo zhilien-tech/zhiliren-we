@@ -38,6 +38,8 @@ import com.linyun.airline.admin.order.inland.enums.PayMethodEnum;
 import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
 import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.order.international.form.InternationalParamForm;
+import com.linyun.airline.admin.order.international.form.InternationalPayParamForm;
+import com.linyun.airline.admin.order.international.form.InternationalReceiveParamForm;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
 import com.linyun.airline.common.enums.AccountPayEnum;
@@ -102,6 +104,58 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object internationalListData(InternationalParamForm paramForm, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		paramForm.setCompanyid(new Long(company.getId()).intValue());
+		Map<String, Object> listPageData = this.listPage4Datatables(paramForm);
+		List<Record> list = (List<Record>) listPageData.get("data");
+		for (Record record : list) {
+			List<TAirlineInfoEntity> query = dbDao.query(TAirlineInfoEntity.class,
+					Cnd.where("planid", "=", record.get("id")).orderBy("leavedate", "asc"), null);
+			record.put("airinfo", query);
+			record.put("orderstatusenum", EnumUtil.enum2(InternationalStatusEnum.class));
+		}
+		listPageData.remove("data");
+		listPageData.put("data", list);
+		return listPageData;
+	}
+
+	/**
+	 * 查询国际订单收款列表
+	 * <p>
+	 * TODO查询国际订单收款列表
+	 * @param paramForm
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object internationalReceiveListData(InternationalReceiveParamForm paramForm, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		paramForm.setCompanyid(new Long(company.getId()).intValue());
+		Map<String, Object> listPageData = this.listPage4Datatables(paramForm);
+		List<Record> list = (List<Record>) listPageData.get("data");
+		for (Record record : list) {
+			List<TAirlineInfoEntity> query = dbDao.query(TAirlineInfoEntity.class,
+					Cnd.where("planid", "=", record.get("id")).orderBy("leavedate", "asc"), null);
+			record.put("airinfo", query);
+			record.put("orderstatusenum", EnumUtil.enum2(InternationalStatusEnum.class));
+		}
+		listPageData.remove("data");
+		listPageData.put("data", list);
+		return listPageData;
+	}
+
+	/**
+	 * 查询国际订单付款列表
+	 * <p>
+	 * TODO查询国际订单付款列表
+	 * @param paramForm
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object internationalPayListData(InternationalPayParamForm paramForm, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
@@ -262,6 +316,9 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	 */
 	@SuppressWarnings("unchecked")
 	public Object saveInternationalDetail(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		String data = request.getParameter("data");
 		Map<String, Object> fromJson = JsonUtil.fromJson(data, Map.class);
 		Long orderedid = Long.valueOf((String) fromJson.get("orderedid"));
@@ -270,7 +327,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		orderinfo.setOrdersstatus(orderType);
 		dbDao.update(orderinfo);
 		String financeData = request.getParameter("financeData");
-		saveFinanceData(financeData, orderType);
+		saveFinanceData(financeData, orderType, user);
 		return null;
 	}
 
@@ -278,7 +335,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	 * 保存财务信息
 	 */
 	@SuppressWarnings("unchecked")
-	private Object saveFinanceData(String financeData, Integer orderType) {
+	private Object saveFinanceData(String financeData, Integer orderType, TUserEntity user) {
 		Map<String, String> financeMap = JsonUtil.fromJson(financeData, Map.class);
 		//财务信息id
 		String id = financeMap.get("id");
@@ -346,18 +403,21 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		if (!Util.isEmpty(financeMap.get("relief"))) {
 			relief = Double.valueOf(financeMap.get("relief"));
 		}
+		TFinanceInfoEntity financeInfo = new TFinanceInfoEntity();
 		//开票日期
 		Date billingdate = null;
 		if (!Util.isEmpty(financeMap.get("billingdate"))) {
 			billingdate = DateUtil.string2Date(financeMap.get("billingdate"), DateUtil.FORMAT_YYYY_MM_DD);
-		} else if (orderType.equals(InternationalStatusEnum.TICKETING.intKey())) {
+		}
+		if (orderType.equals(InternationalStatusEnum.TICKETING.intKey())) {
 			billingdate = new Date();
+			financeInfo.setIssuer(user.getFullName());
+			financeInfo.setIssuerid(new Long(user.getId()).intValue());
 		}
 		//销售人员
 		String salesperson = financeMap.get("salesperson");
 		//开票人
 		String issuer = financeMap.get("issuer");
-		TFinanceInfoEntity financeInfo = new TFinanceInfoEntity();
 		financeInfo.setOrderid(orderid);
 		financeInfo.setCusgroupnum(cusgroupnum);
 		financeInfo.setTeamtype(teamtype);
@@ -374,7 +434,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		financeInfo.setRelief(relief);
 		financeInfo.setBillingdate(billingdate);
 		financeInfo.setSalesperson(salesperson);
-		financeInfo.setIssuer(issuer);
+
 		if (Util.isEmpty(id)) {
 			dbDao.insert(financeInfo);
 		} else {
