@@ -326,10 +326,18 @@ $(function(){
         		initAirInfoSelect2($(this));
         	}
         });
+        /*只在最后一个需求上显示 备注项*/
+        $('.remarkTr').remove();
+        $('.DemandDiv:last-child .cloTable tbody').append('<tr class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><input type="text" id="remark" name="remark" class="form-control input-sm noteText" placeholder=" " value=" "></td></tr>');
     });
     //客户需求的 -需求 按钮
     $(document).on("click",".removeDemand",function(){
         $(this).parent().remove();
+        /*判断最后一个需求是否有 备注项 如果没有 就添加备注项*/
+        var cl=$('.DemandDiv:last-child .cloTable tbody tr').hasClass('remarkTr');
+        if(cl==false){
+        	$('.DemandDiv:last-child .cloTable tbody').append('<tr class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><input type="text" id="remark" name="remark" class="form-control input-sm noteText" placeholder=" " value=" "></td></tr>');
+        }
     });
   });
 $("#linkName").on('select2:unselect', function (evt) {

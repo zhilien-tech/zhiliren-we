@@ -273,7 +273,7 @@
 					                   </tr>
 			                   		</c:otherwise>
 			                   </c:choose>
-			                   <tr>
+			                   <tr class="remarkTr">
 			                     <td></span><label>备注：</label></td>
 			                     <td colspan="11"><input id="remark" name="remark" disabled="disabled" type="text" class="form-control input-sm noteText" placeholder="" value="${customneed.cusinfo.remark }"/></td>
 			                   </tr>
@@ -327,7 +327,7 @@
 		                      <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake none"></a>
 		                     </td>
 		                   </tr>
-		                   <tr>
+		                   <tr class="remarkTr">
 		                     <td></span><label>备注：</label></td>
 		                     <td colspan="11"><input type="text" id="remark" name="remark" class="form-control input-sm noteText" placeholder=" " value="${customneed.cusinfo.remark }"></td>
 		                   </tr>
