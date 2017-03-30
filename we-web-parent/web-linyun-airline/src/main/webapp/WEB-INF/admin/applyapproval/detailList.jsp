@@ -41,8 +41,8 @@
 			<li>
 				<span>金额</span>
 				
+				<span><fmt:formatNumber type="number" value="${obj.reduceList.account }" maxFractionDigits="2"></fmt:formatNumber></span>
 			
-				<span>${obj.reduceList.account }</span>
 			</li>
 			<li>
 				<span>手续费</span>
@@ -89,11 +89,12 @@
 				
 				<c:if test="${obj.operation=='inlandNum'}">
 				
-					<span>${obj.detaillist.costpricesum }</span>
+					
+					<span><fmt:formatNumber type="number" value="${obj.detaillist.costpricesum }" maxFractionDigits="2"></fmt:formatNumber></span>
 				</c:if>
 				<c:if test="${obj.operation=='international'}">
-				
-					<span>${obj.detaillist.amount }</span>
+					<span><fmt:formatNumber type="number" value="${obj.detaillist.amount }" maxFractionDigits="2"></fmt:formatNumber></span>
+					
 				</c:if>
 			</li>
 			<li>
