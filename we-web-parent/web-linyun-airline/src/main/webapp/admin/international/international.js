@@ -112,12 +112,15 @@ function initInternationalTable(){
 initInternationalTable();
 //加载列表数据
 function loadDataTable(status){
+	if(!status){
+		status = $('#status').val();
+	}
 	var param = {
 			ordersstatus:status
 	};
 	internationalTable.settings()[0].ajax.data = param;
 	internationalTable.ajax.reload();
-	$('#status').val(status);
+	
 }
 //点击行跳转到详情页
 $("tbody",$('#internationalTable')).on("dblclick","tr",function(event) {
