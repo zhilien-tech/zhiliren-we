@@ -68,6 +68,7 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 		/*查询航空公司*/
 		Cnd cnd = Cnd.NEW();
 		cnd.and("companyId", "=", companyId);
+		cnd.and("airlineCompanyName", "is not", null);
 		cnd.groupBy("airlineCompanyId");
 
 		sql.setCondition(cnd);
@@ -218,9 +219,9 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 		String sqlString = sqlManager.get("airlinepolicy_select2_airlinecompany");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
-		cnd.and("dictName", "like", Strings.trim(findCompany) + "%");
-		cnd.or("dictCode", "like", "%" + Strings.trim(findCompany) + "%");
 		cnd.and("typeCode", "=", "HKGS");
+		cnd.and("(dictName", "like", Strings.trim(findCompany) + "%");
+		cnd.or("dictCode", "like", "%" + Strings.trim(findCompany) + "%");
 		if (!Util.isEmpty(companyName)) {
 			cnd.and("id", "NOT IN", companyName);
 		}
