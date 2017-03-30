@@ -104,10 +104,10 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 * 
 	 * 会计收款列表
 	 * <p>
-	 * TODO(这里描述这个方法详情– 可选)
+	 *  (这里描述这个方法详情– 可选)
 	 *
 	 * @param form
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public Object listRecData(InterRecListSearchSqlForm form, HttpSession session, HttpServletRequest request) {
 
@@ -213,7 +213,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 * (确认收款页面)
 	 *
 	 * @param inlandPayIds
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public Object toConfirmRec(String id, HttpSession session) {
 		//当前登录用户id
@@ -271,26 +271,28 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 * (保存  确认收款)
 	 *
 	 * @param inlandPayIds
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public Object saveInterRec(String recId, HttpSession session) {
 
 		int updateNum = 0;
 		int orderRecEd = AccountReceiveEnum.RECEIVEDONEY.intKey();
-
-		TOrderReceiveEntity orderReceiveEntity = dbDao.fetch(TOrderReceiveEntity.class,
-				Cnd.where("receiveid", "in", recId));
-		if (!Util.isEmpty(orderReceiveEntity)) {
-			orderReceiveEntity.setReceivestatus(orderRecEd);
-			orderReceiveEntity.setReceiveDate(DateUtil.nowDate());
-			updateNum = dbDao.update(orderReceiveEntity);
-			int rId = orderReceiveEntity.getReceiveid();
-			dbDao.update(TReceiveEntity.class, Chain.make("status", orderRecEd), Cnd.where("id", "=", rId));
+		List<TOrderReceiveEntity> newRecOrderList = new ArrayList<TOrderReceiveEntity>();
+		List<TOrderReceiveEntity> orderReceiveList = dbDao.query(TOrderReceiveEntity.class,
+				Cnd.where("receiveid", "in", recId), null);
+		if (!Util.isEmpty(orderReceiveList)) {
+			for (TOrderReceiveEntity recOrderEntity : orderReceiveList) {
+				recOrderEntity.setReceivestatus(orderRecEd);
+				recOrderEntity.setReceiveDate(DateUtil.nowDate());
+				newRecOrderList.add(recOrderEntity);
+			}
+			updateNum = dbDao.update(newRecOrderList);
 		}
+		dbDao.update(TReceiveEntity.class, Chain.make("status", orderRecEd), Cnd.where("id", "in", recId));
 
 		//收款成功添加消息提醒
 		if (updateNum > 0) {
-			//TODO  ******************************************添加消息提醒***********************************************
+			// ******************************************添加消息提醒***********************************************
 			String sqlS = sqlManager.get("receivePay_order_rec_rids");
 			Sql sql = Sqls.create(sqlS);
 			Cnd cnd = Cnd.NEW();
@@ -408,12 +410,12 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 
 	/**
 	 * 
-	 * TODO(会计已付款查询)
+	 * (会计已付款查询)
 	 * <p>
-	 * TODO(这里描述这个方法详情– 可选)
+	 * 
 	 *
 	 * @param sqlParamForm
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public Object listPayEdData(InterPayEdListSearchSqlForm form, HttpSession session) {
 		//当前公司下的用户
@@ -440,7 +442,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 * (确认付款页面)
 	 *
 	 * @param inlandPayIds
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return 
 	 */
 	public Object toConfirmPay(String orderIds, HttpSession session) {
 		//当前公司id
@@ -564,7 +566,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 * (保存  确认付款页面)
 	 *
 	 * @param inlandPayIds
-	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 * @return  (这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object saveInterPay(TSaveInterPayAddFrom form, HttpSession session) {
 		List<TPayEntity> payList = new ArrayList<TPayEntity>();
@@ -628,7 +630,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			if (!Util.eq(null, purpose)) {
 				payEntity.setPurpose(purpose);
 			}
-			if (!Util.eq(null, fundType)) {
+			if ((!Util.eq(null, fundType)) && (!Util.eq("--请选择--", fundType))) {
 				payEntity.setFundType(fundType);
 			}
 			if (!Util.eq(null, payDate)) {
@@ -643,7 +645,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			if (!Util.eq(null, totalMoney)) {
 				payEntity.setTotalMoney(totalMoney);
 			}
-			if (!Util.eq(null, currency)) {
+			if ((!Util.eq(null, currency)) && (!Util.eq("--请选择--", currency))) {
 				if (!Util.eq("--请选择--", currency)) {
 					payEntity.setPayCurrency(currency);
 				}
@@ -663,17 +665,23 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		if (!Util.isEmpty(payReceiptList)) {
 			dbDao.insert(payReceiptList);
 		}
-		//更新订单状态
-		List<TPayOrderEntity> payOrderList = dbDao.query(TPayOrderEntity.class, Cnd.where("payid", "in", payIds), null);
 		int updateNum = 0;
-		if (!Util.eq(null, payIds)) {
-			updateNum = dbDao.update(TPayOrderEntity.class, Chain.make("paystatus", APPROVALPAYED),
-					Cnd.where("payid", "in", payIds));
+		//更新付款订单表状态
+		List<TPayOrderEntity> newPayOrderList = new ArrayList<TPayOrderEntity>();
+		List<TPayOrderEntity> payOrderList = dbDao.query(TPayOrderEntity.class, Cnd.where("payid", "in", payIds), null);
+		if (!Util.isEmpty(payOrderList)) {
+			for (TPayOrderEntity payOrderEntity : payOrderList) {
+				payOrderEntity.setPaystauts(APPROVALPAYED);
+				payOrderEntity.setPayDate(DateUtil.nowDate());
+				newPayOrderList.add(payOrderEntity);
+			}
+			updateNum = dbDao.update(newPayOrderList);
 		}
+		//更新付款表状态   TODO
 
 		//付款成功 操作台添加消息
 		if (updateNum > 0) {
-			//TODO  ******************************************添加消息提醒***********************************************
+			//******************************************添加消息提醒***********************************************
 			String sqlS = sqlManager.get("receivePay_order_pnr_pids");
 			Sql sql = Sqls.create(sqlS);
 			Cnd cnd = Cnd.NEW();

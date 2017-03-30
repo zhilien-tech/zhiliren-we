@@ -13,7 +13,7 @@
 <!--本页面style-->
 </head>
 <body>
-<form id="confirmInternationalPayForm">
+<form id="confirmInterPayForm">
 	<div class="modal-top">
 		<div class="modal-header boderButt">
 			<button type="button" id="closePayWindow" class="btn btn-primary right btn-sm">取消</button>
@@ -100,6 +100,7 @@
 					</select></td>
 					<td>资金种类：</td>
 					<td><select id="fundType" name="fundType" class="form-control input-sm">
+							<option>--请选择--</option>
 							<c:forEach var="one" items="${obj.zjzlList}">
 	                        	<option value="${one.id }">${one.comDictName }</option>
 	                        </c:forEach>

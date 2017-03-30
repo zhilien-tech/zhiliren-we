@@ -2,9 +2,9 @@
 function confirmPayClick(){
 	$.ajax({
 		type : 'POST',
-		data : $("#confirmInlandPayForm").serialize(),
+		data : $("#confirmInterPayForm").serialize(),
 		async: false,
-		url: BASE_PATH + '/admin/receivePay/inter/saveInlandPay.html',
+		url: BASE_PATH + '/admin/receivePay/inter/saveInterPay.html',
 		success : function(data) {
 			if(data === false){
 				parent.layer.msg("收款单位不一致，付款失败", "", 2000);
