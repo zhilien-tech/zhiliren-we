@@ -302,7 +302,7 @@
 			url: '${base}/admin/invoicemanage/invoiceinfo/saveShouInvoiceInfo.html',
            success: function (data) { 
            	closewindow();
-           	window.parent.successCallback('5');
+           	window.parent.successCallback('2');
            },
            error: function (xhr) {
            	layer.msg("提交失败","",3000);

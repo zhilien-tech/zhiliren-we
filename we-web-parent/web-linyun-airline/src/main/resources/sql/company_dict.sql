@@ -55,3 +55,55 @@ FROM
 	t_company_dictinfo cin
 LEFT JOIN t_company c ON c.id = cin.comId
 $condition
+
+/*company_dict_loginNum_listDate*/
+SELECT
+	lob.id,
+	lob.comId,
+	dt.dictName,
+	lob.comTypeCode,
+	lob.comDdictCode,
+	lob.webURl,
+	lob.loginNumName,
+	lob.airlineName,
+	lob.`status`,
+	lob.createTime,
+	lob.updateTime,
+	lob.remark
+FROM
+	t_login_number lob
+INNER JOIN dict_info dt ON dt.dictName=lob.airlineName
+$condition
+
+/*company_dict_airlineName_select2*/
+SELECT
+	dt.id AS airLineId,
+	dt.typeCode,
+	dt.dictCode,
+	dt.dictName,
+	dt.description,
+	dt.`status`,
+	dt.quanPin,
+	dt.jianpin,
+	dt.createTime
+FROM
+	dict_info dt
+$condition
+LIMIT 0,5
+
+/*company_dict_airlineName_update*/
+SELECT
+	dt.id,
+	dt.typeCode,
+	dt.dictCode,
+	dt.dictName,
+	dt.description,
+	dt.`status`,
+	dt.quanPin,
+	dt.jianpin,
+	dt.createTime
+FROM
+	dict_info dt
+INNER JOIN t_login_number lob ON lob.comDdictCode=dt.typeCode
+$condition
+LIMIT 0,5
