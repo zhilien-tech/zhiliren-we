@@ -27,6 +27,7 @@ import com.linyun.airline.admin.receivePayment.form.inter.InterPayEdListSearchSq
 import com.linyun.airline.admin.receivePayment.form.inter.InterPayListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.inter.InterRecListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.inter.TSaveInterPayAddFrom;
+import com.linyun.airline.admin.receivePayment.form.inter.TUpdateInterPayAddFrom;
 import com.linyun.airline.admin.receivePayment.service.InterReceivePayService;
 
 @IocBean
@@ -77,6 +78,15 @@ public class InterReceivePayModule {
 	@Ok("jsp")
 	public Object editConfirmPay(HttpServletRequest request, HttpSession session) {
 		return interReceivePayService.editConfirmPay(request, session);
+	}
+
+	/**
+	 * 
+	 * 编辑付款
+	 */
+	@At
+	public Object updateInterPay(@Param("..") final TUpdateInterPayAddFrom form, HttpSession session) {
+		return interReceivePayService.updateInterPay(form, session);
 	}
 
 	/**

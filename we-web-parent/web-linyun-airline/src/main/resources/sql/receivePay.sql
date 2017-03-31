@@ -504,7 +504,16 @@ ORDER BY
 	
 /*receivePay_inter_payed_edit*/
 SELECT
-	p.*, uo.id,
+	p.*, 
+	(
+		SELECT
+			username
+		FROM
+			t_user u
+		WHERE
+			u.id = p.proposer
+	) proposerMan,
+	uo.id,
 	uo.ordersnum,
 	fi.cusgroupnum,
 	ci.shortName,
