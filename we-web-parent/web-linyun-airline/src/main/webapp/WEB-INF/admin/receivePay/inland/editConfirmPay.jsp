@@ -138,9 +138,9 @@
 				</tr>
 				<tr>
 					<td>手续费：</td>
-					<td><input id="payFees" name="payFees" value="${obj.payList[0].payfees}" type="text" class="form-control input-sm"></td>
+					<td><input id="payFees" name="payFees" value="<fmt:formatNumber type="number" value="${obj.payList[0].payfees}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm"></td>
 					<td>金额：</td>
-					<td><input id="payMoney" name="payMoney" value="${obj.payList[0].paymoney}"  type="text" class="form-control input-sm"></td>
+					<td><input id="payMoney" name="payMoney" value="<fmt:formatNumber type="number" value="${obj.payList[0].paymoney}" pattern="0.00" maxFractionDigits="2"/>"  type="text" class="form-control input-sm"></td>
 					<td colspan="2">
 						<input id="chineseMoney" name="payChineseMoney" value="${obj.payList[0].paychinesemoney}" type="text" class="form-control input-sm textIpnu" readonly="readonly"></td>
 					<td class="bj">币种：</td>
