@@ -117,7 +117,6 @@ public class ComInfoDictModule {
 	@At
 	@POST
 	public Object updateLoginNum(@Param("..") final ComLoginNumUpdateForm updateForm, final HttpSession session) {
-		updateForm.setUpdateTime(new Date());
 		comInfoDictService.updateLoginNum(updateForm, session);
 		return JsonResult.success("修改成功!");
 	}

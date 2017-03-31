@@ -93,7 +93,8 @@ LIMIT 0,5
 
 /*company_dict_airlineName_update*/
 SELECT
-	dt.id,
+	dt.id AS dictId,
+	lob.*,
 	dt.typeCode,
 	dt.dictCode,
 	dt.dictName,

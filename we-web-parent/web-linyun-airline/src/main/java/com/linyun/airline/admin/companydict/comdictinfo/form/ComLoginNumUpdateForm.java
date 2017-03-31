@@ -12,12 +12,8 @@ import com.uxuexi.core.web.form.ModForm;
 @EqualsAndHashCode(callSuper = true)
 public class ComLoginNumUpdateForm extends ModForm implements Serializable {
 	private static final long serialVersionUID = 1L;
-	//公司id
-	private Integer comId;
 	//字典类别编码
 	private String comTypeCode;
-	//字典代码
-	private String comDdictCode;
 	//网站地址
 	private String webURl;
 	//登录账号

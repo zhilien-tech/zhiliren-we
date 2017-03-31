@@ -7,6 +7,7 @@
 
 package com.linyun.airline.admin.companydict.comdictinfo.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +35,7 @@ import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
+import com.uxuexi.core.common.util.BeanUtil;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.DbSqlUtil;
@@ -236,6 +238,31 @@ public class ComInfoDictService extends BaseService<ComDictInfoEntity> {
 	public Map<String, Object> updateLoginNum(Long id) {
 		Map<String, Object> obj = Maps.newHashMap();
 		ComLoginNumEntity single = dbDao.fetch(ComLoginNumEntity.class, id);
+		//查询航空公司
+		Sql sql = Sqls.create(sqlManager.get("company_dict_airlineName_update"));
+		Cnd cnd = Cnd.NEW();
+		cnd.and("lob.id", "=", id);
+		cnd.groupBy("lob.airlineName ");
+		sql.setCondition(cnd);
+		List<ComLoginNumEntity> areaList = DbSqlUtil.query(dbDao, ComLoginNumEntity.class, sql);
+		//区域id 拼串
+		String areaIds = "";
+		for (ComLoginNumEntity tAreaEntity : areaList) {
+			areaIds += tAreaEntity.getId() + ",";
+		}
+		if (areaIds.length() > 0) {
+			areaIds = areaIds.substring(0, areaIds.length() - 1);
+		}
+		obj.put("areaIds", areaIds);
+		obj.put("airlineInfo", Lists.transform(areaList, new Function<ComLoginNumEntity, Select2Option>() {
+			@Override
+			public Select2Option apply(ComLoginNumEntity record) {
+				Select2Option op = new Select2Option();
+				op.setId(record.getId());//字典id
+				op.setText(record.getAirlineName());//信息名称
+				return op;
+			}
+		}));
 		obj.put("loginNumData", single);
 		return obj;
 	}
@@ -243,32 +270,17 @@ public class ComInfoDictService extends BaseService<ComDictInfoEntity> {
 	//编辑保存登录账号数据
 	public boolean updateLoginNum(ComLoginNumUpdateForm updateForm, final HttpSession session) {
 		//从session中得到公司id
-		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		Long comId = company.getId();//得到公司的id
-		Map<String, Object> obj = Maps.newHashMap();
-		//查询航空公司
-		Sql sql = Sqls.create(sqlManager.get("company_dict_airlineName_update"));
-		Cnd cnd = Cnd.NEW();
-		cnd.and("a.comId", "=", comId);
-		sql.setCondition(cnd);
-		List<DictInfoEntity> areaList = DbSqlUtil.query(dbDao, DictInfoEntity.class, sql);
-		//区域id 拼串
-		String areaIds = "";
-		for (DictInfoEntity tAreaEntity : areaList) {
-			areaIds += tAreaEntity.getId() + ",";
+		//TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		//Long comId = company.getId();//得到公司的id
+		updateForm.setUpdateTime(new Date());
+		if (!Util.isEmpty(updateForm)) {
+			String airlineId = updateForm.getAirlineName();
+			DictInfoEntity dictInfoEntity = dbDao.fetch(DictInfoEntity.class, Cnd.where("id", "=", airlineId));
+			updateForm.setAirlineName(dictInfoEntity.getDictName());
 		}
-		if (areaIds.length() > 0) {
-			areaIds = areaIds.substring(0, areaIds.length() - 1);
-		}
-		obj.put("airlineInfo", Lists.transform(areaList, new Function<DictInfoEntity, Select2Option>() {
-			@Override
-			public Select2Option apply(DictInfoEntity record) {
-				Select2Option op = new Select2Option();
-				op.setId(record.getId());//字典id
-				op.setText(record.getDictName());//信息名称
-				return op;
-			}
-		}));
+		ComLoginNumEntity comlog = new ComLoginNumEntity();
+		BeanUtil.copyProperties(updateForm, comlog);
+		this.updateIgnoreNull(comlog);//更新表中的数据
 		// 修改字典信息实体
 		FormUtil.modify(dbDao, updateForm, ComLoginNumEntity.class);
 		return true;

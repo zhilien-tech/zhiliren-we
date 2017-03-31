@@ -20,7 +20,7 @@
 	<div class="modal-top">
     <div class="modal-header boderButt">
         <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">返回</button>
-        <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
+        <input type="button" id="submitBtn" class="btn btn-primary right btn-sm" onclick="saveUpdateSubmit();" value="保存">
         <h4>编辑</h4>
     </div>
           <form id="updateLoginForm" method="post">
@@ -119,45 +119,49 @@
 <script src="${base}/common/js/layer/layer.js"></script>
 <script type="text/javascript">
 //验证
-$(document).ready(function(){
-	$('#updateLoginForm').bootstrapValidator({
-		message: '验证不通过!',
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-        	webURl: {
-                validators: {
-                    notEmpty: {
-                        message: '网站地址不能为空!'
-                    },
-                    remote: { 
-                        url: '${base}/admin/companydict/comdictinfo/checkWebURlExist.html',//验证地址
-                             message: '网站地址已存在，请重新输入!',//提示消息
-                             delay :  2000,
-                             type: 'POST',//请求方式
-                             data: function(validator) {
-                                return {
-                                	webURl:$('input[name="webURl"]').val()
-                             };
-                        }
-                    }
-                }
-            },
-            loginNumName: {
-            	validators: {
-                    notEmpty: {
-                        message: '登录账号不能为空!'
-                    },
-                }
-            }
-        }
-	});
-});
+function validateParams(){
+	var options = {
+			message: '验证不通过!',
+	        feedbackIcons: {
+	            valid: 'glyphicon glyphicon-ok',
+	            invalid: 'glyphicon glyphicon-remove',
+	            validating: 'glyphicon glyphicon-refresh'
+	        },
+	        fields: {
+	        	webURl: {
+	                validators: {
+	                    notEmpty: {
+	                        message: '网站地址不能为空!'
+	                    },
+	                    remote: { 
+	                        url: '${base}/admin/companydict/comdictinfo/checkWebURlExist.html',//验证地址
+	                             message: '网站地址已存在，请重新输入!',//提示消息
+	                             delay :  2000,
+	                             type: 'POST',//请求方式
+	                             data: function(validator) {
+	                                return {
+	                                	webURl:$('input[name="webURl"]').val(),
+	                                	id:'${obj.loginNumData.id}'
+	                             };
+	                        }
+	                    }
+	                }
+	            },
+	            loginNumName: {
+	            	validators: {
+	                    notEmpty: {
+	                        message: '登录账号不能为空!'
+	                    }
+	                }
+	            }
+	        }
+	};
+	$("#updateLoginForm").bootstrapValidator(options);  
+	$("#updateLoginForm").data('bootstrapValidator').validate();
+	return $("#updateLoginForm").data('bootstrapValidator').isValid();
+}
 //航空公司select2
-$("#airlineNameId").select2({
+var _areaSelect = $("#airlineNameId").select2({
 	ajax : {
 		url : '${base}/admin/companydict/comdictinfo/airLine.html',
 		dataType : 'json',
@@ -166,7 +170,7 @@ $("#airlineNameId").select2({
 		data : function(params) {
 			return {
 				airline : params.term, // search term
-				airlineIds:$("#airlineIds").val(),
+				selectedAreaIds:$("#airlineIds").val(),
 				page : params.page
 			};
 		},
@@ -176,7 +180,7 @@ $("#airlineNameId").select2({
 			return {
 				results : data
 			};
-		}
+		},
 	},
 	escapeMarkup : function(markup) {
 		return markup;
@@ -187,14 +191,15 @@ $("#airlineNameId").select2({
 	maximumSelectionLength : 5, //设置最多可以选择多少项
 	tags : false, //设置必须存在的选项 才能选中
 });
+_areaSelect.val([${obj.areaIds}]).trigger("change");
 //编辑
-$("#submit").click(function(){
-	$('#updateLoginForm').bootstrapValidator('validate');
-	var bootstrapValidator = $("#updateLoginForm").data('bootstrapValidator');
-	if(bootstrapValidator.isValid()){
+validateParams();
+function saveUpdateSubmit(){
+	var valid = validateParams();
+	if(valid){
 		$.ajax({
            type: "POST",
-           url:'${base}/admin/companydict/comdictinfo/addLoginNum.html',
+           url:'${base}/admin/companydict/comdictinfo/updateLoginNum.html',
            data:$('#updateLoginForm').serialize(),// 你的formid
            error: function(request) {
               layer.msg('编辑失败!',{time:2000});
@@ -203,17 +208,13 @@ $("#submit").click(function(){
 				layer.load(1, {
 					 shade: [0.1,'#fff'] //0.1透明度的白色背景
 				});
-	              	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-					window.location.reload(); // 父页面刷新
-				    window.parent.successCallback('1');
+	            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				parent.layer.close(index);			    
+				window.parent.successCallback('2');
            }
        });
 	}
-});
-//提交时开始验证
-$('#submit').click(function() {
-       $('#updateLoginForm').bootstrapValidator('validate');
-   });
+}
 //点击返回
 function closewindow(){
 	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
