@@ -40,14 +40,7 @@ function initPayDataTable(){
 		            {"data": "ordersnum", "bSortable": false},
 		            {"data": "pnrnum", "bSortable": false,
 		            	render:function(data, type, row, meta) {
-		            		var result = '<ul> ';
-		            		$.each(row.orders, function(name, value) {
-		            			if(value && value.pnr!=undefined){
-		            				result += '<li style="list-style:none;">'+value.pnr+'</li>';
-		            			}
-		            		});
-		            		result += '</ul>';
-		            		return result;
+		            		return "";
 		            	}	
 		            },
 		            {"data": "leavesdate", "bSortable": false,
