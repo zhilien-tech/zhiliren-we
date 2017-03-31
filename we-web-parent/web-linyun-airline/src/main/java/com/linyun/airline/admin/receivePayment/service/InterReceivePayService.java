@@ -457,9 +457,33 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		List<Record> data = (List<Record>) listdata.get("data");
 
 		//TODO
+		List<String> payIds = new ArrayList<String>();
+		String id = "";
+		for (Record record : data) {
+			String pid = record.getString("pid");
+			if (!Util.eq(id, pid)) {
+				payIds.add(pid);
+			}
+			id = pid;
+		}
+		List<Record> newData = new ArrayList<Record>();
+		for (String pid : payIds) {
+			Record record = new Record();
+			List<Record> orders = new ArrayList<Record>();
+			for (Record r : data) {
+				String pidStr = r.getString("pid");
+				//同一个支付订单
+				if (Util.eq(pid, pidStr)) {
+					orders.add(r);
+				}
+			}
+			record.put("pid", pid);
+			record.put("orders", orders);
+			newData.add(record);
+		}
 
 		listdata.remove("data");
-		listdata.put("data", data);
+		listdata.put("data", newData);
 		return listdata;
 	}
 

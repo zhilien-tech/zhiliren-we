@@ -499,3 +499,5 @@ WHERE
 		INNER JOIN t_finance_info fi ON fi.orderid = uo.id
 		$condition
 	)
+ORDER BY
+	po.payDate DESC

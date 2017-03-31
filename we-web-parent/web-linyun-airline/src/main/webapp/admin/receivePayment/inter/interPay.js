@@ -198,12 +198,17 @@ function initPayEdDataTable(){
 			}
 		},
 		"columns": [
-		            {"data": "ordernum", "bSortable": false,
-		            	render:function(data, type, row, meta) {
+		            {"data": "ordersnum", "bSortable": false,
+			            render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
 		            		$.each(row.orders, function(name, value) {
 		            			if(value){
-		            				result += '<li style="list-style:none;">'+value.ordernum+'</li>';
+		            				var ordernum = value.ordersnum;
+		            				if(ordernum == null || ordernum == undefined || ordernum==""){
+		            					ordernum = " ";
+		            				}else{
+		            					result += '<li style="list-style:none;">'+ordernum+'</li>';
+		            				}
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -211,16 +216,7 @@ function initPayEdDataTable(){
 		            	}
 		            },
 		            {"data": "pnrnum", "bSortable": false,
-		            	render:function(data, type, row, meta) {
-		            		var result = '<ul> ';
-		            		$.each(row.orders, function(name, value) {
-		            			if(value){
-		            				result += '<li style="list-style:none;">'+value.pnrnum+'</li>';
-		            			}
-		            		});
-		            		result += '</ul>';
-		            		return result;
-		            	}
+		            	return "";
 		            },
 		            {"data": "leavedate", "bSortable": false,
 		            	render: function(data, type, row, meta) {
