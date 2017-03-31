@@ -19,4 +19,5 @@ tbody.tableTbody tr td ul {padding-left: 0 !important;margin-bottom: 0px !import
 .tableTbody tr td:nth-child(4){padding:0;}
 .tableTbody tr td:nth-child(5){padding:0;}
 .tableTbody tr td:nth-child(6){padding:0;}
-.hangduan .form-group:nth-child(2) label{width:70px;padding-right:0;}
+#teamtype,#teamtype1 {padding-left: 3px;}
+.nav-tabs-custom > .nav-tabs > li {border-top: 3px solid transparent;margin-bottom: -2px;margin-right: 0px;}
