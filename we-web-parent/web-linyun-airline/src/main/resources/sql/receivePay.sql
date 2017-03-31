@@ -501,3 +501,21 @@ WHERE
 	)
 ORDER BY
 	po.payDate DESC
+	
+/*receivePay_inter_payed_edit*/
+SELECT
+	p.*, uo.id,
+	uo.ordersnum,
+	fi.cusgroupnum,
+	ci.shortName,
+	fi.billingdate,
+	pi.peoplecount,
+	fi.`issuer`
+FROM
+	t_up_order uo
+LEFT JOIN t_pay_order po ON po.orderid = uo.id
+INNER JOIN t_pay p ON p.id = po.payid
+INNER JOIN t_plan_info pi ON pi.ordernumber = uo.id
+INNER JOIN t_customer_info ci ON ci.id = uo.userid
+INNER JOIN t_finance_info fi ON fi.orderid = uo.id
+$condition

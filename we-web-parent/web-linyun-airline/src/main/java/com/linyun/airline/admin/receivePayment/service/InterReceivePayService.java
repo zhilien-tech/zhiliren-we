@@ -26,6 +26,7 @@ import org.nutz.dao.util.cri.SqlExpressionGroup;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Files;
+import org.nutz.lang.Strings;
 import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
@@ -44,6 +45,7 @@ import com.linyun.airline.admin.receivePayment.form.inter.InterPayEdListSearchSq
 import com.linyun.airline.admin.receivePayment.form.inter.InterPayListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.inter.InterRecListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.inter.TSaveInterPayAddFrom;
+import com.linyun.airline.admin.receivePayment.util.FormatDateUtil;
 import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
@@ -51,6 +53,7 @@ import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.ApprovalResultEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
+import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.common.enums.MessageRemindEnum;
 import com.linyun.airline.common.enums.MessageWealthStatusEnum;
 import com.linyun.airline.common.enums.SearchOrderStatusEnum;
@@ -456,7 +459,6 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		@SuppressWarnings("unchecked")
 		List<Record> data = (List<Record>) listdata.get("data");
 
-		//TODO
 		List<String> payIds = new ArrayList<String>();
 		String id = "";
 		for (Record record : data) {
@@ -620,6 +622,134 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		map.put("ids", orderIds);
 
 		return map;
+	}
+
+	/**
+	 * 
+	 * 到编辑已付款页面
+	 * <p>
+	 * TODO
+	 * @param request
+	 * @return 
+	 */
+	public Object editConfirmPay(HttpServletRequest request, HttpSession session) {
+
+		//当前公司所有用户id
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		String payId = request.getParameter("payid");
+		//TODO
+		String sqlString = sqlManager.get("receivePay_inter_payed_edit");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("p.id", "in", payId);
+		cnd.and("po.paystauts", "=", APPROVALPAYED);
+		List<Record> payList = dbDao.query(sql, cnd, null);
+
+		//总金额
+		double totalMoney = 0;
+		//申请人
+		String proposer = "";
+		//审批人
+		String approver = "";
+		//审批结果
+		String approveresult = "";
+		//操作人
+		String operator = "";
+		for (Record record : payList) {
+			//计算订单总金额
+			/*if (!Util.isEmpty(record.get("salesprice"))) {
+				Double costpricesum = (Double) record.get("salesprice");
+				totalMoney += Double.valueOf(costpricesum);
+			}*/
+			totalMoney = 0.00;
+			proposer = record.getString("proposer");
+			approver = record.getString("approver"); //审批人
+			String opr = record.getString("operator"); //操作人
+			if (!Util.eq(operator, opr)) {
+				operator = opr;
+			}
+			approveresult = record.getString("approveresult");
+			String payDateStr = record.getString("payDate");
+			if (!Util.isEmpty(payDateStr)) {
+				String payDateFormat = DateTimeUtil.format(DateTimeUtil.string2Date(payDateStr, null));
+				record.put("payDate", payDateFormat);
+			}
+			String billDateStr = record.getString("billingdate");
+			if (!Util.isEmpty(billDateStr)) {
+				String formatBillDate = FormatDateUtil.dateToOrderDate(DateTimeUtil.string2Date(billDateStr, null));
+				record.set("billingdate", formatBillDate);
+			}
+		}
+		result.put("proposer", proposer);
+		result.put("approver", approver);
+		if (Util.eq(APPROVALENABLE, approveresult)) {
+			result.put("approveresult", "同意");
+		} else {
+			result.put("approveresult", "拒绝");
+		}
+		result.put("payList", payList);
+		//总金额
+		result.put("totalMoney", totalMoney);
+
+		//付款的水单信息
+		TPayReceiptEntity receiptEntity = dbDao.fetch(TPayReceiptEntity.class, Cnd.where("payId", "in", payId));
+		if (!Util.isEmpty(receiptEntity)) {
+			result.put("receiptUrl", receiptEntity.getReceiptUrl());
+		}
+
+		//银行名称
+		List<TBankCardEntity> bankList = new ArrayList<TBankCardEntity>();
+		try {
+			Cnd cnd2 = Cnd.NEW();
+			cnd2.and("companyid", "=", companyId);
+			cnd2.and("bankName", "!=", "");
+			cnd2.and("status", "=", BankCardStatusEnum.ENABLE.intKey());
+			cnd2.groupBy("bankName");
+			bankList = dbDao.query(TBankCardEntity.class, cnd2, null);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		result.put("bankList", bankList);
+
+		//币种
+		List<DictInfoEntity> BZList = new ArrayList<DictInfoEntity>();
+		try {
+			BZList = externalInfoService.findDictInfoByName("", BZCODE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		result.put("bzList", BZList);
+		//付款用途
+		List<ComDictInfoEntity> fkytList = new ArrayList<ComDictInfoEntity>();
+		try {
+			fkytList = findCodeByName("", YTCODE, companyId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		result.put("fkytList", fkytList);
+		//资金种类
+		List<ComDictInfoEntity> zjzlList = new ArrayList<ComDictInfoEntity>();
+		try {
+			zjzlList = findCodeByName("", ZJZLCODE, companyId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		result.put("zjzlList", zjzlList);
+
+		result.put("payId", payId);
+
+		//付款的银行卡信息
+		String bankSqlStr = sqlManager.get("receivePay_payed_bank");
+		Sql bankSql = Sqls.create(bankSqlStr);
+		bankSql.setParam("PayId", payId);
+		Record bank = dbDao.fetch(bankSql);
+		result.put("companybank", bank);
+		result.put("payId", payId);
+		return result;
 	}
 
 	/**
@@ -836,4 +966,12 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		return userIds;
 	}
 
+	//查询用途 公司字典
+	public List<ComDictInfoEntity> findCodeByName(String name, String typeCode, long companyId) throws Exception {
+		Cnd cnd = Cnd.NEW();
+		cnd.and("comDictName", "like", Strings.trim(name) + "%").and("status", "=", DataStatusEnum.ENABLE.intKey())
+				.and("comTypeCode", "=", typeCode).and("comId", "=", companyId).groupBy("comDictName");
+		List<ComDictInfoEntity> query = dbDao.query(ComDictInfoEntity.class, cnd, null);
+		return query;
+	}
 }

@@ -71,6 +71,15 @@ public class InterReceivePayModule {
 	}
 
 	/**
+	 * 到编辑已付款
+	 */
+	@At
+	@Ok("jsp")
+	public Object editConfirmPay(HttpServletRequest request, HttpSession session) {
+		return interReceivePayService.editConfirmPay(request, session);
+	}
+
+	/**
 	 * 根据银行id查询 银行卡
 	 */
 	@At
