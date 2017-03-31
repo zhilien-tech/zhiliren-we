@@ -6,7 +6,7 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class TSaveInterPayAddFrom implements Serializable {
+public class TUpdateInterPayAddFrom implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**付款订单pay ids */

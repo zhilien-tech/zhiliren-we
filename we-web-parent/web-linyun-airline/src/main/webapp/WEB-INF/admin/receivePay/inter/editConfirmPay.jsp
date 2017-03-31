@@ -12,7 +12,7 @@
 <!--本页面style-->
 </head>
 <body>
-<form id="confirmInlandPayForm">
+<form id="confirmInterPayForm">
 	<div class="modal-top">
 		<div class="modal-header boderButt">
 			<button type="button" id="closePayWindow" class="btn btn-primary right btn-sm">取消</button>
@@ -34,7 +34,7 @@
 						<th>金额</th>
 					</tr>
 				</thead>
-				<tbody id="inlandConfirmPayTbody">
+				<tbody id="interConfirmPayTbody">
 					<input id="payIds" name="payIds" type="hidden" value="${obj.payId }">
 					<input id="payNames" name="payNames" type="hidden" value="${obj.sameName }">
 					<input id="operators" name="operators" type="hidden" value="${obj.operators }"><!-- 水单url -->
@@ -207,8 +207,8 @@
 	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
 	
 	<!-- 確認付款js -->
-	<script src="${base}/admin/receivePayment/inland/confirmPay.js"></script>
-	<script src="${base}/admin/receivePayment/inland/inlandPay.js"></script>
+	<script src="${base}/admin/receivePayment/inter/interConfirmPay.js"></script>
+	<script src="${base}/admin/receivePayment/inter/interPay.js"></script>
 	<!-- 收付款Common js -->
 	<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
 	
@@ -217,16 +217,16 @@
 		function updateConfirmPay(){
 			$.ajax({
 				type : 'POST',
-				data : $("#confirmInlandPayForm").serialize(),
+				data : $("#confirmInterPayForm").serialize(),
 				async: false,
-				url: BASE_PATH + '/admin/receivePay/inland/updateInlandPay.html',
+				url: BASE_PATH + '/admin/receivePay/inter/updateInterPay.html',
 				success : function(data) {
 					var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 					parent.layer.close(index);
 					parent.layer.msg("编辑成功", "", 1000);
-					parent.inlandPayTable.ajax.reload(
+					parent.interPayEdTable.ajax.reload(
 							function(json){
-								autoHighLoad($('#inlandPayTable'));
+								autoHighLoad($('#interPayEdTable'));
 							}
 					);
 				},
