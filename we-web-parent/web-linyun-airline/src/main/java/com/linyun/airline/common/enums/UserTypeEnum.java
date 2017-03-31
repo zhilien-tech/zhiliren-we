@@ -4,7 +4,7 @@ import com.uxuexi.core.common.enums.IEnum;
 
 public enum UserTypeEnum implements IEnum {
 
-	UPCOM(0, "上游公司用户"), UP_MANAGER(1, "上游公司管理员"), PLAT(2, "平台用户"), AGENT(3, "代理商用户"), AGENT_MANAGER(4, "代理商管理员");
+	UPCOM(0, "上游公司普通用户"), UP_MANAGER(1, "上游公司管理员"), PLAT(2, "平台用户"), AGENT(3, "代理商普通用户"), AGENT_MANAGER(4, "代理商管理员");
 	private int key;
 	private String value;
 
