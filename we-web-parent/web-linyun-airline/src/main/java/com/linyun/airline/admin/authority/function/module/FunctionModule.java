@@ -112,6 +112,9 @@ public class FunctionModule {
 	public Object update(@Param("..") TFunctionModForm modForm) {
 		modForm.setUpdateTime(new Date());
 		modForm.setCreateTime(new Date());
+		TFunctionEntity single = dbDao.fetch(TFunctionEntity.class, modForm.getId());
+		String portrait = single.getPortrait();
+		modForm.setPortrait(portrait);
 		FormUtil.modify(dbDao, modForm, TFunctionEntity.class);
 		return JsonResult.success("修改成功!");
 	}

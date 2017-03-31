@@ -172,7 +172,7 @@ $("#airlineNameId").select2({
 	minimumInputLength : 1,
 	maximumInputLength : 20,
 	language : "zh-CN", //设置 提示语言
-	maximumSelectionLength : 5, //设置最多可以选择多少项
+	maximumSelectionLength : 1, //设置最多可以选择多少项
 	tags : false, //设置必须存在的选项 才能选中
 });
 //添加
@@ -180,7 +180,6 @@ $("#submit").click(function(){
 	$('#addForm').bootstrapValidator('validate');
 	var bootstrapValidator = $("#addForm").data('bootstrapValidator');
 	if(bootstrapValidator.isValid()){
-		alert(JSON.stringify($('#addForm').serialize()));
 		$.ajax({
            type: "POST",
            url:'${base}/admin/companydict/comdictinfo/addLoginNum.html',
