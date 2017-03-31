@@ -45,6 +45,9 @@ public class TSaveInterPayAddFrom implements Serializable {
 	/**金额*/
 	private Double payMoney;
 
+	/**金额大写*/
+	private String payChineseMoney;
+
 	/**币种*/
 	private Integer payCurrency;
 

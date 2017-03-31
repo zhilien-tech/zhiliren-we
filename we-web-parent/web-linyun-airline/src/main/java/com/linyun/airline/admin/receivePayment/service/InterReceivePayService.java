@@ -909,6 +909,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		Date payDate = form.getPayDate();
 		Double payFees = form.getPayFees();
 		Double payMoney = form.getPayMoney();
+		String payChineseMoney = form.getPayChineseMoney();
 		Integer currency = form.getPayCurrency();
 		Integer isInvioce = form.getIsInvioce();
 		String receiptUrl = form.getReceiptUrl();
@@ -944,7 +945,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//付款集合
 		List<TPayEntity> updateList = new ArrayList<TPayEntity>();
 		TPayOrderEntity payOrder = dbDao.fetch(TPayOrderEntity.class, Cnd.where("orderid", "in", orderIds));
-		Integer payIds = payOrder.getPayid();
+		int payIds = payOrder.getPayid();
 		List<TPayEntity> payEntityList = dbDao.query(TPayEntity.class, Cnd.where("id", "in", payIds), null);
 		for (TPayEntity payEntity : payEntityList) {
 			if (!Util.eq(null, bankId)) {
@@ -977,11 +978,22 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			if (!Util.eq(null, isInvioce)) {
 				payEntity.setIsInvioce(isInvioce);
 			}
+			if (!Util.eq(null, payChineseMoney)) {
+				payEntity.setPayChineseMoney(payChineseMoney);
+			}
 			updateList.add(payEntity);
+
+			//更新付款订单信息
+			if (!Util.isEmpty(updateList)) {
+				dbDao.update(updateList);
+			} else {
+				dbDao.insert(updateList);
+			}
+
 			//添加水单
 			if (!Util.isEmpty(receiptUrl)) {
 				payReceiptEntity.setReceiptUrl(receiptUrl);
-				payReceiptEntity.setId(payEntity.getId());
+				payReceiptEntity.setPayId(payEntity.getId());
 			}
 			payReceiptList.add(payReceiptEntity);
 		}
