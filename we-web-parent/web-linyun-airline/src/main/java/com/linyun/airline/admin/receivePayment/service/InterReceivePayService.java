@@ -557,7 +557,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				Double incometotal = (Double) record.get("salePrice");
 				totalMoney += incometotal;
 			}
-			proposer = record.getString("proposer");
+			proposer = record.getString("proposerMan");
 			approver = record.getString("approver"); //审批人
 			String opr = record.getString("operator"); //操作人
 			if (!Util.eq(operator, opr)) {
