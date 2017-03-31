@@ -421,7 +421,7 @@ $('#interPayClick').click(function(){
 			title:false,
 			skin: false, //加上边框
 			closeBtn:false,//默认 右上角关闭按钮 是否显示
-			shadeClose:true,
+			shadeClose:false,
 			area: ['850px', '650px'],
 			content: ['confirmPay.html?orderIds='+ ids,'no'],
 		});
