@@ -418,23 +418,83 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 * @return 
 	 */
 	public Object listPayEdData(InterPayEdListSearchSqlForm form, HttpSession session) {
-		//当前公司下的用户
-		String userIds = userInComp(session);
-		form.setLoginUserId(userIds);
-		form.setOrderPnrStatus(APPROVALPAYED);
-
+		//当前公司id
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		form.setCompanyId(companyId);
+		String orderStatus = form.getOrderStatus();
+		if (Util.isEmpty(orderStatus)) {
+			orderStatus = "3";
+		} else {
+			if (Util.eq("firBooking", orderStatus)) {
+				//一订
+				orderStatus = InternationalStatusEnum.ONEBOOK.intKey() + "";
+			}
+			if (Util.eq("secBooking", orderStatus)) {
+				//二订
+				orderStatus = InternationalStatusEnum.TWOBOOK.intKey() + "";
+			}
+			if (Util.eq("thrBooking", orderStatus)) {
+				//三订
+				orderStatus = InternationalStatusEnum.THREEBOOK.intKey() + "";
+			}
+			if (Util.eq("allBooking", orderStatus)) {
+				//全款
+				orderStatus = InternationalStatusEnum.FULLAMOUNT.intKey() + "";
+			}
+			if (Util.eq("lastBooking", orderStatus)) {
+				//尾款
+				orderStatus = InternationalStatusEnum.TAILMONEY.intKey() + "";
+			}
+			if (Util.eq("outTicket", orderStatus)) {
+				//出票
+				orderStatus = InternationalStatusEnum.TICKETING.intKey() + "";
+			}
+		}
+		form.setOrderStatus(orderStatus);
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
 		List<Record> data = (List<Record>) listdata.get("data");
+
+		//TODO
+		List<String> payIds = new ArrayList<String>();
+		String id = "";
 		for (Record record : data) {
-			Sql sql = Sqls.create(sqlManager.get("receivePay_payed_list"));
-			Cnd cnd = Cnd.NEW();
-			cnd.and("p.id", "=", record.getString("pid"));
-			List<Record> orders = dbDao.query(sql, cnd, null);
-			record.put("orders", orders);
+			String pid = record.getString("pid");
+			if (!Util.eq(id, pid)) {
+				payIds.add(pid);
+			}
+			id = pid;
 		}
+		List<Record> newData = new ArrayList<Record>();
+		for (String pid : payIds) {
+			Record record = new Record();
+			String totalmoney = "0.00"; //总额
+			String shortname = ""; //收款单位
+			int payStatus = AccountPayEnum.APPROVALPAYED.intKey(); //收款状态
+			String issuer = "";
+			List<Record> orders = new ArrayList<Record>();
+			for (Record r : data) {
+				String pidStr = r.getString("pid");
+				shortname = r.getString("shortname");
+				issuer = r.getString("issuer");
+				//同一个支付订单
+				if (Util.eq(pid, pidStr)) {
+					orders.add(r);
+				}
+			}
+			record.put("pid", pid);
+			record.put("totalmoney", totalmoney);
+			record.put("shortname", shortname);
+			record.put("payStatus", payStatus);
+			record.put("issuer", issuer);
+			record.put("orders", orders);
+
+			newData.add(record);
+		}
+
 		listdata.remove("data");
-		listdata.put("data", data);
+		listdata.put("data", newData);
 		return listdata;
 	}
 
