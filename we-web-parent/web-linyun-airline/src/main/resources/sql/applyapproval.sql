@@ -37,7 +37,7 @@ select * from(
 select  uo.orderstype,uo.ordersnum,p.purpose,
 p.proposer,ci.shortName,p.fundType,p.payFees,p.payCurrency,p.isInvioce,p.approveTime,p.approveResult,p.id as 'usingId',uo.id,
 u.userName,(select dictCode from dict_info where id=p.payCurrency) as 'currencyStr',(select dictName from dict_info where id=p.purpose) as 'purposeStr',
-(select dictName from dict_info where id=p.fundType) as 'fundTypeStr',p.companyId,uo.paystatus,uo.amount,uo.orderstime
+(select dictName from dict_info where id=p.fundType) as 'fundTypeStr',p.companyId,po.paystauts as 'paystatus',uo.amount,uo.orderstime
 from 
 t_up_order uo
 LEFT JOIN t_pay_order po on po.orderid=uo.id
