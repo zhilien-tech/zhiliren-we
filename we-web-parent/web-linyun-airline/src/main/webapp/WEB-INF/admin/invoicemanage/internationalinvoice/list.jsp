@@ -55,7 +55,7 @@
                          </form>
                     </div>
                     <div class="box-body">
-                         <table id="KaiInvoiceTable1" class="table table-bordered table-hover">
+                         <table id="KaiInterInvoiceTable" class="table table-bordered table-hover">
                            <thead>
                            <tr>
                              <th>订单号</th>
@@ -117,13 +117,12 @@
                         </form>
                     </div>
                     <div class="box-body">
-                         <table id="shouInvoiceTable1" class="table table-bordered table-hover">
+                         <table id="shouInterInvoiceTable" class="table table-bordered table-hover">
                            <thead>
                            <tr>
                              <th>订单号</th>
-                             <th>PNR</th>
-                             <th>人数</th>
-                             <th>发票数</th>
+                             <th>发票号</th>
+                             <th>发票金额</th>
                              <th>总金额</th>
                              <th>收发票日期</th>
                              <th>发票开具项目</th>
@@ -152,14 +151,14 @@
 	var BASE_PATH = '${base}';
 </script>
 <script src="${base }/admin/order/ordercommon.js"></script>
-<script src="${base}/admin/invoiceinfo/invoiceinfo.js"></script>
+<script src="${base}/admin/invoiceinfo/internationalinvoiceInfo.js"></script>
 <!-- My97DatePicker -->
 <script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
 //他页面回调
 function successCallback(id){
-	  KaiInvoiceTable1.ajax.reload(null,false);
-	  shouInvoiceTable1.ajax.reload(null,false);
+	  KaiInterInvoiceTable.ajax.reload(null,false);
+	  shouInterInvoiceTable.ajax.reload(null,false);
 	  if(id == '1'){
 		  layer.msg("确认开发票成功",{time: 2000});
 	  }else if(id == '2'){

@@ -26,7 +26,6 @@
                   <thead>
                     <tr>
                       <th>订单号</th>
-                      <th>PNR</th>
                       <th>开票日期</th>
                       <th>客户团号</th>
                       <th>客户公司名称</th>
@@ -36,16 +35,15 @@
                     </tr>
                   </thead>
                   <tbody>
-                  	<c:forEach var="one" items="${obj.pnrinfo }">
+                  	<c:forEach var="one" items="${obj.orders }">
                   		<tr>
                   			<td>${one.ordersnum }</td>
-                  			<td>${one.pnr }</td>
                   			<td>${one.billingdate }</td>
                   			<td>${one.cusgroupnum }</td>
-                  			<td>${one.customename }</td>
+                  			<td>${one.shortName }</td>
                   			<td>${one.linkMan }</td>
                   			<td>${one.issuer }</td>
-                  			<td><fmt:formatNumber type="number" value="${one.costpricesum }" pattern="0.00" maxFractionDigits="2"/></td>
+                  			<td><fmt:formatNumber type="number" value="${one.incometotal }" pattern="0.00" maxFractionDigits="2"/></td>
                   		</tr>
                   	</c:forEach>
                   </tbody>
@@ -137,8 +135,8 @@
                   <td><label id="balance" name="balance"><fmt:formatNumber type="number" value="${obj.invoicebalance }" pattern="0.00" maxFractionDigits="2"/></label></td>
           </tr>
           <c:choose>
-          	<c:when test="${fn:length(obj.invoiceDetail)>0}">
-		          <c:forEach items="${obj.invoiceDetail }" var="invoiceDetail" varStatus="status">
+          	<c:when test="${fn:length(obj.invoicedetail)>0}">
+		          <c:forEach items="${obj.invoicedetail }" var="invoiceDetail" varStatus="status">
 			          <tr class="cloneTR">
 			                  <td>发票号：</td>
 			                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm" value="${invoiceDetail.invoicenum }"></td>
@@ -214,8 +212,8 @@
 	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 	<script src="${base }/admin/order/invoiceupload.js"></script>
   <script type="text/javascript">
-     $(function(){
-    	 /*-----收付款>收款>开发票 + 按钮-----*/
+  $(function(){
+ 	 /*-----收付款>收款>开发票 + 按钮-----*/
 	      $('.addIcon').click(function(){
 	          var divTest = $(this).parents('.cloneTR'); 
 	          var lastDiv = $('.cloneTR').last();
@@ -244,7 +242,7 @@
 	          document.getElementById('light').style.display='block';
 	          //document.getElementById('fade').style.display='block';
 	          document.getElementById('fapiaoid').src=invoiceurl; 
-	      });
+	      }); 
 	      $(document).on('click','.deleteInvoice',function(){
 	   	  	  var invoicedetaildiv = $(this).parent().parent().parent();
 	   	  	  invoicedetaildiv.find('[name=invoiceurl]').val('');
@@ -256,12 +254,12 @@
 	          //document.getElementById('fade').style.display='block';
 	          document.getElementById('fapiaoid').src=''; 
 	      });
-     });
-   //关闭窗口
-     function closewindow(){
- 		var index = parent.parent.layer.getFrameIndex(window.name); //获取窗口索引
- 		parent.layer.close(index);
- 	}
+  });
+	//关闭窗口
+	  function closewindow(){
+			var index = parent.parent.layer.getFrameIndex(window.name); //获取窗口索引
+			parent.layer.close(index);
+	  }
    
    function saveInvoiceInfo(){
 	   var formdata = {};

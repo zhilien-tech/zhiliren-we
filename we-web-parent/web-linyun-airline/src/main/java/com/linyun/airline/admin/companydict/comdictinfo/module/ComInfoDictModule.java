@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Chain;
@@ -24,14 +25,19 @@ import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
+import com.linyun.airline.admin.companydict.comdictinfo.entity.ComLoginNumEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.companydict.comdictinfo.form.ComInfoAddForm;
 import com.linyun.airline.admin.companydict.comdictinfo.form.ComInfoSqlForm;
 import com.linyun.airline.admin.companydict.comdictinfo.form.ComInfoUpdateForm;
+import com.linyun.airline.admin.companydict.comdictinfo.form.ComLoginNumAddForm;
+import com.linyun.airline.admin.companydict.comdictinfo.form.ComLoginNumSqlForm;
+import com.linyun.airline.admin.companydict.comdictinfo.form.ComLoginNumUpdateForm;
 import com.linyun.airline.admin.companydict.comdictinfo.service.ComInfoDictService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.common.form.AlterStatusForm;
+import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.Util;
@@ -81,6 +87,79 @@ public class ComInfoDictModule {
 		Long comId = company.getId();//得到公司的id
 		sqlForm.setComId(comId);
 		return comInfoDictService.comInfoListData(sqlForm);
+	}
+
+	/**
+	 * @param sqlForm
+	 * 登录账号列表数据
+	 */
+	@At
+	public Object loginNumData(@Param("..") final ComLoginNumSqlForm sqlForm) {
+		//return comInfoDictService.loginNumData(sqlForm);
+		return comInfoDictService.listPage4Datatables(sqlForm);
+	}
+
+	/**
+	 * 打开登录账号编辑页面
+	 */
+	@At
+	@GET
+	@Ok("jsp")
+	public Object updateLoginNum(@Param("id") final Long id) {
+		Map<String, Object> map = comInfoDictService.updateLoginNum(id);
+		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));
+		return map;
+	}
+
+	/**
+	 * 保存登录账号编辑操作
+	 */
+	@At
+	@POST
+	public Object updateLoginNum(@Param("..") final ComLoginNumUpdateForm updateForm, final HttpSession session) {
+		comInfoDictService.updateLoginNum(updateForm, session);
+		return JsonResult.success("修改成功!");
+	}
+
+	/**
+	 * 弹出添加登录账号页面
+	 */
+	@At
+	@GET
+	@Ok("jsp")
+	public void addLoginNum() {
+	}
+
+	/**
+	 * @param airlineName
+	 * 区域select2查询
+	 */
+	@At
+	@POST
+	public Object airLine(@Param("airline") final String airlineName, @Param("airlineIds") final String airlineIds,
+			final HttpSession session) {
+		return comInfoDictService.airLine(airlineName, airlineIds, session);
+	}
+
+	/**
+	 * TODO 添加登录账号
+	 * @param addForm
+	 */
+	@At
+	@POST
+	public Object addLoginNum(@Param("..") final ComLoginNumAddForm addForm, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long comId = company.getId();//获得当前登陆公司id
+		addForm.setComId(comId);
+		addForm.setComTypeCode(ComDictTypeEnum.DICTTYPE_DLZH.key());//登录账号
+		addForm.setCreateTime(new Date());
+		String airlineId = addForm.getAirlineName();
+		DictInfoEntity dictInfoEntity = dbDao.fetch(DictInfoEntity.class, Cnd.where("id", "=", airlineId));
+		addForm.setAirlineName(dictInfoEntity.getDictName());
+		addForm.setComDdictCode(dictInfoEntity.getTypeCode());
+		FormUtil.add(dbDao, addForm, ComLoginNumEntity.class);
+		return JsonResult.success("添加成功!");
 	}
 
 	/**
@@ -199,20 +278,20 @@ public class ComInfoDictModule {
 	}
 
 	/**
-	 * 校验字典信息名称
+	 * 校验登录网址唯一性
 	 */
 	@At
 	@POST
-	public Object checkDictNameExist(@Param("comTypeCode") final String comTypeCode,
-			@Param("comDictName") final String Name, @Param("id") final long id, final HttpSession session) {
+	public Object checkWebURlExist(@Param("webURl") final String webURl, @Param("id") final long id,
+			final HttpSession session) {
 		//从session中得到公司id
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Long comId = company.getId();//得到公司的id
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<ComDictInfoEntity> listName = dbDao.query(ComDictInfoEntity.class, Cnd.where("comDictName", "=", Name)
-				.and("comId", "=", comId).and("comTypeCode", "=", comTypeCode), null);
-		List<ComDictInfoEntity> listName2 = dbDao.query(ComDictInfoEntity.class, Cnd.where("comDictName", "=", Name)
-				.and("comId", "=", comId).and("comTypeCode", "=", comTypeCode).and("id", "=", id), null);
+		List<ComLoginNumEntity> listName = dbDao.query(ComLoginNumEntity.class,
+				Cnd.where("webURl", "=", webURl).and("comId", "=", comId), null);
+		List<ComLoginNumEntity> listName2 = dbDao.query(ComLoginNumEntity.class,
+				Cnd.where("webURl", "=", webURl).and("comId", "=", comId).and("id", "=", id), null);
 		if (!Util.isEmpty(listName)) {
 			if (Util.isEmpty(id)) {
 				map.put("valid", false);
