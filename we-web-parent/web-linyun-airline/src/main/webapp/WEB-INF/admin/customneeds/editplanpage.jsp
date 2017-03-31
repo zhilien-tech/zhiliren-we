@@ -20,16 +20,22 @@
 	<!-- style -->
     <link rel="stylesheet" href="${base }/public/css/style.css">
 	<style type="text/css">
-		.wu-example .statusBar .btns .uploadBtn {
-		    background: #3c8dbc !important;
-		    color: #fff;
-		    border-color: transparent;
-		    position: relative;
-		    top: -122px;
-		    height: 40px;
-		    border-radius: 5px;
-		}
+		.wu-example .statusBar .btns .uploadBtn {background: #3c8dbc !important;color: #fff;border-color: transparent;position: relative;top: -122px;height: 40px;border-radius: 5px;}
 		html, body {min-height: 0;min-width: 0;overflow-x: auto !important;}
+		.select2-container--default .select2-search--inline .select2-search__field{margin-left: 0px;}
+		.select2-container--default .select2-selection--multiple .select2-selection__choice{background-color: rgba(60, 141, 188, 0);border-color: rgba(54, 127, 169, 0);color: #555555;padding: 0px;}
+		.select2-container--default .select2-selection--multiple .select2-selection__choice__remove{display:none;}
+		.addAirPlan,.removeAirPlan {position: relative;top: -10px;left: -5px;}
+		.hangduan div.form-group:nth-child(2) label{width: 80px;padding-right: 0;position: relative;left:-5px;}
+		.hangduan div.form-group:nth-child(3) label{width:80px;padding-right:0;position: relative;left: -15px;}
+		.hangduan div.form-group:nth-child(4) label{width:70px;padding-right:0;position: relative;left:-15px;}
+		.hangduan div.form-group:nth-child(5) label{width:50px;padding-right:0;position: relative;left:-15px;}
+		.hangduan div.form-group:nth-child(1) div{width: 160px !important;}
+		.hangduan div.form-group:nth-child(2) div{width: 160px !important;position: relative;left:-5px;}
+		.hangduan div.form-group:nth-child(3) div{position: relative;left: -15px;}
+		.hangduan div.form-group:nth-child(4) div{width:120px;padding-right:0;position: relative;left:-20px;}
+		input#setoffdate {position: relative;left:5px;}
+		input#setofftime {position: relative;left:-15px;}
 	</style>
 </head>
 <body>
