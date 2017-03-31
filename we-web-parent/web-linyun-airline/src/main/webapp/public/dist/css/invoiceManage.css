@@ -9,23 +9,25 @@
 .dataTable thead .sorting_desc:after {display: none !important;}
 .dataTable thead .sorting:after {display: none !important;}
 .tab-content{padding: 0 !important;padding-top: 10px !important;}
-#KaiInvoiceTable1 tbody tr td:nth-child(4) {line-height:60px;}
-#KaiInvoiceTable1 tbody tr td:nth-child(5) {line-height:60px;}
-#KaiInvoiceTable1 tbody tr td:nth-child(6) {line-height:60px;}
-#KaiInvoiceTable1 tbody tr td:nth-child(7) {line-height:60px;}
-#KaiInvoiceTable1 tbody tr td:nth-child(8) {line-height:60px;}
-#KaiInvoiceTable1 tbody tr td:nth-child(9) {line-height:60px;}
-#KaiInvoiceTable1 tbody tr td:nth-child(10) {line-height:60px;}
-#KaiInvoiceTable1 tbody tr td:nth-child(11) {line-height:60px;}
+#KaiInterInvoiceTable tbody tr td:nth-child(4) {line-height:60px;}
+#KaiInterInvoiceTable tbody tr td:nth-child(5) {line-height:60px;}
+#KaiInterInvoiceTable tbody tr td:nth-child(6) {line-height:60px;}
+#KaiInterInvoiceTable tbody tr td:nth-child(7) {line-height:60px;}
+#KaiInterInvoiceTable tbody tr td:nth-child(8) {line-height:60px;}
+#KaiInterInvoiceTable tbody tr td:nth-child(9) {line-height:60px;}
+#KaiInterInvoiceTable tbody tr td:nth-child(10) {line-height:60px;}
+#KaiInterInvoiceTable tbody tr td:nth-child(11) {line-height:60px;}
 .TimeInput {padding-left: 4px;padding-right: 0px;}
 .ckBtn {margin-left: 10px;}
-#shouInvoiceTable1 tbody tr td{line-height:40px;}
-/* #shouInvoiceTable1 tbody tr td:nth-child(7) {line-height:60px;}
-#shouInvoiceTable1 tbody tr td:nth-child(8) {line-height:60px;}
-#shouInvoiceTable1 tbody tr td:nth-child(9) {line-height:60px;}
-#shouInvoiceTable1 tbody tr td:nth-child(10) {line-height:60px;}
-#shouInvoiceTable1 tbody tr td:nth-child(11) {line-height:60px;}
-#shouInvoiceTable1 tbody tr td:nth-child(12) {line-height:60px;} */
+#shouInterInvoiceTable tbody tr td:nth-child(4) {line-height:60px;}
+#shouInterInvoiceTable tbody tr td:nth-child(5) {line-height:60px;}
+#shouInterInvoiceTable tbody tr td:nth-child(6) {line-height:60px;}
+#shouInterInvoiceTable tbody tr td:nth-child(7) {line-height:60px;}
+#shouInterInvoiceTable tbody tr td:nth-child(8) {line-height:60px;}
+#shouInterInvoiceTable tbody tr td:nth-child(9) {line-height:60px;}
+#shouInterInvoiceTable tbody tr td:nth-child(10) {line-height:60px;}
+#shouInterInvoiceTable tbody tr td:nth-child(11) {line-height:60px;}
+#shouInterInvoiceTable tbody tr td:nth-child(12) {line-height:60px;}
 .fileUL1{padding-left:6px;}
 .FileDivA{width: 40px;}
 .payTable2 {margin-top: 10px;width: 100%;}

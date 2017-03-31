@@ -324,6 +324,7 @@ function openDetailPage(id){
         skin: false, //加上边框
         closeBtn:false,//默认 右上角关闭按钮 是否显示
         shadeClose:false,
+        scrollbar: false,
         area: ['900px', '500px'],
         content: BASE_PATH + '/admin/inland/pnrDetailPage.html?pnrid='+id,
         end:function(){

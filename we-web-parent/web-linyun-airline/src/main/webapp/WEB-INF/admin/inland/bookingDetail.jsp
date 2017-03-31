@@ -999,6 +999,7 @@
 	         skin: false, //加上边框
 	         closeBtn:false,//默认 右上角关闭按钮 是否显示
 	         shadeClose:true,
+	         scrollbar: false,
 	         area: ['880px', '425px'],
 	         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+needid,
 	         end:function(){

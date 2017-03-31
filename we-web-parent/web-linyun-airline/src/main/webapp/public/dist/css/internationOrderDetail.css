@@ -29,14 +29,12 @@ ul{padding-left: 0; margin-bottom: 0px;}
 .remindData{width: 95%;}
 .remindTable tbody tr td{padding-bottom: 10px;}
 /*------end 提醒设置------*/
-
 /*------日志------*/
 table.dataTable thead .sorting_asc:after {display: none;}
 table.dataTable thead .sorting:after {display: none;}
 table.dataTable thead .sorting_desc:after {display: none;}
 table.dataTable thead > tr > th {padding-right: 5px;}
 /*------end 日志------*/
-
 /*------添加航段------*/
 .addHDtable{width: 100%;}
 .addHDtable tr td{padding-bottom:10px;}
@@ -48,21 +46,30 @@ table.dataTable thead > tr > th {padding-right: 5px;}
 .addHD-tr td:nth-child(4){width:150px;}
 .addHD-tr td:nth-child(6){width:80px;}
 .addHD-tr td:nth-child(7){width:60px !important;}
-.addHD-tr td:nth-child(8){width:60px;}
-.addHD-tr td:nth-child(10){width:80px;}
-.addHD-tr td:nth-child(12){width:80px;}
+.addHD-tr td:nth-child(8){width:70px;}
+.addHD-tr td:nth-child(10){width:65px;}
+.addHD-tr td:nth-child(12){width:65px;}
 .addHD-tr td:nth-child(13){width:30px !important;}
-.addHD-tr td:nth-child(odd){width: 70px;}
+.addHD-tr td:nth-child(odd){width:66px;}
 .addHDIcon,.removHDIcon{color: #3c8dbc;border: solid 1px #22516d;padding: 4px;border-radius: 13px;position: relative;left: 10px;}
 .select2-container--default .select2-selection--multiple .select2-selection__rendered li {display: inline-block;}
 .select2-container .select2-search--inline {float: none;}
 .select2-container--default .select2-selection--multiple .select2-selection__choice {background-color: rgba(60, 141, 188, 0);border-color: rgba(54, 127, 169, 0);padding: 0px;color: #4d4d4d;font-size: 11px;}
 .select2-selection__choice__remove{dispaly:none;}
 .select2-container--default .select2-selection--multiple .select2-selection__choice {margin-right: 0px;}
-.select2-container--default .select2-selection--multiple .select2-selection__rendered {padding: 0 0px;}
-.addHD-tr td:nth-child(2) .select2-container{width: 154px !important;}
-.addHD-tr td:nth-child(4) .select2-container{width: 154px !important;}
-.addHD-tr td:nth-child(8) .select2-container{width: 60px !important;}
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {padding: 0 5px;}
+.addHD-tr td:nth-child(2) .select2-container{width: 150px !important;}
+.addHD-tr td:nth-child(4) .select2-container{width: 150px !important;}
+.addHD-tr td:nth-child(8) .select2-container{width: 70px !important;}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove{display:none !important;}
+
+
+
+
+
+
+
+
 /*------end 添加航段------*/
 /*------添加记录------*/
 .addYSKtable tbody tr td{padding-bottom:10px;}
@@ -76,7 +83,6 @@ table.dataTable thead > tr > th {padding-right: 5px;}
 .addYSKtable tbody tr:nth-child(1) td:nth-child(7){width:105px;}
 .addYSKtable tbody tr:nth-child(2) td:nth-child(7){width:65px;}
 /*------end 添加记录------*/
-
 /*------航程信息------*/
 input.uploadVisitors{float: left;width: 55px;height: 10px;position: relative;top: -20px;left: 10px;cursor: pointer;opacity: 0;}
 .FileDiv{height: 29px;line-height: 28px;width: 74px;border-radius: 3px;background: rgba(60, 141, 188, 0);color: #3c8dbc;text-align: center;display: inline-block;}

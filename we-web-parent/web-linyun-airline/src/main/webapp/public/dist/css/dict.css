@@ -11,12 +11,12 @@
 /*add*/
 .textareaHei{height: 105px !important;}
 .form-control-feedback {position: absolute;top: -2px;right: -15px;}
-
 /*公司权限配置*/
 .comSty{border: solid 1px #eee;border-radius: 3px;width: 60%;background-color: rgba(251, 251, 251, 0.54);}
 .ztree li a{color: #5f5f5f;margin-left: 3px;}
 .ztree li span {margin-left: 3px;}
 .comForSty{margin-bottom:0;}
-
-
-
+#loginNumTable tbody tr td [data-toggle="tooltip"]{display: inline-block;width: 230px;overflow: hidden;text-overflow: ellipsis; white-space: nowrap;}
+#loginNumTable tbody tr td .tooltip .tooltip-inner{word-wrap: break-word;}
+#loginNumTable tbody tr td .tooltip .tooltip-arrow{border-left-color: #909a95}
+#comcomdatatableInfo tbody tr td [data-toggle="tooltip"]{display: inline-block;width: 230px;overflow: hidden;text-overflow: ellipsis; white-space: nowrap;}
