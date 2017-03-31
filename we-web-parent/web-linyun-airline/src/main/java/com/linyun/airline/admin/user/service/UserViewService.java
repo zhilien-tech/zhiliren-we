@@ -33,8 +33,10 @@ import com.linyun.airline.admin.user.form.TSalaryIncreaseUpdateForm;
 import com.linyun.airline.common.access.AccessConfig;
 import com.linyun.airline.common.access.sign.MD5;
 import com.linyun.airline.common.constants.CommonConstants;
+import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.common.enums.UserDisableStatusEnum;
 import com.linyun.airline.common.enums.UserJobStatusEnum;
+import com.linyun.airline.common.enums.UserTypeEnum;
 import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.entities.TAreaEntity;
 import com.linyun.airline.entities.TCompanyEntity;
@@ -121,6 +123,10 @@ public class UserViewService extends BaseService<TUserEntity> {
 	@Aop("txDb")
 	public Map<String, String> saveEmployeeData(TUserAddForm addForm, TSalaryIncreaseAddForm addSalaryForm,
 			Long areaId, Long jobId, final HttpSession session) {
+		//通过session获取公司的id
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long companyId = company.getId();//得到公司的id
+		String comType = company.getComType();//公司类型(1、上游公司;2、代理商)
 		//先添加用户数据
 		TUserEntity userEntity = new TUserEntity();
 		userEntity.setFullName(addForm.getFullName());//用户姓名
@@ -128,6 +134,11 @@ public class UserViewService extends BaseService<TUserEntity> {
 		userEntity.setTelephone(addForm.getTelephone());//手机号
 		userEntity.setPassword(CommonConstants.INITIAL_PASSWORD);
 		userEntity.setQq(addForm.getQq());
+		if (!Util.isEmpty(comType) && comType.equals(CompanyTypeEnum.UPCOMPANY.intKey())) {
+			userEntity.setUserType(UserTypeEnum.UPCOM.intKey());//上游公司普通用户
+		} else if (!Util.isEmpty(comType) && comType.equals(CompanyTypeEnum.AGENT.intKey())) {
+			userEntity.setUserType(UserTypeEnum.AGENT.intKey());//代理商公司普通用户
+		}
 		userEntity.setLandline(addForm.getLandline());
 		userEntity.setEmail(addForm.getEmail());
 		userEntity.setDisableStatus(UserDisableStatusEnum.YES.intKey());//没有禁用
@@ -137,9 +148,6 @@ public class UserViewService extends BaseService<TUserEntity> {
 		userEntity = dbDao.insert(userEntity);
 		//获取到用户id
 		Long userId = userEntity.getId();
-		//通过session获取公司的id
-		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		Long companyId = company.getId();//得到公司的id
 		//根据公司id和职位id查询出公司职位表的id
 		TCompanyJobEntity comJob = dbDao.fetch(TCompanyJobEntity.class,
 				Cnd.where("comId", "=", companyId).and("posid", "=", jobId));
