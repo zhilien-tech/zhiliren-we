@@ -67,6 +67,7 @@ public class InterPayEdListSearchSqlForm extends DataTablesParamForm {
 			cnd.and("pi.leavesdate", "<=", leaveEndDate);
 		}
 		cnd.and("po.paystauts", "=", AccountPayEnum.APPROVALPAYED.intKey()); //已收款
+		cnd.and("po.orderstatus", "=", orderStatus);
 		cnd.and("p.companyId", "=", companyId);
 		return cnd;
 	}

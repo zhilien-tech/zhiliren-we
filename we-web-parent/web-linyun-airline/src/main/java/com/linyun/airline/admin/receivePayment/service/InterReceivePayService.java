@@ -469,16 +469,27 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		List<Record> newData = new ArrayList<Record>();
 		for (String pid : payIds) {
 			Record record = new Record();
+			String totalmoney = "0.00"; //总额
+			String shortname = ""; //收款单位
+			int payStatus = AccountPayEnum.APPROVALPAYED.intKey(); //收款状态
+			String issuer = "";
 			List<Record> orders = new ArrayList<Record>();
 			for (Record r : data) {
 				String pidStr = r.getString("pid");
+				shortname = r.getString("shortname");
+				issuer = r.getString("issuer");
 				//同一个支付订单
 				if (Util.eq(pid, pidStr)) {
 					orders.add(r);
 				}
 			}
 			record.put("pid", pid);
+			record.put("totalmoney", totalmoney);
+			record.put("shortname", shortname);
+			record.put("payStatus", payStatus);
+			record.put("issuer", issuer);
 			record.put("orders", orders);
+
 			newData.add(record);
 		}
 
