@@ -402,22 +402,27 @@ SELECT
 	uo.id,
 	uo.ordersnum,
 	po.orderstatus,
-	(SELECT dictCode FROM dict_info WHERE id = p.payCurrency ) AS 'payCurrency',
-	pi.PNR,
-	tpi.leavesdate,
-	tpi.peoplecount,
+	(
+		SELECT
+			dictCode
+		FROM
+			dict_info
+		WHERE
+			id = p.payCurrency
+	) AS 'payCurrency',
+	pi.leavesdate,
+	pi.peoplecount,
 	prr.actualnumber,
 	prr.currentpay,
 	fi.`issuer`,
 	ci.shortName,
-	ci.linkMan
+	ci.linkMan,
+	p.approveResult
 FROM
 	t_up_order uo
 INNER JOIN t_pay_order po ON po.orderid = uo.id
 INNER JOIN t_pay p ON p.id = po.payid
-LEFT JOIN t_pay_pnr pp ON pp.payId = p.id
-LEFT JOIN t_pnr_info pi ON pi.id = pp.pnrId
-LEFT JOIN t_plan_info tpi ON tpi.ordernumber = uo.ordersnum
+LEFT JOIN t_plan_info pi ON pi.ordernumber = uo.id
 LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
 LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
 LEFT JOIN t_customer_info ci ON ci.id = uo.userid
@@ -429,9 +434,7 @@ WHERE
 			t_up_order uo
 		INNER JOIN t_pay_order po ON po.orderid = uo.id
 		INNER JOIN t_pay p ON p.id = po.payid
-		LEFT JOIN t_pay_pnr pp ON pp.payId = p.id
-		LEFT JOIN t_pnr_info pi ON pi.id = pp.pnrId
-		LEFT JOIN t_plan_info tpi ON tpi.ordernumber = uo.ordersnum
+		LEFT JOIN t_plan_info pi ON pi.ordernumber = uo.id
 		LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
 		LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
 		LEFT JOIN t_customer_info ci ON ci.id = uo.userid
@@ -440,23 +443,29 @@ WHERE
 	
 /*receivePay_inter_pay_order_ids*/
 SELECT
+	p.*, 
+	(
+		SELECT
+			username
+		FROM
+			t_user u
+		WHERE
+			u.id = p.proposer
+	) proposerMan,
 	uo.id,
 	uo.ordersnum,
-	pi.pnr,
 	fi.cusgroupnum,
 	ci.shortName,
 	fi.billingdate,
-	prr.actualnumber,
-	ci. NAME customename,
-	ci.linkMan,
-	fi. ISSUER,
-	fi.incometotal
+	pi.peoplecount,
+	fi.`issuer`
 FROM
 	t_up_order uo
-LEFT JOIN t_customer_info ci ON uo.userid = ci.id
-LEFT JOIN t_finance_info fi ON uo.id = fi.orderid
-LEFT JOIN t_pnr_info pi ON pi.orderid = uo.id
-LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
+LEFT JOIN t_pay_order po ON po.orderid = uo.id
+INNER JOIN t_pay p ON p.id = po.payid
+INNER JOIN t_plan_info pi ON pi.ordernumber = uo.id
+INNER JOIN t_customer_info ci ON ci.id = uo.userid
+INNER JOIN t_finance_info fi ON fi.orderid = uo.id
 $condition
 
 /*receivePay_inter_payed_orders*/
@@ -501,3 +510,30 @@ WHERE
 	)
 ORDER BY
 	po.payDate DESC
+	
+/*receivePay_inter_payed_edit*/
+SELECT
+	p.*, 
+	(
+		SELECT
+			username
+		FROM
+			t_user u
+		WHERE
+			u.id = p.proposer
+	) proposerMan,
+	uo.id,
+	uo.ordersnum,
+	fi.cusgroupnum,
+	ci.shortName,
+	fi.billingdate,
+	pi.peoplecount,
+	fi.`issuer`
+FROM
+	t_up_order uo
+LEFT JOIN t_pay_order po ON po.orderid = uo.id
+INNER JOIN t_pay p ON p.id = po.payid
+INNER JOIN t_plan_info pi ON pi.ordernumber = uo.id
+INNER JOIN t_customer_info ci ON ci.id = uo.userid
+INNER JOIN t_finance_info fi ON fi.orderid = uo.id
+$condition

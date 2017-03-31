@@ -40,14 +40,7 @@ function initPayDataTable(){
 		            {"data": "ordersnum", "bSortable": false},
 		            {"data": "pnrnum", "bSortable": false,
 		            	render:function(data, type, row, meta) {
-		            		var result = '<ul> ';
-		            		$.each(row.orders, function(name, value) {
-		            			if(value && value.pnr!=undefined){
-		            				result += '<li style="list-style:none;">'+value.pnr+'</li>';
-		            			}
-		            		});
-		            		result += '</ul>';
-		            		return result;
+		            		return "";
 		            	}	
 		            },
 		            {"data": "leavesdate", "bSortable": false,
@@ -348,7 +341,8 @@ function initPayEdDataTable(){
 		            	//   指定第一列，从0开始，0表示第一列，1表示第二列……
 		            	targets: 11,
 		            	render: function(data, type, row, meta) {
-		            		var modify = '<a style="cursor:pointer;" onclick="editPay('+row.payid+');">编辑</a>';
+		            		var pid = row.pid;
+		            		var modify = '<a style="cursor:pointer;" onclick="editPay('+pid+');">编辑</a>';
 		            		return modify;
 		            	}
 		            }]
@@ -420,7 +414,7 @@ $('#interPayClick').click(function(){
 			title:false,
 			skin: false, //加上边框
 			closeBtn:false,//默认 右上角关闭按钮 是否显示
-			shadeClose:true,
+			shadeClose:false,
 			area: ['850px', '650px'],
 			content: ['confirmPay.html?orderIds='+ ids,'no'],
 		});
@@ -590,6 +584,18 @@ function payOnkeyEnter(){
 	 if(event.keyCode==13){
 		 $("#interPaySearchBtn").click();
 	 }
+}
+
+function editPay(ids){
+	layer.open({
+		type: 2,
+		title:false,
+		skin: false, //加上边框
+		closeBtn:false,//默认 右上角关闭按钮 是否显示
+		shadeClose:false,
+		area: ['850px', '650px'],
+		content: ['editConfirmPay.html?payid='+ ids,'no'],
+	});
 }
 
 

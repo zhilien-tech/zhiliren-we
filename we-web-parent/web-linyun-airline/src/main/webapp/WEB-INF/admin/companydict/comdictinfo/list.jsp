@@ -272,8 +272,9 @@ function initDatatable() {
 		"processing" : true,
 		"serverSide" : true,
 		"stripeClasses": [ 'strip1','strip2' ],//斑马线
-		"bLengthChange" : false,
-		"language" : {
+		"bLengthChange": false,
+		"autoWidth": false,
+		"language": {
 			"url" : "${base}/public/plugins/datatables/cn.json"
 		},
         "ajax": {
@@ -347,7 +348,7 @@ function initDatatable() {
                     		return createtimestr;
                         } 	
                     },
-                    {"data": "remark", "bSortable": false,
+                    {"data": "remark", "bSortable": false,"width":"50%",
                     	render: function(data, type, row, meta) {
                     		 var remark = row.remark;
 	                   		 if(null==remark || ""==remark){
@@ -356,9 +357,20 @@ function initDatatable() {
                     		 var result = '<span data-toggle="tooltip" data-placement="left" title="'+remark+'">'+remark+'<span>';
                     		 return result;
                     	}	
-                    }
+                    } ,
+                    {"data": " ", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                        	var modify = '<a style="cursor:pointer;" onclick="edit('+row.id+');">编辑</a>';
+                          		if(1==row.status){
+                          			var judge = '<a href="javascript:physicalDelete('+row.id+',2)" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
+                          		}else{
+                          			var judge = '<a href="javascript:physicalDelete('+row.id+',1)" class="btn_mini btn_modify">启用</a>';
+                          		}
+                            return modify+judge;
+                        }	
+                    } 
             ],
-            "columnDefs": [{
+            "columnDefs": [  /* {
                 //   指定第一列，从0开始，0表示第一列，1表示第二列……
                 targets: 5,
                 render: function(data, type, row, meta) {
@@ -370,7 +382,14 @@ function initDatatable() {
                   		}
                     return modify+judge;
                 }
-            }]
+            } */
+            			   /* {"sWidth": "10%",Targets:0 },
+                           {"sWidth": "20%",Targets:1 },
+                           {"sWidth": "10%",Targets:2 },
+                           {"sWidth": "20%",Targets:3 },
+                           {"sWidth": "20%",Targets:4 },
+                           {"sWidth": "20%",Targets:5 } */
+            ]
 	});
 	//登录账号列表
 	loginNumTable = $('#loginNumTable').DataTable({
@@ -379,6 +398,7 @@ function initDatatable() {
 		"serverSide" : true,
 		"stripeClasses": [ 'strip1','strip2' ],//斑马线
 		"bLengthChange" : false,
+		"autoWidth": false,
 		"language" : {
 			"url" : "${base}/public/plugins/datatables/cn.json"
 		},
@@ -450,9 +470,20 @@ function initDatatable() {
                     		 var result = '<span data-toggle="tooltip" data-placement="left" title="'+remark+'">'+remark+'<span>';
                     		 return result;
                     	}	
+                    },
+                    {"data": " ", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                        	var modify = '<a style="cursor:pointer;" onclick="edit('+row.id+');">编辑</a>';
+                    		if(1==row.status){
+                    			var judge = '<a href="javascript:physicalDelete('+row.id+',2)" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
+                    		}else{
+                    			var judge = '<a href="javascript:physicalDelete('+row.id+',1)" class="btn_mini btn_modify">启用</a>';
+                    		}
+                            return modify+judge;
+                        }
                     }
             ],
-            "columnDefs": [{
+            "columnDefs": [/* {
                 //   指定第一列，从0开始，0表示第一列，1表示第二列……
                 targets: 6,
                 render: function(data, type, row, meta) {
@@ -464,7 +495,15 @@ function initDatatable() {
             		}
                     return modify+judge;
                 }
-            }]
+            } */
+            {"sWidth": "20%",Targets:0 },
+            {"sWidth": "14%",Targets:1 },
+            {"sWidth": "14%",Targets:2 },
+            {"sWidth": "9%",Targets:3 },
+            {"sWidth": "15%",Targets:4 },
+            {"sWidth": "14%",Targets:5 },
+            {"sWidth": "12%",Targets:6 }
+            ]
 	});
 }
 
