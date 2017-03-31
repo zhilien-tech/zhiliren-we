@@ -40,6 +40,7 @@ import com.linyun.airline.common.form.AlterStatusForm;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.uxuexi.core.common.util.EnumUtil;
+import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
@@ -73,7 +74,10 @@ public class ComInfoDictModule {
 	@At
 	@Ok("jsp")
 	public Object list(@Param("..") final ComInfoSqlForm sqlForm) {
-		return comInfoDictService.getDictTypeName();
+		Map<String, Object> map = MapUtil.map();
+		map.put("dicttypelist", EnumUtil.enum2(ComDictTypeEnum.class));
+		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));
+		return map;
 	}
 
 	/**
@@ -116,8 +120,8 @@ public class ComInfoDictModule {
 	 */
 	@At
 	@POST
-	public Object updateLoginNum(@Param("..") final ComLoginNumUpdateForm updateForm, final HttpSession session) {
-		comInfoDictService.updateLoginNum(updateForm, session);
+	public Object updateLoginNum(@Param("..") final ComLoginNumUpdateForm updateForm) {
+		comInfoDictService.updateLoginNum(updateForm);
 		return JsonResult.success("修改成功!");
 	}
 
@@ -243,6 +247,8 @@ public class ComInfoDictModule {
 		try {
 			dbDao.update(ComDictInfoEntity.class, Chain.make("status", form.getStatus()),
 					Cnd.where("id", "=", form.getId()));
+			dbDao.update(ComLoginNumEntity.class, Chain.make("status", form.getStatus()),
+					Cnd.where("id", "=", form.getId()));
 			return JsonResult.success("操作成功!");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -292,6 +298,29 @@ public class ComInfoDictModule {
 				Cnd.where("webURl", "=", webURl).and("comId", "=", comId), null);
 		List<ComLoginNumEntity> listName2 = dbDao.query(ComLoginNumEntity.class,
 				Cnd.where("webURl", "=", webURl).and("comId", "=", comId).and("id", "=", id), null);
+		if (!Util.isEmpty(listName)) {
+			if (Util.isEmpty(id)) {
+				map.put("valid", false);
+			} else if (!Util.isEmpty(listName2)) {
+				map.put("valid", true);
+			}
+		} else {
+			map.put("valid", true);
+		}
+		return map;
+	}
+
+	/**
+	 * 校验字典信息名称
+	 */
+	@At
+	@POST
+	public Object checkDictNameExist(@Param("comDictName") final String Name, @Param("id") final long id) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<ComDictInfoEntity> listName = dbDao.query(ComDictInfoEntity.class, Cnd.where("comDictName", "=", Name),
+				null);
+		List<ComDictInfoEntity> listName2 = dbDao.query(ComDictInfoEntity.class, Cnd.where("comDictName", "=", Name)
+				.and("id", "=", id), null);
 		if (!Util.isEmpty(listName)) {
 			if (Util.isEmpty(id)) {
 				map.put("valid", false);

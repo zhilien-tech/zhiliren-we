@@ -21,10 +21,18 @@
 						<div class="box" style="padding:10px;">
 								<div class="col-md-2">
 									<!--状态名称 搜索框-->
-										<select id="statusId" name="status" class="form-control input-sm">
-											<option value="1">启用中</option>
-                                   			<option value="2">已删除</option>
-										</select>
+									<select id="statusId" name="status" onchange="defaultSelect();" class="form-control input-sm">
+										<c:forEach var="map" items="${obj.dataStatusEnum}">
+											<c:choose>
+												<c:when test="${map.key == obj.dataStatusEnum.status}">
+													<option value="${map.key}" selected="selected">${map.value}</option>
+												</c:when>
+												<c:otherwise>
+													<option value="${map.key}">${map.value}</option>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
+									</select>
 								</div>
 								<div class="col-md-3 dictInfoSousuo" style="float:left;">
 									<!--字典类别名称 搜索下拉框-->
@@ -55,7 +63,7 @@
                                 <div class="col-md-3 dictInfoSousuo" style="float:left;">
 									<!--字典信息名称 搜索框-->
 									<input type="text" id="comDictNameId" name="comDictName" onkeypress="onkeyEnter();" class="form-control"
-										placeholder="字典信息">
+										placeholder="字典信息/航空公司">
 								</div>
 								<div class="col-md-2 col-padding">
 									<!--搜索 按钮-->
@@ -244,6 +252,7 @@ $(function() {
 	initDatatable();
 	$('.menu-ul:eq(0)').hide();//隐藏收付款的二级菜单
 	$('.menu-ul li a:eq(3)').css("color","rgb(245, 245, 245)");//二级菜单 数据字典 高亮style
+	defaultSelect();
 });
 //判断如果是出发城市则隐藏掉其他内容
 $('#comTypeCode').change(function(){
@@ -426,14 +435,6 @@ function initDatatable() {
                     			return "";
                     		}
                     		return airlinename; 
-                    		/* var result = '';
-                      		$.each(row.dictname, function(name, value) {
-                      			alert(name);
-                      			if(row.airlinename == name){
-                      				result = value;
-                      			}
-                      		});
-                    		return result; */
                     	}	
                     },
                     {"data": "status", "bSortable": false,
@@ -530,10 +531,14 @@ $("#comDictInfoSearchBtn").on('click', function () {
     }
 });
 
-//状态选择按钮
+/* //状态选择按钮
 $("#statusId").change(function(){
 	$('#comDictInfoSearchBtn').click();
-});
+}); */
+//状态默认选中
+function defaultSelect(){
+	$('#comDictInfoSearchBtn').click();
+}
 //公司字典类别名称选择按钮
 $("#comTypeCode").change(function(){
 	$('#comDictInfoSearchBtn').click();
