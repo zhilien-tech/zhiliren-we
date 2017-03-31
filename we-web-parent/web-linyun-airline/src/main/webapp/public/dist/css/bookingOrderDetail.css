@@ -3,7 +3,7 @@
 .addPNR .table-bordered {border: 1px solid #cccccc;margin-bottom: 5px;background-color: #e4e4e4;}
 .addPNR .table-bordered > thead > tr > th,.addPNR .table-bordered > tbody > tr > th,.addPNR .table-bordered > thead > tr > td,.addPNR .table-bordered > tbody > tr > td{ border: 1px solid #cccccc;text-align: center;padding:4px;}
 .addPNR table tr{height: 30px;}
-.PNRbtn{padding: 4px 2px !important;margin-left: 10px !important;position: relative;top:15px;}
+.PNRbtn{padding: 4px 2px !important;margin-left: 10px !important;}
 .addDemand{left: 72.5%; margin-left: 8px;line-height: 18px;font-size: 12px;}
 .addIcon {top: 0px;float: left;left: 10px;margin-right: 10px;margin-left:-2px;}
 .removIcon {float: left;left: 10px;}
@@ -29,7 +29,7 @@ select[multiple="multiple"]{height: 180px;}
 .infoShow{display: block;}
 .actionInfo{background-color: #3c8dbc;padding: 4px 12px !important;color: #fff !important;}
 form#financeForm table {margin-bottom: 10px;}
-
+.addPNR table{width: 95%;float: left;}
 
 /*select2 内容style 隐藏*/
 .select2-container--default .select2-selection--multiple .select2-selection__choice {background-color:rgba(255, 255, 255, 0);border-color:rgba(255, 255, 255, 0);padding: 2px 0px;color: #555;font-size: 11px;}
@@ -37,7 +37,7 @@ form#financeForm table {margin-bottom: 10px;}
 .select2-container--default .select2-search--inline .select2-search__field {margin-left: 0px;}
 /*end select2 内容style 隐藏*/
 .cloTable tbody tr:nth-child(1) td:nth-child(2) .select2-container .selection .select2-selection {width:100%;}
-.PNRbtnTD {float: right;position: relative;top: -50px;left:40px;}
+/* .PNRbtnTD {float: right;position: relative;top: -50px;left:40px;} */
 .airlineinfo td:nth-child(4){width:70px;}
 input#leavedate {width: 75px;}
 input#arrivetime {width: 75px;}

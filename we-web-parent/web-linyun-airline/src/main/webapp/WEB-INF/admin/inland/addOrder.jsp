@@ -126,7 +126,7 @@
                       <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake"></a>
                      </td>
                    </tr>
-                   <tr>
+                   <tr class="remarkTr">
                      <td></span><label>备注：</label></td>
                      <td colspan="11"><input name="remark" id="remark" type="text" class="form-control input-sm noteText" placeholder=" "></td>
                    </tr>
