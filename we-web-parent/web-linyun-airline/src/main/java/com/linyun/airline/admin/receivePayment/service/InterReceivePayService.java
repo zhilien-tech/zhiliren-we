@@ -553,8 +553,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		String operator = "";
 		String operatorList = "";
 		for (Record record : orders) {
-			if (!Util.isEmpty(record.get("salePrice"))) {
-				Double incometotal = (Double) record.get("salePrice");
+			if (!Util.isEmpty(record.get("currentpay"))) {
+				Double incometotal = (Double) record.get("currentpay");
 				totalMoney += incometotal;
 			}
 			proposer = record.getString("proposerMan");

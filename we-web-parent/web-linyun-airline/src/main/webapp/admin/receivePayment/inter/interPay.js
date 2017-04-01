@@ -86,13 +86,16 @@ function initPayDataTable(){
 		            		return result;
 		            	}	
 		            },
-		            {"data": "saleprice", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var saleprice = row.saleprice;
-		            		if(null == saleprice || ""== saleprice || undefined==saleprice){
-		            			return "";
-		            		}
-		            		return saleprice;
+		            {"data": "ataxprice", "bSortable": false,
+		            	render:function(data, type, row, meta) {
+		            		var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.ataxprice!=undefined){
+		            				result += '<li style="list-style:none;">'+(value.ataxprice).toFixed(2)+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
 		            	}
 		            },
 		            {"data": "currentpay", "bSortable": false,
@@ -100,7 +103,7 @@ function initPayDataTable(){
 		            		var result = '<ul> ';
 		            		$.each(row.orders, function(name, value) {
 		            			if(value && value.currentpay!=undefined){
-		            				result += '<li style="list-style:none;">'+value.currentpay+'</li>';
+		            				result += '<li style="list-style:none;">'+(value.currentpay).toFixed(2)+'</li>';
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -253,7 +256,7 @@ function initPayEdDataTable(){
 		            		var result = '<ul> ';
 		            		$.each(row.orders, function(name, value) {
 		            			if(value && value.saleprice!=undefined){
-		            				result += '<li style="list-style:none;">'+value.saleprice+'</li>';
+		            				result += '<li style="list-style:none;">'+(value.saleprice).toFixed(2)+'</li>';
 		            			}
 		            		});
 		            		result += '</ul>';

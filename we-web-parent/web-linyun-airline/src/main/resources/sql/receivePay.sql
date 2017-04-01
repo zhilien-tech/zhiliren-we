@@ -413,6 +413,7 @@ SELECT
 	pi.leavesdate,
 	pi.peoplecount,
 	prr.actualnumber,
+	prr.ataxprice,
 	prr.currentpay,
 	fi.`issuer`,
 	ci.shortName,
@@ -457,13 +458,15 @@ SELECT
 	fi.cusgroupnum,
 	ci.shortName,
 	fi.billingdate,
-	pi.peoplecount,
-	fi.`issuer`
+    prr.actualnumber,
+	fi.`issuer`,
+	prr.currentpay
 FROM
 	t_up_order uo
 LEFT JOIN t_pay_order po ON po.orderid = uo.id
 LEFT JOIN t_pay p ON p.id = po.payid
 LEFT JOIN t_plan_info pi ON pi.ordernumber = uo.id
+INNER JOIN t_pay_receive_record prr ON prr.orderid = uo.id
 LEFT JOIN t_customer_info ci ON ci.id = uo.userid
 LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
 $condition
