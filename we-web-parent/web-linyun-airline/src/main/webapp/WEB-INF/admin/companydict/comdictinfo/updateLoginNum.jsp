@@ -55,21 +55,22 @@
 	                        <div class="form-group">
 			                      <label class="col-sm-3 text-right padding">航空公司：</label>
 			                      <div class="col-sm-3 padding iconCla">
-			                         <select id="airlineNameId" name="airlineName" onchange="setSelectedAirlineIds();"
+			                         <select id="airlineNameId" name="airlineName1" onchange="setSelectedAirlineIds();"
 										class="form-control select2 inputWidth" multiple="multiple"
 										data-placeholder="请输入航空公司">
-										<option></option>
-										<c:forEach var="one" items="${obj.airlineInfo }">
-											<option value="${one.id }">${one.text}</option>
-										</c:forEach>
+										<option value="${obj.airlineInfo[0].id }" selected="selected">${obj.airlineInfo[0].text }</option>
+										<%-- <c:forEach var="one" items="${obj.airlineInfo }">
+											<option value="${one.text }" selected="selected">${one.text}</option>
+										</c:forEach> --%>
 									 </select>
 									 <!-- 区域ID -->
-									 <input id="airlineIds" name="airlineIds" type="hidden"/>
+									 <input id="airlineIds" name="airlineName" type="hidden"/>
 			                      </div>
 			                      <!-- 设置已选中的项 -->
 								<script type="text/javascript">
 									function setSelectedAirlineIds() {
 										var _airlineIds = $("#airlineNameId").select2("val");
+										//var _airlineNames = $("#airlineNameId").text();
 										$("#airlineIds").val(_airlineIds);
 									}
 								</script>
@@ -188,7 +189,7 @@ var _areaSelect = $("#airlineNameId").select2({
 	minimumInputLength : 1,
 	maximumInputLength : 20,
 	language : "zh-CN", //设置 提示语言
-	maximumSelectionLength : 5, //设置最多可以选择多少项
+	maximumSelectionLength : 1, //设置最多可以选择多少项
 	tags : false, //设置必须存在的选项 才能选中
 });
 _areaSelect.val([${obj.areaIds}]).trigger("change");

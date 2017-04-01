@@ -89,6 +89,7 @@ SELECT
 FROM
 	dict_info dt
 $condition
+)
 LIMIT 0,5
 
 /*company_dict_airlineName_update*/

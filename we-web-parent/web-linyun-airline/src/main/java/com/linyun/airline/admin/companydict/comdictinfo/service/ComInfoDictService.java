@@ -20,6 +20,7 @@ import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
@@ -201,7 +202,7 @@ public class ComInfoDictService extends BaseService<ComDictInfoEntity> {
 			public Select2Option apply(Record record) {
 				Select2Option op = new Select2Option();
 				op.setId(record.getInt("airLineId"));
-				op.setText(record.getString("dictName"));
+				op.setText(record.getString("dictCode") + "-" + record.getString("dictName"));
 				return op;
 			}
 		});
@@ -218,14 +219,15 @@ public class ComInfoDictService extends BaseService<ComDictInfoEntity> {
 		String sqlString = sqlManager.get("company_dict_airlineName_select2");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
-		//cnd.and("ta.areaName", "like", Strings.trim(areaName) + "%");
+		cnd.and("dt.typeCode", "=", "HKGS");
+		cnd.and("(dt.dictName", "like", Strings.trim(areaName) + "%");
+		cnd.or("dt.dictCode", "like", "%" + Strings.trim(areaName) + "%");
 		if (!Util.isEmpty(airlineIds)) {
 			cnd.and("dt.id", "NOT IN", airlineIds);
 		}
 		/*if (!Util.isEmpty(comId)) {
 			cnd.and("dt.comId", "=", comId);
 		}*/
-		cnd.and("dt.typeCode", "=", "HKGS");
 		sql.setCondition(cnd);
 		sql.setCallback(Sqls.callback.records());
 		nutDao.execute(sql);
@@ -237,7 +239,6 @@ public class ComInfoDictService extends BaseService<ComDictInfoEntity> {
 	//回显登录账号数据
 	public Map<String, Object> updateLoginNum(Long id) {
 		Map<String, Object> obj = Maps.newHashMap();
-		ComLoginNumEntity single = dbDao.fetch(ComLoginNumEntity.class, id);
 		//查询航空公司
 		Sql sql = Sqls.create(sqlManager.get("company_dict_airlineName_update"));
 		Cnd cnd = Cnd.NEW();
@@ -263,20 +264,34 @@ public class ComInfoDictService extends BaseService<ComDictInfoEntity> {
 				return op;
 			}
 		}));
-		obj.put("loginNumData", single);
+		obj.put("loginNumData", dbDao.fetch(ComLoginNumEntity.class, id));
 		return obj;
 	}
 
 	//编辑保存登录账号数据
-	public boolean updateLoginNum(ComLoginNumUpdateForm updateForm, final HttpSession session) {
-		//从session中得到公司id
-		//TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		//Long comId = company.getId();//得到公司的id
+	public boolean updateLoginNum(ComLoginNumUpdateForm updateForm) {
 		updateForm.setUpdateTime(new Date());
-		if (!Util.isEmpty(updateForm)) {
-			String airlineId = updateForm.getAirlineName();
-			DictInfoEntity dictInfoEntity = dbDao.fetch(DictInfoEntity.class, Cnd.where("id", "=", airlineId));
-			updateForm.setAirlineName(dictInfoEntity.getDictName());
+		ComLoginNumEntity fetch = dbDao.fetch(ComLoginNumEntity.class, updateForm.getId());
+		Integer status = fetch.getStatus();
+		if (!fetch.getAirlineName().equals(updateForm.getAirlineName())) {
+			Long airlineNameId = Long.parseLong(updateForm.getAirlineName());
+			DictInfoEntity single = dbDao.fetch(DictInfoEntity.class, airlineNameId);
+			if (Util.isEmpty(single)) {
+				if (status.equals(DataStatusEnum.ENABLE.intKey())) {
+					updateForm.setStatus(DataStatusEnum.DELETE.intKey());
+				} else if (status.equals(DataStatusEnum.DELETE.intKey())) {
+					updateForm.setStatus(DataStatusEnum.ENABLE.intKey());
+				}
+				updateForm.setAirlineName(fetch.getAirlineName());
+			} else if (!Util.isEmpty(single)) {
+				if (status.equals(DataStatusEnum.ENABLE.intKey())) {
+					updateForm.setStatus(DataStatusEnum.DELETE.intKey());
+				} else if (status.equals(DataStatusEnum.DELETE.intKey())) {
+					updateForm.setStatus(DataStatusEnum.ENABLE.intKey());
+				}
+				String dictName = single.getDictName();
+				updateForm.setAirlineName(dictName);
+			}
 		}
 		ComLoginNumEntity comlog = new ComLoginNumEntity();
 		BeanUtil.copyProperties(updateForm, comlog);
