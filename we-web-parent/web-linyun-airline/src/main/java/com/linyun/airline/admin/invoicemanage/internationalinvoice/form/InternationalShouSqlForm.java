@@ -6,6 +6,8 @@
 
 package com.linyun.airline.admin.invoicemanage.internationalinvoice.form;
 
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -34,6 +36,13 @@ public class InternationalShouSqlForm extends DataTablesParamForm {
 
 	private Integer userid;
 
+	private Integer status;//开票状态
+	private Integer billuserid;//收票人
+	private Date shouInvoiceBeginDate;//收票日期
+	private Date shouInvoiceEndDate;//收票日期
+	private String PNR;//pnr
+	private String paymentunit;//收款单位
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		//String sqlString = EntityUtil.entityCndSql(TInvoiceInfoEntity.class);
@@ -49,6 +58,20 @@ public class InternationalShouSqlForm extends DataTablesParamForm {
 		//cnd.and("invoicetype", "=", InvoiceInfoEnum.RECEIPT_INVOIC_ING.intKey());//开发票中
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("comId", "=", companyid);
+		}
+		//开票日期
+		if (!Util.isEmpty(shouInvoiceBeginDate)) {
+			cnd.and("tii.invoicedate", ">=", shouInvoiceBeginDate);
+		}
+		//开票日期
+		if (!Util.isEmpty(shouInvoiceEndDate)) {
+			cnd.and("tii.invoicedate", "<=", shouInvoiceEndDate);
+		}
+		if (!Util.isEmpty(status)) {
+			cnd.and("tii.status", "=", status);
+		}
+		if (!Util.isEmpty(billuserid)) {
+			cnd.and("tii.billuserid", "=", billuserid);
 		}
 		return cnd;
 	}

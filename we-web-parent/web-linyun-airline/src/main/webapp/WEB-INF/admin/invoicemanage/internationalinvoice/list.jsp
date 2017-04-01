@@ -107,7 +107,7 @@
                               <input id="shouInvoiceEndDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'shouInvoiceBeginDate\')}'})"  class="form-control TimeInput" placeholder="2017-02-22">
                             </div>
                             <div class="col-md-3 textPadding"><!-- PNR/单位 搜索框 -->
-                              <input id="paymentunitId" type="text" class="form-control" placeholder="PNR/单位">
+                              <input id="paymentunitId" type="text" class="form-control" placeholder="单位">
                             </div>
                             <div class="col-md-2"><!-- 搜索 按钮 -->
                               <button id="shouSearchInvoiceBtn" type="button" class="btn btn-primary btn-sm">搜索</button>

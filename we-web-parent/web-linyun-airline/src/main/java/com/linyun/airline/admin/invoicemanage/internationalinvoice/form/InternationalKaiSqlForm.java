@@ -6,6 +6,8 @@
 
 package com.linyun.airline.admin.invoicemanage.internationalinvoice.form;
 
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,6 +15,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
+import org.nutz.dao.util.cri.SqlExpressionGroup;
 
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.enums.InvoiceInfoEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
@@ -29,6 +32,13 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
 @EqualsAndHashCode(callSuper = true)
 public class InternationalKaiSqlForm extends DataTablesParamForm {
 
+	private Date invoicedate;//开票日期
+	private Integer status;//开票状态
+	private Integer billuserid;//开票人
+	private Date kaiInvoiceBeginDate;//开票日期
+	private Date kaiInvoiceEndDate;//开票日期
+	private String invoicenum;//发票号
+	private String paymentunit;//付款单位
 	private Integer companyid;
 
 	private Integer userid;
@@ -48,6 +58,25 @@ public class InternationalKaiSqlForm extends DataTablesParamForm {
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("comId", "=", companyid);
 		}
+		SqlExpressionGroup group = new SqlExpressionGroup();
+		group.and("idd.invoicenum", "LIKE", "%" + invoicenum + "%").or("ii.paymentunit", "LIKE",
+				"%" + paymentunit + "%");
+		if (!Util.isEmpty(invoicenum)) {
+			cnd.and(group);
+		}
+		//开票日期
+		if (!Util.isEmpty(kaiInvoiceBeginDate)) {
+			cnd.and("invoicedate", ">=", kaiInvoiceBeginDate);
+		}
+		//开票日期
+		if (!Util.isEmpty(kaiInvoiceEndDate)) {
+			cnd.and("invoicedate", "<=", kaiInvoiceEndDate);
+		}
+		if (!Util.isEmpty(status)) {
+			cnd.and("status", "=", status);
+		}
+		cnd.orderBy("status", "DESC");
+		cnd.orderBy("invoicedate", "DESC");
 		return cnd;
 	}
 }
