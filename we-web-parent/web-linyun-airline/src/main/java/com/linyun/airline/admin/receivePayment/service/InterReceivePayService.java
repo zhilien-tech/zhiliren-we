@@ -187,9 +187,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				String rid = r.getString("id");
 				if (Util.eq(id, rid)) {
 					rList.add(r);
-					if (!Util.isEmpty(r.get("incometotal"))) {
-						Double incometotal = (Double) r.get("incometotal");
-						sum += incometotal;
+					if (!Util.isEmpty(r.get("currentpay"))) {
+						Double currentpay = (Double) r.get("currentpay");
+						sum += currentpay;
 					}
 				}
 			}
@@ -240,8 +240,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//计算合计金额
 		Double sum = 0.0;
 		for (Record record : orders) {
-			if (!Util.isEmpty(record.get("incometotal"))) {
-				Double incometotal = (Double) record.get("incometotal");
+			if (!Util.isEmpty(record.get("currentpay"))) {
+				Double incometotal = (Double) record.get("currentpay");
 				sum += incometotal;
 			}
 		}
