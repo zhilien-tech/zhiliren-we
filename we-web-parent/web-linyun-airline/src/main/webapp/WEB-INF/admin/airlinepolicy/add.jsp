@@ -37,6 +37,7 @@
 				<script type="text/javascript">
 					function setSelectedAirlineCompanyId() {
 						var _selectedAreaIds = $("#findAirlineCompany").select2("val");
+						
 						$("#airlineCompanyId").val(_selectedAreaIds);
 					}
 				</script>
@@ -65,7 +66,10 @@
       			</div>
       			<script type="text/javascript">
 					function setSelectedfindArea() {
-						var _selectedAreaIds = $("#findArea").select2("val");
+						 var _selectedAreaIds = $("#findArea").select2("val"); 
+					/* 	var _selectedAreaIds1 = $("#findArea").find('option:selected').text();
+						
+						alert(_selectedAreaIds1); */
 						$("#areaId").val(_selectedAreaIds);
 					}
 				</script>

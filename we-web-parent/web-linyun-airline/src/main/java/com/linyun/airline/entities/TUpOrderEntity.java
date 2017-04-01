@@ -73,4 +73,15 @@ public class TUpOrderEntity implements Serializable {
 	@Comment("公司id")
 	private Integer companyId;
 
+	@Column
+	@Comment("航空公司")
+	private String airlinecom;
+
+	@Column
+	@Comment("人数")
+	private Integer peoplecount;
+
+	@Column
+	@Comment("成本单价")
+	private Double costsingleprice;
 }

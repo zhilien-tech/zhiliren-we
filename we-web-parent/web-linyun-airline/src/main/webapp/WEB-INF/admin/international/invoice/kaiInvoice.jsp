@@ -42,7 +42,7 @@
                 			<td>${one.shortName }</td>
                 			<td>${one.linkMan }</td>
                 			<td>${one.issuer }</td>
-                			<td>${one.incometotal }</td>
+                			<td>${one.currentpay }</td>
                 		</tr>
                 	</c:forEach>
                   </tbody>

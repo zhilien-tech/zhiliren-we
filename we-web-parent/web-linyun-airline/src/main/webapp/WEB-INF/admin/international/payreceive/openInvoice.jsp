@@ -44,7 +44,7 @@
                 			<td>${one.shortName }</td>
                 			<td>${one.linkMan }</td>
                 			<td>${one.issuer }</td>
-                			<td>${one.incometotal }</td>
+                			<td>${one.currentpay }</td>
                 		</tr>
                 	</c:forEach>
                   </tbody>
@@ -74,7 +74,7 @@
                        </select>
                     </td>
                     <td>合计：</td>
-                    <td id="sumjine">${obj.receive.sum }</td>
+                    <td id="sumjine">${obj.sumincome }</td>
                   </tr>
          </table>
          <div class="bankSlipImg" align="center"><img id="shuidanimg" width="400" height="300" alt="" src="${obj.bill.receiptUrl }"></div>

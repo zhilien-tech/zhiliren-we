@@ -62,8 +62,8 @@ function initshouFuKuanGatheringTable() {
                   	render:function(data, type, row, meta) {
                   		var result = '<ul>';
                   		$.each(row.orders, function(name, value) {
-                  			if(value && value.incometotal != undefined){
-                  				result += '<li style="list-style:none;">'+value.incometotal+'</li>';
+                  			if(value && value.currentpay != undefined){
+                  				result += '<li style="list-style:none;">'+value.currentpay+'</li>';
                   			}
                   		});
                   		result += '</ul>';
@@ -74,8 +74,8 @@ function initshouFuKuanGatheringTable() {
                 	  render:function(data, type, row, meta) {
                     		var result = 0;
                     		$.each(row.orders, function(name, value) {
-                    			if(value && value.incometotal != undefined){
-                    				result += value.incometotal;
+                    			if(value && value.currentpay != undefined){
+                    				result += value.currentpay;
                     			}
                     		});
                     		return result;
@@ -207,8 +207,8 @@ function initshouFuKuanPayTable() {
                   {"data": "incometotal", "bSortable": false,
                   	render:function(data, type, row, meta) {
                   		var result = '';
-                		if(row.costtotal && row.costtotal != undefined){
-                			result = row.costtotal;
+                		if(row.currentpay && row.currentpay != undefined){
+                			result = row.currentpay;
                 		}
                   		return result;
                   	}
