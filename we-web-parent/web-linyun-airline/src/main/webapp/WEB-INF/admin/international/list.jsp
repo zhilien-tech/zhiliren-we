@@ -29,9 +29,9 @@
                 <li><a href="#tab_6" data-toggle="tab" onclick="loadreceivedata();">收/付款</a></li>
                 <li><a href="#tab_7" data-toggle="tab" onclick="kaiInvoiceLoad();">发票</a></li>
                 <li><a href="#tab_1" onclick="loadDataTable(9)" data-toggle="tab">关闭</a></li>
-                <li class="orderLi"><button type="button" id="addOrder" class="btn btn-primary btn-sm right">添加订单</button></li>
+                <!-- <li class="orderLi"><button type="button" id="addOrder" class="btn btn-primary btn-sm right">添加订单</button></li> -->
               </ul>
-                <!-- 当前所在的tab页 -->
+                <!-- 当前所在的tab页 --> 
                 <input type="hidden" id="status" name="status" value="">
               <div class="tab-content">
                   <div class="tab-pane pane-content active" id="tab_1"><!--全部-->
@@ -451,7 +451,7 @@
 	        closeBtn:false,//默认 右上角关闭按钮 是否显示
 	        shadeClose:true,
 	        area: ['1087px', '620px'],
-	        content: '${base}/admin/inland/addOrder.html'
+	        content: '${base}/admin/international/addInterOrder.html'
 	      });
 	  });
 	  

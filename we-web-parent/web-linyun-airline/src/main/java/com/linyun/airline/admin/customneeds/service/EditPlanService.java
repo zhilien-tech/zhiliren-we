@@ -42,6 +42,7 @@ import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TFlightInfoEntity;
 import com.linyun.airline.entities.TPlanInfoEntity;
+import com.linyun.airline.entities.TPnrInfoEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUpOrderTicketEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
@@ -319,9 +320,25 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 				upOrderEntity.setOrdersstatus(InternationalStatusEnum.SEARCH.intKey());
 				upOrderEntity.setOrderstime(new Date());
 				upOrderEntity.setOrderstype(OrderTypeEnum.TEAM.intKey());
+				upOrderEntity.setCompanyId(new Long(company.getId()).intValue());
+				upOrderEntity.setPeoplecount(planinfo.getPeoplecount());
 				if (!Util.isEmpty(customInfo))
 					upOrderEntity.setUserid(new Long(customInfo.get(0).getId()).intValue());
 				insertOrder = dbDao.insert(upOrderEntity);
+				//更新pnr、设置主航段
+				TPnrInfoEntity pnrinfo = new TPnrInfoEntity();
+				pnrinfo.setOrderid(insertOrder.getId());
+				pnrinfo.setMainsection(1);
+				TPnrInfoEntity insertPnr = dbDao.insert(pnrinfo);
+				List<TAirlineInfoEntity> ailineids = dbDao.query(TAirlineInfoEntity.class,
+						Cnd.where("planid", "=", planinfo.getId()), null);
+				//设置航段信息
+				List<TAirlineInfoEntity> updateairline = new ArrayList<TAirlineInfoEntity>();
+				for (TAirlineInfoEntity airline : ailineids) {
+					airline.setPnrid(insertPnr.getId());
+					updateairline.add(airline);
+				}
+				dbDao.update(updateairline);
 				//设置订单ID
 				planinfo.setOrdernumber(String.valueOf(insertOrder.getId()));
 				dbDao.update(planinfo);
