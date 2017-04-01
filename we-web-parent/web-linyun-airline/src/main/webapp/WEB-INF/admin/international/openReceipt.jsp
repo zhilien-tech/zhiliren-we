@@ -19,7 +19,7 @@
             <input type="hidden" name="orderstatus" id="orderstatus" value="${obj.orderstatus }">
             <h4>收款</h4>
           </div>
-          <div class="modal-body" style="height: 483px;overflow-y:auto; ">
+          <div class="modal-body" style="height: 500px;overflow-y:auto; ">
           	<input type="hidden" id="ids"  name="ids" value="${obj.ids }" >
               <table id="receivablesTable" class="table table-bordered table-hover">
                 <thead>
@@ -74,7 +74,7 @@
               <input type="hidden" id="sumincome" name="sumincome" value="${obj.sumincome }">
               <button type="button" id="uploadFile" class="btn btn-primary btn-sm bankSlipBtn">上传水单</button>
               <input type="hidden" id="billurl" name="billurl" value="">
-              <div class="bankSlipImg" align="center"><img id="shuidanimg" width="400" height="300" alt="" src=""></div>
+              <div class="bankSlipImg" align="center"><img id="shuidanimg" width="100%" height="305" alt="" src=""></div>
           </div>
 	</div>
    <!--JS 文件-->

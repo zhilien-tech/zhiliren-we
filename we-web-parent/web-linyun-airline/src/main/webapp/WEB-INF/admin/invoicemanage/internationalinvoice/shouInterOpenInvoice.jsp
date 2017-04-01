@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
-    <title>开发票</title>
+    <title>收发票</title>
 	<link rel="stylesheet" href="${base }/public/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="${base }/public/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" type="text/css" href="${base }/public/ionicons/css/ionicons.min.css">
@@ -16,11 +16,12 @@
 	<div class="modal-top">
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
-            <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo();" value="提交"/>
-            <h4 class="invoiceH4">收款信息</h4>
+            <input type="button" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo()" value="确认收发票"/>
+            <h4 class="invoiceH4">收发票信息</h4>
     </div>
-    <div style="height:550px; overflow-y:auto; ">
+    <div style="height:550px; overflow-y:auto;">
       <div class="modal-body">
+      	<input id="id" name="id" type="hidden" value="${obj.id }" > 
          <table id="receivablesTable" class="table table-bordered table-hover">
                   <thead>
                     <tr>
@@ -34,64 +35,72 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <c:forEach var="one" items="${obj.orders }">
-                		<tr>
-                			<td>${one.ordersnum }</td>
-                			<td>${one.billingdate }</td>
-                			<td>${one.cusgroupnum }</td>
-                			<td>${one.shortName }</td>
-                			<td>${one.linkMan }</td>
-                			<td>${one.issuer }</td>
-                			<td>${one.incometotal }</td>
-                		</tr>
-                	</c:forEach>
+                  	<c:forEach var="one" items="${obj.orders }">
+                  		<tr>
+                  			<td>${one.ordersnum }</td>
+                  			<td>${one.billingdate }</td>
+                  			<td>${one.cusgroupnum }</td>
+                  			<td>${one.shortName }</td>
+                  			<td>${one.linkMan }</td>
+                  			<td>${one.issuer }</td>
+                  			<td><fmt:formatNumber type="number" value="${one.incometotal }" pattern="0.00" maxFractionDigits="2"/></td>
+                  		</tr>
+                  	</c:forEach>
                   </tbody>
          </table>
-         <table border="0" class="selectTable">
+         <table border="0" class="selectTable tdOddWidth">
                   <tr>
-                    <td>银行：</td>
+                    <td><label>银行：</label></td>
                     <td>
-                      <select class="form-control input-sm">
-                           <c:forEach var="one" items="${obj.yhkSelect }">
-                           	<c:choose>
-                           		<c:when test="${obj.receive.bankcardid eq one.id }">
-		                        	<option value="${one.id }" selected="selected">${one.dictName }</option>
-                           		</c:when>
-                           		<c:otherwise>
-		                        	<option value="${one.id }">${one.dictName }</option>
-                           		</c:otherwise>
-                           	</c:choose>
-                           </c:forEach>
+                      <select class="form-control input-sm" disabled="disabled">
+                          <c:forEach var="one" items="${obj.yhkSelect }">
+                        	 <c:choose>
+                          		<c:when test="${obj.companybank.bankComp eq one.id }">
+		                        	 <option value="${one.id }" selected="selected">${one.dictName }</option>
+                          		</c:when>
+                          		<c:otherwise>
+	                        	 <option value="${one.id }">${one.dictName }</option>
+                          		</c:otherwise>
+                          	</c:choose>
+                          </c:forEach>
                       </select>
                     </td>
-                    <td>银行卡名称：</td>
+                    <td><label>银行卡名称：</label></td>
                     <td>
-                      <select class="form-control input-sm">
-                          <option>${obj.receive.bankcardname }</option>
+                      <select class="form-control input-sm" disabled="disabled">
+                          <option>${obj.companybank.cardName }</option>
                       </select>
                     </td>
-                    <td>卡号：</td>
+                    <td><label>卡号：</label></td>
                     <td>
-                       <select class="form-control input-sm">
-                          <option>${obj.receive.bankcardnum }</option>
+                       <select class="form-control input-sm" disabled="disabled">
+                          <option>${obj.companybank.cardNum }</option>
                        </select>
                     </td>
                     <td>合计：</td>
-                    <td id="sumjine">${obj.receive.sum }</td>
+                    <td id="sumjine"><fmt:formatNumber type="number" value="${obj.sumjine }"  pattern="0.00" maxFractionDigits="2"/></td>
                   </tr>
          </table>
-         <div class="bankSlipImg" align="center"><img id="shuidanimg" width="100%" height="305" alt="" src="${obj.bill.receiptUrl }"></div>
+         <div class="bankSlipImg" align="center"><img id="shuidanimg" width="100%" height="305" alt="" src="${obj.billurl }"></div>
       </div>
       <span class="invoiceInfo-header">发票信息</span>
       <div class="invoiceInfo-body">
       	<input type="hidden" id="id" name="id" value="${obj.invoiceinfo.id }">
         <table class="payTable2">
           <tr>
-                  <td>发票项目：</td>
+                  <td>项目用途：</td>
                   <td>
                     <select id="invoiceitem" name="invoiceitem" class="form-control input-sm">
-                        <option value="1">团款</option>
-                        <option value="2">代订机票费用</option>
+                        <c:forEach items="${obj.ytselect }" var="one">
+                        	<c:choose>
+                        		<c:when test="${obj.invoiceinfo.invoiceitem eq one.id}">
+                        			<option value="${one.id }" selected="selected">${one.comDictName }</option>
+                        		</c:when>
+                        		<c:otherwise>
+		                    		<option value="${one.id }">${one.comDictName }</option>
+                        		</c:otherwise>
+                        	</c:choose>
+                    	</c:forEach>
                     </select>
                   </td>
                   <td>发票日期：</td>
@@ -113,7 +122,7 @@
           </tr>
           <tr>
                   <td>付款单位：</td>
-                  <td colspan="3"><input id="paymentunit" name="paymentunit" type="text" class="form-control input-sm" disabled="disabled" value="${obj.invoiceinfo.paymentunit }"></td>
+                  <td colspan="3"><input id="paymentunit" name="paymentunit" type="text" value="${obj.invoiceinfo.paymentunit }" class="form-control input-sm" value="JQ" disabled="disabled"></td>
           </tr>
           <tr>
                   <td>备注：</td>
@@ -121,62 +130,63 @@
           </tr>
           <tr>
                   <td>差额：</td>
-                  <td><input id="difference" name="difference" type="text" class="form-control input-sm" value="${obj.invoiceinfo.difference }"></td>
+                  <td><input id="difference" name="difference" type="text" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.invoiceinfo.difference }" pattern="0.00" maxFractionDigits="2"/>"></td>
                   <td>余额：</td>
-                  <td><label id="balance" name="balance">${obj.invoicebalance }</label>
-                  </td>
+                  <td><label id="balance" name="balance"><fmt:formatNumber type="number" value="${obj.invoicebalance }" pattern="0.00" maxFractionDigits="2"/></label></td>
           </tr>
           <c:choose>
           	<c:when test="${fn:length(obj.invoicedetail)>0}">
 		          <c:forEach items="${obj.invoicedetail }" var="invoiceDetail" varStatus="status">
 			          <tr class="cloneTR">
-		                  <td>发票号：</td>
-		                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm" value="${invoiceDetail.invoicenum }"></td>
-		                  <td>金额：</td>
-		                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm" value="${invoiceDetail.invoicebalance }"></td>
-		                  <td colspan="4">
-		                    <ul class="fileUL">
-		                      <li>
+			                  <td>发票号：</td>
+			                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm" value="${invoiceDetail.invoicenum }"></td>
+			                  <td>金额：</td>
+			                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${invoiceDetail.invoicebalance }" pattern="0.00" maxFractionDigits="2"/>"></td>
+			                  <td colspan="4">
+			                  	<ul class="fileUL">
+			                      <li>
 		                        <a href="javascript:;" class="FileDiv">
 		                          		上传
 		                          <input type="file" class="sc" id="sc" name="sc">
 		                        </a>
 		                      </li>
-		                      <li><a href="javascript:;" id="fileName" name="fileName">${invoiceDetail.imagename }</a></li>
-		                      <c:choose>
-		                      	<c:when test="${status.index eq 0 }">
+			                      <li><a href="javascript:;" id="fileName" name="fileName">${invoiceDetail.imagename }</a></li>
+			                      <li><a href="javascript:;" class="fileDelete deleteInvoice" >删除</a></li>
+		                      	  <li><a href="javascript:;" id="preView" class="fileDelete">预览</a></li>
+			                      <c:choose>
+			                      	<c:when test="${status.index eq 0 }">
 				                      <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
-		                      	</c:when>
-		                      	<c:otherwise>
-				                      <li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>
-		                      	</c:otherwise>
-		                      </c:choose>
-		                    </ul>
-		                    <input id="invoiceurl" name="invoiceurl" type="hidden" value="${invoiceDetail.invoiceurl }">
-		                  </td>
+			                      	</c:when>
+			                      	<c:otherwise>
+			                      		<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>
+			                      	</c:otherwise>
+			                      </c:choose>
+			                    </ul>
+			                    <input id="invoiceurl" name="invoiceurl" type="hidden" value="${invoiceDetail.invoiceurl }">
+			                  </td>
 			          </tr>
 		          </c:forEach>
           	</c:when>
           	<c:otherwise>
           		<tr class="cloneTR">
-	                  <td>发票号：</td>
-	                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm"></td>
-	                  <td>金额：</td>
-	                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm mustNumberPoint"></td>
-	                  <td colspan="4">
-	                    <ul class="fileUL">
-	                      <li>
-	                      	<a href="javascript:;" class="FileDiv">
-	                      		上传
-	                          <input type="file" class="sc" id="sc" name="sc">
-	                        </a> 
-	                      </li>
-	                      <li><a href="javascript:;" id="fileName" name="fileName">未选择文件</a></li>
-	                      <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
-	                    </ul>
-	                    <input id="invoiceurl" name="invoiceurl" type="hidden" value="">
-	                  </td>
-          		</tr>
+                  <td>发票号：</td>
+                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm"></td>
+                  <td>金额：</td>
+                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm"></td>
+                  <td colspan="4">
+                    <ul class="fileUL">
+                      <li>
+                        <a href="javascript:;" class="FileDiv">
+                         	 上传
+                          <input type="file" class="sc" id="sc" name="sc">
+                        </a>
+                      </li>
+                      <li><a id="fileName" name="fileName">未选择文件</a></li>
+                      <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
+                    </ul>
+                    <input id="invoiceurl" name="invoiceurl" type="hidden" value="">
+                  </td>
+          </tr>
           	</c:otherwise>
           </c:choose>
         </table>
@@ -202,8 +212,8 @@
 	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 	<script src="${base }/admin/order/invoiceupload.js"></script>
   <script type="text/javascript">
-     $(function(){
-    	 /*-----收付款>收款>开发票 + 按钮-----*/
+  $(function(){
+ 	 /*-----收付款>收款>开发票 + 按钮-----*/
 	      $('.addIcon').click(function(){
 	          var divTest = $(this).parents('.cloneTR'); 
 	          var lastDiv = $('.cloneTR').last();
@@ -216,6 +226,8 @@
 	          lastDiv.after(newDiv);
 	          var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
 	          newDiv.find("p").html(No); 
+	          newDiv.find('#preView').parent().remove();
+	          newDiv.find('.deleteInvoice').parent().remove();
 	          newDiv.find('.addIcon').parent().remove();
 	          newDiv.find('.fileUL').append('<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>');
 	      });
@@ -224,19 +236,30 @@
 	          $(this).parents('.cloneTR').remove();
 	      });
 	      
-	      $(document).on('click','#fileName',function(){
+	      $(document).on('click','#preView',function(){
 	   	  	  var invoiceurl = $(this).parent().parent().parent().find('[name=invoiceurl]').val();
 	   	  	  //alert(invoiceurl);
 	          document.getElementById('light').style.display='block';
 	          //document.getElementById('fade').style.display='block';
 	          document.getElementById('fapiaoid').src=invoiceurl; 
+	      }); 
+	      $(document).on('click','.deleteInvoice',function(){
+	   	  	  var invoicedetaildiv = $(this).parent().parent().parent();
+	   	  	  invoicedetaildiv.find('[name=invoiceurl]').val('');
+	   	  	  invoicedetaildiv.find('[name=fileName]').html('未选择文件');
+	   	  	  invoicedetaildiv.find('#preView').remove();
+	   	  	  invoicedetaildiv.find('.deleteInvoice').remove();
+	   	  	  //alert(invoiceurl);
+	          //document.getElementById('light').style.display='block';
+	          //document.getElementById('fade').style.display='block';
+	          document.getElementById('fapiaoid').src=''; 
 	      });
-     });
-   //关闭窗口
-     function closewindow(){
- 		var index = parent.parent.layer.getFrameIndex(window.name); //获取窗口索引
- 		parent.layer.close(index);
- 	}
+  });
+	//关闭窗口
+	  function closewindow(){
+			var index = parent.parent.layer.getFrameIndex(window.name); //获取窗口索引
+			parent.layer.close(index);
+	  }
    
    function saveInvoiceInfo(){
 	   var formdata = {};
@@ -272,13 +295,14 @@
 		   invoicedetails.push(detail);
 	   });
 	   formdata.invoicedetails = invoicedetails;
+	   
 	   $.ajax({ 
 			type: 'POST', 
 			data: {data:JSON.stringify(formdata)}, 
-			url: '${base}/admin/inland/saveKaiInvoiceInfo.html',
+			url: '${base}/admin/invoicemanage/invoiceinfo/saveShouInvoiceInfo.html',
            success: function (data) { 
            	closewindow();
-           	window.parent.successCallback('5');
+           	window.parent.successCallback('2');
            },
            error: function (xhr) {
            	layer.msg("提交失败","",3000);
@@ -287,4 +311,4 @@
    }
   </script>
 </body>
-</html>	
+</html>
