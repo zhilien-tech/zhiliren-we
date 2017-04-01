@@ -173,3 +173,15 @@ AND tprr.orderstatusid = @orderstatus
 AND tprr.recordtype = @recordtype
 $condition	
 
+/*get_international_kai_invoice_list_order*/
+SELECT
+	tuo.*, tprr.actualnumber
+FROM
+	t_up_order tuo
+INNER JOIN t_order_receive tor ON tuo.id = tor.orderid
+INNER JOIN t_receive tr ON tor.receiveid = tr.id
+INNER JOIN t_invoice_info tii ON tr.id = tii.receiveid
+LEFT JOIN t_pay_receive_record tprr ON tor.orderid = tprr.orderid
+AND tprr.orderstatusid = tor.orderstatus
+AND tprr.recordtype = @recordtype
+$condition
