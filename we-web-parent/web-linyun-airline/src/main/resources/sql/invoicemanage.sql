@@ -67,9 +67,18 @@ $condition
 /*invoicemanage_kaiinvoice_search_list*/
 SELECT
 	tuo.ordersnum,
+	tuo.peoplecount,
 	ii.*, 
 	u.id AS userIds,
 	idd.invoicenum,
+	(
+		SELECT
+			count(*)
+		FROM
+			t_invoice_detail
+		WHERE
+			invoiceinfoid = ii.id
+	) invoicecount,
 	u.userName
 FROM
 	t_invoice_info ii
