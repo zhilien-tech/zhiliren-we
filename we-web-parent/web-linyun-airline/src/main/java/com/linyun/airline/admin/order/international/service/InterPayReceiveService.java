@@ -157,8 +157,8 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.id", "in", ids);
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
-		cnd.and("tprr.orderstatusid", "=", orderstatus);
-		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.RECEIVE.intKey());
+		sql.setParam("orderstatus", orderstatus);
+		sql.setParam("recordtype", PayReceiveTypeEnum.RECEIVE.intKey());
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		String customename = "";
 		if (orders.size() > 0) {
@@ -286,8 +286,8 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.id", "in", ids);
 		cnd.and("tuo.id", "in", ids);
-		cnd.and("tprr.orderstatusid", "=", payorders.getOrderstatus());
-		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.PAY.intKey());
+		sql.setParam("orderstatus", payorders.getOrderstatus());
+		sql.setParam("recordtype", PayReceiveTypeEnum.PAY.intKey());
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		String customename = "";
 		if (orders.size() > 0) {
