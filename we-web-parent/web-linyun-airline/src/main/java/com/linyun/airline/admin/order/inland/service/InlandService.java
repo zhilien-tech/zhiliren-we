@@ -1467,6 +1467,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			paypnrs.add(paypnr);
 			//PNR更新状态
 			TPnrInfoEntity pnrinfo = dbDao.fetch(TPnrInfoEntity.class, Long.valueOf(str));
+			pnrinfo.setOptime(new Date());
 			pnrinfo.setOrderPnrStatus(AccountPayEnum.APPROVAL.intKey());
 			paypnr.setOptime(new Date());
 			pnrinfos.add(pnrinfo);
