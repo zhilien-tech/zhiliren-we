@@ -38,7 +38,7 @@ GROUP BY u.id
 where  month=month(now()) AND year=year(now())
 /*salary_add_no*/
 select * from(
-select SUM(fi.costtotal) as 'costTotal',COUNT(*) as 'groupNumber',SUM(fi.incometotal) as 'incomeTotal',SUM(fi.personcount) as 'headCount',u.fullName
+select u.fullName
 as 'drawer',si.baseWages as 'basePay',si.commission,si.comId,month(max(fi.billingdate)) as 'month1',year(max(fi.billingdate)) as 'year1',u.id
 as 'drawerId',fi.orderid,u.id,u.status
 from

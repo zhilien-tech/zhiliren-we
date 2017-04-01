@@ -125,12 +125,12 @@ public class SalaryViewService extends BaseService<TSalaryEntity> {
 	}
 
 	public void addSalary() {
-		String stringSql = sqlManager.get("salary_add");
-		Sql sql = Sqls.create(stringSql);
-		addSalary1(sql);
 		String stringSql2 = sqlManager.get("salary_add_no");
 		Sql sql2 = Sqls.create(stringSql2);
 		addSalary1(sql2);
+		String stringSql = sqlManager.get("salary_add");
+		Sql sql = Sqls.create(stringSql);
+		addSalary1(sql);
 	}
 
 	public void addSalary1(Sql sql2) {
