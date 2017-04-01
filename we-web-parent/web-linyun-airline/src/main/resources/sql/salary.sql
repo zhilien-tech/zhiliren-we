@@ -39,7 +39,7 @@ where  month=month(now()) AND year=year(now())
 /*salary_add_no*/
 select * from(
 select SUM(fi.costtotal) as 'costTotal',COUNT(*) as 'groupNumber',SUM(fi.incometotal) as 'incomeTotal',SUM(fi.personcount) as 'headCount',u.fullName
-as 'drawer',si.baseWages as 'basePay',si.commission,si.comId,month(fi.billingdate) as 'month',year(fi.billingdate) as 'year',u.id
+as 'drawer',si.baseWages as 'basePay',si.commission,si.comId,month(max(fi.billingdate)) as 'month1',year(max(fi.billingdate)) as 'year1',u.id
 as 'drawerId',fi.orderid,u.id,u.status
 from
 t_user u
@@ -47,4 +47,4 @@ LEFT JOIN t_salary_increase si on si.userId=u.id
 LEFT JOIN t_finance_info fi on fi.issuerid=u.id
 GROUP BY u.id 
 ) uu
-where uu.orderid is null and uu.status=1
+where (uu.month1 !=month(now()) Or uu.year1!=year(now())) and uu.status=1
