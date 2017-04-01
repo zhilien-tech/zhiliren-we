@@ -83,12 +83,14 @@ SELECT
 	tii.remark,
 	tii.id invoiceid,
 	tfi.costtotal,
-	tprr.currentpay
+	tprr.currentpay,
+	tci.shortName customename
 FROM
 	t_pay_order tpo
 INNER JOIN t_up_order tuo ON tpo.orderid = tuo.id
 INNER JOIN t_pay tp ON tpo.payid = tp.id
-INNER JOIN t_plan_info tpi ON tuo.id = tpi.ordernumber
+INNER JOIN t_customer_info tci ON tuo.userid = tci.id
+LEFT JOIN t_plan_info tpi ON tuo.id = tpi.ordernumber
 LEFT JOIN t_finance_info tfi ON tfi.orderid = tuo.id
 LEFT JOIN t_invoice_info tii ON tpo.id = tii.orderpayid
 LEFT JOIN t_pay_receive_record tprr ON tprr.orderid = tpo.orderid
@@ -171,3 +173,15 @@ AND tprr.orderstatusid = @orderstatus
 AND tprr.recordtype = @recordtype
 $condition	
 
+/*get_international_kai_invoice_list_order*/
+SELECT
+	tuo.*, tprr.actualnumber
+FROM
+	t_up_order tuo
+INNER JOIN t_order_receive tor ON tuo.id = tor.orderid
+INNER JOIN t_receive tr ON tor.receiveid = tr.id
+INNER JOIN t_invoice_info tii ON tr.id = tii.receiveid
+LEFT JOIN t_pay_receive_record tprr ON tor.orderid = tprr.orderid
+AND tprr.orderstatusid = tor.orderstatus
+AND tprr.recordtype = @recordtype
+$condition

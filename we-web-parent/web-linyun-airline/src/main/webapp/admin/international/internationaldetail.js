@@ -139,3 +139,19 @@ $('#airlinecom').select2({
 	maximumSelectionLength : 1, //设置最多可以选择多少项
 	tags : false //设置必须存在的选项 才能选中
 });
+
+loadCustominfo();
+function loadCustominfo(){
+	var creditLinenum = 0;
+	if(creditLine){
+		creditLinenum = parseFloat(creditLine);
+	}
+	var arrearsnum = 0;
+	if(arrears){
+		arrearsnum = parseFloat(arrears);
+	}
+	if(creditLinenum - arrearsnum < 10000){
+		$('#customeidcolor').attr('color','red');
+		$('#historyqiancolor').attr('color','red');
+	}
+}

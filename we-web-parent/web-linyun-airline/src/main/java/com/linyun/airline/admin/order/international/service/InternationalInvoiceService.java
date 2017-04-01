@@ -75,8 +75,9 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 			List<TInvoiceDetailEntity> invoiceDetail = dbDao.query(TInvoiceDetailEntity.class,
 					Cnd.where("invoiceinfoid", "=", record.getInt("id")), null);
 			record.put("invoiceDetail", invoiceDetail);
-			String sqlString = sqlManager.get("get_kai_invoice_list_order");
+			String sqlString = sqlManager.get("get_international_kai_invoice_list_order");
 			Sql sql = Sqls.create(sqlString);
+			sql.setParam("recordtype", PayReceiveTypeEnum.RECEIVE.intKey());
 			Cnd cnd = Cnd.NEW();
 			cnd.and("tii.id", "=", record.getInt("id"));
 			List<Record> orders = dbDao.query(sql, cnd, null);
