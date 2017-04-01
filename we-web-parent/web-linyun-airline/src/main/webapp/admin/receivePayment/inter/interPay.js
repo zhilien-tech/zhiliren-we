@@ -251,12 +251,12 @@ function initPayEdDataTable(){
 		            		return result;
 		            	}
 		            },
-		            {"data": "saleprice", "bSortable": false,
+		            {"data": "currentpay", "bSortable": false,
 		            	render:function(data, type, row, meta) {
 		            		var result = '<ul> ';
 		            		$.each(row.orders, function(name, value) {
-		            			if(value && value.saleprice!=undefined){
-		            				result += '<li style="list-style:none;">'+(value.saleprice).toFixed(2)+'</li>';
+		            			if(value && value.currentpay!=undefined){
+		            				result += '<li style="list-style:none;">'+(value.currentpay).toFixed(2)+'</li>';
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -286,7 +286,7 @@ function initPayEdDataTable(){
 		            		if(null == totalmoney || ""== totalmoney){
 		            			return "";
 		            		}
-		            		return totalmoney;
+		            		return totalmoney.toFixed(2);
 		            	}
 		            },
 		            {"data": "shortname", "bSortable": false,

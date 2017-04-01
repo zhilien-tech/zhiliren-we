@@ -412,6 +412,7 @@ SELECT
 	) AS 'payCurrency',
 	pi.leavesdate,
 	pi.peoplecount,
+	prr.actualyreduce,
 	prr.actualnumber,
 	prr.ataxprice,
 	prr.currentpay,
@@ -479,7 +480,8 @@ SELECT
 	po.orderstatus,
 	po.paystauts,
 	pi.leavesdate,
-	pi.peoplecount,
+	prr.currentpay,
+	prr.actualnumber peoplecount,
 	(
 		SELECT
 			dictCode
@@ -496,6 +498,7 @@ FROM
 LEFT JOIN t_pay_order po ON po.orderid = uo.id
 INNER JOIN t_pay p ON p.id = po.payid
 INNER JOIN t_plan_info pi ON pi.ordernumber = uo.id
+LEFT JOIN t_pay_receive_record prr ON prr.orderid=uo.id
 INNER JOIN t_customer_info ci ON ci.id = uo.userid
 INNER JOIN t_finance_info fi ON fi.orderid = uo.id
 WHERE
@@ -507,6 +510,7 @@ WHERE
 		LEFT JOIN t_pay_order po ON po.orderid = uo.id
 		INNER JOIN t_pay p ON p.id = po.payid
 		INNER JOIN t_plan_info pi ON pi.ordernumber = uo.id
+		LEFT JOIN t_pay_receive_record prr ON prr.orderid=uo.id
 		INNER JOIN t_customer_info ci ON ci.id = uo.userid
 		INNER JOIN t_finance_info fi ON fi.orderid = uo.id
 		$condition
@@ -531,12 +535,14 @@ SELECT
 	ci.shortName,
 	fi.billingdate,
 	pi.peoplecount,
+	prr.currentpay,
 	fi.`issuer`
 FROM
 	t_up_order uo
 LEFT JOIN t_pay_order po ON po.orderid = uo.id
 INNER JOIN t_pay p ON p.id = po.payid
 INNER JOIN t_plan_info pi ON pi.ordernumber = uo.id
+LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
 INNER JOIN t_customer_info ci ON ci.id = uo.userid
 INNER JOIN t_finance_info fi ON fi.orderid = uo.id
 $condition
