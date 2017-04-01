@@ -283,19 +283,58 @@
 		            }
 		        },
 		        "columns": [
-		                    {"data": "typename", "bSortable": false},
-		                    {"data": "dictcode", "bSortable": false},
-		                    {"data": "dictname", "bSortable": false},
-		                    {"data": "description", "bSortable": false,
+		                    {"data": "typename", "bSortable": false,
 		                    	render: function(data, type, row, meta) {
-		                    		var result = '<span data-toggle="tooltip" data-placement="right" title="'+row.description+'">'+row.description+'<span>';
-		                    		return result;
+		                    		var typename = row.typename;
+		                    		if(null==typename || ""==typename){
+		                    			return "";
+		                    		}
+		                    		return typename;
 		                    	}	
 		                    },
-		                    {"data": "statusname", "bSortable": true}, 
+		                    {"data": "dictcode", "bSortable": false,
+		                    	render: function(data, type, row, meta) {
+		                    		var dictcode = row.dictcode;
+		                    		if(null==dictcode || ""==dictcode){
+		                    			return "";
+		                    		}
+		                    		return dictcode;
+		                    	}	
+		                    },
+		                    {"data": "dictname", "bSortable": false,
+		                    	render: function(data, type, row, meta) {
+		                    		var dictname = row.dictname;
+		                    		if(null==dictname || ""==dictname){
+		                    			return "";
+		                    		}
+		                    		return dictname;
+		                    	}
+		                    },
+		                    {"data": "description", "bSortable": false,
+			                    render: function(data, type, row, meta) {
+		                    		 var description = row.description;
+			                   		 if(null==description || ""==description){
+			                   			 return "";
+			                   		 }
+		                    		 var result = '<span data-toggle="tooltip" data-placement="left" title="'+description+'">'+description+'<span>';
+		                    		 return result;
+		                    	}
+		                    },
+		                    {"data": "statusname", "bSortable": true,
+		                    	render: function(data, type, row, meta) {
+		                    		var statusname = row.statusname;
+		                    		if(null==statusname || ""==statusname){
+		                    			return "";
+		                    		}
+		                    		return statusname;
+		                    	}	
+		                    }, 
 		                    {"data": "createtime", "bSortable": true,
 		                    	 render: function(data, type, row, meta) {
 		                    		 var createtime = new Date(row.createtime);
+		                    		 if(null==createtime || ""==createtime){
+		                    			 return "";
+		                    		 }
 		                    		 var createtimestr = createtime.getFullYear() + "-" + createtime.getMonth() + "-" + createtime.getDate() + " "
 		                    		 + createtime.getHours() + ":" + createtime.getMinutes() + ":" + createtime.getSeconds();
 		                    		return createtimestr;

@@ -243,7 +243,10 @@ $(".paymentUl li").click(function(){
 				autoHighLoad($('#interRecTable'));
 			}		
 	);
-	/*toConfirmRecPage(); */
+	/*destroyDatetable($("#interPayTable"));
+	destroyDatetable($("#interPayEdTable"));
+	destroyDatetable($("#interRecTable"));
+	toConfirmRecPage();*/
 });
 
 //回车搜索
@@ -251,4 +254,11 @@ function recOnkeyEnter(){
 	if(event.keyCode==13){
 		$("#interRecSearchBtn").click();
 	}
+}
+
+//销毁datatable
+function destroyDatetable(obj){
+	var datatable = obj.dataTable()
+	datatable.fnClearTable(); //清空一下table
+	datatable.fnDestroy(); //还原初始化了的datatable
 }

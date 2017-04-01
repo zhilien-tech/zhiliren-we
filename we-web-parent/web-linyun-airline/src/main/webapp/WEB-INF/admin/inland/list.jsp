@@ -19,7 +19,7 @@
                 <li><a href="#tab_6" data-toggle="tab">收/付款</a></li>
                 <li><a href="#tab_7" data-toggle="tab" onclick="kaiInvoiceLoad();">发票</a></li>
                 <li><a href="#tab_1" onclick="loadDataTable(5)" data-toggle="tab">关闭</a></li>
-                <li class="orderLi"><button type="button" id="addOrder" class="btn btn-primary btn-sm right">添加订单</button></li>
+                <li class="orderLi"><button type="button" id="addOrderGJ" class="btn btn-primary btn-sm right">添加订单</button></li>
               </ul>
                 <!-- 当前所在的tab页 -->
                 <input type="hidden" id="status" name="status" value="">

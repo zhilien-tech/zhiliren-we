@@ -40,14 +40,7 @@ function initPayDataTable(){
 		            {"data": "ordersnum", "bSortable": false},
 		            {"data": "pnrnum", "bSortable": false,
 		            	render:function(data, type, row, meta) {
-		            		var result = '<ul> ';
-		            		$.each(row.orders, function(name, value) {
-		            			if(value && value.pnr!=undefined){
-		            				result += '<li style="list-style:none;">'+value.pnr+'</li>';
-		            			}
-		            		});
-		            		result += '</ul>';
-		            		return result;
+		            		return "";
 		            	}	
 		            },
 		            {"data": "leavesdate", "bSortable": false,
@@ -138,7 +131,7 @@ function initPayDataTable(){
 		            		return result;
 		            	}
 		            },
-		            {"data": "orderstatus", "bSortable": false,
+		            {"data": "paystauts", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var s = '';
 		            		if(data == '2'){
@@ -198,12 +191,17 @@ function initPayEdDataTable(){
 			}
 		},
 		"columns": [
-		            {"data": "ordernum", "bSortable": false,
-		            	render:function(data, type, row, meta) {
+		            {"data": "ordersnum", "bSortable": false,
+			            render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
 		            		$.each(row.orders, function(name, value) {
 		            			if(value){
-		            				result += '<li style="list-style:none;">'+value.ordernum+'</li>';
+		            				var ordernum = value.ordersnum;
+		            				if(ordernum == null || ordernum == undefined || ordernum==""){
+		            					ordernum = " ";
+		            				}else{
+		            					result += '<li style="list-style:none;">'+ordernum+'</li>';
+		            				}
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -211,23 +209,17 @@ function initPayEdDataTable(){
 		            	}
 		            },
 		            {"data": "pnrnum", "bSortable": false,
-		            	render:function(data, type, row, meta) {
-		            		var result = '<ul> ';
-		            		$.each(row.orders, function(name, value) {
-		            			if(value){
-		            				result += '<li style="list-style:none;">'+value.pnrnum+'</li>';
-		            			}
-		            		});
-		            		result += '</ul>';
-		            		return result;
+		            	render: function(data, type, row, meta) {
+		            		var s = '';
+		            		return s;
 		            	}
 		            },
 		            {"data": "leavedate", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
 		            		$.each(row.orders, function(name, value) {
-		            			if(value && value.leavedate != undefined){
-		            				var date = value.leavedate;
+		            			if(value && value.leavesdate != undefined){
+		            				var date = value.leavesdate;
 		            				var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
 		            				var week = ['MO','TU','WE','TH','FR','SA','SU'];
 		            				var ldate = new Date(date);
@@ -269,16 +261,21 @@ function initPayEdDataTable(){
 		            	}
 		            },
 		            {"data": "currency", "bSortable": false,
-		            	render:function(data, type, row, meta) {
-		            		var result = '<ul>';
+			            render: function(data, type, row, meta) {
+		            		var result = '<ul> ';
 		            		$.each(row.orders, function(name, value) {
-		            			if(value && value.currency!=undefined){
-		            				result += '<li style="list-style:none;">'+value.currency+'</li>';
+		            			if(value){
+		            				var paycurrency = value.paycurrency;
+		            				if(paycurrency == null || paycurrency == undefined || paycurrency==""){
+		            					paycurrency = " ";
+		            				}else{
+		            					result += '<li style="list-style:none;">'+paycurrency+'</li>';
+		            				}
 		            			}
 		            		});
 		            		result += '</ul>';
 		            		return result;
-		            	}
+			            }
 		            },
 		            {"data": "totalmoney", "bSortable": false,
 		            	render: function(data, type, row, meta) {
@@ -298,13 +295,14 @@ function initPayEdDataTable(){
 		            		return shortname;
 		            	}
 		            },
-		            {"data": "orderpnrstatus", "bSortable": false,
+		            {"data": "paystatus", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var s = '';
-		            		if(data == '2'){
+		            		var paystatus = row.paystatus;
+		            		if(paystatus == '2'){
 		            			s = '付款中';
 		            		}
-		            		if(data == '3'){
+		            		if(paystatus == '3'){
 		            			s = '已付款';
 		            		}
 		            		return s;
@@ -312,11 +310,11 @@ function initPayEdDataTable(){
 		            },
 		            {"data": "username", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		var username = row.username;
-		            		if(null == username || ""== username){
+		            		var issuer = row.issuer;
+		            		if(null == issuer || ""== issuer){
 		            			return "";
 		            		}
-		            		return username;
+		            		return issuer;
 		            	}
 		            },
 		            {"data": "remark", "bSortable": false,
@@ -343,7 +341,8 @@ function initPayEdDataTable(){
 		            	//   指定第一列，从0开始，0表示第一列，1表示第二列……
 		            	targets: 11,
 		            	render: function(data, type, row, meta) {
-		            		var modify = '<a style="cursor:pointer;" onclick="editPay('+row.payid+');">编辑</a>';
+		            		var pid = row.pid;
+		            		var modify = '<a style="cursor:pointer;" onclick="editPay('+pid+');">编辑</a>';
 		            		return modify;
 		            	}
 		            }]
@@ -415,7 +414,7 @@ $('#interPayClick').click(function(){
 			title:false,
 			skin: false, //加上边框
 			closeBtn:false,//默认 右上角关闭按钮 是否显示
-			shadeClose:true,
+			shadeClose:false,
 			area: ['850px', '650px'],
 			content: ['confirmPay.html?orderIds='+ ids,'no'],
 		});
@@ -585,6 +584,18 @@ function payOnkeyEnter(){
 	 if(event.keyCode==13){
 		 $("#interPaySearchBtn").click();
 	 }
+}
+
+function editPay(ids){
+	layer.open({
+		type: 2,
+		title:false,
+		skin: false, //加上边框
+		closeBtn:false,//默认 右上角关闭按钮 是否显示
+		shadeClose:false,
+		area: ['850px', '650px'],
+		content: ['editConfirmPay.html?payid='+ ids,'no'],
+	});
 }
 
 
