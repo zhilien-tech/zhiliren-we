@@ -80,7 +80,15 @@ function initDatatable1() {
                     	render: function(data, type, row, meta) {
                     		var result = '<ul>';
                     		$.each(row.airinfo, function(name, value) {
-                    			result += '<li style="list-style:none;">'+(value.leavetime+'/'+value.arrivetime)+'</li>';
+                    			result += '<li style="list-style:none;">';
+                    			if(value.leavetime && value.leavetime != undefined){
+                    				result += value.leavetime;
+                    			}
+                    			result += '/';
+                    			if(value.arrivetime && value.arrivetime != undefined){
+                    				result += value.arrivetime;
+                    			}
+                    			result += '</li>';
                     		});
                     		result += '</ul>';
                     		/*var result = '<ul>' 

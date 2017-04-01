@@ -25,7 +25,7 @@
                   <thead>
                     <tr>
                       <th>订单号</th>
-                      <th>开票日期</th>
+                      <th>出票日期</th>
                       <th>客户团号</th>
                       <th>客户公司名称</th>
                       <th>联系人</th>
@@ -42,7 +42,7 @@
                 			<td>${one.shortName }</td>
                 			<td>${one.linkMan }</td>
                 			<td>${one.issuer }</td>
-                			<td>${one.currentpay }</td>
+                			<td><fmt:formatNumber type="number" value="${one.currentpay }" pattern="0.00" maxFractionDigits="2"/></td>
                 		</tr>
                 	</c:forEach>
                   </tbody>
@@ -77,7 +77,7 @@
                        </select>
                     </td>
                     <td>合计：</td>
-                    <td id="sumjine">${obj.receive.sum }</td>
+                    <td id="sumjine"><fmt:formatNumber type="number" value="${obj.receive.sum }" pattern="0.00" maxFractionDigits="2"/></td>
                   </tr>
          </table>
          <div class="bankSlipImg" align="center"><img id="shuidanimg" width="100%" height="305" alt="" src="${obj.bill.receiptUrl }"></div>
@@ -90,8 +90,16 @@
                   <td>发票项目：</td>
                   <td>
                     <select id="invoiceitem" name="invoiceitem" class="form-control input-sm">
-                        <option value="1">团款</option>
-                        <option value="2">代订机票费用</option>
+                        <c:forEach items="${obj.ytselect }" var="one">
+                    		<c:choose>
+                        		<c:when test="${obj.invoiceinfo.invoiceitem eq one.id}">
+                        			<option value="${one.id }" selected="selected">${one.comDictName }</option>
+                        		</c:when>
+                        		<c:otherwise>
+		                    		<option value="${one.id }">${one.comDictName }</option>
+                        		</c:otherwise>
+                        	</c:choose>
+                    	</c:forEach>
                     </select>
                   </td>
                   <td>发票日期：</td>
@@ -112,7 +120,7 @@
                   </td> --%>
           </tr>
           <tr>
-                  <td>付款单位：</td>
+                  <td>收款单位：</td>
                   <td colspan="3"><input id="paymentunit" name="paymentunit" type="text" class="form-control input-sm" disabled="disabled" value="${obj.invoiceinfo.paymentunit }"></td>
           </tr>
           <tr>
@@ -121,9 +129,9 @@
           </tr>
           <tr>
                   <td>差额：</td>
-                  <td><input id="difference" name="difference" type="text" class="form-control input-sm" value="${obj.invoiceinfo.difference }"></td>
+                  <td><input id="difference" name="difference" type="text" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.invoiceinfo.difference }" pattern="0.00" maxFractionDigits="2"/>"></td>
                   <td>余额：</td>
-                  <td><label id="balance" name="balance">${obj.invoicebalance }</label>
+                  <td><label id="balance" name="balance"><fmt:formatNumber type="number" value="${obj.invoicebalance }" pattern="0.00" maxFractionDigits="2"/></label>
                   </td>
           </tr>
           <c:choose>
@@ -133,7 +141,7 @@
 		                  <td>发票号：</td>
 		                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm" value="${invoiceDetail.invoicenum }"></td>
 		                  <td>金额：</td>
-		                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm" value="${invoiceDetail.invoicebalance }"></td>
+		                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${invoiceDetail.invoicebalance }" pattern="0.00" maxFractionDigits="2"/>"></td>
 		                  <td colspan="4">
 		                    <ul class="fileUL">
 		                      <li>
@@ -216,6 +224,8 @@
 	          lastDiv.after(newDiv);
 	          var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
 	          newDiv.find("p").html(No); 
+	          newDiv.find('#preView').parent().remove();
+	          newDiv.find('.deleteInvoice').parent().remove();
 	          newDiv.find('.addIcon').parent().remove();
 	          newDiv.find('.fileUL').append('<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>');
 	      });
@@ -224,12 +234,23 @@
 	          $(this).parents('.cloneTR').remove();
 	      });
 	      
-	      $(document).on('click','#fileName',function(){
+	      $(document).on('click','#preView',function(){
 	   	  	  var invoiceurl = $(this).parent().parent().parent().find('[name=invoiceurl]').val();
 	   	  	  //alert(invoiceurl);
 	          document.getElementById('light').style.display='block';
 	          //document.getElementById('fade').style.display='block';
 	          document.getElementById('fapiaoid').src=invoiceurl; 
+	      });
+	      $(document).on('click','.deleteInvoice',function(){
+	   	  	  var invoicedetaildiv = $(this).parent().parent().parent();
+	   	  	  invoicedetaildiv.find('[name=invoiceurl]').val('');
+	   	  	  invoicedetaildiv.find('[name=fileName]').html('未选择文件');
+	   	  	  invoicedetaildiv.find('#preView').remove();
+	   	  	  invoicedetaildiv.find('.deleteInvoice').remove();
+	   	  	  //alert(invoiceurl);
+	          //document.getElementById('light').style.display='block';
+	          //document.getElementById('fade').style.display='block';
+	          document.getElementById('fapiaoid').src=''; 
 	      });
      });
    //关闭窗口

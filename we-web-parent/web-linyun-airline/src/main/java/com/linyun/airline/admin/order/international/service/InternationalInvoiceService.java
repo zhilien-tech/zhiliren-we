@@ -75,8 +75,9 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 			List<TInvoiceDetailEntity> invoiceDetail = dbDao.query(TInvoiceDetailEntity.class,
 					Cnd.where("invoiceinfoid", "=", record.getInt("id")), null);
 			record.put("invoiceDetail", invoiceDetail);
-			String sqlString = sqlManager.get("get_kai_invoice_list_order");
+			String sqlString = sqlManager.get("get_international_kai_invoice_list_order");
 			Sql sql = Sqls.create(sqlString);
+			sql.setParam("recordtype", PayReceiveTypeEnum.RECEIVE.intKey());
 			Cnd cnd = Cnd.NEW();
 			cnd.and("tii.id", "=", record.getInt("id"));
 			List<Record> orders = dbDao.query(sql, cnd, null);
@@ -172,8 +173,8 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.id", "in", ids);
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
-		cnd.and("tprr.orderstatusid", "=", orderstatus);
-		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.RECEIVE.intKey());
+		sql.setParam("orderstatus", orderstatus);
+		sql.setParam("recordtype", PayReceiveTypeEnum.RECEIVE.intKey());
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//订单信息
 		result.put("orders", orders);
@@ -247,8 +248,8 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.id", "in", ids);
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
-		cnd.and("tprr.orderstatusid", "=", payorder.getOrderstatus());
-		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.RECEIVE.intKey());
+		sql.setParam("orderstatus", payorder.getOrderstatus());
+		sql.setParam("recordtype", PayReceiveTypeEnum.PAY.intKey());
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//订单信息
 		result.put("orders", orders);

@@ -146,8 +146,9 @@
 			  $('#actualyreduce').val(alreadydec);
 		  }
 		  //本期罚金
+		  var currentfine = 0;
 		  if(alreadydec > freenumber){
-			  var currentfine = parseFloat(fineprice) / parseInt(autualypeople) * (parseInt(alreadydec) -  parseInt(freenumber));
+			  currentfine = parseFloat(fineprice) / parseInt(autualypeople) * (parseInt(alreadydec) -  parseInt(freenumber));
 			  if(!isNaN(currentfine) && currentfine != 0){
 			   	 $('#currentfine').val(currentfine.toFixed(2));
 			  }
@@ -156,7 +157,6 @@
 		  if(!isNaN(currentpay) && currentpay != 0){
 		   	 $('#currentpay').val(currentpay.toFixed(2));
 		  }
-		  
 	  });
 	</script>
 </body>

@@ -59,12 +59,12 @@
                            <thead>
                            <tr>
                              <th>订单号</th>
-                             <th>发票号</th>
-                             <th>发票金额</th>
+                             <th>人数</th>
+                             <th>发票数</th>
                              <th>总额</th>
                              <th>开发票日期</th>
                              <th>发票开具项目</th>
-                             <th>付款单位</th>
+                             <th>收款单位</th>
                              <th>开票人</th>
                              <th>状态</th>
                              <th>备注</th>
@@ -107,7 +107,7 @@
                               <input id="shouInvoiceEndDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'shouInvoiceBeginDate\')}'})"  class="form-control TimeInput" placeholder="2017-02-22">
                             </div>
                             <div class="col-md-3 textPadding"><!-- PNR/单位 搜索框 -->
-                              <input id="paymentunitId" type="text" class="form-control" placeholder="PNR/单位">
+                              <input id="paymentunitId" type="text" class="form-control" placeholder="单位">
                             </div>
                             <div class="col-md-2"><!-- 搜索 按钮 -->
                               <button id="shouSearchInvoiceBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
@@ -126,7 +126,7 @@
                              <th>总金额</th>
                              <th>收发票日期</th>
                              <th>发票开具项目</th>
-                             <th>收款单位</th>
+                             <th>付款单位</th>
                              <th>收票人</th>
                              <th>状态</th>
                              <th>备注</th>

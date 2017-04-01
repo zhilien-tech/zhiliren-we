@@ -45,6 +45,6 @@ from
 t_user u
 LEFT JOIN t_salary_increase si on si.userId=u.id
 LEFT JOIN t_finance_info fi on fi.issuerid=u.id
-GROUP BY u.id 
+GROUP BY u.id
 ) uu
-where (uu.month1 !=month(now()) Or uu.year1!=year(now())) and uu.status=1
+where (uu.month1 !=month(now()) Or uu.year1!=year(now()) or uu.month1  is null) and uu.status=1
