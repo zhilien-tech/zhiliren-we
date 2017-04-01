@@ -204,7 +204,7 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		String ids = "";
 		for (TOrderReceiveEntity tOrderReceiveEntity : query) {
 			ids += tOrderReceiveEntity.getOrderid() + ",";
-			orderstatus = tOrderReceiveEntity.getOrderstatus();
+			//orderstatus = tOrderReceiveEntity.getOrderstatus();
 		}
 		ids = ids.substring(0, ids.length() - 1);
 		String sqlString = sqlManager.get("international_invoice_table_data");
@@ -212,8 +212,9 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.id", "in", ids);
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
-		cnd.and("tprr.orderstatusid", "=", orderstatus);
+		//cnd.and("tprr.orderstatusid", "=", orderstatus);
 		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.RECEIVE.intKey());
+		cnd.groupBy("tuo.ordersnum");
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//订单信息
 		result.put("orders", orders);
