@@ -90,3 +90,20 @@ INNER JOIN t_pay_order tpo ON tii.orderpayid = tpo.id
 INNER JOIN t_up_order tuo ON tpo.orderid = tuo.id
 $condition
 
+/*international_invoice_table_data*/
+SELECT
+	tprr.orderstatus,
+	 tuo.*, tfi.billingdate,
+	 tfi.cusgroupnum,
+	 tci.shortName,
+	 tci.NAME customename,
+	 tci.linkMan,
+	 tfi.issuer,
+	 tfi.incometotal,
+     tprr.currentpay
+FROM
+	t_up_order tuo
+left JOIN t_customer_info tci ON tuo.userid = tci.id
+LEFT JOIN t_finance_info tfi ON tuo.id = tfi.orderid
+LEFT JOIN t_pay_receive_record tprr ON tprr.orderid = tuo.id
+$condition	

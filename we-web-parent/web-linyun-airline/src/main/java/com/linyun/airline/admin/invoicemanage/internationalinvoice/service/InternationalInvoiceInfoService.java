@@ -31,11 +31,13 @@ import com.linyun.airline.admin.invoicemanage.internationalinvoice.form.Internat
 import com.linyun.airline.admin.invoicemanage.internationalinvoice.form.InternationalShouSqlForm;
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.enums.InvoiceInfoEnum;
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
 import com.linyun.airline.admin.order.inland.util.FormatDateUtil;
 import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
+import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TInvoiceDetailEntity;
@@ -198,15 +200,20 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		result.put("ytselect", ytselect);
 		List<TOrderReceiveEntity> query = dbDao.query(TOrderReceiveEntity.class,
 				Cnd.where("receiveid", "=", fetch.getId()), null);
+		Integer orderstatus = null;
 		String ids = "";
 		for (TOrderReceiveEntity tOrderReceiveEntity : query) {
 			ids += tOrderReceiveEntity.getOrderid() + ",";
+			orderstatus = tOrderReceiveEntity.getOrderstatus();
 		}
 		ids = ids.substring(0, ids.length() - 1);
-		String sqlString = sqlManager.get("get_sea_invoce_table_data");
+		String sqlString = sqlManager.get("international_invoice_table_data");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.id", "in", ids);
+		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
+		cnd.and("tprr.orderstatusid", "=", orderstatus);
+		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.RECEIVE.intKey());
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//订单信息
 		result.put("orders", orders);
