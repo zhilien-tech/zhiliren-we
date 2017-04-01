@@ -46,6 +46,8 @@ public class InterReceiptSqlForm extends DataTablesParamForm {
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("tr.companyid", "=", companyid);
 		}
+		cnd.orderBy("tr.status", "asc");
+		cnd.orderBy("tr.receivedate", "desc");
 		return cnd;
 	}
 
