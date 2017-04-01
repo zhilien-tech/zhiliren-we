@@ -1,4 +1,4 @@
-/*get_international_list_sql*/
+/*international_invoice_list_sql*/
 SELECT
 	tpi.*, tuo.ordersnum,
 	tuo.ordersstatus,
@@ -12,20 +12,25 @@ $condition
 
 /*international_invoice_sea_invoce_table_data*/
 SELECT
-	 tuo.*, tfi.billingdate,
-	 tfi.cusgroupnum,
-	 tci.shortName,
-	 tci.NAME customename,
-	 tci.linkMan,
-	 tfi.issuer,
-	 tfi.incometotal
+	tprr.orderstatus,
+	tuo.*, tfi.billingdate,
+	tfi.cusgroupnum,
+	tci.shortName,
+	tci. NAME customename,
+	tci.linkMan,
+	tfi. ISSUER,
+	tfi.incometotal,
+	tprr.currentpay
 FROM
 	t_up_order tuo
-left JOIN t_customer_info tci ON tuo.userid = tci.id
+LEFT JOIN t_customer_info tci ON tuo.userid = tci.id
 LEFT JOIN t_finance_info tfi ON tuo.id = tfi.orderid
+LEFT JOIN t_pay_receive_record tprr ON tprr.orderid = tuo.id
+AND tprr.orderstatusid = @orderstatus
+AND tprr.recordtype = @recordtype
 $condition
 
-/*get_international_receive_list*/
+/*international_invoice_receive_list*/
 SELECT
 	tr.*, tii.id invoiceid,
 	tu.userName
@@ -35,7 +40,7 @@ LEFT JOIN t_invoice_info tii ON tr.id = tii.receiveid
 INNER JOIN t_user tu ON tr.userid = tu.id
 $condition
 
-/*get_international_receive_list_order*/
+/*international_invoice_receive_list_order*/
 SELECT
 	tuo.ordersnum,tfi.personcount,tfi.incometotal,tpi.*
 FROM
@@ -46,7 +51,7 @@ INNER JOIN t_receive tr ON tor.receiveid = tr.id
 INNER JOIN t_plan_info  tpi ON tuo.id = tpi.ordernumber
 $condition
 
-/*get_international_pay_list*/
+/*international_invoice_pay_list*/
 SELECT
 	tpo.*, tuo.ordersnum,
 	tpi.peoplecount,
@@ -62,7 +67,7 @@ LEFT JOIN t_finance_info tfi ON tfi.orderid = tuo.id
 LEFT JOIN t_invoice_info tii ON tpo.id = tii.orderpayid
 $condition
 
-/*get_international_pay_list_order*/
+/*international_invoice_pay_list_order*/
 SELECT
 	tuo.ordersnum,tfi.personcount,tfi.incometotal,tpi.*
 FROM
@@ -73,12 +78,17 @@ INNER JOIN t_pay tp ON tpo.payid = tp.id
 INNER JOIN t_plan_info  tpi ON tuo.id = tpi.ordernumber
 $condition
 
-/*get_inter_shou_invoice_list_order*/
-select tuo.* FROM
-t_up_order tuo
+/*international_invoice_inter_shou_invoice_list_order*/
+SELECT
+	tuo.*, tprr.actualnumber
+FROM
+	t_up_order tuo
 INNER JOIN t_order_receive tor ON tuo.id = tor.orderid
 INNER JOIN t_receive tr ON tor.receiveid = tr.id
-INNER JOIN t_invoice_info tii ON tr.id = tii.receiveid
+INNER JOIN t_invoice_info ii ON tr.id = ii.receiveid
+LEFT JOIN t_pay_receive_record tprr ON tor.orderid = tprr.orderid
+AND tprr.orderstatusid = tor.orderstatus
+AND tprr.recordtype = @recordtype
 $condition
 
 /*international_invoice_international_invoice_list*/

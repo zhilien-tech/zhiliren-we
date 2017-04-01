@@ -107,10 +107,12 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 			List<TInvoiceDetailEntity> invoiceDetail = dbDao.query(TInvoiceDetailEntity.class,
 					Cnd.where("invoiceinfoid", "=", record.getInt("id")), null);
 			record.put("invoiceDetail", invoiceDetail);
-			String sqlString = sqlManager.get("invoicemanage_kaiinvoice_search_list");
+			String sqlString = sqlManager.get("international_invoice_inter_shou_invoice_list_order");
 			Sql sql = Sqls.create(sqlString);
 			Cnd cnd = Cnd.NEW();
 			cnd.and("ii.id", "=", record.getInt("id"));
+			sql.setParam("recordtype", PayReceiveTypeEnum.RECEIVE.intKey());
+			cnd.groupBy("tuo.ordersnum");
 			List<Record> orders = dbDao.query(sql, cnd, null);
 			record.put("orders", orders);
 			String username = "";
@@ -207,13 +209,14 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 			orderstatus = tOrderReceiveEntity.getOrderstatus();
 		}
 		ids = ids.substring(0, ids.length() - 1);
-		String sqlString = sqlManager.get("international_invoice_table_data");
+		String sqlString = sqlManager.get("international_invoice_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.id", "in", ids);
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
-		cnd.and("tprr.orderstatusid", "=", orderstatus);
-		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.RECEIVE.intKey());
+		sql.setParam("orderstatus", orderstatus);
+		sql.setParam("recordtype", PayReceiveTypeEnum.RECEIVE.intKey());
+		cnd.groupBy("tuo.ordersnum");
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//订单信息
 		result.put("orders", orders);
@@ -358,6 +361,9 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.id", "in", ids);
+		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
+		sql.setParam("orderstatus", payorder.getOrderstatus());
+		sql.setParam("recordtype", PayReceiveTypeEnum.PAY.intKey());
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//订单信息
 		result.put("orders", orders);
@@ -384,8 +390,8 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		//总金额
 		double sumjine = 0;
 		for (Record record : orders) {
-			if (!Util.isEmpty(record.get("incometotal"))) {
-				sumjine += Double.valueOf((Double) record.get("incometotal"));
+			if (!Util.isEmpty(record.get("currentpay"))) {
+				sumjine += Double.valueOf((Double) record.get("currentpay"));
 			}
 		}
 		result.put("sumjine", sumjine);
