@@ -21,7 +21,10 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
+import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
+import com.linyun.airline.admin.invoicemanage.invoiceinfo.enums.InvoiceInfoEnum;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
 import com.linyun.airline.admin.order.international.form.InternationalKaiListForm;
@@ -39,6 +42,7 @@ import com.linyun.airline.entities.TOrderReceiveEntity;
 import com.linyun.airline.entities.TReceiveBillEntity;
 import com.linyun.airline.entities.TReceiveEntity;
 import com.linyun.airline.entities.TUserEntity;
+import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.base.service.BaseService;
 
@@ -66,6 +70,9 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
+				null);
 		sqlForm.setCompanyid(new Long(company.getId()).intValue());
 		sqlForm.setUserid(new Long(user.getId()).intValue());
 		Map<String, Object> listData = this.listPage4Datatables(sqlForm);
@@ -82,6 +89,8 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 			cnd.and("tii.id", "=", record.getInt("id"));
 			List<Record> orders = dbDao.query(sql, cnd, null);
 			record.put("orders", orders);
+			record.put("invoiceinfoenum", EnumUtil.enum2(InvoiceInfoEnum.class));
+			record.put("ytselect", ytselect);
 			String username = "";
 			TUserEntity billuser = dbDao.fetch(TUserEntity.class, record.getInt("billuserid"));
 			if (!Util.isEmpty(billuser)) {
@@ -107,6 +116,9 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
+				null);
 		sqlForm.setCompanyid(new Long(company.getId()).intValue());
 		sqlForm.setUserid(new Long(user.getId()).intValue());
 		Map<String, Object> listData = this.listPage4Datatables(sqlForm);
@@ -122,6 +134,8 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 			cnd.and("tii.id", "=", record.getInt("id"));
 			List<Record> orders = dbDao.query(sql, cnd, null);*/
 			//record.put("orders", orders);
+			record.put("invoiceinfoenum", EnumUtil.enum2(InvoiceInfoEnum.class));
+			record.put("ytselect", ytselect);
 			String username = "";
 			TUserEntity billuser = dbDao.fetch(TUserEntity.class, record.getInt("billuserid"));
 			if (!Util.isEmpty(billuser)) {
@@ -141,6 +155,9 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object kaiInvoice(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Map<String, Object> result = new HashMap<String, Object>();
 		//发票id
 		String id = request.getParameter("id");
@@ -189,6 +206,10 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 				Cnd.where("receiveid", "=", fetch.getId()), null);
 		//银行卡下拉
 		result.put("yhkSelect", yhkSelect);
+		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
+				null);
+		result.put("ytselect", ytselect);
 		//订单信息id
 		result.put("ids", ids);
 		result.put("id", id);
@@ -213,6 +234,9 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object shouInvoice(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Map<String, Object> result = new HashMap<String, Object>();
 		//发票id
 		String id = request.getParameter("id");
@@ -264,6 +288,11 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 				null);
 		//银行卡下拉
 		result.put("yhkSelect", yhkSelect);
+		//用途下拉
+		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
+				null);
+		result.put("ytselect", ytselect);
 		//订单信息id
 		result.put("ids", ids);
 		result.put("id", id);

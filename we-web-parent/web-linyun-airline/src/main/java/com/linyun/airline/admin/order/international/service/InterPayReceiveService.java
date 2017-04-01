@@ -22,6 +22,8 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
+import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.enums.InvoiceInfoEnum;
 import com.linyun.airline.admin.login.service.LoginService;
@@ -186,6 +188,11 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		List<TReceiveBillEntity> query2 = dbDao.query(TReceiveBillEntity.class, Cnd.where("receiveid", "=", id), null);
 		//银行卡下拉
 		result.put("yhkSelect", yhkSelect);
+		//用途下拉
+		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
+				null);
+		result.put("ytselect", ytselect);
 		//订单信息id
 		result.put("ids", ids);
 		result.put("id", id);
@@ -323,6 +330,11 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		create.setParam("companyId", company.getId());
 		create.setParam("typeCode", YHCODE);
 		List<Record> yhkSelect = dbDao.query(create, null, null);
+		//用途下拉
+		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
+				null);
+		result.put("ytselect", ytselect);
 		result.put("companybank", companybank);
 		result.put("id", id);
 		result.put("billurl", billurl);
