@@ -15,7 +15,6 @@
 <link rel="stylesheet" href="${base}/public/dist/css/query.css">
 <!--本页面styleFlie-->
 </head>
-
 <body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
 		<!--right Content-->
@@ -194,12 +193,12 @@
 										data-placeholder="MU8876"></select></td>
 									<td><label>出发时间：</label></td>
 									<td><input name="cAirOutDate" type="text"
-										class="form-control mustTimes input-sm textWid" placeholder="08:00">
+										class="form-control mustTimes input-sm textWid" placeholder="0800">
 										<!-- <input id="cAirOutDate0" name="cAirOutDate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'cAirArrivalDate0\')}'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2020-01-01"> -->
 									</td>
 									<td><label>抵达时间：</label></td>
 									<td><input name="cAirArrivalDate" type="text"
-										class="form-control mustArriveTimes input-sm textWid" placeholder="14:00">
+										class="form-control mustArriveTimes input-sm textWid" placeholder="1400">
 										<!-- <input id="cAirArrivalDate0" name="cAirArrivalDate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'cAirOutDate0\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2020-01-01"> -->
 									</td>
 									<td><label class="labelWid">成本价：</label></td>
@@ -217,11 +216,11 @@
 									<td><a href="javascript:;" name="addButton"
 										class="glyphicon glyphicon-plus addIcon removAddMake"></a></td>
 								</tr>
-								<tr name="cRemarkTr">
+								<tr name="cRemarkTr" class="remarkTr">
 									<td></span><label>备注：</label></td>
-									<td colspan="11"><input id="cRemark" name="cRemark"
-										type="text" class="form-control input-sm noteText"
-										placeholder=" "></td>
+									<td colspan="11">
+										<input id="cRemark" name="cRemark" type="text" class="form-control input-sm noteText" placeholder=" ">
+									</td>
 								</tr>
 							</table>
 						</div>
@@ -240,7 +239,7 @@
 							</li>
 							<li><a href="#tab_4" data-toggle="tab">sabre</a></li>
 							<li><a href="#tab_5" data-toggle="tab">etem</a></li>
-							<li><a href="#tab_6" data-toggle="tab">CA</a></li>
+							<!-- <li><a href="#tab_6" data-toggle="tab">CA</a></li> -->
 						</ul>
 						<div class="tab-content">
 							<div class="tab-pane active" id="tab_1">
@@ -487,11 +486,9 @@
 
 							<!-- sabre解析 -->
 							<div class="tab-pane" id="tab_4">
-								<textarea id="sabreTextArea" class="form-control sabreTextatea"></textarea>
-								<button type="button" onclick="parsingText()"
-									class="btn btn-primary input-sm parsingBtn">解析</button>
-								<button type="button" onclick="clearParsingText()"
-									class="btn btn-primary input-sm parsingBtn">清除</button>
+								<textarea id="sabreTextAreas" name="sabreTextAreas" class="form-control input-sm sabreTextatea"></textarea>
+								<button type="button" onclick="parsingText()" class="btn btn-primary input-sm parsingBtn">解析</button>
+								<button type="button" onclick="clearParsingText()" class="btn btn-primary input-sm parsingBtn">清除</button>
 								<table id="sabreTable" class="table table-bordered table-hover">
 									<!-- 表头 -->
 									<thead id="pnrThread"></thead>
@@ -502,7 +499,7 @@
 
 							<!-- etem解析 -->
 							<div class="tab-pane" id="tab_5">
-								<textarea id="etemTextArea" class="form-control sabreTextatea"></textarea>
+								<textarea id="etemTextArea" class="form-control input-sm sabreTextatea"></textarea>
 								<button type="button" onclick="parsingEtemText()"
 									class="btn btn-primary input-sm parsingBtn">解析</button>
 								<button type="button" onclick="clearParsingEtemText()"
@@ -516,10 +513,10 @@
 							</div>
 
 							<!-- CA跳转 -->
-							<div class="tab-pane" id="tab_6">
+							<!-- <div class="tab-pane" id="tab_6">
 								<iframe class="ifea" src="http://www.jdair.net/" frameborder="0"
 									scrolling="no"></iframe>
-							</div>
+							</div> -->
 
 						</div>
 					</div>
@@ -571,7 +568,7 @@
 					type : 'post',
 					async : false,
 					data : {
-						"sabrePNR" : $('#sabreTextArea').val()
+						"sabrePNR" : $('#sabreTextAreas').val()
 					},
 					success : function(result) {
 						if (result.parsingType == "D￥") {
@@ -622,7 +619,7 @@
 						}
 
 						$("#pnrThread").html(pnrThread);
-						$("#pnrtbody").append(pnrBody);
+						$("#pnrtbody").html(pnrBody);
 					}
 				});
 			}
@@ -631,7 +628,7 @@
 			function clearParsingText() {
 				$("#pnrThread").html("");
 				$("#pnrtbody").html("");
-				$('#sabreTextArea').val("");
+				$('#sabreTextAreas').val("");
 			}
 		</script>
 

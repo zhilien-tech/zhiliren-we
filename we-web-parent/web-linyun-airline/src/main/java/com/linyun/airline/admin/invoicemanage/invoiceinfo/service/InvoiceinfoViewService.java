@@ -350,7 +350,7 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		TPayEntity payinfo = new TPayEntity();
 		String billurl = "";
 		if (query.size() > 0) {
-			payinfo = dbDao.fetch(TPayEntity.class, query.get(0).getId().longValue());
+			payinfo = dbDao.fetch(TPayEntity.class, query.get(0).getPayId().longValue());
 			if (!Util.isEmpty(payinfo)) {
 				List<TPayReceiptEntity> query2 = dbDao.query(TPayReceiptEntity.class,
 						Cnd.where("payId", "=", payinfo.getId()), null);

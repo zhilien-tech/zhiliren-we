@@ -225,6 +225,7 @@ $(function(){
         newDiv.find('[name=customneedid]').before('<a href="javascript:;" class="btn btn-primary btn-sm removeDemand"><b>-</b>&nbsp;&nbsp;需求</a>');
         var divId=document.getElementById('infofooter').getElementsByTagName('div');
         newDiv.find('.titleNum').text(divId.length);
+        newDiv.find('.paymethod').trigger("change");
         newDiv.find('[name=airlineinfo]').each(function(i){
         	if(i > 0){
         		$(this).remove();
@@ -241,10 +242,18 @@ $(function(){
         		initAirInfoSelect2($(this));
         	}
         });
+        /*只在最后一个需求上显示 备注项*/
+        $('.remarkTr').remove();
+        $('.customerInfo #infofooter:last-child .cloTable tbody .pnrTr').after('<tr class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><input type="text" id="remark" name="remark" disabled="disabled" class="form-control input-sm noteText" placeholder=" " value=" "></td></tr>');
     });
     //客户需求的 -需求 按钮
     $(document).on("click",".removeDemand",function(){
-        $(this).parent().parent().remove(); 
+        $(this).parent().parent().remove();
+        /*判断最后一个需求是否有 备注项 如果没有 就添加备注项*/
+        var cl=$('.customerInfo #infofooter:last-child .cloTable tbody tr:last-child').hasClass('remarkTr');
+        if(cl==false){
+        	$('.customerInfo #infofooter:last-child .cloTable tbody').append('<tr class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><input type="text" id="remark" name="remark" disabled="disabled" class="form-control input-sm noteText" placeholder=" " value=" "></td></tr>');
+        }
     });
   });
 //加载pnr信息数据
@@ -315,6 +324,7 @@ function openDetailPage(id){
         skin: false, //加上边框
         closeBtn:false,//默认 右上角关闭按钮 是否显示
         shadeClose:false,
+        scrollbar: false,
         area: ['900px', '500px'],
         content: BASE_PATH + '/admin/inland/pnrDetailPage.html?pnrid='+id,
         end:function(){
@@ -338,4 +348,58 @@ function loadCustominfo(){
 		$('#customeidcolor').attr('color','red');
 		$('#historyqiancolor').attr('color','red');
 	}
+}
+//设置付款方式
+$(document).on("change",".paymethod",function(){
+	var paymethod = $(this).val();
+	var parentDiv = $(this).parent().parent().parent();
+	if(paymethod == 1){
+		parentDiv.find('[name=threepaytd]').show();
+		parentDiv.find('[name=threepaymethod]').show();
+		parentDiv.find('[name=internationalcard]').hide();
+		$.ajax({ 
+			type: 'POST', 
+			data: {}, 
+			dataType:'json',
+			url: BASE_PATH + '/admin/inland/loadCustomeSelect.html',
+            success: function (data) { 
+            	var result = '';
+            	for(var i=0 ; i<data.length ; i++){
+            		result += '<option value="'+data[i].id+'">'+data[i].shortname+'</option>';
+            	}
+            	parentDiv.find('[name=thirdcustomid]').html(result);
+            },
+            error: function (xhr) {
+          	
+            } 
+         });
+	}else if(paymethod == 2){
+		parentDiv.find('[name=threepaytd]').hide();
+		parentDiv.find('[name=threepaymethod]').hide();
+		parentDiv.find('[name=internationalcard]').show();
+		$.ajax({
+			type: 'POST', 
+			data: {}, 
+			dataType:'json',
+			url: BASE_PATH + '/admin/inland/loadBalance.html',
+            success: function (data) { 
+            	parentDiv.find('[name=internationalcard]').html('<label>余额：'+data.balance+'</label>');
+            },
+            error: function (xhr) {
+          	
+            } 
+         });
+	}else{
+		parentDiv.find('[name=threepaytd]').hide();
+		parentDiv.find('[name=threepaymethod]').hide();
+		parentDiv.find('[name=internationalcard]').hide();
+	}
+    //$(this).parent().parent().remove();
+});
+//自动触发付款方式select事件
+triggerSelect();
+function triggerSelect(){
+	$('.DemandDiv').each(function(i){
+		$(this).find('.paymethod').trigger("change");
+	});
 }

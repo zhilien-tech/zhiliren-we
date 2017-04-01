@@ -4,7 +4,7 @@
 <html lang="en-US">
 <head>
 <meta charset="UTF-8">
-<title>确认付款</title>
+<title>编辑付款</title>
 <link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
 <link rel="stylesheet" type="text/css" href="${base}/public/dist/css/receivePayment.css">
@@ -121,7 +121,7 @@
 					</select></td>
 					<td>资金种类：</td>
 					<td><select id="fundType" name="fundType" class="form-control input-sm">
-							<!-- <option value="0">--请选择--</option> -->
+							<option value="0">--请选择--</option>
 							<c:forEach var="one" items="${obj.zjzlList}">
 	                        	<c:choose>
 	                          		<c:when test="${obj.payList[0].fundtype eq one.id }">
@@ -138,9 +138,9 @@
 				</tr>
 				<tr>
 					<td>手续费：</td>
-					<td><input id="payFees" name="payFees" value="${obj.payList[0].payfees}" type="text" class="form-control input-sm"></td>
+					<td><input id="payFees" name="payFees" value="<fmt:formatNumber type="number" value="${obj.payList[0].payfees}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm"></td>
 					<td>金额：</td>
-					<td><input id="payMoney" name="payMoney" value="${obj.payList[0].paymoney}"  type="text" class="form-control input-sm"></td>
+					<td><input id="payMoney" name="payMoney" value="<fmt:formatNumber type="number" value="${obj.payList[0].paymoney}" pattern="0.00" maxFractionDigits="2"/>"  type="text" class="form-control input-sm"></td>
 					<td colspan="2">
 						<input id="chineseMoney" name="payChineseMoney" value="${obj.payList[0].paychinesemoney}" type="text" class="form-control input-sm textIpnu" readonly="readonly"></td>
 					<td class="bj">币种：</td>
@@ -237,8 +237,11 @@
 				}
 			});
 		}
-		//文件上传
+		
 		$(function(){
+			//银行名称
+			bankSelect();
+			//文件上传
 			$.fileupload1 = $('#uploadFile').uploadify({
 				'auto' : true,//选择文件后自动上传
 				'formData' : {

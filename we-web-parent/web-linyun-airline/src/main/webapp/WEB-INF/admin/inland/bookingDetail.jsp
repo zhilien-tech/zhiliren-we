@@ -313,8 +313,8 @@
 		                        </select>
 		                     </td>
 		                     <td><label>付款方式：</label></td>
-		                     <td colspan="3">
-								<select id="paymethod" name="paymethod" disabled="disabled" class="form-control input-sm">
+		                     <td colspan="1"> 
+								<select id="paymethod" name="paymethod" disabled="disabled" class="form-control input-sm paymethod">
 		                            <option value="">请选择</option>
 		                            <c:forEach var="map" items="${obj.paymethodenum}" >
 		                            	<c:choose>
@@ -328,9 +328,12 @@
 									 </c:forEach>
 		                        </select>
 							 </td>
+							 <td name="internationalcard" style="display: none;"><label>余额：</label></td>
+							 <td name="threepaytd"></td>
+							 <td name="threepaymethod" style="display: none;"><select name="thirdcustomid" class="form-control input-sm"></select></td>
 		                   </tr>
-		                   <tr>
-		                     <td colspan="12" class="addPNR">
+		                   <tr class="pnrTr">
+		                     <td colspan="13" class="addPNR">
 		                        <table class="table table-bordered table-hover">
 		                         <thead>
 		                          <tr>
@@ -352,7 +355,7 @@
 		                     	</div>
 		                     </td>
 		                   </tr>
-		                   <tr>
+		                   <tr class="remarkTr">
 		                     <td></span><label>备注：</label></td>
 		                     <td colspan="11"><input type="text" id="remark" name="remark" disabled="disabled" class="form-control input-sm noteText" placeholder=" " value="${customneed.cusinfo.remark }"></td>
 		                   </tr>
@@ -427,17 +430,20 @@
 		                        </select>
 		                     </td>
 		                     <td><label>付款方式：</label></td>
-		                     <td colspan="3">
-								<select id="paymethod" name="paymethod" disabled="disabled" class="form-control input-sm">
+		                     <td colspan="1">
+								<select id="paymethod" name="paymethod" disabled="disabled" class="form-control input-sm paymethod">
 		                            <option value="">请选择</option>
 		                            <c:forEach var="map" items="${obj.paymethodenum}" >
 								   		<option value="${map.key}">${map.value}</option>
 									 </c:forEach>
 		                        </select>
 							 </td>
+							 <td name="internationalcard" style="display: none;"><label>余额：</label></td>
+							 <td name="threepaytd"></td>
+							 <td name="threepaymethod" style="display: none;"><select name="thirdcustomid" class="form-control input-sm"></select></td>
 		                   </tr>
 		                   <tr>
-		                     <td colspan="12" class="addPNR">
+		                     <td colspan="13" class="addPNR">
 		                        <table class="table table-bordered table-hover">
 		                         <thead>
 		                          <tr>
@@ -544,7 +550,7 @@
                      <td><label><a href="javascript:;" class="" id="jianMian" disabled="disabled">减免</a>：</label></td>
                      <td><input id="relief" name="relief" type="text" class="form-control input-sm" disabled="disabled" value="<fmt:formatNumber type="number" value="${obj.finance.relief }" pattern="0.00" maxFractionDigits="2"/>"></td>
                      <td><label>实收合计：</label></td>
-                     <td><input id="incometotal" name="incometotal" type="text" class="form-control input-sm disab loadprofit mustNumberPoint" disabled="disabled" value="<fmt:formatNumber type="number" value="${obj.finance.incometotal }" pattern="0.00" maxFractionDigits="2"/>"></td>
+                     <td><input id="incometotal" name="incometotal" type="text" class="form-control input-sm loadprofit mustNumberPoint" disabled="disabled" value="<fmt:formatNumber type="number" value="${obj.finance.incometotal }" pattern="0.00" maxFractionDigits="2"/>"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>成本合计：</label></td>
@@ -552,7 +558,7 @@
                      <td><label>应返：</label></td>
                      <td><input id="returntotal" name="returntotal" type="text" class="form-control input-sm disab loadprofit mustNumberPoint" disabled="disabled" value="<fmt:formatNumber type="number" value="${obj.finance.returntotal }" pattern="0.00" maxFractionDigits="2"/>"></td>
                      <td><label>利润合计：</label></td>
-                     <td><input id="profittotal" name="profittotal" type="text" class="form-control input-sm disab mustNumberPoint" disabled="disabled" value="<fmt:formatNumber type="number" value="${obj.finance.profittotal }" pattern="0.00" maxFractionDigits="2"/>"></td>
+                     <td><input id="profittotal" name="profittotal" type="text" class="form-control input-sm mustNumberPoint" disabled="disabled" value="<fmt:formatNumber type="number" value="${obj.finance.profittotal }" pattern="0.00" maxFractionDigits="2"/>"></td>
                    </tr>
                  </table>
                 </form>
@@ -859,11 +865,17 @@
 		var issuer = $('#issuer').val();
 		//减免
 		var relief = $('#relief').val();
+		//实收合计
+		var incometotal = $('#incometotal').val();
+		//利润合计
+		var profittotal = $('#profittotal').val();
 		var financeForm = getFormJson('#financeForm');
 		financeForm.billingdate = billingdate;
 		financeForm.salesperson = salesperson;
 		financeForm.issuer = issuer;
 		financeForm.relief = relief;
+		financeForm.incometotal = incometotal;
+		financeForm.profittotal = profittotal;
 		$.ajax({ 
 			type: 'POST', 
 			data: {data:JSON.stringify(customdata),financeData:JSON.stringify(financeForm)}, 
@@ -987,6 +999,7 @@
 	         skin: false, //加上边框
 	         closeBtn:false,//默认 右上角关闭按钮 是否显示
 	         shadeClose:true,
+	         scrollbar: false,
 	         area: ['880px', '425px'],
 	         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+needid,
 	         end:function(){
@@ -1015,8 +1028,8 @@
 	       	 	}else{
 	       	 		incometotal = data.yingshousum;
 	       	 	}
-	       	 	var incometotalval = $('#incometotal').val();
-	       	 	if(!isNaN(incometotal) && !incometotalval){
+	       	 	
+	       	 	if(!isNaN(incometotal)){
      		 		$('#incometotal').val(incometotal);
 	       	 	}
 	       	 	var returntotal = 0;
@@ -1026,8 +1039,7 @@
 	 	       	}
 	 	   	    //利润合计
 	 	   	 	var profittotal  = parseFloat(incometotal) - parseFloat(data.chengbensum) - parseFloat(returntotal);
-	 	   	    var profittotalval = $('#profittotal').val();
-	 	   	 	if(!isNaN(profittotal) && !profittotalval){
+	 	   	 	if(!isNaN(profittotal)){
 	 	   		 	$('#profittotal').val(profittotal.toFixed(2));
 	 	   	 	}
 	         },

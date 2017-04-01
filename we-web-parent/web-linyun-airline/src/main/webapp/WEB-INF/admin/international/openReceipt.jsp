@@ -16,9 +16,10 @@
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="commitInvoice();" value="提交"/>
+            <input type="hidden" name="orderstatus" id="orderstatus" value="${obj.orderstatus }">
             <h4>收款</h4>
           </div>
-          <div class="modal-body" style="height: 483px;overflow-y:auto; ">
+          <div class="modal-body" style="height: 500px;overflow-y:auto; ">
           	<input type="hidden" id="ids"  name="ids" value="${obj.ids }" >
               <table id="receivablesTable" class="table table-bordered table-hover">
                 <thead>
@@ -41,7 +42,7 @@
                 			<td>${one.shortName }</td>
                 			<td>${one.linkMan }</td>
                 			<td>${one.issuer }</td>
-                			<td>${one.incometotal }</td>
+                			<td>${one.currentpay }</td>
                 		</tr>
                 	</c:forEach>
                 </tbody>
@@ -73,7 +74,7 @@
               <input type="hidden" id="sumincome" name="sumincome" value="${obj.sumincome }">
               <button type="button" id="uploadFile" class="btn btn-primary btn-sm bankSlipBtn">上传水单</button>
               <input type="hidden" id="billurl" name="billurl" value="">
-              <div class="bankSlipImg" align="center"><img id="shuidanimg" width="400" height="300" alt="" src=""></div>
+              <div class="bankSlipImg" align="center"><img id="shuidanimg" width="100%" height="305" alt="" src=""></div>
           </div>
 	</div>
    <!--JS 文件-->
@@ -100,10 +101,11 @@
 		var bankcardnum = $('#bankcardnum').val();
 		var billurl = $('#billurl').val();
 		var sumincome = $('#sumincome').val();
+		var orderstatus = $('#orderstatus').val();
 		$.ajax({
 	        type: "post",
 	        url: '${base}/admin/international/saveReceipt.html',
-	        data: {ids:ids,bankcardid:bankcardid,bankcardname:bankcardname,bankcardnum:bankcardnum,billurl:billurl,sumincome:sumincome},
+	        data: {ids:ids,bankcardid:bankcardid,bankcardname:bankcardname,bankcardnum:bankcardnum,billurl:billurl,sumincome:sumincome,orderstatus:orderstatus},
 	        cache: false,
 	        async : false,
 	        success: function (data ,textStatus, jqXHR){
@@ -118,14 +120,13 @@
 	}
 	
 	//文件上传
-    $('#uploadFile').click(function(){
     	$.fileupload1 = $('#uploadFile').uploadify({
     		'auto' : true,//选择文件后自动上传
     		'formData' : {
     			'fcharset' : 'uft-8',
     			'action' : 'uploadimage'
     		},
-    		'buttonText' : '上传',//按钮显示的文字
+    		'buttonText' : '上传水单',//按钮显示的文字
     		'fileSizeLimit' : '3000MB',
     		'fileTypeDesc' : '文件',//在浏览窗口底部的文件类型下拉菜单中显示的文本
     		'fileTypeExts' : '*.png; *.jpg; *.bmp; *.gif; *.jpeg;',//上传文件的类型
@@ -160,7 +161,6 @@
                 }
             }
     	});
-    });
 	//加载银行卡名称下拉
 	function loadbankcardname(){
 		var bankcardid = $('#bankcardid').val();

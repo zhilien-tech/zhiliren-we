@@ -14,7 +14,6 @@ function initRecDataTable() {
 			"url": BASE_PATH + "/admin/receivePay/inter/interRecList.html",
 			"type": "post",
 			"data": function (d) {
-
 			}
 		},
 		"columns": [
@@ -125,9 +124,7 @@ function initRecDataTable() {
 		            		}
 		            		return notes;
 		            	}
-		            }
-
-		            ],
+		            }],
 		            columnDefs: [{
 		            	//   指定第一列，从0开始，0表示第一列，1表示第二列……
 		            	targets: 4,
@@ -141,7 +138,7 @@ function initRecDataTable() {
 }
 
 //datatable行点击事件
-$("tbody",$('#interRecTable')).on("click","tr",function(event){
+$("tbody",$('#interRecTable')).on("dblclick","tr",function(event){
 	//获取当前行的数据
 	var row = interRecTable.row($(this).closest('tr')).data();
 	confirmReceive(row.id);
@@ -181,7 +178,7 @@ $("#confirmRecClick").click(function(){
 		parent.layer.close(index);
 		parent.layer.msg("该订单已收款，请勿重复收款", "", 2000);
 	}
-	
+
 });
 
 //关闭确认付款窗口
@@ -216,12 +213,12 @@ $("#interRecSearchBtn").on('click', function () {
 	var inlandRecEndDate = $("#interRecEndDate").val();
 	var inlandRecInput = $("#interRecInput").val();
 	var orderStatus = $("li.btnStyle").attr("id");
-    var param = {
-		"receiveStatus":receiveStatus,
-		"orderStatus":orderStatus,
-		"leaveBeginDate":inlandRecBeginDate,
-		"leaveEndDate":inlandRecEndDate,
-		"name": inlandRecInput
+	    var param = {
+			"receiveStatus":receiveStatus,
+			"orderStatus":orderStatus,
+			"leaveBeginDate":inlandRecBeginDate,
+			"leaveEndDate":inlandRecEndDate,
+			"name": inlandRecInput
 	};
 	interRecTable.settings()[0].ajax.data = param;
 	interRecTable.ajax.reload(
@@ -231,7 +228,7 @@ $("#interRecSearchBtn").on('click', function () {
 	);
 });
 
-//国际Tab  一订、二订、三订、全款状态 js-----------------------------------------------
+//国际Tab  一订、二订、三订、全款状态 js--------------------------------
 $(".paymentUl li").click(function(){
 	$(this).addClass("btnStyle").siblings().removeClass('btnStyle');
 	var bookId = $(this).attr("id");
@@ -246,12 +243,22 @@ $(".paymentUl li").click(function(){
 				autoHighLoad($('#interRecTable'));
 			}		
 	);
-	
+	/*destroyDatetable($("#interPayTable"));
+	destroyDatetable($("#interPayEdTable"));
+	destroyDatetable($("#interRecTable"));
+	toConfirmRecPage();*/
 });
 
 //回车搜索
 function recOnkeyEnter(){
-	 if(event.keyCode==13){
-		 $("#interRecSearchBtn").click();
-	 }
+	if(event.keyCode==13){
+		$("#interRecSearchBtn").click();
+	}
+}
+
+//销毁datatable
+function destroyDatetable(obj){
+	var datatable = obj.dataTable()
+	datatable.fnClearTable(); //清空一下table
+	datatable.fnDestroy(); //还原初始化了的datatable
 }

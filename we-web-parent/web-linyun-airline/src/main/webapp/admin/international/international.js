@@ -62,7 +62,15 @@ function initInternationalTable(){
                     	render: function(data, type, row, meta) {
                     		var result = '<ul>';
                     		$.each(row.airinfo, function(name, value) {
-                    			result += '<li style="list-style:none;">'+(value.leavetime+'/'+value.arrivetime)+'</li>';
+                    			result += '<li style="list-style:none;">';
+                    			if(value.leavetime && value.leavetime != undefined){
+                    				result += value.leavetime;
+                    			}
+                    			result += '/';
+                    			if(value.arrivetime && value.arrivetime != undefined){
+                    				result += value.arrivetime;
+                    			}
+                    			result += '</li>';
                     		});
                     		result += '</ul>';
                     		return result;
@@ -117,10 +125,10 @@ function loadDataTable(status){
 	};
 	internationalTable.settings()[0].ajax.data = param;
 	internationalTable.ajax.reload();
-	$('#status').val(status);
+	
 }
 //点击行跳转到详情页
-$("tbody",$('#internationalTable')).on("click","tr",function(event) {
+$("tbody",$('#internationalTable')).on("dblclick","tr",function(event) {
 	var item = internationalTable.row($(this).closest('tr')).data();
 	var url = BASE_PATH + '/admin/international/internationalDetail.html?orderid='+item.ordernumber;
 	window.open(url);

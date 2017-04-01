@@ -73,4 +73,11 @@ public class TPayReceiveRecordEntity implements Serializable {
 	@Comment("订单状态")
 	private String orderstatus;
 
+	@Column
+	@Comment("订单状态")
+	private Integer orderstatusid;
+
+	@Column
+	@Comment("实际减少人数")
+	private Integer actualyreduce;
 }

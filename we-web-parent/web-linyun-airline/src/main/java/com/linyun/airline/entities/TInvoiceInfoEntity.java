@@ -85,4 +85,12 @@ public class TInvoiceInfoEntity implements Serializable {
 	@Comment("状态类别（内陆跨海、国际）")
 	private Integer ordertype;
 
+	@Column
+	@Comment("订单付款ID")
+	private Integer orderpayid;
+
+	@Column
+	@Comment("订单状态")
+	private Integer orderstatus;
+
 }

@@ -328,12 +328,14 @@ $("#inlandPaySelect").change(function(){
 	if(selectEd){
 		destroyDatetable($("#inlandPayEdTable"));
 		$("#inlandPayClick").show();
+		$("#inlandPayCancelBtn").show();
 		$("#inlandPayTable").show();
 		$("#inlandPayEdTable").hide();
 		initPayDataTable();
 	}else{
 		destroyDatetable($("#inlandPayTable"));
 		$("#inlandPayClick").hide();
+		$("#inlandPayCancelBtn").hide();
 		$("#inlandPayTable").hide();
 		$("#inlandPayEdTable").show();
 		initPayEdDataTable();
@@ -363,7 +365,7 @@ $('#inlandPayClick').click(function(){
 			skin: false, //加上边框
 			closeBtn:false,//默认 右上角关闭按钮 是否显示
 			shadeClose:false,
-			area: ['850px', '690px'],
+			area: ['850px', '650px'],
 			content: ['confirmPay.html?inlandPayIds='+ ids,'no'],
 		});
 

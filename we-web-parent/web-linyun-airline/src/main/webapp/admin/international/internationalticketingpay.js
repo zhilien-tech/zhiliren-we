@@ -15,7 +15,7 @@ function initpayTable() {
             "url": BASE_PATH + "/public/plugins/datatables/cn.json"
         },
         "ajax": {
-            "url": BASE_PATH + "/admin/international/internationalListData.html",
+            "url": BASE_PATH + "/admin/international/internationalPayListData.html",
             "type": "post",
             "data": function (d) {
             	
@@ -86,7 +86,15 @@ function initpayTable() {
                     	render: function(data, type, row, meta) {
                     		var result = '<ul>';
                     		$.each(row.airinfo, function(name, value) {
-                    			result += '<li style="list-style:none;">'+(value.leavetime+'/'+value.arrivetime)+'</li>';
+                    			result += '<li style="list-style:none;">';
+                    			if(value.leavetime && value.leavetime != undefined){
+                    				result += value.leavetime;
+                    			}
+                    			result += '/';
+                    			if(value.arrivetime && value.arrivetime != undefined){
+                    				result += value.arrivetime;
+                    			}
+                    			result += '</li>';
                     		});
                     		result += '</ul>';
                     		return result;
@@ -144,6 +152,12 @@ function initpayTable() {
     	}
     });
 }
+//点击行跳转到详情页
+$("tbody",$('#payTable')).on("dblclick","tr",function(event) {
+	var item = payTable.row($(this).closest('tr')).data();
+	var url = BASE_PATH + '/admin/international/internationalDetail.html?orderid='+item.ordernumber;
+	window.open(url);
+});
 //控制复选框
 $(".checkall1").click(function () {
     var check = $(this).prop("checked");
@@ -230,8 +244,11 @@ $(document).on('click', '.checkchild1', function(e) {
 });
 //点击出票加载出票表格
 function loadFukuanTable(){
+	var status = $('#status').val();
+	$('#checkedboxval1').val('');
+	$(".checkall1").prop("checked", false);
 	var param = {
-			ordersstatus:8,
+			ordersstatus:status,
 			ticketingpay:1
 	};
 	payTable.settings()[0].ajax.data = param;
@@ -250,6 +267,7 @@ $('.fuKuanBtn1').click(function(){
 			url: BASE_PATH + '/admin/inland/checkIsCommonCompany.html',
            success: function (data) { 
         	   if(data){
+        		   var status = $('#status').val();
         		   layer.open({
         				type: 2,
         				title:false,
@@ -257,7 +275,7 @@ $('.fuKuanBtn1').click(function(){
         				closeBtn:false,//默认 右上角关闭按钮 是否显示
         				shadeClose:true,
         				area: ['850px', '550px'],
-        				content: BASE_PATH + '/admin/international/openPayment.html?ids='+ids,
+        				content: BASE_PATH + '/admin/international/openPayment.html?ids='+ids+'&orderstatus='+status,
         				end:function(){
         					payTable.ajax.reload(function(json){
         						autoHighLoad($('#payTable'));

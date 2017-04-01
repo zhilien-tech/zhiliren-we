@@ -19,7 +19,7 @@
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="commitPayApply();" value="提交"/>
             <h4 class="invoiceH4">付款申请</h4>
     </div>
-      <div class="modal-body">
+      <div class="modal-body" style="height: 250px;overflow-y: auto;">
       	 <input type="hidden" id="ids" name="ids" value="${obj.ids }">
          <table id="receivablesTable" class="table table-bordered table-hover">
                   <thead>
@@ -72,7 +72,7 @@
          <div class="col-sm-2 padding"><input type="text" class="form-control input-sm" disabled="disabled" value="${obj.user.userName }"></div>
          <label class="col-sm-1 text-right padding">审批人：</label>
          <div class="col-sm-2 padding"><input id="approver" name="approver" type="text" class="form-control input-sm" disabled="disabled" value="侯小凌"></div>
-         <label class="col-sm-1 text-right padding">审批结果：</label>
+         <label class="col-sm-1 text-right padding" style="width:95px;">审批结果：</label>
          <div class="col-sm-2 padding"><input id="approveResult" name="approveResult" type="text" class="form-control input-sm" disabled="disabled"></div>
       </div>
 	</div>

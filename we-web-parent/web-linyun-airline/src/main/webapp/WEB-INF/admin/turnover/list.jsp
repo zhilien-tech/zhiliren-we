@@ -28,13 +28,13 @@
                <form role="form" class="form-horizontal" id="selectTurnOver">
 	                <div class="form-group row marginBott cf">
 	                  <div class="col-md-1 paddingRight5">
-	                    <select class="form-control input-sm" name="status" id="status" onchange="select();">
+	                    <select class="form-control input-sm" name="status" id="status" onchange="pickedFunc();">
 	                      <option value="1">启用中</option>
 	                      <option value="0">关闭</option>
 	                    </select>
 	                  </div>
 	                  <div class="col-md-1 padding">
-	                     <select class="form-control input-sm" name="bankCardName" id="bankCardName" onchange="select();">
+	                     <select class="form-control input-sm" name="bankCardName" id="bankCardName" onchange="pickedFunc();">
 	                      <!-- <option>银行卡名称</option>
 	                      <option>国际段专用</option>-->
 	                      <option value="">银行卡名称</option> 
@@ -44,14 +44,14 @@
 	                    </select>
 	                  </div>
 	                  <div class="col-md-1 padding">
-	                    <select class="form-control input-sm" name="operation" id="operation" onchange="select();">
+	                    <select class="form-control input-sm" name="operation" id="operation" onchange="pickedFunc();">
 	                      <option value="">用途</option>
 	                      <option value="支出">支出</option>
 	                      <option value="收入">收入</option>
 	                    </select>
 	                  </div>
 	                  <div class="col-md-1 padding">
-	                     <select class="form-control input-sm" name="projectName" id="projectName" onchange="select();">
+	                     <select class="form-control input-sm" name="projectName" id="projectName" onchange="pickedFunc();">
 	                     <!--  <option>机票款</option>
 	                      <option>预付机票款</option>-->
 	                      <option value="">项目</option> 
@@ -61,7 +61,7 @@
 	                    </select>
 	                  </div>
 	                  <div class="col-md-1 padding">
-	                     <select class="form-control input-sm" name="currency" id="currency" onchange="select();">
+	                     <select class="form-control input-sm" name="currency" id="currency" onchange="pickedFunc();">
 	                      <option value="">币种</option>
 	                     <!--  <option>人民币</option>
 	                      <option>澳币</option> -->
@@ -71,14 +71,14 @@
 	                    </select>
 	                  </div>
 	                  <div class="col-md-1 padding">
-	                     <input type="text" class="form-control" placeholder="2017-02-22" name="tradeDate" id="tradeDate" value="" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" oninput="select();" >
+	                     <input type="text" class="form-control" placeholder="2017-02-22" name="tradeDate" id="tradeDate" value="" onFocus="WdatePicker({onpicked:pickedFunc,oncleared:pickedFunc,dateFmt:'yyyy-MM-dd'})" >
 	                  </div>
 	                  <div class="col-md-1 padding">
 	                     <input type="text" class="form-control"  name="companyName" id="companyName" value=""  >
 	                  </div>
 	                  <div class="col-md-2 padding">
-	                    <button type="button" class="btn btn-primary btn-sm suBtn" onclick="select();" >搜索</button>
-	                    <button type="button" class="btn btn-primary btn-sm suBtn" onclick="clearSelect();select();">清空</button>
+	                    <button type="button" class="btn btn-primary btn-sm suBtn" onclick="pickedFunc();" >搜索</button>
+	                    <button type="button" class="btn btn-primary btn-sm suBtn" onclick="clearSelect();pickedFunc();">清空</button>
 	                  </div>
 	                  <div class="col-md-1col-md-offset-3">
 	                    <button type="button" class="btn btn-primary btn-sm right jyb" id="addTurnOver">记一笔</button>
@@ -272,7 +272,7 @@
 		  }
 	  }
 	//根据不同的条件进行搜索
-	function select()
+	function pickedFunc()
 	{
 		var tradeDate = $('#tradeDate').val();
 		var status = $('#status').val();

@@ -23,6 +23,8 @@ import org.nutz.mvc.upload.UploadAdaptor;
 
 import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.order.international.form.InternationalParamForm;
+import com.linyun.airline.admin.order.international.form.InternationalPayParamForm;
+import com.linyun.airline.admin.order.international.form.InternationalReceiveParamForm;
 import com.linyun.airline.admin.order.international.service.InternationalService;
 import com.linyun.airline.entities.TPayReceiveRecordEntity;
 import com.uxuexi.core.common.util.EnumUtil;
@@ -58,6 +60,25 @@ public class InternationalModule {
 	@POST
 	public Object internationalListData(@Param("..") InternationalParamForm paramForm, HttpServletRequest request) {
 		return internationalService.internationalListData(paramForm, request);
+	}
+
+	/**
+	 * 国际订单收款列表数据
+	 */
+	@At
+	@POST
+	public Object internationalReceiveListData(@Param("..") InternationalReceiveParamForm paramForm,
+			HttpServletRequest request) {
+		return internationalService.internationalReceiveListData(paramForm, request);
+	}
+
+	/**
+	 * 国际订单付款列表数据
+	 */
+	@At
+	@POST
+	public Object internationalPayListData(@Param("..") InternationalPayParamForm paramForm, HttpServletRequest request) {
+		return internationalService.internationalPayListData(paramForm, request);
 	}
 
 	/**

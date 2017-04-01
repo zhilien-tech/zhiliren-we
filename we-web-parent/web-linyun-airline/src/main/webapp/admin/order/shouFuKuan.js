@@ -175,6 +175,7 @@ function initshouFuKuanPayTable() {
 	"bLengthChange": false,
     "processing": true,
     "serverSide": true,
+    "autoWidth": false,
     "stripeClasses": [ 'strip1','strip2' ],
     "language": {
         "url": BASE_PATH + "/public/plugins/datatables/cn.json"
@@ -284,28 +285,33 @@ function initshouFuKuanPayTable() {
                   		return result;
                   	}
                 },
-                {"data": "issuer","bSortable": false}
+                {"data": "issuer","bSortable": false},
+                {"data":"active","bSortable":false,
+                	render: function(data, type, row, meta) {
+                        return '<a style="cursor:pointer;" onclick="receiveInvoice('+row.id+','+row.invoiceid+');">收发票</a>'
+                    }
+                }
         ],
     "columnDefs": [
-				/*{ "sWidth": "8.33%",  "aTargets": [0] },
-				{ "sWidth": "8.33%", "aTargets": [1] },
-				{ "sWidth": "8.33%", "aTargets": [2] },
-				{ "sWidth": "8.33%", "aTargets": [3] },
-				{ "sWidth": "8.33%", "aTargets": [4] },
-				{ "sWidth": "8.33%", "aTargets": [5] }, 
-				{ "sWidth": "8.33%",  "aTargets": [6] },
-				{ "sWidth": "8.33%", "aTargets": [7] },
-				{ "sWidth": "8.33%", "aTargets": [8] },
-				{ "sWidth": "8.33%", "aTargets": [9] },
-				{ "sWidth": "8.33%", "aTargets": [10] },
-				{ "sWidth": "8.33%", "aTargets": [11] }, */
-                {
+				{ "sWidth": "7.33%", "targets": [0] },
+				{ "sWidth": "5.33%", "targets": [1] },
+				{ "sWidth": "6.33%", "targets": [2] },
+				{ "sWidth": "5.33%", "targets": [3] },
+				{ "sWidth": "8.33%", "targets": [4] },
+				{ "sWidth": "7.33%", "targets": [5] }, 
+				{ "sWidth": "12.33%", "targets": [6] },
+				{ "sWidth": "8.33%", "targets": [7] },
+				{ "sWidth": "5.33%", "targets": [8] },
+				{ "sWidth": "14.33%", "targets": [9] },
+				{ "sWidth": "8.33%", "targets": [10] },
+				{ "sWidth": "11.33%", "targets": [11] }
+				/*{
   	//   指定第一列，从0开始，0表示第一列，1表示第二列……
         targets: 11,
         render: function(data, type, row, meta) {
             return '<a style="cursor:pointer;" onclick="receiveInvoice('+row.id+','+row.invoiceid+');">收发票</a>'
         }
-    }]
+    }*/]
 });
 }
 function shoufukuanPay(){

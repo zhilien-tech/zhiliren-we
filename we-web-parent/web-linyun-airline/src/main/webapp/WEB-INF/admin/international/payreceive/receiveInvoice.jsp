@@ -21,6 +21,7 @@
     <div style="height:550px; overflow-y:auto;">
       <div class="modal-body">
       	<input id="id" name="id" type="hidden" value="${obj.id }" > 
+      	<input id="orderstatus" name="orderstatus" type="hidden" value="${obj.payorders.orderstatus }" > 
          <table id="receivablesTable" class="table table-bordered table-hover">
                   <thead>
                     <tr>
@@ -42,7 +43,7 @@
                 			<td>${one.shortName }</td>
                 			<td>${one.linkMan }</td>
                 			<td>${one.issuer }</td>
-                			<td>${one.incometotal }</td>
+                			<td>${one.currentpay }</td>
                 		</tr>
                 	</c:forEach>
                   </tbody>
@@ -75,7 +76,7 @@
                     <td id="sumjine">${obj.sumjine }</td>
                   </tr>
          </table>
-         <div class="bankSlipImg" align="center"><img id="shuidanimg" width="400" height="300" alt="" src="${obj.billurl }"></div>
+         <div class="bankSlipImg" align="center"><img id="shuidanimg" width="400" height="300" alt="" src="${obj.billurl.receiptUrl }"></div>
       </div>
       <span class="invoiceInfo-header">发票信息</span>
       <div class="invoiceInfo-body">
@@ -133,7 +134,6 @@
                         </a>
                       </li>
                       <li><a href="javascript:;" id="fileName" name="fileName">未选择文件</a></li>
-                      <li><a href="javascript:;" class="fileDelete">删除</a></li>
                       <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
                     </ul>
                     <input id="invoiceurl" name="invoiceurl" type="hidden" value="">
@@ -177,6 +177,8 @@
 	          lastDiv.after(newDiv);
 	          var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
 	          newDiv.find("p").html(No); 
+	          newDiv.find('#preView').parent().remove();
+	          newDiv.find('.deleteInvoice').parent().remove();
 	          newDiv.find('.addIcon').parent().remove();
 	          newDiv.find('.fileUL').append('<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>');
 	      });
@@ -185,12 +187,30 @@
 	          $(this).parents('.cloneTR').remove();
 	      });
 	      
-	      $(document).on('click','#fileName',function(){
+	      /* $(document).on('click','#fileName',function(){
 	   	  	  var invoiceurl = $(this).parent().parent().parent().find('[name=invoiceurl]').val();
 	   	  	  //alert(invoiceurl);
 	          document.getElementById('light').style.display='block';
 	          //document.getElementById('fade').style.display='block';
 	          document.getElementById('fapiaoid').src=invoiceurl; 
+	      }); */
+	      $(document).on('click','#preView',function(){
+	   	  	  var invoiceurl = $(this).parent().parent().parent().find('[name=invoiceurl]').val();
+	   	  	  //alert(invoiceurl);
+	          document.getElementById('light').style.display='block';
+	          //document.getElementById('fade').style.display='block';
+	          document.getElementById('fapiaoid').src=invoiceurl; 
+	      });
+	      $(document).on('click','.deleteInvoice',function(){
+	   	  	  var invoicedetaildiv = $(this).parent().parent().parent();
+	   	  	  invoicedetaildiv.find('[name=invoiceurl]').val('');
+	   	  	  invoicedetaildiv.find('[name=fileName]').html('未选择文件');
+	   	  	  invoicedetaildiv.find('#preView').remove();
+	   	  	  invoicedetaildiv.find('.deleteInvoice').remove();
+	   	  	  //alert(invoiceurl);
+	          //document.getElementById('light').style.display='block';
+	          //document.getElementById('fade').style.display='block';
+	          document.getElementById('fapiaoid').src=''; 
 	      });
 
      });
@@ -203,7 +223,9 @@
    function saveInvoiceInfo(){
 	   var formdata = {};
 	   var id = $('#id').val();
-	   formdata.payid = id;
+	   formdata.orderpayid = id;
+	   var orderstatus = $('#orderstatus').val();
+	   formdata.orderstatus = orderstatus;
 	   var invoiceitem = $('#invoiceitem').val();
 	   formdata.invoiceitem = invoiceitem;
 	   var invoicedate = $('#invoicedate').val();
@@ -238,12 +260,12 @@
 			type: 'POST', 
 			data: {data:JSON.stringify(formdata)}, 
 			url: '${base}/admin/international/payreceive/saveInvoiceInfo.html',
-           success: function (data) { 
-           	closewindow();
-           	window.parent.successCallback('5');
-           },
-           error: function (xhr) {
-           	layer.msg("提交失败","",3000);
+            success: function (data) { 
+	           	closewindow();
+	           	window.parent.successCallback('5');
+            },
+            error: function (xhr) {
+           		layer.msg("提交失败","",3000);
            } 
        });
    }

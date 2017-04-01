@@ -23,6 +23,7 @@
     <div style="height:550px; overflow-y:auto; ">
       <div class="modal-body">
       	 <input type="hidden" id="id" name="id" value="${obj.id }" >
+      	 <input type="hidden" id="orderstatus" name="orderstatus" value="${obj.receive.orderstatus }" >
          <table id="receivablesTable" class="table table-bordered table-hover">
                   <thead>
                     <tr>
@@ -142,8 +143,6 @@
                         </a> 
                       </li>
                       <li><a href="javascript:;" id="fileName" name="fileName">未选择文件</a></li>
-                      <li><a href="javascript:;" class="fileDelete deleteInvoice" >删除</a></li>
-                      <li><a href="javascript:;" id="preView" class="fileDelete">预览</a></li>
                       <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
                     </ul>
                     <input id="invoiceurl" name="invoiceurl" type="hidden" value="">
@@ -196,6 +195,8 @@
 		          lastDiv.after(newDiv);
 		          var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
 		          newDiv.find("p").html(No); 
+		          newDiv.find('#preView').parent().remove();
+		          newDiv.find('.deleteInvoice').parent().remove();
 		          newDiv.find('.addIcon').parent().remove();
 		          newDiv.find('.fileUL').append('<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>');
 		      });
@@ -215,6 +216,8 @@
 		   	  	  var invoicedetaildiv = $(this).parent().parent().parent();
 		   	  	  invoicedetaildiv.find('[name=invoiceurl]').val('');
 		   	  	  invoicedetaildiv.find('[name=fileName]').html('未选择文件');
+		   	  	  invoicedetaildiv.find('#preView').remove();
+		   	  	  invoicedetaildiv.find('.deleteInvoice').remove();
 		   	  	  //alert(invoiceurl);
 		          //document.getElementById('light').style.display='block';
 		          //document.getElementById('fade').style.display='block';
@@ -232,6 +235,8 @@
 	   var formdata = {};
 	   var id = $('#id').val();
 	   formdata.pnrid = id;
+	   var orderstatus = $('#orderstatus').val();
+	   formdata.orderstatus = orderstatus;
 	   var invoiceitem = $('#invoiceitem').val();
 	   formdata.invoiceitem = invoiceitem;
 	   var invoicedate = $('#invoicedate').val();

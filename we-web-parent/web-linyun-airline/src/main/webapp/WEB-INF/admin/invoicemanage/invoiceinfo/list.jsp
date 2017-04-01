@@ -161,9 +161,13 @@ function successCallback(id){
 	  KaiInvoiceTable1.ajax.reload(null,false);
 	  shouInvoiceTable1.ajax.reload(null,false);
 	  if(id == '1'){
-		  layer.msg("确认开发票成功!",{time: 2000});
+		  layer.msg("确认开发票成功",{time: 2000});
 	  }else if(id == '2'){
-		  layer.msg("确认收发票成功!",{time: 2000});
+		  layer.msg("确认收发票成功",{time: 2000});
 	  }
 }
+$(function(){
+	$('.menu-ul:eq(0)').hide(); 
+	$('.menu-ul:eq(1) li:eq(0) a').css("color","rgb(245, 245, 245)");
+});
 </script>

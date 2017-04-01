@@ -13,6 +13,8 @@ import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
+import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
+import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
@@ -36,6 +38,7 @@ public class InterPaymentSqlForm extends DataTablesParamForm {
 	public Sql sql(SqlManager sqlManager) {
 		String sqlString = sqlManager.get("get_international_pay_list");
 		Sql sql = Sqls.create(sqlString);
+		sql.setParam("recordtype", PayReceiveTypeEnum.PAY.intKey());
 		sql.setCondition(cnd());
 		return sql;
 	}
@@ -46,6 +49,9 @@ public class InterPaymentSqlForm extends DataTablesParamForm {
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("tp.companyid", "=", companyid);
 		}
+		cnd.and("tpo.paystauts", "!=", AccountPayEnum.REFUSE.intKey());
+		cnd.orderBy("tpo.paystauts", "asc");
+		cnd.orderBy("tpo.payDate", "desc");
 		return cnd;
 	}
 

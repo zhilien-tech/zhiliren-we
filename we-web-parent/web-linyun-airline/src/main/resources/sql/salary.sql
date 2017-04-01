@@ -26,12 +26,25 @@ from t_salary ts
 $condition
 /*salary_add*/
 select * from(
-select SUM(costtotal) as 'costTotal',COUNT(*) as 'groupNumber',SUM(incometotal) as 'incomeTotal',SUM(personcount) as 'headCount',u.userName
+select SUM(fi.costtotal) as 'costTotal',COUNT(*) as 'groupNumber',SUM(fi.incometotal) as 'incomeTotal',SUM(fi.personcount) as 'headCount',u.fullName
 as 'drawer',si.baseWages as 'basePay',si.commission,si.comId,month(fi.billingdate) as 'month',year(fi.billingdate) as 'year',fi.issuerid
 as 'drawerId'
-from t_finance_info fi 
-LEFT JOIN t_user u on u.id=fi.issuerid
+from
+t_user u
 LEFT JOIN t_salary_increase si on si.userId=u.id
-GROUP BY fi.issuerid
+LEFT JOIN t_finance_info fi on fi.issuerid=u.id
+GROUP BY u.id 
 ) uu
 where  month=month(now()) AND year=year(now())
+/*salary_add_no*/
+select * from(
+select u.fullName
+as 'drawer',si.baseWages as 'basePay',si.commission,si.comId,month(max(fi.billingdate)) as 'month1',year(max(fi.billingdate)) as 'year1',u.id
+as 'drawerId',fi.orderid,u.id,u.status
+from
+t_user u
+LEFT JOIN t_salary_increase si on si.userId=u.id
+LEFT JOIN t_finance_info fi on fi.issuerid=u.id
+GROUP BY u.id
+) uu
+where (uu.month1 !=month(now()) Or uu.year1!=year(now()) or uu.month1  is null) and uu.status=1

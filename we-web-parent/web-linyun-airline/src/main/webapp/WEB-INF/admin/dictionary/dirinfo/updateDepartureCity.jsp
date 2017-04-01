@@ -26,7 +26,7 @@
                 <div class="modal-body" style="height:425px;overflow-y: auto;">
                  <div class="tab-content">
                         <div class="form-group row">
-                        	<%-- 字典类别id --%>
+                        	<%-- 登录账号id --%>
                         	<input name="id" type="hidden" value="${obj.deparinfo.id}"/>
                             <label class="col-sm-3 text-right padding">字典类型编码：</label>
                             <div class="col-sm-8 padding">

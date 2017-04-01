@@ -27,6 +27,8 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.google.common.base.Splitter;
+import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
+import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.customneeds.service.EditPlanService;
 import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
@@ -36,6 +38,8 @@ import com.linyun.airline.admin.order.inland.enums.PayMethodEnum;
 import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
 import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.order.international.form.InternationalParamForm;
+import com.linyun.airline.admin.order.international.form.InternationalPayParamForm;
+import com.linyun.airline.admin.order.international.form.InternationalReceiveParamForm;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
 import com.linyun.airline.common.enums.AccountPayEnum;
@@ -86,6 +90,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	private static final String YHCODE = "YH";
 	//付款用途
 	private static final String FKYTCODE = "FKYT";
+	//航空公司字典代码
+	private static final String AIRCOMCODE = "HKGS";
 	@Inject
 	private EditPlanService editPlanService;
 	@Inject
@@ -100,6 +106,58 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object internationalListData(InternationalParamForm paramForm, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		paramForm.setCompanyid(new Long(company.getId()).intValue());
+		Map<String, Object> listPageData = this.listPage4Datatables(paramForm);
+		List<Record> list = (List<Record>) listPageData.get("data");
+		for (Record record : list) {
+			List<TAirlineInfoEntity> query = dbDao.query(TAirlineInfoEntity.class,
+					Cnd.where("planid", "=", record.get("id")).orderBy("leavedate", "asc"), null);
+			record.put("airinfo", query);
+			record.put("orderstatusenum", EnumUtil.enum2(InternationalStatusEnum.class));
+		}
+		listPageData.remove("data");
+		listPageData.put("data", list);
+		return listPageData;
+	}
+
+	/**
+	 * 查询国际订单收款列表
+	 * <p>
+	 * TODO查询国际订单收款列表
+	 * @param paramForm
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object internationalReceiveListData(InternationalReceiveParamForm paramForm, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		paramForm.setCompanyid(new Long(company.getId()).intValue());
+		Map<String, Object> listPageData = this.listPage4Datatables(paramForm);
+		List<Record> list = (List<Record>) listPageData.get("data");
+		for (Record record : list) {
+			List<TAirlineInfoEntity> query = dbDao.query(TAirlineInfoEntity.class,
+					Cnd.where("planid", "=", record.get("id")).orderBy("leavedate", "asc"), null);
+			record.put("airinfo", query);
+			record.put("orderstatusenum", EnumUtil.enum2(InternationalStatusEnum.class));
+		}
+		listPageData.remove("data");
+		listPageData.put("data", list);
+		return listPageData;
+	}
+
+	/**
+	 * 查询国际订单付款列表
+	 * <p>
+	 * TODO查询国际订单付款列表
+	 * @param paramForm
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object internationalPayListData(InternationalPayParamForm paramForm, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
@@ -247,6 +305,10 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		result.put("paymethodenum", EnumUtil.enum2(PayMethodEnum.class));
 		result.put("receivestatus", PayReceiveTypeEnum.RECEIVE.intKey());
 		result.put("paystatus", PayReceiveTypeEnum.PAY.intKey());
+		result.put(
+				"aircomselect",
+				dbDao.query(DictInfoEntity.class,
+						Cnd.where("typeCode", "=", AIRCOMCODE).and("dictCode", "=", orderinfo.getAirlinecom()), null));
 		return result;
 	}
 
@@ -260,15 +322,25 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	 */
 	@SuppressWarnings("unchecked")
 	public Object saveInternationalDetail(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		String data = request.getParameter("data");
 		Map<String, Object> fromJson = JsonUtil.fromJson(data, Map.class);
 		Long orderedid = Long.valueOf((String) fromJson.get("orderedid"));
 		TUpOrderEntity orderinfo = this.fetch(orderedid);
 		Integer orderType = Integer.valueOf((String) fromJson.get("orderType"));
 		orderinfo.setOrdersstatus(orderType);
+		if (!Util.isEmpty(fromJson.get("peoplecount"))) {
+			orderinfo.setPeoplecount(Integer.valueOf((String) fromJson.get("peoplecount")));
+		}
+		orderinfo.setAirlinecom((String) fromJson.get("airlinecom"));
+		if (!Util.isEmpty(fromJson.get("costsingleprice"))) {
+			orderinfo.setCostsingleprice(Double.valueOf((String) fromJson.get("costsingleprice")));
+		}
 		dbDao.update(orderinfo);
 		String financeData = request.getParameter("financeData");
-		saveFinanceData(financeData, orderType);
+		saveFinanceData(financeData, orderType, user);
 		return null;
 	}
 
@@ -276,7 +348,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	 * 保存财务信息
 	 */
 	@SuppressWarnings("unchecked")
-	private Object saveFinanceData(String financeData, Integer orderType) {
+	private Object saveFinanceData(String financeData, Integer orderType, TUserEntity user) {
 		Map<String, String> financeMap = JsonUtil.fromJson(financeData, Map.class);
 		//财务信息id
 		String id = financeMap.get("id");
@@ -344,18 +416,21 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		if (!Util.isEmpty(financeMap.get("relief"))) {
 			relief = Double.valueOf(financeMap.get("relief"));
 		}
+		TFinanceInfoEntity financeInfo = new TFinanceInfoEntity();
 		//开票日期
 		Date billingdate = null;
 		if (!Util.isEmpty(financeMap.get("billingdate"))) {
 			billingdate = DateUtil.string2Date(financeMap.get("billingdate"), DateUtil.FORMAT_YYYY_MM_DD);
-		} else if (orderType.equals(InternationalStatusEnum.TICKETING.intKey())) {
+		}
+		if (orderType.equals(InternationalStatusEnum.TICKETING.intKey())) {
 			billingdate = new Date();
+			financeInfo.setIssuer(user.getFullName());
+			financeInfo.setIssuerid(new Long(user.getId()).intValue());
 		}
 		//销售人员
 		String salesperson = financeMap.get("salesperson");
 		//开票人
 		String issuer = financeMap.get("issuer");
-		TFinanceInfoEntity financeInfo = new TFinanceInfoEntity();
 		financeInfo.setOrderid(orderid);
 		financeInfo.setCusgroupnum(cusgroupnum);
 		financeInfo.setTeamtype(teamtype);
@@ -372,7 +447,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		financeInfo.setRelief(relief);
 		financeInfo.setBillingdate(billingdate);
 		financeInfo.setSalesperson(salesperson);
-		financeInfo.setIssuer(issuer);
+
 		if (Util.isEmpty(id)) {
 			dbDao.insert(financeInfo);
 		} else {
@@ -586,9 +661,36 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		String orderid = request.getParameter("orderid");
 		String payreceivestatus = request.getParameter("payreceivestatus");
 		String ordersstatus = request.getParameter("ordersstatus");
+		String peoplecount = request.getParameter("peoplecount");
+		String costsingleprice = request.getParameter("costsingleprice");
 		result.put("orderid", orderid);
 		result.put("recordtype", payreceivestatus);
 		result.put("ordersstatus", ordersstatus);
+		result.put("costsingleprice", costsingleprice);
+		//准备实际人数数据
+		String sqlString = sqlManager.get("get_international_last_payreceive_record");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("t.orderid", "=", orderid);
+		cnd.and("t.recordtype", "=", payreceivestatus);
+		List<Record> payreceiverecord = dbDao.query(sql, cnd, null);
+		if (payreceiverecord.size() > 0) {
+			if (!Util.isEmpty(payreceiverecord.get(0).get("actualnumber"))) {
+				peoplecount = String.valueOf(payreceiverecord.get(0).get("actualnumber"));
+			}
+		}
+		//准备罚金
+		Integer fineprice = 0;
+		String sqlString1 = sqlManager.get("get_international_record_sumprice");
+		Sql sql1 = Sqls.create(sqlString1);
+		Cnd cnd1 = Cnd.NEW();
+		cnd1.and("orderid", "=", orderid);
+		cnd1.and("recordtype", "=", payreceivestatus);
+		cnd1.groupBy("orderid", "recordtype");
+		List<Record> payreceiverecordsum = dbDao.query(sql1, cnd1, null);
+		if (payreceiverecordsum.size() > 0 && !Util.isEmpty(payreceiverecordsum.get(0).get("yishou"))) {
+			fineprice = payreceiverecordsum.get(0).getInt("yishou");
+		}
 		//币种下拉
 		List<DictInfoEntity> bzcode = new ArrayList<DictInfoEntity>();
 		try {
@@ -598,6 +700,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 
 		}
 		result.put("bzcode", bzcode);
+		result.put("autualypeople", peoplecount);
+		result.put("fineprice", fineprice);
 		return result;
 	}
 
@@ -614,10 +718,13 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		payreceive.setOpid(new Long(user.getId()).intValue());
 		payreceive.setOptime(new Date());
-		for (InternationalStatusEnum payenum : InternationalStatusEnum.values()) {
-			if (Integer.valueOf(payreceive.getOrderstatus()).equals(payenum.intKey())) {
-				payreceive.setOrderstatus(payenum.value());
-				break;
+		if (!Util.isEmpty(payreceive.getOrderstatus())) {
+			payreceive.setOrderstatusid(Integer.valueOf(payreceive.getOrderstatus()));
+			for (InternationalStatusEnum payenum : InternationalStatusEnum.values()) {
+				if (Integer.valueOf(payreceive.getOrderstatus()).equals(payenum.intKey())) {
+					payreceive.setOrderstatus(payenum.value());
+					break;
+				}
 			}
 		}
 		return dbDao.insert(payreceive);
@@ -703,7 +810,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		payreceive.setOpid(new Long(user.getId()).intValue());
-		payreceive.setOptime(new Date());
+		//payreceive.setOptime(new Date());
 		return dbDao.update(payreceive);
 	}
 
@@ -766,31 +873,34 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Map<String, Object> result = new HashMap<String, Object>();
 		String ids = request.getParameter("ids");
-		String sqlString = sqlManager.get("get_sea_invoce_table_data");
+		String orderstatus = request.getParameter("orderstatus");
+		String sqlString = sqlManager.get("get_international_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.limit();
-		cnd.and("tuo.ordersstatus", "=", InternationalStatusEnum.TICKETING.intKey());
+		//cnd.and("tuo.ordersstatus", "=", InternationalStatusEnum.TICKETING.intKey());
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
 		cnd.and("tuo.id", "in", ids);
+		sql.setParam("orderstatus", orderstatus);
+		sql.setParam("recordtype", PayReceiveTypeEnum.RECEIVE.intKey());
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//计算合计金额
 		double sumincome = 0;
 		for (Record record : orders) {
-			if (!Util.isEmpty(record.get("incometotal"))) {
-				Double incometotal = (Double) record.get("incometotal");
+			if (!Util.isEmpty(record.get("currentpay"))) {
+				Double incometotal = (Double) record.get("currentpay");
 				sumincome += incometotal;
 			}
 		}
 		result.put("orders", orders);
-		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
-		try {
-			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Sql create = Sqls.create(sqlManager.get("get_bank_info_select"));
+		create.setParam("companyId", company.getId());
+		create.setParam("typeCode", YHCODE);
+		List<Record> yhkSelect = dbDao.query(create, null, null);
 		result.put("yhkSelect", yhkSelect);
 		result.put("ids", ids);
 		result.put("sumincome", sumincome);
+		//订单状态
+		result.put("orderstatus", orderstatus);
 		return result;
 	}
 
@@ -813,6 +923,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		String bankcardnum = request.getParameter("bankcardnum");
 		String billurl = request.getParameter("billurl");
 		String sumincome = request.getParameter("sumincome");
+		String orderstatus = request.getParameter("orderstatus");
 		TReceiveEntity receiveEntity = new TReceiveEntity();
 		receiveEntity.setBankcardid(Integer.valueOf(bankcardid));
 		receiveEntity.setBankcardname(bankcardname);
@@ -822,10 +933,22 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		receiveEntity.setStatus(AccountReceiveEnum.RECEIVINGMONEY.intKey());
 		receiveEntity.setOrderstype(OrderTypeEnum.TEAM.intKey());
 		receiveEntity.setCompanyid(new Long(company.getId()).intValue());
+		String customeName = "";
+		if (!Util.isEmpty(ids)) {
+			String orderid = ids.split(",")[0];
+			TUpOrderEntity fetch = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(orderid));
+			if (!Util.isEmpty(fetch.getUserid())) {
+				TCustomerInfoEntity customeinfo = dbDao.fetch(TCustomerInfoEntity.class, fetch.getUserid().longValue());
+				customeName = customeinfo.getShortName();
+			}
+		}
 		//客户名称还未填写
-		receiveEntity.setCustomename("");
+		receiveEntity.setCustomename(customeName);
 		if (!Util.isEmpty(sumincome)) {
 			receiveEntity.setSum(Double.valueOf(sumincome));
+		}
+		if (!Util.isEmpty(orderstatus)) {
+			receiveEntity.setOrderstatus(Integer.valueOf(orderstatus));
 		}
 		//保存收款信息
 		TReceiveEntity insert = dbDao.insert(receiveEntity);
@@ -875,25 +998,32 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		Map<String, Object> result = new HashMap<String, Object>();
 		String ids = request.getParameter("ids");
-		String sqlString = sqlManager.get("get_sea_invoce_table_data");
+		String orderstatus = request.getParameter("orderstatus");
+		String sqlString = sqlManager.get("get_international_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
-		Cnd cnd = Cnd.limit();
-		cnd.and("tuo.ordersstatus", "=", InternationalStatusEnum.TICKETING.intKey());
-		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
+		Cnd cnd = Cnd.NEW();
+		//cnd.and("tuo.ordersstatus", "=", InternationalStatusEnum.TICKETING.intKey());
 		cnd.and("tuo.id", "in", ids);
+		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
+		sql.setParam("orderstatus", orderstatus);
+		sql.setParam("recordtype", PayReceiveTypeEnum.PAY.intKey());
+		/*cnd.and("tprr.orderstatusid", "=", orderstatus);
+		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.PAY.intKey());*/
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		result.put("orders", orders);
 		try {
 			result.put("bzSelect", externalInfoService.findDictInfoByName("", BIZHONGCODE));
-			result.put("ytSelect", externalInfoService.findDictInfoByName("", FKYTCODE));
+			//result.put("ytSelect", externalInfoService.findDictInfoByName("", FKYTCODE));
 		} catch (Exception e) {
-
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-
 		}
+		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
+				null);
+		result.put("ytSelect", ytselect);
 		result.put("user", user);
 		result.put("ids", ids);
+		result.put("orderstatus", orderstatus);
 		return result;
 	}
 
@@ -914,6 +1044,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		String purpose = request.getParameter("purpose");
 		String payCurrency = request.getParameter("payCurrency");
 		String approver = request.getParameter("approver");
+		String orderstatus = request.getParameter("orderstatus");
 		TPayEntity payEntity = new TPayEntity();
 		payEntity.setPurpose(Integer.valueOf(purpose));
 		payEntity.setPayCurrency(Integer.valueOf(payCurrency));
@@ -922,6 +1053,9 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		payEntity.setCompanyId(new Long(company.getId()).intValue());
 		payEntity.setOrdertype(OrderTypeEnum.TEAM.intKey());
 		payEntity.setStatus(AccountPayEnum.APPROVAL.intKey());
+		if (!Util.isEmpty(orderstatus)) {
+			payEntity.setOrderstatus(Integer.valueOf(orderstatus));
+		}
 		TPayEntity insert = dbDao.insert(payEntity);
 		Iterable<String> split = Splitter.on(",").split(ids);
 		List<TPayOrderEntity> payorders = new ArrayList<TPayOrderEntity>();

@@ -21,13 +21,13 @@ import com.uxuexi.core.common.util.EnumUtil;
 @Data
 public class DictInfoDto implements Comparable<DictInfoDto> {
 
-	private long id;
+	private Integer id;
 
 	private String dictname;
 
 	private String typename;
 
-	private int status;
+	private Integer status;
 
 	private String statusname;
 

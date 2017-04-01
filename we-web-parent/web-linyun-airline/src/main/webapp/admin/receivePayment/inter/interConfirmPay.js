@@ -2,9 +2,9 @@
 function confirmPayClick(){
 	$.ajax({
 		type : 'POST',
-		data : $("#confirmInlandPayForm").serialize(),
+		data : $("#confirmInterPayForm").serialize(),
 		async: false,
-		url: BASE_PATH + '/admin/receivePay/inter/saveInlandPay.html',
+		url: BASE_PATH + '/admin/receivePay/inter/saveInterPay.html',
 		success : function(data) {
 			if(data === false){
 				parent.layer.msg("收款单位不一致，付款失败", "", 2000);
@@ -12,9 +12,9 @@ function confirmPayClick(){
 				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 				parent.layer.close(index);
 				parent.layer.msg("付款成功", "", 1000);
-				parent.inlandPayTable.ajax.reload(
+				parent.interPayTable.ajax.reload(
 						function(json){
-							autoHighLoad($('#inlandPayTable'));
+							autoHighLoad($('#interPayTable'));
 						}
 				);
 			}

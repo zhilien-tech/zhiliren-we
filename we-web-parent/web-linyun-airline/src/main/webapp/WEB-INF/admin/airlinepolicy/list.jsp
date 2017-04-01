@@ -15,9 +15,6 @@
 <c:set var="url" value="${base}/admin/airlinepolicy" />
 <!-- <body class="hold-transition skin-blue sidebar-mini"> -->
 <div class="wrapper">
-
- 
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Main content -->
@@ -44,7 +41,7 @@
                       <option>亚洲</option> -->
                        <option value="">请选择</option>
                       <c:forEach items="${obj.areaList }" var="each">
-                      	<option value="${each.areaId}">${each.areaName }</option>
+                      	<option value="${each.areaName}">${each.areaName }</option>
                       </c:forEach>
                     </select>
                   </div>
@@ -165,7 +162,15 @@
 	        "columns": [
 	                    {"data": "filename", "bSortable": false},
 	                    {"data": "airlinecompanyname", "bSortable": false},
-	                    {"data": "areaname", "bSortable": false},
+	                    {"data": "areaname", "bSortable": false,
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.areaname;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance;
+	                    	}		
+	                    },
 	                    {"data": "updatetime", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var depositBalance = row.updatetime;
@@ -180,9 +185,9 @@
 	        "columnDefs": [{ "sWidth": "34.66%",  "targets": [0] },
 	     				{ "sWidth": "8.66%",  "targets": [1] },
 	    				{ "sWidth": "16.66%",  "targets": [2] },
-	    				{ "sWidth": "12.66%",  "targets": [3] },
-	    				{ "sWidth": "10.66%",  "targets": [4] },
-	    				{ "sWidth": "22.66%",  "targets": [5] },
+	    				{ "sWidth": "11.66%",  "targets": [3] },
+	    				{ "sWidth": "7.66%",  "targets": [4] },
+	    				{ "sWidth": "26.66%",  "targets": [5] },
 	                    {
 	            //   指定第一列，从0开始，0表示第一列，1表示第二列……
 	            targets: 5,
@@ -324,7 +329,7 @@
 	function pickedFunc(){
 		
 		var airlineCompanyId = $('#selectCompany').val();
-		var areaId = $('#selectArea').val();
+		var areaName = $('#selectArea').val();
 		var type = $('#selectType').val();
 		var beginTime = $('#beginTime').val();
 		var endTime = $('#endTime').val();
@@ -334,7 +339,7 @@
 		var companyName = $('#companyName').val(); */
 	    var param = {
 	        "airlineCompanyId": airlineCompanyId,
-	        "areaId": areaId,
+	        "areaName": areaName,
 	        "type": type,
 			"endTime":endTime,
 			"beginTime":beginTime

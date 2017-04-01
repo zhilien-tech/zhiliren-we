@@ -79,13 +79,17 @@
                <div class="infofooter">
                  <table>
                    <tr>
-                     <td><label>客户姓名：</label></td>
+                     <td><label>
+                     	<font id="customeidcolor"> 客户姓名：</font>
+                     </label></td>
                      <td><input id="linkName" name="linkName" disabled="disabled" type="text" class="form-control input-sm" value="${obj.custominfo.linkMan }">
                      	<input id="customerId" name="customerId" type="hidden" value="${obj.custominfo.id }"/>
                      	<!-- 订单id -->
                      	<input id="orderedid" name="orderedid" type="hidden" value="${obj.orderinfo.id }"></td>
-                     <td><label style="position: relative;top: 4px;">结算方式：</label></td>
-                     <td colspan="3"><pre class="preTxt">不限 信用额度：0  临时额度：0  历史欠款：0  预存款：0</pre></td>
+	                     <td><label style="position: relative;top: 4px;">结算方式：</label></td>
+                     	<td colspan="3"><pre class="preTxt">不限 信用额度：<fmt:formatNumber type="number" value="${empty obj.custominfo.creditLine?0:obj.custominfo.creditLine}" pattern="0.00" maxFractionDigits="2"/>  
+                     		<font id="historyqiancolor"> 历史欠款：<fmt:formatNumber type="number" value="${empty obj.custominfo.arrears? 0.00:obj.custominfo.arrears}" pattern="0.00" maxFractionDigits="2"/></font>　
+                   		 预存款：<fmt:formatNumber type="number" value="${empty obj.custominfo.preDeposit?0:obj.custominfo.preDeposit}" pattern="0.00" maxFractionDigits="2"/></pre></td>
                      <td><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
                    </tr>
                  </table>
@@ -125,11 +129,22 @@
                   <table class="HCinfoInp">
                    <tr>
                      <td><label>航空公司：</label></td>
-                     <td><select id="aircom" name="aircom" class="form-control input-sm disab" multiple="multiple"></select></td>
+                     <td><select id="airlinecom" name="airlinecom" class="form-control input-sm disab" multiple="multiple">
+                     		<c:forEach items="${obj.aircomselect }" var="aircom">
+                     			<c:choose>
+                     				<c:when test="${obj.orderinfo.airlinecom eq aircom.dictCode}">
+			                     		<option value="${aircom.dictCode }" selected="selected">${aircom.dictCode }-${aircom.dictName }</option>
+                     				</c:when>
+                     				<c:otherwise>
+			                     		<option value="${aircom.dictCode }">${aircom.dictCode }-${aircom.dictName }</option>
+                     				</c:otherwise>
+                     			</c:choose>
+                     		</c:forEach>
+                     </select></td>
                      <td><label>人数：</label></td>
-                     <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm disab mustNumber"></td>
+                     <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm disab mustNumber" value="${obj.orderinfo.peoplecount }"></td>
                      <td><label>成本单价：</label></td>
-                     <td><input id="costprice" name="costprice" type="text" class="form-control input-sm disab mustNumberPoint"></td>
+                     <td><input id="costsingleprice" name="costsingleprice" type="text" class="form-control input-sm disab mustNumberPoint" value="${obj.orderinfo.costsingleprice }"></td>
                    </tr>
                  </table>
                  <div class="tableDuan"><!--主段-->
@@ -344,6 +359,8 @@
   <!--end footer-->
   <script type="text/javascript">
   	var BASE_PATH = '${base}';
+  	var creditLine = '${obj.custominfo.creditLine}';
+	var arrears = '${obj.custominfo.arrears}';
   </script>
   <!--Javascript Flie-->
   <script src="${base }/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -369,7 +386,7 @@
           $('.btnCancel').toggle();//取消按钮 显示
           $(".btnRemind").toggle();//提醒设置按钮 显示
           $(".btnLog").toggle();//日志按钮 显示
-          $(".listInfo").toggle();//选项卡 显示
+          //$(".listInfo").toggle();//选项卡 显示
           $('.disab').removeAttr("disabled");//信息模块 input 禁止编辑的状态
         });
         //取消按钮 click事件
@@ -379,7 +396,7 @@
           $('.btnCancel').toggle();//取消 按钮 隐藏
           $('.btnRemind').toggle();//提醒设置 按钮 隐藏
           $('.btnLog').toggle();//日志 按钮 隐藏
-          $(".listInfo").toggle();//选项卡 隐藏
+          //$(".listInfo").toggle();//选项卡 隐藏
           $('.disab').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
         });
 
@@ -428,29 +445,61 @@
         //点击 添加记录-预收款 弹框
         $('.addYSK').click(function(){
         	var orderType = $('#orderType').val();
-            layer.open({
-                type: 2,
-                title:false,
-                skin: false, //加上边框
-                closeBtn:false,//默认 右上角关闭按钮 是否显示
-                shadeClose:true,
-                area: ['1000px', '450px'],
-                content: '${base}/admin/international/addReceiveRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.receivestatus}&ordersstatus='+orderType
-              });
-        });
+        	var peoplecount = $('#peoplecount').val();
+        	var costsingleprice = $('#costsingleprice').val();
+        	$.ajax({ 
+        		type: 'POST', 
+        		data: {orderid:'${obj.orderinfo.id }',ordersstatus:orderType}, 
+        		url: BASE_PATH + '/admin/intervalidate/checkRecordIsExist.html',
+              	success: function (data) { 
+              		if(data){
+			            layer.open({
+			                type: 2,
+			                title:false,
+			                skin: false, //加上边框
+			                closeBtn:false,//默认 右上角关闭按钮 是否显示
+			                shadeClose:true,
+			                area: ['1000px', '450px'],
+			                content: '${base}/admin/international/addReceiveRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.receivestatus}&ordersstatus='+orderType+'&peoplecount='+peoplecount+'&costsingleprice='+costsingleprice
+			              });
+              		}else{
+              			layer.msg("该状态已经添加收款记录","",3000);
+              		}
+                },
+                error: function (xhr) {
+              		layer.msg("保存失败","",3000);
+                } 
+          });
+       });
 
         //点击 添加记录-预付款 弹框
         $('.addYFK').click(function(){
         	var orderType = $('#orderType').val();
-            layer.open({
-                type: 2,
-                title:false,
-                skin: false, //加上边框
-                closeBtn:false,//默认 右上角关闭按钮 是否显示
-                shadeClose:true,
-                area: ['1000px', '450px'],
-                content: '${base}/admin/international/addPayRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.paystatus}&ordersstatus='+orderType
-              });
+        	var peoplecount = $('#peoplecount').val();
+        	var costsingleprice = $('#costsingleprice').val();
+        	$.ajax({ 
+        		type: 'POST', 
+        		data: {orderid:'${obj.orderinfo.id }',ordersstatus:orderType}, 
+        		url: BASE_PATH + '/admin/intervalidate/checkPayRecordIsExist.html',
+              	success: function (data) { 
+              		if(data){
+			            layer.open({
+			                type: 2,
+			                title:false,
+			                skin: false, //加上边框
+			                closeBtn:false,//默认 右上角关闭按钮 是否显示
+			                shadeClose:true,
+			                area: ['1000px', '450px'],
+			                content: '${base}/admin/international/addPayRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.paystatus}&ordersstatus='+orderType+'&peoplecount='+peoplecount+'&costsingleprice='+costsingleprice
+			             });
+              		}else{
+              			layer.msg("该状态已经添加付款记录","",3000);
+              		}
+                },
+                error: function (xhr) {
+              		layer.msg("保存失败","",3000);
+                } 
+          });
         });
         $('.recordParent p:eq(0)').click(function(){//预收款记录 切换tab
           $(this).addClass('recStyle').siblings().removeClass('recStyle');
@@ -478,54 +527,125 @@
             	var zihtml = '';
             	for(var i = 0 ;i < data.length ; i++){
             		if(data[i].pnrinfo.mainsection === 1){
-            			mainhtml += '<tr><td>'+data[i].pnrinfo.pNR+'</td>';
+            			mainhtml += '<tr><td>';
+            			if(data[i].pnrinfo.pNR && data[i].pnrinfo.pNR != undefined){
+            				mainhtml += data[i].pnrinfo.pNR;
+            			}
+            			mainhtml += '</td>';
             			mainhtml += '<td><ul>';
             			$.each(data[i].airinfo, function(name, value) {
-               				mainhtml += '<li>'+value.leavecity+'/'+value.arrvicity+'</li>';
+               				//mainhtml += '<li>'+value.leavecity+'/'+value.arrvicity+'</li>';
+               				mainhtml += '<li>';
+               				if(value.leavecity && value.leavecity != undefined){
+               					mainhtml += value.leavecity;
+               				}
+               				mainhtml += '/';
+               				if(value.arrvicity && value.arrvicity != undefined){
+               					mainhtml += value.arrvicity;
+               				}
+               				mainhtml += '</li>';
                 		});
             			mainhtml += '</ul></td>'; 
             			mainhtml += '<td><ul>';
             			$.each(data[i].airinfo, function(name, value) {
-               				mainhtml += '<li>'+value.ailinenum+'</li>';
+            				mainhtml += '<li>';
+               				if(value.ailinenum && value.ailinenum != undefined){
+               					mainhtml += value.ailinenum;
+               				}
+               				mainhtml += '</li>';
+               				//mainhtml += '<li>'+value.ailinenum+'</li>';
                 		});
             			mainhtml += '</ul></td>'; 
             			mainhtml += '<td><ul>';
             			$.each(data[i].airinfo, function(name, value) {
-               				mainhtml += '<li>'+value.leavedate+'</li>';
+               				//mainhtml += '<li>'+value.leavedate+'</li>';
+               				mainhtml += '<li>';
+               				if(value.leavedate && value.leavedate != undefined){
+               					mainhtml += value.leavedate;
+               				}
+               				mainhtml += '</li>';
                 		});
             			mainhtml += '</ul></td>'; 
             			mainhtml += '<td><ul>';
             			$.each(data[i].airinfo, function(name, value) {
-               				mainhtml += '<li>'+value.leavetime+'/'+value.arrivetime+'</li>';
+            				mainhtml += '<li>';
+               				if(value.leavetime && value.leavetime != undefined){
+               					mainhtml += value.leavetime;
+               				}
+               				mainhtml += '/';
+               				if(value.arrivetime && value.arrivetime != undefined){
+               					mainhtml += value.arrivetime;
+               				}
+               				mainhtml += '</li>';
                 		});
             			mainhtml += '</ul></td>'; 
-            			mainhtml += '<td>'+data[i].pnrinfo.peoplecount+'</td>';
+            			//人数
+            			mainhtml += '<td>';
+            			if(data[i].pnrinfo.peoplecount && data[i].pnrinfo.peoplecount != undefined){
+            				mainhtml += data[i].pnrinfo.peoplecount;
+            			}
+            			mainhtml += '</td>';
             			mainhtml += '<td><a href="javascript:editAirlineInfo('+data[i].pnrinfo.id+');">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;';
             			mainhtml += '<a href="javascript:visitorInfo('+data[i].pnrinfo.id+');" class="YKinfo">游客信息</a>';
             			mainhtml += '<a href="javascript:;" class="FileDiv">上传游客<input type="file" class="uploadVisitors"><input type="hidden" id="pnrid" name="pnrid" value="'+data[i].pnrinfo.id+'"></a></td>';
             		}else{
-            			zihtml += '<tr><td>'+data[i].pnrinfo.pNR+'</td>';
+            			zihtml += '<tr><td>';
+            			if(data[i].pnrinfo.pNR && data[i].pnrinfo.pNR != undefined){
+            				zihtml += data[i].pnrinfo.pNR;
+            			}
+            			zihtml += '</td>';
             			zihtml += '<td><ul>';
             			$.each(data[i].airinfo, function(name, value) {
-               				zihtml += '<li>'+value.leavecity+'/'+value.arrvicity+'</li>';
+               				//zihtml += '<li>'+value.leavecity+'/'+value.arrvicity+'</li>';
+               				zihtml += '<li>';
+               				if(value.leavecity && value.leavecity != undefined){
+               					zihtml += value.leavecity;
+               				}
+               				zihtml += '/';
+               				if(value.arrvicity && value.arrvicity != undefined){
+               					zihtml += value.arrvicity;
+               				}
+               				zihtml += '</li>';
                 		});
             			zihtml += '</ul></td>'; 
             			zihtml += '<td><ul>';
             			$.each(data[i].airinfo, function(name, value) {
-               				zihtml += '<li>'+value.ailinenum+'</li>';
+            				zihtml += '<li>';
+               				if(value.ailinenum && value.ailinenum != undefined){
+               					zihtml += value.ailinenum;
+               				}
+               				zihtml += '</li>';
+               				//zihtml += '<li>'+value.ailinenum+'</li>';
                 		});
             			zihtml += '</ul></td>'; 
             			zihtml += '<td><ul>';
             			$.each(data[i].airinfo, function(name, value) {
-               				zihtml += '<li>'+value.leavedate+'</li>';
+               				//zihtml += '<li>'+value.leavedate+'</li>';
+               				zihtml += '<li>';
+               				if(value.leavedate && value.leavedate != undefined){
+               					zihtml += value.leavedate;
+               				}
+               				zihtml += '</li>';
                 		});
             			zihtml += '</ul></td>'; 
             			zihtml += '<td><ul>';
             			$.each(data[i].airinfo, function(name, value) {
-               				zihtml += '<li>'+value.leavetime+'/'+value.arrivetime+'</li>';
+               				zihtml += '<li>';
+               				if(value.leavetime && value.leavetime != undefined){
+               					zihtml += value.leavetime;
+               				}
+               				zihtml += '/';
+               				if(value.arrivetime && value.arrivetime != undefined){
+               					zihtml += value.arrivetime;
+               				}
+               				zihtml += '</li>';
                 		});
             			zihtml += '</ul></td>'; 
-            			zihtml += '<td>'+data[i].pnrinfo.peoplecount+'</td>';
+            			zihtml += '<td>';
+            			if(data[i].pnrinfo.peoplecount && data[i].pnrinfo.peoplecount != undefined){
+            				zihtml += data[i].pnrinfo.peoplecount;
+            			}
+            			zihtml += '</td>';
             			zihtml += '<td><a href="javascript:editAirlineInfo('+data[i].pnrinfo.id+');">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;';
             			zihtml += '<a href="javascript:visitorInfo('+data[i].pnrinfo.id+');" class="YKinfo">游客信息</a>';
             			zihtml += '<a href="javascript:;" class="FileDiv">上传游客<input type="file" class="uploadVisitors"><input type="hidden" id="pnrid" name="pnrid" value="'+data[i].pnrinfo.id+'"></a></td>';
@@ -552,41 +672,134 @@
             	var paystatus = data.paystatus;
             	var receivehtml = '';
             	var payhtml = '';
+            	//合计收款罚金
+            	var receivefinesum = 0;
+            	//合计收款应付
+            	var receiveyingsum = 0;
+            	//合计收款税金
+            	var receiveshuisum = 0;
+            	//合计收款实付
+            	var receiveshisum = 0;
+            	//合计付款罚金
+            	var payfinesum = 0;
+            	//合计付款应付
+            	var payyingsum = 0;
+            	//合计付款税金
+            	var payshuisum = 0;
+            	//合计付款实付
+            	var payshisum = 0;
             	$.each(data.record, function(name, value) {
             		if(value.recordtype === receivestatus){
             			receivehtml += '<tr>';
-            			receivehtml +='<td>'+value.orderstatus+'</td>';
-                        receivehtml += '<td>'+value.prepayratio+'</td>';
-                        receivehtml += '<td>'+value.freenumber+'</td>';
-                        receivehtml += '<td>'+value.actualnumber+'</td>';
-                        receivehtml += '<td>'+value.currentfine+'</td>';
-                        receivehtml += '<td>'+value.currentdue+'</td>';
-                        receivehtml += '<td>'+value.ataxprice+'</td>';
-                        receivehtml += '<td>'+value.currentpay+'</td>';
+            			if(value.orderstatus != undefined){
+	            			receivehtml += '<td>'+value.orderstatus+'</td>';
+            			}else{
+            				receivehtml += '<td></td>';
+            			}
+            			if(value.prepayratio != undefined){
+	                        receivehtml += '<td>'+value.prepayratio+'%</td>';
+            			}else{
+            				receivehtml += '<td></td>';
+            			}
+            			if(value.freenumber != undefined){
+	                        receivehtml += '<td>'+value.freenumber+'</td>';
+            			}else{
+            				receivehtml += '<td></td>';
+            			} 
+            			if(value.actualyreduce != undefined){
+	                        receivehtml += '<td>'+value.actualyreduce+'</td>';
+            			}else{
+            				receivehtml += '<td></td>';
+            			} 
+            			if(value.currentfine != undefined){
+	                        receivehtml += '<td>'+value.currentfine+'</td>';
+	                        receivefinesum += parseFloat(value.currentfine);
+            			}else{
+            				receivehtml += '<td></td>';
+            			}
+            			if(value.currentdue != undefined){
+	                        receivehtml += '<td>'+value.currentdue+'</td>';
+	                        receiveyingsum += parseFloat(value.currentdue);
+            			}else{
+            				receivehtml += '<td></td>';
+            			} 
+            			if(value.ataxprice != undefined){
+	                        receivehtml += '<td>'+value.ataxprice+'</td>';
+	                        receiveshuisum += parseFloat(value.ataxprice);
+            			}else{
+            				receivehtml += '<td></td>';
+            			} 
+            			if(value.currentpay != undefined){
+	                        receivehtml += '<td>'+value.currentpay+'</td>';
+	                        receiveshisum += parseFloat(value.currentpay);
+            			}else{
+            				receivehtml += '<td></td>';
+            			} 
                         receivehtml += '<td>';
                         receivehtml += '<a href="javascript:editRecord('+value.id+','+value.recordtype+');">编辑</a>';
                         receivehtml += '</td>';
                         receivehtml += '</tr>';
             		}else{
             			payhtml += '<tr>';
-            			payhtml +='<td>'+value.orderstatus+'</td>';
-                        payhtml += '<td>'+value.prepayratio+'</td>';
-                        payhtml += '<td>'+value.freenumber+'</td>';
-                        payhtml += '<td>'+value.actualnumber+'</td>';
-                        payhtml += '<td>'+value.currentfine+'</td>';
-                        payhtml += '<td>'+value.currentdue+'</td>';
-                        payhtml += '<td>'+value.ataxprice+'</td>';
-                        payhtml += '<td>'+value.currentpay+'</td>';
+            			if(value.orderstatus != undefined){
+	            			payhtml += '<td>'+value.orderstatus+'</td>';
+            			}else{
+            				payhtml += '<td></td>';
+            			}
+            			if(value.prepayratio != undefined){
+	                        payhtml += '<td>'+value.prepayratio+'%</td>';
+            			}else{
+            				payhtml += '<td></td>';
+            			}
+            			if(value.freenumber != undefined){
+	                        payhtml += '<td>'+value.freenumber+'</td>';
+            			}else{
+            				payhtml += '<td></td>';
+            			} 
+            			if(value.actualyreduce != undefined){
+	                        payhtml += '<td>'+value.actualyreduce+'</td>';
+            			}else{
+            				payhtml += '<td></td>';
+            			} 
+            			if(value.currentfine != undefined){
+	                        payhtml += '<td>'+value.currentfine+'</td>';
+	                        payfinesum += parseFloat(value.currentfine);
+            			}else{
+            				payhtml += '<td></td>';
+            			}
+            			if(value.currentdue != undefined){
+	                        payhtml += '<td>'+value.currentdue+'</td>';
+	                        payyingsum += parseFloat(value.currentdue);
+            			}else{
+            				payhtml += '<td></td>';
+            			} 
+            			if(value.ataxprice != undefined){
+	                        payhtml += '<td>'+value.ataxprice+'</td>';
+	                        payshuisum += parseFloat(value.ataxprice);
+            			}else{
+            				payhtml += '<td></td>';
+            			} 
+            			if(value.currentpay != undefined){
+	                        payhtml += '<td>'+value.currentpay+'</td>';
+	                        payshisum += parseFloat(value.currentpay);
+            			}else{
+            				payhtml += '<td></td>';
+            			} 
                         payhtml += '<td>';
                         payhtml += '<a href="javascript:editRecord('+value.id+','+value.recordtype+');">编辑</a>';
                         payhtml += '</td>';
                         payhtml += '</tr>';
             		}
         		});
+            	receivehtml += '<tr><td>合计</td> <td></td> <td></td> <td></td> <td>'+receivefinesum+'</td> <td>'+receiveyingsum+'</td> <td>'+receiveshuisum+'</td> <td>'+receiveshisum+'</td> <td></td>';
+            	payhtml += '<tr><td>合计</td> <td></td> <td></td> <td></td> <td>'+payfinesum+'</td> <td>'+payyingsum+'</td> <td>'+payshuisum+'</td> <td>'+payshisum+'</td> <td></td>';
             	$('#receiverecord').html(receivehtml);
             	$('#payrecord').html(payhtml);
+            	$('#receivable').val(receiveshisum);
+            	$('#costtotal').val(payshisum);
             },
             error: function (xhr) {
+            	
             } 
       });
     }
