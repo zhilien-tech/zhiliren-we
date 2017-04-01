@@ -111,6 +111,7 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 			Sql sql = Sqls.create(sqlString);
 			Cnd cnd = Cnd.NEW();
 			cnd.and("ii.id", "=", record.getInt("id"));
+			cnd.groupBy("tuo.ordersnum");
 			List<Record> orders = dbDao.query(sql, cnd, null);
 			record.put("orders", orders);
 			String username = "";

@@ -25,7 +25,7 @@
                   <thead>
                     <tr>
                       <th>订单号</th>
-                      <th>开票日期</th>
+                      <th>出票日期</th>
                       <th>客户团号</th>
                       <th>客户公司名称</th>
                       <th>联系人</th>
@@ -42,7 +42,7 @@
                 			<td>${one.shortName }</td>
                 			<td>${one.linkMan }</td>
                 			<td>${one.issuer }</td>
-                			<td><fmt:formatNumber type="number" value="${one.incometotal }" pattern="0.00" maxFractionDigits="2"/></td>
+                			<td><fmt:formatNumber type="number" value="${one.currentpay }" pattern="0.00" maxFractionDigits="2"/></td>
                 		</tr>
                 	</c:forEach>
                   </tbody>
@@ -120,7 +120,7 @@
                   </td> --%>
           </tr>
           <tr>
-                  <td>付款单位：</td>
+                  <td>收款单位：</td>
                   <td colspan="3"><input id="paymentunit" name="paymentunit" type="text" class="form-control input-sm" disabled="disabled" value="${obj.invoiceinfo.paymentunit }"></td>
           </tr>
           <tr>
