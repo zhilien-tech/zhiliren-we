@@ -40,6 +40,15 @@ function saveInternationalDetail(){
 	orderinfo.orderedid = orderedid;
 	var customerId = $('#customerId').val();
 	orderinfo.customerId = customerId;
+	var airlinecom = $('#airlinecom').val();
+	if (airlinecom) {
+		airlinecom = airlinecom.join(',');
+		}
+	orderinfo.airlinecom = airlinecom;
+	var peoplecount = $('#peoplecount').val();
+	orderinfo.peoplecount = peoplecount;
+	var costsingleprice = $('#costsingleprice').val();
+	orderinfo.costsingleprice = costsingleprice;
 	$.ajax({ 
 		type: 'POST', 
 		data: {data:JSON.stringify(orderinfo),financeData:JSON.stringify(getFinanceFormData())}, 
@@ -96,7 +105,7 @@ function dataURLtoBlob(dataurl) {
     return new Blob([u8arr], {type:mime});
 }
 //航红公司下拉
-$('#aircom').select2({
+$('#airlinecom').select2({
 	ajax : {
 		url : BASE_PATH + '/admin/search/getAirLineSelect.html',
 		dataType : 'json',

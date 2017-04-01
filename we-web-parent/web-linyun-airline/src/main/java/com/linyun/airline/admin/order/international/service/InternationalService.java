@@ -90,6 +90,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	private static final String YHCODE = "YH";
 	//付款用途
 	private static final String FKYTCODE = "FKYT";
+	//航空公司字典代码
+	private static final String AIRCOMCODE = "HKGS";
 	@Inject
 	private EditPlanService editPlanService;
 	@Inject
@@ -303,6 +305,10 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		result.put("paymethodenum", EnumUtil.enum2(PayMethodEnum.class));
 		result.put("receivestatus", PayReceiveTypeEnum.RECEIVE.intKey());
 		result.put("paystatus", PayReceiveTypeEnum.PAY.intKey());
+		result.put(
+				"aircomselect",
+				dbDao.query(DictInfoEntity.class,
+						Cnd.where("typeCode", "=", AIRCOMCODE).and("dictCode", "=", orderinfo.getAirlinecom()), null));
 		return result;
 	}
 
@@ -325,6 +331,13 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		TUpOrderEntity orderinfo = this.fetch(orderedid);
 		Integer orderType = Integer.valueOf((String) fromJson.get("orderType"));
 		orderinfo.setOrdersstatus(orderType);
+		if (!Util.isEmpty(fromJson.get("peoplecount"))) {
+			orderinfo.setPeoplecount(Integer.valueOf((String) fromJson.get("peoplecount")));
+		}
+		orderinfo.setAirlinecom((String) fromJson.get("airlinecom"));
+		if (!Util.isEmpty(fromJson.get("costsingleprice"))) {
+			orderinfo.setCostsingleprice(Double.valueOf((String) fromJson.get("costsingleprice")));
+		}
 		dbDao.update(orderinfo);
 		String financeData = request.getParameter("financeData");
 		saveFinanceData(financeData, orderType, user);
@@ -648,9 +661,36 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		String orderid = request.getParameter("orderid");
 		String payreceivestatus = request.getParameter("payreceivestatus");
 		String ordersstatus = request.getParameter("ordersstatus");
+		String peoplecount = request.getParameter("peoplecount");
+		String costsingleprice = request.getParameter("costsingleprice");
 		result.put("orderid", orderid);
 		result.put("recordtype", payreceivestatus);
 		result.put("ordersstatus", ordersstatus);
+		result.put("costsingleprice", costsingleprice);
+		//准备实际人数数据
+		String sqlString = sqlManager.get("get_international_last_payreceive_record");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("t.orderid", "=", orderid);
+		cnd.and("t.recordtype", "=", payreceivestatus);
+		List<Record> payreceiverecord = dbDao.query(sql, cnd, null);
+		if (payreceiverecord.size() > 0) {
+			if (!Util.isEmpty(payreceiverecord.get(0).get("actualnumber"))) {
+				peoplecount = String.valueOf(payreceiverecord.get(0).get("actualnumber"));
+			}
+		}
+		//准备罚金
+		Integer fineprice = 0;
+		String sqlString1 = sqlManager.get("get_international_record_sumprice");
+		Sql sql1 = Sqls.create(sqlString1);
+		Cnd cnd1 = Cnd.NEW();
+		cnd1.and("orderid", "=", orderid);
+		cnd1.and("recordtype", "=", payreceivestatus);
+		cnd1.groupBy("orderid", "recordtype");
+		List<Record> payreceiverecordsum = dbDao.query(sql1, cnd1, null);
+		if (payreceiverecordsum.size() > 0 && !Util.isEmpty(payreceiverecordsum.get(0).get("yishou"))) {
+			fineprice = payreceiverecordsum.get(0).getInt("yishou");
+		}
 		//币种下拉
 		List<DictInfoEntity> bzcode = new ArrayList<DictInfoEntity>();
 		try {
@@ -660,6 +700,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 
 		}
 		result.put("bzcode", bzcode);
+		result.put("autualypeople", peoplecount);
+		result.put("fineprice", fineprice);
 		return result;
 	}
 
@@ -676,10 +718,13 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		payreceive.setOpid(new Long(user.getId()).intValue());
 		payreceive.setOptime(new Date());
-		for (InternationalStatusEnum payenum : InternationalStatusEnum.values()) {
-			if (Integer.valueOf(payreceive.getOrderstatus()).equals(payenum.intKey())) {
-				payreceive.setOrderstatus(payenum.value());
-				break;
+		if (!Util.isEmpty(payreceive.getOrderstatus())) {
+			payreceive.setOrderstatusid(Integer.valueOf(payreceive.getOrderstatus()));
+			for (InternationalStatusEnum payenum : InternationalStatusEnum.values()) {
+				if (Integer.valueOf(payreceive.getOrderstatus()).equals(payenum.intKey())) {
+					payreceive.setOrderstatus(payenum.value());
+					break;
+				}
 			}
 		}
 		return dbDao.insert(payreceive);
@@ -765,7 +810,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		payreceive.setOpid(new Long(user.getId()).intValue());
-		payreceive.setOptime(new Date());
+		//payreceive.setOptime(new Date());
 		return dbDao.update(payreceive);
 	}
 
@@ -829,18 +874,20 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		Map<String, Object> result = new HashMap<String, Object>();
 		String ids = request.getParameter("ids");
 		String orderstatus = request.getParameter("orderstatus");
-		String sqlString = sqlManager.get("get_sea_invoce_table_data");
+		String sqlString = sqlManager.get("get_international_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.limit();
 		//cnd.and("tuo.ordersstatus", "=", InternationalStatusEnum.TICKETING.intKey());
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
 		cnd.and("tuo.id", "in", ids);
+		cnd.and("tprr.orderstatusid", "=", orderstatus);
+		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.RECEIVE.intKey());
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//计算合计金额
 		double sumincome = 0;
 		for (Record record : orders) {
-			if (!Util.isEmpty(record.get("incometotal"))) {
-				Double incometotal = (Double) record.get("incometotal");
+			if (!Util.isEmpty(record.get("currentpay"))) {
+				Double incometotal = (Double) record.get("currentpay");
 				sumincome += incometotal;
 			}
 		}
@@ -952,12 +999,14 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		Map<String, Object> result = new HashMap<String, Object>();
 		String ids = request.getParameter("ids");
 		String orderstatus = request.getParameter("orderstatus");
-		String sqlString = sqlManager.get("get_sea_invoce_table_data");
+		String sqlString = sqlManager.get("get_international_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
-		Cnd cnd = Cnd.limit();
+		Cnd cnd = Cnd.NEW();
 		//cnd.and("tuo.ordersstatus", "=", InternationalStatusEnum.TICKETING.intKey());
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
 		cnd.and("tuo.id", "in", ids);
+		cnd.and("tprr.orderstatusid", "=", orderstatus);
+		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.PAY.intKey());
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		result.put("orders", orders);
 		try {
