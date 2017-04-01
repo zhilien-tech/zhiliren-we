@@ -880,8 +880,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		//cnd.and("tuo.ordersstatus", "=", InternationalStatusEnum.TICKETING.intKey());
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
 		cnd.and("tuo.id", "in", ids);
-		cnd.and("tprr.orderstatusid", "=", orderstatus);
-		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.RECEIVE.intKey());
+		sql.setParam("orderstatus", orderstatus);
+		sql.setParam("recordtype", PayReceiveTypeEnum.RECEIVE.intKey());
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//计算合计金额
 		double sumincome = 0;
@@ -1003,10 +1003,12 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		//cnd.and("tuo.ordersstatus", "=", InternationalStatusEnum.TICKETING.intKey());
-		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
 		cnd.and("tuo.id", "in", ids);
-		cnd.and("tprr.orderstatusid", "=", orderstatus);
-		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.PAY.intKey());
+		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
+		sql.setParam("orderstatus", orderstatus);
+		sql.setParam("recordtype", PayReceiveTypeEnum.PAY.intKey());
+		/*cnd.and("tprr.orderstatusid", "=", orderstatus);
+		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.PAY.intKey());*/
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		result.put("orders", orders);
 		try {

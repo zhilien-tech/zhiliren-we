@@ -154,18 +154,20 @@ $condition
 /*get_international_sea_invoce_table_data*/
 SELECT
 	tprr.orderstatus,
-	 tuo.*, tfi.billingdate,
-	 tfi.cusgroupnum,
-	 tci.shortName,
-	 tci.NAME customename,
-	 tci.linkMan,
-	 tfi.issuer,
-	 tfi.incometotal,
-     tprr.currentpay
+	tuo.*, tfi.billingdate,
+	tfi.cusgroupnum,
+	tci.shortName,
+	tci. NAME customename,
+	tci.linkMan,
+	tfi. ISSUER,
+	tfi.incometotal,
+	tprr.currentpay
 FROM
 	t_up_order tuo
-left JOIN t_customer_info tci ON tuo.userid = tci.id
+LEFT JOIN t_customer_info tci ON tuo.userid = tci.id
 LEFT JOIN t_finance_info tfi ON tuo.id = tfi.orderid
 LEFT JOIN t_pay_receive_record tprr ON tprr.orderid = tuo.id
+AND tprr.orderstatusid = @orderstatus
+AND tprr.recordtype = @recordtype
 $condition	
 
