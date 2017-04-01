@@ -47,7 +47,7 @@
                 			<td>${one.actualnumber }</td>
                 			<td>${one.issuer }</td>
                 			<td>
-                				<fmt:formatNumber type="number" value="${one.saleprice }" pattern="0.00" maxFractionDigits="2"/>
+                				<fmt:formatNumber type="number" value="${one.currentpay }" pattern="0.00" maxFractionDigits="2"/>
                 			</td>
                 		</tr>
                 	</c:forEach>

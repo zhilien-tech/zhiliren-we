@@ -63,12 +63,12 @@ function initRecDataTable() {
 		            		return result;
 		            	}
 		            },
-		            {"data": "incometotal", "bSortable": false,
-		            	render: function(data, type, row, meta) {
+		            {"data": "currentpay", "bSortable": false,
+		            	render:function(data, type, row, meta) {
 		            		var result = '<ul> ';
 		            		$.each(row.orders, function(name, value) {
-		            			if(value && value.incometotal!=undefined){
-		            				result += '<li style="list-style:none;">'+(value.incometotal).toFixed(2)+'</li>';
+		            			if(value && value.currentpay!=undefined){
+		            				result += '<li style="list-style:none;">'+(value.currentpay).toFixed(2)+'</li>';
 		            			}
 		            		});
 		            		result += '</ul>';
