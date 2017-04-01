@@ -359,8 +359,8 @@
 	                	}else{
 	                		msgT = "";
 	                	}
-	                	content += '<li><a href="#"><span>'+dStr+'</span><span>'+tStr+'</span>'+''+msgC+'</a></li>';
-	                	/* content += '<li><a href="javascript:;" onclick="openOrderById('+orderId+','+orderType+','+userMsgId+');"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +''+msgC+'</a></li>'; */
+	                	/* content += '<li><a href="#"><span>'+dStr+'</span><span>'+tStr+'</span>'+''+msgC+'</a></li>'; */
+	                	content += '<li><a href="javascript:;" onclick="openOrderById('+orderId+','+orderType+','+userMsgId+');"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +''+msgC+'</a></li>'; 
 		            });
 					if(num){
 						msgNumObj.html(num);
