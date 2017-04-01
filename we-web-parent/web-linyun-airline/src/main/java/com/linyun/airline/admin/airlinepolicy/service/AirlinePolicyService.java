@@ -68,7 +68,7 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 		/*查询航空公司*/
 		Cnd cnd = Cnd.NEW();
 		cnd.and("companyId", "=", companyId);
-		cnd.and("airlineCompanyName", "is not", null);
+		cnd.and("temp.airlineCompanyName", "is not", null);
 		cnd.groupBy("airlineCompanyId");
 
 		sql.setCondition(cnd);
@@ -93,7 +93,13 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 
 		addForm.setCreateTime(new Date());
 		addForm.setUpdateTime(new Date());
+		/*dbDao.fetch(ComDictInfoEntity.class, addForm.getAreaId());*/
+		try {
+			TAirlinePolicyEntity tap = dbDao.fetch(TAirlinePolicyEntity.class, Long.valueOf(addForm.getAreaName()));
+			addForm.setAreaName(tap.getAreaName());
+		} catch (Exception e1) {
 
+		}
 		addForm.setStatus(AirlinePolicyEnum.ENABLE.intKey());
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Long companyId = company.getId();
@@ -235,10 +241,11 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 
 	/**
 	 * 根据输入显示地区
+	 * @param session 
 	 */
 	//
-	public Object selectArea(String findCompany, String companyName) {
-		List<Record> companyNameList = getAreaList(findCompany, companyName);
+	public Object selectArea(String findCompany, String companyName, HttpSession session) {
+		List<Record> companyNameList = getAreaList(findCompany, companyName, session);
 		List<Select2Option> result = transform2SelectOptions1(companyNameList);
 		return result;
 	}
@@ -257,12 +264,16 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 
 	/**
 	 * 获取公司名称下拉框
+	 * @param session 
 	 * @param dictName
 	 */
-	public List<Record> getAreaList(String findCompany, final String companyName) {
+	public List<Record> getAreaList(String findCompany, final String companyName, HttpSession session) {
 		String sqlString = sqlManager.get("airlinepolicy_select2_newarea");
 		Sql sql = Sqls.create(sqlString);
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long companyId = company.getId();
 		Cnd cnd = Cnd.NEW();
+		cnd.and("companyId", "=", companyId);
 		cnd.and("areaName", "like", Strings.trim(findCompany) + "%");
 		if (!Util.isEmpty(companyName)) {
 			cnd.and("id", "NOT IN", companyName);
@@ -298,6 +309,12 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 		String url = updateForm.getUrl();
 		String extend = null;
 		TAirlinePolicyEntity airlinePolicy = dbDao.fetch(TAirlinePolicyEntity.class, id);
+		try {
+			TAirlinePolicyEntity tap = dbDao.fetch(TAirlinePolicyEntity.class, Long.valueOf(updateForm.getAreaName()));
+			updateForm.setAreaName(tap.getAreaName());
+		} catch (Exception e1) {
+
+		}
 		if (!Util.isEmpty(url)) {
 			extend = url.substring(url.lastIndexOf("."), url.length());
 
