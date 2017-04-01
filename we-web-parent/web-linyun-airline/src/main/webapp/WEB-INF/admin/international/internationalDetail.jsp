@@ -79,13 +79,17 @@
                <div class="infofooter">
                  <table>
                    <tr>
-                     <td><label>客户姓名：</label></td>
+                     <td><label>
+                     	<font id="customeidcolor"> 客户姓名：</font>
+                     </label></td>
                      <td><input id="linkName" name="linkName" disabled="disabled" type="text" class="form-control input-sm" value="${obj.custominfo.linkMan }">
                      	<input id="customerId" name="customerId" type="hidden" value="${obj.custominfo.id }"/>
                      	<!-- 订单id -->
                      	<input id="orderedid" name="orderedid" type="hidden" value="${obj.orderinfo.id }"></td>
-                     <td><label style="position: relative;top: 4px;">结算方式：</label></td>
-                     <td colspan="3"><pre class="preTxt">不限 信用额度：0  临时额度：0  历史欠款：0  预存款：0</pre></td>
+	                     <td><label style="position: relative;top: 4px;">结算方式：</label></td>
+                     	<td colspan="3"><pre class="preTxt">不限 信用额度：<fmt:formatNumber type="number" value="${empty obj.custominfo.creditLine?0:obj.custominfo.creditLine}" pattern="0.00" maxFractionDigits="2"/>  
+                     		<font id="historyqiancolor"> 历史欠款：<fmt:formatNumber type="number" value="${empty obj.custominfo.arrears? 0.00:obj.custominfo.arrears}" pattern="0.00" maxFractionDigits="2"/></font>　
+                   		 预存款：<fmt:formatNumber type="number" value="${empty obj.custominfo.preDeposit?0:obj.custominfo.preDeposit}" pattern="0.00" maxFractionDigits="2"/></pre></td>
                      <td><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
                    </tr>
                  </table>
@@ -355,6 +359,8 @@
   <!--end footer-->
   <script type="text/javascript">
   	var BASE_PATH = '${base}';
+  	var creditLine = '${obj.custominfo.creditLine}';
+	var arrears = '${obj.custominfo.arrears}';
   </script>
   <!--Javascript Flie-->
   <script src="${base }/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -521,54 +527,125 @@
             	var zihtml = '';
             	for(var i = 0 ;i < data.length ; i++){
             		if(data[i].pnrinfo.mainsection === 1){
-            			mainhtml += '<tr><td>'+data[i].pnrinfo.pNR+'</td>';
+            			mainhtml += '<tr><td>';
+            			if(data[i].pnrinfo.pNR && data[i].pnrinfo.pNR != undefined){
+            				mainhtml += data[i].pnrinfo.pNR;
+            			}
+            			mainhtml += '</td>';
             			mainhtml += '<td><ul>';
             			$.each(data[i].airinfo, function(name, value) {
-               				mainhtml += '<li>'+value.leavecity+'/'+value.arrvicity+'</li>';
+               				//mainhtml += '<li>'+value.leavecity+'/'+value.arrvicity+'</li>';
+               				mainhtml += '<li>';
+               				if(value.leavecity && value.leavecity != undefined){
+               					mainhtml += value.leavecity;
+               				}
+               				mainhtml += '/';
+               				if(value.arrvicity && value.arrvicity != undefined){
+               					mainhtml += value.arrvicity;
+               				}
+               				mainhtml += '</li>';
                 		});
             			mainhtml += '</ul></td>'; 
             			mainhtml += '<td><ul>';
             			$.each(data[i].airinfo, function(name, value) {
-               				mainhtml += '<li>'+value.ailinenum+'</li>';
+            				mainhtml += '<li>';
+               				if(value.ailinenum && value.ailinenum != undefined){
+               					mainhtml += value.ailinenum;
+               				}
+               				mainhtml += '</li>';
+               				//mainhtml += '<li>'+value.ailinenum+'</li>';
                 		});
             			mainhtml += '</ul></td>'; 
             			mainhtml += '<td><ul>';
             			$.each(data[i].airinfo, function(name, value) {
-               				mainhtml += '<li>'+value.leavedate+'</li>';
+               				//mainhtml += '<li>'+value.leavedate+'</li>';
+               				mainhtml += '<li>';
+               				if(value.leavedate && value.leavedate != undefined){
+               					mainhtml += value.leavedate;
+               				}
+               				mainhtml += '</li>';
                 		});
             			mainhtml += '</ul></td>'; 
             			mainhtml += '<td><ul>';
             			$.each(data[i].airinfo, function(name, value) {
-               				mainhtml += '<li>'+value.leavetime+'/'+value.arrivetime+'</li>';
+            				mainhtml += '<li>';
+               				if(value.leavetime && value.leavetime != undefined){
+               					mainhtml += value.leavetime;
+               				}
+               				mainhtml += '/';
+               				if(value.arrivetime && value.arrivetime != undefined){
+               					mainhtml += value.arrivetime;
+               				}
+               				mainhtml += '</li>';
                 		});
             			mainhtml += '</ul></td>'; 
-            			mainhtml += '<td>'+data[i].pnrinfo.peoplecount+'</td>';
+            			//人数
+            			mainhtml += '<td>';
+            			if(data[i].pnrinfo.peoplecount && data[i].pnrinfo.peoplecount != undefined){
+            				mainhtml += data[i].pnrinfo.peoplecount;
+            			}
+            			mainhtml += '</td>';
             			mainhtml += '<td><a href="javascript:editAirlineInfo('+data[i].pnrinfo.id+');">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;';
             			mainhtml += '<a href="javascript:visitorInfo('+data[i].pnrinfo.id+');" class="YKinfo">游客信息</a>';
             			mainhtml += '<a href="javascript:;" class="FileDiv">上传游客<input type="file" class="uploadVisitors"><input type="hidden" id="pnrid" name="pnrid" value="'+data[i].pnrinfo.id+'"></a></td>';
             		}else{
-            			zihtml += '<tr><td>'+data[i].pnrinfo.pNR+'</td>';
+            			zihtml += '<tr><td>';
+            			if(data[i].pnrinfo.pNR && data[i].pnrinfo.pNR != undefined){
+            				zihtml += data[i].pnrinfo.pNR;
+            			}
+            			zihtml += '</td>';
             			zihtml += '<td><ul>';
             			$.each(data[i].airinfo, function(name, value) {
-               				zihtml += '<li>'+value.leavecity+'/'+value.arrvicity+'</li>';
+               				//zihtml += '<li>'+value.leavecity+'/'+value.arrvicity+'</li>';
+               				zihtml += '<li>';
+               				if(value.leavecity && value.leavecity != undefined){
+               					zihtml += value.leavecity;
+               				}
+               				zihtml += '/';
+               				if(value.arrvicity && value.arrvicity != undefined){
+               					zihtml += value.arrvicity;
+               				}
+               				zihtml += '</li>';
                 		});
             			zihtml += '</ul></td>'; 
             			zihtml += '<td><ul>';
             			$.each(data[i].airinfo, function(name, value) {
-               				zihtml += '<li>'+value.ailinenum+'</li>';
+            				zihtml += '<li>';
+               				if(value.ailinenum && value.ailinenum != undefined){
+               					zihtml += value.ailinenum;
+               				}
+               				zihtml += '</li>';
+               				//zihtml += '<li>'+value.ailinenum+'</li>';
                 		});
             			zihtml += '</ul></td>'; 
             			zihtml += '<td><ul>';
             			$.each(data[i].airinfo, function(name, value) {
-               				zihtml += '<li>'+value.leavedate+'</li>';
+               				//zihtml += '<li>'+value.leavedate+'</li>';
+               				zihtml += '<li>';
+               				if(value.leavedate && value.leavedate != undefined){
+               					zihtml += value.leavedate;
+               				}
+               				zihtml += '</li>';
                 		});
             			zihtml += '</ul></td>'; 
             			zihtml += '<td><ul>';
             			$.each(data[i].airinfo, function(name, value) {
-               				zihtml += '<li>'+value.leavetime+'/'+value.arrivetime+'</li>';
+               				zihtml += '<li>';
+               				if(value.leavetime && value.leavetime != undefined){
+               					zihtml += value.leavetime;
+               				}
+               				zihtml += '/';
+               				if(value.arrivetime && value.arrivetime != undefined){
+               					zihtml += value.arrivetime;
+               				}
+               				zihtml += '</li>';
                 		});
             			zihtml += '</ul></td>'; 
-            			zihtml += '<td>'+data[i].pnrinfo.peoplecount+'</td>';
+            			zihtml += '<td>';
+            			if(data[i].pnrinfo.peoplecount && data[i].pnrinfo.peoplecount != undefined){
+            				zihtml += data[i].pnrinfo.peoplecount;
+            			}
+            			zihtml += '</td>';
             			zihtml += '<td><a href="javascript:editAirlineInfo('+data[i].pnrinfo.id+');">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;';
             			zihtml += '<a href="javascript:visitorInfo('+data[i].pnrinfo.id+');" class="YKinfo">游客信息</a>';
             			zihtml += '<a href="javascript:;" class="FileDiv">上传游客<input type="file" class="uploadVisitors"><input type="hidden" id="pnrid" name="pnrid" value="'+data[i].pnrinfo.id+'"></a></td>';

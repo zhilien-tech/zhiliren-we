@@ -50,6 +50,8 @@ public class InterPaymentSqlForm extends DataTablesParamForm {
 			cnd.and("tp.companyid", "=", companyid);
 		}
 		cnd.and("tpo.paystauts", "!=", AccountPayEnum.REFUSE.intKey());
+		cnd.orderBy("tpo.paystauts", "asc");
+		cnd.orderBy("tpo.payDate", "desc");
 		return cnd;
 	}
 

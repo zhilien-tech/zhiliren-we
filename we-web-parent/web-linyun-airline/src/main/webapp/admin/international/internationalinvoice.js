@@ -78,9 +78,11 @@ function initkaiInvoiceTable() {
                   {"data": "invoiceitem", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                     		var result = '';
-                    		if(row.invoiceitem){
-                    			result = row.invoiceitem;
-                    		}
+                    		$.each(row.ytselect, function(name, value) {
+                    			if(value.id === row.invoiceitem){
+                    				result = value.comDictName;
+                    			}
+                    		});
                     		return result;
                     	}
                   },
@@ -89,9 +91,11 @@ function initkaiInvoiceTable() {
                   {"data": "status", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                   		var result = '';
-                  		if(row.status && row.status != undefined){
-                  			result = row.status;
-                  		}
+                  		$.each(row.invoiceinfoenum, function(name, value) {
+                  			if(row.status == name){
+                  				result = value;
+                  			}
+                  		});
                   		return result;
                   	}
                   },
@@ -199,9 +203,11 @@ function initshouInvoiceTable() {
                   {"data": "invoiceitem", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                     		var result = '';
-                    		if(row.invoiceitem){
-                    			result = row.invoiceitem;
-                    		}
+                    		$.each(row.ytselect, function(name, value) {
+                    			if(value.id === row.invoiceitem){
+                    				result = value.comDictName;
+                    			}
+                    		});
                     		return result;
                     	}
                   },
@@ -210,9 +216,11 @@ function initshouInvoiceTable() {
                   {"data": "status", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                   		var result = '';
-                  		if(row.status && row.status != undefined){
-                  			result = row.status;
-                  		}
+                  		$.each(row.invoiceinfoenum, function(name, value) {
+                  			if(row.status == name){
+                  				result = value;
+                  			}
+                  		});
                   		return result;
                   	}
                   },

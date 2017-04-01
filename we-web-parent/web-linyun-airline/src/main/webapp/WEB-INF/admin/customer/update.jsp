@@ -14,14 +14,9 @@
 <link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css" />
 <link href="${base }/public/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
-	.select2-container {
-		width: 95.5% !important;
-		display: inline-block;
-	}
-	.seleSpanWid .select2-container {
-		width: 98.5% !important;
-		display: inline-block;
-	}
+	.select2-container {width: 95.5% !important;display: inline-block;}
+	.seleSpanWid .select2-container {width: 98.5% !important;display: inline-block;}
+	.modal-content{box-shadow: 0 0 0 #fff;}
 </style>
 
 

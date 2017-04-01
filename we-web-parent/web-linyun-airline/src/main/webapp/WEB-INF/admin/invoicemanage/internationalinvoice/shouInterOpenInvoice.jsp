@@ -43,7 +43,7 @@
                   			<td>${one.shortName }</td>
                   			<td>${one.linkMan }</td>
                   			<td>${one.issuer }</td>
-                  			<td><fmt:formatNumber type="number" value="${one.incometotal }" pattern="0.00" maxFractionDigits="2"/></td>
+                  			<td><fmt:formatNumber type="number" value="${one.currentpay }" pattern="0.00" maxFractionDigits="2"/></td>
                   		</tr>
                   	</c:forEach>
                   </tbody>
@@ -81,7 +81,7 @@
                     <td id="sumjine"><fmt:formatNumber type="number" value="${obj.sumjine }"  pattern="0.00" maxFractionDigits="2"/></td>
                   </tr>
          </table>
-         <div class="bankSlipImg" align="center"><img id="shuidanimg" width="100%" height="305" alt="" src="${obj.billurl }"></div>
+         <div class="bankSlipImg" align="center"><img id="shuidanimg" width="100%" height="305" alt="" src="${obj.bill.receiptUrl }"></div>
       </div>
       <span class="invoiceInfo-header">发票信息</span>
       <div class="invoiceInfo-body">

@@ -83,7 +83,7 @@
       <div class="invoiceInfo-body">
         <table class="payTable2">
           <tr>
-                  <td>发票项目：</td>
+                  <td>项目用途：</td>
                   <td>
                     <select id="invoiceitem" name="invoiceitem" class="form-control input-sm">
                         <option value="1">团款</option>
@@ -188,6 +188,8 @@
 		          lastDiv.after(newDiv);
 		          var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
 		          newDiv.find("p").html(No); 
+		          newDiv.find('#preView').parent().remove();
+		          newDiv.find('.deleteInvoice').parent().remove();
 		          newDiv.find('.addIcon').parent().remove();
 		          newDiv.find('.fileUL').append('<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>');
 		      });
@@ -196,12 +198,23 @@
 		          $(this).parents('.cloneTR').remove();
 		      });
 		      
-		      $(document).on('click','#fileName',function(){
+		      $(document).on('click','#preView',function(){
 		   	  	  var invoiceurl = $(this).parent().parent().parent().find('[name=invoiceurl]').val();
 		   	  	  //alert(invoiceurl);
 		          document.getElementById('light').style.display='block';
 		          //document.getElementById('fade').style.display='block';
 		          document.getElementById('fapiaoid').src=invoiceurl; 
+		      });
+		      $(document).on('click','.deleteInvoice',function(){
+		   	  	  var invoicedetaildiv = $(this).parent().parent().parent();
+		   	  	  invoicedetaildiv.find('[name=invoiceurl]').val('');
+		   	  	  invoicedetaildiv.find('[name=fileName]').html('未选择文件');
+		   	  	  invoicedetaildiv.find('#preView').remove();
+		   	  	  invoicedetaildiv.find('.deleteInvoice').remove();
+		   	  	  //alert(invoiceurl);
+		          //document.getElementById('light').style.display='block';
+		          //document.getElementById('fade').style.display='block';
+		          document.getElementById('fapiaoid').src=''; 
 		      });
      
      });
