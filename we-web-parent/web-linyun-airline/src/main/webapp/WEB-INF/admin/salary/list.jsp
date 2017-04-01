@@ -149,7 +149,15 @@ function initDatatable() {
         },
         "columns": [
                     {"data": "drawer", "bSortable": false},//开票人
-                    {"data": "groupnumber", "bSortable": false},//团数
+                    {"data": "groupnumber", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var depositBalance = row.groupnumber;
+                    		if(depositBalance==null||depositBalance==''){
+                    			return 0;
+                    		}
+                    		return depositBalance;
+                    	}			
+                    },//团数
                     {"data": "headcount", "bSortable": false},//人头数
                     {"data": "updatetime", "bSortable": false},//时间
                     {"data": "costtotal", "bSortable": false,

@@ -157,9 +157,10 @@ public class AirlinePolicyModule {
 	 */
 	@At
 	@POST
-	public Object selectArea(@Param("p") final String findCompany, @Param("companyName") final String companyName) {
+	public Object selectArea(@Param("p") final String findCompany, @Param("companyName") final String companyName,
+			final HttpSession session) {
 
-		return this.airlinePolicyService.selectArea(findCompany, companyName);
+		return this.airlinePolicyService.selectArea(findCompany, companyName, session);
 	}
 
 	/**

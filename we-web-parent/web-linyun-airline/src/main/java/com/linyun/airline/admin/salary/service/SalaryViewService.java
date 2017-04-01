@@ -125,6 +125,15 @@ public class SalaryViewService extends BaseService<TSalaryEntity> {
 	}
 
 	public void addSalary() {
+		String stringSql2 = sqlManager.get("salary_add_no");
+		Sql sql2 = Sqls.create(stringSql2);
+		addSalary1(sql2);
+		String stringSql = sqlManager.get("salary_add");
+		Sql sql = Sqls.create(stringSql);
+		addSalary1(sql);
+	}
+
+	public void addSalary1(Sql sql2) {
 
 		/**
 		 * 获取公司的id
@@ -132,8 +141,8 @@ public class SalaryViewService extends BaseService<TSalaryEntity> {
 		 */
 		/*TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Long companyId = company.getId();*/
-		String stringSql = sqlManager.get("salary_add");
-		Sql sql = Sqls.create(stringSql);
+		/*String stringSql = sqlManager.get("salary_add");*/
+		Sql sql = sql2;
 		/*	Cnd cnd = Cnd.NEW();
 			cnd.and("comId", "=", companyId);
 			cnd.and("month", "=", "month(now())");

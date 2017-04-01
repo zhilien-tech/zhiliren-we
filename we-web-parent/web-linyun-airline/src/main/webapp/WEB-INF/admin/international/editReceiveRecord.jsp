@@ -21,6 +21,7 @@
             <input id="orderid" name="orderid" type="hidden" value="${obj.recordinfo.orderid }">
             <input id="recordtype" name="recordtype" type="hidden" value="${obj.recordinfo.recordtype }">
             <input id="orderstatus" name="orderstatus" type="hidden" value="${obj.recordinfo.orderstatus }">
+            <input id="orderstatusid" name="orderstatusid" type="hidden" value="${obj.recordinfo.orderstatusid }">
             <h4>预收款</h4>
           </div>
           <div class="modal-body" style="height:481px;overflow-y:auto; ">
