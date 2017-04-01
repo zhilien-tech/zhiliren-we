@@ -166,4 +166,8 @@ function successCallback(id){
 		  layer.msg("确认收发票成功",{time: 2000});
 	  }
 }
+$(function(){
+	$('.menu-ul:eq(0)').hide(); 
+	$('.menu-ul:eq(1) li:eq(0) a').css("color","rgb(245, 245, 245)");
+});
 </script>

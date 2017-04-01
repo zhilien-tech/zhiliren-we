@@ -1,6 +1,7 @@
 var KaiInterInvoiceTable;
 //初始化表格
 initKaiInterInvoiceTable();
+kaiInvoiceSelectData();
 function initKaiInterInvoiceTable() {
 	KaiInterInvoiceTable = $('#KaiInterInvoiceTable').DataTable({
   	"searching":false,
@@ -280,39 +281,74 @@ function openshouInvoiceEdit(id){
         content: BASE_PATH + '/admin/invoicemanage/internationalinvoice/shouInterOpenInvoice.html?id='+id
     });
 }
-/*//收发票 搜索按钮
-$("#shouSearchInvoiceBtn").on('click', function () {
-	alert(111);
+//开发票 搜索按钮
+$("#kaiSearchInvoiceBtn").on('click',kaiInvoiceSelectData());
+function kaiInvoiceSelectData() {
+	var status = $("#kaiInvoiceSelect").val();
+	var billuserid = $("#kaibilluserid").val();
+	var kaiInvoiceBeginDate = $("#kaiInvoiceBeginDate").val();
+	var kaiInvoiceEndDate = $("#kaiInvoiceEndDate").val();
+	var invoicenum = $("#invoicenumId").val();
+	var paymentunit = $("#invoicenumId").val();
+	
+    var param = {
+		        "status":status,
+		        "billuserid":billuserid,
+		        "kaiInvoiceBeginDate":kaiInvoiceBeginDate,
+		        "kaiInvoiceEndDate":kaiInvoiceEndDate,
+				"invoicenum": invoicenum,
+				"paymentunit": paymentunit
+		    };
+    	KaiInterInvoiceTable.settings()[0].ajax.data = param;
+    	KaiInterInvoiceTable.ajax.reload(
+			function(json){
+				autoHighLoad($('#KaiInterInvoiceTable'));
+			}
+    	);
+}
+//开发票状态选择按钮
+$("#kaiInvoiceSelect").change(function(){
+	kaiInvoiceSelectData();
+});
+//开发票开票人选择按钮
+$("#kaibilluserid").change(function(){
+	kaiInvoiceSelectData();
+});
+/*清除 开发票   检索项*/
+$('#kaiEmptyBtn').click(function(){
+	clearSearchTxt("kaiInvoiceSelect","kaibilluserid", "kaiInvoiceBeginDate", "kaiInvoiceEndDate", "invoicenumId");
+	kaiInvoiceSelectData();
+});
+
+//收发票 搜索按钮
+$("#shouSearchInvoiceBtn").on('click',shouInvoiceSelectData());
+function shouInvoiceSelectData() {
 	var status = $("#shouInvoiceSelect").val();
-	var username = $("#username").val();
+	var billuserid = $("#shoubilluserid").val();
 	var shouInvoiceBeginDate = $("#shouInvoiceBeginDate").val();
 	var shouInvoiceEndDate = $("#shouInvoiceEndDate").val();
 	var PNR = $("#paymentunitId").val();
 	var paymentunit = $("#paymentunitId").val();
     var param = {
 		        "status":status,
-		        "username":username,
+		        "billuserid":billuserid,
 		        "shouInvoiceBeginDate":shouInvoiceBeginDate,
 		        "shouInvoiceEndDate":shouInvoiceEndDate,
 				"PNR": PNR,
 				"paymentunit": paymentunit
 		    };
-	alert(status);
-    if(status==3 || status==4){
     	shouInterInvoiceTable.settings()[0].ajax.data = param;
     	shouInterInvoiceTable.ajax.reload(
     			function(json){
     				autoHighLoad($('#shouInterInvoiceTable'));
     			}
     	);
-    }
-    
-});
+}
 
-
-清除 开发票   检索项
+/*清除 收发票   检索项*/
 $('#shouEmptyBtn').click(function(){
-	clearSearchTxt("shouInvoiceSelect","username", "shouInvoiceBeginDate", "shouInvoiceEndDate", "paymentunitId");
+	clearSearchTxt("shouInvoiceSelect","shoubilluserid", "shouInvoiceBeginDate", "shouInvoiceEndDate", "paymentunitId");
+	shouInvoiceSelectData();
 });
 
 //清空搜索项函数
@@ -322,4 +358,12 @@ function clearSearchTxt(selectId,selectUsername ,beginDateId, endDateId, inputId
 	$("#"+beginDateId).val("");
 	$("#"+endDateId).val("");
 	$("#"+inputId).val("");
-}*/
+}
+//收发票状态选择按钮
+$("#shouInvoiceSelect").change(function(){
+	shouInvoiceSelectData();
+});
+//根据开票人进行筛选
+$("#shoubilluserid").change(function(){
+	shouInvoiceSelectData();
+});
