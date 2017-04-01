@@ -25,6 +25,7 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.enums.InvoiceInfoEnum;
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
 import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.order.international.form.InterPaymentSqlForm;
 import com.linyun.airline.admin.order.international.form.InterReceiptSqlForm;
@@ -86,7 +87,8 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		for (Record record : data) {
 			String sqlString = sqlManager.get("get_international_receive_list_order");
 			Sql sql = Sqls.create(sqlString);
-			Cnd cnd = Cnd.limit();
+			sql.setParam("recordtype", PayReceiveTypeEnum.RECEIVE.intKey());
+			Cnd cnd = Cnd.NEW();
 			cnd.and("tr.id", "=", record.get("id"));
 			List<Record> orders = dbDao.query(sql, cnd, null);
 			record.put("orders", orders);
@@ -143,15 +145,20 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		//付款信息
 		TReceiveEntity fetch = dbDao.fetch(TReceiveEntity.class, Long.valueOf(id));
 		List<TOrderReceiveEntity> query = dbDao.query(TOrderReceiveEntity.class, Cnd.where("receiveid", "=", id), null);
+		Integer orderstatus = null;
 		String ids = "";
 		for (TOrderReceiveEntity tOrderReceiveEntity : query) {
 			ids += tOrderReceiveEntity.getOrderid() + ",";
+			orderstatus = tOrderReceiveEntity.getOrderstatus();
 		}
 		ids = ids.substring(0, ids.length() - 1);
-		String sqlString = sqlManager.get("get_sea_invoce_table_data");
+		String sqlString = sqlManager.get("get_international_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
-		Cnd cnd = Cnd.limit();
+		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.id", "in", ids);
+		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
+		cnd.and("tprr.orderstatusid", "=", orderstatus);
+		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.RECEIVE.intKey());
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		String customename = "";
 		if (orders.size() > 0) {
@@ -161,11 +168,12 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		//计算合计金额
 		double sumincome = 0;
 		for (Record record : orders) {
-			if (!Util.isEmpty(record.get("incometotal"))) {
-				Double incometotal = (Double) record.get("incometotal");
+			if (!Util.isEmpty(record.get("currentpay"))) {
+				Double incometotal = (Double) record.get("currentpay");
 				sumincome += incometotal;
 			}
 		}
+		result.put("sumincome", sumincome);
 		//订单信息
 		result.put("orders", orders);
 		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
@@ -273,10 +281,13 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		}*/
 		ids += payorders.getOrderid();
 		//ids = ids.substring(0, ids.length() - 1);
-		String sqlString = sqlManager.get("get_sea_invoce_table_data");
+		String sqlString = sqlManager.get("get_international_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
-		Cnd cnd = Cnd.limit();
+		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.id", "in", ids);
+		cnd.and("tuo.id", "in", ids);
+		cnd.and("tprr.orderstatusid", "=", payorders.getOrderstatus());
+		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.PAY.intKey());
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		String customename = "";
 		if (orders.size() > 0) {
@@ -286,8 +297,8 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		//计算合计金额
 		double sumincome = 0;
 		for (Record record : orders) {
-			if (!Util.isEmpty(record.get("incometotal"))) {
-				Double incometotal = (Double) record.get("incometotal");
+			if (!Util.isEmpty(record.get("currentpay"))) {
+				Double incometotal = (Double) record.get("currentpay");
 				sumincome += incometotal;
 			}
 		}

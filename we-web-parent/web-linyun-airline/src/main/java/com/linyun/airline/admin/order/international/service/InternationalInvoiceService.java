@@ -23,12 +23,14 @@ import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
 import com.linyun.airline.admin.order.international.form.InternationalKaiListForm;
 import com.linyun.airline.admin.order.international.form.InternationalShouListForm;
 import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
+import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TInvoiceDetailEntity;
@@ -158,15 +160,20 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 
 		List<TOrderReceiveEntity> query = dbDao.query(TOrderReceiveEntity.class,
 				Cnd.where("receiveid", "=", fetch.getId()), null);
+		Integer orderstatus = null;
 		String ids = "";
 		for (TOrderReceiveEntity tOrderReceiveEntity : query) {
 			ids += tOrderReceiveEntity.getOrderid() + ",";
+			orderstatus = tOrderReceiveEntity.getOrderstatus();
 		}
 		ids = ids.substring(0, ids.length() - 1);
-		String sqlString = sqlManager.get("get_sea_invoce_table_data");
+		String sqlString = sqlManager.get("get_international_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.id", "in", ids);
+		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
+		cnd.and("tprr.orderstatusid", "=", orderstatus);
+		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.RECEIVE.intKey());
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//订单信息
 		result.put("orders", orders);
@@ -235,10 +242,13 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 		}*/
 		//ids = ids.substring(0, ids.length() - 1);
 		ids += payorder.getOrderid();
-		String sqlString = sqlManager.get("get_sea_invoce_table_data");
+		String sqlString = sqlManager.get("get_international_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.id", "in", ids);
+		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
+		cnd.and("tprr.orderstatusid", "=", payorder.getOrderstatus());
+		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.RECEIVE.intKey());
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//订单信息
 		result.put("orders", orders);
@@ -264,8 +274,8 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 		//总金额
 		double sumjine = 0;
 		for (Record record : orders) {
-			if (!Util.isEmpty(record.get("incometotal"))) {
-				sumjine += Double.valueOf((Double) record.get("incometotal"));
+			if (!Util.isEmpty(record.get("currentpay"))) {
+				sumjine += Double.valueOf((Double) record.get("currentpay"));
 			}
 		}
 		result.put("sumjine", sumjine);

@@ -15,7 +15,7 @@ function initpayTable() {
             "url": BASE_PATH + "/public/plugins/datatables/cn.json"
         },
         "ajax": {
-            "url": BASE_PATH + "/admin/international/internationalListData.html",
+            "url": BASE_PATH + "/admin/international/internationalPayListData.html",
             "type": "post",
             "data": function (d) {
             	
@@ -144,6 +144,12 @@ function initpayTable() {
     	}
     });
 }
+//点击行跳转到详情页
+$("tbody",$('#payTable')).on("dblclick","tr",function(event) {
+	var item = payTable.row($(this).closest('tr')).data();
+	var url = BASE_PATH + '/admin/international/internationalDetail.html?orderid='+item.ordernumber;
+	window.open(url);
+});
 //控制复选框
 $(".checkall1").click(function () {
     var check = $(this).prop("checked");
