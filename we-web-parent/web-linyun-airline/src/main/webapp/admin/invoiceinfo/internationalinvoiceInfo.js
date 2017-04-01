@@ -32,40 +32,34 @@ function initKaiInterInvoiceTable() {
                     		return result;
                     	}
                   },
-                  {"data": "invoicenum", "bSortable": false,
-                  	render:function(data, type, row, meta) {
-                  		var result = '<ul> ';
-                		$.each(row.invoicedetail, function(name, value) {
-                			if(value && value.invoicenum != undefined){
-                				result += '<li style="list-style:none;">'+value.invoicenum+'</li>';
-                			}
-                		});
-                		result += '</ul>';
-                		return result;
-                  	}
-                  },
-                  {"data": "invoicebalance", "bSortable": false,
-                  	render:function(data, type, row, meta) {
-                  		var result = '<ul>';
-                  		$.each(row.invoicedetail, function(name, value) {
-                  			if(value && value.invoicebalance != undefined){
-                  				result += '<li style="list-style:none;">'+value.invoicebalance+'</li>';
-                  			}
-                  		});
-                  		result += '</ul>';
+                  {"data": "peoplecount,", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                  		var result = '';
+                  		if(row.peoplecount && row.peoplecount != undefined) {
+                  			result =row.peoplecount;
+                  		}
                   		return result;
                   	}
+                  },
+                  {"data": "invoicecount", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                  		var result = '';
+                  		if(row.invoicecount && row.invoicecount != undefined) {
+                  			result =row.invoicecount;
+                  		}
+                  		return result;
+                  	 }
                   },
                   {"data": "incometotal", "bSortable": false,
-                  	render:function(data, type, row, meta) {
-                  		var result = 0;
-                  		$.each(row.invoicedetail, function(name, value) {
-                  			if(value && value.invoicebalance != undefined){
-                  				result = parseFloat(result) + parseFloat(value.invoicebalance);
-                  			}
-                  		});
-                  		return result;
-                  	}
+                	  render:function(data, type, row, meta) {
+                    		var result = 0;
+                    		$.each(row.invoicedetail, function(name, value) {
+                    			if(value && value.invoicebalance != undefined){
+                    				result = (parseFloat(result) + parseFloat(value.invoicebalance)).toFixed(2);
+                    			}
+                    		});
+                    		return result;
+                    	}
                   },
                   {"data": "invoicedate", "bSortable": false,
                 	  render:function(data, type, row, meta) {
@@ -87,8 +81,24 @@ function initKaiInterInvoiceTable() {
                     		return result;
                     	}
                   },
-                  {"data": "paymentunit", "bSortable": false},
-                  {"data": "username", "bSortable": false},
+                  {"data": "paymentunit", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+	                  		var result = '';
+	                  		if(row.paymentunit){
+	                  			result = row.paymentunit;
+	                  		}
+	                  		return result;
+                  	   }
+                  },
+                  {"data": "username", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+	                  		var result = '';
+	                  		if(row.username){
+	                  			result = row.username;
+	                  		}
+	                  		return result;
+                	   }
+                  },
                   {"data": "status", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                     		var status = row.status;
@@ -103,7 +113,15 @@ function initKaiInterInvoiceTable() {
                     		}
                     	}
                   },
-                  {"data": "remark", "bSortable": false}
+                  {"data": "remark", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+	                  		var result = '';
+	                  		if(row.remark){
+	                  			result = row.remark;
+	                  		}
+	                  		return result;
+                	  }
+                  }
           ],
       columnDefs: [{
     	//   指定第一列，从0开始，0表示第一列，1表示第二列……
