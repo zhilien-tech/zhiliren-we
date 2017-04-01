@@ -557,7 +557,8 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				String airSeats = "";
 				ParsingSabreEntity pSabreEntity = new ParsingSabreEntity();
 
-				String[] pnr = pnrs.split(" ");
+				String[] pnr = pnrs.split("\\s+");
+
 				id = Integer.parseInt(pnr[0].substring(0, 1));
 				airCompName = pnr[0].substring(1);
 				flightNum = pnr[1];

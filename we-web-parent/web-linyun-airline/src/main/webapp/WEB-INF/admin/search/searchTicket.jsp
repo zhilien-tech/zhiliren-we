@@ -220,7 +220,6 @@
 									<td></span><label>备注：</label></td>
 									<td colspan="11">
 										<input id="cRemark" name="cRemark" type="text" class="form-control input-sm noteText" placeholder=" ">
-										<!--<textarea id="cRemark" name="cRemark" class="form-control remarkTextarea"></textarea>-->
 									</td>
 								</tr>
 							</table>
@@ -487,11 +486,9 @@
 
 							<!-- sabre解析 -->
 							<div class="tab-pane" id="tab_4">
-								<textarea id="sabreTextArea" class="form-control sabreTextatea"></textarea>
-								<button type="button" onclick="parsingText()"
-									class="btn btn-primary input-sm parsingBtn">解析</button>
-								<button type="button" onclick="clearParsingText()"
-									class="btn btn-primary input-sm parsingBtn">清除</button>
+								<textarea id="sabreTextAreas" name="sabreTextAreas" class="form-control input-sm sabreTextatea"></textarea>
+								<button type="button" onclick="parsingText()" class="btn btn-primary input-sm parsingBtn">解析</button>
+								<button type="button" onclick="clearParsingText()" class="btn btn-primary input-sm parsingBtn">清除</button>
 								<table id="sabreTable" class="table table-bordered table-hover">
 									<!-- 表头 -->
 									<thead id="pnrThread"></thead>
@@ -502,7 +499,7 @@
 
 							<!-- etem解析 -->
 							<div class="tab-pane" id="tab_5">
-								<textarea id="etemTextArea" class="form-control sabreTextatea"></textarea>
+								<textarea id="etemTextArea" class="form-control input-sm sabreTextatea"></textarea>
 								<button type="button" onclick="parsingEtemText()"
 									class="btn btn-primary input-sm parsingBtn">解析</button>
 								<button type="button" onclick="clearParsingEtemText()"
@@ -571,7 +568,7 @@
 					type : 'post',
 					async : false,
 					data : {
-						"sabrePNR" : $('#sabreTextArea').val()
+						"sabrePNR" : $('#sabreTextAreas').val()
 					},
 					success : function(result) {
 						if (result.parsingType == "D￥") {
@@ -622,7 +619,7 @@
 						}
 
 						$("#pnrThread").html(pnrThread);
-						$("#pnrtbody").append(pnrBody);
+						$("#pnrtbody").html(pnrBody);
 					}
 				});
 			}
@@ -631,7 +628,7 @@
 			function clearParsingText() {
 				$("#pnrThread").html("");
 				$("#pnrtbody").html("");
-				$('#sabreTextArea').val("");
+				$('#sabreTextAreas').val("");
 			}
 		</script>
 
