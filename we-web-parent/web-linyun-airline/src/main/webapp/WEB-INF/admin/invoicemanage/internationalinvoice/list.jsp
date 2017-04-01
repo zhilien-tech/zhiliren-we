@@ -110,7 +110,7 @@
                               <input id="paymentunitId" type="text" class="form-control" placeholder="单位">
                             </div>
                             <div class="col-md-2"><!-- 搜索 按钮 -->
-                              <button id="shouSearchInvoiceBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
+                              <button id="shouSearchInvoiceBtn" onclick="shouInvoiceSelectData();" type="button" class="btn btn-primary btn-sm">搜索</button>
                               <button id="shouEmptyBtn" type="button" class="btn btn-primary btn-sm ckBtn">清空</button>
                             </div>
                           </div>

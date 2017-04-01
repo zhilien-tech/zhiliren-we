@@ -32,10 +32,10 @@ function initKaiInterInvoiceTable() {
                     		return result;
                     	}
                   },
-                  {"data": "peoplecount,", "bSortable": false,
+                  {"data": "actualnumber,", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                   		var result = '';
-                  		if(row.peoplecount && row.peoplecount != undefined) {
+                  		if(row.actualnumber && row.actualnumber != undefined) {
                   			result =row.peoplecount;
                   		}
                   		return result;
@@ -195,7 +195,7 @@ function initshouInterInvoiceTable() {
                   		var result = '<ul>';
                   		$.each(row.invoicedetail, function(name, value) {
                   			if(value && value.invoicebalance != undefined){
-                  				result += '<li style="list-style:none;">'+value.invoicebalance+'</li>';
+                  				result += '<li style="list-style:none;">'+value.invoicebalance.toFixed(2)+'</li>';
                   			}
                   		});
                   		result += '</ul>';
@@ -207,7 +207,7 @@ function initshouInterInvoiceTable() {
                   		var result = 0;
                   		$.each(row.invoicedetail, function(name, value) {
                   			if(value && value.invoicebalance != undefined){
-                  				result = parseFloat(result) + parseFloat(value.invoicebalance);
+                  				result = (parseFloat(result) + parseFloat(value.invoicebalance)).toFixed(2);
                   			}
                   		});
                   		return result;
