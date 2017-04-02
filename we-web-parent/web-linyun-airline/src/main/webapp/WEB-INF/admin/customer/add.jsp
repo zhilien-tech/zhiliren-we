@@ -98,7 +98,7 @@
 									<select id="agent" name="responsibleId"
 										class="form-control input-sm inpImportant">
 										<c:forEach var="one" items="${obj.userlist }">
-											<option value="${one.id }">${one.userName}</option>
+											<option value="${one.id }">${one.fullName}</option>
 										</c:forEach>
 									</select><span class="prompt">*</span>
 								</div>
