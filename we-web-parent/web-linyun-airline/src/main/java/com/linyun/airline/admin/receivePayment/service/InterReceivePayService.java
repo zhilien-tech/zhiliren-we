@@ -36,6 +36,7 @@ import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
 import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
@@ -90,7 +91,11 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	//款项已付
 	private static final int PAYEDMSGTYPE = MessageWealthStatusEnum.PAYED.intKey();
 	//订单状态
-	private static final int FIRBOOKING = SearchOrderStatusEnum.FIRBOOKING.intKey(); //一订
+	private static final int FIRBOOKING = SearchOrderStatusEnum.FIRBOOKING.intKey();
+
+	//收付款枚举
+	private static final int PAYTYPE = PayReceiveTypeEnum.PAY.intKey(); //付款记录
+	private static final int RECEIVETYPE = PayReceiveTypeEnum.RECEIVE.intKey(); //收款记录
 
 	@Inject
 	private UploadService qiniuUploadService;
@@ -360,6 +365,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		}
 		form.setOrderStatus(orderStatus);
 		form.setCompanyId(companyId);
+
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
 		List<Record> payList = (List<Record>) listdata.get("data");
@@ -466,6 +472,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			}
 		}
 		form.setOrderStatus(orderStatus);
+		form.setRecordtype(PAYTYPE);
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
 		List<Record> data = (List<Record>) listdata.get("data");
