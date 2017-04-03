@@ -368,7 +368,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		}
 		form.setOrderStatus(orderStatus);
 		form.setCompanyId(companyId);
-
+		form.setRecordtype(PAYTYPE);
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
 		List<Record> payList = (List<Record>) listdata.get("data");
@@ -376,6 +376,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//查询订单
 		String sqlStr = sqlManager.get("receivePay_inter_pay_order_list");
 		Sql conSql = Sqls.create(sqlStr);
+		conSql.setParam("orderstatus", orderStatus);
+		conSql.setParam("recordtype", PAYTYPE);
 		Cnd cnd = Cnd.NEW();
 		SqlExpressionGroup group = new SqlExpressionGroup();
 		group.and("ci.shortName", "LIKE", "%" + name + "%").or("uo.ordersnum", "LIKE", "%" + name + "%")

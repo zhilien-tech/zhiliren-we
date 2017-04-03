@@ -41,7 +41,7 @@ public class InterRecListSearchSqlForm extends DataTablesParamForm {
 	/**收款状态*/
 	private String receiveStatus;
 
-	/**收款状态*/
+	/**记录状态*/
 	private int recordtype;
 
 	/**出发日期 -- 开始出发日期*/

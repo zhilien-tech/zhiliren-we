@@ -403,6 +403,7 @@ FROM
 	t_up_order uo
 INNER JOIN t_pay_order po ON po.orderid = uo.id
 INNER JOIN t_pay p ON p.id = po.payid
+LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
 $condition
 
 
@@ -451,7 +452,10 @@ WHERE
 		LEFT JOIN t_customer_info ci ON ci.id = uo.userid
 		$condition
 	)
-
+AND prr.recordtype=@recordtype
+AND prr.orderstatusid=@orderstatus
+ORDER BY
+	po.payDate DESC
 	
 /*receivePay_inter_pay_order_ids*/
 SELECT
