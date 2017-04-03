@@ -41,6 +41,9 @@ public class InterRecListSearchSqlForm extends DataTablesParamForm {
 	/**收款状态*/
 	private String receiveStatus;
 
+	/**收款状态*/
+	private int recordtype;
+
 	/**出发日期 -- 开始出发日期*/
 	private Date leaveBeginDate;
 
@@ -56,11 +59,13 @@ public class InterRecListSearchSqlForm extends DataTablesParamForm {
 			cnd.and("orec.receivestatus", "=", receiveStatus); //收款状态 收款中、已收款
 		}
 		if (!Util.isEmpty(orderStatus)) {
-			cnd.and("orec.orderstatus", "=", orderStatus); //订单状态 一订、二订。。。
+			cnd.and("prr.orderstatusid", "=", orderStatus); //订单状态 一订、二订。。。
 		}
 		cnd.and("r.companyid", "=", companyId);
 
 		cnd.and("r.orderstype", "=", OrderTypeEnum.TEAM.intKey()); //团队（国际）
+
+		cnd.and("prr.recordtype", "=", recordtype);
 		return cnd;
 	}
 

@@ -350,6 +350,7 @@ FROM
 	t_receive r
 LEFT JOIN t_order_receive orec ON orec.receiveid=r.id
 LEFT JOIN t_up_order uo on uo.id=orec.orderid
+LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
 LEFT JOIN t_invoice_info ii ON r.id = ii.receiveid
 LEFT JOIN t_user u ON r.userid = u.id
 $condition
@@ -389,7 +390,8 @@ WHERE
 		LEFT JOIN t_customer_info ci ON ci.id = uo.userid
 		$condition
 	)
-GROUP BY uo.ordersnum
+AND prr.recordtype=@recordtype
+AND prr.orderstatusid=@orderstatus
 	
 /*receivePay_inter_pay_invioce_list*/
 SELECT
