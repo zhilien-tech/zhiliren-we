@@ -547,7 +547,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		Sql sql = Sqls.create(sqlManager.get("receivePay_inter_pay_order_ids"));
 		/*String inlandPayIdStr = inlandPayIds.substring(0, inlandPayIds.length() - 1);*/
 		Cnd cnd = Cnd.NEW();
-		cnd.and("uo.id", "in", orderIds);
+		cnd.and("prr.id", "in", orderIds);
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		String payIds = "";
 		if (!Util.isEmpty(orders)) {
@@ -583,11 +583,13 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//操作人
 		String operator = "";
 		String operatorList = "";
+		String oids = "";
 		for (Record record : orders) {
 			if (!Util.isEmpty(record.get("currentpay"))) {
 				Double incometotal = (Double) record.get("currentpay");
 				totalMoney += incometotal;
 			}
+			oids = record.getString("id") + ",";
 			proposer = record.getString("proposerMan");
 			approver = record.getString("approver"); //审批人
 			String opr = record.getString("operator"); //操作人
@@ -650,8 +652,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		oids = oids.substring(0, oids.length() - 1);
 		map.put("zjzlList", zjzlList);
-		map.put("ids", orderIds);
+		map.put("ids", oids);
 
 		return map;
 	}

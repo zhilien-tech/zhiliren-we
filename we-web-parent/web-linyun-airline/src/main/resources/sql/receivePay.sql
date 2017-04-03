@@ -395,7 +395,8 @@ AND prr.orderstatusid=@orderstatus
 	
 /*receivePay_inter_pay_invioce_list*/
 SELECT
-	uo.id,
+	prr.id,
+	uo.id uid,
 	uo.ordersnum,
 	po.orderstatus,
 	po.paystauts
@@ -409,7 +410,8 @@ $condition
 
 /*receivePay_inter_pay_order_list*/
 SELECT
-	uo.id,
+	prr.id,
+	uo.id uid,
 	uo.ordersnum,
 	po.orderstatus,
 	(
@@ -460,6 +462,7 @@ ORDER BY
 /*receivePay_inter_pay_order_ids*/
 SELECT
 	p.*, 
+	prr.id prrid,
 	(
 		SELECT
 			username
