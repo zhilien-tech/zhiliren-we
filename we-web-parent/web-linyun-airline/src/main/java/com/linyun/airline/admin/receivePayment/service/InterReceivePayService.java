@@ -498,9 +498,11 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			String shortname = ""; //收款单位
 			int payStatus = AccountPayEnum.APPROVALPAYED.intKey(); //收款状态
 			String issuer = "";
+			String prrIds = "";
 			List<Record> orders = new ArrayList<Record>();
 			for (Record r : data) {
 				String pidStr = r.getString("pid");
+				String prrid = r.getString("prrid");
 				shortname = r.getString("shortname");
 				issuer = r.getString("issuer");
 				//同一个支付订单
@@ -509,10 +511,13 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 					if (!Util.isEmpty(currentpayStr)) {
 						totalmoney += Double.valueOf(currentpayStr);
 					}
+					prrIds += prrid + ",";
 					orders.add(r);
 				}
 			}
+			prrIds = prrIds.substring(0, prrIds.length() - 1);
 			record.put("pid", pid);
+			record.put("prrIds", prrIds);
 			record.put("totalmoney", totalmoney);
 			record.put("shortname", shortname);
 			record.put("payStatus", payStatus);
@@ -667,11 +672,14 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 
 		Map<String, Object> result = new HashMap<String, Object>();
 		String payId = request.getParameter("payid");
+		String prrIds = request.getParameter("prrIds");
+
 		//TODO
 		String sqlString = sqlManager.get("receivePay_inter_payed_edit");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("p.id", "in", payId);
+		cnd.and("prr.id", "in", prrIds);
 		cnd.and("po.paystauts", "=", APPROVALPAYED);
 		List<Record> payList = dbDao.query(sql, cnd, null);
 

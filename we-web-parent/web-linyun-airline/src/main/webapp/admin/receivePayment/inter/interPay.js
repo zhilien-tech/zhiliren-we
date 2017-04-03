@@ -345,7 +345,8 @@ function initPayEdDataTable(){
 		            	targets: 11,
 		            	render: function(data, type, row, meta) {
 		            		var pid = row.pid;
-		            		var modify = '<a style="cursor:pointer;" onclick="editPay('+pid+');">编辑</a>';
+		            		var prrIds = row.prrids;
+		            		var modify = '<a style="cursor:pointer;" onclick="editPay('+ pid +','+ prrIds +');">编辑</a>';
 		            		return modify;
 		            	}
 		            }]
@@ -589,7 +590,7 @@ function payOnkeyEnter(){
 	 }
 }
 
-function editPay(ids){
+function editPay(pid, prrIds){
 	layer.open({
 		type: 2,
 		title:false,
@@ -597,7 +598,7 @@ function editPay(ids){
 		closeBtn:false,//默认 右上角关闭按钮 是否显示
 		shadeClose:false,
 		area: ['850px', '650px'],
-		content: ['editConfirmPay.html?payid='+ ids,'no'],
+		content: ['editConfirmPay.html?payid='+pid +'&prrIds='+prrIds,'no'],
 	});
 }
 

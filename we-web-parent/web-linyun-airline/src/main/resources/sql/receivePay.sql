@@ -488,8 +488,9 @@ $condition
 
 /*receivePay_inter_payed_orders*/
 SELECT
-	p.id pid,
 	uo.id,
+	p.id pid,
+	prr.id prrid,
 	uo.ordersnum,
 	po.orderstatus,
 	po.paystauts,
@@ -536,6 +537,7 @@ ORDER BY
 	
 /*receivePay_inter_payed_edit*/
 SELECT
+    prr.id,
 	p.*, 
 	(
 		SELECT
@@ -550,7 +552,7 @@ SELECT
 	fi.cusgroupnum,
 	ci.shortName,
 	fi.billingdate,
-	pi.peoplecount,
+	prr.actualnumber peoplecount,
 	prr.currentpay,
 	fi.`issuer`
 FROM

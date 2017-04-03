@@ -25,6 +25,9 @@ public class TBankCardAddForm extends AddForm implements Serializable {
 	/**银行名称*/
 	private String bankName;
 
+	/**银行id*/
+	private long bankNameId;
+
 	/**币种*/
 	private String currency;
 
