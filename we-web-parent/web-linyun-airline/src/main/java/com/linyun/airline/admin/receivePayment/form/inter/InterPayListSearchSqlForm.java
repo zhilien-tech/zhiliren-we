@@ -41,6 +41,9 @@ public class InterPayListSearchSqlForm extends DataTablesParamForm {
 	/**付款状态*/
 	private String payStatus;
 
+	/**记录状态*/
+	private int recordtype;
+
 	/**出发日期 -- 开始出发日期*/
 	private Date leaveBeginDate;
 
@@ -56,10 +59,11 @@ public class InterPayListSearchSqlForm extends DataTablesParamForm {
 			cnd.and("po.paystauts", "=", payStatus); //收款状态 收款中、已收款
 		}
 		if (!Util.isEmpty(orderStatus)) {
-			cnd.and("po.orderstatus", "=", orderStatus); //订单状态 一订、二订。。。
+			cnd.and("prr.orderstatusid", "=", orderStatus); //订单状态 一订、二订。。。
 		}
 		cnd.and("p.ordertype", "=", OrderTypeEnum.TEAM.intKey()); //团队（国际）
 		cnd.and("p.companyId", "=", companyId);
+		cnd.and("prr.recordtype", "=", recordtype);
 		return cnd;
 	}
 

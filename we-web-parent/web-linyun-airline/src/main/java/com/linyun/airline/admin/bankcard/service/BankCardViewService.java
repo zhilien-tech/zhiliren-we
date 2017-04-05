@@ -148,6 +148,7 @@ public class BankCardViewService extends BaseService<TBankCardEntity> {
 		addForm.setInitialAmount(addForm.getBalance());
 		addForm.setStatus(BankCardStatusEnum.ENABLE.intKey());
 		addForm.setBankName(di.getDictName());
+		addForm.setBankNameId(di.getId());
 		FormUtil.add(dbDao, addForm, TBankCardEntity.class);
 		return null;
 	}
@@ -168,6 +169,7 @@ public class BankCardViewService extends BaseService<TBankCardEntity> {
 		}
 		if (!Util.isEmpty(updateForm.getBankName())) {
 			updateForm.setBankName(di.getDictName());
+			updateForm.setBankNameId(di.getId());
 		}
 		BeanUtil.copyProperties(updateForm, bankCard);
 		updateIgnoreNull(bankCard);//更新银行卡表中的数据
