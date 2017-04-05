@@ -63,7 +63,7 @@
                                 <div class="col-md-3 dictInfoSousuo" style="float:left;">
 									<!--字典信息名称 搜索框-->
 									<input type="text" id="comDictNameId" name="comDictName" onkeypress="onkeyEnter();" class="form-control"
-										placeholder="字典信息/航空公司">
+										placeholder="字典信息/航空公司/公司名称">
 								</div>
 								<div class="col-md-2 col-padding">
 									<!--搜索 按钮-->
@@ -108,6 +108,22 @@
 									</tbody>
 								</table>
 							</div>
+							<div id="thirdPayMentTable_container" class="box-body">
+								<table id="thirdPayMentTable" class="table table-bordered table-hover">
+									<thead>
+										<tr>
+											<th>第三方公司</th>
+											<th>银行卡账号</th>
+											<th>状态</th>
+											<th>创建时间</th>
+											<th>备注</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
 							<!-- /.box-body -->
 						</div>
 						<!-- /.box -->
@@ -136,6 +152,22 @@ function add(){
 	   	    shadeClose: false,
 	   	    area: ['900px', '435px'],
 	   	    content: '${base}/admin/companydict/comdictinfo/addLoginNum.html',
+	   	    end: function(){//添加完页面点击返回的时候自动加载表格数据
+	   	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	   			parent.layer.close(index);
+	   	    }
+	   	 });
+	}else if("DSFZF"==comTypeCode){
+		//添加登录账号
+		layer.open({
+	   	    type: 2,
+	   	    title:false,
+	   	    closeBtn:false,
+	   	    fix: false,
+	   	    maxmin: false,
+	   	    shadeClose: false,
+	   	    area: ['900px', '435px'],
+	   	    content: '${base}/admin/companydict/comdictinfo/addThirdPayMent.html',
 	   	    end: function(){//添加完页面点击返回的时候自动加载表格数据
 	   	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 	   			parent.layer.close(index);
@@ -175,7 +207,20 @@ function edit(id){
 	  	    area: ['900px', '435px'],
 	  	    content: '${base}/admin/companydict/comdictinfo/updateLoginNum.html?id='+id
 	  	  });
-	}else{
+	}else if("DSFZF"==comTypeCode){
+		//编辑第三方支付
+		layer.open({
+	  	    type: 2,
+	  	    title: false,
+	  	  	closeBtn:false,
+	  	    fix: false,
+	  	    maxmin: false,
+	  	    shadeClose: false,
+	  	    area: ['900px', '435px'],
+	  	    content: '${base}/admin/companydict/comdictinfo/updateThirdPayMent.html?id='+id
+	  	  });
+	}
+	else{
 		layer.open({
 	  	    type: 2,
 	  	    title: false,
@@ -192,6 +237,7 @@ function edit(id){
 function successCallback(id){
 	comcomdatatableInfo.ajax.reload(null,false);
 	loginNumTable.ajax.reload(null,false);
+	thirdPayMentTable.ajax.reload(null,false);
 	  if(id == '1'){
 		  layer.msg("添加成功",{time:2000});
 	  }else if(id == '2'){
@@ -245,14 +291,15 @@ $(function() {
 <!-- 分页显示 -->
 <script type="text/javascript">
 var flag=$('#comTypeCode').val();
-var comcomdatatableInfo;
-//var comcomdatatableInfo;//登录账号Table
+var comcomdatatableInfo;//登录账号Table
+var thirdPayMentTable;//第三方支付Table
 //初始化
 $(function() {
 	initDatatable();
 	$('.menu-ul:eq(0)').hide();//隐藏收付款的二级菜单
 	$('.menu-ul li a:eq(3)').css("color","rgb(245, 245, 245)");//二级菜单 数据字典 高亮style
 	defaultSelect();
+	$('#thirdPayMentTable_container').hide();
 });
 //判断如果是出发城市则隐藏掉其他内容
 $('#comTypeCode').change(function(){
@@ -260,9 +307,16 @@ $('#comTypeCode').change(function(){
 	if(seleID=="DLZH"){
 		$('#loginNumTable_container').show();
 		$('#datatableInfo_container').hide();
-	}else{
+		$('#thirdPayMentTable_container').hide();
+	}else if(seleID=="DSFZF"){
+		$('#loginNumTable_container').hide();
+		$('#datatableInfo_container').hide();
+		$('#thirdPayMentTable_container').show();
+	}
+	else{
 		$('#datatableInfo_container').show();
 		$('#loginNumTable_container').hide();
+		$('#thirdPayMentTable_container').hide();
 	}
 });
 //流水项目、项目用途、资金种类
@@ -505,6 +559,92 @@ function initDatatable() {
             {"sWidth": "12%",Targets:6 }
             ]
 	});
+	//第三方支付列表
+	thirdPayMentTable = $('#thirdPayMentTable').DataTable({
+		"searching" : false,
+		"processing" : true,
+		"serverSide" : true,
+		"stripeClasses": [ 'strip1','strip2' ],//斑马线
+		"bLengthChange" : false,
+		"autoWidth": false,
+		"language" : {
+			"url" : "${base}/public/plugins/datatables/cn.json"
+		},
+        "ajax": {
+            "url": "${base}/admin/companydict/comdictinfo/thirdPayMentData.html",
+            "type": "post",
+            "data": function (d) {
+            	
+            }
+        },
+        "columns": [
+                    {"data": "thirdcompanyname", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var thirdcompanyname = row.thirdcompanyname;
+                    		if(null==thirdcompanyname || ""==thirdcompanyname){
+                    			return "";
+                    		}
+                    		return thirdcompanyname;
+                    	}
+                    },
+                    {"data": "bankcardnum", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var bankcardnum = row.bankcardnum;
+                    		if(null==bankcardnum || ""==bankcardnum){
+                    			return "";
+                    		}
+                    		return bankcardnum;
+                    	}
+                    },
+                    {"data": "status", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var status = row.status;
+                    		if(null==status || ""==status){
+                    			return "";
+                    		}
+                    		if(status===1){
+                    			return "已启用";
+                    		}else if(status===2){
+                    			return "已删除";
+                    		}
+                    	}
+                    },
+                    {"data": "createtime", "bSortable": false,
+                   	 render: function(data, type, row, meta) {
+                   		 var createtime = new Date(row.createtime);
+                   		 if(null==createtime || ""==createtime){
+                   			 return "";
+                   		 }
+                   		 var createtimestr = createtime.getFullYear() + "-" + createtime.getMonth() + "-" + createtime.getDate() + " "
+                   		 + createtime.getHours() + ":" + createtime.getMinutes() + ":" + createtime.getSeconds();
+                   		return createtimestr;
+                       } 	
+                   },
+                    {"data": "remark", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		 var remark = row.remark;
+	                   		 if(null==remark || ""==remark){
+	                   			 return "";
+	                   		 }
+                    		 var result = '<span data-toggle="tooltip" data-placement="left" title="'+remark+'">'+remark+'<span>';
+                    		 return result;
+                    	}	
+                    }
+            ],
+            "columnDefs": [{
+                //   指定第一列，从0开始，0表示第一列，1表示第二列……
+                targets: 5,
+                render: function(data, type, row, meta) {
+                	var modify = '<a style="cursor:pointer;" onclick="edit('+row.id+');">编辑</a>';
+            		if(1==row.status){
+            			var judge = '<a href="javascript:physicalDelete('+row.id+',2)" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
+            		}else{
+            			var judge = '<a href="javascript:physicalDelete('+row.id+',1)" class="btn_mini btn_modify">启用</a>';
+            		}
+                    return modify+judge;
+                }
+            }]
+	});
 }
 
 //公司字典信息搜索
@@ -513,11 +653,13 @@ $("#comDictInfoSearchBtn").on('click', function () {
 	var comTypeCode = $("#comTypeCode").val();
 	var comDictName = $("#comDictNameId").val();
 	var airlineName = $("#comDictNameId").val();//航空公司
+	var thirdCompanyName = $("#comDictNameId").val();//航空公司
     var param = {
 		        "status":status,
 		        "comTypeCode":comTypeCode,
 		        "comDictName":comDictName,
 		        "airlineName":airlineName,
+		        "thirdCompanyName":thirdCompanyName
 		    };
     if(status==1 ||　status==2){
     	comcomdatatableInfo.settings()[0].ajax.data = param;
@@ -528,6 +670,8 @@ $("#comDictInfoSearchBtn").on('click', function () {
     	);
     	loginNumTable.settings()[0].ajax.data = param;
 		loginNumTable.ajax.reload();
+		thirdPayMentTable.settings()[0].ajax.data = param;
+		thirdPayMentTable.ajax.reload();
     }
 });
 

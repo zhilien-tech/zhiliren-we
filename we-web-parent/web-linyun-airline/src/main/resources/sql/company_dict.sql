@@ -22,6 +22,29 @@ FROM
 INNER JOIN t_company c ON c.id = cmd.comId
 $condition
 
+/*company_dictinfo_thirdpayment_list_data*/
+SELECT
+	tp.id,
+	tp.comId,
+	tp.userId,
+	tp.comTypeCode,
+	tp.comDictCode,
+	tp.thirdCompanyName,
+	tp.bankCardNum,
+	tp.`status`,
+	tp.createTime,
+	tp.updateTime,
+	tp.remark,
+	tp.res1,
+	tp.res2,
+	tp.res3,
+	tp.res4,
+	tp.res5
+FROM
+	t_third_payment tp
+INNER JOIN t_company c ON c.id=tp.comId
+$condition
+
 /*company_select_dicttypename*/
 SELECT
 	cty.id,

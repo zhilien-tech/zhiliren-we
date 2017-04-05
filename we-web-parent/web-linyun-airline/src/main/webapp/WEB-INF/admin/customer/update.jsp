@@ -74,7 +74,7 @@
 									<!-- 负责人下拉列表 -->
 									<select id="agent" name="responsibleId" class="form-control input-sm inpImportant">
 										<c:forEach var="one" items="${obj.userlist }">
-											<option value="${one.id }" <c:if test="${one.id eq obj.customer.responsibleId}">selected</c:if>>${one.userName}</option>
+											<option value="${one.id }" <c:if test="${one.id eq obj.customer.responsibleId}">selected</c:if>>${one.fullName}</option>
 										</c:forEach>
 									</select><span class="prompt">*</span>
 								</div>

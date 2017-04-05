@@ -350,6 +350,7 @@ FROM
 	t_receive r
 LEFT JOIN t_order_receive orec ON orec.receiveid=r.id
 LEFT JOIN t_up_order uo on uo.id=orec.orderid
+LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
 LEFT JOIN t_invoice_info ii ON r.id = ii.receiveid
 LEFT JOIN t_user u ON r.userid = u.id
 $condition
@@ -389,11 +390,13 @@ WHERE
 		LEFT JOIN t_customer_info ci ON ci.id = uo.userid
 		$condition
 	)
-GROUP BY uo.ordersnum
+AND prr.recordtype=@recordtype
+AND prr.orderstatusid=@orderstatus
 	
 /*receivePay_inter_pay_invioce_list*/
 SELECT
-	uo.id,
+	prr.id,
+	uo.id uid,
 	uo.ordersnum,
 	po.orderstatus,
 	po.paystauts
@@ -401,12 +404,14 @@ FROM
 	t_up_order uo
 INNER JOIN t_pay_order po ON po.orderid = uo.id
 INNER JOIN t_pay p ON p.id = po.payid
+LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
 $condition
 
 
 /*receivePay_inter_pay_order_list*/
 SELECT
-	uo.id,
+	prr.id,
+	uo.id uid,
 	uo.ordersnum,
 	po.orderstatus,
 	(
@@ -449,10 +454,15 @@ WHERE
 		LEFT JOIN t_customer_info ci ON ci.id = uo.userid
 		$condition
 	)
+AND prr.recordtype=@recordtype
+AND prr.orderstatusid=@orderstatus
+ORDER BY
+	po.payDate DESC
 	
 /*receivePay_inter_pay_order_ids*/
 SELECT
 	p.*, 
+	prr.id prrid,
 	(
 		SELECT
 			username
@@ -481,8 +491,9 @@ $condition
 
 /*receivePay_inter_payed_orders*/
 SELECT
-	p.id pid,
 	uo.id,
+	p.id pid,
+	prr.id prrid,
 	uo.ordersnum,
 	po.orderstatus,
 	po.paystauts,
@@ -522,11 +533,14 @@ WHERE
 		INNER JOIN t_finance_info fi ON fi.orderid = uo.id
 		$condition
 	)
+AND prr.recordtype=@recordtype
+AND prr.orderstatusid=@orderstatus
 ORDER BY
 	po.payDate DESC
 	
 /*receivePay_inter_payed_edit*/
 SELECT
+    prr.id,
 	p.*, 
 	(
 		SELECT
@@ -541,7 +555,7 @@ SELECT
 	fi.cusgroupnum,
 	ci.shortName,
 	fi.billingdate,
-	pi.peoplecount,
+	prr.actualnumber peoplecount,
 	prr.currentpay,
 	fi.`issuer`
 FROM
