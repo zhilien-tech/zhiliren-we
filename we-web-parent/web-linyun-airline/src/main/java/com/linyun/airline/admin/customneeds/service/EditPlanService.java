@@ -234,6 +234,31 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 			airlines.add(airline);
 		}
 		dbDao.updateRelations(before, airlines);
+		if (!Util.isEmpty(planInfoEntity.getOrdernumber())) {
+			//客户信息
+			List<TCustomerInfoEntity> customInfo = dbDao.query(TCustomerInfoEntity.class,
+					Cnd.where("shortName", "=", planInfoEntity.getTravelname()), null);
+			if (!Util.isEmpty(customInfo) && !Util.isEmpty(planInfoEntity.getOrdernumber())) {
+				TUpOrderEntity upOrderEntity = dbDao.fetch(TUpOrderEntity.class,
+						Long.valueOf(planInfoEntity.getOrdernumber()));
+				upOrderEntity.setUserid(new Long(customInfo.get(0).getId()).intValue());
+				dbDao.update(upOrderEntity);
+				TPnrInfoEntity pnrinfo = dbDao.fetch(TPnrInfoEntity.class,
+						Cnd.where("orderid", "=", upOrderEntity.getId()));
+				//获取pnr信息
+				if (!Util.isEmpty(pnrinfo.getId())) {
+					List<TAirlineInfoEntity> ailineids = dbDao.query(TAirlineInfoEntity.class,
+							Cnd.where("planid", "=", planInfoEntity.getId()), null);
+					//设置航段信息为主航段
+					List<TAirlineInfoEntity> updateairline = new ArrayList<TAirlineInfoEntity>();
+					for (TAirlineInfoEntity airline : ailineids) {
+						airline.setPnrid(pnrinfo.getId());
+						updateairline.add(airline);
+					}
+					dbDao.update(updateairline);
+				}
+			}
+		}
 		return dbDao.update(planInfoEntity);
 	}
 
@@ -306,9 +331,9 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 			List<TUpOrderTicketEntity> query = dbDao.query(TUpOrderTicketEntity.class,
 					Cnd.where("ticketid", "=", planId), null);
 			//如果不存在订单号则生成
+			//获取计划信息
+			TPlanInfoEntity planInfo = this.fetch(planId);
 			if (Util.isEmpty(planinfo.getOrdernumber())) {
-				//获取计划信息
-				TPlanInfoEntity planInfo = this.fetch(planId);
 				//如果当前天最大值存在
 				TUpOrderEntity insertOrder = new TUpOrderEntity();
 				//订单信息
@@ -344,6 +369,15 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 				dbDao.update(planinfo);
 			} else {
 				TUpOrderEntity fetch = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(planinfo.getOrdernumber()));
+				fetch.setAmount(planInfo.getPrice());
+				fetch.setCurrencyCode(planInfo.getCurrencycode());
+				fetch.setCustomid(company.getId());
+				fetch.setOrdersnum(generateOrderNum());
+				fetch.setOrdersstatus(InternationalStatusEnum.SEARCH.intKey());
+				fetch.setOrderstime(new Date());
+				fetch.setOrderstype(OrderTypeEnum.TEAM.intKey());
+				fetch.setCompanyId(new Long(company.getId()).intValue());
+				fetch.setPeoplecount(planinfo.getPeoplecount());
 				if (!Util.isEmpty(customInfo)) {
 					fetch.setUserid(new Long(customInfo.get(0).getId()).intValue());
 				}

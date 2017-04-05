@@ -15,6 +15,10 @@
 	<script src="${base}/public/bootstrap/js/bootstrap.js"></script>
 	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 	<script src="${base}/common/js/layer/layer.js"></script>
+	<style>
+		.iconCla .select2-container{width: 95.5% !important;}
+		.form-control-feedback {top: 0px;left: 210px;}
+	</style>
 </head>
 <body>
 	<div class="modal-top">

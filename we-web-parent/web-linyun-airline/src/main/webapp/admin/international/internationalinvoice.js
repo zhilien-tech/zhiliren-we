@@ -78,9 +78,11 @@ function initkaiInvoiceTable() {
                   {"data": "invoiceitem", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                     		var result = '';
-                    		if(row.invoiceitem){
-                    			result = row.invoiceitem;
-                    		}
+                    		$.each(row.ytselect, function(name, value) {
+                    			if(value.id === row.invoiceitem){
+                    				result = value.comDictName;
+                    			}
+                    		});
                     		return result;
                     	}
                   },
@@ -89,9 +91,11 @@ function initkaiInvoiceTable() {
                   {"data": "status", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                   		var result = '';
-                  		if(row.status && row.status != undefined){
-                  			result = row.status;
-                  		}
+                  		$.each(row.invoiceinfoenum, function(name, value) {
+                  			if(row.status == name){
+                  				result = value;
+                  			}
+                  		});
                   		return result;
                   	}
                   },
@@ -109,6 +113,25 @@ function initkaiInvoiceTable() {
 function kaiInvoiceLoad(){
 	kaiInvoiceTable.ajax.reload();
 }
+$('#kaiInvoiceSearch').click(function(){
+	var div = $(this).parent().parent();
+	var startdate = div.find('[name=startdate]').val();
+	var enddate = div.find('[name=enddate]').val();
+	var searchInfo = div.find('[name=searchInfo]').val();
+	var status = $('#status').val();
+	var kaiinvoicestatus = $('#kaiinvoicestatus').val();
+	var param = {
+			ordersstatus:status,
+			startdate:startdate,
+			enddate:enddate,
+			searchInfo:searchInfo,
+			kaiinvoicestatus:kaiinvoicestatus
+	};
+	kaiInvoiceTable.settings()[0].ajax.data = param;
+	kaiInvoiceTable.ajax.reload(function(json){
+		autoHighLoad($('#kaiInvoiceTable'));
+	});
+});
 //打开开发票页面
 function openkaiInvoiceEdit(id){
 	layer.open({
@@ -199,9 +222,11 @@ function initshouInvoiceTable() {
                   {"data": "invoiceitem", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                     		var result = '';
-                    		if(row.invoiceitem){
-                    			result = row.invoiceitem;
-                    		}
+                    		$.each(row.ytselect, function(name, value) {
+                    			if(value.id === row.invoiceitem){
+                    				result = value.comDictName;
+                    			}
+                    		});
                     		return result;
                     	}
                   },
@@ -210,9 +235,11 @@ function initshouInvoiceTable() {
                   {"data": "status", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                   		var result = '';
-                  		if(row.status && row.status != undefined){
-                  			result = row.status;
-                  		}
+                  		$.each(row.invoiceinfoenum, function(name, value) {
+                  			if(row.status == name){
+                  				result = value;
+                  			}
+                  		});
                   		return result;
                   	}
                   },
@@ -242,46 +269,20 @@ function openshouInvoiceEdit(id){
         content: BASE_PATH + '/admin/international/invoice/shouInvoice.html?id='+id
     });
 }
-/*//收发票 搜索按钮
-$("#shouSearchInvoiceBtn").on('click', function () {
-	alert(111);
-	var status = $("#shouInvoiceSelect").val();
-	var username = $("#username").val();
-	var shouInvoiceBeginDate = $("#shouInvoiceBeginDate").val();
-	var shouInvoiceEndDate = $("#shouInvoiceEndDate").val();
-	var PNR = $("#paymentunitId").val();
-	var paymentunit = $("#paymentunitId").val();
-    var param = {
-		        "status":status,
-		        "username":username,
-		        "shouInvoiceBeginDate":shouInvoiceBeginDate,
-		        "shouInvoiceEndDate":shouInvoiceEndDate,
-				"PNR": PNR,
-				"paymentunit": paymentunit
-		    };
-	alert(status);
-    if(status==3 || status==4){
-    	shouInvoiceTable.settings()[0].ajax.data = param;
-    	shouInvoiceTable.ajax.reload(
-    			function(json){
-    				autoHighLoad($('#shouInvoiceTable'));
-    			}
-    	);
-    }
-    
+$('#shouInvoiceSearch').click(function(){
+	var div = $(this).parent().parent();
+	var startdate = div.find('[name=startdate]').val();
+	var enddate = div.find('[name=enddate]').val();
+	var searchInfo = div.find('[name=searchInfo]').val();
+	var status = $('#status').val();
+	var shouinvoicestatus = $('#shouinvoicestatus').val();
+	var param = {
+			ordersstatus:status,
+			startdate:startdate,
+			enddate:enddate,
+			searchInfo:searchInfo,
+			shouinvoicestatus:shouinvoicestatus
+	};
+	shouInvoiceTable.settings()[0].ajax.data = param;
+	shouInvoiceTable.ajax.reload();
 });
-
-
-清除 开发票   检索项
-$('#shouEmptyBtn').click(function(){
-	clearSearchTxt("shouInvoiceSelect","username", "shouInvoiceBeginDate", "shouInvoiceEndDate", "paymentunitId");
-});
-
-//清空搜索项函数
-function clearSearchTxt(selectId,selectUsername ,beginDateId, endDateId, inputId){
-	$("#"+selectId+" option:first").prop("selected", 'selected');  
-	$("#"+selectUsername+" option:first").prop("selected", 'selected');  
-	$("#"+beginDateId).val("");
-	$("#"+endDateId).val("");
-	$("#"+inputId).val("");
-}*/

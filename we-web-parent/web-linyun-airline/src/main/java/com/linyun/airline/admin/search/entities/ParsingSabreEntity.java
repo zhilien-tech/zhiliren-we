@@ -61,5 +61,6 @@ public class ParsingSabreEntity implements Serializable {
 	private String presetDate;
 
 	//舱位价格
+	private String airSeatsPrice;
 
 }

@@ -513,9 +513,12 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 		//判断以哪种格式解析
 		String parsingType = "";
+		sabrePNR += "\n";
 		String[] sabrePnrs = sabrePNR.split("\\s+");
-		String sabrePnrsStr = sabrePnrs[0];
-		if (sabrePnrsStr.contains("/D￥") && sabrePnrsStr.contains("<<")) {
+		String[] sabrePnrs1 = sabrePNR.split("\\n+");
+		String sabrePnrsStr = sabrePnrs1[0];
+		/*		String sabrePnrsStr = sabrePnrs[0];
+		*/if (sabrePnrsStr.contains("/D￥") && sabrePnrsStr.contains("<<")) {
 			parsingType = "1";
 		} else if (sabrePnrsStr.contains("WP<<")) {
 			parsingType = "3";
@@ -529,14 +532,19 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		if (parsingType == "1") {
 			//分割sabre组
 			//(?s)表示开启跨行匹配，\\d{1}一位数字，[A-Za-z]{2}两位字母，/斜线，\\s空白字符,.+任意字符出现1到多次，?非贪婪模式，最后以\n换行结束
-			String regex = "(?s)\\d{1}[A-Za-z]{2}/.{2}\\s.+?\\d\n";
+			/*String regex = "(?s)\\d{1}[A-Za-z]{2}/.{2}\\s.+?\\d\n";
 			Pattern pattern = Pattern.compile(regex);
-			Matcher m = pattern.matcher(sabrePNR);
+			Matcher m = pattern.matcher(sabrePNR);*/
 			ArrayList<String> sabreGroup = Lists.newArrayList();
-			while (m.find()) {
+			/*while (m.find()) {
 				sabreGroup.add(m.group());
 			}
-
+			*/
+			for (int i = 0; i < sabrePnrs1.length; i++) {
+				if (i % 2 == 0 && i != 0) {
+					sabreGroup.add(sabrePnrs1[i].trim() + " " + sabrePnrs1[i + 1].trim());
+				}
+			}
 			for (String pnrs : sabreGroup) {
 				/***********************根据 128FEBAKLSYD/D￥VA<< 解析***********************/
 				//序号
@@ -564,15 +572,21 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				flightNum = pnr[1];
 				airLeavelDate = sabrePnrs[1];
 				String containStr = pnr[7];
+				int a = 0;
 				if (containStr.contains("*")) {
 					String[] seatLine = containStr.split("[*]");
 					for (String seat : pnr) {
+						a++;
 						if (!seat.contains("/E") && seat.length() == 2) {
+
 							airSeats += (" " + seat);
+							if (a == 7) {
+
+								airSeats += (" " + seatLine[0]);
+							}
 						}
 					}
 					airLine = seatLine[1];
-					airSeats += (" " + seatLine[0]);
 					airDepartureTime = pnr[8];
 					airLandingTime = pnr[9];
 				} else {
@@ -613,7 +627,11 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			String airDepartureTime = sabrePnrs[8];
 			String airLandingTime = sabrePnrs[9];
 			String airSeatNum = sabrePnrs[7];
-
+			String sevenLine = sabrePnrs1[6];
+			String str[] = sevenLine.split("\\s+");
+			String str1 = str[str.length - 1].trim();
+			String str2 = str1.substring(0, str1.lastIndexOf(".") + 3);
+			pSabreEntity.setAirSeatsPrice(str2);
 			pSabreEntity.setId(id); //序号
 			pSabreEntity.setAirlineComName(airCompName); //航空公司
 			pSabreEntity.setFlightNum(flightNum); //航班号
