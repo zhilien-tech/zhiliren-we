@@ -24,7 +24,7 @@
             <input id="orderstatusid" name="orderstatusid" type="hidden" value="${obj.recordinfo.orderstatusid }">
             <h4>预收款</h4>
           </div>
-          <div class="modal-body" style="height:481px;overflow-y:auto; ">
+          <div class="modal-body" style="height:130px;overflow-y:auto; ">
               <table class="addYSKtable">
                 <tbody>
                       <tr>
