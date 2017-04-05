@@ -63,7 +63,7 @@
                                 <div class="col-md-3 dictInfoSousuo" style="float:left;">
 									<!--字典信息名称 搜索框-->
 									<input type="text" id="comDictNameId" name="comDictName" onkeypress="onkeyEnter();" class="form-control"
-										placeholder="字典信息/航空公司">
+										placeholder="字典信息/航空公司/公司名称">
 								</div>
 								<div class="col-md-2 col-padding">
 									<!--搜索 按钮-->
@@ -113,7 +113,8 @@
 									<thead>
 										<tr>
 											<th>第三方公司</th>
-											<th>银行卡账号</th>
+											<th>银行卡名称</th>
+											<th>卡号</th>
 											<th>状态</th>
 											<th>创建时间</th>
 											<th>备注</th>
@@ -244,6 +245,8 @@ function successCallback(id){
 		  layer.msg("修改成功",{time:2000});
 	  }else if(id == '3'){
 		  layer.msg("删除成功",{time:2000});
+	  }else if(id == '4'){
+		  layer.msg("启用成功",{time:2000});
 	  }
   }
 //删除提示
@@ -269,8 +272,13 @@ function physicalDelete(did, status) {
 			url : url,
 			success : function(data) {
 				if ("200" == data.status) {
-					layer.msg("操作成功!",{time:2000});
-					window.location.reload(true);
+					if("1"==status){
+						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+					    window.parent.successCallback('4');
+					}else if("2"==status){
+						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+					    window.parent.successCallback('3');
+					}
 				} else {
 					layer.msg("操作失败!",{time:2000});
 				}
@@ -587,6 +595,15 @@ function initDatatable() {
                     		return thirdcompanyname;
                     	}
                     },
+                    {"data": "bankcardname", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var bankcardname = row.bankcardname;
+                    		if(null==bankcardname || ""==bankcardname){
+                    			return "";
+                    		}
+                    		return bankcardname;
+                    	}
+                    },
                     {"data": "bankcardnum", "bSortable": false,
                     	render: function(data, type, row, meta) {
                     		var bankcardnum = row.bankcardnum;
@@ -633,7 +650,7 @@ function initDatatable() {
             ],
             "columnDefs": [{
                 //   指定第一列，从0开始，0表示第一列，1表示第二列……
-                targets: 5,
+                targets: 6,
                 render: function(data, type, row, meta) {
                 	var modify = '<a style="cursor:pointer;" onclick="edit('+row.id+');">编辑</a>';
             		if(1==row.status){
@@ -653,11 +670,13 @@ $("#comDictInfoSearchBtn").on('click', function () {
 	var comTypeCode = $("#comTypeCode").val();
 	var comDictName = $("#comDictNameId").val();
 	var airlineName = $("#comDictNameId").val();//航空公司
+	var thirdCompanyName = $("#comDictNameId").val();//航空公司
     var param = {
 		        "status":status,
 		        "comTypeCode":comTypeCode,
 		        "comDictName":comDictName,
 		        "airlineName":airlineName,
+		        "thirdCompanyName":thirdCompanyName
 		    };
     if(status==1 ||　status==2){
     	comcomdatatableInfo.settings()[0].ajax.data = param;
@@ -668,6 +687,8 @@ $("#comDictInfoSearchBtn").on('click', function () {
     	);
     	loginNumTable.settings()[0].ajax.data = param;
 		loginNumTable.ajax.reload();
+		thirdPayMentTable.settings()[0].ajax.data = param;
+		thirdPayMentTable.ajax.reload();
     }
 });
 

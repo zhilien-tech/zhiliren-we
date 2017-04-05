@@ -35,7 +35,7 @@ SELECT
 	tp.createTime,
 	tp.updateTime,
 	tp.remark,
-	tp.res1,
+	tp.bankCardName,
 	tp.res2,
 	tp.res3,
 	tp.res4,

@@ -34,7 +34,14 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                        	<label class="col-sm-3 text-right padding">银行卡账号：</label>
+                        	<label class="col-sm-3 text-right padding">银行卡名称：</label>
+                            <div class="col-sm-8 padding">
+                              <input id="bankCardNameId" name="bankCardName" class="form-control input-sm inpImpWid" placeholder="请输入银行卡名称" />
+                              <span class="prompt">*</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                        	<label class="col-sm-3 text-right padding">卡号：</label>
                             <div class="col-sm-8 padding">
                               <input id="bankCardNumId" name="bankCardNum" class="form-control input-sm inpImpWid" placeholder="请输入银行卡账号" />
                               <span class="prompt">*</span>
@@ -75,6 +82,13 @@
 	                validators: {
 	                    notEmpty: {
 	                        message: '第三方公司名称不能为空!'
+	                    }
+	                }
+	            },
+	            bankCardName: {
+	                validators: {
+	                    notEmpty: {
+	                        message: '银行卡名称不能为空!'
 	                    }
 	                }
 	            },
@@ -121,7 +135,7 @@
 		                         }
 		                   }
 	                }
-	            },
+	            }
 	        }
 		});
 	});

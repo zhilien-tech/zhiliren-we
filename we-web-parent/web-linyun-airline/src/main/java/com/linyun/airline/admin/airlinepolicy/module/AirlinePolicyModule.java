@@ -8,6 +8,7 @@ package com.linyun.airline.admin.airlinepolicy.module;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -187,13 +188,20 @@ public class AirlinePolicyModule {
 	}
 
 	/**
-	 * 删除记录
+	 * 文件下载
 	 */
 	@At
 	public Object download(@Param("id") final long id, final HttpServletResponse response,
-			@Param("url") final String url, @Param("fileName") final String fileName) {
+			@Param("url") final String url, @Param("fileName") final String fileName, HttpServletRequest request) {
+		try {
+			request.setCharacterEncoding("utf-8");
+		} catch (UnsupportedEncodingException e) {
 
-		airlinePolicyService.downloadById(id, response, url, fileName);
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		}
+		airlinePolicyService.downloadById(id, response, url, fileName, request);
 		return null;
 	}
 }

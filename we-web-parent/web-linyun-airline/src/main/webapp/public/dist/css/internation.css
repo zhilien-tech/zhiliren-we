@@ -22,3 +22,26 @@ tbody.tableTbody tr td ul {padding-left: 0 !important;margin-bottom: 0px !import
 .tableTbody tr td:nth-child(6){padding:0;}
 #teamtype,#teamtype1 {padding-left: 3px;}
 .nav-tabs-custom > .nav-tabs > li {border-top: 3px solid transparent;margin-bottom: -2px;margin-right: 0px;}
+.addCityAirline div .select2-container{width: 100% !important;}
+#shouFuKuanGatheringTable tbody tr td:nth-child(11) {line-height: 60px;}
+.select2-container{width: 100% !important;}
+#payTable tbody tr td{padding:0;}
+#payTable tbody tr td ul li {border-bottom: solid 1px #f4f4f4;}
+#payTable tbody tr td:nth-child(2){line-height: 60px;}
+#payTable tbody tr td:nth-child(3){line-height: 60px;}
+#payTable tbody tr td:nth-child(8){line-height: 60px;}
+#payTable tbody tr td:nth-child(9){line-height: 60px;}
+#payTable tbody tr td:nth-child(10){line-height: 60px;}
+#payTable tbody tr td:nth-child(11){line-height: 60px;}
+#payTable tbody tr td:nth-child(12){line-height: 60px;}
+#payTable tbody tr td:nth-child(13){line-height: 60px;}
+input.checkchild1 { margin-top: 20px;}
+
+
+
+
+
+
+
+
+
