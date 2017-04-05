@@ -197,6 +197,8 @@
 				  layer.msg("修改成功",{time:2000});
 			  }else if(id == '3'){
 				  layer.msg("删除成功",{time:2000});
+			  }else if(id == '3'){
+				  layer.msg("启用成功",{time:2000});
 			  }
 		  }
 		//删除提示
@@ -222,8 +224,13 @@
 					url : url,
 					success : function(data) {
 						if ("200" == data.status) {
-							layer.msg("操作成功!",{time:2000});
-							window.location.reload(true);
+							if("1"==status){
+								var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+							    window.parent.successCallback('4');
+							}else if("2"==status){
+								var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+							    window.parent.successCallback('3');
+							}
 						} else {
 							layer.msg("操作失败!",{time:2000});
 						}

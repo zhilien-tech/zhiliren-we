@@ -319,6 +319,8 @@ public class ComInfoDictModule {
 					Cnd.where("id", "=", form.getId()));
 			dbDao.update(ComLoginNumEntity.class, Chain.make("status", form.getStatus()),
 					Cnd.where("id", "=", form.getId()));
+			dbDao.update(ComThirdPayMentEntity.class, Chain.make("status", form.getStatus()),
+					Cnd.where("id", "=", form.getId()));
 			return JsonResult.success("操作成功!");
 		} catch (Exception e) {
 			e.printStackTrace();
