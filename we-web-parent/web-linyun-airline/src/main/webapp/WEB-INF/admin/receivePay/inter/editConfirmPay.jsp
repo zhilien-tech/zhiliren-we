@@ -41,7 +41,7 @@
 					<c:forEach var="one" items="${obj.payList}">
                 		<tr ondblclick="trDetail(${one.id});">
                 			<td>${one.ordersnum }</td>
-                			<td>${one.pnr }</td>
+                			<td>${one.pnrnum }</td>
                 			<td>${one.cusgroupnum }</td>
                 			<td>${one.shortname }</td>
                 			<td>${one.billingdate }</td>

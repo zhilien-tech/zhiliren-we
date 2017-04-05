@@ -116,6 +116,26 @@ function initPayDataTable(){
 	});
 }
 
+//datatable行点击事件
+$("tbody",$('#inlandPayTable')).on("dblclick","tr",function(event){
+	//获取当前行的数据
+	var row = inlandPayTable.row($(this).closest('tr')).data();
+	var ids = row.pid;
+	layer.open({
+		type: 2,
+		title:false,
+		skin: false, //加上边框
+		closeBtn:false,//默认 右上角关闭按钮 是否显示
+		shadeClose:false,
+		area: ['850px', '650px'],
+		content: ['confirmPay.html?inlandPayIds='+ ids,'no'],
+	});
+});
+$("tbody",$('#inlandPayEdTable')).on("dblclick","tr",function(event){
+	//获取当前行的数据
+	var row = inlandPayEdTable.row($(this).closest('tr')).data();
+	editPay(row.payid);
+});
 
 //会计   已付款datatable
 var inlandPayEdTable;
@@ -477,7 +497,7 @@ $("#inlandPaySearchBtn").on('click', function () {
 			        "orderStatus":orderStatus,
 			        "leavetdate":inlandPayBeginDate,
 			        "backdate":inlandPayEndDate,
-			"name": inlandPayInput
+					"name": inlandPayInput
 			    };
 	if(orderStatus==inlandPayStatus){
 		inlandPayTable.settings()[0].ajax.data = param;
