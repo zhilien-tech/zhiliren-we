@@ -48,7 +48,7 @@
                 			<td>${one.peoplecount }</td>
                 			<td>${one.approver }</td>
                 			<td>
-                				<fmt:formatNumber type="number" value="${one.salesprice }" pattern="0.00" maxFractionDigits="2"/>
+                				<fmt:formatNumber type="number" value="${one.currentpay }" pattern="0.00" maxFractionDigits="2"/>
                 			</td>
                 		</tr>
                 	</c:forEach>

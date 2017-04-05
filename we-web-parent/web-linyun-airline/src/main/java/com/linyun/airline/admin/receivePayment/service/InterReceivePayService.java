@@ -187,9 +187,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				String rid = r.getString("id");
 				if (Util.eq(id, rid)) {
 					rList.add(r);
-					if (!Util.isEmpty(r.get("incometotal"))) {
-						Double incometotal = (Double) r.get("incometotal");
-						sum += incometotal;
+					if (!Util.isEmpty(r.get("currentpay"))) {
+						Double currentpay = (Double) r.get("currentpay");
+						sum += currentpay;
 					}
 				}
 			}
@@ -240,8 +240,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//计算合计金额
 		Double sum = 0.0;
 		for (Record record : orders) {
-			if (!Util.isEmpty(record.get("incometotal"))) {
-				Double incometotal = (Double) record.get("incometotal");
+			if (!Util.isEmpty(record.get("currentpay"))) {
+				Double incometotal = (Double) record.get("currentpay");
 				sum += incometotal;
 			}
 		}
@@ -390,6 +390,16 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			List<Record> orderList = new ArrayList<Record>();
 			for (Record r : orders) {
 				String orderId = r.getString("id");
+				String reduceNumStr = r.getString("actualyreduce");
+				if (Util.isEmpty(reduceNumStr)) {
+					reduceNumStr = "0";
+				}
+				String actualNumStr = r.getString("actualnumber");
+				if (Util.isEmpty(actualNumStr)) {
+					actualNumStr = "0";
+				}
+				int peopleCount = Integer.valueOf(actualNumStr) + Integer.valueOf(reduceNumStr);
+				r.set("peoplecount", peopleCount);
 				if (Util.eq(payId, orderId)) {
 					orderList.add(r);
 				}
@@ -472,7 +482,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		List<Record> newData = new ArrayList<Record>();
 		for (String pid : payIds) {
 			Record record = new Record();
-			String totalmoney = "0.00"; //总额
+			double totalmoney = 0; //总额
 			String shortname = ""; //收款单位
 			int payStatus = AccountPayEnum.APPROVALPAYED.intKey(); //收款状态
 			String issuer = "";
@@ -483,6 +493,10 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				issuer = r.getString("issuer");
 				//同一个支付订单
 				if (Util.eq(pid, pidStr)) {
+					String currentpayStr = r.getString("currentpay");
+					if (!Util.isEmpty(currentpayStr)) {
+						totalmoney += Double.valueOf(currentpayStr);
+					}
 					orders.add(r);
 				}
 			}
@@ -553,8 +567,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		String operator = "";
 		String operatorList = "";
 		for (Record record : orders) {
-			if (!Util.isEmpty(record.get("salePrice"))) {
-				Double incometotal = (Double) record.get("salePrice");
+			if (!Util.isEmpty(record.get("currentpay"))) {
+				Double incometotal = (Double) record.get("currentpay");
 				totalMoney += incometotal;
 			}
 			proposer = record.getString("proposerMan");
@@ -650,7 +664,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		List<Record> payList = dbDao.query(sql, cnd, null);
 
 		//总金额
-		double totalMoney = 0;
+		double totalMoney = 0.00;
 		//申请人
 		String proposer = "";
 		//审批人
@@ -661,11 +675,11 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		String operator = "";
 		for (Record record : payList) {
 			//计算订单总金额
-			/*if (!Util.isEmpty(record.get("salesprice"))) {
-				Double costpricesum = (Double) record.get("salesprice");
+			if (!Util.isEmpty(record.get("currentpay"))) {
+				Double costpricesum = (Double) record.get("currentpay");
 				totalMoney += Double.valueOf(costpricesum);
-			}*/
-			totalMoney = 0.00;
+			}
+
 			proposer = record.getString("proposerMan");
 			approver = record.getString("approver"); //审批人
 			String opr = record.getString("operator"); //操作人

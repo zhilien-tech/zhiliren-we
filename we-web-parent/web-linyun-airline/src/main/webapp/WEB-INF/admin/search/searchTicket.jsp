@@ -599,7 +599,7 @@
 									+ '<th>航空公司</th>' + '<th>航班号</th>'
 									+ '<th>舱位</th>' + '<th>起飞日期</th>'
 									+ '<th>航段</th>' + '<th>座位数</th>'
-									+ '<th>航程时间</th>' + '</tr>';
+									+ '<th>航程时间</th>'+ '<th>舱位价格</th>' + '</tr>';
 							var pnrBody = '';
 							var obj = result.arrayList;
 							for (var i = 0; i < obj.length; i++) {
@@ -613,7 +613,8 @@
 										+ '</td>' + '<td>' + obj[i].airSeatNum
 										+ '</td>' + '<td>'
 										+ obj[i].airDepartureTime + '-'
-										+ obj[i].airLandingTime + '</td>'
+										+ obj[i].airLandingTime + '</td>'+'<td>' + obj[i].airSeatsPrice
+										+ '</td>'
 										+ '</tr>';
 							}
 						}
