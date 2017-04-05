@@ -55,6 +55,7 @@ import com.linyun.airline.entities.TFlightInfoEntity;
 import com.linyun.airline.entities.TOrderCustomneedEntity;
 import com.linyun.airline.entities.TOrderReceiveEntity;
 import com.linyun.airline.entities.TPayReceiveRecordEntity;
+import com.linyun.airline.entities.TPlanInfoEntity;
 import com.linyun.airline.entities.TPnrInfoEntity;
 import com.linyun.airline.entities.TReceiveBillEntity;
 import com.linyun.airline.entities.TReceiveEntity;
@@ -1079,5 +1080,83 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		dbDao.update(orders);
 		dbDao.insert(payorders);
 		return null;
+	}
+
+	public Object saveInterOrderInfo(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		TCustomerInfoEntity customerInfo = new TCustomerInfoEntity();
+		String data = request.getParameter("data");
+		Map<String, Object> fromJson = JsonUtil.fromJson(data, Map.class);
+		//订单信息
+		TUpOrderEntity orderinfo = new TUpOrderEntity();
+		orderinfo.setOrdersnum(editPlanService.generateOrderNum());
+		orderinfo.setCompanyId(new Long(company.getId()).intValue());
+		if (!Util.isEmpty(fromJson.get("costsingleprice"))) {
+			orderinfo.setCostsingleprice(Double.valueOf((String) fromJson.get("costsingleprice")));
+		}
+		orderinfo.setInterOrderStatus(Integer.valueOf((String) fromJson.get("interOrderStatus")));
+		orderinfo.setLoginUserId(new Long(user.getId()).intValue());
+		orderinfo.setOrdersstatus(Integer.valueOf((String) fromJson.get("interOrderStatus")));
+		orderinfo.setOrderstime(new Date());
+		orderinfo.setOrderstype(OrderTypeEnum.TEAM.intKey());
+		if (!Util.isEmpty(fromJson.get("peoplecount"))) {
+			Integer peoplecount = Integer.valueOf((String) fromJson.get("peoplecount"));
+			orderinfo.setPeoplecount(peoplecount);
+		}
+		if (!Util.isEmpty(fromJson.get("customerId"))) {
+			Integer customerId = Integer.valueOf((String) fromJson.get("customerId"));
+			orderinfo.setUserid(customerId);
+			customerInfo = dbDao.fetch(TCustomerInfoEntity.class, customerId.longValue());
+		}
+		TUpOrderEntity insertOrder = dbDao.insert(orderinfo);
+		//添加计划制作数据
+		TPlanInfoEntity planinfo = new TPlanInfoEntity();
+		planinfo.setCompanyid(new Long(company.getId()).intValue());
+		planinfo.setCreatetime(new Date());
+		planinfo.setIsclose(0);
+		planinfo.setIssave(1);
+		planinfo.setOpid(user.getId());
+		planinfo.setOrdernumber(String.valueOf(insertOrder.getId()));
+		if (!Util.isEmpty(fromJson.get("peoplecount"))) {
+			Integer peoplecount = Integer.valueOf((String) fromJson.get("peoplecount"));
+			planinfo.setPeoplecount(peoplecount);
+		}
+		planinfo.setTravelname(customerInfo.getShortName());
+		TPlanInfoEntity insertPlanInfo = dbDao.insert(planinfo);
+		//判断是否是主航段
+		List<TPnrInfoEntity> query = dbDao.query(TPnrInfoEntity.class, Cnd.where("orderid", "=", insertOrder.getId()),
+				null);
+		String pnr = (String) fromJson.get("pnr");
+		TPnrInfoEntity pnrinfo = new TPnrInfoEntity();
+		pnrinfo.setOrderid(insertOrder.getId());
+		pnrinfo.setPNR(pnr);
+		//是否是主航段
+		if (query.size() > 0) {
+			pnrinfo.setMainsection(0);
+		} else {
+			pnrinfo.setMainsection(1);
+		}
+		TPnrInfoEntity insertpnr = dbDao.insert(pnrinfo);
+		List<Map<String, String>> airinfos = (List<Map<String, String>>) fromJson.get("airinfos");
+		List<TAirlineInfoEntity> ailines = new ArrayList<TAirlineInfoEntity>();
+		for (Map<String, String> map : airinfos) {
+			TAirlineInfoEntity airline = new TAirlineInfoEntity();
+			airline.setLeavecity(map.get("leavecity"));
+			airline.setArrvicity(map.get("arrivecity"));
+			if (!Util.isEmpty(map.get("leavedate"))) {
+				airline.setLeavedate(DateUtil.string2Date(map.get("leavedate"), DateUtil.FORMAT_YYYY_MM_DD));
+			}
+			airline.setLeavetime(map.get("leavetime"));
+			airline.setArrivetime(map.get("arrivetime"));
+			airline.setAilinenum(map.get("ailinenum"));
+			airline.setPnrid(insertpnr.getId());
+			airline.setPlanid(insertPlanInfo.getId());
+			ailines.add(airline);
+		}
+		return dbDao.insert(ailines);
 	}
 }

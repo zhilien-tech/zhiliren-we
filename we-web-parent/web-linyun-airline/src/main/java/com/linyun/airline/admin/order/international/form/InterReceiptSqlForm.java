@@ -6,14 +6,18 @@
 
 package com.linyun.airline.admin.order.international.form;
 
+import java.util.Date;
+
 import lombok.Data;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
+import org.nutz.dao.util.cri.SqlExpressionGroup;
 
 import com.linyun.airline.common.enums.OrderTypeEnum;
+import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
@@ -32,6 +36,14 @@ public class InterReceiptSqlForm extends DataTablesParamForm {
 
 	private Integer userid;
 
+	private String startdate;
+
+	private String enddate;
+
+	private String searchInfo;
+
+	private Integer receivestatus;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		String sqlString = sqlManager.get("get_international_receive_list");
@@ -45,6 +57,23 @@ public class InterReceiptSqlForm extends DataTablesParamForm {
 		cnd.and("tr.orderstype", "=", OrderTypeEnum.TEAM.intKey());
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("tr.companyid", "=", companyid);
+		}
+		if (!Util.isEmpty(searchInfo)) {
+			SqlExpressionGroup sqlex = new SqlExpressionGroup();
+			sqlex.and("tr.customename", "like", "%" + searchInfo + "%").or("tu.userName", "like",
+					"%" + searchInfo + "%");
+			cnd.and(sqlex);
+		}
+		if (!Util.isEmpty(startdate)) {
+			Date startdates = DateUtil.string2Date(startdate, DateUtil.FORMAT_YYYY_MM_DD);
+			cnd.and("tr.receivedate", ">=", startdates);
+		}
+		if (!Util.isEmpty(enddate)) {
+			Date enddates = DateUtil.string2Date(enddate, DateUtil.FORMAT_YYYY_MM_DD);
+			cnd.and("tr.receivedate", "<=", enddates);
+		}
+		if (!Util.isEmpty(receivestatus)) {
+			cnd.and("tr.status", "=", receivestatus);
 		}
 		cnd.orderBy("tr.status", "asc");
 		cnd.orderBy("tr.receivedate", "desc");

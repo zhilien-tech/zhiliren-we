@@ -373,13 +373,13 @@ $(document).on("change",".paymethod",function(){
           	
             } 
          });
-	}else if(paymethod == 2){
+	}else{
 		parentDiv.find('[name=threepaytd]').hide();
 		parentDiv.find('[name=threepaymethod]').hide();
 		parentDiv.find('[name=internationalcard]').show();
 		$.ajax({
 			type: 'POST', 
-			data: {}, 
+			data: {paymethod:paymethod}, 
 			dataType:'json',
 			url: BASE_PATH + '/admin/inland/loadBalance.html',
             success: function (data) { 

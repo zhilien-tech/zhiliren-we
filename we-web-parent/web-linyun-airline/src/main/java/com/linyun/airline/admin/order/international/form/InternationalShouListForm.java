@@ -6,14 +6,20 @@
 
 package com.linyun.airline.admin.order.international.form;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import lombok.Data;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
+import org.nutz.dao.util.cri.SqlExpressionGroup;
 
 import com.linyun.airline.common.enums.OrderTypeEnum;
+import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
@@ -32,6 +38,14 @@ public class InternationalShouListForm extends DataTablesParamForm {
 
 	private Integer userid;
 
+	private String startdate;
+
+	private String enddate;
+
+	private String searchInfo;
+
+	private Integer shouinvoicestatus;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		//String sqlString = EntityUtil.entityCndSql(TInvoiceInfoEntity.class);
@@ -47,6 +61,25 @@ public class InternationalShouListForm extends DataTablesParamForm {
 		//cnd.and("invoicetype", "=", InvoiceInfoEnum.RECEIPT_INVOIC_ING.intKey());//开发票中
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("comId", "=", companyid);
+		}
+		DateFormat format = new SimpleDateFormat(DateUtil.FORMAT_YYYYMMDD);
+		if (!Util.isEmpty(searchInfo)) {
+			SqlExpressionGroup sqlex = new SqlExpressionGroup();
+			sqlex.and("tuo.ordersnum", "like", "%" + searchInfo + "%")
+					.or("tii.paymentunit", "like", "%" + searchInfo + "%")
+					.or("tii.remark", "like", "%" + searchInfo + "%");
+			cnd.and(sqlex);
+		}
+		if (!Util.isEmpty(startdate)) {
+			Date startdates = DateUtil.string2Date(startdate, DateUtil.FORMAT_YYYY_MM_DD);
+			cnd.and("tii.invoicedate", ">=", startdates);
+		}
+		if (!Util.isEmpty(enddate)) {
+			Date enddates = DateUtil.string2Date(enddate, DateUtil.FORMAT_YYYY_MM_DD);
+			cnd.and("tii.invoicedate", "<=", enddates);
+		}
+		if (!Util.isEmpty(shouinvoicestatus)) {
+			cnd.and("tii.status", "=", shouinvoicestatus);
 		}
 		return cnd;
 	}

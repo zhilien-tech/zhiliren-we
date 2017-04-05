@@ -63,6 +63,7 @@ import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.ExcelReader;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAirlineInfoEntity;
+import com.linyun.airline.entities.TBankCardEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TFinanceInfoEntity;
@@ -511,6 +512,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		result.put("user", user);
 		TUpOrderEntity orderinfo = this.fetch(id);
 		result.put("orderinfo", orderinfo);
@@ -518,7 +521,14 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(orderinfo.getUserid()));
 		result.put("custominfo", custominfo);
 		//客户负责人
-		result.put("responsible", dbDao.fetch(TUserEntity.class, custominfo.getResponsibleId()).getUserName());
+		String resposeble = "";
+		if (!Util.isEmpty(custominfo.getResponsibleId())) {
+			TUserEntity resposebleuser = dbDao.fetch(TUserEntity.class, custominfo.getResponsibleId());
+			if (!Util.isEmpty(resposebleuser) && !Util.isEmpty(resposebleuser.getFullName())) {
+				resposeble = resposebleuser.getFullName();
+			}
+		}
+		result.put("responsible", resposeble);
 		//客户需求信息、航班信息集合
 		List<Map<String, Object>> customneedinfo = new ArrayList<Map<String, Object>>();
 		//查询客户需求信息
@@ -557,7 +567,14 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		TFinanceInfoEntity finance = dbDao.fetch(TFinanceInfoEntity.class, Cnd.where("orderid", "=", id));
 		result.put("finance", finance);
 		//支付方式
-		result.put("paymethodenum", EnumUtil.enum2(PayMethodEnum.class));
+		List<TBankCardEntity> paymethod = dbDao.query(TBankCardEntity.class,
+				Cnd.where("companyId", "=", company.getId()).and("status", "=", BankCardStatusEnum.ENABLE.intKey()),
+				null);
+		TBankCardEntity bankCardEntity = new TBankCardEntity();
+		bankCardEntity.setId(PayMethodEnum.THIRDPART.intKey());
+		bankCardEntity.setBankName(PayMethodEnum.THIRDPART.value());
+		paymethod.add(0, bankCardEntity);
+		result.put("paymethod", paymethod);
 		//订单状态
 		result.put("orderstatusenum", EnumUtil.enum2(OrderStatusEnum.class));
 		result.put("querystatus", OrderStatusEnum.SEARCH.intKey());
