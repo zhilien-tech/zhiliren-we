@@ -63,4 +63,7 @@ public class ParsingSabreEntity implements Serializable {
 	//舱位价格
 	private String airSeatsPrice;
 
+	//价格币种
+	private String airSeatsCurrency;
+
 }

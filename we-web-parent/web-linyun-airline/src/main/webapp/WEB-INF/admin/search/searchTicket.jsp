@@ -500,7 +500,7 @@
 							<!-- etem解析 -->
 							<div class="tab-pane" id="tab_5">
 								<textarea id="etemTextArea" class="form-control input-sm sabreTextatea"></textarea>
-								<button type="button" onclick="parsingEtemText()"
+								<button type="button" onclick="parsingEtemText();"
 									class="btn btn-primary input-sm parsingBtn">解析</button>
 								<button type="button" onclick="clearParsingEtemText()"
 									class="btn btn-primary input-sm parsingBtn">清除</button>
@@ -688,8 +688,23 @@
 										+ '</tr>';
 							}
 						}
+						if (result.parsingType == "QTE:/") {
+							var pnrThread = '<tr>' 
+												+ '<th>总价</th>'
+												+ '<th>币种</th>'
+												+ '</tr>';
+							var pnrBody = '';
+							var obj = result.arrayList;
+							for (var i = 0; i < obj.length; i++) {
+								pnrBody += '<tr>' 
+										+ '<td>' + obj[i].airSeatsPrice+ '</td>' 
+										+ '<td>' + obj[i].airSeatsCurrency+ '</td>' 
+										+ '</tr>';
+							}
+						}
+						
 						$("#etemThread").html(pnrThread);
-						$("#etemTbody").append(pnrBody);
+						$("#etemTbody").html(pnrBody);
 					}
 				});
 			}
