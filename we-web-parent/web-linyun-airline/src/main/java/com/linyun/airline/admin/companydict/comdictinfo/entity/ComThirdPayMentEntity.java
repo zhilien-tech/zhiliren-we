@@ -49,6 +49,10 @@ public class ComThirdPayMentEntity {
 	private String thirdCompanyName;
 
 	@Column
+	@Comment("银行卡名称")
+	private String bankCardName;
+
+	@Column
 	@Comment("银行卡账号")
 	private String bankCardNum;
 
@@ -67,10 +71,6 @@ public class ComThirdPayMentEntity {
 	@Column
 	@Comment("备注")
 	private String remark;
-
-	@Column
-	@Comment("预留字段1")
-	private String res1;
 
 	@Column
 	@Comment("预留字段2")
@@ -136,10 +136,10 @@ public class ComThirdPayMentEntity {
 				return false;
 		} else if (!remark.equals(other.remark))
 			return false;
-		if (res1 == null) {
-			if (other.res1 != null)
+		if (bankCardName == null) {
+			if (other.bankCardName != null)
 				return false;
-		} else if (!res1.equals(other.res1))
+		} else if (!bankCardName.equals(other.bankCardName))
 			return false;
 		if (res2 == null) {
 			if (other.res2 != null)
@@ -199,7 +199,7 @@ public class ComThirdPayMentEntity {
 		result = prime * result + ((createTime == null) ? 0 : createTime.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((remark == null) ? 0 : remark.hashCode());
-		result = prime * result + ((res1 == null) ? 0 : res1.hashCode());
+		result = prime * result + ((bankCardName == null) ? 0 : bankCardName.hashCode());
 		result = prime * result + ((res2 == null) ? 0 : res2.hashCode());
 		result = prime * result + ((res3 == null) ? 0 : res3.hashCode());
 		result = prime * result + ((res4 == null) ? 0 : res4.hashCode());
