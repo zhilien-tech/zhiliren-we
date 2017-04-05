@@ -31,7 +31,14 @@
 	                        </div>
                         </div>
                         <div class="form-group row">
-                        	<label class="col-sm-3 text-right padding">银行卡账号：</label>
+                        	<label class="col-sm-3 text-right padding">银行卡名称：</label>
+                            <div class="col-sm-8 padding">
+                              	<input name="bankCardName" id="bankCardNameId" type="text" class="form-control input-sm inpImpWid"  value="${obj.single.bankCardName}" />
+                            	<span class="prompt">*</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                        	<label class="col-sm-3 text-right padding">卡号：</label>
                             <div class="col-sm-8 padding">
                               	<input name="bankCardNum" id="bankCardNumId" type="text" class="form-control input-sm inpImpWid"  value="${obj.single.bankCardNum}" />
                             	<span class="prompt">*</span>
@@ -87,6 +94,13 @@ function validateParams(){
                 validators: {
                     notEmpty: {
                         message: '第三方公司名称不能为空!'
+                    }
+                }
+            },
+            bankCardName: {
+                validators: {
+                    notEmpty: {
+                        message: '银行卡名称不能为空!'
                     }
                 }
             },

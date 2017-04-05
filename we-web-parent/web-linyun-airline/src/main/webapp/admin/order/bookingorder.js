@@ -352,20 +352,25 @@ function loadCustominfo(){
 //设置付款方式
 $(document).on("change",".paymethod",function(){
 	var paymethod = $(this).val();
-	var parentDiv = $(this).parent().parent().parent();
+	var parentDiv = $(this).parent().parent().parent().parent().parent();
+	var customerneedid = parentDiv.find('[name=customneedid]').val();
 	if(paymethod == 1){
 		parentDiv.find('[name=threepaytd]').show();
 		parentDiv.find('[name=threepaymethod]').show();
 		parentDiv.find('[name=internationalcard]').hide();
-		$.ajax({ 
+		$.ajax({
 			type: 'POST', 
-			data: {}, 
+			data: {customerneedid:customerneedid}, 
 			dataType:'json',
 			url: BASE_PATH + '/admin/inland/loadCustomeSelect.html',
             success: function (data) { 
             	var result = '';
-            	for(var i=0 ; i<data.length ; i++){
-            		result += '<option value="'+data[i].id+'">'+data[i].shortname+'</option>';
+            	for(var i=0 ; i<data.thirdPayMent.length ; i++){
+            		if(data.threepaymethod == data.thirdPayMent[i].id){
+            			result += '<option value="'+data.thirdPayMent[i].id+'" selected="selected">'+data.thirdPayMent[i].thirdCompanyName+'</option>';
+            		}else{
+            			result += '<option value="'+data.thirdPayMent[i].id+'">'+data.thirdPayMent[i].thirdCompanyName+'</option>';
+            		}
             	}
             	parentDiv.find('[name=thirdcustomid]').html(result);
             },
@@ -373,17 +378,17 @@ $(document).on("change",".paymethod",function(){
           	
             } 
          });
-	}else{
+	}else if(paymethod){
 		parentDiv.find('[name=threepaytd]').hide();
 		parentDiv.find('[name=threepaymethod]').hide();
 		parentDiv.find('[name=internationalcard]').show();
 		$.ajax({
 			type: 'POST', 
-			data: {paymethod:paymethod}, 
+			data: {paymethod:paymethod},  
 			dataType:'json',
 			url: BASE_PATH + '/admin/inland/loadBalance.html',
             success: function (data) { 
-            	parentDiv.find('[name=internationalcard]').html('<label>余额：'+data.balance+'</label>');
+            	parentDiv.find('[name=internationalcard]').html('　余额：'+data.balance);
             },
             error: function (xhr) {
           	

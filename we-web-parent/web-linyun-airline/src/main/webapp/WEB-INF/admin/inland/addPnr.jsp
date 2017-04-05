@@ -31,7 +31,7 @@
                     <td><select id="loginid" name="loginid" class="form-control input-sm">
                     		<option value="">请选择</option>
 	                    	<c:forEach items="${obj.loginselect }" var="one">
-		                    		<option value="${one.comDictName }">${one.comDictName }</option>
+		                    		<option value="${one.id }">${one.loginNumName }</option>
 	                    	</c:forEach>
                     	</select>
                     </td>

@@ -49,8 +49,8 @@ public class ComThirdPayMentSqlForm extends DataTablesParamForm {
 	private Date updateTime;
 	//备注
 	private String remark;
-	//预留字段1
-	private String res1;
+	//银行卡名称
+	private String bankCardName;
 	//预留字段2
 	private String res2;
 	//预留字段3

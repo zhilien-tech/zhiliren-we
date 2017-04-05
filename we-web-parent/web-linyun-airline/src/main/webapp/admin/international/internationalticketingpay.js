@@ -283,7 +283,7 @@ function loadFukuanTable(){
 $('.fuKuanBtn1').click(function(){
 	var ids = $('#checkedboxval1').val();
 	if(!ids){
-		layer.msg("请至少选中一条记录",{time: 2000, icon:1});
+		layer.msg("请至少选中一条记录",{time: 2000});
 	}else{
 		$.ajax({ 
 			type: 'POST', 

@@ -287,7 +287,7 @@ function loadTicking(status){
 $('.fuKuanBtn').click(function(){
 	var ids = $('#checkedboxval2').val();
 	if(!ids){
-		layer.msg("请至少选中一条记录",{time: 2000, icon:1});
+		layer.msg("请至少选中一条记录",{time: 2000});
 	}else{
 		var status = $('#status').val();
 		$.ajax({ 

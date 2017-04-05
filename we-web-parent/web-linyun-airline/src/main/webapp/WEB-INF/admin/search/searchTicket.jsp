@@ -672,6 +672,7 @@
 									+ '<th>航班号</th>' + '<th>预订舱位</th>'
 									+ '<th>预订日期</th>' + '<th>航段</th>'
 									+ '<th>预订座位数</th>' + '<th>航程时间</th>'
+									+ '<th>币种</th>' + '<th>含税总价</th>'
 									+ '</tr>';
 							var pnrBody = '';
 							var obj = result.arrayList;
@@ -682,9 +683,10 @@
 										+ '</td>' + '<td>' + obj[i].presetDate
 										+ '</td>' + '<td>' + obj[i].airLine
 										+ '</td>' + '<td>' + obj[i].airSeatNum
-										+ '</td>' + '<td>'
-										+ obj[i].airDepartureTime + '-'
-										+ obj[i].airLandingTime + '</td>'
+										+ '</td>' + '<td>'+ obj[i].airDepartureTime + '-'+ obj[i].airLandingTime 
+										+ '</td>' + '<td>' + obj[i].airSeatsCurrency
+										+ '</td>' + '<td>' + obj[i].airSeatsPrice
+										+ '</td>'
 										+ '</tr>';
 							}
 						}

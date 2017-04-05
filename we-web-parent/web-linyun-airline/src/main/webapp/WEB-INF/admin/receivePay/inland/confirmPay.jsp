@@ -40,7 +40,7 @@
 					<input id="payNames" name="payNames" type="hidden" value="${obj.sameName }">
 					<input id="operators" name="operators" type="hidden" value="${obj.operators }"><!-- 水单url -->
 					<c:forEach var="one" items="${obj.orders}">
-                		<tr>
+                		<tr ondblclick="trDetail(${one.uid });">
                 			<td>${one.ordernum }</td>
                 			<td>${one.pnrnum }</td>
                 			<td>${one.cusgroupnum }</td>
@@ -285,6 +285,11 @@
 					
 				}
 			});
+		}
+		
+		function trDetail(id){
+			var url = '${base}/admin//inland/queryDetail.html?id='+ id;
+			window.open(url);
 		}
 	</script>
 </body>

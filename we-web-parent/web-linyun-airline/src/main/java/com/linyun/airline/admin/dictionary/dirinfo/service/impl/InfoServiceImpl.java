@@ -66,7 +66,7 @@ public class InfoServiceImpl extends BaseService<DictInfoEntity> implements IInf
 		Map<String, Object> obj = new HashMap<String, Object>();
 		obj.put("dirtype",
 				dbDao.query(DictTypeEntity.class,
-						Cnd.where("status", "=", DataStatusEnum.ENABLE.intKey()), null));
+						Cnd.where("status", "=", DataStatusEnum.ENABLE.intKey()).and("typeCode", "!=", "CFCS"), null));
 		//obj.put("deparinfo", dbDao.fetch(TDepartureCityEntity.class, id));
 		obj.put("dirinfo", dbDao.fetch(DictInfoEntity.class, id));
 		return obj;

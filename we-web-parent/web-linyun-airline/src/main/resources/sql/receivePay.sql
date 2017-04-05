@@ -76,6 +76,7 @@ SELECT
 			u.id = p.proposer
 	) proposerMan,
 	uo.ordersnum,
+	uo.id uid,
 	pi.pnr,
 	fi.cusgroupnum,
 	ci.shortName,
@@ -471,7 +472,7 @@ SELECT
 		WHERE
 			u.id = p.proposer
 	) proposerMan,
-	uo.id,
+	uo.id uid,
 	uo.ordersnum,
 	fi.cusgroupnum,
 	ci.shortName,

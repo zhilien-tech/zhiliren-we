@@ -33,7 +33,7 @@
                 <tbody id="interConfirmRecTbody">
                   <input id="recIds" name="recIds" type="hidden" value="${obj.id }"><!-- 水单url -->
 					<c:forEach var="one" items="${obj.orders}">
-                		<tr>
+                		<tr ondblclick="trDetail(${one.id });">
                 			<td>${one.ordersnum }</td>
                 			<td>${one.billingdate }</td>
                 			<td>${one.cusgroupnum }</td>
@@ -94,6 +94,7 @@
 	<!-- 確認收款js -->
 	<script src="${base}/admin/receivePayment/inter/interReceive.js"></script>
 	<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
+	<script src="${base}/common/js/layer/layer.js"></script>
 	<!-- 防止订单重复提交 -->
 	<script type="text/javascript">
 		$(function(){
@@ -102,6 +103,11 @@
 				$("#confirmRecClick").attr('disabled',true);
 			}
 		});
+		
+		function trDetail(id){
+			var url = '${base}/admin/international/internationalDetail.html?orderid='+ id;
+			window.open(url);
+		}
 	</script>
 </body>
 </html>

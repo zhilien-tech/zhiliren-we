@@ -23,7 +23,7 @@
 			
 			<table id="receivablesTable" class="table table-bordered table-hover">
 				<thead>
-					<tr>
+					<tr ondblclick="trDetail(${one.id});">
 						<th>订单号</th>
 						<th>PNR</th>
 						<th>客户团号</th>
@@ -39,7 +39,7 @@
 					<input id="payNames" name="payNames" type="hidden" value="${obj.sameName }">
 					<input id="operators" name="operators" type="hidden" value="${obj.operators }"><!-- 水单url -->
 					<c:forEach var="one" items="${obj.payList}">
-                		<tr>
+                		<tr ondblclick="trDetail(${one.id});">
                 			<td>${one.ordersnum }</td>
                 			<td>${one.pnr }</td>
                 			<td>${one.cusgroupnum }</td>
@@ -338,6 +338,11 @@
 						
 					}
 				});
+			}
+			
+			function trDetail(id){
+				var url = '${base}/admin/international/internationalDetail.html?orderid='+ id;
+				window.open(url);
 			}
 		</script>
 </body>

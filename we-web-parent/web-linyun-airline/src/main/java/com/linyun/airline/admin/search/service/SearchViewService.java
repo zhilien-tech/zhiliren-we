@@ -736,6 +736,14 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		}
 		/************************输入SD5Q9来预订********************************/
 		if (parsingType == "2") {
+			int indexOf = 0;
+			for (int i = 0; i < etemPnrs.length; i++) {
+				if (etemPnrs[i].contains("QTE:/")) {
+					indexOf = i;
+				}
+
+			}
+
 			ParsingSabreEntity pEtemEntity = new ParsingSabreEntity();
 			int id = Integer.parseInt(etemPnrs[1].substring(0, 1));
 			String flightNum = etemPnrs[2];
@@ -745,6 +753,8 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			String airSeatNum = etemPnrs[6];
 			String airDepartureTime = etemPnrs[7];
 			String airLandingTime = etemPnrs[8];
+			String airSeatsPrice = etemPnrs[indexOf + 46];
+			String airSeatsCurrency = etemPnrs[indexOf + 45];
 
 			pEtemEntity.setId(id);
 			pEtemEntity.setFlightNum(flightNum);
@@ -754,6 +764,8 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			pEtemEntity.setAirSeatNum(airSeatNum);
 			pEtemEntity.setAirDepartureTime(airDepartureTime);
 			pEtemEntity.setAirLandingTime(airLandingTime);
+			pEtemEntity.setAirSeatsPrice(airSeatsPrice);
+			pEtemEntity.setAirSeatsCurrency(airSeatsCurrency);
 
 			arrayList.add(pEtemEntity);
 			map.put("parsingType", "SD0Q0");
