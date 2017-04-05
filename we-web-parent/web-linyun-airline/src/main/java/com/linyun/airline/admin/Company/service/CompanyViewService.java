@@ -176,6 +176,7 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 		//添加管理员信息数据
 		userAddForm.setPassword(MANAGE_PASSWORD);
 		userAddForm.setUserName(addForm.getTelephone());
+		userAddForm.setFullName(addForm.getTelephone());
 		userAddForm.setTelephone("");
 		userAddForm.setStatus(1);
 		//设置上游公司或代理商的管理员用户类型
@@ -252,6 +253,7 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 		//修改管理员用户名
 		TUserEntity userEntity = dbDao.fetch(TUserEntity.class, updateForm.getAdminId());
 		userEntity.setUserName(updateForm.getTelephone());
+		userEntity.setFullName(updateForm.getTelephone());
 		//设置上游公司或代理商的管理员用户类型
 		if (updateForm.getComType() == CompanyTypeEnum.UPCOMPANY.intKey()) {
 			userEntity.setUserType(UserTypeEnum.UP_MANAGER.intKey());

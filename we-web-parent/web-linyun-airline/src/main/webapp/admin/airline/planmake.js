@@ -646,7 +646,7 @@ $(function () {
 		if($('.addMake').length > 1){
 			$(this).parent().remove();
 		}else{
-			layer.alert("最后一个不能删",{time: 2000, icon:1});
+			layer.msg("最后一个不能删",{time: 2000});
 		}
 	});
 });
@@ -926,11 +926,11 @@ function makePlan(){
 	            	datatable1.ajax.reload();
 	            	if(divlength-1 == i){
 	            		layer.closeAll('loading');
-	            		layer.alert("制作成功",{time: 2000, icon:1});
+	            		layer.msg("制作成功",{time: 2000});
 	            	}
 	            },
 	            error: function (xhr) {
-	            	layer.alert("制作失败",{time: 2000, icon:1});
+	            	layer.msg("制作失败",{time: 2000});
 	            } 
 	        });
 		});
@@ -944,20 +944,20 @@ function checkIsNull(){
 		if(travelname){
 			travelname = travelname.join(',');
 		}else{
-			layer.alert("请填写第"+(i+1)+"个旅行社",{time: 2000, icon:1});
+			layer.msg("请填写第"+(i+1)+"个旅行社",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}*/
 		var teamtype = $('#teamtype').val();
 		var peoplecount = $(this).find('[name=peoplecount]').val();
 		if(!peoplecount){
-			layer.alert("请填写第"+(i+1)+"个人数",{time: 2000, icon:1});
+			layer.msg("请填写第"+(i+1)+"个人数",{time: 2000});
 			result = false;
 			return false;
 		}
 		var dayscount = $(this).find('[name=dayscount]').val();
 		if(!dayscount){
-			layer.alert("请填写第"+(i+1)+"个天数",{time: 2000, icon:1});
+			layer.msg("请填写第"+(i+1)+"个天数",{time: 2000});
 			result = false;
 			return false;
 		}
@@ -965,7 +965,7 @@ function checkIsNull(){
 		if (backairline) {
 			backairline = backairline.join(',');
 		}else{
-			layer.alert("请填写第"+(i+1)+"个回程航班",{time: 2000, icon:1});
+			layer.msg("请填写第"+(i+1)+"个回程航班",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}*/
@@ -973,7 +973,7 @@ function checkIsNull(){
 		if (leavescity) {
 			leavescity = leavescity.join(',');
 		}else{
-			layer.alert("请填写第"+(i+1)+"个去程出发城市",{time: 2000, icon:1});
+			layer.msg("请填写第"+(i+1)+"个去程出发城市",{time: 2000});
 			result = false;
 			return false;
 		}
@@ -981,7 +981,7 @@ function checkIsNull(){
 		if (backscity) {
 			backscity = backscity.join(',');
 		}else{
-			layer.alert("请填写第"+(i+1)+"个去程抵达城市",{time: 2000, icon:1});
+			layer.msg("请填写第"+(i+1)+"个去程抵达城市",{time: 2000});
 			result = false;
 			return false;
 		}
@@ -989,20 +989,20 @@ function checkIsNull(){
 		if (leaveairline) {
 			leaveairline = leaveairline.join(',');
 		}else{
-			layer.alert("请填写第"+(i+1)+"个去程航班",{time: 2000, icon:1});
+			layer.msg("请填写第"+(i+1)+"个去程航班",{time: 2000});
 			result = false;
 			return false;
 		}
 		if(teamtype == 2){
 			var setoffdate = $(this).find('[name=setoffdate]').first().val();
 			if (!setoffdate) {
-				layer.alert("请填写第"+(i+1)+"个出发日期",{time: 2000, icon:1});
+				layer.msg("请填写第"+(i+1)+"个出发日期",{time: 2000});
 				result = false;
 				return false;
 			}
 			var setofftime = $(this).find('[name=setofftime]').first().val();
 			if (!setofftime) {
-				layer.alert("请填写第"+(i+1)+"个时间",{time: 2000, icon:1});
+				layer.msg("请填写第"+(i+1)+"个时间",{time: 2000});
 				result = false;
 				return false;
 			}
@@ -1011,7 +1011,7 @@ function checkIsNull(){
 		if (backleavecity) {
 			backleavecity = backleavecity.join(',');
 		}else{
-			layer.alert("请填写第"+(i+1)+"个返程出发城市",{time: 2000, icon:1});
+			layer.msg("请填写第"+(i+1)+"个返程出发城市",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}
@@ -1019,7 +1019,7 @@ function checkIsNull(){
 		if (backbackcity) {
 			backbackcity = backbackcity.join(',');
 		}else{
-			layer.alert("请填写第"+(i+1)+"个返程抵达城市",{time: 2000, icon:1});
+			layer.msg("请填写第"+(i+1)+"个返程抵达城市",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}*/
@@ -1027,7 +1027,7 @@ function checkIsNull(){
 		if (unioncity) {
 			unioncity = unioncity.join(',');
 		}else{
-			layer.alert("请填写第"+(i+1)+"个联运城市",{time: 2000, icon:1});
+			layer.msg("请填写第"+(i+1)+"个联运城市",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}*/
@@ -1037,19 +1037,19 @@ function checkIsNull(){
 			if(weekSelect==2){
 				var calenderdate = $(this).find('[name=calenderdate]').val();
 				if(!calenderdate){
-					layer.alert("请选择第"+(i+1)+"个自由日期",{time: 2000, icon:1});
+					layer.msg("请选择第"+(i+1)+"个自由日期",{time: 2000});
 					result = false;
 					return false;
 				}
 			}else{
 				if(!startdate){
-					layer.alert("请填写第"+(i+1)+"个起始日期",{time: 2000, icon:1});
+					layer.msg("请填写第"+(i+1)+"个起始日期",{time: 2000});
 					result = false;
 					return false;
 				}
 				var enddate = $(this).find('[name=enddate]').val();
 				if(!enddate){
-					layer.alert("请填写第"+(i+1)+"个截止日期",{time: 2000, icon:1});
+					layer.msg("请填写第"+(i+1)+"个截止日期",{time: 2000});
 					result = false;
 					return false;
 				}
@@ -1061,7 +1061,7 @@ function checkIsNull(){
 				weekday = weekday.join(',');
 			}
 			if(!weekday){
-				layer.alert("请选择第"+(i+1)+"个每周",{time: 2000, icon:1});
+				layer.msg("请选择第"+(i+1)+"个每周",{time: 2000, icon:1});
 				result = false;
 				return false;
 			}*/
@@ -1076,7 +1076,7 @@ function checkIsNull(){
 			weekday = weekday.join(',');
 		}
 		if(!weekday && !calenderdate){
-			layer.alert("请选择第"+(i+1)+"个每周或自由中的一种",{time: 2000, icon:1});
+			layer.msg("请选择第"+(i+1)+"个每周或自由中的一种",{time: 2000, icon:1});
 			result = false;
 			return false;
 		}*/
@@ -1106,17 +1106,17 @@ function savePlan(){
 				data: {}, 
 				url: BASE_PATH + '/admin/customneeds/savePlanData.html',
 				success: function (data) { 
-					layer.alert("保存成功",{time: 2000, icon:1});
+					layer.msg("保存成功",{time: 2000});
 					datatable1.ajax.reload();
 					datatable2.ajax.reload();
 				},
 				error: function (xhr) {
-					layer.alert("保存失败",{time: 2000, icon:1});
+					layer.msg("保存失败",{time: 2000});
 				} 
 			});
 		});
 	}else{
-		layer.alert("没有需要保存的计划",{time: 2000, icon:1});
+		layer.msg("没有需要保存的计划",{time: 2000});
 	}
 }
 //提示是否保存已经制作的计划

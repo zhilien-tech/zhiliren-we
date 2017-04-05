@@ -9,10 +9,10 @@
 	<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
 	<link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
-  <link rel="stylesheet" href="${base}/public/font-awesome/css/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="${base}/public/ionicons/css/ionicons.min.css">
-  <link rel="stylesheet" type="text/css" href="${base}/public/dist/css/inlandCross.css">
-  <link rel="stylesheet" href="${base}/public/dist/css/internationOrderDetail.css"><!--本页面styleFlie-->
+	<link rel="stylesheet" href="${base}/public/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="${base}/public/ionicons/css/ionicons.min.css">
+	<%--<link rel="stylesheet" type="text/css" href="${base}/public/dist/css/inlandCross.css"> --%>
+	<link rel="stylesheet" href="${base}/public/dist/css/internationOrderDetail.css"><!--本页面styleFlie-->
 </head>
 <body>
 	<div class="modal-top">
@@ -77,7 +77,6 @@
                      
                    </tr>
                  </table>
-
                </div>
           </div><!--end 客户信息-->
           <div class="customerInfo"><!--航段信息-->

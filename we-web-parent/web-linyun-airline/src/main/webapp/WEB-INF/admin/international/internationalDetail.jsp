@@ -54,7 +54,7 @@
                  <p>客户信息</p>
                  <div class="infoTopContent">
                    <span>${obj.orderinfo.ordersnum }</span>
-                   <select id="orderType" name="orderType" class="form-control input-sm conSelect cf">
+                   <select id="orderType" name="orderType" disabled="disabled" class="form-control input-sm conSelect cf">
                    	 <c:forEach var="map" items="${obj.internationalstatusenum}" >
                      	<c:if test="${obj.orderinfo.ordersstatus <= map.key }">
                      		<c:choose>
@@ -129,7 +129,7 @@
                   <table class="HCinfoInp">
                    <tr>
                      <td><label>航空公司：</label></td>
-                     <td><select id="airlinecom" name="airlinecom" class="form-control input-sm disab" multiple="multiple">
+                     <td><select id="airlinecom" name="airlinecom" disabled="disabled" class="form-control input-sm disab" multiple="multiple">
                      		<c:forEach items="${obj.aircomselect }" var="aircom">
                      			<c:choose>
                      				<c:when test="${obj.orderinfo.airlinecom eq aircom.dictCode}">
@@ -142,9 +142,9 @@
                      		</c:forEach>
                      </select></td>
                      <td><label>人数：</label></td>
-                     <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm disab mustNumber" value="${obj.orderinfo.peoplecount }"></td>
+                     <td><input id="peoplecount" name="peoplecount" disabled="disabled" type="text" class="form-control input-sm disab mustNumber" value="${obj.orderinfo.peoplecount }"></td>
                      <td><label>成本单价：</label></td>
-                     <td><input id="costsingleprice" name="costsingleprice" type="text" class="form-control input-sm disab mustNumberPoint" value="${obj.orderinfo.costsingleprice }"></td>
+                     <td><input id="costsingleprice" name="costsingleprice" disabled="disabled" type="text" class="form-control input-sm disab mustNumberPoint" value="${obj.orderinfo.costsingleprice }"></td>
                    </tr>
                  </table>
                  <div class="tableDuan"><!--主段-->
@@ -388,6 +388,7 @@
           $(".btnLog").toggle();//日志按钮 显示
           //$(".listInfo").toggle();//选项卡 显示
           $('.disab').removeAttr("disabled");//信息模块 input 禁止编辑的状态
+          $('#orderType').removeAttr("disabled");//信息模块 input 禁止编辑的状态
         });
         //取消按钮 click事件
         $('.btnCancel').click(function(){
@@ -398,6 +399,7 @@
           $('.btnLog').toggle();//日志 按钮 隐藏
           //$(".listInfo").toggle();//选项卡 隐藏
           $('.disab').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
+          $('#orderType').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
         });
 
         $('.UnderIcon').on('click',function(){//客户信息 显示/隐藏
@@ -807,9 +809,9 @@
 	  loadAirlineInfo();
 	  loadpayAndReceiveRecord();
 	  if(id == '1'){
-		  layer.alert("添加成功",{time: 2000, icon:1});
+		  layer.msg("添加成功",{time: 2000});
 	  }else if(id == '2'){
-		  layer.alert("修改成功",{time: 2000, icon:1});
+		  layer.msg("修改成功",{time: 2000});
 	  }
 	}
     //编辑航段

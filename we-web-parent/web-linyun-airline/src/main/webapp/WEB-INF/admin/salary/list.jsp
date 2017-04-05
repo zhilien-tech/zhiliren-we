@@ -55,7 +55,7 @@
                     </select>
                   </div>
                   <div class="col-md-2 padding">
-                    <button type="button" class="btn btn-primary btn-sm" onclick="select();">搜索</button>
+                   <!--  <button type="button" class="btn btn-primary btn-sm" onclick="select();">搜索</button> -->
                   </div>
                   <div class="col-md-6 padding">
                   	<button type="button" class="btn btn-primary btn-sm right" style="margin-left:6px;" onclick="add();">添加</button>
@@ -239,13 +239,14 @@ function add(){
 			layer.msg('添加失败!');
 		},
 		success : function(data) {
-			layer.load(1, {
+			/* layer.load(1, {
 				 shade: [0.1,'#fff'] //0.1透明度的白色背景
-			});
-			formValidator();
-			 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+			}); */
+			/* formValidator(); */
+		/* 	 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 		    parent.layer.close(index);
-		    window.parent.successCallback('1'); 
+		    window.parent.successCallback('1');  */
+		    location=location;
 			
 		    
 		}

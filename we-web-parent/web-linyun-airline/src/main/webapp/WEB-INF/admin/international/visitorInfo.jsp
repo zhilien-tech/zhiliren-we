@@ -93,9 +93,9 @@
   
   function successCallback(id){
 	  if(id == '1'){
-		  layer.alert("添加成功",{time: 2000, icon:1});
+		  layer.msg("添加成功",{time: 2000});
 	  }else if(id == '2'){
-		  layer.alert("修改成功",{time: 2000, icon:1});
+		  layer.msg("修改成功",{time: 2000});
 	  }
 	}
   </script>

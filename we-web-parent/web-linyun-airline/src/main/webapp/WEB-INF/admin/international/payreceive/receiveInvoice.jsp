@@ -85,8 +85,9 @@
                   <td>项目用途：</td>
                   <td>
                     <select id="invoiceitem" name="invoiceitem" class="form-control input-sm">
-                        <option value="1">团款</option>
-                        <option value="2">代订机票费用</option>
+                        <c:forEach items="${obj.ytselect }" var="one">
+                    		<option value="${one.id }">${one.comDictName }</option>
+                    	</c:forEach>
                     </select>
                   </td>
                   <td>发票日期：</td>
