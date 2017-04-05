@@ -16,7 +16,7 @@ import com.uxuexi.core.common.enums.IEnum;
 public enum ComDictTypeEnum implements IEnum {
 
 	DICTTYPE_LSXM("LSXM", "流水项目"), DICTTYPE_XMYT("XMYT", "项目用途"), DICTTYPE_DLZH("DLZH", "登录账号"), DICTTYPE_ZJZL("ZJZL",
-			"资金种类");
+			"资金种类"), DICTTYPE_DSFZF("DSFZF", "第三方支付");
 	private String key;
 	private String value;
 

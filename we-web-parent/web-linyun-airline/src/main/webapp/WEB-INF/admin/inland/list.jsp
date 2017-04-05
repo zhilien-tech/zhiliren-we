@@ -425,7 +425,7 @@
 <script src="${base}/admin/order/invoice.js"></script>
 <script type="text/javascript"> 
 //添加订单 弹框
-	$('#addOrder').click(function(){
+	$('#addOrderGJ').click(function(){
 	    layer.open({
 	        type: 2,
 	        title:false,

@@ -27,6 +27,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComLoginNumEntity;
+import com.linyun.airline.admin.companydict.comdictinfo.entity.ComThirdPayMentEntity;
+import com.linyun.airline.admin.companydict.comdictinfo.enums.ComAddTypeEnum;
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.companydict.comdictinfo.form.ComInfoSqlForm;
 import com.linyun.airline.admin.companydict.comdictinfo.form.ComInfoUpdateForm;
@@ -78,7 +80,7 @@ public class ComInfoDictService extends BaseService<ComDictInfoEntity> {
 	 */
 	public Object getDictTypeName() {
 		Map<String, Object> obj = Maps.newHashMap();
-		obj.put("dicttypelist", EnumUtil.enum2(ComDictTypeEnum.class));
+		obj.put("dicttypelist", EnumUtil.enum2(ComAddTypeEnum.class));
 		return obj;
 	}
 
@@ -299,5 +301,19 @@ public class ComInfoDictService extends BaseService<ComDictInfoEntity> {
 		// 修改字典信息实体
 		FormUtil.modify(dbDao, updateForm, ComLoginNumEntity.class);
 		return true;
+	}
+
+	//回显登录账号数据
+	public Map<String, Object> updateThirdPayMnet(Integer id, final HttpSession session) {
+		//从session中得到公司id
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long comId = company.getId();//得到公司的id
+		Map<String, Object> obj = Maps.newHashMap();
+		Cnd cnd = Cnd.NEW();
+		cnd.and("comId", "=", comId);
+		cnd.and("id", "=", id);
+		ComThirdPayMentEntity single = dbDao.fetch(ComThirdPayMentEntity.class, cnd);
+		obj.put("single", single);
+		return obj;
 	}
 }

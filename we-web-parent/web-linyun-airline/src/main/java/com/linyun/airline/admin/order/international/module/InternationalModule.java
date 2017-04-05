@@ -327,4 +327,13 @@ public class InternationalModule {
 	public Object savePayment(HttpServletRequest request) {
 		return internationalService.savePayment(request);
 	}
+
+	/**
+	 * 添加国际订单
+	 */
+	@At
+	@POST
+	public Object saveInterOrderInfo(HttpServletRequest request) {
+		return internationalService.saveInterOrderInfo(request);
+	}
 }

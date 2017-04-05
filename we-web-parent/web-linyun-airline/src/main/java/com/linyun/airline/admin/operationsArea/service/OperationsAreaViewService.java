@@ -574,6 +574,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		SqlExpressionGroup group = new SqlExpressionGroup();
 		group.and("f.`name`", "LIKE", "%" + INLAND_ORDER + "%").or("f.`name`", "LIKE", "%" + INTERNATIONAL_ORDER + "%");
 		cnd.and(group);
+		sql.setCondition(cnd);
 		Record record = dbDao.fetch(sql);
 		int funNums = Integer.valueOf(record.getString("funnum"));
 		return funNums;

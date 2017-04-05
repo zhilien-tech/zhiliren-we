@@ -36,6 +36,7 @@ import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
 import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
@@ -90,7 +91,11 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	//款项已付
 	private static final int PAYEDMSGTYPE = MessageWealthStatusEnum.PAYED.intKey();
 	//订单状态
-	private static final int FIRBOOKING = SearchOrderStatusEnum.FIRBOOKING.intKey(); //一订
+	private static final int FIRBOOKING = SearchOrderStatusEnum.FIRBOOKING.intKey();
+
+	//收付款枚举
+	private static final int PAYTYPE = PayReceiveTypeEnum.PAY.intKey(); //付款记录
+	private static final int RECEIVETYPE = PayReceiveTypeEnum.RECEIVE.intKey(); //收款记录
 
 	@Inject
 	private UploadService qiniuUploadService;
@@ -154,12 +159,15 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		}
 		form.setOrderStatus(orderStatus);
 		form.setCompanyId(companyId);
+		form.setRecordtype(RECEIVETYPE);
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
 		List<Record> list = (List<Record>) listdata.get("data");
 
 		String sqlStr = sqlManager.get("receivePay_inter_rec_order_list");
 		Sql sql = Sqls.create(sqlStr);
+		sql.setParam("orderstatus", orderStatus);
+		sql.setParam("recordtype", RECEIVETYPE);
 		Cnd cnd = Cnd.NEW();
 		SqlExpressionGroup group = new SqlExpressionGroup();
 		group.and("ci.shortName", "LIKE", "%" + name + "%").or("uo.ordersnum", "LIKE", "%" + name + "%")
@@ -187,9 +195,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				String rid = r.getString("id");
 				if (Util.eq(id, rid)) {
 					rList.add(r);
-					if (!Util.isEmpty(r.get("incometotal"))) {
-						Double incometotal = (Double) r.get("incometotal");
-						sum += incometotal;
+					if (!Util.isEmpty(r.get("currentpay"))) {
+						Double currentpay = (Double) r.get("currentpay");
+						sum += currentpay;
 					}
 				}
 			}
@@ -240,8 +248,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//计算合计金额
 		Double sum = 0.0;
 		for (Record record : orders) {
-			if (!Util.isEmpty(record.get("incometotal"))) {
-				Double incometotal = (Double) record.get("incometotal");
+			if (!Util.isEmpty(record.get("currentpay"))) {
+				Double incometotal = (Double) record.get("currentpay");
 				sum += incometotal;
 			}
 		}
@@ -360,6 +368,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		}
 		form.setOrderStatus(orderStatus);
 		form.setCompanyId(companyId);
+		form.setRecordtype(PAYTYPE);
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
 		List<Record> payList = (List<Record>) listdata.get("data");
@@ -367,6 +376,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//查询订单
 		String sqlStr = sqlManager.get("receivePay_inter_pay_order_list");
 		Sql conSql = Sqls.create(sqlStr);
+		conSql.setParam("orderstatus", orderStatus);
+		conSql.setParam("recordtype", PAYTYPE);
 		Cnd cnd = Cnd.NEW();
 		SqlExpressionGroup group = new SqlExpressionGroup();
 		group.and("ci.shortName", "LIKE", "%" + name + "%").or("uo.ordersnum", "LIKE", "%" + name + "%")
@@ -390,6 +401,16 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			List<Record> orderList = new ArrayList<Record>();
 			for (Record r : orders) {
 				String orderId = r.getString("id");
+				String reduceNumStr = r.getString("actualyreduce");
+				if (Util.isEmpty(reduceNumStr)) {
+					reduceNumStr = "0";
+				}
+				String actualNumStr = r.getString("actualnumber");
+				if (Util.isEmpty(actualNumStr)) {
+					actualNumStr = "0";
+				}
+				int peopleCount = Integer.valueOf(actualNumStr) + Integer.valueOf(reduceNumStr);
+				r.set("peoplecount", peopleCount);
 				if (Util.eq(payId, orderId)) {
 					orderList.add(r);
 				}
@@ -456,6 +477,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			}
 		}
 		form.setOrderStatus(orderStatus);
+		form.setRecordtype(PAYTYPE);
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
 		List<Record> data = (List<Record>) listdata.get("data");
@@ -472,21 +494,30 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		List<Record> newData = new ArrayList<Record>();
 		for (String pid : payIds) {
 			Record record = new Record();
-			String totalmoney = "0.00"; //总额
+			double totalmoney = 0; //总额
 			String shortname = ""; //收款单位
 			int payStatus = AccountPayEnum.APPROVALPAYED.intKey(); //收款状态
 			String issuer = "";
+			String prrIds = "";
 			List<Record> orders = new ArrayList<Record>();
 			for (Record r : data) {
 				String pidStr = r.getString("pid");
+				String prrid = r.getString("prrid");
 				shortname = r.getString("shortname");
 				issuer = r.getString("issuer");
 				//同一个支付订单
 				if (Util.eq(pid, pidStr)) {
+					String currentpayStr = r.getString("currentpay");
+					if (!Util.isEmpty(currentpayStr)) {
+						totalmoney += Double.valueOf(currentpayStr);
+					}
+					prrIds += prrid + ",";
 					orders.add(r);
 				}
 			}
+			prrIds = prrIds.substring(0, prrIds.length() - 1);
 			record.put("pid", pid);
+			record.put("prrIds", prrIds);
 			record.put("totalmoney", totalmoney);
 			record.put("shortname", shortname);
 			record.put("payStatus", payStatus);
@@ -516,7 +547,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		Sql sql = Sqls.create(sqlManager.get("receivePay_inter_pay_order_ids"));
 		/*String inlandPayIdStr = inlandPayIds.substring(0, inlandPayIds.length() - 1);*/
 		Cnd cnd = Cnd.NEW();
-		cnd.and("uo.id", "in", orderIds);
+		cnd.and("prr.id", "in", orderIds);
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		String payIds = "";
 		if (!Util.isEmpty(orders)) {
@@ -552,11 +583,13 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//操作人
 		String operator = "";
 		String operatorList = "";
+		String oids = "";
 		for (Record record : orders) {
-			if (!Util.isEmpty(record.get("salePrice"))) {
-				Double incometotal = (Double) record.get("salePrice");
+			if (!Util.isEmpty(record.get("currentpay"))) {
+				Double incometotal = (Double) record.get("currentpay");
 				totalMoney += incometotal;
 			}
+			oids = record.getString("id") + ",";
 			proposer = record.getString("proposerMan");
 			approver = record.getString("approver"); //审批人
 			String opr = record.getString("operator"); //操作人
@@ -619,8 +652,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		oids = oids.substring(0, oids.length() - 1);
 		map.put("zjzlList", zjzlList);
-		map.put("ids", orderIds);
+		map.put("ids", oids);
 
 		return map;
 	}
@@ -641,16 +675,19 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 
 		Map<String, Object> result = new HashMap<String, Object>();
 		String payId = request.getParameter("payid");
+		String prrIds = request.getParameter("prrIds");
+
 		//TODO
 		String sqlString = sqlManager.get("receivePay_inter_payed_edit");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("p.id", "in", payId);
+		cnd.and("prr.id", "in", prrIds);
 		cnd.and("po.paystauts", "=", APPROVALPAYED);
 		List<Record> payList = dbDao.query(sql, cnd, null);
 
 		//总金额
-		double totalMoney = 0;
+		double totalMoney = 0.00;
 		//申请人
 		String proposer = "";
 		//审批人
@@ -661,11 +698,11 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		String operator = "";
 		for (Record record : payList) {
 			//计算订单总金额
-			/*if (!Util.isEmpty(record.get("salesprice"))) {
-				Double costpricesum = (Double) record.get("salesprice");
+			if (!Util.isEmpty(record.get("currentpay"))) {
+				Double costpricesum = (Double) record.get("currentpay");
 				totalMoney += Double.valueOf(costpricesum);
-			}*/
-			totalMoney = 0.00;
+			}
+
 			proposer = record.getString("proposerMan");
 			approver = record.getString("approver"); //审批人
 			String opr = record.getString("operator"); //操作人

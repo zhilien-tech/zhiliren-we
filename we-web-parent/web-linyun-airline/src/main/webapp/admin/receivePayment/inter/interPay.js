@@ -86,13 +86,16 @@ function initPayDataTable(){
 		            		return result;
 		            	}	
 		            },
-		            {"data": "saleprice", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var saleprice = row.saleprice;
-		            		if(null == saleprice || ""== saleprice || undefined==saleprice){
-		            			return "";
-		            		}
-		            		return saleprice;
+		            {"data": "ataxprice", "bSortable": false,
+		            	render:function(data, type, row, meta) {
+		            		var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.ataxprice!=undefined){
+		            				result += '<li style="list-style:none;">'+(value.ataxprice).toFixed(2)+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
 		            	}
 		            },
 		            {"data": "currentpay", "bSortable": false,
@@ -100,7 +103,7 @@ function initPayDataTable(){
 		            		var result = '<ul> ';
 		            		$.each(row.orders, function(name, value) {
 		            			if(value && value.currentpay!=undefined){
-		            				result += '<li style="list-style:none;">'+value.currentpay+'</li>';
+		            				result += '<li style="list-style:none;">'+(value.currentpay).toFixed(2)+'</li>';
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -248,12 +251,12 @@ function initPayEdDataTable(){
 		            		return result;
 		            	}
 		            },
-		            {"data": "saleprice", "bSortable": false,
+		            {"data": "currentpay", "bSortable": false,
 		            	render:function(data, type, row, meta) {
 		            		var result = '<ul> ';
 		            		$.each(row.orders, function(name, value) {
-		            			if(value && value.saleprice!=undefined){
-		            				result += '<li style="list-style:none;">'+value.saleprice+'</li>';
+		            			if(value && value.currentpay!=undefined){
+		            				result += '<li style="list-style:none;">'+(value.currentpay).toFixed(2)+'</li>';
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -283,7 +286,7 @@ function initPayEdDataTable(){
 		            		if(null == totalmoney || ""== totalmoney){
 		            			return "";
 		            		}
-		            		return totalmoney;
+		            		return totalmoney.toFixed(2);
 		            	}
 		            },
 		            {"data": "shortname", "bSortable": false,
@@ -342,7 +345,8 @@ function initPayEdDataTable(){
 		            	targets: 11,
 		            	render: function(data, type, row, meta) {
 		            		var pid = row.pid;
-		            		var modify = '<a style="cursor:pointer;" onclick="editPay('+pid+');">编辑</a>';
+		            		var prrIds = row.prrids;
+		            		var modify = '<a style="cursor:pointer;" onclick="editPay('+ pid +','+ prrIds +');">编辑</a>';
 		            		return modify;
 		            	}
 		            }]
@@ -586,7 +590,7 @@ function payOnkeyEnter(){
 	 }
 }
 
-function editPay(ids){
+function editPay(pid, prrIds){
 	layer.open({
 		type: 2,
 		title:false,
@@ -594,7 +598,7 @@ function editPay(ids){
 		closeBtn:false,//默认 右上角关闭按钮 是否显示
 		shadeClose:false,
 		area: ['850px', '650px'],
-		content: ['editConfirmPay.html?payid='+ ids,'no'],
+		content: ['editConfirmPay.html?payid='+pid +'&prrIds='+prrIds,'no'],
 	});
 }
 

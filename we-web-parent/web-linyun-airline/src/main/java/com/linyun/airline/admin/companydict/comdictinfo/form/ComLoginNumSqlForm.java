@@ -20,7 +20,7 @@ public class ComLoginNumSqlForm extends DataTablesParamForm {
 	//主键
 	private Integer id;
 	//公司id
-	private Integer comId;
+	private Long comId;
 	//字典类别编码
 	private String comTypeCode;
 	//字典代码
@@ -67,6 +67,9 @@ public class ComLoginNumSqlForm extends DataTablesParamForm {
 		}
 		if (!Util.isEmpty(comTypeCode)) {
 			cnd.and("lob.comTypeCode", "=", comTypeCode);
+		}
+		if (!Util.isEmpty(comId)) {
+			cnd.and("lob.comId", "=", comId);
 		}
 		cnd.orderBy("lob.createTime", "desc");
 		return cnd;
