@@ -855,7 +855,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		if (!Util.isEmpty(payChineseMoney)) {
 			payEntity.setPayChineseMoney(payChineseMoney);
 		}
-		dbDao.update(payEntity);
+		int updateNum = dbDao.update(payEntity);
 
 		//更新银行卡信息
 		Integer bankId = payEntity.getBankId();
@@ -902,7 +902,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		}
 
 		//付款成功 操作台添加消息
-		/*if (updatenum > 0) {
+		if (updateNum > 0) {
 			//TODO  ******************************************添加消息提醒***********************************************
 			String sqlS = sqlManager.get("receivePay_order_pnr_pids");
 			Sql sql = Sqls.create(sqlS);
@@ -918,7 +918,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				map.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
 				searchViewService.addRemindMsg(map, ordernum, pnr, uid, PAYEDMSGTYPE, session);
 			}
-		}*/
+		}
 
 		return "seccess";
 	}
