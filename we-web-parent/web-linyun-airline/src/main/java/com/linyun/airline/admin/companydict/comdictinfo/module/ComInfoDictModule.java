@@ -26,6 +26,7 @@ import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComLoginNumEntity;
+import com.linyun.airline.admin.companydict.comdictinfo.entity.ComThirdPayMentEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.companydict.comdictinfo.form.ComInfoAddForm;
 import com.linyun.airline.admin.companydict.comdictinfo.form.ComInfoSqlForm;
@@ -33,6 +34,9 @@ import com.linyun.airline.admin.companydict.comdictinfo.form.ComInfoUpdateForm;
 import com.linyun.airline.admin.companydict.comdictinfo.form.ComLoginNumAddForm;
 import com.linyun.airline.admin.companydict.comdictinfo.form.ComLoginNumSqlForm;
 import com.linyun.airline.admin.companydict.comdictinfo.form.ComLoginNumUpdateForm;
+import com.linyun.airline.admin.companydict.comdictinfo.form.ComThirdPayMentAddForm;
+import com.linyun.airline.admin.companydict.comdictinfo.form.ComThirdPayMentSqlForm;
+import com.linyun.airline.admin.companydict.comdictinfo.form.ComThirdPayMentUpdateForm;
 import com.linyun.airline.admin.companydict.comdictinfo.service.ComInfoDictService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.enums.DataStatusEnum;
@@ -98,8 +102,11 @@ public class ComInfoDictModule {
 	 * 登录账号列表数据
 	 */
 	@At
-	public Object loginNumData(@Param("..") final ComLoginNumSqlForm sqlForm) {
-		//return comInfoDictService.loginNumData(sqlForm);
+	public Object loginNumData(@Param("..") final ComLoginNumSqlForm sqlForm, final HttpSession session) {
+		//从session中得到公司id
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long comId = company.getId();//得到公司的id
+		sqlForm.setComId(comId);
 		return comInfoDictService.listPage4Datatables(sqlForm);
 	}
 
@@ -135,17 +142,6 @@ public class ComInfoDictModule {
 	}
 
 	/**
-	 * @param airlineName
-	 * 区域select2查询
-	 */
-	@At
-	@POST
-	public Object airLine(@Param("airline") final String airlineName, @Param("airlineIds") final String airlineIds,
-			final HttpSession session) {
-		return comInfoDictService.airLine(airlineName, airlineIds, session);
-	}
-
-	/**
 	 * TODO 添加登录账号
 	 * @param addForm
 	 */
@@ -164,6 +160,80 @@ public class ComInfoDictModule {
 		addForm.setComDdictCode(dictInfoEntity.getTypeCode());
 		FormUtil.add(dbDao, addForm, ComLoginNumEntity.class);
 		return JsonResult.success("添加成功!");
+	}
+
+	/**
+	 * @param sqlForm
+	 * 第三方支付列表数据
+	 */
+	@At
+	public Object thirdPayMentData(@Param("..") final ComThirdPayMentSqlForm sqlForm, final HttpSession session) {
+		//从session中得到公司id
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long comId = company.getId();//得到公司的id
+		sqlForm.setComId(comId);
+		return comInfoDictService.listPage4Datatables(sqlForm);
+	}
+
+	/**
+	 * 打开第三方支付页面
+	 */
+	@At
+	@GET
+	@Ok("jsp")
+	public void addThirdPayMent() {
+	}
+
+	/**
+	 * 添加第三方支付操作
+	 * @param addForm
+	 * @param request
+	 */
+	@At
+	@POST
+	public Object addThirdPayMent(@Param("..") final ComThirdPayMentAddForm addForm, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long comId = company.getId();//获得当前登陆公司id
+		addForm.setComId(comId);
+		addForm.setCreateTime(new Date());
+		addForm.setComTypeCode(ComDictTypeEnum.DICTTYPE_DSFZF.key());//第三方支付
+		FormUtil.add(dbDao, addForm, ComThirdPayMentEntity.class);
+		return JsonResult.success("添加成功!");
+	}
+
+	/**
+	 * 打开第三方支付编辑页面
+	 */
+	@At
+	@GET
+	@Ok("jsp")
+	public Object updateThirdPayMent(@Param("id") final Integer id, final HttpSession session) {
+		Map<String, Object> map = comInfoDictService.updateThirdPayMnet(id, session);
+		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));
+		return map;
+	}
+
+	/**
+	 * 编辑保存第三方支付数据
+	 */
+	@At
+	@POST
+	public Object updateThirdPayMent(@Param("..") final ComThirdPayMentUpdateForm updateForm) {
+		updateForm.setUpdateTime(new Date());
+		FormUtil.modify(dbDao, updateForm, ComThirdPayMentEntity.class);
+		return JsonResult.success("修改成功!");
+	}
+
+	/**
+	 * @param airlineName
+	 * 区域select2查询
+	 */
+	@At
+	@POST
+	public Object airLine(@Param("airline") final String airlineName, @Param("airlineIds") final String airlineIds,
+			final HttpSession session) {
+		return comInfoDictService.airLine(airlineName, airlineIds, session);
 	}
 
 	/**
@@ -262,14 +332,14 @@ public class ComInfoDictModule {
 	@At
 	@POST
 	public Object checkTypeCodeExist(@Param("comTypeCode") final String comTypeCode,
-			@Param("comDdictCode") final String Code, @Param("id") final long id, final HttpSession session) {
+			@Param("comDictCode") final String Code, @Param("id") final long id, final HttpSession session) {
 		//从session中得到公司id
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Long comId = company.getId();//得到公司的id
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<ComDictInfoEntity> listCode = dbDao.query(ComDictInfoEntity.class, Cnd.where("comDdictCode", "=", Code)
+		List<ComDictInfoEntity> listCode = dbDao.query(ComDictInfoEntity.class, Cnd.where("comDictCode", "=", Code)
 				.and("comId", "=", comId).and("comTypeCode", "=", comTypeCode), null);
-		List<ComDictInfoEntity> listCode2 = dbDao.query(ComDictInfoEntity.class, Cnd.where("comDdictCode", "=", Code)
+		List<ComDictInfoEntity> listCode2 = dbDao.query(ComDictInfoEntity.class, Cnd.where("comDictCode", "=", Code)
 				.and("comId", "=", comId).and("comTypeCode", "=", comTypeCode).and("id", "=", id), null);
 		if (!Util.isEmpty(listCode)) {
 			if (Util.isEmpty(id)) {
@@ -298,6 +368,33 @@ public class ComInfoDictModule {
 				Cnd.where("webURl", "=", webURl).and("comId", "=", comId), null);
 		List<ComLoginNumEntity> listName2 = dbDao.query(ComLoginNumEntity.class,
 				Cnd.where("webURl", "=", webURl).and("comId", "=", comId).and("id", "=", id), null);
+		if (!Util.isEmpty(listName)) {
+			if (Util.isEmpty(id)) {
+				map.put("valid", false);
+			} else if (!Util.isEmpty(listName2)) {
+				map.put("valid", true);
+			}
+		} else {
+			map.put("valid", true);
+		}
+		return map;
+	}
+
+	/**
+	 * 校验银行卡账户唯一性
+	 */
+	@At
+	@POST
+	public Object checkBankCardNumExist(@Param("bankCardNum") final String bankCardNum, @Param("id") final long id,
+			final HttpSession session) {
+		//从session中得到公司id
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long comId = company.getId();//得到公司的id
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<ComThirdPayMentEntity> listName = dbDao.query(ComThirdPayMentEntity.class,
+				Cnd.where("bankCardNum", "=", bankCardNum).and("comId", "=", comId), null);
+		List<ComThirdPayMentEntity> listName2 = dbDao.query(ComThirdPayMentEntity.class,
+				Cnd.where("bankCardNum", "=", bankCardNum).and("comId", "=", comId).and("id", "=", id), null);
 		if (!Util.isEmpty(listName)) {
 			if (Util.isEmpty(id)) {
 				map.put("valid", false);
