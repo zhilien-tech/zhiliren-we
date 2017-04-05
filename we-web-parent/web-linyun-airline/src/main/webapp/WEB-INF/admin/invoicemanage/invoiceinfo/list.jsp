@@ -2,7 +2,7 @@
 <%@include file="/WEB-INF/common/tld.jsp"%>
 <%@include file="/WEB-INF/public/header.jsp"%>
 <%@include file="/WEB-INF/public/aside.jsp"%>
-<link rel="stylesheet" type="text/css" href="${base }/public/dist/css/invoiceManage.css">
+<link rel="stylesheet" type="text/css" href="${base }/public/dist/css/invoiceInterManage.css">
  <!-- Content-->
   <div class="content-wrapper">
     <!-- Main content -->

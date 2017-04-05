@@ -63,7 +63,7 @@
                                 <div class="col-md-3 dictInfoSousuo" style="float:left;">
 									<!--字典信息名称 搜索框-->
 									<input type="text" id="comDictNameId" name="comDictName" onkeypress="onkeyEnter();" class="form-control"
-										placeholder="字典信息/航空公司">
+										placeholder="字典信息/航空公司/公司名称">
 								</div>
 								<div class="col-md-2 col-padding">
 									<!--搜索 按钮-->
@@ -653,11 +653,13 @@ $("#comDictInfoSearchBtn").on('click', function () {
 	var comTypeCode = $("#comTypeCode").val();
 	var comDictName = $("#comDictNameId").val();
 	var airlineName = $("#comDictNameId").val();//航空公司
+	var thirdCompanyName = $("#comDictNameId").val();//航空公司
     var param = {
 		        "status":status,
 		        "comTypeCode":comTypeCode,
 		        "comDictName":comDictName,
 		        "airlineName":airlineName,
+		        "thirdCompanyName":thirdCompanyName
 		    };
     if(status==1 ||　status==2){
     	comcomdatatableInfo.settings()[0].ajax.data = param;
@@ -668,6 +670,8 @@ $("#comDictInfoSearchBtn").on('click', function () {
     	);
     	loginNumTable.settings()[0].ajax.data = param;
 		loginNumTable.ajax.reload();
+		thirdPayMentTable.settings()[0].ajax.data = param;
+		thirdPayMentTable.ajax.reload();
     }
 });
 
