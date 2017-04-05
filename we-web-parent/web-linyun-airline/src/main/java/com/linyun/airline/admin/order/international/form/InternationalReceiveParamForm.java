@@ -6,6 +6,10 @@
 
 package com.linyun.airline.admin.order.international.form;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import lombok.Data;
 
 import org.nutz.dao.Cnd;
@@ -15,6 +19,7 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.cri.SqlExpressionGroup;
 
 import com.linyun.airline.common.enums.OrderTypeEnum;
+import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
@@ -37,6 +42,12 @@ public class InternationalReceiveParamForm extends DataTablesParamForm {
 
 	private String ticketingpay;
 
+	private String startdate;
+
+	private String enddate;
+
+	private String searchInfo;
+
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
@@ -57,6 +68,23 @@ public class InternationalReceiveParamForm extends DataTablesParamForm {
 				sqlex.and("tuo.paystatus", "=", "").or("tuo.paystatus", "is", null);
 				cnd.and(sqlex);
 			}*/
+		}
+		DateFormat format = new SimpleDateFormat(DateUtil.FORMAT_YYYYMMDD);
+		if (!Util.isEmpty(searchInfo)) {
+			SqlExpressionGroup sqlex = new SqlExpressionGroup();
+			sqlex.and("tuo.ordersnum", "like", "%" + searchInfo + "%").or("tpi.travelname", "like",
+					"%" + searchInfo + "%");
+			cnd.and(sqlex);
+		}
+		if (!Util.isEmpty(startdate)) {
+			Date startdates = DateUtil.string2Date(startdate, DateUtil.FORMAT_YYYY_MM_DD);
+			String startdatestr = format.format(startdates);
+			cnd.and("SUBSTR(tuo.ordersnum,1,8)", ">=", startdatestr);
+		}
+		if (!Util.isEmpty(enddate)) {
+			Date enddates = DateUtil.string2Date(enddate, DateUtil.FORMAT_YYYY_MM_DD);
+			String enddatestr = format.format(enddates);
+			cnd.and("SUBSTR(tuo.ordersnum,1,8)", "<=", enddatestr);
 		}
 		cnd.orderBy("tor.receiveDate", "desc");
 		return cnd;

@@ -100,7 +100,15 @@ function initpayTable() {
                     		return result;
                     	}	
                     },
-                    {"data": "peoplecount", "bSortable": false},
+                    {"data": "peoplecount", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var result='';
+                    		if(row.peoplecount && row.peoplecount != undefined){
+                    			result = row.peoplecount;
+                    		}
+                    		return result;
+                    	}
+                    },
                     {"data": "foc", "bSortable": false,
                     	render: function(data, type, row, meta) {
                     		var result = '否';
@@ -110,7 +118,15 @@ function initpayTable() {
                     		return result;
                     	}
                     },
-                    {"data": "dayscount", "bSortable": false},
+                    {"data": "dayscount", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var result='';
+                    		if(row.dayscount && row.dayscount != undefined){
+                    			result = row.dayscount;
+                    		}
+                    		return result;
+                    	}
+                    },
                     {"data": "ordersstatus", "bSortable": false,
                     	render:function(data, type, row, meta) {
                       		var result = '';
@@ -131,7 +147,15 @@ function initpayTable() {
                     		return result;
                     	}
                     },
-                    {"data": "unioncity", "bSortable": false}
+                    {"data": "unioncity", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var result='';
+                    		if(row.unioncity){
+                    			result = row.unioncity;
+                    		}
+                    		return result;
+                    	}
+                    }
             ],
         columnDefs: [{
             //   指定第一列，从0开始，0表示第一列，1表示第二列……
@@ -295,7 +319,7 @@ $('.fuKuanBtn1').click(function(){
 	}
 });
 
-/*$('#ticketingSearch').click(function(){
+$('#ticketingPaySearch').click(function(){
 	var div = $(this).parent().parent();
 	var startdate = div.find('[name=startdate]').val();
 	var enddate = div.find('[name=enddate]').val();
@@ -306,7 +330,7 @@ $('.fuKuanBtn1').click(function(){
 			startdate:startdate,
 			enddate:enddate,
 			searchInfo:searchInfo,
-			ticketing:1
+			ticketingpay:1
 	};
 	payTable.settings()[0].ajax.data = param;
 	payTable.ajax.reload(function(json){
@@ -316,7 +340,6 @@ $('.fuKuanBtn1').click(function(){
 function onkeyTicketingEnter(){
 	var e = window.event || arguments.callee.caller.arguments[0];
     if(e && e.keyCode == 13){
- 		$('#ticketingSearch').click();
+ 		$('#ticketingPaySearch').click();
     }
 }
-*/
