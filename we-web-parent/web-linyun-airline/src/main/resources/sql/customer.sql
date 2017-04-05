@@ -152,7 +152,7 @@ SELECT 	i.id,
 	i.contract, 
 	i.forbid, 
 	i.business,
-	u.userName
+	u.fullName userName
 	FROM 
 t_customer_info i INNER JOIN t_upCompany uc ON i.upComId=uc.id
 INNER JOIN t_user u ON i.responsibleId=u.id
