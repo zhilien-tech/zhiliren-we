@@ -449,29 +449,32 @@
         	var orderType = $('#orderType').val();
         	var peoplecount = $('#peoplecount').val();
         	var costsingleprice = $('#costsingleprice').val();
-        	$.ajax({ 
-        		type: 'POST', 
-        		data: {orderid:'${obj.orderinfo.id }',ordersstatus:orderType}, 
-        		url: BASE_PATH + '/admin/intervalidate/checkRecordIsExist.html',
-              	success: function (data) { 
-              		if(data){
-			            layer.open({
-			                type: 2,
-			                title:false,
-			                skin: false, //加上边框
-			                closeBtn:false,//默认 右上角关闭按钮 是否显示
-			                shadeClose:true,
-			                area: ['1000px', '450px'],
-			                content: '${base}/admin/international/addReceiveRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.receivestatus}&ordersstatus='+orderType+'&peoplecount='+peoplecount+'&costsingleprice='+costsingleprice
-			              });
-              		}else{
-              			layer.msg("该状态已经添加收款记录","",3000);
-              		}
-                },
-                error: function (xhr) {
-              		layer.msg("保存失败","",3000);
-                } 
-          });
+        	if(orderType > 2){
+	        	$.ajax({ 
+	        		type: 'POST', 
+	        		data: {orderid:'${obj.orderinfo.id }',ordersstatus:orderType}, 
+	        		url: BASE_PATH + '/admin/intervalidate/checkRecordIsExist.html',
+	              	success: function (data) { 
+	              		if(data){
+				            layer.open({
+				                type: 2,
+				                title:false,
+				                skin: false, //加上边框
+				                closeBtn:false,//默认 右上角关闭按钮 是否显示
+				                shadeClose:true,
+				                area: ['1000px', '450px'],
+				                content: '${base}/admin/international/addReceiveRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.receivestatus}&ordersstatus='+orderType+'&peoplecount='+peoplecount+'&costsingleprice='+costsingleprice
+				              });
+	              		}else{
+	              			layer.msg("该状态已经添加收款记录","",3000);
+	              		}
+	                },
+	                error: function (xhr) {
+	                } 
+	          });
+        	}else{
+        		layer.msg("一订以后才能添加记录","",3000);
+        	}
        });
 
         //点击 添加记录-预付款 弹框
@@ -479,29 +482,32 @@
         	var orderType = $('#orderType').val();
         	var peoplecount = $('#peoplecount').val();
         	var costsingleprice = $('#costsingleprice').val();
-        	$.ajax({ 
-        		type: 'POST', 
-        		data: {orderid:'${obj.orderinfo.id }',ordersstatus:orderType}, 
-        		url: BASE_PATH + '/admin/intervalidate/checkPayRecordIsExist.html',
-              	success: function (data) { 
-              		if(data){
-			            layer.open({
-			                type: 2,
-			                title:false,
-			                skin: false, //加上边框
-			                closeBtn:false,//默认 右上角关闭按钮 是否显示
-			                shadeClose:true,
-			                area: ['1000px', '450px'],
-			                content: '${base}/admin/international/addPayRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.paystatus}&ordersstatus='+orderType+'&peoplecount='+peoplecount+'&costsingleprice='+costsingleprice
-			             });
-              		}else{
-              			layer.msg("该状态已经添加付款记录","",3000);
-              		}
-                },
-                error: function (xhr) {
-              		layer.msg("保存失败","",3000);
-                } 
-          });
+        	if(orderType > 2){
+	        	$.ajax({ 
+	        		type: 'POST', 
+	        		data: {orderid:'${obj.orderinfo.id }',ordersstatus:orderType}, 
+	        		url: BASE_PATH + '/admin/intervalidate/checkPayRecordIsExist.html',
+	              	success: function (data) { 
+	              		if(data){
+				            layer.open({
+				                type: 2,
+				                title:false,
+				                skin: false, //加上边框
+				                closeBtn:false,//默认 右上角关闭按钮 是否显示
+				                shadeClose:true,
+				                area: ['1000px', '450px'],
+				                content: '${base}/admin/international/addPayRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.paystatus}&ordersstatus='+orderType+'&peoplecount='+peoplecount+'&costsingleprice='+costsingleprice
+				             });
+	              		}else{
+	              			layer.msg("该状态已经添加付款记录","",3000);
+	              		}
+	                },
+	                error: function (xhr) {
+	                } 
+	          });
+        	}else{
+        		layer.msg("一订以后才能添加记录","",3000);
+        	}
         });
         $('.recordParent p:eq(0)').click(function(){//预收款记录 切换tab
           $(this).addClass('recStyle').siblings().removeClass('recStyle');

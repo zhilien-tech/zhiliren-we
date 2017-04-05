@@ -963,7 +963,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			TOrderReceiveEntity orderreceive = new TOrderReceiveEntity();
 			orderreceive.setReceiveid(insert.getId());
 			orderreceive.setOrderid(Integer.valueOf(str));
-			orderreceive.setOrderstatus(order.getOrdersstatus());
+			orderreceive.setOrderstatus(Integer.valueOf(orderstatus));
 			orderreceive.setReceiveDate(new Date());
 			orderreceive.setReceivestatus(AccountReceiveEnum.RECEIVINGMONEY.intKey());
 			orderreceives.add(orderreceive);
@@ -1068,7 +1068,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			payorder.setPayid(insert.getId());
 			payorder.setOrderid(Integer.valueOf(str));
 			payorder.setPayDate(new Date());
-			payorder.setOrderstatus(orderifo.getOrdersstatus());
+			payorder.setOrderstatus(Integer.valueOf(orderstatus));
 			payorder.setPaystauts(AccountPayEnum.APPROVAL.intKey());
 			payorders.add(payorder);
 
