@@ -680,6 +680,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			if (!Util.isEmpty(map.get("paymethod"))) {
 				paymethod = Integer.valueOf((String) map.get("paymethod"));
 			}
+			Integer thirdcustomid = null;
+			if (!Util.isEmpty(map.get("thirdcustomid"))) {
+				thirdcustomid = Integer.valueOf((String) map.get("thirdcustomid"));
+			}
 			String remark = (String) map.get("remark");
 			TOrderCustomneedEntity customneedEntity = new TOrderCustomneedEntity();
 			customneedEntity.setLeavecity(leavecity);
@@ -693,6 +697,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			customneedEntity.setAvgexrate(formatDouble(avgexrate));
 			customneedEntity.setPaycurrency(paycurrency);
 			customneedEntity.setPaymethod(paymethod);
+			customneedEntity.setThirdcustomid(thirdcustomid);
 			customneedEntity.setRemark(remark);
 			//与订单相关
 			customneedEntity.setOrdernum(id);

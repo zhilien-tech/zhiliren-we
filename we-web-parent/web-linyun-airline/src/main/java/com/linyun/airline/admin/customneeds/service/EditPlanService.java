@@ -224,11 +224,13 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 			//添加时间
 			if (!Util.isEmpty(cityAirlineJson.getSetofftime())) {
 				String[] offtimes = cityAirlineJson.getSetofftime().split("/");
-				if (!Util.isEmpty(offtimes[0])) {
-					airline.setLeavetime(offtimes[0]);
-				}
-				if (!Util.isEmpty(offtimes[1])) {
-					airline.setArrivetime(offtimes[1]);
+				if (offtimes.length > 0) {
+					if (!Util.isEmpty(offtimes[0])) {
+						airline.setLeavetime(offtimes[0]);
+					}
+					if (!Util.isEmpty(offtimes[1])) {
+						airline.setArrivetime(offtimes[1]);
+					}
 				}
 			}
 			airlines.add(airline);

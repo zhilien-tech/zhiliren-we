@@ -14,7 +14,7 @@
 	<div class="modal-top">
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
-            <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveData()" value="保存"/>
+            <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveData()" value="提交"/>
             <h4>减免申请</h4>
           </div>
           <div class="modal-body" style="padding:0;">
@@ -56,7 +56,7 @@
 
                 <div class="form-group row">
                   <label class="col-sm-2 text-right padding">申请人：</label>
-                  <div class="col-sm-2 padding"><input id="applyid" name="applyid" type="text" class="form-control input-sm" disabled="disabled" value="${empty obj.mitigate.applyid ? obj.user.userName : obj.applyuser.userName }"/></div>
+                  <div class="col-sm-2 padding"><input id="applyid" name="applyid" type="text" class="form-control input-sm" disabled="disabled" value="${empty obj.mitigate.applyid ? obj.user.fullName : obj.applyuser.fullName }"/></div>
                   <label class="col-sm-1 text-right padding">审批人：</label>
                   <div class="col-sm-2 padding"><input id="approvelid" name="approvelid" type="text" class="form-control input-sm" disabled="disabled" value="候小凌"/></div>
                   <label class="col-sm-2 text-right padding">申请结果：</label>

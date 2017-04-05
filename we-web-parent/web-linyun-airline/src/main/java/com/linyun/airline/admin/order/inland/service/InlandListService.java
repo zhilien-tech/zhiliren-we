@@ -21,8 +21,10 @@ import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.linyun.airline.admin.companydict.comdictinfo.entity.ComThirdPayMentEntity;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
+import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.common.enums.OrderStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAirlineInfoEntity;
@@ -262,14 +264,26 @@ public class InlandListService extends BaseService<TUpOrderEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object loadCustomeSelect(HttpServletRequest request) {
+		Map<String, Object> result = new HashMap<String, Object>();
 		HttpSession session = request.getSession();
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		String sqlString = sqlManager.get("customer_list_info");
-		Sql sql = Sqls.create(sqlString);
-		Cnd cnd = Cnd.NEW();
-		cnd.and("uc.comId", "=", company.getId());
-		List<Record> query = dbDao.query(sql, cnd, null);
-		return query;
+		String customerneedid = request.getParameter("customerneedid");
+		Integer threepaymethod = null;
+		if (!Util.isEmpty(customerneedid)) {
+			TOrderCustomneedEntity customerneed = dbDao.fetch(TOrderCustomneedEntity.class,
+					Long.valueOf(customerneedid));
+			threepaymethod = customerneed.getThirdcustomid();
+		}
+		result.put("threepaymethod", threepaymethod);
+		//		String sqlString = sqlManager.get("customer_list_info");
+		List<ComThirdPayMentEntity> thirdPayMent = dbDao.query(ComThirdPayMentEntity.class,
+				Cnd.where("comId", "=", company.getId()).and("status", "=", DataStatusEnum.ENABLE.intKey()), null);
+		result.put("thirdPayMent", thirdPayMent);
+		//		Sql sql = Sqls.create(sqlString);
+		//		Cnd cnd = Cnd.NEW();
+		//		cnd.and("uc.comId", "=", company.getId());
+		//		List<Record> query = dbDao.query(sql, cnd, null);
+		return result;
 	}
 
 	/**

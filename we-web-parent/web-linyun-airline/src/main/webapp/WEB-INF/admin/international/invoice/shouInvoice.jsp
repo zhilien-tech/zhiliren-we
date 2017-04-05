@@ -151,8 +151,10 @@
 		                        </a>
 		                      </li>
 		                      <li><a href="javascript:;" id="fileName" name="fileName">${invoiceDetail.imagename }</a></li>
-		                      <li><a href="javascript:;" class="fileDelete deleteInvoice" >删除</a></li>
-		                      <li><a href="javascript:;" id="preView" class="fileDelete">预览</a></li>
+		                      <c:if test="${!empty invoiceDetail.invoiceurl }">
+			                      <li><a href="javascript:;" class="fileDelete deleteInvoice" >删除</a></li>
+			                      <li><a href="javascript:;" id="preView" class="fileDelete">预览</a></li>
+		                      </c:if>
 		                      <c:choose>
 		                      	<c:when test="${status.index eq 0 }">
 				                      <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
