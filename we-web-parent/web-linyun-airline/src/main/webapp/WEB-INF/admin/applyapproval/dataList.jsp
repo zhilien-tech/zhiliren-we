@@ -63,7 +63,7 @@
 					</li>
 					<li>
 						
-						<span><%-- ${each.PNR } --%></span>
+						<span>${each.orderstatus }</span>
 						
 						<span>${each.fullName }</span>
 					</li>

@@ -107,7 +107,12 @@
 			</li>
 			<li>
 				<span>发票</span>
-				<span>${obj.detaillist.isInvioce }</span>
+				<c:if test="${obj.detaillist.isInvioce ==1 }">
+					<span>有</span>
+				</c:if>
+				<c:if test="${obj.detaillist.isInvioce ==0 }">
+					<span>无</span>
+				</c:if>
 			</li>
 			<li>
 				<span>签收时间</span>
@@ -126,6 +131,7 @@
   <input name="id" id="id" value="${obj.detaillist.id }" type="hidden">
   <input name="usingId" id="usingId" value="${obj.detaillist.usingId }" type="hidden">
   <input name="orderId" id="orderId" value="${obj.detaillist.orderId }" type="hidden">
+  <input name="resultId" id="resultId" value="${obj.detaillist.resultId }" type="hidden">
 
 <c:if test="${obj.operation=='inlandNum'}">
 <input name="status" id="status" value="${obj.detaillist.orderPnrStatus }" type="hidden">
@@ -156,8 +162,7 @@
 function control(flag){
 	var status=$("#status").val();
 	var reduceStatus=$("#reduceStatus").val();
-	alert(status);
-	alert(reduceStatus); 
+	
 	if(status==1){
 		if(flag=="agree"){
 			agree("agree");
@@ -223,6 +228,7 @@ function agree(temp) {
 				status:$('#status').val(),
 				temp:temp,
 				orderId:$("#orderId").val(),
+				resultId:$("#resultId").val(),
 				operation:$("#operation").val(),
 				reduce:$("#reduce").val(),
 				reduceId:$("#reduceId").val(),

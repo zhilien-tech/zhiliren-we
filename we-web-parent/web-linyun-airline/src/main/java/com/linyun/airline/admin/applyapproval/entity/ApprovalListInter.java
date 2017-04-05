@@ -34,6 +34,8 @@ public class ApprovalListInter {
 	private Date approveTime;
 	private Integer approveResult;
 	private Integer usingId;
+	private Integer orderstatusid;
+	private String orderstatus;
 	/*private Integer orderId;*/
 	private String userName;
 	private String fullName;
@@ -344,6 +346,22 @@ public class ApprovalListInter {
 
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
+	}
+
+	public Integer getOrderstatusid() {
+		return orderstatusid;
+	}
+
+	public void setOrderstatusid(Integer orderstatusid) {
+		this.orderstatusid = orderstatusid;
+	}
+
+	public String getOrderstatus() {
+		return orderstatus;
+	}
+
+	public void setOrderstatus(String orderstatus) {
+		this.orderstatus = orderstatus;
 	}
 
 }

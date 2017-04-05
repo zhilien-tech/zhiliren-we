@@ -347,7 +347,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 	}
 
 	public Map<String, String> doAgree(HttpSession session, Long usingId, Long id, Long status, String temp,
-			Long orderId, String operation, Long reduceId, String reduce, Integer reduceStatus) {
+			Long orderId, String operation, Long reduceId, String reduce, Integer reduceStatus, Long resultId) {
 		if ("reduceno".equalsIgnoreCase(reduce)) {
 			Integer approvalResult = null;
 			Integer approvalStatus = null;
@@ -400,7 +400,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 					return JsonResult.success("审核通过");
 				}
 			} else if ("international".equalsIgnoreCase(operation)) {
-				TUpOrderEntity upOrderInfo = dbDao.fetch(TUpOrderEntity.class, id);
+				TUpOrderEntity upOrderInfo = dbDao.fetch(TUpOrderEntity.class, orderId);
 				//订单id
 				upOrderid = upOrderInfo.getId();
 				//pnr
@@ -409,9 +409,9 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 				ordersnum = upOrderInfo.getOrdersnum();
 				upOrderInfo.setPaystatus(approvalStatus);
 				int res2 = this.updateIgnoreNull(upOrderInfo);
-				TPayOrderEntity payoOrderEntity = dbDao.fetch(TPayOrderEntity.class,
-						Cnd.where("orderid", "=", upOrderid));
+				TPayOrderEntity payoOrderEntity = dbDao.fetch(TPayOrderEntity.class, Cnd.where("id", "=", resultId));
 				payoOrderEntity.setPaystauts(approvalStatus);
+				payoOrderEntity.setPayDate(new Date());
 				int res3 = this.updateIgnoreNull(payoOrderEntity);
 				boolean flag = orderInterTrueOrFalse(usingId);
 				if (flag) {
@@ -421,7 +421,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 					pay.setStatus(approvalStatus);
 					int res = this.updateIgnoreNull(pay);
 				}
-				if (res2 > 0 && res3 > 0) {
+				if (res3 > 0) {
 					Map<String, Object> remindMap = new HashMap<String, Object>();
 					remindMap.put("remindDate", DateUtil.Date2String(new Date()));
 					remindMap.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
