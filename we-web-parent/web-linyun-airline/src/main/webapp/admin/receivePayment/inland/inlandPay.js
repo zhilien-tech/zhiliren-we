@@ -116,7 +116,6 @@ function initPayDataTable(){
 	});
 }
 
-
 //会计   已付款datatable
 var inlandPayEdTable;
 function initPayEdDataTable(){
