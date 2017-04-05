@@ -353,7 +353,10 @@
 	                	var userMsgId = element.umid;
 	                	var orderType = msgT;
 	                	if(msgT == 3){
-	                		msgT = "自定义事件：";
+	                		msgT = "";
+	                		/* msgT = "自定义事件："; */
+	                		cName = "";
+	                		agent = "";
 	                	}else if(msgT==2){
 	                		msgT = "系统提醒：";
 	                	}else{
