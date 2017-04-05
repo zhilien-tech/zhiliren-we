@@ -39,6 +39,9 @@ public class InterPayEdListSearchSqlForm extends DataTablesParamForm {
 	/**订单状态*/
 	private String orderStatus;
 
+	/**记录状态*/
+	private int recordtype;
+
 	/**出发日期 -- 开始出发日期*/
 	private Date leaveBeginDate;
 
@@ -67,7 +70,7 @@ public class InterPayEdListSearchSqlForm extends DataTablesParamForm {
 			cnd.and("pi.leavesdate", "<=", leaveEndDate);
 		}
 		cnd.and("po.paystauts", "=", AccountPayEnum.APPROVALPAYED.intKey()); //已收款
-		cnd.and("po.orderstatus", "=", orderStatus);
+		cnd.and("prr.orderstatusid", "=", orderStatus);
 		cnd.and("p.companyId", "=", companyId);
 		return cnd;
 	}
@@ -77,6 +80,8 @@ public class InterPayEdListSearchSqlForm extends DataTablesParamForm {
 		String sqlString = sqlManager.get("receivePay_inter_payed_orders");
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
+		sql.setParam("orderstatus", orderStatus);
+		sql.setParam("recordtype", recordtype);
 		return sql;
 	}
 

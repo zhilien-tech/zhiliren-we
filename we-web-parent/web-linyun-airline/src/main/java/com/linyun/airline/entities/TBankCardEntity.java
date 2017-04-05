@@ -46,6 +46,9 @@ public class TBankCardEntity implements Serializable {
 	@Comment("银行名称")
 	private String bankName;
 	@Column
+	@Comment("银行id")
+	private String bankNameId;
+	@Column
 	@Comment("币种")
 	private String currency;
 	@Column

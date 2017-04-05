@@ -136,7 +136,9 @@
 												<input id="checkedboxPayValue" name="checkedboxPayValue" type="hidden">
 												<thead id="interPayThead">
 													<tr>
-														<td class="checkTh"><input type="checkbox" class="checkBoxPayAll"></td>
+														<td class="checkTh">
+															<input type="checkbox" class="checkBoxPayAll">
+														</td>
 														<th>订单号</th>
 														<th>PNR</th>
 														<th>出发日期</th>
