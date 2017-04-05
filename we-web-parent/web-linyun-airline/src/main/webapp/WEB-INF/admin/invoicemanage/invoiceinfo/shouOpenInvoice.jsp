@@ -19,7 +19,7 @@
             <input type="button" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo()" value="确认收发票"/>
             <h4 class="invoiceH4">收发票信息</h4>
     </div>
-    <div style="height:550px; overflow-y:auto;">
+    <div style="height:550px; overflow-y:auto;" class="allCentext">
       <div class="modal-body">
       	<input id="id" name="id" type="hidden" value="${obj.id }" > 
          <table id="receivablesTable" class="table table-bordered table-hover">
@@ -232,6 +232,7 @@
 	          newDiv.find('.deleteInvoice').parent().remove();
 	          newDiv.find('.addIcon').parent().remove();
 	          newDiv.find('.fileUL').append('<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>');
+	          $('.allCentext').scrollTop( $('.allCentext').height() );//点击圆圈加号 添加的内容默认显示出来 
 	      });
 	      /*-----收付款>收款>开发票 - 按钮-----*/
 	      $(document).on("click",".removIcon",function(){
