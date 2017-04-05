@@ -30,6 +30,7 @@ import org.nutz.mvc.annotation.Param;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.linyun.airline.admin.dictionary.external.externalInfoServiceImpl;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
 import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.entities.DictInfoEntity;
@@ -63,6 +64,8 @@ public class BankCardViewService extends BaseService<TBankCardEntity> {
 	 */
 	@Inject
 	private IDbDao dbDao;
+	@Inject
+	private externalInfoServiceImpl externalInfoServiceImpl;
 
 	public Map<String, Object> list() {
 		Map<String, Object> maps = Maps.newHashMap();
@@ -72,10 +75,20 @@ public class BankCardViewService extends BaseService<TBankCardEntity> {
 		List<DictInfoEntity> bankCardTypeList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "YHKLX"),
 				null);
 		//查询有哪些币种
-		List<DictInfoEntity> moneyTypeList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "BZ"), null);
+		List<DictInfoEntity> currencyList = null;
+
+		try {
+			currencyList = externalInfoServiceImpl.findDictInfoByName("", "BZ");
+		} catch (Exception e) {
+
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		}
+		//List<DictInfoEntity> moneyTypeList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "BZ"), null);
 		maps.put("bankList", bankList);
 		maps.put("bankCardTypeList", bankCardTypeList);
-		maps.put("moneyTypeList", moneyTypeList);
+		maps.put("moneyTypeList", currencyList);
 		return maps;
 	}
 

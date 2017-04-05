@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -416,14 +417,7 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 
 	public void downloadById(long id, HttpServletResponse response, String url2, String fileName2,
 			HttpServletRequest request) {
-		try {
-			request.setCharacterEncoding("utf-8");
-		} catch (UnsupportedEncodingException e1) {
-
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-
-		}
+		//查看前台接收的是什么编码格式
 		String resourceFile = null;
 		String fileName = null;
 		if (Util.isEmpty(url2) && Util.isEmpty(fileName2)) {
@@ -431,9 +425,25 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 			TAirlinePolicyEntity airlinePolicy = dbDao.fetch(TAirlinePolicyEntity.class, id);
 			resourceFile = airlinePolicy.getUrl();
 			fileName = airlinePolicy.getFileName();
+			try {
+				fileName = new String(fileName.getBytes("utf-8"), "ISO8859-1");
+			} catch (UnsupportedEncodingException e) {
+
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+
+			}
 		} else {
 			resourceFile = url2;
 			fileName = fileName2;
+			try {
+				fileName = URLEncoder.encode(fileName2, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+
+			}
 		}
 		/*String fileName = "下载吧";*/
 
@@ -446,11 +456,12 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 				URLConnection connection = url.openConnection();
 				is = connection.getInputStream();
 
+				//new String(fileName.getBytes("utf-8"), "ISO8859-1")
 				out = response.getOutputStream();
 				response.reset();
 				response.setContentType("application/octet-stream");
-				response.setHeader("Content-Disposition",
-						"attachment;filename=\"" + new String(fileName.getBytes("utf-8"), "ISO8859-1") + "\"");
+				response.setCharacterEncoding("utf-8");
+				response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
 				byte[] buffer = new byte[4096];
 				int count = 0;
 				while ((count = is.read(buffer)) > 0) {
