@@ -212,9 +212,15 @@ function initPayEdDataTable(){
 		            	}
 		            },
 		            {"data": "pnrnum", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var s = '';
-		            		return s;
+		            	render:function(data, type, row, meta) {
+		            		var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.pnrnum!=undefined){
+		            				result += '<li style="list-style:none;">'+value.pnrnum+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
 		            	}
 		            },
 		            {"data": "leavedate", "bSortable": false,

@@ -41,7 +41,7 @@
                 		<tr ondblclick="trDetail(${one.uid});">
                 			<%-- <td>${one.id }</td> --%>
                 			<td>${one.ordersnum }</td>
-                			<td>${one.pnr }</td>
+                			<td>${one.pnrnum }</td>
                 			<td>${one.cusgroupnum }</td>
                 			<td>${one.shortname }</td>
                 			<td>${one.billingdate }</td>
