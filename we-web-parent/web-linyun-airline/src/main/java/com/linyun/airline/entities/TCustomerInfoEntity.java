@@ -60,6 +60,14 @@ public class TCustomerInfoEntity implements Serializable {
 	private String address;
 
 	@Column
+	@Comment("国境内陆")
+	private String inlandLine;
+
+	@Column
+	@Comment("国际")
+	private String interLine;
+
+	@Column
 	@Comment("负责人")
 	private long responsibleId;
 

@@ -950,7 +950,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		Integer currency = form.getPayCurrency();
 		Integer isInvioce = form.getIsInvioce();
 		String receiptUrl = form.getReceiptUrl();
-		String orderIds = form.getPayIds();
+		String payIds = form.getPayIds();
+
 		Double totalMoney = form.getTotalMoney();
 		String payNames = form.getPayNames();
 		//操作人
@@ -981,8 +982,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		TUpOrderEntity upOrder = new TUpOrderEntity();
 		//付款集合
 		List<TPayEntity> updateList = new ArrayList<TPayEntity>();
-		TPayOrderEntity payOrder = dbDao.fetch(TPayOrderEntity.class, Cnd.where("orderid", "in", orderIds));
-		int payIds = payOrder.getPayid();
+		TPayOrderEntity payOrder = dbDao.fetch(TPayOrderEntity.class, Cnd.where("payid", "in", payIds));
+		int payids = payOrder.getPayid();
 		List<TPayEntity> payEntityList = dbDao.query(TPayEntity.class, Cnd.where("id", "in", payIds), null);
 		for (TPayEntity payEntity : payEntityList) {
 			if (!Util.eq(null, bankId)) {
@@ -1041,8 +1042,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		int updateNum = 0;
 		//更新付款订单表状态
 		List<TPayOrderEntity> newPayOrderList = new ArrayList<TPayOrderEntity>();
-		List<TPayOrderEntity> payOrderList = dbDao.query(TPayOrderEntity.class, Cnd.where("orderid", "in", orderIds),
-				null);
+		List<TPayOrderEntity> payOrderList = dbDao.query(TPayOrderEntity.class, Cnd.where("payid", "in", payids), null);
 		if (!Util.isEmpty(payOrderList)) {
 			for (TPayOrderEntity payOrderEntity : payOrderList) {
 				payOrderEntity.setPaystauts(APPROVALPAYED);

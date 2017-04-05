@@ -36,6 +36,9 @@
 		.hangduan div.form-group:nth-child(4) div{width:120px;padding-right:0;position: relative;left:-20px;}
 		input#setoffdate {position: relative;left:5px;}
 		input#setofftime {position: relative;left:-15px;}
+		.hangduan div.form-group:nth-child(1) div .select2-container{width:155px !important;}
+		.hangduan div.form-group:nth-child(2) div .select2-container{width:155px !important;}
+		.hangduan div.form-group:nth-child(3) div .select2-container{width:85px !important;}
 	</style>
 </head>
 <body>

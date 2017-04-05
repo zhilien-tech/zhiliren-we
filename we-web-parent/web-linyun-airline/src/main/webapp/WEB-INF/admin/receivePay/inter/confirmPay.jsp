@@ -38,9 +38,10 @@
 				<tbody id="interConfirmPayTbody">
 					<input id="payIds" name="payIds" type="hidden" value="${obj.ids }"><!-- 水单url -->
 					<c:forEach var="one" items="${obj.orders}">
-                		<tr>
+                		<tr ondblclick="trDetail(${one.uid});">
+                			<%-- <td>${one.id }</td> --%>
                 			<td>${one.ordersnum }</td>
-                			<td>${one.pnr }</td>
+                			<td>${one.pnrnum }</td>
                 			<td>${one.cusgroupnum }</td>
                 			<td>${one.shortname }</td>
                 			<td>${one.billingdate }</td>
@@ -174,7 +175,6 @@
 	<script src="${base}/common/js/layer/layer.js"></script>
 	<!-- uploadify -->
 	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
-	
 	<!-- 確認付款js -->
 	<script src="${base}/admin/receivePayment/inter/interConfirmPay.js"></script>
 	
@@ -278,7 +278,11 @@
 				}
 			});
 		}
-	
+		
+		function trDetail(id){
+			var url = '${base}/admin/international/internationalDetail.html?orderid='+ id;
+			window.open(url);
+		}
 	</script>
 </body>
 </html>

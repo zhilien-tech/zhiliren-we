@@ -94,8 +94,11 @@
       		<div class="row">
       			<div class="form-group">
       				<label class="col-sm-3 text-right padding"></label>
-      				<button id="file" name="file" type="file" class="btn btn-primary btn-sm" >上传文件</button>
-              		<span id="completeFileName"></span>
+      				<div class="col-sm-8 padding">
+      					<button id="file" name="file" type="file" class="btn btn-primary btn-sm" >上传文件</button>
+              			<span id="completeFileName"></span>
+      				</div>
+      				
       			</div>
       		</div>
         <input type="hidden" name="url" value="" id="url"/>
