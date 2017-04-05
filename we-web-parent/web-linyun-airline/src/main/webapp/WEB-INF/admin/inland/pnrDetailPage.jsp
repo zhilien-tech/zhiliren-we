@@ -28,11 +28,11 @@
                     	<select disabled="disabled" class="form-control input-sm">
                     		<c:forEach items="${obj.loginselect }" var="one">
 	                    		<c:choose>
-	                        		<c:when test="${obj.pnrinfo.loginid eq one.comDictName}">
-	                        			<option value="${one.comDictName }" selected="selected">${one.comDictName }</option>
+	                        		<c:when test="${obj.pnrinfo.loginid eq one.id}">
+	                        			<option value="${one.id }" selected="selected">${one.loginNumName }</option>
 	                        		</c:when>
 	                        		<c:otherwise>
-			                    		<option value="${one.comDictName }">${one.comDictName }</option>
+			                    		<option value="${one.id }">${one.loginNumName }</option>
 	                        		</c:otherwise>
 	                        	</c:choose>
 	                    	</c:forEach>

@@ -373,7 +373,7 @@ $(document).on("change",".paymethod",function(){
           	
             } 
          });
-	}else{
+	}else if(paymethod){
 		parentDiv.find('[name=threepaytd]').hide();
 		parentDiv.find('[name=threepaymethod]').hide();
 		parentDiv.find('[name=internationalcard]').show();

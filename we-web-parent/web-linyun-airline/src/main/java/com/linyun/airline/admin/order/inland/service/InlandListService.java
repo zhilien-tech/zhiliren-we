@@ -22,7 +22,6 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.linyun.airline.admin.login.service.LoginService;
-import com.linyun.airline.admin.order.inland.enums.PayMethodEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
 import com.linyun.airline.common.enums.OrderStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
@@ -284,12 +283,8 @@ public class InlandListService extends BaseService<TUpOrderEntity> {
 		TBankCardEntity result = new TBankCardEntity();
 		HttpSession session = request.getSession();
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		List<TBankCardEntity> query = dbDao.query(TBankCardEntity.class,
-				Cnd.where("companyId", "=", company.getId()).and("status", "=", BankCardStatusEnum.ENABLE.intKey())
-						.and("cardName", "=", PayMethodEnum.INTERNATIONAL.value()), null);
-		if (query.size() > 0) {
-			result = query.get(0);
-		}
+		String paymethod = request.getParameter("paymethod");
+		result = dbDao.fetch(TBankCardEntity.class, Long.valueOf(paymethod));
 		return result;
 	}
 }

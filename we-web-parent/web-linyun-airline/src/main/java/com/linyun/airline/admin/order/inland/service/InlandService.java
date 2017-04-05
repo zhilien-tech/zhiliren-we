@@ -36,6 +36,7 @@ import org.nutz.mvc.upload.TempFile;
 
 import com.google.common.base.Splitter;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
+import com.linyun.airline.admin.companydict.comdictinfo.entity.ComLoginNumEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.customneeds.service.EditPlanService;
 import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
@@ -56,6 +57,7 @@ import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
+import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.common.enums.MessageTypeEnum;
 import com.linyun.airline.common.enums.OrderRemindEnum;
 import com.linyun.airline.common.enums.OrderStatusEnum;
@@ -1015,9 +1017,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			e.printStackTrace();
 
 		}
-		List<ComDictInfoEntity> loginselect = dbDao.query(ComDictInfoEntity.class,
-				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_DLZH.key()).and("comId", "=", company.getId()),
-				null);
+		List<ComLoginNumEntity> loginselect = dbDao.query(ComLoginNumEntity.class,
+				Cnd.where("status", "=", DataStatusEnum.ENABLE.intKey()).and("comId", "=", company.getId()), null);
 		result.put("loginselect", loginselect);
 		result.put("visitors", visitors);
 		result.put("bzcode", bzcode);
@@ -1129,9 +1130,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			e.printStackTrace();
 
 		}
-		List<ComDictInfoEntity> loginselect = dbDao.query(ComDictInfoEntity.class,
-				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_DLZH.key()).and("comId", "=", company.getId()),
-				null);
+		List<ComLoginNumEntity> loginselect = dbDao.query(ComLoginNumEntity.class,
+				Cnd.where("status", "=", DataStatusEnum.ENABLE.intKey()).and("comId", "=", company.getId()), null);
 		result.put("loginselect", loginselect);
 		result.put("pnrinfo", pnrinfo);
 		result.put("visitors", visitors);
@@ -1208,9 +1208,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		TUpOrderEntity orderinfo = dbDao.fetch(TUpOrderEntity.class, custom.getOrdernum().longValue());
 		//客户信息
 		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, orderinfo.getUserid().longValue());
-		List<ComDictInfoEntity> loginselect = dbDao.query(ComDictInfoEntity.class,
-				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_DLZH.key()).and("comId", "=", company.getId()),
-				null);
+		List<ComLoginNumEntity> loginselect = dbDao.query(ComLoginNumEntity.class,
+				Cnd.where("status", "=", DataStatusEnum.ENABLE.intKey()).and("comId", "=", company.getId()), null);
 		result.put("loginselect", loginselect);
 		result.put("custominfo", custominfo);
 		result.put("include", include);
