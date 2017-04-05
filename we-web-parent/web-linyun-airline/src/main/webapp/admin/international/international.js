@@ -76,7 +76,15 @@ function initInternationalTable(){
                     		return result;
                     	}	
                     },
-                    {"data": "peoplecount", "bSortable": false},
+                    {"data": "peoplecount", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var result='';
+                    		if(row.peoplecount && row.peoplecount != undefined){
+                    			result = row.peoplecount;
+                    		}
+                    		return result;
+                    	}
+                    },
                     {"data": "foc", "bSortable": false,
                     	render: function(data, type, row, meta) {
                     		var result = '否';
@@ -86,7 +94,15 @@ function initInternationalTable(){
                     		return result;
                     	}
                     },
-                    {"data": "dayscount", "bSortable": false},
+                    {"data": "dayscount", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var result='';
+                    		if(row.dayscount && row.dayscount != undefined){
+                    			result = row.dayscount;
+                    		}
+                    		return result;
+                    	}
+                    },
                     {"data": "ordersstatus", "bSortable": false,
                     	render:function(data, type, row, meta) {
                       		var result = '';
@@ -107,7 +123,15 @@ function initInternationalTable(){
                     		return result;
                     	}
                     },
-                    {"data": "unioncity", "bSortable": false}
+                    {"data": "unioncity", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var result='';
+                    		if(row.unioncity){
+                    			result = row.unioncity;
+                    		}
+                    		return result;
+                    	}
+                    }
             ],
         columnDefs: [{
     		targets: 0,
@@ -120,6 +144,7 @@ function initInternationalTable(){
 initInternationalTable();
 //加载列表数据
 function loadDataTable(status){
+	$('#status').val(status);
 	var param = {
 			ordersstatus:status
 	};
@@ -132,4 +157,21 @@ $("tbody",$('#internationalTable')).on("dblclick","tr",function(event) {
 	var item = internationalTable.row($(this).closest('tr')).data();
 	var url = BASE_PATH + '/admin/international/internationalDetail.html?orderid='+item.ordernumber;
 	window.open(url);
+});
+$('#searchOrder').click(function(i){
+	var div = $(this).parent().parent();
+	var startdate = div.find('[name=startdate]').val();
+	var enddate = div.find('[name=enddate]').val();
+	var searchInfo = div.find('[name=searchInfo]').val();
+	var status = $('#status').val();
+	var param = {
+			ordersstatus:status,
+			startdate:startdate,
+			enddate:enddate,
+			searchInfo:searchInfo
+	};
+	internationalTable.settings()[0].ajax.data = param;
+	internationalTable.ajax.reload(function(json){
+		autoHighLoad($('#internationalTable'));
+	});
 });

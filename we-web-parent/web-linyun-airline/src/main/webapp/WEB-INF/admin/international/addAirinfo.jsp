@@ -40,7 +40,7 @@
                         <td><label>出发时间：</label></td>
                         <td><input id="leavetime" name="leavetime" type="text" class="form-control input-sm mustTimes" placeholder="12:00"></td>
                         <td><label>抵达时间：</label></td>
-                        <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm mustTimes" placeholder="13:00"></td>
+                        <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm mustArriveTimes" placeholder="13:00"></td>
                         <td><a href="javascript:;" class="glyphicon glyphicon-plus addHDIcon"></a></td>
                       </tr>
                 </tbody>

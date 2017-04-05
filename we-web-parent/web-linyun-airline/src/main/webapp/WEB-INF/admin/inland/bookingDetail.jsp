@@ -316,13 +316,13 @@
 		                     <td colspan="1"> 
 								<select id="paymethod" name="paymethod" disabled="disabled" class="form-control input-sm paymethod">
 		                            <option value="">请选择</option>
-		                            <c:forEach var="map" items="${obj.paymethodenum}" >
+		                            <c:forEach var="map" items="${obj.paymethod}" >
 		                            	<c:choose>
-		                            		<c:when test="${customneed.cusinfo.paymethod eq map.key }">
-		                            			<option value="${map.key}" selected="selected">${map.value}</option>
+		                            		<c:when test="${customneed.cusinfo.paymethod eq map.id }">
+		                            			<option value="${map.id}" selected="selected">${map.bankName}</option>
 		                            		</c:when>
 		                            		<c:otherwise>
-										   		<option value="${map.key}">${map.value}</option>
+										   		<option value="${map.id}">${map.bankName}</option>
 		                            		</c:otherwise>
 		                            	</c:choose>
 									 </c:forEach>

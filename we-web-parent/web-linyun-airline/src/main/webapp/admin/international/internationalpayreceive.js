@@ -131,6 +131,25 @@ function initshouFuKuanGatheringTable() {
 function loadreceivedata(){
 	shouFuKuanGatheringTable.ajax.reload();
 }
+$('#receiveSearch').click(function(){
+	var div = $(this).parent().parent();
+	var startdate = div.find('[name=startdate]').val();
+	var enddate = div.find('[name=enddate]').val();
+	var searchInfo = div.find('[name=searchInfo]').val();
+	var status = $('#status').val();
+	var receivestatus = $('#receivestatus').val();
+	var param = {
+			ordersstatus:status,
+			startdate:startdate,
+			enddate:enddate,
+			searchInfo:searchInfo,
+			receivestatus:receivestatus
+	};
+	shouFuKuanGatheringTable.settings()[0].ajax.data = param;
+	shouFuKuanGatheringTable.ajax.reload(function(json){
+		autoHighLoad($('#shouFuKuanGatheringTable'));
+	});
+});
 //打开开发票页面
 function openInvoice(id,invoiceid){
 	if(invoiceid){
@@ -277,6 +296,25 @@ function initshouFuKuanPayTable() {
 function shoufukuanPay(){
 	shouFuKuanPayTable.ajax.reload();
 }
+$('#paySearch').click(function(){
+	var div = $(this).parent().parent();
+	var startdate = div.find('[name=startdate]').val();
+	var enddate = div.find('[name=enddate]').val();
+	var searchInfo = div.find('[name=searchInfo]').val();
+	var status = $('#status').val();
+	var paystatus = $('#paystatus').val();
+	var param = {
+			ordersstatus:status,
+			startdate:startdate,
+			enddate:enddate,
+			searchInfo:searchInfo,
+			paystatus:paystatus
+	};
+	shouFuKuanPayTable.settings()[0].ajax.data = param;
+	shouFuKuanPayTable.ajax.reload(function(json){
+		autoHighLoad($('#shouFuKuanPayTable'));
+	});
+});
 function receiveInvoice(id,invoiceid){
 	if(invoiceid){
 		layer.open({
