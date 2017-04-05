@@ -62,7 +62,7 @@
 			</li>
 			<li>
 				<span>申请人</span>
-				<span>${obj.reduceList.userName }</span>
+				<span>${obj.reduceList.fullName }</span>
 			</li>
 		</ul>
   </c:if>
@@ -115,7 +115,7 @@
 			</li>
 			<li>
 				<span>申请人</span>
-				<span>${obj.detaillist.userName }</span>
+				<span>${obj.detaillist.fullName }</span>
 			</li>
 		</ul>
   </c:if>
@@ -156,7 +156,8 @@
 function control(flag){
 	var status=$("#status").val();
 	var reduceStatus=$("#reduceStatus").val();
-	
+	alert(status);
+	alert(reduceStatus); 
 	if(status==1){
 		if(flag=="agree"){
 			agree("agree");
