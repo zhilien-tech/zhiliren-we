@@ -38,6 +38,7 @@ public class ApprovalList {
 	private Integer usingId;
 	private Integer orderId;
 	private String userName;
+	private String fullName;
 	private String currencyStr;
 	private String purposeStr;
 	private String fundTypeStr;
@@ -348,6 +349,14 @@ public class ApprovalList {
 				+ ", approveTime=" + approveTime + ", approveResult=" + approveResult + ", usingId=" + usingId
 				+ ", orderId=" + orderId + ", userName=" + userName + ", currencyStr=" + currencyStr + ", purposeStr="
 				+ purposeStr + ", fundTypeStr=" + fundTypeStr + ", companyId=" + companyId + "]";
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 }

@@ -11,12 +11,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -412,7 +414,16 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 
 	}
 
-	public void downloadById(long id, HttpServletResponse response, String url2, String fileName2) {
+	public void downloadById(long id, HttpServletResponse response, String url2, String fileName2,
+			HttpServletRequest request) {
+		try {
+			request.setCharacterEncoding("utf-8");
+		} catch (UnsupportedEncodingException e1) {
+
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+
+		}
 		String resourceFile = null;
 		String fileName = null;
 		if (Util.isEmpty(url2) && Util.isEmpty(fileName2)) {
@@ -425,50 +436,59 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 			fileName = fileName2;
 		}
 		/*String fileName = "下载吧";*/
+
 		InputStream is = null;
 		OutputStream out = null;
-		try {
-
-			URL url = new URL(resourceFile);
-			URLConnection connection = url.openConnection();
-			is = connection.getInputStream();
-
-			out = response.getOutputStream();
-			response.reset();
-			response.setContentType("application/octet-stream");
-			response.setHeader("Content-Disposition", "attachment;filename=\""
-					+ new String(fileName.getBytes("utf-8"), "ISO8859-1") + "\"");
-			byte[] buffer = new byte[4096];
-			int count = 0;
-			while ((count = is.read(buffer)) > 0) {
-				out.write(buffer, 0, count);
-			}
-			out.flush();
-			response.flushBuffer();
-			out.close();
-			is.close();
-
-		} catch (Exception e) {
-
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
-		} finally {
+		if (!Util.isEmpty(resourceFile)) {
 			try {
-				is.close();
-			} catch (IOException e) {
 
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				URL url = new URL(resourceFile);
+				URLConnection connection = url.openConnection();
+				is = connection.getInputStream();
 
-			}
-			try {
+				out = response.getOutputStream();
+				response.reset();
+				response.setContentType("application/octet-stream");
+				response.setHeader("Content-Disposition",
+						"attachment;filename=\"" + new String(fileName.getBytes("utf-8"), "ISO8859-1") + "\"");
+				byte[] buffer = new byte[4096];
+				int count = 0;
+				while ((count = is.read(buffer)) > 0) {
+					out.write(buffer, 0, count);
+				}
+				out.flush();
+				response.flushBuffer();
 				out.close();
-			} catch (IOException e) {
+				is.close();
+
+			} catch (Exception e) {
 
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 
+			} finally {
+				try {
+					if (!Util.isEmpty(is)) {
+
+						is.close();
+					}
+				} catch (IOException e) {
+
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+
+				}
+				try {
+					if (!Util.isEmpty(out)) {
+
+						out.close();
+					}
+				} catch (IOException e) {
+
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+
+				}
 			}
 		}
 

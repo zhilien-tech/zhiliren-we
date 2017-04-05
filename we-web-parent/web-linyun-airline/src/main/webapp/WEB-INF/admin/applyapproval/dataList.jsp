@@ -63,9 +63,9 @@
 					</li>
 					<li>
 						
-						<span><%-- ${each.PNR } --%></span>
+						<span>${each.orderstatus }</span>
 						
-						<span>${each.userName }</span>
+						<span>${each.fullName }</span>
 					</li>
 					<%-- <li>
 						<span>${each.purpose }</span>
@@ -126,7 +126,7 @@
 						
 							<span>${each.PNR }</span>
 						
-						<span>${each.userName }</span>
+						<span>${each.fullName }</span>
 					</li>
 					<%-- <li>
 						<span>${each.purpose }</span>
