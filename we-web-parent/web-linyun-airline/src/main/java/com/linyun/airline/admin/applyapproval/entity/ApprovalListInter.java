@@ -34,8 +34,11 @@ public class ApprovalListInter {
 	private Date approveTime;
 	private Integer approveResult;
 	private Integer usingId;
+	private Integer orderstatusid;
+	private String orderstatus;
 	/*private Integer orderId;*/
 	private String userName;
+	private String fullName;
 	private String currencyStr;
 	private String purposeStr;
 	private String fundTypeStr;
@@ -335,6 +338,30 @@ public class ApprovalListInter {
 
 	public void setOrdertype(Integer ordertype) {
 		this.ordertype = ordertype;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public Integer getOrderstatusid() {
+		return orderstatusid;
+	}
+
+	public void setOrderstatusid(Integer orderstatusid) {
+		this.orderstatusid = orderstatusid;
+	}
+
+	public String getOrderstatus() {
+		return orderstatus;
+	}
+
+	public void setOrderstatus(String orderstatus) {
+		this.orderstatus = orderstatus;
 	}
 
 }

@@ -182,21 +182,23 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">国境内陆：</label>
 							<div class="col-sm-3 padding">
-								<select id="isLine" class="form-control select2 inpImportant"
+								<!-- <select id="isLine" class="form-control select2 inpImportant"
 									multiple="multiple" onchange="inLine()"
 									data-placeholder="请输入国境内陆">
 								</select>
-								<!-- 国境内陆ID -->
-								<input id="sLine1ID" type="hidden" name="sLine1" />
+								国境内陆ID
+								<input id="sLine1ID" type="hidden" name="sLine1" /> -->
+								<input id="inlandLine" name="inlandLine" type="text" class="form-control input-sm inpImportant" placeholder="请输入国境内陆" />
 							</div>
 							<label class="col-sm-2 text-right padding">国际：</label>
 							<div class="col-sm-3 padding">
-								<select id="sLine2ID" class="form-control select2 inpImportant"
+								<!-- <select id="sLine2ID" class="form-control select2 inpImportant"
 									multiple="multiple" onchange="outLine()"
 									data-placeholder="请输入国际线路">
 								</select>
-								<!-- 国际线路ID -->
-								<input id="line2ID" type="hidden" name="internationLine" />
+								国际线路ID
+								<input id="line2ID" type="hidden" name="internationLine" /> -->
+								<input id="interLine" name="interLine" type="text" class="form-control input-sm inpImportant" placeholder="请输入国际" />
 							</div>
 						</div>
 					</div>

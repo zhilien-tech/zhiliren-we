@@ -53,7 +53,6 @@ import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TCustomerInvoiceEntity;
-import com.linyun.airline.entities.TCustomerLineEntity;
 import com.linyun.airline.entities.TCustomerOutcityEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
@@ -265,7 +264,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		}
 		dbDao.insert(outcityEntities);
 
-		//国境内陆截取
+		/*//国境内陆截取
 		Iterable<String> sLine1s = Splitter.on(",").split(addForm.getSLine1());
 		Iterable<String> internationLines = Splitter.on(",").split(addForm.getInternationLine());
 		//国境内陆保存
@@ -288,7 +287,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 				lineEntities.add(lineEntity);
 			}
 		}
-		dbDao.insert(lineEntities);
+		dbDao.insert(lineEntities);*/
 
 		//	dbDao.updateRelations(before, after);
 
@@ -617,7 +616,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 				Cnd.where("infoId", "=", updateForm.getId()), null);
 		dbDao.updateRelations(outCitysBefore, outCitysAfter);
 
-		//国境内陆截取
+		/*//国境内陆截取
 		Iterable<String> sLine1s = Splitter.on(",").split(updateForm.getSLine1());
 		//国际截取
 		Iterable<String> internationLines = Splitter.on(",").split(updateForm.getInternationLine());
@@ -641,7 +640,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		}
 		List<TCustomerLineEntity> linesBefore = dbDao.query(TCustomerLineEntity.class,
 				Cnd.where("infoId", "=", updateForm.getId()), null);
-		dbDao.updateRelations(linesBefore, linesAfter);
+		dbDao.updateRelations(linesBefore, linesAfter);*/
 
 		//发票信息截取
 		Iterable<String> sInvNames = Splitter.on(",").split(updateForm.getSInvName());

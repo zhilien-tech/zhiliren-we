@@ -33,7 +33,7 @@
                 <tbody>
                   <input id="recIds" name="recIds" type="hidden" value="${obj.id }"><!-- 水单url -->
 					<c:forEach var="one" items="${obj.orders}">
-                		<tr>
+                		<tr ondblclick="trDetail(${one.id });">
                 			<td>${one.ordersnum }</td>
                 			<td>${one.billingdate }</td>
                 			<td>${one.cusgroupnum }</td>
@@ -95,6 +95,7 @@
 	<script src="${base}/admin/receivePayment/inland/inlandReceive.js"></script>
 	<!-- 收付款Common js -->
 	<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
+	<script src="${base}/common/js/layer/layer.js"></script>
 	<!-- 防止订单重复提交 -->
 	<script type="text/javascript">
 		$(function(){
@@ -103,6 +104,10 @@
 				$("#confirmRecClick").attr('disabled',true);
 			}
 		});
+		function trDetail(id){
+			var url = '${base}/admin//inland/queryDetail.html?id='+ id;
+			window.open(url);
+		}
 	</script>
 </body>
 </html>

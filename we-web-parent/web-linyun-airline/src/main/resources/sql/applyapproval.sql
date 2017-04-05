@@ -3,7 +3,7 @@ select * from(
 select uo.orderstype,ti.id,ti.PNR,ti.orderPnrStatus,ti.costpricesum,uo.ordersnum,ti.optime,p.purpose,
 
 p.proposer,ci.shortName,p.fundType,p.payFees,p.payCurrency,p.isInvioce,p.approveTime,p.approveResult,p.id as 'usingId',uo.id as 'orderId',
-u.userName,(select dictCode from dict_info where id=p.payCurrency) as 'currencyStr',(select comDictName from t_company_dictinfo where id=p.purpose) as 'purposeStr',
+u.fullName,(select dictCode from dict_info where id=p.payCurrency) as 'currencyStr',(select comDictName from t_company_dictinfo where id=p.purpose) as 'purposeStr',
 (select comDictName from t_company_dictinfo where id=p.fundType) as 'fundTypeStr',p.companyId
 
 FROM t_pnr_info  ti
@@ -35,11 +35,14 @@ order by optime desc
 /*applyapproval_list_international*/
 select * from(
 select  uo.orderstype,uo.ordersnum,p.purpose,
-p.proposer,ci.shortName,p.fundType,p.payFees,p.payCurrency,p.isInvioce,p.approveTime,p.approveResult,p.id as 'usingId',uo.id,
-u.userName,(select dictCode from dict_info where id=p.payCurrency) as 'currencyStr',(select dictName from dict_info where id=p.purpose) as 'purposeStr',
-(select dictName from dict_info where id=p.fundType) as 'fundTypeStr',p.companyId,po.paystauts as 'paystatus',uo.amount,uo.orderstime
+p.proposer,ci.shortName,p.fundType,p.payFees,p.payCurrency,p.isInvioce,p.approveTime,p.approveResult,p.id as 'usingId',p.id,uo.id as 'orderId',
+u.fullName,(select dictCode from dict_info where id=p.payCurrency) as 'currencyStr',(select dictName from dict_info where id=p.purpose) as 'purposeStr',
+(select dictName from dict_info where id=p.fundType) as 'fundTypeStr',p.companyId,po.paystauts as 'paystatus',uo.amount,po.payDate as 'orderstime',prr.orderstatusid,prr.orderstatus
+,po.id as 'resultId'
 from 
-t_up_order uo
+t_pay_receive_record prr
+LEFT JOIN 
+t_up_order uo on prr.orderid=uo.id
 LEFT JOIN t_pay_order po on po.orderid=uo.id
 LEFT JOIN t_pay p on p.id=po.payid
 LEFT JOIN t_customer_info ci on ci.id=uo.userid
@@ -56,7 +59,7 @@ LEFT JOIN t_order_customneed oc on oc.id =pi.needid
 LEFT JOIN t_up_order uo on uo.id=oc.ordernum
 $condition
 /*applyapproval_reduce_inland*/
-select mi.*,u.userName,uo.ordersnum
+select mi.*,u.fullName,uo.ordersnum
 from 
 t_mitigate_info mi 
 LEFT JOIN t_up_order uo on mi.orderid=uo.id

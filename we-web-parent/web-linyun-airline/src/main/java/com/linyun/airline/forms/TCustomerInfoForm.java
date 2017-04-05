@@ -47,6 +47,12 @@ public class TCustomerInfoForm implements SQLParamForm, Serializable {
 	/**地址*/
 	private String address;
 
+	/**国境内陆*/
+	private String inlandLine;
+
+	/**国际*/
+	private String interLine;
+
 	/**负责人id*/
 	private long responsibleId;
 

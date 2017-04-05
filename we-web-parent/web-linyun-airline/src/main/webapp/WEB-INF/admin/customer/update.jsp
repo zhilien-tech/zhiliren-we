@@ -162,26 +162,28 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">国境内陆：</label>
 							<div class="col-sm-3 padding">
-								<select id="isLine" class="form-control select2 inpImportant" onchange="inLine()"  multiple="multiple"  data-placeholder="请输入国境内陆">
+								<%-- <select id="isLine" class="form-control select2 inpImportant" onchange="inLine()"  multiple="multiple"  data-placeholder="请输入国境内陆">
 									<option></option>
 									<c:forEach var="one" items="${obj.innerlinelist }">
 										<option value="${one.id }">${one.text}</option>
 									</c:forEach>
 								</select>
 								<!-- 国境内陆ID -->
-								<input id="sLine1ID" type="hidden" name="sLine1"/>
+								<input id="sLine1ID" type="hidden" name="sLine1"/> --%>
+								<input id="inlandLine" name="inlandLine" value="${obj.customer.inlandLine}" type="text" class="form-control input-sm inpImportant" placeholder="请输入国境内陆" />
 							</div>
 
 							<label class="col-sm-2 text-right padding">国际：</label>
 							<div class="col-sm-3 padding">
-								<select id="sLine2ID" class="form-control select2 inpImportant" onchange="outLine()" multiple="multiple"  data-placeholder="请输入国际线路">
+								<%-- <select id="sLine2ID" class="form-control select2 inpImportant" onchange="outLine()" multiple="multiple"  data-placeholder="请输入国际线路">
 									<option></option>
 									<c:forEach var="one" items="${obj.interlinelist }">
 										<option value="${one.id }">${one.text}</option>
 									</c:forEach>
 								</select>
 								<!-- 国际线路ID -->
-								<input id="line2ID" type="hidden" name="internationLine" />
+								<input id="line2ID" type="hidden" name="internationLine" /> --%>
+								<input id="interLine" name="interLine" value="${obj.customer.interLine}" type="text" class="form-control input-sm" placeholder="请输入国际线路" />
 							</div>
 						</div>
 					</div>
