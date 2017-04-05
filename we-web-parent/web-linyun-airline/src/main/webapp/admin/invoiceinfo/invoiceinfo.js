@@ -37,7 +37,11 @@ function initKaiInvoiceTable1() {
                   		var result = '<ul> ';
                 		$.each(row.invoicedetail, function(name, value) {
                 			if(value && value.invoicenum != undefined){
-                				result += '<li style="list-style:none;">'+value.invoicenum+'</li>';
+                				if(value.invoicenum !=null && value.invoicenum != ""){
+                					result += '<li style="list-style:none;">'+value.invoicenum+'</li>';
+                				}else{
+                					return "";
+                				}
                 			}
                 		});
                 		result += '</ul>';

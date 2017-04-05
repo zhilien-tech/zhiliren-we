@@ -44,23 +44,5 @@ footer button{width: 50%;height: 100%;color: #fff;font-size: .9rem;}
 footer button:nth-child(1){float: left;border: solid 1px #397ea7;background-color: #3c8dbc;}
 footer button:nth-child(2){float: right;    background-color: #ecf0f5;border: solid 1px #306e92;color: #3c8dbc;}
 /*-----end 审批详情-----*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.layui-layer-btn0{border: 1px solid #dedede !important;background-color: #f1f1f1 !important;color: #333 !important;}
+.layui-layer-btn1{border-color: #4898d5 !important;background-color: #2e8ded !important;color: #fff !important;}
