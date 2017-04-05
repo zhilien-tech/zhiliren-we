@@ -88,4 +88,8 @@ public class TOrderCustomneedEntity implements Serializable {
 	@Column
 	@Comment("付款方式")
 	private Integer paymethod;
+
+	@Column
+	@Comment("第三方支付ID")
+	private Integer thirdcustomid;
 }

@@ -111,7 +111,9 @@ function initkaiInvoiceTable() {
   });
 }
 function kaiInvoiceLoad(){
-	kaiInvoiceTable.ajax.reload();
+	kaiInvoiceTable.ajax.reload(function(json){
+		autoHighLoad($('#kaiInvoiceTable'));
+	});
 }
 $('#kaiInvoiceSearch').click(function(){
 	var div = $(this).parent().parent();

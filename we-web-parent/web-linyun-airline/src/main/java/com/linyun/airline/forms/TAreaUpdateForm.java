@@ -16,9 +16,6 @@ public class TAreaUpdateForm extends ModForm implements Serializable {
 	/**用户id*/
 	private Long userId;
 
-	/**公司id*/
-	private Long comId;
-
 	/**区域id*/
 	private Long areaId;
 

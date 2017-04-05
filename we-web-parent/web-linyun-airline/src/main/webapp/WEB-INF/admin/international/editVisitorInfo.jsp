@@ -74,7 +74,7 @@
             	window.parent.successCallback('2');
             },
             error: function (xhr) {
-            	layer.alert("编辑失败",{time: 2000, icon:1});
+            	layer.msg("编辑失败",{time: 2000});
             } 
       });
 	}

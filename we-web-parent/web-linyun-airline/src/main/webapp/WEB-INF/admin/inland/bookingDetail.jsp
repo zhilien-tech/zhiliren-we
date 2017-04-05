@@ -328,9 +328,9 @@
 									 </c:forEach>
 		                        </select>
 							 </td>
-							 <td name="internationalcard" style="display: none;"><label>余额：</label></td>
+							 <td name="internationalcard" colspan="2" style="display: none;" align="left"><label>余额：</label></td>
 							 <td name="threepaytd"></td>
-							 <td name="threepaymethod" style="display: none;"><select name="thirdcustomid" class="form-control input-sm"></select></td>
+							 <td name="threepaymethod" style="display: none;"><select name="thirdcustomid" disabled="disabled" class="form-control input-sm"></select></td>
 		                   </tr>
 		                   <tr class="pnrTr">
 		                     <td colspan="13" class="addPNR">
@@ -438,9 +438,9 @@
 									 </c:forEach>
 		                        </select>
 							 </td>
-							 <td name="internationalcard" style="display: none;"><label>余额：</label></td>
+							 <td name="internationalcard" colspan="2" style="display: none;" align="left"><label>余额：</label></td>
 							 <td name="threepaytd"></td>
-							 <td name="threepaymethod" style="display: none;"><select name="thirdcustomid" class="form-control input-sm"></select></td>
+							 <td name="threepaymethod" style="display: none;"><select name="thirdcustomid" disabled="disabled" class="form-control input-sm"></select></td>
 		                   </tr>
 		                   <tr>
 		                     <td colspan="13" class="addPNR">
@@ -659,6 +659,7 @@
               $(this).find('[name=avgexrate]').removeAttr('disabled');
               $(this).find('[name=paycurrency]').removeAttr('disabled');
               $(this).find('[name=paymethod]').removeAttr('disabled');
+              $(this).find('[name=thirdcustomid]').removeAttr('disabled');
               $(this).find('[name=remark]').removeAttr('disabled');
               $(this).find('[name=airlineinfo]').each(function(i){
             	$(this).find('[name=airlineid]').removeAttr('disabled');
@@ -703,6 +704,7 @@
 	              $(this).find('[name=avgexrate]').attr('disabled','disabled');
 	              $(this).find('[name=paycurrency]').attr('disabled','disabled');
 	              $(this).find('[name=paymethod]').attr('disabled','disabled');
+	              $(this).find('[name=thirdcustomid]').attr('disabled','disabled');
 	              $(this).find('[name=remark]').attr('disabled','disabled');
 	              $(this).find('[name=airlineinfo]').each(function(i){
 	            	$(this).find('[name=airlineid]').attr('disabled','disabled');
@@ -804,6 +806,7 @@
 			row1.avgexrate = $(this).find('[name=avgexrate]').val();
 			row1.paycurrency = $(this).find('[name=paycurrency]').val();
 			row1.paymethod = $(this).find('[name=paymethod]').val();
+			row1.thirdcustomid = $(this).find('[name=thirdcustomid]').val();
 			row1.remark = $(this).find('[name=remark]').val();
 			lenthcustom += $(this).find('[name=customneedid]').val();
 			lenthcustom += $(this).find('[name=leavedate]').val();
@@ -1008,7 +1011,6 @@
 	         }
 	       });
     });
-  	setFinanceInfo();
   function setFinanceInfo(){
 	//设置财务信息
  	 $.ajax({ 
@@ -1180,6 +1182,8 @@
          } 
       });
  }
+ //设置财务信息
+ setFinanceInfo();
   </script>
 </body>
 </html>
