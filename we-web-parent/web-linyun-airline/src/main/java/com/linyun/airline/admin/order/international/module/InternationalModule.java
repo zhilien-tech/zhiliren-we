@@ -150,7 +150,7 @@ public class InternationalModule {
 	 * 保存编辑航段信息
 	 */
 	@At
-	@Ok("jsp")
+	@POST
 	public Object saveEditAirinfo(HttpServletRequest request) {
 		return internationalService.saveEditAirinfo(request);
 	}

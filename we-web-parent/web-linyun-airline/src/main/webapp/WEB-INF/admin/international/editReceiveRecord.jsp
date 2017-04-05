@@ -96,7 +96,7 @@
             	window.parent.successCallback('2');
             },
             error: function (xhr) {
-            	layer.alert("修改失败",{time: 2000, icon:1});
+            	layer.msg("修改失败",{time: 2000});
             } 
       });
 	}

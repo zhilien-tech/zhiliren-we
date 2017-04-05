@@ -282,11 +282,11 @@ function closeEditPlan(id){
 			data: {id:id}, 
 			url: BASE_PATH + '/admin/customneeds/closeEditPlan.html',
             success: function (data) { 
-            	layer.alert("关闭成功",{time: 2000, icon:1});
+            	layer.msg("关闭成功",{time: 2000});
             	datatable2.ajax.reload();
             },
             error: function (xhr) {
-            	layer.alert("关闭失败",{time: 2000, icon:1});
+            	layer.msg("关闭失败",{time: 2000});
             } 
         });
 	});
@@ -299,11 +299,11 @@ function enableEditPlan(id){
 			data: {id:id}, 
 			url: BASE_PATH + '/admin/customneeds/enableEditPlan.html',
             success: function (data) { 
-            	layer.alert("启用成功",{time: 2000, icon:1});
+            	layer.msg("启用成功",{time: 2000});
             	datatable2.ajax.reload();
             },
             error: function (xhr) {
-            	layer.alert("启用失败",{time: 2000, icon:1});
+            	layer.msg("启用失败",{time: 2000});
             } 
         });
 	});

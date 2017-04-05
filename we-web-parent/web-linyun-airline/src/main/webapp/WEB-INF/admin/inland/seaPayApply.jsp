@@ -69,7 +69,7 @@
          </div><!--end 用途/币种-->
          <div class="form-group row"><!--申请人/审批人/审批结果-->
          <label class="col-sm-2 text-right padding">申请人：</label>
-         <div class="col-sm-2 padding"><input type="text" class="form-control input-sm" disabled="disabled" value="${obj.user.userName }"></div>
+         <div class="col-sm-2 padding"><input type="text" class="form-control input-sm" disabled="disabled" value="${obj.user.fullName }"></div>
          <label class="col-sm-1 text-right padding">审批人：</label>
          <div class="col-sm-2 padding"><input id="approver" name="approver" type="text" class="form-control input-sm" disabled="disabled" value="侯小凌"></div>
          <label class="col-sm-1 text-right padding" style="width:95px;">审批结果：</label>
