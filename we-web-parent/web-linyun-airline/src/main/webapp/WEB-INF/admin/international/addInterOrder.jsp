@@ -146,7 +146,7 @@
 	}
     $(function(){
       $('.UnderIcon').on('click',function(){//客户信息 显示/隐藏
-          $('.hideTable').toggle('400');
+          $('.hideTable').toggle();
         });
      /*  //客户需求的 + 按钮
       $('.addHDIcon').click(function(){

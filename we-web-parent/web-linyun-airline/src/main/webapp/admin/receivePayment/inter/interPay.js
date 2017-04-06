@@ -172,7 +172,28 @@ function initPayDataTable(){
 
 	});
 }
-
+//datatable行点击事件
+$("tbody",$('#interPayTable')).on("dblclick","tr",function(event){
+	//获取当前行的数据
+	var row = interPayTable.row($(this).closest('tr')).data();
+	var ids = row.id;
+	layer.open({
+		type: 2,
+		title:false,
+		skin: false, //加上边框
+		closeBtn:false,//默认 右上角关闭按钮 是否显示
+		shadeClose:false,
+		area: ['850px', '650px'],
+		content: ['confirmPay.html?orderIds='+ ids,'no'],
+	});
+});
+$("tbody",$('#interPayEdTable')).on("dblclick","tr",function(event){
+	//获取当前行的数据
+	var row = interPayEdTable.row($(this).closest('tr')).data();
+	var prrids = row.prrids;
+	var pid = row.pid;
+	editPay(pid, prrids);
+});
 
 //会计   已付款datatable
 var interPayEdTable;
@@ -212,9 +233,15 @@ function initPayEdDataTable(){
 		            	}
 		            },
 		            {"data": "pnrnum", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var s = '';
-		            		return s;
+		            	render:function(data, type, row, meta) {
+		            		var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.pnrnum!=undefined){
+		            				result += '<li style="list-style:none;">'+value.pnrnum+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
 		            	}
 		            },
 		            {"data": "leavedate", "bSortable": false,

@@ -165,10 +165,10 @@
 										data-placeholder="SHA-ShangHai-China"></select>
 									</td>
 									<td><label>出发日期：</label></td>
-									<td><input id="cOutDate" name="cOutDate" type="text"
-										onFocus="WdatePicker({minDate:'%y-%M-%d'})"
-										class="form-control input-sm timeWid inputdatestr startdatestr"
-										placeholder="2020-01-01"></td>
+									<td>
+										<input id="cOutDate" name="cOutDate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d'})"
+										class="form-control input-sm timeWid inputdatestr startdatestr">
+									</td>
 									<td><label>人数：</label></td>
 									<td><input id="cPersonAmount" name="cPersonAmount"
 										type="text" onkeyup="this.value=this.value.replace(/\D/g,'')"
@@ -219,7 +219,8 @@
 								<tr name="cRemarkTr" class="remarkTr">
 									<td></span><label>备注：</label></td>
 									<td colspan="11">
-										<input id="cRemark" name="cRemark" type="text" class="form-control input-sm noteText" placeholder=" ">
+										<!-- <input id="cRemark" name="cRemark" type="text" class="form-control input-sm noteText" placeholder=" "> -->
+										<textarea rows="5" cols="140" id="cRemark" name="cRemark"></textarea>
 									</td>
 								</tr>
 							</table>

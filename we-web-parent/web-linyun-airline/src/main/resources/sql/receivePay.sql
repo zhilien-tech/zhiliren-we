@@ -69,7 +69,7 @@ SELECT
 	p.*,
 	(
 		SELECT
-			username
+			fullName
 		FROM
 			t_user u
 		WHERE
@@ -87,7 +87,7 @@ SELECT
 	ci.linkMan,
 	(
 		SELECT
-			username
+			fullName
 		FROM
 			t_user u
 		WHERE
@@ -334,11 +334,13 @@ $condition
 /*receivePay_order_rec_rids*/
 SELECT
 	uo.id,
-	uo.ordersnum
+	uo.ordersnum,
+    pi.pnr pnrnum
 FROM
 	t_up_order uo
 INNER JOIN t_order_receive ore ON ore.orderid=uo.id 
 INNER JOIN t_receive r ON r.id=ore.receiveid
+LEFT JOIN t_pnr_info pi on pi.orderid=uo.id
 $condition
 
 /*receivePay_inter_rec_invioce_list*/
@@ -414,6 +416,7 @@ SELECT
 	prr.id,
 	uo.id uid,
 	uo.ordersnum,
+	pii.PNR pnrnum,
 	po.orderstatus,
 	(
 		SELECT
@@ -441,6 +444,7 @@ LEFT JOIN t_plan_info pi ON pi.ordernumber = uo.id
 LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
 LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
 LEFT JOIN t_customer_info ci ON ci.id = uo.userid
+LEFT JOIN t_pnr_info pii ON pii.orderid = uo.id
 WHERE
 	uo.id IN (
 		SELECT
@@ -453,6 +457,7 @@ WHERE
 		LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
 		LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
 		LEFT JOIN t_customer_info ci ON ci.id = uo.userid
+		LEFT JOIN t_pnr_info pii ON pii.orderid = uo.id
 		$condition
 	)
 AND prr.recordtype=@recordtype
@@ -464,9 +469,10 @@ ORDER BY
 SELECT
 	p.*, 
 	prr.id prrid,
+	pii.pnr pnrnum,
 	(
 		SELECT
-			username
+			fullName
 		FROM
 			t_user u
 		WHERE
@@ -488,6 +494,7 @@ LEFT JOIN t_plan_info pi ON pi.ordernumber = uo.id
 INNER JOIN t_pay_receive_record prr ON prr.orderid = uo.id
 LEFT JOIN t_customer_info ci ON ci.id = uo.userid
 LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
+LEFT JOIN t_pnr_info pii ON pii.orderid = uo.id
 $condition
 
 /*receivePay_inter_payed_orders*/
@@ -495,6 +502,7 @@ SELECT
 	uo.id,
 	p.id pid,
 	prr.id prrid,
+	pii.pnr pnrnum,
 	uo.ordersnum,
 	po.orderstatus,
 	po.paystauts,
@@ -520,6 +528,7 @@ INNER JOIN t_plan_info pi ON pi.ordernumber = uo.id
 LEFT JOIN t_pay_receive_record prr ON prr.orderid=uo.id
 INNER JOIN t_customer_info ci ON ci.id = uo.userid
 INNER JOIN t_finance_info fi ON fi.orderid = uo.id
+LEFT JOIN t_pnr_info pii ON pii.orderid = uo.id
 WHERE
 	p.id IN (
 		SELECT
@@ -532,6 +541,7 @@ WHERE
 		LEFT JOIN t_pay_receive_record prr ON prr.orderid=uo.id
 		INNER JOIN t_customer_info ci ON ci.id = uo.userid
 		INNER JOIN t_finance_info fi ON fi.orderid = uo.id
+		LEFT JOIN t_pnr_info pii ON pii.orderid = uo.id
 		$condition
 	)
 AND prr.recordtype=@recordtype
@@ -545,7 +555,7 @@ SELECT
 	p.*, 
 	(
 		SELECT
-			username
+			fullName
 		FROM
 			t_user u
 		WHERE
@@ -553,6 +563,7 @@ SELECT
 	) proposerMan,
 	uo.id,
 	uo.ordersnum,
+	pii.pnr pnrnum,
 	fi.cusgroupnum,
 	ci.shortName,
 	fi.billingdate,
@@ -567,4 +578,8 @@ INNER JOIN t_plan_info pi ON pi.ordernumber = uo.id
 LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
 INNER JOIN t_customer_info ci ON ci.id = uo.userid
 INNER JOIN t_finance_info fi ON fi.orderid = uo.id
+LEFT JOIN t_pnr_info pii ON pii.orderid = uo.id
 $condition
+
+
+/*receivePay_inter_order_rec_rids*/
