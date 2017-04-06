@@ -661,7 +661,9 @@
             		}
             	}
             	$('#mainsection').html(mainhtml);
+            	autoHighLoad($('#mainsection'));
             	$('#zisection').html(zihtml);
+            	autoHighLoad($('#zisection'))
             },
             error: function (xhr) {
             } 
