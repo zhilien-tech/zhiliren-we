@@ -12,11 +12,13 @@ $condition
 
 /*get_international_receive_list_sql*/
 SELECT
-	tpi.*, tuo.ordersnum,
+  tpi.*, tuo.ordersnum,
 	tuo.ordersstatus,
-	tr.orderstatus receiveorderstatus
+	tr.orderstatus receiveorderstatus,
+	tprr.orderstatus statusname
 FROM
-	t_up_order tuo
+	t_pay_receive_record tprr
+INNER JOIN t_up_order tuo ON tprr.orderid = tuo.id
 INNER JOIN t_plan_info tpi ON tpi.ordernumber = tuo.id
 LEFT JOIN (
 	SELECT
@@ -31,11 +33,14 @@ $condition
 
 /*get_international_pay_list_sql*/
 SELECT
+	tprr.orderstatus,tprr.currentpay,
 	tpi.*, tuo.ordersnum,
 	tuo.ordersstatus,
-	tp.orderstatus receiveorderstatus
+	tp.orderstatus receiveorderstatus,
+	tprr.orderstatus statusname
 FROM
-	t_up_order tuo
+	t_pay_receive_record tprr
+INNER JOIN t_up_order tuo ON tprr.orderid = tuo.id
 INNER JOIN t_plan_info tpi ON tpi.ordernumber = tuo.id
 LEFT JOIN (
 	SELECT

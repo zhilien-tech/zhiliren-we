@@ -171,7 +171,11 @@
  		 data.customerId = customerId;
  		 var interOrderStatus = $('#interOrderStatus').val();
  		 data.interOrderStatus = interOrderStatus;
- 		 var airlinecom = $("#airlinecom").select2("val");
+ 		 //var airlinecom = $("#airlinecom").select2("val");
+ 		 var airlinecom = $("#airlinecom").val();
+			if (airlinecom) {
+				airlinecom = airlinecom.join(',');
+			}
  		 data.airlinecom = airlinecom;
  		 var peoplecount = $('#peoplecount').val();
  		 data.peoplecount = peoplecount;
