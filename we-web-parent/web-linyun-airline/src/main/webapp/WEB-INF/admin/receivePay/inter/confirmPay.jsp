@@ -20,7 +20,7 @@
 			<input type="button" id="submit" onclick="confirmPayClick();" class="btn btn-primary right btn-sm" value="确定付款" />
 			<h4>付款</h4>
 		</div>
-		<div class="modal-body" style="height: 600px; overflow-y: auto;">
+		<div class="modal-body" style="height: 580px; overflow-y: auto;">
 			
 			<table id="interConfirmPayTable" class="table table-bordered table-hover">
 				<thead>
@@ -152,7 +152,7 @@
 			<input type="text" name="uploadFile" id="uploadFile" />
 			<input id="receiptUrl" name="receiptUrl" type="hidden" ><!-- 水单url -->
 			<div class="bankSlipImg"  align="center">
-				<img id="receiptImg" width="400" height="300" alt="" src="">
+				<img id="receiptImg" width="100%" height="305" alt="" src="">
 			</div>
 		</div>
 	</div>

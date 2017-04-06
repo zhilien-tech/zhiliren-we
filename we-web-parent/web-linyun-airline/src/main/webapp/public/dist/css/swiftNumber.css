@@ -9,8 +9,8 @@ table.dataTable thead > tr > th {padding-right: 0px;padding-left: 0px;}
 .textareaHeight{height: 107px !important;resize:none;}
 .btn {padding: 4.5px 18px;}
 .form-control-feedback {position: absolute;right: -20px;}
-
-
+#selectedBankNum{padding-left: 3px;padding-right: 0px !important;}
+.select2TextWidth .select2{width:100% !important;}
 
 
 

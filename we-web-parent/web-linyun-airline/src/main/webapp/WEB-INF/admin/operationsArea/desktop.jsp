@@ -674,6 +674,17 @@
 		                          SpanNumber[i].style.color="#e04174";
 		                      }
 		                  }
+		                  //清明节
+		                  var myYear=spanVal.substr(2,2);//获取当前年份后两位
+		                  var QMJdata1=parseInt(myYear*0.2422+4.81);
+		                  var QMJdata2=parseInt(myYear/4);
+		                  var QMJday=QMJdata1-QMJdata2;
+		                  if(thisMonth==04){
+		                	  if(thisDay==QMJday){
+		                		  SpanNumber[i].innerHTML="清明";
+		                		  SpanNumber[i].style.color="#e04174";
+		                	  }
+		                  }//end 清明节
 		                  //end 阳历 节假日-------------------------------------------//
 		                  //阴历 节假日-----------------------------------------------//
 		                  var   isEnd=false;
