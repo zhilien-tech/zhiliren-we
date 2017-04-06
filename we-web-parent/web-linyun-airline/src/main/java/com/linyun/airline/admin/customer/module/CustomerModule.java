@@ -1,13 +1,12 @@
 package com.linyun.airline.admin.customer.module;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Cnd;
@@ -26,13 +25,13 @@ import com.linyun.airline.admin.customer.form.TCustomerInfoSqlForm;
 import com.linyun.airline.admin.customer.service.CustomerViewService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.base.UploadService;
-import com.linyun.airline.common.base.Uploader;
 import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
 import com.linyun.airline.forms.TCustomerInfoUpdateForm;
+import com.uxuexi.core.common.util.FileUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
@@ -196,14 +195,27 @@ public class CustomerModule {
 	/**
 	 * 上传文件
 	 */
+	/*	@At
+		@Ok("json")
+		public Object uploadFile(HttpServletRequest request, HttpServletResponse response) throws Exception {
+			request.setCharacterEncoding(CommonConstants.CHARACTER_ENCODING_PROJECT);//字符编码为utf-8
+			response.setCharacterEncoding(CommonConstants.CHARACTER_ENCODING_PROJECT);
+
+			Uploader uploader = new Uploader(request, qiniuUploadService);
+			uploader.upload();
+			String url = CommonConstants.IMAGES_SERVER_ADDR + uploader.getUrl();
+			return url;
+		}*/
 	@At
+	@POST
+	@AdaptBy(type = UploadAdaptor.class)
 	@Ok("json")
-	public Object uploadFile(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		request.setCharacterEncoding(CommonConstants.CHARACTER_ENCODING_PROJECT);//字符编码为utf-8
-		response.setCharacterEncoding(CommonConstants.CHARACTER_ENCODING_PROJECT);
-		Uploader uploader = new Uploader(request, qiniuUploadService);
-		uploader.upload();
-		String url = CommonConstants.IMAGES_SERVER_ADDR + uploader.getUrl();
+	public Object uploadFile(@Param("Filedata") final File file) throws Exception {
+		FileInputStream is = new FileInputStream(file);
+		String ext = FileUtil.getSuffix(file);
+		/*String str = file.getName();*/
+		String shortUrl = qiniuUploadService.uploadImage(is, ext, null);
+		String url = CommonConstants.IMAGES_SERVER_ADDR + shortUrl;
 		return url;
 	}
 

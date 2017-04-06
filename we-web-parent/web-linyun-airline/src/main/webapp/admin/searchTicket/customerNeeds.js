@@ -354,8 +354,9 @@ $('.addDemand').click(function(){
 	newDiv.find('[name=airLineClickHidden]').val("1");
 	
 	/*只在最后一个需求上显示 备注项*/
+	var cRemarkTxt = $("#cRemark").val();
     $('.remarkTr').remove();
-    $('.DemandDiv:last-child .cloTable tbody').append('<tr class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><input type="text" id="remark" name="remark" class="form-control input-sm noteText" placeholder=" " value=" "></td></tr>');
+    $('.DemandDiv:last-child .cloTable tbody').append('<tr class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><input type="text" id="cRemark" name="cRemark" value="'+cRemarkTxt+'" class="form-control input-sm noteText" placeholder=" " value=" "></td></tr>');
 });
 
 /************************************客户需求的 +需求 按钮 end ************************************/
