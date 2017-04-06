@@ -43,7 +43,7 @@
                         <td><input id="currentfine" name="currentfine" type="text" class="form-control input-sm mustNumberPoint"></td>
                         <td><label>本期应付：</label></td>
                         <td><input id="currentdue" name="currentdue" type="text" class="form-control input-sm mustNumberPoint"></td>
-                        <td><label>税金单价：</label></td>
+                        <td><label>税金总价：</label></td>
                         <td><input id="ataxprice" name="ataxprice" type="text" class="form-control input-sm mustNumberPoint autocalc"></td>
                         <td><label>本期实付：</label></td>
                         <td><input id="currentpay" name="currentpay" type="text" class="form-control input-sm mustNumberPoint"></td>

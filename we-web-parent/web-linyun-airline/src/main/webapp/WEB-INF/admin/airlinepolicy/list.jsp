@@ -55,10 +55,10 @@
                   </div>
                   <div class="col-md-1 padding">
                      
-                  	 <input type="text" class="form-control input-sm" placeholder="2017-02-22" name="beginTime" id="beginTime" value="" onFocus="WdatePicker({onpicked:pickedFunc,oncleared:pickedFunc,el:'beginTime',dateFmt:'yyyy-MM-dd'})"  >
+                  	 <input type="text" class="form-control input-sm"  name="beginTime" id="beginTime" value="" onFocus="WdatePicker({onpicked:pickedFunc,oncleared:pickedFunc,el:'beginTime',dateFmt:'yyyy-MM-dd'})"  >
                   </div>
                   <div class="col-md-1 padding">
-                  	  <input type="text" class="form-control input-sm" placeholder="2017-02-22" name="endTime" id="endTime" value="" onFocus="WdatePicker({onpicked:pickedFunc,oncleared:pickedFunc,dateFmt:'yyyy-MM-dd'})"  >
+                  	  <input type="text" class="form-control input-sm"  name="endTime" id="endTime" value="" onFocus="WdatePicker({onpicked:pickedFunc,oncleared:pickedFunc,dateFmt:'yyyy-MM-dd'})"  >
                   </div>
                   <div class="col-md-1 padding">
                   	  <button type="button" class="btn btn-primary btn-sm suBtn" onclick="clearSelect();pickedFunc();">清空</button>

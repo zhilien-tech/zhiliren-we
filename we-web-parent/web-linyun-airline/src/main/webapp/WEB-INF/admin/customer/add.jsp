@@ -404,25 +404,24 @@
 	            'multi':false,
 	            'successTimeout':1800,
 	            'queueSizeLimit':100,
-	            'uploader' : '${base}/admin/customer/uploadFile.html',
+	            'uploader' : '${base}/admin/customer/uploadFile.html;jsessionid=${pageContext.session.id}',
 	            'onUploadStart' : function(file) {
 					$("#addBtn").attr('disabled',true);
 				},
 	            'onUploadSuccess':function(file,data,response){
 	            	$("#completeFileName").html("");
 					var jsonobj = eval('(' + data + ')');
-					$('#appendix').val(data);
-					$("#fileUrl").val(data);
+					$('#appendix').val(jsonobj);
+					$("#fileUrl").val(jsonobj);
 					$("#appendixName").val(file.name);
 					var innerHtml = "";
                     if (response) {
-                        innerHtml = "<div><a id='downloadA' href='#' download='"+file.name+"' onclick='downloadFile("
-                                + data
-                                + ");' >"
+                        innerHtml = "<div><a id='downloadA' href='${base}/admin/airlinepolicy/download.html?url="+jsonobj+"&fileName="+file.name+"'>"
                                 + file.name
                                 + "</a>&nbsp;&nbsp;<span>上传成功</span>&nbsp;&nbsp;&nbsp;&nbsp;"
                                 + "<input type='button' class='delete' onclick='deleteFile();' value='删除'><input type='hidden' name='${attachIds}' value='"
-                                + data + "'></div>";
+                                + jsonobj + "'></div>";
+                                
                     } else {
                         innerHtml = "<div>该附件上传失败，请重新上传</div>";
                     }

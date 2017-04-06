@@ -6,6 +6,8 @@
 
 package com.linyun.airline.admin.bankcard.module;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Cnd;
@@ -19,6 +21,7 @@ import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.bankcard.service.BankCardViewService;
+import com.linyun.airline.admin.dictionary.external.externalInfoServiceImpl;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.forms.TBankCardAddForm;
 import com.linyun.airline.forms.TBankCardForm;
@@ -39,7 +42,8 @@ import com.uxuexi.core.web.chain.support.JsonResult;
 public class BankCardModule {
 	@Inject
 	private BankCardViewService bankCardViewService;
-
+	@Inject
+	private externalInfoServiceImpl externalInfoServiceImpl;
 	/**
 	 * 注入容器中的dbDao对象，用于数据库查询、持久操作
 	 */
@@ -119,7 +123,17 @@ public class BankCardModule {
 	@At
 	public Object selectCurrency() {
 		//查询有哪些币种
-		return dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "BZ"), null);
+		List<DictInfoEntity> currencyList = null;
+
+		try {
+			currencyList = externalInfoServiceImpl.findDictInfoByName("", "BZ");
+		} catch (Exception e) {
+
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		}
+		return currencyList;
 	}
 
 	/**

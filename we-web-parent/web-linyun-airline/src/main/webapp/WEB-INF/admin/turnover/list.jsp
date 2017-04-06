@@ -71,7 +71,7 @@
 	                    </select>
 	                  </div>
 	                  <div class="col-md-1 padding">
-	                     <input type="text" class="form-control" placeholder="2017-02-22" name="tradeDate" id="tradeDate" value="" onFocus="WdatePicker({onpicked:pickedFunc,oncleared:pickedFunc,dateFmt:'yyyy-MM-dd'})" >
+	                     <input type="text" class="form-control"  name="tradeDate" id="tradeDate" value="" onFocus="WdatePicker({onpicked:pickedFunc,oncleared:pickedFunc,dateFmt:'yyyy-MM-dd'})" >
 	                  </div>
 	                  <div class="col-md-1 padding">
 	                     <input type="text" class="form-control"  name="companyName" id="companyName" value=""  >
