@@ -240,12 +240,12 @@
 								<input id="datepicker1" name="contractTimeString" type="text"
 									class="form-control input-sm input-wid"
 									onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'datepicker2\')}'})"
-									placeholder="2015-08-08" value="${obj.customer.contractTimeString}"/> 
+									value="${obj.customer.contractTimeString}"/> 
 								至 <input id="datepicker2"
 									name="contractDueTimeString" type="text"
 									class="form-control input-sm input-wid"
 									onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'datepicker1\')}'})"
-									placeholder="2088-09-09" value="${obj.customer.contractDueTimeString}"/>
+									value="${obj.customer.contractDueTimeString}"/>
 							</div>
 						</div>
 						<div class="form-group row">

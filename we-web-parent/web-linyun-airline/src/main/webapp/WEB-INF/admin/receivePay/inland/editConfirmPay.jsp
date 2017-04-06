@@ -62,11 +62,11 @@
 							<!-- <option>--请选择--</option> -->
 							<c:forEach var="one" items="${obj.bankList}">
 	                 			<c:choose>
-	                          		<c:when test="${obj.companybank.bankcompid eq one.id }">
-			                        	 <option value="${one.id }" selected="selected">${one.bankName }</option>
+	                          		<c:when test="${obj.companybank.bankcompid eq one.bankNameId }">
+			                        	 <option value="${one.bankNameId }" selected="selected">${one.bankName }</option>
 	                          		</c:when>
 	                          		<c:otherwise>
-		                        	 <option value="${one.id }">${one.bankName }</option>
+		                        	 <option value="${one.bankNameId }">${one.bankName }</option>
 	                          		</c:otherwise>
 	                          	</c:choose>       	
 	                        </c:forEach>
@@ -298,7 +298,7 @@
 					data : {
 						bankId:$('#bankComp').val()
 					},
-					url : '${base}/admin/receivePay/inland/getCardNames.html',
+					url : '${base}/admin/receivePay/inter/getCardNames.html',
 					success : function(data) {
 						/* var option = "<option>--请选择--</option>"; */
 						var option = "";
