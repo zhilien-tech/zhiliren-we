@@ -48,7 +48,7 @@
 							<label class="col-sm-1 text-right padding">卡号：</label>
 							<div class="col-sm-2 padding">
 								<input name="cardNum" type="text" class="form-control input-sm"
-									value="${obj.bankCardInfo.cardNum }" maxlength="23"/>
+									value="${obj.bankCardInfo.cardNum }" onkeyup="this.value=this.value.replace(/\D/g,'').replace(/....(?!$)/g,'$& ')" maxlength="23"/>
 							</div>
 						</div>
 						<div class="form-group form-group1">
