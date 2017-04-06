@@ -334,11 +334,13 @@ $condition
 /*receivePay_order_rec_rids*/
 SELECT
 	uo.id,
-	uo.ordersnum
+	uo.ordersnum,
+    pi.pnr pnrnum
 FROM
 	t_up_order uo
 INNER JOIN t_order_receive ore ON ore.orderid=uo.id 
 INNER JOIN t_receive r ON r.id=ore.receiveid
+LEFT JOIN t_pnr_info pi on pi.orderid=uo.id
 $condition
 
 /*receivePay_inter_rec_invioce_list*/
@@ -578,3 +580,6 @@ INNER JOIN t_customer_info ci ON ci.id = uo.userid
 INNER JOIN t_finance_info fi ON fi.orderid = uo.id
 LEFT JOIN t_pnr_info pii ON pii.orderid = uo.id
 $condition
+
+
+/*receivePay_inter_order_rec_rids*/

@@ -356,17 +356,20 @@ $('.addDemand').click(function(){
 	/*只在最后一个需求上显示 备注项*/
 	var cRemarkTxt = $("#cRemark").val();
     $('.remarkTr').remove();
-    $('.DemandDiv:last-child .cloTable tbody').append('<tr class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><input type="text" id="cRemark" name="cRemark" value="'+cRemarkTxt+'" class="form-control input-sm noteText" placeholder=" " value=" "></td></tr>');
+   /* $('.DemandDiv:last-child .cloTable tbody').append('<tr class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><input type="text" id="cRemark" name="cRemark" value="'+cRemarkTxt+'" class="form-control input-sm noteText" placeholder=" " value=" "></td></tr>');*/
+    $('.DemandDiv:last-child .cloTable tbody').append('<tr class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><textarea rows="5" cols="140" id="cRemark" name="cRemark">'+cRemarkTxt+'</textarea></td></tr>');
 });
 
 /************************************客户需求的 +需求 按钮 end ************************************/
 //客户需求的 -需求 按钮
 $(document).on("click",".removeDemand",function(){
+	var cRemarkTxt = $("#cRemark").val();
 	$(this).parent().remove();
 	/*判断最后一个需求是否有 备注项 如果没有 就添加备注项*/
     var cl=$('.DemandDiv:last-child .cloTable tbody tr').hasClass('remarkTr');
     if(cl==false){
-    	$('.DemandDiv:last-child .cloTable tbody').append('<tr class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><input type="text" id="remark" name="remark" class="form-control input-sm noteText" placeholder=" " value=" "></td></tr>');
+    	/*$('.DemandDiv:last-child .cloTable tbody').append('<tr class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><input type="text" id="remark" name="remark" class="form-control input-sm noteText" placeholder=" " value=" "></td></tr>');*/
+    	 $('.DemandDiv:last-child .cloTable tbody').append('<tr class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><textarea rows="5" cols="140" id="cRemark" name="cRemark">'+cRemarkTxt+'</textarea></td></tr>');
     }
 });
 
