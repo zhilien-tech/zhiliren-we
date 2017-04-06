@@ -506,14 +506,18 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				String prrid = r.getString("prrid");
 				shortname = r.getString("shortname");
 				issuer = r.getString("issuer");
+				String currentpayStr = r.getString("currentpay");
 				//同一个支付订单
 				if (Util.eq(pid, pidStr)) {
-					String currentpayStr = r.getString("currentpay");
 					if (!Util.isEmpty(currentpayStr)) {
-						totalmoney += Double.valueOf(currentpayStr);
+						totalmoney = Double.valueOf(currentpayStr);
 					}
 					prrIds += prrid + ",";
 					orders.add(r);
+				} else {
+					if (!Util.isEmpty(currentpayStr)) {
+						totalmoney = Double.valueOf(currentpayStr);
+					}
 				}
 			}
 			prrIds = prrIds.substring(0, prrIds.length() - 1);
@@ -585,10 +589,15 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		String operator = "";
 		String operatorList = "";
 		String oids = "";
+		String oStr = "";
 		for (Record record : orders) {
 			if (!Util.isEmpty(record.get("currentpay"))) {
-				Double incometotal = (Double) record.get("currentpay");
-				totalMoney += incometotal;
+				String ordernumStr = record.getString("ordersnum");
+				if (!Util.eq(oStr, ordernumStr)) {
+					Double incometotal = (Double) record.get("currentpay");
+					totalMoney += incometotal;
+				}
+				oStr = ordernumStr;
 			}
 			oids = record.getString("id") + ",";
 			proposer = record.getString("proposerMan");
@@ -697,11 +706,16 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		String approveresult = "";
 		//操作人
 		String operator = "";
+		String oStr = "";
 		for (Record record : payList) {
 			//计算订单总金额
 			if (!Util.isEmpty(record.get("currentpay"))) {
-				Double costpricesum = (Double) record.get("currentpay");
-				totalMoney += Double.valueOf(costpricesum);
+				String ordernumStr = record.getString("ordersnum");
+				if (!Util.eq(oStr, ordernumStr)) {
+					Double costpricesum = (Double) record.get("currentpay");
+					totalMoney += Double.valueOf(costpricesum);
+				}
+				oStr = ordernumStr;
 			}
 
 			proposer = record.getString("proposerMan");

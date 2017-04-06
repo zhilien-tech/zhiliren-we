@@ -348,7 +348,7 @@ SELECT
 	r.*, 
 	orec.receivestatus,
 	ii.id invoiceid,
-	u.userName
+	u.fullName userName
 FROM
 	t_receive r
 LEFT JOIN t_order_receive orec ON orec.receiveid=r.id
