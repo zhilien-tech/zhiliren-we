@@ -582,4 +582,9 @@ LEFT JOIN t_pnr_info pii ON pii.orderid = uo.id
 $condition
 
 
+/*receivePay_inter_order_pay_rids*/
+
+
 /*receivePay_inter_order_rec_rids*/
+
+

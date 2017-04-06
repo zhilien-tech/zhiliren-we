@@ -553,7 +553,7 @@ $("#interPaySearchBtn").on('click', function () {
 	var interPayBeginDate = $("#interPayBeginDate").val();
 	var interPayEndDate = $("#interPayEndDate").val();
 	var interPayInput = $("#interPayInput").val();
-	var orderStatus = $("li.btnStyle").attr("id");
+	var orderStatus = $(".osClass",$(".orderStatusClass")).attr("id");
 	var param = {
 			        "orderStatus":orderStatus,
 					"payStatus":payStatus,
@@ -577,7 +577,7 @@ $("#interPaySearchBtn").on('click', function () {
 				}
 		);
 	}
-	    
+	   
 });
 
 

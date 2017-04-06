@@ -902,25 +902,6 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			}
 		}
 
-		//付款成功 操作台添加消息
-		if (updateNum > 0) {
-			//TODO  ******************************************添加消息提醒***********************************************
-			/*	String sqlS = sqlManager.get("receivePay_order_pnr_pids");
-				Sql sql = Sqls.create(sqlS);
-				Cnd cnd = Cnd.NEW();
-				cnd.and("pi.id", "in", payIds);
-				List<Record> orderPnrList = dbDao.query(sql, cnd, null);
-				for (Record record : orderPnrList) {
-					int uid = Integer.valueOf(record.getString("id"));
-					String ordernum = record.getString("ordersnum");
-					String pnr = record.getString("PNR");
-					Map<String, Object> map = new HashMap<String, Object>();
-					map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
-					map.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
-					searchViewService.addRemindMsg(map, ordernum, pnr, uid, PAYEDMSGTYPE, session);
-				}*/
-		}
-
 		return "seccess";
 	}
 
@@ -1058,7 +1039,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//付款成功 操作台添加消息
 		if (updateNum > 0) {
 			//******************************************添加消息提醒***********************************************
-			/*String sqlS = sqlManager.get("receivePay_order_pnr_pids");
+			/*String sqlS = sqlManager.get("receivePay_inter_order_pay_pids");
 			Sql sql = Sqls.create(sqlS);
 			Cnd cnd = Cnd.NEW();
 			cnd.and("pi.id", "in", payIds);
