@@ -56,7 +56,6 @@ import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.ApprovalResultEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
 import com.linyun.airline.common.enums.DataStatusEnum;
-import com.linyun.airline.common.enums.MessageRemindEnum;
 import com.linyun.airline.common.enums.MessageWealthStatusEnum;
 import com.linyun.airline.common.enums.SearchOrderStatusEnum;
 import com.linyun.airline.common.enums.UserJobStatusEnum;
@@ -78,6 +77,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 
 	private static final String YHCODE = "YH";
 	private static final String BZCODE = "BZ";
+	private static final String MAINSECTION = "1";
 	private static final int ENABLE = BankCardStatusEnum.ENABLE.intKey();
 	private static final String YTCODE = ComDictTypeEnum.DICTTYPE_XMYT.key();
 	private static final String ZJZLCODE = ComDictTypeEnum.DICTTYPE_ZJZL.key();
@@ -305,20 +305,21 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//收款成功添加消息提醒
 		if (updateNum > 0) {
 			// ******************************************添加消息提醒***********************************************
-			String sqlS = sqlManager.get("receivePay_order_rec_rids");
+			/*String sqlS = sqlManager.get("receivePay_inter_order_rec_rids");
 			Sql sql = Sqls.create(sqlS);
 			Cnd cnd = Cnd.NEW();
 			cnd.and("r.id", "in", recId);
+			cnd.and("pi.mainsection", "=", MAINSECTION);
 			List<Record> orderPnrList = dbDao.query(sql, cnd, null);
 			for (Record record : orderPnrList) {
 				int uid = Integer.valueOf(record.getString("id"));
 				String ordernum = record.getString("ordersnum");
-				String pnr = "";
+				String pnr = record.getString("pnrnum");
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 				map.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
 				searchViewService.addRemindMsg(map, ordernum, pnr, uid, RECEDMSGTYPE, session);
-			}
+			}*/
 		}
 
 		return updateNum;
@@ -855,7 +856,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		if (!Util.isEmpty(payChineseMoney)) {
 			payEntity.setPayChineseMoney(payChineseMoney);
 		}
-		dbDao.update(payEntity);
+		int updateNum = dbDao.update(payEntity);
 
 		//更新银行卡信息
 		Integer bankId = payEntity.getBankId();
@@ -902,23 +903,23 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		}
 
 		//付款成功 操作台添加消息
-		/*if (updatenum > 0) {
+		if (updateNum > 0) {
 			//TODO  ******************************************添加消息提醒***********************************************
-			String sqlS = sqlManager.get("receivePay_order_pnr_pids");
-			Sql sql = Sqls.create(sqlS);
-			Cnd cnd = Cnd.NEW();
-			cnd.and("pi.id", "in", payIds);
-			List<Record> orderPnrList = dbDao.query(sql, cnd, null);
-			for (Record record : orderPnrList) {
-				int uid = Integer.valueOf(record.getString("id"));
-				String ordernum = record.getString("ordersnum");
-				String pnr = record.getString("PNR");
-				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
-				map.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
-				searchViewService.addRemindMsg(map, ordernum, pnr, uid, PAYEDMSGTYPE, session);
-			}
-		}*/
+			/*	String sqlS = sqlManager.get("receivePay_order_pnr_pids");
+				Sql sql = Sqls.create(sqlS);
+				Cnd cnd = Cnd.NEW();
+				cnd.and("pi.id", "in", payIds);
+				List<Record> orderPnrList = dbDao.query(sql, cnd, null);
+				for (Record record : orderPnrList) {
+					int uid = Integer.valueOf(record.getString("id"));
+					String ordernum = record.getString("ordersnum");
+					String pnr = record.getString("PNR");
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
+					map.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
+					searchViewService.addRemindMsg(map, ordernum, pnr, uid, PAYEDMSGTYPE, session);
+				}*/
+		}
 
 		return "seccess";
 	}
@@ -950,7 +951,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		Integer currency = form.getPayCurrency();
 		Integer isInvioce = form.getIsInvioce();
 		String receiptUrl = form.getReceiptUrl();
-		String orderIds = form.getPayIds();
+		String payIds = form.getPayIds();
+
 		Double totalMoney = form.getTotalMoney();
 		String payNames = form.getPayNames();
 		//操作人
@@ -981,8 +983,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		TUpOrderEntity upOrder = new TUpOrderEntity();
 		//付款集合
 		List<TPayEntity> updateList = new ArrayList<TPayEntity>();
-		TPayOrderEntity payOrder = dbDao.fetch(TPayOrderEntity.class, Cnd.where("orderid", "in", orderIds));
-		int payIds = payOrder.getPayid();
+		TPayOrderEntity payOrder = dbDao.fetch(TPayOrderEntity.class, Cnd.where("payid", "in", payIds));
+		int payids = payOrder.getPayid();
 		List<TPayEntity> payEntityList = dbDao.query(TPayEntity.class, Cnd.where("id", "in", payIds), null);
 		for (TPayEntity payEntity : payEntityList) {
 			if (!Util.eq(null, bankId)) {
@@ -1041,8 +1043,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		int updateNum = 0;
 		//更新付款订单表状态
 		List<TPayOrderEntity> newPayOrderList = new ArrayList<TPayOrderEntity>();
-		List<TPayOrderEntity> payOrderList = dbDao.query(TPayOrderEntity.class, Cnd.where("orderid", "in", orderIds),
-				null);
+		List<TPayOrderEntity> payOrderList = dbDao.query(TPayOrderEntity.class, Cnd.where("payid", "in", payids), null);
 		if (!Util.isEmpty(payOrderList)) {
 			for (TPayOrderEntity payOrderEntity : payOrderList) {
 				payOrderEntity.setPaystauts(APPROVALPAYED);
@@ -1057,7 +1058,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//付款成功 操作台添加消息
 		if (updateNum > 0) {
 			//******************************************添加消息提醒***********************************************
-			String sqlS = sqlManager.get("receivePay_order_pnr_pids");
+			/*String sqlS = sqlManager.get("receivePay_order_pnr_pids");
 			Sql sql = Sqls.create(sqlS);
 			Cnd cnd = Cnd.NEW();
 			cnd.and("pi.id", "in", payIds);
@@ -1070,7 +1071,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 				map.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
 				searchViewService.addRemindMsg(map, ordernum, "", uid, PAYEDMSGTYPE, session);
-			}
+			}*/
 		}
 
 		return "success";

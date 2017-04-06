@@ -12,6 +12,9 @@
   <link rel="stylesheet" href="${base }/public/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" type="text/css" href="${base }/public/ionicons/css/ionicons.min.css">
   <link rel="stylesheet" type="text/css" href="${base }/public/dist/css/inlandCross.css"><!--本页面样式-->
+  <style type="text/css">
+  	[name="airlineinfo"] td .select2-container{width:115px !important;}
+  </style>
 </head>
 <body>
 	<div class="modal-top">

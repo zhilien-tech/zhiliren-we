@@ -25,6 +25,7 @@ import org.nutz.ioc.loader.annotation.Inject;
 import com.linyun.airline.admin.applyapproval.entity.ApprovalList;
 import com.linyun.airline.admin.applyapproval.entity.ApprovalListInter;
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
 import com.linyun.airline.admin.search.service.SearchViewService;
@@ -63,6 +64,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 	public Map<String, Object> findNums(HttpSession session) {
 		String sqlStringInter = sqlManager.get("applyapproval_list_international");
 		Sql sqlInter = Sqls.create(sqlStringInter);
+		sqlInter.setParam("recordtype", PayReceiveTypeEnum.PAY.intKey());
 		Cnd cnd = Cnd.NEW();
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Long companyId = company.getId();
@@ -118,6 +120,8 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 			orderType = OrderTypeEnum.TEAM.intKey();
 			String sqlString = sqlManager.get("applyapproval_list_international");
 			Sql sql = Sqls.create(sqlString);
+			sql.setParam("recordtype", PayReceiveTypeEnum.PAY.intKey());
+
 			Cnd cnd = Cnd.NEW();
 			//国际
 			cnd.and("orderstype", "=", orderType);
@@ -268,6 +272,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 				orderType = OrderTypeEnum.TEAM.intKey();
 				String sqlString = sqlManager.get("applyapproval_list_international");
 				Sql sql = Sqls.create(sqlString);
+				sql.setParam("recordtype", PayReceiveTypeEnum.PAY.intKey());
 				Cnd cnd = Cnd.NEW();
 				/*Long companyId = 23l;*/
 				TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
@@ -489,6 +494,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		boolean flag = true;
 		String sqlString = sqlManager.get("applyapproval_list_international");
 		Sql sql = Sqls.create(sqlString);
+		sql.setParam("recordtype", PayReceiveTypeEnum.PAY.intKey());
 		Cnd cnd = Cnd.NEW();
 		//国际
 		cnd.and("usingId", "=", orderId);
