@@ -189,7 +189,7 @@
             skin: false, //加上边框
             closeBtn:false,//默认 右上角关闭按钮 是否显示
             shadeClose:true,
-            area: ['770px', '325px'],
+            area: ['1000px', '325px'],
             content: ['${url}/add.html','no']
           });
       }); 

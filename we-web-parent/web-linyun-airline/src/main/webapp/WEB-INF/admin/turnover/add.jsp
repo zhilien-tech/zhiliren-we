@@ -148,7 +148,7 @@
 	                	</div>
 	                	<div id="div1" class="form-group form-group1">
 	                		<label class="col-sm-2 text-right padding">单位名称：</label>
-	                		<div class="col-sm-5 padding">
+	                		<div class="col-sm-5 padding select2TextWidth">
 			                	<select id="findCompany" name="findCompany" onchange="setSelectedAreaIds()" class="form-control select2 inpImpWid" multiple="multiple" ></select>
 				               	<input name="companyNameId" id="companyNameId"  type="hidden" placeholder="单位名称" />
 	                		</div>
