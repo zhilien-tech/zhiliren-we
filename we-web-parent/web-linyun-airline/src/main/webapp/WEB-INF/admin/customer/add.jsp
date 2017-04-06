@@ -404,7 +404,7 @@
 	            'multi':false,
 	            'successTimeout':1800,
 	            'queueSizeLimit':100,
-	            'uploader' : '${base}/admin/customer/uploadFile.html',
+	            'uploader' : '${base}/admin/customer/uploadFile.html;jsessionid=${pageContext.session.id}',
 	            'onUploadStart' : function(file) {
 					$("#addBtn").attr('disabled',true);
 				},
