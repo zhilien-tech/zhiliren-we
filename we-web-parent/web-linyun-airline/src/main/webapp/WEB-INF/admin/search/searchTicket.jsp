@@ -219,7 +219,8 @@
 								<tr name="cRemarkTr" class="remarkTr">
 									<td></span><label>备注：</label></td>
 									<td colspan="11">
-										<input id="cRemark" name="cRemark" type="text" class="form-control input-sm noteText" placeholder=" ">
+										<!-- <input id="cRemark" name="cRemark" type="text" class="form-control input-sm noteText" placeholder=" "> -->
+										<textarea rows="5" cols="140" id="cRemark" name="cRemark"></textarea>
 									</td>
 								</tr>
 							</table>
