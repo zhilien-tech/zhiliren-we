@@ -199,7 +199,7 @@
 								<span id="completeFileName">
 									<c:if test="${not empty obj.customer.appendixName}">
 										<div>
-											<a id='downloadA' href='#' download='${obj.customer.appendixName}' onclick='downloadFile(${obj.customer.appendix})' >
+											<a id='downloadA' href='${base}/admin/airlinepolicy/download.html?url=${obj.customer.appendix}&fileName=${obj.customer.appendixName}'>
 		                                		${obj.customer.appendixName}
 			                                </a>
 			                                &nbsp;&nbsp;<span>上传成功</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -408,6 +408,7 @@
 	<script type="text/javascript">
 		var base = "${base}";
 		$(function() {
+			
 			$.fileupload1 = $('#uploadify').uploadify({
 	            'auto' : true,
 	            'formData' : {
@@ -429,18 +430,16 @@
 	            'onUploadSuccess':function(file,data,response){
 	            	$("#completeFileName").html("");
 					var jsonobj = eval('(' + data + ')');
-					$('#appendix').val(data);
-					$("#fileUrl").val(data);
+					$('#appendix').val(jsonobj);
+					$("#fileUrl").val(jsonobj);
 					$("#appendixName").val(file.name);
 					var innerHtml = "";
                     if (response) {
-                        innerHtml = "<div><a id='downloadA' href='#' download='"+file.name+"' onclick='downloadFile("
-                                + data
-                                + ");' >"
+                    	innerHtml = "<div><a id='downloadA' href='${base}/admin/airlinepolicy/download.html?url="+jsonobj+"&fileName="+file.name+"'>"
                                 + file.name
                                 + "</a>&nbsp;&nbsp;<span>上传成功</span>&nbsp;&nbsp;&nbsp;&nbsp;"
                                 + "<input type='button' class='delete' onclick='deleteFile();' value='删除'><input type='hidden' name='${attachIds}' value='"
-                                + data + "'></div>";
+                                + jsonobj + "'></div>";
                     } else {
                         innerHtml = "<div>该附件上传失败，请重新上传</div>";
                     }
