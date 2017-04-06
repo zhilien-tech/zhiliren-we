@@ -117,3 +117,18 @@ left JOIN t_customer_info tci ON tuo.userid = tci.id
 LEFT JOIN t_finance_info tfi ON tuo.id = tfi.orderid
 LEFT JOIN t_pay_receive_record tprr ON tprr.orderid = tuo.id
 $condition	
+
+/*international_invoice__search_list*/
+SELECT
+	tuo.ordersnum,
+	ii.*, 
+	u.id AS userIds,
+	u.userName
+FROM
+	t_invoice_info ii
+LEFT JOIN t_order_receive ore ON ii.receiveid = ore.receiveid
+LEFT JOIN t_up_order tuo ON tuo.id = ore.orderid
+LEFT JOIN t_customer_info cus ON cus.id = tuo.userid
+LEFT JOIN t_user u ON u.id = ii.billuserid
+LEFT JOIN dict_info info ON info.id = ii.invoiceitem
+$condition

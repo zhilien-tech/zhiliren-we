@@ -73,7 +73,7 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		//从session中得到当前登录公司id
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Long companyId = company.getId();//得到公司的id
-		Sql sql = Sqls.create(sqlManager.get("get_kai_invoice_search_list"));
+		Sql sql = Sqls.create(sqlManager.get("international_invoice__search_list"));
 		Cnd cnd = Cnd.NEW();
 		cnd.and("ii.comId", "=", companyId);
 		cnd.groupBy("u.userName");
