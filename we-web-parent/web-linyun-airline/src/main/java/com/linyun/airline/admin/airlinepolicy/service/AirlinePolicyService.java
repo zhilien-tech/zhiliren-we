@@ -14,7 +14,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -425,25 +424,43 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 			TAirlinePolicyEntity airlinePolicy = dbDao.fetch(TAirlinePolicyEntity.class, id);
 			resourceFile = airlinePolicy.getUrl();
 			fileName = airlinePolicy.getFileName();
-			try {
+			/*try {
 				fileName = new String(fileName.getBytes("utf-8"), "ISO8859-1");
 			} catch (UnsupportedEncodingException e) {
 
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 
-			}
+			}*/
 		} else {
 			resourceFile = url2;
 			fileName = fileName2;
-			try {
+			/*try {
 				fileName = URLEncoder.encode(fileName2, "UTF-8");
 			} catch (UnsupportedEncodingException e) {
 
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 
+			}*/
+		}
+		String agent = request.getHeader("USER-AGENT");
+		String downLoadName = null;
+		try {
+			if (null != agent && -1 != agent.indexOf("MSIE")) //IE 
+			{
+				fileName = java.net.URLEncoder.encode(fileName, "UTF-8");
+			} else if (null != agent && -1 != agent.indexOf("Mozilla"))//Firefox 
+			{
+				fileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
+			} else {
+				fileName = java.net.URLEncoder.encode(fileName, "UTF-8");
 			}
+		} catch (UnsupportedEncodingException e) {
+
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
 		}
 		/*String fileName = "下载吧";*/
 
@@ -461,7 +478,8 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 				response.reset();
 				response.setContentType("application/octet-stream");
 				response.setCharacterEncoding("utf-8");
-				response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
+				//response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
+				response.setHeader("Content-Disposition", String.format("attachment;filename=\"%s\"", fileName));
 				byte[] buffer = new byte[4096];
 				int count = 0;
 				while ((count = is.read(buffer)) > 0) {

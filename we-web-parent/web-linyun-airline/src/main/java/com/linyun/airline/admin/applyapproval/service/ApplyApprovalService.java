@@ -409,7 +409,9 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 				//订单id
 				upOrderid = upOrderInfo.getId();
 				//pnr
-
+				TPnrInfoEntity PayPnrEntity = dbDao.fetch(TPnrInfoEntity.class,
+						Cnd.where("orderid", "=", orderId).and("mainsection", "=", 1));
+				pnr = PayPnrEntity.getPNR();
 				//订单号
 				ordersnum = upOrderInfo.getOrdersnum();
 				upOrderInfo.setPaystatus(approvalStatus);
