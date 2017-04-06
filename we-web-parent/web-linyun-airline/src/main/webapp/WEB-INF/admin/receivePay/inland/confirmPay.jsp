@@ -62,7 +62,7 @@
 						<select id="bankComp" name="bankComp" onchange="bankSelect();" class="form-control input-sm">
 							<!-- <option>--请选择--</option> -->
 							<c:forEach var="one" items="${obj.bankList}">
-	                        	<option value="${one.id }">${one.bankName }</option>
+	                        	<option value="${one.bankNameId }">${one.bankName }</option>
 	                        </c:forEach>
 						</select>
 					</td>
@@ -246,7 +246,7 @@
 				data : {
 					bankId:$('#bankComp').val()
 				},
-				url : '${base}/admin/receivePay/inland/getCardNames.html',
+				url : '${base}/admin/receivePay/inter/getCardNames.html',
 				success : function(data) {
 					/* var option = "<option>--请选择--</option>"; */
 					var option = "";
