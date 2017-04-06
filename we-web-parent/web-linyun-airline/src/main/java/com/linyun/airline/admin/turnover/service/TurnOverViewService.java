@@ -21,6 +21,7 @@ import org.nutz.dao.entity.Record;
 import org.nutz.dao.pager.Pager;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.Daos;
+import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.Strings;
 import org.nutz.mvc.annotation.Param;
@@ -30,6 +31,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
+import com.linyun.airline.admin.dictionary.external.externalInfoServiceImpl;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
 import com.linyun.airline.common.enums.TurnOverStatusEnum;
 import com.linyun.airline.common.result.Select2Option;
@@ -62,6 +64,8 @@ public class TurnOverViewService extends BaseService<TTurnOverEntity> {
 	 * @param session 
 	 * @see com.uxuexi.core.web.base.service.BaseService#listPage4Datatables(com.uxuexi.core.web.form.DataTablesParamForm)
 	 */
+	@Inject
+	private externalInfoServiceImpl externalInfoServiceImpl;
 
 	public Map<String, Object> listPage4Datatables(@Param("..") final TTurnOverFindForm findForm,
 			DataTablesParamForm sqlParamForm, HttpSession session) {
@@ -158,7 +162,18 @@ public class TurnOverViewService extends BaseService<TTurnOverEntity> {
 				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
 				null);
 		//查询有哪些币种类型
-		List<DictInfoEntity> currencyList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "BZ"), null);
+		List<DictInfoEntity> currencyList = null;
+
+		try {
+			currencyList = externalInfoServiceImpl.findDictInfoByName("", "BZ");
+		} catch (Exception e) {
+
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		}
+
+		//List<DictInfoEntity> currencyList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "BZ"), null);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("companyId", "=", companyId);
 		cnd.and("status", "=", BankCardStatusEnum.ENABLE.intKey());
@@ -236,7 +251,16 @@ public class TurnOverViewService extends BaseService<TTurnOverEntity> {
 		Long companyId = company.getId();
 		/*Long id = 23L;*/
 		//查询有哪些币种
-		List<DictInfoEntity> currencyList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "BZ"), null);
+		List<DictInfoEntity> currencyList = null;
+
+		try {
+			currencyList = externalInfoServiceImpl.findDictInfoByName("", "BZ");
+		} catch (Exception e) {
+
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		}
 		/*List<DictInfoEntity> projectList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "FKYT"), null);*/
 		List<ComDictInfoEntity> projectList = dbDao.query(ComDictInfoEntity.class,
 				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
