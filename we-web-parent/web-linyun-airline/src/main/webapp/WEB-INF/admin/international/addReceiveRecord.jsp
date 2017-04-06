@@ -29,7 +29,7 @@
               <table class="addYSKtable">
                 <tbody>
                       <tr>
-                        <td><label>成本单价：</label></td>
+                        <td><label>销售单价：</label></td>
                         <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint autocalc" value="${obj.costsingleprice }"></td>
                         <td><label>预收款比例 ：</label></td>
                         <td><input id="prepayratio" name="prepayratio" type="text" class="form-control input-sm mustNumberPoint autocalc"></td>
@@ -41,11 +41,11 @@
                       <tr>
                         <td><label>本期罚金：</label></td>
                         <td><input id="currentfine" name="currentfine" type="text" class="form-control input-sm mustNumberPoint"></td>
-                        <td><label>本期应付：</label></td>
+                        <td><label>本期应收：</label></td>
                         <td><input id="currentdue" name="currentdue" type="text" class="form-control input-sm mustNumberPoint"></td>
-                        <td><label>税金单价：</label></td>
+                        <td><label>税金总价：</label></td>
                         <td><input id="ataxprice" name="ataxprice" type="text" class="form-control input-sm mustNumberPoint autocalc"></td>
-                        <td><label>本期实付：</label></td>
+                        <td><label>本期实收：</label></td>
                         <td><input id="currentpay" name="currentpay" type="text" class="form-control input-sm mustNumberPoint"></td>
                         <td><label>币种：</label></td>
                         <td>
@@ -76,6 +76,27 @@
 	function closewindow(){
 		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 		parent.layer.close(index);
+	}
+	setSalePrice();
+	function setSalePrice(){
+		//成本单价
+		var costsingleprice = '${obj.costsingleprice}';
+		//票价折扣
+		var discountFare = 1;
+		var countfare = '${obj.custominfo.discountFare}';
+		if(countfare){
+			discountFare = countfare;
+		}
+		//手续费
+		var fees = 0;
+		var feescount = '${obj.custominfo.fees}'; 
+		if(feescount){
+			fees = feescount;
+		}
+		var price = parseFloat(costsingleprice * discountFare / 100) + parseFloat(fees);
+		if(!isNaN(price)){
+			$('#costprice').val(price.toFixed(2));
+		}
 	}
 	//保存记录
 	function saveData(){

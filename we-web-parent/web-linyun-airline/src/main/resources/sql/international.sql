@@ -14,7 +14,8 @@ $condition
 SELECT
   tpi.*, tuo.ordersnum,
 	tuo.ordersstatus,
-	tr.orderstatus receiveorderstatus
+	tr.orderstatus receiveorderstatus,
+	tprr.orderstatus statusname
 FROM
 	t_pay_receive_record tprr
 INNER JOIN t_up_order tuo ON tprr.orderid = tuo.id
@@ -35,7 +36,8 @@ SELECT
 	tprr.orderstatus,tprr.currentpay,
 	tpi.*, tuo.ordersnum,
 	tuo.ordersstatus,
-	tp.orderstatus receiveorderstatus
+	tp.orderstatus receiveorderstatus,
+	tprr.orderstatus statusname
 FROM
 	t_pay_receive_record tprr
 INNER JOIN t_up_order tuo ON tprr.orderid = tuo.id

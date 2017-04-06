@@ -42,7 +42,7 @@ function initshouFuKuanGatheringTable() {
                   	render:function(data, type, row, meta) {
                   		var result = '<ul> ';
                 		$.each(row.orders, function(name, value) {
-                			if(value){
+                			if(value.leavesdate && value.leavesdate != undefined){
                 				result += '<li style="list-style:none;">'+value.leavesdate+'</li>';
                 			}
                 		});

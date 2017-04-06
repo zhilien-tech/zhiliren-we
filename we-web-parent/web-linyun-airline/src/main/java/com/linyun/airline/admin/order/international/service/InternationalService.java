@@ -36,6 +36,7 @@ import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.inland.enums.PassengerTypeEnum;
 import com.linyun.airline.admin.order.inland.enums.PayMethodEnum;
 import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
+import com.linyun.airline.admin.order.inland.util.FormatDateUtil;
 import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.order.international.form.InternationalParamForm;
 import com.linyun.airline.admin.order.international.form.InternationalPayParamForm;
@@ -664,6 +665,13 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		String ordersstatus = request.getParameter("ordersstatus");
 		String peoplecount = request.getParameter("peoplecount");
 		String costsingleprice = request.getParameter("costsingleprice");
+		//客户信息
+		String customerId = request.getParameter("customerId");
+		TCustomerInfoEntity custominfo = new TCustomerInfoEntity();
+		if (!Util.isEmpty(customerId)) {
+			custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(customerId));
+		}
+		result.put("custominfo", custominfo);
 		result.put("orderid", orderid);
 		result.put("recordtype", payreceivestatus);
 		result.put("ordersstatus", ordersstatus);
@@ -772,6 +780,9 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			map.put("pnrinfo", tPnrInfoEntity);
 			List<TAirlineInfoEntity> airinfo = dbDao.query(TAirlineInfoEntity.class,
 					Cnd.where("pnrid", "=", tPnrInfoEntity.getId()), null);
+			for (TAirlineInfoEntity tAirlineInfoEntity : airinfo) {
+				tAirlineInfoEntity.setCurrencyCode(FormatDateUtil.dateToOrderDate(tAirlineInfoEntity.getLeavedate()));
+			}
 			map.put("airinfo", airinfo);
 			result.add(map);
 		}
@@ -1103,6 +1114,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		orderinfo.setOrdersstatus(Integer.valueOf((String) fromJson.get("interOrderStatus")));
 		orderinfo.setOrderstime(new Date());
 		orderinfo.setOrderstype(OrderTypeEnum.TEAM.intKey());
+		orderinfo.setAirlinecom((String) fromJson.get("airlinecom"));
 		if (!Util.isEmpty(fromJson.get("peoplecount"))) {
 			Integer peoplecount = Integer.valueOf((String) fromJson.get("peoplecount"));
 			orderinfo.setPeoplecount(peoplecount);

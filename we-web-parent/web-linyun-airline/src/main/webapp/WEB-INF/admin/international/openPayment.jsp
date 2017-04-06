@@ -38,7 +38,7 @@
                 	<c:forEach var="one" items="${obj.orders }">
                 		<tr>
                 			<td>${one.ordersnum }</td>
-                			<td>${one.billingdate }</td>
+                			<td><fmt:formatDate value="${one.billingdate }" pattern="yyyy-MM-dd" /></td>
                 			<td>${one.cusgroupnum }</td>
                 			<td>${one.shortName }</td>
                 			<td>${one.linkMan }</td>
@@ -60,6 +60,7 @@
                   <label class="col-sm-1 text-right padding">币种：</label>
                   <div class="col-sm-2 padding">
                     <select id="payCurrency" name="payCurrency" class="form-control input-sm">
+                    	<option value="">请选择</option>
                       <c:forEach var="one" items="${obj.bzSelect }">
                         	<option value="${one.id }">${one.dictCode }</option>
                         </c:forEach>

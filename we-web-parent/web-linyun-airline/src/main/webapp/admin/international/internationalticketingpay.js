@@ -130,11 +130,14 @@ function initpayTable() {
                     {"data": "ordersstatus", "bSortable": false,
                     	render:function(data, type, row, meta) {
                       		var result = '';
-                      		$.each(row.orderstatusenum, function(name, value) {
+                      		/*$.each(row.orderstatusenum, function(name, value) {
                       			if(row.ordersstatus == name){
                       				result = value;
                       			}
-                      		});
+                      		});*/
+                      		if(row.statusname && row.statusname != undefined){
+                      			result = row.statusname;
+                      		}
                       		return result;
                       	  }
                     },

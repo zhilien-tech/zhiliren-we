@@ -146,7 +146,7 @@
 	}
     $(function(){
       $('.UnderIcon').on('click',function(){//客户信息 显示/隐藏
-          $('.hideTable').toggle('400');
+          $('.hideTable').toggle();
         });
      /*  //客户需求的 + 按钮
       $('.addHDIcon').click(function(){
@@ -171,7 +171,11 @@
  		 data.customerId = customerId;
  		 var interOrderStatus = $('#interOrderStatus').val();
  		 data.interOrderStatus = interOrderStatus;
- 		 var airlinecom = $("#airlinecom").select2("val");
+ 		 //var airlinecom = $("#airlinecom").select2("val");
+ 		 var airlinecom = $("#airlinecom").val();
+			if (airlinecom) {
+				airlinecom = airlinecom.join(',');
+			}
  		 data.airlinecom = airlinecom;
  		 var peoplecount = $('#peoplecount').val();
  		 data.peoplecount = peoplecount;

@@ -307,7 +307,7 @@
                      <td><label>销售：</label></td>
                      <td><input id="salesperson" name="salesperson" value="候小凌" type="text" class="form-control input-sm" disabled="disabled"></td>
                      <td><label>开票人：</label></td>
-                     <td><input id="issuer" name="issuer" type="text" value="${empty obj.finance.issuer?obj.user.userName:obj.finance.issuer }" class="form-control input-sm" disabled="disabled"></td>
+                     <td><input id="issuer" name="issuer" type="text" value="${empty obj.finance.issuer?obj.user.fullName:obj.finance.issuer }" class="form-control input-sm" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>人头数：</label></td>
@@ -449,6 +449,7 @@
         	var orderType = $('#orderType').val();
         	var peoplecount = $('#peoplecount').val();
         	var costsingleprice = $('#costsingleprice').val();
+        	var customerId = $('#customerId').val();
         	if(orderType > 2){
 	        	$.ajax({ 
 	        		type: 'POST', 
@@ -463,7 +464,7 @@
 				                closeBtn:false,//默认 右上角关闭按钮 是否显示
 				                shadeClose:true,
 				                area: ['1000px', '450px'],
-				                content: '${base}/admin/international/addReceiveRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.receivestatus}&ordersstatus='+orderType+'&peoplecount='+peoplecount+'&costsingleprice='+costsingleprice
+				                content: '${base}/admin/international/addReceiveRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.receivestatus}&ordersstatus='+orderType+'&peoplecount='+peoplecount+'&costsingleprice='+costsingleprice+'&customerId='+customerId
 				              });
 	              		}else{
 	              			layer.msg("该状态已经添加收款记录","",3000);
@@ -568,8 +569,8 @@
             			$.each(data[i].airinfo, function(name, value) {
                				//mainhtml += '<li>'+value.leavedate+'</li>';
                				mainhtml += '<li>';
-               				if(value.leavedate && value.leavedate != undefined){
-               					mainhtml += value.leavedate;
+               				if(value.currencyCode && value.currencyCode != undefined){
+               					mainhtml += value.currencyCode;
                				}
                				mainhtml += '</li>';
                 		});
@@ -630,8 +631,8 @@
             			$.each(data[i].airinfo, function(name, value) {
                				//zihtml += '<li>'+value.leavedate+'</li>';
                				zihtml += '<li>';
-               				if(value.leavedate && value.leavedate != undefined){
-               					zihtml += value.leavedate;
+               				if(value.currencyCode && value.currencyCode != undefined){
+               					zihtml += value.currencyCode;
                				}
                				zihtml += '</li>';
                 		});
