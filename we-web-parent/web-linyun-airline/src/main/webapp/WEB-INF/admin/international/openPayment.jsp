@@ -38,7 +38,7 @@
                 	<c:forEach var="one" items="${obj.orders }">
                 		<tr>
                 			<td>${one.ordersnum }</td>
-                			<td>${one.billingdate }</td>
+                			<td><fmt:formatDate value="${one.billingdate }" pattern="yyyy-MM-dd" /></td>
                 			<td>${one.cusgroupnum }</td>
                 			<td>${one.shortName }</td>
                 			<td>${one.linkMan }</td>
@@ -49,9 +49,10 @@
                 </tbody>
               </table>
          <div class="form-group row"><!--用途/币种-->
-                  <label class="col-sm-2 text-right padding">用途：</label>
+                  <label class="col-sm-2 text-right padding">项目用途：</label>
                   <div class="col-sm-2 padding">
                     <select id="purpose" name="purpose" class="form-control input-sm">
+                    	<option value="">请选择</option>
                       <c:forEach var="one" items="${obj.ytSelect }">
                         	<option value="${one.id }">${one.comDictName }</option>
                         </c:forEach>
@@ -60,6 +61,7 @@
                   <label class="col-sm-1 text-right padding">币种：</label>
                   <div class="col-sm-2 padding">
                     <select id="payCurrency" name="payCurrency" class="form-control input-sm">
+                    	<option value="">请选择</option>
                       <c:forEach var="one" items="${obj.bzSelect }">
                         	<option value="${one.id }">${one.dictCode }</option>
                         </c:forEach>
@@ -68,11 +70,11 @@
          </div><!--end 用途/币种-->
          <div class="form-group row"><!--申请人/审批人/审批结果-->
          <label class="col-sm-2 text-right padding">申请人：</label>
-         <div class="col-sm-2 padding"><input type="text" class="form-control input-sm" disabled="disabled" value="${obj.user.userName }"></div>
+         <div class="col-sm-2 padding"><input type="text" class="form-control input-sm" disabled="disabled" value="${obj.user.fullName }"></div>
          <label class="col-sm-1 text-right padding">审批人：</label>
          <div class="col-sm-2 padding"><input id="approver" name="approver" type="text" class="form-control input-sm" disabled="disabled" value="侯小凌"></div>
          <label class="col-sm-1 text-right padding">审批结果：</label>
-         <div class="col-sm-2 padding"><input id="approveResult" name="approveResult" type="text" class="form-control input-sm"></div>
+         <div class="col-sm-2 padding"><input id="approveResult" name="approveResult" type="text" class="form-control input-sm" disabled="disabled"></div>
       </div>
 	</div>
    <!--JS 文件-->

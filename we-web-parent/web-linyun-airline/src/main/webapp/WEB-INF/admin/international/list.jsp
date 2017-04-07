@@ -193,7 +193,7 @@
                   <div class="tab-pane pane-content" id="tab_6">
                      <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs nlkhUL">
-                          <li class="active"><a href="#tab1_a" data-toggle="tab">收款</a></li>
+                          <li class="active"><a href="#tab1_a" data-toggle="tab" onclick="loadreceivedata();">收款</a></li>
                           <li><a href="#tab1_b" data-toggle="tab" onclick="shoufukuanPay();">付款</a></li>
                         </ul>
                         <div class="tab-content padding0">
@@ -349,6 +349,7 @@
                                     <th>发票开具项目</th>
                                     <th>付款单位</th>
                                     <th>开票人</th>
+                                    <th>订单状态</th>
                                     <th>状态</th>
                                     <th>备注</th>
                                     <th>操作</th>
@@ -399,6 +400,7 @@
 	                                    <th>发票开具项目</th>
 	                                    <th>付款单位</th>
 	                                    <th>开票人</th>
+	                                    <th>订单状态</th>
 	                                    <th>状态</th>
 	                                    <th>备注</th>
 	                                    <th>操作</th>
@@ -447,6 +449,7 @@
 	        skin: false, //加上边框
 	        closeBtn:false,//默认 右上角关闭按钮 是否显示
 	        shadeClose:true,
+	        scrollbar: false,
 	        area: ['1087px', '620px'],
 	        content: '${base}/admin/international/addInterOrder.html'
 	      });

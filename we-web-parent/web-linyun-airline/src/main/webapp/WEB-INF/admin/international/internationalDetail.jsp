@@ -21,10 +21,8 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-
   <!--Header -->
   <header class="main-header">
-
     <!-- Logo -->
     <a href="index2.html" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -87,7 +85,25 @@
                      	<!-- 订单id -->
                      	<input id="orderedid" name="orderedid" type="hidden" value="${obj.orderinfo.id }"></td>
 	                     <td><label style="position: relative;top: 4px;">结算方式：</label></td>
-                     	<td colspan="3"><pre class="preTxt">不限 信用额度：<fmt:formatNumber type="number" value="${empty obj.custominfo.creditLine?0:obj.custominfo.creditLine}" pattern="0.00" maxFractionDigits="2"/>  
+                     	<td colspan="3"><pre class="preTxt">
+					 <c:choose>
+                     	<c:when test="${obj.custominfo.payType eq 1 }">
+                     		现金
+                     	</c:when>
+                     	<c:when test="${obj.custominfo.payType eq 2 }">3
+                     		支票
+                     	</c:when>
+                     	<c:when test="${obj.custominfo.payType eq 3 }">
+                     		银行汇款
+                     	</c:when>
+                     	<c:when test="${obj.custominfo.payType eq 4 }">
+                     		第三方
+                     	</c:when>
+                     	<c:when test="${obj.custominfo.payType eq 5 }">
+                     		其他
+                     	</c:when>
+                     </c:choose>　
+						 信用额度：<fmt:formatNumber type="number" value="${empty obj.custominfo.creditLine?0:obj.custominfo.creditLine}" pattern="0.00" maxFractionDigits="2"/>  
                      		<font id="historyqiancolor"> 历史欠款：<fmt:formatNumber type="number" value="${empty obj.custominfo.arrears? 0.00:obj.custominfo.arrears}" pattern="0.00" maxFractionDigits="2"/></font>　
                    		 预存款：<fmt:formatNumber type="number" value="${empty obj.custominfo.preDeposit?0:obj.custominfo.preDeposit}" pattern="0.00" maxFractionDigits="2"/></pre></td>
                      <td><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
@@ -129,7 +145,7 @@
                   <table class="HCinfoInp">
                    <tr>
                      <td><label>航空公司：</label></td>
-                     <td><select id="airlinecom" name="airlinecom" disabled="disabled" class="form-control input-sm disab" multiple="multiple">
+                     <td class="hkgsTd"><select id="airlinecom" name="airlinecom" disabled="disabled" class="form-control input-sm disab" multiple="multiple">
                      		<c:forEach items="${obj.aircomselect }" var="aircom">
                      			<c:choose>
                      				<c:when test="${obj.orderinfo.airlinecom eq aircom.dictCode}">
@@ -141,10 +157,10 @@
                      			</c:choose>
                      		</c:forEach>
                      </select></td>
-                     <td><label>人数：</label></td>
+                     <td class="renshuTd"><label>人数：</label></td>
                      <td><input id="peoplecount" name="peoplecount" disabled="disabled" type="text" class="form-control input-sm disab mustNumber" value="${obj.orderinfo.peoplecount }"></td>
                      <td><label>成本单价：</label></td>
-                     <td><input id="costsingleprice" name="costsingleprice" disabled="disabled" type="text" class="form-control input-sm disab mustNumberPoint" value="${obj.orderinfo.costsingleprice }"></td>
+                     <td><input id="costsingleprice" name="costsingleprice" disabled="disabled" type="text" class="form-control input-sm disab mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.orderinfo.costsingleprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
                    </tr>
                  </table>
                  <div class="tableDuan"><!--主段-->
@@ -291,23 +307,37 @@
                         <select id="paycurrency" name="paycurrency" class="form-control input-sm">
                             <option>请选择</option>
                             <c:forEach items="${obj.bzcode }" var="one"> 
-			                     <option value="${one.dictCode }">${one.dictCode }</option>
+                            	<c:choose>
+                            		<c:when test="${obj.finance.paycurrency eq one.id }">
+					                     <option value="${one.id }" selected="selected">${one.dictCode }</option>
+                            		</c:when>
+                            		<c:otherwise>
+					                     <option value="${one.id }">${one.dictCode }</option>
+                            		</c:otherwise>
+                            	</c:choose>
 	                     	</c:forEach>
                         </select>
                      </td>
                      <td><label>付款方式：</label></td>
                      <td>
-                        <select class="form-control input-sm">
+                        <select id="paymethod" name="paymethod" class="form-control input-sm">
                             <option>请选择</option>
-                            <c:forEach var="map" items="${obj.paymethodenum}" >
-						   		<option value="${map.key}">${map.value}</option>
+                            <c:forEach var="map" items="${obj.paymethod}" >
+                            	<c:choose>
+                            		<c:when test="${obj.finance.paymethod eq map.id }">
+                            			<option value="${map.id}" selected="selected">${map.bankName}</option>
+                            		</c:when>
+                            		<c:otherwise>
+								   		<option value="${map.id}">${map.bankName}</option>
+                            		</c:otherwise>
+                            	</c:choose>
 							 </c:forEach>
                         </select>
                      </td>
                      <td><label>销售：</label></td>
                      <td><input id="salesperson" name="salesperson" value="候小凌" type="text" class="form-control input-sm" disabled="disabled"></td>
                      <td><label>开票人：</label></td>
-                     <td><input id="issuer" name="issuer" type="text" value="${empty obj.finance.issuer?obj.user.userName:obj.finance.issuer }" class="form-control input-sm" disabled="disabled"></td>
+                     <td><input id="issuer" name="issuer" type="text" value="${empty obj.finance.issuer?obj.user.fullName:obj.finance.issuer }" class="form-control input-sm" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>人头数：</label></td>
@@ -449,29 +479,33 @@
         	var orderType = $('#orderType').val();
         	var peoplecount = $('#peoplecount').val();
         	var costsingleprice = $('#costsingleprice').val();
-        	$.ajax({ 
-        		type: 'POST', 
-        		data: {orderid:'${obj.orderinfo.id }',ordersstatus:orderType}, 
-        		url: BASE_PATH + '/admin/intervalidate/checkRecordIsExist.html',
-              	success: function (data) { 
-              		if(data){
-			            layer.open({
-			                type: 2,
-			                title:false,
-			                skin: false, //加上边框
-			                closeBtn:false,//默认 右上角关闭按钮 是否显示
-			                shadeClose:true,
-			                area: ['1000px', '450px'],
-			                content: '${base}/admin/international/addReceiveRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.receivestatus}&ordersstatus='+orderType+'&peoplecount='+peoplecount+'&costsingleprice='+costsingleprice
-			              });
-              		}else{
-              			layer.msg("该状态已经添加收款记录","",3000);
-              		}
-                },
-                error: function (xhr) {
-              		layer.msg("保存失败","",3000);
-                } 
-          });
+        	var customerId = $('#customerId').val();
+        	if(orderType > 2){
+	        	$.ajax({ 
+	        		type: 'POST', 
+	        		data: {orderid:'${obj.orderinfo.id }',ordersstatus:orderType}, 
+	        		url: BASE_PATH + '/admin/intervalidate/checkRecordIsExist.html',
+	              	success: function (data) { 
+	              		if(data){
+				            layer.open({
+				                type: 2,
+				                title:false,
+				                skin: false, //加上边框
+				                closeBtn:false,//默认 右上角关闭按钮 是否显示
+				                shadeClose:true,
+				                area: ['1000px', '450px'],
+				                content: '${base}/admin/international/addReceiveRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.receivestatus}&ordersstatus='+orderType+'&peoplecount='+peoplecount+'&costsingleprice='+costsingleprice+'&customerId='+customerId
+				              });
+	              		}else{
+	              			layer.msg("该状态已经添加收款记录","",3000);
+	              		}
+	                },
+	                error: function (xhr) {
+	                } 
+	          });
+        	}else{
+        		layer.msg("一订以后才能添加记录","",3000);
+        	}
        });
 
         //点击 添加记录-预付款 弹框
@@ -479,29 +513,32 @@
         	var orderType = $('#orderType').val();
         	var peoplecount = $('#peoplecount').val();
         	var costsingleprice = $('#costsingleprice').val();
-        	$.ajax({ 
-        		type: 'POST', 
-        		data: {orderid:'${obj.orderinfo.id }',ordersstatus:orderType}, 
-        		url: BASE_PATH + '/admin/intervalidate/checkPayRecordIsExist.html',
-              	success: function (data) { 
-              		if(data){
-			            layer.open({
-			                type: 2,
-			                title:false,
-			                skin: false, //加上边框
-			                closeBtn:false,//默认 右上角关闭按钮 是否显示
-			                shadeClose:true,
-			                area: ['1000px', '450px'],
-			                content: '${base}/admin/international/addPayRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.paystatus}&ordersstatus='+orderType+'&peoplecount='+peoplecount+'&costsingleprice='+costsingleprice
-			             });
-              		}else{
-              			layer.msg("该状态已经添加付款记录","",3000);
-              		}
-                },
-                error: function (xhr) {
-              		layer.msg("保存失败","",3000);
-                } 
-          });
+        	if(orderType > 2){
+	        	$.ajax({ 
+	        		type: 'POST', 
+	        		data: {orderid:'${obj.orderinfo.id }',ordersstatus:orderType}, 
+	        		url: BASE_PATH + '/admin/intervalidate/checkPayRecordIsExist.html',
+	              	success: function (data) { 
+	              		if(data){
+				            layer.open({
+				                type: 2,
+				                title:false,
+				                skin: false, //加上边框
+				                closeBtn:false,//默认 右上角关闭按钮 是否显示
+				                shadeClose:true,
+				                area: ['900px', '200px'],
+				                content: '${base}/admin/international/addPayRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.paystatus}&ordersstatus='+orderType+'&peoplecount='+peoplecount+'&costsingleprice='+costsingleprice
+				             });
+	              		}else{
+	              			layer.msg("该状态已经添加付款记录","",3000);
+	              		}
+	                },
+	                error: function (xhr) {
+	                } 
+	          });
+        	}else{
+        		layer.msg("一订以后才能添加记录","",3000);
+        	}
         });
         $('.recordParent p:eq(0)').click(function(){//预收款记录 切换tab
           $(this).addClass('recStyle').siblings().removeClass('recStyle');
@@ -562,8 +599,8 @@
             			$.each(data[i].airinfo, function(name, value) {
                				//mainhtml += '<li>'+value.leavedate+'</li>';
                				mainhtml += '<li>';
-               				if(value.leavedate && value.leavedate != undefined){
-               					mainhtml += value.leavedate;
+               				if(value.currencyCode && value.currencyCode != undefined){
+               					mainhtml += value.currencyCode;
                				}
                				mainhtml += '</li>';
                 		});
@@ -624,8 +661,8 @@
             			$.each(data[i].airinfo, function(name, value) {
                				//zihtml += '<li>'+value.leavedate+'</li>';
                				zihtml += '<li>';
-               				if(value.leavedate && value.leavedate != undefined){
-               					zihtml += value.leavedate;
+               				if(value.currencyCode && value.currencyCode != undefined){
+               					zihtml += value.currencyCode;
                				}
                				zihtml += '</li>';
                 		});
@@ -654,14 +691,16 @@
             		}
             	}
             	$('#mainsection').html(mainhtml);
+            	autoHighLoad($('#mainsection'));
             	$('#zisection').html(zihtml);
+            	autoHighLoad($('#zisection'))
             },
             error: function (xhr) {
             } 
       });
     }
-    //加载收付款记录信息
-    loadpayAndReceiveRecord();
+  //加载减免信息
+    loadJianMianAccount('${obj.orderinfo.id }'); 
     function loadpayAndReceiveRecord(){
     	$.ajax({
 			type: 'POST', 
@@ -714,25 +753,25 @@
             				receivehtml += '<td></td>';
             			} 
             			if(value.currentfine != undefined){
-	                        receivehtml += '<td>'+value.currentfine+'</td>';
+	                        receivehtml += '<td>'+value.currentfine.toFixed(2)+'</td>';
 	                        receivefinesum += parseFloat(value.currentfine);
             			}else{
             				receivehtml += '<td></td>';
             			}
             			if(value.currentdue != undefined){
-	                        receivehtml += '<td>'+value.currentdue+'</td>';
+	                        receivehtml += '<td>'+value.currentdue.toFixed(2)+'</td>';
 	                        receiveyingsum += parseFloat(value.currentdue);
             			}else{
             				receivehtml += '<td></td>';
             			} 
             			if(value.ataxprice != undefined){
-	                        receivehtml += '<td>'+value.ataxprice+'</td>';
+	                        receivehtml += '<td>'+value.ataxprice.toFixed(2)+'</td>';
 	                        receiveshuisum += parseFloat(value.ataxprice);
             			}else{
             				receivehtml += '<td></td>';
             			} 
             			if(value.currentpay != undefined){
-	                        receivehtml += '<td>'+value.currentpay+'</td>';
+	                        receivehtml += '<td>'+value.currentpay.toFixed(2)+'</td>';
 	                        receiveshisum += parseFloat(value.currentpay);
             			}else{
             				receivehtml += '<td></td>';
@@ -764,25 +803,25 @@
             				payhtml += '<td></td>';
             			} 
             			if(value.currentfine != undefined){
-	                        payhtml += '<td>'+value.currentfine+'</td>';
+	                        payhtml += '<td>'+value.currentfine.toFixed(2)+'</td>';
 	                        payfinesum += parseFloat(value.currentfine);
             			}else{
             				payhtml += '<td></td>';
             			}
             			if(value.currentdue != undefined){
-	                        payhtml += '<td>'+value.currentdue+'</td>';
+	                        payhtml += '<td>'+value.currentdue.toFixed(2)+'</td>';
 	                        payyingsum += parseFloat(value.currentdue);
             			}else{
             				payhtml += '<td></td>';
             			} 
             			if(value.ataxprice != undefined){
-	                        payhtml += '<td>'+value.ataxprice+'</td>';
+	                        payhtml += '<td>'+value.ataxprice.toFixed(2)+'</td>';
 	                        payshuisum += parseFloat(value.ataxprice);
             			}else{
             				payhtml += '<td></td>';
             			} 
             			if(value.currentpay != undefined){
-	                        payhtml += '<td>'+value.currentpay+'</td>';
+	                        payhtml += '<td>'+value.currentpay.toFixed(2)+'</td>';
 	                        payshisum += parseFloat(value.currentpay);
             			}else{
             				payhtml += '<td></td>';
@@ -793,12 +832,34 @@
                         payhtml += '</tr>';
             		}
         		});
-            	receivehtml += '<tr><td>合计</td> <td></td> <td></td> <td></td> <td>'+receivefinesum+'</td> <td>'+receiveyingsum+'</td> <td>'+receiveshuisum+'</td> <td>'+receiveshisum+'</td> <td></td>';
-            	payhtml += '<tr><td>合计</td> <td></td> <td></td> <td></td> <td>'+payfinesum+'</td> <td>'+payyingsum+'</td> <td>'+payshuisum+'</td> <td>'+payshisum+'</td> <td></td>';
+            	receivehtml += '<tr><td>合计</td> <td></td> <td></td> <td></td> <td>'+receivefinesum.toFixed(2)+'</td> <td>'+receiveyingsum.toFixed(2)+'</td> <td>'+receiveshuisum.toFixed(2)+'</td> <td>'+receiveshisum.toFixed(2)+'</td> <td></td>';
+            	payhtml += '<tr><td>合计</td> <td></td> <td></td> <td></td> <td>'+payfinesum.toFixed(2)+'</td> <td>'+payyingsum.toFixed(2)+'</td> <td>'+payshuisum.toFixed(2)+'</td> <td>'+payshisum.toFixed(2)+'</td> <td></td>';
             	$('#receiverecord').html(receivehtml);
             	$('#payrecord').html(payhtml);
-            	$('#receivable').val(receiveshisum);
-            	$('#costtotal').val(payshisum);
+            	$('#receivable').val(receiveshisum.toFixed(2));
+            	$('#costtotal').val(payshisum.toFixed(2));
+            	setFinanceInfo();
+            	/* var incometotal  = '';
+            	var relief = $('#relief').val();
+	       	 	if(relief){
+	       	 		incometotal  = parseFloat(receiveshisum) - parseFloat(relief);
+	       	 	}else{
+	       	 		incometotal = receiveshisum;
+	       	 	}
+	       	 	
+	       	 	if(!isNaN(incometotal)){
+     		 		$('#incometotal').val(incometotal.toFixed(2));
+	       	 	}
+	       	 	var returntotal = 0;
+	 	       	//应返合计
+	 	       	if($('#returntotal').val()){
+		 	   	 	returntotal = $('#returntotal').val();
+	 	       	}
+	 	   	    //利润合计
+	 	   	 	var profittotal  = parseFloat(incometotal) - parseFloat(payshisum) - parseFloat(returntotal);
+	 	   	 	if(!isNaN(profittotal)){
+	 	   		 	$('#profittotal').val(profittotal.toFixed(2));
+	 	   	 	} */
             },
             error: function (xhr) {
             	
@@ -856,6 +917,95 @@
            content: url
          });
     }
+    
+  //点击 减免 弹框
+    $(document).on("click",".jianMian",function(){
+        layer.open({
+            type: 2,
+            title:false,
+            skin: false, //加上边框
+            closeBtn:false,//默认 右上角关闭按钮 是否显示
+            shadeClose:true,
+            area: ['770px', '240px'],
+            content: '${base}/admin/inland/mitigate.html?id=${obj.orderinfo.id }&customeid=${obj.custominfo.id }',
+            end:function(){
+            	loadJianMianAccount('${obj.orderinfo.id }');
+            }
+          });
+    });
+  	//加载减免信息
+    function loadJianMianAccount(orderid){
+   	 	$.ajax({ 
+   			type: 'POST', 
+   			data: {orderid:orderid}, 
+   			dataType:'json',
+   			url: BASE_PATH + '/admin/inland/loadJianMianAccount.html',
+            success: function (data) { 
+           	 if(data.account){
+   	         	$('#relief').val(data.account.toFixed(2));
+           	 }
+           	loadpayAndReceiveRecord();
+            },
+            error: function (xhr) {
+            } 
+         });
+    }
+    //应收自动加载实收合计
+     $(document).on('input', '#receivable', function(e) {
+   	 	var yingshou = $(this).val();
+   	 	var relief = $('#relief').val();
+   	 	var incometotal  = '';
+   	 	if(relief){
+   	 		incometotal  = parseFloat(yingshou) - parseFloat(relief);
+   	 	}else{
+   	 		incometotal = yingshou;
+   	 	}
+   	 	if(!isNaN(incometotal)){
+   		 	$('#incometotal').val(incometotal.toFixed(2));
+   	 	}
+   	 });
+    //自动加载利润合计
+     $(document).on('input', '.loadprofit', function(e) {
+   	    //实收合计
+   	 	var incometotal = $('#incometotal').val();
+   	    //成本合计
+   	 	var costtotal = $('#costtotal').val();
+   	    //应返合计
+   	 	var returntotal = $('#returntotal').val();
+   	    //利润合计
+   	 	var profittotal  = parseFloat(incometotal) - parseFloat(costtotal) - parseFloat(returntotal);
+   	 	if(!isNaN(profittotal)){
+   		 	$('#profittotal').val(profittotal.toFixed(2));
+   	 	}
+   	 });
+    
+	 //设置财务信息
+     function setFinanceInfo(){
+         	//成本合计
+         	var costtotal = $('#costtotal').val();
+         	//应收
+         	var receivable = $('#receivable').val();
+         	var relief = $('#relief').val();
+      	 	var incometotal  = '';
+      	 	if(relief){
+      	 		incometotal  = parseFloat(receivable) - parseFloat(relief);
+      	 	}else{
+      	 		incometotal = receivable;
+      	 	}
+      	 	if(!isNaN(incometotal)){
+  		 		$('#incometotal').val(incometotal);
+      	 	}
+      	 	var returntotal = 0;
+	       	//应返合计
+	       	if($('#returntotal').val()){
+ 	   	 	returntotal = $('#returntotal').val();
+	       	}
+	   	    //利润合计
+	   	 	var profittotal  = parseFloat(incometotal) - parseFloat(costtotal) - parseFloat(returntotal);
+	   	 	if(!isNaN(profittotal)){
+	   		 	$('#profittotal').val(profittotal.toFixed(2));
+	   	 	}
+   	  }
   </script>
 </body>
 </html>

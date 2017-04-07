@@ -20,7 +20,7 @@
 			<input type="button" id="submit" onclick="confirmPayClick();" class="btn btn-primary right btn-sm" value="确定付款" />
 			<h4>付款</h4>
 		</div>
-		<div class="modal-body" style="height: 600px; overflow-y: auto;">
+		<div class="modal-body" style="height: 580px; overflow-y: auto;">
 			
 			<table id="interConfirmPayTable" class="table table-bordered table-hover">
 				<thead>
@@ -37,6 +37,8 @@
 				</thead>
 				<tbody id="interConfirmPayTbody">
 					<input id="payIds" name="payIds" type="hidden" value="${obj.ids }"><!-- 水单url -->
+					<input id="orderIds" name="orderIds" type="hidden" value="${obj.pOrderIds }"><!-- 订单id -->
+					<input id="orderStatus" name="orderStatus" type="hidden" value="${obj.orderStatus }"><!-- 订单状态 -->
 					<c:forEach var="one" items="${obj.orders}">
                 		<tr ondblclick="trDetail(${one.uid});">
                 			<%-- <td>${one.id }</td> --%>
@@ -86,8 +88,9 @@
 							<option value=1 selected="selected">国内</option>
 							<option value=2>境外</option>
 					</select></td>
-					<td>用途：</td>
+					<td>项目用途：</td>
 					<td><select id="purpose" name="purpose" class="form-control input-sm">
+							<option value="0">--请选择--</option>
 							<c:forEach var="one" items="${obj.fkytList}">
 								<c:choose>
 	                          		<c:when test="${obj.purpose eq one.id }">
@@ -152,7 +155,7 @@
 			<input type="text" name="uploadFile" id="uploadFile" />
 			<input id="receiptUrl" name="receiptUrl" type="hidden" ><!-- 水单url -->
 			<div class="bankSlipImg"  align="center">
-				<img id="receiptImg" width="400" height="300" alt="" src="">
+				<img id="receiptImg" width="100%" height="305" alt="" src="">
 			</div>
 		</div>
 	</div>

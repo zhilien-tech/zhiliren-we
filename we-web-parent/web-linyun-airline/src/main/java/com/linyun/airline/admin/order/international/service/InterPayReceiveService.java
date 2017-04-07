@@ -28,6 +28,7 @@ import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.enums.InvoiceInfoEnum;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
+import com.linyun.airline.admin.order.inland.util.FormatDateUtil;
 import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.order.international.form.InterPaymentSqlForm;
 import com.linyun.airline.admin.order.international.form.InterReceiptSqlForm;
@@ -92,6 +93,10 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 			Cnd cnd = Cnd.NEW();
 			cnd.and("tr.id", "=", record.get("id"));
 			List<Record> orders = dbDao.query(sql, cnd, null);
+			for (Record order : orders) {
+				order.put("leavesdate", FormatDateUtil.dateToOrderDate((Date) order.get("leavesdate")));
+
+			}
 			record.put("orders", orders);
 			record.put("receiveenum", EnumUtil.enum2(AccountReceiveEnum.class));
 			record.put("internationalstatusenum", EnumUtil.enum2(InternationalStatusEnum.class));
@@ -227,7 +232,7 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 			invoiceinfo.setInvoicedate(DateUtil.string2Date((String) fromJson.get("invoicedate"),
 					DateUtil.FORMAT_YYYY_MM_DD));
 		}
-		invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
+		//invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
 		if (!Util.isEmpty(fromJson.get("deptid"))) {
 			invoiceinfo.setDeptid(Integer.valueOf((String) fromJson.get("deptid")));
 		}
@@ -370,7 +375,7 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 			invoiceinfo.setInvoicedate(DateUtil.string2Date((String) fromJson.get("invoicedate"),
 					DateUtil.FORMAT_YYYY_MM_DD));
 		}
-		invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
+		//invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
 		if (!Util.isEmpty(fromJson.get("deptid"))) {
 			invoiceinfo.setDeptid(Integer.valueOf((String) fromJson.get("deptid")));
 		}

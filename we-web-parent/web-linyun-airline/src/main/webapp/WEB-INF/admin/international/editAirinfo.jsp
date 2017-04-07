@@ -17,7 +17,7 @@
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveAirInfo();" value="保存"/>
-            <h4>添加航段</h4>
+            <h4>编辑航段</h4>
           </div>
           <div class="modal-body" style="height:481px;overflow-y:auto; ">
               <table class="addHDtable">
@@ -57,7 +57,7 @@
 									</c:forEach>
 	                        	</select></td>
 	                        <td><label>出发日期：</label></td>
-	                        <td><input id="leavedate" name="leavedate" type="text" class="form-control input-sm" onFocus="WdatePicker({minDate:'%y-%M-%d'})" value="${airinfo.leavedate }" placeholder="2017-03-16"></td>
+	                        <td><input id="leavedate" name="leavedate" type="text" class="form-control input-sm" onFocus="WdatePicker({minDate:'%y-%M-%d'})" value="<fmt:formatDate value="${airinfo.leavedate }" pattern="yyyy-MM-dd" />" placeholder=""></td>
 	                        <td><label>航班号：</label></td>
 	                        <td><select id="ailinenum" name="ailinenum" type="text" class="form-control input-sm" placeholder="ca309" multiple="multiple">
 	                        		<c:forEach var="one" items="${obj.airline }">
@@ -74,7 +74,7 @@
 	                        <td><label>出发时间：</label></td>
 	                        <td><input id="leavetime" name="leavetime" type="text" class="form-control input-sm mustTimes" placeholder="12:00" value="${airinfo.leavetime }"></td>
 	                        <td><label>抵达时间：</label></td>
-	                        <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm mustTimes" placeholder="13:00" value="${airinfo.arrivetime }"></td>
+	                        <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm mustArriveTimes" placeholder="13:00" value="${airinfo.arrivetime }"></td>
 	                        <c:choose>
 	                        	<c:when test="${status.index eq 0 }">
 			                        <td><a href="javascript:;" class="glyphicon glyphicon-plus addHDIcon"></a></td>

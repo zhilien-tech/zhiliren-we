@@ -36,8 +36,8 @@ order by optime desc
 select * from(
 select  uo.orderstype,uo.ordersnum,p.purpose,
 p.proposer,ci.shortName,p.fundType,p.payFees,p.payCurrency,p.isInvioce,p.approveTime,p.approveResult,p.id as 'usingId',p.id,uo.id as 'orderId',
-u.fullName,(select dictCode from dict_info where id=p.payCurrency) as 'currencyStr',(select dictName from dict_info where id=p.purpose) as 'purposeStr',
-(select dictName from dict_info where id=p.fundType) as 'fundTypeStr',p.companyId,po.paystauts as 'paystatus',prr.currentpay as 'amount',po.payDate as 'orderstime',prr.orderstatusid,prr.orderstatus
+u.fullName,(select dictCode from dict_info where id=p.payCurrency) as 'currencyStr',(select comDictName from t_company_dictinfo  where id=p.purpose) as 'purposeStr',
+(select comDictName from t_company_dictinfo  where id=p.fundType) as 'fundTypeStr',p.companyId,po.paystauts as 'paystatus',prr.currentpay as 'amount',po.payDate as 'orderstime',prr.orderstatusid,prr.orderstatus
 ,po.id as 'resultId'
 from 
 t_pay_receive_record prr

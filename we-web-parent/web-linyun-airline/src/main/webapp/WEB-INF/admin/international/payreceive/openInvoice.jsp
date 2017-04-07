@@ -18,11 +18,13 @@
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo();" value="提交"/>
+            <input type="hidden" id="backupbalance" name="backupbalance" value="${obj.invoicebalance }">
             <h4 class="invoiceH4">收款信息</h4>
     </div>
-    <div style="height:550px; overflow-y:auto; ">
+    <div style="height:550px; overflow-y:auto;" class="allCentext">
       <div class="modal-body">
       	 <input type="hidden" id="id" name="id" value="${obj.id }" >
+      	 <input type="hidden" id="orderstatus" name="orderstatus" value="${obj.receive.orderstatus }" >
          <table id="receivablesTable" class="table table-bordered table-hover">
                   <thead>
                     <tr>
@@ -39,7 +41,7 @@
                     <c:forEach var="one" items="${obj.orders }">
                 		<tr>
                 			<td>${one.ordersnum }</td>
-                			<td>${one.billingdate }</td>
+                			<td><fmt:formatDate value="${one.billingdate }" pattern="yyyy-MM-dd" /></td>
                 			<td>${one.cusgroupnum }</td>
                 			<td>${one.shortName }</td>
                 			<td>${one.linkMan }</td>
@@ -51,9 +53,9 @@
          </table>
          <table border="0" class="selectTable">
                   <tr>
-                    <td>银行：</td>
+                    <td><label>银行：</label></td>
                     <td>
-                      <select class="form-control input-sm">
+                      <select class="form-control input-sm" disabled="disabled">
                            <c:forEach var="one" items="${obj.yhkSelect }">
                              	<c:if test="${one.id eq obj.receive.bankcardid }">
                              		<option value="${one.id }" selected="selected">${one.dictName }</option>
@@ -61,23 +63,23 @@
                            </c:forEach>
                       </select>
                     </td>
-                    <td>银行卡名称：</td>
+                    <td><label>银行卡名称：</label></td>
                     <td>
-                      <select class="form-control input-sm">
+                      <select class="form-control input-sm" disabled="disabled">
                           <option>${obj.receive.bankcardname }</option>
                       </select>
                     </td>
-                    <td>卡号：</td>
+                    <td><label>卡号：</label></td>
                     <td>
-                       <select class="form-control input-sm">
+                       <select class="form-control input-sm" disabled="disabled">
                           <option>${obj.receive.bankcardnum }</option>
                        </select>
                     </td>
-                    <td>合计：</td>
+                    <td><label>合计：</label></td>
                     <td id="sumjine">${obj.sumincome }</td>
                   </tr>
          </table>
-         <div class="bankSlipImg" align="center"><img id="shuidanimg" width="400" height="300" alt="" src="${obj.bill.receiptUrl }"></div>
+         <div class="bankSlipImg" align="center"><img id="shuidanimg" width="100%" height="305" alt="" src="${obj.bill.receiptUrl }"></div>
       </div>
       <span class="invoiceInfo-header">发票信息</span>
       <div class="invoiceInfo-body">
@@ -86,6 +88,7 @@
                   <td>项目用途：</td>
                   <td>
                     <select id="invoiceitem" name="invoiceitem" class="form-control input-sm">
+                    	<option value="">请选择</option>
                         <c:forEach items="${obj.ytselect }" var="one">
                     		<option value="${one.id }">${one.comDictName }</option>
                     	</c:forEach>
@@ -193,6 +196,7 @@
 		          newDiv.find('.deleteInvoice').parent().remove();
 		          newDiv.find('.addIcon').parent().remove();
 		          newDiv.find('.fileUL').append('<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>');
+		          $('.allCentext').scrollTop($('.allCentext').height());
 		      });
 		      /*-----收付款>收款>开发票 - 按钮-----*/
 		      $(document).on("click",".removIcon",function(){
@@ -229,6 +233,8 @@
 	   var formdata = {};
 	   var id = $('#id').val();
 	   formdata.receiveid = id;
+	   var orderstatus = $('#orderstatus').val();
+	   formdata.orderstatus = orderstatus;
 	   var invoiceitem = $('#invoiceitem').val();
 	   formdata.invoiceitem = invoiceitem;
 	   var invoicedate = $('#invoicedate').val();

@@ -16,9 +16,10 @@
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo()" value="提交"/>
+            <input type="hidden" id="backupbalance" name="backupbalance" value="${obj.invoicebalance }">
             <h4 class="invoiceH4">收款信息</h4>
     </div>
-    <div style="height:550px; overflow-y:auto;">
+    <div style="height:550px; overflow-y:auto;" class="allCentext">
       <div class="modal-body">
       	<input id="id" name="id" type="hidden" value="${obj.id }" > 
       	<input id="orderstatus" name="orderstatus" type="hidden" value="${obj.payorders.orderstatus }" > 
@@ -38,7 +39,7 @@
                     <c:forEach var="one" items="${obj.orders }">
                 		<tr>
                 			<td>${one.ordersnum }</td>
-                			<td>${one.billingdate }</td>
+                			<td><fmt:formatDate value="${one.billingdate }" pattern="yyyy-MM-dd" /></td>
                 			<td>${one.cusgroupnum }</td>
                 			<td>${one.shortName }</td>
                 			<td>${one.linkMan }</td>
@@ -50,9 +51,9 @@
          </table>
          <table border="0" class="selectTable">
                   <tr>
-                    <td>银行：</td>
+                    <td><label>银行：</label></td>
                     <td>
-                      <select class="form-control input-sm">
+                      <select class="form-control input-sm" disabled="disabled">
                           <c:forEach var="one" items="${obj.yhkSelect }">
                           		<c:if test="${obj.companybank.bankComp eq one.id }">
 		                        	 <option value="${one.id }" selected="selected">${one.dictName }</option>
@@ -60,19 +61,19 @@
                           </c:forEach>
                       </select>
                     </td>
-                    <td>银行卡名称：</td> 
+                    <td><label>银行卡名称：</label></td> 
                     <td>
-                      <select class="form-control input-sm">
+                      <select class="form-control input-sm" disabled="disabled">
                           <option>${obj.companybank.cardName }</option>
                       </select>
                     </td>
-                    <td>卡号：</td>
+                    <td><label>卡号：</label></td>
                     <td>
-                       <select class="form-control input-sm">
+                       <select class="form-control input-sm" disabled="disabled">
                           <option>${obj.companybank.cardNum }</option>
                        </select>
                     </td>
-                    <td>合计：</td>
+                    <td><label>合计：</label></td>
                     <td id="sumjine">${obj.sumjine }</td>
                   </tr>
          </table>
@@ -85,6 +86,7 @@
                   <td>项目用途：</td>
                   <td>
                     <select id="invoiceitem" name="invoiceitem" class="form-control input-sm">
+                    	<option value="">请选择</option>
                         <c:forEach items="${obj.ytselect }" var="one">
                     		<option value="${one.id }">${one.comDictName }</option>
                     	</c:forEach>
@@ -182,6 +184,7 @@
 	          newDiv.find('.deleteInvoice').parent().remove();
 	          newDiv.find('.addIcon').parent().remove();
 	          newDiv.find('.fileUL').append('<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>');
+	          $('.allCentext').scrollTop($('.allCentext').height());
 	      });
 	      /*-----收付款>收款>开发票 - 按钮-----*/
 	      $(document).on("click",".removIcon",function(){

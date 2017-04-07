@@ -90,7 +90,15 @@ function initkaiInvoiceTable() {
                     	}
                   },
                   {"data": "paymentunit", "bSortable": false},
-                  {"data": "username", "bSortable": false},
+                  {"data": "username", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                    		var result = '';
+                    		if(row.username && row.username != undefined){
+                    			result = row.username;
+                    		}
+                    		return result;
+                    	}  
+                  },
                   {"data": "status", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                   		var result = '';
@@ -143,6 +151,7 @@ function openkaiInvoiceEdit(id){
         skin: false, //加上边框
         closeBtn:false,//默认 右上角关闭按钮 是否显示
         shadeClose:true,
+        scrollbar: false,
         area: ['987px', '620px'],
         content: BASE_PATH + '/admin/inland/kaiInvoice.html?id='+id
       });
@@ -209,9 +218,9 @@ function initshouInvoiceTable() {
                 	render:function(data, type, row, meta) {
                 		var result = '';
                 		if(row.costpricesum && row.costpricesum != undefined) {
-                			result =row.costpricesum;
+                			result =row.costpricesum.toFixed(2);
                 		}
-                		return result.toFixed(2);
+                		return result;
                 	}
                 },
                 {"data": "invoicedate", "bSortable": false,
@@ -243,7 +252,15 @@ function initshouInvoiceTable() {
                 		return result;
                 	}
                 },
-                {"data": "fullname", "bSortable": false},
+                {"data": "fullname", "bSortable": false,
+                	render:function(data, type, row, meta) {
+                		var result = '';
+                		if(row.fullname && row.fullname != undefined) {
+                			result =row.fullname;
+                		}
+                		return result;
+                	}
+                },
                 {"data": "status", "bSortable": false,
                 	render:function(data, type, row, meta) {
                   		var result = '';
@@ -299,6 +316,7 @@ function openshouInvoiceEdit(id){
         skin: false, //加上边框
         closeBtn:false,//默认 右上角关闭按钮 是否显示
         shadeClose:true,
+        scrollbar: false,
         area: ['987px', '620px'],
         content: BASE_PATH + '/admin/inland/shouInvoice.html?id='+id
     });

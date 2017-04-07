@@ -18,6 +18,7 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.util.cri.SqlExpressionGroup;
 
+import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.Util;
@@ -52,8 +53,9 @@ public class InternationalReceiveParamForm extends DataTablesParamForm {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
 		if (!Util.isEmpty(ordersstatus) && ordersstatus != 0) {
-			cnd.and("tuo.ordersstatus", "=", ordersstatus);
+			cnd.and("tprr.orderstatusid", "=", ordersstatus);
 		}
+		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.RECEIVE.intKey());
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("tpi.companyid", "=", companyid);
 		}

@@ -36,6 +36,7 @@ import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.inland.enums.PassengerTypeEnum;
 import com.linyun.airline.admin.order.inland.enums.PayMethodEnum;
 import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
+import com.linyun.airline.admin.order.inland.util.FormatDateUtil;
 import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.order.international.form.InternationalParamForm;
 import com.linyun.airline.admin.order.international.form.InternationalPayParamForm;
@@ -44,10 +45,12 @@ import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
+import com.linyun.airline.common.enums.BankCardStatusEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.ExcelReader;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAirlineInfoEntity;
+import com.linyun.airline.entities.TBankCardEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TFinanceInfoEntity;
@@ -271,6 +274,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		result.put("user", user);
 		String orderid = request.getParameter("orderid");
 		//订单数据
@@ -304,6 +309,15 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		}
 		result.put("bzcode", bzcode);
 		result.put("paymethodenum", EnumUtil.enum2(PayMethodEnum.class));
+		//支付方式
+		List<TBankCardEntity> paymethod = dbDao.query(TBankCardEntity.class,
+				Cnd.where("companyId", "=", company.getId()).and("status", "=", BankCardStatusEnum.ENABLE.intKey()),
+				null);
+		TBankCardEntity bankCardEntity = new TBankCardEntity();
+		bankCardEntity.setId(PayMethodEnum.THIRDPART.intKey());
+		bankCardEntity.setBankName(PayMethodEnum.THIRDPART.value());
+		paymethod.add(0, bankCardEntity);
+		result.put("paymethod", paymethod);
 		result.put("receivestatus", PayReceiveTypeEnum.RECEIVE.intKey());
 		result.put("paystatus", PayReceiveTypeEnum.PAY.intKey());
 		result.put(
@@ -371,6 +385,14 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		Integer personcount = null;
 		if (!Util.isEmpty(financeMap.get("personcount"))) {
 			personcount = Integer.valueOf(financeMap.get("personcount"));
+		}
+		Integer paycurrency = null;
+		if (!Util.isEmpty(financeMap.get("paycurrency"))) {
+			paycurrency = Integer.valueOf(financeMap.get("paycurrency"));
+		}
+		Integer paymethod = null;
+		if (!Util.isEmpty(financeMap.get("paymethod"))) {
+			paymethod = Integer.valueOf(financeMap.get("paymethod"));
 		}
 		//结算状态
 		Integer billingstatus = null;
@@ -448,6 +470,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		financeInfo.setRelief(relief);
 		financeInfo.setBillingdate(billingdate);
 		financeInfo.setSalesperson(salesperson);
+		financeInfo.setPaycurrency(paycurrency);
+		financeInfo.setPaymethod(paymethod);
 
 		if (Util.isEmpty(id)) {
 			dbDao.insert(financeInfo);
@@ -664,6 +688,13 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		String ordersstatus = request.getParameter("ordersstatus");
 		String peoplecount = request.getParameter("peoplecount");
 		String costsingleprice = request.getParameter("costsingleprice");
+		//客户信息
+		String customerId = request.getParameter("customerId");
+		TCustomerInfoEntity custominfo = new TCustomerInfoEntity();
+		if (!Util.isEmpty(customerId)) {
+			custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(customerId));
+		}
+		result.put("custominfo", custominfo);
 		result.put("orderid", orderid);
 		result.put("recordtype", payreceivestatus);
 		result.put("ordersstatus", ordersstatus);
@@ -772,6 +803,9 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			map.put("pnrinfo", tPnrInfoEntity);
 			List<TAirlineInfoEntity> airinfo = dbDao.query(TAirlineInfoEntity.class,
 					Cnd.where("pnrid", "=", tPnrInfoEntity.getId()), null);
+			for (TAirlineInfoEntity tAirlineInfoEntity : airinfo) {
+				tAirlineInfoEntity.setCurrencyCode(FormatDateUtil.dateToOrderDate(tAirlineInfoEntity.getLeavedate()));
+			}
 			map.put("airinfo", airinfo);
 			result.add(map);
 		}
@@ -963,7 +997,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			TOrderReceiveEntity orderreceive = new TOrderReceiveEntity();
 			orderreceive.setReceiveid(insert.getId());
 			orderreceive.setOrderid(Integer.valueOf(str));
-			orderreceive.setOrderstatus(order.getOrdersstatus());
+			orderreceive.setOrderstatus(Integer.valueOf(orderstatus));
 			orderreceive.setReceiveDate(new Date());
 			orderreceive.setReceivestatus(AccountReceiveEnum.RECEIVINGMONEY.intKey());
 			orderreceives.add(orderreceive);
@@ -1068,7 +1102,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			payorder.setPayid(insert.getId());
 			payorder.setOrderid(Integer.valueOf(str));
 			payorder.setPayDate(new Date());
-			payorder.setOrderstatus(orderifo.getOrdersstatus());
+			payorder.setOrderstatus(Integer.valueOf(orderstatus));
 			payorder.setPaystauts(AccountPayEnum.APPROVAL.intKey());
 			payorders.add(payorder);
 
@@ -1103,6 +1137,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		orderinfo.setOrdersstatus(Integer.valueOf((String) fromJson.get("interOrderStatus")));
 		orderinfo.setOrderstime(new Date());
 		orderinfo.setOrderstype(OrderTypeEnum.TEAM.intKey());
+		orderinfo.setAirlinecom((String) fromJson.get("airlinecom"));
 		if (!Util.isEmpty(fromJson.get("peoplecount"))) {
 			Integer peoplecount = Integer.valueOf((String) fromJson.get("peoplecount"));
 			orderinfo.setPeoplecount(peoplecount);

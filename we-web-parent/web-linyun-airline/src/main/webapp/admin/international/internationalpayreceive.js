@@ -30,7 +30,7 @@ function initshouFuKuanGatheringTable() {
                 	  render:function(data, type, row, meta) {
                     		var result = '<ul> ';
                     		$.each(row.orders, function(name, value) {
-                    			if(value){
+                    			if(value.ordersnum && value.ordersnum != undefined){
                     				result += '<li style="list-style:none;">'+value.ordersnum+'</li>';
                     			}
                     		});
@@ -42,7 +42,7 @@ function initshouFuKuanGatheringTable() {
                   	render:function(data, type, row, meta) {
                   		var result = '<ul> ';
                 		$.each(row.orders, function(name, value) {
-                			if(value){
+                			if(value.leavesdate && value.leavesdate != undefined){
                 				result += '<li style="list-style:none;">'+value.leavesdate+'</li>';
                 			}
                 		});
@@ -94,12 +94,12 @@ function initshouFuKuanGatheringTable() {
                     		return result;
                     	}
                   },
-                  {"data": "username", "bSortable": false},
+                  {"data": "fullname", "bSortable": false},
                   {"data": "orderstatus", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                   		var result = '';
                   		$.each(row.internationalstatusenum, function(name, value) {
-                  			if(row.orderstatus == name){
+                  			if(row.orderstatus && row.orderstatus != undefined && row.orderstatus == name){
                   				result = value;
                   			}
                   		});
@@ -165,6 +165,7 @@ function openInvoice(id,invoiceid){
 	        skin: false, //加上边框
 	        closeBtn:false,//默认 右上角关闭按钮 是否显示
 	        shadeClose:true,
+	        scrollbar: false,
 	        area: ['987px', '620px'],
 	        content: BASE_PATH + '/admin/international/invoice/kaiInvoice.html?id='+invoiceid
 	      });
@@ -175,6 +176,7 @@ function openInvoice(id,invoiceid){
 			skin: false, //加上边框
 			closeBtn:false,//默认 右上角关闭按钮 是否显示
 			shadeClose:true,
+			scrollbar: false,
 			area: ['987px', '620px'],
 			content: BASE_PATH + '/admin/international/payreceive/openInvoice.html?id='+id
 		});
@@ -329,6 +331,7 @@ function receiveInvoice(id,invoiceid){
 	        skin: false, //加上边框
 	        closeBtn:false,//默认 右上角关闭按钮 是否显示
 	        shadeClose:true,
+	        scrollbar: false,
 	        area: ['987px', '620px'],
 	        content: BASE_PATH + '/admin/international/invoice/shouInvoice.html?id='+invoiceid
 	    });
@@ -339,6 +342,7 @@ function receiveInvoice(id,invoiceid){
 			skin: false, //加上边框
 			closeBtn:false,//默认 右上角关闭按钮 是否显示
 			shadeClose:true,
+			scrollbar: false,
 			area: ['987px', '620px'],
 			content: BASE_PATH + '/admin/international/payreceive/receiveInvoice.html?id='+id
 		});
