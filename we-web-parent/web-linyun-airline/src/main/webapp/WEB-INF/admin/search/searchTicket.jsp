@@ -142,13 +142,13 @@
 					<div class="infoTop">
 						<p>客户需求</p>
 					</div>
-					<div id="infofooter" class="infofooter">
+					<div id="infofooter" class="infofooter infofooter1">
 						<div class="DemandDiv">
 							<!-- 隐藏域   控制第一次添加航空段数时，只添加内容 -->
 							<input name="airLineClickHidden" value="1" type="hidden" /> <span
 								class="titleNum">1</span> <a href="javascript:;"
 								class="btn btn-primary btn-sm addDemand"><b>+</b>&nbsp;&nbsp;需求</a>
-							<table class="cloTable">
+							<table class="cloTable xuqiuTable">
 								<tr>
 									<td><label>出发城市：</label></td>
 									<td colspan="2">
@@ -188,7 +188,7 @@
 										class="form-control select2" multiple="multiple"
 										data-placeholder="AA-美国美洲航空"></select></td>
 									<td><label>航班号：</label></td>
-									<td><select id="cAirlineNum" name="cAirlineNum"
+									<td class="cAirlineNumTd"><select id="cAirlineNum" name="cAirlineNum"
 										class="form-control select2" multiple="multiple"
 										data-placeholder="MU8876"></select></td>
 									<td><label>出发时间：</label></td>
@@ -216,16 +216,28 @@
 									<td><a href="javascript:;" name="addButton"
 										class="glyphicon glyphicon-plus addIcon removAddMake"></a></td>
 								</tr>
-								<tr name="cRemarkTr" class="remarkTr">
+								<!-- <tr name="cRemarkTr" class="remarkTr">
 									<td></span><label>备注：</label></td>
 									<td colspan="11">
-										<!-- <input id="cRemark" name="cRemark" type="text" class="form-control input-sm noteText" placeholder=" "> -->
-										<textarea rows="5" cols="140" id="cRemark" name="cRemark"></textarea>
+										<input id="cRemark" name="cRemark" type="text" class="form-control input-sm noteText" placeholder=" ">
+									</td>
+								</tr> -->
+							</table>
+						</div>
+						
+					</div>
+					<context class="remarkContext">
+					   <div class="remarkDiv">
+							<table class="remarkTable">
+								<tr name="cRemarkTr" class="remarkTr">
+									<td><label>备注：</label></td>
+									<td>
+										<textarea class="form-control" id="cRemark" name="cRemark"></textarea>
 									</td>
 								</tr>
 							</table>
-						</div>
-					</div>
+					   </div>	
+					</context>
 				</div>
 				<!--end 客户需求-->
 

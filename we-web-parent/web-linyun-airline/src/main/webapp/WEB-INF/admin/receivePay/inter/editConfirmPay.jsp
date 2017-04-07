@@ -19,7 +19,7 @@
 			<button  type="button" id="submit" onclick="updateConfirmPay();" class="btn btn-primary right btn-sm">保存</button>
 			<h4>编辑付款</h4>
 		</div>
-		<div class="modal-body" style="height: 622px; overflow-y: auto;">
+		<div class="modal-body" style="height:580px; overflow-y: auto;">
 			
 			<table id="receivablesTable" class="table table-bordered table-hover">
 				<thead>

@@ -103,7 +103,7 @@ input#peoplecount {width: 143px !important;}
 .addYSKtable tbody tr:nth-child(2) td:nth-child(8){width:100px;}
 .addYSKtable tbody tr:nth-child(2) td:nth-child(9){width:45px;}
 .addYSKtable tbody tr:nth-child(2) td:nth-child(10){width:80px;}
-#prepayratio {width: 89%;display: inline-block;}
+#prepayratio {width: 88%;display: inline-block;}
 .query-style li [data-toggle="tab"]{line-height: 23px;}
 /*------end 添加记录------*/
 /*------航程信息------*/
@@ -111,3 +111,4 @@ input.uploadVisitors{float: left;width: 55px;height: 10px;position: relative;top
 .FileDiv{height: 29px;line-height: 28px;width: 74px;border-radius: 3px;background: rgba(60, 141, 188, 0);color: #3c8dbc;text-align: center;display: inline-block;}
 .infofooter {padding: 10px 0px 12px 0px;}
 /*------end 航程信息------*/
+.hideTable tbody tr td{padding-bottom:7px;}
