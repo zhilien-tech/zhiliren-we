@@ -65,6 +65,10 @@ public class RemindMessageService extends BaseService<TMessageEntity> {
 		if (!Util.isEmpty(msgData.get("upOrderId"))) {
 			upOrderId = ((Integer) msgData.get("upOrderId")).longValue();
 		}
+		int upOrderStatus = 0;
+		if (!Util.isEmpty(msgData.get("upOrderStatus"))) {
+			upOrderStatus = (int) (msgData.get("upOrderStatus"));
+		}
 
 		//判断消息是否存在， 不存在则添加
 		if (!Util.isEmpty(customerInfoId)) {
@@ -101,6 +105,8 @@ public class RemindMessageService extends BaseService<TMessageEntity> {
 		if (upOrderId != 0L) {
 			addForm.setUpOrderId(upOrderId);
 		}
+		//订单类型
+		addForm.setUpOrderStatus(upOrderStatus);
 		//消息提醒模式
 		addForm.setReminderMode(reminderMode);
 		//消息是否提醒  （默认为为提醒）
