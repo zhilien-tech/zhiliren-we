@@ -60,8 +60,8 @@ import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.ApprovalResultEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
 import com.linyun.airline.common.enums.DataStatusEnum;
-import com.linyun.airline.common.enums.MessageRemindEnum;
 import com.linyun.airline.common.enums.MessageWealthStatusEnum;
+import com.linyun.airline.common.enums.OrderRemindEnum;
 import com.linyun.airline.common.enums.UserJobStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TBankCardEntity;
@@ -200,7 +200,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				String pnr = "";
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
-				map.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
+				map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
 				searchViewService.addRemindMsg(map, ordernum, pnr, uid, RECEDMSGTYPE, session);
 			}
 		}
@@ -765,7 +765,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				String pnr = record.getString("PNR");
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
-				map.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
+				map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
 				searchViewService.addRemindMsg(map, ordernum, pnr, uid, PAYEDMSGTYPE, session);
 			}
 		}
@@ -883,26 +883,6 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				dbDao.insert(payReceiptEntity);
 			}
 		}
-
-		//付款成功 操作台添加消息
-		/*if (updatenum > 0) {
-			//TODO  ******************************************添加消息提醒***********************************************
-			String sqlS = sqlManager.get("receivePay_order_pnr_pids");
-			Sql sql = Sqls.create(sqlS);
-			Cnd cnd = Cnd.NEW();
-			cnd.and("pi.id", "in", payIds);
-			List<Record> orderPnrList = dbDao.query(sql, cnd, null);
-			for (Record record : orderPnrList) {
-				int uid = Integer.valueOf(record.getString("id"));
-				String ordernum = record.getString("ordersnum");
-				String pnr = record.getString("PNR");
-				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
-				map.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
-				searchViewService.addRemindMsg(map, ordernum, pnr, uid, PAYEDMSGTYPE, session);
-			}
-		}*/
-
 		return null;
 	}
 

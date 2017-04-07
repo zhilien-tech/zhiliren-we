@@ -151,7 +151,9 @@ $("#confirmRecClick").click(function(){
 		$.ajax({
 			type : 'POST',
 			data : {
-				id:$("#recIds").val()
+				"recIds":$("#recIds").val(),
+				"orderIds":$("#orderIds").val(),
+				"orderStatus":$("#prrOrderStatus").val()
 			},
 			async: false,
 			url: BASE_PATH + '/admin/receivePay/inter/saveInterRec.html',
@@ -200,7 +202,7 @@ function confirmReceive(id){
 	});
 }
 
-//付款检索
+//收款检索
 $("#interRecSelect").change(function(){
 	$("#interRecSearchBtn").click();
 });
@@ -212,13 +214,13 @@ $("#interRecSearchBtn").on('click', function () {
 	var inlandRecBeginDate = $("#interRecBeginDate").val();
 	var inlandRecEndDate = $("#interRecEndDate").val();
 	var inlandRecInput = $("#interRecInput").val();
-	var orderStatus = $("li.btnStyle").attr("id");
-	    var param = {
-			"receiveStatus":receiveStatus,
-			"orderStatus":orderStatus,
-			"leaveBeginDate":inlandRecBeginDate,
-			"leaveEndDate":inlandRecEndDate,
-			"name": inlandRecInput
+	var orderStatus = $(".osClass",$(".orderStatusClass")).attr("id");
+    var param = {
+		"receiveStatus":receiveStatus,
+		"orderStatus":orderStatus,
+		"leaveBeginDate":inlandRecBeginDate,
+		"leaveEndDate":inlandRecEndDate,
+		"name": inlandRecInput
 	};
 	interRecTable.settings()[0].ajax.data = param;
 	interRecTable.ajax.reload(
@@ -229,9 +231,9 @@ $("#interRecSearchBtn").on('click', function () {
 });
 
 //国际Tab  一订、二订、三订、全款状态 js--------------------------------
-$(".paymentUl li").click(function(){
-	$(this).addClass("btnStyle").siblings().removeClass('btnStyle');
-	var bookId = $(this).attr("id");
+$(".paymentNewUl li").click(function(){
+	$(this).addClass("orderStatusClass").siblings().removeClass('orderStatusClass');
+	var bookId =$(".osClass",$(this)).attr("id");
 	var receiveStatus = $("#interRecSelect").val();
 	var param = {
 			"receiveStatus":receiveStatus,
