@@ -106,9 +106,11 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 			record.put("invoiceinfoenum", EnumUtil.enum2(InvoiceInfoEnum.class));
 			record.put("ytselect", ytselect);
 			String username = "";
-			TUserEntity billuser = dbDao.fetch(TUserEntity.class, record.getInt("billuserid"));
-			if (!Util.isEmpty(billuser)) {
-				username = billuser.getFullName();
+			if (!Util.isEmpty(record.getInt("billuserid"))) {
+				TUserEntity billuser = dbDao.fetch(TUserEntity.class, record.getInt("billuserid"));
+				if (!Util.isEmpty(billuser)) {
+					username = billuser.getFullName();
+				}
 			}
 			record.put("internationalstatusenum", EnumUtil.enum2(InternationalStatusEnum.class));
 			record.put("username", username);
@@ -158,9 +160,11 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 			record.put("invoiceinfoenum", EnumUtil.enum2(InvoiceInfoEnum.class));
 			record.put("ytselect", ytselect);
 			String username = "";
-			TUserEntity billuser = dbDao.fetch(TUserEntity.class, record.getInt("billuserid"));
-			if (!Util.isEmpty(billuser)) {
-				username = billuser.getFullName();
+			if (!Util.isEmpty(record.getInt("billuserid"))) {
+				TUserEntity billuser = dbDao.fetch(TUserEntity.class, record.getInt("billuserid"));
+				if (!Util.isEmpty(billuser)) {
+					username = billuser.getFullName();
+				}
 			}
 			record.put("internationalstatusenum", EnumUtil.enum2(InternationalStatusEnum.class));
 			record.put("username", username);

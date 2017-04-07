@@ -92,4 +92,8 @@ public class TUpOrderEntity implements Serializable {
 	@Column
 	@Comment("提醒类型")
 	private Integer remindType;
+
+	@Column
+	@Comment("备注")
+	private String remark;
 }

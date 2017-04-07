@@ -107,7 +107,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 					DateUtil.FORMAT_YYYY_MM_DD));
 		}
 		//if (!Util.isEmpty(fromJson.get("billuserid"))) {
-		invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
+		//invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
 		//}
 		if (!Util.isEmpty(fromJson.get("deptid"))) {
 			invoiceinfo.setDeptid(Integer.valueOf((String) fromJson.get("deptid")));
@@ -172,7 +172,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		}
 		/*if (!Util.isEmpty(fromJson.get("billuserid"))) {
 		}*/
-		invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
+		//invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
 		if (!Util.isEmpty(fromJson.get("deptid"))) {
 			invoiceinfo.setDeptid(Integer.valueOf((String) fromJson.get("deptid")));
 		}
@@ -335,8 +335,11 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			//订单信息
 			List<Record> orders = dbDao.query(sql, cnd, null);
 			record.put("orders", orders);
-			record.put("username", dbDao.fetch(TUserEntity.class, Long.valueOf(record.getInt("billuserid")))
-					.getFullName());
+			String username = "";
+			if (!Util.isEmpty(record.getInt("billuserid"))) {
+				username = dbDao.fetch(TUserEntity.class, Long.valueOf(record.getInt("billuserid"))).getFullName();
+			}
+			record.put("username", username);
 			record.put("invoiceinfoenum", EnumUtil.enum2(InvoiceInfoEnum.class));
 			record.put("ytselect", ytselect);
 			String invoicedate = FormatDateUtil.dateToOrderDate((Date) record.get("invoicedate"));
@@ -565,9 +568,9 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			invoiceinfo.setInvoicedate(DateUtil.string2Date((String) fromJson.get("invoicedate"),
 					DateUtil.FORMAT_YYYY_MM_DD));
 		}
-		if (!Util.isEmpty(fromJson.get("billuserid"))) {
+		/*if (!Util.isEmpty(fromJson.get("billuserid"))) {
 			invoiceinfo.setBilluserid(Integer.valueOf((String) fromJson.get("billuserid")));
-		}
+		}*/
 		if (!Util.isEmpty(fromJson.get("deptid"))) {
 			invoiceinfo.setDeptid(Integer.valueOf((String) fromJson.get("deptid")));
 		}
@@ -627,9 +630,9 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			invoiceinfo.setInvoicedate(DateUtil.string2Date((String) fromJson.get("invoicedate"),
 					DateUtil.FORMAT_YYYY_MM_DD));
 		}
-		if (!Util.isEmpty(fromJson.get("billuserid"))) {
+		/*if (!Util.isEmpty(fromJson.get("billuserid"))) {
 			invoiceinfo.setBilluserid(Integer.valueOf((String) fromJson.get("billuserid")));
-		}
+		}*/
 		if (!Util.isEmpty(fromJson.get("deptid"))) {
 			invoiceinfo.setDeptid(Integer.valueOf((String) fromJson.get("deptid")));
 		}

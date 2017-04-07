@@ -43,16 +43,31 @@ $(document).on('change','.sc', function(){
 	reader.readAsDataURL(file);
 });
 
-$(document).on('input','#invoicebalance', function(){
+$(document).on('input','#invoicebalance', function(e){
+	//var e = window.event || arguments.callee.caller.arguments[0];
+    if(e && e.keyCode == 8){
+		 alert('退格');
+	 }
+	var thisval = $(this).val();
 	var banlanceyue = parseFloat($('#sumjine').html());
+	var balance = $('#balance').html();
+	var shengyu = $('#backupbalance').val();
 	$('.cloneTR').each(function(i){
 		var invoicebalance = $(this).find('[name=invoicebalance]').val();
 		if(invoicebalance){
-			banlanceyue = banlanceyue - parseFloat(invoicebalance);
+			if(banlanceyue - parseFloat(invoicebalance) > 0){
+				banlanceyue = banlanceyue - parseFloat(invoicebalance);
+			}else{
+				banlanceyue = 0;
+				thisval = shengyu;
+			}
 		}
 	});
+	$(this).val(thisval);
 	if(!isNaN(banlanceyue)){
 		$('#balance').html(banlanceyue.toFixed(2));
 	}
 });
-
+$(document).on('blur','#invoicebalance', function(){
+	$('#backupbalance').val($('#balance').html());
+});

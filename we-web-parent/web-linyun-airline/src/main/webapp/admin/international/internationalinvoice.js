@@ -87,7 +87,15 @@ function initkaiInvoiceTable() {
                     	}
                   },
                   {"data": "paymentunit", "bSortable": false},
-                  {"data": "username", "bSortable": false},
+                  {"data": "username", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                    		var result = '';
+                			if(row.username && row.username!=undefined){
+                				result = row.username;
+                			}
+                    		return result;
+                    	} 
+                  },
                   {"data": "orderstatus", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                   		var result = '';
@@ -243,7 +251,15 @@ function initshouInvoiceTable() {
                     	}
                   },
                   {"data": "paymentunit", "bSortable": false},
-                  {"data": "username", "bSortable": false},
+                  {"data": "username", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                  		var result = '';
+              			if(row.username && row.username!=undefined){
+              				result = row.username;
+              			}
+                  		return result;
+                  	} 
+                  },
                   {"data": "orderstatus", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                     		var result = '';

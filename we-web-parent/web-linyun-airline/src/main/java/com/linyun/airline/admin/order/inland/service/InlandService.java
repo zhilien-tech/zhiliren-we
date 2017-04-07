@@ -373,6 +373,14 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				orderinfo.setOrdersnum(editPlanService.generateOrderNum());
 			}
 		}
+		if (!Util.isEmpty(fromJson.get("remindTime"))) {
+			Date remindTime = DateUtil.string2Date((String) fromJson.get("remindTime"), DateUtil.FORMAT_FULL_PATTERN);
+			orderinfo.setRemindTime(remindTime);
+		}
+		if (!Util.isEmpty(fromJson.get("remindType"))) {
+			String remindType = (String) fromJson.get("remindType");
+			orderinfo.setRemindType(Integer.valueOf(remindType));
+		}
 		//更新订单信息
 		int updateNum = dbDao.update(orderinfo);
 

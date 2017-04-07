@@ -591,7 +591,7 @@
             <div class="infofooter">
                  <table class="remindSet">
                    <tr>
-                     <td><input id="remindTime" disabled="disabled" type="text" class="form-control input-sm" placeholder="2020-01-01 00:00:00" onfocus="WdatePicker({minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="<fmt:formatDate value="${obj.orderinfo.remindType }" pattern="yyyy-MM-dd HH:mm:ss" />"/></td>
+                     <td><input id="remindTime" disabled="disabled" type="text" class="form-control input-sm" placeholder="2020-01-01 00:00:00" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="<fmt:formatDate value="${obj.orderinfo.remindTime }" pattern="yyyy-MM-dd HH:mm:ss" />"/></td>
                      <td>
                        <select id="remindType" disabled="disabled" class="form-control input-sm">
                          <c:forEach var="map" items="${obj.orderRemindEnum}" >
