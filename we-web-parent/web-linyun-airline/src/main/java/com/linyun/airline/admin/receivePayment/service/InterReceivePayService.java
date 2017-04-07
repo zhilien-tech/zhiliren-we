@@ -32,10 +32,13 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.upload.UploadAdaptor;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.operationsArea.service.RemindMessageService;
 import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
 import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
@@ -56,6 +59,11 @@ import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.ApprovalResultEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
 import com.linyun.airline.common.enums.DataStatusEnum;
+import com.linyun.airline.common.enums.MessageLevelEnum;
+import com.linyun.airline.common.enums.MessageRemindEnum;
+import com.linyun.airline.common.enums.MessageSourceEnum;
+import com.linyun.airline.common.enums.MessageStatusEnum;
+import com.linyun.airline.common.enums.MessageTypeEnum;
 import com.linyun.airline.common.enums.MessageWealthStatusEnum;
 import com.linyun.airline.common.enums.OrderRemindEnum;
 import com.linyun.airline.common.enums.SearchOrderStatusEnum;
@@ -120,6 +128,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 
 	@Inject
 	private ReceivePayService receivePayService;
+
+	@Inject
+	private RemindMessageService remindMessageService;
 
 	/**
 	 * 
@@ -331,7 +342,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			for (Record record : orderPnrList) {
 				int uid = Integer.valueOf(record.getString("id"));
 				String ordernum = record.getString("ordersnum");
-				String pnr = record.getString("pnrnum");
+				String pnr = record.getString("PNR");
 				addInterRemindMsg(uid, ordernum, pnr, orderStatus, session);
 			}
 		}
@@ -374,7 +385,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 		map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
 		map.put("orderStatus", msgOrderStatus);
-		String addRemindMsg = searchViewService.addRemindMsg(map, ordernum, pnr, orderId, msgOrderStatus, session);
+		String addRemindMsg = addRemindMsg(map, ordernum, pnr, orderId, msgOrderStatus, session);
 		return addRemindMsg;
 	}
 
@@ -608,12 +619,15 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		cnd.and("prr.id", "in", orderIds);
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		String payIds = "";
+		String pOrderIds = "";
+		String pOrderStatus = "";
 		if (!Util.isEmpty(orders)) {
 			String shortname = orders.get(0).getString("shortname");
 			for (Record record : orders) {
 				String everyShortName = record.getString("shortname");
 				String id = record.getString("id");
 				String uid = record.getString("uid");
+				String prrOrderStatus = record.getString("prrorderstatus");
 				if (!Util.eq(shortname, everyShortName)) {
 					map.put("sameName", false);
 				} else {
@@ -621,6 +635,12 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				}
 				if (!Util.isEmpty(id)) {
 					payIds += record.getString("id") + ",";
+				}
+				if (!Util.isEmpty(uid)) {
+					pOrderIds += record.getString("uid") + ",";
+				}
+				if (!Util.isEmpty(prrOrderStatus)) {
+					pOrderStatus = record.getString("prrorderstatus");
 				}
 			}
 		}
@@ -718,7 +738,11 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		oids = oids.substring(0, oids.length() - 1);
 		map.put("zjzlList", zjzlList);
 		map.put("ids", oids);
-
+		if (pOrderIds.length() > 1) {
+			pOrderIds = pOrderIds.substring(0, pOrderIds.length() - 1);
+		}
+		map.put("pOrderIds", pOrderIds);
+		map.put("orderStatus", pOrderStatus);
 		return map;
 	}
 
@@ -1000,7 +1024,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		Integer isInvioce = form.getIsInvioce();
 		String receiptUrl = form.getReceiptUrl();
 		String payIds = form.getPayIds();
-
+		String orderIds = form.getOrderIds();
+		String orderStatus = form.getOrderStatus();
 		Double totalMoney = form.getTotalMoney();
 		String payNames = form.getPayNames();
 		//操作人
@@ -1097,6 +1122,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				payOrderEntity.setPaystauts(APPROVALPAYED);
 				payOrderEntity.setPayDate(DateUtil.nowDate());
 				newPayOrderList.add(payOrderEntity);
+
 			}
 			updateNum = dbDao.update(newPayOrderList);
 		}
@@ -1106,16 +1132,19 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//付款成功 操作台添加消息
 		if (updateNum > 0) {
 			//******************************************添加消息提醒***********************************************
-			String sqlS = sqlManager.get("receivePay_inter_order_pay_pids");
+			String sqlS = sqlManager.get("receivePay_inter_order_pay_rids");
 			Sql sql = Sqls.create(sqlS);
 			Cnd cnd = Cnd.NEW();
-			cnd.and("pi.id", "in", payIds);
+			cnd.and("prr.orderid", "in", orderIds);
+			cnd.and("prr.orderstatusid", "=", orderStatus);
+			cnd.and("pi.mainsection", "=", MAINSECTION);
 			List<Record> orderPnrList = dbDao.query(sql, cnd, null);
+
 			for (Record record : orderPnrList) {
 				int uid = Integer.valueOf(record.getString("id"));
 				String ordernum = record.getString("ordersnum");
 				String pnr = record.getString("PNR");
-				/*addInterRemindMsg(uid, ordernum, pnr, orderStatus, session);*/
+				addInterRemindMsg(uid, ordernum, pnr, orderStatus, session);
 			}
 		}
 
@@ -1203,4 +1232,224 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		List<ComDictInfoEntity> query = dbDao.query(ComDictInfoEntity.class, cnd, null);
 		return query;
 	}
+
+	/**
+	 * 
+	 * ******************************************添加消息提醒*************************************************
+	 * <p>
+	 *
+	 * @param data Json数据
+	 * @param generateOrderNum  订单号
+	 * @param pnr  pnr号
+	 * @param orderStatus  订单状态(使用消息提醒的枚举)
+	 * @param session
+	 * @return 
+	 */
+	public String addRemindMsg(Map<String, Object> fromJson, String generateOrderNum, String pnr, int upOrderId,
+			int orderStatus, HttpSession session) {
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long userId = loginUser.getId();
+		//查询当前公司下 会计id
+		TCompanyEntity companyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Sql accountSql = Sqls.create(sqlManager.get("customer_search_accounter"));
+		accountSql.setParam("jobName", "会计");
+		accountSql.setParam("compId", companyEntity.getId());
+		List<Record> accountingIds = dbDao.query(accountSql, null, null);
+
+		//消息接收方ids
+		ArrayList<Long> receiveUserIds = Lists.newArrayList();
+		if (!Util.isEmpty(accountingIds)) {
+			for (Record record : accountingIds) {
+				long accountingId = Long.parseLong(record.getString("userId"));
+				receiveUserIds.add(accountingId);
+			}
+		}
+		receiveUserIds.add(userId);
+		//消息来源id
+		long SourceUserId = userId;
+		//消息来源方类型
+		int sourceUserType = MessageSourceEnum.SYSTEMMSG.intKey();
+		//消息接收方类型（个人、公司、系统）
+		int receiveUserType = MessageSourceEnum.PERSONALMSG.intKey();
+		//消息状态
+		int msgStatus = MessageStatusEnum.UNREAD.intKey();
+
+		//提醒日期 TODO
+		String remindDateStr = (String) fromJson.get("remindDate");
+		//客户信息id
+		/*String customerInfoId = (String) fromJson.get("customerInfoId");*/
+		String customerInfoId = null;
+		//消息提醒日期
+		Date remindDateTime = DateUtil.nowDate();
+		if (!Util.isEmpty(remindDateStr)) {
+			remindDateTime = DateUtil.string2Date(remindDateStr);
+		}
+
+		//消息提醒方式
+		String remindStr = fromJson.get("remindType").toString();
+		if (Util.isEmpty(remindStr)) {
+			remindStr = "6";
+		}
+		Integer remindType = Integer.valueOf(remindStr);
+		switch (remindType) {
+		case 0:
+			//每15Min  消息表：5
+			remindType = MessageRemindEnum.FIFTEENM.intKey();
+			break;
+		case 1:
+			//每30Min  消息表：7
+			remindType = MessageRemindEnum.THIRTYM.intKey();
+			break;
+		case 2:
+			//每1H 消息表：4
+			remindType = MessageRemindEnum.HOUR.intKey();
+			break;
+		case 3:
+			//每一天 消息表：3
+			remindType = MessageRemindEnum.DAY.intKey();
+			break;
+		case 4:
+			//每一周 消息表：2
+			remindType = MessageRemindEnum.WEEK.intKey();
+			break;
+		case 5:
+			//每一月 消息表：1
+			remindType = MessageRemindEnum.MOUTH.intKey();
+			break;
+		case 6:
+			//不重复（只提醒一次） 消息表：8
+			remindType = MessageRemindEnum.UNREPEAT.intKey();
+			break;
+		default:
+			//自定义 消息表：6
+			remindType = MessageRemindEnum.TIMED.intKey();
+			break;
+		}
+		long reminderMode = remindType;
+
+		//消息类型和订单状态 orderStatus有关
+		int msgType = MessageTypeEnum.NOTICEMSG.intKey(); //消息类型---默认为"系统通知消息"
+		int msgLevel = MessageLevelEnum.MSGLEVEL1.intKey(); //消息优先级---默认为"优先级一"
+		String msgContent = ""; //消息内容
+		switch (orderStatus) {
+		case 1:
+			//查询 4
+			msgType = MessageTypeEnum.SEARCHMSG.intKey();
+			//消息等级2
+			msgLevel = MessageLevelEnum.MSGLEVEL2.intKey();
+			//消息内容
+			msgContent = "向你发送一个查询询单：" + generateOrderNum;
+			break;
+		case 2:
+			//预订 5
+			msgType = MessageTypeEnum.BOOKMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL2.intKey();
+			msgContent = "向你发送一个预售订单：" + generateOrderNum;
+			break;
+		case 3:
+			//开票 (消息内容TODO)  6
+			msgType = MessageTypeEnum.DRAWBILLMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL3.intKey();
+			msgContent = "向你发送一个开票订单：" + generateOrderNum;
+			break;
+		case 4:
+			//出票 (消息内容TODO) 7
+			msgType = MessageTypeEnum.MAKEOUTBILLMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL3.intKey();
+			msgContent = "向你发送一个出票订单：" + generateOrderNum;
+			break;
+		case 5:
+			//关闭 (消息内容TODO)  0
+			msgType = MessageTypeEnum.CLOSEMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL1.intKey();
+			msgContent = "向你发送一个关闭订单：" + generateOrderNum;
+			break;
+		case 6:
+			//一订 8
+			msgType = MessageTypeEnum.FIRBOOKMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
+			msgContent = generateOrderNum + "订单一订需处理";
+			break;
+		case 7:
+			//二订 9
+			msgType = MessageTypeEnum.SECBOOKMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
+			msgContent = generateOrderNum + "订单二订需处理";
+			break;
+		case 8:
+			//三订 10
+			msgType = MessageTypeEnum.THRBOOKMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
+			msgContent = generateOrderNum + "订单三订需处理";
+			break;
+		case 9:
+			//全款 11
+			msgType = MessageTypeEnum.ALLBOOKMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
+			msgContent = generateOrderNum + "订单全款需处理";
+			break;
+		case 10:
+			//尾款 12
+			msgType = MessageTypeEnum.LASTBOOKMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
+			msgContent = generateOrderNum + "订单需结清尾款";
+			break;
+		case 11:
+			//已收款 14
+			msgType = MessageTypeEnum.RECEIVEDMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = generateOrderNum + "订单款项已收";
+			break;
+		case 12:
+			//已付款 15
+			msgType = MessageTypeEnum.PAYEDMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = generateOrderNum + " " + pnr + "款项已付";
+			break;
+		case 13:
+			//收款款已开发票 16
+			msgType = MessageTypeEnum.INVIOCEMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = generateOrderNum + "订单" + pnr + "发票已开";
+			break;
+		case 14:
+			//付款已收发票 17
+			msgType = MessageTypeEnum.RECINVIOCEMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = generateOrderNum + "订单中PNR：" + pnr + "发票已收";
+			break;
+		case 15:
+			//付款 已审批18
+			msgType = MessageTypeEnum.RECINVIOCEMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = generateOrderNum + "订单中PNR：" + pnr + "审批已通过";
+			break;
+		case 16:
+			//付款已收发票 19
+			msgType = MessageTypeEnum.RECINVIOCEMSG.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = generateOrderNum + "订单中PNR：" + pnr + "审批已拒绝";
+			break;
+		}
+
+		/*添加的消息 存放到map中*/
+		Map<String, Object> mapMsg = Maps.newHashMap();
+		mapMsg.put("msgContent", msgContent);
+		mapMsg.put("msgType", msgType);
+		mapMsg.put("msgLevel", msgLevel);
+		mapMsg.put("msgStatus", msgStatus);
+		mapMsg.put("reminderMode", reminderMode);
+		mapMsg.put("SourceUserId", SourceUserId);
+		mapMsg.put("sourceUserType", sourceUserType);
+		mapMsg.put("receiveUserIds", receiveUserIds);
+		mapMsg.put("receiveUserType", receiveUserType);
+		mapMsg.put("customerInfoId", customerInfoId);
+		mapMsg.put("remindMsgDate", remindDateTime);
+		mapMsg.put("upOrderId", upOrderId);
+
+		remindMessageService.addMessageEvent(mapMsg);
+		return "消息添加成功";
+	}
+
 }

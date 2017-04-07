@@ -37,6 +37,8 @@
 				</thead>
 				<tbody id="interConfirmPayTbody">
 					<input id="payIds" name="payIds" type="hidden" value="${obj.ids }"><!-- 水单url -->
+					<input id="orderIds" name="orderIds" type="hidden" value="${obj.pOrderIds }"><!-- 订单id -->
+					<input id="orderStatus" name="orderStatus" type="hidden" value="${obj.orderStatus }"><!-- 订单状态 -->
 					<c:forEach var="one" items="${obj.orders}">
                 		<tr ondblclick="trDetail(${one.uid});">
                 			<%-- <td>${one.id }</td> --%>
