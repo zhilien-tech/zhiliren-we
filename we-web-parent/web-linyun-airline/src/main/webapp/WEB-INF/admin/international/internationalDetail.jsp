@@ -21,10 +21,8 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-
   <!--Header -->
   <header class="main-header">
-
     <!-- Logo -->
     <a href="index2.html" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -147,7 +145,7 @@
                   <table class="HCinfoInp">
                    <tr>
                      <td><label>航空公司：</label></td>
-                     <td><select id="airlinecom" name="airlinecom" disabled="disabled" class="form-control input-sm disab" multiple="multiple">
+                     <td class="hkgsTd"><select id="airlinecom" name="airlinecom" disabled="disabled" class="form-control input-sm disab" multiple="multiple">
                      		<c:forEach items="${obj.aircomselect }" var="aircom">
                      			<c:choose>
                      				<c:when test="${obj.orderinfo.airlinecom eq aircom.dictCode}">
@@ -159,7 +157,7 @@
                      			</c:choose>
                      		</c:forEach>
                      </select></td>
-                     <td><label>人数：</label></td>
+                     <td class="renshuTd"><label>人数：</label></td>
                      <td><input id="peoplecount" name="peoplecount" disabled="disabled" type="text" class="form-control input-sm disab mustNumber" value="${obj.orderinfo.peoplecount }"></td>
                      <td><label>成本单价：</label></td>
                      <td><input id="costsingleprice" name="costsingleprice" disabled="disabled" type="text" class="form-control input-sm disab mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.orderinfo.costsingleprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
@@ -528,7 +526,7 @@
 				                skin: false, //加上边框
 				                closeBtn:false,//默认 右上角关闭按钮 是否显示
 				                shadeClose:true,
-				                area: ['1000px', '450px'],
+				                area: ['900px', '200px'],
 				                content: '${base}/admin/international/addPayRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.paystatus}&ordersstatus='+orderType+'&peoplecount='+peoplecount+'&costsingleprice='+costsingleprice
 				             });
 	              		}else{

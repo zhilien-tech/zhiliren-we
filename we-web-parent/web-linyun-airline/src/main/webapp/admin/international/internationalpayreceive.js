@@ -165,6 +165,7 @@ function openInvoice(id,invoiceid){
 	        skin: false, //加上边框
 	        closeBtn:false,//默认 右上角关闭按钮 是否显示
 	        shadeClose:true,
+	        scrollbar: false,
 	        area: ['987px', '620px'],
 	        content: BASE_PATH + '/admin/international/invoice/kaiInvoice.html?id='+invoiceid
 	      });
@@ -175,6 +176,7 @@ function openInvoice(id,invoiceid){
 			skin: false, //加上边框
 			closeBtn:false,//默认 右上角关闭按钮 是否显示
 			shadeClose:true,
+			scrollbar: false,
 			area: ['987px', '620px'],
 			content: BASE_PATH + '/admin/international/payreceive/openInvoice.html?id='+id
 		});
@@ -329,6 +331,7 @@ function receiveInvoice(id,invoiceid){
 	        skin: false, //加上边框
 	        closeBtn:false,//默认 右上角关闭按钮 是否显示
 	        shadeClose:true,
+	        scrollbar: false,
 	        area: ['987px', '620px'],
 	        content: BASE_PATH + '/admin/international/invoice/shouInvoice.html?id='+invoiceid
 	    });
@@ -339,6 +342,7 @@ function receiveInvoice(id,invoiceid){
 			skin: false, //加上边框
 			closeBtn:false,//默认 右上角关闭按钮 是否显示
 			shadeClose:true,
+			scrollbar: false,
 			area: ['987px', '620px'],
 			content: BASE_PATH + '/admin/international/payreceive/receiveInvoice.html?id='+id
 		});

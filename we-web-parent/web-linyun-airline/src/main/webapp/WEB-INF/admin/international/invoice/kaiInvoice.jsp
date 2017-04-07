@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en-US">
@@ -19,7 +18,7 @@
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo();" value="保存"/>
             <h4 class="invoiceH4">收款信息</h4>
     </div>
-    <div style="height:550px; overflow-y:auto; ">
+    <div style="height:550px; overflow-y:auto;" class="allCentext">
       <div class="modal-body">
          <table id="receivablesTable" class="table table-bordered table-hover">
                   <thead>
@@ -49,7 +48,7 @@
          </table>
          <table border="0" class="selectTable">
                   <tr>
-                    <td>银行：</td>
+                    <td><label>银行：</label></td>
                     <td>
                       <select class="form-control input-sm" disabled="disabled">
                            <c:forEach var="one" items="${obj.yhkSelect }">
@@ -64,19 +63,19 @@
                            </c:forEach>
                       </select>
                     </td>
-                    <td>银行卡名称：</td>
+                    <td><label>银行卡名称：</label></td>
                     <td>
                       <select class="form-control input-sm" disabled="disabled">
                           <option>${obj.receive.bankcardname }</option>
                       </select>
                     </td>
-                    <td>卡号：</td>
+                    <td><label>卡号：</label></td>
                     <td>
                        <select class="form-control input-sm" disabled="disabled">
                           <option>${obj.receive.bankcardnum }</option>
                        </select>
                     </td>
-                    <td>合计：</td>
+                    <td><label>合计：</label></td>
                     <td id="sumjine"><fmt:formatNumber type="number" value="${obj.receive.sum }" pattern="0.00" maxFractionDigits="2"/></td>
                   </tr>
          </table>
@@ -233,6 +232,7 @@
 	          newDiv.find('.deleteInvoice').parent().remove();
 	          newDiv.find('.addIcon').parent().remove();
 	          newDiv.find('.fileUL').append('<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>');
+	          $('.allCentext').scrollTop($('.allCentext').height());
 	      });
 	      /*-----收付款>收款>开发票 - 按钮-----*/
 	      $(document).on("click",".removIcon",function(){

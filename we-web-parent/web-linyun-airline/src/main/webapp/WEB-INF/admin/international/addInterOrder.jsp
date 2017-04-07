@@ -61,20 +61,19 @@
                      <td><label>公司简称：</label></td>
                      <td><input id="shortName" name="shortName" type="text" class="form-control input-sm" placeholder="" readonly="true"></td>
                      <td><label>电话：</label></td>
-                     <td><input id="telephone" name="telephone" type="text" class="form-control input-sm" placeholder="" readonly="true"></td>
+                     <td><input id="telephone" name="telephone" type="text" class="form-control input-sm" readonly="true"></td>
                      <td><label>地址：</label></td>
-                     <td colspan="3"><input id="address" name="address" type="text" class="form-control input-sm addressInput" placeholder="" readonly="true"></td>
+                     <td colspan="3"><input id="address" name="address" type="text" class="form-control input-sm addressInput" readonly="true"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>负责人：</label></td>
-                     <td><input id="responsible" name="responsible" type="text" class="form-control input-sm" placeholder="" readonly="true"></td>
+                     <td><input id="responsible" name="responsible" type="text" class="form-control input-sm" readonly="true"></td>
                      <td><label>网址：</label></td>
-                     <td><input id="siteUrl" name="siteUrl" type="text" class="form-control input-sm" placeholder="" readonly="true"></td>
+                     <td><input id="siteUrl" name="siteUrl" type="text" class="form-control input-sm" readonly="true"></td>
                      <td><label>传真：</label></td>
-                     <td><input id="fax" name="fax" type="text" class="form-control input-sm" placeholder="" readonly="true"></td>
+                     <td><input id="fax" name="fax" type="text" class="form-control input-sm" readonly="true"></td>
                      <td><label>出发城市：</label></td>
-                     <td><input id="departureCity" name="departureCity" type="text" class="form-control input-sm addressInput" placeholder="" readonly="true"></td>
-                     
+                     <td><input id="departureCity" name="departureCity" type="text" class="form-control input-sm addressInput" readonly="true"></td>
                    </tr>
                  </table>
                </div>
