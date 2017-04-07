@@ -100,7 +100,13 @@ function initPayDataTable(){
 		            	}
 		            },
 		            {"data": "drawer", "bSortable": false}
-
+			            render: function(data, type, row, meta) {
+		            		var drawer = row.drawer;
+		            		if(null == drawer || ""== drawer){
+		            			return "";
+		            		}
+		            		return drawer;
+		            	}
 		            ],
 		            "infoCallback": function (settings, start, end, max, total, pre) {
 		            	var length = $(".checkBoxPayChild:checked").length;
