@@ -101,6 +101,13 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 #inlandPayEdTbody tr td:nth-child(10) {line-height: 60px;}
 #inlandPayEdTbody tr td:nth-child(11) {line-height: 60px;}
 #inlandPayEdTbody tr td:nth-child(12) {line-height: 60px;}
+#interPayEdTbody tr td{padding:0;}
+#interPayEdTbody tr td:nth-child(7) {line-height: 60px;}
+#interPayEdTbody tr td:nth-child(8) {line-height: 60px;}
+#interPayEdTbody tr td:nth-child(9) {line-height: 60px;}
+#interPayEdTbody tr td:nth-child(10) {line-height: 60px;}
+#interPayEdTbody tr td:nth-child(11) {line-height: 60px;}
+#interPayEdTbody tr td:nth-child(12) {line-height: 60px;}
 .txtTable tbody tr td:nth-child(1) {width: 62px;}
 .txtTable tbody tr td:nth-child(2) {width: 125px;}
 .txtTable tbody tr td:nth-child(3) {width: 90px;}
@@ -109,9 +116,9 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 .txtTable tbody tr td:nth-child(6) {width: 210px;}
 .txtTable tbody tr td:nth-child(7) {width: 50px;}
 #inlandPayBeginDate,#inlandPayEndDate,#inlandRecBeginDate,#inlandRecEndDate {padding-left: 3px;padding-right: 3px;}
-
-
-
+#interRecSelect,#interPaySelect{padding-left: 3px;padding-right: 3px;}
+button#interPayCancelBtn {padding: 5px 10px;}
+.leftPadding {padding-left: 10px;}
 
 
 

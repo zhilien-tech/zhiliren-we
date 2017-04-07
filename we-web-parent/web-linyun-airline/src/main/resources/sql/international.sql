@@ -56,7 +56,7 @@ $condition
 /*get_international_receive_list*/
 SELECT
 	tr.*, tii.id invoiceid,
-	tu.userName
+	tu.fullName
 FROM
 	t_receive tr
 LEFT JOIN t_invoice_info tii ON tr.id = tii.receiveid
@@ -180,7 +180,7 @@ $condition
 
 /*get_international_kai_invoice_list_order*/
 SELECT
-	tuo.*, tprr.actualnumber
+	tuo.*, tprr.actualnumber,tprr.orderstatus
 FROM
 	t_up_order tuo
 INNER JOIN t_order_receive tor ON tuo.id = tor.orderid

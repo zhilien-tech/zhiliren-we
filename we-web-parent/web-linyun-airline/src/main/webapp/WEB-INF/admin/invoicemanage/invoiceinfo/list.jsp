@@ -32,7 +32,7 @@
                                    <option value="">开票人</option>
 				                    <c:forEach items="${obj.listIssuer}" var="one">
 				                    	<option value="${one.billuserid }">
-			                            	${one.userName }
+			                            	${one.fullName }
 			                            </option>
 			                        </c:forEach>
                                </select>
@@ -94,7 +94,7 @@
                                   <option value="">收票人</option>
 				                    <c:forEach items="${obj.listIssuer}" var="one" varStatus="indexs">
 				                    	<option value="${one.billuserid }">
-			                            	${one.userName }
+			                            	${one.fullName }
 			                            </option>
 			                        </c:forEach>
                               </select>

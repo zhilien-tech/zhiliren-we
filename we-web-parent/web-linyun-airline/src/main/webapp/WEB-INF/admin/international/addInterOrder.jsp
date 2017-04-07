@@ -56,10 +56,10 @@
                    </tr>
                  </table>
 
-                 <table class="hideTable none">
+                 <table class="hideTable none hideTable">
                    <tr>
                      <td><label>公司简称：</label></td>
-                     <td><input id="shortName" name="shortName" type="text" class="form-control input-sm" readonly="true"></td>
+                     <td><input id="shortName" name="shortName" type="text" class="form-control input-sm" placeholder="" readonly="true"></td>
                      <td><label>电话：</label></td>
                      <td><input id="telephone" name="telephone" type="text" class="form-control input-sm" readonly="true"></td>
                      <td><label>地址：</label></td>

@@ -107,7 +107,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 					DateUtil.FORMAT_YYYY_MM_DD));
 		}
 		//if (!Util.isEmpty(fromJson.get("billuserid"))) {
-		invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
+		//invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
 		//}
 		if (!Util.isEmpty(fromJson.get("deptid"))) {
 			invoiceinfo.setDeptid(Integer.valueOf((String) fromJson.get("deptid")));
@@ -172,7 +172,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		}
 		/*if (!Util.isEmpty(fromJson.get("billuserid"))) {
 		}*/
-		invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
+		//invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
 		if (!Util.isEmpty(fromJson.get("deptid"))) {
 			invoiceinfo.setDeptid(Integer.valueOf((String) fromJson.get("deptid")));
 		}
@@ -268,6 +268,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 
 	public Object saveMitigateData(HttpServletRequest request) {
 		String orderid = request.getParameter("orderid");
+		TUpOrderEntity fetch = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(orderid));
 		String customeid = request.getParameter("customeid");
 		String customname = request.getParameter("customname");
 		HttpSession session = request.getSession();
@@ -283,13 +284,14 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		mitigateInfoEntity.setCustomname(customname);
 		mitigateInfoEntity.setApplyid(new Long(user.getId()).intValue());
 		mitigateInfoEntity.setApplyResult(ReductionStatusEnum.APPROVALING.intKey());
+		mitigateInfoEntity.setOrdertype(fetch.getOrderstype());
 		if (!Util.isEmpty(account)) {
 			mitigateInfoEntity.setAccount(formatDouble(Double.valueOf(account)));
 		}
 		mitigateInfoEntity.setAccountupper(accountupper);
 		mitigateInfoEntity.setCurrency(currency);
 		mitigateInfoEntity.setApprovelid(approvelid);
-		mitigateInfoEntity.setOrdertype(OrderTypeEnum.FIT.intKey());
+		//mitigateInfoEntity.setOrdertype(OrderTypeEnum.FIT.intKey());
 		return dbDao.insert(mitigateInfoEntity);
 
 	}
@@ -333,8 +335,11 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			//订单信息
 			List<Record> orders = dbDao.query(sql, cnd, null);
 			record.put("orders", orders);
-			record.put("username", dbDao.fetch(TUserEntity.class, Long.valueOf(record.getInt("billuserid")))
-					.getFullName());
+			String username = "";
+			if (!Util.isEmpty(record.getInt("billuserid"))) {
+				username = dbDao.fetch(TUserEntity.class, Long.valueOf(record.getInt("billuserid"))).getFullName();
+			}
+			record.put("username", username);
 			record.put("invoiceinfoenum", EnumUtil.enum2(InvoiceInfoEnum.class));
 			record.put("ytselect", ytselect);
 			String invoicedate = FormatDateUtil.dateToOrderDate((Date) record.get("invoicedate"));
@@ -563,9 +568,9 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			invoiceinfo.setInvoicedate(DateUtil.string2Date((String) fromJson.get("invoicedate"),
 					DateUtil.FORMAT_YYYY_MM_DD));
 		}
-		if (!Util.isEmpty(fromJson.get("billuserid"))) {
+		/*if (!Util.isEmpty(fromJson.get("billuserid"))) {
 			invoiceinfo.setBilluserid(Integer.valueOf((String) fromJson.get("billuserid")));
-		}
+		}*/
 		if (!Util.isEmpty(fromJson.get("deptid"))) {
 			invoiceinfo.setDeptid(Integer.valueOf((String) fromJson.get("deptid")));
 		}
@@ -625,9 +630,9 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			invoiceinfo.setInvoicedate(DateUtil.string2Date((String) fromJson.get("invoicedate"),
 					DateUtil.FORMAT_YYYY_MM_DD));
 		}
-		if (!Util.isEmpty(fromJson.get("billuserid"))) {
+		/*if (!Util.isEmpty(fromJson.get("billuserid"))) {
 			invoiceinfo.setBilluserid(Integer.valueOf((String) fromJson.get("billuserid")));
-		}
+		}*/
 		if (!Util.isEmpty(fromJson.get("deptid"))) {
 			invoiceinfo.setDeptid(Integer.valueOf((String) fromJson.get("deptid")));
 		}
