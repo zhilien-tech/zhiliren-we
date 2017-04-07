@@ -16,6 +16,7 @@
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo()" value="提交"/>
+            <input type="hidden" id="backupbalance" name="backupbalance" value="${obj.invoicebalance }">
             <h4 class="invoiceH4">收款信息</h4>
     </div>
     <div style="height:550px; overflow-y:auto;" class="allCentext">
@@ -52,7 +53,7 @@
                   <tr>
                     <td><label>银行：</label></td>
                     <td>
-                      <select class="form-control input-sm">
+                      <select class="form-control input-sm" disabled="disabled">
                           <c:forEach var="one" items="${obj.yhkSelect }">
                           		<c:if test="${obj.companybank.bankComp eq one.id }">
 		                        	 <option value="${one.id }" selected="selected">${one.dictName }</option>
@@ -62,13 +63,13 @@
                     </td>
                     <td><label>银行卡名称：</label></td> 
                     <td>
-                      <select class="form-control input-sm">
+                      <select class="form-control input-sm" disabled="disabled">
                           <option>${obj.companybank.cardName }</option>
                       </select>
                     </td>
                     <td><label>卡号：</label></td>
                     <td>
-                       <select class="form-control input-sm">
+                       <select class="form-control input-sm" disabled="disabled">
                           <option>${obj.companybank.cardNum }</option>
                        </select>
                     </td>
@@ -85,6 +86,7 @@
                   <td>项目用途：</td>
                   <td>
                     <select id="invoiceitem" name="invoiceitem" class="form-control input-sm">
+                    	<option value="">请选择</option>
                         <c:forEach items="${obj.ytselect }" var="one">
                     		<option value="${one.id }">${one.comDictName }</option>
                     	</c:forEach>
