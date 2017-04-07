@@ -85,7 +85,25 @@
                      	<!-- 订单id -->
                      	<input id="orderedid" name="orderedid" type="hidden" value="${obj.orderinfo.id }"></td>
                      <td><label style="position: relative;top: 4px;">结算方式：</label></td>
-                     <td colspan="3"><pre class="preTxt">不限 信用额度：<fmt:formatNumber type="number" value="${empty obj.custominfo.creditLine?0:obj.custominfo.creditLine}" pattern="0.00" maxFractionDigits="2"/>  
+                     <td colspan="3"><pre class="preTxt">
+                     <c:choose>
+                     	<c:when test="${obj.custominfo.payType eq 1 }">
+                     		现金
+                     	</c:when>
+                     	<c:when test="${obj.custominfo.payType eq 2 }">3
+                     		支票
+                     	</c:when>
+                     	<c:when test="${obj.custominfo.payType eq 3 }">
+                     		银行汇款
+                     	</c:when>
+                     	<c:when test="${obj.custominfo.payType eq 4 }">
+                     		第三方
+                     	</c:when>
+                     	<c:when test="${obj.custominfo.payType eq 5 }">
+                     		其他
+                     	</c:when>
+                     </c:choose>　
+                     	 信用额度：<fmt:formatNumber type="number" value="${empty obj.custominfo.creditLine?0:obj.custominfo.creditLine}" pattern="0.00" maxFractionDigits="2"/>  
                      		<font id="historyqiancolor"> 历史欠款：<fmt:formatNumber type="number" value="${empty obj.custominfo.arrears? 0.00:obj.custominfo.arrears}" pattern="0.00" maxFractionDigits="2"/></font>　
                    		 预存款：<fmt:formatNumber type="number" value="${empty obj.custominfo.preDeposit?0:obj.custominfo.preDeposit}" pattern="0.00" maxFractionDigits="2"/></pre></td>
                      <td><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
@@ -573,11 +591,18 @@
             <div class="infofooter">
                  <table class="remindSet">
                    <tr>
-                     <td><input id="remindTime" disabled="disabled" type="text" class="form-control input-sm" placeholder="2020-01-01 00:00:00" onfocus="WdatePicker({minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></td>
+                     <td><input id="remindTime" disabled="disabled" type="text" class="form-control input-sm" placeholder="2020-01-01 00:00:00" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="<fmt:formatDate value="${obj.orderinfo.remindTime }" pattern="yyyy-MM-dd HH:mm:ss" />"/></td>
                      <td>
                        <select id="remindType" disabled="disabled" class="form-control input-sm">
                          <c:forEach var="map" items="${obj.orderRemindEnum}" >
-					   		<option value="${map.key}">${map.value}</option>
+                         	<c:choose>
+                         		<c:when test="${map.key eq obj.orderinfo.remindType }">
+							   		<option value="${map.key}" selected="selected">${map.value}</option>
+                         		</c:when>
+                         		<c:otherwise>
+							   		<option value="${map.key}">${map.value}</option>
+                         		</c:otherwise>
+                         	</c:choose>
 						 </c:forEach>
                        </select>
                      </td>

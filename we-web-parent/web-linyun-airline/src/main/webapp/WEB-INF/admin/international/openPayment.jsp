@@ -49,9 +49,10 @@
                 </tbody>
               </table>
          <div class="form-group row"><!--用途/币种-->
-                  <label class="col-sm-2 text-right padding">用途：</label>
+                  <label class="col-sm-2 text-right padding">项目用途：</label>
                   <div class="col-sm-2 padding">
                     <select id="purpose" name="purpose" class="form-control input-sm">
+                    	<option value="">请选择</option>
                       <c:forEach var="one" items="${obj.ytSelect }">
                         	<option value="${one.id }">${one.comDictName }</option>
                         </c:forEach>
