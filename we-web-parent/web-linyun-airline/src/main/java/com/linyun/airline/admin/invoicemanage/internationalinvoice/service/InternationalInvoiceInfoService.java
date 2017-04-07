@@ -38,6 +38,7 @@ import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
 import com.linyun.airline.common.enums.OrderTypeEnum;
+import com.linyun.airline.common.enums.UserTypeEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TInvoiceDetailEntity;
@@ -76,7 +77,7 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		Sql sql = Sqls.create(sqlManager.get("international_invoice__search_list"));
 		Cnd cnd = Cnd.NEW();
 		cnd.and("ii.comId", "=", companyId);
-		cnd.groupBy("u.userName");
+		cnd.groupBy("u.fullName");
 		List<Record> query = dbDao.query(sql, cnd, null);
 		obj.put("listIssuer", query);
 		return obj;
@@ -92,6 +93,7 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		Long userId = user.getId();
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		//检索条件
@@ -116,9 +118,20 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 			List<Record> orders = dbDao.query(sql, cnd, null);
 			record.put("orders", orders);
 			String username = "";
-			TUserEntity billuser = dbDao.fetch(TUserEntity.class, record.getInt("billuserid"));
+			/*TUserEntity billuser = dbDao.fetch(TUserEntity.class, record.getInt("billuserid"));
 			if (!Util.isEmpty(billuser)) {
-				username = billuser.getUserName();
+				username = billuser.getFullName();
+			}*/
+			TUserEntity billuser = dbDao.fetch(TUserEntity.class, userId);
+			Integer userType = billuser.getUserType();//获取当前登录用户的类型
+			if (!Util.isEmpty(billuser) && !Util.isEmpty(userType) && userType == (UserTypeEnum.UPCOM.intKey())
+					|| userType == (UserTypeEnum.AGENT.intKey())) {
+				username = billuser.getFullName();
+			} else {
+				TUserEntity fulluser = dbDao.fetch(TUserEntity.class, record.getInt("billuserid"));
+				if (!Util.isEmpty(fulluser)) {
+					username = fulluser.getFullName();
+				}
 			}
 			record.put("ytselect", ytselect);
 			String invoicedate = FormatDateUtil.dateToOrderDate((Date) record.get("invoicedate"));
@@ -138,6 +151,7 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		Long userId = user.getId();
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		sqlForm.setCompanyid(new Long(company.getId()).intValue());
@@ -159,10 +173,21 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 			List<Record> orders = dbDao.query(sql, cnd, null);*/
 			//record.put("orders", orders);
 			String username = "";
-			TUserEntity billuser = dbDao.fetch(TUserEntity.class, record.getInt("billuserid"));
-			if (!Util.isEmpty(billuser)) {
-				username = billuser.getUserName();
+			TUserEntity billuser = dbDao.fetch(TUserEntity.class, userId);
+			Integer userType = billuser.getUserType();//获取当前登录用户的类型
+			if (!Util.isEmpty(billuser) && !Util.isEmpty(userType) && userType == (UserTypeEnum.UPCOM.intKey())
+					|| userType == (UserTypeEnum.AGENT.intKey())) {
+				username = billuser.getFullName();
+			} else {
+				TUserEntity fulluser = dbDao.fetch(TUserEntity.class, record.getInt("billuserid"));
+				if (!Util.isEmpty(fulluser)) {
+					username = fulluser.getFullName();
+				}
 			}
+			/*TUserEntity billuser = dbDao.fetch(TUserEntity.class, record.getInt("billuserid"));
+			if (!Util.isEmpty(billuser)) {
+				username = billuser.getFullName();
+			}*/
 			record.put("ytselect", ytselect);
 			record.put("username", username);
 			String invoicedate = FormatDateUtil.dateToOrderDate((Date) record.get("invoicedate"));
@@ -218,6 +243,10 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		sql.setParam("recordtype", PayReceiveTypeEnum.RECEIVE.intKey());
 		cnd.groupBy("tuo.ordersnum");
 		List<Record> orders = dbDao.query(sql, cnd, null);
+		for (Record record : orders) {
+			String billingdate = FormatDateUtil.dateToOrderDate((Date) record.get("billingdate"));
+			record.put("billingdate", billingdate);
+		}
 		//订单信息
 		result.put("orders", orders);
 		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
@@ -255,10 +284,12 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		Integer userId = (int) user.getId();
 		String jsondata = request.getParameter("data");
 		Map<String, Object> fromJson = JsonUtil.fromJson(jsondata, Map.class);
 		String id = (String) fromJson.get("id");
 		TInvoiceInfoEntity invoiceinfo = dbDao.fetch(TInvoiceInfoEntity.class, Long.valueOf(id));
+		invoiceinfo.setBilluserid(userId);
 		if (!Util.isEmpty(fromJson.get("invoiceitem"))) {
 			invoiceinfo.setInvoiceitem(Integer.valueOf((String) fromJson.get("invoiceitem")));
 		}
@@ -270,9 +301,9 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 			invoiceinfo.setInvoicedate(DateUtil.string2Date((String) fromJson.get("invoicedate"),
 					DateUtil.FORMAT_YYYY_MM_DD));
 		}
-		if (!Util.isEmpty(fromJson.get("billuserid"))) {
+		/*if (!Util.isEmpty(fromJson.get("billuserid"))) {
 			invoiceinfo.setBilluserid(Integer.valueOf((String) fromJson.get("billuserid")));
-		}
+		}*/
 		if (!Util.isEmpty(fromJson.get("deptid"))) {
 			invoiceinfo.setDeptid(Integer.valueOf((String) fromJson.get("deptid")));
 		}
@@ -365,6 +396,10 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		sql.setParam("orderstatus", payorder.getOrderstatus());
 		sql.setParam("recordtype", PayReceiveTypeEnum.PAY.intKey());
 		List<Record> orders = dbDao.query(sql, cnd, null);
+		for (Record record : orders) {
+			String billingdate = FormatDateUtil.dateToOrderDate((Date) record.get("billingdate"));
+			record.put("billingdate", billingdate);
+		}
 		//订单信息
 		result.put("orders", orders);
 		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
@@ -415,11 +450,13 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		Integer userId = (int) user.getId();
 		String jsondata = request.getParameter("data");
 		Map<String, Object> fromJson = JsonUtil.fromJson(jsondata, Map.class);
 		String id = (String) fromJson.get("id");
 		//发票信息
 		TInvoiceInfoEntity invoiceinfo = dbDao.fetch(TInvoiceInfoEntity.class, Long.valueOf(id));
+		invoiceinfo.setBilluserid(userId);
 		if (!Util.isEmpty(fromJson.get("invoiceitem"))) {
 			invoiceinfo.setInvoiceitem(Integer.valueOf((String) fromJson.get("invoiceitem")));
 		}
@@ -427,9 +464,9 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 			invoiceinfo.setInvoicedate(DateUtil.string2Date((String) fromJson.get("invoicedate"),
 					DateUtil.FORMAT_YYYY_MM_DD));
 		}
-		if (!Util.isEmpty(fromJson.get("billuserid"))) {
+		/*if (!Util.isEmpty(fromJson.get("billuserid"))) {
 			invoiceinfo.setBilluserid(Integer.valueOf((String) fromJson.get("billuserid")));
-		}
+		}*/
 		if (!Util.isEmpty(fromJson.get("deptid"))) {
 			invoiceinfo.setDeptid(Integer.valueOf((String) fromJson.get("deptid")));
 		}

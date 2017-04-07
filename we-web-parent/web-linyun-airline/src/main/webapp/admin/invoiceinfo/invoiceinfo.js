@@ -102,12 +102,12 @@ function initKaiInvoiceTable1() {
                   },
                   {"data": "username", "bSortable": false,
                 	  render:function(data, type, row, meta) {
-                  		var username = row.username;
-                  		if(username == "" || username == null){
-                  			return "";
-                  		}
-                  		return username;
-                  	}
+	                  		var result = '';
+	                  		if(row.username){
+	                  			result = row.username;
+	                  		}
+	                  		return result;
+                	  }
                   },
                   {"data": "status", "bSortable": false,
                 	  render:function(data, type, row, meta) {
@@ -296,12 +296,12 @@ function initshouInvoiceTable1() {
                 },
                 {"data": "username", "bSortable": false,
                 	render:function(data, type, row, meta) {
-                		var username = row.username;
-                		if(username===null ||  username===""){
-                			return "";
-                		}
-                		return username;
-                	}
+                  		var result = '';
+                  		if(row.username){
+                  			result = row.username;
+                  		}
+                  		return result;
+            	   }
                 },
                 {"data": "status", "bSortable": false,
                 	render:function(data, type, row, meta) {

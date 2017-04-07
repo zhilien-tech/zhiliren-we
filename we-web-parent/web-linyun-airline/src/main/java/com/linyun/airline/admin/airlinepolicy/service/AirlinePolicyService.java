@@ -14,7 +14,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -425,8 +424,32 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 			TAirlinePolicyEntity airlinePolicy = dbDao.fetch(TAirlinePolicyEntity.class, id);
 			resourceFile = airlinePolicy.getUrl();
 			fileName = airlinePolicy.getFileName();
-			try {
+			/*try {
 				fileName = new String(fileName.getBytes("utf-8"), "ISO8859-1");
+			} catch (UnsupportedEncodingException e) {
+
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+
+			}*/
+		} else {
+			resourceFile = url2;
+			fileName = fileName2;
+			/*try {
+				fileName = java.net.URLDecoder.decode(fileName2, "UTF-8");
+				fileName = new String(fileName.getBytes("utf-8"), "ISO8859-1");
+			} catch (UnsupportedEncodingException e) {
+
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+
+			}*/
+		}
+		String userAgent = request.getHeader("User-Agent");
+		//针对IE或者以IE为内核的浏览器：
+		if (userAgent.contains("MSIE") || userAgent.contains("Trident")) {
+			try {
+				fileName = java.net.URLEncoder.encode(fileName, "UTF-8");
 			} catch (UnsupportedEncodingException e) {
 
 				// TODO Auto-generated catch block
@@ -434,10 +457,9 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 
 			}
 		} else {
-			resourceFile = url2;
-			fileName = fileName2;
+			//非IE浏览器的处理：
 			try {
-				fileName = URLEncoder.encode(fileName2, "UTF-8");
+				fileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
 			} catch (UnsupportedEncodingException e) {
 
 				// TODO Auto-generated catch block
@@ -445,7 +467,6 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 
 			}
 		}
-		/*String fileName = "下载吧";*/
 
 		InputStream is = null;
 		OutputStream out = null;
@@ -461,7 +482,8 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 				response.reset();
 				response.setContentType("application/octet-stream");
 				response.setCharacterEncoding("utf-8");
-				response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
+				//response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
+				response.setHeader("Content-Disposition", String.format("attachment;filename=\"%s\"", fileName));
 				byte[] buffer = new byte[4096];
 				int count = 0;
 				while ((count = is.read(buffer)) > 0) {
