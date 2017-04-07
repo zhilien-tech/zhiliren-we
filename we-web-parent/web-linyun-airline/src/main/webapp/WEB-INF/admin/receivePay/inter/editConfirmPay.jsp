@@ -107,6 +107,7 @@
 					</select></td>
 					<td>项目用途：</td>
 					<td><select id="purpose" name="purpose" class="form-control input-sm">
+							<option value="0">--请选择--</option>
 							<c:forEach var="one" items="${obj.fkytList}">
 	                        	<%-- <option value="${one.id }">${one.dictName }</option> --%>
 	                        	<c:choose>

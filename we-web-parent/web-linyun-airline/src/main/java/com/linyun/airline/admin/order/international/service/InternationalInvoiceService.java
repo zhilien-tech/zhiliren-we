@@ -6,7 +6,10 @@
 
 package com.linyun.airline.admin.order.international.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +30,7 @@ import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.enums.InvoiceInfoEnum;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
+import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.order.international.form.InternationalKaiListForm;
 import com.linyun.airline.admin.order.international.form.InternationalShouListForm;
 import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
@@ -42,6 +46,7 @@ import com.linyun.airline.entities.TOrderReceiveEntity;
 import com.linyun.airline.entities.TReceiveBillEntity;
 import com.linyun.airline.entities.TReceiveEntity;
 import com.linyun.airline.entities.TUserEntity;
+import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.base.service.BaseService;
@@ -88,14 +93,26 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 			Cnd cnd = Cnd.NEW();
 			cnd.and("tii.id", "=", record.getInt("id"));
 			List<Record> orders = dbDao.query(sql, cnd, null);
+			DateFormat format = new SimpleDateFormat(DateUtil.FORMAT_YYYY_MM_DD);
+			String invoicedate = "";
+			if (!Util.isEmpty(record.get("invoicedate"))) {
+				invoicedate = format.format((Date) record.get("invoicedate"));
+			}
 			record.put("orders", orders);
+			if (orders.size() > 0) {
+				record.put("orderstatus", orders.get(0).get("orderstatus"));
+			}
+			record.put("invoicedate", invoicedate);
 			record.put("invoiceinfoenum", EnumUtil.enum2(InvoiceInfoEnum.class));
 			record.put("ytselect", ytselect);
 			String username = "";
-			TUserEntity billuser = dbDao.fetch(TUserEntity.class, record.getInt("billuserid"));
-			if (!Util.isEmpty(billuser)) {
-				username = billuser.getUserName();
+			if (!Util.isEmpty(record.getInt("billuserid"))) {
+				TUserEntity billuser = dbDao.fetch(TUserEntity.class, record.getInt("billuserid"));
+				if (!Util.isEmpty(billuser)) {
+					username = billuser.getFullName();
+				}
 			}
+			record.put("internationalstatusenum", EnumUtil.enum2(InternationalStatusEnum.class));
 			record.put("username", username);
 		}
 		return listData;
@@ -128,6 +145,12 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 			List<TInvoiceDetailEntity> invoiceDetail = dbDao.query(TInvoiceDetailEntity.class,
 					Cnd.where("invoiceinfoid", "=", record.getInt("id")), null);
 			record.put("invoiceDetail", invoiceDetail);
+			DateFormat format = new SimpleDateFormat(DateUtil.FORMAT_YYYY_MM_DD);
+			String invoicedate = "";
+			if (!Util.isEmpty(record.get("invoicedate"))) {
+				invoicedate = format.format((Date) record.get("invoicedate"));
+			}
+			record.put("invoicedate", invoicedate);
 			/*String sqlString = sqlManager.get("get_inter_shou_invoice_list_order");
 			Sql sql = Sqls.create(sqlString);
 			Cnd cnd = Cnd.NEW();
@@ -137,10 +160,13 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 			record.put("invoiceinfoenum", EnumUtil.enum2(InvoiceInfoEnum.class));
 			record.put("ytselect", ytselect);
 			String username = "";
-			TUserEntity billuser = dbDao.fetch(TUserEntity.class, record.getInt("billuserid"));
-			if (!Util.isEmpty(billuser)) {
-				username = billuser.getUserName();
+			if (!Util.isEmpty(record.getInt("billuserid"))) {
+				TUserEntity billuser = dbDao.fetch(TUserEntity.class, record.getInt("billuserid"));
+				if (!Util.isEmpty(billuser)) {
+					username = billuser.getFullName();
+				}
 			}
+			record.put("internationalstatusenum", EnumUtil.enum2(InternationalStatusEnum.class));
 			record.put("username", username);
 		}
 		return listData;

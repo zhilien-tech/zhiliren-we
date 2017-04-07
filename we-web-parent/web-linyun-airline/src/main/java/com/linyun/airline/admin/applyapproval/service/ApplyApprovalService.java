@@ -28,11 +28,13 @@ import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
+import com.linyun.airline.admin.receivePayment.service.InterReceivePayService;
 import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.ApprovalResultEnum;
 import com.linyun.airline.common.enums.MessageRemindEnum;
 import com.linyun.airline.common.enums.MessageWealthStatusEnum;
+import com.linyun.airline.common.enums.OrderRemindEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.enums.ReductionStatusEnum;
 import com.linyun.airline.entities.ApplyApprovalEntity;
@@ -60,6 +62,8 @@ import com.uxuexi.core.web.chain.support.JsonResult;
 public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 	@Inject
 	private SearchViewService searchViewService;
+	@Inject
+	private InterReceivePayService interReceivePayService;
 
 	public Map<String, Object> findNums(HttpSession session) {
 		String sqlStringInter = sqlManager.get("applyapproval_list_international");
@@ -156,6 +160,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 			/******副数据*******/
 			List<ApprovalListInter> query1 = DbSqlUtil.query(dbDao, ApprovalListInter.class, reduceInteSql);
 			for (ApprovalListInter approvalList : query1) {
+				approvalList.setOrderstime(approvalList.getOptime());
 				approvalList.setPaystatus(approvalList.getApplyResult());
 				approvalList.setAmount(approvalList.getAccount());
 				approvalList.setShortName(approvalList.getCustomname());
@@ -398,8 +403,9 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 				}
 				if (res1 > 0) {
 					Map<String, Object> remindMap = new HashMap<String, Object>();
+					remindMap.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
 					remindMap.put("remindDate", DateUtil.Date2String(new Date()));
-					remindMap.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
+					//remindMap.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
 					searchViewService.addRemindMsg(remindMap, ordersnum, pnr, upOrderid, orderType, session);
 
 					return JsonResult.success("审核通过");
@@ -409,7 +415,9 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 				//订单id
 				upOrderid = upOrderInfo.getId();
 				//pnr
-
+				TPnrInfoEntity PayPnrEntity = dbDao.fetch(TPnrInfoEntity.class,
+						Cnd.where("orderid", "=", orderId).and("mainsection", "=", 1));
+				pnr = PayPnrEntity.getPNR();
 				//订单号
 				ordersnum = upOrderInfo.getOrdersnum();
 				upOrderInfo.setPaystatus(approvalStatus);
@@ -430,8 +438,9 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 					Map<String, Object> remindMap = new HashMap<String, Object>();
 					remindMap.put("remindDate", DateUtil.Date2String(new Date()));
 					remindMap.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
-					searchViewService.addRemindMsg(remindMap, ordersnum, pnr, upOrderid, orderType, session);
-
+					//searchViewService.addRemindMsg(remindMap, ordersnum, pnr, upOrderid, orderType, session);
+					interReceivePayService.addInterRemindMsg(orderId.intValue(), ordersnum, pnr,
+							payoOrderEntity.getOrderstatus() + "", session);
 					return JsonResult.success("审核通过");
 				}
 			}

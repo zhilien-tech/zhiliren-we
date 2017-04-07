@@ -232,7 +232,7 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 			invoiceinfo.setInvoicedate(DateUtil.string2Date((String) fromJson.get("invoicedate"),
 					DateUtil.FORMAT_YYYY_MM_DD));
 		}
-		invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
+		//invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
 		if (!Util.isEmpty(fromJson.get("deptid"))) {
 			invoiceinfo.setDeptid(Integer.valueOf((String) fromJson.get("deptid")));
 		}
@@ -375,7 +375,7 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 			invoiceinfo.setInvoicedate(DateUtil.string2Date((String) fromJson.get("invoicedate"),
 					DateUtil.FORMAT_YYYY_MM_DD));
 		}
-		invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
+		//invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
 		if (!Util.isEmpty(fromJson.get("deptid"))) {
 			invoiceinfo.setDeptid(Integer.valueOf((String) fromJson.get("deptid")));
 		}

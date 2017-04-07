@@ -185,22 +185,25 @@
 							</div>
 							end nav-tabs-custom
 						</div> -->
-						
 						 <div class="nav-tabs-custom">
-			              <ul class="nav nav-tabs">
-			                <li class="active"><a href="#tab_1" data-toggle="tab" id="firBooking">一订</a></li>
-			                <li><a href="#tab_1" data-toggle="tab" id="secBooking">二订</a></li>
-			                <li><a href="#tab_1" data-toggle="tab" id="thrBooking">三订</a></li>
-			                <li><a href="#tab_1" data-toggle="tab" id="allBooking">全款</a></li>
-			                <li><a href="#tab_1" data-toggle="tab" id="lastBooking">尾款</a></li>
-			                <li><a href="#tab_1" data-toggle="tab" id="outTicket">出票</a></li>
+			              <ul class="nav nav-tabs paymentNewUl">
+			                <li class="active orderStatusClass"><a class="osClass" href="#tab_1" data-toggle="tab" id="firBooking">一订</a></li>
+			                <li><a class="osClass" href="#tab_1" data-toggle="tab" id="secBooking">二订</a></li>
+			                <li><a class="osClass" href="#tab_1" data-toggle="tab" id="thrBooking">三订</a></li>
+			                <li><a class="osClass" href="#tab_1" data-toggle="tab" id="allBooking">全款</a></li>
+			                <li><a class="osClass" href="#tab_1" data-toggle="tab" id="lastBooking">尾款</a></li>
+			                <li><a class="osClass" href="#tab_1" data-toggle="tab" id="outTicket">出票</a></li>
 			              </ul>
 			              <div class="tab-content"><!--内陆订单-->
 			                  <div class="tab-pane pane-content active" id="tab_1">
 			                     <div class="nav-tabs-custom">
 			                        <ul class="nav nav-tabs nlkhUL">
-			                          <li class="active"><a href="#tab1_a" onclick="toConfirmRecPage();" data-toggle="tab">收款</a></li>
-			                          <li><a href="#tab1_b" onclick="toConfirmPayPage();" data-toggle="tab">付款</a></li>
+			                          <li class="active">
+			                          	<a href="#tab1_a" onclick="toConfirmRecPage();" data-toggle="tab">收款</a>
+			                          </li>
+			                          <li>
+			                          	<a href="#tab1_b" onclick="toConfirmPayPage();" data-toggle="tab">付款</a>
+			                          </li>
 			                        </ul>
 			                        <div class="tab-content padding0">
 			                            <div class="tab-pane pane-content active" id="tab1_a"><!--内陆订单 收款-->

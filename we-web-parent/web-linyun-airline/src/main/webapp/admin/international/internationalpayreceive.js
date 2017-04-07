@@ -30,7 +30,7 @@ function initshouFuKuanGatheringTable() {
                 	  render:function(data, type, row, meta) {
                     		var result = '<ul> ';
                     		$.each(row.orders, function(name, value) {
-                    			if(value){
+                    			if(value.ordersnum && value.ordersnum != undefined){
                     				result += '<li style="list-style:none;">'+value.ordersnum+'</li>';
                     			}
                     		});
@@ -94,12 +94,12 @@ function initshouFuKuanGatheringTable() {
                     		return result;
                     	}
                   },
-                  {"data": "username", "bSortable": false},
+                  {"data": "fullname", "bSortable": false},
                   {"data": "orderstatus", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                   		var result = '';
                   		$.each(row.internationalstatusenum, function(name, value) {
-                  			if(row.orderstatus == name){
+                  			if(row.orderstatus && row.orderstatus != undefined && row.orderstatus == name){
                   				result = value;
                   			}
                   		});

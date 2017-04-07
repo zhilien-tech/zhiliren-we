@@ -47,7 +47,7 @@
                                    <option value="">开票人</option>
 				                    <c:forEach items="${obj.listIssuer}" var="one">
 				                    	<option value="${one.billuserid }">
-			                            	${one.userName }
+			                            	${one.fullName }
 			                            </option>
 			                        </c:forEach>
                                </select>
@@ -74,8 +74,8 @@
                            <thead>
                            <tr>
                              <th>订单号</th>
-                             <th>人数</th>
-                             <th>发票数</th>
+                             <th>发票号</th>
+                             <th>发票金额</th>
                              <th>总额</th>
                              <th>开发票日期</th>
                              <th>发票开具项目</th>
@@ -125,7 +125,7 @@
                                   <option value="">收票人</option>
 				                    <c:forEach items="${obj.listIssuer}" var="one" varStatus="indexs">
 				                    	<option value="${one.billuserid }">
-			                            	${one.userName }
+			                            	${one.fullName }
 			                            </option>
 			                        </c:forEach>
                               </select>

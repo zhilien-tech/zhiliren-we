@@ -17,7 +17,7 @@
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveAirInfo();" value="保存"/>
-            <h4>添加航段</h4>
+            <h4>编辑航段</h4>
           </div>
           <div class="modal-body" style="height:481px;overflow-y:auto; ">
               <table class="addHDtable">
