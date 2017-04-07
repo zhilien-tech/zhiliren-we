@@ -123,7 +123,7 @@ SELECT
 	tuo.ordersnum,
 	ii.*, 
 	u.id AS userIds,
-	u.userName
+	u.fullName
 FROM
 	t_invoice_info ii
 LEFT JOIN t_order_receive ore ON ii.receiveid = ore.receiveid

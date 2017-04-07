@@ -1,6 +1,8 @@
 package com.linyun.airline.admin.authority.authoritymanage.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +79,22 @@ public class AuthorityViewService extends BaseService<DeptJobForm> {
 		Sql comFunSql = Sqls.fetchEntity(sqlManager.get("company_function"));
 		comFunSql.params().set("comId", companyId);
 		List<TFunctionEntity> allModule = DbSqlUtil.query(dbDao, TFunctionEntity.class, comFunSql);
+		//排序functionMap
+		Collections.sort(allModule, new Comparator<TFunctionEntity>() {
+			@Override
+			public int compare(TFunctionEntity tf1, TFunctionEntity tf2) {
+				if (!Util.isEmpty(tf1.getSort()) && !Util.isEmpty(tf2.getSort())) {
+					if (tf1.getSort() > tf2.getSort()) {
+						return 1;
+					} else if (tf1.getSort() == tf2.getSort()) {
+						return 0;
+					} else if (tf1.getSort() < tf2.getSort()) {
+						return -1;
+					}
+				}
+				return 0;
+			}
+		});
 		return allModule;
 	}
 

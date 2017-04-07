@@ -32,23 +32,29 @@ function initKaiInterInvoiceTable() {
                     		return result;
                     	}
                   },
-                  {"data": "actualnumber,", "bSortable": false,
+                  {"data": "invoicenum,", "bSortable": false,
                 	  render:function(data, type, row, meta) {
-                  		var result = '';
-                  		if(row.actualnumber && row.actualnumber != undefined) {
-                  			result =row.peoplecount;
-                  		}
-                  		return result;
-                  	}
+	                    	var result = '<ul> ';
+	                  		$.each(row.invoicedetail, function(name, value) {
+	                  			if(value && value.invoicenum != undefined){
+	                  				result += '<li style="list-style:none;">'+value.invoicenum+'</li>';
+	                  			}
+	                  		});
+	                  		result += '</ul>';
+	                  		return result;
+                    	}
                   },
-                  {"data": "invoicecount", "bSortable": false,
+                  {"data": "invoicebalance", "bSortable": false,
                 	  render:function(data, type, row, meta) {
-                  		var result = '';
-                  		if(row.invoicecount && row.invoicecount != undefined) {
-                  			result =row.invoicecount;
-                  		}
-                  		return result;
-                  	 }
+                    		var result = '<ul>';
+                    		$.each(row.invoicedetail, function(name, value) {
+                    			if(value && value.invoicebalance != undefined){
+                    				result += '<li style="list-style:none;">'+value.invoicebalance+'</li>';
+                    			}
+                    		});
+                    		result += '</ul>';
+                    		return result;
+                    	}
                   },
                   {"data": "incometotal", "bSortable": false,
                 	  render:function(data, type, row, meta) {
@@ -270,12 +276,12 @@ function initshouInterInvoiceTable() {
                   },
                   {"data": "username", "bSortable": false,
                 	  render:function(data, type, row, meta) {
-                  		var username = row.username;
-                  		if(username===null ||  username===""){
-                  			return "";
-                  		}
-                  		return username;
-                  	}
+	                  		var result = '';
+	                  		if(row.username){
+	                  			result = row.username;
+	                  		}
+	                  		return result;
+                	  }
                   },
                   {"data": "orderstatus", "bSortable": false,
                 	  render:function(data, type, row, meta) {

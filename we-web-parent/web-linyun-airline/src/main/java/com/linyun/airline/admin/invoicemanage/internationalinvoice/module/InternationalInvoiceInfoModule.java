@@ -45,7 +45,7 @@ public class InternationalInvoiceInfoModule {
 	}
 
 	/**
-	 * 开发票列表数据
+	 * 开发票列表页面
 	 */
 	@At
 	@POST
@@ -54,7 +54,7 @@ public class InternationalInvoiceInfoModule {
 	}
 
 	/**
-	 * 收发票页面
+	 * 收发票列表页面
 	 */
 	@At
 	@POST
@@ -78,5 +78,23 @@ public class InternationalInvoiceInfoModule {
 	@Ok("jsp")
 	public Object shouInterOpenInvoice(HttpServletRequest request) {
 		return internationalInvoiceInfoService.shouInterOpenInvoice(request);
+	}
+
+	/**
+	 * 保存开发票数据
+	 */
+	@At
+	@POST
+	public Object saveKaiInvoiceInfo(HttpServletRequest request) {
+		return internationalInvoiceInfoService.saveKaiInvoiceInfo(request);
+	}
+
+	/**
+	 * 保存收发票数据
+	 */
+	@At
+	@POST
+	public Object saveShouInvoiceInfo(HttpServletRequest request) {
+		return internationalInvoiceInfoService.saveShouInvoiceInfo(request);
 	}
 }
