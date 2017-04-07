@@ -424,18 +424,18 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 			TAirlinePolicyEntity airlinePolicy = dbDao.fetch(TAirlinePolicyEntity.class, id);
 			resourceFile = airlinePolicy.getUrl();
 			fileName = airlinePolicy.getFileName();
-			try {
+			/*try {
 				fileName = new String(fileName.getBytes("utf-8"), "ISO8859-1");
 			} catch (UnsupportedEncodingException e) {
 
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 
-			}
+			}*/
 		} else {
 			resourceFile = url2;
 			fileName = fileName2;
-			try {
+			/*try {
 				fileName = java.net.URLDecoder.decode(fileName2, "UTF-8");
 				fileName = new String(fileName.getBytes("utf-8"), "ISO8859-1");
 			} catch (UnsupportedEncodingException e) {
@@ -443,27 +443,30 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 
-			}
+			}*/
 		}
-		/*	String agent = request.getHeader("USER-AGENT");
-			String downLoadName = null;
+		String userAgent = request.getHeader("User-Agent");
+		//针对IE或者以IE为内核的浏览器：
+		if (userAgent.contains("MSIE") || userAgent.contains("Trident")) {
 			try {
-				if (null != agent && -1 != agent.indexOf("MSIE")) //IE 
-				{
-					fileName = java.net.URLDecoder.decode(fileName, "utf-8");
-				} else if (null != agent && -1 != agent.indexOf("Mozilla"))//Firefox 
-				{
-					fileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
-				} else {
-					fileName = java.net.URLDecoder.decode(fileName, "utf-8");
-				}
+				fileName = java.net.URLEncoder.encode(fileName, "UTF-8");
 			} catch (UnsupportedEncodingException e) {
 
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 
-			}*/
-		/*String fileName = "下载吧";*/
+			}
+		} else {
+			//非IE浏览器的处理：
+			try {
+				fileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+			} catch (UnsupportedEncodingException e) {
+
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+
+			}
+		}
 
 		InputStream is = null;
 		OutputStream out = null;
