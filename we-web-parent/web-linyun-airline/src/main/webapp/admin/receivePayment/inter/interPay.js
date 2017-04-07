@@ -40,8 +40,15 @@ function initPayDataTable(){
 		            {"data": "ordersnum", "bSortable": false},
 		            {"data": "pnrnum", "bSortable": false,
 		            	render:function(data, type, row, meta) {
-		            		return "";
-		            	}	
+		            		var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value && value.pnrnum!=undefined){
+		            				result += '<li style="list-style:none;">'+value.pnrnum+'</li>';
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
+		            	}
 		            },
 		            {"data": "leavesdate", "bSortable": false,
 		            	render: function(data, type, row, meta) {
@@ -65,9 +72,14 @@ function initPayDataTable(){
 		            {"data": "peoplecount", "bSortable": false,
 		            	render:function(data, type, row, meta) {
 		            		var result = '<ul> ';
+		            		var oNum = "";
 		            		$.each(row.orders, function(name, value) {
 		            			if(value && value.peoplecount!=undefined){
-		            				result += '<li style="list-style:none;">'+value.peoplecount+'</li>';
+		            				var ordernum = value.ordersnum;
+		            				if(oNum!=ordernum){
+		            					result += '<li style="list-style:none;">'+value.peoplecount+'</li>';
+		            				}
+		            				oNum = ordernum;
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -77,9 +89,14 @@ function initPayDataTable(){
 		            {"data": "actualnumber", "bSortable": false,
 		            	render:function(data, type, row, meta) {
 		            		var result = '<ul> ';
+		            		var oNum = "";
 		            		$.each(row.orders, function(name, value) {
 		            			if(value && value.actualnumber!=undefined){
-		            				result += '<li style="list-style:none;">'+value.actualnumber+'</li>';
+		            				var ordernum = value.ordersnum;
+		            				if(oNum!=ordernum){
+		            					result += '<li style="list-style:none;">'+value.actualnumber+'</li>';
+		            				}
+		            				oNum = ordernum;
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -89,9 +106,14 @@ function initPayDataTable(){
 		            {"data": "ataxprice", "bSortable": false,
 		            	render:function(data, type, row, meta) {
 		            		var result = '<ul> ';
+		            		var oNum = "";
 		            		$.each(row.orders, function(name, value) {
 		            			if(value && value.ataxprice!=undefined){
-		            				result += '<li style="list-style:none;">'+(value.ataxprice).toFixed(2)+'</li>';
+		            				var ordernum = value.ordersnum;
+		            				if(oNum!=ordernum){
+		            					result += '<li style="list-style:none;">'+(value.ataxprice).toFixed(2)+'</li>';
+		            				}
+		            				oNum = ordernum;
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -101,9 +123,14 @@ function initPayDataTable(){
 		            {"data": "currentpay", "bSortable": false,
 		            	render:function(data, type, row, meta) {
 		            		var result = '<ul> ';
+		            		var oNum = "";
 		            		$.each(row.orders, function(name, value) {
 		            			if(value && value.currentpay!=undefined){
-		            				result += '<li style="list-style:none;">'+(value.currentpay).toFixed(2)+'</li>';
+		            				var ordernum = value.ordersnum;
+		            				if(oNum!=ordernum){
+		            					result += '<li style="list-style:none;">'+(value.currentpay).toFixed(2)+'</li>';
+		            				}
+		            				oNum = ordernum;
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -113,9 +140,14 @@ function initPayDataTable(){
 		            {"data": "paycurrency", "bSortable": false,
 		            	render:function(data, type, row, meta) {
 		            		var result = '<ul> ';
+		            		var oNum = "";
 		            		$.each(row.orders, function(name, value) {
 		            			if(value && value.paycurrency!=undefined){
-		            				result += '<li style="list-style:none;">'+value.paycurrency+'</li>';
+		            				var ordernum = value.ordersnum;
+		            				if(oNum!=ordernum){
+		            					result += '<li style="list-style:none;">'+value.paycurrency+'</li>';
+		            				}
+		            				oNum = ordernum;
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -125,9 +157,14 @@ function initPayDataTable(){
 		            {"data": "shortname", "bSortable": false,
 		            	render:function(data, type, row, meta) {
 		            		var result = '<ul> ';
+		            		var oNum = "";
 		            		$.each(row.orders, function(name, value) {
 		            			if(value && value.shortname!=undefined){
-		            				result += '<li style="list-style:none;">'+value.shortname+'</li>';
+		            				var ordernum = value.ordersnum;
+		            				if(oNum!=ordernum){
+		            					result += '<li style="list-style:none;">'+value.shortname+'</li>';
+		            				}
+		            				oNum = ordernum;
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -149,9 +186,14 @@ function initPayDataTable(){
 		            {"data": "issuer", "bSortable": false,
 		            	render:function(data, type, row, meta) {
 		            		var result = '<ul> ';
+		            		var oNum = "";
 		            		$.each(row.orders, function(name, value) {
 		            			if(value && value.issuer!=undefined){
-		            				result += '<li style="list-style:none;">'+value.issuer+'</li>';
+		            				var ordernum = value.ordersnum;
+		            				if(oNum!=ordernum){
+		            					result += '<li style="list-style:none;">'+value.issuer+'</li>';
+		            				}
+		            				oNum = ordernum;
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -218,14 +260,18 @@ function initPayEdDataTable(){
 		            {"data": "ordersnum", "bSortable": false,
 			            render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
+		            		var oNum = "";
 		            		$.each(row.orders, function(name, value) {
 		            			if(value){
 		            				var ordernum = value.ordersnum;
 		            				if(ordernum == null || ordernum == undefined || ordernum==""){
 		            					ordernum = " ";
 		            				}else{
-		            					result += '<li style="list-style:none;">'+ordernum+'</li>';
+		            					if(oNum!=ordernum){
+		            						result += '<li style="list-style:none;">'+ordernum+'</li>';
+		            					}
 		            				}
+		            				oNum = ordernum;
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -264,14 +310,19 @@ function initPayEdDataTable(){
 		            {"data": "peoplecount", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
+		            		var oNum = "";
 		            		$.each(row.orders, function(name, value) {
 		            			if(value){
 		            				var pCount = value.peoplecount;
+		            				var ordernum = value.ordersnum;
 		            				if(pCount == null || pCount == undefined || pCount==""){
 		            					pCount = " ";
 		            				}else{
-		            					result += '<li style="list-style:none;">'+pCount+'</li>';
+		            					if(oNum!=ordernum){
+		            						result += '<li style="list-style:none;">'+pCount+'</li>';
+		            					}
 		            				}
+		            				oNum = ordernum;
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -281,10 +332,15 @@ function initPayEdDataTable(){
 		            {"data": "currentpay", "bSortable": false,
 		            	render:function(data, type, row, meta) {
 		            		var result = '<ul> ';
+		            		var oNum = "";
 		            		$.each(row.orders, function(name, value) {
+		            			var ordernum = value.ordersnum;
 		            			if(value && value.currentpay!=undefined){
-		            				result += '<li style="list-style:none;">'+(value.currentpay).toFixed(2)+'</li>';
+		            				if(oNum!=ordernum){
+		            					result += '<li style="list-style:none;">'+(value.currentpay).toFixed(2)+'</li>';
+	            					}
 		            			}
+		            			oNum = ordernum;
 		            		});
 		            		result += '</ul>';
 		            		return result;
@@ -293,14 +349,19 @@ function initPayEdDataTable(){
 		            {"data": "currency", "bSortable": false,
 			            render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
+		            		var oNum = "";
 		            		$.each(row.orders, function(name, value) {
 		            			if(value){
 		            				var paycurrency = value.paycurrency;
+		            				var ordernum = value.ordersnum;
 		            				if(paycurrency == null || paycurrency == undefined || paycurrency==""){
 		            					paycurrency = " ";
 		            				}else{
-		            					result += '<li style="list-style:none;">'+paycurrency+'</li>';
+		            					if(oNum!=ordernum){
+		            						result += '<li style="list-style:none;">'+paycurrency+'</li>';
+		            					}
 		            				}
+		            				oNum = ordernum;
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -553,7 +614,7 @@ $("#interPaySearchBtn").on('click', function () {
 	var interPayBeginDate = $("#interPayBeginDate").val();
 	var interPayEndDate = $("#interPayEndDate").val();
 	var interPayInput = $("#interPayInput").val();
-	var orderStatus = $("li.btnStyle").attr("id");
+	var orderStatus = $(".osClass",$(".orderStatusClass")).attr("id");
 	var param = {
 			        "orderStatus":orderStatus,
 					"payStatus":payStatus,
@@ -577,7 +638,7 @@ $("#interPaySearchBtn").on('click', function () {
 				}
 		);
 	}
-	    
+	   
 });
 
 

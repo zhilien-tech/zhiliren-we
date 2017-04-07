@@ -60,4 +60,7 @@ public class TSaveInterPayAddFrom implements Serializable {
 	/**合计*/
 	private Double totalMoney;
 
+	/**订单状态*/
+	private String orderStatus;
+
 }

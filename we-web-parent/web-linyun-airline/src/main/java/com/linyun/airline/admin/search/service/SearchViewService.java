@@ -962,7 +962,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * @param data Json数据
 	 * @param generateOrderNum  订单号
 	 * @param pnr  pnr号
-	 * @param orderStatus  订单状态
+	 * @param orderStatus  订单状态(使用消息提醒的枚举)
 	 * @param session
 	 * @return 
 	 */
