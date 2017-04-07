@@ -151,7 +151,9 @@ $("#confirmRecClick").click(function(){
 		$.ajax({
 			type : 'POST',
 			data : {
-				id:$("#recIds").val()
+				"recIds":$("#recIds").val(),
+				"orderIds":$("#orderIds").val(),
+				"orderStatus":$("#prrOrderStatus").val()
 			},
 			async: false,
 			url: BASE_PATH + '/admin/receivePay/inter/saveInterRec.html',

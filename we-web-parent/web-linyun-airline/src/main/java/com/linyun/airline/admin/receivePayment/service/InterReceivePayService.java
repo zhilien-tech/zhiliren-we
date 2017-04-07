@@ -57,6 +57,7 @@ import com.linyun.airline.common.enums.ApprovalResultEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
 import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.common.enums.MessageWealthStatusEnum;
+import com.linyun.airline.common.enums.OrderRemindEnum;
 import com.linyun.airline.common.enums.SearchOrderStatusEnum;
 import com.linyun.airline.common.enums.UserJobStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
@@ -92,10 +93,21 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	private static final int PAYEDMSGTYPE = MessageWealthStatusEnum.PAYED.intKey();
 	//订单状态
 	private static final int FIRBOOKING = SearchOrderStatusEnum.FIRBOOKING.intKey();
-
 	//收付款枚举
 	private static final int PAYTYPE = PayReceiveTypeEnum.PAY.intKey(); //付款记录
 	private static final int RECEIVETYPE = PayReceiveTypeEnum.RECEIVE.intKey(); //收款记录
+
+	//消息提醒中的订单状态
+	private static final int SEARCHMSG = SearchOrderStatusEnum.SEARCH.intKey();
+	private static final int BOOKINGMSG = SearchOrderStatusEnum.BOOKING.intKey();
+	private static final int TICKETINGMSG = SearchOrderStatusEnum.TICKETING.intKey();
+	private static final int BILLINGMSG = SearchOrderStatusEnum.BILLING.intKey();
+	private static final int CLOSEMSG = SearchOrderStatusEnum.CLOSE.intKey();
+	private static final int FIRBOOKINGMSG = SearchOrderStatusEnum.FIRBOOKING.intKey();
+	private static final int SECBOOKINGMSG = SearchOrderStatusEnum.SECBOOKING.intKey();
+	private static final int THRBOOKINGMSG = SearchOrderStatusEnum.THRBOOKING.intKey();
+	private static final int ALLBOOKINGMSG = SearchOrderStatusEnum.ALLBOOKING.intKey();
+	private static final int LASTBOOKINGMSG = SearchOrderStatusEnum.LASTBOOKING.intKey();
 
 	@Inject
 	private UploadService qiniuUploadService;
@@ -247,13 +259,16 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//计算合计金额
 		Double sum = 0.0;
+		String prrOrderStatus = "";
 		for (Record record : orders) {
 			if (!Util.isEmpty(record.get("currentpay"))) {
 				Double incometotal = (Double) record.get("currentpay");
 				sum += incometotal;
 			}
+			prrOrderStatus = record.getString("prrorderstatus");
 		}
 		map.put("sum", sum);
+		map.put("prrOrderStatus", prrOrderStatus);
 
 		//订单信息
 		map.put("orders", orders);
@@ -285,7 +300,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 * @param inlandPayIds
 	 * @return 
 	 */
-	public Object saveInterRec(String recId, HttpSession session) {
+	public Object saveInterRec(String recId, String orderIds, String orderStatus, HttpSession session) {
 
 		int updateNum = 0;
 		int orderRecEd = AccountReceiveEnum.RECEIVEDONEY.intKey();
@@ -305,24 +320,53 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//收款成功添加消息提醒
 		if (updateNum > 0) {
 			// ******************************************添加消息提醒***********************************************
-			/*String sqlS = sqlManager.get("receivePay_inter_order_rec_rids");
+			String sqlS = sqlManager.get("receivePay_inter_order_rec_rids");
 			Sql sql = Sqls.create(sqlS);
 			Cnd cnd = Cnd.NEW();
-			cnd.and("r.id", "in", recId);
+			cnd.and("prr.orderid", "in", orderIds);
+			cnd.and("prr.orderstatusid", "=", orderStatus);
 			cnd.and("pi.mainsection", "=", MAINSECTION);
 			List<Record> orderPnrList = dbDao.query(sql, cnd, null);
+
 			for (Record record : orderPnrList) {
 				int uid = Integer.valueOf(record.getString("id"));
 				String ordernum = record.getString("ordersnum");
 				String pnr = record.getString("pnrnum");
-				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
-				map.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
-				searchViewService.addRemindMsg(map, ordernum, pnr, uid, RECEDMSGTYPE, session);
-			}*/
+				addInterRemindMsg(uid, ordernum, pnr, orderStatus, session);
+			}
 		}
 
 		return updateNum;
+	}
+
+	public String addInterRemindMsg(int orderId, String ordernum, String pnr, String orderStatus, HttpSession session) {
+		int msgOrderStatus = 0;
+		switch (orderStatus) {
+		case "3":
+			msgOrderStatus = FIRBOOKINGMSG;
+			break;
+		case "4":
+			msgOrderStatus = SECBOOKINGMSG;
+			break;
+		case "5":
+			msgOrderStatus = THRBOOKINGMSG;
+			break;
+		case "6":
+			msgOrderStatus = ALLBOOKINGMSG;
+			break;
+		case "7":
+			msgOrderStatus = LASTBOOKINGMSG;
+			break;
+		case "8":
+			msgOrderStatus = TICKETINGMSG;
+			break;
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
+		map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
+		map.put("orderStatus", msgOrderStatus);
+		String addRemindMsg = searchViewService.addRemindMsg(map, ordernum, pnr, orderId, msgOrderStatus, session);
+		return addRemindMsg;
 	}
 
 	/**
