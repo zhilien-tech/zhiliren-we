@@ -40,6 +40,7 @@
                   <label class="col-sm-2 text-right padding">币种：</label>
                   <div class="col-sm-2 padding">
                     <select id="currency" name="currency" class="form-control input-sm">
+                    	<option value="">请选择</option>
                       <c:forEach items="${obj.bzcode }" var="one"> 
                       	 <c:choose>
                       	 	<c:when test="${one.dictCode eq obj.mitigate.currency}">

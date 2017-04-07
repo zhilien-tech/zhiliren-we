@@ -268,6 +268,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 
 	public Object saveMitigateData(HttpServletRequest request) {
 		String orderid = request.getParameter("orderid");
+		TUpOrderEntity fetch = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(orderid));
 		String customeid = request.getParameter("customeid");
 		String customname = request.getParameter("customname");
 		HttpSession session = request.getSession();
@@ -283,13 +284,14 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		mitigateInfoEntity.setCustomname(customname);
 		mitigateInfoEntity.setApplyid(new Long(user.getId()).intValue());
 		mitigateInfoEntity.setApplyResult(ReductionStatusEnum.APPROVALING.intKey());
+		mitigateInfoEntity.setOrdertype(fetch.getOrderstype());
 		if (!Util.isEmpty(account)) {
 			mitigateInfoEntity.setAccount(formatDouble(Double.valueOf(account)));
 		}
 		mitigateInfoEntity.setAccountupper(accountupper);
 		mitigateInfoEntity.setCurrency(currency);
 		mitigateInfoEntity.setApprovelid(approvelid);
-		mitigateInfoEntity.setOrdertype(OrderTypeEnum.FIT.intKey());
+		//mitigateInfoEntity.setOrdertype(OrderTypeEnum.FIT.intKey());
 		return dbDao.insert(mitigateInfoEntity);
 
 	}

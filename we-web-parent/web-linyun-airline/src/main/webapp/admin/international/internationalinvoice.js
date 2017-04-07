@@ -88,6 +88,15 @@ function initkaiInvoiceTable() {
                   },
                   {"data": "paymentunit", "bSortable": false},
                   {"data": "username", "bSortable": false},
+                  {"data": "orderstatus", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                  		var result = '';
+              			if(row.orderstatus && row.orderstatus!=undefined){
+              				result = row.orderstatus;
+              			}
+                  		return result;
+                  	} 
+                  },
                   {"data": "status", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                   		var result = '';
@@ -103,7 +112,7 @@ function initkaiInvoiceTable() {
           ],
       columnDefs: [{
     	//   指定第一列，从0开始，0表示第一列，1表示第二列……
-          targets: 10,
+          targets: 11,
           render: function(data, type, row, meta) {
               return '<a style="cursor:pointer;" onclick="openkaiInvoiceEdit('+row.id+');">编辑</a>'
           }
@@ -234,6 +243,17 @@ function initshouInvoiceTable() {
                   },
                   {"data": "paymentunit", "bSortable": false},
                   {"data": "username", "bSortable": false},
+                  {"data": "orderstatus", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                    		var result = '';
+                    		$.each(row.internationalstatusenum, function(name, value) {
+                    			if(row.orderstatus!=undefined && row.orderstatus == name){
+                    				result = value;
+                    			}
+                    		});
+                    		return result;
+                    	}
+                  },
                   {"data": "status", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                   		var result = '';
@@ -249,7 +269,7 @@ function initshouInvoiceTable() {
         ],
     columnDefs: [{
   	//   指定第一列，从0开始，0表示第一列，1表示第二列……
-        targets: 10,
+        targets: 11,
         render: function(data, type, row, meta) {
             return '<a style="cursor:pointer;" onclick="openshouInvoiceEdit('+row.id+');">编辑</a>'
         }

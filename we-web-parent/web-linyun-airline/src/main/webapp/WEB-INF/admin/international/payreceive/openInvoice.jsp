@@ -23,6 +23,7 @@
     <div style="height:550px; overflow-y:auto; ">
       <div class="modal-body">
       	 <input type="hidden" id="id" name="id" value="${obj.id }" >
+      	 <input type="hidden" id="orderstatus" name="orderstatus" value="${obj.receive.orderstatus }" >
          <table id="receivablesTable" class="table table-bordered table-hover">
                   <thead>
                     <tr>
@@ -53,7 +54,7 @@
                   <tr>
                     <td>银行：</td>
                     <td>
-                      <select class="form-control input-sm">
+                      <select class="form-control input-sm" disabled="disabled">
                            <c:forEach var="one" items="${obj.yhkSelect }">
                              	<c:if test="${one.id eq obj.receive.bankcardid }">
                              		<option value="${one.id }" selected="selected">${one.dictName }</option>
@@ -63,13 +64,13 @@
                     </td>
                     <td>银行卡名称：</td>
                     <td>
-                      <select class="form-control input-sm">
+                      <select class="form-control input-sm" disabled="disabled">
                           <option>${obj.receive.bankcardname }</option>
                       </select>
                     </td>
                     <td>卡号：</td>
                     <td>
-                       <select class="form-control input-sm">
+                       <select class="form-control input-sm" disabled="disabled">
                           <option>${obj.receive.bankcardnum }</option>
                        </select>
                     </td>
@@ -86,6 +87,7 @@
                   <td>项目用途：</td>
                   <td>
                     <select id="invoiceitem" name="invoiceitem" class="form-control input-sm">
+                    	<option value="">请选择</option>
                         <c:forEach items="${obj.ytselect }" var="one">
                     		<option value="${one.id }">${one.comDictName }</option>
                     	</c:forEach>
@@ -229,6 +231,8 @@
 	   var formdata = {};
 	   var id = $('#id').val();
 	   formdata.receiveid = id;
+	   var orderstatus = $('#orderstatus').val();
+	   formdata.orderstatus = orderstatus;
 	   var invoiceitem = $('#invoiceitem').val();
 	   formdata.invoiceitem = invoiceitem;
 	   var invoicedate = $('#invoicedate').val();

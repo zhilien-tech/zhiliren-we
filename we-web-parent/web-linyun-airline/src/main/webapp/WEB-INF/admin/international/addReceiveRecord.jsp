@@ -156,27 +156,29 @@
 		  if($('#ataxprice').val()){
 			  ataxprice = $('#ataxprice').val();
 		  }
-		  //实收金额
-		  var currentdue =  parseInt(actualnumber) * parseFloat(costprice) * parseFloat(prepayratio)/100 - parseFloat(fineprice);
-		  if(!isNaN(currentdue) && currentdue != 0){
-		   	 $('#currentdue').val(currentdue.toFixed(2));
-		  }
-		  //已减人数
-		  var alreadydec = autualypeople - actualnumber;
-		  if(!isNaN(alreadydec) && alreadydec > 0){
-			  $('#actualyreduce').val(alreadydec);
-		  }
-		  //本期罚金
-		  var currentfine = 0;
-		  if(alreadydec > freenumber){
-			  currentfine = parseFloat(fineprice) / parseInt(autualypeople) * (parseInt(alreadydec) -  parseInt(freenumber));
-			  if(!isNaN(currentfine) && currentfine != 0){
-			   	 $('#currentfine').val(currentfine.toFixed(2));
+		  if($('#prepayratio').val() && $('#actualnumber').val()){
+			  //实收金额
+			  var currentdue =  parseInt(actualnumber) * parseFloat(costprice) * parseFloat(prepayratio)/100 - parseFloat(fineprice);
+			  if(!isNaN(currentdue) && currentdue != 0){
+			   	 $('#currentdue').val(currentdue.toFixed(2));
 			  }
-		  }
-		  var currentpay = parseFloat(currentdue) + parseFloat(currentfine) + parseFloat(ataxprice);
-		  if(!isNaN(currentpay) && currentpay != 0){
-		   	 $('#currentpay').val(currentpay.toFixed(2));
+			  //已减人数
+			  var alreadydec = autualypeople - actualnumber;
+			  if(!isNaN(alreadydec) && alreadydec > 0){
+				  $('#actualyreduce').val(alreadydec);
+			  }
+			  //本期罚金
+			  var currentfine = 0;
+			  if(alreadydec > freenumber){
+				  currentfine = parseFloat(fineprice) / parseInt(autualypeople) * (parseInt(alreadydec) -  parseInt(freenumber));
+				  if(!isNaN(currentfine) && currentfine != 0){
+				   	 $('#currentfine').val(currentfine.toFixed(2));
+				  }
+			  }
+			  var currentpay = parseFloat(currentdue) + parseFloat(currentfine) + parseFloat(ataxprice);
+			  if(!isNaN(currentpay) && currentpay != 0){
+			   	 $('#currentpay').val(currentpay.toFixed(2));
+			  }
 		  }
 	  });
 	</script>

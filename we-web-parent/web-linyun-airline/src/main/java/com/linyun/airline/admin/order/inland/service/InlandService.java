@@ -54,6 +54,7 @@ import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayPnrEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
 import com.linyun.airline.admin.search.service.SearchViewService;
+import com.linyun.airline.admin.turnover.service.TurnOverViewService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
@@ -79,6 +80,7 @@ import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.entities.TVisitorInfoEntity;
 import com.linyun.airline.entities.TVisitorsPnrEntity;
+import com.linyun.airline.forms.TTurnOverAddForm;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.JsonUtil;
@@ -129,6 +131,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	private OrderLogService orderLogService;
 	@Inject
 	private SearchViewService searchViewService;
+	@Inject
+	private TurnOverViewService turnOverViewService;
 
 	public Object listData(InlandListSearchForm form, HttpServletRequest request) {
 		HttpSession session = request.getSession();
@@ -292,7 +296,15 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(orderinfo.getUserid()));
 		result.put("custominfo", custominfo);
 		//客户负责人
-		result.put("responsible", dbDao.fetch(TUserEntity.class, custominfo.getResponsibleId()).getUserName());
+		//result.put("responsible", dbDao.fetch(TUserEntity.class, custominfo.getResponsibleId()).getUserName());
+		String resposeble = "";
+		if (!Util.isEmpty(custominfo.getResponsibleId())) {
+			TUserEntity resposebleuser = dbDao.fetch(TUserEntity.class, custominfo.getResponsibleId());
+			if (!Util.isEmpty(resposebleuser) && !Util.isEmpty(resposebleuser.getFullName())) {
+				resposeble = resposebleuser.getFullName();
+			}
+		}
+		result.put("responsible", resposeble);
 		//客户需求信息、航班信息集合
 		List<Map<String, Object>> customneedinfo = new ArrayList<Map<String, Object>>();
 		//查询客户需求信息
@@ -605,11 +617,13 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	 * @param request 
 	 * @return TODO
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "null" })
 	public Object saveBookingOrderInfo(String data, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Map<String, Object> fromJson = JsonUtil.fromJson(data, Map.class);
 		//订单id   从页面隐藏域获取
 		Integer id = Integer.valueOf((String) fromJson.get("id"));
@@ -622,6 +636,14 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		orderinfo.setUserid(customerId);
 		orderinfo.setOrdersstatus(orderType);
 		orderinfo.setLoginUserId(new Long(user.getId()).intValue());
+		if (!Util.isEmpty(fromJson.get("remindTime"))) {
+			Date remindTime = DateUtil.string2Date((String) fromJson.get("remindTime"), DateUtil.FORMAT_FULL_PATTERN);
+			orderinfo.setRemindTime(remindTime);
+		}
+		if (!Util.isEmpty(fromJson.get("remindType"))) {
+			String remindType = (String) fromJson.get("remindType");
+			orderinfo.setRemindType(Integer.valueOf(remindType));
+		}
 		//更新订单信息
 		int updateNum = dbDao.update(orderinfo);
 		//消息提醒
@@ -637,13 +659,13 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				searchViewService.addRemindMsg(remindMap, ordersnum, "", upOrderid, orderType, session);
 			}
 		}
-
 		String logcontent = "";
 		for (OrderStatusEnum statusenum : OrderStatusEnum.values()) {
 			if (orderType == statusenum.intKey()) {
 				logcontent = statusenum.value();
 			}
 		}
+
 		orderLogService.addOrderLog(new Long(user.getId()).intValue(), orderinfo.getId(), orderinfo.getOrdersnum(),
 				logcontent);
 		//查询原有的客户需求信息
@@ -716,6 +738,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			//查询数据库原有的航班信息
 			List<TAirlineInfoEntity> airlines = dbDao.query(TAirlineInfoEntity.class,
 					Cnd.where("needid", "=", customneedid), null);
+			double chengbensum = 0;
 			for (Map<String, Object> airmap : airinfo) {
 				String airlineid = (String) airmap.get("airlineid");
 				//航空公司
@@ -744,6 +767,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				airlineEntity.setFormprice(formatDouble(formprice));
 				airlineEntity.setPrice(formatDouble(price));
 				airlineEntity.setNeedid(Integer.valueOf(customneedid));
+				chengbensum += formprice;
 				if (Util.isEmpty(airlineid)) {
 					dbDao.insert(airlineEntity);
 				} else {
@@ -766,6 +790,19 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 					dbDao.delete(tAirlineInfoEntity);
 				}
 			}//end of  删除航班信息
+				//保存流水信息
+			if (orderType == OrderStatusEnum.TICKETING.intKey() && !Util.isEmpty(paymethod)
+					&& paymethod != PayMethodEnum.THIRDPART.intKey()) {
+				TTurnOverAddForm addForm = new TTurnOverAddForm();
+				addForm.setCompanyNameId(company.getId());
+				addForm.setCompanyName(company.getComName());
+				//查询银行信息
+				TBankCardEntity bankinfo = dbDao.fetch(TBankCardEntity.class, paymethod.longValue());
+				addForm.setCardNum(bankinfo.getCardNum());
+				addForm.setBankName(bankinfo.getBankName());
+				addForm.setMoney(chengbensum);
+				turnOverViewService.addTurnOver(addForm, session);
+			}
 		}
 		//如果页面上已经删除，则应该删除数据库中的记录
 		for (TOrderCustomneedEntity cus : querycusneed) {

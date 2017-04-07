@@ -84,4 +84,12 @@ public class TUpOrderEntity implements Serializable {
 	@Column
 	@Comment("成本单价")
 	private Double costsingleprice;
+
+	@Column
+	@Comment("提醒时间")
+	private Date remindTime;
+
+	@Column
+	@Comment("提醒类型")
+	private Integer remindType;
 }

@@ -28,7 +28,7 @@
               <table class="addYSKtable">
                 <tbody>
                       <tr>
-                        <td><label>成本单价：</label></td>
+                        <td><label>销售单价：</label></td>
                         <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint" value="${obj.recordinfo.costprice }"></td>
                         <td><label>预收款比例 ：</label></td>
                         <td><input id="prepayratio" name="prepayratio" type="text" class="form-control input-sm mustNumberPoint" value="${obj.recordinfo.prepayratio }"></td>

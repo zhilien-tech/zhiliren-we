@@ -82,7 +82,25 @@
                      	<input id="id" name="id" type="hidden" value="${obj.orderinfo.id }">
                      </td>
                      <td><label style="position: relative;top: 4px;">结算方式：</label></td>
-                     <td colspan="3"><pre class="preTxt">不限 信用额度：<fmt:formatNumber type="number" value="${obj.custominfo.creditLine}" pattern="0.00" maxFractionDigits="2"/>  
+                     <td colspan="3"><pre class="preTxt"> 
+                   	 <c:choose>
+                     	<c:when test="${obj.custominfo.payType eq 1 }">
+                     		现金
+                     	</c:when>
+                     	<c:when test="${obj.custominfo.payType eq 2 }">3
+                     		支票
+                     	</c:when>
+                     	<c:when test="${obj.custominfo.payType eq 3 }">
+                     		银行汇款
+                     	</c:when>
+                     	<c:when test="${obj.custominfo.payType eq 4 }">
+                     		第三方
+                     	</c:when>
+                     	<c:when test="${obj.custominfo.payType eq 5 }">
+                     		其他
+                     	</c:when>
+                     </c:choose>　
+                     	信用额度：<fmt:formatNumber type="number" value="${obj.custominfo.creditLine}" pattern="0.00" maxFractionDigits="2"/>  
                      		<font id="historyqiancolor"> 历史欠款：<fmt:formatNumber type="number" value="${empty obj.custominfo.arrears? 0.00:obj.custominfo.arrears}" pattern="0.00" maxFractionDigits="2"/></font>　
                    		 预存款：<fmt:formatNumber type="number" value="${obj.custominfo.preDeposit}" pattern="0.00" maxFractionDigits="2"/></pre></td>
                      <td><i class="UnderIcon fa fa-chevron-circle-down"></i></td>

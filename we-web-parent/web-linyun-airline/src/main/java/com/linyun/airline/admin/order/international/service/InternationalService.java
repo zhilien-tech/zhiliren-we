@@ -45,10 +45,12 @@ import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
+import com.linyun.airline.common.enums.BankCardStatusEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.ExcelReader;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAirlineInfoEntity;
+import com.linyun.airline.entities.TBankCardEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TFinanceInfoEntity;
@@ -272,6 +274,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		result.put("user", user);
 		String orderid = request.getParameter("orderid");
 		//订单数据
@@ -305,6 +309,15 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		}
 		result.put("bzcode", bzcode);
 		result.put("paymethodenum", EnumUtil.enum2(PayMethodEnum.class));
+		//支付方式
+		List<TBankCardEntity> paymethod = dbDao.query(TBankCardEntity.class,
+				Cnd.where("companyId", "=", company.getId()).and("status", "=", BankCardStatusEnum.ENABLE.intKey()),
+				null);
+		TBankCardEntity bankCardEntity = new TBankCardEntity();
+		bankCardEntity.setId(PayMethodEnum.THIRDPART.intKey());
+		bankCardEntity.setBankName(PayMethodEnum.THIRDPART.value());
+		paymethod.add(0, bankCardEntity);
+		result.put("paymethod", paymethod);
 		result.put("receivestatus", PayReceiveTypeEnum.RECEIVE.intKey());
 		result.put("paystatus", PayReceiveTypeEnum.PAY.intKey());
 		result.put(
@@ -372,6 +385,14 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		Integer personcount = null;
 		if (!Util.isEmpty(financeMap.get("personcount"))) {
 			personcount = Integer.valueOf(financeMap.get("personcount"));
+		}
+		Integer paycurrency = null;
+		if (!Util.isEmpty(financeMap.get("paycurrency"))) {
+			paycurrency = Integer.valueOf(financeMap.get("paycurrency"));
+		}
+		Integer paymethod = null;
+		if (!Util.isEmpty(financeMap.get("paymethod"))) {
+			paymethod = Integer.valueOf(financeMap.get("paymethod"));
 		}
 		//结算状态
 		Integer billingstatus = null;
@@ -449,6 +470,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		financeInfo.setRelief(relief);
 		financeInfo.setBillingdate(billingdate);
 		financeInfo.setSalesperson(salesperson);
+		financeInfo.setPaycurrency(paycurrency);
+		financeInfo.setPaymethod(paymethod);
 
 		if (Util.isEmpty(id)) {
 			dbDao.insert(financeInfo);

@@ -52,7 +52,7 @@
                   <tr>
                     <td>银行：</td>
                     <td>
-                      <select class="form-control input-sm">
+                      <select class="form-control input-sm" disabled="disabled">
                           <c:forEach var="one" items="${obj.yhkSelect }">
                           		<c:if test="${obj.companybank.bankComp eq one.id }">
 		                        	 <option value="${one.id }" selected="selected">${one.dictName }</option>
@@ -62,13 +62,13 @@
                     </td>
                     <td>银行卡名称：</td> 
                     <td>
-                      <select class="form-control input-sm">
+                      <select class="form-control input-sm" disabled="disabled">
                           <option>${obj.companybank.cardName }</option>
                       </select>
                     </td>
                     <td>卡号：</td>
                     <td>
-                       <select class="form-control input-sm">
+                       <select class="form-control input-sm" disabled="disabled">
                           <option>${obj.companybank.cardNum }</option>
                        </select>
                     </td>
@@ -85,6 +85,7 @@
                   <td>项目用途：</td>
                   <td>
                     <select id="invoiceitem" name="invoiceitem" class="form-control input-sm">
+                    	<option value="">请选择</option>
                         <c:forEach items="${obj.ytselect }" var="one">
                     		<option value="${one.id }">${one.comDictName }</option>
                     	</c:forEach>
