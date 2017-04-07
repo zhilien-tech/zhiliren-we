@@ -28,6 +28,7 @@ import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
+import com.linyun.airline.admin.receivePayment.service.InterReceivePayService;
 import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.ApprovalResultEnum;
@@ -61,6 +62,8 @@ import com.uxuexi.core.web.chain.support.JsonResult;
 public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 	@Inject
 	private SearchViewService searchViewService;
+	@Inject
+	private InterReceivePayService interReceivePayService;
 
 	public Map<String, Object> findNums(HttpSession session) {
 		String sqlStringInter = sqlManager.get("applyapproval_list_international");
@@ -435,8 +438,9 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 					Map<String, Object> remindMap = new HashMap<String, Object>();
 					remindMap.put("remindDate", DateUtil.Date2String(new Date()));
 					remindMap.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
-					searchViewService.addRemindMsg(remindMap, ordersnum, pnr, upOrderid, orderType, session);
-
+					//searchViewService.addRemindMsg(remindMap, ordersnum, pnr, upOrderid, orderType, session);
+					interReceivePayService.addInterRemindMsg(orderId.intValue(), ordersnum, pnr,
+							payoOrderEntity.getOrderstatus() + "", session);
 					return JsonResult.success("审核通过");
 				}
 			}
