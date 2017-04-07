@@ -33,6 +33,7 @@ import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.ApprovalResultEnum;
 import com.linyun.airline.common.enums.MessageRemindEnum;
 import com.linyun.airline.common.enums.MessageWealthStatusEnum;
+import com.linyun.airline.common.enums.OrderRemindEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.enums.ReductionStatusEnum;
 import com.linyun.airline.entities.ApplyApprovalEntity;
@@ -399,8 +400,9 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 				}
 				if (res1 > 0) {
 					Map<String, Object> remindMap = new HashMap<String, Object>();
+					remindMap.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
 					remindMap.put("remindDate", DateUtil.Date2String(new Date()));
-					remindMap.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
+					//remindMap.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
 					searchViewService.addRemindMsg(remindMap, ordersnum, pnr, upOrderid, orderType, session);
 
 					return JsonResult.success("审核通过");
