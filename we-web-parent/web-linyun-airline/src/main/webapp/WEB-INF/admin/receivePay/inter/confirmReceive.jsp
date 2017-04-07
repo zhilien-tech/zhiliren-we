@@ -31,7 +31,9 @@
                   </tr>
                 </thead>
                 <tbody id="interConfirmRecTbody">
-                  <input id="recIds" name="recIds" type="hidden" value="${obj.id }"><!-- 水单url -->
+                  <input id="recIds" name="recIds" type="hidden" value="${obj.id }"><!-- 收款id -->
+                  <input id="orderIds" name="orderIds" type="hidden" value="${obj.ids }"><!-- 订单id -->
+                  <input id="prrOrderStatus" name="prrOrderStatus" type="hidden" value="${obj.prrOrderStatus }"><!-- 订单状态 -->
 					<c:forEach var="one" items="${obj.orders}">
                 		<tr ondblclick="trDetail(${one.id });">
                 			<td>${one.ordersnum }</td>

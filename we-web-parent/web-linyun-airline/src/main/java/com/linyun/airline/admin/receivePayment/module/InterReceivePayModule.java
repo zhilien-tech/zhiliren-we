@@ -149,8 +149,9 @@ public class InterReceivePayModule {
 	 * 确认收款
 	 */
 	@At
-	public Object saveInterRec(@Param("id") final String recId, HttpSession session) {
-		return interReceivePayService.saveInterRec(recId, session);
+	public Object saveInterRec(@Param("recIds") final String recId, @Param("orderIds") final String orderIds,
+			@Param("orderStatus") final String orderStatus, HttpSession session) {
+		return interReceivePayService.saveInterRec(recId, orderIds, orderStatus, session);
 	}
 
 	//水单上传 返回值文件存储地址
