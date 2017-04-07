@@ -179,7 +179,7 @@
 				'buttonText' : '上传',//按钮显示的文字
 				'fileSizeLimit' : '3000MB',
 				'fileTypeDesc' : '文件',//在浏览窗口底部的文件类型下拉菜单中显示的文本
-				'fileTypeExts' : '*.doc; *.xls; *.xlsx;*.docx;',//上传文件的类型
+				 'fileTypeExts' : '*.png; *.txt; *.doc; *.pdf; *.xls; *.jpg; *.docx; *.xlsx;',//上传文件的类型
 				'swf' : '${base}/public/plugins/uploadify/uploadify.swf',//指定swf文件
 				'multi' : false,//multi设置为true将允许多文件上传
 				'successTimeout' : 1800,

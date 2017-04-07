@@ -130,11 +130,14 @@ function initdrawerPayTable() {
                     {"data": "ordersstatus", "bSortable": false,
                     	render:function(data, type, row, meta) {
                       		var result = '';
-                      		$.each(row.orderstatusenum, function(name, value) {
+                      		/*$.each(row.orderstatusenum, function(name, value) {
                       			if(row.ordersstatus == name){
                       				result = value;
                       			}
-                      		});
+                      		});*/
+                      		if(row.statusname && row.statusname != undefined){
+                    			result = row.statusname;
+                    		}
                       		return result;
                       	  }
                     },
@@ -302,6 +305,7 @@ $('.fuKuanBtn').click(function(){
         				skin: false, //加上边框
         				closeBtn:false,//默认 右上角关闭按钮 是否显示
         				shadeClose:true,
+        				scrollbar: false,
         				area: ['850px', '568px'],
         				content: BASE_PATH + '/admin/international/openReceipt.html?ids='+ids+'&orderstatus='+status,
         				end:function(){

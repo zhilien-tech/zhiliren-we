@@ -27,6 +27,21 @@
                                    <option value="2">已开发票</option>
                                </select>
                              </div>
+                             <%-- <div class="col-md-1 textPadding">
+                               <select id="kaiInvoiceSelect" name="orderstatus" class="form-control TimeInput">
+                                   <option value=" ">全部</option>
+                                   <c:forEach items="${obj.listIssuer}" var="one">
+				                    	<option value="${one.orderstatus }">
+				                    		<c:if test="${one.orderstatus eq 3 }">一订</c:if>
+				                    		<c:if test="${one.orderstatus eq 4 }">二订</c:if>
+				                    		<c:if test="${one.orderstatus eq 5 }">三订</c:if>
+				                    		<c:if test="${one.orderstatus eq 6 }">全款</c:if>
+				                    		<c:if test="${one.orderstatus eq 7 }">尾款</c:if>
+				                    		<c:if test="${one.orderstatus eq 8 }">出票</c:if>
+			                            </option>
+			                        </c:forEach>
+                               </select>
+                             </div> --%>
                              <div class="col-md-1 textPadding">
                                <select id="kaibilluserid" name="billuserid" class="form-control TimeInput">
                                    <option value="">开票人</option>
@@ -66,6 +81,7 @@
                              <th>发票开具项目</th>
                              <th>收款单位</th>
                              <th>开票人</th>
+                             <th>订单状态</th>
                              <th>状态</th>
                              <th>备注</th>
                              <th>操作</th>
@@ -89,6 +105,21 @@
                                   <option value="4">已收发票</option>
                               </select>
                             </div>
+                            <%-- <div class="col-md-1 textPadding">
+                               <select id="kaiInvoiceSelect" name="orderstatus" class="form-control TimeInput">
+                                   <option value=" ">全部</option>
+                                   <c:forEach items="${obj.listIssuer}" var="one">
+				                    	<option value="${one.orderstatus }">
+				                    		<c:if test="${one.orderstatus eq 3 }">一订</c:if>
+				                    		<c:if test="${one.orderstatus eq 4 }">二订</c:if>
+				                    		<c:if test="${one.orderstatus eq 5 }">三订</c:if>
+				                    		<c:if test="${one.orderstatus eq 6 }">全款</c:if>
+				                    		<c:if test="${one.orderstatus eq 7 }">尾款</c:if>
+				                    		<c:if test="${one.orderstatus eq 8 }">出票</c:if>
+			                            </option>
+			                        </c:forEach>
+                               </select>
+                             </div> --%>
                             <div class="col-md-1 textPadding">
                               <select id="shoubilluserid" name="billuserid" class="form-control TimeInput">
                                   <option value="">收票人</option>
@@ -128,6 +159,7 @@
                              <th>发票开具项目</th>
                              <th>付款单位</th>
                              <th>收票人</th>
+                             <th>订单状态</th>
                              <th>状态</th>
                              <th>备注</th>
                              <th>操作</th>

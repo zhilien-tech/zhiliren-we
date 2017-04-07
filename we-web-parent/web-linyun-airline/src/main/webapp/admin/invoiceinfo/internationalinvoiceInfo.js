@@ -99,6 +99,28 @@ function initKaiInterInvoiceTable() {
 	                  		return result;
                 	   }
                   },
+                  {"data": "orderstatus", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+              		  		var orderstatus = row.orderstatus;
+	                  		if(orderstatus ==null || orderstatus==""){
+	                  			return "";
+	                  		}else{
+	                  			if(orderstatus===3){
+	                  				return "一订";
+	                  			}else if(orderstatus===4){
+	                  				return "二订";
+	                  			}else if(orderstatus===5){
+	                  				return "三订";
+	                  			}else if(orderstatus===6){
+	                  				return "全款";
+	                  			}else if(orderstatus===7){
+	                  				return "尾款";
+	                  			}else if(orderstatus===8){
+	                  				return "出票";
+	                  			}
+	                  		}
+                	  	}
+                  },
                   {"data": "status", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                     		var status = row.status;
@@ -125,7 +147,7 @@ function initKaiInterInvoiceTable() {
           ],
       columnDefs: [{
     	//   指定第一列，从0开始，0表示第一列，1表示第二列……
-          targets: 10,
+          targets: 11,
           render: function(data, type, row, meta) {
               return '<a style="cursor:pointer;" onclick="openkaiInvoiceEdit('+row.id+');">开发票</a>'
           }
@@ -255,6 +277,28 @@ function initshouInterInvoiceTable() {
                   		return username;
                   	}
                   },
+                  {"data": "orderstatus", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                		  	var orderstatus = row.orderstatus;
+	                  		if(orderstatus ==null || orderstatus==""){
+	                  			return "";
+	                  		}else{
+	                  			if(orderstatus===3){
+	                  				return "一订";
+	                  			}else if(orderstatus===4){
+	                  				return "二订";
+	                  			}else if(orderstatus===5){
+	                  				return "三订";
+	                  			}else if(orderstatus===6){
+	                  				return "全款";
+	                  			}else if(orderstatus===7){
+	                  				return "尾款";
+	                  			}else if(orderstatus===8){
+	                  				return "出票";
+	                  			}
+	                  		}
+                	  }
+                  },
                   {"data": "status", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                   		var status = row.status;
@@ -281,7 +325,7 @@ function initshouInterInvoiceTable() {
         ],
     columnDefs: [{
   	//   指定第一列，从0开始，0表示第一列，1表示第二列……
-        targets: 10,
+        targets: 11,
         render: function(data, type, row, meta) {
             return '<a style="cursor:pointer;" onclick="openshouInvoiceEdit('+row.id+');">收发票</a>'
         }
