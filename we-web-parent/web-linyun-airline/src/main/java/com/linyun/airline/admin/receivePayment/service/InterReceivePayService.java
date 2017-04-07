@@ -342,6 +342,12 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	public String addInterRemindMsg(int orderId, String ordernum, String pnr, String orderStatus, HttpSession session) {
 		int msgOrderStatus = 0;
 		switch (orderStatus) {
+		case "1":
+			msgOrderStatus = SEARCHMSG;
+			break;
+		case "2":
+			msgOrderStatus = BOOKINGMSG;
+			break;
 		case "3":
 			msgOrderStatus = FIRBOOKINGMSG;
 			break;
@@ -359,6 +365,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			break;
 		case "8":
 			msgOrderStatus = TICKETINGMSG;
+			break;
+		case "9":
+			msgOrderStatus = CLOSEMSG;
 			break;
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -1097,7 +1106,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//付款成功 操作台添加消息
 		if (updateNum > 0) {
 			//******************************************添加消息提醒***********************************************
-			/*String sqlS = sqlManager.get("receivePay_inter_order_pay_pids");
+			String sqlS = sqlManager.get("receivePay_inter_order_pay_pids");
 			Sql sql = Sqls.create(sqlS);
 			Cnd cnd = Cnd.NEW();
 			cnd.and("pi.id", "in", payIds);
@@ -1106,11 +1115,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				int uid = Integer.valueOf(record.getString("id"));
 				String ordernum = record.getString("ordersnum");
 				String pnr = record.getString("PNR");
-				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
-				map.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
-				searchViewService.addRemindMsg(map, ordernum, "", uid, PAYEDMSGTYPE, session);
-			}*/
+				/*addInterRemindMsg(uid, ordernum, pnr, orderStatus, session);*/
+			}
 		}
 
 		return "success";
