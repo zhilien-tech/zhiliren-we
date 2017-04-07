@@ -849,6 +849,10 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			orderinfo.setOrdersstatus(orderStatus);
 			break;
 		}
+		if (!Util.isEmpty(fromJson.get("cRemark"))) {
+			String remark = (String) fromJson.get("cRemark");
+			orderinfo.setRemark(remark);
+		}
 		TUpOrderEntity insertOrder = dbDao.insert(orderinfo);
 		int upOrderId = insertOrder.getId();
 
