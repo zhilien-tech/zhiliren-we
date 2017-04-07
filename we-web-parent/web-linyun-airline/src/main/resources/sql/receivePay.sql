@@ -486,7 +486,8 @@ SELECT
 	fi.billingdate,
     prr.actualnumber,
 	fi.`issuer`,
-	prr.currentpay
+	prr.currentpay,
+	prr.orderstatusid prrOrderStatus
 FROM
 	t_up_order uo
 LEFT JOIN t_pay_order po ON po.orderid = uo.id
@@ -584,8 +585,21 @@ $condition
 
 
 /*receivePay_inter_order_pay_rids*/
-
-
+SELECT
+	uo.id,
+	uo.ordersnum,
+	pi.PNR,
+	prr.orderstatusid,
+	prr.orderstatus
+FROM
+	t_up_order uo
+LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
+LEFT JOIN t_pnr_info pi ON pi.orderid = uo.id
+LEFT JOIN t_pay_order po on po.orderid=uo.id
+$condition
+GROUP BY
+	uo.id
+	
 /*receivePay_inter_order_rec_rids*/
 SELECT
 	uo.id,
@@ -598,4 +612,6 @@ FROM
 LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
 LEFT JOIN t_pnr_info pi ON pi.orderid = uo.id
 $condition
+GROUP BY
+	uo.id
 

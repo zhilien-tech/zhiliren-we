@@ -1090,25 +1090,25 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			//一订 8
 			msgType = MessageTypeEnum.FIRBOOKMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
-			msgContent = generateOrderNum + "订单需支付一订";
+			msgContent = generateOrderNum + "订单一订需处理";
 			break;
 		case 7:
 			//二订 9
 			msgType = MessageTypeEnum.SECBOOKMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
-			msgContent = generateOrderNum + "订单需支付二订";
+			msgContent = generateOrderNum + "订单二订需处理";
 			break;
 		case 8:
 			//三订 10
 			msgType = MessageTypeEnum.THRBOOKMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
-			msgContent = generateOrderNum + "订单需支付三订";
+			msgContent = generateOrderNum + "订单三订需处理";
 			break;
 		case 9:
 			//全款 11
 			msgType = MessageTypeEnum.ALLBOOKMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
-			msgContent = generateOrderNum + "订单需要支付全款";
+			msgContent = generateOrderNum + "订单全款需处理";
 			break;
 		case 10:
 			//尾款 12
