@@ -343,48 +343,61 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				int uid = Integer.valueOf(record.getString("id"));
 				String ordernum = record.getString("ordersnum");
 				String pnr = record.getString("PNR");
-				addInterRemindMsg(uid, ordernum, pnr, orderStatus, session);
+				addInterRemindMsg(uid, ordernum, pnr, orderStatus, RECEIVETYPE, session);
 			}
 		}
 
 		return updateNum;
 	}
 
-	public String addInterRemindMsg(int orderId, String ordernum, String pnr, String orderStatus, HttpSession session) {
+	public String addInterRemindMsg(int orderId, String ordernum, String pnr, String orderStatus, int payRecType,
+			HttpSession session) {
 		int msgOrderStatus = 0;
+		String statusStr = "";
 		switch (orderStatus) {
 		case "1":
 			msgOrderStatus = SEARCHMSG;
+			statusStr = "查询";
 			break;
 		case "2":
 			msgOrderStatus = BOOKINGMSG;
+			statusStr = "预订";
 			break;
 		case "3":
 			msgOrderStatus = FIRBOOKINGMSG;
+			statusStr = "一订";
 			break;
 		case "4":
 			msgOrderStatus = SECBOOKINGMSG;
+			statusStr = "二订";
 			break;
 		case "5":
 			msgOrderStatus = THRBOOKINGMSG;
+			statusStr = "三订";
 			break;
 		case "6":
 			msgOrderStatus = ALLBOOKINGMSG;
+			statusStr = "全款";
 			break;
 		case "7":
 			msgOrderStatus = LASTBOOKINGMSG;
+			statusStr = "尾款";
 			break;
 		case "8":
 			msgOrderStatus = TICKETINGMSG;
+			statusStr = "出票";
 			break;
 		case "9":
 			msgOrderStatus = CLOSEMSG;
+			statusStr = "关闭";
 			break;
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 		map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
 		map.put("orderStatus", msgOrderStatus);
+		map.put("orderStatusStr", statusStr);
+		map.put("payRecType", payRecType);
 		String addRemindMsg = addRemindMsg(map, ordernum, pnr, orderId, msgOrderStatus, session);
 		return addRemindMsg;
 	}
@@ -1144,7 +1157,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				int uid = Integer.valueOf(record.getString("id"));
 				String ordernum = record.getString("ordersnum");
 				String pnr = record.getString("PNR");
-				addInterRemindMsg(uid, ordernum, pnr, orderStatus, session);
+				addInterRemindMsg(uid, ordernum, pnr, orderStatus, PAYTYPE, session);
 			}
 		}
 
@@ -1286,6 +1299,11 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			remindDateTime = DateUtil.string2Date(remindDateStr);
 		}
 
+		//订单状态
+		String orderStatusStr = fromJson.get("orderStatusStr").toString();
+		//收付款状态
+		String payRecType = fromJson.get("payRecType").toString();
+
 		//消息提醒方式
 		String remindStr = fromJson.get("remindType").toString();
 		if (Util.isEmpty(remindStr)) {
@@ -1339,97 +1357,132 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			//消息等级2
 			msgLevel = MessageLevelEnum.MSGLEVEL2.intKey();
 			//消息内容
-			msgContent = "向你发送一个查询询单：" + generateOrderNum;
+			msgContent = "查询单号：" + generateOrderNum + " 记录编号：" + pnr;
 			break;
 		case 2:
 			//预订 5
 			msgType = MessageTypeEnum.BOOKMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL2.intKey();
-			msgContent = "向你发送一个预售订单：" + generateOrderNum;
+			msgContent = "预定单号：" + generateOrderNum + " 记录编号：" + pnr;
 			break;
 		case 3:
-			//开票 (消息内容TODO)  6
+			//开票 (消息内容TODO)  6   
 			msgType = MessageTypeEnum.DRAWBILLMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL3.intKey();
-			msgContent = "向你发送一个开票订单：" + generateOrderNum;
+			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "开发票中";
 			break;
 		case 4:
 			//出票 (消息内容TODO) 7
 			msgType = MessageTypeEnum.MAKEOUTBILLMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL3.intKey();
-			msgContent = "向你发送一个出票订单：" + generateOrderNum;
+			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "发票已开";
 			break;
 		case 5:
 			//关闭 (消息内容TODO)  0
 			msgType = MessageTypeEnum.CLOSEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL1.intKey();
-			msgContent = "向你发送一个关闭订单：" + generateOrderNum;
+			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "已关闭";
 			break;
 		case 6:
 			//一订 8
 			msgType = MessageTypeEnum.FIRBOOKMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
-			msgContent = generateOrderNum + "订单一订需处理";
+			if (Util.eq(PAYTYPE, payRecType)) {
+				//付款
+				msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "付款已提交";
+			}
+			if (Util.eq(RECEIVETYPE, payRecType)) {
+				//收款
+				msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "收款已提交";
+			}
 			break;
 		case 7:
 			//二订 9
 			msgType = MessageTypeEnum.SECBOOKMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
-			msgContent = generateOrderNum + "订单二订需处理";
+			if (Util.eq(PAYTYPE, payRecType)) {
+				//付款
+				msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "付款已提交";
+			}
+			if (Util.eq(RECEIVETYPE, payRecType)) {
+				//收款
+				msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "收款已提交";
+			}
 			break;
 		case 8:
 			//三订 10
 			msgType = MessageTypeEnum.THRBOOKMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
-			msgContent = generateOrderNum + "订单三订需处理";
+			if (Util.eq(PAYTYPE, payRecType)) {
+				//付款
+				msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "付款已提交";
+			}
+			if (Util.eq(RECEIVETYPE, payRecType)) {
+				//收款
+				msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "收款已提交";
+			}
 			break;
 		case 9:
 			//全款 11
 			msgType = MessageTypeEnum.ALLBOOKMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
-			msgContent = generateOrderNum + "订单全款需处理";
+			if (Util.eq(PAYTYPE, payRecType)) {
+				//付款
+				msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "付款已提交";
+			}
+			if (Util.eq(RECEIVETYPE, payRecType)) {
+				//收款
+				msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "收款已提交";
+			}
 			break;
 		case 10:
 			//尾款 12
 			msgType = MessageTypeEnum.LASTBOOKMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL4.intKey();
-			msgContent = generateOrderNum + "订单需结清尾款";
+			if (Util.eq(PAYTYPE, payRecType)) {
+				//付款
+				msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "付款已提交";
+			}
+			if (Util.eq(RECEIVETYPE, payRecType)) {
+				//收款
+				msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "收款已提交";
+			}
 			break;
 		case 11:
 			//已收款 14
 			msgType = MessageTypeEnum.RECEIVEDMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = generateOrderNum + "订单款项已收";
+			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "款项已收";
 			break;
 		case 12:
 			//已付款 15
 			msgType = MessageTypeEnum.PAYEDMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = generateOrderNum + " " + pnr + "款项已付";
+			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "款项已付";
 			break;
 		case 13:
 			//收款款已开发票 16
 			msgType = MessageTypeEnum.INVIOCEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = generateOrderNum + "订单" + pnr + "发票已开";
+			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "发票已开";
 			break;
 		case 14:
 			//付款已收发票 17
 			msgType = MessageTypeEnum.RECINVIOCEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = generateOrderNum + "订单中PNR：" + pnr + "发票已收";
+			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "发票已收";
 			break;
 		case 15:
 			//付款 已审批18
 			msgType = MessageTypeEnum.RECINVIOCEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = generateOrderNum + "订单中PNR：" + pnr + "审批已通过";
+			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "付款审批已通过";
 			break;
 		case 16:
 			//付款已收发票 19
 			msgType = MessageTypeEnum.RECINVIOCEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = generateOrderNum + "订单中PNR：" + pnr + "审批已拒绝";
+			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "付款审批已拒绝";
 			break;
 		}
 
