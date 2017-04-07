@@ -49,7 +49,7 @@
               </table>
               <table border="0" class="selectTable">
                 <tr>
-                  <td>银行：</td>
+                  <td><label>银行：</label></td>
                   <td>
                     <select id="bankcardid" name="bankcardid" class="form-control input-sm" onchange="loadbankcardname();">
                         <c:forEach var="one" items="${obj.yhkSelect }">
@@ -57,17 +57,17 @@
                         </c:forEach>
                     </select>
                   </td>
-                  <td>银行卡名称：</td>
+                  <td><label>银行卡名称：</label></td>
                   <td>
                     <select id="bankcardname" name="bankcardname" class="form-control input-sm" onchange="loadbankcardnum();">
                     </select>
                   </td>
-                  <td>卡号：</td>
+                  <td><label>卡号：</label></td>
                   <td>
                      <select id="bankcardnum" name="bankcardnum" class="form-control input-sm">
                      </select>
                   </td>
-                  <td>合计：</td>
+                  <td><label>合计：</label></td>
                   <td id="heji">${obj.sumincome }</td>
                 </tr>
               </table>
