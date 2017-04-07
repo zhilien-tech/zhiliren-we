@@ -156,6 +156,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 			/******副数据*******/
 			List<ApprovalListInter> query1 = DbSqlUtil.query(dbDao, ApprovalListInter.class, reduceInteSql);
 			for (ApprovalListInter approvalList : query1) {
+				approvalList.setOrderstime(approvalList.getOptime());
 				approvalList.setPaystatus(approvalList.getApplyResult());
 				approvalList.setAmount(approvalList.getAccount());
 				approvalList.setShortName(approvalList.getCustomname());

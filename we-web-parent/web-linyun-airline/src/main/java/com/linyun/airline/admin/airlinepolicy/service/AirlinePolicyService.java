@@ -449,12 +449,12 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 		try {
 			if (null != agent && -1 != agent.indexOf("MSIE")) //IE 
 			{
-				fileName = java.net.URLEncoder.encode(fileName, "UTF-8");
+				fileName = java.net.URLDecoder.decode(fileName, "utf-8");
 			} else if (null != agent && -1 != agent.indexOf("Mozilla"))//Firefox 
 			{
 				fileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
 			} else {
-				fileName = java.net.URLEncoder.encode(fileName, "UTF-8");
+				fileName = java.net.URLDecoder.decode(fileName, "utf-8");
 			}
 		} catch (UnsupportedEncodingException e) {
 
