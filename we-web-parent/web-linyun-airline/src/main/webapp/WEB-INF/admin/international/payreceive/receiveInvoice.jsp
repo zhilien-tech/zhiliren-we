@@ -18,7 +18,7 @@
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo()" value="提交"/>
             <h4 class="invoiceH4">收款信息</h4>
     </div>
-    <div style="height:550px; overflow-y:auto;">
+    <div style="height:550px; overflow-y:auto;" class="allCentext">
       <div class="modal-body">
       	<input id="id" name="id" type="hidden" value="${obj.id }" > 
       	<input id="orderstatus" name="orderstatus" type="hidden" value="${obj.payorders.orderstatus }" > 
@@ -50,7 +50,7 @@
          </table>
          <table border="0" class="selectTable">
                   <tr>
-                    <td>银行：</td>
+                    <td><label>银行：</label></td>
                     <td>
                       <select class="form-control input-sm">
                           <c:forEach var="one" items="${obj.yhkSelect }">
@@ -60,19 +60,19 @@
                           </c:forEach>
                       </select>
                     </td>
-                    <td>银行卡名称：</td> 
+                    <td><label>银行卡名称：</label></td> 
                     <td>
                       <select class="form-control input-sm">
                           <option>${obj.companybank.cardName }</option>
                       </select>
                     </td>
-                    <td>卡号：</td>
+                    <td><label>卡号：</label></td>
                     <td>
                        <select class="form-control input-sm">
                           <option>${obj.companybank.cardNum }</option>
                        </select>
                     </td>
-                    <td>合计：</td>
+                    <td><label>合计：</label></td>
                     <td id="sumjine">${obj.sumjine }</td>
                   </tr>
          </table>
@@ -182,6 +182,7 @@
 	          newDiv.find('.deleteInvoice').parent().remove();
 	          newDiv.find('.addIcon').parent().remove();
 	          newDiv.find('.fileUL').append('<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>');
+	          $('.allCentext').scrollTop($('.allCentext').height());
 	      });
 	      /*-----收付款>收款>开发票 - 按钮-----*/
 	      $(document).on("click",".removIcon",function(){
