@@ -1120,37 +1120,37 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			//已收款 14
 			msgType = MessageTypeEnum.RECEIVEDMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + "中PNR：" + pnr + "款项已收";
+			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "款项已收";
 			break;
 		case 12:
 			//已付款 15
 			msgType = MessageTypeEnum.PAYEDMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + "中PNR：" + pnr + "款项已付";
+			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "款项已付";
 			break;
 		case 13:
 			//收款款已开发票 16
 			msgType = MessageTypeEnum.INVIOCEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + "中PNR：" + pnr + "发票已开";
+			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "发票已开";
 			break;
 		case 14:
 			//付款已收发票 17
 			msgType = MessageTypeEnum.RECINVIOCEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + "中PNR：" + pnr + "发票已收";
+			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "发票已收";
 			break;
 		case 15:
 			//付款 已审批18
 			msgType = MessageTypeEnum.RECINVIOCEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + "中PNR：" + pnr + "审批已通过";
+			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "审批已通过";
 			break;
 		case 16:
 			//付款已收发票 19
 			msgType = MessageTypeEnum.RECINVIOCEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + "中PNR：" + pnr + "审批已拒绝";
+			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "审批已拒绝";
 			break;
 		}
 

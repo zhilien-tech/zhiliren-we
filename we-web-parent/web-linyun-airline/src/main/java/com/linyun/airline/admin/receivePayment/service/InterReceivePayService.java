@@ -1476,13 +1476,13 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			//付款 已审批18
 			msgType = MessageTypeEnum.RECINVIOCEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "付款审批已通过";
+			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "审批已通过";
 			break;
 		case 16:
 			//付款已收发票 19
 			msgType = MessageTypeEnum.RECINVIOCEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "付款审批已拒绝";
+			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "审批已拒绝";
 			break;
 		}
 
