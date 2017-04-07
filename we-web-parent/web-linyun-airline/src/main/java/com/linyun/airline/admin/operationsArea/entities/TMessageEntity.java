@@ -54,4 +54,8 @@ public class TMessageEntity implements Serializable {
 	@Comment("订单id")
 	private Long upOrderId;
 
+	@Column
+	@Comment("订单状态")
+	private Long upOrderStatus;
+
 }

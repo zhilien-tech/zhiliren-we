@@ -1447,7 +1447,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		mapMsg.put("customerInfoId", customerInfoId);
 		mapMsg.put("remindMsgDate", remindDateTime);
 		mapMsg.put("upOrderId", upOrderId);
-
+		mapMsg.put("upOrderStatus", orderStatus);
 		remindMessageService.addMessageEvent(mapMsg);
 		return "消息添加成功";
 	}
