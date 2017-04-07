@@ -49,7 +49,11 @@ function initInternationalTable(){
                     	render: function(data, type, row, meta) {
                     		var result = '<ul>';
                     		$.each(row.airinfo, function(name, value) {
-                    			result += '<li style="list-style:none;">'+value.ailinenum+'</li>';
+                    			if(value.ailinenum && value.ailinenum != undefined){
+                    				result += '<li style="list-style:none;">'+value.ailinenum+'</li>';
+                    			}else{
+                    				result += '<li style="list-style:none;"></li>';
+                    			}
                     		});
                     		result += '</ul>';
                     		return result;
