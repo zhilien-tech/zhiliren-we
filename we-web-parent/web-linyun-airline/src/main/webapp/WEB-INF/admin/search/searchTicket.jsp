@@ -232,7 +232,7 @@
 								<tr name="cRemarkTr" class="remarkTr">
 									<td><label>备注：</label></td>
 									<td>
-										<textarea class="form-control" id="cRemark" name="cRemark"></textarea>
+										<textarea class="form-control" id="cRemark" name="cRemark"  rows="5"></textarea>
 									</td>
 								</tr>
 							</table>
