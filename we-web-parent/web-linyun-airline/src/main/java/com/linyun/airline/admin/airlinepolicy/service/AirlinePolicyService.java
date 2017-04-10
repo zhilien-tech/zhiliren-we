@@ -428,19 +428,25 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 				fileName = new String(fileName.getBytes("utf-8"), "ISO8859-1");
 			} catch (UnsupportedEncodingException e) {
 
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 
 			}*/
+
 		} else {
 			resourceFile = url2;
-			fileName = fileName2;
+			try {
+				fileName = java.net.URLDecoder.decode(fileName2, "UTF-8");
+				fileName = new String(fileName.getBytes(), "utf-8");
+			} catch (UnsupportedEncodingException e) {
+
+				e.printStackTrace();
+
+			}
 			/*try {
 				fileName = java.net.URLDecoder.decode(fileName2, "UTF-8");
 				fileName = new String(fileName.getBytes("utf-8"), "ISO8859-1");
 			} catch (UnsupportedEncodingException e) {
 
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 
 			}*/
@@ -452,7 +458,6 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 				fileName = java.net.URLEncoder.encode(fileName, "UTF-8");
 			} catch (UnsupportedEncodingException e) {
 
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 
 			}
@@ -462,7 +467,6 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 				fileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
 			} catch (UnsupportedEncodingException e) {
 
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 
 			}
@@ -496,7 +500,6 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 
 			} catch (Exception e) {
 
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 
 			} finally {
@@ -507,7 +510,6 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 					}
 				} catch (IOException e) {
 
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 
 				}
@@ -518,7 +520,6 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 					}
 				} catch (IOException e) {
 
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 
 				}

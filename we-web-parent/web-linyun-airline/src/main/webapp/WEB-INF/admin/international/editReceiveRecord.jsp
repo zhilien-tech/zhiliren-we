@@ -34,8 +34,8 @@
                         <td><input id="prepayratio" name="prepayratio" type="text" class="form-control input-sm mustNumberPoint" value="${obj.recordinfo.prepayratio }"><span class="bfh">%</span></td>
                         <td><label>实际人数：</label></td>
                         <td><input id="actualnumber" name="actualnumber" type="text" class="form-control input-sm mustNumber" value="${obj.recordinfo.actualnumber }"></td>
-                        <td colspan="2"><label>免罚金可减人数：</label></td>
-                        <td colspan="2"><input id="freenumber" name="freenumber" type="text" class="form-control input-sm mustNumber" value="${obj.recordinfo.freenumber }"></td>
+                        <td><label>免罚金可减人数：</label></td>
+                        <td><input id="freenumber" name="freenumber" type="text" class="form-control input-sm mustNumber" value="${obj.recordinfo.freenumber }"></td>
                       </tr>
                       <tr>
                         <td><label>本期罚金：</label></td>

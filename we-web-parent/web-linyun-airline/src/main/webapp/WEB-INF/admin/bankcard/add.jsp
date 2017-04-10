@@ -35,7 +35,7 @@
 			            </div>
 			            <div class="form-group form-group1">
 		                  <label class="col-sm-1 text-right padding">卡号：</label>
-		                  <div class="col-sm-2 padding">
+		                  <div class="col-sm-3 padding">
 		                    <input name="cardNum" type="text" class="form-control input-sm" id="cardNum" onkeyup="this.value=this.value.replace(/\D/g,'').replace(/....(?!$)/g,'$& ')" maxlength="23"/>
 		                  </div>
 		                </div>
@@ -81,7 +81,7 @@
 							</script>
 			                <div class="form-group form-group1">
 			                  <label class="col-sm-1 text-right padding">币种：</label>
-			                  <div class="col-sm-2 padding">
+			                  <div class="col-sm-3 padding">
 			                    <select class="form-control input-sm" name="currency" id="findCurrency">
 			                     	<option value="">请选择</option>
 			                      <c:forEach items="${obj.moneyTypeList }" var="each">
@@ -101,7 +101,7 @@
 	                
 	                <div class="form-group row"><!--备注-->
 	                  <label class="col-sm-2 text-right padding">备注：</label>
-	                  <div class="col-sm-8 padding">
+	                  <div class="col-sm-9 padding">
 	                    <textarea class="form-control input-sm textareaHeight" name="remark"></textarea>
 	                  </div>
 	                </div><!--end 备注-->

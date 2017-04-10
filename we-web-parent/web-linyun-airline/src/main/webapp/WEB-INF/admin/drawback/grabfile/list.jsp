@@ -551,6 +551,7 @@ function successCallback(id){
 					  	    fix: false,
 					  	    maxmin: false,
 					  	    shadeClose: false,
+					  	    scrollbar: false,
 					  	    area: ['1200px', '700px'],
 					  	    content: '${base}/admin/drawback/grabreport/filePreview.html?id='+pid
 					 	});
@@ -622,6 +623,7 @@ function successCallback(id){
 	  	    fix: false,
 	  	    maxmin: false,
 	  	    shadeClose: false,
+	  	    scrollbar: false,
 	  	    area: ['400px', '170px'],
 	  	    content: '${base}/admin/drawback/grabfile/add.html?parentId='+pid,
 	  	    end: function(){//添加完页面点击返回的时候自动加载表格数据
@@ -643,6 +645,7 @@ function successCallback(id){
 	  	    fix: false,
 	  	    maxmin: false,
 	  	    shadeClose: false,
+	  	    scrollbar: false,
 	  	    area: ['400px', '170px'],
 	  	    content: '${base}/admin/drawback/grabfile/update.html?id='+id,
 	  	    end: function(){//添加完页面点击返回的时候自动加载表格数据
@@ -836,6 +839,7 @@ function successCallback(id){
 	  	    fix: false,
 	  	    maxmin: false,
 	  	    shadeClose: false,
+	  	    scrollbar: false,
 	  	  	area: ['1000px', '600px'],
 	  	    content: '${base}/admin/drawback/grabreport/update.html?id='+id
 	  	  });
