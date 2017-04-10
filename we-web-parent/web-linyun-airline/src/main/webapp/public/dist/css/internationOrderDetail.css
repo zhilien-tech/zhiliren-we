@@ -8,13 +8,13 @@ ul{padding-left: 0; margin-bottom: 0px;}
 .tableDuan{margin:10px;}
 .tableDuan span{width: 3%;float: left;text-align: center;border: solid 1px #3c8dbc;color: #3c8dbc;line-height: 24px;font-size: 11px;border-radius: 4px;}
 .tableDuan .main{width: 96%;margin-left:4%;}
-.tableDuan .main tbody tr td{padding: 0;}
-.tableDuan .main tbody tr td ul li{border-bottom: solid 1px #f4f4f4;}
-.tableDuan .main tbody tr td ul li:last-child{border-bottom:0;}
-.tableDuan .main tbody tr td:nth-child(1){line-height: 60px;}
-.tableDuan .main tbody tr td:nth-child(6){line-height: 60px;}
-.tableDuan .main tbody tr td:nth-child(7){line-height: 60px;}
-.HCinfoInp{margin-left: 4%;}
+.tableDuan .main tr td{padding: 0;}
+.tableDuan .main tr td ul li{border-bottom: solid 1px #f4f4f4;}
+.tableDuan .main tr td ul li:last-child{border-bottom:0;}
+.tableDuan .main tr td:nth-child(1){line-height: 60px;}
+.tableDuan .main tr td:nth-child(6){line-height: 60px;}
+.tableDuan .main tr td:nth-child(7){line-height: 60px;}
+.addressInput {width: 100% !important;}
 .recordDiu{padding: 0 10px;}
 .recordParent{margin-top: 15px;}
 .record{cursor: pointer;background-color: #fff;color:#b5b5b5; margin: 0px;border: solid 1px #e0e0e0;display: inline-block; width: 85px;text-align: center;line-height: 30px; border-top: solid 2px #bdbdbd;border-radius: 3px 3px 0 0;border-bottom: solid 1px #e8e8e8;}
@@ -84,7 +84,7 @@ input#peoplecount {width: 143px !important;}
 .addHDtable tbody tr td:nth-child(11) label{position: relative;left: -10px;}
 .addHDtable tbody tr td:nth-child(12) input{position: relative;left: -10px;}
 .addHDtable tbody tr td:nth-child(13) a{position: relative;left: -3px;}
-.infofooter table tbody tr:nth-child(1) td:nth-child(2){width:150px;}
+.infofooter table tr:nth-child(1) td:nth-child(2){width:150px;}
 .hkgsTd .select2-container {width:100% !important;}
 .hkgsTd .select2-container .selection .select2-selection{width:100% !important;}
 .renshuTd label{width:50px !important;}
@@ -102,8 +102,9 @@ input#peoplecount {width: 143px !important;}
 .addYSKtable tbody tr:nth-child(2) td:nth-child(7){width:70px;}
 .addYSKtable tbody tr:nth-child(2) td:nth-child(8){width:100px;}
 .addYSKtable tbody tr:nth-child(2) td:nth-child(9){width:45px;}
-.addYSKtable tbody tr:nth-child(2) td:nth-child(10){width:80px;}
-#prepayratio {width: 88%;display: inline-block;}
+.addYSKtable tbody tr:nth-child(2) td:nth-child(10){width:70px;}
+.addYSKtable tbody tr:nth-child(2) td:nth-child(10) #currency{padding-left:3px;padding-right:3px;}
+#prepayratio {width: 87%;display: inline-block;}
 .query-style li [data-toggle="tab"]{line-height: 23px;}
 /*------end 添加记录------*/
 /*------航程信息------*/
@@ -112,10 +113,17 @@ input.uploadVisitors{float: left;width: 55px;height: 10px;position: relative;top
 .infofooter {padding: 10px 0px 12px 0px;}
 /*------end 航程信息------*/
 .hideTable tbody tr td{padding-bottom:7px;}
-.tableDuan .table tbody tr td:nth-child(1){width:25%}
-.tableDuan .table tbody tr td:nth-child(2){width:12%}
-.tableDuan .table tbody tr td:nth-child(3){width:12%}
-.tableDuan .table tbody tr td:nth-child(4){width:12%}
-.tableDuan .table tbody tr td:nth-child(5){width:12%}
-.tableDuan .table tbody tr td:nth-child(6){width:7%}
-.tableDuan .table tbody tr td:nth-child(7){width:20%}
+.tableDuan .table tr td:nth-child(1){width:25%}
+.tableDuan .table tr td:nth-child(2){width:12%}
+.tableDuan .table tr td:nth-child(3){width:12%}
+.tableDuan .table tr td:nth-child(4){width:12%}
+.tableDuan .table tr td:nth-child(5){width:12%}
+.tableDuan .table tr td:nth-child(6){width:7%}
+.tableDuan .table tr td:nth-child(7){width:20%}
+.tableDuan .table tr th:nth-child(1){width:25%}
+.tableDuan .table tr th:nth-child(2){width:12%}
+.tableDuan .table tr th:nth-child(3){width:12%}
+.tableDuan .table tr th:nth-child(4){width:12%}
+.tableDuan .table tr th:nth-child(5){width:12%}
+.tableDuan .table tr th:nth-child(6){width:7%}
+.tableDuan .table tr th:nth-child(7){width:20%}

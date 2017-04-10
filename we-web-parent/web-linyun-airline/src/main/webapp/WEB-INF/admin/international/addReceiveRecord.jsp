@@ -25,18 +25,18 @@
             <input id="actualyreduce" name="actualyreduce" type="hidden" value="${obj.actualyreduce }">
             <h4>预收款</h4>
           </div>
-          <div class="modal-body" style="height:300px;overflow-y:auto; ">
+          <div class="modal-body" style="height:130px;overflow-y:auto; ">
               <table class="addYSKtable">
                 <tbody>
                       <tr>
                         <td><label>销售单价：</label></td>
                         <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint autocalc" value="${obj.costsingleprice }"></td>
                         <td><label>预收款比例 ：</label></td>
-                        <td><input id="prepayratio" name="prepayratio" type="text" class="form-control input-sm mustNumberPoint autocalc"></td>
+                        <td><input id="prepayratio" name="prepayratio" type="text" class="form-control input-sm mustNumberPoint autocalc"><span>%</span></td>
                         <td><label>实际人数：</label></td>
                         <td><input id="actualnumber" name="actualnumber" type="text" class="form-control input-sm mustNumber autocalc"></td>
-                        <td colspan="2"><label>免罚金可减人数：</label></td>
-                        <td colspan="2"><input id="freenumber" name="freenumber" type="text" class="form-control input-sm mustNumber autocalc"></td>
+                        <td><label>免罚金可减人数：</label></td>
+                        <td><input id="freenumber" name="freenumber" type="text" class="form-control input-sm mustNumber autocalc"></td>
                       </tr>
                       <tr>
                         <td><label>本期罚金：</label></td>

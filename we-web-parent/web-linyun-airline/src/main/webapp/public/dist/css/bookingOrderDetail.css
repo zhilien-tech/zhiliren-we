@@ -44,3 +44,4 @@ input#arrivetime {width: 75px;}
 [name="airlineinfo"] td:nth-child(2) .select2-container .selection .select2-selection {width: 100% !important;}
 .select2-container {width: 100% !important;}
 .cloTable tbody tr:nth-child(1) td:nth-child(4) .select2-container .selection .select2-selection {width: 100%;}
+.addressInput {width: 100% !important;}
