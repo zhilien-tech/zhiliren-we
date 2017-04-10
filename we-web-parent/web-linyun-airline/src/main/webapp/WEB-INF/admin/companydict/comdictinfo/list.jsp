@@ -151,6 +151,7 @@ function add(){
 	   	    fix: false,
 	   	    maxmin: false,
 	   	    shadeClose: false,
+	   	 	scrollbar: false,
 	   	    area: ['900px', '435px'],
 	   	    content: '${base}/admin/companydict/comdictinfo/addLoginNum.html',
 	   	    end: function(){//添加完页面点击返回的时候自动加载表格数据
@@ -205,6 +206,7 @@ function edit(id){
 	  	    fix: false,
 	  	    maxmin: false,
 	  	    shadeClose: false,
+	  	    scrollbar: false,
 	  	    area: ['900px', '435px'],
 	  	    content: '${base}/admin/companydict/comdictinfo/updateLoginNum.html?id='+id
 	  	  });
@@ -229,6 +231,7 @@ function edit(id){
 	  	    fix: false,
 	  	    maxmin: false,
 	  	    shadeClose: false,
+	  	    scrollbar: false,
 	  	    area: ['900px', '435px'],
 	  	    content: '${base}/admin/companydict/comdictinfo/update.html?id='+id
 	  	  });
