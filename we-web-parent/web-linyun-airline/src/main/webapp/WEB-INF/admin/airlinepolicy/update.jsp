@@ -237,7 +237,8 @@
 						    parent.layer.close(index); 
 						}
 					});  */
-					
+					fileName = encodeURI(fileName);
+					fileName = encodeURI(fileName);  //需要通过两次编码
 					var innerHtml = "";
                     if (response) {
                         innerHtml = "<div><a id='downloadA' href='${base}/admin/airlinepolicy/download.html?url="+url+"&fileName="+fileName+"'>"
