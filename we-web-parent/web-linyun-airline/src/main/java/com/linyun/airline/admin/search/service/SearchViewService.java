@@ -1073,22 +1073,24 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			msgContent = "预订单号：" + generateOrderNum;
 			break;
 		case 3:
-			//开票 (消息内容TODO)  6
+			//开票 （操作人员）开飞机票  6
 			msgType = MessageTypeEnum.DRAWBILLMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL3.intKey();
-			msgContent = "单号：" + generateOrderNum + "中PNR：" + pnr + "开发票中";
+			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "开发票中";
+			/*receiveUserIds.removeAll(receiveUserIds);
+			receiveUserIds.add(userId);*/
 			break;
 		case 4:
-			//出票 (消息内容TODO) 7
+			//出票 (操作人员)出飞机票 7
 			msgType = MessageTypeEnum.MAKEOUTBILLMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL3.intKey();
-			msgContent = "单号：" + generateOrderNum + "中PNR：" + pnr + "发票已开";
+			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "发票已开";
 			break;
 		case 5:
-			//关闭 (消息内容TODO)  0
+			//关闭 (操作人员)关闭订单  0
 			msgType = MessageTypeEnum.CLOSEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL1.intKey();
-			msgContent = "单号：" + generateOrderNum + "中PNR：" + pnr + "已关闭";
+			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "已关闭";
 			break;
 		case 6:
 			//一订 8
@@ -1124,37 +1126,61 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			//已收款 14
 			msgType = MessageTypeEnum.RECEIVEDMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "款项已收";
+			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "收款已确认";
 			break;
 		case 12:
 			//已付款 15
 			msgType = MessageTypeEnum.PAYEDMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "款项已付";
+			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "付款已确认";
 			break;
 		case 13:
-			//收款款已开发票 16
+			//收款  已开发票 16
 			msgType = MessageTypeEnum.INVIOCEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "发票已开";
+			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "已开发票";
 			break;
 		case 14:
-			//付款已收发票 17
+			//付款  已收发票 17
 			msgType = MessageTypeEnum.RECINVIOCEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "发票已收";
+			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "已收发票";
 			break;
 		case 15:
-			//付款 已审批18
+			//付款 已审批 18
 			msgType = MessageTypeEnum.RECINVIOCEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
 			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "审批已通过";
 			break;
 		case 16:
-			//付款已收发票 19
+			//付款 已拒绝 19
 			msgType = MessageTypeEnum.RECINVIOCEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
 			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "审批已拒绝";
+			break;
+		case 17: //MessageWealthStatusEnum
+			//付款 收款已提交 20
+			msgType = MessageTypeEnum.RECSUBMITED.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "收款已提交";
+			break;
+		case 18: //MessageWealthStatusEnum
+			//付款 需付款已提交申请 21  MessageTypeEnum
+			msgType = MessageTypeEnum.PSAPPROVALING.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "需付款/已提交申请";
+			break;
+		case 19: //MessageWealthStatusEnum
+			//付款 （会计）开发票中 22  MessageTypeEnum
+			msgType = MessageTypeEnum.INVIOCING.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "开发票中";
+			break;
+		case 20: //MessageWealthStatusEnum
+			//付款 （会计）收发票中 23  MessageTypeEnum
+			msgType = MessageTypeEnum.RECINVIOCING.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "收发票中";
 			break;
 		}
 

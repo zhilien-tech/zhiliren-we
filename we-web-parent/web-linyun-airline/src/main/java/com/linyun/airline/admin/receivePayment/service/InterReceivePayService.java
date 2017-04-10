@@ -1484,6 +1484,30 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
 			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "审批已拒绝";
 			break;
+		case 17: //MessageWealthStatusEnum
+			//付款 收款已提交 20
+			msgType = MessageTypeEnum.RECSUBMITED.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "收款已提交";
+			break;
+		case 18: //MessageWealthStatusEnum
+			//付款 需付款已提交申请 21  MessageTypeEnum
+			msgType = MessageTypeEnum.PSAPPROVALING.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "需付款/已提交申请";
+			break;
+		case 19: //MessageWealthStatusEnum
+			//付款 （会计）开发票中 22  MessageTypeEnum
+			msgType = MessageTypeEnum.INVIOCING.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "开发票中";
+			break;
+		case 20: //MessageWealthStatusEnum
+			//付款 （会计）收发票中 23  MessageTypeEnum
+			msgType = MessageTypeEnum.RECINVIOCING.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "收发票中";
+			break;
 		}
 
 		/*添加的消息 存放到map中*/
