@@ -43,7 +43,7 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 .formMarginTop{margin-top:10px;}
 #interRecTable tbody tr td{padding:0;}
 #interPayTbody tr td{padding:0;}
-.checkBoxPayChild {position: relative;top: 22px;}
+/* .checkBoxPayChild {position: relative;top: 22px;} */
 #interPayTbody tr td:nth-child(2){line-height:60px;}
 #interPayTbody tr td:nth-child(11){line-height:60px;}
 #interRecTable tr td:nth-child(5){line-height:60px;}
