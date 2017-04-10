@@ -44,11 +44,17 @@ $(document).on('change','.sc', function(){
 });
 
 $(document).on('input','#invoicebalance', function(e){
-	//var e = window.event || arguments.callee.caller.arguments[0];
-    if(e && e.keyCode == 8){
-		 alert('退格');
-	 }
 	var thisval = $(this).val();
+	if(!isNaN(thisval)){
+        var dot = thisval.indexOf(".");
+        if(dot != -1){
+            var dotCnt = thisval.substring(dot+1,thisval.length);
+            if(dotCnt.length > 2){
+            	thisval = thisval.substr(0,thisval.indexOf(".")+3); 
+            }
+        }
+    }
+	$(this).val(thisval);
 	var banlanceyue = parseFloat($('#sumjine').html());
 	var balance = $('#balance').html();
 	var shengyu = $('#backupbalance').val();
@@ -69,5 +75,13 @@ $(document).on('input','#invoicebalance', function(e){
 	}
 });
 $(document).on('blur','#invoicebalance', function(){
-	$('#backupbalance').val($('#balance').html());
+	//if($('#balance').html() != '0.00'){
+		$('#backupbalance').val($('#balance').html());
+	//}
+});
+$(document).on('focus','#invoicebalance', function(){
+	if($('#balance').html() == '0.00' && $(this).val()){
+		//alert($(this).val());
+		$('#backupbalance').val($(this).val());
+	}
 });

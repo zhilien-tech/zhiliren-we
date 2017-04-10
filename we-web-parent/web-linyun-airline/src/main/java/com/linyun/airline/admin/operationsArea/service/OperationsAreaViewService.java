@@ -372,6 +372,12 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		case "taskNotice":
 			//任务 TODO
 			msgType = String.valueOf(NOTICEMSG) + "," + String.valueOf(FINANCIALMSG);
+			msgType += String.valueOf(FIRBOOK) + "," + String.valueOf(SECBOOK) + "," + String.valueOf(THRBOOK) + ","
+					+ String.valueOf(ALLBOOK) + "," + String.valueOf(LASTBOOK) + "," + String.valueOf(RECEIVEDMSG)
+					+ "," + String.valueOf(PAYEDMSG) + "," + String.valueOf(INVIOCEMSG) + ","
+					+ String.valueOf(RECINVIOCEMSG) + "," + String.valueOf(APPROVALEDMSG) + ","
+					+ String.valueOf(UNAPPROVALMSG) + "," + String.valueOf(MAKEOUTBILLMSG) + ","
+					+ String.valueOf(DRAWBILLMSG);
 			break;
 		}
 

@@ -2,7 +2,7 @@
  * ApplyApprovalService.java
  * com.linyun.airline.admin.applyapproval.service
  * Copyright (c) 2017, 北京科技有限公司版权所有.
-*/
+ */
 
 package com.linyun.airline.admin.applyapproval.service;
 
@@ -439,8 +439,9 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 					remindMap.put("remindDate", DateUtil.Date2String(new Date()));
 					remindMap.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
 					//searchViewService.addRemindMsg(remindMap, ordersnum, pnr, upOrderid, orderType, session);
+					int payRecType = 0;
 					interReceivePayService.addInterRemindMsg(orderId.intValue(), ordersnum, pnr,
-							payoOrderEntity.getOrderstatus() + "", session);
+							payoOrderEntity.getOrderstatus() + "", payRecType, session);
 					return JsonResult.success("审核通过");
 				}
 			}
@@ -473,7 +474,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		//String remindType = (String) fromJson.get("remindType");
 		/*int upOrderid = id; //订单id
 		String ordersnum = orderinfo.getOrdersnum();//订单号
-		*/
+		 */
 		return JsonResult.error("审核失败");
 
 	}

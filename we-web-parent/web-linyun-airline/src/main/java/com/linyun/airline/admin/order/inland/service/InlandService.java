@@ -291,6 +291,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	public Object queryDetail(Integer id) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		TUpOrderEntity orderinfo = this.fetch(id);
+		//orderinfo.setRemark(orderinfo.getRemark().replaceAll("\r", "<br>"));
 		result.put("orderinfo", orderinfo);
 		//客户信息
 		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(orderinfo.getUserid()));
@@ -361,10 +362,12 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		boolean generateOrder = (boolean) fromJson.get("generateOrder");
 		//订单状态（查询、预订、出票......）
 		Integer orderType = Integer.valueOf((String) fromJson.get("orderType"));
+		String remark = (String) fromJson.get("remark");
 		TUpOrderEntity orderinfo = this.fetch(id);
 		orderinfo.setId(id);
 		orderinfo.setUserid(customerId);
 		orderinfo.setOrdersstatus(orderType);
+		orderinfo.setRemark(remark);
 		orderinfo.setLoginUserId(new Long(user.getId()).intValue());
 		//生成订单号
 		if (generateOrder) {

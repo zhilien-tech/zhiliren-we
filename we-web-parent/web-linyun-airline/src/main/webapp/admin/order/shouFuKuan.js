@@ -88,7 +88,15 @@ function initshouFuKuanGatheringTable() {
                     		return result;
                     	}
                   },
-                  {"data": "issuer", "bSortable": false},
+                  {"data": "issuer", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                  		var result = '';
+                  		if(row.issuer){
+                  			result = row.issuer;
+                  		}
+                  		return result;
+                  	}
+                  },
                   {"data": "status", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                   		var result = '';
@@ -287,7 +295,15 @@ function initshouFuKuanPayTable() {
                   		return result;
                   	}
                 },
-                {"data": "issuer","bSortable": false},
+                {"data": "issuer","bSortable": false,
+                	render:function(data, type, row, meta) {
+                  		var result = '';
+                  		if(row.issuer){
+                  			result = row.issuer;
+                  		}
+                  		return result;
+                  	}
+                },
                 {"data":"active","bSortable":false,
                 	render: function(data, type, row, meta) {
                         return '<a style="cursor:pointer;" onclick="receiveInvoice('+row.id+','+row.invoiceid+');">收发票</a>'

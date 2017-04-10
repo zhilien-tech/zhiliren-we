@@ -29,23 +29,23 @@
                 <tbody>
                       <tr>
                         <td><label>成本单价：</label></td>
-                        <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint" value="${obj.recordinfo.costprice }"></td>
+                        <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.recordinfo.costprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
                         <td><label>预付款比例 ：</label></td>
-                        <td><input id="prepayratio" name="prepayratio" type="text" class="form-control input-sm mustNumberPoint" value="${obj.recordinfo.prepayratio }"><span>%</span></td>
+                        <td><input id="prepayratio" name="prepayratio" type="text" class="form-control input-sm mustNumberPoint" value="${obj.prepayratio }"><span>%</span></td>
                         <td><label>实际人数：</label></td>
                         <td><input id="actualnumber" name="actualnumber" type="text" class="form-control input-sm mustNumber" value="${obj.recordinfo.actualnumber }"></td>
-                        <td colspan="2"><label>免罚金可减人数：</label></td>
-                        <td colspan="2"><input id="freenumber" name="freenumber" type="text" class="form-control input-sm mustNumber" value="${obj.recordinfo.freenumber }"></td>
+                        <td><label>免罚金可减人数：</label></td>
+                        <td><input id="freenumber" name="freenumber" type="text" class="form-control input-sm mustNumber" value="${obj.recordinfo.freenumber }"></td>
                       </tr>
                       <tr>
                         <td><label>本期罚金：</label></td>
-                        <td><input id="currentfine" name="currentfine" type="text" class="form-control input-sm mustNumberPoint" value="${obj.recordinfo.currentfine }"></td>
+                        <td><input id="currentfine" name="currentfine" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.recordinfo.currentfine }" pattern="0.00" maxFractionDigits="2"/>"></td>
                         <td><label>本期应付：</label></td>
-                        <td><input id="currentdue" name="currentdue" type="text" class="form-control input-sm mustNumberPoint" value="${obj.recordinfo.currentdue }"></td>
+                        <td><input id="currentdue" name="currentdue" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.recordinfo.currentdue }" pattern="0.00" maxFractionDigits="2"/>"></td>
                         <td><label>税金单价：</label></td>
-                        <td><input id="ataxprice" name="ataxprice" type="text" class="form-control input-sm mustNumberPoint" value="${obj.recordinfo.ataxprice }"></td>
+                        <td><input id="ataxprice" name="ataxprice" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.recordinfo.ataxprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
                         <td><label>本期实付：</label></td>
-                        <td><input id="currentpay" name="currentpay" type="text" class="form-control input-sm mustNumberPoint" value="${obj.recordinfo.currentpay }"></td>
+                        <td><input id="currentpay" name="currentpay" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.recordinfo.currentpay }" pattern="0.00" maxFractionDigits="2"/>"></td>
                         <td><label>币种：</label></td>
                         <td>
                           <select id="currency" name="currency" class="form-control input-sm">

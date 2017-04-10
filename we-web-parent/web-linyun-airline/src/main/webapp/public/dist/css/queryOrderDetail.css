@@ -26,25 +26,4 @@ div#orderlog ul li{text-align: center;}
 [name="airlineinfo"] td:nth-child(2) .select2-container .selection .select2-selection{width: 115px !important;}
 #price { padding-left: 3px; padding-right: 3px;}
 #leavedate{padding-left:5px; padding-right: 3px;}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.addressInput {width: 100% !important;}

@@ -126,6 +126,7 @@
     	    fix: false,
     	    maxmin: false,
     	    shadeClose: false,
+    	    scrollbar: false,
     	    area: ['900px', '390px'],
     	    content: '${base}/admin/dictionary/dirtype/add.html',
     	    end: function(){//添加完页面点击返回的时候自动加载表格数据
@@ -142,6 +143,7 @@
 	  	    fix: false,
 	  	    maxmin: false,
 	  	    shadeClose: false,
+	  	    scrollbar: false,
 	  	    area: ['900px', '400px'],
 	  	    content: '${base}/admin/dictionary/dirtype/update.html?id='+id
 	  	  });

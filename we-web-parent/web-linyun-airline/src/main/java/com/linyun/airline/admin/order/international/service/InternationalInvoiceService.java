@@ -269,23 +269,12 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 		//发票信息
 		TInvoiceInfoEntity invoiceinfo = dbDao.fetch(TInvoiceInfoEntity.class, Long.valueOf(id));
 		//发票明细
-		List<TInvoiceDetailEntity> invoicedetail = dbDao.query(TInvoiceDetailEntity.class,
-				Cnd.where("invoiceinfoid", "=", invoiceinfo.getId()), null);
 		//付款订单表信息
 		TPayOrderEntity payorder = dbDao.fetch(TPayOrderEntity.class, invoiceinfo.getOrderpayid().longValue());
 		//付款信息
 		TPayEntity fetch = dbDao.fetch(TPayEntity.class, Long.valueOf(payorder.getPayid()));
-		double invoicebalance = 0;
-		if (!Util.isEmpty(fetch.getPayMoney())) {
-			invoicebalance = fetch.getPayMoney();
-		}
-		for (TInvoiceDetailEntity detail : invoicedetail) {
-			if (!Util.isEmpty(detail.getInvoicebalance())) {
-				invoicebalance -= detail.getInvoicebalance();
-			}
-		}
-		result.put("invoicebalance", invoicebalance);
-
+		List<TInvoiceDetailEntity> invoicedetail = dbDao.query(TInvoiceDetailEntity.class,
+				Cnd.where("invoiceinfoid", "=", invoiceinfo.getId()), null);
 		List<TPayOrderEntity> query = dbDao.query(TPayOrderEntity.class, Cnd.where("payid", "=", fetch.getId()), null);
 		String ids = "";
 		/*for (TPayOrderEntity tPayOrderEntity : query) {
@@ -335,6 +324,13 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 			}
 		}
 		result.put("sumjine", sumjine);
+		double invoicebalance = sumjine;
+		for (TInvoiceDetailEntity detail : invoicedetail) {
+			if (!Util.isEmpty(detail.getInvoicebalance())) {
+				invoicebalance -= detail.getInvoicebalance();
+			}
+		}
+		result.put("invoicebalance", invoicebalance);
 		result.put("companybank", companybank);
 		//发票信息
 		result.put("invoiceinfo", invoiceinfo);
