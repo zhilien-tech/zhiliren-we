@@ -56,5 +56,4 @@ public class TCompanyUpdateForm extends ModForm implements Serializable {
 
 	/**删除标识*/
 	private int deletestatus;
-
 }

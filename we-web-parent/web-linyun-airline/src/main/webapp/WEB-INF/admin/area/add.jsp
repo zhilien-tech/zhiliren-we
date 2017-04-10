@@ -76,7 +76,6 @@ $("#submit").click(function(){
 	var bootstrapValidator = $("#addAreaForm").data('bootstrapValidator');
 	if(bootstrapValidator.isValid()){
 		$.ajax({
-           cache: true,
            type: "POST",
            url:'${base}/admin/area/add.html',
            data:$('#addAreaForm').serialize(),
@@ -87,12 +86,12 @@ $("#submit").click(function(){
 			layer.load(1, {
 				 shade: [0.1,'#fff'] //0.1透明度的白色背景
 			});
-              	layer.msg('添加成功!',{time: 5000, icon:6});
-				window.location.reload(true);
+              	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				parent.layer.close(index);
+				window.parent.successCallback('1');
            }
        });
 	}
-	 $(".Mymodal-lg").modal('hide');
 });
 //提交时开始验证
 $('#submit').click(function() {
@@ -102,7 +101,6 @@ $('#submit').click(function() {
 function closewindow(){
 	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 	parent.layer.close(index);
-	window.parent.successCallback('4');
 }
 </script>
 </body>
