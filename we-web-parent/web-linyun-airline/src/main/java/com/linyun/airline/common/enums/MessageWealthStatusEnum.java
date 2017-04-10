@@ -11,8 +11,17 @@ import com.uxuexi.core.common.enums.IEnum;
  * @Date	 2016年12月07日
  */
 public enum MessageWealthStatusEnum implements IEnum {
-	RECEIVED(11, "已收款"), PAYED(12, "已付款"), INVIOCE(13, "已开发票"), RECINVIOCE(14, "已收发票"), APPROVAL(15, "已审批"), UNAPPROVAL(
-			16, "已拒绝");
+	RECEIVED(11, "已收款"), 
+	PAYED(12, "已付款"), 
+	INVIOCE(13, "已开发票"), 
+	RECINVIOCE(14, "已收发票"), 
+	APPROVAL(15, "已审批"), 
+	UNAPPROVAL(16, "已拒绝"),
+	RECSUBMITED(17,"收款已提交"),
+	PSAPPROVALING(18,"需付款已提交申请"),
+	INVIOCING(19,"开发票中"),
+	RECINVIOCING(20,"收发票中"),
+	;
 
 	private int key;
 	private String value;

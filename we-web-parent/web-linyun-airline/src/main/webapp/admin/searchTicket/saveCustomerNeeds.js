@@ -29,7 +29,11 @@ function saveOrderInfo(){
 	//客户信息id
 	var customerInfoId = $('#linkManId').val();
 	customdata.customerInfoId = customerInfoId;
-
+   
+	//备注
+	var cRemark = $('#cRemark').val();
+	customdata.cRemark = cRemark;
+	
 	var row = [];
 	$('.DemandDiv').each(function(i){
 		var lenthcustom = '';
