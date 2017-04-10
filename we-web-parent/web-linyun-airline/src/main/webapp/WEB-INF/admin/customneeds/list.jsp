@@ -551,6 +551,7 @@ $(function () {
     	    fix: false,
     	    maxmin: false,
     	    shadeClose: false,
+    	    scrollbar: false,
     	    area: ['900px', '500px'],
     	    content: '${url}/add.html',
     	    end:function(){
@@ -567,6 +568,7 @@ $(function () {
   	    fix: false,
   	    maxmin: false,
   	    shadeClose: false,
+  	  	scrollbar: false,
   	    area: ['900px', '500px'],
   	    content: '${url}/update.html?id='+id,
   	    end:function(){

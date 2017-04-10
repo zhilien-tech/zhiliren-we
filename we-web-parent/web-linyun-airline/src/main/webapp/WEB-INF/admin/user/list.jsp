@@ -116,6 +116,7 @@
   	    fix: false,
   	    maxmin: false,
   	    shadeClose: false,
+  	  	scrollbar: false,
   	    area: ['900px', '400px'],
   	    content: '${base}/admin/user/update.html?id='+id
   	  });

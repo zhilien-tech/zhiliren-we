@@ -94,6 +94,7 @@
     	    fix: false,
     	    maxmin: false,
     	    shadeClose: false,
+    	    scrollbar: false,
     	    area: ['900px', '500px'],
     	    content: '${base}/admin/authority/authoritymanage/add.html',
     	    end: function(){//添加完页面点击返回的时候自动加载表格数据
@@ -111,6 +112,7 @@
   	    fix: false,
   	    maxmin: false,
   	    shadeClose: false,
+  	 	scrollbar: false,
   	    area: ['900px', '500px'],
   	    content: '${base}/admin/authority/authoritymanage/update.html?id='+id
   	  });

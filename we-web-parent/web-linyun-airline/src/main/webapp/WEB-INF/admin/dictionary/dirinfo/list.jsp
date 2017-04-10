@@ -134,6 +134,7 @@
 		    	    fix: false,
 		    	    maxmin: false,
 		    	    shadeClose: false,
+		    	    scrollbar: false,
 		    	    area: ['920px', '500px'],
 		    	    content: '${base}/admin/dictionary/dirinfo/addDepartureCity.html',
 		    	    end: function(){//添加完页面点击返回的时候自动加载表格数据
@@ -150,6 +151,7 @@
 		    	    fix: false,
 		    	    maxmin: false,
 		    	    shadeClose: false,
+		    	    scrollbar: false,
 		    	    area: ['900px', '435px'],
 		    	    content: '${base}/admin/dictionary/dirinfo/add.html',
 		    	    end: function(){//添加完页面点击返回的时候自动加载表格数据
@@ -171,6 +173,7 @@
 			  	    fix: false,
 			  	    maxmin: false,
 			  	    shadeClose: false,
+			  	    scrollbar: false,
 			  	  	area: ['920px', '500px'],
 			  	    content: '${base}/admin/dictionary/dirinfo/updateDepartureCity.html?id='+id
 			  	  });
@@ -182,6 +185,7 @@
 			  	    fix: false,
 			  	    maxmin: false,
 			  	    shadeClose: false,
+			  	    scrollbar: false,
 			  	    area: ['900px', '435px'],
 			  	    content: '${base}/admin/dictionary/dirinfo/update.html?id='+id
 			  	  });
