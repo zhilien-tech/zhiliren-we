@@ -15,9 +15,10 @@
 <body>
 	<div class="modal-top">
     <div class="modal-header boderButt">
-            <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
-            <input type="button" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo()" value="确认收发票"/>
-            <h4 class="invoiceH4">收发票信息</h4>
+    	<input type="hidden" id="backupbalance" name="backupbalance" value="${obj.invoicebalance }">
+        <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
+        <input type="button" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo()" value="确认收发票"/>
+        <h4 class="invoiceH4">收发票信息</h4>
     </div>
     <div style="height:550px; overflow-y:auto;" class="allCentext">
       <div class="modal-body">
