@@ -32,7 +32,7 @@
                         <td><label>销售单价：</label></td>
                         <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint autocalc" value="${obj.costsingleprice }"></td>
                         <td><label>预收款比例 ：</label></td>
-                        <td><input id="prepayratio" name="prepayratio" type="text" class="form-control input-sm mustNumberPoint autocalc"></td>
+                        <td><input id="prepayratio" name="prepayratio" type="text" class="form-control input-sm mustNumberPoint autocalc"><span>%</span></td>
                         <td><label>实际人数：</label></td>
                         <td><input id="actualnumber" name="actualnumber" type="text" class="form-control input-sm mustNumber autocalc"></td>
                         <td colspan="2"><label>免罚金可减人数：</label></td>

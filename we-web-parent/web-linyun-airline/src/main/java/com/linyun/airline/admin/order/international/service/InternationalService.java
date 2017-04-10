@@ -775,6 +775,13 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		String recordid = request.getParameter("recordid");
 		TPayReceiveRecordEntity recordinfo = dbDao.fetch(TPayReceiveRecordEntity.class, Long.valueOf(recordid));
 		result.put("recordinfo", recordinfo);
+		Double prepayratio = recordinfo.getPrepayratio();
+		String prepayratioresult = "";
+		if (!Util.isEmpty(prepayratio)) {
+			String prepayratiostr = String.valueOf(prepayratio);
+			prepayratioresult = FormatDateUtil.subZeroAndDot(prepayratiostr);
+		}
+		result.put("prepayratio", prepayratioresult);
 		//币种下拉
 		List<DictInfoEntity> bzcode = new ArrayList<DictInfoEntity>();
 		try {
