@@ -337,10 +337,10 @@
 		                            <c:forEach var="map" items="${obj.paymethod}" >
 		                            	<c:choose>
 		                            		<c:when test="${customneed.cusinfo.paymethod eq map.id }">
-		                            			<option value="${map.id}" selected="selected">${map.bankName}</option>
+		                            			<option value="${map.id}" selected="selected">${map.cardName}</option>
 		                            		</c:when>
 		                            		<c:otherwise>
-										   		<option value="${map.id}">${map.bankName}</option>
+										   		<option value="${map.id}">${map.cardName}</option>
 		                            		</c:otherwise>
 		                            	</c:choose>
 									 </c:forEach>
@@ -451,8 +451,8 @@
 		                     <td colspan="1">
 								<select id="paymethod" name="paymethod" disabled="disabled" class="form-control input-sm paymethod">
 		                            <option value="">请选择</option>
-		                            <c:forEach var="map" items="${obj.paymethodenum}" >
-								   		<option value="${map.key}">${map.value}</option>
+		                            <c:forEach var="map" items="${obj.paymethod}" >
+								   		<option value="${map.key}">${map.cardName}</option>
 									 </c:forEach>
 		                        </select>
 							 </td>
