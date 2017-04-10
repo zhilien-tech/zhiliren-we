@@ -9,7 +9,7 @@
 .infoTopContent .infoTopContent input{display: inline-block;}
 .infoTopContent .conTimeInput{width: 125px;height: 28px;position: relative;top: -2px;}
 .infoTopContent .btn{margin-left: 12px;padding: 4px 15px;position: relative;top: -3px;}
-.infofooter{min-height:50px;border: solid 1px #e0e0e0;border-top: 0; padding: 10px 0px 0px 0px;background-color: #fff;border-radius: 0 4px 4px 4px;}
+.infofooter{min-height:50px;overflow: hidden;border: solid 1px #e0e0e0;border-top: 0; padding: 10px 0px 0px 0px;background-color: #fff;border-radius: 0 4px 4px 4px;}
 .infofooter table tr td label{width: 78px;text-align: right;position: relative;top: 3px;}
 /* .infofooter table tbody tr td .form-control{width: 115px;}*/
 .cloTable tr td:nth-of-type(3) label{width: 70px;}
@@ -18,7 +18,7 @@
 .cloTable tr td:nth-of-type(9) label{width: 60px;}
 .cloTable tr:nth-of-type(1) td:nth-of-type(10) select{padding-left: 3px;}
 .cloTable tr:nth-of-type(1) td:nth-of-type(2) span.select2-container{width:185px !important;}
-.cloTable tr:nth-of-type(1) td:nth-of-type(3) label{position: relative;left: 45px;}
+.cloTable tr:nth-of-type(1) td:nth-of-type(3) label{position: relative;left:5px;}
 .cloTable tr:nth-of-type(1) td:nth-of-type(4) span.select2-container{width:225px !important;}
 .cloTable tr:nth-of-type(1) td:nth-of-type(7) label{width: 60px;}
 .cloTable tr td:nth-of-type(11) label{width: 60px;}
@@ -156,3 +156,22 @@ table.dataTable thead > tr > th {padding-right:0px;}
 /*----end 出发城市/到达城市 style-----*/
 .addCustomerAirline td:nth-child(12) input{padding-left:3px;padding-right: 3px;}
 #tab_4 #cRemark{max-width: 730px;height: 200px !important;display: inline-block;position: relative;left: 10px;}
+/* .cAirlineNumTd .select2{width: 100% !important;} */
+.xuqiuTable{ width: 100%;}
+.xuqiuTable tbody tr td:nth-child(odd){float: right; position: relative;top: 8px;}
+.xuqiuTable tbody tr:nth-child(1) td:nth-child(6){width:85px !important;}
+.xuqiuTable tbody tr:nth-child(2) td:nth-child(8){width:85px !important;}
+.xuqiuTable tbody tr:nth-child(2) td:nth-child(6){width:80px;}
+.xuqiuTable tr:nth-of-type(1) td:nth-of-type(4) span.select2-container {width:170px !important;}
+.xuqiuTable tbody tr:nth-child(1) td:nth-child(8){width:85px;}
+.xuqiuTable tbody tr:nth-child(2) td:nth-child(10){width:85px;}
+.xuqiuTable tr:nth-of-type(1) td:nth-of-type(2) span.select2-container {width:180px !important;}
+.xuqiuTable tbody tr:nth-child(2) td:nth-child(2){width:115px;}
+.xuqiuTable tbody tr:nth-child(2) td:nth-child(3){width:54px;}
+.xuqiuTable tr:nth-of-type(1) td:nth-of-type(3) label {position: relative;left:0px;}
+.remarkDiv{padding: 5px 0px;display: block;background-color: #f5f5f5;    box-shadow: 1px 0px 5px #bebebe;margin-bottom: 15px;border-left: solid 1px #e0e0e0;}
+.remarkTable{width:100%;}
+.remarkContext{overflow: hidden;height: 80px;display: block;border: solid 1px #e0e0e0;border-radius: 0 0 3px 3px;background-color: white;}
+.remarkTable tbody tr td:nth-child(1){width: 86px;text-align: right;}
+.remarkTable tbody tr td:nth-child(2){padding-right: 6%;}
+.infofooter1 {border-bottom: 0;border-radius: 3px 3px 0px 0px;}
