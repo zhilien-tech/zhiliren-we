@@ -156,7 +156,7 @@ table.dataTable thead > tr > th {padding-right:0px;}
 /*----end 出发城市/到达城市 style-----*/
 .addCustomerAirline td:nth-child(12) input{padding-left:3px;padding-right: 3px;}
 #tab_4 #cRemark{max-width: 730px;height: 200px !important;display: inline-block;position: relative;left: 10px;}
-.cAirlineNumTd .select2{width: 100% !important;}
+/* .cAirlineNumTd .select2{width: 100% !important;} */
 .xuqiuTable{ width: 100%;}
 .xuqiuTable tbody tr td:nth-child(odd){float: right; position: relative;top: 8px;}
 .xuqiuTable tbody tr:nth-child(1) td:nth-child(6){width:85px !important;}

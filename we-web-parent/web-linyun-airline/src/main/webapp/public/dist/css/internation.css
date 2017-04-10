@@ -48,5 +48,7 @@ input.checkchild1 { margin-top: 20px;}
 #shouInvoiceTable tbody tr td:nth-child(9){line-height: 60px;}
 #shouInvoiceTable tbody tr td:nth-child(10){line-height: 60px;}
 #shouInvoiceTable tbody tr td:nth-child(11){line-height: 60px;}
+#shouInvoiceTable tbody tr td:nth-child(12){line-height: 60px;}
 #drawerPayTable tbody tr td:nth-child(3){line-height: 60px;}
 #drawerPayTable tbody tr td:nth-child(8){line-height: 60px;}
+#kaiInvoiceTable tbody tr td:nth-child(12) {line-height: 60px;}
