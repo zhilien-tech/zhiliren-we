@@ -72,6 +72,10 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	private static final int DRAWBILLMSG = MessageTypeEnum.DRAWBILLMSG.intKey();
 	//TODO 任务消息状态
 	private static final int NOTICEMSG = MessageTypeEnum.NOTICEMSG.intKey();
+	private static final int RECINVIOCING = MessageTypeEnum.RECINVIOCING.intKey(); //收发票中
+	private static final int INVIOCING = MessageTypeEnum.INVIOCING.intKey(); //开发票中
+	private static final int PSAPPROVALING = MessageTypeEnum.PSAPPROVALING.intKey(); //需付款/已提交申请
+	private static final int RECSUBMITED = MessageTypeEnum.RECSUBMITED.intKey(); //收款已提交
 
 	//消息提醒模式
 	private static final int MOUTH = MessageRemindEnum.MOUTH.intKey();
@@ -362,22 +366,27 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			break;
 		case "bookOrders":
 			//订单
-			msgType = String.valueOf(BOOKMSG) + "," + String.valueOf(FIRBOOK) + "," + String.valueOf(SECBOOK) + ","
-					+ String.valueOf(THRBOOK) + "," + String.valueOf(ALLBOOK) + "," + String.valueOf(LASTBOOK) + ","
-					+ String.valueOf(RECEIVEDMSG) + "," + String.valueOf(PAYEDMSG) + "," + String.valueOf(INVIOCEMSG)
-					+ "," + String.valueOf(RECINVIOCEMSG) + "," + String.valueOf(APPROVALEDMSG) + ","
-					+ String.valueOf(UNAPPROVALMSG) + "," + String.valueOf(MAKEOUTBILLMSG) + ","
-					+ String.valueOf(DRAWBILLMSG);
+			msgType = String.valueOf(BOOKMSG) + "," + String.valueOf(FIRBOOK) 
+					+ "," + String.valueOf(SECBOOK) + ","+ String.valueOf(THRBOOK) 
+					+ "," + String.valueOf(ALLBOOK) + "," + String.valueOf(LASTBOOK) 
+					+ ","+ String.valueOf(RECEIVEDMSG) + "," + String.valueOf(PAYEDMSG)
+					+ "," + String.valueOf(INVIOCEMSG)+ "," + String.valueOf(RECINVIOCEMSG)
+					+ "," + String.valueOf(APPROVALEDMSG) + ","+ String.valueOf(UNAPPROVALMSG) 
+					+ "," + String.valueOf(MAKEOUTBILLMSG) + ","+ String.valueOf(DRAWBILLMSG)
+					+ "," + String.valueOf(RECINVIOCING) + ","+ String.valueOf(PSAPPROVALING) 
+					+ "," + String.valueOf(INVIOCING);
 			break;
 		case "taskNotice":
 			//任务 TODO
 			msgType = String.valueOf(NOTICEMSG) + "," + String.valueOf(FINANCIALMSG);
-			msgType += String.valueOf(FIRBOOK) + "," + String.valueOf(SECBOOK) + "," + String.valueOf(THRBOOK) + ","
-					+ String.valueOf(ALLBOOK) + "," + String.valueOf(LASTBOOK) + "," + String.valueOf(RECEIVEDMSG)
-					+ "," + String.valueOf(PAYEDMSG) + "," + String.valueOf(INVIOCEMSG) + ","
-					+ String.valueOf(RECINVIOCEMSG) + "," + String.valueOf(APPROVALEDMSG) + ","
-					+ String.valueOf(UNAPPROVALMSG) + "," + String.valueOf(MAKEOUTBILLMSG) + ","
-					+ String.valueOf(DRAWBILLMSG);
+			msgType += String.valueOf(FIRBOOK) + "," + String.valueOf(SECBOOK)
+					+ "," + String.valueOf(THRBOOK) + ","+ String.valueOf(ALLBOOK)
+					+ "," + String.valueOf(LASTBOOK) + "," + String.valueOf(RECEIVEDMSG)
+					+ "," + String.valueOf(PAYEDMSG) + "," + String.valueOf(INVIOCEMSG)
+					+ ","+ String.valueOf(RECINVIOCEMSG) + "," + String.valueOf(APPROVALEDMSG)
+					+ ","+ String.valueOf(UNAPPROVALMSG) + "," + String.valueOf(MAKEOUTBILLMSG)
+					+ ","+ String.valueOf(DRAWBILLMSG) + "," + String.valueOf(RECINVIOCING)
+					+ ","+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING);
 			break;
 		}
 
