@@ -218,14 +218,16 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 			TUpcompanyEntity upcompany = new TUpcompanyEntity();
 			upcompany.setComId(company.getId());
 			dbDao.insert(upcompany);
+			//新增完上游公司自动配上权限
+			authorityPublicService.companyFunction(addForm);
 		} else {
 			TAgentEntity agent = new TAgentEntity();
 			agent.setComId(company.getId());
 			dbDao.insert(agent);
+			//新增完代理商公司自动配上权限
+			authorityPublicService.DlsCompanyFunction(addForm);
 		}
-		//新增完公司自动配上权限
-		dbDao.insert(userJobEntity);
-		return authorityPublicService.companyFunction(addForm);
+		return dbDao.insert(userJobEntity);
 	}
 
 	/**
@@ -289,6 +291,14 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 		//修改公司信息
 		updateForm.setCreatetime(company.getCreatetime());
 		updateForm.setLastupdatetime(new Date());
+
+		//查询上游公司(代理商公司)之前的功能
+		Integer comType = updateForm.getComType();//得到公司类型
+		if (!Util.isEmpty(comType) && comType == CompanyTypeEnum.UPCOMPANY.intKey()) {
+			authorityPublicService.companyUpdateFunction(updateForm);
+		} else if (!Util.isEmpty(comType) && comType == CompanyTypeEnum.AGENT.intKey()) {
+			authorityPublicService.DlscompanyUpdateFunction(updateForm);
+		}
 		return this.update(updateForm);
 	}
 

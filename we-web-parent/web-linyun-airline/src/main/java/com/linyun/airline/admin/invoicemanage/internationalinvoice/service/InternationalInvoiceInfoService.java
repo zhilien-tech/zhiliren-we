@@ -522,4 +522,27 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		return result;
 	}
 
+	/**
+	 * 双击回显开发票详情数据
+	 * @param request
+	 * @param interKaiInvoiceDetail
+	 */
+	public Object interKaiInvoiceDetail(HttpServletRequest request, String interKaiInvoiceDetail) {
+		String interKaiInvoiceDetail1 = interKaiInvoiceDetail;
+		String aaa[] = interKaiInvoiceDetail1.split("</td>");
+		for (int i = 0; i < aaa.length; i++) {
+			aaa[i] = aaa[i].substring(4, aaa[i].length());
+		}
+		String ordersnum = aaa[0];
+		String billingdate = aaa[1];
+		String cusgroupnum = aaa[2];
+		String shortName = aaa[3];
+		String linkman = aaa[4];
+		String issuer = aaa[5];
+		String currentpay = aaa[6];
+
+		return interKaiInvoiceDetail1;
+
+	}
+
 }

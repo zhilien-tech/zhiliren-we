@@ -192,7 +192,8 @@ public class LoginServiceImpl extends BaseService<TUserEntity> implements LoginS
 			form.setReturnUrl(">>:/admin/operationsArea/desktop.html");
 		} else if (UserTypeEnum.AGENT.intKey() == user.getUserType()
 				|| UserTypeEnum.AGENT_MANAGER.intKey() == user.getUserType()) {
-			form.setReturnUrl(">>:/admin/user/list.html");
+			form.setReturnUrl(">>:/admin/operationsArea/desktop.html");
+			/*form.setReturnUrl(">>:/admin/user/list.html");*/
 		} else {
 			form.setReturnUrl("jsp:main");
 		}

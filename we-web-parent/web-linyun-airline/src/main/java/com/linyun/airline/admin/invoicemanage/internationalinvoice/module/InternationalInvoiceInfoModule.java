@@ -13,6 +13,7 @@ import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
@@ -96,5 +97,24 @@ public class InternationalInvoiceInfoModule {
 	@POST
 	public Object saveShouInvoiceInfo(HttpServletRequest request) {
 		return internationalInvoiceInfoService.saveShouInvoiceInfo(request);
+	}
+
+	/**
+	 * 打开开发票编辑页面
+	 */
+	@At
+	@Ok("jsp")
+	@GET
+	public Object interKaiInvoiceDetail(@Param("interKaiInvoiceDetail") String interKaiInvoiceDetail) {
+		return interKaiInvoiceDetail;
+	}
+
+	/**
+	 * 双击回显开发票详情数据
+	 */
+	@At
+	@POST
+	public Object interKaiInvoiceDetail(HttpServletRequest request, @Param("data") String interKaiInvoiceDetail) {
+		return internationalInvoiceInfoService.interKaiInvoiceDetail(request, interKaiInvoiceDetail);
 	}
 }
