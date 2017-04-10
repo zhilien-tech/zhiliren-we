@@ -34,7 +34,7 @@
 	                        <td><select id="leavecity" name="leavecity" type="text" class="form-control input-sm" multiple="multiple">
 	                        	<c:forEach var="one" items="${obj.city }">
 									<c:choose>
-		                    			<c:when test="${airinfo.arrvicity eq one.dictCode }">
+		                    			<c:when test="${airinfo.leavecity eq one.dictCode }">
 											<option value="${one.dictCode }" selected="selected">${one.dictCode}-${one.englishName }-${one.countryName }</option>
 		                    			</c:when>
 		                    			<c:otherwise>
