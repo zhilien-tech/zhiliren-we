@@ -95,7 +95,7 @@
       			<div class="form-group">
       				<label class="col-sm-3 text-right padding"></label>
       				<div class="col-sm-8 padding">
-      					<button id="file" name="file" type="file" class="btn btn-primary btn-sm" >上传文件</button>
+      					<button id="file" name="file" type="file" class="btn btn-primary btn-sm" >上传</button>
               			<span id="completeFileName"></span>
       				</div>
       				
