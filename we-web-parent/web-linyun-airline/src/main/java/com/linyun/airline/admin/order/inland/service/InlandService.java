@@ -440,7 +440,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			customneedEntity.setTickettype(tickettype);
 			//与订单相关
 			customneedEntity.setOrdernum(id);
-			customneedEntity.setRemark((String) map.get("remark"));
+			//customneedEntity.setRemark((String) map.get("remark"));
 			if (Util.isEmpty(customneedid)) {
 				//新增
 				TOrderCustomneedEntity insertCus = dbDao.insert(customneedEntity);
@@ -598,6 +598,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		TBankCardEntity bankCardEntity = new TBankCardEntity();
 		bankCardEntity.setId(PayMethodEnum.THIRDPART.intKey());
 		bankCardEntity.setBankName(PayMethodEnum.THIRDPART.value());
+		bankCardEntity.setCardName(PayMethodEnum.THIRDPART.value());
 		paymethod.add(0, bankCardEntity);
 		result.put("paymethod", paymethod);
 		//订单状态
@@ -642,10 +643,12 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		Integer customerId = Integer.valueOf((String) fromJson.get("customerId"));
 		//订单状态（查询、预订、出票......）
 		Integer orderType = Integer.valueOf((String) fromJson.get("orderType"));
+		String remark = (String) fromJson.get("remark");
 		TUpOrderEntity orderinfo = this.fetch(id);
 		orderinfo.setId(id);
 		orderinfo.setUserid(customerId);
 		orderinfo.setOrdersstatus(orderType);
+		orderinfo.setRemark(remark);
 		orderinfo.setLoginUserId(new Long(user.getId()).intValue());
 		if (!Util.isEmpty(fromJson.get("remindTime"))) {
 			Date remindTime = DateUtil.string2Date((String) fromJson.get("remindTime"), DateUtil.FORMAT_FULL_PATTERN);
@@ -717,7 +720,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			if (!Util.isEmpty(map.get("thirdcustomid"))) {
 				thirdcustomid = Integer.valueOf((String) map.get("thirdcustomid"));
 			}
-			String remark = (String) map.get("remark");
+			//String remark = (String) map.get("remark");
 			TOrderCustomneedEntity customneedEntity = new TOrderCustomneedEntity();
 			customneedEntity.setLeavecity(leavecity);
 			customneedEntity.setArrivecity(arrivecity);

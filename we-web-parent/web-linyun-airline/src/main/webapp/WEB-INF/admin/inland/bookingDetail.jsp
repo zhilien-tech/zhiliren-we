@@ -498,7 +498,7 @@
 							<tr name="cRemarkTr" class="remarkTr">
 								<td><label>备注：</label></td>
 								<td>
-									<textarea class="form-control" id="cRemark" name="cRemark"></textarea>
+									<textarea class="form-control" id="cRemark" name="cRemark">${obj.orderinfo.remark }</textarea>
 								</td>
 							</tr>
 						</table>
@@ -806,6 +806,8 @@
 		customdata.customerId = customerId;
 		var id = $('#orderedid').val();
 		customdata.id = id;
+		var cRemark = $('#cRemark').val();
+		customdata.remark = cRemark;
 		var remindTime = $('#remindTime').val();
 		customdata.remindTime = remindTime;
 		var remindType = $('#remindType').val();
