@@ -349,10 +349,30 @@
                             <option value="1">是</option>
                         </select>
                      </td>
-                     <td><label>进澳时间：</label></td>
+					 <%--<td><label>进澳时间：</label></td>
                      <td><input id="enterausdate" name="enterausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.enterausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
                      <td><label>出澳时间：</label></td>
+                     <td><input id="outausdate" name="outausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.outausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td> --%>
+                   </tr>
+                   <tr class="KHinfo">
+                     <td><label>进澳时间：</label></td>
+                     <td><input id="enterausdate" name="enterausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.enterausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                   	 <td><label>航空公司：</label></td>
+                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><label>出发时间：</label></td>
+                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><label>抵达时间：</label></td>
+                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                   </tr>
+                   <tr class="KHinfo">
+                     <td><label>出澳时间：</label></td>
                      <td><input id="outausdate" name="outausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.outausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                   	 <td><label>航空公司：</label></td>
+                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><label>出发时间：</label></td>
+                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><label>抵达时间：</label></td>
+                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>应收：</label></td>
