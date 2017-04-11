@@ -37,7 +37,11 @@ function initKaiInterInvoiceTable() {
 	                    	var result = '<ul> ';
 	                  		$.each(row.invoicedetail, function(name, value) {
 	                  			if(value && value.invoicenum != undefined){
-	                  				result += '<li style="list-style:none;">'+value.invoicenum+'</li>';
+	                  				if(value.invoicenum !=null && value.invoicenum != ""){
+	                					result += '<li style="list-style:none;">'+value.invoicenum+'</li>';
+	                				}else{
+	                					return "";
+	                				}
 	                  			}
 	                  		});
 	                  		result += '</ul>';
@@ -163,6 +167,12 @@ function initKaiInterInvoiceTable() {
 function kaiInvoiceLoad(){
 	KaiInterInvoiceTable.ajax.reload();
 }
+//datatable行点击事件
+$("tbody",$('#KaiInterInvoiceTable')).on("dblclick","tr",function(event){
+	//获取当前行的数据
+	var row = KaiInterInvoiceTable.row($(this).closest('tr')).data();
+	openkaiInvoiceEdit(row.id);
+});
 //打开开发票页面
 function openkaiInvoiceEdit(id){
 	layer.open({
@@ -341,7 +351,13 @@ function initshouInterInvoiceTable() {
 function shouInvoiceLoad(){
 	shouInterInvoiceTable.ajax.reload();
 }
-
+//datatable行点击事件
+$("tbody",$('#shouInterInvoiceTable')).on("dblclick","tr",function(event){
+	//获取当前行的数据
+	var row = shouInterInvoiceTable.row($(this).closest('tr')).data();
+	var url = BASE_PATH + '/admin/international/internationalDetail.html?orderid='+row.orderid;
+	window.open(url,'_black');
+});
 function openshouInvoiceEdit(id){
 	layer.open({
         type: 2,
