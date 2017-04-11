@@ -1145,7 +1145,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			//收款  已开发票 16
 			msgType = MessageTypeEnum.INVIOCEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "已开发票";
+			msgContent = "单号：" + generateOrderNum + "已开发票";
 			break;
 		case 14:
 			//付款  已收发票 17
@@ -1181,7 +1181,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			//付款 （会计）开发票中 22  MessageTypeEnum
 			msgType = MessageTypeEnum.INVIOCING.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "开发票中";
+			msgContent = "单号：" + generateOrderNum + "开发票中";
 			break;
 		case 20: //MessageWealthStatusEnum
 			//付款 （会计）收发票中 23  MessageTypeEnum
