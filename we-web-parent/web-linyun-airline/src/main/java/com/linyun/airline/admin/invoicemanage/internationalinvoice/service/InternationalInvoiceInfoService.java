@@ -38,6 +38,7 @@ import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
 import com.linyun.airline.admin.receivePayment.service.InterReceivePayService;
+import com.linyun.airline.common.enums.MessageWealthStatusEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.enums.UserTypeEnum;
 import com.linyun.airline.entities.DictInfoEntity;
@@ -375,7 +376,7 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 			ordersnum = record.getString("ordersnum");
 		}
 		interReceivePayService.addInterRemindMsg(orderId, ordersnum, "", ordertatus + "",
-				PayReceiveTypeEnum.RECEIVE.intKey(), session);
+				MessageWealthStatusEnum.INVIOCE.intKey(), PayReceiveTypeEnum.RECEIVE.intKey(), session);
 		return null;
 	}
 
@@ -559,7 +560,7 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 			orderId = record.getInt("id");
 		}
 		interReceivePayService.addInterRemindMsg(orderId, ordersnum, "", ordertatus + "",
-				PayReceiveTypeEnum.RECEIVE.intKey(), session);
+				MessageWealthStatusEnum.RECINVIOCE.intKey(), PayReceiveTypeEnum.RECEIVE.intKey(), session);
 		return null;
 	}
 
@@ -575,28 +576,4 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		}
 		return result;
 	}
-
-	/**
-	 * 双击回显开发票详情数据
-	 * @param request
-	 * @param interKaiInvoiceDetail
-	 */
-	public Object interKaiInvoiceDetail(HttpServletRequest request, String interKaiInvoiceDetail) {
-		String interKaiInvoiceDetail1 = interKaiInvoiceDetail;
-		String aaa[] = interKaiInvoiceDetail1.split("</td>");
-		for (int i = 0; i < aaa.length; i++) {
-			aaa[i] = aaa[i].substring(4, aaa[i].length());
-		}
-		String ordersnum = aaa[0];
-		String billingdate = aaa[1];
-		String cusgroupnum = aaa[2];
-		String shortName = aaa[3];
-		String linkman = aaa[4];
-		String issuer = aaa[5];
-		String currentpay = aaa[6];
-
-		return interKaiInvoiceDetail1;
-
-	}
-
 }
