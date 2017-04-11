@@ -365,15 +365,17 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 			Integer upOrderid = null;
 			String ordersnum = null;
 			String pnr = null;
+			int a = 0;
 			if ("agree".equalsIgnoreCase(temp)) {
 				approvalResult = ApprovalResultEnum.ENABLE.intKey();
 				approvalStatus = AccountPayEnum.APPROVALPAYING.intKey();
 				orderType = MessageWealthStatusEnum.APPROVAL.intKey();
+				a = MessageWealthStatusEnum.APPROVAL.intKey();
 			} else if ("refuse".equalsIgnoreCase(temp)) {
 				approvalResult = ApprovalResultEnum.DISABLE.intKey();
 				approvalStatus = AccountPayEnum.REFUSE.intKey();
 				orderType = MessageWealthStatusEnum.UNAPPROVAL.intKey();
-
+				a = MessageWealthStatusEnum.UNAPPROVAL.intKey();
 			}
 			if ("inlandNum".equalsIgnoreCase(operation)) {
 				TPnrInfoEntity pnrInfo = dbDao.fetch(TPnrInfoEntity.class, id);
@@ -439,9 +441,9 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 					remindMap.put("remindDate", DateUtil.Date2String(new Date()));
 					remindMap.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
 					//searchViewService.addRemindMsg(remindMap, ordersnum, pnr, upOrderid, orderType, session);
-					int payRecType = 0;
+					int payRecType = 2;
 					interReceivePayService.addInterRemindMsg(orderId.intValue(), ordersnum, pnr,
-							payoOrderEntity.getOrderstatus() + "", payRecType, session);
+							payoOrderEntity.getOrderstatus() + "", a, payRecType, session);
 					return JsonResult.success("审核通过");
 				}
 			}
