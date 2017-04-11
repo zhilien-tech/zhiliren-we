@@ -337,10 +337,10 @@
 		                            <c:forEach var="map" items="${obj.paymethod}" >
 		                            	<c:choose>
 		                            		<c:when test="${customneed.cusinfo.paymethod eq map.id }">
-		                            			<option value="${map.id}" selected="selected">${map.bankName}</option>
+		                            			<option value="${map.id}" selected="selected">${map.cardName}</option>
 		                            		</c:when>
 		                            		<c:otherwise>
-										   		<option value="${map.id}">${map.bankName}</option>
+										   		<option value="${map.id}">${map.cardName}</option>
 		                            		</c:otherwise>
 		                            	</c:choose>
 									 </c:forEach>
@@ -373,10 +373,10 @@
 		                     	</div>
 		                     </td>
 		                   </tr>
-		                   <tr class="remarkTr">
+		                   <%-- <tr class="remarkTr">
 		                     <td></span><label>备注：</label></td>
 		                     <td colspan="11"><input type="text" id="remark" name="remark" disabled="disabled" class="form-control input-sm noteText" placeholder=" " value="${customneed.cusinfo.remark }"></td>
-		                   </tr>
+		                   </tr> --%>
 		                 </table>
 		                </div>
 		               </div>
@@ -451,8 +451,8 @@
 		                     <td colspan="1">
 								<select id="paymethod" name="paymethod" disabled="disabled" class="form-control input-sm paymethod">
 		                            <option value="">请选择</option>
-		                            <c:forEach var="map" items="${obj.paymethodenum}" >
-								   		<option value="${map.key}">${map.value}</option>
+		                            <c:forEach var="map" items="${obj.paymethod}" >
+								   		<option value="${map.id}">${map.cardName}</option>
 									 </c:forEach>
 		                        </select>
 							 </td>
@@ -483,15 +483,27 @@
 		                        <a href="javascript:;" class="btn btn-primary btn-sm PNRbtn"><b>+</b>&nbsp;&nbsp;PNR</a>
 		                     </td>
 		                   </tr>
-		                   <tr>
+		                   <%-- <tr>
 		                     <td></span><label>备注：</label></td>
 		                     <td colspan="11"><input type="text" id="remark" name="remark" disabled="disabled" class="form-control input-sm noteText" placeholder=" " value="${customneed.cusinfo.remark }"></td>
-		                   </tr>
+		                   </tr> --%>
 		                 </table>
 		                </div>
 		               </div>
                		</c:otherwise>
                </c:choose>
+               <context class="remarkContext">
+				   <div class="remarkDiv">
+						<table class="remarkTable">
+							<tr name="cRemarkTr" class="remarkTr">
+								<td><label>备注：</label></td>
+								<td>
+									<textarea class="form-control" id="cRemark" name="cRemark"></textarea>
+								</td>
+							</tr>
+						</table>
+				   </div>	
+				</context>
           </div><!--end 客户需求-->
 
           <div class="customerInfo"><!--信息-->

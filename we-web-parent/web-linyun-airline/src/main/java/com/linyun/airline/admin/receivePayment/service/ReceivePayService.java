@@ -197,7 +197,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			for (Record record : orderPnrList) {
 				int uid = Integer.valueOf(record.getString("id"));
 				String ordernum = record.getString("ordersnum");
-				String pnr = "";
+				String pnr = record.getString("pnrnum");
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 				map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());

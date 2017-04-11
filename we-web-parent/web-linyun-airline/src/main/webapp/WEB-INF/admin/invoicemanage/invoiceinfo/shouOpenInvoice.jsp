@@ -15,9 +15,11 @@
 <body>
 	<div class="modal-top">
     <div class="modal-header boderButt">
-            <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
-            <input type="button" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo()" value="确认收发票"/>
-            <h4 class="invoiceH4">收发票信息</h4>
+    	<input type="hidden" id="backupbalance" name="backupbalance" value="${obj.invoicebalance }">
+    	<input type="hidden" id="orderId" name="orderId" value="${obj.pnrinfo[0].orderids }">
+        <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
+        <input type="button" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo()" value="确认收发票"/>
+        <h4 class="invoiceH4">收发票信息</h4>
     </div>
     <div style="height:550px; overflow-y:auto;" class="allCentext">
       <div class="modal-body">
@@ -217,6 +219,11 @@
 	<script src="${base }/admin/order/invoiceupload.js"></script>
   <script type="text/javascript">
      $(function(){
+    	 /*-----收发票双击事件-----*/
+    	 $("#receivablesTable tr").dblclick(function() {
+     		 var orderId = $("#orderId").val();
+     		 window.open('${base}/admin/inland/bookingDetail.html?id='+orderId,'_black');
+     	 });
     	 /*-----收付款>收款>开发票 + 按钮-----*/
 	      $('.addIcon').click(function(){
 	          var divTest = $(this).parents('.cloneTR'); 
