@@ -661,6 +661,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	public Object parsingEtem(String etemStr) {
 		//判断以哪种格式解析
 		String parsingType = "";
+		etemStr = etemStr + "\n";
 		String[] etemPnrs = etemStr.split("\\s+");
 		String etem = etemPnrs[0];
 		if (etem.contains("avh/")) {
@@ -677,7 +678,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		/***********************黑屏查询：AVH/AKLSYD/28FEB/EK**************************/
 		if (parsingType == "1") {
 			//(?s)表示开启跨行匹配，\\d{1}一位数字，[A-Za-z]{2}两位字母，/斜线，\\s空白字符,.+任意字符出现1到多次，?非贪婪模式，最后以\n换行结束
-			String regex = "(?s)\\d{1}.{2}[*][A-Za-z]{2}\\d+\\s.+?\\d\n";
+			String regex = "(?s)((\\d{1}.{2}[*])|(\\s{4}))[A-Za-z]{2}\\d+\\s.+?\\d\n";
 			Pattern pattern = Pattern.compile(regex);
 			Matcher m = pattern.matcher(etemStr);
 			ArrayList<String> etemGroup = Lists.newArrayList();
@@ -690,7 +691,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			String airCompName = etemStrs[4];
 			//起飞日期
 			String airLeavelDate = etemStrs[1];
-
+			int a = 1;
 			for (String pnrs : etemGroup) {
 				/***********************根据 avh/aklsyd/28feb/ek\n 解析***********************/
 				//序号
@@ -709,7 +710,14 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				ParsingSabreEntity pSabreEntity = new ParsingSabreEntity();
 
 				String[] pnr = pnrs.split("\\s+");
-				id = Integer.parseInt(pnr[0].substring(0, 1));
+				/*id = Integer.parseInt(pnr[0].substring(0, 1));*/
+				id = a;
+				if (pnr[0].contains(a + "")) {
+					a++;
+				} else {
+					id = a - 1;
+				}
+				pSabreEntity.setId(id);
 				flightNum = pnr[1];
 				airLine = pnr[13];
 				airDepartureTime = pnr[14];
@@ -720,7 +728,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 					}
 				}
 
-				pSabreEntity.setId(id);
 				pSabreEntity.setAirlineComName(airCompName);
 				pSabreEntity.setFlightNum(flightNum);
 				pSabreEntity.setAirLeavelDate(airLeavelDate);

@@ -317,21 +317,6 @@
            } 
        });
    }
-   //行双击事件
-   /* function Test(){  
-        var rows=document.getElementById("receivablesTable").rows;
-        alert(JSON.stringify(rows));
-        /* if(rows.length>0){
-            for(var i=1;i<rows.length;i++){  
-              (function(i){  
-                var temp=rows[i].cells[0].childNodes[1].value;
-                var obj=rows[i];  
-                obj.ondblclick=function(){alert(temp);};  
-                })(i)  
-            }  
-        }  */ 
-    //}  
-    //window.onload=function(){Test();} */
   </script>
 </body>
 </html>	

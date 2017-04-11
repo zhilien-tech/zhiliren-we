@@ -23,6 +23,9 @@ public class TShouInvoiceInfoSqlForm extends DataTablesParamForm {
 	/**公司id*/
 	private Long comId;
 
+	/**订单id*/
+	private Long orderids;
+
 	/**发票项目*/
 	private Integer invoiceitem;
 
