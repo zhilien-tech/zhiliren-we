@@ -447,6 +447,7 @@
 			              maxmin: false, 
 			              area: ['400px', '210px'],
 			              closeBtn: false,
+			              scrollbar: false,
 			              content: '${base}/admin/operationsArea/customEvent.html?selDate='+selDate,
 			              end: function () {
 			            	  /* $.fancybox.close();  */
