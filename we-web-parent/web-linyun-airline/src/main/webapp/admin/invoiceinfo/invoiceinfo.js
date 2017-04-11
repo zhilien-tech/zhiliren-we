@@ -145,6 +145,12 @@ function initKaiInvoiceTable1() {
 function kaiInvoiceLoad(){
 	KaiInvoiceTable1.ajax.reload();
 }
+//datatable行点击事件
+$("tbody",$('#KaiInvoiceTable1')).on("dblclick","tr",function(event){
+	//获取当前行的数据
+	var row = KaiInvoiceTable1.row($(this).closest('tr')).data();
+	openkaiInvoiceEdit(row.id);
+});
 //打开开发票页面
 function openkaiInvoiceEdit(id){
 	layer.open({
@@ -343,7 +349,13 @@ function shouInvoiceLoad(){
 			}
 	);
 }
-
+//datatable行点击事件
+$("tbody",$('#shouInvoiceTable1')).on("dblclick","tr",function(event){
+	//获取当前行的数据
+	var row = shouInvoiceTable1.row($(this).closest('tr')).data();
+	var url = BASE_PATH + '/admin/inland/bookingDetail.html?id='+row.orderids;
+	window.open(url,'_black');
+});
 function openshouInvoiceEdit(id){
 	layer.open({
         type: 2,

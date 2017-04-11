@@ -93,6 +93,7 @@ $condition
 
 /*international_invoice_international_invoice_list*/
 SELECT
+	tuo.id AS orderid,
 	tii.*, tuo.ordersnum
 FROM
 	t_invoice_info tii

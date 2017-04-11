@@ -351,7 +351,7 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		//发票明细
 		List<TInvoiceDetailEntity> invoiceDetail = dbDao.query(TInvoiceDetailEntity.class,
 				Cnd.where("invoiceinfoid", "=", invoiceinfo.getId()), null);
-		String sqlString = sqlManager.get("get_fukuan_info_list");
+		String sqlString = sqlManager.get("invoicemanage_get_kaiinvoice_info_list");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tpi.id", "=", invoiceinfo.getPnrid());
@@ -390,13 +390,13 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 				}
 			}
 		}
-		Sql create = Sqls.create(sqlManager.get("get_bank_info_select"));
+		Sql create = Sqls.create(sqlManager.get("invoicemanage_get_bank_info_select"));
 		create.setParam("companyId", company.getId());
 		create.setParam("typeCode", YHCODE);
 		List<Record> yhkSelect = dbDao.query(create, null, null);
 		//付款银行卡信息
 		Record companybank = new Record();
-		String pagesqlStr = sqlManager.get("get_fukuan_invoice_page_data");
+		String pagesqlStr = sqlManager.get("invoicemanage_get_kai_invoice_page_data");
 		Sql pagesql = Sqls.create(pagesqlStr);
 		Cnd pagecnd = Cnd.NEW();
 		pagecnd.and("tpp.pnrId", "=", invoiceinfo.getPnrid());
