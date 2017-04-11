@@ -31,6 +31,13 @@ ADD COLUMN `actualyreduce`  int NULL COMMENT '实际减少人数' AFTER `orderst
 ALTER TABLE `t_order_customneed`
 ADD COLUMN `thirdcustomid`  int NULL COMMENT '第三方支付ID' AFTER `paymethod`;
 
+ALTER TABLE `t_up_order`
+ADD COLUMN `remindTime`  datetime NULL COMMENT '提醒时间' AFTER `costsingleprice`,
+ADD COLUMN `remindType`  int NULL COMMENT '提醒类型' AFTER `remindTime`;
+
+ALTER TABLE `t_up_order`
+ADD COLUMN `remark`  text NULL COMMENT '备注' AFTER `remindType`;
+
 /*新增登录账号表*/
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */

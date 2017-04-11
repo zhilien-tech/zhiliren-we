@@ -43,7 +43,7 @@ $(document).on('change','.sc', function(){
 	reader.readAsDataURL(file);
 });
 
-$(document).on('input','#invoicebalance', function(e){
+$(document).on('input','#invoicebalance', function(){
 	var thisval = $(this).val();
 	if(!isNaN(thisval)){
         var dot = thisval.indexOf(".");
@@ -56,7 +56,7 @@ $(document).on('input','#invoicebalance', function(e){
     }
 	$(this).val(thisval);
 	var banlanceyue = parseFloat($('#sumjine').html());
-	var balance = $('#balance').html();
+	//var balance = $('#balance').html();
 	var shengyu = $('#backupbalance').val();
 	$('.cloneTR').each(function(i){
 		var invoicebalance = $(this).find('[name=invoicebalance]').val();
@@ -80,8 +80,8 @@ $(document).on('blur','#invoicebalance', function(){
 	//}
 });
 $(document).on('focus','#invoicebalance', function(){
-	if($('#balance').html() == '0.00' && $(this).val()){
+	//if($('#balance').html() == '0.00' && $(this).val()){
 		//alert($(this).val());
-		$('#backupbalance').val($(this).val());
-	}
+		$('#backupbalance').val(parseFloat($(this).val())+parseFloat($('#balance').html()));
+	//}
 });
