@@ -642,7 +642,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	public Object saveInlandPay(TSaveInlandPayAddFrom form, HttpSession session) {
 		List<TPayEntity> payList = new ArrayList<TPayEntity>();
 		//当前公司id
-		TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Long companyId = company.getId();
 		//当前登陆用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
@@ -785,7 +785,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	public Object updateInlandPay(TUpdateInlandPayAddFrom form, HttpSession session) {
 		List<TPayEntity> payList = new ArrayList<TPayEntity>();
 		//当前公司id
-		TCompanyEntity company = (TCompanyEntity) session.getAttribute("user_company");
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Long companyId = company.getId();
 		//当前登陆用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);

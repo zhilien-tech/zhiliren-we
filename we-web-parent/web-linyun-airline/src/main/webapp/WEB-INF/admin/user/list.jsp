@@ -29,8 +29,7 @@
 	                    	<option value="${one.deptName }">
                             	${one.deptName }
                             </option>
-	                    
-							<%-- <c:choose>
+							<%--<c:choose>
 								<c:when test="${indexs.index eq 0}">
 	                               	<option value="${one.deptName }" selected="selected">
 	                               		${one.deptName }

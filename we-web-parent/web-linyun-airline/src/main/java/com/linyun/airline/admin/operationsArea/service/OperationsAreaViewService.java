@@ -547,6 +547,9 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	public Object getCheckBox(HttpSession session) {
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long userId = loginUser.getId();
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = company.getId();
 		TCheckboxStatusEntity checkbox = dbDao.fetch(TCheckboxStatusEntity.class, Cnd.where("userId", "=", userId));
 		if (Util.isEmpty(checkbox)) {
 			TCheckboxStatusEntity check = new TCheckboxStatusEntity();
@@ -561,7 +564,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 				Cnd.where("userId", "=", userId));
 		obj.put("checkBox", checkBoxEntity);
 		//统计当前用户是否拥有 “内陆跨海”和“国际”的功能
-		int functionNum = getFunctionNum(userId);
+		int functionNum = getFunctionNum(userId, companyId);
 		if (functionNum > 0) {
 			obj.put("funNums", true);
 		} else {
@@ -578,19 +581,27 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	 * @param session
 	 * @return 对应功能的个数
 	 */
-	public int getFunctionNum(long userId) {
-		//判断t_company中，是否有当前用户id
+	public int getFunctionNum(long userId, long companyId) {
 
-		Sql sql = Sqls.create(sqlManager.get("operationsArea_function_nums"));
-		Cnd cnd = Cnd.NEW();
-		cnd.and("f.parentId", "=", FUNCTION_PARENT_ID);
-		cnd.and("uj.userid", "=", userId);
-		SqlExpressionGroup group = new SqlExpressionGroup();
-		group.and("f.`name`", "LIKE", "%" + INLAND_ORDER + "%").or("f.`name`", "LIKE", "%" + INTERNATIONAL_ORDER + "%");
-		cnd.and(group);
-		sql.setCondition(cnd);
-		Record record = dbDao.fetch(sql);
-		int funNums = Integer.valueOf(record.getString("funnum"));
+		int funNums = 0;
+		TCompanyEntity companyEntity = dbDao.fetch(TCompanyEntity.class,
+				Cnd.where("id", "=", companyId).and("adminId", "=", userId));
+		if (!Util.isEmpty(companyEntity)) {
+			funNums = 1;
+		} else {
+			Sql sql = Sqls.create(sqlManager.get("operationsArea_function_nums"));
+			Cnd cnd = Cnd.NEW();
+			cnd.and("f.parentId", "=", FUNCTION_PARENT_ID);
+			cnd.and("uj.userid", "=", userId);
+			SqlExpressionGroup group = new SqlExpressionGroup();
+			group.and("f.`name`", "LIKE", "%" + INLAND_ORDER + "%").or("f.`name`", "LIKE",
+					"%" + INTERNATIONAL_ORDER + "%");
+			cnd.and(group);
+			sql.setCondition(cnd);
+			Record record = dbDao.fetch(sql);
+			funNums = Integer.valueOf(record.getString("funnum"));
+		}
+
 		return funNums;
 	}
 

@@ -39,11 +39,17 @@ public class TestEtem {
 				+ "    EK413  DS# FA AA JX CX IX OA PX YX EX RX     SYD 1845  2005 388 0^M  E\n"
 				+ ">              WX MX BX UA KX HC QX LC TC VX XC                 --1   13:45\n";
 		//(?s)表示开启跨行匹配，\\d{1}一位数字，[A-Za-z]{2}两位字母，/斜线，\\s空白字符,.+任意字符出现1到多次，?非贪婪模式，最后以\n换行结束
-		String regex = "(?s)\\d{1}.{2}[*][A-Za-z]{2}\\d+\\s.+?\\d\n";
+		String regex = "(?s)((\\d{1}.{2}[*])|(\\s{4}))[A-Za-z]{2}\\d+\\s.+?\\d\n";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher m = pattern.matcher(input);
 		while (m.find()) {
 			System.out.println(m.group() + "|||");
 		}
+		/*String regex1 = "(?s)\\s{4}[A-Za-z]{2}\\d+\\s.+?\\d\n";
+		Pattern pattern1 = Pattern.compile(regex1);
+		Matcher m1 = pattern1.matcher(input);
+		while (m1.find()) {
+			System.out.println(m1.group() + "|||");
+		}*/
 	}
 }
