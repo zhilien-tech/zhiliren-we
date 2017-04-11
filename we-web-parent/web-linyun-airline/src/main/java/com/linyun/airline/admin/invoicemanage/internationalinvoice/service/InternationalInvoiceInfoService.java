@@ -38,6 +38,7 @@ import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
 import com.linyun.airline.admin.receivePayment.service.InterReceivePayService;
+import com.linyun.airline.common.enums.MessageWealthStatusEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.enums.UserTypeEnum;
 import com.linyun.airline.entities.DictInfoEntity;
@@ -67,7 +68,7 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 	private externalInfoService externalInfoService;
 
 	@Inject
-	private InterReceivePayService interReceivePayService;//国际开发票(收发票)消息提醒
+	private InterReceivePayService interReceivePayService;
 
 	/**
 	 * 开票人的查询
@@ -375,10 +376,8 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 			ordersnum = record.getString("ordersnum");
 		}
 		interReceivePayService.addInterRemindMsg(orderId, ordersnum, "", ordertatus + "",
-				PayReceiveTypeEnum.RECEIVE.intKey(), session);
-		/*		interReceivePayService.addInterRemindMsg(orderId, ordersnum, "", ordertatus + "",
-						PayReceiveTypeEnum.RECEIVE.intKey(), InvoiceInfoEnum.INVOIC_ED.intKey(), session);
-		*/return null;
+				MessageWealthStatusEnum.INVIOCE.intKey(), PayReceiveTypeEnum.RECEIVE.intKey(), session);
+		return null;
 	}
 
 	/**
@@ -561,7 +560,7 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 			orderId = record.getInt("id");
 		}
 		interReceivePayService.addInterRemindMsg(orderId, ordersnum, "", ordertatus + "",
-				PayReceiveTypeEnum.RECEIVE.intKey(), session);
+				MessageWealthStatusEnum.RECINVIOCE.intKey(), PayReceiveTypeEnum.RECEIVE.intKey(), session);
 		return null;
 	}
 

@@ -115,6 +115,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	//内陆跨海
 	private static final String NLKHCODE = "NLKH";
 	//付款用途
+	private static final String HUANHANG = "&#13;&#10;";
 	private static final String FPXMCODE = "FPXM";
 	private static final String EXCEL_PATH = "download";
 	private static final String FILE_EXCEL_NAME = "客户需求游客模板.xlsx";
@@ -200,8 +201,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		Integer customerId = Integer.valueOf((String) fromJson.get("customerId"));
 		boolean generateOrder = (boolean) fromJson.get("generateOrder");
 		Integer orderType = Integer.valueOf((String) fromJson.get("orderType"));
+		String remark = (String) fromJson.get("remark");
 		TUpOrderEntity orderinfo = new TUpOrderEntity();
 		orderinfo.setUserid(customerId);
+		orderinfo.setRemark(remark);
 		orderinfo.setOrdersstatus(orderType);
 		orderinfo.setLoginUserId(new Long(user.getId()).intValue());
 		orderinfo.setCompanyId(new Long(company.getId()).intValue());
@@ -227,7 +230,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			if (!Util.isEmpty(map.get("tickettype"))) {
 				tickettype = Integer.valueOf((String) map.get("tickettype"));
 			}
-			String remark = (String) map.get("remark");
+			//String remark = (String) map.get("remark");
 			TOrderCustomneedEntity customneedEntity = new TOrderCustomneedEntity();
 			customneedEntity.setLeavecity(leavecity);
 			customneedEntity.setArrivecity(arrivecity);
@@ -236,7 +239,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			}
 			customneedEntity.setPeoplecount(peoplecount);
 			customneedEntity.setTickettype(tickettype);
-			customneedEntity.setRemark(remark);
+			//customneedEntity.setRemark(remark);
 			//与订单相关
 			customneedEntity.setOrdernum(insertOrder.getId());
 			TOrderCustomneedEntity insertCus = dbDao.insert(customneedEntity);
@@ -291,7 +294,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	public Object queryDetail(Integer id) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		TUpOrderEntity orderinfo = this.fetch(id);
-		//orderinfo.setRemark(orderinfo.getRemark().replaceAll("\r", "<br>"));
+		orderinfo.setRemark(orderinfo.getRemark().replace("\n", HUANHANG));
 		result.put("orderinfo", orderinfo);
 		//客户信息
 		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(orderinfo.getUserid()));
@@ -440,7 +443,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			customneedEntity.setTickettype(tickettype);
 			//与订单相关
 			customneedEntity.setOrdernum(id);
-			customneedEntity.setRemark((String) map.get("remark"));
+			//customneedEntity.setRemark((String) map.get("remark"));
 			if (Util.isEmpty(customneedid)) {
 				//新增
 				TOrderCustomneedEntity insertCus = dbDao.insert(customneedEntity);
@@ -541,6 +544,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		result.put("user", user);
 		TUpOrderEntity orderinfo = this.fetch(id);
+		orderinfo.setRemark(orderinfo.getRemark().replace("\n", HUANHANG));
 		result.put("orderinfo", orderinfo);
 		//客户信息
 		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(orderinfo.getUserid()));
@@ -598,6 +602,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		TBankCardEntity bankCardEntity = new TBankCardEntity();
 		bankCardEntity.setId(PayMethodEnum.THIRDPART.intKey());
 		bankCardEntity.setBankName(PayMethodEnum.THIRDPART.value());
+		bankCardEntity.setCardName(PayMethodEnum.THIRDPART.value());
 		paymethod.add(0, bankCardEntity);
 		result.put("paymethod", paymethod);
 		//订单状态
@@ -642,10 +647,12 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		Integer customerId = Integer.valueOf((String) fromJson.get("customerId"));
 		//订单状态（查询、预订、出票......）
 		Integer orderType = Integer.valueOf((String) fromJson.get("orderType"));
+		String remark = (String) fromJson.get("remark");
 		TUpOrderEntity orderinfo = this.fetch(id);
 		orderinfo.setId(id);
 		orderinfo.setUserid(customerId);
 		orderinfo.setOrdersstatus(orderType);
+		orderinfo.setRemark(remark);
 		orderinfo.setLoginUserId(new Long(user.getId()).intValue());
 		if (!Util.isEmpty(fromJson.get("remindTime"))) {
 			Date remindTime = DateUtil.string2Date((String) fromJson.get("remindTime"), DateUtil.FORMAT_FULL_PATTERN);
@@ -717,7 +724,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			if (!Util.isEmpty(map.get("thirdcustomid"))) {
 				thirdcustomid = Integer.valueOf((String) map.get("thirdcustomid"));
 			}
-			String remark = (String) map.get("remark");
+			//String remark = (String) map.get("remark");
 			TOrderCustomneedEntity customneedEntity = new TOrderCustomneedEntity();
 			customneedEntity.setLeavecity(leavecity);
 			customneedEntity.setArrivecity(arrivecity);
