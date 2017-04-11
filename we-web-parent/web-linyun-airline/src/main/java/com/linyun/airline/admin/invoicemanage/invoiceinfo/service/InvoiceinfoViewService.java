@@ -519,15 +519,17 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		cnd.and("tpi.id", "=", invoiceinfo.getPnrid());
 		List<Record> pnrinfo = dbDao.query(sql, cnd, null);
 		String ordersnum = "";
+		String pnr = "";
 		Integer orderId = null;
 		for (Record record : pnrinfo) {
 			ordersnum = record.getString("ordersnum");
 			orderId = record.getInt("orderids");
+			pnr = record.getString("pnr");
 		}
 		Map<String, Object> map = Maps.newHashMap();
 		map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 		map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
-		searchViewService.addRemindMsg(map, ordersnum, "", orderId, MessageWealthStatusEnum.RECINVIOCE.intKey(),
+		searchViewService.addRemindMsg(map, ordersnum, pnr, orderId, MessageWealthStatusEnum.RECINVIOCE.intKey(),
 				session);
 		return null;
 	}
