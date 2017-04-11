@@ -294,7 +294,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	public Object queryDetail(Integer id) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		TUpOrderEntity orderinfo = this.fetch(id);
-		orderinfo.setRemark(orderinfo.getRemark().replace("\n", HUANHANG));
+		if (!Util.isEmpty(orderinfo.getRemark())) {
+			orderinfo.setRemark(orderinfo.getRemark().replace("\n", HUANHANG));
+		}
 		result.put("orderinfo", orderinfo);
 		//客户信息
 		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(orderinfo.getUserid()));
@@ -544,7 +546,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		result.put("user", user);
 		TUpOrderEntity orderinfo = this.fetch(id);
-		orderinfo.setRemark(orderinfo.getRemark().replace("\n", HUANHANG));
+		if (!Util.isEmpty(orderinfo.getRemark())) {
+			orderinfo.setRemark(orderinfo.getRemark().replace("\n", HUANHANG));
+		}
 		result.put("orderinfo", orderinfo);
 		//客户信息
 		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(orderinfo.getUserid()));
