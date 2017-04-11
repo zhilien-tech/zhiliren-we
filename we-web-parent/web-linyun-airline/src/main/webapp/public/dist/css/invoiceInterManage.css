@@ -16,7 +16,9 @@
 #KaiInvoiceTable1 tbody tr td:nth-child(8) {line-height:60px;}
 #KaiInvoiceTable1 tbody tr td:nth-child(9) {line-height:60px;}
 #KaiInvoiceTable1 tbody tr td:nth-child(10) {line-height:60px;}
+#KaiInvoiceTable1 tbody tr td:nth-child(10) span{width:130px;display: block;word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 auto;}
 #KaiInvoiceTable1 tbody tr td:nth-child(11) {line-height:60px;}
+.tooltipSpan{width:50px;display: block;word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 auto;}
 .TimeInput {padding-left: 4px;padding-right: 0px;}
 .ckBtn {margin-left: 10px;}
 .fileUL1{padding-left:6px;}
