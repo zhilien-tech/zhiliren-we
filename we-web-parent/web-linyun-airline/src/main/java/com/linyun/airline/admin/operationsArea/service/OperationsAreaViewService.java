@@ -366,27 +366,24 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			break;
 		case "bookOrders":
 			//订单
-			msgType = String.valueOf(BOOKMSG) + "," + String.valueOf(FIRBOOK) 
-					+ "," + String.valueOf(SECBOOK) + ","+ String.valueOf(THRBOOK) 
-					+ "," + String.valueOf(ALLBOOK) + "," + String.valueOf(LASTBOOK) 
-					+ ","+ String.valueOf(RECEIVEDMSG) + "," + String.valueOf(PAYEDMSG)
-					+ "," + String.valueOf(INVIOCEMSG)+ "," + String.valueOf(RECINVIOCEMSG)
-					+ "," + String.valueOf(APPROVALEDMSG) + ","+ String.valueOf(UNAPPROVALMSG) 
-					+ "," + String.valueOf(MAKEOUTBILLMSG) + ","+ String.valueOf(DRAWBILLMSG)
-					+ "," + String.valueOf(RECINVIOCING) + ","+ String.valueOf(PSAPPROVALING) 
-					+ "," + String.valueOf(INVIOCING);
+			msgType = String.valueOf(BOOKMSG) + "," + String.valueOf(FIRBOOK) + "," + String.valueOf(SECBOOK) + ","
+					+ String.valueOf(THRBOOK) + "," + String.valueOf(ALLBOOK) + "," + String.valueOf(LASTBOOK) + ","
+					+ String.valueOf(RECEIVEDMSG) + "," + String.valueOf(PAYEDMSG) + "," + String.valueOf(INVIOCEMSG)
+					+ "," + String.valueOf(RECINVIOCEMSG) + "," + String.valueOf(APPROVALEDMSG) + ","
+					+ String.valueOf(UNAPPROVALMSG) + "," + String.valueOf(MAKEOUTBILLMSG) + ","
+					+ String.valueOf(DRAWBILLMSG) + "," + String.valueOf(RECINVIOCING) + ","
+					+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING);
 			break;
 		case "taskNotice":
 			//任务 TODO
 			msgType = String.valueOf(NOTICEMSG) + "," + String.valueOf(FINANCIALMSG);
-			msgType += String.valueOf(FIRBOOK) + "," + String.valueOf(SECBOOK)
-					+ "," + String.valueOf(THRBOOK) + ","+ String.valueOf(ALLBOOK)
-					+ "," + String.valueOf(LASTBOOK) + "," + String.valueOf(RECEIVEDMSG)
-					+ "," + String.valueOf(PAYEDMSG) + "," + String.valueOf(INVIOCEMSG)
-					+ ","+ String.valueOf(RECINVIOCEMSG) + "," + String.valueOf(APPROVALEDMSG)
-					+ ","+ String.valueOf(UNAPPROVALMSG) + "," + String.valueOf(MAKEOUTBILLMSG)
-					+ ","+ String.valueOf(DRAWBILLMSG) + "," + String.valueOf(RECINVIOCING)
-					+ ","+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING);
+			msgType += String.valueOf(FIRBOOK) + "," + String.valueOf(SECBOOK) + "," + String.valueOf(THRBOOK) + ","
+					+ String.valueOf(ALLBOOK) + "," + String.valueOf(LASTBOOK) + "," + String.valueOf(RECEIVEDMSG)
+					+ "," + String.valueOf(PAYEDMSG) + "," + String.valueOf(INVIOCEMSG) + ","
+					+ String.valueOf(RECINVIOCEMSG) + "," + String.valueOf(APPROVALEDMSG) + ","
+					+ String.valueOf(UNAPPROVALMSG) + "," + String.valueOf(MAKEOUTBILLMSG) + ","
+					+ String.valueOf(DRAWBILLMSG) + "," + String.valueOf(RECINVIOCING) + ","
+					+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING);
 			break;
 		}
 
@@ -582,6 +579,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	 * @return 对应功能的个数
 	 */
 	public int getFunctionNum(long userId) {
+		//判断t_company中，是否有当前用户id
+
 		Sql sql = Sqls.create(sqlManager.get("operationsArea_function_nums"));
 		Cnd cnd = Cnd.NEW();
 		cnd.and("f.parentId", "=", FUNCTION_PARENT_ID);
