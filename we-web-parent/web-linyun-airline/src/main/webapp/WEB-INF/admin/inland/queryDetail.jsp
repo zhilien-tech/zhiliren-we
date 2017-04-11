@@ -140,7 +140,7 @@
                <c:choose>
                		<c:when test="${fn:length(obj.customneedinfo)>0}">
 		               <c:forEach var="customneed" items="${obj.customneedinfo }" varStatus="status">
-			               <div id="infofooter" name="infofooter" class="infofooter">
+			               <div id="infofooter" name="infofooter" class="infofooter infofooter1">
 			                <div class="DemandDiv">
 			                 <span class="titleNum">${status.index + 1 }</span>
 			                 <c:choose>

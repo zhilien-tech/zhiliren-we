@@ -197,7 +197,7 @@ function successCallback(id){
 		  layer.msg("确认收发票成功",{time: 2000});
 	  }
 }
-$(function(){
+$(function(){//二级菜单的高亮
 	$('.menu-ul:eq(0)').hide(); 
 	$('.menu-ul:eq(1) li:eq(1) a').css("color","rgb(245, 245, 245)");
 });
