@@ -37,6 +37,7 @@ import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
+import com.linyun.airline.admin.receivePayment.service.InterReceivePayService;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.enums.UserTypeEnum;
 import com.linyun.airline.entities.DictInfoEntity;
@@ -64,6 +65,9 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 
 	@Inject
 	private externalInfoService externalInfoService;
+
+	@Inject
+	private InterReceivePayService interReceivePayService;
 
 	/**
 	 * 开票人的查询
@@ -279,7 +283,7 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 	 * 保存开发票数据
 	 * @param request
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "null" })
 	public Object saveKaiInvoiceInfo(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
@@ -343,6 +347,35 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 			invoicedetails.add(entity);
 		}
 		dbDao.updateRelations(before, invoicedetails);
+		//国际开发票消息提醒
+		TReceiveEntity fetch = dbDao.fetch(TReceiveEntity.class, Long.valueOf(invoiceinfo.getReceiveid()));
+		List<TOrderReceiveEntity> query = dbDao.query(TOrderReceiveEntity.class,
+				Cnd.where("receiveid", "=", fetch.getId()), null);
+		Integer orderstatus = null;
+		String ids = "";
+		for (TOrderReceiveEntity tOrderReceiveEntity : query) {
+			ids += tOrderReceiveEntity.getOrderid() + ",";
+			orderstatus = tOrderReceiveEntity.getOrderstatus();
+		}
+		ids = ids.substring(0, ids.length() - 1);
+		String sqlString = sqlManager.get("international_invoice_sea_invoce_table_data");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("tuo.id", "in", ids);
+		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
+		sql.setParam("orderstatus", orderstatus);
+		sql.setParam("recordtype", PayReceiveTypeEnum.RECEIVE.intKey());
+		cnd.groupBy("tuo.ordersnum");
+		List<Record> orders = dbDao.query(sql, cnd, null);
+		String ordersnum = "";
+		Integer orderId = null;
+		Integer ordertatus = invoiceinfo.getOrderstatus();
+		for (Record record : orders) {
+			orderId = record.getInt("id");
+			ordersnum = record.getString("ordersnum");
+		}
+		interReceivePayService.addInterRemindMsg(orderId, ordersnum, "", ordertatus + "",
+				PayReceiveTypeEnum.RECEIVE.intKey(), session);
 		return null;
 	}
 
@@ -445,7 +478,7 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 	 * 保存收发票数据
 	 * @param request
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "null" })
 	public Object saveShouInvoiceInfo(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
@@ -506,6 +539,27 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 			invoicedetails.add(invoiceDetailEntity);
 		}
 		dbDao.updateRelations(before, invoicedetails);
+		//收发票消息提醒 InvoiceInfoEnum.Already_INVOICe.intKey()
+		TPayOrderEntity payorder = dbDao.fetch(TPayOrderEntity.class, invoiceinfo.getOrderpayid().longValue());
+		String ids = "";
+		ids += payorder.getOrderid();
+		String sqlString = sqlManager.get("international_invoice_sea_invoce_table_data");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("tuo.id", "in", ids);
+		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
+		sql.setParam("orderstatus", payorder.getOrderstatus());
+		sql.setParam("recordtype", PayReceiveTypeEnum.PAY.intKey());
+		List<Record> orders = dbDao.query(sql, cnd, null);
+		String ordersnum = "";
+		Integer orderId = null;
+		Integer ordertatus = invoiceinfo.getOrderstatus();
+		for (Record record : orders) {
+			ordersnum = record.getString("ordersnum");
+			orderId = record.getInt("id");
+		}
+		interReceivePayService.addInterRemindMsg(orderId, ordersnum, "", ordertatus + "",
+				PayReceiveTypeEnum.RECEIVE.intKey(), session);
 		return null;
 	}
 
