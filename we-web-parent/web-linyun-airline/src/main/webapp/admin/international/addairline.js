@@ -128,8 +128,11 @@ $('.addHDIcon').click(function(){
     newDiv.find('[name=leavetime]').val('');
     newDiv.find('[name=arrivetime]').val('');
     newDiv.find('[name=leavecity]').next().remove();
+    newDiv.find('[name=leavecity]').empty();
     newDiv.find('[name=arrivecity]').next().remove();
+    newDiv.find('[name=arrivecity]').empty();
     newDiv.find('[name=ailinenum]').next().remove();
+    newDiv.find('[name=ailinenum]').empty();
     initAirSelect2(newDiv);
     lastDiv.after(newDiv);
     var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
