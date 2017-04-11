@@ -360,7 +360,7 @@
 								<tr name="cRemarkTr" class="remarkTr">
 									<td><label>备注：</label></td>
 									<td>
-										<textarea class="form-control" id="cRemark" name="cRemark"></textarea>
+										<textarea class="form-control" id="cRemark" name="cRemark">${obj.orderinfo.remark }</textarea>
 									</td>
 								</tr>
 							</table>
@@ -621,9 +621,6 @@
 	<script src="${base}/admin/receivePayment/recPayCommon.js"></script> --%>
   <script type="text/javascript">
       $(function(){
-    	  var remark = '${obj.orderinfo.remark }';
-    	  var reg=new RegExp("\r\n","g"); 
-    	  $('#cRemark').html(remark.replace('/\n/g','<br>'));
         //编辑按钮 click事件
         $('.editBtn').click(function(){
               $(this).addClass('none');

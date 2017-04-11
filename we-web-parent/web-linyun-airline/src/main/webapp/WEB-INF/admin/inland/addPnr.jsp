@@ -186,9 +186,13 @@
 	 	}
 	   if(peoplecount){
 		   var costpricesum = parseFloat(costprice) * parseInt(peoplecount);
-		   $('#costpricesum').val(costpricesum.toFixed(2));
+		   if(!isNaN(costpricesum)){
+			   $('#costpricesum').val(costpricesum.toFixed(2));
+		   }
 		   var salespricesum = parseFloat(salesprice) * parseInt(peoplecount);
-		   $('#salespricesum').val(salespricesum.toFixed(2));
+		   if(!isNaN(salespricesum)){
+			   $('#salespricesum').val(salespricesum.toFixed(2));
+		   }
 	   }
    });
   </script>
