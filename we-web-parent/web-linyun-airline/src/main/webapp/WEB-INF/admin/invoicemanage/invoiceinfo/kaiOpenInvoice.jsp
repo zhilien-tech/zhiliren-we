@@ -1,7 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
-<!DOCTYPE html">
+<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
@@ -16,6 +15,7 @@
 	<div class="modal-top">
     <div class="modal-header boderButt">
     	<input type="hidden" id="backupbalance" name="backupbalance" value="${obj.invoicebalance }">
+    	<input type="hidden" id="orderId" name="orderId" value="${obj.ids }">
         <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
         <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo();" value="确认开发票"/>
         <h4 class="invoiceH4">开发票信息</h4>
@@ -216,6 +216,11 @@
 	<script src="${base }/admin/order/invoiceupload.js"></script>
   <script type="text/javascript">
      $(function(){
+    	 /*-----开发票双击事件-----*/
+    	 $("#receivablesTable tr").dblclick(function() {
+     		 var orderId = $("#orderId").val();
+     		 window.open('${base}/admin/inland/bookingDetail.html?id='+orderId,'_black');
+     	 });
     	 /*-----收付款>收款>开发票 + 按钮-----*/
 	      $('.addIcon').click(function(){
 	          var divTest = $(this).parents('.cloneTR'); 

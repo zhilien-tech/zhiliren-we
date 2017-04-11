@@ -33,7 +33,7 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
 public class InternationalShouSqlForm extends DataTablesParamForm {
 
 	private Integer companyid;
-
+	private Integer orderId;
 	private Integer userid;
 
 	private Integer status;//开票状态

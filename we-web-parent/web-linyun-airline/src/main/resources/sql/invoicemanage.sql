@@ -93,6 +93,7 @@ $condition
 /*invoicemanage_shou_invoice_list*/
 SELECT
 	tii.comId,
+	tuo.id AS orderids,
 	tuo.ordersnum,
 	tpi.*, tii.invoicedate,
 	tii.`status`,
@@ -130,4 +131,48 @@ LEFT JOIN t_up_order tuo ON tuo.id = ore.orderid
 LEFT JOIN t_customer_info cus ON cus.id = tuo.userid
 LEFT JOIN t_user u ON u.id = ii.billuserid
 LEFT JOIN dict_info info ON info.id = ii.invoiceitem
+$condition
+/*invoicemanage_get_kaiinvoice_info_list*/
+SELECT
+	tuo.id AS orderids,
+	tpi.*, tuo.ordersnum,
+	tfi.billingdate,
+	tfi.cusgroupnum,
+	tci. NAME customename,
+	tci.linkMan,
+	(
+		SELECT
+			fullName
+		FROM
+			t_user
+		WHERE
+			id = tfi.ISSUERid
+	) issuer
+FROM
+	t_pnr_info tpi
+INNER JOIN t_order_customneed toc ON tpi.needid = toc.id
+INNER JOIN t_up_order tuo ON toc.ordernum = tuo.id
+INNER JOIN t_finance_info tfi ON tuo.id = tfi.orderid
+LEFT JOIN t_customer_info tci ON tuo.userid = tci.id
+$condition
+/*invoicemanage_get_bank_info_select*/
+SELECT
+	*
+FROM
+	dict_info
+WHERE
+	dictname IN (
+		SELECT DISTINCT
+			bankName
+		FROM
+			t_bankcard
+		WHERE
+			companyId = @companyId
+	)
+AND typecode = @typeCode
+/*invoicemanage_get_kai_invoice_page_data*/
+select tcb.* FROM
+t_pay_pnr tpp
+LEFT JOIN t_pay tp ON tpp.payId = tp.id
+left JOIN t_company_bank_card tcb ON tp.bankId = tcb.id
 $condition
