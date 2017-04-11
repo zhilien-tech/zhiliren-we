@@ -82,8 +82,10 @@ public class MailScrabService extends BaseService {
 		String pop3Server = "pop3.sina.com";
 		String pop3Port = "110";
 		//对于user和password，qq邮箱的password填写授权key
-		String user = "liuxuli232@sina.cn";
-		String passwd = "6832156775";
+		//String user = "liuxuli232@sina.cn";
+		// passwd = "6832156775";
+		String user = "in2020072@sina.com";
+		String passwd = "tlywy2017jan";
 
 		// 准备连接服务器的会话信息  
 		Properties props = new Properties();

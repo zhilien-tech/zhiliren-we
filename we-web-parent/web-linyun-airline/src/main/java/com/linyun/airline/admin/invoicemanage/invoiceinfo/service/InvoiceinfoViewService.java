@@ -29,7 +29,10 @@ import com.linyun.airline.admin.order.inland.util.FormatDateUtil;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayPnrEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
+import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.base.UploadService;
+import com.linyun.airline.common.enums.MessageWealthStatusEnum;
+import com.linyun.airline.common.enums.OrderRemindEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.enums.UserTypeEnum;
 import com.linyun.airline.entities.TCompanyEntity;
@@ -39,6 +42,7 @@ import com.linyun.airline.entities.TOrderReceiveEntity;
 import com.linyun.airline.entities.TReceiveBillEntity;
 import com.linyun.airline.entities.TReceiveEntity;
 import com.linyun.airline.entities.TUserEntity;
+import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.JsonUtil;
@@ -59,6 +63,9 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 
 	@Inject
 	private UploadService qiniuUploadService;
+	//开发票(收发票)消息提醒
+	@Inject
+	private SearchViewService searchViewService;
 
 	/**
 	 * 开票人的查询
@@ -213,7 +220,6 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		result.put("invoicedetail", invoicedetail);
 		if (query2.size() > 0)
 			result.put("bill", query2.get(0));
-
 		return result;
 	}
 
@@ -221,7 +227,7 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 	 * 保存开发票数据
 	 * @param request
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "null" })
 	public Object saveKaiInvoiceInfo(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
@@ -285,6 +291,30 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 			invoicedetails.add(entity);
 		}
 		dbDao.updateRelations(before, invoicedetails);
+		//开发票消息提醒
+		TReceiveEntity fetch = dbDao.fetch(TReceiveEntity.class, Long.valueOf(invoiceinfo.getReceiveid()));
+		List<TOrderReceiveEntity> query = dbDao.query(TOrderReceiveEntity.class,
+				Cnd.where("receiveid", "=", fetch.getId()), null);
+		String ids = "";
+		for (TOrderReceiveEntity tOrderReceiveEntity : query) {
+			ids += tOrderReceiveEntity.getOrderid() + ",";
+		}
+		ids = ids.substring(0, ids.length() - 1);
+		String sqlString = sqlManager.get("get_sea_invoce_table_data");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("tuo.id", "in", ids);
+		List<Record> orders = dbDao.query(sql, cnd, null);
+		String ordersnum = "";
+		Integer orderId = null;
+		for (Record record : orders) {
+			ordersnum = record.getString("ordersnum");
+			orderId = record.getInt("id");
+		}
+		Map<String, Object> map = Maps.newHashMap();
+		map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
+		map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
+		searchViewService.addRemindMsg(map, ordersnum, "", orderId, MessageWealthStatusEnum.INVIOCE.intKey(), session);
 		return null;
 	}
 
@@ -413,14 +443,13 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		result.put("invoiceDetail", invoiceDetail);
 		result.put("invoiceinfo", invoiceinfo);
 		return result;
-
 	}
 
 	/**
 	 * 保存收发票数据
 	 * @param request
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "null" })
 	public Object saveShouInvoiceInfo(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
@@ -481,6 +510,23 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 			invoicedetails.add(invoiceDetailEntity);
 		}
 		dbDao.updateRelations(before, invoicedetails);
+		//收发票消息提醒
+		String sqlString = sqlManager.get("invoicemanage_get_kaiinvoice_info_list");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("tpi.id", "=", invoiceinfo.getPnrid());
+		List<Record> pnrinfo = dbDao.query(sql, cnd, null);
+		String ordersnum = "";
+		Integer orderId = null;
+		for (Record record : pnrinfo) {
+			ordersnum = record.getString("ordersnum");
+			orderId = record.getInt("orderids");
+		}
+		Map<String, Object> map = Maps.newHashMap();
+		map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
+		map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
+		searchViewService.addRemindMsg(map, ordersnum, "", orderId, MessageWealthStatusEnum.RECINVIOCE.intKey(),
+				session);
 		return null;
 	}
 
