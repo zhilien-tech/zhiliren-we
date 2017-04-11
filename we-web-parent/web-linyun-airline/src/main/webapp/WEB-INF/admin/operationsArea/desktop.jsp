@@ -397,6 +397,7 @@
 	            	userMsgId: userMsgId
 	            },
 	            success: function(data) {
+	            	taskBarFunctions();
 	            	layer.msg("消息已查看", "", 2000);
 	            }
 	        });
