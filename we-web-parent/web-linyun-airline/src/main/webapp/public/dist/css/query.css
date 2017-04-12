@@ -2,7 +2,7 @@
 .box{min-height: 500px;}
 .infoTop{margin-top:15px;border-bottom:solid 1px #f1f1f1;}
 .infoTop p{background-color: #fff;margin: 0px;border: solid 1px #e0e0e0;display:inline-block;width: 85px;text-align: center;line-height: 30px;border-top: solid 2px #3c8dbc;border-radius: 3px 3px 0 0;border-bottom: 0;}
-.infoTopContent{width:305px;height: 30px;float: right;}
+.infoTopContent{width:315px;height: 30px;float: right;}
 .infoTopContent input{display: inline-block;}
 .infoTopContent .conCheckInput{width: 15px;height: 15px;position: relative;top: 3px;right: 3px;}
 .infoTopContent .conSelect{width: 70px; height: 28px;display: inline-block;margin:0 15px; }
@@ -16,8 +16,8 @@
 .cloTable tr td:nth-of-type(5) label{width: 70px;}
 .cloTable tr td:nth-of-type(7) label{width: 70px;}
 .cloTable tr td:nth-of-type(9) label{width: 60px;}
-.cloTable tr:nth-of-type(1) td:nth-of-type(10) select{padding-left: 3px;}
-.cloTable tr:nth-of-type(1) td:nth-of-type(2) span.select2-container{width:185px !important;}
+.cloTable tr td:nth-of-type(10){width: 8%;}
+.cloTable tr:nth-of-type(1) td:nth-of-type(2) span.select2-container{/* width:185px !important; */}
 .cloTable tr:nth-of-type(1) td:nth-of-type(3) label{position: relative;left:5px;}
 .cloTable tr:nth-of-type(1) td:nth-of-type(4) span.select2-container{width:225px !important;}
 .cloTable tr:nth-of-type(1) td:nth-of-type(7) label{width: 60px;}
@@ -28,6 +28,10 @@
 .infofooter  table tr td .UnderIcon{font-size: 20px;cursor: pointer;color: #5d6a7b;position: relative;top: 3px;left: 15px;}
 .infofooter  table tr td .UnderIcon:hover{color: #4b5563;}
 .hideTable{margin-top:5px;margin-bottom: 15px;}
+.hideTable tbody tr td:nth-of-type(2){width:150px;}
+select#teamAirLevel {width: 208px !important;}
+.hkgsLabel{width: 100px !important;}
+.txtSelect .select2{width: 208px !important;}
 .preTxt{display: block;padding: 0;margin: 15px 0 10px;font-size: 13px;color: #585858;word-break: break-all;word-wrap: break-word;border: 0;background-color: #fff;}
 .listInfo{margin-top: 10px;}
 .tab-pane{margin: 0;}
@@ -35,6 +39,9 @@
 .nav-tabs-custom > .nav-tabs > li {border-top: 2px solid transparent;}
 .query-style > li > a {padding:5px 27px;}
 .tab-pane table tr td label {width: 78px;text-align: right;}
+.scatteredTable3 tr td:nth-of-type(5) label {width:102px;}
+.scatteredTable3 tr td:nth-of-type(7) label {width:80px;}
+.scatteredTable3 tr td:nth-of-type(8) .select2 {width:115px !important;}
 .scatteredTable1{color: #5f5f5f;}
 .scatteredTable1 tr td{padding: 4px 0;}
 .scatteredTable1 tr td span{font-size: 13px;}
@@ -52,10 +59,10 @@
 .scatteredTable3{margin-top:5px;}
 .scatteredTable3 tr td label{position: relative;top: 2px;}
 .scatteredTable3 tr td input{width: 115px;}
-.paddTd{padding-left:20px;}
-.scatteredTable3 tr td select{width:96px;}
-.scatteredTable3 tr td .selectWid{width: 160px;}
-.scatteredTable3 tr td .btn{margin-left: 17px;padding: 4px 15px;}
+.paddTd{padding-left:1px;}
+.scatteredTable3 tr td select{width: 68px;padding-left: 3px;padding-right: 3px;}
+.scatteredTable3 tr td .selectWid{width:210px;}
+.scatteredTable3 tr td .btn{margin-left: 14px;padding: 4px 15px;}
 .TableListInfo{border: solid 1px #eee;min-height:200px;margin: 15px;max-width:100%;border-radius: 3px;background-color: rgba(251, 251, 251, 0.58);}
 .TableListInfo h5{width: 620px;text-align: center;color: #7d7d7d;font-weight: 600; }
 .paragraphBtn,.paragraphTime,.paragraphListInfo{padding: 0 0 0 10px;}
@@ -88,7 +95,7 @@
 .showDis{display:table-cell;}
 .timSelect{display: inline-block;width:90px;height: 28px !important;}
 .dropdown-toggle {display: block;margin-top: 10px;}
-.select2-container {width: 115px !important;}
+ .select2-container {width: 150px !important;}
 .select2-container--default.select2-container--disabled .select2-selection--multiple{width: 115px;}
 td[colspan="3"] .select2 .selection .select2-selection{width:100%;}
 td[colspan="3"] .select2 .selection .select2-selection ul .select2-search--inline{display: none;}
@@ -159,20 +166,21 @@ table.dataTable thead > tr > th {padding-right:0px;}
 /* .cAirlineNumTd .select2{width: 100% !important;} */
 .xuqiuTable{ width: 100%;}
 .xuqiuTable tbody tr td:nth-child(odd){float: right; position: relative;top: 8px;}
-.xuqiuTable tbody tr:nth-child(1) td:nth-child(6){width:85px !important;}
+.xuqiuTable tbody tr td:nth-child(6){width: 9% !important;}
 .xuqiuTable tbody tr:nth-child(2) td:nth-child(8){width:85px !important;}
 .xuqiuTable tbody tr:nth-child(2) td:nth-child(6){width:80px;}
-.xuqiuTable tr:nth-of-type(1) td:nth-of-type(4) span.select2-container {width:170px !important;}
-.xuqiuTable tbody tr:nth-child(1) td:nth-child(8){width:85px;}
+.xuqiuTable tr:nth-of-type(1) td:nth-of-type(4) span.select2-container {width:150px !important;}
+.xuqiuTable tbody tr td:nth-child(8){width:5%;}
 .xuqiuTable tbody tr:nth-child(2) td:nth-child(10){width:85px;}
-.xuqiuTable tr:nth-of-type(1) td:nth-of-type(2) span.select2-container {width:180px !important;}
-.xuqiuTable tbody tr:nth-child(2) td:nth-child(2){width:115px;}
+.xuqiuTable tr:nth-of-type(1) td:nth-of-type(2) span.select2-container {width:150px !important;}
+.xuqiuTable tbody tr:nth-child(2) td:nth-child(2){width:150px;}
 .xuqiuTable tbody tr:nth-child(2) td:nth-child(3){width:54px;}
 .xuqiuTable tr:nth-of-type(1) td:nth-of-type(3) label {position: relative;left:0px;}
 .remarkDiv{padding: 5px 0px;display: block;background-color: #f5f5f5;    box-shadow: 1px 0px 5px #bebebe;margin-bottom: 15px;border-left: solid 1px #e0e0e0;}
 .remarkTable{width:100%;}
 .remarkContext{overflow: hidden;min-height: 80px;display: block;border: solid 1px #e0e0e0;border-radius: 0 0 3px 3px;background-color: white;}
-.remarkTable tbody tr td:nth-child(1){width: 86px;text-align: right;}
-.remarkTable tbody tr td:nth-child(2){padding-right: 6%;}
+.remarkTable tbody tr td:nth-child(1){width: 75px;text-align: right;}
+.remarkTable tbody tr td:nth-child(2){padding-right:5.6%;}
 .infofooter1{border-bottom: 0;border-radius: 3px 3px 0px 0px;}
 textarea#cRemark{height: 112px;resize:none}
+.xuqiuTable tbody tr
