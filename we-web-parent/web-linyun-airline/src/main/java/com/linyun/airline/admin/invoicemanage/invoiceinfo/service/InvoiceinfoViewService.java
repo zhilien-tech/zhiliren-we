@@ -194,13 +194,18 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.id", "in", ids);
+		double incometotal = 0;
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		for (Record record : orders) {
+			if (!Util.isEmpty(record.get("incometotal"))) {
+				incometotal = (Double) record.get("incometotal");
+			}
 			String billingdate = FormatDateUtil.dateToOrderDate((Date) record.get("billingdate"));
 			record.put("billingdate", billingdate);
 		}
 		//订单信息
 		result.put("orders", orders);
+		result.put("incometotal", incometotal);
 		Sql create = Sqls.create(sqlManager.get("get_bank_info_select"));
 		create.setParam("companyId", company.getId());
 		create.setParam("typeCode", YHCODE);
