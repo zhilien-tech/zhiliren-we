@@ -151,14 +151,14 @@
 							<table class="cloTable xuqiuTable">
 								<tr>
 									<td><label>出发城市：</label></td>
-									<td colspan="2">
+									<td>
 										<!-- <input id="cOutcity" name="cOutcity" type="text" class="form-control input-sm" placeholder="PEK(北京)"> -->
 										<select id="cOutcity" name="cOutcity"
 										class="form-control select2" multiple="multiple"
 										data-placeholder="PEK-BeiJing-China"></select>
 									</td>
 									<td><label>抵达城市：</label></td>
-									<td colspan="2">
+									<td>
 										<!-- <input id="cArrivalcity" type="text" class="form-control input-sm" placeholder="SYD(悉尼)"> -->
 										<select id="cArrivalcity" name="cArrivalcity"
 										class="form-control select2" multiple="multiple"
@@ -299,7 +299,7 @@
 											<td><select id="singleArriveCity0" name="destination0"
 												onkeypress="onkeyEnter();" class="form-control input-sm"
 												multiple="multiple" data-placeholder="拼音/三字代码"></select></td>
-											<td class="untilTd1"></td>
+											<!-- <td class="untilTd1"></td> -->
 											<!--空白处 可以忽略-->
 											<td><label>出发日期：</label></td>
 											<td>
@@ -421,14 +421,14 @@
 												onkeypress="onkeyTeamEnter();" class="form-control input-sm"
 												multiple="multiple" data-placeholder="拼音/三字代码"></select>
 											</td>
-											<td class="untilTd1"></td>
+											<!-- <td class="untilTd1"></td> -->
 											<!--空白处 可以忽略-->
 											<td><label>出发日期：</label></td>
 											<td>
 												<!-- <input type="text" class="form-control input-sm" placeholder="2016-12-21"> -->
-												<input id="teamOutDatepicker0" name="departuredate1"
+												<input id="teamOutDatepicker0" class="form-control input-sm" name="departuredate1"
 												onkeypress="onkeyTeamEnter();" type="text"
-												class="form-control input-sm"
+												classingleArriveCity0s="form-control input-sm"
 												onFocus="WdatePicker({startDate:'%y', dateFmt:'yyyy-MM-dd',minDate:'%y-%M-{%d}'})"
 												placeholder="2017-01-01">
 											</td>
@@ -455,8 +455,8 @@
 													<option value="3">商务舱</option>
 													<option value="4">头等舱</option>
 											</select></td>
-											<td><label>航空公司：</label></td>
-											<td>
+											<td><label class="hkgsLabel">航空公司：</label></td>
+											<td class="txtSelect">
 												<!-- <input type="text" class="form-control input-sm" placeholder="(选填)中文/代码"> -->
 												<select id="teamAirline" name="teamAirline"
 												class="form-control input-sm" multiple="multiple"
