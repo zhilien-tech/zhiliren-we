@@ -38,8 +38,8 @@ form#financeForm table {margin-bottom: 10px;}
 .cloTable tbody tr:nth-child(1) td:nth-child(2) .select2-container .selection .select2-selection {width:100%;}
 /* .PNRbtnTD {float: right;position: relative;top: -50px;left:40px;} */
 .airlineinfo td:nth-child(4){width:70px;}
-input#leavedate {width: 75px;}
-input#arrivetime {width: 75px;}
+input#leavedate {width: 82px;}
+input#arrivetime {width: 82px;}
 .cloTable tr td label {float: right;}
 [name="airlineinfo"] td:nth-child(2) .select2-container .selection .select2-selection {width: 100% !important;}
 .select2-container {width: 100% !important;}
