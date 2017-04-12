@@ -276,8 +276,8 @@ function loadPNRdata(){
             	var result = '';
             	for(var i=0 ; i<data.length ; i++){
             		result += '<tr>';
-            		if(data[i].pNR != undefined){
-            			result +='<td>'+data[i].pNR+'</td>';
+            		if(data[i].pnr != undefined){
+            			result +='<td>'+data[i].pnr+'</td>';
             		}else{
             			result +='<td></td>';
             		}

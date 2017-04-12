@@ -1176,8 +1176,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		Sql sql = Sqls.create(EntityUtil.entityCndSql(TPnrInfoEntity.class));
 		List<Record> query = dbDao.query(sql, Cnd.where("needid", "=", customneedid), null);
 		for (Record record : query) {
-			record.put("loginid", dbDao.fetch(ComLoginNumEntity.class, Long.valueOf((String) record.get("loginid")))
-					.getLoginNumName());
+			if (!Util.isEmpty(record.get("loginid"))) {
+				record.put("loginid", dbDao
+						.fetch(ComLoginNumEntity.class, Long.valueOf((String) record.get("loginid"))).getLoginNumName());
+			}
 		}
 		return query;
 	}
