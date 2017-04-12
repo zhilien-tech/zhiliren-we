@@ -57,7 +57,7 @@ public class TCustomerInfoSqlForm extends DataTablesParamForm {
 		Cnd cnd = Cnd.NEW();
 		//TODO 添加自定义查询条件（可选）
 		SqlExpressionGroup group = new SqlExpressionGroup();
-		group.and("i.name", "LIKE", "%" + name + "%").or("u.userName", "LIKE", "%" + name + "%")
+		group.and("i.name", "LIKE", "%" + name + "%").or("u.fullName", "LIKE", "%" + name + "%")
 				.or("i.telephone", "LIKE", "%" + name + "%");
 		if (!Util.isEmpty(name)) {
 			cnd.and(group);
