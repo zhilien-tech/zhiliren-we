@@ -50,7 +50,7 @@
 					<li>
 						<span>${each.shortName }</span>
 						
-						<span><fmt:formatNumber type="number" value="${each.amount }" maxFractionDigits="2"></fmt:formatNumber></span>
+						<span><fmt:formatNumber type="number" value="${each.amount }" pattern="0.00" maxFractionDigits="2"></fmt:formatNumber></span>
 							
 					<%-- 	<c:if test="${obj.operation=='international'}">
 						
@@ -120,7 +120,7 @@
 					<li>
 						<span>${each.shortName }</span>
 						
-						<span><fmt:formatNumber type="number" value="${each.costpricesum }" maxFractionDigits="2"></fmt:formatNumber></span>
+						<span><fmt:formatNumber type="number" value="${each.costpricesum }" pattern="0.00" maxFractionDigits="2"></fmt:formatNumber></span>
 							
 					<%-- 	<c:if test="${obj.operation=='international'}">
 						
