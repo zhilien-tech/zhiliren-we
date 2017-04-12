@@ -36,9 +36,10 @@
 			            <div class="form-group form-group1">
 		                  <label class="col-sm-1 text-right padding">卡号：</label>
 		                  <div class="col-sm-3 padding">
-		                    <input name="cardNum" type="text" class="form-control input-sm" id="cardNum" onkeyup="this.value=this.value.replace(/\D/g,'').replace(/....(?!$)/g,'$& ')" maxlength="23"/>
+		                    <input name="cardNum" type="text" class="form-control input-sm" id="cardNum" onkeyup="this.value=this.value.replace(/[^0-9a-zA-Z]/g,'').replace(/....(?!$)/g,'$& ')"  maxlength="23"/>
 		                  </div>
 		                </div>
+		             
 		                <div class="form-group form-group1">
 		                  <label class="col-sm-1 text-right padding">类型：</label>
 		                  <div class="col-sm-2 padding">
@@ -133,7 +134,45 @@
 		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 		parent.layer.close(index);
 	}
+	/*  !function () {
+	        $('#cardNum').on('keyup',function(){
+	            var $this = $(this),
+	                v = $this.val();
+	            /\S{5}/.test(v) && $this.val(v.replace(/\s/g,'').replace(/(.{4})/g, "$1 "));
+	        });
+	    }();	 */ 
+  /*      $(function() {
 
+           $('#cardNum').on('keyup', function(e) {
+            //只对输入数字时进行处理
+              if((e.which >= 48 && e.which <= 57) ||
+                      (e.which >= 96 && e.which <= 105 )||(e.which >= 78 && e.which <= 90 )){
+                   //获取当前光标的位置
+                   var caret = this.selectionStart;
+                   //获取当前的value
+                   var value = this.value;
+                   //从左边沿到坐标之间的空格数
+                   var sp =  (value.slice(0, caret).match(/\s/g) || []).length;
+                   //去掉所有空格
+                  var nospace = value.replace(/\s/g, '');
+                  //重新插入空格
+                  var curVal = this.value = nospace.replace(/([0-9a-zA-Z]{4})/g, "$1 ").trim();
+                  //从左边沿到原坐标之间的空格数
+                  var curSp = (curVal.slice(0, caret).match(/\s/g) || []).length;
+                 //修正光标位置
+                this.selectionEnd = this.selectionStart = caret + curSp - sp;
+
+               }
+           })
+       });
+        */
+  
+       
+	
+	
+	
+	
+	
 	//表单验证
 	function formValidator(){
 		$('#addBankCard').bootstrapValidator({
@@ -193,9 +232,9 @@
 	                    notEmpty: {
 	                        message: '银行卡号不能为空!'
 	                    } ,
-	                    regexp: {
-	                	 	regexp: /^[\d\s]{19,23}$/,
-	                        message: '银行卡号为16-19位!'
+	                     regexp: {
+	                	 	regexp: /^[0-9a-zA-Z\s]{19,23}$/,
+	                        message: '银行卡号为16-19位的数字或字母!'
 	                    },
 	                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
 	                         url: '${base}/admin/bankcard/checkBankCardNumExist.html',//验证地址
