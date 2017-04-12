@@ -244,6 +244,11 @@
 	  		}
 	  	}
 	  	
+	  	//移除多余小日历
+	  	function removeMinCalander(){
+	  		$("div#minCalen").next().remove();
+	  	}
+	  	
 	  	//移除任务 active样式
 	  	function removeClass(){
 	  		if($("#taskLi").attr("class")=="active"){
@@ -254,8 +259,10 @@
 	  		}else{
 	  			$("#tab_5").removeClass("active");
 				$("#taskLi").removeClass("active");
-				$("#tab_3").addClass("active");
-  				$("#remindLi").addClass("active");
+				if($("#remindLi").attr("class")=="active"){
+					$("#tab_3").addClass("active");
+	  				$("#remindLi").addClass("active");
+				}
 	  		}
 	  		
 	  	}
