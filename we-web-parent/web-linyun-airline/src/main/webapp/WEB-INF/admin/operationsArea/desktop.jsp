@@ -659,7 +659,6 @@
 		          var SpanNumber=document.getElementById('minCalen').getElementsByTagName('span');//获取页面里放有多少天数
 		          
 		          for(var i=0;i<SpanNumber.length;i++){
-		              
 		              var spanVal=SpanNumber[i].getAttribute("data-date");//获取span标签的data-date属性值
 		              if (spanVal!=null) {//当期日不为null时
 		                  //阳历 节假日-----------------------------------------------//
@@ -740,15 +739,12 @@
 		    $(document).on('click','.k-btn-next-month',function(){//点击小日历 向右箭头时，加载阳历节假日
 		          showHoliday();
 		    });
-
 		    $(document).on('click','.k-btn-previous-month',function(){//点击小日历 向左箭头时，加载阳历节假日
 		          showHoliday();
 		    });
 		    /*---------------------------------end 小日历 节假日------------------------------------*/
-			  
 		    //获取当前3个月事件
 			getTimeStr();
-			  
 			$('.checkShow').click(function(){//显示提醒 显示/隐藏
 			    if($(this).prop('checked')){
 			          $('.dot').css('display','block');
@@ -760,6 +756,13 @@
 			/* 小日历 背景显示月份 */
 			backgroundMonth();
 		}
+		
+		/*删除多余的小日历*/		
+		function removeMinCalendar(){
+			$("div#minCalen").next().remove();
+		}
+	
+		
 		//-------------------小日历背景 添加 月份显示-----------------------
 		function backgroundMonth(){
 		    var monthVal1= $('div[data-cal-index="2"] .k-title .k-caption').text();//获取top月份
