@@ -834,7 +834,7 @@
 			if(redDotStr==0 && iLength>0){
 				var redDate = $(e.target).attr('data-date');
 				$("#redDivDate").val(redDate);
-    			if($("#checkShow").prop('checked')){
+    			/* if($("#checkShow").prop('checked')){
     				$.ajax({
     		            url: '/admin/operationsArea/getMinCal.html',
     		            dataType: 'json',
@@ -860,7 +860,32 @@
   					        time: 1500
   					     }
       			    );
-    			}
+    			} */
+				$.ajax({
+		            url: '/admin/operationsArea/getMinCal.html',
+		            dataType: 'json',
+		            type: 'POST',
+		            async:false,
+		            data: {
+		            	gtime: redDate
+		            },
+		            success: function(data) {
+		            	$.each(eval(data), function (index, element) {
+		            		$("#minCalId").val("");
+		            		$("#minCalId").val(element.msgcontent);
+		                }); 
+		            }
+		        });
+				//弹框提示信息
+				var msg = $("#minCalId").val();
+    			layer.tips(
+    				 msg, 
+    				 $(e.target),
+		    		 {
+				        tips: [3, 'rgb(90, 90, 90)'],
+				        time: 1500
+				     }
+  			    );
 			}
 	    });
 	    
