@@ -49,7 +49,7 @@
 						 	<ul class="nav nav-tabs custome">
 			                  <li id="searchLi" class="active"><a href="#tab_1" data-toggle="tab">询单(<span id="searchOrderNum"></span>)</a></li>
 			                  <li id="bookLi"><a href="#tab_2" data-toggle="tab">订单(<span id="bookOrderMsgNum"></span>)</a></li>
-			                   <li id="taskLi"><a id="taskAClick" href="#tab_5" data-toggle="tab">任务(<span id="taskNoticeMsgNum"></span>)</a></li>
+			                  <li id="taskLi"><a id="taskAClick" href="#tab_5" data-toggle="tab">任务(<span id="taskNoticeMsgNum"></span>)</a></li>
 			                  <li id="remindLi"><a id="myRemindClick" href="#tab_3" data-toggle="tab">我的提醒(<span id="remindMsgNum"></span>)</a></li>
 			                  <li id="accountLI"><a href="#tab_4" data-toggle="tab">账期(<span id="accountPayTypeMsgNum"></span>)</a></li>
 			                </ul>
@@ -254,8 +254,12 @@
 	  		}else{
 	  			$("#tab_5").removeClass("active");
 				$("#taskLi").removeClass("active");
-				$("#tab_3").addClass("active");
-  				$("#remindLi").addClass("active");
+				if($("#remindLi").attr("class")=="active"){
+					$("#tab_3").addClass("active");
+	  				$("#remindLi").addClass("active");
+				}
+				/* $("#tab_3").addClass("active");
+  				$("#remindLi").addClass("active"); */
 	  		}
 	  		
 	  	}
