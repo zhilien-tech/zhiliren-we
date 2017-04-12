@@ -310,7 +310,7 @@ $(function(){
         var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
         newDiv.find("p").html(No); 
         newDiv.find('.addDemand').remove();
-        newDiv.prepend('<a href="javascript:;" class="btn btn-primary btn-sm removeDemand"><b>-</b>&nbsp;&nbsp;需求</a>');
+        newDiv.prepend('<a href="javascript:;" class="btn btn-primary btn-sm removeDemand"><b>-</b>&nbsp;&nbsp;&nbsp;需求</a>');
         var divId=document.getElementById('infofooter').getElementsByTagName('div');
         newDiv.find('.titleNum').text(divId.length);
         newDiv.find('[name=airlineinfo]').each(function(i){
