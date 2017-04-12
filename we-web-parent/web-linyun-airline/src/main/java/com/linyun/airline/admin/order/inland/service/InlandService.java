@@ -85,6 +85,7 @@ import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.JsonUtil;
 import com.uxuexi.core.common.util.Util;
+import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.base.service.BaseService;
 
 /**
@@ -1172,7 +1173,12 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	 */
 	public Object loadPNRdata(HttpServletRequest request) {
 		String customneedid = request.getParameter("customneedid");
-		List<TPnrInfoEntity> query = dbDao.query(TPnrInfoEntity.class, Cnd.where("needid", "=", customneedid), null);
+		Sql sql = Sqls.create(EntityUtil.entityCndSql(TPnrInfoEntity.class));
+		List<Record> query = dbDao.query(sql, Cnd.where("needid", "=", customneedid), null);
+		for (Record record : query) {
+			record.put("loginid", dbDao.fetch(ComLoginNumEntity.class, Long.valueOf((String) record.get("loginid")))
+					.getLoginNumName());
+		}
 		return query;
 	}
 
