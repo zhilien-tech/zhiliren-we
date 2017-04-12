@@ -218,9 +218,25 @@
 	                    {"data": "modifydate", "bSortable": false},
 	                    {"data": "bankname", "bSortable": false},
 	                    {"data": "projectname", "bSortable": false},//项目
-	                    {"data": "money", "bSortable": false},
+	                    {"data": "money", "bSortable": false,
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.money;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "0.00";
+	                    		}
+	                    		return depositBalance.toFixed(2);
+	                    	}		
+	                    },
 	                    {"data": "purpose", "bSortable": false},
-	                    {"data": "balance", "bSortable": false},
+	                    {"data": "balance", "bSortable": false,
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.balance;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "0.00";
+	                    		}
+	                    		return depositBalance.toFixed(2);
+	                    	}		
+	                    },
 	                    {"data": "currency", "bSortable": false},
 	                    {"data": "averagerate", "bSortable": false},
 	                    {"data": "companyname", "bSortable": false},//单位
