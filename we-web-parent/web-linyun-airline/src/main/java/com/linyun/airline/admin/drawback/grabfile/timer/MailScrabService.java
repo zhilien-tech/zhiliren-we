@@ -78,12 +78,23 @@ public class MailScrabService extends BaseService {
 	/** 
 	 * 接收邮件 
 	 */
-	public void receivePop3() throws Exception {
+	public void receivePop3(String user, String passwd) throws Exception {
 		String pop3Server = "pop3.sina.com";
 		String pop3Port = "110";
 		//对于user和password，qq邮箱的password填写授权key
-		String user = "liuxuli232@sina.cn";
-		String passwd = "6832156775";
+		/*String user = "liuxuli232@sina.cn";
+		String passwd = "6832156775";*/
+		/*String user = "in2020072@sina.com";
+		String passwd = "tlywy2017jan";*/
+		/*String user = "lftravel@sina.com";
+		String passwd = "mar2016lywy";*/
+
+		String userTeam = "";
+		if ("in2020072@sina.com".equals(user)) {
+			userTeam = "team";
+		} else if ("lftravel@sina.com".equals(user)) {
+			userTeam = "fit";
+		}
 
 		// 准备连接服务器的会话信息  
 		Properties props = new Properties();
@@ -118,11 +129,24 @@ public class MailScrabService extends BaseService {
 
 		// 得到收件箱中的所有邮件,并解析  
 		Message[] messages = folder.getMessages();
-		parseMessage(messages);
+		parseMessage(userTeam, messages);
 
 		//释放资源  
 		folder.close(true);
 		store.close();
+	}
+
+	public void loginMailAccount() {
+		String userTeam = "in2020072@sina.com";
+		String passwdTeam = "tlywy2017jan";
+		String userFit = "lftravel@sina.com";
+		String passwdFit = "mar2016lywy";
+		try {
+			receivePop3(userTeam, passwdTeam);
+			receivePop3(userFit, passwdFit);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/** 
@@ -130,14 +154,14 @@ public class MailScrabService extends BaseService {
 	 * @param messages 要解析的邮件列表 
 	 * @throws ParseException 
 	 */
-	public void parseMessage(Message... messages) throws MessagingException, IOException {
+	public void parseMessage(String userTeam, Message... messages) throws MessagingException, IOException {
 		if (messages == null || messages.length < 1) {
 			throw new MessagingException("未找到要解析的邮件!");
 		}
 		// 解析所有邮件  
 		for (int i = 0, count = messages.length; i < count; i++) {
 			MimeMessage msg = (MimeMessage) messages[i];
-			eachHandler(msg);
+			eachHandler(msg, userTeam);
 			boolean isRead = isRead(msg);
 			if (isRead) {
 				continue;
@@ -152,7 +176,8 @@ public class MailScrabService extends BaseService {
 	 * @throws FileNotFoundException 
 	 * @throws ParseException 
 	 */
-	private void eachHandler(MimeMessage msg) throws MessagingException, FileNotFoundException, IOException {
+	private void eachHandler(MimeMessage msg, String userTeam) throws MessagingException, FileNotFoundException,
+			IOException {
 		//1、从邮件获取能直接保存的数据
 		String theme = getSubject(msg);//主题
 		String sender = getFrom(msg);//发件人
@@ -187,23 +212,30 @@ public class MailScrabService extends BaseService {
 			grabRecordId = mailEntity.getId();
 		}
 		//3-2、保存抓取文件
-		FileNavalEnum structureType = structureType();
-		TGrabFileEntity rootFile = getRootFile(sender);
-		long rootId = rootFile.getId();
+		FileNavalEnum structureType = structureType(sender);
+		//TGrabFileEntity rootFile = dbDao.fetch(TGrabFileEntity.class, Cnd.where("mailId", "=", grabRecordId));
+		long rootId = 0;
 		switch (structureType) {
 		case FITD7JQTT:
+			String flag = "";
+			if ("team".equals(userTeam)) {
+				flag = "团";
+			} else {
+				flag = "散";
+			}
 			/**************************时间开始***************************/
+			Date createTime = DateTimeUtil.nowDate();
+			SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
+			String fileName = format.format(createTime);
+			rootId = getTopParentId(sender);
 			//父id
 			TGrabFileEntity timeFile = new TGrabFileEntity();
 			timeFile.setParentId(rootId);
 
 			//创建时间
-			Date createTime = DateTimeUtil.nowDate();
 			timeFile.setCreateTime(createTime);
 
 			//名称
-			SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
-			String fileName = format.format(createTime);
 			timeFile.setFileName(fileName);
 			//类型
 			timeFile.setType(FileTypeEnum.FOLDER.intKey());//文件类型
@@ -214,7 +246,7 @@ public class MailScrabService extends BaseService {
 			timeFile.setStatus(DataStatusEnum.ENABLE.intKey());
 			timeFile.setLevel(2);
 			timeFile.setSort(0);
-			timeFile.setGroupType(1);
+			timeFile.setGroupType(flag);//散团类型
 			List<TGrabFileEntity> list = existFile(rootId, fileName);
 			if (!Util.isEmpty(list)) {
 				timeFile = list.get(0);
@@ -252,7 +284,7 @@ public class MailScrabService extends BaseService {
 			groupNumFile.setLevel(3);
 
 			groupNumFile.setSort(sort);
-			groupNumFile.setGroupType(3);//散团类型
+			groupNumFile.setGroupType(flag);//散团类型
 
 			List<TGrabFileEntity> lst = existGroupNumFile(pid, cusgroupnum);
 			if (!Util.isEmpty(lst)) {
@@ -281,8 +313,8 @@ public class MailScrabService extends BaseService {
 			fileProps.setStatus(DataStatusEnum.ENABLE.intKey());
 			fileProps.setLevel(4);
 
-			//TODO 
-			fileProps.setGroupType(1);
+			//散团类型
+			fileProps.setGroupType(flag);
 			//文件url
 			List<TGrabFileEntity> grabFileList = Lists.newArrayList();
 			saveAttachment(msg, grabFileList, fileProps);
@@ -295,6 +327,7 @@ public class MailScrabService extends BaseService {
 		case FITQF:
 			//TODO
 			/**************************客户团号***************************/
+			rootId = getTopParentId(sender);
 			long sort1 = getSort(rootId);
 
 			String cusgroupnum1 = getcusGroupnum();//得到客户团号
@@ -324,7 +357,7 @@ public class MailScrabService extends BaseService {
 			groupNumFile1.setLevel(2);//层级
 
 			groupNumFile1.setSort(sort1);
-			groupNumFile1.setGroupType(2);//散团类型
+			groupNumFile1.setGroupType("散");//散团类型
 
 			List<TGrabFileEntity> lst1 = existGroupNumFile(rootId, cusgroupnum1);
 			if (!Util.isEmpty(lst1)) {
@@ -353,7 +386,7 @@ public class MailScrabService extends BaseService {
 			//层级
 			fileProps1.setLevel(3);
 			//TODO 
-			fileProps1.setGroupType(1);
+			fileProps1.setGroupType("散");
 			//文件url
 			List<TGrabFileEntity> grabFileList1 = Lists.newArrayList();
 			saveAttachment(msg, grabFileList1, fileProps1);
@@ -366,6 +399,13 @@ public class MailScrabService extends BaseService {
 		case FITVA:
 			//TODO
 			/**************************时间开始***************************/
+			String temp = "";
+			if ("team".equals(userTeam)) {
+				temp = "团";
+			} else {
+				temp = "散";
+			}
+			rootId = getTopParentId(sender);
 			//父id
 			TGrabFileEntity timeFile2 = new TGrabFileEntity();
 			timeFile2.setParentId(rootId);
@@ -387,7 +427,7 @@ public class MailScrabService extends BaseService {
 			timeFile2.setStatus(DataStatusEnum.ENABLE.intKey());
 			timeFile2.setLevel(2);
 			timeFile2.setSort(0);
-			timeFile2.setGroupType(1);
+			timeFile2.setGroupType(temp);
 			List<TGrabFileEntity> list2 = existFile(rootId, fileName2);
 			if (!Util.isEmpty(list2)) {
 				timeFile2 = list2.get(0);
@@ -426,7 +466,7 @@ public class MailScrabService extends BaseService {
 			groupNumFile2.setLevel(3);
 
 			groupNumFile2.setSort(sort2);
-			groupNumFile2.setGroupType(3);//散团类型
+			groupNumFile2.setGroupType(temp);//散团类型
 
 			List<TGrabFileEntity> lst2 = existGroupNumFile(pid2, cusgroupnum2);
 			if (!Util.isEmpty(lst2)) {
@@ -464,7 +504,7 @@ public class MailScrabService extends BaseService {
 			pnrFile.setLevel(4);
 
 			pnrFile.setSort(sort2);
-			pnrFile.setGroupType(2);//散团类型
+			pnrFile.setGroupType(temp);//散团类型
 
 			List<TGrabFileEntity> lst3 = existGroupNumFile(pid3, PNR);
 			if (!Util.isEmpty(lst3)) {
@@ -494,7 +534,7 @@ public class MailScrabService extends BaseService {
 			//层级
 			fileProps3.setLevel(5);
 			//TODO 散团类别
-			fileProps3.setGroupType(1);
+			fileProps3.setGroupType(temp);
 			//文件url
 			List<TGrabFileEntity> grabFileList3 = Lists.newArrayList();
 			saveAttachment(msg, grabFileList3, fileProps3);
@@ -507,6 +547,13 @@ public class MailScrabService extends BaseService {
 		case TEAMJQTT:
 			//TODO
 			/*************************************************文件开始*******************************************************/
+			String flagjq = "";
+			if ("team".equals(userTeam)) {
+				flagjq = "团";
+			} else {
+				flagjq = "散";
+			}
+			rootId = getTopParentId(sender);
 			//父id
 			TGrabFileEntity fileProps4 = new TGrabFileEntity();
 			fileProps4.setParentId(rootId);
@@ -526,7 +573,7 @@ public class MailScrabService extends BaseService {
 			//层级
 			fileProps4.setLevel(2);
 			//TODO 散团类别
-			fileProps4.setGroupType(1);
+			fileProps4.setGroupType(flagjq);
 			//文件url
 			List<TGrabFileEntity> grabFileList4 = Lists.newArrayList();
 			saveAttachment(msg, grabFileList4, fileProps4);
@@ -539,6 +586,13 @@ public class MailScrabService extends BaseService {
 		case TEAMVA:
 			//TODO
 			/**************************************************PNR开始**************************************************/
+			String flagva = "";
+			if ("team".equals(userTeam)) {
+				flagva = "团";
+			} else {
+				flagva = "散";
+			}
+			rootId = getTopParentId(sender);
 			long sort3 = getSort(rootId);
 			//得到PNR
 			String PNR2 = getAttachmentName();
@@ -567,7 +621,7 @@ public class MailScrabService extends BaseService {
 			pnrFile2.setLevel(3);
 
 			pnrFile2.setSort(sort3);
-			pnrFile2.setGroupType(2);//散团类型
+			pnrFile2.setGroupType(flagva);//散团类型
 
 			List<TGrabFileEntity> lst4 = existGroupNumFile(rootId, PNR2);
 			if (!Util.isEmpty(lst4)) {
@@ -597,7 +651,7 @@ public class MailScrabService extends BaseService {
 			//层级
 			fileProps5.setLevel(3);
 			//TODO 散团类别
-			fileProps5.setGroupType(1);
+			fileProps5.setGroupType(flagva);
 			//文件url
 			List<TGrabFileEntity> grabFileList5 = Lists.newArrayList();
 			saveAttachment(msg, grabFileList5, fileProps5);
@@ -610,6 +664,47 @@ public class MailScrabService extends BaseService {
 		default:
 			break;
 		}
+	}
+
+	private long getTopParentId(String sender) {
+		String fileName = null;
+		TGrabMailEntity listMail = dbDao.fetch(TGrabMailEntity.class, Cnd.where("sender", "=", sender));
+		String senderDb = listMail.getSender();//得到抓取保存到数据库中的发件人
+		if (senderDb.contains(GrabMailConstants.FIT_D7)) {
+			fileName = "D7";
+		} else if (senderDb.contains(GrabMailConstants.FIT_QF)) {
+			fileName = "QF";
+		} else if (senderDb.contains(GrabMailConstants.FIT_VA)) {
+			fileName = "VA";
+		} else if (senderDb.contains(GrabMailConstants.TEAM_JQ)) {
+			fileName = "JQ";
+		} else if (senderDb.contains(GrabMailConstants.TEAM_VA)) {
+			fileName = "VA";
+		} else if (senderDb.contains(GrabMailConstants.FIT_JQ)) {
+			fileName = "JQ";
+		} else if (senderDb.contains(GrabMailConstants.FIT_TT)) {
+			fileName = "TT";
+		} else if (senderDb.contains(GrabMailConstants.TEAM_TT)) {
+			fileName = "TT";
+		} else if (senderDb.contains(GrabMailConstants.FIT_CI)) {
+			fileName = "CI";
+		} else if (senderDb.contains(GrabMailConstants.TEAM_CI)) {
+			fileName = "CI";
+		} else if (senderDb.contains(GrabMailConstants.FIT_EK)) {
+			fileName = "EK";
+		} else if (senderDb.contains(GrabMailConstants.TEAM_EK)) {
+			fileName = "EK";
+		} else if (senderDb.contains(GrabMailConstants.FIT_NZ)) {
+			fileName = "NZ";
+		} else if (senderDb.contains(GrabMailConstants.FIT_SABRE)) {
+			fileName = "SABRE";
+		} else {
+			fileName = "D7";
+		}
+		Cnd cnd = Cnd.NEW();
+		cnd.and("fileName", "=", fileName);
+		TGrabFileEntity fetch = dbDao.fetch(TGrabFileEntity.class, cnd);
+		return fetch.getId();
 	}
 
 	/**
@@ -936,26 +1031,27 @@ public class MailScrabService extends BaseService {
 	}
 
 	//通过发件人确定顶层目录文件夹
-	private TGrabFileEntity getRootFile(String sender) {
+	/*private TGrabFileEntity getRootFile(int sender) {
 		//TODO
 		TGrabFileEntity singleFile = dbDao.fetch(TGrabFileEntity.class, Cnd.where("id", "=", 1));
 		return singleFile;
-	}
+	}*/
 
 	//判断文件结构类型
-	private FileNavalEnum structureType() {
+	private FileNavalEnum structureType(String sender) {
 		//TODO
-		TGrabFileEntity rootFile = getRootFile("");
-		if (rootFile.equals(GrabMailConstants.FIT_D7) || rootFile.equals(GrabMailConstants.FIT_JQ)
-				|| rootFile.equals(GrabMailConstants.FIT_TT)) {
+		TGrabMailEntity listMail = dbDao.fetch(TGrabMailEntity.class, Cnd.where("sender", "=", sender));
+		String senderDb = listMail.getSender();//得到抓取保存到数据库中的发件人
+		if (senderDb.contains(GrabMailConstants.FIT_D7) || senderDb.contains(GrabMailConstants.FIT_JQ)
+				|| senderDb.contains(GrabMailConstants.FIT_TT)) {
 			return FileNavalEnum.FITD7JQTT;
-		} else if (rootFile.equals(GrabMailConstants.FIT_QF)) {
+		} else if (senderDb.contains(GrabMailConstants.FIT_QF)) {
 			return FileNavalEnum.FITQF;
-		} else if (rootFile.equals(GrabMailConstants.FIT_VA)) {
+		} else if (senderDb.contains(GrabMailConstants.FIT_VA)) {
 			return FileNavalEnum.FITVA;
-		} else if (rootFile.equals(GrabMailConstants.TEAM_JQ) || rootFile.equals(GrabMailConstants.TEAM_TT)) {
+		} else if (senderDb.contains(GrabMailConstants.TEAM_JQ) || senderDb.contains(GrabMailConstants.TEAM_TT)) {
 			return FileNavalEnum.TEAMJQTT;
-		} else if (rootFile.equals(GrabMailConstants.TEAM_VA)) {
+		} else if (senderDb.contains(GrabMailConstants.TEAM_VA)) {
 			return FileNavalEnum.TEAMVA;
 		}
 		return FileNavalEnum.FITD7JQTT;

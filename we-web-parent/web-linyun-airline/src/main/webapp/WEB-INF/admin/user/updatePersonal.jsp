@@ -127,10 +127,13 @@ $("#submit").click(function() {
 				layer.load(1, {
 					 shade: [0.1,'#fff'] //0.1透明度的白色背景
 				});
-			    window.parent.location.reload();
+			    /* window.parent.location.reload();
 				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 			    parent.layer.close(index);
-              	layer.msg('修改成功!',{time:2000});
+              	layer.msg('修改成功!',{time:2000}); */
+				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				parent.layer.close(index);
+				window.parent.successCallback('2');
 			}
 		});
 	}
