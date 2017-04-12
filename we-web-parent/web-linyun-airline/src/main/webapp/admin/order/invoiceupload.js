@@ -57,7 +57,7 @@ $(document).on('input','#invoicebalance', function(){
 	$(this).val(thisval);
 	var banlanceyue = parseFloat($('#sumjine').html());
 	//var balance = $('#balance').html();
-	var shengyu = $('#backupbalance').val();
+	//var shengyu = $('#backupbalance').val();
 	$('.cloneTR').each(function(i){
 		var invoicebalance = $(this).find('[name=invoicebalance]').val();
 		if(invoicebalance){
@@ -65,7 +65,7 @@ $(document).on('input','#invoicebalance', function(){
 				banlanceyue = banlanceyue - parseFloat(invoicebalance);
 			}else{
 				banlanceyue = 0;
-				thisval = shengyu;
+				thisval = $('#backupbalance').val();
 			}
 		}
 	});
@@ -82,6 +82,8 @@ $(document).on('blur','#invoicebalance', function(){
 $(document).on('focus','#invoicebalance', function(){
 	//if($('#balance').html() == '0.00' && $(this).val()){
 		//alert($(this).val());
+	if($(this).val()){
 		$('#backupbalance').val(parseFloat($(this).val())+parseFloat($('#balance').html()));
+	}
 	//}
 });

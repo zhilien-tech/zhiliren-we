@@ -36,7 +36,7 @@
                   </thead>
                   <tbody>
                   	<c:forEach var="one" items="${obj.orders }">
-                		<tr>
+                		<tr ondblclick="toOrderDetail(${one.ordersid})">
                 			<td>${one.ordersnum }</td>
                 			<td>${one.pnr }</td>
                 			<td>${one.cusgroupnum }</td>
@@ -113,6 +113,11 @@
 	            layer.msg("请求失败！",{time: 2000});
 	        }
 	     });
+	}
+	
+	function toOrderDetail(id){
+		var url = '${base}/admin/inland/bookingDetail.html?id=' + id;
+		window.open(url);
 	}
 	</script>
 </body>

@@ -174,4 +174,5 @@ table.dataTable thead > tr > th {padding-right:0px;}
 .remarkContext{overflow: hidden;min-height: 80px;display: block;border: solid 1px #e0e0e0;border-radius: 0 0 3px 3px;background-color: white;}
 .remarkTable tbody tr td:nth-child(1){width: 86px;text-align: right;}
 .remarkTable tbody tr td:nth-child(2){padding-right: 6%;}
-.infofooter1 {border-bottom: 0;border-radius: 3px 3px 0px 0px;}
+.infofooter1{border-bottom: 0;border-radius: 3px 3px 0px 0px;}
+textarea#cRemark{height: 112px;resize:none}

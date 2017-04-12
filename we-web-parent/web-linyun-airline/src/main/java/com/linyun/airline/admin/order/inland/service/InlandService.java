@@ -294,7 +294,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	public Object queryDetail(Integer id) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		TUpOrderEntity orderinfo = this.fetch(id);
-		orderinfo.setRemark(orderinfo.getRemark().replace("\n", HUANHANG));
+		if (!Util.isEmpty(orderinfo.getRemark())) {
+			orderinfo.setRemark(orderinfo.getRemark().replace("\n", HUANHANG));
+		}
 		result.put("orderinfo", orderinfo);
 		//客户信息
 		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(orderinfo.getUserid()));
@@ -544,7 +546,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		result.put("user", user);
 		TUpOrderEntity orderinfo = this.fetch(id);
-		orderinfo.setRemark(orderinfo.getRemark().replace("\n", HUANHANG));
+		if (!Util.isEmpty(orderinfo.getRemark())) {
+			orderinfo.setRemark(orderinfo.getRemark().replace("\n", HUANHANG));
+		}
 		result.put("orderinfo", orderinfo);
 		//客户信息
 		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(orderinfo.getUserid()));
@@ -927,6 +931,12 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		}
 		//销售人员
 		String salesperson = financeMap.get("salesperson");
+		String enteraircom = financeMap.get("enteraircom");
+		String enterstarttime = financeMap.get("enterstarttime");
+		String enterarrivetime = financeMap.get("enterarrivetime");
+		String outaircom = financeMap.get("outaircom");
+		String outstarttime = financeMap.get("outstarttime");
+		String outarrivetime = financeMap.get("outarrivetime");
 		//开票人
 		financeInfo.setOrderid(orderid);
 		financeInfo.setCusgroupnum(cusgroupnum);
@@ -944,6 +954,12 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		financeInfo.setRelief(formatDouble(relief));
 		financeInfo.setBillingdate(billingdate);
 		financeInfo.setSalesperson(salesperson);
+		financeInfo.setEnteraircom(enteraircom);
+		financeInfo.setEnterstarttime(enterstarttime);
+		financeInfo.setEnterarrivetime(enterarrivetime);
+		financeInfo.setOutaircom(outaircom);
+		financeInfo.setOutstarttime(outstarttime);
+		financeInfo.setOutarrivetime(outarrivetime);
 		if (Util.isEmpty(id)) {
 			dbDao.insert(financeInfo);
 		} else {
