@@ -235,7 +235,7 @@
 								</select>
 							</div>
 
-							<label class="col-sm-2 text-right padding">合作时间：</label>
+							<label class="col-sm-1 text-right padding">合作时间：</label>
 							<div class="col-sm-5 padding">
 								<input id="datepicker1" name="contractTimeString" type="text"
 									class="form-control input-sm input-wid"
