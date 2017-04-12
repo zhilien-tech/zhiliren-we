@@ -490,10 +490,11 @@ function successCallback(id){
 	                    },
 	                    {"data": "createtime", "bSortable": true,
 	                    	 render: function(data, type, row, meta) {
-	                    		 var createtime = new Date(row.createtime);
-	                    		 var createtimestr = createtime.getFullYear() + "-" + createtime.getMonth() + "-" + createtime.getDate() + " "
-	                    		 + createtime.getHours() + ":" + createtime.getMinutes() + ":" + createtime.getSeconds();
-	                    		return createtimestr;
+	                    		 var createtime = row.createtime;
+	                    		 if(null==createtime || ""==createtime){
+	                    			 return "";
+	                    		 }
+	                    		return createtime;
 	                        } 	
 	                    },
 	                    {"data": "filesize", "bSortable": false,

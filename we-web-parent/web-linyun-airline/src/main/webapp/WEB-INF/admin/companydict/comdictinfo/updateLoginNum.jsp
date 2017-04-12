@@ -158,6 +158,13 @@ function validateParams(){
 	                        message: '登录账号不能为空!'
 	                    }
 	                }
+	            },
+	            airlineName1: {
+	            	validators: {
+	                    notEmpty: {
+	                        message: '航空公司不能为空!'
+	                    }
+	                }
 	            }
 	        }
 	};

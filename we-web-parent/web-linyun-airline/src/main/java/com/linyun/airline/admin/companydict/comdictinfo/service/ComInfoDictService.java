@@ -279,18 +279,18 @@ public class ComInfoDictService extends BaseService<ComDictInfoEntity> {
 			Long airlineNameId = Long.parseLong(updateForm.getAirlineName());
 			DictInfoEntity single = dbDao.fetch(DictInfoEntity.class, airlineNameId);
 			if (Util.isEmpty(single)) {
-				if (status.equals(DataStatusEnum.ENABLE.intKey())) {
+				/*if (status.equals(DataStatusEnum.ENABLE.intKey())) {
 					updateForm.setStatus(DataStatusEnum.DELETE.intKey());
 				} else if (status.equals(DataStatusEnum.DELETE.intKey())) {
 					updateForm.setStatus(DataStatusEnum.ENABLE.intKey());
-				}
+				}*/
 				updateForm.setAirlineName(fetch.getAirlineName());
 			} else if (!Util.isEmpty(single)) {
-				if (status.equals(DataStatusEnum.ENABLE.intKey())) {
+				/*if (status.equals(DataStatusEnum.ENABLE.intKey())) {
 					updateForm.setStatus(DataStatusEnum.DELETE.intKey());
 				} else if (status.equals(DataStatusEnum.DELETE.intKey())) {
 					updateForm.setStatus(DataStatusEnum.ENABLE.intKey());
-				}
+				}*/
 				String dictName = single.getDictName();
 				updateForm.setAirlineName(dictName);
 			}
