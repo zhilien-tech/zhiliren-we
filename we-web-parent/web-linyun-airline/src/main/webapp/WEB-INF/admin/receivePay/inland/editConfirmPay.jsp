@@ -342,7 +342,7 @@
 			}
 			
 			function trDetail(id){
-				var url = '${base}/admin//inland/queryDetail.html?id='+ id;
+				var url = '${base}/admin/inland/bookingDetail.html?id='+ id;
 				window.open(url);
 			}
 		</script>
