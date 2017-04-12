@@ -1666,6 +1666,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				sumincome += incometotal;
 			}
 		}
+		result.put("sumincome", sumincome);
 		//订单信息
 		result.put("orders", orders);
 		Sql create = Sqls.create(sqlManager.get("get_bank_info_select"));
