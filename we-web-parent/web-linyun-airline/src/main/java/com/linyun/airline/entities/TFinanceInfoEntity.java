@@ -101,4 +101,28 @@ public class TFinanceInfoEntity implements Serializable {
 	@Comment("开票人id")
 	private Integer issuerid;
 
+	@Column
+	@Comment("进澳航空公司")
+	private String enteraircom;
+
+	@Column
+	@Comment("出澳航空公司")
+	private String outaircom;
+
+	@Column
+	@Comment("进澳出发时间")
+	private String enterstarttime;
+
+	@Column
+	@Comment("进澳抵达时间")
+	private String enterarrivetime;
+
+	@Column
+	@Comment("出澳出发时间")
+	private String outstarttime;
+
+	@Column
+	@Comment("出澳抵达时间")
+	private String outarrivetime;
+
 }

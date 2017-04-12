@@ -73,5 +73,5 @@ public class TGrabFileEntity implements Serializable {
 
 	@Column
 	@Comment("散团类型")
-	private int groupType;
+	private String groupType;
 }
