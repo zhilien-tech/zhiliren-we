@@ -215,9 +215,33 @@
 	               "data": $('#selectTurnOver').serialize()
 	        },
 	        "columns": [
-	                    {"data": "modifydate", "bSortable": false},
-	                    {"data": "bankname", "bSortable": false},
-	                    {"data": "projectname", "bSortable": false},//项目
+	                    {"data": "modifydate", "bSortable": false,
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.modifydate;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance;
+	                    	}			
+	                    },
+	                    {"data": "bankname", "bSortable": false,
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.bankname;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance;
+	                    	}			
+	                    },
+	                    {"data": "projectname", "bSortable": false,
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.projectname;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance;
+	                    	}			
+	                    },//项目
 	                    {"data": "money", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var depositBalance = row.money;
@@ -227,7 +251,16 @@
 	                    		return depositBalance.toFixed(2);
 	                    	}		
 	                    },
-	                    {"data": "purpose", "bSortable": false},
+	                    {"data": "purpose", "bSortable": false,
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.purpose;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance;
+	                    	}
+	                    
+	                    },
 	                    {"data": "balance", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var depositBalance = row.balance;
@@ -237,10 +270,43 @@
 	                    		return depositBalance.toFixed(2);
 	                    	}		
 	                    },
-	                    {"data": "currency", "bSortable": false},
-	                    {"data": "averagerate", "bSortable": false},
-	                    {"data": "companyname", "bSortable": false},//单位
-	                    {"data": "invoicestatus", "bSortable": false},//发票
+	                    {"data": "currency", "bSortable": false,
+	                    	
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.currency;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance;
+	                    	}	
+	                    },
+	                    {"data": "averagerate", "bSortable": false,
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.averagerate;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance;
+	                    	}	
+	                    },
+	                    {"data": "companyname", "bSortable": false,
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.companyname;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance;
+	                    	}	
+	                    },//单位
+	                    {"data": "invoicestatus", "bSortable": false,
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.invoicestatus;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance;
+	                    	}		
+	                    },//发票
 	                    {"data": "remark", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var depositBalance = row.remark;
