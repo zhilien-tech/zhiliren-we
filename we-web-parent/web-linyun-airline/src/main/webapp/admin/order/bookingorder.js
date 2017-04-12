@@ -169,7 +169,7 @@ $(function(){
       });
     //加载pnr表格
     loadPNRdata();
-    //客户需求的 + 按钮
+    //航班信息的 + 按钮
     $(document).on("click",".addIcon",function(){
         var divTest = $(this).parent().parent().parent().find('[name=airlineinfo]').last(); 
         var newDiv = divTest.clone(false,true);
@@ -245,10 +245,16 @@ $(function(){
         /*只在最后一个需求上显示 备注项*/
         //$('.remarkTr').remove();
         //$('.customerInfo #infofooter:last-child .cloTable tbody .pnrTr').after('<tr class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><input type="text" id="remark" name="remark" disabled="disabled" class="form-control input-sm noteText" placeholder=" " value=" "></td></tr>');
+        $('.DemandDiv').each(function(i){
+        	$(this).find('.titleNum').html(i+1);
+        });
     });
     //客户需求的 -需求 按钮
     $(document).on("click",".removeDemand",function(){
         $(this).parent().parent().remove();
+        $('.DemandDiv').each(function(i){
+        	$(this).find('.titleNum').html(i+1);
+        });
         /*判断最后一个需求是否有 备注项 如果没有 就添加备注项*/
         //var cl=$('.customerInfo #infofooter:last-child .cloTable tbody tr:last-child').hasClass('remarkTr');
         //if(cl==false){
@@ -408,3 +414,38 @@ function triggerSelect(){
 		$(this).find('.paymethod').trigger("change");
 	});
 }
+//航空公司下拉
+$('.aircomselect').select2({
+	ajax : {
+		url : BASE_PATH + '/admin/search/getAirLineSelect.html',
+		dataType : 'json',
+		delay : 250,
+		type : 'post',
+		data : function(params) {
+			return {
+				airlinename : params.term, // search term
+				page : params.page
+			};
+		},
+		processResults : function(data, params) {
+			params.page = params.page || 1;
+			var selectdata = $.map(data, function (obj) {
+				  obj.id = obj.dictCode; // replace pk with your identifier
+				  obj.text = obj.dictCode + "-" + obj.dictName; // replace pk with your identifier
+				  return obj;
+			});
+			return {
+				results : selectdata
+			};
+		},
+		cache : false
+	},
+	escapeMarkup : function(markup) {
+		return markup;
+	}, // let our custom formatter work
+	minimumInputLength : 1,
+	maximumInputLength : 20,
+	language : "zh-CN", //设置 提示语言
+	maximumSelectionLength : 1, //设置最多可以选择多少项
+	tags : false //设置必须存在的选项 才能选中
+});

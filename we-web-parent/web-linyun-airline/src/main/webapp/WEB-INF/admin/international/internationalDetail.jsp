@@ -358,21 +358,43 @@
                      <td><label>进澳时间：</label></td>
                      <td><input id="enterausdate" name="enterausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.enterausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
                    	 <td><label>航空公司：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><select id="enteraircom" name="enteraircom" value="" type="text" class="form-control input-sm disab aircomselect" disabled="disabled" multiple="multiple">
+                     	<c:forEach items="${obj.aircomselect }" var="one"> 
+                   			<c:choose>
+	                   			<c:when test="${obj.finance.enteraircom  eq one.dictCode  }">
+									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.dictName }</option>
+	                   			</c:when>
+	                   			<c:otherwise>
+		                     		<option value="${one.dictCode }">${one.dictCode }-${one.dictName }</option>
+	                   			</c:otherwise>
+                    		</c:choose>
+                     	</c:forEach>
+                     </select></td>
                      <td><label>出发时间：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="enterstarttime" name="enterstarttime" value="${obj.finance.enterstarttime }" type="text" class="form-control input-sm disab mustTimes" disabled="disabled"></td>
                      <td><label>抵达时间：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="enterarrivetime" name="enterarrivetime" value="${obj.finance.enterarrivetime }" type="text" class="form-control input-sm disab mustArriveTimes" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>出澳时间：</label></td>
                      <td><input id="outausdate" name="outausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.outausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
                    	 <td><label>航空公司：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><select id="outaircom" name="outaircom" value="" type="text" class="form-control input-sm disab aircomselect" disabled="disabled" multiple="multiple">
+                     	<c:forEach items="${obj.aircomselect }" var="one"> 
+                   			<c:choose>
+	                   			<c:when test="${obj.finance.outaircom  eq one.dictCode  }">
+									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.dictName }</option>
+	                   			</c:when>
+	                   			<c:otherwise>
+		                     		<option value="${one.dictCode }">${one.dictCode }-${one.dictName }</option>
+	                   			</c:otherwise>
+                    		</c:choose>
+                     	</c:forEach>
+                     </select></td>
                      <td><label>出发时间：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="outstarttime" name="outstarttime" value="${obj.finance.outstarttime }" type="text" class="form-control input-sm disab mustTimes" disabled="disabled"></td>
                      <td><label>抵达时间：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="outarrivetime" name="outarrivetime" value="${obj.finance.outarrivetime }" type="text" class="form-control input-sm disab mustArriveTimes" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>应收：</label></td>
@@ -425,6 +447,8 @@
   <!-- DataTables -->
   <script src="${base }/public/plugins/datatables/jquery.dataTables.min.js"></script>
   <script src="${base }/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
+  <!-- My97DatePicker --> 
+  <script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
   <script src="${base }/admin/order/ordercommon.js"></script>
   <script src="${base }/admin/international/internationaldetail.js"></script>
   <script type="text/javascript">

@@ -931,6 +931,12 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		}
 		//销售人员
 		String salesperson = financeMap.get("salesperson");
+		String enteraircom = financeMap.get("enteraircom");
+		String enterstarttime = financeMap.get("enterstarttime");
+		String enterarrivetime = financeMap.get("enterarrivetime");
+		String outaircom = financeMap.get("outaircom");
+		String outstarttime = financeMap.get("outstarttime");
+		String outarrivetime = financeMap.get("outarrivetime");
 		//开票人
 		financeInfo.setOrderid(orderid);
 		financeInfo.setCusgroupnum(cusgroupnum);
@@ -948,6 +954,12 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		financeInfo.setRelief(formatDouble(relief));
 		financeInfo.setBillingdate(billingdate);
 		financeInfo.setSalesperson(salesperson);
+		financeInfo.setEnteraircom(enteraircom);
+		financeInfo.setEnterstarttime(enterstarttime);
+		financeInfo.setEnterarrivetime(enterarrivetime);
+		financeInfo.setOutaircom(outaircom);
+		financeInfo.setOutstarttime(outstarttime);
+		financeInfo.setOutarrivetime(outarrivetime);
 		if (Util.isEmpty(id)) {
 			dbDao.insert(financeInfo);
 		} else {

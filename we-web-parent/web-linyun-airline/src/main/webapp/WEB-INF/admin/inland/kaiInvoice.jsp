@@ -36,7 +36,7 @@
                   </thead>
                   <tbody>
                     <c:forEach var="one" items="${obj.orders }">
-                		<tr>
+                		<tr ondblclick="toOrderDetail(${one.id})">
                 			<td>${one.ordersnum }</td>
                 			<td>${one.billingdate }</td>
                 			<td>${one.cusgroupnum }</td>
@@ -312,6 +312,10 @@
            } 
        });
    }
+   function toOrderDetail(id){
+		var url = '${base}/admin/inland/bookingDetail.html?id=' + id;
+		window.open(url);
+	}
   </script>
 </body>
 </html>	
