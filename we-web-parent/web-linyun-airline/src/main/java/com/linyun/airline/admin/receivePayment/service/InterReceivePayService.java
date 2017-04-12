@@ -343,15 +343,15 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				int uid = Integer.valueOf(record.getString("id"));
 				String ordernum = record.getString("ordersnum");
 				String pnr = record.getString("PNR");
-				addInterRemindMsg(uid, ordernum, pnr, orderStatus, RECEIVETYPE, session);
+				addInterRemindMsg(uid, ordernum, pnr, orderStatus, RECEDMSGTYPE, RECEIVETYPE, session);
 			}
 		}
 
 		return updateNum;
 	}
 
-	public String addInterRemindMsg(int orderId, String ordernum, String pnr, String orderStatus, int payRecType,
-			HttpSession session) {
+	public String addInterRemindMsg(int orderId, String ordernum, String pnr, String orderStatus, int typeEnum,
+			int payRecType, HttpSession session) {
 		int msgOrderStatus = 0;
 		String statusStr = "";
 		switch (orderStatus) {
@@ -398,7 +398,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		map.put("orderStatus", msgOrderStatus);
 		map.put("orderStatusStr", statusStr);
 		map.put("payRecType", payRecType);
-		String addRemindMsg = addRemindMsg(map, ordernum, pnr, orderId, msgOrderStatus, session);
+		String addRemindMsg = addRemindMsg(map, ordernum, pnr, orderId, typeEnum, session);
 		return addRemindMsg;
 	}
 
@@ -1157,7 +1157,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				int uid = Integer.valueOf(record.getString("id"));
 				String ordernum = record.getString("ordersnum");
 				String pnr = record.getString("PNR");
-				addInterRemindMsg(uid, ordernum, pnr, orderStatus, PAYTYPE, session);
+				addInterRemindMsg(uid, ordernum, pnr, orderStatus, PAYEDMSGTYPE, PAYTYPE, session);
 			}
 		}
 
@@ -1464,7 +1464,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			//收款款已开发票 16
 			msgType = MessageTypeEnum.INVIOCEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "发票已开";
+			msgContent = "单号：" + generateOrderNum + " " + orderStatusStr + "发票已开";
 			break;
 		case 14:
 			//付款已收发票 17
@@ -1500,7 +1500,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			//付款 （会计）开发票中 22  MessageTypeEnum
 			msgType = MessageTypeEnum.INVIOCING.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "开发票中";
+			msgContent = "单号：" + generateOrderNum + " " + orderStatusStr + "开发票中";
 			break;
 		case 20: //MessageWealthStatusEnum
 			//付款 （会计）收发票中 23  MessageTypeEnum

@@ -383,7 +383,7 @@
 				//查询详情跳转
 				url = '${base}/admin/inland/queryDetail.html?id='+orderId;
 			}
-			if(orderType==5 || orderType==8 || orderType==9 || orderType==10 || orderType==11 || orderType==12 || orderType==14 || orderType==15 || orderType==16 || orderType==17 || orderType==18 || orderType==19){
+			if(orderType==5 || orderType==8 || orderType==9 || orderType==10 || orderType==11 || orderType==12 || orderType==14 || orderType==15 || orderType==16 || orderType==17 || orderType==18 || orderType==19 || orderType==20 || orderType==21 || orderType==22 || orderType==23){
 				//预订订单详情跳转
 				url = '${base}/admin/inland/bookingDetail.html?id='+orderId;
 			}
@@ -397,6 +397,7 @@
 	            	userMsgId: userMsgId
 	            },
 	            success: function(data) {
+	            	taskBarFunctions();
 	            	layer.msg("消息已查看", "", 2000);
 	            }
 	        });
@@ -447,6 +448,7 @@
 			              maxmin: false, 
 			              area: ['400px', '210px'],
 			              closeBtn: false,
+			              scrollbar: false,
 			              content: '${base}/admin/operationsArea/customEvent.html?selDate='+selDate,
 			              end: function () {
 			            	  /* $.fancybox.close();  */
@@ -832,7 +834,7 @@
 			if(redDotStr==0 && iLength>0){
 				var redDate = $(e.target).attr('data-date');
 				$("#redDivDate").val(redDate);
-    			if($("#checkShow").prop('checked')){
+    			/* if($("#checkShow").prop('checked')){
     				$.ajax({
     		            url: '/admin/operationsArea/getMinCal.html',
     		            dataType: 'json',
@@ -858,7 +860,32 @@
   					        time: 1500
   					     }
       			    );
-    			}
+    			} */
+				$.ajax({
+		            url: '/admin/operationsArea/getMinCal.html',
+		            dataType: 'json',
+		            type: 'POST',
+		            async:false,
+		            data: {
+		            	gtime: redDate
+		            },
+		            success: function(data) {
+		            	$.each(eval(data), function (index, element) {
+		            		$("#minCalId").val("");
+		            		$("#minCalId").val(element.msgcontent);
+		                }); 
+		            }
+		        });
+				//弹框提示信息
+				var msg = $("#minCalId").val();
+    			layer.tips(
+    				 msg, 
+    				 $(e.target),
+		    		 {
+				        tips: [3, 'rgb(90, 90, 90)'],
+				        time: 1500
+				     }
+  			    );
 			}
 	    });
 	    

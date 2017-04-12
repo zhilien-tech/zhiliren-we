@@ -87,7 +87,7 @@
                <div class="infoTop">
                  <p>客户需求</p>
                </div>
-               <div id="infofooter" class="infofooter">
+               <div id="infofooter" class="infofooter infofooter1">
                 <div class="DemandDiv addOrderKHXQ">
                  <span class="titleNum">1</span>
                  <a href="javascript:;" class="btn btn-primary btn-sm addDemand"><b>+</b>&nbsp;&nbsp;需求</a>
@@ -129,14 +129,26 @@
                       <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake"></a>
                      </td>
                    </tr>
-                   <tr class="remarkTr">
+                   <!-- <tr class="remarkTr">
                      <td></span><label>备注：</label></td>
                      <td colspan="11"><input name="remark" id="remark" type="text" class="form-control input-sm noteText" placeholder=" "></td>
-                   </tr>
+                   </tr> -->
                  </table>
                 </div>
                  
                </div>
+               <context class="remarkContext">
+				   <div class="remarkDiv">
+						<table class="remarkTable">
+							<tr name="cRemarkTr" class="remarkTr">
+								<td><label>备注：</label></td>
+								<td>
+									<textarea class="form-control" id="cRemark" name="cRemark"></textarea>
+								</td>
+							</tr>
+						</table>
+				   </div>	
+				</context>
           </div><!--end 客户需求-->
           </form>
       </div>
@@ -173,6 +185,8 @@
   		var customdata = {};
   		var customerId = $('#customerId').val();
   		customdata.customerId = customerId;
+  		var cRemark = $('#cRemark').val();
+  		customdata.remark = cRemark;
   		var generateOrder = $('#generateOrder').val();
   		customdata.generateOrder = $("#generateOrder").is(':checked');
   		var orderType = $('#orderType').val();
