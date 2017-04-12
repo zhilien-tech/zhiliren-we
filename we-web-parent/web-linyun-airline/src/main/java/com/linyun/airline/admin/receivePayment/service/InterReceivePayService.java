@@ -1464,7 +1464,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			//收款款已开发票 16
 			msgType = MessageTypeEnum.INVIOCEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "发票已开";
+			msgContent = "单号：" + generateOrderNum + " " + orderStatusStr + "发票已开";
 			break;
 		case 14:
 			//付款已收发票 17
@@ -1500,7 +1500,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			//付款 （会计）开发票中 22  MessageTypeEnum
 			msgType = MessageTypeEnum.INVIOCING.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "开发票中";
+			msgContent = "单号：" + generateOrderNum + " " + orderStatusStr + "开发票中";
 			break;
 		case 20: //MessageWealthStatusEnum
 			//付款 （会计）收发票中 23  MessageTypeEnum
