@@ -156,3 +156,11 @@ alter table t_third_payment modify column res3 varchar(64) comment '预留字段
 alter table t_third_payment modify column res4 varchar(64) comment '预留字段4';
 
 alter table t_third_payment modify column res5 varchar(64) comment '预留字段5';
+
+ALTER TABLE `t_finance_info`
+ADD COLUMN `enteraircom`  varchar(32) NULL COMMENT '进澳航空公司' AFTER `issuerid`,
+ADD COLUMN `outaircom`  varchar(32) NULL COMMENT '出澳航空公司' AFTER `enteraircom`,
+ADD COLUMN `enterstarttime`  varchar(16) NULL COMMENT '进澳出发时间' AFTER `outaircom`,
+ADD COLUMN `enterarrivetime`  varchar(16) NULL COMMENT '进澳抵达时间' AFTER `enterstarttime`,
+ADD COLUMN `outstarttime`  varchar(16) NULL COMMENT '出澳出发时间' AFTER `enterarrivetime`,
+ADD COLUMN `outarrivetime`  varchar(16) NULL COMMENT '出澳抵达时间' AFTER `outstarttime`;

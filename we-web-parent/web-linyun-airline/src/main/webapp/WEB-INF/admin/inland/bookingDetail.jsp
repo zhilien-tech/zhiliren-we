@@ -163,7 +163,7 @@
 		                 <table class="cloTable" id="tableWid">
 		                   <tr>
 		                     <td><label>出发城市：</label></td>
-		                     <td colspan="2"><select id="leavecity" name="leavecity" disabled="disabled" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
+		                     <td><select id="leavecity" name="leavecity" disabled="disabled" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
 			                     	<c:forEach var="one" items="${obj.city }">
 			                    		<c:choose>
 			                    			<c:when test="${customneed.cusinfo.leavecity eq one.dictCode }">
@@ -177,7 +177,7 @@
 			                     </select>
 			                 </td>
 		                     <td><label>抵达城市：</label></td>
-		                     <td colspan="2"><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
+		                     <td><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
 			                     	<c:forEach var="one" items="${obj.city }">
 			                    		<c:choose>
 			                    			<c:when test="${customneed.cusinfo.arrivecity eq one.dictCode }">
@@ -578,21 +578,43 @@
                      <td><label>进澳时间：</label></td>
                      <td><input id="enterausdate" name="enterausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.enterausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
                    	 <td><label>航空公司：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><select id="enteraircom" name="enteraircom" type="text" class="form-control input-sm disab aircomselect" disabled="disabled" multiple="multiple">
+                     	<c:forEach items="${obj.aircom }" var="one"> 
+                   			<c:choose>
+	                   			<c:when test="${obj.finance.enteraircom  eq one.dictCode  }">
+									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.dictName }</option>
+	                   			</c:when>
+	                   			<c:otherwise>
+		                     		<option value="${one.dictCode }">${one.dictCode }-${one.dictName }</option>
+	                   			</c:otherwise>
+                    		</c:choose>
+                     	</c:forEach>
+                     </select></td>
                      <td><label>出发时间：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="enterstarttime" name="enterstarttime" value="${obj.finance.enterstarttime }" type="text" class="form-control input-sm disab mustTimes" disabled="disabled"></td>
                      <td><label>抵达时间：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="enterarrivetime" name="enterarrivetime" value="${obj.finance.enterarrivetime }" type="text" class="form-control input-sm disab mustArriveTimes" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>出澳时间：</label></td>
                      <td><input id="outausdate" name="outausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.outausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
                    	 <td><label>航空公司：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><select id="outaircom" name="outaircom" type="text" class="form-control input-sm disab aircomselect" disabled="disabled" multiple="multiple">
+                     	<c:forEach items="${obj.aircom }" var="one"> 
+                   			<c:choose>
+	                   			<c:when test="${obj.finance.outaircom  eq one.dictCode  }">
+									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.dictName }</option>
+	                   			</c:when>
+	                   			<c:otherwise>
+		                     		<option value="${one.dictCode }">${one.dictCode }-${one.dictName }</option>
+	                   			</c:otherwise>
+                    		</c:choose>
+                     	</c:forEach>
+                     </select></td>
                      <td><label>出发时间：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="outstarttime" name="outstarttime" value="${obj.finance.outstarttime }" type="text" class="form-control input-sm disab mustTimes" disabled="disabled"></td>
                      <td><label>抵达时间：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="outarrivetime" name="outarrivetime" value="${obj.finance.outarrivetime }" type="text" class="form-control input-sm disab mustArriveTimes" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>应收：</label></td>
@@ -931,6 +953,16 @@
 		var incometotal = $('#incometotal').val();
 		//利润合计
 		var profittotal = $('#profittotal').val();
+		//进澳时间航公公司
+		var enteraircom = $('#enteraircom').val();
+		if (enteraircom) {
+			enteraircom = enteraircom.join(',');
+		}
+		//出澳时间航空公司
+		var outaircom = $('#outaircom').val();
+		if (outaircom) {
+			outaircom = outaircom.join(',');
+		}
 		var financeForm = getFormJson('#financeForm');
 		financeForm.billingdate = billingdate;
 		financeForm.salesperson = salesperson;
@@ -938,6 +970,8 @@
 		financeForm.relief = relief;
 		financeForm.incometotal = incometotal;
 		financeForm.profittotal = profittotal;
+		financeForm.enteraircom = enteraircom;
+		financeForm.outaircom = outaircom;
 		$.ajax({ 
 			type: 'POST', 
 			data: {data:JSON.stringify(customdata),financeData:JSON.stringify(financeForm)}, 

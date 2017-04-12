@@ -61,7 +61,7 @@ public class TGrabFileSqlForm extends DataTablesParamForm {
 	private long sort;
 
 	/**散团类型*/
-	private int groupType;
+	private String groupType;
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {

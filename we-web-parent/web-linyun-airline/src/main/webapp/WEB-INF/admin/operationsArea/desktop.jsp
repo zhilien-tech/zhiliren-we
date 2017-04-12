@@ -49,7 +49,7 @@
 						 	<ul class="nav nav-tabs custome">
 			                  <li id="searchLi" class="active"><a href="#tab_1" data-toggle="tab">询单(<span id="searchOrderNum"></span>)</a></li>
 			                  <li id="bookLi"><a href="#tab_2" data-toggle="tab">订单(<span id="bookOrderMsgNum"></span>)</a></li>
-			                   <li id="taskLi"><a id="taskAClick" href="#tab_5" data-toggle="tab">任务(<span id="taskNoticeMsgNum"></span>)</a></li>
+			                  <li id="taskLi"><a id="taskAClick" href="#tab_5" data-toggle="tab">任务(<span id="taskNoticeMsgNum"></span>)</a></li>
 			                  <li id="remindLi"><a id="myRemindClick" href="#tab_3" data-toggle="tab">我的提醒(<span id="remindMsgNum"></span>)</a></li>
 			                  <li id="accountLI"><a href="#tab_4" data-toggle="tab">账期(<span id="accountPayTypeMsgNum"></span>)</a></li>
 			                </ul>
@@ -254,8 +254,12 @@
 	  		}else{
 	  			$("#tab_5").removeClass("active");
 				$("#taskLi").removeClass("active");
-				$("#tab_3").addClass("active");
-  				$("#remindLi").addClass("active");
+				if($("#remindLi").attr("class")=="active"){
+					$("#tab_3").addClass("active");
+	  				$("#remindLi").addClass("active");
+				}
+				/* $("#tab_3").addClass("active");
+  				$("#remindLi").addClass("active"); */
 	  		}
 	  		
 	  	}
@@ -659,7 +663,6 @@
 		          var SpanNumber=document.getElementById('minCalen').getElementsByTagName('span');//获取页面里放有多少天数
 		          
 		          for(var i=0;i<SpanNumber.length;i++){
-		              
 		              var spanVal=SpanNumber[i].getAttribute("data-date");//获取span标签的data-date属性值
 		              if (spanVal!=null) {//当期日不为null时
 		                  //阳历 节假日-----------------------------------------------//
@@ -740,15 +743,12 @@
 		    $(document).on('click','.k-btn-next-month',function(){//点击小日历 向右箭头时，加载阳历节假日
 		          showHoliday();
 		    });
-
 		    $(document).on('click','.k-btn-previous-month',function(){//点击小日历 向左箭头时，加载阳历节假日
 		          showHoliday();
 		    });
 		    /*---------------------------------end 小日历 节假日------------------------------------*/
-			  
 		    //获取当前3个月事件
 			getTimeStr();
-			  
 			$('.checkShow').click(function(){//显示提醒 显示/隐藏
 			    if($(this).prop('checked')){
 			          $('.dot').css('display','block');
@@ -760,6 +760,13 @@
 			/* 小日历 背景显示月份 */
 			backgroundMonth();
 		}
+		
+		/*删除多余的小日历*/		
+		function removeMinCalendar(){
+			$("div#minCalen").next().remove();
+		}
+	
+		
 		//-------------------小日历背景 添加 月份显示-----------------------
 		function backgroundMonth(){
 		    var monthVal1= $('div[data-cal-index="2"] .k-title .k-caption').text();//获取top月份

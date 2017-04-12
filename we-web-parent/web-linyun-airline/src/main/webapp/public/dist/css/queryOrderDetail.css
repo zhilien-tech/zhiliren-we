@@ -6,10 +6,16 @@ table.remindSet{margin-left: 10px;margin-right: 10px;}
 .editBtn{position:relative;left:75px;}
 .infoTopContent input:nth-child(2) {display:none;}
 .infoTopContent input:nth-child(4) {display:none;}
-/* .tdBtn{width: 60px;} */
+.infofooter table:nth-child(1) tbody tr td:nth-child(2){width:150px;}
 .cloTable {margin-right: 10px;clear: both;}
 .sw{display: inline-block;}
 .dis{display:block;}
+.scatteredTable2 tr td .form-control {width: 100%;}
+.setMore td:nth-child(2) {width: 206px;}
+.setMore td:nth-child(5) {width: 195px;}
+.setMore td:nth-child(7) {width: 115px;}
+.setMore td:nth-child(9) {width: 115px;}
+.scatteredTable3 tr td .selectWid {width: 190px;}
 .infoTopContent {width: 355px;}
 .infoTopContent .conSelect {width: 85px;margin: 0 0 0 15px;}
 .remindSet tr td:nth-child(1){width: 65%;}
@@ -18,12 +24,19 @@ table.remindSet{margin-left: 10px;margin-right: 10px;}
 .remindSet tr td:nth-child(2) select{padding: 0 5px;font-size: 11px;}
 div#orderlog ul {padding-left: 0;}
 div#orderlog ul li{text-align: center;}
-.cloTable tbody tr:nth-child(1) td:nth-child(2) .select2-container .selection .select2-selection{width:185px;}
-.cloTable tbody tr:nth-child(1) td:nth-child(4) .select2-container .selection .select2-selection{width:185px;}
-[name="airlineinfo"] td:nth-child(4) .select2-container{width: 70px !important;}
+.cloTable tbody tr:nth-child(1) td:nth-child(2) .select2-container .selection .select2-selection{width:140px;}
+.cloTable tbody tr:nth-child(1) td:nth-child(4) .select2-container .selection .select2-selection{width:140px;}
+.cloTable tr:nth-of-type(1) td:nth-of-type(4) span.select2-container {width: 140px !important;}
+.cloTable tr td:nth-of-type(10) {width: 6%;}
+.cloTable tr td:nth-of-type(8) {width: 6%;}
+.cloTable tr td:nth-of-type(9) label { width: 55px;}
+.cloTable tr td:nth-of-type(11) label {width: 55px;}
+[name="airlineinfo"] td:nth-child(2){width:140px !important;}
 .select2-container--default.select2-container--disabled .select2-selection--multiple {width: 70px;}
 .cloTable tr:nth-of-type(1) td:nth-of-type(3) label {position: relative;left: 0px;}
-[name="airlineinfo"] td:nth-child(2) .select2-container .selection .select2-selection{width: 115px !important;}
-#price { padding-left: 3px; padding-right: 3px;}
-#leavedate{padding-left:5px; padding-right: 3px;}
+[name="airlineinfo"] td:nth-child(2) .select2-container .selection .select2-selection{width: 140px !important;}
+.select2-container {width: 140px !important;}
+[name="airlineinfo"] td:nth-child(4) .select2-container .selection .select2-selection {width: 140px !important;}
+.cloTable tbody tr td:nth-child(4){width: 140px !important;}
 .addressInput {width: 100% !important;}
+#arrivetime,#peoplecount,#leavetime,#leavedate,#tickettype,#formprice,#formprice,#price{padding-left:3px;padding-right:3px;}

@@ -37,7 +37,7 @@
                   </thead>
                   <tbody>
                     <c:forEach var="one" items="${obj.orders }">
-                		<tr>
+                		<tr ondblclick="toInterOrderDetail(${one.id})">
                 			<td>${one.ordersnum }</td>
                 			<td><fmt:formatDate value="${one.billingdate }" pattern="yyyy-MM-dd" /></td>
                 			<td>${one.cusgroupnum }</td>
@@ -273,6 +273,10 @@
            } 
        });
    }
+   function toInterOrderDetail(id){
+		var url = '${base}/admin/international/internationalDetail.html?orderid='+id;
+		window.open(url);
+	}
   </script>
 </body>
 </html>	

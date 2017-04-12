@@ -39,7 +39,7 @@
                   </thead>
                   <tbody>
                     <c:forEach var="one" items="${obj.orders }">
-                		<tr>
+                		<tr ondblclick="toOrderDetail(${one.id})">
                 			<td>${one.ordersnum }</td>
                 			<td>${one.billingdate }</td>
                 			<td>${one.cusgroupnum }</td>
@@ -81,7 +81,7 @@
                        </select>
                     </td>
                     <td>合计：</td>
-                    <td id="sumjine"><fmt:formatNumber type="number" value="${obj.receive.sum }" pattern="0.00" maxFractionDigits="2"/></td>
+                    <td id="sumjine"><fmt:formatNumber type="number" value="${obj.sumincome }" pattern="0.00" maxFractionDigits="2"/></td>
                   </tr>
          </table>
          <div class="bankSlipImg" align="center"><img id="shuidanimg" width="100%" height="305" alt="" src="${obj.bill.receiptUrl }"></div>
@@ -127,7 +127,7 @@
                   <td>差额：</td>
                   <td><input id="difference" name="difference" type="text" class="form-control input-sm mustNumberPoint"></td>
                   <td>余额：</td>
-                  <td><label id="balance" name="balance"><fmt:formatNumber type="number" value="${obj.receive.sum }" pattern="0.00" maxFractionDigits="2"/></label>
+                  <td><label id="balance" name="balance"><fmt:formatNumber type="number" value="${obj.sumincome }" pattern="0.00" maxFractionDigits="2"/></label>
                   </td>
           </tr>
           <tr class="cloneTR">
@@ -281,6 +281,10 @@
            } 
        });
    }
+   function toOrderDetail(id){
+		var url = '${base}/admin/inland/bookingDetail.html?id=' + id;
+		window.open(url);
+	}
   </script>
 </body>
 </html>	

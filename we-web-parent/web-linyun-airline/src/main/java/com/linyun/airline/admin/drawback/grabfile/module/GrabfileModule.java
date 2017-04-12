@@ -239,7 +239,7 @@ public class GrabfileModule {
 	@At
 	@POST
 	public void grabMail() throws Exception {
-		grabMailService.receivePop3();
+		grabMailService.loginMailAccount();
 	}
 
 	//文件预览

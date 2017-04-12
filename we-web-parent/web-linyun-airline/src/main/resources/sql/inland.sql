@@ -69,6 +69,7 @@ SELECT
 	toc.leavetdate,
 	tuo.ordersstatus,
 	tuo.ordersnum,
+	tuo.id ordersid,
 	tci.linkMan,
 	tci.telephone,
 	tci.shortName,
@@ -155,6 +156,7 @@ $condition
 SELECT
 	tpi.*, tuo.ordersnum,
 	tfi.billingdate,
+	tuo.id ordersid,
 	tfi.cusgroupnum,
 	tci. NAME customename,
 	tci.linkMan,
