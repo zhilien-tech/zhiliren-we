@@ -372,7 +372,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 					+ "," + String.valueOf(RECINVIOCEMSG) + "," + String.valueOf(APPROVALEDMSG) + ","
 					+ String.valueOf(UNAPPROVALMSG) + "," + String.valueOf(MAKEOUTBILLMSG) + ","
 					+ String.valueOf(DRAWBILLMSG) + "," + String.valueOf(RECINVIOCING) + ","
-					+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING);
+					+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING) + ","
+					+ String.valueOf(RECSUBMITED);
 			break;
 		case "taskNotice":
 			//任务 TODO
@@ -383,7 +384,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 					+ String.valueOf(RECINVIOCEMSG) + "," + String.valueOf(APPROVALEDMSG) + ","
 					+ String.valueOf(UNAPPROVALMSG) + "," + String.valueOf(MAKEOUTBILLMSG) + ","
 					+ String.valueOf(DRAWBILLMSG) + "," + String.valueOf(RECINVIOCING) + ","
-					+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING);
+					+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING) + ","
+					+ String.valueOf(RECSUBMITED);
 			break;
 		}
 
@@ -673,11 +675,9 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 
 		Sql sql = Sqls.create(sqlManager.get("msg_type"));
 		Date date1 = DateUtil.string2Date(timeStr);
-		if (!Util.isEmpty(id)) {
-			sql.params().set("userId", id);
-		}
-		sql.params().set("MincalTimes1", date1);
-		sql.params().set("msgStatus", 1);
+		sql.setParam("userid", id);
+		sql.setParam("MincalTimes1", date1);
+		sql.setParam("msgStatus", 1);
 		List<Record> rList = dbDao.query(sql, null, null);
 
 		Set<String> set = new HashSet<String>();
