@@ -372,7 +372,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 					+ "," + String.valueOf(RECINVIOCEMSG) + "," + String.valueOf(APPROVALEDMSG) + ","
 					+ String.valueOf(UNAPPROVALMSG) + "," + String.valueOf(MAKEOUTBILLMSG) + ","
 					+ String.valueOf(DRAWBILLMSG) + "," + String.valueOf(RECINVIOCING) + ","
-					+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING);
+					+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING) + ","
+					+ String.valueOf(RECSUBMITED);
 			break;
 		case "taskNotice":
 			//任务 TODO
@@ -383,7 +384,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 					+ String.valueOf(RECINVIOCEMSG) + "," + String.valueOf(APPROVALEDMSG) + ","
 					+ String.valueOf(UNAPPROVALMSG) + "," + String.valueOf(MAKEOUTBILLMSG) + ","
 					+ String.valueOf(DRAWBILLMSG) + "," + String.valueOf(RECINVIOCING) + ","
-					+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING);
+					+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING) + ","
+					+ String.valueOf(RECSUBMITED);
 			break;
 		}
 
