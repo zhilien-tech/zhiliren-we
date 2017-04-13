@@ -1100,8 +1100,12 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		String approver = request.getParameter("approver");
 		String orderstatus = request.getParameter("orderstatus");
 		TPayEntity payEntity = new TPayEntity();
-		payEntity.setPurpose(Integer.valueOf(purpose));
-		payEntity.setPayCurrency(Integer.valueOf(payCurrency));
+		if (!Util.isEmpty(purpose)) {
+			payEntity.setPurpose(Integer.valueOf(purpose));
+		}
+		if (!Util.isEmpty(payCurrency)) {
+			payEntity.setPayCurrency(Integer.valueOf(payCurrency));
+		}
 		payEntity.setProposer(new Long(user.getId()).intValue());
 		payEntity.setApprover(approver);
 		payEntity.setCompanyId(new Long(company.getId()).intValue());

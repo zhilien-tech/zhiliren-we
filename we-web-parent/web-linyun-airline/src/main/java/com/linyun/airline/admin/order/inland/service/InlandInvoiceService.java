@@ -36,8 +36,11 @@ import com.linyun.airline.admin.order.inland.util.FormatDateUtil;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayPnrEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
+import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.constants.CommonConstants;
+import com.linyun.airline.common.enums.MessageWealthStatusEnum;
+import com.linyun.airline.common.enums.OrderRemindEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.enums.ReductionStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
@@ -46,12 +49,15 @@ import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TInvoiceDetailEntity;
 import com.linyun.airline.entities.TInvoiceInfoEntity;
 import com.linyun.airline.entities.TMitigateInfoEntity;
+import com.linyun.airline.entities.TOrderCustomneedEntity;
 import com.linyun.airline.entities.TOrderLogEntity;
 import com.linyun.airline.entities.TOrderReceiveEntity;
+import com.linyun.airline.entities.TPnrInfoEntity;
 import com.linyun.airline.entities.TReceiveBillEntity;
 import com.linyun.airline.entities.TReceiveEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUserEntity;
+import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.JsonUtil;
@@ -80,6 +86,8 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 
 	@Inject
 	private UploadService qiniuUploadService;
+	@Inject
+	private SearchViewService searchViewService;
 
 	/**
 	 * 保存付款发票信息
@@ -123,7 +131,17 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		}
 		invoiceinfo.setInvoicetype(PayReceiveTypeEnum.PAY.intKey());
 		if (!Util.isEmpty(fromJson.get("pnrid"))) {
-			invoiceinfo.setPnrid(Integer.valueOf((String) fromJson.get("pnrid")));
+			Integer pnrid = Integer.valueOf((String) fromJson.get("pnrid"));
+			invoiceinfo.setPnrid(pnrid);
+			TPnrInfoEntity pnrinfo = dbDao.fetch(TPnrInfoEntity.class, pnrid.longValue());
+			TOrderCustomneedEntity customneed = dbDao.fetch(TOrderCustomneedEntity.class, pnrinfo.getNeedid()
+					.longValue());
+			TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, customneed.getOrdernum().longValue());
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
+			map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
+			searchViewService.addRemindMsg(map, order.getOrdersnum(), pnrinfo.getPNR(), order.getId(),
+					MessageWealthStatusEnum.RECINVIOCING.intKey(), session);
 		}
 		invoiceinfo.setOpid(new Long(user.getId()).intValue());
 		invoiceinfo.setComId(new Long(company.getId()).intValue());
@@ -187,7 +205,20 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		}
 		invoiceinfo.setInvoicetype(PayReceiveTypeEnum.RECEIVE.intKey());
 		if (!Util.isEmpty(fromJson.get("pnrid"))) {
-			invoiceinfo.setReceiveid(Integer.valueOf((String) fromJson.get("pnrid")));
+			Integer receiveid = Integer.valueOf((String) fromJson.get("pnrid"));
+			invoiceinfo.setReceiveid(receiveid);
+			//消息提醒
+			Sql sql = Sqls.create(sqlManager.get("select_receive_order_info"));
+			Cnd cnd = Cnd.NEW();
+			cnd.and("tor.receiveid", "=", receiveid);
+			List<Record> query = dbDao.query(sql, cnd, null);
+			for (Record record : query) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
+				map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
+				searchViewService.addRemindMsg(map, record.getString("ordersnum"), "", record.getInt("id"),
+						MessageWealthStatusEnum.INVIOCING.intKey(), session);
+			}
 		}
 		invoiceinfo.setOpid(new Long(user.getId()).intValue());
 		invoiceinfo.setComId(new Long(company.getId()).intValue());
