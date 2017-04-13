@@ -218,7 +218,7 @@ $(function(){
         newDiv.find('[name=pnrinfodata]').html('');
         initCitySelect2(newDiv);
         //divTest.after(newDiv);
-        $('#infofooter').last().after(newDiv);
+        $('.DemandDiv').last().after(newDiv);
         var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
         newDiv.find("p").html(No); 
         newDiv.find('.addDemand').remove();
@@ -276,8 +276,8 @@ function loadPNRdata(){
             	var result = '';
             	for(var i=0 ; i<data.length ; i++){
             		result += '<tr>';
-            		if(data[i].pNR != undefined){
-            			result +='<td>'+data[i].pNR+'</td>';
+            		if(data[i].pnr != undefined){
+            			result +='<td>'+data[i].pnr+'</td>';
             		}else{
             			result +='<td></td>';
             		}

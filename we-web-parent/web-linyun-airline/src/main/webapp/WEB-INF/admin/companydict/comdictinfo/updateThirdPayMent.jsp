@@ -40,7 +40,7 @@
                         <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">卡号：</label>
                             <div class="col-sm-8 padding">
-                              	<input name="bankCardNum" id="bankCardNumId" type="text" class="form-control input-sm inpImpWid"  value="${obj.single.bankCardNum}" />
+                              	<input name="bankCardNum" id="bankCardNumId" type="text" class="form-control input-sm inpImpWid" onkeyup="this.value=this.value.replace(/[^0-9a-zA-Z]/g,'').replace(/....(?!$)/g,'$& ')"  maxlength="23"  value="${obj.single.bankCardNum}" />
                             	<span class="prompt">*</span>
                             </div>
                         </div>

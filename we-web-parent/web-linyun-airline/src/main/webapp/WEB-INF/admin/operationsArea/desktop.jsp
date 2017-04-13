@@ -763,7 +763,9 @@
 		
 		/*删除多余的小日历*/		
 		function removeMinCalendar(){
-			$("div#minCalen").next().remove();
+			/* $("div#minCalen").next().remove(); */
+			$("div#minCalen").remove();
+			$(".kalendae").attr("id","minCalen");
 		}
 	
 		

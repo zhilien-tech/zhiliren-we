@@ -235,6 +235,7 @@ $("#interRecSearchBtn").on('click', function () {
 $(".paymentNewUl li").click(function(){
 	$(this).addClass("orderStatusClass").siblings().removeClass('orderStatusClass');
 	var bookId =$(".osClass",$(this)).attr("id");
+	
 	var receiveStatus = $("#interRecSelect").val();
 	var param = {
 			"receiveStatus":receiveStatus,

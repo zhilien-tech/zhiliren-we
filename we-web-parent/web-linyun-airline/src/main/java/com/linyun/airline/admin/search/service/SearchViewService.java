@@ -1133,7 +1133,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			//已收款 14
 			msgType = MessageTypeEnum.RECEIVEDMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "收款已确认";
+			msgContent = "单号：" + generateOrderNum + "收款已确认";
 			break;
 		case 12:
 			//已付款 15
@@ -1169,7 +1169,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			//付款 收款已提交 20
 			msgType = MessageTypeEnum.RECSUBMITED.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "收款已提交";
+			msgContent = "单号：" + generateOrderNum + "收款已提交";
 			break;
 		case 18: //MessageWealthStatusEnum
 			//付款 需付款已提交申请 21  MessageTypeEnum
