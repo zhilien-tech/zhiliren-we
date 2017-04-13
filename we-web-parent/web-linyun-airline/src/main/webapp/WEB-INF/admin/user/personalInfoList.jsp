@@ -102,11 +102,11 @@ function editPersonal(userId){
 }
 //事件提示
 function successCallback(id){
-	PersonDatatable.ajax.reload(null,false);
+	  window.location.reload();
 	  if(id == '1'){
 		  layer.msg("密码修改成功",{time:2000});
 	  }else if(id == '2'){
-		  layer.msg("修改成功",{time:2000});
+		  layer.msg("修改成功",{time:5000});
 	  }
   }
 </script>

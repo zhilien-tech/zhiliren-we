@@ -63,7 +63,7 @@
                                 <div class="col-md-3 dictInfoSousuo" style="float:left;">
 									<!--字典信息名称 搜索框-->
 									<input type="text" id="comDictNameId" name="comDictName" onkeypress="onkeyEnter();" class="form-control"
-										placeholder="字典信息/航空公司/公司名称">
+										placeholder="字典信息/航空公司/第三方公司">
 								</div>
 								<div class="col-md-2 col-padding">
 									<!--搜索 按钮-->
@@ -404,13 +404,13 @@ function initDatatable() {
                     }, 
                     {"data": "createtime", "bSortable": false,
                     	 render: function(data, type, row, meta) {
-                    		 var createtime = new Date(row.createtime);
+                    		 var createtime = row.createtime;
                     		 if(null==createtime || ""==createtime){
                     			 return "";
                     		 }
-                    		 var createtimestr = createtime.getFullYear() + "-" + createtime.getMonth() + "-" + createtime.getDate() + " "
-                    		 + createtime.getHours() + ":" + createtime.getMinutes() + ":" + createtime.getSeconds();
-                    		return createtimestr;
+                    		 /* var createtimestr = createtime.getFullYear() + "-" + createtime.getMonth() + "-" + createtime.getDate() + " "
+                    		 + createtime.getHours() + ":" + createtime.getMinutes() + ":" + createtime.getSeconds(); */
+                    		return createtime;
                         } 	
                     },
                     {"data": "remark", "bSortable": false,"width":"50%",
@@ -517,13 +517,11 @@ function initDatatable() {
                     },
                     {"data": "createtime", "bSortable": false,
                    	 render: function(data, type, row, meta) {
-                   		 var createtime = new Date(row.createtime);
+                   		 var createtime = row.createtime;
                    		 if(null==createtime || ""==createtime){
                    			 return "";
                    		 }
-                   		 var createtimestr = createtime.getFullYear() + "-" + createtime.getMonth() + "-" + createtime.getDate() + " "
-                   		 + createtime.getHours() + ":" + createtime.getMinutes() + ":" + createtime.getSeconds();
-                   		return createtimestr;
+                   		return createtime;
                        } 	
                    },
                     {"data": "remark", "bSortable": false,
@@ -631,13 +629,11 @@ function initDatatable() {
                     },
                     {"data": "createtime", "bSortable": false,
                    	 render: function(data, type, row, meta) {
-                   		 var createtime = new Date(row.createtime);
+                   		 var createtime = row.createtime;
                    		 if(null==createtime || ""==createtime){
                    			 return "";
                    		 }
-                   		 var createtimestr = createtime.getFullYear() + "-" + createtime.getMonth() + "-" + createtime.getDate() + " "
-                   		 + createtime.getHours() + ":" + createtime.getMinutes() + ":" + createtime.getSeconds();
-                   		return createtimestr;
+                   		return createtime;
                        } 	
                    },
                     {"data": "remark", "bSortable": false,

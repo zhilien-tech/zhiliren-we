@@ -169,16 +169,6 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 				Cnd.where("invoiceinfoid", "=", invoiceinfo.getId()), null);
 		//付款信息
 		TReceiveEntity fetch = dbDao.fetch(TReceiveEntity.class, Long.valueOf(invoiceinfo.getReceiveid()));
-		double invoicebalance = 0.00;
-		if (!Util.isEmpty(fetch)) {
-			invoicebalance = fetch.getSum();
-		}
-		for (TInvoiceDetailEntity detail : invoicedetail) {
-			if (!Util.isEmpty(detail.getInvoicebalance())) {
-				invoicebalance -= detail.getInvoicebalance();
-			}
-		}
-		result.put("invoicebalance", formatDouble(invoicebalance));
 		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
 				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
 				null);
@@ -195,12 +185,24 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.id", "in", ids);
 		List<Record> orders = dbDao.query(sql, cnd, null);
+		//订单信息
+		result.put("orders", orders);
+		double sumjine = 0;
 		for (Record record : orders) {
+			if (!Util.isEmpty(record.get("incometotal"))) {
+				sumjine += (Double) record.get("incometotal");
+			}
 			String billingdate = FormatDateUtil.dateToOrderDate((Date) record.get("billingdate"));
 			record.put("billingdate", billingdate);
 		}
-		//订单信息
-		result.put("orders", orders);
+		result.put("sumjine", sumjine);
+		double invoicebalance = sumjine;
+		for (TInvoiceDetailEntity detail : invoicedetail) {
+			if (!Util.isEmpty(detail.getInvoicebalance())) {
+				invoicebalance -= detail.getInvoicebalance();
+			}
+		}
+		result.put("invoicebalance", invoicebalance);
 		Sql create = Sqls.create(sqlManager.get("get_bank_info_select"));
 		create.setParam("companyId", company.getId());
 		create.setParam("typeCode", YHCODE);
