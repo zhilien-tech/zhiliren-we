@@ -740,10 +740,16 @@
 		      }
 		    }
 		    
-		    $(document).on('click','.k-btn-next-month',function(){//点击小日历 向右箭头时，加载阳历节假日
+		    $(document).on('click','.k-btn-next-month',function(){//点击小日历 向右切换月箭头时，加载节假日
 		          showHoliday();
 		    });
-		    $(document).on('click','.k-btn-previous-month',function(){//点击小日历 向左箭头时，加载阳历节假日
+		    $(document).on('click','.k-btn-previous-month',function(){//点击小日历 向左切换月箭头时，加载节假日
+		          showHoliday();
+		    });
+		    $(document).on('click','.k-btn-next-year',function(){//点击小日历 向右切换年箭头时，加载节假日
+		          showHoliday();
+		    });
+		    $(document).on('click','.k-btn-previous-year',function(){//点击小日历 向左切换年箭头时，加载节假日
 		          showHoliday();
 		    });
 		    /*---------------------------------end 小日历 节假日------------------------------------*/
