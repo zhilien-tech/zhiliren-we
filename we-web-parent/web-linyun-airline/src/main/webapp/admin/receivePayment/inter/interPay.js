@@ -447,21 +447,26 @@ function initPayEdDataTable(){
 
 //付款页切换
 function  toConfirmPayPage(){
-	destroyDatetable($("#interRecTable"));
-	initPayDataTable();
-	$('#interPaySearchBtn').click();
-	$("#interRecSelect option:first").prop("selected", true);
+	/*alert($('ul.nlkhUL li').eq(0).attr("class"));*/
+		destroyDatetable($("#interRecTable"));
+		initPayDataTable();
+		$('#interPaySearchBtn').click();
+		$("#interRecSelect option:first").prop("selected", true);
+	
+	
 }
 //收款页切换
 function  toConfirmRecPage(){
-	destroyDatetable($("#interPayTable"));
-	destroyDatetable($("#interPayEdTable"));
-	initRecDataTable();
-	$('#interRecSearchBtn').click();
-	$("#interPayClick").show();
-	$("#interPayTable").show();
-	$("#interPayEdTable").hide();
-	$("#interPaySelect option:first").prop("selected", true);
+	/*alert($('ul.nlkhUL li').eq(1).attr("class"));*/
+		destroyDatetable($("#interPayTable"));
+		destroyDatetable($("#interPayEdTable"));
+		initRecDataTable();
+		$('#interRecSearchBtn').click();
+		$("#interPayClick").show();
+		$("#interPayTable").show();
+		$("#interPayEdTable").hide();
+		$("#interPaySelect option:first").prop("selected", true);
+	
 }
 
 //状态选择按钮
