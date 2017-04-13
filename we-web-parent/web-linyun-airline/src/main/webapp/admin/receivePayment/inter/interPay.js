@@ -259,7 +259,7 @@ function initPayEdDataTable(){
 		},
 		"columns": [
 		            {"data": "ordersnum", "bSortable": false,
-			            render: function(data, type, row, meta) {
+		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
 		            		var oNum = "";
 		            		$.each(row.orders, function(name, value) {
@@ -339,7 +339,7 @@ function initPayEdDataTable(){
 		            			if(value && value.currentpay!=undefined){
 		            				if(oNum!=ordernum){
 		            					result += '<li style="list-style:none;">'+(value.currentpay).toFixed(2)+'</li>';
-	            					}
+		            				}
 		            			}
 		            			oNum = ordernum;
 		            		});
@@ -348,7 +348,7 @@ function initPayEdDataTable(){
 		            	}
 		            },
 		            {"data": "currency", "bSortable": false,
-			            render: function(data, type, row, meta) {
+		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
 		            		var oNum = "";
 		            		$.each(row.orders, function(name, value) {
@@ -367,7 +367,7 @@ function initPayEdDataTable(){
 		            		});
 		            		result += '</ul>';
 		            		return result;
-			            }
+		            	}
 		            },
 		            {"data": "totalmoney", "bSortable": false,
 		            	render: function(data, type, row, meta) {
@@ -447,17 +447,17 @@ function initPayEdDataTable(){
 
 //付款页切换
 function  toConfirmPayPage(){
-	/*alert($('ul.nlkhUL li').eq(0).attr("class"));*/
+	if($('ul.nlkhUL li').eq(1).attr("class") != "active"){
+		var payStatus = $("#interPaySelect").val();
 		destroyDatetable($("#interRecTable"));
 		initPayDataTable();
 		$('#interPaySearchBtn').click();
 		$("#interRecSelect option:first").prop("selected", true);
-	
-	
+	}
 }
 //收款页切换
 function  toConfirmRecPage(){
-	/*alert($('ul.nlkhUL li').eq(1).attr("class"));*/
+	if($('ul.nlkhUL li').eq(0).attr("class") != "active"){
 		destroyDatetable($("#interPayTable"));
 		destroyDatetable($("#interPayEdTable"));
 		initRecDataTable();
@@ -466,7 +466,17 @@ function  toConfirmRecPage(){
 		$("#interPayTable").show();
 		$("#interPayEdTable").hide();
 		$("#interPaySelect option:first").prop("selected", true);
-	
+	}
+}
+
+//页面加载时调用
+function  recPageFirst(){
+	initRecDataTable();
+	$('#interRecSearchBtn').click();
+	$("#interPayClick").show();
+	$("#interPayTable").show();
+	$("#interPayEdTable").hide();
+	$("#interPaySelect option:first").prop("selected", true);
 }
 
 //状态选择按钮
@@ -623,10 +633,10 @@ $("#interPaySearchBtn").on('click', function () {
 	var orderStatus = $(".osClass",$(".orderStatusClass")).attr("id");
 	var param = {
 			        "orderStatus":orderStatus,
-					"payStatus":payStatus,
+			"payStatus":payStatus,
 			        "leavetdate":interPayBeginDate,
 			        "backdate":interPayEndDate,
-					"name": interPayInput
+			"name": interPayInput
 			    };
 	if(payStatus==interPayStatus){
 		interPayTable.settings()[0].ajax.data = param;
@@ -679,9 +689,9 @@ function clearSearchTxt(selectId, beginDateId, endDateId, inputId){
 
 //回车搜索
 function payOnkeyEnter(){
-	 if(event.keyCode==13){
-		 $("#interPaySearchBtn").click();
-	 }
+	if(event.keyCode==13){
+		$("#interPaySearchBtn").click();
+	}
 }
 
 function editPay(pid, prrIds){

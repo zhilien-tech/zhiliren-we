@@ -331,15 +331,29 @@ function editPay(ids){
 
 //付款页切换
 function  toConfirmPayPage(){
-	destroyDatetable($("#inlandRecTable"));
-	initPayDataTable();
-	$('#inlandPaySearchBtn').click();
-	$("#inlandRecSelect option:first").prop("selected", true);
+	if($('ul.nav-tabs li').eq(1).attr("class") != "active"){
+		destroyDatetable($("#inlandRecTable"));
+		initPayDataTable();
+		$('#inlandPaySearchBtn').click();
+		$("#inlandRecSelect option:first").prop("selected", true);
+	}
 }
 //收款页切换
 function  toConfirmRecPage(){
-	destroyDatetable($("#inlandPayTable"));
-	destroyDatetable($("#inlandPayEdTable"));
+	if($('ul.nav-tabs li').eq(0).attr("class") != "active"){
+		destroyDatetable($("#inlandPayTable"));
+		destroyDatetable($("#inlandPayEdTable"));
+		initRecDataTable();
+		$('#inlandRecSearchBtn').click();
+		$("#inlandPayClick").show();
+		$("#inlandPayTable").show();
+		$("#inlandPayEdTable").hide();
+		$("#inlandPaySelect option:first").prop("selected", true);
+	}
+}
+
+//页面加载时调用
+function  recPageFirst(){
 	initRecDataTable();
 	$('#inlandRecSearchBtn').click();
 	$("#inlandPayClick").show();
