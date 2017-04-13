@@ -43,9 +43,11 @@ import com.linyun.airline.admin.order.international.form.InternationalPayParamFo
 import com.linyun.airline.admin.order.international.form.InternationalReceiveParamForm;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
+import com.linyun.airline.admin.receivePayment.service.InterReceivePayService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
+import com.linyun.airline.common.enums.MessageWealthStatusEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.ExcelReader;
 import com.linyun.airline.entities.DictInfoEntity;
@@ -100,6 +102,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	private EditPlanService editPlanService;
 	@Inject
 	private externalInfoService externalInfoService;
+	@Inject
+	private InterReceivePayService interReceivePayService;
 
 	/**
 	 * 查询国际列表
@@ -1023,6 +1027,10 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			//订单信息
 			order.setReceivestatus(AccountReceiveEnum.RECEIVINGMONEY.intKey());
 			orders.add(order);
+			//消息提醒
+			interReceivePayService.addInterRemindMsg(order.getId(), order.getOrdersnum(), "",
+					String.valueOf(order.getOrdersstatus()), MessageWealthStatusEnum.RECSUBMITED.intKey(),
+					PayReceiveTypeEnum.RECEIVE.intKey(), session);
 		}
 		//更新订单状态
 		dbDao.update(orders);
@@ -1132,6 +1140,10 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			//更新订单状态
 			orderifo.setPaystatus(AccountPayEnum.APPROVAL.intKey());
 			orders.add(orderifo);
+			//消息提醒
+			interReceivePayService.addInterRemindMsg(orderifo.getId(), orderifo.getOrdersnum(), "",
+					String.valueOf(orderifo.getOrdersstatus()), MessageWealthStatusEnum.PSAPPROVALING.intKey(),
+					PayReceiveTypeEnum.PAY.intKey(), session);
 		}
 		//更新pnr状态
 		dbDao.update(orders);
