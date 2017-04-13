@@ -1082,27 +1082,42 @@
 				url: '${base}/admin/inland/saveCustomeneedInfo.html',
 	            success: function (data) { 
 	            	xuqiuDiv.find('[name=customneedid]').val(data.id);
+	            	layer.open({
+	   		         type: 2,
+	   		         title:false,
+	   		         skin: false, //加上边框
+	   		         closeBtn:false,//默认 右上角关闭按钮 是否显示
+	   		         shadeClose:true,
+	   		         scrollbar: false,
+	   		         area: ['880px', '425px'],
+	   		         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+data.id,
+	   		         end:function(){
+	   		        	 //设置财务信息
+	   		        	 setFinanceInfo();
+	   		         }
+	   		       });
 		         },
 		         error: function (xhr) {
 		          	layer.msg("保存失败","",3000);
 		         } 
 	      });
+		 }else{
+			 needid = xuqiuDiv.find('[name=customneedid]').val();
+			 layer.open({
+		         type: 2,
+		         title:false,
+		         skin: false, //加上边框
+		         closeBtn:false,//默认 右上角关闭按钮 是否显示
+		         shadeClose:true,
+		         scrollbar: false,
+		         area: ['880px', '425px'],
+		         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+needid,
+		         end:function(){
+		        	 //设置财务信息
+		        	 setFinanceInfo();
+		         }
+		       });
 		 }
-		 needid = xuqiuDiv.find('[name=customneedid]').val();
-		 layer.open({
-	         type: 2,
-	         title:false,
-	         skin: false, //加上边框
-	         closeBtn:false,//默认 右上角关闭按钮 是否显示
-	         shadeClose:true,
-	         scrollbar: false,
-	         area: ['880px', '425px'],
-	         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+needid,
-	         end:function(){
-	        	 //设置财务信息
-	        	 setFinanceInfo();
-	         }
-	       });
     });
   function setFinanceInfo(){
 	//设置财务信息
