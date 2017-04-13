@@ -33,7 +33,10 @@ import com.linyun.airline.admin.invoicemanage.invoiceinfo.enums.InvoiceInfoEnum;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
 import com.linyun.airline.admin.order.inland.util.FormatDateUtil;
+import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
+import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
+import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
 import com.linyun.airline.admin.receivePayment.service.InterReceivePayService;
 import com.linyun.airline.common.enums.MessageWealthStatusEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
@@ -394,40 +397,29 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
 				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
 				null);
-		//发票明细
+		//付款订单表信息
+		TPayOrderEntity payorder = dbDao.fetch(TPayOrderEntity.class, invoiceinfo.getOrderpayid().longValue());
+		//付款信息
+		TPayEntity fetch = dbDao.fetch(TPayEntity.class, Long.valueOf(payorder.getPayid()));
 		List<TInvoiceDetailEntity> invoicedetail = dbDao.query(TInvoiceDetailEntity.class,
 				Cnd.where("invoiceinfoid", "=", invoiceinfo.getId()), null);
-		//付款信息
-		TReceiveEntity fetch = dbDao.fetch(TReceiveEntity.class, Long.valueOf(invoiceinfo.getReceiveid()));
-
-		List<TOrderReceiveEntity> query = dbDao.query(TOrderReceiveEntity.class,
-				Cnd.where("receiveid", "=", fetch.getId()), null);
-		Integer orderstatus = null;
+		List<TPayOrderEntity> query = dbDao.query(TPayOrderEntity.class, Cnd.where("payid", "=", fetch.getId()), null);
 		String ids = "";
-		for (TOrderReceiveEntity tOrderReceiveEntity : query) {
-			ids += tOrderReceiveEntity.getOrderid() + ",";
-			orderstatus = tOrderReceiveEntity.getOrderstatus();
-		}
-		ids = ids.substring(0, ids.length() - 1);
+		/*for (TPayOrderEntity tPayOrderEntity : query) {
+			ids += tPayOrderEntity.getOrderid() + ",";
+		}*/
+		//ids = ids.substring(0, ids.length() - 1);
+		ids += payorder.getOrderid();
 		String sqlString = sqlManager.get("international_invoice_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.id", "in", ids);
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
-		sql.setParam("orderstatus", orderstatus);
+		sql.setParam("orderstatus", payorder.getOrderstatus());
 		sql.setParam("recordtype", PayReceiveTypeEnum.RECEIVE.intKey());
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//订单信息
 		result.put("orders", orders);
-		double sumjine = 0;
-		for (Record record : orders) {
-			if (!Util.isEmpty(record.get("currentpay"))) {
-				sumjine += (Double) record.get("currentpay");
-			}
-			String billingdate = FormatDateUtil.dateToOrderDate((Date) record.get("billingdate"));
-			record.put("billingdate", billingdate);
-		}
-		result.put("sumjine", sumjine);
 		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
 		try {
 			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);
@@ -435,8 +427,8 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 			e.printStackTrace();
 		}
 		//水单信息
-		List<TReceiveBillEntity> query2 = dbDao.query(TReceiveBillEntity.class,
-				Cnd.where("receiveid", "=", fetch.getId()), null);
+		List<TPayReceiptEntity> query2 = dbDao.query(TPayReceiptEntity.class, Cnd.where("payId", "=", fetch.getId()),
+				null);
 		//银行卡下拉
 		result.put("yhkSelect", yhkSelect);
 		//订单信息id
@@ -444,6 +436,26 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		result.put("id", id);
 		result.put("receive", fetch);
 		result.put("ytselect", ytselect);
+		TCompanyBankCardEntity companybank = new TCompanyBankCardEntity();
+		if (!Util.isEmpty(fetch.getBankId())) {
+			companybank = dbDao.fetch(TCompanyBankCardEntity.class, fetch.getBankId().longValue());
+		}
+		//总金额
+		double sumjine = 0;
+		for (Record record : orders) {
+			if (!Util.isEmpty(record.get("currentpay"))) {
+				sumjine += Double.valueOf((Double) record.get("currentpay"));
+			}
+		}
+		result.put("sumjine", sumjine);
+		double invoicebalance = sumjine;
+		for (TInvoiceDetailEntity detail : invoicedetail) {
+			if (!Util.isEmpty(detail.getInvoicebalance())) {
+				invoicebalance -= detail.getInvoicebalance();
+			}
+		}
+		result.put("invoicebalance", invoicebalance);
+		result.put("companybank", companybank);
 		//发票信息
 		result.put("invoiceinfo", invoiceinfo);
 		//发票明细

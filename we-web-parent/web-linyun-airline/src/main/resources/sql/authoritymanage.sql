@@ -1,6 +1,7 @@
 /*authoritymanage_list*/
 SELECT
 	c.comName,
+	c.createtime,
 	d.id AS deptId,
 	d.deptName,
 	j.id AS jobId,
@@ -127,3 +128,35 @@ WHERE
 	cj.posid =@jobId
 AND uj.`status` =@jobStatus
 AND cj.comId=@companyId
+
+/*authoritymanage_delete_t_job*/
+delete from t_job
+where deptId=@deptId
+
+/*authoritymanage_delete_t_company_job*/
+DELETE
+FROM
+	t_company_job
+WHERE
+	posid IN (
+		SELECT
+			id
+		FROM
+			t_job j
+		WHERE
+			j.deptId =@deptId
+	)
+	
+/*authoritymanage_delete_t_com_fun_pos_map*/
+DELETE
+FROM
+	t_com_fun_pos_map
+WHERE
+	jobId IN (
+		SELECT
+			id
+		FROM
+			t_job j
+		WHERE
+			j.deptId =@deptId
+	)
