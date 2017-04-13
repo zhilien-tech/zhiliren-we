@@ -197,7 +197,7 @@ $(function(){
 
     //客户需求的 +需求 按钮
     $('.addXuQiu').click(function(){
-        var divTest = $(this).parent().parent(); 
+        var divTest = $(this).parent(); 
         var newDiv = divTest.clone(false,true);
         newDiv.find('[name=customneedid]').val('');
         newDiv.find('[name=leavecity]').next().remove();
@@ -251,7 +251,7 @@ $(function(){
     });
     //客户需求的 -需求 按钮
     $(document).on("click",".removeDemand",function(){
-        $(this).parent().parent().remove();
+        $(this).parent().remove();
         $('.DemandDiv').each(function(i){
         	$(this).find('.titleNum').html(i+1);
         });
