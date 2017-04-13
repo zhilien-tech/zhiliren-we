@@ -30,7 +30,7 @@
           <input id="generateOrder" class="right orderInput" type="checkbox" checked="checked" readonly="true">
           <h4>添加订单</h4>
      </div>
-      <div class="modal-body modal-hei">
+      <div class="modal-body modal-hei" style="height:484px;overflow-y: auto;">
       	<form id="customaddform" action="">
           <div class="customerInfo"><!--客户信息-->
                <div class="infoTop">

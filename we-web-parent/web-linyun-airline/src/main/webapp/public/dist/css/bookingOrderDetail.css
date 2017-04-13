@@ -37,7 +37,7 @@ form#financeForm table {margin-bottom: 10px;}
 /*end select2 内容style 隐藏*/
 .cloTable tbody tr:nth-child(1) td:nth-child(2) .select2-container .selection .select2-selection {width:100%;}
 .airlineinfo td:nth-child(4){width: 12% !important;}
-input#arrivetime {width: 82px;}
+input#arrivetime {width:100%;}
 .cloTable tr td label {float: right;}
 [name="airlineinfo"] td:nth-child(2) .select2-container .selection .select2-selection {width: 100% !important;}
 .airlineinfo td:nth-child(12){width:6%;}
@@ -53,3 +53,6 @@ input#arrivetime {width: 82px;}
 #avgexrate{width:140px;}
 .tdBtn {width: 30px !important;}
 .cloTable tbody tr td:nth-child(4) { width:12% !important;}
+.cloTable tr td:nth-of-type(10){width: 0%;}
+.removeIconTd{width: 30px !important;}
+.removIcon{margin-right: 10px;}
