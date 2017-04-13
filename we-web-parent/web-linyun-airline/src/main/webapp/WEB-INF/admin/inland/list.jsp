@@ -433,7 +433,7 @@
 	        closeBtn:false,//默认 右上角关闭按钮 是否显示
 	        shadeClose:true,
 	        scrollbar: false,
-	        area: ['1087px', '620px'],
+	        area: ['1137px', '553px'],
 	        content: '${base}/admin/inland/addOrder.html'
 	      });
 	  });

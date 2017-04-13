@@ -54,7 +54,7 @@
                 	</c:forEach>
 				</tbody>
 			</table>
-			<table class="selectTable">
+			<%-- <table class="selectTable">
 				<tr>
 					<td>银行：</td>
 					<td>
@@ -91,8 +91,44 @@
 					</td>
 					<input id="totalMoney" name="totalMoney" type="hidden" value="${obj.totalMoney }">
 				</tr>
-			</table>
+			</table> --%>
 			<table class="payTable2">
+				<tr>
+					<td>银行：</td>
+					<td>
+						<select id="bankComp" name="bankComp" onchange="bankSelect();" class="form-control input-sm">
+							<!-- <option>--请选择--</option> -->
+							<c:forEach var="one" items="${obj.bankList}">
+	                 			<c:choose>
+	                          		<c:when test="${obj.companybank.bankcompid eq one.bankNameId }">
+			                        	 <option value="${one.bankNameId }" selected="selected">${one.bankName }</option>
+	                          		</c:when>
+	                          		<c:otherwise>
+		                        	 <option value="${one.bankNameId }">${one.bankName }</option>
+	                          		</c:otherwise>
+	                          	</c:choose>       	
+	                        </c:forEach>
+	                       
+						</select>
+					</td>
+					<td>银行卡名称：</td>
+					<td><select id="cardName" name="cardName" onchange="cardSelect();" class="form-control input-sm">
+							<!-- <option>--请选择--</option> -->
+							<option>${obj.companybank.cardName }</option>
+					</select></td>
+					<td>卡号：</td>
+					<td>
+						<select id="cardNum" name="cardNum" class="form-control input-sm">
+							<!-- <option>--请选择--</option> -->
+							<option>${obj.companybank.cardNum }</option>
+						</select>
+					</td>
+					<td>合计：</td>
+					<td id="totalMoney">
+						<fmt:formatNumber type="number" value="${obj.totalMoney }" pattern="0.00" maxFractionDigits="2"/>
+					</td>
+					<input id="totalMoney" name="totalMoney" type="hidden" value="${obj.totalMoney }">
+				</tr>
 				<tr>
 					<td>国内外：</td>
 					<td><select id="payAddress" name="payAddress" class="form-control input-sm">

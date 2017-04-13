@@ -51,7 +51,7 @@ table.dataTable thead .sorting:after{display: none;}
 .cloTable{margin-top:5px;}
 .textWid{width:85px !important;}
 .addIcon{top: 0px;margin-right: 0px;margin-left: 15px;}
-.removIcon{color: #3c8dbc;margin-right: 0;margin-top: 0;margin-left: -22px;}
+.removIcon{color: #3c8dbc;margin-right: 0;margin-top: 0;margin-left: -24px;}
 .cloTable tr {height: 40px;}
 .addDemand,.removeDemand{padding: 5px 11px;position: relative;left: 950px;margin-top: 5px;}
 .addDemand b{float: left;}
@@ -69,6 +69,7 @@ table.dataTable thead .sorting:after{display: none;}
 .selectTable tbody tr td:nth-child(1){width:45px;}
 .selectTable tbody tr td:nth-child(2){width:150px;}
 .selectTable tbody tr td:nth-child(3){width:95px;}
+.selectTable tbody tr td:nth-child(4){width:20%;}
 .selectTable tbody tr td:nth-child(5){width:50px;}
 .selectTable tbody tr td:nth-child(6){width:240px;}
 .selectTable tbody tr td:nth-child(7){width:50px;}
@@ -180,10 +181,11 @@ select.form-control.TimeInput { padding-left: 3px; padding-right: 3px;}
 #uploadFile{width: 70px !important;}
 object#SWFUpload_0 {top: 10px;width: 70px;}
 div#uploadFile-button {position: relative;top: 10px;}
-.remarkContext {margin-bottom: 10px;overflow: hidden;min-height: 80px;display: block;border: solid 1px #e0e0e0;border-radius: 0 0 3px 3px;background-color:#fcfcfb;}
+.remarkContext {margin-bottom: 10px;overflow: hidden;min-height: 80px;display: block;border: solid 1px #e0e0e0;border-radius: 0 0 3px 3px;background-color:#f2f2f2;}
 .remarkDiv {padding: 5px 0px;display: block;background-color: #f5f5f5;box-shadow: 1px 0px 5px #bebebe;margin-bottom: 15px;border-left: solid 1px #e0e0e0;}
 textarea#cRemark {height: 112px;resize: none;}
 .remarkTable tbody tr td:nth-child(1){width: 86px;text-align: right;}
 .infofooter1 {padding-bottom: 1px;border-bottom: 0;border-radius: 3px 3px 0px 0px;margin-bottom: 0px;}
 .remarkTable tbody tr td:nth-child(2){padding-right: 6%;}
 .remarkTable {width: 100%;}
+input#address {width: 100% !important;}

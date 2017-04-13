@@ -60,6 +60,7 @@ import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
 import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.common.enums.MessageTypeEnum;
+import com.linyun.airline.common.enums.MessageWealthStatusEnum;
 import com.linyun.airline.common.enums.OrderRemindEnum;
 import com.linyun.airline.common.enums.OrderStatusEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
@@ -81,6 +82,7 @@ import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.entities.TVisitorInfoEntity;
 import com.linyun.airline.entities.TVisitorsPnrEntity;
 import com.linyun.airline.forms.TTurnOverAddForm;
+import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.JsonUtil;
@@ -1176,8 +1178,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		Sql sql = Sqls.create(EntityUtil.entityCndSql(TPnrInfoEntity.class));
 		List<Record> query = dbDao.query(sql, Cnd.where("needid", "=", customneedid), null);
 		for (Record record : query) {
-			record.put("loginid", dbDao.fetch(ComLoginNumEntity.class, Long.valueOf((String) record.get("loginid")))
-					.getLoginNumName());
+			if (!Util.isEmpty(record.get("loginid"))) {
+				record.put("loginid", dbDao
+						.fetch(ComLoginNumEntity.class, Long.valueOf((String) record.get("loginid"))).getLoginNumName());
+			}
 		}
 		return query;
 	}
@@ -1514,6 +1518,12 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			orderreceive.setReceiveDate(new Date());
 			orderreceive.setReceivestatus(AccountReceiveEnum.RECEIVINGMONEY.intKey());
 			orders.add(order);
+			//消息提醒
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
+			map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
+			searchViewService.addRemindMsg(map, order.getOrdersnum(), "", order.getId(),
+					MessageWealthStatusEnum.RECSUBMITED.intKey(), session);
 		}
 		//更新订单状态
 		dbDao.update(orders);
@@ -1525,7 +1535,6 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		//更新水单表
 		dbDao.insert(receiveBill);
 		return null;
-
 	}
 
 	/**
@@ -1565,10 +1574,18 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			paypnrs.add(paypnr);
 			//PNR更新状态
 			TPnrInfoEntity pnrinfo = dbDao.fetch(TPnrInfoEntity.class, Long.valueOf(str));
+			TOrderCustomneedEntity need = dbDao.fetch(TOrderCustomneedEntity.class, pnrinfo.getNeedid().longValue());
+			TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, need.getOrdernum().longValue());
 			pnrinfo.setOptime(new Date());
 			pnrinfo.setOrderPnrStatus(AccountPayEnum.APPROVAL.intKey());
 			paypnr.setOptime(new Date());
 			pnrinfos.add(pnrinfo);
+			//消息提醒
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
+			map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
+			searchViewService.addRemindMsg(map, order.getOrdersnum(), pnrinfo.getPNR(), order.getId(),
+					MessageWealthStatusEnum.PSAPPROVALING.intKey(), session);
 		}
 		//更新pnr状态
 		dbDao.update(pnrinfos);
@@ -1619,6 +1636,11 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			record.put("leavedates", leavetdates);
 			record.put("customs", customs);
 			record.put("orders", orders);
+			String issuer = "";
+			if (orders.size() > 0) {
+				issuer = (String) orders.get(0).get("issuer");
+			}
+			record.put("issuer", issuer);
 			record.put("receiveenum", EnumUtil.enum2(AccountReceiveEnum.class));
 			record.put("invoiceenum", EnumUtil.enum2(InvoiceInfoEnum.class));
 		}

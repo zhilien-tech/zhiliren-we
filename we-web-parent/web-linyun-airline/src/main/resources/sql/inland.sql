@@ -87,14 +87,10 @@ $condition
 /*get_shoufukuan_shoukuan_list*/
 SELECT
 	tr.*, tii.id invoiceid,
-	tii. STATUS invoicestatus,
-	tfi.issuer
+	tii. STATUS invoicestatus
 FROM
 	t_receive tr
 LEFT JOIN t_invoice_info tii ON tr.id = tii.receiveid
-LEFT JOIN t_order_receive tor ON tr.id = tor.receiveid
-LEFT JOIN t_up_order tuo ON tor.orderid = tuo.id
-LEFT JOIN t_finance_info tfi ON tfi.orderid = tuo.id
 $condition
 
 /*get_shoukuan_order_list*/
@@ -102,7 +98,8 @@ SELECT
 	tuo.ordersnum,
 	tfi.personcount,
 	tfi.incometotal,
-	tuo.id orderid
+	tuo.id orderid,
+	tfi.issuer
 FROM
 	t_up_order tuo
 LEFT JOIN t_finance_info tfi ON tuo.id = tfi.orderid
@@ -265,3 +262,12 @@ WHERE
 			companyId = @companyId
 	)
 AND typecode = @typeCode
+
+
+/*select_receive_order_info*/
+SELECT
+	tuo.*
+FROM
+	t_order_receive tor
+INNER JOIN t_up_order tuo ON tor.orderid = tuo.id
+$condition

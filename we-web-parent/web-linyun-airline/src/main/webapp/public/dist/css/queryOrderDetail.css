@@ -27,10 +27,13 @@ div#orderlog ul li{text-align: center;}
 .cloTable tbody tr:nth-child(1) td:nth-child(2) .select2-container .selection .select2-selection{width:140px;}
 .cloTable tbody tr:nth-child(1) td:nth-child(4) .select2-container .selection .select2-selection{width:140px;}
 .cloTable tr:nth-of-type(1) td:nth-of-type(4) span.select2-container {width: 140px !important;}
-.cloTable tr td:nth-of-type(10) {width: 6%;}
-.cloTable tr td:nth-of-type(8) {width: 6%;}
+.cloTable tr td:nth-of-type(10) {width:8%;}
+.cloTable tr td:nth-of-type(6) {width:10%;}
+.cloTable tr td:nth-of-type(8) {width:8%;}
+.cloTable tr td:nth-of-type(12) {width:8%;}
 .cloTable tr td:nth-of-type(9) label { width: 55px;}
 .cloTable tr td:nth-of-type(11) label {width: 55px;}
+.infofooter table tr td label {float: right;}
 [name="airlineinfo"] td:nth-child(2){width:140px !important;}
 .select2-container--default.select2-container--disabled .select2-selection--multiple {width: 70px;}
 .cloTable tr:nth-of-type(1) td:nth-of-type(3) label {position: relative;left: 0px;}
