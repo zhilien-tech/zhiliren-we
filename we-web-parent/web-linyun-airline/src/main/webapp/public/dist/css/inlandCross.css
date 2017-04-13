@@ -69,6 +69,7 @@ table.dataTable thead .sorting:after{display: none;}
 .selectTable tbody tr td:nth-child(1){width:45px;}
 .selectTable tbody tr td:nth-child(2){width:150px;}
 .selectTable tbody tr td:nth-child(3){width:95px;}
+.selectTable tbody tr td:nth-child(4){width:20%;}
 .selectTable tbody tr td:nth-child(5){width:50px;}
 .selectTable tbody tr td:nth-child(6){width:240px;}
 .selectTable tbody tr td:nth-child(7){width:50px;}
