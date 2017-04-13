@@ -36,6 +36,8 @@ public class TCompanySqlForm extends DataTablesParamForm {
 	/**公司类型*/
 	private String comType;
 
+	private Long logincompanyid;
+
 	private Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		//TODO 添加自定义查询条件（可选）
@@ -49,6 +51,7 @@ public class TCompanySqlForm extends DataTablesParamForm {
 			cnd.and("t.comType", "=", comType);
 		}
 		cnd.and("t.deletestatus", "=", 0);
+		cnd.and("t.id", "!=", logincompanyid);
 		cnd.orderBy("t.createtime", "desc");
 		return cnd;
 	}

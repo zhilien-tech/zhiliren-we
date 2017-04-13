@@ -14,7 +14,7 @@ public class TCompanyUpdateForm extends ModForm implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**管理员账号id*/
-	private long adminId;
+	private Long adminId;
 	/**用户名*/
 	private String telephone;
 
@@ -22,7 +22,7 @@ public class TCompanyUpdateForm extends ModForm implements Serializable {
 	private String comName;
 
 	/**公司类型*/
-	private int comType;
+	private Integer comType;
 
 	/**备注*/
 	private String remark;
@@ -46,7 +46,7 @@ public class TCompanyUpdateForm extends ModForm implements Serializable {
 	private String license;
 
 	/**操作人*/
-	private long opid;
+	private Long opid;
 
 	/**创建时间*/
 	private Date createtime;

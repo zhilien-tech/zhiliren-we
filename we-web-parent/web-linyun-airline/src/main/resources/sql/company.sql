@@ -1,30 +1,45 @@
 /*company_list*/
-select t.id,
-		t.adminId,
-		t.comName,
-		case when comType = 1 then 
-			'上游公司'
-		when comType = 2 then
-			'代理商'
-		else
-			'其他'
-		end  comType,
-		t.remark,
-		t.connect,
-		t.mobile,
-		t.email,
-		t.phonenumber,
-		t.address,
-		t.license,
-		t.opid,
-		t.createtime,
-		t.lastupdatetime,
-		t.deletestatus,
-    IFNULL(t1.countuser,0) renshu
-from t_company t left join (select count(tu.id)-1 countuser,tcj.comId  
-										from t_company_job tcj,t_user_job tuj,t_user tu 
-										where tcj.id = tuj.companyJobId and tu.id=tuj.userid and tu.status=1 GROUP BY tcj.comId) t1 
-				on t1.comId = t.id
+SELECT
+	t.id,
+	t.adminId,
+	t.comName,
+	CASE
+WHEN comType = 1 THEN
+	'上游公司'
+WHEN comType = 2 THEN
+	'代理商'
+ELSE
+	'其他'
+END comType,
+ t.remark,
+ t.connect,
+ t.mobile,
+ t.email,
+ t.phonenumber,
+ t.address,
+ t.license,
+ t.opid,
+ t.createtime,
+ t.lastupdatetime,
+ t.deletestatus,
+ IFNULL(t1.countuser, 0) renshu
+FROM
+	t_company t
+LEFT JOIN (
+	SELECT
+		count(tu.id) - 1 countuser,
+		tcj.comId
+	FROM
+		t_company_job tcj,
+		t_user_job tuj,
+		t_user tu
+	WHERE
+		tcj.id = tuj.companyJobId
+	AND tu.id = tuj.userid
+	AND tu. STATUS = 1
+	GROUP BY
+		tcj.comId
+) t1 ON t1.comId = t.id			
 $condition
 /*company_list_count*/
 select count(*)

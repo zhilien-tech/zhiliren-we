@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
@@ -16,6 +18,7 @@ import org.nutz.lang.Strings;
 
 import com.linyun.airline.admin.authority.authoritymanage.publicservice.AuthorityPublicService;
 import com.linyun.airline.admin.authority.job.entity.TJobEntity;
+import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.common.enums.UserTypeEnum;
 import com.linyun.airline.entities.TAgentEntity;
@@ -57,10 +60,12 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 	 * @param sqlManagerm
 	 * @return 返回上游公司、代理商、总数 封装到map中
 	 */
-	public Map<String, Object> getUpCompanyAndAgentCount() {
+	public Map<String, Object> getUpCompanyAndAgentCount(HttpSession session) {
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Map<String, Object> map = MapUtil.map();
-		long upconpany = getCompanyCount(CompanyTypeEnum.UPCOMPANY.intKey());
-		long agent = getCompanyCount(CompanyTypeEnum.AGENT.intKey());
+		long upconpany = getCompanyCount(CompanyTypeEnum.UPCOMPANY.intKey(), company.getId());
+		long agent = getCompanyCount(CompanyTypeEnum.AGENT.intKey(), company.getId());
 		map.put("upconpany", upconpany);
 		map.put("agent", agent);
 		map.put("totalcompany", upconpany + agent);
@@ -78,12 +83,13 @@ public class CompanyViewService extends BaseService<TCompanyEntity> {
 	 * @return 返回相应数量
 	 */
 	@SuppressWarnings("unused")
-	private long getCompanyCount(int comType) {
+	private long getCompanyCount(int comType, Long logincompanyid) {
 		String sqlString = EntityUtil.entityCndSql(TCompanyEntity.class);
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("comType", "=", comType);
 		cnd.and("deletestatus", "=", 0);
+		cnd.and("id", "!=", logincompanyid);
 		sql.setCondition(cnd);
 		return Daos.queryCount(nutDao, sql.toString());
 	}
