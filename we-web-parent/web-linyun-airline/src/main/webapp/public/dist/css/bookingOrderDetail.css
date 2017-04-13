@@ -56,3 +56,4 @@ input#arrivetime {width:100%;}
 .cloTable tr td:nth-of-type(10){width: 0%;}
 .removeIconTd{width: 30px !important;}
 .removIcon{margin-right: 10px;}
+.remarkContext {border-top: 0;}
