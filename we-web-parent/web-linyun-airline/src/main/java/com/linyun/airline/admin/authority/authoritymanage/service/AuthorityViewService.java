@@ -141,6 +141,18 @@ public class AuthorityViewService extends BaseService<DeptJobForm> {
 		Long companyId = company.getId();//得到公司的id
 		String jobJson = updateForm.getJobJson();
 		JobDto[] jobJsonArray = Json.fromJsonAsArray(JobDto.class, jobJson);
+		//删除公司功能职位表数据
+		Sql sqlDeleteComFunJob = Sqls.create(sqlManager.get("authoritymanage_delete_t_com_fun_pos_map"));
+		sqlDeleteComFunJob.params().set("deptId", deptId);
+		nutDao.execute(sqlDeleteComFunJob);
+		//删除公司职位表数据
+		Sql sqlDeleteComJob = Sqls.create(sqlManager.get("authoritymanage_delete_t_company_job"));
+		sqlDeleteComJob.params().set("deptId", deptId);
+		nutDao.execute(sqlDeleteComJob);
+		//删除职位表数据
+		Sql sqlDeleteJob = Sqls.create(sqlManager.get("authoritymanage_delete_t_job"));
+		sqlDeleteJob.params().set("deptId", deptId);
+		nutDao.execute(sqlDeleteJob);
 		if (!Util.isEmpty(jobJsonArray)) {
 			for (JobDto jobDto : jobJsonArray) {
 				saveOrUpdateSingleJob(dept.getId(), jobDto.getJobId(), companyId, jobDto.getJobName(),
@@ -173,6 +185,7 @@ public class AuthorityViewService extends BaseService<DeptJobForm> {
 		//获取到部门id
 		Long deptId = newDept.getId();
 		JobDto[] jobJsonArray = Json.fromJsonAsArray(JobDto.class, jobJson);
+
 		if (!Util.isEmpty(jobJsonArray)) {
 			for (JobDto jobDto : jobJsonArray) {
 				saveOrUpdateSingleJob(deptId, null, companyId, jobDto.getJobName(), jobDto.getFunctionIds());
@@ -183,32 +196,33 @@ public class AuthorityViewService extends BaseService<DeptJobForm> {
 
 	private void saveOrUpdateSingleJob(Long deptId, Long jobId, Long companyId, String jobName, String functionIds) {
 		//1，判断操作类型，执行职位新增或者修改
-		if (Util.isEmpty(jobId) || jobId <= 0) {
-			//添加操作
-			Sql sql = Sqls.create(sqlManager.get("authoritymanage_companyJob"));
-			sql.params().set("comId", companyId);
-			sql.params().set("jobName", jobName);
-			TJobEntity newJob = DbSqlUtil.fetchEntity(dbDao, TJobEntity.class, sql);
+		//if (Util.isEmpty(jobId) || jobId <= 0) {
+		//添加操作
+		Sql sql = Sqls.create(sqlManager.get("authoritymanage_companyJob"));
+		sql.params().set("comId", companyId);
+		sql.params().set("jobName", jobName);
+		TJobEntity newJob = DbSqlUtil.fetchEntity(dbDao, TJobEntity.class, sql);
 
-			if (Util.isEmpty(newJob)) {
-				//职位不存在则新增
-				newJob = new TJobEntity();
-				newJob.setName(jobName);
-				newJob.setDeptId(deptId);
-				newJob = dbDao.insert(newJob);
-				jobId = newJob.getId();
+		if (Util.isEmpty(newJob)) {
+			//职位不存在则新增
+			newJob = new TJobEntity();
+			newJob.setName(jobName);
+			newJob.setDeptId(deptId);
+			newJob = dbDao.insert(newJob);
+			jobId = newJob.getId();
 
-				//该公司添加新的职位
-				TCompanyJobEntity newComJob = new TCompanyJobEntity();
-				newComJob.setComId(companyId);
-				newComJob.setPosid(jobId);
-				dbDao.insert(newComJob);
-			} else {
-				//如果职位名称已存在
-				throw new IllegalArgumentException("该公司此职位已存在,无法添加,职位名称:" + jobName);
-			}
-
+			//该公司添加新的职位
+			TCompanyJobEntity newComJob = new TCompanyJobEntity();
+			newComJob.setComId(companyId);
+			newComJob.setPosid(jobId);
+			dbDao.insert(newComJob);
 		} else {
+			//如果职位名称已存在
+			throw new IllegalArgumentException("该公司此职位已存在,无法添加,职位名称:" + jobName);
+		}
+
+		//} 
+		/*else {
 			//更新操作
 			TJobEntity newJob = dbDao.fetch(TJobEntity.class, Cnd.where("id", "=", jobId));
 			if (Util.isEmpty(newJob)) {
@@ -226,8 +240,9 @@ public class AuthorityViewService extends BaseService<DeptJobForm> {
 				//如果职位名称已存在
 				throw new IllegalArgumentException("该公司此职位已存在,无法修改,职位名称:" + jobName);
 			}
+
 			dbDao.update(TJobEntity.class, Chain.make("name", jobName), Cnd.where("id", "=", newJob.getId()));
-		}
+		}*/
 
 		//2，截取功能模块id，根据功能id和公司id查询出公司功能id，用公司功能id和职位id往公司功能职位表添加数据
 		if (!Util.isEmpty(functionIds)) {
