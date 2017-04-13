@@ -1,5 +1,5 @@
 /******************************************************************************
-version : 0.0.X   BEGIN
+version : 1.0.0   BEGIN
 ******************************************************************************/ 
 /*航空政策管理增加地区字段*/
 ALTER TABLE `t_airlinepolicy`
@@ -164,3 +164,7 @@ ADD COLUMN `enterstarttime`  varchar(16) NULL COMMENT '进澳出发时间' AFTER
 ADD COLUMN `enterarrivetime`  varchar(16) NULL COMMENT '进澳抵达时间' AFTER `enterstarttime`,
 ADD COLUMN `outstarttime`  varchar(16) NULL COMMENT '出澳出发时间' AFTER `enterarrivetime`,
 ADD COLUMN `outarrivetime`  varchar(16) NULL COMMENT '出澳抵达时间' AFTER `outstarttime`;
+/******************************************************************************
+version : 1.0.0   END   2017-04-12
+******************************************************************************/ 
+
