@@ -67,6 +67,7 @@
 											<option value="${one.text }" selected="selected">${one.text}</option>
 										</c:forEach> --%>
 									 </select>
+									 <span class="prompt">*</span>
 									 <!-- 区域ID -->
 									 <input id="airlineIds" name="airlineName" type="hidden"/>
 			                      </div>
