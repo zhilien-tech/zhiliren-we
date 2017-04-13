@@ -235,18 +235,54 @@ $("#interRecSearchBtn").on('click', function () {
 $(".paymentNewUl li").click(function(){
 	$(this).addClass("orderStatusClass").siblings().removeClass('orderStatusClass');
 	var bookId =$(".osClass",$(this)).attr("id");
+	 
+	 $('ul.nlkhUL li').each(function(i,ele){
+        if($(ele).hasClass('active')){
+        	var clickFun = $(ele).find("a").attr("onclick");
+        	//收款
+        	if(clickFun == "toConfirmRecPage();"){
+        		var receiveStatus = $("#interRecSelect").val();
+        		var param = {
+        				"receiveStatus":receiveStatus,
+        				"orderStatus":bookId
+        		};
+        		interRecTable.settings()[0].ajax.data = param;
+        		interRecTable.ajax.reload(
+        				function(json){
+        					autoHighLoad($('#interRecTable'));
+        				}		
+        		);
+        	}
+        	//付款
+        	if(clickFun == "toConfirmPayPage();"){
+        		var payStatus = $("#interPaySelect").val();
+        		var param = {
+        				"payStatus":payStatus,
+        				"orderStatus":bookId
+        		};
+        		if(payStatus == "2"){
+        			//付款中
+        			interPayTable.settings()[0].ajax.data = param;
+            		interPayTable.ajax.reload(
+            				function(json){
+            					autoHighLoad($('#interPayTable'));
+            				}		
+            		);
+        		}else{
+        			interPayEdTable.settings()[0].ajax.data = param;
+        			interPayEdTable.ajax.reload(
+            				function(json){
+            					autoHighLoad($('#interPayEdTable'));
+            				}		
+            		);
+        		}
+        		
+        	}
+        	
+        }
+    });
 	
-	var receiveStatus = $("#interRecSelect").val();
-	var param = {
-			"receiveStatus":receiveStatus,
-			"orderStatus":bookId
-	};
-	interRecTable.settings()[0].ajax.data = param;
-	interRecTable.ajax.reload(
-			function(json){
-				autoHighLoad($('#interRecTable'));
-			}		
-	);
+	
 	/*destroyDatetable($("#interPayTable"));
 	destroyDatetable($("#interPayEdTable"));
 	destroyDatetable($("#interRecTable"));
