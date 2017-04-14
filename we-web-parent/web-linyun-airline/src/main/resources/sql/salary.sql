@@ -26,8 +26,8 @@ from t_salary ts
 $condition
 /*salary_add*/
 select * from (
-select *,count(*) as 'groupNumber' from (
-select  fi.costtotal as 'costTotal',fi.incometotal as 'incomeTotal',fi.personcount as 'headCount',u.fullName
+select *,count(*) as 'groupNumber',sum(aa.cost) as 'costTotal',sum(aa.income) as 'incomeTotal',sum(aa.head) as 'headCount' from (
+select  fi.costtotal as 'cost',fi.incometotal as 'income',fi.personcount as 'head',u.fullName
 as 'drawer',si.baseWages as 'basePay',si.commission,si.comId,month(fi.billingdate) as 'month',year(fi.billingdate) as 'year',fi.issuerid
 as 'drawerId'
 from

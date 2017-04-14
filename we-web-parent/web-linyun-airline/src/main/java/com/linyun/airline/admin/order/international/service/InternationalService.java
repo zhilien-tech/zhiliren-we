@@ -43,9 +43,12 @@ import com.linyun.airline.admin.order.international.form.InternationalPayParamFo
 import com.linyun.airline.admin.order.international.form.InternationalReceiveParamForm;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
+import com.linyun.airline.admin.receivePayment.service.InterReceivePayService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
+import com.linyun.airline.common.enums.MessageWealthStatusEnum;
+import com.linyun.airline.common.enums.OrderRemindEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.ExcelReader;
 import com.linyun.airline.entities.DictInfoEntity;
@@ -100,6 +103,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	private EditPlanService editPlanService;
 	@Inject
 	private externalInfoService externalInfoService;
+	@Inject
+	private InterReceivePayService interReceivePayService;
 
 	/**
 	 * 查询国际列表
@@ -1023,6 +1028,10 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			//订单信息
 			order.setReceivestatus(AccountReceiveEnum.RECEIVINGMONEY.intKey());
 			orders.add(order);
+			//消息提醒
+			interReceivePayService.addInterRemindMsg(order.getId(), order.getOrdersnum(), "",
+					String.valueOf(order.getOrdersstatus()), MessageWealthStatusEnum.RECSUBMITED.intKey(),
+					PayReceiveTypeEnum.RECEIVE.intKey(), session);
 		}
 		//更新订单状态
 		dbDao.update(orders);
@@ -1132,6 +1141,10 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			//更新订单状态
 			orderifo.setPaystatus(AccountPayEnum.APPROVAL.intKey());
 			orders.add(orderifo);
+			//消息提醒
+			interReceivePayService.addInterRemindMsg(orderifo.getId(), orderifo.getOrdersnum(), "",
+					String.valueOf(orderifo.getOrdersstatus()), MessageWealthStatusEnum.PSAPPROVALING.intKey(),
+					PayReceiveTypeEnum.PAY.intKey(), session);
 		}
 		//更新pnr状态
 		dbDao.update(orders);
@@ -1216,5 +1229,48 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			ailines.add(airline);
 		}
 		return dbDao.insert(ailines);
+	}
+
+	/**
+	 * 消息提醒页面
+	 * TODO(这里描述这个方法详情– 可选)
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object orderRemind(HttpServletRequest request) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String orderid = request.getParameter("orderid");
+		result.put("orderid", orderid);
+		result.put("orderRemindEnum", EnumUtil.enum2(OrderRemindEnum.class));
+		return result;
+	}
+
+	/**
+	 * 保存消息提醒
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	@SuppressWarnings("unchecked")
+	public Object saveOrderRemindInfo(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		String data = request.getParameter("data");
+		Map<String, Object> dataJson = JsonUtil.fromJson(data, Map.class);
+		String orderid = (String) dataJson.get("orderid");
+		TUpOrderEntity orderinfo = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(orderid));
+		List<Map<String, String>> remindinfos = (List<Map<String, String>>) dataJson.get("remindinfos");
+		for (Map<String, String> map : remindinfos) {
+			String orderstatus = map.get("orderstatus");
+			Integer typeEnum = Integer.valueOf(map.get("remindstatus"));
+			Integer remindType = Integer.valueOf(map.get("messageType"));
+			String remindDate = map.get("remindData");
+			if (!Util.isEmpty(remindDate)) {
+				interReceivePayService.addInterRepeatRemindMsg(orderinfo.getId(), orderinfo.getOrdersnum(), "",
+						orderstatus, typeEnum, 0, remindType, remindDate, session);
+			}
+		}
+		return null;
 	}
 }

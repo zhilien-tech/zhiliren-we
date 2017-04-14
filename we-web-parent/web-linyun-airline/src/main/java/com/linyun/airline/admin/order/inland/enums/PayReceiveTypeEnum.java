@@ -17,7 +17,7 @@ import com.uxuexi.core.common.enums.IEnum;
  * @Date	 2017年3月3日 	 
  */
 public enum PayReceiveTypeEnum implements IEnum {
-	RECEIVE(1, "收款"), PAY(2, "付款");
+	REPEAT(0, "重复提醒"), RECEIVE(1, "收款"), PAY(2, "付款");
 	private int key;
 	private String value;
 
