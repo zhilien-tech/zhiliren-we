@@ -71,7 +71,7 @@
                    <button type="button" class="btn btn-primary input-sm btnSave none" onclick="saveInternationalDetail()">保存</button> 
                    <button type="button" class="btn btn-primary input-sm btnCancel none">取消</button>
                    <button type="button" class="btn btn-primary input-sm editBtn right">编辑</button>
-                   
+                   <input id="mainaircount" name="mainaircount" type="hidden">
                  </div>
                </div>
                <div class="infofooter">
@@ -141,7 +141,7 @@
                  <p>航程信息</p>
                </div>
                <div class="infofooter">
-                  <button type="button" class="btn btn-primary right addHD">添加航段</button>
+                  <button type="button" class="btn btn-primary right addHD none">添加航段</button>
                   <table class="HCinfoInp">
                    <tr>
                      <td><label>航空公司：</label></td>
@@ -210,7 +210,7 @@
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active" id="tab_1">
-						<button type="button" class="btn btn-primary right recordBtn addYSK">添加记录</button>
+						<button type="button" class="btn btn-primary right recordBtn addYSK none">添加记录</button>
 		                <table class="table table-bordered table-hover main">
 		                    <thead>
 		                      <tr>
@@ -231,7 +231,7 @@
 		                </table>
 					</div>
 					<div class="tab-pane" id="tab_2">
-						<button type="button" class="btn btn-primary right recordBtn addYFK">添加记录</button>
+						<button type="button" class="btn btn-primary right recordBtn addYFK none">添加记录</button>
 		                <table class="table table-bordered table-hover main">
 		                    <thead>
 		                      <tr>
@@ -460,9 +460,14 @@
           $('.btnCancel').toggle();//取消按钮 显示
           $(".btnRemind").toggle();//提醒设置按钮 显示
           $(".btnLog").toggle();//日志按钮 显示
+          $(".addHD").toggle();//添加航段 显示
+          $(".addYSK").toggle();//添加预收款 显示
+          $(".addYFK").toggle();//添加预付款 显示
           //$(".listInfo").toggle();//选项卡 显示
           $('.disab').removeAttr("disabled");//信息模块 input 禁止编辑的状态
           $('#orderType').removeAttr("disabled");//信息模块 input 禁止编辑的状态
+          loadAirlineInfo();
+          loadJianMianAccount('${obj.orderinfo.id }');
         });
         //取消按钮 click事件
         $('.btnCancel').click(function(){
@@ -471,9 +476,14 @@
           $('.btnCancel').toggle();//取消 按钮 隐藏
           $('.btnRemind').toggle();//提醒设置 按钮 隐藏
           $('.btnLog').toggle();//日志 按钮 隐藏
+          $('.addHD').toggle();//添加航段 隐藏
+          $('.addYSK').toggle();//添加预收款 隐藏
+          $('.addYFK').toggle();//添加付款 隐藏
           //$(".listInfo").toggle();//选项卡 隐藏
           $('.disab').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
           $('#orderType').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
+          loadAirlineInfo(1);
+          loadJianMianAccount('${obj.orderinfo.id }',1);
         });
 
         $('.UnderIcon').on('click',function(){//客户信息 显示/隐藏
@@ -488,7 +498,7 @@
                 skin: false, //加上边框
                 closeBtn:false,//默认 右上角关闭按钮 是否显示
                 shadeClose:true,
-                area: ['400px', '350px'],
+                area: ['400px', '450px'],
                 content: '${base}/admin/international/orderRemind.html?orderid=${obj.orderinfo.id }'
               });
         });
@@ -597,8 +607,9 @@
         });
     });
     //加载航段信息
-    loadAirlineInfo();
-    function loadAirlineInfo(){
+    loadAirlineInfo(1);
+    function loadAirlineInfo(status){
+    	
     	$.ajax({
 			type: 'POST', 
 			data: {orderid:'${obj.orderinfo.id}'}, 
@@ -610,13 +621,16 @@
             	var zihtml = '';
             	for(var i = 0 ;i < data.length ; i++){
             		if(data[i].pnrinfo.mainsection === 1){
+            			//设置主航段信息
             			mainhtml += '<tr><td>';
             			if(data[i].pnrinfo.pNR && data[i].pnrinfo.pNR != undefined){
             				mainhtml += data[i].pnrinfo.pNR;
             			}
             			mainhtml += '</td>';
             			mainhtml += '<td><ul>';
+            			var mainaircount = 0;
             			$.each(data[i].airinfo, function(name, value) {
+            				mainaircount += 1;
                				//mainhtml += '<li>'+value.leavecity+'/'+value.arrvicity+'</li>';
                				mainhtml += '<li>';
                				if(value.leavecity && value.leavecity != undefined){
@@ -668,9 +682,13 @@
             				mainhtml += data[i].pnrinfo.peoplecount;
             			}
             			mainhtml += '</td>';
-            			mainhtml += '<td><a href="javascript:editAirlineInfo('+data[i].pnrinfo.id+');">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;';
-            			mainhtml += '<a href="javascript:visitorInfo('+data[i].pnrinfo.id+');" class="YKinfo">游客信息</a>';
-            			mainhtml += '<a href="javascript:;" class="FileDiv">上传游客<input type="file" class="uploadVisitors"><input type="hidden" id="pnrid" name="pnrid" value="'+data[i].pnrinfo.id+'"></a></td>';
+            			if(status){
+            				mainhtml += '<td></td>';
+            			}else{
+	            			mainhtml += '<td><a href="javascript:editAirlineInfo('+data[i].pnrinfo.id+');">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;';
+	            			mainhtml += '<a href="javascript:visitorInfo('+data[i].pnrinfo.id+');" class="YKinfo">游客信息</a>';
+	            			mainhtml += '<a href="javascript:;" class="FileDiv">上传游客<input type="file" class="uploadVisitors"><input type="hidden" id="pnrid" name="pnrid" value="'+data[i].pnrinfo.id+'"></a></td>';
+            			}
             		}else{
             			zihtml += '<tr><td>';
             			if(data[i].pnrinfo.pNR && data[i].pnrinfo.pNR != undefined){
@@ -729,11 +747,17 @@
             				zihtml += data[i].pnrinfo.peoplecount;
             			}
             			zihtml += '</td>';
-            			zihtml += '<td><a href="javascript:editAirlineInfo('+data[i].pnrinfo.id+');">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;';
-            			zihtml += '<a href="javascript:visitorInfo('+data[i].pnrinfo.id+');" class="YKinfo">游客信息</a>';
-            			zihtml += '<a href="javascript:;" class="FileDiv">上传游客<input type="file" class="uploadVisitors"><input type="hidden" id="pnrid" name="pnrid" value="'+data[i].pnrinfo.id+'"></a></td>';
+            			if(status){
+            				zihtml += '<td></td>';
+            			}else{
+	            			zihtml += '<td><a href="javascript:editAirlineInfo('+data[i].pnrinfo.id+');">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;';
+	            			zihtml += '<a href="javascript:visitorInfo('+data[i].pnrinfo.id+');" class="YKinfo">游客信息</a>';
+	            			zihtml += '<a href="javascript:;" class="FileDiv">上传游客<input type="file" class="uploadVisitors"><input type="hidden" id="pnrid" name="pnrid" value="'+data[i].pnrinfo.id+'"></a></td>';
+            			}
             		}
             	}
+            	//设置主航段数
+            	$('#mainaircount').val(mainaircount);
             	$('#mainsection').html(mainhtml);
             	autoHighLoad($('#mainsection'));
             	$('#zisection').html(zihtml);
@@ -744,8 +768,8 @@
       });
     }
   //加载减免信息
-    loadJianMianAccount('${obj.orderinfo.id }'); 
-    function loadpayAndReceiveRecord(){
+    loadJianMianAccount('${obj.orderinfo.id }',1); 
+    function loadpayAndReceiveRecord(status){
     	$.ajax({
 			type: 'POST', 
 			data: {orderid:'${obj.orderinfo.id}'}, 
@@ -773,6 +797,8 @@
             	var payshuisum = 0;
             	//合计付款实付
             	var payshisum = 0;
+            	//人头数
+            	var actualnumber = 0;
             	$.each(data.record, function(name, value) {
             		if(value.recordtype === receivestatus){
             			receivehtml += '<tr>';
@@ -821,10 +847,15 @@
             				receivehtml += '<td></td>';
             			} 
                         receivehtml += '<td>';
-                        receivehtml += '<a href="javascript:editRecord('+value.id+','+value.recordtype+');">编辑</a>';
+                        if(!status){
+	                        receivehtml += '<a href="javascript:editRecord('+value.id+','+value.recordtype+');">编辑</a>';
+                        }
                         receivehtml += '</td>';
                         receivehtml += '</tr>';
             		}else{
+            			if(value.actualnumber != undefined){
+            				actualnumber = value.actualnumber;
+            			}
             			payhtml += '<tr>';
             			if(value.orderstatus != undefined){
 	            			payhtml += '<td>'+value.orderstatus+'</td>';
@@ -871,7 +902,9 @@
             				payhtml += '<td></td>';
             			} 
                         payhtml += '<td>';
-                        payhtml += '<a href="javascript:editRecord('+value.id+','+value.recordtype+');">编辑</a>';
+                        if(!status){
+	                        payhtml += '<a href="javascript:editRecord('+value.id+','+value.recordtype+');">编辑</a>';
+                        }
                         payhtml += '</td>';
                         payhtml += '</tr>';
             		}
@@ -882,6 +915,8 @@
             	$('#payrecord').html(payhtml);
             	$('#receivable').val(receiveshisum.toFixed(2));
             	$('#costtotal').val(payshisum.toFixed(2));
+            	var mainaircount = $('#mainaircount').val();
+            	$('#personcount').val(actualnumber * mainaircount);
             	setFinanceInfo();
             	/* var incometotal  = '';
             	var relief = $('#relief').val();
@@ -917,6 +952,8 @@
 		  layer.msg("添加成功",{time: 2000});
 	  }else if(id == '2'){
 		  layer.msg("修改成功",{time: 2000});
+	  }else if(id=='3'){
+		  layer.msg("提醒成功",{time: 2000});
 	  }
 	}
     //编辑航段
@@ -978,7 +1015,7 @@
           });
     });
   	//加载减免信息
-    function loadJianMianAccount(orderid){
+    function loadJianMianAccount(orderid,status){
    	 	$.ajax({ 
    			type: 'POST', 
    			data: {orderid:orderid}, 
@@ -988,7 +1025,7 @@
            	 if(data.account){
    	         	$('#relief').val(data.account.toFixed(2));
            	 }
-           	loadpayAndReceiveRecord();
+           	loadpayAndReceiveRecord(status);
             },
             error: function (xhr) {
             } 

@@ -348,7 +348,7 @@
 							 </td>
 							 <td name="internationalcard" colspan="2" style="display: none;" align="left"><label>余额：</label></td>
 							 <td name="threepaytd"></td>
-							 <td name="threepaymethod" colspan="3" style="display: none;"><select name="thirdcustomid" disabled="disabled" class="form-control input-sm"></select></td>
+							 <td name="threepaymethod" style="display: none;"><select name="thirdcustomid" disabled="disabled" class="form-control input-sm"></select></td>
 		                   </tr>
 		                   <tr class="pnrTr">
 		                     <td colspan="13" class="addPNR">
@@ -498,7 +498,7 @@
 							<tr name="cRemarkTr" class="remarkTr">
 								<td><label>备注：</label></td>
 								<td>
-									<textarea class="form-control" id="cRemark" name="cRemark">${obj.orderinfo.remark }</textarea>
+									<textarea class="form-control" id="cRemark" name="cRemark" disabled="disabled">${obj.orderinfo.remark }</textarea>
 								</td>
 							</tr>
 						</table>
@@ -726,6 +726,7 @@
           $('#orderType').removeAttr("disabled");//订单状态禁止编辑的状态
           $('#remindTime').removeAttr("disabled");//订单状态禁止编辑的状态
           $('#remindType').removeAttr("disabled");//订单状态禁止编辑的状态
+          $('#cRemark').removeAttr("disabled");//订单状态禁止编辑的状态
           $('#jianMian').addClass("jianMian");//减免禁止编辑的状态
           //页面不可编辑
           $('.DemandDiv').each(function(i){
@@ -750,6 +751,7 @@
           		$(this).find('[name=price]').removeAttr('disabled');
               });
           });
+          loadPNRdata();
         });
         //取消按钮 click事件
         $('.btnCancel').click(function(){
@@ -767,6 +769,7 @@
           $('#orderType').attr("disabled",'disabled');//订单状态添加 不可编辑属性
           $('#remindTime').attr("disabled",'disabled');//提醒时间添加 不可编辑属性
           $('#remindType').attr("disabled",'disabled');//提醒状态添加 不可编辑属性
+          $('#cRemark').attr("disabled",'disabled');//提醒状态添加 不可编辑属性
           $('#jianMian').removeClass("jianMian");//减免添加 不可编辑属性
           //页面可以编辑
           $('.DemandDiv').each(function(i){
@@ -796,6 +799,7 @@
 	              });
         	  }
           });
+          loadPNRdata(1);
         });
 
         $('.clearBtn').click(function(){//清楚按钮 隐藏

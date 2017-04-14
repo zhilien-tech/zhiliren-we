@@ -184,7 +184,7 @@ SELECT
 	um.id umid,
 	m.generateTime,
 	c.comName,
-	u.userName,
+	u.fullName username,
 	m.msgContent,
 	m.msgType,
 	m.reminderMode,

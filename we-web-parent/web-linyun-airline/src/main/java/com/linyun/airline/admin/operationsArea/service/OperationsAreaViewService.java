@@ -54,13 +54,12 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	//询单消息状态
 	private static final int SEARCHORDERS = MessageTypeEnum.SEARCHMSG.intKey();
 	//订单消息状态
-	private static final int BOOKORDERS = MessageTypeEnum.BOOKMSG.intKey();
+	private static final int BOOKMSG = MessageTypeEnum.BOOKMSG.intKey();
 	private static final int FIRBOOK = MessageTypeEnum.FIRBOOKMSG.intKey();
 	private static final int SECBOOK = MessageTypeEnum.SECBOOKMSG.intKey();
 	private static final int THRBOOK = MessageTypeEnum.THRBOOKMSG.intKey();
 	private static final int ALLBOOK = MessageTypeEnum.ALLBOOKMSG.intKey();
 	private static final int LASTBOOK = MessageTypeEnum.LASTBOOKMSG.intKey();
-	private static final int BOOKMSG = MessageTypeEnum.BOOKMSG.intKey();
 	private static final int FINANCIALMSG = MessageTypeEnum.FINANCIALMSG.intKey();
 	private static final int RECEIVEDMSG = MessageTypeEnum.RECEIVEDMSG.intKey();
 	private static final int PAYEDMSG = MessageTypeEnum.PAYEDMSG.intKey();
@@ -70,7 +69,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	private static final int UNAPPROVALMSG = MessageTypeEnum.UNAPPROVALMSG.intKey();
 	private static final int MAKEOUTBILLMSG = MessageTypeEnum.MAKEOUTBILLMSG.intKey();
 	private static final int DRAWBILLMSG = MessageTypeEnum.DRAWBILLMSG.intKey();
-	//TODO 任务消息状态
+	//任务消息状态
 	private static final int NOTICEMSG = MessageTypeEnum.NOTICEMSG.intKey();
 	private static final int RECINVIOCING = MessageTypeEnum.RECINVIOCING.intKey(); //收发票中
 	private static final int INVIOCING = MessageTypeEnum.INVIOCING.intKey(); //开发票中
@@ -355,7 +354,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 				sendUserIds.add(accountingId);
 			}
 		}
-		sendUserIds.add(loginUserId); //TODO
+		sendUserIds.add(loginUserId);
 
 		//消息类型(默认为关闭状态)
 		String msgType = "0";
@@ -376,7 +375,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 					+ String.valueOf(RECSUBMITED);
 			break;
 		case "taskNotice":
-			//任务 TODO
+			//任务 
 			msgType = String.valueOf(NOTICEMSG) + "," + String.valueOf(FINANCIALMSG);
 			msgType += String.valueOf(FIRBOOK) + "," + String.valueOf(SECBOOK) + "," + String.valueOf(THRBOOK) + ","
 					+ String.valueOf(ALLBOOK) + "," + String.valueOf(LASTBOOK) + "," + String.valueOf(RECEIVEDMSG)
@@ -395,7 +394,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		cnd.and("um.userId", "=", loginUserId);
 		cnd.and("m.msgType", "in", msgType);
 		/*cnd.and("um.isRead", "=", READ);*/
-		List<Record> records = dbDao.query(sql, cnd, null);
+		List<Record> records = dbDao.query(sql, cnd, null); //TODO 查询公司简称
 		List<Record> recordsByCondition = new ArrayList<Record>();
 
 		for (Record record : records) {
@@ -421,7 +420,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			}
 			if (String.valueOf(DAY).equals(reminderMode)) {
 				if (Util.eq(isReadMsg, UNREAD)) {
-					//每1天提醒 TODO
+					//每1天提醒 
 					recordsByCondition.add(record);
 				} else {
 					if (!Util.isEmpty(lastReadTime)) {
@@ -435,7 +434,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			}
 			if (String.valueOf(HOUR).equals(reminderMode)) {
 				if (Util.eq(isReadMsg, UNREAD)) {
-					//每1小时提醒 TODO
+					//每1小时提醒 
 					recordsByCondition.add(record);
 				} else {
 					if (!Util.isEmpty(lastReadTime)) {
@@ -448,7 +447,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			}
 			if (String.valueOf(THIRTYM).equals(reminderMode)) {
 				if (Util.eq(isReadMsg, UNREAD)) {
-					//每30分钟提醒 TODO
+					//每30分钟提醒 
 					recordsByCondition.add(record);
 				} else {
 					if (!Util.isEmpty(lastReadTime)) {
@@ -461,7 +460,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			}
 			if (String.valueOf(FIFTEENM).equals(reminderMode)) {
 				if (Util.eq(isReadMsg, UNREAD)) {
-					//每15分钟提醒 TODO
+					//每15分钟提醒 
 					recordsByCondition.add(record);
 				} else {
 					if (!Util.isEmpty(lastReadTime)) {
@@ -483,7 +482,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 				}
 			}
 			if (String.valueOf(UNREPEAT).equals(reminderMode)) {
-				//不重复 提醒 （即只提醒一次）TODO
+				//不重复 提醒 （即只提醒一次）
 				if (Util.eq(isReadMsg, UNREAD)) {
 					recordsByCondition.add(record);
 				}
@@ -704,7 +703,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	 * 
 	 * 根据上次阅读时间，计算下一次提醒时间
 	 * <p>
-	 * TODO
+	 * 
 	 * @param lastReadTime 上次阅读时间
 	 * @param firRemindTime 第一次提醒时间
 	 * @param remindInterval 提醒时间间隔， 单位分钟

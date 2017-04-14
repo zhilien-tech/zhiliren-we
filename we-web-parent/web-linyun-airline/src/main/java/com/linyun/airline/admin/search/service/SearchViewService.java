@@ -985,9 +985,10 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		//查询当前公司下 会计id
 		TCompanyEntity companyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Sql accountSql = Sqls.create(sqlManager.get("customer_search_accounter"));
-		accountSql.setParam("jobName", "会计");
-		accountSql.setParam("compId", companyEntity.getId());
-		List<Record> accountingIds = dbDao.query(accountSql, null, null);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("j.`name`", "like", "%会计%");
+		cnd.and("cj.comId", "=", companyEntity.getId());
+		List<Record> accountingIds = dbDao.query(accountSql, cnd, null);
 
 		//消息接收方ids
 		ArrayList<Long> receiveUserIds = Lists.newArrayList();
