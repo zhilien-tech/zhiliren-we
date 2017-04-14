@@ -47,7 +47,7 @@
                 			<td>${one.shortname }</td>
                 			<td>${one.billdate }</td>
                 			<td>${one.peoplecount }</td>
-                			<td>${one.approver }</td>
+                			<td>${one.issuer }</td>
                 			<td>
                 				<fmt:formatNumber type="number" value="${one.saleprice }" pattern="0.00" maxFractionDigits="2"/>
                 			</td>
