@@ -262,7 +262,7 @@ public class InternationalModule {
 	@At
 	@Ok("jsp")
 	public Object orderRemind(HttpServletRequest request) {
-		return null;
+		return internationalService.orderRemind(request);
 	}
 
 	/**
@@ -335,5 +335,14 @@ public class InternationalModule {
 	@POST
 	public Object saveInterOrderInfo(HttpServletRequest request) {
 		return internationalService.saveInterOrderInfo(request);
+	}
+
+	/**
+	 * 保存消息提醒
+	 */
+	@At
+	@POST
+	public Object saveOrderRemindInfo(HttpServletRequest request) {
+		return internationalService.saveOrderRemindInfo(request);
 	}
 }

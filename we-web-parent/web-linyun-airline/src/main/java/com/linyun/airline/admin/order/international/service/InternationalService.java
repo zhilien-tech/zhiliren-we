@@ -48,6 +48,7 @@ import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
 import com.linyun.airline.common.enums.MessageWealthStatusEnum;
+import com.linyun.airline.common.enums.OrderRemindEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.ExcelReader;
 import com.linyun.airline.entities.DictInfoEntity;
@@ -1228,5 +1229,48 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			ailines.add(airline);
 		}
 		return dbDao.insert(ailines);
+	}
+
+	/**
+	 * 消息提醒页面
+	 * TODO(这里描述这个方法详情– 可选)
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object orderRemind(HttpServletRequest request) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String orderid = request.getParameter("orderid");
+		result.put("orderid", orderid);
+		result.put("orderRemindEnum", EnumUtil.enum2(OrderRemindEnum.class));
+		return result;
+	}
+
+	/**
+	 * 保存消息提醒
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	@SuppressWarnings("unchecked")
+	public Object saveOrderRemindInfo(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		String data = request.getParameter("data");
+		Map<String, Object> dataJson = JsonUtil.fromJson(data, Map.class);
+		String orderid = (String) dataJson.get("orderid");
+		TUpOrderEntity orderinfo = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(orderid));
+		List<Map<String, String>> remindinfos = (List<Map<String, String>>) dataJson.get("remindinfos");
+		for (Map<String, String> map : remindinfos) {
+			String orderstatus = map.get("orderstatus");
+			Integer typeEnum = Integer.valueOf(map.get("remindstatus"));
+			Integer remindType = Integer.valueOf(map.get("messageType"));
+			String remindDate = map.get("remindData");
+			if (!Util.isEmpty(remindDate)) {
+				interReceivePayService.addInterRepeatRemindMsg(orderinfo.getId(), orderinfo.getOrdersnum(), "",
+						orderstatus, typeEnum, 0, remindType, remindDate, session);
+			}
+		}
+		return null;
 	}
 }
