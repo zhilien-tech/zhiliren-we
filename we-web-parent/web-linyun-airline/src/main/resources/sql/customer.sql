@@ -167,9 +167,8 @@ FROM
 		INNER JOIN t_user_job uj ON cj.posid = uj.companyJobId
 	)
 INNER JOIN t_job j ON cj.posid = j.id
-WHERE
-	j.`name` = @jobName
-AND cj.comId = @compId
+$condition
+
 
 /*customer_search__msg*/
 SELECT
