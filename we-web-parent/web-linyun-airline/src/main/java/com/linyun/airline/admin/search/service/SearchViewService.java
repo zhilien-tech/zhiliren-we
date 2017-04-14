@@ -978,27 +978,28 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * @return 
 	 */
 	public String addRemindMsg(Map<String, Object> fromJson, String generateOrderNum, String pnr, int upOrderId,
-			int orderStatus, HttpSession session) {
+			int orderStatus, List<Long> receiveUids, HttpSession session) {
 		//当前用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long userId = loginUser.getId();
 		//查询当前公司下 会计id
-		TCompanyEntity companyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		/*TCompanyEntity companyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Sql accountSql = Sqls.create(sqlManager.get("customer_search_accounter"));
 		Cnd cnd = Cnd.NEW();
 		cnd.and("j.`name`", "like", "%会计%");
 		cnd.and("cj.comId", "=", companyEntity.getId());
-		List<Record> accountingIds = dbDao.query(accountSql, cnd, null);
+		List<Record> accountingIds = dbDao.query(accountSql, cnd, null);*/
 
 		//消息接收方ids
-		ArrayList<Long> receiveUserIds = Lists.newArrayList();
-		if (!Util.isEmpty(accountingIds)) {
-			for (Record record : accountingIds) {
-				long accountingId = Long.parseLong(record.getString("userId"));
-				receiveUserIds.add(accountingId);
+		List<Long> receiveUserIds = Lists.newArrayList();
+		if (!Util.isEmpty(receiveUids)) {
+			for (Long uid : receiveUids) {
+				receiveUserIds.add(uid);
 			}
+		} else {
+			receiveUserIds.add(userId);
 		}
-		receiveUserIds.add(userId);
+
 		//消息来源id
 		long SourceUserId = userId;
 		//消息来源方类型

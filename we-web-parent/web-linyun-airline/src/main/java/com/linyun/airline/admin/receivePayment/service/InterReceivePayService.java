@@ -345,7 +345,10 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				int uid = Integer.valueOf(record.getString("id"));
 				String ordernum = record.getString("ordersnum");
 				String pnr = record.getString("PNR");
-				addInterRemindMsg(uid, ordernum, pnr, orderStatus, RECEDMSGTYPE, RECEIVETYPE, session);
+				String uids = record.getString("userid");
+				List<Long> receiveUserIds = Lists.newArrayList();
+				receiveUserIds.add(Long.valueOf(uids));
+				addInterRemindMsg(uid, ordernum, pnr, orderStatus, RECEDMSGTYPE, RECEIVETYPE, receiveUserIds, session);
 			}
 		}
 
@@ -353,7 +356,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	}
 
 	public String addInterRemindMsg(int orderId, String ordernum, String pnr, String orderStatus, int typeEnum,
-			int payRecType, HttpSession session) {
+			int payRecType, List<Long> receiveUids, HttpSession session) {
 		int msgOrderStatus = 0;
 		String statusStr = "";
 		switch (orderStatus) {
@@ -400,13 +403,13 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		map.put("orderStatus", msgOrderStatus);
 		map.put("orderStatusStr", statusStr);
 		map.put("payRecType", payRecType);
-		String addRemindMsg = addRemindMsg(map, ordernum, pnr, orderId, typeEnum, session);
+		String addRemindMsg = addRemindMsg(map, ordernum, pnr, orderId, typeEnum, receiveUids, session);
 		return addRemindMsg;
 	}
 
 	//重复提醒设置
 	public String addInterRepeatRemindMsg(int orderId, String ordernum, String pnr, String orderStatus, int typeEnum,
-			int payRecType, int remindType, String remindDate, HttpSession session) {
+			int payRecType, int remindType, String remindDate, List<Long> receiveUids, HttpSession session) {
 		int msgOrderStatus = 0;
 		String statusStr = "";
 		switch (orderStatus) {
@@ -453,7 +456,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		map.put("orderStatus", msgOrderStatus);
 		map.put("orderStatusStr", statusStr);
 		map.put("payRecType", payRecType);
-		String addRemindMsg = addRemindMsg(map, ordernum, pnr, orderId, typeEnum, session);
+		String addRemindMsg = addRemindMsg(map, ordernum, pnr, orderId, typeEnum, receiveUids, session);
 		return addRemindMsg;
 	}
 
@@ -1212,7 +1215,10 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				int uid = Integer.valueOf(record.getString("id"));
 				String ordernum = record.getString("ordersnum");
 				String pnr = record.getString("PNR");
-				addInterRemindMsg(uid, ordernum, pnr, orderStatus, PAYEDMSGTYPE, PAYTYPE, session);
+				String uids = record.getString("userid");
+				List<Long> receiveUserIds = Lists.newArrayList();
+				receiveUserIds.add(Long.valueOf(uids));
+				addInterRemindMsg(uid, ordernum, pnr, orderStatus, PAYEDMSGTYPE, PAYTYPE, receiveUserIds, session);
 			}
 		}
 
@@ -1314,27 +1320,19 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 * @return 
 	 */
 	public String addRemindMsg(Map<String, Object> fromJson, String generateOrderNum, String pnr, int upOrderId,
-			int orderStatus, HttpSession session) {
+			int orderStatus, List<Long> receiveUids, HttpSession session) {
 		//当前用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long userId = loginUser.getId();
-		//查询当前公司下 会计id
-		TCompanyEntity companyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		Sql accountSql = Sqls.create(sqlManager.get("customer_search_accounter"));
-		Cnd cnd = Cnd.NEW();
-		cnd.and("j.`name`", "like", "%会计%");
-		cnd.and("cj.comId", "=", companyEntity.getId());
-		List<Record> accountingIds = dbDao.query(accountSql, cnd, null);
-
 		//消息接收方ids
-		ArrayList<Long> receiveUserIds = Lists.newArrayList();
-		if (!Util.isEmpty(accountingIds)) {
-			for (Record record : accountingIds) {
-				long accountingId = Long.parseLong(record.getString("userId"));
-				receiveUserIds.add(accountingId);
+		List<Long> receiveUserIds = Lists.newArrayList();
+		if (!Util.isEmpty(receiveUids)) {
+			for (Long uid : receiveUids) {
+				receiveUserIds.add(uid);
 			}
+		} else {
+			receiveUserIds.add(userId);
 		}
-		receiveUserIds.add(userId);
 		//消息来源id
 		long SourceUserId = userId;
 		//消息来源方类型
