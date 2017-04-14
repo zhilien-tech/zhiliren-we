@@ -1419,6 +1419,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			msgType = MessageTypeEnum.BOOKMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL2.intKey();
 			msgContent = "预定单号：" + generateOrderNum + " 记录编号：" + pnr;
+			if (Util.eq(REPEATTYPE, payRecType)) {
+				msgContent = "单号：" + generateOrderNum + " 当前状态：" + orderStatusStr + "状态";
+			}
 			break;
 		case 3:
 			//开票 (消息内容TODO)  6   
@@ -1431,6 +1434,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			msgType = MessageTypeEnum.MAKEOUTBILLMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL3.intKey();
 			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "发票已开";
+			if (Util.eq(REPEATTYPE, payRecType)) {
+				msgContent = "单号：" + generateOrderNum + " 当前状态：" + orderStatusStr + "状态";
+			}
 			break;
 		case 5:
 			//关闭 (消息内容TODO)  0
