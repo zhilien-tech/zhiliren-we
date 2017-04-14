@@ -127,7 +127,7 @@
 .kalendae .k-header span,
 .kalendae .k-days span {
 	float:left;
-	margin:1px 1px;
+	margin:1px 0.2%;
 }
 
 .kalendae .k-header span {
