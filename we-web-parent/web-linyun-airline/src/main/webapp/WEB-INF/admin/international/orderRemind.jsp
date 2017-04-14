@@ -23,91 +23,140 @@
                 <tbody>
                   <tr>
                     <td><label class="remindLabel">预订</label></td>
-                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
+                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="<fmt:formatDate value="${obj.booking.reminddate }" pattern="yyyy-MM-dd HH:mm:ss" />"></td>
                     <td>
                       <input type="hidden" id="orderstatus" name="orderstatus" value="2">
                       <input type="hidden" id="remindstatus" name="remindstatus" value="2">
                       <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
-					   		<option value="${map.key}">${map.value}</option>
+					   		<c:choose>
+	                          	<c:when test="${map.key eq obj.booking.remindtype }">
+							   		<option value="${map.key}" selected="selected">${map.value}</option>
+	                          	</c:when>
+	                          	<c:otherwise>
+							   		<option value="${map.key}">${map.value}</option>
+	                          	</c:otherwise>
+                          	</c:choose>
 						 </c:forEach>
                       </select>
                     </td>
                   </tr>
                   <tr>
                     <td><label class="remindLabel">一订</label></td>
-                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
+                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="<fmt:formatDate value="${obj.onebook.reminddate }" pattern="yyyy-MM-dd HH:mm:ss" />"></td>
                     <td>
                       <input type="hidden" id="orderstatus" name="orderstatus" value="3">
                       <input type="hidden" id="remindstatus" name="remindstatus" value="6">
                       <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
-					   		<option value="${map.key}">${map.value}</option>
+					   		<c:choose>
+	                          	<c:when test="${map.key eq obj.onebook.remindtype }">
+							   		<option value="${map.key}" selected="selected">${map.value}</option>
+	                          	</c:when>
+	                          	<c:otherwise>
+							   		<option value="${map.key}">${map.value}</option>
+	                          	</c:otherwise>
+                          	</c:choose>
 						 </c:forEach>
                       </select>
                     </td>
                   </tr>
                   <tr>
                     <td><label class="remindLabel">二订</label></td>
-                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
+                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="<fmt:formatDate value="${obj.twobook.reminddate }" pattern="yyyy-MM-dd HH:mm:ss" />"></td>
                     <td>
                       <input type="hidden" id="orderstatus" name="orderstatus" value="4">
                       <input type="hidden" id="remindstatus" name="remindstatus" value="7">
                       <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
-					   		<option value="${map.key}">${map.value}</option>
+                          	<c:choose>
+	                          	<c:when test="${map.key eq obj.twobook.remindtype }">
+							   		<option value="${map.key}" selected="selected">${map.value}</option>
+	                          	</c:when>
+	                          	<c:otherwise>
+							   		<option value="${map.key}">${map.value}</option>
+	                          	</c:otherwise>
+                          	</c:choose>
 						 </c:forEach>
                       </select>
                     </td>
                   </tr>
                   <tr>
                     <td><label class="remindLabel">三订</label></td>
-                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
+                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="<fmt:formatDate value="${obj.threebook.reminddate }" pattern="yyyy-MM-dd HH:mm:ss" />"></td>
                     <td>
                       <input type="hidden" id="orderstatus" name="orderstatus" value="5">
                       <input type="hidden" id="remindstatus" name="remindstatus" value="8">
                       <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
-					   		<option value="${map.key}">${map.value}</option>
+					   		<c:choose>
+	                          	<c:when test="${map.key eq obj.threebook.remindtype }">
+							   		<option value="${map.key}" selected="selected">${map.value}</option>
+	                          	</c:when>
+	                          	<c:otherwise>
+							   		<option value="${map.key}">${map.value}</option>
+	                          	</c:otherwise>
+                          	</c:choose>
 						 </c:forEach>
                       </select>
                     </td>
                   </tr>
                   <tr>
                     <td><label class="remindLabel">全款</label></td>
-                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
+                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="<fmt:formatDate value="${obj.fullamount.reminddate }" pattern="yyyy-MM-dd HH:mm:ss" />"></td>
                     <td>
                       <input type="hidden" id="orderstatus" name="orderstatus" value="6">
                       <input type="hidden" id="remindstatus" name="remindstatus" value="9">
                       <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
-					   		<option value="${map.key}">${map.value}</option>
+					   		<c:choose>
+	                          	<c:when test="${map.key eq obj.fullamount.remindtype }">
+							   		<option value="${map.key}" selected="selected">${map.value}</option>
+	                          	</c:when>
+	                          	<c:otherwise>
+							   		<option value="${map.key}">${map.value}</option>
+	                          	</c:otherwise>
+                          	</c:choose>
 						 </c:forEach>
                       </select>
                     </td>
                   </tr>
                   <tr>
                     <td><label class="remindLabel">尾款</label></td>
-                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
+                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="<fmt:formatDate value="${obj.tailmoney.reminddate }" pattern="yyyy-MM-dd HH:mm:ss" />"></td>
                     <td>
                       <input type="hidden" id="orderstatus" name="orderstatus" value="7">
                       <input type="hidden" id="remindstatus" name="remindstatus" value="10">
                       <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
-					   		<option value="${map.key}">${map.value}</option>
+					   		<c:choose>
+	                          	<c:when test="${map.key eq obj.tailmoney.remindtype }">
+							   		<option value="${map.key}" selected="selected">${map.value}</option>
+	                          	</c:when>
+	                          	<c:otherwise>
+							   		<option value="${map.key}">${map.value}</option>
+	                          	</c:otherwise>
+                          	</c:choose>
 						 </c:forEach>
                       </select>
                     </td>
                   </tr>
                   <tr>
                     <td><label class="remindLabel">出票</label></td>
-                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
+                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="<fmt:formatDate value="${obj.ticketing.reminddate }" pattern="yyyy-MM-dd HH:mm:ss" />"></td>
                     <td>
                       <input type="hidden" id="orderstatus" name="orderstatus" value="8">
                       <input type="hidden" id="remindstatus" name="remindstatus" value="3">
                       <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
-					   		<option value="${map.key}">${map.value}</option>
+					   		<c:choose>
+	                          	<c:when test="${map.key eq obj.ticketing.remindtype }">
+							   		<option value="${map.key}" selected="selected">${map.value}</option>
+	                          	</c:when>
+	                          	<c:otherwise>
+							   		<option value="${map.key}">${map.value}</option>
+	                          	</c:otherwise>
+                          	</c:choose>
 						 </c:forEach>
                       </select>
                     </td>
