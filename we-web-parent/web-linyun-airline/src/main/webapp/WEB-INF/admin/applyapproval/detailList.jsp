@@ -116,8 +116,15 @@
 				</c:if>
 			</li>
 			<li>
-				<span>签收时间</span>
-				<span><fmt:formatDate value="${obj.detaillist.approveTime }" pattern="yyy-MM-dd HH:mm:ss"/></span>
+				<span>签收时间${obj.operation}</span>
+				
+				<c:if test="${obj.operation=='inlandNum'}">
+				
+					<span><fmt:formatDate value="${obj.detaillist.approveTime }" pattern="yyy-MM-dd HH:mm:ss"/></span>
+				</c:if>
+				<c:if test="${obj.operation=='international'}">
+					<span><fmt:formatDate value="${obj.detaillist.orderstime }" pattern="yyy-MM-dd HH:mm:ss"/></span>
+				</c:if>
 			</li>
 			<li>
 				<span>申请人</span>

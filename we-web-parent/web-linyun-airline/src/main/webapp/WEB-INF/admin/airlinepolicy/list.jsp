@@ -26,10 +26,10 @@
                <form role="form" class="form-horizontal">
                 <div class="form-group row mar cf">
                   <div class="col-md-1 padRight">
-                    <select class="form-control input-sm" name="selectCompany" id="selectCompany" onchange="pickedFunc();">
+                    <select class="form-control input-sm" name="selectCompany" id="selectCompany" onchange="pickedFunc();" style="width:90px; ">
                       <!-- <option>VR</option>
                       <option>JQ</option> -->
-                      <option value="">请选择</option>
+                      <option value="">航空公司</option>
                       <c:forEach items="${obj.airlineCompanyList }" var="each">
                       	<option value="${each.airlineCompanyId }">${each.airlineCompanyName }</option>
                       </c:forEach>
@@ -39,7 +39,7 @@
                      <select class="form-control input-sm" name="selectArea" id="selectArea" onchange="pickedFunc();">
                       <!-- <option>澳洲</option>
                       <option>亚洲</option> -->
-                       <option value="">请选择</option>
+                       <option value="">地区</option>
                       <c:forEach items="${obj.areaList }" var="each">
                       	<option value="${each.areaName}">${each.areaName }</option>
                       </c:forEach>

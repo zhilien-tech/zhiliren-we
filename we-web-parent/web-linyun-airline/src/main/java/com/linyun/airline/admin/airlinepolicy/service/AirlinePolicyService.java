@@ -83,6 +83,7 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 		/*cnd1.groupBy("areaId");*/
 		cnd1.and("companyId", "=", companyId);
 		cnd1.and("areaName", "is not", null);
+		cnd1.groupBy("areaName");
 		sql1.setCondition(cnd1);
 		List<Record> list1 = dbDao.query(sql1, cnd1, null);
 		map.put("airlineCompanyList", list);

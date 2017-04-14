@@ -173,14 +173,16 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 				public int compare(ApprovalListInter o1, ApprovalListInter o2) {
 
 					if (!Util.isEmpty(o1.getOrderstime()) || !Util.isEmpty(o1.getOrderstime())) {
+						if (!Util.isEmpty(o1.getOrderstime()) && !Util.isEmpty(o2.getOrderstime())) {
 
-						if (o1.getOrderstime().getTime() < o2.getOrderstime().getTime()) {
-							return 1;
-						} else if (o1.getOrderstime() == o2.getOrderstime()) {
+							if (o1.getOrderstime().getTime() < o2.getOrderstime().getTime()) {
+								return 1;
+							} else if (o1.getOrderstime() == o2.getOrderstime()) {
 
-							return 0;
-						} else if (o1.getOrderstime().getTime() > o2.getOrderstime().getTime()) {
-							return -1;
+								return 0;
+							} else if (o1.getOrderstime().getTime() > o2.getOrderstime().getTime()) {
+								return -1;
+							}
 						}
 					}
 					return 0;
