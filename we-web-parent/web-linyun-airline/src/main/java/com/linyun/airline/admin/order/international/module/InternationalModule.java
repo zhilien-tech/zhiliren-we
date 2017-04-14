@@ -262,7 +262,7 @@ public class InternationalModule {
 	@At
 	@Ok("jsp")
 	public Object orderRemind(HttpServletRequest request) {
-		return null;
+		return internationalService.orderRemind(request);
 	}
 
 	/**

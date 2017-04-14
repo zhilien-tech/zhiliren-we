@@ -48,6 +48,7 @@ import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
 import com.linyun.airline.common.enums.MessageWealthStatusEnum;
+import com.linyun.airline.common.enums.OrderRemindEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.ExcelReader;
 import com.linyun.airline.entities.DictInfoEntity;
@@ -1228,5 +1229,14 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			ailines.add(airline);
 		}
 		return dbDao.insert(ailines);
+	}
+
+	public Object orderRemind(HttpServletRequest request) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String orderid = request.getParameter("orderid");
+		result.put("orderid", orderid);
+		result.put("orderRemindEnum", EnumUtil.enum2(OrderRemindEnum.class));
+		return result;
+
 	}
 }

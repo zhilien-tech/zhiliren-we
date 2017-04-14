@@ -826,6 +826,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				addForm.setCardNum(bankinfo.getCardNum());
 				addForm.setBankName(bankinfo.getBankName());
 				addForm.setMoney(chengbensum);
+				addForm.setTradeDate(new Date());
+				addForm.setPurpose("支出");
+				addForm.setAverageRate((String) map.get("realtimexrate"));
+				addForm.setCurrency(paycurrency);
 				turnOverViewService.addTurnOver(addForm, session);
 			}
 		}
