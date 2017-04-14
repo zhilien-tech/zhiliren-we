@@ -60,7 +60,7 @@
 					<td>银行：</td>
 					<td>
 						<select id="bankComp" name="bankComp" onchange="bankSelect();" class="form-control input-sm">
-							<!-- <option>--请选择--</option> -->
+							<option value="0">--请选择--</option>
 							<c:forEach var="one" items="${obj.bankList}">
 	                        	<option value="${one.bankNameId }">${one.bankName }</option>
 	                        </c:forEach>
