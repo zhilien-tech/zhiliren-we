@@ -36,8 +36,11 @@ import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
+import com.linyun.airline.admin.receivePayment.service.InterReceivePayService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
+import com.linyun.airline.common.enums.MessageWealthStatusEnum;
+import com.linyun.airline.common.enums.OrderRemindEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TInvoiceDetailEntity;
@@ -45,7 +48,9 @@ import com.linyun.airline.entities.TInvoiceInfoEntity;
 import com.linyun.airline.entities.TOrderReceiveEntity;
 import com.linyun.airline.entities.TReceiveBillEntity;
 import com.linyun.airline.entities.TReceiveEntity;
+import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUserEntity;
+import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.JsonUtil;
@@ -67,6 +72,8 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 	private static final String YHCODE = "YH";
 	@Inject
 	private externalInfoService externalInfoService;
+	@Inject
+	private InterReceivePayService interReceivePayService;
 
 	/**
 	 * 国际收款列表
@@ -247,7 +254,21 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		}
 		invoiceinfo.setInvoicetype(InvoiceInfoEnum.INVOIC_ING.intKey());
 		if (!Util.isEmpty(fromJson.get("receiveid"))) {
-			invoiceinfo.setReceiveid(Integer.valueOf((String) fromJson.get("receiveid")));
+			Integer receiveid = Integer.valueOf((String) fromJson.get("pnrid"));
+			invoiceinfo.setReceiveid(receiveid);
+			//消息提醒
+			Sql sql = Sqls.create(sqlManager.get("select_receive_order_info"));
+			Cnd cnd = Cnd.NEW();
+			cnd.and("tor.receiveid", "=", receiveid);
+			List<Record> query = dbDao.query(sql, cnd, null);
+			for (Record record : query) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
+				map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
+				interReceivePayService.addInterRemindMsg(record.getInt("id"), record.getString("ordersnum"), "",
+						record.getString("ordersstatus"), MessageWealthStatusEnum.INVIOCING.intKey(),
+						PayReceiveTypeEnum.RECEIVE.intKey(), session);
+			}
 		}
 		if (!Util.isEmpty(fromJson.get("orderstatus"))) {
 			invoiceinfo.setOrderstatus(Integer.valueOf((String) fromJson.get("orderstatus")));
@@ -390,7 +411,14 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		}
 		invoiceinfo.setInvoicetype(InvoiceInfoEnum.RECEIPT_INVOIC_ING.intKey());
 		if (!Util.isEmpty(fromJson.get("orderpayid"))) {
-			invoiceinfo.setOrderpayid(Integer.valueOf((String) fromJson.get("orderpayid")));
+			Integer orderpayid = Integer.valueOf((String) fromJson.get("orderpayid"));
+			invoiceinfo.setOrderpayid(orderpayid);
+			//消息提醒
+			TPayOrderEntity payorder = dbDao.fetch(TPayOrderEntity.class, orderpayid.longValue());
+			TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, payorder.getOrderid().longValue());
+			interReceivePayService.addInterRemindMsg(order.getId(), order.getOrdersnum(), "",
+					String.valueOf(order.getOrdersstatus()), MessageWealthStatusEnum.RECINVIOCING.intKey(),
+					PayReceiveTypeEnum.PAY.intKey(), session);
 		}
 		if (!Util.isEmpty(fromJson.get("orderstatus"))) {
 			invoiceinfo.setOrderstatus(Integer.valueOf((String) fromJson.get("orderstatus")));

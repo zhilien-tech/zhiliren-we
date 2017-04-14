@@ -54,13 +54,12 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	//询单消息状态
 	private static final int SEARCHORDERS = MessageTypeEnum.SEARCHMSG.intKey();
 	//订单消息状态
-	private static final int BOOKORDERS = MessageTypeEnum.BOOKMSG.intKey();
+	private static final int BOOKMSG = MessageTypeEnum.BOOKMSG.intKey();
 	private static final int FIRBOOK = MessageTypeEnum.FIRBOOKMSG.intKey();
 	private static final int SECBOOK = MessageTypeEnum.SECBOOKMSG.intKey();
 	private static final int THRBOOK = MessageTypeEnum.THRBOOKMSG.intKey();
 	private static final int ALLBOOK = MessageTypeEnum.ALLBOOKMSG.intKey();
 	private static final int LASTBOOK = MessageTypeEnum.LASTBOOKMSG.intKey();
-	private static final int BOOKMSG = MessageTypeEnum.BOOKMSG.intKey();
 	private static final int FINANCIALMSG = MessageTypeEnum.FINANCIALMSG.intKey();
 	private static final int RECEIVEDMSG = MessageTypeEnum.RECEIVEDMSG.intKey();
 	private static final int PAYEDMSG = MessageTypeEnum.PAYEDMSG.intKey();
@@ -372,7 +371,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 					+ "," + String.valueOf(RECINVIOCEMSG) + "," + String.valueOf(APPROVALEDMSG) + ","
 					+ String.valueOf(UNAPPROVALMSG) + "," + String.valueOf(MAKEOUTBILLMSG) + ","
 					+ String.valueOf(DRAWBILLMSG) + "," + String.valueOf(RECINVIOCING) + ","
-					+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING);
+					+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING) + ","
+					+ String.valueOf(RECSUBMITED);
 			break;
 		case "taskNotice":
 			//任务 TODO
@@ -383,7 +383,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 					+ String.valueOf(RECINVIOCEMSG) + "," + String.valueOf(APPROVALEDMSG) + ","
 					+ String.valueOf(UNAPPROVALMSG) + "," + String.valueOf(MAKEOUTBILLMSG) + ","
 					+ String.valueOf(DRAWBILLMSG) + "," + String.valueOf(RECINVIOCING) + ","
-					+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING);
+					+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING) + ","
+					+ String.valueOf(RECSUBMITED);
 			break;
 		}
 
@@ -673,11 +674,9 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 
 		Sql sql = Sqls.create(sqlManager.get("msg_type"));
 		Date date1 = DateUtil.string2Date(timeStr);
-		if (!Util.isEmpty(id)) {
-			sql.params().set("userId", id);
-		}
-		sql.params().set("MincalTimes1", date1);
-		sql.params().set("msgStatus", 1);
+		sql.setParam("userid", id);
+		sql.setParam("MincalTimes1", date1);
+		sql.setParam("msgStatus", 1);
 		List<Record> rList = dbDao.query(sql, null, null);
 
 		Set<String> set = new HashSet<String>();

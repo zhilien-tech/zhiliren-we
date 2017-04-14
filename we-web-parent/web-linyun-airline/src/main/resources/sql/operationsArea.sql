@@ -118,10 +118,14 @@ SELECT DISTINCT
 	m.msgType
 FROM
 	t_message m
+INNER JOIN t_user_msg um ON m.id = um.msgId
 WHERE
-	date_format(m.generateTime, '%Y-%m-%d') = date_format(@MincalTimes1,'%Y-%m-%d')
+	m.msgStatus = @msgStatus
+AND 
+	um.userId = @userid
 AND
-	m.msgStatus=@msgStatus
+	date_format(m.generateTime, '%Y-%m-%d') = date_format(@MincalTimes1,'%Y-%m-%d')
+
 	
 /*agentCompany_list*/
 SELECT
@@ -180,7 +184,7 @@ SELECT
 	um.id umid,
 	m.generateTime,
 	c.comName,
-	u.userName,
+	u.fullName username,
 	m.msgContent,
 	m.msgType,
 	m.reminderMode,
