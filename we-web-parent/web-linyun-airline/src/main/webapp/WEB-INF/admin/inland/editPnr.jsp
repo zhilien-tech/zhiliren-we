@@ -48,7 +48,7 @@
                     <td>币种：</td>
                     <td>
                       <select id="currency" name="currency" class="form-control input-sm">
-                        <option>请选择</option>
+                        <option value="">请选择</option>
                         <c:forEach items="${obj.bzcode }" var="one"> 
                         	<c:choose>
                         		<c:when test="${obj.pnrinfo.currency eq one.dictCode }">
