@@ -498,6 +498,7 @@
                 skin: false, //加上边框
                 closeBtn:false,//默认 右上角关闭按钮 是否显示
                 shadeClose:true,
+                scrollbar: false,
                 area: ['400px', '450px'],
                 content: '${base}/admin/international/orderRemind.html?orderid=${obj.orderinfo.id }'
               });
@@ -511,6 +512,7 @@
                 skin: false, //加上边框
                 closeBtn:false,//默认 右上角关闭按钮 是否显示
                 shadeClose:true,
+                scrollbar: false,
                 area: ['800px', '550px'],
                 content: '${base}/admin/international/orderLog.html?orderid=${obj.orderinfo.id }'
               });
@@ -524,6 +526,7 @@
                 skin: false, //加上边框
                 closeBtn:false,//默认 右上角关闭按钮 是否显示
                 shadeClose:true,
+                scrollbar: false,
                 area: ['1100px', '550px'],
                 content: '${base}/admin/international/addAirinfo.html?orderid=${obj.orderinfo.id }'
               });
@@ -580,6 +583,7 @@
 				                skin: false, //加上边框
 				                closeBtn:false,//默认 右上角关闭按钮 是否显示
 				                shadeClose:true,
+				                scrollbar: false,
 				                area: ['900px', '200px'],
 				                content: '${base}/admin/international/addPayRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.paystatus}&ordersstatus='+orderType+'&peoplecount='+peoplecount+'&costsingleprice='+costsingleprice
 				             });
@@ -964,6 +968,7 @@
             skin: false, //加上边框
             closeBtn:false,//默认 右上角关闭按钮 是否显示
             shadeClose:true,
+            scrollbar: false,
             area: ['1100px', '550px'],
             content: '${base}/admin/international/editAirinfo.html?pnrid='+pnrid
           });
@@ -976,6 +981,7 @@
             skin: false, //加上边框
             closeBtn:false,//默认 右上角关闭按钮 是否显示
             shadeClose:true,
+            scrollbar: false,
             area: ['900px', '550px'],
             content: '${base}/admin/international/visitorInfo.html?pnrid='+pnrid
           });
@@ -994,6 +1000,7 @@
            skin: false, //加上边框
            closeBtn:false,//默认 右上角关闭按钮 是否显示
            shadeClose:true,
+           scrollbar: false,
            area: ['900px', '200px'],
            content: url
          });
@@ -1007,6 +1014,7 @@
             skin: false, //加上边框
             closeBtn:false,//默认 右上角关闭按钮 是否显示
             shadeClose:true,
+            scrollbar: false,
             area: ['770px', '240px'],
             content: '${base}/admin/inland/mitigate.html?id=${obj.orderinfo.id }&customeid=${obj.custominfo.id }',
             end:function(){
