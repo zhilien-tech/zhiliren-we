@@ -402,6 +402,59 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		return addRemindMsg;
 	}
 
+	//重复提醒设置
+	public String addInterRepeatRemindMsg(int orderId, String ordernum, String pnr, String orderStatus, int typeEnum,
+			int payRecType, int remindType, String remindDate, HttpSession session) {
+		int msgOrderStatus = 0;
+		String statusStr = "";
+		switch (orderStatus) {
+		case "1":
+			msgOrderStatus = SEARCHMSG;
+			statusStr = "查询";
+			break;
+		case "2":
+			msgOrderStatus = BOOKINGMSG;
+			statusStr = "预订";
+			break;
+		case "3":
+			msgOrderStatus = FIRBOOKINGMSG;
+			statusStr = "一订";
+			break;
+		case "4":
+			msgOrderStatus = SECBOOKINGMSG;
+			statusStr = "二订";
+			break;
+		case "5":
+			msgOrderStatus = THRBOOKINGMSG;
+			statusStr = "三订";
+			break;
+		case "6":
+			msgOrderStatus = ALLBOOKINGMSG;
+			statusStr = "全款";
+			break;
+		case "7":
+			msgOrderStatus = LASTBOOKINGMSG;
+			statusStr = "尾款";
+			break;
+		case "8":
+			msgOrderStatus = TICKETINGMSG;
+			statusStr = "出票";
+			break;
+		case "9":
+			msgOrderStatus = CLOSEMSG;
+			statusStr = "关闭";
+			break;
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("remindDate", remindDate);
+		map.put("remindType", remindType);
+		map.put("orderStatus", msgOrderStatus);
+		map.put("orderStatusStr", statusStr);
+		map.put("payRecType", payRecType);
+		String addRemindMsg = addRemindMsg(map, ordernum, pnr, orderId, typeEnum, session);
+		return addRemindMsg;
+	}
+	
 	/**
 	 * 付款中列表
 	 */
