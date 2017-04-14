@@ -14,18 +14,19 @@
 	<div class="modal-top">
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
-            <input type="submit" id="submit" class="btn btn-primary right btn-sm" value="保存"/>
+            <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveRemindMessage()" value="保存"/>
             <input type="hidden" id="orderid" name="orderid" value="${obj.orderid }">
             <h4>提醒设置</h4>
           </div>
-          <div class="modal-body" style="height:281px;overflow-y:auto; ">
+          <div class="modal-body" style="height:381px;overflow-y:auto; ">
               <table class="remindTable">
                 <tbody>
                   <tr>
                     <td><label class="remindLabel">预订</label></td>
-                    <td><input type="text" class="form-control input-sm remindData" placeholder="2017-03-16"></td>
+                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
                     <td>
-                      <select class="form-control input-sm">
+                      <input type="hidden" id="orderstatus" name="orderstatus" value="2">
+                      <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
 					   		<option value="${map.key}">${map.value}</option>
 						 </c:forEach>
@@ -34,9 +35,10 @@
                   </tr>
                   <tr>
                     <td><label class="remindLabel">一订</label></td>
-                    <td><input type="text" class="form-control input-sm remindData" placeholder="2017-03-16"></td>
+                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
                     <td>
-                      <select class="form-control input-sm">
+                      <input type="hidden" id="orderstatus" name="orderstatus" value="3">
+                      <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
 					   		<option value="${map.key}">${map.value}</option>
 						 </c:forEach>
@@ -45,9 +47,10 @@
                   </tr>
                   <tr>
                     <td><label class="remindLabel">二订</label></td>
-                    <td><input type="text" class="form-control input-sm remindData" placeholder="2017-03-16"></td>
+                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
                     <td>
-                      <select class="form-control input-sm">
+                      <input type="hidden" id="orderstatus" name="orderstatus" value="4">
+                      <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
 					   		<option value="${map.key}">${map.value}</option>
 						 </c:forEach>
@@ -56,9 +59,10 @@
                   </tr>
                   <tr>
                     <td><label class="remindLabel">三订</label></td>
-                    <td><input type="text" class="form-control input-sm remindData" placeholder="2017-03-16"></td>
+                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
                     <td>
-                      <select class="form-control input-sm">
+                      <input type="hidden" id="orderstatus" name="orderstatus" value="5">
+                      <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
 					   		<option value="${map.key}">${map.value}</option>
 						 </c:forEach>
@@ -67,9 +71,10 @@
                   </tr>
                   <tr>
                     <td><label class="remindLabel">全款</label></td>
-                    <td><input type="text" class="form-control input-sm remindData" placeholder="2017-03-16"></td>
+                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
                     <td>
-                      <select class="form-control input-sm">
+                      <input type="hidden" id="orderstatus" name="orderstatus" value="6">
+                      <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
 					   		<option value="${map.key}">${map.value}</option>
 						 </c:forEach>
@@ -78,9 +83,10 @@
                   </tr>
                   <tr>
                     <td><label class="remindLabel">尾款</label></td>
-                    <td><input type="text" class="form-control input-sm remindData" placeholder="2017-03-16"></td>
+                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
                     <td>
-                      <select class="form-control input-sm">
+                      <input type="hidden" id="orderstatus" name="orderstatus" value="7">
+                      <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
 					   		<option value="${map.key}">${map.value}</option>
 						 </c:forEach>
@@ -89,9 +95,10 @@
                   </tr>
                   <tr>
                     <td><label class="remindLabel">出票</label></td>
-                    <td><input type="text" class="form-control input-sm remindData" placeholder="2017-03-16"></td>
+                    <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
                     <td>
-                      <select class="form-control input-sm">
+                      <input type="hidden" id="orderstatus" name="orderstatus" value="8">
+                      <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
 					   		<option value="${map.key}">${map.value}</option>
 						 </c:forEach>
@@ -109,11 +116,43 @@
 	<script src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script><!-- SlimScroll -->
 	<script src="${base}/public/plugins/fastclick/fastclick.js"></script><!-- FastClick -->
 	<script src="${base}/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
+	<!-- My97DatePicker --> 
+   <script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 	<script type="text/javascript">
 	//关闭窗口
     function closewindow(){
 		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 		parent.layer.close(index);
+	}
+	
+	function saveRemindMessage(){
+		var orderremind = {};
+		var orderid = $('#orderid').val();
+		orderremind.orderid = orderid;
+		var remindinfos = [];
+		$('.remindTable').find('tr').each(function(i){
+			var remindinfo = {};
+			var remindData = $(this).find('.remindData').val();
+			remindinfo.remindData = remindData;
+			var messageType = $(this).find('.messageType').val();
+			remindinfo.messageType = messageType;
+			var orderstatus = $(this).find('#orderstatus').val();
+			remindinfo.orderstatus = orderstatus;
+			remindinfos.push(remindinfo);
+		});
+		orderremind.remindinfos = remindinfos;
+		$.ajax({ 
+			type: 'POST', 
+			data: {data:JSON.stringify(orderremind)}, 
+			url: '${base}/admin/international/saveOrderRemindInfo.html',
+            success: function (data) { 
+            	closewindow();
+            	window.parent.successCallback(3);
+	        },
+	        error: function (xhr) {
+	           layer.msg("保存失败","",3000);
+	        } 
+      });
 	}
 	</script>
 </body>

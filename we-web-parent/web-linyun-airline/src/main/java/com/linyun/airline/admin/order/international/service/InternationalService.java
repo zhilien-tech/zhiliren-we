@@ -1231,6 +1231,12 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		return dbDao.insert(ailines);
 	}
 
+	/**
+	 * 消息提醒页面
+	 * TODO(这里描述这个方法详情– 可选)
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
 	public Object orderRemind(HttpServletRequest request) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		String orderid = request.getParameter("orderid");
@@ -1238,5 +1244,22 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		result.put("orderRemindEnum", EnumUtil.enum2(OrderRemindEnum.class));
 		return result;
 
+	}
+
+	/**
+	 * 保存消息提醒
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	@SuppressWarnings("unchecked")
+	public Object saveOrderRemindInfo(HttpServletRequest request) {
+		String data = request.getParameter("data");
+		Map<String, Object> dataJson = JsonUtil.fromJson(data, Map.class);
+		String orderid = (String) dataJson.get("orderid");
+		List<Map<String, String>> remindinfos = (List<Map<String, String>>) dataJson.get("remindinfos");
+		return null;
 	}
 }

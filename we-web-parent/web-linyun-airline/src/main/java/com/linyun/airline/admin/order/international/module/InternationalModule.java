@@ -336,4 +336,13 @@ public class InternationalModule {
 	public Object saveInterOrderInfo(HttpServletRequest request) {
 		return internationalService.saveInterOrderInfo(request);
 	}
+
+	/**
+	 * 保存消息提醒
+	 */
+	@At
+	@POST
+	public Object saveOrderRemindInfo(HttpServletRequest request) {
+		return internationalService.saveOrderRemindInfo(request);
+	}
 }
