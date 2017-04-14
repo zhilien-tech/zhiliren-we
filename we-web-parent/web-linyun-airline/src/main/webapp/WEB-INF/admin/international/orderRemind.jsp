@@ -26,6 +26,7 @@
                     <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
                     <td>
                       <input type="hidden" id="orderstatus" name="orderstatus" value="2">
+                      <input type="hidden" id="remindstatus" name="remindstatus" value="2">
                       <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
 					   		<option value="${map.key}">${map.value}</option>
@@ -38,6 +39,7 @@
                     <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
                     <td>
                       <input type="hidden" id="orderstatus" name="orderstatus" value="3">
+                      <input type="hidden" id="remindstatus" name="remindstatus" value="6">
                       <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
 					   		<option value="${map.key}">${map.value}</option>
@@ -50,6 +52,7 @@
                     <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
                     <td>
                       <input type="hidden" id="orderstatus" name="orderstatus" value="4">
+                      <input type="hidden" id="remindstatus" name="remindstatus" value="7">
                       <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
 					   		<option value="${map.key}">${map.value}</option>
@@ -62,6 +65,7 @@
                     <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
                     <td>
                       <input type="hidden" id="orderstatus" name="orderstatus" value="5">
+                      <input type="hidden" id="remindstatus" name="remindstatus" value="8">
                       <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
 					   		<option value="${map.key}">${map.value}</option>
@@ -74,6 +78,7 @@
                     <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
                     <td>
                       <input type="hidden" id="orderstatus" name="orderstatus" value="6">
+                      <input type="hidden" id="remindstatus" name="remindstatus" value="9">
                       <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
 					   		<option value="${map.key}">${map.value}</option>
@@ -86,6 +91,7 @@
                     <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
                     <td>
                       <input type="hidden" id="orderstatus" name="orderstatus" value="7">
+                      <input type="hidden" id="remindstatus" name="remindstatus" value="10">
                       <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
 					   		<option value="${map.key}">${map.value}</option>
@@ -98,6 +104,7 @@
                     <td><input type="text" class="form-control input-sm remindData" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"></td>
                     <td>
                       <input type="hidden" id="orderstatus" name="orderstatus" value="8">
+                      <input type="hidden" id="remindstatus" name="remindstatus" value="3">
                       <select class="form-control input-sm messageType">
                           <c:forEach var="map" items="${obj.orderRemindEnum }" >
 					   		<option value="${map.key}">${map.value}</option>
@@ -138,6 +145,8 @@
 			remindinfo.messageType = messageType;
 			var orderstatus = $(this).find('#orderstatus').val();
 			remindinfo.orderstatus = orderstatus;
+			var remindstatus = $(this).find('#remindstatus').val();
+			remindinfo.remindstatus = remindstatus;
 			remindinfos.push(remindinfo);
 		});
 		orderremind.remindinfos = remindinfos;

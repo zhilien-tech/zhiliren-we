@@ -1243,7 +1243,6 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		result.put("orderid", orderid);
 		result.put("orderRemindEnum", EnumUtil.enum2(OrderRemindEnum.class));
 		return result;
-
 	}
 
 	/**
@@ -1256,10 +1255,22 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	 */
 	@SuppressWarnings("unchecked")
 	public Object saveOrderRemindInfo(HttpServletRequest request) {
+		HttpSession session = request.getSession();
 		String data = request.getParameter("data");
 		Map<String, Object> dataJson = JsonUtil.fromJson(data, Map.class);
 		String orderid = (String) dataJson.get("orderid");
+		TUpOrderEntity orderinfo = dbDao.fetch(TUpOrderEntity.class, Long.valueOf(orderid));
 		List<Map<String, String>> remindinfos = (List<Map<String, String>>) dataJson.get("remindinfos");
+		for (Map<String, String> map : remindinfos) {
+			String orderstatus = map.get("orderstatus");
+			Integer typeEnum = Integer.valueOf(map.get("remindstatus"));
+			Integer remindType = Integer.valueOf(map.get("messageType"));
+			String remindDate = map.get("remindData");
+			if (!Util.isEmpty(remindDate)) {
+				interReceivePayService.addInterRepeatRemindMsg(orderinfo.getId(), orderinfo.getOrdersnum(), "",
+						orderstatus, typeEnum, 0, remindType, remindDate, session);
+			}
+		}
 		return null;
 	}
 }
