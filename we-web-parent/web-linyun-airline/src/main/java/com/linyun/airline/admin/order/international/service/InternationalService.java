@@ -1245,32 +1245,46 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		result.put("orderRemindEnum", EnumUtil.enum2(OrderRemindEnum.class));
 		result.put(
 				"booking",
-				dbDao.fetch(TInterMessageEntity.class,
-						Cnd.where("orderid", "=", orderid).and("orderstatus", "=", InternationalStatusEnum.BOOKING)));
+				dbDao.fetch(
+						TInterMessageEntity.class,
+						Cnd.where("orderid", "=", orderid).and("orderstatus", "=",
+								InternationalStatusEnum.BOOKING.intKey())));
 		result.put(
 				"onebook",
-				dbDao.fetch(TInterMessageEntity.class,
-						Cnd.where("orderid", "=", orderid).and("orderstatus", "=", InternationalStatusEnum.ONEBOOK)));
+				dbDao.fetch(
+						TInterMessageEntity.class,
+						Cnd.where("orderid", "=", orderid).and("orderstatus", "=",
+								InternationalStatusEnum.ONEBOOK.intKey())));
 		result.put(
 				"twobook",
-				dbDao.fetch(TInterMessageEntity.class,
-						Cnd.where("orderid", "=", orderid).and("orderstatus", "=", InternationalStatusEnum.TWOBOOK)));
+				dbDao.fetch(
+						TInterMessageEntity.class,
+						Cnd.where("orderid", "=", orderid).and("orderstatus", "=",
+								InternationalStatusEnum.TWOBOOK.intKey())));
 		result.put(
 				"threebook",
-				dbDao.fetch(TInterMessageEntity.class,
-						Cnd.where("orderid", "=", orderid).and("orderstatus", "=", InternationalStatusEnum.THREEBOOK)));
+				dbDao.fetch(
+						TInterMessageEntity.class,
+						Cnd.where("orderid", "=", orderid).and("orderstatus", "=",
+								InternationalStatusEnum.THREEBOOK.intKey())));
 		result.put(
 				"fullamount",
-				dbDao.fetch(TInterMessageEntity.class,
-						Cnd.where("orderid", "=", orderid).and("orderstatus", "=", InternationalStatusEnum.FULLAMOUNT)));
+				dbDao.fetch(
+						TInterMessageEntity.class,
+						Cnd.where("orderid", "=", orderid).and("orderstatus", "=",
+								InternationalStatusEnum.FULLAMOUNT.intKey())));
 		result.put(
 				"tailmoney",
-				dbDao.fetch(TInterMessageEntity.class,
-						Cnd.where("orderid", "=", orderid).and("orderstatus", "=", InternationalStatusEnum.TAILMONEY)));
+				dbDao.fetch(
+						TInterMessageEntity.class,
+						Cnd.where("orderid", "=", orderid).and("orderstatus", "=",
+								InternationalStatusEnum.TAILMONEY.intKey())));
 		result.put(
 				"ticketing",
-				dbDao.fetch(TInterMessageEntity.class,
-						Cnd.where("orderid", "=", orderid).and("orderstatus", "=", InternationalStatusEnum.TICKETING)));
+				dbDao.fetch(
+						TInterMessageEntity.class,
+						Cnd.where("orderid", "=", orderid).and("orderstatus", "=",
+								InternationalStatusEnum.TICKETING.intKey())));
 		return result;
 	}
 
@@ -1302,10 +1316,10 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			intermessage.setOrderid(orderinfo.getId());
 			intermessage.setOrderstatus(Integer.valueOf(orderstatus));
 			intermessage.setRemindtype(remindType);
-			intermessage.setReminddate(DateUtil.string2Date(remindDate, DateUtil.FORMAT_FULL_PATTERN));
 			if (!Util.isEmpty(remindDate)) {
+				intermessage.setReminddate(DateUtil.string2Date(remindDate, DateUtil.FORMAT_FULL_PATTERN));
 				interReceivePayService.addInterRepeatRemindMsg(orderinfo.getId(), orderinfo.getOrdersnum(), "",
-						orderstatus, typeEnum, 0, remindType, remindDate, session);
+						orderstatus, typeEnum, PayReceiveTypeEnum.REPEAT.intKey(), remindType, remindDate, session);
 				after.add(intermessage);
 			}
 		}
