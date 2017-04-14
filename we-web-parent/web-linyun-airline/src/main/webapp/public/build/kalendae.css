@@ -109,13 +109,11 @@
 .kalendae .k-title,
 .kalendae .k-header,
 .kalendae .k-days {
-	width:260px;
+	/* width:260px; */
 	display:block;
 	overflow:hidden;
 	margin-top: 5px;
 }
-
-
 /** Hide unusable buttons **/
 .kalendae.k-disable-next-month-btn .k-btn-next-month,
 .kalendae.k-disable-previous-month-btn .k-btn-previous-month,

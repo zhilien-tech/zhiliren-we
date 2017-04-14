@@ -348,7 +348,7 @@
 							 </td>
 							 <td name="internationalcard" colspan="2" style="display: none;" align="left"><label>余额：</label></td>
 							 <td name="threepaytd"></td>
-							 <td name="threepaymethod" colspan="3" style="display: none;"><select name="thirdcustomid" disabled="disabled" class="form-control input-sm"></select></td>
+							 <td name="threepaymethod" style="display: none;"><select name="thirdcustomid" disabled="disabled" class="form-control input-sm"></select></td>
 		                   </tr>
 		                   <tr class="pnrTr">
 		                     <td colspan="13" class="addPNR">
