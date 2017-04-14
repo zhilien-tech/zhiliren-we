@@ -54,13 +54,12 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	//询单消息状态
 	private static final int SEARCHORDERS = MessageTypeEnum.SEARCHMSG.intKey();
 	//订单消息状态
-	private static final int BOOKORDERS = MessageTypeEnum.BOOKMSG.intKey();
+	private static final int BOOKMSG = MessageTypeEnum.BOOKMSG.intKey();
 	private static final int FIRBOOK = MessageTypeEnum.FIRBOOKMSG.intKey();
 	private static final int SECBOOK = MessageTypeEnum.SECBOOKMSG.intKey();
 	private static final int THRBOOK = MessageTypeEnum.THRBOOKMSG.intKey();
 	private static final int ALLBOOK = MessageTypeEnum.ALLBOOKMSG.intKey();
 	private static final int LASTBOOK = MessageTypeEnum.LASTBOOKMSG.intKey();
-	private static final int BOOKMSG = MessageTypeEnum.BOOKMSG.intKey();
 	private static final int FINANCIALMSG = MessageTypeEnum.FINANCIALMSG.intKey();
 	private static final int RECEIVEDMSG = MessageTypeEnum.RECEIVEDMSG.intKey();
 	private static final int PAYEDMSG = MessageTypeEnum.PAYEDMSG.intKey();
