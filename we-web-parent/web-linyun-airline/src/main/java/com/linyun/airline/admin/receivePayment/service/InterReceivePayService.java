@@ -104,6 +104,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	//收付款枚举
 	private static final int PAYTYPE = PayReceiveTypeEnum.PAY.intKey(); //付款记录
 	private static final int RECEIVETYPE = PayReceiveTypeEnum.RECEIVE.intKey(); //收款记录
+	//重复提醒枚举
+	private static final int REPEATTYPE = PayReceiveTypeEnum.REPEAT.intKey(); //收款记录
 
 	//消息提醒中的订单状态
 	private static final int SEARCHMSG = SearchOrderStatusEnum.SEARCH.intKey();
@@ -454,7 +456,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		String addRemindMsg = addRemindMsg(map, ordernum, pnr, orderId, typeEnum, session);
 		return addRemindMsg;
 	}
-	
+
 	/**
 	 * 付款中列表
 	 */
@@ -1417,6 +1419,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			msgType = MessageTypeEnum.BOOKMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL2.intKey();
 			msgContent = "预定单号：" + generateOrderNum + " 记录编号：" + pnr;
+			if (Util.eq(REPEATTYPE, payRecType)) {
+				msgContent = "单号：" + generateOrderNum + " 当前状态：" + orderStatusStr + "状态";
+			}
 			break;
 		case 3:
 			//开票 (消息内容TODO)  6   
@@ -1429,6 +1434,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			msgType = MessageTypeEnum.MAKEOUTBILLMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL3.intKey();
 			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "发票已开";
+			if (Util.eq(REPEATTYPE, payRecType)) {
+				msgContent = "单号：" + generateOrderNum + " 当前状态：" + orderStatusStr + "状态";
+			}
 			break;
 		case 5:
 			//关闭 (消息内容TODO)  0
@@ -1448,6 +1456,10 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				//收款
 				msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "收款已提交";
 			}
+			if (Util.eq(REPEATTYPE, payRecType)) {
+				msgContent = "单号：" + generateOrderNum + " 当前状态：" + orderStatusStr + "状态";
+			}
+
 			break;
 		case 7:
 			//二订 9
@@ -1460,6 +1472,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			if (Util.eq(RECEIVETYPE, payRecType)) {
 				//收款
 				msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "收款已提交";
+			}
+			if (Util.eq(REPEATTYPE, payRecType)) {
+				msgContent = "单号：" + generateOrderNum + " 当前状态：" + orderStatusStr + "状态";
 			}
 			break;
 		case 8:
@@ -1474,6 +1489,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				//收款
 				msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "收款已提交";
 			}
+			if (Util.eq(REPEATTYPE, payRecType)) {
+				msgContent = "单号：" + generateOrderNum + " 当前状态：" + orderStatusStr + "状态";
+			}
 			break;
 		case 9:
 			//全款 11
@@ -1487,6 +1505,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				//收款
 				msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "收款已提交";
 			}
+			if (Util.eq(REPEATTYPE, payRecType)) {
+				msgContent = "单号：" + generateOrderNum + " 当前状态：" + orderStatusStr + "状态";
+			}
 			break;
 		case 10:
 			//尾款 12
@@ -1499,6 +1520,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			if (Util.eq(RECEIVETYPE, payRecType)) {
 				//收款
 				msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "收款已提交";
+			}
+			if (Util.eq(REPEATTYPE, payRecType)) {
+				msgContent = "单号：" + generateOrderNum + " 当前状态：" + orderStatusStr + "状态";
 			}
 			break;
 		case 11:
