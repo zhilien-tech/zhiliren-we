@@ -254,7 +254,7 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		}
 		invoiceinfo.setInvoicetype(InvoiceInfoEnum.INVOIC_ING.intKey());
 		if (!Util.isEmpty(fromJson.get("receiveid"))) {
-			Integer receiveid = Integer.valueOf((String) fromJson.get("pnrid"));
+			Integer receiveid = Integer.valueOf((String) fromJson.get("receiveid"));
 			invoiceinfo.setReceiveid(receiveid);
 			//消息提醒
 			Sql sql = Sqls.create(sqlManager.get("select_receive_order_info"));

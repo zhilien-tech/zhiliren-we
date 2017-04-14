@@ -488,7 +488,7 @@
                 skin: false, //加上边框
                 closeBtn:false,//默认 右上角关闭按钮 是否显示
                 shadeClose:true,
-                area: ['400px', '350px'],
+                area: ['400px', '450px'],
                 content: '${base}/admin/international/orderRemind.html?orderid=${obj.orderinfo.id }'
               });
         });
@@ -917,6 +917,8 @@
 		  layer.msg("添加成功",{time: 2000});
 	  }else if(id == '2'){
 		  layer.msg("修改成功",{time: 2000});
+	  }else if(id=='3'){
+		  layer.msg("提醒成功",{time: 2000});
 	  }
 	}
     //编辑航段
