@@ -168,7 +168,7 @@ $(function(){
         $('.hideTable').toggle();
       });
     //加载pnr表格
-    loadPNRdata();
+    loadPNRdata(1);
     //航班信息的 + 按钮
     $(document).on("click",".addIcon",function(){
         var divTest = $(this).parent().parent().parent().find('[name=airlineinfo]').last(); 
@@ -263,7 +263,7 @@ $(function(){
     });
   });
 //加载pnr信息数据
-function loadPNRdata(){
+function loadPNRdata(status){
 	$('.DemandDiv').each(function(i){
 		var customDiv = $(this);
 		var customneedid = customDiv.find('[name=customneedid]').val();
@@ -311,7 +311,11 @@ function loadPNRdata(){
             		}else{
             			result +='<td></td>';
             		}
-            		result +='<td><a href="javascript:openDetailPage('+data[i].id+');" class="PNRdetails">详情</a></td>';
+            		if(status){
+            			result +='<td></td>';
+            		}else{
+            			result +='<td><a href="javascript:openDetailPage('+data[i].id+');" class="PNRdetails">详情</a></td>';
+            		}
             		result += '</tr>';
             	}
             	customDiv.find('[name=pnrinfodata]').html(result);

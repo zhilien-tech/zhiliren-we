@@ -173,3 +173,16 @@ version : 1.0.1   BEGIN   2017-04-13
 ******************************************************************************/ 
 ALTER TABLE `t_message`
 ADD COLUMN `upOrderStatus`  int NULL COMMENT '订单状态' AFTER `upOrderId`;
+
+create table t_inter_message
+(
+   id                   int not null auto_increment comment '主键id',
+   reminddate           datetime comment '提醒时间',
+   remindtype           int comment '提醒类型',
+   orderstatus          int comment '订单状态',
+   orderid              int comment '订单ID',
+   primary key (id)
+);
+
+alter table t_inter_message comment '国际消息提醒表';
+
