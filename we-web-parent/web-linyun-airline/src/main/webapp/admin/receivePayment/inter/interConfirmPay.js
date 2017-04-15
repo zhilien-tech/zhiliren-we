@@ -1,5 +1,10 @@
 //确认付款
 function confirmPayClick(){
+	var bankComp = $("#bankComp").val();
+	if(bankComp=="0"){
+		layer.msg('银行不能为空');
+		return;
+	}
 	$.ajax({
 		type : 'POST',
 		data : $("#confirmInterPayForm").serialize(),

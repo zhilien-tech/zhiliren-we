@@ -484,7 +484,13 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			if (String.valueOf(UNREPEAT).equals(reminderMode)) {
 				//不重复 提醒 （即只提醒一次）
 				if (Util.eq(isReadMsg, UNREAD)) {
-					recordsByCondition.add(record);
+					String generatetime = record.getString("generatetime");
+					long generateMillis = DateTimeUtil.string2DateTime(generatetime, "").getMillis();
+					long nowMillis = DateTimeUtil.now().getMillis();
+					long a = generateMillis - nowMillis;
+					if (a < 0) {
+						recordsByCondition.add(record);
+					}
 				}
 			}
 		}
