@@ -140,6 +140,8 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("comName", "like", Strings.trim(comName) + "%");
 		cnd.and("deletestatus", "=", 0);
+		cnd.and("c.comName", "!=", "平台后台管理");
+		cnd.and("c.id", "!=", companyId);
 		List<Record> agentCompanyList = dbDao.query(sql, cnd, null);
 		String upCustomerId = "";
 		String agCustomerId = "";
