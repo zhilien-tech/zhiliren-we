@@ -202,11 +202,11 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		}
 		//出发日期
 		if (!Util.isEmpty(leaveBeginDate)) {
-			cnd.and("pi.leavesdate", ">=", leaveBeginDate);
+			cnd.and("ai.leavedate", ">=", leaveBeginDate);
 		}
 		// 返回日期
 		if (!Util.isEmpty(leaveEndDate)) {
-			cnd.and("pi.leavesdate", "<=", leaveEndDate);
+			cnd.and("ai.leavedate", "<=", leaveEndDate);
 		}
 		List<Record> orders = dbDao.query(sql, cnd, null);
 
