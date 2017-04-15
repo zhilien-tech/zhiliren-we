@@ -361,7 +361,7 @@
 	                		/* msgT = "自定义事件："; */
 	                		cName = "";
 	                		agent = "";
-	                		content += '<li><span>'+dStr +'&nbsp;&nbsp;&nbsp;&nbsp;</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +''+msgC+'</li>'; 
+	                		content += '<li>&nbsp;&nbsp;&nbsp;&nbsp;<span>'+dStr +'&nbsp;&nbsp;&nbsp;&nbsp;</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +''+msgC+'</li>'; 
 	                	}else if(msgT==2){
 	                		msgT = "系统提醒：";
 	                		content += '<li><a href="javascript:;" onclick="openOrderById('+orderId+','+orderType+','+userMsgId+');"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +''+msgC+'</a></li>'; 
