@@ -202,27 +202,33 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		}
 		//出发日期
 		if (!Util.isEmpty(leaveBeginDate)) {
-			cnd.and("pi.leavesdate", ">=", leaveBeginDate);
+			cnd.and("ai.leavedate", ">=", leaveBeginDate);
 		}
 		// 返回日期
 		if (!Util.isEmpty(leaveEndDate)) {
-			cnd.and("pi.leavesdate", "<=", leaveEndDate);
+			cnd.and("ai.leavedate", "<=", leaveEndDate);
 		}
 		List<Record> orders = dbDao.query(sql, cnd, null);
 
 		for (Record record : list) {
 			//计算合计金额
 			Double sum = 0.0;
+			//订单号
+			String oNum = "";
 			//收款id
 			String id = record.get("id").toString();
 			List<Record> rList = new ArrayList<Record>();
 			for (Record r : orders) {
 				String rid = r.getString("id");
+				String orderNum = r.getString("ordersnum");
 				if (Util.eq(id, rid)) {
 					rList.add(r);
 					if (!Util.isEmpty(r.get("currentpay"))) {
-						Double currentpay = (Double) r.get("currentpay");
-						sum += currentpay;
+						if (!Util.eq(oNum, orderNum)) {
+							Double currentpay = (Double) r.get("currentpay");
+							sum += currentpay;
+						}
+						oNum = orderNum;
 					}
 				}
 			}
