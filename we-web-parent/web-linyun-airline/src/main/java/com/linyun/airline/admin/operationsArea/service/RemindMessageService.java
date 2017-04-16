@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
@@ -25,6 +26,8 @@ import com.uxuexi.core.web.base.service.BaseService;
 @IocBean
 public class RemindMessageService extends BaseService<TMessageEntity> {
 	private static final Log log = Logs.get();
+
+	private static final int confirmMsg = 3;
 
 	/**
 	 * 
@@ -111,36 +114,46 @@ public class RemindMessageService extends BaseService<TMessageEntity> {
 		addForm.setReminderMode(reminderMode);
 		//消息是否提醒  （默认为为提醒）
 		addForm.setIsRemind(Long.valueOf(MessageIsRemindEnum.YES.intKey()));
-		//添加消息数据
-		TMessageEntity tMessageEntity = this.add(addForm);
+		//添加消息数据  不存在则添加， 存在则更新
+		TMessageEntity msgEntity = dbDao.fetch(TMessageEntity.class,
+				Cnd.where("msgContent", "=", msgContent).and("msgType", "!=", confirmMsg));
+		List<TUserMsgEntity> userMsgEntityList = new ArrayList<TUserMsgEntity>();
+		if (!Util.isEmpty(msgEntity)) {
+			//消息已存在， 更新消息
+			msgEntity.setGenerateTime(remindMsgDate);
+			msgEntity.setReminderMode(reminderMode);
+			dbDao.update(msgEntity);
+		} else {
+			//不存在，则添加
+			TMessageEntity tMessageEntity = this.add(addForm);
+			/*******************************操作   用户-消息  关系表**************************************/
+			List<TUserMsgEntity> userMsgList = new ArrayList<>();
+			for (long receiveUserId : receiveUserIds) {
+				TUserMsgEntity tUserMsgEntity = new TUserMsgEntity();
+				//用户ID(接收方id)
+				tUserMsgEntity.setUserId(receiveUserId);
+				//消息ID
+				tUserMsgEntity.setMsgId(Long.valueOf(tMessageEntity.getId()));
+				//接收方用户类型（个人、公司、系统）
+				tUserMsgEntity.setUserType(receiveUserType);
+				//来源方类型  （个人、公司、系统）
+				tUserMsgEntity.setMsgSource(sourceUserType);
+				//来源方ID  
+				tUserMsgEntity.setFromId(SourceUserId);
+				//是否阅读  默认为未读状态
+				tUserMsgEntity.setIsRead(Long.valueOf(MessageStatusEnum.UNREAD.intKey()));
+				//自定义事件的时间
+				tUserMsgEntity.setSendTime(addForm.getGenerateTime());
+				//客户消息表id
+				if (!Util.isEmpty(customerInfoId)) {
+					tUserMsgEntity.setCustomerInfoId(customerInfoId);
+				}
 
-		/*******************************操作   用户-消息  关系表**************************************/
-		List<TUserMsgEntity> userMsgList = new ArrayList<>();
-		for (long receiveUserId : receiveUserIds) {
-			TUserMsgEntity tUserMsgEntity = new TUserMsgEntity();
-			//用户ID(接收方id)
-			tUserMsgEntity.setUserId(receiveUserId);
-			//消息ID
-			tUserMsgEntity.setMsgId(Long.valueOf(tMessageEntity.getId()));
-			//接收方用户类型（个人、公司、系统）
-			tUserMsgEntity.setUserType(receiveUserType);
-			//来源方类型  （个人、公司、系统）
-			tUserMsgEntity.setMsgSource(sourceUserType);
-			//来源方ID  
-			tUserMsgEntity.setFromId(SourceUserId);
-			//是否阅读  默认为未读状态
-			tUserMsgEntity.setIsRead(Long.valueOf(MessageStatusEnum.UNREAD.intKey()));
-			//自定义事件的时间
-			tUserMsgEntity.setSendTime(addForm.getGenerateTime());
-			//客户消息表id
-			if (!Util.isEmpty(customerInfoId)) {
-				tUserMsgEntity.setCustomerInfoId(customerInfoId);
+				//添加数组中
+				userMsgList.add(tUserMsgEntity);
 			}
-
-			//添加数组中
-			userMsgList.add(tUserMsgEntity);
+			userMsgEntityList = dbDao.insert(userMsgList);
 		}
-		List<TUserMsgEntity> userMsgEntityList = dbDao.insert(userMsgList);
 
 		return userMsgEntityList;
 	}
