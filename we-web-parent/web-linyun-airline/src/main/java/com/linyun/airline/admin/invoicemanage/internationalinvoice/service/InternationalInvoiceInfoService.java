@@ -23,6 +23,7 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
@@ -378,13 +379,18 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		String ordersnum = "";
 		Integer orderId = null;
+		List<Long> receiveUids = Lists.newArrayList();
 		Integer ordertatus = invoiceinfo.getOrderstatus();
 		for (Record record : orders) {
 			orderId = record.getInt("id");
 			ordersnum = record.getString("ordersnum");
+			Integer uId = record.getInt("loginUserId");
+			if (!Util.isEmpty(uId)) {
+				receiveUids.add(Long.valueOf(uId + ""));
+			}
 		}
 		interReceivePayService.addInterRemindMsg(orderId, ordersnum, "", ordertatus + "",
-				MessageWealthStatusEnum.INVIOCE.intKey(), PayReceiveTypeEnum.RECEIVE.intKey(), session);
+				MessageWealthStatusEnum.INVIOCE.intKey(), PayReceiveTypeEnum.RECEIVE.intKey(), receiveUids, session);
 		return null;
 	}
 
@@ -553,12 +559,17 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		String ordersnum = "";
 		Integer orderId = null;
 		Integer ordertatus = invoiceinfo.getOrderstatus();
+		List<Long> receiveUids = Lists.newArrayList();
 		for (Record record : orders) {
 			ordersnum = record.getString("ordersnum");
 			orderId = record.getInt("id");
+			Integer uId = record.getInt("loginUserId");
+			if (!Util.isEmpty(uId)) {
+				receiveUids.add(Long.valueOf(uId + ""));
+			}
 		}
 		interReceivePayService.addInterRemindMsg(orderId, ordersnum, "", ordertatus + "",
-				MessageWealthStatusEnum.RECINVIOCE.intKey(), PayReceiveTypeEnum.RECEIVE.intKey(), session);
+				MessageWealthStatusEnum.RECINVIOCE.intKey(), PayReceiveTypeEnum.RECEIVE.intKey(), receiveUids, session);
 		return null;
 	}
 

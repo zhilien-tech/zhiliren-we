@@ -17,6 +17,7 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
@@ -310,14 +311,20 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		String ordersnum = "";
 		Integer orderId = null;
+		List<Long> receiveUids = Lists.newArrayList();
 		for (Record record : orders) {
 			ordersnum = record.getString("ordersnum");
 			orderId = record.getInt("id");
+			Integer uId = record.getInt("loginUserId");
+			if (!Util.isEmpty(uId)) {
+				receiveUids.add(Long.valueOf(uId + ""));
+			}
 		}
 		Map<String, Object> map = Maps.newHashMap();
 		map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 		map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
-		searchViewService.addRemindMsg(map, ordersnum, "", orderId, MessageWealthStatusEnum.INVIOCE.intKey(), session);
+		searchViewService.addRemindMsg(map, ordersnum, "", orderId, MessageWealthStatusEnum.INVIOCE.intKey(),
+				receiveUids, session);
 		return null;
 	}
 
@@ -521,16 +528,21 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		String ordersnum = "";
 		String pnr = "";
 		Integer orderId = null;
+		List<Long> receiveUids = Lists.newArrayList();
 		for (Record record : pnrinfo) {
 			ordersnum = record.getString("ordersnum");
 			orderId = record.getInt("orderids");
 			pnr = record.getString("pnr");
+			Integer uId = record.getInt("userid");
+			if (!Util.isEmpty(uId)) {
+				receiveUids.add(Long.valueOf(uId + ""));
+			}
 		}
 		Map<String, Object> map = Maps.newHashMap();
 		map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 		map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
 		searchViewService.addRemindMsg(map, ordersnum, pnr, orderId, MessageWealthStatusEnum.RECINVIOCE.intKey(),
-				session);
+				receiveUids, session);
 		return null;
 	}
 
