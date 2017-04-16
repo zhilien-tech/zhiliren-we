@@ -38,6 +38,7 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.upload.UploadAdaptor;
 
+import com.google.common.collect.Lists;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
@@ -222,10 +223,13 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				int uid = Integer.valueOf(record.getString("id"));
 				String ordernum = record.getString("ordersnum");
 				String pnr = record.getString("pnrnum");
+				String uids = record.getString("userid");
+				List<Long> receiveUserIds = Lists.newArrayList();
+				receiveUserIds.add(Long.parseLong(uids));
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 				map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
-				searchViewService.addRemindMsg(map, ordernum, pnr, uid, RECEDMSGTYPE, session);
+				searchViewService.addRemindMsg(map, ordernum, pnr, uid, RECEDMSGTYPE, receiveUserIds, session);
 			}
 		}
 
@@ -805,10 +809,13 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				int uid = Integer.valueOf(record.getString("id"));
 				String ordernum = record.getString("ordersnum");
 				String pnr = record.getString("PNR");
+				String uids = record.getString("userid");
+				List<Long> receiveUserIds = Lists.newArrayList();
+				receiveUserIds.add(Long.valueOf(uids));
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 				map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
-				searchViewService.addRemindMsg(map, ordernum, pnr, uid, PAYEDMSGTYPE, session);
+				searchViewService.addRemindMsg(map, ordernum, pnr, uid, PAYEDMSGTYPE, receiveUserIds, session);
 			}
 		}
 
