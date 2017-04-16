@@ -16,7 +16,7 @@
 		     <div class="modal-header">
 		     	  <input id="userId" name="id" type="hidden" value="${obj.personalInfo[0].id}"/>
 		          <button type="button" class="btn btn-primary right btn-sm returnBtn" onclick="closewindow('${obj.personalInfo[0].id}');">取消</button>
-		          <button id="submit" class="btn btn-primary right btn-sm saveBtn">保存</button>
+		          <button id="submit" onclick="updatePassData('${obj.personalInfo[0].id}');" class="btn btn-primary right btn-sm saveBtn">保存</button>
 		          <h5>修改密码</h5>
 		     </div>
 	      	<div class="modal-body pwdBody">
@@ -38,10 +38,7 @@
 	<script src="${base}/common/js/layer/layer.js"></script>
 <script type="text/javascript">
 //修改密码
-$("#submit").click(function() {
-	var loadLayer = layer.load(0.1, {
-		 shade: [0.1,'#fff'] //0.1透明度的白色背景
-	});
+function updatePassData(userId){
 	$.ajax({
 		type: 'POST',
 		dataType : 'json',
@@ -50,11 +47,9 @@ $("#submit").click(function() {
 		url: '${base}/admin/user/updatePassword.html',
         success: function (data) { 
         	if(data.status == '200'){
-       			layer.close(loadLayer);
        			alert("修改成功!");
         		window.parent.location.href="${base}/admin/logout.html";//密码修改成功跳到登录页
 			}else{
-				layer.close(loadLayer) ;
 				layer.msg(data.message) ;
 			}
         },
@@ -62,28 +57,26 @@ $("#submit").click(function() {
         	layer.msg("密码修改失败!","",3000);
         } 
     });
-});
-//验证原密码是否输入正确
-/* function checkOldPass(userId){
-	$.ajax({
-		cache : true,
-		type : "POST",
-		url : '${base}/admin/user/checkOldPass.html',
-		data : $('#passwordForm').serialize(),//form表单数据
-		success : function(data) {
-			layer.load(1, {
-				 shade: [0.1,'#fff'] //0.1透明度的白色背景
-			});
-            //layer.msg('密码修改成功!',{time: 5000, icon:6});
-			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-		    parent.layer.close(index);
-		    window.location.reload();
-		},
-		error : function(request) {
-			layer.msg('原密码密码输入错误!');
-		}
-	});
-} */
+	/* layer.confirm('您是否确认修改密码？', function(index){
+		$.ajax({
+			type : 'POST',
+			data: $("#passwordForm").serialize(),//form表单数据
+			dataType : 'json',
+			url : '${base}/admin/user/updatePassword.html',
+			success : function(data) {
+				if(data.status == '200'){
+					layer.close(index);
+	        		window.parent.location.href="${base}/admin/logout.html";//密码修改成功跳到登录页
+				}else{
+					layer.msg(data.message) ;
+				}
+			},
+			error : function(xhr) {
+				layer.msg("操作失败", "", 3000);
+			}
+		});
+	}); */
+}
 //点击取消
 function closewindow(){
 	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引

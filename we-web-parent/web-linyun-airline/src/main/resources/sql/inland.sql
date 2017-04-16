@@ -1,6 +1,7 @@
 /*get_inland_listdata*/
 SELECT
 	tuo.*, tfi.receivable,
+	tfi.incometotal,
 	tfi.personcount,
 	tci.linkMan userName,
 	tci.telephone,
@@ -155,7 +156,7 @@ SELECT
 	tfi.billingdate,
 	tuo.id ordersid,
 	tfi.cusgroupnum,
-	tci. NAME customename,
+	tci.shortName customename,
 	tci.linkMan,
 	(
 		SELECT
@@ -271,3 +272,22 @@ FROM
 	t_order_receive tor
 INNER JOIN t_up_order tuo ON tor.orderid = tuo.id
 $condition
+
+/*select_function_user_ids*/
+SELECT
+	uj.userid
+FROM
+	t_function f
+LEFT JOIN t_company_function_map cfm ON cfm.funId = f.id
+LEFT JOIN t_com_fun_pos_map cfpm ON cfpm.companyFunId = cfm.id
+LEFT JOIN t_job j ON j.id = cfpm.jobId
+LEFT JOIN t_company_job cj ON cj.posid = j.id
+LEFT JOIN t_user_job uj ON uj.companyJobId = cj.id
+WHERE
+	f.parentId = @parentid
+AND cj.comId = @companyid
+AND (
+	f.`name` LIKE @functionname
+)
+GROUP BY
+	(uj.userid)

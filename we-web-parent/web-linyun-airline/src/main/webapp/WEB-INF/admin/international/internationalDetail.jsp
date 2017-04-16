@@ -305,7 +305,7 @@
                      <td><label>付款币种：</label></td>
                      <td>
                         <select id="paycurrency" name="paycurrency" class="form-control input-sm">
-                            <option>请选择</option>
+                            <option value="">请选择</option>
                             <c:forEach items="${obj.bzcode }" var="one"> 
                             	<c:choose>
                             		<c:when test="${obj.finance.paycurrency eq one.id }">
@@ -321,7 +321,7 @@
                      <td><label>付款方式：</label></td>
                      <td>
                         <select id="paymethod" name="paymethod" class="form-control input-sm">
-                            <option>请选择</option>
+                            <option value="">请选择</option>
                             <c:forEach var="map" items="${obj.paymethod}" >
                             	<c:choose>
                             		<c:when test="${obj.finance.paymethod eq map.id }">
@@ -1056,11 +1056,20 @@
     //自动加载利润合计
      $(document).on('input', '.loadprofit', function(e) {
    	    //实收合计
-   	 	var incometotal = $('#incometotal').val();
+   	 	var incometotal = 0;
+   	    if($('#incometotal').val()){
+   	    	incometotal = $('#incometotal').val();
+   	    }
    	    //成本合计
-   	 	var costtotal = $('#costtotal').val();
+   	 	var costtotal = 0;
+   	    if($('#costtotal').val()){
+   	    	costtotal = $('#costtotal').val();
+   	    }
    	    //应返合计
-   	 	var returntotal = $('#returntotal').val();
+   	 	var returntotal =0;
+   	    if($('#returntotal').val()){
+   	    	returntotal = $('#returntotal').val();
+   	    }
    	    //利润合计
    	 	var profittotal  = parseFloat(incometotal) - parseFloat(costtotal) - parseFloat(returntotal);
    	 	if(!isNaN(profittotal)){
@@ -1071,10 +1080,19 @@
 	 //设置财务信息
      function setFinanceInfo(){
          	//成本合计
-         	var costtotal = $('#costtotal').val();
+         	var costtotal = 0;
+         	if($('#costtotal').val()){
+         		costtotal = $('#costtotal').val();
+         	}
          	//应收
-         	var receivable = $('#receivable').val();
-         	var relief = $('#relief').val();
+         	var receivable = 0;
+         	if($('#receivable').val()){
+         		receivable = $('#receivable').val();
+         	}
+         	var relief = 0;
+         	if($('#relief').val()){
+         		relief = $('#relief').val();
+         	}
       	 	var incometotal  = '';
       	 	if(relief){
       	 		incometotal  = parseFloat(receivable) - parseFloat(relief);

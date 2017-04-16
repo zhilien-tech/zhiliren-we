@@ -414,12 +414,16 @@ public class ComInfoDictModule {
 	 */
 	@At
 	@POST
-	public Object checkDictNameExist(@Param("comDictName") final String Name, @Param("id") final long id) {
+	public Object checkDictNameExist(@Param("comDictName") final String Name, @Param("id") final long id,
+			final HttpSession session) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<ComDictInfoEntity> listName = dbDao.query(ComDictInfoEntity.class, Cnd.where("comDictName", "=", Name),
-				null);
+		//从session中得到公司id
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long comId = company.getId();//得到公司的id
+		List<ComDictInfoEntity> listName = dbDao.query(ComDictInfoEntity.class, Cnd.where("comDictName", "=", Name)
+				.and("comId", "=", comId), null);
 		List<ComDictInfoEntity> listName2 = dbDao.query(ComDictInfoEntity.class, Cnd.where("comDictName", "=", Name)
-				.and("id", "=", id), null);
+				.and("id", "=", id).and("comId", "=", comId), null);
 		if (!Util.isEmpty(listName)) {
 			if (Util.isEmpty(id)) {
 				map.put("valid", false);

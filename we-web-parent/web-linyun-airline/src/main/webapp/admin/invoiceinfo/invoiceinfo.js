@@ -382,6 +382,11 @@ $("tbody",$('#shouInvoiceTable1')).on("dblclick","tr",function(event){
 	var url = BASE_PATH + '/admin/inland/bookingDetail.html?id='+row.orderids;
 	window.open(url,'_black');
 });
+/*$("tbody",$('#shouInvoiceTable1')).on("dblclick","tr",function(event){
+	//获取当前行的数据
+	var row = shouInvoiceTable1.row($(this).closest('tr')).data();
+	openshouInvoiceEdit(row.id);
+});*/
 function openshouInvoiceEdit(id){
 	layer.open({
         type: 2,
@@ -393,9 +398,6 @@ function openshouInvoiceEdit(id){
         content: BASE_PATH + '/admin/invoicemanage/invoiceinfo/shouOpenInvoice.html?id='+id
     });
 }
-
-
-
 //收发票 搜索按钮
 $("#shouSearchInvoiceBtn").on('click',shouInvoiceSelectData());
 function shouInvoiceSelectData() {
