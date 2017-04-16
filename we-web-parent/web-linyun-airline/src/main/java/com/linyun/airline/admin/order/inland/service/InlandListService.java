@@ -301,4 +301,20 @@ public class InlandListService extends BaseService<TUpOrderEntity> {
 		result = dbDao.fetch(TBankCardEntity.class, Long.valueOf(paymethod));
 		return result;
 	}
+
+	public List<Long> getUserIdsByFun(Long companyid, Long parentid, String functionname) {
+		List<Long> result = new ArrayList<Long>();
+		String sqlString = sqlManager.get("select_function_user_ids");
+		Sql sql = Sqls.create(sqlString);
+		sql.setParam("parentid", parentid);
+		sql.setParam("companyid", companyid);
+		sql.setParam("functionname", "%" + functionname + "%");
+		List<Record> query = dbDao.query(sql, null, null);
+		for (Record record : query) {
+			if (!Util.isEmpty(record.getInt("userid"))) {
+				result.add(new Integer(record.getInt("userid")).longValue());
+			}
+		}
+		return result;
+	}
 }

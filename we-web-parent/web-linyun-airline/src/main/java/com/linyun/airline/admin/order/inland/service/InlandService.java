@@ -137,6 +137,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	private SearchViewService searchViewService;
 	@Inject
 	private TurnOverViewService turnOverViewService;
+	@Inject
+	private InlandListService inlandListService;
 
 	public Object listData(InlandListSearchForm form, HttpServletRequest request) {
 		HttpSession session = request.getSession();
@@ -359,6 +361,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Map<String, Object> fromJson = JsonUtil.fromJson(data, Map.class);
 		//订单id   从页面隐藏域获取
 		Integer id = Integer.valueOf((String) fromJson.get("id"));
@@ -406,7 +410,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			remindMap.put("remindDate", remindTime);
 			remindMap.put("remindType", remindType);
 			if (updateNum > 0) {
-				searchViewService.addRemindMsg(remindMap, ordersnum, "", upOrderid, orderType, session);
+				//inlandListService.getUserIdsByFun(company.getId(), parentid, functionname)
+				List<Long> receiveUids = new ArrayList<Long>();
+				receiveUids.add(user.getId());
+				searchViewService.addRemindMsg(remindMap, ordersnum, "", upOrderid, orderType, receiveUids, session);
 			}
 		}
 
@@ -683,7 +690,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			remindMap.put("remindDate", remindTime);
 			remindMap.put("remindType", remindType);
 			if (updateNum > 0) {
-				searchViewService.addRemindMsg(remindMap, ordersnum, "", upOrderid, orderType, session);
+				List<Long> receiveUids = new ArrayList<Long>();
+				receiveUids.add(user.getId());
+				searchViewService.addRemindMsg(remindMap, ordersnum, "", upOrderid, orderType, receiveUids, session);
 			}
 		}
 		String logcontent = "";
@@ -1590,8 +1599,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 			map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
+			List<Long> receiveusers = inlandListService.getUserIdsByFun(company.getId(), Long.valueOf(0), "审批手机");
 			searchViewService.addRemindMsg(map, order.getOrdersnum(), pnrinfo.getPNR(), order.getId(),
-					MessageWealthStatusEnum.PSAPPROVALING.intKey(), session);
+					MessageWealthStatusEnum.PSAPPROVALING.intKey(), receiveusers, session);
 		}
 		//更新pnr状态
 		dbDao.update(pnrinfos);

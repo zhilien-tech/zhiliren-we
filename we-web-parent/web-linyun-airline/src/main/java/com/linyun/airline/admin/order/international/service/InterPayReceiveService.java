@@ -22,12 +22,14 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.linyun.airline.admin.authority.function.entity.TFunctionEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.enums.InvoiceInfoEnum;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
+import com.linyun.airline.admin.order.inland.service.InlandListService;
 import com.linyun.airline.admin.order.inland.util.FormatDateUtil;
 import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.order.international.form.InterPaymentSqlForm;
@@ -74,6 +76,8 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 	private externalInfoService externalInfoService;
 	@Inject
 	private InterReceivePayService interReceivePayService;
+	@Inject
+	private InlandListService inlandListService;
 
 	/**
 	 * 国际收款列表
@@ -265,9 +269,16 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 				map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
+				List<TFunctionEntity> function = dbDao.query(TFunctionEntity.class, Cnd.where("name", "=", "发票管理"),
+						null);
+				long functionid = 0;
+				if (function.size() > 0) {
+					functionid = function.get(0).getId();
+				}
+				List<Long> receiveusers = inlandListService.getUserIdsByFun(company.getId(), functionid, "国际发票");
 				interReceivePayService.addInterRemindMsg(record.getInt("id"), record.getString("ordersnum"), "",
 						record.getString("ordersstatus"), MessageWealthStatusEnum.INVIOCING.intKey(),
-						PayReceiveTypeEnum.RECEIVE.intKey(), session);
+						PayReceiveTypeEnum.RECEIVE.intKey(), receiveusers, session);
 			}
 		}
 		if (!Util.isEmpty(fromJson.get("orderstatus"))) {
@@ -416,9 +427,15 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 			//消息提醒
 			TPayOrderEntity payorder = dbDao.fetch(TPayOrderEntity.class, orderpayid.longValue());
 			TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, payorder.getOrderid().longValue());
+			List<TFunctionEntity> function = dbDao.query(TFunctionEntity.class, Cnd.where("name", "=", "发票管理"), null);
+			long functionid = 0;
+			if (function.size() > 0) {
+				functionid = function.get(0).getId();
+			}
+			List<Long> receiveusers = inlandListService.getUserIdsByFun(company.getId(), functionid, "国际发票");
 			interReceivePayService.addInterRemindMsg(order.getId(), order.getOrdersnum(), "",
 					String.valueOf(order.getOrdersstatus()), MessageWealthStatusEnum.RECINVIOCING.intKey(),
-					PayReceiveTypeEnum.PAY.intKey(), session);
+					PayReceiveTypeEnum.PAY.intKey(), receiveusers, session);
 		}
 		if (!Util.isEmpty(fromJson.get("orderstatus"))) {
 			invoiceinfo.setOrderstatus(Integer.valueOf((String) fromJson.get("orderstatus")));
