@@ -279,7 +279,6 @@ formValidator();
 //删除提示
 $(document).on("click","#deleteBtn",function(jobId){
 	var dele= this;
-	//alert($(dele).val());
 	//if("" != jobId || null != jobId){
 		layer.confirm("您确认删除信息吗？", {
 		    btn: ["是","否"], //按钮

@@ -360,11 +360,16 @@ function shouInvoiceLoad(){
 	shouInterInvoiceTable.ajax.reload();
 }
 //datatable行点击事件
-$("tbody",$('#shouInterInvoiceTable')).on("dblclick","tr",function(event){
+/*$("tbody",$('#shouInterInvoiceTable')).on("dblclick","tr",function(event){
 	//获取当前行的数据
 	var row = shouInterInvoiceTable.row($(this).closest('tr')).data();
 	var url = BASE_PATH + '/admin/international/internationalDetail.html?orderid='+row.orderid;
 	window.open(url,'_black');
+});*/
+$("tbody",$('#shouInterInvoiceTable')).on("dblclick","tr",function(event){
+	//获取当前行的数据
+	var row = shouInterInvoiceTable.row($(this).closest('tr')).data();
+	openshouInvoiceEdit(row.id);
 });
 function openshouInvoiceEdit(id){
 	layer.open({

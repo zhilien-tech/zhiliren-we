@@ -89,6 +89,7 @@ $("#submit").click(function(){
               	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 				window.location.reload(); // 父页面刷新
 				window.parent.successCallback('1');
+				$("#areaName").focus();     
            }
        });
 	}

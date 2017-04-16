@@ -57,7 +57,7 @@ public class TSalaryIncreaseEntity implements Serializable {
 
 	@Column
 	@Comment("提成")
-	private Double commission;
+	private float commission;
 
 	@Column
 	@Comment("罚款")

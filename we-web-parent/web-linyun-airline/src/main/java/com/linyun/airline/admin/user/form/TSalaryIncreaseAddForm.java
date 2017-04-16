@@ -43,7 +43,7 @@ public class TSalaryIncreaseAddForm extends AddForm {
 	private Double ratepaying;
 
 	//提成
-	private Double commission;
+	private float commission;
 
 	//罚款
 	private Double forfeit;
