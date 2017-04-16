@@ -45,6 +45,8 @@ public class PayApplyListForm extends DataTablesParamForm {
 
 	private String searchInfo;
 
+	private Long adminId;
+
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		cnd.and("tuo.ordersstatus", "=", OrderStatusEnum.TICKETING.intKey());

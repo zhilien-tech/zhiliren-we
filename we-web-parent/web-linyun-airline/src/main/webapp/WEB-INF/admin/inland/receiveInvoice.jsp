@@ -40,7 +40,7 @@
                   		<tr ondblclick="toOrderDetail(${one.ordersid})">
                   			<td>${one.ordersnum }</td>
                   			<td>${one.pnr }</td>
-                  			<td>${one.billingdate }</td>
+                  			<td><fmt:formatDate value="${one.billingdate }" pattern="yyyy-MM-dd" /></td>
                   			<td>${one.cusgroupnum }</td>
                   			<td>${one.customename }</td>
                   			<td>${one.linkMan }</td>

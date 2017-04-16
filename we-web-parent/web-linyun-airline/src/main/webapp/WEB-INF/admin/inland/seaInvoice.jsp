@@ -36,7 +36,7 @@
                 	<c:forEach var="one" items="${obj.orders }">
                 		<tr ondblclick="toOrderDetail(${one.id});">
                 			<td>${one.ordersnum }</td>
-                			<td>${one.billingdate }</td>
+                			<td><fmt:formatDate value="${one.billingdate }" pattern="yyyy-MM-dd" /></td>
                 			<td>${one.cusgroupnum }</td>
                 			<td>${one.shortName }</td>
                 			<td>${one.linkMan }</td>
@@ -51,6 +51,7 @@
                   <td>银行：</td>
                   <td>
                     <select id="bankcardid" name="bankcardid" class="form-control input-sm" onchange="loadbankcardname();">
+                    	<option value="">请选择</option>
                         <c:forEach var="one" items="${obj.yhkSelect }">
                         	<option value="${one.id }">${one.dictName }</option>
                         </c:forEach>
@@ -100,21 +101,25 @@
 		var bankcardnum = $('#bankcardnum').val();
 		var billurl = $('#billurl').val();
 		var sumincome = $('#sumincome').val();
-		$.ajax({
-	        type: "post",
-	        url: '${base}/admin/inland/saveSeaInvoice.html',
-	        data: {ids:ids,bankcardid:bankcardid,bankcardname:bankcardname,bankcardnum:bankcardnum,billurl:billurl,sumincome:sumincome},
-	        cache: false,
-	        async : false,
-	        success: function (data ,textStatus, jqXHR){
-	        	layer.msg("提交成功！",{time: 2000});
-	        	closewindow();
-	        	window.parent.successCallback('5');
-	        },
-	        error:function (XMLHttpRequest, textStatus, errorThrown) {      
-	            layer.msg("请求失败！",{time: 2000});
-	        }
-	     });
+		if(actualnumber){
+			$.ajax({
+		        type: "post",
+		        url: '${base}/admin/inland/saveSeaInvoice.html',
+		        data: {ids:ids,bankcardid:bankcardid,bankcardname:bankcardname,bankcardnum:bankcardnum,billurl:billurl,sumincome:sumincome},
+		        cache: false,
+		        async : false,
+		        success: function (data ,textStatus, jqXHR){
+		        	layer.msg("提交成功！",{time: 2000});
+		        	closewindow();
+		        	window.parent.successCallback('5');
+		        },
+		        error:function (XMLHttpRequest, textStatus, errorThrown) {      
+		            layer.msg("请求失败！",{time: 2000});
+		        }
+		     });
+		}else{
+			layer.msg("请选择银行！",{time: 2000});
+		}
 	}
 	
 	//文件上传
@@ -169,40 +174,44 @@
 	//加载银行卡名称下拉
 	function loadbankcardname(){
 		var bankcardid = $('#bankcardid').val();
-		$.ajax({
-	        type: "post",
-	        url: '${base}/admin/inland/loadBankCardNameSelect.html',
-	        data: {bankcardid:bankcardid},
-	        cache: false,
-	        async : false,
-	        success: function (data ,textStatus, jqXHR){
-	        	var html = '';
-	        	$.each(data, function(name, value) {
-	        		html += '<option value="'+value.id+'">'+value.cardName+'</option>';
-	        	});
-	        	$('#bankcardname').html(html);
-	        },
-	        error:function (XMLHttpRequest, textStatus, errorThrown) {      
-	        }
-	     });
-		loadbankcardnum();
+		if(bankcardid){
+			$.ajax({
+		        type: "post",
+		        url: '${base}/admin/inland/loadBankCardNameSelect.html',
+		        data: {bankcardid:bankcardid},
+		        cache: false,
+		        async : false,
+		        success: function (data ,textStatus, jqXHR){
+		        	var html = '';
+		        	$.each(data, function(name, value) {
+		        		html += '<option value="'+value.id+'">'+value.cardName+'</option>';
+		        	});
+		        	$('#bankcardname').html(html);
+		        },
+		        error:function (XMLHttpRequest, textStatus, errorThrown) {      
+		        }
+		     });
+			loadbankcardnum();
+		}
 	}
 	//加载银行卡号
 	function loadbankcardnum(){
 		var bankcardname = $('#bankcardname').val();
-		$.ajax({
-	        type: "post",
-	        url: '${base}/admin/inland/loadBankCardNumSelect.html',
-	        data: {bankcardname:bankcardname},
-	        cache: false,
-	        async : false,
-	        success: function (data ,textStatus, jqXHR){
-	        	var html = '<option>'+data.cardNum+'</option>';
-	        	$('#bankcardnum').html(html);
-	        },
-	        error:function (XMLHttpRequest, textStatus, errorThrown) {      
-	        }
-	     });
+		if(bankcardname){
+			$.ajax({
+		        type: "post",
+		        url: '${base}/admin/inland/loadBankCardNumSelect.html',
+		        data: {bankcardname:bankcardname},
+		        cache: false,
+		        async : false,
+		        success: function (data ,textStatus, jqXHR){
+		        	var html = '<option>'+data.cardNum+'</option>';
+		        	$('#bankcardnum').html(html);
+		        },
+		        error:function (XMLHttpRequest, textStatus, errorThrown) {      
+		        }
+		     });
+		}
 	}
 	loadbankcardname();
 	loadbankcardnum();

@@ -27,6 +27,7 @@ import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.google.common.base.Splitter;
+import com.linyun.airline.admin.authority.function.entity.TFunctionEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.customneeds.service.EditPlanService;
@@ -36,6 +37,7 @@ import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.order.inland.enums.PassengerTypeEnum;
 import com.linyun.airline.admin.order.inland.enums.PayMethodEnum;
 import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
+import com.linyun.airline.admin.order.inland.service.InlandListService;
 import com.linyun.airline.admin.order.inland.util.FormatDateUtil;
 import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.order.international.form.InternationalParamForm;
@@ -106,6 +108,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	private externalInfoService externalInfoService;
 	@Inject
 	private InterReceivePayService interReceivePayService;
+	@Inject
+	private InlandListService inlandListService;
 
 	/**
 	 * 查询国际列表
@@ -533,6 +537,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		//判断是否是主航段
 		Integer orderid = Integer.valueOf((String) fromJson.get("orderid"));
 		List<TPnrInfoEntity> query = dbDao.query(TPnrInfoEntity.class, Cnd.where("orderid", "=", orderid), null);
+		TPlanInfoEntity planinfo = dbDao.fetch(TPlanInfoEntity.class, Cnd.where("ordernumber", "=", orderid));
 		String pnr = (String) fromJson.get("pnr");
 		TPnrInfoEntity pnrinfo = new TPnrInfoEntity();
 		pnrinfo.setOrderid(orderid);
@@ -557,6 +562,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			airline.setArrivetime(map.get("arrivetime"));
 			airline.setAilinenum(map.get("ailinenum"));
 			airline.setPnrid(insertpnr.getId());
+			airline.setPlanid(planinfo.getId());
 			ailines.add(airline);
 		}
 		return dbDao.insert(ailines);
@@ -609,6 +615,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		TPnrInfoEntity pnrinfo = dbDao.fetch(TPnrInfoEntity.class, pnrid.intValue());
 		pnrinfo.setPNR(pnr);
 		dbDao.update(pnrinfo);
+		TPlanInfoEntity planinfo = dbDao.fetch(TPlanInfoEntity.class,
+				Cnd.where("ordernumber", "=", pnrinfo.getOrderid()));
 		List<Map<String, String>> airinfos = (List<Map<String, String>>) fromJson.get("airinfos");
 		//查询之前的
 		List<TAirlineInfoEntity> before = dbDao.query(TAirlineInfoEntity.class, Cnd.where("pnrid", "=", pnrid), null);
@@ -625,6 +633,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			airline.setArrivetime(map.get("arrivetime"));
 			airline.setAilinenum(map.get("ailinenum"));
 			airline.setPnrid(pnrid);
+			airline.setPlanid(planinfo.getId());
 			ailines.add(airline);
 		}
 		dbDao.updateRelations(before, ailines);
@@ -1030,9 +1039,15 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			order.setReceivestatus(AccountReceiveEnum.RECEIVINGMONEY.intKey());
 			orders.add(order);
 			//消息提醒
+			List<TFunctionEntity> function = dbDao.query(TFunctionEntity.class, Cnd.where("name", "=", "收付款"), null);
+			long functionid = 0;
+			if (function.size() > 0) {
+				functionid = function.get(0).getId();
+			}
+			List<Long> receiveusers = inlandListService.getUserIdsByFun(company.getId(), functionid, "国际订单");
 			interReceivePayService.addInterRemindMsg(order.getId(), order.getOrdersnum(), "",
 					String.valueOf(order.getOrdersstatus()), MessageWealthStatusEnum.RECSUBMITED.intKey(),
-					PayReceiveTypeEnum.RECEIVE.intKey(), session);
+					PayReceiveTypeEnum.RECEIVE.intKey(), receiveusers, session);
 		}
 		//更新订单状态
 		dbDao.update(orders);
@@ -1143,9 +1158,15 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			orderifo.setPaystatus(AccountPayEnum.APPROVAL.intKey());
 			orders.add(orderifo);
 			//消息提醒
+			List<TFunctionEntity> function = dbDao.query(TFunctionEntity.class, Cnd.where("name", "=", "收付款"), null);
+			long functionid = 0;
+			if (function.size() > 0) {
+				functionid = function.get(0).getId();
+			}
+			List<Long> receiveusers = inlandListService.getUserIdsByFun(company.getId(), functionid, "国际订单");
 			interReceivePayService.addInterRemindMsg(orderifo.getId(), orderifo.getOrdersnum(), "",
 					String.valueOf(orderifo.getOrdersstatus()), MessageWealthStatusEnum.PSAPPROVALING.intKey(),
-					PayReceiveTypeEnum.PAY.intKey(), session);
+					PayReceiveTypeEnum.PAY.intKey(), receiveusers, session);
 		}
 		//更新pnr状态
 		dbDao.update(orders);
@@ -1299,6 +1320,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	@SuppressWarnings("unchecked")
 	public Object saveOrderRemindInfo(HttpServletRequest request) {
 		HttpSession session = request.getSession();
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		String data = request.getParameter("data");
 		Map<String, Object> dataJson = JsonUtil.fromJson(data, Map.class);
 		String orderid = (String) dataJson.get("orderid");
@@ -1318,8 +1341,11 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			intermessage.setRemindtype(remindType);
 			if (!Util.isEmpty(remindDate)) {
 				intermessage.setReminddate(DateUtil.string2Date(remindDate, DateUtil.FORMAT_FULL_PATTERN));
+				List<Long> receiveusers = new ArrayList<Long>();
+				receiveusers.add(user.getId());
 				interReceivePayService.addInterRepeatRemindMsg(orderinfo.getId(), orderinfo.getOrdersnum(), "",
-						orderstatus, typeEnum, PayReceiveTypeEnum.REPEAT.intKey(), remindType, remindDate, session);
+						orderstatus, typeEnum, PayReceiveTypeEnum.REPEAT.intKey(), remindType, remindDate,
+						receiveusers, session);
 				after.add(intermessage);
 			}
 		}
