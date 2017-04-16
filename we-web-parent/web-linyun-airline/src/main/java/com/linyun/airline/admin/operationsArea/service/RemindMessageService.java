@@ -114,10 +114,10 @@ public class RemindMessageService extends BaseService<TMessageEntity> {
 		addForm.setReminderMode(reminderMode);
 		//消息是否提醒  （默认为为提醒）
 		addForm.setIsRemind(Long.valueOf(MessageIsRemindEnum.YES.intKey()));
+		List<TUserMsgEntity> userMsgEntityList = new ArrayList<TUserMsgEntity>();
 		//添加消息数据  不存在则添加， 存在则更新
 		TMessageEntity msgEntity = dbDao.fetch(TMessageEntity.class,
 				Cnd.where("msgContent", "=", msgContent).and("msgType", "!=", confirmMsg));
-		List<TUserMsgEntity> userMsgEntityList = new ArrayList<TUserMsgEntity>();
 		if (!Util.isEmpty(msgEntity)) {
 			//消息已存在， 更新消息
 			msgEntity.setGenerateTime(remindMsgDate);
