@@ -53,6 +53,7 @@ import com.linyun.airline.admin.receivePayment.form.inland.TSaveInlandPayAddFrom
 import com.linyun.airline.admin.receivePayment.form.inland.TUpdateInlandPayAddFrom;
 import com.linyun.airline.admin.receivePayment.util.FormatDateUtil;
 import com.linyun.airline.admin.search.service.SearchViewService;
+import com.linyun.airline.admin.turnover.service.TurnOverViewService;
 import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.enums.AccountPayEnum;
@@ -72,6 +73,7 @@ import com.linyun.airline.entities.TReceiveBillEntity;
 import com.linyun.airline.entities.TReceiveEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUserEntity;
+import com.linyun.airline.forms.TTurnOverAddForm;
 import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.common.util.Util;
@@ -105,6 +107,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 
 	@Inject
 	private SearchViewService searchViewService;
+
+	@Inject
+	private TurnOverViewService turnOverViewService;
 
 	/**
 	 * 
@@ -191,6 +196,19 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				Cnd.where("id", "in", recId));
 
 		//添加流水 TODO
+		TTurnOverAddForm addForm = new TTurnOverAddForm();
+		TReceiveEntity receiveEntity = dbDao.fetch(TReceiveEntity.class, Cnd.where("id", "in", recId));
+		int bankcardId = receiveEntity.getBankcardid();
+		Double sum = receiveEntity.getSum();
+		String bankcardnum = receiveEntity.getBankcardnum();
+		String comName = loginCompany.getComName();
+		addForm.setBankCardId(bankcardId);
+		addForm.setTradeDate(new Date());
+		addForm.setMoney(sum);
+		addForm.setCardNum(bankcardnum);
+		addForm.setPurpose("收入");
+		addForm.setCompanyName(comName);
+		turnOverViewService.addTurnOver(addForm, session);
 
 		//收款成功添加消息提醒
 		if (updateNum > 0) {
@@ -653,7 +671,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//当前登陆用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long loginUserId = loginUser.getId();
-		String bankComp = form.getBankComp();
+		String bankCompStr = form.getBankComp();
+		String bankcardId = bankCompStr.split(",")[0];
+		String bankComp = bankCompStr.split(",")[1];
 		String cardName = form.getCardName();
 		String cardNum = form.getCardNum();
 		Integer payAddress = form.getPayAddress();
@@ -756,6 +776,22 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			updatenum = dbDao.update(TPnrInfoEntity.class, Chain.make("orderPnrStatus", APPROVALPAYED),
 					Cnd.where("id", "in", pnrIds));
 		}
+
+		//添加流水
+		TTurnOverAddForm addForm = new TTurnOverAddForm();
+		String comName = company.getComName();
+		addForm.setBankCardId(Integer.valueOf(bankcardId));
+		addForm.setTradeDate(new Date());
+		addForm.setMoney(totalMoney);
+		addForm.setCardNum(cardNum);
+		addForm.setPurpose("支出");
+		addForm.setCompanyName(comName);
+		if (!Util.isEmpty(currency)) {
+			DictInfoEntity dictInfoEntity = dbDao.fetch(DictInfoEntity.class, Long.valueOf(currency));
+			String currencyStr = dictInfoEntity.getDictCode();
+			addForm.setCurrency(currencyStr);
+		}
+		turnOverViewService.addTurnOver(addForm, session);
 
 		//付款成功 操作台添加消息
 		if (updatenum > 0) {
