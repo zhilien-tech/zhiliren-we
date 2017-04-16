@@ -64,8 +64,9 @@ public class InterRecListSearchSqlForm extends DataTablesParamForm {
 		cnd.and("r.companyid", "=", companyId);
 
 		cnd.and("r.orderstype", "=", OrderTypeEnum.TEAM.intKey()); //团队（国际）
-
 		cnd.and("prr.recordtype", "=", recordtype);
+		//表示已审批  TODO
+		/*cnd.and("orec.receivestatus", "=", 2);*/
 		return cnd;
 	}
 

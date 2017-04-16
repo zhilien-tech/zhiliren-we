@@ -371,17 +371,19 @@ SELECT
 	orec.receivestatus,
 	ci.shortName,
 	ci.linkMan,
-	pi.leavesdate,
+	ai.leavedate leavesdate,
 	prr.actualnumber peoplecount,
 	prr.currentpay
 FROM
 	t_up_order uo
 LEFT JOIN t_finance_info fi ON uo.id = fi.orderid
 INNER JOIN t_order_receive orec ON uo.id = orec.orderid
-LEFT JOIN t_pay_receive_record prr on prr.orderid=uo.id
+LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
 INNER JOIN t_receive r ON orec.receiveid = r.id
 INNER JOIN t_plan_info pi ON uo.id = pi.ordernumber
 LEFT JOIN t_customer_info ci ON ci.id = uo.userid
+LEFT JOIN t_pnr_info pnri ON pnri.orderid = uo.id
+LEFT JOIN t_airline_info ai ON ai.pnrid = pnri.id
 WHERE
 	r.id IN (
 		SELECT
@@ -390,10 +392,12 @@ WHERE
 			t_up_order uo
 		LEFT JOIN t_finance_info fi ON uo.id = fi.orderid
 		INNER JOIN t_order_receive orec ON uo.id = orec.orderid
-		LEFT JOIN t_pay_receive_record prr on prr.orderid=uo.id
+		LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
 		INNER JOIN t_receive r ON orec.receiveid = r.id
 		INNER JOIN t_plan_info pi ON uo.id = pi.ordernumber
 		LEFT JOIN t_customer_info ci ON ci.id = uo.userid
+		LEFT JOIN t_pnr_info pnri ON pnri.orderid = uo.id
+		LEFT JOIN t_airline_info ai ON ai.pnrid = pnri.id
 		$condition
 	)
 AND prr.recordtype=@recordtype
