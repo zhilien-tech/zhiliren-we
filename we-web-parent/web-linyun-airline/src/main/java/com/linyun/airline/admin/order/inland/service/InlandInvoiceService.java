@@ -24,6 +24,7 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.linyun.airline.admin.authority.function.entity.TFunctionEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
@@ -88,6 +89,8 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 	private UploadService qiniuUploadService;
 	@Inject
 	private SearchViewService searchViewService;
+	@Inject
+	private InlandListService inlandListService;
 
 	/**
 	 * 保存付款发票信息
@@ -140,8 +143,14 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 			map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
+			List<TFunctionEntity> function = dbDao.query(TFunctionEntity.class, Cnd.where("name", "=", "发票管理"), null);
+			long functionid = 0;
+			if (function.size() > 0) {
+				functionid = function.get(0).getId();
+			}
+			List<Long> receiveusers = inlandListService.getUserIdsByFun(company.getId(), functionid, "内陆发票");
 			searchViewService.addRemindMsg(map, order.getOrdersnum(), pnrinfo.getPNR(), order.getId(),
-					MessageWealthStatusEnum.RECINVIOCING.intKey(), session);
+					MessageWealthStatusEnum.RECINVIOCING.intKey(), receiveusers, session);
 		}
 		invoiceinfo.setOpid(new Long(user.getId()).intValue());
 		invoiceinfo.setComId(new Long(company.getId()).intValue());
@@ -216,8 +225,15 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 				map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
+				List<TFunctionEntity> function = dbDao.query(TFunctionEntity.class, Cnd.where("name", "=", "发票管理"),
+						null);
+				long functionid = 0;
+				if (function.size() > 0) {
+					functionid = function.get(0).getId();
+				}
+				List<Long> receiveusers = inlandListService.getUserIdsByFun(company.getId(), functionid, "内陆发票");
 				searchViewService.addRemindMsg(map, record.getString("ordersnum"), "", record.getInt("id"),
-						MessageWealthStatusEnum.INVIOCING.intKey(), session);
+						MessageWealthStatusEnum.INVIOCING.intKey(), receiveusers, session);
 			}
 		}
 		invoiceinfo.setOpid(new Long(user.getId()).intValue());
@@ -322,6 +338,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		mitigateInfoEntity.setAccountupper(accountupper);
 		mitigateInfoEntity.setCurrency(currency);
 		mitigateInfoEntity.setApprovelid(approvelid);
+		mitigateInfoEntity.setOptime(new Date());
 		//mitigateInfoEntity.setOrdertype(OrderTypeEnum.FIT.intKey());
 		return dbDao.insert(mitigateInfoEntity);
 

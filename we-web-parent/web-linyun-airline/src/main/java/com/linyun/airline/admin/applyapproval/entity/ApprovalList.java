@@ -37,6 +37,7 @@ public class ApprovalList {
 	private Integer approveResult;
 	private Integer usingId;
 	private Integer orderId;
+	private Integer userId;
 	private String userName;
 	private String fullName;
 	private String currencyStr;
@@ -357,6 +358,14 @@ public class ApprovalList {
 
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 }

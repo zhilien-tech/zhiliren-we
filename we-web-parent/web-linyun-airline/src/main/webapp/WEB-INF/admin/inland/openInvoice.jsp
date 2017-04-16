@@ -41,7 +41,7 @@
                     <c:forEach var="one" items="${obj.orders }">
                 		<tr ondblclick="toOrderDetail(${one.id})">
                 			<td>${one.ordersnum }</td>
-                			<td>${one.billingdate }</td>
+                			<td><fmt:formatDate value="${one.billingdate }" pattern="yyyy-MM-dd" /></td>
                 			<td>${one.cusgroupnum }</td>
                 			<td>${one.shortName }</td>
                 			<td>${one.linkMan }</td>

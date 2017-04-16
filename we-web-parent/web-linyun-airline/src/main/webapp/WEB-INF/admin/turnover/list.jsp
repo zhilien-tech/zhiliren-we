@@ -224,9 +224,9 @@
 	                    		return depositBalance;
 	                    	}			
 	                    },
-	                    {"data": "bankname", "bSortable": false,
+	                    {"data": "cardname", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var depositBalance = row.bankname;
+	                    		var depositBalance = row.cardname;
 	                    		if(null==depositBalance || ""==depositBalance){
 	                    			return "";
 	                    		}

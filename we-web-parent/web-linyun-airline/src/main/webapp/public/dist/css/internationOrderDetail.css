@@ -104,7 +104,7 @@ input#peoplecount {width: 143px !important;}
 .addYSKtable tbody tr:nth-child(2) td:nth-child(9){width:45px;}
 .addYSKtable tbody tr:nth-child(2) td:nth-child(10){width:70px;}
 .addYSKtable tbody tr:nth-child(2) td:nth-child(10) #currency{padding-left:3px;padding-right:3px;}
-#prepayratio {width: 87%;display: inline-block;}
+#prepayratio {width: 86%;display: inline-block;}
 .query-style li [data-toggle="tab"]{line-height: 23px;}
 /*------end 添加记录------*/
 /*------航程信息------*/

@@ -41,7 +41,7 @@
                 			<td>${one.pnr }</td>
                 			<td>${one.cusgroupnum }</td>
                 			<td>${one.shortName }</td>
-                			<td>${one.billingdate }</td>
+                			<td><fmt:formatDate value="${one.billingdate }" pattern="yyyy-MM-dd" /></td>
                 			<td>${one.peoplecount }</td>
                 			<td>${one.issuer }</td>
                 			<td><fmt:formatNumber type="number" value="${one.costpricesum }" pattern="0.00" maxFractionDigits="2"/></td>

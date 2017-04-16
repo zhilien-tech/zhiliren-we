@@ -305,7 +305,7 @@
                      <td><label>付款币种：</label></td>
                      <td>
                         <select id="paycurrency" name="paycurrency" class="form-control input-sm">
-                            <option>请选择</option>
+                            <option value="">请选择</option>
                             <c:forEach items="${obj.bzcode }" var="one"> 
                             	<c:choose>
                             		<c:when test="${obj.finance.paycurrency eq one.id }">
@@ -321,7 +321,7 @@
                      <td><label>付款方式：</label></td>
                      <td>
                         <select id="paymethod" name="paymethod" class="form-control input-sm">
-                            <option>请选择</option>
+                            <option value="">请选择</option>
                             <c:forEach var="map" items="${obj.paymethod}" >
                             	<c:choose>
                             		<c:when test="${obj.finance.paymethod eq map.id }">
@@ -498,6 +498,7 @@
                 skin: false, //加上边框
                 closeBtn:false,//默认 右上角关闭按钮 是否显示
                 shadeClose:true,
+                scrollbar: false,
                 area: ['400px', '450px'],
                 content: '${base}/admin/international/orderRemind.html?orderid=${obj.orderinfo.id }'
               });
@@ -511,6 +512,7 @@
                 skin: false, //加上边框
                 closeBtn:false,//默认 右上角关闭按钮 是否显示
                 shadeClose:true,
+                scrollbar: false,
                 area: ['800px', '550px'],
                 content: '${base}/admin/international/orderLog.html?orderid=${obj.orderinfo.id }'
               });
@@ -524,6 +526,7 @@
                 skin: false, //加上边框
                 closeBtn:false,//默认 右上角关闭按钮 是否显示
                 shadeClose:true,
+                scrollbar: false,
                 area: ['1100px', '550px'],
                 content: '${base}/admin/international/addAirinfo.html?orderid=${obj.orderinfo.id }'
               });
@@ -580,6 +583,7 @@
 				                skin: false, //加上边框
 				                closeBtn:false,//默认 右上角关闭按钮 是否显示
 				                shadeClose:true,
+				                scrollbar: false,
 				                area: ['900px', '200px'],
 				                content: '${base}/admin/international/addPayRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.paystatus}&ordersstatus='+orderType+'&peoplecount='+peoplecount+'&costsingleprice='+costsingleprice
 				             });
@@ -964,6 +968,7 @@
             skin: false, //加上边框
             closeBtn:false,//默认 右上角关闭按钮 是否显示
             shadeClose:true,
+            scrollbar: false,
             area: ['1100px', '550px'],
             content: '${base}/admin/international/editAirinfo.html?pnrid='+pnrid
           });
@@ -976,6 +981,7 @@
             skin: false, //加上边框
             closeBtn:false,//默认 右上角关闭按钮 是否显示
             shadeClose:true,
+            scrollbar: false,
             area: ['900px', '550px'],
             content: '${base}/admin/international/visitorInfo.html?pnrid='+pnrid
           });
@@ -994,6 +1000,7 @@
            skin: false, //加上边框
            closeBtn:false,//默认 右上角关闭按钮 是否显示
            shadeClose:true,
+           scrollbar: false,
            area: ['900px', '200px'],
            content: url
          });
@@ -1007,6 +1014,7 @@
             skin: false, //加上边框
             closeBtn:false,//默认 右上角关闭按钮 是否显示
             shadeClose:true,
+            scrollbar: false,
             area: ['770px', '240px'],
             content: '${base}/admin/inland/mitigate.html?id=${obj.orderinfo.id }&customeid=${obj.custominfo.id }',
             end:function(){
@@ -1048,11 +1056,20 @@
     //自动加载利润合计
      $(document).on('input', '.loadprofit', function(e) {
    	    //实收合计
-   	 	var incometotal = $('#incometotal').val();
+   	 	var incometotal = 0;
+   	    if($('#incometotal').val()){
+   	    	incometotal = $('#incometotal').val();
+   	    }
    	    //成本合计
-   	 	var costtotal = $('#costtotal').val();
+   	 	var costtotal = 0;
+   	    if($('#costtotal').val()){
+   	    	costtotal = $('#costtotal').val();
+   	    }
    	    //应返合计
-   	 	var returntotal = $('#returntotal').val();
+   	 	var returntotal =0;
+   	    if($('#returntotal').val()){
+   	    	returntotal = $('#returntotal').val();
+   	    }
    	    //利润合计
    	 	var profittotal  = parseFloat(incometotal) - parseFloat(costtotal) - parseFloat(returntotal);
    	 	if(!isNaN(profittotal)){
@@ -1063,10 +1080,19 @@
 	 //设置财务信息
      function setFinanceInfo(){
          	//成本合计
-         	var costtotal = $('#costtotal').val();
+         	var costtotal = 0;
+         	if($('#costtotal').val()){
+         		costtotal = $('#costtotal').val();
+         	}
          	//应收
-         	var receivable = $('#receivable').val();
-         	var relief = $('#relief').val();
+         	var receivable = 0;
+         	if($('#receivable').val()){
+         		receivable = $('#receivable').val();
+         	}
+         	var relief = 0;
+         	if($('#relief').val()){
+         		relief = $('#relief').val();
+         	}
       	 	var incometotal  = '';
       	 	if(relief){
       	 		incometotal  = parseFloat(receivable) - parseFloat(relief);

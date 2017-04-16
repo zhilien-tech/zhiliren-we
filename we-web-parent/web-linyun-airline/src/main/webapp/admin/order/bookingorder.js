@@ -183,6 +183,7 @@ $(function(){
         newDiv.find('[name=arrivetime]').val('');
         newDiv.find('[name=formprice]').val('');
         newDiv.find('[name=price]').val('');
+        newDiv.find('[name=ispriceempty]').val('1');
 		initAirInfoSelect2(newDiv);
         var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
         newDiv.find("p").html(No); 
@@ -239,6 +240,7 @@ $(function(){
         		$(this).find('[name=arrivetime]').val('');
         		$(this).find('[name=formprice]').val('');
         		$(this).find('[name=price]').val('');
+        		$(this).find('[name=ispriceempty]').val('1');
         		initAirInfoSelect2($(this));
         	}
         });

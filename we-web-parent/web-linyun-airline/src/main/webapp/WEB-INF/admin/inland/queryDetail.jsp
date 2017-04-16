@@ -360,7 +360,7 @@
 								<tr name="cRemarkTr" class="remarkTr">
 									<td><label>备注：</label></td>
 									<td>
-										<textarea class="form-control" id="cRemark" name="cRemark">${obj.orderinfo.remark }</textarea>
+										<textarea class="form-control" id="cRemark" name="cRemark" disabled="disabled">${obj.orderinfo.remark }</textarea>
 									</td>
 								</tr>
 							</table>
@@ -638,6 +638,7 @@
               $('.remindSet tbody tr td input').removeAttr("disabled");//删除 提醒设置 input 禁止编辑的状态
               $('#orderType').removeAttr("disabled");//状态可编辑
               $('#remindType').removeAttr("disabled");//提醒状态可编辑
+              $('#cRemark').removeAttr("disabled");//提醒状态可编辑
               $('.DemandDiv').each(function(i){
             	  $(this).find('[name=leavecity]').removeAttr('disabled');
             	  $(this).find('[name=arrivecity]').removeAttr('disabled');
@@ -669,6 +670,7 @@
           $('.remindSet tbody tr td input').attr("disabled",'disabled');//提醒设置 input 添加 不可编辑属性
           $('#orderType').attr("disabled",'disabled');//状态 不可编辑属性
           $('#remindType').attr("disabled",'disabled');//提醒状态 不可编辑属性
+          $('#cRemark').attr("disabled",'disabled');//提醒状态 不可编辑属性
           $('.DemandDiv').each(function(i){
         	  var customneedid = $(this).find('[name=customneedid]').val();
         	  if(i>0 && !customneedid){
