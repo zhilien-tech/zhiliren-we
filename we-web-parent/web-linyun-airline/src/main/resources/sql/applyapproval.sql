@@ -4,7 +4,7 @@ select uo.orderstype,ti.id,ti.PNR,ti.orderPnrStatus,ti.costpricesum,uo.ordersnum
 
 p.proposer,ci.shortName,p.fundType,p.payFees,p.payCurrency,p.isInvioce,p.approveTime,p.approveResult,p.id as 'usingId',uo.id as 'orderId',
 u.fullName,(select dictCode from dict_info where id=p.payCurrency) as 'currencyStr',(select comDictName from t_company_dictinfo where id=p.purpose) as 'purposeStr',
-(select comDictName from t_company_dictinfo where id=p.fundType) as 'fundTypeStr',p.companyId
+(select comDictName from t_company_dictinfo where id=p.fundType) as 'fundTypeStr',p.companyId,u.id as 'userId'
 
 FROM t_pnr_info  ti
 LEFT JOIN t_order_customneed oc on ti.needid=oc.id
@@ -38,7 +38,7 @@ select  uo.orderstype,uo.ordersnum,p.purpose,
 p.proposer,ci.shortName,p.fundType,p.payFees,p.payCurrency,p.isInvioce,p.approveTime,p.approveResult,p.id as 'usingId',p.id,uo.id as 'orderId',
 u.fullName,(select dictCode from dict_info where id=p.payCurrency) as 'currencyStr',(select comDictName from t_company_dictinfo  where id=p.purpose) as 'purposeStr',
 (select comDictName from t_company_dictinfo  where id=p.fundType) as 'fundTypeStr',p.companyId,po.paystauts as 'paystatus',prr.currentpay as 'amount',po.payDate as 'orderstime',prr.orderstatusid,prr.orderstatus
-,po.id as 'resultId'
+,po.id as 'resultId',u.id as 'userId'
 from 
 t_pay_receive_record prr
 LEFT JOIN 
@@ -59,7 +59,7 @@ LEFT JOIN t_order_customneed oc on oc.id =pi.needid
 LEFT JOIN t_up_order uo on uo.id=oc.ordernum
 $condition
 /*applyapproval_reduce_inland*/
-select mi.*,u.fullName,uo.ordersnum
+select mi.*,u.fullName,uo.ordersnum,u.id as 'userId'
 from 
 t_mitigate_info mi 
 LEFT JOIN t_up_order uo on mi.orderid=uo.id

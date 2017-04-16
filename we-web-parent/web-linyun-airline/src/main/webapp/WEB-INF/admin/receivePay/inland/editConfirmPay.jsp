@@ -97,7 +97,7 @@
 					<td>银行：</td>
 					<td>
 						<select id="bankComp" name="bankComp" onchange="bankSelect();" class="form-control input-sm">
-							<!-- <option>--请选择--</option> -->
+							<option value="0">--请选择--</option>
 							<c:forEach var="one" items="${obj.bankList}">
 	                 			<c:choose>
 	                          		<c:when test="${obj.companybank.bankcompid eq one.bankNameId }">
@@ -252,6 +252,11 @@
 	<script type="text/javascript">
 	
 		function updateConfirmPay(){
+			var bankComp = $("#bankComp").val();
+			if(bankComp=="0"){
+				layer.msg('银行不能为空');
+				return;
+			}
 			$.ajax({
 				type : 'POST',
 				data : $("#confirmInlandPayForm").serialize(),

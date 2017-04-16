@@ -771,18 +771,19 @@ public class MailScrabService extends BaseService {
 	public String getFrom(MimeMessage msg) throws MessagingException, UnsupportedEncodingException {
 		String from = "";
 		Address[] froms = msg.getFrom();
-		if (froms.length < 1)
-			throw new MessagingException("没有发件人!");
+		if (!Util.isEmpty(froms)) {
+			if (froms.length < 1)
+				throw new MessagingException("没有发件人!");
 
-		InternetAddress address = (InternetAddress) froms[0];
-		String person = address.getPersonal();
-		if (person != null) {
-			person = MimeUtility.decodeText(person) + " ";
-		} else {
-			person = "";
+			InternetAddress address = (InternetAddress) froms[0];
+			String person = address.getPersonal();
+			if (person != null) {
+				person = MimeUtility.decodeText(person) + " ";
+			} else {
+				person = "";
+			}
+			from = person + "<" + address.getAddress() + ">";
 		}
-		from = person + "<" + address.getAddress() + ">";
-
 		return from;
 	}
 
