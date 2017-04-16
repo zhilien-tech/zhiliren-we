@@ -503,7 +503,7 @@ $("#interPaySelect").change(function(){
 
 //销毁datatable
 function destroyDatetable(obj){
-	var datatable = obj.dataTable()
+	var datatable = obj.dataTable();
 	datatable.fnClearTable(); //清空一下table
 	datatable.fnDestroy(); //还原初始化了的datatable
 }

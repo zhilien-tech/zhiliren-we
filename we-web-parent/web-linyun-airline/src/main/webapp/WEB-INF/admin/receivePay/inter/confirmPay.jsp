@@ -61,8 +61,9 @@
 					<td>银行：</td>
 					<td>
 						<select id="bankComp" name="bankComp" onchange="bankSelect();" class="form-control input-sm">
+							<option value="0">--请选择--</option>
 							<c:forEach var="one" items="${obj.bankList}">
-	                        	<option value="${one.bankNameId }">${one.bankName }</option>
+	                        	<option value="${one.id },${one.bankNameId }">${one.bankName }</option>
 	                        </c:forEach>
 						</select>
 					</td>
@@ -239,7 +240,7 @@
 				cache : false,
 				type : "POST",
 				data : {
-					bankId:$('#bankComp').val()
+					bankId:$('#bankComp').val().split(',')[1]
 				},
 				url : '${base}/admin/receivePay/inter/getCardNames.html',
 				success : function(data) {
