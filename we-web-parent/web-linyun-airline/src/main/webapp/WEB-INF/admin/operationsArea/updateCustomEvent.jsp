@@ -98,9 +98,10 @@
 						window.parent.minCalendarbackground();
 						window.parent.removeClass();
 						window.parent.removeMinCalendar();
+						window.parent.layer.msg("更新成功", "", 2000);
 					},
 					error : function(xhr) {
-						layer.msg("更新失败", "", 2000);
+						window.parent.layer.msg("更新失败", "", 2000);
 					}
 				});
 			}
@@ -152,9 +153,10 @@
 						window.parent.minCalendarbackground();
 						window.parent.removeClass();
 						window.parent.removeMinCalendar();
+						window.parent.layer.msg("删除成功", "", 2000);
 					},
 					error : function() {
-						layer.msg("删除失败", "", 3000);
+						window.parent.layer.msg("删除失败", "", 3000);
 					}
 				});
 			}, function(){

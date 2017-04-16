@@ -182,9 +182,15 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object saveInlandRec(String recId, HttpSession session) {
+		//获取当前登录用户
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity loginCompany = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		int orderRecEd = AccountReceiveEnum.RECEIVEDONEY.intKey();
 		int updateNum = dbDao.update(TReceiveEntity.class, Chain.make("status", orderRecEd),
 				Cnd.where("id", "in", recId));
+
+		//添加流水 TODO
 
 		//收款成功添加消息提醒
 		if (updateNum > 0) {
