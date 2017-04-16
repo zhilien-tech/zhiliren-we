@@ -47,7 +47,7 @@
                 			<td>${one.shortname }</td>
                 			<td>${one.billdate }</td>
                 			<td>${one.peoplecount }</td>
-                			<td>${one.approver }</td>
+                			<td>${one.issuer }</td>
                 			<td>
                 				<fmt:formatNumber type="number" value="${one.saleprice }" pattern="0.00" maxFractionDigits="2"/>
                 			</td>
@@ -60,9 +60,9 @@
 					<td>银行：</td>
 					<td>
 						<select id="bankComp" name="bankComp" onchange="bankSelect();" class="form-control input-sm">
-							<!-- <option>--请选择--</option> -->
+							<option value="0">--请选择--</option>
 							<c:forEach var="one" items="${obj.bankList}">
-	                        	<option value="${one.bankNameId }">${one.bankName }</option>
+	                        	<option value="${one.id },${one.bankNameId }">${one.bankName }</option>
 	                        </c:forEach>
 						</select>
 					</td>
@@ -245,7 +245,7 @@
 				cache : false,
 				type : "POST",
 				data : {
-					bankId:$('#bankComp').val()
+					bankId:$('#bankComp').val().split(',')[1]
 				},
 				url : '${base}/admin/receivePay/inter/getCardNames.html',
 				success : function(data) {
