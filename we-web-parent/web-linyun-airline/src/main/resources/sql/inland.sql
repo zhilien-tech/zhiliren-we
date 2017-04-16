@@ -1,6 +1,7 @@
 /*get_inland_listdata*/
 SELECT
 	tuo.*, tfi.receivable,
+	tfi.incometotal,
 	tfi.personcount,
 	tci.linkMan userName,
 	tci.telephone,
@@ -155,7 +156,7 @@ SELECT
 	tfi.billingdate,
 	tuo.id ordersid,
 	tfi.cusgroupnum,
-	tci. NAME customename,
+	tci.shortName customename,
 	tci.linkMan,
 	(
 		SELECT

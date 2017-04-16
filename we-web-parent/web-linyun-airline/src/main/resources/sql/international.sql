@@ -69,7 +69,8 @@ SELECT
 	tfi.personcount,
 	tfi.incometotal,
 	tpi.*, tprr.orderstatus,
-	tprr.currentpay
+	tprr.currentpay,
+	tprr.actualnumber
 FROM
 	t_up_order tuo
 LEFT JOIN t_finance_info tfi ON tuo.id = tfi.orderid
@@ -89,7 +90,8 @@ SELECT
 	tii.id invoiceid,
 	tfi.costtotal,
 	tprr.currentpay,
-	tci.shortName customename
+	tci.shortName customename,
+	tprr.actualnumber
 FROM
 	t_pay_order tpo
 INNER JOIN t_up_order tuo ON tpo.orderid = tuo.id

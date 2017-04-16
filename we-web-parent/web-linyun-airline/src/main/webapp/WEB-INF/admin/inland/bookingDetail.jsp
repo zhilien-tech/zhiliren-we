@@ -1144,7 +1144,7 @@
 	       	 	}
 	       	 	
 	       	 	if(!isNaN(incometotal)){
-     		 		$('#incometotal').val(incometotal);
+     		 		$('#incometotal').val(incometotal.toFixed(2));
 	       	 	}
 	       	 	var returntotal = 0;
 	 	       	//应返合计
@@ -1263,11 +1263,20 @@
  //自动加载利润合计
   $(document).on('input', '.loadprofit', function(e) {
 	    //实收合计
-	 	var incometotal = $('#incometotal').val();
+	 	var incometotal = 0;
+	    if($('#incometotal').val()){
+	    	incometotal = $('#incometotal').val();
+	    }
 	    //成本合计
-	 	var costtotal = $('#costtotal').val();
+	 	var costtotal = 0;
+	    if($('#costtotal').val()){
+	    	costtotal = $('#costtotal').val();
+	    }
 	    //应返合计
-	 	var returntotal = $('#returntotal').val();
+	 	var returntotal = 0;
+	    if($('#returntotal').val()){
+	    	returntotal = $('#returntotal').val();
+	    }
 	    //利润合计
 	 	var profittotal  = parseFloat(incometotal) - parseFloat(costtotal) - parseFloat(returntotal);
 	 	if(!isNaN(profittotal)){

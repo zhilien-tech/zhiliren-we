@@ -146,6 +146,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		form.setUserid(new Long(user.getId()).intValue());
 		form.setCompanyId(new Long(company.getId()).intValue());
+		form.setAdminId(company.getAdminId());
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
 		List<Record> data = (List<Record>) listdata.get("data");
@@ -507,7 +508,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			for (TAirlineInfoEntity tAirlineInfoEntity : airlines) {
 				boolean airlineflag = true;
 				for (Map<String, Object> airsmap : airinfo) {
-					if (tAirlineInfoEntity.getId().equals(Integer.valueOf((String) airsmap.get("airlineid")))) {
+					if (!Util.isEmpty(airsmap.get("airlineid"))
+							&& tAirlineInfoEntity.getId().equals(Integer.valueOf((String) airsmap.get("airlineid")))) {
 						airlineflag = false;
 					}
 				}
@@ -1526,8 +1528,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 			map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
-			searchViewService.addRemindMsg(map, order.getOrdersnum(), "", order.getId(),
-					MessageWealthStatusEnum.RECSUBMITED.intKey(), session);
+			//			searchViewService.addRemindMsg(map, order.getOrdersnum(), "", order.getId(),
+			//					MessageWealthStatusEnum.RECSUBMITED.intKey(), session);
 		}
 		//更新订单状态
 		dbDao.update(orders);
@@ -1849,6 +1851,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		sqlform.setUserId(new Long(user.getId()).intValue());
 		sqlform.setCompanyid(company.getId());
+		sqlform.setAdminId(company.getAdminId());
 		Map<String, Object> listData = this.listPage4Datatables(sqlform);
 		List<Record> data = (List<Record>) listData.get("data");
 		for (Record record : data) {

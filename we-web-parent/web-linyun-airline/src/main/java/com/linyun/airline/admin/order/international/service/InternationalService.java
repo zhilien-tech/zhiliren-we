@@ -533,6 +533,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		//判断是否是主航段
 		Integer orderid = Integer.valueOf((String) fromJson.get("orderid"));
 		List<TPnrInfoEntity> query = dbDao.query(TPnrInfoEntity.class, Cnd.where("orderid", "=", orderid), null);
+		TPlanInfoEntity planinfo = dbDao.fetch(TPlanInfoEntity.class, Cnd.where("ordernumber", "=", orderid));
 		String pnr = (String) fromJson.get("pnr");
 		TPnrInfoEntity pnrinfo = new TPnrInfoEntity();
 		pnrinfo.setOrderid(orderid);
@@ -557,6 +558,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			airline.setArrivetime(map.get("arrivetime"));
 			airline.setAilinenum(map.get("ailinenum"));
 			airline.setPnrid(insertpnr.getId());
+			airline.setPlanid(planinfo.getId());
 			ailines.add(airline);
 		}
 		return dbDao.insert(ailines);
@@ -609,6 +611,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		TPnrInfoEntity pnrinfo = dbDao.fetch(TPnrInfoEntity.class, pnrid.intValue());
 		pnrinfo.setPNR(pnr);
 		dbDao.update(pnrinfo);
+		TPlanInfoEntity planinfo = dbDao.fetch(TPlanInfoEntity.class,
+				Cnd.where("ordernumber", "=", pnrinfo.getOrderid()));
 		List<Map<String, String>> airinfos = (List<Map<String, String>>) fromJson.get("airinfos");
 		//查询之前的
 		List<TAirlineInfoEntity> before = dbDao.query(TAirlineInfoEntity.class, Cnd.where("pnrid", "=", pnrid), null);
@@ -625,6 +629,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			airline.setArrivetime(map.get("arrivetime"));
 			airline.setAilinenum(map.get("ailinenum"));
 			airline.setPnrid(pnrid);
+			airline.setPlanid(planinfo.getId());
 			ailines.add(airline);
 		}
 		dbDao.updateRelations(before, ailines);

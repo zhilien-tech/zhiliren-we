@@ -346,7 +346,6 @@ public abstract class BaseService<T> {
 
 		Pager pager = new OffsetPager(sqlParamForm.getStart(), sqlParamForm.getLength());
 		pager.setRecordCount((int) Daos.queryCount(nutDao, sql.toString()));
-
 		sql.setPager(pager);
 		sql.setCallback(Sqls.callback.records());
 		nutDao.execute(sql);

@@ -99,7 +99,7 @@ function initDatatable() {
             }
         },
         "columns": [
-                    {"data": "username", "bSortable": true},
+                    {"data": "fullname", "bSortable": true},
                     {"data": "department", "bSortable": true},
                     {"data": "zhiwei", "bSortable": true},
                     {"data": "telephone", "bSortable": false}

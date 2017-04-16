@@ -102,21 +102,25 @@
 		var billurl = $('#billurl').val();
 		var sumincome = $('#sumincome').val();
 		var orderstatus = $('#orderstatus').val();
-		$.ajax({
-	        type: "post",
-	        url: '${base}/admin/international/saveReceipt.html',
-	        data: {ids:ids,bankcardid:bankcardid,bankcardname:bankcardname,bankcardnum:bankcardnum,billurl:billurl,sumincome:sumincome,orderstatus:orderstatus},
-	        cache: false,
-	        async : false,
-	        success: function (data ,textStatus, jqXHR){
-	        	layer.msg("提交成功！",{time: 2000});
-	        	closewindow();
-	        	window.parent.successCallback('5');
-	        },
-	        error:function (XMLHttpRequest, textStatus, errorThrown) {      
-	            layer.msg("请求失败！",{time: 2000});
-	        }
-	     });
+		if(bankcardid){
+			$.ajax({
+		        type: "post",
+		        url: '${base}/admin/international/saveReceipt.html',
+		        data: {ids:ids,bankcardid:bankcardid,bankcardname:bankcardname,bankcardnum:bankcardnum,billurl:billurl,sumincome:sumincome,orderstatus:orderstatus},
+		        cache: false,
+		        async : false,
+		        success: function (data ,textStatus, jqXHR){
+		        	layer.msg("提交成功！",{time: 2000});
+		        	closewindow();
+		        	window.parent.successCallback('5');
+		        },
+		        error:function (XMLHttpRequest, textStatus, errorThrown) {      
+		            layer.msg("提交失败！",{time: 2000});
+		        }
+		     });
+		}else{
+			layer.msg("请选择银行！",{time: 2000});
+		}
 	}
 	
 	//文件上传

@@ -48,6 +48,8 @@ public class InlandListSearchForm extends DataTablesParamForm {
 
 	private Integer companyId;
 
+	private Long adminId;
+
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		DateFormat format = new SimpleDateFormat(DateUtil.FORMAT_YYYYMMDD);
@@ -66,6 +68,9 @@ public class InlandListSearchForm extends DataTablesParamForm {
 		}*/
 		if (!Util.isEmpty(companyId)) {
 			cnd.and("tuo.companyId", "=", companyId);
+		}
+		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && !userid.equals(adminId)) {
+			cnd.and("tuo.loginUserId", "=", userid);
 		}
 		if (!Util.isEmpty(searchInfo)) {
 			SqlExpressionGroup sqlex = new SqlExpressionGroup();
