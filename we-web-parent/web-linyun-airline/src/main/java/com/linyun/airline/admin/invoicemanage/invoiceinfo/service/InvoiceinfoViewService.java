@@ -389,13 +389,11 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tpi.id", "=", invoiceinfo.getPnrid());
 		List<Record> pnrinfo = dbDao.query(sql, cnd, null);
-		for (Record record : pnrinfo) {
-			String billingdate = FormatDateUtil.dateToOrderDate((Date) record.get("billingdate"));
-			record.put("billingdate", billingdate);
-		}
 		result.put("pnrinfo", pnrinfo);
 		double sumjine = 0;
 		for (Record record : pnrinfo) {
+			String billingdate = FormatDateUtil.dateToOrderDate((Date) record.get("billingdate"));
+			record.put("billingdate", billingdate);
 			if (!Util.isEmpty(record.get("costpricesum"))) {
 				Double salespricesum = (Double) record.get("costpricesum");
 				sumjine += Double.valueOf(salespricesum);
