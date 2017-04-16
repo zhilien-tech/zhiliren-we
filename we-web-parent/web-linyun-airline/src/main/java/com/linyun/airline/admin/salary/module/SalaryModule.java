@@ -6,6 +6,7 @@
 
 package com.linyun.airline.admin.salary.module;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.pager.Pager;
@@ -53,8 +54,8 @@ public class SalaryModule {
 	 */
 	@At
 	public Object listData(@Param("..") final TSalaryFindForm findForm, @Param("..") final TSalaryForm sqlForm,
-			final HttpSession session) {
-		return salaryViewService.listPage4Datatables(findForm, sqlForm, session);
+			final HttpSession session, final HttpServletRequest request) {
+		return salaryViewService.listPage4Datatables(findForm, sqlForm, session, request);
 	}
 
 	/**

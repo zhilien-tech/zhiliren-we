@@ -48,10 +48,24 @@
                   </div>
                   <div class="col-md-1 padding">
                      <select class="form-control input-sm" id="month" onchange="select();">
-                      <option value="">月份</option>
-                       <c:forEach items="${obj.monthsList }" var="each">
-                      	<option value="${each.months }">${each.months }</option>
-                      </c:forEach>
+                      <option value="">月份${monthsList1}</option>
+                      <%-- <c:choose>
+                      <c:when test="${obj.monthsList1 !=null && obj.monthsList1 !='' }">
+	                      
+	                       
+		                       <c:forEach items="${obj.monthsList1 }" var="each">
+		                      	<option value="${each.months }">${each.months }</option>
+		                      </c:forEach>
+	                      
+                      
+                      </c:when>
+                      <c:otherwise> --%>
+	                       <c:forEach items="${obj.monthsList }" var="each">
+	                      	<option value="${each.months }">${each.months }</option>
+	                      </c:forEach>
+                     <%--  
+                      </c:otherwise>
+                      </c:choose>  --%>
                     </select>
                   </div>
                   <div class="col-md-2 padding">
@@ -224,6 +238,7 @@ function select()
         "year": year,
         "month": month
     };
+		
     empTable.settings()[0].ajax.data = param;
 	empTable.ajax.reload();
 }

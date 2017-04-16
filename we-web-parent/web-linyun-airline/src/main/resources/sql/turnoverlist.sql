@@ -1,5 +1,5 @@
 /*turnoverlist_list*/
-select tu.*,tb.balance,tb.currency as curren,DATE_FORMAT(tradeDate, '%Y-%c-%d') as modifyDate,tb.companyId
+select tu.*,tb.balance,tb.currency as curren,DATE_FORMAT(tradeDate, '%Y-%c-%d') as modifyDate,tb.companyId,tb.cardName
 from t_turnover tu 
 left join t_bankcard tb
 on tu.bankCardId=tb.id

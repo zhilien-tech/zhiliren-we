@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Chain;
@@ -46,7 +47,7 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
 public class SalaryViewService extends BaseService<TSalaryEntity> {
 
 	public Map<String, Object> listPage4Datatables(@Param("..") final TSalaryFindForm findForm,
-			DataTablesParamForm sqlParamForm, final HttpSession session) {
+			DataTablesParamForm sqlParamForm, final HttpSession session, HttpServletRequest request) {
 		//从session中得到当前登录公司id
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Long comId = company.getId();//得到公司的id
@@ -88,8 +89,20 @@ public class SalaryViewService extends BaseService<TSalaryEntity> {
 
 		@SuppressWarnings("unchecked")
 		List<Record> list = (List<Record>) sql.getResult();
-
 		Map<String, Object> re = MapUtil.map();
+		//根据年查月份
+		/*if (!Util.isEmpty(year)) {
+
+			String monthsString = sqlManager.get("salary_months");
+			Sql monthsSql = Sqls.create(monthsString);
+			Cnd cnd1 = Cnd.NEW();
+			cnd1.and("comId", "=", comId);
+			cnd1.and("ms.years", "=", year);
+			monthsSql.setCondition(cnd1);
+			List<Record> monthsList = dbDao.query(monthsSql, cnd1, null);
+			re.put("monthsList1", monthsList);
+			session.setAttribute("monthsList1", monthsList);
+		}*/
 		re.put("data", list);
 		re.put("draw", sqlParamForm.getDraw());
 		re.put("recordsTotal", pager.getPageSize());
