@@ -141,7 +141,7 @@
 				   <div class="remarkDiv">
 						<table class="remarkTable">
 							<tr name="cRemarkTr" class="remarkTr">
-								<td><label>备注：</label></td>
+								<td  class="remarktd1"><label>备注：</label></td>
 								<td>
 									<textarea class="form-control" id="cRemark" name="cRemark"></textarea>
 								</td>

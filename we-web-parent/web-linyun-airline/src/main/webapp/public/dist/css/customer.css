@@ -2,7 +2,7 @@
 .eti_a{cursor: pointer;}
 /*add*/
 .modal-header {border-bottom: 0px;}
-#addHtml{min-width: 150px; overflow-x: auto !important;}
+#addHtml{min-width: 150px; overflow-x:hidden;}
 .nav .active a{color: #3b8cbc !important;}
 #completeFileName div .delete{background-color: #e0e0e0;border: 0;color: #717171;font-size: 12px;padding: 0px 22px;border-radius: 3px;}
 .modal-body{position: relative;max-height: 443px;overflow-y: auto;width: 100%;}

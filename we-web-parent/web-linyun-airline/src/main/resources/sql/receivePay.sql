@@ -324,7 +324,8 @@ $condition
 SELECT
 	uo.id,
 	uo.ordersnum,
-	pi.PNR
+	pi.PNR,
+	pi.userid
 FROM
 	t_pnr_info pi
 INNER JOIN t_pay_pnr pp ON pi.id = pp.pnrId
@@ -336,7 +337,8 @@ $condition
 SELECT
 	uo.id,
 	uo.ordersnum,
-    pi.pnr pnrnum
+    pi.pnr pnrnum,
+    r.userid
 FROM
 	t_up_order uo
 INNER JOIN t_order_receive ore ON ore.orderid=uo.id 
@@ -593,6 +595,7 @@ SELECT
 	uo.id,
 	uo.ordersnum,
 	pi.PNR,
+	prr.opid userid,
 	prr.orderstatusid,
 	prr.orderstatus
 FROM
@@ -609,8 +612,10 @@ SELECT
 	uo.id,
 	uo.ordersnum,
 	pi.PNR,
+	pi.userid,
 	prr.orderstatusid,
-	prr.orderstatus
+	prr.orderstatus,
+	prr.opid userid
 FROM
 	t_up_order uo
 LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
@@ -619,3 +624,50 @@ $condition
 GROUP BY
 	uo.id
 
+	
+/*receivePay_count_OP_companyId*/
+SELECT
+	uj.userid
+FROM
+	t_function f
+LEFT JOIN t_company_function_map cfm ON cfm.funId = f.id
+LEFT JOIN t_com_fun_pos_map cfpm ON cfpm.companyFunId = cfm.id
+LEFT JOIN t_job j ON j.id = cfpm.jobId
+LEFT JOIN t_company_job cj ON cj.posid = j.id
+LEFT JOIN t_user_job uj ON uj.companyJobId = cj.id
+WHERE
+	f.parentId = 0
+AND cj.comId = @companyid
+AND (
+	f.`name` LIKE '%内陆订单%'
+	OR f.`name` LIKE '%国际订单%'
+)
+GROUP BY
+	(uj.userid)
+
+/*receivePay_count_accounting_companyId*/
+SELECT
+	uj.userid
+FROM
+	t_function f
+LEFT JOIN t_company_function_map cfm ON cfm.funId = f.id
+LEFT JOIN t_com_fun_pos_map cfpm ON cfpm.companyFunId = cfm.id
+LEFT JOIN t_job j ON j.id = cfpm.jobId
+LEFT JOIN t_company_job cj ON cj.posid = j.id
+LEFT JOIN t_user_job uj ON uj.companyJobId = cj.id
+WHERE
+	(f.parentId = 81
+AND cj.comId = @companyid
+AND (
+	f.`name` LIKE '%内陆订单%'
+	OR f.`name` LIKE '%国际订单%'
+))
+OR
+(f.parentId = 97
+AND cj.comId = @companyid
+AND (
+	f.`name` LIKE '%内陆发票%'
+	OR f.`name` LIKE '%国际发票%'
+))
+GROUP BY
+	(uj.userid)
