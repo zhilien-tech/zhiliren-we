@@ -1008,7 +1008,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		//消息状态
 		int msgStatus = MessageStatusEnum.UNREAD.intKey();
 
-		//提醒日期 TODO
+		//提醒日期 
 		String remindDateStr = (String) fromJson.get("remindDate");
 		//客户信息id
 		/*String customerInfoId = (String) fromJson.get("customerInfoId");*/
@@ -1067,6 +1067,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		String msgContent = ""; //消息内容
 		switch (orderStatus) {
 		case 1:
+			//TODO  设置参数， 如果参数一致，则更新；  不一致，则添加
 			//查询 4
 			msgType = MessageTypeEnum.SEARCHMSG.intKey();
 			//消息等级2
