@@ -137,6 +137,7 @@
 		
   </content>
   <input name="id" id="id" value="${obj.detaillist.id }" type="hidden">
+  <input name="userId" id="userId" value="${obj.userId }" type="hidden">
   <input name="usingId" id="usingId" value="${obj.detaillist.usingId }" type="hidden">
   <input name="orderId" id="orderId" value="${obj.detaillist.orderId }" type="hidden">
   <input name="resultId" id="resultId" value="${obj.detaillist.resultId }" type="hidden">
@@ -240,6 +241,7 @@ function agree(temp) {
 				operation:$("#operation").val(),
 				reduce:$("#reduce").val(),
 				reduceId:$("#reduceId").val(),
+				userId:$("#userId").val(),
 				reduceStatus:$("#reduceStatus").val()
 			},
 			dataType : 'json',

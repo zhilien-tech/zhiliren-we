@@ -6,6 +6,7 @@
 
 package com.linyun.airline.admin.applyapproval.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -297,6 +298,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 					re.put("date", date);
 				}
 				re.put("detaillist", datalist.get(0));
+				re.put("userId", datalist.get(0).get("userId"));
 				re.put("operation", operation);
 				re.put("reduce", "reduceno");
 				return re;
@@ -321,6 +323,8 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 					re.put("date", date);
 				}
 				re.put("detaillist", datalist.get(0));
+				re.put("userId", datalist.get(0).get("userId"));
+
 				re.put("operation", operation);
 				re.put("reduce", "reduceno");
 				return re;
@@ -359,7 +363,16 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 	}
 
 	public Map<String, String> doAgree(HttpSession session, Long usingId, Long id, Long status, String temp,
-			Long orderId, String operation, Long reduceId, String reduce, Integer reduceStatus, Long resultId) {
+			Long orderId, String operation, Long reduceId, String reduce, Integer reduceStatus, Long resultId,
+			Long userId) {
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long companyId = company.getId();
+		//查看会计id
+		String sqlUserStr = sqlManager.get("receivePay_count_accounting_companyId");
+		Sql sqlUser = Sqls.create(sqlUserStr);
+		Cnd cndUser = Cnd.NEW();
+		sqlUser.setParam("companyid", companyId);
+		List<Record> listUser = dbDao.query(sqlUser, cndUser, null);
 		if ("reduceno".equalsIgnoreCase(reduce)) {
 			Integer approvalResult = null;
 			Integer approvalStatus = null;
@@ -410,7 +423,19 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 					remindMap.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
 					remindMap.put("remindDate", DateUtil.Date2String(new Date()));
 					//remindMap.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
-					searchViewService.addRemindMsg(remindMap, ordersnum, pnr, upOrderid, orderType, session);
+					List<Long> receiveUids = new ArrayList<Long>();
+					if (listUser.size() > 0) {
+						for (Record long1 : listUser) {
+							if (!Util.isEmpty(long1.get("userid"))) {
+								int longid = (Integer) long1.get("userid");
+								Long long2 = (long) longid;
+								receiveUids.add(long2);
+							}
+						}
+					}
+					receiveUids.add(userId);
+					searchViewService.addRemindMsg(remindMap, ordersnum, pnr, upOrderid, orderType, receiveUids,
+							session);
 
 					return JsonResult.success("审核通过");
 				}
@@ -444,8 +469,19 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 					remindMap.put("remindType", MessageRemindEnum.UNREPEAT.intKey());
 					//searchViewService.addRemindMsg(remindMap, ordersnum, pnr, upOrderid, orderType, session);
 					int payRecType = 2;
+					List<Long> receiveUids = new ArrayList<Long>();
+					if (listUser.size() > 0) {
+						for (Record long1 : listUser) {
+							if (!Util.isEmpty(long1.get("userid"))) {
+								int longid = (Integer) long1.get("userid");
+								Long long2 = (long) longid;
+								receiveUids.add(long2);
+							}
+						}
+					}
+					receiveUids.add(userId);
 					interReceivePayService.addInterRemindMsg(orderId.intValue(), ordersnum, pnr,
-							payoOrderEntity.getOrderstatus() + "", a, payRecType, session);
+							payoOrderEntity.getOrderstatus() + "", a, payRecType, receiveUids, session);
 					return JsonResult.success("审核通过");
 				}
 			}

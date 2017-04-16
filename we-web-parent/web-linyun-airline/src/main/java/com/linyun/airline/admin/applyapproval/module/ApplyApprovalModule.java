@@ -96,9 +96,9 @@ public class ApplyApprovalModule {
 			@Param("temp") final String temp, @Param("orderId") final Long orderId,
 			@Param("operation") final String operation, @Param("reduceId") final Long reduceId,
 			@Param("reduce") final String reduce, @Param("reduceStatus") final Integer reduceStatus,
-			@Param("resultId") final Long resultId) {
+			@Param("resultId") final Long resultId, @Param("userId") final Long userId) {
 
 		return applyApprovalService.doAgree(session, usingId, id, status, temp, orderId, operation, reduceId, reduce,
-				reduceStatus, resultId);
+				reduceStatus, resultId, userId);
 	}
 }
