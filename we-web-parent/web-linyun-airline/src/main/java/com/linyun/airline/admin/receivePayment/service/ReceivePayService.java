@@ -782,10 +782,15 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		String comName = company.getComName();
 		addForm.setBankCardId(Integer.valueOf(bankcardId));
 		addForm.setTradeDate(new Date());
-		addForm.setMoney(payMoney);
+		addForm.setMoney(totalMoney);
 		addForm.setCardNum(cardNum);
 		addForm.setPurpose("支出");
 		addForm.setCompanyName(comName);
+		if (!Util.isEmpty(currency)) {
+			DictInfoEntity dictInfoEntity = dbDao.fetch(DictInfoEntity.class, Long.valueOf(currency));
+			String currencyStr = dictInfoEntity.getDictCode();
+			addForm.setCurrency(currencyStr);
+		}
 		turnOverViewService.addTurnOver(addForm, session);
 
 		//付款成功 操作台添加消息

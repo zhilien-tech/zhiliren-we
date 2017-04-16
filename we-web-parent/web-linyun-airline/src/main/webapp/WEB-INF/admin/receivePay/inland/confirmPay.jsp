@@ -245,7 +245,7 @@
 				cache : false,
 				type : "POST",
 				data : {
-					bankId:$('#bankComp').val()
+					bankId:$('#bankComp').val().split(',')[1]
 				},
 				url : '${base}/admin/receivePay/inter/getCardNames.html',
 				success : function(data) {
