@@ -27,7 +27,8 @@ import com.uxuexi.core.web.base.service.BaseService;
 public class RemindMessageService extends BaseService<TMessageEntity> {
 	private static final Log log = Logs.get();
 
-	private static final int confirmMsg = 3;
+	private static final int CUSTOMER_MSG = 2;
+	private static final int CUSTOM_MSG = 3;
 
 	/**
 	 * 
@@ -116,8 +117,10 @@ public class RemindMessageService extends BaseService<TMessageEntity> {
 		addForm.setIsRemind(Long.valueOf(MessageIsRemindEnum.YES.intKey()));
 		List<TUserMsgEntity> userMsgEntityList = new ArrayList<TUserMsgEntity>();
 		//添加消息数据  不存在则添加， 存在则更新
-		TMessageEntity msgEntity = dbDao.fetch(TMessageEntity.class,
-				Cnd.where("msgContent", "=", msgContent).and("msgType", "!=", confirmMsg));
+		TMessageEntity msgEntity = dbDao.fetch(
+				TMessageEntity.class,
+				Cnd.where("msgContent", "=", msgContent).and("msgType", "!=", CUSTOM_MSG)
+						.and("msgType", "!=", CUSTOMER_MSG));
 		if (!Util.isEmpty(msgEntity)) {
 			//消息已存在， 更新消息
 			msgEntity.setGenerateTime(remindMsgDate);

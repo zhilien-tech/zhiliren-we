@@ -1135,6 +1135,13 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			//收款单位不一致，不能付款
 			return false;
 		}
+		//验证银行卡是否有余额
+		boolean cardMoney = turnOverViewService.checkBankCardNumEnoughOther(Integer.valueOf(bankcardId), "支出",
+				totalMoney);
+		if (Util.eq("false", cardMoney)) {
+			//余额不足
+			return "余额不足";
+		}
 		//付款水单 集合
 		List<TPayReceiptEntity> payReceiptList = new ArrayList<TPayReceiptEntity>();
 		TPayReceiptEntity payReceiptEntity = new TPayReceiptEntity();

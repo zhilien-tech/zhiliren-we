@@ -33,6 +33,7 @@ import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.dictionary.external.externalInfoServiceImpl;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
+import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.common.enums.TurnOverStatusEnum;
 import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.entities.DictInfoEntity;
@@ -154,13 +155,13 @@ public class TurnOverViewService extends BaseService<TTurnOverEntity> {
 		/*Long id = 23L;*/
 		//查询有哪些银行卡类型
 
-		List<DictInfoEntity> bankCardTypeList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "YHKLX"),
-				null);
+		List<DictInfoEntity> bankCardTypeList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "YHKLX")
+				.and("status", "=", DataStatusEnum.ENABLE.intKey()), null);
 		//查询有哪些项目
 		/*	List<DictInfoEntity> projectList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "FKYT"), null);*/
 		List<ComDictInfoEntity> projectList = dbDao.query(ComDictInfoEntity.class,
-				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
-				null);
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId())
+						.and("status", "=", DataStatusEnum.ENABLE.intKey()), null);
 		//查询有哪些币种类型
 		List<DictInfoEntity> currencyList = null;
 
@@ -263,8 +264,8 @@ public class TurnOverViewService extends BaseService<TTurnOverEntity> {
 		}
 		/*List<DictInfoEntity> projectList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "FKYT"), null);*/
 		List<ComDictInfoEntity> projectList = dbDao.query(ComDictInfoEntity.class,
-				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
-				null);
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId())
+						.and("status", "=", DataStatusEnum.ENABLE.intKey()), null);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("companyId", "=", companyId);
 		cnd.and("status", "=", BankCardStatusEnum.ENABLE.intKey());
@@ -373,6 +374,32 @@ public class TurnOverViewService extends BaseService<TTurnOverEntity> {
 		}
 		map.put("valid", flag);
 		return map;
+
+	}
+
+	//其他地方验证
+	public boolean checkBankCardNumEnoughOther(int bankCardId, String purpose, double money) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Cnd cnd = Cnd.NEW();
+		cnd.and("id", "=", bankCardId);
+		List<TBankCardEntity> bankCardList = dbDao.query(TBankCardEntity.class, cnd, null);
+		boolean flag = false;
+		if ("支出".equalsIgnoreCase(purpose)) {
+
+			if (!Util.isEmpty(bankCardList)) {
+				TBankCardEntity bankcard = bankCardList.get(0);
+				if (bankcard.getBalance() >= money) {
+					flag = true;
+				}
+
+			}
+		} else if ("收入".equalsIgnoreCase(purpose)) {
+			flag = true;
+		} else {
+			flag = true;
+		}
+
+		return flag;
 
 	}
 
