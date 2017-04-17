@@ -49,11 +49,18 @@ public class InternationalReceiveParamForm extends DataTablesParamForm {
 
 	private String searchInfo;
 
+	private Integer userid;
+
+	private Integer adminId;
+
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
 		if (!Util.isEmpty(ordersstatus) && ordersstatus != 0) {
 			cnd.and("tprr.orderstatusid", "=", ordersstatus);
+		}
+		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && !userid.equals(adminId)) {
+			cnd.and("tuo.loginUserId", "=", userid);
 		}
 		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.RECEIVE.intKey());
 		if (!Util.isEmpty(companyid)) {

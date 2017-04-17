@@ -121,9 +121,13 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	 */
 	public Object internationalListData(InternationalParamForm paramForm, HttpServletRequest request) {
 		HttpSession session = request.getSession();
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		paramForm.setCompanyid(new Long(company.getId()).intValue());
+		paramForm.setAdminId(company.getAdminId().intValue());
+		paramForm.setUserid(new Long(user.getId()).intValue());
 		Map<String, Object> listPageData = this.listPage4Datatables(paramForm);
 		List<Record> list = (List<Record>) listPageData.get("data");
 		for (Record record : list) {
@@ -149,7 +153,11 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		HttpSession session = request.getSession();
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		paramForm.setCompanyid(new Long(company.getId()).intValue());
+		paramForm.setUserid(new Long(user.getId()).intValue());
+		paramForm.setAdminId(company.getAdminId().intValue());
 		Map<String, Object> listPageData = this.listPage4Datatables(paramForm);
 		List<Record> list = (List<Record>) listPageData.get("data");
 		for (Record record : list) {
@@ -175,6 +183,10 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		HttpSession session = request.getSession();
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		paramForm.setUserid(new Long(user.getId()).intValue());
+		paramForm.setAdminId(company.getAdminId().intValue());
 		paramForm.setCompanyid(new Long(company.getId()).intValue());
 		Map<String, Object> listPageData = this.listPage4Datatables(paramForm);
 		List<Record> list = (List<Record>) listPageData.get("data");
@@ -330,10 +342,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		result.put("paymethod", paymethod);
 		result.put("receivestatus", PayReceiveTypeEnum.RECEIVE.intKey());
 		result.put("paystatus", PayReceiveTypeEnum.PAY.intKey());
-		result.put(
-				"aircomselect",
-				dbDao.query(DictInfoEntity.class,
-						Cnd.where("typeCode", "=", AIRCOMCODE).and("dictCode", "=", orderinfo.getAirlinecom()), null));
+		result.put("aircomselect", dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", AIRCOMCODE), null));
 		return result;
 	}
 
@@ -786,7 +795,104 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 				}
 			}
 		}
-		return dbDao.insert(payreceive);
+		TPayReceiveRecordEntity payrecord = dbDao.insert(payreceive);
+		Integer orderid = payrecord.getOrderid();
+		TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, orderid.longValue());
+		TCustomerInfoEntity custome = dbDao.fetch(TCustomerInfoEntity.class, order.getUserid().longValue());
+		//票价折扣
+		double discountFare = 1;
+		if (!Util.isEmpty(custome.getDiscountFare())) {
+			discountFare = custome.getDiscountFare();
+		}
+		//手续费
+		double fees = 0;
+		if (!Util.isEmpty(custome.getFees())) {
+			fees = custome.getFees();
+		}
+		//收款信息
+		TPayReceiveRecordEntity receiveEntity = new TPayReceiveRecordEntity();
+		//成本单价
+		double costprice = payrecord.getCostprice() * discountFare / 100 + fees;
+		receiveEntity.setCostprice(costprice);
+		Integer recordtype = PayReceiveTypeEnum.RECEIVE.intKey();
+		//记录类型
+		receiveEntity.setRecordtype(recordtype);
+		//预付款比例
+		receiveEntity.setPrepayratio(payrecord.getPrepayratio());
+		double prepayratio = 0;
+		if (!Util.isEmpty(payrecord.getPrepayratio())) {
+			prepayratio = payrecord.getPrepayratio();
+		}
+		//实际人数
+		receiveEntity.setActualnumber(payrecord.getActualnumber());
+		Integer actualnumber = 0;
+		if (!Util.isEmpty(payrecord.getActualnumber())) {
+			actualnumber = payrecord.getActualnumber();
+		}
+		//免罚金可减人数
+		receiveEntity.setFreenumber(payrecord.getFreenumber());
+		Integer freenumber = 0;
+		if (!Util.isEmpty(payrecord.getFreenumber())) {
+			freenumber = payrecord.getFreenumber();
+		}
+		receiveEntity.setOpid(new Long(user.getId()).intValue());
+		receiveEntity.setOptime(new Date());
+		//币种
+		receiveEntity.setCurrency(payrecord.getCurrency());
+		//订单ID
+		receiveEntity.setOrderid(payrecord.getOrderid());
+		//订单状态
+		receiveEntity.setOrderstatus(payrecord.getOrderstatus());
+		//订单状态ID
+		receiveEntity.setOrderstatusid(payrecord.getOrderstatusid());
+		//实际减少人数
+		receiveEntity.setActualyreduce(payrecord.getActualyreduce());
+		Integer actualyreduce = 0;
+		if (!Util.isEmpty(payrecord.getActualyreduce())) {
+			actualyreduce = payrecord.getActualyreduce();
+		}
+		//原有人数
+		Integer peoplecount = order.getPeoplecount();
+		String sqlString = sqlManager.get("get_international_last_payreceive_record");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("t.orderid", "=", orderid);
+		cnd.and("t.recordtype", "=", recordtype);
+		List<Record> payreceiverecord = dbDao.query(sql, cnd, null);
+		if (payreceiverecord.size() > 0) {
+			if (!Util.isEmpty(payreceiverecord.get(0).get("actualnumber"))) {
+				peoplecount = payreceiverecord.get(0).getInt("actualnumber");
+			}
+		}
+		//已收钱
+		Integer fineprice = 0;
+		String sqlString1 = sqlManager.get("get_international_record_sumprice");
+		Sql sql1 = Sqls.create(sqlString1);
+		Cnd cnd1 = Cnd.NEW();
+		cnd1.and("orderid", "=", orderid);
+		cnd1.and("recordtype", "=", recordtype);
+		cnd1.groupBy("orderid", "recordtype");
+		List<Record> payreceiverecordsum = dbDao.query(sql1, cnd1, null);
+		if (payreceiverecordsum.size() > 0 && !Util.isEmpty(payreceiverecordsum.get(0).get("yishou"))) {
+			fineprice = payreceiverecordsum.get(0).getInt("yishou");
+		}
+		double currentfine = 0;
+		//罚金(已收钱数/之前的人数 *（实际减少人数-免罚金可减人数）)
+		if (actualyreduce > freenumber) {
+			currentfine = fineprice / peoplecount * (actualyreduce - freenumber);
+		}
+		receiveEntity.setCurrentfine(currentfine);
+		//本期应付(销售单价*实际人数*预付款比例-已付)
+		double currentdue = actualnumber * costprice * (prepayratio / 100) - fineprice;
+		receiveEntity.setCurrentdue(currentdue);
+		//税金
+		double ataxprice = 0;
+		if (!Util.isEmpty(payrecord.getAtaxprice())) {
+			ataxprice = payrecord.getAtaxprice();
+		}
+		receiveEntity.setAtaxprice(ataxprice);
+		receiveEntity.setCurrentpay(currentdue + ataxprice);
+		return dbDao.insert(receiveEntity);
 	}
 
 	/**
@@ -989,6 +1095,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		String ids = request.getParameter("ids");
 		String bankcardid = request.getParameter("bankcardid");
 		String bankcardname = request.getParameter("bankcardname");
+		String bankcardnameid = request.getParameter("bankcardnameid");
 		String bankcardnum = request.getParameter("bankcardnum");
 		String billurl = request.getParameter("billurl");
 		String sumincome = request.getParameter("sumincome");
@@ -996,6 +1103,9 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		TReceiveEntity receiveEntity = new TReceiveEntity();
 		receiveEntity.setBankcardid(Integer.valueOf(bankcardid));
 		receiveEntity.setBankcardname(bankcardname);
+		if (!Util.isEmpty(bankcardnameid)) {
+			receiveEntity.setBankcardnameid(Integer.valueOf(bankcardnameid));
+		}
 		receiveEntity.setBankcardnum(bankcardnum);
 		receiveEntity.setReceivedate(new Date());
 		receiveEntity.setUserid(new Long(user.getId()).intValue());

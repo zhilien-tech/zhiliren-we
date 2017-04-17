@@ -29,13 +29,13 @@
                 <tbody>
                       <tr>
                         <td><label>销售单价：</label></td>
-                        <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.recordinfo.costprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
+                        <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint autocalc" value="<fmt:formatNumber type="number" value="${obj.recordinfo.costprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
                         <td><label>预收款比例 ：</label></td>
-                        <td><input id="prepayratio" name="prepayratio" type="text" class="form-control input-sm mustNumberPoint" value="${obj.prepayratio }"><span class="bfh">%</span></td>
+                        <td><input id="prepayratio" name="prepayratio" type="text" class="form-control input-sm mustNumberPoint autocalc" value="${obj.prepayratio }"><span class="bfh">%</span></td>
                         <td><label>实际人数：</label></td>
-                        <td><input id="actualnumber" name="actualnumber" type="text" class="form-control input-sm mustNumber" value="${obj.recordinfo.actualnumber }"></td>
+                        <td><input id="actualnumber" name="actualnumber" type="text" class="form-control input-sm mustNumber autocalc" value="${obj.recordinfo.actualnumber }"></td>
                         <td><label>免罚金可减人数：</label></td>
-                        <td><input id="freenumber" name="freenumber" type="text" class="form-control input-sm mustNumber" value="${obj.recordinfo.freenumber }"></td>
+                        <td><input id="freenumber" name="freenumber" type="text" class="form-control input-sm mustNumber autocalc" value="${obj.recordinfo.freenumber }"></td>
                       </tr>
                       <tr>
                         <td><label>本期罚金：</label></td>
@@ -43,7 +43,7 @@
                         <td><label>本期应付：</label></td>
                         <td><input id="currentdue" name="currentdue" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.recordinfo.currentdue }" pattern="0.00" maxFractionDigits="2"/>"></td>
                         <td><label>税金单价：</label></td>
-                        <td><input id="ataxprice" name="ataxprice" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.recordinfo.ataxprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
+                        <td><input id="ataxprice" name="ataxprice" type="text" class="form-control input-sm mustNumberPoint autocalc" value="<fmt:formatNumber type="number" value="${obj.recordinfo.ataxprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
                         <td><label>本期实付：</label></td>
                         <td><input id="currentpay" name="currentpay" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.recordinfo.currentpay }" pattern="0.00" maxFractionDigits="2"/>"></td>
                         <td><label>币种：</label></td>
@@ -100,6 +100,71 @@
             } 
       });
 	}
+	
+	//自动加载利润合计
+	  $(document).on('input', '.autocalc', function(e) {
+		  
+		  $('#actualyreduce').val('');
+		  //已收钱数
+		  var fineprice = 0;
+		  if($('#fineprice').val()){
+			  fineprice = $('#fineprice').val();
+		  }
+		  //原有人数
+		  var autualypeople = 0;
+		  if($('#autualypeople').val()){
+			  autualypeople = $('#autualypeople').val();
+		  }
+		  //成本单价
+		  var costprice = 0;
+		  if($('#costprice').val()){
+			  costprice = $('#costprice').val();
+		  }
+		  //预付款比例
+		  var prepayratio = 0;
+		  if($('#prepayratio').val()){
+			  prepayratio = $('#prepayratio').val();
+		  }
+		  //实际人数
+		  var actualnumber = 0;
+		  if($('#actualnumber').val()){
+			  actualnumber = $('#actualnumber').val();
+		  }
+		  //免罚金可减人数
+		  var freenumber = 0;
+		  if($('#freenumber').val()){
+			  freenumber = $('#freenumber').val();
+		  }
+		  //税金单价
+		  var ataxprice = 0;
+		  if($('#ataxprice').val()){
+			  ataxprice = $('#ataxprice').val();
+		  }
+		  if($('#prepayratio').val() && $('#actualnumber').val()){
+			  //实收金额
+			  var currentdue =  parseInt(actualnumber) * parseFloat(costprice) * parseFloat(prepayratio)/100 - parseFloat(fineprice);
+			  if(!isNaN(currentdue) && currentdue != 0){
+			   	 $('#currentdue').val(currentdue.toFixed(2));
+			  }
+			  //已减人数
+			  var alreadydec = autualypeople - actualnumber;
+			  if(!isNaN(alreadydec) && alreadydec > 0){
+				  $('#actualyreduce').val(alreadydec);
+			  }
+			  //本期罚金
+			  var currentfine = 0;
+			  if(alreadydec > freenumber){
+				  currentfine = parseFloat(fineprice) / parseInt(autualypeople) * (parseInt(alreadydec) -  parseInt(freenumber));
+				  if(!isNaN(currentfine) && currentfine != 0){
+				   	 $('#currentfine').val(currentfine.toFixed(2));
+				  }
+			  }
+			  var currentpay = parseFloat(currentdue) + parseFloat(currentfine) + parseFloat(ataxprice);
+			  if(!isNaN(currentpay) && currentpay != 0){
+			   	 $('#currentpay').val(currentpay.toFixed(2));
+			  }
+		  }
+	  });
 	</script>
 </body>
 </html>	

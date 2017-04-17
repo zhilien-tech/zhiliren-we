@@ -46,6 +46,7 @@ import com.linyun.airline.entities.TPnrInfoEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUpOrderTicketEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
+import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TPlanInfoUpdateForm;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.JsonUtil;
@@ -318,6 +319,8 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 	public synchronized Object insertOrderNum(HttpSession session, String planIds) {
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		//格式化日期
 		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
 		String dateStr = format.format(new Date());
@@ -340,6 +343,7 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 				TUpOrderEntity insertOrder = new TUpOrderEntity();
 				//订单信息
 				TUpOrderEntity upOrderEntity = new TUpOrderEntity();
+				upOrderEntity.setLoginUserId(new Long(user.getId()).intValue());
 				upOrderEntity.setAmount(planInfo.getPrice());
 				upOrderEntity.setCurrencyCode(planInfo.getCurrencycode());
 				upOrderEntity.setCustomid(company.getId());
