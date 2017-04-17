@@ -20,7 +20,7 @@
 	.contextFrom{width: 90%;margin:17px auto;}
 </style>
 </head>
-<body onresize=hero();>
+<body onresize=hero(); onload="document.getElementById('folderId').focus()">
 	<div class="modal-top">
 		<form id="addForm" method="post">
 			<div class="modal-header boderButt">

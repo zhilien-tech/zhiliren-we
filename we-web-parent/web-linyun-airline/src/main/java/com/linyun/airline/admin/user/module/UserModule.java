@@ -161,7 +161,7 @@ public class UserModule {
 	@GET
 	@Ok("jsp")
 	public Object updatePassword(final HttpSession session) {
-		return userViewService.updatePassword(session);
+		return userViewService.openUpdatePassword(session);
 	}
 
 	/**
