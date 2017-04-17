@@ -281,6 +281,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("uo.id", "in", ids);
+		cnd.and("prr.recordtype", "=", RECEIVETYPE);
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//计算合计金额
 		Double sum = 0.0;
