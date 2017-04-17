@@ -66,6 +66,7 @@ $condition
 /*get_international_receive_list_order*/
 SELECT
 	tuo.ordersnum,
+	tuo.id orderid,
 	tfi.personcount,
 	tfi.incometotal,
 	tpi.*, tprr.orderstatus,
