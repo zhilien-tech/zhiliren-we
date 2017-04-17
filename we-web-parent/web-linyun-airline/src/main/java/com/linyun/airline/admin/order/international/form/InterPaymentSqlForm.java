@@ -48,6 +48,8 @@ public class InterPaymentSqlForm extends DataTablesParamForm {
 
 	private Integer paystatus;
 
+	private Integer adminId;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		String sqlString = sqlManager.get("get_international_pay_list");
@@ -60,8 +62,12 @@ public class InterPaymentSqlForm extends DataTablesParamForm {
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tp.ordertype", "=", OrderTypeEnum.TEAM.intKey());
+		cnd.and("tii.status", "is", null);
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("tp.companyid", "=", companyid);
+		}
+		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && !userid.equals(adminId)) {
+			cnd.and("tuo.loginUserId", "=", userid);
 		}
 		cnd.and("tpo.paystauts", "!=", AccountPayEnum.REFUSE.intKey());
 		DateFormat format = new SimpleDateFormat(DateUtil.FORMAT_YYYYMMDD);

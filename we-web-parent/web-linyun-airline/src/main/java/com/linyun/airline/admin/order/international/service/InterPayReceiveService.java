@@ -95,6 +95,8 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		sqlForm.setCompanyid(new Long(company.getId()).intValue());
+		sqlForm.setUserid(new Long(user.getId()).intValue());
+		sqlForm.setAdminId(company.getAdminId().intValue());
 		Map<String, Object> listData = this.listPage4Datatables(sqlForm);
 		List<Record> data = (List<Record>) listData.get("data");
 		for (Record record : data) {
@@ -131,6 +133,8 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		sqlForm.setCompanyid(new Long(company.getId()).intValue());
+		sqlForm.setAdminId(company.getAdminId().intValue());
+		sqlForm.setUserid(new Long(user.getId()).intValue());
 		Map<String, Object> listData = this.listPage4Datatables(sqlForm);
 		List<Record> data = (List<Record>) listData.get("data");
 		for (Record record : data) {
@@ -260,6 +264,8 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		if (!Util.isEmpty(fromJson.get("receiveid"))) {
 			Integer receiveid = Integer.valueOf((String) fromJson.get("receiveid"));
 			invoiceinfo.setReceiveid(receiveid);
+			TReceiveEntity receiveinfo = dbDao.fetch(TReceiveEntity.class, receiveid.longValue());
+			invoiceinfo.setOpid(receiveinfo.getUserid());
 			//消息提醒
 			Sql sql = Sqls.create(sqlManager.get("select_receive_order_info"));
 			Cnd cnd = Cnd.NEW();
@@ -284,7 +290,7 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		if (!Util.isEmpty(fromJson.get("orderstatus"))) {
 			invoiceinfo.setOrderstatus(Integer.valueOf((String) fromJson.get("orderstatus")));
 		}
-		invoiceinfo.setOpid(new Long(user.getId()).intValue());
+		//invoiceinfo.setOpid(new Long(user.getId()).intValue());
 		invoiceinfo.setOptime(new Date());
 		invoiceinfo.setOrdertype(OrderTypeEnum.TEAM.intKey());
 		invoiceinfo.setComId(new Long(company.getId()).intValue());
@@ -427,6 +433,9 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 			//消息提醒
 			TPayOrderEntity payorder = dbDao.fetch(TPayOrderEntity.class, orderpayid.longValue());
 			TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, payorder.getOrderid().longValue());
+			//罚款信息
+			TPayEntity payinfo = dbDao.fetch(TPayEntity.class, payorder.getPayid().longValue());
+			invoiceinfo.setOpid(payinfo.getProposer());
 			List<TFunctionEntity> function = dbDao.query(TFunctionEntity.class, Cnd.where("name", "=", "发票管理"), null);
 			long functionid = 0;
 			if (function.size() > 0) {
@@ -441,7 +450,7 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 			invoiceinfo.setOrderstatus(Integer.valueOf((String) fromJson.get("orderstatus")));
 		}
 		invoiceinfo.setComId(new Long(company.getId()).intValue());
-		invoiceinfo.setOpid(new Long(user.getId()).intValue());
+		//invoiceinfo.setOpid(new Long(user.getId()).intValue());
 		invoiceinfo.setOptime(new Date());
 		invoiceinfo.setOrdertype(OrderTypeEnum.TEAM.intKey());
 		invoiceinfo.setStatus(InvoiceInfoEnum.RECEIPT_INVOIC_ING.intKey());

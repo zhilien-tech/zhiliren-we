@@ -137,6 +137,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			Integer pnrid = Integer.valueOf((String) fromJson.get("pnrid"));
 			invoiceinfo.setPnrid(pnrid);
 			TPnrInfoEntity pnrinfo = dbDao.fetch(TPnrInfoEntity.class, pnrid.longValue());
+			invoiceinfo.setOpid(pnrinfo.getUserid());
 			TOrderCustomneedEntity customneed = dbDao.fetch(TOrderCustomneedEntity.class, pnrinfo.getNeedid()
 					.longValue());
 			TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, customneed.getOrdernum().longValue());
@@ -152,7 +153,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			searchViewService.addRemindMsg(map, order.getOrdersnum(), pnrinfo.getPNR(), order.getId(),
 					MessageWealthStatusEnum.RECINVIOCING.intKey(), receiveusers, session);
 		}
-		invoiceinfo.setOpid(new Long(user.getId()).intValue());
+		//invoiceinfo.setOpid(new Long(user.getId()).intValue());
 		invoiceinfo.setComId(new Long(company.getId()).intValue());
 		invoiceinfo.setOptime(new Date());
 		invoiceinfo.setOrdertype(OrderTypeEnum.FIT.intKey());
@@ -216,6 +217,8 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		if (!Util.isEmpty(fromJson.get("pnrid"))) {
 			Integer receiveid = Integer.valueOf((String) fromJson.get("pnrid"));
 			invoiceinfo.setReceiveid(receiveid);
+			TReceiveEntity receiveinfo = dbDao.fetch(TReceiveEntity.class, receiveid.longValue());
+			invoiceinfo.setOpid(receiveinfo.getUserid());
 			//消息提醒
 			Sql sql = Sqls.create(sqlManager.get("select_receive_order_info"));
 			Cnd cnd = Cnd.NEW();
@@ -236,7 +239,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 						MessageWealthStatusEnum.INVIOCING.intKey(), receiveusers, session);
 			}
 		}
-		invoiceinfo.setOpid(new Long(user.getId()).intValue());
+		//invoiceinfo.setOpid(new Long(user.getId()).intValue());
 		invoiceinfo.setComId(new Long(company.getId()).intValue());
 		invoiceinfo.setOptime(new Date());
 		invoiceinfo.setOrdertype(OrderTypeEnum.FIT.intKey());
@@ -365,6 +368,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 				null);
 		paramForm.setUserid(new Long(user.getId()).intValue());
 		paramForm.setCompanyid(company.getId());
+		paramForm.setAdminId(company.getAdminId().intValue());
 		Long comId = company.getId();//得到公司的id
 		Map<String, Object> DatatablesData = this.listPage4Datatables(paramForm);
 		List<Record> listdata = (List<Record>) DatatablesData.get("data");
@@ -423,6 +427,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		paramForm.setUserid(new Long(user.getId()).intValue());
 		paramForm.setCompanyid(company.getId());
+		paramForm.setAdminId(company.getAdminId().intValue());
 		Map<String, Object> datatableData = this.listPage4Datatables(paramForm);
 		List<Record> listdata = (List<Record>) datatableData.get("data");
 		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
