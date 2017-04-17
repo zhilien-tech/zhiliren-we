@@ -43,7 +43,13 @@
                 		<tr ondblclick="trDetail(${one.uid});">
                 			<%-- <td>${one.id }</td> --%>
                 			<td>${one.ordersnum }</td>
-                			<td>${one.pnrnum }</td>
+                			<td>
+                				<ul>
+                					<c:forEach var="pnr" items="${one.pnrnum}">
+	                					<li>${pnr}</li>
+	                				</c:forEach>
+                				</ul>
+                			</td>
                 			<td>${one.cusgroupnum }</td>
                 			<td>${one.shortname }</td>
                 			<td>${one.billingdate }</td>
