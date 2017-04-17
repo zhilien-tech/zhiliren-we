@@ -16,7 +16,7 @@
 	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 	<script src="${base}/common/js/layer/layer.js"></script>
 </head>
-<body onresize=hero();>
+<body onresize=hero(); onload="document.getElementById('thirdCompanyNameId').focus()">
           <div class="modal-top">
           <form id="addForm" method="post"> 
               <div class="modal-header boderButt">

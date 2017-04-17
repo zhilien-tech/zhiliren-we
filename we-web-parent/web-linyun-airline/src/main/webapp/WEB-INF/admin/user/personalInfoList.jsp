@@ -21,7 +21,7 @@
             <div class="box-header">
                 <div class="form-group row cf personalBtn">
                     <button type="button" onclick="editPersonal('${obj.personalInfo[0].id}');" class="btn btn-primary btn-sm right personalEtie">编辑</button>
-                    <button type="button" onclick="openUpdatePassword();" class="btn btn-primary btn-sm right updatePwd" >修改密码</button>
+                    <a type="button" onclick="openUpdatePassword();" class="btn btn-primary btn-sm right updatePwd" >修改密码</a>
                 </div>
             </div>
             <div class="personalTable">
@@ -84,9 +84,11 @@ function openUpdatePassword(){
 	    area: ['550px', '320px'],
 	    content: '${base}/admin/user/updatePassword.html',
 	    end: function(){
+	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+			parent.layer.close(index);
 	    }
-	  });
-	}
+	});
+}
 //打开编辑个人信息页面
 function editPersonal(userId){
 	layer.open({
