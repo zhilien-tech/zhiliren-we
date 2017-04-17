@@ -338,6 +338,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		TBankCardEntity bankCardEntity = new TBankCardEntity();
 		bankCardEntity.setId(PayMethodEnum.THIRDPART.intKey());
 		bankCardEntity.setBankName(PayMethodEnum.THIRDPART.value());
+		bankCardEntity.setCardName(PayMethodEnum.THIRDPART.value());
 		paymethod.add(0, bankCardEntity);
 		result.put("paymethod", paymethod);
 		result.put("receivestatus", PayReceiveTypeEnum.RECEIVE.intKey());
