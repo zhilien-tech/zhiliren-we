@@ -17,6 +17,7 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
@@ -168,16 +169,6 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 				Cnd.where("invoiceinfoid", "=", invoiceinfo.getId()), null);
 		//付款信息
 		TReceiveEntity fetch = dbDao.fetch(TReceiveEntity.class, Long.valueOf(invoiceinfo.getReceiveid()));
-		double invoicebalance = 0.00;
-		if (!Util.isEmpty(fetch)) {
-			invoicebalance = fetch.getSum();
-		}
-		for (TInvoiceDetailEntity detail : invoicedetail) {
-			if (!Util.isEmpty(detail.getInvoicebalance())) {
-				invoicebalance -= detail.getInvoicebalance();
-			}
-		}
-		result.put("invoicebalance", formatDouble(invoicebalance));
 		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
 				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
 				null);
@@ -194,12 +185,24 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.id", "in", ids);
 		List<Record> orders = dbDao.query(sql, cnd, null);
+		//订单信息
+		result.put("orders", orders);
+		double sumjine = 0;
 		for (Record record : orders) {
+			if (!Util.isEmpty(record.get("incometotal"))) {
+				sumjine += (Double) record.get("incometotal");
+			}
 			String billingdate = FormatDateUtil.dateToOrderDate((Date) record.get("billingdate"));
 			record.put("billingdate", billingdate);
 		}
-		//订单信息
-		result.put("orders", orders);
+		result.put("sumjine", sumjine);
+		double invoicebalance = sumjine;
+		for (TInvoiceDetailEntity detail : invoicedetail) {
+			if (!Util.isEmpty(detail.getInvoicebalance())) {
+				invoicebalance -= detail.getInvoicebalance();
+			}
+		}
+		result.put("invoicebalance", invoicebalance);
 		Sql create = Sqls.create(sqlManager.get("get_bank_info_select"));
 		create.setParam("companyId", company.getId());
 		create.setParam("typeCode", YHCODE);
@@ -306,14 +309,20 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		String ordersnum = "";
 		Integer orderId = null;
+		List<Long> receiveUids = Lists.newArrayList();
 		for (Record record : orders) {
 			ordersnum = record.getString("ordersnum");
 			orderId = record.getInt("id");
+			Integer uId = record.getInt("loginUserId");
+			if (!Util.isEmpty(uId)) {
+				receiveUids.add(Long.valueOf(uId + ""));
+			}
 		}
 		Map<String, Object> map = Maps.newHashMap();
 		map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 		map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
-		searchViewService.addRemindMsg(map, ordersnum, "", orderId, MessageWealthStatusEnum.INVIOCE.intKey(), session);
+		searchViewService.addRemindMsg(map, ordersnum, "", orderId, MessageWealthStatusEnum.INVIOCE.intKey(),
+				receiveUids, session);
 		return null;
 	}
 
@@ -385,13 +394,11 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tpi.id", "=", invoiceinfo.getPnrid());
 		List<Record> pnrinfo = dbDao.query(sql, cnd, null);
-		for (Record record : pnrinfo) {
-			String billingdate = FormatDateUtil.dateToOrderDate((Date) record.get("billingdate"));
-			record.put("billingdate", billingdate);
-		}
 		result.put("pnrinfo", pnrinfo);
 		double sumjine = 0;
 		for (Record record : pnrinfo) {
+			String billingdate = FormatDateUtil.dateToOrderDate((Date) record.get("billingdate"));
+			record.put("billingdate", billingdate);
 			if (!Util.isEmpty(record.get("costpricesum"))) {
 				Double salespricesum = (Double) record.get("costpricesum");
 				sumjine += Double.valueOf(salespricesum);
@@ -518,16 +525,21 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		String ordersnum = "";
 		String pnr = "";
 		Integer orderId = null;
+		List<Long> receiveUids = Lists.newArrayList();
 		for (Record record : pnrinfo) {
 			ordersnum = record.getString("ordersnum");
 			orderId = record.getInt("orderids");
 			pnr = record.getString("pnr");
+			Integer uId = record.getInt("userid");
+			if (!Util.isEmpty(uId)) {
+				receiveUids.add(Long.valueOf(uId + ""));
+			}
 		}
 		Map<String, Object> map = Maps.newHashMap();
 		map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 		map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
 		searchViewService.addRemindMsg(map, ordersnum, pnr, orderId, MessageWealthStatusEnum.RECINVIOCE.intKey(),
-				session);
+				receiveUids, session);
 		return null;
 	}
 

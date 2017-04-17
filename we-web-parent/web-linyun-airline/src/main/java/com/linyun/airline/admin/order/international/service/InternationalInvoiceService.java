@@ -80,6 +80,7 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 				null);
 		sqlForm.setCompanyid(new Long(company.getId()).intValue());
 		sqlForm.setUserid(new Long(user.getId()).intValue());
+		sqlForm.setAdminId(company.getAdminId().intValue());
 		Map<String, Object> listData = this.listPage4Datatables(sqlForm);
 		List<Record> data = (List<Record>) listData.get("data");
 		for (Record record : data) {
@@ -138,6 +139,7 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 				null);
 		sqlForm.setCompanyid(new Long(company.getId()).intValue());
 		sqlForm.setUserid(new Long(user.getId()).intValue());
+		sqlForm.setAdminId(company.getAdminId().intValue());
 		Map<String, Object> listData = this.listPage4Datatables(sqlForm);
 		List<Record> data = (List<Record>) listData.get("data");
 		for (Record record : data) {
@@ -194,13 +196,6 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 				Cnd.where("invoiceinfoid", "=", invoiceinfo.getId()), null);
 		//付款信息
 		TReceiveEntity fetch = dbDao.fetch(TReceiveEntity.class, Long.valueOf(invoiceinfo.getReceiveid()));
-		double invoicebalance = fetch.getSum();
-		for (TInvoiceDetailEntity detail : invoicedetail) {
-			if (!Util.isEmpty(detail.getInvoicebalance())) {
-				invoicebalance -= detail.getInvoicebalance();
-			}
-		}
-		result.put("invoicebalance", invoicebalance);
 
 		List<TOrderReceiveEntity> query = dbDao.query(TOrderReceiveEntity.class,
 				Cnd.where("receiveid", "=", fetch.getId()), null);
@@ -221,6 +216,20 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//订单信息
 		result.put("orders", orders);
+		double sumjine = 0;
+		for (Record record : orders) {
+			if (!Util.isEmpty(record.get("currentpay"))) {
+				sumjine += (Double) record.get("currentpay");
+			}
+		}
+		result.put("sumjine", sumjine);
+		double invoicebalance = sumjine;
+		for (TInvoiceDetailEntity detail : invoicedetail) {
+			if (!Util.isEmpty(detail.getInvoicebalance())) {
+				invoicebalance -= detail.getInvoicebalance();
+			}
+		}
+		result.put("invoicebalance", invoicebalance);
 		List<DictInfoEntity> yhkSelect = new ArrayList<DictInfoEntity>();
 		try {
 			yhkSelect = externalInfoService.findDictInfoByName("", YHCODE);

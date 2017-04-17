@@ -29,7 +29,7 @@
                     <select class="form-control input-sm" name="selectCompany" id="selectCompany" onchange="pickedFunc();">
                       <!-- <option>VR</option>
                       <option>JQ</option> -->
-                      <option value="">请选择</option>
+                      <option value="">航空公司</option>
                       <c:forEach items="${obj.airlineCompanyList }" var="each">
                       	<option value="${each.airlineCompanyId }">${each.airlineCompanyName }</option>
                       </c:forEach>
@@ -39,7 +39,7 @@
                      <select class="form-control input-sm" name="selectArea" id="selectArea" onchange="pickedFunc();">
                       <!-- <option>澳洲</option>
                       <option>亚洲</option> -->
-                       <option value="">请选择</option>
+                       <option value="">地区</option>
                       <c:forEach items="${obj.areaList }" var="each">
                       	<option value="${each.areaName}">${each.areaName }</option>
                       </c:forEach>
@@ -63,7 +63,7 @@
                   <div class="col-md-1 padding">
                   	  <button type="button" class="btn btn-primary btn-sm suBtn" onclick="clearSelect();pickedFunc();">清空</button>
                   </div>
-                  <div class="col-md-6 padding">
+                  <div class="col-md-3 padding right">
                    <%-- <a href="${base}/admin/airlinepolicy/add.html" class="btn btn-primary btn-sm right">上传</a> --%>
                     <!--  <button id="file" name="file" type="file" class="btn btn-primary btn-sm right" >上传</button> -->
                      <button id="addFile" name="add" type="button" class="btn btn-primary btn-sm right" >添加</button>

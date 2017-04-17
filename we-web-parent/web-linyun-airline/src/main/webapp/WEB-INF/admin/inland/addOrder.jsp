@@ -13,7 +13,7 @@
   <link rel="stylesheet" type="text/css" href="${base }/public/ionicons/css/ionicons.min.css">
   <link rel="stylesheet" type="text/css" href="${base }/public/dist/css/inlandCross.css"><!--本页面样式-->
   <style type="text/css">
-  	[name="airlineinfo"] td .select2-container{width:115px !important;}
+  	[name="airlineinfo"] td .select2-container{width:130px !important;}
   </style>
 </head>
 <body>
@@ -30,7 +30,7 @@
           <input id="generateOrder" class="right orderInput" type="checkbox" checked="checked" readonly="true">
           <h4>添加订单</h4>
      </div>
-      <div class="modal-body modal-hei">
+      <div class="modal-body modal-hei" style="height:484px;overflow-y: auto;">
       	<form id="customaddform" action="">
           <div class="customerInfo"><!--客户信息-->
                <div class="infoTop">
@@ -87,7 +87,7 @@
                <div class="infoTop">
                  <p>客户需求</p>
                </div>
-               <div id="infofooter" class="infofooter">
+               <div id="infofooter" class="infofooter infofooter1">
                 <div class="DemandDiv addOrderKHXQ">
                  <span class="titleNum">1</span>
                  <a href="javascript:;" class="btn btn-primary btn-sm addDemand"><b>+</b>&nbsp;&nbsp;需求</a>
@@ -141,7 +141,7 @@
 				   <div class="remarkDiv">
 						<table class="remarkTable">
 							<tr name="cRemarkTr" class="remarkTr">
-								<td><label>备注：</label></td>
+								<td  class="remarktd1"><label>备注：</label></td>
 								<td>
 									<textarea class="form-control" id="cRemark" name="cRemark"></textarea>
 								</td>

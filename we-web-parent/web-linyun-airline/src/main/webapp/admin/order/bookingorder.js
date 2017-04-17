@@ -168,8 +168,8 @@ $(function(){
         $('.hideTable').toggle();
       });
     //加载pnr表格
-    loadPNRdata();
-    //客户需求的 + 按钮
+    loadPNRdata(1);
+    //航班信息的 + 按钮
     $(document).on("click",".addIcon",function(){
         var divTest = $(this).parent().parent().parent().find('[name=airlineinfo]').last(); 
         var newDiv = divTest.clone(false,true);
@@ -183,6 +183,7 @@ $(function(){
         newDiv.find('[name=arrivetime]').val('');
         newDiv.find('[name=formprice]').val('');
         newDiv.find('[name=price]').val('');
+        newDiv.find('[name=ispriceempty]').val('1');
 		initAirInfoSelect2(newDiv);
         var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
         newDiv.find("p").html(No); 
@@ -197,7 +198,7 @@ $(function(){
 
     //客户需求的 +需求 按钮
     $('.addXuQiu').click(function(){
-        var divTest = $(this).parent().parent(); 
+        var divTest = $(this).parent(); 
         var newDiv = divTest.clone(false,true);
         newDiv.find('[name=customneedid]').val('');
         newDiv.find('[name=leavecity]').next().remove();
@@ -218,11 +219,11 @@ $(function(){
         newDiv.find('[name=pnrinfodata]').html('');
         initCitySelect2(newDiv);
         //divTest.after(newDiv);
-        $('#infofooter').last().after(newDiv);
+        $('.DemandDiv').last().after(newDiv);
         var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
         newDiv.find("p").html(No); 
         newDiv.find('.addDemand').remove();
-        newDiv.find('[name=customneedid]').before('<a href="javascript:;" class="btn btn-primary btn-sm removeDemand"><b>-</b>&nbsp;&nbsp;需求</a>');
+        newDiv.find('[name=customneedid]').before('<a href="javascript:;" class="btn btn-primary btn-sm removeDemand"><b>-</b>&nbsp;&nbsp;&nbsp;需求</a>');
         var divId=document.getElementById('infofooter').getElementsByTagName('div');
         newDiv.find('.titleNum').text(divId.length);
         newDiv.find('.paymethod').trigger("change");
@@ -239,16 +240,23 @@ $(function(){
         		$(this).find('[name=arrivetime]').val('');
         		$(this).find('[name=formprice]').val('');
         		$(this).find('[name=price]').val('');
+        		$(this).find('[name=ispriceempty]').val('1');
         		initAirInfoSelect2($(this));
         	}
         });
         /*只在最后一个需求上显示 备注项*/
         //$('.remarkTr').remove();
         //$('.customerInfo #infofooter:last-child .cloTable tbody .pnrTr').after('<tr class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><input type="text" id="remark" name="remark" disabled="disabled" class="form-control input-sm noteText" placeholder=" " value=" "></td></tr>');
+        $('.DemandDiv').each(function(i){
+        	$(this).find('.titleNum').html(i+1);
+        });
     });
     //客户需求的 -需求 按钮
     $(document).on("click",".removeDemand",function(){
-        $(this).parent().parent().remove();
+        $(this).parent().remove();
+        $('.DemandDiv').each(function(i){
+        	$(this).find('.titleNum').html(i+1);
+        });
         /*判断最后一个需求是否有 备注项 如果没有 就添加备注项*/
         //var cl=$('.customerInfo #infofooter:last-child .cloTable tbody tr:last-child').hasClass('remarkTr');
         //if(cl==false){
@@ -257,7 +265,7 @@ $(function(){
     });
   });
 //加载pnr信息数据
-function loadPNRdata(){
+function loadPNRdata(status){
 	$('.DemandDiv').each(function(i){
 		var customDiv = $(this);
 		var customneedid = customDiv.find('[name=customneedid]').val();
@@ -270,8 +278,8 @@ function loadPNRdata(){
             	var result = '';
             	for(var i=0 ; i<data.length ; i++){
             		result += '<tr>';
-            		if(data[i].pNR != undefined){
-            			result +='<td>'+data[i].pNR+'</td>';
+            		if(data[i].pnr != undefined){
+            			result +='<td>'+data[i].pnr+'</td>';
             		}else{
             			result +='<td></td>';
             		}
@@ -305,7 +313,11 @@ function loadPNRdata(){
             		}else{
             			result +='<td></td>';
             		}
-            		result +='<td><a href="javascript:openDetailPage('+data[i].id+');" class="PNRdetails">详情</a></td>';
+            		if(status){
+            			result +='<td></td>';
+            		}else{
+            			result +='<td><a href="javascript:openDetailPage('+data[i].id+');" class="PNRdetails">详情</a></td>';
+            		}
             		result += '</tr>';
             	}
             	customDiv.find('[name=pnrinfodata]').html(result);
@@ -408,3 +420,38 @@ function triggerSelect(){
 		$(this).find('.paymethod').trigger("change");
 	});
 }
+//航空公司下拉
+$('.aircomselect').select2({
+	ajax : {
+		url : BASE_PATH + '/admin/search/getAirLineSelect.html',
+		dataType : 'json',
+		delay : 250,
+		type : 'post',
+		data : function(params) {
+			return {
+				airlinename : params.term, // search term
+				page : params.page
+			};
+		},
+		processResults : function(data, params) {
+			params.page = params.page || 1;
+			var selectdata = $.map(data, function (obj) {
+				  obj.id = obj.dictCode; // replace pk with your identifier
+				  obj.text = obj.dictCode + "-" + obj.dictName; // replace pk with your identifier
+				  return obj;
+			});
+			return {
+				results : selectdata
+			};
+		},
+		cache : false
+	},
+	escapeMarkup : function(markup) {
+		return markup;
+	}, // let our custom formatter work
+	minimumInputLength : 1,
+	maximumInputLength : 20,
+	language : "zh-CN", //设置 提示语言
+	maximumSelectionLength : 1, //设置最多可以选择多少项
+	tags : false //设置必须存在的选项 才能选中
+});

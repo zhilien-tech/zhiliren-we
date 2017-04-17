@@ -45,6 +45,8 @@ public class PayApplyListForm extends DataTablesParamForm {
 
 	private String searchInfo;
 
+	private Long adminId;
+
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		cnd.and("tuo.ordersstatus", "=", OrderStatusEnum.TICKETING.intKey());
@@ -65,6 +67,9 @@ public class PayApplyListForm extends DataTablesParamForm {
 			exp1.and("tci.linkMan", "like", "%" + searchInfo + "%").or("tpi.PNR", "like", "%" + searchInfo + "%")
 					.or("tuo.ordersnum", "like", "%" + searchInfo + "%");
 			cnd.and(exp1);
+		}
+		if (!Util.isEmpty(userId) && !Util.isEmpty(adminId) && !userId.equals(adminId)) {
+			cnd.and("tuo.loginUserId", "=", userId);
 		}
 		SqlExpressionGroup exp = new SqlExpressionGroup();
 		exp.and("tpi.orderPnrStatus", "=", "").or("tpi.orderPnrStatus", "is", null)

@@ -87,8 +87,9 @@ $("#submit").click(function(){
 				 shade: [0.1,'#fff'] //0.1透明度的白色背景
 			});
               	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-				parent.layer.close(index);
+				window.location.reload(); // 父页面刷新
 				window.parent.successCallback('1');
+				$("#areaName").focus();     
            }
        });
 	}

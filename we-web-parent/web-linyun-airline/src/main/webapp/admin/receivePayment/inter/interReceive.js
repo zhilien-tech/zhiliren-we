@@ -20,9 +20,14 @@ function initRecDataTable() {
 		            {"data": "ordersnum", "bSortable": false,
 		            	render:function(data, type, row, meta) {
 		            		var result = '<ul> ';
+		            		var oNum = "";
 		            		$.each(row.orders, function(name, value) {
 		            			if(value){
-		            				result += '<li style="list-style:none;">'+value.ordersnum+'</li>';
+		            				var orderNum = value.ordersnum;
+		            				if(oNum != orderNum){
+		            					result += '<li style="list-style:none;">'+orderNum+'</li>';
+		            				}
+		            				oNum = orderNum;
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -49,13 +54,18 @@ function initRecDataTable() {
 		            {"data": "peoplecount", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
+		            		var oNum = "";
 		            		$.each(row.orders, function(name, value) {
 		            			if(value){
 		            				var pCount = value.peoplecount;
 		            				if(pCount == null || pCount == undefined || pCount==""){
 		            					pCount = '';
 		            				}else{
-		            					result += '<li style="list-style:none;">'+pCount+'</li>';
+		            					var orderNum = value.ordersnum;
+			            				if(oNum != orderNum){
+			            					result += '<li style="list-style:none;">'+pCount+'</li>';
+			            				}
+			            				oNum = orderNum;
 		            				}
 		            			}
 		            		});
@@ -66,9 +76,14 @@ function initRecDataTable() {
 		            {"data": "currentpay", "bSortable": false,
 		            	render:function(data, type, row, meta) {
 		            		var result = '<ul> ';
+		            		var oNum = "";
 		            		$.each(row.orders, function(name, value) {
 		            			if(value && value.currentpay!=undefined){
-		            				result += '<li style="list-style:none;">'+(value.currentpay).toFixed(2)+'</li>';
+		            				var orderNum = value.ordersnum;
+		            				if(oNum != orderNum){
+		            					result += '<li style="list-style:none;">'+(value.currentpay).toFixed(2)+'</li>';
+		            				}
+		            				oNum = orderNum;
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -235,17 +250,54 @@ $("#interRecSearchBtn").on('click', function () {
 $(".paymentNewUl li").click(function(){
 	$(this).addClass("orderStatusClass").siblings().removeClass('orderStatusClass');
 	var bookId =$(".osClass",$(this)).attr("id");
-	var receiveStatus = $("#interRecSelect").val();
-	var param = {
-			"receiveStatus":receiveStatus,
-			"orderStatus":bookId
-	};
-	interRecTable.settings()[0].ajax.data = param;
-	interRecTable.ajax.reload(
-			function(json){
-				autoHighLoad($('#interRecTable'));
-			}		
-	);
+	 
+	 $('ul.nlkhUL li').each(function(i,ele){
+        if($(ele).hasClass('active')){
+        	var clickFun = $(ele).find("a").attr("onclick");
+        	//收款
+        	if(clickFun == "toConfirmRecPage();"){
+        		var receiveStatus = $("#interRecSelect").val();
+        		var param = {
+        				"receiveStatus":receiveStatus,
+        				"orderStatus":bookId
+        		};
+        		interRecTable.settings()[0].ajax.data = param;
+        		interRecTable.ajax.reload(
+        				function(json){
+        					autoHighLoad($('#interRecTable'));
+        				}		
+        		);
+        	}
+        	//付款
+        	if(clickFun == "toConfirmPayPage();"){
+        		var payStatus = $("#interPaySelect").val();
+        		var param = {
+        				"payStatus":payStatus,
+        				"orderStatus":bookId
+        		};
+        		if(payStatus == "2"){
+        			//付款中
+        			interPayTable.settings()[0].ajax.data = param;
+            		interPayTable.ajax.reload(
+            				function(json){
+            					autoHighLoad($('#interPayTable'));
+            				}		
+            		);
+        		}else{
+        			interPayEdTable.settings()[0].ajax.data = param;
+        			interPayEdTable.ajax.reload(
+            				function(json){
+            					autoHighLoad($('#interPayEdTable'));
+            				}		
+            		);
+        		}
+        		
+        	}
+        	
+        }
+    });
+	
+	
 	/*destroyDatetable($("#interPayTable"));
 	destroyDatetable($("#interPayEdTable"));
 	destroyDatetable($("#interRecTable"));

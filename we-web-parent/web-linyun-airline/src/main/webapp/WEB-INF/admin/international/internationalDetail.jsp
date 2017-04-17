@@ -71,7 +71,7 @@
                    <button type="button" class="btn btn-primary input-sm btnSave none" onclick="saveInternationalDetail()">保存</button> 
                    <button type="button" class="btn btn-primary input-sm btnCancel none">取消</button>
                    <button type="button" class="btn btn-primary input-sm editBtn right">编辑</button>
-                   
+                   <input id="mainaircount" name="mainaircount" type="hidden">
                  </div>
                </div>
                <div class="infofooter">
@@ -141,7 +141,7 @@
                  <p>航程信息</p>
                </div>
                <div class="infofooter">
-                  <button type="button" class="btn btn-primary right addHD">添加航段</button>
+                  <button type="button" class="btn btn-primary right addHD none">添加航段</button>
                   <table class="HCinfoInp">
                    <tr>
                      <td><label>航空公司：</label></td>
@@ -205,12 +205,12 @@
     	  <div class="listInfo"><!-- 预收款记录/预付款记录 -->
 			<div class="nav-tabs-custom">
 				<ul class="nav nav-tabs query-style">
-					<li class="active"><a href="#tab_1" data-toggle="tab">预收款记录</a></li>
-					<li><a href="#tab_2" data-toggle="tab">预付款记录</a></li>
+					<li class="active"><a href="#tab_2" data-toggle="tab">预付款记录</a></li>
+					<li><a href="#tab_1" data-toggle="tab">预收款记录</a></li>
 				</ul>
 				<div class="tab-content">
-					<div class="tab-pane active" id="tab_1">
-						<button type="button" class="btn btn-primary right recordBtn addYSK">添加记录</button>
+					<div class="tab-pane" id="tab_1">
+						<!-- <button type="button" class="btn btn-primary right recordBtn addYSK none">添加记录</button> -->
 		                <table class="table table-bordered table-hover main">
 		                    <thead>
 		                      <tr>
@@ -230,8 +230,8 @@
 		                    </tbody>
 		                </table>
 					</div>
-					<div class="tab-pane" id="tab_2">
-						<button type="button" class="btn btn-primary right recordBtn addYFK">添加记录</button>
+					<div class="tab-pane active" id="tab_2">
+						<button type="button" class="btn btn-primary right recordBtn addYFK none">添加记录</button>
 		                <table class="table table-bordered table-hover main">
 		                    <thead>
 		                      <tr>
@@ -305,7 +305,7 @@
                      <td><label>付款币种：</label></td>
                      <td>
                         <select id="paycurrency" name="paycurrency" class="form-control input-sm">
-                            <option>请选择</option>
+                            <option value="">请选择</option>
                             <c:forEach items="${obj.bzcode }" var="one"> 
                             	<c:choose>
                             		<c:when test="${obj.finance.paycurrency eq one.id }">
@@ -321,7 +321,7 @@
                      <td><label>付款方式：</label></td>
                      <td>
                         <select id="paymethod" name="paymethod" class="form-control input-sm">
-                            <option>请选择</option>
+                            <option value="">请选择</option>
                             <c:forEach var="map" items="${obj.paymethod}" >
                             	<c:choose>
                             		<c:when test="${obj.finance.paymethod eq map.id }">
@@ -358,21 +358,43 @@
                      <td><label>进澳时间：</label></td>
                      <td><input id="enterausdate" name="enterausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.enterausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
                    	 <td><label>航空公司：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><select id="enteraircom" name="enteraircom" value="" type="text" class="form-control input-sm disab aircomselect" disabled="disabled" multiple="multiple">
+                     	<c:forEach items="${obj.aircomselect }" var="one"> 
+                   			<c:choose>
+	                   			<c:when test="${obj.finance.enteraircom  eq one.dictCode  }">
+									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.dictName }</option>
+	                   			</c:when>
+	                   			<c:otherwise>
+		                     		<option value="${one.dictCode }">${one.dictCode }-${one.dictName }</option>
+	                   			</c:otherwise>
+                    		</c:choose>
+                     	</c:forEach>
+                     </select></td>
                      <td><label>出发时间：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="enterstarttime" name="enterstarttime" value="${obj.finance.enterstarttime }" type="text" class="form-control input-sm disab mustTimes" disabled="disabled"></td>
                      <td><label>抵达时间：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="enterarrivetime" name="enterarrivetime" value="${obj.finance.enterarrivetime }" type="text" class="form-control input-sm disab mustArriveTimes" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>出澳时间：</label></td>
                      <td><input id="outausdate" name="outausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.outausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
                    	 <td><label>航空公司：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><select id="outaircom" name="outaircom" value="" type="text" class="form-control input-sm disab aircomselect" disabled="disabled" multiple="multiple">
+                     	<c:forEach items="${obj.aircomselect }" var="one"> 
+                   			<c:choose>
+	                   			<c:when test="${obj.finance.outaircom  eq one.dictCode  }">
+									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.dictName }</option>
+	                   			</c:when>
+	                   			<c:otherwise>
+		                     		<option value="${one.dictCode }">${one.dictCode }-${one.dictName }</option>
+	                   			</c:otherwise>
+                    		</c:choose>
+                     	</c:forEach>
+                     </select></td>
                      <td><label>出发时间：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="outstarttime" name="outstarttime" value="${obj.finance.outstarttime }" type="text" class="form-control input-sm disab mustTimes" disabled="disabled"></td>
                      <td><label>抵达时间：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="outarrivetime" name="outarrivetime" value="${obj.finance.outarrivetime }" type="text" class="form-control input-sm disab mustArriveTimes" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>应收：</label></td>
@@ -425,6 +447,8 @@
   <!-- DataTables -->
   <script src="${base }/public/plugins/datatables/jquery.dataTables.min.js"></script>
   <script src="${base }/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
+  <!-- My97DatePicker --> 
+  <script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
   <script src="${base }/admin/order/ordercommon.js"></script>
   <script src="${base }/admin/international/internationaldetail.js"></script>
   <script type="text/javascript">
@@ -436,9 +460,14 @@
           $('.btnCancel').toggle();//取消按钮 显示
           $(".btnRemind").toggle();//提醒设置按钮 显示
           $(".btnLog").toggle();//日志按钮 显示
+          $(".addHD").toggle();//添加航段 显示
+          $(".addYSK").toggle();//添加预收款 显示
+          $(".addYFK").toggle();//添加预付款 显示
           //$(".listInfo").toggle();//选项卡 显示
           $('.disab').removeAttr("disabled");//信息模块 input 禁止编辑的状态
           $('#orderType').removeAttr("disabled");//信息模块 input 禁止编辑的状态
+          loadAirlineInfo();
+          loadJianMianAccount('${obj.orderinfo.id }');
         });
         //取消按钮 click事件
         $('.btnCancel').click(function(){
@@ -447,9 +476,14 @@
           $('.btnCancel').toggle();//取消 按钮 隐藏
           $('.btnRemind').toggle();//提醒设置 按钮 隐藏
           $('.btnLog').toggle();//日志 按钮 隐藏
+          $('.addHD').toggle();//添加航段 隐藏
+          $('.addYSK').toggle();//添加预收款 隐藏
+          $('.addYFK').toggle();//添加付款 隐藏
           //$(".listInfo").toggle();//选项卡 隐藏
           $('.disab').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
           $('#orderType').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
+          loadAirlineInfo(1);
+          loadJianMianAccount('${obj.orderinfo.id }',1);
         });
 
         $('.UnderIcon').on('click',function(){//客户信息 显示/隐藏
@@ -464,7 +498,8 @@
                 skin: false, //加上边框
                 closeBtn:false,//默认 右上角关闭按钮 是否显示
                 shadeClose:true,
-                area: ['400px', '350px'],
+                scrollbar: false,
+                area: ['400px', '450px'],
                 content: '${base}/admin/international/orderRemind.html?orderid=${obj.orderinfo.id }'
               });
         });
@@ -477,6 +512,7 @@
                 skin: false, //加上边框
                 closeBtn:false,//默认 右上角关闭按钮 是否显示
                 shadeClose:true,
+                scrollbar: false,
                 area: ['800px', '550px'],
                 content: '${base}/admin/international/orderLog.html?orderid=${obj.orderinfo.id }'
               });
@@ -490,6 +526,7 @@
                 skin: false, //加上边框
                 closeBtn:false,//默认 右上角关闭按钮 是否显示
                 shadeClose:true,
+                scrollbar: false,
                 area: ['1100px', '550px'],
                 content: '${base}/admin/international/addAirinfo.html?orderid=${obj.orderinfo.id }'
               });
@@ -546,6 +583,7 @@
 				                skin: false, //加上边框
 				                closeBtn:false,//默认 右上角关闭按钮 是否显示
 				                shadeClose:true,
+				                scrollbar: false,
 				                area: ['900px', '200px'],
 				                content: '${base}/admin/international/addPayRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.paystatus}&ordersstatus='+orderType+'&peoplecount='+peoplecount+'&costsingleprice='+costsingleprice
 				             });
@@ -573,8 +611,9 @@
         });
     });
     //加载航段信息
-    loadAirlineInfo();
-    function loadAirlineInfo(){
+    loadAirlineInfo(1);
+    function loadAirlineInfo(status){
+    	
     	$.ajax({
 			type: 'POST', 
 			data: {orderid:'${obj.orderinfo.id}'}, 
@@ -586,13 +625,16 @@
             	var zihtml = '';
             	for(var i = 0 ;i < data.length ; i++){
             		if(data[i].pnrinfo.mainsection === 1){
+            			//设置主航段信息
             			mainhtml += '<tr><td>';
             			if(data[i].pnrinfo.pNR && data[i].pnrinfo.pNR != undefined){
             				mainhtml += data[i].pnrinfo.pNR;
             			}
             			mainhtml += '</td>';
             			mainhtml += '<td><ul>';
+            			var mainaircount = 0;
             			$.each(data[i].airinfo, function(name, value) {
+            				mainaircount += 1;
                				//mainhtml += '<li>'+value.leavecity+'/'+value.arrvicity+'</li>';
                				mainhtml += '<li>';
                				if(value.leavecity && value.leavecity != undefined){
@@ -644,9 +686,13 @@
             				mainhtml += data[i].pnrinfo.peoplecount;
             			}
             			mainhtml += '</td>';
-            			mainhtml += '<td><a href="javascript:editAirlineInfo('+data[i].pnrinfo.id+');">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;';
-            			mainhtml += '<a href="javascript:visitorInfo('+data[i].pnrinfo.id+');" class="YKinfo">游客信息</a>';
-            			mainhtml += '<a href="javascript:;" class="FileDiv">上传游客<input type="file" class="uploadVisitors"><input type="hidden" id="pnrid" name="pnrid" value="'+data[i].pnrinfo.id+'"></a></td>';
+            			if(status){
+            				mainhtml += '<td></td>';
+            			}else{
+	            			mainhtml += '<td><a href="javascript:editAirlineInfo('+data[i].pnrinfo.id+');">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;';
+	            			mainhtml += '<a href="javascript:visitorInfo('+data[i].pnrinfo.id+');" class="YKinfo">游客信息</a>';
+	            			mainhtml += '<a href="javascript:;" class="FileDiv">上传游客<input type="file" class="uploadVisitors"><input type="hidden" id="pnrid" name="pnrid" value="'+data[i].pnrinfo.id+'"></a></td>';
+            			}
             		}else{
             			zihtml += '<tr><td>';
             			if(data[i].pnrinfo.pNR && data[i].pnrinfo.pNR != undefined){
@@ -705,11 +751,17 @@
             				zihtml += data[i].pnrinfo.peoplecount;
             			}
             			zihtml += '</td>';
-            			zihtml += '<td><a href="javascript:editAirlineInfo('+data[i].pnrinfo.id+');">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;';
-            			zihtml += '<a href="javascript:visitorInfo('+data[i].pnrinfo.id+');" class="YKinfo">游客信息</a>';
-            			zihtml += '<a href="javascript:;" class="FileDiv">上传游客<input type="file" class="uploadVisitors"><input type="hidden" id="pnrid" name="pnrid" value="'+data[i].pnrinfo.id+'"></a></td>';
+            			if(status){
+            				zihtml += '<td></td>';
+            			}else{
+	            			zihtml += '<td><a href="javascript:editAirlineInfo('+data[i].pnrinfo.id+');">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;';
+	            			zihtml += '<a href="javascript:visitorInfo('+data[i].pnrinfo.id+');" class="YKinfo">游客信息</a>';
+	            			zihtml += '<a href="javascript:;" class="FileDiv">上传游客<input type="file" class="uploadVisitors"><input type="hidden" id="pnrid" name="pnrid" value="'+data[i].pnrinfo.id+'"></a></td>';
+            			}
             		}
             	}
+            	//设置主航段数
+            	$('#mainaircount').val(mainaircount);
             	$('#mainsection').html(mainhtml);
             	autoHighLoad($('#mainsection'));
             	$('#zisection').html(zihtml);
@@ -720,8 +772,8 @@
       });
     }
   //加载减免信息
-    loadJianMianAccount('${obj.orderinfo.id }'); 
-    function loadpayAndReceiveRecord(){
+    loadJianMianAccount('${obj.orderinfo.id }',1); 
+    function loadpayAndReceiveRecord(status){
     	$.ajax({
 			type: 'POST', 
 			data: {orderid:'${obj.orderinfo.id}'}, 
@@ -749,6 +801,8 @@
             	var payshuisum = 0;
             	//合计付款实付
             	var payshisum = 0;
+            	//人头数
+            	var actualnumber = 0;
             	$.each(data.record, function(name, value) {
             		if(value.recordtype === receivestatus){
             			receivehtml += '<tr>';
@@ -797,10 +851,15 @@
             				receivehtml += '<td></td>';
             			} 
                         receivehtml += '<td>';
-                        receivehtml += '<a href="javascript:editRecord('+value.id+','+value.recordtype+');">编辑</a>';
+                        if(!status){
+	                        receivehtml += '<a href="javascript:editRecord('+value.id+','+value.recordtype+');">编辑</a>';
+                        }
                         receivehtml += '</td>';
                         receivehtml += '</tr>';
             		}else{
+            			if(value.actualnumber != undefined){
+            				actualnumber = value.actualnumber;
+            			}
             			payhtml += '<tr>';
             			if(value.orderstatus != undefined){
 	            			payhtml += '<td>'+value.orderstatus+'</td>';
@@ -847,7 +906,9 @@
             				payhtml += '<td></td>';
             			} 
                         payhtml += '<td>';
-                        payhtml += '<a href="javascript:editRecord('+value.id+','+value.recordtype+');">编辑</a>';
+                        if(!status){
+	                        payhtml += '<a href="javascript:editRecord('+value.id+','+value.recordtype+');">编辑</a>';
+                        }
                         payhtml += '</td>';
                         payhtml += '</tr>';
             		}
@@ -858,6 +919,8 @@
             	$('#payrecord').html(payhtml);
             	$('#receivable').val(receiveshisum.toFixed(2));
             	$('#costtotal').val(payshisum.toFixed(2));
+            	var mainaircount = $('#mainaircount').val();
+            	$('#personcount').val(actualnumber * mainaircount);
             	setFinanceInfo();
             	/* var incometotal  = '';
             	var relief = $('#relief').val();
@@ -893,6 +956,8 @@
 		  layer.msg("添加成功",{time: 2000});
 	  }else if(id == '2'){
 		  layer.msg("修改成功",{time: 2000});
+	  }else if(id=='3'){
+		  layer.msg("提醒成功",{time: 2000});
 	  }
 	}
     //编辑航段
@@ -903,6 +968,7 @@
             skin: false, //加上边框
             closeBtn:false,//默认 右上角关闭按钮 是否显示
             shadeClose:true,
+            scrollbar: false,
             area: ['1100px', '550px'],
             content: '${base}/admin/international/editAirinfo.html?pnrid='+pnrid
           });
@@ -915,6 +981,7 @@
             skin: false, //加上边框
             closeBtn:false,//默认 右上角关闭按钮 是否显示
             shadeClose:true,
+            scrollbar: false,
             area: ['900px', '550px'],
             content: '${base}/admin/international/visitorInfo.html?pnrid='+pnrid
           });
@@ -933,6 +1000,7 @@
            skin: false, //加上边框
            closeBtn:false,//默认 右上角关闭按钮 是否显示
            shadeClose:true,
+           scrollbar: false,
            area: ['900px', '200px'],
            content: url
          });
@@ -946,6 +1014,7 @@
             skin: false, //加上边框
             closeBtn:false,//默认 右上角关闭按钮 是否显示
             shadeClose:true,
+            scrollbar: false,
             area: ['770px', '240px'],
             content: '${base}/admin/inland/mitigate.html?id=${obj.orderinfo.id }&customeid=${obj.custominfo.id }',
             end:function(){
@@ -954,7 +1023,7 @@
           });
     });
   	//加载减免信息
-    function loadJianMianAccount(orderid){
+    function loadJianMianAccount(orderid,status){
    	 	$.ajax({ 
    			type: 'POST', 
    			data: {orderid:orderid}, 
@@ -964,7 +1033,7 @@
            	 if(data.account){
    	         	$('#relief').val(data.account.toFixed(2));
            	 }
-           	loadpayAndReceiveRecord();
+           	loadpayAndReceiveRecord(status);
             },
             error: function (xhr) {
             } 
@@ -987,11 +1056,20 @@
     //自动加载利润合计
      $(document).on('input', '.loadprofit', function(e) {
    	    //实收合计
-   	 	var incometotal = $('#incometotal').val();
+   	 	var incometotal = 0;
+   	    if($('#incometotal').val()){
+   	    	incometotal = $('#incometotal').val();
+   	    }
    	    //成本合计
-   	 	var costtotal = $('#costtotal').val();
+   	 	var costtotal = 0;
+   	    if($('#costtotal').val()){
+   	    	costtotal = $('#costtotal').val();
+   	    }
    	    //应返合计
-   	 	var returntotal = $('#returntotal').val();
+   	 	var returntotal =0;
+   	    if($('#returntotal').val()){
+   	    	returntotal = $('#returntotal').val();
+   	    }
    	    //利润合计
    	 	var profittotal  = parseFloat(incometotal) - parseFloat(costtotal) - parseFloat(returntotal);
    	 	if(!isNaN(profittotal)){
@@ -1002,10 +1080,19 @@
 	 //设置财务信息
      function setFinanceInfo(){
          	//成本合计
-         	var costtotal = $('#costtotal').val();
+         	var costtotal = 0;
+         	if($('#costtotal').val()){
+         		costtotal = $('#costtotal').val();
+         	}
          	//应收
-         	var receivable = $('#receivable').val();
-         	var relief = $('#relief').val();
+         	var receivable = 0;
+         	if($('#receivable').val()){
+         		receivable = $('#receivable').val();
+         	}
+         	var relief = 0;
+         	if($('#relief').val()){
+         		relief = $('#relief').val();
+         	}
       	 	var incometotal  = '';
       	 	if(relief){
       	 		incometotal  = parseFloat(receivable) - parseFloat(relief);

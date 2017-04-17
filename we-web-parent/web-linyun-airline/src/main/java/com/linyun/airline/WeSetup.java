@@ -104,7 +104,7 @@ public class WeSetup implements Setup {
 				public void run() {
 					logger.info("邮件抓取定时任务启动----------");
 					try {
-						grabMailService.receivePop3();
+						grabMailService.loginMailAccount();
 					} catch (Exception e) {
 						e.printStackTrace();
 

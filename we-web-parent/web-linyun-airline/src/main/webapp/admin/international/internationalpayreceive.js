@@ -54,8 +54,8 @@ function initshouFuKuanGatheringTable() {
                   	render:function(data, type, row, meta) {
                   		var result = '<ul>';
                   		$.each(row.orders, function(name, value) {
-                  			if(value && value.peoplecount != undefined){
-                  				result += '<li style="list-style:none;">'+value.peoplecount+'</li>';
+                  			if(value && value.actualnumber != undefined){
+                  				result += '<li style="list-style:none;">'+value.actualnumber+'</li>';
                   			}
                   		});
                   		result += '</ul>';
@@ -225,8 +225,8 @@ function initshouFuKuanPayTable() {
                   {"data": "peoplecount", "bSortable": false,
                   	render:function(data, type, row, meta) {
                   		var result = '';
-                		if(row.peoplecount && row.peoplecount != undefined){
-                			result = row.peoplecount;
+                		if(row.actualnumber && row.actualnumber != undefined){
+                			result = row.actualnumber;
                 		}
                   		return result;
                   	}

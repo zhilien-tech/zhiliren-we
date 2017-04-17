@@ -32,6 +32,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.linyun.airline.admin.dictionary.external.externalInfoServiceImpl;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
+import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TBankCardEntity;
@@ -72,12 +73,14 @@ public class BankCardViewService extends BaseService<TBankCardEntity> {
 		//查询有哪些银行
 		List<DictInfoEntity> bankList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "YH"), null);
 		//查询有哪些银行卡类型
-		List<DictInfoEntity> bankCardTypeList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "YHKLX"),
-				null);
+		/*List<DictInfoEntity> bankCardTypeList = dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "YHKLX"),
+				null);*/
+		List<DictInfoEntity> bankCardTypeList = null;
 		//查询有哪些币种
 		List<DictInfoEntity> currencyList = null;
 
 		try {
+			bankCardTypeList = externalInfoServiceImpl.findDictInfoByName("", "YHKLX");
 			currencyList = externalInfoServiceImpl.findDictInfoByName("", "BZ");
 		} catch (Exception e) {
 
@@ -249,6 +252,7 @@ public class BankCardViewService extends BaseService<TBankCardEntity> {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("dictName", "like", "%" + Strings.trim(findCompany) + "%");
 		cnd.and("typeCode", "=", "YH");
+		cnd.and("status", "=", DataStatusEnum.ENABLE.intKey());
 		if (!Util.isEmpty(companyName)) {
 			cnd.and("id", "NOT IN", companyName);
 		}

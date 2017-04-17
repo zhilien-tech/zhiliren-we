@@ -342,13 +342,11 @@
 		                    }, 
 		                    {"data": "createtime", "bSortable": true,
 		                    	 render: function(data, type, row, meta) {
-		                    		 var createtime = new Date(row.createtime);
+		                    		 var createtime =row.createtime;
 		                    		 if(null==createtime || ""==createtime){
 		                    			 return "";
 		                    		 }
-		                    		 var createtimestr = createtime.getFullYear() + "-" + createtime.getMonth() + "-" + createtime.getDate() + " "
-		                    		 + createtime.getHours() + ":" + createtime.getMinutes() + ":" + createtime.getSeconds();
-		                    		return createtimestr;
+		                    		return createtime;
 		                        } 	
 		                    }
 		            ],
@@ -391,9 +389,33 @@
 		            }
 		        },
 		        "columns": [
-		                    {"data": "typename", "bSortable": false},
-		                    {"data": "dictcode", "bSortable": false},
-		                    {"data": "countryname", "bSortable": false},
+		                    {"data": "typename", "bSortable": false,
+		                    	render: function(data, type, row, meta) {
+		                    		var typename = row.typename;
+		                    		if(typename=="" || null==typename){
+		                    			return "";
+		                    		}
+		                    		return typename;
+		                        } 
+		                    },
+		                    {"data": "dictcode", "bSortable": false,
+		                    	render: function(data, type, row, meta) {
+		                    		var dictcode = row.dictcode;
+		                    		if(dictcode=="" || null==dictcode){
+		                    			return "";
+		                    		}
+		                    		return dictcode;
+		                        } 	
+		                    },
+		                    {"data": "countryname", "bSortable": false,
+		                    	render: function(data, type, row, meta) {
+		                    		var countryname = row.countryname;
+		                    		if(countryname=="" || null==countryname){
+		                    			return "";
+		                    		}
+		                    		return countryname;
+		                        }
+		                    },
 		                    {"data": "statename", "bSortable": false,
 		                    	render: function(data, type, row, meta) {
 		                    		var statename = row.statename;

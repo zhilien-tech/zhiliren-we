@@ -54,13 +54,12 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	//询单消息状态
 	private static final int SEARCHORDERS = MessageTypeEnum.SEARCHMSG.intKey();
 	//订单消息状态
-	private static final int BOOKORDERS = MessageTypeEnum.BOOKMSG.intKey();
+	private static final int BOOKMSG = MessageTypeEnum.BOOKMSG.intKey();
 	private static final int FIRBOOK = MessageTypeEnum.FIRBOOKMSG.intKey();
 	private static final int SECBOOK = MessageTypeEnum.SECBOOKMSG.intKey();
 	private static final int THRBOOK = MessageTypeEnum.THRBOOKMSG.intKey();
 	private static final int ALLBOOK = MessageTypeEnum.ALLBOOKMSG.intKey();
 	private static final int LASTBOOK = MessageTypeEnum.LASTBOOKMSG.intKey();
-	private static final int BOOKMSG = MessageTypeEnum.BOOKMSG.intKey();
 	private static final int FINANCIALMSG = MessageTypeEnum.FINANCIALMSG.intKey();
 	private static final int RECEIVEDMSG = MessageTypeEnum.RECEIVEDMSG.intKey();
 	private static final int PAYEDMSG = MessageTypeEnum.PAYEDMSG.intKey();
@@ -70,12 +69,13 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	private static final int UNAPPROVALMSG = MessageTypeEnum.UNAPPROVALMSG.intKey();
 	private static final int MAKEOUTBILLMSG = MessageTypeEnum.MAKEOUTBILLMSG.intKey();
 	private static final int DRAWBILLMSG = MessageTypeEnum.DRAWBILLMSG.intKey();
-	//TODO 任务消息状态
+	//任务消息状态
 	private static final int NOTICEMSG = MessageTypeEnum.NOTICEMSG.intKey();
 	private static final int RECINVIOCING = MessageTypeEnum.RECINVIOCING.intKey(); //收发票中
 	private static final int INVIOCING = MessageTypeEnum.INVIOCING.intKey(); //开发票中
 	private static final int PSAPPROVALING = MessageTypeEnum.PSAPPROVALING.intKey(); //需付款/已提交申请
 	private static final int RECSUBMITED = MessageTypeEnum.RECSUBMITED.intKey(); //收款已提交
+	private static final int PROCESSMSG = MessageTypeEnum.PROCESSMSG.intKey();
 
 	//消息提醒模式
 	private static final int MOUTH = MessageRemindEnum.MOUTH.intKey();
@@ -355,7 +355,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 				sendUserIds.add(accountingId);
 			}
 		}
-		sendUserIds.add(loginUserId); //TODO
+		sendUserIds.add(loginUserId);
 
 		//消息类型(默认为关闭状态)
 		String msgType = "0";
@@ -372,10 +372,11 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 					+ "," + String.valueOf(RECINVIOCEMSG) + "," + String.valueOf(APPROVALEDMSG) + ","
 					+ String.valueOf(UNAPPROVALMSG) + "," + String.valueOf(MAKEOUTBILLMSG) + ","
 					+ String.valueOf(DRAWBILLMSG) + "," + String.valueOf(RECINVIOCING) + ","
-					+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING);
+					+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING) + ","
+					+ String.valueOf(RECSUBMITED);
 			break;
 		case "taskNotice":
-			//任务 TODO
+			//任务 
 			msgType = String.valueOf(NOTICEMSG) + "," + String.valueOf(FINANCIALMSG);
 			msgType += String.valueOf(FIRBOOK) + "," + String.valueOf(SECBOOK) + "," + String.valueOf(THRBOOK) + ","
 					+ String.valueOf(ALLBOOK) + "," + String.valueOf(LASTBOOK) + "," + String.valueOf(RECEIVEDMSG)
@@ -383,7 +384,8 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 					+ String.valueOf(RECINVIOCEMSG) + "," + String.valueOf(APPROVALEDMSG) + ","
 					+ String.valueOf(UNAPPROVALMSG) + "," + String.valueOf(MAKEOUTBILLMSG) + ","
 					+ String.valueOf(DRAWBILLMSG) + "," + String.valueOf(RECINVIOCING) + ","
-					+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING);
+					+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING) + ","
+					+ String.valueOf(RECSUBMITED);
 			break;
 		}
 
@@ -393,7 +395,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		cnd.and("um.userId", "=", loginUserId);
 		cnd.and("m.msgType", "in", msgType);
 		/*cnd.and("um.isRead", "=", READ);*/
-		List<Record> records = dbDao.query(sql, cnd, null);
+		List<Record> records = dbDao.query(sql, cnd, null); //TODO 查询公司简称
 		List<Record> recordsByCondition = new ArrayList<Record>();
 
 		for (Record record : records) {
@@ -402,90 +404,93 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			String isReadMsg = record.getString("isread"); //消息是否已读
 			String lastReadTime = record.getString("readtime"); //上次读取消息的时间、
 			Date nowDate = DateUtil.nowDate();
-			if (String.valueOf(MOUTH).equals(reminderMode)) {
-				//每自然月1号提醒
-				int day = DateUtil.getDay(nowDate);
-				if (day == 1) {
-					recordsByCondition.add(record);
+
+			//定时提醒
+			String generatetime = record.getString("generatetime");
+			long generateMillis = DateTimeUtil.string2DateTime(generatetime, "").getMillis();
+			long nowMillis = DateTimeUtil.now().getMillis();
+			long a = generateMillis - nowMillis;
+			if (a < 0) {
+				if (String.valueOf(MOUTH).equals(reminderMode)) {
+					//每自然月1号提醒
+					int day = DateUtil.getDay(nowDate);
+					if (day == 1) {
+						recordsByCondition.add(record);
+					}
 				}
-			}
-			if (String.valueOf(WEEK).equals(reminderMode)) {
-				//每自然周一提醒
-				Date firstWeekDay = DateUtil.getFirstWeekDay(nowDate);
-				long millisBetween = DateUtil.millisBetween(firstWeekDay, nowDate);
-				if (millisBetween == 0) {
-					recordsByCondition.add(record);
+				if (String.valueOf(WEEK).equals(reminderMode)) {
+					//每自然周一提醒
+					Date firstWeekDay = DateUtil.getFirstWeekDay(nowDate);
+					long millisBetween = DateUtil.millisBetween(firstWeekDay, nowDate);
+					if (millisBetween == 0) {
+						recordsByCondition.add(record);
+					}
 				}
-			}
-			if (String.valueOf(DAY).equals(reminderMode)) {
-				if (Util.eq(isReadMsg, UNREAD)) {
-					//每1天提醒 TODO
-					recordsByCondition.add(record);
-				} else {
-					if (!Util.isEmpty(lastReadTime)) {
-						//当前时间减去下一次最近提醒时间的毫秒值之差
-						long subMs = getNextRemindTime(lastReadTime, generateDate, ONEDAYMINS);
-						if (subMs > 0) {
-							recordsByCondition.add(record);
+				if (String.valueOf(DAY).equals(reminderMode)) {
+					if (Util.eq(isReadMsg, UNREAD)) {
+						//每1天提醒 
+						recordsByCondition.add(record);
+					} else {
+						if (!Util.isEmpty(lastReadTime)) {
+							//当前时间减去下一次最近提醒时间的毫秒值之差
+							long subMs = getNextRemindTime(lastReadTime, generateDate, ONEDAYMINS);
+							if (subMs > 0) {
+								recordsByCondition.add(record);
+							}
 						}
 					}
 				}
-			}
-			if (String.valueOf(HOUR).equals(reminderMode)) {
-				if (Util.eq(isReadMsg, UNREAD)) {
-					//每1小时提醒 TODO
-					recordsByCondition.add(record);
-				} else {
-					if (!Util.isEmpty(lastReadTime)) {
-						long subMs = getNextRemindTime(lastReadTime, generateDate, ONEHOURMINS);
-						if (subMs > 0) {
-							recordsByCondition.add(record);
+				if (String.valueOf(HOUR).equals(reminderMode)) {
+					if (Util.eq(isReadMsg, UNREAD)) {
+						//每1小时提醒 
+						recordsByCondition.add(record);
+					} else {
+						if (!Util.isEmpty(lastReadTime)) {
+							long subMs = getNextRemindTime(lastReadTime, generateDate, ONEHOURMINS);
+							if (subMs > 0) {
+								recordsByCondition.add(record);
+							}
 						}
 					}
 				}
-			}
-			if (String.valueOf(THIRTYM).equals(reminderMode)) {
-				if (Util.eq(isReadMsg, UNREAD)) {
-					//每30分钟提醒 TODO
-					recordsByCondition.add(record);
-				} else {
-					if (!Util.isEmpty(lastReadTime)) {
-						long subMs = getNextRemindTime(lastReadTime, generateDate, THIRTYMINS);
-						if (subMs > 0) {
-							recordsByCondition.add(record);
+				if (String.valueOf(THIRTYM).equals(reminderMode)) {
+					if (Util.eq(isReadMsg, UNREAD)) {
+						//每30分钟提醒 
+						recordsByCondition.add(record);
+					} else {
+						if (!Util.isEmpty(lastReadTime)) {
+							long subMs = getNextRemindTime(lastReadTime, generateDate, THIRTYMINS);
+							if (subMs > 0) {
+								recordsByCondition.add(record);
+							}
 						}
 					}
 				}
-			}
-			if (String.valueOf(FIFTEENM).equals(reminderMode)) {
-				if (Util.eq(isReadMsg, UNREAD)) {
-					//每15分钟提醒 TODO
-					recordsByCondition.add(record);
-				} else {
-					if (!Util.isEmpty(lastReadTime)) {
-						long subMs = getNextRemindTime(lastReadTime, generateDate, FIFTEENMINS);
-						if (subMs > 0) {
-							recordsByCondition.add(record);
+				if (String.valueOf(FIFTEENM).equals(reminderMode)) {
+					if (Util.eq(isReadMsg, UNREAD)) {
+						//每15分钟提醒 
+						recordsByCondition.add(record);
+					} else {
+						if (!Util.isEmpty(lastReadTime)) {
+							long subMs = getNextRemindTime(lastReadTime, generateDate, FIFTEENMINS);
+							if (subMs > 0) {
+								recordsByCondition.add(record);
+							}
 						}
 					}
 				}
-			}
-			if (String.valueOf(TIMED).equals(reminderMode)) {
-				//自定义提醒
-				String generatetime = record.getString("generatetime");
-				long generateMillis = DateTimeUtil.string2DateTime(generatetime, "").getMillis();
-				long nowMillis = DateTimeUtil.now().getMillis();
-				long a = generateMillis - nowMillis;
-				if (a < 0) {
+				if (String.valueOf(TIMED).equals(reminderMode)) {
+					//自定义提醒
 					recordsByCondition.add(record);
 				}
-			}
-			if (String.valueOf(UNREPEAT).equals(reminderMode)) {
-				//不重复 提醒 （即只提醒一次）TODO
-				if (Util.eq(isReadMsg, UNREAD)) {
-					recordsByCondition.add(record);
+				if (String.valueOf(UNREPEAT).equals(reminderMode)) {
+					//不重复 提醒 （即只提醒一次）
+					if (Util.eq(isReadMsg, UNREAD)) {
+						recordsByCondition.add(record);
+					}
 				}
 			}
+
 		}
 
 		int size = recordsByCondition.size();
@@ -673,11 +678,9 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 
 		Sql sql = Sqls.create(sqlManager.get("msg_type"));
 		Date date1 = DateUtil.string2Date(timeStr);
-		if (!Util.isEmpty(id)) {
-			sql.params().set("userId", id);
-		}
-		sql.params().set("MincalTimes1", date1);
-		sql.params().set("msgStatus", 1);
+		sql.setParam("userid", id);
+		sql.setParam("MincalTimes1", date1);
+		sql.setParam("msgStatus", 1);
 		List<Record> rList = dbDao.query(sql, null, null);
 
 		Set<String> set = new HashSet<String>();
@@ -704,7 +707,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	 * 
 	 * 根据上次阅读时间，计算下一次提醒时间
 	 * <p>
-	 * TODO
+	 * 
 	 * @param lastReadTime 上次阅读时间
 	 * @param firRemindTime 第一次提醒时间
 	 * @param remindInterval 提醒时间间隔， 单位分钟

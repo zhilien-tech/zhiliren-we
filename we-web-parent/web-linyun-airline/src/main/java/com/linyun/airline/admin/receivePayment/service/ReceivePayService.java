@@ -38,6 +38,7 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.upload.UploadAdaptor;
 
+import com.google.common.collect.Lists;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
@@ -53,6 +54,7 @@ import com.linyun.airline.admin.receivePayment.form.inland.TSaveInlandPayAddFrom
 import com.linyun.airline.admin.receivePayment.form.inland.TUpdateInlandPayAddFrom;
 import com.linyun.airline.admin.receivePayment.util.FormatDateUtil;
 import com.linyun.airline.admin.search.service.SearchViewService;
+import com.linyun.airline.admin.turnover.service.TurnOverViewService;
 import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.enums.AccountPayEnum;
@@ -72,6 +74,7 @@ import com.linyun.airline.entities.TReceiveBillEntity;
 import com.linyun.airline.entities.TReceiveEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUserEntity;
+import com.linyun.airline.forms.TTurnOverAddForm;
 import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.common.util.Util;
@@ -105,6 +108,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 
 	@Inject
 	private SearchViewService searchViewService;
+
+	@Inject
+	private TurnOverViewService turnOverViewService;
 
 	/**
 	 * 
@@ -182,9 +188,28 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object saveInlandRec(String recId, HttpSession session) {
+		//获取当前登录用户
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity loginCompany = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		int orderRecEd = AccountReceiveEnum.RECEIVEDONEY.intKey();
 		int updateNum = dbDao.update(TReceiveEntity.class, Chain.make("status", orderRecEd),
 				Cnd.where("id", "in", recId));
+
+		//添加流水 TODO
+		TTurnOverAddForm addForm = new TTurnOverAddForm();
+		TReceiveEntity receiveEntity = dbDao.fetch(TReceiveEntity.class, Cnd.where("id", "in", recId));
+		int bankcardId = receiveEntity.getBankcardnameid();
+		Double sum = receiveEntity.getSum();
+		String bankcardnum = receiveEntity.getBankcardnum();
+		String comName = loginCompany.getComName();
+		addForm.setBankCardId(bankcardId);
+		addForm.setTradeDate(new Date());
+		addForm.setMoney(sum);
+		addForm.setCardNum(bankcardnum);
+		addForm.setPurpose("收入");
+		addForm.setCompanyName(comName);
+		turnOverViewService.addTurnOver(addForm, session);
 
 		//收款成功添加消息提醒
 		if (updateNum > 0) {
@@ -198,10 +223,13 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				int uid = Integer.valueOf(record.getString("id"));
 				String ordernum = record.getString("ordersnum");
 				String pnr = record.getString("pnrnum");
+				String uids = record.getString("userid");
+				List<Long> receiveUserIds = Lists.newArrayList();
+				receiveUserIds.add(Long.parseLong(uids));
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 				map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
-				searchViewService.addRemindMsg(map, ordernum, pnr, uid, RECEDMSGTYPE, session);
+				searchViewService.addRemindMsg(map, ordernum, pnr, uid, RECEDMSGTYPE, receiveUserIds, session);
 			}
 		}
 
@@ -647,7 +675,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//当前登陆用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long loginUserId = loginUser.getId();
-		String bankComp = form.getBankComp();
+		String bankCompStr = form.getBankComp();
+		String bankcardId = bankCompStr.split(",")[0];
+		String bankComp = bankCompStr.split(",")[1];
 		String cardName = form.getCardName();
 		String cardNum = form.getCardNum();
 		Integer payAddress = form.getPayAddress();
@@ -669,6 +699,15 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			//收款单位不一致，不能付款
 			return false;
 		}
+
+		//验证银行卡是否有余额
+		boolean cardMoney = turnOverViewService.checkBankCardNumEnoughOther(Integer.valueOf(bankcardId), "支出",
+				totalMoney);
+		if (Util.eq("false", cardMoney)) {
+			//余额不足
+			return "余额不足";
+		}
+
 		//付款水单 集合
 		TPayReceiptEntity payReceiptEntity = new TPayReceiptEntity();
 		//银行卡
@@ -751,6 +790,22 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 					Cnd.where("id", "in", pnrIds));
 		}
 
+		//添加流水
+		TTurnOverAddForm addForm = new TTurnOverAddForm();
+		String comName = company.getComName();
+		addForm.setBankCardId(Integer.valueOf(bankcardId));
+		addForm.setTradeDate(new Date());
+		addForm.setMoney(totalMoney);
+		addForm.setCardNum(cardNum);
+		addForm.setPurpose("支出");
+		addForm.setCompanyName(comName);
+		if (!Util.isEmpty(currency)) {
+			DictInfoEntity dictInfoEntity = dbDao.fetch(DictInfoEntity.class, Long.valueOf(currency));
+			String currencyStr = dictInfoEntity.getDictCode();
+			addForm.setCurrency(currencyStr);
+		}
+		turnOverViewService.addTurnOver(addForm, session);
+
 		//付款成功 操作台添加消息
 		if (updatenum > 0) {
 			//TODO  ******************************************添加消息提醒***********************************************
@@ -763,10 +818,13 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				int uid = Integer.valueOf(record.getString("id"));
 				String ordernum = record.getString("ordersnum");
 				String pnr = record.getString("PNR");
+				String uids = record.getString("userid");
+				List<Long> receiveUserIds = Lists.newArrayList();
+				receiveUserIds.add(Long.valueOf(uids));
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 				map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
-				searchViewService.addRemindMsg(map, ordernum, pnr, uid, PAYEDMSGTYPE, session);
+				searchViewService.addRemindMsg(map, ordernum, pnr, uid, PAYEDMSGTYPE, receiveUserIds, session);
 			}
 		}
 

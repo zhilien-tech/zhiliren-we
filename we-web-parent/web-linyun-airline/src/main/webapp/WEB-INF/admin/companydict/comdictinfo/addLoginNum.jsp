@@ -61,6 +61,7 @@
 										class="form-control select2 inputWidth" multiple="multiple"
 										data-placeholder="请输入航空公司">
 									 </select>
+									 <span class="prompt">*</span>
 									 <!-- 区域ID -->
 									 <input id="airlineIds" name="airlineIds" type="hidden"/>
 			                      </div>
@@ -142,6 +143,13 @@ $(document).ready(function(){
             	validators: {
                     notEmpty: {
                         message: '登录账号不能为空!'
+                    },
+                }
+            },
+            airlineName: {
+            	validators: {
+                    notEmpty: {
+                        message: '航空公司不能为空!'
                     },
                 }
             }

@@ -16,7 +16,7 @@
                 <li><a href="#tab_1" onclick="loadDataTable(2)" data-toggle="tab">预订</a></li>
                 <li><a href="#tab_1" onclick="loadDataTable(3)" data-toggle="tab">开票</a></li>
                 <li><a href="#tab_5" onclick="loadTicking()" data-toggle="tab">出票</a></li>
-                <li><a href="#tab_6" data-toggle="tab">收/付款</a></li>
+                <li><a href="#tab_6" onclick="loadshouFuKuanGatheringTable()" data-toggle="tab">收/付款</a></li>
                 <li><a href="#tab_7" data-toggle="tab" onclick="kaiInvoiceLoad();">发票</a></li>
                 <li><a href="#tab_1" onclick="loadDataTable(5)" data-toggle="tab">关闭</a></li>
                 <li class="orderLi"><button type="button" id="addOrderGJ" class="btn btn-primary btn-sm right">添加订单</button></li>
@@ -115,7 +115,7 @@
                                     <th>航段</th>
                                     <th>时间</th>
                                     <th>销售单价</th>
-                                    <th>销售总价</th>
+                                    <th>实收合计</th>
                                     <th>人头数</th>
                                     <th>状态</th>
                                     <th>联系人</th>
@@ -433,7 +433,7 @@
 	        closeBtn:false,//默认 右上角关闭按钮 是否显示
 	        shadeClose:true,
 	        scrollbar: false,
-	        area: ['1087px', '620px'],
+	        area: ['1137px', '553px'],
 	        content: '${base}/admin/inland/addOrder.html'
 	      });
 	  });

@@ -35,7 +35,7 @@
                   </thead>
                   <tbody>
                     <c:forEach var="one" items="${obj.orders }">
-                		<tr>
+                		<tr ondblclick="toInterOrderDetail(${one.id})">
                 			<td>${one.ordersnum }</td>
                 			<td><fmt:formatDate value="${one.billingdate }" pattern="yyyy-MM-dd" /></td>
                 			<td>${one.cusgroupnum }</td>
@@ -77,7 +77,7 @@
                        </select>
                     </td>
                     <td><label>合计：</label></td>
-                    <td id="sumjine"><fmt:formatNumber type="number" value="${obj.receive.sum }" pattern="0.00" maxFractionDigits="2"/></td>
+                    <td id="sumjine"><fmt:formatNumber type="number" value="${obj.sumjine }" pattern="0.00" maxFractionDigits="2"/></td>
                   </tr>
          </table>
          <div class="bankSlipImg" align="center"><img id="shuidanimg" width="100%" height="305" alt="" src="${obj.bill.receiptUrl }"></div>
@@ -312,6 +312,11 @@
            } 
        });
    }
+   
+   function toInterOrderDetail(id){
+		var url = '${base}/admin/international/internationalDetail.html?orderid='+id;
+		window.open(url);
+	}
   </script>
 </body>
 </html>	

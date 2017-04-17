@@ -1,5 +1,5 @@
 /******************************************************************************
-version : 0.0.X   BEGIN
+version : 1.0.0   BEGIN
 ******************************************************************************/ 
 /*航空政策管理增加地区字段*/
 ALTER TABLE `t_airlinepolicy`
@@ -156,3 +156,37 @@ alter table t_third_payment modify column res3 varchar(64) comment '预留字段
 alter table t_third_payment modify column res4 varchar(64) comment '预留字段4';
 
 alter table t_third_payment modify column res5 varchar(64) comment '预留字段5';
+
+ALTER TABLE `t_finance_info`
+ADD COLUMN `enteraircom`  varchar(32) NULL COMMENT '进澳航空公司' AFTER `issuerid`,
+ADD COLUMN `outaircom`  varchar(32) NULL COMMENT '出澳航空公司' AFTER `enteraircom`,
+ADD COLUMN `enterstarttime`  varchar(16) NULL COMMENT '进澳出发时间' AFTER `outaircom`,
+ADD COLUMN `enterarrivetime`  varchar(16) NULL COMMENT '进澳抵达时间' AFTER `enterstarttime`,
+ADD COLUMN `outstarttime`  varchar(16) NULL COMMENT '出澳出发时间' AFTER `enterarrivetime`,
+ADD COLUMN `outarrivetime`  varchar(16) NULL COMMENT '出澳抵达时间' AFTER `outstarttime`;
+/******************************************************************************
+version : 1.0.0   END   2017-04-12
+******************************************************************************/ 
+
+/******************************************************************************
+version : 1.0.1   BEGIN   2017-04-13
+******************************************************************************/ 
+ALTER TABLE `t_message`
+ADD COLUMN `upOrderStatus`  int NULL COMMENT '订单状态' AFTER `upOrderId`;
+
+create table t_inter_message
+(
+   id                   int not null auto_increment comment '主键id',
+   reminddate           datetime comment '提醒时间',
+   remindtype           int comment '提醒类型',
+   orderstatus          int comment '订单状态',
+   orderid              int comment '订单ID',
+   primary key (id)
+);
+
+alter table t_inter_message comment '国际消息提醒表';
+
+ALTER TABLE `t_receive`
+ADD COLUMN `bankcardnameid`  int NULL COMMENT '银行卡id' AFTER `orderstatus`;
+
+

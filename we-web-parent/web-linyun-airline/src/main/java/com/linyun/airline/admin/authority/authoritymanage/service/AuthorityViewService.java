@@ -141,6 +141,46 @@ public class AuthorityViewService extends BaseService<DeptJobForm> {
 		Long companyId = company.getId();//得到公司的id
 		String jobJson = updateForm.getJobJson();
 		JobDto[] jobJsonArray = Json.fromJsonAsArray(JobDto.class, jobJson);
+		//根据部门id查出此部门下面职位之前的数据
+		String jobIds = "";
+		List<TJobEntity> beforeJob = dbDao.query(TJobEntity.class, Cnd.where("deptId", "=", deptId), null);
+		for (TJobEntity tJoblst : beforeJob) {
+			Long jobId = tJoblst.getId();
+			jobIds += String.valueOf(jobId) + ",";
+		}
+		if (!Util.isEmpty(jobIds)) {
+			jobIds = jobIds.substring(0, jobIds.length() - 1);
+		}
+		//职位表欲更新为
+		String afterjobIds = "";
+		if (jobJsonArray.length >= 1) {
+			for (JobDto jobDto : jobJsonArray) {
+				Long jobId = jobDto.getJobId();
+				afterjobIds += String.valueOf(jobId) + ",";
+			}
+		}
+		if (!Util.isEmpty(afterjobIds)) {
+			afterjobIds = afterjobIds.substring(0, afterjobIds.length() - 1);
+		}
+		List<TJobEntity> afterJob = null;
+		if (!Util.isEmpty(afterjobIds)) {
+			afterJob = dbDao.query(TJobEntity.class, Cnd.where("id", "in", afterjobIds), null);
+		}
+		dbDao.updateRelations(beforeJob, afterJob);
+
+		//根据职位id查询出公司功能职位表之前的数据
+		List<TComFunPosMapEntity> beforeComfunPos = dbDao.query(TComFunPosMapEntity.class,
+				Cnd.where("jobId", "in", jobIds), null);
+		//公司功能职位表欲更新为
+		List<TComFunPosMapEntity> afterComfunPos = dbDao.query(TComFunPosMapEntity.class,
+				Cnd.where("jobId", "in", afterjobIds), null);
+		dbDao.updateRelations(beforeComfunPos, afterComfunPos);
+		List<TCompanyJobEntity> beforeComJob = dbDao.query(TCompanyJobEntity.class, Cnd.where("comId", "=", companyId)
+				.and("posid", "in", jobIds), null);
+		//欲更新为
+		List<TCompanyJobEntity> afterComJob = dbDao.query(TCompanyJobEntity.class, Cnd.where("comId", "=", companyId)
+				.and("posid", "in", afterjobIds), null);
+		dbDao.updateRelations(beforeComJob, afterComJob);
 		if (!Util.isEmpty(jobJsonArray)) {
 			for (JobDto jobDto : jobJsonArray) {
 				saveOrUpdateSingleJob(dept.getId(), jobDto.getJobId(), companyId, jobDto.getJobName(),
@@ -173,6 +213,7 @@ public class AuthorityViewService extends BaseService<DeptJobForm> {
 		//获取到部门id
 		Long deptId = newDept.getId();
 		JobDto[] jobJsonArray = Json.fromJsonAsArray(JobDto.class, jobJson);
+
 		if (!Util.isEmpty(jobJsonArray)) {
 			for (JobDto jobDto : jobJsonArray) {
 				saveOrUpdateSingleJob(deptId, null, companyId, jobDto.getJobName(), jobDto.getFunctionIds());
@@ -196,8 +237,7 @@ public class AuthorityViewService extends BaseService<DeptJobForm> {
 				newJob.setName(jobName);
 				newJob.setDeptId(deptId);
 				newJob = dbDao.insert(newJob);
-				jobId = newJob.getId();
-
+				jobId = newJob.getId();//得到职位id
 				//该公司添加新的职位
 				TCompanyJobEntity newComJob = new TCompanyJobEntity();
 				newComJob.setComId(companyId);
@@ -226,6 +266,7 @@ public class AuthorityViewService extends BaseService<DeptJobForm> {
 				//如果职位名称已存在
 				throw new IllegalArgumentException("该公司此职位已存在,无法修改,职位名称:" + jobName);
 			}
+
 			dbDao.update(TJobEntity.class, Chain.make("name", jobName), Cnd.where("id", "=", newJob.getId()));
 		}
 

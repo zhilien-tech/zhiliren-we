@@ -15,11 +15,11 @@ import org.nutz.dao.entity.annotation.Table;
 public class TCompanyEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id(auto = true)
-	private long id;
+	private Long id;
 
 	@Column
 	@Comment("管理员账号id")
-	private long adminId;
+	private Long adminId;
 
 	@Column
 	@Comment("公司名称")

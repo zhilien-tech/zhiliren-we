@@ -978,26 +978,28 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * @return 
 	 */
 	public String addRemindMsg(Map<String, Object> fromJson, String generateOrderNum, String pnr, int upOrderId,
-			int orderStatus, HttpSession session) {
+			int orderStatus, List<Long> receiveUids, HttpSession session) {
 		//当前用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long userId = loginUser.getId();
 		//查询当前公司下 会计id
-		TCompanyEntity companyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		/*TCompanyEntity companyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Sql accountSql = Sqls.create(sqlManager.get("customer_search_accounter"));
-		accountSql.setParam("jobName", "会计");
-		accountSql.setParam("compId", companyEntity.getId());
-		List<Record> accountingIds = dbDao.query(accountSql, null, null);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("j.`name`", "like", "%会计%");
+		cnd.and("cj.comId", "=", companyEntity.getId());
+		List<Record> accountingIds = dbDao.query(accountSql, cnd, null);*/
 
 		//消息接收方ids
-		ArrayList<Long> receiveUserIds = Lists.newArrayList();
-		if (!Util.isEmpty(accountingIds)) {
-			for (Record record : accountingIds) {
-				long accountingId = Long.parseLong(record.getString("userId"));
-				receiveUserIds.add(accountingId);
+		List<Long> receiveUserIds = Lists.newArrayList();
+		if (!Util.isEmpty(receiveUids)) {
+			for (Long uid : receiveUids) {
+				receiveUserIds.add(uid);
 			}
+		} else {
+			receiveUserIds.add(userId);
 		}
-		receiveUserIds.add(userId);
+
 		//消息来源id
 		long SourceUserId = userId;
 		//消息来源方类型
@@ -1007,7 +1009,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		//消息状态
 		int msgStatus = MessageStatusEnum.UNREAD.intKey();
 
-		//提醒日期 TODO
+		//提醒日期 
 		String remindDateStr = (String) fromJson.get("remindDate");
 		//客户信息id
 		/*String customerInfoId = (String) fromJson.get("customerInfoId");*/
@@ -1066,6 +1068,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		String msgContent = ""; //消息内容
 		switch (orderStatus) {
 		case 1:
+			//TODO  设置参数， 如果参数一致，则更新；  不一致，则添加
 			//查询 4
 			msgType = MessageTypeEnum.SEARCHMSG.intKey();
 			//消息等级2
@@ -1133,7 +1136,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			//已收款 14
 			msgType = MessageTypeEnum.RECEIVEDMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "收款已确认";
+			msgContent = "单号：" + generateOrderNum + "收款已确认";
 			break;
 		case 12:
 			//已付款 15
@@ -1169,7 +1172,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			//付款 收款已提交 20
 			msgType = MessageTypeEnum.RECSUBMITED.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "收款已提交";
+			msgContent = "单号：" + generateOrderNum + "收款已提交";
 			break;
 		case 18: //MessageWealthStatusEnum
 			//付款 需付款已提交申请 21  MessageTypeEnum

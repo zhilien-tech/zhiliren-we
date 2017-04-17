@@ -28,7 +28,7 @@
           <input class="right orderInput" type="checkbox" checked="checked">
           <h4>添加订单</h4>
      </div>
-      <div class="modal-body modal-hei">
+      <div class="modal-body modal-hei" style="height:484px;overflow-y: auto;">
           <div class="customerInfo"><!--客户信息-->
                <div class="infoTop">
                  <p>客户信息</p>

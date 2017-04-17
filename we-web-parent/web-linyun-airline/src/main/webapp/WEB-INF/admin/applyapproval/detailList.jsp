@@ -41,7 +41,7 @@
 			<li>
 				<span>金额</span>
 				
-				<span><fmt:formatNumber type="number" value="${obj.reduceList.account }" maxFractionDigits="2"></fmt:formatNumber></span>
+				<span><fmt:formatNumber type="number" value="${obj.reduceList.account }" pattern="0.00" maxFractionDigits="2"></fmt:formatNumber></span>
 			
 			</li>
 			<li>
@@ -90,16 +90,17 @@
 				<c:if test="${obj.operation=='inlandNum'}">
 				
 					
-					<span><fmt:formatNumber type="number" value="${obj.detaillist.costpricesum }" maxFractionDigits="2"></fmt:formatNumber></span>
+					<span><fmt:formatNumber type="number" value="${obj.detaillist.costpricesum }" pattern="0.00" maxFractionDigits="2"></fmt:formatNumber></span>
 				</c:if>
 				<c:if test="${obj.operation=='international'}">
-					<span><fmt:formatNumber type="number" value="${obj.detaillist.amount }" maxFractionDigits="2"></fmt:formatNumber></span>
+					<span><fmt:formatNumber type="number" value="${obj.detaillist.amount }" pattern="0.00" maxFractionDigits="2"></fmt:formatNumber></span>
 					
 				</c:if>
 			</li>
 			<li>
 				<span>手续费</span>
-				<span>${obj.detaillist.payFees }</span>
+				<%-- <span>${obj.detaillist.payFees }</span> --%>
+				<span><fmt:formatNumber type="number" value="${obj.detaillist.payFees }" pattern="0.00" maxFractionDigits="2"></fmt:formatNumber></span>
 			</li>
 			<li>
 				<span>币种</span>
@@ -115,8 +116,15 @@
 				</c:if>
 			</li>
 			<li>
-				<span>签收时间</span>
-				<span><fmt:formatDate value="${obj.detaillist.approveTime }" pattern="yyy-MM-dd HH:mm:ss"/></span>
+				<span>签收时间${obj.operation}</span>
+				
+				<c:if test="${obj.operation=='inlandNum'}">
+				
+					<span><fmt:formatDate value="${obj.detaillist.approveTime }" pattern="yyy-MM-dd HH:mm:ss"/></span>
+				</c:if>
+				<c:if test="${obj.operation=='international'}">
+					<span><fmt:formatDate value="${obj.detaillist.orderstime }" pattern="yyy-MM-dd HH:mm:ss"/></span>
+				</c:if>
 			</li>
 			<li>
 				<span>申请人</span>
@@ -129,6 +137,7 @@
 		
   </content>
   <input name="id" id="id" value="${obj.detaillist.id }" type="hidden">
+  <input name="userId" id="userId" value="${obj.userId }" type="hidden">
   <input name="usingId" id="usingId" value="${obj.detaillist.usingId }" type="hidden">
   <input name="orderId" id="orderId" value="${obj.detaillist.orderId }" type="hidden">
   <input name="resultId" id="resultId" value="${obj.detaillist.resultId }" type="hidden">
@@ -232,6 +241,7 @@ function agree(temp) {
 				operation:$("#operation").val(),
 				reduce:$("#reduce").val(),
 				reduceId:$("#reduceId").val(),
+				userId:$("#userId").val(),
 				reduceStatus:$("#reduceStatus").val()
 			},
 			dataType : 'json',

@@ -116,7 +116,6 @@ $("#submit").click(function() {
 	var bootstrapValidator = $("#editPersonalForm").data('bootstrapValidator');
 	if(bootstrapValidator.isValid()){
 		$.ajax({
-			cache : false,
 			type : "POST",
 			url : '${base}/admin/user/updatePersonal.html',
 			data : $('#editPersonalForm').serialize(),
@@ -124,13 +123,9 @@ $("#submit").click(function() {
 				layer.msg('修改失败!');
 			},
 			success : function(data) {
-				layer.load(1, {
-					 shade: [0.1,'#fff'] //0.1透明度的白色背景
-				});
-			    window.parent.location.reload();
 				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-			    parent.layer.close(index);
-              	layer.msg('修改成功!',{time:2000});
+				parent.layer.close(index);
+				window.parent.successCallback('2');
 			}
 		});
 	}

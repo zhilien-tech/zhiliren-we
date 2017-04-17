@@ -72,17 +72,18 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 	//付款中订单状态
 	private static final int APPROVALPAYING = AccountPayEnum.APPROVALPAYING.intKey();
-
 	//公司类型
 	private static final int UPCOMPANY = CompanyTypeEnum.UPCOMPANY.intKey();
 	private static final int AGENT = CompanyTypeEnum.AGENT.intKey();
-
 	//普通用户类型
 	private static final int UPCOM_USER = UserTypeEnum.UPCOM.intKey();
 	private static final int AGENT_USER = UserTypeEnum.AGENT.intKey();
 	//管理员用户类型
 	private static final int UP_MANAGER = UserTypeEnum.UP_MANAGER.intKey();
 	private static final int AGENT_MANAGER = UserTypeEnum.AGENT_MANAGER.intKey();
+
+	private static final int RECPAY_MENU_ID = 81;
+	private static final int INVOICE_MENU_ID = 97;
 
 	@Inject
 	private externalInfoService externalInfoService;
@@ -140,6 +141,8 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("comName", "like", Strings.trim(comName) + "%");
 		cnd.and("deletestatus", "=", 0);
+		cnd.and("c.comName", "!=", "平台后台管理");
+		cnd.and("c.id", "!=", companyId);
 		List<Record> agentCompanyList = dbDao.query(sql, cnd, null);
 		String upCustomerId = "";
 		String agCustomerId = "";
@@ -315,8 +318,9 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		//查询当前公司下 会计id
 		TCompanyEntity companyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Sql accountSql = Sqls.create(sqlManager.get("customer_search_accounter"));
-		accountSql.setParam("jobName", "会计");
-		accountSql.setParam("compId", companyEntity.getId());
+		accountSql.setParam("recPayId", RECPAY_MENU_ID);
+		accountSql.setParam("invioceId", INVOICE_MENU_ID);
+		accountSql.setParam("companyid", companyEntity.getId());
 		List<Record> accountingIds = dbDao.query(accountSql, null, null);
 
 		String msgContent = "今天 需要进行财务结算";
@@ -332,8 +336,10 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		ArrayList<Long> receiveUserIds = Lists.newArrayList();
 		if (!Util.isEmpty(accountingIds)) {
 			for (Record record : accountingIds) {
-				long accountingId = Long.parseLong(record.getString("userId"));
-				receiveUserIds.add(accountingId);
+				if (!Util.isEmpty(record.getString("userId"))) {
+					long accountingId = Long.parseLong(record.getString("userId"));
+					receiveUserIds.add(accountingId);
+				}
 			}
 		}
 		receiveUserIds.add(userId);
@@ -668,8 +674,9 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		//查询当前公司下 会计id
 		TCompanyEntity companyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Sql accountSql = Sqls.create(sqlManager.get("customer_search_accounter"));
-		accountSql.setParam("jobName", "会计");
-		accountSql.setParam("compId", companyEntity.getId());
+		accountSql.setParam("recPayId", RECPAY_MENU_ID);
+		accountSql.setParam("invioceId", INVOICE_MENU_ID);
+		accountSql.setParam("companyid", companyEntity.getId());
 		List<Record> accountingIds = dbDao.query(accountSql, null, null);
 
 		String msgContent = "今天 需要进行财务结算";
@@ -685,8 +692,10 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		ArrayList<Long> receiveUserIds = Lists.newArrayList();
 		if (!Util.isEmpty(accountingIds)) {
 			for (Record record : accountingIds) {
-				long accountingId = Long.parseLong(record.getString("userId"));
-				receiveUserIds.add(accountingId);
+				if (!Util.isEmpty(record.getString("userId"))) {
+					long accountingId = Long.parseLong(record.getString("userId"));
+					receiveUserIds.add(accountingId);
+				}
 			}
 		}
 		receiveUserIds.add(userId);
@@ -700,7 +709,6 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		map.put("reminderMode", reminderMode);
 		map.put("SourceUserId", SourceUserId);
 		map.put("sourceUserType", sourceUserType);
-		map.put("receiveUserIds", receiveUserIds);
 		map.put("receiveUserIds", receiveUserIds);
 		map.put("receiveUserType", receiveUserType);
 		map.put("customerInfoId", customerInfoId);

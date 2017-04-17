@@ -160,16 +160,31 @@ $condition
 
 /*customer_search_accounter*/
 SELECT
-	uj.userid userId
+	uj.userid
 FROM
-	(
-		t_company_job cj
-		INNER JOIN t_user_job uj ON cj.posid = uj.companyJobId
-	)
-INNER JOIN t_job j ON cj.posid = j.id
+	t_function f
+LEFT JOIN t_company_function_map cfm ON cfm.funId = f.id
+LEFT JOIN t_com_fun_pos_map cfpm ON cfpm.companyFunId = cfm.id
+LEFT JOIN t_job j ON j.id = cfpm.jobId
+LEFT JOIN t_company_job cj ON cj.posid = j.id
+LEFT JOIN t_user_job uj ON uj.companyJobId = cj.id
 WHERE
-	j.`name` = @jobName
-AND cj.comId = @compId
+	(f.parentId = @recPayId
+AND cj.comId = @companyid
+AND (
+	f.`name` LIKE '%内陆订单%'
+	OR f.`name` LIKE '%国际订单%'
+))
+OR
+(f.parentId = @invioceId
+AND cj.comId = @companyid
+AND (
+	f.`name` LIKE '%内陆发票%'
+	OR f.`name` LIKE '%国际发票%'
+))
+GROUP BY
+	(uj.userid)
+
 
 /*customer_search__msg*/
 SELECT

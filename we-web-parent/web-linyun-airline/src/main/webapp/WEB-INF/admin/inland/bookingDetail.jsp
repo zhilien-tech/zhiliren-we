@@ -163,7 +163,7 @@
 		                 <table class="cloTable" id="tableWid">
 		                   <tr>
 		                     <td><label>出发城市：</label></td>
-		                     <td colspan="2"><select id="leavecity" name="leavecity" disabled="disabled" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
+		                     <td><select id="leavecity" name="leavecity" disabled="disabled" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
 			                     	<c:forEach var="one" items="${obj.city }">
 			                    		<c:choose>
 			                    			<c:when test="${customneed.cusinfo.leavecity eq one.dictCode }">
@@ -177,7 +177,7 @@
 			                     </select>
 			                 </td>
 		                     <td><label>抵达城市：</label></td>
-		                     <td colspan="2"><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
+		                     <td><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
 			                     	<c:forEach var="one" items="${obj.city }">
 			                    		<c:choose>
 			                    			<c:when test="${customneed.cusinfo.arrivecity eq one.dictCode }">
@@ -316,7 +316,7 @@
 		                     <td><label>平均汇率：</label></td>
 		                     <td><input id="avgexrate" name="avgexrate" disabled="disabled" type="text" class="form-control input-sm textWid" value="${customneed.cusinfo.avgexrate }"/></td>
 		                     <td><label>币种：</label></td>
-		                     <td colspan="3"><select id="paycurrency" name="paycurrency" disabled="disabled" class="form-control input-sm">
+		                     <td><select id="paycurrency" name="paycurrency" disabled="disabled" class="form-control input-sm">
 		                     		<option value="">请选择</option>
 		                            <c:forEach items="${obj.bzcode }" var="one"> 
 		                        	<c:choose>
@@ -498,7 +498,7 @@
 							<tr name="cRemarkTr" class="remarkTr">
 								<td><label>备注：</label></td>
 								<td>
-									<textarea class="form-control" id="cRemark" name="cRemark">${obj.orderinfo.remark }</textarea>
+									<textarea class="form-control" id="cRemark" name="cRemark" disabled="disabled">${obj.orderinfo.remark }</textarea>
 								</td>
 							</tr>
 						</table>
@@ -578,21 +578,43 @@
                      <td><label>进澳时间：</label></td>
                      <td><input id="enterausdate" name="enterausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.enterausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
                    	 <td><label>航空公司：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><select id="enteraircom" name="enteraircom" type="text" class="form-control input-sm disab aircomselect" disabled="disabled" multiple="multiple">
+                     	<c:forEach items="${obj.aircom }" var="one"> 
+                   			<c:choose>
+	                   			<c:when test="${obj.finance.enteraircom  eq one.dictCode  }">
+									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.dictName }</option>
+	                   			</c:when>
+	                   			<c:otherwise>
+		                     		<option value="${one.dictCode }">${one.dictCode }-${one.dictName }</option>
+	                   			</c:otherwise>
+                    		</c:choose>
+                     	</c:forEach>
+                     </select></td>
                      <td><label>出发时间：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="enterstarttime" name="enterstarttime" value="${obj.finance.enterstarttime }" type="text" class="form-control input-sm disab mustTimes" disabled="disabled"></td>
                      <td><label>抵达时间：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="enterarrivetime" name="enterarrivetime" value="${obj.finance.enterarrivetime }" type="text" class="form-control input-sm disab mustArriveTimes" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>出澳时间：</label></td>
                      <td><input id="outausdate" name="outausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.outausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
                    	 <td><label>航空公司：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><select id="outaircom" name="outaircom" type="text" class="form-control input-sm disab aircomselect" disabled="disabled" multiple="multiple">
+                     	<c:forEach items="${obj.aircom }" var="one"> 
+                   			<c:choose>
+	                   			<c:when test="${obj.finance.outaircom  eq one.dictCode  }">
+									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.dictName }</option>
+	                   			</c:when>
+	                   			<c:otherwise>
+		                     		<option value="${one.dictCode }">${one.dictCode }-${one.dictName }</option>
+	                   			</c:otherwise>
+                    		</c:choose>
+                     	</c:forEach>
+                     </select></td>
                      <td><label>出发时间：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="outstarttime" name="outstarttime" value="${obj.finance.outstarttime }" type="text" class="form-control input-sm disab mustTimes" disabled="disabled"></td>
                      <td><label>抵达时间：</label></td>
-                     <td><input value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                     <td><input id="outarrivetime" name="outarrivetime" value="${obj.finance.outarrivetime }" type="text" class="form-control input-sm disab mustArriveTimes" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>应收：</label></td>
@@ -704,6 +726,7 @@
           $('#orderType').removeAttr("disabled");//订单状态禁止编辑的状态
           $('#remindTime').removeAttr("disabled");//订单状态禁止编辑的状态
           $('#remindType').removeAttr("disabled");//订单状态禁止编辑的状态
+          $('#cRemark').removeAttr("disabled");//订单状态禁止编辑的状态
           $('#jianMian').addClass("jianMian");//减免禁止编辑的状态
           //页面不可编辑
           $('.DemandDiv').each(function(i){
@@ -728,6 +751,7 @@
           		$(this).find('[name=price]').removeAttr('disabled');
               });
           });
+          loadPNRdata();
         });
         //取消按钮 click事件
         $('.btnCancel').click(function(){
@@ -745,6 +769,7 @@
           $('#orderType').attr("disabled",'disabled');//订单状态添加 不可编辑属性
           $('#remindTime').attr("disabled",'disabled');//提醒时间添加 不可编辑属性
           $('#remindType').attr("disabled",'disabled');//提醒状态添加 不可编辑属性
+          $('#cRemark').attr("disabled",'disabled');//提醒状态添加 不可编辑属性
           $('#jianMian').removeClass("jianMian");//减免添加 不可编辑属性
           //页面可以编辑
           $('.DemandDiv').each(function(i){
@@ -774,6 +799,7 @@
 	              });
         	  }
           });
+          loadPNRdata(1);
         });
 
         $('.clearBtn').click(function(){//清楚按钮 隐藏
@@ -931,6 +957,16 @@
 		var incometotal = $('#incometotal').val();
 		//利润合计
 		var profittotal = $('#profittotal').val();
+		//进澳时间航公公司
+		var enteraircom = $('#enteraircom').val();
+		if (enteraircom) {
+			enteraircom = enteraircom.join(',');
+		}
+		//出澳时间航空公司
+		var outaircom = $('#outaircom').val();
+		if (outaircom) {
+			outaircom = outaircom.join(',');
+		}
 		var financeForm = getFormJson('#financeForm');
 		financeForm.billingdate = billingdate;
 		financeForm.salesperson = salesperson;
@@ -938,6 +974,8 @@
 		financeForm.relief = relief;
 		financeForm.incometotal = incometotal;
 		financeForm.profittotal = profittotal;
+		financeForm.enteraircom = enteraircom;
+		financeForm.outaircom = outaircom;
 		$.ajax({ 
 			type: 'POST', 
 			data: {data:JSON.stringify(customdata),financeData:JSON.stringify(financeForm)}, 
@@ -1048,27 +1086,42 @@
 				url: '${base}/admin/inland/saveCustomeneedInfo.html',
 	            success: function (data) { 
 	            	xuqiuDiv.find('[name=customneedid]').val(data.id);
+	            	layer.open({
+	   		         type: 2,
+	   		         title:false,
+	   		         skin: false, //加上边框
+	   		         closeBtn:false,//默认 右上角关闭按钮 是否显示
+	   		         shadeClose:true,
+	   		         scrollbar: false,
+	   		         area: ['880px', '425px'],
+	   		         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+data.id,
+	   		         end:function(){
+	   		        	 //设置财务信息
+	   		        	 setFinanceInfo();
+	   		         }
+	   		       });
 		         },
 		         error: function (xhr) {
 		          	layer.msg("保存失败","",3000);
 		         } 
 	      });
+		 }else{
+			 needid = xuqiuDiv.find('[name=customneedid]').val();
+			 layer.open({
+		         type: 2,
+		         title:false,
+		         skin: false, //加上边框
+		         closeBtn:false,//默认 右上角关闭按钮 是否显示
+		         shadeClose:true,
+		         scrollbar: false,
+		         area: ['880px', '425px'],
+		         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+needid,
+		         end:function(){
+		        	 //设置财务信息
+		        	 setFinanceInfo();
+		         }
+		       });
 		 }
-		 needid = xuqiuDiv.find('[name=customneedid]').val();
-		 layer.open({
-	         type: 2,
-	         title:false,
-	         skin: false, //加上边框
-	         closeBtn:false,//默认 右上角关闭按钮 是否显示
-	         shadeClose:true,
-	         scrollbar: false,
-	         area: ['880px', '425px'],
-	         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+needid,
-	         end:function(){
-	        	 //设置财务信息
-	        	 setFinanceInfo();
-	         }
-	       });
     });
   function setFinanceInfo(){
 	//设置财务信息
@@ -1091,7 +1144,7 @@
 	       	 	}
 	       	 	
 	       	 	if(!isNaN(incometotal)){
-     		 		$('#incometotal').val(incometotal);
+     		 		$('#incometotal').val(incometotal.toFixed(2));
 	       	 	}
 	       	 	var returntotal = 0;
 	 	       	//应返合计
@@ -1210,11 +1263,20 @@
  //自动加载利润合计
   $(document).on('input', '.loadprofit', function(e) {
 	    //实收合计
-	 	var incometotal = $('#incometotal').val();
+	 	var incometotal = 0;
+	    if($('#incometotal').val()){
+	    	incometotal = $('#incometotal').val();
+	    }
 	    //成本合计
-	 	var costtotal = $('#costtotal').val();
+	 	var costtotal = 0;
+	    if($('#costtotal').val()){
+	    	costtotal = $('#costtotal').val();
+	    }
 	    //应返合计
-	 	var returntotal = $('#returntotal').val();
+	 	var returntotal = 0;
+	    if($('#returntotal').val()){
+	    	returntotal = $('#returntotal').val();
+	    }
 	    //利润合计
 	 	var profittotal  = parseFloat(incometotal) - parseFloat(costtotal) - parseFloat(returntotal);
 	 	if(!isNaN(profittotal)){

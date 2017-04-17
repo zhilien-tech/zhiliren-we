@@ -25,16 +25,17 @@ from t_salary ts
 ) ms
 $condition
 /*salary_add*/
-select * from(
-select SUM(fi.costtotal) as 'costTotal',COUNT(*) as 'groupNumber',SUM(fi.incometotal) as 'incomeTotal',SUM(fi.personcount) as 'headCount',u.fullName
+select * from (
+select *,count(*) as 'groupNumber',sum(aa.cost) as 'costTotal',sum(aa.income) as 'incomeTotal',sum(aa.head) as 'headCount' from (
+select  fi.costtotal as 'cost',fi.incometotal as 'income',fi.personcount as 'head',u.fullName
 as 'drawer',si.baseWages as 'basePay',si.commission,si.comId,month(fi.billingdate) as 'month',year(fi.billingdate) as 'year',fi.issuerid
 as 'drawerId'
 from
 t_user u
 LEFT JOIN t_salary_increase si on si.userId=u.id
-LEFT JOIN t_finance_info fi on fi.issuerid=u.id
-GROUP BY u.id 
-) uu
+LEFT JOIN t_finance_info fi on fi.issuerid=u.id) aa
+
+GROUP BY aa.drawerId,aa.`month`,aa.`year`) uu 
 where  month=month(now()) AND year=year(now())
 /*salary_add_no*/
 select * from(

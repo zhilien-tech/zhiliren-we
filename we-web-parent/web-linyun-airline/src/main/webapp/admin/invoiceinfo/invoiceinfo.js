@@ -125,21 +125,27 @@ function initKaiInvoiceTable1() {
                   },
                   {"data": "remark", "bSortable": false,
                 	  render:function(data, type, row, meta) {
-                  		var remark = row.remark;
+                  		//var remark = row.remark;
+                		var remark = '<span data-toggle="tooltip" data-placement="left" title="'+row.remark+'">'+row.remark+'<span>';
                   		if(remark == "" || remark == null){
                   			return "";
                   		}
                   		return remark;
                   	}
+                  },
+                  {"data": " ", "bSortable": false,
+                	  render: function(data, type, row, meta) {
+                          return '<a style="cursor:pointer;" onclick="openkaiInvoiceEdit('+row.id+');">开发票</a>'
+                      }
                   }
           ],
-      columnDefs: [{
+      columnDefs: [/*{
     	//   指定第一列，从0开始，0表示第一列，1表示第二列……
           targets: 10,
           render: function(data, type, row, meta) {
               return '<a style="cursor:pointer;" onclick="openkaiInvoiceEdit('+row.id+');">开发票</a>'
           }
-      }]
+      }*/]
   });
 }
 function kaiInvoiceLoad(){
@@ -215,6 +221,7 @@ function initshouInvoiceTable1() {
     "processing": true,
     "serverSide": true,
     "stripeClasses": [ 'strip1','strip2' ],
+    /*"autoWidth": false,*/
     "language": {
         "url": BASE_PATH + "/public/plugins/datatables/cn.json"
     },
@@ -327,19 +334,38 @@ function initshouInvoiceTable1() {
                 	render:function(data, type, row, meta) {
                   		var result = '';
                   		if(row.remark){
-                  			result = row.remark;
+                  			//result = row.remark;
+                  			var result = '<span class="tooltipSpan" data-toggle="tooltip" data-placement="left" title="'+row.remark+'">'+row.remark+'<span>';
                   		}
                   		return result;
                   	}
+                },
+                {"data": " ", "bSortable": false,
+                	render: function(data, type, row, meta) {
+                        return '<a style="cursor:pointer;" onclick="openshouInvoiceEdit('+row.invoiceid+');">收发票</a>'
+                    }
                 }
         ],
-    columnDefs: [{
+    columnDefs: [/*{
   	//   指定第一列，从0开始，0表示第一列，1表示第二列……
         targets: 11,
         render: function(data, type, row, meta) {
             return '<a style="cursor:pointer;" onclick="openshouInvoiceEdit('+row.invoiceid+');">收发票</a>'
         }
-    }]
+    }*/
+    /*{ "sWidth": "5%",  "targets": [0] },
+	{ "sWidth": "0.5%",  "targets": [1] }
+	/*{ "sWidth": "4%",  "targets": [2] },
+	{ "sWidth": "5.1%",  "targets": [3] }
+	{ "sWidth": "8.33%",  "targets": [4] },
+	{ "sWidth": "7.33%",  "targets": [5] },
+	{ "sWidth": "10.66%",  "targets": [6] },
+	{ "sWidth": "21.33%",  "targets": [7] },
+	{ "sWidth": "8.33%",  "targets": [8] },
+	{ "sWidth": "8.33%",  "targets": [9] },
+	{ "sWidth": "6.33%",  "targets": [10] },
+	{ "sWidth": "8.33%",  "targets": [11] }*/
+    ]
 });
 }
 function shouInvoiceLoad(){
@@ -350,11 +376,16 @@ function shouInvoiceLoad(){
 	);
 }
 //datatable行点击事件
-$("tbody",$('#shouInvoiceTable1')).on("dblclick","tr",function(event){
+/*$("tbody",$('#shouInvoiceTable1')).on("dblclick","tr",function(event){
 	//获取当前行的数据
 	var row = shouInvoiceTable1.row($(this).closest('tr')).data();
 	var url = BASE_PATH + '/admin/inland/bookingDetail.html?id='+row.orderids;
 	window.open(url,'_black');
+});*/
+$("tbody",$('#shouInvoiceTable1')).on("dblclick","tr",function(event){
+	//获取当前行的数据
+	var row = shouInvoiceTable1.row($(this).closest('tr')).data();
+	openshouInvoiceEdit(row.invoiceid);
 });
 function openshouInvoiceEdit(id){
 	layer.open({
@@ -367,9 +398,6 @@ function openshouInvoiceEdit(id){
         content: BASE_PATH + '/admin/invoicemanage/invoiceinfo/shouOpenInvoice.html?id='+id
     });
 }
-
-
-
 //收发票 搜索按钮
 $("#shouSearchInvoiceBtn").on('click',shouInvoiceSelectData());
 function shouInvoiceSelectData() {

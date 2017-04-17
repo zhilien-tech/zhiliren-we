@@ -49,7 +49,7 @@
 							<input name="jobId" type="hidden" value='${one.jobId }'>
 							</li>
 							<li><button type="button" class="btn btn-primary btn-sm btnPadding" id="settingsPermis">设置权限</button>
-							<button type="button" class="btn btn-primary btn-sm btnPadding" id="deleteBtn" onclick="physicalDelete('${one.jobId}');" >删除</button></li></ul>
+							<button type="button" class="btn btn-primary btn-sm btnPadding" id="deleteBtn"  >删除</button></li></ul>
 							<c:choose>
 								<c:when test="${stat.index == 0}">
 									<div class="ztree none"><ul id="tree_${stat.index}"></ul></div>
@@ -110,7 +110,7 @@
 		//部门职位 编辑职位
 	    $('#addJob').click(function(){
 	       $(".job_container .ztree").hide();
-	       $('.jobName').append('<div class="job_container"><ul class="addDepartment marHei"><li><label class="text-right">职位名称：</label></li><li class="li-input inpPadd"><input id="jobName" name="jobName" type="text" class="form-control input-sm inputText" placeholder="请输入职位名称"></li><li><button type="button" class="btn btn-primary btn-sm btnPadding" id="settingsPermis">设置权限</button><button type="button" class="btn btn-primary btn-sm btnPadding" id="deleteBtn" >删除</button></li></ul>'
+	       $('.jobName').append('<div class="job_container"><ul class="addDepartment marHei"><li><label class="text-right">职位名称：</label></li><li class="li-input inpPadd"><input id="jobName" name="jobName" type="text" class="form-control input-sm inputText" placeholder="请输入职位名称"></li><li><button type="button" class="btn btn-primary btn-sm btnPadding" id="settingsPermis">设置权限</button><button type="button" style="width:70px;" class="btn btn-primary btn-sm btnPadding" id="deleteBtn1" >删除</button></li></ul>'
 	       +'<div class="ztree"><ul id="tree_'+treeIndex+'"></ul></div></div>');
 	       treeIndex++;
 	       
@@ -149,12 +149,6 @@
 	    	nodes.push(root) ;
 	    	$.fn.zTree.init(treeContainer, setting, nodes);
 	    });
-	  	//删除按钮
-	    $('.jobName').on("click","#deleteBtn",function() {
-	      $(this).parent().parent().next().remove();
-	      $(this).closest('.job_container').remove();
-	
-	    });
 	    //设置权限 按钮
 	    $('.jobName').on("click","#settingsPermis",function() {
 		    $(this).parents('.marHei').next().toggle('500');
@@ -191,11 +185,6 @@
 	   
 	   var jobJson = JSON.stringify(jobInfos) ;
 	   $("#jobJson").val(jobJson) ;
-	}
-	//点击返回关闭窗口
-	function closewindow(){
-		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-		parent.layer.close(index);
 	}
 </script>
 <script type="text/javascript">
@@ -261,7 +250,6 @@ formValidator();
 				 shade: [0.1,'#fff'] //0.1透明度的白色背景
 			});
 			$.ajax({
-	           cache: false,
 	           type: "POST",
 	           url:'${base}/admin/authority/authoritymanage/update.html',
 	           data:{
@@ -285,50 +273,113 @@ formValidator();
 	           }
 	       });
 		}
-		 $(".Mymodal-lg").modal('hide');
 	});
+	
+
 //删除提示
-function physicalDelete(jobId) {
-	layer.confirm("您确认删除信息吗？", {
-	    btn: ["是","否"], //按钮
-	    shade: false //不显示遮罩
-	}, function(){
-		// 点击确定之后
-		var url = '${base}/admin/authority/authoritymanage/delete.html';
-		$.ajax({
-			type : 'POST',
-			data : {
-				jobId : jobId
-			},
-			dataType : 'json',
-			url : url,
-			success : function(data) {
-				if ("200" == data.status) {
-					layer.msg("操作成功!", "", 3000);
-					 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-				     parent.layer.close(index);
-				     window.parent.successCallback('3');
-				} else {
-					layer.msg("操作失败!此职位下还有用户", "", 3000);
-				}
-			},
-			error : function(xhr) {
-				layer.msg("操作失败", "", 3000);
-			}
+$(document).on("click","#deleteBtn",function(jobId){
+	var dele= this;
+	//if("" != jobId || null != jobId){
+		layer.confirm("您确认删除信息吗？", {
+		    btn: ["是","否"], //按钮
+		    shade: false //不显示遮罩
+		},function(index){
+		     layer.close(index);
+		     $(dele).parent().parent().next().remove();
+		     $(dele).closest('.job_container').remove();
+		},function(index){
+			//点击否
+			layer.close(index);
 		});
-	}, function(){
-	    // 取消之后不用处理
-	});
+	//}else{
+		//删除按钮
+	//      $(dele).parent().parent().next().remove();
+	//      $(dele).closest('.job_container').remove();
+	//}
+});
+//删除不提示
+$(document).on("click","#deleteBtn1",function(jobId){
+	var dele= this;
+	//删除按钮
+    $(dele).parent().parent().next().remove();
+    $(dele).closest('.job_container').remove();
+	
+});	
+//删除提示
+/* function physicalDelete(jobId) {
+	var dele= this;
+	if("" != jobId || null != jobId){
+		layer.confirm("您确认删除信息吗？", {
+		    btn: ["是","否"], //按钮
+		    shade: false //不显示遮罩
+		},function(index){
+			 layer.close(index);
+		     $(dele).parent().parent().next().remove();
+		     $(dele).closest('.job_container').remove();
+		},function(){
+			
+		});
+	}else{
+		//删除按钮
+	    $('.jobName').on("click","#deleteBtn",function() {
+	      $(this).parent().parent().next().remove();
+	      $(this).closest('.job_container').remove();
+	    });
+	} */
+	/* 
+	if(jobId != "" && jobId != null){
+		layer.confirm("您确认删除信息吗？", {
+		    btn: ["是","否"], //按钮
+		    shade: false //不显示遮罩
+		}, function(){
+			// 点击确定之后
+			var url = '${base}/admin/authority/authoritymanage/delete.html';
+			$.ajax({
+				type : 'POST',
+				data : {
+					jobId : jobId
+				},
+				dataType : 'json',
+				url : url,
+				success : function(data) {
+					if ("200" == data.status) {
+						 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+					     parent.layer.close(index);
+					     window.parent.successCallback('3');
+					} else {
+						layer.msg("操作失败!此职位下还有用户", "", 3000);
+					}
+				},
+				error : function(xhr) {
+					layer.msg("操作失败", "", 3000);
+				} 
+			});
+			$('.jobName').on("click","#deleteBtn",function() {
+			      $(this).parent().parent().next().remove();
+			      $(this).closest('.job_container').remove();
+			    });
+			
+		}, function(){
+		    // 取消之后不用处理
+		});
+	}else{
+		//删除按钮
+	    $('.jobName').on("click","#deleteBtn",function() {
+	      $(this).parent().parent().next().remove();
+	      $(this).closest('.job_container').remove();
+	    });
+	} */
+	
+//}
+//提交时开始验证
+$('#submit').click(function() {
+    $('#editDeptForm').bootstrapValidator('validate');
+});
+//点击返回关闭窗口
+function closewindow(){
+	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	parent.layer.close(index);
 }
-	//提交时开始验证
-	$('#submit').click(function() {
-	    $('#editDeptForm').bootstrapValidator('validate');
-	});
-	//点击返回关闭窗口
-	function closewindow(){
-		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-		parent.layer.close(index);
-	}
 </script>
 </body>
 </html>

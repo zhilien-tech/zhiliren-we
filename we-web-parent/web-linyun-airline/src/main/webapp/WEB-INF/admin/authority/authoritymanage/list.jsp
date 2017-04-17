@@ -118,7 +118,7 @@
   	  });
 	}
 	//事件提示
-	function successCallback(id){
+	function successCallback(id,inputId){
 		deptDatatable.ajax.reload(null,false);
 		areaDatatable.ajax.reload(null,false);
 		  if(id == '1'){

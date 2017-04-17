@@ -24,6 +24,7 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
+import com.linyun.airline.admin.authority.function.entity.TFunctionEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
@@ -36,8 +37,11 @@ import com.linyun.airline.admin.order.inland.util.FormatDateUtil;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayPnrEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
+import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.constants.CommonConstants;
+import com.linyun.airline.common.enums.MessageWealthStatusEnum;
+import com.linyun.airline.common.enums.OrderRemindEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.enums.ReductionStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
@@ -46,12 +50,15 @@ import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TInvoiceDetailEntity;
 import com.linyun.airline.entities.TInvoiceInfoEntity;
 import com.linyun.airline.entities.TMitigateInfoEntity;
+import com.linyun.airline.entities.TOrderCustomneedEntity;
 import com.linyun.airline.entities.TOrderLogEntity;
 import com.linyun.airline.entities.TOrderReceiveEntity;
+import com.linyun.airline.entities.TPnrInfoEntity;
 import com.linyun.airline.entities.TReceiveBillEntity;
 import com.linyun.airline.entities.TReceiveEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUserEntity;
+import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.JsonUtil;
@@ -80,6 +87,10 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 
 	@Inject
 	private UploadService qiniuUploadService;
+	@Inject
+	private SearchViewService searchViewService;
+	@Inject
+	private InlandListService inlandListService;
 
 	/**
 	 * 保存付款发票信息
@@ -123,9 +134,26 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		}
 		invoiceinfo.setInvoicetype(PayReceiveTypeEnum.PAY.intKey());
 		if (!Util.isEmpty(fromJson.get("pnrid"))) {
-			invoiceinfo.setPnrid(Integer.valueOf((String) fromJson.get("pnrid")));
+			Integer pnrid = Integer.valueOf((String) fromJson.get("pnrid"));
+			invoiceinfo.setPnrid(pnrid);
+			TPnrInfoEntity pnrinfo = dbDao.fetch(TPnrInfoEntity.class, pnrid.longValue());
+			invoiceinfo.setOpid(pnrinfo.getUserid());
+			TOrderCustomneedEntity customneed = dbDao.fetch(TOrderCustomneedEntity.class, pnrinfo.getNeedid()
+					.longValue());
+			TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, customneed.getOrdernum().longValue());
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
+			map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
+			List<TFunctionEntity> function = dbDao.query(TFunctionEntity.class, Cnd.where("name", "=", "发票管理"), null);
+			long functionid = 0;
+			if (function.size() > 0) {
+				functionid = function.get(0).getId();
+			}
+			List<Long> receiveusers = inlandListService.getUserIdsByFun(company.getId(), functionid, "内陆发票");
+			searchViewService.addRemindMsg(map, order.getOrdersnum(), pnrinfo.getPNR(), order.getId(),
+					MessageWealthStatusEnum.RECINVIOCING.intKey(), receiveusers, session);
 		}
-		invoiceinfo.setOpid(new Long(user.getId()).intValue());
+		//invoiceinfo.setOpid(new Long(user.getId()).intValue());
 		invoiceinfo.setComId(new Long(company.getId()).intValue());
 		invoiceinfo.setOptime(new Date());
 		invoiceinfo.setOrdertype(OrderTypeEnum.FIT.intKey());
@@ -187,9 +215,31 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		}
 		invoiceinfo.setInvoicetype(PayReceiveTypeEnum.RECEIVE.intKey());
 		if (!Util.isEmpty(fromJson.get("pnrid"))) {
-			invoiceinfo.setReceiveid(Integer.valueOf((String) fromJson.get("pnrid")));
+			Integer receiveid = Integer.valueOf((String) fromJson.get("pnrid"));
+			invoiceinfo.setReceiveid(receiveid);
+			TReceiveEntity receiveinfo = dbDao.fetch(TReceiveEntity.class, receiveid.longValue());
+			invoiceinfo.setOpid(receiveinfo.getUserid());
+			//消息提醒
+			Sql sql = Sqls.create(sqlManager.get("select_receive_order_info"));
+			Cnd cnd = Cnd.NEW();
+			cnd.and("tor.receiveid", "=", receiveid);
+			List<Record> query = dbDao.query(sql, cnd, null);
+			for (Record record : query) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
+				map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
+				List<TFunctionEntity> function = dbDao.query(TFunctionEntity.class, Cnd.where("name", "=", "发票管理"),
+						null);
+				long functionid = 0;
+				if (function.size() > 0) {
+					functionid = function.get(0).getId();
+				}
+				List<Long> receiveusers = inlandListService.getUserIdsByFun(company.getId(), functionid, "内陆发票");
+				searchViewService.addRemindMsg(map, record.getString("ordersnum"), "", record.getInt("id"),
+						MessageWealthStatusEnum.INVIOCING.intKey(), receiveusers, session);
+			}
 		}
-		invoiceinfo.setOpid(new Long(user.getId()).intValue());
+		//invoiceinfo.setOpid(new Long(user.getId()).intValue());
 		invoiceinfo.setComId(new Long(company.getId()).intValue());
 		invoiceinfo.setOptime(new Date());
 		invoiceinfo.setOrdertype(OrderTypeEnum.FIT.intKey());
@@ -291,6 +341,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		mitigateInfoEntity.setAccountupper(accountupper);
 		mitigateInfoEntity.setCurrency(currency);
 		mitigateInfoEntity.setApprovelid(approvelid);
+		mitigateInfoEntity.setOptime(new Date());
 		//mitigateInfoEntity.setOrdertype(OrderTypeEnum.FIT.intKey());
 		return dbDao.insert(mitigateInfoEntity);
 
@@ -317,6 +368,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 				null);
 		paramForm.setUserid(new Long(user.getId()).intValue());
 		paramForm.setCompanyid(company.getId());
+		paramForm.setAdminId(company.getAdminId().intValue());
 		Long comId = company.getId();//得到公司的id
 		Map<String, Object> DatatablesData = this.listPage4Datatables(paramForm);
 		List<Record> listdata = (List<Record>) DatatablesData.get("data");
@@ -375,6 +427,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		paramForm.setUserid(new Long(user.getId()).intValue());
 		paramForm.setCompanyid(company.getId());
+		paramForm.setAdminId(company.getAdminId().intValue());
 		Map<String, Object> datatableData = this.listPage4Datatables(paramForm);
 		List<Record> listdata = (List<Record>) datatableData.get("data");
 		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
@@ -412,13 +465,6 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 				Cnd.where("invoiceinfoid", "=", invoiceinfo.getId()), null);
 		//付款信息
 		TReceiveEntity fetch = dbDao.fetch(TReceiveEntity.class, Long.valueOf(invoiceinfo.getReceiveid()));
-		double invoicebalance = fetch.getSum();
-		for (TInvoiceDetailEntity detail : invoicedetail) {
-			if (!Util.isEmpty(detail.getInvoicebalance())) {
-				invoicebalance -= detail.getInvoicebalance();
-			}
-		}
-		result.put("invoicebalance", formatDouble(invoicebalance));
 		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
 				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
 				null);
@@ -437,6 +483,20 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//订单信息
 		result.put("orders", orders);
+		double sumjine = 0;
+		for (Record record : orders) {
+			if (!Util.isEmpty(record.get("incometotal"))) {
+				sumjine += (Double) record.get("incometotal");
+			}
+		}
+		result.put("sumjine", sumjine);
+		double invoicebalance = sumjine;
+		for (TInvoiceDetailEntity detail : invoicedetail) {
+			if (!Util.isEmpty(detail.getInvoicebalance())) {
+				invoicebalance -= detail.getInvoicebalance();
+			}
+		}
+		result.put("invoicebalance", invoicebalance);
 		Sql create = Sqls.create(sqlManager.get("get_bank_info_select"));
 		create.setParam("companyId", company.getId());
 		create.setParam("typeCode", YHCODE);

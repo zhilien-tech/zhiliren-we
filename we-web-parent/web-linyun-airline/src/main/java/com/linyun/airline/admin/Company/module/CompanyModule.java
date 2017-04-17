@@ -3,6 +3,8 @@ package com.linyun.airline.admin.Company.module;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.entity.Record;
 import org.nutz.dao.pager.Pager;
@@ -17,6 +19,7 @@ import org.nutz.mvc.annotation.Param;
 import com.linyun.airline.admin.Company.form.TCompanySqlForm;
 import com.linyun.airline.admin.Company.form.TCompanyUserSqlForm;
 import com.linyun.airline.admin.Company.service.CompanyViewService;
+import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.forms.TCompanyAddForm;
@@ -50,8 +53,8 @@ public class CompanyModule {
 	 */
 	@At
 	@Ok("jsp")
-	public Object list() {
-		return companyViewService.getUpCompanyAndAgentCount();
+	public Object list(HttpSession session) {
+		return companyViewService.getUpCompanyAndAgentCount(session);
 	}
 
 	/**
@@ -170,7 +173,10 @@ public class CompanyModule {
 	 * 分页查询公司信息
 	 */
 	@At
-	public Object listData(@Param("..") final TCompanySqlForm paramForm) {
+	public Object listData(@Param("..") final TCompanySqlForm paramForm, HttpSession session) {
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		paramForm.setLogincompanyid(company.getId());
 		return companyViewService.listPage4Datatables(paramForm);
 	}
 
@@ -198,8 +204,8 @@ public class CompanyModule {
 	 */
 	@At
 	@POST
-	public Object loadCompanyCount() {
-		return companyViewService.getUpCompanyAndAgentCount();
+	public Object loadCompanyCount(HttpSession session) {
+		return companyViewService.getUpCompanyAndAgentCount(session);
 	}
 
 	/**

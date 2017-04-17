@@ -52,6 +52,7 @@ import com.linyun.airline.admin.receivePayment.form.inter.TSaveInterPayAddFrom;
 import com.linyun.airline.admin.receivePayment.form.inter.TUpdateInterPayAddFrom;
 import com.linyun.airline.admin.receivePayment.util.FormatDateUtil;
 import com.linyun.airline.admin.search.service.SearchViewService;
+import com.linyun.airline.admin.turnover.service.TurnOverViewService;
 import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.enums.AccountPayEnum;
@@ -76,6 +77,7 @@ import com.linyun.airline.entities.TReceiveBillEntity;
 import com.linyun.airline.entities.TReceiveEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUserEntity;
+import com.linyun.airline.forms.TTurnOverAddForm;
 import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.Util;
@@ -90,7 +92,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	private static final int ENABLE = BankCardStatusEnum.ENABLE.intKey();
 	private static final String YTCODE = ComDictTypeEnum.DICTTYPE_XMYT.key();
 	private static final String ZJZLCODE = ComDictTypeEnum.DICTTYPE_ZJZL.key();
-	private static final int RECEIVESTATUS = AccountReceiveEnum.RECEIVEDONEY.intKey();
+	private static final int RECEIVINGMONEY = AccountReceiveEnum.RECEIVINGMONEY.intKey(); //收款中
+	private static final int RECEIVESTATUS = AccountReceiveEnum.RECEIVEDONEY.intKey(); //已收款
 	private static final int APPROVALPAYED = AccountPayEnum.APPROVALPAYED.intKey();
 	private static final int APPROVALPAYING = AccountPayEnum.APPROVALPAYING.intKey();
 	private static final int APPROVALENABLE = ApprovalResultEnum.ENABLE.intKey();
@@ -104,6 +107,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	//收付款枚举
 	private static final int PAYTYPE = PayReceiveTypeEnum.PAY.intKey(); //付款记录
 	private static final int RECEIVETYPE = PayReceiveTypeEnum.RECEIVE.intKey(); //收款记录
+	//重复提醒枚举
+	private static final int REPEATTYPE = PayReceiveTypeEnum.REPEAT.intKey(); //收款记录
 
 	//消息提醒中的订单状态
 	private static final int SEARCHMSG = SearchOrderStatusEnum.SEARCH.intKey();
@@ -131,6 +136,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 
 	@Inject
 	private RemindMessageService remindMessageService;
+
+	@Inject
+	private TurnOverViewService turnOverViewService;
 
 	/**
 	 * 
@@ -200,27 +208,33 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		}
 		//出发日期
 		if (!Util.isEmpty(leaveBeginDate)) {
-			cnd.and("pi.leavesdate", ">=", leaveBeginDate);
+			cnd.and("ai.leavedate", ">=", leaveBeginDate);
 		}
 		// 返回日期
 		if (!Util.isEmpty(leaveEndDate)) {
-			cnd.and("pi.leavesdate", "<=", leaveEndDate);
+			cnd.and("ai.leavedate", "<=", leaveEndDate);
 		}
 		List<Record> orders = dbDao.query(sql, cnd, null);
 
 		for (Record record : list) {
 			//计算合计金额
 			Double sum = 0.0;
+			//订单号
+			String oNum = "";
 			//收款id
 			String id = record.get("id").toString();
 			List<Record> rList = new ArrayList<Record>();
 			for (Record r : orders) {
 				String rid = r.getString("id");
+				String orderNum = r.getString("ordersnum");
 				if (Util.eq(id, rid)) {
 					rList.add(r);
 					if (!Util.isEmpty(r.get("currentpay"))) {
-						Double currentpay = (Double) r.get("currentpay");
-						sum += currentpay;
+						if (!Util.eq(oNum, orderNum)) {
+							Double currentpay = (Double) r.get("currentpay");
+							sum += currentpay;
+						}
+						oNum = orderNum;
 					}
 				}
 			}
@@ -315,6 +329,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 
 		int updateNum = 0;
 		int orderRecEd = AccountReceiveEnum.RECEIVEDONEY.intKey();
+		//获取当前公司
+		TCompanyEntity loginCompany = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		List<TOrderReceiveEntity> newRecOrderList = new ArrayList<TOrderReceiveEntity>();
 		List<TOrderReceiveEntity> orderReceiveList = dbDao.query(TOrderReceiveEntity.class,
 				Cnd.where("receiveid", "in", recId), null);
@@ -327,6 +343,21 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			updateNum = dbDao.update(newRecOrderList);
 		}
 		dbDao.update(TReceiveEntity.class, Chain.make("status", orderRecEd), Cnd.where("id", "in", recId));
+
+		//添加流水
+		TTurnOverAddForm addForm = new TTurnOverAddForm();
+		TReceiveEntity receiveEntity = dbDao.fetch(TReceiveEntity.class, Cnd.where("id", "in", recId));
+		int bankcardId = receiveEntity.getBankcardnameid();
+		Double sum = receiveEntity.getSum();
+		String bankcardnum = receiveEntity.getBankcardnum();
+		String comName = loginCompany.getComName();
+		addForm.setBankCardId(bankcardId);
+		addForm.setTradeDate(new Date());
+		addForm.setMoney(sum);
+		addForm.setCardNum(bankcardnum);
+		addForm.setPurpose("收入");
+		addForm.setCompanyName(comName);
+		turnOverViewService.addTurnOver(addForm, session);
 
 		//收款成功添加消息提醒
 		if (updateNum > 0) {
@@ -343,7 +374,10 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				int uid = Integer.valueOf(record.getString("id"));
 				String ordernum = record.getString("ordersnum");
 				String pnr = record.getString("PNR");
-				addInterRemindMsg(uid, ordernum, pnr, orderStatus, RECEDMSGTYPE, RECEIVETYPE, session);
+				String uids = record.getString("userid");
+				List<Long> receiveUserIds = Lists.newArrayList();
+				receiveUserIds.add(Long.valueOf(uids));
+				addInterRemindMsg(uid, ordernum, pnr, orderStatus, RECEDMSGTYPE, RECEIVETYPE, receiveUserIds, session);
 			}
 		}
 
@@ -351,7 +385,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	}
 
 	public String addInterRemindMsg(int orderId, String ordernum, String pnr, String orderStatus, int typeEnum,
-			int payRecType, HttpSession session) {
+			int payRecType, List<Long> receiveUids, HttpSession session) {
 		int msgOrderStatus = 0;
 		String statusStr = "";
 		switch (orderStatus) {
@@ -398,7 +432,60 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		map.put("orderStatus", msgOrderStatus);
 		map.put("orderStatusStr", statusStr);
 		map.put("payRecType", payRecType);
-		String addRemindMsg = addRemindMsg(map, ordernum, pnr, orderId, typeEnum, session);
+		String addRemindMsg = addRemindMsg(map, ordernum, pnr, orderId, typeEnum, receiveUids, session);
+		return addRemindMsg;
+	}
+
+	//重复提醒设置
+	public String addInterRepeatRemindMsg(int orderId, String ordernum, String pnr, String orderStatus, int typeEnum,
+			int payRecType, int remindType, String remindDate, List<Long> receiveUids, HttpSession session) {
+		int msgOrderStatus = 0;
+		String statusStr = "";
+		switch (orderStatus) {
+		case "1":
+			msgOrderStatus = SEARCHMSG;
+			statusStr = "查询";
+			break;
+		case "2":
+			msgOrderStatus = BOOKINGMSG;
+			statusStr = "预订";
+			break;
+		case "3":
+			msgOrderStatus = FIRBOOKINGMSG;
+			statusStr = "一订";
+			break;
+		case "4":
+			msgOrderStatus = SECBOOKINGMSG;
+			statusStr = "二订";
+			break;
+		case "5":
+			msgOrderStatus = THRBOOKINGMSG;
+			statusStr = "三订";
+			break;
+		case "6":
+			msgOrderStatus = ALLBOOKINGMSG;
+			statusStr = "全款";
+			break;
+		case "7":
+			msgOrderStatus = LASTBOOKINGMSG;
+			statusStr = "尾款";
+			break;
+		case "8":
+			msgOrderStatus = TICKETINGMSG;
+			statusStr = "出票";
+			break;
+		case "9":
+			msgOrderStatus = CLOSEMSG;
+			statusStr = "关闭";
+			break;
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("remindDate", remindDate);
+		map.put("remindType", remindType);
+		map.put("orderStatus", msgOrderStatus);
+		map.put("orderStatusStr", statusStr);
+		map.put("payRecType", payRecType);
+		String addRemindMsg = addRemindMsg(map, ordernum, pnr, orderId, typeEnum, receiveUids, session);
 		return addRemindMsg;
 	}
 
@@ -1023,7 +1110,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//当前登陆用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long loginUserId = loginUser.getId();
-		String bankComp = form.getBankComp();
+		String bankCompStr = form.getBankComp();
+		String bankcardId = bankCompStr.split(",")[0];
+		String bankComp = bankCompStr.split(",")[1];
 		String cardName = form.getCardName();
 		String cardNum = form.getCardNum();
 		Integer payAddress = form.getPayAddress();
@@ -1046,6 +1135,13 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		if (Util.eq("false", payNames)) {
 			//收款单位不一致，不能付款
 			return false;
+		}
+		//验证银行卡是否有余额
+		boolean cardMoney = turnOverViewService.checkBankCardNumEnoughOther(Integer.valueOf(bankcardId), "支出",
+				totalMoney);
+		if (Util.eq("false", cardMoney)) {
+			//余额不足
+			return "余额不足";
 		}
 		//付款水单 集合
 		List<TPayReceiptEntity> payReceiptList = new ArrayList<TPayReceiptEntity>();
@@ -1142,6 +1238,22 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//更新付款表状态   TODO payIds
 		/*dbDao.update(TPayEntity.class, Chain.make("status", APPROVALPAYED), Cnd.where("id", "in", payIds));*/
 
+		//添加流水 TODO
+		TTurnOverAddForm addForm = new TTurnOverAddForm();
+		String comName = tCompanyEntity.getComName();
+		addForm.setBankCardId(Integer.valueOf(bankcardId));
+		addForm.setTradeDate(new Date());
+		addForm.setMoney(totalMoney);
+		addForm.setCardNum(cardNum);
+		addForm.setPurpose("支出");
+		addForm.setCompanyName(comName);
+		if (!Util.isEmpty(currency)) {
+			DictInfoEntity dictInfoEntity = dbDao.fetch(DictInfoEntity.class, Long.valueOf(currency));
+			String currencyStr = dictInfoEntity.getDictCode();
+			addForm.setCurrency(currencyStr);
+		}
+		turnOverViewService.addTurnOver(addForm, session);
+
 		//付款成功 操作台添加消息
 		if (updateNum > 0) {
 			//******************************************添加消息提醒***********************************************
@@ -1157,7 +1269,10 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				int uid = Integer.valueOf(record.getString("id"));
 				String ordernum = record.getString("ordersnum");
 				String pnr = record.getString("PNR");
-				addInterRemindMsg(uid, ordernum, pnr, orderStatus, PAYEDMSGTYPE, PAYTYPE, session);
+				String uids = record.getString("userid");
+				List<Long> receiveUserIds = Lists.newArrayList();
+				receiveUserIds.add(Long.valueOf(uids));
+				addInterRemindMsg(uid, ordernum, pnr, orderStatus, PAYEDMSGTYPE, PAYTYPE, receiveUserIds, session);
 			}
 		}
 
@@ -1259,26 +1374,19 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 * @return 
 	 */
 	public String addRemindMsg(Map<String, Object> fromJson, String generateOrderNum, String pnr, int upOrderId,
-			int orderStatus, HttpSession session) {
+			int orderStatus, List<Long> receiveUids, HttpSession session) {
 		//当前用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long userId = loginUser.getId();
-		//查询当前公司下 会计id
-		TCompanyEntity companyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		Sql accountSql = Sqls.create(sqlManager.get("customer_search_accounter"));
-		accountSql.setParam("jobName", "会计");
-		accountSql.setParam("compId", companyEntity.getId());
-		List<Record> accountingIds = dbDao.query(accountSql, null, null);
-
 		//消息接收方ids
-		ArrayList<Long> receiveUserIds = Lists.newArrayList();
-		if (!Util.isEmpty(accountingIds)) {
-			for (Record record : accountingIds) {
-				long accountingId = Long.parseLong(record.getString("userId"));
-				receiveUserIds.add(accountingId);
+		List<Long> receiveUserIds = Lists.newArrayList();
+		if (!Util.isEmpty(receiveUids)) {
+			for (Long uid : receiveUids) {
+				receiveUserIds.add(uid);
 			}
+		} else {
+			receiveUserIds.add(userId);
 		}
-		receiveUserIds.add(userId);
 		//消息来源id
 		long SourceUserId = userId;
 		//消息来源方类型
@@ -1364,6 +1472,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			msgType = MessageTypeEnum.BOOKMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL2.intKey();
 			msgContent = "预定单号：" + generateOrderNum + " 记录编号：" + pnr;
+			if (Util.eq(REPEATTYPE, payRecType)) {
+				msgContent = "单号：" + generateOrderNum + " 当前状态：" + orderStatusStr + "状态";
+			}
 			break;
 		case 3:
 			//开票 (消息内容TODO)  6   
@@ -1376,6 +1487,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			msgType = MessageTypeEnum.MAKEOUTBILLMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL3.intKey();
 			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "发票已开";
+			if (Util.eq(REPEATTYPE, payRecType)) {
+				msgContent = "单号：" + generateOrderNum + " 当前状态：" + orderStatusStr + "状态";
+			}
 			break;
 		case 5:
 			//关闭 (消息内容TODO)  0
@@ -1395,6 +1509,10 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				//收款
 				msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "收款已提交";
 			}
+			if (Util.eq(REPEATTYPE, payRecType)) {
+				msgContent = "单号：" + generateOrderNum + " 当前状态：" + orderStatusStr + "状态";
+			}
+
 			break;
 		case 7:
 			//二订 9
@@ -1407,6 +1525,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			if (Util.eq(RECEIVETYPE, payRecType)) {
 				//收款
 				msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "收款已提交";
+			}
+			if (Util.eq(REPEATTYPE, payRecType)) {
+				msgContent = "单号：" + generateOrderNum + " 当前状态：" + orderStatusStr + "状态";
 			}
 			break;
 		case 8:
@@ -1421,6 +1542,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				//收款
 				msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "收款已提交";
 			}
+			if (Util.eq(REPEATTYPE, payRecType)) {
+				msgContent = "单号：" + generateOrderNum + " 当前状态：" + orderStatusStr + "状态";
+			}
 			break;
 		case 9:
 			//全款 11
@@ -1434,6 +1558,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				//收款
 				msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "收款已提交";
 			}
+			if (Util.eq(REPEATTYPE, payRecType)) {
+				msgContent = "单号：" + generateOrderNum + " 当前状态：" + orderStatusStr + "状态";
+			}
 			break;
 		case 10:
 			//尾款 12
@@ -1446,6 +1573,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			if (Util.eq(RECEIVETYPE, payRecType)) {
 				//收款
 				msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "收款已提交";
+			}
+			if (Util.eq(REPEATTYPE, payRecType)) {
+				msgContent = "单号：" + generateOrderNum + " 当前状态：" + orderStatusStr + "状态";
 			}
 			break;
 		case 11:
@@ -1464,7 +1594,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			//收款款已开发票 16
 			msgType = MessageTypeEnum.INVIOCEMSG.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "发票已开";
+			msgContent = "单号：" + generateOrderNum + " " + orderStatusStr + "发票已开";
 			break;
 		case 14:
 			//付款已收发票 17
@@ -1500,7 +1630,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			//付款 （会计）开发票中 22  MessageTypeEnum
 			msgType = MessageTypeEnum.INVIOCING.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + " 记录编号：" + pnr + " " + orderStatusStr + "开发票中";
+			msgContent = "单号：" + generateOrderNum + " " + orderStatusStr + "开发票中";
 			break;
 		case 20: //MessageWealthStatusEnum
 			//付款 （会计）收发票中 23  MessageTypeEnum

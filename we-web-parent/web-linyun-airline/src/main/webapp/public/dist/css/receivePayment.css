@@ -44,6 +44,7 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 #interRecTable tbody tr td{padding:0;}
 #interPayTbody tr td{padding:0;}
 /* .checkBoxPayChild {position: relative;top: 22px;} */
+#interPayTbody tr td:nth-child(1) input{margin-top:23px;}
 #interPayTbody tr td:nth-child(2){line-height:60px;}
 #interPayTbody tr td:nth-child(11){line-height:60px;}
 #interRecTable tr td:nth-child(5){line-height:60px;}
@@ -69,12 +70,14 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 .payTable2 tbody tr td:nth-child(odd){text-align: right;}
 .payTable2 tbody tr td:nth-child(even){width: 115px;}
 .payTable2 tbody tr td:nth-child(1){width: 57px;}
-.payTable2 tbody tr td:nth-child(3){width: 67px;}
-.payTable2 tbody tr td:nth-child(5){width: 75px;}
-.payTable2 tbody tr td:nth-child(7){width: 75px;}
+.payTable2 tbody tr td:nth-child(3){width:80px;}
+.payTable2 tbody tr td:nth-child(5){width:66px;}
+.payTable2 tbody tr td:nth-child(6){width:120px;}
+.payTable2 tbody tr td:nth-child(7){width:64px;}
+.payTable2 tbody tr td:nth-child(8){width:80px;}
 .payTable2 tbody tr td{padding-bottom: 8px;}
 .textIpnu{width: 96.5%; margin-left: 7px;}
-.bj{width: 75px !important;text-align: right;}
+.bj{width:64px !important;text-align: right;}
 .labelShuidan{ margin-top: 15px;font-size: 16px !important;}
 .SDdiv{margin-top: 0;}
 .imgInfo tr td:nth-child(odd){text-align: right;width: 75px;}
@@ -116,15 +119,6 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 .txtTable tbody tr td:nth-child(6) {width: 210px;}
 .txtTable tbody tr td:nth-child(7) {width: 50px;}
 #inlandPayBeginDate,#inlandPayEndDate,#inlandRecBeginDate,#inlandRecEndDate {padding-left: 3px;padding-right: 3px;}
-#interRecSelect,#interPaySelect{padding-left: 3px;padding-right: 3px;}
+#interRecSelect,#interPaySelect,#cardNum,#approver,#fundType{padding-left: 3px;padding-right: 3px;}
 button#interPayCancelBtn {padding: 5px 10px;}
 .leftPadding {padding-left: 10px;}
-
-
-
-
-
-
-
-
-

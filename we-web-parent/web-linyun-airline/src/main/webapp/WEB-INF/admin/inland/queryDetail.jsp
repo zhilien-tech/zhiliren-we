@@ -140,7 +140,7 @@
                <c:choose>
                		<c:when test="${fn:length(obj.customneedinfo)>0}">
 		               <c:forEach var="customneed" items="${obj.customneedinfo }" varStatus="status">
-			               <div id="infofooter" name="infofooter" class="infofooter">
+			               <div id="infofooter" name="infofooter" class="infofooter infofooter1">
 			                <div class="DemandDiv">
 			                 <span class="titleNum">${status.index + 1 }</span>
 			                 <c:choose>
@@ -156,7 +156,7 @@
 			                 <table class="cloTable">
 			                   <tr>
 			                     <td><label>出发城市：</label></td>
-			                     <td colspan="2"><select id="leavecity" name="leavecity" disabled="false" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
+			                     <td><select id="leavecity" name="leavecity" disabled="false" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
 			                     	<c:forEach var="one" items="${obj.city }">
 			                    		<c:choose>
 			                    			<c:when test="${customneed.cusinfo.leavecity eq one.dictCode }">
@@ -170,7 +170,7 @@
 			                     	</select>
 			                     </td>
 			                     <td><label>抵达城市：</label></td>
-			                     <td colspan="2"><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
+			                     <td><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
 			                     	<c:forEach var="one" items="${obj.city }">
 			                    		<c:choose>
 			                    			<c:when test="${customneed.cusinfo.arrivecity eq one.dictCode }">
@@ -360,7 +360,7 @@
 								<tr name="cRemarkTr" class="remarkTr">
 									<td><label>备注：</label></td>
 									<td>
-										<textarea class="form-control" id="cRemark" name="cRemark">${obj.orderinfo.remark }</textarea>
+										<textarea class="form-control" id="cRemark" name="cRemark" disabled="disabled">${obj.orderinfo.remark }</textarea>
 									</td>
 								</tr>
 							</table>
@@ -419,7 +419,7 @@
 										<td><input id="singleArriveCity0" name="destination0"
 											onkeypress="onkeyEnter();" class="form-control input-sm"
 											multiple="multiple" data-placeholder="拼音/三字代码"></td>
-										<td class="untilTd1"></td>
+										<!-- <td class="untilTd1"></td> -->
 										<!--空白处 可以忽略-->
 										<td><label>出发日期：</label></td>
 										<td>
@@ -638,6 +638,7 @@
               $('.remindSet tbody tr td input').removeAttr("disabled");//删除 提醒设置 input 禁止编辑的状态
               $('#orderType').removeAttr("disabled");//状态可编辑
               $('#remindType').removeAttr("disabled");//提醒状态可编辑
+              $('#cRemark').removeAttr("disabled");//提醒状态可编辑
               $('.DemandDiv').each(function(i){
             	  $(this).find('[name=leavecity]').removeAttr('disabled');
             	  $(this).find('[name=arrivecity]').removeAttr('disabled');
@@ -669,6 +670,7 @@
           $('.remindSet tbody tr td input').attr("disabled",'disabled');//提醒设置 input 添加 不可编辑属性
           $('#orderType').attr("disabled",'disabled');//状态 不可编辑属性
           $('#remindType').attr("disabled",'disabled');//提醒状态 不可编辑属性
+          $('#cRemark').attr("disabled",'disabled');//提醒状态 不可编辑属性
           $('.DemandDiv').each(function(i){
         	  var customneedid = $(this).find('[name=customneedid]').val();
         	  if(i>0 && !customneedid){

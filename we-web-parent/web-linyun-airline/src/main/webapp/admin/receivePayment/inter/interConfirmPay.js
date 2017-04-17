@@ -1,5 +1,10 @@
 //确认付款
 function confirmPayClick(){
+	var bankComp = $("#bankComp").val();
+	if(bankComp=="0"){
+		layer.msg('银行不能为空');
+		return;
+	}
 	$.ajax({
 		type : 'POST',
 		data : $("#confirmInterPayForm").serialize(),
@@ -8,6 +13,8 @@ function confirmPayClick(){
 		success : function(data) {
 			if(data === false){
 				parent.layer.msg("收款单位不一致，付款失败", "", 2000);
+			}else if(data === "余额不足"){
+				parent.layer.msg("该银行卡余额不足", "", 2000);
 			}else{
 				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 				parent.layer.close(index);

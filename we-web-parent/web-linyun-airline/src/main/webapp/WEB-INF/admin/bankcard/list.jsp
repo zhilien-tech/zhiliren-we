@@ -139,12 +139,20 @@
 	                    	render: function(data, type, row, meta) {
 	                    		var depositBalance = row.balance;
 	                    		if(null==depositBalance || ""==depositBalance){
-	                    			return "0";
+	                    			return "0.00";
 	                    		}
-	                    		return depositBalance;
+	                    		return depositBalance.toFixed(2);
 	                    	}
 						},
-						{"data": "initialamount", "bSortable": false},
+						{"data": "initialamount", "bSortable": false,
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.initialamount;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "0.00";
+	                    		}
+	                    		return depositBalance.toFixed(2);
+	                    	}	
+						},
 	                    {"data": "currency", "bSortable": false},
 	                    {"data": "remark", "bSortable": false,
 	                    	render: function(data, type, row, meta) {

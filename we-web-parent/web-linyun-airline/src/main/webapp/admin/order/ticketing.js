@@ -132,8 +132,8 @@ function initdrawerPayTable() {
                     {"data": "receivable", "bSortable": false,
                     	render:function(data, type, row, meta) {
                     		var result = '';
-                    		if(row.receivable){
-                    			result = row.receivable.toFixed(2);
+                    		if(row.incometotal){
+                    			result = row.incometotal.toFixed(2);
                     		}
                     		return result; 
                     	}

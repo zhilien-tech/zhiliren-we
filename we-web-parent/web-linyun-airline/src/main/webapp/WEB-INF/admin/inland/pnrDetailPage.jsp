@@ -26,6 +26,7 @@
                     <td>登录帐号：</td>
                     <td>
                     	<select disabled="disabled" class="form-control input-sm">
+                    		<option value="">请选择</option>
                     		<c:forEach items="${obj.loginselect }" var="one">
 	                    		<c:choose>
 	                        		<c:when test="${obj.pnrinfo.loginid eq one.id}">
@@ -43,6 +44,7 @@
                     <td>币种：</td>
                     <td>
                       <select disabled="disabled" class="form-control input-sm" >
+                      	<option value="">请选择</option>
                         <c:forEach items="${obj.bzcode }" var="one"> 
                         	<c:choose>
                         		<c:when test="${obj.pnrinfo.currency eq one.dictCode }">

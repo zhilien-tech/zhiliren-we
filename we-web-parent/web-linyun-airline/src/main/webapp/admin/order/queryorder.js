@@ -211,13 +211,11 @@ $(function(){
         newDiv.find('[name=remark]').val('');
         initCitySelect2(newDiv);
         //divTest.after(newDiv);
-        $('#infofooter').last().append(newDiv);
+        $('.DemandDiv').last().after(newDiv);
         var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
         newDiv.find("p").html(No); 
         newDiv.find('.addDemand').remove();
-        newDiv.prepend('<a href="javascript:;" class="btn btn-primary btn-sm removeDemand"><b>-</b>&nbsp;&nbsp;需求</a>');
-        var divId=document.getElementById('infofooter').getElementsByTagName('div');
-        newDiv.find('.titleNum').text(divId.length);
+        newDiv.prepend('<a href="javascript:;" class="btn btn-primary btn-sm removeDemand"><b>-</b>&nbsp;&nbsp;&nbsp;需求</a>');
         newDiv.find('[name=airlineinfo]').each(function(i){
         	if(i > 0){
         		$(this).remove();
@@ -234,6 +232,9 @@ $(function(){
         		initAirInfoSelect2($(this));
         	}
         });
+        $('.DemandDiv').each(function(i){
+        	$(this).find('.titleNum').html(i+1);
+        });
         /*只在最后一个需求上显示 备注项*/
         //$('.remarkTr').remove();
         //$('.DemandDiv:last-child .cloTable tbody').append('<tr class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><input type="text" id="remark" name="remark" class="form-control input-sm noteText" placeholder=" " value=" "></td></tr>');
@@ -241,6 +242,9 @@ $(function(){
     //客户需求的 -需求 按钮
     $(document).on("click",".removeDemand",function(){
         $(this).parent().remove();
+        $('.DemandDiv').each(function(i){
+        	$(this).find('.titleNum').html(i+1);
+        });
         /*判断最后一个需求是否有 备注项 如果没有 就添加备注项*/
         //var cl=$('.DemandDiv:last-child .cloTable tbody tr').hasClass('remarkTr');
         //if(cl==false){

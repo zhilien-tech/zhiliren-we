@@ -17,8 +17,6 @@
   <div class="content-wrapper">
     <!-- Main content -->
     <section class="content">
-      <div class="row row-top">
-        <div class="col-xs-12">
           <div class="row">
             <div class="col-md-12">
               <!-- Custom Tabs -->
@@ -101,9 +99,7 @@
               </div><!-- end nav-tabs-custom -->
             </div><!-- end col-md-12 -->
           </div><!-- end row -->
-        </div>
-      </div>
-    </section>
+   </section>
     <!-- /.content -->
   </div>
   <!--end 内容-->
@@ -490,10 +486,11 @@ function successCallback(id){
 	                    },
 	                    {"data": "createtime", "bSortable": true,
 	                    	 render: function(data, type, row, meta) {
-	                    		 var createtime = new Date(row.createtime);
-	                    		 var createtimestr = createtime.getFullYear() + "-" + createtime.getMonth() + "-" + createtime.getDate() + " "
-	                    		 + createtime.getHours() + ":" + createtime.getMinutes() + ":" + createtime.getSeconds();
-	                    		return createtimestr;
+	                    		 var createtime = row.createtime;
+	                    		 if(null==createtime || ""==createtime){
+	                    			 return "";
+	                    		 }
+	                    		return createtime;
 	                        } 	
 	                    },
 	                    {"data": "filesize", "bSortable": false,
@@ -509,16 +506,16 @@ function successCallback(id){
 	            "columnDefs": [
 							   {"sWidth": "5%","aTargets": [0] },
 							   {"sWidth": "50%","aTargets": [1] },
-							   {"sWidth": "15%","aTargets": [2] },
-							   {"sWidth": "10%","aTargets": [3] },
-							   {"sWidth": "20%","aTargets": [4] },
+							   {"sWidth": "17%","aTargets": [2] },
+							   {"sWidth": "9%","aTargets": [3] },
+							   {"sWidth": "19%","aTargets": [4] },
 	                           {
 	                //   指定第一列，从0开始，0表示第一列，1表示第二列……
 	                targets: 4,
 	                render: function(data, type, row, meta) {
-	                	var editFolder = '<a href="javascript:editFolder('+row.id+');" style="cursor:pointer;">编辑&nbsp;&nbsp;&nbsp;</a>';
-	                	var download = '<a href="${base}/admin/drawback/grabfile/downLoadZipFile.html?parentId='+row.id+'" style="cursor:pointer;">&nbsp;&nbsp;下载&nbsp;&nbsp;&nbsp;</a>';
-	                	var move  = '<a href="javascript:move('+row.id+');" style="cursor:pointer;">&nbsp;&nbsp;移动到&nbsp;&nbsp;</a>';
+	                	var editFolder = '<a href="javascript:editFolder('+row.id+');" style="cursor:pointer;">编辑&nbsp;&nbsp;</a>';
+	                	var download = '<a href="${base}/admin/drawback/grabfile/downLoadZipFile.html?parentId='+row.id+'" style="cursor:pointer;">下载&nbsp;&nbsp;</a>';
+	                	var move  = '<a href="javascript:move('+row.id+');" style="cursor:pointer;">移动到&nbsp;&nbsp;</a>';
                    		if(1==row.status){
                    			var judge = '<a href="javascript:physicalDelete('+row.id+',2);" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
                    		}else{
@@ -681,6 +678,7 @@ function successCallback(id){
 	                    {"data": "pnr", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var pnr = row.pnr;
+	                    		var pnr = '<span data-toggle="tooltip" data-placement="right" title="'+pnr+'">'+pnr+'<span>';
 	                    		if(null==pnr || ""==pnr){
 	                    			return "";
 	                    		}
@@ -691,6 +689,7 @@ function successCallback(id){
 	                    {"data": "remit", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var remit = (row.remit).toFixed(2);
+	                    		var remit = '<span data-toggle="tooltip" data-placement="right" title="'+remit+'">'+remit+'<span>';
 	                    		if(null==remit || ""==remit){
 	                    			return "";
 	                    		}
@@ -700,6 +699,7 @@ function successCallback(id){
 	                    {"data": "depositbalance", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var depositBalance = (row.depositbalance).toFixed(2);
+	                    		var depositBalance = '<span data-toggle="tooltip" data-placement="right" title="'+depositBalance+'">'+depositBalance+'<span>';
 	                    		if(null==depositBalance || ""==depositBalance){
 	                    			return "";
 	                    		}
@@ -745,6 +745,7 @@ function successCallback(id){
 	                    {"data": "agencyfee", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var agencyFee = (row.agencyfee).toFixed(2);
+	                    		var agencyFee = '<span data-toggle="tooltip" data-placement="right" title="'+agencyFee+'">'+agencyFee+'<span>';
 	                    		if(null==agencyFee || ""==agencyFee){
 	                    			return "";
 	                    		}
@@ -754,6 +755,7 @@ function successCallback(id){
 	                    {"data": "taxrebate", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var taxRebate = (row.taxrebate).toFixed(2);
+	                    		var taxRebate = '<span data-toggle="tooltip" data-placement="right" title="'+taxRebate+'">'+taxRebate+'<span>';
 	                    		if(null==taxRebate || ""==taxRebate){
 	                    			return "";
 	                    		}
@@ -774,6 +776,7 @@ function successCallback(id){
 	                    {"data": "realincome", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var realIncome = (row.realincome).toFixed(2);
+	                    		var realIncome = '<span data-toggle="tooltip" data-placement="right" title="'+realIncome+'">'+realIncome+'<span>';
 	                    		if(null==realIncome || ""==realIncome){
 	                    			return "";
 	                    		}
@@ -783,6 +786,7 @@ function successCallback(id){
 	                    {"data": "realtotal", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var realTotal = (row.realtotal).toFixed(2);
+	                    		var realTotal = '<span data-toggle="tooltip" data-placement="right" title="'+realTotal+'">'+realTotal+'<span>';
 	                    		if(null==realTotal || ""==realTotal){
 	                    			return "";
 	                    		}
@@ -792,6 +796,7 @@ function successCallback(id){
 	                    {"data": "agencyfee2", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var agencyFee2 = (row.agencyfee2).toFixed(2);
+	                    		var agencyFee2 = '<span data-toggle="tooltip" data-placement="right" title="'+agencyFee2+'">'+agencyFee2+'<span>';
 	                    		if(null==agencyFee2 || ""==agencyFee2){
 	                    			return "";
 	                    		}
@@ -820,6 +825,7 @@ function successCallback(id){
 	                    }
 	            ],
 	            "columnDefs": [
+							   {"sWidth": "7%","aTargets": [10] },
 							   {
 					                //   指定第一列，从0开始，0表示第一列，1表示第二列……
 					                targets: 14,

@@ -67,6 +67,7 @@
 											<option value="${one.text }" selected="selected">${one.text}</option>
 										</c:forEach> --%>
 									 </select>
+									 <span class="prompt">*</span>
 									 <!-- 区域ID -->
 									 <input id="airlineIds" name="airlineName" type="hidden"/>
 			                      </div>
@@ -156,6 +157,13 @@ function validateParams(){
 	            	validators: {
 	                    notEmpty: {
 	                        message: '登录账号不能为空!'
+	                    }
+	                }
+	            },
+	            airlineName1: {
+	            	validators: {
+	                    notEmpty: {
+	                        message: '航空公司不能为空!'
 	                    }
 	                }
 	            }

@@ -21,7 +21,7 @@
             <div class="box-header">
                 <div class="form-group row cf personalBtn">
                     <button type="button" onclick="editPersonal('${obj.personalInfo[0].id}');" class="btn btn-primary btn-sm right personalEtie">编辑</button>
-                    <button type="button" onclick="updatePassword();" class="btn btn-primary btn-sm right updatePwd" >修改密码</button>
+                    <button type="button" onclick="openUpdatePassword();" class="btn btn-primary btn-sm right updatePwd" >修改密码</button>
                 </div>
             </div>
             <div class="personalTable">
@@ -73,7 +73,7 @@
 <!-- end Footer -->
 <script type="text/javascript">
 //打开修改密码弹框
-function updatePassword(){
+function openUpdatePassword(){
   layer.open({
 	    type: 2,
 	    title: false,
@@ -102,11 +102,11 @@ function editPersonal(userId){
 }
 //事件提示
 function successCallback(id){
-	PersonDatatable.ajax.reload(null,false);
+	  window.location.reload();
 	  if(id == '1'){
 		  layer.msg("密码修改成功",{time:2000});
 	  }else if(id == '2'){
-		  layer.msg("修改成功",{time:2000});
+		  layer.msg("修改成功",{time:5000});
 	  }
   }
 </script>

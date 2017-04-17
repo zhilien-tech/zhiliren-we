@@ -73,18 +73,19 @@
 						$("#areaId").val(_selectedAreaIds);
 					}
 				</script>
-      			<div class="form-group iconStyle">
+      			<!-- <div class="form-group iconStyle">
       				<label class="col-sm-1 text-right padding">文件名：</label>
       				<div class="col-sm-3 padding">
       				 	<input type="text" class="form-control input-sm filetext" placeholder="请输入文件名称" name="fileRealName">
 					</div>
-      			</div>
+      			</div> -->
       		</div>
       		<div class="row">
       			<div class="form-group">
       				<label class="col-sm-3 text-right padding"></label>
       				<div class="col-sm-8 padding"> 
-      					<button id="file" name="file" type="file" class="btn btn-primary btn-sm" >上传</button>
+      					<!-- <button id="file" name="file" type="file" class="btn btn-primary btn-sm" >上传</button> -->
+      					<input type="file" name="file" id="file" class="btn btn-primary btn-sm" /> 
       					<span id="completeFileName"></span>
       				</div>
       				

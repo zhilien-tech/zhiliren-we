@@ -8,6 +8,7 @@ function initKaiInterInvoiceTable() {
   	"bLengthChange": false,
       "processing": true,
       "serverSide": true,
+      "autoWidth":false,
       "stripeClasses": [ 'strip1','strip2' ],
       "language": {
           "url": BASE_PATH + "/public/plugins/datatables/cn.json"
@@ -149,18 +150,24 @@ function initKaiInterInvoiceTable() {
                 	  render:function(data, type, row, meta) {
 	                  		var result = '';
 	                  		if(row.remark){
-	                  			result = row.remark;
+	                  			//result = row.remark;
+	                  			var result = '<span data-toggle="tooltip" data-placement="left" title="'+row.remark+'">'+row.remark+'<span>';
 	                  		}
 	                  		return result;
                 	  }
+                  },
+                  {"data": " ", "bSortable": false,
+                	  render: function(data, type, row, meta) {
+                          return '<a style="cursor:pointer;" onclick="openkaiInvoiceEdit('+row.id+');">开发票</a>'
+                      }
                   }
           ],
       columnDefs: [{
     	//   指定第一列，从0开始，0表示第一列，1表示第二列……
-          targets: 11,
+          /*targets: 11,
           render: function(data, type, row, meta) {
               return '<a style="cursor:pointer;" onclick="openkaiInvoiceEdit('+row.id+');">开发票</a>'
-          }
+          }*/
       }]
   });
 }
@@ -333,7 +340,8 @@ function initshouInterInvoiceTable() {
                 	  render:function(data, type, row, meta) {
                     		var result = '';
                     		if(row.remark){
-                    			result = row.remark;
+                    			//result = row.remark;
+                    			var result = '<span data-toggle="tooltip" data-placement="left" title="'+row.remark+'">'+row.remark+'<span>';
                     		}
                     		return result;
                     	}  
@@ -352,11 +360,16 @@ function shouInvoiceLoad(){
 	shouInterInvoiceTable.ajax.reload();
 }
 //datatable行点击事件
-$("tbody",$('#shouInterInvoiceTable')).on("dblclick","tr",function(event){
+/*$("tbody",$('#shouInterInvoiceTable')).on("dblclick","tr",function(event){
 	//获取当前行的数据
 	var row = shouInterInvoiceTable.row($(this).closest('tr')).data();
 	var url = BASE_PATH + '/admin/international/internationalDetail.html?orderid='+row.orderid;
 	window.open(url,'_black');
+});*/
+$("tbody",$('#shouInterInvoiceTable')).on("dblclick","tr",function(event){
+	//获取当前行的数据
+	var row = shouInterInvoiceTable.row($(this).closest('tr')).data();
+	openshouInvoiceEdit(row.id);
 });
 function openshouInvoiceEdit(id){
 	layer.open({
