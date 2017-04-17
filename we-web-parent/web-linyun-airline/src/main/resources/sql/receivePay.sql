@@ -353,12 +353,12 @@ SELECT
 	ii.id invoiceid,
 	fi.`issuer` userName
 FROM
-	t_receive r
-LEFT JOIN t_order_receive orec ON orec.receiveid=r.id
-LEFT JOIN t_up_order uo on uo.id=orec.orderid
+	t_up_order uo
+LEFT JOIN t_order_receive orec ON uo.id = orec.orderid
+LEFT JOIN t_receive r ON orec.receiveid = r.id
 LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
 LEFT JOIN t_invoice_info ii ON r.id = ii.receiveid
-LEFT JOIN t_finance_info fi on fi.orderid=uo.id
+LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
 $condition
 
 /*receivePay_inter_rec_order_list*/
