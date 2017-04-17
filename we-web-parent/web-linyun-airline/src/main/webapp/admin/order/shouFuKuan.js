@@ -257,6 +257,7 @@ function initshouFuKuanPayTable() {
                 		var result = '';
                 		if(row.customename && row.customename != undefined){
                 			result = row.customename;
+                			result = '<span data-toggle="tooltip" data-placement="right" title="'+result+'">'+result+'<span>';
                 		}
                 		return result;
                 	}
@@ -266,6 +267,7 @@ function initshouFuKuanPayTable() {
                 		var result = '';
                 		if(row.costpricesum && row.costpricesum != undefined){
                 			result = row.costpricesum.toFixed(2);
+                			result = '<span data-toggle="tooltip" data-placement="right" title="'+result+'">'+result+'<span>';
                 		}
                 		return result;
                 	}
@@ -309,7 +311,7 @@ function initshouFuKuanPayTable() {
                         return '<a style="cursor:pointer;" onclick="receiveInvoice('+row.id+','+row.invoiceid+');">收发票</a>'
                     }
                 }
-        ],
+        ]/*,
     "columnDefs": [
 				{ "sWidth": "7.33%", "targets": [0] },
 				{ "sWidth": "5.33%", "targets": [1] },
@@ -323,13 +325,7 @@ function initshouFuKuanPayTable() {
 				{ "sWidth": "14.33%", "targets": [9] },
 				{ "sWidth": "8.33%", "targets": [10] },
 				{ "sWidth": "11.33%", "targets": [11] }
-				/*{
-  	//   指定第一列，从0开始，0表示第一列，1表示第二列……
-        targets: 11,
-        render: function(data, type, row, meta) {
-            return '<a style="cursor:pointer;" onclick="receiveInvoice('+row.id+','+row.invoiceid+');">收发票</a>'
-        }
-    }*/]
+	]*/
 });
 }
 function shoufukuanPay(){

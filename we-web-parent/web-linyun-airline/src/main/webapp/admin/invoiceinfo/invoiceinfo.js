@@ -165,6 +165,7 @@ function openkaiInvoiceEdit(id){
         skin: false, //加上边框
         closeBtn:false,//默认 右上角关闭按钮 是否显示
         shadeClose:true,
+        scrollbar: false,
         area: ['987px', '620px'],
         content: BASE_PATH + '/admin/invoicemanage/invoiceinfo/kaiOpenInvoice.html?id='+id
       });
@@ -394,6 +395,7 @@ function openshouInvoiceEdit(id){
         skin: false, //加上边框
         closeBtn:false,//默认 右上角关闭按钮 是否显示
         shadeClose:true,
+        scrollbar: false,
         area: ['987px', '620px'],
         content: BASE_PATH + '/admin/invoicemanage/invoiceinfo/shouOpenInvoice.html?id='+id
     });

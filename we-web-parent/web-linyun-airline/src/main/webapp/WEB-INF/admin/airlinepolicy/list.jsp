@@ -25,7 +25,7 @@
             <div class="box-header">
                <form role="form" class="form-horizontal">
                 <div class="form-group row mar cf">
-                  <div class="col-md-1 padRight">
+                  <div class="col-md-2 textPadding">
                     <select class="form-control input-sm" name="selectCompany" id="selectCompany" onchange="pickedFunc();">
                       <!-- <option>VR</option>
                       <option>JQ</option> -->
@@ -35,7 +35,7 @@
                       </c:forEach>
                     </select>
                   </div>
-                  <div class="col-md-1 padding">
+                  <div class="col-md-2 textPadding paddingLeft10">
                      <select class="form-control input-sm" name="selectArea" id="selectArea" onchange="pickedFunc();">
                       <!-- <option>澳洲</option>
                       <option>亚洲</option> -->
@@ -44,8 +44,8 @@
                       	<option value="${each.areaName}">${each.areaName }</option>
                       </c:forEach>
                     </select>
-                  </div>
-                  <div class="col-md-1 padding">
+                  </div> 
+                  <div class="col-md-1 textPadding paddingLeft10">
                      <select class="form-control input-sm" name="selectType" id="selectType" onchange="pickedFunc();">
                      
                       <option value="">请选择</option>
@@ -53,14 +53,14 @@
                       <option>散</option>
                     </select>
                   </div>
-                  <div class="col-md-1 padding">
+                  <div class="col-md-1 textPadding paddingLeft10">
                      
                   	 <input type="text" class="form-control input-sm"  name="beginTime" id="beginTime" value="" onFocus="WdatePicker({onpicked:pickedFunc,oncleared:pickedFunc,el:'beginTime',dateFmt:'yyyy-MM-dd'})"  >
                   </div>
-                  <div class="col-md-1 padding">
+                  <div class="col-md-1 textPadding paddingLeft10">
                   	  <input type="text" class="form-control input-sm"  name="endTime" id="endTime" value="" onFocus="WdatePicker({onpicked:pickedFunc,oncleared:pickedFunc,dateFmt:'yyyy-MM-dd'})"  >
                   </div>
-                  <div class="col-md-1 padding">
+                  <div class="col-md-1 textPadding paddingLeft10">
                   	  <button type="button" class="btn btn-primary btn-sm suBtn" onclick="clearSelect();pickedFunc();">清空</button>
                   </div>
                   <div class="col-md-3 padding right">

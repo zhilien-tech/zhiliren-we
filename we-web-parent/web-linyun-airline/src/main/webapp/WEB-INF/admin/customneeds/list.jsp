@@ -30,9 +30,8 @@
                        
                         <!--默认/关闭 下拉框 and 按钮（添加、导入、导出....）-->
                         <div class="form-group row">
-                          <div class="col-md-12 btnTop">
+                          <div class="col-md-12 btnTop textPadding">
                             <button type="button" class="btn btn-primary btn-sm right" onclick="add();">添加</button>
-                            
                             <a class="btn btn-primary btn-sm right" id="exportExcelId" target="hidden_frame" href="${base}/admin/customneeds/exportCustomNeedsExcel.html">导出excel</a>
                             <form id="uploadExcelForm" action="${url }/inportExcelData.html" name="form3" enctype="multipart/form-data" method="post" target="hidden_frame" style="display: inline;">
 	                            <p class="flie_A right">导入excel<input name="excelFile" id="excelFile" onchange="javascript:onfileChange();" type="file"/></p>

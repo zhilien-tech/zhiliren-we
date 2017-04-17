@@ -43,5 +43,6 @@ label.lab {float: none !important;display: inline-block;}
 /* .uploadify-queue-item{margin-left:265px;background-color: #fff;} */
 #file{position: relative;top: 11px;}
 .deleteBtn,.delete{background-color: #e6e6e6;border: solid 1px #dedede;color: #888;padding: 0px 13px;border-radius: 3px;font-size: 11px;}
-#SWFUpload_0_1{}
+#selectCompany,#selectType,#beginTime,#endTime,#selectArea{padding-left:3px;padding-right:3px;}
+.paddingLeft10{padding-left:10px;}
 /*end 弹框 style*/
