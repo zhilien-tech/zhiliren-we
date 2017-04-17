@@ -75,6 +75,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	private static final int INVIOCING = MessageTypeEnum.INVIOCING.intKey(); //开发票中
 	private static final int PSAPPROVALING = MessageTypeEnum.PSAPPROVALING.intKey(); //需付款/已提交申请
 	private static final int RECSUBMITED = MessageTypeEnum.RECSUBMITED.intKey(); //收款已提交
+	private static final int PROCESSMSG = MessageTypeEnum.PROCESSMSG.intKey();
 
 	//消息提醒模式
 	private static final int MOUTH = MessageRemindEnum.MOUTH.intKey();
