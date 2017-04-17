@@ -269,7 +269,7 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 			balance = formatDouble(Double.valueOf((String) fromJson.get("balance")));
 		}
 		invoiceinfo.setBalance(balance);
-		invoiceinfo.setOpid(new Long(user.getId()).intValue());
+		//		invoiceinfo.setOpid(new Long(user.getId()).intValue());
 		invoiceinfo.setOptime(new Date());
 		invoiceinfo.setStatus(InvoiceInfoEnum.INVOIC_ED.intKey());
 		//保存发票信息
@@ -493,7 +493,7 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 			balance = formatDouble(Double.valueOf((String) fromJson.get("balance")));
 		}
 		invoiceinfo.setBalance(balance);
-		invoiceinfo.setOpid(new Long(user.getId()).intValue());
+		//		invoiceinfo.setOpid(new Long(user.getId()).intValue());
 		invoiceinfo.setOptime(new Date());
 		invoiceinfo.setStatus(InvoiceInfoEnum.Already_INVOICe.intKey());//已收发票
 		//保存发票信息

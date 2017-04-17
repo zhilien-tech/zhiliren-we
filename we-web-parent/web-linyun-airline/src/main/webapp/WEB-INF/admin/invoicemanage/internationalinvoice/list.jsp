@@ -189,8 +189,12 @@
 <script type="text/javascript">
 //他页面回调
 function successCallback(id){
-	  KaiInterInvoiceTable.ajax.reload(null,false);
-	  shouInterInvoiceTable.ajax.reload(null,false);
+	  KaiInterInvoiceTable.ajax.reload(function(json){
+			autoHighLoad($('#KaiInterInvoiceTable'));
+		}, false);
+	  shouInterInvoiceTable.ajax.reload(function(json){
+			autoHighLoad($('#KaiInterInvoiceTable'));
+		},false);
 	  if(id == '1'){
 		  layer.msg("确认开发票成功",{time: 2000});
 	  }else if(id == '2'){

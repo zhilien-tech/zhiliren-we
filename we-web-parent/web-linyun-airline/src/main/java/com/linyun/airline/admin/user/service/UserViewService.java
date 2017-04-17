@@ -441,7 +441,7 @@ public class UserViewService extends BaseService<TUserEntity> {
 	 * @param session
 	 * 打开修改密码页面时准备数据
 	 */
-	public Object updatePassword(final HttpSession session) {
+	public Object openUpdatePassword(final HttpSession session) {
 		Map<String, Object> obj = Maps.newHashMap();
 		//通过session获取用户的id
 		TUserEntity personal = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);

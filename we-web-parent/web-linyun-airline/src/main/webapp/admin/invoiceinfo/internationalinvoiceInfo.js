@@ -172,7 +172,11 @@ function initKaiInterInvoiceTable() {
   });
 }
 function kaiInvoiceLoad(){
-	KaiInterInvoiceTable.ajax.reload();
+	KaiInterInvoiceTable.ajax.reload(
+		function(json){
+			autoHighLoad($('#KaiInterInvoiceTable'));
+		}		
+	);
 }
 //datatable行点击事件
 $("tbody",$('#KaiInterInvoiceTable')).on("dblclick","tr",function(event){
@@ -357,7 +361,11 @@ function initshouInterInvoiceTable() {
 });
 }
 function shouInvoiceLoad(){
-	shouInterInvoiceTable.ajax.reload();
+	shouInterInvoiceTable.ajax.reload(
+		function(json){
+			autoHighLoad($('#shouInterInvoiceTable'));
+		}
+	);
 }
 //datatable行点击事件
 /*$("tbody",$('#shouInterInvoiceTable')).on("dblclick","tr",function(event){
@@ -440,9 +448,9 @@ function shouInvoiceSelectData() {
 		    };
     	shouInterInvoiceTable.settings()[0].ajax.data = param;
     	shouInterInvoiceTable.ajax.reload(
-    			function(json){
-    				autoHighLoad($('#shouInterInvoiceTable'));
-    			}
+			function(json){
+				autoHighLoad($('#shouInterInvoiceTable'));
+			}
     	);
 }
 
