@@ -366,6 +366,7 @@ LEFT JOIN (
 LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
 $condition
 
+
 /*receivePay_inter_rec_order_list*/
 SELECT
 	r.id,
