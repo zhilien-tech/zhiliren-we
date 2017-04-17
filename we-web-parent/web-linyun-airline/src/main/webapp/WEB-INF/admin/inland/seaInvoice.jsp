@@ -102,7 +102,7 @@
 		var bankcardnum = $('#bankcardnum').val();
 		var billurl = $('#billurl').val();
 		var sumincome = $('#sumincome').val();
-		if(actualnumber){
+		if(bankcardnameid){
 			$.ajax({
 		        type: "post",
 		        url: '${base}/admin/inland/saveSeaInvoice.html',

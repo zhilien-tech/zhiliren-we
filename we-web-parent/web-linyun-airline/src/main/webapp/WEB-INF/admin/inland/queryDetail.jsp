@@ -896,7 +896,7 @@
     	$(this).val($(this).val().replace(/[^.\d]/g,''));
     	var fromprice = $(this).val();
     	//票价折扣
-    	var discountFare = 1;
+    	var discountFare = 0;
     	var countfare = '${obj.custominfo.discountFare}';
     	if(countfare){
     		discountFare = countfare;
@@ -910,7 +910,7 @@
     	//alert("值："+fromprice + " 折扣："+discountFare + " 手续费：" + fees);
     	var price = parseFloat(fromprice * discountFare / 100) + parseFloat(fees);
     	if(fromprice){
-     		if(isNaN(price)){
+     		if(isNaN(price) && price > 0){
      			$(this).parent().parent().find('[name=price]').val('');
      		}else{
     	 		$(this).parent().parent().find('[name=price]').val(price.toFixed(2));
