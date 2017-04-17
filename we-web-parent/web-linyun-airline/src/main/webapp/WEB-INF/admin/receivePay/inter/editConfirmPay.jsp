@@ -96,7 +96,7 @@
 				<tr>
 					<td>银行：</td>
 					<td>
-						<select id="bankComp" name="bankComp" onchange="bankSelect();" class="form-control input-sm">
+						<select id="bankComp" name="bankComp" onchange="bankSelect();" class="form-control input-sm" disabled="disabled">
 							<option value="0">--请选择--</option>
 							<c:forEach var="one" items="${obj.bankList}">
 	                 			<c:choose>
@@ -112,13 +112,13 @@
 						</select>
 					</td>
 					<td>银行卡名称：</td>
-					<td><select id="cardName" name="cardName" onchange="cardSelect();" class="form-control input-sm">
+					<td><select id="cardName" name="cardName" onchange="cardSelect();" class="form-control input-sm" disabled="disabled">
 							<!-- <option>--请选择--</option> -->
 							<option>${obj.companybank.cardName }</option>
 					</select></td>
 					<td>卡号：</td>
 					<td>
-						<select id="cardNum" name="cardNum" class="form-control input-sm">
+						<select id="cardNum" name="cardNum" class="form-control input-sm" disabled="disabled">
 							<!-- <option>--请选择--</option> -->
 							<option>${obj.companybank.cardNum }</option>
 						</select>
@@ -252,6 +252,9 @@
 	<script type="text/javascript">
 	
 		function updateConfirmPay(){
+			$("#bankComp").removeAttr("disabled");
+			$("#cardName").removeAttr("disabled");
+			$("#cardNum").removeAttr("disabled");
 			var bankComp = $("#bankComp").val();
 			if(bankComp=="-1"){
 				layer.msg('银行不能为空');
