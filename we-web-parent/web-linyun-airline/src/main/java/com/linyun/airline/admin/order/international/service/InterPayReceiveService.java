@@ -45,6 +45,7 @@ import com.linyun.airline.common.enums.MessageWealthStatusEnum;
 import com.linyun.airline.common.enums.OrderRemindEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.entities.TCompanyEntity;
+import com.linyun.airline.entities.TFinanceInfoEntity;
 import com.linyun.airline.entities.TInvoiceDetailEntity;
 import com.linyun.airline.entities.TInvoiceInfoEntity;
 import com.linyun.airline.entities.TOrderReceiveEntity;
@@ -111,6 +112,15 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 
 			}
 			record.put("orders", orders);
+			String username = "";
+			if (orders.size() > 0) {
+				TFinanceInfoEntity financeinfo = dbDao.fetch(TFinanceInfoEntity.class,
+						Integer.valueOf(orders.get(0).getInt("orderid")).longValue());
+				if (!Util.isEmpty(financeinfo) && !Util.isEmpty(financeinfo.getIssuer())) {
+					username = financeinfo.getIssuer();
+				}
+			}
+			record.put("fullname", username);
 			record.put("receiveenum", EnumUtil.enum2(AccountReceiveEnum.class));
 			record.put("internationalstatusenum", EnumUtil.enum2(InternationalStatusEnum.class));
 		}
@@ -143,7 +153,15 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 			Cnd cnd = Cnd.limit();
 			cnd.and("tp.id", "=", record.get("id"));
 			List<Record> orders = dbDao.query(sql, cnd, null);
-			record.put("username", user.getFullName());
+			String username = "";
+			if (orders.size() > 0) {
+				TFinanceInfoEntity financeinfo = dbDao.fetch(TFinanceInfoEntity.class,
+						Integer.valueOf(orders.get(0).getInt("orderid")).longValue());
+				if (!Util.isEmpty(financeinfo) && !Util.isEmpty(financeinfo.getIssuer())) {
+					username = financeinfo.getIssuer();
+				}
+			}
+			record.put("username", username);
 			record.put("orders", orders);
 			record.put("receiveenum", EnumUtil.enum2(AccountPayEnum.class));
 			record.put("internationalstatusenum", EnumUtil.enum2(InternationalStatusEnum.class));
@@ -175,7 +193,9 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 			ids += tOrderReceiveEntity.getOrderid() + ",";
 			orderstatus = tOrderReceiveEntity.getOrderstatus();
 		}
-		ids = ids.substring(0, ids.length() - 1);
+		if (ids.length() > 0) {
+			ids = ids.substring(0, ids.length() - 1);
+		}
 		String sqlString = sqlManager.get("get_international_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
