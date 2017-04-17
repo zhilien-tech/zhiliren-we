@@ -205,12 +205,12 @@
     	  <div class="listInfo"><!-- 预收款记录/预付款记录 -->
 			<div class="nav-tabs-custom">
 				<ul class="nav nav-tabs query-style">
-					<li class="active"><a href="#tab_1" data-toggle="tab">预收款记录</a></li>
-					<li><a href="#tab_2" data-toggle="tab">预付款记录</a></li>
+					<li class="active"><a href="#tab_2" data-toggle="tab">预付款记录</a></li>
+					<li><a href="#tab_1" data-toggle="tab">预收款记录</a></li>
 				</ul>
 				<div class="tab-content">
-					<div class="tab-pane active" id="tab_1">
-						<button type="button" class="btn btn-primary right recordBtn addYSK none">添加记录</button>
+					<div class="tab-pane" id="tab_1">
+						<!-- <button type="button" class="btn btn-primary right recordBtn addYSK none">添加记录</button> -->
 		                <table class="table table-bordered table-hover main">
 		                    <thead>
 		                      <tr>
@@ -230,7 +230,7 @@
 		                    </tbody>
 		                </table>
 					</div>
-					<div class="tab-pane" id="tab_2">
+					<div class="tab-pane active" id="tab_2">
 						<button type="button" class="btn btn-primary right recordBtn addYFK none">添加记录</button>
 		                <table class="table table-bordered table-hover main">
 		                    <thead>

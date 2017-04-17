@@ -46,12 +46,18 @@ public class FuKuanParamForm extends DataTablesParamForm {
 
 	private Integer status;
 
+	private Integer adminId;
+
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		//cnd.and("tpi.userid", "=", userid);
 		cnd.and("tpi.orderPnrStatus", "!=", AccountPayEnum.REFUSE.intKey());
+		cnd.and("tii.status", "is", null);
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("tuo.companyid", "=", companyid);
+		}
+		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && !userid.equals(adminId)) {
+			cnd.and("tuo.loginUserId", "=", userid);
 		}
 		if (!Util.isEmpty(startdate)) {
 			Date startdates = DateUtil.string2Date(startdate, DateUtil.FORMAT_YYYY_MM_DD);

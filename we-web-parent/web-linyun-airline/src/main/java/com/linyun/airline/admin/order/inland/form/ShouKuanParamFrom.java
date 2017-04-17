@@ -46,12 +46,18 @@ public class ShouKuanParamFrom extends DataTablesParamForm {
 
 	private Integer status;
 
+	private Integer adminId;
+
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
 		cnd.and("tr.userid", "=", userid);
 		cnd.and("tr.companyid", "=", companyid);
 		cnd.and("tr.orderstype", "=", OrderTypeEnum.FIT.intKey());
 		//cnd.and("tr.status", "=", AccountReceiveEnum.RECEIVEDONEY.intKey());
+		cnd.and("tii.status", "is", null);
+		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && !userid.equals(adminId)) {
+			cnd.and("tr.userid", "=", userid);
+		}
 		if (!Util.isEmpty(startdate)) {
 			Date startdates = DateUtil.string2Date(startdate, DateUtil.FORMAT_YYYY_MM_DD);
 			cnd.and("tr.receivedate", ">=", startdates);

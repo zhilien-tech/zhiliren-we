@@ -59,7 +59,7 @@ public class InterRecListSearchSqlForm extends DataTablesParamForm {
 			cnd.and("orec.receivestatus", "=", receiveStatus); //收款状态 收款中、已收款
 		}
 		if (!Util.isEmpty(orderStatus)) {
-			cnd.and("prr.orderstatusid", "=", orderStatus); //订单状态 一订、二订。。。
+			cnd.and("orec.orderstatus", "=", orderStatus); //订单状态 一订、二订。。。
 		}
 		cnd.and("r.companyid", "=", companyId);
 
@@ -75,6 +75,7 @@ public class InterRecListSearchSqlForm extends DataTablesParamForm {
 		String sqlString = sqlManager.get("receivePay_inter_rec_invioce_list");
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
+		sql.setParam("prrOStatus", orderStatus);
 		return sql;
 	}
 

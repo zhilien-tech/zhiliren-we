@@ -17,7 +17,7 @@
 	.form-control-feedback {position: absolute;top: 0px;right: 330px;}
 </style>
 </head>
-<body class="bodyOne">
+<body class="bodyOne" onload="document.getElementById('deptName').focus()">
 	<div class="divContent">
 		<form id="addDeptForm" method="post">
 			<div class="headerClass">

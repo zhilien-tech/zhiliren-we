@@ -10,17 +10,17 @@
    <link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
    <link rel="stylesheet" href="${base}/public/dist/css/personalInfo.css"><!--本页的styleFlie-->	
  </head>
-<body>
+<body onload="document.getElementById('oldPass').focus()">
 	<div class="modal-top">
-		<form id="passwordForm" method="post">
-		     <div class="modal-header">
-		     	  <input id="userId" name="id" type="hidden" value="${obj.personalInfo[0].id}"/>
-		          <button type="button" class="btn btn-primary right btn-sm returnBtn" onclick="closewindow('${obj.personalInfo[0].id}');">取消</button>
-		          <button id="submit" onclick="updatePassData('${obj.personalInfo[0].id}');" class="btn btn-primary right btn-sm saveBtn">保存</button>
-		          <h5>修改密码</h5>
-		     </div>
+	     <div class="modal-header">
+	          <button type="button" class="btn btn-primary right btn-sm returnBtn" onclick="closewindow('${obj.personalInfo[0].id}');">取消</button>
+	          <button id="updatePassDateId" onclick="updatePassData();"  class="btn btn-primary right btn-sm saveBtn">保存</button>
+	          <h5>修改密码</h5>
+	     </div>
+		 <form id="passwordForm" method="post">
 	      	<div class="modal-body pwdBody">
 	          <div class="form-group pwd">
+	          	<input id="userId" name="id" type="hidden" value="${obj.personalInfo[0].id}"/>
 	       		<label>用户密码：</label>
 	            <input id="oldPass" name="password" type="password" placeholder="请输入旧密码"  class="form-control input-sm">
 	            <input id="newPass" name="newPass" type="password" placeholder="请输入新密码" class="form-control input-sm">
@@ -38,44 +38,32 @@
 	<script src="${base}/common/js/layer/layer.js"></script>
 <script type="text/javascript">
 //修改密码
-function updatePassData(userId){
-	$.ajax({
-		type: 'POST',
-		dataType : 'json',
-		async: false,
-		data: $("#passwordForm").serialize(),//form表单数据
-		url: '${base}/admin/user/updatePassword.html',
-        success: function (data) { 
-        	if(data.status == '200'){
-       			alert("修改成功!");
-        		window.parent.location.href="${base}/admin/logout.html";//密码修改成功跳到登录页
-			}else{
-				layer.msg(data.message) ;
-			}
-        },
-        error: function (request) {
-        	layer.msg("密码修改失败!","",3000);
-        } 
-    });
-	/* layer.confirm('您是否确认修改密码？', function(index){
+function updatePassData(){
+    parent.layer.confirm('您确认修改密码吗？', {
+	   btn: ['是','否'], //按钮
+	   shade: false //不显示遮罩
+	}, function(){
 		$.ajax({
-			type : 'POST',
-			data: $("#passwordForm").serialize(),//form表单数据
-			dataType : 'json',
+			type : "POST",
 			url : '${base}/admin/user/updatePassword.html',
+			data : $('#passwordForm').serialize(),
 			success : function(data) {
-				if(data.status == '200'){
-					layer.close(index);
-	        		window.parent.location.href="${base}/admin/logout.html";//密码修改成功跳到登录页
-				}else{
-					layer.msg(data.message) ;
+				if ("200" == data.status) {
+					window.location.href="${base}/admin/logout.html";
+					var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+			      	parent.layer.close(index);
+			      	window.parent.successCallback('1');
+				} else {
+					parent.layer.msg("操作失败!"); 
 				}
 			},
-			error : function(xhr) {
-				layer.msg("操作失败", "", 3000);
+			error : function(request) {
+				parent.layer.msg('操作失败!');
 			}
 		});
-	}); */
+	}, function(){
+		 //取消之后不做任何操作
+	});
 }
 //点击取消
 function closewindow(){

@@ -149,7 +149,11 @@ function initKaiInvoiceTable1() {
   });
 }
 function kaiInvoiceLoad(){
-	KaiInvoiceTable1.ajax.reload();
+	KaiInvoiceTable1.ajax.reload(
+		function(json){
+			autoHighLoad($('#KaiInvoiceTable1'));
+		}
+	);
 }
 //datatable行点击事件
 $("tbody",$('#KaiInvoiceTable1')).on("dblclick","tr",function(event){
@@ -371,9 +375,9 @@ function initshouInvoiceTable1() {
 }
 function shouInvoiceLoad(){
 	shouInvoiceTable1.ajax.reload(
-			function(json){
-				autoHighLoad($('#shouInvoiceTable1'));
-			}
+		function(json){
+			autoHighLoad($('#shouInvoiceTable1'));
+		}
 	);
 }
 //datatable行点击事件

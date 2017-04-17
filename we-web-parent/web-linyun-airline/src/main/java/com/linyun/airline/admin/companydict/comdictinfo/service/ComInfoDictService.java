@@ -101,7 +101,15 @@ public class ComInfoDictService extends BaseService<ComDictInfoEntity> {
 		cnd.and("cin.id", "=", id);
 		cnd.and("cin.comId", "=", comId);
 		List<Record> single = dbDao.query(sql, cnd, null);
+		//编辑时查询出字典内别名称
+		/*Sql sql2 = Sqls.create(sqlManager.get("company_dictinfo_list"));
+		Cnd cnd2 = Cnd.NEW();
+		cnd2.and("cmd.id", "=", id);
+		cnd2.and("cmd.comId", "=", comId);
+		cnd2.and("cmd.comTypeCode", "!=", "DLZH").and("cmd.comTypeCode", "!=", "DSFZF");
+		List<Record> lsttypename = dbDao.query(sql2, cnd2, null);*/
 		obj.put("single", single);
+		//obj.put("lsttypename", lsttypename);
 		return obj;
 	}
 

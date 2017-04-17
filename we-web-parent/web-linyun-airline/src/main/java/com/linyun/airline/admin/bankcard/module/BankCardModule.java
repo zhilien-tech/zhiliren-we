@@ -22,6 +22,7 @@ import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.bankcard.service.BankCardViewService;
 import com.linyun.airline.admin.dictionary.external.externalInfoServiceImpl;
+import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.forms.TBankCardAddForm;
 import com.linyun.airline.forms.TBankCardForm;
@@ -105,7 +106,8 @@ public class BankCardModule {
 	@At
 	public Object selectBankName() {
 		//查询有哪些银行
-		return dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "YH"), null);
+		return dbDao.query(DictInfoEntity.class,
+				Cnd.where("typeCode", "=", "YH").and("status", "=", DataStatusEnum.ENABLE.intKey()), null);
 	}
 
 	/**
@@ -114,7 +116,8 @@ public class BankCardModule {
 	@At
 	public Object selectBankCardType() {
 		//查询有哪些银行卡类型
-		return dbDao.query(DictInfoEntity.class, Cnd.where("typeCode", "=", "YHKLX"), null);
+		return dbDao.query(DictInfoEntity.class,
+				Cnd.where("typeCode", "=", "YHKLX").and("status", "=", DataStatusEnum.ENABLE.intKey()), null);
 	}
 
 	/**
