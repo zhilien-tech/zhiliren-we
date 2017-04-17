@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="${base}/public/dist/css/dict.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
 </head>
-<body>
+<body onload="document.getElementById('areaName').focus()">
 	<div class="modal-top">
 		<form id="addAreaForm" method="post">
 		     <div class="modal-header">
@@ -21,7 +21,7 @@
 		      <div class="modal-body">
 		          <div class="form-group">
 		             <div class="col-md-8 col-md-offset-2">
-						<input id="areaName" name="areaName" type="text" placeholder="请输入区域名称" class="form-control input-sm">
+						<input id="areaName" onfocus="aaa();" name="areaName" type="text" placeholder="请输入区域名称" class="form-control input-sm">
 		             </div>
 		          </div>
 		      </div>
