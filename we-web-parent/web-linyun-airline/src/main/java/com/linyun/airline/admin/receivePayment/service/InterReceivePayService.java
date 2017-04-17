@@ -281,6 +281,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("uo.id", "in", ids);
+		cnd.and("prr.recordtype", "=", RECEIVETYPE);
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//计算合计金额
 		Double sum = 0.0;
@@ -308,9 +309,15 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				.query(TReceiveBillEntity.class, Cnd.where("receiveid", "=", id), null);
 		//银行卡下拉
 		map.put("yhkSelect", yhkSelect);
+
+		int bankcardid = fetch.getBankcardid();
+		DictInfoEntity bank = dbDao.fetch(DictInfoEntity.class, bankcardid);
+		String bankName = bank.getDictName();
+
 		//订单信息id
 		map.put("ids", ids);
 		map.put("id", id);
+		map.put("bankName", bankName);
 		map.put("receive", fetch);
 		if (receipts.size() > 0) {
 			map.put("receipturl", receipts.get(0));
@@ -744,7 +751,34 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				}
 			}
 		}
-		map.put("orders", orders);
+
+		//同一订单号，一行显示   TODO
+		List<Record> NewList = new ArrayList<Record>();
+		String oNumStr = "";
+		for (Record record : orders) {
+			String oNum = record.getString("ordersnum");
+			if (!Util.eq(oNumStr, oNum)) {
+				NewList.add(record);
+			}
+			oNumStr = oNum;
+		}
+		//新集合、
+		for (Record record : NewList) {
+			List<String> pnrList = new ArrayList<String>();
+			String newONum = record.getString("ordersnum");
+			for (Record r : orders) {
+				String oNum = r.getString("ordersnum");
+				if (Util.eq(newONum, oNum)) {
+					String pnrStr = r.getString("pnrnum");
+					if (!Util.isEmpty(pnrStr)) {
+						pnrList.add(pnrStr);
+					}
+				}
+			}
+			record.set("pnrnum", pnrList);
+		}
+
+		map.put("orders", NewList);
 
 		//计算合计金额
 		double totalMoney = 0;
@@ -872,7 +906,6 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		cnd.and("prr.id", "in", prrIds);
 		cnd.and("po.paystauts", "=", APPROVALPAYED);
 		List<Record> payList = dbDao.query(sql, cnd, null);
-
 		//总金额
 		double totalMoney = 0.00;
 		//申请人
@@ -912,6 +945,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				String formatBillDate = FormatDateUtil.dateToOrderDate(DateTimeUtil.string2Date(billDateStr, null));
 				record.set("billingdate", formatBillDate);
 			}
+
 		}
 		result.put("proposer", proposer);
 		result.put("approver", approver);
@@ -920,7 +954,34 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		} else {
 			result.put("approveresult", "拒绝");
 		}
-		result.put("payList", payList);
+
+		//同一订单号，一行显示   TODO
+		List<Record> NewList = new ArrayList<Record>();
+		String oNumStr = "";
+		for (Record record : payList) {
+			String oNum = record.getString("ordersnum");
+			if (!Util.eq(oNumStr, oNum)) {
+				NewList.add(record);
+			}
+			oNumStr = oNum;
+		}
+		//新集合、
+		for (Record record : NewList) {
+			List<String> pnrList = new ArrayList<String>();
+			String newONum = record.getString("ordersnum");
+			for (Record r : payList) {
+				String oNum = r.getString("ordersnum");
+				if (Util.eq(newONum, oNum)) {
+					String pnrStr = r.getString("pnrnum");
+					if (!Util.isEmpty(pnrStr)) {
+						pnrList.add(pnrStr);
+					}
+				}
+			}
+			record.set("pnrnum", pnrList);
+		}
+
+		result.put("payList", NewList);
 		//总金额
 		result.put("totalMoney", totalMoney);
 

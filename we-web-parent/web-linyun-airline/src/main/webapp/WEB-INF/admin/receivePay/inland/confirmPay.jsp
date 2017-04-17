@@ -269,51 +269,57 @@
 	
 		//银行名称改变
 		function bankSelect(){
-			$.ajax({
-				cache : false,
-				type : "POST",
-				data : {
-					bankId:$('#bankComp').val().split(',')[1]
-				},
-				url : '${base}/admin/receivePay/inter/getCardNames.html',
-				success : function(data) {
-					/* var option = "<option>--请选择--</option>"; */
-					var option = "";
-					var nameNtr = option;
-					var numStr = option;
-					for(var i=0;i< data.length;i++){
-						nameNtr += '<option value="'+data[i]+'">'+data[i]+'</option>';
+			var bankId = $('#bankComp').val().split(',')[1];
+			if(bankId){
+				$.ajax({
+					cache : false,
+					type : "POST",
+					data : {
+						bankId:$('#bankComp').val().split(',')[1]
+					},
+					url : '${base}/admin/receivePay/inter/getCardNames.html',
+					success : function(data) {
+						/* var option = "<option>--请选择--</option>"; */
+						var option = "";
+						var nameNtr = option;
+						var numStr = option;
+						for(var i=0;i< data.length;i++){
+							nameNtr += '<option value="'+data[i]+'">'+data[i]+'</option>';
+						}
+						document.getElementById("cardName").innerHTML = nameNtr;
+						cardSelect();
+					},
+					error : function(request) {
+						
 					}
-					document.getElementById("cardName").innerHTML = nameNtr;
-					cardSelect();
-				},
-				error : function(request) {
-					
-				}
-			});
+				});
+			}
 		}
 		
 		//银行卡名称改变
 		function cardSelect(){
-			$.ajax({
-				cache : false,
-				type : "POST",
-				data : {
-					cardName:$('#cardName').val()
-				},
-				url : '${base}/admin/receivePay/inland/getCardNums.html',
-				success : function(data) {
-					/* var str = "<option>--请选择--</option>"; */
-					var str = "";
-					for(var i=0;i< data.length;i++){
-						str += '<option value="'+data[i]+'">'+data[i]+'</option>';
+			var cardName = $('#cardName').val();
+			if(cardName){
+				$.ajax({
+					cache : false,
+					type : "POST",
+					data : {
+						cardName:$('#cardName').val()
+					},
+					url : '${base}/admin/receivePay/inland/getCardNums.html',
+					success : function(data) {
+						/* var str = "<option>--请选择--</option>"; */
+						var str = "";
+						for(var i=0;i< data.length;i++){
+							str += '<option value="'+data[i]+'">'+data[i]+'</option>';
+						}
+						document.getElementById("cardNum").innerHTML=str;
+					},
+					error : function(request) {
+						
 					}
-					document.getElementById("cardNum").innerHTML=str;
-				},
-				error : function(request) {
-					
-				}
-			});
+				});
+			}
 		}
 		
 		function trDetail(id){

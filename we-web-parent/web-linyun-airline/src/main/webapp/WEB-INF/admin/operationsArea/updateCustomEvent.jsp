@@ -87,9 +87,7 @@
 						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 						parent.layer.close(index);
 						//添加成功 刷新各个模块
-						window.parent.backgroundMonth();
 						window.parent.taskBarFunctions();
-						window.parent.minCalendarInit();
 						window.parent.reload();
 						window.parent.getTimeStr();
 						window.parent.checkBoxShow();
@@ -97,6 +95,7 @@
 						window.parent.minCalendarbackground();
 						window.parent.removeClass();
 						window.parent.removeMinCalendar();
+						window.parent.minCalendarInit();
 						window.parent.backgroundMonth();
 						window.parent.layer.msg("更新成功", "", 2000);
 					},
@@ -146,13 +145,13 @@
 						window.parent.taskEventList();
 						window.parent.reload();
 						window.parent.getTimeStr();
-						window.parent.minCalendarInit();
 						window.parent.checkBoxShow();
 						window.parent.createMinCanlender();
 						window.parent.minCalendarbackground();
 						window.parent.removeClass();
 						window.parent.removeMinCalendar();
 						window.parent.backgroundMonth();
+						window.parent.minCalendarInit();
 						window.parent.layer.msg("删除成功", "", 2000);
 					},
 					error : function() {
