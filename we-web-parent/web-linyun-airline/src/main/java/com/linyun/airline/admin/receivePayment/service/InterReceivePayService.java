@@ -92,7 +92,8 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	private static final int ENABLE = BankCardStatusEnum.ENABLE.intKey();
 	private static final String YTCODE = ComDictTypeEnum.DICTTYPE_XMYT.key();
 	private static final String ZJZLCODE = ComDictTypeEnum.DICTTYPE_ZJZL.key();
-	private static final int RECEIVESTATUS = AccountReceiveEnum.RECEIVEDONEY.intKey();
+	private static final int RECEIVINGMONEY = AccountReceiveEnum.RECEIVINGMONEY.intKey(); //收款中
+	private static final int RECEIVESTATUS = AccountReceiveEnum.RECEIVEDONEY.intKey(); //已收款
 	private static final int APPROVALPAYED = AccountPayEnum.APPROVALPAYED.intKey();
 	private static final int APPROVALPAYING = AccountPayEnum.APPROVALPAYING.intKey();
 	private static final int APPROVALENABLE = ApprovalResultEnum.ENABLE.intKey();
@@ -346,7 +347,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//添加流水
 		TTurnOverAddForm addForm = new TTurnOverAddForm();
 		TReceiveEntity receiveEntity = dbDao.fetch(TReceiveEntity.class, Cnd.where("id", "in", recId));
-		int bankcardId = receiveEntity.getBankcardid();
+		int bankcardId = receiveEntity.getBankcardnameid();
 		Double sum = receiveEntity.getSum();
 		String bankcardnum = receiveEntity.getBankcardnum();
 		String comName = loginCompany.getComName();
@@ -1134,6 +1135,13 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		if (Util.eq("false", payNames)) {
 			//收款单位不一致，不能付款
 			return false;
+		}
+		//验证银行卡是否有余额
+		boolean cardMoney = turnOverViewService.checkBankCardNumEnoughOther(Integer.valueOf(bankcardId), "支出",
+				totalMoney);
+		if (Util.eq("false", cardMoney)) {
+			//余额不足
+			return "余额不足";
 		}
 		//付款水单 集合
 		List<TPayReceiptEntity> payReceiptList = new ArrayList<TPayReceiptEntity>();

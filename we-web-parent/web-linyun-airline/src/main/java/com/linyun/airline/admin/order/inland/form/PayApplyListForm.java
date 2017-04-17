@@ -68,6 +68,9 @@ public class PayApplyListForm extends DataTablesParamForm {
 					.or("tuo.ordersnum", "like", "%" + searchInfo + "%");
 			cnd.and(exp1);
 		}
+		if (!Util.isEmpty(userId) && !Util.isEmpty(adminId) && !userId.equals(adminId)) {
+			cnd.and("tuo.loginUserId", "=", userId);
+		}
 		SqlExpressionGroup exp = new SqlExpressionGroup();
 		exp.and("tpi.orderPnrStatus", "=", "").or("tpi.orderPnrStatus", "is", null)
 				.or("tpi.orderPnrStatus", "=", AccountPayEnum.REFUSE.intKey());

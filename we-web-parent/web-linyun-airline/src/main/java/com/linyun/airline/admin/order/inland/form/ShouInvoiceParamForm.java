@@ -51,12 +51,17 @@ public class ShouInvoiceParamForm extends DataTablesParamForm {
 
 	private Long companyid;
 
+	private Integer adminId;
+
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		//cnd.and("opid", "=", userid);
 		cnd.and("invoicetype", "=", PayReceiveTypeEnum.PAY.intKey());
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("tii.comId", "=", companyid);
+		}
+		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && !userid.equals(adminId)) {
+			cnd.and("tii.opid", "=", userid);
 		}
 		if (!Util.isEmpty(startdate)) {
 			Date startdates = DateUtil.string2Date(startdate, DateUtil.FORMAT_YYYY_MM_DD);

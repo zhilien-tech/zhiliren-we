@@ -186,3 +186,7 @@ create table t_inter_message
 
 alter table t_inter_message comment '国际消息提醒表';
 
+ALTER TABLE `t_receive`
+ADD COLUMN `bankcardnameid`  int NULL COMMENT '银行卡id' AFTER `orderstatus`;
+
+

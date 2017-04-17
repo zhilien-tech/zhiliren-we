@@ -50,6 +50,10 @@ public class InternationalPayParamForm extends DataTablesParamForm {
 
 	private String searchInfo;
 
+	private Integer userid;
+
+	private Integer adminId;
+
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
@@ -59,6 +63,9 @@ public class InternationalPayParamForm extends DataTablesParamForm {
 		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.PAY.intKey());
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("tpi.companyid", "=", companyid);
+		}
+		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && !userid.equals(adminId)) {
+			cnd.and("tuo.loginUserId", "=", userid);
 		}
 		if (!Util.isEmpty(ordersstatus)) {
 			/*if (!Util.isEmpty(ticketing)) {

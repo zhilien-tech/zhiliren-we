@@ -46,6 +46,8 @@ public class InternationalShouListForm extends DataTablesParamForm {
 
 	private Integer shouinvoicestatus;
 
+	private Integer adminId;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		//String sqlString = EntityUtil.entityCndSql(TInvoiceInfoEntity.class);
@@ -61,6 +63,9 @@ public class InternationalShouListForm extends DataTablesParamForm {
 		//cnd.and("invoicetype", "=", InvoiceInfoEnum.RECEIPT_INVOIC_ING.intKey());//开发票中
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("comId", "=", companyid);
+		}
+		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && !userid.equals(adminId)) {
+			cnd.and("tuo.loginUserId", "=", userid);
 		}
 		DateFormat format = new SimpleDateFormat(DateUtil.FORMAT_YYYYMMDD);
 		if (!Util.isEmpty(searchInfo)) {

@@ -44,6 +44,8 @@ public class InterReceiptSqlForm extends DataTablesParamForm {
 
 	private Integer receivestatus;
 
+	private Integer adminId;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		String sqlString = sqlManager.get("get_international_receive_list");
@@ -55,8 +57,12 @@ public class InterReceiptSqlForm extends DataTablesParamForm {
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tr.orderstype", "=", OrderTypeEnum.TEAM.intKey());
+		cnd.and("tii.status", "is", null);
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("tr.companyid", "=", companyid);
+		}
+		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && !userid.equals(adminId)) {
+			cnd.and("tr.userid", "=", userid);
 		}
 		if (!Util.isEmpty(searchInfo)) {
 			SqlExpressionGroup sqlex = new SqlExpressionGroup();
