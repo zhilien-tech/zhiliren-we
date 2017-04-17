@@ -83,7 +83,7 @@
 													<c:if test="${'2' eq obj.queryForm.contract}">selected</c:if>>禁止合作</option>
 											</select>
 										</div>
-										<div class="col-md-2">
+										<div class="col-md-2 col-padding">
 											<!--是否禁用 下拉框-->
 											<select id="forbid" class="form-control select" name="forbid" onchange="searchOpt();">
 												<option value="">是否禁用</option>
@@ -93,7 +93,7 @@
 													<c:if test="${'1' eq obj.queryForm.forbid}">selected</c:if>>是</option>
 											</select>
 										</div>
-										<div class="col-md-3">
+										<div class="col-md-3 col-padding">
 											<!--公司名称/负责人/电话 搜索框-->
 											<input type="text" id="sname" name="name"
 												 class="form-control"  placeholder="公司名称/负责人/电话" onkeypress="onkeyEnter();">
