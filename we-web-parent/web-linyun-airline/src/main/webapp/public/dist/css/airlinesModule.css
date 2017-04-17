@@ -1,4 +1,5 @@
-.kalendae{overflow: hidden;}
+#isclose,#airline,#travel,#totalcount,#totalday,#leavedate,#leavecity,#backdate,#backcity{padding-left:3px;padding-right:3px;}
+.kalendae{overflow: hidden;24 46 20 20}
 .k-btn-previous-year,.k-btn-next-year{display: none;}
 .k-first-month{margin-left: -270px;}
 .k-first-month .k-title{overflow:inherit;}

@@ -149,7 +149,11 @@ function initKaiInvoiceTable1() {
   });
 }
 function kaiInvoiceLoad(){
-	KaiInvoiceTable1.ajax.reload();
+	KaiInvoiceTable1.ajax.reload(
+		function(json){
+			autoHighLoad($('#KaiInvoiceTable1'));
+		}
+	);
 }
 //datatable行点击事件
 $("tbody",$('#KaiInvoiceTable1')).on("dblclick","tr",function(event){
@@ -165,6 +169,7 @@ function openkaiInvoiceEdit(id){
         skin: false, //加上边框
         closeBtn:false,//默认 右上角关闭按钮 是否显示
         shadeClose:true,
+        scrollbar: false,
         area: ['987px', '620px'],
         content: BASE_PATH + '/admin/invoicemanage/invoiceinfo/kaiOpenInvoice.html?id='+id
       });
@@ -370,9 +375,9 @@ function initshouInvoiceTable1() {
 }
 function shouInvoiceLoad(){
 	shouInvoiceTable1.ajax.reload(
-			function(json){
-				autoHighLoad($('#shouInvoiceTable1'));
-			}
+		function(json){
+			autoHighLoad($('#shouInvoiceTable1'));
+		}
 	);
 }
 //datatable行点击事件
@@ -394,6 +399,7 @@ function openshouInvoiceEdit(id){
         skin: false, //加上边框
         closeBtn:false,//默认 右上角关闭按钮 是否显示
         shadeClose:true,
+        scrollbar: false,
         area: ['987px', '620px'],
         content: BASE_PATH + '/admin/invoicemanage/invoiceinfo/shouOpenInvoice.html?id='+id
     });

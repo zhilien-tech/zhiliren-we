@@ -134,6 +134,7 @@ $("tbody",$('#inlandPayTable')).on("dblclick","tr",function(event){
 		skin: false, //加上边框
 		closeBtn:false,//默认 右上角关闭按钮 是否显示
 		shadeClose:false,
+		scrollbar: false,
 		area: ['850px', '650px'],
 		content: ['confirmPay.html?inlandPayIds='+ ids,'no'],
 	});
@@ -164,7 +165,7 @@ function initPayEdDataTable(){
 			}
 		},
 		"columns": [
-        {"data": "ordernum", "bSortable": false,
+        {"data": "ordernum", "bSortable": false,"width":"7%",
         	render:function(data, type, row, meta) {
         		var result = '<ul> ';
         		$.each(row.orders, function(name, value) {
@@ -176,7 +177,7 @@ function initPayEdDataTable(){
         		return result;
         	}
         },
-        {"data": "pnrnum", "bSortable": false,
+        {"data": "pnrnum", "bSortable": false,"width":"7%",
         	render:function(data, type, row, meta) {
         		var result = '<ul> ';
         		$.each(row.orders, function(name, value) {
@@ -188,7 +189,7 @@ function initPayEdDataTable(){
         		return result;
         	}
         },
-        {"data": "leavedate", "bSortable": false,
+        {"data": "leavedate", "bSortable": false,"width":"7%",
         	render: function(data, type, row, meta) {
         		var result = '<ul> ';
         		$.each(row.orders, function(name, value) {
@@ -205,7 +206,7 @@ function initPayEdDataTable(){
         		return result;
         	}
         },
-        {"data": "peoplecount", "bSortable": false,
+        {"data": "peoplecount", "bSortable": false,"width":"4%",
         	render: function(data, type, row, meta) {
         		var result = '<ul> ';
         		$.each(row.orders, function(name, value) {
@@ -222,7 +223,7 @@ function initPayEdDataTable(){
         		return result;
         	}
         },
-        {"data": "saleprice", "bSortable": false,
+        {"data": "saleprice", "bSortable": false,"width":"3%",
         	render:function(data, type, row, meta) {
         		var result = '<ul> ';
         		$.each(row.orders, function(name, value) {
@@ -246,7 +247,7 @@ function initPayEdDataTable(){
         		return result;
         	}
         },
-        {"data": "totalmoney", "bSortable": false,
+        {"data": "totalmoney", "bSortable": false,"width":"8%",
         	render: function(data, type, row, meta) {
         		var totalmoney = row.totalmoney;
         		if(null == totalmoney || ""== totalmoney){
@@ -293,9 +294,8 @@ function initPayEdDataTable(){
         		}
         		return asd;
         	}
-        }
-        ],
-        "infoCallback": function (settings, start, end, max, total, pre) {
+        },
+        {"infoCallback": function (settings, start, end, max, total, pre) {
         	var length = $(".checkBoxPayChild:checked").length;
         	if(inlandPayEdTable.page.len() == length){
         		$(".checkBoxPayAll").prop("checked", true);
@@ -304,7 +304,8 @@ function initPayEdDataTable(){
 
         	}
         	return '显示第 '+start+' 至 '+end+' 条结果，共'+total+' 条 (每页显示 '+max+' 条)'
-        },
+        }
+        }],
         columnDefs: [{
         	//   指定第一列，从0开始，0表示第一列，1表示第二列……
         	targets: 11,
@@ -324,6 +325,7 @@ function editPay(ids){
 		skin: false, //加上边框
 		closeBtn:false,//默认 右上角关闭按钮 是否显示
 		shadeClose:false,
+		scrollbar: false,
 		area: ['850px', '650px'],
 		content: ['editConfirmPay.html?payid='+ ids,'no'],
 	});
@@ -406,6 +408,7 @@ $('#inlandPayClick').click(function(){
 			skin: false, //加上边框
 			closeBtn:false,//默认 右上角关闭按钮 是否显示
 			shadeClose:false,
+			scrollbar: false,
 			area: ['850px', '650px'],
 			content: ['confirmPay.html?inlandPayIds='+ ids,'no'],
 		});

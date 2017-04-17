@@ -349,17 +349,23 @@ $condition
 /*receivePay_inter_rec_invioce_list*/
 SELECT
 	r.*, 
-	orec.receivestatus,
-	ii.id invoiceid,
+    orec.receivestatus,
 	fi.`issuer` userName
 FROM
 	t_receive r
-LEFT JOIN t_order_receive orec ON orec.receiveid=r.id
-LEFT JOIN t_up_order uo on uo.id=orec.orderid
-LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
-LEFT JOIN t_invoice_info ii ON r.id = ii.receiveid
-LEFT JOIN t_finance_info fi on fi.orderid=uo.id
+INNER JOIN t_order_receive orec ON orec.receiveid = r.id
+INNER JOIN t_up_order uo ON uo.id = orec.orderid
+LEFT JOIN (
+	SELECT
+		*
+	FROM
+		t_pay_receive_record
+	WHERE
+		orderstatusid = @prrOStatus
+) prr ON prr.orderid = uo.id
+LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
 $condition
+
 
 /*receivePay_inter_rec_order_list*/
 SELECT

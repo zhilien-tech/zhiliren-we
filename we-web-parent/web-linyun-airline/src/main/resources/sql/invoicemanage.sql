@@ -93,6 +93,7 @@ $condition
 /*invoicemanage_shou_invoice_list*/
 SELECT
 	tii.comId,
+	tii.billuserid,
 	tuo.id AS orderids,
 	tuo.ordersnum,
 	tpi.*, tii.invoicedate,

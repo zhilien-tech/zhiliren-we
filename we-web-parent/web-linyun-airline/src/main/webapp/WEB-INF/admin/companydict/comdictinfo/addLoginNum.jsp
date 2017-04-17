@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
 	<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
+	<link rel="stylesheet" href="${base}/public/dist/css/dict.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
 	<!-- js -->
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -20,7 +21,7 @@
 		.form-control-feedback {top: 0px;left: 210px;}
 	</style>
 </head>
-<body>
+<body onload="document.getElementById('webURlId').focus()">
 	<div class="modal-top">
     <div class="modal-header boderButt">
         <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">返回</button>

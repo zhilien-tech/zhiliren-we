@@ -210,6 +210,7 @@ function confirmReceive(id){
 		skin: false, //加上边框
 		closeBtn:false,//默认 右上角关闭按钮 是否显示
 		shadeClose:false,
+		scrollbar: false,
 		area: ['850px', '650px'],
 		content: ['confirmReceive.html?inlandRecId='+ id,'no'],
 	});
