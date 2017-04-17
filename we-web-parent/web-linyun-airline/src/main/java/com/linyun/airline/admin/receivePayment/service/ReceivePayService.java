@@ -199,7 +199,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//添加流水 TODO
 		TTurnOverAddForm addForm = new TTurnOverAddForm();
 		TReceiveEntity receiveEntity = dbDao.fetch(TReceiveEntity.class, Cnd.where("id", "in", recId));
-		int bankcardId = receiveEntity.getBankcardid();
+		int bankcardId = receiveEntity.getBankcardnameid();
 		Double sum = receiveEntity.getSum();
 		String bankcardnum = receiveEntity.getBankcardnum();
 		String comName = loginCompany.getComName();
