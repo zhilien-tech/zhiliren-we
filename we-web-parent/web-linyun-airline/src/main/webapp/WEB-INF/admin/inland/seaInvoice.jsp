@@ -98,6 +98,7 @@
 		var ids = $('#ids').val();
 		var bankcardid = $('#bankcardid').val();
 		var bankcardname = $('#bankcardname').find("option:selected").text();
+		var bankcardnameid = $('#bankcardname').val();
 		var bankcardnum = $('#bankcardnum').val();
 		var billurl = $('#billurl').val();
 		var sumincome = $('#sumincome').val();
@@ -105,7 +106,7 @@
 			$.ajax({
 		        type: "post",
 		        url: '${base}/admin/inland/saveSeaInvoice.html',
-		        data: {ids:ids,bankcardid:bankcardid,bankcardname:bankcardname,bankcardnum:bankcardnum,billurl:billurl,sumincome:sumincome},
+		        data: {ids:ids,bankcardid:bankcardid,bankcardnameid:bankcardnameid,bankcardname:bankcardname,bankcardnum:bankcardnum,billurl:billurl,sumincome:sumincome},
 		        cache: false,
 		        async : false,
 		        success: function (data ,textStatus, jqXHR){

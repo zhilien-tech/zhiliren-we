@@ -349,7 +349,7 @@ $condition
 /*receivePay_inter_rec_invioce_list*/
 SELECT
 	r.*, 
-  orec.receivestatus,
+    orec.receivestatus,
 	fi.`issuer` userName
 FROM
 	t_receive r

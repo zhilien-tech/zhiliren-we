@@ -60,4 +60,8 @@ public class TReceiveEntity implements Serializable {
 	@Column
 	@Comment("订单状态")
 	private Integer orderstatus;
+
+	@Column
+	@Comment("银行卡名称ID")
+	private Integer bankcardnameid;
 }

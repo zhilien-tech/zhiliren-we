@@ -80,6 +80,7 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 				null);
 		sqlForm.setCompanyid(new Long(company.getId()).intValue());
 		sqlForm.setUserid(new Long(user.getId()).intValue());
+		sqlForm.setAdminId(company.getAdminId().intValue());
 		Map<String, Object> listData = this.listPage4Datatables(sqlForm);
 		List<Record> data = (List<Record>) listData.get("data");
 		for (Record record : data) {
@@ -138,6 +139,7 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 				null);
 		sqlForm.setCompanyid(new Long(company.getId()).intValue());
 		sqlForm.setUserid(new Long(user.getId()).intValue());
+		sqlForm.setAdminId(company.getAdminId().intValue());
 		Map<String, Object> listData = this.listPage4Datatables(sqlForm);
 		List<Record> data = (List<Record>) listData.get("data");
 		for (Record record : data) {

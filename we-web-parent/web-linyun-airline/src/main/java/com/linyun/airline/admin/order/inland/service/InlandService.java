@@ -829,6 +829,14 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				//保存流水信息
 			if (orderType == OrderStatusEnum.TICKETING.intKey() && !Util.isEmpty(paymethod)
 					&& paymethod != PayMethodEnum.THIRDPART.intKey()) {
+				List<TPnrInfoEntity> pnrinfos = dbDao.query(TPnrInfoEntity.class, Cnd.where("needid", "=", customerId),
+						null);
+				double money = 0;
+				for (TPnrInfoEntity pnrinfo : pnrinfos) {
+					if (!Util.isEmpty(pnrinfo.getCostpricesum())) {
+						money += pnrinfo.getCostpricesum();
+					}
+				}
 				TTurnOverAddForm addForm = new TTurnOverAddForm();
 				addForm.setCompanyNameId(company.getId());
 				addForm.setCompanyName(company.getComName());
@@ -836,7 +844,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				TBankCardEntity bankinfo = dbDao.fetch(TBankCardEntity.class, paymethod.longValue());
 				addForm.setCardNum(bankinfo.getCardNum());
 				addForm.setBankName(bankinfo.getBankName());
-				addForm.setMoney(chengbensum);
+				addForm.setMoney(money);
 				addForm.setTradeDate(new Date());
 				addForm.setPurpose("支出");
 				addForm.setAverageRate((String) map.get("realtimexrate"));
@@ -1489,12 +1497,16 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		Iterable<String> split = Splitter.on(",").split(ids);
 		String bankcardid = request.getParameter("bankcardid");
 		String bankcardname = request.getParameter("bankcardname");
+		String bankcardnameid = request.getParameter("bankcardnameid");
 		String bankcardnum = request.getParameter("bankcardnum");
 		String billurl = request.getParameter("billurl");
 		String sumincome = request.getParameter("sumincome");
 		TReceiveEntity receiveEntity = new TReceiveEntity();
 		receiveEntity.setBankcardid(Integer.valueOf(bankcardid));
 		receiveEntity.setBankcardname(bankcardname);
+		if (!Util.isEmpty(bankcardnameid)) {
+			receiveEntity.setBankcardnameid(Integer.valueOf(bankcardnameid));
+		}
 		receiveEntity.setBankcardnum(bankcardnum);
 		receiveEntity.setReceivedate(new Date());
 		receiveEntity.setUserid(new Long(user.getId()).intValue());
@@ -1628,6 +1640,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		Integer userid = Long.valueOf(user.getId()).intValue();
 		sqlParamForm.setUserid(userid);
 		sqlParamForm.setCompanyid(new Long(company.getId()).intValue());
+		sqlParamForm.setAdminId(company.getAdminId().intValue());
 		Map<String, Object> datatabledata = this.listPage4Datatables(sqlParamForm);
 		@SuppressWarnings("unchecked")
 		List<Record> list = (List<Record>) datatabledata.get("data");
@@ -1752,6 +1765,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		Integer userid = Long.valueOf(user.getId()).intValue();
 		sqlParamForm.setUserid(userid);
 		sqlParamForm.setCompanyid(company.getId());
+		sqlParamForm.setAdminId(company.getAdminId().intValue());
 		Map<String, Object> datatabledata = this.listPage4Datatables(sqlParamForm);
 		@SuppressWarnings("unchecked")
 		List<Record> list = (List<Record>) datatabledata.get("data");

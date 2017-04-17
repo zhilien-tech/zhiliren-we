@@ -47,6 +47,8 @@ public class InternationalKaiListForm extends DataTablesParamForm {
 
 	private Integer kaiinvoicestatus;
 
+	private Integer adminId;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		String sqlString = EntityUtil.entityCndSql(TInvoiceInfoEntity.class);
@@ -57,6 +59,9 @@ public class InternationalKaiListForm extends DataTablesParamForm {
 
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
+		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && !userid.equals(adminId)) {
+			cnd.and("opid", "=", userid);
+		}
 		if (!Util.isEmpty(startdate)) {
 			Date startdates = DateUtil.string2Date(startdate, DateUtil.FORMAT_YYYY_MM_DD);
 			cnd.and("invoicedate", ">=", startdates);
