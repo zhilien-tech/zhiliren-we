@@ -511,7 +511,10 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 			}
 			idStr = id;
 		}
-		ids = ids.substring(0, ids.length() - 1);
+		if (ids.length() > 1) {
+			ids = ids.substring(0, ids.length() - 1);
+		}
+
 		List<TUpOrderEntity> orderList = dbDao.query(TUpOrderEntity.class, Cnd.where("id", "in", ids), null);
 		for (Record record : recordsByCondition) {
 			int orderId = record.getInt("uporderid");
