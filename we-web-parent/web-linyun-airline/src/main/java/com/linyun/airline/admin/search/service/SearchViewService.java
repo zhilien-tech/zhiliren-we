@@ -517,8 +517,8 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		String[] sabrePnrs = sabrePNR.split("\\s+");
 		String[] sabrePnrs1 = sabrePNR.split("\\n+");
 		String sabrePnrsStr = sabrePnrs1[0];
-		/*		String sabrePnrsStr = sabrePnrs[0];
-		*/if (sabrePnrsStr.contains("/D￥") && sabrePnrsStr.contains("<<")) {
+		/*String sabrePnrsStr = sabrePnrs[0];*/
+		if (sabrePnrsStr.contains("/D￥") && sabrePnrsStr.contains("<<")) {
 			parsingType = "1";
 		} else if (sabrePnrsStr.contains("WP<<")) {
 			parsingType = "3";
@@ -627,10 +627,11 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			String airDepartureTime = sabrePnrs[8];
 			String airLandingTime = sabrePnrs[9];
 			String airSeatNum = sabrePnrs[7];
-			String sevenLine = sabrePnrs1[6];
+			String sevenLine = sabrePnrs1[5];
 			String str[] = sevenLine.split("\\s+");
 			String str1 = str[str.length - 1].trim();
-			String str2 = str1.substring(0, str1.lastIndexOf(".") + 3);
+			/*String str2 = str1.substring(0, str1.lastIndexOf(".") + 3);*/
+			String str2 = str1;
 			pSabreEntity.setAirSeatsPrice(str2);
 			pSabreEntity.setId(id); //序号
 			pSabreEntity.setAirlineComName(airCompName); //航空公司
