@@ -353,6 +353,8 @@
 	                	var agent = element.username;
 	                	var msgC = element.msgcontent;
 	                	var msgT = element.msgtype;
+	                	//表示国际2或内陆1
+	                	var orderT = element.ordertype; 
 	                	var orderId = element.uporderid;
 	                	var userMsgId = element.umid;
 	                	var orderType = msgT;
@@ -364,10 +366,10 @@
 	                		content += '<li>&nbsp;&nbsp;&nbsp;&nbsp;<span>'+dStr +'&nbsp;&nbsp;&nbsp;&nbsp;</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +''+msgC+'</li>'; 
 	                	}else if(msgT==2){
 	                		msgT = "系统提醒：";
-	                		content += '<li><a href="javascript:;" onclick="openOrderById('+orderId+','+orderType+','+userMsgId+');"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +''+msgC+'</a></li>'; 
+	                		content += '<li><a href="javascript:;" onclick="openOrderById('+orderId+','+orderType+','+userMsgId+','+orderT+');"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +''+msgC+'</a></li>'; 
 	                	}else{
 	                		msgT = "";
-	                		content += '<li><a href="javascript:;" onclick="openOrderById('+orderId+','+orderType+','+userMsgId+');"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +''+msgC+'</a></li>'; 
+	                		content += '<li><a href="javascript:;" onclick="openOrderById('+orderId+','+orderType+','+userMsgId+','+orderT+');"><span>'+dStr+'</span><span>'+tStr+'</span>'+cName+'&nbsp;&nbsp;'+agent+'&nbsp;&nbsp;'+ msgT +''+msgC+'</a></li>'; 
 	                	}
 	                	/* content += '<li><a href="#"><span>'+dStr+'</span><span>'+tStr+'</span>'+''+msgC+'</a></li>'; */
 	                	
@@ -384,15 +386,28 @@
 		}
 		
 		//打开新页面
-		function openOrderById(orderId, orderType, userMsgId){
+		function openOrderById(orderId, orderType, userMsgId, orderT){
+			alert(orderT);
 			var url = "";
 			if(orderType==4){
 				//查询详情跳转
-				url = '${base}/admin/inland/queryDetail.html?id='+orderId;
+				if(orderT==1){
+					url = '${base}/admin/inland/queryDetail.html?id='+orderId; //内陆
+				}
+				if(orderT==2){
+					url = '${base}/admin/international/internationalDetail.html?orderid='+orderId; //国际
+				}
+				
 			}
 			if(orderType==5 || orderType==8 || orderType==9 || orderType==10 || orderType==11 || orderType==12 || orderType==14 || orderType==15 || orderType==16 || orderType==17 || orderType==18 || orderType==19 || orderType==20 || orderType==21 || orderType==22 || orderType==23){
 				//预订订单详情跳转
-				url = '${base}/admin/inland/bookingDetail.html?id='+orderId;
+				if(orderT==1){
+					url = '${base}/admin/inland/bookingDetail.html?id='+orderId; //内陆
+				}
+				if(orderT==2){
+					url = '${base}/admin/international/internationalDetail.html?orderid='+orderId; //国际
+				}
+				
 			}
 			window.open(url);
 			
