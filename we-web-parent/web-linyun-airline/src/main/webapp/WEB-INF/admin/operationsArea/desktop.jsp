@@ -392,8 +392,7 @@
 				//查询详情跳转
 				if(orderT==2){
 					url = '${base}/admin/inland/queryDetail.html?id='+orderId; //内陆
-				}
-				if(orderT==1){
+				}else{
 					url = '${base}/admin/international/internationalDetail.html?orderid='+orderId; //国际
 				}
 				
@@ -402,8 +401,7 @@
 				//预订订单详情跳转
 				if(orderT==2){
 					url = '${base}/admin/inland/bookingDetail.html?id='+orderId; //内陆
-				}
-				if(orderT==1){
+				}else{
 					url = '${base}/admin/international/internationalDetail.html?orderid='+orderId; //国际
 				}
 				
