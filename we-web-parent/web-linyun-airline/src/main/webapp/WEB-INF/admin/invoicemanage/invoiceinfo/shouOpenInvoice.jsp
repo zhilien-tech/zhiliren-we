@@ -251,8 +251,9 @@
 	    	  if(invoicebalance){
 	    		  var yubanlance = parseFloat($('#balance').html()) + parseFloat(invoicebalance);
 	    		  $('#balance').html(yubanlance.toFixed(2));
-	    		  $('#backupbalance').html(yubanlance.toFixed(2));
+	    		  $('#backupbalance').val(yubanlance.toFixed(2));
 	    	  }
+	    	  $('#thisval').val('');
 	          $(this).parents('.cloneTR').remove();
 	      });
 	      
