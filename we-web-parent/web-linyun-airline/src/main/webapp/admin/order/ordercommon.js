@@ -63,10 +63,13 @@ function autoHighLoad(obj){
             $(this).children('ul').find("li").eq(0).addClass('eq0');
           }else if(liLength==3){
             $(this).children('ul').find("li").eq(2).addClass('eq2');
-          }else if(liLength>=4){
+          }else if(liLength==4){
         	$(this).children('ul').find("li").addClass('eq3');
         	$(this).children('ul').find("li").eq(2).addClass('eq4');
         	$(this).children('ul').find("li").eq(3).addClass('eq2');
+          }else if(liLength>=5){
+        	$(this).children('ul').find("li").css("line-height","13px");
+        	$(this).children('ul').find("li").css("height","13px");
           }
        });
  	});

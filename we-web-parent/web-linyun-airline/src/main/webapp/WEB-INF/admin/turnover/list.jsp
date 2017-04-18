@@ -230,6 +230,7 @@
 	                    		if(null==depositBalance || ""==depositBalance){
 	                    			return "";
 	                    		}
+	                    		var depositBalance = '<span data-toggle="tooltip" data-placement="left" title="'+depositBalance+'">'+depositBalance+'<span>';
 	                    		return depositBalance;
 	                    	}			
 	                    },
@@ -313,10 +314,11 @@
 	                    		if(null==depositBalance || ""==depositBalance){
 	                    			return "";
 	                    		}
-	                    		if(depositBalance.length>4){
+	                    		/* if(depositBalance.length>4){
 	                    			var res=depositBalance.substring(0,4); 
 	                    			return res+"...";
-	                    		}
+	                    		} */
+	                    		var depositBalance = '<span data-toggle="tooltip" data-placement="left" title="'+depositBalance+'">'+depositBalance+'<span>';
 	                    		return depositBalance;
 	                    	}	
 	                    }

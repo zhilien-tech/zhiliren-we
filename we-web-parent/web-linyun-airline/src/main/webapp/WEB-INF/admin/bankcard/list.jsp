@@ -160,24 +160,25 @@
 	                    		if(null==depositBalance || ""==depositBalance){
 	                    			return "";
 	                    		}
-	                    		if(depositBalance.length>4){
+	                    		/* if(depositBalance.length>4){
 	                    			var res=depositBalance.substring(0,4); 
 	                    			return res+"...";
-	                    		}
+	                    		} */
+	                    		var depositBalance = '<span data-toggle="tooltip" data-placement="left" title="'+depositBalance+'">'+depositBalance+'<span>';
 	                    		return depositBalance;
 	                    	}	
 	                    }
 	            ],
 	        columnDefs: [
 						{"sWidth": "11.33%","aTargets": [0] },
-						{"sWidth": "22.33%","aTargets": [1] },
+						{"sWidth": "20.33%","aTargets": [1] },
 						{"sWidth": "7%","aTargets": [2] },
-						{"sWidth": "11%","aTargets": [3] },
-						{"sWidth": "8%","aTargets": [4] },
-						{"sWidth": "8%","aTargets": [5] },
+						{"sWidth": "13%","aTargets": [3] },
+						{"sWidth": "10%","aTargets": [4] },
+						{"sWidth": "10%","aTargets": [5] },
 						{"sWidth": "6%","aTargets": [6] },
 						{"sWidth": "11%","aTargets": [7] },
-						{"sWidth": "11%","aTargets": [8] },
+						{"sWidth": "5%","aTargets": [8] },
 	                    {
 	            //   指定第一列，从0开始，0表示第一列，1表示第二列……
 	            targets: 8,

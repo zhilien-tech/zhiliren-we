@@ -396,18 +396,18 @@
 		                 <table class="cloTable">
 		                   <tr>
 		                     <td><label>出发城市：</label></td>
-		                     <td colspan="2"><select id="leavecity" name="leavecity" disabled="disabled" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
+		                     <td><select id="leavecity" name="leavecity" disabled="disabled" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
 			                     </select>
 			                 </td>
 		                     <td><label>抵达城市：</label></td>
-		                     <td colspan="2"><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
+		                     <td><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
 			                     </select></td>
 		                     <td><label>出发日期：</label></td>
 		                     <td><input id="leavedate" name="leavedate" disabled="disabled" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:''})"/></td>
 		                     <td><label>人数：</label></td>
 		                     <td><input id="peoplecount" name="peoplecount" disabled="disabled" type="text" class="form-control input-sm textWid mustNumber"/></td>
 		                     <td><label class="labelWid">早中晚：</label></td>
-		                     <td colspan="2">
+		                     <td>
 		                       <select id="tickettype" name="tickettype" disabled="disabled" class="form-control input-sm textWid">
 			                         <option value="1">早</option>
 			                         <option value="2">中</option>
@@ -441,7 +441,7 @@
 		                     <td><label>平均汇率：</label></td>
 		                     <td><input id="avgexrate" name="avgexrate" disabled="disabled" type="text" class="form-control input-sm textWid"/></td>
 		                     <td><label>币种：</label></td>
-		                     <td colspan="3"><select id="paycurrency" name="paycurrency" disabled="disabled" class="form-control input-sm">
+		                     <td><select id="paycurrency" name="paycurrency" disabled="disabled" class="form-control input-sm">
 		                     		<c:forEach items="${obj.bzcode }" var="one"> 
 					                     <option value="${one.dictCode }">${one.dictCode }</option>
 			                     	</c:forEach>
@@ -478,9 +478,9 @@
 		                         <tbody id="pnrinfodata" name="pnrinfodata">
 		                         </tbody>
 		                        </table>
-		                     </td>
-		                     <td class="PNRbtnTD none">
-		                        <a href="javascript:;" class="btn btn-primary btn-sm PNRbtn"><b>+</b>&nbsp;&nbsp;PNR</a>
+		                        <div class="PNRbtnTD none">
+			                        <a href="javascript:;" class="btn btn-primary btn-sm PNRbtn"><b>+</b>&nbsp;&nbsp;PNR</a>
+			                    </div>
 		                     </td>
 		                   </tr>
 		                   <%-- <tr>
