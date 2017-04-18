@@ -16,7 +16,8 @@
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo()" value="提交"/>
-            <input type="hidden" id="backupbalance" name="backupbalance" value="${obj.sumjine }">
+            <input type="hidden" id="backupbalance" name="backupbalance" value="<fmt:formatNumber type="number" value="${obj.sumjine }" pattern="0.00" maxFractionDigits="2"/>">
+            <input type="hidden" id="thisval" name="thisval">
             <h4 class="invoiceH4">付款信息</h4>
     </div>
     <div style="height:550px; overflow-y:auto;" class="allCentext">
@@ -195,6 +196,13 @@
 	      });
 	      /*-----收付款>收款>开发票 - 按钮-----*/
 	      $(document).on("click",".removIcon",function(){
+	    	  var divTest = $(this).parents('.cloneTR');
+	    	  var invoicebalance = divTest.find('[name=invoicebalance]').val(); 
+	    	  if(invoicebalance){
+	    		  var yubanlance = parseFloat($('#balance').html()) + parseFloat(invoicebalance);
+	    		  $('#balance').html(yubanlance.toFixed(2));
+	    		  $('#backupbalance').html(yubanlance.toFixed(2));
+	    	  }
 	          $(this).parents('.cloneTR').remove();
 	      });
 	      

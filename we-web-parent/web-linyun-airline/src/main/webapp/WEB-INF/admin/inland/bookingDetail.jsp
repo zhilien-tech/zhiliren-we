@@ -774,8 +774,8 @@
           //页面可以编辑
           $('.DemandDiv').each(function(i){
         	  var customneedid = $(this).find('[name=customneedid]').val();
-        	  if(i>0 && !customneedid){ 
-        		  $(this).parent().remove();
+        	  if(!customneedid){
+        		  $(this).remove();
         	  }else{
 	        	  $(this).find('[name=leavecity]').attr('disabled','disabled');
 	        	  $(this).find('[name=arrivecity]').attr('disabled','disabled');
@@ -1181,7 +1181,7 @@
  	//成本价
  	var fromprice = $(this).val();
  	//票价折扣
-	var discountFare = 1;
+	var discountFare = 0;
 	var countfare = '${obj.custominfo.discountFare}';
 	if(countfare){
 		discountFare = countfare;
@@ -1198,7 +1198,7 @@
  	var ispriceempty = $(this).parent().parent().find('[name=ispriceempty]').val();
  	if(ispriceempty){
 	 	if(fromprice){
-	 		if(isNaN(price)){
+	 		if(isNaN(price) && price > 0){
 	 			$(this).parent().parent().find('[name=price]').val('');
 	 		}else{
 		 		$(this).parent().parent().find('[name=price]').val(price.toFixed(2));

@@ -281,6 +281,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("uo.id", "in", ids);
+		cnd.and("prr.recordtype", "=", RECEIVETYPE);
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//计算合计金额
 		Double sum = 0.0;
@@ -308,9 +309,15 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				.query(TReceiveBillEntity.class, Cnd.where("receiveid", "=", id), null);
 		//银行卡下拉
 		map.put("yhkSelect", yhkSelect);
+
+		int bankcardid = fetch.getBankcardid();
+		DictInfoEntity bank = dbDao.fetch(DictInfoEntity.class, bankcardid);
+		String bankName = bank.getDictName();
+
 		//订单信息id
 		map.put("ids", ids);
 		map.put("id", id);
+		map.put("bankName", bankName);
 		map.put("receive", fetch);
 		if (receipts.size() > 0) {
 			map.put("receipturl", receipts.get(0));
