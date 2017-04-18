@@ -62,7 +62,7 @@ public class TestEtem {
 		/*String regex = "(?s)((\\d{1}.{2}[*])|(\\s{4}))[A-Za-z]{2}\\d+\\s.+?\\d\n";*/
 		String regex = "((\\d{1}.{2}.)|())[A-Za-z]{2}\\d+.+\\s+.+?[:]\\d{2}";
 		Pattern pattern = Pattern.compile(regex);
-		Matcher m = pattern.matcher(input2);
+		Matcher m = pattern.matcher(input);
 		while (m.find()) {
 			System.out.println(m.group() + "|||");
 		}

@@ -715,15 +715,18 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				/*id = Integer.parseInt(pnr[0].substring(0, 1));*/
 				id = a;
 				if (pnr[0].contains(a + "")) {
+					airDepartureTime = pnr[14];
+					airLandingTime = pnr[15];
 					a++;
 				} else {
+					airDepartureTime = pnr[13];
+					airLandingTime = pnr[14];
 					id = a - 1;
 				}
 				pSabreEntity.setId(id);
 				flightNum = pnr[1];
 				airLine = pnr[13];
-				airDepartureTime = pnr[14];
-				airLandingTime = pnr[15];
+
 				for (String seat : pnr) {
 					if (!seat.contains("-") && !seat.contains("+") && seat.length() == 2) {
 						airSeats += (" " + seat);
