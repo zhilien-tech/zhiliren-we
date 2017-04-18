@@ -116,7 +116,12 @@ function initkaiInvoiceTable() {
                   		return result;
                   	}
                   },
-                  {"data": "remark", "bSortable": false}
+                  {"data": "remark", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                		   var result = '<span data-toggle="tooltip" data-placement="left" title="'+row.remark+'">'+row.remark+'<span>';
+	                  	  return result;
+	                  }
+                  }
           ],
       columnDefs: [{
     	//   指定第一列，从0开始，0表示第一列，1表示第二列……
@@ -282,7 +287,12 @@ function initshouInvoiceTable() {
                   		return result;
                   	}
                   },
-                  {"data": "remark", "bSortable": false}
+                  {"data": "remark", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+               		   var result = '<span data-toggle="tooltip" data-placement="left" title="'+row.remark+'">'+row.remark+'<span>';
+	                  	  return result;
+	                  }
+                  }
         ],
     columnDefs: [{
   	//   指定第一列，从0开始，0表示第一列，1表示第二列……

@@ -57,7 +57,6 @@ table.dataTable thead .sorting:after{display: none;}
 .cloTable tr {height: 40px;}
 .addDemand,.removeDemand{padding: 5px 11px;position: relative;left: 950px;margin-top: 5px;}
 .addDemand b{float: left;}
-.DemandDiv{background-color: #f5f5f5;box-shadow: 0px 1px 5px #bebebe;margin-bottom: 15px;}
 .removeDemand b{float: left;}
 .noteText{width: 100% !important;}
 .labelWid{width: 57px !important;}
@@ -172,7 +171,7 @@ select.form-control.TimeInput { padding-left: 3px; padding-right: 3px;}
 #kaiInvoiceTable tbody tr td ul li:last-child{border-bottom:0;}
 #kaiInvoiceTable tbody tr td ul{padding-left: 0;margin-bottom:0;}
 #kaiInvoiceTable tbody tr td{padding:0;}
-#kaiInvoiceTable tbody tr td:nth-child(1) ul li{line-height: 27px;}
+/* #kaiInvoiceTable tbody tr td:nth-child(1) ul li{line-height: 27px;} */
 #kaiInvoiceTable tbody tr td:nth-child(4){line-height: 60px;}
 #kaiInvoiceTable tbody tr td:nth-child(5){line-height: 60px;}
 #kaiInvoiceTable tbody tr td:nth-child(6){line-height: 60px;}
