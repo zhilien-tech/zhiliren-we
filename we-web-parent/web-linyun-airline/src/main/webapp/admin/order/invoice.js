@@ -39,7 +39,7 @@ function initkaiInvoiceTable() {
                   		var result = '<ul> ';
                 		$.each(row.invoicedetail, function(name, value) {
                 			if(value && value.invoicenum != undefined){
-                				result += '<li style="list-style:none;">'+value.invoicenum+'</li>';
+                				result += '<li style="list-style:none;"><span data-toggle="tooltip" data-placement="left" title="'+value.invoicenum+'">'+value.invoicenum+'<span></li>';
                 			}
                 		});
                 		result += '</ul>';
@@ -89,7 +89,14 @@ function initkaiInvoiceTable() {
                     		return result;
                     	}
                   },
-                  {"data": "paymentunit", "bSortable": false},
+                  {"data": "paymentunit", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                  		var result = row.paymentunit;
+                  		var result = '<span data-toggle="tooltip" data-placement="left" title="'+result+'">'+result+'<span>';
+                  		return result;
+                  	}
+                  
+                  },
                   {"data": "username", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                     		var result = '';
@@ -110,7 +117,13 @@ function initkaiInvoiceTable() {
                   		return result;
                   	}
                   },
-                  {"data": "remark", "bSortable": false}
+                  {"data": "remark", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                    		var remark = "";
+                    		var remark = '<span data-toggle="tooltip" data-placement="left" title="'+row.remark+'">'+row.remark+'<span>';
+                    		return remark;
+                    	}
+                  }
           ],
       columnDefs: [{
     	//   指定第一列，从0开始，0表示第一列，1表示第二列……
@@ -277,6 +290,7 @@ function initshouInvoiceTable() {
                   		var result = '';
                   		if(row.remark){
                   			result = row.remark;
+                  			var result = '<span data-toggle="tooltip" data-placement="left" title="'+result+'">'+result+'<span>';
                   		}
                   		return result;
                   	}
