@@ -184,8 +184,8 @@ select.form-control.TimeInput { padding-left: 3px; padding-right: 3px;}
 #uploadFile{width: 70px !important;}
 object#SWFUpload_0 {top: 10px;width: 70px;}
 div#uploadFile-button {position: relative;top: 10px;}
-.remarkContext {margin-bottom: 10px;overflow: hidden;min-height: 80px;display: block;border: solid 1px #e0e0e0;border-radius: 0 0 3px 3px;background-color:#fcfcfc;}
-.remarkDiv {padding: 5px 0px;display: block;background-color: #f5f5f5;box-shadow: 1px 0px 5px #bebebe;margin-bottom: 15px;border-left: solid 1px #e0e0e0;}
+.remarkContext {margin-bottom: 10px;overflow: hidden;min-height: 80px;display: block;border: solid 1px #e0e0e0;border-radius: 0 0 3px 3px;background-color:#fcfcfc;border-top: 0;}
+.remarkDiv {padding: 5px 0px;display: block;margin-bottom: 15px;}
 textarea#cRemark {height: 112px;resize: none;}
 .remarkTable tbody tr td:nth-child(1){width: 86px;text-align: right;}
 .infofooter1 {padding-bottom: 1px;border-bottom: 0;border-radius: 3px 3px 0px 0px;margin-bottom: 0px;}
