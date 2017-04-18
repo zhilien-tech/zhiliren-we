@@ -325,10 +325,10 @@
                             <c:forEach var="map" items="${obj.paymethod}" >
                             	<c:choose>
                             		<c:when test="${obj.finance.paymethod eq map.id }">
-                            			<option value="${map.id}" selected="selected">${map.bankName}</option>
+                            			<option value="${map.id}" selected="selected">${map.cardName}</option>
                             		</c:when>
                             		<c:otherwise>
-								   		<option value="${map.id}">${map.bankName}</option>
+								   		<option value="${map.id}">${map.cardName}</option>
                             		</c:otherwise>
                             	</c:choose>
 							 </c:forEach>
