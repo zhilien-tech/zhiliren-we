@@ -57,7 +57,6 @@ table.dataTable thead .sorting:after{display: none;}
 .cloTable tr {height: 40px;}
 .addDemand,.removeDemand{padding: 5px 11px;position: relative;left: 950px;margin-top: 5px;}
 .addDemand b{float: left;}
-.DemandDiv{background-color: #f5f5f5;box-shadow: 0px 1px 5px #bebebe;margin-bottom: 15px;}
 .removeDemand b{float: left;}
 .noteText{width: 100% !important;}
 .labelWid{width: 57px !important;}
