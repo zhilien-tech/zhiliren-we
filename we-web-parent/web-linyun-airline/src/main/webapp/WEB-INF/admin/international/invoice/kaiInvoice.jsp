@@ -131,7 +131,7 @@
           </tr>
           <tr>
                   <td>差额：</td>
-                  <td><input id="difference" name="difference" type="text" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.invoiceinfo.difference }" pattern="0.00" maxFractionDigits="2"/>"></td>
+                  <td><input id="difference" name="difference" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.invoiceinfo.difference }" pattern="0.00" maxFractionDigits="2"/>"></td>
                   <td>余额：</td>
                   <td><label id="balance" name="balance"><fmt:formatNumber type="number" value="${obj.invoicebalance }" pattern="0.00" maxFractionDigits="2"/></label>
                   </td>
@@ -143,7 +143,7 @@
 		                  <td>发票号：</td>
 		                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm" value="${invoiceDetail.invoicenum }"></td>
 		                  <td>金额：</td>
-		                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${invoiceDetail.invoicebalance }" pattern="0.00" maxFractionDigits="2"/>"></td>
+		                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${invoiceDetail.invoicebalance }" pattern="0.00" maxFractionDigits="2"/>"></td>
 		                  <td colspan="4">
 		                    <ul class="fileUL">
 		                      <li>
@@ -229,7 +229,7 @@
 	          newDiv.find('[name=invoiceurl]').val('');
 	          lastDiv.after(newDiv);
 	          var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
-	          newDiv.find("p").html(No); 
+	          newDiv.find("p").html(No);
 	          newDiv.find('#preView').parent().remove();
 	          newDiv.find('.deleteInvoice').parent().remove();
 	          newDiv.find('.addIcon').parent().remove();
@@ -243,8 +243,9 @@
 	    	  if(invoicebalance){
 	    		  var yubanlance = parseFloat($('#balance').html()) + parseFloat(invoicebalance);
 	    		  $('#balance').html(yubanlance.toFixed(2));
-	    		  $('#backupbalance').html(yubanlance.toFixed(2));
+	    		  $('#backupbalance').val(yubanlance.toFixed(2));
 	    	  }
+	    	  $('#thisval').val('');
 	          $(this).parents('.cloneTR').remove();
 	      });
 	      

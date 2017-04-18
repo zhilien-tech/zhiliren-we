@@ -67,7 +67,7 @@ $(document).on('input','#invoicebalance', function(){
 				banlanceyue = banlanceyue - parseFloat(invoicebalance);
 			}else{
 				banlanceyue = 0;
-				if(parseFloat(tempval) != parseFloat(thisval)){
+				if(tempval && parseFloat(tempval) != parseFloat(thisval)){
 					thisval = $('#backupbalance').val();
 				}
 			}
@@ -90,7 +90,7 @@ $(document).on('focus','#invoicebalance', function(){
 		//alert($(this).val());
 	if($(this).val()){
 		$('#backupbalance').val(parseFloat($(this).val())+parseFloat($('#balance').html()));
-		$('#thisval').val($(this).val());
 	}
+	$('#thisval').val($(this).val());
 	//}
 });

@@ -11,6 +11,10 @@ function initkaiInvoiceTable() {
       "initComplete": function( settings, json ) {
       	 autoHighLoad($(this));
       },
+      "infoCallback": function( settings, start, end, max, total, pre ) {
+        	autoHighLoad($(this));
+			return '显示第 '+start+' 至 '+end+' 条结果，共 '+total+' 条 (每页显示 '+max+' 条)';
+      },
       "language": {
           "url": BASE_PATH + "/public/plugins/datatables/cn.json"
       },
@@ -153,7 +157,12 @@ function openkaiInvoiceEdit(id){
         shadeClose:true,
         scrollbar: false,
         area: ['987px', '620px'],
-        content: BASE_PATH + '/admin/inland/kaiInvoice.html?id='+id
+        content: BASE_PATH + '/admin/inland/kaiInvoice.html?id='+id,
+        end:function(){
+        	kaiInvoiceTable.ajax.reload(function(json){
+        		autoHighLoad($('#kaiInvoiceTable'));
+        	});
+        }
       });
 }
 //付款表格
@@ -318,7 +327,10 @@ function openshouInvoiceEdit(id){
         shadeClose:true,
         scrollbar: false,
         area: ['987px', '620px'],
-        content: BASE_PATH + '/admin/inland/shouInvoice.html?id='+id
+        content: BASE_PATH + '/admin/inland/shouInvoice.html?id='+id,
+        end:function(){
+        	shouInvoiceTable.ajax.reload();
+        }
     });
 }
 /*//收发票 搜索按钮
