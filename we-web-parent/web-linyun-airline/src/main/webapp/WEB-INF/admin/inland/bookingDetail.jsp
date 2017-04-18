@@ -774,8 +774,8 @@
           //页面可以编辑
           $('.DemandDiv').each(function(i){
         	  var customneedid = $(this).find('[name=customneedid]').val();
-        	  if(i>0 && !customneedid){ 
-        		  $(this).parent().remove();
+        	  if(!customneedid){
+        		  $(this).remove();
         	  }else{
 	        	  $(this).find('[name=leavecity]').attr('disabled','disabled');
 	        	  $(this).find('[name=arrivecity]').attr('disabled','disabled');
