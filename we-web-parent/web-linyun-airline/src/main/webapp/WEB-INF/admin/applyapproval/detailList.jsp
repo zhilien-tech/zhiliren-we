@@ -116,7 +116,7 @@
 				</c:if>
 			</li>
 			<li>
-				<span>签收时间${obj.operation}</span>
+				<span>签收时间</span>
 				
 				<c:if test="${obj.operation=='inlandNum'}">
 				

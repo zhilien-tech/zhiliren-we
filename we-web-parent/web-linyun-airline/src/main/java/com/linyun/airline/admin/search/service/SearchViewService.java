@@ -517,10 +517,10 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		String[] sabrePnrs = sabrePNR.split("\\s+");
 		String[] sabrePnrs1 = sabrePNR.split("\\n+");
 		String sabrePnrsStr = sabrePnrs1[0];
-		/*		String sabrePnrsStr = sabrePnrs[0];
-		*/if (sabrePnrsStr.contains("/D￥") && sabrePnrsStr.contains("<<")) {
+		/*String sabrePnrsStr = sabrePnrs[0];*/
+		if (sabrePnrsStr.contains("/D￥") && sabrePnrsStr.contains("<<")) {
 			parsingType = "1";
-		} else if (sabrePnrsStr.contains("WP<<")) {
+		} else if (sabrePnrsStr.contains("WP<<") || sabrePnrsStr.contains("wp<<")) {
 			parsingType = "3";
 		} else {
 			parsingType = "2";
@@ -566,12 +566,26 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				ParsingSabreEntity pSabreEntity = new ParsingSabreEntity();
 
 				String[] pnr = pnrs.split("\\s+");
+				String regex = "[a-zA-Z]{6}";
+				Pattern pattern = Pattern.compile(regex);
+				Matcher m = pattern.matcher(pnrs);
+				String pStr = "";
+				while (m.find()) {
+					pStr = m.group();
+				}
+				int pIndex = 0;
+				for (int i = 0; i < pnr.length; i++) {
+					boolean contains = pnr[i].contains(pStr);
+					if (contains) {
+						pIndex = i;
+					}
+				}
 
 				id = Integer.parseInt(pnr[0].substring(0, 1));
 				airCompName = pnr[0].substring(1);
 				flightNum = pnr[1];
 				airLeavelDate = sabrePnrs[1];
-				String containStr = pnr[7];
+				String containStr = pnr[pIndex];
 				int a = 0;
 				if (containStr.contains("*")) {
 					String[] seatLine = containStr.split("[*]");
@@ -580,24 +594,21 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 						if (!seat.contains("/E") && seat.length() == 2) {
 
 							airSeats += (" " + seat);
-							if (a == 7) {
-
-								airSeats += (" " + seatLine[0]);
-							}
+							airSeats += (" " + seatLine[0]);
 						}
 					}
 					airLine = seatLine[1];
-					airDepartureTime = pnr[8];
-					airLandingTime = pnr[9];
+					airDepartureTime = pnr[pIndex + 1];
+					airLandingTime = pnr[pIndex + 2];
 				} else {
 					for (String seat : pnr) {
 						if (!seat.contains("/E") && seat.length() == 2) {
 							airSeats += (" " + seat);
 						}
 					}
-					airLine = pnr[8];
-					airDepartureTime = pnr[9];
-					airLandingTime = pnr[10];
+					airLine = pnr[pIndex];
+					airDepartureTime = pnr[pIndex + 1];
+					airLandingTime = pnr[pIndex + 2];
 				}
 				pSabreEntity.setId(id);
 				pSabreEntity.setAirlineComName(airCompName);
@@ -627,10 +638,11 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			String airDepartureTime = sabrePnrs[8];
 			String airLandingTime = sabrePnrs[9];
 			String airSeatNum = sabrePnrs[7];
-			String sevenLine = sabrePnrs1[6];
+			String sevenLine = sabrePnrs1[5];
 			String str[] = sevenLine.split("\\s+");
 			String str1 = str[str.length - 1].trim();
-			String str2 = str1.substring(0, str1.lastIndexOf(".") + 3);
+			/*String str2 = str1.substring(0, str1.lastIndexOf(".") + 3);*/
+			String str2 = str1;
 			pSabreEntity.setAirSeatsPrice(str2);
 			pSabreEntity.setId(id); //序号
 			pSabreEntity.setAirlineComName(airCompName); //航空公司
@@ -664,11 +676,11 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		etemStr = etemStr + "\n";
 		String[] etemPnrs = etemStr.split("\\s+");
 		String etem = etemPnrs[0];
-		if (etem.contains("avh/")) {
+		if (etem.contains("AVH/") || etem.contains("avh/")) {
 			parsingType = "1";
-		} else if (etem.contains("SD")) {
+		} else if (etem.contains("SD") || etem.contains("sd")) {
 			parsingType = "2";
-		} else if (etem.contains("QTE:/")) {
+		} else if (etem.contains("QTE:/") || etem.contains("FSI")) {
 			parsingType = "3";
 		}
 
@@ -678,7 +690,8 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		/***********************黑屏查询：AVH/AKLSYD/28FEB/EK**************************/
 		if (parsingType == "1") {
 			//(?s)表示开启跨行匹配，\\d{1}一位数字，[A-Za-z]{2}两位字母，/斜线，\\s空白字符,.+任意字符出现1到多次，?非贪婪模式，最后以\n换行结束
-			String regex = "(?s)((\\d{1}.{2}[*])|(\\s{4}))[A-Za-z]{2}\\d+\\s.+?\\d\n";
+			/*String regex = "(?s)((\\d{1}.{2}[*])|(\\s{4}))[A-Za-z]{2}\\d+\\s.+?\\d\n";*/
+			String regex = "((\\d{1}.{2}.)|())[A-Za-z]{2}\\d+.+\\s+.+?[:]\\d{2}";
 			Pattern pattern = Pattern.compile(regex);
 			Matcher m = pattern.matcher(etemStr);
 			ArrayList<String> etemGroup = Lists.newArrayList();
@@ -713,15 +726,18 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				/*id = Integer.parseInt(pnr[0].substring(0, 1));*/
 				id = a;
 				if (pnr[0].contains(a + "")) {
+					airDepartureTime = pnr[14];
+					airLandingTime = pnr[15];
 					a++;
 				} else {
+					airDepartureTime = pnr[13];
+					airLandingTime = pnr[14];
 					id = a - 1;
 				}
 				pSabreEntity.setId(id);
 				flightNum = pnr[1];
 				airLine = pnr[13];
-				airDepartureTime = pnr[14];
-				airLandingTime = pnr[15];
+
 				for (String seat : pnr) {
 					if (!seat.contains("-") && !seat.contains("+") && seat.length() == 2) {
 						airSeats += (" " + seat);
@@ -745,7 +761,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		if (parsingType == "2") {
 			int indexOf = 0;
 			for (int i = 0; i < etemPnrs.length; i++) {
-				if (etemPnrs[i].contains("QTE:/")) {
+				if (etemPnrs[i].contains("QTE:/") || etemPnrs[i].contains("FSI/")) {
 					indexOf = i;
 				}
 
@@ -760,8 +776,8 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			String airSeatNum = etemPnrs[6];
 			String airDepartureTime = etemPnrs[7];
 			String airLandingTime = etemPnrs[8];
-			String airSeatsPrice = etemPnrs[indexOf + 46];
-			String airSeatsCurrency = etemPnrs[indexOf + 45];
+			String airSeatsPrice = etemPnrs[indexOf + 45];
+			String airSeatsCurrency = etemPnrs[indexOf + 44];
 
 			pEtemEntity.setId(id);
 			pEtemEntity.setFlightNum(flightNum);
