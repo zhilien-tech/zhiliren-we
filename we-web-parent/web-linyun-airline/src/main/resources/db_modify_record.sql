@@ -191,4 +191,6 @@ ADD COLUMN `bankcardnameid`  int NULL COMMENT '银行卡id' AFTER `orderstatus`;
 /******************************************************************************
 version : 1.0.1   END   2017-04-17
 ******************************************************************************/ 
+ALTER TABLE `t_turnover`
+ADD COLUMN `historymoney`  double(32,0) NULL DEFAULT NULL COMMENT '卡里历史余额' AFTER `invoiceStatus`;
 
