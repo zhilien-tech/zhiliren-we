@@ -90,6 +90,7 @@ $(document).on('focus','#invoicebalance', function(){
 		//alert($(this).val());
 	if($(this).val()){
 		$('#backupbalance').val(parseFloat($(this).val())+parseFloat($('#balance').html()));
+		$('#thisval').val($(this).val());
 	}
 	$('#thisval').val($(this).val());
 	//}

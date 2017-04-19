@@ -18,6 +18,7 @@
     	<input type="hidden" id="orderId" name="orderId" value="${obj.ids }">
         <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
         <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo();" value="确认开发票"/>
+        <input type="hidden" id="thisval" name="thisval">
         <h4 class="invoiceH4">开发票信息</h4>
     </div>
     <div style="height:550px; overflow-y:auto;" class="allCentext">
@@ -242,6 +243,14 @@
 	      });
 	      /*-----收付款>收款>开发票 - 按钮-----*/
 	      $(document).on("click",".removIcon",function(){
+	    	  var divTest = $(this).parents('.cloneTR');
+	    	  var invoicebalance = divTest.find('[name=invoicebalance]').val(); 
+	    	  if(invoicebalance){
+	    		  var yubanlance = parseFloat($('#balance').html()) + parseFloat(invoicebalance);
+	    		  $('#balance').html(yubanlance.toFixed(2));
+	    		  $('#backupbalance').val(yubanlance.toFixed(2));
+	    	  }
+	    	  $('#thisval').val('');
 	          $(this).parents('.cloneTR').remove();
 	      });
 	      

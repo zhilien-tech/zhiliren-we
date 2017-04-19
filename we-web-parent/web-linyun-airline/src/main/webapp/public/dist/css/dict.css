@@ -20,3 +20,5 @@
 #loginNumTable tbody tr td .tooltip .tooltip-inner{word-wrap: break-word;}
 #loginNumTable tbody tr td .tooltip .tooltip-arrow{border-left-color: #909a95}
 #comcomdatatableInfo tbody tr td [data-toggle="tooltip"]{display: inline-block;width:300px;overflow: hidden;text-overflow: ellipsis; white-space: nowrap;}
+#thirdPayMentTable tbody tr td:nth-of-type(6) span{border: 0;width: 120px;display: block;word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 auto;}
+.tooltip-inner {word-wrap: break-word;}

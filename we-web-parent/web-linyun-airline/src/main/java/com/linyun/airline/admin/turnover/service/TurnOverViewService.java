@@ -225,6 +225,7 @@ public class TurnOverViewService extends BaseService<TTurnOverEntity> {
 		if ("支出".equalsIgnoreCase(purpose)) {
 			//根据查出的金额进行更新
 			bankcard.setBalance(bankcard.getBalance() - money);
+
 			nutDao.update(bankcard);
 
 		} else if ("收入".equalsIgnoreCase(purpose)) {
@@ -232,7 +233,7 @@ public class TurnOverViewService extends BaseService<TTurnOverEntity> {
 			nutDao.update(bankcard);
 
 		}
-
+		addForm.setHistorymoney(bankcard.getBalance());
 		addForm.setCompanyName(companyName);
 		addForm.setStatus(TurnOverStatusEnum.ENABLE.intKey());
 		addForm.setCreateTime(new Date());
