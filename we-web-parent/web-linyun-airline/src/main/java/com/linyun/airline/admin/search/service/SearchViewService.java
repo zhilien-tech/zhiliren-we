@@ -520,7 +520,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		/*String sabrePnrsStr = sabrePnrs[0];*/
 		if (sabrePnrsStr.contains("/D￥") && sabrePnrsStr.contains("<<")) {
 			parsingType = "1";
-		} else if (sabrePnrsStr.contains("WP<<")) {
+		} else if (sabrePnrsStr.contains("WP<<") || sabrePnrsStr.contains("wp<<")) {
 			parsingType = "3";
 		} else {
 			parsingType = "2";
@@ -665,11 +665,11 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		etemStr = etemStr + "\n";
 		String[] etemPnrs = etemStr.split("\\s+");
 		String etem = etemPnrs[0];
-		if (etem.contains("avh/")) {
+		if (etem.contains("AVH/") || etem.contains("avh/")) {
 			parsingType = "1";
-		} else if (etem.contains("SD")) {
+		} else if (etem.contains("SD") || etem.contains("sd")) {
 			parsingType = "2";
-		} else if (etem.contains("QTE:/")) {
+		} else if (etem.contains("QTE:/") || etem.contains("FSI")) {
 			parsingType = "3";
 		}
 
@@ -750,7 +750,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		if (parsingType == "2") {
 			int indexOf = 0;
 			for (int i = 0; i < etemPnrs.length; i++) {
-				if (etemPnrs[i].contains("QTE:/")) {
+				if (etemPnrs[i].contains("QTE:/") || etemPnrs[i].contains("FSI/")) {
 					indexOf = i;
 				}
 
@@ -765,8 +765,8 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			String airSeatNum = etemPnrs[6];
 			String airDepartureTime = etemPnrs[7];
 			String airLandingTime = etemPnrs[8];
-			String airSeatsPrice = etemPnrs[indexOf + 46];
-			String airSeatsCurrency = etemPnrs[indexOf + 45];
+			String airSeatsPrice = etemPnrs[indexOf + 45];
+			String airSeatsCurrency = etemPnrs[indexOf + 44];
 
 			pEtemEntity.setId(id);
 			pEtemEntity.setFlightNum(flightNum);
