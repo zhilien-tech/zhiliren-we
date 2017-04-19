@@ -294,7 +294,6 @@
 				});
 			}
 		}
-		
 		function trDetail(id){
 			var url = '${base}/admin/international/internationalDetail.html?orderid='+ id;
 			window.open(url);
