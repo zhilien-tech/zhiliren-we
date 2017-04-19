@@ -566,12 +566,26 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				ParsingSabreEntity pSabreEntity = new ParsingSabreEntity();
 
 				String[] pnr = pnrs.split("\\s+");
+				String regex = "[a-zA-Z]{6}";
+				Pattern pattern = Pattern.compile(regex);
+				Matcher m = pattern.matcher(pnrs);
+				String pStr = "";
+				while (m.find()) {
+					pStr = m.group();
+				}
+				int pIndex = 0;
+				for (int i = 0; i < pnr.length; i++) {
+					boolean contains = pnr[i].contains(pStr);
+					if (contains) {
+						pIndex = i;
+					}
+				}
 
 				id = Integer.parseInt(pnr[0].substring(0, 1));
 				airCompName = pnr[0].substring(1);
 				flightNum = pnr[1];
 				airLeavelDate = sabrePnrs[1];
-				String containStr = pnr[7];
+				String containStr = pnr[pIndex];
 				int a = 0;
 				if (containStr.contains("*")) {
 					String[] seatLine = containStr.split("[*]");
@@ -580,24 +594,21 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 						if (!seat.contains("/E") && seat.length() == 2) {
 
 							airSeats += (" " + seat);
-							if (a == 7) {
-
-								airSeats += (" " + seatLine[0]);
-							}
+							airSeats += (" " + seatLine[0]);
 						}
 					}
 					airLine = seatLine[1];
-					airDepartureTime = pnr[8];
-					airLandingTime = pnr[9];
+					airDepartureTime = pnr[pIndex + 1];
+					airLandingTime = pnr[pIndex + 2];
 				} else {
 					for (String seat : pnr) {
 						if (!seat.contains("/E") && seat.length() == 2) {
 							airSeats += (" " + seat);
 						}
 					}
-					airLine = pnr[8];
-					airDepartureTime = pnr[9];
-					airLandingTime = pnr[10];
+					airLine = pnr[pIndex];
+					airDepartureTime = pnr[pIndex + 1];
+					airLandingTime = pnr[pIndex + 2];
 				}
 				pSabreEntity.setId(id);
 				pSabreEntity.setAirlineComName(airCompName);
