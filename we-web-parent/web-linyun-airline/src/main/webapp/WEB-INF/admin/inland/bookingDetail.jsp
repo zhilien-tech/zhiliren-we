@@ -262,7 +262,7 @@
 					                     <td><label>抵达时间：</label></td>
 					                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustArriveTimes" value="${airline.arrivetime }"/></td>
 					                     <td><label class="labelWid">成本价：</label></td>
-					                     <td><input id="formprice" name="formprice" type="text" disabled="disabled" class="form-control input-sm textWid costPrice" value="<fmt:formatNumber type="number" value="${airline.formprice }" pattern="0.00" maxFractionDigits="2"/>"/></td>
+					                     <td><input id="formprice" name="formprice" type="text" disabled="disabled" class="form-control input-sm textWid mustNumberPoint costPrice" value="<fmt:formatNumber type="number" value="${airline.formprice }" pattern="0.00" maxFractionDigits="2"/>"/></td>
 					                     <td><label class="labelWid">销售价：</label></td>
 					                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid mustNumberPoint xiaoShouCls" value="<fmt:formatNumber type="number" value="${airline.price }" pattern="0.00" maxFractionDigits="2"/>"/>
 					                     	 <c:choose>
@@ -298,7 +298,7 @@
 					                     <td><label>抵达时间：</label></td>
 					                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustArriveTimes" /></td>
 					                     <td><label class="labelWid">成本价：</label></td>
-					                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" /></td>
+					                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid mustNumberPoint costPrice" /></td>
 					                     <td><label class="labelWid">销售价：</label></td>
 					                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid mustNumberPoint xiaoShouCls"/>
 					                     	 <input type="hidden" id="ispriceempty" name="ispriceempty">
@@ -311,10 +311,10 @@
 			                   </c:choose>
 			               <tr>
 		                     <td><label>实时汇率：</label></td>
-		                     <td><input id="realtimexrate" name="realtimexrate" disabled="disabled" type="text" class="form-control input-sm textWid" value="${customneed.cusinfo.realtimexrate }"/>
+		                     <td><input id="realtimexrate" name="realtimexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid" value="${customneed.cusinfo.realtimexrate }"/>
 			                 </td>
 		                     <td><label>平均汇率：</label></td>
-		                     <td><input id="avgexrate" name="avgexrate" disabled="disabled" type="text" class="form-control input-sm textWid" value="${customneed.cusinfo.avgexrate }"/></td>
+		                     <td><input id="avgexrate" name="avgexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid" value="${customneed.cusinfo.avgexrate }"/></td>
 		                     <td><label>币种：</label></td>
 		                     <td><select id="paycurrency" name="paycurrency" disabled="disabled" class="form-control input-sm">
 		                     		<option value="">请选择</option>
@@ -425,7 +425,7 @@
 		                     <td><label>抵达时间：</label></td>
 		                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustArriveTimes" /></td>
 		                     <td><label class="labelWid">成本价：</label></td>
-		                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" /></td>
+		                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid mustNumberPoint costPrice" /></td>
 		                     <td><label class="labelWid">销售价：</label></td>
 		                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid mustNumberPoint xiaoShouCls"/>
 		                     	 <input type="hidden" id="ispriceempty" name="ispriceempty">
@@ -436,10 +436,10 @@
 		                   </tr>
 			               <tr>
 		                     <td><label>实时汇率：</label></td>
-		                     <td><input id="realtimexrate" name="realtimexrate" disabled="disabled" type="text" class="form-control input-sm textWid"/>
+		                     <td><input id="realtimexrate" name="realtimexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid"/>
 			                 </td>
 		                     <td><label>平均汇率：</label></td>
-		                     <td><input id="avgexrate" name="avgexrate" disabled="disabled" type="text" class="form-control input-sm textWid"/></td>
+		                     <td><input id="avgexrate" name="avgexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid"/></td>
 		                     <td><label>币种：</label></td>
 		                     <td><select id="paycurrency" name="paycurrency" disabled="disabled" class="form-control input-sm">
 		                     		<c:forEach items="${obj.bzcode }" var="one"> 
