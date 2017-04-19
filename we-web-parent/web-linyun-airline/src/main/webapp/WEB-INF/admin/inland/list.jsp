@@ -440,9 +440,15 @@
 	  
 	//他页面回调
 	  function successCallback(id){
-		  inlandCrossTable.ajax.reload(null,false);
-		  shouFuKuanPayTable.ajax.reload();
-		  shouFuKuanGatheringTable.ajax.reload();
+		  inlandCrossTable.ajax.reload(function(json){
+				autoHighLoad($('#inlandCrossTable'));
+			},false);
+		  shouFuKuanPayTable.ajax.reload(function(json){
+				autoHighLoad($('#shouFuKuanPayTable'));
+			});
+		  shouFuKuanGatheringTable.ajax.reload(function(json){
+				autoHighLoad($('#shouFuKuanGatheringTable'));
+			});
 		  if(id == '1'){
 			  layer.msg("添加成功",{time: 2000});
 		  }else if(id == '2'){

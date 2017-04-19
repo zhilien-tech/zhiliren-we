@@ -120,7 +120,7 @@
           </tr>
           <tr>
                   <td>差额：</td>
-                  <td><input id="difference" name="difference" type="text" class="form-control input-sm"></td>
+                  <td><input id="difference" name="difference" type="text" class="form-control input-sm mustNumberPoint"></td>
                   <td>余额：</td>
                   <td><label id="balance" name="balance">${obj.sumjine }</label></td>
           </tr>
@@ -128,7 +128,7 @@
                   <td>发票号：</td>
                   <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm"></td>
                   <td>金额：</td>
-                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm"></td>
+                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm mustNumberPoint"></td>
                   <td colspan="4">
                     <ul class="fileUL">
                       <li>
@@ -194,8 +194,9 @@
 	    	  if(invoicebalance){
 	    		  var yubanlance = parseFloat($('#balance').html()) + parseFloat(invoicebalance);
 	    		  $('#balance').html(yubanlance.toFixed(2));
-	    		  $('#backupbalance').html(yubanlance.toFixed(2));
+	    		  $('#backupbalance').val(yubanlance.toFixed(2));
 	    	  }
+	    	  $('#thisval').val('');
 	          $(this).parents('.cloneTR').remove();
 	      });
 	      

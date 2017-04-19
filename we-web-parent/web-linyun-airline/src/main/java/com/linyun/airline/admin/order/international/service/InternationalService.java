@@ -1149,6 +1149,12 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			//订单信息
 			order.setReceivestatus(AccountReceiveEnum.RECEIVINGMONEY.intKey());
 			orders.add(order);
+			String pnrstr = "";
+			TPnrInfoEntity pnrinfo = dbDao.fetch(TPnrInfoEntity.class,
+					Cnd.where("orderid", "=", str).and("mainsection", "=", 1));
+			if (!Util.isEmpty(pnrinfo) && Util.isEmpty(pnrinfo.getPNR())) {
+				pnrstr = pnrinfo.getPNR();
+			}
 			//消息提醒
 			List<TFunctionEntity> function = dbDao.query(TFunctionEntity.class, Cnd.where("name", "=", "收付款"), null);
 			long functionid = 0;
@@ -1156,7 +1162,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 				functionid = function.get(0).getId();
 			}
 			List<Long> receiveusers = inlandListService.getUserIdsByFun(company.getId(), functionid, "国际订单");
-			interReceivePayService.addInterRemindMsg(order.getId(), order.getOrdersnum(), "",
+			interReceivePayService.addInterRemindMsg(order.getId(), order.getOrdersnum(), pnrstr,
 					String.valueOf(order.getOrdersstatus()), MessageWealthStatusEnum.RECSUBMITED.intKey(),
 					PayReceiveTypeEnum.RECEIVE.intKey(), receiveusers, session);
 		}
@@ -1268,6 +1274,12 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			//更新订单状态
 			orderifo.setPaystatus(AccountPayEnum.APPROVAL.intKey());
 			orders.add(orderifo);
+			String pnrstr = "";
+			TPnrInfoEntity pnrinfo = dbDao.fetch(TPnrInfoEntity.class,
+					Cnd.where("orderid", "=", str).and("mainsection", "=", 1));
+			if (!Util.isEmpty(pnrinfo) && Util.isEmpty(pnrinfo.getPNR())) {
+				pnrstr = pnrinfo.getPNR();
+			}
 			//消息提醒
 			List<TFunctionEntity> function = dbDao.query(TFunctionEntity.class, Cnd.where("name", "=", "收付款"), null);
 			long functionid = 0;
@@ -1275,7 +1287,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 				functionid = function.get(0).getId();
 			}
 			List<Long> receiveusers = inlandListService.getUserIdsByFun(company.getId(), functionid, "国际订单");
-			interReceivePayService.addInterRemindMsg(orderifo.getId(), orderifo.getOrdersnum(), "",
+			interReceivePayService.addInterRemindMsg(orderifo.getId(), orderifo.getOrdersnum(), pnrstr,
 					String.valueOf(orderifo.getOrdersstatus()), MessageWealthStatusEnum.PSAPPROVALING.intKey(),
 					PayReceiveTypeEnum.PAY.intKey(), receiveusers, session);
 		}
