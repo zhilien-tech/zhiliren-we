@@ -62,7 +62,7 @@
                 	</c:forEach>
 				</tbody>
 			</table>
-			<table class="selectTable">
+			<%-- <table class="selectTable">
 				<tr>
 					<td>银行：</td>
 					<td>
@@ -87,8 +87,32 @@
 					</td>
 					<input id="totalMoney" name="totalMoney" type="hidden" value="${obj.totalMoney }">
 				</tr>
-			</table>
+			</table> --%>
 			<table class="payTable2">
+				<tr>
+					<td>银行：</td>
+					<td>
+						<select id="bankComp" name="bankComp" onchange="bankSelect();" class="form-control input-sm">
+							<option value="0">--请选择--</option>
+							<c:forEach var="one" items="${obj.bankList}">
+	                        	<option value="${one.id },${one.bankNameId }">${one.bankName }</option>
+	                        </c:forEach>
+						</select>
+					</td>
+					<td>银行卡名称：</td>
+					<td><select id="cardName" onchange="cardSelect();" name="cardName" class="form-control input-sm">
+							
+					</select></td>
+					<td>卡号：</td>
+					<td><select id="cardNum" name="cardNum" class="form-control input-sm">
+							
+					</select></td>
+					<td>合计：</td>
+					<td id="totalMoney">
+						<fmt:formatNumber type="number" value="${obj.totalMoney }" pattern="0.00" maxFractionDigits="2"/>
+					</td>
+					<input id="totalMoney" name="totalMoney" type="hidden" value="${obj.totalMoney }">
+				</tr>
 				<tr>
 					<td>国内外：</td>
 					<td><select id="payAddress" name="payAddress" class="form-control input-sm">
