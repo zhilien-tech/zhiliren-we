@@ -9,8 +9,9 @@
 .infoTopContent .infoTopContent input{display: inline-block;}
 .infoTopContent .conTimeInput{width: 125px;height: 28px;position: relative;top: -2px;}
 .infoTopContent .btn{margin-left: 12px;padding: 4px 15px;position: relative;top: -3px;}
-.infofooter{min-height:50px;overflow: hidden;border: solid 1px #e0e0e0;border-top: 0; padding: 10px 0px 0px 0px;background-color: #fff;border-radius: 0 4px 4px 4px;}
+.infofooter{overflow: hidden;border: solid 1px #e0e0e0;border-top: 0;background-color: #fff;border-radius: 0 4px 4px 4px;}
 .infofooter table tr td label{width: 78px;text-align: right;position: relative;top: 3px;}
+.DemandDiv:nth-of-type(1){margin-top:10px;}
 /* .infofooter table tbody tr td .form-control{width: 115px;}*/
 .cloTable tr td:nth-of-type(3) label{width: 70px;}
 .cloTable tr td:nth-of-type(5) label{width: 70px;}

@@ -44,6 +44,7 @@ $(document).on('change','.sc', function(){
 });
 
 $(document).on('input','#invoicebalance', function(){
+	var tempval = $('#thisval').val();
 	var thisval = $(this).val();
 	if(!isNaN(thisval)){
         var dot = thisval.indexOf(".");
@@ -55,17 +56,20 @@ $(document).on('input','#invoicebalance', function(){
         }
     }
 	$(this).val(thisval);
+	thisval = $(this).val();
 	var banlanceyue = parseFloat($('#sumjine').html());
 	//var balance = $('#balance').html();
 	//var shengyu = $('#backupbalance').val();
 	$('.cloneTR').each(function(i){
 		var invoicebalance = $(this).find('[name=invoicebalance]').val();
 		if(invoicebalance){
-			if(banlanceyue - parseFloat(invoicebalance) > 0){
+			if(banlanceyue > parseFloat(invoicebalance)){
 				banlanceyue = banlanceyue - parseFloat(invoicebalance);
 			}else{
 				banlanceyue = 0;
-				thisval = $('#backupbalance').val();
+				if(tempval && parseFloat(tempval) != parseFloat(thisval)){
+					thisval = $('#backupbalance').val();
+				}
 			}
 		}
 	});
@@ -73,10 +77,12 @@ $(document).on('input','#invoicebalance', function(){
 	if(!isNaN(banlanceyue)){
 		$('#balance').html(banlanceyue.toFixed(2));
 	}
+	$('#thisval').val(thisval);
 });
 $(document).on('blur','#invoicebalance', function(){
 	//if($('#balance').html() != '0.00'){
 		$('#backupbalance').val($('#balance').html());
+		$('#thisval').val('');
 	//}
 });
 $(document).on('focus','#invoicebalance', function(){
@@ -84,6 +90,8 @@ $(document).on('focus','#invoicebalance', function(){
 		//alert($(this).val());
 	if($(this).val()){
 		$('#backupbalance').val(parseFloat($(this).val())+parseFloat($('#balance').html()));
+		$('#thisval').val($(this).val());
 	}
+	$('#thisval').val($(this).val());
 	//}
 });

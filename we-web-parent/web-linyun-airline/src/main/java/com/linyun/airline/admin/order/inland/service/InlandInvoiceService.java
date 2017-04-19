@@ -388,7 +388,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			List<Record> orders = dbDao.query(sql, cnd, null);
 			record.put("orders", orders);
 			String username = "";
-			if (!Util.isEmpty(record.getInt("billuserid"))) {
+			if (!Util.isEmpty(record.get("billuserid"))) {
 				username = dbDao.fetch(TUserEntity.class, Long.valueOf(record.getInt("billuserid"))).getFullName();
 			}
 			record.put("username", username);
