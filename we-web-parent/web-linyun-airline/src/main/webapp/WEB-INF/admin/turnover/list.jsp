@@ -263,9 +263,9 @@
 	                    	}
 	                    
 	                    },
-	                    {"data": "balance", "bSortable": false,
+	                    {"data": "historymoney", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var depositBalance = row.balance;
+	                    		var depositBalance = row.historymoney;
 	                    		if(null==depositBalance || ""==depositBalance){
 	                    			return "0.00";
 	                    		}

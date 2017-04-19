@@ -125,7 +125,7 @@
           </tr>
           <tr>
                   <td><label>差额：</label></td>
-                  <td><input id="difference" name="difference" type="text" class="form-control input-sm"></td>
+                  <td><input id="difference" name="difference" type="text" class="form-control input-sm mustNumberPoint"></td>
                   <td><label>余额：</label></td>
                   <td><label id="balance" name="balance"><fmt:formatNumber type="number" value="${obj.sumjine }" pattern="0.00" maxFractionDigits="2"/></label></td>
           </tr>
@@ -133,7 +133,7 @@
                   <td><label>发票号：</label></td>
                   <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm"></td>
                   <td><label>金额：</label></td>
-                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm"></td>
+                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm mustNumberPoint"></td>
                   <td colspan="4">
                     <ul class="fileUL">
                       <li>
@@ -201,8 +201,9 @@
 	    	  if(invoicebalance){
 	    		  var yubanlance = parseFloat($('#balance').html()) + parseFloat(invoicebalance);
 	    		  $('#balance').html(yubanlance.toFixed(2));
-	    		  $('#backupbalance').html(yubanlance.toFixed(2));
+	    		  $('#backupbalance').val(yubanlance.toFixed(2));
 	    	  }
+	    	  $('#thisval').val('');
 	          $(this).parents('.cloneTR').remove();
 	      });
 	      

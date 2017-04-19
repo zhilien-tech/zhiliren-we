@@ -35,6 +35,7 @@ import org.nutz.log.Logs;
 import org.nutz.mvc.upload.TempFile;
 
 import com.google.common.base.Splitter;
+import com.linyun.airline.admin.authority.function.entity.TFunctionEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComLoginNumEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
@@ -1549,8 +1550,14 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("remindDate", DateTimeUtil.format(DateTimeUtil.nowDateTime()));
 			map.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
-			//			searchViewService.addRemindMsg(map, order.getOrdersnum(), "", order.getId(),
-			//					MessageWealthStatusEnum.RECSUBMITED.intKey(), session);
+			List<TFunctionEntity> function = dbDao.query(TFunctionEntity.class, Cnd.where("name", "=", "收付款"), null);
+			long functionid = 0;
+			if (function.size() > 0) {
+				functionid = function.get(0).getId();
+			}
+			List<Long> receiveusers = inlandListService.getUserIdsByFun(company.getId(), functionid, "内陆订单");
+			searchViewService.addRemindMsg(map, order.getOrdersnum(), "", order.getId(),
+					MessageWealthStatusEnum.RECSUBMITED.intKey(), receiveusers, session);
 		}
 		//更新订单状态
 		dbDao.update(orders);

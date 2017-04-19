@@ -100,7 +100,7 @@
                      <td><label>出发日期：</label></td>
                      <td><input id="leavedate" name="leavedate" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:'%y-%M-%d'})"></td>
                      <td><label>人数：</label></td>
-                     <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm textWid"></td>
+                     <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm textWid mustNumber"></td>
                      <td><label class="labelWid">早中晚：</label></td>
                      <td>
                        <select id="tickettype" name="tickettype" class="form-control input-sm textWid">
@@ -122,9 +122,9 @@
                      <td><label>抵达时间：</label></td>
                      <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm textWid mustArriveTimes"></td>
                      <td><label class="labelWid">成本价：</label></td>
-                     <td><input id="formprice" name="formprice" type="text" class="form-control input-sm textWid costPrice"></td>
+                     <td><input id="formprice" name="formprice" type="text" class="form-control input-sm textWid costPrice mustNumberPoint"></td>
                      <td><label class="labelWid">销售价：</label></td>
-                     <td><input id="price" name="price" type="text" class="form-control input-sm textWid"></td>
+                     <td><input id="price" name="price" type="text" class="form-control input-sm textWid mustNumberPoint"></td>
                      <td>
                       <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake"></a>
                      </td>
