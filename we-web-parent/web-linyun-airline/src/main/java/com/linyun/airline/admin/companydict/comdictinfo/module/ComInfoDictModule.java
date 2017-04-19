@@ -27,6 +27,7 @@ import org.nutz.mvc.annotation.Param;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComDictInfoEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComLoginNumEntity;
 import com.linyun.airline.admin.companydict.comdictinfo.entity.ComThirdPayMentEntity;
+import com.linyun.airline.admin.companydict.comdictinfo.enums.ComAddTypeEnum;
 import com.linyun.airline.admin.companydict.comdictinfo.enums.ComDictTypeEnum;
 import com.linyun.airline.admin.companydict.comdictinfo.form.ComInfoAddForm;
 import com.linyun.airline.admin.companydict.comdictinfo.form.ComInfoSqlForm;
@@ -273,7 +274,7 @@ public class ComInfoDictModule {
 	public Object update(@Param("id") final long id, final HttpSession session) {
 		Map<String, Object> map = comInfoDictService.findDirinfo(id, session);
 		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));
-		map.put("comdicttypeenum", EnumUtil.enum2(ComDictTypeEnum.class));
+		map.put("comdicttypeenum", EnumUtil.enum2(ComAddTypeEnum.class));
 		return map;
 	}
 
