@@ -72,15 +72,6 @@
   <!-- /.content-wrapper -->
 
   <!-- Main Footer -->
-<!--   <footer class="main-footer">
-    To the right
-    <div class="pull-right hidden-xs">
-      Anything you want
-    </div>
-    Default to the left
-    <strong>版权 &copy; 2016 <a href="#"> 聚优国际旅行社（北京）有限公司</a>.</strong> 保留所有权利.
-  </footer> -->
-  <!-- <div class="control-sidebar-bg"></div> -->
 </div>
 <!-- ./wrapper -->
  <%@include file="/WEB-INF/public/footer.jsp"%>
@@ -103,23 +94,18 @@
           });
       });
   });
-  
-  
-  
 </script>
 <script type="text/javascript">
-	
-	
-	
 	var empTable;
 	function initDatatable() {
 		empTable = $('#bankCardTable').DataTable({
 			"searching" : false,
 			"processing" : true,
 			"serverSide" : true,
-			"stripeClasses": [ 'strip1','strip2' ],//斑马线
 			"bLengthChange" : false,
-			"bSort": true, //排序功能 
+			"stripeClasses": [ 'strip1','strip2' ],//斑马线
+			"bSort": true, //排序功能
+			"autoWidth": false,
 			"language" : {
 				"url" : "${base}/public/plugins/datatables/cn.json"
 			},
@@ -160,25 +146,21 @@
 	                    		if(null==depositBalance || ""==depositBalance){
 	                    			return "";
 	                    		}
-	                    		/* if(depositBalance.length>4){
-	                    			var res=depositBalance.substring(0,4); 
-	                    			return res+"...";
-	                    		} */
 	                    		var depositBalance = '<span data-toggle="tooltip" data-placement="left" title="'+depositBalance+'">'+depositBalance+'<span>';
 	                    		return depositBalance;
 	                    	}	
 	                    }
 	            ],
-	        columnDefs: [
-						{"sWidth": "11.33%","aTargets": [0] },
-						{"sWidth": "20.33%","aTargets": [1] },
-						{"sWidth": "7%","aTargets": [2] },
-						{"sWidth": "13%","aTargets": [3] },
-						{"sWidth": "10%","aTargets": [4] },
-						{"sWidth": "10%","aTargets": [5] },
-						{"sWidth": "6%","aTargets": [6] },
-						{"sWidth": "11%","aTargets": [7] },
-						{"sWidth": "5%","aTargets": [8] },
+	        "columnDefs": [ 
+						/* {"sWidth": "11%", "targets": [0] },
+						{"sWidth": "20%", "targets": [1] },
+						{"sWidth": "7%", "targets": [2] },
+						{"sWidth": "13%", "aTargets": [3] },
+						{"sWidth": "10%", "aTargets": [4] },
+						{"sWidth": "10%", "targets": [5] },
+						{"sWidth": "6%", "targets": [6] },
+						{"sWidth": "14%", "targets": [7] },
+						{"sWidth": "10%", "targets": [8] },  */
 	                    {
 	            //   指定第一列，从0开始，0表示第一列，1表示第二列……
 	            targets: 8,
