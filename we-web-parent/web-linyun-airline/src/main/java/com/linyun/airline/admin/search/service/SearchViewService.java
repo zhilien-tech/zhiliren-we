@@ -514,8 +514,33 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		//判断以哪种格式解析
 		String parsingType = "";
 		sabrePNR += "\n";
-		String[] sabrePnrs = sabrePNR.split("\\s+");
-		String[] sabrePnrs1 = sabrePNR.split("\\n+");
+		/*String[] sabrePnrs = sabrePNR.split("\\s+");*/
+		String[] sabrePnrList = sabrePNR.split("\\s+");
+		List<String> sabreList = new ArrayList<String>();
+		for (String s : sabrePnrList) {
+			if (!Util.isEmpty(s)) {
+				sabreList.add(s);
+			}
+		}
+		int sabreSize = sabreList.size();
+		String[] sabrePnrs = new String[sabreSize];
+		for (int i = 0; i < sabreSize; i++) {
+			sabrePnrs[i] = sabreList.get(i);
+		}
+
+		String[] sabrePnrsn = sabrePNR.split("\\n+");
+		//去除 空行
+		List<String> pnrList = new ArrayList<String>();
+		for (String str : sabrePnrsn) {
+			if (!Util.isEmpty(str)) {
+				pnrList.add(str);
+			}
+		}
+		int size = pnrList.size();
+		String[] sabrePnrs1 = new String[size];
+		for (int i = 0; i < size; i++) {
+			sabrePnrs1[i] = pnrList.get(i);
+		}
 		String sabrePnrsStr = sabrePnrs1[0];
 		/*String sabrePnrsStr = sabrePnrs[0];*/
 		if (sabrePnrsStr.contains("/D￥") && sabrePnrsStr.contains("<<")) {
@@ -674,7 +699,20 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		//判断以哪种格式解析
 		String parsingType = "";
 		etemStr = etemStr + "\n";
-		String[] etemPnrs = etemStr.split("\\s+");
+		String[] etemPnrss = etemStr.split("\\s+");
+		//去除空行
+		List<String> etemList = new ArrayList<String>();
+		for (String s : etemPnrss) {
+			if (!Util.isEmpty(s)) {
+				etemList.add(s);
+			}
+		}
+		int etemSize = etemList.size();
+		String[] etemPnrs = new String[etemSize];
+		for (int i = 0; i < etemSize; i++) {
+			etemPnrs[i] = etemList.get(i);
+		}
+
 		String etem = etemPnrs[0];
 		if (etem.contains("AVH/") || etem.contains("avh/")) {
 			parsingType = "1";
@@ -699,7 +737,19 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				etemGroup.add(m.group());
 			}
 
-			String[] etemStrs = etemStr.split("\\s+");
+			String[] etemStrss = etemStr.split("\\s+");
+			List<String> etemLists = new ArrayList<String>();
+			for (String s : etemStrss) {
+				if (!Util.isEmpty(s)) {
+					etemLists.add(s);
+				}
+			}
+			int etemSizes = etemLists.size();
+			String[] etemStrs = new String[etemSizes];
+			for (int i = 0; i < etemSize; i++) {
+				etemStrs[i] = etemLists.get(i);
+			}
+
 			//航空公司
 			String airCompName = etemStrs[4];
 			//起飞日期
