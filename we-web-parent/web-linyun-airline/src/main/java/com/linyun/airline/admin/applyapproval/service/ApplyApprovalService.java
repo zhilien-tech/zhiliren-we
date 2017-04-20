@@ -501,7 +501,12 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 
 				chain.add("applyResult", doingOperation);
 			}
-
+			Map<String, Object> remindMap = new HashMap<String, Object>();
+			remindMap.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
+			remindMap.put("remindDate", DateUtil.Date2String(new Date()));
+			remindMap.put("", "");
+			//searchViewService.addRemindMsg(remindMap, "", "", upOrderid, orderType, receiveUids,
+			//	session);
 			TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 			chain.add("approvelid", user.getId());
 			int res3 = dbDao.update(TMitigateInfoEntity.class, chain, Cnd.where("id", "=", reduceId));
