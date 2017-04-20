@@ -34,6 +34,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.linyun.airline.admin.Company.service.CompanyViewService;
 import com.linyun.airline.admin.customer.base.Select2Option2;
+import com.linyun.airline.admin.customer.form.TCustomerInfoSqlForm;
 import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
@@ -47,6 +48,7 @@ import com.linyun.airline.common.enums.MessageRemindEnum;
 import com.linyun.airline.common.enums.MessageSourceEnum;
 import com.linyun.airline.common.enums.MessageStatusEnum;
 import com.linyun.airline.common.enums.MessageTypeEnum;
+import com.linyun.airline.common.enums.UserStatusEnum;
 import com.linyun.airline.common.enums.UserTypeEnum;
 import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.entities.DictInfoEntity;
@@ -85,6 +87,8 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	private static final int RECPAY_MENU_ID = 81;
 	private static final int INVOICE_MENU_ID = 97;
 
+	private static final int USER_VALID = UserStatusEnum.VALID.intKey();
+
 	@Inject
 	private externalInfoService externalInfoService;
 
@@ -112,6 +116,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 			long companyId = tCompanyEntity.getId();
 			Sql sql = Sqls.create(sqlManager.get("customer_agent_list"));
 			sql.setParam("comid", companyId);
+			sql.setParam("status", USER_VALID);
 			/*sql.setParam("userid", userId);*/
 			List<Record> record = dbDao.query(sql, null, null);
 			obj.put("userlist", record);
@@ -125,6 +130,40 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		}
 
 		return obj;
+	}
+
+	public Object listData(TCustomerInfoSqlForm queryForm, HttpSession session) {
+		//当前公司id
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();//得到公司关系表id
+		queryForm.setCompanyId(companyId);
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		int userType = loginUser.getUserType(); //用户类型
+		long userId = loginUser.getId();
+
+		String userIds = "";
+
+		//管理员
+		if (Util.eq(UP_MANAGER, userType) || Util.eq(AGENT_MANAGER, userType)) {
+			Sql sql = Sqls.create(sqlManager.get("customer_agent_list"));
+			sql.setParam("comid", companyId);
+			sql.setParam("status", USER_VALID);
+			/*sql.setParam("userid", userId);*/
+			List<Record> record = dbDao.query(sql, null, null);
+			for (Record r : record) {
+				String id = r.getString("id");
+				userIds += id + ",";
+			}
+		}
+		//普通用户
+		if (Util.eq(UPCOM_USER, userType) || Util.eq(AGENT_USER, userType)) {
+			userIds = userId + ",";
+		}
+		userIds = userIds.substring(0, userIds.length() - 1);
+		queryForm.setUserIds(userIds);
+
+		return listPage4Datatables(queryForm);
 	}
 
 	//客户公司
@@ -427,6 +466,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		long companyId = tCompanyEntity.getId();
 		Sql sql = Sqls.create(sqlManager.get("customer_agent_list"));
 		sql.setParam("comid", companyId);
+		sql.setParam("status", USER_VALID);
 		List<Record> record = dbDao.query(sql, null, null);
 		obj.put("userlist", record);
 

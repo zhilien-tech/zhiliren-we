@@ -2,6 +2,7 @@ package com.linyun.airline.admin.customer.module;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,9 @@ import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
+import org.nutz.dao.Sqls;
+import org.nutz.dao.entity.Record;
+import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.AdaptBy;
@@ -29,6 +33,7 @@ import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
+import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
 import com.linyun.airline.forms.TCustomerInfoUpdateForm;
 import com.uxuexi.core.common.util.FileUtil;
@@ -118,10 +123,7 @@ public class CustomerModule {
 	//服务器端分页查询,当前用户的提醒信息
 	@At
 	public Object listData(@Param("..") final TCustomerInfoSqlForm queryForm, HttpSession session) {
-		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		long companyId = tCompanyEntity.getId();//得到公司关系表id
-		queryForm.setCompanyId(companyId);
-		return customerViewService.listPage4Datatables(queryForm);
+		return customerViewService.listData(queryForm, session);
 	}
 
 	/**
