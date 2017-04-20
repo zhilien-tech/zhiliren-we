@@ -122,7 +122,7 @@ function initCustNeedsSelect2(){
 	//航班号下拉
 	$("#cAirlineNum").select2({
 		ajax : {
-			url : BASE_PATH + "/admin/search/getCAirNumSelect.html",
+			url : BASE_PATH + "/admin/customneeds/getAirLineSelect.html",
 			dataType : 'json',
 			delay : 250,
 			type : 'post',
@@ -427,7 +427,7 @@ $(document).on("click",".addIcon",function(){
 	newDiv.find('[class=autoAddairLineNum]').remove();
 	newDiv.find('[name=cAirlineNum]').select2({
 		ajax : {
-			url : BASE_PATH + "/admin/search/getCAirNumSelect.html",
+			url : BASE_PATH + "/admin/customneeds/getAirLineSelect.html",
 			dataType : 'json',
 			delay : 250,
 			type : 'post',
