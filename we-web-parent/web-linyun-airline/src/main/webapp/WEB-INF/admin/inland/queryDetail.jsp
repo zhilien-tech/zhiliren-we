@@ -241,11 +241,11 @@
 					                     <td><select id="ailinenum" name="ailinenum" disabled="disabled" class="form-control input-sm"  multiple="multiple" placeholder="SYD(悉尼)">
 					                     	<c:forEach items="${obj.airline }" var="one"> 
 						                   			<c:choose>
-							                   			<c:when test="${airline.ailinenum  eq one.airlinenum  }">
-															<option value="${one.airlinenum }" selected="selected">${one.airlinenum }</option>
+							                   			<c:when test="${airline.ailinenum  eq one.dictName  }">
+															<option value="${one.dictName }" selected="selected">${one.dictName }</option>
 							                   			</c:when>
 							                   			<c:otherwise>
-								                     		<option value="${one.airlinenum }">${one.airlinenum }</option>
+								                     		<option value="${one.dictName }">${one.dictName }</option>
 							                   			</c:otherwise>
 						                    		</c:choose>
 						                     	</c:forEach>
