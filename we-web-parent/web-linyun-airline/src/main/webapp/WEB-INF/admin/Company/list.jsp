@@ -154,7 +154,7 @@ $(function () {
     	    maxmin: false,
     	    shadeClose: false,
     	    scrollbar: false,
-    	    area: ['900px', '590px'],
+    	    area: ['880px', '585px'],
     	    content: '${url}/add.html'
     	    
     	  });
@@ -169,7 +169,7 @@ $(function () {
   	    maxmin: false,
   	    shadeClose: false,
   	    scrollbar: false,
-  	    area: ['900px', '590px'],
+  	    area: ['880px', '585px'],
   	    content: '${url}/update.html?id='+id
   	  });
   }
