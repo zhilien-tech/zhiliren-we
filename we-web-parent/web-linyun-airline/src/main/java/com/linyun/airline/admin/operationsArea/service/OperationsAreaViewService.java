@@ -77,6 +77,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	private static final int PSAPPROVALING = MessageTypeEnum.PSAPPROVALING.intKey(); //需付款/已提交申请
 	private static final int RECSUBMITED = MessageTypeEnum.RECSUBMITED.intKey(); //收款已提交
 	private static final int PROCESSMSG = MessageTypeEnum.PROCESSMSG.intKey();
+	private static final int DERATEMONEY = MessageTypeEnum.DERATEMONEY.intKey();
 
 	//消息提醒模式
 	private static final int MOUTH = MessageRemindEnum.MOUTH.intKey();
@@ -374,7 +375,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 					+ String.valueOf(UNAPPROVALMSG) + "," + String.valueOf(MAKEOUTBILLMSG) + ","
 					+ String.valueOf(DRAWBILLMSG) + "," + String.valueOf(RECINVIOCING) + ","
 					+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING) + ","
-					+ String.valueOf(RECSUBMITED);
+					+ String.valueOf(RECSUBMITED) + "," + String.valueOf(DERATEMONEY);
 			break;
 		case "taskNotice":
 			//任务 

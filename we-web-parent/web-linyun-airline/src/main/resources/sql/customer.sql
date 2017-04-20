@@ -68,6 +68,7 @@ FROM
 INNER JOIN t_company_job cj ON uj.companyJobId = cj.id
 WHERE
 	cj.comId = @comid
+AND u.status = @status
 AND userName IS NOT NULL
 ORDER BY
 	u.userName
