@@ -43,7 +43,13 @@
                 		<tr ondblclick="trDetail(${one.uid});">
                 			<%-- <td>${one.id }</td> --%>
                 			<td>${one.ordersnum }</td>
-                			<td>${one.pnrnum }</td>
+                			<td>
+                				<ul>
+                					<c:forEach var="pnr" items="${one.pnrnum}">
+	                					<li>${pnr}</li>
+	                				</c:forEach>
+                				</ul>
+                			</td>
                 			<td>${one.cusgroupnum }</td>
                 			<td>${one.shortname }</td>
                 			<td>${one.billingdate }</td>
@@ -56,7 +62,7 @@
                 	</c:forEach>
 				</tbody>
 			</table>
-			<table class="selectTable">
+			<%-- <table class="selectTable">
 				<tr>
 					<td>银行：</td>
 					<td>
@@ -81,8 +87,32 @@
 					</td>
 					<input id="totalMoney" name="totalMoney" type="hidden" value="${obj.totalMoney }">
 				</tr>
-			</table>
+			</table> --%>
 			<table class="payTable2">
+				<tr>
+					<td>银行：</td>
+					<td>
+						<select id="bankComp" name="bankComp" onchange="bankSelect();" class="form-control input-sm">
+							<option value="0">--请选择--</option>
+							<c:forEach var="one" items="${obj.bankList}">
+	                        	<option value="${one.id },${one.bankNameId }">${one.bankName }</option>
+	                        </c:forEach>
+						</select>
+					</td>
+					<td>银行卡名称：</td>
+					<td><select id="cardName" onchange="cardSelect();" name="cardName" class="form-control input-sm">
+							
+					</select></td>
+					<td>卡号：</td>
+					<td><select id="cardNum" name="cardNum" class="form-control input-sm">
+							
+					</select></td>
+					<td>合计：</td>
+					<td id="totalMoney">
+						<fmt:formatNumber type="number" value="${obj.totalMoney }" pattern="0.00" maxFractionDigits="2"/>
+					</td>
+					<input id="totalMoney" name="totalMoney" type="hidden" value="${obj.totalMoney }">
+				</tr>
 				<tr>
 					<td>国内外：</td>
 					<td><select id="payAddress" name="payAddress" class="form-control input-sm">
@@ -236,53 +266,58 @@
 			});
 		//银行名称改变
 		function bankSelect(){
-			$.ajax({
-				cache : false,
-				type : "POST",
-				data : {
-					bankId:$('#bankComp').val().split(',')[1]
-				},
-				url : '${base}/admin/receivePay/inter/getCardNames.html',
-				success : function(data) {
-					/* var option = "<option>--请选择--</option>"; */
-					var option = "";
-					var nameNtr = option;
-					var numStr = option;
-					for(var i=0;i< data.length;i++){
-						nameNtr += '<option value="'+data[i]+'">'+data[i]+'</option>';
+			var bankId = $('#bankComp').val().split(',')[1];
+			if(bankId){
+				$.ajax({
+					cache : false,
+					type : "POST",
+					data : {
+						bankId:$('#bankComp').val().split(',')[1]
+					},
+					url : '${base}/admin/receivePay/inter/getCardNames.html',
+					success : function(data) {
+						/* var option = "<option>--请选择--</option>"; */
+						var option = "";
+						var nameNtr = option;
+						var numStr = option;
+						for(var i=0;i< data.length;i++){
+							nameNtr += '<option value="'+data[i]+'">'+data[i]+'</option>';
+						}
+						document.getElementById("cardName").innerHTML = nameNtr;
+						cardSelect();
+					},
+					error : function(request) {
+						
 					}
-					document.getElementById("cardName").innerHTML = nameNtr;
-					cardSelect();
-				},
-				error : function(request) {
-					
-				}
-			});
+				});
+			}
 		}
 		
 		//银行卡名称改变
 		function cardSelect(){
-			$.ajax({
-				cache : false,
-				type : "POST",
-				data : {
-					cardName:$('#cardName').val()
-				},
-				url : '${base}/admin/receivePay/inland/getCardNums.html',
-				success : function(data) {
-					/* var str = "<option>--请选择--</option>"; */
-					var str = "";
-					for(var i=0;i< data.length;i++){
-						str += '<option value="'+data[i]+'">'+data[i]+'</option>';
+			var cardName = $('#cardName').val();
+			if(cardName){
+				$.ajax({
+					cache : false,
+					type : "POST",
+					data : {
+						cardName:$('#cardName').val()
+					},
+					url : '${base}/admin/receivePay/inland/getCardNums.html',
+					success : function(data) {
+						/* var str = "<option>--请选择--</option>"; */
+						var str = "";
+						for(var i=0;i< data.length;i++){
+							str += '<option value="'+data[i]+'">'+data[i]+'</option>';
+						}
+						document.getElementById("cardNum").innerHTML=str;
+					},
+					error : function(request) {
+						
 					}
-					document.getElementById("cardNum").innerHTML=str;
-				},
-				error : function(request) {
-					
-				}
-			});
+				});
+			}
 		}
-		
 		function trDetail(id){
 			var url = '${base}/admin/international/internationalDetail.html?orderid='+ id;
 			window.open(url);

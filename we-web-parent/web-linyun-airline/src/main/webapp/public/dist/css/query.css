@@ -9,8 +9,9 @@
 .infoTopContent .infoTopContent input{display: inline-block;}
 .infoTopContent .conTimeInput{width: 125px;height: 28px;position: relative;top: -2px;}
 .infoTopContent .btn{margin-left: 12px;padding: 4px 15px;position: relative;top: -3px;}
-.infofooter{min-height:50px;overflow: hidden;border: solid 1px #e0e0e0;border-top: 0; padding: 10px 0px 0px 0px;background-color: #fff;border-radius: 0 4px 4px 4px;}
+.infofooter{overflow: hidden;border: solid 1px #e0e0e0;border-top: 0;background-color: #fff;border-radius: 0 4px 4px 4px;}
 .infofooter table tr td label{width: 78px;text-align: right;position: relative;top: 3px;}
+.DemandDiv:nth-of-type(1){margin-top:10px;}
 /* .infofooter table tbody tr td .form-control{width: 115px;}*/
 .cloTable tr td:nth-of-type(3) label{width: 70px;}
 .cloTable tr td:nth-of-type(5) label{width: 70px;}
@@ -123,7 +124,7 @@ td[colspan="3"] .select2 .selection .select2-selection ul .select2-search--inlin
 .KHinfo td{padding-top: 12px;}
 .paragraphNumber {padding-top: 10px;}
 /*---------客户信息---------*/
-.DemandDiv{background-color: #f5f5f5;box-shadow: 0px 1px 5px #bebebe;margin-bottom:15px;}
+/*.DemandDiv{background-color: #f5f5f5;box-shadow: 0px 1px 5px #bebebe;margin-bottom:15px;}*/
 .titleNum{float: left;border: rgb(45, 110, 149) solid 1px;text-align: center !important;margin-left: 10px;border-radius: 3px;font-size: 15px !important;color: #2d6e95;margin-top: 5px;width: 24px;margin-bottom: 12px;}
 .addDemand,.removeDemand{padding: 5px 11px;position: relative;left: 88%;margin-top: 5px;}
 .cloTable{margin-top:5px;}
@@ -132,6 +133,7 @@ td[colspan="3"] .select2 .selection .select2-selection ul .select2-search--inlin
 .noteText{width: 100% !important;}
 .removIcon{color: #3c8dbc;margin-right: 20px;margin-top: 0;cursor: pointer;}
 .removIcon:hover{color: rgba(60, 141, 188, 0.75);}
+#infofooter{border-bottom: 0 !important;}
 /*---------end 客户信息---------*/
 .sabre{padding: 3px 15px;}
 .sabreTextatea{max-width:730px;height: 200px !important;display: inline-block;position: relative;left: 10px;}
@@ -176,10 +178,10 @@ table.dataTable thead > tr > th {padding-right:0px;}
 .xuqiuTable tbody tr:nth-child(2) td:nth-child(2){width:150px;}
 .xuqiuTable tbody tr:nth-child(2) td:nth-child(3){width:54px;}
 .xuqiuTable tr:nth-of-type(1) td:nth-of-type(3) label {position: relative;left:0px;}
-.remarkDiv{padding: 5px 0px;display: block;background-color: #f5f5f5;    box-shadow: 1px 0px 5px #bebebe;margin-bottom: 15px;border-left: solid 1px #e0e0e0;}
+.remarkDiv{padding: 5px 0px;display: block;margin-bottom: 15px;}
 .remarkTable{width:100%;}
-.remarkContext{overflow: hidden;min-height: 80px;display: block;border: solid 1px #e0e0e0;border-radius: 0 0 3px 3px;background-color: white;}
-.remarkTable tbody tr td:nth-child(1){width: 75px;text-align: right;}
+.remarkContext{overflow: hidden;min-height: 80px;display: block;border: solid 1px #e0e0e0;border-radius: 0 0 3px 3px;border-top: 0;background-color: white;}
+.remarkTable tbody tr td:nth-child(1){width: 78px;text-align: right;}
 .remarkTable tbody tr td:nth-child(2){padding-right:5.6%;}
 .infofooter1{border-bottom: 0;border-radius: 3px 3px 0px 0px;}
 textarea#cRemark{height: 112px;resize:none}

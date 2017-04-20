@@ -61,7 +61,6 @@
 		<div class="content-wrapper">
 			<!-- Main content -->
 			<section class="content">
-				<div class="row row-top">
 					<div class="col-xs-12">
 						<div class="box">
 							<div class="box-header">
@@ -135,13 +134,9 @@
 							<!-- /.box-body -->
 						</div>
 						<!-- /.box -->
-					</div>
-					<!-- /.col -->
-				</div>
-			</section>
-			<!-- /.content -->
-		</div>
-		<!-- /.content-wrapper -->
+					</div><!-- /.col -->
+			</section><!-- /.content -->
+		</div><!-- /.content-wrapper -->
 
 		<!-- Main Footer -->
 		<%@include file="/WEB-INF/public/footer.jsp"%>

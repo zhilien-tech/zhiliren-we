@@ -119,6 +119,6 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 .txtTable tbody tr td:nth-child(6) {width: 210px;}
 .txtTable tbody tr td:nth-child(7) {width: 50px;}
 #inlandPayBeginDate,#inlandPayEndDate,#inlandRecBeginDate,#inlandRecEndDate {padding-left: 3px;padding-right: 3px;}
-#interRecSelect,#interPaySelect,#cardNum,#approver,#fundType{padding-left: 3px;padding-right: 3px;}
+#interRecSelect,#interPaySelect,#cardNum,#approver,#fundType,#payDate,#payCurrency,#approveResult{padding-left: 3px;padding-right: 3px;}
 button#interPayCancelBtn {padding: 5px 10px;}
 .leftPadding {padding-left: 10px;}

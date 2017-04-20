@@ -174,7 +174,7 @@
 					{ "sWidth": "35%",  "targets": [1] },
 					{ "sWidth": "35%",  "targets": [2] },
 					{ "sWidth": "15%",  "targets": [3] },
-                         {
+                    {
                 //   指定第一列，从0开始，0表示第一列，1表示第二列……
                 targets: 3,
                 render: function(data, type, row, meta) {
