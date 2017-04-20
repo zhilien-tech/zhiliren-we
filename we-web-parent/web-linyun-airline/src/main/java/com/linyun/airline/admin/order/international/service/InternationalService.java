@@ -59,7 +59,6 @@ import com.linyun.airline.entities.TBankCardEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TFinanceInfoEntity;
-import com.linyun.airline.entities.TFlightInfoEntity;
 import com.linyun.airline.entities.TInterMessageEntity;
 import com.linyun.airline.entities.TOrderCustomneedEntity;
 import com.linyun.airline.entities.TOrderReceiveEntity;
@@ -600,7 +599,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		List<TDepartureCityEntity> city = externalInfoService.findCityByCode("", CITYCODE);
 		result.put("city", city);
 		//航班号下拉
-		result.put("airline", dbDao.query(TFlightInfoEntity.class, null, null));
+		result.put("airline", externalInfoService.findDictInfoByText("", AIRLINECODE));
 		return result;
 	}
 

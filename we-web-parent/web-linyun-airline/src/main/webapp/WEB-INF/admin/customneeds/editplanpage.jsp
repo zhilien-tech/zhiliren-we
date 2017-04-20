@@ -178,11 +178,11 @@
 		                  	<select id="leaveairline" name="leaveairline" type="text" class="form-control input-sm select2" multiple="multiple" placeholder=" " >
 		                    	<c:forEach var="one" items="${obj.airline }">
 		                    		<c:choose>
-		                    			<c:when test="${airline.ailinenum eq one.airlinenum }">
-											<option value="${one.airlinenum }" selected="selected">${one.airlinenum}</option>
+		                    			<c:when test="${airline.ailinenum eq one.dictName }">
+											<option value="${one.dictName }" selected="selected">${one.dictName}</option>
 		                    			</c:when>
 		                    			<c:otherwise>
-											<option value="${one.airlinenum }">${one.airlinenum}</option>
+											<option value="${one.dictName }">${one.dictName}</option>
 		                    			</c:otherwise>
 		                    		</c:choose>
 								</c:forEach>
