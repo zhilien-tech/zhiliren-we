@@ -301,7 +301,7 @@ SELECT
 	ci.shortName,
 	ci.linkMan,
 	fi. ISSUER,
-	prr.currentpay,
+	fi.incometotal currentpay,
 	prr.orderstatusid prrOrderStatus
 FROM
 	t_up_order uo

@@ -41,7 +41,7 @@
                 			<td>${one.linkman }</td>
                 			<td>${one.issuer }</td>
                 			<td>
-                				<fmt:formatNumber type="number" value="${one.incometotal }" pattern="0.00" maxFractionDigits="2"/>
+                				<fmt:formatNumber type="number" value="${one.currentpay }" pattern="0.00" maxFractionDigits="2"/>
                 			</td>
                 		</tr>
                 	</c:forEach>
@@ -52,7 +52,7 @@
                   <td>银行：</td>
                   <td>
                     <select disabled="disabled" class="form-control input-sm">
-                   		<option selected = "selected">${obj.yhkSelect[0].dictName}</option>
+                   		<option selected = "selected">${obj.bankName}</option>
                     </select>
                   </td>
                   <td>银行卡名称：</td>

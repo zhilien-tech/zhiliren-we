@@ -830,8 +830,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				//保存流水信息
 			if (orderType == OrderStatusEnum.TICKETING.intKey() && !Util.isEmpty(paymethod)
 					&& paymethod != PayMethodEnum.THIRDPART.intKey()) {
-				List<TPnrInfoEntity> pnrinfos = dbDao.query(TPnrInfoEntity.class, Cnd.where("needid", "=", customerId),
-						null);
+				List<TPnrInfoEntity> pnrinfos = dbDao.query(TPnrInfoEntity.class,
+						Cnd.where("needid", "=", customneedid), null);
 				double money = 0;
 				for (TPnrInfoEntity pnrinfo : pnrinfos) {
 					if (!Util.isEmpty(pnrinfo.getCostpricesum())) {
