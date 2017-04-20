@@ -699,7 +699,20 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		//判断以哪种格式解析
 		String parsingType = "";
 		etemStr = etemStr + "\n";
-		String[] etemPnrs = etemStr.split("\\s+");
+		String[] etemPnrss = etemStr.split("\\s+");
+		//去除空行
+		List<String> etemList = new ArrayList<String>();
+		for (String s : etemPnrss) {
+			if (!Util.isEmpty(s)) {
+				etemList.add(s);
+			}
+		}
+		int etemSize = etemList.size();
+		String[] etemPnrs = new String[etemSize];
+		for (int i = 0; i < etemSize; i++) {
+			etemPnrs[i] = etemList.get(i);
+		}
+
 		String etem = etemPnrs[0];
 		if (etem.contains("AVH/") || etem.contains("avh/")) {
 			parsingType = "1";
@@ -724,7 +737,19 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				etemGroup.add(m.group());
 			}
 
-			String[] etemStrs = etemStr.split("\\s+");
+			String[] etemStrss = etemStr.split("\\s+");
+			List<String> etemLists = new ArrayList<String>();
+			for (String s : etemStrss) {
+				if (!Util.isEmpty(s)) {
+					etemLists.add(s);
+				}
+			}
+			int etemSizes = etemLists.size();
+			String[] etemStrs = new String[etemSizes];
+			for (int i = 0; i < etemSize; i++) {
+				etemStrs[i] = etemLists.get(i);
+			}
+
 			//航空公司
 			String airCompName = etemStrs[4];
 			//起飞日期
