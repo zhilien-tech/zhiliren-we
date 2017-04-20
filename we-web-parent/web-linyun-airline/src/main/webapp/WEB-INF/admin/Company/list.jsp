@@ -13,7 +13,6 @@
           <div class="box">
             <div class="box-header">
               <div class="form-group row form-right">
-             
                 <div class="col-md-3"><!--公司名称/负责人/电话 搜索框-->
                   <input type="text" name="companyName" id="companyName" class="form-control" placeholder="公司名称/负责人/电话" onkeypress="onkeyEnter();">
                 </div>
