@@ -274,17 +274,17 @@
 			                   		<c:otherwise>
 					                   <tr name="airlineinfo">
 					                     <td></span><label>航空公司：</label></td>
-					                     <td><select id="aircom" name="aircom" class="form-control input-sm"  multiple="multiple" placeholder="" ></select></td>
+					                     <td><select id="aircom" name="aircom" disabled="disabled" class="form-control input-sm"  multiple="multiple" placeholder="" ></select></td>
 					                     <td><label>航班号：</label></td>
-					                     <td><select id="ailinenum" name="ailinenum" class="form-control input-sm"  multiple="multiple" placeholder="SYD(悉尼)"></select></td>
+					                     <td><select id="ailinenum" name="ailinenum" disabled="disabled" class="form-control input-sm"  multiple="multiple" placeholder="SYD(悉尼)"></select></td>
 					                     <td><label>出发时间：</label></td>
-					                     <td><input id="leavetime" name="leavetime" type="text" class="form-control input-sm textWid mustTimes" placeholder=""/></td>
+					                     <td><input id="leavetime" name="leavetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" placeholder=""/></td>
 					                     <td><label>抵达时间：</label></td>
-					                     <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm textWid mustArriveTimes" /></td>
+					                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustArriveTimes" /></td>
 					                     <td><label class="labelWid">成本价：</label></td>
-					                     <td><input id="formprice" name="formprice" type="text" class="form-control input-sm textWid costPrice" /></td>
+					                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" /></td>
 					                     <td><label class="labelWid">销售价：</label></td>
-					                     <td><input id="price" name="price" type="text" class="form-control input-sm textWid mustNumberPoint"/></td>
+					                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid mustNumberPoint"/></td>
 					                     <td class="tdBtn">
 					                      <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake none"></a>
 					                     </td>

@@ -1263,7 +1263,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			String derateMoney = (String) fromJson.get("derateMoney");
 			msgType = MessageTypeEnum.DERATEMONEY.intKey();
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
-			msgContent = "单号：" + generateOrderNum + "减免金额" + derateMoney + "元，已审批通过";
+			msgContent = "单号：" + generateOrderNum + " 减免金额" + derateMoney + "元，已审批通过";
 			break;
 		}
 

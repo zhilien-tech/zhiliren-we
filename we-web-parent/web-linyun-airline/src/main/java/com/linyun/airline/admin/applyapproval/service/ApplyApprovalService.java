@@ -495,12 +495,20 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 
 			}
 			TMitigateInfoEntity mitigateInfo = dbDao.fetch(TMitigateInfoEntity.class, reduceId);
-
+			TUpOrderEntity upOrderEntity = dbDao.fetch(TUpOrderEntity.class, (long) mitigateInfo.getOrderid());
 			Chain chain = Chain.make("optime", new Date());
 			if (doingOperation > 0) {
 
 				chain.add("applyResult", doingOperation);
 			}
+			Map<String, Object> remindMap = new HashMap<String, Object>();
+			remindMap.put("remindType", OrderRemindEnum.UNREPEAT.intKey());
+			remindMap.put("remindDate", DateUtil.Date2String(new Date()));
+			remindMap.put("derateMoney", mitigateInfo.getAccount() + "");
+			List<Long> receiveUids = new ArrayList<Long>();
+			receiveUids.add((long) mitigateInfo.getApplyid());
+			searchViewService.addRemindMsg(remindMap, upOrderEntity.getOrdersnum(), "", mitigateInfo.getOrderid(),
+					MessageWealthStatusEnum.DERATEMONEY.intKey(), receiveUids, session);
 
 			TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 			chain.add("approvelid", user.getId());
