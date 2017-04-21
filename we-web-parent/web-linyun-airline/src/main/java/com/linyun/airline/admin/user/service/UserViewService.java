@@ -17,6 +17,7 @@ import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Function;
@@ -98,7 +99,7 @@ public class UserViewService extends BaseService<TUserEntity> {
 		String sqlString = sqlManager.get("employee_area_list");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
-		//cnd.and("ta.areaName", "like", Strings.trim(areaName) + "%");
+		cnd.and("ta.areaName", "like", Strings.trim(areaName) + "%");
 		if (!Util.isEmpty(selectedAreaIds)) {
 			cnd.and("ta.id", "NOT IN", selectedAreaIds);
 		}
