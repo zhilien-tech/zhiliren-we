@@ -216,6 +216,7 @@ $("tbody",$('#inlandCrossTable')).on("dblclick","tr",function(event) {
 		data : {
 			"id":item.id
 		},
+		async:false,
 		dataType:'json',
 		url : BASE_PATH+'/admin/inland/getOrderInfoById.html',
 		success : function(data) {
