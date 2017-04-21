@@ -282,7 +282,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				airlist.add(airlineEntity);
 				//添加航班信息
 			}
-			dbDao.insert(airlist);
+			if (!Util.isEmpty(airlist)) {
+				dbDao.insert(airlist);
+			}
 		}
 		// TODO Auto-generated method stub
 		return null;

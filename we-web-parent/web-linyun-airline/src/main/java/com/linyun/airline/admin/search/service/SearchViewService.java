@@ -1258,6 +1258,13 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
 			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "收发票中";
 			break;
+		case 21: //MessageWealthStatusEnum
+			//减免
+			String derateMoney = (String) fromJson.get("derateMoney");
+			msgType = MessageTypeEnum.DERATEMONEY.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = "单号：" + generateOrderNum + " 减免金额" + derateMoney + "元，已审批通过";
+			break;
 		}
 
 		/*添加的消息 存放到map中*/

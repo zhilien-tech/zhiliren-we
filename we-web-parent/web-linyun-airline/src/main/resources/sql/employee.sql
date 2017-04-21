@@ -152,3 +152,25 @@ FROM
 	t_department d
 LEFT JOIN t_company c ON c.id = d.comId
 $condition
+
+/*employee_add_data_update_old_user*/
+SELECT
+	u.id,
+	u.userName,
+	u.`password`,
+	u.fullName,
+	u.telephone,
+	u.landline,
+	u.qq,
+	u.email,
+	u.userType,
+	u.`status`,
+	u.createTime,
+	u.updateTime,
+	u.disableStatus,
+	u.remark
+FROM
+	t_user u
+LEFT JOIN t_user_job uj ON u.id = uj.userid
+LEFT JOIN t_company_job cj ON cj.id = uj.companyJobId
+$condition
