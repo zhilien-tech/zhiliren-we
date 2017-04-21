@@ -36,6 +36,7 @@ import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.common.enums.UserDisableStatusEnum;
 import com.linyun.airline.common.enums.UserJobStatusEnum;
+import com.linyun.airline.common.enums.UserStatusEnum;
 import com.linyun.airline.common.enums.UserTypeEnum;
 import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.entities.TAreaEntity;
@@ -378,11 +379,14 @@ public class UserViewService extends BaseService<TUserEntity> {
 	}
 
 	public TUserEntity findUser(String loginName, String passwd) {
-		TUserEntity user = dbDao.fetch(TUserEntity.class,
-				Cnd.where("userName", "=", loginName).and("password", "=", passwd));
+		TUserEntity user = dbDao.fetch(
+				TUserEntity.class,
+				Cnd.where("userName", "=", loginName).and("password", "=", passwd)
+						.and("status", "=", UserStatusEnum.VALID.intKey()));
 
 		if (Util.isEmpty(user)) {
-			user = dbDao.fetch(TUserEntity.class, Cnd.where("telephone", "=", loginName).and("password", "=", passwd));
+			user = dbDao.fetch(TUserEntity.class, Cnd.where("telephone", "=", loginName).and("password", "=", passwd)
+					.and("status", "=", UserStatusEnum.VALID.intKey()));
 		}
 		return user;
 	}
