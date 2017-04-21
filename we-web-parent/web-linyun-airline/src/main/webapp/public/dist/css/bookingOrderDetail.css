@@ -67,3 +67,5 @@ div#orderlog {padding-top: 10px;}
 .KHinfo td .select2{width:100% !important; }
 #realtimexrate { width: 150px;}
 .cloTable tbody tr td:nth-child(2){width:155px;}
+[name="threepaytd"]{width:57px !important;}
+[name="thirdcustomid"]{padding-left: 0px;padding-right: 0px;}
