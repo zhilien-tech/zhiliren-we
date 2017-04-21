@@ -207,7 +207,11 @@ FROM
 LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
 LEFT JOIN t_order_receive orec ON orec.orderid = uo.id
 LEFT JOIN t_receive r ON r.id = orec.receiveid
-$condition
+WHERE
+	uo.userid = @customerId
+AND uo.orderstype = @orderType
+AND (r.`status` = @rStatus OR r.`status` IS NULL)
+AND NOT uo.ordersstatus IN (@oStatus)
 
 /*customer_inter_arrearsMoney_byId*/
 SELECT
@@ -217,4 +221,9 @@ FROM
 LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
 LEFT JOIN t_order_receive orec ON orec.orderid = uo.id
 LEFT JOIN t_receive r ON r.id = orec.receiveid
-$condition
+WHERE
+	uo.userid = @customerId
+AND uo.orderstype = @orderType
+AND prr.recordtype = @recordType
+AND (r.`status` = @rStatus OR r.`status` IS NULL)
+AND NOT prr.orderstatusid IN (@oStatus)

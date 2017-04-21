@@ -450,12 +450,10 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		//INLAND 欠款统计
 		Sql arrearsSql = Sqls.create(sqlManager.get("customer_inland_arrearsMoney_byId"));
 		arrearsSql.setCallback(Sqls.callback.records());
-		Cnd arrearsCnd = Cnd.NEW();
-		arrearsCnd.and("uo.userid", "=", id);
-		arrearsCnd.and("uo.orderstype", "=", FIT);
-		arrearsCnd.and("r.`status`", "=", RECEIVINGMONEY);
-		arrearsCnd.and("uo.ordersstatus", "NOT IN", SEARCH + "," + CLOSE);
-		arrearsSql.setCondition(arrearsCnd);
+		arrearsSql.setParam("customerId", id);
+		arrearsSql.setParam("orderType", FIT);
+		arrearsSql.setParam("rStatus", RECEIVINGMONEY);
+		arrearsSql.setParam("oStatus", SEARCH + "," + CLOSE);
 		Double arrears = 0.0;
 		if (!Util.isEmpty(id)) {
 			Record arrearsRecord = dbDao.fetch(arrearsSql);
@@ -467,12 +465,11 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		//国际欠款统计
 		Sql arrearsInterSql = Sqls.create(sqlManager.get("customer_inter_arrearsMoney_byId"));
 		arrearsInterSql.setCallback(Sqls.callback.records());
-		Cnd arrearsInterCnd = Cnd.NEW();
-		arrearsInterCnd.and("uo.userid", "=", id);
-		arrearsInterCnd.and("uo.orderstype", "=", TEAM);
-		arrearsInterCnd.and("r.`status`", "=", RECEIVINGMONEY);
-		arrearsInterCnd.and("prr.orderstatusid", "NOT IN", INTERS + "," + INTERC);
-		arrearsInterSql.setCondition(arrearsInterCnd);
+		arrearsInterSql.setParam("customerId", id);
+		arrearsInterSql.setParam("orderType", TEAM);
+		arrearsInterSql.setParam("rStatus", RECEIVINGMONEY);
+		arrearsInterSql.setParam("recordType", RECEIVINGMONEY);
+		arrearsInterSql.setParam("oStatus", INTERS + "," + INTERC);
 		if (!Util.isEmpty(id)) {
 			Record arrearsRecord = dbDao.fetch(arrearsInterSql);
 			String arrearsStr = arrearsRecord.getString("arrears");
