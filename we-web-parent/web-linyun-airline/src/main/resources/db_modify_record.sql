@@ -203,3 +203,12 @@ MODIFY COLUMN `money`  double(32,2) NULL DEFAULT NULL COMMENT '金额' AFTER `av
 /******************************************************************************
 version : 1.0.2   END   2017-04-20
 ******************************************************************************/ 
+
+/******************************************************************************
+version : 1.0.3   BEGIN   2017-04-21
+******************************************************************************/
+ALTER TABLE `t_visitor_info`
+ADD COLUMN `num`  varchar(32) NULL COMMENT '序号' AFTER `pnrid`,
+ADD COLUMN `birthday`  varchar(32) NULL COMMENT '出生日期' AFTER `num`,
+ADD COLUMN `validuntil`  varchar(32) NULL COMMENT '有效期至' AFTER `birthday`;
+
