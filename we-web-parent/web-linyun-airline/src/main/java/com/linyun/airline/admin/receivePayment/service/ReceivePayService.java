@@ -123,6 +123,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 */
 	public Object listRecData(InlandRecListSearchSqlForm form, HttpSession session, HttpServletRequest request) {
 
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+
 		//检索条件
 		String name = form.getName();
 		Date leaveBeginDate = form.getLeaveBeginDate();
@@ -148,8 +151,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		List<Record> orders = dbDao.query(sql, cnd, null);
 
 		//当前公司下的用户
-		String userIds = userInComp(session);
-		form.setLoginUserId(userIds);
+		form.setCompanyid(companyId);
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
 		List<Record> list = (List<Record>) listdata.get("data");
