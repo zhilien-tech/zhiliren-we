@@ -121,7 +121,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	private static final String HUANHANG = "&#13;&#10;";
 	private static final String FPXMCODE = "FPXM";
 	private static final String EXCEL_PATH = "download";
-	private static final String FILE_EXCEL_NAME = "客户需求游客模板.xlsx";
+	private static final String FILE_EXCEL_NAME = "名单模板.xls";
 
 	private static final int ENABLE = BankCardStatusEnum.ENABLE.intKey();
 
@@ -1061,14 +1061,25 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			List<TVisitorInfoEntity> visitors = new ArrayList<TVisitorInfoEntity>();
 			for (int i = 1; i <= map.size(); i++) {
 				String[] row = map.get(i);
-				TVisitorInfoEntity visitor = new TVisitorInfoEntity();
-				//订单id
-				visitor.setOrdernum(Integer.valueOf(dingdanid));
-				//游客姓名
-				visitor.setVisitorname(row[0]);
-				//游客电话
-				visitor.setPhonenum(row[1]);
-				visitors.add(visitor);
+				String sumstr = row[0] + row[1] + row[2] + row[3] + row[4] + row[5];
+				if (!Util.isEmpty(sumstr)) {
+					TVisitorInfoEntity visitor = new TVisitorInfoEntity();
+					//订单id
+					visitor.setOrdernum(Integer.valueOf(dingdanid));
+					//序号
+					visitor.setNum(row[0]);
+					//游客姓名
+					visitor.setVisitorname(row[1]);
+					//游客电话
+					visitor.setGender(row[2]);
+					//出生日期
+					visitor.setBirthday(row[3]);
+					//护照号
+					visitor.setCardnum(row[4]);
+					//有效期至
+					visitor.setValiduntil(row[5]);
+					visitors.add(visitor);
+				}
 			}
 			//导入数据库
 			dbDao.insert(visitors);

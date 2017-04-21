@@ -45,6 +45,18 @@ public class TVisitorInfoEntity implements Serializable {
 	private String cardnum;
 
 	@Column
+	@Comment("有效期至")
+	private String validuntil;
+
+	@Column
+	@Comment("出生日期")
+	private String birthday;
+
+	@Column
+	@Comment("序号")
+	private String num;
+
+	@Column
 	@Comment("pnrid")
 	private Integer pnrid;
 
