@@ -39,15 +39,19 @@ import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEn
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.service.RemindMessageService;
+import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.common.base.MobileResult;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.enums.AccountPayEnum;
+import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.common.enums.MessageLevelEnum;
 import com.linyun.airline.common.enums.MessageRemindEnum;
 import com.linyun.airline.common.enums.MessageSourceEnum;
 import com.linyun.airline.common.enums.MessageStatusEnum;
 import com.linyun.airline.common.enums.MessageTypeEnum;
+import com.linyun.airline.common.enums.OrderStatusEnum;
+import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.enums.UserStatusEnum;
 import com.linyun.airline.common.enums.UserTypeEnum;
 import com.linyun.airline.common.result.Select2Option;
@@ -74,6 +78,19 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 	//付款中订单状态
 	private static final int APPROVALPAYING = AccountPayEnum.APPROVALPAYING.intKey();
+	//收款中订单状态
+	private static final int RECEIVINGMONEY = AccountReceiveEnum.RECEIVINGMONEY.intKey();
+
+	private static final int TEAM = OrderTypeEnum.TEAM.intKey(); //国际
+	private static final int FIT = OrderTypeEnum.FIT.intKey(); //内陆
+
+	//订单状态  内陆
+	private static final int SEARCH = OrderStatusEnum.SEARCH.intKey();
+	private static final int CLOSE = OrderStatusEnum.CLOSE.intKey();
+	//国际
+	private static final int INTERS = InternationalStatusEnum.SEARCH.intKey();
+	private static final int INTERC = InternationalStatusEnum.CLOSE.intKey();
+
 	//公司类型
 	private static final int UPCOMPANY = CompanyTypeEnum.UPCOMPANY.intKey();
 	private static final int AGENT = CompanyTypeEnum.AGENT.intKey();
@@ -83,7 +100,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	//管理员用户类型
 	private static final int UP_MANAGER = UserTypeEnum.UP_MANAGER.intKey();
 	private static final int AGENT_MANAGER = UserTypeEnum.AGENT_MANAGER.intKey();
-
+	//功能id
 	private static final int RECPAY_MENU_ID = 81;
 	private static final int INVOICE_MENU_ID = 97;
 
@@ -429,14 +446,14 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		Date contractTime = tCustomerInfoEntity.getContractTime();
 		Date contractDueTime = tCustomerInfoEntity.getContractDueTime();
 
-		//根据客户订单， 查询已欠款
-		Sql arrearsSql = Sqls.create(sqlManager.get("customer_arrearsMoney_byId"));
+		//根据客户信息id， 查询已欠款   TODO
+		//INLAND 欠款统计
+		Sql arrearsSql = Sqls.create(sqlManager.get("customer_inland_arrearsMoney_byId"));
 		arrearsSql.setCallback(Sqls.callback.records());
-		Cnd arrearsCnd = Cnd.NEW();
-		arrearsCnd.and("uo.userid", "=", id);
-		arrearsCnd.and("pi.orderPnrStatus", "=", APPROVALPAYING);
-		arrearsSql.setCondition(arrearsCnd);
-
+		arrearsSql.setParam("customerId", id);
+		arrearsSql.setParam("orderType", FIT);
+		arrearsSql.setParam("rStatus", RECEIVINGMONEY);
+		arrearsSql.setParam("oStatus", SEARCH + "," + CLOSE);
 		Double arrears = 0.0;
 		if (!Util.isEmpty(id)) {
 			Record arrearsRecord = dbDao.fetch(arrearsSql);
@@ -445,6 +462,22 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 				arrears = Double.valueOf(arrearsStr);
 			}
 		}
+		//国际欠款统计
+		Sql arrearsInterSql = Sqls.create(sqlManager.get("customer_inter_arrearsMoney_byId"));
+		arrearsInterSql.setCallback(Sqls.callback.records());
+		arrearsInterSql.setParam("customerId", id);
+		arrearsInterSql.setParam("orderType", TEAM);
+		arrearsInterSql.setParam("rStatus", RECEIVINGMONEY);
+		arrearsInterSql.setParam("recordType", RECEIVINGMONEY);
+		arrearsInterSql.setParam("oStatus", INTERS + "," + INTERC);
+		if (!Util.isEmpty(id)) {
+			Record arrearsRecord = dbDao.fetch(arrearsInterSql);
+			String arrearsStr = arrearsRecord.getString("arrears");
+			if (!Util.isEmpty(arrearsStr)) {
+				arrears += Double.valueOf(arrearsStr);
+			}
+		}
+
 		tCustomerInfoEntity.setArrears(arrears);
 
 		//日期格式转换

@@ -36,6 +36,7 @@ import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
 import com.linyun.airline.common.enums.UserDisableStatusEnum;
 import com.linyun.airline.common.enums.UserJobStatusEnum;
+import com.linyun.airline.common.enums.UserStatusEnum;
 import com.linyun.airline.common.enums.UserTypeEnum;
 import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.entities.TAreaEntity;
@@ -127,73 +128,96 @@ public class UserViewService extends BaseService<TUserEntity> {
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		Long companyId = company.getId();//得到公司的id
 		String comType = company.getComType();//公司类型(1、上游公司;2、代理商)
-		//先添加用户数据
-		TUserEntity userEntity = new TUserEntity();
-		userEntity.setFullName(addForm.getFullName());//用户姓名
-		userEntity.setUserName(addForm.getTelephone());//用户名
-		userEntity.setTelephone(addForm.getTelephone());//手机号
-		userEntity.setPassword(CommonConstants.INITIAL_PASSWORD);
-		userEntity.setQq(addForm.getQq());
-		if (!Util.isEmpty(comType) && comType.equals(CompanyTypeEnum.UPCOMPANY.intKey())) {
-			userEntity.setUserType(UserTypeEnum.UPCOM.intKey());//上游公司普通用户
-		} else if (!Util.isEmpty(comType) && comType.equals(CompanyTypeEnum.AGENT.intKey())) {
-			userEntity.setUserType(UserTypeEnum.AGENT.intKey());//代理商公司普通用户
-		}
-		userEntity.setLandline(addForm.getLandline());
-		userEntity.setEmail(addForm.getEmail());
-		userEntity.setDisableStatus(UserDisableStatusEnum.YES.intKey());//没有禁用
-		userEntity.setRemark(addForm.getRemark());
-		userEntity.setStatus(UserJobStatusEnum.ON.intKey());//在职
-		userEntity.setCreateTime(new Date());
-		userEntity = dbDao.insert(userEntity);
-		//获取到用户id
-		Long userId = userEntity.getId();
-		//根据公司id和职位id查询出公司职位表的id
-		TCompanyJobEntity comJob = dbDao.fetch(TCompanyJobEntity.class,
-				Cnd.where("comId", "=", companyId).and("posid", "=", jobId));
-		Long companyJobId = comJob.getId();//得到公司职位id
-		//往用户就职表中填入数据
-		Sql sql1 = Sqls.create(sqlManager.get("employee_add_data"));
-		sql1.params().set("userId", userId);
-		sql1.params().set("statusId", UserJobStatusEnum.ON.intKey());//在职
-		sql1.params().set("companyJobId", companyJobId);
-		TUserJobEntity newUser = DbSqlUtil.fetchEntity(dbDao, TUserJobEntity.class, sql1);
-		if (Util.isEmpty(newUser)) {
-			newUser = new TUserJobEntity();
-			newUser.setUserid(userId);
-			newUser.setCompanyJobId(companyJobId);
-			newUser.setStatus(UserJobStatusEnum.ON.intKey());//在职
-			newUser.setHireDate(new Date());
-			newUser.setLeaveDate(new Date());
-			newUser = dbDao.insert(newUser);
-		}
-		//往用户区域表中填数据
-		Iterable<String> areaIds = Splitter.on(",").split(addForm.getSelectedAreaIds());
-		List<TUserAreaMapEntity> areaEntities = new ArrayList<TUserAreaMapEntity>();
-		for (String dictInfoId : areaIds) {
-			TUserAreaMapEntity userAreaMapEntity = new TUserAreaMapEntity();
-			userAreaMapEntity.setAreaId(Long.valueOf(dictInfoId));
-			//判断是否为空
-			if (!Util.isEmpty(dictInfoId) && Long.valueOf(dictInfoId) != 0) {
-				userAreaMapEntity.setUserId(userId);
+		//查询出如果本公司下的某个员工离职了，再此入职让他的状态改为入职状态即可
+		Sql sqlUser = Sqls.create(sqlManager.get("employee_add_data_update_old_user"));
+		Cnd cnd = Cnd.NEW();
+		cnd.and("cj.comId", "=", companyId);
+		cnd.and("u.status", "=", UserJobStatusEnum.OFF.intKey());//离职
+		cnd.and("uj.status", "=", UserJobStatusEnum.OFF.intKey());//离职
+		cnd.and("u.telephone", "=", addForm.getTelephone());//用户名
+		List<Record> before = dbDao.query(sqlUser, cnd, null);
+		Long userId = null;
+		for (Record record : before) {
+			if (!Util.isEmpty(before)) {
+				userId = (long) record.getInt("id");
 			}
-			areaEntities.add(userAreaMapEntity);
 		}
-		dbDao.insert(areaEntities);
-		//向员工的工资表中添加数据
-		TSalaryIncreaseEntity insertSalary = new TSalaryIncreaseEntity();
-		insertSalary.setComId(companyId);//公司id
-		insertSalary.setUserId(userId);
-		insertSalary.setBaseWages(addSalaryForm.getBaseWages());//基本工资
-		insertSalary.setWuXianYiJin(addSalaryForm.getWuXianYiJin());//五险一金
-		insertSalary.setBonus(addSalaryForm.getBonus());//奖金
-		insertSalary.setCommission(addSalaryForm.getCommission());//提成
-		insertSalary.setCreateTime(new Date());
-		insertSalary.setForfeit(addSalaryForm.getForfeit());//罚款
-		insertSalary.setRatepaying(addSalaryForm.getRatepaying());//纳税
-		insertSalary.setRemark(addSalaryForm.getRemark());//
-		insertSalary.setStatus(SalaryEnum.ALREADY_WAGES.intKey());//已发工资
-		dbDao.insert(insertSalary);
+		if (Util.isEmpty(before)) {
+			//先添加用户数据
+			TUserEntity userEntity = new TUserEntity();
+			userEntity.setFullName(addForm.getFullName());//用户姓名
+			userEntity.setUserName(addForm.getTelephone());//用户名
+			userEntity.setTelephone(addForm.getTelephone());//手机号
+			userEntity.setPassword(CommonConstants.INITIAL_PASSWORD);
+			userEntity.setQq(addForm.getQq());
+			if (!Util.isEmpty(comType) && comType.equals(CompanyTypeEnum.UPCOMPANY.intKey())) {
+				userEntity.setUserType(UserTypeEnum.UPCOM.intKey());//上游公司普通用户
+			} else if (!Util.isEmpty(comType) && comType.equals(CompanyTypeEnum.AGENT.intKey())) {
+				userEntity.setUserType(UserTypeEnum.AGENT.intKey());//代理商公司普通用户
+			}
+			userEntity.setLandline(addForm.getLandline());
+			userEntity.setEmail(addForm.getEmail());
+			userEntity.setDisableStatus(UserDisableStatusEnum.YES.intKey());//没有禁用
+			userEntity.setRemark(addForm.getRemark());
+			userEntity.setStatus(UserJobStatusEnum.ON.intKey());//在职
+			userEntity.setCreateTime(new Date());
+			userEntity = dbDao.insert(userEntity);
+			//获取到用户id
+			Long userIds = userEntity.getId();
+			//根据公司id和职位id查询出公司职位表的id
+			TCompanyJobEntity comJob = dbDao.fetch(TCompanyJobEntity.class,
+					Cnd.where("comId", "=", companyId).and("posid", "=", jobId));
+			Long companyJobId = comJob.getId();//得到公司职位id
+			//往用户就职表中填入数据
+			Sql sql1 = Sqls.create(sqlManager.get("employee_add_data"));
+			sql1.params().set("userId", userId);
+			sql1.params().set("statusId", UserJobStatusEnum.ON.intKey());//在职
+			sql1.params().set("companyJobId", companyJobId);
+			TUserJobEntity newUser = DbSqlUtil.fetchEntity(dbDao, TUserJobEntity.class, sql1);
+			if (Util.isEmpty(newUser)) {
+				newUser = new TUserJobEntity();
+				newUser.setUserid(userIds);
+				newUser.setCompanyJobId(companyJobId);
+				newUser.setStatus(UserJobStatusEnum.ON.intKey());//在职
+				newUser.setHireDate(new Date());
+				newUser.setLeaveDate(new Date());
+				newUser = dbDao.insert(newUser);
+			}
+			//往用户区域表中填数据
+			Iterable<String> areaIds = Splitter.on(",").split(addForm.getSelectedAreaIds());
+			List<TUserAreaMapEntity> areaEntities = new ArrayList<TUserAreaMapEntity>();
+			for (String dictInfoId : areaIds) {
+				TUserAreaMapEntity userAreaMapEntity = new TUserAreaMapEntity();
+				userAreaMapEntity.setAreaId(Long.valueOf(dictInfoId));
+				//判断是否为空
+				if (!Util.isEmpty(dictInfoId) && Long.valueOf(dictInfoId) != 0) {
+					userAreaMapEntity.setUserId(userIds);
+				}
+				areaEntities.add(userAreaMapEntity);
+			}
+			dbDao.insert(areaEntities);
+			//向员工的工资表中添加数据
+			TSalaryIncreaseEntity insertSalary = new TSalaryIncreaseEntity();
+			insertSalary.setComId(companyId);//公司id
+			insertSalary.setUserId(userIds);
+			insertSalary.setBaseWages(addSalaryForm.getBaseWages());//基本工资
+			insertSalary.setWuXianYiJin(addSalaryForm.getWuXianYiJin());//五险一金
+			insertSalary.setBonus(addSalaryForm.getBonus());//奖金
+			insertSalary.setCommission(addSalaryForm.getCommission());//提成
+			insertSalary.setCreateTime(new Date());
+			insertSalary.setForfeit(addSalaryForm.getForfeit());//罚款
+			insertSalary.setRatepaying(addSalaryForm.getRatepaying());//纳税
+			insertSalary.setRemark(addSalaryForm.getRemark());//
+			insertSalary.setStatus(SalaryEnum.ALREADY_WAGES.intKey());//已发工资
+			dbDao.insert(insertSalary);
+		}
+		//若此员工在本公司离职，但是又想入职，查询出他的信息之后更新此员工的状态即可
+		if (!Util.isEmpty(before)) {
+			dbDao.update(TUserJobEntity.class, Chain.make("status", UserJobStatusEnum.ON.intKey()),
+					Cnd.where("userid", "=", userId));
+			dbDao.update(TUserEntity.class, Chain.make("status", UserJobStatusEnum.ON.intKey()),
+					Cnd.where("id", "=", userId));
+		}
 		return JsonResult.success("添加成功!");
 	}
 
@@ -273,6 +297,9 @@ public class UserViewService extends BaseService<TUserEntity> {
 	 * 修改保存
 	 */
 	public Object updateData(TUserModForm updateForm, TSalaryIncreaseUpdateForm salUpdateForm, final HttpSession session) {
+		//通过session获取公司的id
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		Long companyId = company.getId();//得到公司的id
 		Map<String, Object> obj = Maps.newHashMap();
 		if (!Util.isEmpty(updateForm)) {
 			updateForm.setStatus(UserJobStatusEnum.ON.intKey());
@@ -281,9 +308,6 @@ public class UserViewService extends BaseService<TUserEntity> {
 		TUserEntity user = new TUserEntity();
 		BeanUtil.copyProperties(updateForm, user);
 		this.updateIgnoreNull(user);//更新用户表中的数据
-		//通过session获取公司的id
-		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
-		Long companyId = company.getId();//得到公司的id
 		//根据公司id和职位id查询出公司职位表的id
 		TCompanyJobEntity comJob = dbDao.fetch(TCompanyJobEntity.class,
 				Cnd.where("comId", "=", companyId).and("posid", "=", updateForm.getJobId()));
@@ -355,11 +379,14 @@ public class UserViewService extends BaseService<TUserEntity> {
 	}
 
 	public TUserEntity findUser(String loginName, String passwd) {
-		TUserEntity user = dbDao.fetch(TUserEntity.class,
-				Cnd.where("userName", "=", loginName).and("password", "=", passwd));
+		TUserEntity user = dbDao.fetch(
+				TUserEntity.class,
+				Cnd.where("userName", "=", loginName).and("password", "=", passwd)
+						.and("status", "=", UserStatusEnum.VALID.intKey()));
 
 		if (Util.isEmpty(user)) {
-			user = dbDao.fetch(TUserEntity.class, Cnd.where("telephone", "=", loginName).and("password", "=", passwd));
+			user = dbDao.fetch(TUserEntity.class, Cnd.where("telephone", "=", loginName).and("password", "=", passwd)
+					.and("status", "=", UserStatusEnum.VALID.intKey()));
 		}
 		return user;
 	}
@@ -407,10 +434,14 @@ public class UserViewService extends BaseService<TUserEntity> {
 		int count = 0;
 		if (Util.isEmpty(userId)) {
 			//添加时校验
-			count = nutDao.count(TUserEntity.class, Cnd.where("telephone", "=", telephone));
+			count = nutDao.count(TUserEntity.class,
+					Cnd.where("telephone", "=", telephone).and("status", "=", UserJobStatusEnum.ON.intKey()));
 		} else {
 			//更新时校验
-			count = nutDao.count(TUserEntity.class, Cnd.where("telephone", "=", telephone).and("id", "!=", userId));
+			count = nutDao.count(
+					TUserEntity.class,
+					Cnd.where("telephone", "=", telephone).and("id", "!=", userId)
+							.and("status", "=", UserJobStatusEnum.ON.intKey()));
 		}
 		map.put("valid", count <= 0);
 		return map;

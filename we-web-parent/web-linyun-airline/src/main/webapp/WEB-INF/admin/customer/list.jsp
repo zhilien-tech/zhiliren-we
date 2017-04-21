@@ -293,7 +293,7 @@ function initDatatable() {
 	    	    maxmin: false,
 	    	    shadeClose: false,
 	    	    scrollbar: false,
-	    	    area: ['900px', '500px'],
+	    	    area: ['900px', '550px'],
 	    	    content: '${base}/admin/customer/update.html?id='+id
 	    	  });
 	  }
