@@ -162,7 +162,7 @@ public class UserViewService extends BaseService<TUserEntity> {
 			userEntity.setCreateTime(new Date());
 			userEntity = dbDao.insert(userEntity);
 			//获取到用户id
-			//userId = userEntity.getId();
+			Long userIds = userEntity.getId();
 			//根据公司id和职位id查询出公司职位表的id
 			TCompanyJobEntity comJob = dbDao.fetch(TCompanyJobEntity.class,
 					Cnd.where("comId", "=", companyId).and("posid", "=", jobId));
@@ -175,13 +175,40 @@ public class UserViewService extends BaseService<TUserEntity> {
 			TUserJobEntity newUser = DbSqlUtil.fetchEntity(dbDao, TUserJobEntity.class, sql1);
 			if (Util.isEmpty(newUser)) {
 				newUser = new TUserJobEntity();
-				newUser.setUserid(userId);
+				newUser.setUserid(userIds);
 				newUser.setCompanyJobId(companyJobId);
 				newUser.setStatus(UserJobStatusEnum.ON.intKey());//在职
 				newUser.setHireDate(new Date());
 				newUser.setLeaveDate(new Date());
 				newUser = dbDao.insert(newUser);
 			}
+			//往用户区域表中填数据
+			Iterable<String> areaIds = Splitter.on(",").split(addForm.getSelectedAreaIds());
+			List<TUserAreaMapEntity> areaEntities = new ArrayList<TUserAreaMapEntity>();
+			for (String dictInfoId : areaIds) {
+				TUserAreaMapEntity userAreaMapEntity = new TUserAreaMapEntity();
+				userAreaMapEntity.setAreaId(Long.valueOf(dictInfoId));
+				//判断是否为空
+				if (!Util.isEmpty(dictInfoId) && Long.valueOf(dictInfoId) != 0) {
+					userAreaMapEntity.setUserId(userIds);
+				}
+				areaEntities.add(userAreaMapEntity);
+			}
+			dbDao.insert(areaEntities);
+			//向员工的工资表中添加数据
+			TSalaryIncreaseEntity insertSalary = new TSalaryIncreaseEntity();
+			insertSalary.setComId(companyId);//公司id
+			insertSalary.setUserId(userIds);
+			insertSalary.setBaseWages(addSalaryForm.getBaseWages());//基本工资
+			insertSalary.setWuXianYiJin(addSalaryForm.getWuXianYiJin());//五险一金
+			insertSalary.setBonus(addSalaryForm.getBonus());//奖金
+			insertSalary.setCommission(addSalaryForm.getCommission());//提成
+			insertSalary.setCreateTime(new Date());
+			insertSalary.setForfeit(addSalaryForm.getForfeit());//罚款
+			insertSalary.setRatepaying(addSalaryForm.getRatepaying());//纳税
+			insertSalary.setRemark(addSalaryForm.getRemark());//
+			insertSalary.setStatus(SalaryEnum.ALREADY_WAGES.intKey());//已发工资
+			dbDao.insert(insertSalary);
 		}
 		//若此员工在本公司离职，但是又想入职，查询出他的信息之后更新此员工的状态即可
 		if (!Util.isEmpty(before)) {
@@ -190,33 +217,6 @@ public class UserViewService extends BaseService<TUserEntity> {
 			dbDao.update(TUserEntity.class, Chain.make("status", UserJobStatusEnum.ON.intKey()),
 					Cnd.where("id", "=", userId));
 		}
-		//往用户区域表中填数据
-		Iterable<String> areaIds = Splitter.on(",").split(addForm.getSelectedAreaIds());
-		List<TUserAreaMapEntity> areaEntities = new ArrayList<TUserAreaMapEntity>();
-		for (String dictInfoId : areaIds) {
-			TUserAreaMapEntity userAreaMapEntity = new TUserAreaMapEntity();
-			userAreaMapEntity.setAreaId(Long.valueOf(dictInfoId));
-			//判断是否为空
-			if (!Util.isEmpty(dictInfoId) && Long.valueOf(dictInfoId) != 0) {
-				userAreaMapEntity.setUserId(userId);
-			}
-			areaEntities.add(userAreaMapEntity);
-		}
-		dbDao.insert(areaEntities);
-		//向员工的工资表中添加数据
-		TSalaryIncreaseEntity insertSalary = new TSalaryIncreaseEntity();
-		insertSalary.setComId(companyId);//公司id
-		insertSalary.setUserId(userId);
-		insertSalary.setBaseWages(addSalaryForm.getBaseWages());//基本工资
-		insertSalary.setWuXianYiJin(addSalaryForm.getWuXianYiJin());//五险一金
-		insertSalary.setBonus(addSalaryForm.getBonus());//奖金
-		insertSalary.setCommission(addSalaryForm.getCommission());//提成
-		insertSalary.setCreateTime(new Date());
-		insertSalary.setForfeit(addSalaryForm.getForfeit());//罚款
-		insertSalary.setRatepaying(addSalaryForm.getRatepaying());//纳税
-		insertSalary.setRemark(addSalaryForm.getRemark());//
-		insertSalary.setStatus(SalaryEnum.ALREADY_WAGES.intKey());//已发工资
-		dbDao.insert(insertSalary);
 		return JsonResult.success("添加成功!");
 	}
 
