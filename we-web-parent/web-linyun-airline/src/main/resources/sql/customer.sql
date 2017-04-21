@@ -199,11 +199,22 @@ AND m.msgType = @msgType
 AND um.customerInfoId = @customerInfoId
 
 
-/*customer_arrearsMoney_byId*/
+/*customer_inland_arrearsMoney_byId*/
 SELECT
-	SUM(pi.salesprice) arrears
+	SUM(fi.receivable) arrears
 FROM
-	t_pnr_info pi
-LEFT JOIN t_order_customneed oc ON oc.id = pi.needid
-LEFT JOIN t_up_order uo ON uo.id=oc.ordernum
+	t_up_order uo
+LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
+LEFT JOIN t_order_receive orec ON orec.orderid = uo.id
+LEFT JOIN t_receive r ON r.id = orec.receiveid
+$condition
+
+/*customer_inter_arrearsMoney_byId*/
+SELECT
+	SUM(prr.currentpay) arrears
+FROM
+	t_up_order uo
+LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
+LEFT JOIN t_order_receive orec ON orec.orderid = uo.id
+LEFT JOIN t_receive r ON r.id = orec.receiveid
 $condition
