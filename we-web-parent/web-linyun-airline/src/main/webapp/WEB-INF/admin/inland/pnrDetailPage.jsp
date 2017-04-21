@@ -78,7 +78,7 @@
                     <!-- <li class="actionInfo">布鲁斯·李</li> -->
                   </ul>
                   <div class="infoCentext">
-                    <div id="visitorinfo"></div>    
+                    <div id="visitorinfo" style="line-height:50px;"></div>    
                   </div>
                 </div>
 
@@ -130,7 +130,10 @@
  			url: '${base}/admin/inland/showVisitorInfo.html',
              success: function (data) { 
              	var result = '';
-             	result += '姓名：'+data.visitorname+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;电话：' + data.phonenum;
+             	result += '姓名：'+data.visitorname+'&nbsp;&nbsp;<br>性别：'
+             				+ data.gender + '<br>出生日期：' 
+             				+ data.birthday + '<br>护照号：'
+             				+data.cardnum + '<br>有效期至：'+ data.validuntil;
              	$('#visitorinfo').html(result);
              },
              error: function (xhr) {
