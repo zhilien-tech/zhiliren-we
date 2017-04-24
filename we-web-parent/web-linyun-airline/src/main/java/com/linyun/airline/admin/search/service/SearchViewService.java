@@ -42,6 +42,8 @@ import com.linyun.airline.common.enums.MessageStatusEnum;
 import com.linyun.airline.common.enums.MessageTypeEnum;
 import com.linyun.airline.common.enums.OrderStatusEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
+import com.linyun.airline.common.enums.UserStatusEnum;
+import com.linyun.airline.common.enums.UserTypeEnum;
 import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.common.sabre.dto.FlightSegment;
 import com.linyun.airline.common.sabre.dto.InstalFlightAirItinerary;
@@ -78,6 +80,12 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	private static final int INTERS = InternationalStatusEnum.SEARCH.intKey();
 	private static final int INTERC = InternationalStatusEnum.CLOSE.intKey();
 
+	private static final int USER_VALID = UserStatusEnum.VALID.intKey();
+	private static final int UPCOM_USER = UserTypeEnum.UPCOM.intKey();
+	private static final int AGENT_USER = UserTypeEnum.AGENT.intKey();
+	private static final int UP_MANAGER = UserTypeEnum.UP_MANAGER.intKey();
+	private static final int AGENT_MANAGER = UserTypeEnum.AGENT_MANAGER.intKey();
+
 	@Inject
 	private CustomerViewService customerViewService;
 	@Inject
@@ -102,24 +110,26 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * @return 
 	 */
 	public Object getLinkNameSelect(String linkname, HttpSession session) {
+		//当前登录公司id
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
+
 		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
 		long upcompanyRelationId = 0;
 		if (!Util.isEmpty(upcompany)) {
+
 			upcompanyRelationId = upcompany.getId();
 		}
+		//获得用户id
+		String userIds = getUserIds(session);
 		List<TCustomerInfoEntity> customerInfos = new ArrayList<TCustomerInfoEntity>();
-		try {
-			customerInfos = dbDao
-					.query(TCustomerInfoEntity.class,
-							Cnd.where("linkMan", "like", Strings.trim(linkname) + "%").and("upComId", "=",
-									upcompanyRelationId), null);
-			if (customerInfos.size() > 5) {
-				customerInfos = customerInfos.subList(0, 5);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		Cnd cnd = Cnd.NEW();
+		cnd.and("linkMan", "like", Strings.trim(linkname) + "%");
+		cnd.and("upComId", "=", upcompanyRelationId);
+		cnd.and("responsibleId", "in", userIds);
+		customerInfos = dbDao.query(TCustomerInfoEntity.class, cnd, null);
+		if (customerInfos.size() > 5) {
+			customerInfos = customerInfos.subList(0, 5);
 		}
 		return customerInfos;
 	}
@@ -195,7 +205,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			}
 		}));
 
-		//统计历史欠款  TODO
+		//统计历史欠款  
 		Double arrears = getMoney(id);//历史欠款
 		customerInfoEntity.setArrears(arrears);
 		obj.put("responsibleName", responsibleName);
@@ -1296,6 +1306,13 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		return "消息添加成功";
 	}
 
+	/**
+	 * 
+	 * 统计客户已欠款
+	 * <p>
+	 *
+	 * @param id  客户信息id
+	 */
 	public Double getMoney(long id) {
 		//根据客户信息id， 查询已欠款   TODO
 		//INLAND 欠款统计
@@ -1329,6 +1346,45 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			}
 		}
 		return arrears;
+	}
+
+	/**
+	 * 
+	 * 管理员和用户 权限分配
+	 * <p>
+	 *
+	 * @param session
+	 * @return 用户id
+	 */
+	public String getUserIds(HttpSession session) {
+		String userIds = "";
+		//当前登录公司id
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		int userType = loginUser.getUserType(); //用户类型
+		long userId = loginUser.getId();
+		//管理员
+		if (Util.eq(UP_MANAGER, userType) || Util.eq(AGENT_MANAGER, userType)) {
+			Sql sql = Sqls.create(sqlManager.get("customer_agent_list"));
+			sql.setParam("comid", companyId);
+			sql.setParam("status", USER_VALID);
+			/*sql.setParam("userid", userId);*/
+			List<Record> record = dbDao.query(sql, null, null);
+			for (Record r : record) {
+				String uId = r.getString("id");
+				userIds += uId + ",";
+			}
+		}
+
+		//普通用户
+		if (Util.eq(UPCOM_USER, userType) || Util.eq(AGENT_USER, userType)) {
+			userIds = userId + ",";
+		}
+		userIds = userIds.substring(0, userIds.length() - 1);
+
+		return userIds;
 	}
 
 }
