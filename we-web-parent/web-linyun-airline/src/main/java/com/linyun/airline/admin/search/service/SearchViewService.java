@@ -31,13 +31,16 @@ import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.entities.TMessageEntity;
 import com.linyun.airline.admin.operationsArea.service.RemindMessageService;
+import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.search.entities.ParsingSabreEntity;
 import com.linyun.airline.admin.search.form.SearchTicketSqlForm;
+import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.MessageLevelEnum;
 import com.linyun.airline.common.enums.MessageRemindEnum;
 import com.linyun.airline.common.enums.MessageSourceEnum;
 import com.linyun.airline.common.enums.MessageStatusEnum;
 import com.linyun.airline.common.enums.MessageTypeEnum;
+import com.linyun.airline.common.enums.OrderStatusEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.common.sabre.dto.FlightSegment;
@@ -66,6 +69,14 @@ import com.uxuexi.core.web.base.service.BaseService;
 @IocBean
 public class SearchViewService extends BaseService<TMessageEntity> {
 	private static final Log log = Logs.get();
+
+	private static final int TEAM = OrderTypeEnum.TEAM.intKey(); //国际
+	private static final int FIT = OrderTypeEnum.FIT.intKey(); //内陆
+	private static final int RECEIVINGMONEY = AccountReceiveEnum.RECEIVINGMONEY.intKey();
+	private static final int SEARCH = OrderStatusEnum.SEARCH.intKey();
+	private static final int CLOSE = OrderStatusEnum.CLOSE.intKey();
+	private static final int INTERS = InternationalStatusEnum.SEARCH.intKey();
+	private static final int INTERC = InternationalStatusEnum.CLOSE.intKey();
 
 	@Inject
 	private CustomerViewService customerViewService;
@@ -184,13 +195,12 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			}
 		}));
 
+		//统计历史欠款  TODO
+		Double arrears = getMoney(id);//历史欠款
+		customerInfoEntity.setArrears(arrears);
 		obj.put("responsibleName", responsibleName);
 		obj.put("customerInfoEntity", customerInfoEntity);
-		Double arrears = customerInfoEntity.getArrears();//历史欠款
 		Double creditLine = customerInfoEntity.getCreditLine();//信用额度
-		if (Util.isEmpty(arrears)) {
-			arrears = 0.0;
-		}
 		if (Util.isEmpty(creditLine)) {
 			creditLine = 0.0;
 		}
@@ -564,7 +574,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			/*while (m.find()) {
 				sabreGroup.add(m.group());
 			}
-			*/
+			 */
 			for (int i = 0; i < sabrePnrs1.length; i++) {
 				if (i % 2 == 0 && i != 0) {
 					sabreGroup.add(sabrePnrs1[i].trim() + " " + sabrePnrs1[i + 1].trim());
@@ -1284,6 +1294,41 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		mapMsg.put("upOrderStatus", orderStatus);
 		remindMessageService.addMessageEvent(mapMsg);
 		return "消息添加成功";
+	}
+
+	public Double getMoney(long id) {
+		//根据客户信息id， 查询已欠款   TODO
+		//INLAND 欠款统计
+		Sql arrearsSql = Sqls.create(sqlManager.get("customer_inland_arrearsMoney_byId"));
+		arrearsSql.setCallback(Sqls.callback.records());
+		arrearsSql.setParam("customerId", id);
+		arrearsSql.setParam("orderType", FIT);
+		arrearsSql.setParam("rStatus", RECEIVINGMONEY);
+		arrearsSql.setParam("oStatus", SEARCH + "," + CLOSE);
+		Double arrears = 0.0;
+		if (!Util.isEmpty(id)) {
+			Record arrearsRecord = dbDao.fetch(arrearsSql);
+			String arrearsStr = arrearsRecord.getString("arrears");
+			if (!Util.isEmpty(arrearsStr)) {
+				arrears = Double.valueOf(arrearsStr);
+			}
+		}
+		//国际欠款统计
+		Sql arrearsInterSql = Sqls.create(sqlManager.get("customer_inter_arrearsMoney_byId"));
+		arrearsInterSql.setCallback(Sqls.callback.records());
+		arrearsInterSql.setParam("customerId", id);
+		arrearsInterSql.setParam("orderType", TEAM);
+		arrearsInterSql.setParam("rStatus", RECEIVINGMONEY);
+		arrearsInterSql.setParam("recordType", RECEIVINGMONEY);
+		arrearsInterSql.setParam("oStatus", INTERS + "," + INTERC);
+		if (!Util.isEmpty(id)) {
+			Record arrearsRecord = dbDao.fetch(arrearsInterSql);
+			String arrearsStr = arrearsRecord.getString("arrears");
+			if (!Util.isEmpty(arrearsStr)) {
+				arrears += Double.valueOf(arrearsStr);
+			}
+		}
+		return arrears;
 	}
 
 }
