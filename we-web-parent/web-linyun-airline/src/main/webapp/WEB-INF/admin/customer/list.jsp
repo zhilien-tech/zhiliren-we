@@ -182,15 +182,15 @@ function initDatatable() {
         "ajax": {
             "url": "${base}/admin/customer/listData.html",
             "type": "post",
-            "data": function (d) {
+            /* "data": function (d) {
             	
-            }
+            } */
         },
         /* 列表序号 */
         "fnDrawCallback"    : function(){
         	var api = this.api();
         	var startIndex= api.context[0]._iDisplayStart;
-   	       　　  api.column(0).nodes().each(function(cell, i) {
+   	       　　       api.column(0).nodes().each(function(cell, i) {
    	       　　　　cell.innerHTML = startIndex + i + 1;
    	       　　});
       	},
