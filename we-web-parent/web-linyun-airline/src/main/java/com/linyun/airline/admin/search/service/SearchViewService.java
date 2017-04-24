@@ -195,15 +195,12 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			}
 		}));
 
-		obj.put("responsibleName", responsibleName);
-		obj.put("customerInfoEntity", customerInfoEntity);
-
 		//统计历史欠款  TODO
 		Double arrears = getMoney(id);//历史欠款
+		customerInfoEntity.setArrears(arrears);
+		obj.put("responsibleName", responsibleName);
+		obj.put("customerInfoEntity", customerInfoEntity);
 		Double creditLine = customerInfoEntity.getCreditLine();//信用额度
-		if (Util.isEmpty(arrears)) {
-			arrears = 0.0;
-		}
 		if (Util.isEmpty(creditLine)) {
 			creditLine = 0.0;
 		}
