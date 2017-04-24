@@ -149,17 +149,16 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		if (!Util.isEmpty(upcompany)) {
 			upcompanyRelationId = upcompany.getId();
 		}
+		//获得用户id
+		String userIds = getUserIds(session);
 		List<TCustomerInfoEntity> customerInfos = new ArrayList<TCustomerInfoEntity>();
-		try {
-			customerInfos = dbDao.query(
-					TCustomerInfoEntity.class,
-					Cnd.where("telephone", "like", Strings.trim(phonenum) + "%").and("upComId", "=",
-							upcompanyRelationId), null);
-			if (customerInfos.size() > 5) {
-				customerInfos = customerInfos.subList(0, 5);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		Cnd cnd = Cnd.NEW();
+		cnd.and("telephone", "like", Strings.trim(phonenum) + "%");
+		cnd.and("upComId", "=", upcompanyRelationId);
+		cnd.and("responsibleId", "in", userIds);
+		customerInfos = dbDao.query(TCustomerInfoEntity.class, cnd, null);
+		if (customerInfos.size() > 5) {
+			customerInfos = customerInfos.subList(0, 5);
 		}
 		return customerInfos;
 	}
