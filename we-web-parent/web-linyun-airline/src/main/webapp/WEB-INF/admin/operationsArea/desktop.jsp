@@ -327,7 +327,6 @@
 			} 
 			//获取当前时间
 			var timeStr = d.getHours() +":"+ d.getMinutes();
-			
 			$.ajax({
 				type : 'POST',
 				dataType : 'json',
