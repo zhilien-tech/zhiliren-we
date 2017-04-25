@@ -339,61 +339,68 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		form.setPointofsalecountry("US");
 		form.setOffset(1);
 		form.setLimit(10);
-		SabreService service = new SabreServiceImpl();
-		SabreResponse resp = service.instaFlightsSearch(form);
-		String departureDateTime = "";
-		String arrivalDateTime = "";
-		if (resp.getStatusCode() == 200) {
-			List<InstalFlightAirItinerary> list = (List<InstalFlightAirItinerary>) resp.getData();
-			for (InstalFlightAirItinerary instalFlightAirItinerary : list) {
-				List<FlightSegment> flightSegment = instalFlightAirItinerary.getList();
-				for (FlightSegment flight : flightSegment) {
-					departureDateTime = flight.getDepartureDateTime();
-					arrivalDateTime = flight.getArrivalDateTime();
-					if (!Util.isEmpty(departureDateTime) || "" != departureDateTime) {
-						departureDateTime = departureDateTime.substring(11, 13) + departureDateTime.substring(14, 16);
-						flight.setDepartureDateTime(departureDateTime);
+		SabreResponse resp = new SabreResponse();
+		try {
+			SabreService service = new SabreServiceImpl();
+			resp = service.instaFlightsSearch(form);
+			String departureDateTime = "";
+			String arrivalDateTime = "";
+			if (resp.getStatusCode() == 200) {
+				List<InstalFlightAirItinerary> list = (List<InstalFlightAirItinerary>) resp.getData();
+				for (InstalFlightAirItinerary instalFlightAirItinerary : list) {
+					List<FlightSegment> flightSegment = instalFlightAirItinerary.getList();
+					for (FlightSegment flight : flightSegment) {
+						departureDateTime = flight.getDepartureDateTime();
+						arrivalDateTime = flight.getArrivalDateTime();
+						if (!Util.isEmpty(departureDateTime) || "" != departureDateTime) {
+							departureDateTime = departureDateTime.substring(11, 13)
+									+ departureDateTime.substring(14, 16);
+							flight.setDepartureDateTime(departureDateTime);
+						}
+						if (!Util.isEmpty(arrivalDateTime) || "" != arrivalDateTime) {
+							arrivalDateTime = arrivalDateTime.substring(11, 13) + arrivalDateTime.substring(14, 16);
+							flight.setArrivalDateTime(arrivalDateTime);
+						}
 					}
-					if (!Util.isEmpty(arrivalDateTime) || "" != arrivalDateTime) {
-						arrivalDateTime = arrivalDateTime.substring(11, 13) + arrivalDateTime.substring(14, 16);
-						flight.setArrivalDateTime(arrivalDateTime);
-					}
+					String airlineCode = instalFlightAirItinerary.getAirlineCode();
 				}
-				String airlineCode = instalFlightAirItinerary.getAirlineCode();
 			}
+			if (resp.getStatusCode() == 400) {
+				SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
+				String message = sabreExResponse.getMessage();
+				if (message.contains("Parameter 'origin' must be specified")) {
+					sabreExResponse.setMessage("出发城市不能为空");
+				}
+				if (message.contains("Parameter 'destination' must be specified")) {
+					sabreExResponse.setMessage("到达城市不能为空");
+				}
+				if (message.contains("Parameter 'departuredate' must be specified")) {
+					sabreExResponse.setMessage("出发日期不能为空");
+				}
+				if (message.contains("arrivalDateTime")) {
+					sabreExResponse.setMessage("返回日期不能为空");
+				}
+				if (message.contains("No results")) {
+					sabreExResponse.setMessage("未查询到结果");
+				}
+				if (message.contains("Date range in 'departuredate' and 'returndate' exceeds the maximum allowed")) {
+					sabreExResponse.setMessage("出发日期和返回日期之差不超过15天");
+				}
+				if (message.contains("Parameter 'passengercount' must be between 0 and 10")) {
+					sabreExResponse.setMessage("乘客数量必须是 0 到 10 之间");
+				}
+			}
+			if (resp.getStatusCode() == 404) {
+				SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
+				String message = sabreExResponse.getMessage();
+				if (message.contains("No results")) {
+					sabreExResponse.setMessage("未查询到结果");
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e);
 		}
-		if (resp.getStatusCode() == 400) {
-			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
-			String message = sabreExResponse.getMessage();
-			if (message.contains("Parameter 'origin' must be specified")) {
-				sabreExResponse.setMessage("出发城市不能为空");
-			}
-			if (message.contains("Parameter 'destination' must be specified")) {
-				sabreExResponse.setMessage("到达城市不能为空");
-			}
-			if (message.contains("Parameter 'departuredate' must be specified")) {
-				sabreExResponse.setMessage("出发日期不能为空");
-			}
-			if (message.contains("arrivalDateTime")) {
-				sabreExResponse.setMessage("返回日期不能为空");
-			}
-			if (message.contains("No results")) {
-				sabreExResponse.setMessage("未查询到结果");
-			}
-			if (message.contains("Date range in 'departuredate' and 'returndate' exceeds the maximum allowed")) {
-				sabreExResponse.setMessage("出发日期和返回日期之差不超过15天");
-			}
-			if (message.contains("Parameter 'passengercount' must be between 0 and 10")) {
-				sabreExResponse.setMessage("乘客数量必须是 0 到 10 之间");
-			}
-		}
-		if (resp.getStatusCode() == 404) {
-			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
-			String message = sabreExResponse.getMessage();
-			if (message.contains("No results")) {
-				sabreExResponse.setMessage("未查询到结果");
-			}
-		}
+
 		return resp;
 	}
 
