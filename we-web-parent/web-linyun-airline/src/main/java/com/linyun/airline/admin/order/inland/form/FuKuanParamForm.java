@@ -56,7 +56,7 @@ public class FuKuanParamForm extends DataTablesParamForm {
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("tuo.companyid", "=", companyid);
 		}
-		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && !userid.equals(adminId)) {
+		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && userid != adminId) {
 			cnd.and("tuo.loginUserId", "=", userid);
 		}
 		if (!Util.isEmpty(startdate)) {
