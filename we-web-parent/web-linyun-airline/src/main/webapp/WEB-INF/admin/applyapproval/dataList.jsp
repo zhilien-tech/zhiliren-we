@@ -59,16 +59,16 @@
 					</li>
 					<li>
 						<span>${each.ordersnum }</span>
-						<c:choose>
+						<%-- <c:choose>
 							<c:when test="${each.isReduce == 'YES'}">
 							
 								<span>减免</span>
 							</c:when>
-							<c:otherwise>
+							<c:otherwise> --%>
 								<span>${each.purposeStr }</span>
 							
-							</c:otherwise>
-						</c:choose>
+						<%-- 	</c:otherwise>
+						</c:choose> --%>
 					</li>
 					<li>
 						
@@ -129,16 +129,16 @@
 					</li>
 					<li>
 						<span>${each.ordersnum }</span>
-						<c:choose>
+						<%-- <c:choose>
 							<c:when test="${each.isReduce == 'YES'}">
 							
 								<span>减免</span>
 							</c:when>
-							<c:otherwise>
+							<c:otherwise> --%>
 								<span>${each.purposeStr }</span>
 							
-							</c:otherwise>
-						</c:choose>
+						<%-- 	</c:otherwise>
+						</c:choose> --%>
 					</li>
 					<li>
 						
