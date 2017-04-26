@@ -201,7 +201,7 @@
 				  layer.msg("修改成功",{time:2000});
 			  }else if(id == '3'){
 				  layer.msg("删除成功",{time:2000});
-			  }else if(id == '3'){
+			  }else if(id == '4'){
 				  layer.msg("启用成功",{time:2000});
 			  }
 		  }
