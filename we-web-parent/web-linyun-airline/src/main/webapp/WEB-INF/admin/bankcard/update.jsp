@@ -48,7 +48,8 @@
 							<label class="col-sm-1 text-right padding">卡号：</label>
 							<div class="col-sm-3 padding">
 								<input name="cardNum" type="text" class="form-control input-sm" id="cardNum"
-									value="${obj.bankCardInfo.cardNum }" onkeyup="this.value=this.value.replace(/[^0-9a-zA-Z]/g,'').replace(/....(?!$)/g,'$& ')" maxlength="23"/>
+									value="${obj.bankCardInfo.cardNum }" onkeyup="this.value=this.value.replace(/\s/g,'').replace(/....(?!$)/g,'$& ')" maxlength="32"/>
+							<!-- this.value=this.value.replace(/[^0-9a-zA-Z]/g,'').replace(/....(?!$)/g,'$& ') -->
 							</div>
 						</div>
 						<div class="form-group form-group1">
@@ -196,10 +197,6 @@
 	            	validators: {
 	                    notEmpty: {
 	                        message: '银行卡号不能为空!'
-	                    },
-	                    regexp: {
-	                	 	regexp: /^[0-9a-zA-Z\s]{19,23}$/,
-	                        message: '银行卡号为16-19位的数字或字母!'
 	                    },
 	                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
 	                         url: '${base}/admin/bankcard/checkBankCardNumExist.html',//验证地址
