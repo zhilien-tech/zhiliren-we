@@ -11,6 +11,10 @@ function initkaiInvoiceTable() {
       "initComplete": function( settings, json ) {
       	 autoHighLoad($(this));
       },
+      "infoCallback": function( settings, start, end, max, total, pre ) {
+        	autoHighLoad($(this));
+			return '显示第 '+start+' 至 '+end+' 条结果，共 '+total+' 条 (每页显示 '+max+' 条)';
+      },
       "language": {
           "url": BASE_PATH + "/public/plugins/datatables/cn.json"
       },
@@ -39,7 +43,7 @@ function initkaiInvoiceTable() {
                   		var result = '<ul> ';
                 		$.each(row.invoicedetail, function(name, value) {
                 			if(value && value.invoicenum != undefined){
-                				result += '<li style="list-style:none;">'+value.invoicenum+'</li>';
+                				result += '<li style="list-style:none;"><span data-toggle="tooltip" data-placement="left" title="'+value.invoicenum+'">'+value.invoicenum+'<span></li>';
                 			}
                 		});
                 		result += '</ul>';
@@ -89,7 +93,14 @@ function initkaiInvoiceTable() {
                     		return result;
                     	}
                   },
-                  {"data": "paymentunit", "bSortable": false},
+                  {"data": "paymentunit", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                  		var result = row.paymentunit;
+                  		var result = '<span data-toggle="tooltip" data-placement="left" title="'+result+'">'+result+'<span>';
+                  		return result;
+                  	}
+                  
+                  },
                   {"data": "username", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                     		var result = '';
@@ -110,7 +121,13 @@ function initkaiInvoiceTable() {
                   		return result;
                   	}
                   },
-                  {"data": "remark", "bSortable": false}
+                  {"data": "remark", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                    		var remark = "";
+                    		var remark = '<span data-toggle="tooltip" data-placement="left" title="'+row.remark+'">'+row.remark+'<span>';
+                    		return remark;
+                    	}
+                  }
           ],
       columnDefs: [{
     	//   指定第一列，从0开始，0表示第一列，1表示第二列……
@@ -153,7 +170,12 @@ function openkaiInvoiceEdit(id){
         shadeClose:true,
         scrollbar: false,
         area: ['987px', '620px'],
-        content: BASE_PATH + '/admin/inland/kaiInvoice.html?id='+id
+        content: BASE_PATH + '/admin/inland/kaiInvoice.html?id='+id,
+        end:function(){
+        	kaiInvoiceTable.ajax.reload(function(json){
+        		autoHighLoad($('#kaiInvoiceTable'));
+        	});
+        }
       });
 }
 //付款表格
@@ -277,6 +299,7 @@ function initshouInvoiceTable() {
                   		var result = '';
                   		if(row.remark){
                   			result = row.remark;
+                  			var result = '<span data-toggle="tooltip" data-placement="left" title="'+result+'">'+result+'<span>';
                   		}
                   		return result;
                   	}
@@ -318,7 +341,10 @@ function openshouInvoiceEdit(id){
         shadeClose:true,
         scrollbar: false,
         area: ['987px', '620px'],
-        content: BASE_PATH + '/admin/inland/shouInvoice.html?id='+id
+        content: BASE_PATH + '/admin/inland/shouInvoice.html?id='+id,
+        end:function(){
+        	shouInvoiceTable.ajax.reload();
+        }
     });
 }
 /*//收发票 搜索按钮

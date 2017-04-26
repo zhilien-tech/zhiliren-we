@@ -21,7 +21,7 @@ public interface externalInfoService {
 
 	public List<DictInfoEntity> findDictInfoByName(String name, String typeCode) throws Exception;
 
-	public List<DictInfoEntity> findDictInfoByText(String name, String typeCode) throws Exception;
+	public List<DictInfoEntity> findDictInfoByText(String name, String typeCode);
 
 	public List<DictInfoEntity> findDictInfoByTypes(String name, String typeCode1, String typeCode2) throws Exception;
 

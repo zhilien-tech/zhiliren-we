@@ -206,6 +206,7 @@
 			"stripeClasses": [ 'strip1','strip2' ],//斑马线
 			"bLengthChange" : false,
 			"bSort": true, //排序功能 
+			"autoWidth": false,
 			"language" : {
 				"url" : "${base}/public/plugins/datatables/cn.json"
 			},
@@ -230,6 +231,7 @@
 	                    		if(null==depositBalance || ""==depositBalance){
 	                    			return "";
 	                    		}
+	                    		var depositBalance = '<span data-toggle="tooltip" data-placement="left" title="'+depositBalance+'">'+depositBalance+'<span>';
 	                    		return depositBalance;
 	                    	}			
 	                    },
@@ -261,9 +263,9 @@
 	                    	}
 	                    
 	                    },
-	                    {"data": "balance", "bSortable": false,
+	                    {"data": "historymoney", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var depositBalance = row.balance;
+	                    		var depositBalance = row.historymoney;
 	                    		if(null==depositBalance || ""==depositBalance){
 	                    			return "0.00";
 	                    		}
@@ -313,10 +315,11 @@
 	                    		if(null==depositBalance || ""==depositBalance){
 	                    			return "";
 	                    		}
-	                    		if(depositBalance.length>4){
+	                    		/* if(depositBalance.length>4){
 	                    			var res=depositBalance.substring(0,4); 
 	                    			return res+"...";
-	                    		}
+	                    		} */
+	                    		var depositBalance = '<span data-toggle="tooltip" data-placement="left" title="'+depositBalance+'">'+depositBalance+'<span>';
 	                    		return depositBalance;
 	                    	}	
 	                    }

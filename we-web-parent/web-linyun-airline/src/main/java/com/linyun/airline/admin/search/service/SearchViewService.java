@@ -31,14 +31,19 @@ import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
 import com.linyun.airline.admin.operationsArea.entities.TMessageEntity;
 import com.linyun.airline.admin.operationsArea.service.RemindMessageService;
+import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.search.entities.ParsingSabreEntity;
 import com.linyun.airline.admin.search.form.SearchTicketSqlForm;
+import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.MessageLevelEnum;
 import com.linyun.airline.common.enums.MessageRemindEnum;
 import com.linyun.airline.common.enums.MessageSourceEnum;
 import com.linyun.airline.common.enums.MessageStatusEnum;
 import com.linyun.airline.common.enums.MessageTypeEnum;
+import com.linyun.airline.common.enums.OrderStatusEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
+import com.linyun.airline.common.enums.UserStatusEnum;
+import com.linyun.airline.common.enums.UserTypeEnum;
 import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.common.sabre.dto.FlightSegment;
 import com.linyun.airline.common.sabre.dto.InstalFlightAirItinerary;
@@ -67,6 +72,20 @@ import com.uxuexi.core.web.base.service.BaseService;
 public class SearchViewService extends BaseService<TMessageEntity> {
 	private static final Log log = Logs.get();
 
+	private static final int TEAM = OrderTypeEnum.TEAM.intKey(); //国际
+	private static final int FIT = OrderTypeEnum.FIT.intKey(); //内陆
+	private static final int RECEIVINGMONEY = AccountReceiveEnum.RECEIVINGMONEY.intKey();
+	private static final int SEARCH = OrderStatusEnum.SEARCH.intKey();
+	private static final int CLOSE = OrderStatusEnum.CLOSE.intKey();
+	private static final int INTERS = InternationalStatusEnum.SEARCH.intKey();
+	private static final int INTERC = InternationalStatusEnum.CLOSE.intKey();
+
+	private static final int USER_VALID = UserStatusEnum.VALID.intKey();
+	private static final int UPCOM_USER = UserTypeEnum.UPCOM.intKey();
+	private static final int AGENT_USER = UserTypeEnum.AGENT.intKey();
+	private static final int UP_MANAGER = UserTypeEnum.UP_MANAGER.intKey();
+	private static final int AGENT_MANAGER = UserTypeEnum.AGENT_MANAGER.intKey();
+
 	@Inject
 	private CustomerViewService customerViewService;
 	@Inject
@@ -91,24 +110,26 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * @return 
 	 */
 	public Object getLinkNameSelect(String linkname, HttpSession session) {
+		//当前登录公司id
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
+
 		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
 		long upcompanyRelationId = 0;
 		if (!Util.isEmpty(upcompany)) {
+
 			upcompanyRelationId = upcompany.getId();
 		}
+		//获得用户id
+		String userIds = getUserIds(session);
 		List<TCustomerInfoEntity> customerInfos = new ArrayList<TCustomerInfoEntity>();
-		try {
-			customerInfos = dbDao
-					.query(TCustomerInfoEntity.class,
-							Cnd.where("linkMan", "like", Strings.trim(linkname) + "%").and("upComId", "=",
-									upcompanyRelationId), null);
-			if (customerInfos.size() > 5) {
-				customerInfos = customerInfos.subList(0, 5);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		Cnd cnd = Cnd.NEW();
+		cnd.and("linkMan", "like", Strings.trim(linkname) + "%");
+		cnd.and("upComId", "=", upcompanyRelationId);
+		cnd.and("responsibleId", "in", userIds);
+		customerInfos = dbDao.query(TCustomerInfoEntity.class, cnd, null);
+		if (customerInfos.size() > 5) {
+			customerInfos = customerInfos.subList(0, 5);
 		}
 		return customerInfos;
 	}
@@ -128,17 +149,16 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		if (!Util.isEmpty(upcompany)) {
 			upcompanyRelationId = upcompany.getId();
 		}
+		//获得用户id
+		String userIds = getUserIds(session);
 		List<TCustomerInfoEntity> customerInfos = new ArrayList<TCustomerInfoEntity>();
-		try {
-			customerInfos = dbDao.query(
-					TCustomerInfoEntity.class,
-					Cnd.where("telephone", "like", Strings.trim(phonenum) + "%").and("upComId", "=",
-							upcompanyRelationId), null);
-			if (customerInfos.size() > 5) {
-				customerInfos = customerInfos.subList(0, 5);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		Cnd cnd = Cnd.NEW();
+		cnd.and("telephone", "like", Strings.trim(phonenum) + "%");
+		cnd.and("upComId", "=", upcompanyRelationId);
+		cnd.and("responsibleId", "in", userIds);
+		customerInfos = dbDao.query(TCustomerInfoEntity.class, cnd, null);
+		if (customerInfos.size() > 5) {
+			customerInfos = customerInfos.subList(0, 5);
 		}
 		return customerInfos;
 	}
@@ -184,13 +204,12 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			}
 		}));
 
+		//统计历史欠款  
+		Double arrears = getMoney(id);//历史欠款
+		customerInfoEntity.setArrears(arrears);
 		obj.put("responsibleName", responsibleName);
 		obj.put("customerInfoEntity", customerInfoEntity);
-		Double arrears = customerInfoEntity.getArrears();//历史欠款
 		Double creditLine = customerInfoEntity.getCreditLine();//信用额度
-		if (Util.isEmpty(arrears)) {
-			arrears = 0.0;
-		}
 		if (Util.isEmpty(creditLine)) {
 			creditLine = 0.0;
 		}
@@ -320,61 +339,68 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		form.setPointofsalecountry("US");
 		form.setOffset(1);
 		form.setLimit(10);
-		SabreService service = new SabreServiceImpl();
-		SabreResponse resp = service.instaFlightsSearch(form);
-		String departureDateTime = "";
-		String arrivalDateTime = "";
-		if (resp.getStatusCode() == 200) {
-			List<InstalFlightAirItinerary> list = (List<InstalFlightAirItinerary>) resp.getData();
-			for (InstalFlightAirItinerary instalFlightAirItinerary : list) {
-				List<FlightSegment> flightSegment = instalFlightAirItinerary.getList();
-				for (FlightSegment flight : flightSegment) {
-					departureDateTime = flight.getDepartureDateTime();
-					arrivalDateTime = flight.getArrivalDateTime();
-					if (!Util.isEmpty(departureDateTime) || "" != departureDateTime) {
-						departureDateTime = departureDateTime.substring(11, 13) + departureDateTime.substring(14, 16);
-						flight.setDepartureDateTime(departureDateTime);
+		SabreResponse resp = new SabreResponse();
+		try {
+			SabreService service = new SabreServiceImpl();
+			resp = service.instaFlightsSearch(form);
+			String departureDateTime = "";
+			String arrivalDateTime = "";
+			if (resp.getStatusCode() == 200) {
+				List<InstalFlightAirItinerary> list = (List<InstalFlightAirItinerary>) resp.getData();
+				for (InstalFlightAirItinerary instalFlightAirItinerary : list) {
+					List<FlightSegment> flightSegment = instalFlightAirItinerary.getList();
+					for (FlightSegment flight : flightSegment) {
+						departureDateTime = flight.getDepartureDateTime();
+						arrivalDateTime = flight.getArrivalDateTime();
+						if (!Util.isEmpty(departureDateTime) || "" != departureDateTime) {
+							departureDateTime = departureDateTime.substring(11, 13)
+									+ departureDateTime.substring(14, 16);
+							flight.setDepartureDateTime(departureDateTime);
+						}
+						if (!Util.isEmpty(arrivalDateTime) || "" != arrivalDateTime) {
+							arrivalDateTime = arrivalDateTime.substring(11, 13) + arrivalDateTime.substring(14, 16);
+							flight.setArrivalDateTime(arrivalDateTime);
+						}
 					}
-					if (!Util.isEmpty(arrivalDateTime) || "" != arrivalDateTime) {
-						arrivalDateTime = arrivalDateTime.substring(11, 13) + arrivalDateTime.substring(14, 16);
-						flight.setArrivalDateTime(arrivalDateTime);
-					}
+					String airlineCode = instalFlightAirItinerary.getAirlineCode();
 				}
-				String airlineCode = instalFlightAirItinerary.getAirlineCode();
 			}
+			if (resp.getStatusCode() == 400) {
+				SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
+				String message = sabreExResponse.getMessage();
+				if (message.contains("Parameter 'origin' must be specified")) {
+					sabreExResponse.setMessage("出发城市不能为空");
+				}
+				if (message.contains("Parameter 'destination' must be specified")) {
+					sabreExResponse.setMessage("到达城市不能为空");
+				}
+				if (message.contains("Parameter 'departuredate' must be specified")) {
+					sabreExResponse.setMessage("出发日期不能为空");
+				}
+				if (message.contains("arrivalDateTime")) {
+					sabreExResponse.setMessage("返回日期不能为空");
+				}
+				if (message.contains("No results")) {
+					sabreExResponse.setMessage("未查询到结果");
+				}
+				if (message.contains("Date range in 'departuredate' and 'returndate' exceeds the maximum allowed")) {
+					sabreExResponse.setMessage("出发日期和返回日期之差不超过15天");
+				}
+				if (message.contains("Parameter 'passengercount' must be between 0 and 10")) {
+					sabreExResponse.setMessage("乘客数量必须是 0 到 10 之间");
+				}
+			}
+			if (resp.getStatusCode() == 404) {
+				SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
+				String message = sabreExResponse.getMessage();
+				if (message.contains("No results")) {
+					sabreExResponse.setMessage("未查询到结果");
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e);
 		}
-		if (resp.getStatusCode() == 400) {
-			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
-			String message = sabreExResponse.getMessage();
-			if (message.contains("Parameter 'origin' must be specified")) {
-				sabreExResponse.setMessage("出发城市不能为空");
-			}
-			if (message.contains("Parameter 'destination' must be specified")) {
-				sabreExResponse.setMessage("到达城市不能为空");
-			}
-			if (message.contains("Parameter 'departuredate' must be specified")) {
-				sabreExResponse.setMessage("出发日期不能为空");
-			}
-			if (message.contains("arrivalDateTime")) {
-				sabreExResponse.setMessage("返回日期不能为空");
-			}
-			if (message.contains("No results")) {
-				sabreExResponse.setMessage("未查询到结果");
-			}
-			if (message.contains("Date range in 'departuredate' and 'returndate' exceeds the maximum allowed")) {
-				sabreExResponse.setMessage("出发日期和返回日期之差不超过15天");
-			}
-			if (message.contains("Parameter 'passengercount' must be between 0 and 10")) {
-				sabreExResponse.setMessage("乘客数量必须是 0 到 10 之间");
-			}
-		}
-		if (resp.getStatusCode() == 404) {
-			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
-			String message = sabreExResponse.getMessage();
-			if (message.contains("No results")) {
-				sabreExResponse.setMessage("未查询到结果");
-			}
-		}
+
 		return resp;
 	}
 
@@ -514,13 +540,38 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		//判断以哪种格式解析
 		String parsingType = "";
 		sabrePNR += "\n";
-		String[] sabrePnrs = sabrePNR.split("\\s+");
-		String[] sabrePnrs1 = sabrePNR.split("\\n+");
+		/*String[] sabrePnrs = sabrePNR.split("\\s+");*/
+		String[] sabrePnrList = sabrePNR.split("\\s+");
+		List<String> sabreList = new ArrayList<String>();
+		for (String s : sabrePnrList) {
+			if (!Util.isEmpty(s)) {
+				sabreList.add(s);
+			}
+		}
+		int sabreSize = sabreList.size();
+		String[] sabrePnrs = new String[sabreSize];
+		for (int i = 0; i < sabreSize; i++) {
+			sabrePnrs[i] = sabreList.get(i);
+		}
+
+		String[] sabrePnrsn = sabrePNR.split("\\n+");
+		//去除 空行
+		List<String> pnrList = new ArrayList<String>();
+		for (String str : sabrePnrsn) {
+			if (!Util.isEmpty(str)) {
+				pnrList.add(str);
+			}
+		}
+		int size = pnrList.size();
+		String[] sabrePnrs1 = new String[size];
+		for (int i = 0; i < size; i++) {
+			sabrePnrs1[i] = pnrList.get(i);
+		}
 		String sabrePnrsStr = sabrePnrs1[0];
-		/*		String sabrePnrsStr = sabrePnrs[0];
-		*/if (sabrePnrsStr.contains("/D￥") && sabrePnrsStr.contains("<<")) {
+		/*String sabrePnrsStr = sabrePnrs[0];*/
+		if (sabrePnrsStr.contains("/D￥") && sabrePnrsStr.contains("<<")) {
 			parsingType = "1";
-		} else if (sabrePnrsStr.contains("WP<<")) {
+		} else if (sabrePnrsStr.contains("WP<<") || sabrePnrsStr.contains("wp<<")) {
 			parsingType = "3";
 		} else {
 			parsingType = "2";
@@ -539,7 +590,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			/*while (m.find()) {
 				sabreGroup.add(m.group());
 			}
-			*/
+			 */
 			for (int i = 0; i < sabrePnrs1.length; i++) {
 				if (i % 2 == 0 && i != 0) {
 					sabreGroup.add(sabrePnrs1[i].trim() + " " + sabrePnrs1[i + 1].trim());
@@ -566,12 +617,26 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				ParsingSabreEntity pSabreEntity = new ParsingSabreEntity();
 
 				String[] pnr = pnrs.split("\\s+");
+				String regex = "[a-zA-Z]{6}";
+				Pattern pattern = Pattern.compile(regex);
+				Matcher m = pattern.matcher(pnrs);
+				String pStr = "";
+				while (m.find()) {
+					pStr = m.group();
+				}
+				int pIndex = 0;
+				for (int i = 0; i < pnr.length; i++) {
+					boolean contains = pnr[i].contains(pStr);
+					if (contains) {
+						pIndex = i;
+					}
+				}
 
 				id = Integer.parseInt(pnr[0].substring(0, 1));
 				airCompName = pnr[0].substring(1);
 				flightNum = pnr[1];
 				airLeavelDate = sabrePnrs[1];
-				String containStr = pnr[7];
+				String containStr = pnr[pIndex];
 				int a = 0;
 				if (containStr.contains("*")) {
 					String[] seatLine = containStr.split("[*]");
@@ -580,24 +645,21 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 						if (!seat.contains("/E") && seat.length() == 2) {
 
 							airSeats += (" " + seat);
-							if (a == 7) {
-
-								airSeats += (" " + seatLine[0]);
-							}
+							airSeats += (" " + seatLine[0]);
 						}
 					}
 					airLine = seatLine[1];
-					airDepartureTime = pnr[8];
-					airLandingTime = pnr[9];
+					airDepartureTime = pnr[pIndex + 1];
+					airLandingTime = pnr[pIndex + 2];
 				} else {
 					for (String seat : pnr) {
 						if (!seat.contains("/E") && seat.length() == 2) {
 							airSeats += (" " + seat);
 						}
 					}
-					airLine = pnr[8];
-					airDepartureTime = pnr[9];
-					airLandingTime = pnr[10];
+					airLine = pnr[pIndex];
+					airDepartureTime = pnr[pIndex + 1];
+					airLandingTime = pnr[pIndex + 2];
 				}
 				pSabreEntity.setId(id);
 				pSabreEntity.setAirlineComName(airCompName);
@@ -627,10 +689,11 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			String airDepartureTime = sabrePnrs[8];
 			String airLandingTime = sabrePnrs[9];
 			String airSeatNum = sabrePnrs[7];
-			String sevenLine = sabrePnrs1[6];
+			String sevenLine = sabrePnrs1[5];
 			String str[] = sevenLine.split("\\s+");
 			String str1 = str[str.length - 1].trim();
-			String str2 = str1.substring(0, str1.lastIndexOf(".") + 3);
+			/*String str2 = str1.substring(0, str1.lastIndexOf(".") + 3);*/
+			String str2 = str1;
 			pSabreEntity.setAirSeatsPrice(str2);
 			pSabreEntity.setId(id); //序号
 			pSabreEntity.setAirlineComName(airCompName); //航空公司
@@ -662,13 +725,26 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		//判断以哪种格式解析
 		String parsingType = "";
 		etemStr = etemStr + "\n";
-		String[] etemPnrs = etemStr.split("\\s+");
+		String[] etemPnrss = etemStr.split("\\s+");
+		//去除空行
+		List<String> etemList = new ArrayList<String>();
+		for (String s : etemPnrss) {
+			if (!Util.isEmpty(s)) {
+				etemList.add(s);
+			}
+		}
+		int etemSize = etemList.size();
+		String[] etemPnrs = new String[etemSize];
+		for (int i = 0; i < etemSize; i++) {
+			etemPnrs[i] = etemList.get(i);
+		}
+
 		String etem = etemPnrs[0];
-		if (etem.contains("avh/")) {
+		if (etem.contains("AVH/") || etem.contains("avh/")) {
 			parsingType = "1";
-		} else if (etem.contains("SD")) {
+		} else if (etem.contains("SD") || etem.contains("sd")) {
 			parsingType = "2";
-		} else if (etem.contains("QTE:/")) {
+		} else if (etem.contains("QTE:/") || etem.contains("FSI")) {
 			parsingType = "3";
 		}
 
@@ -678,7 +754,8 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		/***********************黑屏查询：AVH/AKLSYD/28FEB/EK**************************/
 		if (parsingType == "1") {
 			//(?s)表示开启跨行匹配，\\d{1}一位数字，[A-Za-z]{2}两位字母，/斜线，\\s空白字符,.+任意字符出现1到多次，?非贪婪模式，最后以\n换行结束
-			String regex = "(?s)((\\d{1}.{2}[*])|(\\s{4}))[A-Za-z]{2}\\d+\\s.+?\\d\n";
+			/*String regex = "(?s)((\\d{1}.{2}[*])|(\\s{4}))[A-Za-z]{2}\\d+\\s.+?\\d\n";*/
+			String regex = "((\\d{1}.{2}.)|())[A-Za-z]{2}\\d+.+\\s+.+?[:]\\d{2}";
 			Pattern pattern = Pattern.compile(regex);
 			Matcher m = pattern.matcher(etemStr);
 			ArrayList<String> etemGroup = Lists.newArrayList();
@@ -686,7 +763,19 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				etemGroup.add(m.group());
 			}
 
-			String[] etemStrs = etemStr.split("\\s+");
+			String[] etemStrss = etemStr.split("\\s+");
+			List<String> etemLists = new ArrayList<String>();
+			for (String s : etemStrss) {
+				if (!Util.isEmpty(s)) {
+					etemLists.add(s);
+				}
+			}
+			int etemSizes = etemLists.size();
+			String[] etemStrs = new String[etemSizes];
+			for (int i = 0; i < etemSize; i++) {
+				etemStrs[i] = etemLists.get(i);
+			}
+
 			//航空公司
 			String airCompName = etemStrs[4];
 			//起飞日期
@@ -713,15 +802,18 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				/*id = Integer.parseInt(pnr[0].substring(0, 1));*/
 				id = a;
 				if (pnr[0].contains(a + "")) {
+					airDepartureTime = pnr[14];
+					airLandingTime = pnr[15];
 					a++;
 				} else {
+					airDepartureTime = pnr[13];
+					airLandingTime = pnr[14];
 					id = a - 1;
 				}
 				pSabreEntity.setId(id);
 				flightNum = pnr[1];
 				airLine = pnr[13];
-				airDepartureTime = pnr[14];
-				airLandingTime = pnr[15];
+
 				for (String seat : pnr) {
 					if (!seat.contains("-") && !seat.contains("+") && seat.length() == 2) {
 						airSeats += (" " + seat);
@@ -745,7 +837,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		if (parsingType == "2") {
 			int indexOf = 0;
 			for (int i = 0; i < etemPnrs.length; i++) {
-				if (etemPnrs[i].contains("QTE:/")) {
+				if (etemPnrs[i].contains("QTE:/") || etemPnrs[i].contains("FSI/")) {
 					indexOf = i;
 				}
 
@@ -760,8 +852,8 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			String airSeatNum = etemPnrs[6];
 			String airDepartureTime = etemPnrs[7];
 			String airLandingTime = etemPnrs[8];
-			String airSeatsPrice = etemPnrs[indexOf + 46];
-			String airSeatsCurrency = etemPnrs[indexOf + 45];
+			String airSeatsPrice = etemPnrs[indexOf + 45];
+			String airSeatsCurrency = etemPnrs[indexOf + 44];
 
 			pEtemEntity.setId(id);
 			pEtemEntity.setFlightNum(flightNum);
@@ -1192,6 +1284,13 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
 			msgContent = "单号：" + generateOrderNum + " PNR：" + pnr + "收发票中";
 			break;
+		case 21: //MessageWealthStatusEnum
+			//减免
+			String derateMoney = (String) fromJson.get("derateMoney");
+			msgType = MessageTypeEnum.DERATEMONEY.intKey();
+			msgLevel = MessageLevelEnum.MSGLEVEL5.intKey();
+			msgContent = "单号：" + generateOrderNum + " 减免金额" + derateMoney + "元，已审批通过";
+			break;
 		}
 
 		/*添加的消息 存放到map中*/
@@ -1211,6 +1310,87 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		mapMsg.put("upOrderStatus", orderStatus);
 		remindMessageService.addMessageEvent(mapMsg);
 		return "消息添加成功";
+	}
+
+	/**
+	 * 
+	 * 统计客户已欠款
+	 * <p>
+	 *
+	 * @param id  客户信息id
+	 */
+	public Double getMoney(long id) {
+		//根据客户信息id， 查询已欠款   TODO
+		//INLAND 欠款统计
+		Sql arrearsSql = Sqls.create(sqlManager.get("customer_inland_arrearsMoney_byId"));
+		arrearsSql.setCallback(Sqls.callback.records());
+		arrearsSql.setParam("customerId", id);
+		arrearsSql.setParam("orderType", FIT);
+		arrearsSql.setParam("rStatus", RECEIVINGMONEY);
+		arrearsSql.setParam("oStatus", SEARCH + "," + CLOSE);
+		Double arrears = 0.0;
+		if (!Util.isEmpty(id)) {
+			Record arrearsRecord = dbDao.fetch(arrearsSql);
+			String arrearsStr = arrearsRecord.getString("arrears");
+			if (!Util.isEmpty(arrearsStr)) {
+				arrears = Double.valueOf(arrearsStr);
+			}
+		}
+		//国际欠款统计
+		Sql arrearsInterSql = Sqls.create(sqlManager.get("customer_inter_arrearsMoney_byId"));
+		arrearsInterSql.setCallback(Sqls.callback.records());
+		arrearsInterSql.setParam("customerId", id);
+		arrearsInterSql.setParam("orderType", TEAM);
+		arrearsInterSql.setParam("rStatus", RECEIVINGMONEY);
+		arrearsInterSql.setParam("recordType", RECEIVINGMONEY);
+		arrearsInterSql.setParam("oStatus", INTERS + "," + INTERC);
+		if (!Util.isEmpty(id)) {
+			Record arrearsRecord = dbDao.fetch(arrearsInterSql);
+			String arrearsStr = arrearsRecord.getString("arrears");
+			if (!Util.isEmpty(arrearsStr)) {
+				arrears += Double.valueOf(arrearsStr);
+			}
+		}
+		return arrears;
+	}
+
+	/**
+	 * 
+	 * 管理员和用户 权限分配
+	 * <p>
+	 *
+	 * @param session
+	 * @return 用户id
+	 */
+	public String getUserIds(HttpSession session) {
+		String userIds = "";
+		//当前登录公司id
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		int userType = loginUser.getUserType(); //用户类型
+		long userId = loginUser.getId();
+		//管理员
+		if (Util.eq(UP_MANAGER, userType) || Util.eq(AGENT_MANAGER, userType)) {
+			Sql sql = Sqls.create(sqlManager.get("customer_agent_list"));
+			sql.setParam("comid", companyId);
+			sql.setParam("status", USER_VALID);
+			/*sql.setParam("userid", userId);*/
+			List<Record> record = dbDao.query(sql, null, null);
+			for (Record r : record) {
+				String uId = r.getString("id");
+				userIds += uId + ",";
+			}
+		}
+
+		//普通用户
+		if (Util.eq(UPCOM_USER, userType) || Util.eq(AGENT_USER, userType)) {
+			userIds = userId + ",";
+		}
+		userIds = userIds.substring(0, userIds.length() - 1);
+
+		return userIds;
 	}
 
 }

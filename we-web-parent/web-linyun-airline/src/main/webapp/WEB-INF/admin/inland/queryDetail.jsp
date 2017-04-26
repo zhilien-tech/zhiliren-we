@@ -101,7 +101,7 @@
                      	</c:when>
                      </c:choose>　
                      	信用额度：<fmt:formatNumber type="number" value="${obj.custominfo.creditLine}" pattern="0.00" maxFractionDigits="2"/>  
-                     		<font id="historyqiancolor"> 历史欠款：<fmt:formatNumber type="number" value="${empty obj.custominfo.arrears? 0.00:obj.custominfo.arrears}" pattern="0.00" maxFractionDigits="2"/></font>　
+                     		<font id="historyqiancolor"> 历史欠款：<fmt:formatNumber type="number" value="${empty obj.historymony? 0.00:obj.historymony}" pattern="0.00" maxFractionDigits="2"/></font>　
                    		 预存款：<fmt:formatNumber type="number" value="${obj.custominfo.preDeposit}" pattern="0.00" maxFractionDigits="2"/></pre></td>
                      <td><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
                    </tr>
@@ -241,11 +241,11 @@
 					                     <td><select id="ailinenum" name="ailinenum" disabled="disabled" class="form-control input-sm"  multiple="multiple" placeholder="SYD(悉尼)">
 					                     	<c:forEach items="${obj.airline }" var="one"> 
 						                   			<c:choose>
-							                   			<c:when test="${airline.ailinenum  eq one.airlinenum  }">
-															<option value="${one.airlinenum }" selected="selected">${one.airlinenum }</option>
+							                   			<c:when test="${airline.ailinenum  eq one.dictName  }">
+															<option value="${one.dictName }" selected="selected">${one.dictName }</option>
 							                   			</c:when>
 							                   			<c:otherwise>
-								                     		<option value="${one.airlinenum }">${one.airlinenum }</option>
+								                     		<option value="${one.dictName }">${one.dictName }</option>
 							                   			</c:otherwise>
 						                    		</c:choose>
 						                     	</c:forEach>
@@ -274,17 +274,17 @@
 			                   		<c:otherwise>
 					                   <tr name="airlineinfo">
 					                     <td></span><label>航空公司：</label></td>
-					                     <td><select id="aircom" name="aircom" class="form-control input-sm"  multiple="multiple" placeholder="" ></select></td>
+					                     <td><select id="aircom" name="aircom" disabled="disabled" class="form-control input-sm"  multiple="multiple" placeholder="" ></select></td>
 					                     <td><label>航班号：</label></td>
-					                     <td><select id="ailinenum" name="ailinenum" class="form-control input-sm"  multiple="multiple" placeholder="SYD(悉尼)"></select></td>
+					                     <td><select id="ailinenum" name="ailinenum" disabled="disabled" class="form-control input-sm"  multiple="multiple" placeholder="SYD(悉尼)"></select></td>
 					                     <td><label>出发时间：</label></td>
-					                     <td><input id="leavetime" name="leavetime" type="text" class="form-control input-sm textWid mustTimes" placeholder=""/></td>
+					                     <td><input id="leavetime" name="leavetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" placeholder=""/></td>
 					                     <td><label>抵达时间：</label></td>
-					                     <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm textWid mustArriveTimes" /></td>
+					                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustArriveTimes" /></td>
 					                     <td><label class="labelWid">成本价：</label></td>
-					                     <td><input id="formprice" name="formprice" type="text" class="form-control input-sm textWid costPrice" /></td>
+					                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" /></td>
 					                     <td><label class="labelWid">销售价：</label></td>
-					                     <td><input id="price" name="price" type="text" class="form-control input-sm textWid mustNumberPoint"/></td>
+					                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid mustNumberPoint"/></td>
 					                     <td class="tdBtn">
 					                      <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake none"></a>
 					                     </td>
@@ -583,7 +583,7 @@
 	<script type="text/javascript">
 		var BASE_PATH = '${base}';
 		var creditLine = '${obj.custominfo.creditLine}';
-		var arrears = '${obj.custominfo.arrears}';
+		var arrears = '${obj.historymony}';
 		//票价折扣
     	var discountFare = '${obj.custominfo.discountFare}';
     	//手续费
@@ -896,7 +896,7 @@
     	$(this).val($(this).val().replace(/[^.\d]/g,''));
     	var fromprice = $(this).val();
     	//票价折扣
-    	var discountFare = 1;
+    	var discountFare = 0;
     	var countfare = '${obj.custominfo.discountFare}';
     	if(countfare){
     		discountFare = countfare;
@@ -910,7 +910,7 @@
     	//alert("值："+fromprice + " 折扣："+discountFare + " 手续费：" + fees);
     	var price = parseFloat(fromprice * discountFare / 100) + parseFloat(fees);
     	if(fromprice){
-     		if(isNaN(price)){
+     		if(isNaN(price) && price > 0){
      			$(this).parent().parent().find('[name=price]').val('');
      		}else{
     	 		$(this).parent().parent().find('[name=price]').val(price.toFixed(2));

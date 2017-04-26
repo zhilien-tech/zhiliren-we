@@ -47,12 +47,15 @@ public class InlandRecListSearchSqlForm extends DataTablesParamForm {
 	/**当前公司用户id*/
 	private String loginUserId;
 
+	/**当前公司id*/
+	private Long companyid;
+
 	public Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		if (!Util.isEmpty(orderStatus)) {
 			cnd.and("r.`status`", "=", orderStatus);
 		}
-		cnd.and("r.userid", "in", loginUserId);
+		cnd.and("r.companyid", "=", companyid);
 		cnd.and("r.orderstype", "=", OrderTypeEnum.FIT.intKey()); //散客
 		cnd.orderBy("r.receivedate", "DESC");
 		return cnd;

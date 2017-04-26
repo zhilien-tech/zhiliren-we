@@ -78,5 +78,8 @@ public class TTurnOverEntity implements Serializable {
 	@Column
 	@Comment("发票状态")
 	private String invoiceStatus;
+	@Column
+	@Comment("卡里历史余额")
+	private double historymoney;
 
 }

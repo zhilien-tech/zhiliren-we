@@ -123,6 +123,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	 */
 	public Object listRecData(InlandRecListSearchSqlForm form, HttpSession session, HttpServletRequest request) {
 
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+
 		//检索条件
 		String name = form.getName();
 		Date leaveBeginDate = form.getLeaveBeginDate();
@@ -148,8 +151,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		List<Record> orders = dbDao.query(sql, cnd, null);
 
 		//当前公司下的用户
-		String userIds = userInComp(session);
-		form.setLoginUserId(userIds);
+		form.setCompanyid(companyId);
 		Map<String, Object> listdata = this.listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
 		List<Record> list = (List<Record>) listdata.get("data");
@@ -497,8 +499,8 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//计算合计金额
 		Double sum = 0.0;
 		for (Record record : orders) {
-			if (!Util.isEmpty(record.get("incometotal"))) {
-				Double incometotal = (Double) record.get("incometotal");
+			if (!Util.isEmpty(record.get("currentpay"))) {
+				Double incometotal = (Double) record.get("currentpay");
 				sum += incometotal;
 			}
 			String billDateStr = record.getString("billingdate");
@@ -523,9 +525,15 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 				.query(TReceiveBillEntity.class, Cnd.where("receiveid", "=", id), null);
 		//银行卡下拉
 		map.put("yhkSelect", yhkSelect);
+
+		int bankcardid = fetch.getBankcardid();
+		DictInfoEntity bank = dbDao.fetch(DictInfoEntity.class, bankcardid);
+		String bankName = bank.getDictName();
+
 		//订单信息id
 		map.put("ids", ids);
 		map.put("id", id);
+		map.put("bankName", bankName);
 		map.put("receive", fetch);
 		if (receipts.size() > 0) {
 			map.put("receipturl", receipts.get(0));

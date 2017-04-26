@@ -51,7 +51,9 @@ public class TCompanySqlForm extends DataTablesParamForm {
 			cnd.and("t.comType", "=", comType);
 		}
 		cnd.and("t.deletestatus", "=", 0);
-		cnd.and("t.id", "!=", logincompanyid);
+		if (!Util.isEmpty(logincompanyid)) {
+			cnd.and("t.id", "!=", logincompanyid);
+		}
 		cnd.orderBy("t.createtime", "desc");
 		return cnd;
 	}

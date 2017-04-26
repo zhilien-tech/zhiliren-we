@@ -54,7 +54,7 @@
                   <td>银行：</td>
                   <td>
                     <select disabled="disabled" class="form-control input-sm">
-                        <option selected = "selected">${obj.yhkSelect[0].dictName}</option>
+                        <option selected = "selected">${obj.bankName}</option>
                     </select>
                   </td>
                   <td>银行卡名称：</td>

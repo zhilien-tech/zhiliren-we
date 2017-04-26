@@ -419,7 +419,7 @@ function initDatatable() {
 	                   		 if(null==remark || ""==remark){
 	                   			 return "";
 	                   		 }
-                    		 var result = '<span data-toggle="tooltip" data-placement="left" title="'+remark+'">'+remark+'<span>';
+                    		 var result = '<span data-toggle="tooltip" data-placement="bottom" title="'+remark+'">'+remark+'<span>';
                     		 return result;
                     	}	
                     } ,
@@ -532,7 +532,7 @@ function initDatatable() {
 	                   		 if(null==remark || ""==remark){
 	                   			 return "";
 	                   		 }
-                    		 var result = '<span data-toggle="tooltip" data-placement="left" title="'+remark+'">'+remark+'<span>';
+                    		 var result = '<span data-toggle="tooltip" data-placement="bottom" title="'+remark+'">'+remark+'<span>';
                     		 return result;
                     	}	
                     },
@@ -644,7 +644,7 @@ function initDatatable() {
 	                   		 if(null==remark || ""==remark){
 	                   			 return "";
 	                   		 }
-                    		 var result = '<span data-toggle="tooltip" data-placement="left" title="'+remark+'">'+remark+'<span>';
+                    		 var result = '<span data-toggle="tooltip" data-placement="bottom" title="'+remark+'">'+remark+'<span>';
                     		 return result;
                     	}	
                     }

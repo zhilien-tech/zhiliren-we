@@ -60,7 +60,7 @@ public class ShouInvoiceParamForm extends DataTablesParamForm {
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("tii.comId", "=", companyid);
 		}
-		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && !userid.equals(adminId)) {
+		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && userid != adminId) {
 			cnd.and("tii.opid", "=", userid);
 		}
 		if (!Util.isEmpty(startdate)) {

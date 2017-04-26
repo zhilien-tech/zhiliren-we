@@ -211,12 +211,26 @@ $(function () {
 $("tbody",$('#inlandCrossTable')).on("dblclick","tr",function(event) {
 	var item = inlandCrossTable.row($(this).closest('tr')).data();
 	var url = BASE_PATH;
-	if(item.ordersstatus == 1){
-		url += '/admin/inland/queryDetail.html?id='+item.id;
-	}else{
-		url = '/admin/inland/bookingDetail.html?id='+item.id;
-	}
-	window.open(url);
+	$.ajax({
+		type : 'POST',
+		data : {
+			"id":item.id
+		},
+		async:false,
+		dataType:'json',
+		url : BASE_PATH+'/admin/inland/getOrderInfoById.html',
+		success : function(data) {
+			if(data.ordersstatus == 1){
+				url += '/admin/inland/queryDetail.html?id='+item.id;
+			}else{
+				url = '/admin/inland/bookingDetail.html?id='+item.id;
+			}
+			window.open(url);
+		},
+		error : function() {
+		}
+	});
+	
 });
 function edit(id,status){ 
 	var url = BASE_PATH;

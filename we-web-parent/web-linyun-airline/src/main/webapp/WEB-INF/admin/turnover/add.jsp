@@ -208,6 +208,13 @@
 	                    }
 	                }
 	            },
+	            tradeDate: {
+	            	validators: {
+	                    notEmpty: {
+	                        message: '交易日期不能为空!'
+	                    }
+	                }
+	            },
 	            projectName: {
 	            	validators: {
 	                    notEmpty: {

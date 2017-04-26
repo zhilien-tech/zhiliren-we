@@ -89,9 +89,9 @@
                              <td><label>航空公司：</label></td>
                              <td><select id="airlinecom" name="airlinecom" class="form-control input-sm disab" multiple="multiple"></select></td>
                              <td><label>人数：</label></td>
-                             <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm disab"></td>
+                             <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm disab mustNumber"></td>
                              <td><label>成本单价：</label></td>
-                             <td><input id="costsingleprice" name="costsingleprice" type="text" class="form-control input-sm disab"></td>
+                             <td><input id="costsingleprice" name="costsingleprice" type="text" class="form-control input-sm disab mustNumberPoint"></td>
                            </tr>
                           <tr>
                             <td><label>记录编号：</label></td>
