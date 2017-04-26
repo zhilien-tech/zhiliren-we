@@ -168,9 +168,18 @@ function initPayEdDataTable(){
         {"data": "ordernum", "bSortable": false,"width":"7%",
         	render:function(data, type, row, meta) {
         		var result = '<ul> ';
+        		var oNum = "";
         		$.each(row.orders, function(name, value) {
         			if(value){
-        				result += '<li style="list-style:none;">'+value.ordernum+'</li>';
+        				var ordernum = value.ordernum;
+        				if(ordernum == null || ordernum == undefined || ordernum==""){
+        					ordernum = " ";
+        				}else{
+        					if(oNum!=ordernum){
+        						result += '<li style="list-style:none;">'+ordernum+'</li>';
+        					}
+        				}
+        				oNum = ordernum;
         			}
         		});
         		result += '</ul>';
