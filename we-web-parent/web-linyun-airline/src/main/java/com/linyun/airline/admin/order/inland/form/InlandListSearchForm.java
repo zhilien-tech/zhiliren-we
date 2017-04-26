@@ -69,7 +69,7 @@ public class InlandListSearchForm extends DataTablesParamForm {
 		if (!Util.isEmpty(companyId)) {
 			cnd.and("tuo.companyId", "=", companyId);
 		}
-		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && !userid.equals(adminId)) {
+		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && userid.longValue() != adminId) {
 			cnd.and("tuo.loginUserId", "=", userid);
 		}
 		if (!Util.isEmpty(searchInfo)) {

@@ -46,6 +46,7 @@ import com.linyun.airline.admin.order.international.form.InternationalReceivePar
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
 import com.linyun.airline.admin.receivePayment.service.InterReceivePayService;
+import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
@@ -109,6 +110,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	private InterReceivePayService interReceivePayService;
 	@Inject
 	private InlandListService inlandListService;
+	@Inject
+	private SearchViewService searchViewService;
 
 	/**
 	 * 查询国际列表
@@ -307,6 +310,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			custominfo = dbDao.fetch(TCustomerInfoEntity.class, orderinfo.getUserid().longValue());
 		}
 		result.put("custominfo", custominfo);
+		Double historymony = searchViewService.getMoney(orderinfo.getUserid().longValue());
+		result.put("historymony", historymony);
 		//异步加载
 		TFinanceInfoEntity finance = dbDao.fetch(TFinanceInfoEntity.class, Cnd.where("orderid", "=", orderid));
 		result.put("finance", finance);

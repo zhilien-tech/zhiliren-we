@@ -309,6 +309,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		//客户信息
 		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(orderinfo.getUserid()));
 		result.put("custominfo", custominfo);
+		Double historymony = searchViewService.getMoney(orderinfo.getUserid().longValue());
+		result.put("historymony", historymony);
 		//客户负责人
 		//result.put("responsible", dbDao.fetch(TUserEntity.class, custominfo.getResponsibleId()).getUserName());
 		String resposeble = "";
@@ -568,6 +570,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		//客户信息
 		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(orderinfo.getUserid()));
 		result.put("custominfo", custominfo);
+		Double historymony = searchViewService.getMoney(orderinfo.getUserid().longValue());
+		result.put("historymony", historymony);
 		//客户负责人
 		String resposeble = "";
 		if (!Util.isEmpty(custominfo.getResponsibleId())) {

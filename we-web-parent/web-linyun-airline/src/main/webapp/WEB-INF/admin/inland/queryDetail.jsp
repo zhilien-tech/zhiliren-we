@@ -101,7 +101,7 @@
                      	</c:when>
                      </c:choose>　
                      	信用额度：<fmt:formatNumber type="number" value="${obj.custominfo.creditLine}" pattern="0.00" maxFractionDigits="2"/>  
-                     		<font id="historyqiancolor"> 历史欠款：<fmt:formatNumber type="number" value="${empty obj.custominfo.arrears? 0.00:obj.custominfo.arrears}" pattern="0.00" maxFractionDigits="2"/></font>　
+                     		<font id="historyqiancolor"> 历史欠款：<fmt:formatNumber type="number" value="${empty obj.historymony? 0.00:obj.historymony}" pattern="0.00" maxFractionDigits="2"/></font>　
                    		 预存款：<fmt:formatNumber type="number" value="${obj.custominfo.preDeposit}" pattern="0.00" maxFractionDigits="2"/></pre></td>
                      <td><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
                    </tr>
@@ -583,7 +583,7 @@
 	<script type="text/javascript">
 		var BASE_PATH = '${base}';
 		var creditLine = '${obj.custominfo.creditLine}';
-		var arrears = '${obj.custominfo.arrears}';
+		var arrears = '${obj.historymony}';
 		//票价折扣
     	var discountFare = '${obj.custominfo.discountFare}';
     	//手续费
