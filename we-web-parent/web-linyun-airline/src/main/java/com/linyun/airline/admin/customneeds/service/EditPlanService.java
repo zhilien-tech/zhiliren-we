@@ -40,7 +40,6 @@ import com.linyun.airline.common.util.ExportExcel;
 import com.linyun.airline.entities.TAirlineInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
-import com.linyun.airline.entities.TFlightInfoEntity;
 import com.linyun.airline.entities.TPlanInfoEntity;
 import com.linyun.airline.entities.TPnrInfoEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
@@ -173,7 +172,7 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 			//城市下拉
 			result.put("city", city);
 			//航班号下拉
-			result.put("airline", dbDao.query(TFlightInfoEntity.class, null, null));
+			result.put("airline", externalInfoService.findDictInfoByText("", AIRLINECODE));
 			//准备联运城市下拉数据
 			TDepartureCityEntity dictinfo = new TDepartureCityEntity();
 			dictinfo.setId(0);

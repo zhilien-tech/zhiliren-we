@@ -188,5 +188,27 @@ alter table t_inter_message comment '国际消息提醒表';
 
 ALTER TABLE `t_receive`
 ADD COLUMN `bankcardnameid`  int NULL COMMENT '银行卡id' AFTER `orderstatus`;
+/******************************************************************************
+version : 1.0.1   END   2017-04-17
+******************************************************************************/ 
+/******************************************************************************
+version : 1.0.2   BEGIN   2017-04-19
+******************************************************************************/ 
+ALTER TABLE `t_turnover`
+ADD COLUMN `historymoney`  double(32,2) NULL DEFAULT NULL COMMENT '卡里历史余额' AFTER `invoiceStatus`;
+ALTER TABLE `t_bankcard`
+MODIFY COLUMN `initialAmount`  double(32,2) NULL DEFAULT NULL COMMENT '初始金额' AFTER `balance`;
+ALTER TABLE `t_turnover`
+MODIFY COLUMN `money`  double(32,2) NULL DEFAULT NULL COMMENT '金额' AFTER `averageRate`;
+/******************************************************************************
+version : 1.0.2   END   2017-04-20
+******************************************************************************/ 
 
+/******************************************************************************
+version : 1.0.3   BEGIN   2017-04-21
+******************************************************************************/
+ALTER TABLE `t_visitor_info`
+ADD COLUMN `num`  varchar(32) NULL COMMENT '序号' AFTER `pnrid`,
+ADD COLUMN `birthday`  varchar(32) NULL COMMENT '出生日期' AFTER `num`,
+ADD COLUMN `validuntil`  varchar(32) NULL COMMENT '有效期至' AFTER `birthday`;
 

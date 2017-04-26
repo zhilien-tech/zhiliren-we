@@ -266,7 +266,8 @@ function formValidator(){
                          //自定义提交数据，默认值提交当前input value
                          data: function(validator) {
                             return {
-                            	telephone:$('input[name="telephone"]').val()
+                            	telephone:$('input[name="telephone"]').val(),
+                            	disableStatus:$('input[name="disableStatus"]').val()
                             };
                          }
                      }

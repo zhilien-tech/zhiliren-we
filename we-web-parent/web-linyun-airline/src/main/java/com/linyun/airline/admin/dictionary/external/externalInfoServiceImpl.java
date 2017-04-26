@@ -6,6 +6,7 @@
 
 package com.linyun.airline.admin.dictionary.external;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.nutz.dao.Cnd;
@@ -37,11 +38,17 @@ public class externalInfoServiceImpl extends BaseService<DictInfoEntity> impleme
 	}
 
 	@Override
-	public List<DictInfoEntity> findDictInfoByText(String name, String typeCode) throws Exception {
+	public List<DictInfoEntity> findDictInfoByText(String name, String typeCode) {
 		SqlExpressionGroup exp = new SqlExpressionGroup();
 		exp.and("dictName", "like", Strings.trim(name) + "%").or("dictCode", "like", Strings.trim(name) + "%");
-		List<DictInfoEntity> infoList = dbDao.query(DictInfoEntity.class,
-				Cnd.where(exp).and("status", "=", DataStatusEnum.ENABLE.intKey()).and("typeCode", "=", typeCode), null);
+		List<DictInfoEntity> infoList = new ArrayList<DictInfoEntity>();
+		try {
+			infoList = dbDao.query(DictInfoEntity.class,
+					Cnd.where(exp).and("status", "=", DataStatusEnum.ENABLE.intKey()).and("typeCode", "=", typeCode),
+					null);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		return infoList;
 	}
 

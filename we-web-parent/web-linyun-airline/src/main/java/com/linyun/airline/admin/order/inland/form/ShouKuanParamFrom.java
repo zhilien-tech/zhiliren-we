@@ -55,7 +55,7 @@ public class ShouKuanParamFrom extends DataTablesParamForm {
 		cnd.and("tr.orderstype", "=", OrderTypeEnum.FIT.intKey());
 		//cnd.and("tr.status", "=", AccountReceiveEnum.RECEIVEDONEY.intKey());
 		cnd.and("tii.status", "is", null);
-		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && !userid.equals(adminId)) {
+		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && userid != adminId) {
 			cnd.and("tr.userid", "=", userid);
 		}
 		if (!Util.isEmpty(startdate)) {

@@ -22,10 +22,8 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-
   <!--Header -->
   <header class="main-header">
-
     <!-- Logo -->
     <a href="index2.html" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -104,7 +102,7 @@
                      	</c:when>
                      </c:choose>　
                      	 信用额度：<fmt:formatNumber type="number" value="${empty obj.custominfo.creditLine?0:obj.custominfo.creditLine}" pattern="0.00" maxFractionDigits="2"/>  
-                     		<font id="historyqiancolor"> 历史欠款：<fmt:formatNumber type="number" value="${empty obj.custominfo.arrears? 0.00:obj.custominfo.arrears}" pattern="0.00" maxFractionDigits="2"/></font>　
+                     		<font id="historyqiancolor"> 历史欠款：<fmt:formatNumber type="number" value="${empty obj.historymony? 0.00:obj.historymony}" pattern="0.00" maxFractionDigits="2"/></font>　
                    		 预存款：<fmt:formatNumber type="number" value="${empty obj.custominfo.preDeposit?0:obj.custominfo.preDeposit}" pattern="0.00" maxFractionDigits="2"/></pre></td>
                      <td><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
                    </tr>
@@ -248,11 +246,11 @@
 					                     <td><select id="ailinenum" name="ailinenum" disabled="disabled" class="form-control input-sm"  multiple="multiple" placeholder="SYD(悉尼)">
 					                     	<c:forEach items="${obj.airline }" var="one"> 
 						                   			<c:choose>
-							                   			<c:when test="${airline.ailinenum  eq one.airlinenum  }">
-															<option value="${one.airlinenum }" selected="selected">${one.airlinenum }</option>
+							                   			<c:when test="${airline.ailinenum  eq one.dictName  }">
+															<option value="${one.dictName }" selected="selected">${one.dictName }</option>
 							                   			</c:when>
 							                   			<c:otherwise>
-								                     		<option value="${one.airlinenum }">${one.airlinenum }</option>
+								                     		<option value="${one.dictName }">${one.dictName }</option>
 							                   			</c:otherwise>
 						                    		</c:choose>
 						                     	</c:forEach>
@@ -262,7 +260,7 @@
 					                     <td><label>抵达时间：</label></td>
 					                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustArriveTimes" value="${airline.arrivetime }"/></td>
 					                     <td><label class="labelWid">成本价：</label></td>
-					                     <td><input id="formprice" name="formprice" type="text" disabled="disabled" class="form-control input-sm textWid costPrice" value="<fmt:formatNumber type="number" value="${airline.formprice }" pattern="0.00" maxFractionDigits="2"/>"/></td>
+					                     <td><input id="formprice" name="formprice" type="text" disabled="disabled" class="form-control input-sm textWid mustNumberPoint costPrice" value="<fmt:formatNumber type="number" value="${airline.formprice }" pattern="0.00" maxFractionDigits="2"/>"/></td>
 					                     <td><label class="labelWid">销售价：</label></td>
 					                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid mustNumberPoint xiaoShouCls" value="<fmt:formatNumber type="number" value="${airline.price }" pattern="0.00" maxFractionDigits="2"/>"/>
 					                     	 <c:choose>
@@ -298,7 +296,7 @@
 					                     <td><label>抵达时间：</label></td>
 					                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustArriveTimes" /></td>
 					                     <td><label class="labelWid">成本价：</label></td>
-					                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" /></td>
+					                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid mustNumberPoint costPrice" /></td>
 					                     <td><label class="labelWid">销售价：</label></td>
 					                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid mustNumberPoint xiaoShouCls"/>
 					                     	 <input type="hidden" id="ispriceempty" name="ispriceempty">
@@ -311,10 +309,10 @@
 			                   </c:choose>
 			               <tr>
 		                     <td><label>实时汇率：</label></td>
-		                     <td><input id="realtimexrate" name="realtimexrate" disabled="disabled" type="text" class="form-control input-sm textWid" value="${customneed.cusinfo.realtimexrate }"/>
+		                     <td><input id="realtimexrate" name="realtimexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid" value="${customneed.cusinfo.realtimexrate }"/>
 			                 </td>
 		                     <td><label>平均汇率：</label></td>
-		                     <td><input id="avgexrate" name="avgexrate" disabled="disabled" type="text" class="form-control input-sm textWid" value="${customneed.cusinfo.avgexrate }"/></td>
+		                     <td><input id="avgexrate" name="avgexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid" value="${customneed.cusinfo.avgexrate }"/></td>
 		                     <td><label>币种：</label></td>
 		                     <td><select id="paycurrency" name="paycurrency" disabled="disabled" class="form-control input-sm">
 		                     		<option value="">请选择</option>
@@ -396,18 +394,18 @@
 		                 <table class="cloTable">
 		                   <tr>
 		                     <td><label>出发城市：</label></td>
-		                     <td colspan="2"><select id="leavecity" name="leavecity" disabled="disabled" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
+		                     <td><select id="leavecity" name="leavecity" disabled="disabled" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
 			                     </select>
 			                 </td>
 		                     <td><label>抵达城市：</label></td>
-		                     <td colspan="2"><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
+		                     <td><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
 			                     </select></td>
 		                     <td><label>出发日期：</label></td>
 		                     <td><input id="leavedate" name="leavedate" disabled="disabled" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:''})"/></td>
 		                     <td><label>人数：</label></td>
 		                     <td><input id="peoplecount" name="peoplecount" disabled="disabled" type="text" class="form-control input-sm textWid mustNumber"/></td>
 		                     <td><label class="labelWid">早中晚：</label></td>
-		                     <td colspan="2">
+		                     <td>
 		                       <select id="tickettype" name="tickettype" disabled="disabled" class="form-control input-sm textWid">
 			                         <option value="1">早</option>
 			                         <option value="2">中</option>
@@ -425,7 +423,7 @@
 		                     <td><label>抵达时间：</label></td>
 		                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustArriveTimes" /></td>
 		                     <td><label class="labelWid">成本价：</label></td>
-		                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" /></td>
+		                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid mustNumberPoint costPrice" /></td>
 		                     <td><label class="labelWid">销售价：</label></td>
 		                     <td><input id="price" name="price" type="text" disabled="disabled" class="form-control input-sm textWid mustNumberPoint xiaoShouCls"/>
 		                     	 <input type="hidden" id="ispriceempty" name="ispriceempty">
@@ -436,12 +434,12 @@
 		                   </tr>
 			               <tr>
 		                     <td><label>实时汇率：</label></td>
-		                     <td><input id="realtimexrate" name="realtimexrate" disabled="disabled" type="text" class="form-control input-sm textWid"/>
+		                     <td><input id="realtimexrate" name="realtimexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid"/>
 			                 </td>
 		                     <td><label>平均汇率：</label></td>
-		                     <td><input id="avgexrate" name="avgexrate" disabled="disabled" type="text" class="form-control input-sm textWid"/></td>
+		                     <td><input id="avgexrate" name="avgexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid"/></td>
 		                     <td><label>币种：</label></td>
-		                     <td colspan="3"><select id="paycurrency" name="paycurrency" disabled="disabled" class="form-control input-sm">
+		                     <td><select id="paycurrency" name="paycurrency" disabled="disabled" class="form-control input-sm">
 		                     		<c:forEach items="${obj.bzcode }" var="one"> 
 					                     <option value="${one.dictCode }">${one.dictCode }</option>
 			                     	</c:forEach>
@@ -478,9 +476,9 @@
 		                         <tbody id="pnrinfodata" name="pnrinfodata">
 		                         </tbody>
 		                        </table>
-		                     </td>
-		                     <td class="PNRbtnTD none">
-		                        <a href="javascript:;" class="btn btn-primary btn-sm PNRbtn"><b>+</b>&nbsp;&nbsp;PNR</a>
+		                        <div class="PNRbtnTD none">
+			                        <a href="javascript:;" class="btn btn-primary btn-sm PNRbtn"><b>+</b>&nbsp;&nbsp;PNR</a>
+			                    </div>
 		                     </td>
 		                   </tr>
 		                   <%-- <tr>
@@ -685,7 +683,7 @@
   <script type="text/javascript">
 	 var BASE_PATH = '${base}';
 	 var creditLine = '${obj.custominfo.creditLine}';
-	 var arrears = '${obj.custominfo.arrears}';
+	 var arrears = '${obj.historymony}';
   </script>
   <!--Javascript Flie-->
   <script src="${base }/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -774,8 +772,8 @@
           //页面可以编辑
           $('.DemandDiv').each(function(i){
         	  var customneedid = $(this).find('[name=customneedid]').val();
-        	  if(i>0 && !customneedid){ 
-        		  $(this).parent().remove();
+        	  if(!customneedid){
+        		  $(this).remove();
         	  }else{
 	        	  $(this).find('[name=leavecity]').attr('disabled','disabled');
 	        	  $(this).find('[name=arrivecity]').attr('disabled','disabled');
@@ -1181,7 +1179,7 @@
  	//成本价
  	var fromprice = $(this).val();
  	//票价折扣
-	var discountFare = 1;
+	var discountFare = 0;
 	var countfare = '${obj.custominfo.discountFare}';
 	if(countfare){
 		discountFare = countfare;
@@ -1198,7 +1196,7 @@
  	var ispriceempty = $(this).parent().parent().find('[name=ispriceempty]').val();
  	if(ispriceempty){
 	 	if(fromprice){
-	 		if(isNaN(price)){
+	 		if(isNaN(price) && price > 0){
 	 			$(this).parent().parent().find('[name=price]').val('');
 	 		}else{
 		 		$(this).parent().parent().find('[name=price]').val(price.toFixed(2));

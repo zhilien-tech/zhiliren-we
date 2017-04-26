@@ -19,13 +19,15 @@
 .sub_btn{height:32px; line-height:32px; padding-top:6px; border-top:1px solid #f0f0f0; text-align:right; position:relative}
 .sub_btn .del{position:absolute; left:2px}
 .fc-event {border: 1px solid #d8d8d8;background-color: rgb(247, 247, 247);color: #4e4e4e;font-size: .85em;cursor: default;text-shadow: 0 0 0 #eee;}
-/* .fc-header-title {float:right;position:relative;right:5px;} */
 .evevtBtttonAdd{width: 138px;}
 span.fc-button {border-radius: 4px;margin-left: 10px;}
 .fc-header-title h2 {font-size: 25px;}
+
+
+
 /*--------------提醒 弹框----------------*/
-.EventBody{width: 400px;height: 140px;}
-.eventText{margin-top: 10px;padding-bottom: 10px;border: 0;border-bottom: solid 1px #eee;font-size: 15px;margin-bottom: 10px;border-radius: 0px;}
+.EventBody{width: 400px;height: 200px;}
+.eventText{margin-top: 10px;padding-bottom: 10px;border: 0;border-bottom: solid 1px #eee;font-size: 15px;margin-bottom: 10px;border-radius: 0px;width: 102%;margin-left: 0px;}
 .evevtTool{height: 31px;padding-left: 20px;margin-top: 15px;}
 .evevtTool input{display: inline-block;width: 80%;}
 .evevtBttton{width:203px;margin: 15px 61px;}

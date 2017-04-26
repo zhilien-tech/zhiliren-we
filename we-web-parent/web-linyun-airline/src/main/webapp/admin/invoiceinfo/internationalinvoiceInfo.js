@@ -10,6 +10,13 @@ function initKaiInterInvoiceTable() {
       "serverSide": true,
       "autoWidth":false,
       "stripeClasses": [ 'strip1','strip2' ],
+      "initComplete": function( settings, json ) {
+       	 autoHighLoad($(this));
+       },
+       "infoCallback": function( settings, start, end, max, total, pre ) {
+        	autoHighLoad($(this));
+			return '显示第 '+start+' 至 '+end+' 条结果，共 '+total+' 条 (每页显示 '+max+' 条)';
+      },
       "language": {
           "url": BASE_PATH + "/public/plugins/datatables/cn.json"
       },
@@ -208,6 +215,13 @@ function initshouInterInvoiceTable() {
     "processing": true,
     "serverSide": true,
     "stripeClasses": [ 'strip1','strip2' ],
+    "initComplete": function( settings, json ) {
+     	 autoHighLoad($(this));
+     },
+     "infoCallback": function( settings, start, end, max, total, pre ) {
+      	autoHighLoad($(this));
+			return '显示第 '+start+' 至 '+end+' 条结果，共 '+total+' 条 (每页显示 '+max+' 条)';
+    },
     "language": {
         "url": BASE_PATH + "/public/plugins/datatables/cn.json"
     },

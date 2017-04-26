@@ -75,6 +75,7 @@ public class InternationalKaiSqlForm extends DataTablesParamForm {
 		if (!Util.isEmpty(status)) {
 			cnd.and("status", "=", status);
 		}
+		cnd.orderBy("status", "ASC");
 		cnd.orderBy("optime", "DESC");
 		return cnd;
 	}

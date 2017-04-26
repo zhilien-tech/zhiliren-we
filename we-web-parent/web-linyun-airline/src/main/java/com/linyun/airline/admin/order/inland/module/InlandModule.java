@@ -283,4 +283,10 @@ public class InlandModule {
 	public Object receiveInvoice(HttpServletRequest request) {
 		return inlandService.receiveInvoice(request);
 	}
+
+	@At
+	@POST
+	public Object getOrderInfoById(@Param("id") Long id) {
+		return inlandService.getOrderInfoById(id);
+	}
 }

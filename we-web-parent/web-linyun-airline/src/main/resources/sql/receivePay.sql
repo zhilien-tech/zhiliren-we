@@ -301,8 +301,7 @@ SELECT
 	ci.shortName,
 	ci.linkMan,
 	fi. ISSUER,
-	fi.incometotal,
-	prr.currentpay,
+	fi.incometotal currentpay,
 	prr.orderstatusid prrOrderStatus
 FROM
 	t_up_order uo
@@ -317,7 +316,7 @@ SELECT
 	uj.userid
 FROM
 	t_user_job uj
-INNER JOIN t_company_job cj ON cj.posid = uj.companyJobId
+INNER JOIN t_company_job cj ON cj.id = uj.companyJobId
 $condition
 
 /*receivePay_order_pnr_pids*/
@@ -365,6 +364,8 @@ LEFT JOIN (
 ) prr ON prr.orderid = uo.id
 LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
 $condition
+ORDER BY
+	r.receivedate DESC
 
 
 /*receivePay_inter_rec_order_list*/

@@ -53,6 +53,9 @@ public class TCustomerInfoSqlForm extends DataTablesParamForm {
 	/**当前登陆用户的公司id*/
 	private long companyId;
 
+	/**用户id*/
+	private String userIds;
+
 	public Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		//TODO 添加自定义查询条件（可选）
@@ -75,7 +78,7 @@ public class TCustomerInfoSqlForm extends DataTablesParamForm {
 			cnd.orderBy("i.id", "DESC");
 		}
 		cnd.and("uc.comId", "=", companyId);
-
+		cnd.and("u.id", "in", userIds);
 		return cnd;
 	}
 
