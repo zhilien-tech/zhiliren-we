@@ -1623,6 +1623,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			TPayPnrEntity paypnr = new TPayPnrEntity();
 			paypnr.setPayId(insert.getId());
 			paypnr.setPnrId(Integer.valueOf(str));
+			paypnr.setOptime(new Date());
 			paypnrs.add(paypnr);
 			//PNR更新状态
 			TPnrInfoEntity pnrinfo = dbDao.fetch(TPnrInfoEntity.class, Long.valueOf(str));
@@ -1630,7 +1631,6 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, need.getOrdernum().longValue());
 			pnrinfo.setOptime(new Date());
 			pnrinfo.setOrderPnrStatus(AccountPayEnum.APPROVAL.intKey());
-			paypnr.setOptime(new Date());
 			pnrinfos.add(pnrinfo);
 			//消息提醒
 			Map<String, Object> map = new HashMap<String, Object>();
