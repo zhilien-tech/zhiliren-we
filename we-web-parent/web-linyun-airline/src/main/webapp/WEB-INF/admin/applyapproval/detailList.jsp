@@ -32,7 +32,7 @@
 			</li>
 			<li>
 				<span>项目用途</span>
-				<span>减免</span>
+				<span>${obj.reduceList.purposeStr }</span>
 			</li>
 			<li>
 				<span>资金种类</span>
