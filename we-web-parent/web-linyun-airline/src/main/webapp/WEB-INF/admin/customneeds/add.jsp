@@ -20,16 +20,8 @@
 	<!-- style -->
   <link rel="stylesheet" href="${base }/public/css/style.css">
 	<style type="text/css">
-		.wu-example .statusBar .btns .uploadBtn {
-		    background: #3c8dbc !important;
-		    color: #fff;
-		    border-color: transparent;
-		    position: relative;
-		    top: -122px;
-		    height: 40px;
-		    border-radius: 5px;
-		}
-		html, body {min-height: 0;min-width: 0;overflow-x: auto !important;}
+		.wu-example .statusBar .btns .uploadBtn {background: #3c8dbc !important; color: #fff;border-color: transparent; position: relative; top: -122px;height: 40px;border-radius: 5px;}
+		html, body {min-height: 0;min-width: 0;}
 	</style>
 </head>
 <body>

@@ -650,7 +650,7 @@
 		/* 出发城市 */
 		function cityOpt() {
 			//出发城市Id
-			var selectedCityId = $("#city").select2("val");
+		    var selectedCityId = $("#city").select2("val"); 
 			$("#outcity").val(selectedCityId);
 		}
 		/* 国内线路 */
