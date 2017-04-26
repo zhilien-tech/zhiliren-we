@@ -328,6 +328,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		String accountupper = request.getParameter("accountupper");
 		String currency = request.getParameter("currency");
 		String approvelid = request.getParameter("approvelid");
+		String application = request.getParameter("application");
 		TMitigateInfoEntity mitigateInfoEntity = new TMitigateInfoEntity();
 		mitigateInfoEntity.setOrderid(Integer.valueOf(orderid));
 		mitigateInfoEntity.setCustomeid(Integer.valueOf(customeid));
@@ -342,6 +343,7 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		mitigateInfoEntity.setCurrency(currency);
 		mitigateInfoEntity.setApprovelid(approvelid);
 		mitigateInfoEntity.setOptime(new Date());
+		mitigateInfoEntity.setApplication(application);
 		//mitigateInfoEntity.setOrdertype(OrderTypeEnum.FIT.intKey());
 		return dbDao.insert(mitigateInfoEntity);
 

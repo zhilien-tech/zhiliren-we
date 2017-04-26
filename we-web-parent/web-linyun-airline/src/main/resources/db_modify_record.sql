@@ -211,4 +211,15 @@ ALTER TABLE `t_visitor_info`
 ADD COLUMN `num`  varchar(32) NULL COMMENT '序号' AFTER `pnrid`,
 ADD COLUMN `birthday`  varchar(32) NULL COMMENT '出生日期' AFTER `num`,
 ADD COLUMN `validuntil`  varchar(32) NULL COMMENT '有效期至' AFTER `birthday`;
+/******************************************************************************
+version : 1.0.3   END   2017-04-21
+******************************************************************************/
 
+/******************************************************************************
+version : 1.0.4   BEGIN   2017-04-26
+******************************************************************************/
+ALTER TABLE `t_mitigate_info`
+ADD COLUMN `application`  varchar(32) NULL COMMENT '用途' AFTER `ordertype`;
+
+ALTER TABLE `t_customerneeds`
+ADD COLUMN `remark`  text NULL COMMENT '备注' AFTER `companyid`;
