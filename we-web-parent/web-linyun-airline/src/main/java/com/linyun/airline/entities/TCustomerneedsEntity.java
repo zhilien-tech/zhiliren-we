@@ -81,4 +81,8 @@ public class TCustomerneedsEntity implements Serializable {
 	@Comment("所属公司")
 	private long companyid;
 
+	@Column
+	@Comment("备注")
+	private String remark;
+
 }

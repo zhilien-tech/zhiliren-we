@@ -196,7 +196,7 @@
 	            phonenumber: {
 	            	validators: {
 	            		regexp: {
-	                        regexp: /^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/,
+	                        regexp: /^((0\d{2,3}-\d{7,8})|(1[35784]\d{9}))$/,
 	                        message: '座机格式错误'
 	                    }
 	                }

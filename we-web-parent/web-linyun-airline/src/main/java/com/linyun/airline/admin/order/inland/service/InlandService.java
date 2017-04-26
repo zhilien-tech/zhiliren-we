@@ -1105,8 +1105,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		String needid = request.getParameter("needid");
 		Map<String, Object> result = new HashMap<String, Object>();
 		//游客信息
-		List<TVisitorInfoEntity> visitors = dbDao.query(TVisitorInfoEntity.class,
-				Cnd.where("ordernum", "=", dingdanid), null);
+		List<TVisitorInfoEntity> visitors = dbDao.query(TVisitorInfoEntity.class, Cnd.where("ordernum", "=", dingdanid)
+				.orderBy("id", "asc"), null);
 		String includeall = sqlManager.get("get_customneed_visitor");
 		Sql includeallsql = Sqls.create(includeall);
 		//该客户需求已经使用的游客信息
