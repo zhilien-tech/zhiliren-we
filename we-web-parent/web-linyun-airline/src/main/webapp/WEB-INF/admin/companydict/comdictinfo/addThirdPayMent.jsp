@@ -43,7 +43,7 @@
                         <div class="form-group row">
                         	<label class="col-sm-3 text-right padding">卡号：</label>
                             <div class="col-sm-8 padding">
-                              <input id="bankCardNumId" name="bankCardNum" class="form-control input-sm inpImpWid" onkeyup="this.value=this.value.replace(/[^0-9a-zA-Z]/g,'').replace(/....(?!$)/g,'$& ')"  maxlength="23" placeholder="请输入银行卡账号" />
+                              <input id="bankCardNumId" name="bankCardNum" class="form-control input-sm inpImpWid" onkeyup="this.value=this.value.replace(/\s/g,'').replace(/....(?!$)/g,'$& ')"  maxlength="32" placeholder="请输入银行卡账号" />
                               <span class="prompt">*</span>
                             </div>
                         </div>
