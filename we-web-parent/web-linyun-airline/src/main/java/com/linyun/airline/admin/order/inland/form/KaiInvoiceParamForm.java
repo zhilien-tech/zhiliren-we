@@ -61,7 +61,7 @@ public class KaiInvoiceParamForm extends DataTablesParamForm {
 		if (!Util.isEmpty(companyid)) {
 			cnd.and("comId", "=", companyid);
 		}
-		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && !userid.equals(adminId)) {
+		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && userid != adminId) {
 			cnd.and("opid", "=", userid);
 		}
 		cnd.and("ordertype", "=", OrderTypeEnum.FIT.intKey());

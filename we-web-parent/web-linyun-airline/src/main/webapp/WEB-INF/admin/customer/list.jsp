@@ -32,7 +32,8 @@
 <script src="${base}/public/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
 <script src="${base}/public/plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <!-- date-range-picker -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.js"></script> -->
+<script src="${base}/admin/customer/moment.js"></script>
 <script src="${base}/public/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap datepicker -->
 <script src="${base}/public/plugins/datepicker/bootstrap-datepicker.js"></script>
@@ -61,7 +62,6 @@
 		<div class="content-wrapper">
 			<!-- Main content -->
 			<section class="content">
-				<div class="row row-top">
 					<div class="col-xs-12">
 						<div class="box">
 							<div class="box-header">
@@ -135,13 +135,9 @@
 							<!-- /.box-body -->
 						</div>
 						<!-- /.box -->
-					</div>
-					<!-- /.col -->
-				</div>
-			</section>
-			<!-- /.content -->
-		</div>
-		<!-- /.content-wrapper -->
+					</div><!-- /.col -->
+			</section><!-- /.content -->
+		</div><!-- /.content-wrapper -->
 
 		<!-- Main Footer -->
 		<%@include file="/WEB-INF/public/footer.jsp"%>
@@ -187,15 +183,15 @@ function initDatatable() {
         "ajax": {
             "url": "${base}/admin/customer/listData.html",
             "type": "post",
-            "data": function (d) {
+            /* "data": function (d) {
             	
-            }
+            } */
         },
         /* 列表序号 */
         "fnDrawCallback"    : function(){
         	var api = this.api();
         	var startIndex= api.context[0]._iDisplayStart;
-   	       　　  api.column(0).nodes().each(function(cell, i) {
+   	       　　       api.column(0).nodes().each(function(cell, i) {
    	       　　　　cell.innerHTML = startIndex + i + 1;
    	       　　});
       	},
@@ -298,7 +294,7 @@ function initDatatable() {
 	    	    maxmin: false,
 	    	    shadeClose: false,
 	    	    scrollbar: false,
-	    	    area: ['900px', '500px'],
+	    	    area: ['900px', '550px'],
 	    	    content: '${base}/admin/customer/update.html?id='+id
 	    	  });
 	  }

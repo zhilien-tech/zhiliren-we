@@ -22,10 +22,8 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-
   <!--Header -->
   <header class="main-header">
-
     <!-- Logo -->
     <a href="index2.html" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -104,7 +102,7 @@
                      	</c:when>
                      </c:choose>　
                      	 信用额度：<fmt:formatNumber type="number" value="${empty obj.custominfo.creditLine?0:obj.custominfo.creditLine}" pattern="0.00" maxFractionDigits="2"/>  
-                     		<font id="historyqiancolor"> 历史欠款：<fmt:formatNumber type="number" value="${empty obj.custominfo.arrears? 0.00:obj.custominfo.arrears}" pattern="0.00" maxFractionDigits="2"/></font>　
+                     		<font id="historyqiancolor"> 历史欠款：<fmt:formatNumber type="number" value="${empty obj.historymony? 0.00:obj.historymony}" pattern="0.00" maxFractionDigits="2"/></font>　
                    		 预存款：<fmt:formatNumber type="number" value="${empty obj.custominfo.preDeposit?0:obj.custominfo.preDeposit}" pattern="0.00" maxFractionDigits="2"/></pre></td>
                      <td><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
                    </tr>
@@ -248,11 +246,11 @@
 					                     <td><select id="ailinenum" name="ailinenum" disabled="disabled" class="form-control input-sm"  multiple="multiple" placeholder="SYD(悉尼)">
 					                     	<c:forEach items="${obj.airline }" var="one"> 
 						                   			<c:choose>
-							                   			<c:when test="${airline.ailinenum  eq one.airlinenum  }">
-															<option value="${one.airlinenum }" selected="selected">${one.airlinenum }</option>
+							                   			<c:when test="${airline.ailinenum  eq one.dictName  }">
+															<option value="${one.dictName }" selected="selected">${one.dictName }</option>
 							                   			</c:when>
 							                   			<c:otherwise>
-								                     		<option value="${one.airlinenum }">${one.airlinenum }</option>
+								                     		<option value="${one.dictName }">${one.dictName }</option>
 							                   			</c:otherwise>
 						                    		</c:choose>
 						                     	</c:forEach>
@@ -685,7 +683,7 @@
   <script type="text/javascript">
 	 var BASE_PATH = '${base}';
 	 var creditLine = '${obj.custominfo.creditLine}';
-	 var arrears = '${obj.custominfo.arrears}';
+	 var arrears = '${obj.historymony}';
   </script>
   <!--Javascript Flie-->
   <script src="${base }/public/plugins/jQuery/jquery-2.2.3.min.js"></script>

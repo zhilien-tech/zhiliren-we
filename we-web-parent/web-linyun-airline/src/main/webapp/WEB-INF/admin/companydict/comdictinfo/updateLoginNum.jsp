@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
 	<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
+	<link rel="stylesheet" href="${base}/public/dist/css/dict.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
 	<!-- js -->
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>

@@ -98,7 +98,7 @@
                      <td><label>抵达城市：</label></td>
                      <td><select id="arrivecity" name="arrivecity" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)"></select></td>
                      <td><label>出发日期：</label></td>
-                     <td><input id="leavedate" name="leavedate" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:'%y-%M-%d'})"></td>
+                     <td><input id="leavedate" name="leavedate" type="text" class="form-control input-sm textWid" onFocus="WdatePicker({minDate:'%y-%M-%d'})"></td>
                      <td><label>人数：</label></td>
                      <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm textWid mustNumber"></td>
                      <td><label class="labelWid">早中晚：</label></td>

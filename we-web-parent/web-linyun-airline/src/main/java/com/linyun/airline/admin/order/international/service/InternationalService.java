@@ -46,6 +46,7 @@ import com.linyun.airline.admin.order.international.form.InternationalReceivePar
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
 import com.linyun.airline.admin.receivePayment.service.InterReceivePayService;
+import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
@@ -59,7 +60,6 @@ import com.linyun.airline.entities.TBankCardEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TFinanceInfoEntity;
-import com.linyun.airline.entities.TFlightInfoEntity;
 import com.linyun.airline.entities.TInterMessageEntity;
 import com.linyun.airline.entities.TOrderCustomneedEntity;
 import com.linyun.airline.entities.TOrderReceiveEntity;
@@ -110,6 +110,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	private InterReceivePayService interReceivePayService;
 	@Inject
 	private InlandListService inlandListService;
+	@Inject
+	private SearchViewService searchViewService;
 
 	/**
 	 * 查询国际列表
@@ -308,6 +310,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			custominfo = dbDao.fetch(TCustomerInfoEntity.class, orderinfo.getUserid().longValue());
 		}
 		result.put("custominfo", custominfo);
+		Double historymony = searchViewService.getMoney(orderinfo.getUserid().longValue());
+		result.put("historymony", historymony);
 		//异步加载
 		TFinanceInfoEntity finance = dbDao.fetch(TFinanceInfoEntity.class, Cnd.where("orderid", "=", orderid));
 		result.put("finance", finance);
@@ -600,7 +604,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		List<TDepartureCityEntity> city = externalInfoService.findCityByCode("", CITYCODE);
 		result.put("city", city);
 		//航班号下拉
-		result.put("airline", dbDao.query(TFlightInfoEntity.class, null, null));
+		result.put("airline", externalInfoService.findDictInfoByText("", AIRLINECODE));
 		return result;
 	}
 

@@ -62,11 +62,11 @@
 	                        <td><select id="ailinenum" name="ailinenum" type="text" class="form-control input-sm" placeholder="ca309" multiple="multiple">
 	                        		<c:forEach var="one" items="${obj.airline }">
 			                    		<c:choose>
-			                    			<c:when test="${airinfo.ailinenum eq one.airlinenum }">
-												<option value="${one.airlinenum }" selected="selected">${one.airlinenum}</option>
+			                    			<c:when test="${airinfo.ailinenum eq one.dictName }">
+												<option value="${one.dictName }" selected="selected">${one.dictName}</option>
 			                    			</c:when>
 			                    			<c:otherwise>
-												<option value="${one.airlinenum }">${one.airlinenum}</option>
+												<option value="${one.dictName }">${one.dictName}</option>
 			                    			</c:otherwise>
 			                    		</c:choose>
 									</c:forEach>

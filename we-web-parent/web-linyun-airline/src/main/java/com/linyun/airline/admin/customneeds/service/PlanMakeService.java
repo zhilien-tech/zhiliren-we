@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -32,7 +33,6 @@ import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAirlineInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
-import com.linyun.airline.entities.TFlightInfoEntity;
 import com.linyun.airline.entities.TPlanInfoEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
@@ -131,7 +131,7 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 	 */
 	public Object getAirLineSelect(String airlinename, String exname) {
 		//List<DictInfoEntity> airlineSelect = new ArrayList<DictInfoEntity>();
-		List<TFlightInfoEntity> airlineSelect = new ArrayList<TFlightInfoEntity>();
+		/*List<TFlightInfoEntity> airlineSelect = new ArrayList<TFlightInfoEntity>();
 		try {
 			//airlineSelect = externalInfoService.findDictInfoByName(airlinename, this.AIRLINECODE);
 			airlineSelect = dbDao.query(TFlightInfoEntity.class,
@@ -148,8 +148,33 @@ public class PlanMakeService extends BaseService<TPlanInfoEntity> {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}*/
+		//
+		List<DictInfoEntity> airlineSelect = new ArrayList<DictInfoEntity>();
+		List<Map> airlist = new ArrayList<Map>();
+		try {
+			airlineSelect = externalInfoService.findDictInfoByText(airlinename, AIRLINECODE);
+			DictInfoEntity exinfo = new DictInfoEntity();
+			for (DictInfoEntity dictInfo : airlineSelect) {
+				if (!Util.isEmpty(exname) && dictInfo.getDictName().equals(exname)) {
+					exinfo = dictInfo;
+				} else {
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("airlinenum", dictInfo.getDictName());
+					airlist.add(map);
+				}
+			}
+			/*airlineSelect.remove(exinfo);
+			if (airlineSelect.size() > 5) {
+				airlineSelect = airlineSelect.subList(0, 5);
+			}*/
+			if (airlist.size() > 5) {
+				airlist = airlist.subList(0, 5);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return airlineSelect;
+		return airlist;
 	}
 
 	/**

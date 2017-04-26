@@ -349,11 +349,11 @@
 											</select></td>
 											<td><label>航空公司：</label></td>
 											<td>
-												<!-- <input type="text" class="form-control input-sm" placeholder="(选填)中文/二字代码"> -->
+												<!-- <input type="text" class="form-control input-sm" placeholder="中文/二字代码"> -->
 												<select id="airline" name="includedcarriers"
 												onkeypress="onkeyEnter();" onchange="airlineNameOpt()"
 												class="form-control input-sm" multiple="multiple"
-												data-placeholder="(选填)中文/二字代码"></select>
+												data-placeholder="中文/二字代码"></select>
 											</td>
 											<td>
 												<button id="searchSingleTicketsBtn" type="button"
@@ -457,10 +457,10 @@
 											</select></td>
 											<td><label class="hkgsLabel">航空公司：</label></td>
 											<td class="txtSelect">
-												<!-- <input type="text" class="form-control input-sm" placeholder="(选填)中文/代码"> -->
+												<!-- <input type="text" class="form-control input-sm" placeholder="中文/代码"> -->
 												<select id="teamAirline" name="teamAirline"
 												class="form-control input-sm" multiple="multiple"
-												data-placeholder="(选填)中文/二字代码"></select> <input
+												data-placeholder="中文/二字代码"></select> <input
 												id="teamAirlineName" name="teamAirlineName" type="hidden" />
 											</td>
 											<td>

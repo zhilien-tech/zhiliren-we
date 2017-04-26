@@ -72,7 +72,6 @@ import com.linyun.airline.entities.TBankCardEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TFinanceInfoEntity;
-import com.linyun.airline.entities.TFlightInfoEntity;
 import com.linyun.airline.entities.TOrderCustomneedEntity;
 import com.linyun.airline.entities.TOrderReceiveEntity;
 import com.linyun.airline.entities.TPnrInfoEntity;
@@ -122,7 +121,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	private static final String HUANHANG = "&#13;&#10;";
 	private static final String FPXMCODE = "FPXM";
 	private static final String EXCEL_PATH = "download";
-	private static final String FILE_EXCEL_NAME = "客户需求游客模板.xlsx";
+	private static final String FILE_EXCEL_NAME = "名单模板.xls";
 
 	private static final int ENABLE = BankCardStatusEnum.ENABLE.intKey();
 
@@ -283,7 +282,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				airlist.add(airlineEntity);
 				//添加航班信息
 			}
-			dbDao.insert(airlist);
+			if (!Util.isEmpty(airlist)) {
+				dbDao.insert(airlist);
+			}
 		}
 		// TODO Auto-generated method stub
 		return null;
@@ -308,6 +309,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		//客户信息
 		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(orderinfo.getUserid()));
 		result.put("custominfo", custominfo);
+		Double historymony = searchViewService.getMoney(orderinfo.getUserid().longValue());
+		result.put("historymony", historymony);
 		//客户负责人
 		//result.put("responsible", dbDao.fetch(TUserEntity.class, custominfo.getResponsibleId()).getUserName());
 		String resposeble = "";
@@ -336,7 +339,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		//添加客户需求、航班信息
 		result.put("customneedinfo", customneedinfo);
 		//准备航班号下拉
-		result.put("airline", dbDao.query(TFlightInfoEntity.class, null, null));
+		//		result.put("airline", dbDao.query(TFlightInfoEntity.class, null, null));
+		result.put("airline", externalInfoService.findDictInfoByText("", AIRLINECODE));
 		//准备城市下拉
 		List<TDepartureCityEntity> city = externalInfoService.findCityByCode("", CITYCODE);
 		result.put("city", city);
@@ -566,6 +570,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		//客户信息
 		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(orderinfo.getUserid()));
 		result.put("custominfo", custominfo);
+		Double historymony = searchViewService.getMoney(orderinfo.getUserid().longValue());
+		result.put("historymony", historymony);
 		//客户负责人
 		String resposeble = "";
 		if (!Util.isEmpty(custominfo.getResponsibleId())) {
@@ -601,7 +607,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		//添加客户需求、航班信息
 		result.put("customneedinfo", customneedinfo);
 		//准备航班号下拉
-		result.put("airline", dbDao.query(TFlightInfoEntity.class, null, null));
+		result.put("airline", externalInfoService.findDictInfoByText("", AIRLINECODE));
 		//准备城市下拉
 		List<TDepartureCityEntity> city = externalInfoService.findCityByCode("", CITYCODE);
 		result.put("city", city);
@@ -790,6 +796,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				Double formprice = null;
 				if (!Util.isEmpty(airmap.get("formprice"))) {
 					formprice = Double.valueOf((String) airmap.get("formprice"));
+					chengbensum += formprice;
 				}
 				//销售价
 				Double price = null;
@@ -804,7 +811,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				airlineEntity.setFormprice(formatDouble(formprice));
 				airlineEntity.setPrice(formatDouble(price));
 				airlineEntity.setNeedid(Integer.valueOf(customneedid));
-				chengbensum += formprice;
+
 				if (Util.isEmpty(airlineid)) {
 					dbDao.insert(airlineEntity);
 				} else {
@@ -976,7 +983,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		financeInfo.setReceivable(formatDouble(receivable));
 		financeInfo.setIncometotal(formatDouble(incometotal));
 		financeInfo.setCosttotal(formatDouble(costtotal));
-		financeInfo.setReturntotal(formatDouble(returntotal));
+		financeInfo.setReturntotal(returntotal);
 		financeInfo.setProfittotal(formatDouble(profittotal));
 		financeInfo.setRelief(formatDouble(relief));
 		financeInfo.setBillingdate(billingdate);
@@ -1058,14 +1065,25 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			List<TVisitorInfoEntity> visitors = new ArrayList<TVisitorInfoEntity>();
 			for (int i = 1; i <= map.size(); i++) {
 				String[] row = map.get(i);
-				TVisitorInfoEntity visitor = new TVisitorInfoEntity();
-				//订单id
-				visitor.setOrdernum(Integer.valueOf(dingdanid));
-				//游客姓名
-				visitor.setVisitorname(row[0]);
-				//游客电话
-				visitor.setPhonenum(row[1]);
-				visitors.add(visitor);
+				String sumstr = row[0] + row[1] + row[2] + row[3] + row[4] + row[5];
+				if (!Util.isEmpty(sumstr)) {
+					TVisitorInfoEntity visitor = new TVisitorInfoEntity();
+					//订单id
+					visitor.setOrdernum(Integer.valueOf(dingdanid));
+					//序号
+					visitor.setNum(row[0]);
+					//游客姓名
+					visitor.setVisitorname(row[1]);
+					//游客电话
+					visitor.setGender(row[2]);
+					//出生日期
+					visitor.setBirthday(row[3]);
+					//护照号
+					visitor.setCardnum(row[4]);
+					//有效期至
+					visitor.setValiduntil(row[5]);
+					visitors.add(visitor);
+				}
 			}
 			//导入数据库
 			dbDao.insert(visitors);
@@ -1905,5 +1923,14 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			result = Double.valueOf(format);
 		}
 		return result;
+	}
+
+	public Object getOrderInfoById(Long id) {
+		TUpOrderEntity orderinfo = new TUpOrderEntity();
+		if (!Util.isEmpty(id)) {
+			orderinfo = dbDao.fetch(TUpOrderEntity.class, id);
+		}
+		return orderinfo;
+
 	}
 }
