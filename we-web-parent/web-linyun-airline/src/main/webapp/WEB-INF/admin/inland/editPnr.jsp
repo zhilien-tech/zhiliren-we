@@ -209,6 +209,21 @@
   		   $('#salespricesum').val(salespricesum.toFixed(2));
   	   }
      });
+     $('#salesprice').on('input',function(){
+  	   //人数
+  	   var peoplecount = 0;
+  	   if($('#peoplecount').val()){
+  		   peoplecount = parseInt($('#peoplecount').val());
+  	   }
+  	   var salesprice = 0;
+  	   if($(this).val()){
+  		   salesprice = $(this).val();
+  	   }
+  	   var salespricesum = salesprice * peoplecount;
+  	   if(salespricesum != 0){
+  		   $('#salespricesum').val(salespricesum.toFixed(2));
+  	   }
+     });
   </script>
 </body>
 </html>	

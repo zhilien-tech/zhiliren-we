@@ -316,7 +316,7 @@ SELECT
 	uj.userid
 FROM
 	t_user_job uj
-INNER JOIN t_company_job cj ON cj.posid = uj.companyJobId
+INNER JOIN t_company_job cj ON cj.id = uj.companyJobId
 $condition
 
 /*receivePay_order_pnr_pids*/

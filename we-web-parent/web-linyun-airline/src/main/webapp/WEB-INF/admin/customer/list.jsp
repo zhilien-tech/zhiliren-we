@@ -32,7 +32,8 @@
 <script src="${base}/public/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
 <script src="${base}/public/plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <!-- date-range-picker -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.js"></script> -->
+<script src="${base}/admin/customer/moment.js"></script>
 <script src="${base}/public/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap datepicker -->
 <script src="${base}/public/plugins/datepicker/bootstrap-datepicker.js"></script>
@@ -182,15 +183,15 @@ function initDatatable() {
         "ajax": {
             "url": "${base}/admin/customer/listData.html",
             "type": "post",
-            "data": function (d) {
+            /* "data": function (d) {
             	
-            }
+            } */
         },
         /* 列表序号 */
         "fnDrawCallback"    : function(){
         	var api = this.api();
         	var startIndex= api.context[0]._iDisplayStart;
-   	       　　  api.column(0).nodes().each(function(cell, i) {
+   	       　　       api.column(0).nodes().each(function(cell, i) {
    	       　　　　cell.innerHTML = startIndex + i + 1;
    	       　　});
       	},

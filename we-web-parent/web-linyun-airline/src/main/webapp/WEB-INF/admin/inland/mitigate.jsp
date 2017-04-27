@@ -27,6 +27,10 @@
                   	<input id="customeid" name="customeid" type="hidden" value="${obj.customeinfo.id }">
                     <input name="customname" type="text" class="form-control input-sm" value="${obj.customeinfo.name }"/>
                   </div>
+                  <label class="col-sm-2 text-right padding">用途：</label>
+                  <div class="col-sm-2 padding">
+                    <input id="application" name="application" type="text" class="form-control input-sm" value="${obj.mitigate.application }"/>
+                  </div>
                 </div>
 
                 <div class="form-group row">

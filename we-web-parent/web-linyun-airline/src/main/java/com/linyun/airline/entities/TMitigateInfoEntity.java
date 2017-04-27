@@ -73,4 +73,8 @@ public class TMitigateInfoEntity {
 	@Column
 	@Comment("订单类型")
 	private Integer ordertype;
+
+	@Column
+	@Comment("用途")
+	private String application;
 }

@@ -102,7 +102,7 @@
                      	</c:when>
                      </c:choose>　
                      	 信用额度：<fmt:formatNumber type="number" value="${empty obj.custominfo.creditLine?0:obj.custominfo.creditLine}" pattern="0.00" maxFractionDigits="2"/>  
-                     		<font id="historyqiancolor"> 历史欠款：<fmt:formatNumber type="number" value="${empty obj.custominfo.arrears? 0.00:obj.custominfo.arrears}" pattern="0.00" maxFractionDigits="2"/></font>　
+                     		<font id="historyqiancolor"> 历史欠款：<fmt:formatNumber type="number" value="${empty obj.historymony? 0.00:obj.historymony}" pattern="0.00" maxFractionDigits="2"/></font>　
                    		 预存款：<fmt:formatNumber type="number" value="${empty obj.custominfo.preDeposit?0:obj.custominfo.preDeposit}" pattern="0.00" maxFractionDigits="2"/></pre></td>
                      <td><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
                    </tr>
@@ -308,11 +308,11 @@
 			                   		</c:otherwise>
 			                   </c:choose>
 			               <tr>
+		                     <td><label>平均汇率：</label></td>
+		                     <td><input id="avgexrate" name="avgexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid" value="${customneed.cusinfo.avgexrate }"/></td>
 		                     <td><label>实时汇率：</label></td>
 		                     <td><input id="realtimexrate" name="realtimexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid" value="${customneed.cusinfo.realtimexrate }"/>
 			                 </td>
-		                     <td><label>平均汇率：</label></td>
-		                     <td><input id="avgexrate" name="avgexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid" value="${customneed.cusinfo.avgexrate }"/></td>
 		                     <td><label>币种：</label></td>
 		                     <td><select id="paycurrency" name="paycurrency" disabled="disabled" class="form-control input-sm">
 		                     		<option value="">请选择</option>
@@ -433,11 +433,11 @@
 		                     </td>
 		                   </tr>
 			               <tr>
+		                     <td><label>平均汇率：</label></td>
+		                     <td><input id="avgexrate" name="avgexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid"/></td>
 		                     <td><label>实时汇率：</label></td>
 		                     <td><input id="realtimexrate" name="realtimexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid"/>
 			                 </td>
-		                     <td><label>平均汇率：</label></td>
-		                     <td><input id="avgexrate" name="avgexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid"/></td>
 		                     <td><label>币种：</label></td>
 		                     <td><select id="paycurrency" name="paycurrency" disabled="disabled" class="form-control input-sm">
 		                     		<c:forEach items="${obj.bzcode }" var="one"> 
@@ -683,7 +683,7 @@
   <script type="text/javascript">
 	 var BASE_PATH = '${base}';
 	 var creditLine = '${obj.custominfo.creditLine}';
-	 var arrears = '${obj.custominfo.arrears}';
+	 var arrears = '${obj.historymony}';
   </script>
   <!--Javascript Flie-->
   <script src="${base }/public/plugins/jQuery/jquery-2.2.3.min.js"></script>

@@ -64,4 +64,7 @@ public class TCustomerneedsAddForm extends AddForm implements Serializable {
 	/**所属公司*/
 	private long companyid;
 
+	/**备注*/
+	private String remark;
+
 }

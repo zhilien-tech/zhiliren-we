@@ -196,7 +196,7 @@ FROM
 LEFT JOIN t_message m ON m.id = um.msgId
 LEFT JOIN t_user u ON u.id = um.fromId
 LEFT JOIN t_user_job uj ON uj.userid = u.id
-LEFT JOIN t_company_job cj ON cj.posid = uj.companyJobId
+LEFT JOIN t_company_job cj ON cj.id = uj.companyJobId
 LEFT JOIN t_company c ON c.id = cj.comId
 LEFT JOIN t_upCompany uc ON uc.comId = c.id
 $condition

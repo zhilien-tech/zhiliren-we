@@ -121,7 +121,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	private static final String HUANHANG = "&#13;&#10;";
 	private static final String FPXMCODE = "FPXM";
 	private static final String EXCEL_PATH = "download";
-	private static final String FILE_EXCEL_NAME = "客户需求游客模板.xlsx";
+	private static final String FILE_EXCEL_NAME = "名单模板.xls";
 
 	private static final int ENABLE = BankCardStatusEnum.ENABLE.intKey();
 
@@ -309,6 +309,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		//客户信息
 		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(orderinfo.getUserid()));
 		result.put("custominfo", custominfo);
+		Double historymony = searchViewService.getMoney(orderinfo.getUserid().longValue());
+		result.put("historymony", historymony);
 		//客户负责人
 		//result.put("responsible", dbDao.fetch(TUserEntity.class, custominfo.getResponsibleId()).getUserName());
 		String resposeble = "";
@@ -568,6 +570,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		//客户信息
 		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(orderinfo.getUserid()));
 		result.put("custominfo", custominfo);
+		Double historymony = searchViewService.getMoney(orderinfo.getUserid().longValue());
+		result.put("historymony", historymony);
 		//客户负责人
 		String resposeble = "";
 		if (!Util.isEmpty(custominfo.getResponsibleId())) {
@@ -1061,14 +1065,25 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			List<TVisitorInfoEntity> visitors = new ArrayList<TVisitorInfoEntity>();
 			for (int i = 1; i <= map.size(); i++) {
 				String[] row = map.get(i);
-				TVisitorInfoEntity visitor = new TVisitorInfoEntity();
-				//订单id
-				visitor.setOrdernum(Integer.valueOf(dingdanid));
-				//游客姓名
-				visitor.setVisitorname(row[0]);
-				//游客电话
-				visitor.setPhonenum(row[1]);
-				visitors.add(visitor);
+				String sumstr = row[0] + row[1] + row[2] + row[3] + row[4] + row[5];
+				if (!Util.isEmpty(sumstr)) {
+					TVisitorInfoEntity visitor = new TVisitorInfoEntity();
+					//订单id
+					visitor.setOrdernum(Integer.valueOf(dingdanid));
+					//序号
+					visitor.setNum(row[0]);
+					//游客姓名
+					visitor.setVisitorname(row[1]);
+					//游客电话
+					visitor.setGender(row[2]);
+					//出生日期
+					visitor.setBirthday(row[3]);
+					//护照号
+					visitor.setCardnum(row[4]);
+					//有效期至
+					visitor.setValiduntil(row[5]);
+					visitors.add(visitor);
+				}
 			}
 			//导入数据库
 			dbDao.insert(visitors);
@@ -1090,8 +1105,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		String needid = request.getParameter("needid");
 		Map<String, Object> result = new HashMap<String, Object>();
 		//游客信息
-		List<TVisitorInfoEntity> visitors = dbDao.query(TVisitorInfoEntity.class,
-				Cnd.where("ordernum", "=", dingdanid), null);
+		List<TVisitorInfoEntity> visitors = dbDao.query(TVisitorInfoEntity.class, Cnd.where("ordernum", "=", dingdanid)
+				.orderBy("id", "asc"), null);
 		String includeall = sqlManager.get("get_customneed_visitor");
 		Sql includeallsql = Sqls.create(includeall);
 		//该客户需求已经使用的游客信息
@@ -1608,6 +1623,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			TPayPnrEntity paypnr = new TPayPnrEntity();
 			paypnr.setPayId(insert.getId());
 			paypnr.setPnrId(Integer.valueOf(str));
+			paypnr.setOptime(new Date());
 			paypnrs.add(paypnr);
 			//PNR更新状态
 			TPnrInfoEntity pnrinfo = dbDao.fetch(TPnrInfoEntity.class, Long.valueOf(str));
@@ -1615,7 +1631,6 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, need.getOrdernum().longValue());
 			pnrinfo.setOptime(new Date());
 			pnrinfo.setOrderPnrStatus(AccountPayEnum.APPROVAL.intKey());
-			paypnr.setOptime(new Date());
 			pnrinfos.add(pnrinfo);
 			//消息提醒
 			Map<String, Object> map = new HashMap<String, Object>();
