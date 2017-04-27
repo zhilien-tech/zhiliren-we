@@ -105,12 +105,6 @@ td[colspan="3"] .select2 .selection .select2-selection ul .select2-search--inlin
 #datatable2 tbody tr td ul li {border-bottom: solid 1px #eee;}
 #datatable2 tbody tr td ul li:last-child {border-bottom: solid 0px #eee;}
 #datatable2 tbody tr .sorting_1{padding-top: 14px !important;}
-#datatable2 tbody tr td:nth-child(1){line-height:40px;}
-#datatable2 tbody tr td:nth-child(2){line-height:40px;}
-#datatable2 tbody tr td:nth-child(7){line-height:40px;}
-#datatable2 tbody tr td:nth-child(8){line-height:40px;}
-#datatable2 tbody tr td:nth-child(9){line-height:40px;}
-#datatable2 tbody tr td:nth-child(10){line-height:40px;}
 #datatable2 thead tr th{padding-right: 0px;}
 #datatable2 thead .sorting_asc:after {display: none;}
 .select2-container .select2-search--inline {float: none;}

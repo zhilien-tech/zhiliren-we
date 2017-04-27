@@ -10,6 +10,17 @@ function initPayDataTable(){
 		"language": {
 			"url": BASE_PATH + "/public/plugins/datatables/cn.json"
 		},
+		"infoCallback": function (settings, start, end, max, total, pre) {
+        	var length = $(".checkBoxPayChild:checked").length;
+        	if(inlandPayTable.page.len() == length){
+        		$(".checkBoxPayAll").prop("checked", true);
+        	}else{
+        		$(".checkBoxPayAll").prop("checked", false);
+
+        	}
+        	autoHighLoad($(this));
+        	return '显示第 '+start+' 至 '+end+' 条结果，共'+total+' 条 (每页显示 '+max+' 条)'
+        },
 		"ajax": {
 			"url": BASE_PATH + "/admin/receivePay/inland/inlandPayList.html",
 			"type": "post",
@@ -108,17 +119,7 @@ function initPayDataTable(){
 		            		return drawer;
 		            	}
 		            }
-		            ],
-		            "infoCallback": function (settings, start, end, max, total, pre) {
-		            	var length = $(".checkBoxPayChild:checked").length;
-		            	if(inlandPayTable.page.len() == length){
-		            		$(".checkBoxPayAll").prop("checked", true);
-		            	}else{
-		            		$(".checkBoxPayAll").prop("checked", false);
-
-		            	}
-		            	return '显示第 '+start+' 至 '+end+' 条结果，共'+total+' 条 (每页显示 '+max+' 条)'
-		            }
+		]
 
 	});
 }
@@ -157,6 +158,17 @@ function initPayEdDataTable(){
 		"language": {
 			"url": BASE_PATH + "/public/plugins/datatables/cn.json"
 		},
+        "infoCallback": function (settings, start, end, max, total, pre) {
+        	var length = $(".checkBoxPayChild:checked").length;
+        	if(inlandPayEdTable.page.len() == length){
+        		$(".checkBoxPayAll").prop("checked", true);
+        	}else{
+        		$(".checkBoxPayAll").prop("checked", false);
+
+        	}
+        	autoHighLoad($(this));
+        	return '显示第 '+start+' 至 '+end+' 条结果，共'+total+' 条 (每页显示 '+max+' 条)'
+        },
 		"ajax": {
 			"url": BASE_PATH + "/admin/receivePay/inland/inlandPayEdList.html",
 			"type": "post",
@@ -168,9 +180,18 @@ function initPayEdDataTable(){
         {"data": "ordernum", "bSortable": false,"width":"7%",
         	render:function(data, type, row, meta) {
         		var result = '<ul> ';
+        		var oNum = "";
         		$.each(row.orders, function(name, value) {
         			if(value){
-        				result += '<li style="list-style:none;">'+value.ordernum+'</li>';
+        				var ordernum = value.ordernum;
+        				if(ordernum == null || ordernum == undefined || ordernum==""){
+        					ordernum = "";
+        				}else{
+        					if(oNum!=ordernum){
+        						result += '<li style="list-style:none;">'+ordernum+'</li>';
+        					}
+        				}
+        				oNum = ordernum;
         			}
         		});
         		result += '</ul>';
@@ -239,7 +260,7 @@ function initPayEdDataTable(){
         	render:function(data, type, row, meta) {
         		var result = '<ul>';
         		$.each(row.orders, function(name, value) {
-        			if(value && value.currency!=undefined){
+        			if(value && value.currency!=undefined && value.currency!="请选择"){
         				result += '<li style="list-style:none;">'+value.currency+'</li>';
         			}
         		});
@@ -294,17 +315,6 @@ function initPayEdDataTable(){
         		}
         		return asd;
         	}
-        },
-        {"infoCallback": function (settings, start, end, max, total, pre) {
-        	var length = $(".checkBoxPayChild:checked").length;
-        	if(inlandPayEdTable.page.len() == length){
-        		$(".checkBoxPayAll").prop("checked", true);
-        	}else{
-        		$(".checkBoxPayAll").prop("checked", false);
-
-        	}
-        	return '显示第 '+start+' 至 '+end+' 条结果，共'+total+' 条 (每页显示 '+max+' 条)'
-        }
         }],
         columnDefs: [{
         	//   指定第一列，从0开始，0表示第一列，1表示第二列……

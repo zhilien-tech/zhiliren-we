@@ -223,3 +223,6 @@ ADD COLUMN `application`  varchar(32) NULL COMMENT '用途' AFTER `ordertype`;
 
 ALTER TABLE `t_customerneeds`
 ADD COLUMN `remark`  text NULL COMMENT '备注' AFTER `companyid`;
+/******************************************************************************
+version : 1.0.4   END   2017-04-26
+******************************************************************************/

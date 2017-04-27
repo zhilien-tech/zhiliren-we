@@ -296,7 +296,7 @@ $('.addDemand').click(function(){
 	newDiv.find('[class=autoAddairLineNum]').remove();
 	newDiv.find('[name=cAirlineNum]').select2({
 		ajax : {
-			url : BASE_PATH + "/admin/search/getCAirNumSelect.html",
+			url : BASE_PATH + "/admin/customneeds/getAirLineSelect.html",
 			dataType : 'json',
 			delay : 250,
 			type : 'post',

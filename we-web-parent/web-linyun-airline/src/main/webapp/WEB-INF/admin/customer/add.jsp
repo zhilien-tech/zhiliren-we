@@ -528,7 +528,8 @@
 								}
 							}, */
 							regexp : {
-								regexp : /^[1][34578][0-9]{9}$/,
+								/* regexp : /^[1][34578][0-9]{9}$/, */
+								regexp : /^((0\d{2,3}-\d{7,8})|(1[35874]\d{9}))$/,
 								message : '联系电话格式错误'
 							}
 						}
@@ -650,7 +651,7 @@
 		/* 出发城市 */
 		function cityOpt() {
 			//出发城市Id
-			var selectedCityId = $("#city").select2("val");
+		    var selectedCityId = $("#city").select2("val"); 
 			$("#outcity").val(selectedCityId);
 		}
 		/* 国内线路 */
