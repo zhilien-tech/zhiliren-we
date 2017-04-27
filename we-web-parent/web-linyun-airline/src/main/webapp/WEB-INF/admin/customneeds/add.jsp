@@ -75,7 +75,7 @@
 		           <div class="form-group"><!--去程日期/出发城市/出发航班-->
 		             <label class="col-sm-2 text-right padding customerEdit">去程日期：</label>
 		             <div class="col-sm-2 padding">
-		               <input id="leavedateString" name="leavedateString" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'backdateString\')}'})" type="text" class="form-control input-sm inputdatestr" placeholder="2016-12-01" />
+		               <input id="leavedateString" name="leavedateString" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'backdateString\')}'})" type="text" class="form-control input-sm inputdatestr" placeholder=" " />
 		             </div>
 		            </div>
 				    <div class="form-group form-group1">
@@ -97,7 +97,7 @@
 		           <div class="form-group"><!--回程日期/返回城市/回程航班-->
 		             <label class="col-sm-2 text-right padding customerEdit">回程日期：</label>
 		             <div class="col-sm-2 padding">
-		               <input id="backdateString" name="backdateString" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'leavedateString\')}'})" class="form-control input-sm inputdatestr" placeholder="2016-12-01" />
+		               <input id="backdateString" name="backdateString" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'leavedateString\')}'})" class="form-control input-sm inputdatestr" />
 		             </div>
 		            </div>
 					<div class="form-group form-group1">
@@ -115,7 +115,16 @@
 		             </div>
 		           </div><!--end 回程日期/返回城市/回程航班-->
 	           </div>
-	           <context class="remarkContext">
+	           <div class="row"><!--备注-->
+		           <div class="form-group">
+		             <label class="col-sm-2 text-right padding customerEdit">备注：</label>
+		             <div class="col-sm-10 padding">
+		               <textarea class="form-control input-sm textareaHei" id="remark" name="remark"></textarea>
+		             </div>
+		            </div>
+		       </div><!--end 备注-->
+	           </div>
+	           <!-- <context class="remarkContext">
 				   <div class="remarkDiv">
 						<table class="remarkTable">
 							<tr name="cRemarkTr" class="remarkTr">
@@ -126,7 +135,7 @@
 							</tr>
 						</table>
 				   </div>	
-				</context>
+				</context> -->
 	       </div>
 	     </div>
 	     </form>
