@@ -177,22 +177,22 @@ function validateParams(){
 		                            	id:'${obj.deparinfo.id}'
 		                            };
 		                         }
-		                   },
+		                   }/* ,
 		                   regexp: {
 		                        regexp: /^[\u4e00-\u9fa5]*$/,
 		                        message: '中文名称只能输入汉字!'
-		                    }
+		                    } */
 	                }
 	            },
 	            englishName: {
 	            	validators: {
 	                    notEmpty: {
 	                        message: '英文名称不能为空!'
-	                    },
+	                    }/* ,
 	                    regexp: {
 	                        regexp: /^[a-zA-Z]+$/,
 	                        message: '英文名称只能输入字母!'
-	                    }
+	                    } */
 	                }
 	            },
 	            /* pinYin: {

@@ -18,10 +18,11 @@
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo();" value="提交"/>
-            <input type="hidden" id="backupbalance" name="backupbalance" value="${obj.receive.sum }">
+            <input type="hidden" id="backupbalance" name="backupbalance" value="<fmt:formatNumber type="number" value="${obj.sumincome }" pattern="0.00" maxFractionDigits="2"/>">
+            <input type="hidden" id="thisval" name="thisval">
             <h4 class="invoiceH4">收款信息</h4>
     </div>
-    <div style="height:550px; overflow-y:auto; ">
+    <div style="height:550px; overflow-y:auto;" class="allCentext">
       <div class="modal-body">
       	 <input type="hidden" id="id" name="id" value="${obj.id }" >
       	 <input type="hidden" id="orderstatus" name="orderstatus" value="${obj.receive.orderstatus }" >
@@ -200,9 +201,18 @@
 		          newDiv.find('.deleteInvoice').parent().remove();
 		          newDiv.find('.addIcon').parent().remove();
 		          newDiv.find('.fileUL').append('<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>');
+		          $('.allCentext').scrollTop( $('.allCentext').height() );//点击圆圈加号 添加的内容默认显示出来 
 		      });
 		      /*-----收付款>收款>开发票 - 按钮-----*/
 		      $(document).on("click",".removIcon",function(){
+		    	  var divTest = $(this).parents('.cloneTR');
+		    	  var invoicebalance = divTest.find('[name=invoicebalance]').val(); 
+		    	  if(invoicebalance){
+		    		  var yubanlance = parseFloat($('#balance').html()) + parseFloat(invoicebalance);
+		    		  $('#balance').html(yubanlance.toFixed(2));
+		    		  $('#backupbalance').val(yubanlance.toFixed(2));
+		    	  }
+		    	  $('#thisval').val('');
 		          $(this).parents('.cloneTR').remove();
 		      });
 		      

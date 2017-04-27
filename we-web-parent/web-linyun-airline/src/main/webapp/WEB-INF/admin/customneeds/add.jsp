@@ -123,6 +123,18 @@
 		             </div>
 		           </div><!--end 回程日期/返回城市/回程航班-->
 	           </div>
+	           <context class="remarkContext">
+				   <div class="remarkDiv">
+						<table class="remarkTable">
+							<tr name="cRemarkTr" class="remarkTr">
+								<td><label>备注：</label></td>
+								<td>
+									<textarea class="form-control" id="remark" name="remark"></textarea>
+								</td>
+							</tr>
+						</table>
+				   </div>	
+				</context>
 	       </div>
 	     </div>
 	     </form>

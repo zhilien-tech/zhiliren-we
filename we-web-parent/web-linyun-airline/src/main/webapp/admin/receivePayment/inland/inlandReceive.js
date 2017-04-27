@@ -10,6 +10,10 @@ function initRecDataTable() {
 		"language": {
 			"url": BASE_PATH + "/public/plugins/datatables/cn.json"
 		},
+		"infoCallback": function( settings, start, end, max, total, pre ) {
+          	autoHighLoad($(this));
+  			return '显示第 '+start+' 至 '+end+' 条结果，共 '+total+' 条 (每页显示 '+max+' 条)';
+        },
 		"ajax": {
 			"url": BASE_PATH + "/admin/receivePay/inland/inlandRecList.html",
 			"type": "post",
@@ -210,6 +214,7 @@ function confirmReceive(id){
 		skin: false, //加上边框
 		closeBtn:false,//默认 右上角关闭按钮 是否显示
 		shadeClose:false,
+		scrollbar: false,
 		area: ['850px', '650px'],
 		content: ['confirmReceive.html?inlandRecId='+ id,'no'],
 	});

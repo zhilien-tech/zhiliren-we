@@ -4,24 +4,21 @@
 <!DOCTYPE HTML>
 <html lang="en-US" id="updateHtml">
 <head>
-<meta charset="UTF-8">
-<title>更新</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
-<link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
-<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
-<link rel="stylesheet" href="${base}/public/dist/css/customer.css">
-<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css" />
-<link href="${base }/public/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
-<style type="text/css">
-	.select2-container {width: 95.5% !important;display: inline-block;}
-	.seleSpanWid .select2-container {width: 98.5% !important;display: inline-block;}
-	.modal-content{box-shadow: 0 0 0 #fff;}
-</style>
-
-
+	<meta charset="UTF-8">
+	<title>更新</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+	<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
+	<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
+	<link rel="stylesheet" href="${base}/public/dist/css/customer.css">
+	<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css" />
+	<link href="${base }/public/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+	<style type="text/css">
+		.select2-container {width: 95.5% !important;display: inline-block;}
+		.seleSpanWid .select2-container {width: 98.5% !important;display: inline-block;}
+		.modal-content{box-shadow: 0 0 0 #fff;}
+	</style>
 </head>
-
 <body>
 	<div class="modal-content">
 		<form id="customerUpdateForm">
@@ -44,7 +41,7 @@
 							<div class="form-group">
 								<input name="id" type="hidden" value="${obj.customer.id }">
 								<label class="col-sm-3 text-right padding">公司名称：</label>
-								<div id="comDiv" class="col-sm-8 padding inpNone seleSpanWid">
+								<div id="comDiv" class="col-sm-7 padding inpNone seleSpanWid">
 									<select id="companyId" name="companyId"  onchange="editInput()" class="form-control select2 inpImpWid" multiple="multiple"  data-placeholder="请输入公司名称">
 										<option></option>
 										<c:forEach var="one" items="${obj.comEntity }">
@@ -69,7 +66,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 text-right padding">负责人：</label>
+								<label class="col-sm-1 text-right padding">负责人：</label>
 								<div class="col-sm-3 padding">
 									<!-- 负责人下拉列表 -->
 									<select id="agent" name="responsibleId" class="form-control input-sm inpImportant">
@@ -89,7 +86,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 text-right padding">联系电话：</label>
+								<label class="col-sm-1 text-right padding">联系电话：</label>
 								<div id="phoneDiv" class="col-sm-3 padding">
 									<input id="telephone" name="telephone" type="tel" class="form-control input-sm inpImportant"
 										value="${obj.customer.telephone}" placeholder="请输入联系电话" /><span class="prompt">*</span>
@@ -103,7 +100,7 @@
 									value="${obj.customer.siteUrl}" placeholder="请输入网址" />
 							</div>
 							<div class="form-group fax">
-								<label class="col-sm-2 text-right padding">传真：</label>
+								<label class="col-sm-1 text-right padding">传真：</label>
 								<div class="col-sm-3 padding">
 									<input name="fax" type="tel" class="form-control input-sm inpImportant"
 										value="${obj.customer.fax}" placeholder="请输入传真" />
@@ -113,7 +110,7 @@
 						<div class="row address">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">地址：</label>
-								<div class="col-sm-8 padding">
+								<div class="col-sm-7 padding">
 									<input id="address" name="address" type="tel" class="form-control input-sm inpImpWid"
 										value="${obj.customer.address}" placeholder="请输入详细地址" /><span class="prompt">*</span>
 								</div>
@@ -132,7 +129,7 @@
 										<c:if test="${'3' eq obj.customer.travelType}">selected</c:if>>综合</option>
 								</select>
 							</div>
-							<label class="col-sm-2 text-right padding">是否禁用：</label>
+							<label class="col-sm-1 text-right padding">是否禁用：</label>
 							<div class="col-sm-3 padding">
 								<select id="forbid" name="forbid" class="form-control input-sm inpImportant">
 									<option value="0"
@@ -145,7 +142,7 @@
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">出发城市：</label>
 							
-							<div class="col-sm-8 padding seleSpanWid">
+							<div class="col-sm-7 padding seleSpanWid">
 								<select id="city" class="form-control select2" onchange="cityOpt()"  multiple="multiple"  data-placeholder="请输入出发城市">
 									<option></option>
 									<c:forEach var="one" items="${obj.outcitylist }">
@@ -173,7 +170,7 @@
 								<input id="inlandLine" name="inlandLine" value="${obj.customer.inlandLine}" type="text" class="form-control input-sm inpImportant" placeholder="请输入国境内陆" />
 							</div>
 
-							<label class="col-sm-2 text-right padding">国际：</label>
+							<label class="col-sm-1 text-right padding">国际：</label>
 							<div class="col-sm-3 padding">
 								<%-- <select id="sLine2ID" class="form-control select2 inpImportant" onchange="outLine()" multiple="multiple"  data-placeholder="请输入国际线路">
 									<option></option>
@@ -214,7 +211,7 @@
 						<!--业务范围-->
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">业务范围：</label>
-							<div class="col-sm-8 padding">
+							<div class="col-sm-7 padding">
 								<textarea name="business" class="form-control textar-hei" >${obj.customer.business }</textarea>
 							</div>
 						</div>
@@ -731,7 +728,8 @@
 		                         }
 		                     },  */
 							regexp : {
-								regexp : /^[1][34578][0-9]{9}$/,
+								/* regexp : /^[1][34578][0-9]{9}$/, */
+								regexp : /^((0\d{2,3}-\d{7,8})|(1[35874]\d{9}))$/,
 								message : '联系电话格式错误'
 							}
 						}

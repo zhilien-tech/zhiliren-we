@@ -73,6 +73,7 @@ public class InternationalShouSqlForm extends DataTablesParamForm {
 		if (!Util.isEmpty(billuserid)) {
 			cnd.and("tii.billuserid", "=", billuserid);
 		}
+		cnd.orderBy("tii.status", "ASC");
 		cnd.orderBy("optime", "DESC");
 		return cnd;
 	}

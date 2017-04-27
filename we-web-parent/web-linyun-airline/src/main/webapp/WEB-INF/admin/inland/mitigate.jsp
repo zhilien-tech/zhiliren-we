@@ -27,12 +27,16 @@
                   	<input id="customeid" name="customeid" type="hidden" value="${obj.customeinfo.id }">
                     <input name="customname" type="text" class="form-control input-sm" value="${obj.customeinfo.name }"/>
                   </div>
+                  <label class="col-sm-2 text-right padding">用途：</label>
+                  <div class="col-sm-2 padding">
+                    <input id="application" name="application" type="text" class="form-control input-sm" value="${obj.mitigate.application }"/>
+                  </div>
                 </div>
 
                 <div class="form-group row">
                   <label class="col-sm-2 text-right padding">金额：</label>
                   <div class="col-sm-2 padding">
-                    <input id="account" name="account" type="text" class="form-control input-sm account" value="${obj.mitigate.account }"/>
+                    <input id="account" name="account" type="text" class="form-control input-sm account mustNumberPoint" value="${obj.mitigate.account }"/>
                   </div>
                   <div class="col-sm-3 padding">
                       <input id="accountupper" name="accountupper" type="text" class="form-control input-sm" value="${obj.mitigate.accountupper }" disabled="disabled" />
@@ -76,6 +80,7 @@
 	<script src="${base }/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
 	<!--layer -->
 	<script src="${base}/common/js/layer/layer.js"></script>
+	<script src="${base }/admin/order/ordercommon.js"></script>
 	<script type="text/javascript">
 	//金额转换为大写
 	function changeNumMoneyToChinese(money) {  

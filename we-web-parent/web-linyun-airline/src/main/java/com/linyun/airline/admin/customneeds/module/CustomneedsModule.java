@@ -35,6 +35,8 @@ public class CustomneedsModule {
 
 	private static final Log log = Logs.get();
 
+	private static final String HUANHANG = "&#13;&#10;";
+
 	@Inject
 	private CustomneedsViewService customneedsViewService;
 
@@ -73,7 +75,9 @@ public class CustomneedsModule {
 	@GET
 	@Ok("jsp")
 	public Object update(@Param("id") final long id) {
-		return customneedsViewService.fetch(id);
+		TCustomerneedsEntity fetch = customneedsViewService.fetch(id);
+		fetch.setRemark(fetch.getRemark().replace("\n", HUANHANG));
+		return fetch;
 	}
 
 	/**

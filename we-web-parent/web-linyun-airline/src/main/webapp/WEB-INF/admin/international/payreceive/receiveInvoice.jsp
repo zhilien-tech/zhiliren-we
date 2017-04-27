@@ -16,7 +16,8 @@
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo()" value="提交"/>
-            <input type="hidden" id="backupbalance" name="backupbalance" value="${obj.sumjine }">
+            <input type="hidden" id="backupbalance" name="backupbalance" value="<fmt:formatNumber type="number" value="${obj.sumjine }" pattern="0.00" maxFractionDigits="2"/>">
+            <input type="hidden" id="thisval" name="thisval">
             <h4 class="invoiceH4">付款信息</h4>
     </div>
     <div style="height:550px; overflow-y:auto;" class="allCentext">
@@ -119,7 +120,7 @@
           </tr>
           <tr>
                   <td>差额：</td>
-                  <td><input id="difference" name="difference" type="text" class="form-control input-sm"></td>
+                  <td><input id="difference" name="difference" type="text" class="form-control input-sm mustNumberPoint"></td>
                   <td>余额：</td>
                   <td><label id="balance" name="balance">${obj.sumjine }</label></td>
           </tr>
@@ -127,7 +128,7 @@
                   <td>发票号：</td>
                   <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm"></td>
                   <td>金额：</td>
-                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm"></td>
+                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm mustNumberPoint"></td>
                   <td colspan="4">
                     <ul class="fileUL">
                       <li>
@@ -188,6 +189,14 @@
 	      });
 	      /*-----收付款>收款>开发票 - 按钮-----*/
 	      $(document).on("click",".removIcon",function(){
+	    	  var divTest = $(this).parents('.cloneTR');
+	    	  var invoicebalance = divTest.find('[name=invoicebalance]').val(); 
+	    	  if(invoicebalance){
+	    		  var yubanlance = parseFloat($('#balance').html()) + parseFloat(invoicebalance);
+	    		  $('#balance').html(yubanlance.toFixed(2));
+	    		  $('#backupbalance').val(yubanlance.toFixed(2));
+	    	  }
+	    	  $('#thisval').val('');
 	          $(this).parents('.cloneTR').remove();
 	      });
 	      

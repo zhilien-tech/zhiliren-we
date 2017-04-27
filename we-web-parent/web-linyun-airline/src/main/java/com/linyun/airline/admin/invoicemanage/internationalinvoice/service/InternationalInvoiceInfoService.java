@@ -430,7 +430,7 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		cnd.and("tuo.id", "in", ids);
 		cnd.and("tuo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
 		sql.setParam("orderstatus", payorder.getOrderstatus());
-		sql.setParam("recordtype", PayReceiveTypeEnum.RECEIVE.intKey());
+		sql.setParam("recordtype", PayReceiveTypeEnum.PAY.intKey());
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		//订单信息
 		result.put("orders", orders);

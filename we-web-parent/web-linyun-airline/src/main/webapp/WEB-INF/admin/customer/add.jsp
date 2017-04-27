@@ -51,7 +51,7 @@
 						<div class="row">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">公司名称：</label>
-								<div id="comDiv" class="col-sm-8 padding seleSpanWid inpNone">
+								<div id="comDiv" class="col-sm-7 padding seleSpanWid inpNone">
 									<select id="companyId" name="companyId" onchange="editInput()"
 										class="form-control select2 inpImpWid" multiple="multiple"
 										data-placeholder="请输入公司名称">
@@ -92,7 +92,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 text-right padding">负责人：</label>
+								<label class="col-sm-1 text-right padding">负责人：</label>
 								<div class="col-sm-3 padding">
 									<!-- 负责人下拉列表 -->
 									<select id="agent" name="responsibleId"
@@ -113,7 +113,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-2 text-right padding">联系电话：</label>
+								<label class="col-sm-1 text-right padding">联系电话：</label>
 								<div id="phoneDiv" class="col-sm-3 padding">
 									<input id="telephoneId" name="telephone" type="text"
 										class="form-control input-sm inpImportant"
@@ -128,7 +128,7 @@
 									class="form-control input-sm inpImportant" placeholder="请输入网址" />
 							</div>
 							<div class="form-group fax">
-								<label class="col-sm-2 text-right padding">传真：</label>
+								<label class="col-sm-1 text-right padding">传真：</label>
 								<div  class="col-sm-3 padding">
 									<input id="fax" name="fax" type="text" class="form-control input-sm inpImportant" placeholder="请输入传真" />
 								</div>
@@ -137,7 +137,7 @@
 						<div class="row address">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">地址：</label>
-								<div class="col-sm-8 padding">
+								<div class="col-sm-7 padding">
 									<input id="address" name="address" type="text"
 										class="form-control input-sm inpImpWid" placeholder="请输入详细地址" /><span
 										class="prompt">*</span>
@@ -154,7 +154,7 @@
 									<option value="3">综合</option>
 								</select>
 							</div>
-							<label class="col-sm-2 text-right padding">是否禁用：</label>
+							<label class="col-sm-1 text-right padding">是否禁用：</label>
 							<div class="col-sm-3 padding">
 								<select id="forbidID" name="forbid"
 									class="form-control input-sm inpImportant">
@@ -166,7 +166,7 @@
 						<div class="row">
 							<div>
 								<label class="col-sm-3 text-right padding">出发城市：</label>
-								<div class="col-sm-8 padding seleSpanWid">
+								<div class="col-sm-7 padding seleSpanWid">
 									<select id="city" class="form-control select2 inpImpWid"
 										multiple="multiple" onchange="cityOpt()"
 										data-placeholder="请输入出发城市">
@@ -190,7 +190,7 @@
 								<input id="sLine1ID" type="hidden" name="sLine1" /> -->
 								<input id="inlandLine" name="inlandLine" type="text" class="form-control input-sm inpImportant" placeholder="请输入国境内陆" />
 							</div>
-							<label class="col-sm-2 text-right padding">国际：</label>
+							<label class="col-sm-1 text-right padding">国际：</label>
 							<div class="col-sm-3 padding">
 								<!-- <select id="sLine2ID" class="form-control select2 inpImportant"
 									multiple="multiple" onchange="outLine()"
@@ -219,7 +219,7 @@
 						<!--业务范围-->
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">业务范围：</label>
-							<div class="col-sm-8 padding">
+							<div class="col-sm-7 padding">
 								<textarea id="businessID" name="business" class="form-control textar-hei"></textarea>
 							</div>
 						</div>
@@ -528,7 +528,8 @@
 								}
 							}, */
 							regexp : {
-								regexp : /^[1][34578][0-9]{9}$/,
+								/* regexp : /^[1][34578][0-9]{9}$/, */
+								regexp : /^((0\d{2,3}-\d{7,8})|(1[35874]\d{9}))$/,
 								message : '联系电话格式错误'
 							}
 						}

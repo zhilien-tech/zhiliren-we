@@ -59,7 +59,7 @@ LEFT JOIN t_order_customneed oc on oc.id =pi.needid
 LEFT JOIN t_up_order uo on uo.id=oc.ordernum
 $condition
 /*applyapproval_reduce_inland*/
-select mi.*,u.fullName,uo.ordersnum,u.id as 'userId'
+select mi.*,u.fullName,uo.ordersnum,u.id as 'userId',mi.application as 'purposeStr'
 from 
 t_mitigate_info mi 
 LEFT JOIN t_up_order uo on mi.orderid=uo.id

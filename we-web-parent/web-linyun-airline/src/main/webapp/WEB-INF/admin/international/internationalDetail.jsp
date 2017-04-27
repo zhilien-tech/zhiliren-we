@@ -104,7 +104,7 @@
                      	</c:when>
                      </c:choose>　
 						 信用额度：<fmt:formatNumber type="number" value="${empty obj.custominfo.creditLine?0:obj.custominfo.creditLine}" pattern="0.00" maxFractionDigits="2"/>  
-                     		<font id="historyqiancolor"> 历史欠款：<fmt:formatNumber type="number" value="${empty obj.custominfo.arrears? 0.00:obj.custominfo.arrears}" pattern="0.00" maxFractionDigits="2"/></font>　
+                     		<font id="historyqiancolor"> 历史欠款：<fmt:formatNumber type="number" value="${empty obj.historymony? 0.00:obj.historymony}" pattern="0.00" maxFractionDigits="2"/></font>　
                    		 预存款：<fmt:formatNumber type="number" value="${empty obj.custominfo.preDeposit?0:obj.custominfo.preDeposit}" pattern="0.00" maxFractionDigits="2"/></pre></td>
                      <td><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
                    </tr>
@@ -325,10 +325,10 @@
                             <c:forEach var="map" items="${obj.paymethod}" >
                             	<c:choose>
                             		<c:when test="${obj.finance.paymethod eq map.id }">
-                            			<option value="${map.id}" selected="selected">${map.bankName}</option>
+                            			<option value="${map.id}" selected="selected">${map.cardName}</option>
                             		</c:when>
                             		<c:otherwise>
-								   		<option value="${map.id}">${map.bankName}</option>
+								   		<option value="${map.id}">${map.cardName}</option>
                             		</c:otherwise>
                             	</c:choose>
 							 </c:forEach>
@@ -432,7 +432,7 @@
   <script type="text/javascript">
   	var BASE_PATH = '${base}';
   	var creditLine = '${obj.custominfo.creditLine}';
-	var arrears = '${obj.custominfo.arrears}';
+	var arrears = '${obj.historymony}';
   </script>
   <!--Javascript Flie-->
   <script src="${base }/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -550,6 +550,7 @@
 				                skin: false, //加上边框
 				                closeBtn:false,//默认 右上角关闭按钮 是否显示
 				                shadeClose:true,
+				                scrollbar: false,
 				                area: ['900px', '200px'],
 				                content: '${base}/admin/international/addReceiveRecord.html?orderid=${obj.orderinfo.id }&payreceivestatus=${obj.receivestatus}&ordersstatus='+orderType+'&peoplecount='+peoplecount+'&costsingleprice='+costsingleprice+'&customerId='+customerId
 				              });

@@ -31,7 +31,9 @@ function initDatatable() {
                     		var result = '<ul id="tableUl"> ';
                     		$.each(row.pnrinfo, function(name, value) {
                     			if(value && value.pNR != undefined){
-                    				result += '<li style="list-style:none;">'+value.pNR+'</li>';
+                    				//result += '<li style="list-style:none;">'+value.pNR+'</li>';
+                    				//result += '<li style="list-style:none;"><span data-toggle="tooltip" data-placement="left" title="'+value.pNR+'">'+value.pNR+'<span></li>';
+                    				result += '<li style="list-style:none;"><span data-toggle="tooltip" data-placement="right" title="'+value.pNR+'">'+value.pNR+'<span></li>';
                     			}
                     		});
                     		result += '</ul>';
@@ -107,7 +109,8 @@ function initDatatable() {
                     		var result = '<ul>';
                     		$.each(row.pnrinfo, function(name, value) {
                     			if(value && value.salespricesum != undefined){
-                    				result += '<li style="list-style:none;">'+value.salespricesum.toFixed(2)+'</li>';
+                    				//result += '<li style="list-style:none;">'+value.salespricesum.toFixed(2)+'</li>';
+                    				result += '<li style="list-style:none;"><span data-toggle="tooltip" data-placement="right" title="'+value.salespricesum.toFixed(2)+'">'+value.salespricesum.toFixed(2)+'<span></li>';
                     			}
                     		});
                     		result += '</ul>';
@@ -118,8 +121,10 @@ function initDatatable() {
                     	render:function(data, type, row, meta) {
                     		var result = '';
                     		if(row.receivable){
-                    			result = row.receivable.toFixed(2);
+                    			//result = row.receivable.toFixed(2);
+                    			result += '<span data-toggle="tooltip" data-placement="right" title="'+row.receivable.toFixed(2)+'">'+row.receivable.toFixed(2)+'<span>';
                     		}
+                    		//result += '<span data-toggle="tooltip" data-placement="right" title="'+result+'">'+result+'<span>';
                     		return result; 
                     	}
                     },
@@ -157,17 +162,17 @@ function initDatatable() {
                     }}*/
             ],
         "columnDefs": [{ "sWidth": "10.33%",  "targets": [0] },
-						{ "sWidth": "7.33%",  "targets": [1] },
-						{ "sWidth": "8.33%",  "targets": [2] },
-						{ "sWidth": "8.33%",  "targets": [3] },
-						{ "sWidth": "6.33%",  "targets": [4] },
-						{ "sWidth": "8.33%",  "targets": [5] },
-						{ "sWidth": "8.33%",  "targets": [6] },
-						{ "sWidth": "8.33%",  "targets": [7] },
-						{ "sWidth": "8.33%",  "targets": [8] },
-						{ "sWidth": "5.33%",  "targets": [9] },
-						{ "sWidth": "6.33%",  "targets": [10] },
-						{ "sWidth": "9.33%",  "targets": [11] }
+					   { "sWidth": "7.33%",  "targets": [1] },
+					   { "sWidth": "8.33%",  "targets": [2] },
+					   { "sWidth": "6.33%",  "targets": [3] },
+					   { "sWidth": "8.33%",  "targets": [4] },
+					   { "sWidth": "8.33%",  "targets": [5] },
+					   { "sWidth": "8.33%",  "targets": [6] },
+					   { "sWidth": "8.33%",  "targets": [7] },
+					   { "sWidth": "8.33%",  "targets": [8] },
+					   { "sWidth": "5.33%",  "targets": [9] },
+					   { "sWidth": "6.33%",  "targets": [10] },
+					   { "sWidth": "9.33%",  "targets": [11] }
 						//{ "sWidth": "10.33%",  "targets": [12] }
                         /*{
             //   指定第一列，从0开始，0表示第一列，1表示第二列……
@@ -206,12 +211,26 @@ $(function () {
 $("tbody",$('#inlandCrossTable')).on("dblclick","tr",function(event) {
 	var item = inlandCrossTable.row($(this).closest('tr')).data();
 	var url = BASE_PATH;
-	if(item.ordersstatus == 1){
-		url += '/admin/inland/queryDetail.html?id='+item.id;
-	}else{
-		url = '/admin/inland/bookingDetail.html?id='+item.id;
-	}
-	window.open(url);
+	$.ajax({
+		type : 'POST',
+		data : {
+			"id":item.id
+		},
+		async:false,
+		dataType:'json',
+		url : BASE_PATH+'/admin/inland/getOrderInfoById.html',
+		success : function(data) {
+			if(data.ordersstatus == 1){
+				url += '/admin/inland/queryDetail.html?id='+item.id;
+			}else{
+				url = '/admin/inland/bookingDetail.html?id='+item.id;
+			}
+			window.open(url);
+		},
+		error : function() {
+		}
+	});
+	
 });
 function edit(id,status){ 
 	var url = BASE_PATH;

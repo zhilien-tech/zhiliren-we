@@ -50,7 +50,7 @@ public class ShouKuanParamFrom extends DataTablesParamForm {
 
 	public Cnd cnd() {
 		Cnd cnd = Cnd.limit();
-		cnd.and("tr.userid", "=", userid);
+		//cnd.and("tr.userid", "=", userid);
 		cnd.and("tr.companyid", "=", companyid);
 		cnd.and("tr.orderstype", "=", OrderTypeEnum.FIT.intKey());
 		//cnd.and("tr.status", "=", AccountReceiveEnum.RECEIVEDONEY.intKey());

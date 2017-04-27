@@ -100,11 +100,11 @@
 	                            	dictCode:$('#dictCode').val()
 	                            };
 	                         }
-	                     },
+	                     }/* ,
 		                regexp: {
 		                	regexp: /^[a-zA-Z]+$/,
 	                        message: '字典代码只能为英文字母!'
-	                    }
+	                    } */
 	                }
 	            },
 	            dictName: {

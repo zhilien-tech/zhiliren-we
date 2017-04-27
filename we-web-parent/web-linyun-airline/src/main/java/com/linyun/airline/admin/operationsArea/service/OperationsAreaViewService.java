@@ -39,6 +39,7 @@ import com.linyun.airline.common.enums.MessageUserEnum;
 import com.linyun.airline.entities.TCheckboxStatusEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TMessageEntity;
+import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.entities.TUserMsgEntity;
 import com.uxuexi.core.common.util.DateTimeUtil;
@@ -76,6 +77,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 	private static final int PSAPPROVALING = MessageTypeEnum.PSAPPROVALING.intKey(); //需付款/已提交申请
 	private static final int RECSUBMITED = MessageTypeEnum.RECSUBMITED.intKey(); //收款已提交
 	private static final int PROCESSMSG = MessageTypeEnum.PROCESSMSG.intKey();
+	private static final int DERATEMONEY = MessageTypeEnum.DERATEMONEY.intKey();
 
 	//消息提醒模式
 	private static final int MOUTH = MessageRemindEnum.MOUTH.intKey();
@@ -373,7 +375,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 					+ String.valueOf(UNAPPROVALMSG) + "," + String.valueOf(MAKEOUTBILLMSG) + ","
 					+ String.valueOf(DRAWBILLMSG) + "," + String.valueOf(RECINVIOCING) + ","
 					+ String.valueOf(PSAPPROVALING) + "," + String.valueOf(INVIOCING) + ","
-					+ String.valueOf(RECSUBMITED);
+					+ String.valueOf(RECSUBMITED) + "," + String.valueOf(DERATEMONEY);
 			break;
 		case "taskNotice":
 			//任务 
@@ -395,7 +397,7 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		cnd.and("um.userId", "=", loginUserId);
 		cnd.and("m.msgType", "in", msgType);
 		/*cnd.and("um.isRead", "=", READ);*/
-		List<Record> records = dbDao.query(sql, cnd, null); //TODO 查询公司简称
+		List<Record> records = dbDao.query(sql, cnd, null);
 		List<Record> recordsByCondition = new ArrayList<Record>();
 
 		for (Record record : records) {
@@ -494,9 +496,37 @@ public class OperationsAreaViewService extends BaseService<TMessageEntity> {
 		}
 
 		int size = recordsByCondition.size();
+		List<String> orderIds = new ArrayList<String>();
 		for (Record record : recordsByCondition) {
+			String orderId = record.getString("uporderid");
+			orderIds.add(orderId);
 			record.set("num", size);
 		}
+
+		//订单id集合
+		String idStr = "";
+		String ids = "";
+		for (String id : orderIds) {
+			if (!Util.eq(ids, id)) {
+				ids += id + ",";
+			}
+			idStr = id;
+		}
+		if (ids.length() > 1) {
+			ids = ids.substring(0, ids.length() - 1);
+		}
+
+		List<TUpOrderEntity> orderList = dbDao.query(TUpOrderEntity.class, Cnd.where("id", "in", ids), null);
+		for (Record record : recordsByCondition) {
+			int orderId = record.getInt("uporderid");
+			for (TUpOrderEntity order : orderList) {
+				Integer id = order.getId();
+				if (Util.eq(id, orderId)) {
+					record.set("orderType", order.getOrderstype());
+				}
+			}
+		}
+
 		return JsonUtil.toJson(recordsByCondition);
 	}
 

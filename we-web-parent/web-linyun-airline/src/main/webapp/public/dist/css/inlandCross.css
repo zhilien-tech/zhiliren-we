@@ -20,6 +20,8 @@ table.dataTable thead .sorting:after{display: none;}
 #inlandCrossTable tbody tr td:nth-child(12){line-height: 60px;}
 #inlandCrossTable tbody tr td:nth-child(13){line-height: 60px;}
 #inlandCrossTable_wrapper{margin-top: -15px;}
+#inlandCrossTable tbody tr td ul li span{display:block;width: 75px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0 auto;}
+#inlandCrossTable tbody tr td span{display:block;width: 75px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0 auto;}
 .row-top {background-color: #ecf0f5;}
 #tab_1,#tab7_a,#tab7_b,#tab1_1,#tab1_2,#tab1_a,#tab1_b{padding-top: 10px;}
 /*添加订单*/
@@ -55,7 +57,6 @@ table.dataTable thead .sorting:after{display: none;}
 .cloTable tr {height: 40px;}
 .addDemand,.removeDemand{padding: 5px 11px;position: relative;left: 950px;margin-top: 5px;}
 .addDemand b{float: left;}
-.DemandDiv{background-color: #f5f5f5;box-shadow: 0px 1px 5px #bebebe;margin-bottom: 15px;}
 .removeDemand b{float: left;}
 .noteText{width: 100% !important;}
 .labelWid{width: 57px !important;}
@@ -120,6 +121,8 @@ td.sorting_1 input {position: relative;top: 5px;}
 #shouFuKuanGatheringTable tbody tr td:nth-child(8){line-height:60px;}
 #shouFuKuanGatheringTable tbody tr td:nth-child(9){line-height:60px;}
 #shouFuKuanGatheringTable tbody tr td:nth-child(10){line-height:60px;}
+#shouFuKuanPayTable tbody tr td:nth-child(7) span{width:70px;display: block; word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 auto;}
+#shouFuKuanPayTable tbody tr td:nth-child(8) span{width:70px;display: block; word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 auto;}
 /*开发票 弹框*/
 .invoiceInfo-header{width: 100%;display: inline-block;border-bottom: solid 1px #e5e5e5;padding-bottom: 16px;padding-top: 10px;padding-left: 20px;font-size: 17px;}
 .invoiceH4{font-size: 17px !important;}
@@ -168,7 +171,7 @@ select.form-control.TimeInput { padding-left: 3px; padding-right: 3px;}
 #kaiInvoiceTable tbody tr td ul li:last-child{border-bottom:0;}
 #kaiInvoiceTable tbody tr td ul{padding-left: 0;margin-bottom:0;}
 #kaiInvoiceTable tbody tr td{padding:0;}
-#kaiInvoiceTable tbody tr td:nth-child(1) ul li{line-height: 27px;}
+/* #kaiInvoiceTable tbody tr td:nth-child(1) ul li{line-height: 27px;} */
 #kaiInvoiceTable tbody tr td:nth-child(4){line-height: 60px;}
 #kaiInvoiceTable tbody tr td:nth-child(5){line-height: 60px;}
 #kaiInvoiceTable tbody tr td:nth-child(6){line-height: 60px;}
@@ -181,8 +184,8 @@ select.form-control.TimeInput { padding-left: 3px; padding-right: 3px;}
 #uploadFile{width: 70px !important;}
 object#SWFUpload_0 {top: 10px;width: 70px;}
 div#uploadFile-button {position: relative;top: 10px;}
-.remarkContext {margin-bottom: 10px;overflow: hidden;min-height: 80px;display: block;border: solid 1px #e0e0e0;border-radius: 0 0 3px 3px;background-color:#fcfcfc;}
-.remarkDiv {padding: 5px 0px;display: block;background-color: #f5f5f5;box-shadow: 1px 0px 5px #bebebe;margin-bottom: 15px;border-left: solid 1px #e0e0e0;}
+.remarkContext {margin-bottom: 10px;overflow: hidden;min-height: 80px;display: block;border: solid 1px #e0e0e0;border-radius: 0 0 3px 3px;background-color:#fcfcfc;border-top: 0;}
+.remarkDiv {padding: 5px 0px;display: block;margin-bottom: 15px;}
 textarea#cRemark {height: 112px;resize: none;}
 .remarkTable tbody tr td:nth-child(1){width: 86px;text-align: right;}
 .infofooter1 {padding-bottom: 1px;border-bottom: 0;border-radius: 3px 3px 0px 0px;margin-bottom: 0px;}
@@ -190,3 +193,7 @@ textarea#cRemark {height: 112px;resize: none;}
 .remarkTable {width: 100%;}
 .remarktd1{width:70px !important;}
 input#address {width: 100% !important;}
+#kaiInvoiceTable tbody tr td:nth-child(10) span{display: block; width: 75px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0 auto;}
+#kaiInvoiceTable tbody tr td:nth-child(2) ul li span{display: block;width:90px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0 auto;}
+#kaiInvoiceTable tbody tr td:nth-child(7) span{display: block;width:110px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0 auto;}
+#shouInvoiceTable tbody tr td:nth-child(11) span{display: block;width:80px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0 auto;}

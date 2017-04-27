@@ -167,7 +167,12 @@ function openInvoice(id,invoiceid){
 	        shadeClose:true,
 	        scrollbar: false,
 	        area: ['987px', '620px'],
-	        content: BASE_PATH + '/admin/international/invoice/kaiInvoice.html?id='+invoiceid
+	        content: BASE_PATH + '/admin/international/invoice/kaiInvoice.html?id='+invoiceid,
+	        end:function(){
+	        	shouFuKuanGatheringTable.ajax.reload(function(json){
+	        		autoHighLoad($('#shouFuKuanGatheringTable'));
+	        	});
+	        }
 	      });
 	}else{
 		layer.open({
@@ -178,7 +183,12 @@ function openInvoice(id,invoiceid){
 			shadeClose:true,
 			scrollbar: false,
 			area: ['987px', '620px'],
-			content: BASE_PATH + '/admin/international/payreceive/openInvoice.html?id='+id
+			content: BASE_PATH + '/admin/international/payreceive/openInvoice.html?id='+id,
+			end:function(){
+				shouFuKuanGatheringTable.ajax.reload(function(json){
+					autoHighLoad($('#shouFuKuanGatheringTable'));
+				});
+			}
 		});
 	}
 }
@@ -260,7 +270,15 @@ function initshouFuKuanPayTable() {
                     		return result;
                     	}
                   },
-                  {"data": "username", "bSortable": false},
+                  {"data": "username", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                  		var result = '';
+                  		if(row.username && row.username != undefined){
+                  			result = row.username;
+                  		}
+                  		return result;
+                  	}
+                  },
                   {"data": "orderstatus", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                     		var result = '';
@@ -333,7 +351,12 @@ function receiveInvoice(id,invoiceid){
 	        shadeClose:true,
 	        scrollbar: false,
 	        area: ['987px', '620px'],
-	        content: BASE_PATH + '/admin/international/invoice/shouInvoice.html?id='+invoiceid
+	        content: BASE_PATH + '/admin/international/invoice/shouInvoice.html?id='+invoiceid,
+	        end:function(){
+	        	shouFuKuanPayTable.ajax.reload(function(json){
+	        		autoHighLoad($('#shouFuKuanPayTable'));
+	        	});
+	        }
 	    });
 	}else {
 		layer.open({
@@ -344,7 +367,12 @@ function receiveInvoice(id,invoiceid){
 			shadeClose:true,
 			scrollbar: false,
 			area: ['987px', '620px'],
-			content: BASE_PATH + '/admin/international/payreceive/receiveInvoice.html?id='+id
+			content: BASE_PATH + '/admin/international/payreceive/receiveInvoice.html?id='+id,
+			end:function(){
+				shouFuKuanPayTable.ajax.reload(function(json){
+					autoHighLoad($('#shouFuKuanPayTable'));
+				});
+			}
 		});
 	}
 }

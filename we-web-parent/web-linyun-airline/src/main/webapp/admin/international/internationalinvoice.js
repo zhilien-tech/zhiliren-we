@@ -11,6 +11,10 @@ function initkaiInvoiceTable() {
       "language": {
           "url": BASE_PATH + "/public/plugins/datatables/cn.json"
       },
+      "infoCallback": function( settings, start, end, max, total, pre ) {
+        	autoHighLoad($(this));
+			return '显示第 '+start+' 至 '+end+' 条结果，共 '+total+' 条 (每页显示 '+max+' 条)';
+      },
       "ajax": {
           "url": BASE_PATH + "/admin/international/invoice/listKaiInvoiceData.html",
           "type": "post",
@@ -116,7 +120,12 @@ function initkaiInvoiceTable() {
                   		return result;
                   	}
                   },
-                  {"data": "remark", "bSortable": false}
+                  {"data": "remark", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                		   var result = '<span data-toggle="tooltip" data-placement="left" title="'+row.remark+'">'+row.remark+'<span>';
+	                  	  return result;
+	                  }
+                  }
           ],
       columnDefs: [{
     	//   指定第一列，从0开始，0表示第一列，1表示第二列……
@@ -175,6 +184,10 @@ function initshouInvoiceTable() {
     "processing": true,
     "serverSide": true,
     "stripeClasses": [ 'strip1','strip2' ],
+    "infoCallback": function( settings, start, end, max, total, pre ) {
+      	autoHighLoad($(this));
+			return '显示第 '+start+' 至 '+end+' 条结果，共 '+total+' 条 (每页显示 '+max+' 条)';
+    },
     "language": {
         "url": BASE_PATH + "/public/plugins/datatables/cn.json"
     },
@@ -282,7 +295,12 @@ function initshouInvoiceTable() {
                   		return result;
                   	}
                   },
-                  {"data": "remark", "bSortable": false}
+                  {"data": "remark", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+               		   var result = '<span data-toggle="tooltip" data-placement="left" title="'+row.remark+'">'+row.remark+'<span>';
+	                  	  return result;
+	                  }
+                  }
         ],
     columnDefs: [{
   	//   指定第一列，从0开始，0表示第一列，1表示第二列……

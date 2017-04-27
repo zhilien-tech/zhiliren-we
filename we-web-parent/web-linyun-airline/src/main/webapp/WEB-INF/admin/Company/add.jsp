@@ -37,13 +37,13 @@
               <div class="modal-header boderButt">
                   <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">返回</button>
                   <input type="button" id="submitButton" class="btn btn-primary right btn-sm" onclick="submitCompany()" value="保存"/>
-                  <h4>&nbsp;&nbsp;&nbsp;<i class="fa fa-user"></i> 基本资料</h4>
+                  <h4>&nbsp;&nbsp;&nbsp;基本资料</h4>
               </div>
                 <div class="modal-body">
                  <div class="tab-content">
                         <div class="form-group row">
                             <label class="col-sm-3 text-right padding">公司名称：</label>
-                            <div class="col-sm-8 padding">
+                            <div class="col-sm-7 padding">
                               <input name="comName" type="tel" class="form-control input-sm inpImpWid" placeholder="请输入公司名称" /><span class="prompt">*</span>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
 	                            </div>
 	                        </div>
 	                        <div class="form-group form-group1"> 
-	                            <label class="col-sm-2 text-right padding">联系人：</label>
+	                            <label class="col-sm-1 text-right padding">联系人：</label>
 	                            <div class="col-sm-3 padding">
 	                              <input name="connect" type="tel" class="form-control input-sm inpImportant" placeholder="请输入联系人姓名" /><span class="prompt">*</span>
 	                            </div>
@@ -69,7 +69,7 @@
 	                            </div>
 	                         </div>
 	                        <div class="form-group form-group1">  
-	                            <label class="col-sm-2 text-right padding">联系邮箱：</label>
+	                            <label class="col-sm-1 text-right padding">联系邮箱：</label>
 	                            <div class="col-sm-3 padding">
 	                              <input name="email" type="tel" class="form-control input-sm inpImportant" placeholder="请输入联系邮箱" />
 	                            </div>
@@ -83,7 +83,7 @@
 	                            </div>
 	                         </div>
 	                        <div class="form-group form-group1">  
-	                            <label class="col-sm-2 text-right padding">公司类型：</label>
+	                            <label class="col-sm-1 text-right padding">公司类型：</label>
 	                            <div class="col-sm-3 padding">
 	                              <select class="form-control input-sm inpImportant" name="comType">
 	                                <option value="">==请选择==</option>
@@ -96,7 +96,7 @@
 						</div>
                         <div class="form-group row">
                             <label class="col-sm-3 text-right padding">地址：</label>
-                            <div class="col-sm-8 padding">
+                            <div class="col-sm-7 padding">
                               <input name="address" type="tel" class="form-control input-sm inpImpWid" placeholder="请输入详细地址" /><span class="prompt">*</span>
                             </div>
                         </div>
@@ -198,7 +198,7 @@
 	            phonenumber: {
 	            	validators: {
 	            		regexp: {
-	                        regexp: /^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/,
+	                        regexp: /^((0\d{2,3}-\d{7,8})|(1[35874]\d{9}))$/,
 	                        message: '座机格式:区号-座机号'
 	                    }
 	                }

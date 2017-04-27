@@ -44,7 +44,7 @@
 						</c:forEach>
 	                  </select>
 	                </div>
-	                <div class="col-md-3"><!--姓名/联系电话 搜索框-->
+	                <div class="col-md-3 col-padding"><!--姓名/联系电话 搜索框-->
 	                  <input id="fullName" name="fullName" type="text"  onkeypress="onkeyEnter();" class="form-control" placeholder="姓名/联系电话">
 	                </div>
 	                <div class="col-md-1 col-padding"><!--搜索 按钮-->

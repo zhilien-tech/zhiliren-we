@@ -18,10 +18,10 @@
 			<section class="content">
 				<div class="row row-top">
 					<div class="col-xs-12">
-						<div class="box" style="padding:10px;">
-								<div class="col-md-2">
+						<div class="box" style="padding-top:10px;">
+								<div class="col-md-1 textPadding">
 									<!--状态名称 搜索框-->
-									<select id="statusId" name="status" onchange="defaultSelect();" class="form-control input-sm">
+									<select id="statusId" name="status" onchange="defaultSelect();" class="form-control Padding3 input-sm">
 										<c:forEach var="map" items="${obj.dataStatusEnum}">
 											<c:choose>
 												<c:when test="${map.key == obj.dataStatusEnum.status}">
@@ -34,9 +34,9 @@
 										</c:forEach>
 									</select>
 								</div>
-								<div class="col-md-3 dictInfoSousuo" style="float:left;">
+								<div class="col-md-3 col-padding">
 									<!--字典类别名称 搜索下拉框-->
-                                    <label class="col-sm-4 text-right padding">类别名称：</label>
+                                    <label class="col-sm-4 text-right padding"">类别名称：</label>
 		                            <div class="col-sm-8 padding">
 		                            	<select id="comTypeCode" name="comTypeName" class="form-control input-sm inpImpWid">
 											<!-- <option value=" ">==请选择==</option> -->
@@ -60,7 +60,7 @@
 		                    			</select>
 		                            </div>
 								</div>
-                                <div class="col-md-3 dictInfoSousuo" style="float:left;">
+                                <div class="col-md-3 col-padding">
 									<!--字典信息名称 搜索框-->
 									<input type="text" id="comDictNameId" name="comDictName" onkeypress="onkeyEnter();" class="form-control"
 										placeholder="字典信息/航空公司/第三方公司">
@@ -69,8 +69,8 @@
 									<!--搜索 按钮-->
 									<button id="comDictInfoSearchBtn" type="button" class="btn btn-primary btn-sm">搜索</button>
 								</div>
-							<div class="col-md-1 col-md-offset-1">
-								<a class="btn btn-primary btn-sm" onclick="add();">添加</a>
+							<div class="col-md-3 textPadding">
+								<a class="btn btn-primary btn-sm right" onclick="add();">添加</a>
 							</div>
 							<!-- /.box-header -->
 							<div id="datatableInfo_container" class="box-body none">
@@ -413,13 +413,13 @@ function initDatatable() {
                     		return createtime;
                         } 	
                     },
-                    {"data": "remark", "bSortable": false,"width":"50%",
+                    {"data": "remark", "bSortable": false,"width":"35%",
                     	render: function(data, type, row, meta) {
                     		 var remark = row.remark;
 	                   		 if(null==remark || ""==remark){
 	                   			 return "";
 	                   		 }
-                    		 var result = '<span data-toggle="tooltip" data-placement="left" title="'+remark+'">'+remark+'<span>';
+                    		 var result = '<span data-toggle="tooltip" data-placement="bottom" title="'+remark+'">'+remark+'<span>';
                     		 return result;
                     	}	
                     } ,
@@ -478,6 +478,7 @@ function initDatatable() {
                     {"data": "weburl", "bSortable": false,
                     	render: function(data, type, row, meta) {
                     		var weburl = row.weburl;
+                    		var weburl = '<span data-toggle="tooltip" data-placement="right" title="'+weburl+'">'+weburl+'<span>';
                     		if(null==weburl || ""==weburl){
                     			return "";
                     		}
@@ -487,6 +488,7 @@ function initDatatable() {
                     {"data": "loginnumname", "bSortable": false,
                     	render: function(data, type, row, meta) {
                     		var loginnumname = row.loginnumname;
+                    		var loginnumname = '<span data-toggle="tooltip" data-placement="right" title="'+loginnumname+'">'+loginnumname+'<span>';
                     		if(null==loginnumname || ""==loginnumname){
                     			return "";
                     		}
@@ -530,7 +532,7 @@ function initDatatable() {
 	                   		 if(null==remark || ""==remark){
 	                   			 return "";
 	                   		 }
-                    		 var result = '<span data-toggle="tooltip" data-placement="left" title="'+remark+'">'+remark+'<span>';
+                    		 var result = '<span data-toggle="tooltip" data-placement="bottom" title="'+remark+'">'+remark+'<span>';
                     		 return result;
                     	}	
                     },
@@ -642,7 +644,7 @@ function initDatatable() {
 	                   		 if(null==remark || ""==remark){
 	                   			 return "";
 	                   		 }
-                    		 var result = '<span data-toggle="tooltip" data-placement="left" title="'+remark+'">'+remark+'<span>';
+                    		 var result = '<span data-toggle="tooltip" data-placement="bottom" title="'+remark+'">'+remark+'<span>';
                     		 return result;
                     	}	
                     }
