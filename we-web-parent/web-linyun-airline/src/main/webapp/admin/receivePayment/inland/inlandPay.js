@@ -117,6 +117,7 @@ function initPayDataTable(){
 		            		$(".checkBoxPayAll").prop("checked", false);
 
 		            	}
+		            	autoHighLoad($(this));
 		            	return '显示第 '+start+' 至 '+end+' 条结果，共'+total+' 条 (每页显示 '+max+' 条)'
 		            }
 
@@ -312,6 +313,7 @@ function initPayEdDataTable(){
         		$(".checkBoxPayAll").prop("checked", false);
 
         	}
+        	autoHighLoad($(this));
         	return '显示第 '+start+' 至 '+end+' 条结果，共'+total+' 条 (每页显示 '+max+' 条)'
         }
         }],
