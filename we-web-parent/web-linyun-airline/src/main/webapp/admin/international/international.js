@@ -186,3 +186,10 @@ $('#searchOrder').click(function(i){
 		autoHighLoad($('#internationalTable'));
 	});
 });
+
+function onkeyEnter(){
+	var e = window.event || arguments.callee.caller.arguments[0];
+    if(e && e.keyCode == 13){
+ 		$('#searchOrder').click();
+    }
+}

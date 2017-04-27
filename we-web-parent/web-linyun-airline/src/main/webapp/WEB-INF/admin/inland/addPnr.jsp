@@ -90,13 +90,13 @@
    <!--JS 文件-->
 	<script src="${base }/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script src="${base }/public/bootstrap/js/bootstrap.min.js"></script>
+    <script src="${base }/admin/order/ordercommon.js"></script>
 
 	<script src="${base }/public/plugins/slimScroll/jquery.slimscroll.min.js"></script><!-- SlimScroll -->
 	<script src="${base }/public/plugins/fastclick/fastclick.js"></script><!-- FastClick -->
 	<script src="${base }/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
     <script src="${base }/public/dist/js/multiselect.min.js"></script>
     <script src="${base }/public/dist/js/prettify.min.js"></script>
-    <script src="${base }/admin/order/ordercommon.js"></script>
     <!--layer -->
   <script src="${base}/common/js/layer/layer.js"></script>
     <script type="text/javascript">
@@ -105,7 +105,17 @@
  	//手续费
  	var fees = '${obj.custominfo.fees}'; 
       $(function(){
-          $('#multiselect').multiselect();
+    	  var orderCount = 0;
+          $('#multiselect').multiselect({
+        	  keepRenderingSort:true
+          });
+    	  /* var visitors = eval('${obj.visitors}');
+    	  var options = '';
+    	  $.each(visitors, function(name, value) {
+    		  var option = '<option value='+value.id+' position="'+name+'">'+value.visitorname+'</option>';
+    		  options += option;
+  		  });
+    	  $('#multiselect').html(options); */
       });
       //关闭窗口
       function closewindow(){

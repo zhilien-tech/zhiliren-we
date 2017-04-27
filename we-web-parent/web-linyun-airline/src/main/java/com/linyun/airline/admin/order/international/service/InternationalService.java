@@ -75,6 +75,7 @@ import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.JsonUtil;
 import com.uxuexi.core.common.util.Util;
+import com.uxuexi.core.db.util.DbSqlUtil;
 import com.uxuexi.core.web.base.service.BaseService;
 
 /**
@@ -310,6 +311,22 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			custominfo = dbDao.fetch(TCustomerInfoEntity.class, orderinfo.getUserid().longValue());
 		}
 		result.put("custominfo", custominfo);
+		Sql citySql = Sqls.create(sqlManager.get("customer_cityOption_list"));
+		Cnd cityCnd = Cnd.NEW();
+		cityCnd.and("c.infoId", "=", custominfo.getId());
+		cityCnd.orderBy("d.dictCode", "desc");
+		citySql.setCondition(cityCnd);
+		List<TDepartureCityEntity> outcityEntities = DbSqlUtil.query(dbDao, TDepartureCityEntity.class, citySql);
+		String outcitys = "";
+		if (!Util.isEmpty(outcityEntities)) {
+			for (TDepartureCityEntity tDepartureCityEntity : outcityEntities) {
+				outcitys += tDepartureCityEntity.getDictCode() + ",";
+			}
+		}
+		if (outcitys.length() > 0) {
+			outcitys = outcitys.substring(0, outcitys.length() - 1);
+		}
+		result.put("outcitys", outcitys);
 		Double historymony = searchViewService.getMoney(orderinfo.getUserid().longValue());
 		result.put("historymony", historymony);
 		//异步加载
@@ -1479,4 +1496,29 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		dbDao.updateRelations(before, after);
 		return null;
 	}
+
+	/**
+	 * 删除子航段
+	 * <p>
+	 * TODO删除子航段
+	 *
+	 * @param request
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object deleteAirinfo(HttpServletRequest request) {
+		String pnrid = request.getParameter("id");
+		if (!Util.isEmpty(pnrid)) {
+			TPnrInfoEntity pnrinfo = dbDao.fetch(TPnrInfoEntity.class, Long.valueOf(pnrid));
+			List<TAirlineInfoEntity> before = dbDao.query(TAirlineInfoEntity.class, Cnd.where("pnrid", "=", pnrid),
+					null);
+			if (!Util.isEmpty(before)) {
+				dbDao.delete(before);
+			}
+			if (!Util.isEmpty(pnrinfo)) {
+				dbDao.delete(pnrinfo);
+			}
+		}
+		return null;
+	}
+
 }

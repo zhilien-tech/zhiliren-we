@@ -87,6 +87,7 @@ import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.JsonUtil;
 import com.uxuexi.core.common.util.Util;
+import com.uxuexi.core.db.util.DbSqlUtil;
 import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.base.service.BaseService;
 
@@ -309,6 +310,22 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		//客户信息
 		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(orderinfo.getUserid()));
 		result.put("custominfo", custominfo);
+		Sql citySql = Sqls.create(sqlManager.get("customer_cityOption_list"));
+		Cnd cityCnd = Cnd.NEW();
+		cityCnd.and("c.infoId", "=", custominfo.getId());
+		cityCnd.orderBy("d.dictCode", "desc");
+		citySql.setCondition(cityCnd);
+		List<TDepartureCityEntity> outcityEntities = DbSqlUtil.query(dbDao, TDepartureCityEntity.class, citySql);
+		String outcitys = "";
+		if (!Util.isEmpty(outcityEntities)) {
+			for (TDepartureCityEntity tDepartureCityEntity : outcityEntities) {
+				outcitys += tDepartureCityEntity.getDictCode() + ",";
+			}
+		}
+		if (outcitys.length() > 0) {
+			outcitys = outcitys.substring(0, outcitys.length() - 1);
+		}
+		result.put("outcitys", outcitys);
 		Double historymony = searchViewService.getMoney(orderinfo.getUserid().longValue());
 		result.put("historymony", historymony);
 		//客户负责人
@@ -570,6 +587,22 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		//客户信息
 		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(orderinfo.getUserid()));
 		result.put("custominfo", custominfo);
+		Sql citySql = Sqls.create(sqlManager.get("customer_cityOption_list"));
+		Cnd cityCnd = Cnd.NEW();
+		cityCnd.and("c.infoId", "=", custominfo.getId());
+		cityCnd.orderBy("d.dictCode", "desc");
+		citySql.setCondition(cityCnd);
+		List<TDepartureCityEntity> outcityEntities = DbSqlUtil.query(dbDao, TDepartureCityEntity.class, citySql);
+		String outcitys = "";
+		if (!Util.isEmpty(outcityEntities)) {
+			for (TDepartureCityEntity tDepartureCityEntity : outcityEntities) {
+				outcitys += tDepartureCityEntity.getDictCode() + ",";
+			}
+		}
+		if (outcitys.length() > 0) {
+			outcitys = outcitys.substring(0, outcitys.length() - 1);
+		}
+		result.put("outcitys", outcitys);
 		Double historymony = searchViewService.getMoney(orderinfo.getUserid().longValue());
 		result.put("historymony", historymony);
 		//客户负责人
@@ -763,7 +796,6 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			customneedEntity.setPaycurrency(paycurrency);
 			customneedEntity.setPaymethod(paymethod);
 			customneedEntity.setThirdcustomid(thirdcustomid);
-			customneedEntity.setRemark(remark);
 			//与订单相关
 			customneedEntity.setOrdernum(id);
 			if (Util.isEmpty(customneedid)) {
@@ -1062,6 +1094,12 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			ExcelReader excelReader = new ExcelReader();
 			//获取Excel模板第二行之后的数据
 			Map<Integer, String[]> map = excelReader.readExcelContent(is);
+			//删除以后的模板
+			List<TVisitorInfoEntity> beforevisitors = dbDao.query(TVisitorInfoEntity.class,
+					Cnd.where("ordernum", "=", dingdanid), null);
+			if (!Util.isEmpty(beforevisitors)) {
+				dbDao.delete(beforevisitors);
+			}
 			List<TVisitorInfoEntity> visitors = new ArrayList<TVisitorInfoEntity>();
 			for (int i = 1; i <= map.size(); i++) {
 				String[] row = map.get(i);

@@ -331,7 +331,7 @@ $('.fuKuanBtn').click(function(){
 	}
 });
 
-$('.ticketingSearch').click(function(){
+$('#ticketingSearch').click(function(){
 	var div = $(this).parent().parent();
 	var startdate = div.find('[name=startdate]').val();
 	var enddate = div.find('[name=enddate]').val();
