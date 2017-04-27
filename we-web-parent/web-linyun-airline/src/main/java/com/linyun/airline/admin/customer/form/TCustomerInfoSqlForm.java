@@ -92,7 +92,6 @@ public class TCustomerInfoSqlForm extends DataTablesParamForm {
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;
-
 	}
 
 }
