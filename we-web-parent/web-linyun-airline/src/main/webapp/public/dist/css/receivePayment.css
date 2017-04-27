@@ -41,8 +41,6 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 #GJpayTable tbody tr td{padding:0;}
 .fuKuanBtn,.fuKuanBtn1{float: right;position: relative;left: 60px;}
 .formMarginTop{margin-top:10px;}
-#interRecTable tbody tr td{padding:0;}
-#interPayTbody tr td{padding:0;}
 /* .checkBoxPayChild {position: relative;top: 22px;} */
 #interPayTbody tr td:nth-child(1) input{margin-top:23px;}
 #interPayBeginDate,#interPayEndDate,#interRecBeginDate,#interRecEndDate{padding-left: 3px;padding-right: 3px;}
@@ -83,9 +81,6 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 /*--内陆跨海 收款 table style--*/
 #inlandRecSelect,#inlandPaySelect{padding-left: 3px;padding-right: 3px;}
 /* 付款居中 */
-#inlandRecTable tbody tr td{padding:0;}
-#inlandPayEdTbody tr td{padding:0;}
-#interPayEdTbody tr td{padding:0;}
 .txtTable tbody tr td:nth-child(1) {width: 62px;}
 .txtTable tbody tr td:nth-child(2) {width: 125px;}
 .txtTable tbody tr td:nth-child(3) {width: 90px;}
