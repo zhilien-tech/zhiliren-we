@@ -9,8 +9,6 @@ table.dataTable thead .sorting:after{display: none;}
 #inlandCrossTable tbody tr td ul{padding-left:0;margin-bottom: 0px;}
 #inlandCrossTable tbody tr td{padding: 0;}
 #inlandCrossTable tbody tr td ul li{list-style: none;height: 20px;}
-#inlandCrossTable tbody tr td ul li:nth-child(1) {border-bottom: solid 1px #f4f4f4;}
-#inlandCrossTable tbody tr td ul li:nth-child(2) {border-bottom: solid 1px #f4f4f4;}
 #inlandCrossTable thead tr th{padding-right: 10px;}
 #inlandCrossTable tbody tr td:nth-child(1){line-height: 60px;}
 #inlandCrossTable tbody tr td:nth-child(8){line-height: 60px;}

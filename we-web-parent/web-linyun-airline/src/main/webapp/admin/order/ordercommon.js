@@ -104,6 +104,29 @@ function loadOrderLog(orderid){
 }
 //datatables自动高度
 function autoHighLoad(obj){
+	
+	/*obj.find('tr').each(function(){
+		var trHeight=$(this).children('td').eq(0).height();
+		if(trHeight!=0&&trHeight!=null){
+			var lineHeight=trHeight+"px";
+			alert(lineHeight);
+			$(this).children('td').css("line-height",lineHeight);
+			 var liLength = $(this).children('ul').find("li").length;
+		}
+	});*/
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	obj.find('tr').each(function () {//全部 table 自适应高度      
        $(this).children('td').each(function(){
           var liLength = $(this).children('ul').find("li").length;
