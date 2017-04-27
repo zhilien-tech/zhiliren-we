@@ -120,7 +120,9 @@
   <script src="${base}/common/js/layer/layer.js"></script>
     <script type="text/javascript">
       $(function(){
-          $('#multiselect').multiselect();
+          $('#multiselect').multiselect({
+        	  keepRenderingSort:true
+          });
       });
     //票价折扣
   	var discountFare = '${obj.custominfo.discountFare}';

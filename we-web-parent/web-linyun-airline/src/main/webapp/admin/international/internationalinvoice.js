@@ -160,6 +160,15 @@ $('#kaiInvoiceSearch').click(function(){
 		autoHighLoad($('#kaiInvoiceTable'));
 	});
 });
+function changekaiinvoice(){
+	$('#kaiInvoiceSearch').click();
+}
+function kaiinvoiceenter(){
+	var e = window.event || arguments.callee.caller.arguments[0];
+    if(e && e.keyCode == 13){
+ 		$('#kaiInvoiceSearch').click();
+    }
+}
 //打开开发票页面
 function openkaiInvoiceEdit(id){
 	layer.open({
@@ -344,3 +353,12 @@ $('#shouInvoiceSearch').click(function(){
 	shouInvoiceTable.settings()[0].ajax.data = param;
 	shouInvoiceTable.ajax.reload();
 });
+function changeshouinvoice(){
+	$('#shouInvoiceSearch').click();
+}
+function shouinvoiceenter(){
+	var e = window.event || arguments.callee.caller.arguments[0];
+    if(e && e.keyCode == 13){
+ 		$('#shouInvoiceSearch').click();
+    }
+}

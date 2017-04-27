@@ -7,16 +7,8 @@
 table.dataTable thead .sorting_asc:after{display: none;}
 table.dataTable thead .sorting:after{display: none;}
 #inlandCrossTable tbody tr td ul{padding-left:0;margin-bottom: 0px;}
-#inlandCrossTable tbody tr td{padding: 0;}
 #inlandCrossTable tbody tr td ul li{list-style: none;height: 20px;}
 #inlandCrossTable thead tr th{padding-right: 10px;}
-#inlandCrossTable tbody tr td:nth-child(1){line-height: 60px;}
-#inlandCrossTable tbody tr td:nth-child(8){line-height: 60px;}
-#inlandCrossTable tbody tr td:nth-child(9){line-height: 60px;}
-#inlandCrossTable tbody tr td:nth-child(10){line-height: 60px;}
-#inlandCrossTable tbody tr td:nth-child(11){line-height: 60px;}
-#inlandCrossTable tbody tr td:nth-child(12){line-height: 60px;}
-#inlandCrossTable tbody tr td:nth-child(13){line-height: 60px;}
 #inlandCrossTable_wrapper{margin-top: -15px;}
 #inlandCrossTable tbody tr td ul li span{display:block;width: 75px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0 auto;}
 #inlandCrossTable tbody tr td span{display:block;width: 75px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0 auto;}
@@ -93,15 +85,7 @@ table.dataTable thead > tr > th {padding-right: 5px;}
 #drawerPayTable tbody tr td ul li:last-child{border-bottom: 0;}
 #drawerPayTable tbody tr td ul{padding-left: 0;margin-bottom: 0;}
 table.dataTable thead .sorting_desc:after {display: none;}
-#drawerPayTable tbody tr td{padding:0;}
 #drawerPayTable tbody tr td:nth-child(1) input{display: block;margin: 45% auto;}
-#drawerPayTable tbody tr td:nth-child(2){line-height:60px;}
-#drawerPayTable tbody tr td:nth-child(9){line-height:60px;}
-#drawerPayTable tbody tr td:nth-child(10){line-height:60px;}
-#drawerPayTable tbody tr td:nth-child(11){line-height:60px;}
-#drawerPayTable tbody tr td:nth-child(12){line-height:60px;}
-#drawerPayTable tbody tr td:nth-child(13){line-height:60px;}
-#drawerPayTable tbody tr td:nth-child(14){line-height:60px;}
 /*出票 付款*/
 #payTable tbody tr td ul li{list-style: none;border-bottom: solid 2px #f4f4f4;}
 #payTable tbody tr td ul{padding-left: 0;margin-bottom:0;}
@@ -111,14 +95,7 @@ td.sorting_1 input {position: relative;top: 5px;}
 /*---收/付款 付款---*/
 #shouFuKuanGatheringTable tbody tr td ul li{list-style: none;border-bottom: solid 1px #f4f4f4;}
 #shouFuKuanGatheringTable tbody tr td ul{padding-left: 0;margin-bottom:0;}
-#shouFuKuanGatheringTable tbody tr td{padding:0;}
 #shouFuKuanGatheringTable tbody tr td ul li:last-child{border-bottom: 0;}
-#shouFuKuanGatheringTable tbody tr td:nth-child(5){line-height:60px;}
-#shouFuKuanGatheringTable tbody tr td:nth-child(6){line-height:60px;}
-#shouFuKuanGatheringTable tbody tr td:nth-child(7){line-height:60px;}
-#shouFuKuanGatheringTable tbody tr td:nth-child(8){line-height:60px;}
-#shouFuKuanGatheringTable tbody tr td:nth-child(9){line-height:60px;}
-#shouFuKuanGatheringTable tbody tr td:nth-child(10){line-height:60px;}
 #shouFuKuanPayTable tbody tr td:nth-child(7) span{width:70px;display: block; word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 auto;}
 #shouFuKuanPayTable tbody tr td:nth-child(8) span{width:70px;display: block; word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 auto;}
 /*开发票 弹框*/
@@ -168,16 +145,6 @@ select.form-control.TimeInput { padding-left: 3px; padding-right: 3px;}
 #kaiInvoiceTable tbody tr td ul li{list-style: none;border-bottom: solid 1px #f4f4f4;}
 #kaiInvoiceTable tbody tr td ul li:last-child{border-bottom:0;}
 #kaiInvoiceTable tbody tr td ul{padding-left: 0;margin-bottom:0;}
-#kaiInvoiceTable tbody tr td{padding:0;}
-/* #kaiInvoiceTable tbody tr td:nth-child(1) ul li{line-height: 27px;} */
-#kaiInvoiceTable tbody tr td:nth-child(4){line-height: 60px;}
-#kaiInvoiceTable tbody tr td:nth-child(5){line-height: 60px;}
-#kaiInvoiceTable tbody tr td:nth-child(6){line-height: 60px;}
-#kaiInvoiceTable tbody tr td:nth-child(7){line-height: 60px;}
-#kaiInvoiceTable tbody tr td:nth-child(8){line-height: 60px;}
-#kaiInvoiceTable tbody tr td:nth-child(9){line-height: 60px;}
-#kaiInvoiceTable tbody tr td:nth-child(10){line-height: 60px;}
-#kaiInvoiceTable tbody tr td:nth-child(11){line-height: 60px;}
 .fuKuanBtn, .fuKuanBtn1 {float: right;position: relative;left: 60px;}
 #uploadFile{width: 70px !important;}
 object#SWFUpload_0 {top: 10px;width: 70px;}

@@ -331,7 +331,7 @@ $('#ticketingPaySearch').click(function(){
 	var startdate = div.find('[name=startdate]').val();
 	var enddate = div.find('[name=enddate]').val();
 	var searchInfo = div.find('[name=searchInfo]').val();
-	var status = 4;
+	var status = $('#status').val();
 	var param = {
 			ordersstatus:status,
 			startdate:startdate,
@@ -344,7 +344,7 @@ $('#ticketingPaySearch').click(function(){
 		autoHighLoad($('#payTable'));
 	});
 });
-function onkeyTicketingEnter(){
+function onkeyTicketingPayEnter(){
 	var e = window.event || arguments.callee.caller.arguments[0];
     if(e && e.keyCode == 13){
  		$('#ticketingPaySearch').click();

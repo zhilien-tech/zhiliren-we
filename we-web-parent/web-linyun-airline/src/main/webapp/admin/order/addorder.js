@@ -99,6 +99,7 @@ $("#linkName").on('select2:select', function (evt) {
 			}else{
 				$("#preDepositId").html("0.00");
 			}
+			$('#departureCity').val(dataJson.outcitys);
 		},
 		error : function() {
 		}

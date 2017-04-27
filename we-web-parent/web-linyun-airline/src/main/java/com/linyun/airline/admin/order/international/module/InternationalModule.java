@@ -345,4 +345,14 @@ public class InternationalModule {
 	public Object saveOrderRemindInfo(HttpServletRequest request) {
 		return internationalService.saveOrderRemindInfo(request);
 	}
+
+	/**
+	 * 删除航段
+	 */
+	@At
+	@POST
+	public Object deleteAirinfo(HttpServletRequest request) {
+		return internationalService.deleteAirinfo(request);
+	}
+
 }
