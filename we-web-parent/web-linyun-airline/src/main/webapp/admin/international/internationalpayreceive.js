@@ -156,6 +156,15 @@ $('#receiveSearch').click(function(){
 		autoHighLoad($('#shouFuKuanGatheringTable'));
 	});
 });
+function changeshoukuan(){
+	$('#receiveSearch').click();
+}
+function shoukuanenter(){
+	var e = window.event || arguments.callee.caller.arguments[0];
+    if(e && e.keyCode == 13){
+ 		$('#receiveSearch').click();
+    }
+}
 //打开开发票页面
 function openInvoice(id,invoiceid){
 	if(invoiceid){
@@ -341,6 +350,15 @@ $('#paySearch').click(function(){
 		autoHighLoad($('#shouFuKuanPayTable'));
 	});
 });
+function changefukuan(){
+	$('#paySearch').click();
+}
+function fukuanenter(){
+	var e = window.event || arguments.callee.caller.arguments[0];
+    if(e && e.keyCode == 13){
+ 		$('#paySearch').click();
+    }
+}
 function receiveInvoice(id,invoiceid){
 	if(invoiceid){
 		layer.open({

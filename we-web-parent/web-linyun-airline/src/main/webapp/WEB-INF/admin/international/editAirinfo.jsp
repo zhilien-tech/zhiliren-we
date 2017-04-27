@@ -17,6 +17,9 @@
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveAirInfo();" value="保存"/>
+            <c:if test="${obj.pnrinfo.mainsection eq 0 }">
+	            <button type="button" class="btn right btn-sm" onclick="deleteairinfo()">删除</button>
+            </c:if>
             <h4>编辑航段</h4>
           </div>
           <div class="modal-body" style="height:481px;overflow-y:auto; ">
@@ -166,6 +169,24 @@
             	layer.msg("编辑失败","",3000);
             } 
         });
+  	 }
+  	  
+  	 function deleteairinfo(){
+  		layer.confirm('确认删除该航段吗?', {icon: 3, title:'提示'}, function(){
+			$.ajax({ 
+				type: 'POST', 
+				data: {id:'${obj.pnrinfo.id}'}, 
+				url: '${base}/admin/international/deleteAirinfo.html',
+	            success: function (data) { 
+	            	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	            	window.parent.successCallback('4');
+	            	parent.layer.close(index);
+	            },
+	            error: function (xhr) {
+	            	layer.msg("删除失败","",3000);
+	            } 
+	        });
+		});
   	 }
   </script>
 </body>

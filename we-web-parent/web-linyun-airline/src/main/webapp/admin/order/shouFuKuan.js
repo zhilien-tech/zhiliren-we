@@ -189,6 +189,15 @@ $('.shoukuansearch').click(function(){
 		autoHighLoad($('#shouFuKuanGatheringTable'));
 	});
 });
+function changeshoukuan(){
+	$('.shoukuansearch').click();
+}
+function onshoukuansearchenter(){
+	var e = window.event || arguments.callee.caller.arguments[0];
+    if(e && e.keyCode == 13){
+ 		$('.shoukuansearch').click();
+    }
+}
 //付款表格
 var shouFuKuanPayTable;
 //初始化表格
@@ -360,6 +369,15 @@ $('.fukuansearch').click(function(){
 	shouFuKuanPayTable.settings()[0].ajax.data = param;
 	shouFuKuanPayTable.ajax.reload();
 });
+function fukuansearchenter(){
+	var e = window.event || arguments.callee.caller.arguments[0];
+    if(e && e.keyCode == 13){
+ 		$('.fukuansearch').click();
+    }
+}
+function changefukuan(){
+	$('.fukuansearch').click();
+}
 function receiveInvoice(id,invoiceid){
 	if(invoiceid){
 		layer.open({
