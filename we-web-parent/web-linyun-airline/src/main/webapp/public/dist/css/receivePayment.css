@@ -45,13 +45,6 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 #interPayTbody tr td{padding:0;}
 /* .checkBoxPayChild {position: relative;top: 22px;} */
 #interPayTbody tr td:nth-child(1) input{margin-top:23px;}
-#interPayTbody tr td:nth-child(2){line-height:60px;}
-#interPayTbody tr td:nth-child(11){line-height:60px;}
-#interRecTable tr td:nth-child(5){line-height:60px;}
-#interRecTable tr td:nth-child(6){line-height:60px;}
-#interRecTable tr td:nth-child(7){line-height:60px;}
-#interRecTable tr td:nth-child(8){line-height:60px;}
-#interRecTable tr td:nth-child(9){line-height:60px;}
 #interPayBeginDate,#interPayEndDate,#interRecBeginDate,#interRecEndDate{padding-left: 3px;padding-right: 3px;}
 /*付款 弹框页面*/
 #receivablesTable{margin-bottom: 8px;}
@@ -87,30 +80,12 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 .tabConte{margin: 0 10px;}
 .nav-tabs-custom > .tab-content {padding: 10px 10px;}
 .paddingBottom{padding-bottom: 10px;}
-
 /*--内陆跨海 收款 table style--*/
-#inlandRecTable tbody tr td:nth-child(5){line-height:60px;}
-#inlandRecTable tbody tr td:nth-child(6){line-height:60px;}
-#inlandRecTable tbody tr td:nth-child(7){line-height:60px;}
-#inlandRecTable tbody tr td:nth-child(8){line-height:60px;}
-#inlandRecTable tbody tr td:nth-child(9){line-height:60px;}
 #inlandRecSelect,#inlandPaySelect{padding-left: 3px;padding-right: 3px;}
 /* 付款居中 */
 #inlandRecTable tbody tr td{padding:0;}
 #inlandPayEdTbody tr td{padding:0;}
-#inlandPayEdTbody tr td:nth-child(7) {line-height: 60px;}
-#inlandPayEdTbody tr td:nth-child(8) {line-height: 60px;}
-#inlandPayEdTbody tr td:nth-child(9) {line-height: 60px;}
-#inlandPayEdTbody tr td:nth-child(10) {line-height: 60px;}
-#inlandPayEdTbody tr td:nth-child(11) {line-height: 60px;}
-#inlandPayEdTbody tr td:nth-child(12) {line-height: 60px;}
 #interPayEdTbody tr td{padding:0;}
-#interPayEdTbody tr td:nth-child(7) {line-height: 60px;}
-#interPayEdTbody tr td:nth-child(8) {line-height: 60px;}
-#interPayEdTbody tr td:nth-child(9) {line-height: 60px;}
-#interPayEdTbody tr td:nth-child(10) {line-height: 60px;}
-#interPayEdTbody tr td:nth-child(11) {line-height: 60px;}
-#interPayEdTbody tr td:nth-child(12) {line-height: 60px;}
 .txtTable tbody tr td:nth-child(1) {width: 62px;}
 .txtTable tbody tr td:nth-child(2) {width: 125px;}
 .txtTable tbody tr td:nth-child(3) {width: 90px;}
