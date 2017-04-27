@@ -173,7 +173,7 @@ function initPayEdDataTable(){
         			if(value){
         				var ordernum = value.ordernum;
         				if(ordernum == null || ordernum == undefined || ordernum==""){
-        					ordernum = " ";
+        					ordernum = "";
         				}else{
         					if(oNum!=ordernum){
         						result += '<li style="list-style:none;">'+ordernum+'</li>';
@@ -248,7 +248,7 @@ function initPayEdDataTable(){
         	render:function(data, type, row, meta) {
         		var result = '<ul>';
         		$.each(row.orders, function(name, value) {
-        			if(value && value.currency!=undefined){
+        			if(value && value.currency!=undefined && value.currency!="请选择"){
         				result += '<li style="list-style:none;">'+value.currency+'</li>';
         			}
         		});
