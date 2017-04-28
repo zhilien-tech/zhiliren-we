@@ -42,7 +42,7 @@ function initkaiInvoiceTable() {
                   	render:function(data, type, row, meta) {
                   		var result = '<ul> ';
                 		$.each(row.invoicedetail, function(name, value) {
-                			if(value && value.invoicenum != undefined){
+                			if(value.invoicenum && value.invoicenum != undefined){
                 				result += '<li style="list-style:none;"><span data-toggle="tooltip" data-placement="left" title="'+value.invoicenum+'">'+value.invoicenum+'<span></li>';
                 			}
                 		});

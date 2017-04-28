@@ -52,6 +52,7 @@
                   <td><label>银行：</label></td>
                   <td>
                     <select id="bankcardid" name="bankcardid" class="form-control input-sm" onchange="loadbankcardname();">
+                    	<option value="">请选择</option>
                         <c:forEach var="one" items="${obj.yhkSelect }">
                         	<option value="${one.id }">${one.dictName }</option>
                         </c:forEach>
@@ -169,40 +170,48 @@
 	//加载银行卡名称下拉
 	function loadbankcardname(){
 		var bankcardid = $('#bankcardid').val();
-		$.ajax({
-	        type: "post",
-	        url: '${base}/admin/inland/loadBankCardNameSelect.html',
-	        data: {bankcardid:bankcardid},
-	        cache: false,
-	        async : false,
-	        success: function (data ,textStatus, jqXHR){
-	        	var html = '';
-	        	$.each(data, function(name, value) {
-	        		html += '<option value="'+value.id+'">'+value.cardName+'</option>';
-	        	});
-	        	$('#bankcardname').html(html);
-	        },
-	        error:function (XMLHttpRequest, textStatus, errorThrown) {      
-	        }
-	     });
+		if(bankcardid){
+			$.ajax({
+		        type: "post",
+		        url: '${base}/admin/inland/loadBankCardNameSelect.html',
+		        data: {bankcardid:bankcardid},
+		        cache: false,
+		        async : false,
+		        success: function (data ,textStatus, jqXHR){
+		        	var html = '';
+		        	$.each(data, function(name, value) {
+		        		html += '<option value="'+value.id+'">'+value.cardName+'</option>';
+		        	});
+		        	$('#bankcardname').html(html);
+		        },
+		        error:function (XMLHttpRequest, textStatus, errorThrown) {      
+		        }
+		     });
+		}else{
+			$('#bankcardname').html('');
+		}
 		loadbankcardnum();
 	}
 	//加载银行卡号
 	function loadbankcardnum(){
 		var bankcardname = $('#bankcardname').val();
-		$.ajax({
-	        type: "post",
-	        url: '${base}/admin/inland/loadBankCardNumSelect.html',
-	        data: {bankcardname:bankcardname},
-	        cache: false,
-	        async : false,
-	        success: function (data ,textStatus, jqXHR){
-	        	var html = '<option>'+data.cardNum+'</option>';
-	        	$('#bankcardnum').html(html);
-	        },
-	        error:function (XMLHttpRequest, textStatus, errorThrown) {      
-	        }
-	     });
+		if(bankcardname){
+			$.ajax({
+		        type: "post",
+		        url: '${base}/admin/inland/loadBankCardNumSelect.html',
+		        data: {bankcardname:bankcardname},
+		        cache: false,
+		        async : false,
+		        success: function (data ,textStatus, jqXHR){
+		        	var html = '<option>'+data.cardNum+'</option>';
+		        	$('#bankcardnum').html(html);
+		        },
+		        error:function (XMLHttpRequest, textStatus, errorThrown) {      
+		        }
+		     });
+		}else{
+			$('#bankcardnum').html('');
+		}
 	}
 	loadbankcardname();
 	//loadbankcardnum();

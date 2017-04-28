@@ -192,8 +192,10 @@
 		        error:function (XMLHttpRequest, textStatus, errorThrown) {      
 		        }
 		     });
-			loadbankcardnum();
+		}else{
+			$('#bankcardname').html('');
 		}
+		loadbankcardnum();
 	}
 	//加载银行卡号
 	function loadbankcardnum(){
@@ -212,6 +214,8 @@
 		        error:function (XMLHttpRequest, textStatus, errorThrown) {      
 		        }
 		     });
+		}else{
+			$('#bankcardnum').html('');
 		}
 	}
 	loadbankcardname();
