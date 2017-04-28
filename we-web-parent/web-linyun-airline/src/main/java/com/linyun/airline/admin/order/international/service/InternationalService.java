@@ -136,6 +136,9 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		for (Record record : list) {
 			List<TAirlineInfoEntity> query = dbDao.query(TAirlineInfoEntity.class,
 					Cnd.where("planid", "=", record.get("id")).orderBy("leavedate", "asc"), null);
+			for (TAirlineInfoEntity tAirlineInfoEntity : query) {
+				tAirlineInfoEntity.setAircom(FormatDateUtil.dateToOrderDate(tAirlineInfoEntity.getLeavedate()));
+			}
 			record.put("airinfo", query);
 			record.put("orderstatusenum", EnumUtil.enum2(InternationalStatusEnum.class));
 		}
