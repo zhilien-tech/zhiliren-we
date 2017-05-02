@@ -28,7 +28,7 @@
 		    height: 40px;
 		    border-radius: 5px;
 		}
-		html, body {min-height: 0;min-width: 0;overflow-x: auto !important;}
+		html, body {min-height: 0;min-width: 0;}
 	</style>
 </head>
 <body >
@@ -124,7 +124,15 @@
 		             </div>
 		           </div><!--end 回程日期/返回城市/回程航班-->
 	           </div>
-	           <context class="remarkContext">
+	           <div class="row"><!--备注-->
+		           <div class="form-group">
+		             <label class="col-sm-2 text-right padding customerEdit">备注：</label>
+		             <div class="col-sm-10 padding">
+		               <textarea class="form-control input-sm textareaHei" id="remark" name="remark" >${obj.remark}</textarea>
+		             </div>
+		            </div>
+		       </div><!--end 备注-->
+	          <%--  <context class="remarkContext">
 				   <div class="remarkDiv">
 						<table class="remarkTable">
 							<tr name="cRemarkTr" class="remarkTr">
@@ -135,7 +143,7 @@
 							</tr>
 						</table>
 				   </div>	
-				</context>
+				</context> --%>
 	       </div>
 	     </div>
 	     </form>

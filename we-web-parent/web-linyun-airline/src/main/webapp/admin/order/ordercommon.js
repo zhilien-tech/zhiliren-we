@@ -102,25 +102,14 @@ function loadOrderLog(orderid){
         } 
     });
 }
-//datatables自动高度
+//datatables里的td 出现多行数据时，边距为0
 function autoHighLoad(obj){
+	
 	obj.find('tr').each(function () {//全部 table 自适应高度      
        $(this).children('td').each(function(){
-          var liLength = $(this).children('ul').find("li").length;
-          if(liLength==1){
-            $(this).children('ul').find("li").addClass('eq');
-          }else if(liLength==2){
-            $(this).children('ul').find("li").eq(1).addClass('eq1');
-            $(this).children('ul').find("li").eq(0).addClass('eq0');
-          }else if(liLength==3){
-            $(this).children('ul').find("li").eq(2).addClass('eq2');
-          }else if(liLength==4){
-        	$(this).children('ul').find("li").addClass('eq3');
-        	$(this).children('ul').find("li").eq(2).addClass('eq4');
-        	$(this).children('ul').find("li").eq(3).addClass('eq2');
-          }else if(liLength>=5){
-        	$(this).children('ul').find("li").css("line-height","13px");
-        	$(this).children('ul').find("li").css("height","13px");
+          var liLength = $(this).children('ul').length;
+          if(liLength!=0){
+            $(this).css("padding","0");
           }
        });
  	});

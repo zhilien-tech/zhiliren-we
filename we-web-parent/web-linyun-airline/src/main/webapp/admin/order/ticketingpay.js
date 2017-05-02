@@ -273,3 +273,9 @@ $('.ticketpaysearch').click(function(){
 	payTable.settings()[0].ajax.data = param;
 	payTable.ajax.reload();
 });
+function onkeyTicketingPayEnter(){
+	var e = window.event || arguments.callee.caller.arguments[0];
+    if(e && e.keyCode == 13){
+ 		$('.ticketpaysearch').click();
+    }
+}

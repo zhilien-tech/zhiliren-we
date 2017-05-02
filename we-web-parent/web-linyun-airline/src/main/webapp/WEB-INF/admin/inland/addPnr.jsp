@@ -19,11 +19,11 @@
             <input type="button" id="submit" class="btn btn-primary right btn-sm" onclick="savePnrInfo();" value="保存"/>
             <h4>+PNR</h4>
           </div>
-          <div class="modal-body" style="    top: -20px;left: 20px;">
+          <div class="modal-body" style="height: 356px;overflow-y: auto;">
             <div class="tab-content backcard">
             	<form id="addPnrForm">
             	<input id="needid" name="needid" type="hidden" value="${obj.needid }" >
-                <table class="PNRtable">
+                <%-- <table class="PNRtable">
                   <tr>
                     <td>PNR：</td>
                     <td><input id="pnr" name="pnr" type="text" class="form-control input-sm PNRlength"></td>
@@ -57,8 +57,92 @@
                     <td>销售总价：</td>
                     <td><input id="salespricesum" name="salespricesum" type="text" class="form-control input-sm mustNumberPoint"></td></td>
                   </tr>
+                </table> --%>
+				<table class="PNRtable">
+                  <tr>
+                    <td>PNR：</td>
+                    <td><input id="pnr" name="pnr" type="text" class="form-control input-sm PNRlength"></td>
+                    <td>登录帐号：</td>
+                    <td><select id="loginid" name="loginid" class="form-control input-sm">
+                    		<option value="">请选择</option>
+	                    	<c:forEach items="${obj.loginselect }" var="one">
+		                    		<option value="${one.id }">${one.loginNumName }</option>
+	                    	</c:forEach>
+                    	</select>
+                    </td>
+                    <td>币种：</td>
+                    <td>
+                      <select id="currency" name="currency" class="form-control input-sm">
+                        <option value="">请选择</option>
+                        <c:forEach items="${obj.bzcode }" var="one"> 
+		                     <option value="${one.dictCode }">${one.dictCode }</option>
+                     	</c:forEach>
+                      </select>
+                    </td>
+                    <td>平均汇率：</td>
+                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumber"></td>
+                    <td>实时汇率：</td>
+                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumber"></td>
+                  </tr>
+                  <tr>
+                  	<td>成人：</td>
+                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td>成本单价：</td>
+                    <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td>成本总价：</td>
+                    <td><input id="costpricesum" name="costpricesum" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td>销售单价：</td>
+                    <td><input id="salesprice" name="salesprice" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td>销售总价：</td>
+                    <td><input id="salespricesum" name="salespricesum" type="text" class="form-control input-sm mustNumberPoint"></td>
+                  </tr>
+                  <tr>
+                  	<td>儿童：</td>
+                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td>成本单价：</td>
+                    <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td>成本总价：</td>
+                    <td><input id="costpricesum" name="costpricesum" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td>销售单价：</td>
+                    <td><input id="salesprice" name="salesprice" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td>销售总价：</td>
+                    <td><input id="salespricesum" name="salespricesum" type="text" class="form-control input-sm mustNumberPoint"></td>
+                  </tr>
+                  <tr>
+                  	<td>婴儿：</td>
+                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td>成本单价：</td>
+                    <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td>成本总价：</td>
+                    <td><input id="costpricesum" name="costpricesum" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td>销售单价：</td>
+                    <td><input id="salesprice" name="salesprice" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td>销售总价：</td>
+                    <td><input id="salespricesum" name="salespricesum" type="text" class="form-control input-sm mustNumberPoint"></td>
+                  </tr>
+                  <tr>
+                  	<td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td>成本合计：</td>
+                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td> </td>
+                    <td> </td>
+                    <td>销售合计：</td>
+                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                  </tr>
+                  <tr>
+                  	<td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td colspan="2">成本RMB合计：</td>
+                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td> </td>
+                    <td colspan="2">销售RMB合计：</td>
+                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                  </tr>
                 </table>
-
                 <div class="multiselectDiv">
                   <div class="row">
                     <div class="col-sm-5">
@@ -90,13 +174,13 @@
    <!--JS 文件-->
 	<script src="${base }/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script src="${base }/public/bootstrap/js/bootstrap.min.js"></script>
+    <script src="${base }/admin/order/ordercommon.js"></script>
 
 	<script src="${base }/public/plugins/slimScroll/jquery.slimscroll.min.js"></script><!-- SlimScroll -->
 	<script src="${base }/public/plugins/fastclick/fastclick.js"></script><!-- FastClick -->
 	<script src="${base }/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
     <script src="${base }/public/dist/js/multiselect.min.js"></script>
     <script src="${base }/public/dist/js/prettify.min.js"></script>
-    <script src="${base }/admin/order/ordercommon.js"></script>
     <!--layer -->
   <script src="${base}/common/js/layer/layer.js"></script>
     <script type="text/javascript">
@@ -105,7 +189,17 @@
  	//手续费
  	var fees = '${obj.custominfo.fees}'; 
       $(function(){
-          $('#multiselect').multiselect();
+    	  var orderCount = 0;
+          $('#multiselect').multiselect({
+        	  keepRenderingSort:true
+          });
+    	  /* var visitors = eval('${obj.visitors}');
+    	  var options = '';
+    	  $.each(visitors, function(name, value) {
+    		  var option = '<option value='+value.id+' position="'+name+'">'+value.visitorname+'</option>';
+    		  options += option;
+  		  });
+    	  $('#multiselect').html(options); */
       });
       //关闭窗口
       function closewindow(){

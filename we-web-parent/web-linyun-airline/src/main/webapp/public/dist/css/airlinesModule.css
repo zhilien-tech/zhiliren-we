@@ -24,12 +24,6 @@ div[data-cal-index="2"] .k-title{width: 120px;margin: 0 auto;}
 #example3 tbody tr td ul{margin-bottom: 0;padding-left: 0px;}
 #example3>tbody>tr>td {padding: 3px 0px;}
 #example3 tbody tr td ul li:first-child {border-bottom: solid 1px #eee;}
-#example3 tbody tr .sorting_1{line-height: 40px !important;}
-#example3 tbody tr td:nth-child(6){line-height:40px;}
-#example3 tbody tr td:nth-child(7){line-height:40px;}
-#example3 tbody tr td:nth-child(8){line-height:40px;}
-#example3 tbody tr td:nth-child(9){line-height:40px;}
-#example3 tbody tr td:nth-child(10){line-height:40px;}
 #example3 thead tr th{padding-right: 0px;}
 .kalendae .k-days span.k-selected.k-active {background: #ce728f;}
 #datatable2 tbody tr td ul{margin-bottom: 0;padding-left: 0px;}
@@ -37,13 +31,6 @@ div[data-cal-index="2"] .k-title{width: 120px;margin: 0 auto;}
 #datatable2 tbody tr td ul li{border-bottom: solid 1px #eee;}
 #datatable2 tbody tr td ul li:last-child{border-bottom: solid 0px #eee;}
 #datatable2 tbody tr .sorting_1 {padding-top: 14px;}
-#datatable2 tbody tr td:nth-child(2){line-height:40px;}
-#datatable2 tbody tr td:nth-child(7){line-height:40px;}
-#datatable2 tbody tr td:nth-child(8){line-height:40px;}
-#datatable2 tbody tr td:nth-child(9){line-height:40px;}
-#datatable2 tbody tr td:nth-child(10){line-height:40px;}
-#datatable2 tbody tr td:nth-child(11){line-height:40px;}
-#datatable2 tbody tr td:nth-child(12){line-height:40px;}
 #datatable2 thead tr th{padding-right:0px;}
 #datatable2 thead .sorting_asc:after {display:none;}
 .select2-dropdown--below{width: 150px !important;}

@@ -35,11 +35,14 @@ function initInternationalTable(){
                     {"data": "leavesdate", "bSortable": false,
                     	render: function(data, type, row, meta) {
                     		var result = '<ul>';
-                    		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
-                    		var week = ['MO','TU','WE','TH','FR','SA','SU'];
+                    		//var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
+                    		//var week = ['MO','TU','WE','TH','FR','SA','SU'];
                     		$.each(row.airinfo, function(name, value) {
-                    			var leavedate = new Date(value.leavedate);
-                    			result += '<li style="list-style:none;">'+(week[leavedate.getUTCDay()]+leavedate.getDate() + MM[leavedate.getMonth()])+'</li>';
+                    			//var leavedate = new Date(value.leavedate);
+                    			if(value.aircom && value.aircom != undefined){
+                    				result += '<li style="list-style:none;">'+value.aircom+'</li>';
+                    			}
+                    			//result += '<li style="list-style:none;">'+row.aircom+'</li>';
                     		});
                     		result += '</ul>';
                     		return result;
@@ -63,7 +66,16 @@ function initInternationalTable(){
                     	render: function(data, type, row, meta) {
                     		var result = '<ul>';
                     		$.each(row.airinfo, function(name, value) {
-                    			result += '<li style="list-style:none;">'+(value.leavecity+'/'+value.arrvicity)+'</li>';
+                    			//result += '<li style="list-style:none;">'+(value.leavecity+'/'+value.arrvicity)+'</li>';
+                    			result += '<li style="list-style:none;">';
+                    			if(value.leavecity && value.leavecity != undefined){
+                    				result += value.leavecity;
+                    			}
+                    			result += '/';
+                    			if(value.arrvicity && value.arrvicity != undefined){
+                    				result += value.arrvicity;
+                    			}
+                    			result += '</li>';
                     		});
                     		result += '</ul>';
                     		return result;
@@ -186,3 +198,10 @@ $('#searchOrder').click(function(i){
 		autoHighLoad($('#internationalTable'));
 	});
 });
+
+function onkeyEnter(){
+	var e = window.event || arguments.callee.caller.arguments[0];
+    if(e && e.keyCode == 13){
+ 		$('#searchOrder').click();
+    }
+}

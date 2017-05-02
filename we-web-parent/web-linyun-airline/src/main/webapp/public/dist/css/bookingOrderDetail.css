@@ -9,9 +9,14 @@
 .removIcon {float: left;left: 10px;}
 .scykP{padding-top: 0;line-height: 27px;font-size: 12px;}
 /*+PNR*/
-.PNRtable tr td:nth-child(odd){text-align: right;width: 9%;}
-.PNRtable tr td:nth-child(even){width: 15%;}
-.PNRtable tr:nth-child(even) td{position: relative;top: 10px;}
+#addPnrForm{margin-top: 0px;margin-right: 0px;}
+.PNRtable tr td:nth-child(odd){text-align: right;width:8.5%;}
+.PNRtable tr td:nth-child(even){width: 11%;}
+.PNRtable tr td{position: relative;padding-top: 10px;}
+.PNRtable tr td:nth-child(1){text-align: right;width: 4%;}
+.PNRtable tr td input{padding-left:3px;padding-right:3px;}
+.PNRtable tr td select{padding-left:3px;padding-right:3px;}
+.PNRtable tr [colspan="2"]{text-align:right;}
 .multiselectDiv {margin-top:20px;}
 .multiselectP {text-align: center;font-size: 14px;line-height: 30px;}
 .multiselectDiv .row .col-sm-2{margin-top:65px;}

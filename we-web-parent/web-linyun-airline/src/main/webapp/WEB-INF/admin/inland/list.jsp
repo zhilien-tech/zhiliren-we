@@ -29,14 +29,14 @@
                        <form role="form" class="form-horizontal">
                         <div class="form-group row marginBott cf">
                           <div class="col-md-1">
-                            <input type="text" name="startdate" class="form-control TimeInput" placeholder="2017-02-20" onFocus="WdatePicker()"> 
+                            <input type="text" name="startdate" class="form-control TimeInput" placeholder="2017-02-20" onFocus="WdatePicker()" onkeypress="onkeyEnter();"> 
                           </div>
                           <label class="col-md-1 labelClas">至</label>
                           <div class="col-md-1">
-                            <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22" onFocus="WdatePicker()">
+                            <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22" onFocus="WdatePicker()" onkeypress="onkeyEnter();">
                           </div>
                           <div class="col-md-3"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                            <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR" onkeypress="onkeyEnter();">
+                            <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人" onkeypress="onkeyEnter();">
                           </div>
                           <div class="col-md-1"><!-- 搜索 按钮 -->
                             <button id="searchOrder" type="button" class="btn btn-primary btn-sm">搜索</button>
@@ -90,7 +90,7 @@
                                       <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22" onFocus="WdatePicker()" onkeypress="onkeyTicketingEnter()">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR" onkeypress="onkeyTicketingEnter()">
+                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人" onkeypress="onkeyTicketingEnter()">
                                     </div>
                                     <div class="col-md-2"><!-- 搜索 按钮 -->
                                       <button type="button" id="ticketingSearch" class="btn btn-primary btn-sm">搜索</button>
@@ -132,14 +132,14 @@
                                  <form role="form" class="form-horizontal">
                                   <div class="form-group row marginBott5 cf">
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" name="startdate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-20"> 
+                                      <input type="text" name="startdate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-20" onkeypress="onkeyTicketingPayEnter()"> 
                                     </div>
                                     <label class="col-md-1 labelClas">至</label>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" name="enddate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-22">
+                                      <input type="text" name="enddate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-22" onkeypress="onkeyTicketingPayEnter()">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR" onkeypress="onkeyTicketingPayEnter()">
                                     </div>
                                     <div class="col-md-2"><!-- 搜索 按钮 -->
                                       <button type="button" class="btn btn-primary btn-sm ticketpaysearch">搜索</button>
@@ -193,21 +193,21 @@
                                  <form role="form" class="form-horizontal">
                                   <div class="form-group row marginBott5 cf">
                                     <div class="col-md-1 textPadding">
-                                      <select class="form-control TimeInput" name="status">
+                                      <select class="form-control TimeInput" name="status" onchange="changeshoukuan()">
                                           <option value="">全部</option>
                                           <option value="1">收款中</option>
                                           <option value="2">已收款</option>
                                       </select>
                                     </div>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" name="startdate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-20"> 
+                                      <input type="text" name="startdate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-20" onkeypress="onshoukuansearchenter()"> 
                                     </div>
                                     <label class="col-md-1 labelClas">至</label>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" name="enddate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-22">
+                                      <input type="text" name="enddate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-22" onkeypress="onshoukuansearchenter()">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/联系人" onkeypress="onshoukuansearchenter()">
                                     </div>
                                     <div class="col-md-2"><!-- 搜索 按钮 -->
                                       <button type="button" class="btn btn-primary btn-sm shoukuansearch">搜索</button>
@@ -242,7 +242,7 @@
                                  <form role="form" class="form-horizontal">
                                   <div class="form-group row marginBott5 cf">
                                      <div class="col-md-1 textPadding">
-                                      <select class="form-control TimeInput" name="status">
+                                      <select class="form-control TimeInput" name="status" onchange="changefukuan()">
                                           <option value="">全部</option>
                                           <option value="1">审批中</option>
                                           <option value="2">付款中</option>
@@ -250,14 +250,14 @@
                                       </select>
                                     </div>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" name="startdate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-20"> 
+                                      <input type="text" name="startdate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-20" onkeypress="fukuansearchenter()"> 
                                     </div>
                                     <label class="col-md-1 labelClas">至</label>
                                     <div class="col-md-1 textPadding">
-                                      <input name="enddate" type="text" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-22">
+                                      <input name="enddate" type="text" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-22" onkeypress="fukuansearchenter()">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR" onkeypress="fukuansearchenter()">
                                     </div>
                                     <div class="col-md-2"><!-- 搜索 按钮 -->
                                       <button type="button" class="btn btn-primary btn-sm fukuansearch">搜索</button>
@@ -306,21 +306,21 @@
                                  <form role="form" class="form-horizontal">
                                   <div class="form-group row marginBott5 cf">
                                     <div class="col-md-1 textPadding">
-                                      <select class="form-control TimeInput" name="status">
+                                      <select class="form-control TimeInput" name="status" onchange="changekaiinvoice()">
                                           <option value="">全部</option>
                                           <option value="1">开发票中</option>
                                           <option value="2">已开发票</option>
                                       </select>
                                     </div>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" name="startdate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-20"> 
+                                      <input type="text" name="startdate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-20" onkeypress="kaiinvoiceenter()"> 
                                     </div>
                                     <label class="col-md-1 labelClas">至</label>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" name="enddate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-22">
+                                      <input type="text" name="enddate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-22" onkeypress="kaiinvoiceenter()">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/联系人" onkeypress="kaiinvoiceenter()">
                                     </div>
                                     <div class="col-md-2"><!-- 搜索 按钮 -->
                                       <button type="button" class="btn btn-primary btn-sm openinvoicesearch">搜索</button>
@@ -356,21 +356,21 @@
                                  <form role="form" class="form-horizontal">
                                   <div class="form-group row marginBott5 cf">
                                      <div class="col-md-1 textPadding">
-                                      <select class="form-control TimeInput" name="status">
+                                      <select class="form-control TimeInput" name="status" onchange="changeshouinvoice()">
                                           <option value="">全部</option>
                                           <option value="3">收发票中</option>
                                           <option value="4">已收发票</option>
                                       </select>
                                     </div>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" name="startdate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-20"> 
+                                      <input type="text" name="startdate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-20" onkeypress="shouinvoiceenter()"> 
                                     </div>
                                     <label class="col-md-1 labelClas">至</label>
                                     <div class="col-md-1 textPadding">
-                                      <input type="text" name="enddate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-22">
+                                      <input type="text" name="enddate" class="form-control TimeInput" onFocus="WdatePicker()" placeholder="2017-02-22" onkeypress="shouinvoiceenter()">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人/PNR" onkeypress="shouinvoiceenter()">
                                     </div>
                                     <div class="col-md-2"><!-- 搜索 按钮 -->
                                       <button type="button" class="btn btn-primary btn-sm receiveinvoicesearch">搜索</button>

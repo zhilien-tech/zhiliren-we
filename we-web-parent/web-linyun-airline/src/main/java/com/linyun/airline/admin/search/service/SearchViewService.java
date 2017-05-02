@@ -203,7 +203,16 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				return op;
 			}
 		}));
-
+		String outcitys = "";
+		if (!Util.isEmpty(outcityEntities)) {
+			for (TDepartureCityEntity tDepartureCityEntity : outcityEntities) {
+				outcitys += tDepartureCityEntity.getDictCode() + ",";
+			}
+		}
+		if (outcitys.length() > 0) {
+			outcitys = outcitys.substring(0, outcitys.length() - 1);
+		}
+		obj.put("outcitys", outcitys);
 		//统计历史欠款  
 		Double arrears = getMoney(id);//历史欠款
 		customerInfoEntity.setArrears(arrears);

@@ -86,18 +86,15 @@
                      <td colspan="3"><pre class="preTxt">
                      <c:choose>
                      	<c:when test="${obj.custominfo.payType eq 1 }">
-                     		现金
+                     		月结
                      	</c:when>
-                     	<c:when test="${obj.custominfo.payType eq 2 }">3
-                     		支票
+                     	<c:when test="${obj.custominfo.payType eq 2 }">
+                     		周结
                      	</c:when>
                      	<c:when test="${obj.custominfo.payType eq 3 }">
-                     		银行汇款
+                     		单结
                      	</c:when>
                      	<c:when test="${obj.custominfo.payType eq 4 }">
-                     		第三方
-                     	</c:when>
-                     	<c:when test="${obj.custominfo.payType eq 5 }">
                      		其他
                      	</c:when>
                      </c:choose>　
@@ -125,7 +122,7 @@
                      <td><label>传真：</label></td>
                      <td><input type="text" class="form-control input-sm" placeholder="" value="${obj.custominfo.fax }" readonly="true"></td>
                      <td><label>出发城市：</label></td>
-                     <td><input type="text" class="form-control input-sm addressInput" placeholder="" value="${obj.custominfo.id }" readonly="true"></td>
+                     <td><input type="text" class="form-control input-sm addressInput" placeholder="" value="${obj.outcitys }" readonly="true"></td>
                      
                    </tr>
                  </table>

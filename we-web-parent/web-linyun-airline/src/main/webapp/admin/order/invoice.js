@@ -42,7 +42,7 @@ function initkaiInvoiceTable() {
                   	render:function(data, type, row, meta) {
                   		var result = '<ul> ';
                 		$.each(row.invoicedetail, function(name, value) {
-                			if(value && value.invoicenum != undefined){
+                			if(value.invoicenum && value.invoicenum != undefined){
                 				result += '<li style="list-style:none;"><span data-toggle="tooltip" data-placement="left" title="'+value.invoicenum+'">'+value.invoicenum+'<span></li>';
                 			}
                 		});
@@ -160,6 +160,16 @@ $('.openinvoicesearch').click(function(){
 		autoHighLoad($('#kaiInvoiceTable'));
 	});
 });
+
+function kaiinvoiceenter(){
+	var e = window.event || arguments.callee.caller.arguments[0];
+    if(e && e.keyCode == 13){
+ 		$('.openinvoicesearch').click();
+    }
+}
+function changekaiinvoice(){
+	$('.openinvoicesearch').click();
+}
 //打开开发票页面
 function openkaiInvoiceEdit(id){
 	layer.open({
@@ -332,6 +342,15 @@ $('.receiveinvoicesearch').click(function(){
 	shouInvoiceTable.settings()[0].ajax.data = param;
 	shouInvoiceTable.ajax.reload();
 });
+function changeshouinvoice(){
+	$('.receiveinvoicesearch').click();
+}
+function shouinvoiceenter(){
+	var e = window.event || arguments.callee.caller.arguments[0];
+    if(e && e.keyCode == 13){
+ 		$('.receiveinvoicesearch').click();
+    }
+}
 function openshouInvoiceEdit(id){
 	layer.open({
         type: 2,

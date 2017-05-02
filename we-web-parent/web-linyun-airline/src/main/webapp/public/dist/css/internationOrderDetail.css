@@ -11,9 +11,6 @@ ul{padding-left: 0; margin-bottom: 0px;}
 .tableDuan .main tr td{padding: 0;}
 .tableDuan .main tr td ul li{border-bottom: solid 1px #f4f4f4;}
 .tableDuan .main tr td ul li:last-child{border-bottom:0;}
-.tableDuan .main tr td:nth-child(1){line-height: 60px;}
-.tableDuan .main tr td:nth-child(6){line-height: 60px;}
-.tableDuan .main tr td:nth-child(7){line-height: 60px;}
 .addressInput {width: 100% !important;}
 .recordDiu{padding: 0 10px;}
 .recordParent{margin-top: 15px;}
