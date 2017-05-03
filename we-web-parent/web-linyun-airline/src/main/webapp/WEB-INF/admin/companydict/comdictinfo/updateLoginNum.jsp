@@ -30,7 +30,7 @@
     </div>
           <form id="updateLoginForm" method="post">
 	          <div class="modal-body">
-	            <div class="tab-content backcard">
+	            <div class="tab-content backcard" style="padding-left: 50px;">
 	                <div class="row">
 	                      <div class="form-group">
 	                      <%-- 字典类别id --%>
