@@ -283,8 +283,18 @@ function loadPNRdata(status){
             		}else{
             			result +='<td></td>';
             		}
-            		if(data[i].costprice != undefined){
-            			result +='<td>'+data[i].costprice.toFixed(2)+'</td>';
+            		if(data[i].peoplecount != undefined){
+            			result +='<td>'+data[i].peoplecount+'</td>';
+            		}else{
+            			result +='<td></td>';
+            		}
+            		if(data[i].loginid != undefined){
+            			result +='<td>'+data[i].loginid+'</td>';
+            		}else{
+            			result +='<td></td>';
+            		}
+            		if(data[i].currency != undefined){
+            			result +='<td>'+data[i].currency+'</td>';
             		}else{
             			result +='<td></td>';
             		}
@@ -293,23 +303,28 @@ function loadPNRdata(status){
             		}else{
             			result +='<td></td>';
             		}
-            		if(data[i].salesprice != undefined){
-            			result +='<td>'+data[i].salesprice.toFixed(2)+'</td>';
-            		}else{
-            			result +='<td></td>';
-            		}
             		if(data[i].salespricesum != undefined){
             			result +='<td>'+data[i].salespricesum.toFixed(2)+'</td>';
             		}else{
             			result +='<td></td>';
             		}
-            		if(data[i].peoplecount != undefined){
-            			result +='<td>'+data[i].peoplecount+'</td>';
+            		if(data[i].averagerate != undefined){
+            			result +='<td>'+data[i].averagerate+'</td>';
             		}else{
             			result +='<td></td>';
             		}
-            		if(data[i].loginid != undefined){
-            			result +='<td>'+data[i].loginid+'</td>';
+            		if(data[i].currentrate != undefined){
+            			result +='<td>'+data[i].currentrate+'</td>';
+            		}else{
+            			result +='<td></td>';
+            		}
+            		if(data[i].costpricesumrmb != undefined){
+            			result +='<td>'+data[i].costpricesumrmb+'</td>';
+            		}else{
+            			result +='<td></td>';
+            		}
+            		if(data[i].salespricesumrmb != undefined){
+            			result +='<td>'+data[i].salespricesumrmb+'</td>';
             		}else{
             			result +='<td></td>';
             		}

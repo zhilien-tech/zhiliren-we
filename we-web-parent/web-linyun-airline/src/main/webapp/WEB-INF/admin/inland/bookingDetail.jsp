@@ -351,12 +351,15 @@
 		                         <thead>
 		                          <tr>
 		                            <td>PNR</td>
-		                            <td>成本单价</td>
-		                            <td>成本总价</td>
-		                            <td>销售单价</td>
-		                            <td>销售总价</td>
 		                            <td>人数</td>
 		                            <td>登录帐号</td>
+		                            <td>币种</td>
+		                            <td>成本合计</td>
+		                            <td>销售合计</td>
+		                            <td>平均汇率</td>
+		                            <td>实时汇率</td>
+		                            <td>成本RMB总价</td>
+		                            <td>销售RMB总价</td>
 		                            <td>操作</td>
 		                          </tr>
 		                         </thead>
@@ -461,12 +464,15 @@
 		                         <thead>
 		                          <tr>
 		                            <td>PNR</td>
-		                            <td>成本单价</td>
-		                            <td>成本总价</td>
-		                            <td>销售单价</td>
-		                            <td>销售总价</td>
 		                            <td>人数</td>
 		                            <td>登录帐号</td>
+		                            <td>币种</td>
+		                            <td>成本合计</td>
+		                            <td>销售合计</td>
+		                            <td>平均汇率</td>
+		                            <td>实时汇率</td>
+		                            <td>成本RMB总价</td>
+		                            <td>销售RMB总价</td>
 		                            <td>操作</td>
 		                          </tr>
 		                         </thead>

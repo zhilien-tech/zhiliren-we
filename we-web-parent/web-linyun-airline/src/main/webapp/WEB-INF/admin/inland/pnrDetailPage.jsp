@@ -57,45 +57,45 @@
                       </select>
                     </td>
                     <td>平均汇率：</td>
-                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumber"></td>
+                    <td><input disabled="disabled" type="text" class="form-control input-sm mustNumber" value="${obj.pnrinfo.averagerate }"></td>
                     <td>实时汇率：</td>
-                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumber"></td>
+                    <td><input disabled="disabled" type="text" class="form-control input-sm mustNumber" value="${obj.pnrinfo.currentrate }"></td>
                   </tr>
                   <tr>
                   	<td>成人：</td>
-                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input disabled="disabled" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.adultcount }"></td>
                     <td>成本单价：</td>
-                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.costprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.adultcostprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
                     <td>成本总价：</td>
-                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.costpricesum }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.adultcostpricesum }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
                     <td>销售单价：</td>
-                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.salesprice }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.adultsalesprice }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
                     <td>销售总价：</td>
-                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.salespricesum }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.adultsalespricesum }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
                   </tr>
                   <tr>
                   	<td>儿童：</td>
-                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input disabled="disabled" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.childcount }"></td>
                     <td>成本单价：</td>
-                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.costprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.childcostprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
                     <td>成本总价：</td>
-                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.costpricesum }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.childcostpricesum }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
                     <td>销售单价：</td>
-                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.salesprice }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.childsalesprice }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
                     <td>销售总价：</td>
-                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.salespricesum }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.childsalespricesum }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
                   </tr>
                   <tr>
                   	<td>婴儿：</td>
-                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input disabled="disabled" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.babycount }"></td>
                     <td>成本单价：</td>
-                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.costprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.babycostprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
                     <td>成本总价：</td>
-                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.costpricesum }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.babycostpricesum }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
                     <td>销售单价：</td>
-                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.salesprice }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.babysalesprice }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
                     <td>销售总价：</td>
-                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.salespricesum }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.babysalespricesum }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
                   </tr>
                   <tr>
                   	<td> </td>
@@ -103,21 +103,21 @@
                     <td> </td>
                     <td> </td>
                     <td>成本合计：</td>
-                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input disabled="disabled" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.costpricesum }"></td>
                     <td> </td>
                     <td> </td>
                     <td>销售合计：</td>
-                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input disabled="disabled" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.salespricesum }"></td>
                   </tr>
                   <tr>
                   	<td> </td>
                     <td> </td>
                     <td> </td>
                     <td colspan="2">成本RMB合计：</td>
-                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input disabled="disabled" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.costpricesumrmb }"></td>
                     <td> </td>
                     <td colspan="2">销售RMB合计：</td>
-                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input disabled="disabled" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.salespricesumrmb }"></td>
                   </tr>
                 </table>
                 <%-- <table class="PNRtable">

@@ -61,7 +61,7 @@
 				<table class="PNRtable">
                   <tr>
                     <td>PNR：</td>
-                    <td><input id="pnr" name="pnr" type="text" class="form-control input-sm PNRlength"></td>
+                    <td><input id="pNR" name="pNR" type="text" class="form-control input-sm PNRlength"></td>
                     <td>登录帐号：</td>
                     <td><select id="loginid" name="loginid" class="form-control input-sm">
                     		<option value="">请选择</option>
@@ -80,45 +80,45 @@
                       </select>
                     </td>
                     <td>平均汇率：</td>
-                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumber"></td>
+                    <td><input id="averagerate" name="averagerate" type="text" class="form-control input-sm mustNumberPoint"></td>
                     <td>实时汇率：</td>
-                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumber"></td>
+                    <td><input id="currentrate" name="currentrate" type="text" class="form-control input-sm mustNumberPoint"></td>
                   </tr>
-                  <tr>
+                  <tr class="priceinfo">
                   	<td>成人：</td>
-                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input id="adultcount" name="adultcount" type="text" class="form-control input-sm mustNumber peoplecount"></td>
                     <td>成本单价：</td>
-                    <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input id="adultcostprice" name="adultcostprice" type="text" class="form-control input-sm mustNumberPoint costprice"></td>
                     <td>成本总价：</td>
-                    <td><input id="costpricesum" name="costpricesum" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input id="adultcostpricesum" name="adultcostpricesum" type="text" class="form-control input-sm mustNumberPoint costpricesum"></td>
                     <td>销售单价：</td>
-                    <td><input id="salesprice" name="salesprice" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input id="adultsalesprice" name="adultsalesprice" type="text" class="form-control input-sm mustNumberPoint salesprice"></td>
                     <td>销售总价：</td>
-                    <td><input id="salespricesum" name="salespricesum" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input id="adultsalespricesum" name="adultsalespricesum" type="text" class="form-control input-sm mustNumberPoint salespricesum"></td>
                   </tr>
-                  <tr>
+                  <tr class="priceinfo">
                   	<td>儿童：</td>
-                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input id="childcount" name="childcount" type="text" class="form-control input-sm mustNumber peoplecount"></td>
                     <td>成本单价：</td>
-                    <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input id="childcostprice" name="childcostprice" type="text" class="form-control input-sm mustNumberPoint costprice"></td>
                     <td>成本总价：</td>
-                    <td><input id="costpricesum" name="costpricesum" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input id="childcostpricesum" name="childcostpricesum" type="text" class="form-control input-sm mustNumberPoint costpricesum"></td>
                     <td>销售单价：</td>
-                    <td><input id="salesprice" name="salesprice" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input id="childsalesprice" name="childsalesprice" type="text" class="form-control input-sm mustNumberPoint salesprice"></td>
                     <td>销售总价：</td>
-                    <td><input id="salespricesum" name="salespricesum" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input id="childsalespricesum" name="childsalespricesum" type="text" class="form-control input-sm mustNumberPoint salespricesum"></td>
                   </tr>
-                  <tr>
+                  <tr class="priceinfo">
                   	<td>婴儿：</td>
-                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input id="babycount" name="babycount" type="text" class="form-control input-sm mustNumber peoplecount"></td>
                     <td>成本单价：</td>
-                    <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input id="babycostprice" name="babycostprice" type="text" class="form-control input-sm mustNumberPoint costprice"></td>
                     <td>成本总价：</td>
-                    <td><input id="costpricesum" name="costpricesum" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input id="babycostpricesum" name="babycostpricesum" type="text" class="form-control input-sm mustNumberPoint costpricesum"></td>
                     <td>销售单价：</td>
-                    <td><input id="salesprice" name="salesprice" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input id="babysalesprice" name="babysalesprice" type="text" class="form-control input-sm mustNumberPoint salesprice"></td>
                     <td>销售总价：</td>
-                    <td><input id="salespricesum" name="salespricesum" type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input id="babysalespricesum" name="babysalespricesum" type="text" class="form-control input-sm mustNumberPoint salespricesum"></td>
                   </tr>
                   <tr>
                   	<td> </td>
@@ -126,21 +126,21 @@
                     <td> </td>
                     <td> </td>
                     <td>成本合计：</td>
-                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input id="costpricesum" name="costpricesum" type="text" class="form-control input-sm mustNumberPoint"></td>
                     <td> </td>
                     <td> </td>
                     <td>销售合计：</td>
-                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input id="salespricesum" name="salespricesum" type="text" class="form-control input-sm mustNumberPoint"></td>
                   </tr>
                   <tr>
                   	<td> </td>
                     <td> </td>
                     <td> </td>
                     <td colspan="2">成本RMB合计：</td>
-                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input id="costpricesumrmb" name="costpricesumrmb" type="text" class="form-control input-sm mustNumberPoint"></td>
                     <td> </td>
                     <td colspan="2">销售RMB合计：</td>
-                    <td><input id=" " name=" " type="text" class="form-control input-sm mustNumberPoint"></td>
+                    <td><input id="salespricesumrmb" name="salespricesumrmb" type="text" class="form-control input-sm mustNumberPoint"></td>
                   </tr>
                 </table>
                 <div class="multiselectDiv">
@@ -262,38 +262,41 @@
 	   }
    }
    
-   $('#costprice').on('input',function(){
+   $('.costprice').on('input',function(){
+	   var parentdiv = $(this).parent().parent();
 	   //成本单价
-	   var costprice = $('#costprice').val();
+	   var costprice = $(this).val();
 	   //人数
-	   var peoplecount = $('#peoplecount').val();
+	   var peoplecount = parentdiv.find('.peoplecount').val();
 	   //自动填充销售单价
 	   var salesprice = parseFloat(costprice) * parseFloat(discountFare)/100 + parseFloat(fees);
 	   if(costprice){
 	 		if(isNaN(salesprice)){
-	 			$('#salesprice').val('');
+	 			parentdiv.find('.salesprice').val('');
 	 		}else{
-	 			$('#salesprice').val(salesprice.toFixed(2));
+	 			parentdiv.find('.salesprice').val(salesprice.toFixed(2));
 	 		}
 	 	}else{
-	 		$('#salesprice').val('');
+	 		parentdiv.find('.salesprice').val('');
 	 	}
 	   if(peoplecount){
 		   var costpricesum = parseFloat(costprice) * parseInt(peoplecount);
 		   if(!isNaN(costpricesum)){
-			   $('#costpricesum').val(costpricesum.toFixed(2));
+			   parentdiv.find('.costpricesum').val(costpricesum.toFixed(2));
 		   }
 		   var salespricesum = parseFloat(salesprice) * parseInt(peoplecount);
 		   if(!isNaN(salespricesum)){
-			   $('#salespricesum').val(salespricesum.toFixed(2));
+			   parentdiv.find('.salespricesum').val(salespricesum.toFixed(2));
 		   }
 	   }
+	   setSumPrice();
    });
-   $('#salesprice').on('input',function(){
+   $('.salesprice').on('input',function(){
+	   var parentdiv = $(this).parent().parent();
 	   //人数
 	   var peoplecount = 0;
-	   if($('#peoplecount').val()){
-		   peoplecount = parseInt($('#peoplecount').val());
+	   if(parentdiv.find('.peoplecount').val()){
+		   peoplecount = parseInt(parentdiv.find('.peoplecount').val());
 	   }
 	   var salesprice = 0;
 	   if($(this).val()){
@@ -301,9 +304,45 @@
 	   }
 	   var salespricesum = salesprice * peoplecount;
 	   if(salespricesum != 0){
-		   $('#salespricesum').val(salespricesum.toFixed(2));
+		   parentdiv.find('.salespricesum').val(salespricesum.toFixed(2));
 	   }
+	   setSumPrice();
    });
+   
+   function setSumPrice(){
+	   var costpricesum = 0;
+	   var salespricesum = 0;
+	   $('.priceinfo').each(function(i){
+		   if($(this).find('.costpricesum').val()){
+			   costpricesum += parseFloat($(this).find('.costpricesum').val());
+		   }
+		   if($(this).find('.salespricesum').val()){
+			   salespricesum += parseFloat($(this).find('.salespricesum').val());
+		   }
+	   });
+	   if(costpricesum > 0){
+		   $('#costpricesum').val(costpricesum.toFixed(2));
+		   var averagerate = 0;
+		   if($('#averagerate').val()){
+			   averagerate = parseFloat($('#averagerate').val());
+			   var costpricesumrmb = costpricesum * averagerate;
+			   if(costpricesumrmb > 0){
+				   $('#costpricesumrmb').val(costpricesumrmb.toFixed(2));
+			   }
+		   }
+	   }
+	   if(salespricesum > 0){
+		   $('#salespricesum').val(salespricesum.toFixed(2));
+		   var currentrate = 0;
+		   if($('#currentrate').val()){
+			   currentrate = parseFloat($('#currentrate').val());
+			   var salespricesumrmb = salespricesum * currentrate;
+			   if(salespricesumrmb > 0){
+				   $('#salespricesumrmb').val(salespricesumrmb.toFixed(2));
+			   }
+		   }
+	   }
+   }
   </script>
 </body>
 </html>	

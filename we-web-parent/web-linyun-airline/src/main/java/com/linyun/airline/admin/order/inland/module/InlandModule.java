@@ -1,5 +1,5 @@
 /**
- * InlandModule.java
+3 * InlandModule.java
  * com.linyun.airline.admin.order.inland.module
  * Copyright (c) 2017, 北京科技有限公司版权所有.
 */
@@ -28,6 +28,7 @@ import com.linyun.airline.admin.order.inland.form.PayApplyListForm;
 import com.linyun.airline.admin.order.inland.form.ShouKuanParamFrom;
 import com.linyun.airline.admin.order.inland.service.InlandService;
 import com.linyun.airline.common.enums.OrderStatusEnum;
+import com.linyun.airline.entities.TPnrInfoEntity;
 import com.uxuexi.core.common.util.EnumUtil;
 
 /**
@@ -151,8 +152,9 @@ public class InlandModule {
 	 */
 	@At
 	@POST
-	public Object addPnrInfo(HttpServletRequest request) {
-		return inlandService.addPnrInfo(request);
+	public Object addPnrInfo(HttpServletRequest request, @Param("..") TPnrInfoEntity pnrinfo,
+			@Param("visitor") String visitor) {
+		return inlandService.addPnrInfo(request, pnrinfo, visitor);
 	}
 
 	/**
@@ -196,8 +198,9 @@ public class InlandModule {
 	 */
 	@At
 	@POST
-	public Object editPnrInfo(HttpServletRequest request) {
-		return inlandService.editPnrInfo(request);
+	public Object editPnrInfo(HttpServletRequest request, @Param("..") TPnrInfoEntity pnrinfo,
+			@Param("visitor") String visitor) {
+		return inlandService.editPnrInfo(request, pnrinfo, visitor);
 	}
 
 	/**
