@@ -813,15 +813,17 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				if (pnr[0].contains(a + "")) {
 					airDepartureTime = pnr[14];
 					airLandingTime = pnr[15];
+					flightNum = pnr[1];
+					airLine = pnr[13];
 					a++;
 				} else {
 					airDepartureTime = pnr[13];
 					airLandingTime = pnr[14];
+					flightNum = pnr[0];
+					airLine = pnr[12];
 					id = a - 1;
 				}
 				pSabreEntity.setId(id);
-				flightNum = pnr[1];
-				airLine = pnr[13];
 
 				for (String seat : pnr) {
 					if (!seat.contains("-") && !seat.contains("+") && seat.length() == 2) {
