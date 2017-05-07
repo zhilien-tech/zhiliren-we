@@ -2,6 +2,10 @@ package com.linyun.airline.admin.drawback.grabfile.service;
 
 import java.io.File;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,13 +16,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
+import org.nutz.dao.entity.Record;
 import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.mvc.annotation.Param;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.linyun.airline.admin.drawback.grabfile.entity.TGrabFileEntity;
 import com.linyun.airline.admin.drawback.grabfile.enums.FileTypeEnum;
+import com.linyun.airline.admin.drawback.grabfile.form.TGrabFileSqlForm;
 import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.common.util.ZFile;
 import com.linyun.airline.common.util.ZipUtils;
@@ -28,6 +35,27 @@ import com.uxuexi.core.web.base.service.BaseService;
 
 @IocBean
 public class GrabfileViewService extends BaseService<TGrabFileEntity> {
+
+	@SuppressWarnings("unchecked")
+	public Object listData(@Param("..") final TGrabFileSqlForm sqlForm) {
+		Map<String, Object> DatatablesData = this.listPage4Datatables(sqlForm);
+		List<Record> listdata = (List<Record>) DatatablesData.get("data");
+		String sendTime = "";
+		for (Record record : listdata) {
+			if (!Util.isEmpty(sendTime)) {
+				DateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日 E HH:mm ");
+				Date date = null;
+				try {
+					date = dateFormat.parse(record.getString("sendTime"));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				SimpleDateFormat fmt = new SimpleDateFormat("yyyy.MM.dd");
+				sendTime = fmt.format(date);//邮件发送时间
+			}
+		}
+		return DatatablesData;
+	}
 
 	//添加时根据pid查询数据
 	public Map<String, Object> superFolder(long pid) {

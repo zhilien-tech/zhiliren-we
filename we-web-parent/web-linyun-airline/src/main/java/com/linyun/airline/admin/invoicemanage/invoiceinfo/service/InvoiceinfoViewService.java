@@ -64,7 +64,6 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 
 	@Inject
 	private UploadService qiniuUploadService;
-
 	@Inject
 	private SearchViewService searchViewService;
 
@@ -223,7 +222,6 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		result.put("invoicedetail", invoicedetail);
 		if (query2.size() > 0)
 			result.put("bill", query2.get(0));
-
 		return result;
 	}
 
@@ -451,7 +449,6 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		result.put("invoiceDetail", invoiceDetail);
 		result.put("invoiceinfo", invoiceinfo);
 		return result;
-
 	}
 
 	/**
