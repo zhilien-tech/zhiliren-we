@@ -44,6 +44,10 @@ public class TGrabFileEntity implements Serializable {
 	private String fileSize;
 
 	@Column
+	@Comment("文件单位")
+	private String unit;
+
+	@Column
 	@Comment("文件类型(1-文件夹;2-文件;)")
 	private int type;
 
@@ -73,5 +77,5 @@ public class TGrabFileEntity implements Serializable {
 
 	@Column
 	@Comment("散团类型")
-	private String groupType;
+	private Integer groupType;
 }

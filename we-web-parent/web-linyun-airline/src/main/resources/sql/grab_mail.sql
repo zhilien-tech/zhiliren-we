@@ -87,3 +87,27 @@ WHERE
 		WHERE
 			id =@fileId
 	)
+	
+/*grab_mail_and_file_list*/
+SELECT
+	gr.id,
+	gr.mailId,
+	gm.sendTime,
+	gr.parentId,
+	gr.folderName,
+	gr.fileName,
+	gr.url,
+	gr.fileSize,
+	gr.unit,
+	gr.type,
+	gr.`status`,
+	gr.createTime,
+	gr.updateTime,
+	gr.`level`,
+	gr.fullPath,
+	gr.sort,
+	gr.groupType
+FROM
+	t_grab_file gr
+LEFT JOIN t_grab_mail gm ON gm.id=gr.mailId
+$condition
