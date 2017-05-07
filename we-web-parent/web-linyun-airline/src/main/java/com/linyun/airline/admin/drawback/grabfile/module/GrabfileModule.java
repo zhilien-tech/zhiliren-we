@@ -75,7 +75,8 @@ public class GrabfileModule {
 	 */
 	@At
 	public Object listData(@Param("..") final TGrabFileSqlForm sqlForm) {
-		return grabfileViewService.listPage4Datatables(sqlForm);
+		//return grabfileViewService.listPage4Datatables(sqlForm);
+		return grabfileViewService.listData(sqlForm);
 	}
 
 	/**

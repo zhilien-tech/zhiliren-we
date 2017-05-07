@@ -22,7 +22,7 @@
               <!-- Custom Tabs -->
               <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
-                      <li class="active"><a href="#tab_1" data-toggle="tab">邮件抓取</a></li>
+                      <li class="active"><a href="#tab_1" data-toggle="tab">散客</a></li>
                       <li><a href="#tab_2" data-toggle="tab">团队</a></li>
                       <li><a href="#tab_3" data-toggle="tab">报表</a></li>
                 </ul>
@@ -525,22 +525,23 @@ function successCallback(id){
 	                    		}
 	                    	}
 	                    },
-	                    {"data": "createtime", "bSortable": true,
+	                    {"data": "updatetime", "bSortable": true,
 	                    	 render: function(data, type, row, meta) {
-	                    		 var createtime = row.createtime;
-	                    		 if(null==createtime || ""==createtime){
+	                    		 var updatetime = row.updatetime;
+	                    		 if(null==updatetime || ""==updatetime){
 	                    			 return "";
 	                    		 }
-	                    		return createtime;
+	                    		return updatetime;
 	                        } 	
 	                    },
 	                    {"data": "filesize", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var filesize = row.filesize;
+	                    		var unit = row.unit;
 	                    		if(null==filesize || ""==filesize){
 	                    			return null;
 	                    		}
-	                    		return filesize+"k";
+	                    		return filesize+unit;
 	                    	}	
 	                    },
 	            ],
@@ -809,9 +810,9 @@ function successCallback(id){
 	                    		if(null==backStatus || ""==backStatus){
 	                    			return "";
 	                    		}else if(backStatus==0){
-	                    			return "已退"
+	                    			return "已退税"
 	                    		}
-	                    		return "未退";
+	                    		return "未退税";
 	                    	}
 	                    },
 	                    {"data": "realincome", "bSortable": false,
@@ -863,16 +864,37 @@ function successCallback(id){
 	                    		var outAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+outAustralianTime+'">'+outAustralianTime+'<span>';
 	                    		return outAustralianTime;
 	                    	}
+	                    },
+	                    {"data": "backstatus", "bSortable": false,
+	                    	render: function(data, type, row, meta) {
+	                    		var backStatus = row.backstatus;
+	                    		if(null==backStatus || ""==backStatus){
+	                    			return "";
+	                    		}else if(backStatus==0){
+	                    			return "已关联"
+	                    		}
+	                    		return "未关联";
+	                    	}
+	                    },
+	                    {"data": "outaustraliantime", "bSortable": false,
+	                    	render: function(data, type, row, meta) {
+	                    		var outAustralianTime = row.outaustraliantime;
+	                    		if(null==outAustralianTime || ""==outAustralianTime){
+	                    			return "";
+	                    		}
+	                    		var outAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+outAustralianTime+'">'+outAustralianTime+'<span>';
+	                    		return outAustralianTime;
+	                    	}
 	                    }
 	            ],
 	            "columnDefs": [
 							   {"sWidth": "7%","aTargets": [10] },
 							   {
 					                //   指定第一列，从0开始，0表示第一列，1表示第二列……
-					                targets: 14,
+					                targets: 16,
 					                render: function(data, type, row, meta) {
 					                	/* var details = '<a style="cursor:pointer;" onclick="editPreview('+row.id+');">编辑</a>'; */
-					                    return details;
+					                    return null;
 					                }
 				               }]
 		});
