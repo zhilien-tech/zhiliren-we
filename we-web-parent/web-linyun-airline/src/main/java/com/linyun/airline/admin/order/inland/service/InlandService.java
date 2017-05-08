@@ -1003,6 +1003,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		String outaircom = financeMap.get("outaircom");
 		String outstarttime = financeMap.get("outstarttime");
 		String outarrivetime = financeMap.get("outarrivetime");
+		String enterleavecity = financeMap.get("enterleavecity");
+		String enterarrivecity = financeMap.get("enterarrivecity");
+		String outleavecity = financeMap.get("outleavecity");
+		String outarrivecity = financeMap.get("outarrivecity");
 		//开票人
 		financeInfo.setOrderid(orderid);
 		financeInfo.setCusgroupnum(cusgroupnum);
@@ -1021,9 +1025,13 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		financeInfo.setBillingdate(billingdate);
 		financeInfo.setSalesperson(salesperson);
 		financeInfo.setEnteraircom(enteraircom);
+		financeInfo.setEnterleavecity(enterleavecity);
+		financeInfo.setEnterarrivecity(enterarrivecity);
 		financeInfo.setEnterstarttime(enterstarttime);
 		financeInfo.setEnterarrivetime(enterarrivetime);
 		financeInfo.setOutaircom(outaircom);
+		financeInfo.setOutleavecity(outleavecity);
+		financeInfo.setOutarrivecity(outarrivecity);
 		financeInfo.setOutstarttime(outstarttime);
 		financeInfo.setOutarrivetime(outarrivetime);
 		if (Util.isEmpty(id)) {

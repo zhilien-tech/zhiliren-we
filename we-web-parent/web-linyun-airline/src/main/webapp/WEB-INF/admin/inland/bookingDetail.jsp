@@ -186,7 +186,7 @@
 			                     </select></td>
 		                     <td><label>出发日期：</label></td>
 		                     <td><input id="leavedate" name="leavedate" disabled="disabled" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:'${customneed.cusinfo.leavetdate }'})" value="<fmt:formatDate value="${customneed.cusinfo.leavetdate }" pattern="yyyy-MM-dd" />"/></td>
-		                     <td><label>人数：</label></td>
+		                     <%-- <td><label>人数：</label></td>
 		                     <td><input id="peoplecount" name="peoplecount" disabled="disabled" type="text" class="form-control input-sm textWid mustNumber" value="${customneed.cusinfo.peoplecount }"/></td>
 		                     <td><label class="labelWid">早中晚：</label></td>
 		                     <td>
@@ -216,7 +216,7 @@
 			                       	 	</c:otherwise>
 			                       	 </c:choose>
 			                       </select>
-		                     </td>
+		                     </td> --%>
 		                   </tr>
 		                   <c:choose>
 			                   		<c:when test="${fn:length(customneed.ailines)>0}">
@@ -402,7 +402,7 @@
 			                     </select></td>
 		                     <td><label>出发日期：</label></td>
 		                     <td><input id="leavedate" name="leavedate" disabled="disabled" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:''})"/></td>
-		                     <td><label>人数：</label></td>
+		                     <!-- <td><label>人数：</label></td>
 		                     <td><input id="peoplecount" name="peoplecount" disabled="disabled" type="text" class="form-control input-sm textWid mustNumber"/></td>
 		                     <td><label class="labelWid">早中晚：</label></td>
 		                     <td>
@@ -411,7 +411,7 @@
 			                         <option value="2">中</option>
 			                         <option value="3">晚</option>
 			                       </select>
-		                     </td>
+		                     </td> -->
 		                   </tr>
 		                   <tr name="airlineinfo" class="airlineinfo">
 		                     <td></span><label>航空公司：</label></td>
@@ -591,6 +591,32 @@
                     		</c:choose>
                      	</c:forEach>
                      </select></td>
+                   	 <td><label>出发城市：</label></td>
+                     <td><select id="enterleavecity" name="enterleavecity" type="text" class="form-control input-sm disab cityselect" disabled="disabled" multiple="multiple">
+                     	<c:forEach items="${obj.city }" var="one"> 
+                   			<c:choose>
+	                   			<c:when test="${obj.finance.enterleavecity  eq one.dictCode  }">
+									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+	                   			</c:when>
+	                   			<c:otherwise>
+		                     		<option value="${one.dictCode }">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+	                   			</c:otherwise>
+                    		</c:choose>
+                     	</c:forEach>
+                     </select></td>
+                   	 <td><label>抵达城市：</label></td>
+                     <td><select id="enterarrivecity" name="enterarrivecity" type="text" class="form-control input-sm disab cityselect" disabled="disabled" multiple="multiple">
+                     	<c:forEach items="${obj.city }" var="one"> 
+                   			<c:choose>
+	                   			<c:when test="${obj.finance.enterarrivecity  eq one.dictCode  }">
+									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+	                   			</c:when>
+	                   			<c:otherwise>
+		                     		<option value="${one.dictCode }">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+	                   			</c:otherwise>
+                    		</c:choose>
+                     	</c:forEach>
+                     </select></td>
                      <td><label>出发时间：</label></td>
                      <td><input id="enterstarttime" name="enterstarttime" value="${obj.finance.enterstarttime }" type="text" class="form-control input-sm disab mustTimes" disabled="disabled"></td>
                      <td><label>抵达时间：</label></td>
@@ -608,6 +634,32 @@
 	                   			</c:when>
 	                   			<c:otherwise>
 		                     		<option value="${one.dictCode }">${one.dictCode }-${one.dictName }</option>
+	                   			</c:otherwise>
+                    		</c:choose>
+                     	</c:forEach>
+                     </select></td>
+                     <td><label>出发城市：</label></td>
+                     <td><select id="outleavecity" name="outleavecity" type="text" class="form-control input-sm disab cityselect" disabled="disabled" multiple="multiple">
+                     	<c:forEach items="${obj.city }" var="one"> 
+                   			<c:choose>
+	                   			<c:when test="${obj.finance.outleavecity  eq one.dictCode  }">
+									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+	                   			</c:when>
+	                   			<c:otherwise>
+		                     		<option value="${one.dictCode }">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+	                   			</c:otherwise>
+                    		</c:choose>
+                     	</c:forEach>
+                     </select></td>
+                   	 <td><label>抵达城市：</label></td>
+                     <td><select id="outarrivecity" name="outarrivecity" type="text" class="form-control input-sm disab cityselect" disabled="disabled" multiple="multiple">
+                     	<c:forEach items="${obj.city }" var="one"> 
+                   			<c:choose>
+	                   			<c:when test="${obj.finance.outarrivecity  eq one.dictCode  }">
+									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+	                   			</c:when>
+	                   			<c:otherwise>
+		                     		<option value="${one.dictCode }">${one.dictCode }-${one.englishName }-${one.countryName }</option>
 	                   			</c:otherwise>
                     		</c:choose>
                      	</c:forEach>
@@ -963,10 +1015,30 @@
 		if (enteraircom) {
 			enteraircom = enteraircom.join(',');
 		}
+		//进澳出发城市
+		var enterleavecity = $('#enterleavecity').val();
+		if (enterleavecity) {
+			enterleavecity = enterleavecity.join(',');
+		}
+		//进澳抵达城市
+		var enterarrivecity = $('#enterarrivecity').val();
+		if (enterarrivecity) {
+			enterarrivecity = enterarrivecity.join(',');
+		}
 		//出澳时间航空公司
 		var outaircom = $('#outaircom').val();
 		if (outaircom) {
 			outaircom = outaircom.join(',');
+		}
+		//出澳出发城市
+		var outleavecity = $('#outleavecity').val();
+		if (outleavecity) {
+			outleavecity = outleavecity.join(',');
+		}
+		//出澳抵达城市
+		var outarrivecity = $('#outarrivecity').val();
+		if (outarrivecity) {
+			outarrivecity = outarrivecity.join(',');
 		}
 		var financeForm = getFormJson('#financeForm');
 		financeForm.billingdate = billingdate;
@@ -976,7 +1048,11 @@
 		financeForm.incometotal = incometotal;
 		financeForm.profittotal = profittotal;
 		financeForm.enteraircom = enteraircom;
+		financeForm.enterleavecity = enterleavecity;
+		financeForm.enterarrivecity = enterarrivecity;
 		financeForm.outaircom = outaircom;
+		financeForm.outleavecity = outleavecity;
+		financeForm.outarrivecity = outarrivecity;
 		$.ajax({ 
 			type: 'POST', 
 			data: {data:JSON.stringify(customdata),financeData:JSON.stringify(financeForm)}, 

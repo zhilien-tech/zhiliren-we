@@ -251,3 +251,9 @@ ADD COLUMN `babysalespricesum`  double NULL COMMENT '婴儿销售总价' AFTER `
 ADD COLUMN `costpricesumrmb`  double NULL COMMENT '成本RMB总价' AFTER `babysalespricesum`,
 ADD COLUMN `salespricesumrmb`  double NULL COMMENT '销售RMB总价' AFTER `costpricesumrmb`;
 
+ALTER TABLE `t_finance_info`
+ADD COLUMN `enterleavecity`  varchar(16) NULL COMMENT '进澳出发城市' AFTER `outarrivetime`,
+ADD COLUMN `enterarrivecity`  varchar(16) NULL COMMENT '进澳抵达城市' AFTER `enterleavecity`,
+ADD COLUMN `outleavecity`  varchar(255) NULL COMMENT '出澳出发城市' AFTER `enterarrivecity`,
+ADD COLUMN `outarrivecity`  varchar(255) NULL COMMENT '出澳抵达城市' AFTER `outleavecity`;
+

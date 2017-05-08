@@ -125,4 +125,20 @@ public class TFinanceInfoEntity implements Serializable {
 	@Comment("出澳抵达时间")
 	private String outarrivetime;
 
+	@Column
+	@Comment("进澳出发城市")
+	private String enterleavecity;
+
+	@Column
+	@Comment("进澳抵达城市")
+	private String enterarrivecity;
+
+	@Column
+	@Comment("出澳出发城市")
+	private String outleavecity;
+
+	@Column
+	@Comment("出澳抵达城市")
+	private String outarrivecity;
+
 }
