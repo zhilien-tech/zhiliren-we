@@ -891,8 +891,9 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		/*********************输入QTE:/EK来查询价格*****************************/
 		if (parsingType == "3") {
 			ParsingSabreEntity pEtemEntity = new ParsingSabreEntity();
-			String airSeatsPrice = etemPnrs[46];
-			String airSeatsCurrency = etemPnrs[45];
+
+			String airSeatsCurrency = etemPnrs[44];
+			String airSeatsPrice = etemPnrs[45];
 			pEtemEntity.setAirSeatsPrice(airSeatsPrice);
 			pEtemEntity.setAirSeatsCurrency(airSeatsCurrency);
 			arrayList.add(pEtemEntity);
