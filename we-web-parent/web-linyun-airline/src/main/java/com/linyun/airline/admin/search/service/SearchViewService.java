@@ -863,8 +863,15 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			String airSeatNum = etemPnrs[6];
 			String airDepartureTime = etemPnrs[7];
 			String airLandingTime = etemPnrs[8];
-			String airSeatsPrice = etemPnrs[indexOf + 45];
-			String airSeatsCurrency = etemPnrs[indexOf + 44];
+			String airSeatsPrice = "";
+			String airSeatsCurrency = "";
+			if (0 != indexOf) {
+				airSeatsCurrency = etemPnrs[indexOf + 44];
+				airSeatsPrice = etemPnrs[indexOf + 45];
+			} else {
+				airSeatsPrice = "-";
+				airSeatsCurrency = "-";
+			}
 
 			pEtemEntity.setId(id);
 			pEtemEntity.setFlightNum(flightNum);
