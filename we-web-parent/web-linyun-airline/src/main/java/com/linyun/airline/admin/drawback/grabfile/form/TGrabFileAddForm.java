@@ -32,6 +32,9 @@ public class TGrabFileAddForm extends AddForm {
 	/**文件大小*/
 	private String fileSize;
 
+	/**文件单位*/
+	private String unit;
+
 	/**文件类型(1-文件夹;2-文件;)*/
 	private int type;
 

@@ -22,8 +22,9 @@
               <!-- Custom Tabs -->
               <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
-                      <li class="active"><a href="#tab_1" data-toggle="tab">邮件抓取</a></li>
-                      <li><a href="#tab_2" data-toggle="tab">报表</a></li>
+                      <li class="active"><a href="#tab_1" data-toggle="tab">散客</a></li>
+                      <li><a href="#tab_2" data-toggle="tab">团队</a></li>
+                      <li><a href="#tab_3" data-toggle="tab">报表</a></li>
                 </ul>
                 <div class="tab-content">
                   <!--邮件抓取-->
@@ -66,9 +67,47 @@
                    </table>
                    <input id="checkedboxval" name="checkedboxval" type="hidden">
                   </div><!--end 邮件抓取-->
-
-                  <!------------------------------------------报表开始---------------------------------------------->
+				  <!---------------------------团队------------------------------->
                   <div class="tab-pane pane-content" id="tab_2">
+                   <div class="rebatesBtn">
+                     <button type="button" onclick="batchDelete();" class="btn btn-primary btn-sm right noneBtn none">批量删除</button>
+                     <!-- <button type="button" class="btn btn-primary btn-sm right noneBtn none">移动到</button> -->
+                     <button type="button" class="btn btn-primary btn-sm right batchBtn">批量操作</button>
+                     <button id="folderId" name="createFolder" onclick='newFolder();' type="button" class="btn btn-primary btn-sm right carrynews">新建文件夹</button>
+                     <button id="grabMailId" name="grabMailName" type="button" class="btn btn-primary btn-sm right">邮件抓取</button>
+                     <button id="uploadFile" onclick="uploadFile();" name="fileID" type="file" class="btn btn-primary btn-sm right">上传</button>
+                     <button type="button" class="btn btn-primary btn-sm right returnBtn none">返回上一级</button>
+                     <button type="button" class="btn btn-primary btn-sm right indexBtn none">返回首页</button>
+                   </div>
+                   <input id="currentDirId" type="hidden" value="0"/>
+                   <input type="hidden" name="fileName" id="fileName" />
+				   <input type="hidden" id="url">
+                   <ol class="breadcrumb">
+                        <li><a href="${base}/admin/drawback/grabfile/list.html"><i class="fa fa-folder-open"></i> 全部文件</a></li>
+                   </ol>
+                   <table id="rebatesEamilTable" class="table table-bordered table-hover">
+                     <thead>
+                      <tr>
+                       <th><input  class="checkTh" id="fileCheckbox" name="fileCheckbox" type="checkbox"></th>
+	                       <th>文件名</th>
+	                       <th>时间</th>
+	                       <th>大小</th>
+	                       <th>操作</th>
+                      </tr>
+                     </thead>
+                     <form id="folderForm" method="post">
+                     	<tbody>
+                     		<div  class="alldom">
+								<ul id="divall">
+								</ul>
+							</div>
+                     	</tbody>
+                     </form>
+                   </table>
+                   <input id="checkedboxval" name="checkedboxval" type="hidden">
+                  </div><!--end 团队-->
+                  <!------------------------------------------报表开始---------------------------------------------->
+                  <div class="tab-pane pane-content" id="tab_3">
                         <table id="rebatesReportTable" class="table table-bordered table-hover">
                           <thead>
                           <tr>
@@ -87,6 +126,8 @@
                             <th>代理费</th>
                             <th>入澳时间</th>
                             <th>出澳时间</th>
+                            <th>关联状态</th>
+                            <th>备注</th>
                             <!-- <th>操作</th> -->
                           </tr>
                           </thead>
@@ -484,22 +525,23 @@ function successCallback(id){
 	                    		}
 	                    	}
 	                    },
-	                    {"data": "createtime", "bSortable": true,
+	                    {"data": "updatetime", "bSortable": true,
 	                    	 render: function(data, type, row, meta) {
-	                    		 var createtime = row.createtime;
-	                    		 if(null==createtime || ""==createtime){
+	                    		 var updatetime = row.updatetime;
+	                    		 if(null==updatetime || ""==updatetime){
 	                    			 return "";
 	                    		 }
-	                    		return createtime;
+	                    		return updatetime;
 	                        } 	
 	                    },
 	                    {"data": "filesize", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var filesize = row.filesize;
+	                    		var unit = row.unit;
 	                    		if(null==filesize || ""==filesize){
 	                    			return null;
 	                    		}
-	                    		return filesize+"k";
+	                    		return filesize+unit;
 	                    	}	
 	                    },
 	            ],
@@ -768,9 +810,9 @@ function successCallback(id){
 	                    		if(null==backStatus || ""==backStatus){
 	                    			return "";
 	                    		}else if(backStatus==0){
-	                    			return "已退"
+	                    			return "已退税"
 	                    		}
-	                    		return "未退";
+	                    		return "未退税";
 	                    	}
 	                    },
 	                    {"data": "realincome", "bSortable": false,
@@ -822,16 +864,37 @@ function successCallback(id){
 	                    		var outAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+outAustralianTime+'">'+outAustralianTime+'<span>';
 	                    		return outAustralianTime;
 	                    	}
+	                    },
+	                    {"data": "backstatus", "bSortable": false,
+	                    	render: function(data, type, row, meta) {
+	                    		var backStatus = row.backstatus;
+	                    		if(null==backStatus || ""==backStatus){
+	                    			return "";
+	                    		}else if(backStatus==0){
+	                    			return "已关联"
+	                    		}
+	                    		return "未关联";
+	                    	}
+	                    },
+	                    {"data": "outaustraliantime", "bSortable": false,
+	                    	render: function(data, type, row, meta) {
+	                    		var outAustralianTime = row.outaustraliantime;
+	                    		if(null==outAustralianTime || ""==outAustralianTime){
+	                    			return "";
+	                    		}
+	                    		var outAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+outAustralianTime+'">'+outAustralianTime+'<span>';
+	                    		return outAustralianTime;
+	                    	}
 	                    }
 	            ],
 	            "columnDefs": [
 							   {"sWidth": "7%","aTargets": [10] },
 							   {
 					                //   指定第一列，从0开始，0表示第一列，1表示第二列……
-					                targets: 14,
+					                targets: 16,
 					                render: function(data, type, row, meta) {
 					                	/* var details = '<a style="cursor:pointer;" onclick="editPreview('+row.id+');">编辑</a>'; */
-					                    return details;
+					                    return null;
 					                }
 				               }]
 		});

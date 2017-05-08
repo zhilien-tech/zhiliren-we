@@ -813,15 +813,17 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				if (pnr[0].contains(a + "")) {
 					airDepartureTime = pnr[14];
 					airLandingTime = pnr[15];
+					flightNum = pnr[1];
+					airLine = pnr[13];
 					a++;
 				} else {
 					airDepartureTime = pnr[13];
 					airLandingTime = pnr[14];
+					flightNum = pnr[0];
+					airLine = pnr[12];
 					id = a - 1;
 				}
 				pSabreEntity.setId(id);
-				flightNum = pnr[1];
-				airLine = pnr[13];
 
 				for (String seat : pnr) {
 					if (!seat.contains("-") && !seat.contains("+") && seat.length() == 2) {
@@ -861,8 +863,15 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			String airSeatNum = etemPnrs[6];
 			String airDepartureTime = etemPnrs[7];
 			String airLandingTime = etemPnrs[8];
-			String airSeatsPrice = etemPnrs[indexOf + 45];
-			String airSeatsCurrency = etemPnrs[indexOf + 44];
+			String airSeatsPrice = "";
+			String airSeatsCurrency = "";
+			if (0 != indexOf) {
+				airSeatsCurrency = etemPnrs[indexOf + 44];
+				airSeatsPrice = etemPnrs[indexOf + 45];
+			} else {
+				airSeatsPrice = "-";
+				airSeatsCurrency = "-";
+			}
 
 			pEtemEntity.setId(id);
 			pEtemEntity.setFlightNum(flightNum);
@@ -882,8 +891,9 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		/*********************输入QTE:/EK来查询价格*****************************/
 		if (parsingType == "3") {
 			ParsingSabreEntity pEtemEntity = new ParsingSabreEntity();
-			String airSeatsPrice = etemPnrs[46];
-			String airSeatsCurrency = etemPnrs[45];
+
+			String airSeatsCurrency = etemPnrs[44];
+			String airSeatsPrice = etemPnrs[45];
 			pEtemEntity.setAirSeatsPrice(airSeatsPrice);
 			pEtemEntity.setAirSeatsCurrency(airSeatsCurrency);
 			arrayList.add(pEtemEntity);

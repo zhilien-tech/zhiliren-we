@@ -6,8 +6,6 @@
 
 package com.linyun.airline.admin.drawback.grabfile.entity;
 
-import java.util.Date;
-
 import lombok.Data;
 
 /**
@@ -28,7 +26,7 @@ public class MailStatusBean {
 	private String addressee;
 
 	/**发送时间*/
-	private Date sendTime;
+	private String sendTime;
 
 	/**
 	 * (non-Javadoc)

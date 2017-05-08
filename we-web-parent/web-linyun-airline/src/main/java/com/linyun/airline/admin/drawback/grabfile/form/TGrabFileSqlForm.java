@@ -10,9 +10,7 @@ import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
-import com.linyun.airline.admin.drawback.grabfile.entity.TGrabFileEntity;
 import com.uxuexi.core.common.util.Util;
-import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
 @Data
@@ -39,6 +37,9 @@ public class TGrabFileSqlForm extends DataTablesParamForm {
 	/**文件大小*/
 	private String fileSize;
 
+	/**文件单位*/
+	private String unit;
+
 	/**文件类型(1-文件夹;2-文件;)*/
 	private int type;
 
@@ -63,14 +64,18 @@ public class TGrabFileSqlForm extends DataTablesParamForm {
 	/**散团类型*/
 	private String groupType;
 
+	/**发送邮件时间*/
+	private String sendTime;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**
 		 * 默认使用了当前form关联entity的单表查询sql,如果是多表复杂sql，
 		 * 请使用sqlManager获取自定义的sql，并设置查询条件
 		 */
-		String sqlString = EntityUtil.entityCndSql(TGrabFileEntity.class);
-		//sqlString += " AND (CASE WHEN TYPE=2 AND url NOT LIKE '%pdf' THEN 0 ELSE 1 END )=1";
+		//String sqlString = EntityUtil.entityCndSql(TGrabFileEntity.class);
+		String sqlString = sqlManager.get("grab_mail_and_file_list");
+		sqlString += " AND ((gr.url not like '%.doc' and gr.url not like '%.xls') or gr.url is null)";
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;
@@ -80,7 +85,7 @@ public class TGrabFileSqlForm extends DataTablesParamForm {
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		if (!Util.isEmpty(parentId)) {
-			cnd.and("parentId", "=", parentId);
+			cnd.and("gr.parentId", "=", parentId);
 		}
 		return cnd;
 	}
