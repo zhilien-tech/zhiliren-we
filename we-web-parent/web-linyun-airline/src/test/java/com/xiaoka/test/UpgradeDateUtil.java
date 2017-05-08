@@ -566,6 +566,60 @@ public class UpgradeDateUtil {
 		return c.getTime();
 	}
 
+	/**
+	 * 获取日期中的英文月份缩写
+	 * @return String
+	 */
+	public static String getMonthShortEnNameOfDate(String date) {
+		Calendar cd = Calendar.getInstance();
+		String result = "";
+		try {
+			cd.setTime(FORMAT_DEFAULT_DATE.parse(date));
+			int month = cd.get(Calendar.MONTH) + 1;
+			switch (month) {
+			case 1:
+				result = "JAN";
+				break;
+			case 2:
+				result = "FEB";
+				break;
+			case 3:
+				result = "MAR";
+				break;
+			case 4:
+				result = "APR";
+				break;
+			case 5:
+				result = "MAY";
+				break;
+			case 6:
+				result = "JUN";
+				break;
+			case 7:
+				result = "JUL";
+				break;
+			case 8:
+				result = "AUG";
+				break;
+			case 9:
+				result = "SEP";
+				break;
+			case 10:
+				result = "OCT";
+				break;
+			case 11:
+				result = "NOV";
+				break;
+			case 12:
+				result = "DEC";
+				break;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 	/**==========================================时间比较操作=========================================================*/
 	/** 
 	 * 返回指定时间距离当前时间的中文信息
