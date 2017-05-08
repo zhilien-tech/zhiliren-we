@@ -198,7 +198,18 @@
                  </div><!--end 子段-->
                </div>
           </div><!--end 航程信息-->
-          
+          <context class="remarkContext">
+				   <div class="remarkDiv">
+						<table class="remarkTable">
+							<tr name="cRemarkTr" class="remarkTr">
+								<td><label>备注：</label></td>
+								<td>
+									<textarea class="form-control" id="cRemark" name="cRemark" disabled="disabled">${obj.orderinfo.remark }</textarea>
+								</td>
+							</tr>
+						</table>
+				   </div>	
+				</context>
     	  <div class="listInfo"><!-- 预收款记录/预付款记录 -->
 			<div class="nav-tabs-custom">
 				<ul class="nav nav-tabs query-style">
@@ -463,6 +474,7 @@
           //$(".listInfo").toggle();//选项卡 显示
           $('.disab').removeAttr("disabled");//信息模块 input 禁止编辑的状态
           $('#orderType').removeAttr("disabled");//信息模块 input 禁止编辑的状态
+          $('#cRemark').removeAttr("disabled");//信息模块 input 禁止编辑的状态
           loadAirlineInfo();
           loadJianMianAccount('${obj.orderinfo.id }');
         });
@@ -479,6 +491,7 @@
           //$(".listInfo").toggle();//选项卡 隐藏
           $('.disab').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
           $('#orderType').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
+          $('#cRemark').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
           loadAirlineInfo(1);
           loadJianMianAccount('${obj.orderinfo.id }',1);
         });

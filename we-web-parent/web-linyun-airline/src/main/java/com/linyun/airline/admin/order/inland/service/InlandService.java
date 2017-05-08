@@ -1003,6 +1003,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		String outaircom = financeMap.get("outaircom");
 		String outstarttime = financeMap.get("outstarttime");
 		String outarrivetime = financeMap.get("outarrivetime");
+		String enterleavecity = financeMap.get("enterleavecity");
+		String enterarrivecity = financeMap.get("enterarrivecity");
+		String outleavecity = financeMap.get("outleavecity");
+		String outarrivecity = financeMap.get("outarrivecity");
 		//开票人
 		financeInfo.setOrderid(orderid);
 		financeInfo.setCusgroupnum(cusgroupnum);
@@ -1021,9 +1025,13 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		financeInfo.setBillingdate(billingdate);
 		financeInfo.setSalesperson(salesperson);
 		financeInfo.setEnteraircom(enteraircom);
+		financeInfo.setEnterleavecity(enterleavecity);
+		financeInfo.setEnterarrivecity(enterarrivecity);
 		financeInfo.setEnterstarttime(enterstarttime);
 		financeInfo.setEnterarrivetime(enterarrivetime);
 		financeInfo.setOutaircom(outaircom);
+		financeInfo.setOutleavecity(outleavecity);
+		financeInfo.setOutarrivecity(outarrivecity);
 		financeInfo.setOutstarttime(outstarttime);
 		financeInfo.setOutarrivetime(outarrivetime);
 		if (Util.isEmpty(id)) {
@@ -1194,11 +1202,11 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	 * @param request
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object addPnrInfo(HttpServletRequest request) {
+	public Object addPnrInfo(HttpServletRequest request, TPnrInfoEntity pnrinfo, String visitor) {
 		HttpSession session = request.getSession();
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
-		String needid = request.getParameter("needid");
+		/*String needid = request.getParameter("needid");
 		String pnr = request.getParameter("pnr");
 		String loginid = request.getParameter("loginid");
 		String peoplecount = request.getParameter("peoplecount");
@@ -1207,8 +1215,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		String costpricesum = request.getParameter("costpricesum");
 		String salesprice = request.getParameter("salesprice");
 		String salespricesum = request.getParameter("salespricesum");
-		String visitor = request.getParameter("visitor");
-		TPnrInfoEntity pnrinfo = new TPnrInfoEntity();
+		//String visitor = request.getParameter("visitor");
+		//TPnrInfoEntity pnrinfo = new TPnrInfoEntity();
 		pnrinfo.setPNR(pnr);
 		if (!Util.isEmpty(costprice)) {
 			pnrinfo.setCostprice(formatDouble(Double.valueOf(costprice)));
@@ -1227,9 +1235,22 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		if (!Util.isEmpty(salespricesum)) {
 			pnrinfo.setSalespricesum(formatDouble(Double.valueOf(salespricesum)));
 		}
-		pnrinfo.setNeedid(Integer.valueOf(needid));
+		pnrinfo.setNeedid(Integer.valueOf(needid));*/
 		pnrinfo.setUserid(new Long(user.getId()).intValue());
 		pnrinfo.setOptime(new Date());
+		int peoplecount = 0;
+		if (!Util.isEmpty(pnrinfo.getAdultcount())) {
+			peoplecount += pnrinfo.getAdultcount();
+		}
+		if (!Util.isEmpty(pnrinfo.getChildcount())) {
+			peoplecount += pnrinfo.getChildcount();
+		}
+		if (!Util.isEmpty(pnrinfo.getBabycount())) {
+			peoplecount += pnrinfo.getBabycount();
+		}
+		if (peoplecount > 0) {
+			pnrinfo.setPeoplecount(peoplecount);
+		}
 		TPnrInfoEntity insert = dbDao.insert(pnrinfo);
 		Iterable<String> visitors = Splitter.on(",").split(visitor);
 		List<TVisitorsPnrEntity> visitorpnrs = new ArrayList<TVisitorsPnrEntity>();
@@ -1393,46 +1414,20 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	 * @param request
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object editPnrInfo(HttpServletRequest request) {
-		String pnr = request.getParameter("pnr");
-		String loginid = request.getParameter("loginid");
-		String peoplecount = request.getParameter("peoplecount");
-		String currency = request.getParameter("currency");
-		String costprice = request.getParameter("costprice");
-		String costpricesum = request.getParameter("costpricesum");
-		String salesprice = request.getParameter("salesprice");
-		String salespricesum = request.getParameter("salespricesum");
-		String visitor = request.getParameter("visitor");
-		String pnrid = request.getParameter("pnrid");
-		TPnrInfoEntity pnrinfo = dbDao.fetch(TPnrInfoEntity.class, Long.valueOf(pnrid));
-		pnrinfo.setPNR(pnr);
-		pnrinfo.setLoginid(loginid);
-		Integer peoplecounti = null;
-		if (!Util.isEmpty(peoplecount)) {
-			peoplecounti = Integer.valueOf(peoplecount);
+	public Object editPnrInfo(HttpServletRequest request, TPnrInfoEntity pnrinfo, String visitor) {
+		int peoplecount = 0;
+		if (!Util.isEmpty(pnrinfo.getAdultcount())) {
+			peoplecount += pnrinfo.getAdultcount();
 		}
-		pnrinfo.setPeoplecount(peoplecounti);
-		pnrinfo.setCurrency(currency);
-		Double costpriced = null;
-		if (!Util.isEmpty(costprice)) {
-			costpriced = Double.valueOf(costprice);
+		if (!Util.isEmpty(pnrinfo.getChildcount())) {
+			peoplecount += pnrinfo.getChildcount();
 		}
-		pnrinfo.setCostprice(formatDouble(costpriced));
-		Double costpricesumd = null;
-		if (!Util.isEmpty(costpricesum)) {
-			costpricesumd = Double.valueOf(costpricesum);
+		if (!Util.isEmpty(pnrinfo.getBabycount())) {
+			peoplecount += pnrinfo.getBabycount();
 		}
-		pnrinfo.setCostpricesum(formatDouble(costpricesumd));
-		Double salespriced = null;
-		if (!Util.isEmpty(salesprice)) {
-			salespriced = Double.valueOf(salesprice);
+		if (peoplecount > 0) {
+			pnrinfo.setPeoplecount(peoplecount);
 		}
-		pnrinfo.setSalesprice(formatDouble(salespriced));
-		Double salespricesumd = null;
-		if (!Util.isEmpty(salespricesum)) {
-			salespricesumd = Double.valueOf(salespricesum);
-		}
-		pnrinfo.setSalespricesum(formatDouble(salespricesumd));
 		dbDao.update(pnrinfo);
 		Iterable<String> visitors = Splitter.on(",").split(visitor);
 		List<TVisitorsPnrEntity> before = dbDao.query(TVisitorsPnrEntity.class,

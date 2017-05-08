@@ -103,6 +103,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	private static final String FKYTCODE = "FKYT";
 	//航空公司字典代码
 	private static final String AIRCOMCODE = "HKGS";
+	private static final String HUANHANG = "&#13;&#10;";
 	@Inject
 	private EditPlanService editPlanService;
 	@Inject
@@ -308,6 +309,9 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		String orderid = request.getParameter("orderid");
 		//订单数据
 		TUpOrderEntity orderinfo = this.fetch(Long.valueOf(orderid));
+		if (!Util.isEmpty(orderinfo.getRemark())) {
+			orderinfo.setRemark(orderinfo.getRemark().replace("\n", HUANHANG));
+		}
 		result.put("orderinfo", orderinfo);
 		TCustomerInfoEntity custominfo = new TCustomerInfoEntity();
 		if (!Util.isEmpty(orderinfo.getUserid())) {
@@ -394,6 +398,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			orderinfo.setPeoplecount(Integer.valueOf((String) fromJson.get("peoplecount")));
 		}
 		orderinfo.setAirlinecom((String) fromJson.get("airlinecom"));
+		orderinfo.setRemark((String) fromJson.get("remark"));
 		if (!Util.isEmpty(fromJson.get("costsingleprice"))) {
 			orderinfo.setCostsingleprice(Double.valueOf((String) fromJson.get("costsingleprice")));
 		}
@@ -1343,6 +1348,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		orderinfo.setOrderstime(new Date());
 		orderinfo.setOrderstype(OrderTypeEnum.TEAM.intKey());
 		orderinfo.setAirlinecom((String) fromJson.get("airlinecom"));
+		orderinfo.setRemark((String) fromJson.get("remark"));
 		if (!Util.isEmpty(fromJson.get("peoplecount"))) {
 			Integer peoplecount = Integer.valueOf((String) fromJson.get("peoplecount"));
 			orderinfo.setPeoplecount(peoplecount);

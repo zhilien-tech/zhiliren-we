@@ -283,8 +283,18 @@ function loadPNRdata(status){
             		}else{
             			result +='<td></td>';
             		}
-            		if(data[i].costprice != undefined){
-            			result +='<td>'+data[i].costprice.toFixed(2)+'</td>';
+            		if(data[i].peoplecount != undefined){
+            			result +='<td>'+data[i].peoplecount+'</td>';
+            		}else{
+            			result +='<td></td>';
+            		}
+            		if(data[i].loginid != undefined){
+            			result +='<td>'+data[i].loginid+'</td>';
+            		}else{
+            			result +='<td></td>';
+            		}
+            		if(data[i].currency != undefined){
+            			result +='<td>'+data[i].currency+'</td>';
             		}else{
             			result +='<td></td>';
             		}
@@ -293,23 +303,28 @@ function loadPNRdata(status){
             		}else{
             			result +='<td></td>';
             		}
-            		if(data[i].salesprice != undefined){
-            			result +='<td>'+data[i].salesprice.toFixed(2)+'</td>';
-            		}else{
-            			result +='<td></td>';
-            		}
             		if(data[i].salespricesum != undefined){
             			result +='<td>'+data[i].salespricesum.toFixed(2)+'</td>';
             		}else{
             			result +='<td></td>';
             		}
-            		if(data[i].peoplecount != undefined){
-            			result +='<td>'+data[i].peoplecount+'</td>';
+            		if(data[i].averagerate != undefined){
+            			result +='<td>'+data[i].averagerate+'</td>';
             		}else{
             			result +='<td></td>';
             		}
-            		if(data[i].loginid != undefined){
-            			result +='<td>'+data[i].loginid+'</td>';
+            		if(data[i].currentrate != undefined){
+            			result +='<td>'+data[i].currentrate+'</td>';
+            		}else{
+            			result +='<td></td>';
+            		}
+            		if(data[i].costpricesumrmb != undefined){
+            			result +='<td>'+data[i].costpricesumrmb+'</td>';
+            		}else{
+            			result +='<td></td>';
+            		}
+            		if(data[i].salespricesumrmb != undefined){
+            			result +='<td>'+data[i].salespricesumrmb+'</td>';
             		}else{
             			result +='<td></td>';
             		}
@@ -446,6 +461,47 @@ $('.aircomselect').select2({
 		},
 		cache : false
 	},
+	escapeMarkup : function(markup) {
+		return markup;
+	}, // let our custom formatter work
+	minimumInputLength : 1,
+	maximumInputLength : 20,
+	language : "zh-CN", //设置 提示语言
+	maximumSelectionLength : 1, //设置最多可以选择多少项
+	tags : false //设置必须存在的选项 才能选中
+});
+//城市下拉
+$('.cityselect').select2({
+	ajax : {
+		url : BASE_PATH + "/admin/customneeds/getCitySelect.html",
+		dataType : 'json',
+		delay : 250,
+		type : 'post',
+		data : function(params) {
+			var backscity = obj.find('[name=leavecity]').val();
+			if(backscity){
+				backscity = backscity.join(',');
+			}
+			return {
+				exname : backscity,
+				cityname : params.term, // search term
+				page : params.page
+			};
+		},
+		processResults : function(data, params) {
+			params.page = params.page || 1;
+			var selectdata = $.map(data, function (obj) {
+				  obj.id = obj.dictCode; // replace pk with your identifier
+				  obj.text = obj.dictCode+'-'+obj.englishName+'-'+obj.countryName; // replace pk with your identifier
+				  return obj;
+			});
+			return {
+				results : selectdata
+			};
+		},
+		cache : false
+	},
+	
 	escapeMarkup : function(markup) {
 		return markup;
 	}, // let our custom formatter work

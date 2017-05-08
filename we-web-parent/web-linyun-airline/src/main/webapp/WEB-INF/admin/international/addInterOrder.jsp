@@ -116,6 +116,18 @@
                  </table>
                </div>
           </div><!--end 航段信息-->
+          <context class="remarkContext">
+				   <div class="remarkDiv">
+						<table class="remarkTable">
+							<tr name="cRemarkTr" class="remarkTr">
+								<td><label>备注：</label></td>
+								<td>
+									<textarea class="form-control" id="cRemark" name="cRemark"></textarea>
+								</td>
+							</tr>
+						</table>
+				   </div>	
+				</context>
       </div>
 	</div>
 	<script type="text/javascript">
@@ -182,6 +194,8 @@
  		 data.costsingleprice = costsingleprice;
  		 var pnr = $('#pnr').val();
  		 data.pnr = pnr;
+ 		 var cRemark = $('#cRemark').val();
+		 data.remark = cRemark;
  		 var airinfos = [];
  		 $('.addHD-tr').each(function(i){
  			 var airinfo = {};
