@@ -31,7 +31,19 @@
                         <td><label>销售单价：</label></td>
                         <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint autocalc" value="<fmt:formatNumber type="number" value="${obj.recordinfo.costprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
                         <td><label>预收款比例 ：</label></td>
-                        <td><input id="prepayratio" name="prepayratio" type="text" class="form-control input-sm mustNumberPoint autocalc" value="${obj.prepayratio }"><span class="bfh">%</span></td>
+                        <td><select id="inputtype" name="inputtype" class="form-control input-sm">
+                        		<c:forEach var="map" items="${obj.inputtypeenum}" >
+                     				<c:choose>
+	                        			<c:when test="${map.key eq obj.recordinfo.inputtype}">
+		                     				<option value="${map.key}" selected="selected">${map.value}</option>
+	                        			</c:when>
+	                        			<c:otherwise>
+		                     				<option value="${map.key}">${map.value}</option>
+	                        			</c:otherwise>
+                        			</c:choose>
+								</c:forEach>
+                        	</select></td>
+                        <td><input id="prepayratio" name="prepayratio" type="text" class="form-control input-sm mustNumberPoint autocalc" value="${obj.recordinfo.prepayratio }"><span class="bfh">%</span></td>
                         <td><label>实际人数：</label></td>
                         <td><input id="actualnumber" name="actualnumber" type="text" class="form-control input-sm mustNumber autocalc" value="${obj.recordinfo.actualnumber }"></td>
                         <td><label>免罚金可减人数：</label></td>
@@ -41,12 +53,12 @@
                         <td><label>本期罚金：</label></td>
                         <td><input id="currentfine" name="currentfine" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.recordinfo.currentfine }" pattern="0.00" maxFractionDigits="2"/>"></td>
                         <td><label>本期应付：</label></td>
-                        <td><input id="currentdue" name="currentdue" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.recordinfo.currentdue }" pattern="0.00" maxFractionDigits="2"/>"></td>
+                        <td colspan="2"><input id="currentdue" name="currentdue" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.recordinfo.currentdue }" pattern="0.00" maxFractionDigits="2"/>"></td>
                         <td><label>税金单价：</label></td>
                         <td><input id="ataxprice" name="ataxprice" type="text" class="form-control input-sm mustNumberPoint autocalc" value="<fmt:formatNumber type="number" value="${obj.recordinfo.ataxprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
                         <td><label>本期实付：</label></td>
                         <td><input id="currentpay" name="currentpay" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.recordinfo.currentpay }" pattern="0.00" maxFractionDigits="2"/>"></td>
-                        <td><label>币种：</label></td>
+                        <%-- <td><label>币种：</label></td>
                         <td>
                           <select id="currency" name="currency" class="form-control input-sm">
                             <c:forEach items="${obj.bzcode }" var="one"> 
@@ -60,7 +72,7 @@
                             	</c:choose>
 	                     	</c:forEach>
                           </select>
-                        </td>
+                        </td> --%>
                       </tr>
                 </tbody>
               </table>
@@ -103,6 +115,10 @@
 	
 	//自动加载利润合计
 	  $(document).on('input', '.autocalc', function(e) {
+		  var inputtype = $('#inputtype').val();
+		  if(inputtype != 1){
+			  return
+		  }
 		  
 		  $('#actualyreduce').val('');
 		  //已收钱数
@@ -163,6 +179,13 @@
 			  if(!isNaN(currentpay) && currentpay != 0){
 			   	 $('#currentpay').val(currentpay.toFixed(2));
 			  }
+		  }
+	  });
+	
+	  $(document).on('input', '#prepayratio', function(e) {
+		  var inputtype = $('#inputtype').val();
+		  if(inputtype === 1){
+			  $(this).val($(this).val().replace(/[^.\d]/g,''));
 		  }
 	  });
 	</script>

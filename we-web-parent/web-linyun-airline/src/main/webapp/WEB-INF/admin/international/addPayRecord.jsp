@@ -33,8 +33,9 @@
                         <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint autocalc" value="${obj.costsingleprice }"></td>
                         <td><label>预付款比例 ：</label></td>
                         <td><select id="inputtype" name="inputtype" class="form-control input-sm">
-                        		<option value="1">百分比</option>
-                        		<option value="2">手填</option>
+                        		<c:forEach var="map" items="${obj.inputtypeenum}" >
+                     				<option value="${map.key}">${map.value}</option>
+								</c:forEach>
                         	</select></td>
                         <td><input id="prepayratio" name="prepayratio" type="text" class="form-control input-sm"><span>%</span></td>
                         <td><label>实际人数：</label></td>
@@ -101,7 +102,10 @@
 	}
 	//自动加载利润合计
 	  $(document).on('input', '.autocalc', function(e) {
-		  
+		  var inputtype = $('#inputtype').val();
+		  if(inputtype != 1){
+			  return
+		  }
 		  $('#actualyreduce').val('');
 		  //已收钱数
 		  var fineprice = 0;
@@ -163,6 +167,13 @@
 			  }
 		  }
 		  
+	  });
+	
+	  $(document).on('input', '#prepayratio', function(e) {
+		  var inputtype = $('#inputtype').val();
+		  if(inputtype === 1){
+			  $(this).val($(this).val().replace(/[^.\d]/g,''));
+		  }
 	  });
 	</script>
 </body>

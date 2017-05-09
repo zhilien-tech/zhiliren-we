@@ -39,6 +39,9 @@ import com.linyun.airline.admin.order.inland.enums.PayMethodEnum;
 import com.linyun.airline.admin.order.inland.enums.PayReceiveTypeEnum;
 import com.linyun.airline.admin.order.inland.service.InlandListService;
 import com.linyun.airline.admin.order.inland.util.FormatDateUtil;
+import com.linyun.airline.admin.order.international.enums.BackReasonEnum;
+import com.linyun.airline.admin.order.international.enums.BackTicketStatusEnum;
+import com.linyun.airline.admin.order.international.enums.InputTypeEnum;
 import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.admin.order.international.form.InternationalParamForm;
 import com.linyun.airline.admin.order.international.form.InternationalPayParamForm;
@@ -56,6 +59,7 @@ import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.ExcelReader;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAirlineInfoEntity;
+import com.linyun.airline.entities.TBackTicketInfoEntity;
 import com.linyun.airline.entities.TBankCardEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
@@ -578,9 +582,13 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		List<TPnrInfoEntity> query = dbDao.query(TPnrInfoEntity.class, Cnd.where("orderid", "=", orderid), null);
 		TPlanInfoEntity planinfo = dbDao.fetch(TPlanInfoEntity.class, Cnd.where("ordernumber", "=", orderid));
 		String pnr = (String) fromJson.get("pnr");
+		String peoplecount = (String) fromJson.get("peoplecount");
 		TPnrInfoEntity pnrinfo = new TPnrInfoEntity();
 		pnrinfo.setOrderid(orderid);
 		pnrinfo.setPNR(pnr);
+		if (!Util.isEmpty(peoplecount)) {
+			pnrinfo.setPeoplecount(Integer.valueOf(peoplecount));
+		}
 		//是否是主航段
 		if (query.size() > 0) {
 			pnrinfo.setMainsection(0);
@@ -651,8 +659,12 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		//判断是否是主航段
 		Integer pnrid = Integer.valueOf((String) fromJson.get("pnrid"));
 		String pnr = (String) fromJson.get("pnr");
+		String peoplecount = (String) fromJson.get("peoplecount");
 		TPnrInfoEntity pnrinfo = dbDao.fetch(TPnrInfoEntity.class, pnrid.intValue());
 		pnrinfo.setPNR(pnr);
+		if (!Util.isEmpty(peoplecount)) {
+			pnrinfo.setPeoplecount(Integer.valueOf(peoplecount));
+		}
 		dbDao.update(pnrinfo);
 		TPlanInfoEntity planinfo = dbDao.fetch(TPlanInfoEntity.class,
 				Cnd.where("ordernumber", "=", pnrinfo.getOrderid()));
@@ -696,6 +708,10 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			ExcelReader excelReader = new ExcelReader();
 			//获取Excel模板第二行之后的数据
 			Map<Integer, String[]> map = excelReader.readExcelContent(is);
+			List<TVisitorInfoEntity> query = dbDao
+					.query(TVisitorInfoEntity.class, Cnd.where("pnrid", "=", pnrid), null);
+			//删除原有的
+			dbDao.delete(query);
 			List<TVisitorInfoEntity> visitors = new ArrayList<TVisitorInfoEntity>();
 			for (int i = 1; i <= map.size(); i++) {
 				String[] row = map.get(i);
@@ -710,6 +726,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 				visitor.setVisitortype(row[3]);
 				visitor.setCardtype(row[4]);
 				visitor.setCardnum(row[5]);
+				visitor.setRemark(row[6]);
 				visitors.add(visitor);
 			}
 			//导入数据库
@@ -718,7 +735,6 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			file.delete();
 		} catch (IOException e) {
 			e.printStackTrace();
-
 		}
 		return null;
 	}
@@ -734,8 +750,11 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	public Object visitorInfo(HttpServletRequest request) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		String pnrid = request.getParameter("pnrid");
-		List<TVisitorInfoEntity> visitors = dbDao.query(TVisitorInfoEntity.class, Cnd.where("pnrid", "=", pnrid), null);
+		String sqlString = sqlManager.get("get_visitor_info_list");
+		Sql sql = Sqls.create(sqlString);
+		List<Record> visitors = dbDao.query(sql, Cnd.where("pnrid", "=", pnrid), null);
 		result.put("visitors", visitors);
+		result.put("backticketstatusenum", EnumUtil.enum2(BackTicketStatusEnum.class));
 		return result;
 	}
 
@@ -800,6 +819,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		result.put("bzcode", bzcode);
 		result.put("autualypeople", peoplecount);
 		result.put("fineprice", fineprice);
+		result.put("inputtypeenum", EnumUtil.enum2(InputTypeEnum.class));
 		return result;
 	}
 
@@ -839,90 +859,99 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		if (!Util.isEmpty(custome.getFees())) {
 			fees = custome.getFees();
 		}
-		//收款信息
-		TPayReceiveRecordEntity receiveEntity = new TPayReceiveRecordEntity();
-		//成本单价
-		double costprice = payrecord.getCostprice() * discountFare / 100 + fees;
-		receiveEntity.setCostprice(costprice);
-		Integer recordtype = PayReceiveTypeEnum.RECEIVE.intKey();
-		//记录类型
-		receiveEntity.setRecordtype(recordtype);
-		//预付款比例
-		receiveEntity.setPrepayratio(payrecord.getPrepayratio());
-		double prepayratio = 0;
-		if (!Util.isEmpty(payrecord.getPrepayratio())) {
-			prepayratio = payrecord.getPrepayratio();
-		}
-		//实际人数
-		receiveEntity.setActualnumber(payrecord.getActualnumber());
-		Integer actualnumber = 0;
-		if (!Util.isEmpty(payrecord.getActualnumber())) {
-			actualnumber = payrecord.getActualnumber();
-		}
-		//免罚金可减人数
-		receiveEntity.setFreenumber(payrecord.getFreenumber());
-		Integer freenumber = 0;
-		if (!Util.isEmpty(payrecord.getFreenumber())) {
-			freenumber = payrecord.getFreenumber();
-		}
-		receiveEntity.setOpid(new Long(user.getId()).intValue());
-		receiveEntity.setOptime(new Date());
-		//币种
-		receiveEntity.setCurrency(payrecord.getCurrency());
-		//订单ID
-		receiveEntity.setOrderid(payrecord.getOrderid());
-		//订单状态
-		receiveEntity.setOrderstatus(payrecord.getOrderstatus());
-		//订单状态ID
-		receiveEntity.setOrderstatusid(payrecord.getOrderstatusid());
-		//实际减少人数
-		receiveEntity.setActualyreduce(payrecord.getActualyreduce());
-		Integer actualyreduce = 0;
-		if (!Util.isEmpty(payrecord.getActualyreduce())) {
-			actualyreduce = payrecord.getActualyreduce();
-		}
-		//原有人数
-		Integer peoplecount = order.getPeoplecount();
-		String sqlString = sqlManager.get("get_international_last_payreceive_record");
-		Sql sql = Sqls.create(sqlString);
-		Cnd cnd = Cnd.NEW();
-		cnd.and("t.orderid", "=", orderid);
-		cnd.and("t.recordtype", "=", recordtype);
-		List<Record> payreceiverecord = dbDao.query(sql, cnd, null);
-		if (payreceiverecord.size() > 0) {
-			if (!Util.isEmpty(payreceiverecord.get(0).get("actualnumber"))) {
-				peoplecount = payreceiverecord.get(0).getInt("actualnumber");
+		if (payrecord.getInputtype() == 1) {
+
+			//收款信息
+			TPayReceiveRecordEntity receiveEntity = new TPayReceiveRecordEntity();
+			//成本单价
+			double costprice = payrecord.getCostprice() * discountFare / 100 + fees;
+			receiveEntity.setCostprice(costprice);
+			Integer recordtype = PayReceiveTypeEnum.RECEIVE.intKey();
+			//记录类型
+			receiveEntity.setRecordtype(recordtype);
+			//预付款比例
+			receiveEntity.setPrepayratio(payrecord.getPrepayratio());
+			double prepayratio = 0;
+			if (!Util.isEmpty(payrecord.getPrepayratio())) {
+				prepayratio = Double.valueOf(payrecord.getPrepayratio());
 			}
+			//实际人数
+			receiveEntity.setActualnumber(payrecord.getActualnumber());
+			Integer actualnumber = 0;
+			if (!Util.isEmpty(payrecord.getActualnumber())) {
+				actualnumber = payrecord.getActualnumber();
+			}
+			//免罚金可减人数
+			receiveEntity.setFreenumber(payrecord.getFreenumber());
+			Integer freenumber = 0;
+			if (!Util.isEmpty(payrecord.getFreenumber())) {
+				freenumber = payrecord.getFreenumber();
+			}
+			receiveEntity.setOpid(new Long(user.getId()).intValue());
+			receiveEntity.setOptime(new Date());
+			//币种
+			receiveEntity.setCurrency(payrecord.getCurrency());
+			//订单ID
+			receiveEntity.setOrderid(payrecord.getOrderid());
+			//订单状态
+			receiveEntity.setOrderstatus(payrecord.getOrderstatus());
+			//订单状态ID
+			receiveEntity.setOrderstatusid(payrecord.getOrderstatusid());
+			//实际减少人数
+			receiveEntity.setActualyreduce(payrecord.getActualyreduce());
+			Integer actualyreduce = 0;
+			if (!Util.isEmpty(payrecord.getActualyreduce())) {
+				actualyreduce = payrecord.getActualyreduce();
+			}
+			//原有人数
+			Integer peoplecount = order.getPeoplecount();
+			String sqlString = sqlManager.get("get_international_last_payreceive_record");
+			Sql sql = Sqls.create(sqlString);
+			Cnd cnd = Cnd.NEW();
+			cnd.and("t.orderid", "=", orderid);
+			cnd.and("t.recordtype", "=", recordtype);
+			List<Record> payreceiverecord = dbDao.query(sql, cnd, null);
+			if (payreceiverecord.size() > 0) {
+				if (!Util.isEmpty(payreceiverecord.get(0).get("actualnumber"))) {
+					peoplecount = payreceiverecord.get(0).getInt("actualnumber");
+				}
+			}
+			//已收钱
+			Integer fineprice = 0;
+			String sqlString1 = sqlManager.get("get_international_record_sumprice");
+			Sql sql1 = Sqls.create(sqlString1);
+			Cnd cnd1 = Cnd.NEW();
+			cnd1.and("orderid", "=", orderid);
+			cnd1.and("recordtype", "=", recordtype);
+			cnd1.groupBy("orderid", "recordtype");
+			List<Record> payreceiverecordsum = dbDao.query(sql1, cnd1, null);
+			if (payreceiverecordsum.size() > 0 && !Util.isEmpty(payreceiverecordsum.get(0).get("yishou"))) {
+				fineprice = payreceiverecordsum.get(0).getInt("yishou");
+			}
+			double currentfine = 0;
+			//罚金(已收钱数/之前的人数 *（实际减少人数-免罚金可减人数）)
+			if (actualyreduce > freenumber) {
+				currentfine = fineprice / peoplecount * (actualyreduce - freenumber);
+			}
+			receiveEntity.setCurrentfine(currentfine);
+			//本期应付(销售单价*实际人数*预付款比例-已付)
+			double currentdue = actualnumber * costprice * (prepayratio / 100) - fineprice;
+			receiveEntity.setCurrentdue(currentdue);
+			//税金
+			double ataxprice = 0;
+			if (!Util.isEmpty(payrecord.getAtaxprice())) {
+				ataxprice = payrecord.getAtaxprice();
+			}
+			receiveEntity.setAtaxprice(ataxprice);
+			receiveEntity.setCurrentpay(currentdue + ataxprice);
+			dbDao.insert(receiveEntity);
+		} else {
+			double costprice = payrecord.getCostprice() * discountFare / 100 + fees;
+			payrecord.setCostprice(costprice);
+			payrecord.setRecordtype(PayReceiveTypeEnum.RECEIVE.intKey());
+			dbDao.insert(payrecord);
 		}
-		//已收钱
-		Integer fineprice = 0;
-		String sqlString1 = sqlManager.get("get_international_record_sumprice");
-		Sql sql1 = Sqls.create(sqlString1);
-		Cnd cnd1 = Cnd.NEW();
-		cnd1.and("orderid", "=", orderid);
-		cnd1.and("recordtype", "=", recordtype);
-		cnd1.groupBy("orderid", "recordtype");
-		List<Record> payreceiverecordsum = dbDao.query(sql1, cnd1, null);
-		if (payreceiverecordsum.size() > 0 && !Util.isEmpty(payreceiverecordsum.get(0).get("yishou"))) {
-			fineprice = payreceiverecordsum.get(0).getInt("yishou");
-		}
-		double currentfine = 0;
-		//罚金(已收钱数/之前的人数 *（实际减少人数-免罚金可减人数）)
-		if (actualyreduce > freenumber) {
-			currentfine = fineprice / peoplecount * (actualyreduce - freenumber);
-		}
-		receiveEntity.setCurrentfine(currentfine);
-		//本期应付(销售单价*实际人数*预付款比例-已付)
-		double currentdue = actualnumber * costprice * (prepayratio / 100) - fineprice;
-		receiveEntity.setCurrentdue(currentdue);
-		//税金
-		double ataxprice = 0;
-		if (!Util.isEmpty(payrecord.getAtaxprice())) {
-			ataxprice = payrecord.getAtaxprice();
-		}
-		receiveEntity.setAtaxprice(ataxprice);
-		receiveEntity.setCurrentpay(currentdue + ataxprice);
-		return dbDao.insert(receiveEntity);
+		return null;
 	}
 
 	/**
@@ -938,13 +967,6 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		String recordid = request.getParameter("recordid");
 		TPayReceiveRecordEntity recordinfo = dbDao.fetch(TPayReceiveRecordEntity.class, Long.valueOf(recordid));
 		result.put("recordinfo", recordinfo);
-		Double prepayratio = recordinfo.getPrepayratio();
-		String prepayratioresult = "";
-		if (!Util.isEmpty(prepayratio)) {
-			String prepayratiostr = String.valueOf(prepayratio);
-			prepayratioresult = FormatDateUtil.subZeroAndDot(prepayratiostr);
-		}
-		result.put("prepayratio", prepayratioresult);
 		//币种下拉
 		List<DictInfoEntity> bzcode = new ArrayList<DictInfoEntity>();
 		try {
@@ -954,6 +976,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 
 		}
 		result.put("bzcode", bzcode);
+		result.put("inputtypeenum", EnumUtil.enum2(InputTypeEnum.class));
 		return result;
 	}
 
@@ -1060,9 +1083,23 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	 * @param request
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object backTicket(HttpServletRequest request) {
-
-		return null;
+	public Object backTicket(HttpServletRequest request, Integer visitorid) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		TVisitorInfoEntity visitorinfo = dbDao.fetch(TVisitorInfoEntity.class, visitorid.longValue());
+		TBackTicketInfoEntity backinfo = new TBackTicketInfoEntity();
+		TBackTicketInfoEntity backinfos = dbDao.fetch(TBackTicketInfoEntity.class,
+				Cnd.where("visitorid", "=", visitorid));
+		if (!Util.isEmpty(backinfos)) {
+			backinfo = backinfos;
+		}
+		if (Util.isEmpty(backinfo.getApplydate())) {
+			backinfo.setApplydate(new Date());
+		}
+		result.put("visitorinfo", visitorinfo);
+		result.put("backinfo", backinfo);
+		result.put("backreasonenum", EnumUtil.enum2(BackReasonEnum.class));
+		result.put("backticketstatusenum", EnumUtil.enum2(BackTicketStatusEnum.class));
+		return result;
 	}
 
 	/**
@@ -1526,6 +1563,31 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			if (!Util.isEmpty(pnrinfo)) {
 				dbDao.delete(pnrinfo);
 			}
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * 保存退票信息
+	 * <p>
+	 * 保存退票信息
+	 *
+	 * @param request
+	 * @param backticketinfo
+	 * @return (保存退票信息)
+	 */
+	public Object saveBackTicketInfo(HttpServletRequest request, TBackTicketInfoEntity backticketinfo) {
+		String applydatestr = request.getParameter("applydatestr");
+		if (!Util.isEmpty(applydatestr)) {
+			Date applydate = DateUtil.string2Date(applydatestr, DateUtil.FORMAT_YYYY_MM_DD);
+			backticketinfo.setApplydate(applydate);
+		}
+		Integer id = backticketinfo.getId();
+		if (!Util.isEmpty(id)) {
+			dbDao.update(backticketinfo);
+		} else {
+			dbDao.insert(backticketinfo);
 		}
 		return null;
 	}
