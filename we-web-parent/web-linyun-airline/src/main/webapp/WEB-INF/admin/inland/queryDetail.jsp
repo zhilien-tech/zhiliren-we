@@ -183,8 +183,8 @@
 			                     <td><input id="leavedate" name="leavedate" disabled="disabled" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:'${customneed.cusinfo.leavetdate }'})" value="<fmt:formatDate value="${customneed.cusinfo.leavetdate }" pattern="yyyy-MM-dd" />"/></td>
 			                     <td><label>人数：</label></td>
 			                     <td><input id="peoplecount" name="peoplecount" disabled="disabled" type="text" class="form-control input-sm textWid mustNumber" value="${customneed.cusinfo.peoplecount }"/></td>
-			                     <td><label class="labelWid">早中晚：</label></td>
-			                     <td>
+			                     <%-- <td><label class="labelWid">早中晚：</label></td>
+			                      <td>
 			                       <select id="tickettype" name="tickettype" disabled="disabled" class="form-control input-sm textWid" value="${customneed.cusinfo.tickettype }">
 			                       	 <c:choose>
 			                       	 	<c:when test="${customneed.cusinfo.tickettype eq 1 }">
@@ -211,7 +211,7 @@
 			                       	 	</c:otherwise>
 			                       	 </c:choose>
 			                       </select>
-			                     </td>
+			                     </td>  --%>
 			                   </tr>
 			                   <c:choose>
 			                   		<c:when test="${fn:length(customneed.ailines)>0}">
@@ -316,14 +316,14 @@
 		                     <td><input id="leavedate" name="leavedate" disabled="disabled" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:''})"/></td>
 		                     <td><label>人数：</label></td>
 		                     <td><input id="peoplecount" name="peoplecount" disabled="disabled" type="text" class="form-control input-sm textWid mustNumber"/></td>
-		                     <td><label class="labelWid">早中晚：</label></td>
-		                     <td>
+		                     <!-- <td><label class="labelWid">早中晚：</label></td>
+		                      <td>
 		                       <select id="tickettype" name="tickettype" disabled="disabled" class="form-control input-sm textWid">
 			                         <option value="1">早</option>
 			                         <option value="2">中</option>
 			                         <option value="3">晚</option>
 			                       </select>
-		                     </td>
+		                     </td>  -->
 		                   </tr>
 		                   <tr name="airlineinfo">
 		                     <td></span><label>航空公司：</label></td>

@@ -773,7 +773,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			if (!Util.isEmpty(map.get("avgexrate"))) {
 				avgexrate = Double.valueOf((String) map.get("avgexrate"));
 			}
-			String paycurrency = (String) map.get("paycurrency");
+			String neilu = (String) map.get("neilu");
 			Integer paymethod = null;
 			if (!Util.isEmpty(map.get("paymethod"))) {
 				paymethod = Integer.valueOf((String) map.get("paymethod"));
@@ -793,7 +793,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 			customneedEntity.setTickettype(tickettype);
 			customneedEntity.setRealtimexrate(formatDouble(realtimexrate));
 			customneedEntity.setAvgexrate(formatDouble(avgexrate));
-			customneedEntity.setPaycurrency(paycurrency);
+			customneedEntity.setNeilu(neilu);
 			customneedEntity.setPaymethod(paymethod);
 			customneedEntity.setThirdcustomid(thirdcustomid);
 			//与订单相关
@@ -888,7 +888,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				addForm.setTradeDate(new Date());
 				addForm.setPurpose("支出");
 				addForm.setAverageRate((String) map.get("realtimexrate"));
-				addForm.setCurrency(paycurrency);
+				addForm.setCurrency("CNY");
 				turnOverViewService.addTurnOver(addForm, session);
 			}
 		}

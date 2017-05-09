@@ -257,3 +257,33 @@ ADD COLUMN `enterarrivecity`  varchar(16) NULL COMMENT '进澳抵达城市' AFTE
 ADD COLUMN `outleavecity`  varchar(255) NULL COMMENT '出澳出发城市' AFTER `enterarrivecity`,
 ADD COLUMN `outarrivecity`  varchar(255) NULL COMMENT '出澳抵达城市' AFTER `outleavecity`;
 
+ALTER TABLE `t_pay_receive_record`
+MODIFY COLUMN `prepayratio`  varchar(32) NULL DEFAULT NULL COMMENT '预付款比例' AFTER `costprice`,
+ADD COLUMN `inputtype`  int NULL COMMENT '输入类型' AFTER `actualyreduce`;
+
+ALTER TABLE `t_visitor_info`
+ADD COLUMN `remark`  varchar(256) NULL COMMENT '备注' AFTER `validuntil`;
+
+create table t_back_ticket_info
+(
+   id                   int not null auto_increment comment '主键id',
+   visitorname          varchar(32) comment '退票人',
+   telephone            varchar(16) comment '电话',
+   applydate            date comment '申请日期',
+   price                double comment '金额',
+   tax                  double comment '税金',
+   backprice            double comment '退款金额',
+   reason               varchar(32) comment '原因',
+   backstatus           varchar(32) comment '退票状态',
+   remark               varchar(256) comment '备注',
+   visitorid            int comment '游客id',
+   opid                 int comment '操作人',
+   optime               datetime comment '操作时间',
+   primary key (id)
+);
+
+alter table t_back_ticket_info comment '退票表';
+
+ALTER TABLE `t_order_customneed`
+ADD COLUMN `neilu`  varchar(32) NULL COMMENT '内陆跨海' AFTER `thirdcustomid`;
+

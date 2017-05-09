@@ -290,7 +290,18 @@
 							 </c:forEach>
                         </select>
                      </td>
-                     <td><label>内陆跨海：</label></td>
+                     <td><label>是否结算：</label></td>
+                     <td>
+                        <select id="billingstatus" name="billingstatus" class="form-control input-sm disab" disabled="disabled">
+                            <option value="0">否</option>
+                            <option value="1">是</option>
+                        </select>
+                     </td>
+                     <td><label>销售：</label></td>
+                     <td><input id="salesperson" name="salesperson" value="候小凌" type="text" class="form-control input-sm" disabled="disabled"></td>
+                     <td><label>开票人：</label></td>
+                     <td><input id="issuer" name="issuer" type="text" value="${empty obj.finance.issuer?obj.user.fullName:obj.finance.issuer }" class="form-control input-sm" disabled="disabled"></td>
+                     <%-- <td><label>内陆跨海：</label></td>
                      <td>
                         <select id="neilu" name="neilu" class="form-control input-sm disab" disabled="disabled">
                             <option value="">请选择</option>
@@ -305,11 +316,11 @@
 	                        	</c:choose>
 	                     	</c:forEach>
                         </select>
-                     </td>
+                     </td> --%>
                      <td><label>开票日期：</label></td>
                      <td><input id="billingdate" name="billingdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" type="text" class="form-control input-sm" value="<fmt:formatDate value="${obj.finance.billingdate }" pattern="yyyy-MM-dd" />" disabled="disabled"></td>
                    </tr>
-                   <tr class="KHinfo">
+                   <%-- <tr class="KHinfo">
                      <td><label>付款币种：</label></td>
                      <td>
                         <select id="paycurrency" name="paycurrency" class="form-control input-sm">
@@ -342,27 +353,14 @@
 							 </c:forEach>
                         </select>
                      </td>
-                     <td><label>销售：</label></td>
-                     <td><input id="salesperson" name="salesperson" value="候小凌" type="text" class="form-control input-sm" disabled="disabled"></td>
-                     <td><label>开票人：</label></td>
-                     <td><input id="issuer" name="issuer" type="text" value="${empty obj.finance.issuer?obj.user.fullName:obj.finance.issuer }" class="form-control input-sm" disabled="disabled"></td>
-                   </tr>
-                   <tr class="KHinfo">
-                     <td><label>人头数：</label></td>
-                     <td><input id="personcount" name="personcount" value="${obj.finance.personcount }" type="text" class="form-control input-sm disab mustNumber" disabled="disabled"></td>
-                     <td><label>是否结算：</label></td>
-                     <td>
-                        <select id="billingstatus" name="billingstatus" class="form-control input-sm disab" disabled="disabled">
-                            <option value="0">否</option>
-                            <option value="1">是</option>
-                        </select>
-                     </td>
+                     
+                   </tr> --%>
+                     
 					 <%--<td><label>进澳时间：</label></td>
                      <td><input id="enterausdate" name="enterausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.enterausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
                      <td><label>出澳时间：</label></td>
                      <td><input id="outausdate" name="outausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.outausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td> --%>
-                   </tr>
-                   <tr class="KHinfo">
+                   <%-- <tr class="KHinfo">
                      <td><label>进澳时间：</label></td>
                      <td><input id="enterausdate" name="enterausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.enterausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
                    	 <td><label>航空公司：</label></td>
@@ -403,9 +401,11 @@
                      <td><input id="outstarttime" name="outstarttime" value="${obj.finance.outstarttime }" type="text" class="form-control input-sm disab mustTimes" disabled="disabled"></td>
                      <td><label>抵达时间：</label></td>
                      <td><input id="outarrivetime" name="outarrivetime" value="${obj.finance.outarrivetime }" type="text" class="form-control input-sm disab mustArriveTimes" disabled="disabled"></td>
-                   </tr>
+                   </tr> --%>
                    <tr class="KHinfo">
-                     <td><label>应收：</label></td>
+                   	 <td><label>人头数：</label></td>
+                     <td><input id="personcount" name="personcount" value="${obj.finance.personcount }" type="text" class="form-control input-sm disab mustNumber" disabled="disabled"></td>
+                     <td><label>应收金额：</label></td>
                      <td><input id="receivable" name="receivable" type="text" class="form-control input-sm disab mustNumberPoint" value="${obj.finance.receivable }" disabled="disabled"></td>
                      <td><label><a href="javascript:;" class="jianMian">减免</a>：</label></td>
                      <td><input id="relief" name="relief" type="text" class="form-control input-sm" disabled="disabled" value="${obj.finance.relief }"></td>
@@ -413,6 +413,8 @@
                      <td><input id="incometotal" name="incometotal" type="text" class="form-control input-sm disab loadprofit mustNumberPoint" disabled="disabled" value="${obj.finance.incometotal }"></td>
                    </tr>
                    <tr class="KHinfo">
+                   	 <td><label></label></td>
+                   	 <td></td>
                      <td><label>成本合计：</label></td>
                      <td><input id="costtotal" name="costtotal" type="text" class="form-control input-sm disab loadprofit mustNumberPoint" disabled="disabled" value="${obj.finance.costtotal }"></td>
                      <td><label>应返：</label></td>

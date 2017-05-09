@@ -24,24 +24,28 @@
          <div class="form-group row"><!--姓名/证件类型-->
                   <label class="col-sm-2 text-right padding">姓名：</label>
                   <div class="col-sm-3 padding"><input id="visitorname" name="visitorname" type="text" class="form-control input-sm" value="${obj.visitorinfo.visitorname }"></div>
-                  <label class="col-sm-2 text-right padding">证件类型：</label>
-                  <div class="col-sm-3 padding">
-                   <input type="text" id="cardtype" name="cardtype" class="form-control input-sm" value="${obj.visitorinfo.cardtype }">
-                  </div>
-         </div><!--end 姓名/证件类型-->
-         <div class="form-group row"><!--性别/证件号码-->
                   <label class="col-sm-2 text-right padding">性别：</label>
                   <div class="col-sm-3 padding">
                    <input type="text" id="gender" name="gender" class="form-control input-sm" value="${obj.visitorinfo.gender }">
                   </div>
-                  <label class="col-sm-2 text-right padding">证件号码：</label>
-                  <div class="col-sm-3 padding"><input id="cardnum" name="cardnum" type="text" class="form-control input-sm" value="${obj.visitorinfo.cardnum }"></div>
-         </div><!--end 性别/证件号码-->
-         <div class="form-group row"><!--旅客类型-->
+         </div><!--end 姓名/证件类型-->
+         <div class="form-group row"><!--性别/证件号码-->
                   <label class="col-sm-2 text-right padding">旅客类型：<	/label>
                   <div class="col-sm-3 padding">
                     <input type="text" id="visitortype" name="visitortype" class="form-control input-sm" value="${obj.visitorinfo.visitortype }">
                   </div>
+                  <label class="col-sm-2 text-right padding">证件类型：</label>
+                  <div class="col-sm-3 padding">
+                   <input type="text" id="cardtype" name="cardtype" class="form-control input-sm" value="${obj.visitorinfo.cardtype }">
+                  </div>
+         </div><!--end 性别/证件号码-->
+         <div class="form-group row"><!--旅客类型-->
+                  <label class="col-sm-2 text-right padding">证件号码：</label>
+                  <div class="col-sm-3 padding"><input id="cardnum" name="cardnum" type="text" class="form-control input-sm" value="${obj.visitorinfo.cardnum }"></div>
+         </div><!--end 旅客类型-->
+         <div class="form-group row"><!--旅客类型-->
+                  <label class="col-sm-2 text-right padding">备注：</label>
+                  <div class="col-sm-3 padding"><input id="remark" name="remark" type="text" class="form-control input-sm" value="${obj.visitorinfo.remark }"></div>
          </div><!--end 旅客类型-->
       </div>
       </form>
