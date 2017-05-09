@@ -35,7 +35,7 @@ table.dataTable thead > tr > th {padding-right: 5px;}
 /*------添加航段------*/
 .addHDtable{width: 100%;}
 .addHDtable tr td{padding-bottom:10px;}
-.numTd{width: 38.9%;}
+.numTd{width: 95%;}
 .addHDtable tr td label{float: right;}
 .addHD-tr td input{padding-left:3px;padding-right: 3px;}
 .addHD-tr td label{margin-bottom: 0;float:right;}
@@ -57,7 +57,7 @@ table.dataTable thead > tr > th {padding-right: 5px;}
 .select2-container--default .select2-selection--multiple .select2-selection__rendered {padding: 0 5px;}
 .addHD-tr td:nth-child(2) .select2-container{width: 150px !important;}
 .addHD-tr td:nth-child(4) .select2-container{width: 150px !important;}
-.addHD-tr td:nth-child(8) .select2-container{width: 70px !important;}
+.addHD-tr td:nth-child(8) .select2-container{width: 80px !important;}
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove{display:none !important;}
 .orderLabel {line-height: 30px;}
 .infoTop p {background-color: #fcfcfc; margin: 0px;border: solid 1px #e0e0e0;display: inline-block;width: 85px;text-align: center;line-height: 30px;border-top: solid 2px #3c8dbc;border-radius: 3px 3px 0 0;border-bottom: 0;}
@@ -70,14 +70,14 @@ table.dataTable thead > tr > th {padding-right: 5px;}
 .infofooter table tr td .UnderIcon {font-size: 20px;cursor: pointer;color: #5d6a7b;position: relative;top: 3px;left: 15px;}
 .infofooter table tr td label {width: 70px;text-align: right;}
 .orderInput {width: 15px;height: 15px;position: relative;top: 3px;right: 3px;}
-input#peoplecount {width: 143px !important;}
-.addHDtable tbody .addHD-tr td:nth-child(4) .select2-container{width: 143px !important;}
+input#peoplecount {width: 134px !important;}
+.addHDtable tbody .addHD-tr td:nth-child(4) .select2-container{width: 136px !important;}
 .addHDtable tbody tr td:nth-child(5) label{position: relative;left: -10px;}
 .addHDtable tbody tr td:nth-child(6) input{position: relative;left: -10px;}
-.addHDtable tbody .addHD-tr td:nth-child(7) label{position: relative;width: 60px;left: -10px;}
-.addHDtable tbody .addHD-tr td:nth-child(8) .select2-container{position: relative;left: -10px;}
-.addHDtable tbody tr td:nth-child(9) label{position: relative;left: -10px;}
-.addHDtable tbody tr td:nth-child(10) input{position: relative;left: -10px;}
+.addHDtable tbody .addHD-tr td:nth-child(7) label{position: relative;width: 60px;left: -7px;}
+.addHDtable tbody .addHD-tr td:nth-child(8) .select2-container{position: relative;left: -15px;}
+.addHDtable tbody tr td:nth-child(9) label{position: relative;left: -15px;}
+.addHDtable tbody tr td:nth-child(10) input{position: relative;left: -15px;}
 .addHDtable tbody tr td:nth-child(11) label{position: relative;left: -10px;}
 .addHDtable tbody tr td:nth-child(12) input{position: relative;left: -10px;}
 .addHDtable tbody tr td:nth-child(13) a{position: relative;left: -3px;}
@@ -88,26 +88,28 @@ input#peoplecount {width: 143px !important;}
 /*------end 添加航段------*/
 /*------添加记录------*/
 .addYSKtable tbody tr td{padding-bottom:10px;}
+.addHDtable tbody tr td:nth-child(6) #leavedate{width: 96%;}
 .addYSKtable tbody tr td label{float: right; margin-bottom: 0;}
 .addYSKtable tbody tr td:nth-child(1){width: 65px;}
 .addYSKtable tbody tr td:nth-child(2){width: 100px;}
 .addYSKtable tbody tr td:nth-child(3){width: 85px;}
-.addYSKtable tbody tr td:nth-child(4){width: 100px;}
+.addYSKtable tbody tr td:nth-child(4){width: 85px;}
 .addYSKtable tbody tr td:nth-child(5){width: 70px;}
-.addYSKtable tbody tr td:nth-child(6){width: 100px;}
+.addYSKtable tbody tr td:nth-child(6){width: 70px;}
+.addYSKtable tbody tr td:nth-child(8){width: 105px;}
 .addYSKtable tbody tr:nth-child(1) td:nth-child(7){width:105px;}
 .addYSKtable tbody tr:nth-child(2) td:nth-child(7){width:70px;}
 .addYSKtable tbody tr:nth-child(2) td:nth-child(8){width:100px;}
 .addYSKtable tbody tr:nth-child(2) td:nth-child(9){width:45px;}
 .addYSKtable tbody tr:nth-child(2) td:nth-child(10){width:70px;}
 .addYSKtable tbody tr:nth-child(2) td:nth-child(10) #currency{padding-left:3px;padding-right:3px;}
-#prepayratio {width: 86%;display: inline-block;}
+#prepayratio {width: 83%;display: inline-block;}
 .query-style li [data-toggle="tab"]{line-height: 23px;}
 /*------end 添加记录------*/
 /*------航程信息------*/
 input.uploadVisitors{float: left;width: 55px;height: 10px;position: relative;top: -20px;left: 10px;cursor: pointer;opacity: 0;}
 .FileDiv{height: 29px;line-height: 28px;width: 74px;border-radius: 3px;background: rgba(60, 141, 188, 0);color: #3c8dbc;text-align: center;display: inline-block;}
-.infofooter {padding: 10px 0px 12px 0px;}
+.infofooter {padding: 10px 10px 12px 0px;}
 /*------end 航程信息------*/
 .hideTable tbody tr td{padding-bottom:7px;}
 .tableDuan .table tr td:nth-child(1){width:25%}
