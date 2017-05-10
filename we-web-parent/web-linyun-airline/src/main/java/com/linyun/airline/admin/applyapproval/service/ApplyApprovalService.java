@@ -173,7 +173,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 				@Override
 				public int compare(ApprovalListInter o1, ApprovalListInter o2) {
 
-					if (!Util.isEmpty(o1.getOrderstime()) || !Util.isEmpty(o1.getOrderstime())) {
+					if (!Util.isEmpty(o1.getOrderstime()) && !Util.isEmpty(o2.getOrderstime())) {
 						if (!Util.isEmpty(o1.getOrderstime()) && !Util.isEmpty(o2.getOrderstime())) {
 
 							if (o1.getOrderstime().getTime() < o2.getOrderstime().getTime()) {
@@ -244,7 +244,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 				@Override
 				public int compare(ApprovalList o1, ApprovalList o2) {
 
-					if (!Util.isEmpty(o1.getOptime()) || !Util.isEmpty(o1.getOptime())) {
+					if (!Util.isEmpty(o1.getOptime()) && !Util.isEmpty(o2.getOptime())) {
 						if (o1.getOptime().getTime() < o2.getOptime().getTime()) {
 							return 1;
 						} else if (o1.getOptime() == o2.getOptime()) {
