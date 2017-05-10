@@ -17,7 +17,7 @@
             <button type="button" class="btn btn-primary right btn-sm btnEdit">编辑</button>
             <h4>详情</h4>
           </div>
-          <div class="modal-body" style="height: 431px;overflow-y: auto;">
+          <div class="modal-body" style="height:580px;overflow-y: auto;padding: 10px 15px;">
             <div class="tab-content backcard">
             	<table class="PNRtable">
                   <tr>
@@ -115,8 +115,7 @@
                     <td> </td>
                     <td colspan="2">成本RMB合计：</td>
                     <td><input disabled="disabled" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.costpricesumrmb }"></td>
-                    <td> </td>
-                    <td colspan="2">销售RMB合计：</td>
+                    <td colspan="3">销售RMB合计：</td>
                     <td><input disabled="disabled" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.salespricesumrmb }"></td>
                   </tr>
                 </table>

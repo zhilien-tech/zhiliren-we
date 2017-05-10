@@ -30,12 +30,12 @@
     </div>
           <form id="updateLoginForm" method="post">
 	          <div class="modal-body">
-	            <div class="tab-content backcard">
+	            <div class="tab-content backcard" style="padding-left: 50px;">
 	                <div class="row">
 	                      <div class="form-group">
 	                      <%-- 字典类别id --%>
 	                      <input name="id" type="hidden" value="${obj.loginNumData.id}"/>
-	                          <label class="col-sm-3 text-right padding">网站地址：</label>
+	                          <label class="col-sm-2 text-right padding">网站地址：</label>
 	                            <div class="col-sm-3 padding">
 	                              <input id="webURlId" name="webURl" type="text" class="form-control input-sm inputWidth" value="${obj.loginNumData.webURl }" />
 	                              <span class="prompt">*</span>
@@ -58,7 +58,7 @@
 	                          </div>
 	                        </div> -->
 	                        <div class="form-group">
-			                      <label class="col-sm-3 text-right padding">航空公司：</label>
+			                      <label class="col-sm-2 text-right padding">航空公司：</label>
 			                      <div class="col-sm-3 padding iconCla">
 			                         <select id="airlineNameId" name="airlineName1" onchange="setSelectedAirlineIds();"
 										class="form-control select2 inputWidth" multiple="multiple"
@@ -102,7 +102,7 @@
 	
 	                <div class="row">
 	                    <div class="form-group">
-	                        <label class="col-sm-3 text-right padding">备注：</label>
+	                        <label class="col-sm-2 text-right padding">备注：</label>
 	                        <div class="col-sm-8 padding">
 	                             <textarea id="remarkId" name="remark" class="form-control inpImpWid textareaHei">${obj.loginNumData.remark}</textarea>
 	                        </div>
