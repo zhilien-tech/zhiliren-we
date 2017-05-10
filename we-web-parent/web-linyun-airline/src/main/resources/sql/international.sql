@@ -193,3 +193,11 @@ LEFT JOIN t_pay_receive_record tprr ON tor.orderid = tprr.orderid
 AND tprr.orderstatusid = tor.orderstatus
 AND tprr.recordtype = @recordtype
 $condition
+
+/*get_visitor_info_list*/
+SELECT
+	tvi.*,tbti.backstatus
+FROM
+	t_visitor_info tvi
+LEFT JOIN t_back_ticket_info tbti ON tvi.id = tbti.visitorid
+$condition

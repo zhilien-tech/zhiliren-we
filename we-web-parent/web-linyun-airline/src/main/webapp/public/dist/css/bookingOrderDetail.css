@@ -3,6 +3,14 @@
 .addPNR .table-bordered {border: 1px solid #cccccc;margin-bottom: 5px;}
 .addPNR .table-bordered > thead > tr > th,.addPNR .table-bordered > tbody > tr > th,.addPNR .table-bordered > thead > tr > td,.addPNR .table-bordered > tbody > tr > td{ border: 1px solid #cccccc;text-align: center;padding:4px;}
 .addPNR table tr{height: 30px;}
+.cloTable .addPNR table tr td:nth-child(1){width:11% !important;}
+.cloTable .addPNR table tr td:nth-child(2){width:6% !important;}
+.cloTable .addPNR table tr td:nth-child(4){width:6% !important;}
+.cloTable .addPNR table tr td:nth-child(7){width:8% !important;}
+.cloTable .addPNR table tr td:nth-child(8){width:8% !important;}
+.cloTable .addPNR table tr td:nth-child(10){width:10% !important;}
+.cloTable .addPNR table tr td:nth-child(11){width:5% !important;}
+
 .PNRbtn{padding: 4px 2px !important;margin-left: 10px !important;}
 .addDemand{left: 72.5%; margin-left: 8px;line-height: 18px;font-size: 12px;}
 .addIcon {top: 0px;float: left;left: 10px;margin-right: 10px;margin-left:-2px;}
@@ -10,10 +18,19 @@
 .scykP{padding-top: 0;line-height: 27px;font-size: 12px;}
 /*+PNR*/
 #addPnrForm{margin-top: 0px;margin-right: 0px;}
-.PNRtable tr td:nth-child(odd){text-align: right;width:8.5%;}
-.PNRtable tr td:nth-child(even){width: 11%;}
+.PNRtable tr td:nth-child(odd){text-align: right;}
 .PNRtable tr td{position: relative;padding-top: 10px;}
-.PNRtable tr td:nth-child(1){text-align: right;width: 4%;}
+.PNRtable tr td:nth-child(1){width: 45px;}
+.PNRtable tr td:nth-child(2){width: 105px;}
+.PNRtable tr td:nth-child(3){width: 80px;}
+.PNRtable tr td:nth-child(4){width: 105px;}
+.PNRtable tr td:nth-child(5){width: 80px;}
+.PNRtable tr td:nth-child(6){width: 105px;}
+.PNRtable tr td:nth-child(7){width: 80px;}
+.PNRtable tr td:nth-child(8){width: 105px;}
+.PNRtable tr td:nth-child(9){width: 80px;}
+.PNRtable tr td:nth-child(10){width: 105px;}
+.PNRtable tr:nth-child(6) td:nth-child(6){text-align: right;}
 .PNRtable tr td input{padding-left:3px;padding-right:3px;}
 .PNRtable tr td select{padding-left:3px;padding-right:3px;}
 .PNRtable tr [colspan="2"]{text-align:right;}
@@ -34,7 +51,7 @@ select[multiple="multiple"]{height: 180px;}
 .infoShow{display: block;}
 .actionInfo{background-color: #3c8dbc;padding: 4px 12px !important;color: #fff !important;}
 form#financeForm table {margin-bottom: 10px;}
-.addPNR table{width: 94%;float: left;}
+.addPNR table{width: 95%;float: left;}
 .cloTable tr:nth-of-type(1) td:nth-of-type(4) span.select2-container {width: 150px !important;}
 [name="airlineinfo"] td:nth-child(4) .select2-container .selection .select2-selection {width: 150px !important;}
 .cloTable tr td:nth-of-type(12) {width: 8%;}
@@ -74,3 +91,4 @@ div#orderlog {padding-top: 10px;}
 .cloTable tbody tr td:nth-child(2){width:155px;}
 [name="threepaytd"]{width:57px !important;}
 [name="thirdcustomid"]{padding-left: 0px;padding-right: 0px;}
+.tdWid,#neilu{width:150px !important;}

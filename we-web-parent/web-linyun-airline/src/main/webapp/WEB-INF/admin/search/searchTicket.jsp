@@ -705,15 +705,15 @@
 						}
 						if (result.parsingType == "QTE:/") {
 							var pnrThread = '<tr>' 
-												+ '<th>总价</th>'
 												+ '<th>币种</th>'
+												+ '<th>含税总价</th>'
 												+ '</tr>';
 							var pnrBody = '';
 							var obj = result.arrayList;
 							for (var i = 0; i < obj.length; i++) {
 								pnrBody += '<tr>' 
-										+ '<td>' + obj[i].airSeatsPrice+ '</td>' 
 										+ '<td>' + obj[i].airSeatsCurrency+ '</td>' 
+										+ '<td>' + obj[i].airSeatsPrice+ '</td>' 
 										+ '</tr>';
 							}
 						}

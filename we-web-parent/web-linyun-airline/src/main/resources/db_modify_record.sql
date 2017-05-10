@@ -226,3 +226,64 @@ ADD COLUMN `remark`  text NULL COMMENT '备注' AFTER `companyid`;
 /******************************************************************************
 version : 1.0.4   END   2017-04-26
 ******************************************************************************/
+
+/******************************************************************************
+version : 1.0.5   BEGIN   2017-05-04
+******************************************************************************/
+ALTER TABLE `t_pnr_info`
+ADD COLUMN `averagerate`  double NULL COMMENT '平均汇率' AFTER `orderid`,
+ADD COLUMN `currentrate`  double NULL COMMENT '实时汇率' AFTER `averagerate`,
+ADD COLUMN `adultcount`  int NULL COMMENT '成人数' AFTER `currentrate`,
+ADD COLUMN `adultcostprice`  double NULL COMMENT '成人成本单价' AFTER `adultcount`,
+ADD COLUMN `adultcostpricesum`  double NULL COMMENT '成人成本总价' AFTER `adultcostprice`,
+ADD COLUMN `adultsalesprice`  double NULL COMMENT '成人销售总价' AFTER `adultcostpricesum`,
+ADD COLUMN `adultsalespricesum`  double NULL COMMENT '成人销售总价' AFTER `adultsalesprice`,
+ADD COLUMN `childcount`  int NULL COMMENT '儿童人数' AFTER `adultsalespricesum`,
+ADD COLUMN `childcostprice`  double NULL COMMENT '儿童成本单价' AFTER `childcount`,
+ADD COLUMN `childcostpricesum`  double NULL COMMENT '儿童成本总价' AFTER `childcostprice`,
+ADD COLUMN `childsalesprice`  double NULL COMMENT '儿童销售单价' AFTER `childcostpricesum`,
+ADD COLUMN `childsalespricesum`  double NULL COMMENT '儿童销售总价' AFTER `childsalesprice`,
+ADD COLUMN `babycount`  int NULL COMMENT '婴儿人数' AFTER `childsalespricesum`,
+ADD COLUMN `babycostprice`  double NULL COMMENT '婴儿成本单价' AFTER `babycount`,
+ADD COLUMN `babycostpricesum`  double NULL COMMENT '婴儿成本总价' AFTER `babycostprice`,
+ADD COLUMN `babysalesprice`  double NULL COMMENT '婴儿销售单价' AFTER `babycostpricesum`,
+ADD COLUMN `babysalespricesum`  double NULL COMMENT '婴儿销售总价' AFTER `babysalesprice`,
+ADD COLUMN `costpricesumrmb`  double NULL COMMENT '成本RMB总价' AFTER `babysalespricesum`,
+ADD COLUMN `salespricesumrmb`  double NULL COMMENT '销售RMB总价' AFTER `costpricesumrmb`;
+
+ALTER TABLE `t_finance_info`
+ADD COLUMN `enterleavecity`  varchar(16) NULL COMMENT '进澳出发城市' AFTER `outarrivetime`,
+ADD COLUMN `enterarrivecity`  varchar(16) NULL COMMENT '进澳抵达城市' AFTER `enterleavecity`,
+ADD COLUMN `outleavecity`  varchar(255) NULL COMMENT '出澳出发城市' AFTER `enterarrivecity`,
+ADD COLUMN `outarrivecity`  varchar(255) NULL COMMENT '出澳抵达城市' AFTER `outleavecity`;
+
+ALTER TABLE `t_pay_receive_record`
+MODIFY COLUMN `prepayratio`  varchar(32) NULL DEFAULT NULL COMMENT '预付款比例' AFTER `costprice`,
+ADD COLUMN `inputtype`  int NULL COMMENT '输入类型' AFTER `actualyreduce`;
+
+ALTER TABLE `t_visitor_info`
+ADD COLUMN `remark`  varchar(256) NULL COMMENT '备注' AFTER `validuntil`;
+
+create table t_back_ticket_info
+(
+   id                   int not null auto_increment comment '主键id',
+   visitorname          varchar(32) comment '退票人',
+   telephone            varchar(16) comment '电话',
+   applydate            date comment '申请日期',
+   price                double comment '金额',
+   tax                  double comment '税金',
+   backprice            double comment '退款金额',
+   reason               varchar(32) comment '原因',
+   backstatus           varchar(32) comment '退票状态',
+   remark               varchar(256) comment '备注',
+   visitorid            int comment '游客id',
+   opid                 int comment '操作人',
+   optime               datetime comment '操作时间',
+   primary key (id)
+);
+
+alter table t_back_ticket_info comment '退票表';
+
+ALTER TABLE `t_order_customneed`
+ADD COLUMN `neilu`  varchar(32) NULL COMMENT '内陆跨海' AFTER `thirdcustomid`;
+

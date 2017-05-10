@@ -19,7 +19,7 @@ public class TPnrInfoEntity implements Serializable {
 
 	@Column
 	@Comment("PNR")
-	private String pNR; 
+	private String pNR;
 
 	@Column
 	@Comment("成本单价")
@@ -76,5 +76,81 @@ public class TPnrInfoEntity implements Serializable {
 	@Column
 	@Comment("订单id（国际用）")
 	private Integer orderid;
+
+	@Column
+	@Comment("平均汇率")
+	private Double averagerate;
+
+	@Column
+	@Comment("实时汇率")
+	private Integer currentrate;
+
+	@Column
+	@Comment("成人数")
+	private Integer adultcount;
+
+	@Column
+	@Comment("成人成本单价")
+	private Double adultcostprice;
+
+	@Column
+	@Comment("成人成本总价")
+	private Double adultcostpricesum;
+
+	@Column
+	@Comment("成人销售单价")
+	private Double adultsalesprice;
+
+	@Column
+	@Comment("成人销售总价")
+	private Double adultsalespricesum;
+
+	@Column
+	@Comment("儿童人数")
+	private Integer childcount;
+
+	@Column
+	@Comment("儿童成本单价")
+	private Double childcostprice;
+
+	@Column
+	@Comment("儿童成本总价")
+	private Double childcostpricesum;
+
+	@Column
+	@Comment("儿童销售单价")
+	private Double childsalesprice;
+
+	@Column
+	@Comment("儿童销售总价")
+	private Double childsalespricesum;
+
+	@Column
+	@Comment("婴儿人数")
+	private Integer babycount;
+
+	@Column
+	@Comment("婴儿成本单价")
+	private Double babycostprice;
+
+	@Column
+	@Comment("婴儿成本总价")
+	private Double babycostpricesum;
+
+	@Column
+	@Comment("婴儿销售单价")
+	private Double babysalesprice;
+
+	@Column
+	@Comment("婴儿销售总价")
+	private Double babysalespricesum;
+
+	@Column
+	@Comment("成本RMB总价")
+	private Double costpricesumrmb;
+
+	@Column
+	@Comment("销售RMB总价")
+	private Double salespricesumrmb;
 
 }

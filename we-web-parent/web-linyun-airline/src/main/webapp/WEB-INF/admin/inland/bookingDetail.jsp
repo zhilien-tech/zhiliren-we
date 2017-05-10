@@ -188,7 +188,7 @@
 		                     <td><input id="leavedate" name="leavedate" disabled="disabled" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:'${customneed.cusinfo.leavetdate }'})" value="<fmt:formatDate value="${customneed.cusinfo.leavetdate }" pattern="yyyy-MM-dd" />"/></td>
 		                     <td><label>人数：</label></td>
 		                     <td><input id="peoplecount" name="peoplecount" disabled="disabled" type="text" class="form-control input-sm textWid mustNumber" value="${customneed.cusinfo.peoplecount }"/></td>
-		                     <td><label class="labelWid">早中晚：</label></td>
+		                     <%--<td><label class="labelWid">早中晚：</label></td>
 		                     <td>
 		                       <select id="tickettype" name="tickettype" disabled="disabled" class="form-control input-sm textWid" value="${customneed.cusinfo.tickettype }">
 			                         <c:choose>
@@ -216,7 +216,7 @@
 			                       	 	</c:otherwise>
 			                       	 </c:choose>
 			                       </select>
-		                     </td>
+		                     </td> --%>
 		                   </tr>
 		                   <c:choose>
 			                   		<c:when test="${fn:length(customneed.ailines)>0}">
@@ -305,24 +305,24 @@
 			                   		</c:otherwise>
 			                   </c:choose>
 			               <tr>
-		                     <td><label>平均汇率：</label></td>
+		                     <%-- <td><label>平均汇率：</label></td>
 		                     <td><input id="avgexrate" name="avgexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid" value="${customneed.cusinfo.avgexrate }"/></td>
 		                     <td><label>实时汇率：</label></td>
 		                     <td><input id="realtimexrate" name="realtimexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid" value="${customneed.cusinfo.realtimexrate }"/>
-			                 </td>
-		                     <td><label>币种：</label></td>
-		                     <td><select id="paycurrency" name="paycurrency" disabled="disabled" class="form-control input-sm">
+			                 </td> --%>
+		                     <td><label>内陆跨海：</label></td>
+		                     <td class="tdWid"><select id="neilu" name="neilu" disabled="disabled" class="form-control input-sm">
 		                     		<option value="">请选择</option>
-		                            <c:forEach items="${obj.bzcode }" var="one"> 
-		                        	<c:choose>
-		                        		<c:when test="${customneed.cusinfo.paycurrency eq one.dictCode }">
-						                     <option value="${one.dictCode }" selected="selected">${one.dictCode }</option>
-		                        		</c:when>
-		                        		<c:otherwise>
-						                     <option value="${one.dictCode }">${one.dictCode }</option>
-		                        		</c:otherwise>
-		                        	</c:choose>
-		                     	</c:forEach>
+		                            <c:forEach items="${obj.nlkhcode }" var="one"> 
+			                        	<c:choose>
+			                        		<c:when test="${customneed.cusinfo.neilu eq one.id }">
+							                     <option value="${one.id }" selected="selected">${one.dictName }</option>
+			                        		</c:when>
+			                        		<c:otherwise>
+							                     <option value="${one.id }">${one.dictName }</option>
+			                        		</c:otherwise>
+			                        	</c:choose>
+			                     	</c:forEach>
 		                        </select>
 		                     </td>
 		                     <td><label>付款方式：</label></td>
@@ -351,12 +351,15 @@
 		                         <thead>
 		                          <tr>
 		                            <td>PNR</td>
-		                            <td>成本单价</td>
-		                            <td>成本总价</td>
-		                            <td>销售单价</td>
-		                            <td>销售总价</td>
 		                            <td>人数</td>
 		                            <td>登录帐号</td>
+		                            <td>币种</td>
+		                            <td>成本合计</td>
+		                            <td>销售合计</td>
+		                            <td>平均汇率</td>
+		                            <td>实时汇率</td>
+		                            <td>成本RMB总价</td>
+		                            <td>销售RMB总价</td>
 		                            <td>操作</td>
 		                          </tr>
 		                         </thead>
@@ -401,14 +404,14 @@
 		                     <td><input id="leavedate" name="leavedate" disabled="disabled" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:''})"/></td>
 		                     <td><label>人数：</label></td>
 		                     <td><input id="peoplecount" name="peoplecount" disabled="disabled" type="text" class="form-control input-sm textWid mustNumber"/></td>
-		                     <td><label class="labelWid">早中晚：</label></td>
+		                     <!-- <td><label class="labelWid">早中晚：</label></td>
 		                     <td>
 		                       <select id="tickettype" name="tickettype" disabled="disabled" class="form-control input-sm textWid">
 			                         <option value="1">早</option>
 			                         <option value="2">中</option>
 			                         <option value="3">晚</option>
 			                       </select>
-		                     </td>
+		                     </td> -->
 		                   </tr>
 		                   <tr name="airlineinfo" class="airlineinfo">
 		                     <td></span><label>航空公司：</label></td>
@@ -430,15 +433,15 @@
 		                     </td>
 		                   </tr>
 			               <tr>
-		                     <td><label>平均汇率：</label></td>
+		                     <!-- <td><label>平均汇率：</label></td>
 		                     <td><input id="avgexrate" name="avgexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid"/></td>
 		                     <td><label>实时汇率：</label></td>
 		                     <td><input id="realtimexrate" name="realtimexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid"/>
-			                 </td>
-		                     <td><label>币种：</label></td>
-		                     <td><select id="paycurrency" name="paycurrency" disabled="disabled" class="form-control input-sm">
-		                     		<c:forEach items="${obj.bzcode }" var="one"> 
-					                     <option value="${one.dictCode }">${one.dictCode }</option>
+			                 </td> -->
+		                     <td><label>内陆跨海：</label></td>
+		                     <td><select id="neilu" name="neilu" disabled="disabled" class="form-control input-sm">
+		                     		<c:forEach items="${obj.nlkhcode }" var="one"> 
+					                     <option value="${one.id }">${one.dictName }</option>
 			                     	</c:forEach>
 		                        </select>
 		                     </td>
@@ -461,12 +464,15 @@
 		                         <thead>
 		                          <tr>
 		                            <td>PNR</td>
-		                            <td>成本单价</td>
-		                            <td>成本总价</td>
-		                            <td>销售单价</td>
-		                            <td>销售总价</td>
 		                            <td>人数</td>
 		                            <td>登录帐号</td>
+		                            <td>币种</td>
+		                            <td>成本合计</td>
+		                            <td>销售合计</td>
+		                            <td>平均汇率</td>
+		                            <td>实时汇率</td>
+		                            <td>成本RMB总价</td>
+		                            <td>销售RMB总价</td>
 		                            <td>操作</td>
 		                          </tr>
 		                         </thead>
@@ -529,7 +535,18 @@
 							 </c:forEach>
                         </select>
                      </td>
-                     <td><label>内陆跨海：</label></td>
+                     <td><label>是否结算：</label></td>
+                     <td>
+                        <select id="billingstatus" name="billingstatus" class="form-control input-sm disab" disabled="disabled">
+                            <option value="0">否</option>
+                            <option value="1">是</option>
+                        </select>
+                     </td>
+                     <td><label>销售：</label></td>
+                     <td><input id="salesperson" name="salesperson" value="候小凌" type="text" class="form-control input-sm" disabled="disabled"></td>
+                     <td><label>开票人：</label></td>
+                     <td><input id="issuer" name="issuer" type="text" value="${empty obj.finance.issuer?obj.user.fullName:obj.finance.issuer }" class="form-control input-sm" disabled="disabled"></td>
+                     <%-- <td><label>内陆跨海：</label></td>
                      <td>
                         <select id="neilu" name="neilu" class="form-control input-sm disab" disabled="disabled">
                             <option value="">请选择</option>
@@ -544,31 +561,17 @@
 	                        	</c:choose>
 	                     	</c:forEach>
                         </select>
-                     </td>
+                     </td> --%>
                      <td><label>开票日期：</label></td>
                      <td><input id="billingdate" name="billingdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" type="text" class="form-control input-sm" value="<fmt:formatDate value="${obj.finance.billingdate }" pattern="yyyy-MM-dd" />" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
-                     <td><label>销售：</label></td>
-                     <td><input id="salesperson" name="salesperson" value="候小凌" type="text" class="form-control input-sm" disabled="disabled"></td>
-                     <td><label>开票人：</label></td>
-                     <td><input id="issuer" name="issuer" type="text" value="${empty obj.finance.issuer?obj.user.fullName:obj.finance.issuer }" class="form-control input-sm" disabled="disabled"></td>
                    </tr>
-                   <tr class="KHinfo">
-                     <td><label>人头数：</label></td>
-                     <td><input id="personcount" name="personcount" value="${obj.finance.personcount }" type="text" class="form-control input-sm disab mustNumber" disabled="disabled"></td>
-                     <td><label>是否结算：</label></td>
-                     <td>
-                        <select id="billingstatus" name="billingstatus" class="form-control input-sm disab" disabled="disabled">
-                            <option value="0">否</option>
-                            <option value="1">是</option>
-                        </select>
-                     </td>
+                     
                      <%-- <td><label>进澳时间：</label></td>
                      <td><input id="enterausdate" name="enterausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.enterausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
                      <td><label>出澳时间：</label></td>
                      <td><input id="outausdate" name="outausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.outausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td> --%>
-                   </tr>
                    <tr class="KHinfo">
                      <td><label>进澳时间：</label></td>
                      <td><input id="enterausdate" name="enterausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.enterausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
@@ -581,6 +584,32 @@
 	                   			</c:when>
 	                   			<c:otherwise>
 		                     		<option value="${one.dictCode }">${one.dictCode }-${one.dictName }</option>
+	                   			</c:otherwise>
+                    		</c:choose>
+                     	</c:forEach>
+                     </select></td>
+                   	 <td><label>出发城市：</label></td>
+                     <td><select id="enterleavecity" name="enterleavecity" type="text" class="form-control input-sm disab cityselect" disabled="disabled" multiple="multiple">
+                     	<c:forEach items="${obj.city }" var="one"> 
+                   			<c:choose>
+	                   			<c:when test="${obj.finance.enterleavecity  eq one.dictCode  }">
+									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+	                   			</c:when>
+	                   			<c:otherwise>
+		                     		<option value="${one.dictCode }">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+	                   			</c:otherwise>
+                    		</c:choose>
+                     	</c:forEach>
+                     </select></td>
+                   	 <td><label>抵达城市：</label></td>
+                     <td><select id="enterarrivecity" name="enterarrivecity" type="text" class="form-control input-sm disab cityselect" disabled="disabled" multiple="multiple">
+                     	<c:forEach items="${obj.city }" var="one"> 
+                   			<c:choose>
+	                   			<c:when test="${obj.finance.enterarrivecity  eq one.dictCode  }">
+									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+	                   			</c:when>
+	                   			<c:otherwise>
+		                     		<option value="${one.dictCode }">${one.dictCode }-${one.englishName }-${one.countryName }</option>
 	                   			</c:otherwise>
                     		</c:choose>
                      	</c:forEach>
@@ -606,12 +635,40 @@
                     		</c:choose>
                      	</c:forEach>
                      </select></td>
+                     <td><label>出发城市：</label></td>
+                     <td><select id="outleavecity" name="outleavecity" type="text" class="form-control input-sm disab cityselect" disabled="disabled" multiple="multiple">
+                     	<c:forEach items="${obj.city }" var="one"> 
+                   			<c:choose>
+	                   			<c:when test="${obj.finance.outleavecity  eq one.dictCode  }">
+									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+	                   			</c:when>
+	                   			<c:otherwise>
+		                     		<option value="${one.dictCode }">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+	                   			</c:otherwise>
+                    		</c:choose>
+                     	</c:forEach>
+                     </select></td>
+                   	 <td><label>抵达城市：</label></td>
+                     <td><select id="outarrivecity" name="outarrivecity" type="text" class="form-control input-sm disab cityselect" disabled="disabled" multiple="multiple">
+                     	<c:forEach items="${obj.city }" var="one"> 
+                   			<c:choose>
+	                   			<c:when test="${obj.finance.outarrivecity  eq one.dictCode  }">
+									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+	                   			</c:when>
+	                   			<c:otherwise>
+		                     		<option value="${one.dictCode }">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+	                   			</c:otherwise>
+                    		</c:choose>
+                     	</c:forEach>
+                     </select></td>
                      <td><label>出发时间：</label></td>
                      <td><input id="outstarttime" name="outstarttime" value="${obj.finance.outstarttime }" type="text" class="form-control input-sm disab mustTimes" disabled="disabled"></td>
                      <td><label>抵达时间：</label></td>
                      <td><input id="outarrivetime" name="outarrivetime" value="${obj.finance.outarrivetime }" type="text" class="form-control input-sm disab mustArriveTimes" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
+                   	 <td><label>人头数：</label></td>
+                     <td><input id="personcount" name="personcount" value="${obj.finance.personcount }" type="text" class="form-control input-sm disab mustNumber" disabled="disabled"></td>
                      <td><label>应收：</label></td>
                      <td><input id="receivable" name="receivable" type="text" class="form-control input-sm disab mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.finance.receivable }" pattern="0.00" maxFractionDigits="2"/>" disabled="disabled"></td>
                      <td><label><a href="javascript:;" class="" id="jianMian" disabled="disabled">减免</a>：</label></td>
@@ -620,6 +677,8 @@
                      <td><input id="incometotal" name="incometotal" type="text" class="form-control input-sm loadprofit mustNumberPoint" disabled="disabled" value="<fmt:formatNumber type="number" value="${obj.finance.incometotal }" pattern="0.00" maxFractionDigits="2"/>"></td>
                    </tr>
                    <tr class="KHinfo">
+                     <td><label></label></td>
+                     <td></td>
                      <td><label>成本合计：</label></td>
                      <td><input id="costtotal" name="costtotal" type="text" class="form-control input-sm disab loadprofit mustNumberPoint" disabled="disabled" value="<fmt:formatNumber type="number" value="${obj.finance.costtotal }" pattern="0.00" maxFractionDigits="2"/>"></td>
                      <td><label>应返：</label></td>
@@ -732,7 +791,7 @@
               $(this).find('[name=tickettype]').removeAttr('disabled');
               $(this).find('[name=realtimexrate]').removeAttr('disabled');
               $(this).find('[name=avgexrate]').removeAttr('disabled');
-              $(this).find('[name=paycurrency]').removeAttr('disabled');
+              $(this).find('[name=neilu]').removeAttr('disabled');
               $(this).find('[name=paymethod]').removeAttr('disabled');
               $(this).find('[name=thirdcustomid]').removeAttr('disabled');
               $(this).find('[name=remark]').removeAttr('disabled');
@@ -779,7 +838,7 @@
 	              $(this).find('[name=tickettype]').attr('disabled','disabled');
 	              $(this).find('[name=realtimexrate]').attr('disabled','disabled');
 	              $(this).find('[name=avgexrate]').attr('disabled','disabled');
-	              $(this).find('[name=paycurrency]').attr('disabled','disabled');
+	              $(this).find('[name=neilu]').attr('disabled','disabled');
 	              $(this).find('[name=paymethod]').attr('disabled','disabled');
 	              $(this).find('[name=thirdcustomid]').attr('disabled','disabled');
 	              $(this).find('[name=remark]').attr('disabled','disabled');
@@ -884,7 +943,7 @@
 			row1.tickettype = $(this).find('[name=tickettype]').val();
 			row1.realtimexrate = $(this).find('[name=realtimexrate]').val();
 			row1.avgexrate = $(this).find('[name=avgexrate]').val();
-			row1.paycurrency = $(this).find('[name=paycurrency]').val();
+			row1.neilu = $(this).find('[name=neilu]').val();
 			row1.paymethod = $(this).find('[name=paymethod]').val();
 			row1.thirdcustomid = $(this).find('[name=thirdcustomid]').val();
 			row1.remark = $(this).find('[name=remark]').val();
@@ -893,7 +952,7 @@
 			lenthcustom += $(this).find('[name=peoplecount]').val();
 			lenthcustom += $(this).find('[name=realtimexrate]').val();
 			lenthcustom += $(this).find('[name=avgexrate]').val();
-			lenthcustom += $(this).find('[name=paycurrency]').val();
+			lenthcustom += $(this).find('[name=neilu]').val();
 			lenthcustom += $(this).find('[name=paymethod]').val();
 			lenthcustom += $(this).find('[name=remark]').val();
 			var airrows = [];
@@ -957,10 +1016,30 @@
 		if (enteraircom) {
 			enteraircom = enteraircom.join(',');
 		}
+		//进澳出发城市
+		var enterleavecity = $('#enterleavecity').val();
+		if (enterleavecity) {
+			enterleavecity = enterleavecity.join(',');
+		}
+		//进澳抵达城市
+		var enterarrivecity = $('#enterarrivecity').val();
+		if (enterarrivecity) {
+			enterarrivecity = enterarrivecity.join(',');
+		}
 		//出澳时间航空公司
 		var outaircom = $('#outaircom').val();
 		if (outaircom) {
 			outaircom = outaircom.join(',');
+		}
+		//出澳出发城市
+		var outleavecity = $('#outleavecity').val();
+		if (outleavecity) {
+			outleavecity = outleavecity.join(',');
+		}
+		//出澳抵达城市
+		var outarrivecity = $('#outarrivecity').val();
+		if (outarrivecity) {
+			outarrivecity = outarrivecity.join(',');
 		}
 		var financeForm = getFormJson('#financeForm');
 		financeForm.billingdate = billingdate;
@@ -970,7 +1049,11 @@
 		financeForm.incometotal = incometotal;
 		financeForm.profittotal = profittotal;
 		financeForm.enteraircom = enteraircom;
+		financeForm.enterleavecity = enterleavecity;
+		financeForm.enterarrivecity = enterarrivecity;
 		financeForm.outaircom = outaircom;
+		financeForm.outleavecity = outleavecity;
+		financeForm.outarrivecity = outarrivecity;
 		$.ajax({ 
 			type: 'POST', 
 			data: {data:JSON.stringify(customdata),financeData:JSON.stringify(financeForm)}, 
@@ -1088,7 +1171,7 @@
 	   		         closeBtn:false,//默认 右上角关闭按钮 是否显示
 	   		         shadeClose:true,
 	   		         scrollbar: false,
-	   		         area: ['880px', '425px'],
+	   		         area: ['880px', '570pnrDetailPagepx'],
 	   		         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+data.id,
 	   		         end:function(){
 	   		        	 //设置财务信息
@@ -1109,7 +1192,7 @@
 		         closeBtn:false,//默认 右上角关闭按钮 是否显示
 		         shadeClose:true,
 		         scrollbar: false,
-		         area: ['880px', '425px'],
+		         area: ['880px', '570px'],
 		         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+needid,
 		         end:function(){
 		        	 //设置财务信息
