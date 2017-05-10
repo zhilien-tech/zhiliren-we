@@ -59,7 +59,6 @@ import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TCustomerInvoiceEntity;
-import com.linyun.airline.entities.TCustomerOutcityEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
@@ -308,7 +307,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 		TCustomerInfoEntity customerInfo = this.add(addForm);
 
-		//出发城市城市截取
+		/*//出发城市城市截取
 		Iterable<String> outcityids = Splitter.on(",").split(addForm.getOutcityname());
 		//出发城市保存
 		List<TCustomerOutcityEntity> outcityEntities = new ArrayList<TCustomerOutcityEntity>();
@@ -321,7 +320,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 			}
 			outcityEntities.add(outcityEntity);
 		}
-		dbDao.insert(outcityEntities);
+		dbDao.insert(outcityEntities);*/
 
 		/*//国境内陆截取
 		Iterable<String> sLine1s = Splitter.on(",").split(addForm.getSLine1());
@@ -678,7 +677,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 
 		this.update(updateForm);
 
-		//出发城市城市截取
+		/*//出发城市城市截取
 		Iterable<String> outcityids = Splitter.on(",").split(updateForm.getOutcityname());
 		//出发城市更新
 		List<TCustomerOutcityEntity> outCitysAfter = new ArrayList<TCustomerOutcityEntity>();
@@ -694,6 +693,7 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		List<TCustomerOutcityEntity> outCitysBefore = dbDao.query(TCustomerOutcityEntity.class,
 				Cnd.where("infoId", "=", updateForm.getId()), null);
 		dbDao.updateRelations(outCitysBefore, outCitysAfter);
+		 */
 
 		/*//国境内陆截取
 		Iterable<String> sLine1s = Splitter.on(",").split(updateForm.getSLine1());

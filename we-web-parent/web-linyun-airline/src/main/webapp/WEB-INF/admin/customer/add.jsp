@@ -175,6 +175,7 @@
 										出发城市ID
 										<input id="outcity" type="hidden" name="outcityname" /> 
 									-->
+									<input id="outCityName" type="text" name="outCityName" class="form-control input-sm inpImpWid"/>
 								</div>
 							</div>
 						</div>
