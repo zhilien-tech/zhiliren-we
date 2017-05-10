@@ -143,14 +143,15 @@
 							<label class="col-sm-3 text-right padding">出发城市：</label>
 							
 							<div class="col-sm-7 padding seleSpanWid">
-								<select id="city" class="form-control select2" onchange="cityOpt()"  multiple="multiple"  data-placeholder="请输入出发城市">
+								<%-- <select id="city" class="form-control select2" onchange="cityOpt()"  multiple="multiple"  data-placeholder="请输入出发城市">
 									<option></option>
 									<c:forEach var="one" items="${obj.outcitylist }">
 										<option value="${one.id }">${one.text}</option>
 									</c:forEach>
 								</select>
 								<!-- 出发城市ID -->
-								<input id="outcity" type="hidden" name="outcityname"/>
+								<input id="outcity" type="hidden" name="outcityname"/> --%>
+								<input id="outCityName" type="text" name="outCityName" value="${obj.customer.outCityName}" class="form-control input-sm inpImpWid"/>
 							</div>
 						</div>
 					</div>
