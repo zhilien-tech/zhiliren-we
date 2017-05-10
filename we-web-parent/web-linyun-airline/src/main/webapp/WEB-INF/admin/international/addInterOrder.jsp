@@ -13,6 +13,20 @@
 	<link rel="stylesheet" type="text/css" href="${base}/public/ionicons/css/ionicons.min.css">
 	<%--<link rel="stylesheet" type="text/css" href="${base}/public/dist/css/inlandCross.css"> --%>
 	<link rel="stylesheet" href="${base}/public/dist/css/internationOrderDetail.css"><!--本页面styleFlie-->
+	<style type="text/css">
+		.remarkDiv { padding: 5px 0px;display: block;margin-bottom: 15px;    margin-top: 13px;}
+		.remarkContext {overflow: hidden;min-height: 80px;display: block;border: solid 1px #e0e0e0;border-radius: 0 0 3px 3px;background-color: white;}
+.remarkTable {
+    width: 100%;
+}
+.remarkTable tbody tr td:nth-child(1) {
+    width: 70px;
+    text-align: right;
+}
+.remarkTable tbody tr td:nth-child(2) {
+    padding-right: 5%;
+}
+	</style>
 </head>
 <body>
 	<div class="modal-top">
@@ -95,7 +109,7 @@
                            </tr>
                           <tr>
                             <td><label>记录编号：</label></td>
-                            <td colspan="11"><input id="pnr" name="pnr" type="text" class="form-control input-sm numTd PNRlength"></td>
+                            <td colspan="3"><input id="pnr" name="pnr" type="text" class="form-control input-sm numTd PNRlength"></td>
                           </tr>
                           <tr class="addHD-tr">
                             <td><label>出发城市：</label></td>
@@ -116,6 +130,18 @@
                  </table>
                </div>
           </div><!--end 航段信息-->
+          <context class="remarkContext">
+				   <div class="remarkDiv">
+						<table class="remarkTable">
+							<tr name="cRemarkTr" class="remarkTr">
+								<td><label>备注：</label></td>
+								<td>
+									<textarea class="form-control" id="cRemark" name="cRemark"></textarea>
+								</td>
+							</tr>
+						</table>
+				   </div>	
+		  </context>
       </div>
 	</div>
 	<script type="text/javascript">
@@ -182,6 +208,8 @@
  		 data.costsingleprice = costsingleprice;
  		 var pnr = $('#pnr').val();
  		 data.pnr = pnr;
+ 		 var cRemark = $('#cRemark').val();
+		 data.remark = cRemark;
  		 var airinfos = [];
  		 $('.addHD-tr').each(function(i){
  			 var airinfo = {};

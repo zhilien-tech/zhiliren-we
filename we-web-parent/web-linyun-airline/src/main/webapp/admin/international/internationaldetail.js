@@ -61,6 +61,8 @@ function saveInternationalDetail(){
 	orderinfo.peoplecount = peoplecount;
 	var costsingleprice = $('#costsingleprice').val();
 	orderinfo.costsingleprice = costsingleprice;
+	var cRemark = $('#cRemark').val();
+	orderinfo.remark = cRemark;
 	$.ajax({ 
 		type: 'POST', 
 		data: {data:JSON.stringify(orderinfo),financeData:JSON.stringify(getFinanceFormData())}, 

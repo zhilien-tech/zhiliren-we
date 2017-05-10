@@ -25,9 +25,9 @@
                   <h4>添加</h4>
               </div>
                 <div class="modal-body" style="height:360px;overflow-y: auto;">
-                 <div class="tab-content">
+                 <div class="tab-content" style="padding-left: 50px;">
                         <div class="form-group row">
-                            <label class="col-sm-3 text-right padding">字典类别名称：</label>
+                            <label class="col-sm-2 text-right padding">字典类别名称：</label>
                             <div class="col-sm-8 padding">
                             	<select id="comTypeCode" name="comTypeCode" class="form-control input-sm inpImpWid">
                             		<option value=" ">==请选择==</option>
@@ -51,14 +51,14 @@
                             </div>
                         </div> -->
                         <div class="form-group row">
-                        	<label class="col-sm-3 text-right padding">字典信息：</label>
+                        	<label class="col-sm-2 text-right padding">字典信息：</label>
                             <div class="col-sm-8 padding">
                               <input id="comDictName" name="comDictName" class="form-control input-sm inpImpWid" placeholder="请输入字典信息" />
                             	<span class="prompt">*</span>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 text-right padding">状态：</label>
+                            <label class="col-sm-2 text-right padding">状态：</label>
                             <div class="col-sm-8 padding">
                               <select id="status" name="status" class="form-control input-sm inpImpWid">
                                 <option value="1" selected="selected">启用</option>
@@ -67,7 +67,7 @@
                             </div>
                         </div>
 						<div class="form-group row">
-                            <label class="col-sm-3 text-right padding">备注：</label>
+                            <label class="col-sm-2 text-right padding">备注：</label>
                             <div class="col-sm-8 padding ">
                               <textarea name="remark" class="form-control inpImpWid textareaHei"></textarea>
                             </div>

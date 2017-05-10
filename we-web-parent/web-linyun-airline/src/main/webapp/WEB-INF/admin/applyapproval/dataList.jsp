@@ -142,7 +142,7 @@
 					</li>
 					<li>
 						
-							<span>${each.PNR }</span>
+						<span>${each.PNR }</span>
 						
 						<span>${each.fullName }</span>
 					</li>
@@ -173,6 +173,9 @@
 									同意
 								</span>
 								
+							</c:if>
+							<c:if test="${each.orderPnrStatus=='' || each.orderPnrStatus==null}">
+								<span></span>
 							</c:if>
 		
 								<span><fmt:formatDate value="${each.optime }" pattern="yyyy-MM-dd HH:mm:ss"/></span>

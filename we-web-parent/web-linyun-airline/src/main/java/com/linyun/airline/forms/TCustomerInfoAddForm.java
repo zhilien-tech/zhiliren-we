@@ -43,6 +43,9 @@ public class TCustomerInfoAddForm extends AddForm implements Serializable {
 	/**地址*/
 	private String address;
 
+	/**出发城市*/
+	private String outCityName;
+
 	/**国境内陆*/
 	private String inlandLine;
 

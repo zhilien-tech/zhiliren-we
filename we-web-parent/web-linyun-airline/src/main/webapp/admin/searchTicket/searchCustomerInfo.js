@@ -91,12 +91,12 @@ $("#linkNameId").on('select2:select', function (evt) {
 			/* 电话补全 */
 			$("#phoneNumId").append('<option selected="true" value='+ id +'>'+phoneNum+'</option>'); 
 			/* 出发城市补全 */
-			$("#city").select2({
+			/*$("#city").select2({
 				initSelection : function (element, callback) {
 					var data = dataJson.outcitylist;
 					callback(data);
 				}
-			});
+			});*/
 		
 			if(dataJson.isArrearsRed){
 				$('#fontLSqk').css("color","red");
@@ -113,6 +113,7 @@ $("#linkNameId").on('select2:select', function (evt) {
 			$("#responsibleId").val(dataJson.responsibleName);
 			$("#siteUrlId").val(dataJson.customerInfoEntity.siteUrl);
 			$("#faxId").val(dataJson.customerInfoEntity.fax);
+			$("#outCityName").val(dataJson.customerInfoEntity.outCityName);
 			
 			/*票价折扣*/
 			$("#discountHidden").val(dataJson.customerInfoEntity.discountFare);
@@ -169,12 +170,12 @@ $("#phoneNumId").on('select2:select', function (evt) {
 			/* 客户名称补全 */
 			$("#linkNameId").append('<option selected="true" value='+ id +'>'+linkName+'</option>'); 
 			/* 出发城市补全 */
-			$("#city").select2({
+			/*$("#city").select2({
 				initSelection : function (element, callback) {
 					var data = dataJson.outcitylist;
 					callback(data);
 				}
-			});
+			});*/
 			
 			if(dataJson.isArrearsRed){
 				$('#fontLSqk').css("color","red");
@@ -191,6 +192,7 @@ $("#phoneNumId").on('select2:select', function (evt) {
 			$("#responsibleId").val(dataJson.responsibleName);
 			$("#siteUrlId").val(dataJson.customerInfoEntity.siteUrl);
 			$("#faxId").val(dataJson.customerInfoEntity.fax);
+			$("#outCityName").val(dataJson.customerInfoEntity.outCityName);
 			
 			/*票价折扣*/
 			$("#discountHidden").val(dataJson.customerInfoEntity.discountFare);
@@ -248,7 +250,7 @@ function clearText(){
 	//电话清空
 	$("#phoneNumId").val(null).trigger("change");
 	//出发城市清空
-	$("#city").val(null).trigger("change");
+	/*$("#city").val(null).trigger("change");*/
 	//文本框清空
 	$("#addressId").val("");
 	$("#shortNameId").val("");
@@ -269,6 +271,8 @@ function clearText(){
 	//清空客户信息隐藏域
 	$('#linkManId').val("");
 	$("#phoneId").val("");
+	//出发城市清空
+	$("#outCityName").val("");
 	
 }
 

@@ -26,6 +26,7 @@ import com.linyun.airline.admin.order.international.form.InternationalParamForm;
 import com.linyun.airline.admin.order.international.form.InternationalPayParamForm;
 import com.linyun.airline.admin.order.international.form.InternationalReceiveParamForm;
 import com.linyun.airline.admin.order.international.service.InternationalService;
+import com.linyun.airline.entities.TBackTicketInfoEntity;
 import com.linyun.airline.entities.TPayReceiveRecordEntity;
 import com.uxuexi.core.common.util.EnumUtil;
 
@@ -288,8 +289,8 @@ public class InternationalModule {
 	 */
 	@At
 	@Ok("jsp")
-	public Object backTicket(HttpServletRequest request) {
-		return internationalService.backTicket(request);
+	public Object backTicket(HttpServletRequest request, @Param("visitorid") Integer visitorid) {
+		return internationalService.backTicket(request, visitorid);
 	}
 
 	/**
@@ -353,6 +354,15 @@ public class InternationalModule {
 	@POST
 	public Object deleteAirinfo(HttpServletRequest request) {
 		return internationalService.deleteAirinfo(request);
+	}
+
+	/**
+	 * 保存退票信息
+	 */
+	@At
+	@POST
+	public Object saveBackTicketInfo(HttpServletRequest request, @Param("..") TBackTicketInfoEntity backticketinfo) {
+		return internationalService.saveBackTicketInfo(request, backticketinfo);
 	}
 
 }

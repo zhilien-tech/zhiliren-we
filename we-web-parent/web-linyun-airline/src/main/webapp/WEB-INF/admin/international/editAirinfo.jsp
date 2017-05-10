@@ -27,8 +27,12 @@
                 <tbody>
                       <tr>
                         <td><label>记录编号：</label></td>
-                        <td colspan="11"><input id="pnr" name="pnr" type="text" class="form-control input-sm numTd PNRlength" value="${obj.pnrinfo.PNR }">
+                        <td colspan="3"><input id="pnr" name="pnr" type="text" class="form-control input-sm numTd PNRlength" value="${obj.pnrinfo.PNR }">
                         	<input type="hidden" id="pnrid" name="pnrid" value="${obj.pnrinfo.id }">
+                        </td>
+                        <td><label style="position: relative;right: 10px;">人数：</label></td>
+                        <td colspan="1"><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm numTd mustNumber" value="${obj.pnrinfo.peoplecount }" style="position: relative;
+    right: 10px;">
                         </td>
                       </tr>
                       <c:forEach  items="${obj.airinfo }" var="airinfo" varStatus="status">
@@ -127,6 +131,8 @@
   		 data.pnrid = pnrid;
   		 var pnr = $('#pnr').val();
   		 data.pnr = pnr;
+  		 var peoplecount = $('#peoplecount').val();
+  		 data.peoplecount = peoplecount;
   		 var airinfos = [];
   		 $('.addHD-tr').each(function(i){
   			 var airinfo = {};

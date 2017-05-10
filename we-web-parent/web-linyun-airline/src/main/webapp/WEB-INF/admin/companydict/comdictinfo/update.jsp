@@ -19,11 +19,11 @@
                   <h4>编辑</h4>
               </div>
                 <div class="modal-body" style="height:360px;overflow-y: auto;">
-                 <div class="tab-content">
+                 <div class="tab-content" style="padding-left: 50px;">
                         <div class="form-group row">
                         	<%-- 字典类别id --%>
                         	<input name="id" type="hidden" value="${obj.single[0].id}"/>
-                            <label class="col-sm-3 text-right padding">字典类别名称：</label>
+                            <label class="col-sm-2 text-right padding">字典类别名称：</label>
                             <div class="col-sm-8 padding">
                             	<select id="comTypeCode" name="comTypeCode" class="form-control input-sm inpImpWid">
 									<c:forEach var="one" items="${obj.comdicttypeenum }">
@@ -48,14 +48,14 @@
                             </div>
                         </div> --%>
                         <div class="form-group row">
-                        	<label class="col-sm-3 text-right padding">字典信息：</label>
+                        	<label class="col-sm-2 text-right padding">字典信息：</label>
                             <div class="col-sm-8 padding">
                               	<input name="comDictName" id="comDictName" type="text" class="form-control input-sm inpImpWid"  value="${obj.single[0].comDictName}"/>
                             	<span class="prompt">*</span>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 text-right padding">状态：</label>
+                            <label class="col-sm-2 text-right padding">状态：</label>
                             <div class="col-sm-8 padding">
                               	<select id="status" name="status" class="form-control input-sm inpImpWid">
 									<c:forEach var="map" items="${obj.dataStatusEnum}" >
@@ -72,9 +72,9 @@
                             </div>
                         </div>
 						<div class="form-group row">
-                            <label class="col-sm-3 text-right padding">备注：</label>
+                            <label class="col-sm-2 text-right padding">备注：</label>
                             <div class="col-sm-8 padding">
-                              <textarea name="remark" id="remark" class="form-control textareaHei">${obj.single[0].remark}</textarea>
+                              <textarea name="remark" id="remark" class="form-control inpImpWid textareaHei">${obj.single[0].remark}</textarea>
                             </div>
                         </div>
                     </div>

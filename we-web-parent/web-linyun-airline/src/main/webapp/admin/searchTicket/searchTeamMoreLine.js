@@ -67,7 +67,7 @@ function initTeamSelect2(){
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
 							obj.id = obj.dictCode; 
-							obj.text = obj.dictCode +" - "+ obj.englishName +" - "+ obj.countryName; 
+							obj.text = obj.dictCode +" - "+ obj.englishName +" - "+ obj.countryName;
 							return obj;
 						});
 						return {

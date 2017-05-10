@@ -24,31 +24,31 @@
                   <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
                   <h4>添加</h4>
               </div>
-                <div class="modal-body" style="height:360px;overflow-y: auto;">
+                <div class="modal-body" style="height:360px;overflow-y: auto; padding-left: 50px;">
                  <div class="tab-content">
                         <div class="form-group row">
-                            <label class="col-sm-3 text-right padding">第三方公司名称：</label>
+                            <label class="col-sm-2 text-right padding">第三方公司名称：</label>
                             <div class="col-sm-8 padding">
                               <input id="thirdCompanyNameId" name="thirdCompanyName" class="form-control input-sm inpImpWid" placeholder="请输入第三方公司名称" />
                               <span class="prompt">*</span>
                             </div>
                         </div>
                         <div class="form-group row">
-                        	<label class="col-sm-3 text-right padding">银行卡名称：</label>
+                        	<label class="col-sm-2 text-right padding">银行卡名称：</label>
                             <div class="col-sm-8 padding">
                               <input id="bankCardNameId" name="bankCardName" class="form-control input-sm inpImpWid" placeholder="请输入银行卡名称" />
                               <span class="prompt">*</span>
                             </div>
                         </div>
                         <div class="form-group row">
-                        	<label class="col-sm-3 text-right padding">卡号：</label>
+                        	<label class="col-sm-2 text-right padding">卡号：</label>
                             <div class="col-sm-8 padding">
                               <input id="bankCardNumId" name="bankCardNum" class="form-control input-sm inpImpWid" onkeyup="this.value=this.value.replace(/\s/g,'').replace(/....(?!$)/g,'$& ')"  maxlength="32" placeholder="请输入银行卡账号" />
                               <span class="prompt">*</span>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 text-right padding">状态：</label>
+                            <label class="col-sm-2 text-right padding">状态：</label>
                             <div class="col-sm-8 padding">
                               <select id="status" name="status" class="form-control input-sm inpImpWid">
                                 <option value="1" selected="selected">启用</option>
@@ -57,7 +57,7 @@
                             </div>
                         </div>
 						<div class="form-group row">
-                            <label class="col-sm-3 text-right padding">备注：</label>
+                            <label class="col-sm-2 text-right padding">备注：</label>
                             <div class="col-sm-8 padding ">
                               <textarea name="remark" class="form-control inpImpWid textareaHei"></textarea>
                             </div>

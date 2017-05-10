@@ -28,6 +28,8 @@
                        <th>游客类型</th>
                        <th>证件类型</th>
                        <th>证件号码</th>
+                       <th>状态</th>
+                       <th>备注</th>
                        <th>操作</th>
                       </tr>
                      </thead>
@@ -40,8 +42,15 @@
 	                       <td>${visitor.visitortype }</td>
 	                       <td>${visitor.cardtype }</td>
 	                       <td>${visitor.cardnum }</td>
+	                       <td><c:forEach items="${obj.backticketstatusenum }" var="map">
+		                       		<c:if test="${visitor.backstatus eq map.key }">
+		                       			${map.value }
+		                       		</c:if>
+	                       	</c:forEach>
+	                       </td>
+	                       <td>${visitor.remark }</td>
 	                       <td>
-	                          <a href="javascript:editVisitor(${visitor.id });">编辑</a>
+	                          <a href="javascript:editVisitor(${visitor.id });">编辑</a>&nbsp;&nbsp;&nbsp;
 	                          <a href="javascript:backTicket(${visitor.id });" class="refund">退票</a>
 	                       </td>
 	                      </tr>
@@ -69,7 +78,7 @@
            skin: false, //加上边框
            closeBtn:false,//默认 右上角关闭按钮 是否显示
            shadeClose:true,
-           area: ['900px', '254px'],
+           area: ['860px', '354px'],
            content: '${base}/admin/international/editVisitorInfo.html?visitorid='+id
          });
    }
@@ -81,7 +90,7 @@
            skin: false, //加上边框
            closeBtn:false,//默认 右上角关闭按钮 是否显示
            shadeClose:true,
-           area: ['850px', '254px'],
+           area: ['850px', '394px'],
            content: '${base}/admin/international/backTicket.html?visitorid='+id
          });
    }
@@ -96,6 +105,8 @@
 		  layer.msg("添加成功",{time: 2000});
 	  }else if(id == '2'){
 		  layer.msg("修改成功",{time: 2000});
+	  }else if(id == '3'){
+		  layer.msg("退票成功",{time: 2000});
 	  }
 	}
   </script>

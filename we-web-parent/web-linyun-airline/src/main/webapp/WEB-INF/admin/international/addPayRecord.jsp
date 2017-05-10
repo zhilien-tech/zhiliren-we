@@ -32,7 +32,12 @@
                         <td><label>成本单价：</label></td>
                         <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint autocalc" value="${obj.costsingleprice }"></td>
                         <td><label>预付款比例 ：</label></td>
-                        <td><input id="prepayratio" name="prepayratio" type="text" class="form-control input-sm mustNumberPoint autocalc"><span>%</span></td>
+                        <td><select id="inputtype" name="inputtype" class="form-control input-sm">
+                        		<c:forEach var="map" items="${obj.inputtypeenum}" >
+                     				<option value="${map.key}">${map.value}</option>
+								</c:forEach>
+                        	</select></td>
+                        <td><input id="prepayratio" name="prepayratio" type="text" class="form-control input-sm"><span>%</span></td>
                         <td><label>实际人数：</label></td>
                         <td><input id="actualnumber" name="actualnumber" type="text" class="form-control input-sm mustNumber autocalc"></td>
                         <td><label>免罚金可减人数：</label></td>
@@ -42,12 +47,12 @@
                         <td><label>本期罚金：</label></td>
                         <td><input id="currentfine" name="currentfine" type="text" class="form-control input-sm mustNumberPoint"></td>
                         <td><label>本期应付：</label></td>
-                        <td><input id="currentdue" name="currentdue" type="text" class="form-control input-sm mustNumberPoint"></td>
+                        <td colspan="2"><input id="currentdue" name="currentdue" type="text" class="form-control input-sm mustNumberPoint"></td>
                         <td><label>税金总价：</label></td>
                         <td><input id="ataxprice" name="ataxprice" type="text" class="form-control input-sm mustNumberPoint autocalc"></td>
                         <td><label>本期实付：</label></td>
                         <td><input id="currentpay" name="currentpay" type="text" class="form-control input-sm mustNumberPoint"></td>
-                        <td><label>币种：</label></td>
+                        <%-- <td><label>币种：</label></td>
                         <td>
                           <select id="currency" name="currency" class="form-control input-sm">
                             <option value="">请选择</option>
@@ -55,7 +60,7 @@
 			                     <option value="${one.id }">${one.dictCode }</option>
 	                     	</c:forEach>
                           </select>
-                        </td>
+                        </td> --%>
                       </tr>
                 </tbody>
               </table>
@@ -97,7 +102,10 @@
 	}
 	//自动加载利润合计
 	  $(document).on('input', '.autocalc', function(e) {
-		  
+		  var inputtype = $('#inputtype').val();
+		  if(inputtype != 1){
+			  return
+		  }
 		  $('#actualyreduce').val('');
 		  //已收钱数
 		  var fineprice = 0;
@@ -159,6 +167,13 @@
 			  }
 		  }
 		  
+	  });
+	
+	  $(document).on('input', '#prepayratio', function(e) {
+		  var inputtype = $('#inputtype').val();
+		  if(inputtype === 1){
+			  $(this).val($(this).val().replace(/[^.\d]/g,''));
+		  }
 	  });
 	</script>
 </body>

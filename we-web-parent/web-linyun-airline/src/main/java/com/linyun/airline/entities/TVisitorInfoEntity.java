@@ -60,4 +60,7 @@ public class TVisitorInfoEntity implements Serializable {
 	@Comment("pnrid")
 	private Integer pnrid;
 
+	@Column
+	@Comment("备注")
+	private String remark;
 }

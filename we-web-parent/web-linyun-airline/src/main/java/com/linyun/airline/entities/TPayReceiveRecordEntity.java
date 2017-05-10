@@ -27,7 +27,7 @@ public class TPayReceiveRecordEntity implements Serializable {
 
 	@Column
 	@Comment("预付款比例")
-	private Double prepayratio;
+	private String prepayratio;
 
 	@Column
 	@Comment("实际人数")
@@ -80,4 +80,8 @@ public class TPayReceiveRecordEntity implements Serializable {
 	@Column
 	@Comment("实际减少人数")
 	private Integer actualyreduce;
+
+	@Column
+	@Comment("输入类型")
+	private Integer inputtype;
 }
