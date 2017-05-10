@@ -78,7 +78,7 @@
            skin: false, //加上边框
            closeBtn:false,//默认 右上角关闭按钮 是否显示
            shadeClose:true,
-           area: ['900px', '254px'],
+           area: ['860px', '354px'],
            content: '${base}/admin/international/editVisitorInfo.html?visitorid='+id
          });
    }
