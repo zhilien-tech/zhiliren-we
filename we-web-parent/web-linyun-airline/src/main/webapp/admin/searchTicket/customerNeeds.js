@@ -23,6 +23,7 @@ function initCustNeedsSelect2(){
 				var selectdata = $.map(data, function (obj) {
 					obj.id = obj.dictCode; // replace pk with your identifier
 					obj.text = obj.dictCode+'-'+obj.englishName+'-'+obj.countryName; // replace pk with your identifier
+					/*obj.text = obj.dictCode;*/
 					return obj;
 				});
 				return {
@@ -31,6 +32,7 @@ function initCustNeedsSelect2(){
 			},
 			cache : false
 		},
+		templateSelection: formatRepoSelection,
 		escapeMarkup : function(markup) {
 			return markup;
 		}, // let our custom formatter work
@@ -72,6 +74,7 @@ function initCustNeedsSelect2(){
 			},
 			cache : false
 		},
+		templateSelection: formatRepoSelection,
 		escapeMarkup : function(markup) {
 			return markup;
 		}, // let our custom formatter work
@@ -81,6 +84,13 @@ function initCustNeedsSelect2(){
 		maximumSelectionLength : 1, //设置最多可以选择多少项
 		tags : false //设置必须存在的选项 才能选中
 	});
+	//select2 选项渲染
+	function formatRepoSelection(repo){
+		var text =  repo.text;
+		text = text.substr(0,3);
+		return text;
+	}
+	
 
 	//加载航空公司下拉
 	$("#cAirlineCompany").select2({
@@ -202,6 +212,7 @@ $('.addDemand').click(function(){
 			},
 			cache : false
 		},
+		templateSelection: formatRepoSelection,
 		escapeMarkup : function(markup) {
 			return markup;
 		}, // let our custom formatter work
@@ -244,6 +255,7 @@ $('.addDemand').click(function(){
 			},
 			cache : false
 		},
+		templateSelection: formatRepoSelection,
 		escapeMarkup : function(markup) {
 			return markup;
 		}, // let our custom formatter work
