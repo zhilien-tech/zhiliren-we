@@ -30,7 +30,7 @@
                   </div>
          </div><!--end 姓名/证件类型-->
          <div class="form-group row"><!--性别/证件号码-->
-                  <label class="col-sm-3 text-right padding">旅客类型：<	/label>
+                  <label class="col-sm-3 text-right padding">旅客类型：</label>
                   <div class="col-sm-3 padding">
                     <input type="text" id="visitortype" name="visitortype" class="form-control input-sm" value="${obj.visitorinfo.visitortype }">
                   </div>
