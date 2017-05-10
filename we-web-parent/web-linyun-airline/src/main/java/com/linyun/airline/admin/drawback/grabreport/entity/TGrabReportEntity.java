@@ -88,4 +88,16 @@ public class TGrabReportEntity implements Serializable {
 	@Comment("PNR")
 	private String PNR;
 
+	@Column
+	@Comment("人数")
+	private Integer peopleNum;
+
+	@Column
+	@Comment("成本单价")
+	private Double costUnitPrice;
+
+	@Column
+	@Comment("实收单价")
+	private Double paidUnitPrice;
+
 }

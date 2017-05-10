@@ -15,18 +15,19 @@
 </head>
 <body>
 	<div class="modal-top">
-		<form id="addForm" method="post">
     		<div class="modal-header boderButt">
 	            <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">取消</button>
 	            <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
 	            <h4>附件预览</h4>
           	</div>
+         <form id="addForm" method="post">
           	<div class="modal-body modal-bod" style="height:632px;overflow-y:auto; ">
           	  <div class="row"><!--文件名称/PNR/退税状态-->
           	    <div class="form-group inline">
                   <label class="col-sm-2 text-right padding">文件名称：</label>
+                  <input id="pid" name="id" type="hidden" value="${obj.fileurl.id }"  />
                   <div class="col-sm-2 padding">
-                  		<input id="fileNameId" name="fileName" type="text" class="form-control input-sm inputWidth" value=""/>
+                  		<input id="fileNameId" name="fileName" type="text" class="form-control input-sm inputWidth" value="${obj.fileurl.fileName }" />
                   </div>
                 </div>  
               	<div class="form-group inline">
@@ -253,8 +254,8 @@ $("#submit").click(function() {
 	$('#addForm').bootstrapValidator('validate');
 	var bootstrapValidator = $("#addForm").data('bootstrapValidator');
 	if(bootstrapValidator.isValid()){
+		alert(JSON.stringify($('#addForm').serialize()));
 		$.ajax({
-			cache : false,
 			type : "POST",
 			url : '${base}/admin/drawback/grabreport/add.html',
 			data : $('#addForm').serialize(),
