@@ -6,7 +6,7 @@
 .PNRbtn{padding: 4px 2px !important;margin-left: 10px !important;}
 .addDemand{left: 72.5%; margin-left: 8px;line-height: 18px;font-size: 12px;}
 .addIcon {top: 0px;float: left;left: 10px;margin-right: 10px;margin-left:-2px;}
-.removIcon {float: left;left: 10px;}
+.removIcon {float: left;left: 8px;}
 .scykP{padding-top: 0;line-height: 27px;font-size: 12px;}
 /*+PNR*/
 #addPnrForm{margin-top: 0px;margin-right: 0px;}
@@ -60,8 +60,8 @@ input#arrivetime {width:100%;}
 #tableWid tbody tr td:nth-child(2){width:140px;} */
 #paycurrency,#paymethod,#avgexrate,#remindType{padding-left:3px;padding-right:3px;}
 #avgexrate{width:150px;}
-.tdBtn {width: 30px !important;}
-.cloTable tbody tr td:nth-child(4) { width:12% !important;}
+.tdBtn{width:35px !important;}
+.cloTable tbody tr td:nth-child(4){ width:12% !important;}
 .cloTable tr td:nth-of-type(10){width:8%;}
 .removeIconTd{width: 30px !important;}
 .removIcon{margin-right: 10px;}

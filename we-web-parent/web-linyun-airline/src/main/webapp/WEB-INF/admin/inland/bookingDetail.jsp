@@ -271,7 +271,7 @@
 					                     </td>
 					                     <c:choose>
 					                     	<c:when test="${status.index eq 0 }">
-							                     <td colspan="3" class="tdBtn">
+							                     <td class="tdBtn">
 							                      <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake none"></a>
 							                     </td>
 					                     	</c:when>

@@ -35,7 +35,7 @@ table.dataTable thead > tr > th {padding-right: 5px;}
 /*------添加航段------*/
 .addHDtable{width: 100%;}
 .addHDtable tr td{padding-bottom:10px;}
-.numTd{width: 38.9%;}
+.numTd{width: 38.6%;}
 .addHDtable tr td label{float: right;}
 .addHD-tr td input{padding-left:3px;padding-right: 3px;}
 .addHD-tr td label{margin-bottom: 0;float:right;}
