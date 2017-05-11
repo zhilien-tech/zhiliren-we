@@ -321,20 +321,19 @@
 							<div class="form-group">
 								<label class="col-sm-2 text-right padding">信用额度：</label>
 	                            <div class="col-sm-2 padding">
-	                              <input name="creditLine" value="<fmt:formatNumber type="number" value="${obj.customer.creditLine}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
-										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
+	                              <%-- <input name="creditLine" value="<fmt:formatNumber type="number" value="${obj.customer.creditLine}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
+										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"> --%>
+	                              <input name="creditLine" value="<fmt:formatNumber type="number" value="${obj.customer.creditLine}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm" oninput="checkLength(this);"/>
 	                            </div>
 							</div>
                             <label class="col-sm-1 text-right padding">已欠款：</label>
                             <div class="col-sm-2 padding">
-                            	<input name="arrears" value="<fmt:formatNumber type="number" value="${obj.customer.arrears}" pattern="0.00" maxFractionDigits="2"/>" type="text" readonly="readonly" class="form-control input-sm" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
-										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
+                            	<input name="arrears" value="<fmt:formatNumber type="number" value="${obj.customer.arrears}" pattern="0.00" maxFractionDigits="2"/>" type="text" readonly="readonly" class="form-control input-sm" />
                             </div>
 							<div class="form-group">
                           		 <label class="col-sm-1 text-right padding">预收款：</label>
 	                            <div class="col-sm-1 padding">
-	                              <input name="preDeposit" value="<fmt:formatNumber type="number" value="${obj.customer.preDeposit}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
-										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
+	                              <input name="preDeposit" value="<fmt:formatNumber type="number" value="${obj.customer.preDeposit}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm" oninput="checkLength(this);"/>
 	                            </div>
                           	</div>
                         </div>
@@ -342,31 +341,27 @@
 							<div class="form-group">
 								<label class="col-sm-2 text-right padding">票价折扣：</label>
 	                            <div class="col-sm-2 padding">
-	                              <input name="discountFare" value="<fmt:formatNumber type="number" value="${obj.customer.discountFare}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm discountText" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
-										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
+	                              <input name="discountFare" value="<fmt:formatNumber type="number" value="${obj.customer.discountFare}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm discountText" oninput="checkLength(this);"/>
 	                              <span>%</span>
 	                            </div>
 							</div>
                             <div class="form-group">
                             	<label class="col-sm-1 text-right padding">手续费：</label>
 	                            <div class="col-sm-2 padding">
-	                            	<input name="fees" value="<fmt:formatNumber type="number" value="${obj.customer.fees}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm discountText" placeholder="每张票" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
-										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
+	                            	<input name="fees" value="<fmt:formatNumber type="number" value="${obj.customer.fees}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm discountText" placeholder="每张票" oninput="checkLength(this);"/>
 	                            	<span>￥</span>
 	                            </div>
                           	</div>
 							<div class="form-group">
 								<label class="col-sm-1 text-right padding">汇率：</label>
 	                            <div class="col-sm-1 padding">
-	                              <input name="exchangeRates" value="<fmt:formatNumber type="number" value="${obj.customer.exchangeRates}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
-										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
+	                              <input name="exchangeRates" value="<fmt:formatNumber type="number" value="${obj.customer.exchangeRates}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm" oninput="checkLength(this);"/>
 	                            </div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-1 text-right padding">退税：</label>
 	                            <div class="col-sm-2 padding">
-	                              <input name="taxRefund" value="<fmt:formatNumber type="number" value="${obj.customer.taxRefund}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm taxText" placeholder="每张票" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
-										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
+	                              <input name="taxRefund" value="<fmt:formatNumber type="number" value="${obj.customer.taxRefund}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm taxText" placeholder="每张票" oninput="checkLength(this);"/>
 	                            </div>
 							</div>
                         </div>
@@ -749,7 +744,7 @@
 								message : '传真格式错误'
 							}
 						}
-					}/* ,
+					},
 					creditLine : {
 						validators : {
 							regexp : {
@@ -797,7 +792,7 @@
 								message : '退税格式错误'
 							}
 						}
-					} */
+					} 
 				}
 			});
 		}
@@ -1054,6 +1049,16 @@
 		function downloadFile(url) {  
 			$("#downloadA").attr("href", url);
 	    }
+		//小数点保留两位小数
+		function checkLength(obj){
+			obj.value = obj.value.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符  
+		    obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的  
+		    obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$","."); 
+		    obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');//只能输入两个小数  
+		    if(obj.value.indexOf(".")< 0 && obj.value !=""){//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额 
+		        obj.value= parseFloat(obj.value); 
+		    } 
+		}
 	</script>
 	
 	
