@@ -9,6 +9,7 @@ package com.linyun.airline.admin.receivePayment.service;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -602,6 +603,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		}
 
 		listdata.remove("data");
+		Collections.reverse(ordersBC);
 		listdata.put("data", ordersBC);
 		listdata.put("recordsFiltered", ordersBC.size());
 		return listdata;
