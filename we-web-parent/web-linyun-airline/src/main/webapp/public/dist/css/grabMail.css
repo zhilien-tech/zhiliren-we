@@ -7,7 +7,7 @@ table.dataTable thead .sorting_asc:after{content: "";}
 table.dataTable thead .sorting:after{content: "";}
 .text-left{text-align:left !important;}
 .checkTh input{position: relative;left: 11px;}
-.breadcrumb {margin-bottom: 30px;clear: both;}
+.breadcrumb {clear: both;position: relative;top: 10px;}
 #rebatesEamilTable tbody tr .sorting_1 input {margin:3px auto;}
 /* #rebatesEamilTable thead > tr > th {padding-right: 8px;} */
 div#uploadFile{width: 46px !important;float: right;margin-right: 10px;border-radius: 3px;}
@@ -21,6 +21,6 @@ div#uploadFile-button {width: 46px !important;}
 #rebatesReportTable tbody td:nth-child(1){width:50px !important;}
 #rebatesReportTable thead th:nth-child(1){width:50px;overflow: hidden;}
 #rebatesReportTable tbody td:nth-child(3) span{width:65px;}
-
+#rebatesEamilTable_wrapper {position: relative;top: 24px;}
 
 
