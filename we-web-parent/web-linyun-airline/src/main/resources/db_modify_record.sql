@@ -314,3 +314,7 @@ create table t_back_ticket_file
 );
 
 alter table t_back_ticket_file comment '退票附件表';
+
+/*客户管理 电话位数修改*/
+ALTER TABLE `t_customer_info`
+MODIFY COLUMN `telephone`  varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '电话' AFTER `linkMan`;
