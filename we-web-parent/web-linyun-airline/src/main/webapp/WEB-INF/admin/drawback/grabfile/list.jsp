@@ -22,9 +22,9 @@
               <!-- Custom Tabs -->
               <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
-                      <li class="active"><a id="fitTab" href="#tab_1" onclick="setPageStatus('0');" data-toggle="tab">散客</a></li>
+                      <li class="active"><a id="fitTab" href="#tab_1" onclick="reloadTable(0);" data-toggle="tab">散客</a></li>
                       <input id="pagerStatus" type="hidden" value="0"/>
-                      <li><a id="teamTab" href="#tab_2" onclick="setPageStatus('1');" data-toggle="tab">团队</a></li>
+                      <li><a id="teamTab" href="#tab_2" onclick="reloadTable(1);" data-toggle="tab">团队</a></li>
                       <li><a href="#tab_3" data-toggle="tab">报表</a></li>
                 </ul>
                 <div class="tab-content">
@@ -473,120 +473,258 @@ function successCallback(id){
 <script type="text/javascript">
 	//初始化表格
 	$(function() {
-		initDatatable();
+		initDatatable(0);
+		initDatatable(1);
 	});
 	var rebatesEamilTable;
+	var rebatesEamilTeamTable;
 	//var rebatesEamilTeamTable;
-	var options = {
-			"searching" : false,
-			"processing" : true,
-			"serverSide" : true,//左下角括号中页数的显示
-			"bPaginate":true,//左下角分页显示
-			"info":true,//右下角分页显示
-			"bLengthChange" : false,
-			"stripeClasses": [ 'strip1','strip2' ],//斑马线
-			"bJQueryUI": true,
-			"language" : {
-				"url" : "${base}/public/plugins/datatables/cn.json"
-			},
-	        "ajax": {
-	            "url": "${base}/admin/drawback/grabfile/listData.html",
-	            "type": "post",
-	            "data": function (d) {
-	            	return {parentId:0}
-	            }
-	        },
-	        "columns": [
-						{"data": "id", "bSortable": false,
-	                    	render: function(data, type, row, meta) {
-	                    		var result = '';
-	                    		var hiddenval = $('#checkedboxval').val();
-	                    		var splits = hiddenval.split(',');
-	                    		var flag = false;
-	                    		for(var i=0;i<splits.length;i++){
-	                    			if(splits[i] == row.id){
-	                    				flag = true;
-	                    			}
-	                    		}	
-	                    		if(flag){
-	                    			result = '<input type="checkbox"  class="checkchild" checked="true" value="' + row.id + '" />';
-	                    		}else{
-	                    			result = '<input type="checkbox"  class="checkchild" value="' + row.id + '" />';
-	                    		}
-	                            return result;
-	                    	}
-						},
-	                    {"data": "filename", "bSortable": false,
-	                    	render: function(data, type, row, meta) {
-	                    		var filename = row.filename;
-	                    		var fileId  = row.id;
-	                    		var filetype = row.type;
-	                    		var fileExtension = filename.substring(filename.lastIndexOf('.') + 1);
-	                    		if(null==filename || ""==filename){
-	                    			return null;
-	                    		}
-	                    		//return filename;
-	                    		if(filetype===1){
-	                    			/* return '<a id="'+fileId+'" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
-	                    			return '<a id="'+fileId+'" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
-	                    		}else if(filetype===2 && fileExtension==="pdf"){
-	                    			/* return  '<a id="'+fileId+'" class="fa fa-file-pdf-o" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
-	                    			return  '<a id="'+fileId+'" class="fa fa-file-pdf-o" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
-	                    		}//else if(filetype===2 && fileExtension==="PNG"){
-	                    			/* return  '<a id="'+fileId+'" class="fa fa-area-chart" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
-	                    			//return  '<a id="'+fileId+'" class="fa fa-area-chart" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
-	                    		//}
-	                    		else{
-	                    			/* return  '<a id="'+fileId+'" class="fa fa-file-text" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
-	                    			return  '<a id="'+fileId+'" class="fa fa-file-text" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
-	                    		}
-	                    	}
-	                    },
-	                    {"data": "updatetime", "bSortable": true,
-	                    	 render: function(data, type, row, meta) {
-	                    		 var updatetime = row.updatetime;
-	                    		 if(null==updatetime || ""==updatetime){
-	                    			 return "";
-	                    		 }
-	                    		return updatetime;
-	                        } 	
-	                    },
-	                    {"data": "filesize", "bSortable": false,
-	                    	render: function(data, type, row, meta) {
-	                    		var filesize = row.filesize;
-	                    		var unit = row.unit;
-	                    		if(null==filesize || ""==filesize){
-	                    			return null;
-	                    		}
-	                    		return filesize+unit;
-	                    	}	
-	                    },
-	            ],
-	            "columnDefs": [
-							   {"sWidth": "5%","aTargets": [0] },
-							   {"sWidth": "50%","aTargets": [1] },
-							   {"sWidth": "17%","aTargets": [2] },
-							   {"sWidth": "9%","aTargets": [3] },
-							   {"sWidth": "19%","aTargets": [4] },
-	                           {
-	                //   指定第一列，从0开始，0表示第一列，1表示第二列……
-	                targets: 4,
-	                render: function(data, type, row, meta) {
-	                	//var editFolder = '<a href="javascript:editFolder('+row.id+');" style="cursor:pointer;">编辑&nbsp;&nbsp;</a>';
-	                	var download = '<a href="${base}/admin/drawback/grabfile/downLoadZipFile.html?parentId='+row.id+'" style="cursor:pointer;">下载&nbsp;&nbsp;</a>';
-	                	//var move  = '<a href="javascript:move('+row.id+');" style="cursor:pointer;">移动到&nbsp;&nbsp;</a>';
-                   		if(1==row.status){
-                   			var judge = '<a href="javascript:physicalDelete('+row.id+',2);" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
-                   		}else{
-                   			var judge = '<a href="javascript:physicalDelete('+row.id+',1);" class="btn_mini btn_modify">启用</a>';
-                   		}
-	                    return download+judge;
-	                }
-	            }]
-		};
-	function initDatatable() {
-		rebatesEamilTable = $('#rebatesEamilTable').DataTable(options);
+	var options0 = {
+					"searching" : false,
+					"processing" : true,
+					"serverSide" : true,//左下角括号中页数的显示
+					"bPaginate":true,//左下角分页显示
+					"info":true,//右下角分页显示
+					"bLengthChange" : false,
+					"stripeClasses": [ 'strip1','strip2' ],//斑马线
+					"bJQueryUI": true,
+					"language" : {
+						"url" : "${base}/public/plugins/datatables/cn.json"
+					},
+			        "ajax": {
+			            "url": "${base}/admin/drawback/grabfile/listData.html?flag=0",
+			            "type": "post",
+			            "data": function (d) {
+			            	return {parentId:0}
+			            }
+			        },
+			        "columns": [
+								{"data": "id", "bSortable": false,
+			                    	render: function(data, type, row, meta) {
+			                    		var result = '';
+			                    		var hiddenval = $('#checkedboxval').val();
+			                    		var splits = hiddenval.split(',');
+			                    		var flag = false;
+			                    		for(var i=0;i<splits.length;i++){
+			                    			if(splits[i] == row.id){
+			                    				flag = true;
+			                    			}
+			                    		}	
+			                    		if(flag){
+			                    			result = '<input type="checkbox"  class="checkchild" checked="true" value="' + row.id + '" />';
+			                    		}else{
+			                    			result = '<input type="checkbox"  class="checkchild" value="' + row.id + '" />';
+			                    		}
+			                            return result;
+			                    	}
+								},
+			                    {"data": "filename", "bSortable": false,
+			                    	render: function(data, type, row, meta) {
+			                    		var filename = row.filename;
+			                    		var fileId  = row.id;
+			                    		var filetype = row.type;
+			                    		var fileExtension = filename.substring(filename.lastIndexOf('.') + 1);
+			                    		if(null==filename || ""==filename){
+			                    			return null;
+			                    		}
+			                    		//return filename;
+			                    		if(filetype===1){
+			                    			/* return '<a id="'+fileId+'" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
+			                    			return '<a id="'+fileId+'" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
+			                    		}else if(filetype===2 && fileExtension==="pdf"){
+			                    			/* return  '<a id="'+fileId+'" class="fa fa-file-pdf-o" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
+			                    			return  '<a id="'+fileId+'" class="fa fa-file-pdf-o" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
+			                    		}//else if(filetype===2 && fileExtension==="PNG"){
+			                    			/* return  '<a id="'+fileId+'" class="fa fa-area-chart" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
+			                    			//return  '<a id="'+fileId+'" class="fa fa-area-chart" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
+			                    		//}
+			                    		else{
+			                    			/* return  '<a id="'+fileId+'" class="fa fa-file-text" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
+			                    			return  '<a id="'+fileId+'" class="fa fa-file-text" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
+			                    		}
+			                    	}
+			                    },
+			                    {"data": "updatetime", "bSortable": true,
+			                    	 render: function(data, type, row, meta) {
+			                    		 var updatetime = row.updatetime;
+			                    		 if(null==updatetime || ""==updatetime){
+			                    			 return "";
+			                    		 }
+			                    		return updatetime;
+			                        } 	
+			                    },
+			                    {"data": "filesize", "bSortable": false,
+			                    	render: function(data, type, row, meta) {
+			                    		var filesize = row.filesize;
+			                    		var unit = row.unit;
+			                    		if(null==filesize || ""==filesize){
+			                    			return null;
+			                    		}
+			                    		return filesize+unit;
+			                    	}	
+			                    },
+			            ],
+			            "columnDefs": [
+									   {"sWidth": "5%","aTargets": [0] },
+									   {"sWidth": "50%","aTargets": [1] },
+									   {"sWidth": "17%","aTargets": [2] },
+									   {"sWidth": "9%","aTargets": [3] },
+									   {"sWidth": "19%","aTargets": [4] },
+			                           {
+			                //   指定第一列，从0开始，0表示第一列，1表示第二列……
+			                targets: 4,
+			                render: function(data, type, row, meta) {
+			                	//var editFolder = '<a href="javascript:editFolder('+row.id+');" style="cursor:pointer;">编辑&nbsp;&nbsp;</a>';
+			                	var download = '<a href="${base}/admin/drawback/grabfile/downLoadZipFile.html?parentId='+row.id+'" style="cursor:pointer;">下载&nbsp;&nbsp;</a>';
+			                	//var move  = '<a href="javascript:move('+row.id+');" style="cursor:pointer;">移动到&nbsp;&nbsp;</a>';
+		                   		if(1==row.status){
+		                   			var judge = '<a href="javascript:physicalDelete('+row.id+',2);" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
+		                   		}else{
+		                   			var judge = '<a href="javascript:physicalDelete('+row.id+',1);" class="btn_mini btn_modify">启用</a>';
+		                   		}
+			                    return download+judge;
+			                }
+			            }]
+				};
+	var options1 = {
+					"searching" : false,
+					"processing" : true,
+					"serverSide" : true,//左下角括号中页数的显示
+					"bPaginate":true,//左下角分页显示
+					"info":true,//右下角分页显示
+					"bLengthChange" : false,
+					"stripeClasses": [ 'strip1','strip2' ],//斑马线
+					"bJQueryUI": true,
+					"language" : {
+						"url" : "${base}/public/plugins/datatables/cn.json"
+					},
+			        "ajax": {
+			            "url": "${base}/admin/drawback/grabfile/listData.html?flag=1",
+			            "type": "post",
+			            "data": function (d) {
+			            	return {parentId:0}
+			            }
+			        },
+			        "columns": [
+								{"data": "id", "bSortable": false,
+			                    	render: function(data, type, row, meta) {
+			                    		var result = '';
+			                    		var hiddenval = $('#checkedboxval').val();
+			                    		var splits = hiddenval.split(',');
+			                    		var flag = false;
+			                    		for(var i=0;i<splits.length;i++){
+			                    			if(splits[i] == row.id){
+			                    				flag = true;
+			                    			}
+			                    		}	
+			                    		if(flag){
+			                    			result = '<input type="checkbox"  class="checkchild" checked="true" value="' + row.id + '" />';
+			                    		}else{
+			                    			result = '<input type="checkbox"  class="checkchild" value="' + row.id + '" />';
+			                    		}
+			                            return result;
+			                    	}
+								},
+			                    {"data": "filename", "bSortable": false,
+			                    	render: function(data, type, row, meta) {
+			                    		var filename = row.filename;
+			                    		var fileId  = row.id;
+			                    		var filetype = row.type;
+			                    		var fileExtension = filename.substring(filename.lastIndexOf('.') + 1);
+			                    		if(null==filename || ""==filename){
+			                    			return null;
+			                    		}
+			                    		//return filename;
+			                    		if(filetype===1){
+			                    			/* return '<a id="'+fileId+'" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
+			                    			return '<a id="'+fileId+'" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
+			                    		}else if(filetype===2 && fileExtension==="pdf"){
+			                    			/* return  '<a id="'+fileId+'" class="fa fa-file-pdf-o" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
+			                    			return  '<a id="'+fileId+'" class="fa fa-file-pdf-o" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
+			                    		}//else if(filetype===2 && fileExtension==="PNG"){
+			                    			/* return  '<a id="'+fileId+'" class="fa fa-area-chart" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
+			                    			//return  '<a id="'+fileId+'" class="fa fa-area-chart" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
+			                    		//}
+			                    		else{
+			                    			/* return  '<a id="'+fileId+'" class="fa fa-file-text" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
+			                    			return  '<a id="'+fileId+'" class="fa fa-file-text" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
+			                    		}
+			                    	}
+			                    },
+			                    {"data": "updatetime", "bSortable": true,
+			                    	 render: function(data, type, row, meta) {
+			                    		 var updatetime = row.updatetime;
+			                    		 if(null==updatetime || ""==updatetime){
+			                    			 return "";
+			                    		 }
+			                    		return updatetime;
+			                        } 	
+			                    },
+			                    {"data": "filesize", "bSortable": false,
+			                    	render: function(data, type, row, meta) {
+			                    		var filesize = row.filesize;
+			                    		var unit = row.unit;
+			                    		if(null==filesize || ""==filesize){
+			                    			return null;
+			                    		}
+			                    		return filesize+unit;
+			                    	}	
+			                    },
+			            ],
+			            "columnDefs": [
+									   {"sWidth": "5%","aTargets": [0] },
+									   {"sWidth": "50%","aTargets": [1] },
+									   {"sWidth": "17%","aTargets": [2] },
+									   {"sWidth": "9%","aTargets": [3] },
+									   {"sWidth": "19%","aTargets": [4] },
+			                           {
+			                //   指定第一列，从0开始，0表示第一列，1表示第二列……
+			                targets: 4,
+			                render: function(data, type, row, meta) {
+			                	//var editFolder = '<a href="javascript:editFolder('+row.id+');" style="cursor:pointer;">编辑&nbsp;&nbsp;</a>';
+			                	var download = '<a href="${base}/admin/drawback/grabfile/downLoadZipFile.html?parentId='+row.id+'" style="cursor:pointer;">下载&nbsp;&nbsp;</a>';
+			                	//var move  = '<a href="javascript:move('+row.id+');" style="cursor:pointer;">移动到&nbsp;&nbsp;</a>';
+		                   		if(1==row.status){
+		                   			var judge = '<a href="javascript:physicalDelete('+row.id+',2);" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
+		                   		}else{
+		                   			var judge = '<a href="javascript:physicalDelete('+row.id+',1);" class="btn_mini btn_modify">启用</a>';
+		                   		}
+			                    return download+judge;
+			                }
+			            }]
+				};
+	function initDatatable(flag) {
+			
+			if(flag==0){
+				
+				rebatesEamilTable = $('#rebatesEamilTable').DataTable(options0);
+			}
+			if(flag==1){
+				
+				rebatesEamilTeamTable = $('#rebatesEamilTeamTable').DataTable(options1);
+			}
+		
 	}
+	/*切换标签的时候重新加载table */
+	function reloadTable(flag){
+		if(flag==0){
+			
+			//rebatesEamilTable = $('#rebatesEamilTable').DataTable(options);
+			rebatesEamilTable.ajax.reload();
+		}
+		if(flag==1){
+			
+			//rebatesEamilTeamTable = $('#rebatesEamilTeamTable').DataTable(options);
+			rebatesEamilTeamTable.ajax.reload();
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
 	//当点击进入下一级的时候重新加载表格
 	//var clickFlag = 1;
 	function createFodler(pid,filename,filetype,clickFlag){
@@ -618,7 +756,7 @@ function successCallback(id){
 				}
 			});
 		}else{
-			options.ajax.data.parentId=pid;
+			options0.ajax.data.parentId=pid;
 			var param = {parentId:pid};
 			rebatesEamilTable.settings()[0].ajax.data = param;
 			rebatesEamilTable.ajax.reload();
@@ -677,7 +815,7 @@ function successCallback(id){
 			editFolder(row.id);
 		}
 	}); */
-	//双击进入到下一层
+	//双击进入到下一层散客
 	$('#rebatesEamilTable tbody').on("dblclick","tr",function(event){
 		//获取当前行的数据
 		var row = rebatesEamilTable.row($(this).closest('tr')).data();
@@ -689,6 +827,114 @@ function successCallback(id){
 		}
 			createFodler(row.id,row.filename,filetype,clickFlag);
 	});
+	//双击进入到下一层团队
+	$('#rebatesEamilTeamTable tbody').on("dblclick","tr",function(event){
+		//获取当前行的数据
+		var row = rebatesEamilTeamTable.row($(this).closest('tr')).data();
+		var clickFlag =1;
+		var filetype = row.type;
+		if(clickFlag ==1 && filetype==2){
+			clickFlag = 2;
+			return false;
+		}
+			createFodler1(row.id,row.filename,filetype,clickFlag);
+	});
+	//================================================================================================
+	function createFodler1(pid,filename,filetype,clickFlag){
+		if(clickFlag===1 && filetype===2){
+			$.ajax({
+				type : "POST",
+				url : '${base}/admin/drawback/grabfile/filePreview.html',
+				data : {
+					id : pid
+				},
+				success : function(data) {
+					if(filetype == 2){
+						layer.open({
+					  	    type: 2,
+					  	    title:false,
+					  	    closeBtn:false,
+					  	    fix: false,
+					  	    maxmin: false,
+					  	    shadeClose: false,
+					  	    scrollbar: false,
+					  	    area: ['1200px', '700px'],
+					  	    content: '${base}/admin/drawback/grabreport/filePreview.html?id='+pid
+					 	});
+					} 
+						
+				},
+				error : function(request) {
+					layer.msg("操作失败", "", 3000);
+				}
+			});
+		}else{
+			options1.ajax.data.parentId=pid;
+			var param = {parentId:pid};
+			rebatesEamilTeamTable.settings()[0].ajax.data = param;
+			rebatesEamilTeamTable.ajax.reload();
+			var exist=false;
+			$("ol.breadcrumb").find("li").each(function(index){
+				var currenuId = $(this).attr("id");
+				if(currenuId == pid){
+					exist = true ;
+					return false;
+				}
+			});
+			
+			if(!exist){
+				if(filetype == 1){
+					$("ol.breadcrumb").find("li").each(function(){
+						$(this).removeClass("active");
+					});
+					$("ol.breadcrumb").append('<li id=\''+pid+'\' class="active"><a class="fa fa-folder-open" onclick="javascript:createFodler(\''+pid+'\',\''+filename+'\');"  href="#">'+filename+'</a></li>');
+				}
+			}else{
+				//找到指定元素的下标
+				var selectIndex = 0;
+				$("ol.breadcrumb").find("li").each(function(index){
+					var currenuId = $(this).attr("id");
+					if(currenuId == pid){
+						selectIndex=index;
+						return false;
+					}
+				});
+				
+				//删除大于该下标的其他元素
+				$("ol.breadcrumb").find("li").each(function(index){
+					if(index > selectIndex){
+						$(this).remove(); 
+					}
+				});
+				var length = $("ol.breadcrumb").find("li").length;
+				$("ol.breadcrumb").find("li").each(function(index){
+					if(index != (length-1)){
+						$(this).removeClass("active");
+					}
+				});
+			}
+			//修改当前所在文件夹id
+			$("input#currentDirId").val(pid);
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	//新建子文件夹
 	function newFolder(){
