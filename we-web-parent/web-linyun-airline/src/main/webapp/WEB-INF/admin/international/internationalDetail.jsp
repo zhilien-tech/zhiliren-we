@@ -80,29 +80,36 @@
                      <td><label>
                      	<font id="customeidcolor"> 客户姓名：</font>
                      </label></td>
-                     <td><input id="linkName" name="linkName" disabled="disabled" type="text" class="form-control input-sm" value="${obj.custominfo.linkMan }">
-                     	<input id="customerId" name="customerId" type="hidden" value="${obj.custominfo.id }"/>
+                     <td><select id="linkName" name="linkName" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="请输入客户姓名">
+                     		<c:if test="${obj.custominfo.id ne 0 }">
+	                     		<option value="${obj.custominfo.id }" selected="selected">${obj.custominfo.linkMan }</option>
+                     		</c:if>
+                     	</select>
+<%--                      	<input id="linkName" name="linkName" disabled="disabled" type="text" class="form-control input-sm" value="${obj.custominfo.linkMan }">
+ --%>                     	<input id="customerId" name="customerId" type="hidden" value="${obj.custominfo.id }"/>
                      	<!-- 订单id -->
                      	<input id="orderedid" name="orderedid" type="hidden" value="${obj.orderinfo.id }"></td>
 	                     <td><label style="position: relative;top: 4px;">结算方式：</label></td>
                      	<td colspan="3"><pre class="preTxt">
-					 <c:choose>
-                     	<c:when test="${obj.custominfo.payType eq 1 }">
-                     		月结
-                     	</c:when>
-                     	<c:when test="${obj.custominfo.payType eq 2 }">
-                     		周结
-                     	</c:when>
-                     	<c:when test="${obj.custominfo.payType eq 3 }">
-                     		单结
-                     	</c:when>
-                     	<c:when test="${obj.custominfo.payType eq 4 }">
-                     		其他
-                     	</c:when>
-                     </c:choose>　
-						 信用额度：<fmt:formatNumber type="number" value="${empty obj.custominfo.creditLine?0:obj.custominfo.creditLine}" pattern="0.00" maxFractionDigits="2"/>  
-                     		<font id="historyqiancolor"> 历史欠款：<fmt:formatNumber type="number" value="${empty obj.historymony? 0.00:obj.historymony}" pattern="0.00" maxFractionDigits="2"/></font>　
-                   		 预存款：<fmt:formatNumber type="number" value="${empty obj.custominfo.preDeposit?0:obj.custominfo.preDeposit}" pattern="0.00" maxFractionDigits="2"/></pre></td>
+                     	<span id="payTypeId">
+						 <c:choose>
+	                     	<c:when test="${obj.custominfo.payType eq 1 }">
+	                     		月结
+	                     	</c:when>
+	                     	<c:when test="${obj.custominfo.payType eq 2 }">
+	                     		周结
+	                     	</c:when>
+	                     	<c:when test="${obj.custominfo.payType eq 3 }">
+	                     		单结
+	                     	</c:when>
+	                     	<c:when test="${obj.custominfo.payType eq 4 }">
+	                     		其他
+	                     	</c:when>
+	                     </c:choose>　
+	                     </span> 
+						 信用额度：<span id="creditLineId"><fmt:formatNumber type="number" value="${empty obj.custominfo.creditLine?0:obj.custominfo.creditLine}" pattern="0.00" maxFractionDigits="2"/></span>  
+                     		<font id="historyqiancolor"> 历史欠款：<span id="arrearsId"><fmt:formatNumber type="number" value="${empty obj.historymony?0.00:obj.historymony}" pattern="0.00" maxFractionDigits="2"/></span></font>　
+                   		 预存款：<span id="preDepositId"><fmt:formatNumber type="number" value="${empty obj.custominfo.preDeposit?0:obj.custominfo.preDeposit}" pattern="0.00" maxFractionDigits="2"/></span></pre></td>
                      <td><i class="UnderIcon fa fa-chevron-circle-down"></i></td>
                    </tr>
                  </table>
@@ -110,21 +117,21 @@
                  <table class="hideTable none">
                    <tr>
                      <td><label>公司简称：</label></td>
-                     <td><input type="text" class="form-control input-sm" placeholder="" value="${obj.custominfo.shortName }" readonly="true"></td>
+                     <td><input type="text" id="shortName" class="form-control input-sm" placeholder="" value="${obj.custominfo.shortName }" readonly="true"></td>
                      <td><label>电话：</label></td>
-                     <td><input type="text" class="form-control input-sm" placeholder="" value="${obj.custominfo.telephone }" readonly="true"></td>
+                     <td><input type="text" id="telephone" class="form-control input-sm" placeholder="" value="${obj.custominfo.telephone }" readonly="true"></td>
                      <td><label>地址：</label></td>
-                     <td colspan="3"><input type="text" class="form-control input-sm addressInput" placeholder="" value="${obj.custominfo.address }" readonly="true"></td>
+                     <td colspan="3"><input type="text" id="address" class="form-control input-sm addressInput" placeholder="" value="${obj.custominfo.address }" readonly="true"></td>
                    </tr>
                    <tr class="KHinfo">
                      <td><label>负责人：</label></td>
-                     <td><input type="text" class="form-control input-sm" placeholder="" value="${obj.responsible }" readonly="true"></td>
+                     <td><input type="text" id="responsible" name="responsible" class="form-control input-sm" placeholder="" value="${obj.responsible }" readonly="true"></td>
                      <td><label>网址：</label></td>
-                     <td><input type="text" class="form-control input-sm" placeholder="" value="${obj.custominfo.siteUrl }" readonly="true"></td>
+                     <td><input type="text" id="siteUrl" name="siteUrl" class="form-control input-sm" placeholder="" value="${obj.custominfo.siteUrl }" readonly="true"></td>
                      <td><label>传真：</label></td>
-                     <td><input type="text" class="form-control input-sm" placeholder="" value="${obj.custominfo.fax }" readonly="true"></td>
+                     <td><input type="text" id="fax" name="fax" class="form-control input-sm" placeholder="" value="${obj.custominfo.fax }" readonly="true"></td>
                      <td><label>出发城市：</label></td>
-                     <td><input type="text" class="form-control input-sm addressInput" placeholder="" value="${obj.outcitys }" readonly="true"></td>
+                     <td><input type="text" id="departureCity" name="departureCity" class="form-control input-sm addressInput" placeholder="" value="${obj.outcitys }" readonly="true"></td>
                      
                    </tr>
                  </table>
@@ -441,6 +448,7 @@
   <!--end footer-->
   <script type="text/javascript">
   	var BASE_PATH = '${base}';
+  	var customersid = '${obj.custominfo.id}';
   	var creditLine = '${obj.custominfo.creditLine}';
 	var arrears = '${obj.historymony}';
   </script>
@@ -477,6 +485,7 @@
           $('.disab').removeAttr("disabled");//信息模块 input 禁止编辑的状态
           $('#orderType').removeAttr("disabled");//信息模块 input 禁止编辑的状态
           $('#cRemark').removeAttr("disabled");//信息模块 input 禁止编辑的状态
+          $('#linkName').removeAttr("disabled");//信息模块 input 禁止编辑的状态
           loadAirlineInfo();
           loadJianMianAccount('${obj.orderinfo.id }');
         });
@@ -494,6 +503,7 @@
           $('.disab').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
           $('#orderType').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
           $('#cRemark').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
+          $('#linkName').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
           loadAirlineInfo(1);
           loadJianMianAccount('${obj.orderinfo.id }',1);
         });
@@ -825,7 +835,11 @@
             				receivehtml += '<td></td>';
             			}
             			if(value.prepayratio != undefined){
-	                        receivehtml += '<td>'+value.prepayratio+'%</td>';
+            				if(value.inputtype !=undefined && value.inputtype == 1){
+		                        receivehtml += '<td>'+value.prepayratio+'%</td>';
+            				}else{
+		                        receivehtml += '<td>'+value.prepayratio+'</td>';
+            				}
             			}else{
             				receivehtml += '<td></td>';
             			}
@@ -880,7 +894,11 @@
             				payhtml += '<td></td>';
             			}
             			if(value.prepayratio != undefined){
-	                        payhtml += '<td>'+value.prepayratio+'%</td>';
+            				if(value.inputtype !=undefined && value.inputtype == 1){
+            					payhtml += '<td>'+value.prepayratio+'%</td>';
+            				}else{
+            					payhtml += '<td>'+value.prepayratio+'</td>';
+            				}
             			}else{
             				payhtml += '<td></td>';
             			}

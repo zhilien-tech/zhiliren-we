@@ -873,8 +873,8 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 						Cnd.where("needid", "=", customneedid), null);
 				double money = 0;
 				for (TPnrInfoEntity pnrinfo : pnrinfos) {
-					if (!Util.isEmpty(pnrinfo.getCostpricesum())) {
-						money += pnrinfo.getCostpricesum();
+					if (!Util.isEmpty(pnrinfo.getCostpricesumrmb())) {
+						money += pnrinfo.getCostpricesumrmb();
 					}
 				}
 				TTurnOverAddForm addForm = new TTurnOverAddForm();
