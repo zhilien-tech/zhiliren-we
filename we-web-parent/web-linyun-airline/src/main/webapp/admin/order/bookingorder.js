@@ -445,7 +445,7 @@ function triggerSelect(){
 //航空公司下拉
 $('.aircomselect').select2({
 	ajax : {
-		url : BASE_PATH + '/admin/search/getAirLineSelect.html',
+		url : BASE_PATH + "/admin/customneeds/getAirLineSelect.html",
 		dataType : 'json',
 		delay : 250,
 		type : 'post',
@@ -458,8 +458,8 @@ $('.aircomselect').select2({
 		processResults : function(data, params) {
 			params.page = params.page || 1;
 			var selectdata = $.map(data, function (obj) {
-				  obj.id = obj.dictCode; // replace pk with your identifier
-				  obj.text = obj.dictCode + "-" + obj.dictName; // replace pk with your identifier
+				  obj.id = obj.airlinenum; // replace pk with your identifier
+				  obj.text = obj.airlinenum; // replace pk with your identifier
 				  return obj;
 			});
 			return {
@@ -468,6 +468,7 @@ $('.aircomselect').select2({
 		},
 		cache : false
 	},
+	
 	escapeMarkup : function(markup) {
 		return markup;
 	}, // let our custom formatter work

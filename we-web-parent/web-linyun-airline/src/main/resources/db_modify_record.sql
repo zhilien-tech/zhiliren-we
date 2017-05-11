@@ -298,3 +298,15 @@ version : 1.0.6   BEGIN   2017-05-10
 ALTER TABLE `t_customer_info`
 ADD COLUMN `outCityName`  varchar(255) NULL COMMENT '出发城市' AFTER `address`;
 
+create table t_back_ticket_file
+(
+   id                   int not null auto_increment comment '主键ID',
+   filename             varchar(1024) comment '文件名',
+   fileurl              varchar(1024) comment '文件路径',
+   backticketid         int comment '退票ID',
+   opid                 int comment '操作人',
+   optime               datetime comment '操作时间',
+   primary key (id)
+);
+
+alter table t_back_ticket_file comment '退票附件表';
