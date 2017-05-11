@@ -457,7 +457,6 @@ public class MailScrabService extends BaseService {
 		String cusgroupnum = getcusGroupnum();//得到客户团号
 		long sort = 0;
 		if (!Util.isEmpty(map.get("sort"))) {
-
 			sort = map.get("sort");
 			if (Util.isEmpty(cusgroupnum)) {
 				sort += 1;

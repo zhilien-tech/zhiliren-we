@@ -196,6 +196,13 @@ $(document).ready(function(){
                    	  }
                 }
             },
+            peopleNum: {
+                validators: {
+                    notEmpty: {
+                        message: '人数不能为空!'
+                    },
+                }
+            },
             agentRebate: {
                 validators: {
                 	regexp: {

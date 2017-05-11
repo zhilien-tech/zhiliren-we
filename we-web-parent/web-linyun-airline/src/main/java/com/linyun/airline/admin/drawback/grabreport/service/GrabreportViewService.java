@@ -64,40 +64,76 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		Integer peopleNum = addForm.getPeopleNum();//人数
 		Double costUnitPrice = addForm.getCostUnitPrice();//成本单价
 		Double paidUnitPrice = addForm.getPaidUnitPrice();//实收单价(销售价)
+		Double exciseTax1 = addForm.getExciseTax1();//消费税
+		Integer backStatus = addForm.getBackStatus();//退税状态
+		String inAustralianTime = addForm.getInAustralianTime();//入澳时间
+		String outAustralianTime = addForm.getOutAustralianTime();//出澳时间
+		Double swipe = addForm.getSwipe();//刷卡费
+		Double remit = addForm.getRemit();//汇款
+		Double tax = addForm.getTax();//税金/杂项
+		String remark = addForm.getRemark();//备注
+
 		report.setPeopleNum(peopleNum);
 		report.setCostUnitPrice(costUnitPrice);
 		report.setPaidUnitPrice(paidUnitPrice);
-
 		report.setPNR(pnr);//PNR
-		report.setExciseTax1(Double.parseDouble(df.format(addForm.getExciseTax1())));//消费税
-		report.setBackStatus(addForm.getBackStatus());//退税状态
-		report.setInAustralianTime(addForm.getInAustralianTime());//入澳时间
-		report.setOutAustralianTime(addForm.getOutAustralianTime());//出澳时间
-		report.setSwipe(Double.parseDouble(df.format(addForm.getSwipe())));//刷卡费
-		report.setRemark(addForm.getRemark());//备注
-		Double tax = Double.parseDouble(df.format(addForm.getTax()));//税金/杂项
-		Double remit = Double.parseDouble(df.format(addForm.getRemit()));//汇款
-		report.setTax(tax);
-		report.setRemit(remit);
+		report.setBackStatus(backStatus);//退税状态
+		report.setInAustralianTime(inAustralianTime);//入澳时间
+		report.setOutAustralianTime(outAustralianTime);//出澳时间
+		report.setRemark(remark);//备注
+
+		if (!Util.isEmpty(exciseTax1)) {
+			report.setExciseTax1(Double.parseDouble(df.format(exciseTax1)));//消费税
+		} else {
+			report.setExciseTax1(0.0);//页面传过来的值为0时消费税默认给0
+		}
+		if (!Util.isEmpty(swipe)) {
+			report.setSwipe(Double.parseDouble(df.format(swipe)));//刷卡费
+		} else {
+			report.setSwipe(0.0);//页面传过来的值为0时刷卡费默认给0
+		}
+		if (!Util.isEmpty(tax)) {
+			report.setTax(Double.parseDouble(df.format(tax)));//税金/杂项;
+		} else {
+			report.setTax(0.0);//页面传过来的值为0时税金/杂项默认给0
+		}
+		if (!Util.isEmpty(remit)) {
+			report.setRemit(Double.parseDouble(df.format(remit)));//汇款
+		} else {
+			report.setRemit(0.0);//页面传过来的值为0时汇款默认给0
+		}
 		List<TGrabReportEntity> reportList = dbDao.query(TGrabReportEntity.class, null, null);
 		TGrabReportEntity lastData = reportList.get(reportList.size() - 1);
 		Double boforeBalance = 7312.92;
 		if (!Util.isEmpty(lastData)) {
 			boforeBalance = lastData.getDepositBalance();
 		}
+		if (Util.isEmpty(remit)) {
+			remit = 0.0;
+		}
+		if (Util.isEmpty(peopleNum)) {
+			peopleNum = 0;
+		}
+		if (Util.isEmpty(costUnitPrice)) {
+			costUnitPrice = 0.0;
+		}
 		if (!Util.isEmpty(remit) && !Util.isEmpty(peopleNum) && !Util.isEmpty(costUnitPrice)) {
 			//TODO 1、备用金额=[上期备用金额+汇款-(人数*成本单价)]
 			Double depositBalance = Double
 					.parseDouble(df.format((boforeBalance + remit) - (peopleNum * costUnitPrice)));
-			report.setDepositBalance(7312.92);
+			report.setDepositBalance(depositBalance);
 		}
 		//2、代理费=SUM(票价<含行李>*代理返点)
-		Double ticketPrice = Double.parseDouble(df.format(addForm.getTicketPrice()));//票价<含行李>
-		Double agentRebate = Double.parseDouble(df.format(addForm.getAgentRebate()));//代理返点
-		Double agencyFee = Double.parseDouble(df.format(ticketPrice * agentRebate));//代理费
-		report.setTicketPrice(ticketPrice);
-		report.setAgencyFee(agencyFee);
-		report.setAgentRebate(agentRebate);
+		Double ticketPrice = addForm.getTicketPrice();//票价<含行李>
+		Double agentRebate = addForm.getAgentRebate();//代理返点
+		Double agencyFee = 0.0;
+		if (!Util.isEmpty(ticketPrice) && !Util.isEmpty(agentRebate)) {
+			agencyFee = Double.parseDouble(df.format(ticketPrice * agentRebate));//代理费
+			report.setTicketPrice(Double.parseDouble(df.format(ticketPrice)));//票价<含行李>
+			report.setAgencyFee(agencyFee);//代理费
+			report.setAgentRebate(Double.parseDouble(df.format(agentRebate)));//代理返点
+		}
+
 		//3、税返点=SUM(代理费*10%)
 		Double taxRebate = Double.parseDouble(df.format(agencyFee * 0.1));//税返点
 		report.setTaxRebate(taxRebate);
@@ -115,6 +151,7 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 			Double agencyFee2 = Double.parseDouble(df.format((realTotal - (realTotal / 11) - tax) * agentRebate));//代理费2
 			report.setAgencyFee2(agencyFee2);
 		}
-		return dbDao.insert(report);
+		TGrabReportEntity insertData = dbDao.insert(report);
+		return insertData;
 	}
 }
