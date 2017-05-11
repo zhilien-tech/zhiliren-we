@@ -313,7 +313,7 @@ function batchClosePlan(){
 	var ids = $('#checkedboxval').val();
 	var length = $(".checkchild:checked").length;
 	if(!ids){
-		layer.alert("请至少选中一条记录",{time: 2000, icon:1});
+		layer.msg("请至少选中一条记录",{time: 2000});
 	}else{
 		layer.confirm('确定要关闭该计划吗?', {icon: 3, title:'提示'}, function(){
 			/*var ids = [];
@@ -326,13 +326,13 @@ function batchClosePlan(){
 				data: {ids:ids}, 
 				url: BASE_PATH + '/admin/customneeds/betchClosePlan.html',
 				success: function (data) { 
-					layer.alert("关闭成功",{time: 2000, icon:1});
+					layer.msg("关闭成功",{time: 2000});
 					$('#checkedboxval').val('');
 					datatable2.ajax.reload(null,false);
 					$('.checkall').attr('checked',false);
 				},
 				error: function (xhr) {
-					layer.alert("关闭失败",{time: 2000, icon:1});
+					layer.msg("关闭失败",{time: 2000});
 				} 
 			});
 		});
@@ -343,7 +343,7 @@ function generateOrderNum(){
 	var ids = $('#checkedboxval').val();
 	var length = $(".checkchild:checked").length;
 	if(!ids){
-		layer.alert("请至少选中一条记录",{time: 2000, icon:1});
+		layer.msg("请至少选中一条记录",{time: 2000});
 	}else{
 		layer.confirm('确定要批量生成订单吗?', {icon: 3, title:'提示'}, function(){
 			/*var ids = [];
@@ -356,13 +356,13 @@ function generateOrderNum(){
 				data: {planids:ids}, 
 				url: BASE_PATH + '/admin/customneeds/generateOrderNum.html',
 				success: function (data) { 
-					layer.alert("生成成功",{time: 2000, icon:1});
+					layer.msg("生成成功",{time: 2000});
 					$('#checkedboxval').val('');
 					datatable2.ajax.reload();
 					$('.checkall').attr('checked',false);
 				},
 				error: function (xhr) {
-					layer.alert("生成失败",{time: 2000, icon:1});
+					layer.msg("生成失败",{time: 2000});
 				} 
 			});
 		});

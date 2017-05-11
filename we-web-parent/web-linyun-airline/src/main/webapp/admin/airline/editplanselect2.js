@@ -100,7 +100,7 @@ var _unioncity = $("#unioncity").select2({
 		},
 		cache : false
 	},
-	
+	templateSelection: formatRepoSelection,
 	escapeMarkup : function(markup) {
 		return markup;
 	}, // let our custom formatter work
@@ -182,7 +182,7 @@ function loadEditPageSelect(divObj){
 			},
 			cache : false
 		},
-		
+		templateSelection: formatRepoSelection,
 		escapeMarkup : function(markup) {
 			return markup;
 		}, // let our custom formatter work
@@ -219,7 +219,7 @@ function loadEditPageSelect(divObj){
 			},
 			cache : false
 		},
-		
+		templateSelection: formatRepoSelection,
 		escapeMarkup : function(markup) {
 			return markup;
 		}, // let our custom formatter work

@@ -9,6 +9,7 @@
 	<meta name="alexaVerifyID" content="" />
     <title>编辑</title>
 	<link rel="stylesheet" href="${base }/public/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/AdminLTE.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/font-awesome.min.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/ionicons.min.css">
@@ -54,13 +55,17 @@
 		           	 <input type="hidden" id="id" name="id" value="${obj.id }">
 		             <label class="col-sm-2 text-right padding customerEdit">航空公司：</label>
 		             <div class="col-sm-2 padding">
-		               <input name="airline" type="text" class="form-control input-sm" placeholder="首航-CA" value="${obj.airline }"/>
+		               <select id="airline" name="airline" type="text" class="form-control input-sm aircomselect" placeholder="首航-CA" multiple="multiple">
+		               		<option value="${obj.airline }" selected="selected">${obj.airline }</option>
+		               </select>
 		             </div>
 		            </div>
 					<div class="form-group form-group1">
 		             <label class="col-sm-2 text-right padding">旅行社：</label>
 		             <div class="col-sm-2 padding">
-		               <input name="travel" type="text" class="form-control input-sm" placeholder=" " value="${obj.travel}"/>
+		               <select id="travel" name="travel" type="text" class="form-control input-sm travelname" placeholder=" " multiple="multiple">
+		               		<option value="${obj.travel}" selected="selected">${obj.travel}</option>
+		               </select>
 		             </div>
 		           </div><!--end 航空公司/旅行社-->
 				</div>
@@ -68,19 +73,21 @@
 		           <div class="form-group"><!--人数/天数/联运要求-->
 		             <label class="col-sm-2 text-right padding customerEdit">人数：</label>
 		             <div class="col-sm-2 padding">
-		               <input name="totalcount" type="text" class="form-control input-sm" placeholder="" value="${obj.totalcount}"/>
+		               <input id="totalcount" name="totalcount" type="text" class="form-control input-sm" placeholder="" value="${obj.totalcount}"/>
 		             </div>
 		            </div>
 					<div class="form-group form-group1">
 		             <label class="col-sm-2 text-right padding">天数：</label>
 		             <div class="col-sm-2 padding">
-		               <input name="totalday" type="text" class="form-control input-sm" placeholder=" " value="${obj.totalday}"/>
+		               <input id="totalday" name="totalday" type="text" class="form-control input-sm" placeholder=" " value="${obj.totalday}"/>
 		             </div>
 		            </div>
 					<div class="form-group form-group1">
 		             <label class="col-sm-2 text-right padding">联运要求：</label>
 		             <div class="col-sm-2 padding">
-		               <input name="uniontransport" type="text" class="form-control input-sm" placeholder=" " value="${obj.uniontransport}"/>
+		               <select id="uniontransport" name="uniontransport" type="text" class="form-control input-sm unioncityselect" placeholder=" " multiple="multiple">
+		               		<option value="${obj.uniontransport}" selected="selected">${obj.uniontransport}</option>
+		               </select>
 		             </div>
 		           </div><!--end 人数/天数/联运要求-->
 				</div>
@@ -94,13 +101,17 @@
 					<div class="form-group form-group1">
 		             <label class="col-sm-2 text-right padding">出发城市：</label>
 		             <div class="col-sm-2 padding">
-		               <input name="leavecity" type="text" class="form-control input-sm" placeholder="" value="${obj.leavecity}"/>
+		               <select id="leavecity" name="leavecity" type="text" class="form-control input-sm cityselect" placeholder="" multiple="multiple">
+		               		<option value="${obj.leavecity}" selected="selected">${obj.leavecity}</option>
+		               </select>
 		             </div>
 		            </div>
 					<div class="form-group form-group1">
 		             <label class="col-sm-2 text-right padding">出发航班：</label>
 		             <div class="col-sm-2 padding">
-		               <input name="leaveflight" type="text" class="form-control input-sm" placeholder=" " value="${obj.leaveflight}"/>
+		               <select id="leaveflight" name="leaveflight" type="text" class="form-control input-sm airlineselect" placeholder=" " multiple="multiple">
+		               		<option value="${obj.leaveflight}" selected="selected">${obj.leaveflight}</option>
+		               </select>
 		             </div>
 		           </div><!--end 去程日期/出发城市/出发航班-->
 				</div>
@@ -114,13 +125,17 @@
 					<div class="form-group form-group1">
 		             <label class="col-sm-2 text-right padding">返回城市：</label>
 		             <div class="col-sm-2 padding">
-		               <input name="backcity" type="text" class="form-control input-sm" placeholder="" value="${obj.backcity}"/>
+		               <select id="backcity" name="backcity" type="text" class="form-control input-sm cityselect" placeholder="" multiple="multiple">
+		               		<option value="${obj.backcity}" selected="selected">${obj.backcity}</option>
+		               </select>
 		             </div>
 		            </div>
 					<div class="form-group form-group1">
 		             <label class="col-sm-2 text-right padding">回程航班：</label>
 		             <div class="col-sm-2 padding">
-		               <input name="backflight" type="text" class="form-control input-sm" placeholder=" " value="${obj.backflight}"/>
+		               <select id="backflight" name="backflight" type="text" class="form-control input-sm airlineselect" placeholder=" " multiple="multiple">
+		               		<option value="${obj.backflight}" selected="selected">${obj.backflight}</option>
+		               </select>
 		             </div>
 		           </div><!--end 回程日期/返回城市/回程航班-->
 	           </div>
@@ -148,15 +163,22 @@
 	     </div>
 	     </form>
 	</div>
+	<script type="text/javascript">
+		var BASE_PATH = '${base}';
+	</script>
 	<!-- jQuery 2.2.3 -->
 	<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script src="${base}/public/bootstrap/js/bootstrap.js"></script>
 	<script src="${base}/public/dist/js/bootstrapValidator.js"></script>
 	<!--layer -->
 	<script src="${base}/common/js/layer/layer.js"></script>
+	<!-- Select2 -->
+	<script src="${base}/public/plugins/select2/select2.full.min.js"></script>
+	<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
 	<!--pikaday -->
 	<script src="${base}/public/dist/js/pikaday.js"></script>
 	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
+	<script src="${base}/admin/airline/customeneedupdate.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		//页面校验
@@ -176,9 +198,51 @@
 		$('#customNeedsUpdatedForm').bootstrapValidator('validate');
 		var bootstrapValidator = $("#customNeedsUpdatedForm").data('bootstrapValidator');
 		if(bootstrapValidator.isValid()){
+			var customneed = {};
+			customneed.id = $('#id').val();
+			var airline = $('#airline').val();
+			if(airline){
+				airline = airline.join(',');
+			}
+			customneed.airline = airline;
+			var travel = $('#travel').val();
+			if(travel){
+				travel = travel.join(',');
+			}
+			customneed.travel = travel;
+			customneed.totalcount = $('#totalcount').val();
+			customneed.totalday = $('#totalday').val();
+			customneed.leavedateString = $('#leavedateString').val();
+			customneed.backdateString = $('#backdateString').val();
+			customneed.remark = $('#remark').val();
+			var uniontransport = $('#uniontransport').val();
+			if(uniontransport){
+				uniontransport = uniontransport.join(',');
+			}
+			customneed.uniontransport = uniontransport;
+			var leavecity = $('#leavecity').val();
+			if(leavecity){
+				leavecity = leavecity.join(',');
+			}
+			customneed.leavecity = leavecity;
+			var leaveflight = $('#leaveflight').val();
+			if(leaveflight){
+				leaveflight = leaveflight.join(',');
+			}
+			customneed.leaveflight = leaveflight;
+			var backcity = $('#backcity').val();
+			if(backcity){
+				backcity = backcity.join(',');
+			}
+			customneed.backcity = backcity;
+			var backflight = $('#backflight').val();
+			if(backflight){
+				backflight = backflight.join(',');
+			}
+			customneed.backflight = backflight;
 			$.ajax({ 
 				type: 'POST', 
-				data: $("#customNeedsUpdatedForm").serialize(), 
+				data: customneed, 
 				url: '${base}/admin/customneeds/update.html',
 	            success: function (data) { 
 	            	layer.msg("修改成功",{time: 2000});
@@ -275,14 +339,3 @@
 	
 </body>
 </html>	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
