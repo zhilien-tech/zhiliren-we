@@ -254,7 +254,6 @@ $("#submit").click(function() {
 	$('#addForm').bootstrapValidator('validate');
 	var bootstrapValidator = $("#addForm").data('bootstrapValidator');
 	if(bootstrapValidator.isValid()){
-		alert(JSON.stringify($('#addForm').serialize()));
 		$.ajax({
 			type : "POST",
 			url : '${base}/admin/drawback/grabreport/add.html',

@@ -1,8 +1,5 @@
 package com.linyun.airline.admin.drawback.grabreport.module;
 
-import java.util.List;
-import java.util.Map;
-
 import org.nutz.dao.pager.Pager;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -12,13 +9,10 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
-import com.google.common.collect.Maps;
-import com.linyun.airline.admin.drawback.grabreport.entity.TGrabReportEntity;
 import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportAddForm;
 import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportSqlForm;
 import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportUpdateForm;
 import com.linyun.airline.admin.drawback.grabreport.service.GrabreportViewService;
-import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
 
 @IocBean
@@ -27,9 +21,6 @@ public class GrabreportModule {
 
 	@Inject
 	private GrabreportViewService grabreportViewService;
-
-	@Inject
-	private IDbDao dbDao;
 
 	/**
 	 * 分页查询
@@ -48,9 +39,6 @@ public class GrabreportModule {
 	 */
 	@At
 	public Object listData(@Param("..") final TGrabReportSqlForm sqlForm) {
-		Map<Object, String> obj = Maps.newHashMap();
-		List<TGrabReportEntity> reportList = dbDao.query(TGrabReportEntity.class, null, null);
-		reportList.get(reportList.size() - 1);
 		return grabreportViewService.listPage4Datatables(sqlForm);
 	}
 

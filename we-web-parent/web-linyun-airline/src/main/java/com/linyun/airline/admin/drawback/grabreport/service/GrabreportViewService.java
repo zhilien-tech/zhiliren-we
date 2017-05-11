@@ -80,10 +80,15 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		report.setTax(tax);
 		report.setRemit(remit);
 		List<TGrabReportEntity> reportList = dbDao.query(TGrabReportEntity.class, null, null);
-
+		TGrabReportEntity lastData = reportList.get(reportList.size() - 1);
+		Double boforeBalance = 7312.92;
+		if (!Util.isEmpty(lastData)) {
+			boforeBalance = lastData.getDepositBalance();
+		}
 		if (!Util.isEmpty(remit) && !Util.isEmpty(peopleNum) && !Util.isEmpty(costUnitPrice)) {
 			//TODO 1、备用金额=[上期备用金额+汇款-(人数*成本单价)]
-			//Double depositBalance = Double.parseDouble(df.format(("上期备用金额" + remit) - (peopleNum * costUnitPrice)));
+			Double depositBalance = Double
+					.parseDouble(df.format((boforeBalance + remit) - (peopleNum * costUnitPrice)));
 			report.setDepositBalance(7312.92);
 		}
 		//2、代理费=SUM(票价<含行李>*代理返点)
