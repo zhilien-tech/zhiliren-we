@@ -183,11 +183,13 @@ $("tbody",$('#internationalTable')).on("dblclick","tr",function(event) {
 });
 $('#searchOrder').click(function(i){
 	var div = $(this).parent().parent();
+	var teamtype = div.find('[name=teamtype]').val();
 	var startdate = div.find('[name=startdate]').val();
 	var enddate = div.find('[name=enddate]').val();
 	var searchInfo = div.find('[name=searchInfo]').val();
 	var status = $('#status').val();
 	var param = {
+			teamtype:teamtype,
 			ordersstatus:status,
 			startdate:startdate,
 			enddate:enddate,
@@ -198,7 +200,9 @@ $('#searchOrder').click(function(i){
 		autoHighLoad($('#internationalTable'));
 	});
 });
-
+function changeteamType(){
+	$('#searchOrder').click();
+}
 function onkeyEnter(){
 	var e = window.event || arguments.callee.caller.arguments[0];
     if(e && e.keyCode == 13){

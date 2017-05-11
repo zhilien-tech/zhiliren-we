@@ -583,11 +583,11 @@ $(function () {
 				data: {id:id}, 
 				url: '${base}/admin/customneeds/closeCustomNeeds.html',
 	            success: function (data) { 
-	            	layer.alert("关闭成功",{time: 2000, icon:1});
+	            	layer.msg("关闭成功",{time: 2000});
 	            	datatable.ajax.reload(null,false);
 	            },
 	            error: function (xhr) {
-	            	layer.alert("关闭失败",{time: 2000, icon:1});
+	            	layer.msg("关闭失败",{time: 2000});
 	            } 
 	        });
 		});
@@ -599,11 +599,11 @@ $(function () {
 				data: {id:id}, 
 				url: '${base}/admin/customneeds/enableCustomNeeds.html',
 	            success: function (data) { 
-	            	layer.alert("启用成功",{time: 2000, icon:1});
+	            	layer.msg("启用成功",{time: 2000});
 	            	datatable.ajax.reload(null,false);
 	            },
 	            error: function (xhr) {
-	            	layer.alert("启用失败",{time: 2000, icon:1});
+	            	layer.msg("启用失败",{time: 2000});
 	            } 
 	        });
 		});
@@ -628,7 +628,7 @@ $(function () {
   		var extStart = filepath.lastIndexOf(".");
   		var ext = filepath.substring(extStart, filepath.length).toUpperCase();
   		if (ext != ".XLS" && ext != ".XLSX") {
-  			layer.alert("请选择正确的Excel文件");
+  			layer.msg("请选择正确的Excel文件");
   			return;
   		}
   		document.getElementById("uploadExcelForm").submit();
@@ -638,18 +638,18 @@ $(function () {
   function successCallback(id){
 	  datatable.ajax.reload(null,false);
 	  if(id == '1'){
-		  layer.alert("添加成功",{time: 2000, icon:1});
+		  layer.msg("添加成功",{time: 2000});
 	  }else if(id == '2'){
-		  layer.alert("修改成功",{time: 2000, icon:1});
+		  layer.msg("修改成功",{time: 2000});
 	  }else if(id == '3'){
-		  layer.alert("关闭成功",{time: 2000, icon:1});
+		  layer.msg("关闭成功",{time: 2000});
 	  }else if(id == '4'){
-		  layer.alert("启用成功",{time: 2000, icon:1});
+		  layer.msg("启用成功",{time: 2000});
 	  }
   }
   
   function callback(){
-	  layer.alert("导入成功",{time: 2000, icon:1});
+	  layer.msg("导入成功",{time: 2000});
 	  $('#uploadExcelForm')[0].reset();
 	  layer.closeAll('loading');
 	  datatable.ajax.reload();
