@@ -22,26 +22,9 @@
 		.addIcon {top: 3px;margin-left: 10px;}
 		.removIcon { margin-top: 3px;margin-left:5px;}
 		.allCentext{height:355px;overflow-y: auto;padding-bottom: 0;}
-		.white_content {
-		    display: none;
-		    position: absolute;
-		    top: 25%;
-		    left: 25%;
-		    width: 55%;
-		    height: 55%;
-		    padding: 15px;
-		    border: 1px solid #efefef;
-		    border-radius: 5px;
-		    box-shadow: 0 0 31px #dadada;
-		    background-color: white;
-		    z-index: 1002;
-		    overflow: auto;
-		}
-		.white_content img {
-		    width: 100%;
-		    height: 100%;
-		}
-		
+		.white_content {display: none;position: absolute;top: 25%;left: 25%;width: 55%;height: 55%;padding: 15px;border: 1px solid #efefef;border-radius: 5px;box-shadow: 0 0 31px #dadada;background-color: white;z-index: 1002;overflow: auto;}
+		.white_content img {width: 100%;height: 100%;}
+		.fa-times-circle {position: absolute;top: 3px;font-size: 18px;left: 473px;cursor: pointer;color: rgb(59, 134, 177);}
 	</style>
 </head>
 <body>
