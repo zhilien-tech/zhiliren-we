@@ -83,14 +83,14 @@ $(document).ready(function(){
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-        	landline: {
+        	/* landline: {
                 validators: {
                 	regexp: {
                         regexp: /^((0\d{2,3}-\d{7,8}-\d{4,6})|(1[35874]\d{9}))$/,
                         message: '座机格式:区号-座机号-分机号!'
                     }
                 }
-            },
+            }, */
             qq: {
             	validators: {
             		regexp: {

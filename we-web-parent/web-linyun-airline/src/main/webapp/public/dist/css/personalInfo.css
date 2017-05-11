@@ -15,3 +15,6 @@
 .help-block {position: absolute;top:35px;}
 .form-group {margin-bottom: 10px;}
 #jobName,#areaName{margin-top: 20px;}
+#PersonDatatable tbody tr td span{width:400px;display: block; word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis; margin: 0 auto;}
+#PersonDatatable tbody tr td:nth-child(1){width:40%;}
+#PersonDatatable tbody tr td:nth-child(2){width:60%;}

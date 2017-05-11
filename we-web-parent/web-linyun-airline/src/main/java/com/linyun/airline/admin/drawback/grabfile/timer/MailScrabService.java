@@ -6,15 +6,21 @@
 
 package com.linyun.airline.admin.drawback.grabfile.timer;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 
@@ -53,6 +59,9 @@ import com.linyun.airline.admin.drawback.grabmail.entity.TGrabMailEntity;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.common.enums.DataStatusEnum;
+import com.linyun.airline.common.util.grabmail.ContentImage;
+import com.linyun.airline.common.util.grabmail.ContentUrl;
+import com.linyun.airline.common.util.grabmail.EmlConvertToHtml;
 import com.uxuexi.core.common.util.BeanUtil;
 import com.uxuexi.core.common.util.FileUtil;
 import com.uxuexi.core.common.util.Util;
@@ -70,8 +79,10 @@ public class MailScrabService extends BaseService {
 
 	@Inject
 	private UploadService qiniuUploadService;
-
+	private Map<String, Long> map = new HashMap<String, Long>();
 	private Logger logger = LoggerFactory.getLogger(MailScrabService.class);
+	private ContentImage ctim = new ContentImage();
+	private EmlConvertToHtml ect = new EmlConvertToHtml();
 
 	public MailScrabService() {
 
@@ -195,13 +206,13 @@ public class MailScrabService extends BaseService {
 	}
 
 	public void loginMailAccount() {
-		String userTeam = "in2020072@sina.com";
-		String passwdTeam = "tlywy2017jan";
 		String userFit = "lftravel@sina.com";
 		String passwdFit = "mar2016lywy";
+		String userTeam = "in2020072@sina.com";
+		String passwdTeam = "tlywy2017jan";
 		try {
-			receivePop3(userTeam, passwdTeam);
 			receivePop3(userFit, passwdFit);
+			receivePop3(userTeam, passwdTeam);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -248,55 +259,65 @@ public class MailScrabService extends BaseService {
 		logger.info("发送时间:" + sendTime);
 		logger.info("邮件大小:" + fileSize + "k");
 		//2、查询数据库判断是否已存在某条数据，如果存在直接返回，不存在则解析
-		Sql sql = Sqls.create(sqlManager.get("grab_mail_file_level"));
-		sql.params().set("theme", theme);
-		sql.params().set("sender", sender);
-		sql.params().set("addressee", addressee);
-		sql.params().set("sendTime", sendTime);
-		int count = DbSqlUtil.fetchInt(dbDao, sql);
-		long grabRecordId = 0;
-		if (count > 0) {
-			return;
-		} else {
-			//3-1、保存邮件抓取记录
-			TGrabMailEntity mailEntity = new TGrabMailEntity();
-			mailEntity.setTheme(theme);
-			mailEntity.setSender(sender);
-			mailEntity.setAddressee(addressee);
-			mailEntity.setSendTime(sendTime);
-			mailEntity.setGrabTime(new Date());//抓取时间
-			mailEntity.setGrabStatus(GrabTypeEnum.ALREADYGRAB.intKey());//已抓
-			mailEntity = dbDao.insert(mailEntity);
-			grabRecordId = mailEntity.getId();
+		int count = 0;
+		if (!Util.isEmpty(sender)) {
+			if (sender.contains(GrabMailConstants.FIT_QF) || sender.contains(GrabMailConstants.FIT_D7)
+					|| sender.contains(GrabMailConstants.FIT_VA) || sender.contains(GrabMailConstants.FIT_JQ)
+					|| sender.contains(GrabMailConstants.FIT_TT) || sender.contains(GrabMailConstants.FIT_CI)
+					|| sender.contains(GrabMailConstants.TEAM_JQ) || sender.contains(GrabMailConstants.TEAM_VA)
+					|| sender.contains(GrabMailConstants.TEAM_TT)) {
+				Sql sql = Sqls.create(sqlManager.get("grab_mail_file_level"));
+				sql.params().set("theme", theme);
+				sql.params().set("sender", sender);
+				sql.params().set("addressee", addressee);
+				sql.params().set("sendTime", sendTime);
+				count = DbSqlUtil.fetchInt(dbDao, sql);
+				long grabRecordId = 0;
+				if (count > 0) {
+					return;
+				} else {
+					//3-1、保存邮件抓取记录
+					TGrabMailEntity mailEntity = new TGrabMailEntity();
+					mailEntity.setTheme(theme);
+					mailEntity.setSender(sender);
+					mailEntity.setAddressee(addressee);
+					mailEntity.setSendTime(sendTime);
+					mailEntity.setGrabTime(new Date());//抓取时间
+					mailEntity.setGrabStatus(GrabTypeEnum.ALREADYGRAB.intKey());//已抓
+					mailEntity = dbDao.insert(mailEntity);
+					grabRecordId = mailEntity.getId();
+				}
+
+				//3-2、保存抓取文件
+				fileLevel(msg, userTeam, sender, sendTime, fileSize, grabRecordId);
+				/*FileNavalEnum structureType = structureType(sender);
+				switch (structureType) {
+				case FITD7JQTT:
+					fileLevel(msg, userTeam, sender, sendTime, fileSize, grabRecordId);
+					break;
+				case FITQF:
+					//TODO
+					fileLevel(msg, userTeam, sender, sendTime, fileSize, grabRecordId);
+					break;
+				case FITVA:
+					//TODO
+					fileLevel(msg, userTeam, sender, sendTime, fileSize, grabRecordId);
+					break;
+				case TEAMJQTT:
+					//TODO
+					fileLevel(msg, userTeam, sender, sendTime, fileSize, grabRecordId);
+					break;
+				case TEAMVA:
+					//TODO
+					fileLevel(msg, userTeam, sender, sendTime, fileSize, grabRecordId);
+					break;
+				default:
+					break;
+				}*/
+			} else {
+				return;
+			}
 		}
-
-		//3-2、保存抓取文件
-		fileLevel(msg, userTeam, sender, sendTime, fileSize, grabRecordId);
-		/*FileNavalEnum structureType = structureType(sender);
-		switch (structureType) {
-		case FITD7JQTT:
-			fileLevel(msg, userTeam, sender, sendTime, fileSize, grabRecordId);
-			break;
-		case FITQF:
-			//TODO
-			fileLevel(msg, userTeam, sender, sendTime, fileSize, grabRecordId);
-			break;
-		case FITVA:
-			//TODO
-			fileLevel(msg, userTeam, sender, sendTime, fileSize, grabRecordId);
-			break;
-		case TEAMJQTT:
-			//TODO
-			fileLevel(msg, userTeam, sender, sendTime, fileSize, grabRecordId);
-			break;
-		case TEAMVA:
-			//TODO
-			fileLevel(msg, userTeam, sender, sendTime, fileSize, grabRecordId);
-			break;
-		default:
-			break;
-		}*/
-
 	}
 
 	/**
@@ -312,10 +333,10 @@ public class MailScrabService extends BaseService {
 	 * @throws FileNotFoundException
 	 * @throws IOException 
 	 */
-	@SuppressWarnings("static-access")
 	private void fileLevel(MimeMessage msg, Integer userTeam, String sender, String sendTime, String fileSize,
 			long grabRecordId) throws UnsupportedEncodingException, MessagingException, FileNotFoundException,
 			IOException {
+		//
 		long rootId;
 		DateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日 E HH:mm ");
 		Date date = null;
@@ -330,7 +351,6 @@ public class MailScrabService extends BaseService {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy.MM");
 		String fileName = format.format(date);
 		rootId = getTopParentId(sender);
-		//DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm ");
 		Chain chain = Chain.make("updateTime", date);
 		TGrabFileEntity single = dbDao.fetch(TGrabFileEntity.class, rootId);
 		if (Util.isEmpty(single.getFileSize())) {
@@ -387,7 +407,7 @@ public class MailScrabService extends BaseService {
 		TGrabFileEntity one = dbDao.fetch(TGrabFileEntity.class, rootIdTwo);
 		if (Util.isEmpty(one.getFileSize())) {
 			double temp = convertToM(fileDouble);//将其单位转换为kb
-			temp = getFileSize(temp, chain);
+			temp = getFileSize(temp, chain2);
 			chain2.add("fileSize", temp);
 		} else {
 			double afterConvert = 0;
@@ -428,14 +448,16 @@ public class MailScrabService extends BaseService {
 					Cnd.where("id", "=", timeFileTwo.getId()));
 		} else {
 			timeFileTwo = dbDao.insert(timeFileTwo);
+			map.put("sort", 0L);
 		}
 		/**************************第二层结束***************************/
 		/**************************客户团号***************************/
-		long sort = getSort(timeFileTwo.getId());
-
+		/*long sort = getSort(timeFileTwo.getId());*/
+		long sort = map.get("sort");
 		String cusgroupnum = getcusGroupnum();//得到客户团号
 		if (Util.isEmpty(cusgroupnum)) {
 			sort += 1;
+			map.put("sort", sort);
 			cusgroupnum = "客户团号" + sort;
 		}
 		//父id
@@ -444,7 +466,7 @@ public class MailScrabService extends BaseService {
 		TGrabFileEntity cusgroupOne = dbDao.fetch(TGrabFileEntity.class, pid);
 		if (Util.isEmpty(cusgroupOne.getFileSize())) {
 			double temp = convertToM(fileDouble);//将其单位转换为kb
-			temp = getFileSize(temp, chain);
+			temp = getFileSize(temp, chain3);
 			chain3.add("fileSize", temp);
 		} else {
 
@@ -490,9 +512,111 @@ public class MailScrabService extends BaseService {
 			groupNumFile = dbDao.insert(groupNumFile);
 		}
 
-		/**********************客户团号结束**********************/
+		/****************************************************客户团号结束**********************************************/
 
-		/**********************************文件开始****************************************/
+		/**********************************文件开始****************************************************/
+		/*if (sender.contains(GrabMailConstants.FIT_JQ)) {
+			//TODO 如果是散客下JQ航空公司就将文件正文内容转化为pdf格式，然后在本地保存下它的地址并且
+			//要将此邮件下面的附件地址也要保存到本地
+			String contentHtml = null;
+			String fileUrl = null;
+			try {
+				contentHtml = ctim.getContentHtml(msg);
+				fileUrl = uploadFileNew(contentHtml);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			saveCommonFile(msg, userTeam, fileSize, grabRecordId, date, fileDouble, single, groupNumFile, fileUrl);
+		} else if (sender.contains(GrabMailConstants.FIT_TT)) {
+			//TODO 如果是散客下TT航空公司,将邮件正文进行解析，抓取的附件是正文pdf文档中的下载按钮所链接的地址
+			String fileUrl = null;
+			try {
+				fileUrl = ContentUrl.getUrl(msg);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			saveCommonFile(msg, userTeam, fileSize, grabRecordId, date, fileDouble, single, groupNumFile, fileUrl);
+		} else if (sender.contains(GrabMailConstants.FIT_CI)) {
+			//TODO 如果是散客下CI航空公司,将.eml格式的文件转化为PDF格式进行保存
+
+			String contentHtml = null;
+			String fileUrl = null;
+			try {
+				contentHtml = ect.getContentHtml(msg);
+				fileUrl = uploadFileNew(contentHtml);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			saveCommonFile(msg, userTeam, fileSize, grabRecordId, date, fileDouble, single, groupNumFile, fileUrl);
+		} else if (sender.contains(GrabMailConstants.FIT_D7)) {
+			//TODO 如果是散客下D7航空公司,将邮件的正文部分转化为pdf格式进行保存
+			String contentHtml = null;
+			String fileUrl = null;
+			try {
+				contentHtml = ctim.getContentHtml(msg);
+				fileUrl = uploadFileNew(contentHtml);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			saveCommonFile(msg, userTeam, fileSize, grabRecordId, date, fileDouble, single, groupNumFile, fileUrl);
+		} else if (sender.contains(GrabMailConstants.TEAM_JQ)) {
+			//TODO 如果是团队下JQ航空公司就将文件正文内容转化为pdf格式，然后在本地保存下它的地址并且
+			//要将此邮件下面的附件地址也要保存到本地
+			String contentHtml = null;
+			String fileUrl = null;
+			try {
+				contentHtml = ctim.getContentHtml(msg);
+				fileUrl = uploadFileNew(contentHtml);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			saveCommonFile(msg, userTeam, fileSize, grabRecordId, date, fileDouble, single, groupNumFile, fileUrl);
+		} else if (sender.contains(GrabMailConstants.TEAM_TT)) {
+			//TODO 如果是团队下TT航空公司,将邮件正文进行解析，抓取的附件是正文pdf文档中的下载按钮所链接的地址
+			String fileUrl = null;
+			try {
+				fileUrl = ContentUrl.getUrl(msg);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			saveCommonFile(msg, userTeam, fileSize, grabRecordId, date, fileDouble, single, groupNumFile, fileUrl);
+		} else {
+			//除了上述特殊抓取之外，此处就是保存只需要邮件附件的方法
+			saveCommonFile(msg, userTeam, fileSize, grabRecordId, date, fileDouble, single, groupNumFile, null);
+		}*/
+		saveCommonFile(msg, userTeam, fileSize, grabRecordId, date, fileDouble, single, groupNumFile, null);
+	}
+
+	private String uploadFileNew(String content, String fileName) throws FileNotFoundException, IOException {
+		String str1 = System.getProperty("java.io.tmpdir");
+		File file = new File(str1 + File.separator + "12.html");
+		OutputStream os = new FileOutputStream(file);
+		byte[] b = content.getBytes();
+		os.write(b);
+		File file1 = new File(str1 + File.separator + "12.html");
+		String fileURL = CommonConstants.IMAGES_SERVER_ADDR
+				+ qiniuUploadService.uploadImage(new FileInputStream(file1), "html", null);
+		return fileURL;
+	}
+
+	/**
+	 * 公用保存附件的方法
+	 * @param msg
+	 * @param userTeam
+	 * @param fileSize
+	 * @param grabRecordId
+	 * @param date
+	 * @param fileDouble
+	 * @param single
+	 * @param groupNumFile
+	 * @throws UnsupportedEncodingException
+	 * @throws MessagingException
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	private void saveCommonFile(MimeMessage msg, Integer userTeam, String fileSize, long grabRecordId, Date date,
+			Double fileDouble, TGrabFileEntity single, TGrabFileEntity groupNumFile, String fileUrl)
+			throws UnsupportedEncodingException, MessagingException, FileNotFoundException, IOException {
 		//父id
 		TGrabFileEntity fileProps = new TGrabFileEntity();
 		fileProps.setParentId(groupNumFile.getId());
@@ -501,7 +625,7 @@ public class MailScrabService extends BaseService {
 		TGrabFileEntity filePropsOne = dbDao.fetch(TGrabFileEntity.class, groupNumFile.getId());
 		if (Util.isEmpty(filePropsOne.getFileSize())) {
 			double temp = convertToM(fileDouble);//将其单位转换为kb
-			temp = getFileSize(temp, chain);
+			temp = getFileSize(temp, chain4);
 			chain4.add("fileSize", temp);
 		} else {
 			double afterConvert = 0;
@@ -539,6 +663,30 @@ public class MailScrabService extends BaseService {
 		//文件url
 		List<TGrabFileEntity> grabFileList = Lists.newArrayList();
 		saveAttachment(msg, grabFileList, fileProps);
+		String sender = getFrom(msg);
+		//=======根据情况选择保存附件以外的东西================================================
+		if (sender.contains(GrabMailConstants.FIT_JQ)) {
+			//TODO 如果是散客下JQ航空公司就将文件正文内容转化为pdf格式，然后在本地保存下它的地址并且
+			//要将此邮件下面的附件地址也要保存到本地
+			saveContent(grabFileList, fileProps, msg);
+		} else if (sender.contains(GrabMailConstants.FIT_TT)) {
+			//TODO 如果是散客下TT航空公司,将邮件正文进行解析，抓取的附件是正文pdf文档中的下载按钮所链接的地址
+			saveLink(grabFileList, fileProps, msg);
+		} else if (sender.contains(GrabMailConstants.FIT_CI)) {
+			//TODO 如果是散客下CI航空公司,将.eml格式的文件转化为PDF格式进行保存
+
+		} else if (sender.contains(GrabMailConstants.FIT_D7)) {
+			//TODO 如果是散客下D7航空公司,将邮件的正文部分转化为pdf格式进行保存
+			saveContent(grabFileList, fileProps, msg);
+		} else if (sender.contains(GrabMailConstants.TEAM_JQ)) {
+			//TODO 如果是团队下JQ航空公司就将文件正文内容转化为pdf格式，然后在本地保存下它的地址并且
+			//要将此邮件下面的附件地址也要保存到本地
+			saveContent(grabFileList, fileProps, msg);
+		} else if (sender.contains(GrabMailConstants.TEAM_TT)) {
+			//TODO 如果是团队下TT航空公司,将邮件正文进行解析，抓取的附件是正文pdf文档中的下载按钮所链接的地址
+			saveLink(grabFileList, fileProps, msg);
+		}
+
 		if (!Util.isEmpty(grabFileList)) {
 			dbDao.insert(grabFileList);
 		} else {
@@ -546,6 +694,11 @@ public class MailScrabService extends BaseService {
 		}
 	}
 
+	/**
+	 * TODO(文件大小转换)
+	 * @param temp
+	 * @param chain
+	 */
 	private double getFileSize(double temp, Chain chain) {
 		if (temp > 1024) {
 			temp = convertToM(temp);
@@ -555,6 +708,10 @@ public class MailScrabService extends BaseService {
 		return temp;
 	}
 
+	/**
+	 * TODO(根据发件人区分抓取的邮件)
+	 * @param sender
+	 */
 	private long getTopParentId(String sender) {
 		String fileName = null;
 		TGrabMailEntity listMail = dbDao.fetch(TGrabMailEntity.class, Cnd.where("sender", "=", sender));
@@ -577,18 +734,6 @@ public class MailScrabService extends BaseService {
 			fileName = "TT";
 		} else if (senderDb.contains(GrabMailConstants.FIT_CI)) {
 			fileName = "CI";
-		} else if (senderDb.contains(GrabMailConstants.TEAM_CI)) {
-			fileName = "CI";
-		} else if (senderDb.contains(GrabMailConstants.FIT_EK)) {
-			fileName = "EK";
-		} else if (senderDb.contains(GrabMailConstants.TEAM_EK)) {
-			fileName = "EK";
-		} else if (senderDb.contains(GrabMailConstants.FIT_NZ)) {
-			fileName = "NZ";
-		} else if (senderDb.contains(GrabMailConstants.FIT_SABRE)) {
-			fileName = "SABRE";
-		} else {
-			fileName = "D7";
 		}
 		Cnd cnd = Cnd.NEW();
 		cnd.and("fileName", "=", fileName);
@@ -695,9 +840,17 @@ public class MailScrabService extends BaseService {
 		StringBuffer receiveAddress = new StringBuffer();
 		Address[] addresss = null;
 		if (type == null) {
-			addresss = msg.getAllRecipients();
+			try {
+				addresss = msg.getAllRecipients();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} else {
-			addresss = msg.getRecipients(type);
+			try {
+				addresss = msg.getRecipients(type);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		if (addresss == null || addresss.length < 1)
@@ -837,6 +990,100 @@ public class MailScrabService extends BaseService {
 		}
 	}
 
+	/****
+	 * 
+	 * 保存内容
+	 * @param grabFileLst
+	 * @param fileProps
+	 * @param msg TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public void saveContent(List<TGrabFileEntity> grabFileLst, TGrabFileEntity fileProps, MimeMessage msg) {
+		String contentHtml = null;
+		String fileUrl = null;
+		try {
+			String subjectStr = msg.getSubject();
+			// getContent() 是获取包裹内容, Part相当于外包装  
+			Object o = msg.getContent();
+			String fileName = "content";
+			String PNR = null;
+			if (subjectStr.contains("#")) {
+
+				PNR = subjectStr.substring(subjectStr.indexOf("#") + 2,
+						subjectStr.indexOf(")", subjectStr.indexOf("#")));
+			}
+			if (!Util.isEmpty(PNR)) {
+				fileName += PNR;
+			}
+			contentHtml = ctim.getContentHtml(msg);
+			fileUrl = uploadFileNew(contentHtml, fileName);
+			TGrabFileEntity newFile = new TGrabFileEntity();
+			BeanUtil.copyProperties(fileProps, newFile);
+			String attachmentName = fileName;
+			int fileSort = 0;
+			if (Util.isEmpty(attachmentName)) {
+				fileSort = getSort(fileProps.getParentId());
+				fileSort += 1;
+				attachmentName = "PNR" + fileSort;
+			}
+			//文件名和序号
+			newFile.setFileName(attachmentName);
+			fileProps.setSort(fileSort);
+			newFile.setUrl(fileUrl);
+			newFile.setType(FileTypeEnum.FILE.intKey());//文件
+			grabFileLst.add(newFile);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/****
+	 * 
+	 * 保存链接
+	 * @param grabFileLst
+	 * @param fileProps
+	 * @param msg TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public void saveLink(List<TGrabFileEntity> grabFileLst, TGrabFileEntity fileProps, MimeMessage msg) {
+		String fileUrl = null;
+
+		try {
+			fileUrl = ContentUrl.getUrl(msg);
+			String subjectStr = msg.getSubject();
+			// getContent() 是获取包裹内容, Part相当于外包装  
+			String PNR = null;
+			if (subjectStr.contains("#")) {
+
+				PNR = subjectStr.substring(subjectStr.indexOf("#") + 2,
+						subjectStr.indexOf(")", subjectStr.indexOf("#")));
+			}
+			TGrabFileEntity newFile = new TGrabFileEntity();
+			BeanUtil.copyProperties(fileProps, newFile);
+			String fileName = "link";
+			if (!Util.isEmpty(PNR)) {
+				fileName += PNR;
+			}
+			String attachmentName = fileName;
+			int fileSort = 0;
+			if (Util.isEmpty(attachmentName)) {
+				fileSort = getSort(fileProps.getParentId());
+				fileSort += 1;
+				attachmentName = "PNR" + fileSort;
+			}
+			//文件名和序号
+			newFile.setFileName(attachmentName);
+			fileProps.setSort(fileSort);
+			newFile.setUrl(fileUrl);
+			newFile.setType(FileTypeEnum.FILE.intKey());//文件
+			grabFileLst.add(newFile);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	/**  
 	 * 保存附件  
 	 * @param part 邮件中多个组合体中的其中一个组合体  
@@ -864,7 +1111,42 @@ public class MailScrabService extends BaseService {
 				if (disp != null && (disp.equalsIgnoreCase(Part.ATTACHMENT) || disp.equalsIgnoreCase(Part.INLINE))) {
 					//向网络上上传一个文件，然后返回一个地址存储到数据库中
 					InputStream is = bodyPart.getInputStream();
-					String fileUrl = uploadFile(is, fileExt);
+					String fileUrl = null;
+					if ("eml".equals(fileExt)) {
+						String str1 = System.getProperty("java.io.tmpdir");
+						File file = new File(str1 + File.separator + "12.eml");
+						OutputStream os = new FileOutputStream(file);
+						int length = 0;
+						byte[] b = new byte[1024];
+						while ((length = is.read(b)) != -1) {
+							os.write(b);
+						}
+						os.flush();
+						File file1 = new File(str1 + File.separator + "12.html");
+						String content = null;
+						try {
+							content = ect.display(file1);
+						} catch (Exception e) {
+
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+
+						}
+						OutputStream os1 = new FileOutputStream(file1);
+						byte[] b1 = content.getBytes();
+						os.write(b1);
+
+						File file3 = new File(str1 + File.separator + "12.html");
+
+						String fileURL = CommonConstants.IMAGES_SERVER_ADDR
+								+ qiniuUploadService.uploadImage(new FileInputStream(file3), "html", null);
+
+					} else {
+						fileUrl = uploadFile(is, fileExt);
+
+					}
+
+					//String fileUrl = uploadFile(is, fileExt);
 
 					TGrabFileEntity newFile = new TGrabFileEntity();
 					BeanUtil.copyProperties(fileProps, newFile);
@@ -918,8 +1200,8 @@ public class MailScrabService extends BaseService {
 	 * @param fileName 文件名  
 	 * @return 文件URL地址
 	 */
-	private String uploadFile(InputStream is, String fileName) {
-		String fileURL = CommonConstants.IMAGES_SERVER_ADDR + qiniuUploadService.uploadImage(is, fileName, fileName);
+	private String uploadFile(InputStream is, String fileExt) {
+		String fileURL = CommonConstants.IMAGES_SERVER_ADDR + qiniuUploadService.uploadImage(is, fileExt, null);
 		//文件存储地址
 		logger.info("文件存储地址:" + fileURL);
 		return fileURL;

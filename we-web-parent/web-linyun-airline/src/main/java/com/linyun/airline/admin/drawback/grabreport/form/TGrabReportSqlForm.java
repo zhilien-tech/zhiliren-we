@@ -21,6 +21,9 @@ public class TGrabReportSqlForm extends DataTablesParamForm {
 	/**备注*/
 	private String remark;
 
+	/**文件名*/
+	private String fileName;
+
 	/**汇款*/
 	private Double remit;
 
@@ -71,6 +74,15 @@ public class TGrabReportSqlForm extends DataTablesParamForm {
 
 	/**PNR*/
 	private String PNR;
+
+	/**人数*/
+	private Integer peopleNum;
+
+	/**成本单价*/
+	private Double costUnitPrice;
+
+	/**实收单价*/
+	private Double paidUnitPrice;
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {

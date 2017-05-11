@@ -25,13 +25,13 @@ public class GrabMailConstants {
 	/**散客CI邮件发送地址*/
 	public static final String FIT_CI = "CAL-Reservation@amadeus.com";
 	/**散客NZ邮件发送地址*/
-	public static final String FIT_NZ = "Air.New.Zealand@airnz.co.nz";
+	//public static final String FIT_NZ = "Air.New.Zealand@airnz.co.nz";
 	/**散客D7邮件发送地址*/
 	public static final String FIT_D7 = "reservations@airasia.com";
 	/**散客EK邮件发送地址*/
-	public static final String FIT_EK = "do-not-reply@emirates.email";//网站出的才有邮件，量比较少
+	//public static final String FIT_EK = "do-not-reply@emirates.email";//网站出的才有邮件，量比较少
 	/**散客SABRE邮件发送地址*/
-	public static final String FIT_SABRE = "confirmation@tripcase.com";
+	//public static final String FIT_SABRE = "confirmation@tripcase.com";
 
 	/**********************************************团队(team)********************************************/
 	/**团队JQ邮件发送地址*/
@@ -41,7 +41,7 @@ public class GrabMailConstants {
 	/**团队TT邮件发送地址*/
 	public static final String TEAM_TT = "confirmation@email.tigerair.com.au";
 	/**团队CI邮件发送地址*/
-	public static final String TEAM_CI = "CAL-confirmation@amadeus.com";
+	//public static final String TEAM_CI = "CAL-confirmation@amadeus.com";
 	/**团队EK邮件发送地址*/
-	public static final String TEAM_EK = "HKGGroupDesk@emirates.com";//无附件，出票信息在邮件正文内
+	//public static final String TEAM_EK = "HKGGroupDesk@emirates.com";//无附件，出票信息在邮件正文内
 }

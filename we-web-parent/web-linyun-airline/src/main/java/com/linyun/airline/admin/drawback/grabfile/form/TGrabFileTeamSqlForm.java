@@ -1,3 +1,9 @@
+/**
+ * TGrabFileTeamSqlForm.java
+ * com.linyun.airline.admin.drawback.grabfile.form
+ * Copyright (c) 2017, 北京科技有限公司版权所有.
+*/
+
 package com.linyun.airline.admin.drawback.grabfile.form;
 
 import java.util.Date;
@@ -14,9 +20,15 @@ import com.linyun.airline.admin.drawback.grabfile.enums.GroupTypeEnum;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
+/**
+ * TODO(团队sql查询)
+ * @author   崔建斌
+ * @Date	 2017年5月7日 	 
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class TGrabFileSqlForm extends DataTablesParamForm {
+public class TGrabFileTeamSqlForm extends DataTablesParamForm {
+
 	/**主键*/
 	private long id;
 
@@ -68,15 +80,6 @@ public class TGrabFileSqlForm extends DataTablesParamForm {
 	/**发送邮件时间*/
 	private String sendTime;
 
-	/**航空公司代码*/
-	private String fileNameCode;
-
-	/**发送邮件时间*/
-	private String fileNameTime;
-
-	/**判断是团还是散*/
-	private int flag;
-
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**
@@ -97,18 +100,7 @@ public class TGrabFileSqlForm extends DataTablesParamForm {
 		if (!Util.isEmpty(parentId)) {
 			cnd.and("gr.parentId", "=", parentId);
 		}
-		if (!Util.isEmpty(fileNameCode)) {
-			cnd.and("gr.fileName", "LIKE", "%" + fileNameCode + "%").and("gr.fileName", "LIKE",
-					"%" + fileNameTime + "%");
-		}
-		//cnd.and("gr.groupType", "=", GroupTypeEnum.GRABMAIL_FIT.intKey());//散客
-		int a = flag;
-		if (a == 0) {
-			cnd.and("groupType", "=", GroupTypeEnum.GRABMAIL_FIT.intKey());
-		} else if (a == 1) {
-			cnd.and("groupType", "=", GroupTypeEnum.GRABMAIL_TEAM.intKey());
-
-		}
+		cnd.and("gr.groupType", "=", GroupTypeEnum.GRABMAIL_TEAM.intKey());//散客
 		return cnd;
 	}
 }
