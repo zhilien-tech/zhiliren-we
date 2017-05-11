@@ -48,6 +48,9 @@ public class InlandPayEdListSearchSqlForm extends DataTablesParamForm {
 	/**当前公司下用户 ids*/
 	private String loginUserId;
 
+	/**当前公司id*/
+	private long loginCompanyId;
+
 	/**订单状态*/
 	private long orderPnrStatus;
 
@@ -75,7 +78,8 @@ public class InlandPayEdListSearchSqlForm extends DataTablesParamForm {
 
 		cnd.and("uo.orderstype", "=", OrderTypeEnum.FIT.intKey()); //散客
 		cnd.and("pi.orderPnrStatus", "=", orderPnrStatus);
-		cnd.and("pi.userid", "in", loginUserId);
+		/*cnd.and("pi.userid", "in", loginUserId); //当前公司下的用户id*/
+		cnd.and("uo.companyId", "=", loginCompanyId);
 
 		return cnd;
 	}
