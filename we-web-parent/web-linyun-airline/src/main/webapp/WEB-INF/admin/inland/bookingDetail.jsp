@@ -122,7 +122,7 @@
                      <td><label>传真：</label></td>
                      <td><input type="text" class="form-control input-sm" placeholder="" value="${obj.custominfo.fax }" readonly="true"></td>
                      <td><label>出发城市：</label></td>
-                     <td><input type="text" class="form-control input-sm addressInput" placeholder="" value="${obj.outcitys }" readonly="true"></td>
+                     <td><input type="text" class="form-control input-sm addressInput" placeholder="" value="${obj.custominfo.outCityName }" readonly="true"></td>
                      
                    </tr>
                  </table>
@@ -162,10 +162,10 @@
 			                     	<c:forEach var="one" items="${obj.city }">
 			                    		<c:choose>
 			                    			<c:when test="${customneed.cusinfo.leavecity eq one.dictCode }">
-												<option value="${one.dictCode }" selected="selected">${one.dictCode}-${one.englishName }-${one.countryName }</option>
+												<option value="${one.dictCode }" selected="selected">${one.dictCode}</option>
 			                    			</c:when>
 			                    			<c:otherwise>
-												<option value="${one.dictCode }">${one.dictCode}-${one.englishName }-${one.countryName }</option>
+												<option value="${one.dictCode }">${one.dictCode}</option>
 			                    			</c:otherwise>
 			                    		</c:choose>
 									</c:forEach>
@@ -176,10 +176,10 @@
 			                     	<c:forEach var="one" items="${obj.city }">
 			                    		<c:choose>
 			                    			<c:when test="${customneed.cusinfo.arrivecity eq one.dictCode }">
-												<option value="${one.dictCode }" selected="selected">${one.dictCode}-${one.englishName }-${one.countryName }</option>
+												<option value="${one.dictCode }" selected="selected">${one.dictCode}</option>
 			                    			</c:when>
 			                    			<c:otherwise>
-												<option value="${one.dictCode }">${one.dictCode}-${one.englishName }-${one.countryName }</option>
+												<option value="${one.dictCode }">${one.dictCode}</option>
 			                    			</c:otherwise>
 			                    		</c:choose>
 									</c:forEach>
@@ -575,15 +575,15 @@
                    <tr class="KHinfo">
                      <td><label>进澳时间：</label></td>
                      <td><input id="enterausdate" name="enterausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.enterausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
-                   	 <td><label>航空公司：</label></td>
+                   	 <td><label>航班号：</label></td>
                      <td><select id="enteraircom" name="enteraircom" type="text" class="form-control input-sm disab aircomselect" disabled="disabled" multiple="multiple">
-                     	<c:forEach items="${obj.aircom }" var="one"> 
+                     	<c:forEach items="${obj.airline }" var="one"> 
                    			<c:choose>
-	                   			<c:when test="${obj.finance.enteraircom  eq one.dictCode  }">
-									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.dictName }</option>
+	                   			<c:when test="${obj.finance.enteraircom  eq one.dictName  }">
+									<option value="${one.dictName }" selected="selected">${one.dictName }</option>
 	                   			</c:when>
 	                   			<c:otherwise>
-		                     		<option value="${one.dictCode }">${one.dictCode }-${one.dictName }</option>
+		                     		<option value="${one.dictName }">${one.dictName }</option>
 	                   			</c:otherwise>
                     		</c:choose>
                      	</c:forEach>
@@ -593,10 +593,10 @@
                      	<c:forEach items="${obj.city }" var="one"> 
                    			<c:choose>
 	                   			<c:when test="${obj.finance.enterleavecity  eq one.dictCode  }">
-									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+									<option value="${one.dictCode }" selected="selected">${one.dictCode }</option>
 	                   			</c:when>
 	                   			<c:otherwise>
-		                     		<option value="${one.dictCode }">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+		                     		<option value="${one.dictCode }">${one.dictCode }</option>
 	                   			</c:otherwise>
                     		</c:choose>
                      	</c:forEach>
@@ -606,10 +606,10 @@
                      	<c:forEach items="${obj.city }" var="one"> 
                    			<c:choose>
 	                   			<c:when test="${obj.finance.enterarrivecity  eq one.dictCode  }">
-									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+									<option value="${one.dictCode }" selected="selected">${one.dictCode }</option>
 	                   			</c:when>
 	                   			<c:otherwise>
-		                     		<option value="${one.dictCode }">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+		                     		<option value="${one.dictCode }">${one.dictCode }</option>
 	                   			</c:otherwise>
                     		</c:choose>
                      	</c:forEach>
@@ -622,15 +622,15 @@
                    <tr class="KHinfo">
                      <td><label>出澳时间：</label></td>
                      <td><input id="outausdate" name="outausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.outausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
-                   	 <td><label>航空公司：</label></td>
+                   	 <td><label>航班号：</label></td>
                      <td><select id="outaircom" name="outaircom" type="text" class="form-control input-sm disab aircomselect" disabled="disabled" multiple="multiple">
-                     	<c:forEach items="${obj.aircom }" var="one"> 
+                     	<c:forEach items="${obj.airline }" var="one"> 
                    			<c:choose>
-	                   			<c:when test="${obj.finance.outaircom  eq one.dictCode  }">
-									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.dictName }</option>
+	                   			<c:when test="${obj.finance.outaircom  eq one.dictName  }">
+									<option value="${one.dictName }" selected="selected">${one.dictName }</option>
 	                   			</c:when>
 	                   			<c:otherwise>
-		                     		<option value="${one.dictCode }">${one.dictCode }-${one.dictName }</option>
+		                     		<option value="${one.dictName }">${one.dictName }</option>
 	                   			</c:otherwise>
                     		</c:choose>
                      	</c:forEach>
@@ -640,10 +640,10 @@
                      	<c:forEach items="${obj.city }" var="one"> 
                    			<c:choose>
 	                   			<c:when test="${obj.finance.outleavecity  eq one.dictCode  }">
-									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+									<option value="${one.dictCode }" selected="selected">${one.dictCode }</option>
 	                   			</c:when>
 	                   			<c:otherwise>
-		                     		<option value="${one.dictCode }">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+		                     		<option value="${one.dictCode }">${one.dictCode }</option>
 	                   			</c:otherwise>
                     		</c:choose>
                      	</c:forEach>
@@ -653,10 +653,10 @@
                      	<c:forEach items="${obj.city }" var="one"> 
                    			<c:choose>
 	                   			<c:when test="${obj.finance.outarrivecity  eq one.dictCode  }">
-									<option value="${one.dictCode }" selected="selected">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+									<option value="${one.dictCode }" selected="selected">${one.dictCode }</option>
 	                   			</c:when>
 	                   			<c:otherwise>
-		                     		<option value="${one.dictCode }">${one.dictCode }-${one.englishName }-${one.countryName }</option>
+		                     		<option value="${one.dictCode }">${one.dictCode }</option>
 	                   			</c:otherwise>
                     		</c:choose>
                      	</c:forEach>

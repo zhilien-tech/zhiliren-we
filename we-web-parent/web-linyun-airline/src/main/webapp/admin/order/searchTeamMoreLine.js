@@ -35,6 +35,7 @@ function initTeamSelect2(){
 					},
 					cache : false
 				},
+				templateSelection: formatRepoSelection,
 				escapeMarkup : function(markup) {
 					return markup;
 				}, // let our custom formatter work
@@ -76,6 +77,7 @@ function initTeamSelect2(){
 					},
 					cache : true
 				},
+				templateSelection: formatRepoSelection,
 				escapeMarkup : function(markup) {
 					return markup;
 				}, // let our custom formatter work
@@ -434,4 +436,10 @@ function onkeyTeamEnter(){
 	if(e && e.keyCode == 13){
 		selectteam();
 	}
+}
+//select2 选项渲染
+function formatRepoSelection(repo){
+	var text =  repo.text;
+	text = text.substr(0,3);
+	return text;
 }

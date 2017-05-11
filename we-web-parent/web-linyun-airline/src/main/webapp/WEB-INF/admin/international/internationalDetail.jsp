@@ -131,7 +131,7 @@
                      <td><label>传真：</label></td>
                      <td><input type="text" id="fax" name="fax" class="form-control input-sm" placeholder="" value="${obj.custominfo.fax }" readonly="true"></td>
                      <td><label>出发城市：</label></td>
-                     <td><input type="text" id="departureCity" name="departureCity" class="form-control input-sm addressInput" placeholder="" value="${obj.outcitys }" readonly="true"></td>
+                     <td><input type="text" id="departureCity" name="departureCity" class="form-control input-sm addressInput" placeholder="" value="${obj.custominfo.outCityName }" readonly="true"></td>
                      
                    </tr>
                  </table>
@@ -234,9 +234,9 @@
 		                        <th>免罚金可减人数</th>
 		                        <th>实际减少人数</th>
 		                        <th>本期罚金</th>
-		                        <th>本期应付</th>
+		                        <th>本期应收</th>
 		                        <th>本期税金</th>
-		                        <th>本期实付</th>
+		                        <th>本期实收</th>
 		                        <th>操作</th>
 		                      </tr>
 		                    </thead>
@@ -414,7 +414,7 @@
                      <td><input id="personcount" name="personcount" value="${obj.finance.personcount }" type="text" class="form-control input-sm disab mustNumber" disabled="disabled"></td>
                      <td><label>应收金额：</label></td>
                      <td><input id="receivable" name="receivable" type="text" class="form-control input-sm disab mustNumberPoint" value="${obj.finance.receivable }" disabled="disabled"></td>
-                     <td><label><a href="javascript:;" class="jianMian">减免</a>：</label></td>
+                     <td><label><a href="javascript:;" id="jianMian" class="">减免</a>：</label></td>
                      <td><input id="relief" name="relief" type="text" class="form-control input-sm" disabled="disabled" value="${obj.finance.relief }"></td>
                      <td><label>实收合计：</label></td>
                      <td><input id="incometotal" name="incometotal" type="text" class="form-control input-sm disab loadprofit mustNumberPoint" disabled="disabled" value="${obj.finance.incometotal }"></td>
@@ -486,6 +486,7 @@
           $('#orderType').removeAttr("disabled");//信息模块 input 禁止编辑的状态
           $('#cRemark').removeAttr("disabled");//信息模块 input 禁止编辑的状态
           $('#linkName').removeAttr("disabled");//信息模块 input 禁止编辑的状态
+          $('#jianMian').addClass("jianMian");//减免禁止编辑的状态
           loadAirlineInfo();
           loadJianMianAccount('${obj.orderinfo.id }');
         });
@@ -504,6 +505,7 @@
           $('#orderType').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
           $('#cRemark').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
           $('#linkName').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
+          $('#jianMian').removeClass("jianMian");//减免添加 不可编辑属性
           loadAirlineInfo(1);
           loadJianMianAccount('${obj.orderinfo.id }',1);
         });
@@ -990,6 +992,8 @@
 	  }else if(id=='3'){
 		  layer.msg("提醒成功",{time: 2000});
 	  }else if(id=='4'){
+		  layer.msg("提交成功",{time: 2000});
+	  }else if(id=='5'){
 		  layer.msg("删除成功",{time: 2000});
 	  }
 	}

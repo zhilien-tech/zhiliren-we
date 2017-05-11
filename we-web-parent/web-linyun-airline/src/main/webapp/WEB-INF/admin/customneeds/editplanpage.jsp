@@ -145,10 +145,10 @@
 		                    	<c:forEach var="one" items="${obj.city }">
 		                    		<c:choose>
 		                    			<c:when test="${airline.leavecity eq one.dictCode }">
-											<option value="${one.dictCode }" selected="selected">${one.dictCode}-${one.englishName }-${one.countryName }</option>
+											<option value="${one.dictCode }" selected="selected">${one.dictCode}</option>
 		                    			</c:when>
 		                    			<c:otherwise>
-											<option value="${one.dictCode }">${one.dictCode}-${one.englishName }-${one.countryName }</option>
+											<option value="${one.dictCode }">${one.dictCode}</option>
 		                    			</c:otherwise>
 		                    		</c:choose>
 								</c:forEach>
@@ -162,10 +162,10 @@
 		                    	<c:forEach var="one" items="${obj.city }">
 									<c:choose>
 		                    			<c:when test="${airline.arrvicity eq one.dictCode }">
-											<option value="${one.dictCode }" selected="selected">${one.dictCode}-${one.englishName }-${one.countryName }</option>
+											<option value="${one.dictCode }" selected="selected">${one.dictCode}</option>
 		                    			</c:when>
 		                    			<c:otherwise>
-											<option value="${one.dictCode }">${one.dictCode}-${one.englishName }-${one.countryName }</option>
+											<option value="${one.dictCode }">${one.dictCode}</option>
 		                    			</c:otherwise>
 		                    		</c:choose>
 								</c:forEach>
@@ -406,6 +406,12 @@
 			$('#generateOrder').attr('checked','checked');
 		}
 	}); 
+	//select2 选项渲染
+	function formatRepoSelection(repo){
+		var text =  repo.text;
+		text = text.substr(0,3);
+		return text;
+	}
 </script>
 </body>
 </html>	

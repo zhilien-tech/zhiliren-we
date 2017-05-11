@@ -59,6 +59,7 @@ import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.ExcelReader;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAirlineInfoEntity;
+import com.linyun.airline.entities.TBackTicketFileEntity;
 import com.linyun.airline.entities.TBackTicketInfoEntity;
 import com.linyun.airline.entities.TBankCardEntity;
 import com.linyun.airline.entities.TCompanyEntity;
@@ -718,7 +719,9 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			List<TVisitorInfoEntity> query = dbDao
 					.query(TVisitorInfoEntity.class, Cnd.where("pnrid", "=", pnrid), null);
 			//删除原有的
-			dbDao.delete(query);
+			if (!Util.isEmpty(query)) {
+				dbDao.delete(query);
+			}
 			List<TVisitorInfoEntity> visitors = new ArrayList<TVisitorInfoEntity>();
 			for (int i = 1; i <= map.size(); i++) {
 				String[] row = map.get(i);
@@ -1096,14 +1099,17 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		TBackTicketInfoEntity backinfo = new TBackTicketInfoEntity();
 		TBackTicketInfoEntity backinfos = dbDao.fetch(TBackTicketInfoEntity.class,
 				Cnd.where("visitorid", "=", visitorid));
+		List<TBackTicketFileEntity> backfile = new ArrayList<TBackTicketFileEntity>();
 		if (!Util.isEmpty(backinfos)) {
 			backinfo = backinfos;
+			backfile = dbDao.query(TBackTicketFileEntity.class, Cnd.where("backticketid", "=", backinfo.getId()), null);
 		}
 		if (Util.isEmpty(backinfo.getApplydate())) {
 			backinfo.setApplydate(new Date());
 		}
 		result.put("visitorinfo", visitorinfo);
 		result.put("backinfo", backinfo);
+		result.put("backfile", backfile);
 		result.put("backreasonenum", EnumUtil.enum2(BackReasonEnum.class));
 		result.put("backticketstatusenum", EnumUtil.enum2(BackTicketStatusEnum.class));
 		return result;
@@ -1584,8 +1590,14 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	 * @param backticketinfo
 	 * @return (保存退票信息)
 	 */
+	@SuppressWarnings("unchecked")
 	public Object saveBackTicketInfo(HttpServletRequest request, TBackTicketInfoEntity backticketinfo) {
+		HttpSession session = request.getSession();
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		String applydatestr = request.getParameter("applydatestr");
+		String backticketfiles = request.getParameter("backticketfiles");
+		List<Map<String, String>> backfiles = JsonUtil.fromJson(backticketfiles, List.class);
 		if (!Util.isEmpty(applydatestr)) {
 			Date applydate = DateUtil.string2Date(applydatestr, DateUtil.FORMAT_YYYY_MM_DD);
 			backticketinfo.setApplydate(applydate);
@@ -1593,8 +1605,32 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		Integer id = backticketinfo.getId();
 		if (!Util.isEmpty(id)) {
 			dbDao.update(backticketinfo);
+			List<TBackTicketFileEntity> before = dbDao.query(TBackTicketFileEntity.class,
+					Cnd.where("backticketid", "=", backticketinfo.getId()), null);
+			List<TBackTicketFileEntity> after = new ArrayList<TBackTicketFileEntity>();
+			for (Map<String, String> map : backfiles) {
+				TBackTicketFileEntity tBackTicketFileEntity = new TBackTicketFileEntity();
+				tBackTicketFileEntity.setFilename(map.get("filename"));
+				tBackTicketFileEntity.setFileurl(map.get("fileurl"));
+				tBackTicketFileEntity.setBackticketid(backticketinfo.getId());
+				tBackTicketFileEntity.setOptime(new Date());
+				tBackTicketFileEntity.setOpid(Long.valueOf(user.getId()).intValue());
+				after.add(tBackTicketFileEntity);
+			}
+			dbDao.updateRelations(before, after);
 		} else {
-			dbDao.insert(backticketinfo);
+			TBackTicketInfoEntity insert = dbDao.insert(backticketinfo);
+			List<TBackTicketFileEntity> backticketfile = new ArrayList<TBackTicketFileEntity>();
+			for (Map<String, String> map : backfiles) {
+				TBackTicketFileEntity tBackTicketFileEntity = new TBackTicketFileEntity();
+				tBackTicketFileEntity.setFilename(map.get("filename"));
+				tBackTicketFileEntity.setFileurl(map.get("fileurl"));
+				tBackTicketFileEntity.setBackticketid(insert.getId());
+				tBackTicketFileEntity.setOptime(new Date());
+				tBackTicketFileEntity.setOpid(Long.valueOf(user.getId()).intValue());
+				backticketfile.add(tBackTicketFileEntity);
+			}
+			dbDao.insert(backticketfile);
 		}
 		return null;
 	}

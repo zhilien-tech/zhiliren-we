@@ -248,11 +248,12 @@
  			type: 'POST', 
  			data: addPnrData, 
  			url: '${base}/admin/inland/editPnrInfo.html',
+ 			async:false,
            success: function (data) { 
            	//alert("添加成功");
            	//location.reload();
            	layer.closeAll('loading');
-           	closewindow();
+           	location.href = '${base}/admin/inland/pnrDetailPage.html?pnrid=${obj.pnrinfo.id }';
            	window.parent.successCallback('2');
            },
            error: function (xhr) {

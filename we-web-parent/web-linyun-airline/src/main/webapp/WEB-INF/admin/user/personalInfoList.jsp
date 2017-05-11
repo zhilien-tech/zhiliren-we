@@ -37,7 +37,7 @@
                   </tr>
                   <tr class="strip1">
                     <td>座机号码</td>
-                    <td>${obj.personalInfo[0].landline }</td>
+                    <td><span data-toggle="tooltip" data-placement="bottom" title="${obj.personalInfo[0].landline }">${obj.personalInfo[0].landline }<span></td>
                   </tr>
                   <tr class="strip2">
                     <td>联系QQ</td>

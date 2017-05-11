@@ -35,6 +35,7 @@ function initSelect2(){
 					},
 					cache : false
 				},
+				templateSelection: formatRepoSelection,
 				escapeMarkup : function(markup) {
 					return markup;
 				}, // let our custom formatter work
@@ -76,6 +77,7 @@ function initSelect2(){
 					},
 					cache : false
 				},
+				templateSelection: formatRepoSelection,
 				escapeMarkup : function(markup) {
 					return markup;
 				}, // let our custom formatter work
@@ -367,4 +369,9 @@ $("#searchSingleTicketsBtn").click(function() {
 	
 });
 
-
+//select2 选项渲染
+function formatRepoSelection(repo){
+	var text =  repo.text;
+	text = text.substr(0,3);
+	return text;
+}

@@ -43,7 +43,7 @@
                         			</c:choose>
 								</c:forEach>
                         	</select></td>
-                        <td><input id="prepayratio" name="prepayratio" type="text" class="form-control input-sm mustNumberPoint autocalc" value="${obj.recordinfo.prepayratio }"><!-- <span class="bfh">%</span> --></td>
+                        <td><input id="prepayratio" name="prepayratio" type="text" class="form-control input-sm" value="${obj.recordinfo.prepayratio }"><!-- <span class="bfh">%</span> --></td>
                         <td><label>实际人数：</label></td>
                         <td><input id="actualnumber" name="actualnumber" type="text" class="form-control input-sm mustNumber autocalc" value="${obj.recordinfo.actualnumber }"></td>
                         <td><label>免罚金可减人数：</label></td>
