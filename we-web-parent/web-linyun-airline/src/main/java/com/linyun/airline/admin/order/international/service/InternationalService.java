@@ -858,15 +858,18 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		TPayReceiveRecordEntity payrecord = dbDao.insert(payreceive);
 		Integer orderid = payrecord.getOrderid();
 		TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, orderid.longValue());
-		TCustomerInfoEntity custome = dbDao.fetch(TCustomerInfoEntity.class, order.getUserid().longValue());
+		TCustomerInfoEntity custome = new TCustomerInfoEntity();
+		if (!Util.isEmpty(order.getUserid())) {
+			custome = dbDao.fetch(TCustomerInfoEntity.class, order.getUserid().longValue());
+		}
 		//票价折扣
 		double discountFare = 1;
-		if (!Util.isEmpty(custome.getDiscountFare())) {
+		if (!Util.isEmpty(custome) && !Util.isEmpty(custome.getDiscountFare())) {
 			discountFare = custome.getDiscountFare();
 		}
 		//手续费
 		double fees = 0;
-		if (!Util.isEmpty(custome.getFees())) {
+		if (!Util.isEmpty(custome) && !Util.isEmpty(custome.getFees())) {
 			fees = custome.getFees();
 		}
 		if (payrecord.getInputtype() == 1) {
@@ -1048,8 +1051,125 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		//获取当前登录用户
 		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		payreceive.setOpid(new Long(user.getId()).intValue());
+		//更新信息
+		dbDao.update(payreceive);
 		//payreceive.setOptime(new Date());
-		return dbDao.update(payreceive);
+		if (PayReceiveTypeEnum.PAY.intKey() == payreceive.getRecordtype()) {
+			TPayReceiveRecordEntity receiveEntity = dbDao.fetch(
+					TPayReceiveRecordEntity.class,
+					Cnd.where("orderid", "=", payreceive.getOrderid()).and("recordtype", "=",
+							PayReceiveTypeEnum.RECEIVE.intKey()));
+			Integer orderid = payreceive.getOrderid();
+			TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, orderid.longValue());
+			TCustomerInfoEntity custome = new TCustomerInfoEntity();
+			if (!Util.isEmpty(order.getUserid())) {
+				custome = dbDao.fetch(TCustomerInfoEntity.class, order.getUserid().longValue());
+			}
+			//票价折扣
+			double discountFare = 1;
+			if (!Util.isEmpty(custome) && !Util.isEmpty(custome.getDiscountFare())) {
+				discountFare = custome.getDiscountFare();
+			}
+			//手续费
+			double fees = 0;
+			if (!Util.isEmpty(custome) && !Util.isEmpty(custome.getFees())) {
+				fees = custome.getFees();
+			}
+			if (payreceive.getInputtype() == 1) {
+				//收款信息
+				//TPayReceiveRecordEntity receiveEntity = new TPayReceiveRecordEntity();
+				//成本单价
+				double costprice = payreceive.getCostprice() * discountFare / 100 + fees;
+				receiveEntity.setCostprice(costprice);
+				Integer recordtype = PayReceiveTypeEnum.RECEIVE.intKey();
+				//记录类型
+				receiveEntity.setRecordtype(recordtype);
+				//预付款比例
+				receiveEntity.setPrepayratio(payreceive.getPrepayratio());
+				double prepayratio = 0;
+				if (!Util.isEmpty(payreceive.getPrepayratio())) {
+					prepayratio = Double.valueOf(payreceive.getPrepayratio());
+				}
+				//实际人数
+				receiveEntity.setActualnumber(payreceive.getActualnumber());
+				Integer actualnumber = 0;
+				if (!Util.isEmpty(payreceive.getActualnumber())) {
+					actualnumber = payreceive.getActualnumber();
+				}
+				//免罚金可减人数
+				receiveEntity.setFreenumber(payreceive.getFreenumber());
+				Integer freenumber = 0;
+				if (!Util.isEmpty(payreceive.getFreenumber())) {
+					freenumber = payreceive.getFreenumber();
+				}
+				receiveEntity.setOpid(new Long(user.getId()).intValue());
+				receiveEntity.setOptime(new Date());
+				//币种
+				receiveEntity.setCurrency(payreceive.getCurrency());
+				//订单ID
+				receiveEntity.setOrderid(payreceive.getOrderid());
+				//订单状态
+				receiveEntity.setOrderstatus(payreceive.getOrderstatus());
+				//订单状态ID
+				receiveEntity.setOrderstatusid(payreceive.getOrderstatusid());
+				//实际减少人数
+				receiveEntity.setActualyreduce(payreceive.getActualyreduce());
+				Integer actualyreduce = 0;
+				if (!Util.isEmpty(payreceive.getActualyreduce())) {
+					actualyreduce = payreceive.getActualyreduce();
+				}
+				//原有人数
+				Integer peoplecount = order.getPeoplecount();
+				String sqlString = sqlManager.get("get_international_last_payreceive_record");
+				Sql sql = Sqls.create(sqlString);
+				Cnd cnd = Cnd.NEW();
+				cnd.and("t.orderid", "=", orderid);
+				cnd.and("t.recordtype", "=", recordtype);
+				List<Record> payreceiverecord = dbDao.query(sql, cnd, null);
+				if (payreceiverecord.size() > 0) {
+					if (!Util.isEmpty(payreceiverecord.get(0).get("actualnumber"))) {
+						peoplecount = payreceiverecord.get(0).getInt("actualnumber");
+					}
+				}
+				//已收钱
+				Integer fineprice = 0;
+				String sqlString1 = sqlManager.get("get_international_record_sumprice");
+				Sql sql1 = Sqls.create(sqlString1);
+				Cnd cnd1 = Cnd.NEW();
+				cnd1.and("orderid", "=", orderid);
+				cnd1.and("recordtype", "=", recordtype);
+				cnd1.groupBy("orderid", "recordtype");
+				List<Record> payreceiverecordsum = dbDao.query(sql1, cnd1, null);
+				if (payreceiverecordsum.size() > 0 && !Util.isEmpty(payreceiverecordsum.get(0).get("yishou"))) {
+					fineprice = payreceiverecordsum.get(0).getInt("yishou");
+				}
+				double currentfine = 0;
+				//罚金(已收钱数/之前的人数 *（实际减少人数-免罚金可减人数）)
+				if (actualyreduce > freenumber) {
+					currentfine = fineprice / peoplecount * (actualyreduce - freenumber);
+				}
+				receiveEntity.setCurrentfine(currentfine);
+				//本期应付(销售单价*实际人数*预付款比例-已付)
+				double currentdue = actualnumber * costprice * (prepayratio / 100) - fineprice;
+				receiveEntity.setCurrentdue(currentdue);
+				//税金
+				double ataxprice = 0;
+				if (!Util.isEmpty(payreceive.getAtaxprice())) {
+					ataxprice = payreceive.getAtaxprice();
+				}
+				receiveEntity.setAtaxprice(ataxprice);
+				receiveEntity.setCurrentpay(currentdue + ataxprice);
+				dbDao.update(receiveEntity);
+			} else {
+				//更新收款信息
+				payreceive.setId(receiveEntity.getId());
+				double costprice = payreceive.getCostprice() * discountFare / 100 + fees;
+				payreceive.setCostprice(costprice);
+				payreceive.setRecordtype(PayReceiveTypeEnum.RECEIVE.intKey());
+				dbDao.update(payreceive);
+			}
+		}
+		return null;
 	}
 
 	/**

@@ -290,3 +290,12 @@ function changebackairline(){
 	var backairline = $("#backairline").select2("val");
 	$("#backflight").val(backairline);
 }
+
+//select2 选项渲染
+function formatRepoSelection(repo){
+	var text =  repo.text;
+	if(text != '全国联运'){
+		text = text.substr(0,3);
+	}
+	return text;
+}
