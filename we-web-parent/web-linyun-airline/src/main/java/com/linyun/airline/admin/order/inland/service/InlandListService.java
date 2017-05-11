@@ -31,6 +31,7 @@ import com.linyun.airline.entities.TAirlineInfoEntity;
 import com.linyun.airline.entities.TBankCardEntity;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TOrderCustomneedEntity;
+import com.linyun.airline.entities.TPnrInfoEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.JsonUtil;
@@ -228,8 +229,8 @@ public class InlandListService extends BaseService<TUpOrderEntity> {
 			if (!Util.isEmpty(record.get("costpricesum"))) {
 				chengbensum += Double.valueOf((Double) record.get("costpricesum"));
 			}
-			if (!Util.isEmpty(record.get("salespricesum"))) {
-				yingshousum += Double.valueOf((Double) record.get("salespricesum"));
+			if (!Util.isEmpty(record.get("salespricesumrmb"))) {
+				yingshousum += Double.valueOf((Double) record.get("salespricesumrmb"));
 			}
 			if (!Util.isEmpty(record.get("peoplecount"))) {
 				renshusum += (Integer) record.get("peoplecount");
@@ -294,11 +295,26 @@ public class InlandListService extends BaseService<TUpOrderEntity> {
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
 	public Object loadBalance(HttpServletRequest request) {
-		TBankCardEntity result = new TBankCardEntity();
+		Map<String, Object> result = new HashMap<String, Object>();
 		HttpSession session = request.getSession();
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		String paymethod = request.getParameter("paymethod");
-		result = dbDao.fetch(TBankCardEntity.class, Long.valueOf(paymethod));
+		String customerneedid = request.getParameter("customerneedid");
+		List<TPnrInfoEntity> pnrlist = dbDao
+				.query(TPnrInfoEntity.class, Cnd.where("needid", "=", customerneedid), null);
+		double sumjine = 0;
+		for (TPnrInfoEntity tPnrInfoEntity : pnrlist) {
+			if (!Util.isEmpty(tPnrInfoEntity.getCostpricesum())) {
+				sumjine += tPnrInfoEntity.getCostpricesum();
+			}
+		}
+		TBankCardEntity bankinfo = dbDao.fetch(TBankCardEntity.class, Long.valueOf(paymethod));
+		boolean isread = false;
+		if (bankinfo.getBalance() < sumjine) {
+			isread = true;
+		}
+		result.put("bankinfo", bankinfo);
+		result.put("isread", isread);
 		return result;
 	}
 
@@ -311,7 +327,7 @@ public class InlandListService extends BaseService<TUpOrderEntity> {
 		sql.setParam("functionname", "%" + functionname + "%");
 		List<Record> query = dbDao.query(sql, null, null);
 		for (Record record : query) {
-			if (!Util.isEmpty(record.getInt("userid"))) {
+			if (!Util.isEmpty(record.get("userid"))) {
 				result.add(new Integer(record.getInt("userid")).longValue());
 			}
 		}

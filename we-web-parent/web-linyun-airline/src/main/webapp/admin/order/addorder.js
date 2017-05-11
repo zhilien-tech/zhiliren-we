@@ -377,7 +377,7 @@ function clearText(){
 	//客户名称
 	$("#custInfoName").css("color","");
 	//清空客户信息隐藏域
-	$('#linkManId').val("");
+	$('#customerId').val("");
 	$("#phoneId").val("");
 	
 }
