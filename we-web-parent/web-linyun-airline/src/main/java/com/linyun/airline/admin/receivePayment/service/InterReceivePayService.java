@@ -707,6 +707,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 
 		listdata.remove("data");
 		listdata.put("data", newData);
+		listdata.put("recordsFiltered", newData.size());
 		return listdata;
 	}
 
