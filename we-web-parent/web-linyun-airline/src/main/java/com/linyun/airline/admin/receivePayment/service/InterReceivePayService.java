@@ -89,6 +89,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	private static final String YHCODE = "YH";
 	private static final String BZCODE = "BZ";
 	private static final String MAINSECTION = "1";
+	private static final String RMB_CODE = "CNY";
 	private static final int ENABLE = BankCardStatusEnum.ENABLE.intKey();
 	private static final String YTCODE = ComDictTypeEnum.DICTTYPE_XMYT.key();
 	private static final String ZJZLCODE = ComDictTypeEnum.DICTTYPE_ZJZL.key();
@@ -364,6 +365,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		addForm.setCardNum(bankcardnum);
 		addForm.setPurpose("收入");
 		addForm.setCompanyName(comName);
+		addForm.setCurrency(RMB_CODE);
 		turnOverViewService.addTurnOver(addForm, session);
 
 		//收款成功添加消息提醒
