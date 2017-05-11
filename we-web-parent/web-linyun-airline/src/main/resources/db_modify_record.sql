@@ -297,4 +297,8 @@ version : 1.0.6   BEGIN   2017-05-10
 /*客户管理 出发城市手动输入*/
 ALTER TABLE `t_customer_info`
 ADD COLUMN `outCityName`  varchar(255) NULL COMMENT '出发城市' AFTER `address`;
+/*客户管理 联系电话改为64*/
+ALTER TABLE `t_customer_info`
+MODIFY COLUMN `telephone`  varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '电话' AFTER `linkMan`;
+
 
