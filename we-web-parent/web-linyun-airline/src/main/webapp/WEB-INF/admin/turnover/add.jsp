@@ -67,7 +67,7 @@
 	                	
 		                  <label class="col-sm-2 text-right padding">用途：</label>
 		                  <div class="col-sm-2 padding">
-		                      <select class="form-control input-sm" name="purpose" id="purpose" onchange="check();">
+		                      <select class="form-control input-sm" name="purpose" id="purpose" ><!-- 移除事件onchange：onchange="check();" -->
 		                      <option value="">请选择</option>
 		                      <option>收入</option>
 		                      <option>支出</option>
@@ -266,8 +266,8 @@
 	                    regexp: {
 	                	 	regexp: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
 	                        message: '金额必须为数字!'
-	                    },
-	                    remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
+	                    }/*,
+	                     remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
 	                         url: '${base}/admin/turnover/checkBankCardNumEnough.html',//验证地址
 	                         message: '银行卡余额不足，请更换银行卡!',//提示消息
 	                         delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
@@ -280,7 +280,7 @@
 	                            	money:$('input[name="cardNum"]').val()
 	                            };
 	                         }
-	                     }
+	                     } */
 	                }
 	            }
 	         } 

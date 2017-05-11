@@ -286,4 +286,15 @@ alter table t_back_ticket_info comment '退票表';
 
 ALTER TABLE `t_order_customneed`
 ADD COLUMN `neilu`  varchar(32) NULL COMMENT '内陆跨海' AFTER `thirdcustomid`;
+/******************************************************************************
+version : 1.0.5   END   2017-05-04
+******************************************************************************/
+
+
+/******************************************************************************
+version : 1.0.6   BEGIN   2017-05-10
+******************************************************************************/
+/*客户管理 出发城市手动输入*/
+ALTER TABLE `t_customer_info`
+ADD COLUMN `outCityName`  varchar(255) NULL COMMENT '出发城市' AFTER `address`;
 

@@ -271,7 +271,7 @@
 					                     </td>
 					                     <c:choose>
 					                     	<c:when test="${status.index eq 0 }">
-							                     <td colspan="3" class="tdBtn">
+							                     <td class="tdBtn">
 							                      <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake none"></a>
 							                     </td>
 					                     	</c:when>
@@ -311,7 +311,7 @@
 		                     <td><input id="realtimexrate" name="realtimexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid" value="${customneed.cusinfo.realtimexrate }"/>
 			                 </td> --%>
 		                     <td><label>内陆跨海：</label></td>
-		                     <td><select id="neilu" name="neilu" disabled="disabled" class="form-control input-sm">
+		                     <td class="tdWid"><select id="neilu" name="neilu" disabled="disabled" class="form-control input-sm">
 		                     		<option value="">请选择</option>
 		                            <c:forEach items="${obj.nlkhcode }" var="one"> 
 			                        	<c:choose>
@@ -1171,7 +1171,7 @@
 	   		         closeBtn:false,//默认 右上角关闭按钮 是否显示
 	   		         shadeClose:true,
 	   		         scrollbar: false,
-	   		         area: ['930px', '525px'],
+	   		         area: ['880px', '570px'],
 	   		         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+data.id,
 	   		         end:function(){
 	   		        	 //设置财务信息
@@ -1193,7 +1193,7 @@
 		         closeBtn:false,//默认 右上角关闭按钮 是否显示
 		         shadeClose:true,
 		         scrollbar: false,
-		         area: ['930px', '525px'],
+		         area: ['880px', '570px'],
 		         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+needid,
 		         end:function(){
 		        	 //设置财务信息

@@ -352,7 +352,7 @@ function openDetailPage(id){
         closeBtn:false,//默认 右上角关闭按钮 是否显示
         shadeClose:false,
         scrollbar: false,
-        area: ['930px', '500px'],
+        area: ['900px', '650px'],
         content: BASE_PATH + '/admin/inland/pnrDetailPage.html?pnrid='+id,
         end:function(){
 	       	 //设置财务信息

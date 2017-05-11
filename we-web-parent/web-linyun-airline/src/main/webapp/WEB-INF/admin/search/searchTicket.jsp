@@ -122,13 +122,14 @@
 									<td><label>出发城市：</label></td>
 									<td colspan="3">
 										<!-- <input id="departureCityId" type="text" disabled="disabled" class="form-control input-sm"> -->
-										<select id="city" class="form-control input-sm addWidths"
+										<%-- <select id="city" class="form-control input-sm addWidths"
 										multiple="multiple" Disabled="true" data-placeholder="">
 											<option></option>
 											<c:forEach var="one" items="${obj.outcitylist }">
 												<option value="${one.id }">${one.text}</option>
 											</c:forEach>
-									</select>
+										</select> --%>
+										<input id="outCityName" type="text" disabled="disabled" class="form-control input-sm">
 									</td>
 								</tr>
 							</table>
@@ -155,14 +156,14 @@
 										<!-- <input id="cOutcity" name="cOutcity" type="text" class="form-control input-sm" placeholder="PEK(北京)"> -->
 										<select id="cOutcity" name="cOutcity"
 										class="form-control select2" multiple="multiple"
-										data-placeholder="PEK-BeiJing-China"></select>
+										data-placeholder=""></select>
 									</td>
 									<td><label>抵达城市：</label></td>
 									<td>
 										<!-- <input id="cArrivalcity" type="text" class="form-control input-sm" placeholder="SYD(悉尼)"> -->
 										<select id="cArrivalcity" name="cArrivalcity"
 										class="form-control select2" multiple="multiple"
-										data-placeholder="SHA-ShangHai-China"></select>
+										data-placeholder=""></select>
 									</td>
 									<td><label>出发日期：</label></td>
 									<td>
@@ -186,19 +187,19 @@
 									<td></span><label>航空公司：</label></td>
 									<td><select id="cAirlineCompany" name="cAirlineCompany"
 										class="form-control select2" multiple="multiple"
-										data-placeholder="AA-美国美洲航空"></select></td>
+										data-placeholder=""></select></td>
 									<td><label>航班号：</label></td>
 									<td class="cAirlineNumTd"><select id="cAirlineNum" name="cAirlineNum"
 										class="form-control select2" multiple="multiple"
-										data-placeholder="MU8876"></select></td>
+										data-placeholder=""></select></td>
 									<td><label>出发时间：</label></td>
 									<td><input name="cAirOutDate" type="text"
-										class="form-control mustTimes input-sm textWid" placeholder="0800">
+										class="form-control mustTimes input-sm textWid" placeholder="">
 										<!-- <input id="cAirOutDate0" name="cAirOutDate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'cAirArrivalDate0\')}'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2020-01-01"> -->
 									</td>
 									<td><label>抵达时间：</label></td>
 									<td><input name="cAirArrivalDate" type="text"
-										class="form-control mustArriveTimes input-sm textWid" placeholder="1400">
+										class="form-control mustArriveTimes input-sm textWid" placeholder="">
 										<!-- <input id="cAirArrivalDate0" name="cAirArrivalDate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'cAirOutDate0\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2020-01-01"> -->
 									</td>
 									<td><label class="labelWid">成本价：</label></td>

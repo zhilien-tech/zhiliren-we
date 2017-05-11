@@ -169,8 +169,7 @@
                     <td> </td>
                     <td colspan="2">成本RMB合计：</td>
                     <td><input id="costpricesumrmb" name="costpricesumrmb" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.costpricesumrmb }" pattern="0.00" maxFractionDigits="2"/>"></td>
-                    <td> </td>
-                    <td colspan="2">销售RMB合计：</td>
+                    <td colspan="3">销售RMB合计：</td>
                     <td><input id="salespricesumrmb" name="salespricesumrmb" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.salespricesumrmb }" pattern="0.00" maxFractionDigits="2"/>"></td>
                   </tr>
                 </table>

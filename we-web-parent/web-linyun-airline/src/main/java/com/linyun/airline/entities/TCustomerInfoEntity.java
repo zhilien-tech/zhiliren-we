@@ -60,6 +60,10 @@ public class TCustomerInfoEntity implements Serializable {
 	private String address;
 
 	@Column
+	@Comment("出发城市")
+	private String outCityName;
+
+	@Column
 	@Comment("国境内陆")
 	private String inlandLine;
 

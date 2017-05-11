@@ -167,12 +167,15 @@
 							<div>
 								<label class="col-sm-3 text-right padding">出发城市：</label>
 								<div class="col-sm-7 padding seleSpanWid">
-									<select id="city" class="form-control select2 inpImpWid"
-										multiple="multiple" onchange="cityOpt()"
-										data-placeholder="请输入出发城市">
-									</select><!-- <span class="prompt">*</span> -->
-									<!-- 出发城市ID -->
-									<input id="outcity" type="hidden" name="outcityname" />
+									<!-- 
+										<select id="city" class="form-control select2 inpImpWid"
+											multiple="multiple" onchange="cityOpt()"
+											data-placeholder="请输入出发城市">
+										</select><span class="prompt">*</span>
+										出发城市ID
+										<input id="outcity" type="hidden" name="outcityname" /> 
+									-->
+									<input id="outCityName" type="text" name="outCityName" class="form-control input-sm inpImpWid"/>
 								</div>
 							</div>
 						</div>
@@ -527,11 +530,11 @@
 									};
 								}
 							}, */
-							regexp : {
-								/* regexp : /^[1][34578][0-9]{9}$/, */
+							/* regexp : {
+								regexp : /^[1][34578][0-9]{9}$/,
 								regexp : /^((0\d{2,3}-\d{7,8})|(1[35874]\d{9}))$/,
 								message : '联系电话格式错误'
-							}
+							} */
 						}
 					},
 					address : {

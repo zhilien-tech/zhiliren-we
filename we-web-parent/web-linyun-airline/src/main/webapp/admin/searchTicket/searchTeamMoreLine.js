@@ -1,6 +1,11 @@
 //第一次初始化加载
 initTeamSelect2();
-
+//select2 选项渲染
+function formatRepoSelection(repo){
+	var text =  repo.text;
+	text = text.substr(0,3);
+	return text;
+}
 function initTeamSelect2(){
 	$('.setTeamMore').each(function(i){
 		if($('.setTeamMore').length - 1 == i){
@@ -35,6 +40,7 @@ function initTeamSelect2(){
 					},
 					cache : false
 				},
+				templateSelection: formatRepoSelection,
 				escapeMarkup : function(markup) {
 					return markup;
 				}, // let our custom formatter work
@@ -67,7 +73,7 @@ function initTeamSelect2(){
 						params.page = params.page || 1;
 						var selectdata = $.map(data, function (obj) {
 							obj.id = obj.dictCode; 
-							obj.text = obj.dictCode +" - "+ obj.englishName +" - "+ obj.countryName; 
+							obj.text = obj.dictCode +" - "+ obj.englishName +" - "+ obj.countryName;
 							return obj;
 						});
 						return {
@@ -76,6 +82,7 @@ function initTeamSelect2(){
 					},
 					cache : true
 				},
+				templateSelection: formatRepoSelection,
 				escapeMarkup : function(markup) {
 					return markup;
 				}, // let our custom formatter work
