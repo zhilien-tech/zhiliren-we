@@ -122,7 +122,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 	private static final String HUANHANG = "&#13;&#10;";
 	private static final String FPXMCODE = "FPXM";
 	private static final String EXCEL_PATH = "download";
-	private static final String FILE_EXCEL_NAME = "名单模板.xls";
+	private static final String FILE_EXCEL_NAME = "客户团号.xls";
 
 	private static final int ENABLE = BankCardStatusEnum.ENABLE.intKey();
 

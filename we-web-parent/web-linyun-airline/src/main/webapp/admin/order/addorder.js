@@ -99,7 +99,7 @@ $("#linkName").on('select2:select', function (evt) {
 			}else{
 				$("#preDepositId").html("0.00");
 			}
-			$('#departureCity').val(dataJson.outcitys);
+			$('#departureCity').val(dataJson.customerInfoEntity.outCityName);
 		},
 		error : function() {
 		}
@@ -137,7 +137,7 @@ function initCitySelect2(obj){
 			},
 			cache : false
 		},
-		
+		templateSelection: formatRepoSelection,
 		escapeMarkup : function(markup) {
 			return markup;
 		}, // let our custom formatter work
@@ -179,7 +179,7 @@ function initCitySelect2(obj){
 			},
 			cache : false
 		},
-		
+		templateSelection: formatRepoSelection,
 		escapeMarkup : function(markup) {
 			return markup;
 		}, // let our custom formatter work
@@ -380,4 +380,9 @@ function clearText(){
 	$('#customerId').val("");
 	$("#phoneId").val("");
 	
+}
+function formatRepoSelection(repo){
+	var text =  repo.text;
+	text = text.substr(0,3);
+	return text;
 }

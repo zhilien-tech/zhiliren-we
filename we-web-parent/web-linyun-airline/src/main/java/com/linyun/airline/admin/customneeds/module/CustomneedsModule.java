@@ -26,6 +26,7 @@ import com.linyun.airline.entities.TCustomerneedsEntity;
 import com.linyun.airline.forms.TCustomerneedsAddForm;
 import com.linyun.airline.forms.TCustomerneedsForm;
 import com.linyun.airline.forms.TCustomerneedsUpdateForm;
+import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.base.page.Pagination;
 import com.uxuexi.core.web.chain.support.JsonResult;
 
@@ -76,7 +77,9 @@ public class CustomneedsModule {
 	@Ok("jsp")
 	public Object update(@Param("id") final long id) {
 		TCustomerneedsEntity fetch = customneedsViewService.fetch(id);
-		fetch.setRemark(fetch.getRemark().replace("\n", HUANHANG));
+		if (!Util.isEmpty(fetch.getRemark())) {
+			fetch.setRemark(fetch.getRemark().replace("\n", HUANHANG));
+		}
 		return fetch;
 	}
 
