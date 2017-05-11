@@ -46,8 +46,9 @@ public class TKaiInvoiceInfoSqlForm extends DataTablesParamForm {
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		SqlExpressionGroup group = new SqlExpressionGroup();
-		group.and("idd.invoicenum", "LIKE", "%" + invoicenum + "%").or("ii.paymentunit", "LIKE",
-				"%" + paymentunit + "%");
+		/*group.and("idd.invoicenum", "LIKE", "%" + invoicenum + "%").or("ii.paymentunit", "LIKE",
+				"%" + paymentunit + "%");*/
+		group.and("paymentunit", "LIKE", "%" + paymentunit + "%");
 		if (!Util.isEmpty(invoicenum)) {
 			cnd.and(group);
 		}
@@ -75,6 +76,7 @@ public class TKaiInvoiceInfoSqlForm extends DataTablesParamForm {
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		String sqlString = EntityUtil.entityCndSql(TInvoiceInfoEntity.class);
+		//String sqlString = sqlManager.get("invoicemanage_kaiinvoice_list");
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;

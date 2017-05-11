@@ -45,7 +45,7 @@
                                <input id="kaiInvoiceEndDate" name="invoicedate"  type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'kaiInvoiceBeginDate\')}'})" class="form-control TimeInput" placeholder="2017-02-22">
                              </div>
                              <div class="col-md-3 textPadding"><!-- 发票号/单位 搜索框 -->
-                               <input id="invoicenumId" name="invoicenum" type="text" class="form-control" placeholder="发票号/单位">
+                               <input id="invoicenumId" name="invoicenum" type="text" class="form-control" placeholder="订单号/发票号/付款单位/发票开具项目">
                              </div>
                              <div class="col-md-2"><!-- 搜索 按钮 -->
                                <button id="kaiSearchInvoiceBtn" onclick="kaiInvoiceSelectData();" type="button" class="btn btn-primary btn-sm">搜索</button>
@@ -107,7 +107,7 @@
                               <input id="shouInvoiceEndDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'shouInvoiceBeginDate\')}'})"  class="form-control TimeInput" placeholder="2017-02-22">
                             </div>
                             <div class="col-md-3 textPadding"><!-- PNR/单位 搜索框 -->
-                              <input id="paymentunitId" type="text" class="form-control" placeholder="PNR/单位">
+                              <input id="paymentunitId" type="text" class="form-control" placeholder="PNR/收款单位">
                             </div>
                             <div class="col-md-2"><!-- 搜索 按钮 -->
                               <button id="shouSearchInvoiceBtn" type="button" class="btn btn-primary btn-sm">搜索</button>

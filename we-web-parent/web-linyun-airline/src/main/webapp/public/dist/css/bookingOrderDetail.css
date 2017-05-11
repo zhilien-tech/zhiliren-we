@@ -8,7 +8,7 @@
 .cloTable .addPNR table tr td:nth-child(4){width:6% !important;}
 .cloTable .addPNR table tr td:nth-child(7){width:8% !important;}
 .cloTable .addPNR table tr td:nth-child(8){width:8% !important;}
-.cloTable .addPNR table tr td:nth-child(10){width:10% !important;}
+.cloTable .addPNR table tr td:nth-child(10){width:11% !important;}
 .cloTable .addPNR table tr td:nth-child(11){width:5% !important;}
 .PNRbtn{padding: 4px 2px !important;margin-left: 10px !important;}
 .addDemand{left: 72.5%; margin-left: 8px;line-height: 18px;font-size: 12px;}
@@ -50,7 +50,7 @@ select[multiple="multiple"]{height: 180px;}
 .infoShow{display: block;}
 .actionInfo{background-color: #3c8dbc;padding: 4px 12px !important;color: #fff !important;}
 form#financeForm table {margin-bottom: 10px;}
-.addPNR table{width: 95%;float: left;}
+.addPNR table{width: 94.5%;float: left;}
 .cloTable tr:nth-of-type(1) td:nth-of-type(4) span.select2-container {width: 150px !important;}
 [name="airlineinfo"] td:nth-child(4) .select2-container .selection .select2-selection {width: 150px !important;}
 .cloTable tr td:nth-of-type(12) {width: 8%;}

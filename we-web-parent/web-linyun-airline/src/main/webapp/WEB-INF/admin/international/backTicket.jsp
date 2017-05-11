@@ -22,26 +22,9 @@
 		.addIcon {top: 3px;margin-left: 10px;}
 		.removIcon { margin-top: 3px;margin-left:5px;}
 		.allCentext{height:355px;overflow-y: auto;padding-bottom: 0;}
-		.white_content {
-		    display: none;
-		    position: absolute;
-		    top: 25%;
-		    left: 25%;
-		    width: 55%;
-		    height: 55%;
-		    padding: 15px;
-		    border: 1px solid #efefef;
-		    border-radius: 5px;
-		    box-shadow: 0 0 31px #dadada;
-		    background-color: white;
-		    z-index: 1002;
-		    overflow: auto;
-		}
-		.white_content img {
-		    width: 100%;
-		    height: 100%;
-		}
-		
+		.white_content {display: none;position: absolute;top: 25%;left: 25%;width: 55%;height: 55%;padding: 15px;border: 1px solid #efefef;border-radius: 5px;box-shadow: 0 0 31px #dadada;background-color: white;z-index: 1002;overflow: auto;}
+		.white_content img {width: 100%;height: 100%;}
+		.fa-times-circle {position: absolute;top: 3px;font-size: 18px;left: 473px;cursor: pointer;color: rgb(59, 134, 177);}
 	</style>
 </head>
 <body>
@@ -264,6 +247,7 @@
 	   	  	  invoicedetaildiv.find('[name=fileurl]').val('');
 	   	  	  invoicedetaildiv.find('[name=fileName]').html('未选择文件');
 	   	  	  invoicedetaildiv.find('#preView').remove();
+	   	  	  invoicedetaildiv.find('#download').remove();
 	   	  	  invoicedetaildiv.find('.deleteInvoice').remove();
 	          document.getElementById('fapiaoid').src=''; 
 	      });
@@ -309,7 +293,7 @@
 	              		var ext = file.name.substring(extStart, file.name.length).toUpperCase();
 	              		var deletepreview = '<li><a href="javascript:;" class="fileDelete deleteInvoice" >删除</a></li>';
 	              		if (ext != ".JPG" && ext != ".JPEG" && ext != ".PNG" && ext != ".GIF" && ext != ".BMP") {
-		              		deletepreview += '<li><a href="'+obj.data+'" id="" class="fileDelete">下载</a></li>';
+		              		deletepreview += '<li><a href="'+obj.data+'" id="download" class="fileDelete">下载</a></li>';
 	              		}else{
 		              		deletepreview += '<li><a href="javascript:;" id="preView" class="fileDelete">预览</a></li>';
 	              		}
