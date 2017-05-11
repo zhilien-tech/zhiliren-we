@@ -9,8 +9,12 @@
 	<link rel="stylesheet" href="${base }/public/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/AdminLTE.css">
-  <link rel="stylesheet" href="${base }/public/plugins/datatables/dataTables.bootstrap.css">
-  <link rel="stylesheet" href="${base }/public/dist/css/internationOrderDetail.css"><!--本页面styleFlie-->
+    <link rel="stylesheet" href="${base }/public/plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="${base }/public/dist/css/internationOrderDetail.css"><!--本页面styleFlie-->
+	<style>
+		.numTd {width: 94.4%;}
+		input#peoplecount{position: relative;left: -10px;width: 85px !important;padding-left: 3px;padding-right: 3px;}
+	</style>
 </head>
 <body>
 	<div class="modal-top">
@@ -37,13 +41,13 @@
                         <td><label>抵达城市：</label></td>
                         <td><select id="arrivecity" name="arrivecity" class="form-control input-sm" multiple="multiple"></select></td>
                         <td><label>出发日期：</label></td>
-                        <td><input id="leavedate" name="leavedate" type="text" class="form-control input-sm" onFocus="WdatePicker({minDate:'%y-%M-%d'})" placeholder="2017-03-16"></td>
+                        <td><input id="leavedate" name="leavedate" type="text" class="form-control input-sm" onFocus="WdatePicker({minDate:'%y-%M-%d'})" placeholder=" "></td>
                         <td><label>航班号：</label></td>
                         <td><select id="ailinenum" name="ailinenum" class="form-control input-sm" placeholder="ca309" multiple="multiple"></select></td>
                         <td><label>出发时间：</label></td>
-                        <td><input id="leavetime" name="leavetime" type="text" class="form-control input-sm mustTimes" placeholder="12:00"></td>
+                        <td><input id="leavetime" name="leavetime" type="text" class="form-control input-sm mustTimes" placeholder=" "></td>
                         <td><label>抵达时间：</label></td>
-                        <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm mustArriveTimes" placeholder="13:00"></td>
+                        <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm mustArriveTimes" placeholder=" "></td>
                         <td><a href="javascript:;" class="glyphicon glyphicon-plus addHDIcon"></a></td>
                       </tr>
                 </tbody>

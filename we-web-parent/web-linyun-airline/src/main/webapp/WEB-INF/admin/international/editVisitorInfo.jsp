@@ -20,7 +20,7 @@
             <input type="hidden" name="id" id="id" value="${obj.visitorinfo.id }">
             <h4 class="invoiceH4">编辑信息</h4>
     </div>
-      <div class="modal-body" style="height:285px;overflow-y: auto;">
+      <div class="modal-body" style="height:315px;overflow-y: auto;">
          <div class="form-group row"><!--姓名/证件类型-->
                   <label class="col-sm-3 text-right padding">姓名：</label>
                   <div class="col-sm-3 padding"><input id="visitorname" name="visitorname" type="text" class="form-control input-sm" value="${obj.visitorinfo.visitorname }"></div>
@@ -41,11 +41,11 @@
          </div><!--end 性别/证件号码-->
          <div class="form-group row"><!--旅客类型-->
                   <label class="col-sm-3 text-right padding">证件号码：</label>
-                  <div class="col-sm-3 padding"><input id="cardnum" name="cardnum" type="text" class="form-control input-sm" value="${obj.visitorinfo.cardnum }"></div>
+                  <div class="col-sm-7 padding"><input id="cardnum" name="cardnum" type="text" class="form-control input-sm" value="${obj.visitorinfo.cardnum }"></div>
          </div><!--end 旅客类型-->
          <div class="form-group row"><!--旅客类型-->
                   <label class="col-sm-3 text-right padding">备注：</label>
-                  <div class="col-sm-3 padding"><input id="remark" name="remark" type="text" class="form-control input-sm" value="${obj.visitorinfo.remark }"></div>
+                  <div class="col-sm-7 padding"><textarea id="remark" name="remark" class="form-control input-sm textareaHei">${obj.visitorinfo.remark }</textarea></div>
          </div><!--end 旅客类型-->
       </div>
       </form>
