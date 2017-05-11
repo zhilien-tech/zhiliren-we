@@ -42,7 +42,6 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 .fuKuanBtn,.fuKuanBtn1{float: right;position: relative;left: 60px;}
 .formMarginTop{margin-top:10px;}
 /* .checkBoxPayChild {position: relative;top: 22px;} */
-#interPayTbody tr td:nth-child(1) input{margin-top:23px;}
 #interPayBeginDate,#interPayEndDate,#interRecBeginDate,#interRecEndDate{padding-left: 3px;padding-right: 3px;}
 /*付款 弹框页面*/
 #receivablesTable{margin-bottom: 8px;}
@@ -92,3 +91,4 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 #interRecSelect,#interPaySelect,#cardNum,#approver,#fundType,#payDate,#payCurrency,#approveResult{padding-left: 3px;padding-right: 3px;}
 button#interPayCancelBtn {padding: 5px 10px;}
 .leftPadding {padding-left: 10px;}
+/* #interPayTable tbody tr td{padding: 0;} */
