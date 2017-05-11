@@ -297,7 +297,7 @@
 		    	            	window.parent.successCallback('2');
 		    	            },
 		    	            error: function (xhr) {
-		    	            	layer.alert("编辑失败","",3000);
+		    	            	layer.msg("编辑失败",{time: 2000});
 		    	            } 
 		    	        });
 		            },

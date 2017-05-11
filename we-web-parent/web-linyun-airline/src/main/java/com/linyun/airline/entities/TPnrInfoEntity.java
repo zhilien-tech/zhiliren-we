@@ -83,7 +83,7 @@ public class TPnrInfoEntity implements Serializable {
 
 	@Column
 	@Comment("实时汇率")
-	private Integer currentrate;
+	private Double currentrate;
 
 	@Column
 	@Comment("成人数")

@@ -181,13 +181,13 @@
 				data: $("#customNeedsUpdatedForm").serialize(), 
 				url: '${base}/admin/customneeds/update.html',
 	            success: function (data) { 
-	            	layer.alert("修改成功",{time: 2000, icon:1});
+	            	layer.msg("修改成功",{time: 2000});
 	            	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 	            	window.parent.successCallback('2');
 	            	parent.layer.close(index);
 	            },
 	            error: function (xhr) {
-	            	layer.alert("修改失败","",3000);
+	            	layer.msg("修改失败","",3000);
 	            } 
 	        });
 		}
@@ -205,7 +205,7 @@
 	            	parent.layer.close(index);
 	            },
 	            error: function (xhr) {
-	            	layer.alert("关闭失败","",3000);
+	            	layer.msg("关闭失败","",3000);
 	            } 
 	        });
 		});
@@ -223,7 +223,7 @@
 	            	parent.layer.close(index);
 	            },
 	            error: function (xhr) {
-	            	layer.alert("启用失败","",3000);
+	            	layer.msg("启用失败","",3000);
 	            } 
 	        });
 		});

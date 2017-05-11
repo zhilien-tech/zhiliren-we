@@ -85,10 +85,10 @@
                     <td><input id="currentrate" name="currentrate" type="text" class="form-control input-sm mustNumberPoint"></td>
                   </tr>
                   <tr class="priceinfo">
-                  	<td>成人：</td>
-                    <td><input id="adultcount" name="adultcount" type="text" class="form-control input-sm mustNumber peoplecount"></td>
+                  	<td>成人数：</td>
+                    <td><input id="adultcount" name="adultcount" type="text" class="form-control input-sm mustNumber peoplecount autojisuan"></td>
                     <td>成本单价：</td>
-                    <td><input id="adultcostprice" name="adultcostprice" type="text" class="form-control input-sm mustNumberPoint costprice"></td>
+                    <td><input id="adultcostprice" name="adultcostprice" type="text" class="form-control input-sm mustNumberPoint costprice autojisuan"></td>
                     <td>成本总价：</td>
                     <td><input id="adultcostpricesum" name="adultcostpricesum" type="text" class="form-control input-sm mustNumberPoint costpricesum"></td>
                     <td>销售单价：</td>
@@ -97,10 +97,10 @@
                     <td><input id="adultsalespricesum" name="adultsalespricesum" type="text" class="form-control input-sm mustNumberPoint salespricesum"></td>
                   </tr>
                   <tr class="priceinfo">
-                  	<td>儿童：</td>
-                    <td><input id="childcount" name="childcount" type="text" class="form-control input-sm mustNumber peoplecount"></td>
+                  	<td>儿童数：</td>
+                    <td><input id="childcount" name="childcount" type="text" class="form-control input-sm mustNumber peoplecount autojisuan"></td>
                     <td>成本单价：</td>
-                    <td><input id="childcostprice" name="childcostprice" type="text" class="form-control input-sm mustNumberPoint costprice"></td>
+                    <td><input id="childcostprice" name="childcostprice" type="text" class="form-control input-sm mustNumberPoint costprice autojisuan"></td>
                     <td>成本总价：</td>
                     <td><input id="childcostpricesum" name="childcostpricesum" type="text" class="form-control input-sm mustNumberPoint costpricesum"></td>
                     <td>销售单价：</td>
@@ -109,10 +109,10 @@
                     <td><input id="childsalespricesum" name="childsalespricesum" type="text" class="form-control input-sm mustNumberPoint salespricesum"></td>
                   </tr>
                   <tr class="priceinfo">
-                  	<td>婴儿：</td>
-                    <td><input id="babycount" name="babycount" type="text" class="form-control input-sm mustNumber peoplecount"></td>
+                  	<td>婴儿数：</td>
+                    <td><input id="babycount" name="babycount" type="text" class="form-control input-sm mustNumber peoplecount autojisuan"></td>
                     <td>成本单价：</td>
-                    <td><input id="babycostprice" name="babycostprice" type="text" class="form-control input-sm mustNumberPoint costprice"></td>
+                    <td><input id="babycostprice" name="babycostprice" type="text" class="form-control input-sm mustNumberPoint costprice autojisuan"></td>
                     <td>成本总价：</td>
                     <td><input id="babycostpricesum" name="babycostpricesum" type="text" class="form-control input-sm mustNumberPoint costpricesum"></td>
                     <td>销售单价：</td>
@@ -261,10 +261,10 @@
 	   }
    }
    
-   $('.costprice').on('input',function(){
+   $('.autojisuan').on('input',function(){
 	   var parentdiv = $(this).parent().parent();
 	   //成本单价
-	   var costprice = $(this).val();
+	   var costprice = parentdiv.find('.costprice').val();
 	   //人数
 	   var peoplecount = parentdiv.find('.peoplecount').val();
 	   //自动填充销售单价
@@ -307,7 +307,12 @@
 	   }
 	   setSumPrice();
    });
-   
+   $('#averagerate').on('input',function(){
+  	 setSumPrice();
+   });
+   $('#currentrate').on('input',function(){
+  	 setSumPrice();
+   });
    function setSumPrice(){
 	   var costpricesum = 0;
 	   var salespricesum = 0;

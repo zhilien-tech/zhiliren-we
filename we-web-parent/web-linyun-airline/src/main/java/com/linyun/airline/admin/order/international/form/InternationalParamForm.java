@@ -35,6 +35,8 @@ import com.uxuexi.core.web.form.DataTablesParamForm;
 @Data
 public class InternationalParamForm extends DataTablesParamForm {
 
+	private Integer teamtype;
+
 	private Integer companyid;
 
 	private Integer ordersstatus;
@@ -93,6 +95,9 @@ public class InternationalParamForm extends DataTablesParamForm {
 			Date enddates = DateUtil.string2Date(enddate, DateUtil.FORMAT_YYYY_MM_DD);
 			String enddatestr = format.format(enddates);
 			cnd.and("SUBSTR(tuo.ordersnum,1,8)", "<=", enddatestr);
+		}
+		if (!Util.isEmpty(teamtype)) {
+			cnd.and("tpi.teamtype", "=", teamtype);
 		}
 		cnd.orderBy("tuo.ordersnum", "desc");
 		return cnd;
