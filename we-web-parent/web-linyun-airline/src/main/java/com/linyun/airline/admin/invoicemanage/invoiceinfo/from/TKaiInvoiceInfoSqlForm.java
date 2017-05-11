@@ -75,6 +75,7 @@ public class TKaiInvoiceInfoSqlForm extends DataTablesParamForm {
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		String sqlString = EntityUtil.entityCndSql(TInvoiceInfoEntity.class);
+		//String sqlString = sqlManager.get("invoicemanage_kaiinvoice_list");
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;

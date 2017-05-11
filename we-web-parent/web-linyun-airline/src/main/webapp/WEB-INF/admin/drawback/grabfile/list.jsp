@@ -1097,87 +1097,94 @@ function successCallback(id){
 	        "columns": [
 	                    {"data": "pnr", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var pnr = row.pnr;
-	                    		var pnr = '<span data-toggle="tooltip" data-placement="right" title="'+pnr+'">'+pnr+'<span>';
+	                    		var pnrdata = row.pnr;
+	                    		var pnr = '<span data-toggle="tooltip" data-placement="right" title="'+pnrdata+'">'+pnrdata+'<span>';
 	                    		if(null==pnr || ""==pnr){
 	                    			return "";
 	                    		}
-	                    		// var pnr = '<span data-toggle="tooltip" data-placement="right" title="'+row.pnr+'">'+row.pnr+'<span>';
 	                    		return pnr;
 	                    	}
 	                    },
 	                    {"data": "remit", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var remit = (row.remit).toFixed(2);
-	                    		var remit = '<span data-toggle="tooltip" data-placement="right" title="'+remit+'">'+remit+'<span>';
-	                    		if(null==remit || ""==remit){
-	                    			return "";
+	                    		var remitdata = (row.remit);
+	                    		if(null==remitdata || ""==remitdata){
+	                    			return "0.00";
+	                    		}else{
+	                    			remitdata = (row.remit).toFixed(2);
+	                    			var remit = '<span data-toggle="tooltip" data-placement="right" title="'+remitdata+'">'+remitdata+'<span>';
 	                    		}
 	                    		return remit;
 	                    	}
 	                    },
 	                    {"data": "depositbalance", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var depositBalance = (row.depositbalance).toFixed(2);
-	                    		var depositBalance = '<span data-toggle="tooltip" data-placement="right" title="'+depositBalance+'">'+depositBalance+'<span>';
-	                    		if(null==depositBalance || ""==depositBalance){
-	                    			return "";
+	                    		var depositBalancedata = (row.depositbalance);
+	                    		if(null==depositBalancedata || ""==depositBalancedata){
+	                    			return "0.00";
+	                    		}else{
+	                    			depositBalancedata = (row.depositbalance).toFixed(2);
+	                    			var depositBalance = '<span data-toggle="tooltip" data-placement="right" title="'+depositBalancedata+'">'+depositBalancedata+'<span>';
 	                    		}
 	                    		return depositBalance;
 	                    	}	
 	                    },
 	                    {"data": "ticketprice", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var ticketPrice = (row.ticketprice).toFixed(2);
+	                    		var ticketPrice = (row.ticketprice);
 	                    		if(null==ticketPrice || ""==ticketPrice){
-	                    			return "";
+	                    			return "0.00";
 	                    		}
-	                    		return ticketPrice;
+	                    		return ticketPrice.toFixed(2);
 	                    	}
 	                    },
 	                    {"data": "swipe", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var swipe = (row.swipe).toFixed(2);
+	                    		var swipe = (row.swipe);
 	                    		if(null==swipe || ""==swipe){
-	                    			return "";
+	                    			return "0.00";
 	                    		}
-	                    		return swipe;
+	                    		return swipe.toFixed(2);
 	                    	}
 	                    },
 	                    {"data": "tax", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var tax = (row.tax).toFixed(2);
+	                    		var tax = (row.tax);
 	                    		if(null==tax || ""==tax){
-	                    			return "";
+	                    			return "0.00";
 	                    		}
-	                    		return tax;
+	                    		return tax.toFixed(2);
 	                    	}
 	                    },
 	                    {"data": "excisetax1", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var exciseTax1 = (row.excisetax1).toFixed(2);
+	                    		var exciseTax1 = (row.excisetax1);
 	                    		if(null==exciseTax1 || ""==exciseTax1){
-	                    			return "";
+	                    			return "0.00";
 	                    		}
-	                    		return exciseTax1;
+	                    		return exciseTax1.toFixed(2);
 	                    	}
 	                    },
 	                    {"data": "agencyfee", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var agencyFee = (row.agencyfee).toFixed(2);
-	                    		var agencyFee = '<span data-toggle="tooltip" data-placement="right" title="'+agencyFee+'">'+agencyFee+'<span>';
-	                    		if(null==agencyFee || ""==agencyFee){
-	                    			return "";
+	                    		var agencyFeeData = (row.agencyfee);
+	                    		if(null==agencyFeeData || ""==agencyFeeData){
+	                    			return "0.00";
+	                    		}else{
+	                    			agencyFeeData = (row.agencyfee).toFixed(2);
+	                    			var agencyFee = '<span data-toggle="tooltip" data-placement="right" title="'+agencyFeeData+'">'+agencyFeeData+'<span>';
 	                    		}
 	                    		return agencyFee;
 	                    	}
 	                    },
 	                    {"data": "taxrebate", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var taxRebate = (row.taxrebate).toFixed(2);
-	                    		var taxRebate = '<span data-toggle="tooltip" data-placement="right" title="'+taxRebate+'">'+taxRebate+'<span>';
-	                    		if(null==taxRebate || ""==taxRebate){
-	                    			return "";
+	                    		var taxRebateData = (row.taxrebate);
+	                    		if(null==taxRebateData || ""==taxRebateData){
+	                    			return "0.00";
+	                    		}else{
+	                    			taxRebateData = (row.taxrebate).toFixed(2);
+	                    			var taxRebate = '<span data-toggle="tooltip" data-placement="right" title="'+taxRebateData+'">'+taxRebateData+'<span>';
 	                    		}
 	                    		return taxRebate;
 	                    	}
@@ -1195,51 +1202,59 @@ function successCallback(id){
 	                    },
 	                    {"data": "realincome", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var realIncome = (row.realincome).toFixed(2);
-	                    		var realIncome = '<span data-toggle="tooltip" data-placement="right" title="'+realIncome+'">'+realIncome+'<span>';
-	                    		if(null==realIncome || ""==realIncome){
-	                    			return "";
+	                    		var realIncomedata = (row.realincome);
+	                    		if(null==realIncomedata || ""==realIncomedata){
+	                    			return "0.00";
+	                    		}else{
+	                    			realIncomedata = (row.realincome).toFixed(2);
+	                    			var realIncome = '<span data-toggle="tooltip" data-placement="right" title="'+realIncomedata+'">'+realIncomedata+'<span>';
 	                    		}
 	                    		return realIncome;
 	                    	}
 	                    },
-	                    {"data": "realtotal", "bSortable": false,
+	                    {"data": "realtotaldata", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var realTotal = (row.realtotal).toFixed(2);
-	                    		var realTotal = '<span data-toggle="tooltip" data-placement="right" title="'+realTotal+'">'+realTotal+'<span>';
-	                    		if(null==realTotal || ""==realTotal){
-	                    			return "";
+	                    		var realTotalData = (row.realtotal);
+	                    		if(null==realTotalData || ""==realTotalData){
+	                    			return "0.00";
+	                    		}else{
+	                    			realTotalData = (row.realtotal).toFixed(2);
+	                    			var realTotal = '<span data-toggle="tooltip" data-placement="right" title="'+realTotalData+'">'+realTotalData+'<span>';
 	                    		}
 	                    		return realTotal;
 	                    	}
 	                    },
 	                    {"data": "agencyfee2", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var agencyFee2 = (row.agencyfee2).toFixed(2);
-	                    		var agencyFee2 = '<span data-toggle="tooltip" data-placement="right" title="'+agencyFee2+'">'+agencyFee2+'<span>';
-	                    		if(null==agencyFee2 || ""==agencyFee2){
-	                    			return "";
+	                    		var agencyFee2Data = (row.agencyfee2);
+	                    		if(null==agencyFee2Data || ""==agencyFee2Data){
+	                    			return "0.00";
+	                    		}else{
+	                    			agencyFee2Data = (row.agencyfee2).toFixed(2);
+	                    			var agencyFee2 = '<span data-toggle="tooltip" data-placement="right" title="'+agencyFee2Data+'">'+agencyFee2Data+'<span>';
 	                    		}
 	                    		return agencyFee2;
 	                    	}
 	                    },
 	                    {"data": "inaustraliantime", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var inAustralianTime = row.inaustraliantime;
-	                    		if(null==inAustralianTime || ""==inAustralianTime){
+	                    		var inAustralianTimeData = row.inaustraliantime;
+	                    		if(null==inAustralianTimeData || ""==inAustralianTimeData){
 	                    			return "";
+	                    		}else{
+	                    			var inAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+inAustralianTimeData+'">'+inAustralianTimeData+'<span>';
 	                    		}
-	                    		var inAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+inAustralianTime+'">'+inAustralianTime+'<span>';
 	                    		return inAustralianTime;
 	                    	}
 	                    },
 	                    {"data": "outaustraliantime", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var outAustralianTime = row.outaustraliantime;
-	                    		if(null==outAustralianTime || ""==outAustralianTime){
+	                    		var outAustralianTimeData = row.outaustraliantime;
+	                    		if(null==outAustralianTimeData || ""==outAustralianTimeData){
 	                    			return "";
+	                    		}else{
+		                    		var outAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+outAustralianTimeData+'">'+outAustralianTimeData+'<span>';
 	                    		}
-	                    		var outAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+outAustralianTime+'">'+outAustralianTime+'<span>';
 	                    		return outAustralianTime;
 	                    	}
 	                    },
@@ -1254,14 +1269,15 @@ function successCallback(id){
 	                    		return "未关联";
 	                    	}
 	                    },
-	                    {"data": "outaustraliantime", "bSortable": false,
+	                    {"data": "remark", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var outAustralianTime = row.outaustraliantime;
-	                    		if(null==outAustralianTime || ""==outAustralianTime){
+	                    		var remarkData = row.remark;
+	                    		if(null==remarkData || ""==remarkData){
 	                    			return "";
+	                    		}else{
+		                    		var remark = '<span data-toggle="tooltip" data-placement="left" title="'+remarkData+'">'+remarkData+'<span>';
 	                    		}
-	                    		var outAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+outAustralianTime+'">'+outAustralianTime+'<span>';
-	                    		return outAustralianTime;
+	                    		return remark;
 	                    	}
 	                    }
 	            ],

@@ -82,18 +82,40 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		report.setOutAustralianTime(outAustralianTime);//出澳时间
 		report.setRemark(remark);//备注
 
-		if (!Util.isEmpty(exciseTax1) && !Util.isEmpty(swipe) && !Util.isEmpty(tax) && !Util.isEmpty(remit)) {
+		if (!Util.isEmpty(exciseTax1)) {
 			report.setExciseTax1(Double.parseDouble(df.format(exciseTax1)));//消费税
-			report.setSwipe(Double.parseDouble(df.format(swipe)));//刷卡费
-			report.setTax(Double.parseDouble(df.format(tax)));//税金/杂项;
-			report.setRemit(Double.parseDouble(df.format(remit)));//汇款
+		} else {
+			report.setExciseTax1(0.0);//页面传过来的值为0时消费税默认给0
 		}
-
+		if (!Util.isEmpty(swipe)) {
+			report.setSwipe(Double.parseDouble(df.format(swipe)));//刷卡费
+		} else {
+			report.setSwipe(0.0);//页面传过来的值为0时刷卡费默认给0
+		}
+		if (!Util.isEmpty(tax)) {
+			report.setTax(Double.parseDouble(df.format(tax)));//税金/杂项;
+		} else {
+			report.setTax(0.0);//页面传过来的值为0时税金/杂项默认给0
+		}
+		if (!Util.isEmpty(remit)) {
+			report.setRemit(Double.parseDouble(df.format(remit)));//汇款
+		} else {
+			report.setRemit(0.0);//页面传过来的值为0时汇款默认给0
+		}
 		List<TGrabReportEntity> reportList = dbDao.query(TGrabReportEntity.class, null, null);
 		TGrabReportEntity lastData = reportList.get(reportList.size() - 1);
 		Double boforeBalance = 7312.92;
 		if (!Util.isEmpty(lastData)) {
 			boforeBalance = lastData.getDepositBalance();
+		}
+		if (Util.isEmpty(remit)) {
+			remit = 0.0;
+		}
+		if (Util.isEmpty(peopleNum)) {
+			peopleNum = 0;
+		}
+		if (Util.isEmpty(costUnitPrice)) {
+			costUnitPrice = 0.0;
 		}
 		if (!Util.isEmpty(remit) && !Util.isEmpty(peopleNum) && !Util.isEmpty(costUnitPrice)) {
 			//TODO 1、备用金额=[上期备用金额+汇款-(人数*成本单价)]
