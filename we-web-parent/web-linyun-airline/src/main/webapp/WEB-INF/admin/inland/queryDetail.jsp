@@ -121,7 +121,7 @@
                      <td><label>传真：</label></td>
                      <td><input type="text" class="form-control input-sm" placeholder="请输入传真" value="${obj.custominfo.fax }" readonly="true"/></td>
                      <td><label>出发城市：</label></td>
-                     <td><input type="text" class="form-control input-sm addressInput" placeholder="请输入出发城市" value="${obj.outcitys }" readonly="true"/></td>
+                     <td><input type="text" class="form-control input-sm addressInput" placeholder="请输入出发城市" value="${obj.custominfo.outCityName }" readonly="true"/></td>
                      
                    </tr>
                  </table>
