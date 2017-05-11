@@ -271,7 +271,7 @@
 					                     </td>
 					                     <c:choose>
 					                     	<c:when test="${status.index eq 0 }">
-							                     <td colspan="3" class="tdBtn">
+							                     <td class="tdBtn">
 							                      <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake none"></a>
 							                     </td>
 					                     	</c:when>
@@ -311,7 +311,7 @@
 		                     <td><input id="realtimexrate" name="realtimexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid" value="${customneed.cusinfo.realtimexrate }"/>
 			                 </td> --%>
 		                     <td><label>内陆跨海：</label></td>
-		                     <td><select id="neilu" name="neilu" disabled="disabled" class="form-control input-sm">
+		                     <td class="tdWid"><select id="neilu" name="neilu" disabled="disabled" class="form-control input-sm">
 		                     		<option value="">请选择</option>
 		                            <c:forEach items="${obj.nlkhcode }" var="one"> 
 			                        	<c:choose>
@@ -682,9 +682,9 @@
                      <td><label>成本合计：</label></td>
                      <td><input id="costtotal" name="costtotal" type="text" class="form-control input-sm disab loadprofit mustNumberPoint" disabled="disabled" value="<fmt:formatNumber type="number" value="${obj.finance.costtotal }" pattern="0.00" maxFractionDigits="2"/>"></td>
                      <td><label>应返：</label></td>
-                     <td><input id="returntotal" name="returntotal" type="text" class="form-control input-sm disab loadprofit mustNumberPoint" disabled="disabled" value="<fmt:formatNumber type="number" value="${obj.finance.returntotal }" pattern="0.00" maxFractionDigits="2"/>"></td>
+                     <td><input id="returntotal" name="returntotal" type="text" class="form-control input-sm disab mustNumberPoint" disabled="disabled" value="<fmt:formatNumber type="number" value="${obj.finance.returntotal }" pattern="0.00" maxFractionDigits="2"/>"></td>
                      <td><label>利润合计：</label></td>
-                     <td><input id="profittotal" name="profittotal" type="text" class="form-control input-sm mustNumberPoint" disabled="disabled" value="<fmt:formatNumber type="number" value="${obj.finance.profittotal }" pattern="0.00" maxFractionDigits="2"/>"></td>
+                     <td><input id="profittotal" name="profittotal" type="text" class="form-control input-sm disab mustNumberPoint" disabled="disabled" value="<fmt:formatNumber type="number" value="${obj.finance.profittotal }" pattern="0.00" maxFractionDigits="2"/>"></td>
                    </tr>
                  </table>
                 </form>
@@ -1104,7 +1104,7 @@
   	}
   	
   function callback(){
-	  layer.alert("导入成功",{time: 2000, icon:1});
+	  layer.msg("导入成功",{time: 2000});
 	  layer.closeAll('loading');
   }
   //打开添加pnr页面
@@ -1171,11 +1171,12 @@
 	   		         closeBtn:false,//默认 右上角关闭按钮 是否显示
 	   		         shadeClose:true,
 	   		         scrollbar: false,
-	   		         area: ['880px', '425px'],
+	   		         area: ['880px', '570px'],
 	   		         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+data.id,
 	   		         end:function(){
 	   		        	 //设置财务信息
 	   		        	 setFinanceInfo();
+	   		        	 triggerSelect();
 	   		         }
 	   		       });
 		         },
@@ -1192,7 +1193,7 @@
 		         closeBtn:false,//默认 右上角关闭按钮 是否显示
 		         shadeClose:true,
 		         scrollbar: false,
-		         area: ['880px', '425px'],
+		         area: ['880px', '570px'],
 		         content: '${base}/admin/inland/addPnr.html?dingdanid=${obj.orderinfo.id}&needid='+needid,
 		         end:function(){
 		        	 //设置财务信息
@@ -1230,10 +1231,10 @@
 		 	   	 	returntotal = $('#returntotal').val();
 	 	       	}
 	 	   	    //利润合计
-	 	   	 	var profittotal  = parseFloat(incometotal) - parseFloat(data.chengbensum) - parseFloat(returntotal);
+	 	   	 	/* var profittotal  = parseFloat(incometotal) - parseFloat(data.chengbensum) - parseFloat(returntotal);
 	 	   	 	if(!isNaN(profittotal)){
 	 	   		 	$('#profittotal').val(profittotal.toFixed(2));
-	 	   	 	}
+	 	   	 	} */
 	         },
 	         error: function (xhr) {
 	         } 
@@ -1356,10 +1357,10 @@
 	    	returntotal = $('#returntotal').val();
 	    }
 	    //利润合计
-	 	var profittotal  = parseFloat(incometotal) - parseFloat(costtotal) - parseFloat(returntotal);
+	 	/* var profittotal  = parseFloat(incometotal) - parseFloat(costtotal) - parseFloat(returntotal);
 	 	if(!isNaN(profittotal)){
 		 	$('#profittotal').val(profittotal.toFixed(2));
-	 	}
+	 	} */
 	 });
  //加载日志
  loadOrderLog('${obj.orderinfo.id }');

@@ -37,3 +37,7 @@ div[data-cal-index="2"] .k-title{width: 120px;margin: 0 auto;}
 .sorting_1 input{display: block;margin: 30% auto;}
 .btnTop{position: relative;margin-top: -57px;}
 form#searchForm {margin-top: -15px;}
+/* 隐藏select2背景样式 */
+.select2-container--default .select2-selection--multiple .select2-selection__choice {background-color: rgba(186, 193, 197, 0);border-color: rgba(54, 127, 169, 0);padding: 0px;font-size: 13px;color: #585858;}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {display: none;}
+

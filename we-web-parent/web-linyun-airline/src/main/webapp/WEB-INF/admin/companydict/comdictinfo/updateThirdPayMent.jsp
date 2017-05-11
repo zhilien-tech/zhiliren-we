@@ -18,12 +18,12 @@
                   <input type="button" id="submitButton" class="btn btn-primary right btn-sm" onclick="submitInfo();" value="保存"/>
                   <h4>编辑</h4>
               </div>
-                <div class="modal-body" style="height:360px;overflow-y: auto;">
+                <div class="modal-body" style="height:360px;overflow-y: auto; padding-left: 50px;">
                  		<div class="tab-content">
 	                        <div class="form-group row">
 	                        	<%-- 字典类别id --%>
 	                        	<input name="id" type="hidden" type="text" value='${obj.single.id}'/>
-	                            <label class="col-sm-3 text-right padding">第三方公司名称：</label>
+	                            <label class="col-sm-2 text-right padding">第三方公司名称：</label>
 	                            <div class="col-sm-8 padding">
 	                              <input id="thirdCompanyNameId" name="thirdCompanyName" type="text" class="form-control input-sm inpImpWid" value="${obj.single.thirdCompanyName}" />
 	                              <span class="prompt">*</span>
@@ -31,21 +31,21 @@
 	                        </div>
                         </div>
                         <div class="form-group row">
-                        	<label class="col-sm-3 text-right padding">银行卡名称：</label>
+                        	<label class="col-sm-2 text-right padding">银行卡名称：</label>
                             <div class="col-sm-8 padding">
                               	<input name="bankCardName" id="bankCardNameId" type="text" class="form-control input-sm inpImpWid"  value="${obj.single.bankCardName}" />
                             	<span class="prompt">*</span>
                             </div>
                         </div>
                         <div class="form-group row">
-                        	<label class="col-sm-3 text-right padding">卡号：</label>
+                        	<label class="col-sm-2 text-right padding">卡号：</label>
                             <div class="col-sm-8 padding">
                               	<input name="bankCardNum" id="bankCardNumId" type="text" class="form-control input-sm inpImpWid" onkeyup="this.value=this.value.replace(/\s/g,'').replace(/....(?!$)/g,'$& ')"  maxlength="32"  value="${obj.single.bankCardNum}" />
                             	<span class="prompt">*</span>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 text-right padding">状态：</label>
+                            <label class="col-sm-2 text-right padding">状态：</label>
                             <div class="col-sm-8 padding">
                               	<select id="status" name="status" class="form-control input-sm inpImpWid">
 									<c:forEach var="map" items="${obj.dataStatusEnum}" >
@@ -62,9 +62,9 @@
                             </div>
                         </div>
 						<div class="form-group row">
-                            <label class="col-sm-3 text-right padding">备注：</label>
+                            <label class="col-sm-2 text-right padding">备注：</label>
                             <div class="col-sm-8 padding">
-                              <textarea name="remark" id="remark" type="text" class="form-control textareaHei">${obj.single.remark}</textarea>
+                              <textarea name="remark" id="remark" type="text" class="form-control inpImpWid textareaHei">${obj.single.remark}</textarea>
                             </div>
                         </div>
                     </div>

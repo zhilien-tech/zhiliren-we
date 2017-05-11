@@ -1,6 +1,11 @@
 //第一次初始化加载
 initSelect2();
-
+//select2 选项渲染
+function formatRepoSelection(repo){
+	var text =  repo.text;
+	text = text.substr(0,3);
+	return text;
+}
 function initSelect2(){
 	$('.setMore').each(function(i){
 		if($('.setMore').length - 1 == i){
@@ -35,6 +40,7 @@ function initSelect2(){
 					},
 					cache : false
 				},
+				templateSelection: formatRepoSelection,
 				escapeMarkup : function(markup) {
 					return markup;
 				}, // let our custom formatter work
@@ -76,6 +82,7 @@ function initSelect2(){
 					},
 					cache : false
 				},
+				templateSelection: formatRepoSelection,
 				escapeMarkup : function(markup) {
 					return markup;
 				}, // let our custom formatter work

@@ -238,7 +238,7 @@
 			airinfos.push(airinfo);
  		 });
  		 data.airinfos = airinfos;
- 		if(customerId){
+ 		//if(customerId){
 	 		layer.load(1);
 	 		$.ajax({ 
 				type: 'POST', 
@@ -253,9 +253,9 @@
 	           	layer.msg("添加失败","",3000);
 	           } 
 	       });
- 		}else{
+ 		/* }else{
  			layer.msg("请选择客户姓名","",3000);
- 		}
+ 		} */
  	 }
   </script>
 </body>
