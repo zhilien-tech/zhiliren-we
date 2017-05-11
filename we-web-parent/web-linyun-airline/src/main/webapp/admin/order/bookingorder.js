@@ -352,11 +352,12 @@ function openDetailPage(id){
         closeBtn:false,//默认 右上角关闭按钮 是否显示
         shadeClose:false,
         scrollbar: false,
-        area: ['900px', '500px'],
+        area: ['930px', '500px'],
         content: BASE_PATH + '/admin/inland/pnrDetailPage.html?pnrid='+id,
         end:function(){
 	       	 //设置财务信息
         	setFinanceInfo();
+        	triggerSelect();
         }
       });
 }
@@ -411,11 +412,17 @@ $(document).on("change",".paymethod",function(){
 		parentDiv.find('[name=internationalcard]').show();
 		$.ajax({
 			type: 'POST', 
-			data: {paymethod:paymethod},  
+			data: {paymethod:paymethod,customerneedid:customerneedid},  
 			dataType:'json',
 			url: BASE_PATH + '/admin/inland/loadBalance.html',
             success: function (data) { 
-            	parentDiv.find('[name=internationalcard]').html('　余额：'+data.balance);
+            	var yuehtml = '';
+            	if(data.isread){
+            		yuehtml += '<font color="red">　余额：'+data.bankinfo.balance + '</font>';
+            	}else{
+            		yuehtml += '　余额：'+data.bankinfo.balance;
+            	}
+            	parentDiv.find('[name=internationalcard]').html(yuehtml);
             },
             error: function (xhr) {
           	
@@ -478,12 +485,7 @@ $('.cityselect').select2({
 		delay : 250,
 		type : 'post',
 		data : function(params) {
-			var backscity = obj.find('[name=leavecity]').val();
-			if(backscity){
-				backscity = backscity.join(',');
-			}
 			return {
-				exname : backscity,
 				cityname : params.term, // search term
 				page : params.page
 			};

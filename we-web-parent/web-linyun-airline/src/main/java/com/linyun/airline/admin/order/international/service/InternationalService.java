@@ -338,7 +338,10 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			outcitys = outcitys.substring(0, outcitys.length() - 1);
 		}
 		result.put("outcitys", outcitys);
-		Double historymony = searchViewService.getMoney(orderinfo.getUserid().longValue());
+		double historymony = 0;
+		if (!Util.isEmpty(orderinfo.getUserid())) {
+			historymony = searchViewService.getMoney(orderinfo.getUserid().longValue());
+		}
 		result.put("historymony", historymony);
 		//异步加载
 		TFinanceInfoEntity finance = dbDao.fetch(TFinanceInfoEntity.class, Cnd.where("orderid", "=", orderid));
@@ -400,6 +403,10 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		orderinfo.setOrdersstatus(orderType);
 		if (!Util.isEmpty(fromJson.get("peoplecount"))) {
 			orderinfo.setPeoplecount(Integer.valueOf((String) fromJson.get("peoplecount")));
+		}
+		String customerId = (String) fromJson.get("customerId");
+		if (!Util.isEmpty(customerId)) {
+			orderinfo.setUserid(Integer.valueOf(customerId));
 		}
 		orderinfo.setAirlinecom((String) fromJson.get("airlinecom"));
 		orderinfo.setRemark((String) fromJson.get("remark"));

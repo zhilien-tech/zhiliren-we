@@ -181,7 +181,7 @@
 				url: '${base}/admin/customneeds/add.html',
 	            success: function (data) { 
 	            	//alert("添加成功");
-	            	layer.alert("添加成功",{time: 2000, icon:1});
+	            	layer.msg("添加成功",{time: 2000});
 	            	$("#customNeedsAddForm")[0].reset();
 	                initAddSelect2();
 	            	$("#customNeedsAddForm").data('bootstrapValidator').destroy();
@@ -190,7 +190,7 @@
 	            	//location.reload();
 	            },
 	            error: function (xhr) {
-	            	layer.alert("添加失败","",3000);
+	            	layer.msg("添加失败",{time: 2000});
 	            } 
 	        });
 		}

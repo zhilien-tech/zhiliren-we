@@ -39,6 +39,12 @@
                        <form role="form" class="form-horizontal">
                         <div class="form-group row marginBott cf">
                           <div class="col-md-1">
+                            <select type="text" name="teamtype" class="form-control TimeInput" onchange="changeteamType()">
+                            	<option value="1">系列团</option>
+		      					<option value="2">临时团</option>
+                            </select> 
+                          </div>
+                          <div class="col-md-1">
                             <input type="text" name="startdate" class="form-control TimeInput" placeholder="2017-02-20" onFocus="WdatePicker()" onkeypress="onkeyEnter()"> 
                           </div>
                           <label class="col-md-1 labelClas">至</label>

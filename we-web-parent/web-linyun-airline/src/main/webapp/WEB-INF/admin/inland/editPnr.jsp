@@ -116,40 +116,40 @@
                     <td><input id="currentrate" name="currentrate" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.currentrate }"></td>
                   </tr>
                   <tr class="priceinfo">
-                  	<td>成人：</td>
-                    <td><input id="adultcount" name="adultcount" type="text" class="form-control input-sm mustNumber peoplecount" value="${obj.pnrinfo.adultcount }"></td>
+                  	<td>成人数：</td>
+                    <td><input id="adultcount" name="adultcount" type="text" class="form-control input-sm mustNumber peoplecount autojisuan" value="${obj.pnrinfo.adultcount }"></td>
                     <td>成本单价：</td>
-                    <td><input id="adultcostprice" name="adultcostprice" type="text" class="form-control input-sm mustNumberPoint costprice" value="${obj.pnrinfo.adultcostprice }"></td>
+                    <td><input id="adultcostprice" name="adultcostprice" type="text" class="form-control input-sm mustNumberPoint costprice autojisuan" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.adultcostprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
                     <td>成本总价：</td>
-                    <td><input id="adultcostpricesum" name="adultcostpricesum" type="text" class="form-control input-sm mustNumberPoint costpricesum" value="${obj.pnrinfo.adultcostpricesum }"></td>
+                    <td><input id="adultcostpricesum" name="adultcostpricesum" type="text" class="form-control input-sm mustNumberPoint costpricesum" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.adultcostpricesum }" pattern="0.00" maxFractionDigits="2"/>"></td>
                     <td>销售单价：</td>
-                    <td><input id="adultsalesprice" name="adultsalesprice" type="text" class="form-control input-sm mustNumberPoint salesprice" value="${obj.pnrinfo.adultsalesprice }"></td>
+                    <td><input id="adultsalesprice" name="adultsalesprice" type="text" class="form-control input-sm mustNumberPoint salesprice" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.adultsalesprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
                     <td>销售总价：</td>
-                    <td><input id="adultsalespricesum" name="adultsalespricesum" type="text" class="form-control input-sm mustNumberPoint salespricesum" value="${obj.pnrinfo.adultsalespricesum }"></td>
+                    <td><input id="adultsalespricesum" name="adultsalespricesum" type="text" class="form-control input-sm mustNumberPoint salespricesum" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.adultsalespricesum }" pattern="0.00" maxFractionDigits="2"/>"></td>
                   </tr>
                   <tr class="priceinfo">
-                  	<td>儿童：</td>
-                    <td><input id="childcount" name="childcount" type="text" class="form-control input-sm mustNumber peoplecount" value="${obj.pnrinfo.childcount }"></td>
+                  	<td>儿童数：</td>
+                    <td><input id="childcount" name="childcount" type="text" class="form-control input-sm mustNumber peoplecount autojisuan" value="${obj.pnrinfo.childcount }"></td>
                     <td>成本单价：</td>
-                    <td><input id="childcostprice" name="childcostprice" type="text" class="form-control input-sm mustNumberPoint costprice" value="${obj.pnrinfo.childcostprice }"></td>
+                    <td><input id="childcostprice" name="childcostprice" type="text" class="form-control input-sm mustNumberPoint costprice autojisuan" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.childcostprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
                     <td>成本总价：</td>
-                    <td><input id="childcostpricesum" name="childcostpricesum" type="text" class="form-control input-sm mustNumberPoint costpricesum" value="${obj.pnrinfo.childcostpricesum }"></td>
+                    <td><input id="childcostpricesum" name="childcostpricesum" type="text" class="form-control input-sm mustNumberPoint costpricesum" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.childcostpricesum }" pattern="0.00" maxFractionDigits="2"/>"></td>
                     <td>销售单价：</td>
-                    <td><input id="childsalesprice" name="childsalesprice" type="text" class="form-control input-sm mustNumberPoint salesprice" value="${obj.pnrinfo.childsalesprice }"></td>
+                    <td><input id="childsalesprice" name="childsalesprice" type="text" class="form-control input-sm mustNumberPoint salesprice" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.childsalesprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
                     <td>销售总价：</td>
-                    <td><input id="childsalespricesum" name="childsalespricesum" type="text" class="form-control input-sm mustNumberPoint salespricesum" value="${obj.pnrinfo.childsalespricesum }"></td>
+                    <td><input id="childsalespricesum" name="childsalespricesum" type="text" class="form-control input-sm mustNumberPoint salespricesum" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.childsalespricesum }" pattern="0.00" maxFractionDigits="2"/>"></td>
                   </tr>
                   <tr class="priceinfo">
-                  	<td>婴儿：</td>
-                    <td><input id="babycount" name="babycount" type="text" class="form-control input-sm mustNumber peoplecount" value="${obj.pnrinfo.babycount }"></td>
+                  	<td>婴儿数：</td>
+                    <td><input id="babycount" name="babycount" type="text" class="form-control input-sm mustNumber peoplecount autojisuan" value="${obj.pnrinfo.babycount }"></td>
                     <td>成本单价：</td>
-                    <td><input id="babycostprice" name="babycostprice" type="text" class="form-control input-sm mustNumberPoint costprice" value="${obj.pnrinfo.babycostprice }"></td>
+                    <td><input id="babycostprice" name="babycostprice" type="text" class="form-control input-sm mustNumberPoint costprice autojisuan" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.babycostprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
                     <td>成本总价：</td>
-                    <td><input id="babycostpricesum" name="babycostpricesum" type="text" class="form-control input-sm mustNumberPoint costpricesum" value="${obj.pnrinfo.babycostpricesum }"></td>
+                    <td><input id="babycostpricesum" name="babycostpricesum" type="text" class="form-control input-sm mustNumberPoint costpricesum" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.babycostpricesum }" pattern="0.00" maxFractionDigits="2"/>"></td>
                     <td>销售单价：</td>
-                    <td><input id="babysalesprice" name="babysalesprice" type="text" class="form-control input-sm mustNumberPoint salesprice" value="${obj.pnrinfo.babysalesprice }"></td>
+                    <td><input id="babysalesprice" name="babysalesprice" type="text" class="form-control input-sm mustNumberPoint salesprice" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.babysalesprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
                     <td>销售总价：</td>
-                    <td><input id="babysalespricesum" name="babysalespricesum" type="text" class="form-control input-sm mustNumberPoint salespricesum" value="${obj.pnrinfo.babysalespricesum }"></td>
+                    <td><input id="babysalespricesum" name="babysalespricesum" type="text" class="form-control input-sm mustNumberPoint salespricesum" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.babysalespricesum }" pattern="0.00" maxFractionDigits="2"/>"></td>
                   </tr>
                   <tr>
                   	<td> </td>
@@ -157,21 +157,21 @@
                     <td> </td>
                     <td> </td>
                     <td>成本合计：</td>
-                    <td><input id="costpricesum" name="costpricesum" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.costpricesum }"></td>
+                    <td><input id="costpricesum" name="costpricesum" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.costpricesum }" pattern="0.00" maxFractionDigits="2"/>"></td>
                     <td> </td>
                     <td> </td>
                     <td>销售合计：</td>
-                    <td><input id="salespricesum" name="salespricesum" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.salespricesum }"></td>
+                    <td><input id="salespricesum" name="salespricesum" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.salespricesum }" pattern="0.00" maxFractionDigits="2"/>"></td>
                   </tr>
                   <tr>
                   	<td> </td>
                     <td> </td>
                     <td> </td>
                     <td colspan="2">成本RMB合计：</td>
-                    <td><input id="costpricesumrmb" name="costpricesumrmb" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.costpricesumrmb }"></td>
+                    <td><input id="costpricesumrmb" name="costpricesumrmb" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.costpricesumrmb }" pattern="0.00" maxFractionDigits="2"/>"></td>
                     <td> </td>
                     <td colspan="2">销售RMB合计：</td>
-                    <td><input id="salespricesumrmb" name="salespricesumrmb" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.salespricesumrmb }"></td>
+                    <td><input id="salespricesumrmb" name="salespricesumrmb" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.salespricesumrmb }" pattern="0.00" maxFractionDigits="2"/>"></td>
                   </tr>
                 </table>
                 <div class="multiselectDiv">
@@ -288,10 +288,10 @@
   		   $('#peoplecount').val(count);
   	   }
      }
-     $('.costprice').on('input',function(){
+     $('.autojisuan').on('input',function(){
   	   var parentdiv = $(this).parent().parent();
   	   //成本单价
-  	   var costprice = $(this).val();
+  	   var costprice = parentdiv.find('.costprice').val();
   	   //人数
   	   var peoplecount = parentdiv.find('.peoplecount').val();
   	   //自动填充销售单价
@@ -334,7 +334,12 @@
   	   }
   	   setSumPrice();
      });
-     
+     $('#averagerate').on('input',function(){
+    	 setSumPrice();
+     });
+     $('#currentrate').on('input',function(){
+    	 setSumPrice();
+     });
      function setSumPrice(){
   	   var costpricesum = 0;
   	   var salespricesum = 0;
