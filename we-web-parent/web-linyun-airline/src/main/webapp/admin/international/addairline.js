@@ -30,7 +30,7 @@ function initAirSelect2(obj){
 			},
 			cache : false
 		},
-		
+		templateSelection: formatRepoSelection,
 		escapeMarkup : function(markup) {
 			return markup;
 		}, // let our custom formatter work
@@ -72,7 +72,7 @@ function initAirSelect2(obj){
 			},
 			cache : false
 		},
-		
+		templateSelection: formatRepoSelection,
 		escapeMarkup : function(markup) {
 			return markup;
 		}, // let our custom formatter work
@@ -143,3 +143,10 @@ $('.addHDIcon').click(function(){
 $(document).on("click",".removHDIcon",function(){
     $(this).parent().parent().remove();
 });
+
+//select2 选项渲染
+function formatRepoSelection(repo){
+	var text =  repo.text;
+	text = text.substr(0,3);
+	return text;
+}

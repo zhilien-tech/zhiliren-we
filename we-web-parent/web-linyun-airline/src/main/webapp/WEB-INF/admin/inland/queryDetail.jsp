@@ -157,10 +157,10 @@
 			                     	<c:forEach var="one" items="${obj.city }">
 			                    		<c:choose>
 			                    			<c:when test="${customneed.cusinfo.leavecity eq one.dictCode }">
-												<option value="${one.dictCode }" selected="selected">${one.dictCode}-${one.englishName }-${one.countryName }</option>
+												<option value="${one.dictCode }" selected="selected">${one.dictCode}</option>
 			                    			</c:when>
 			                    			<c:otherwise>
-												<option value="${one.dictCode }">${one.dictCode}-${one.englishName }-${one.countryName }</option>
+												<option value="${one.dictCode }">${one.dictCode}</option>
 			                    			</c:otherwise>
 			                    		</c:choose>
 									</c:forEach>
@@ -171,10 +171,10 @@
 			                     	<c:forEach var="one" items="${obj.city }">
 			                    		<c:choose>
 			                    			<c:when test="${customneed.cusinfo.arrivecity eq one.dictCode }">
-												<option value="${one.dictCode }" selected="selected">${one.dictCode}-${one.englishName }-${one.countryName }</option>
+												<option value="${one.dictCode }" selected="selected">${one.dictCode}</option>
 			                    			</c:when>
 			                    			<c:otherwise>
-												<option value="${one.dictCode }">${one.dictCode}-${one.englishName }-${one.countryName }</option>
+												<option value="${one.dictCode }">${one.dictCode}</option>
 			                    			</c:otherwise>
 			                    		</c:choose>
 									</c:forEach>

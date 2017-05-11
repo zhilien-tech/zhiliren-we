@@ -30,7 +30,7 @@ function initCitySelect2(obj){
 			},
 			cache : false
 		},
-		
+		templateSelection: formatRepoSelection,
 		escapeMarkup : function(markup) {
 			return markup;
 		}, // let our custom formatter work
@@ -72,7 +72,7 @@ function initCitySelect2(obj){
 			},
 			cache : false
 		},
-		
+		templateSelection: formatRepoSelection,
 		escapeMarkup : function(markup) {
 			return markup;
 		}, // let our custom formatter work
@@ -266,4 +266,10 @@ function loadCustominfo(){
 		$('#customeidcolor').attr('color','red');
 		$('#historyqiancolor').attr('color','red');
 	}
+}
+//select2 选项渲染
+function formatRepoSelection(repo){
+	var text =  repo.text;
+	text = text.substr(0,3);
+	return text;
 }

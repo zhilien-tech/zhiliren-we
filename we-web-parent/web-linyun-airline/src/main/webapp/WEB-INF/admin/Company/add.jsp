@@ -242,7 +242,7 @@
 	            	//alert("添加成功");
 	            	//location.reload();
 	            	layer.closeAll('loading');
-	            	layer.msg("添加成功",{time: 2000, icon:1});
+	            	layer.msg("添加成功",{time: 2000});
 	            	$('#companyaddForm')[0].reset();
 	            	$('#uploader_00').empty();
 	            	$('#uploader_00').html('<div id="imgUrlMessage" name="imgUrlMessage"></div>');

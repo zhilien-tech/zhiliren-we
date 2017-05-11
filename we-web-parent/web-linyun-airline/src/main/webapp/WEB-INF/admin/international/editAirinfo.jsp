@@ -42,10 +42,10 @@
 	                        	<c:forEach var="one" items="${obj.city }">
 									<c:choose>
 		                    			<c:when test="${airinfo.leavecity eq one.dictCode }">
-											<option value="${one.dictCode }" selected="selected">${one.dictCode}-${one.englishName }-${one.countryName }</option>
+											<option value="${one.dictCode }" selected="selected">${one.dictCode}</option>
 		                    			</c:when>
 		                    			<c:otherwise>
-											<option value="${one.dictCode }">${one.dictCode}-${one.englishName }-${one.countryName }</option>
+											<option value="${one.dictCode }">${one.dictCode}</option>
 		                    			</c:otherwise>
 		                    		</c:choose>
 								</c:forEach>
@@ -55,10 +55,10 @@
 	                        		<c:forEach var="one" items="${obj.city }">
 										<c:choose>
 			                    			<c:when test="${airinfo.arrvicity eq one.dictCode }">
-												<option value="${one.dictCode }" selected="selected">${one.dictCode}-${one.englishName }-${one.countryName }</option>
+												<option value="${one.dictCode }" selected="selected">${one.dictCode}</option>
 			                    			</c:when>
 			                    			<c:otherwise>
-												<option value="${one.dictCode }">${one.dictCode}-${one.englishName }-${one.countryName }</option>
+												<option value="${one.dictCode }">${one.dictCode}</option>
 			                    			</c:otherwise>
 			                    		</c:choose>
 									</c:forEach>
@@ -185,7 +185,7 @@
 				url: '${base}/admin/international/deleteAirinfo.html',
 	            success: function (data) { 
 	            	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-	            	window.parent.successCallback('4');
+	            	window.parent.successCallback('5');
 	            	parent.layer.close(index);
 	            },
 	            error: function (xhr) {

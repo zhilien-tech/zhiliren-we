@@ -718,7 +718,9 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			List<TVisitorInfoEntity> query = dbDao
 					.query(TVisitorInfoEntity.class, Cnd.where("pnrid", "=", pnrid), null);
 			//删除原有的
-			dbDao.delete(query);
+			if (!Util.isEmpty(query)) {
+				dbDao.delete(query);
+			}
 			List<TVisitorInfoEntity> visitors = new ArrayList<TVisitorInfoEntity>();
 			for (int i = 1; i <= map.size(); i++) {
 				String[] row = map.get(i);

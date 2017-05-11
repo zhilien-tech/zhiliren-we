@@ -30,7 +30,7 @@ function initCitySelect2(obj){
 			},
 			cache : false
 		},
-		
+		templateSelection: formatRepoSelection,
 		escapeMarkup : function(markup) {
 			return markup;
 		}, // let our custom formatter work
@@ -72,7 +72,7 @@ function initCitySelect2(obj){
 			},
 			cache : false
 		},
-		
+		templateSelection: formatRepoSelection,
 		escapeMarkup : function(markup) {
 			return markup;
 		}, // let our custom formatter work
@@ -503,7 +503,7 @@ $('.cityselect').select2({
 		},
 		cache : false
 	},
-	
+	templateSelection: formatRepoSelection,
 	escapeMarkup : function(markup) {
 		return markup;
 	}, // let our custom formatter work
@@ -513,3 +513,9 @@ $('.cityselect').select2({
 	maximumSelectionLength : 1, //设置最多可以选择多少项
 	tags : false //设置必须存在的选项 才能选中
 });
+//select2 选项渲染
+function formatRepoSelection(repo){
+	var text =  repo.text;
+	text = text.substr(0,3);
+	return text;
+}
