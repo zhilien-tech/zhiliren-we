@@ -74,6 +74,9 @@ public class TGrabFileSqlForm extends DataTablesParamForm {
 	/**发送邮件时间*/
 	private String fileNameTime;
 
+	/**判断是团还是散*/
+	private int flag;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**
@@ -98,7 +101,14 @@ public class TGrabFileSqlForm extends DataTablesParamForm {
 			cnd.and("gr.fileName", "LIKE", "%" + fileNameCode + "%").and("gr.fileName", "LIKE",
 					"%" + fileNameTime + "%");
 		}
-		cnd.and("gr.groupType", "=", GroupTypeEnum.GRABMAIL_FIT.intKey());//散客
+		//cnd.and("gr.groupType", "=", GroupTypeEnum.GRABMAIL_FIT.intKey());//散客
+		int a = flag;
+		if (a == 0) {
+			cnd.and("groupType", "=", GroupTypeEnum.GRABMAIL_FIT.intKey());
+		} else if (a == 1) {
+			cnd.and("groupType", "=", GroupTypeEnum.GRABMAIL_TEAM.intKey());
+
+		}
 		return cnd;
 	}
 }

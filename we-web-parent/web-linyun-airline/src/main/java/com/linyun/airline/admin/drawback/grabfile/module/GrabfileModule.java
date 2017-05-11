@@ -26,7 +26,6 @@ import com.linyun.airline.admin.drawback.grabfile.entity.TGrabFileEntity;
 import com.linyun.airline.admin.drawback.grabfile.enums.FileTypeEnum;
 import com.linyun.airline.admin.drawback.grabfile.form.TGrabFileAddForm;
 import com.linyun.airline.admin.drawback.grabfile.form.TGrabFileSqlForm;
-import com.linyun.airline.admin.drawback.grabfile.form.TGrabFileTeamSqlForm;
 import com.linyun.airline.admin.drawback.grabfile.form.TGrabFileUpdateForm;
 import com.linyun.airline.admin.drawback.grabfile.service.GrabfileViewService;
 import com.linyun.airline.admin.drawback.grabfile.timer.MailScrabService;
@@ -72,20 +71,12 @@ public class GrabfileModule {
 	}
 
 	/**
-	 * 散客查询
+	 * 服务端分页查询
 	 */
 	@At
 	public Object listData(@Param("..") final TGrabFileSqlForm sqlForm) {
 		//return grabfileViewService.listPage4Datatables(sqlForm);
 		return grabfileViewService.listData(sqlForm);
-	}
-
-	/**
-	 * 团队查询
-	 */
-	@At
-	public Object listTeamData(@Param("..") final TGrabFileTeamSqlForm sqlForm) {
-		return grabfileViewService.listPage4Datatables(sqlForm);
 	}
 
 	/**
@@ -255,10 +246,10 @@ public class GrabfileModule {
 	//文件预览
 	@At
 	@POST
-	public Object filePreview(@Param("id") final long id) {
+	public Object filePreview(@Param("id") final long pid) {
 		Map<String, Object> obj = Maps.newHashMap();
 		TGrabFileEntity fileSingle = dbDao.fetch(TGrabFileEntity.class,
-				Cnd.where("id", "=", id).and("type", "=", FileTypeEnum.FILE.intKey()));
+				Cnd.where("id", "=", pid).and("type", "=", FileTypeEnum.FILE.intKey()));
 		obj.put("filepre", fileSingle);
 		return obj;
 	}
