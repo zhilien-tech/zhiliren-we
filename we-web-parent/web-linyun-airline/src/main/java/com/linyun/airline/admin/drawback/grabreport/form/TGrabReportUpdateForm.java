@@ -15,6 +15,9 @@ public class TGrabReportUpdateForm extends ModForm implements Serializable {
 	/**备注*/
 	private String remark;
 
+	/**文件名*/
+	private String fileName;
+
 	/**汇款*/
 	private Double remit;
 
@@ -66,4 +69,12 @@ public class TGrabReportUpdateForm extends ModForm implements Serializable {
 	/**PNR*/
 	private String PNR;
 
+	/**人数*/
+	private Integer peopleNum;
+
+	/**成本单价*/
+	private Double costUnitPrice;
+
+	/**实收单价*/
+	private Double paidUnitPrice;
 }

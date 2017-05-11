@@ -12,8 +12,14 @@ import com.uxuexi.core.web.form.AddForm;
 public class TGrabReportAddForm extends AddForm implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	/**主键*/
+	private Long id;
+
 	/**备注*/
 	private String remark;
+
+	/**文件名*/
+	private String fileName;
 
 	/**汇款*/
 	private Double remit;
@@ -66,4 +72,12 @@ public class TGrabReportAddForm extends AddForm implements Serializable {
 	/**PNR*/
 	private String PNR;
 
+	/**人数*/
+	private Integer peopleNum;
+
+	/**成本单价*/
+	private Double costUnitPrice;
+
+	/**实收单价*/
+	private Double paidUnitPrice;
 }

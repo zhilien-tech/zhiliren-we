@@ -57,8 +57,8 @@ public class GrabreportModule {
 	 */
 	@At
 	@POST
-	public Object add(@Param("..") TGrabReportAddForm addForm) {
-		return grabreportViewService.saveFilePreview(addForm);
+	public Object add(@Param("..") TGrabReportAddForm addForm, @Param("id") long pid) {
+		return grabreportViewService.saveFilePreview(addForm, pid);
 	}
 
 	/**

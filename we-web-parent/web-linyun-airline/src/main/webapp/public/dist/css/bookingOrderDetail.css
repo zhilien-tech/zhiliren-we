@@ -10,7 +10,6 @@
 .cloTable .addPNR table tr td:nth-child(8){width:8% !important;}
 .cloTable .addPNR table tr td:nth-child(10){width:10% !important;}
 .cloTable .addPNR table tr td:nth-child(11){width:5% !important;}
-
 .PNRbtn{padding: 4px 2px !important;margin-left: 10px !important;}
 .addDemand{left: 72.5%; margin-left: 8px;line-height: 18px;font-size: 12px;}
 .addIcon {top: 0px;float: left;left: 10px;margin-right: 10px;margin-left:-2px;}
@@ -20,7 +19,7 @@
 #addPnrForm{margin-top: 0px;margin-right: 0px;}
 .PNRtable tr td:nth-child(odd){text-align: right;}
 .PNRtable tr td{position: relative;padding-top: 10px;}
-.PNRtable tr td:nth-child(1){width: 45px;}
+.PNRtable tr td:nth-child(1){width:60px;}
 .PNRtable tr td:nth-child(2){width: 105px;}
 .PNRtable tr td:nth-child(3){width: 80px;}
 .PNRtable tr td:nth-child(4){width: 105px;}
