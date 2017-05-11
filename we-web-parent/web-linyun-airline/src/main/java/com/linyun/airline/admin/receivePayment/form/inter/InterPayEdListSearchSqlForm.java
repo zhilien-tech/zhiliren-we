@@ -56,7 +56,7 @@ public class InterPayEdListSearchSqlForm extends DataTablesParamForm {
 		//添加自定义查询条件（可选）
 		SqlExpressionGroup group = new SqlExpressionGroup();
 		group.and("ci.shortName", "LIKE", "%" + name + "%").or("uo.ordersnum", "LIKE", "%" + name + "%")
-				.or("ci.linkMan", "LIKE", "%" + name + "%");
+				.or("ci.linkMan", "LIKE", "%" + name + "%").or("pii.PNR", "LIKE", "%" + name + "%");
 		if (!Util.isEmpty(name)) {
 			cnd.and(group);
 		}

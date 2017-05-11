@@ -555,7 +555,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		Cnd cnd = Cnd.NEW();
 		SqlExpressionGroup group = new SqlExpressionGroup();
 		group.and("ci.shortName", "LIKE", "%" + name + "%").or("uo.ordersnum", "LIKE", "%" + name + "%")
-				.or("ci.linkMan", "LIKE", "%" + name + "%").or("pi.PNR", "LIKE", "%" + name + "%");
+				.or("ci.linkMan", "LIKE", "%" + name + "%").or("pii.PNR", "LIKE", "%" + name + "%");
 		if (!Util.isEmpty(name)) {
 			cnd.and(group);
 		}
@@ -707,6 +707,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 
 		listdata.remove("data");
 		listdata.put("data", newData);
+		listdata.put("recordsFiltered", newData.size());
 		return listdata;
 	}
 
