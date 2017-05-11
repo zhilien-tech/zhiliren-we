@@ -239,20 +239,25 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 				approvalList.setIsReduce("YES");
 			}
 			query.addAll(query1);
+			//System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
 			Collections.sort(query, new Comparator<ApprovalList>() {
 
 				@Override
 				public int compare(ApprovalList o1, ApprovalList o2) {
+					Date timeO1 = o1.getOptime();
+					Date timeO2 = o2.getOptime();
+					if (!Util.isEmpty(timeO1) && !Util.isEmpty(timeO2)) {
+						return timeO2.compareTo(timeO1);
+					}
 
-					if (!Util.isEmpty(o1.getOptime()) && !Util.isEmpty(o2.getOptime())) {
-						if (o1.getOptime().getTime() < o2.getOptime().getTime()) {
-							return 1;
-						} else if (o1.getOptime() == o2.getOptime()) {
-
-							return 0;
-						} else if (o1.getOptime().getTime() > o2.getOptime().getTime()) {
-							return -1;
-						}
+					if (timeO1 == null && timeO2 == null) {
+						return 0;
+					}
+					if (timeO1 == null) {
+						return -1;
+					}
+					if (timeO2 == null) {
+						return -1;
 					}
 					return 0;
 

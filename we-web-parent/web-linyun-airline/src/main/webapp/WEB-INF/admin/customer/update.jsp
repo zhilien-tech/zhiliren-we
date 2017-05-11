@@ -88,7 +88,7 @@
 							<div class="form-group">
 								<label class="col-sm-1 text-right padding">联系电话：</label>
 								<div id="phoneDiv" class="col-sm-3 padding">
-									<input id="telephone" name="telephone" type="tel" class="form-control input-sm inpImportant"
+									<input id="telephone" name="telephone" type="tel" class="form-control input-sm inpImportant mustPhoneLength"
 										value="${obj.customer.telephone}" placeholder="请输入联系电话" /><span class="prompt">*</span>
 								</div>
 							</div>
@@ -1049,6 +1049,12 @@
 		function downloadFile(url) {  
 			$("#downloadA").attr("href", url);
 	    }
+		
+		//电话控制位数
+		$(document).on("input",".mustPhoneLength",function(){
+			$(this).val($(this).val().substr(0,64));
+		});
+		
 		//小数点保留两位小数
 		function checkLength(obj){
 			obj.value = obj.value.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符  

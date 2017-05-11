@@ -247,6 +247,7 @@
 	   	  	  invoicedetaildiv.find('[name=fileurl]').val('');
 	   	  	  invoicedetaildiv.find('[name=fileName]').html('未选择文件');
 	   	  	  invoicedetaildiv.find('#preView').remove();
+	   	  	  invoicedetaildiv.find('#download').remove();
 	   	  	  invoicedetaildiv.find('.deleteInvoice').remove();
 	          document.getElementById('fapiaoid').src=''; 
 	      });
@@ -292,7 +293,7 @@
 	              		var ext = file.name.substring(extStart, file.name.length).toUpperCase();
 	              		var deletepreview = '<li><a href="javascript:;" class="fileDelete deleteInvoice" >删除</a></li>';
 	              		if (ext != ".JPG" && ext != ".JPEG" && ext != ".PNG" && ext != ".GIF" && ext != ".BMP") {
-		              		deletepreview += '<li><a href="'+obj.data+'" id="" class="fileDelete">下载</a></li>';
+		              		deletepreview += '<li><a href="'+obj.data+'" id="download" class="fileDelete">下载</a></li>';
 	              		}else{
 		              		deletepreview += '<li><a href="javascript:;" id="preView" class="fileDelete">预览</a></li>';
 	              		}

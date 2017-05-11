@@ -54,7 +54,7 @@
                    <input id="currentDirId" type="hidden" value="0"/>
                    <input type="hidden" name="fileName" id="fileName" />
 				   <input type="hidden" id="url">
-                   <ol class="breadcrumb">
+                   <ol class="breadcrumb" id="fitBreadcrumb">
                         <li><a href="${base}/admin/drawback/grabfile/list.html"><i class="fa fa-folder-open"></i> 全部文件</a></li>
                    </ol>
                    <table id="rebatesEamilTable" class="table table-bordered table-hover">
@@ -93,7 +93,7 @@
                    <input id="currentDirId" type="hidden" value="0"/>
                    <input type="hidden" name="fileName" id="fileName" />
 				   <input type="hidden" id="url">
-                   <ol class="breadcrumb">
+                   <ol class="breadcrumb" id="teamBreadcrumb">
                         <li><a href="${base}/admin/drawback/grabfile/list.html"><i class="fa fa-folder-open"></i> 全部文件</a></li>
                    </ol>
                    <table id="rebatesEamilTeamTable" class="table table-bordered table-hover">
@@ -479,6 +479,7 @@ function successCallback(id){
 	var rebatesEamilTable;
 	var rebatesEamilTeamTable;
 	//var rebatesEamilTeamTable;
+
 	var options0 = {//散客
 					"searching" : false,
 					"processing" : true,
@@ -720,6 +721,7 @@ function successCallback(id){
 			                    return download+judge;
 			                }
 			            }] */
+
 				};
 	function initDatatable(flag) {
 			
@@ -789,7 +791,7 @@ function successCallback(id){
 			rebatesEamilTable.settings()[0].ajax.data = param;
 			rebatesEamilTable.ajax.reload();
 			var exist=false;
-			$("ol.breadcrumb").find("li").each(function(index){
+			$("#fitBreadcrumb").find("li").each(function(index){
 				var currenuId = $(this).attr("id");
 				if(currenuId == pid){
 					exist = true ;
@@ -799,15 +801,15 @@ function successCallback(id){
 			
 			if(!exist){
 				if(filetype == 1){
-					$("ol.breadcrumb").find("li").each(function(){
+					$("#fitBreadcrumb").find("li").each(function(){
 						$(this).removeClass("active");
 					});
-					$("ol.breadcrumb").append('<li id=\''+pid+'\' class="active"><a class="fa fa-folder-open" onclick="javascript:createFodler(\''+pid+'\',\''+filename+'\');"  href="#">'+filename+'</a></li>');
+					$("#fitBreadcrumb").append('<li id=\''+pid+'\' class="active"><a class="fa fa-folder-open" onclick="javascript:createFodler(\''+pid+'\',\''+filename+'\');"  href="#">'+filename+'</a></li>');
 				}
 			}else{
 				//找到指定元素的下标
 				var selectIndex = 0;
-				$("ol.breadcrumb").find("li").each(function(index){
+				$("#fitBreadcrumb").find("li").each(function(index){
 					var currenuId = $(this).attr("id");
 					if(currenuId == pid){
 						selectIndex=index;
@@ -816,13 +818,13 @@ function successCallback(id){
 				});
 				
 				//删除大于该下标的其他元素
-				$("ol.breadcrumb").find("li").each(function(index){
+				$("#fitBreadcrumb").find("li").each(function(index){
 					if(index > selectIndex){
 						$(this).remove(); 
 					}
 				});
-				var length = $("ol.breadcrumb").find("li").length;
-				$("ol.breadcrumb").find("li").each(function(index){
+				var length = $("#fitBreadcrumb").find("li").length;
+				$("#fitBreadcrumb").find("li").each(function(index){
 					if(index != (length-1)){
 						$(this).removeClass("active");
 					}
@@ -868,7 +870,8 @@ function successCallback(id){
 			createFodler1(row.id,row.filename,filetype,clickFlag);
 	});
 	//================================================================================================
-	function createFodler1(pid,filename,filetype,clickFlag){
+
+function createFodler1(pid,filename,filetype,clickFlag){//团队
 		if(clickFlag===1 && filetype===2){
 			$.ajax({
 				type : "POST",
@@ -902,7 +905,7 @@ function successCallback(id){
 			rebatesEamilTeamTable.settings()[0].ajax.data = param;
 			rebatesEamilTeamTable.ajax.reload();
 			var exist=false;
-			$("ol.breadcrumb").find("li").each(function(index){
+			$("#teamBreadcrumb").find("li").each(function(index){
 				var currenuId = $(this).attr("id");
 				if(currenuId == pid){
 					exist = true ;
@@ -912,15 +915,15 @@ function successCallback(id){
 			
 			if(!exist){
 				if(filetype == 1){
-					$("ol.breadcrumb").find("li").each(function(){
+					$("#teamBreadcrumb").find("li").each(function(){
 						$(this).removeClass("active");
 					});
-					$("ol.breadcrumb").append('<li id=\''+pid+'\' class="active"><a class="fa fa-folder-open" onclick="javascript:createFodler(\''+pid+'\',\''+filename+'\');"  href="#">'+filename+'</a></li>');
+					$("#teamBreadcrumb").append('<li id=\''+pid+'\' class="active"><a class="fa fa-folder-open" onclick="javascript:createFodler1(\''+pid+'\',\''+filename+'\');"  href="#">'+filename+'</a></li>');
 				}
 			}else{
 				//找到指定元素的下标
 				var selectIndex = 0;
-				$("ol.breadcrumb").find("li").each(function(index){
+				$("#teamBreadcrumb").find("li").each(function(index){
 					var currenuId = $(this).attr("id");
 					if(currenuId == pid){
 						selectIndex=index;
@@ -929,13 +932,13 @@ function successCallback(id){
 				});
 				
 				//删除大于该下标的其他元素
-				$("ol.breadcrumb").find("li").each(function(index){
+				$("#teamBreadcrumb").find("li").each(function(index){
 					if(index > selectIndex){
 						$(this).remove(); 
 					}
 				});
-				var length = $("ol.breadcrumb").find("li").length;
-				$("ol.breadcrumb").find("li").each(function(index){
+				var length = $("#teamBreadcrumb").find("li").length;
+				$("#teamBreadcrumb").find("li").each(function(index){
 					if(index != (length-1)){
 						$(this).removeClass("active");
 					}
@@ -945,6 +948,25 @@ function successCallback(id){
 			$("input#currentDirId").val(pid);
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 	
 	//新建子文件夹
 	function newFolder(){
