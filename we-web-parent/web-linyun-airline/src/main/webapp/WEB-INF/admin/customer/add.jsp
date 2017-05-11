@@ -116,7 +116,7 @@
 								<label class="col-sm-1 text-right padding">联系电话：</label>
 								<div id="phoneDiv" class="col-sm-3 padding">
 									<input id="telephoneId" name="telephone" type="text"
-										class="form-control input-sm inpImportant"
+										class="form-control input-sm inpImportant mustPhoneLength"
 										placeholder="请输入联系电话" /><span class="prompt">*</span>
 								</div>
 							</div>
@@ -836,6 +836,10 @@
 		function downloadFile(url) {  
 			$("#downloadA").attr("href", url);
 	    }
+		
+		$(document).on("input",".mustPhoneLength",function(){
+			$(this).val($(this).val().substr(0,64));
+		});
 		
 		//小数点保留两位小数
 		function checkLength(obj){

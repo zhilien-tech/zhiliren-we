@@ -366,6 +366,7 @@
 	<script src="${base}/admin/receivePayment/inter/interPay.js"></script>
 	<script src="${base}/admin/receivePayment/inter/interReceive.js"></script>
 	<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
+	<script src="${base}/admin/order/ordercommon.js"></script>
 	<script type="text/javascript">
 		$(function(){
 			$('.menu-ul:eq(1)').hide();//隐藏数据字典的二级菜单

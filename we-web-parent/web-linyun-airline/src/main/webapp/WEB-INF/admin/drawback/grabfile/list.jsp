@@ -41,7 +41,7 @@
                      <button type="button" class="btn btn-primary btn-sm right indexBtn none">返回首页</button>
                    </div>
                    <!-- 检索开始 -->
-                   <div class="col-md-2 col-padding">
+                   <div class="col-md-2 col-padding marBottom10">
                    	 	<input id="fileNameId" name="fileName" type="text" onkeypress="onkeyEnter();" class="form-control" placeholder="请输入航空公司二字代码"/>
                    </div>
                    <div class="col-md-2 col-padding">
@@ -479,7 +479,7 @@ function successCallback(id){
 	var rebatesEamilTable;
 	var rebatesEamilTeamTable;
 	//var rebatesEamilTeamTable;
-	var options0 = {
+	var options0 = {//散客
 					"searching" : false,
 					"processing" : true,
 					"serverSide" : true,//左下角括号中页数的显示
@@ -488,6 +488,7 @@ function successCallback(id){
 					"bLengthChange" : false,
 					"stripeClasses": [ 'strip1','strip2' ],//斑马线
 					"bJQueryUI": true,
+					"bAutoWidth":false,
 					"language" : {
 						"url" : "${base}/public/plugins/datatables/cn.json"
 					},
@@ -499,7 +500,7 @@ function successCallback(id){
 			            }
 			        },
 			        "columns": [
-								{"data": "id", "bSortable": false,
+								{"data": "id", "bSortable": false,"sWidth":"5%",
 			                    	render: function(data, type, row, meta) {
 			                    		var result = '';
 			                    		var hiddenval = $('#checkedboxval').val();
@@ -518,7 +519,7 @@ function successCallback(id){
 			                            return result;
 			                    	}
 								},
-			                    {"data": "filename", "bSortable": false,
+			                    {"data": "filename", "bSortable": false,"sWidth":"50%",
 			                    	render: function(data, type, row, meta) {
 			                    		var filename = row.filename;
 			                    		var fileId  = row.id;
@@ -544,7 +545,7 @@ function successCallback(id){
 			                    		}
 			                    	}
 			                    },
-			                    {"data": "updatetime", "bSortable": true,
+			                    {"data": "updatetime", "bSortable": true,"sWidth":"15%",
 			                    	 render: function(data, type, row, meta) {
 			                    		 var updatetime = row.updatetime;
 			                    		 if(null==updatetime || ""==updatetime){
@@ -553,7 +554,7 @@ function successCallback(id){
 			                    		return updatetime;
 			                        } 	
 			                    },
-			                    {"data": "filesize", "bSortable": false,
+			                    {"data": "filesize", "bSortable": false,"sWidth":"15%",
 			                    	render: function(data, type, row, meta) {
 			                    		var filesize = row.filesize;
 			                    		var unit = row.unit;
@@ -563,14 +564,27 @@ function successCallback(id){
 			                    		return filesize+unit;
 			                    	}	
 			                    },
-			            ],
+			                    {"data": "no", "bSortable": false,"sWidth":"15%",
+			                    	render: function(data, type, row, meta) {
+					                	//var editFolder = '<a href="javascript:editFolder('+row.id+');" style="cursor:pointer;">编辑&nbsp;&nbsp;</a>';
+					                	var download = '<a href="${base}/admin/drawback/grabfile/downLoadZipFile.html?parentId='+row.id+'" style="cursor:pointer;">下载&nbsp;&nbsp;</a>';
+					                	//var move  = '<a href="javascript:move('+row.id+');" style="cursor:pointer;">移动到&nbsp;&nbsp;</a>';
+				                   		if(1==row.status){
+				                   			var judge = '<a href="javascript:physicalDelete('+row.id+',2);" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
+				                   		}else{
+				                   			var judge = '<a href="javascript:physicalDelete('+row.id+',1);" class="btn_mini btn_modify">启用</a>';
+				                   		}
+					                    return download+judge;
+					                }	
+			                    }
+			            ]/* ,
 			            "columnDefs": [
-									   {"sWidth": "5%","aTargets": [0] },
-									   {"sWidth": "50%","aTargets": [1] },
-									   {"sWidth": "17%","aTargets": [2] },
-									   {"sWidth": "9%","aTargets": [3] },
-									   {"sWidth": "19%","aTargets": [4] },
-			                           {
+									    /* { "sWidth": "5%",  "targets": [0] },
+										{ "sWidth": "40%",  "targets": [1] },
+										{ "sWidth": "15%",  "targets": [2] },
+										{ "sWidth": "10%",  "targets": [3] },
+										{ "sWidth": "10%",  "targets": [4] }, 
+			                            {
 			                //   指定第一列，从0开始，0表示第一列，1表示第二列……
 			                targets: 4,
 			                render: function(data, type, row, meta) {
@@ -584,9 +598,9 @@ function successCallback(id){
 		                   		}
 			                    return download+judge;
 			                }
-			            }]
+			            }] */
 				};
-	var options1 = {
+	var options1 = {//团队
 					"searching" : false,
 					"processing" : true,
 					"serverSide" : true,//左下角括号中页数的显示
@@ -595,6 +609,7 @@ function successCallback(id){
 					"bLengthChange" : false,
 					"stripeClasses": [ 'strip1','strip2' ],//斑马线
 					"bJQueryUI": true,
+					"bAutoWidth":false,
 					"language" : {
 						"url" : "${base}/public/plugins/datatables/cn.json"
 					},
@@ -606,7 +621,7 @@ function successCallback(id){
 			            }
 			        },
 			        "columns": [
-								{"data": "id", "bSortable": false,
+								{"data": "id", "bSortable": false,"sWidth":"10%",
 			                    	render: function(data, type, row, meta) {
 			                    		var result = '';
 			                    		var hiddenval = $('#checkedboxval').val();
@@ -625,7 +640,7 @@ function successCallback(id){
 			                            return result;
 			                    	}
 								},
-			                    {"data": "filename", "bSortable": false,
+			                    {"data": "filename", "bSortable": false,"sWidth":"50%",
 			                    	render: function(data, type, row, meta) {
 			                    		var filename = row.filename;
 			                    		var fileId  = row.id;
@@ -651,7 +666,7 @@ function successCallback(id){
 			                    		}
 			                    	}
 			                    },
-			                    {"data": "updatetime", "bSortable": true,
+			                    {"data": "updatetime", "bSortable": true,"sWidth":"15%",
 			                    	 render: function(data, type, row, meta) {
 			                    		 var updatetime = row.updatetime;
 			                    		 if(null==updatetime || ""==updatetime){
@@ -660,7 +675,7 @@ function successCallback(id){
 			                    		return updatetime;
 			                        } 	
 			                    },
-			                    {"data": "filesize", "bSortable": false,
+			                    {"data": "filesize", "bSortable": false,"sWidth":"15%",
 			                    	render: function(data, type, row, meta) {
 			                    		var filesize = row.filesize;
 			                    		var unit = row.unit;
@@ -670,13 +685,26 @@ function successCallback(id){
 			                    		return filesize+unit;
 			                    	}	
 			                    },
-			            ],
+			                    {"data": "no", "bSortable": false,"sWidth":"25%",
+			                    	render: function(data, type, row, meta) {
+					                	//var editFolder = '<a href="javascript:editFolder('+row.id+');" style="cursor:pointer;">编辑&nbsp;&nbsp;</a>';
+					                	var download = '<a href="${base}/admin/drawback/grabfile/downLoadZipFile.html?parentId='+row.id+'" style="cursor:pointer;">下载&nbsp;&nbsp;</a>';
+					                	//var move  = '<a href="javascript:move('+row.id+');" style="cursor:pointer;">移动到&nbsp;&nbsp;</a>';
+				                   		if(1==row.status){
+				                   			var judge = '<a href="javascript:physicalDelete('+row.id+',2);" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
+				                   		}else{
+				                   			var judge = '<a href="javascript:physicalDelete('+row.id+',1);" class="btn_mini btn_modify">启用</a>';
+				                   		}
+					                    return download+judge;
+					                }	
+			                    }
+			            ]/* ,
 			            "columnDefs": [
-									   {"sWidth": "5%","aTargets": [0] },
-									   {"sWidth": "50%","aTargets": [1] },
-									   {"sWidth": "17%","aTargets": [2] },
-									   {"sWidth": "9%","aTargets": [3] },
-									   {"sWidth": "19%","aTargets": [4] },
+									   { "sWidth": "5%",  "targets": [0] },
+									   { "sWidth": "35%",  "targets": [1] },
+									   { "sWidth": "35%",  "targets": [2] },
+									   { "sWidth": "15%",  "targets": [3] },
+									   { "sWidth": "10%",  "targets": [4] },  
 			                           {
 			                //   指定第一列，从0开始，0表示第一列，1表示第二列……
 			                targets: 4,
@@ -691,7 +719,7 @@ function successCallback(id){
 		                   		}
 			                    return download+judge;
 			                }
-			            }]
+			            }] */
 				};
 	function initDatatable(flag) {
 			
@@ -917,24 +945,6 @@ function successCallback(id){
 			$("input#currentDirId").val(pid);
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	//新建子文件夹
 	function newFolder(){
