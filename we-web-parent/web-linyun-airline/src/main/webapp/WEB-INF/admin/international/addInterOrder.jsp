@@ -16,16 +16,12 @@
 	<style type="text/css">
 		.remarkDiv { padding: 5px 0px;display: block;margin-bottom: 15px;    margin-top: 13px;}
 		.remarkContext {overflow: hidden;min-height: 80px;display: block;border: solid 1px #e0e0e0;border-radius: 0 0 3px 3px;background-color: white;}
-.remarkTable {
-    width: 100%;
-}
-.remarkTable tbody tr td:nth-child(1) {
-    width: 70px;
-    text-align: right;
-}
-.remarkTable tbody tr td:nth-child(2) {
-    padding-right: 5%;
-}
+		.remarkTable {width: 100%;}
+		.remarkTable tbody tr td:nth-child(1) {width: 70px;text-align: right;}
+		.remarkTable tbody tr td:nth-child(2) {padding-right: 5%;}
+		.addHDtable tbody tr td:nth-child(2) span{width:150px !important;}
+		.addHDtable tbody .addHD-tr td:nth-child(4) .select2-container {width: 133px !important;}
+		.addHDtable tbody tr td:nth-child(6) #leavedate{width: 100%;}
 	</style>
 </head>
 <body>
@@ -117,7 +113,7 @@
                             <td><label>抵达城市：</label></td>
                             <td><select id="arrivecity" name="arrivecity" type="text" class="form-control input-sm" multiple="multiple"></select></td>
                             <td><label>出发日期：</label></td>
-                            <td><input id="leavedate" name="leavedate" type="text" class="form-control input-sm" onFocus="WdatePicker({minDate:'%y-%M-%d'})" placeholder="2017-03-16"></td>
+                            <td><input id="leavedate" name="leavedate" type="text" class="form-control input-sm" onFocus="WdatePicker({minDate:'%y-%M-%d'})" placeholder=" "></td>
                             <td><label>航班号：</label></td>
                             <td><select id="ailinenum" name="ailinenum" type="text" class="form-control input-sm" placeholder="ca309" multiple="multiple"></select></td>
                             <td><label>出发时间：</label></td>

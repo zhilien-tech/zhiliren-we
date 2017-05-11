@@ -246,7 +246,11 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	public Map<String, Object> listPayData(final InlandPayListSearchSqlForm sqlParamForm, HttpSession session) {
 		//当前公司下的用户
 		String userIds = userInComp(session);
-		sqlParamForm.setLoginUserId(userIds);
+		//当前公司所有用户id
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		/*sqlParamForm.setLoginUserId(userIds);*/
+		sqlParamForm.setLoginCompanyId(companyId);
 		sqlParamForm.setOrderPnrStatus(APPROVALPAYING);
 		checkNull(sqlParamForm, "sqlParamForm不能为空");
 		Sql sql = sqlParamForm.sql(sqlManager);
@@ -281,7 +285,11 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 	public Object listPayEdData(InlandPayEdListSearchSqlForm form, HttpSession session) {
 		//当前公司下的用户
 		String userIds = userInComp(session);
-		form.setLoginUserId(userIds);
+		/*form.setLoginUserId(userIds);*/
+		//当前公司所有用户id
+		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		long companyId = tCompanyEntity.getId();
+		form.setLoginCompanyId(companyId);
 		form.setOrderPnrStatus(APPROVALPAYED);
 
 		Map<String, Object> listdata = this.listPage4Datatables(form);

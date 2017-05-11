@@ -275,7 +275,7 @@ function initSelect2(){
 					},
 					cache : false
 				},
-				
+				templateSelection: formatRepoSelection,
 				escapeMarkup : function(markup) {
 					return markup;
 				}, // let our custom formatter work
@@ -316,7 +316,7 @@ function initSelect2(){
 					},
 					cache : false
 				},
-				
+				templateSelection: formatRepoSelection,
 				escapeMarkup : function(markup) {
 					return markup;
 				}, // let our custom formatter work
@@ -357,7 +357,7 @@ function initSelect2(){
 					},
 					cache : false
 				},
-				
+				templateSelection: formatRepoSelection,
 				escapeMarkup : function(markup) {
 					return markup;
 				}, // let our custom formatter work
@@ -398,7 +398,7 @@ function initSelect2(){
 					},
 					cache : false
 				},
-				
+				templateSelection: formatRepoSelection,
 				escapeMarkup : function(markup) {
 					return markup;
 				}, // let our custom formatter work
@@ -438,7 +438,7 @@ function initSelect2(){
 					},
 					cache : false
 				},
-				
+				templateSelection: formatRepoSelection,
 				escapeMarkup : function(markup) {
 					return markup;
 				}, // let our custom formatter work
@@ -737,7 +737,7 @@ $(document).on('click', '.addNeeds', function(e) {
 			},
 			cache : false
 		},
-		
+		templateSelection: formatRepoSelection,
 		escapeMarkup : function(markup) {
 			return markup;
 		}, // let our custom formatter work
@@ -778,7 +778,7 @@ $(document).on('click', '.addNeeds', function(e) {
 			},
 			cache : false
 		},
-		
+		templateSelection: formatRepoSelection,
 		escapeMarkup : function(markup) {
 			return markup;
 		}, // let our custom formatter work
@@ -1224,7 +1224,7 @@ function changeType(){
 						},
 						cache : false
 					},
-					
+					templateSelection: formatRepoSelection,
 					escapeMarkup : function(markup) {
 						return markup;
 					}, // let our custom formatter work
@@ -1265,7 +1265,7 @@ function changeType(){
 						},
 						cache : false
 					},
-					
+					templateSelection: formatRepoSelection,
 					escapeMarkup : function(markup) {
 						return markup;
 					}, // let our custom formatter work
@@ -1327,4 +1327,11 @@ function changeType(){
 			});
 		});
 	}
+}
+
+//select2 选项渲染
+function formatRepoSelection(repo){
+	var text =  repo.text;
+	text = text.substr(0,3);
+	return text;
 }

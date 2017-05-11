@@ -46,8 +46,9 @@ public class TKaiInvoiceInfoSqlForm extends DataTablesParamForm {
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		SqlExpressionGroup group = new SqlExpressionGroup();
-		group.and("idd.invoicenum", "LIKE", "%" + invoicenum + "%").or("ii.paymentunit", "LIKE",
-				"%" + paymentunit + "%");
+		/*group.and("idd.invoicenum", "LIKE", "%" + invoicenum + "%").or("ii.paymentunit", "LIKE",
+				"%" + paymentunit + "%");*/
+		group.and("paymentunit", "LIKE", "%" + paymentunit + "%");
 		if (!Util.isEmpty(invoicenum)) {
 			cnd.and(group);
 		}

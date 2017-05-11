@@ -42,36 +42,26 @@ GROUP BY
 	
 /*invoicemanage_kaiinvoice_list*/
 SELECT
-	ii.id,
-	idd.invoicenum,
-	tuo.ordersnum,
-	ii.invoiceitem,
-	ii.invoicedate,
-	ii.billuserid,
-	ii.deptid,
-	ii.paymentunit,
-	ii.remark,
-	ii.difference,
-	ii.balance,
-	ii.invoicetype,
-	ii.receiveid,
-	ii.pnrid,
-	ii.opid,
-	ii.optime,
-	ii.`status`,
-	ii.comId,
-	ii.payid,
-	ii.ordertype,
-	ii.orderpayid,
-	ii.orderstatus
+	id,
+	invoiceitem,
+	invoicedate,
+	billuserid,
+	deptid,
+	paymentunit,
+	remark,
+	difference,
+	balance,
+	invoicetype,
+	receiveid,
+	pnrid,
+	opid,
+	optime,
+	STATUS,
+	comId,
+	payid,
+	ordertype
 FROM
 	t_invoice_info ii
-LEFT JOIN t_order_receive ore ON ii.receiveid = ore.receiveid
-LEFT JOIN t_up_order tuo ON tuo.id = ore.orderid
-LEFT JOIN t_customer_info cus ON cus.id = tuo.userid
-LEFT JOIN t_user u ON u.id = ii.billuserid
-LEFT JOIN dict_info info ON info.id = ii.invoiceitem
-LEFT JOIN t_invoice_detail idd ON ii.id = idd.invoiceinfoid
 $condition
 
 /*invoicemanage_kaiinvoice_search_list*/

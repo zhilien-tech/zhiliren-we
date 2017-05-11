@@ -297,4 +297,21 @@ version : 1.0.6   BEGIN   2017-05-10
 /*客户管理 出发城市手动输入*/
 ALTER TABLE `t_customer_info`
 ADD COLUMN `outCityName`  varchar(255) NULL COMMENT '出发城市' AFTER `address`;
+/*客户管理 电话位数修改*/
+ALTER TABLE `t_customer_info`
+MODIFY COLUMN `telephone`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '电话' AFTER `linkMan`;
+
+
+create table t_back_ticket_file
+(
+   id                   int not null auto_increment comment '主键ID',
+   filename             varchar(1024) comment '文件名',
+   fileurl              varchar(1024) comment '文件路径',
+   backticketid         int comment '退票ID',
+   opid                 int comment '操作人',
+   optime               datetime comment '操作时间',
+   primary key (id)
+);
+
+alter table t_back_ticket_file comment '退票附件表';
 
