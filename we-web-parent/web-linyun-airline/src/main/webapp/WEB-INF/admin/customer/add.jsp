@@ -313,20 +313,19 @@
 							<div class="form-group">
 								<label class="col-sm-2 text-right padding">信用额度：</label>
 	                            <div class="col-sm-2 padding">
-	                              <input id="creditLine" name="creditLine" type="text" class="form-control input-sm" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
-										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
+	                              <input id="creditLine" name="creditLine" type="text" class="form-control input-sm" oninput="checkLength(this);"/>
 	                            </div>
 							</div>
                             <label class="col-sm-1 text-right padding">已欠款：</label>
                             <div class="col-sm-2 padding">
-                            	<input id="arrears" name="arrears" type="text" readonly="readonly" class="form-control input-sm" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
-										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
+                            	<input id="arrears" name="arrears" type="text" readonly="readonly" class="form-control input-sm" />
                             </div>
 							<div class="form-group">
 								<label class="col-sm-1 text-right padding">预收款：</label>
 	                            <div class="col-sm-1 padding">
-	                              <input id="preDeposit" name="preDeposit" type="text" class="form-control input-sm" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
-										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
+	                              <!-- <input id="preDeposit" name="preDeposit" type="text" class="form-control input-sm" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
+										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"> -->
+	                              <input id="preDeposit" name="preDeposit" type="text" class="form-control input-sm" oninput="checkLength(this);"/>
 	                            </div>
 							</div>
                         </div>
@@ -334,31 +333,27 @@
 							<div class="form-group">
 								<label class="col-sm-2 text-right padding">票价折扣：</label>
 	                            <div class="col-sm-2 padding">
-	                              <input id="discountFare" name="discountFare" type="text" class="form-control input-sm discountText" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
-										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
+	                              <input id="discountFare" name="discountFare" type="text" class="form-control input-sm discountText" oninput="checkLength(this);"/>
 	                              <span>%</span>
 	                            </div>
 							</div>
                           	<div class="form-group">
                           		<label class="col-sm-1 text-right padding">手续费：</label>
 	                            <div class="col-sm-2 padding">
-	                            	<input id="fees" name="fees" type="text" class="form-control input-sm discountText" placeholder="每张票" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
-										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
+	                            	<input id="fees" name="fees" type="text" class="form-control input-sm discountText" placeholder="每张票" oninput="checkLength(this);"/>
 	                            	<span>￥</span>
 	                            </div>
                           	</div>
 							<div class="form-group">
 								<label class="col-sm-1 text-right padding">汇率：</label>
 	                            <div class="col-sm-1 padding">
-	                              <input id="exchangeRates" name="exchangeRates" type="text" class="form-control input-sm" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
-										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
+	                              <input id="exchangeRates" name="exchangeRates" type="text" class="form-control input-sm" oninput="checkLength(this);"/>
 	                            </div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-1 text-right padding">退税：</label>
 	                            <div class="col-sm-2 padding">
-	                              <input id="taxRefund" name="taxRefund" type="text" class="form-control input-sm taxText" placeholder="每张票" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
-										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
+	                              <input id="taxRefund" name="taxRefund" type="text" class="form-control input-sm taxText" placeholder="每张票" oninput="checkLength(this);"/>
 	                            </div>
 							</div>
                         </div>
@@ -551,11 +546,12 @@
 								message : '传真格式错误'
 							}
 						}
-					}/* ,
+					},
 					creditLine : {
 						validators : {
 							regexp : {
-								regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/,
+								/* regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, */
+								regexp: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
 								message : '信用额度格式错误'
 							}
 						}
@@ -563,7 +559,8 @@
 					preDeposit  : {
 						validators : {
 							regexp : {
-								regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/,
+								/* regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, */
+								regexp: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
 								message : '预收款格式错误'
 							}
 						}
@@ -571,7 +568,8 @@
 					discountFare : {
 						validators : {
 							regexp : {
-								regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/,
+								/* regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, */
+								regexp: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
 								message : '票价折扣格式错误'
 							}
 						}
@@ -579,7 +577,8 @@
 					fees : {
 						validators : {
 							regexp : {
-								regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/,
+								/* regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, */
+								regexp: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
 								message : '手续费格式错误'
 							}
 						}
@@ -587,7 +586,8 @@
 					exchangeRates : {
 						validators : {
 							regexp : {
-								regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/,
+								/* regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, */
+								regexp: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
 								message : '汇率格式错误'
 							}
 						}
@@ -595,11 +595,12 @@
 					taxRefund : {
 						validators : {
 							regexp : {
-								regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/,
+								/* regexp : /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, */
+								regexp: /^[0-9]+([.]{1}[0-9]+){0,1}$/,
 								message : '退税格式错误'
 							}
 						}
-					} */
+					}
 				}
 			});
 		});
@@ -835,6 +836,17 @@
 		function downloadFile(url) {  
 			$("#downloadA").attr("href", url);
 	    }
+		
+		//小数点保留两位小数
+		function checkLength(obj){
+			obj.value = obj.value.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符  
+		    obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的  
+		    obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$","."); 
+		    obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');//只能输入两个小数  
+		    if(obj.value.indexOf(".")< 0 && obj.value !=""){//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额 
+		        obj.value= parseFloat(obj.value); 
+		    } 
+		}
 	</script>
 
 </body>
