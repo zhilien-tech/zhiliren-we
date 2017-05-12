@@ -148,6 +148,10 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 			Cnd reduceInteCnd = Cnd.NEW();
 			reduceInteCnd.and("uo.companyId", "=", companyId);
 			reduceInteCnd.and("mi.ordertype", "=", OrderTypeEnum.TEAM.intKey());
+			if (!Util.isEmpty(date)) {
+				reduceInteCnd.and("date(mi.optime)", "=", date);
+
+			}
 			/*dbDao.query(clazz, reduceInteCnd, pager)*/
 			reduceInteSql.setCondition(reduceInteCnd);
 			//List<Record> reduceInteList = dbDao.query(reduceInteSql, reduceInteCnd, null);
@@ -224,6 +228,10 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 			Cnd reduceInlandCnd = Cnd.NEW();
 			reduceInlandCnd.and("uo.companyId", "=", companyId);
 			reduceInlandCnd.and("mi.ordertype", "=", OrderTypeEnum.FIT.intKey());
+			if (!Util.isEmpty(date)) {
+				reduceInlandCnd.and("date(mi.optime)", "=", date);
+
+			}
 			reduceInlandSql.setCondition(reduceInlandCnd);
 			//List<Record> reduceInlandList = dbDao.query(reduceInlandSql, reduceInlandCnd, null);
 			/********内陆减免的处理结束**********/
