@@ -376,4 +376,13 @@ public class InternationalModule {
 		return internationalService.downloadFile(request, backticketfile, response);
 	}
 
+	/**
+	 * 退票附件下载
+	 */
+	@At
+	@POST
+	public Object loadVisitorData(HttpServletRequest request) {
+		return internationalService.loadVisitorData(request);
+	}
+
 }

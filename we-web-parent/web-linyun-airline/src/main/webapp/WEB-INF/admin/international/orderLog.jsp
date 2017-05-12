@@ -13,7 +13,7 @@
 <body>
 	<div class="modal-top">
     <div class="modal-header boderButt">
-            <button type="button" class="btn btn-primary right btn-sm">取消</button>
+            <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
             <h4>日志</h4>
           </div>
           <div class="modal-body" style="height:481px;overflow-y:auto; ">
@@ -26,11 +26,11 @@
                       </tr>
                      </thead>
                      <tbody>
-                      <tr>
+                      <!-- <tr>
                        <td>万五</td>
                        <td>2017-03-09 15:36</td>
                        <td>该客户将北京到巴黎的原出发日期改签到2017-03-29日03：25（航班号为CA772号）</td>
-                      </tr>
+                      </tr> -->
                      </tbody>
                    </table>
           </div>
@@ -68,6 +68,12 @@
         }
       });
   });
+  
+//关闭窗口
+  function closewindow(){
+		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+		parent.layer.close(index);
+  }
   </script>
 </body>
 </html>

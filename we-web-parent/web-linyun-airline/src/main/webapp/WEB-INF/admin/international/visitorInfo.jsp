@@ -33,8 +33,8 @@
                        <th>操作</th>
                       </tr>
                      </thead>
-                     <tbody>
-                      <c:forEach items="${obj.visitors }" var="visitor" varStatus="status">
+                     <tbody id="visitortabledata">
+                      <%-- <c:forEach items="${obj.visitors }" var="visitor" varStatus="status">
 	                      <tr>
 	                       <td>${status.index + 1 }</td>
 	                       <td>${visitor.visitorname }</td>
@@ -54,7 +54,7 @@
 	                          <a href="javascript:backTicket(${visitor.id });" class="refund">退票</a>
 	                       </td>
 	                      </tr>
-                      </c:forEach>
+                      </c:forEach> --%>
                      </tbody>
                    </table>
           </div>
@@ -101,6 +101,7 @@
   }
   
   function successCallback(id){
+	  loadTableData();
 	  if(id == '1'){
 		  layer.msg("添加成功",{time: 2000});
 	  }else if(id == '2'){
@@ -109,6 +110,68 @@
 		  layer.msg("退票成功",{time: 2000});
 	  }
 	}
+  loadTableData();
+  function loadTableData(){
+	  $.ajax({
+			type: 'POST', 
+			data: {pnrid:'${obj.pnrid}'}, 
+			url: '${base}/admin/international/loadVisitorData.html',
+			async:false,
+			dataType:'json',
+          success: function (data) { 
+        	 var visitorhtml = '';
+          	$.each(data.visitors, function(name, value) {
+       			visitorhtml += '<tr>';
+        		visitorhtml += '<td>'+name+'</td>';
+       			if(value.visitorname != undefined){
+                    visitorhtml += '<td>'+value.visitorname+'</td>';
+       			}else{
+       				visitorhtml += '<td></td>';
+       			}
+       			if(value.gender != undefined){
+                      visitorhtml += '<td>'+value.gender+'</td>';
+       			}else{
+       				visitorhtml += '<td></td>';
+       			} 
+       			if(value.visitortype != undefined){
+                      visitorhtml += '<td>'+value.visitortype+'</td>';
+       			}else{
+       				visitorhtml += '<td></td>';
+       			} 
+       			if(value.cardtype != undefined){
+                      visitorhtml += '<td>'+value.cardtype+'</td>';
+       			}else{
+       				visitorhtml += '<td></td>';
+       			}
+       			if(value.cardnum != undefined){
+                      visitorhtml += '<td>'+value.cardnum+'</td>';
+       			}else{
+       				visitorhtml += '<td></td>';
+       			} 
+       			if(value.backstatus != undefined){
+       				$.each(data.backticketstatusenum, function(name1, value1) {
+              			if(value.backstatus == name1){
+              				visitorhtml += '<td>'+value1+'</td>';
+              			}
+              		});
+       			}else{
+       				visitorhtml += '<td></td>';
+       			} 
+       			if(value.remark != undefined){
+                    visitorhtml += '<td>'+value.remark+'</td>';
+     			}else{
+     				visitorhtml += '<td></td>';
+     			} 
+                visitorhtml += '<td><a href="javascript:editVisitor('+value.id+');">编辑</a>';
+                visitorhtml += '&nbsp;&nbsp;&nbsp;<a href="javascript:backTicket('+value.id+');">退票</a></td>';
+      		});
+          	$('#visitortabledata').html(visitorhtml);
+          },
+          error: function (xhr) {
+          	
+          } 
+    });
+  }
   </script>
 </body>
 </html>	
