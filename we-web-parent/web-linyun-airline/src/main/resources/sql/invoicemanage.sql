@@ -198,3 +198,4 @@ AND (
 )
 GROUP BY
 	(uj.userid)
+	

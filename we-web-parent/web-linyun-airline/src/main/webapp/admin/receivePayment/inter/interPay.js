@@ -42,7 +42,7 @@ function initPayDataTable(){
 		            	render:function(data, type, row, meta) {
 		            		var result = '<ul> ';
 		            		$.each(row.orders, function(name, value) {
-		            			if(value && value.pnrnum!=undefined){
+		            			if(value && value.pnrnum!=undefined && value.pnrnum!=null && value.pnrnum!=""){
 		            				result += '<li style="list-style:none;">'+value.pnrnum+'</li>';
 		            			}
 		            		});
@@ -284,7 +284,7 @@ function initPayEdDataTable(){
 		            	render:function(data, type, row, meta) {
 		            		var result = '<ul> ';
 		            		$.each(row.orders, function(name, value) {
-		            			if(value && value.pnrnum!=undefined){
+		            			if(value && value.pnrnum!=undefined && value.pnrnum!=null && value.pnrnum!=""){
 		            				result += '<li style="list-style:none;">'+value.pnrnum+'</li>';
 		            			}
 		            		});

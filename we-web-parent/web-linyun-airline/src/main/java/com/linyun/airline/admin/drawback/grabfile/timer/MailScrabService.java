@@ -211,8 +211,8 @@ public class MailScrabService extends BaseService {
 		String userTeam = "in2020072@sina.com";
 		String passwdTeam = "tlywy2017jan";
 		try {
-			receivePop3(userFit, passwdFit);
 			receivePop3(userTeam, passwdTeam);
+			receivePop3(userFit, passwdFit);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -350,7 +350,8 @@ public class MailScrabService extends BaseService {
 		Double fileDouble = Double.valueOf(fileSize);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy.MM");
 		String fileName = format.format(date);
-		rootId = getTopParentId(sender);
+		//散和团区分第一层的parentId
+		rootId = getTopParentId(sender, userTeam);
 		Chain chain = Chain.make("updateTime", date);
 		TGrabFileEntity single = dbDao.fetch(TGrabFileEntity.class, rootId);
 		if (Util.isEmpty(single.getFileSize())) {
@@ -453,12 +454,15 @@ public class MailScrabService extends BaseService {
 		/**************************第二层结束***************************/
 		/**************************客户团号***************************/
 		/*long sort = getSort(timeFileTwo.getId());*/
-		long sort = map.get("sort");
 		String cusgroupnum = getcusGroupnum();//得到客户团号
-		if (Util.isEmpty(cusgroupnum)) {
-			sort += 1;
-			map.put("sort", sort);
-			cusgroupnum = "客户团号" + sort;
+		long sort = 0;
+		if (!Util.isEmpty(map.get("sort"))) {
+			sort = map.get("sort");
+			if (Util.isEmpty(cusgroupnum)) {
+				sort += 1;
+				map.put("sort", sort);
+				cusgroupnum = "客户团号" + sort;
+			}
 		}
 		//父id
 		long pid = timeFileTwo.getId();
@@ -711,8 +715,9 @@ public class MailScrabService extends BaseService {
 	/**
 	 * TODO(根据发件人区分抓取的邮件)
 	 * @param sender
+	 * @param userTeam 
 	 */
-	private long getTopParentId(String sender) {
+	private long getTopParentId(String sender, Integer userTeam) {
 		String fileName = null;
 		TGrabMailEntity listMail = dbDao.fetch(TGrabMailEntity.class, Cnd.where("sender", "=", sender));
 		String senderDb = listMail.getSender();//得到抓取保存到数据库中的发件人
@@ -737,6 +742,7 @@ public class MailScrabService extends BaseService {
 		}
 		Cnd cnd = Cnd.NEW();
 		cnd.and("fileName", "=", fileName);
+		cnd.and("groupType", "=", userTeam);
 		TGrabFileEntity fetch = dbDao.fetch(TGrabFileEntity.class, cnd);
 		return fetch.getId();
 	}

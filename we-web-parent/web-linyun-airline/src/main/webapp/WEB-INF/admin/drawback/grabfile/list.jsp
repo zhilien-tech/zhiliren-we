@@ -54,7 +54,7 @@
                    <input id="currentDirId" type="hidden" value="0"/>
                    <input type="hidden" name="fileName" id="fileName" />
 				   <input type="hidden" id="url">
-                   <ol class="breadcrumb">
+                   <ol class="breadcrumb" id="fitBreadcrumb">
                         <li><a href="${base}/admin/drawback/grabfile/list.html"><i class="fa fa-folder-open"></i> 全部文件</a></li>
                    </ol>
                    <table id="rebatesEamilTable" class="table table-bordered table-hover">
@@ -93,7 +93,7 @@
                    <input id="currentDirId" type="hidden" value="0"/>
                    <input type="hidden" name="fileName" id="fileName" />
 				   <input type="hidden" id="url">
-                   <ol class="breadcrumb">
+                   <ol class="breadcrumb" id="teamBreadcrumb">
                         <li><a href="${base}/admin/drawback/grabfile/list.html"><i class="fa fa-folder-open"></i> 全部文件</a></li>
                    </ol>
                    <table id="rebatesEamilTeamTable" class="table table-bordered table-hover">
@@ -479,6 +479,7 @@ function successCallback(id){
 	var rebatesEamilTable;
 	var rebatesEamilTeamTable;
 	//var rebatesEamilTeamTable;
+
 	var options0 = {//散客
 					"searching" : false,
 					"processing" : true,
@@ -720,6 +721,7 @@ function successCallback(id){
 			                    return download+judge;
 			                }
 			            }] */
+
 				};
 	function initDatatable(flag) {
 			
@@ -759,7 +761,7 @@ function successCallback(id){
 		if(clickFlag===1 && filetype===2){
 			$.ajax({
 				type : "POST",
-				url : '${base}/admin/drawback/grabfile/filePreview.html',
+				url : '${base}/admin/drawback/grabreport/filePreview.html',
 				data : {
 					id : pid
 				},
@@ -789,7 +791,7 @@ function successCallback(id){
 			rebatesEamilTable.settings()[0].ajax.data = param;
 			rebatesEamilTable.ajax.reload();
 			var exist=false;
-			$("ol.breadcrumb").find("li").each(function(index){
+			$("#fitBreadcrumb").find("li").each(function(index){
 				var currenuId = $(this).attr("id");
 				if(currenuId == pid){
 					exist = true ;
@@ -799,15 +801,15 @@ function successCallback(id){
 			
 			if(!exist){
 				if(filetype == 1){
-					$("ol.breadcrumb").find("li").each(function(){
+					$("#fitBreadcrumb").find("li").each(function(){
 						$(this).removeClass("active");
 					});
-					$("ol.breadcrumb").append('<li id=\''+pid+'\' class="active"><a class="fa fa-folder-open" onclick="javascript:createFodler(\''+pid+'\',\''+filename+'\');"  href="#">'+filename+'</a></li>');
+					$("#fitBreadcrumb").append('<li id=\''+pid+'\' class="active"><a class="fa fa-folder-open" onclick="javascript:createFodler(\''+pid+'\',\''+filename+'\');"  href="#">'+filename+'</a></li>');
 				}
 			}else{
 				//找到指定元素的下标
 				var selectIndex = 0;
-				$("ol.breadcrumb").find("li").each(function(index){
+				$("#fitBreadcrumb").find("li").each(function(index){
 					var currenuId = $(this).attr("id");
 					if(currenuId == pid){
 						selectIndex=index;
@@ -816,13 +818,13 @@ function successCallback(id){
 				});
 				
 				//删除大于该下标的其他元素
-				$("ol.breadcrumb").find("li").each(function(index){
+				$("#fitBreadcrumb").find("li").each(function(index){
 					if(index > selectIndex){
 						$(this).remove(); 
 					}
 				});
-				var length = $("ol.breadcrumb").find("li").length;
-				$("ol.breadcrumb").find("li").each(function(index){
+				var length = $("#fitBreadcrumb").find("li").length;
+				$("#fitBreadcrumb").find("li").each(function(index){
 					if(index != (length-1)){
 						$(this).removeClass("active");
 					}
@@ -868,7 +870,8 @@ function successCallback(id){
 			createFodler1(row.id,row.filename,filetype,clickFlag);
 	});
 	//================================================================================================
-	function createFodler1(pid,filename,filetype,clickFlag){
+
+function createFodler1(pid,filename,filetype,clickFlag){//团队
 		if(clickFlag===1 && filetype===2){
 			$.ajax({
 				type : "POST",
@@ -902,7 +905,7 @@ function successCallback(id){
 			rebatesEamilTeamTable.settings()[0].ajax.data = param;
 			rebatesEamilTeamTable.ajax.reload();
 			var exist=false;
-			$("ol.breadcrumb").find("li").each(function(index){
+			$("#teamBreadcrumb").find("li").each(function(index){
 				var currenuId = $(this).attr("id");
 				if(currenuId == pid){
 					exist = true ;
@@ -912,15 +915,15 @@ function successCallback(id){
 			
 			if(!exist){
 				if(filetype == 1){
-					$("ol.breadcrumb").find("li").each(function(){
+					$("#teamBreadcrumb").find("li").each(function(){
 						$(this).removeClass("active");
 					});
-					$("ol.breadcrumb").append('<li id=\''+pid+'\' class="active"><a class="fa fa-folder-open" onclick="javascript:createFodler(\''+pid+'\',\''+filename+'\');"  href="#">'+filename+'</a></li>');
+					$("#teamBreadcrumb").append('<li id=\''+pid+'\' class="active"><a class="fa fa-folder-open" onclick="javascript:createFodler1(\''+pid+'\',\''+filename+'\');"  href="#">'+filename+'</a></li>');
 				}
 			}else{
 				//找到指定元素的下标
 				var selectIndex = 0;
-				$("ol.breadcrumb").find("li").each(function(index){
+				$("#teamBreadcrumb").find("li").each(function(index){
 					var currenuId = $(this).attr("id");
 					if(currenuId == pid){
 						selectIndex=index;
@@ -929,13 +932,13 @@ function successCallback(id){
 				});
 				
 				//删除大于该下标的其他元素
-				$("ol.breadcrumb").find("li").each(function(index){
+				$("#teamBreadcrumb").find("li").each(function(index){
 					if(index > selectIndex){
 						$(this).remove(); 
 					}
 				});
-				var length = $("ol.breadcrumb").find("li").length;
-				$("ol.breadcrumb").find("li").each(function(index){
+				var length = $("#teamBreadcrumb").find("li").length;
+				$("#teamBreadcrumb").find("li").each(function(index){
 					if(index != (length-1)){
 						$(this).removeClass("active");
 					}
@@ -945,6 +948,25 @@ function successCallback(id){
 			$("input#currentDirId").val(pid);
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 	
 	//新建子文件夹
 	function newFolder(){
@@ -1107,87 +1129,94 @@ function successCallback(id){
 	        "columns": [
 	                    {"data": "pnr", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var pnr = row.pnr;
-	                    		var pnr = '<span data-toggle="tooltip" data-placement="right" title="'+pnr+'">'+pnr+'<span>';
+	                    		var pnrdata = row.pnr;
+	                    		var pnr = '<span data-toggle="tooltip" data-placement="right" title="'+pnrdata+'">'+pnrdata+'<span>';
 	                    		if(null==pnr || ""==pnr){
 	                    			return "";
 	                    		}
-	                    		// var pnr = '<span data-toggle="tooltip" data-placement="right" title="'+row.pnr+'">'+row.pnr+'<span>';
 	                    		return pnr;
 	                    	}
 	                    },
 	                    {"data": "remit", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var remit = (row.remit).toFixed(2);
-	                    		var remit = '<span data-toggle="tooltip" data-placement="right" title="'+remit+'">'+remit+'<span>';
-	                    		if(null==remit || ""==remit){
-	                    			return "";
+	                    		var remitdata = (row.remit);
+	                    		if(null==remitdata || ""==remitdata){
+	                    			return "0.00";
+	                    		}else{
+	                    			remitdata = (row.remit).toFixed(2);
+	                    			var remit = '<span data-toggle="tooltip" data-placement="right" title="'+remitdata+'">'+remitdata+'<span>';
 	                    		}
 	                    		return remit;
 	                    	}
 	                    },
 	                    {"data": "depositbalance", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var depositBalance = (row.depositbalance).toFixed(2);
-	                    		var depositBalance = '<span data-toggle="tooltip" data-placement="right" title="'+depositBalance+'">'+depositBalance+'<span>';
-	                    		if(null==depositBalance || ""==depositBalance){
-	                    			return "";
+	                    		var depositBalancedata = (row.depositbalance);
+	                    		if(null==depositBalancedata || ""==depositBalancedata){
+	                    			return "0.00";
+	                    		}else{
+	                    			depositBalancedata = (row.depositbalance).toFixed(2);
+	                    			var depositBalance = '<span data-toggle="tooltip" data-placement="right" title="'+depositBalancedata+'">'+depositBalancedata+'<span>';
 	                    		}
 	                    		return depositBalance;
 	                    	}	
 	                    },
 	                    {"data": "ticketprice", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var ticketPrice = (row.ticketprice).toFixed(2);
+	                    		var ticketPrice = (row.ticketprice);
 	                    		if(null==ticketPrice || ""==ticketPrice){
-	                    			return "";
+	                    			return "0.00";
 	                    		}
-	                    		return ticketPrice;
+	                    		return ticketPrice.toFixed(2);
 	                    	}
 	                    },
 	                    {"data": "swipe", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var swipe = (row.swipe).toFixed(2);
+	                    		var swipe = (row.swipe);
 	                    		if(null==swipe || ""==swipe){
-	                    			return "";
+	                    			return "0.00";
 	                    		}
-	                    		return swipe;
+	                    		return swipe.toFixed(2);
 	                    	}
 	                    },
 	                    {"data": "tax", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var tax = (row.tax).toFixed(2);
+	                    		var tax = (row.tax);
 	                    		if(null==tax || ""==tax){
-	                    			return "";
+	                    			return "0.00";
 	                    		}
-	                    		return tax;
+	                    		return tax.toFixed(2);
 	                    	}
 	                    },
 	                    {"data": "excisetax1", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var exciseTax1 = (row.excisetax1).toFixed(2);
+	                    		var exciseTax1 = (row.excisetax1);
 	                    		if(null==exciseTax1 || ""==exciseTax1){
-	                    			return "";
+	                    			return "0.00";
 	                    		}
-	                    		return exciseTax1;
+	                    		return exciseTax1.toFixed(2);
 	                    	}
 	                    },
 	                    {"data": "agencyfee", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var agencyFee = (row.agencyfee).toFixed(2);
-	                    		var agencyFee = '<span data-toggle="tooltip" data-placement="right" title="'+agencyFee+'">'+agencyFee+'<span>';
-	                    		if(null==agencyFee || ""==agencyFee){
-	                    			return "";
+	                    		var agencyFeeData = (row.agencyfee);
+	                    		if(null==agencyFeeData || ""==agencyFeeData){
+	                    			return "0.00";
+	                    		}else{
+	                    			agencyFeeData = (row.agencyfee).toFixed(2);
+	                    			var agencyFee = '<span data-toggle="tooltip" data-placement="right" title="'+agencyFeeData+'">'+agencyFeeData+'<span>';
 	                    		}
 	                    		return agencyFee;
 	                    	}
 	                    },
 	                    {"data": "taxrebate", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var taxRebate = (row.taxrebate).toFixed(2);
-	                    		var taxRebate = '<span data-toggle="tooltip" data-placement="right" title="'+taxRebate+'">'+taxRebate+'<span>';
-	                    		if(null==taxRebate || ""==taxRebate){
-	                    			return "";
+	                    		var taxRebateData = (row.taxrebate);
+	                    		if(null==taxRebateData || ""==taxRebateData){
+	                    			return "0.00";
+	                    		}else{
+	                    			taxRebateData = (row.taxrebate).toFixed(2);
+	                    			var taxRebate = '<span data-toggle="tooltip" data-placement="right" title="'+taxRebateData+'">'+taxRebateData+'<span>';
 	                    		}
 	                    		return taxRebate;
 	                    	}
@@ -1205,51 +1234,59 @@ function successCallback(id){
 	                    },
 	                    {"data": "realincome", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var realIncome = (row.realincome).toFixed(2);
-	                    		var realIncome = '<span data-toggle="tooltip" data-placement="right" title="'+realIncome+'">'+realIncome+'<span>';
-	                    		if(null==realIncome || ""==realIncome){
-	                    			return "";
+	                    		var realIncomedata = (row.realincome);
+	                    		if(null==realIncomedata || ""==realIncomedata){
+	                    			return "0.00";
+	                    		}else{
+	                    			realIncomedata = (row.realincome).toFixed(2);
+	                    			var realIncome = '<span data-toggle="tooltip" data-placement="right" title="'+realIncomedata+'">'+realIncomedata+'<span>';
 	                    		}
 	                    		return realIncome;
 	                    	}
 	                    },
-	                    {"data": "realtotal", "bSortable": false,
+	                    {"data": "realtotaldata", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var realTotal = (row.realtotal).toFixed(2);
-	                    		var realTotal = '<span data-toggle="tooltip" data-placement="right" title="'+realTotal+'">'+realTotal+'<span>';
-	                    		if(null==realTotal || ""==realTotal){
-	                    			return "";
+	                    		var realTotalData = (row.realtotal);
+	                    		if(null==realTotalData || ""==realTotalData){
+	                    			return "0.00";
+	                    		}else{
+	                    			realTotalData = (row.realtotal).toFixed(2);
+	                    			var realTotal = '<span data-toggle="tooltip" data-placement="right" title="'+realTotalData+'">'+realTotalData+'<span>';
 	                    		}
 	                    		return realTotal;
 	                    	}
 	                    },
 	                    {"data": "agencyfee2", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var agencyFee2 = (row.agencyfee2).toFixed(2);
-	                    		var agencyFee2 = '<span data-toggle="tooltip" data-placement="right" title="'+agencyFee2+'">'+agencyFee2+'<span>';
-	                    		if(null==agencyFee2 || ""==agencyFee2){
-	                    			return "";
+	                    		var agencyFee2Data = (row.agencyfee2);
+	                    		if(null==agencyFee2Data || ""==agencyFee2Data){
+	                    			return "0.00";
+	                    		}else{
+	                    			agencyFee2Data = (row.agencyfee2).toFixed(2);
+	                    			var agencyFee2 = '<span data-toggle="tooltip" data-placement="right" title="'+agencyFee2Data+'">'+agencyFee2Data+'<span>';
 	                    		}
 	                    		return agencyFee2;
 	                    	}
 	                    },
 	                    {"data": "inaustraliantime", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var inAustralianTime = row.inaustraliantime;
-	                    		if(null==inAustralianTime || ""==inAustralianTime){
+	                    		var inAustralianTimeData = row.inaustraliantime;
+	                    		if(null==inAustralianTimeData || ""==inAustralianTimeData){
 	                    			return "";
+	                    		}else{
+	                    			var inAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+inAustralianTimeData+'">'+inAustralianTimeData+'<span>';
 	                    		}
-	                    		var inAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+inAustralianTime+'">'+inAustralianTime+'<span>';
 	                    		return inAustralianTime;
 	                    	}
 	                    },
 	                    {"data": "outaustraliantime", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var outAustralianTime = row.outaustraliantime;
-	                    		if(null==outAustralianTime || ""==outAustralianTime){
+	                    		var outAustralianTimeData = row.outaustraliantime;
+	                    		if(null==outAustralianTimeData || ""==outAustralianTimeData){
 	                    			return "";
+	                    		}else{
+		                    		var outAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+outAustralianTimeData+'">'+outAustralianTimeData+'<span>';
 	                    		}
-	                    		var outAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+outAustralianTime+'">'+outAustralianTime+'<span>';
 	                    		return outAustralianTime;
 	                    	}
 	                    },
@@ -1264,14 +1301,15 @@ function successCallback(id){
 	                    		return "未关联";
 	                    	}
 	                    },
-	                    {"data": "outaustraliantime", "bSortable": false,
+	                    {"data": "remark", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var outAustralianTime = row.outaustraliantime;
-	                    		if(null==outAustralianTime || ""==outAustralianTime){
+	                    		var remarkData = row.remark;
+	                    		if(null==remarkData || ""==remarkData){
 	                    			return "";
+	                    		}else{
+		                    		var remark = '<span data-toggle="tooltip" data-placement="left" title="'+remarkData+'">'+remarkData+'<span>';
 	                    		}
-	                    		var outAustralianTime = '<span data-toggle="tooltip" data-placement="left" title="'+outAustralianTime+'">'+outAustralianTime+'<span>';
-	                    		return outAustralianTime;
+	                    		return remark;
 	                    	}
 	                    }
 	            ],

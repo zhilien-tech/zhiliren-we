@@ -25,6 +25,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.linyun.airline.admin.drawback.grabfile.entity.TGrabFileEntity;
 import com.linyun.airline.admin.drawback.grabfile.enums.FileTypeEnum;
+import com.linyun.airline.admin.drawback.grabfile.form.TGrabFileAddForm;
 import com.linyun.airline.admin.drawback.grabfile.form.TGrabFileSqlForm;
 import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.common.util.ZFile;
@@ -55,6 +56,25 @@ public class GrabfileViewService extends BaseService<TGrabFileEntity> {
 			}
 		}
 		return DatatablesData;
+	}
+
+	/**
+	 * 保存上传文件
+	 * @param addForm
+	 */
+	public Object saveUploadFile(TGrabFileAddForm addForm) {
+		TGrabFileEntity grabfile = new TGrabFileEntity();
+		grabfile.setCreateTime(new Date());
+		grabfile.setStatus(DataStatusEnum.ENABLE.intKey());
+		grabfile.setUrl(addForm.getUrl());
+		grabfile.setFileName(addForm.getFileName());
+		grabfile.setParentId(addForm.getId());
+		grabfile.setMailId(addForm.getId());
+		grabfile.setFileSize(addForm.getFileSize());//文件大小
+		grabfile.setType(FileTypeEnum.FILE.intKey());//文件类型
+
+		TGrabFileEntity reportDate = dbDao.insert(grabfile);
+		return reportDate;
 	}
 
 	//添加时根据pid查询数据

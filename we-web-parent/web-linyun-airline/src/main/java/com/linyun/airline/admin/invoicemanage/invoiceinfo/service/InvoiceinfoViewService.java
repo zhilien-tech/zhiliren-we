@@ -79,6 +79,7 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		Sql sql = Sqls.create(sqlManager.get("invoicemanage_invoice_getfullname_list"));
 		Cnd cnd = Cnd.NEW();
 		cnd.and("ii.comId", "=", companyId);
+		cnd.and("ii.billuserid", "is not", null);
 		cnd.groupBy("u.fullName");
 		List<Record> query = dbDao.query(sql, cnd, null);
 		obj.put("listIssuer", query);

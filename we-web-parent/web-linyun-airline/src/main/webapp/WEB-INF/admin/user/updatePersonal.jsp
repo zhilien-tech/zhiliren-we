@@ -32,7 +32,7 @@
 	          			<td><label>座机电话：</label></td>
 	          			<td>
 	          				<div class="form-group">
-	          				<input id="landline" name="landline" type="text" value="${obj.personalInfo[0].landline }" class="form-control input-sm">
+	          				<input id="landline" name="landline" type="text" value="${obj.personalInfo[0].landline }" maxlength="64" class="form-control input-sm">
 	          				</div>
 	          			</td>
 	          			<td><label>联系QQ：</label></td>
