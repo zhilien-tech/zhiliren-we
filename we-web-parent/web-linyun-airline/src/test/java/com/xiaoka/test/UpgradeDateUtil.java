@@ -549,12 +549,18 @@ public class UpgradeDateUtil {
 	}
 
 	/**  
-	 * 获得今天在本周的第几天  
+	 * 获得今天在本周的第几天    
+	 * 
+	 * 周一为第一天
 	 *   
 	 * @return  
 	 */
 	public static int getDayOfWeek() {
-		return Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+		int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
+		if (day == 0) {
+			day = 7;
+		}
+		return day;
 	}
 
 	/**  
@@ -1261,7 +1267,7 @@ public class UpgradeDateUtil {
 	 *            年  
 	 * @return  
 	 */
-	public boolean isLeapYear(int year) {
+	public static boolean isLeapYear(int year) {
 		return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
 	}
 
@@ -1271,7 +1277,7 @@ public class UpgradeDateUtil {
 	 * @param year  
 	 * @return  
 	 */
-	public boolean isLeapYear2(int year) {
+	public static boolean isLeapYear2(int year) {
 		return new GregorianCalendar().isLeapYear(year);
 	}
 
