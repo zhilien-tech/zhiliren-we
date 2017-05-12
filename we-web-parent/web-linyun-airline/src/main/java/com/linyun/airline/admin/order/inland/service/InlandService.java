@@ -668,13 +668,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		result.put("passengertypeenum", EnumUtil.enum2(PassengerTypeEnum.class));
 		result.put("orderRemindEnum", EnumUtil.enum2(OrderRemindEnum.class));
 		//内陆跨海下拉
-		//币种下拉
-		List<DictInfoEntity> nlkhcode = new ArrayList<DictInfoEntity>();
-		try {
-			nlkhcode = externalInfoService.findDictInfoByName("", NLKHCODE);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		//检索条件
+		List<ComDictInfoEntity> nlkhcode = dbDao.query(ComDictInfoEntity.class,
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.INLAND_CROSS_SEA.key())
+						.and("comId", "=", company.getId()), null);
 		result.put("nlkhcode", nlkhcode);
 		return result;
 

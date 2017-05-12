@@ -40,6 +40,7 @@
                         <div class="form-group row marginBott cf">
                           <div class="col-md-1">
                             <select type="text" name="teamtype" class="form-control TimeInput" onchange="changeteamType()">
+                            	<option value="">请选择</option>
                             	<option value="1">系列团</option>
 		      					<option value="2">临时团</option>
                             </select> 
