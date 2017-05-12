@@ -704,7 +704,7 @@ function successCallback(id){
 		if(clickFlag===1 && filetype===2){
 			$.ajax({
 				type : "POST",
-				url : '${base}/admin/drawback/grabfile/filePreview.html',
+				url : '${base}/admin/drawback/grabreport/filePreview.html',
 				data : {
 					id : pid
 				},
