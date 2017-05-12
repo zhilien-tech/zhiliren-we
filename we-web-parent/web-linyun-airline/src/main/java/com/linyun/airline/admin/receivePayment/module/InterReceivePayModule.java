@@ -72,6 +72,15 @@ public class InterReceivePayModule {
 	}
 
 	/**
+	 * 验证付款单位
+	 */
+	@At
+	@POST
+	public Object sameShortName(@Param("orderIds") String orderIds, HttpSession session) {
+		return interReceivePayService.toConfirmPay(orderIds, session);
+	}
+
+	/**
 	 * 到编辑已付款
 	 */
 	@At

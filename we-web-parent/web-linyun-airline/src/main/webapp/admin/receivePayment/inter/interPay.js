@@ -519,16 +519,34 @@ $('#interPayClick').click(function(){
 	if(!ids){
 		layer.msg("请至少选中一条记录", "", 2000);
 	}else{
-		layer.open({
-			type: 2,
-			title:false,
-			skin: false, //加上边框
-			closeBtn:false,//默认 右上角关闭按钮 是否显示
-			shadeClose:false,
-			area: ['850px', '650px'],
-			content: ['confirmPay.html?orderIds='+ ids,'no'],
+		
+		$.ajax({
+			type : 'POST',
+			data : {
+				"orderIds":ids
+			},
+			async: false,
+			"url": BASE_PATH + "/admin/receivePay/inter/sameShortName.html",
+			success : function(data) {
+				var boolean = data.sameName;
+				if(boolean == false){
+					layer.msg("收款单位不一致", "", 2000);
+					clearGou();
+					return false;
+				}else{
+					layer.open({
+						type: 2,
+						title:false,
+						skin: false, //加上边框
+						closeBtn:false,//默认 右上角关闭按钮 是否显示
+						shadeClose:false,
+						area: ['850px', '650px'],
+						content: ['confirmPay.html?orderIds='+ ids,'no'],
+					});
+				}
+			}
 		});
-
+		
 	}
 });
 
