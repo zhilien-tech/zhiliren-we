@@ -501,7 +501,7 @@ function successCallback(id){
 			            }
 			        },
 			        "columns": [
-								{"data": "id", "bSortable": false,"sWidth":"5%",
+								{"data": "id", "bSortable": false,"sWidth": "5%",
 			                    	render: function(data, type, row, meta) {
 			                    		var result = '';
 			                    		var hiddenval = $('#checkedboxval').val();
@@ -520,7 +520,7 @@ function successCallback(id){
 			                            return result;
 			                    	}
 								},
-			                    {"data": "filename", "bSortable": false,"sWidth":"50%",
+			                    {"data": "filename", "bSortable": false,"sWidth": "50%",
 			                    	render: function(data, type, row, meta) {
 			                    		var filename = row.filename;
 			                    		var fileId  = row.id;
@@ -546,7 +546,7 @@ function successCallback(id){
 			                    		}
 			                    	}
 			                    },
-			                    {"data": "updatetime", "bSortable": true,"sWidth":"15%",
+			                    {"data": "updatetime", "bSortable": true,"sWidth": "20%",
 			                    	 render: function(data, type, row, meta) {
 			                    		 var updatetime = row.updatetime;
 			                    		 if(null==updatetime || ""==updatetime){
@@ -555,7 +555,7 @@ function successCallback(id){
 			                    		return updatetime;
 			                        } 	
 			                    },
-			                    {"data": "filesize", "bSortable": false,"sWidth":"15%",
+			                    {"data": "filesize", "bSortable": false,"sWidth": "13%",
 			                    	render: function(data, type, row, meta) {
 			                    		var filesize = row.filesize;
 			                    		var unit = row.unit;
@@ -565,7 +565,7 @@ function successCallback(id){
 			                    		return filesize+unit;
 			                    	}	
 			                    },
-			                    {"data": "no", "bSortable": false,"sWidth":"15%",
+			                    {"data": "no", "bSortable": false,"sWidth": "12%",
 			                    	render: function(data, type, row, meta) {
 					                	//var editFolder = '<a href="javascript:editFolder('+row.id+');" style="cursor:pointer;">编辑&nbsp;&nbsp;</a>';
 					                	var download = '<a href="${base}/admin/drawback/grabfile/downLoadZipFile.html?parentId='+row.id+'" style="cursor:pointer;">下载&nbsp;&nbsp;</a>';
@@ -578,28 +578,7 @@ function successCallback(id){
 					                    return download+judge;
 					                }	
 			                    }
-			            ]/* ,
-			            "columnDefs": [
-									    /* { "sWidth": "5%",  "targets": [0] },
-										{ "sWidth": "40%",  "targets": [1] },
-										{ "sWidth": "15%",  "targets": [2] },
-										{ "sWidth": "10%",  "targets": [3] },
-										{ "sWidth": "10%",  "targets": [4] }, 
-			                            {
-			                //   指定第一列，从0开始，0表示第一列，1表示第二列……
-			                targets: 4,
-			                render: function(data, type, row, meta) {
-			                	//var editFolder = '<a href="javascript:editFolder('+row.id+');" style="cursor:pointer;">编辑&nbsp;&nbsp;</a>';
-			                	var download = '<a href="${base}/admin/drawback/grabfile/downLoadZipFile.html?parentId='+row.id+'" style="cursor:pointer;">下载&nbsp;&nbsp;</a>';
-			                	//var move  = '<a href="javascript:move('+row.id+');" style="cursor:pointer;">移动到&nbsp;&nbsp;</a>';
-		                   		if(1==row.status){
-		                   			var judge = '<a href="javascript:physicalDelete('+row.id+',2);" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
-		                   		}else{
-		                   			var judge = '<a href="javascript:physicalDelete('+row.id+',1);" class="btn_mini btn_modify">启用</a>';
-		                   		}
-			                    return download+judge;
-			                }
-			            }] */
+			            ]
 				};
 	var options1 = {//团队
 					"searching" : false,
@@ -621,8 +600,7 @@ function successCallback(id){
 			            	return {parentId:0}
 			            }
 			        },
-			        "columns": [
-								{"data": "id", "bSortable": false,"sWidth":"10%",
+			        "columns": [{"data": "id", "bSortable": false,"sWidth": "5%",
 			                    	render: function(data, type, row, meta) {
 			                    		var result = '';
 			                    		var hiddenval = $('#checkedboxval').val();
@@ -641,7 +619,7 @@ function successCallback(id){
 			                            return result;
 			                    	}
 								},
-			                    {"data": "filename", "bSortable": false,"sWidth":"50%",
+			                    {"data": "filename", "bSortable": false,"sWidth": "50%",
 			                    	render: function(data, type, row, meta) {
 			                    		var filename = row.filename;
 			                    		var fileId  = row.id;
@@ -667,7 +645,7 @@ function successCallback(id){
 			                    		}
 			                    	}
 			                    },
-			                    {"data": "updatetime", "bSortable": true,"sWidth":"15%",
+			                    {"data": "updatetime", "bSortable": true,"sWidth": "20%",
 			                    	 render: function(data, type, row, meta) {
 			                    		 var updatetime = row.updatetime;
 			                    		 if(null==updatetime || ""==updatetime){
@@ -676,7 +654,7 @@ function successCallback(id){
 			                    		return updatetime;
 			                        } 	
 			                    },
-			                    {"data": "filesize", "bSortable": false,"sWidth":"15%",
+			                    {"data": "filesize", "bSortable": false,"sWidth": "13%",
 			                    	render: function(data, type, row, meta) {
 			                    		var filesize = row.filesize;
 			                    		var unit = row.unit;
@@ -686,7 +664,7 @@ function successCallback(id){
 			                    		return filesize+unit;
 			                    	}	
 			                    },
-			                    {"data": "no", "bSortable": false,"sWidth":"25%",
+			                    {"data": "no", "bSortable": false,"sWidth": "12%",
 			                    	render: function(data, type, row, meta) {
 					                	//var editFolder = '<a href="javascript:editFolder('+row.id+');" style="cursor:pointer;">编辑&nbsp;&nbsp;</a>';
 					                	var download = '<a href="${base}/admin/drawback/grabfile/downLoadZipFile.html?parentId='+row.id+'" style="cursor:pointer;">下载&nbsp;&nbsp;</a>';
@@ -699,62 +677,27 @@ function successCallback(id){
 					                    return download+judge;
 					                }	
 			                    }
-			            ]/* ,
-			            "columnDefs": [
-									   { "sWidth": "5%",  "targets": [0] },
-									   { "sWidth": "35%",  "targets": [1] },
-									   { "sWidth": "35%",  "targets": [2] },
-									   { "sWidth": "15%",  "targets": [3] },
-									   { "sWidth": "10%",  "targets": [4] },  
-			                           {
-			                //   指定第一列，从0开始，0表示第一列，1表示第二列……
-			                targets: 4,
-			                render: function(data, type, row, meta) {
-			                	//var editFolder = '<a href="javascript:editFolder('+row.id+');" style="cursor:pointer;">编辑&nbsp;&nbsp;</a>';
-			                	var download = '<a href="${base}/admin/drawback/grabfile/downLoadZipFile.html?parentId='+row.id+'" style="cursor:pointer;">下载&nbsp;&nbsp;</a>';
-			                	//var move  = '<a href="javascript:move('+row.id+');" style="cursor:pointer;">移动到&nbsp;&nbsp;</a>';
-		                   		if(1==row.status){
-		                   			var judge = '<a href="javascript:physicalDelete('+row.id+',2);" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
-		                   		}else{
-		                   			var judge = '<a href="javascript:physicalDelete('+row.id+',1);" class="btn_mini btn_modify">启用</a>';
-		                   		}
-			                    return download+judge;
-			                }
-			            }] */
-
+			            ]
 				};
 	function initDatatable(flag) {
-			
 			if(flag==0){
-				
 				rebatesEamilTable = $('#rebatesEamilTable').DataTable(options0);
 			}
 			if(flag==1){
-				
 				rebatesEamilTeamTable = $('#rebatesEamilTeamTable').DataTable(options1);
 			}
-		
 	}
 	/*切换标签的时候重新加载table */
 	function reloadTable(flag){
 		if(flag==0){
-			
 			//rebatesEamilTable = $('#rebatesEamilTable').DataTable(options);
 			rebatesEamilTable.ajax.reload();
 		}
 		if(flag==1){
-			
 			//rebatesEamilTeamTable = $('#rebatesEamilTeamTable').DataTable(options);
 			rebatesEamilTeamTable.ajax.reload();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
 	//当点击进入下一级的时候重新加载表格
 	//var clickFlag = 1;
 	function createFodler(pid,filename,filetype,clickFlag){
