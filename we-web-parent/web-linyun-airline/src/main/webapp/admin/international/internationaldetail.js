@@ -63,6 +63,8 @@ function saveInternationalDetail(){
 	orderinfo.airlinecom = airlinecom;
 	var peoplecount = $('#peoplecount').val();
 	orderinfo.peoplecount = peoplecount;
+	var teamtype = $('#teamtype').val();
+	orderinfo.teamtype = teamtype;
 	var costsingleprice = $('#costsingleprice').val();
 	orderinfo.costsingleprice = costsingleprice;
 	var cRemark = $('#cRemark').val();

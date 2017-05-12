@@ -192,27 +192,35 @@
 		  var backticketfiles = [];
 		  $('.cloneTR').each(function(){
 			  var backticketfile = {};
+			  var filelength = '';
 			  var filename = $(this).find('[name=fileName]').html();
 			  backticketfile.filename = filename;
+			  filelength += filename;
 			  var fileurl = $(this).find('[name=fileurl]').val();
 			  backticketfile.fileurl = fileurl;
-			  backticketfiles.push(backticketfile);
+			  filelength += fileurl;
+			  if(filelength){
+				  backticketfiles.push(backticketfile);
+			  }
 		  });
 		  formdata.backticketfiles = JSON.stringify(backticketfiles);
-		  layer.load(1);
-		  $.ajax({ 
-				type: 'POST', 
-				data: formdata, 
-				url: '${base}/admin/international/saveBackTicketInfo.html',
-	            success: function (data) { 
-	            	layer.closeAll('loading');
-	            	closewindow();
-	            	window.parent.successCallback('3');
-	            },
-	            error: function (xhr) {
-	            	layer.msg("退票失败","",3000);
-	            } 
-	        }); 
+		  var backstatus = $('#backstatus').val();
+		  if(backstatus){
+			  layer.load(1);
+			  $.ajax({ 
+					type: 'POST', 
+					data: formdata, 
+					url: '${base}/admin/international/saveBackTicketInfo.html',
+		            success: function (data) { 
+		            	layer.closeAll('loading');
+		            	closewindow();
+		            	window.parent.successCallback('3');
+		            },
+		            error: function (xhr) {
+		            	layer.msg("退票失败","",3000);
+		            } 
+		        }); 
+		  }
 	  });
 	  
 	  $(function(){
@@ -227,6 +235,7 @@
 	          var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
 	          newDiv.find("p").html(No); 
 	          newDiv.find('#preView').parent().remove();
+	          newDiv.find('#download').parent().remove();
 	          newDiv.find('.deleteInvoice').parent().remove();
 	          newDiv.find('.addIcon').parent().remove();
 	          newDiv.find('.fileUL').append('<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>');
@@ -308,7 +317,7 @@
 	  });
 	
 	  function downloadFile(fileurl,filename){
-		  window.location.href='${base}/admin/international/downloadFile.html?fileurl=' + fileurl + '&filename=' + encodeURI(filename);
+		  window.location.href='${base}/admin/international/downloadFile.html?fileurl=' + fileurl + '&filename=' + encodeURI(encodeURI(filename));
 	  }
 	</script>
 </body>
