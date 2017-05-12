@@ -668,7 +668,6 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		result.put("passengertypeenum", EnumUtil.enum2(PassengerTypeEnum.class));
 		result.put("orderRemindEnum", EnumUtil.enum2(OrderRemindEnum.class));
 		//内陆跨海下拉
-		//币种下拉
 		List<DictInfoEntity> nlkhcode = new ArrayList<DictInfoEntity>();
 		try {
 			nlkhcode = externalInfoService.findDictInfoByName("", NLKHCODE);

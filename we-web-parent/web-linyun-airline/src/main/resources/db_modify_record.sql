@@ -1,3 +1,4 @@
+
 /******************************************************************************
 version : 1.0.0   BEGIN
 ******************************************************************************/ 
@@ -314,4 +315,76 @@ create table t_back_ticket_file
 );
 
 alter table t_back_ticket_file comment '退票附件表';
+/*国际查询PNR的function*/
+DROP FUNCTION IF EXISTS `getInterPnrByOrderid`;
+
+CREATE FUNCTION `getInterPnrByOrderid`(orderid int)
+ RETURNS varchar(1024) CHARSET utf8
+BEGIN
+	declare tmpName varchar(50) default '';
+  
+	DECLARE result VARCHAR(1024) DEFAULT '';
+	# 遍历数据结束标志
+  DECLARE done INT DEFAULT 0;
+	#Routine body goes here...
+	DECLARE pnr_cur CURSOR FOR SELECT tpi.pnr pnr from t_pnr_info tpi INNER JOIN t_up_order tuo ON tpi.orderid = tuo.id where tuo.id = orderid;
+	
+	# 将结束标志绑定到游标
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+	OPEN pnr_cur;
+		 cursor_loop:LOOP
+				FETCH pnr_cur INTO tmpName;
+
+				IF done=1 THEN
+					LEAVE cursor_loop;
+				END IF;
+
+			 SET tmpName = CONCAT(tmpName ,'のし') ;
+			 SET result = CONCAT(result ,tmpName) ;
+
+		 END LOOP cursor_loop;
+ CLOSE pnr_cur;
+	  
+	RETURN result;
+END;
+/*内陆查询PNR的function*/
+DROP FUNCTION IF EXISTS `getInlandPnrByOrderid`;
+
+CREATE FUNCTION `getInlandPnrByOrderid`(orderid int)
+ RETURNS varchar(1024) CHARSET utf8
+BEGIN
+	declare tmpName varchar(50) default '';
+  
+	DECLARE result VARCHAR(1024) DEFAULT '';
+	# 遍历数据结束标志
+  DECLARE done INT DEFAULT 0;
+	#Routine body goes here...
+	DECLARE pnr_cur CURSOR FOR SELECT
+									tpi.pnr pnr
+								FROM
+									t_pnr_info tpi
+								INNER JOIN t_order_customneed toc ON tpi.needid = toc.id
+								INNER JOIN t_up_order tuo ON toc.ordernum = tuo.id 
+								where tuo.id = orderid;
+	
+	# 将结束标志绑定到游标
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+	OPEN pnr_cur;
+		 cursor_loop:LOOP
+				FETCH pnr_cur INTO tmpName;
+
+				IF done=1 THEN
+					LEAVE cursor_loop; 
+				END IF;
+
+			 SET tmpName = CONCAT(tmpName ,'のし') ;
+			 SET result = CONCAT(result ,tmpName) ;
+
+		 END LOOP cursor_loop;
+ CLOSE pnr_cur;
+	  
+	RETURN result;
+END;
 
