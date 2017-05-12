@@ -15,6 +15,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
+import org.nutz.dao.util.cri.SqlExpressionGroup;
 
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.uxuexi.core.common.util.Util;
@@ -38,10 +39,12 @@ public class InternationalShouSqlForm extends DataTablesParamForm {
 
 	private Integer status;//开票状态
 	private Integer billuserid;//收票人
+	private String invoicenum;//发票号
 	private Date shouInvoiceBeginDate;//收票日期
 	private Date shouInvoiceEndDate;//收票日期
 	private String PNR;//pnr
 	private String paymentunit;//收款单位
+	private String invoiceitem;//发票开具项目
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {
@@ -54,10 +57,17 @@ public class InternationalShouSqlForm extends DataTablesParamForm {
 
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
-		cnd.and("ordertype", "=", OrderTypeEnum.TEAM.intKey());
+		SqlExpressionGroup group = new SqlExpressionGroup();
+		group.and("tii.paymentunit", "LIKE", "%" + paymentunit + "%")
+				.or("cd.comDictName", "LIKE", "%" + invoiceitem + "%")
+				.or("getByInvoicenumQuery(tii.id)", "LIKE", "%" + invoicenum + "%");
+		if (!Util.isEmpty(invoicenum)) {
+			cnd.and(group);
+		}
+		cnd.and("tii.ordertype", "=", OrderTypeEnum.TEAM.intKey());
 		//cnd.and("invoicetype", "=", InvoiceInfoEnum.RECEIPT_INVOIC_ING.intKey());//开发票中
 		if (!Util.isEmpty(companyid)) {
-			cnd.and("comId", "=", companyid);
+			cnd.and("tii.comId", "=", companyid);
 		}
 		//开票日期
 		if (!Util.isEmpty(shouInvoiceBeginDate)) {
@@ -74,7 +84,7 @@ public class InternationalShouSqlForm extends DataTablesParamForm {
 			cnd.and("tii.billuserid", "=", billuserid);
 		}
 		cnd.orderBy("tii.status", "ASC");
-		cnd.orderBy("optime", "DESC");
+		cnd.orderBy("tii.optime", "DESC");
 		return cnd;
 	}
 }

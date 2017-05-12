@@ -60,7 +60,7 @@
                                <input id="kaiInvoiceEndDate" name="invoicedate"  type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'kaiInvoiceBeginDate\')}'})" class="form-control TimeInput" placeholder="2017-02-22">
                              </div>
                              <div class="col-md-3 textPadding"><!-- 发票号/单位 搜索框 -->
-                               <input id="invoicenumId" name="invoicenum" type="text" class="form-control" placeholder="发票号/单位">
+                               <input id="invoicenumId" name="invoicenum" onkeypress="onkeyEnter();" type="text" class="form-control" placeholder="订单号/发票号/发票开具项目/付款单位">
                              </div>
                              <div class="col-md-2"><!-- 搜索 按钮 -->
                                <button id="kaiSearchInvoiceBtn" onclick="kaiInvoiceSelectData();" type="button" class="btn btn-primary btn-sm">搜索</button>
@@ -79,7 +79,7 @@
                              <th>总额</th>
                              <th>开发票日期</th>
                              <th>发票开具项目</th>
-                             <th>收款单位</th>
+                             <th>付款单位</th>
                              <th>开票人</th>
                              <th>订单状态</th>
                              <th>状态</th>
@@ -138,7 +138,7 @@
                               <input id="shouInvoiceEndDate" type="text" onFocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'shouInvoiceBeginDate\')}'})"  class="form-control TimeInput" placeholder="2017-02-22">
                             </div>
                             <div class="col-md-3 textPadding"><!-- PNR/单位 搜索框 -->
-                              <input id="paymentunitId" type="text" class="form-control" placeholder="单位">
+                              <input id="paymentunitId" onkeypress="onkeyShouEnter();" type="text" class="form-control" placeholder="订单号/发票号/发票开具项目/收款单位">
                             </div>
                             <div class="col-md-2"><!-- 搜索 按钮 -->
                               <button id="shouSearchInvoiceBtn" onclick="shouInvoiceSelectData();" type="button" class="btn btn-primary btn-sm">搜索</button>
@@ -157,7 +157,7 @@
                              <th>总金额</th>
                              <th>收发票日期</th>
                              <th>发票开具项目</th>
-                             <th>付款单位</th>
+                             <th>收款单位</th>
                              <th>收票人</th>
                              <th>订单状态</th>
                              <th>状态</th>
@@ -205,4 +205,15 @@ $(function(){//二级菜单的高亮
 	$('.menu-ul:eq(0)').hide(); 
 	$('.menu-ul:eq(1) li:eq(1) a').css("color","rgb(245, 245, 245)");
 });
+//搜索回车事件
+function onkeyEnter(){
+	 if(event.keyCode==13){
+		 $("#kaiSearchInvoiceBtn").click();
+	 }
+}
+function onkeyShouEnter(){
+	if(event.keyCode==13){
+		 $("#shouSearchInvoiceBtn").click();
+	 }
+}
 </script>
