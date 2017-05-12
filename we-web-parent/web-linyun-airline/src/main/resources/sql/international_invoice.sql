@@ -94,11 +94,13 @@ $condition
 /*international_invoice_international_invoice_list*/
 SELECT
 	tuo.id AS orderid,
+	cd.comDictName,
 	tii.*, tuo.ordersnum
 FROM
 	t_invoice_info tii
 INNER JOIN t_pay_order tpo ON tii.orderpayid = tpo.id
 INNER JOIN t_up_order tuo ON tpo.orderid = tuo.id
+LEFT JOIN t_company_dictinfo cd ON cd.id = tii.invoiceitem
 $condition
 
 /*international_invoice_table_data*/
@@ -132,4 +134,32 @@ LEFT JOIN t_up_order tuo ON tuo.id = ore.orderid
 LEFT JOIN t_customer_info cus ON cus.id = tuo.userid
 LEFT JOIN t_user u ON u.id = ii.billuserid
 LEFT JOIN dict_info info ON info.id = ii.invoiceitem
+$condition
+
+/*international_invoice_kaiinvoice_list*/
+SELECT
+	ii.id,
+	cd.comDictName,
+	ii.invoiceitem,
+	ii.invoicedate,
+	ii.billuserid,
+	ii.deptid,
+	ii.paymentunit,
+	ii.remark,
+	ii.difference,
+	ii.balance,
+	ii.invoicetype,
+	ii.receiveid,
+	ii.pnrid,
+	ii.opid,
+	ii.optime,
+	ii.`status`,
+	ii.comId,
+	ii.payid,
+	ii.ordertype,
+	ii.orderpayid,
+	ii.orderstatus
+FROM
+	t_invoice_info ii
+LEFT JOIN t_company_dictinfo cd ON cd.id = ii.invoiceitem
 $condition

@@ -111,7 +111,7 @@
 				                      <li><a href="javascript:;" id="preView" class="fileDelete">预览</a></li>
 			                      	</c:when>
 			                      	<c:otherwise>
-				                      <li><a href="${one.fileurl }" id="preView" class="fileDelete">下载</a></li>
+				                      <li><a href="javascript:downloadFile('${one.fileurl }','${one.filename }')" id="download" class="fileDelete">下载</a></li>
 			                      	</c:otherwise>
 			                      </c:choose>
 		                      </c:if>
@@ -293,7 +293,7 @@
 	              		var ext = file.name.substring(extStart, file.name.length).toUpperCase();
 	              		var deletepreview = '<li><a href="javascript:;" class="fileDelete deleteInvoice" >删除</a></li>';
 	              		if (ext != ".JPG" && ext != ".JPEG" && ext != ".PNG" && ext != ".GIF" && ext != ".BMP") {
-		              		deletepreview += '<li><a href="'+obj.data+'" id="download" class="fileDelete">下载</a></li>';
+		              		deletepreview += '<li><a href="javascript:downloadFile(\''+obj.data+'\',\''+file.name+'\')" id="download" class="fileDelete">下载</a></li>';
 	              		}else{
 		              		deletepreview += '<li><a href="javascript:;" id="preView" class="fileDelete">预览</a></li>';
 	              		}
@@ -306,7 +306,10 @@
 	  	};
 	  	reader.readAsDataURL(file);
 	  });
-
+	
+	  function downloadFile(fileurl,filename){
+		  window.location.href='${base}/admin/international/downloadFile.html?fileurl=' + fileurl + '&filename=' + encodeURI(filename);
+	  }
 	</script>
 </body>
 </html>

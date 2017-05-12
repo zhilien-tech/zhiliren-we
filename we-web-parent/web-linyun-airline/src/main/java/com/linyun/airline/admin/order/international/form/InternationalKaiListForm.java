@@ -72,7 +72,8 @@ public class InternationalKaiListForm extends DataTablesParamForm {
 		}
 		if (!Util.isEmpty(searchInfo)) {
 			SqlExpressionGroup exp = new SqlExpressionGroup();
-			exp.and("paymentunit", "like", "%" + searchInfo + "%");
+			exp.and("paymentunit", "like", "%" + searchInfo + "%").or("getByInvoicenumQuery(id)", "like",
+					"%" + searchInfo + "%");
 			cnd.and(exp);
 		}
 		if (!Util.isEmpty(companyid)) {
