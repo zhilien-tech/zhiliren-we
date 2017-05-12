@@ -154,8 +154,24 @@ function initDatatable() {
                     		return result; 
                     	}
                     },
-                    {"data": "username", "bSortable": false},
-                    {"data": "telephone", "bSortable": false}
+                    {"data": "username", "bSortable": false,
+                    	render:function(data, type, row, meta) {
+                    		var result = '';
+                    		if(row.username && row.username != undefined){
+                    			result = row.username;
+                    		}
+                    		return result; 
+                    	}
+                    },
+                    {"data": "telephone", "bSortable": false,
+                    	render:function(data, type, row, meta) {
+                    		var result = '';
+                    		if(row.telephone && row.telephone != undefined){
+                    			result = row.telephone;
+                    		}
+                    		return result; 
+                    	}
+                    }
                     /*{"data": "action", "bSortable": false,
                     	render: function(data, type, row, meta) {
                         return '<a style="cursor:pointer;" onclick="edit('+row.id+','+row.ordersstatus+');">编辑</a>'

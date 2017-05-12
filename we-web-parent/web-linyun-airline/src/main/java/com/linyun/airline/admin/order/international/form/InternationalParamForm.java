@@ -82,8 +82,9 @@ public class InternationalParamForm extends DataTablesParamForm {
 		DateFormat format = new SimpleDateFormat(DateUtil.FORMAT_YYYYMMDD);
 		if (!Util.isEmpty(searchInfo)) {
 			SqlExpressionGroup sqlex = new SqlExpressionGroup();
-			sqlex.and("tuo.ordersnum", "like", "%" + searchInfo + "%").or("tpi.travelname", "like",
-					"%" + searchInfo + "%");
+			sqlex.and("tuo.ordersnum", "like", "%" + searchInfo + "%")
+					.or("tpi.travelname", "like", "%" + searchInfo + "%")
+					.or("getInterPnrByOrderid(tuo.id)", "LIKE", "%" + searchInfo + "%");
 			cnd.and(sqlex);
 		}
 		if (!Util.isEmpty(startdate)) {

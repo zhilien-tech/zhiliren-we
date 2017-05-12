@@ -10,6 +10,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Cnd;
@@ -1751,6 +1755,63 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 				backticketfile.add(tBackTicketFileEntity);
 			}
 			dbDao.insert(backticketfile);
+		}
+		return null;
+	}
+
+	/**
+	 * 退票附件下载
+	 * <p>
+	 * 退票附件下载
+	 * @param request
+	 * @param backticketfile
+	 * @param response
+	 * @return (退票附件下载)
+	 */
+	public Object downloadFile(HttpServletRequest request, TBackTicketFileEntity backticketfile,
+			HttpServletResponse response) {
+		InputStream is = null;
+		OutputStream out = null;
+		try {
+			request.setCharacterEncoding("utf-8");
+			if (!Util.isEmpty(backticketfile.getFileurl())) {
+				URL url = new URL(backticketfile.getFileurl());
+				URLConnection connection = url.openConnection();
+				is = connection.getInputStream();
+
+				//new String(fileName.getBytes("utf-8"), "ISO8859-1")
+				out = response.getOutputStream();
+				response.reset();
+				response.setContentType("application/octet-stream");
+				response.setCharacterEncoding("utf-8");
+				//response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
+				//				response.setHeader("Content-Disposition",
+				//						String.format("attachment;filename=\"%s\"", backticketfile.getFilename()));
+				response.addHeader("Content-Disposition", "attachment;filename="
+						+ new String(backticketfile.getFilename().replaceAll(" ", "").getBytes("utf-8"), "iso8859-1"));
+				byte[] buffer = new byte[4096];
+				int count = 0;
+				while ((count = is.read(buffer)) > 0) {
+					out.write(buffer, 0, count);
+				}
+				out.flush();
+				response.flushBuffer();
+				out.close();
+				is.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (!Util.isEmpty(is)) {
+					is.close();
+				}
+				if (!Util.isEmpty(out)) {
+					out.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
