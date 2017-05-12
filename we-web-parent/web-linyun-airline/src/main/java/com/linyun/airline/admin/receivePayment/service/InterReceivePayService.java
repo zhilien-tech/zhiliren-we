@@ -689,17 +689,18 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 					}
 					prrIds += prrid + ",";
 					orders.add(r);
+					record.put("shortname", shortname);
 				} else {
 					if (!Util.isEmpty(currentpayStr)) {
 						totalmoney = Double.valueOf(currentpayStr);
 					}
 				}
+
 			}
 			prrIds = prrIds.substring(0, prrIds.length() - 1);
 			record.put("pid", pid);
 			record.put("prrIds", prrIds);
 			record.put("totalmoney", totalmoney);
-			record.put("shortname", shortname);
 			record.put("payStatus", payStatus);
 			record.put("issuer", issuer);
 			record.put("orders", orders);
