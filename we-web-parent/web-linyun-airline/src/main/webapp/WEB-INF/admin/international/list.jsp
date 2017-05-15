@@ -53,7 +53,7 @@
                             <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22" onFocus="WdatePicker()" onkeypress="onkeyEnter()">
                           </div>
                           <div class="col-md-3"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                            <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人" onkeypress="onkeyEnter();">
+                            <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/PNR/联运要求" onkeypress="onkeyEnter();">
                           </div>
                           <div class="col-md-1"><!-- 搜索 按钮 -->
                             <button id="searchOrder" type="button" class="btn btn-primary btn-sm">搜索</button>
@@ -106,7 +106,7 @@
                                       <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22" onFocus="WdatePicker()" onkeypress="onkeyTicketingEnter()">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人" onkeypress="onkeyTicketingEnter()">
+                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/PNR/联运要求" onkeypress="onkeyTicketingEnter()">
                                     </div>
                                     <div class="col-md-2"><!-- 搜索 按钮 -->
                                       <button type="button" id="ticketingSearch" class="btn btn-primary btn-sm">搜索</button>
@@ -155,7 +155,7 @@
                                       <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22" onFocus="WdatePicker()" onkeypress="onkeyTicketingPayEnter()">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人" onkeypress="onkeyTicketingPayEnter()">
+                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/PNR/联运要求" onkeypress="onkeyTicketingPayEnter()">
                                     </div>
                                     <div class="col-md-2"><!-- 搜索 按钮 -->
                                       <button type="button" id="ticketingPaySearch" class="btn btn-primary btn-sm">搜索</button>
@@ -223,7 +223,7 @@
                                       <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22" onFocus="WdatePicker()" onkeypress="shoukuanenter()">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/联系人" onkeypress="shoukuanenter()">
+                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/PNR/联系人" onkeypress="shoukuanenter()">
                                     </div>
                                     <div class="col-md-2"><!-- 搜索 按钮 -->
                                       <button type="button" id="receiveSearch" class="btn btn-primary btn-sm">搜索</button>
@@ -274,7 +274,7 @@
                                       <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22" onFocus="WdatePicker()" onkeypress="fukuanenter()">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人" onkeypress="fukuanenter()">
+                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/PNR/联系人" onkeypress="fukuanenter()">
                                     </div>
                                     <div class="col-md-2"><!-- 搜索 按钮 -->
                                       <button type="button" id="paySearch" class="btn btn-primary btn-sm">搜索</button>
@@ -335,7 +335,7 @@
                                       <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22" onFocus="WdatePicker()" onkeypress="kaiinvoiceenter()">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/联系人" onkeypress="kaiinvoiceenter()">
+                                      <input type="text" name="searchInfo" class="form-control" placeholder="订单号/发票号/发票开具项目/付款单位" onkeypress="kaiinvoiceenter()">
                                     </div>
                                     <div class="col-md-2"><!-- 搜索 按钮 -->
                                       <button type="button" id="kaiInvoiceSearch" class="btn btn-primary btn-sm">搜索</button>
@@ -386,7 +386,7 @@
                                       <input type="text" name="enddate" class="form-control TimeInput" placeholder="2017-02-22" onFocus="WdatePicker()" onkeypress="shouinvoiceenter()">
                                     </div>
                                     <div class="col-md-3 textPadding"><!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-                                      <input type="text" name="searchInfo" class="form-control" placeholder="客户名称/订单号/联系人" onkeypress="shouinvoiceenter()">
+                                      <input type="text" name="searchInfo" class="form-control" placeholder="订单号/发票号/发票开具项目/客户名称" onkeypress="shouinvoiceenter()">
                                     </div>
                                     <div class="col-md-2"><!-- 搜索 按钮 -->
                                       <button type="button" id="shouInvoiceSearch" class="btn btn-primary btn-sm">搜索</button>

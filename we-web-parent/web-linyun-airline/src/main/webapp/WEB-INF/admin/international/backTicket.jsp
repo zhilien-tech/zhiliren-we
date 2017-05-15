@@ -296,11 +296,12 @@
 	              		thisDiv.find('[name=fileurl]').val(obj.data);
 	              		thisDiv.find('[name=fileName]').html(file.name);
 	              		thisDiv.find('.fileDelete').each(function(){
-	              			$(this).parent.remove();
+	              			$(this).parent().remove();
 	              		});
 	              		var extStart = file.name.lastIndexOf(".");
 	              		var ext = file.name.substring(extStart, file.name.length).toUpperCase();
 	              		var deletepreview = '<li><a href="javascript:;" class="fileDelete deleteInvoice" >删除</a></li>';
+	              		alert(ext);
 	              		if (ext != ".JPG" && ext != ".JPEG" && ext != ".PNG" && ext != ".GIF" && ext != ".BMP") {
 		              		deletepreview += '<li><a href="javascript:downloadFile(\''+obj.data+'\',\''+file.name+'\')" id="download" class="fileDelete">下载</a></li>';
 	              		}else{

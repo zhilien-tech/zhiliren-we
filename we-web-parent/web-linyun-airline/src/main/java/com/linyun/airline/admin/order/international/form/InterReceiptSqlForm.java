@@ -66,8 +66,10 @@ public class InterReceiptSqlForm extends DataTablesParamForm {
 		}
 		if (!Util.isEmpty(searchInfo)) {
 			SqlExpressionGroup sqlex = new SqlExpressionGroup();
-			sqlex.and("tr.customename", "like", "%" + searchInfo + "%").or("tu.userName", "like",
-					"%" + searchInfo + "%");
+			sqlex.and("tr.customename", "like", "%" + searchInfo + "%")
+					.or("tu.userName", "like", "%" + searchInfo + "%")
+					.or("getOrderNumByReceiveid(tr.id)", "like", "%" + searchInfo + "%")
+					.or("getInterPNRByReceiveid(tr.id)", "like", "%" + searchInfo + "%");
 			cnd.and(sqlex);
 		}
 		if (!Util.isEmpty(startdate)) {
