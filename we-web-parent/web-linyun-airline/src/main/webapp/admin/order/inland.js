@@ -167,7 +167,8 @@ function initDatatable() {
                     	render:function(data, type, row, meta) {
                     		var result = '';
                     		if(row.telephone && row.telephone != undefined){
-                    			result = row.telephone;
+                    			//result = row.telephone;
+                    			result= '<span data-toggle="tooltip" data-placement="left" title="'+row.telephone+'">'+row.telephone+'<span>';
                     		}
                     		return result; 
                     	}
@@ -181,11 +182,11 @@ function initDatatable() {
 					   { "sWidth": "7.33%",  "targets": [1] },
 					   { "sWidth": "8.33%",  "targets": [2] },
 					   { "sWidth": "6.33%",  "targets": [3] },
-					   { "sWidth": "8.33%",  "targets": [4] },
-					   { "sWidth": "8.33%",  "targets": [5] },
+					   { "sWidth": "7.33%",  "targets": [4] },
+					   { "sWidth": "10.33%",  "targets": [5] },
 					   { "sWidth": "8.33%",  "targets": [6] },
 					   { "sWidth": "8.33%",  "targets": [7] },
-					   { "sWidth": "8.33%",  "targets": [8] },
+					   { "sWidth": "7.33%",  "targets": [8] },
 					   { "sWidth": "5.33%",  "targets": [9] },
 					   { "sWidth": "6.33%",  "targets": [10] },
 					   { "sWidth": "9.33%",  "targets": [11] }

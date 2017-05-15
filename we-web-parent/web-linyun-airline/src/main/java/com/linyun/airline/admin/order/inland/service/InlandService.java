@@ -310,7 +310,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		//客户信息
 		TCustomerInfoEntity custominfo = dbDao.fetch(TCustomerInfoEntity.class, Long.valueOf(orderinfo.getUserid()));
 		result.put("custominfo", custominfo);
-		Sql citySql = Sqls.create(sqlManager.get("customer_cityOption_list"));
+		/*Sql citySql = Sqls.create(sqlManager.get("customer_cityOption_list"));
 		Cnd cityCnd = Cnd.NEW();
 		cityCnd.and("c.infoId", "=", custominfo.getId());
 		cityCnd.orderBy("d.dictCode", "desc");
@@ -325,7 +325,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		if (outcitys.length() > 0) {
 			outcitys = outcitys.substring(0, outcitys.length() - 1);
 		}
-		result.put("outcitys", outcitys);
+		result.put("outcitys", outcitys);*/
 		Double historymony = searchViewService.getMoney(orderinfo.getUserid().longValue());
 		result.put("historymony", historymony);
 		//客户负责人

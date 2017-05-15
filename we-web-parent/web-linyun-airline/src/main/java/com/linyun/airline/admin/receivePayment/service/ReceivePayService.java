@@ -772,6 +772,8 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		}
 		if (!Util.eq(null, totalMoney)) {
 			payEntity.setTotalMoney(totalMoney);
+		} else {
+			payEntity.setTotalMoney(0.00);
 		}
 		if (!Util.eq(null, currency)) {
 			if (!Util.eq("--请选择--", currency)) {
