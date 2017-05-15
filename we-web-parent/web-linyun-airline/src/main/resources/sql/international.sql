@@ -130,6 +130,7 @@ SELECT
 	tii.*, tuo.ordersnum
 FROM
 	t_invoice_info tii
+LEFT JOIN t_company_dictinfo tcd ON tcd.id = tii.invoiceitem
 INNER JOIN t_pay_order tpo ON tii.orderpayid = tpo.id
 INNER JOIN t_up_order tuo ON tpo.orderid = tuo.id
 $condition

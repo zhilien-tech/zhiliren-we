@@ -1376,6 +1376,7 @@
         	 if(data.account){
 	         	$('#relief').val(data.account.toFixed(2));
         	 }
+        	 setFinanceInfo();
          },
          error: function (xhr) {
        		
@@ -1383,7 +1384,6 @@
       });
  }
  //设置财务信息
- setFinanceInfo();
   </script>
 </body>
 </html>

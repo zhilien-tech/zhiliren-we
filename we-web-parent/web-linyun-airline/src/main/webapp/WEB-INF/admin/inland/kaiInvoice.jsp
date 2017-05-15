@@ -297,15 +297,21 @@
 	   var invoicedetails = [];
 	   $('.cloneTR').each(function(i){
 		   var detail = {};
+		   var invoicelength = '';
 		   var invoicenum = $(this).find('[name=invoicenum]').val();
 		   detail.invoicenum = invoicenum;
+		   invoicelength += invoicenum;
 		   var invoicebalance = $(this).find('[name=invoicebalance]').val();
 		   detail.invoicebalance = invoicebalance;
+		   invoicelength += invoicebalance;
 		   var fileName = $(this).find('[name=fileName]').html();
 		   detail.filename = fileName;
 		   var invoiceurl = $(this).find('[name=invoiceurl]').val();
 		   detail.invoiceurl = invoiceurl;
-		   invoicedetails.push(detail);
+		   invoicelength += invoiceurl;
+		   if(invoicelength){
+			   invoicedetails.push(detail);
+		   }
 	   });
 	   formdata.invoicedetails = invoicedetails;
 	   $.ajax({ 

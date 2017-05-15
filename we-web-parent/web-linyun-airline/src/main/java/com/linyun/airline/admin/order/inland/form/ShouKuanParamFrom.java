@@ -68,7 +68,9 @@ public class ShouKuanParamFrom extends DataTablesParamForm {
 		}
 		if (!Util.isEmpty(searchInfo)) {
 			SqlExpressionGroup exp = new SqlExpressionGroup();
-			exp.and("tr.customename", "like", "%" + searchInfo + "%");
+			exp.and("tr.customename", "like", "%" + searchInfo + "%")
+					.or("getOrderNumByReceiveid(tr.id)", "like", "%" + searchInfo + "%")
+					.or("getPNRByReceiveid(tr.id)", "like", "%" + searchInfo + "%");
 			cnd.and(exp);
 		}
 		if (!Util.isEmpty(status)) {
