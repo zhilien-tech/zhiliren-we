@@ -83,7 +83,8 @@ public class InternationalReceiveParamForm extends DataTablesParamForm {
 			SqlExpressionGroup sqlex = new SqlExpressionGroup();
 			sqlex.and("tuo.ordersnum", "like", "%" + searchInfo + "%")
 					.or("tpi.travelname", "like", "%" + searchInfo + "%")
-					.or("getInterPnrByOrderid(tuo.id)", "like", "%" + searchInfo + "%");
+					.or("getInterPnrByOrderid(tuo.id)", "like", "%" + searchInfo + "%")
+					.or("tpi.unioncity", "like", "%" + searchInfo + "%");
 			cnd.and(sqlex);
 		}
 		if (!Util.isEmpty(startdate)) {

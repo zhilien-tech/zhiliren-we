@@ -65,7 +65,9 @@ public class PayApplyListForm extends DataTablesParamForm {
 		if (!Util.isEmpty(searchInfo)) {
 			SqlExpressionGroup exp1 = new SqlExpressionGroup();
 			exp1.and("tci.linkMan", "like", "%" + searchInfo + "%").or("tpi.PNR", "like", "%" + searchInfo + "%")
-					.or("tuo.ordersnum", "like", "%" + searchInfo + "%");
+					.or("tuo.ordersnum", "like", "%" + searchInfo + "%")
+					.or("tci.shortName", "like", "%" + searchInfo + "%")
+					.or("tci.telephone", "like", "%" + searchInfo + "%");
 			cnd.and(exp1);
 		}
 		if (!Util.isEmpty(userId) && !Util.isEmpty(adminId) && userId.longValue() != adminId) {
