@@ -301,8 +301,28 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		cnd.and("uo.id", "in", ids);
 		cnd.and("prr.recordtype", "=", RECEIVETYPE);
 		List<Record> orders = dbDao.query(sql, cnd, null);
+		String sumSqlStr = sqlManager.get("get_international_receive_list_order");
+		Sql sumSql = Sqls.create(sumSqlStr);
+		sumSql.setParam("recordtype", PayReceiveTypeEnum.RECEIVE.intKey());
+		Cnd sumCnd = Cnd.NEW();
+		sumCnd.and("tr.id", "=", Long.valueOf(id));
+		List<Record> sumOrders = dbDao.query(sumSql, sumCnd, null);
+		double sum = 0;
+		for (Record order : sumOrders) {
+			if (!Util.isEmpty(order.get("currentpay"))) {
+				sum += Double.valueOf(order.getString("currentpay"));
+			}
+			String orderid = order.getString("orderid");
+			for (Record record : orders) {
+				String oid = record.getString("id");
+				if (Util.eq(orderid, oid)) {
+					record.set("currentpay", order.getString("currentpay"));
+				}
+			}
+		}
+
 		//计算合计金额
-		Double sum = 0.0;
+		/*Double sum = 0.0;
 		String prrOrderStatus = "";
 		for (Record record : orders) {
 			if (!Util.isEmpty(record.get("currentpay"))) {
@@ -310,9 +330,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				sum += incometotal;
 			}
 			prrOrderStatus = record.getString("prrorderstatus");
-		}
+		}*/
 		map.put("sum", sum);
-		map.put("prrOrderStatus", prrOrderStatus);
+		/*map.put("prrOrderStatus", prrOrderStatus);*/
 
 		//订单信息
 		map.put("orders", orders);

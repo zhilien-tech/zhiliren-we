@@ -73,11 +73,11 @@ public class InterRecListSearchSqlForm extends DataTablesParamForm {
 		}
 		//出发日期
 		if (!Util.isEmpty(leaveBeginDate)) {
-			cnd.and("getMaxLeavedateByOrderid(uo.id)", ">=", leaveBeginDate);
+			cnd.and("getMaxLeavedateByOrderid(r.id)", ">=", leaveBeginDate);
 		}
 		// 返回日期
 		if (!Util.isEmpty(leaveEndDate)) {
-			cnd.and("getMinLeavedateByOrderid(uo.id)", "<=", leaveEndDate);
+			cnd.and("getMinLeavedateByOrderid(r.id)", "<=", leaveEndDate);
 		}
 
 		cnd.and("r.orderstype", "=", OrderTypeEnum.TEAM.intKey()); //团队（国际）
