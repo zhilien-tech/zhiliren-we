@@ -169,11 +169,20 @@ function initdrawerPayTable() {
                     	}
                     },
                     {"data": "username", "bSortable": false},
-                    {"data": "telephone", "bSortable": false}
+                    {"data": "telephone", "bSortable": false,
+                    	render:function(data, type, row, meta) {
+                    		var telephoneVal = '';
+                    		if(row.telephone && row.telephone != undefined){
+                    			//result = row.telephone;
+                    			telephoneVal= '<span data-toggle="tooltip" data-placement="left" title="'+row.telephone+'">'+row.telephone+'<span>';
+                    		}
+                    		return telephoneVal; 
+                    	}
+                    }
             ],
-        columnDefs: [{
+        /*columnDefs: [{
             //   指定第一列，从0开始，0表示第一列，1表示第二列……
-        }],
+        }],*/
         "infoCallback": function (settings, start, end, max, total, pre) {
     		var length = $(".checkchild:checked").length;
     		if(drawerPayTable.page.len() == length){
