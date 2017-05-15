@@ -122,7 +122,7 @@
         	 var visitorhtml = '';
           	$.each(data.visitors, function(name, value) {
        			visitorhtml += '<tr>';
-        		visitorhtml += '<td>'+name+'</td>';
+        		visitorhtml += '<td>'+(name+1)+'</td>';
        			if(value.visitorname != undefined){
                     visitorhtml += '<td>'+value.visitorname+'</td>';
        			}else{

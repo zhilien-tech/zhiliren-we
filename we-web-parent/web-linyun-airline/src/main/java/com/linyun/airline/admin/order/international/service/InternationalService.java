@@ -57,6 +57,7 @@ import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
+import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.common.enums.MessageWealthStatusEnum;
 import com.linyun.airline.common.enums.OrderRemindEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
@@ -1433,8 +1434,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			e.printStackTrace();
 		}
 		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
-				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
-				null);
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId())
+						.and("status", "=", DataStatusEnum.ENABLE.intKey()), null);
 		result.put("ytSelect", ytselect);
 		result.put("user", user);
 		result.put("ids", ids);
