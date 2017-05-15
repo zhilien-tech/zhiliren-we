@@ -195,7 +195,6 @@
 			  var filelength = '';
 			  var filename = $(this).find('[name=fileName]').html();
 			  backticketfile.filename = filename;
-			  filelength += filename;
 			  var fileurl = $(this).find('[name=fileurl]').val();
 			  backticketfile.fileurl = fileurl;
 			  filelength += fileurl;
@@ -220,6 +219,8 @@
 		            	layer.msg("退票失败","",3000);
 		            } 
 		        }); 
+		  }else{
+			  layer.msg("退票状态不能为空","",3000);
 		  }
 	  });
 	  
@@ -275,6 +276,7 @@
 
 	  $(document).on('change','.sc', function(){
 	  	var thisDiv = $(this).parents('.cloneTR'); 
+	  	var thisobj = $(this);
 	  	var file = this.files[0];
 	  	var reader = new FileReader();
 	  	reader.onload = function(e) {
@@ -301,7 +303,6 @@
 	              		var extStart = file.name.lastIndexOf(".");
 	              		var ext = file.name.substring(extStart, file.name.length).toUpperCase();
 	              		var deletepreview = '<li><a href="javascript:;" class="fileDelete deleteInvoice" >删除</a></li>';
-	              		alert(ext);
 	              		if (ext != ".JPG" && ext != ".JPEG" && ext != ".PNG" && ext != ".GIF" && ext != ".BMP") {
 		              		deletepreview += '<li><a href="javascript:downloadFile(\''+obj.data+'\',\''+file.name+'\')" id="download" class="fileDelete">下载</a></li>';
 	              		}else{
