@@ -77,6 +77,7 @@ public class InlandListSearchForm extends DataTablesParamForm {
 			sqlex.and("tuo.ordersnum", "like", "%" + searchInfo + "%")
 					.or("tci.shortName", "like", "%" + searchInfo + "%")
 					.or("tci.linkMan", "like", "%" + searchInfo + "%")
+					.or("tci.telephone", "like", "%" + searchInfo + "%")
 					.or("getInlandPnrByOrderid(tuo.id)", "like", "%" + searchInfo + "%");
 			cnd.and(sqlex);
 		}

@@ -60,7 +60,8 @@ public class TShouInvoiceInfoSqlForm extends DataTablesParamForm {
 	private Date shouInvoiceBeginDate;//收票日期
 	private Date shouInvoiceEndDate;//收票日期
 	private String paymentunit;//收款单位
-	private String PNR;//收款单位
+	private String PNR;//PNR
+	private String ordersnum;//订单号
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {
@@ -77,8 +78,9 @@ public class TShouInvoiceInfoSqlForm extends DataTablesParamForm {
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		SqlExpressionGroup group = new SqlExpressionGroup();
-		group.and("tii.paymentunit", "LIKE", "%" + paymentunit + "%").or("cd.comDictName", "LIKE",
-				"%" + invoiceitem + "%");
+		group.and("tii.paymentunit", "LIKE", "%" + paymentunit + "%")
+				.or("cd.comDictName", "LIKE", "%" + invoiceitem + "%")
+				.or("tuo.ordersnum", "LIKE", "%" + ordersnum + "%").or("tpi.pnr", "LIKE", "%" + PNR + "%");
 		if (!Util.isEmpty(paymentunit)) {
 			cnd.and(group);
 		}

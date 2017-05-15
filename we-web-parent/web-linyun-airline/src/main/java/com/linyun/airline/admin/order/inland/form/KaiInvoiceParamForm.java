@@ -19,10 +19,8 @@ import org.nutz.dao.util.cri.SqlExpressionGroup;
 
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.enums.InvoiceInfoEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
-import com.linyun.airline.entities.TInvoiceInfoEntity;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.Util;
-import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
@@ -59,37 +57,39 @@ public class KaiInvoiceParamForm extends DataTablesParamForm {
 		Cnd cnd = Cnd.NEW();
 		//cnd.and("opid", "=", userid);
 		if (!Util.isEmpty(companyid)) {
-			cnd.and("comId", "=", companyid);
+			cnd.and("tii.comId", "=", companyid);
 		}
 		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && !userid.equals(adminId)) {
-			cnd.and("opid", "=", userid);
+			cnd.and("tii.opid", "=", userid);
 		}
-		cnd.and("ordertype", "=", OrderTypeEnum.FIT.intKey());
-		cnd.and("invoicetype", "=", InvoiceInfoEnum.INVOIC_ING.intKey());//开发票中
+		cnd.and("tii.ordertype", "=", OrderTypeEnum.FIT.intKey());
+		cnd.and("tii.invoicetype", "=", InvoiceInfoEnum.INVOIC_ING.intKey());//开发票中
 		if (!Util.isEmpty(startdate)) {
 			Date startdates = DateUtil.string2Date(startdate, DateUtil.FORMAT_YYYY_MM_DD);
-			cnd.and("invoicedate", ">=", startdates);
+			cnd.and("tii.invoicedate", ">=", startdates);
 		}
 		if (!Util.isEmpty(enddate)) {
 			Date enddates = DateUtil.string2Date(enddate, DateUtil.FORMAT_YYYY_MM_DD);
-			cnd.and("invoicedate", "<=", enddates);
+			cnd.and("tii.invoicedate", "<=", enddates);
 		}
 		if (!Util.isEmpty(searchInfo)) {
 			SqlExpressionGroup exp = new SqlExpressionGroup();
-			exp.and("paymentunit", "like", "%" + searchInfo + "%").or("getByInvoicenumQuery(id)", "like",
-					"%" + searchInfo + "%");
+			exp.and("tii.paymentunit", "like", "%" + searchInfo + "%")
+					.or("getByInvoicenumQuery(tii.id)", "like", "%" + searchInfo + "%")
+					.or("getOrderNumByReceiveid(tii.receiveid)", "like", "%" + searchInfo + "%")
+					.or("tod.comDictName", "like", "%" + searchInfo + "%");
 			cnd.and(exp);
 		}
 		if (!Util.isEmpty(status)) {
-			cnd.and("status", "=", status);
+			cnd.and("tii.status", "=", status);
 		}
-		cnd.orderBy("optime", "desc");
+		cnd.orderBy("tii.optime", "desc");
 		return cnd;
 	}
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {
-		String sqlString = EntityUtil.entityCndSql(TInvoiceInfoEntity.class);
+		String sqlString = sqlManager.get("get_kaiinvoice_info_list");
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;
