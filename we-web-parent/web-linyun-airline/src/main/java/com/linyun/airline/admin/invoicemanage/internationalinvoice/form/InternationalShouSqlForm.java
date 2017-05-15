@@ -45,6 +45,7 @@ public class InternationalShouSqlForm extends DataTablesParamForm {
 	private String PNR;//pnr
 	private String paymentunit;//收款单位
 	private String invoiceitem;//发票开具项目
+	private String ordersnum;//订单号
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {
@@ -60,7 +61,8 @@ public class InternationalShouSqlForm extends DataTablesParamForm {
 		SqlExpressionGroup group = new SqlExpressionGroup();
 		group.and("tii.paymentunit", "LIKE", "%" + paymentunit + "%")
 				.or("cd.comDictName", "LIKE", "%" + invoiceitem + "%")
-				.or("getByInvoicenumQuery(tii.id)", "LIKE", "%" + invoicenum + "%");
+				.or("getByInvoicenumQuery(tii.id)", "LIKE", "%" + invoicenum + "%")
+				.or("tuo.ordersnum", "LIKE", "%" + ordersnum + "%");
 		if (!Util.isEmpty(invoicenum)) {
 			cnd.and(group);
 		}

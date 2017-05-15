@@ -539,3 +539,46 @@ BEGIN
 	RETURN result;
 END;
 
+/*根据订单id查询最早出发日期*/
+DROP FUNCTION IF EXISTS `getMinLeavedateByOrderid`;
+
+CREATE FUNCTION `getMinLeavedateByOrderid`(orderid int)
+ RETURNS date
+BEGIN
+	declare tmpDate DATE;
+	
+	SELECT
+	min(tai.leavedate) 
+	into tmpDate
+	FROM
+		t_airline_info tai
+	INNER JOIN t_pnr_info tpi ON tai.pnrid = tpi.id
+	INNER JOIN t_order_receive tor ON tpi.orderid = tor.orderid
+	where tor.receiveid = orderid
+	GROUP BY
+		tpi.orderid;
+
+	RETURN tmpDate;
+END;
+
+/*根据订单id查询最晚出发日期*/
+DROP FUNCTION IF EXISTS `getMaxLeavedateByOrderid`;
+
+CREATE FUNCTION `getMaxLeavedateByOrderid`(orderid int)
+ RETURNS date
+BEGIN
+	declare tmpDate DATE;
+	
+	SELECT
+	max(tai.leavedate) 
+	into tmpDate 
+	FROM
+		t_airline_info tai
+	INNER JOIN t_pnr_info tpi ON tai.pnrid = tpi.id
+	INNER JOIN t_order_receive tor ON tpi.orderid = tor.orderid
+	where tor.receiveid = orderid
+	GROUP BY
+		tpi.orderid;
+
+	RETURN tmpDate;
+END;

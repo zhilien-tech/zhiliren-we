@@ -67,8 +67,9 @@ public class InterReceivePayModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object confirmPay(@Param("orderIds") String orderIds, HttpSession session) {
-		return interReceivePayService.toConfirmPay(orderIds, session);
+	public Object confirmPay(@Param("orderIds") String orderIds, @Param("orderStatus") String orderStatus,
+			HttpSession session) {
+		return interReceivePayService.toConfirmPay(orderIds, orderStatus, session);
 	}
 
 	/**
@@ -76,8 +77,9 @@ public class InterReceivePayModule {
 	 */
 	@At
 	@POST
-	public Object sameShortName(@Param("orderIds") String orderIds, HttpSession session) {
-		return interReceivePayService.toConfirmPay(orderIds, session);
+	public Object sameShortName(@Param("orderIds") String orderIds, @Param("orderStatus") String orderStatus,
+			HttpSession session) {
+		return interReceivePayService.toConfirmPay(orderIds, orderStatus, session);
 	}
 
 	/**
