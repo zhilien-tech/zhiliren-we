@@ -219,6 +219,7 @@ function initPayDataTable(){
 $("tbody",$('#interPayTable')).on("dblclick","tr",function(event){
 	//获取当前行的数据
 	var row = interPayTable.row($(this).closest('tr')).data();
+	var orderStatus = $(".osClass",$(".orderStatusClass")).attr("id");
 	var ids = row.id;
 	layer.open({
 		type: 2,
@@ -228,7 +229,7 @@ $("tbody",$('#interPayTable')).on("dblclick","tr",function(event){
 		shadeClose:false,
 		scrollbar: false,
 		area: ['850px', '650px'],
-		content: ['confirmPay.html?orderIds='+ ids,'no'],
+		content: ['confirmPay.html?orderIds='+ ids +'&orderStatus='+ orderStatus,'no'],
 	});
 });
 $("tbody",$('#interPayEdTable')).on("dblclick","tr",function(event){
@@ -516,6 +517,7 @@ $('#interPayClick').click(function(){
 	var ids = $('#checkedboxPayValue').val();
 	$('#checkedboxPayValue').val("");
 	var length = $(".checkBoxPayChild:checked").length;
+	var orderStatus = $(".osClass",$(".orderStatusClass")).attr("id");
 	if(!ids){
 		layer.msg("请至少选中一条记录", "", 2000);
 	}else{
@@ -523,7 +525,8 @@ $('#interPayClick').click(function(){
 		$.ajax({
 			type : 'POST',
 			data : {
-				"orderIds":ids
+				"orderIds":ids,
+				"orderStatus":orderStatus
 			},
 			async: false,
 			"url": BASE_PATH + "/admin/receivePay/inter/sameShortName.html",
@@ -541,7 +544,7 @@ $('#interPayClick').click(function(){
 						closeBtn:false,//默认 右上角关闭按钮 是否显示
 						shadeClose:false,
 						area: ['850px', '650px'],
-						content: ['confirmPay.html?orderIds='+ ids,'no'],
+						content: ['confirmPay.html?orderIds='+ ids +'&orderStatus='+ orderStatus,'no'],
 					});
 				}
 			}
@@ -653,10 +656,10 @@ $("#interPaySearchBtn").on('click', function () {
 	var orderStatus = $(".osClass",$(".orderStatusClass")).attr("id");
 	var param = {
 			        "orderStatus":orderStatus,
-			"payStatus":payStatus,
+					"payStatus":payStatus,
 			        "leavetdate":interPayBeginDate,
 			        "backdate":interPayEndDate,
-			"name": interPayInput
+					"name": interPayInput
 			    };
 	if(payStatus==interPayStatus){
 		interPayTable.settings()[0].ajax.data = param;
