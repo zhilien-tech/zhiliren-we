@@ -9,6 +9,7 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
+import com.linyun.airline.admin.drawback.grabfile.form.TPnrSystemMapSqlForm;
 import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportAddForm;
 import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportSqlForm;
 import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportUpdateForm;
@@ -110,13 +111,23 @@ public class GrabreportModule {
 	}
 
 	/**
-	 * 删除记录
+	 * 根据pnr向附件预览表中添加数据
 	 */
 	@At
 	public Object findAndShowPNR(@Param("id") final long id, @Param("pnr") final String pnr) {
 		//grabreportViewService.deleteById(id);
 		System.out.println(id + pnr);
 		this.grabreportViewService.findAndShowPNR(id, pnr);
-		return JsonResult.success("删除成功");
+		return JsonResult.success("");
 	}
+
+	/***
+	 * 附件预览表的展示
+	 */
+
+	@At
+	public Object listPnrSystem(@Param("..") final TPnrSystemMapSqlForm sqlForm) {
+		return grabreportViewService.listPage4Datatables(sqlForm);
+	}
+
 }

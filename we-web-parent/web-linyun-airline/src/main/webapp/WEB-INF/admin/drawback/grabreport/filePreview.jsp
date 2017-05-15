@@ -163,7 +163,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                	<tr>
+                <!-- 	<tr>
                 		<td>2017032600001</td>
                 		<td>DGD938</td>
                 		<td>QYGY2G</td>
@@ -175,7 +175,7 @@
                 		<td>一订</td>
                 		<td>已关联</td>
                 		<td><a href="javscript:;">取消</a></td>
-                	</tr>
+                	</tr> -->
                 </tbody>
               </table>
               <div class="bankSlipImg">
@@ -391,7 +391,7 @@ var empTable;
 				"url" : "${base}/public/plugins/datatables/cn.json"
 			},
 	       	"ajax": {
-	               "url": "${base}/admin/airlinepolicy/listData.html",
+	               "url": "${base}/admin/drawback/grabreport/listData.html",
 	               "type": "post",
 	               "data": function (d) {
 	            	   
