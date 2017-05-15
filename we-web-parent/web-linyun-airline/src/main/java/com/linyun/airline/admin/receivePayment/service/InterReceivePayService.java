@@ -165,30 +165,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		if (Util.isEmpty(orderStatus)) {
 			orderStatus = "3";
 		} else {
-			if (Util.eq("firBooking", orderStatus)) {
-				//一订
-				orderStatus = InternationalStatusEnum.ONEBOOK.intKey() + "";
-			}
-			if (Util.eq("secBooking", orderStatus)) {
-				//二订
-				orderStatus = InternationalStatusEnum.TWOBOOK.intKey() + "";
-			}
-			if (Util.eq("thrBooking", orderStatus)) {
-				//三订
-				orderStatus = InternationalStatusEnum.THREEBOOK.intKey() + "";
-			}
-			if (Util.eq("allBooking", orderStatus)) {
-				//全款
-				orderStatus = InternationalStatusEnum.FULLAMOUNT.intKey() + "";
-			}
-			if (Util.eq("lastBooking", orderStatus)) {
-				//尾款
-				orderStatus = InternationalStatusEnum.TAILMONEY.intKey() + "";
-			}
-			if (Util.eq("outTicket", orderStatus)) {
-				//出票
-				orderStatus = InternationalStatusEnum.TICKETING.intKey() + "";
-			}
+			orderStatus = getOrderStatus(orderStatus);
 		}
 		form.setOrderStatus(orderStatus);
 		form.setCompanyId(companyId);
@@ -516,30 +493,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		if (Util.isEmpty(orderStatus)) {
 			orderStatus = "3";
 		} else {
-			if (Util.eq("firBooking", orderStatus)) {
-				//一订
-				orderStatus = InternationalStatusEnum.ONEBOOK.intKey() + "";
-			}
-			if (Util.eq("secBooking", orderStatus)) {
-				//二订
-				orderStatus = InternationalStatusEnum.TWOBOOK.intKey() + "";
-			}
-			if (Util.eq("thrBooking", orderStatus)) {
-				//三订
-				orderStatus = InternationalStatusEnum.THREEBOOK.intKey() + "";
-			}
-			if (Util.eq("allBooking", orderStatus)) {
-				//全款
-				orderStatus = InternationalStatusEnum.FULLAMOUNT.intKey() + "";
-			}
-			if (Util.eq("lastBooking", orderStatus)) {
-				//尾款
-				orderStatus = InternationalStatusEnum.TAILMONEY.intKey() + "";
-			}
-			if (Util.eq("outTicket", orderStatus)) {
-				//出票
-				orderStatus = InternationalStatusEnum.TICKETING.intKey() + "";
-			}
+			orderStatus = getOrderStatus(orderStatus);
 		}
 		form.setOrderStatus(orderStatus);
 		form.setCompanyId(companyId);
@@ -551,6 +505,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//查询订单
 		String sqlStr = sqlManager.get("receivePay_inter_pay_order_list");
 		Sql conSql = Sqls.create(sqlStr);
+		conSql.setParam("prrOrderstatus", orderStatus);
 		conSql.setParam("orderstatus", orderStatus);
 		conSql.setParam("recordtype", PAYTYPE);
 		Cnd cnd = Cnd.NEW();
@@ -627,30 +582,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		if (Util.isEmpty(orderStatus)) {
 			orderStatus = "3";
 		} else {
-			if (Util.eq("firBooking", orderStatus)) {
-				//一订
-				orderStatus = InternationalStatusEnum.ONEBOOK.intKey() + "";
-			}
-			if (Util.eq("secBooking", orderStatus)) {
-				//二订
-				orderStatus = InternationalStatusEnum.TWOBOOK.intKey() + "";
-			}
-			if (Util.eq("thrBooking", orderStatus)) {
-				//三订
-				orderStatus = InternationalStatusEnum.THREEBOOK.intKey() + "";
-			}
-			if (Util.eq("allBooking", orderStatus)) {
-				//全款
-				orderStatus = InternationalStatusEnum.FULLAMOUNT.intKey() + "";
-			}
-			if (Util.eq("lastBooking", orderStatus)) {
-				//尾款
-				orderStatus = InternationalStatusEnum.TAILMONEY.intKey() + "";
-			}
-			if (Util.eq("outTicket", orderStatus)) {
-				//出票
-				orderStatus = InternationalStatusEnum.TICKETING.intKey() + "";
-			}
+			orderStatus = getOrderStatus(orderStatus);
 		}
 		form.setOrderStatus(orderStatus);
 		form.setRecordtype(PAYTYPE);
@@ -715,21 +647,58 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	}
 
 	/**
+	 * 
+	 * 根据按钮状态，获取相应的订单状态
+	 * <p>
+	 *
+	 * @param orderStatus   页面按钮id
+	 * @return 
+	 */
+	public String getOrderStatus(String orderStatus) {
+		if (Util.eq("firBooking", orderStatus)) {
+			//一订
+			orderStatus = InternationalStatusEnum.ONEBOOK.intKey() + "";
+		}
+		if (Util.eq("secBooking", orderStatus)) {
+			//二订
+			orderStatus = InternationalStatusEnum.TWOBOOK.intKey() + "";
+		}
+		if (Util.eq("thrBooking", orderStatus)) {
+			//三订
+			orderStatus = InternationalStatusEnum.THREEBOOK.intKey() + "";
+		}
+		if (Util.eq("allBooking", orderStatus)) {
+			//全款
+			orderStatus = InternationalStatusEnum.FULLAMOUNT.intKey() + "";
+		}
+		if (Util.eq("lastBooking", orderStatus)) {
+			//尾款
+			orderStatus = InternationalStatusEnum.TAILMONEY.intKey() + "";
+		}
+		if (Util.eq("outTicket", orderStatus)) {
+			//出票
+			orderStatus = InternationalStatusEnum.TICKETING.intKey() + "";
+		}
+		return orderStatus;
+	}
+
+	/**
 	 * (确认付款页面)
 	 *
 	 * @param inlandPayIds
 	 * @return 
 	 */
-	public Object toConfirmPay(String orderIds, HttpSession session) {
+	public Object toConfirmPay(String orderIds, String orderStatus, HttpSession session) {
 		//当前公司id
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
-
+		String oStatusEnum = getOrderStatus(orderStatus);
 		Map<String, Object> map = new HashMap<String, Object>();
 		Sql sql = Sqls.create(sqlManager.get("receivePay_inter_pay_order_ids"));
 		/*String inlandPayIdStr = inlandPayIds.substring(0, inlandPayIds.length() - 1);*/
 		Cnd cnd = Cnd.NEW();
-		cnd.and("prr.id", "in", orderIds);
+		cnd.and("prr.id", "in", orderIds); //TODO
+		cnd.and("p.orderstatus", "=", oStatusEnum);
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		String payIds = "";
 		String pOrderIds = "";
@@ -758,7 +727,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			}
 		}
 
-		//同一订单号，一行显示   TODO
+		//同一订单号，一行显示   
 		List<Record> NewList = new ArrayList<Record>();
 		String oNumStr = "";
 		for (Record record : orders) {
@@ -890,7 +859,6 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 * 
 	 * 到编辑已付款页面
 	 * <p>
-	 * TODO
 	 * @param request
 	 * @return 
 	 */
@@ -904,7 +872,6 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		String payId = request.getParameter("payid");
 		String prrIds = request.getParameter("prrIds");
 
-		//TODO
 		String sqlString = sqlManager.get("receivePay_inter_payed_edit");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
@@ -961,7 +928,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			result.put("approveresult", "拒绝");
 		}
 
-		//同一订单号，一行显示   TODO
+		//同一订单号，一行显示   
 		List<Record> NewList = new ArrayList<Record>();
 		String oNumStr = "";
 		for (Record record : payList) {
@@ -1302,10 +1269,10 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			}
 			updateNum = dbDao.update(newPayOrderList);
 		}
-		//更新付款表状态   TODO payIds
+		//更新付款表状态  payIds
 		/*dbDao.update(TPayEntity.class, Chain.make("status", APPROVALPAYED), Cnd.where("id", "in", payIds));*/
 
-		//添加流水 TODO
+		//添加流水 
 		TTurnOverAddForm addForm = new TTurnOverAddForm();
 		String comName = tCompanyEntity.getComName();
 		addForm.setBankCardId(Integer.valueOf(bankcardId));
@@ -1463,7 +1430,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//消息状态
 		int msgStatus = MessageStatusEnum.UNREAD.intKey();
 
-		//提醒日期 TODO
+		//提醒日期 
 		String remindDateStr = (String) fromJson.get("remindDate");
 		//客户信息id
 		/*String customerInfoId = (String) fromJson.get("customerInfoId");*/

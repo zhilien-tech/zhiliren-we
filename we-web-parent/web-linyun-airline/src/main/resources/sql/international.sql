@@ -97,7 +97,7 @@ FROM
 	t_pay_order tpo
 INNER JOIN t_up_order tuo ON tpo.orderid = tuo.id
 INNER JOIN t_pay tp ON tpo.payid = tp.id
-INNER JOIN t_customer_info tci ON tuo.userid = tci.id
+LEFT JOIN t_customer_info tci ON tuo.userid = tci.id
 LEFT JOIN t_plan_info tpi ON tuo.id = tpi.ordernumber
 LEFT JOIN t_finance_info tfi ON tfi.orderid = tuo.id
 LEFT JOIN t_invoice_info tii ON tpo.id = tii.orderpayid
