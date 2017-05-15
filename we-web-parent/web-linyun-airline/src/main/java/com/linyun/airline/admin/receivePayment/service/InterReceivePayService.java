@@ -73,6 +73,7 @@ import com.linyun.airline.common.enums.UserJobStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TBankCardEntity;
 import com.linyun.airline.entities.TCompanyEntity;
+import com.linyun.airline.entities.TFinanceInfoEntity;
 import com.linyun.airline.entities.TOrderReceiveEntity;
 import com.linyun.airline.entities.TReceiveBillEntity;
 import com.linyun.airline.entities.TReceiveEntity;
@@ -81,6 +82,7 @@ import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TTurnOverAddForm;
 import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.DateUtil;
+import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.base.service.BaseService;
 
@@ -174,7 +176,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		@SuppressWarnings("unchecked")
 		List<Record> list = (List<Record>) listdata.get("data");
 
-		String sqlStr = sqlManager.get("receivePay_inter_rec_order_list");
+		/*String sqlStr = sqlManager.get("receivePay_inter_rec_order_list");
 		Sql sql = Sqls.create(sqlStr);
 		sql.setParam("orderstatus", orderStatus);
 		sql.setParam("recordtype", RECEIVETYPE);
@@ -233,7 +235,44 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 
 		listdata.remove("data");
 		listdata.put("data", ordersBC);
-		listdata.put("recordsFiltered", ordersBC.size());
+		listdata.put("recordsFiltered", ordersBC.size());*/
+		for (Record record : list) {
+			String sqlString = sqlManager.get("get_international_receive_list_order");
+			Sql sql = Sqls.create(sqlString);
+			sql.setParam("recordtype", PayReceiveTypeEnum.RECEIVE.intKey());
+			Cnd cnd = Cnd.NEW();
+			cnd.and("tr.id", "=", record.get("id"));
+			List<Record> orders = dbDao.query(sql, cnd, null);
+			record.put("orders", orders);
+			double sum = 0;
+			for (Record order : orders) {
+				if (!Util.isEmpty(order.get("currentpay"))) {
+					sum += Double.valueOf(order.getString("currentpay"));
+				}
+			}
+			record.put("sum", sum);
+			String username = "";
+			if (orders.size() > 0) {
+				TFinanceInfoEntity financeinfo = dbDao.fetch(TFinanceInfoEntity.class,
+						Integer.valueOf(orders.get(0).getInt("orderid")).longValue());
+				if (!Util.isEmpty(financeinfo) && !Util.isEmpty(financeinfo.getIssuer())) {
+					username = financeinfo.getIssuer();
+				}
+			}
+			String sqlstr = sqlManager.get("receivePay_getairline_info_byreceiveid");
+			Sql airsql = Sqls.create(sqlstr);
+			airsql.setParam("receiveid", record.get("id"));
+			List<Record> airinfo = dbDao.query(airsql, null, null);
+			for (Record airrecord : airinfo) {
+				if (!Util.isEmpty(airrecord.get("leavedate"))) {
+					airrecord.put("leavedate", FormatDateUtil.dateToOrderDate((Date) airrecord.get("leavedate")));
+				}
+			}
+			record.put("airinfo", airinfo);
+			record.put("fullname", username);
+			record.put("receiveenum", EnumUtil.enum2(AccountReceiveEnum.class));
+			record.put("internationalstatusenum", EnumUtil.enum2(InternationalStatusEnum.class));
+		}
 		return listdata;
 	}
 
@@ -291,7 +330,10 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 
 		int bankcardid = fetch.getBankcardid();
 		DictInfoEntity bank = dbDao.fetch(DictInfoEntity.class, bankcardid);
-		String bankName = bank.getDictName();
+		String bankName = "";
+		if (!Util.isEmpty(bank) && !Util.isEmpty(bank.getDictName())) {
+			bankName = bank.getDictName();
+		}
 
 		//订单信息id
 		map.put("ids", ids);
