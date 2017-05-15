@@ -80,6 +80,7 @@ public class InlandPayEdListSearchSqlForm extends DataTablesParamForm {
 		cnd.and("pi.orderPnrStatus", "=", orderPnrStatus);
 		/*cnd.and("pi.userid", "in", loginUserId); //当前公司下的用户id*/
 		cnd.and("uo.companyId", "=", loginCompanyId);
+		cnd.and("p.totalMoney", "!=", "NULL");
 
 		return cnd;
 	}

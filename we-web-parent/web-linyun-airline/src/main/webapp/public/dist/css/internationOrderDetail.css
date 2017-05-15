@@ -41,7 +41,7 @@ table.dataTable thead > tr > th {padding-right: 5px;}
 .addHD-tr td label{margin-bottom: 0;float:right;}
 .addHD-tr td:nth-child(2){width:150px;}
 .addHD-tr td:nth-child(4){width:150px;}
-.addHD-tr td:nth-child(6){width:80px;}
+.addHD-tr td:nth-child(6){width:90px;}
 .addHD-tr td:nth-child(7){width:60px !important;}
 .addHD-tr td:nth-child(8){width:70px;}
 .addHD-tr td:nth-child(10){width:65px;}
@@ -103,7 +103,6 @@ input#peoplecount {width: 134px !important;}
 .addYSKtable tbody tr:nth-child(2) td:nth-child(9){width:45px;}
 .addYSKtable tbody tr:nth-child(2) td:nth-child(10){width:70px;}
 .addYSKtable tbody tr:nth-child(2) td:nth-child(10) #currency{padding-left:3px;padding-right:3px;}
-#prepayratio {width: 83%;display: inline-block;}
 .query-style li [data-toggle="tab"]{line-height: 23px;}
 /*------end 添加记录------*/
 /*------航程信息------*/
