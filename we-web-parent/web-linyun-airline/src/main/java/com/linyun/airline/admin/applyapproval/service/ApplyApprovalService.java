@@ -553,9 +553,11 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		List<Record> datalist = dbDao.query(sql, cnd, null);
 		for (Record record : datalist) {
 			Integer status = (Integer) record.get("orderPnrStatus");
-			if (status == AccountPayEnum.APPROVAL.intKey()) {
-				flag = false;
-				break;
+			if (!Util.isEmpty(status)) {
+				if (status == AccountPayEnum.APPROVAL.intKey()) {
+					flag = false;
+					break;
+				}
 			}
 		}
 		return flag;
@@ -575,9 +577,11 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		List<Record> datalist = dbDao.query(sql, cnd, null);
 		for (Record record : datalist) {
 			Integer status = (Integer) record.get("paystatus");
-			if (status == AccountPayEnum.APPROVAL.intKey()) {
-				flag = false;
-				break;
+			if (!Util.isEmpty(status)) {
+				if (status == AccountPayEnum.APPROVAL.intKey()) {
+					flag = false;
+					break;
+				}
 			}
 		}
 		return flag;

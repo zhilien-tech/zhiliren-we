@@ -19,9 +19,7 @@ import org.nutz.dao.util.cri.SqlExpressionGroup;
 
 import com.linyun.airline.admin.invoicemanage.invoiceinfo.enums.InvoiceInfoEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
-import com.linyun.airline.entities.TInvoiceInfoEntity;
 import com.uxuexi.core.common.util.Util;
-import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
 /**
@@ -39,13 +37,15 @@ public class InternationalKaiSqlForm extends DataTablesParamForm {
 	private Date kaiInvoiceEndDate;//开票日期
 	private String invoicenum;//发票号
 	private String paymentunit;//付款单位
+	private String invoiceitem;//发票开具项目
 	private Integer companyid;
 
 	private Integer userid;
 
 	@Override
 	public Sql sql(SqlManager sqlManager) {
-		String sqlString = EntityUtil.entityCndSql(TInvoiceInfoEntity.class);
+		//String sqlString = EntityUtil.entityCndSql(TInvoiceInfoEntity.class);
+		String sqlString = sqlManager.get("international_invoice_kaiinvoice_list");
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;
@@ -53,30 +53,31 @@ public class InternationalKaiSqlForm extends DataTablesParamForm {
 
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
-		cnd.and("ordertype", "=", OrderTypeEnum.TEAM.intKey());
-		cnd.and("invoicetype", "=", InvoiceInfoEnum.INVOIC_ING.intKey());//开发票中
+		cnd.and("ii.ordertype", "=", OrderTypeEnum.TEAM.intKey());
+		cnd.and("ii.invoicetype", "=", InvoiceInfoEnum.INVOIC_ING.intKey());//开发票中
 		if (!Util.isEmpty(companyid)) {
-			cnd.and("comId", "=", companyid);
+			cnd.and("ii.comId", "=", companyid);
 		}
 		SqlExpressionGroup group = new SqlExpressionGroup();
-		group.and("idd.invoicenum", "LIKE", "%" + invoicenum + "%").or("ii.paymentunit", "LIKE",
-				"%" + paymentunit + "%");
+		group.and("ii.paymentunit", "LIKE", "%" + paymentunit + "%")
+				.or("cd.comDictName", "LIKE", "%" + invoiceitem + "%")
+				.or("getByInvoicenumQuery(ii.id)", "LIKE", "%" + invoicenum + "%");
 		if (!Util.isEmpty(invoicenum)) {
 			cnd.and(group);
 		}
 		//开票日期
 		if (!Util.isEmpty(kaiInvoiceBeginDate)) {
-			cnd.and("invoicedate", ">=", kaiInvoiceBeginDate);
+			cnd.and("ii.invoicedate", ">=", kaiInvoiceBeginDate);
 		}
 		//开票日期
 		if (!Util.isEmpty(kaiInvoiceEndDate)) {
-			cnd.and("invoicedate", "<=", kaiInvoiceEndDate);
+			cnd.and("ii.invoicedate", "<=", kaiInvoiceEndDate);
 		}
 		if (!Util.isEmpty(status)) {
-			cnd.and("status", "=", status);
+			cnd.and("ii.status", "=", status);
 		}
-		cnd.orderBy("status", "ASC");
-		cnd.orderBy("optime", "DESC");
+		cnd.orderBy("ii.status", "ASC");
+		cnd.orderBy("ii.optime", "DESC");
 		return cnd;
 	}
 }

@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
@@ -26,6 +27,7 @@ import com.linyun.airline.admin.order.international.form.InternationalParamForm;
 import com.linyun.airline.admin.order.international.form.InternationalPayParamForm;
 import com.linyun.airline.admin.order.international.form.InternationalReceiveParamForm;
 import com.linyun.airline.admin.order.international.service.InternationalService;
+import com.linyun.airline.entities.TBackTicketFileEntity;
 import com.linyun.airline.entities.TBackTicketInfoEntity;
 import com.linyun.airline.entities.TPayReceiveRecordEntity;
 import com.uxuexi.core.common.util.EnumUtil;
@@ -363,6 +365,24 @@ public class InternationalModule {
 	@POST
 	public Object saveBackTicketInfo(HttpServletRequest request, @Param("..") TBackTicketInfoEntity backticketinfo) {
 		return internationalService.saveBackTicketInfo(request, backticketinfo);
+	}
+
+	/**
+	 * 退票附件下载
+	 */
+	@At
+	public Object downloadFile(HttpServletRequest request, @Param("..") TBackTicketFileEntity backticketfile,
+			HttpServletResponse response) {
+		return internationalService.downloadFile(request, backticketfile, response);
+	}
+
+	/**
+	 * 退票附件下载
+	 */
+	@At
+	@POST
+	public Object loadVisitorData(HttpServletRequest request) {
+		return internationalService.loadVisitorData(request);
 	}
 
 }

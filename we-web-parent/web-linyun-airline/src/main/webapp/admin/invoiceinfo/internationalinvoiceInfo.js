@@ -415,6 +415,7 @@ function kaiInvoiceSelectData() {
 	var kaiInvoiceEndDate = $("#kaiInvoiceEndDate").val();
 	var invoicenum = $("#invoicenumId").val();
 	var paymentunit = $("#invoicenumId").val();
+	var invoiceitem = $("#invoicenumId").val();
 	
     var param = {
 		        "status":status,
@@ -422,7 +423,8 @@ function kaiInvoiceSelectData() {
 		        "kaiInvoiceBeginDate":kaiInvoiceBeginDate,
 		        "kaiInvoiceEndDate":kaiInvoiceEndDate,
 				"invoicenum": invoicenum,
-				"paymentunit": paymentunit
+				"paymentunit": paymentunit,
+				"invoiceitem": invoiceitem
 		    };
     	KaiInterInvoiceTable.settings()[0].ajax.data = param;
     	KaiInterInvoiceTable.ajax.reload(
@@ -453,14 +455,19 @@ function shouInvoiceSelectData() {
 	var shouInvoiceBeginDate = $("#shouInvoiceBeginDate").val();
 	var shouInvoiceEndDate = $("#shouInvoiceEndDate").val();
 	var PNR = $("#paymentunitId").val();
+	var invoicenum = $("#paymentunitId").val();
 	var paymentunit = $("#paymentunitId").val();
+	var invoiceitem = $("#paymentunitId").val();
     var param = {
 		        "status":status,
 		        "billuserid":billuserid,
 		        "shouInvoiceBeginDate":shouInvoiceBeginDate,
 		        "shouInvoiceEndDate":shouInvoiceEndDate,
 				"PNR": PNR,
-				"paymentunit": paymentunit
+				"paymentunit": paymentunit,
+				"invoiceitem": invoiceitem,
+				"invoicenum": invoicenum
+				
 		    };
     	shouInterInvoiceTable.settings()[0].ajax.data = param;
     	shouInterInvoiceTable.ajax.reload(

@@ -91,3 +91,7 @@ div#orderlog {padding-top: 10px;}
 [name="threepaytd"]{width:57px !important;}
 [name="thirdcustomid"]{padding-left: 0px;padding-right: 0px;}
 .tdWid,#neilu{width:150px !important;}
+form#financeForm table tr td:nth-child(odd) {width: 5% !important;}
+form#financeForm table tr td:nth-child(odd) label{width: 70px !important;}
+form#financeForm table tr td:nth-child(even) {width: 9% !important;}
+#cusgroupnum,#enterausdate,#outausdate,#personcount,#billingdate,#enterarrivetime,#outarrivetime,#outstarttime,#enterstarttime,#issuer{padding-left:3px;padding-right:3px;}

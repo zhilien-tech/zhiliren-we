@@ -316,10 +316,10 @@
 		                            <c:forEach items="${obj.nlkhcode }" var="one"> 
 			                        	<c:choose>
 			                        		<c:when test="${customneed.cusinfo.neilu eq one.id }">
-							                     <option value="${one.id }" selected="selected">${one.dictName }</option>
+							                     <option value="${one.id }" selected="selected">${one.comDictName }</option>
 			                        		</c:when>
 			                        		<c:otherwise>
-							                     <option value="${one.id }">${one.dictName }</option>
+							                     <option value="${one.id }">${one.comDictName }</option>
 			                        		</c:otherwise>
 			                        	</c:choose>
 			                     	</c:forEach>
@@ -441,7 +441,7 @@
 		                     <td><label>内陆跨海：</label></td>
 		                     <td><select id="neilu" name="neilu" disabled="disabled" class="form-control input-sm">
 		                     		<c:forEach items="${obj.nlkhcode }" var="one"> 
-					                     <option value="${one.id }">${one.dictName }</option>
+					                     <option value="${one.id }">${one.comDictName }</option>
 			                     	</c:forEach>
 		                        </select>
 		                     </td>

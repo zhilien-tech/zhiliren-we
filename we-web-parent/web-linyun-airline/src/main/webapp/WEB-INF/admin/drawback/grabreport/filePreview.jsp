@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
     <style type="text/css">
     	.form-control-feedback {position: absolute;top: 1px;right: -10px;}
+    	/* .bankSlipImg{background-color: #525659;} */
+    	[cellpadding="0"]{background-color: #fff;padding: 25px;}
     </style>
 </head>
 <body>
@@ -177,7 +179,7 @@
                 </tbody>
               </table>
               <div class="bankSlipImg">
-              	  <iframe id="zhuce" style="height:445px; width:100%;" name="main" src="${obj.fileurl.url}" frameBorder="0" scrolling="no"></iframe>
+              	  <iframe id="zhuce" style="min-height:445px; width:100%;" name="main" src="${obj.fileurl.url}" frameBorder="0" scrolling="no"></iframe>
               </div>
           </div>
         </form>  
