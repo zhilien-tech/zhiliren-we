@@ -98,4 +98,25 @@ public class GrabreportModule {
 		return JsonResult.success("删除成功");
 	}
 
+	/**
+	 * 
+	 * 根据输入显示公司名称
+	 */
+	@At
+	@POST
+	public Object selectPNRNames(@Param("p") final String findPNR, @Param("PNRName") final String companyName) {
+
+		return this.grabreportViewService.selectPNRNames(findPNR, companyName);
+	}
+
+	/**
+	 * 删除记录
+	 */
+	@At
+	public Object findAndShowPNR(@Param("id") final long id, @Param("pnr") final String pnr) {
+		//grabreportViewService.deleteById(id);
+		System.out.println(id + pnr);
+		this.grabreportViewService.findAndShowPNR(id, pnr);
+		return JsonResult.success("删除成功");
+	}
 }

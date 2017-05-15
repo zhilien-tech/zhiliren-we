@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
     <link rel="stylesheet" type="text/css" href="${base}/public/dist/css/receivePayment.css"><!--本页面style-->
     <link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
+    <link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
     <style type="text/css">
     	.form-control-feedback {position: absolute;top: 1px;right: -10px;}
     </style>
@@ -31,11 +32,28 @@
                   </div>
                 </div>  
               	<div class="form-group inline">
-                  <label class="col-sm-1 text-right padding">PNR：</label>
+                   <label class="col-sm-1 text-right padding">PNR：</label>
                   <div class="col-sm-2 padding">
-                  	  	<input id="pnrInfoId" name="PNR" type="text" class="form-control input-sm inputWidth" placeholder="请输入PNR" />
+                    <%-- <select id="findBank" class="form-control input-sm" onchange="selectBankName();" name="bankName">
+               			<option value="">请选择</option>
+
+               			<c:forEach items="${obj.bankList }" var="each">
+               				<option value="${each.dictName }">${each.dictName }</option>
+               			</c:forEach>
+                    </select> --%>
+                  	<select id="pnrInfoSelect" name="pnrInfoSelect" onchange="setPNRINfo();" class="form-control select2 inpImpWid" multiple="multiple"></select>
+                  	<input id="pnrInfoId"  name="PNR" type="hidden" class="form-control input-sm inputWidth" placeholder="请输入PNR" />
                   </div>
                 </div> 
+                
+                <!-- 设置已选中的项 -->
+				<script type="text/javascript">
+					function setPNRINfo() {
+						var _selectedAreaIds = $("#pnrInfoSelect").select2("val");
+						
+						$("#pnrInfoId").val(_selectedAreaIds);
+					}
+				</script>
                 <div class="form-group inline">
                   <label class="col-sm-1 text-right padding">退税状态：</label>
                   <div class="col-sm-2 padding">
@@ -126,7 +144,7 @@
                   </div>
                 </div> 
          	  </div><!--end 入澳时间/出澳时间/备注 -->
-         	  <table id=" " class="table table-bordered table-hover">
+         	  <table id="PnrShowTable" class="table table-bordered table-hover">
                 <thead>
                   <tr>
                     <th>订单号</th>
@@ -173,6 +191,12 @@
 <script src="${base}/public/plugins/fastclick/fastclick.js"></script><!-- FastClick -->
 <script src="${base}/public/dist/js/app.min.js"></script><!-- AdminLTE App -->
 <script src="${base}/common/js/layer/layer.js"></script>
+<!-- Select2 -->
+<script src="${base}/public/plugins/select2/select2.full.min.js"></script>
+<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
+<script type="text/javascript">
+	var BASE_PATH = '${base}';
+</script>
 <script type="text/javascript">
 //验证
 $(document).ready(function(){
@@ -289,6 +313,182 @@ function closewindow(){
 	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 	parent.layer.close(index);
 }
+//pnr的select2
+$("#pnrInfoSelect").select2({
+	ajax : {
+		url : BASE_PATH + "/admin/drawback/grabreport/selectPNRNames.html",
+		dataType : 'json',
+		delay : 250,
+		type : 'post',
+		data : function(params) {
+			return {
+				p : params.term, // search term
+				PNRName:$("#pnrInfoId").val(),
+				page : params.page
+			};
+		},
+		processResults : function(data, params) {
+			params.page = params.page || 1;
+
+			return {
+				results : data
+			};
+		},
+		cache : false
+	},
+	escapeMarkup : function(markup) {
+		return markup;
+	}, // let our custom formatter work
+	templateSelection:function  formatRepoSelection(repo){
+		
+		
+		$.ajax({
+			type : "POST",
+			url : '${base}/admin/drawback/grabreport/findAndShowPNR.html',
+			data : {
+				id : 12,
+				pnr:repo.text
+			},
+			error : function(request) {
+				//layer.msg('添加失败!');
+			},
+			success : function(data) {
+				/* layer.load(1, {
+					shade : [ 0.1, '#fff' ]
+				//0.1透明度的白色背景
+				});
+				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				parent.layer.close(index);
+				window.parent.successCallback('8'); */
+			}
+		});
+		
+		
+		
+		
+		return repo.text;
+		},
+	minimumInputLength : 1,
+	maximumInputLength : 20,
+	language : "zh-CN", //设置 提示语言
+	maximumSelectionLength : 1, //设置最多可以选择多少项
+	tags : true, //设置必须存在的选项 才能选中
+});
+/* pnr展示 */
+var empTable;
+	function initDatatable() {
+		empTable = $('#PnrShowTable').DataTable({
+			"searching" : false,
+			"processing" : true,
+			"serverSide" : true,
+			"stripeClasses": [ 'strip1','strip2' ],//斑马线
+			"bLengthChange" : false,
+			"bSort": true, //排序功能 
+			"autoWidth": false,
+			"language" : {
+				"url" : "${base}/public/plugins/datatables/cn.json"
+			},
+	       	"ajax": {
+	               "url": "${base}/admin/airlinepolicy/listData.html",
+	               "type": "post",
+	               "data": function (d) {
+	            	   
+	            	}
+	        },
+	        "columns": [
+	                    {"data": "filename", "bSortable": false},//订单号
+	                    {"data": "airlinecompanyname", "bSortable": false},//客户团号
+	                    {"data": "areaname", "bSortable": false,//PNR
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.areaname;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance;
+	                    	}		
+	                    },
+	                    {"data": "updatetime", "bSortable": false,//航空公司
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.updatetime;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance.substring(0,depositBalance.lastIndexOf(' '));
+	                    	}	
+	                    },
+	                    {"data": "updatetime", "bSortable": false,//人数
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.updatetime;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance.substring(0,depositBalance.lastIndexOf(' '));
+	                    	}	
+	                    },
+	                    {"data": "updatetime", "bSortable": false,//成本单价
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.updatetime;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance.substring(0,depositBalance.lastIndexOf(' '));
+	                    	}	
+	                    },
+	                    {"data": "updatetime", "bSortable": false,//入澳时间
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.updatetime;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance.substring(0,depositBalance.lastIndexOf(' '));
+	                    	}	
+	                    },
+	                    {"data": "updatetime", "bSortable": false,//出澳时间
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.updatetime;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance.substring(0,depositBalance.lastIndexOf(' '));
+	                    	}	
+	                    },
+	                    {"data": "updatetime", "bSortable": false,//订单状态
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.updatetime;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance.substring(0,depositBalance.lastIndexOf(' '));
+	                    	}	
+	                    },
+	                    {"data": "type", "bSortable": false}
+	                    ],
+	        "columnDefs": [{ "sWidth": "34.66%",  "targets": [0] },
+	     				{ "sWidth": "8.66%",  "targets": [1] },
+	    				{ "sWidth": "16.66%",  "targets": [2] },
+	    				{ "sWidth": "11.66%",  "targets": [3] },
+	    				{ "sWidth": "7.66%",  "targets": [4] },
+	    				{ "sWidth": "26.66%",  "targets": [5] },
+	                    {
+	            //   指定第一列，从0开始，0表示第一列，1表示第二列……
+	            targets: 5,
+	            render: function(data, type, row, meta) {
+	            	
+	            	var modify1 = '<a style="cursor:pointer;" href="'+row.pdfurl+'" target="_blank">预览</a>';
+	            	var modify2 = '<a style="cursor:pointer;" onclick="update('+row.id+');">编辑</a>';
+	            	if(row.filename ==null || row.filename == ""){
+	            		
+	            		var modify3 = '<a style="cursor:pointer;" href="#">下载</a>';
+	            	}else{
+	            		var modify3 = '<a style="cursor:pointer;" href="${base}/admin/airlinepolicy/download.html?id='+row.id+'">下载</a>';
+	            		
+	            	}
+	            	var modify4 = '<a style="cursor:pointer;" onclick="deleteFile('+row.id+');">删除</a>';
+	                return modify1+"&nbsp; &nbsp; &nbsp;"+modify2+"&nbsp; &nbsp; &nbsp;"+modify3+"&nbsp; &nbsp; &nbsp;"+modify4;
+	            }
+	        }]
+		});
+	}
 </script>
 </body>
 </html>

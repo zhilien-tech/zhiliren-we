@@ -1,19 +1,31 @@
 package com.linyun.airline.admin.drawback.grabreport.service;
 
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
+import org.nutz.dao.Sqls;
+import org.nutz.dao.entity.Record;
+import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.linyun.airline.admin.drawback.grabfile.entity.TGrabFileEntity;
+import com.linyun.airline.admin.drawback.grabfile.entity.TPnrSystemMapEntity;
 import com.linyun.airline.admin.drawback.grabfile.enums.FileTypeEnum;
+import com.linyun.airline.admin.drawback.grabfile.enums.PNRRelationStatusEnum;
+import com.linyun.airline.admin.drawback.grabreport.entity.PNRINFOList;
 import com.linyun.airline.admin.drawback.grabreport.entity.TGrabReportEntity;
 import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportAddForm;
+import com.linyun.airline.common.result.Select2Option;
 import com.uxuexi.core.common.util.Util;
+import com.uxuexi.core.db.util.DbSqlUtil;
 import com.uxuexi.core.web.base.service.BaseService;
 
 @IocBean
@@ -153,5 +165,92 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		}
 		TGrabReportEntity insertData = dbDao.insert(report);
 		return insertData;
+	}
+
+	/***
+	 * PNR select2查询
+	 * TODO(这里用一句话描述这个方法的作用)
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param findCompany
+	 * @param companyName
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object selectPNRNames(String findPNR, String PNRName) {
+		List<Record> PNRNameList = getPNRNameList(findPNR, PNRName);
+		List<Select2Option> result = transform2SelectOptions(PNRNameList);
+		return result;
+	}
+
+	private List<Select2Option> transform2SelectOptions(List<Record> PNRNameList) {
+		return Lists.transform(PNRNameList, new Function<Record, Select2Option>() {
+			@Override
+			public Select2Option apply(Record record) {
+				Select2Option op = new Select2Option();
+				op.setId(record.getInt("pnrId"));
+				op.setText(record.getString("PNR"));
+				return op;
+			}
+		});
+	}
+
+	/**
+	 * 获取PNR下拉框
+	 * @param dictName
+	 */
+	public List<Record> getPNRNameList(String findPNR, final String PNRName) {
+		String sqlString = sqlManager.get("grab_report_addPnrSystemMap");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("PNR", "like", "%" + Strings.trim(findPNR) + "%");
+		//cnd.and("typeCode", "=", "YH");
+		//cnd.and("status", "=", DataStatusEnum.ENABLE.intKey());
+		if (!Util.isEmpty(PNRName)) {
+			cnd.and("pnrId", "NOT IN", PNRName);
+		}
+		sql.setCondition(cnd);
+		sql.setCallback(Sqls.callback.records());
+		nutDao.execute(sql);
+		@SuppressWarnings("unchecked")
+		List<Record> list = (List<Record>) sql.getResult();
+		return list;
+	}
+
+	public void findAndShowPNR(long id, String pnr) {
+		String sqlString = sqlManager.get("grab_report_addPnrSystemMap");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("PNR", "=", pnr);
+		sql.setCondition(cnd);
+		List<PNRINFOList> pnrList = DbSqlUtil.query(dbDao, PNRINFOList.class, sql);
+		for (PNRINFOList pnrinfoList : pnrList) {
+			TPnrSystemMapEntity pnrTemp = dbDao.fetch(TPnrSystemMapEntity.class,
+					Cnd.where("pnrId", "=", pnrinfoList.getPnrId()));
+
+			TPnrSystemMapEntity pnrSystemMapEntity = new TPnrSystemMapEntity();
+			pnrSystemMapEntity.setFinanceId(pnrinfoList.getFinanceId());
+			pnrSystemMapEntity.setGrabFileId(id);
+			pnrSystemMapEntity.setOrderId(pnrinfoList.getOrderId());
+			pnrSystemMapEntity.setPnrId(pnrinfoList.getPnrId());
+			pnrSystemMapEntity.setPayReceiveRecordId(pnrinfoList.getPayReceiveRecordId());
+			pnrSystemMapEntity.setUpdateTime(new Date());
+			if (!Util.isEmpty(pnrTemp)) {
+				Chain chain = Chain.make("financeId", pnrSystemMapEntity.getFinanceId());
+				chain.add("grabFileId", pnrSystemMapEntity.getFinanceId());
+				chain.add("orderId", pnrSystemMapEntity.getOrderId());
+				chain.add("pnrId", pnrSystemMapEntity.getPnrId());
+				chain.add("updateTime", new Date());
+				chain.add("payReceiveRecordId", pnrSystemMapEntity.getPayReceiveRecordId());
+				chain.add("relationStatus", pnrTemp.getRelationStatus());
+				dbDao.update(TPnrSystemMapEntity.class, chain, Cnd.where("pnrId", "=", pnrinfoList.getPnrId()));
+			} else {
+				pnrSystemMapEntity.setCreateTime(new Date());
+				pnrSystemMapEntity.setRelationStatus(PNRRelationStatusEnum.NORELATION.intKey());
+				dbDao.insert(pnrSystemMapEntity);
+
+			}
+		}
+
 	}
 }
