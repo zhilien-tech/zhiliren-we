@@ -33,7 +33,23 @@ SELECT
 	fi.`issuer` drawer
 FROM
 	t_pnr_info pi
-INNER JOIN t_pay_pnr pp ON pi.id = pp.pnrId
+INNER JOIN (
+	SELECT
+		paypnr1.*
+	FROM
+		t_pay_pnr paypnr1,
+		(
+			SELECT
+				max(optime) optime,
+				id
+			FROM
+				t_pay_pnr
+			GROUP BY
+				pnrId
+		) paypnr
+	WHERE
+		paypnr1.id = paypnr.id
+) pp ON pi.id = pp.pnrId
 INNER JOIN t_pay p ON p.id = pp.payId
 INNER JOIN t_order_customneed oc ON pi.needid = oc.id
 INNER JOIN t_up_order uo ON oc.ordernum = uo.id
