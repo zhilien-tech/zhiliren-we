@@ -35,9 +35,11 @@ LEFT JOIN t_finance_info fi on fi.orderid=uo.id
 LEFT JOIN t_pay_receive_record prr on prr.orderid=uo.id
 $condition
 /*grab_report_findPnrSystemMap*/
-SELECT pi.PNR,uo.ordersnum,fi.cusgroupnum,fi.personcount,pi.costprice,prr.orderstatus,fi.outausdate,fi.enterausdate,psm.relationStatus,psm.airCode
+SELECT pi.PNR,uo.ordersnum,fi.cusgroupnum,fi.personcount,pi.costprice,prr.orderstatus,fi.outausdate,fi.enterausdate,psm.relationStatus,psm.airCode,psm.fileName
 from t_pnr_system_map psm
 LEFT JOIN t_up_order uo on uo.id=psm.orderId
 LEFT JOIN t_finance_info fi on fi.id=psm.financeId
 LEFT JOIN t_pay_receive_record prr on prr.id=psm.payReceiveRecordId
 LEFT JOIN t_pnr_info pi on pi.id=psm.pnrId
+LEFT JOIN t_grab_file gf on gf.id=psm.grabFileId
+$condition

@@ -31,6 +31,8 @@ import com.uxuexi.core.web.base.service.BaseService;
 @IocBean
 public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 
+	TGrabFileEntity grabFileEntity = null;
+
 	/**
 	 * 编辑时回显数据
 	 * @param id
@@ -49,6 +51,7 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		Map<String, Object> obj = Maps.newHashMap();
 		TGrabFileEntity fetch = dbDao.fetch(TGrabFileEntity.class, pid);
 		obj.put("fileurl", fetch);
+		obj.put("pid", pid);
 		return obj;
 	}
 
@@ -231,6 +234,13 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 			TPnrSystemMapEntity pnrSystemMapEntity = new TPnrSystemMapEntity();
 			pnrSystemMapEntity.setFinanceId(pnrinfoList.getFinanceId());
 			pnrSystemMapEntity.setGrabFileId(id);
+			//通过传回来的id写递归获取顶级父id
+			getTopParent(id);
+
+			if (!Util.isEmpty(grabFileEntity)) {
+				pnrSystemMapEntity.setFileName(this.grabFileEntity.getFileName());
+			}
+
 			pnrSystemMapEntity.setOrderId(pnrinfoList.getOrderId());
 			pnrSystemMapEntity.setPnrId(pnrinfoList.getPnrId());
 			pnrSystemMapEntity.setPayReceiveRecordId(pnrinfoList.getPayReceiveRecordId());
@@ -243,6 +253,9 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 				chain.add("updateTime", new Date());
 				chain.add("payReceiveRecordId", pnrSystemMapEntity.getPayReceiveRecordId());
 				chain.add("relationStatus", pnrTemp.getRelationStatus());
+				if (!Util.isEmpty(grabFileEntity)) {
+					chain.add("fileName", grabFileEntity.getFileName());
+				}
 				dbDao.update(TPnrSystemMapEntity.class, chain, Cnd.where("pnrId", "=", pnrinfoList.getPnrId()));
 			} else {
 				pnrSystemMapEntity.setCreateTime(new Date());
@@ -253,4 +266,15 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		}
 
 	}
+
+	private void getTopParent(long id) {
+		this.grabFileEntity = dbDao.fetch(TGrabFileEntity.class, id);
+		long parentId = grabFileEntity.getParentId();
+		if (parentId == 0 && !Util.isEmpty(grabFileEntity)) {
+
+			return;
+		}
+		getTopParent(grabFileEntity.getParentId());
+	}
+
 }

@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>附件预览</title>
 	<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
+	 <link rel="stylesheet" href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
 	<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
     <link rel="stylesheet" type="text/css" href="${base}/public/dist/css/receivePayment.css"><!--本页面style-->
     <link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css"/>
@@ -146,6 +147,7 @@
                   </div>
                 </div> 
          	  </div><!--end 入澳时间/出澳时间/备注 -->
+         	  <input type="hidden" name="pid" value="${obj.pid }" id="pid">
          	  <table id="PnrShowTable" class="table table-bordered table-hover">
                 <thead>
                   <tr>
@@ -196,6 +198,13 @@
 <!-- Select2 -->
 <script src="${base}/public/plugins/select2/select2.full.min.js"></script>
 <script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
+
+<!-- DataTables -->
+<script src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
+
+
+
 <script type="text/javascript">
 	var BASE_PATH = '${base}';
 </script>
@@ -310,6 +319,154 @@ $("#submit").click(function() {
 $('#submit').click(function() {
     $('#addForm').bootstrapValidator('validate');
 });
+
+/* pnr展示 */
+$(function (){
+	   initDatatable();
+});
+var empTable;
+	function initDatatable() {
+		empTable = $('#PnrShowTable').DataTable({
+			"searching" : false,
+			"processing" : true,
+			"serverSide" : true,
+			"stripeClasses": [ 'strip1','strip2' ],//斑马线
+			"bLengthChange" : false,
+			"bSort": true, //排序功能 
+			"autoWidth": false,
+			"language" : {
+				"url" : "${base}/public/plugins/datatables/cn.json"
+			},
+	       	"ajax": {
+	               "url": "${base}/admin/drawback/grabreport/listPnrSystem.html",
+	               "type": "post",
+	               "data": function (d) {
+	            	   
+	            	}
+	        },
+	        "columns": [
+	                    {"data": "ordersnum", "bSortable": false,
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.ordersnum;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance;
+	                    	}		
+	                    },//订单号
+	                    {"data": "cusgroupnum", "bSortable": false,
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.cusgroupnum;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance;
+	                    	}			
+	                    },//客户团号
+	                    {"data": "pnr", "bSortable": false,//PNR
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.pnr;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance;
+	                    	}		
+	                    },
+	                    {"data": "filename", "bSortable": false,//航空公司
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.filename;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance;
+	                    	}	
+	                    },
+	                    {"data": "personcount", "bSortable": false,//人数
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.personcount;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance;
+	                    	}	
+	                    },
+	                    {"data": "costprice", "bSortable": false,//成本单价
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.costprice;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return 0.00;
+	                    		}
+	                    		return depositBalance;
+	                    	}	
+	                    },
+	                    {"data": "enterausdate", "bSortable": false,//入澳时间
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.enterausdate;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance;
+	                    	}	
+	                    },
+	                    {"data": "outausdate", "bSortable": false,//出澳时间
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.outausdate;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance;
+	                    	}	
+	                    },
+	                    {"data": "orderstatus", "bSortable": false,//订单状态
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.orderstatus;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance;
+	                    	}	
+	                    },
+	                    {"data": "relationstatus", "bSortable": false,//关联状态
+	                    	render: function(data, type, row, meta) {
+	                    		var depositBalance = row.relationstatus;
+	                    		if(null==depositBalance || ""==depositBalance){
+	                    			return "";
+	                    		}
+	                    		return depositBalance;
+	                    	}	
+	                    },
+	                    {"data": "type", "bSortable": false}
+	                    ],
+	        "columnDefs": [{ "sWidth": "34.66%",  "targets": [0] },
+	     				{ "sWidth": "8.66%",  "targets": [1] },
+	    				{ "sWidth": "16.66%",  "targets": [2] },
+	    				{ "sWidth": "11.66%",  "targets": [3] },
+	    				{ "sWidth": "7.66%",  "targets": [4] },
+	    				{ "sWidth": "26.66%",  "targets": [5] },
+	                    {
+	            //   指定第一列，从0开始，0表示第一列，1表示第二列……
+	            targets: 10,
+	            render: function(data, type, row, meta) {
+	            	
+	            	var modify1 = '<a style="cursor:pointer;" href="'+row.pdfurl+'" target="_blank">预览</a>';
+	            	var modify2 = '<a style="cursor:pointer;" onclick="update('+row.id+');">编辑</a>';
+	            	if(row.filename ==null || row.filename == ""){
+	            		
+	            		var modify3 = '<a style="cursor:pointer;" href="#">下载</a>';
+	            	}else{
+	            		var modify3 = '<a style="cursor:pointer;" href="${base}/admin/airlinepolicy/download.html?id='+row.id+'">下载</a>';
+	            		
+	            	}
+	            	var modify4 = '<a style="cursor:pointer;" onclick="deleteFile('+row.id+');">删除</a>';
+	                return modify1+"&nbsp; &nbsp; &nbsp;"+modify2+"&nbsp; &nbsp; &nbsp;"+modify3+"&nbsp; &nbsp; &nbsp;"+modify4;
+	            }
+	        }]
+		});
+	}
+
+
+
+
 //点击取消
 function closewindow(){
 	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
@@ -342,26 +499,23 @@ $("#pnrInfoSelect").select2({
 		return markup;
 	}, // let our custom formatter work
 	templateSelection:function  formatRepoSelection(repo){
-		
-		
+		var pid=$("#pid").val();
+		var text=repo.text;
 		$.ajax({
 			type : "POST",
 			url : '${base}/admin/drawback/grabreport/findAndShowPNR.html',
 			data : {
-				id : 12,
-				pnr:repo.text
+				id : pid,
+				pnr:text
 			},
 			error : function(request) {
 				//layer.msg('添加失败!');
 			},
 			success : function(data) {
-				/* layer.load(1, {
-					shade : [ 0.1, '#fff' ]
-				//0.1透明度的白色背景
-				});
-				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-				parent.layer.close(index);
-				window.parent.successCallback('8'); */
+				var param = {PNR:text};
+				alert(param);
+				empTable.settings()[0].ajax.data = param;
+				empTable.ajax.reload();
 			}
 		});
 		
@@ -376,121 +530,7 @@ $("#pnrInfoSelect").select2({
 	maximumSelectionLength : 1, //设置最多可以选择多少项
 	tags : true, //设置必须存在的选项 才能选中
 });
-/* pnr展示 */
-var empTable;
-	function initDatatable() {
-		empTable = $('#PnrShowTable').DataTable({
-			"searching" : false,
-			"processing" : true,
-			"serverSide" : true,
-			"stripeClasses": [ 'strip1','strip2' ],//斑马线
-			"bLengthChange" : false,
-			"bSort": true, //排序功能 
-			"autoWidth": false,
-			"language" : {
-				"url" : "${base}/public/plugins/datatables/cn.json"
-			},
-	       	"ajax": {
-	               "url": "${base}/admin/drawback/grabreport/listData.html",
-	               "type": "post",
-	               "data": function (d) {
-	            	   
-	            	}
-	        },
-	        "columns": [
-	                    {"data": "filename", "bSortable": false},//订单号
-	                    {"data": "airlinecompanyname", "bSortable": false},//客户团号
-	                    {"data": "areaname", "bSortable": false,//PNR
-	                    	render: function(data, type, row, meta) {
-	                    		var depositBalance = row.areaname;
-	                    		if(null==depositBalance || ""==depositBalance){
-	                    			return "";
-	                    		}
-	                    		return depositBalance;
-	                    	}		
-	                    },
-	                    {"data": "updatetime", "bSortable": false,//航空公司
-	                    	render: function(data, type, row, meta) {
-	                    		var depositBalance = row.updatetime;
-	                    		if(null==depositBalance || ""==depositBalance){
-	                    			return "";
-	                    		}
-	                    		return depositBalance.substring(0,depositBalance.lastIndexOf(' '));
-	                    	}	
-	                    },
-	                    {"data": "updatetime", "bSortable": false,//人数
-	                    	render: function(data, type, row, meta) {
-	                    		var depositBalance = row.updatetime;
-	                    		if(null==depositBalance || ""==depositBalance){
-	                    			return "";
-	                    		}
-	                    		return depositBalance.substring(0,depositBalance.lastIndexOf(' '));
-	                    	}	
-	                    },
-	                    {"data": "updatetime", "bSortable": false,//成本单价
-	                    	render: function(data, type, row, meta) {
-	                    		var depositBalance = row.updatetime;
-	                    		if(null==depositBalance || ""==depositBalance){
-	                    			return "";
-	                    		}
-	                    		return depositBalance.substring(0,depositBalance.lastIndexOf(' '));
-	                    	}	
-	                    },
-	                    {"data": "updatetime", "bSortable": false,//入澳时间
-	                    	render: function(data, type, row, meta) {
-	                    		var depositBalance = row.updatetime;
-	                    		if(null==depositBalance || ""==depositBalance){
-	                    			return "";
-	                    		}
-	                    		return depositBalance.substring(0,depositBalance.lastIndexOf(' '));
-	                    	}	
-	                    },
-	                    {"data": "updatetime", "bSortable": false,//出澳时间
-	                    	render: function(data, type, row, meta) {
-	                    		var depositBalance = row.updatetime;
-	                    		if(null==depositBalance || ""==depositBalance){
-	                    			return "";
-	                    		}
-	                    		return depositBalance.substring(0,depositBalance.lastIndexOf(' '));
-	                    	}	
-	                    },
-	                    {"data": "updatetime", "bSortable": false,//订单状态
-	                    	render: function(data, type, row, meta) {
-	                    		var depositBalance = row.updatetime;
-	                    		if(null==depositBalance || ""==depositBalance){
-	                    			return "";
-	                    		}
-	                    		return depositBalance.substring(0,depositBalance.lastIndexOf(' '));
-	                    	}	
-	                    },
-	                    {"data": "type", "bSortable": false}
-	                    ],
-	        "columnDefs": [{ "sWidth": "34.66%",  "targets": [0] },
-	     				{ "sWidth": "8.66%",  "targets": [1] },
-	    				{ "sWidth": "16.66%",  "targets": [2] },
-	    				{ "sWidth": "11.66%",  "targets": [3] },
-	    				{ "sWidth": "7.66%",  "targets": [4] },
-	    				{ "sWidth": "26.66%",  "targets": [5] },
-	                    {
-	            //   指定第一列，从0开始，0表示第一列，1表示第二列……
-	            targets: 5,
-	            render: function(data, type, row, meta) {
-	            	
-	            	var modify1 = '<a style="cursor:pointer;" href="'+row.pdfurl+'" target="_blank">预览</a>';
-	            	var modify2 = '<a style="cursor:pointer;" onclick="update('+row.id+');">编辑</a>';
-	            	if(row.filename ==null || row.filename == ""){
-	            		
-	            		var modify3 = '<a style="cursor:pointer;" href="#">下载</a>';
-	            	}else{
-	            		var modify3 = '<a style="cursor:pointer;" href="${base}/admin/airlinepolicy/download.html?id='+row.id+'">下载</a>';
-	            		
-	            	}
-	            	var modify4 = '<a style="cursor:pointer;" onclick="deleteFile('+row.id+');">删除</a>';
-	                return modify1+"&nbsp; &nbsp; &nbsp;"+modify2+"&nbsp; &nbsp; &nbsp;"+modify3+"&nbsp; &nbsp; &nbsp;"+modify4;
-	            }
-	        }]
-		});
-	}
+
 </script>
 </body>
 </html>
