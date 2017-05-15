@@ -75,7 +75,8 @@ public class InterPaymentSqlForm extends DataTablesParamForm {
 			SqlExpressionGroup sqlex = new SqlExpressionGroup();
 			sqlex.and("tuo.ordersnum", "like", "%" + searchInfo + "%")
 					.or("tci.shortName", "like", "%" + searchInfo + "%")
-					.or("tci.linkMan", "like", "%" + searchInfo + "%");
+					.or("tci.linkMan", "like", "%" + searchInfo + "%")
+					.or("getInterPnrByOrderid(tuo.id)", "like", "%" + searchInfo + "%");
 			cnd.and(sqlex);
 		}
 		if (!Util.isEmpty(startdate)) {

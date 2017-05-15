@@ -62,7 +62,7 @@ public class InternationalShouListForm extends DataTablesParamForm {
 		cnd.and("ordertype", "=", OrderTypeEnum.TEAM.intKey());
 		//cnd.and("invoicetype", "=", InvoiceInfoEnum.RECEIPT_INVOIC_ING.intKey());//开发票中
 		if (!Util.isEmpty(companyid)) {
-			cnd.and("comId", "=", companyid);
+			cnd.and("tii.comId", "=", companyid);
 		}
 		if (!Util.isEmpty(userid) && !Util.isEmpty(adminId) && !userid.equals(adminId)) {
 			cnd.and("tuo.loginUserId", "=", userid);
@@ -72,7 +72,9 @@ public class InternationalShouListForm extends DataTablesParamForm {
 			SqlExpressionGroup sqlex = new SqlExpressionGroup();
 			sqlex.and("tuo.ordersnum", "like", "%" + searchInfo + "%")
 					.or("tii.paymentunit", "like", "%" + searchInfo + "%")
-					.or("tii.remark", "like", "%" + searchInfo + "%");
+					.or("tii.remark", "like", "%" + searchInfo + "%")
+					.or("getByInvoicenumQuery(tii.id)", "like", "%" + searchInfo + "%")
+					.or("tcd.comDictName", "like", "%" + searchInfo + "%");
 			cnd.and(sqlex);
 		}
 		if (!Util.isEmpty(startdate)) {
