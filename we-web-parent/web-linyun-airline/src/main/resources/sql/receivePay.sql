@@ -97,18 +97,11 @@ SELECT
 	fi.cusgroupnum,
 	ci.shortName,
 	fi.billingdate,
+	fi.issuer,
 	pi.peoplecount,
     pi.costpricesum salesprice,
     pi.salespricesum,
-	ci.linkMan,
-	(
-		SELECT
-			fullName
-		FROM
-			t_user u
-		WHERE
-			u.id = fi. ISSUER
-	) ISSUER
+	ci.linkMan
 FROM
 	t_pay p
 INNER JOIN t_pay_pnr pp ON pp.payId = p.id
@@ -144,6 +137,7 @@ SELECT
 	fi.cusgroupnum,
 	ci.shortName,
 	fi.billingdate billdate,
+	fi.issuer,
 	oc.peoplecount peopleCount,
 	u.userName proposer,
 	pi.costpricesum salePrice,
