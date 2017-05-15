@@ -102,6 +102,12 @@
                              <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm disab mustNumber"></td>
                              <td><label>成本单价：</label></td>
                              <td><input id="costsingleprice" name="costsingleprice" type="text" class="form-control input-sm disab mustNumberPoint"></td>
+                             <td><label style="position: relative;left: -15px;">状态：</label></td>
+                             <td><select id="teamtype" name="teamtype" type="text" class="form-control input-sm disab" style="padding-left: 3px;position: relative;left: -15px;">
+                             		 <option value="1">系列团</option>
+		      						 <option value="2">临时团</option>
+                             	</select>
+                             </td>
                            </tr>
                           <tr>
                             <td><label>记录编号：</label></td>
@@ -114,7 +120,7 @@
                             <td><select id="arrivecity" name="arrivecity" type="text" class="form-control input-sm" multiple="multiple"></select></td>
                             <td><label>出发日期：</label></td>
                             <td><input id="leavedate" name="leavedate" type="text" class="form-control input-sm" onFocus="WdatePicker({minDate:'%y-%M-%d'})" placeholder=" "></td>
-                            <td><label>航班号：</label></td>
+                            <td><label style="left: -15px;">航班号：</label></td>
                             <td><select id="ailinenum" name="ailinenum" type="text" class="form-control input-sm" placeholder="ca309" multiple="multiple"></select></td>
                             <td><label>出发时间：</label></td>
                             <td><input id="leavetime" name="leavetime" type="text" class="form-control input-sm mustTimes" placeholder=""></td>
@@ -200,6 +206,8 @@
  		 data.airlinecom = airlinecom;
  		 var peoplecount = $('#peoplecount').val();
  		 data.peoplecount = peoplecount;
+ 		 var teamtype = $('#teamtype').val();
+ 		 data.teamtype = teamtype;
  		 var costsingleprice = $('#costsingleprice').val();
  		 data.costsingleprice = costsingleprice;
  		 var pnr = $('#pnr').val();

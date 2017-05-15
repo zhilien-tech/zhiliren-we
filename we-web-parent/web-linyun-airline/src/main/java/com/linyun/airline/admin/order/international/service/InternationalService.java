@@ -321,7 +321,9 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		if (!Util.isEmpty(orderinfo.getRemark())) {
 			orderinfo.setRemark(orderinfo.getRemark().replace("\n", HUANHANG));
 		}
+		TPlanInfoEntity planinfo = dbDao.fetch(TPlanInfoEntity.class, Cnd.where("ordernumber", "=", orderid));
 		result.put("orderinfo", orderinfo);
+		result.put("planinfo", planinfo);
 		TCustomerInfoEntity custominfo = new TCustomerInfoEntity();
 		if (!Util.isEmpty(orderinfo.getUserid())) {
 			custominfo = dbDao.fetch(TCustomerInfoEntity.class, orderinfo.getUserid().longValue());
@@ -419,6 +421,12 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			orderinfo.setCostsingleprice(Double.valueOf((String) fromJson.get("costsingleprice")));
 		}
 		dbDao.update(orderinfo);
+		if (!Util.isEmpty(fromJson.get("teamtype"))) {
+			TPlanInfoEntity planinfo = dbDao.fetch(TPlanInfoEntity.class,
+					Cnd.where("ordernumber", "=", orderinfo.getId()));
+			planinfo.setTeamtype(Integer.valueOf((String) fromJson.get("teamtype")));
+			dbDao.update(planinfo);
+		}
 		String financeData = request.getParameter("financeData");
 		saveFinanceData(financeData, orderType, user);
 		return null;
@@ -768,6 +776,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		Sql sql = Sqls.create(sqlString);
 		List<Record> visitors = dbDao.query(sql, Cnd.where("pnrid", "=", pnrid), null);
 		result.put("visitors", visitors);
+		result.put("pnrid", pnrid);
 		result.put("backticketstatusenum", EnumUtil.enum2(BackTicketStatusEnum.class));
 		return result;
 	}
@@ -1061,8 +1070,9 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		if (PayReceiveTypeEnum.PAY.intKey() == payreceive.getRecordtype()) {
 			TPayReceiveRecordEntity receiveEntity = dbDao.fetch(
 					TPayReceiveRecordEntity.class,
-					Cnd.where("orderid", "=", payreceive.getOrderid()).and("recordtype", "=",
-							PayReceiveTypeEnum.RECEIVE.intKey()));
+					Cnd.where("orderid", "=", payreceive.getOrderid())
+							.and("recordtype", "=", PayReceiveTypeEnum.RECEIVE.intKey())
+							.and("orderstatusid", "=", payreceive.getOrderstatusid()));
 			Integer orderid = payreceive.getOrderid();
 			TUpOrderEntity order = dbDao.fetch(TUpOrderEntity.class, orderid.longValue());
 			TCustomerInfoEntity custome = new TCustomerInfoEntity();
@@ -1539,6 +1549,9 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		planinfo.setCreatetime(new Date());
 		planinfo.setIsclose(0);
 		planinfo.setIssave(1);
+		if (!Util.isEmpty(fromJson.get("teamtype"))) {
+			planinfo.setTeamtype(Integer.valueOf((String) fromJson.get("teamtype")));
+		}
 		planinfo.setOpid(user.getId());
 		planinfo.setOrdernumber(String.valueOf(insertOrder.getId()));
 		if (!Util.isEmpty(fromJson.get("peoplecount"))) {
@@ -1814,6 +1827,17 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			}
 		}
 		return null;
+	}
+
+	public Object loadVisitorData(HttpServletRequest request) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String pnrid = request.getParameter("pnrid");
+		String sqlString = sqlManager.get("get_visitor_info_list");
+		Sql sql = Sqls.create(sqlString);
+		List<Record> visitors = dbDao.query(sql, Cnd.where("pnrid", "=", pnrid), null);
+		result.put("visitors", visitors);
+		result.put("backticketstatusenum", EnumUtil.enum2(BackTicketStatusEnum.class));
+		return result;
 	}
 
 }

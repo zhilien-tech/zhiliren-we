@@ -72,6 +72,15 @@ public class ReceivePayModule {
 	}
 
 	/**
+	 * 验证付款单位
+	 */
+	@At
+	@POST
+	public Object sameShortName(@Param("inlandPayIds") String inlandPayIds, HttpSession session) {
+		return receivePayService.toConfirmPay(inlandPayIds, session);
+	}
+
+	/**
 	 * 根据银行id查询 银行卡
 	 */
 	@At

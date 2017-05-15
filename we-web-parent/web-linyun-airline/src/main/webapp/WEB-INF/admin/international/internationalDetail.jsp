@@ -165,6 +165,26 @@
                      <td><input id="peoplecount" name="peoplecount" disabled="disabled" type="text" class="form-control input-sm disab mustNumber" value="${obj.orderinfo.peoplecount }"></td>
                      <td><label>成本单价：</label></td>
                      <td><input id="costsingleprice" name="costsingleprice" disabled="disabled" type="text" class="form-control input-sm disab mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.orderinfo.costsingleprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
+                     <td><label>状态：</label></td>
+                     <td><select id="teamtype" name="teamtype" type="text" disabled="disabled" class="form-control input-sm disab">
+                     		<c:choose>
+                     			<c:when test="${obj.planinfo.teamtype eq 1 }">
+		                     		 <option value="1" selected="selected">系列团</option>
+                     			</c:when>
+                     			<c:otherwise>
+		                     		 <option value="1">系列团</option>
+                     			</c:otherwise>
+                     		</c:choose>
+                     		<c:choose>
+                     			<c:when test="${obj.planinfo.teamtype eq 2 }">
+									 <option value="2" selected="selected">临时团</option>
+                     			</c:when>
+                     			<c:otherwise>
+									 <option value="2">临时团</option>
+                     			</c:otherwise>
+                     		</c:choose>
+                     	</select>
+                     </td>
                    </tr>
                  </table>
                  <div class="tableDuan"><!--主段-->
@@ -486,6 +506,7 @@
           $('#orderType').removeAttr("disabled");//信息模块 input 禁止编辑的状态
           $('#cRemark').removeAttr("disabled");//信息模块 input 禁止编辑的状态
           $('#linkName').removeAttr("disabled");//信息模块 input 禁止编辑的状态
+          $('#teamtype').removeAttr("disabled");//信息模块 input 禁止编辑的状态
           $('#jianMian').addClass("jianMian");//减免禁止编辑的状态
           loadAirlineInfo();
           loadJianMianAccount('${obj.orderinfo.id }');
@@ -505,6 +526,7 @@
           $('#orderType').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
           $('#cRemark').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
           $('#linkName').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
+          $('#teamtype').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
           $('#jianMian').removeClass("jianMian");//减免添加 不可编辑属性
           loadAirlineInfo(1);
           loadJianMianAccount('${obj.orderinfo.id }',1);

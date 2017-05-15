@@ -12,14 +12,14 @@
 	<link rel="stylesheet" href="${base}/public/dist/css/AdminLTE.css">
 	<style type="text/css">
 		#backTicketForm{margin-top:5px;margin-right:0px;}
-		.sc{position: relative;top: -28px;width: 74px;opacity: 0;cursor: pointer;}
+		.sc{position: relative;top: -29px;left: -1px;width: 74px;height: 29px;opacity: 0;cursor: pointer;}
 		.FileDiv{border: solid 1px #2f7298;height: 29px;line-height: 28px;width:74px;border-radius: 3px;background: #3c8dbc;color: #fff;text-align: center;display: block;}
 		.FileDiv:hover{color: #fff;background-color:#367da7;}
 		.fileUL {margin-left:20.6%;}
 		.fileUL li{float: left;list-style: none;}
 		#fileName,.fileDelete{line-height: 29px;padding-left: 10px;font-size: 12px;color:#656565;}
 		.fileDelete{font-size: 14px;color: #3c8dbc;}
-		.addIcon {top: 3px;margin-left: 10px;}
+		.addIcon {top:3px;margin-left: 10px;}
 		.removIcon { margin-top: 3px;margin-left:5px;}
 		.allCentext{height:355px;overflow-y: auto;padding-bottom: 0;}
 		.white_content {display: none;position: absolute;top: 25%;left: 25%;width: 55%;height: 55%;padding: 15px;border: 1px solid #efefef;border-radius: 5px;box-shadow: 0 0 31px #dadada;background-color: white;z-index: 1002;overflow: auto;}
@@ -192,27 +192,35 @@
 		  var backticketfiles = [];
 		  $('.cloneTR').each(function(){
 			  var backticketfile = {};
+			  var filelength = '';
 			  var filename = $(this).find('[name=fileName]').html();
 			  backticketfile.filename = filename;
+			  filelength += filename;
 			  var fileurl = $(this).find('[name=fileurl]').val();
 			  backticketfile.fileurl = fileurl;
-			  backticketfiles.push(backticketfile);
+			  filelength += fileurl;
+			  if(filelength){
+				  backticketfiles.push(backticketfile);
+			  }
 		  });
 		  formdata.backticketfiles = JSON.stringify(backticketfiles);
-		  layer.load(1);
-		  $.ajax({ 
-				type: 'POST', 
-				data: formdata, 
-				url: '${base}/admin/international/saveBackTicketInfo.html',
-	            success: function (data) { 
-	            	layer.closeAll('loading');
-	            	closewindow();
-	            	window.parent.successCallback('3');
-	            },
-	            error: function (xhr) {
-	            	layer.msg("退票失败","",3000);
-	            } 
-	        }); 
+		  var backstatus = $('#backstatus').val();
+		  if(backstatus){
+			  layer.load(1);
+			  $.ajax({ 
+					type: 'POST', 
+					data: formdata, 
+					url: '${base}/admin/international/saveBackTicketInfo.html',
+		            success: function (data) { 
+		            	layer.closeAll('loading');
+		            	closewindow();
+		            	window.parent.successCallback('3');
+		            },
+		            error: function (xhr) {
+		            	layer.msg("退票失败","",3000);
+		            } 
+		        }); 
+		  }
 	  });
 	  
 	  $(function(){
@@ -227,6 +235,7 @@
 	          var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
 	          newDiv.find("p").html(No); 
 	          newDiv.find('#preView').parent().remove();
+	          newDiv.find('#download').parent().remove();
 	          newDiv.find('.deleteInvoice').parent().remove();
 	          newDiv.find('.addIcon').parent().remove();
 	          newDiv.find('.fileUL').append('<li><a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a></li>');
@@ -308,7 +317,7 @@
 	  });
 	
 	  function downloadFile(fileurl,filename){
-		  window.location.href='${base}/admin/international/downloadFile.html?fileurl=' + fileurl + '&filename=' + encodeURI(filename);
+		  window.location.href='${base}/admin/international/downloadFile.html?fileurl=' + fileurl + '&filename=' + encodeURI(encodeURI(filename));
 	  }
 	</script>
 </body>
