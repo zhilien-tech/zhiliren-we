@@ -525,7 +525,10 @@ function successCallback(id){
 			                    		var filename = row.filename;
 			                    		var fileId  = row.id;
 			                    		var filetype = row.type;
-			                    		var fileExtension = filename.substring(filename.lastIndexOf('.') + 1);
+			                    		var fileExtension='aaa';
+			                    		if(filename!=null&&filename!=''){
+				                    		fileExtension = filename.substring(filename.lastIndexOf('.') + 1);
+			                    		}
 			                    		if(null==filename || ""==filename){
 			                    			return null;
 			                    		}
@@ -624,7 +627,10 @@ function successCallback(id){
 			                    		var filename = row.filename;
 			                    		var fileId  = row.id;
 			                    		var filetype = row.type;
-			                    		var fileExtension = filename.substring(filename.lastIndexOf('.') + 1);
+			                    		var fileExtension='aaa';
+			                    		if(filename!=null&&filename!=''){
+				                    		fileExtension = filename.substring(filename.lastIndexOf('.') + 1);
+			                    		}
 			                    		if(null==filename || ""==filename){
 			                    			return null;
 			                    		}
