@@ -103,7 +103,8 @@ function initKaiInterInvoiceTable() {
                 	  render:function(data, type, row, meta) {
 	                  		var result = '';
 	                  		if(row.paymentunit){
-	                  			result = row.paymentunit;
+	                  			//result = row.paymentunit;
+	                  			result = '<span data-toggle="tooltip" data-placement="left" title="'+row.paymentunit+'">'+row.paymentunit+'<span>';
 	                  		}
 	                  		return result;
                   	   }
@@ -169,7 +170,7 @@ function initKaiInterInvoiceTable() {
                       }
                   }
           ],
-      columnDefs: [{
+      "columnDefs": [{
     	//   指定第一列，从0开始，0表示第一列，1表示第二列……
           /*targets: 11,
           render: function(data, type, row, meta) {
@@ -305,7 +306,8 @@ function initshouInterInvoiceTable() {
                 	  render:function(data, type, row, meta) {
                   		var result = '';
                   		if(row.paymentunit && row.paymentunit != undefined) {
-                  			result =row.paymentunit;
+                  			//result =row.paymentunit;
+                  			var result = '<span data-toggle="tooltip" data-placement="left" title="'+row.paymentunit+'">'+row.paymentunit+'<span>';
                   		}
                   		return result;
                   	}  

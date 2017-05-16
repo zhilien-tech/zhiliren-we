@@ -8,10 +8,13 @@
 .dataTable thead .sorting_desc:after {display: none !important;}
 .dataTable thead .sorting:after {display: none !important;}
 .tab-content{padding: 0 !important;padding-top: 10px !important;}
-#KaiInterInvoiceTable tbody tr td:nth-child(11) span{width:100px;display: block;word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 auto;}
+#KaiInterInvoiceTable tbody tr td:nth-child(11) span{width:80px;display: block;word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 auto;}
+#KaiInterInvoiceTable tbody tr td:nth-child(7) span{width:100px;display: block;word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 auto;}
+
 .TimeInput {padding-left: 4px;padding-right: 0px;}
 .ckBtn {margin-left: 10px;}
 #shouInterInvoiceTable tbody tr td:nth-child(11) span{width:60px;display: block;word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 auto;}
+#shouInterInvoiceTable tbody tr td:nth-child(7) span{width:60px;display: block;word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 auto;}
 .fileUL1{padding-left:6px;}
 .FileDivA{width: 40px;}
 .payTable2 {margin-top: 10px;width: 100%;}

@@ -9,6 +9,8 @@
 .dataTable thead .sorting:after {display: none !important;}
 .tab-content{padding: 0 !important;padding-top: 10px !important;}
 #KaiInvoiceTable1 tbody tr td:nth-child(10) span{width:60px;display: block;word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 auto;}
+#KaiInvoiceTable1 tbody tr td:nth-child(7) span{width:65px;display: block;word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 auto;}
+#KaiInvoiceTable1 tbody tr td:nth-child(1) span{width:95px;display: block;word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 auto;}
 .tooltipSpan{width:50px;display: block;word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 auto;}
 .TimeInput {padding-left: 4px;padding-right: 0px;}
 .ckBtn {margin-left: 10px;}

@@ -32,7 +32,7 @@ function initKaiInvoiceTable1() {
                     		var result = '<ul> ';
                     		$.each(row.orders, function(name, value) {
                     			if(value){
-                    				result += '<li style="list-style:none;">'+value.ordersnum+'</li>';
+                    				result += '<li style="list-style:none;"><span data-toggle="tooltip" data-placement="right" title="'+value.ordersnum+'">'+value.ordersnum+'<span></li>';
                     			}
                     		});
                     		result += '</ul>';
@@ -104,6 +104,7 @@ function initKaiInvoiceTable1() {
                     		if(paymentunit == "" || paymentunit == null){
                     			return "";
                     		}
+                    		var paymentunit = '<span data-toggle="tooltip" data-placement="right" title="'+paymentunit+'">'+paymentunit+'<span>';
                     		return paymentunit;
                     	}
                   },
@@ -132,9 +133,8 @@ function initKaiInvoiceTable1() {
                   },
                   {"data": "remark", "bSortable": false,
                 	  render:function(data, type, row, meta) {
-                  		//var remark = row.remark;
                 		var remark = '<span data-toggle="tooltip" data-placement="left" title="'+row.remark+'">'+row.remark+'<span>';
-                  		if(remark == "" || remark == null){
+                  		if(row.remark == "" || row.remark == null){
                   			return "";
                   		}
                   		return remark;
@@ -146,13 +146,18 @@ function initKaiInvoiceTable1() {
                       }
                   }
           ],
-      columnDefs: [/*{
-    	//   指定第一列，从0开始，0表示第一列，1表示第二列……
-          targets: 10,
-          render: function(data, type, row, meta) {
-              return '<a style="cursor:pointer;" onclick="openkaiInvoiceEdit('+row.id+');">开发票</a>'
-          }
-      }*/]
+      "columnDefs": [
+                    { "sWidth": "11%",  "targets": [0] },
+					{ "sWidth": "9%",  "targets": [1] },
+					{ "sWidth": "9%",  "targets": [2] },
+					{ "sWidth": "9%",  "targets": [3] },
+					{ "sWidth": "9%",  "targets": [4] },
+					{ "sWidth": "9%",  "targets": [5] },
+					{ "sWidth": "9%",  "targets": [6] },
+					{ "sWidth": "9%",  "targets": [7] },
+					{ "sWidth": "9%",  "targets": [8] },
+					{ "sWidth": "9%",  "targets": [9] },
+					{ "sWidth": "7%",  "targets": [10] }]
   });
 }
 function kaiInvoiceLoad(){
@@ -316,7 +321,8 @@ function initshouInvoiceTable1() {
                 	render:function(data, type, row, meta) {
                 		var result = '';
                 		if(row.paymentunit && row.paymentunit != undefined) {
-                			result =row.paymentunit;
+                			//result =row.paymentunit;
+                			var result = '<span class="tooltipSpan" data-toggle="tooltip" data-placement="left" title="'+row.paymentunit+'">'+row.paymentunit+'<span>';
                 		}
                 		return result;
                 	}
