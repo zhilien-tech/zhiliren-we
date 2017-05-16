@@ -80,7 +80,9 @@ $condition
 
 /*international_invoice_inter_shou_invoice_list_order*/
 SELECT
-	tuo.*, tprr.actualnumber
+	tci.shortname,
+	tuo.*, 
+	tprr.actualnumber
 FROM
 	t_up_order tuo
 INNER JOIN t_order_receive tor ON tuo.id = tor.orderid
@@ -89,6 +91,7 @@ INNER JOIN t_invoice_info ii ON tr.id = ii.receiveid
 LEFT JOIN t_pay_receive_record tprr ON tor.orderid = tprr.orderid
 AND tprr.orderstatusid = tor.orderstatus
 AND tprr.recordtype = @recordtype
+LEFT JOIN t_customer_info tci ON tci.id = tuo.userid
 $condition
 
 /*international_invoice_international_invoice_list*/
