@@ -49,8 +49,8 @@ public class GrabreportModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object filePreview(@Param("id") long pid) {
-		return grabreportViewService.addFilePreview(pid);
+	public Object filePreview(@Param("id") long pid, @Param("flagType") long flagType) {
+		return grabreportViewService.addFilePreview(pid, flagType);
 	}
 
 	/**
@@ -105,9 +105,10 @@ public class GrabreportModule {
 	 */
 	@At
 	@POST
-	public Object selectPNRNames(@Param("p") final String findPNR, @Param("PNRName") final String companyName) {
+	public Object selectPNRNames(@Param("p") final String findPNR, @Param("PNRName") final String companyName,
+			@Param("flagType") final int flagType) {
 
-		return this.grabreportViewService.selectPNRNames(findPNR, companyName);
+		return this.grabreportViewService.selectPNRNames(findPNR, companyName, flagType);
 	}
 
 	/**

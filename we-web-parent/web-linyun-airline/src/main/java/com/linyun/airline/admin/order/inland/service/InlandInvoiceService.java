@@ -40,6 +40,7 @@ import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
 import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.constants.CommonConstants;
+import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.common.enums.MessageWealthStatusEnum;
 import com.linyun.airline.common.enums.OrderRemindEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
@@ -366,8 +367,8 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		//检索条件
 		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
-				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
-				null);
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId())
+						.and("status", "=", DataStatusEnum.ENABLE.intKey()), null);
 		paramForm.setUserid(new Long(user.getId()).intValue());
 		paramForm.setCompanyid(company.getId());
 		paramForm.setAdminId(company.getAdminId().intValue());
@@ -433,8 +434,8 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		Map<String, Object> datatableData = this.listPage4Datatables(paramForm);
 		List<Record> listdata = (List<Record>) datatableData.get("data");
 		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
-				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
-				null);
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId())
+						.and("status", "=", DataStatusEnum.ENABLE.intKey()), null);
 		for (Record record : listdata) {
 			record.put("ytselect", ytselect);
 			record.put("invoiceinfoenum", EnumUtil.enum2(InvoiceInfoEnum.class));
@@ -467,9 +468,11 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 				Cnd.where("invoiceinfoid", "=", invoiceinfo.getId()), null);
 		//付款信息
 		TReceiveEntity fetch = dbDao.fetch(TReceiveEntity.class, Long.valueOf(invoiceinfo.getReceiveid()));
-		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
-				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
-				null);
+		List<ComDictInfoEntity> ytselect = dbDao.query(
+				ComDictInfoEntity.class,
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId())
+						.and("status", "=", DataStatusEnum.ENABLE.intKey())
+						.and("status", "=", DataStatusEnum.ENABLE.intKey()), null);
 		result.put("ytselect", ytselect);
 		List<TOrderReceiveEntity> query = dbDao.query(TOrderReceiveEntity.class,
 				Cnd.where("receiveid", "=", fetch.getId()), null);
@@ -535,8 +538,8 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
-				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
-				null);
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId())
+						.and("status", "=", DataStatusEnum.ENABLE.intKey()), null);
 		Map<String, Object> result = new HashMap<String, Object>();
 		//发票id
 		String id = request.getParameter("id");

@@ -37,6 +37,7 @@ import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
+import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
@@ -76,8 +77,8 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
-				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
-				null);
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId())
+						.and("status", "=", DataStatusEnum.ENABLE.intKey()), null);
 		sqlForm.setCompanyid(new Long(company.getId()).intValue());
 		sqlForm.setUserid(new Long(user.getId()).intValue());
 		sqlForm.setAdminId(company.getAdminId().intValue());
@@ -135,8 +136,8 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 		//获取当前公司
 		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
-				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
-				null);
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId())
+						.and("status", "=", DataStatusEnum.ENABLE.intKey()), null);
 		sqlForm.setCompanyid(new Long(company.getId()).intValue());
 		sqlForm.setUserid(new Long(user.getId()).intValue());
 		sqlForm.setAdminId(company.getAdminId().intValue());
@@ -242,8 +243,8 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 		//银行卡下拉
 		result.put("yhkSelect", yhkSelect);
 		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
-				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
-				null);
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId())
+						.and("status", "=", DataStatusEnum.ENABLE.intKey()), null);
 		result.put("ytselect", ytselect);
 		//订单信息id
 		result.put("ids", ids);
@@ -314,8 +315,8 @@ public class InternationalInvoiceService extends BaseService<TInvoiceInfoEntity>
 		result.put("yhkSelect", yhkSelect);
 		//用途下拉
 		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
-				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
-				null);
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId())
+						.and("status", "=", DataStatusEnum.ENABLE.intKey()), null);
 		result.put("ytselect", ytselect);
 		//订单信息id
 		result.put("ids", ids);
