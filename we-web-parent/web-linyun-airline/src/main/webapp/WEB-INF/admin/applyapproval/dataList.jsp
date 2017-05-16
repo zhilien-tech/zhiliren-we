@@ -45,7 +45,7 @@
   
   	<c:if test="${obj.operation=='international' }">
   		<c:forEach items="${obj.query }" var="each">
-		  	<a href="${base}/admin/applyapproval/detailList.html?id=${each.id}&operation=${obj.operation}&date=${obj.date}&reduce=${each.isReduce}">
+		  	<a href="${base}/admin/applyapproval/detailList.html?id=${each.id}&operation=${obj.operation}&date=${obj.date}&reduce=${each.isReduce}&orderid=${each.orderid}">
 				<ul class="content-a-ul">
 					<li>
 						<span>${each.shortName }</span>
@@ -115,7 +115,7 @@
   	</c:if>
   	<c:if test="${obj.operation=='inlandNum' }">
  		<c:forEach items="${obj.query }" var="each">
-		  	<a href="${base}/admin/applyapproval/detailList.html?id=${each.id}&operation=${obj.operation}&date=${obj.date}&reduce=${each.isReduce}">
+		  	<a href="${base}/admin/applyapproval/detailList.html?id=${each.id}&operation=${obj.operation}&date=${obj.date}&reduce=${each.isReduce}&orderid=${each.orderid}">
 				<ul class="content-a-ul">
 					<li>
 						<span>${each.shortName }</span>

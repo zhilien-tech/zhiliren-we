@@ -75,13 +75,13 @@ public class ApplyApprovalModule {
 	@Ok("jsp")
 	public Object detailList(@Param("..") final Pager pager, final HttpSession session,
 			@Param("operation") final String operation, @Param("id") final String id, @Param("date") final String date,
-			@Param("reduce") final String reduce) {
+			@Param("reduce") final String reduce, @Param("orderid") final int orderid) {
 		/*Map<String, Object> map = Maps.newHashMap();
 		List<Record> deplist = grabfileViewService.getFolderInfo(sqlManager);
 		map.put("deplist", deplist);
 		map.put("dataStatusEnum", EnumUtil.enum2(DataStatusEnum.class));*/
 		/*airlinePolicyService.findConditionList()*/
-		return applyApprovalService.findDetail(session, operation, id, date, reduce);
+		return applyApprovalService.findDetail(session, operation, id, date, reduce, orderid);
 	}
 
 	/**

@@ -287,7 +287,7 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 		return null;
 	}
 
-	public Object findDetail(HttpSession session, String operation, String id, String date, String reduce) {
+	public Object findDetail(HttpSession session, String operation, String id, String date, String reduce, int orderid) {
 		if (Util.isEmpty(reduce)) {
 
 			Integer orderType = null;
@@ -304,7 +304,9 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 				cnd.and("companyId", "=", companyId);
 				/*cnd.and("orderstype", "=", orderType);*/
 				/*cnd.and("(orderPnrStatus", "=", AccountPayEnum.APPROVAL.intKey());*/
-
+				if (orderid > 0) {
+					cnd.and("orderId", "=", orderid);
+				}
 				cnd.and("id", "=", id);
 				sql.setCondition(cnd);
 				List<Record> datalist = dbDao.query(sql, cnd, null);
@@ -329,7 +331,9 @@ public class ApplyApprovalService extends BaseService<ApplyApprovalEntity> {
 				cnd.and("companyId", "=", companyId);
 				/*cnd.and("orderstype", "=", orderType);*/
 				/*cnd.and("(orderPnrStatus", "=", AccountPayEnum.APPROVAL.intKey());*/
-
+				if (orderid > 0) {
+					cnd.and("orderId", "=", orderid);
+				}
 				cnd.and("id", "=", id);
 				sql.setCondition(cnd);
 				List<Record> datalist = dbDao.query(sql, cnd, null);
