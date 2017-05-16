@@ -10,7 +10,7 @@ import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
-import com.linyun.airline.admin.drawback.grabfile.enums.GroupTypeEnum;
+import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
@@ -104,9 +104,9 @@ public class TGrabFileSqlForm extends DataTablesParamForm {
 		//cnd.and("gr.groupType", "=", GroupTypeEnum.GRABMAIL_FIT.intKey());//散客
 		int a = flag;
 		if (a == 0) {
-			cnd.and("groupType", "=", GroupTypeEnum.GRABMAIL_FIT.intKey());
+			cnd.and("groupType", "=", OrderTypeEnum.FIT.intKey());
 		} else if (a == 1) {
-			cnd.and("groupType", "=", GroupTypeEnum.GRABMAIL_TEAM.intKey());
+			cnd.and("groupType", "=", OrderTypeEnum.TEAM.intKey());
 
 		}
 		return cnd;

@@ -233,7 +233,7 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		return list;
 	}
 
-	public void findAndShowPNR(long id, String pnr) {
+	public void findAndShowPNR(long id, String pnr, int flagType) {
 		String sqlString = sqlManager.get("grab_report_addPnrSystemMap");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
@@ -253,7 +253,13 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 			if (!Util.isEmpty(grabFileEntity)) {
 				pnrSystemMapEntity.setFileName(this.grabFileEntity.getFileName());
 			}
+			if (flagType == 0) {
+				pnrSystemMapEntity.setType(OrderTypeEnum.FIT.intKey());
 
+			} else if (flagType == 1) {
+				pnrSystemMapEntity.setType(OrderTypeEnum.TEAM.intKey());
+
+			}
 			pnrSystemMapEntity.setOrderId(pnrinfoList.getOrderId());
 			pnrSystemMapEntity.setPnrId(pnrinfoList.getPnrId());
 			pnrSystemMapEntity.setPayReceiveRecordId(pnrinfoList.getPayReceiveRecordId());
@@ -266,6 +272,8 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 				chain.add("updateTime", new Date());
 				chain.add("payReceiveRecordId", pnrSystemMapEntity.getPayReceiveRecordId());
 				chain.add("relationStatus", pnrTemp.getRelationStatus());
+				chain.add("type", pnrSystemMapEntity.getType());
+
 				if (!Util.isEmpty(grabFileEntity)) {
 					chain.add("fileName", grabFileEntity.getFileName());
 				}

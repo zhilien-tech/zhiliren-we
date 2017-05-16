@@ -131,13 +131,13 @@
          	  </div><!--end 税金/杂项/票价/消费税-->
           	  <div class="row"><!--入澳时间/出澳时间/备注-->
                 <div class="form-group inline">
-                  <label class="col-sm-2 text-right padding">入澳时间：</label>
+                  <label class="col-sm-2 text-right padding">入澳日期：</label>
                   <div class="col-sm-2 padding">
                   		<input id="inAustralianTimeId" name="inAustralianTime" type="text" class="form-control input-sm inputWidth" placeholder="请输入入澳时间" />
                   </div>
                 </div>  
                 <div class="form-group inline"> 
-                  <label class="col-sm-1 text-right padding">出澳时间：</label>
+                  <label class="col-sm-1 text-right padding">出澳日期：</label>
                   <div class="col-sm-2 padding">
                   		<input id="outAustralianTimeId" name="outAustralianTime" type="text" class="form-control input-sm inputWidth" placeholder="请输入出澳时间" />
                   </div>
@@ -159,8 +159,8 @@
                     <th>航空公司</th>
                     <th>人数</th>
                     <th>成本单价</th>
-                    <th>入澳时间</th>
-                    <th>出澳时间</th>
+                    <th>入澳日期</th>
+                    <th>出澳日期</th>
                     <th>订单状态</th>
                     <th>关联状态</th>
                     <th>操作</th>
@@ -182,8 +182,8 @@
                 	</tr> -->
                 </tbody>
               </table>
-              <div class="bankSlipImg">
-              	  <iframe id="zhuce" style="min-height:445px; width:100%;" name="main" src="${obj.fileurl.url}" frameBorder="0" scrolling="no"></iframe>
+              <div class="bankSlipImg" style="min-height:445px; width:100%;">
+              	  <iframe id="zhuce" style="min-height:445px; width:100%;" name="main" src="${obj.fileurl.url}" frameBorder="0" scrolling="no" ></iframe>
               </div>
           </div>
         </form>  
@@ -506,13 +506,15 @@ $("#pnrInfoSelect").select2({
 	}, // let our custom formatter work
 	templateSelection:function  formatRepoSelection(repo){
 		var pid=$("#pid").val();
+		var flagType=("#flagType").val();
 		var text=repo.text;
 		$.ajax({
 			type : "POST",
 			url : '${base}/admin/drawback/grabreport/findAndShowPNR.html',
 			data : {
 				id : pid,
-				pnr:text
+				pnr:text,
+				flagType:flagType
 			},
 			error : function(request) {
 				//layer.msg('添加失败!');

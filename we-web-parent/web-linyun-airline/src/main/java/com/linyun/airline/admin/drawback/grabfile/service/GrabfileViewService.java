@@ -28,6 +28,7 @@ import com.linyun.airline.admin.drawback.grabfile.enums.FileTypeEnum;
 import com.linyun.airline.admin.drawback.grabfile.form.TGrabFileAddForm;
 import com.linyun.airline.admin.drawback.grabfile.form.TGrabFileSqlForm;
 import com.linyun.airline.common.enums.DataStatusEnum;
+import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.ZFile;
 import com.linyun.airline.common.util.ZipUtils;
 import com.uxuexi.core.common.util.Util;
@@ -61,8 +62,9 @@ public class GrabfileViewService extends BaseService<TGrabFileEntity> {
 	/**
 	 * 保存上传文件
 	 * @param addForm
+	 * @param flagType 
 	 */
-	public Object saveUploadFile(TGrabFileAddForm addForm) {
+	public Object saveUploadFile(TGrabFileAddForm addForm, int flagType) {
 		TGrabFileEntity grabfile = new TGrabFileEntity();
 		grabfile.setCreateTime(new Date());
 		grabfile.setStatus(DataStatusEnum.ENABLE.intKey());
@@ -72,17 +74,24 @@ public class GrabfileViewService extends BaseService<TGrabFileEntity> {
 		grabfile.setMailId(addForm.getId());
 		grabfile.setFileSize(addForm.getFileSize());//文件大小
 		grabfile.setType(FileTypeEnum.FILE.intKey());//文件类型
+		if (flagType == 0) {
+			grabfile.setGroupType(OrderTypeEnum.FIT.intKey());
 
+		} else if (flagType == 1) {
+			grabfile.setGroupType(OrderTypeEnum.TEAM.intKey());
+
+		}
 		TGrabFileEntity reportDate = dbDao.insert(grabfile);
 		return reportDate;
 	}
 
 	//添加时根据pid查询数据
-	public Map<String, Object> superFolder(long pid) {
+	public Map<String, Object> superFolder(long pid, int flagType) {
 		Map<String, Object> obj = new HashMap<String, Object>();
 		TGrabFileEntity dirfolder = dbDao.fetch(TGrabFileEntity.class,
 				Cnd.where("status", "=", DataStatusEnum.ENABLE.intKey()).and("id", "=", pid));
 		obj.put("dirfolder", dirfolder);
+		obj.put("flagType", flagType);
 		return obj;
 	}
 

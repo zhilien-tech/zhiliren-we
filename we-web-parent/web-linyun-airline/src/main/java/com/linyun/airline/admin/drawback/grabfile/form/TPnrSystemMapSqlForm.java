@@ -10,7 +10,6 @@ import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
-import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
@@ -66,7 +65,7 @@ public class TPnrSystemMapSqlForm extends DataTablesParamForm {
 			cnd.and("psm.id", "=", -1);
 
 		}
-		cnd.and("uo.orderstype", "=", OrderTypeEnum.FIT.intKey());
+
 		return cnd;
 	}
 }
