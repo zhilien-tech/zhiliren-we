@@ -57,6 +57,7 @@ import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.BankCardStatusEnum;
+import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.common.enums.MessageWealthStatusEnum;
 import com.linyun.airline.common.enums.OrderRemindEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
@@ -895,6 +896,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			Integer recordtype = PayReceiveTypeEnum.RECEIVE.intKey();
 			//记录类型
 			receiveEntity.setRecordtype(recordtype);
+			receiveEntity.setInputtype(payrecord.getInputtype());
 			//预付款比例
 			receiveEntity.setPrepayratio(payrecord.getPrepayratio());
 			double prepayratio = 0;
@@ -1173,6 +1175,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 				}
 				receiveEntity.setAtaxprice(ataxprice);
 				receiveEntity.setCurrentpay(currentdue + ataxprice);
+				receiveEntity.setInputtype(payreceive.getInputtype());
 				dbDao.update(receiveEntity);
 			} else {
 				//更新收款信息
@@ -1196,7 +1199,10 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 	public Object editVisitorInfo(HttpServletRequest request) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		String visitorid = request.getParameter("visitorid");
-		TVisitorInfoEntity visitorinfo = dbDao.fetch(TVisitorInfoEntity.class, Long.valueOf(visitorid));
+		TVisitorInfoEntity visitorinfo = new TVisitorInfoEntity();
+		if (!Util.isEmpty(visitorid)) {
+			visitorinfo = dbDao.fetch(TVisitorInfoEntity.class, Long.valueOf(visitorid));
+		}
 		result.put("visitorinfo", visitorinfo);
 		return result;
 	}
@@ -1217,6 +1223,7 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		visitorinfo.setGender(request.getParameter("gender"));
 		visitorinfo.setCardnum(request.getParameter("cardnum"));
 		visitorinfo.setVisitortype(request.getParameter("visitortype"));
+		visitorinfo.setRemark(request.getParameter("remark"));
 		return dbDao.update(visitorinfo);
 	}
 
@@ -1427,8 +1434,8 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 			e.printStackTrace();
 		}
 		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
-				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
-				null);
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId())
+						.and("status", "=", DataStatusEnum.ENABLE.intKey()), null);
 		result.put("ytSelect", ytselect);
 		result.put("user", user);
 		result.put("ids", ids);

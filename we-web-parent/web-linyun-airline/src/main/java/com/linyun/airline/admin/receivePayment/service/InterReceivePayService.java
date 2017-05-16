@@ -73,6 +73,7 @@ import com.linyun.airline.common.enums.UserJobStatusEnum;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TBankCardEntity;
 import com.linyun.airline.entities.TCompanyEntity;
+import com.linyun.airline.entities.TFinanceInfoEntity;
 import com.linyun.airline.entities.TOrderReceiveEntity;
 import com.linyun.airline.entities.TReceiveBillEntity;
 import com.linyun.airline.entities.TReceiveEntity;
@@ -81,6 +82,7 @@ import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TTurnOverAddForm;
 import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.DateUtil;
+import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.base.service.BaseService;
 
@@ -165,30 +167,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		if (Util.isEmpty(orderStatus)) {
 			orderStatus = "3";
 		} else {
-			if (Util.eq("firBooking", orderStatus)) {
-				//一订
-				orderStatus = InternationalStatusEnum.ONEBOOK.intKey() + "";
-			}
-			if (Util.eq("secBooking", orderStatus)) {
-				//二订
-				orderStatus = InternationalStatusEnum.TWOBOOK.intKey() + "";
-			}
-			if (Util.eq("thrBooking", orderStatus)) {
-				//三订
-				orderStatus = InternationalStatusEnum.THREEBOOK.intKey() + "";
-			}
-			if (Util.eq("allBooking", orderStatus)) {
-				//全款
-				orderStatus = InternationalStatusEnum.FULLAMOUNT.intKey() + "";
-			}
-			if (Util.eq("lastBooking", orderStatus)) {
-				//尾款
-				orderStatus = InternationalStatusEnum.TAILMONEY.intKey() + "";
-			}
-			if (Util.eq("outTicket", orderStatus)) {
-				//出票
-				orderStatus = InternationalStatusEnum.TICKETING.intKey() + "";
-			}
+			orderStatus = getOrderStatus(orderStatus);
 		}
 		form.setOrderStatus(orderStatus);
 		form.setCompanyId(companyId);
@@ -197,7 +176,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		@SuppressWarnings("unchecked")
 		List<Record> list = (List<Record>) listdata.get("data");
 
-		String sqlStr = sqlManager.get("receivePay_inter_rec_order_list");
+		/*String sqlStr = sqlManager.get("receivePay_inter_rec_order_list");
 		Sql sql = Sqls.create(sqlStr);
 		sql.setParam("orderstatus", orderStatus);
 		sql.setParam("recordtype", RECEIVETYPE);
@@ -256,7 +235,44 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 
 		listdata.remove("data");
 		listdata.put("data", ordersBC);
-		listdata.put("recordsFiltered", ordersBC.size());
+		listdata.put("recordsFiltered", ordersBC.size());*/
+		for (Record record : list) {
+			String sqlString = sqlManager.get("get_international_receive_list_order");
+			Sql sql = Sqls.create(sqlString);
+			sql.setParam("recordtype", PayReceiveTypeEnum.RECEIVE.intKey());
+			Cnd cnd = Cnd.NEW();
+			cnd.and("tr.id", "=", record.get("id"));
+			List<Record> orders = dbDao.query(sql, cnd, null);
+			record.put("orders", orders);
+			double sum = 0;
+			for (Record order : orders) {
+				if (!Util.isEmpty(order.get("currentpay"))) {
+					sum += Double.valueOf(order.getString("currentpay"));
+				}
+			}
+			record.put("sum", sum);
+			String username = "";
+			if (orders.size() > 0) {
+				TFinanceInfoEntity financeinfo = dbDao.fetch(TFinanceInfoEntity.class,
+						Integer.valueOf(orders.get(0).getInt("orderid")).longValue());
+				if (!Util.isEmpty(financeinfo) && !Util.isEmpty(financeinfo.getIssuer())) {
+					username = financeinfo.getIssuer();
+				}
+			}
+			String sqlstr = sqlManager.get("receivePay_getairline_info_byreceiveid");
+			Sql airsql = Sqls.create(sqlstr);
+			airsql.setParam("receiveid", record.get("id"));
+			List<Record> airinfo = dbDao.query(airsql, null, null);
+			for (Record airrecord : airinfo) {
+				if (!Util.isEmpty(airrecord.get("leavedate"))) {
+					airrecord.put("leavedate", FormatDateUtil.dateToOrderDate((Date) airrecord.get("leavedate")));
+				}
+			}
+			record.put("airinfo", airinfo);
+			record.put("fullname", username);
+			record.put("receiveenum", EnumUtil.enum2(AccountReceiveEnum.class));
+			record.put("internationalstatusenum", EnumUtil.enum2(InternationalStatusEnum.class));
+		}
 		return listdata;
 	}
 
@@ -285,8 +301,28 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		cnd.and("uo.id", "in", ids);
 		cnd.and("prr.recordtype", "=", RECEIVETYPE);
 		List<Record> orders = dbDao.query(sql, cnd, null);
+		String sumSqlStr = sqlManager.get("get_international_receive_list_order");
+		Sql sumSql = Sqls.create(sumSqlStr);
+		sumSql.setParam("recordtype", PayReceiveTypeEnum.RECEIVE.intKey());
+		Cnd sumCnd = Cnd.NEW();
+		sumCnd.and("tr.id", "=", Long.valueOf(id));
+		List<Record> sumOrders = dbDao.query(sumSql, sumCnd, null);
+		double sum = 0;
+		for (Record order : sumOrders) {
+			if (!Util.isEmpty(order.get("currentpay"))) {
+				sum += Double.valueOf(order.getString("currentpay"));
+			}
+			String orderid = order.getString("orderid");
+			for (Record record : orders) {
+				String oid = record.getString("id");
+				if (Util.eq(orderid, oid)) {
+					record.set("currentpay", order.getString("currentpay"));
+				}
+			}
+		}
+
 		//计算合计金额
-		Double sum = 0.0;
+		/*Double sum = 0.0;
 		String prrOrderStatus = "";
 		for (Record record : orders) {
 			if (!Util.isEmpty(record.get("currentpay"))) {
@@ -294,9 +330,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 				sum += incometotal;
 			}
 			prrOrderStatus = record.getString("prrorderstatus");
-		}
+		}*/
 		map.put("sum", sum);
-		map.put("prrOrderStatus", prrOrderStatus);
+		/*map.put("prrOrderStatus", prrOrderStatus);*/
 
 		//订单信息
 		map.put("orders", orders);
@@ -314,7 +350,10 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 
 		int bankcardid = fetch.getBankcardid();
 		DictInfoEntity bank = dbDao.fetch(DictInfoEntity.class, bankcardid);
-		String bankName = bank.getDictName();
+		String bankName = "";
+		if (!Util.isEmpty(bank) && !Util.isEmpty(bank.getDictName())) {
+			bankName = bank.getDictName();
+		}
 
 		//订单信息id
 		map.put("ids", ids);
@@ -516,30 +555,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		if (Util.isEmpty(orderStatus)) {
 			orderStatus = "3";
 		} else {
-			if (Util.eq("firBooking", orderStatus)) {
-				//一订
-				orderStatus = InternationalStatusEnum.ONEBOOK.intKey() + "";
-			}
-			if (Util.eq("secBooking", orderStatus)) {
-				//二订
-				orderStatus = InternationalStatusEnum.TWOBOOK.intKey() + "";
-			}
-			if (Util.eq("thrBooking", orderStatus)) {
-				//三订
-				orderStatus = InternationalStatusEnum.THREEBOOK.intKey() + "";
-			}
-			if (Util.eq("allBooking", orderStatus)) {
-				//全款
-				orderStatus = InternationalStatusEnum.FULLAMOUNT.intKey() + "";
-			}
-			if (Util.eq("lastBooking", orderStatus)) {
-				//尾款
-				orderStatus = InternationalStatusEnum.TAILMONEY.intKey() + "";
-			}
-			if (Util.eq("outTicket", orderStatus)) {
-				//出票
-				orderStatus = InternationalStatusEnum.TICKETING.intKey() + "";
-			}
+			orderStatus = getOrderStatus(orderStatus);
 		}
 		form.setOrderStatus(orderStatus);
 		form.setCompanyId(companyId);
@@ -551,6 +567,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//查询订单
 		String sqlStr = sqlManager.get("receivePay_inter_pay_order_list");
 		Sql conSql = Sqls.create(sqlStr);
+		conSql.setParam("prrOrderstatus", orderStatus);
 		conSql.setParam("orderstatus", orderStatus);
 		conSql.setParam("recordtype", PAYTYPE);
 		Cnd cnd = Cnd.NEW();
@@ -627,30 +644,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		if (Util.isEmpty(orderStatus)) {
 			orderStatus = "3";
 		} else {
-			if (Util.eq("firBooking", orderStatus)) {
-				//一订
-				orderStatus = InternationalStatusEnum.ONEBOOK.intKey() + "";
-			}
-			if (Util.eq("secBooking", orderStatus)) {
-				//二订
-				orderStatus = InternationalStatusEnum.TWOBOOK.intKey() + "";
-			}
-			if (Util.eq("thrBooking", orderStatus)) {
-				//三订
-				orderStatus = InternationalStatusEnum.THREEBOOK.intKey() + "";
-			}
-			if (Util.eq("allBooking", orderStatus)) {
-				//全款
-				orderStatus = InternationalStatusEnum.FULLAMOUNT.intKey() + "";
-			}
-			if (Util.eq("lastBooking", orderStatus)) {
-				//尾款
-				orderStatus = InternationalStatusEnum.TAILMONEY.intKey() + "";
-			}
-			if (Util.eq("outTicket", orderStatus)) {
-				//出票
-				orderStatus = InternationalStatusEnum.TICKETING.intKey() + "";
-			}
+			orderStatus = getOrderStatus(orderStatus);
 		}
 		form.setOrderStatus(orderStatus);
 		form.setRecordtype(PAYTYPE);
@@ -715,21 +709,58 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	}
 
 	/**
+	 * 
+	 * 根据按钮状态，获取相应的订单状态
+	 * <p>
+	 *
+	 * @param orderStatus   页面按钮id
+	 * @return 
+	 */
+	public String getOrderStatus(String orderStatus) {
+		if (Util.eq("firBooking", orderStatus)) {
+			//一订
+			orderStatus = InternationalStatusEnum.ONEBOOK.intKey() + "";
+		}
+		if (Util.eq("secBooking", orderStatus)) {
+			//二订
+			orderStatus = InternationalStatusEnum.TWOBOOK.intKey() + "";
+		}
+		if (Util.eq("thrBooking", orderStatus)) {
+			//三订
+			orderStatus = InternationalStatusEnum.THREEBOOK.intKey() + "";
+		}
+		if (Util.eq("allBooking", orderStatus)) {
+			//全款
+			orderStatus = InternationalStatusEnum.FULLAMOUNT.intKey() + "";
+		}
+		if (Util.eq("lastBooking", orderStatus)) {
+			//尾款
+			orderStatus = InternationalStatusEnum.TAILMONEY.intKey() + "";
+		}
+		if (Util.eq("outTicket", orderStatus)) {
+			//出票
+			orderStatus = InternationalStatusEnum.TICKETING.intKey() + "";
+		}
+		return orderStatus;
+	}
+
+	/**
 	 * (确认付款页面)
 	 *
 	 * @param inlandPayIds
 	 * @return 
 	 */
-	public Object toConfirmPay(String orderIds, HttpSession session) {
+	public Object toConfirmPay(String orderIds, String orderStatus, HttpSession session) {
 		//当前公司id
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
-
+		String oStatusEnum = getOrderStatus(orderStatus);
 		Map<String, Object> map = new HashMap<String, Object>();
 		Sql sql = Sqls.create(sqlManager.get("receivePay_inter_pay_order_ids"));
 		/*String inlandPayIdStr = inlandPayIds.substring(0, inlandPayIds.length() - 1);*/
 		Cnd cnd = Cnd.NEW();
-		cnd.and("prr.id", "in", orderIds);
+		cnd.and("prr.id", "in", orderIds); //TODO
+		cnd.and("p.orderstatus", "=", oStatusEnum);
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		String payIds = "";
 		String pOrderIds = "";
@@ -758,7 +789,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			}
 		}
 
-		//同一订单号，一行显示   TODO
+		//同一订单号，一行显示   
 		List<Record> NewList = new ArrayList<Record>();
 		String oNumStr = "";
 		for (Record record : orders) {
@@ -890,7 +921,6 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 * 
 	 * 到编辑已付款页面
 	 * <p>
-	 * TODO
 	 * @param request
 	 * @return 
 	 */
@@ -904,7 +934,6 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		String payId = request.getParameter("payid");
 		String prrIds = request.getParameter("prrIds");
 
-		//TODO
 		String sqlString = sqlManager.get("receivePay_inter_payed_edit");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
@@ -961,7 +990,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			result.put("approveresult", "拒绝");
 		}
 
-		//同一订单号，一行显示   TODO
+		//同一订单号，一行显示   
 		List<Record> NewList = new ArrayList<Record>();
 		String oNumStr = "";
 		for (Record record : payList) {
@@ -1302,10 +1331,10 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			}
 			updateNum = dbDao.update(newPayOrderList);
 		}
-		//更新付款表状态   TODO payIds
+		//更新付款表状态  payIds
 		/*dbDao.update(TPayEntity.class, Chain.make("status", APPROVALPAYED), Cnd.where("id", "in", payIds));*/
 
-		//添加流水 TODO
+		//添加流水 
 		TTurnOverAddForm addForm = new TTurnOverAddForm();
 		String comName = tCompanyEntity.getComName();
 		addForm.setBankCardId(Integer.valueOf(bankcardId));
@@ -1463,7 +1492,7 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//消息状态
 		int msgStatus = MessageStatusEnum.UNREAD.intKey();
 
-		//提醒日期 TODO
+		//提醒日期 
 		String remindDateStr = (String) fromJson.get("remindDate");
 		//客户信息id
 		/*String customerInfoId = (String) fromJson.get("customerInfoId");*/

@@ -31,7 +31,7 @@
                       <th>客户团号</th>
                       <th>客户公司名称</th>
                       <th>联系人</th>
-                      <th>出票人</th>
+                      <th>票务</th>
                       <th>金额</th>
                     </tr>
                   </thead>
@@ -106,6 +106,8 @@
                   </td>
                   <td>发票日期：</td>
                   <td><input id="invoicedate" name="invoicedate" type="text" onFocus="WdatePicker()" class="form-control input-sm" value="<fmt:formatDate value="${obj.invoiceinfo.invoicedate }" pattern="yyyy-MM-dd" />"></td>
+                  <td>借发票：</td>
+                  <td><input name="borrowInvoice" type="checkbox" value="" /></td>
                   <%-- <td>开票人：</td>
                   <td>
                      <select id="billuserid" name="billuserid" value="${obj.invoiceinfo.billuserid }" class="form-control input-sm">
@@ -142,8 +144,10 @@
 			          <tr class="cloneTR">
 		                  <td>发票号：</td>
 		                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm" value="${invoicedetail.invoicenum }"></td>
-		                  <td>金额：</td>
+		                  <td>实际金额：</td>
 		                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${invoicedetail.invoicebalance }" pattern="0.00" maxFractionDigits="2"/>"></td>
+		                  <td>税控金额：</td>
+		                  <td><input id="fiscalAmountId" name="fiscalAmount" type="text" class="form-control input-sm" value="${invoicedetail.invoicenum }"></td>
 		                  <td colspan="4">
 		                    <ul class="fileUL">
 		                      <li>
@@ -302,15 +306,22 @@
 	   var invoicedetails = [];
 	   $('.cloneTR').each(function(i){
 		   var detail = {};
+		   var invoicelength = '';
 		   var invoicenum = $(this).find('[name=invoicenum]').val();
 		   detail.invoicenum = invoicenum;
+		   invoicelength += invoicenum;
 		   var invoicebalance = $(this).find('[name=invoicebalance]').val();
 		   detail.invoicebalance = invoicebalance;
+		   invoicelength += invoicebalance;
 		   var fileName = $(this).find('[name=fileName]').html();
 		   detail.filename = fileName;
 		   var invoiceurl = $(this).find('[name=invoiceurl]').val();
 		   detail.invoiceurl = invoiceurl;
-		   invoicedetails.push(detail);
+		   invoicelength += invoiceurl;
+		   if(invoicelength){
+			   invoicedetails.push(detail);
+		   }
+
 	   });
 	   formdata.invoicedetails = invoicedetails;
 	   $.ajax({ 

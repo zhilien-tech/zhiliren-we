@@ -174,6 +174,16 @@
 	
 	 function saveData(){
 		 var accountupper = $('#accountupper').val();
+		 var application = $('#application').val();
+		 if(!application){
+			 layer.msg("用途不能为空",{time: 2000});
+			 return;
+		 }
+		 var account = $('#account').val();
+		 if(!account){
+			 layer.msg("金额不能为空",{time: 2000});
+			 return;
+		 }
 		 $.ajax({ 
 			type: 'POST', 
 			data: $("#mitigateForm").serialize()+'&accountupper='+accountupper, 

@@ -75,7 +75,8 @@ public class ShouInvoiceParamForm extends DataTablesParamForm {
 			SqlExpressionGroup exp = new SqlExpressionGroup();
 			exp.and("tpi.PNR", "like", "%" + searchInfo + "%").or("tii.paymentunit", "like", "%" + searchInfo + "%")
 					.or("tuo.ordersnum", "like", "%" + searchInfo + "%")
-					.or("tu.userName", "like", "%" + searchInfo + "%");
+					.or("tu.userName", "like", "%" + searchInfo + "%")
+					.or("tod.comDictName", "like", "%" + searchInfo + "%");
 			cnd.and(exp);
 		}
 		if (!Util.isEmpty(status)) {

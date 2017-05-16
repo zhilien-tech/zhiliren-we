@@ -41,6 +41,7 @@ import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
 import com.linyun.airline.admin.receivePayment.service.InterReceivePayService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
+import com.linyun.airline.common.enums.DataStatusEnum;
 import com.linyun.airline.common.enums.MessageWealthStatusEnum;
 import com.linyun.airline.common.enums.OrderRemindEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
@@ -230,8 +231,8 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		result.put("yhkSelect", yhkSelect);
 		//用途下拉
 		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
-				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
-				null);
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId())
+						.and("status", "=", DataStatusEnum.ENABLE.intKey()), null);
 		result.put("ytselect", ytselect);
 		//订单信息id
 		result.put("ids", ids);
@@ -395,8 +396,8 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		List<Record> yhkSelect = dbDao.query(create, null, null);
 		//用途下拉
 		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
-				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId()),
-				null);
+				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId())
+						.and("status", "=", DataStatusEnum.ENABLE.intKey()), null);
 		result.put("ytselect", ytselect);
 		result.put("companybank", companybank);
 		result.put("id", id);

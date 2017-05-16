@@ -221,6 +221,7 @@ FROM
 	t_pnr_info tpi
 INNER JOIN t_invoice_info tii ON tii.pnrid = tpi.id
 LEFT JOIN t_user tu ON tii.billuserid = tu.id
+LEFT JOIN t_company_dictinfo tod ON tii.invoiceitem = tod.id
 INNER JOIN t_order_customneed toc ON tpi.needid = toc.id
 INNER JOIN t_up_order tuo ON toc.ordernum = tuo.id
 $condition
@@ -291,3 +292,12 @@ AND (
 )
 GROUP BY
 	(uj.userid)
+	
+/*get_kaiinvoice_info_list*/
+SELECT
+	tod.comDictName,
+	tii.*
+FROM
+	t_invoice_info tii
+LEFT JOIN t_company_dictinfo tod ON tii.invoiceitem = tod.id
+$condition

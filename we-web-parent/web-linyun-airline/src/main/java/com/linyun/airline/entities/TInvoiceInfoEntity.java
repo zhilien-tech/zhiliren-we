@@ -93,4 +93,7 @@ public class TInvoiceInfoEntity implements Serializable {
 	@Comment("订单状态")
 	private Integer orderstatus;
 
+	@Column
+	@Comment("借发票")
+	private Integer borrowInvoice;
 }

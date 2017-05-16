@@ -548,7 +548,7 @@
                      </td>
                      <td><label>销售：</label></td>
                      <td><input id="salesperson" name="salesperson" value="候小凌" type="text" class="form-control input-sm" disabled="disabled"></td>
-                     <td><label>开票人：</label></td>
+                     <td><label>票务：</label></td>
                      <td><input id="issuer" name="issuer" type="text" value="${empty obj.finance.issuer?obj.user.fullName:obj.finance.issuer }" class="form-control input-sm" disabled="disabled"></td>
                      <%-- <td><label>内陆跨海：</label></td>
                      <td>
@@ -577,7 +577,7 @@
                      <td><label>出澳时间：</label></td>
                      <td><input id="outausdate" name="outausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.outausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td> --%>
                    <tr class="KHinfo">
-                     <td><label>进澳时间：</label></td>
+                     <td><label>进澳日期：</label></td>
                      <td><input id="enterausdate" name="enterausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.enterausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
                    	 <td><label>航班号：</label></td>
                      <td><select id="enteraircom" name="enteraircom" type="text" class="form-control input-sm disab aircomselect" disabled="disabled" multiple="multiple">
@@ -624,7 +624,7 @@
                      <td><input id="enterarrivetime" name="enterarrivetime" value="${obj.finance.enterarrivetime }" type="text" class="form-control input-sm disab mustArriveTimes" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
-                     <td><label>出澳时间：</label></td>
+                     <td><label>出澳日期：</label></td>
                      <td><input id="outausdate" name="outausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.outausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
                    	 <td><label>航班号：</label></td>
                      <td><select id="outaircom" name="outaircom" type="text" class="form-control input-sm disab aircomselect" disabled="disabled" multiple="multiple">
@@ -1380,6 +1380,7 @@
         	 if(data.account){
 	         	$('#relief').val(data.account.toFixed(2));
         	 }
+        	 setFinanceInfo();
          },
          error: function (xhr) {
        		
@@ -1387,7 +1388,6 @@
       });
  }
  //设置财务信息
- setFinanceInfo();
   </script>
 </body>
 </html>

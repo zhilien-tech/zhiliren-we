@@ -388,3 +388,213 @@ BEGIN
 	RETURN result;
 END;
 
+DROP FUNCTION IF EXISTS `getOrderNumByReceiveid`;
+
+CREATE  FUNCTION `getOrderNumByReceiveid`(receive int)
+ RETURNS varchar(1024) CHARSET utf8
+BEGIN
+	declare tmpName varchar(50) default '';
+  
+	DECLARE result VARCHAR(1024) DEFAULT '';
+	# 遍历数据结束标志
+  DECLARE done INT DEFAULT 0;
+	#Routine body goes here...
+	DECLARE pnr_cur CURSOR FOR select ordersnum from  t_up_order where id in(select orderid from t_order_receive where receiveid = receive);
+	
+	# 将结束标志绑定到游标
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+	OPEN pnr_cur;
+		 cursor_loop:LOOP
+				FETCH pnr_cur INTO tmpName;
+
+				IF done=1 THEN
+					LEAVE cursor_loop; 
+				END IF;
+
+			 SET tmpName = CONCAT(tmpName ,'のし') ;
+			 SET result = CONCAT(result ,tmpName) ;
+
+		 END LOOP cursor_loop;
+ CLOSE pnr_cur;
+	  
+	RETURN result;
+END;
+
+
+DROP FUNCTION IF EXISTS `getPNRByReceiveid`;
+
+CREATE FUNCTION `getPNRByReceiveid`(receive int)
+ RETURNS varchar(1024) CHARSET utf8
+BEGIN
+	declare tmpName varchar(50) default '';
+  
+	DECLARE result VARCHAR(1024) DEFAULT '';
+	# 遍历数据结束标志
+  DECLARE done INT DEFAULT 0;
+	#Routine body goes here... 
+	DECLARE pnr_cur CURSOR FOR SELECT
+									tpi.pnr pnr
+								FROM
+									t_pnr_info tpi
+								INNER JOIN t_order_customneed toc ON tpi.needid = toc.id
+								INNER JOIN t_up_order tuo ON toc.ordernum = tuo.id
+								WHERE
+									tuo.id IN (
+										SELECT
+											tor.orderid
+										FROM
+											t_order_receive tor
+										WHERE
+											tor.receiveid = receive
+									);
+	
+	# 将结束标志绑定到游标
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+	OPEN pnr_cur;
+		 cursor_loop:LOOP
+				FETCH pnr_cur INTO tmpName;
+
+				IF done=1 THEN
+					LEAVE cursor_loop; 
+				END IF;
+
+			 SET tmpName = CONCAT(tmpName ,'のし') ;
+			 SET result = CONCAT(result ,tmpName) ;
+
+		 END LOOP cursor_loop;
+ CLOSE pnr_cur;
+	  
+	RETURN result;
+END;
+
+DROP FUNCTION IF EXISTS `getInterPNRByReceiveid`;
+
+CREATE  FUNCTION `getInterPNRByReceiveid`(receive int)
+ RETURNS varchar(1024) CHARSET utf8
+BEGIN
+	declare tmpName varchar(50) default '';
+  
+	DECLARE result VARCHAR(1024) DEFAULT '';
+	# 遍历数据结束标志
+  DECLARE done INT DEFAULT 0;
+	#Routine body goes here...  
+	DECLARE pnr_cur CURSOR FOR select pnr from t_pnr_info where orderid in (select orderid from t_order_receive where receiveid = receive);
+	
+	# 将结束标志绑定到游标
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+	OPEN pnr_cur;
+		 cursor_loop:LOOP
+				FETCH pnr_cur INTO tmpName;
+
+				IF done=1 THEN
+					LEAVE cursor_loop; 
+				END IF;
+
+			 SET tmpName = CONCAT(tmpName ,'のし') ;
+			 SET result = CONCAT(result ,tmpName) ;
+
+		 END LOOP cursor_loop;
+ CLOSE pnr_cur;
+	  
+	RETURN result;
+END;
+
+DROP FUNCTION IF EXISTS `getByInvoicenumQuery`;
+
+CREATE DEFINER = `root`@`%` FUNCTION `getByInvoicenumQuery`(invoiceId int)
+ RETURNS varchar(1024) CHARSET utf8
+BEGIN
+	declare tmpName varchar(50) default '';
+  
+	DECLARE result VARCHAR(1024) DEFAULT '';
+	# 遍历数据结束标志
+  DECLARE done INT DEFAULT 0; 
+	#Routine body goes here...
+	DECLARE pnr_cur CURSOR FOR SELECT 
+																idd.invoicenum invoicenum
+															FROM
+																t_invoice_detail idd
+															where idd.invoiceinfoid = invoiceId;
+	
+	# 将结束标志绑定到游标 
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+	OPEN pnr_cur;
+		 cursor_loop:LOOP
+				FETCH pnr_cur INTO tmpName;
+
+				IF done=1 THEN
+					LEAVE cursor_loop; 
+				END IF;
+
+			 SET tmpName = CONCAT(tmpName ,'のし') ;
+			 SET result = CONCAT(result ,tmpName) ;
+
+		 END LOOP cursor_loop;
+ CLOSE pnr_cur;
+	  
+	RETURN result;
+END;
+
+/*根据订单id查询最早出发日期*/
+DROP FUNCTION IF EXISTS `getMinLeavedateByOrderid`;
+
+CREATE FUNCTION `getMinLeavedateByOrderid`(orderid int)
+ RETURNS date
+BEGIN
+	declare tmpDate DATE;
+	
+	SELECT
+	min(tai.leavedate) 
+	into tmpDate
+	FROM
+		t_airline_info tai
+	INNER JOIN t_pnr_info tpi ON tai.pnrid = tpi.id
+	INNER JOIN t_order_receive tor ON tpi.orderid = tor.orderid
+	where tor.receiveid = orderid
+	GROUP BY
+		tpi.orderid;
+
+	RETURN tmpDate;
+END;
+
+/*根据订单id查询最晚出发日期*/
+DROP FUNCTION IF EXISTS `getMaxLeavedateByOrderid`;
+
+CREATE FUNCTION `getMaxLeavedateByOrderid`(orderid int)
+ RETURNS date
+BEGIN
+	declare tmpDate DATE;
+	
+	SELECT
+	max(tai.leavedate) 
+	into tmpDate 
+	FROM
+		t_airline_info tai
+	INNER JOIN t_pnr_info tpi ON tai.pnrid = tpi.id
+	INNER JOIN t_order_receive tor ON tpi.orderid = tor.orderid
+	where tor.receiveid = orderid
+	GROUP BY
+		tpi.orderid;
+
+	RETURN tmpDate;
+END;
+
+/*******************发票表中增加借发票字段,发票明细表中增加税控金额字段*******************************/
+ALTER TABLE `t_invoice_info`
+ADD COLUMN `borrowInvoice`  int(11) NULL COMMENT '借发票' AFTER `orderstatus`;
+
+ALTER TABLE `t_invoice_detail`
+ADD COLUMN `fiscalAmount`  double(64,2) NULL COMMENT '税控金额' AFTER `imagename`;
+
+ALTER TABLE `t_airline_info`
+ADD COLUMN `peoplecount`  int NULL COMMENT '人数' AFTER `pnrid`;
+
+ALTER TABLE `t_pay`
+ADD COLUMN `openbank`  varchar(128) NULL COMMENT '开户银行' AFTER `orderstatus`,
+ADD COLUMN `openname`  varchar(128) NULL COMMENT '开户名称' AFTER `openbank`,
+ADD COLUMN `opennumber`  varchar(128) NULL COMMENT '开户账号' AFTER `openname`;
+

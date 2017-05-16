@@ -15,6 +15,7 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
+import org.nutz.dao.util.cri.SqlExpressionGroup;
 
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.uxuexi.core.common.util.Util;
@@ -56,15 +57,31 @@ public class InterRecListSearchSqlForm extends DataTablesParamForm {
 	public Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		if (!Util.isEmpty(receiveStatus)) {
-			cnd.and("orec.receivestatus", "=", receiveStatus); //收款状态 收款中、已收款
+			cnd.and("r.status", "=", receiveStatus); //收款状态 收款中、已收款
 		}
 		if (!Util.isEmpty(orderStatus)) {
-			cnd.and("orec.orderstatus", "=", orderStatus); //订单状态 一订、二订。。。
+			cnd.and("r.orderstatus", "=", orderStatus); //订单状态 一订、二订。。。
 		}
 		cnd.and("r.companyid", "=", companyId);
 
+		SqlExpressionGroup group = new SqlExpressionGroup();
+		group.and("r.customename", "LIKE", "%" + name + "%")
+				.or("getOrderNumByReceiveid(r.id)", "LIKE", "%" + name + "%")
+				.or("tu.fullName", "LIKE", "%" + name + "%");
+		if (!Util.isEmpty(name)) {
+			cnd.and(group);
+		}
+		//出发日期
+		if (!Util.isEmpty(leaveBeginDate)) {
+			cnd.and("getMaxLeavedateByOrderid(r.id)", ">=", leaveBeginDate);
+		}
+		// 返回日期
+		if (!Util.isEmpty(leaveEndDate)) {
+			cnd.and("getMinLeavedateByOrderid(r.id)", "<=", leaveEndDate);
+		}
+
 		cnd.and("r.orderstype", "=", OrderTypeEnum.TEAM.intKey()); //团队（国际）
-		cnd.and("prr.recordtype", "=", recordtype);
+		//cnd.and("prr.recordtype", "=", recordtype);
 		//表示已审批  TODO
 		/*cnd.and("orec.receivestatus", "=", 2);*/
 		return cnd;

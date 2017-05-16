@@ -30,7 +30,7 @@
 						<th>收款单位</th>
 						<th>开票日期</th>
 						<th>人数</th>
-						<th>开票人</th>
+						<th>票务</th>
 						<th>金额</th>
 					</tr>
 				</thead>
@@ -46,7 +46,7 @@
                 			<td>${one.shortname }</td>
                 			<td>${one.billingdate }</td>
                 			<td>${one.peoplecount }</td>
-                			<td>${one.approver }</td>
+                			<td>${one.issuer }</td>
                 			<td>
                 				<fmt:formatNumber type="number" value="${one.salesprice }" pattern="0.00" maxFractionDigits="2"/>
                 			</td>

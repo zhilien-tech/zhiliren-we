@@ -45,6 +45,10 @@ public class TInvoiceDetailEntity implements Serializable {
 	@Comment("操作时间")
 	private Date optime;
 
+	@Column
+	@Comment("税控金额")
+	private Double fiscalAmount;
+
 	/**
 	 * (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)

@@ -40,14 +40,18 @@ public class TKaiInvoiceInfoSqlForm extends DataTablesParamForm {
 	private String invoicenum;//发票号
 	private String paymentunit;//付款单位
 	private String invoiceitem;//发票开具项目
+	private String ordersnum;//订单号
 	private Long companyid;
+	/**借发票*/
+	private Integer borrowInvoice;
 
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		SqlExpressionGroup group = new SqlExpressionGroup();
 		group.and("ii.paymentunit", "LIKE", "%" + paymentunit + "%")
 				.or("cd.comDictName", "LIKE", "%" + invoiceitem + "%")
-				.or("getByInvoicenumQuery(ii.id)", "LIKE", "%" + invoicenum + "%");
+				.or("getByInvoicenumQuery(ii.id)", "LIKE", "%" + invoicenum + "%")
+				.or("getOrderNumByReceiveid(ii.receiveid)", "LIKE", "%" + ordersnum + "%");
 		if (!Util.isEmpty(invoicenum)) {
 			cnd.and(group);
 		}
