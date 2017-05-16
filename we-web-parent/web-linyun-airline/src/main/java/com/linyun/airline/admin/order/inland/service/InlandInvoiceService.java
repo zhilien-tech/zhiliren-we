@@ -118,6 +118,11 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			invoiceinfo.setInvoicedate(DateUtil.string2Date((String) fromJson.get("invoicedate"),
 					DateUtil.FORMAT_YYYY_MM_DD));
 		}
+		int borrowInvoice = 0;
+		if ((Boolean) fromJson.get("borrowInvoice")) {
+			borrowInvoice = 1;
+		}
+		invoiceinfo.setBorrowInvoice(borrowInvoice);
 		//if (!Util.isEmpty(fromJson.get("billuserid"))) {
 		//invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
 		//}
@@ -199,6 +204,11 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			invoiceinfo.setInvoicedate(DateUtil.string2Date((String) fromJson.get("invoicedate"),
 					DateUtil.FORMAT_YYYY_MM_DD));
 		}
+		int borrowInvoice = 0;
+		if ((Boolean) fromJson.get("borrowInvoice")) {
+			borrowInvoice = 1;
+		}
+		invoiceinfo.setBorrowInvoice(borrowInvoice);
 		/*if (!Util.isEmpty(fromJson.get("billuserid"))) {
 		}*/
 		//invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
@@ -254,6 +264,9 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			invoiceDetailEntity.setInvoicenum(map.get("invoicenum"));
 			if (!Util.isEmpty(map.get("invoicebalance"))) {
 				invoiceDetailEntity.setInvoicebalance(formatDouble(Double.valueOf(map.get("invoicebalance"))));
+			}
+			if (!Util.isEmpty(map.get("fiscalAmount"))) {
+				invoiceDetailEntity.setFiscalAmount(Double.valueOf(map.get("fiscalAmount")));
 			}
 			invoiceDetailEntity.setInvoiceurl(map.get("invoiceurl"));
 			invoiceDetailEntity.setImagename(map.get("filename"));
@@ -633,6 +646,11 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			invoiceinfo.setInvoicedate(DateUtil.string2Date((String) fromJson.get("invoicedate"),
 					DateUtil.FORMAT_YYYY_MM_DD));
 		}
+		int borrowInvoice = 0;
+		if ((Boolean) fromJson.get("borrowInvoice")) {
+			borrowInvoice = 1;
+		}
+		invoiceinfo.setBorrowInvoice(borrowInvoice);
 		/*if (!Util.isEmpty(fromJson.get("billuserid"))) {
 			invoiceinfo.setBilluserid(Integer.valueOf((String) fromJson.get("billuserid")));
 		}*/
@@ -669,6 +687,11 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 				invoicebalance = Double.valueOf(map.get("invoicebalance"));
 			}
 			entity.setInvoicebalance(formatDouble(invoicebalance));
+			Double fiscalAmount = null;
+			if (!Util.isEmpty(map.get("fiscalAmount"))) {
+				fiscalAmount = Double.valueOf(map.get("fiscalAmount"));
+			}
+			entity.setFiscalAmount(fiscalAmount);
 			entity.setInvoiceurl(map.get("invoiceurl"));
 			entity.setImagename(map.get("filename"));
 			entity.setInvoiceinfoid(Integer.valueOf(id));
@@ -695,6 +718,11 @@ public class InlandInvoiceService extends BaseService<TInvoiceInfoEntity> {
 			invoiceinfo.setInvoicedate(DateUtil.string2Date((String) fromJson.get("invoicedate"),
 					DateUtil.FORMAT_YYYY_MM_DD));
 		}
+		int borrowInvoice = 0;
+		if ((Boolean) fromJson.get("borrowInvoice")) {
+			borrowInvoice = 1;
+		}
+		invoiceinfo.setBorrowInvoice(borrowInvoice);
 		/*if (!Util.isEmpty(fromJson.get("billuserid"))) {
 			invoiceinfo.setBilluserid(Integer.valueOf((String) fromJson.get("billuserid")));
 		}*/
