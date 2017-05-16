@@ -100,12 +100,14 @@ SELECT
 	tfi.personcount,
 	tfi.incometotal,
 	tuo.id orderid,
-	tfi.issuer
+	tfi.issuer,
+	tci.shortname
 FROM
 	t_up_order tuo
 LEFT JOIN t_finance_info tfi ON tuo.id = tfi.orderid
 INNER JOIN t_order_receive tor ON tuo.id = tor.orderid
 INNER JOIN t_receive tr ON tor.receiveid = tr.id
+LEFT JOIN t_customer_info tci ON tci.id = tuo.userid
 $condition
 
 /*get_pay_fukuan_list*/
@@ -187,7 +189,8 @@ SELECT
 	tuo.ordersnum,
 	ii.*, 
 	u.id AS userIds,
-	u.userName
+	u.userName,
+	cus.shortname
 FROM
 	t_invoice_info ii
 LEFT JOIN t_order_receive ore ON ii.receiveid = ore.receiveid

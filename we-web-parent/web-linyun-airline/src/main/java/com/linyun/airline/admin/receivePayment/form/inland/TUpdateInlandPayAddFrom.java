@@ -33,6 +33,15 @@ public class TUpdateInlandPayAddFrom implements Serializable {
 	/**用途*/
 	private Integer purpose;
 
+	/**开户银行*/
+	private String openBank;
+
+	/**开户名称*/
+	private String openName;
+
+	/**开户账号*/
+	private String openNumber;
+
 	/**资金类型*/
 	private Integer fundType;
 

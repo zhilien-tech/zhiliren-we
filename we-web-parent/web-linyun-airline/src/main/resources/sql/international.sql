@@ -71,7 +71,8 @@ SELECT
 	tfi.incometotal,
 	tpi.*, tprr.orderstatus,
 	tprr.currentpay,
-	tprr.actualnumber
+	tprr.actualnumber,
+	tci.shortname
 FROM
 	t_up_order tuo
 LEFT JOIN t_finance_info tfi ON tuo.id = tfi.orderid
@@ -81,6 +82,7 @@ INNER JOIN t_plan_info tpi ON tuo.id = tpi.ordernumber
 LEFT JOIN t_pay_receive_record tprr ON tprr.orderid = tuo.id
 AND tprr.orderstatusid = tor.orderstatus
 AND tprr.recordtype = @recordtype
+LEFT JOIN t_customer_info tci ON tuo.userid = tci.id
 $condition
 
 /*get_international_pay_list*/
@@ -184,7 +186,9 @@ $condition
 
 /*get_international_kai_invoice_list_order*/
 SELECT
-	tuo.*, tprr.actualnumber,tprr.orderstatus
+	tuo.*, tprr.actualnumber,
+	tprr.orderstatus,
+	tci.shortname
 FROM
 	t_up_order tuo
 INNER JOIN t_order_receive tor ON tuo.id = tor.orderid
@@ -193,6 +197,7 @@ INNER JOIN t_invoice_info tii ON tr.id = tii.receiveid
 LEFT JOIN t_pay_receive_record tprr ON tor.orderid = tprr.orderid
 AND tprr.orderstatusid = tor.orderstatus
 AND tprr.recordtype = @recordtype
+LEFT JOIN t_customer_info tci ON tci.id = tuo.userid
 $condition
 
 /*get_visitor_info_list*/
