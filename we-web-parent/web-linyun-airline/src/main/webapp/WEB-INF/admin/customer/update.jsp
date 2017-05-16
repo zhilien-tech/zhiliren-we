@@ -248,19 +248,14 @@
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-2 text-right padding">付款方式：</label>
-							<div class="col-sm-2 padding">
-								<select id="payWay" name="payWay" class="form-control input-sm paySele" onchange="paywaySelect_change(this)">
-									<option value="1"
-										<c:if test="${'1' eq obj.customer.payWay}">selected</c:if>>现金</option>
-									<option value="2"
-										<c:if test="${'2' eq obj.customer.payWay}">selected</c:if>>支票</option>
-									<option value="3"
-										<c:if test="${'3' eq obj.customer.payWay}">selected</c:if>>银行汇款</option>
-									<option value="4"
-										<c:if test="${'4' eq obj.customer.payWay}">selected</c:if>>第三方</option>
-									<option value="5"
-										<c:if test="${'5' eq obj.customer.payWay}">selected</c:if>>其他</option>
+							<div class="col-sm-7 padding">
+								<select id="payWaySelect" class="form-control select2 inpImpWid" multiple="multiple" onchange="payOpt()" data-placeholder="请输入付款方式">
+									<option></option>
+									<c:forEach var="one" items="${obj.paywaylist }">
+										<option value="${one.id }">${one.text}</option>
+									</c:forEach>
 								</select>
+								<input id="payWay" type="hidden" name="payWay" /> 
 							</div>
 							<div class="col-sm-8" style="display: none;" id="paywayDivId">
 								<div class="col-sm-12 padding payInp">
@@ -642,7 +637,38 @@
 			});
 			_invioceSelect.val([${obj.invioceIds}]).trigger("change");
 			
-			
+			//付款方式回显
+			var _paywaySelect = $("#payWaySelect").select2({
+				ajax : {
+					url : BASE_PATH  + "/admin/customer/payWay.html",
+					dataType : 'json',
+					delay : 250,
+					type : 'post',
+					data : function(params) {
+						return {
+							q : params.term, // search term
+							ids:$('#payWay').val(),
+							page : params.page
+						};
+					},
+					processResults : function(data, params) {
+						params.page = params.page || 1;
+						return {
+							results : data
+						};
+					},
+					cache : false
+				},
+				escapeMarkup : function(markup) {
+					return markup;
+				}, // let our custom formatter work
+				minimumInputLength : 1,
+				maximumInputLength : 20,
+				language : "zh-CN", //设置 提示语言
+				maximumSelectionLength : 5, //设置最多可以选择多少项
+				tags : false, //设置必须存在的选项 才能选中
+			});
+			_paywaySelect.val([${obj.payWayIds}]).trigger("change");
 			
 
 		});
@@ -899,6 +925,12 @@
 			//发票项Id
 			var selectedsInvID = $("#sInvID").select2("val");
 			$("#sInvName").val(selectedsInvID);
+		}
+		/* 付款方式 */
+		function payOpt() {
+			//付款方式Id
+		    var selectedPayweyId = $("#payWaySelect").select2("val"); 
+			$("#payWay").val(selectedPayweyId);
 		}
 	 	//提交时开始验证
 		/* $('#updateBtn').click(function() {
