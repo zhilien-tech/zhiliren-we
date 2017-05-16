@@ -322,6 +322,7 @@ $(function(){
         		$(this).find('[name=ailinenum]').next().remove();
         		$(this).find('[name=leavetime]').val('');
         		$(this).find('[name=arrivetime]').val('');
+        		$(this).find('[name=peoplescount]').val('');
         		$(this).find('[name=formprice]').val('');
         		$(this).find('[name=price]').val('');
         		initAirInfoSelect2($(this));
