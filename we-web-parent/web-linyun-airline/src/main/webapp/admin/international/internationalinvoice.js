@@ -27,7 +27,7 @@ function initkaiInvoiceTable() {
                 	  render:function(data, type, row, meta) {
                     		var result = '<ul> ';
                     		$.each(row.orders, function(name, value) {
-                    			if(value){
+                    			if(value.ordersnum && value.ordersnum != undefined){
                     				result += '<li style="list-style:none;">'+value.ordersnum+'</li>';
                     			}
                     		});
@@ -90,7 +90,18 @@ function initkaiInvoiceTable() {
                     		return result;
                     	}
                   },
-                  {"data": "paymentunit", "bSortable": false},
+                  {"data": "paymentunit", "bSortable": false,
+                	  render:function(data, type, row, meta) {
+                		  var result = '<ul> ';
+                  		$.each(row.orders, function(name, value) {
+                  			if(value.shortname && value.shortname != undefined){
+                  				result += '<li style="list-style:none;">'+value.shortname+'</li>';
+                  			}
+                  		});
+                  		result += '</ul>';
+                  		return result;
+                  	} 
+                  },
                   {"data": "username", "bSortable": false,
                 	  render:function(data, type, row, meta) {
                     		var result = '';

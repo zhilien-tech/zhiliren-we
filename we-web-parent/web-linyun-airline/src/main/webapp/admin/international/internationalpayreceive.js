@@ -87,10 +87,18 @@ function initshouFuKuanGatheringTable() {
                   },
                   {"data": "customename", "bSortable": false,
                 	  render:function(data, type, row, meta) {
-                    		var result = '';
+                    		/*var result = '';
                     		if(row.customename){
                     			result = row.customename;
                     		}
+                    		return result;*/
+                		    var result = '<ul>';
+                    		$.each(row.orders, function(name, value) {
+                    			if(value.shortname && value.shortname != undefined){
+                    				result += '<li style="list-style:none;">'+value.shortname+'</li>';
+                    			}
+                    		});
+                    		result += '</ul>';
                     		return result;
                     	}
                   },

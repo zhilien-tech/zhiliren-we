@@ -297,28 +297,28 @@ $('.fuKuanBtn').click(function(){
 		layer.msg("请至少选中一条记录",{time: 2000});
 	}else{
 		var status = $('#status').val();
-		$.ajax({ 
+		layer.open({
+			type: 2,
+			title:false,
+			skin: false, //加上边框
+			closeBtn:false,//默认 右上角关闭按钮 是否显示
+			shadeClose:true,
+			scrollbar: false,
+			area: ['850px', '568px'],
+			content: BASE_PATH + '/admin/international/openReceipt.html?ids='+ids+'&orderstatus='+status,
+			end:function(){
+				drawerPayTable.ajax.reload(function(json){
+					autoHighLoad($('#drawerPayTable'));
+				},false);
+				$('#checkedboxval2').val('');
+			}
+		});
+		/*$.ajax({ 
 			type: 'POST', 
 			data: {ids:ids}, 
 			url: BASE_PATH + '/admin/inland/checkIsCommonCompany.html',
            success: function (data) { 
         	   if(data){
-        		   layer.open({
-        				type: 2,
-        				title:false,
-        				skin: false, //加上边框
-        				closeBtn:false,//默认 右上角关闭按钮 是否显示
-        				shadeClose:true,
-        				scrollbar: false,
-        				area: ['850px', '568px'],
-        				content: BASE_PATH + '/admin/international/openReceipt.html?ids='+ids+'&orderstatus='+status,
-        				end:function(){
-        					drawerPayTable.ajax.reload(function(json){
-        						autoHighLoad($('#drawerPayTable'));
-        					},false);
-        					$('#checkedboxval2').val('');
-        		  	    }
-        			});
         	   }else{
         		   layer.msg("请选择同一个客户的订单","",3000);
         	   }
@@ -326,7 +326,7 @@ $('.fuKuanBtn').click(function(){
            error: function (xhr) {
            	layer.msg("提交失败","",3000);
            } 
-       });
+       });*/
 		
 	}
 });
