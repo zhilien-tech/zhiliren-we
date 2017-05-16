@@ -45,6 +45,7 @@ import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
+import com.linyun.airline.common.enums.CustomerInfoPaywayEnum;
 import com.linyun.airline.common.enums.MessageLevelEnum;
 import com.linyun.airline.common.enums.MessageRemindEnum;
 import com.linyun.airline.common.enums.MessageSourceEnum;
@@ -295,6 +296,19 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 			addForm.setContractTime(DateUtil.string2Date(addForm.getContractTimeString(), "yyyy-MM-dd"));
 		}
 		addForm.setCreateTime(DateUtil.nowDate());
+		//付款方式名称
+		String payWayIds = addForm.getPayWay();
+		/*String paywayName = "";
+		for (CustomerInfoPaywayEnum payway : CustomerInfoPaywayEnum.values()) {
+			String id = payway.key();
+			String text = payway.value();
+			if (payWayIds.contains(id)) {
+				paywayName += text + "、";
+			}
+		}
+		if (!Util.isEmpty(paywayName)) {
+			addForm.setPaywayName(paywayName.substring(0, paywayName.length() - 1));
+		}*/
 		//得到当前用户所在公司的id
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
@@ -565,6 +579,11 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 				return op;
 			}
 		}));
+
+		String paywayIds = tCustomerInfoEntity.getPayWay();
+		List<Select2Option> payWayList = payWayByIds(paywayIds);
+		obj.put("payWayIds", paywayIds);
+		obj.put("paywaylist", payWayList);
 
 		//国境内陆
 		Sql lineSql = Sqls.create(sqlManager.get("customer_islineOption_list"));
@@ -1022,6 +1041,65 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 				}
 			}
 			list.removeAll(removelist);
+		}
+		return list;
+	}
+
+	/**
+	 * 
+	 * TODO查询发票项
+	 * <p>
+	 * @param invioceName
+	 * @return
+	 * @throws Exception 
+	 */
+	public Object payWay(String paywayName, String ids) throws Exception {
+
+		List<Select2Option> list = new ArrayList<Select2Option>();
+		for (CustomerInfoPaywayEnum payway : CustomerInfoPaywayEnum.values()) {
+			String id = payway.key();
+			String text = payway.value();
+			if (!ids.contains(id)) {
+				Select2Option op = new Select2Option();
+				op.setId(Integer.valueOf(id));
+				op.setText(text);
+				if (Util.isEmpty(paywayName)) {
+					list.add(op);
+				} else {
+					boolean startsWith = text.startsWith(paywayName);
+					if (startsWith) {
+						list.add(op);
+					}
+				}
+
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * 
+	 * 根据id 查询 付款方式
+	 * <p>
+	 *
+	 * @param paywayName
+	 * @param ids
+	 * @return
+	 * @throws Exception 
+	 */
+	public List<Select2Option> payWayByIds(String ids) {
+
+		List<Select2Option> list = new ArrayList<Select2Option>();
+		for (CustomerInfoPaywayEnum payway : CustomerInfoPaywayEnum.values()) {
+			String id = payway.key();
+			String text = payway.value();
+			if (ids.contains(id)) {
+				Select2Option op = new Select2Option();
+				op.setId(Integer.valueOf(id));
+				op.setText(text);
+				list.add(op);
+			}
 		}
 		return list;
 	}

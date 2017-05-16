@@ -292,28 +292,28 @@ $('.fuKuanBtn1').click(function(){
 	if(!ids){
 		layer.msg("请至少选中一条记录",{time: 2000});
 	}else{
-		$.ajax({ 
+		var status = $('#status').val();
+		layer.open({
+			type: 2,
+			title:false,
+			skin: false, //加上边框
+			closeBtn:false,//默认 右上角关闭按钮 是否显示
+			shadeClose:true,
+			area: ['850px', '550px'],
+			content: BASE_PATH + '/admin/international/openPayment.html?ids='+ids+'&orderstatus='+status,
+			end:function(){
+				payTable.ajax.reload(function(json){
+					autoHighLoad($('#payTable'));
+				},false);
+				$('#checkedboxval1').val('');
+			}
+		});
+		/*$.ajax({ 
 			type: 'POST', 
 			data: {ids:ids}, 
 			url: BASE_PATH + '/admin/inland/checkIsCommonCompany.html',
            success: function (data) { 
         	   if(data){
-        		   var status = $('#status').val();
-        		   layer.open({
-        				type: 2,
-        				title:false,
-        				skin: false, //加上边框
-        				closeBtn:false,//默认 右上角关闭按钮 是否显示
-        				shadeClose:true,
-        				area: ['850px', '550px'],
-        				content: BASE_PATH + '/admin/international/openPayment.html?ids='+ids+'&orderstatus='+status,
-        				end:function(){
-        					payTable.ajax.reload(function(json){
-        						autoHighLoad($('#payTable'));
-        					},false);
-        					$('#checkedboxval1').val('');
-        		  	    }
-        			});
         	   }else{
         		   layer.msg("请选择同一个客户的订单","",3000);
         	   }
@@ -321,7 +321,7 @@ $('.fuKuanBtn1').click(function(){
            error: function (xhr) {
            	layer.msg("提交失败","",3000);
            } 
-       });
+       });*/
 		
 	}
 });

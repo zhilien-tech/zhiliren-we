@@ -95,9 +95,17 @@ function initkaiInvoiceTable() {
                   },
                   {"data": "paymentunit", "bSortable": false,
                 	  render:function(data, type, row, meta) {
-                  		var result = row.paymentunit;
+                  		/*var result = row.paymentunit;
                   		var result = '<span data-toggle="tooltip" data-placement="left" title="'+result+'">'+result+'<span>';
-                  		return result;
+                  		return result;*/
+                  		var result = '<ul> ';
+                		$.each(row.orders, function(name, value) {
+                			if(value.shortname && value.shortname != undefined){
+                				result += '<li style="list-style:none;">'+value.shortname+'</li>';
+                			}
+                		});
+                		result += '</ul>';
+                		return result;
                   	}
                   
                   },

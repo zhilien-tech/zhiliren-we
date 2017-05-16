@@ -97,7 +97,7 @@ public class TCustomerInfoEntity implements Serializable {
 
 	@Column
 	@Comment("付款方式（现金、支票、银行汇款、第三方、其他）")
-	private int payWay;
+	private String payWay;
 
 	@Column
 	@Comment("其他付款方式")
