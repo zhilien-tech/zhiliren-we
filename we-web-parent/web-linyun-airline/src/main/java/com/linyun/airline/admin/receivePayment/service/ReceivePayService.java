@@ -798,7 +798,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			payEntity.setOpenname(openName);
 		}
 		if (!Util.eq(null, openNumber)) {
-			payEntity.setOpenname(openNumber);
+			payEntity.setOpennumber(openNumber);
 		}
 		if (!Util.eq(null, totalMoney)) {
 			payEntity.setTotalMoney(totalMoney);
@@ -952,7 +952,7 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			payEntity.setOpenname(openName);
 		}
 		if (!Util.eq(null, openNumber)) {
-			payEntity.setOpenname(openNumber);
+			payEntity.setOpennumber(openNumber);
 		}
 		if (!Util.isEmpty(isInvioce)) {
 			payEntity.setIsInvioce(isInvioce);
