@@ -90,7 +90,7 @@ function initCustNeedsSelect2(){
 		text = text.substr(0,3);
 		return text;
 	}
-	
+
 
 	//加载航空公司下拉
 	$("#cAirlineCompany").select2({
@@ -364,21 +364,27 @@ $('.addDemand').click(function(){
 	//newDiv.find('[name=morningDay]').val(0);
 	newDiv.find('[name=cRemark]').val('');
 	newDiv.find('[name=airLineClickHidden]').val("1");
-	
+
 	/*只在最后一个需求上显示 备注项*/
 	/*var cRemarkTxt = $("#cRemark").val();
     $('.remarkTr').remove();*/
-   /* $('.DemandDiv:last-child .cloTable tbody').append('<tr name="cRemarkTr" class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><input type="text" id="cRemark" name="cRemark" value="'+cRemarkTxt+'" class="form-control input-sm noteText" placeholder=" " value=" "></td></tr>');*/
-    //$('.DemandDiv:last-child .cloTable tbody').append('<tr name="cRemarkTr" class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><textarea rows="5" cols="140" id="cRemark" name="cRemark">'+cRemarkTxt+'</textarea></td></tr>');
+	/* $('.DemandDiv:last-child .cloTable tbody').append('<tr name="cRemarkTr" class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><input type="text" id="cRemark" name="cRemark" value="'+cRemarkTxt+'" class="form-control input-sm noteText" placeholder=" " value=" "></td></tr>');*/
+	//$('.DemandDiv:last-child .cloTable tbody').append('<tr name="cRemarkTr" class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><textarea rows="5" cols="140" id="cRemark" name="cRemark">'+cRemarkTxt+'</textarea></td></tr>');
 });
 
 /************************************客户需求的 +需求 按钮 end ************************************/
 //客户需求的 -需求 按钮
 $(document).on("click",".removeDemand",function(){
-	var cRemarkTxt = $("#cRemark").val();
-	$(this).parent().remove();
+	var demand = $(this);
+	layer.confirm('你确定删除吗？', {icon: 3, title:'提示'}, function(index){
+		//do something
+		var cRemarkTxt = $("#cRemark").val();
+		demand.parent().remove();
+		layer.close(index);
+	});
+
 	/*判断最后一个需求是否有 备注项 如果没有 就添加备注项*/
-    /*var cl=$('.DemandDiv:last-child .cloTable tbody tr').hasClass('remarkTr');
+	/*var cl=$('.DemandDiv:last-child .cloTable tbody tr').hasClass('remarkTr');
     if(cl==false){
     	$('.DemandDiv:last-child .cloTable tbody').append('<tr name="cRemarkTr" class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><input type="text" id="remark" name="remark" class="form-control input-sm noteText" placeholder=" " value=" "></td></tr>');
     	 $('.DemandDiv:last-child .cloTable tbody').append('<tr name="cRemarkTr" class="remarkTr"><td></span><label>备注：</label></td><td colspan="11"><textarea rows="5" cols="140" id="cRemark" name="cRemark">'+cRemarkTxt+'</textarea></td></tr>');
@@ -485,7 +491,12 @@ $(document).on("click",".addIcon",function(){
 
 //客户需求的航空段数 - 按钮
 $(document).on("click",".removIcon",function(){
-	$(this).parent().parent().remove();
+	var demand = $(this);
+	layer.confirm('你确定删除吗？', {icon: 3, title:'提示'}, function(index){
+		//do something
+		demand.parent().parent().remove();
+		layer.close(index);
+	});
 });
 
 
@@ -519,7 +530,7 @@ $(document).on("click",".chooseAirLineBtn",function(){
 		var custArrivalCity = $(this).find('[name=cArrivalcity]').select2("val");
 		var outFlag = true;
 		var arrFlag = true;
-		
+
 		if(null==custOutCity || ""==custOutCity){
 			custOutCity = "无";
 			outFlag = false;
@@ -533,7 +544,7 @@ $(document).on("click",".chooseAirLineBtn",function(){
 				msgFlag=true;
 			}
 		}
-		
+
 		var custLine = custNeedNum +'. '+ custOutCity +' - '+ custArrivalCity;
 		//如果out和arr都为空，则不添加选项
 		if(outFlag || arrFlag){
@@ -542,13 +553,13 @@ $(document).on("click",".chooseAirLineBtn",function(){
 	});
 	if(msgFlag){
 		/*layer.msg("客户需求需填一个城市", "", 3000);*/
-		
+
 		$(".airLineCity").hide();
 	}else{
 		$(".airLineCity").removeAttr("style");
 		$(".airLineCity").append(custLines);
 	}
-	
+
 });
 
 /************************************飞机票 选择项点击事件  start ************************************/
@@ -563,14 +574,14 @@ $(document).on("click",".custLineChoose",function(){
 			if(ClickHiddenInput == "1"){
 				var lengthAir = '';
 				$(demandE).find('[name=airLineClickHidden]').val("0");
-				
+
 				var aircom = $(this).find('[name=cAirlineCompany]').val();
 				var ailinenum = $(this).find('[name=cAirlineNum]').val();
 				var cAirOutDate = $(this).find('[name=cAirOutDate]').val();
 				var cAirArrivalDate = $(this).find('[name=cAirArrivalDate]').val();
 				var cAirCost = $(this).find('[name=cAirCost]').val();
 				var cAirPretium = $(this).find('[name=cAirPretium]').val();
-				
+
 				if (aircom) {
 					aircom = aircom.join(',');
 					lengthAir += aircom;
@@ -618,11 +629,11 @@ $(document).on("click",".custLineChoose",function(){
 				$(tdE).find('[name=cAirArrivalDate]').val(ArrivalDateTime);
 				//成本
 				var costRMB = airTotalMoney;
-		    	//票价折扣
-		    	var discountFare = $("#discountHidden").val();
-		    	//手续费
-		    	var fees = $("#feeHidden").val(); 
-		    	var PretiumRMB = parseFloat(costRMB * discountFare / 100) + parseFloat(fees);
+				//票价折扣
+				var discountFare = $("#discountHidden").val();
+				//手续费
+				var fees = $("#feeHidden").val(); 
+				var PretiumRMB = parseFloat(costRMB * discountFare / 100) + parseFloat(fees);
 				$(tdE).find('[name=cAirPretium]').val(PretiumRMB);
 				$(tdE).find('[name=cAirCost]').val(costRMB);
 			});
