@@ -10,6 +10,7 @@ import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
+import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
@@ -36,6 +37,8 @@ public class TPnrSystemMapSqlForm extends DataTablesParamForm {
 	private Date enterausdate;
 	/**订单状态*/
 	private Integer orderstatus;
+	/**团散类型*/
+	private Integer type;
 	/**关联状态*/
 	private String relationStatus;
 	/**航空公司*/
@@ -51,7 +54,6 @@ public class TPnrSystemMapSqlForm extends DataTablesParamForm {
 		System.out.println("=========================================");
 		String sqlString = sqlManager.get("grab_report_findPnrSystemMap");
 		Sql sql = Sqls.create(sqlString);
-
 		sql.setCondition(cnd());
 		return sql;
 	}
@@ -64,7 +66,7 @@ public class TPnrSystemMapSqlForm extends DataTablesParamForm {
 			cnd.and("psm.id", "=", -1);
 
 		}
-
+		cnd.and("uo.orderstype", "=", OrderTypeEnum.FIT.intKey());
 		return cnd;
 	}
 }

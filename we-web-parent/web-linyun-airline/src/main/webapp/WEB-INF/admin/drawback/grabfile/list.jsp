@@ -535,17 +535,17 @@ function successCallback(id){
 			                    		//return filename;
 			                    		if(filetype===1){
 			                    			/* return '<a id="'+fileId+'" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
-			                    			return '<a id="'+fileId+'" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
+			                    			return '<a id="'+fileId+'" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',0);">'+filename+'</a>';
 			                    		}else if(filetype===2 && fileExtension==="pdf"){
 			                    			/* return  '<a id="'+fileId+'" class="fa fa-file-pdf-o" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
-			                    			return  '<a id="'+fileId+'" class="fa fa-file-pdf-o" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
+			                    			return  '<a id="'+fileId+'" class="fa fa-file-pdf-o" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',0);">'+filename+'</a>';
 			                    		}//else if(filetype===2 && fileExtension==="PNG"){
 			                    			/* return  '<a id="'+fileId+'" class="fa fa-area-chart" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
 			                    			//return  '<a id="'+fileId+'" class="fa fa-area-chart" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
 			                    		//}
 			                    		else{
 			                    			/* return  '<a id="'+fileId+'" class="fa fa-file-text" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
-			                    			return  '<a id="'+fileId+'" class="fa fa-file-text" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
+			                    			return  '<a id="'+fileId+'" class="fa fa-file-text" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',0);">'+filename+'</a>';
 			                    		}
 			                    	}
 			                    },
@@ -712,7 +712,8 @@ function successCallback(id){
 				type : "POST",
 				url : '${base}/admin/drawback/grabreport/filePreview.html',
 				data : {
-					id : pid
+					id : pid,
+					
 				},
 				success : function(data) {
 					if(filetype == 2){
@@ -941,9 +942,8 @@ function createFodler1(pid,filename,filetype,clickFlag){//团队
 	}
 	
 	//修改文件夹名称
-	var clickFlag = 1;
 	function editFolder(id,filename,filetype,clickFlag){
-		if(clickFlag===1 && filetype===1){
+		if(filetype===1){
 			layer.open({
 		  	    type: 2,
 		  	    title:false,
@@ -959,15 +959,15 @@ function createFodler1(pid,filename,filetype,clickFlag){//团队
 		  			parent.layer.close(index);
 		  	    }
 		 	});
-		}else if(clickFlag===1 && filetype===2){
-			$.ajax({
-				type : "POST",
-				url : '${base}/admin/drawback/grabfile/filePreview.html',
+		}else if(filetype===2){
+			/* $.ajax({ */
+				/* type : "POST",
+				url : '${base}/admin/drawback/grabfile/filePreview.html?flagType='+clickFlag,
 				data : {
 					id : id
 				},
-				success : function(data) {
-					if(filetype == 2){
+				success : function(data) { */
+					//if(filetype == 2){
 						layer.open({
 					  	    type: 2,
 					  	    title:false,
@@ -977,15 +977,15 @@ function createFodler1(pid,filename,filetype,clickFlag){//团队
 					  	    shadeClose: false,
 					  	    scrollbar: false,
 					  	    area: ['1200px', '700px'],
-					  	    content: '${base}/admin/drawback/grabreport/filePreview.html?id='+id
+					  	    content: '${base}/admin/drawback/grabreport/filePreview.html?id='+id+'&flagType='+clickFlag
 					 	});
-					} 
+					//} 
 						
-				},
+				/* },
 				error : function(request) {
 					layer.msg("操作失败", "", 3000);
 				}
-			});
+			}); */
 		}else{
 			options.ajax.data.parentId=pid;
 			var param = {parentId:pid};

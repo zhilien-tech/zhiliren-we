@@ -23,6 +23,7 @@ import com.linyun.airline.admin.drawback.grabfile.enums.PNRRelationStatusEnum;
 import com.linyun.airline.admin.drawback.grabreport.entity.PNRINFOList;
 import com.linyun.airline.admin.drawback.grabreport.entity.TGrabReportEntity;
 import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportAddForm;
+import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.result.Select2Option;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.DbSqlUtil;
@@ -47,11 +48,12 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 	 * 打开附件预览时查询url
 	 * @param pid
 	 */
-	public Object addFilePreview(long pid) {
+	public Object addFilePreview(long pid, long flagType) {
 		Map<String, Object> obj = Maps.newHashMap();
 		TGrabFileEntity fetch = dbDao.fetch(TGrabFileEntity.class, pid);
 		obj.put("fileurl", fetch);
 		obj.put("pid", pid);
+		obj.put("flagType", flagType);
 		return obj;
 	}
 
@@ -175,13 +177,14 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 	 * TODO(这里用一句话描述这个方法的作用)
 	 * <p>
 	 * TODO(这里描述这个方法详情– 可选)
+	 * @param flagType 
 	 *
 	 * @param findCompany
 	 * @param companyName
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
-	public Object selectPNRNames(String findPNR, String PNRName) {
-		List<Record> PNRNameList = getPNRNameList(findPNR, PNRName);
+	public Object selectPNRNames(String findPNR, String PNRName, int flagType) {
+		List<Record> PNRNameList = getPNRNameList(findPNR, PNRName, flagType);
 		List<Select2Option> result = transform2SelectOptions(PNRNameList);
 		return result;
 	}
@@ -200,14 +203,24 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 
 	/**
 	 * 获取PNR下拉框
+	 * @param flagType 
 	 * @param dictName
 	 */
-	public List<Record> getPNRNameList(String findPNR, final String PNRName) {
-		String sqlString = sqlManager.get("grab_report_addPnrSystemMap");
-		Sql sql = Sqls.create(sqlString);
+	public List<Record> getPNRNameList(String findPNR, final String PNRName, int flagType) {
+		String sqlString = "";
 		Cnd cnd = Cnd.NEW();
-		cnd.and("PNR", "like", "%" + Strings.trim(findPNR) + "%");
-		//cnd.and("typeCode", "=", "YH");
+		if (0 == flagType) {//散客
+			sqlString = sqlManager.get("grab_report_addPnrSystemMap");
+			cnd.and("uo.orderstype", "=", OrderTypeEnum.FIT.intKey());
+		}
+		if (1 == flagType) {//团队
+			sqlString = sqlManager.get("grab_report_addPnrSystemMap_Inter");
+			cnd.and("uo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
+		}
+		Sql sql = Sqls.create(sqlString);
+		if (!Util.isEmpty(findPNR)) {
+			cnd.and("PNR", "like", "%" + Strings.trim(findPNR) + "%");
+		}
 		//cnd.and("status", "=", DataStatusEnum.ENABLE.intKey());
 		if (!Util.isEmpty(PNRName)) {
 			cnd.and("pnrId", "NOT IN", PNRName);
