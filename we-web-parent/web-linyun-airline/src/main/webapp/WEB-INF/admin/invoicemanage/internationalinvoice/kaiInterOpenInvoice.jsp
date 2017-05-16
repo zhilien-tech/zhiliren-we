@@ -107,8 +107,8 @@
                   </td>
                   <td>发票日期：</td>
                   <td><input id="invoicedate" name="invoicedate" type="text" onFocus="WdatePicker()" class="form-control input-sm" value="<fmt:formatDate value="${obj.invoiceinfo.invoicedate }" pattern="yyyy-MM-dd" />"></td>
-                  <td>借发票：</td>
-                  <td><input name="borrowInvoice" type="checkbox" value="" /></td>
+                  <td><input id="borrowInvoiceId" name="borrowInvoice" type="checkbox" value="${obj.invoiceinfo.borrowInvoice }" /></td>
+                  <td>借发票</td>
                   <%-- <td>开票人：</td>
                   <td>
                      <select id="billuserid" name="billuserid" value="${obj.invoiceinfo.billuserid }" class="form-control input-sm">
@@ -180,8 +180,10 @@
           		<tr class="cloneTR">
                   <td>发票号：</td>
                   <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm"></td>
-                  <td>金额：</td>
+                  <td>实际金额：</td>
                   <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm"></td>
+                  <td>税控金额：</td>
+		          <td><input id="fiscalAmountId" name="fiscalAmount" type="text" class="form-control input-sm"></td>
                   <td colspan="4">
                     <ul class="fileUL">
                       <li>
@@ -336,6 +338,11 @@
            } 
        });
    }
+ //借发票
+   var borrowInvoiceChecked = '${obj.invoiceinfo.borrowInvoice }';
+	if("" != borrowInvoiceChecked && null != borrowInvoiceChecked && '1'===borrowInvoiceChecked){
+		$('input#borrowInvoiceId').attr('checked','checked');
+	}
   </script>
 </body>
 </html>	
