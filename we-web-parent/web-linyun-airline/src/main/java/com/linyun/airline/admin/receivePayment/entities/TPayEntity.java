@@ -82,7 +82,7 @@ public class TPayEntity implements Serializable {
 	private Integer approveResult;
 
 	@Column
-	@Comment("审批时间") 
+	@Comment("审批时间")
 	private Date approveTime;
 
 	@Column
@@ -105,4 +105,15 @@ public class TPayEntity implements Serializable {
 	@Comment("订单状态")
 	private Integer orderstatus;
 
+	@Column
+	@Comment("开户银行")
+	private String openbank;
+
+	@Column
+	@Comment("开户名称")
+	private String openname;
+
+	@Column
+	@Comment("开户账号")
+	private String opennumber;
 }

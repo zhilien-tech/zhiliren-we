@@ -23,6 +23,7 @@ SELECT
 FROM
 	t_airlinepolicy 
 $condition
+GROUP BY areaName
 LIMIT 0,5
 /*airlinepolicy_datalist*/
 select * from(

@@ -121,6 +121,8 @@
                      <td><input id="leavetime" name="leavetime" type="text" class="form-control input-sm textWid mustTimes" placeholder=""></td>
                      <td><label>抵达时间：</label></td>
                      <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm textWid mustArriveTimes"></td>
+                     <td><label>人数：</label></td>
+                     <td><input id="peoplescount" name="peoplescount" type="text" class="form-control input-sm textWid mustNumber"/></td>
                      <td><label class="labelWid">成本价：</label></td>
                      <td><input id="formprice" name="formprice" type="text" class="form-control input-sm textWid costPrice mustNumberPoint"></td>
                      <td><label class="labelWid">销售价：</label></td>
@@ -244,10 +246,12 @@
   				airrow.arrivetime = $(this).find('[name=arrivetime]').val();
   				airrow.formprice = $(this).find('[name=formprice]').val();
   				airrow.price = $(this).find('[name=price]').val();
+  				airrow.peoplescount = $(this).find('[name=peoplescount]').val();
   				lengthAir += $(this).find('[name=leavetime]').val();
   				lengthAir += $(this).find('[name=arrivetime]').val();
   				lengthAir += $(this).find('[name=formprice]').val();
   				lengthAir += $(this).find('[name=price]').val();
+  				lengthAir += $(this).find('[name=peoplescount]').val();
   				if(lengthAir.length > 0){
 	  				airrows.push(airrow);
   				}
