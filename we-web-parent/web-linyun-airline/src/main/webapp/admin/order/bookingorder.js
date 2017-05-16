@@ -238,6 +238,7 @@ $(function(){
         		$(this).find('[name=ailinenum]').empty();
         		$(this).find('[name=leavetime]').val('');
         		$(this).find('[name=arrivetime]').val('');
+        		$(this).find('[name=peoplescount]').val('');
         		$(this).find('[name=formprice]').val('');
         		$(this).find('[name=price]').val('');
         		$(this).find('[name=ispriceempty]').val('1');

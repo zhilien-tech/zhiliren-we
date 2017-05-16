@@ -91,7 +91,7 @@ public class TAirlineInfoEntity implements Serializable {
 
 	@Column
 	@Comment("人数")
-	private Integer peoplecount;
+	private Integer peoplescount;
 
 	/**
 	 * (non-Javadoc)
@@ -171,10 +171,10 @@ public class TAirlineInfoEntity implements Serializable {
 				return false;
 		} else if (!passengertype.equals(other.passengertype))
 			return false;
-		if (peoplecount == null) {
-			if (other.peoplecount != null)
+		if (peoplescount == null) {
+			if (other.peoplescount != null)
 				return false;
-		} else if (!peoplecount.equals(other.peoplecount))
+		} else if (!peoplescount.equals(other.peoplescount))
 			return false;
 		if (planid == null) {
 			if (other.planid != null)
@@ -225,7 +225,7 @@ public class TAirlineInfoEntity implements Serializable {
 		result = prime * result + ((needid == null) ? 0 : needid.hashCode());
 		result = prime * result + ((passengercount == null) ? 0 : passengercount.hashCode());
 		result = prime * result + ((passengertype == null) ? 0 : passengertype.hashCode());
-		result = prime * result + ((peoplecount == null) ? 0 : peoplecount.hashCode());
+		result = prime * result + ((peoplescount == null) ? 0 : peoplescount.hashCode());
 		result = prime * result + ((planid == null) ? 0 : planid.hashCode());
 		result = prime * result + ((pnrid == null) ? 0 : pnrid.hashCode());
 		result = prime * result + ((price == null) ? 0 : price.hashCode());
