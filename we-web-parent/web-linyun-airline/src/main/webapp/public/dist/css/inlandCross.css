@@ -29,7 +29,7 @@ table.dataTable thead .sorting:after{display: none;}
 .infoTopContent .btn{margin-left: 12px;padding: 4px 15px;position: relative;top: -3px;}
 .infofooter{margin-bottom: 10px;min-height:50px;border: solid 1px #e0e0e0;border-top: 0; padding: 20px 0px 0px 0px;background-color: #fcfcfc;border-radius: 0 4px 4px 4px;}
 .infofooter table tr td label{width: 70px;text-align: right;padding-top: 3px;}
-.infofooter table tr td .form-control{width:115px;padding-left: 3px;padding-right: 3px;}
+.infofooter table tr td .form-control{padding-left: 3px;padding-right: 3px;}
 .addressInput{width: 300px !important;}
 .infofooter  table tr td .btn{margin-left: 17px;padding: 4px 15px;}
 .infofooter  table tr td .UnderIcon{font-size: 20px;cursor: pointer;color: #5d6a7b;position: relative;top: 3px;left: 15px;}
@@ -41,10 +41,10 @@ table.dataTable thead .sorting:after{display: none;}
 .lef1{position: relative;left: -31px;}
 .titleNum{float:left;border: rgb(45, 110, 149) solid 1px;text-align: center !important;margin-left: 10px;border-radius: 3px;font-size: 15px !important;color: #2d6e95;margin-top: 5px;width: 24px;}
 .cloTable{margin-top:5px;}
+.cloTable tr {height: 40px;}
 .textWid{width:85px !important;}
 .addIcon{top: 0px;margin-right: 0px;margin-left: 15px;}
 .removIcon{color: #3c8dbc;margin-right: 0;margin-top: 0;margin-left: -24px;}
-.cloTable tr {height: 40px;}
 .addDemand,.removeDemand{padding: 5px 11px;position: relative;left: 950px;margin-top: 5px;}
 .addDemand b{float: left;}
 .removeDemand b{float: left;}
@@ -121,14 +121,17 @@ table.dataTable thead .sorting_desc:after {display: none;}
 .white_content img{width: 100%;height: 100%;}
 #balance {position: relative;top: 3px;}
 /*---添加订单 style---*/
-.infofooter table tbody tr td:nth-child(2){width:115px;}
-.table1 tbody tr td:nth-child(2) .select2-container {width: 130px !important;}
+.select2-dropdown--below {width: 180px !important;}
+.cloTable tbody tr td:nth-child(2) .select2{width:100px !important;}
+.cloTable tbody tr td:nth-child(4) .select2{width:100px !important;}
+.cloTable tbody tr td:nth-child(8) input{width:65px;}
+.cloTable tbody tr td:nth-child(10){width:65px;}
+.table1 tbody tr td:nth-child(2){width:100px;}
+.table1 tbody tr td:nth-child(4){width: 100px;}
+.table1 tbody tr td:nth-child(8) input{width:65px;}
+.table1 tbody tr td:nth-child(10){width:65px;}
 .addOrderKHXQ a.addDemand{left: 920px;padding: 3px 7px;margin-bottom: 7px;}
 .addOrderKHXQ a.removeDemand{left: 920px;padding: 3px 7px;margin-bottom: 7px;}
-.table1 tbody tr td:nth-child(2){width: 130px !important;}
-.table1 tbody tr td:nth-child(4){width: 130px !important;}
-.table1 tbody tr td:nth-child(4) .select2-container{width: 130px !important;}
-[name="airlineinfo"] td:nth-child(4){width: 115px !important;}
 .table1 tbody tr td:nth-child(7) label{width:70px;}
 .select2-container--default .select2-selection--multiple .select2-selection__choice {background-color: rgba(60, 141, 188, 0);border-color: rgba(54, 127, 169, 0);padding: 0px 10px; color: #555;}
 .select2-container--default .select2-selection--multiple .select2-selection__choice {padding: 0 !important;margin-right: 0px;}
