@@ -251,6 +251,8 @@
 					                     <td><input id="leavetime" name="leavetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" placeholder="" value="${airline.leavetime }"/></td>
 					                     <td><label>抵达时间：</label></td>
 					                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustArriveTimes" value="${airline.arrivetime }"/></td>
+					                     <td><label>人数：</label></td>
+		                     			 <td><input id="peoplescount" name="peoplescount" type="text" disabled="disabled" class="form-control input-sm textWid mustNumber" value="${airline.peoplescount }"/></td>
 					                     <td><label class="labelWid">成本价：</label></td>
 					                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" value="<fmt:formatNumber type="number" value="${airline.formprice }" pattern="0.00" maxFractionDigits="2"/>"/></td>
 					                     <td><label class="labelWid">销售价：</label></td>
@@ -278,6 +280,8 @@
 					                     <td><input id="leavetime" name="leavetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" placeholder=""/></td>
 					                     <td><label>抵达时间：</label></td>
 					                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustArriveTimes" /></td>
+					                     <td><label>人数：</label></td>
+		                     			 <td><input id="peoplescount" name="peoplescount" type="text" disabled="disabled" class="form-control input-sm textWid mustNumber" value=" "/></td>
 					                     <td><label class="labelWid">成本价：</label></td>
 					                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" /></td>
 					                     <td><label class="labelWid">销售价：</label></td>
@@ -334,6 +338,8 @@
 		                     <td><input id="leavetime" name="leavetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" placeholder=""/></td>
 		                     <td><label>抵达时间：</label></td>
 		                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustArriveTimes" /></td>
+		                     <td><label>人数：</label></td>
+		                     <td><input id="peoplescount" name="peoplescount" type="text" disabled="disabled" class="form-control input-sm textWid mustNumber" value=" "/></td>
 		                     <td><label class="labelWid">成本价：</label></td>
 		                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid costPrice" /></td>
 		                     <td><label class="labelWid">销售价：</label></td>
@@ -649,6 +655,7 @@
               		$(this).find('[name=ailinenum]').removeAttr('disabled');
               		$(this).find('[name=leavetime]').removeAttr('disabled');
               		$(this).find('[name=arrivetime]').removeAttr('disabled');
+              		$(this).find('[name=peoplescount]').removeAttr('disabled');
               		$(this).find('[name=formprice]').removeAttr('disabled');
               		$(this).find('[name=price]').removeAttr('disabled');
                   });
@@ -685,6 +692,7 @@
 	          		$(this).find('[name=ailinenum]').attr('disabled','disabled');
 	          		$(this).find('[name=leavetime]').attr('disabled','disabled');
 	          		$(this).find('[name=arrivetime]').attr('disabled','disabled');
+	          		$(this).find('[name=peoplescount]').attr('disabled','disabled');
 	          		$(this).find('[name=formprice]').attr('disabled','disabled');
 	          		$(this).find('[name=price]').attr('disabled','disabled');
 	              });
@@ -849,10 +857,12 @@
   				airrow.arrivetime = $(this).find('[name=arrivetime]').val();
   				airrow.formprice = $(this).find('[name=formprice]').val();
   				airrow.price = $(this).find('[name=price]').val();
+  				airrow.peoplescount = $(this).find('[name=peoplescount]').val();
   				lengthAir += $(this).find('[name=leavetime]').val();
   				lengthAir += $(this).find('[name=arrivetime]').val();
   				lengthAir += $(this).find('[name=formprice]').val();
   				lengthAir += $(this).find('[name=price]').val();
+  				lengthAir += $(this).find('[name=peoplescount]').val();
   				if(lengthAir.length > 0){
 	  				airrows.push(airrow);
   				}

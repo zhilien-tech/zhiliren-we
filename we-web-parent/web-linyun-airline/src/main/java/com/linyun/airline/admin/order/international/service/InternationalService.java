@@ -1461,6 +1461,9 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		String payCurrency = request.getParameter("payCurrency");
 		String approver = request.getParameter("approver");
 		String orderstatus = request.getParameter("orderstatus");
+		String openbank = request.getParameter("openbank");
+		String openname = request.getParameter("openname");
+		String opennumber = request.getParameter("opennumber");
 		TPayEntity payEntity = new TPayEntity();
 		if (!Util.isEmpty(purpose)) {
 			payEntity.setPurpose(Integer.valueOf(purpose));
@@ -1473,6 +1476,9 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		payEntity.setCompanyId(new Long(company.getId()).intValue());
 		payEntity.setOrdertype(OrderTypeEnum.TEAM.intKey());
 		payEntity.setStatus(AccountPayEnum.APPROVAL.intKey());
+		payEntity.setOpenbank(openbank);
+		payEntity.setOpenname(openname);
+		payEntity.setOpennumber(opennumber);
 		if (!Util.isEmpty(orderstatus)) {
 			payEntity.setOrderstatus(Integer.valueOf(orderstatus));
 		}

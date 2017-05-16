@@ -272,6 +272,10 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				if (!Util.isEmpty(airmap.get("price"))) {
 					price = Double.valueOf((String) airmap.get("price"));
 				}
+				Integer peoplescount = null;
+				if (!Util.isEmpty(airmap.get("peoplescount"))) {
+					peoplescount = Integer.valueOf((String) airmap.get("peoplescount"));
+				}
 				TAirlineInfoEntity airlineEntity = new TAirlineInfoEntity();
 				airlineEntity.setAircom(aircom);
 				airlineEntity.setAilinenum(ailinenum);
@@ -280,6 +284,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				airlineEntity.setFormprice(formatDouble(formprice));
 				airlineEntity.setPrice(formatDouble(price));
 				airlineEntity.setNeedid(insertCus.getId());
+				airlineEntity.setPeoplescount(peoplescount);
 				airlist.add(airlineEntity);
 				//添加航班信息
 			}
@@ -514,6 +519,11 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				if (!Util.isEmpty(airmap.get("price"))) {
 					price = Double.valueOf((String) airmap.get("price"));
 				}
+				//人数
+				Integer peoplescount = null;
+				if (!Util.isEmpty(airmap.get("peoplescount"))) {
+					peoplescount = Integer.valueOf((String) airmap.get("price"));
+				}
 				TAirlineInfoEntity airlineEntity = new TAirlineInfoEntity();
 				airlineEntity.setAircom(aircom);
 				airlineEntity.setAilinenum(ailinenum);
@@ -522,6 +532,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				airlineEntity.setFormprice(formatDouble(formprice));
 				airlineEntity.setPrice(formatDouble(price));
 				airlineEntity.setNeedid(Integer.valueOf(customneedid));
+				airlineEntity.setNeedid(peoplescount);
 				if (Util.isEmpty(airlineid)) {
 					//插入
 					dbDao.insert(airlineEntity);
@@ -832,6 +843,11 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				if (!Util.isEmpty(airmap.get("price"))) {
 					price = Double.valueOf((String) airmap.get("price"));
 				}
+				//人数
+				Integer peoplescount = null;
+				if (!Util.isEmpty(airmap.get("peoplescount"))) {
+					peoplescount = Integer.valueOf(airmap.get("peoplescount").toString());
+				}
 				TAirlineInfoEntity airlineEntity = new TAirlineInfoEntity();
 				airlineEntity.setAircom(aircom);
 				airlineEntity.setAilinenum(ailinenum);
@@ -840,6 +856,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				airlineEntity.setFormprice(formatDouble(formprice));
 				airlineEntity.setPrice(formatDouble(price));
 				airlineEntity.setNeedid(Integer.valueOf(customneedid));
+				airlineEntity.setPeoplescount(peoplescount);
 
 				if (Util.isEmpty(airlineid)) {
 					dbDao.insert(airlineEntity);
@@ -1642,6 +1659,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		String purpose = request.getParameter("purpose");
 		String payCurrency = request.getParameter("payCurrency");
 		String approver = request.getParameter("approver");
+		String openbank = request.getParameter("openbank");
+		String openname = request.getParameter("openname");
+		String opennumber = request.getParameter("opennumber");
 		TPayEntity payEntity = new TPayEntity();
 		payEntity.setPurpose(Integer.valueOf(purpose));
 		payEntity.setPayCurrency(Integer.valueOf(payCurrency));
@@ -1649,6 +1669,9 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		payEntity.setApprover(approver);
 		payEntity.setCompanyId(new Long(company.getId()).intValue());
 		payEntity.setOrdertype(OrderTypeEnum.FIT.intKey());
+		payEntity.setOpenbank(openbank);
+		payEntity.setOpenname(openname);
+		payEntity.setOpennumber(opennumber);
 		TPayEntity insert = dbDao.insert(payEntity);
 		Iterable<String> split = Splitter.on(",").split(ids);
 		List<TPayPnrEntity> paypnrs = new ArrayList<TPayPnrEntity>();

@@ -198,10 +198,11 @@
 										<!-- <input id="cAirOutDate0" name="cAirOutDate" type="text" onFocus="WdatePicker({minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'cAirArrivalDate0\')}'})" class="form-control input-sm timeWid inputdatestr startdatestr" placeholder="2020-01-01"> -->
 									</td>
 									<td><label>抵达时间：</label></td>
-									<td><input name="cAirArrivalDate" type="text"
-										class="form-control mustArriveTimes input-sm textWid" placeholder="">
+									<td><input name="cAirArrivalDate" type="text" class="form-control mustArriveTimes input-sm textWid" placeholder="">
 										<!-- <input id="cAirArrivalDate0" name="cAirArrivalDate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'cAirOutDate0\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2020-01-01"> -->
 									</td>
+									<td><label>人数：</label></td>
+									<td><input name="cAirPeopleConut" type="text" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" class="form-control input-sm textWid" placeholder=""></td>
 									<td><label class="labelWid">成本单价：</label></td>
 									<td><input name="cAirCost" type="text"
 										class="form-control input-sm textWid costPrice"
