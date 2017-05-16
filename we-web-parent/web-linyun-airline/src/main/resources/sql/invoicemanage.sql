@@ -161,21 +161,7 @@ INNER JOIN t_up_order tuo ON toc.ordernum = tuo.id
 INNER JOIN t_finance_info tfi ON tuo.id = tfi.orderid
 LEFT JOIN t_customer_info tci ON tuo.userid = tci.id
 $condition
-/*invoicemanage_get_bank_info_select*/
-SELECT
-	*
-FROM
-	dict_info
-WHERE
-	dictname IN (
-		SELECT DISTINCT
-			bankName
-		FROM
-			t_bankcard
-		WHERE
-			companyId = @companyId
-	)
-AND typecode = @typeCode
+
 /*invoicemanage_get_kai_invoice_page_data*/
 select tcb.* FROM
 t_pay_pnr tpp
@@ -204,3 +190,33 @@ AND (
 GROUP BY
 	(uj.userid)
 	
+/*invoicemanage_get_sea_invoce_table_data*/
+SELECT
+	 tuo.*, tfi.billingdate,
+	 tfi.cusgroupnum,
+	 tci.shortName,
+	 tci.NAME customename,
+	 tci.linkMan,
+	 tfi.issuer,
+	 tfi.incometotal
+FROM
+	t_up_order tuo
+left JOIN t_customer_info tci ON tuo.userid = tci.id
+LEFT JOIN t_finance_info tfi ON tuo.id = tfi.orderid
+$condition
+
+/*invoicemanage_get_bank_info_select*/
+SELECT
+	*
+FROM
+	dict_info
+WHERE
+	dictname IN (
+		SELECT DISTINCT
+			bankName
+		FROM
+			t_bankcard
+		WHERE
+			companyId = @companyId
+	)
+AND typecode = @typeCode

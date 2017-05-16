@@ -190,7 +190,11 @@ $(function(){
     });
     //客户需求的 - 按钮
     $(document).on("click",".removIcon",function(){
-        $(this).parent().parent().remove();
+    	var thisdiv = $(this);
+    	layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
+    		thisdiv.parent().parent().remove();
+    		layer.close(index);
+		});
     });
 
     //客户需求的 +需求 按钮
@@ -242,10 +246,14 @@ $(function(){
     });
     //客户需求的 -需求 按钮
     $(document).on("click",".removeDemand",function(){
-        $(this).parent().remove();
-        $('.DemandDiv').each(function(i){
-        	$(this).find('.titleNum').html(i+1);
-        });
+    	var thisdiv = $(this);
+    	layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
+    		thisdiv.parent().remove();
+    		$('.DemandDiv').each(function(i){
+    			$(this).find('.titleNum').html(i+1);
+    		});
+    		layer.close(index);
+		});
         /*判断最后一个需求是否有 备注项 如果没有 就添加备注项*/
         //var cl=$('.DemandDiv:last-child .cloTable tbody tr').hasClass('remarkTr');
         //if(cl==false){

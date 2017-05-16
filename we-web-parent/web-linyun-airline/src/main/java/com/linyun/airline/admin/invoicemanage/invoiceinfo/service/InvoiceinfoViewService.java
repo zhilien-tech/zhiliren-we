@@ -181,7 +181,7 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 			ids += tOrderReceiveEntity.getOrderid() + ",";
 		}
 		ids = ids.substring(0, ids.length() - 1);
-		String sqlString = sqlManager.get("get_sea_invoce_table_data");
+		String sqlString = sqlManager.get("invoicemanage_get_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.id", "in", ids);
@@ -204,7 +204,7 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 			}
 		}
 		result.put("invoicebalance", invoicebalance);
-		Sql create = Sqls.create(sqlManager.get("get_bank_info_select"));
+		Sql create = Sqls.create(sqlManager.get("invoicemanage_get_bank_info_select"));
 		create.setParam("companyId", company.getId());
 		create.setParam("typeCode", YHCODE);
 		List<Record> yhkSelect = dbDao.query(create, null, null);
@@ -264,6 +264,9 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		if (!Util.isEmpty(fromJson.get("difference"))) {
 			difference = formatDouble(Double.valueOf((String) fromJson.get("difference")));
 		}
+		if (!Util.isEmpty(fromJson.get("borrowInvoice"))) {
+			invoiceinfo.setBorrowInvoice(Integer.valueOf((String) fromJson.get("borrowInvoice")));
+		}
 		invoiceinfo.setDifference(difference);
 		Double balance = null;
 		if (!Util.isEmpty(fromJson.get("balance"))) {
@@ -303,7 +306,7 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 			ids += tOrderReceiveEntity.getOrderid() + ",";
 		}
 		ids = ids.substring(0, ids.length() - 1);
-		String sqlString = sqlManager.get("get_sea_invoce_table_data");
+		String sqlString = sqlManager.get("invoicemanage_get_sea_invoce_table_data");
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("tuo.id", "in", ids);
@@ -487,6 +490,9 @@ public class InvoiceinfoViewService extends BaseService<TInvoiceInfoEntity> {
 		Double difference = null;
 		if (!Util.isEmpty(fromJson.get("difference"))) {
 			difference = formatDouble(Double.valueOf((String) fromJson.get("difference")));
+		}
+		if (!Util.isEmpty(fromJson.get("borrowInvoice"))) {
+			invoiceinfo.setBorrowInvoice(Integer.valueOf((String) fromJson.get("borrowInvoice")));
 		}
 		invoiceinfo.setDifference(difference);
 		Double balance = null;

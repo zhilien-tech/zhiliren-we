@@ -328,6 +328,9 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		if (!Util.isEmpty(fromJson.get("difference"))) {
 			difference = formatDouble(Double.valueOf((String) fromJson.get("difference")));
 		}
+		if (!Util.isEmpty(fromJson.get("borrowInvoice"))) {
+			invoiceinfo.setBorrowInvoice(Integer.valueOf((String) fromJson.get("borrowInvoice")));
+		}
 		invoiceinfo.setDifference(difference);
 		Double balance = null;
 		if (!Util.isEmpty(fromJson.get("balance"))) {
@@ -515,6 +518,9 @@ public class InternationalInvoiceInfoService extends BaseService<TInvoiceInfoEnt
 		Double difference = null;
 		if (!Util.isEmpty(fromJson.get("difference"))) {
 			difference = formatDouble(Double.valueOf((String) fromJson.get("difference")));
+		}
+		if (!Util.isEmpty(fromJson.get("borrowInvoice"))) {
+			invoiceinfo.setBorrowInvoice(Integer.valueOf((String) fromJson.get("borrowInvoice")));
 		}
 		invoiceinfo.setDifference(difference);
 		Double balance = null;
