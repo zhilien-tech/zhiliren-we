@@ -12,9 +12,6 @@
   <link rel="stylesheet" href="${base }/public/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" type="text/css" href="${base }/public/ionicons/css/ionicons.min.css">
   <link rel="stylesheet" type="text/css" href="${base }/public/dist/css/inlandCross.css"><!--本页面样式-->
-  <style type="text/css">
-  	[name="airlineinfo"] td .select2-container{width:130px !important;}
-  </style>
 </head>
 <body>
 	<div class="modal-top">
@@ -98,12 +95,12 @@
                      <td><label>抵达城市：</label></td>
                      <td><select id="arrivecity" name="arrivecity" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)"></select></td>
                      <td><label>出发日期：</label></td>
-                     <td><input id="leavedate" name="leavedate" type="text" class="form-control input-sm textWid" onFocus="WdatePicker({minDate:'%y-%M-%d'})"></td>
+                     <td><input id="leavedate" name="leavedate" type="text" class="form-control textWid input-sm" onFocus="WdatePicker({minDate:'%y-%M-%d'})"></td>
                      <td><label>人数：</label></td>
-                     <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm textWid mustNumber"></td>
+                     <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm mustNumber"></td>
                      <td><label class="labelWid">早中晚：</label></td>
                      <td>
-                       <select id="tickettype" name="tickettype" class="form-control input-sm textWid">
+                       <select id="tickettype" name="tickettype" class="form-control input-sm">
                          <option value="1">早</option>
                          <option value="2">中</option>
                          <option value="3">晚</option>
@@ -120,9 +117,9 @@
                      <td><label>出发时间：</label></td>
                      <td><input id="leavetime" name="leavetime" type="text" class="form-control input-sm textWid mustTimes" placeholder=""></td>
                      <td><label>抵达时间：</label></td>
-                     <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm textWid mustArriveTimes"></td>
-                     <td><label>人数：</label></td>
-                     <td><input id="peoplescount" name="peoplescount" type="text" class="form-control input-sm textWid mustNumber"/></td>
+                     <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm mustArriveTimes"></td>
+                     <td><label class="labelWid">人数：</label></td>
+                     <td><input id="peoplescount" name="peoplescount" type="text" class="form-control input-sm mustNumber"/></td>
                      <td><label class="labelWid">成本价：</label></td>
                      <td><input id="formprice" name="formprice" type="text" class="form-control input-sm textWid costPrice mustNumberPoint"></td>
                      <td><label class="labelWid">销售价：</label></td>
