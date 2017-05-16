@@ -25,8 +25,6 @@ function confirmPayClick(){
 						}
 				);
 			}
-
-
 		},
 		error: function () {
 			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
