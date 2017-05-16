@@ -30,7 +30,7 @@
 						<th>收款单位</th>
 						<th>开票日期</th>
 						<th>人数</th>
-						<th>开票人</th>
+						<th>票务</th>
 						<th>金额</th>
 					</tr>
 				</thead>

@@ -80,7 +80,7 @@
 														<th>销售金额</th>
 														<th>总额</th>
 														<th>客户名称</th>
-														<th>开票人</th>
+														<th>票务</th>
 														<th>状态</th>
 														<th>备注</th>
 													</tr>
@@ -147,7 +147,7 @@
 														<th>币种</th>
 														<th>收款单位</th>
 														<th>状态</th>
-														<th>开票人</th>
+														<th>票务</th>
 													</tr>
 												</thead>
 												<tbody id="interPayTbody">
@@ -167,7 +167,7 @@
 														<th>总额</th>
 														<th>收款单位</th>
 														<th>状态</th>
-														<th>开票人</th>
+														<th>票务</th>
 														<th>备注</th>
 														<th>操作</th>
 													</tr>
@@ -245,7 +245,7 @@
 														<th>销售金额</th>
 														<th>总额</th>
 														<th>客户名称</th>
-														<th>开票人</th>
+														<th>票务</th>
 														<th>状态</th>
 														<th>备注</th>
 													</tr>
@@ -309,7 +309,7 @@
 														<th>币种</th>
 														<th>收款单位</th>
 														<th>状态</th>
-														<th>开票人</th>
+														<th>票务</th>
 													</tr>
 												</thead>
 												<tbody id="interPayTbody">
@@ -329,7 +329,7 @@
 														<th>总额</th>
 														<th>收款单位</th>
 														<th>状态</th>
-														<th>开票人</th>
+														<th>票务</th>
 														<th>备注</th>
 														<th>操作</th>
 													</tr>
