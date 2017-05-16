@@ -180,8 +180,8 @@
                 	</tr> -->
                 </tbody>
               </table>
-              <div class="bankSlipImg">
-              	  <iframe id="zhuce" style="min-height:445px; width:100%;" name="main" src="${obj.fileurl.url}" frameBorder="0" scrolling="no"></iframe>
+              <div class="bankSlipImg" style="min-height:445px; width:100%;">
+              	  <iframe id="zhuce" style="min-height:445px; width:100%;" name="main" src="${obj.fileurl.url}" frameBorder="0" scrolling="no" ></iframe>
               </div>
           </div>
         </form>  
