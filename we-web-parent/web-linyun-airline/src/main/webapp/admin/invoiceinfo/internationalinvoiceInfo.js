@@ -101,12 +101,15 @@ function initKaiInterInvoiceTable() {
                   },
                   {"data": "paymentunit", "bSortable": false,
                 	  render:function(data, type, row, meta) {
-	                  		var result = '';
-	                  		if(row.paymentunit){
-	                  			result = row.paymentunit;
-	                  		}
-	                  		return result;
-                  	   }
+                    		var result = '<ul> ';
+                    		$.each(row.orders, function(name, value) {
+      	          			if(value.shortname && value.shortname != undefined){
+      	          				result += '<li style="list-style:none;">'+value.shortname+'</li>';
+      	          			}
+      	          		});
+                    		result += '</ul>';
+                    		return result;
+                    	}
                   },
                   {"data": "username", "bSortable": false,
                 	  render:function(data, type, row, meta) {
