@@ -296,6 +296,19 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 			addForm.setContractTime(DateUtil.string2Date(addForm.getContractTimeString(), "yyyy-MM-dd"));
 		}
 		addForm.setCreateTime(DateUtil.nowDate());
+		//付款方式名称
+		String payWayIds = addForm.getPayWay();
+		String paywayName = "";
+		for (CustomerInfoPaywayEnum payway : CustomerInfoPaywayEnum.values()) {
+			String id = payway.key();
+			String text = payway.value();
+			if (payWayIds.contains(id)) {
+				paywayName += text + "、";
+			}
+		}
+		if (!Util.isEmpty(paywayName)) {
+			addForm.setPaywayName(paywayName.substring(0, paywayName.length() - 1));
+		}
 		//得到当前用户所在公司的id
 		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
@@ -1045,7 +1058,10 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 				Select2Option op = new Select2Option();
 				op.setId(Integer.valueOf(id));
 				op.setText(text);
-				list.add(op);
+				boolean startsWith = text.startsWith(paywayName);
+				if (startsWith) {
+					list.add(op);
+				}
 			}
 		}
 

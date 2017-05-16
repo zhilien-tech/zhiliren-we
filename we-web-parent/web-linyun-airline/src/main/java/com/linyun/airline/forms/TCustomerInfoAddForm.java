@@ -71,7 +71,7 @@ public class TCustomerInfoAddForm extends AddForm implements Serializable {
 	private long travelType;
 
 	/**付款方式（现金、支票、银行汇款、第三方、其他）*/
-	private long payWay;
+	private String payWay;
 
 	/**其他付款方式*/
 	private String paywayName;

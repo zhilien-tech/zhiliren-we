@@ -74,7 +74,7 @@ $("#city").select2({
 });
 
 //付款方式
-$("#payWay").select2({
+$("#payWaySelect").select2({
 	ajax : {
 		url : BASE_PATH  + "/admin/customer/payWay.html",
 		dataType : 'json',
@@ -83,7 +83,7 @@ $("#payWay").select2({
 		data : function(params) {
 			return {
 				q : params.term, // search term
-				ids:$('#payWayIds').val(),
+				ids:$('#payWay').val(),
 				page : params.page
 			};
 		},

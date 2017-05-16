@@ -262,9 +262,9 @@
 									<option value="4">第三方</option>
 									<option value="5">其他</option>
 								</select> -->
-								<select id="payWay" class="form-control select2 inpImpWid" multiple="multiple" onchange="payOpt()" data-placeholder="请输入付款方式">
+								<select id="payWaySelect" class="form-control select2 inpImpWid" multiple="multiple" onchange="payOpt()" data-placeholder="请输入付款方式">
 								</select>
-								<input id="payWayIds" type="hidden" name="payWayIds" /> 
+								<input id="payWay" type="hidden" name="payWay" /> 
 							</div>
 							<div class="col-sm-8" style="display: none;" id="paywayDivId">
 								<div class="col-sm-12 padding payInp">
@@ -679,11 +679,11 @@
 			var selectedsInvID = $("#sInvID").select2("val");
 			$("#sInvName").val(selectedsInvID);
 		}
-		/* 出发城市 */
+		/* 付款方式 */
 		function payOpt() {
 			//付款方式Id
-		    var selectedPayweyId = $("#payWay").select2("val"); 
-			$("#payWayIds").val(selectedPayweyId);
+		    var selectedPayweyId = $("#payWaySelect").select2("val"); 
+			$("#payWay").val(selectedPayweyId);
 		}
 	</script>
 
