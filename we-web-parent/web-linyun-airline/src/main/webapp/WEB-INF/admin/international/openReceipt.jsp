@@ -29,7 +29,7 @@
                     <th>客户团号</th>
                     <th>客户</th>
                     <th>联系人</th>
-                    <th>开票人</th>
+                    <th>票务</th>
                     <th>金额</th>
                   </tr>
                 </thead>
