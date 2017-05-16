@@ -130,6 +130,16 @@
 					<input id="totalMoney" name="totalMoney" type="hidden" value="${obj.totalMoney }">
 				</tr>
 				<tr>
+					<td>开户银行：</td>
+					<td><input type="text" id="openBank" name="openBank" value="${obj.openBank }"  class="form-control input-sm"></td>
+					<td>开户名称：</td>
+					<td><input type="text" id="openName" name="openName" value="${obj.openName }"  class="form-control input-sm"></td>
+					<td>开户账号：</td>
+					<td><input type="text" id="openNumber" name="openNumber" value="${obj.openNumber }"  class="form-control input-sm"></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
 					<td>国内外：</td>
 					<td><select id="payAddress" name="payAddress" class="form-control input-sm">
 						<c:if test='${obj.payList[0].payaddress eq 1}'>

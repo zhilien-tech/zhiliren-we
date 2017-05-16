@@ -381,6 +381,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		String approveresult = "";
 		//操作人
 		String operator = "";
+		String openBank = "";
+		String openName = "";
+		String openNumber = "";
 		for (Record record : payList) {
 			if (!Util.isEmpty(record.get("salesprice"))) {
 				Double costpricesum = (Double) record.get("salesprice");
@@ -389,6 +392,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 			proposer = record.getString("proposerman");
 			approver = record.getString("approver"); //审批人
 			String opr = record.getString("operator"); //操作人
+			openBank = record.getString("openbank");
+			openName = record.getString("openname");
+			openNumber = record.getString("opennumber");
 			if (!Util.eq(operator, opr)) {
 				operator = opr;
 			}
@@ -414,6 +420,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		result.put("payList", payList);
 		//总金额
 		result.put("totalMoney", totalMoney);
+		result.put("openBank", openBank);
+		result.put("openName", openName);
+		result.put("openNumber", openNumber);
 
 		//付款的水单信息
 		TPayReceiptEntity receiptEntity = dbDao.fetch(TPayReceiptEntity.class, Cnd.where("payId", "in", payId));
@@ -607,11 +616,17 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		//操作人
 		String operator = "";
 		String operatorList = "";
+		String openBank = "";
+		String openName = "";
+		String openNumber = "";
 		for (Record record : orders) {
 			if (!Util.isEmpty(record.get("salePrice"))) {
 				Double incometotal = (Double) record.get("salePrice");
 				totalMoney += incometotal;
 			}
+			openBank = record.getString("openbank");
+			openName = record.getString("openname");
+			openNumber = record.getString("opennumber");
 			proposer = record.getString("proposer");
 			approver = record.getString("approver"); //审批人
 			String opr = record.getString("operator"); //操作人
@@ -627,6 +642,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		map.put("proposer", proposer);
 		map.put("approver", approver);
 		map.put("purpose", purpose);
+		map.put("openBank", openBank);
+		map.put("openName", openName);
+		map.put("openNumber", openNumber);
 		map.put("payCurreny", payCurrency);
 		map.put("operators", operatorList);
 		if (Util.eq(APPROVALENABLE, approveresult)) {
@@ -701,6 +719,9 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		Integer payAddress = form.getPayAddress();
 		Integer purpose = form.getPurpose();
 		Integer fundType = form.getFundType();
+		String openBank = form.getOpenBank();
+		String openName = form.getOpenName();
+		String openNumber = form.getOpenNumber();
 		Date payDate = form.getPayDate();
 		Double payFees = form.getPayFees();
 		Double payMoney = form.getPayMoney();
@@ -769,6 +790,15 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		}
 		if (!Util.eq(null, payMoney)) {
 			payEntity.setPayMoney(payMoney);
+		}
+		if (!Util.eq(null, openBank)) {
+			payEntity.setOpenbank(openBank);
+		}
+		if (!Util.eq(null, openName)) {
+			payEntity.setOpenname(openName);
+		}
+		if (!Util.eq(null, openNumber)) {
+			payEntity.setOpenname(openNumber);
 		}
 		if (!Util.eq(null, totalMoney)) {
 			payEntity.setTotalMoney(totalMoney);
@@ -885,6 +915,11 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		String bankComp = form.getBankComp();
 		String cardName = form.getCardName();
 		String cardNum = form.getCardNum();
+		//开发银行
+		String openBank = form.getOpenBank();
+		String openName = form.getOpenName();
+		String openNumber = form.getOpenNumber();
+
 		//水单地址
 		String receiptUrl = form.getReceiptUrl();
 
@@ -909,6 +944,15 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		}
 		if (!Util.isEmpty(currency)) {
 			payEntity.setPayCurrency(currency);
+		}
+		if (!Util.eq(null, openBank)) {
+			payEntity.setOpenbank(openBank);
+		}
+		if (!Util.eq(null, openName)) {
+			payEntity.setOpenname(openName);
+		}
+		if (!Util.eq(null, openNumber)) {
+			payEntity.setOpenname(openNumber);
 		}
 		if (!Util.isEmpty(isInvioce)) {
 			payEntity.setIsInvioce(isInvioce);

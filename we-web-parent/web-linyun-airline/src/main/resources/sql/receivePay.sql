@@ -144,7 +144,10 @@ SELECT
 	p.approver,
 	p.approveResult,
 	p.purpose,
-	p.payCurrency
+	p.payCurrency,
+	p.openbank,
+	p.openname,
+	p.opennumber
 FROM
 	t_pnr_info pi
 LEFT JOIN t_order_customneed oc ON oc.id = pi.needid
