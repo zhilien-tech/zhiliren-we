@@ -268,6 +268,11 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 			invoiceinfo.setInvoicedate(DateUtil.string2Date((String) fromJson.get("invoicedate"),
 					DateUtil.FORMAT_YYYY_MM_DD));
 		}
+		int borrowInvoice = 0;
+		if ((Boolean) fromJson.get("borrowInvoice")) {
+			borrowInvoice = 1;
+		}
+		invoiceinfo.setBorrowInvoice(borrowInvoice);
 		//invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
 		if (!Util.isEmpty(fromJson.get("deptid"))) {
 			invoiceinfo.setDeptid(Integer.valueOf((String) fromJson.get("deptid")));
@@ -323,7 +328,12 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		for (Map<String, String> map : details) {
 			TInvoiceDetailEntity invoiceDetailEntity = new TInvoiceDetailEntity();
 			invoiceDetailEntity.setInvoicenum(map.get("invoicenum"));
-			invoiceDetailEntity.setInvoicebalance(Double.valueOf(map.get("invoicebalance")));
+			if (!Util.isEmpty(map.get("invoicebalance"))) {
+				invoiceDetailEntity.setInvoicebalance(Double.valueOf(map.get("invoicebalance")));
+			}
+			if (!Util.isEmpty(map.get("fiscalAmount"))) {
+				invoiceDetailEntity.setFiscalAmount(Double.valueOf(map.get("fiscalAmount")));
+			}
 			invoiceDetailEntity.setInvoiceurl(map.get("invoiceurl"));
 			invoiceDetailEntity.setImagename(map.get("filename"));
 			invoiceDetailEntity.setInvoiceinfoid(insert.getId());
@@ -434,6 +444,11 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 			invoiceinfo.setInvoicedate(DateUtil.string2Date((String) fromJson.get("invoicedate"),
 					DateUtil.FORMAT_YYYY_MM_DD));
 		}
+		int borrowInvoice = 0;
+		if ((Boolean) fromJson.get("borrowInvoice")) {
+			borrowInvoice = 1;
+		}
+		invoiceinfo.setBorrowInvoice(borrowInvoice);
 		//invoiceinfo.setBilluserid(new Long(user.getId()).intValue());
 		if (!Util.isEmpty(fromJson.get("deptid"))) {
 			invoiceinfo.setDeptid(Integer.valueOf((String) fromJson.get("deptid")));
@@ -482,7 +497,9 @@ public class InterPayReceiveService extends BaseService<TReceiveEntity> {
 		for (Map<String, String> map : details) {
 			TInvoiceDetailEntity invoiceDetailEntity = new TInvoiceDetailEntity();
 			invoiceDetailEntity.setInvoicenum(map.get("invoicenum"));
-			invoiceDetailEntity.setInvoicebalance(Double.valueOf(map.get("invoicebalance")));
+			if (!Util.isEmpty(map.get("invoicebalance"))) {
+				invoiceDetailEntity.setInvoicebalance(Double.valueOf(map.get("invoicebalance")));
+			}
 			invoiceDetailEntity.setInvoiceurl(map.get("invoiceurl"));
 			invoiceDetailEntity.setImagename(map.get("filename"));
 			invoiceDetailEntity.setInvoiceinfoid(insert.getId());

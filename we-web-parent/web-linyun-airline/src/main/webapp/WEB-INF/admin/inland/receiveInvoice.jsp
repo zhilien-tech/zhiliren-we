@@ -100,18 +100,13 @@
                   </td>
                   <td><label>发票日期：</label></td>
                   <td><input id="invoicedate" name="invoicedate" type="text" onFocus="WdatePicker()" class="form-control input-sm"></td>
+                  <td><input id="borrowInvoice" name="borrowInvoice" type="checkbox" value="" />　</td>
+                  <td>借发票</td>
                   <td><!-- 开票人： --></td>
                   <td>
                      <!-- select id="billuserid" name="billuserid" class="form-control input-sm">
                         <option value="1">林俊杰</option>
                         <option value="2">王力宏</option>
-                     </select> -->
-                  </td>
-                  <td><!-- 部门： --></td>
-                  <td>
-                     <!-- <select id="deptid" name="deptid" class="form-control input-sm">
-                        <option value="1">国际部</option>
-                        <option value="2">内陆部</option>
                      </select> -->
                   </td>
           </tr>
@@ -239,6 +234,8 @@
 	   formdata.invoiceitem = invoiceitem;
 	   var invoicedate = $('#invoicedate').val();
 	   formdata.invoicedate = invoicedate;
+	   var borrowInvoice = $('#borrowInvoice').is(':checked');
+	   formdata.borrowInvoice = borrowInvoice;
 	   var billuserid = $('#billuserid').val();
 	   formdata.billuserid = billuserid;
 	   var deptid = $('#deptid').val();
