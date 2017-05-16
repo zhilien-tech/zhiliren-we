@@ -55,28 +55,28 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 .selectTable tbody tr td:nth-child(5){width: 50px;}
 .selectTable tbody tr td:nth-child(6){width: 210px;}
 .selectTable tbody tr td:nth-child(7){width: 50px;}
-.selectTableTr td{padding-top: 10px;}
-.payTable2 {margin-top: 15px;}
-.payTable2 tbody tr td:nth-child(odd){text-align: right;}
-.payTable2 tbody tr td:nth-child(even){width: 115px;}
-.payTable2 tbody tr td:nth-child(1){width: 57px;}
+.selectTableTr td{padding-top:10px;}
+.payTable2 {margin-top:15px;}
+.payTable2 tbody tr td:nth-child(odd){text-align:right;}
+.payTable2 tbody tr td:nth-child(even){width:115px;}
+.payTable2 tbody tr td:nth-child(1){width:62px;}
 .payTable2 tbody tr td:nth-child(3){width:80px;}
 .payTable2 tbody tr td:nth-child(5){width:66px;}
 .payTable2 tbody tr td:nth-child(6){width:120px;}
 .payTable2 tbody tr td:nth-child(7){width:64px;}
 .payTable2 tbody tr td:nth-child(8){width:80px;}
-.payTable2 tbody tr td{padding-bottom: 8px;}
-.textIpnu{width: 96.5%; margin-left: 7px;}
-.bj{width:64px !important;text-align: right;}
+.payTable2 tbody tr td{padding-bottom:8px;}
+.textIpnu{width: 96.5%; margin-left:7px;}
+.bj{width:64px !important;text-align:right;}
 .labelShuidan{ margin-top: 15px;font-size: 16px !important;}
-.SDdiv{margin-top: 0;}
+.SDdiv{margin-top:0;}
 .imgInfo tr td:nth-child(odd){text-align: right;width: 75px;}
-.imgInfo tr td{padding-top: 10px;}
+.imgInfo tr td{padding-top:10px;}
 /* .modal-bod{padding:10px;} */
-.imgYulan{width: 100%;height: 100%;}
-.tabConte{margin: 0 10px;}
-.nav-tabs-custom > .tab-content {padding: 10px 10px;}
-.paddingBottom{padding-bottom: 10px;}
+.imgYulan{width:100%;height:100%;}
+.tabConte{margin:0 10px;}
+.nav-tabs-custom > .tab-content {padding:10px 10px;}
+.paddingBottom{padding-bottom:10px;}
 /*--内陆跨海 收款 table style--*/
 #inlandRecSelect,#inlandPaySelect{padding-left: 3px;padding-right: 3px;}
 /* 付款居中 */
