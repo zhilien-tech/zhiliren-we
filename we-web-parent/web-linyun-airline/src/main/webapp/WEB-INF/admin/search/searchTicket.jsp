@@ -202,13 +202,13 @@
 										class="form-control mustArriveTimes input-sm textWid" placeholder="">
 										<!-- <input id="cAirArrivalDate0" name="cAirArrivalDate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'cAirOutDate0\')}'})" class="form-control input-sm timeWid inputdatestr enddatestr" placeholder="2020-01-01"> -->
 									</td>
-									<td><label class="labelWid">成本价：</label></td>
+									<td><label class="labelWid">成本单价：</label></td>
 									<td><input name="cAirCost" type="text"
 										class="form-control input-sm textWid costPrice"
 										onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
 										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]">
 									</td>
-									<td><label class="labelWid">销售价：</label></td>
+									<td><label class="labelWid">销售单价：</label></td>
 									<td><input name="cAirPretium" type="text"
 										class="form-control input-sm textWid"
 										onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
@@ -588,7 +588,7 @@
 						if (result.parsingType == "D￥") {
 							var pnrThread = '<tr>' + '<th>序号</th>'
 									+ '<th>航空公司</th>' + '<th>航班号</th>'
-									+ '<th>航段</th>' + '<th>舱位</th>'
+									+ '<th>航段</th>'
 									+ '<th>起飞日期</th>' + '<th>航程时间</th>'
 									+ '</tr>';
 							var pnrBody = '';
@@ -599,7 +599,6 @@
 										+ obj[i].airlineComName + '</td>'
 										+ '<td>' + obj[i].flightNum + '</td>'
 										+ '<td>' + obj[i].airLine + '</td>'
-										+ '<td>' + obj[i].airSeats + '</td>'
 										+ '<td>' + obj[i].airLeavelDate
 										+ '</td>' + '<td>'
 										+ obj[i].airDepartureTime + '-'
@@ -611,7 +610,7 @@
 						if (result.parsingType == "00v0") {
 							var pnrThread = '<tr>' + '<th>序号</th>'
 									+ '<th>航空公司</th>' + '<th>航班号</th>'
-									+ '<th>舱位</th>' + '<th>起飞日期</th>'
+									+ '<th>起飞日期</th>'
 									+ '<th>航段</th>' + '<th>座位数</th>'
 									+ '<th>航程时间</th>'+ '<th>舱位价格</th>' + '</tr>';
 							var pnrBody = '';
@@ -621,7 +620,6 @@
 										+ '</td>' + '<td>'
 										+ obj[i].airlineComName + '</td>'
 										+ '<td>' + obj[i].flightNum + '</td>'
-										+ '<td>' + obj[i].airSeats + '</td>'
 										+ '<td>' + obj[i].airLeavelDate
 										+ '</td>' + '<td>' + obj[i].airLine
 										+ '</td>' + '<td>' + obj[i].airSeatNum
@@ -662,7 +660,7 @@
 						if (result.parsingType == "avh/") {
 							var pnrThread = '<tr>' + '<th>序号</th>'
 									+ '<th>航空公司</th>' + '<th>航班号</th>'
-									+ '<th>航段</th>' + '<th>舱位</th>'
+									+ '<th>航段</th>'
 									+ '<th>航程日期</th>' + '<th>航程时间</th>'
 									+ '</tr>';
 							var pnrBody = '';
@@ -673,7 +671,6 @@
 										+ obj[i].airlineComName + '</td>'
 										+ '<td>' + obj[i].flightNum + '</td>'
 										+ '<td>' + obj[i].airLine + '</td>'
-										+ '<td>' + obj[i].airSeats + '</td>'
 										+ '<td>' + obj[i].airLeavelDate
 										+ '</td>' + '<td>'
 										+ obj[i].airDepartureTime + '-'
@@ -683,22 +680,20 @@
 						}
 						if (result.parsingType == "SD0Q0") {
 							var pnrThread = '<tr>' + '<th>序号</th>'
-									+ '<th>航班号</th>' + '<th>预订舱位</th>'
-									+ '<th>预订日期</th>' + '<th>航段</th>'
-									+ '<th>预订座位数</th>' + '<th>航程时间</th>'
-									+ '<th>币种</th>' + '<th>含税总价</th>'
+									+ '<th>航班号</th>'
+									+ '<th>起飞日期</th>' + '<th>航段</th>'
+									+ '<th>座位数</th>' + '<th>航程时间</th>'
+									+ '<th>舱位价格</th>'
 									+ '</tr>';
 							var pnrBody = '';
 							var obj = result.arrayList;
 							for (var i = 0; i < obj.length; i++) {
 								pnrBody += '<tr>' + '<td>' + obj[i].id
 										+ '</td>' + '<td>' + obj[i].flightNum
-										+ '</td>' + '<td>' + obj[i].airSeats
 										+ '</td>' + '<td>' + obj[i].presetDate
 										+ '</td>' + '<td>' + obj[i].airLine
 										+ '</td>' + '<td>' + obj[i].airSeatNum
 										+ '</td>' + '<td>'+ obj[i].airDepartureTime + '-'+ obj[i].airLandingTime 
-										+ '</td>' + '<td>' + obj[i].airSeatsCurrency
 										+ '</td>' + '<td>' + obj[i].airSeatsPrice
 										+ '</td>'
 										+ '</tr>';
@@ -707,7 +702,7 @@
 						if (result.parsingType == "QTE:/") {
 							var pnrThread = '<tr>' 
 												+ '<th>币种</th>'
-												+ '<th>含税总价</th>'
+												+ '<th>舱位价格</th>'
 												+ '</tr>';
 							var pnrBody = '';
 							var obj = result.arrayList;
