@@ -598,3 +598,19 @@ ADD COLUMN `openbank`  varchar(128) NULL COMMENT '开户银行' AFTER `orderstat
 ADD COLUMN `openname`  varchar(128) NULL COMMENT '开户名称' AFTER `openbank`,
 ADD COLUMN `opennumber`  varchar(128) NULL COMMENT '开户账号' AFTER `openname`;
 
+
+/*********************** 客户管理付款方式 ***************************/
+ALTER TABLE `t_customer_info`
+MODIFY COLUMN `payWay`  varchar(32) NULL DEFAULT NULL COMMENT '付款方式（现金、支票、银行汇款、第三方、其他）' AFTER `travelType`;
+
+ALTER TABLE `t_customer_info`
+MODIFY COLUMN `responsibleId`  int(32) NULL DEFAULT NULL COMMENT '负责人' AFTER `inlandLine`,
+MODIFY COLUMN `appendix`  varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '附件管理' AFTER `responsibleId`,
+MODIFY COLUMN `createTime`  datetime NULL DEFAULT NULL COMMENT '添加时间' AFTER `appendix`,
+MODIFY COLUMN `appendixName`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '附件名称' AFTER `createTime`,
+MODIFY COLUMN `departureCity`  varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '出发城市' AFTER `appendixName`,
+MODIFY COLUMN `travelType`  int(11) NULL DEFAULT NULL COMMENT '旅行社类型' AFTER `departureCity`,
+MODIFY COLUMN `payWay`  varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '付款方式（现金、支票、银行汇款、第三方、其他）' AFTER `travelType`;
+
+ALTER TABLE `t_customer_info`
+MODIFY COLUMN `paywayName`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '付款方式名称' AFTER `payWay`;
