@@ -143,8 +143,6 @@
                         </a>
                       </li>
                       <li><a id="fileName" name="fileName">未选择文件</a></li>
-                      <li><a href="javascript:;" class="fileDelete deleteInvoice" >删除</a></li>
-                      <li><a href="javascript:;" id="preView" class="fileDelete">预览</a></li>
                       <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
                     </ul>
                     <input id="invoiceurl" name="invoiceurl" type="hidden" value="">

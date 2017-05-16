@@ -35,6 +35,8 @@
     right: 10px;">
                         </td>
                       </tr>
+                    <c:choose>
+                   		<c:when test="${fn:length(obj.airinfo)>0}">
                       <c:forEach  items="${obj.airinfo }" var="airinfo" varStatus="status">
 	                      <tr class="addHD-tr">
 	                        <td><label>出发城市：</label></td>
@@ -92,6 +94,25 @@
 	                        </c:choose>
 	                      </tr>
                       </c:forEach>
+                     </c:when>
+                     <c:otherwise>
+                     	<tr class="addHD-tr">
+	                        <td><label>出发城市：</label></td>
+	                        <td><select id="leavecity" name="leavecity" class="form-control input-sm" multiple="multiple"></select></td>
+	                        <td><label>抵达城市：</label></td>
+	                        <td><select id="arrivecity" name="arrivecity" class="form-control input-sm" multiple="multiple"></select></td>
+	                        <td><label>出发日期：</label></td>
+	                        <td><input id="leavedate" name="leavedate" type="text" class="form-control input-sm" onFocus="WdatePicker({minDate:'%y-%M-%d'})" placeholder=" "></td>
+	                        <td><label>航班号：</label></td>
+	                        <td><select id="ailinenum" name="ailinenum" class="form-control input-sm" placeholder="ca309" multiple="multiple"></select></td>
+	                        <td><label>出发时间：</label></td>
+	                        <td><input id="leavetime" name="leavetime" type="text" class="form-control input-sm mustTimes" placeholder=" "></td>
+	                        <td><label>抵达时间：</label></td>
+	                        <td><input id="arrivetime" name="arrivetime" type="text" class="form-control input-sm mustArriveTimes" placeholder=" "></td>
+	                        <td><a href="javascript:;" class="glyphicon glyphicon-plus addHDIcon"></a></td>
+	                      </tr>
+                     </c:otherwise>
+                  </c:choose>
                 </tbody>
               </table>
           </div>
@@ -135,30 +156,44 @@
   		 data.peoplecount = peoplecount;
   		 var airinfos = [];
   		 $('.addHD-tr').each(function(i){
+  			 var airlength = '';
   			 var airinfo = {};
   			var leavecity = $(this).find('[name=leavecity]').val();
   			if (leavecity) {
   				leavecity = leavecity.join(',');
+  				airlength += leavecity;
+  			}else{
+	  			airlength += '';
   			}
   			airinfo.leavecity = leavecity;
   			//抵达城市
   			var arrivecity = $(this).find('[name=arrivecity]').val();
   			if (arrivecity) {
   				arrivecity = arrivecity.join(',');
+	  			airlength += arrivecity;
+  			}else{
+	  			airlength += '';
   			}
   			airinfo.arrivecity = arrivecity;
   			var ailinenum = $(this).find('[name=ailinenum]').val();
 			if (ailinenum) {
 				ailinenum = ailinenum.join(',');
+				airlength += ailinenum;
+  			}else{
+				airlength += '';
   			}
 			airinfo.ailinenum = ailinenum;
   			var leavedate = $(this).find('[name=leavedate]').val();
 			airinfo.leavedate = leavedate;
+			airlength += leavedate;
   			var leavetime = $(this).find('[name=leavetime]').val();
 			airinfo.leavetime = leavetime;
+			airlength += leavetime;
   			var arrivetime = $(this).find('[name=arrivetime]').val();
 			airinfo.arrivetime = arrivetime;
-			airinfos.push(airinfo);
+			if(airlength){
+				airinfos.push(airinfo);
+			}
   		 });
   		 data.airinfos = airinfos;
   		layer.load(1);
