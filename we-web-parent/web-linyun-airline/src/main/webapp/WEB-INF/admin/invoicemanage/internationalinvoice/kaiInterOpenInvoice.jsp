@@ -148,7 +148,7 @@
 		                  <td>实际金额：</td>
 		                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${invoicedetail.invoicebalance }" pattern="0.00" maxFractionDigits="2"/>"></td>
 		                  <td>税控金额：</td>
-		                  <td><input id="fiscalAmountId" name="fiscalAmount" type="text" class="form-control input-sm" value="${invoicedetail.invoicenum }"></td>
+		                  <td><input id="fiscalAmountId" name="fiscalAmount" type="text" class="form-control input-sm" value="<fmt:formatNumber type="number" value="${invoicedetail.fiscalAmount }" pattern="0.00" maxFractionDigits="2"/>""></td>
 		                  <td colspan="4">
 		                    <ul class="fileUL">
 		                      <li>

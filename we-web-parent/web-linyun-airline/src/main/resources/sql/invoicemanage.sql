@@ -72,6 +72,7 @@ $condition
 SELECT
 	tuo.ordersnum,
 	tuo.peoplecount,
+	tci.shortname,
 	ii.*, 
 	u.id AS userIds,
 	idd.invoicenum,
@@ -92,6 +93,7 @@ LEFT JOIN t_customer_info cus ON cus.id = tuo.userid
 LEFT JOIN t_user u ON u.id = ii.billuserid
 LEFT JOIN dict_info info ON info.id = ii.invoiceitem
 LEFT JOIN t_invoice_detail idd ON ii.id=idd.invoiceinfoid
+LEFT JOIN t_customer_info tci ON tci.id = tuo.userid
 $condition
 
 /*invoicemanage_shou_invoice_list*/
