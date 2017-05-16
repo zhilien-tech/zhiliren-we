@@ -92,30 +92,45 @@
   		 data.peoplecount = peoplecount;
   		 var airinfos = [];
   		 $('.addHD-tr').each(function(i){
+  			 var airlength = '';
   			 var airinfo = {};
   			var leavecity = $(this).find('[name=leavecity]').val();
   			if (leavecity) {
   				leavecity = leavecity.join(',');
+	  			airlength += leavecity;
+  			}else{
+	  			airlength += '';
   			}
   			airinfo.leavecity = leavecity;
   			//抵达城市
   			var arrivecity = $(this).find('[name=arrivecity]').val();
   			if (arrivecity) {
   				arrivecity = arrivecity.join(',');
+	  			airlength += arrivecity;
+  			}else{
+	  			airlength += '';
   			}
   			airinfo.arrivecity = arrivecity;
   			var ailinenum = $(this).find('[name=ailinenum]').val();
 			if (ailinenum) {
 				ailinenum = ailinenum.join(',');
+				airlength += ailinenum;
+  			}else{
+				airlength += '';
   			}
 			airinfo.ailinenum = ailinenum;
   			var leavedate = $(this).find('[name=leavedate]').val();
 			airinfo.leavedate = leavedate;
+			airlength += leavedate;
   			var leavetime = $(this).find('[name=leavetime]').val();
 			airinfo.leavetime = leavetime;
+			airlength += leavetime;
   			var arrivetime = $(this).find('[name=arrivetime]').val();
 			airinfo.arrivetime = arrivetime;
-			airinfos.push(airinfo);
+			airlength += arrivetime;
+			if(airlength){
+				airinfos.push(airinfo);
+			}
   		 });
   		 data.airinfos = airinfos;
   		layer.load(1);

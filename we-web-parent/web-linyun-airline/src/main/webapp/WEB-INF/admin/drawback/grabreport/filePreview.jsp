@@ -26,6 +26,7 @@
           	</div>
          <form id="addForm" method="post">
           	<div class="modal-body modal-bod" style="height:632px;overflow-y:auto; ">
+          	  <input type="hidden" name="flagType" value="${obj.flagType }" id="flagType">
           	  <div class="row"><!--文件名称/PNR/退税状态-->
           	    <div class="form-group inline">
                   <label class="col-sm-2 text-right padding">文件名称：</label>
@@ -74,6 +75,7 @@
                   	  	<input id="peopleNumId" name="peopleNum" type="text" class="form-control input-sm inputWidth" placeholder="请输入人数" />
                   </div>
                 </div> 
+                
                 <div class="form-group inline">
                   <label class="col-sm-1 text-right padding">成本单价：</label>
                   <div class="col-sm-2 padding">
@@ -428,11 +430,13 @@ var empTable;
 	                    },
 	                    {"data": "relationstatus", "bSortable": false,//关联状态
 	                    	render: function(data, type, row, meta) {
-	                    		var depositBalance = row.relationstatus;
-	                    		if(null==depositBalance || ""==depositBalance){
-	                    			return "";
+	                    		var relationstatus = row.relationstatus;
+	                    		if(1===relationstatus){
+	                    			return "关联";
+	                    		}else if(0===relationstatus){
+	                    			return "未关联";
 	                    		}
-	                    		return depositBalance;
+	                    		return relationstatus;
 	                    	}	
 	                    },
 	                    {"data": "type", "bSortable": false}
@@ -473,6 +477,7 @@ function closewindow(){
 	parent.layer.close(index);
 }
 //pnr的select2
+
 $("#pnrInfoSelect").select2({
 	ajax : {
 		url : BASE_PATH + "/admin/drawback/grabreport/selectPNRNames.html",
@@ -483,7 +488,8 @@ $("#pnrInfoSelect").select2({
 			return {
 				p : params.term, // search term
 				PNRName:$("#pnrInfoId").val(),
-				page : params.page
+				page : params.page,
+				flagType:$("#flagType").val()
 			};
 		},
 		processResults : function(data, params) {
@@ -513,15 +519,10 @@ $("#pnrInfoSelect").select2({
 			},
 			success : function(data) {
 				var param = {PNR:text};
-				alert(param);
 				empTable.settings()[0].ajax.data = param;
 				empTable.ajax.reload();
 			}
 		});
-		
-		
-		
-		
 		return repo.text;
 		},
 	minimumInputLength : 1,
@@ -530,7 +531,6 @@ $("#pnrInfoSelect").select2({
 	maximumSelectionLength : 1, //设置最多可以选择多少项
 	tags : true, //设置必须存在的选项 才能选中
 });
-
 </script>
 </body>
 </html>

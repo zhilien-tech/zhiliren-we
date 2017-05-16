@@ -97,18 +97,11 @@ SELECT
 	fi.cusgroupnum,
 	ci.shortName,
 	fi.billingdate,
+	fi.issuer,
 	pi.peoplecount,
     pi.costpricesum salesprice,
     pi.salespricesum,
-	ci.linkMan,
-	(
-		SELECT
-			fullName
-		FROM
-			t_user u
-		WHERE
-			u.id = fi. ISSUER
-	) ISSUER
+	ci.linkMan
 FROM
 	t_pay p
 INNER JOIN t_pay_pnr pp ON pp.payId = p.id
@@ -144,6 +137,7 @@ SELECT
 	fi.cusgroupnum,
 	ci.shortName,
 	fi.billingdate billdate,
+	fi.issuer,
 	oc.peoplecount peopleCount,
 	u.userName proposer,
 	pi.costpricesum salePrice,
@@ -363,22 +357,10 @@ $condition
 
 /*receivePay_inter_rec_invioce_list*/
 SELECT
-	r.*, 
-    orec.receivestatus,
-	fi.`issuer` userName
+	r.*, tu.fullName userName
 FROM
 	t_receive r
-INNER JOIN t_order_receive orec ON orec.receiveid = r.id
-INNER JOIN t_up_order uo ON uo.id = orec.orderid
-LEFT JOIN (
-	SELECT
-		*
-	FROM
-		t_pay_receive_record
-	WHERE
-		orderstatusid = @prrOStatus
-) prr ON prr.orderid = uo.id
-LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
+LEFT JOIN t_user tu ON r.userid = tu.id
 $condition
 ORDER BY
 	r.receivedate DESC
@@ -408,18 +390,18 @@ LEFT JOIN t_customer_info ci ON ci.id = uo.userid
 LEFT JOIN t_pnr_info pnri ON pnri.orderid = uo.id
 LEFT JOIN t_airline_info ai ON ai.pnrid = pnri.id
 WHERE
-	r.id IN (
+EXISTS (
 		SELECT
-			r.id
+			r1.id
 		FROM
-			t_up_order uo
-		LEFT JOIN t_finance_info fi ON uo.id = fi.orderid
-		INNER JOIN t_order_receive orec ON uo.id = orec.orderid
-		LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
-		INNER JOIN t_receive r ON orec.receiveid = r.id
-		INNER JOIN t_plan_info pi ON uo.id = pi.ordernumber
-		LEFT JOIN t_customer_info ci ON ci.id = uo.userid
-		LEFT JOIN t_pnr_info pnri ON pnri.orderid = uo.id
+			t_up_order uo1
+		LEFT JOIN t_finance_info fi ON uo1.id = fi.orderid
+		left JOIN t_order_receive orec ON uo1.id = orec.orderid
+		LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo1.id 
+		INNER JOIN t_receive r1 ON orec.receiveid = r1.id
+		INNER JOIN t_plan_info pi ON uo1.id = pi.ordernumber
+		LEFT JOIN t_customer_info ci ON ci.id = uo1.userid
+		LEFT JOIN t_pnr_info pnri ON pnri.orderid = uo1.id
 		LEFT JOIN t_airline_info ai ON ai.pnrid = pnri.id
 		$condition
 	)
@@ -438,6 +420,7 @@ FROM
 INNER JOIN t_pay_order po ON po.orderid = uo.id
 INNER JOIN t_pay p ON p.id = po.payid
 LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
+	AND prr.orderstatusid = po.orderstatus
 $condition
 
 
@@ -491,7 +474,8 @@ WHERE
 		$condition
 	)
 AND prr.recordtype=@recordtype
-AND prr.orderstatusid=@orderstatus
+AND prr.orderstatusid=@prrOrderstatus
+AND po.orderstatus=@orderstatus
 ORDER BY
 	po.payDate DESC
 	
@@ -557,8 +541,9 @@ LEFT JOIN t_pay_order po ON po.orderid = uo.id
 INNER JOIN t_pay p ON p.id = po.payid
 INNER JOIN t_plan_info pi ON pi.ordernumber = uo.id
 LEFT JOIN t_pay_receive_record prr ON prr.orderid=uo.id
-INNER JOIN t_customer_info ci ON ci.id = uo.userid
-INNER JOIN t_finance_info fi ON fi.orderid = uo.id
+	AND prr.orderstatusid = po.orderstatus
+LEFT JOIN t_customer_info ci ON ci.id = uo.userid
+LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
 LEFT JOIN t_pnr_info pii ON pii.orderid = uo.id
 WHERE
 	p.id IN (
@@ -570,8 +555,9 @@ WHERE
 		INNER JOIN t_pay p ON p.id = po.payid
 		INNER JOIN t_plan_info pi ON pi.ordernumber = uo.id
 		LEFT JOIN t_pay_receive_record prr ON prr.orderid=uo.id
-		INNER JOIN t_customer_info ci ON ci.id = uo.userid
-		INNER JOIN t_finance_info fi ON fi.orderid = uo.id
+			AND prr.orderstatusid = po.orderstatus
+		LEFT JOIN t_customer_info ci ON ci.id = uo.userid
+		LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
 		LEFT JOIN t_pnr_info pii ON pii.orderid = uo.id
 		$condition
 	)
@@ -694,3 +680,13 @@ AND (
 ))
 GROUP BY
 	(uj.userid)
+
+/*receivePay_getairline_info_byreceiveid*/
+SELECT
+	tai.*
+FROM
+	t_airline_info tai
+INNER JOIN t_pnr_info tpi ON tai.pnrid = tpi.id
+INNER JOIN t_up_order tuo ON tpi.orderid = tuo.id
+INNER JOIN t_order_receive tor ON tor.orderid = tuo.id
+where receiveid = @receiveid

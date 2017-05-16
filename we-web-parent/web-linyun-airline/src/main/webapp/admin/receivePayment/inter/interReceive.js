@@ -41,14 +41,9 @@ function initRecDataTable() {
 		            {"data": "leavesdate,", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
-		            		$.each(row.orders, function(name, value) {
-		            			if(value && value.leavesdate != undefined ){
-		            				var date = value.leavesdate;
-		            				var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
-		            				var week = ['MO','TU','WE','TH','FR','SA','SU'];
-		            				var ldate = new Date(date);
-		            				var dateFormat = week[ldate.getUTCDay()]+ldate.getDate() + MM[ldate.getMonth()];
-		            				result += '<li style="list-style:none;">'+dateFormat+'</li>';
+		            		$.each(row.airinfo, function(name, value) {
+		            			if(value && value.leavedate != undefined ){
+		            				result += '<li style="list-style:none;">'+value.leavedate+'</li>';
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -82,12 +77,8 @@ function initRecDataTable() {
 		            		var result = '<ul> ';
 		            		var oNum = "";
 		            		$.each(row.orders, function(name, value) {
-		            			if(value && value.currentpay!=undefined){
-		            				var orderNum = value.ordersnum;
-		            				if(oNum != orderNum){
-		            					result += '<li style="list-style:none;">'+(value.currentpay).toFixed(2)+'</li>';
-		            				}
-		            				oNum = orderNum;
+		            			if(value.currentpay && value.currentpay!=undefined){
+	            					result += '<li style="list-style:none;">'+(value.currentpay).toFixed(2)+'</li>';
 		            			}
 		            		});
 		            		result += '</ul>';
@@ -96,21 +87,19 @@ function initRecDataTable() {
 		            },
 		            {"data": "sum", "bSortable": false,
 		            	render: function(data, type, row, meta) {
-		            		var sum = row.sum;
-		            		if(null == sum || ""== sum){
-		            			return "";
+		            		var result = "";
+		            		if(row.sum && row.sum!=undefined){
+		            			result = row.sum.toFixed(2);
 		            		}
-		            		return sum.toFixed(2);
+		            		return result;
 		            	}
 		            },
-		            {"data": "shortname", "bSortable": false,
+		            {"data": "customename", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var result = '';
-		            		$.each(row.orders, function(name, value) {
-		            			if(value && value.shortname!=undefined){
-		            				result = value.shortname;
-		            			}
-		            		});
+	            			if(row.customename && row.customename!=undefined){
+	            				result = row.customename;
+	            			}
 		            		return result;
 		            	}
 		            },
@@ -124,16 +113,15 @@ function initRecDataTable() {
 		            	}
 		            },
 		            {"data": "orderstatus", "bSortable": false,
-		            	render: function(data, type, row, meta) {
-		            		var s = row.receivestatus;
-		            		if(s == 1){
-		            			s = '收款中';
-		            		}
-		            		if(s == 2 ){
-		            			s = '已收款';
-		            		}
-		            		return s;
-		            	}
+		            	render:function(data, type, row, meta) {
+	                  		var result = '';
+	                  		$.each(row.receiveenum, function(name, value) {
+	                  			if(row.status == name){
+	                  				result = value;
+	                  			}
+	                  		});
+	                  		return result;
+                  	   }
 		            },
 		            {"data": "notes", "bSortable": false,
 		            	render: function(data, type, row, meta) {

@@ -50,8 +50,9 @@ public class TPnrSystemMapEntity implements Serializable {
 	private String remark;
 
 	@Column
-	@Comment("备用1")
-	private String def3;
+	@Comment("团散类型")
+	private Integer type;
+
 	@Column
 	@Comment("备用2")
 	private String def4;
