@@ -589,3 +589,12 @@ ADD COLUMN `borrowInvoice`  int(11) NULL COMMENT '借发票' AFTER `orderstatus`
 
 ALTER TABLE `t_invoice_detail`
 ADD COLUMN `fiscalAmount`  double(64,2) NULL COMMENT '税控金额' AFTER `imagename`;
+
+ALTER TABLE `t_airline_info`
+ADD COLUMN `peoplecount`  int NULL COMMENT '人数' AFTER `pnrid`;
+
+ALTER TABLE `t_pay`
+ADD COLUMN `openbank`  varchar(128) NULL COMMENT '开户银行' AFTER `orderstatus`,
+ADD COLUMN `openname`  varchar(128) NULL COMMENT '开户名称' AFTER `openbank`,
+ADD COLUMN `opennumber`  varchar(128) NULL COMMENT '开户账号' AFTER `openname`;
+
