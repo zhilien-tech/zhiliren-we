@@ -31,7 +31,7 @@
 						<th>收款单位</th>
 						<th>开票日期</th>
 						<th>人数</th>
-						<th>开票人</th>
+						<th>票务</th>
 						<th>金额</th>
 					</tr>
 				</thead>
@@ -55,36 +55,6 @@
                 	</c:forEach>
 				</tbody>
 			</table>
-			<%-- <table class="selectTable txtTable">
-				<tr>
-					<td>银行：</td>
-					<td>
-						<select id="bankComp" name="bankComp" onchange="bankSelect();" class="form-control input-sm">
-							<option value="0">--请选择--</option>
-							<c:forEach var="one" items="${obj.bankList}">
-	                        	<option value="${one.id },${one.bankNameId }">${one.bankName }</option>
-	                        </c:forEach>
-						</select>
-					</td>
-					<td>银行卡名称：</td>
-					<td>
-						<select id="cardName" name="cardName" onchange="cardSelect();" class="form-control input-sm">
-							<!-- <option>--请选择--</option> -->
-						</select>
-					</td>
-					<td>卡号：</td>
-					<td>
-						<select id="cardNum" name="cardNum" class="form-control input-sm">
-							<!-- <option>--请选择--</option> -->
-						</select>
-					</td>
-					<td>合计：</td>
-					<td id="totalMoney">
-						<fmt:formatNumber type="number" value="${obj.totalMoney }" pattern="0.00" maxFractionDigits="2"/>
-					</td>
-					<input id="totalMoney" name="totalMoney" type="hidden" value="${obj.totalMoney }">
-				</tr>
-			</table> --%>
 			<table class="payTable2">
 				<tr>
 					<td>银行：</td>
@@ -113,6 +83,16 @@
 						<fmt:formatNumber type="number" value="${obj.totalMoney }" pattern="0.00" maxFractionDigits="2"/>
 					</td>
 					<input id="totalMoney" name="totalMoney" type="hidden" value="${obj.totalMoney }">
+				</tr>
+				<tr>
+					<td>开户银行：</td>
+					<td><input type="text" id="" name="" class="form-control input-sm"></td>
+					<td>开户名称：</td>
+					<td><input type="text" id="" name="" class="form-control input-sm"></td>
+					<td>开户账号：</td>
+					<td><input type="text" id="" name="" class="form-control input-sm"></td>
+					<td></td>
+					<td></td>
 				</tr>
 				<tr>
 					<td>国内外：</td>

@@ -79,6 +79,7 @@ function saveOrderInfo(){
 			var cAirArrivalDate = $(this).find('[name=cAirArrivalDate]').val();
 			var cAirCost = $(this).find('[name=cAirCost]').val();
 			var cAirPretium = $(this).find('[name=cAirPretium]').val();
+			var cAirPeopleConut = $(this).find('[name=cAirPeopleConut]').val();
 			if (aircom) {
 				aircom = aircom.join(',');
 				lengthAir += aircom;
@@ -95,6 +96,7 @@ function saveOrderInfo(){
 			airrow.ailinenum = ailinenum;
 			airrow.leavetime = cAirOutDate;
 			airrow.arrivetime = cAirArrivalDate;
+			airrow.cAirPeopleConut = cAirPeopleConut;
 			airrow.formprice = cAirCost;
 			airrow.price = cAirPretium;
 
@@ -102,7 +104,7 @@ function saveOrderInfo(){
 			lengthAir += $(this).find('[name=cAirArrivalDate]').val();
 			lengthAir += $(this).find('[name=cAirCost]').val();
 			lengthAir += $(this).find('[name=cAirPretium]').val();
-
+			lengthAir += $(this).find('[name=cAirPeopleConut]').val();
 			if(lengthAir.length > 0){
 				airrows.push(airrow);
 			}

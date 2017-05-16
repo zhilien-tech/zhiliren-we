@@ -29,6 +29,9 @@ public class TInvoiceDetailSqlForm extends DataTablesParamForm {
 	/**发票金额*/
 	private Double invoicebalance;
 
+	/**税控金额*/
+	private Double fiscalAmount;
+
 	/**发票图片url*/
 	private String invoiceurl;
 

@@ -30,7 +30,7 @@
                       <th>支付对象</th>
                       <th>开票日期</th>
                       <th>人数</th>
-                      <th>开票人</th>
+                      <th>票务</th>
                       <th>金额</th>
                     </tr>
                   </thead>
@@ -75,6 +75,14 @@
          <label class="col-sm-1 text-right padding" style="width:95px;">审批结果：</label>
          <div class="col-sm-2 padding"><input id="approveResult" name="approveResult" type="text" class="form-control input-sm" disabled="disabled"></div>
       </div>
+      <div class="form-group row"><!--申请人/审批人/审批结果-->
+         <label class="col-sm-2 text-right padding">开户银行：</label>
+         <div class="col-sm-2 padding"><input id="openbank" name="openbank" type="text" class="form-control input-sm"></div>
+         <label class="col-sm-1 text-right padding">开户名称：</label>
+         <div class="col-sm-2 padding"><input id="openname" name="openname" type="text" class="form-control input-sm"></div>
+         <label class="col-sm-1 text-right padding" style="width:95px;">开户账号：</label>
+         <div class="col-sm-2 padding"><input id="opennumber" name="opennumber" type="text" class="form-control input-sm"></div>
+      </div>
 	</div>
    <!--JS 文件-->
 	<script src="${base }/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
@@ -98,10 +106,13 @@
 		var payCurrency = $('#payCurrency').val();
 		var approver = $('#approver').val();
 		var approveResult = $('#approveResult').val();
+		var openbank = $('#openbank').val();
+		var openname = $('#openname').val();
+		var opennumber = $('#opennumber').val();
 		$.ajax({
 	        type: "post",
 	        url: '${base}/admin/inland/saveSeaPayApply.html',
-	        data: {ids:ids,purpose:purpose,payCurrency:payCurrency,approver:approver,approveResult:approveResult},
+	        data: {ids:ids,purpose:purpose,payCurrency:payCurrency,approver:approver,approveResult:approveResult,openbank:openbank,openname:openname,opennumber:opennumber},
 	        cache: false,
 	        async : false,
 	        success: function (data ,textStatus, jqXHR){

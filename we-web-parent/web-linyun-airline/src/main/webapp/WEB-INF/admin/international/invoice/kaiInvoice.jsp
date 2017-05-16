@@ -30,7 +30,7 @@
                       <th>客户团号</th>
                       <th>客户公司名称</th>
                       <th>联系人</th>
-                      <th>开票人</th>
+                      <th>票务</th>
                       <th>金额</th>
                     </tr>
                   </thead>
@@ -106,6 +106,8 @@
                   </td>
                   <td>发票日期：</td>
                   <td><input id="invoicedate" name="invoicedate" type="text" onFocus="WdatePicker()" class="form-control input-sm" value="<fmt:formatDate value="${obj.invoiceinfo.invoicedate }" pattern="yyyy-MM-dd" />"></td>
+                  <td><input id="borrowInvoice" name="borrowInvoice" type="checkbox" value="" />　</td>
+                  <td>借发票</td>
                   <%-- <td>开票人：</td>
                   <td>
                      <select id="billuserid" name="billuserid" value="${obj.invoiceinfo.billuserid }" class="form-control input-sm">
@@ -144,6 +146,8 @@
 		                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm" value="${invoiceDetail.invoicenum }"></td>
 		                  <td>金额：</td>
 		                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${invoiceDetail.invoicebalance }" pattern="0.00" maxFractionDigits="2"/>"></td>
+		                  <td>税控金额：</td>
+		                  <td><input id="fiscalAmount" name="fiscalAmount" type="text" class="form-control input-sm mustNumberPoint" value="${invoiceDetail.fiscalAmount }"></td>
 		                  <td colspan="4">
 		                    <ul class="fileUL">
 		                      <li>
@@ -177,6 +181,8 @@
 	                  <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm"></td>
 	                  <td>金额：</td>
 	                  <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm mustNumberPoint"></td>
+	                  <td>税控金额：</td>
+                  	  <td><input id="fiscalAmount" name="fiscalAmount" type="text" class="form-control input-sm mustNumberPoint"></td>
 	                  <td colspan="4">
 	                    <ul class="fileUL">
 	                      <li>
@@ -217,6 +223,11 @@
 	<script src="${base }/admin/order/invoiceupload.js"></script>
   <script type="text/javascript">
      $(function(){
+    	//设置复选框是否选择
+    	 var borrowInvoice = '${obj.invoiceinfo.borrowInvoice }';
+    	 if(borrowInvoice === '1'){
+    		 $('#borrowInvoice').attr('checked','checked');
+    	 }
     	 /*-----收付款>收款>开发票 + 按钮-----*/
 	      $('.addIcon').click(function(){
 	          var divTest = $(this).parents('.cloneTR'); 
@@ -227,6 +238,7 @@
 	          newDiv.find('[name=invoicebalance]').val(''); 
 	          newDiv.find('[name=fileName]').html('未选择文件');
 	          newDiv.find('[name=invoiceurl]').val('');
+	          newDiv.find('[name=fiscalAmount]').val('');
 	          lastDiv.after(newDiv);
 	          var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
 	          newDiv.find("p").html(No);
@@ -282,6 +294,8 @@
 	   formdata.invoiceitem = invoiceitem;
 	   var invoicedate = $('#invoicedate').val();
 	   formdata.invoicedate = invoicedate;
+	   var borrowInvoice = $('#borrowInvoice').is(':checked');
+	   formdata.borrowInvoice = borrowInvoice;
 	   var billuserid = $('#billuserid').val();
 	   formdata.billuserid = billuserid;
 	   var deptid = $('#deptid').val();
@@ -309,6 +323,9 @@
 		   var invoiceurl = $(this).find('[name=invoiceurl]').val();
 		   detail.invoiceurl = invoiceurl;
 		   invoicelength += invoiceurl;
+		   var fiscalAmount = $(this).find('[name=fiscalAmount]').val();
+		   detail.fiscalAmount = fiscalAmount;
+		   invoicelength += fiscalAmount;
 		   if(invoicelength){
 			   invoicedetails.push(detail);
 		   }

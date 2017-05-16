@@ -326,7 +326,7 @@
                      </td>
                      <td><label>销售：</label></td>
                      <td><input id="salesperson" name="salesperson" value="候小凌" type="text" class="form-control input-sm" disabled="disabled"></td>
-                     <td><label>开票人：</label></td>
+                     <td><label>票务：</label></td>
                      <td><input id="issuer" name="issuer" type="text" value="${empty obj.finance.issuer?obj.user.fullName:obj.finance.issuer }" class="form-control input-sm" disabled="disabled"></td>
                      <%-- <td><label>内陆跨海：</label></td>
                      <td>

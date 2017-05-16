@@ -16,13 +16,14 @@
 .cloTable tr td:nth-of-type(3) label{width: 70px;}
 .cloTable tr td:nth-of-type(5) label{width: 70px;}
 .cloTable tr td:nth-of-type(7) label{width: 70px;}
-.cloTable tr td:nth-of-type(9) label{width: 60px;}
-.cloTable tr td:nth-of-type(10){width: 8%;}
-.cloTable tr:nth-of-type(1) td:nth-of-type(2) span.select2-container{/* width:185px !important; */}
+.cloTable tr td:nth-of-type(9) label{width: 55px;}
+.cloTable tr td:nth-of-type(10){width: 6%;}
+.cloTable tr td:nth-of-type(11) label{width: 70px;}
+.cloTable tr td:nth-of-type(12) { width: 6%;}
+.cloTable tr td:nth-of-type(13) label{width: 70px;}
+.cloTable tr td:nth-of-type(14) { width: 6%;}
 .cloTable tr:nth-of-type(1) td:nth-of-type(3) label{position: relative;left:5px;}
-.cloTable tr:nth-of-type(1) td:nth-of-type(4) span.select2-container{width:225px !important;}
 .cloTable tr:nth-of-type(1) td:nth-of-type(7) label{width: 60px;}
-.cloTable tr td:nth-of-type(11) label{width: 60px;}
 .select2-dropdown--below {width: 185px !important;}
 .addressInput{width: 231px !important;}
 .infofooter  table tr td .btn{margin-left: 17px;padding: 4px 15px;}
@@ -96,8 +97,7 @@ select#teamAirLevel {width: 208px !important;}
 .showDis{display:table-cell;}
 .timSelect{display: inline-block;width:90px;height: 28px !important;}
 .dropdown-toggle {display: block;margin-top: 10px;}
- .select2-container {width: 150px !important;}
-.select2-container--default.select2-container--disabled .select2-selection--multiple{width: 115px;}
+ .select2-container {width: 100px !important;}
 td[colspan="3"] .select2 .selection .select2-selection{width:100%;}
 td[colspan="3"] .select2 .selection .select2-selection ul .select2-search--inline{display: none;}
 #datatable2 tbody tr td ul{margin-bottom: 0;padding-left: 0px;}
@@ -120,12 +120,12 @@ td[colspan="3"] .select2 .selection .select2-selection ul .select2-search--inlin
 /*---------客户信息---------*/
 /*.DemandDiv{background-color: #f5f5f5;box-shadow: 0px 1px 5px #bebebe;margin-bottom:15px;}*/
 .titleNum{float: left;border: rgb(45, 110, 149) solid 1px;text-align: center !important;margin-left: 10px;border-radius: 3px;font-size: 15px !important;color: #2d6e95;margin-top: 5px;width: 24px;margin-bottom: 12px;}
-.addDemand,.removeDemand{padding: 5px 11px;position: relative;left: 88%;margin-top: 5px;}
+.addDemand,.removeDemand{padding: 5px 11px;position: relative;left: 89.5%;margin-top: 5px;}
 .cloTable{margin-top:5px;}
 .cloTable tr {height: 40px;}
-.addIcon{top: 0px;margin-right: 20px;margin-left: 15px;}
+.addIcon{top: 0px;margin-right: 15px;margin-left: 5px;}
 .noteText{width: 100% !important;}
-.removIcon{color: #3c8dbc;margin-right: 20px;margin-top: 0;cursor: pointer;}
+.removIcon{color: #3c8dbc;margin-right: 15px;margin-top: 0;cursor: pointer;}
 .removIcon:hover{color: rgba(60, 141, 188, 0.75);}
 #infofooter{border-bottom: 0 !important;}
 /*---------end 客户信息---------*/
@@ -162,21 +162,19 @@ table.dataTable thead > tr > th {padding-right:0px;}
 /* .cAirlineNumTd .select2{width: 100% !important;} */
 .xuqiuTable{ width: 100%;}
 .xuqiuTable tbody tr td:nth-child(odd){float: right; position: relative;top: 8px;}
-.xuqiuTable tbody tr td:nth-child(6){width: 9% !important;}
-.xuqiuTable tbody tr:nth-child(2) td:nth-child(8){width:85px !important;}
+.xuqiuTable tbody tr td:nth-child(6){width:9% !important;}
+.xuqiuTable tbody tr:nth-child(2) td:nth-child(8){width:7% !important;}
 .xuqiuTable tbody tr:nth-child(2) td:nth-child(6){width:80px;}
-.xuqiuTable tr:nth-of-type(1) td:nth-of-type(4) span.select2-container {width:150px !important;}
 .xuqiuTable tbody tr td:nth-child(8){width:5%;}
 .xuqiuTable tbody tr:nth-child(2) td:nth-child(10){width:85px;}
-.xuqiuTable tr:nth-of-type(1) td:nth-of-type(2) span.select2-container {width:150px !important;}
-.xuqiuTable tbody tr:nth-child(2) td:nth-child(2){width:150px;}
 .xuqiuTable tbody tr:nth-child(2) td:nth-child(3){width:54px;}
 .xuqiuTable tr:nth-of-type(1) td:nth-of-type(3) label {position: relative;left:0px;}
 .remarkDiv{padding: 5px 0px;display: block;margin-bottom: 15px;}
 .remarkTable{width:100%;}
 .remarkContext{overflow: hidden;min-height: 80px;display: block;border: solid 1px #e0e0e0;border-radius: 0 0 3px 3px;border-top: 0;background-color: white;}
 .remarkTable tbody tr td:nth-child(1){width: 78px;text-align: right;}
-.remarkTable tbody tr td:nth-child(2){padding-right:5.6%;}
+.remarkTable tbody tr td:nth-child(2){padding-right:2%;}
 .infofooter1{border-bottom: 0;border-radius: 3px 3px 0px 0px;}
-textarea#cRemark{height: 112px;resize:none}
+textarea#cRemark{height:112px;resize:none}
 .select2-container--default.select2-container--disabled .select2-selection--multiple {width: 100% !important;}
+#tickettype,#cAirPretium{padding-left:3px;padding-right:3px;}

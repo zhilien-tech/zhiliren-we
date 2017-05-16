@@ -45,6 +45,10 @@ public class TInvoiceDetailEntity implements Serializable {
 	@Comment("操作时间")
 	private Date optime;
 
+	@Column
+	@Comment("税控金额")
+	private Double fiscalAmount;
+
 	/**
 	 * (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
@@ -58,6 +62,11 @@ public class TInvoiceDetailEntity implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		TInvoiceDetailEntity other = (TInvoiceDetailEntity) obj;
+		if (fiscalAmount == null) {
+			if (other.fiscalAmount != null)
+				return false;
+		} else if (!fiscalAmount.equals(other.fiscalAmount))
+			return false;
 		if (imagename == null) {
 			if (other.imagename != null)
 				return false;
@@ -104,6 +113,7 @@ public class TInvoiceDetailEntity implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((fiscalAmount == null) ? 0 : fiscalAmount.hashCode());
 		result = prime * result + ((imagename == null) ? 0 : imagename.hashCode());
 		result = prime * result + ((invoicebalance == null) ? 0 : invoicebalance.hashCode());
 		result = prime * result + ((invoiceinfoid == null) ? 0 : invoiceinfoid.hashCode());

@@ -81,6 +81,13 @@ $(document).on('input','#invoicebalance', function(){
 		$('#balance').html(banlanceyue.toFixed(2));
 	}
 	$('#thisval').val(thisval);
+	var thisbanlance = $(this).val();
+	var fiscalAmount = $(this).parent().parent().find('[name=fiscalAmount]');
+	if(thisbanlance){
+		fiscalAmount.val((parseFloat(thisbanlance) * 0.98).toFixed(2));
+	}else{
+		fiscalAmount.val('');
+	}
 });
 $(document).on('blur','#invoicebalance', function(){
 	//if($('#balance').html() != '0.00'){
