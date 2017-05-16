@@ -252,8 +252,8 @@
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-2 text-right padding">付款方式：</label>
-							<div class="col-sm-2 padding">
-								<select id="payWayID" name="payWay"
+							<div class="col-sm-8 padding">
+								<!-- <select id="payWayID" name="payWay"
 									class="form-control input-sm paySele"
 									onchange="paywaySelect_change(this)">
 									<option value="1" selected="selected">现金</option>
@@ -261,7 +261,10 @@
 									<option value="3">银行汇款</option>
 									<option value="4">第三方</option>
 									<option value="5">其他</option>
+								</select> -->
+								<select id="payWay" class="form-control select2 inpImpWid" multiple="multiple" onchange="payOpt()" data-placeholder="请输入付款方式">
 								</select>
+								<input id="payWayIds" type="hidden" name="payWayIds" /> 
 							</div>
 							<div class="col-sm-8" style="display: none;" id="paywayDivId">
 								<div class="col-sm-12 padding payInp">
@@ -675,6 +678,12 @@
 			//发票项Id
 			var selectedsInvID = $("#sInvID").select2("val");
 			$("#sInvName").val(selectedsInvID);
+		}
+		/* 出发城市 */
+		function payOpt() {
+			//付款方式Id
+		    var selectedPayweyId = $("#payWay").select2("val"); 
+			$("#payWayIds").val(selectedPayweyId);
 		}
 	</script>
 

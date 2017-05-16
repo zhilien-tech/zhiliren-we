@@ -2,7 +2,6 @@ package com.linyun.airline.admin.customer.module;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,9 +11,6 @@ import javax.servlet.http.HttpSession;
 
 import org.nutz.dao.Cnd;
 import org.nutz.dao.SqlManager;
-import org.nutz.dao.Sqls;
-import org.nutz.dao.entity.Record;
-import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.AdaptBy;
@@ -33,7 +29,6 @@ import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.entities.TCompanyEntity;
 import com.linyun.airline.entities.TCustomerInfoEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
-import com.linyun.airline.entities.TUserEntity;
 import com.linyun.airline.forms.TCustomerInfoAddForm;
 import com.linyun.airline.forms.TCustomerInfoUpdateForm;
 import com.uxuexi.core.common.util.FileUtil;
@@ -192,6 +187,13 @@ public class CustomerModule {
 	@POST
 	public Object isInvioce(@Param("q") final String name, @Param("ids") final String ids) throws Exception {
 		return customerViewService.isInvioce(name, ids);
+	}
+
+	//付款方式查询
+	@At
+	@POST
+	public Object payWay(@Param("q") final String name, @Param("ids") final String ids) throws Exception {
+		return customerViewService.payWay(name, ids);
 	}
 
 	/**

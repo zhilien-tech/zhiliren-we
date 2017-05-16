@@ -45,6 +45,7 @@ import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.enums.AccountPayEnum;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
 import com.linyun.airline.common.enums.CompanyTypeEnum;
+import com.linyun.airline.common.enums.CustomerInfoPaywayEnum;
 import com.linyun.airline.common.enums.MessageLevelEnum;
 import com.linyun.airline.common.enums.MessageRemindEnum;
 import com.linyun.airline.common.enums.MessageSourceEnum;
@@ -1023,6 +1024,31 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 			}
 			list.removeAll(removelist);
 		}
+		return list;
+	}
+
+	/**
+	 * 
+	 * TODO查询发票项
+	 * <p>
+	 * @param invioceName
+	 * @return
+	 * @throws Exception 
+	 */
+	public Object payWay(String paywayName, String ids) throws Exception {
+
+		List<Select2Option> list = new ArrayList<Select2Option>();
+		for (CustomerInfoPaywayEnum payway : CustomerInfoPaywayEnum.values()) {
+			String id = payway.key();
+			String text = payway.value();
+			if (!ids.contains(id)) {
+				Select2Option op = new Select2Option();
+				op.setId(Integer.valueOf(id));
+				op.setText(text);
+				list.add(op);
+			}
+		}
+
 		return list;
 	}
 
