@@ -141,7 +141,11 @@ $('.addHDIcon').click(function(){
     newDiv.append('<td class="removeIconTd"><i class="glyphicon glyphicon-minus removHDIcon"></i></td>');
 });
 $(document).on("click",".removHDIcon",function(){
-    $(this).parent().parent().remove();
+	var thisdiv = $(this);
+	layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
+		thisdiv.parent().parent().remove();
+		layer.close(index);
+	});
 });
 
 //select2 选项渲染

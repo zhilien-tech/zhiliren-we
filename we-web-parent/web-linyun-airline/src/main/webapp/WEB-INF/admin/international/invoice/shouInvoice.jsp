@@ -107,6 +107,10 @@
                   </td>
                   <td>发票日期：</td>
                   <td><input id="invoicedate" name="invoicedate" type="text" onFocus="WdatePicker()" class="form-control input-sm" value="<fmt:formatDate value="${obj.invoiceinfo.invoicedate }" pattern="yyyy-MM-dd" />"></td>
+                  <td><input id="borrowInvoice" name="borrowInvoice" type="checkbox" value="" />　</td>
+                  <td>借发票</td>
+                  <td></td>
+                  <td></td>
                   <%-- <td>开票人：</td>
                   <td>
                      <select id="billuserid" name="billuserid" value="${obj.invoiceinfo.billuserid }" class="form-control input-sm">
@@ -218,6 +222,11 @@
 	<script src="${base }/admin/order/invoiceupload.js"></script>
   <script type="text/javascript">
      $(function(){
+    	//设置复选框是否选择
+    	 var borrowInvoice = '${obj.invoiceinfo.borrowInvoice }';
+    	 if(borrowInvoice === '1'){
+    		 $('#borrowInvoice').attr('checked','checked');
+    	 }
     	 /*-----收付款>收款>开发票 + 按钮-----*/
 	      $('.addIcon').click(function(){
 	          var divTest = $(this).parents('.cloneTR'); 
@@ -283,6 +292,8 @@
 	   formdata.invoiceitem = invoiceitem;
 	   var invoicedate = $('#invoicedate').val();
 	   formdata.invoicedate = invoicedate;
+	   var borrowInvoice = $('#borrowInvoice').is(':checked');
+	   formdata.borrowInvoice = borrowInvoice;
 	   var billuserid = $('#billuserid').val();
 	   formdata.billuserid = billuserid;
 	   var deptid = $('#deptid').val();
