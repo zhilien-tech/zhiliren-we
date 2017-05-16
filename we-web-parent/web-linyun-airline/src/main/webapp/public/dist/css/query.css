@@ -18,9 +18,7 @@
 .cloTable tr td:nth-of-type(7) label{width: 70px;}
 .cloTable tr td:nth-of-type(9) label{width: 60px;}
 .cloTable tr td:nth-of-type(10){width: 8%;}
-.cloTable tr:nth-of-type(1) td:nth-of-type(2) span.select2-container{/* width:185px !important; */}
 .cloTable tr:nth-of-type(1) td:nth-of-type(3) label{position: relative;left:5px;}
-.cloTable tr:nth-of-type(1) td:nth-of-type(4) span.select2-container{width:225px !important;}
 .cloTable tr:nth-of-type(1) td:nth-of-type(7) label{width: 60px;}
 .cloTable tr td:nth-of-type(11) label{width: 60px;}
 .select2-dropdown--below {width: 185px !important;}
@@ -96,8 +94,7 @@ select#teamAirLevel {width: 208px !important;}
 .showDis{display:table-cell;}
 .timSelect{display: inline-block;width:90px;height: 28px !important;}
 .dropdown-toggle {display: block;margin-top: 10px;}
- .select2-container {width: 150px !important;}
-.select2-container--default.select2-container--disabled .select2-selection--multiple{width: 115px;}
+ .select2-container {width: 100px !important;}
 td[colspan="3"] .select2 .selection .select2-selection{width:100%;}
 td[colspan="3"] .select2 .selection .select2-selection ul .select2-search--inline{display: none;}
 #datatable2 tbody tr td ul{margin-bottom: 0;padding-left: 0px;}
@@ -176,7 +173,7 @@ table.dataTable thead > tr > th {padding-right:0px;}
 .remarkTable{width:100%;}
 .remarkContext{overflow: hidden;min-height: 80px;display: block;border: solid 1px #e0e0e0;border-radius: 0 0 3px 3px;border-top: 0;background-color: white;}
 .remarkTable tbody tr td:nth-child(1){width: 78px;text-align: right;}
-.remarkTable tbody tr td:nth-child(2){padding-right:5.6%;}
+.remarkTable tbody tr td:nth-child(2){padding-right:7%;}
 .infofooter1{border-bottom: 0;border-radius: 3px 3px 0px 0px;}
 textarea#cRemark{height: 112px;resize:none}
 .select2-container--default.select2-container--disabled .select2-selection--multiple {width: 100% !important;}

@@ -256,6 +256,8 @@
 					                     <td><input id="leavetime" name="leavetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" placeholder="" value="${airline.leavetime }"/></td>
 					                     <td><label>抵达时间：</label></td>
 					                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustArriveTimes" value="${airline.arrivetime }"/></td>
+					                     <td><label>人数：</label></td>
+					                     <td><input id="peoplecount" name="" type="text" class="form-control input-sm textWid mustArriveTimes" value=" "/></td>
 					                     <td><label class="labelWid">成本价：</label></td>
 					                     <td><input id="formprice" name="formprice" type="text" disabled="disabled" class="form-control input-sm textWid mustNumberPoint costPrice" value="<fmt:formatNumber type="number" value="${airline.formprice }" pattern="0.00" maxFractionDigits="2"/>"/></td>
 					                     <td><label class="labelWid">销售价：</label></td>
@@ -292,6 +294,8 @@
 					                     <td><input id="leavetime" name="leavetime" disabled="disabled" type="text" class="form-control input-sm textWid mustTimes" placeholder=""/></td>
 					                     <td><label>抵达时间：</label></td>
 					                     <td><input id="arrivetime" name="arrivetime" disabled="disabled" type="text" class="form-control input-sm textWid mustArriveTimes" /></td>
+					                     <td><label>人数：</label></td>
+					                     <td><input id="peoplecount" name="" type="text" class="form-control input-sm textWid mustArriveTimes" value=" "/></td>
 					                     <td><label class="labelWid">成本价：</label></td>
 					                     <td><input id="formprice" name="formprice" disabled="disabled" type="text" class="form-control input-sm textWid mustNumberPoint costPrice" /></td>
 					                     <td><label class="labelWid">销售价：</label></td>
@@ -346,7 +350,7 @@
 							 <td name="threepaymethod" style="display: none;"><select name="thirdcustomid" disabled="disabled" class="form-control input-sm"></select></td>
 		                   </tr>
 		                   <tr class="pnrTr">
-		                     <td colspan="13" class="addPNR">
+		                     <td colspan="15" class="addPNR">
 		                        <table class="table table-bordered table-hover">
 		                         <thead>
 		                          <tr>
