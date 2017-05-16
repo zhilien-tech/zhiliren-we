@@ -591,7 +591,7 @@ ALTER TABLE `t_invoice_detail`
 ADD COLUMN `fiscalAmount`  double(64,2) NULL COMMENT '税控金额' AFTER `imagename`;
 
 ALTER TABLE `t_airline_info`
-ADD COLUMN `peoplecount`  int NULL COMMENT '人数' AFTER `pnrid`;
+ADD COLUMN `peoplescount`  int NULL COMMENT '人数' AFTER `pnrid`;
 
 ALTER TABLE `t_pay`
 ADD COLUMN `openbank`  varchar(128) NULL COMMENT '开户银行' AFTER `orderstatus`,
