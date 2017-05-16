@@ -351,6 +351,7 @@ $('.addDemand').click(function(){
 			//设置新的 航空段数   出发日期、抵达日期、销售价、成本
 			$(this).find('[name=cAirOutDate]').val('');
 			$(this).find('[name=cAirArrivalDate]').val('');
+			$(this).find('[name=cAirPeopleConut]').val('');
 			$(this).find('[name=cAirPretium]').val('');
 			$(this).find('[name=cAirCost]').val('');
 		}else{
@@ -475,6 +476,7 @@ $(document).on("click",".addIcon",function(){
 	//航空段数   出发日期、抵达日期、销售价、成本清除
 	newDiv.find('[name=cAirOutDate]').val('');
 	newDiv.find('[name=cAirArrivalDate]').val('');
+	newDiv.find('[name=cAirPeopleConut]').val('');
 	newDiv.find('[name=cAirPretium]').val('');
 	newDiv.find('[name=cAirCost]').val('');
 	newDiv.find('[name=airLineClickHidden]').val("1");

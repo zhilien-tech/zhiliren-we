@@ -1043,6 +1043,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				String leavetime = (String) airmap.get("leavetime");
 				//抵达时间
 				String arrivetime = (String) airmap.get("arrivetime");
+				String cAirPeopleConut = (String) airmap.get("cAirPeopleConut");
 				String fPrice = (String) airmap.get("formprice");
 				if (!Util.isEmpty(fPrice)) {
 					//成本价
@@ -1066,6 +1067,9 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				}
 				if (!Util.isEmpty(arrivetime)) {
 					airlineEntity.setArrivetime(arrivetime);
+				}
+				if (!Util.isEmpty(cAirPeopleConut)) {
+					airlineEntity.setPeoplescount(Integer.valueOf(cAirPeopleConut));
 				}
 
 				airlineEntity.setNeedid(insertCus.getId());
