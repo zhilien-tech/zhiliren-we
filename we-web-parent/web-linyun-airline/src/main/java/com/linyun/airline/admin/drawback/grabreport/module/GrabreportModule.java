@@ -115,10 +115,11 @@ public class GrabreportModule {
 	 * 根据pnr向附件预览表中添加数据
 	 */
 	@At
-	public Object findAndShowPNR(@Param("id") final long id, @Param("pnr") final String pnr) {
+	public Object findAndShowPNR(@Param("id") final long id, @Param("pnr") final String pnr,
+			@Param("flagType") final int flagType) {
 		//grabreportViewService.deleteById(id);
 		System.out.println(id + pnr);
-		this.grabreportViewService.findAndShowPNR(id, pnr);
+		this.grabreportViewService.findAndShowPNR(id, pnr, flagType);
 		return JsonResult.success("");
 	}
 

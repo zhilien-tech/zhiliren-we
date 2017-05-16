@@ -90,11 +90,13 @@
                      <button type="button" class="btn btn-primary btn-sm right returnBtn none">返回上一级</button>
                      <button type="button" class="btn btn-primary btn-sm right indexBtn none">返回首页</button>
                    </div>
+                   <!-- 区分当前是哪个切换卡下面的 -->
+                   <input type="hidden" name="flagType" value="0" id="flagType">
                    <input id="currentDirId" type="hidden" value="0"/>
                    <input type="hidden" name="fileName" id="fileName" />
 				   <input type="hidden" id="url">
                    <ol class="breadcrumb" id="teamBreadcrumb">
-                        <li><a href="${base}/admin/drawback/grabfile/list.html"><i class="fa fa-folder-open"></i> 全部文件</a></li>
+                        <li ><a href="javascript:void(0);" onclick="turnToAll();"><i class="fa fa-folder-open"></i> 全部文件</a></li>
                    </ol>
                    <table id="rebatesEamilTeamTable" class="table table-bordered table-hover">
                      <thead>
@@ -135,8 +137,8 @@
                             <th>实收单价</th>
                             <th>实收合计</th>
                             <th>代理费</th>
-                            <th>入澳时间</th>
-                            <th>出澳时间</th>
+                            <th>入澳日期</th>
+                            <th>出澳日期</th>
                             <th>关联状态</th>
                             <th>备注</th>
                             <!-- <th>操作</th> -->
@@ -283,13 +285,15 @@ $(document).on('click', '.checkchild', function(e) {
     			var url  = jsonobj;//地址
     			var fileName = file.name;//文件名称
     			var id = $("input#currentDirId").val();//文件pid
+    			var flagType=$("#flagType").val();
     			$.ajax({
     				cache : false,
     				type : "POST",
     				data : {
     					url : url,
     					fileName : fileName,
-    					id:id
+    					id:id,
+    					flagType:flagType
     				},
     				dataType : 'json',
     				url : '${base}/admin/drawback/grabfile/saveUploadFile.html',
@@ -640,7 +644,7 @@ function successCallback(id){
 			                    			return '<a id="'+fileId+'" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
 			                    		}else if(filetype===2 && fileExtension==="pdf"){
 			                    			/* return  '<a id="'+fileId+'" class="fa fa-file-pdf-o" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
-			                    			return  '<a id="'+fileId+'" class="fa fa-file-pdf-o" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
+			                    			return  '<a id="'+fileId+'" class="fa fa-file-pdf-o" href="#">'+filename+'</a>';
 			                    		}//else if(filetype===2 && fileExtension==="PNG"){
 			                    			/* return  '<a id="'+fileId+'" class="fa fa-area-chart" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
 			                    			//return  '<a id="'+fileId+'" class="fa fa-area-chart" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
@@ -695,6 +699,7 @@ function successCallback(id){
 	}
 	/*切换标签的时候重新加载table */
 	function reloadTable(flag){
+		$("#flagType").val(flag);
 		if(flag==0){
 			//rebatesEamilTable = $('#rebatesEamilTable').DataTable(options);
 			rebatesEamilTable.ajax.reload();
@@ -736,6 +741,7 @@ function successCallback(id){
 				}
 			});
 		}else{
+			alert(11);
 			options0.ajax.data.parentId=pid;
 			var param = {parentId:pid};
 			rebatesEamilTable.settings()[0].ajax.data = param;
@@ -803,6 +809,8 @@ function successCallback(id){
 		var filetype = row.type;
 		if(clickFlag ==1 && filetype==2){
 			clickFlag = 2;
+			var a=row.id;
+			editFolder(a,1223,2,0);
 			return false;
 		}
 			createFodler(row.id,row.filename,filetype,clickFlag);
@@ -815,6 +823,8 @@ function successCallback(id){
 		var filetype = row.type;
 		if(clickFlag ==1 && filetype==2){
 			clickFlag = 2;
+			var a=row.id;
+			editFolder(a,1223,2,0);
 			return false;
 		}
 			createFodler1(row.id,row.filename,filetype,clickFlag);
@@ -921,6 +931,7 @@ function createFodler1(pid,filename,filetype,clickFlag){//团队
 	//新建子文件夹
 	function newFolder(){
 		var pid = $("input#currentDirId").val();
+		var flagType = $("#flagType").val();
 		layer.open({
 	  	    type: 2,
 	  	    title:false,
@@ -930,7 +941,7 @@ function createFodler1(pid,filename,filetype,clickFlag){//团队
 	  	    shadeClose: false,
 	  	    scrollbar: false,
 	  	    area: ['400px', '170px'],
-	  	    content: '${base}/admin/drawback/grabfile/add.html?parentId='+pid,
+	  	    content: '${base}/admin/drawback/grabfile/add.html?parentId='+pid+'&flagType='+flagType,
 	  	    end: function(){//添加完页面点击返回的时候自动加载表格数据
 	  	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 	  			parent.layer.close(index);
@@ -1292,6 +1303,16 @@ function createFodler1(pid,filename,filetype,clickFlag){//团队
 	$(function() {
 		initDatatable2();
 	});
+	
+	
+	function turnToAll(){
+	
+		createFodler(0,1222,2,221);
+	}
+	
+	
+	
+	
 </script>
 <!-- tab切换卡 -->
 <script type="text/javascript">

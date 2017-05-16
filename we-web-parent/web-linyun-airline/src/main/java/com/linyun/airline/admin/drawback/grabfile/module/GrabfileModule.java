@@ -31,6 +31,7 @@ import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.base.Uploader;
 import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.common.enums.DataStatusEnum;
+import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.uxuexi.core.db.dao.IDbDao;
 import com.uxuexi.core.web.chain.support.JsonResult;
 
@@ -96,8 +97,8 @@ public class GrabfileModule {
 	 * @param addForm
 	 */
 	@At
-	public Object saveUploadFile(@Param("..") TGrabFileAddForm addForm) {
-		return grabfileViewService.saveUploadFile(addForm);
+	public Object saveUploadFile(@Param("..") TGrabFileAddForm addForm, @Param("flagType") int flagType) {
+		return grabfileViewService.saveUploadFile(addForm, flagType);
 	}
 
 	/**
@@ -118,15 +119,22 @@ public class GrabfileModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object add(@Param("parentId") final long pid) {
-		return grabfileViewService.superFolder(pid);
+	public Object add(@Param("parentId") final long pid, @Param("flagType") final int flagType) {
+		return grabfileViewService.superFolder(pid, flagType);
 	}
 
 	/**
 	 * 添加
 	 */
 	@At
-	public Object add(@Param("..") TGrabFileAddForm fileAddForm) {
+	public Object add(@Param("..") TGrabFileAddForm fileAddForm, @Param("flagType") final int flagType) {
+		if (flagType == 0) {
+			fileAddForm.setGroupType(OrderTypeEnum.FIT.intKey());
+
+		} else if (flagType == 1) {
+			fileAddForm.setGroupType(OrderTypeEnum.TEAM.intKey());
+
+		}
 		fileAddForm.setCreateTime(new Date());
 		fileAddForm.setStatus(DataStatusEnum.ENABLE.intKey());
 		fileAddForm.setMailId(fileAddForm.getId());
@@ -140,8 +148,8 @@ public class GrabfileModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object update(@Param("id") final long id) {
-		return grabfileViewService.superFolder(id);
+	public Object update(@Param("id") final long id, @Param("flagType") final int flagType) {
+		return grabfileViewService.superFolder(id, flagType);
 	}
 
 	/**
