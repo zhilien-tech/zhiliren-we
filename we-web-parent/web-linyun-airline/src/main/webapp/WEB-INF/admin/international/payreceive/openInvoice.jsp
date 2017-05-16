@@ -97,6 +97,10 @@
                   </td>
                   <td>发票日期：</td>
                   <td><input id="invoicedate" name="invoicedate" type="text" onFocus="WdatePicker()" class="form-control input-sm"></td>
+                  <td><input id="borrowInvoice" name="borrowInvoice" type="checkbox" value="" />　</td>
+                  <td>借发票</td>
+                  <td></td>
+                  <td></td>
                   <!-- <td>开票人：</td>
                   <td>
                      <select id="billuserid" name="billuserid" class="form-control input-sm">
@@ -132,6 +136,8 @@
                   <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm"></td>
                   <td>金额：</td>
                   <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm mustNumberPoint"></td>
+                  <td>税控金额：</td>
+                  <td><input id="fiscalAmount" name="fiscalAmount" type="text" class="form-control input-sm mustNumberPoint"></td>
                   <td colspan="4">
                     <ul class="fileUL">
                       <li>
@@ -190,6 +196,7 @@
 		          newDiv.find('[name=invoicebalance]').val(''); 
 		          newDiv.find('[name=fileName]').html('未选择文件');
 		          newDiv.find('[name=invoiceurl]').val('');
+		          newDiv.find('[name=fiscalAmount]').val('');
 		          lastDiv.after(newDiv);
 		          var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
 		          newDiv.find("p").html(No); 
@@ -247,6 +254,8 @@
 	   var invoiceitem = $('#invoiceitem').val();
 	   formdata.invoiceitem = invoiceitem;
 	   var invoicedate = $('#invoicedate').val();
+	   var borrowInvoice = $('#borrowInvoice').is(':checked');
+	   formdata.borrowInvoice = borrowInvoice;
 	   formdata.invoicedate = invoicedate;
 	   var billuserid = $('#billuserid').val();
 	   formdata.billuserid = billuserid;
@@ -275,6 +284,9 @@
 		   var invoiceurl = $(this).find('[name=invoiceurl]').val();
 		   detail.invoiceurl = invoiceurl;
 		   invoicelength += invoiceurl;
+		   var fiscalAmount = $(this).find('[name=fiscalAmount]').val();
+		   detail.fiscalAmount = fiscalAmount;
+		   invoicelength += fiscalAmount;
 		   if(invoicelength){
 			   invoicedetails.push(detail);
 		   }
