@@ -55,7 +55,7 @@
                    <input type="hidden" name="fileName" id="fileName" />
 				   <input type="hidden" id="url">
                    <ol class="breadcrumb" id="fitBreadcrumb">
-                        <li><a href="${base}/admin/drawback/grabfile/list.html"><i class="fa fa-folder-open"></i> 全部文件</a></li>
+                        <li><a href="javascript:void(0);" onclick="turnToAll(0);"><i class="fa fa-folder-open"></i> 全部文件</a></li>
                    </ol>
                    <table id="rebatesEamilTable" class="table table-bordered table-hover">
                      <thead>
@@ -96,7 +96,7 @@
                    <input type="hidden" name="fileName" id="fileName" />
 				   <input type="hidden" id="url">
                    <ol class="breadcrumb" id="teamBreadcrumb">
-                        <li ><a href="javascript:void(0);" onclick="turnToAll();"><i class="fa fa-folder-open"></i> 全部文件</a></li>
+                        <li ><a href="javascript:void(0);" onclick="turnToAll(1);"><i class="fa fa-folder-open"></i> 全部文件</a></li>
                    </ol>
                    <table id="rebatesEamilTeamTable" class="table table-bordered table-hover">
                      <thead>
@@ -741,7 +741,7 @@ function successCallback(id){
 				}
 			});
 		}else{
-			alert(11);
+			
 			options0.ajax.data.parentId=pid;
 			var param = {parentId:pid};
 			rebatesEamilTable.settings()[0].ajax.data = param;
@@ -860,6 +860,7 @@ function createFodler1(pid,filename,filetype,clickFlag){//团队
 				}
 			});
 		}else{
+			
 			options1.ajax.data.parentId=pid;
 			var param = {parentId:pid};
 			rebatesEamilTeamTable.settings()[0].ajax.data = param;
@@ -1305,9 +1306,33 @@ function createFodler1(pid,filename,filetype,clickFlag){//团队
 	});
 	
 	
-	function turnToAll(){
-	
-		createFodler(0,1222,2,221);
+	function turnToAll(flag){
+		
+
+		if(flag==0){
+			options0.ajax.data.parentId=0;
+			var param = {parentId:0};
+			rebatesEamilTable.settings()[0].ajax.data = param;
+			rebatesEamilTable.ajax.reload();
+			$("#fitBreadcrumb").find("li").each(function(index){
+				
+				if(index>0){
+					$(this).remove(); 
+				} 
+			});
+		}else if(flag==1){
+			options1.ajax.data.parentId=0;
+			var param = {parentId:0};
+			rebatesEamilTeamTable.settings()[0].ajax.data = param;
+			rebatesEamilTeamTable.ajax.reload();
+			$("#teamBreadcrumb").find("li").each(function(index){
+				
+				if(index>0){
+					$(this).remove(); 
+				} 
+			});
+		}
+		
 	}
 	
 	
