@@ -42,6 +42,8 @@ public class TKaiInvoiceInfoSqlForm extends DataTablesParamForm {
 	private String invoiceitem;//发票开具项目
 	private String ordersnum;//订单号
 	private Long companyid;
+	/**借发票*/
+	private Integer borrowInvoice;
 
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();

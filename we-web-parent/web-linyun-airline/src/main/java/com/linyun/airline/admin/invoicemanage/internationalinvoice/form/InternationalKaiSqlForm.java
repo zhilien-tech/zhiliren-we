@@ -40,6 +40,8 @@ public class InternationalKaiSqlForm extends DataTablesParamForm {
 	private String invoiceitem;//发票开具项目
 	private String ordersnum;//订单号
 	private Integer companyid;
+	/**借发票*/
+	private Integer borrowInvoice;
 
 	private Integer userid;
 
