@@ -28,10 +28,10 @@
                       <li><a href="#tab_3" data-toggle="tab">报表</a></li>
                 </ul>
                 <div class="tab-content">
-                  <!--邮件抓取-->
+                  <!--------------------------------------------邮件抓取散客-------------------------------------->
                   <div class="tab-pane pane-content active" id="tab_1">
                    <div class="rebatesBtn">
-                     <button type="button" onclick="batchDelete();" class="btn btn-primary btn-sm right noneBtn none">批量删除</button>
+                     <button type="button" onclick="batchDeleteFit();" class="btn btn-primary btn-sm right noneBtn none">批量删除</button>
                      <!-- <button type="button" class="btn btn-primary btn-sm right noneBtn none">移动到</button> -->
                      <button type="button" class="btn btn-primary btn-sm right batchBtn">批量操作</button>
                      <button id="folderId" name="createFolder" onclick='newFolder();' type="button" class="btn btn-primary btn-sm right carrynews">新建文件夹</button>
@@ -60,7 +60,7 @@
                    <table id="rebatesEamilTable" class="table table-bordered table-hover">
                      <thead>
                       <tr>
-                       <th><input  class="checkTh" id="fileCheckbox" name="fileCheckbox" type="checkbox"></th>
+                       <th><input  class="checkThFit" id="fileCheckboxFit" name="fileCheckbox" type="checkbox"></th>
 	                       <th>文件名</th>
 	                       <th>时间</th>
 	                       <th>大小</th>
@@ -78,18 +78,29 @@
                    </table>
                    <input id="checkedboxval" name="checkedboxval" type="hidden">
                   </div><!--end 邮件抓取-->
-				  <!---------------------------团队------------------------------->
+				  <!-----------------------------------------------团队------------------------------------------------------------------->
                   <div class="tab-pane pane-content" id="tab_2">
                    <div class="rebatesBtn">
-                     <button type="button" onclick="batchDelete();" class="btn btn-primary btn-sm right noneBtn none">批量删除</button>
+                     <button type="button" onclick="batchDeleteTeam();" class="btn btn-primary btn-sm right noneBtn none">批量删除</button>
                      <!-- <button type="button" class="btn btn-primary btn-sm right noneBtn none">移动到</button> -->
                      <button type="button" class="btn btn-primary btn-sm right batchBtn">批量操作</button>
                      <button id="folderId" name="createFolder" onclick='newFolder();' type="button" class="btn btn-primary btn-sm right carrynews">新建文件夹</button>
                      <button id="grabMailId" name="grabMailName" type="button" class="btn btn-primary btn-sm right">邮件抓取</button>
-                     <button id="uploadFile" onclick="uploadFile();" name="fileID" type="file" class="btn btn-primary btn-sm right">上传</button>
+                     <button id="uploadFileTeam" onclick="uploadFileTeam();" name="fileID" type="file" class="btn btn-primary btn-sm right">上传</button>
                      <button type="button" class="btn btn-primary btn-sm right returnBtn none">返回上一级</button>
                      <button type="button" class="btn btn-primary btn-sm right indexBtn none">返回首页</button>
                    </div>
+                   <!-- 检索开始 -->
+                   <div class="col-md-2 col-padding marBottom10">
+                   	 	<input id="fileNameId" name="fileName" type="text" onkeypress="onkeyEnter();" class="form-control" placeholder="请输入航空公司二字代码"/>
+                   </div>
+                   <div class="col-md-2 col-padding">
+                   		<input id="sendTimeId" name="sendTime" type="text" onkeypress="onkeyEnter();" class="form-control" placeholder="请输入时间:例如2017.06"/>
+                   </div>
+                   <div class="col-md-3 col-padding">		
+                   		<input id="searchBtnId" name="searchBtn" type="button" class="btn btn-primary btn-sm" value="搜索"/>
+                   </div>
+                   <!-- 检索结束 -->
                    <!-- 区分当前是哪个切换卡下面的 -->
                    <input type="hidden" name="flagType" value="0" id="flagType">
                    <input id="currentDirId" type="hidden" value="0"/>
@@ -101,7 +112,7 @@
                    <table id="rebatesEamilTeamTable" class="table table-bordered table-hover">
                      <thead>
                       <tr>
-                       <th><input  class="checkTh" id="fileCheckbox" name="fileCheckbox" type="checkbox"></th>
+                       <th><input  class="checkThTeam" id="fileCheckboxTeam" name="fileCheckbox" type="checkbox"></th>
 	                       <th>文件名</th>
 	                       <th>时间</th>
 	                       <th>大小</th>
@@ -169,9 +180,9 @@ $(function () {
         //$('.checkTh').toggle();
         $('.checkTd').toggle();
     });
-  	//复选框选择点击操作
-//控制复选框
-$(".checkTh").click(function () {
+
+//复选框选择点击操作
+$(".checkThFit").click(function () {
     var check = $(this).prop("checked");
     $(".checkchild").prop("checked", check);
     //隐藏域的值
@@ -255,9 +266,9 @@ $(document).on('click', '.checkchild', function(e) {
 	}
 	var length = $(".checkchild:checked").length;
 	if(rebatesEamilTable.page.len() == length){
-		$(".checkTh").prop("checked", true);
+		$(".checkThFit").prop("checked", true);
 	}else{
-		$(".checkTh").prop("checked", false);
+		$(".checkThFit").prop("checked", false);
 	}
 });
     //文件上传
@@ -287,7 +298,6 @@ $(document).on('click', '.checkchild', function(e) {
     			var id = $("input#currentDirId").val();//文件pid
     			var flagType=$("#flagType").val();
     			$.ajax({
-    				cache : false,
     				type : "POST",
     				data : {
     					url : url,
@@ -338,9 +348,82 @@ $(document).on('click', '.checkchild', function(e) {
             }
     	});
     }
-    /* $('#uploadFile').click(function(){
-    	
-    }); */
+    $(uploadFileTeam());
+    function uploadFileTeam(){/* 团队上传 */
+    	$.fileupload1 = $('#uploadFileTeam').uploadify({
+    		'auto' : true,//选择文件后自动上传
+    		'formData' : {
+    			'fcharset' : 'uft-8',
+    			'action' : 'uploadimage'
+    		},
+    		'buttonText' : '上传',//按钮显示的文字
+    		'fileSizeLimit' : '3000MB',
+    		'fileTypeDesc' : '文件',//在浏览窗口底部的文件类型下拉菜单中显示的文本
+    		'fileTypeExts' : '*.png; *.txt; *.doc; *.pdf; *.xls; *.jpg; *.docx; *.xlsx;',//上传文件的类型
+    		'swf' : '${base}/public/plugins/uploadify/uploadify.swf',//指定swf文件
+    		'multi' : false,//multi设置为true将允许多文件上传
+    		'successTimeout' : 1800,
+    		'queueSizeLimit' : 100,
+    		'uploader' : '${base}/admin/drawback/grabfile/uploadFile.html',//后台处理的页面
+    		//onUploadSuccess为上传完视频之后回调的方法，视频json数据data返回，
+    		//下面的例子演示如何获取到vid
+    		'onUploadSuccess' : function(file, data, response) {
+    			var jsonobj = eval('(' + data + ')');
+    			var url  = jsonobj;//地址
+    			var fileName = file.name;//文件名称
+    			var id = $("input#currentDirId").val();//文件pid
+    			var flagType=$("#flagType").val();
+    			$.ajax({
+    				type : "POST",
+    				data : {
+    					url : url,
+    					fileName : fileName,
+    					id:id,
+    					flagType:flagType
+    				},
+    				dataType : 'json',
+    				url : '${base}/admin/drawback/grabfile/saveUploadFile.html',
+    				error : function(request) {
+    					layer.msg('上传失败!',{time:2000});
+    				},
+    				success : function(data) {
+    				    window.parent.successCallback('6');
+    					var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+    				    parent.layer.close(index);
+    				}
+    			});
+    			
+    			var innerHtml = "";
+                if (response) {
+                    innerHtml = "<div><a id='downloadA' href='#' download='"+file.name+"' onclick='downloadFile("
+                            + data
+                            + ");' >"
+                            + file.name
+                            + "</a>&nbsp;&nbsp;<span>上传成功</span>&nbsp;&nbsp;&nbsp;&nbsp;"
+                            + data + "'></div>";
+                } else {
+                    innerHtml = "<div>该附件上传失败，请重新上传</div>";
+                }
+                $("#completeFileName").html($("#completeFileName").html() + innerHtml);
+    		},
+            //加上此句会重写onSelectError方法【需要重写的事件】
+            'overrideEvents': ['onSelectError', 'onDialogClose'],
+            //返回一个错误，选择文件的时候触发
+            'onSelectError':function(file, errorCode, errorMsg){
+                switch(errorCode) {
+                    case -110:
+                        alert("文件 ["+file.name+"] 大小超出系统限制！");
+                        break;
+                    case -120:
+                        alert("文件 ["+file.name+"] 大小异常！");
+                        break;
+                    case -130:
+                        alert("文件 ["+file.name+"] 类型不正确！");
+                        break;
+                }
+            }
+    	});
+    }
 });
 </script>
 <script type="text/javascript">
@@ -380,8 +463,9 @@ function physicalDelete(did, status) {
 	    // 取消之后不用处理
 	});
 }
-//批量删除
-function batchDelete(){
+//散客批量删除
+function batchDeleteFit(){
+	var flagType=$("#flagType").val();
 	var ids = $('#checkedboxval').val();
 	var length = $(".checkchild:checked").length;
 	if(!ids){
@@ -396,10 +480,42 @@ function batchDelete(){
 				data: {ids:ids}, 
 				url: '${base}/admin/drawback/grabfile/batchDelete.html',
 				success: function (data) { 
-					layer.msg("批量删除成功!", "", 1000);
+					window.parent.successCallback('10');
+					$('#checkedboxval').val('');
+					if(flagType===0){
+						rebatesEamilTable.ajax.reload(null,false);
+					}else if(flagType===1){
+						rebatesEamilTeamTable.ajax.reload(null,false);
+					}
+					$('.checkThFit').attr('checked',false);
+				},
+				error: function (xhr) {
+					layer.msg("批量删除失败!", "", 1000);
+				} 
+			});
+		});
+	}
+}
+//团队批量删除
+function batchDeleteTeam(){
+	var ids = $('#checkedboxval').val();
+	var length = $(".checkchild:checked").length;
+	if(!ids){
+		layer.msg("请至少选中一条记录","", 1000);
+	}else{
+		layer.confirm("确定要批量删除吗?", {
+		    btn: ["是","否"], //按钮
+		    shade: false //不显示遮罩
+		}, function(){
+			$.ajax({
+				type: 'POST', 
+				data: {ids:ids}, 
+				url: '${base}/admin/drawback/grabfile/batchDelete.html',
+				success: function (data) { 
+					window.parent.successCallback('10');
 					$('#checkedboxval').val('');
 					rebatesEamilTable.ajax.reload(null,false);
-					$('.checkTh').attr('checked',false);
+					$('.checkThFit').attr('checked',false);
 				},
 				error: function (xhr) {
 					layer.msg("批量删除失败!", "", 1000);
@@ -452,24 +568,27 @@ $('#grabMailId').click(function(){
 function successCallback(id){
 	  rebatesEamilTable.ajax.reload(null,false);
 	  rebatesReportTable.ajax.reload(null,false);
+	  rebatesEamilTeamTable.ajax.reload(null,false);
 	  if(id == '1'){
-		  layer.msg("新建文件夹成功!",{time:2000});
+		  layer.msg("新建文件夹成功",{time:2000});
 	  }else if(id == '2'){
-		  layer.msg("修改文件夹名称成功!",{time:2000});
+		  layer.msg("修改文件夹名称成功",{time:2000});
 	  }else if(id == '3'){
-		  layer.msg("删除成功!",{time:2000});
+		  layer.msg("删除成功",{time:2000});
 	  }else if(id == '4'){
-		  layer.msg("移动成功!",{time:2000});
+		  layer.msg("移动成功",{time:2000});
 	  }else if(id == '5'){
-		  layer.msg("抓取成功!",{time:2000});
+		  layer.msg("抓取成功",{time:2000});
 	  }else if(id == '6'){
-		  layer.msg("上传成功!",{time:2000});
+		  layer.msg("上传成功",{time:2000});
 	  }else if(id == '7'){
-		  layer.msg("文件下载成功!",{time:2000});
+		  layer.msg("文件下载成功",{time:2000});
 	  }else if(id == '8'){
-		  layer.msg("添加成功!",{time:2000});
+		  layer.msg("添加成功",{time:2000});
 	  }else if(id == '9'){
-		  layer.msg("编辑成功!",{time:2000});
+		  layer.msg("编辑成功",{time:2000});
+	  }else if(id == '10'){
+		  layer.msg("批量删除成功",{time:2000});
 	  }
   }
 </script>
@@ -482,8 +601,6 @@ function successCallback(id){
 	});
 	var rebatesEamilTable;
 	var rebatesEamilTeamTable;
-	//var rebatesEamilTeamTable;
-
 	var options0 = {//散客
 					"searching" : false,
 					"processing" : true,
@@ -700,12 +817,17 @@ function successCallback(id){
 	/*切换标签的时候重新加载table */
 	function reloadTable(flag){
 		$("#flagType").val(flag);
+		$("input#currentDirId").val(0);
 		if(flag==0){
-			//rebatesEamilTable = $('#rebatesEamilTable').DataTable(options);
+			options0.ajax.data.parentId=0;
+			var param = {parentId:0};
+			rebatesEamilTable.settings()[0].ajax.data = param;
 			rebatesEamilTable.ajax.reload();
 		}
 		if(flag==1){
-			//rebatesEamilTeamTable = $('#rebatesEamilTeamTable').DataTable(options);
+			options1.ajax.data.parentId=0;
+			var param = {parentId:0};
+			rebatesEamilTeamTable.settings()[0].ajax.data = param;			
 			rebatesEamilTeamTable.ajax.reload();
 		}
 	}
@@ -909,26 +1031,6 @@ function createFodler1(pid,filename,filetype,clickFlag){//团队
 			$("input#currentDirId").val(pid);
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	
 	//新建子文件夹
 	function newFolder(){
 		var pid = $("input#currentDirId").val();
@@ -1315,7 +1417,6 @@ function createFodler1(pid,filename,filetype,clickFlag){//团队
 			rebatesEamilTable.settings()[0].ajax.data = param;
 			rebatesEamilTable.ajax.reload();
 			$("#fitBreadcrumb").find("li").each(function(index){
-				
 				if(index>0){
 					$(this).remove(); 
 				} 
@@ -1326,7 +1427,6 @@ function createFodler1(pid,filename,filetype,clickFlag){//团队
 			rebatesEamilTeamTable.settings()[0].ajax.data = param;
 			rebatesEamilTeamTable.ajax.reload();
 			$("#teamBreadcrumb").find("li").each(function(index){
-				
 				if(index>0){
 					$(this).remove(); 
 				} 

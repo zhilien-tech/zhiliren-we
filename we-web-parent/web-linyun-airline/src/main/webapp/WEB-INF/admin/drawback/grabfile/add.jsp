@@ -22,12 +22,12 @@
 </head>
 <body onresize=hero(); onload="document.getElementById('folderId').focus()">
 	<div class="modal-top">
+		<div class="modal-header boderButt">
+			<input type="button" class="btn btn-primary right btn-sm" onclick="closewindow();" value="返回" />
+               <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
+			<h4>添加文件夹</h4>
+		</div>
 		<form id="addForm" method="post">
-			<div class="modal-header boderButt">
-				<input type="button" class="btn btn-primary right btn-sm" onclick="closewindow();" value="返回" />
-                <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
-				<h4>添加文件夹</h4>
-			</div>
 			 <input type="hidden" name="flagType" value="${obj.flagType }" id="flagType">
 			<div class="modal-body" style="height:100px;overflow-y: auto;">
 				<%-- <div class="tab-content">
@@ -52,7 +52,7 @@
 	</div>
 <script type="text/javascript">
 //验证输入内容不能为空
-$(document).ready(function(){
+/* $(document).ready(function(){
 	$('#addForm').bootstrapValidator({
 		message: '验证不通过!',
         feedbackIcons: {
@@ -67,14 +67,14 @@ $(document).ready(function(){
                         message: '文件夹名称不能为空!'
                     },
                     remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
-                         url: '${base}/admin/dictionary/dirtype/checkTypeCodeExist.html',//验证地址
+                         url: '${base}/admin/drawback/grabfile/checkFileNameExist.html',//验证地址
                          message: '该文件夹名称已存在，请重新输入!',//提示消息
                          delay :  2000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
                          type: 'POST',//请求方式
                          //自定义提交数据，默认值提交当前input value
                          data: function(validator) {
                             return {
-                            	typeCode:$('input[name="fileName"]').val()
+                            	fileName:$('input[name="fileName"]').val()
                             };
                          }
                      }
@@ -82,7 +82,7 @@ $(document).ready(function(){
             }
         }
 	});
-});
+}); */
 //添加成功提示
 $("#submit").click(function() {
 	var flagType=$("#flagType").val();

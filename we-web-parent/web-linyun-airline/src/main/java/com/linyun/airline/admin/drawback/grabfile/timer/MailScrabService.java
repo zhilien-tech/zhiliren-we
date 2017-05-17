@@ -211,8 +211,8 @@ public class MailScrabService extends BaseService {
 		String userTeam = "in2020072@sina.com";
 		String passwdTeam = "tlywy2017jan";
 		try {
-			receivePop3(userTeam, passwdTeam);
 			receivePop3(userFit, passwdFit);
+			receivePop3(userTeam, passwdTeam);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
