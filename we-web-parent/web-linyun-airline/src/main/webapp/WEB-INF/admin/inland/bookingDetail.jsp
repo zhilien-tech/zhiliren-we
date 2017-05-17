@@ -330,7 +330,7 @@
 		                        </select>
 		                     </td>
 		                     <td><label>付款方式：</label></td>
-		                     <td colspan="1"> 
+		                     <td class="tdWid"> 
 								<select id="paymethod" name="paymethod" disabled="disabled" class="form-control input-sm paymethod">
 		                            <option value="">请选择</option>
 		                            <c:forEach var="map" items="${obj.paymethod}" >

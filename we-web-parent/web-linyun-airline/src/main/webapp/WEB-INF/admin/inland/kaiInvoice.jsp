@@ -106,10 +106,7 @@
                   </td>
                   <td>发票日期：</td>
                   <td><input id="invoicedate" name="invoicedate" type="text" onFocus="WdatePicker()" class="form-control input-sm" value="<fmt:formatDate value="${obj.invoiceinfo.invoicedate }" pattern="yyyy-MM-dd" />"></td>
-                  <td><input id="borrowInvoice" name="borrowInvoice" type="checkbox" value="" />　</td>
-                  <td>借发票</td>
-                  <td></td>
-                  <td></td>
+                  <td><input id="borrowInvoice" name="borrowInvoice" type="checkbox" value="" />借发票&nbsp;&nbsp;</td>
                   <%-- <td>开票人：</td>
                   <td>
                      <select id="billuserid" name="billuserid" value="${obj.invoiceinfo.billuserid }" class="form-control input-sm">
