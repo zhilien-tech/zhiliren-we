@@ -1,23 +1,38 @@
 package com.linyun.airline.admin.drawback.grabreport.service;
 
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
+import org.nutz.dao.Sqls;
+import org.nutz.dao.entity.Record;
+import org.nutz.dao.sql.Sql;
 import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.lang.Strings;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.linyun.airline.admin.drawback.grabfile.entity.TGrabFileEntity;
+import com.linyun.airline.admin.drawback.grabfile.entity.TPnrSystemMapEntity;
 import com.linyun.airline.admin.drawback.grabfile.enums.FileTypeEnum;
+import com.linyun.airline.admin.drawback.grabfile.enums.PNRRelationStatusEnum;
+import com.linyun.airline.admin.drawback.grabreport.entity.PNRINFOList;
 import com.linyun.airline.admin.drawback.grabreport.entity.TGrabReportEntity;
 import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportAddForm;
+import com.linyun.airline.common.enums.OrderTypeEnum;
+import com.linyun.airline.common.result.Select2Option;
 import com.uxuexi.core.common.util.Util;
+import com.uxuexi.core.db.util.DbSqlUtil;
 import com.uxuexi.core.web.base.service.BaseService;
 
 @IocBean
 public class GrabreportViewService extends BaseService<TGrabReportEntity> {
+
+	TGrabFileEntity grabFileEntity = null;
 
 	/**
 	 * 编辑时回显数据
@@ -33,10 +48,12 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 	 * 打开附件预览时查询url
 	 * @param pid
 	 */
-	public Object addFilePreview(long pid) {
+	public Object addFilePreview(long pid, long flagType) {
 		Map<String, Object> obj = Maps.newHashMap();
 		TGrabFileEntity fetch = dbDao.fetch(TGrabFileEntity.class, pid);
 		obj.put("fileurl", fetch);
+		obj.put("pid", pid);
+		obj.put("flagType", flagType);
 		return obj;
 	}
 
@@ -154,4 +171,131 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		TGrabReportEntity insertData = dbDao.insert(report);
 		return insertData;
 	}
+
+	/***
+	 * PNR select2查询
+	 * TODO(这里用一句话描述这个方法的作用)
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 * @param flagType 
+	 *
+	 * @param findCompany
+	 * @param companyName
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	 */
+	public Object selectPNRNames(String findPNR, String PNRName, int flagType) {
+		List<Record> PNRNameList = getPNRNameList(findPNR, PNRName, flagType);
+		List<Select2Option> result = transform2SelectOptions(PNRNameList);
+		return result;
+	}
+
+	private List<Select2Option> transform2SelectOptions(List<Record> PNRNameList) {
+		return Lists.transform(PNRNameList, new Function<Record, Select2Option>() {
+			@Override
+			public Select2Option apply(Record record) {
+				Select2Option op = new Select2Option();
+				op.setId(record.getInt("pnrId"));
+				op.setText(record.getString("PNR"));
+				return op;
+			}
+		});
+	}
+
+	/**
+	 * 获取PNR下拉框
+	 * @param flagType 
+	 * @param dictName
+	 */
+	public List<Record> getPNRNameList(String findPNR, final String PNRName, int flagType) {
+		String sqlString = "";
+		Cnd cnd = Cnd.NEW();
+		if (0 == flagType) {//散客
+			sqlString = sqlManager.get("grab_report_addPnrSystemMap");
+			cnd.and("uo.orderstype", "=", OrderTypeEnum.FIT.intKey());
+		}
+		if (1 == flagType) {//团队
+			sqlString = sqlManager.get("grab_report_addPnrSystemMap_Inter");
+			cnd.and("uo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
+		}
+		Sql sql = Sqls.create(sqlString);
+		if (!Util.isEmpty(findPNR)) {
+			cnd.and("PNR", "like", "%" + Strings.trim(findPNR) + "%");
+		}
+		//cnd.and("status", "=", DataStatusEnum.ENABLE.intKey());
+		if (!Util.isEmpty(PNRName)) {
+			cnd.and("pnrId", "NOT IN", PNRName);
+		}
+		sql.setCondition(cnd);
+		sql.setCallback(Sqls.callback.records());
+		nutDao.execute(sql);
+		@SuppressWarnings("unchecked")
+		List<Record> list = (List<Record>) sql.getResult();
+		return list;
+	}
+
+	public void findAndShowPNR(long id, String pnr, int flagType) {
+		String sqlString = sqlManager.get("grab_report_addPnrSystemMap");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("PNR", "=", pnr);
+		sql.setCondition(cnd);
+		List<PNRINFOList> pnrList = DbSqlUtil.query(dbDao, PNRINFOList.class, sql);
+		for (PNRINFOList pnrinfoList : pnrList) {
+			TPnrSystemMapEntity pnrTemp = dbDao.fetch(TPnrSystemMapEntity.class,
+					Cnd.where("pnrId", "=", pnrinfoList.getPnrId()));
+
+			TPnrSystemMapEntity pnrSystemMapEntity = new TPnrSystemMapEntity();
+			pnrSystemMapEntity.setFinanceId(pnrinfoList.getFinanceId());
+			pnrSystemMapEntity.setGrabFileId(id);
+			//通过传回来的id写递归获取顶级父id
+			getTopParent(id);
+
+			if (!Util.isEmpty(grabFileEntity)) {
+				pnrSystemMapEntity.setFileName(this.grabFileEntity.getFileName());
+			}
+			if (flagType == 0) {
+				pnrSystemMapEntity.setType(OrderTypeEnum.FIT.intKey());
+
+			} else if (flagType == 1) {
+				pnrSystemMapEntity.setType(OrderTypeEnum.TEAM.intKey());
+
+			}
+			pnrSystemMapEntity.setOrderId(pnrinfoList.getOrderId());
+			pnrSystemMapEntity.setPnrId(pnrinfoList.getPnrId());
+			pnrSystemMapEntity.setPayReceiveRecordId(pnrinfoList.getPayReceiveRecordId());
+			pnrSystemMapEntity.setUpdateTime(new Date());
+			if (!Util.isEmpty(pnrTemp)) {
+				Chain chain = Chain.make("financeId", pnrSystemMapEntity.getFinanceId());
+				chain.add("grabFileId", pnrSystemMapEntity.getFinanceId());
+				chain.add("orderId", pnrSystemMapEntity.getOrderId());
+				chain.add("pnrId", pnrSystemMapEntity.getPnrId());
+				chain.add("updateTime", new Date());
+				chain.add("payReceiveRecordId", pnrSystemMapEntity.getPayReceiveRecordId());
+				chain.add("relationStatus", pnrTemp.getRelationStatus());
+				chain.add("type", pnrSystemMapEntity.getType());
+
+				if (!Util.isEmpty(grabFileEntity)) {
+					chain.add("fileName", grabFileEntity.getFileName());
+				}
+				dbDao.update(TPnrSystemMapEntity.class, chain, Cnd.where("pnrId", "=", pnrinfoList.getPnrId()));
+			} else {
+				pnrSystemMapEntity.setCreateTime(new Date());
+				pnrSystemMapEntity.setRelationStatus(PNRRelationStatusEnum.NORELATION.intKey());
+				dbDao.insert(pnrSystemMapEntity);
+
+			}
+		}
+
+	}
+
+	private void getTopParent(long id) {
+		this.grabFileEntity = dbDao.fetch(TGrabFileEntity.class, id);
+		long parentId = grabFileEntity.getParentId();
+		if (parentId == 0 && !Util.isEmpty(grabFileEntity)) {
+
+			return;
+		}
+		getTopParent(grabFileEntity.getParentId());
+	}
+
 }

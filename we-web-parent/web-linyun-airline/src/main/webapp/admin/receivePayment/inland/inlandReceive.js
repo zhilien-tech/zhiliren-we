@@ -100,13 +100,26 @@ function initRecDataTable() {
 		            	}
 		            },
 		            {"data": "shortname", "bSortable": false,
-		            	render: function(data, type, row, meta) {
+		            	/*render: function(data, type, row, meta) {
 		            		var result = '';
 		            		$.each(row.orders, function(name, value) {
 		            			if(value && value.shortname!=undefined){
 		            				result = value.shortname;
 		            			}
 		            		});
+		            		return result;
+		            	}*/
+		            	render:function(data, type, row, meta) {
+		            		var result = '<ul> ';
+		            		var shortnames = "";
+		            		$.each(row.orders, function(name, value) {
+		            			var num = value.shortname;
+		            			if(value && (num!=shortnames)){
+		            				result += '<li style="list-style:none;">'+value.shortname+'</li>';
+		            				shortnames = num;
+		            			}
+		            		});
+		            		result += '</ul>';
 		            		return result;
 		            	}
 		            },
