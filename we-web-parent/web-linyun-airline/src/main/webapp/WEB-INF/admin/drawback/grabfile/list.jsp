@@ -271,6 +271,108 @@ $(document).on('click', '.checkchild', function(e) {
 		$(".checkThFit").prop("checked", false);
 	}
 });
+
+/* ==============================团队复选框操作============================================= */ 
+    
+    $(".checkThTeam").click(function () {
+    var check = $(this).prop("checked");
+    $(".checkchildTeam").prop("checked", check);
+    //隐藏域的值
+    var hiddenval = $('#checkedboxval').val();
+	if(check){
+		var splits = hiddenval.split(',');
+		$(".checkchildTeam:checked").each(function(){
+			var thisvals = $(this).val();
+			var flag = false;
+			for(var i=0;i<splits.length;i++){
+				if(splits[i] == thisvals){
+					flag = true;
+				}
+			}
+			//如果隐藏域值为空
+			if(hiddenval){
+				if(!flag){
+					hiddenval += ',' + thisvals;
+				}
+			}else{
+				hiddenval = thisvals;
+			}
+		});
+	}else{
+		$(".checkchildTeam").each(function(){
+			var thisval = $(this).val();
+			var flag = false;
+			var splits = hiddenval.split(',');
+			for(var i=0;i<splits.length;i++){
+				if(splits[i] == thisval){
+					flag = true;
+				}
+			}
+			//如果隐藏域值为空
+			if(flag){
+				var ids = [];
+				for(var i=0;i<splits.length;i++){
+					if(splits[i] != thisval){
+						ids.push(splits[i]);
+					}
+				}
+				ids = ids.join(',');
+				hiddenval = ids;
+			}
+		});
+	}
+	$('#checkedboxval').val(hiddenval);
+});
+//点击之后给隐藏域赋值
+$(document).on('click', '.checkchildTeam', function(e) {
+	var hiddenval = $('#checkedboxval').val();
+	var thisval = $(this).val();
+	var check = $(this).prop("checked");
+	if(check){
+		if(!hiddenval){
+			$('#checkedboxval').val(thisval);
+		}else{
+			$('#checkedboxval').val(hiddenval+','+thisval);
+		}
+	}else{
+		var splits = hiddenval.split(',');
+		var flag = false;
+		for(var i=0;i<splits.length;i++){
+			if(splits[i] == thisval){
+				flag = true;
+			}
+		}
+		//如果存在则删掉当前值
+		if(flag){
+			var ids = [];
+			for(var i=0;i<splits.length;i++){
+				if(splits[i] != thisval){
+					ids.push(splits[i]);
+				}
+			}
+			ids = ids.join(',');
+			$('#checkedboxval').val(ids);
+		}else{
+			$('#checkedboxval').val(hiddenval);
+		}
+	}
+	var length = $(".checkchildTeam:checked").length;
+	if(rebatesEamilTable.page.len() == length){
+		$(".checkThTeam").prop("checked", true);
+	}else{
+		$(".checkThTeam").prop("checked", false);
+	}
+});
+    
+    
+    
+    
+/* =========================================================================== */
+
+
+
+
+
     //文件上传
     $(uploadFile());
     function uploadFile(){
@@ -499,7 +601,7 @@ function batchDeleteFit(){
 //团队批量删除
 function batchDeleteTeam(){
 	var ids = $('#checkedboxval').val();
-	var length = $(".checkchild:checked").length;
+	var length = $(".checkchildTeam:checked").length;
 	if(!ids){
 		layer.msg("请至少选中一条记录","", 1000);
 	}else{
@@ -515,7 +617,7 @@ function batchDeleteTeam(){
 					window.parent.successCallback('10');
 					$('#checkedboxval').val('');
 					rebatesEamilTable.ajax.reload(null,false);
-					$('.checkThFit').attr('checked',false);
+					$('.checkThTeam').attr('checked',false);
 				},
 				error: function (xhr) {
 					layer.msg("批量删除失败!", "", 1000);
@@ -736,9 +838,9 @@ function successCallback(id){
 			                    			}
 			                    		}	
 			                    		if(flag){
-			                    			result = '<input type="checkbox"  class="checkchild" checked="true" value="' + row.id + '" />';
+			                    			result = '<input type="checkbox"  class="checkchildTeam" checked="true" value="' + row.id + '" />';
 			                    		}else{
-			                    			result = '<input type="checkbox"  class="checkchild" value="' + row.id + '" />';
+			                    			result = '<input type="checkbox"  class="checkchildTeam" value="' + row.id + '" />';
 			                    		}
 			                            return result;
 			                    	}
@@ -1409,7 +1511,7 @@ function createFodler1(pid,filename,filetype,clickFlag){//团队
 	
 	
 	function turnToAll(flag){
-		
+		$("input#currentDirId").val(0);
 
 		if(flag==0){
 			options0.ajax.data.parentId=0;
