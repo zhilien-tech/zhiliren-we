@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="${base }/public/dist/css/inlandCross.css"><!--本页style-->
     <style type="text/css">
     	.form-group {margin-bottom: 8px;}
+    	.labelWid {width: 95px !important;}
     </style>
 </head>
 <body>
