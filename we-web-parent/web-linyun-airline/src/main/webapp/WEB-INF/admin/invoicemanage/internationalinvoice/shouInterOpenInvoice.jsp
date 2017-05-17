@@ -7,10 +7,15 @@
     <meta charset="UTF-8">
     <title>收发票</title>
 	<link rel="stylesheet" href="${base }/public/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="${base }/public/font-awesome/css/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="${base }/public/ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="${base }/public/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="${base }/public/ionicons/css/ionicons.min.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/AdminLTE.css">
-  <link rel="stylesheet" href="${base }/public/dist/css/inlandCross.css"><!--本页style-->
+    <link rel="stylesheet" href="${base }/public/dist/css/inlandCross.css"><!--本页style-->
+    <style type="text/css">
+    	.payTable2 tbody tr td:nth-child(5){width: 58%;text-align: left;}
+    	#borrowInvoiceId{margin-left: 15px;}
+    	.addIcon {top: 5px;}
+    </style>
 </head>
 <body>
 	<div class="modal-top">
@@ -108,8 +113,7 @@
                   </td>
                   <td>发票日期：</td>
                   <td><input id="invoicedate" name="invoicedate" type="text" onFocus="WdatePicker()" class="form-control input-sm" value="<fmt:formatDate value="${obj.invoiceinfo.invoicedate }" pattern="yyyy-MM-dd" />"></td>
-                  <td><input id="borrowInvoiceId" name="borrowInvoice" type="checkbox" value="${obj.invoiceinfo.borrowInvoice }" /></td>
-                  <td>借发票</td>
+                  <td><input id="borrowInvoiceId" name="borrowInvoice" type="checkbox" value="${obj.invoiceinfo.borrowInvoice }" />借发票&nbsp;&nbsp;</td>
                   <%-- <td>开票人：</td>
                   <td>
                      <select id="billuserid" name="billuserid" value="${obj.invoiceinfo.billuserid }" class="form-control input-sm">

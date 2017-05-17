@@ -8,8 +8,9 @@
 .modal-body{position: relative;height:478px;overflow-y: auto;width: 100%;}
 /*update*/
 .form-control-feedback{position: absolute;top: -2px;right: -15px;}
-#paywayId {width: 546px;}
-.paytext {width: 546px;}
+#paywayId {width: 553px;}
+.paytext {width: 553px;}
+#invioceType div .select2{width:553px !important;}
 .select2-container{width: 79.5% !important;}
 .row {margin-right: 0px;margin-left: 0px;}
 .address {margin-top: -15px;}

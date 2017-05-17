@@ -252,7 +252,7 @@
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-2 text-right padding">付款方式：</label>
-							<div class="col-sm-8 padding">
+							<div class="col-sm-10 padding">
 								<!-- <select id="payWayID" name="payWay"
 									class="form-control input-sm paySele"
 									onchange="paywaySelect_change(this)">
