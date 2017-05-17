@@ -76,10 +76,8 @@ public class GrabfileViewService extends BaseService<TGrabFileEntity> {
 		grabfile.setType(FileTypeEnum.FILE.intKey());//文件类型
 		if (flagType == 0) {
 			grabfile.setGroupType(OrderTypeEnum.FIT.intKey());
-
 		} else if (flagType == 1) {
 			grabfile.setGroupType(OrderTypeEnum.TEAM.intKey());
-
 		}
 		TGrabFileEntity reportDate = dbDao.insert(grabfile);
 		return reportDate;
@@ -209,5 +207,20 @@ public class GrabfileViewService extends BaseService<TGrabFileEntity> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	//校验部门名称唯一性
+	public Object checkFileNameExist(final String fileName, final Long id) {
+		Map<String, Object> map = Maps.newHashMap();
+		int count = 0;
+		if (Util.isEmpty(id)) {
+			//add
+			count = nutDao.count(TGrabFileEntity.class, Cnd.where("fileName", "=", fileName));
+		} else {
+			//update
+			count = nutDao.count(TGrabFileEntity.class, Cnd.where("fileName", "=", fileName).and("id", "!=", id));
+		}
+		map.put("valid", count <= 0);
+		return map;
 	}
 }

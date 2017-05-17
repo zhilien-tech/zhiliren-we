@@ -298,4 +298,17 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		getTopParent(grabFileEntity.getParentId());
 	}
 
+	public void changeRelationStatus(long id, boolean flag) {
+
+		if (flag) {
+			dbDao.update(TPnrSystemMapEntity.class,
+					Chain.make("relationStatus", PNRRelationStatusEnum.RELATION.intKey()), Cnd.where("id", "=", id));
+		} else {
+			dbDao.update(TPnrSystemMapEntity.class,
+					Chain.make("relationStatus", PNRRelationStatusEnum.NORELATION.intKey()), Cnd.where("id", "=", id));
+
+		}
+
+	}
+
 }

@@ -13,8 +13,11 @@
     <link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
     <style type="text/css">
     	.form-control-feedback {position: absolute;top: 1px;right: -10px;}
-    	/* .bankSlipImg{background-color: #525659;} */
+    	.selelct2Backgrou .select2{width: 183px;}
     	[cellpadding="0"]{background-color: #fff;padding: 25px;}
+    	.select2-container--default .select2-selection--multiple .select2-selection__choice{color: #5f5f5f;background-color: rgba(228, 228, 228, 0);border: 0;}
+   		.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {display: none;}
+   		table.dataTable thead > tr > th {padding-right: 10px;}
     </style>
 </head>
 <body>
@@ -37,7 +40,7 @@
                 </div>  
               	<div class="form-group inline">
                    <label class="col-sm-1 text-right padding">PNR：</label>
-                  <div class="col-sm-2 padding">
+                  <div class="col-sm-2 padding selelct2Backgrou">
                     <%-- <select id="findBank" class="form-control input-sm" onchange="selectBankName();" name="bankName">
                			<option value="">请选择</option>
 
@@ -167,19 +170,6 @@
                   </tr>
                 </thead>
                 <tbody>
-                <!-- 	<tr>
-                		<td>2017032600001</td>
-                		<td>DGD938</td>
-                		<td>QYGY2G</td>
-                		<td>CA</td>
-                		<td>6</td>
-                		<td>1690.00</td>
-                		<td>3U601 CTUMEL 1DEC   0155 1520</td>
-                		<td>3U602 MELCTU  10DEC  2210 0550+1</td>
-                		<td>一订</td>
-                		<td>已关联</td>
-                		<td><a href="javscript:;">取消</a></td>
-                	</tr> -->
                 </tbody>
               </table>
               <div class="bankSlipImg" style="min-height:445px; width:100%;">
@@ -441,28 +431,31 @@ var empTable;
 	                    },
 	                    {"data": "type", "bSortable": false}
 	                    ],
-	        "columnDefs": [{ "sWidth": "34.66%",  "targets": [0] },
+	        "columnDefs": [
+	                 /* { "sWidth": "34.66%",  "targets": [0] },
 	     				{ "sWidth": "8.66%",  "targets": [1] },
 	    				{ "sWidth": "16.66%",  "targets": [2] },
 	    				{ "sWidth": "11.66%",  "targets": [3] },
 	    				{ "sWidth": "7.66%",  "targets": [4] },
-	    				{ "sWidth": "26.66%",  "targets": [5] },
+	    				{ "sWidth": "26.66%",  "targets": [5] }, */
 	                    {
 	            //   指定第一列，从0开始，0表示第一列，1表示第二列……
 	            targets: 10,
 	            render: function(data, type, row, meta) {
+	            	var a=row.pnr;
+	            	/* if(row.relationstatus ===0){
+	            		var modify3 = '<a style="cursor:pointer;" href="javascript:void(0);" onclick="doRelation('+row.id+','+true+','+a+');">关联</a>';
+	            	}else if(row.relationstatus ===1){
+	            		var modify3 = '<a style="cursor:pointer;" href="javascript:void(0);" onclick="doRelation('+row.id+','+false+','+a+');"> </a>';
+	            		
+	            	} */
 	            	
-	            	var modify1 = '<a style="cursor:pointer;" href="'+row.pdfurl+'" target="_blank">预览</a>';
-	            	var modify2 = '<a style="cursor:pointer;" onclick="update('+row.id+');">编辑</a>';
-	            	if(row.filename ==null || row.filename == ""){
-	            		
-	            		var modify3 = '<a style="cursor:pointer;" href="#">下载</a>';
-	            	}else{
-	            		var modify3 = '<a style="cursor:pointer;" href="${base}/admin/airlinepolicy/download.html?id='+row.id+'">下载</a>';
-	            		
-	            	}
-	            	var modify4 = '<a style="cursor:pointer;" onclick="deleteFile('+row.id+');">删除</a>';
-	                return modify1+"&nbsp; &nbsp; &nbsp;"+modify2+"&nbsp; &nbsp; &nbsp;"+modify3+"&nbsp; &nbsp; &nbsp;"+modify4;
+	            	if(row.relationstatus ===0){
+              			var judge = '<a href="javascript:doRelation('+row.id+','+true+',\''+a+'\')" class="btn_mini btn_modify"><font color="#CCCCCC"></font>关联</a>';
+              		}else if(row.relationstatus ===1){
+              			var judge = '<a href="javascript:doRelation('+row.id+','+false+',\''+a+'\')" class="btn_mini btn_modify">取消</a>';
+              		}
+	                return judge;
 	            }
 	        }]
 		});
@@ -506,7 +499,7 @@ $("#pnrInfoSelect").select2({
 	}, // let our custom formatter work
 	templateSelection:function  formatRepoSelection(repo){
 		var pid=$("#pid").val();
-		var flagType=("#flagType").val();
+		var flagType=$("#flagType").val();
 		var text=repo.text;
 		$.ajax({
 			type : "POST",
@@ -533,6 +526,40 @@ $("#pnrInfoSelect").select2({
 	maximumSelectionLength : 1, //设置最多可以选择多少项
 	tags : true, //设置必须存在的选项 才能选中
 });
+
+
+//关联操作
+ function doRelation(id,flag,b){
+	var a="取消";
+	if(flag){
+		a="关联";
+	}
+		$.ajax({
+			type : "POST",
+			url : '${base}/admin/drawback/grabreport/changeRelationStatus.html?id='+id+'&flag='+flag,
+			data : $('#addForm').serialize(),
+			error : function(request) {
+			
+				layer.msg(a+'失败');
+			},
+			success : function(data) {
+
+				if ("200" == data.status) {
+					
+					layer.msg(a+"成功","", 3000);
+					 
+				} else {
+					layer.msg(a+"失败","",3000);
+				}
+				var param = {PNR:b};
+				empTable.settings()[0].ajax.data = param;
+				empTable.ajax.reload();
+			}
+		});
+		
+}
+
+
 </script>
 </body>
 </html>

@@ -132,4 +132,12 @@ public class GrabreportModule {
 		return grabreportViewService.listPage4Datatables(sqlForm);
 	}
 
+	/**
+	 * 关联与取消
+	 */
+	@At
+	public Object changeRelationStatus(@Param("id") final long id, @Param("flag") final boolean flag) {
+		grabreportViewService.changeRelationStatus(id, flag);
+		return JsonResult.success("成功");
+	}
 }

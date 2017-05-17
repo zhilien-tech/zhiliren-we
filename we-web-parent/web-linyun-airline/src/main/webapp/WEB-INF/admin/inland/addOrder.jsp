@@ -37,7 +37,7 @@
                  <table>
                    <tr>
                      <td><label><font id="custInfoName">客户姓名：</font></label></td> 
-                     <td><select id="linkName" name="linkName" class="form-control input-sm" multiple="multiple" placeholder="请输入客户姓名">
+                     <td style="width:100px;"><select id="linkName" name="linkName" class="form-control input-sm" multiple="multiple" placeholder="请输入客户姓名">
                      	</select>
                      	<input id="customerId" name="customerId" type="hidden">
                      	<input id="discountFare" name="discountFare" type="hidden">
