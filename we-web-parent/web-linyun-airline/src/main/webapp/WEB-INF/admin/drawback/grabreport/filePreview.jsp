@@ -452,17 +452,15 @@ var empTable;
 	            targets: 10,
 	            render: function(data, type, row, meta) {
 	            	
-	            	var modify1 = '<a style="cursor:pointer;" href="'+row.pdfurl+'" target="_blank">预览</a>';
-	            	var modify2 = '<a style="cursor:pointer;" onclick="update('+row.id+');">编辑</a>';
-	            	if(row.filename ==null || row.filename == ""){
+	            	
+	            	if(row.relationstatus ===0){
 	            		
-	            		var modify3 = '<a style="cursor:pointer;" href="#">下载</a>';
-	            	}else{
-	            		var modify3 = '<a style="cursor:pointer;" href="${base}/admin/airlinepolicy/download.html?id='+row.id+'">下载</a>';
+	            		var modify3 = '<a style="cursor:pointer;" href="#">关联</a>';
+	            	}else if(row.relationstatus ===1){
+	            		var modify3 = '<a style="cursor:pointer;" href="#">取消 </a>';
 	            		
 	            	}
-	            	var modify4 = '<a style="cursor:pointer;" onclick="deleteFile('+row.id+');">删除</a>';
-	                return modify1+"&nbsp; &nbsp; &nbsp;"+modify2+"&nbsp; &nbsp; &nbsp;"+modify3+"&nbsp; &nbsp; &nbsp;"+modify4;
+	                return modify3+"&nbsp; &nbsp; &nbsp;"
 	            }
 	        }]
 		});
@@ -506,7 +504,7 @@ $("#pnrInfoSelect").select2({
 	}, // let our custom formatter work
 	templateSelection:function  formatRepoSelection(repo){
 		var pid=$("#pid").val();
-		var flagType=("#flagType").val();
+		var flagType=$("#flagType").val();
 		var text=repo.text;
 		$.ajax({
 			type : "POST",

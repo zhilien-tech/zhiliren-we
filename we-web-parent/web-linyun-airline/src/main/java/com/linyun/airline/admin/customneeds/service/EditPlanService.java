@@ -34,6 +34,7 @@ import com.linyun.airline.admin.customneeds.form.EditPlanSqlForm;
 import com.linyun.airline.admin.dictionary.departurecity.entity.TDepartureCityEntity;
 import com.linyun.airline.admin.dictionary.external.externalInfoService;
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.admin.order.inland.util.FormatDateUtil;
 import com.linyun.airline.admin.order.international.enums.InternationalStatusEnum;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.ExportExcel;
@@ -442,6 +443,9 @@ public class EditPlanService extends BaseService<TPlanInfoEntity> {
 		for (Record record : list) {
 			List<TAirlineInfoEntity> query = dbDao.query(TAirlineInfoEntity.class,
 					Cnd.where("planid", "=", record.get("id")).orderBy("leavedate", "asc"), null);
+			for (TAirlineInfoEntity tAirlineInfoEntity : query) {
+				tAirlineInfoEntity.setCurrencyCode(FormatDateUtil.dateToOrderDate(tAirlineInfoEntity.getLeavedate()));
+			}
 			record.put("airinfo", query);
 		}
 		listPageData.remove("data");
