@@ -275,7 +275,7 @@
 													</div>
 													<div class="col-md-3 textPadding">
 														<!-- 客户名称/订单号/联系人/PNR 搜索框 -->
-														<input id="interPayInput" type="text" onkeypress="payOnkeyEnter();" class="form-control" placeholder="客户名称/订单号/联系人/PNR">
+														<input id="interPayInput" type="text" onkeypress="payOnkeyEnter();" class="form-control" placeholder="客户名称/订单号/联系人">
 													</div>
 													<div class="col-md-4">
 														<!-- 搜索 按钮 -->
