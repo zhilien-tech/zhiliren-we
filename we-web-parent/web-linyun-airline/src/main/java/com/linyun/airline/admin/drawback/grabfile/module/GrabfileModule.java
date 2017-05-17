@@ -241,14 +241,15 @@ public class GrabfileModule {
 		grabMailService.loginMailAccount();
 	}
 
-	//文件预览
-	//@At
-	//@POST
-	/*public Object filePreview(@Param("id") final long pid) {
-		Map<String, Object> obj = Maps.newHashMap();
-		TGrabFileEntity fileSingle = dbDao.fetch(TGrabFileEntity.class,
-				Cnd.where("id", "=", pid).and("type", "=", FileTypeEnum.FILE.intKey()));
-		obj.put("filepre", fileSingle);
-		return obj;
-	}*/
+	/**
+	 * 文件夹名称唯一性
+	 * @param deptName
+	 * @param id
+	 * @param session
+	 */
+	@At
+	@POST
+	public Object checkFileNameExist(@Param("fileName") final String fileName, @Param("id") final Long id) {
+		return grabfileViewService.checkFileNameExist(fileName, id);
+	}
 }
