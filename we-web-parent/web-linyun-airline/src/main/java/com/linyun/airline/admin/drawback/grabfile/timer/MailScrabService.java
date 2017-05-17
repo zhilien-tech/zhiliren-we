@@ -54,11 +54,11 @@ import com.linyun.airline.admin.drawback.grabfile.entity.TGrabFileEntity;
 import com.linyun.airline.admin.drawback.grabfile.enums.FileNavalEnum;
 import com.linyun.airline.admin.drawback.grabfile.enums.FileTypeEnum;
 import com.linyun.airline.admin.drawback.grabfile.enums.GrabTypeEnum;
-import com.linyun.airline.admin.drawback.grabfile.enums.GroupTypeEnum;
 import com.linyun.airline.admin.drawback.grabmail.entity.TGrabMailEntity;
 import com.linyun.airline.common.base.UploadService;
 import com.linyun.airline.common.constants.CommonConstants;
 import com.linyun.airline.common.enums.DataStatusEnum;
+import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.grabmail.ContentImage;
 import com.linyun.airline.common.util.grabmail.ContentUrl;
 import com.linyun.airline.common.util.grabmail.EmlConvertToHtml;
@@ -160,9 +160,9 @@ public class MailScrabService extends BaseService {
 		String pop3Port = "110";
 		Integer userTeam = null;
 		if ("in2020072@sina.com".equals(user)) {
-			userTeam = GroupTypeEnum.GRABMAIL_TEAM.intKey();//团队
+			userTeam = OrderTypeEnum.TEAM.intKey();//团队
 		} else if ("lftravel@sina.com".equals(user)) {
-			userTeam = GroupTypeEnum.GRABMAIL_FIT.intKey();//散客
+			userTeam = OrderTypeEnum.FIT.intKey();//散客
 		}
 
 		// 准备连接服务器的会话信息  
@@ -211,8 +211,8 @@ public class MailScrabService extends BaseService {
 		String userTeam = "in2020072@sina.com";
 		String passwdTeam = "tlywy2017jan";
 		try {
-			receivePop3(userFit, passwdFit);
 			receivePop3(userTeam, passwdTeam);
+			receivePop3(userFit, passwdFit);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

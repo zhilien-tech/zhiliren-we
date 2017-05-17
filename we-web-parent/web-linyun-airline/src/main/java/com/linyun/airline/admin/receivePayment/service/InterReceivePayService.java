@@ -834,6 +834,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		String operatorList = "";
 		String oids = "";
 		String oStr = "";
+		String openBank = "";
+		String openName = "";
+		String openNumber = "";
 		for (Record record : orders) {
 			if (!Util.isEmpty(record.get("currentpay"))) {
 				String ordernumStr = record.getString("ordersnum");
@@ -854,6 +857,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			approveresult = record.getString("approveresult");
 			purpose = record.getString("purpose");
 			payCurrency = record.getString("paycurrency");
+			openBank = record.getString("openbank");
+			openName = record.getString("openname");
+			openNumber = record.getString("opennumber");
 		}
 		map.put("totalMoney", totalMoney);
 		map.put("proposer", proposer);
@@ -861,6 +867,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		map.put("purpose", purpose);
 		map.put("payCurreny", payCurrency);
 		map.put("operators", operatorList);
+		map.put("openBank", openBank);
+		map.put("openName", openName);
+		map.put("openNumber", openNumber);
 		if (Util.eq(APPROVALENABLE, approveresult)) {
 			map.put("approveresult", "同意");
 		} else {
@@ -952,6 +961,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		//操作人
 		String operator = "";
 		String oStr = "";
+		String openBank = "";
+		String openName = "";
+		String openNumber = "";
 		for (Record record : payList) {
 			//计算订单总金额
 			if (!Util.isEmpty(record.get("currentpay"))) {
@@ -966,6 +978,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			proposer = record.getString("proposerMan");
 			approver = record.getString("approver"); //审批人
 			String opr = record.getString("operator"); //操作人
+			openBank = record.getString("openbank");
+			openName = record.getString("openname");
+			openNumber = record.getString("opennumber");
 			if (!Util.eq(operator, opr)) {
 				operator = opr;
 			}
@@ -984,6 +999,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		}
 		result.put("proposer", proposer);
 		result.put("approver", approver);
+		result.put("openBank", openBank);
+		result.put("openName", openName);
+		result.put("openNumber", openNumber);
 		if (Util.eq(APPROVALENABLE, approveresult)) {
 			result.put("approveresult", "同意");
 		} else {
@@ -1112,6 +1130,10 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		String bankComp = form.getBankComp();
 		String cardName = form.getCardName();
 		String cardNum = form.getCardNum();
+		//开发银行
+		String openBank = form.getOpenBank();
+		String openName = form.getOpenName();
+		String openNumber = form.getOpenNumber();
 		//水单地址
 		String receiptUrl = form.getReceiptUrl();
 
@@ -1136,6 +1158,15 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		}
 		if (!Util.isEmpty(currency)) {
 			payEntity.setPayCurrency(currency);
+		}
+		if (!Util.eq(null, openBank)) {
+			payEntity.setOpenbank(openBank);
+		}
+		if (!Util.eq(null, openName)) {
+			payEntity.setOpenname(openName);
+		}
+		if (!Util.eq(null, openNumber)) {
+			payEntity.setOpennumber(openNumber);
 		}
 		if (!Util.isEmpty(isInvioce)) {
 			payEntity.setIsInvioce(isInvioce);
@@ -1211,6 +1242,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		String bankComp = bankCompStr.split(",")[1];
 		String cardName = form.getCardName();
 		String cardNum = form.getCardNum();
+		String openBank = form.getOpenBank();
+		String openName = form.getOpenName();
+		String openNumber = form.getOpenNumber();
 		Integer payAddress = form.getPayAddress();
 		Integer purpose = form.getPurpose();
 		Integer fundType = form.getFundType();
@@ -1288,6 +1322,15 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			}
 			if (!Util.eq(null, totalMoney)) {
 				payEntity.setTotalMoney(totalMoney);
+			}
+			if (!Util.eq(null, openBank)) {
+				payEntity.setOpenbank(openBank);
+			}
+			if (!Util.eq(null, openName)) {
+				payEntity.setOpenname(openName);
+			}
+			if (!Util.eq(null, openNumber)) {
+				payEntity.setOpennumber(openNumber);
 			}
 			if (!Util.eq(null, currency)) {
 				payEntity.setPayCurrency(currency);

@@ -57,6 +57,6 @@ public class TGrabFileAddForm extends AddForm {
 	private int sort;
 
 	/**散团类型*/
-	private String groupType;
+	private int groupType;
 
 }

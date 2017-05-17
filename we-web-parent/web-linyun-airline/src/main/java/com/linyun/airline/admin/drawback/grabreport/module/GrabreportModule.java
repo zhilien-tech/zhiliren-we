@@ -9,6 +9,7 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
+import com.linyun.airline.admin.drawback.grabfile.form.TPnrSystemMapSqlForm;
 import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportAddForm;
 import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportSqlForm;
 import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportUpdateForm;
@@ -48,8 +49,8 @@ public class GrabreportModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object filePreview(@Param("id") long pid) {
-		return grabreportViewService.addFilePreview(pid);
+	public Object filePreview(@Param("id") long pid, @Param("flagType") long flagType) {
+		return grabreportViewService.addFilePreview(pid, flagType);
 	}
 
 	/**
@@ -96,6 +97,39 @@ public class GrabreportModule {
 	public Object batchDelete(@Param("ids") final Long[] ids) {
 		grabreportViewService.batchDelete(ids);
 		return JsonResult.success("删除成功");
+	}
+
+	/**
+	 * 
+	 * 根据输入显示公司名称
+	 */
+	@At
+	@POST
+	public Object selectPNRNames(@Param("p") final String findPNR, @Param("PNRName") final String companyName,
+			@Param("flagType") final int flagType) {
+
+		return this.grabreportViewService.selectPNRNames(findPNR, companyName, flagType);
+	}
+
+	/**
+	 * 根据pnr向附件预览表中添加数据
+	 */
+	@At
+	public Object findAndShowPNR(@Param("id") final long id, @Param("pnr") final String pnr,
+			@Param("flagType") final int flagType) {
+		//grabreportViewService.deleteById(id);
+		System.out.println(id + pnr);
+		this.grabreportViewService.findAndShowPNR(id, pnr, flagType);
+		return JsonResult.success("");
+	}
+
+	/***
+	 * 附件预览表的展示
+	 */
+
+	@At
+	public Object listPnrSystem(@Param("..") final TPnrSystemMapSqlForm sqlForm) {
+		return grabreportViewService.listPage4Datatables(sqlForm);
 	}
 
 }

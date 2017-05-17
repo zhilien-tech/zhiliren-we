@@ -27,6 +27,15 @@ public class TSaveInterPayAddFrom implements Serializable {
 	/**银行卡卡号*/
 	private String cardNum;
 
+	/**开户银行*/
+	private String openBank;
+
+	/**开户名称*/
+	private String openName;
+
+	/**开户账号*/
+	private String openNumber;
+
 	/**支付地址*/
 	private Integer payAddress;
 

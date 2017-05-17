@@ -42,6 +42,15 @@ public class TSaveInlandPayAddFrom implements Serializable {
 	/**手续费*/
 	private Double payFees;
 
+	/**开户银行*/
+	private String openBank;
+
+	/**开户名称*/
+	private String openName;
+
+	/**开户账号*/
+	private String openNumber;
+
 	/**金额*/
 	private Double payMoney;
 

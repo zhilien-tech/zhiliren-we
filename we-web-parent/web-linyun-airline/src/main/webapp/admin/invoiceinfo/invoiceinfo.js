@@ -31,7 +31,7 @@ function initKaiInvoiceTable1() {
                 	  render:function(data, type, row, meta) {
                     		var result = '<ul> ';
                     		$.each(row.orders, function(name, value) {
-                    			if(value){
+                    			if(value.ordersnum && value.invoicenum != undefined){
                     				result += '<li style="list-style:none;"><span data-toggle="tooltip" data-placement="right" title="'+value.ordersnum+'">'+value.ordersnum+'<span></li>';
                     			}
                     		});
@@ -43,7 +43,7 @@ function initKaiInvoiceTable1() {
                   	render:function(data, type, row, meta) {
                   		var result = '<ul> ';
                 		$.each(row.invoicedetail, function(name, value) {
-                			if(value && value.invoicenum != undefined){
+                			if(value.invoicenum && value.invoicenum != undefined){
                 				if(value.invoicenum !=null && value.invoicenum != ""){
                 					result += '<li style="list-style:none;">'+value.invoicenum+'</li>';
                 				}else{
@@ -59,7 +59,7 @@ function initKaiInvoiceTable1() {
                   	render:function(data, type, row, meta) {
                   		var result = '<ul>';
                   		$.each(row.invoicedetail, function(name, value) {
-                  			if(value && value.invoicebalance != undefined){
+                  			if(value.invoicebalance && value.invoicebalance != undefined){
                   				result += '<li style="list-style:none;">'+value.invoicebalance.toFixed(2)+'</li>';
                   			}
                   		});
@@ -71,7 +71,7 @@ function initKaiInvoiceTable1() {
                   	render:function(data, type, row, meta) {
                   		var result = 0;
                   		$.each(row.invoicedetail, function(name, value) {
-                  			if(value && value.invoicebalance != undefined){
+                  			if(value.invoicebalance && value.invoicebalance != undefined){
                   				result = (parseFloat(result) + parseFloat(value.invoicebalance)).toFixed(2);
                   			}
                   		});
@@ -98,15 +98,25 @@ function initKaiInvoiceTable1() {
                   		return result;
                   	}
                   },
-                  {"data": "paymentunit", "bSortable": false,
-                	  render:function(data, type, row, meta) {
+                  {"data": "shortname", "bSortable": false,
+                	  /*render:function(data, type, row, meta) {
                     		var paymentunit = row.paymentunit;
                     		if(paymentunit == "" || paymentunit == null){
                     			return "";
                     		}
                     		var paymentunit = '<span data-toggle="tooltip" data-placement="right" title="'+paymentunit+'">'+paymentunit+'<span>';
                     		return paymentunit;
-                    	}
+                    	}*/
+                	  render:function(data, type, row, meta) {
+                  		var result = '<ul> ';
+                  		$.each(row.orders, function(name, value) {
+    	          			if(value.shortname && value.shortname != undefined){
+    	          				result += '<li style="list-style:none;">'+value.shortname+'</li>';
+    	          			}
+    	          		});
+                  		result += '</ul>';
+                  		return result;
+                  	}
                   },
                   {"data": "username", "bSortable": false,
                 	  render:function(data, type, row, meta) {

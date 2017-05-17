@@ -28,6 +28,7 @@
                 <button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
 				<h4>添加文件夹</h4>
 			</div>
+			 <input type="hidden" name="flagType" value="${obj.flagType }" id="flagType">
 			<div class="modal-body" style="height:100px;overflow-y: auto;">
 				<%-- <div class="tab-content">
 					<div class="form-group row">
@@ -84,6 +85,7 @@ $(document).ready(function(){
 });
 //添加成功提示
 $("#submit").click(function() {
+	var flagType=$("#flagType").val();
 	$('#addForm').bootstrapValidator('validate');
 	var bootstrapValidator = $("#addForm").data('bootstrapValidator');
 	if(bootstrapValidator.isValid()){
@@ -94,7 +96,8 @@ $("#submit").click(function() {
 			data : 
 			{
 				parentId:'${obj.dirfolder.id}',
-				fileName:$('input[name="fileName"]').val()
+				fileName:$('input[name="fileName"]').val(),
+				flagType:flagType
 			},
 			error : function(request) {
 				layer.msg('新建文件夹失败!',{time:2000});
