@@ -147,6 +147,7 @@
 												<tr>
 													<th>订单号</th>
 													<th>PNR</th>
+													<th>付款编号</th>
 													<th>出发日期</th>
 													<th>人数</th>
 													<th>应付金额</th>

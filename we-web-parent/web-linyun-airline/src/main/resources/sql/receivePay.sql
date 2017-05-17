@@ -70,13 +70,15 @@ SELECT
 	oc.leavetdate leaveDate,
 	pi.peoplecount peopleCount,
 	pi.costpricesum salePrice,
-	pi.currency currency
+	pi.currency currency,
+	ci.shortName
 FROM
 	t_pay p
 LEFT JOIN t_pay_pnr pp on pp.payId=p.id
 LEFT JOIN t_pnr_info pi on pi.id=pp.pnrId
 LEFT JOIN t_order_customneed oc ON oc.id=pi.needid
 LEFT JOIN t_up_order uo ON uo.id=oc.ordernum
+LEFT JOIN t_customer_info ci ON ci.id = uo.userid
 $condition
 ORDER BY
 	p.confirmDate DESC

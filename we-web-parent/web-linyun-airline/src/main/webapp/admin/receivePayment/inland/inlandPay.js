@@ -221,6 +221,23 @@ function initPayEdDataTable(){
 		            		return result;
 		            	}
 		            },
+		            {"data": "pid", "bSortable": false,
+		            	render:function(data, type, row, meta) {
+			            	var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value){
+		            				var pid = value.id;
+		            				if(pid == null || pid == undefined || pid==""){
+		            					pid = "";
+		            				}else{
+		            					result += '<li style="list-style:none;">NO.'+pid+'</li>';
+		            				}
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
+		            	}
+		            },
 		            {"data": "leavedate", "bSortable": false,"width":"7%",
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
@@ -289,12 +306,32 @@ function initPayEdDataTable(){
 		            	}
 		            },
 		            {"data": "shortname", "bSortable": false,
-		            	render: function(data, type, row, meta) {
+		            	/*render: function(data, type, row, meta) {
 		            		var shortname = row.shortname;
 		            		if(null == shortname || ""== shortname){
 		            			return "";
 		            		}
 		            		return shortname;
+		            	}*/
+		            	render:function(data, type, row, meta) {
+		            		var result = '<ul> ';
+		            		var oNum = "";
+		            		$.each(row.orders, function(name, value) {
+		            			if(value){
+		            				var ordernum = value.ordernum;
+		            				var shortname = value.shortname;
+		            				if(shortname == null || shortname == undefined || shortname==""){
+		            					shortname = "";
+		            				}else{
+		            					if(oNum!=ordernum){
+		            						result += '<li style="list-style:none;">'+shortname+'</li>';
+		            					}
+		            				}
+		            				oNum = ordernum;
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
 		            	}
 		            },
 		            {"data": "orderpnrstatus", "bSortable": false,
