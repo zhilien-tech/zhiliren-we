@@ -83,6 +83,15 @@ public class InterReceivePayModule {
 	}
 
 	/**
+	 * 根据付款编号验证付款单位
+	 */
+	@At
+	@POST
+	public Object sameShortNameByPid(@Param("inlandPayIds") String pnrIds) {
+		return interReceivePayService.sameShortNameByPid(pnrIds);
+	}
+
+	/**
 	 * 到编辑已付款
 	 */
 	@At

@@ -21,6 +21,7 @@ ORDER BY
 
 /*receivePay_pay_list*/
 SELECT
+    p.id,
 	pi.id pid,
 	uo.ordersnum orderNum,
 	pi.PNR pnrNum,

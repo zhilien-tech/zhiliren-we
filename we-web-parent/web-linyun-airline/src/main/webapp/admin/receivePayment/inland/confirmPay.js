@@ -11,7 +11,7 @@ function confirmPayClick(){
 		async: false,
 		url: BASE_PATH + '/admin/receivePay/inland/saveInlandPay.html',
 		success : function(data) {
-			if(data === false){
+			/*if(data === false){
 				parent.layer.msg("收款单位不一致，付款失败", "", 2000);
 			}else if(data === "余额不足"){
 				parent.layer.msg("该银行卡余额不足", "", 2000);
@@ -24,8 +24,15 @@ function confirmPayClick(){
 							autoHighLoad($('#inlandPayTable'));
 						}
 				);
-			}
-
+			}*/
+			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+			parent.layer.close(index);
+			parent.layer.msg("付款成功", "", 1000);
+			parent.inlandPayTable.ajax.reload(
+					function(json){
+						autoHighLoad($('#inlandPayTable'));
+					}
+			);
 
 		},
 		error: function () {

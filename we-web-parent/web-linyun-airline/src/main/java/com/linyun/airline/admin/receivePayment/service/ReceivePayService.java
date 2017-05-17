@@ -1081,4 +1081,22 @@ public class ReceivePayService extends BaseService<TPayEntity> {
 		return userIds;
 	}
 
+	/**
+	 * 根据付款编号验证是否是一条记录
+	 *
+	 * @param 付款编号
+	 * @return 
+	 */
+	public Object sameShortNameByPid(String ids) {
+		boolean result = true;
+		List<TPayPnrEntity> query = dbDao.query(TPayPnrEntity.class, Cnd.where("pnrId", "in", ids), null);
+		for (int i = 0; i < query.size(); i++) {
+			for (int j = 0; j < i; j++) {
+				if (!query.get(j).getPayId().equals(query.get(i).getPayId())) {
+					result = false;
+				}
+			}
+		}
+		return result;
+	}
 }

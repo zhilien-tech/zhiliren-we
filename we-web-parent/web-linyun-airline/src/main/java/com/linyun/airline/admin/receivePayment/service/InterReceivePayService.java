@@ -45,6 +45,7 @@ import com.linyun.airline.admin.order.international.enums.InternationalStatusEnu
 import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
+import com.linyun.airline.admin.receivePayment.entities.TPayPnrEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
 import com.linyun.airline.admin.receivePayment.form.inter.InterPayEdListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.inter.InterPayListSearchSqlForm;
@@ -1798,4 +1799,22 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		return "消息添加成功";
 	}
 
+	/**
+	 * 根据付款编号验证是否是一条记录
+	 *
+	 * @param 付款编号
+	 * @return 
+	 */
+	public Object sameShortNameByPid(String ids) {
+		boolean result = true;
+		List<TPayPnrEntity> query = dbDao.query(TPayPnrEntity.class, Cnd.where("pnrId", "in", ids), null);
+		for (int i = 0; i < query.size(); i++) {
+			for (int j = 0; j < i; j++) {
+				if (!query.get(j).getPayId().equals(query.get(i).getPayId())) {
+					result = false;
+				}
+			}
+		}
+		return result;
+	}
 }
