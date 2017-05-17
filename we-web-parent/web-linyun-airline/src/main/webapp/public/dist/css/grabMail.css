@@ -24,3 +24,5 @@ div#uploadFile-button {width: 46px !important;}
 #rebatesReportTable thead th:nth-child(1){width:50px;overflow: hidden;}
 #rebatesReportTable tbody td:nth-child(3) span{width:65px;}
 #rebatesEamilTable_wrapper {position: relative;top: 24px;}
+#rebatesEamilTable_wrapper .row:nth-child(3){position:relative;top: -15px;}
+#rebatesEamilTeamTable_wrapper .row:nth-child(3){position: relative;top: 25px;}

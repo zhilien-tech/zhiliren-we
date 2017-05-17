@@ -14,7 +14,7 @@
 	<link rel="stylesheet" href="${base }/public/dist/css/bootstrapValidator.css" />
 	<link href="${base }/public/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
 	<style type="text/css">
-		.select2-container {width: 95.5% !important;display: inline-block;}
+		.select2-container {width: 96.5% !important;display: inline-block;}
 		.seleSpanWid .select2-container {width: 98.5% !important;display: inline-block;}
 		.modal-content{box-shadow: 0 0 0 #fff;}
 	</style>
@@ -248,7 +248,7 @@
 						</div>
 						<div class="form-group row">
 							<label class="col-sm-2 text-right padding">付款方式：</label>
-							<div class="col-sm-7 padding">
+							<div class="col-sm-10 padding" style="padding-right: 12px;">
 								<select id="payWaySelect" class="form-control select2 inpImpWid" multiple="multiple" onchange="payOpt()" data-placeholder="请输入付款方式">
 									<option></option>
 									<c:forEach var="one" items="${obj.paywaylist }">
