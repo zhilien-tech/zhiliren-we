@@ -26,3 +26,4 @@ div#uploadFile-button {width: 46px !important;}
 #rebatesEamilTable_wrapper {position: relative;top: 24px;}
 #rebatesEamilTable_wrapper .row:nth-child(3){position:relative;top: -15px;}
 #rebatesEamilTeamTable_wrapper .row:nth-child(3){position: relative;top: 25px;}
+#uploadFileTeam{width:70px !important; float: right;margin-right: 10px;}
