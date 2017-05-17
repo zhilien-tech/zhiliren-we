@@ -289,11 +289,11 @@ function initshouFuKuanPayTable() {
                   },
                   {"data": "username", "bSortable": false,
                 	  render:function(data, type, row, meta) {
-                  		var result = '';
-                  		if(row.username && row.username != undefined){
-                  			result = row.username;
-                  		}
-                  		return result;
+                		  var result = '';
+	                  		if(row.issuer && row.issuer != undefined){
+	                  			result = row.issuer;
+	                  		}
+	                  		return result;
                   	}
                   },
                   {"data": "orderstatus", "bSortable": false,

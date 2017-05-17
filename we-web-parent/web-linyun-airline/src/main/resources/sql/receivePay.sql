@@ -600,8 +600,8 @@ LEFT JOIN t_pay_order po ON po.orderid = uo.id
 INNER JOIN t_pay p ON p.id = po.payid
 INNER JOIN t_plan_info pi ON pi.ordernumber = uo.id
 LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
-INNER JOIN t_customer_info ci ON ci.id = uo.userid
-INNER JOIN t_finance_info fi ON fi.orderid = uo.id
+LEFT JOIN t_customer_info ci ON ci.id = uo.userid
+LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
 LEFT JOIN t_pnr_info pii ON pii.orderid = uo.id
 $condition
 
@@ -711,4 +711,30 @@ INNER JOIN t_pay_order po ON po.orderid = uo.id
 INNER JOIN t_pay p ON p.id = po.payid
 LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
 AND prr.orderstatusid = po.orderstatus
+$condition
+
+/*receivePay_inter_pay_listdata*/
+SELECT
+	tpo.*, tuo.ordersnum,
+	tpi.peoplecount,
+	tii.remark,
+	tii.id invoiceid,
+	tfi.costtotal,
+	tfi.issuer,
+	tprr.currentpay,
+	tci.shortName customename,
+	tprr.actualnumber,
+	tp.id pid,
+	tprr.id prrid
+FROM
+	t_pay_order tpo
+INNER JOIN t_up_order tuo ON tpo.orderid = tuo.id
+INNER JOIN t_pay tp ON tpo.payid = tp.id
+LEFT JOIN t_customer_info tci ON tuo.userid = tci.id
+LEFT JOIN t_plan_info tpi ON tuo.id = tpi.ordernumber
+LEFT JOIN t_finance_info tfi ON tfi.orderid = tuo.id
+LEFT JOIN t_invoice_info tii ON tpo.id = tii.orderpayid
+LEFT JOIN t_pay_receive_record tprr ON tprr.orderid = tpo.orderid
+AND tprr.orderstatusid = tpo.orderstatus
+AND tprr.recordtype = @recordtype
 $condition

@@ -46,7 +46,7 @@ import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
-import com.linyun.airline.admin.receivePayment.form.inter.InterPayEdListSearchSqlForm;
+import com.linyun.airline.admin.receivePayment.form.inter.InterAlreadyPayListForm;
 import com.linyun.airline.admin.receivePayment.form.inter.InterPayListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.inter.InterRecListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.inter.TSaveInterPayAddFrom;
@@ -635,9 +635,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 * @param sqlParamForm
 	 * @return 
 	 */
-	public Object listPayEdData(InterPayEdListSearchSqlForm form, HttpSession session) {
+	public Object listPayEdData(InterAlreadyPayListForm sqlForm, HttpSession session) {
 		//当前公司id
-		TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		/*TCompanyEntity tCompanyEntity = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
 		long companyId = tCompanyEntity.getId();
 		form.setCompanyId(companyId);
 		String orderStatus = form.getOrderStatus();
@@ -648,13 +648,13 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		}
 		form.setOrderStatus(orderStatus);
 		form.setRecordtype(PAYTYPE);
-		Map<String, Object> listdata = this.listPage4Datatables(form);
+		Map<String, Object> listdata = listPage4Datatables(form);
 		@SuppressWarnings("unchecked")
-		List<Record> data = (List<Record>) listdata.get("data");
+		List<Record> listData = (List<Record>) listdata.get("data");
 
 		List<String> payIds = new ArrayList<String>();
 		String id = "";
-		for (Record record : data) {
+		for (Record record : listData) {
 			String pid = record.getString("pid");
 			if (!Util.eq(id, pid)) {
 				payIds.add(pid);
@@ -670,19 +670,20 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 			String issuer = "";
 			String prrIds = "";
 			List<Record> orders = new ArrayList<Record>();
-			for (Record r : data) {
-				String pidStr = r.getString("pid");
-				String prrid = r.getString("prrid");
-				shortname = r.getString("shortname");
-				issuer = r.getString("issuer");
-				String currentpayStr = r.getString("currentpay");
+			for (Record each : listData) {
+				String pidStr = each.getString("pid");
+				String prrid = each.getString("prrid");
+				shortname = each.getString("shortname");
+				issuer = each.getString("issuer");
+				String currentpayStr = each.getString("currentpay");
+				String payStatusStr = each.getString("paystauts");
 				//同一个支付订单
-				if (Util.eq(pid, pidStr)) {
+				if (Util.eq(pid, pidStr) && payStatusStr != "2") {
 					if (!Util.isEmpty(currentpayStr)) {
 						totalmoney = Double.valueOf(currentpayStr);
 					}
 					prrIds += prrid + ",";
-					orders.add(r);
+					orders.add(each);
 					record.put("shortname", shortname);
 				} else {
 					if (!Util.isEmpty(currentpayStr)) {
@@ -705,7 +706,43 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		listdata.remove("data");
 		listdata.put("data", newData);
 		listdata.put("recordsFiltered", newData.size());
-		return listdata;
+		return listdata;*/
+		//获取当前登录用户
+		TUserEntity user = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		//获取当前公司
+		TCompanyEntity company = (TCompanyEntity) session.getAttribute(LoginService.USER_COMPANY_KEY);
+		sqlForm.setCompanyid(new Long(company.getId()).intValue());
+		sqlForm.setAdminId(company.getAdminId().intValue());
+		sqlForm.setUserid(new Long(user.getId()).intValue());
+		String orderStatus = sqlForm.getOrderStatus();
+		if (Util.isEmpty(orderStatus)) {
+			orderStatus = "3";
+		} else {
+			orderStatus = getOrderStatus(orderStatus);
+		}
+		sqlForm.setOrderStatus(orderStatus);
+		Map<String, Object> listData = this.listPage4Datatables(sqlForm);
+		List<Record> data = (List<Record>) listData.get("data");
+		for (Record record : data) {
+			String sqlString = sqlManager.get("get_international_pay_list_order");
+			Sql sql = Sqls.create(sqlString);
+			Cnd cnd = Cnd.limit();
+			cnd.and("tp.id", "=", record.get("id"));
+			List<Record> orders = dbDao.query(sql, cnd, null);
+			String username = "";
+			if (orders.size() > 0) {
+				TFinanceInfoEntity financeinfo = dbDao.fetch(TFinanceInfoEntity.class,
+						Integer.valueOf(orders.get(0).getInt("orderid")).longValue());
+				if (!Util.isEmpty(financeinfo) && !Util.isEmpty(financeinfo.getIssuer())) {
+					username = financeinfo.getIssuer();
+				}
+			}
+			record.put("username", username);
+			record.put("orders", orders);
+			record.put("receiveenum", EnumUtil.enum2(AccountPayEnum.class));
+			record.put("internationalstatusenum", EnumUtil.enum2(InternationalStatusEnum.class));
+		}
+		return listData;
 	}
 
 	/**
@@ -1366,7 +1403,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		int updateNum = 0;
 		//更新付款订单表状态
 		List<TPayOrderEntity> newPayOrderList = new ArrayList<TPayOrderEntity>();
-		List<TPayOrderEntity> payOrderList = dbDao.query(TPayOrderEntity.class, Cnd.where("payid", "in", payids), null);
+		List<TPayOrderEntity> payOrderList = dbDao.query(TPayOrderEntity.class,
+				Cnd.where("payid", "in", payids).and("orderid", "in", orderIds).and("orderstatus", "=", orderStatus),
+				null);
 		if (!Util.isEmpty(payOrderList)) {
 			for (TPayOrderEntity payOrderEntity : payOrderList) {
 				payOrderEntity.setPaystauts(APPROVALPAYED);

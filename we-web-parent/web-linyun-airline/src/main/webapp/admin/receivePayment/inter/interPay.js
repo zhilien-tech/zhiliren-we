@@ -252,14 +252,137 @@ $("tbody",$('#interPayTable')).on("dblclick","tr",function(event){
 $("tbody",$('#interPayEdTable')).on("dblclick","tr",function(event){
 	//获取当前行的数据
 	var row = interPayEdTable.row($(this).closest('tr')).data();
-	var prrids = row.prrids;
+	var prrids = row.prrid;
 	var pid = row.pid;
 	editPay(pid, prrids);
 });
 
 //会计   已付款datatable
 var interPayEdTable;
-function initPayEdDataTable(){
+function initPayEdDataTable() {
+	interPayEdTable = $('#interPayEdTable').DataTable({
+		"searching":false,
+		"bLengthChange": false,
+	    "processing": true,
+	    "serverSide": true,
+	    "stripeClasses": [ 'strip1','strip2' ],
+	    "language": {
+	        "url": BASE_PATH + "/public/plugins/datatables/cn.json"
+	    },
+	    "ajax": {
+	        "url": BASE_PATH + "/admin/receivePay/inter/interPayEdList.html",
+	        "type": "post",
+	        "data": function (d) {
+	        	
+	        }
+	    },
+	    "columns": [
+	                {"data": "ordersnum", "bSortable": false,
+	                	  render:function(data, type, row, meta) {
+	                		  var result = '';
+	                  		  if(row.ordersnum && row.ordersnum != undefined){
+	                  			 result = row.ordersnum;
+	                  		  }
+	                    	  return result;
+	                	  }
+	                  },
+	                  {"data": "leavedate", "bSortable": false,
+	                  	render:function(data, type, row, meta) {
+	                  		var result = '';
+	                		if(row.paydate && row.paydate != undefined){
+	                			result = row.paydate;
+	                		}
+	                  		return result;
+	                  	}
+	                  },
+	                  {"data": "peoplecount", "bSortable": false,
+	                  	render:function(data, type, row, meta) {
+	                  		var result = '';
+	                		if(row.actualnumber && row.actualnumber != undefined){
+	                			result = row.actualnumber;
+	                		}
+	                  		return result;
+	                  	}
+	                  },
+	                  {"data": "incometotal", "bSortable": false,
+	                  	render:function(data, type, row, meta) {
+	                  		var result = '';
+	                		if(row.currentpay && row.currentpay != undefined){
+	                			result = row.currentpay;
+	                		}
+	                  		return result;
+	                  	}
+	                  },
+	                  /*{"data": "sum", "bSortable": false,
+	                	  render:function(data, type, row, meta) {
+	                    		var result = 0;
+	                    		$.each(row.orders, function(name, value) {
+	                    			if(value && value.incometotal != undefined){
+	                    				result += value.incometotal;
+	                    			}
+	                    		});
+	                    		return result;
+	                    	}
+	                  },*/
+	                  {"data": "customename", "bSortable": false,
+	                	  render:function(data, type, row, meta) {
+	                    		var result = '';
+	                    		if(row.customename && row.customename != undefined){
+	                    			result = row.customename;
+	                    		}
+	                    		return result;
+	                    	}
+	                  },
+	                  {"data": "username", "bSortable": false,
+	                	  render:function(data, type, row, meta) {
+	                  		var result = '';
+	                  		if(row.issuer && row.issuer != undefined){
+	                  			result = row.issuer;
+	                  		}
+	                  		return result;
+	                  	}
+	                  },
+	                  {"data": "orderstatus", "bSortable": false,
+	                	  render:function(data, type, row, meta) {
+	                    		var result = '';
+	                    		$.each(row.internationalstatusenum, function(name, value) {
+	                    			if(row.orderstatus == name){
+	                    				result = value;
+	                    			}
+	                    		});
+	                    		return result;
+	                	  }
+	                  },
+	                  {"data": "paystatus", "bSortable": false,
+	                	  render:function(data, type, row, meta) {
+	                  		var result = '';
+	                  		$.each(row.receiveenum, function(name, value) {
+	                  			if(row.paystauts == name){
+	                  				result = value;
+	                  			}
+	                  		});
+	                  		return result;
+	                  	  }
+	                  },{"data": "remark", "bSortable": false,
+	                	  render:function(data, type, row, meta) {
+	                		  var result = '';
+	                  		  if(row.remark && row.remark != undefined){
+	                  		  	 result = row.remark;
+	                  		  }
+	                  		  return result;
+	                	  }
+	                  }
+	        ],
+	    columnDefs: [{
+	  	//   指定第一列，从0开始，0表示第一列，1表示第二列……
+	        targets: 9,
+	        render: function(data, type, row, meta) {
+	            return '<a style="cursor:pointer;" onclick="editPay('+row.pid+','+row.prrid+');">编辑</a>'
+	        }
+	    }],
+	});
+}
+/*function initPayEdDataTable(){
 	interPayEdTable = $("#interPayEdTable").DataTable({
 		"searching":false,
 		"lengthChange": false,
@@ -478,7 +601,7 @@ function initPayEdDataTable(){
 		            }]
 
 	});
-}
+}*/
 
 
 

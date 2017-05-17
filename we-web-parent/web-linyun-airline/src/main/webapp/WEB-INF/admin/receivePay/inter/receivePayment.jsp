@@ -321,7 +321,7 @@
 											<table id="interPayEdTable" style="display: none" class="table table-bordered table-hover">
 												<thead id="interPayEdThead">
 													<tr>
-														<th>订单号</th>
+														<!-- <th>订单号</th>
 														<th>PNR</th>
 														<th>付款编号</th>
 														<th>出发日期</th>
@@ -333,7 +333,18 @@
 														<th>状态</th>
 														<th>票务</th>
 														<th>备注</th>
-														<th>操作</th>
+														<th>操作</th> -->
+														
+														<th>订单号</th>
+					                                    <th>付款日期</th>
+					                                    <th>人数</th>
+					                                    <th>金额</th>
+					                                    <th>客户名称</th>
+					                                    <th>票务</th>
+					                                    <th>订单状态</th>
+					                                    <th>状态</th>
+					                                    <th>备注</th>
+					                                    <th>操作</th>
 													</tr>
 												</thead>
 												<tbody id="interPayEdTbody">
