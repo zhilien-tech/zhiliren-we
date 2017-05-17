@@ -1532,6 +1532,13 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 		cnd.and("tpi.id", "in", ids);
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		result.put("orders", orders);
+		double sumjine = 0;
+		for (Record record : orders) {
+			if (!Util.isEmpty(record.get("costpricesum"))) {
+				sumjine += Double.valueOf(record.getString("costpricesum"));
+			}
+		}
+		result.put("sumjine", sumjine);
 		//检索条件
 		List<ComDictInfoEntity> ytselect = dbDao.query(ComDictInfoEntity.class,
 				Cnd.where("comTypeCode", "=", ComDictTypeEnum.DICTTYPE_XMYT.key()).and("comId", "=", company.getId())

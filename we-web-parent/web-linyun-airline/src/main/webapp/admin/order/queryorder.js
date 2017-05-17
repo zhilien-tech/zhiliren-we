@@ -179,6 +179,7 @@ $(function(){
         newDiv.find('[name=ailinenum]').empty();
         newDiv.find('[name=leavetime]').val('');
         newDiv.find('[name=arrivetime]').val('');
+        newDiv.find('[name=peoplescount]').val('');
         newDiv.find('[name=formprice]').val('');
         newDiv.find('[name=price]').val('');
 		initAirInfoSelect2(newDiv);
@@ -191,10 +192,35 @@ $(function(){
     //客户需求的 - 按钮
     $(document).on("click",".removIcon",function(){
     	var thisdiv = $(this);
-    	layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
+    	var parentdiv = $(this).parent().parent();
+    	var lengthAir = '';
+    	var aircom = parentdiv.find('[name=aircom]').val();
+    	if (aircom) {
+    		aircom = aircom.join(',');
+    		lengthAir += aircom;
+    	}else{
+    		lengthAir += '';
+    	}
+    	var ailinenum = parentdiv.find('[name=ailinenum]').val();
+    	if (ailinenum) {
+    		ailinenum = ailinenum.join(',');
+    		lengthAir += ailinenum;
+    	}else{
+    		lengthAir += '';
+    	}
+    	lengthAir += parentdiv.find('[name=leavetime]').val();
+    	lengthAir += parentdiv.find('[name=arrivetime]').val();
+    	lengthAir += parentdiv.find('[name=formprice]').val();
+    	lengthAir += parentdiv.find('[name=price]').val();
+    	lengthAir += parentdiv.find('[name=peoplescount]').val();
+    	if(lengthAir){
+    		layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
+    			thisdiv.parent().parent().remove();
+    			layer.close(index);
+    		});
+    	}else{
     		thisdiv.parent().parent().remove();
-    		layer.close(index);
-		});
+    	}
     });
 
     //客户需求的 +需求 按钮
@@ -247,13 +273,64 @@ $(function(){
     //客户需求的 -需求 按钮
     $(document).on("click",".removeDemand",function(){
     	var thisdiv = $(this);
-    	layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
-    		thisdiv.parent().remove();
-    		$('.DemandDiv').each(function(i){
-    			$(this).find('.titleNum').html(i+1);
+    	var parentdiv = $(this).parent();
+    	var lenthcustom = '';
+    	var leavecity = parentdiv.find('[name=leavecity]').val();
+    	//出发城市
+    	if (leavecity) {
+    		leavecity = leavecity.join(',');
+    		lenthcustom += leavecity;
+    	}else{
+    		lenthcustom += '';
+    	}
+    	//抵达城市
+    	var arrivecity = parentdiv.find('[name=arrivecity]').val();
+    	if (arrivecity) {
+    		arrivecity = arrivecity.join(',');
+    		lenthcustom += arrivecity;
+    	}else{
+    		lenthcustom += '';
+    	}
+    	lenthcustom += parentdiv.find('[name=leavedate]').val();
+    	lenthcustom += parentdiv.find('[name=peoplecount]').val();
+    	var airrows = [];
+    	parentdiv.find('[name=airlineinfo]').each(function(i){
+    		var lengthAir = '';
+    		var aircom = $(this).find('[name=aircom]').val();
+    		if (aircom) {
+    			aircom = aircom.join(',');
+    			lengthAir += aircom;
+    		}else{
+    			lengthAir += '';
+    		}
+    		var ailinenum = $(this).find('[name=ailinenum]').val();
+    		if (ailinenum) {
+    			ailinenum = ailinenum.join(',');
+    			lengthAir += ailinenum;
+    		}else{
+    			lengthAir += '';
+    		}
+    		lengthAir += $(this).find('[name=leavetime]').val();
+    		lengthAir += $(this).find('[name=arrivetime]').val();
+    		lengthAir += $(this).find('[name=formprice]').val();
+    		lengthAir += $(this).find('[name=price]').val();
+    		lengthAir += $(this).find('[name=peoplescount]').val();
+    		lenthcustom += lengthAir;
+    	});
+    	if(lenthcustom){
+    		layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
+    			thisdiv.parent().remove();
+    			$('.DemandDiv').each(function(i){
+    				$(this).find('.titleNum').html(i+1);
+    			});
+    			layer.close(index);
     		});
-    		layer.close(index);
-		});
+    	}else{
+    		thisdiv.parent().remove();
+			$('.DemandDiv').each(function(i){
+				$(this).find('.titleNum').html(i+1);
+			});
+    	}
         /*判断最后一个需求是否有 备注项 如果没有 就添加备注项*/
         //var cl=$('.DemandDiv:last-child .cloTable tbody tr').hasClass('remarkTr');
         //if(cl==false){
