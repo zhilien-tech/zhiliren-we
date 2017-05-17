@@ -87,7 +87,7 @@ public class InterReceivePayModule {
 	 */
 	@At
 	@POST
-	public Object sameShortNameByPid(@Param("inlandPayIds") String pnrIds) {
+	public Object sameShortNameByPid(@Param("interPayIds") String pnrIds) {
 		return interReceivePayService.sameShortNameByPid(pnrIds);
 	}
 

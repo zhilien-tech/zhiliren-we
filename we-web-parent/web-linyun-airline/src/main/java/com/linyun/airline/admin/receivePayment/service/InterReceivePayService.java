@@ -45,7 +45,6 @@ import com.linyun.airline.admin.order.international.enums.InternationalStatusEnu
 import com.linyun.airline.admin.receivePayment.entities.TCompanyBankCardEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayOrderEntity;
-import com.linyun.airline.admin.receivePayment.entities.TPayPnrEntity;
 import com.linyun.airline.admin.receivePayment.entities.TPayReceiptEntity;
 import com.linyun.airline.admin.receivePayment.form.inter.InterPayEdListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.inter.InterPayListSearchSqlForm;
@@ -760,7 +759,9 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 		Sql sql = Sqls.create(sqlManager.get("receivePay_inter_pay_order_ids"));
 		/*String inlandPayIdStr = inlandPayIds.substring(0, inlandPayIds.length() - 1);*/
 		Cnd cnd = Cnd.NEW();
-		cnd.and("prr.id", "in", orderIds); //TODO
+		if (!Util.isEmpty(orderIds)) {
+			cnd.and("prr.id", "in", orderIds); //TODO
+		}
 		cnd.and("p.orderstatus", "=", oStatusEnum);
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		String payIds = "";
@@ -1807,10 +1808,17 @@ public class InterReceivePayService extends BaseService<TPayEntity> {
 	 */
 	public Object sameShortNameByPid(String ids) {
 		boolean result = true;
-		List<TPayPnrEntity> query = dbDao.query(TPayPnrEntity.class, Cnd.where("pnrId", "in", ids), null);
-		for (int i = 0; i < query.size(); i++) {
+
+		String sqlStr = sqlManager.get("receivePay_paynum_by_prrid");
+		Sql sql = Sqls.create(sqlStr);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("prr.id", "in", ids);
+		List<Record> recordList = dbDao.query(sql, cnd, null);
+		for (int i = 0; i < recordList.size(); i++) {
+			String pidi = recordList.get(i).getString("payid");
 			for (int j = 0; j < i; j++) {
-				if (!query.get(j).getPayId().equals(query.get(i).getPayId())) {
+				String pidj = recordList.get(j).getString("payid");
+				if (!Util.eq(pidi, pidj)) {
 					result = false;
 				}
 			}

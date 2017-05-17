@@ -50,6 +50,23 @@ function initPayDataTable(){
 		            		return result;
 		            	}
 		            },
+		            {"data": "pid", "bSortable": false,
+		            	render:function(data, type, row, meta) {
+			            	var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value){
+		            				var pid = value.pid;
+		            				if(pid == null || pid == undefined || pid==""){
+		            					pid = "";
+		            				}else{
+		            					result += '<li style="list-style:none;">NO.'+pid+'</li>';
+		            				}
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
+		            	}
+		            },
 		            {"data": "leavesdate", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
@@ -293,6 +310,23 @@ function initPayEdDataTable(){
 		            		return result;
 		            	}
 		            },
+		            {"data": "pid", "bSortable": false,
+		            	render:function(data, type, row, meta) {
+			            	var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value){
+		            				var pid = value.pid;
+		            				if(pid == null || pid == undefined || pid==""){
+		            					pid = "";
+		            				}else{
+		            					result += '<li style="list-style:none;">NO.'+pid+'</li>';
+		            				}
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
+		            	}
+		            },
 		            {"data": "leavedate", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
@@ -521,8 +555,33 @@ $('#interPayClick').click(function(){
 	if(!ids){
 		layer.msg("请至少选中一条记录", "", 2000);
 	}else{
-		
 		$.ajax({
+			type : 'POST',
+			data : {
+				"interPayIds":ids
+			},
+			async: false,
+			"url": BASE_PATH + "/admin/receivePay/inter/sameShortNameByPid.html",
+			success : function(data) {
+				if(data){
+					layer.open({
+						type: 2,
+						title:false,
+						skin: false, //加上边框
+						closeBtn:false,//默认 右上角关闭按钮 是否显示
+						shadeClose:false,
+						scrollbar: false,
+						area: ['850px', '650px'],
+						content: ['confirmPay.html?orderIds='+ ids +'&orderStatus='+ orderStatus,'no'],
+					});
+				}else{
+					layer.msg("付款编号不一致", "", 2000);
+					clearGou();
+					return false;
+				}
+			}
+		});
+		/*$.ajax({
 			type : 'POST',
 			data : {
 				"orderIds":ids,
@@ -531,7 +590,7 @@ $('#interPayClick').click(function(){
 			async: false,
 			"url": BASE_PATH + "/admin/receivePay/inter/sameShortName.html",
 			success : function(data) {
-				/*var boolean = data.sameName;
+				var boolean = data.sameName;
 				if(boolean == false){
 					layer.msg("收款单位不一致", "", 2000);
 					clearGou();
@@ -546,18 +605,10 @@ $('#interPayClick').click(function(){
 						area: ['850px', '650px'],
 						content: ['confirmPay.html?orderIds='+ ids +'&orderStatus='+ orderStatus,'no'],
 					});
-				}*/
-				layer.open({
-					type: 2,
-					title:false,
-					skin: false, //加上边框
-					closeBtn:false,//默认 右上角关闭按钮 是否显示
-					shadeClose:false,
-					area: ['850px', '650px'],
-					content: ['confirmPay.html?orderIds='+ ids +'&orderStatus='+ orderStatus,'no'],
-				});
+				}
+				
 			}
-		});
+		});*/
 		
 	}
 });

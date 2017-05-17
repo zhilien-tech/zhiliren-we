@@ -432,6 +432,7 @@ $condition
 
 /*receivePay_inter_pay_order_list*/
 SELECT
+    p.id pid,
 	prr.id,
 	uo.id uid,
 	uo.ordersnum,
@@ -696,3 +697,18 @@ INNER JOIN t_pnr_info tpi ON tai.pnrid = tpi.id
 INNER JOIN t_up_order tuo ON tpi.orderid = tuo.id
 INNER JOIN t_order_receive tor ON tor.orderid = tuo.id
 where receiveid = @receiveid
+
+/*receivePay_paynum_by_prrid*/
+SELECT
+    po.payid payid,
+	prr.id,
+	uo.ordersnum,
+	po.orderstatus,
+	po.paystauts
+FROM
+	t_up_order uo
+INNER JOIN t_pay_order po ON po.orderid = uo.id
+INNER JOIN t_pay p ON p.id = po.payid
+LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
+AND prr.orderstatusid = po.orderstatus
+$condition
