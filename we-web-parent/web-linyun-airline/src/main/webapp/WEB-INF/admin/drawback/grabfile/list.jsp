@@ -128,7 +128,7 @@
                      	</tbody>
                      </form>
                    </table>
-                   <input id="checkedboxval" name="checkedboxval" type="hidden">
+                   <input id="checkedboxvalTeam" name="checkedboxvalTeam" type="hidden">
                   </div><!--end 团队-->
                   <!------------------------------------------报表开始---------------------------------------------->
                   <div class="tab-pane pane-content" id="tab_3">
@@ -271,6 +271,100 @@ $(document).on('click', '.checkchild', function(e) {
 		$(".checkThFit").prop("checked", false);
 	}
 });
+
+//团队批量删除复选框点击操作
+$(".checkThTeam").click(function () {
+    var check = $(this).prop("checked");
+    $(".checkchildTeam").prop("checked", check);
+    //隐藏域的值
+    var hiddenval = $('#checkedboxvalTeam').val();
+	if(check){
+		var splits = hiddenval.split(',');
+		$(".checkchildTeam:checked").each(function(){
+			var thisvals = $(this).val();
+			var flag = false;
+			for(var i=0;i<splits.length;i++){
+				if(splits[i] == thisvals){
+					flag = true;
+				}
+			}
+			//如果隐藏域值为空
+			if(hiddenval){
+				if(!flag){
+					hiddenval += ',' + thisvals;
+				}
+			}else{
+				hiddenval = thisvals;
+			}
+		});
+	}else{
+		$(".checkchildTeam").each(function(){
+			var thisval = $(this).val();
+			var flag = false;
+			var splits = hiddenval.split(',');
+			for(var i=0;i<splits.length;i++){
+				if(splits[i] == thisval){
+					flag = true;
+				}
+			}
+			//如果隐藏域值为空
+			if(flag){
+				var ids = [];
+				for(var i=0;i<splits.length;i++){
+					if(splits[i] != thisval){
+						ids.push(splits[i]);
+					}
+				}
+				ids = ids.join(',');
+				hiddenval = ids;
+			}
+		});
+	}
+	$('#checkedboxvalTeam').val(hiddenval);
+});
+//点击之后给隐藏域赋值
+$(document).on('click', '.checkchildTeam', function(e) {
+	var hiddenval = $('#checkedboxvalTeam').val();
+	var thisval = $(this).val();
+	var check = $(this).prop("checked");
+	if(check){
+		if(!hiddenval){
+			$('#checkedboxvalTeam').val(thisval);
+		}else{
+			$('#checkedboxvalTeam').val(hiddenval+','+thisval);
+		}
+	}else{
+		var splits = hiddenval.split(',');
+		var flag = false;
+		for(var i=0;i<splits.length;i++){
+			if(splits[i] == thisval){
+				flag = true;
+			}
+		}
+		//如果存在则删掉当前值
+		if(flag){
+			var ids = [];
+			for(var i=0;i<splits.length;i++){
+				if(splits[i] != thisval){
+					ids.push(splits[i]);
+				}
+			}
+			ids = ids.join(',');
+			$('#checkedboxvalTeam').val(ids);
+		}else{
+			$('#checkedboxvalTeam').val(hiddenval);
+		}
+	}
+	var length = $(".checkchildTeam:checked").length;
+	if(rebatesEamilTable.page.len() == length){
+		$(".checkThTeam").prop("checked", true);
+	}else{
+		$(".checkThTeam").prop("checked", false);
+	}
+});
+
+
+
     //文件上传
     $(uploadFile());
     function uploadFile(){
@@ -498,8 +592,8 @@ function batchDeleteFit(){
 }
 //团队批量删除
 function batchDeleteTeam(){
-	var ids = $('#checkedboxval').val();
-	var length = $(".checkchild:checked").length;
+	var ids = $('#checkedboxvalTeam').val();
+	var length = $(".checkchildTeam:checked").length;
 	if(!ids){
 		layer.msg("请至少选中一条记录","", 1000);
 	}else{
@@ -513,9 +607,9 @@ function batchDeleteTeam(){
 				url: '${base}/admin/drawback/grabfile/batchDelete.html',
 				success: function (data) { 
 					window.parent.successCallback('10');
-					$('#checkedboxval').val('');
+					$('#checkedboxvalTeam').val('');
 					rebatesEamilTable.ajax.reload(null,false);
-					$('.checkThFit').attr('checked',false);
+					$('.checkThTeam').attr('checked',false);
 				},
 				error: function (xhr) {
 					layer.msg("批量删除失败!", "", 1000);
@@ -727,7 +821,7 @@ function successCallback(id){
 			        "columns": [{"data": "id", "bSortable": false,"sWidth": "5%",
 			                    	render: function(data, type, row, meta) {
 			                    		var result = '';
-			                    		var hiddenval = $('#checkedboxval').val();
+			                    		var hiddenval = $('#checkedboxvalTeam').val();
 			                    		var splits = hiddenval.split(',');
 			                    		var flag = false;
 			                    		for(var i=0;i<splits.length;i++){
@@ -736,9 +830,9 @@ function successCallback(id){
 			                    			}
 			                    		}	
 			                    		if(flag){
-			                    			result = '<input type="checkbox"  class="checkchild" checked="true" value="' + row.id + '" />';
+			                    			result = '<input type="checkbox"  class="checkchildTeam" checked="true" value="' + row.id + '" />';
 			                    		}else{
-			                    			result = '<input type="checkbox"  class="checkchild" value="' + row.id + '" />';
+			                    			result = '<input type="checkbox"  class="checkchildTeam" value="' + row.id + '" />';
 			                    		}
 			                            return result;
 			                    	}
@@ -823,13 +917,25 @@ function successCallback(id){
 			var param = {parentId:0};
 			rebatesEamilTable.settings()[0].ajax.data = param;
 			rebatesEamilTable.ajax.reload();
+			$("#fitBreadcrumb").find("li").each(function(index){
+				if(index>0){
+					$(this).remove(); 
+				} 
+			});
 		}
 		if(flag==1){
 			options1.ajax.data.parentId=0;
 			var param = {parentId:0};
 			rebatesEamilTeamTable.settings()[0].ajax.data = param;			
 			rebatesEamilTeamTable.ajax.reload();
+			$("#teamBreadcrumb").find("li").each(function(index){
+				if(index>0){
+					$(this).remove(); 
+				} 
+			});
+
 		}
+		
 	}
 	//当点击进入下一级的时候重新加载表格
 	//var clickFlag = 1;
