@@ -522,7 +522,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				//人数
 				Integer peoplescount = null;
 				if (!Util.isEmpty(airmap.get("peoplescount"))) {
-					peoplescount = Integer.valueOf((String) airmap.get("price"));
+					peoplescount = Integer.valueOf((String) airmap.get("peoplescount"));
 				}
 				TAirlineInfoEntity airlineEntity = new TAirlineInfoEntity();
 				airlineEntity.setAircom(aircom);
@@ -532,7 +532,7 @@ public class InlandService extends BaseService<TUpOrderEntity> {
 				airlineEntity.setFormprice(formatDouble(formprice));
 				airlineEntity.setPrice(formatDouble(price));
 				airlineEntity.setNeedid(Integer.valueOf(customneedid));
-				airlineEntity.setNeedid(peoplescount);
+				airlineEntity.setPeoplescount(peoplescount);
 				if (Util.isEmpty(airlineid)) {
 					//插入
 					dbDao.insert(airlineEntity);

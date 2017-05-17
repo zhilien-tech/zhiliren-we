@@ -50,8 +50,18 @@ function initDatatable2() {
                     		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
                     		var week = ['MO','TU','WE','TH','FR','SA','SU'];
                     		$.each(row.airinfo, function(name, value) {
-                    			var leavedate = new Date(value.leavedate);
-                    			result += '<li style="list-style:none;">'+(week[leavedate.getUTCDay()]+leavedate.getDate() + MM[leavedate.getMonth()])+'</li>';
+                    			/*var leavedate = new Date(value.leavedate);
+                    			var datestr = week[leavedate.getUTCDay()]+leavedate.getDate() + MM[leavedate.getMonth()];
+                    			if(!isNaN(datestr)){
+                    				result += '<li style="list-style:none;">'+datestr+'</li>';
+                    			}else{
+                    				result += '<li style="list-style:none;"></li>';
+                    			}*/
+                    			if(value.currencyCode && value.currencyCode != undefined){
+                    				result += '<li style="list-style:none;">'+value.currencyCode+'</li>';
+                    			}else{
+                    				result += '<li style="list-style:none;"></li>';
+                    			}
                     		});
                     		result += '</ul>';
                     		return result;
@@ -61,7 +71,11 @@ function initDatatable2() {
                     	render: function(data, type, row, meta) {
                     		var result = '<ul>';
                     		$.each(row.airinfo, function(name, value) {
-                    			result += '<li style="list-style:none;">'+value.ailinenum+'</li>';
+                    			if(value.ailinenum && value.ailinenum != undefined){
+                    				result += '<li style="list-style:none;">'+value.ailinenum+'</li>';
+                    			}else{
+                    				result += '<li style="list-style:none;"></li>';
+                    			}
                     		});
                     		result += '</ul>';
                     		return result;
@@ -71,7 +85,16 @@ function initDatatable2() {
                     	render: function(data, type, row, meta) {
                     		var result = '<ul>';
                     		$.each(row.airinfo, function(name, value) {
-                    			result += '<li style="list-style:none;">'+(value.leavecity+'/'+value.arrvicity)+'</li>';
+                    			//result += '<li style="list-style:none;">'+(value.leavecity+'/'+value.arrvicity)+'</li>';
+                    			result += '<li style="list-style:none;">';
+                    			if(value.leavecity && value.leavecity != undefined){
+                    				result += value.leavecity;
+                    			}
+                    			result += '/';
+                    			if(value.arrvicity && value.arrvicity != undefined){
+                    				result += value.arrvicity;
+                    			}
+                    			result += '</li>';
                     		});
                     		result += '</ul>';
                     		return result;
@@ -95,7 +118,15 @@ function initDatatable2() {
                     		return result;
                     	}	
                     },
-                    {"data": "peoplecount", "bSortable": false},
+                    {"data": "peoplecount", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var result='';
+                    		if(row.peoplecount && row.peoplecount != undefined){
+                    			result = row.peoplecount;
+                    		}
+                    		return result;
+                    	}
+                    },
                     {"data": "foc", "bSortable": false,
                     	render: function(data, type, row, meta) {
                     		var result = '否';
@@ -105,7 +136,15 @@ function initDatatable2() {
                     		return result;
                     	}
                     },
-                    {"data": "dayscount", "bSortable": false},
+                    {"data": "dayscount", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var result='';
+                    		if(row.dayscount && row.dayscount != undefined){
+                    			result = row.dayscount;
+                    		}
+                    		return result;
+                    	}
+                    },
                     {"data": "travelname", "bSortable": false,
                     	render: function(data, type, row, meta) {
                     		var result=' ';
@@ -115,7 +154,15 @@ function initDatatable2() {
                     		return result;
                     	}
                     },
-                    {"data": "unioncity", "bSortable": false}
+                    {"data": "unioncity", "bSortable": false,
+                    	render: function(data, type, row, meta) {
+                    		var result='';
+                    		if(row.unioncity && row.unioncity != undefined){
+                    			result = row.unioncity;
+                    		}
+                    		return result;
+                    	}
+                    }
             ],
         columnDefs: [{
     		targets: 0,
