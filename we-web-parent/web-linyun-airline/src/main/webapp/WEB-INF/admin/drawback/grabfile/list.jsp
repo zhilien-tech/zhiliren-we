@@ -60,7 +60,7 @@
                    <table id="rebatesEamilTable" class="table table-bordered table-hover">
                      <thead>
                       <tr>
-                       <th><input  class="checkTh" id="fileCheckbox" name="fileCheckbox" type="checkbox"></th>
+                       <th><input  class="checkThFit" id="fileCheckboxFit" name="fileCheckbox" type="checkbox"></th>
 	                       <th>文件名</th>
 	                       <th>时间</th>
 	                       <th>大小</th>
@@ -101,7 +101,7 @@
                    <table id="rebatesEamilTeamTable" class="table table-bordered table-hover">
                      <thead>
                       <tr>
-                       <th><input  class="checkTh" id="fileCheckbox" name="fileCheckbox" type="checkbox"></th>
+                       <th><input  class="checkThTeam" id="fileCheckboxTeam" name="fileCheckbox" type="checkbox"></th>
 	                       <th>文件名</th>
 	                       <th>时间</th>
 	                       <th>大小</th>
@@ -169,9 +169,9 @@ $(function () {
         //$('.checkTh').toggle();
         $('.checkTd').toggle();
     });
-  	//复选框选择点击操作
-//控制复选框
-$(".checkTh").click(function () {
+
+//复选框选择点击操作
+$(".checkThFit").click(function () {
     var check = $(this).prop("checked");
     $(".checkchild").prop("checked", check);
     //隐藏域的值
@@ -255,9 +255,9 @@ $(document).on('click', '.checkchild', function(e) {
 	}
 	var length = $(".checkchild:checked").length;
 	if(rebatesEamilTable.page.len() == length){
-		$(".checkTh").prop("checked", true);
+		$(".checkThFit").prop("checked", true);
 	}else{
-		$(".checkTh").prop("checked", false);
+		$(".checkThFit").prop("checked", false);
 	}
 });
     //文件上传
@@ -476,7 +476,7 @@ function batchDeleteFit(){
 					}else if(flagType===1){
 						rebatesEamilTeamTable.ajax.reload(null,false);
 					}
-					$('.checkTh').attr('checked',false);
+					$('.checkThFit').attr('checked',false);
 				},
 				error: function (xhr) {
 					layer.msg("批量删除失败!", "", 1000);
@@ -504,7 +504,7 @@ function batchDeleteTeam(){
 					window.parent.successCallback('10');
 					$('#checkedboxval').val('');
 					rebatesEamilTable.ajax.reload(null,false);
-					$('.checkTh').attr('checked',false);
+					$('.checkThFit').attr('checked',false);
 				},
 				error: function (xhr) {
 					layer.msg("批量删除失败!", "", 1000);
@@ -805,6 +805,7 @@ function successCallback(id){
 	}
 	/*切换标签的时候重新加载table */
 	function reloadTable(flag){
+		$("#flagType").val(flag);
 		$("input#currentDirId").val(0);
 		if(flag==0){
 			options0.ajax.data.parentId=0;
@@ -1405,7 +1406,6 @@ function createFodler1(pid,filename,filetype,clickFlag){//团队
 			rebatesEamilTable.settings()[0].ajax.data = param;
 			rebatesEamilTable.ajax.reload();
 			$("#fitBreadcrumb").find("li").each(function(index){
-				
 				if(index>0){
 					$(this).remove(); 
 				} 
@@ -1416,7 +1416,6 @@ function createFodler1(pid,filename,filetype,clickFlag){//团队
 			rebatesEamilTeamTable.settings()[0].ajax.data = param;
 			rebatesEamilTeamTable.ajax.reload();
 			$("#teamBreadcrumb").find("li").each(function(index){
-				
 				if(index>0){
 					$(this).remove(); 
 				} 
