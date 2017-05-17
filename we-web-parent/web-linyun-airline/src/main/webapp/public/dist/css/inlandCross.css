@@ -165,4 +165,4 @@ input#address {width: 100% !important;}
 #kaiInvoiceTable tbody tr td:nth-child(7) span{display: block;width:110px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0 auto;}
 #shouInvoiceTable tbody tr td:nth-child(11) span{display: block;width:80px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0 auto;}
 #drawerPayTable tbody tr td span {display: block;width:70px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0 auto;}
-.labelWid{width:95px !important;}
+/* .labelWid{width:95px !important;} */
