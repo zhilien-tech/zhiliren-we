@@ -90,6 +90,17 @@
                      <button type="button" class="btn btn-primary btn-sm right returnBtn none">返回上一级</button>
                      <button type="button" class="btn btn-primary btn-sm right indexBtn none">返回首页</button>
                    </div>
+                   <!-- 检索开始 -->
+                   <div class="col-md-2 col-padding marBottom10">
+                   	 	<input id="fileNameId" name="fileName" type="text" onkeypress="onkeyEnter();" class="form-control" placeholder="请输入航空公司二字代码"/>
+                   </div>
+                   <div class="col-md-2 col-padding">
+                   		<input id="sendTimeId" name="sendTime" type="text" onkeypress="onkeyEnter();" class="form-control" placeholder="请输入时间:例如2017.06"/>
+                   </div>
+                   <div class="col-md-3 col-padding">		
+                   		<input id="searchBtnId" name="searchBtn" type="button" class="btn btn-primary btn-sm" value="搜索"/>
+                   </div>
+                   <!-- 检索结束 -->
                    <!-- 区分当前是哪个切换卡下面的 -->
                    <input type="hidden" name="flagType" value="0" id="flagType">
                    <input id="currentDirId" type="hidden" value="0"/>
