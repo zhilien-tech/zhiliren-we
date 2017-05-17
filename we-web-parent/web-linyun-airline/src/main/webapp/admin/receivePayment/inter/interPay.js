@@ -286,6 +286,15 @@ function initPayEdDataTable() {
 	                    	  return result;
 	                	  }
 	                  },
+	                  {"data": "pid", "bSortable": false,
+	                	  render:function(data, type, row, meta) {
+	                		  var result = '';
+	                  		  if(row.payid && row.payid != undefined){
+	                  			 result = "NO."+ row.payid;
+	                  		  }
+	                    	  return result;
+	                	  }
+			            },
 	                  {"data": "leavedate", "bSortable": false,
 	                  	render:function(data, type, row, meta) {
 	                  		var result = '';
