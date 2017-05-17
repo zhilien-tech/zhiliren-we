@@ -50,6 +50,17 @@ function initPayDataTable(){
 		            },
 		            {"data": "ordernum", "bSortable": false},
 		            {"data": "pnrnum", "bSortable": false},
+		            {"data": "pid", "bSortable": false,
+		            	render: function(data, type, row, meta) {
+		            		var pid = row.id;
+		            		if(null == pid || ""== pid){
+		            			return "";
+		            		}else{
+		            			pid = "NO."+pid;
+		            		}
+		            		return pid;
+		            	}
+		            },
 		            {"data": "leavedate", "bSortable": false,
 		            	render: function(data, type, row, meta) {
 		            		var MM = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
@@ -210,6 +221,23 @@ function initPayEdDataTable(){
 		            		return result;
 		            	}
 		            },
+		            {"data": "pid", "bSortable": false,
+		            	render:function(data, type, row, meta) {
+			            	var result = '<ul> ';
+		            		$.each(row.orders, function(name, value) {
+		            			if(value){
+		            				var pid = value.id;
+		            				if(pid == null || pid == undefined || pid==""){
+		            					pid = "";
+		            				}else{
+		            					result += '<li style="list-style:none;">NO.'+pid+'</li>';
+		            				}
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
+		            	}
+		            },
 		            {"data": "leavedate", "bSortable": false,"width":"7%",
 		            	render: function(data, type, row, meta) {
 		            		var result = '<ul> ';
@@ -278,12 +306,32 @@ function initPayEdDataTable(){
 		            	}
 		            },
 		            {"data": "shortname", "bSortable": false,
-		            	render: function(data, type, row, meta) {
+		            	/*render: function(data, type, row, meta) {
 		            		var shortname = row.shortname;
 		            		if(null == shortname || ""== shortname){
 		            			return "";
 		            		}
 		            		return shortname;
+		            	}*/
+		            	render:function(data, type, row, meta) {
+		            		var result = '<ul> ';
+		            		var oNum = "";
+		            		$.each(row.orders, function(name, value) {
+		            			if(value){
+		            				var ordernum = value.ordernum;
+		            				var shortname = value.shortname;
+		            				if(shortname == null || shortname == undefined || shortname==""){
+		            					shortname = "";
+		            				}else{
+		            					if(oNum!=ordernum){
+		            						result += '<li style="list-style:none;">'+shortname+'</li>';
+		            					}
+		            				}
+		            				oNum = ordernum;
+		            			}
+		            		});
+		            		result += '</ul>';
+		            		return result;
 		            	}
 		            },
 		            {"data": "orderpnrstatus", "bSortable": false,
@@ -412,7 +460,7 @@ $('#inlandPayClick').click(function(){
 	if(!ids){
 		layer.msg("请至少选中一条记录", "", 2000);
 	}else{
-		$.ajax({
+		/*$.ajax({
 			type : 'POST',
 			data : {
 				"inlandPayIds":ids
@@ -438,8 +486,35 @@ $('#inlandPayClick').click(function(){
 					});
 				}
 			}
-		});
+		});*/
 
+		$.ajax({
+			type : 'POST',
+			data : {
+				"inlandPayIds":ids
+			},
+			async: false,
+			"url": BASE_PATH + "/admin/receivePay/inland/sameShortNameByPid.html",
+			success : function(data) {
+				if(data){
+					layer.open({
+						type: 2,
+						title:false,
+						skin: false, //加上边框
+						closeBtn:false,//默认 右上角关闭按钮 是否显示
+						shadeClose:false,
+						scrollbar: false,
+						area: ['850px', '650px'],
+						content: ['confirmPay.html?inlandPayIds='+ ids,'no'],
+					});
+				}else{
+					layer.msg("付款编号不一致", "", 2000);
+					clearGou();
+					return false;
+				}
+			}
+		});
+		
 	}
 });
 
