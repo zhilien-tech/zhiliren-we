@@ -128,7 +128,7 @@
                      	</tbody>
                      </form>
                    </table>
-                   <input id="checkedboxval" name="checkedboxval" type="hidden">
+                   <input id="checkedboxvalTeam" name="checkedboxvalTeam" type="hidden">
                   </div><!--end 团队-->
                   <!------------------------------------------报表开始---------------------------------------------->
                   <div class="tab-pane pane-content" id="tab_3">
@@ -272,13 +272,12 @@ $(document).on('click', '.checkchild', function(e) {
 	}
 });
 
-/* ==============================团队复选框操作============================================= */ 
-    
-    $(".checkThTeam").click(function () {
+//团队批量删除复选框点击操作
+$(".checkThTeam").click(function () {
     var check = $(this).prop("checked");
     $(".checkchildTeam").prop("checked", check);
     //隐藏域的值
-    var hiddenval = $('#checkedboxval').val();
+    var hiddenval = $('#checkedboxvalTeam').val();
 	if(check){
 		var splits = hiddenval.split(',');
 		$(".checkchildTeam:checked").each(function(){
@@ -321,18 +320,18 @@ $(document).on('click', '.checkchild', function(e) {
 			}
 		});
 	}
-	$('#checkedboxval').val(hiddenval);
+	$('#checkedboxvalTeam').val(hiddenval);
 });
 //点击之后给隐藏域赋值
 $(document).on('click', '.checkchildTeam', function(e) {
-	var hiddenval = $('#checkedboxval').val();
+	var hiddenval = $('#checkedboxvalTeam').val();
 	var thisval = $(this).val();
 	var check = $(this).prop("checked");
 	if(check){
 		if(!hiddenval){
-			$('#checkedboxval').val(thisval);
+			$('#checkedboxvalTeam').val(thisval);
 		}else{
-			$('#checkedboxval').val(hiddenval+','+thisval);
+			$('#checkedboxvalTeam').val(hiddenval+','+thisval);
 		}
 	}else{
 		var splits = hiddenval.split(',');
@@ -351,9 +350,9 @@ $(document).on('click', '.checkchildTeam', function(e) {
 				}
 			}
 			ids = ids.join(',');
-			$('#checkedboxval').val(ids);
+			$('#checkedboxvalTeam').val(ids);
 		}else{
-			$('#checkedboxval').val(hiddenval);
+			$('#checkedboxvalTeam').val(hiddenval);
 		}
 	}
 	var length = $(".checkchildTeam:checked").length;
@@ -363,13 +362,6 @@ $(document).on('click', '.checkchildTeam', function(e) {
 		$(".checkThTeam").prop("checked", false);
 	}
 });
-    
-    
-    
-    
-/* =========================================================================== */
-
-
 
 
 
@@ -600,7 +592,7 @@ function batchDeleteFit(){
 }
 //团队批量删除
 function batchDeleteTeam(){
-	var ids = $('#checkedboxval').val();
+	var ids = $('#checkedboxvalTeam').val();
 	var length = $(".checkchildTeam:checked").length;
 	if(!ids){
 		layer.msg("请至少选中一条记录","", 1000);
@@ -615,7 +607,7 @@ function batchDeleteTeam(){
 				url: '${base}/admin/drawback/grabfile/batchDelete.html',
 				success: function (data) { 
 					window.parent.successCallback('10');
-					$('#checkedboxval').val('');
+					$('#checkedboxvalTeam').val('');
 					rebatesEamilTable.ajax.reload(null,false);
 					$('.checkThTeam').attr('checked',false);
 				},
@@ -829,7 +821,7 @@ function successCallback(id){
 			        "columns": [{"data": "id", "bSortable": false,"sWidth": "5%",
 			                    	render: function(data, type, row, meta) {
 			                    		var result = '';
-			                    		var hiddenval = $('#checkedboxval').val();
+			                    		var hiddenval = $('#checkedboxvalTeam').val();
 			                    		var splits = hiddenval.split(',');
 			                    		var flag = false;
 			                    		for(var i=0;i<splits.length;i++){
@@ -925,13 +917,25 @@ function successCallback(id){
 			var param = {parentId:0};
 			rebatesEamilTable.settings()[0].ajax.data = param;
 			rebatesEamilTable.ajax.reload();
+			$("#fitBreadcrumb").find("li").each(function(index){
+				if(index>0){
+					$(this).remove(); 
+				} 
+			});
 		}
 		if(flag==1){
 			options1.ajax.data.parentId=0;
 			var param = {parentId:0};
 			rebatesEamilTeamTable.settings()[0].ajax.data = param;			
 			rebatesEamilTeamTable.ajax.reload();
+			$("#teamBreadcrumb").find("li").each(function(index){
+				if(index>0){
+					$(this).remove(); 
+				} 
+			});
+
 		}
+		
 	}
 	//当点击进入下一级的时候重新加载表格
 	//var clickFlag = 1;
@@ -1511,7 +1515,7 @@ function createFodler1(pid,filename,filetype,clickFlag){//团队
 	
 	
 	function turnToAll(flag){
-		$("input#currentDirId").val(0);
+		
 
 		if(flag==0){
 			options0.ajax.data.parentId=0;
