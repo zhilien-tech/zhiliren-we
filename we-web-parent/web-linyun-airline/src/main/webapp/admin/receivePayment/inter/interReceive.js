@@ -95,11 +95,24 @@ function initRecDataTable() {
 		            	}
 		            },
 		            {"data": "customename", "bSortable": false,
-		            	render: function(data, type, row, meta) {
+		            	/*render: function(data, type, row, meta) {
 		            		var result = '';
 	            			if(row.customename && row.customename!=undefined){
 	            				result = row.customename;
 	            			}
+		            		return result;
+		            	}*/
+		            	render:function(data, type, row, meta) {
+		            		var result = '<ul> ';
+		            		var travelnames = "";
+		            		$.each(row.orders, function(name, value) {
+		            			var num = value.travelname;
+		            			if(value && (num!=travelnames)){
+		            				result += '<li style="list-style:none;">'+value.travelname+'</li>';
+		            				travelnames = num;
+		            			}
+		            		});
+		            		result += '</ul>';
 		            		return result;
 		            	}
 		            },
