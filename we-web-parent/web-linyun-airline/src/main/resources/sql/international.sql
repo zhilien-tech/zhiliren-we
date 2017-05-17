@@ -92,6 +92,7 @@ SELECT
 	tii.remark,
 	tii.id invoiceid,
 	tfi.costtotal,
+	tfi.issuer,
 	tprr.currentpay,
 	tci.shortName customename,
 	tprr.actualnumber
