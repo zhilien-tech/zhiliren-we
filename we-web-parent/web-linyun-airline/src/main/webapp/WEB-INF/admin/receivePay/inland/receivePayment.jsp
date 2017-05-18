@@ -190,7 +190,7 @@
 	<!-- My97DatePicker -->
 	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 	<!-- 收付款Common js -->
-	<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
+	<%-- <script src="${base}/admin/receivePayment/recPayCommon.js"></script> --%>
 	<!-- 内陆跨海js -->
 	<script src="${base}/admin/receivePayment/inland/inlandPay.js"></script>
 	<script src="${base}/admin/receivePayment/inland/inlandReceive.js"></script>
