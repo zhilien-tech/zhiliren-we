@@ -40,7 +40,7 @@
                       <c:forEach  items="${obj.airinfo }" var="airinfo" varStatus="status">
 	                      <tr class="addHD-tr">
 	                        <td><label>出发城市：</label></td>
-	                        <td><select id="leavecity" name="leavecity" type="text" class="form-control input-sm" multiple="multiple">
+	                        <td><select id="leavecity" name="leavecity" type="text" class="form-control input-sm cityselect2" multiple="multiple">
 	                        	<c:forEach var="one" items="${obj.city }">
 									<c:choose>
 		                    			<c:when test="${airinfo.leavecity eq one.dictCode }">
@@ -53,7 +53,7 @@
 								</c:forEach>
 	                        </select></td>
 	                        <td><label>抵达城市：</label></td>
-	                        <td><select id="arrivecity" name="arrivecity" type="text" class="form-control input-sm" multiple="multiple">
+	                        <td><select id="arrivecity" name="arrivecity" type="text" class="form-control input-sm cityselect2" multiple="multiple">
 	                        		<c:forEach var="one" items="${obj.city }">
 										<c:choose>
 			                    			<c:when test="${airinfo.arrvicity eq one.dictCode }">
@@ -98,9 +98,9 @@
                      <c:otherwise>
                      	<tr class="addHD-tr">
 	                        <td><label>出发城市：</label></td>
-	                        <td><select id="leavecity" name="leavecity" class="form-control input-sm" multiple="multiple"></select></td>
+	                        <td><select id="leavecity" name="leavecity" class="form-control input-sm cityselect2" multiple="multiple"></select></td>
 	                        <td><label>抵达城市：</label></td>
-	                        <td><select id="arrivecity" name="arrivecity" class="form-control input-sm" multiple="multiple"></select></td>
+	                        <td><select id="arrivecity" name="arrivecity" class="form-control input-sm cityselect2" multiple="multiple"></select></td>
 	                        <td><label>出发日期：</label></td>
 	                        <td><input id="leavedate" name="leavedate" type="text" class="form-control input-sm" onFocus="WdatePicker({minDate:'%y-%M-%d'})" placeholder=" "></td>
 	                        <td><label>航班号：</label></td>

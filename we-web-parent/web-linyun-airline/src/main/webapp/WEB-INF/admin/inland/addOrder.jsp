@@ -91,9 +91,9 @@
                  <table class="table1">
                    <tr>
                      <td><label>出发城市：</label></td>
-                     <td><select id="leavecity" name="leavecity" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)"></select></td>
+                     <td><select id="leavecity" name="leavecity" class="form-control input-sm select2 cityselect2" multiple="multiple" placeholder="PEK(北京)"></select></td>
                      <td><label>抵达城市：</label></td>
-                     <td><select id="arrivecity" name="arrivecity" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)"></select></td>
+                     <td><select id="arrivecity" name="arrivecity" class="form-control input-sm cityselect2" multiple="multiple" placeholder="SYD(悉尼)"></select></td>
                      <td><label>出发日期：</label></td>
                      <td><input id="leavedate" name="leavedate" type="text" class="form-control textWid input-sm" onFocus="WdatePicker({minDate:'%y-%M-%d'})"></td>
                      <td><label>人数：</label></td>

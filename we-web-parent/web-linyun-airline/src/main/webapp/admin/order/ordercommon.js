@@ -113,3 +113,12 @@ function autoHighLoad(obj){
        });
  	});
 }
+
+$(document).on("change",".cityselect2",function(){
+	var thisval = $(this).val();
+	if(thisval){
+		$(this).html('<option value="'+thisval+'" selected="selected">'+thisval+'</option>');
+	}else{
+		$(this).html('');
+	}
+});
