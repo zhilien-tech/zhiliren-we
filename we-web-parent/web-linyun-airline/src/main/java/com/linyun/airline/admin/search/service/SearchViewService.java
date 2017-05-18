@@ -876,6 +876,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			if (0 != indexOf) {
 				airSeatsCurrency = etemPnrs[indexOf + 44];
 				airSeatsPrice = etemPnrs[indexOf + 45];
+				airSeatsPrice = airSeatsCurrency + airSeatsPrice;
 			} else {
 				airSeatsPrice = "-";
 				airSeatsCurrency = "-";
@@ -900,8 +901,26 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		if (parsingType == "3") {
 			ParsingSabreEntity pEtemEntity = new ParsingSabreEntity();
 
+			String airComp = etemPnrs[2];
+			String airNumDate = etemPnrs[3];
+			String flightNum = airComp + airNumDate.substring(0, airNumDate.length() - 6);
+			String presetDate = airNumDate.substring(4, airNumDate.length());
+
+			String leaveInfo = etemPnrs[4];
+			String arriveInfo = etemPnrs[5];
+			String airLine = leaveInfo.substring(0, 3) + arriveInfo.substring(4, arriveInfo.length() - 2);
+			String airDepartureTime = leaveInfo.substring(3, leaveInfo.length());
+			String airLandingTime = arriveInfo.substring(0, arriveInfo.length() - 5);
 			String airSeatsCurrency = etemPnrs[44];
 			String airSeatsPrice = etemPnrs[45];
+			airSeatsPrice = airSeatsCurrency + airSeatsPrice;
+
+			pEtemEntity.setFlightNum(flightNum);
+			pEtemEntity.setPresetDate(presetDate);
+			pEtemEntity.setAirLine(airLine);
+			/*pEtemEntity.setAirSeatNum(airSeatNum);*/
+			pEtemEntity.setAirDepartureTime(airDepartureTime);
+			pEtemEntity.setAirLandingTime(airLandingTime);
 			pEtemEntity.setAirSeatsPrice(airSeatsPrice);
 			pEtemEntity.setAirSeatsCurrency(airSeatsCurrency);
 			arrayList.add(pEtemEntity);
