@@ -104,7 +104,6 @@ function loadOrderLog(orderid){
 }
 //datatables里的td 出现多行数据时，边距为0
 function autoHighLoad(obj){
-	
 	obj.find('tr').each(function () {//全部 table 自适应高度      
        $(this).children('td').each(function(){
           var liLength = $(this).children('ul').length;

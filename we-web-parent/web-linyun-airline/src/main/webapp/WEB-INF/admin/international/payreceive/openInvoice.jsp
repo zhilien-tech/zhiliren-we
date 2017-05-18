@@ -131,7 +131,7 @@
           <tr class="cloneTR">
                   <td>发票号：</td>
                   <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm"></td>
-                  <td>金额：</td>
+                  <td>实际金额：</td>
                   <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm mustNumberPoint"></td>
                   <td>税控金额：</td>
                   <td><input id="fiscalAmount" name="fiscalAmount" type="text" class="form-control input-sm mustNumberPoint"></td>
