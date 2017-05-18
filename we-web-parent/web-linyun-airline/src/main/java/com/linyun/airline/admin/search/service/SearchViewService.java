@@ -705,7 +705,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			String airLandingTime = sabrePnrs[9];
 			String airSeatNum = sabrePnrs[7];
 			airSeatNum = airSeatNum.substring(2, airSeatNum.length());
-			String sevenLine = sabrePnrs1[5];
+			String sevenLine = sabrePnrs1[6];
 			String str[] = sevenLine.split("\\s+");
 			String str1 = str[str.length - 1].trim();
 			/*String str2 = str1.substring(0, str1.lastIndexOf(".") + 3);*/
