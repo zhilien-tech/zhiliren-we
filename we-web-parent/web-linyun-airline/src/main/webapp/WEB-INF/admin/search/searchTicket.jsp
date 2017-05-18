@@ -293,13 +293,13 @@
 											<td>
 												<!-- <input type="text" class="form-control input-sm" placeholder="拼音/三字代码"> -->
 												<select id="outCity0" name="origin0"
-												class="form-control input-sm" multiple="multiple"
+												class="form-control input-sm cityselect2" multiple="multiple"
 												data-placeholder="拼音/三字代码"></select>
 											</td>
 											<td class="untilTd"><i class="fa fa-minus"></i></td>
 											<td><label>到达城市：</label></td>
 											<td><select id="singleArriveCity0" name="destination0"
-												onkeypress="onkeyEnter();" class="form-control input-sm"
+												onkeypress="onkeyEnter();" class="form-control input-sm cityselect2"
 												multiple="multiple" data-placeholder="拼音/三字代码"></select></td>
 											<!-- <td class="untilTd1"></td> -->
 											<!--空白处 可以忽略-->
@@ -412,7 +412,7 @@
 											<td>
 												<!-- <input type="text" class="form-control input-sm" placeholder="拼音/三字代码"> -->
 												<select id="teamOutCity0" name="origin1"
-												onkeypress="onkeyTeamEnter();" class="form-control input-sm"
+												onkeypress="onkeyTeamEnter();" class="form-control input-sm cityselect2"
 												multiple="multiple" data-placeholder="拼音/三字代码"></select>
 											</td>
 											<td class="untilTd"><i class="fa fa-minus"></i></td>
@@ -420,7 +420,7 @@
 											<td>
 												<!-- <input type="text" class="form-control input-sm" placeholder="拼音/三字代码"> -->
 												<select id="teamArriveCity0" name="destination1"
-												onkeypress="onkeyTeamEnter();" class="form-control input-sm"
+												onkeypress="onkeyTeamEnter();" class="form-control input-sm cityselect2"
 												multiple="multiple" data-placeholder="拼音/三字代码"></select>
 											</td>
 											<!-- <td class="untilTd1"></td> -->
