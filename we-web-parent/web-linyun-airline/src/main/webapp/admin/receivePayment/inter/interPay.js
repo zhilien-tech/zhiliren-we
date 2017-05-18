@@ -384,7 +384,7 @@ function initPayEdDataTable() {
 	        ],
 	    columnDefs: [{
 	  	//   指定第一列，从0开始，0表示第一列，1表示第二列……
-	        targets: 9,
+	        targets: 10,
 	        render: function(data, type, row, meta) {
 	            return '<a style="cursor:pointer;" onclick="editPay('+row.pid+','+row.prrid+');">编辑</a>'
 	        }
