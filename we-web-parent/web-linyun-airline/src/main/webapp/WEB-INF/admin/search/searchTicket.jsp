@@ -155,14 +155,14 @@
 									<td>
 										<!-- <input id="cOutcity" name="cOutcity" type="text" class="form-control input-sm" placeholder="PEK(北京)"> -->
 										<select id="cOutcity" name="cOutcity"
-										class="form-control select2" multiple="multiple"
+										class="form-control select2 cityselect2" multiple="multiple"
 										data-placeholder=""></select>
 									</td>
 									<td><label>抵达城市：</label></td>
 									<td>
 										<!-- <input id="cArrivalcity" type="text" class="form-control input-sm" placeholder="SYD(悉尼)"> -->
 										<select id="cArrivalcity" name="cArrivalcity"
-										class="form-control select2" multiple="multiple"
+										class="form-control select2 cityselect2" multiple="multiple"
 										data-placeholder=""></select>
 									</td>
 									<td><label>出发日期：</label></td>
@@ -573,7 +573,7 @@
 		<script src="${base}/admin/searchTicket/saveCustomerNeeds.js"></script>
 		<!-- 时间格式化 -->
 		<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
-
+		<script src="${base }/admin/order/ordercommon.js"></script>
 		<!-- 解析sabre -->
 		<script type="text/javascript">
 			function parsingText() {
