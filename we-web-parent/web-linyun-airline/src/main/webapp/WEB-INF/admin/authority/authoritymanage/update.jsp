@@ -20,12 +20,12 @@
 </head>
 <body class="bodyOne">
 	<div class="divContent">
-		<form id="editDeptForm" method="post">
 			<div class="headerClass">
 				<button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">取消</button>
 				<button type="button" id="submit" class="btn btn-primary right btn-sm">保存</button>
 				<h4>编辑职位部门</h4>
 			</div>
+		<form id="editDeptForm" method="post">
 			<div class="modal-body" style="height:435px;overflow-y: auto;">
 	          <div class="departmentName form-group"><!--部门权限 设置-->
                  <input id="jobJson" name="jobJson" type="hidden" value=""/>
@@ -234,14 +234,14 @@ formValidator();
 		var _jobJson = $("input#jobJson").val();
 		
 		try{
-			$("input[id='jobName']").each(function(index,element){
+			$("input[name='jobName']").each(function(index,element){
 				var eachJobName = $(element).val();
 				if(null == eachJobName || undefined == eachJobName || "" == eachJobName || "" == $.trim(eachJobName)){
 					throw "职位名称不能为空";
 				}
 			}) ;
 		}catch(e){
-			layer.msg(e) ;
+			layer.msg("职位不能为空且至少存在一个") ;
 			return false ;
 		}
 		
@@ -268,7 +268,7 @@ formValidator();
 						window.parent.successCallback('2');
 					}else{
 						layer.close(loadLayer) ;
-						layer.msg(data.message) ;
+						layer.msg("职位不能为空且至少存在一个") ;
 					}
 	           }
 	       });

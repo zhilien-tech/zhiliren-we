@@ -701,17 +701,23 @@
 							}
 						}
 						if (result.parsingType == "QTE:/") {
-							var pnrThread = '<tr>' 
-												+ '<th>币种</th>'
+							var pnrThread = '<tr>' + '<th>序号</th>'
+												+ '<th>航班号</th>'
+												+ '<th>起飞日期</th>' + '<th>航段</th>'
+												+ '<th>航程时间</th>'
 												+ '<th>舱位价格</th>'
 												+ '</tr>';
 							var pnrBody = '';
 							var obj = result.arrayList;
 							for (var i = 0; i < obj.length; i++) {
-								pnrBody += '<tr>' 
-										+ '<td>' + obj[i].airSeatsCurrency+ '</td>' 
-										+ '<td>' + obj[i].airSeatsPrice+ '</td>' 
-										+ '</tr>';
+								pnrBody += '<tr>' + '<td>' + (i+1)
+												+ '</td>' + '<td>' + obj[i].flightNum
+												+ '</td>' + '<td>' + obj[i].presetDate
+												+ '</td>' + '<td>' + obj[i].airLine
+												+ '</td>' + '<td>'+ obj[i].airDepartureTime + '-'+ obj[i].airLandingTime 
+												+ '</td>' + '<td>' + obj[i].airSeatsPrice
+												+ '</td>'
+												+ '</tr>';
 							}
 						}
 						

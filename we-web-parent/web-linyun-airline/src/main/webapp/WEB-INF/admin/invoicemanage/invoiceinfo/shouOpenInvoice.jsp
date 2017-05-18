@@ -22,13 +22,20 @@
     	<input type="hidden" id="backupbalance" name="backupbalance" value="${obj.invoicebalance }">
     	<input type="hidden" id="orderId" name="orderId" value="${obj.pnrinfo[0].orderids }">
         <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
-        <input type="button" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo()" value="确认收发票"/>
+        <c:choose>
+        	<c:when test="${obj.invoiceinfo.status==1 }">
+        		 <input type="button" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo()" value="确认收发票"/>
+        	</c:when>
+        	<c:otherwise>
+        		 <input type="button" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo()" value="保存"/>
+        	</c:otherwise>
+        </c:choose>
         <input type="hidden" id="thisval" name="thisval">
         <h4 class="invoiceH4">收发票信息</h4>
     </div>
     <div style="height:550px; overflow-y:auto;" class="allCentext">
       <div class="modal-body">
-      	<input id="id" name="id" type="hidden" value="${obj.id }" > 
+      	<input id="id" name="id" type="hidden" value="${obj.ordersid }" > 
          <table id="receivablesTable" class="table table-bordered table-hover">
                   <thead>
                     <tr>
@@ -44,7 +51,7 @@
                   </thead>
                   <tbody>
                   	<c:forEach var="one" items="${obj.pnrinfo }">
-                  		<tr>
+                  		<tr ondblclick="toOrderDetail(${one.orderids})">
                   			<td>${one.ordersnum }</td>
                   			<td>${one.pnr }</td>
                   			<td>${one.billingdate }</td>
@@ -114,7 +121,7 @@
                   </td>
                   <td>发票日期：</td>
                   <td><input id="invoicedate" name="invoicedate" type="text" onFocus="WdatePicker()" class="form-control input-sm" value="<fmt:formatDate value="${obj.invoiceinfo.invoicedate }" pattern="yyyy-MM-dd" />"></td>
-                  <td><input id="borrowInvoiceId" name="borrowInvoice" type="checkbox" value="${obj.invoiceinfo.borrowInvoice }" />借发票</td>
+                  <td><input id="borrowInvoice" name="borrowInvoice" type="checkbox" value="" />借发票</td>
                   <td></td>
                   <%-- <td>开票人：</td>
                   <td>
@@ -226,11 +233,12 @@
 	<script src="${base }/admin/order/invoiceupload.js"></script>
   <script type="text/javascript">
      $(function(){
-    	 /*-----收发票双击事件-----*/
-    	 $("#receivablesTable tr").dblclick(function() {
-     		 var orderId = $("#orderId").val();
-     		 window.open('${base}/admin/inland/bookingDetail.html?id='+orderId,'_black');
-     	 });
+    	//借发票
+   	   	 var borrowInvoiceChecked = '${obj.invoiceinfo.borrowInvoice }';
+   		 if('1'===borrowInvoiceChecked){
+   			$('#borrowInvoice').attr('checked','checked');
+   		 }
+    	 
     	 /*-----收付款>收款>开发票 + 按钮-----*/
 	      $('.addIcon').click(function(){
 	          var divTest = $(this).parents('.cloneTR'); 
@@ -296,6 +304,8 @@
 	   formdata.invoiceitem = invoiceitem;
 	   var invoicedate = $('#invoicedate').val();
 	   formdata.invoicedate = invoicedate;
+	   var borrowInvoice = $('#borrowInvoice').is(':checked');
+	   formdata.borrowInvoice = borrowInvoice;
 	   var billuserid = $('#billuserid').val();
 	   formdata.billuserid = billuserid;
 	   var deptid = $('#deptid').val();
@@ -335,18 +345,23 @@
 			url: '${base}/admin/invoicemanage/invoiceinfo/saveShouInvoiceInfo.html',
            success: function (data) { 
            	closewindow();
-           	window.parent.successCallback('2');
+           	var status = '${obj.invoiceinfo.status}';
+           	if(status==3){
+           		window.parent.successCallback('2');
+           	}else if(status==4){
+           		window.parent.successCallback('3');
+           	}
            },
            error: function (xhr) {
            	layer.msg("提交失败","",3000);
            } 
        });
    }
-   //借发票
-   var borrowInvoiceChecked = '${obj.invoiceinfo.borrowInvoice }';
-	if("" != borrowInvoiceChecked && null != borrowInvoiceChecked && '1'===borrowInvoiceChecked){
-		$('input#borrowInvoiceId').attr('checked','checked');
+   /*-----收发票双击事件-----*/
+   function toOrderDetail(id){
+		var url = '${base}/admin/inland/bookingDetail.html?id=' + id;
+		window.open(url);
 	}
-  </script>
+</script>
 </body>
 </html>
