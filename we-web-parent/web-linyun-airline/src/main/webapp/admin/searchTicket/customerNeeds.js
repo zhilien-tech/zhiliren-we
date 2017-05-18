@@ -182,6 +182,7 @@ $('.addDemand').click(function(){
 	newDiv.find('.titleNum').text(divId.length);
 	/**************************************客户需求 设置新的出发城市**************************************/
 	newDiv.find('[name=cOutcity]').next().remove();
+	newDiv.find('[name=cOutcity]').empty();
 	newDiv.find('[name=cOutcity]').select2({
 		ajax : {
 			url : BASE_PATH + "/admin/search/getCustomerCitySelect.html",
@@ -225,6 +226,7 @@ $('.addDemand').click(function(){
 
 	/**************************************客户需求 设置新的抵达城市**************************************/
 	newDiv.find('[name=cArrivalcity]').next().remove();
+	newDiv.find('[name=cArrivalcity]').empty();
 	newDiv.find('[name=cArrivalcity]').select2({
 		ajax : {
 			url : BASE_PATH + "/admin/search/getCustomerCitySelect.html",

@@ -37,9 +37,9 @@
                       </tr>
                       <tr class="addHD-tr">
                         <td><label>出发城市：</label></td>
-                        <td><select id="leavecity" name="leavecity" class="form-control input-sm" multiple="multiple"></select></td>
+                        <td><select id="leavecity" name="leavecity" class="form-control input-sm cityselect2" multiple="multiple"></select></td>
                         <td><label>抵达城市：</label></td>
-                        <td><select id="arrivecity" name="arrivecity" class="form-control input-sm" multiple="multiple"></select></td>
+                        <td><select id="arrivecity" name="arrivecity" class="form-control input-sm cityselect2" multiple="multiple"></select></td>
                         <td><label>出发日期：</label></td>
                         <td><input id="leavedate" name="leavedate" type="text" class="form-control input-sm" onFocus="WdatePicker({minDate:'%y-%M-%d'})" placeholder=" "></td>
                         <td><label>航班号：</label></td>
