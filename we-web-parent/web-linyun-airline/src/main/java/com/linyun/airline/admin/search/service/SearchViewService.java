@@ -625,6 +625,10 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				String airSeats = "";
 				ParsingSabreEntity pSabreEntity = new ParsingSabreEntity();
 
+				if (pnrs.contains("NO MORE")) {
+					break;
+				}
+
 				String[] pnr = pnrs.split("\\s+");
 				String regex = "[a-zA-Z]{6}";
 				Pattern pattern = Pattern.compile(regex);
@@ -641,6 +645,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 					}
 				}
 
+				pnr[0].substring(0, 1);
 				id = Integer.parseInt(pnr[0].substring(0, 1));
 				airCompName = pnr[0].substring(1);
 				flightNum = pnr[1];
@@ -693,11 +698,13 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			String flightNum = sabrePnrs[3].split("[a-zA-Z]")[0];
 			int seatL = sabrePnrs[3].length();
 			String airSeat = sabrePnrs[3].substring(seatL - 1, seatL);
-			String airLeavelDate = sabrePnrs[4] + "(" + sabrePnrs[5] + ")";
+			/*String airLeavelDate = sabrePnrs[4] + "(" + sabrePnrs[5] + ")";*/
+			String airLeavelDate = sabrePnrs[4];
 			String airLine = sabrePnrs[6];
 			String airDepartureTime = sabrePnrs[8];
 			String airLandingTime = sabrePnrs[9];
 			String airSeatNum = sabrePnrs[7];
+			airSeatNum = airSeatNum.substring(2, airSeatNum.length());
 			String sevenLine = sabrePnrs1[5];
 			String str[] = sevenLine.split("\\s+");
 			String str1 = str[str.length - 1].trim();
@@ -861,6 +868,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			String presetDate = etemPnrs[4];
 			String airLine = etemPnrs[5];
 			String airSeatNum = etemPnrs[6];
+			airSeatNum = airSeatNum.substring(2, airSeatNum.length());
 			String airDepartureTime = etemPnrs[7];
 			String airLandingTime = etemPnrs[8];
 			String airSeatsPrice = "";
