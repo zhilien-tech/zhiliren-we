@@ -265,6 +265,7 @@ function initPayEdDataTable() {
 		"bLengthChange": false,
 	    "processing": true,
 	    "serverSide": true,
+	    "bAutoWidth":false,
 	    "stripeClasses": [ 'strip1','strip2' ],
 	    "language": {
 	        "url": BASE_PATH + "/public/plugins/datatables/cn.json"
@@ -277,7 +278,7 @@ function initPayEdDataTable() {
 	        }
 	    },
 	    "columns": [
-	                {"data": "ordersnum", "bSortable": false,
+	                {"data": "ordersnum", "bSortable": false,"sWidth":"10%",
 	                	  render:function(data, type, row, meta) {
 	                		  var result = '';
 	                  		  if(row.ordersnum && row.ordersnum != undefined){
@@ -376,7 +377,7 @@ function initPayEdDataTable() {
 	                	  render:function(data, type, row, meta) {
 	                		  var result = '';
 	                  		  if(row.remark && row.remark != undefined){
-	                  		  	 result = row.remark;
+	                  		  	 result = '<span data-toggle="tooltip" data-placement="left" title="'+row.remark+'">'+row.remark+'</span>';
 	                  		  }
 	                  		  return result;
 	                	  }
