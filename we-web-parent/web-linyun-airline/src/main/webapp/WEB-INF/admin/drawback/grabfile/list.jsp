@@ -272,6 +272,7 @@ $(document).on('click', '.checkchild', function(e) {
 	}
 });
 
+
 //团队批量删除复选框点击操作
 $(".checkThTeam").click(function () {
     var check = $(this).prop("checked");
@@ -362,7 +363,6 @@ $(document).on('click', '.checkchildTeam', function(e) {
 		$(".checkThTeam").prop("checked", false);
 	}
 });
-
 
 
     //文件上传
@@ -592,7 +592,9 @@ function batchDeleteFit(){
 }
 //团队批量删除
 function batchDeleteTeam(){
+
 	var ids = $('#checkedboxvalTeam').val();
+
 	var length = $(".checkchildTeam:checked").length;
 	if(!ids){
 		layer.msg("请至少选中一条记录","", 1000);
@@ -1515,7 +1517,7 @@ function createFodler1(pid,filename,filetype,clickFlag){//团队
 	
 	
 	function turnToAll(flag){
-		
+		$("input#currentDirId").val(0);
 
 		if(flag==0){
 			options0.ajax.data.parentId=0;
