@@ -65,7 +65,7 @@
 		   </div>
 		   <label class="col-sm-1 text-right padding cf">联运城市：</label>
 		   <div class="col-sm-1 padding">
-		     <select id="unioncity0" name="unioncity" class="form-control input-sm js-data-example-ajax" multiple="multiple" placeholder=""></select>
+		     <select id="unioncity0" name="unioncity" class="form-control input-sm js-data-example-ajax cityselect2" multiple="multiple" placeholder=""></select>
 		   </div>
 		   <!-- <div class="col-sm-1">
 		     <a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a>
@@ -77,11 +77,11 @@
 		 <div class="form-group row addCityAirline">
 		   <label class="col-sm-1 text-right padding cf">出发城市：</label>
 		   <div class="col-sm-1 padding">
-		     <select id="leavescity0" name="leavescity" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
+		     <select id="leavescity0" name="leavescity" class="form-control input-sm select2 cityselect2" multiple="multiple" placeholder=""></select>
 		   </div>
 		   <label class="col-sm-1 text-right padding cf">抵达城市：</label>
 		   <div class="col-sm-1 padding">
-		     <select id="backscity0" name="backscity" class="form-control input-sm select2" multiple="multiple" placeholder=""></select>
+		     <select id="backscity0" name="backscity" class="form-control input-sm select2 cityselect2" multiple="multiple" placeholder=""></select>
 		   </div>
 		    <label class="col-sm-1 text-right padding">去程航班：</label>
 		   <div class="col-sm-1 padding">

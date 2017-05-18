@@ -327,7 +327,9 @@ $(function(){
         var divTest = $(this).parent(); 
         var newDiv = divTest.clone(false,true);
         newDiv.find('[name=leavecity]').next().remove();
+        newDiv.find('[name=leavecity]').empty();
         newDiv.find('[name=arrivecity]').next().remove();
+        newDiv.find('[name=arrivecity]').empty();
         //清空出发日期
         newDiv.find('[name=leavedate]').val('');
         //清空人数
@@ -464,7 +466,8 @@ function clearText(){
 	
 }
 function formatRepoSelection(repo){
-	var text =  repo.text;
-	text = text.substr(0,3);
-	return text;
+	//var text =  repo.text;
+	//text = repo.id;
+	return repo.id;
 }
+

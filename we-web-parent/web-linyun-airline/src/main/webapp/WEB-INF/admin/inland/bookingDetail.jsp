@@ -158,7 +158,7 @@
 		                 <table class="cloTable" id="tableWid">
 		                   <tr>
 		                     <td><label>出发城市：</label></td>
-		                     <td><select id="leavecity" name="leavecity" disabled="disabled" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
+		                     <td><select id="leavecity" name="leavecity" disabled="disabled" class="form-control input-sm select2 cityselect2" multiple="multiple" placeholder="PEK(北京)">
 			                     	<c:forEach var="one" items="${obj.city }">
 			                    		<c:choose>
 			                    			<c:when test="${customneed.cusinfo.leavecity eq one.dictCode }">
@@ -172,7 +172,7 @@
 			                     </select>
 			                 </td>
 		                     <td><label>抵达城市：</label></td>
-		                     <td><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
+		                     <td><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm cityselect2" multiple="multiple" placeholder="SYD(悉尼)">
 			                     	<c:forEach var="one" items="${obj.city }">
 			                    		<c:choose>
 			                    			<c:when test="${customneed.cusinfo.arrivecity eq one.dictCode }">
@@ -398,11 +398,11 @@
 		                 <table class="cloTable">
 		                   <tr>
 		                     <td><label>出发城市：</label></td>
-		                     <td><select id="leavecity" name="leavecity" disabled="disabled" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)">
+		                     <td><select id="leavecity" name="leavecity" disabled="disabled" class="form-control input-sm select2 cityselect2" multiple="multiple" placeholder="PEK(北京)">
 			                     </select>
 			                 </td>
 		                     <td><label>抵达城市：</label></td>
-		                     <td><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)">
+		                     <td><select id="arrivecity" name="arrivecity" disabled="disabled" class="form-control input-sm cityselect2" multiple="multiple" placeholder="SYD(悉尼)">
 			                     </select></td>
 		                     <td><label>出发日期：</label></td>
 		                     <td><input id="leavedate" name="leavedate" disabled="disabled" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:''})"/></td>

@@ -574,10 +574,12 @@ $(function () {
 					   //设置新的去程出发城市下拉ID
 					   var leavescity = $(this).find('[name=leavescity]');
 					   leavescity.attr("id","leavescity"+i);
+					   $('#leavescity'+i).empty();
 					   $('#leavescity'+i).next().remove();
 					   //设置新的去程抵达城市下拉框ID
 					   var backscity = $(this).find('[name=backscity]');
 					   backscity.attr("id","backscity"+i);
+					   $('#backscity'+i).empty();
 					   $('#backscity'+i).next().remove();
 				   }else{
 					   $(this).remove();
@@ -591,14 +593,17 @@ $(function () {
 			   //设置新的返程出发城市下拉ID
 			   var backleavecity = $(this).find('[name=backleavecity]');
 			   backleavecity.attr("id","backleavecity"+i);
+			   $('#backleavecity'+i).empty();
 			   $('#backleavecity'+i).next().remove();
 			   //设置新的返程抵达城市下拉框ID
 			   var backbackcity = $(this).find('[name=backbackcity]');
 			   backbackcity.attr("id","backbackcity"+i);
+			   $('#backbackcity'+i).empty();
 			   $('#backbackcity'+i).next().remove();
 			   //设置新的联运城市下拉框ID
 			   var unioncity = $(this).find('[name=unioncity]');
 			   unioncity.attr("id","unioncity"+i);
+			   $('#unioncity'+i).empty();
 			   $('#unioncity'+i).next().remove();
 			   
 			   var startenddate = $(this).find('[name=startenddate]');
@@ -698,9 +703,11 @@ $(document).on('click', '.addNeeds', function(e) {
     leaveairline.next().remove();
     //设置新的去程出发城市下拉ID
     var leavescity = newDiv.find('[name=leavescity]');
+    leavescity.empty();
     leavescity.next().remove();
     //设置新的去程抵达城市下拉框ID
     var backscity = newDiv.find('[name=backscity]');
+    backscity.empty();
     backscity.next().remove();
     //出发日期置空
     newDiv.find('[name=setoffdate]').attr("onFocus","WdatePicker({minDate:'#F{$dp.$D(\\'setoffdate"+setoffid+"\\')}'})");
@@ -1185,9 +1192,11 @@ function changeType(){
 			    leaveairline.next().remove();
 			    //设置新的去程出发城市下拉ID
 			    var leavescity = newdiv.find('[name=leavescity]');
+			    leavescity.empty();
 			    leavescity.next().remove();
 			    //设置新的去程抵达城市下拉框ID
 			    var backscity = newdiv.find('[name=backscity]');
+			    backscity.empty();
 			    backscity.next().remove();
 				$(this).find('.addCityAirline').each(function(i){
 					if(i > 0){
