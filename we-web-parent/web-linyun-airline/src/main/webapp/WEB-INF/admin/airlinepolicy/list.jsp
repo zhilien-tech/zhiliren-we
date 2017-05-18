@@ -213,7 +213,12 @@
 		//selectDeptName();
 		/* uploadFile(); */
 	});
-	
+	//航空公司双击编辑
+	$('#poilcyManageTable tbody').on("dblclick","tr",function(event){
+		//获取当前行的数据
+		var row = empTable.row($(this).closest('tr')).data();
+		update(row.id);
+	});
 	function successCallback(id){
 		 // rebatesEamilTable.ajax.reload(null,false);
 		  //rebatesReportTable.ajax.reload(null,false);
