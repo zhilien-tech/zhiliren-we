@@ -211,8 +211,8 @@ public class MailScrabService extends BaseService {
 		String userTeam = "in2020072@sina.com";
 		String passwdTeam = "tlywy2017jan";
 		try {
-			receivePop3(userFit, passwdFit);
 			receivePop3(userTeam, passwdTeam);
+			receivePop3(userFit, passwdFit);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -250,7 +250,9 @@ public class MailScrabService extends BaseService {
 		//1、从邮件获取能直接保存的数据
 		String theme = getSubject(msg);//主题
 		String sender = getFrom(msg);//发件人
+
 		String addressee = getReceiveAddress(msg, null);//收件人
+
 		String sendTime = getSentDate(msg, null);//发送时间
 		String fileSize = Integer.toString(msg.getSize());//邮件大小
 		logger.info("邮件的主题是:" + theme);
@@ -860,7 +862,8 @@ public class MailScrabService extends BaseService {
 		}
 
 		if (addresss == null || addresss.length < 1)
-			throw new MessagingException("没有收件人!");
+			/*throw new MessagingException("没有收件人!");*/
+			return "不规范的收件人";
 		for (Address address : addresss) {
 			InternetAddress internetAddress = (InternetAddress) address;
 			receiveAddress.append(internetAddress.toUnicodeString()).append(",");
