@@ -1427,6 +1427,13 @@ public class InternationalService extends BaseService<TUpOrderEntity> {
 		cnd.and("tprr.recordtype", "=", PayReceiveTypeEnum.PAY.intKey());*/
 		List<Record> orders = dbDao.query(sql, cnd, null);
 		result.put("orders", orders);
+		double sumjine = 0;
+		for (Record record : orders) {
+			if (!Util.isEmpty(record.get("currentpay"))) {
+				sumjine += Double.valueOf(record.getString("currentpay"));
+			}
+		}
+		result.put("sumjine", sumjine);
 		try {
 			result.put("bzSelect", externalInfoService.findDictInfoByName("", BIZHONGCODE));
 			//result.put("ytSelect", externalInfoService.findDictInfoByName("", FKYTCODE));
