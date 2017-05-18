@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="${base }/public/dist/css/inlandCross.css"><!--本页style-->
     <style type="text/css">
     	.payTable2 tbody tr td:nth-child(5){width: 58%;text-align: left;}
-    	#borrowInvoiceId{margin-left: 15px;}
+    	#borrowInvoice{margin-left: 15px;}
     	.addIcon {top: 5px;}
     </style>
 </head>
