@@ -168,7 +168,12 @@ function initKaiInterInvoiceTable() {
                   },
                   {"data": " ", "bSortable": false,
                 	  render: function(data, type, row, meta) {
-                          return '<a style="cursor:pointer;" onclick="openkaiInvoiceEdit('+row.id+');">开发票</a>'
+                		  var status = row.status;
+                		  if(status===2){
+                			  return '<a style="cursor:pointer;" onclick="openkaiInvoiceEdit('+row.id+');">编辑</a>';
+                		  }else{
+                			  return '<a style="cursor:pointer;" onclick="openkaiInvoiceEdit('+row.id+');">开发票</a>';
+                		  }
                       }
                   }
           ],
@@ -374,7 +379,12 @@ function initshouInterInvoiceTable() {
   	//   指定第一列，从0开始，0表示第一列，1表示第二列……
         targets: 11,
         render: function(data, type, row, meta) {
-            return '<a style="cursor:pointer;" onclick="openshouInvoiceEdit('+row.id+');">收发票</a>'
+        	var status = row.status;
+        	if(status===4){
+        		return '<a style="cursor:pointer;" onclick="openshouInvoiceEdit('+row.id+');">编辑</a>';
+        	}else{
+        		return '<a style="cursor:pointer;" onclick="openshouInvoiceEdit('+row.id+');">收发票</a>';
+        	}
         }
     }]
 });

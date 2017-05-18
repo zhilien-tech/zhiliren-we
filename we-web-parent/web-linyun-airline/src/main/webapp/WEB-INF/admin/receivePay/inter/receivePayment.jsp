@@ -379,7 +379,7 @@
 	<!-- 国际js -->
 	<script src="${base}/admin/receivePayment/inter/interPay.js"></script>
 	<script src="${base}/admin/receivePayment/inter/interReceive.js"></script>
-	<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
+	<%-- <script src="${base}/admin/receivePayment/recPayCommon.js"></script> --%>
 	<script src="${base}/admin/order/ordercommon.js"></script>
 	<script type="text/javascript">
 		$(function(){

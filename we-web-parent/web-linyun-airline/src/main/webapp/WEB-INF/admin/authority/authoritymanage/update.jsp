@@ -241,7 +241,7 @@ formValidator();
 				}
 			}) ;
 		}catch(e){
-			layer.msg(e) ;
+			layer.msg("职位至少有一个") ;
 			return false ;
 		}
 		
@@ -268,7 +268,7 @@ formValidator();
 						window.parent.successCallback('2');
 					}else{
 						layer.close(loadLayer) ;
-						layer.msg(data.message) ;
+						layer.msg("职位至少有一个") ;
 					}
 	           }
 	       });
