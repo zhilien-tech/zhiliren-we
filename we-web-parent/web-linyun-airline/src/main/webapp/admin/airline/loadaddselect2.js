@@ -268,11 +268,21 @@ function changetravelname(){
 //选择联运要求之后触发
 function changeunioncity(){
 	var unioncity = $("#unioncity").select2("val");
+	if(unioncity){
+		$("#unioncity").html('<option value="'+unioncity+'" selected="selected">'+unioncity+'</option>');
+	}else{
+		$("#unioncity").html('');
+	}
 	$("#uniontransport").val(unioncity);
 }
 //选择出发城市之后触发
 function changeleavescity(){
 	var leavescity = $("#leavescity").select2("val");
+	if(leavescity){
+		$("#leavescity").html('<option value="'+leavescity+'" selected="selected">'+leavescity+'</option>');
+	}else{
+		$("#leavescity").html('');
+	}
 	$("#leavecity").val(leavescity);
 }
 //选择出发航班之后触发
@@ -283,6 +293,11 @@ function changeleaveairline(){
 //选择返回城市之后触发
 function changebackscity(){
 	var backscity = $("#backscity").select2("val");
+	if(backscity){
+		$("#backscity").html('<option value="'+backscity+'" selected="selected">'+backscity+'</option>');
+	}else{
+		$("#backscity").html('');
+	}
 	$("#backcity").val(backscity);
 }
 //选择返回城市之后触发
