@@ -376,12 +376,18 @@ $('.addDemand').click(function(){
 //客户需求的 -需求 按钮
 $(document).on("click",".removeDemand",function(){
 	var demand = $(this);
-	layer.confirm('你确定删除吗？', {icon: 3, title:'提示'}, function(index){
-		//do something
-		var cRemarkTxt = $("#cRemark").val();
+	var dLength = clearDemandDiv(demand);
+	if(dLength){
+		layer.confirm('你确定删除吗？', {icon: 3, title:'提示'}, function(index){
+			//do something
+			var cRemarkTxt = $("#cRemark").val();
+			demand.parent().remove();
+			layer.close(index);
+		});
+	}else{
 		demand.parent().remove();
-		layer.close(index);
-	});
+	}
+
 
 	/*判断最后一个需求是否有 备注项 如果没有 就添加备注项*/
 	/*var cl=$('.DemandDiv:last-child .cloTable tbody tr').hasClass('remarkTr');
@@ -492,11 +498,16 @@ $(document).on("click",".addIcon",function(){
 //客户需求的航空段数 - 按钮
 $(document).on("click",".removIcon",function(){
 	var demand = $(this);
-	layer.confirm('你确定删除吗？', {icon: 3, title:'提示'}, function(index){
-		//do something
+	var lengthAir = clearRemovIcon(demand);
+	if(lengthAir){
+		layer.confirm('你确定删除吗？', {icon: 3, title:'提示'}, function(index){
+			//do something
+			demand.parent().parent().remove();
+			layer.close(index);
+		});
+	}else{
 		demand.parent().parent().remove();
-		layer.close(index);
-	});
+	}
 });
 
 
@@ -641,3 +652,105 @@ $(document).on("click",".custLineChoose",function(){
 
 	});
 });
+
+function clearDemandDiv(DemandDivObj){
+	var lenthcustom = '';
+	var parentdiv = DemandDivObj.parent();
+	DemandDivObj.each(function(i){
+		var row1 = {};
+		var leavecity = parentdiv.find('[name=cOutcity]').val();
+		var arrivecity = parentdiv.find('[name=cArrivalcity]').val();
+		var cOutDate = parentdiv.find('[name=cOutDate]').val();
+		var cPersonAmount = parentdiv.find('[name=cPersonAmount]').val();
+		var tickettype = parentdiv.find('[name=tickettype]').val();
+		var cRemark = parentdiv.find('[name=cRemark]').val();
+		//出发城市
+		if (leavecity) {
+			leavecity = leavecity.join(',');
+			lenthcustom += leavecity;
+		}else{
+			lenthcustom += '';
+		}
+		row1.leavecity = leavecity;
+		//抵达城市
+		if (arrivecity) {
+			arrivecity = arrivecity.join(',');
+			lenthcustom += arrivecity;
+		}else{
+			lenthcustom += '';
+		}
+		row1.arrivecity = arrivecity;
+		row1.leavedate = cOutDate;
+		row1.peoplecount = cPersonAmount;
+		row1.tickettype = tickettype;
+		row1.cRemark = cRemark;
+		console.log(tickettype);
+		lenthcustom += parentdiv.find('[name=cOutDate]').val();
+		lenthcustom += parentdiv.find('[name=cPersonAmount]').val();
+		var airrows = [];
+		parentdiv.find('[name=airLineInfo]').each(function(i){
+			var airrow = {};
+			var lengthAir = '';
+			var aircom = $(this).find('[name=cAirlineCompany]').val();
+			var ailinenum = $(this).find('[name=cAirlineNum]').val();
+			var cAirOutDate = $(this).find('[name=cAirOutDate]').val();
+			var cAirArrivalDate = $(this).find('[name=cAirArrivalDate]').val();
+			var cAirCost = $(this).find('[name=cAirCost]').val();
+			var cAirPretium = $(this).find('[name=cAirPretium]').val();
+			var cAirPeopleConut = $(this).find('[name=cAirPeopleConut]').val();
+			if (aircom) {
+				aircom = aircom.join(',');
+				lengthAir += aircom;
+			}else{
+				lengthAir += '';
+			}
+			airrow.aircom = aircom;
+			if (ailinenum) {
+				ailinenum = ailinenum.join(',');
+				lengthAir += ailinenum;
+			}else{
+				lengthAir += '';
+			}
+			airrow.ailinenum = ailinenum;
+			airrow.leavetime = cAirOutDate;
+			airrow.arrivetime = cAirArrivalDate;
+			airrow.cAirPeopleConut = cAirPeopleConut;
+			airrow.formprice = cAirCost;
+			airrow.price = cAirPretium;
+
+			lengthAir += $(this).find('[name=cAirOutDate]').val();
+			lengthAir += $(this).find('[name=cAirArrivalDate]').val();
+			lengthAir += $(this).find('[name=cAirCost]').val();
+			lengthAir += $(this).find('[name=cAirPretium]').val();
+			lengthAir += $(this).find('[name=cAirPeopleConut]').val();
+			lenthcustom += lengthAir;
+		});
+	});
+	return lenthcustom;
+}
+
+function clearRemovIcon(RIconObj){
+	var parentdiv = RIconObj.parent().parent();
+	var lengthAir = '';
+	var aircom = parentdiv.find('[name=cAirlineCompany]').val();
+	if (aircom) {
+		aircom = aircom.join(',');
+		lengthAir += aircom;
+	}else{
+		lengthAir += '';
+	}
+	var ailinenum = parentdiv.find('[name=cAirlineNum]').val();
+	if (ailinenum) {
+		ailinenum = ailinenum.join(',');
+		lengthAir += ailinenum;
+	}else{
+		lengthAir += '';
+	}
+	lengthAir += parentdiv.find('[name=cAirOutDate]').val();
+	lengthAir += parentdiv.find('[name=cAirArrivalDate]').val();
+	lengthAir += parentdiv.find('[name=cAirCost]').val();
+	lengthAir += parentdiv.find('[name=cAirPretium]').val();
+	lengthAir += parentdiv.find('[name=cAirPeopleConut]').val();
+	
+	return lengthAir;
+}
