@@ -142,10 +142,44 @@ $('.addHDIcon').click(function(){
 });
 $(document).on("click",".removHDIcon",function(){
 	var thisdiv = $(this);
-	layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
+	var parentdiv = $(this).parent().parent();
+	var airlength = '';
+	var leavecity = parentdiv.find('[name=leavecity]').val();
+	if (leavecity) {
+		leavecity = leavecity.join(',');
+		airlength += leavecity;
+	}else{
+		airlength += '';
+	}
+	//抵达城市
+	var arrivecity = parentdiv.find('[name=arrivecity]').val();
+	if (arrivecity) {
+		arrivecity = arrivecity.join(',');
+		airlength += arrivecity;
+	}else{
+		airlength += '';
+	}
+	var ailinenum = parentdiv.find('[name=ailinenum]').val();
+	if (ailinenum) {
+		ailinenum = ailinenum.join(',');
+		airlength += ailinenum;
+	}else{
+		airlength += '';
+	}
+	var leavedate = parentdiv.find('[name=leavedate]').val();
+	airlength += leavedate;
+	var leavetime = parentdiv.find('[name=leavetime]').val();
+	airlength += leavetime;
+	var arrivetime = parentdiv.find('[name=arrivetime]').val();
+	airlength += arrivetime;
+	if(airlength){
+		layer.confirm('确定要删除吗?', {icon: 3, title:'提示'}, function(index){
+			thisdiv.parent().parent().remove();
+			layer.close(index);
+		});
+	}else{
 		thisdiv.parent().parent().remove();
-		layer.close(index);
-	});
+	}
 });
 
 //select2 选项渲染

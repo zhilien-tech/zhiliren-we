@@ -47,6 +47,7 @@ $(document).on('change','.sc', function(){
 });
 
 $(document).on('input','#invoicebalance', function(){
+	$(this).val($(this).val().replace(/[^.\d]/g,''));
 	var tempval = $('#thisval').val();
 	var thisval = $(this).val();
 	if(!isNaN(thisval)){

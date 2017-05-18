@@ -486,10 +486,16 @@
 							notEmpty : {
 								message : '公司简称不能为空'
 							},
-							regexp : {
-								regexp : /^[0-9a-zA-Z\u4e00-\u9fa5]{1,6}$/,
-								message : '公司简称长度为6',
-							}/* ,
+							stringLength: {
+		                   	    min: 1,
+		                   	    max: 6,
+		                   	    message: '公司简称长度为6'
+		                   	}
+							/* regexp : {
+							regexp : /^[0-9a-zA-Z\u4e00-\u9fa5]{1,6}$/,
+							message : '公司简称长度为6',
+							}, */
+							/* ,
 							remote : {
 								url : '${base}/admin/customer/checkShortNameExist.html',
 								message : '公司简称已存在，请重新输入!',

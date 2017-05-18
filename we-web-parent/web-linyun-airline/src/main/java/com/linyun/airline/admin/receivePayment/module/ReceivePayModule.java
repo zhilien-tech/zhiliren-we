@@ -171,4 +171,13 @@ public class ReceivePayModule {
 		return receivePayService.upload(file, session);
 	}
 
+	/**
+	 * 根据付款编号验证付款单位
+	 */
+	@At
+	@POST
+	public Object sameShortNameByPid(@Param("inlandPayIds") String pnrIds) {
+		return receivePayService.sameShortNameByPid(pnrIds);
+	}
+
 }

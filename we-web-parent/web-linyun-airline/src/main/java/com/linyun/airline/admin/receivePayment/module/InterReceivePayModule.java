@@ -23,7 +23,7 @@ import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.upload.UploadAdaptor;
 
-import com.linyun.airline.admin.receivePayment.form.inter.InterPayEdListSearchSqlForm;
+import com.linyun.airline.admin.receivePayment.form.inter.InterAlreadyPayListForm;
 import com.linyun.airline.admin.receivePayment.form.inter.InterPayListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.inter.InterRecListSearchSqlForm;
 import com.linyun.airline.admin.receivePayment.form.inter.TSaveInterPayAddFrom;
@@ -83,6 +83,15 @@ public class InterReceivePayModule {
 	}
 
 	/**
+	 * 根据付款编号验证付款单位
+	 */
+	@At
+	@POST
+	public Object sameShortNameByPid(@Param("interPayIds") String pnrIds) {
+		return interReceivePayService.sameShortNameByPid(pnrIds);
+	}
+
+	/**
 	 * 到编辑已付款
 	 */
 	@At
@@ -132,7 +141,7 @@ public class InterReceivePayModule {
 	 *會計   已付款分页
 	 */
 	@At
-	public Object interPayEdList(@Param("..") final InterPayEdListSearchSqlForm form, HttpSession session) {
+	public Object interPayEdList(@Param("..") final InterAlreadyPayListForm form, HttpSession session) {
 		return interReceivePayService.listPayEdData(form, session);
 	}
 

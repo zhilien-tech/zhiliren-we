@@ -14,6 +14,7 @@
     <style type="text/css">
     	.form-group {margin-bottom: 8px;}
     	.labelWid {width: 95px !important;}
+    	.wid115{width:115%}
     </style>
 </head>
 <body>
@@ -56,7 +57,7 @@
          <div class="form-group row"><!--用途/币种-->
                   <label class="col-sm-2 text-right padding">项目用途：</label>
                   <div class="col-sm-2 padding">
-                    <select id="purpose" name="purpose" class="form-control input-sm">
+                    <select id="purpose" name="purpose" class="form-control input-sm wid115">
                       <c:forEach var="one" items="${obj.ytSelect }">
                         	<option value="${one.id }">${one.comDictName }</option>
                       </c:forEach>
@@ -64,28 +65,32 @@
                   </div>
                   <label class="col-sm-1 text-right padding labelWid">币种：</label>
                   <div class="col-sm-2 padding">
-                    <select id="payCurrency" name="payCurrency" class="form-control input-sm">
+                    <select id="payCurrency" name="payCurrency" class="form-control input-sm wid115">
                       <c:forEach var="one" items="${obj.bzSelect }">
                         	<option value="${one.id }">${one.dictCode }</option>
                         </c:forEach>
                     </select>
                   </div>
+                  <label class="col-sm-1 text-right padding labelWid">合计：</label>
+                  <div class="col-sm-2 padding">
+                    <label><fmt:formatNumber type="number" value="${obj.sumjine }" pattern="0.00" maxFractionDigits="2"/></label>
+                  </div>
          </div><!--end 用途/币种-->
          <div class="form-group row"><!--申请人/审批人/审批结果-->
          <label class="col-sm-2 text-right padding">申请人：</label>
-         <div class="col-sm-2 padding"><input type="text" class="form-control input-sm" disabled="disabled" value="${obj.user.fullName }"></div>
+         <div class="col-sm-2 padding"><input type="text" class="form-control input-sm wid115" disabled="disabled" value="${obj.user.fullName }"></div>
          <label class="col-sm-1 text-right padding labelWid">审批人：</label>
-         <div class="col-sm-2 padding"><input id="approver" name="approver" type="text" class="form-control input-sm" disabled="disabled" value="侯小凌"></div>
+         <div class="col-sm-2 padding"><input id="approver" name="approver" type="text" class="form-control input-sm wid115" disabled="disabled" value="侯小凌"></div>
          <label class="col-sm-1 text-right padding" style="width:95px;">审批结果：</label>
-         <div class="col-sm-2 padding"><input id="approveResult" name="approveResult" type="text" class="form-control input-sm" disabled="disabled"></div>
+         <div class="col-sm-2 padding"><input id="approveResult" name="approveResult" type="text" class="form-control input-sm wid115" disabled="disabled"></div>
       </div>
       <div class="form-group row"><!--申请人/审批人/审批结果-->
          <label class="col-sm-2 text-right padding">开户银行：</label>
-         <div class="col-sm-2 padding"><input id="openbank" name="openbank" type="text" class="form-control input-sm"></div>
+         <div class="col-sm-2 padding"><input id="openbank" name="openbank" type="text" class="form-control input-sm wid115"></div>
          <label class="col-sm-1 text-right padding labelWid">开户名称：</label>
-         <div class="col-sm-2 padding"><input id="openname" name="openname" type="text" class="form-control input-sm"></div>
+         <div class="col-sm-2 padding"><input id="openname" name="openname" type="text" class="form-control input-sm wid115"></div>
          <label class="col-sm-1 text-right padding" style="width:95px;">开户账号：</label>
-         <div class="col-sm-2 padding"><input id="opennumber" name="opennumber" type="text" class="form-control input-sm"></div>
+         <div class="col-sm-2 padding"><input id="opennumber" name="opennumber" type="text" class="form-control input-sm wid115"></div>
       </div>
 	</div>
    <!--JS 文件-->

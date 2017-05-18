@@ -127,6 +127,7 @@
 													<td class="checkTh"><input type="checkbox" class="checkBoxPayAll"></td>
 													<th>订单号</th>
 													<th>PNR</th>
+													<th>付款编号</th>
 													<th>出发日期</th>
 													<th>人数</th>
 													<th>应付金额</th>
@@ -146,6 +147,7 @@
 												<tr>
 													<th>订单号</th>
 													<th>PNR</th>
+													<th>付款编号</th>
 													<th>出发日期</th>
 													<th>人数</th>
 													<th>应付金额</th>
@@ -188,7 +190,7 @@
 	<!-- My97DatePicker -->
 	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 	<!-- 收付款Common js -->
-	<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
+	<%-- <script src="${base}/admin/receivePayment/recPayCommon.js"></script> --%>
 	<!-- 内陆跨海js -->
 	<script src="${base}/admin/receivePayment/inland/inlandPay.js"></script>
 	<script src="${base}/admin/receivePayment/inland/inlandReceive.js"></script>

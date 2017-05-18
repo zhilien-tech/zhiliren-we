@@ -46,7 +46,7 @@
                   <th>操作</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="bankCardTable">
                   <!-- <tr>
                     <td>622 4566 2323 2121211</td>
                     <td>1336662606</td>
@@ -176,7 +176,12 @@
 		//selectDeptName();
 		
 	});
-
+	//银行卡双击编辑
+	$('#bankCardTable tbody').on("dblclick","tr",function(event){
+		//获取当前行的数据
+		var row = empTable.row($(this).closest('tr')).data();
+		editUser(row.id);
+	});
 	//编辑
 	function editUser(id){
 	  layer.open({
