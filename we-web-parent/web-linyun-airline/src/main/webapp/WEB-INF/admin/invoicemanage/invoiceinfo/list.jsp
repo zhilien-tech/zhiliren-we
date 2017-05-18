@@ -168,6 +168,8 @@ function successCallback(id){
 		  layer.msg("确认开发票成功",{time: 2000});
 	  }else if(id == '2'){
 		  layer.msg("确认收发票成功",{time: 2000});
+	  }else if(id == '3'){
+		  layer.msg("保存成功",{time: 2000});
 	  }
 }
 $(function(){

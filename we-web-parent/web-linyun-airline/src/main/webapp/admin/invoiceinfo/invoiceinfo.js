@@ -31,7 +31,7 @@ function initKaiInvoiceTable1() {
                 	  render:function(data, type, row, meta) {
                     		var result = '<ul> ';
                     		$.each(row.orders, function(name, value) {
-                    			if(value.ordersnum && value.invoicenum != undefined){
+                    			if(value.ordersnum && value.ordersnum != undefined){
                     				result += '<li style="list-style:none;"><span data-toggle="tooltip" data-placement="right" title="'+value.ordersnum+'">'+value.ordersnum+'<span></li>';
                     			}
                     		});
@@ -152,7 +152,12 @@ function initKaiInvoiceTable1() {
                   },
                   {"data": " ", "bSortable": false,
                 	  render: function(data, type, row, meta) {
-                          return '<a style="cursor:pointer;" onclick="openkaiInvoiceEdit('+row.id+');">开发票</a>'
+                		  var status = row.status;
+                		  if(status===2){
+                			  return '<a style="cursor:pointer;" onclick="openkaiInvoiceEdit('+row.id+');">编辑</a>';
+                		  }else{
+                			  return '<a style="cursor:pointer;" onclick="openkaiInvoiceEdit('+row.id+');">开发票</a>';
+                		  }
                       }
                   }
           ],
@@ -372,7 +377,12 @@ function initshouInvoiceTable1() {
                 },
                 {"data": " ", "bSortable": false,
                 	render: function(data, type, row, meta) {
-                        return '<a style="cursor:pointer;" onclick="openshouInvoiceEdit('+row.invoiceid+');">收发票</a>'
+                		 var status = row.status;
+                		if(status===4){
+                			return '<a style="cursor:pointer;" onclick="openshouInvoiceEdit('+row.invoiceid+');">编辑</a>';
+                		}else{
+                			return '<a style="cursor:pointer;" onclick="openshouInvoiceEdit('+row.invoiceid+');">收发票</a>';
+                		}
                     }
                 }
         ],

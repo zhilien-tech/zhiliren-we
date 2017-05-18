@@ -17,7 +17,14 @@
     	<input type="hidden" id="backupbalance" name="backupbalance" value="${obj.invoicebalance }">
     	<input type="hidden" id="orderId" name="orderId" value="${obj.ids }">
         <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
-        <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo();" value="确认开发票"/>
+        <c:choose>
+        	<c:when test="${obj.invoiceinfo.status==1 }">
+        		 <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo();" value="确认开发票"/>
+        	</c:when>
+        	<c:otherwise>
+        		 <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo();" value="保存"/>
+        	</c:otherwise>
+        </c:choose>
         <input type="hidden" id="thisval" name="thisval">
         <h4 class="invoiceH4">开发票信息</h4>
     </div>
@@ -106,7 +113,7 @@
                   </td>
                   <td>发票日期：</td>
                   <td><input id="invoicedate" name="invoicedate" type="text" onFocus="WdatePicker()" class="form-control input-sm" value="<fmt:formatDate value="${obj.invoiceinfo.invoicedate }" pattern="yyyy-MM-dd" />"></td>
-                  <td><input id="borrowInvoiceId" name="borrowInvoice" type="checkbox" value="${obj.invoiceinfo.borrowInvoice }" />借发票&nbsp;&nbsp;</td>
+                  <td><input id="borrowInvoice" name="borrowInvoice" type="checkbox" value="" />借发票&nbsp;&nbsp;</td>
                   <%-- <td>开票人：</td>
                   <td>
                      <select id="billuserid" name="billuserid" value="${obj.invoiceinfo.billuserid }" class="form-control input-sm">
@@ -222,6 +229,11 @@
 	<script src="${base }/admin/order/invoiceupload.js"></script>
   <script type="text/javascript">
      $(function(){
+    	 //借发票
+	   	 var borrowInvoice = '${obj.invoiceinfo.borrowInvoice }';
+	   	 if(borrowInvoice === '1'){
+	   		 $('#borrowInvoice').attr('checked','checked');
+	   	 }
     	 /*-----开发票双击事件-----*/
     	 $("#receivablesTable tr").dblclick(function() {
      		 var orderId = $("#orderId").val();
@@ -237,6 +249,7 @@
 	          newDiv.find('[name=invoicebalance]').val(''); 
 	          newDiv.find('[name=fileName]').html('未选择文件');
 	          newDiv.find('[name=invoiceurl]').val('');
+	          newDiv.find('[name=fiscalAmount]').val('');
 	          lastDiv.after(newDiv);
 	          var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
 	          newDiv.find("p").html(No);
@@ -292,6 +305,8 @@
 	   formdata.invoiceitem = invoiceitem;
 	   var invoicedate = $('#invoicedate').val();
 	   formdata.invoicedate = invoicedate;
+	   var borrowInvoice = $('#borrowInvoice').is(':checked');
+	   formdata.borrowInvoice = borrowInvoice;
 	   var billuserid = $('#billuserid').val();
 	   formdata.billuserid = billuserid;
 	   var deptid = $('#deptid').val();
@@ -319,6 +334,9 @@
 		   var invoiceurl = $(this).find('[name=invoiceurl]').val();
 		   detail.invoiceurl = invoiceurl;
 		   invoicelength += invoiceurl;
+		   var fiscalAmount = $(this).find('[name=fiscalAmount]').val();
+		   detail.fiscalAmount = fiscalAmount;
+		   invoicelength += fiscalAmount;
 		   if(invoicelength){
 			   invoicedetails.push(detail);
 		   }
@@ -329,20 +347,20 @@
 			type: 'POST', 
 			data: {data:JSON.stringify(formdata)}, 
 			url: '${base}/admin/invoicemanage/invoiceinfo/saveKaiInvoiceInfo.html',
-           success: function (data) { 
+            success: function (data) { 
            	closewindow();
-           	window.parent.successCallback('1');
+           	var status = '${obj.invoiceinfo.status}';
+           	if(status==1){
+           		window.parent.successCallback('1');
+           	}else if(status==2){
+           		window.parent.successCallback('3');
+           	}
            },
            error: function (xhr) {
            	layer.msg("确认失败","",3000);
            } 
        });
    }
- 	//借发票
-	var borrowInvoiceChecked = '${obj.invoiceinfo.borrowInvoice }';
-	if("" != borrowInvoiceChecked && null != borrowInvoiceChecked && '1'===borrowInvoiceChecked){
-		$('input#borrowInvoiceId').attr('checked','checked');
-	}
 </script>
 </body>
 </html>	
