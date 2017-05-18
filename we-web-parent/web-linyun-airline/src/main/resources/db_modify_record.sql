@@ -504,7 +504,7 @@ END;
 
 DROP FUNCTION IF EXISTS `getByInvoicenumQuery`;
 
-CREATE DEFINER = `root`@`%` FUNCTION `getByInvoicenumQuery`(invoiceId int)
+CREATE FUNCTION `getByInvoicenumQuery`(invoiceId int)
  RETURNS varchar(1024) CHARSET utf8
 BEGIN
 	declare tmpName varchar(50) default '';
@@ -614,3 +614,6 @@ MODIFY COLUMN `payWay`  varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci N
 
 ALTER TABLE `t_customer_info`
 MODIFY COLUMN `paywayName`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '付款方式名称' AFTER `payWay`;
+/******************************************************************************
+version : 1.0.6   END   2017-05-18
+******************************************************************************/
