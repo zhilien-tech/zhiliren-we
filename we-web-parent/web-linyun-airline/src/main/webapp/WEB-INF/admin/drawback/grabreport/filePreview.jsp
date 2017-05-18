@@ -52,7 +52,6 @@
                   	<input id="pnrInfoId"  name="PNR" type="hidden" class="form-control input-sm inputWidth" placeholder="请输入PNR" />
                   </div>
                 </div> 
-                
                 <!-- 设置已选中的项 -->
 				<script type="text/javascript">
 					function setPNRINfo() {
@@ -61,16 +60,58 @@
 						$("#pnrInfoId").val(_selectedAreaIds);
 					}
 				</script>
-                <div class="form-group inline">
-                  <label class="col-sm-1 text-right padding">退税状态：</label>
+				<div class="form-group inline">
+                  <label class="col-sm-2 text-right padding">备用金余额：</label>
                   <div class="col-sm-2 padding">
-                  		<select id="backStatusId" name="backStatus" class="form-control input-sm inputWidth">
-                           <option value="0">已退</option>
-                           <option value="1" selected="selected">未退</option>
-                        </select>
+                  		<input id="depositBalanceId" name="depositBalance" type="text" class="form-control input-sm inputWidth" placeholder="请输入备用金余额" />
                   </div>
                 </div>
-         	  </div><!--end 文件名称/PNR/退税状态-->
+                </div>
+                <div class="row">
+                	<div class="form-group inline">
+	                  <label class="col-sm-2 text-right padding">票价：</label>
+	                  <div class="col-sm-2 padding">
+	                  		<input id="ticketPriceId" name="ticketPrice" type="text" class="form-control input-sm inputWidth" placeholder="请输入票价" />
+	                  </div>
+	                </div>
+	                <div class="form-group inline">
+	                  <label class="col-sm-1 text-right padding">刷卡费：</label>
+	                  <div class="col-sm-2 padding">
+	                  		<input id="swipeId" name="swipe" type="text" class="form-control input-sm inputWidth" placeholder="请输入刷卡费" />
+	                  </div>
+	                </div>
+	                <div class="form-group inline">
+	                    <label class="col-sm-2 text-right padding">税金/杂项：</label>
+	                    <div class="col-sm-2 padding">
+	                  		<input id="taxId" name="tax" type="text" class="form-control input-sm inputWidth" placeholder="请输入税金/杂项" />
+	                    </div>
+                	</div>
+                </div>
+				<div class="row">
+					<div class="form-group inline"> 
+	                  <label class="col-sm-2 text-right padding">消费税：</label>
+	                  <div class="col-sm-2 padding">
+	                  		<input id="exciseTax1Id" name="exciseTax1" type="text" class="form-control input-sm inputWidth" placeholder="请输入消费税(GST)" />
+	                  </div>
+         	 		</div>
+         	 		<div class="form-group inline">
+	                  <label class="col-sm-1 text-right padding">代理返点：</label>
+	                  <div class="col-sm-2 padding">
+	                  		<input id="agentRebateId" name="agentRebate" type="text" class="form-control input-sm inputWidth" placeholder="请输入代理返点"/>
+	                  </div>
+	                </div>
+	                <div class="form-group inline">
+	                  <label class="col-sm-2 text-right padding">退税状态：</label>
+	                  <div class="col-sm-2 padding">
+	                  		<select id="backStatusId" name="backStatus" class="form-control input-sm inputWidth">
+	                           <option value="">--请选择--</option>
+	                           <option value="0"><center>不退</center></option>
+	                           <option value="1" selected="selected"><center>未退</center></option>
+	                           <option value="2" selected="selected"><center>已退</center></option>
+	                        </select>
+	                  </div>
+	                </div>
+				</div>
           	  <div class="row"><!--人数/成本单价/实收单价-->
               	<div class="form-group inline">
                   <label class="col-sm-2 text-right padding">人数：</label>
@@ -78,7 +119,6 @@
                   	  	<input id="peopleNumId" name="peopleNum" type="text" class="form-control input-sm inputWidth" placeholder="请输入人数" />
                   </div>
                 </div> 
-                
                 <div class="form-group inline">
                   <label class="col-sm-1 text-right padding">成本单价：</label>
                   <div class="col-sm-2 padding">
@@ -86,67 +126,37 @@
                   </div>
                 </div>  
                 <div class="form-group inline"> 
-                  <label class="col-sm-1 text-right padding">实收单价：</label>
+                  <label class="col-sm-2 text-right padding">实收单价：</label>
                   <div class="col-sm-2 padding">
                   		<input id="paidUnitPriceId" name="paidUnitPrice" type="text" class="form-control input-sm inputWidth" placeholder="请输入实收单价" />
                   </div>
          	 	</div>
          	  </div><!--end 人数/成本单价/实收单价-->
           	  <div class="row"><!--刷卡费/汇款金额/代理返点-->
-              	<div class="form-group inline">
-                  <label class="col-sm-2 text-right padding">刷卡费：</label>
-                  <div class="col-sm-2 padding">
-                  		<input id="swipeId" name="swipe" type="text" class="form-control input-sm inputWidth" placeholder="请输入刷卡费" />
-                  </div>
-                </div> 
                 <div class="form-group inline">
-                  <label class="col-sm-1 text-right padding">汇款金额：</label>
+                  <label class="col-sm-2 text-right padding">汇款金额：</label>
                   <div class="col-sm-2 padding">
                   		<input id="remitId" name="remit" type="text" class="form-control input-sm inputWidth" placeholder="请输入汇款金额" />
                   </div>
                 </div>  
-                <div class="form-group inline">
-                  <label class="col-sm-1 text-right padding">代理返点：</label>
-                  <div class="col-sm-2 padding">
-                  		<input id="agentRebateId" name="agentRebate" type="text" class="form-control input-sm inputWidth" placeholder="请输入代理返点"/>
-                  </div>
-                </div>  
-         	  </div><!--end 刷卡费/汇款金额/代理返点-->
-          	  <div class="row"><!--税金/杂项/票价/消费税-->
-              	<div class="form-group inline">
-                  <label class="col-sm-2 text-right padding">税金/杂项：</label>
-                  <div class="col-sm-2 padding">
-                  		<input id="taxId" name="tax" type="text" class="form-control input-sm inputWidth" placeholder="请输入税金/杂项" />
-                  </div>
-                </div> 
-                <div class="form-group inline">
-                  <label class="col-sm-1 text-right padding">票价：</label>
-                  <div class="col-sm-2 padding">
-                  		<input id="ticketPriceId" name="ticketPrice" type="text" class="form-control input-sm inputWidth" placeholder="请输入票价" />
-                  </div>
-                </div>  
-                <div class="form-group inline"> 
-                  <label class="col-sm-1 text-right padding">消费税：</label>
-                  <div class="col-sm-2 padding">
-                  		<input id="exciseTax1Id" name="exciseTax1" type="text" class="form-control input-sm inputWidth" placeholder="请输入消费税(GST)" />
-                  </div>
-         	 	</div>
-         	  </div><!--end 税金/杂项/票价/消费税-->
-          	  <div class="row"><!--入澳时间/出澳时间/备注-->
-                <div class="form-group inline">
-                  <label class="col-sm-2 text-right padding">入澳日期：</label>
+                 <div class="form-group inline">
+                  <label class="col-sm-1 text-right padding">入澳日期：</label>
                   <div class="col-sm-2 padding">
                   		<input id="inAustralianTimeId" name="inAustralianTime" type="text" class="form-control input-sm inputWidth" placeholder="请输入入澳时间" />
                   </div>
                 </div>  
                 <div class="form-group inline"> 
-                  <label class="col-sm-1 text-right padding">出澳日期：</label>
+                  <label class="col-sm-2 text-right padding">出澳日期：</label>
                   <div class="col-sm-2 padding">
                   		<input id="outAustralianTimeId" name="outAustralianTime" type="text" class="form-control input-sm inputWidth" placeholder="请输入出澳时间" />
                   </div>
          	 	</div>
+         	  </div><!--end 刷卡费/汇款金额/代理返点-->
+          	  <div class="row"><!--税金/杂项/票价/消费税-->
+         	  </div><!--end 税金/杂项/票价/消费税-->
+          	  <div class="row"><!--入澳时间/出澳时间/备注-->
          	 	<div class="form-group inline">
-                  <label class="col-sm-1 text-right padding">备注：</label>
+                  <label class="col-sm-2 text-right padding">备注：</label>
                   <div class="col-sm-2 padding">
                   		<input id="remarkId" name="remark" type="text" class="form-control input-sm inputWidth" placeholder="请输入备注" />
                   </div>
