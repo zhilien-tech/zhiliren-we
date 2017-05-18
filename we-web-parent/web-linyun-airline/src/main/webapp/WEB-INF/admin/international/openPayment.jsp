@@ -67,6 +67,10 @@
                         </c:forEach>
                     </select>
                   </div>
+                  <label class="col-sm-1 text-right padding labelWid">合计：</label>
+                  <div class="col-sm-2 padding">
+                    <label><fmt:formatNumber type="number" value="${obj.sumjine }" pattern="0.00" maxFractionDigits="2"/></label>
+                  </div>
          </div><!--end 用途/币种-->
          <div class="form-group row"><!--申请人/审批人/审批结果-->
          <label class="col-sm-2 text-right padding">申请人：</label>
