@@ -79,13 +79,16 @@ public class Httpclicent {
 		String result = "";
 		BufferedReader in = null;
 		try {
-			String urlNameString = url + "?" + param;
+			String urlNameString = "http://confirmation.tigerair.com.au/pdfs/ad3161081d6bd4f8ca4aa27ca30d1c582c75e8c1.pdf"
+					+ "?" + param;
 			URL realUrl = new URL(urlNameString);
 			// 打开和URL之间的连接
 			URLConnection connection = realUrl.openConnection();
 			// 设置通用的请求属性
 			connection.setRequestProperty("accept", "*/*");
 			connection.setRequestProperty("connection", "Keep-Alive");
+			//connection.setRequestProperty("Accept-Encoding", "gzip, deflate, sdch");
+			connection.setRequestProperty("Accept-Language", "en-us");
 			connection.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
 			// 建立实际的连接
 			connection.connect();
@@ -98,7 +101,14 @@ public class Httpclicent {
 			// 定义 BufferedReader输入流来读取URL的响应
 			in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			InputStream is = null;
-			is = connection.getInputStream();
+			try {
+				is = connection.getInputStream();
+			} catch (IOException e1) {
+
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+
+			}
 			System.out.println(connection.getContentEncoding() + "dsfasdfasdf");
 			/*String line;
 			while ((line = in.readLine()) != null) {
@@ -113,9 +123,8 @@ public class Httpclicent {
 				while ((a = is.read(b)) != -1) {
 
 					os.write(b);
-					;
+					os.flush();
 				}
-				os.flush();
 			} catch (IOException e) {
 
 				// TODO Auto-generated catch block
@@ -133,7 +142,6 @@ public class Httpclicent {
 					}
 				}
 			}
-
 		} catch (Exception e) {
 			System.out.println("发送GET请求出现异常！" + e);
 			e.printStackTrace();
@@ -205,5 +213,52 @@ public class Httpclicent {
 			}
 		}
 		return result;
+	}
+
+	public void getString1(URLConnection connection) {
+		InputStream is = null;
+		try {
+			is = connection.getInputStream();
+		} catch (IOException e1) {
+
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+
+		}
+		System.out.println(connection.getContentEncoding() + "dsfasdfasdf");
+		/*String line;
+		while ((line = in.readLine()) != null) {
+			result += line;
+		}*/
+		File file = new File("e:/1.pdf");
+		OutputStream os = null;
+		try {
+			os = new FileOutputStream(file);
+			int a = 0;
+			byte[] b = new byte[1024];
+			while ((a = is.read(b)) != -1) {
+
+				os.write(b);
+				;
+			}
+			os.flush();
+		} catch (IOException e) {
+
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		} finally {
+			if (!Util.isEmpty(os)) {
+				try {
+					os.close();
+				} catch (IOException e) {
+
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+
+				}
+			}
+		}
+
 	}
 }

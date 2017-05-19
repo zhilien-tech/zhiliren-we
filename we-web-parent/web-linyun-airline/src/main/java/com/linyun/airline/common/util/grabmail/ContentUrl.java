@@ -6,6 +6,7 @@
 
 package com.linyun.airline.common.util.grabmail;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,6 +52,9 @@ public class ContentUrl {
 				//System.out.println(temp.substring(a + 6, b));
 			}
 		}
+		String str1 = System.getProperty("java.io.tmpdir");
+		DownLoadPdfTransfer.downloadpdf(str, str1 + File.separator + "12.pdf");
+
 		return str;
 	}
 }

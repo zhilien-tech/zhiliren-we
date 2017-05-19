@@ -62,6 +62,7 @@ import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.grabmail.ContentImage;
 import com.linyun.airline.common.util.grabmail.ContentUrl;
 import com.linyun.airline.common.util.grabmail.EmlConvertToHtml;
+import com.linyun.airline.common.util.grabmail.HtmlToPdf;
 import com.uxuexi.core.common.util.BeanUtil;
 import com.uxuexi.core.common.util.FileUtil;
 import com.uxuexi.core.common.util.Util;
@@ -602,7 +603,11 @@ public class MailScrabService extends BaseService {
 		File file1 = new File(str1 + File.separator + "12.html");
 		String fileURL = CommonConstants.IMAGES_SERVER_ADDR
 				+ qiniuUploadService.uploadImage(new FileInputStream(file1), "html", null);
-		return fileURL;
+		HtmlToPdf.convert(fileURL, str1 + File.separator + "12.pdf");
+		File file2 = new File(str1 + File.separator + "12.pdf");
+		String fileURLPdf = CommonConstants.IMAGES_SERVER_ADDR
+				+ qiniuUploadService.uploadImage(new FileInputStream(file2), "pdf", null);
+		return fileURLPdf;
 	}
 
 	/**
@@ -1059,6 +1064,10 @@ public class MailScrabService extends BaseService {
 
 		try {
 			fileUrl = ContentUrl.getUrl(msg);
+			String str1 = System.getProperty("java.io.tmpdir");
+			File file1 = new File(str1 + File.separator + "12.html");
+			fileUrl = CommonConstants.IMAGES_SERVER_ADDR
+					+ qiniuUploadService.uploadImage(new FileInputStream(file1), "pdf", null);
 			String subjectStr = msg.getSubject();
 			// getContent() 是获取包裹内容, Part相当于外包装  
 			String PNR = null;
@@ -1147,9 +1156,12 @@ public class MailScrabService extends BaseService {
 
 						File file3 = new File(str1 + File.separator + "12.html");
 
-						String fileURL = CommonConstants.IMAGES_SERVER_ADDR
+						fileUrl = CommonConstants.IMAGES_SERVER_ADDR
 								+ qiniuUploadService.uploadImage(new FileInputStream(file3), "html", null);
-
+						HtmlToPdf.convert(fileUrl, str1 + File.separator + "12.pdf");
+						File file2 = new File(str1 + File.separator + "12.pdf");
+						fileUrl = CommonConstants.IMAGES_SERVER_ADDR
+								+ qiniuUploadService.uploadImage(new FileInputStream(file2), "pdf", null);
 					} else {
 						fileUrl = uploadFile(is, fileExt);
 

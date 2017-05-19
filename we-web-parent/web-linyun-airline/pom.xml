@@ -169,6 +169,13 @@
 		</dependency>
 		
 		<!--  新增结束-->
+		
+		<!-- https://mvnrepository.com/artifact/com.ning/async-http-client -->
+		<dependency>
+		    <groupId>com.ning</groupId>
+		    <artifactId>async-http-client</artifactId>
+		    <version>1.9.40</version>
+		</dependency>
 	</dependencies>
 
 	<build>
