@@ -40,7 +40,8 @@ public class GrabreportModule {
 	 */
 	@At
 	public Object listData(@Param("..") final TGrabReportSqlForm sqlForm) {
-		return grabreportViewService.listPage4Datatables(sqlForm);
+		//return grabreportViewService.listPage4Datatables(sqlForm);
+		return grabreportViewService.queryReportListData(sqlForm);
 	}
 
 	/**

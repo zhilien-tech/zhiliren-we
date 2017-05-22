@@ -84,6 +84,27 @@ public class TGrabReportSqlForm extends DataTablesParamForm {
 	/**实收单价*/
 	private Double paidUnitPrice;
 
+	/**字典信息id*/
+	private Integer dictInfoId;
+
+	/**币种*/
+	private String currency;
+
+	/**总计*/
+	private Double total;
+
+	/**消费税2*/
+	private Double exciseTax2;
+
+	/**实收票价*/
+	private Double realTicketPrice;
+
+	/**关联状态*/
+	private Integer relationStatus;
+
+	/**pnr系统关联id*/
+	private Integer pnrRelationId;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**
@@ -99,7 +120,7 @@ public class TGrabReportSqlForm extends DataTablesParamForm {
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		//TODO 添加自定义查询条件（可选）
-		cnd.groupBy("id");
+		cnd.orderBy("id", "DESC");
 		return cnd;
 	}
 }
