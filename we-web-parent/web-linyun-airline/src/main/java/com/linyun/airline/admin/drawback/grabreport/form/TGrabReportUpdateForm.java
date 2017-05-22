@@ -77,4 +77,22 @@ public class TGrabReportUpdateForm extends ModForm implements Serializable {
 
 	/**实收单价*/
 	private Double paidUnitPrice;
+
+	/**字典信息id*/
+	private Integer dictInfoId;
+
+	/**币种*/
+	private String currency;
+
+	/**总计*/
+	private Double total;
+
+	/**消费税2*/
+	private Double exciseTax2;
+
+	/**实收票价*/
+	private Double realTicketPrice;
+
+	/**pnr系统关联id*/
+	private Integer pnrRelationId;
 }

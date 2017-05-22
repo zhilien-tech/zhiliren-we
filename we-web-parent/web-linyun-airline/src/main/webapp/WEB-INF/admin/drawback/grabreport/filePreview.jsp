@@ -63,7 +63,15 @@
 				<div class="form-group inline">
                   <label class="col-sm-2 text-right padding">币种：</label>
                   <div class="col-sm-2 padding">
-                  		<input id="currencyId" name="currency" type="text" class="form-control input-sm inputWidth" placeholder="请输入币种" />
+                  		<!-- <input id="currencyId" name="currency" type="text" class="form-control input-sm inputWidth" placeholder="请输入币种" /> -->
+                  		<select id="currencyId" name="currency" class="form-control input-sm inputWidth">
+                  			<option value="">请选择</option>
+                  			<c:forEach items="${obj.dictInfoList}" var="one" varStatus="indexs">
+                  				<option value="${one.dictCode }">
+                            		${one.dictCode }
+                            	</option>
+                  			</c:forEach>
+                  		</select>
                   </div>
                 </div>
                </div>
@@ -443,7 +451,7 @@ var empTable;
 	                    	render: function(data, type, row, meta) {
 	                    		var relationstatus = row.relationstatus;
 	                    		if(1===relationstatus){
-	                    			return "关联";
+	                    			return "已关联";
 	                    		}else if(0===relationstatus){
 	                    			return "未关联";
 	                    		}

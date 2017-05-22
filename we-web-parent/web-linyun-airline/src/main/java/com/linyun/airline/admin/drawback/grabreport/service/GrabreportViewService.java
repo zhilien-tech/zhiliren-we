@@ -23,8 +23,11 @@ import com.linyun.airline.admin.drawback.grabfile.enums.PNRRelationStatusEnum;
 import com.linyun.airline.admin.drawback.grabreport.entity.PNRINFOList;
 import com.linyun.airline.admin.drawback.grabreport.entity.TGrabReportEntity;
 import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportAddForm;
+import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportSqlForm;
 import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.result.Select2Option;
+import com.linyun.airline.entities.DictInfoEntity;
+import com.linyun.airline.entities.TPnrInfoEntity;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.DbSqlUtil;
 import com.uxuexi.core.web.base.service.BaseService;
@@ -33,6 +36,26 @@ import com.uxuexi.core.web.base.service.BaseService;
 public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 
 	TGrabFileEntity grabFileEntity = null;
+
+	/**
+	 * 报表数据查询
+	 * @param sqlForm
+	 */
+	@SuppressWarnings("unchecked")
+	public Object queryReportListData(TGrabReportSqlForm sqlForm) {
+		Map<String, Object> DatatablesData = this.listPage4Datatables(sqlForm);
+		List<Record> listdata = (List<Record>) DatatablesData.get("data");
+		Long relationStatus = null;
+		for (Record record : listdata) {
+			Integer pnrRelationId = record.getInt("pnrRelationId");
+			TPnrSystemMapEntity single = dbDao.fetch(TPnrSystemMapEntity.class, Cnd.where("id", "=", pnrRelationId));
+			if (!Util.isEmpty(single)) {
+				relationStatus = single.getRelationStatus();
+			}
+		}
+		DatatablesData.put("relationStatus", relationStatus);
+		return DatatablesData;
+	}
 
 	/**
 	 * 编辑时回显数据
@@ -51,6 +74,15 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 	public Object addFilePreview(long pid, long flagType) {
 		Map<String, Object> obj = Maps.newHashMap();
 		TGrabFileEntity fetch = dbDao.fetch(TGrabFileEntity.class, pid);
+		//根据字典类别编码查询币种
+		String sqlString = sqlManager.get("grab_report_currency_data");
+		Sql sql = Sqls.create(sqlString);
+		Cnd cnd = Cnd.NEW();
+		cnd.and("dt.typeCode", "=", "BZ");
+		cnd.groupBy("dt.dictCode");
+		sql.setCondition(cnd);
+		List<Record> dictInfoList = dbDao.query(sql, cnd, null);
+		obj.put("dictInfoList", dictInfoList);
 		obj.put("fileurl", fetch);
 		obj.put("pid", pid);
 		obj.put("flagType", flagType);
@@ -74,14 +106,19 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		//double数据四舍五入保留小数点后两位
 		TGrabReportEntity report = new TGrabReportEntity();
 		DecimalFormat df = new DecimalFormat("#.00");
-		String pnr = addForm.getPNR();//pnr
+		String pnrId = addForm.getPNR();//pnrid
+		TPnrInfoEntity one = dbDao.fetch(TPnrInfoEntity.class, Cnd.where("id", "=", pnrId));
+		if (!Util.isEmpty(one)) {
+			String pnr = one.getPNR();//得到PNR
+			report.setPNR(pnr);//PNR
+		}
 		/*Sql sql = Sqls.create(sqlManager.get("grab_report_list"));
 		sql.params().set("pnr", pnr);
 		TReportDto fetchPnr = DbSqlUtil.fetchEntity(dbDao, TReportDto.class, sql);*/
 		Integer peopleNum = addForm.getPeopleNum();//人数
 		Double costUnitPrice = addForm.getCostUnitPrice();//成本单价
 		Double paidUnitPrice = addForm.getPaidUnitPrice();//实收单价(销售价)
-		Double exciseTax1 = addForm.getExciseTax1();//消费税
+		Double exciseTax1 = addForm.getExciseTax1();//消费税1
 		Integer backStatus = addForm.getBackStatus();//退税状态
 		String inAustralianTime = addForm.getInAustralianTime();//入澳时间
 		String outAustralianTime = addForm.getOutAustralianTime();//出澳时间
@@ -93,11 +130,18 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		report.setPeopleNum(peopleNum);
 		report.setCostUnitPrice(costUnitPrice);
 		report.setPaidUnitPrice(paidUnitPrice);
-		report.setPNR(pnr);//PNR
 		report.setBackStatus(backStatus);//退税状态
 		report.setInAustralianTime(inAustralianTime);//入澳时间
 		report.setOutAustralianTime(outAustralianTime);//出澳时间
 		report.setRemark(remark);//备注
+		DictInfoEntity single = dbDao.fetch(DictInfoEntity.class, Cnd.where("dictCode", "=", addForm.getCurrency()));
+		long dictInfoId = 0;
+		if (!Util.isEmpty(single)) {
+			dictInfoId = single.getId();//得到字典信息id
+			report.setDictInfoId(dictInfoId);//字典信息id
+		}
+		report.setCurrency(addForm.getCurrency());//币种
+		report.setDepositBalance(addForm.getDepositBalance());//备用金余额
 
 		if (!Util.isEmpty(exciseTax1)) {
 			report.setExciseTax1(Double.parseDouble(df.format(exciseTax1)));//消费税
@@ -119,12 +163,12 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		} else {
 			report.setRemit(0.0);//页面传过来的值为0时汇款默认给0
 		}
-		List<TGrabReportEntity> reportList = dbDao.query(TGrabReportEntity.class, null, null);
+		/*List<TGrabReportEntity> reportList = dbDao.query(TGrabReportEntity.class, null, null);
 		TGrabReportEntity lastData = reportList.get(reportList.size() - 1);
 		Double boforeBalance = 7312.92;
 		if (!Util.isEmpty(lastData)) {
 			boforeBalance = lastData.getDepositBalance();
-		}
+		}*/
 		if (Util.isEmpty(remit)) {
 			remit = 0.0;
 		}
@@ -134,26 +178,29 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		if (Util.isEmpty(costUnitPrice)) {
 			costUnitPrice = 0.0;
 		}
-		if (!Util.isEmpty(remit) && !Util.isEmpty(peopleNum) && !Util.isEmpty(costUnitPrice)) {
+		/*if (!Util.isEmpty(remit) && !Util.isEmpty(peopleNum) && !Util.isEmpty(costUnitPrice)) {
 			//TODO 1、备用金额=[上期备用金额+汇款-(人数*成本单价)]
 			Double depositBalance = Double
 					.parseDouble(df.format((boforeBalance + remit) - (peopleNum * costUnitPrice)));
 			report.setDepositBalance(depositBalance);
-		}
-		//2、代理费=SUM(票价<含行李>*代理返点)
+		}*/
+		//2、代理费1=SUM(票价<含行李>*代理返点)
 		Double ticketPrice = addForm.getTicketPrice();//票价<含行李>
 		Double agentRebate = addForm.getAgentRebate();//代理返点
 		Double agencyFee = 0.0;
 		if (!Util.isEmpty(ticketPrice) && !Util.isEmpty(agentRebate)) {
-			agencyFee = Double.parseDouble(df.format(ticketPrice * agentRebate));//代理费
+			agencyFee = Double.parseDouble(df.format(ticketPrice * agentRebate));//代理费1
 			report.setTicketPrice(Double.parseDouble(df.format(ticketPrice)));//票价<含行李>
 			report.setAgencyFee(agencyFee);//代理费
 			report.setAgentRebate(Double.parseDouble(df.format(agentRebate)));//代理返点
 		}
 
-		//3、税返点=SUM(代理费*10%)
+		//3、税返点=SUM(代理费1*10%)
 		Double taxRebate = Double.parseDouble(df.format(agencyFee * 0.1));//税返点
 		report.setTaxRebate(taxRebate);
+		//总计=票价+刷卡费+税金/杂项+消费税1-代理费1-税返点
+		Double total = ticketPrice + swipe + tax + exciseTax1 - agencyFee - taxRebate;
+		report.setTotal(total);
 		if (!Util.isEmpty(paidUnitPrice) && !Util.isEmpty(peopleNum)) {
 			//4、实收单价(含操作费)=SUM(实收单价)
 			Double realIncome = paidUnitPrice;//实收单价(含操作费)
@@ -161,6 +208,12 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 			//5、实收合计(含操作费)=SUM[实收单价(含操作费)*人数]
 			Double realTotal = (realIncome * peopleNum);//实收合计(含操作费)
 			report.setRealTotal(realTotal);
+			//消费税2=实收合计<含操作费>/11
+			Double exciseTax2 = realTotal / 11;
+			report.setExciseTax2(exciseTax2);
+			//实收票价<含行李费>=实收合计<含操作费>-消费税2-税金/杂项
+			Double realTicketPrice = (realTotal - exciseTax2 - tax);
+			report.setRealTicketPrice(realTicketPrice);
 			/**6、代理费2 =实收票价(含行李)*代理返点
 			 *          =【实收合计(含操作费)-消费税2-税金/杂项 】*代理返点
 			 *          =【实收合计(含操作费)-SUM(实收合计(含操作费)/11)-税金/杂项】*代理返点
