@@ -324,7 +324,7 @@
                             	<input id="arrears" name="arrears" type="text" readonly="readonly" class="form-control input-sm" />
                             </div>
 							<div class="form-group">
-								<label class="col-sm-1 text-right padding">预收款：</label>
+								<label class="col-sm-1 text-right padding">预存款：</label>
 	                            <div class="col-sm-1 padding">
 	                              <!-- <input id="preDeposit" name="preDeposit" type="text" class="form-control input-sm" onkeyup="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"
 										onafterpaste="this.value=(this.value.match(/\d+(\.\d{0,2})?/)||[''])[0]"> -->
