@@ -9,9 +9,13 @@
 	<link rel="stylesheet" href="${base }/public/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/AdminLTE.css">
-  <link rel="stylesheet" href="${base }/public/font-awesome/css/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="${base }/public/ionicons/css/ionicons.min.css">
-  <link rel="stylesheet" type="text/css" href="${base }/public/dist/css/inlandCross.css"><!--本页面样式-->
+    <link rel="stylesheet" href="${base }/public/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="${base }/public/ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="${base }/public/dist/css/inlandCross.css"><!--本页面样式-->
+	<style type="text/css">
+		.table1 tbody tr td:nth-child(2) .select2-container{width:100px !important;}
+		.table1 tbody tr td:nth-child(4) .select2-container{width:100px !important;}
+	</style>
 </head>
 <body>
 	<div class="modal-top">

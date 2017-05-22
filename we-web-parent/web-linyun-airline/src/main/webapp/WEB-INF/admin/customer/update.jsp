@@ -326,7 +326,7 @@
                             	<input name="arrears" value="<fmt:formatNumber type="number" value="${obj.customer.arrears}" pattern="0.00" maxFractionDigits="2"/>" type="text" readonly="readonly" class="form-control input-sm" />
                             </div>
 							<div class="form-group">
-                          		 <label class="col-sm-1 text-right padding">预收款：</label>
+                          		 <label class="col-sm-1 text-right padding">预存款：</label>
 	                            <div class="col-sm-1 padding">
 	                              <input name="preDeposit" value="<fmt:formatNumber type="number" value="${obj.customer.preDeposit}" pattern="0.00" maxFractionDigits="2"/>" type="text" class="form-control input-sm" oninput="checkLength(this);"/>
 	                            </div>
