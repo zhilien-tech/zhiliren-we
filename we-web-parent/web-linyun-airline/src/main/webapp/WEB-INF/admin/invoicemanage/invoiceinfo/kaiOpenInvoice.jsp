@@ -44,7 +44,7 @@
                   </thead>
                   <tbody>
                     <c:forEach var="one" items="${obj.orders }">
-                		<tr>
+                		<tr ondblclick="toOrderDetail(${one.id})">
                 			<td>${one.ordersnum }</td>
                 			<td>${one.billingdate }</td>
                 			<td>${one.cusgroupnum }</td>
@@ -234,11 +234,6 @@
 	   	 if(borrowInvoice === '1'){
 	   		 $('#borrowInvoice').attr('checked','checked');
 	   	 }
-    	 /*-----开发票双击事件-----*/
-    	 $("#receivablesTable tr").dblclick(function() {
-     		 var orderId = $("#orderId").val();
-     		 window.open('${base}/admin/inland/bookingDetail.html?id='+orderId,'_black');
-     	 });
     	 /*-----收付款>收款>开发票 + 按钮-----*/
 	      $('.addIcon').click(function(){
 	          var divTest = $(this).parents('.cloneTR'); 
@@ -360,6 +355,11 @@
            	layer.msg("确认失败","",3000);
            } 
        });
+   }
+   /*-----开发票双击事件-----*/
+   function toOrderDetail(id){
+	  var url = '${base}/admin/inland/bookingDetail.html?id=' + id;
+	  window.open(url);
    }
 </script>
 </body>

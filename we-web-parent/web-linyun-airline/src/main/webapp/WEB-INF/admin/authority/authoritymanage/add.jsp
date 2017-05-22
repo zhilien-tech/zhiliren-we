@@ -222,7 +222,7 @@ $(document).ready(function(){
 			$("input[id='jobName']").each(function(index,element){
 				var eachJobName = $(element).val();
 				if(null == eachJobName || undefined == eachJobName || "" == eachJobName || "" == $.trim(eachJobName)){
-					throw "职位名称不能为空";
+					throw "职位不能为空且至少存在一个";
 				}
 			}) ;
 		}catch(e){

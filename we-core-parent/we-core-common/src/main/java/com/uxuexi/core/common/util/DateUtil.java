@@ -49,6 +49,7 @@ public class DateUtil {
 
 	public static final SimpleDateFormat FORMAT_FULL = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	public static final SimpleDateFormat FORMAT_DEFAULT_DATE = new SimpleDateFormat("yyyy-MM-dd");
+	public static final SimpleDateFormat FORMAT_DEFAULT_DATE_SS = new SimpleDateFormat("yyyy.MM.dd");
 	public static final SimpleDateFormat FORMAT_DEFAULT_TIME = new SimpleDateFormat("HH:mm:ss");
 
 	/**年-月-日格式*/
@@ -621,6 +622,63 @@ public class DateUtil {
 		Calendar c = parse2Calendar(date);
 		c.set(Calendar.DATE, c.get(Calendar.DATE) + day);
 		return c.getTime();
+	}
+
+	/**
+	 * 获取日期中的数字 月份缩写
+	 * @Data  "04 Jan 2013"   FORMAT_YYYY_MM_DD_SS
+	 * @return String
+	 */
+	public static String getMonthByEnNameOfDate(String EnMonthStr) {
+		String UCEnMonthStr = EnMonthStr.toUpperCase();
+		String[] UCEnMonthStrList = UCEnMonthStr.split("\\s+");
+		String dateStr = UCEnMonthStrList[2] + "-" + getNumMonthByEN(UCEnMonthStrList[1]) + "-" + UCEnMonthStrList[0];
+		Date dateFormat = string2Date(dateStr, FORMAT_YYYY_MM_DD);
+		return FORMAT_DEFAULT_DATE_SS.format(dateFormat);
+	}
+
+	//根据英文月份获取数字月
+	public static String getNumMonthByEN(String monthStr) {
+		String month = "";
+		switch (monthStr) {
+		case "JAN":
+			month = "01";
+			break;
+		case "FEB":
+			month = "02";
+			break;
+		case "MAR":
+			month = "03";
+			break;
+		case "APR":
+			month = "04";
+			break;
+		case "MAY":
+			month = "05";
+			break;
+		case "JUN":
+			month = "06";
+			break;
+		case "JUL":
+			month = "07";
+			break;
+		case "AUG":
+			month = "08";
+			break;
+		case "SEP":
+			month = "09";
+			break;
+		case "OCT":
+			month = "10";
+			break;
+		case "NOV":
+			month = "11";
+			break;
+		case "DEC":
+			month = "12";
+			break;
+		}
+		return month;
 	}
 
 }

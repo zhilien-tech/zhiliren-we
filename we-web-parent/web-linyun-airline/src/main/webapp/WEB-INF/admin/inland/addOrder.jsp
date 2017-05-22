@@ -9,9 +9,13 @@
 	<link rel="stylesheet" href="${base }/public/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="${base}/public/plugins/select2/select2.css">
 	<link rel="stylesheet" href="${base }/public/dist/css/AdminLTE.css">
-  <link rel="stylesheet" href="${base }/public/font-awesome/css/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="${base }/public/ionicons/css/ionicons.min.css">
-  <link rel="stylesheet" type="text/css" href="${base }/public/dist/css/inlandCross.css"><!--本页面样式-->
+    <link rel="stylesheet" href="${base }/public/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="${base }/public/ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="${base }/public/dist/css/inlandCross.css"><!--本页面样式-->
+	<style type="text/css">
+		.table1 tbody tr td:nth-child(2) .select2-container{width:100px !important;}
+		.table1 tbody tr td:nth-child(4) .select2-container{width:100px !important;}
+	</style>
 </head>
 <body>
 	<div class="modal-top">
@@ -91,9 +95,9 @@
                  <table class="table1">
                    <tr>
                      <td><label>出发城市：</label></td>
-                     <td><select id="leavecity" name="leavecity" class="form-control input-sm select2" multiple="multiple" placeholder="PEK(北京)"></select></td>
+                     <td><select id="leavecity" name="leavecity" class="form-control input-sm select2 cityselect2" multiple="multiple" placeholder="PEK(北京)"></select></td>
                      <td><label>抵达城市：</label></td>
-                     <td><select id="arrivecity" name="arrivecity" class="form-control input-sm" multiple="multiple" placeholder="SYD(悉尼)"></select></td>
+                     <td><select id="arrivecity" name="arrivecity" class="form-control input-sm cityselect2" multiple="multiple" placeholder="SYD(悉尼)"></select></td>
                      <td><label>出发日期：</label></td>
                      <td><input id="leavedate" name="leavedate" type="text" class="form-control textWid input-sm" onFocus="WdatePicker({minDate:'%y-%M-%d'})"></td>
                      <td><label>人数：</label></td>

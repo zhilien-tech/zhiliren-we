@@ -155,14 +155,14 @@
 									<td>
 										<!-- <input id="cOutcity" name="cOutcity" type="text" class="form-control input-sm" placeholder="PEK(北京)"> -->
 										<select id="cOutcity" name="cOutcity"
-										class="form-control select2" multiple="multiple"
+										class="form-control select2 cityselect2" multiple="multiple"
 										data-placeholder=""></select>
 									</td>
 									<td><label>抵达城市：</label></td>
 									<td>
 										<!-- <input id="cArrivalcity" type="text" class="form-control input-sm" placeholder="SYD(悉尼)"> -->
 										<select id="cArrivalcity" name="cArrivalcity"
-										class="form-control select2" multiple="multiple"
+										class="form-control select2 cityselect2" multiple="multiple"
 										data-placeholder=""></select>
 									</td>
 									<td><label>出发日期：</label></td>
@@ -293,13 +293,13 @@
 											<td>
 												<!-- <input type="text" class="form-control input-sm" placeholder="拼音/三字代码"> -->
 												<select id="outCity0" name="origin0"
-												class="form-control input-sm" multiple="multiple"
+												class="form-control input-sm cityselect2" multiple="multiple"
 												data-placeholder="拼音/三字代码"></select>
 											</td>
 											<td class="untilTd"><i class="fa fa-minus"></i></td>
 											<td><label>到达城市：</label></td>
 											<td><select id="singleArriveCity0" name="destination0"
-												onkeypress="onkeyEnter();" class="form-control input-sm"
+												onkeypress="onkeyEnter();" class="form-control input-sm cityselect2"
 												multiple="multiple" data-placeholder="拼音/三字代码"></select></td>
 											<!-- <td class="untilTd1"></td> -->
 											<!--空白处 可以忽略-->
@@ -412,7 +412,7 @@
 											<td>
 												<!-- <input type="text" class="form-control input-sm" placeholder="拼音/三字代码"> -->
 												<select id="teamOutCity0" name="origin1"
-												onkeypress="onkeyTeamEnter();" class="form-control input-sm"
+												onkeypress="onkeyTeamEnter();" class="form-control input-sm cityselect2"
 												multiple="multiple" data-placeholder="拼音/三字代码"></select>
 											</td>
 											<td class="untilTd"><i class="fa fa-minus"></i></td>
@@ -420,7 +420,7 @@
 											<td>
 												<!-- <input type="text" class="form-control input-sm" placeholder="拼音/三字代码"> -->
 												<select id="teamArriveCity0" name="destination1"
-												onkeypress="onkeyTeamEnter();" class="form-control input-sm"
+												onkeypress="onkeyTeamEnter();" class="form-control input-sm cityselect2"
 												multiple="multiple" data-placeholder="拼音/三字代码"></select>
 											</td>
 											<!-- <td class="untilTd1"></td> -->
@@ -573,7 +573,7 @@
 		<script src="${base}/admin/searchTicket/saveCustomerNeeds.js"></script>
 		<!-- 时间格式化 -->
 		<script src="${base}/admin/receivePayment/recPayCommon.js"></script>
-
+		<script src="${base }/admin/order/ordercommon.js"></script>
 		<!-- 解析sabre -->
 		<script type="text/javascript">
 			function parsingText() {
@@ -701,17 +701,23 @@
 							}
 						}
 						if (result.parsingType == "QTE:/") {
-							var pnrThread = '<tr>' 
-												+ '<th>币种</th>'
+							var pnrThread = '<tr>' + '<th>序号</th>'
+												+ '<th>航班号</th>'
+												+ '<th>起飞日期</th>' + '<th>航段</th>'
+												+ '<th>航程时间</th>'
 												+ '<th>舱位价格</th>'
 												+ '</tr>';
 							var pnrBody = '';
 							var obj = result.arrayList;
 							for (var i = 0; i < obj.length; i++) {
-								pnrBody += '<tr>' 
-										+ '<td>' + obj[i].airSeatsCurrency+ '</td>' 
-										+ '<td>' + obj[i].airSeatsPrice+ '</td>' 
-										+ '</tr>';
+								pnrBody += '<tr>' + '<td>' + (i+1)
+												+ '</td>' + '<td>' + obj[i].flightNum
+												+ '</td>' + '<td>' + obj[i].presetDate
+												+ '</td>' + '<td>' + obj[i].airLine
+												+ '</td>' + '<td>'+ obj[i].airDepartureTime + '-'+ obj[i].airLandingTime 
+												+ '</td>' + '<td>' + obj[i].airSeatsPrice
+												+ '</td>'
+												+ '</tr>';
 							}
 						}
 						

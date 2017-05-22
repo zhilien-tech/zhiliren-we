@@ -3,7 +3,7 @@
 table.dataTable thead .sorting_asc:after{display: none;}
 table.dataTable thead .sorting:after {display: none;}
 table.dataTable thead .sorting_desc:after {display: none;}
-table.dataTable thead > tr > th {padding-right: 0px;}
+table.dataTable thead > tr > th {padding-right:10px;}
 .nlkhUL{border-bottom-color: #ececec !important;}
 .nlkhUL li a{color: #adadad !important;padding: 5px 15px;}
 .nlkhUL li.active{border-top: solid 1px rgba(53, 65, 72, 0) !important;border-bottom: solid 1px #e4e4e4;}
@@ -91,4 +91,4 @@ table.dataTable thead > tr > th {padding-right: 0px;}
 #interRecSelect,#interPaySelect,#cardNum,#approver,#fundType,#payDate,#payCurrency,#approveResult{padding-left: 3px;padding-right: 3px;}
 button#interPayCancelBtn {padding: 5px 10px;}
 .leftPadding {padding-left: 10px;}
-/* #interPayTable tbody tr td{padding: 0;} */
+#interPayEdTbody tr td span{width:70px;display: block;word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis; margin: 0 auto;}

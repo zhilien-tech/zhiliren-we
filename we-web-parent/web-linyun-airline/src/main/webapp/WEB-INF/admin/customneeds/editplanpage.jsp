@@ -120,7 +120,7 @@
                 	<div class="form-group form-group1">
 	                  <label class="col-sm-2 text-right padding customerEdit">联运要求：</label>
 	                  <div class="col-sm-2 padding">
-	                    <select id="unioncity" name="unioncity" type="text" class="form-control input-sm select2" multiple="multiple" placeholder=" " >
+	                    <select id="unioncity" name="unioncity" type="text" class="form-control input-sm select2 cityselect2" multiple="multiple" placeholder=" " >
 	                    	<c:forEach var="one" items="${obj.union }">
 	                    		<c:choose>
 	                    			<c:when test="${one.id eq 0}">
@@ -141,7 +141,7 @@
 	                	<div class="form-group">
 		                  <label class="col-sm-1 text-right padding customerEdit">出发城市：</label>
 		                  <div class="col-sm-1 padding">
-		                    <select id="leavescity" name="leavescity" type="text" class="form-control input-sm select2" multiple="multiple" placeholder="" >
+		                    <select id="leavescity" name="leavescity" type="text" class="form-control input-sm select2 cityselect2" multiple="multiple" placeholder="" >
 		                    	<c:forEach var="one" items="${obj.city }">
 		                    		<c:choose>
 		                    			<c:when test="${airline.leavecity eq one.dictCode }">
@@ -158,7 +158,7 @@
 	                	<div class="form-group form-group1">
 		                  <label class="col-sm-1 text-right padding">抵达城市：</label>
 		                  <div class="col-sm-1 padding">
-		                     <select id="backscity" name="backscity" type="text" class="form-control input-sm select2" multiple="multiple" placeholder="">
+		                     <select id="backscity" name="backscity" type="text" class="form-control input-sm select2 cityselect2" multiple="multiple" placeholder="">
 		                    	<c:forEach var="one" items="${obj.city }">
 									<c:choose>
 		                    			<c:when test="${airline.arrvicity eq one.dictCode }">
@@ -235,6 +235,7 @@
 	<script src="${base}/public/plugins/select2/select2.full.min.js"></script>
 	<script src="${base}/public/plugins/select2/i18n/zh-CN.js"></script>
 	<script src="${base}/admin/airline/editplanselect2.js"></script>
+	<script src="${base }/admin/order/ordercommon.js"></script>
 	<!--pikaday -->
 	<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">

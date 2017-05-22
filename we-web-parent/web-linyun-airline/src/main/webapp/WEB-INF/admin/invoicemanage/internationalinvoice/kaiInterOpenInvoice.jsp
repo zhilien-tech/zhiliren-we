@@ -46,7 +46,7 @@
                   </thead>
                   <tbody>
                     <c:forEach var="one" items="${obj.orders }">
-                		<tr>
+                		<tr ondblclick="toInterOrderDetail(${one.id})">
                 			<td>${one.ordersnum }</td>
                 			<td>${one.billingdate }</td>
                 			<td>${one.cusgroupnum }</td>
@@ -236,11 +236,6 @@
    		 if('1'===borrowInvoiceChecked){
    			$('#borrowInvoice').attr('checked','checked');
    		 }
-    	 
-    	 $("#receivablesTable tr").dblclick(function() {
-    		 var orderId = $("#orderId").val();
-    		 window.open('${base}/admin/international/internationalDetail.html?orderid='+orderId,'_black');
-    	 });
     	 /*-----收付款>收款>开发票 + 按钮-----*/
 	      $('.addIcon').click(function(){
 	          var divTest = $(this).parents('.cloneTR'); 
@@ -362,6 +357,10 @@
            } 
        });
    }
+   function toInterOrderDetail(id){
+		var url = '${base}/admin/international/internationalDetail.html?orderid='+id;
+		window.open(url);
+	}
   </script>
 </body>
 </html>	

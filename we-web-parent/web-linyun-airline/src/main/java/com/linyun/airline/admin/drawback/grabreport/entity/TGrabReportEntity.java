@@ -100,4 +100,27 @@ public class TGrabReportEntity implements Serializable {
 	@Comment("实收单价")
 	private Double paidUnitPrice;
 
+	@Column
+	@Comment("字典信息id")
+	private Long dictInfoId;
+
+	@Column
+	@Comment("币种")
+	private String currency;
+
+	@Column
+	@Comment("总计")
+	private Double total;
+
+	@Column
+	@Comment("消费税2")
+	private Double exciseTax2;
+
+	@Column
+	@Comment("实收票价")
+	private Double realTicketPrice;
+
+	@Column
+	@Comment("实收票价")
+	private Integer pnrRelationId;
 }

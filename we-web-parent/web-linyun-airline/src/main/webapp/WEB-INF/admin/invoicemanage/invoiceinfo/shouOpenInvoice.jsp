@@ -35,7 +35,7 @@
     </div>
     <div style="height:550px; overflow-y:auto;" class="allCentext">
       <div class="modal-body">
-      	<input id="id" name="id" type="hidden" value="${obj.id }" > 
+      	<input id="id" name="id" type="hidden" value="${obj.ordersid }" > 
          <table id="receivablesTable" class="table table-bordered table-hover">
                   <thead>
                     <tr>
@@ -45,13 +45,13 @@
                       <th>客户团号</th>
                       <th>客户公司名称</th>
                       <th>联系人</th>
-                      <th>出票人</th>
+                      <th>票务</th>
                       <th>金额</th>
                     </tr>
                   </thead>
                   <tbody>
                   	<c:forEach var="one" items="${obj.pnrinfo }">
-                  		<tr>
+                  		<tr ondblclick="toOrderDetail(${one.orderids})">
                   			<td>${one.ordersnum }</td>
                   			<td>${one.pnr }</td>
                   			<td>${one.billingdate }</td>
@@ -238,11 +238,7 @@
    		 if('1'===borrowInvoiceChecked){
    			$('#borrowInvoice').attr('checked','checked');
    		 }
-    	 /*-----收发票双击事件-----*/
-    	 $("#receivablesTable tr").dblclick(function() {
-     		 var orderId = $("#orderId").val();
-     		 window.open('${base}/admin/inland/bookingDetail.html?id='+orderId,'_black');
-     	 });
+    	 
     	 /*-----收付款>收款>开发票 + 按钮-----*/
 	      $('.addIcon').click(function(){
 	          var divTest = $(this).parents('.cloneTR'); 
@@ -361,6 +357,11 @@
            } 
        });
    }
-  </script>
+   /*-----收发票双击事件-----*/
+   function toOrderDetail(id){
+		var url = '${base}/admin/inland/bookingDetail.html?id=' + id;
+		window.open(url);
+	}
+</script>
 </body>
 </html>

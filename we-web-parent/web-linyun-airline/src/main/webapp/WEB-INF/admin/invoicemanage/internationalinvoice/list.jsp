@@ -122,7 +122,7 @@
                              </div> --%>
                             <div class="col-md-1 textPadding">
                               <select id="shoubilluserid" name="billuserid" class="form-control TimeInput">
-                                  <option value="">收票人</option>
+                                  <option value="">税票</option>
 				                    <c:forEach items="${obj.listIssuer}" var="one" varStatus="indexs">
 				                    	<option value="${one.billuserid }">
 			                            	${one.fullName }
@@ -158,7 +158,7 @@
                              <th>收发票日期</th>
                              <th>发票开具项目</th>
                              <th>收款单位</th>
-                             <th>收票人</th>
+                             <th>税票</th>
                              <th>订单状态</th>
                              <th>状态</th>
                              <th>备注</th>
