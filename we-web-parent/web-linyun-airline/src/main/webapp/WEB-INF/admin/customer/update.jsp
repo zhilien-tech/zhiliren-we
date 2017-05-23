@@ -68,14 +68,10 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-1 text-right padding">负责人：</label>
+								<label class="col-sm-1 text-right padding">电话：</label>
 								<div class="col-sm-3 padding">
-									<!-- 负责人下拉列表 -->
-									<select id="agent" name="responsibleId" class="form-control input-sm inpImportant">
-										<c:forEach var="one" items="${obj.userlist }">
-											<option value="${one.id }" <c:if test="${one.id eq obj.customer.responsibleId}">selected</c:if>>${one.fullName}</option>
-										</c:forEach>
-									</select><span class="prompt">*</span>
+									<input id=" " name=" " type="text" class="form-control input-sm inpImportant" placeholder="请输入公司简称" />
+									<span class="prompt">*</span>
 								</div>
 							</div>
 						</div>
@@ -95,13 +91,24 @@
 								</div>
 							</div>
 						</div> --%>
-						<div class="row sitefax">
-							<label class="col-sm-3 text-right padding">网址：</label>
+						<div class="row">
+							<%-- <label class="col-sm-3 text-right padding">网址：</label>
 							<div class="col-sm-3 padding">
 								<input name="siteUrl" type="tel" class="form-control input-sm inpImportant"
 									value="${obj.customer.siteUrl}" placeholder="请输入网址" />
+							</div> --%>
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">负责人：</label>
+								<div class="col-sm-3 padding">
+									<!-- 负责人下拉列表 -->
+									<select id="agent" name="responsibleId" class="form-control input-sm inpImportant">
+										<c:forEach var="one" items="${obj.userlist }">
+											<option value="${one.id }" <c:if test="${one.id eq obj.customer.responsibleId}">selected</c:if>>${one.fullName}</option>
+										</c:forEach>
+									</select><span class="prompt">*</span>
+								</div>
 							</div>
-							<div class="form-group fax">
+							<div class="form-group">
 								<label class="col-sm-1 text-right padding">传真：</label>
 								<div class="col-sm-3 padding">
 									<input name="fax" type="tel" class="form-control input-sm inpImportant"
@@ -109,12 +116,19 @@
 								</div>
 							</div>
 						</div>
-						<div class="row address">
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">网址：</label>
+								<div class="col-sm-7 padding">
+									<input name="siteUrl" type="tel" class="form-control input-sm inpImpWid" value="${obj.customer.siteUrl}" placeholder="请输入网址" />
+								</div>
+							</div>
+						</div>
+						<div class="row">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">地址：</label>
 								<div class="col-sm-7 padding">
-									<input id="address" name="address" type="tel" class="form-control input-sm inpImpWid"
-										value="${obj.customer.address}" placeholder="请输入详细地址" /><span class="prompt">*</span>
+									<input id="address" name="address" type="tel" class="form-control input-sm inpImpWid" value="${obj.customer.address}" placeholder="请输入详细地址" /><span class="prompt">*</span>
 								</div>
 							</div>
 						</div>
@@ -448,7 +462,7 @@
 						
 					</div>
 					<div class="tab-pane" id="tabs_7">
-						<div class="row">
+						<!-- <div class="row">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">公司名称：</label>
 								<div class="col-sm-7 padding">
@@ -456,7 +470,7 @@
 									<span class="prompt">*</span>
 								</div>
 							</div>
-						</div>
+						</div> -->
 						<div class="row">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">纳税人识别号：</label>
@@ -493,7 +507,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="row">
+						<!-- <div class="row">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">电话：</label>
 								<div class="col-sm-7 padding">
@@ -509,7 +523,7 @@
 									<input id=" " name=" " type="text" class="form-control input-sm inpImpWid" placeholder=" " />
 								</div>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>
