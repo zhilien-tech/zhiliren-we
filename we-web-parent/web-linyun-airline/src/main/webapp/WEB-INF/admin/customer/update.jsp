@@ -27,10 +27,12 @@
 				<input id="updateBtn" type="button" class="btn btn-primary right btn-sm" value="保存" onclick="updateCustomerInfo();" />
 				<ul class="nav nav-tabs">
 					<li class="active"><a href="#tabs_1" data-toggle="tab">基本信息</a></li>
-					<li><a href="#tabs_2" data-toggle="tab">线路权限</a></li>
-					<li><a href="#tabs_3" data-toggle="tab">附件管理</a></li>
-					<li><a href="#tabs_4" data-toggle="tab">业务范围</a></li>
-					<li><a href="#tabs_5" data-toggle="tab">财务信息</a></li>
+					<li><a href="#tabs_2" data-toggle="tab">联系人</a></li>
+					<li><a href="#tabs_3" data-toggle="tab">线路权限</a></li>
+					<li><a href="#tabs_4" data-toggle="tab">附件管理</a></li>
+					<li><a href="#tabs_5" data-toggle="tab">业务范围</a></li>
+					<li><a href="#tabs_6" data-toggle="tab">财务信息</a></li>
+					<li><a href="#tabs_7" data-toggle="tab">税控信息</a></li>
 				</ul>
 			</div>
 			<div class="modal-body">
@@ -77,7 +79,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="row">
+						<%-- <div class="row">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">联系人：</label>
 								<div class="col-sm-3 padding">
@@ -92,7 +94,7 @@
 										value="${obj.customer.telephone}" placeholder="请输入联系电话" /><span class="prompt">*</span>
 								</div>
 							</div>
-						</div>
+						</div> --%>
 						<div class="row sitefax">
 							<label class="col-sm-3 text-right padding">网址：</label>
 							<div class="col-sm-3 padding">
@@ -156,6 +158,88 @@
 						</div>
 					</div>
 					<div class="tab-pane" id="tabs_2">
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">联系人：</label>
+								<div class="col-sm-3 padding">
+									<input id="linkMan" name="linkMan" type="tel" class="form-control input-sm inpImportant"
+										value="${obj.customer.linkMan}" placeholder="请输入联系人" /><span class="prompt">*</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-1 text-right padding">联系电话：</label>
+								<div id="phoneDiv" class="col-sm-3 padding">
+									<input id="telephone" name="telephone" type="tel" class="form-control input-sm inpImportant mustPhoneLength"
+										value="${obj.customer.telephone}" placeholder="请输入联系电话" /><span class="prompt">*</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">账号名称：</label>
+								<div class="col-sm-7 padding">
+									<input id=" " name=" " type="text"
+										class="form-control input-sm inpImpWid" placeholder=" " /><span
+										class="prompt">*</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group fax">
+								<label class="col-sm-3 text-right padding">银行名称：</label>
+								<div class="col-sm-3 padding">
+									<input name=" " type="text" class="form-control input-sm inpImportant" placeholder=" " />
+								</div>
+							</div>
+							<div class="form-group fax">
+								<label class="col-sm-1 text-right padding">应返合计：</label>
+								<div  class="col-sm-3 padding">
+									<input id=" " name=" " type="text" class="form-control input-sm inpImportant" placeholder=" " />
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group fax">
+								<label class="col-sm-3 text-right padding">银行卡号：</label>
+								<div class="col-sm-3 padding">
+									<input name=" " type="text" class="form-control input-sm inpImportant" placeholder=" " />
+								</div>
+							</div>
+							<div class="form-group fax">
+								<label class="col-sm-1 text-right padding">微信号码：</label>
+								<div  class="col-sm-3 padding">
+									<input id=" " name=" " type="text" class="form-control input-sm inpImportant" placeholder=" " />
+									<span class="prompt">*</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group fax">
+								<label class="col-sm-3 text-right padding">QQ号码：</label>
+								<div class="col-sm-3 padding">
+									<input name=" " type="text" class="form-control input-sm inpImportant" placeholder=" " />
+									<span class="prompt">*</span>
+								</div>
+							</div>
+							<div class="form-group fax">
+								<label class="col-sm-1 text-right padding">E-mail：</label>
+								<div class="col-sm-3 padding">
+									<input id=" " name=" " type="text" class="form-control input-sm inpImportant" placeholder=" " />
+									<span class="prompt">*</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">备注：</label>
+								<div class="col-sm-7 padding">
+									<textarea id="" class="form-control input-sm inpImpWid textareaHei">
+									</textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane" id="tabs_3">
 						<!--路线权限-->
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">国境内陆：</label>
@@ -185,7 +269,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="tab-pane" id="tabs_3">
+					<div class="tab-pane" id="tabs_4">
 						<!--附件管理-->
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">附件列表：</label>
@@ -208,7 +292,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="tab-pane" id="tabs_4">
+					<div class="tab-pane" id="tabs_5">
 						<!--业务范围-->
 						<div class="form-group row">
 							<label class="col-sm-3 text-right padding">业务范围：</label>
@@ -217,7 +301,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="tab-pane tab-pane1" id="tabs_5">
+					<div class="tab-pane tab-pane1" id="tabs_6">
 						<!--财务信息-->
 						<div class="form-group row">
 							<label class="col-sm-2 text-right padding">签约状态：</label>
@@ -362,6 +446,70 @@
                         </div>
 <!--------------------------------------------新编辑 内容   财务信息  end-------------------------------------------------->
 						
+					</div>
+					<div class="tab-pane" id="tabs_7">
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">公司名称：</label>
+								<div class="col-sm-7 padding">
+									<input id=" " name=" " type="text" class="form-control input-sm inpImpWid" placeholder=" " />
+									<span class="prompt">*</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">纳税人识别号：</label>
+								<div class="col-sm-7 padding">
+									<input id=" " name=" " type="text" class="form-control input-sm inpImpWid" placeholder=" " />
+									<span class="prompt">*</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">开户行：</label>
+								<div class="col-sm-7 padding">
+									<input id=" " name=" " type="text" class="form-control input-sm inpImpWid" placeholder=" " />
+									<span class="prompt">*</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">账号：</label>
+								<div class="col-sm-7 padding">
+									<input id=" " name=" " type="text" class="form-control input-sm inpImpWid" placeholder=" " />
+									<span class="prompt">*</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">行号：</label>
+								<div class="col-sm-7 padding">
+									<input id=" " name=" " type="text" class="form-control input-sm inpImpWid" placeholder=" " />
+									<span class="prompt">*</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">电话：</label>
+								<div class="col-sm-7 padding">
+									<input id=" " name=" " type="text" class="form-control input-sm inpImpWid" placeholder=" " />
+									<span class="prompt">*</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">地址：</label>
+								<div class="col-sm-7 padding">
+									<input id=" " name=" " type="text" class="form-control input-sm inpImpWid" placeholder=" " />
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
