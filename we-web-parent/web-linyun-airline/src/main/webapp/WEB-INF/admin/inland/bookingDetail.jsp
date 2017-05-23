@@ -308,12 +308,12 @@
 					                   </tr>
 			                   		</c:otherwise>
 			                   </c:choose>
-			               <tr>
-		                     <%-- <td><label>平均汇率：</label></td>
+			              <%--  <tr>
+		                     <td><label>平均汇率：</label></td>
 		                     <td><input id="avgexrate" name="avgexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid" value="${customneed.cusinfo.avgexrate }"/></td>
 		                     <td><label>实时汇率：</label></td>
 		                     <td><input id="realtimexrate" name="realtimexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid" value="${customneed.cusinfo.realtimexrate }"/>
-			                 </td> --%>
+			                 </td>
 		                     <td><label>内陆跨海：</label></td>
 		                     <td class="tdWid"><select id="neilu" name="neilu" disabled="disabled" class="form-control input-sm">
 		                     		<option value="">请选择</option>
@@ -348,7 +348,7 @@
 							 <td name="internationalcard" colspan="2" style="display: none;" align="left"><label>余额：</label></td>
 							 <td name="threepaytd"></td>
 							 <td name="threepaymethod" style="display: none;"><select name="thirdcustomid" disabled="disabled" class="form-control input-sm"></select></td>
-		                   </tr>
+		                   </tr> --%>
 		                   <tr class="pnrTr">
 		                     <td colspan="15" class="addPNR">
 		                        <table class="table table-bordered table-hover">
@@ -408,14 +408,6 @@
 		                     <td><input id="leavedate" name="leavedate" disabled="disabled" type="text" class="form-control input-sm textWid" placeholder="2017-02-22" onFocus="WdatePicker({minDate:''})"/></td>
 		                     <td><label>人数：</label></td>
 		                     <td><input id="peoplecount" name="peoplecount" disabled="disabled" type="text" class="form-control input-sm textWid mustNumber"/></td>
-		                     <!-- <td><label class="labelWid">早中晚：</label></td>
-		                     <td>
-		                       <select id="tickettype" name="tickettype" disabled="disabled" class="form-control input-sm textWid">
-			                         <option value="1">早</option>
-			                         <option value="2">中</option>
-			                         <option value="3">晚</option>
-			                       </select>
-		                     </td> -->
 		                   </tr>
 		                   <tr name="airlineinfo" class="airlineinfo">
 		                     <td></span><label>航空公司：</label></td>
@@ -438,7 +430,7 @@
 		                      <a href="javascript:;" name="addButton" class="glyphicon glyphicon-plus addIcon removAddMake none"></a>
 		                     </td>
 		                   </tr>
-			               <tr>
+			               <%-- <tr>
 		                     <!-- <td><label>平均汇率：</label></td>
 		                     <td><input id="avgexrate" name="avgexrate" disabled="disabled" type="text" class="form-control input-sm mustNumberPoint textWid"/></td>
 		                     <td><label>实时汇率：</label></td>
@@ -464,7 +456,7 @@
 							 <td name="threepaytd"></td>
 							 <td name="threepaymethod" style="display: none;"><select name="thirdcustomid" disabled="disabled" class="form-control input-sm"></select></td>
 		                   </tr>
-		                   <tr>
+		                   <tr> --%>
 		                     <td colspan="13" class="addPNR">
 		                        <table class="table table-bordered table-hover">
 		                         <thead>
@@ -525,7 +517,7 @@
                    <tr>
                      <td><label>客户团号：</label></td>
                      <td><input id="cusgroupnum" name="cusgroupnum" type="text" class="form-control input-sm disab" disabled="disabled" value="${obj.finance.cusgroupnum }"></td>
-                     <td><label>类型：</label></td>
+                     <%-- <td><label>类型：</label></td>
                      <td>
                         <select id="teamtype" name="teamtype" class="form-control input-sm disab" disabled="disabled">
                             <option value="">请选择</option>
@@ -540,7 +532,7 @@
 	                            </c:choose>
 							 </c:forEach>
                         </select>
-                     </td>
+                     </td> --%>
                      <td><label>是否结算：</label></td>
                      <td>
                         <select id="billingstatus" name="billingstatus" class="form-control input-sm disab" disabled="disabled">
@@ -570,14 +562,11 @@
                      </td> --%>
                      <td><label>开票日期：</label></td>
                      <td><input id="billingdate" name="billingdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" type="text" class="form-control input-sm" value="<fmt:formatDate value="${obj.finance.billingdate }" pattern="yyyy-MM-dd" />" disabled="disabled"></td>
+                   	 <td><label>人头数：</label></td>
+                     <td><input id="personcount" name="personcount" value="${obj.finance.personcount }" type="text" class="form-control input-sm disab mustNumber" disabled="disabled"></td>
                    </tr>
                    <tr class="KHinfo">
                    </tr>
-                     
-                     <%-- <td><label>进澳时间：</label></td>
-                     <td><input id="enterausdate" name="enterausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.enterausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
-                     <td><label>出澳时间：</label></td>
-                     <td><input id="outausdate" name="outausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.outausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td> --%>
                    <tr class="KHinfo">
                      <td><label>进澳日期：</label></td>
                      <td><input id="enterausdate" name="enterausdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<fmt:formatDate value="${obj.finance.enterausdate }" pattern="yyyy-MM-dd" />" type="text" class="form-control input-sm disab" disabled="disabled"></td>
@@ -672,9 +661,7 @@
                      <td><label>抵达时间：</label></td>
                      <td><input id="outarrivetime" name="outarrivetime" value="${obj.finance.outarrivetime }" type="text" class="form-control input-sm disab mustArriveTimes" disabled="disabled"></td>
                    </tr>
-                   <tr class="KHinfo">
-                   	 <td><label>人头数：</label></td>
-                     <td><input id="personcount" name="personcount" value="${obj.finance.personcount }" type="text" class="form-control input-sm disab mustNumber" disabled="disabled"></td>
+                   <%-- <tr class="KHinfo">
                      <td><label>应收：</label></td>
                      <td><input id="receivable" name="receivable" type="text" class="form-control input-sm disab mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.finance.receivable }" pattern="0.00" maxFractionDigits="2"/>" disabled="disabled"></td>
                      <td><label><a href="javascript:;" class="" id="jianMian" disabled="disabled">减免</a>：</label></td>
@@ -691,11 +678,125 @@
                      <td><input id="returntotal" name="returntotal" type="text" class="form-control input-sm disab mustNumberPoint" disabled="disabled" value="<fmt:formatNumber type="number" value="${obj.finance.returntotal }" pattern="0.00" maxFractionDigits="2"/>"></td>
                      <td><label>利润合计：</label></td>
                      <td><input id="profittotal" name="profittotal" type="text" class="form-control input-sm disab mustNumberPoint" disabled="disabled" value="<fmt:formatNumber type="number" value="${obj.finance.profittotal }" pattern="0.00" maxFractionDigits="2"/>"></td>
-                   </tr>
+                   </tr> --%>
                  </table>
                 </form>
             </div>
           </div><!--end 信息-->
+          
+          <div class="customerInfo"><!--收支信息-->
+            <div class="infoTop">
+                 <p>收支信息</p>
+            </div>
+            <div class="infofooter">
+            	<form id="financeForm">
+            		<input id="id" name="id" type="hidden" value="${obj.finance.id }" >
+            		<input id="orderid" name="orderid" type="hidden" value="${obj.orderinfo.id }"/>
+                 <table>
+                   <tr>
+                     <td><label>USD：</label></td>
+                     <td><input id=" " name=" " type="text" class="form-control input-sm disab" disabled="disabled" value=" "></td>
+                     <td><label>RMB金额：</label></td>
+                     <td><input id=" " name=" " type="text" class="form-control input-sm disab" disabled="disabled" value=" "></td>
+                   	 <td> </td>
+                   	 <td> </td>
+                   	 <td> </td>
+                   	 <td> </td>
+                   	 <td> </td>
+                   	 <td> </td>
+                   	 <td> </td>
+                   	 <td> </td>
+                   </tr>
+                   <tr class="KHinfo">
+                     <td><label>CNY：</label></td>
+                     <td><input id=" " name=" " value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                   	 <td><label>RMB金额：</label></td>
+                     <td><input id=" " name=" " type="text" class="form-control input-sm disab" disabled="disabled" value=" "></td>
+                     <td> </td>
+                   	 <td> </td>
+                   	 <td> </td>
+                   	 <td> </td>
+                   	 <td> </td>
+                   	 <td> </td>
+                   	 <td> </td>
+                   	 <td> </td>
+                   </tr>
+                   <tr class="KHinfo">
+                     <td><label>成本合计：</label></td>
+                     <td><input id=" " name=" " value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                   	 <td><label><a href="javascript:;" class="" id="jianMian" disabled="disabled">应返金额：</a></label></td>
+                     <td><input id=" " name=" " value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                   	 <td><label></label></td>
+                   	 <td> </td>
+                   	 <td><label></label></td>
+                   	 <td> </td>
+                   	 <td><label></label></td>
+                   	 <td> </td>
+                   	 <td><label></label></td>
+                   	 <td> </td>
+                   </tr>
+                   <tr class="KHinfo">
+                     <td><label>应收金额：</label></td>
+                     <td><input id=" " name=" " value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                   	 <td><label>实收合计</label></td>
+                     <td><input id=" " name=" " value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                   	 <td><label>合计利润：</label></td>
+                   	 <td><input id=" " name=" " value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
+                   	 <td><label></label></td>
+                   	 <td> </td>
+                   	 <td><label></label></td>
+                   	 <td> </td>
+                   	 <td><label></label></td>
+                   	 <td> </td>
+                   </tr>
+                 </table>
+                </form>
+            </div>
+          </div><!--end 收支信息-->
+          
+          <div class="customerInfo"><!--退改票-->
+            <div class="infoTop">
+                 <p>退改票</p>
+            </div>
+            <div class="infofooter padding10">
+            	<input type="button" value="退票" class="btn btn-primary input-sm tuiPiaoBtn none">
+                 <table class="table table-bordered table-hover tuiGaiPiaoTable">
+                 	<thead>
+                 		<tr>
+                 			<th>客户名称</th>
+                 			<th>退票人</th>
+                 			<th>电话</th>
+                 			<th>申请日期</th>
+                 			<th>金额</th>
+                 			<th>税金</th>
+                 			<th>退款金额</th>
+                 			<th>原因</th>
+                 			<th>状态</th>
+                 			<th>备注</th>
+                 			<th>操作</th>
+                 		</tr>
+                 	</thead>
+                 	<tbody>
+                 		<tr>
+                 			<td>青年旅行社</td>
+                 			<td>游客</td>
+                 			<td>15132620005</td>
+                 			<td>2016-12-05</td>
+                 			<td>3265.00</td>
+                 			<td>123.00</td>
+                 			<td>151.00</td>
+                 			<td>拒签</td>
+                 			<td>退款中</td>
+                 			<td></td>
+                 			<td>
+                 				<a href="javascript:;">编辑</a>&nbsp;&nbsp;
+                 				<a href="javascript:;">删除</a>
+                 			</td>
+                 		</tr>
+                 	</tbody>
+                 </table>
+            </div>
+          </div><!--end 退改票-->
           
         </div>
         <div class="col-sm-2 rightRemind">
@@ -783,6 +884,7 @@
           $('.remindSet tbody tr td input').removeAttr("disabled");//删除 提醒设置 input 禁止编辑的状态
           $('.disab').removeAttr("disabled");//信息模块 input 禁止编辑的状态
           $('.PNRbtnTD').removeClass('none');//+PNR 按钮 显示
+          $('.tuiPiaoBtn').removeClass('none');//退票 按钮 显示
           $('#orderType').removeAttr("disabled");//订单状态禁止编辑的状态
           $('#remindTime').removeAttr("disabled");//订单状态禁止编辑的状态
           $('#remindType').removeAttr("disabled");//订单状态禁止编辑的状态
@@ -827,6 +929,7 @@
           $('.remindSet tbody tr td input').attr("disabled",'disabled');//提醒设置 input 添加 不可编辑属性
           $('.disab').attr("disabled",'disabled');//信息模块 input 添加 不可编辑属性
           $('.PNRbtnTD').addClass('none');//+PNR 按钮 隐藏
+          $('.tuiPiaoBtn').addClass('none');//退票 按钮 隐藏
           $('#orderType').attr("disabled",'disabled');//订单状态添加 不可编辑属性
           $('#remindTime').attr("disabled",'disabled');//提醒时间添加 不可编辑属性
           $('#remindType').attr("disabled",'disabled');//提醒状态添加 不可编辑属性

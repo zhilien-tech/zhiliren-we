@@ -19,24 +19,29 @@
             <input type="button" id="submit" class="btn btn-primary right btn-sm" onclick="savePnrInfo();" value="保存"/>
             <h4>+PNR</h4>
           </div>
-          <div class="modal-body" style="height:500px;overflow-y: auto;">
+          <div class="modal-body" style="height:500px;overflow-y: auto;padding-top: 5px;">
             <div class="tab-content backcard">
             	<form id="addPnrForm">
             	<input id="needid" name="needid" type="hidden" value="${obj.needid }" >
-                <%-- <table class="PNRtable">
-                  <tr>
-                    <td>PNR：</td>
-                    <td><input id="pnr" name="pnr" type="text" class="form-control input-sm PNRlength"></td>
-                    <td>登录帐号：</td>
-                    <td><select id="loginid" name="loginid" class="form-control input-sm">
+				<table class="PNRtable">
+				 <tr>
+                    <td>类型：</td>
+                    <td>
+                    	<select id="" name="" class="form-control input-sm">
                     		<option value="">请选择</option>
-	                    	<c:forEach items="${obj.loginselect }" var="one">
-		                    		<option value="${one.id }">${one.loginNumName }</option>
-	                    	</c:forEach>
+							<option value="">散</option>
+							<option value="">团</option>
                     	</select>
                     </td>
-                    <td>人数：</td>
-                    <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm mustNumber"></td></td>
+                    <td>内陆跨海：</td>
+                    <td>
+                      <select id=" " name=" " class="form-control input-sm">
+                        <option value="">请选择</option>
+                        <option value="">跨海</option>
+                        <option value="">新西兰跨海</option>
+                        <option value="">澳洲内陆</option>
+                      </select>
+                    </td>
                     <td>币种：</td>
                     <td>
                       <select id="currency" name="currency" class="form-control input-sm">
@@ -46,20 +51,28 @@
                      	</c:forEach>
                       </select>
                     </td>
+                    <td>付款方式：</td>
+                    <td>
+                      <select id=" " name=" " class="form-control input-sm">
+                        <option value="">请选择</option>
+                        <option value="">第三方支付</option>
+                      </select>
+                    </td>
                   </tr>
                   <tr>
-                    <td>成本单价：</td>
-                    <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint"></td>
-                    <td>成本总价：</td>
-                    <td><input id="costpricesum" name="costpricesum" type="text" class="form-control input-sm mustNumberPoint"></td></td>
-                    <td>销售单价：</td>
-                    <td><input id="salesprice" name="salesprice" type="text" class="form-control input-sm mustNumberPoint"></td></td>
-                    <td>销售总价：</td>
-                    <td><input id="salespricesum" name="salespricesum" type="text" class="form-control input-sm mustNumberPoint"></td></td>
+                    <td>PNR：</td>
+                    <td><input id="pNR" name="pNR" type="text" class="form-control input-sm PNRlength"></td>
+                    <td>登录账号：</td>
+                    <td>
+                      <select id="loginid" name="loginid" class="form-control input-sm">
+                    		<option value="">请选择</option>
+	                    	<c:forEach items="${obj.loginselect }" var="one">
+		                    		<option value="${one.id }">${one.loginNumName }</option>
+	                    	</c:forEach>
+                      </select>
+                    </td>
                   </tr>
-                </table> --%>
-				<table class="PNRtable">
-                  <tr>
+                  <%-- <tr>
                     <td>PNR：</td>
                     <td><input id="pNR" name="pNR" type="text" class="form-control input-sm PNRlength"></td>
                     <td>登录帐号：</td>
@@ -83,7 +96,7 @@
                     <td><input id="averagerate" name="averagerate" type="text" class="form-control input-sm mustNumberPoint"></td>
                     <td>实时汇率：</td>
                     <td><input id="currentrate" name="currentrate" type="text" class="form-control input-sm mustNumberPoint"></td>
-                  </tr>
+                  </tr> --%>
                   <tr class="priceinfo">
                   	<td>成人数：</td>
                     <td><input id="adultcount" name="adultcount" type="text" class="form-control input-sm mustNumber peoplecount autojisuan"></td>
@@ -123,12 +136,12 @@
                   <tr>
                   	<td> </td>
                     <td> </td>
-                    <td> </td>
-                    <td> </td>
+                    <td>成本汇率：</td>
+                    <td><input id="averagerate" name="averagerate" type="text" class="form-control input-sm mustNumberPoint"></td>
                     <td>成本合计：</td>
                     <td><input id="costpricesum" name="costpricesum" type="text" class="form-control input-sm mustNumberPoint"></td>
-                    <td> </td>
-                    <td> </td>
+                    <td>实时汇率：</td>
+                    <td><input id="currentrate" name="currentrate" type="text" class="form-control input-sm mustNumberPoint"></td>
                     <td>销售合计：</td>
                     <td><input id="salespricesum" name="salespricesum" type="text" class="form-control input-sm mustNumberPoint"></td>
                   </tr>
