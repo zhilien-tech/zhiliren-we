@@ -61,4 +61,18 @@ LEFT JOIN t_finance_info fi ON fi.orderid = uo.id
 LEFT JOIN t_pay_receive_record prr ON prr.orderid = uo.id
 $condition
 
-
+/*grab_report_currency_data*/
+SELECT
+	dt.id,
+	dt.typeCode,
+	dt.dictCode,
+	dt.dictName,
+	dt.description,
+	dt.`status`,
+	dt.quanPin,
+	dt.jianpin,
+	dt.createTime
+FROM
+	dict_info dt
+LEFT JOIN t_grab_report gb ON dt.id = gb.dictInfoId
+$condition

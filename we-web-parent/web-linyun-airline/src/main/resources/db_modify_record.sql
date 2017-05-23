@@ -504,7 +504,7 @@ END;
 
 DROP FUNCTION IF EXISTS `getByInvoicenumQuery`;
 
-CREATE DEFINER = `root`@`%` FUNCTION `getByInvoicenumQuery`(invoiceId int)
+CREATE FUNCTION `getByInvoicenumQuery`(invoiceId int)
  RETURNS varchar(1024) CHARSET utf8
 BEGIN
 	declare tmpName varchar(50) default '';
@@ -614,3 +614,28 @@ MODIFY COLUMN `payWay`  varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci N
 
 ALTER TABLE `t_customer_info`
 MODIFY COLUMN `paywayName`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '付款方式名称' AFTER `payWay`;
+/******************************************************************************
+version : 1.0.6   END   2017-05-18
+******************************************************************************/
+
+/******************************************************************************
+version : 1.0.7   BEGIN(cuijianbin)   2017-05-19
+******************************************************************************/
+ALTER TABLE `t_grab_report`
+MODIFY COLUMN `pnrInfoId`  int(11) NULL DEFAULT NULL COMMENT 'pnrInfoId' AFTER `id`,
+ADD COLUMN `dictInfoId`  int NULL COMMENT '字典信息id' AFTER `taxRebate`;
+
+ALTER TABLE `t_grab_report`
+ADD COLUMN `currency`  varchar(32) NULL COMMENT '币种' AFTER `paidUnitPrice`;
+
+ALTER TABLE `t_grab_report`
+ADD COLUMN `total`  double(32,2) NULL COMMENT '总计' AFTER `paidUnitPrice`;
+
+ALTER TABLE `t_grab_report`
+ADD COLUMN `exciseTax2`  double(32,2) NULL COMMENT '消费税2' AFTER `total`;
+
+ALTER TABLE `t_grab_report`
+ADD COLUMN `realTicketPrice`  double(32,2) NULL COMMENT '实收票价' AFTER `exciseTax2`;
+
+ALTER TABLE `t_grab_report`
+ADD COLUMN `pnrRelationId`  int NULL COMMENT 'pnr系统关联id' AFTER `realTicketPrice`;

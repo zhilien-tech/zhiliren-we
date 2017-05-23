@@ -1395,12 +1395,13 @@ function createFodler1(pid,filename,filetype,clickFlag){//团队
 	                    {"data": "backstatus", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var backStatus = row.backstatus;
-	                    		if(null==backStatus || ""==backStatus){
-	                    			return "";
-	                    		}else if(backStatus==0){
-	                    			return "已退税"
+	                    		if(backStatus===0){
+	                    			return "不退税";
+	                    		}else if(backStatus===1){
+	                    			return "未退税";
+	                    		}else if(backStatus===2){
+		                    		return "已退税";
 	                    		}
-	                    		return "未退税";
 	                    	}
 	                    },
 	                    {"data": "realincome", "bSortable": false,
@@ -1464,12 +1465,12 @@ function createFodler1(pid,filename,filetype,clickFlag){//团队
 	                    {"data": "backstatus", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var backStatus = row.backstatus;
-	                    		if(null==backStatus || ""==backStatus){
-	                    			return "";
-	                    		}else if(backStatus==0){
-	                    			return "已关联"
+	                    		if(backStatus===0){
+	                    			return "未关联";
+	                    		}else if(backStatus===1){
+	                    			return "已关联";
 	                    		}
-	                    		return "未关联";
+	                    		return "";
 	                    	}
 	                    },
 	                    {"data": "remark", "bSortable": false,
