@@ -12,7 +12,7 @@
 </head>
 <body>
 	<div class="modal-top">
-    <div class="modal-header boderButt">
+    	  <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow();">取消</button>
             <button type="button" class="btn btn-primary right btn-sm btnEdit">编辑</button>
             <h4>详情</h4>
@@ -20,7 +20,69 @@
           <div class="modal-body" style="height:580px;overflow-y: auto;padding: 10px 15px;">
             <div class="tab-content backcard">
             	<table class="PNRtable">
+            		<tr>
+                    <td>类型：</td>
+                    <td>
+                    	<select id="" name="" class="form-control input-sm">
+                    		<option value="">请选择</option>
+							<option value="">散</option>
+							<option value="">团</option>
+                    	</select>
+                    </td>
+                    <td>内陆跨海：</td>
+                    <td>
+                      <select id=" " name=" " class="form-control input-sm">
+                        <option value="">请选择</option>
+                        <option value="">跨海</option>
+                        <option value="">新西兰跨海</option>
+                        <option value="">澳洲内陆</option>
+                      </select>
+                    </td>
+                    <td>币种：</td>
+                    <td>
+                      <select disabled="disabled" class="form-control input-sm" >
+                      	<option value="">请选择</option>
+                        <c:forEach items="${obj.bzcode }" var="one"> 
+                        	<c:choose>
+                        		<c:when test="${obj.pnrinfo.currency eq one.dictCode }">
+				                     <option value="${one.dictCode }" selected="selected">${one.dictCode }</option>
+                        		</c:when>
+                        		<c:otherwise>
+				                     <option value="${one.dictCode }">${one.dictCode }</option>
+                        		</c:otherwise>
+                        	</c:choose>
+                     	</c:forEach>
+                      </select>
+                    </td>
+                    <td>付款方式：</td>
+                    <td>
+                      <select id=" " name=" " class="form-control input-sm">
+                        <option value="">请选择</option>
+                        <option value="">第三方支付</option>
+                      </select>
+                    </td>
+                  </tr>
                   <tr>
+                    <td>PNR：</td>
+                    <td><input type="text" disabled="disabled" class="form-control input-sm" value="${obj.pnrinfo.PNR }"></td>
+                    <td>登录账号：</td>
+                    <td>
+                      <select disabled="disabled" class="form-control input-sm">
+                    		<option value="">请选择</option>
+                    		<c:forEach items="${obj.loginselect }" var="one">
+	                    		<c:choose>
+	                        		<c:when test="${obj.pnrinfo.loginid eq one.id}">
+	                        			<option value="${one.id }" selected="selected">${one.loginNumName }</option>
+	                        		</c:when>
+	                        		<c:otherwise>
+			                    		<option value="${one.id }">${one.loginNumName }</option>
+	                        		</c:otherwise>
+	                        	</c:choose>
+	                    	</c:forEach>
+                      </select>
+                    </td>
+                  </tr>
+                  <%-- <tr>
                     <td>PNR：</td>
                     <td><input type="text" disabled="disabled" class="form-control input-sm" value="${obj.pnrinfo.PNR }"></td>
                     <td>登录帐号：</td>
@@ -54,13 +116,12 @@
                         	</c:choose>
                      	</c:forEach>
                       </select>
-                      </select>
                     </td>
                     <td>平均汇率：</td>
                     <td><input disabled="disabled" type="text" class="form-control input-sm mustNumber" value="${obj.pnrinfo.averagerate }"></td>
                     <td>实时汇率：</td>
                     <td><input disabled="disabled" type="text" class="form-control input-sm mustNumber" value="${obj.pnrinfo.currentrate }"></td>
-                  </tr>
+                  </tr> --%>
                   <tr>
                   	<td>成人数：</td>
                     <td><input disabled="disabled" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.adultcount }"></td>
@@ -100,12 +161,12 @@
                   <tr>
                   	<td> </td>
                     <td> </td>
-                    <td> </td>
-                    <td> </td>
+                    <td>平均汇率：</td>
+                    <td><input disabled="disabled" type="text" class="form-control input-sm mustNumber" value="${obj.pnrinfo.averagerate }"></td>
                     <td>成本合计：</td>
                     <td><input disabled="disabled" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.costpricesum }" pattern="0.00" maxFractionDigits="2"/>"></td>
-                    <td> </td>
-                    <td> </td>
+                    <td>实时汇率：</td>
+                    <td><input disabled="disabled" type="text" class="form-control input-sm mustNumber" value="${obj.pnrinfo.currentrate }"></td>
                     <td>销售合计：</td>
                     <td><input disabled="disabled" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.salespricesum }" pattern="0.00" maxFractionDigits="2"/>"></td>
                   </tr>

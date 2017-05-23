@@ -167,4 +167,4 @@ input#address {width: 100% !important;}
 #shouInvoiceTable tbody tr td:nth-child(11) span{display: block;width:80px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0 auto;}
 #drawerPayTable tbody tr td span {display: block;width:70px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0 auto;}
 /*发票管理 style*/
-#borrowInvoiceId,#borrowInvoice{position: relative;top: 2px;right: 3px;}
+#borrowInvoiceId,#borrowInvoice{position: relative;top: 2px;right: 3px;height: 14px;width: 14px;}

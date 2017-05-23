@@ -24,7 +24,7 @@
 .PNRtable tr td:nth-child(3){width: 80px;}
 .PNRtable tr td:nth-child(4){width: 105px;}
 .PNRtable tr td:nth-child(5){width: 80px;}
-.PNRtable tr td:nth-child(6){width: 105px;}
+.PNRtable tr td:nth-child(6){width: 105px;text-align: right;}
 .PNRtable tr td:nth-child(7){width: 80px;}
 .PNRtable tr td:nth-child(8){width: 105px;}
 .PNRtable tr td:nth-child(9){width: 80px;}
@@ -90,3 +90,9 @@ form#financeForm table tr td:nth-child(odd) {width: 5% !important;}
 form#financeForm table tr td:nth-child(odd) label{width: 70px !important;}
 form#financeForm table tr td:nth-child(even) {width: 9% !important;}
 #cusgroupnum,#neilu,#enterausdate,#outausdate,#personcount,#billingdate,#enterarrivetime,#outarrivetime,#outstarttime,#enterstarttime,#issuer{padding-left:3px;padding-right:3px;}
+/*退改票*/
+.tuiGaiPiaoTable{border: 1px solid #cccccc;margin-bottom: 5px;}
+.tuiGaiPiaoTable thead tr th{border: 1px solid #cccccc;text-align: center;padding: 4px;}
+.tuiGaiPiaoTable tbody tr td{border: 1px solid #cccccc;text-align: center;padding: 4px;}
+.padding10{padding:10px;}
+.tuiPiaoBtn{position: absolute;margin-top: -44px;right: 2.5%;padding: 5px 15px;font-size: 12px;}
