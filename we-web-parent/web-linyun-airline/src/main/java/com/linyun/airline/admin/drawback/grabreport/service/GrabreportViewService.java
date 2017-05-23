@@ -264,10 +264,12 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		Cnd cnd = Cnd.NEW();
 		if (0 == flagType) {//散客
 			sqlString = sqlManager.get("grab_report_addPnrSystemMap");
+			sqlString += " limit 0,5";
 			cnd.and("uo.orderstype", "=", OrderTypeEnum.FIT.intKey());
 		}
 		if (1 == flagType) {//团队
 			sqlString = sqlManager.get("grab_report_addPnrSystemMap_Inter");
+			sqlString += "limit 0,5";
 			cnd.and("uo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
 		}
 		Sql sql = Sqls.create(sqlString);
@@ -287,7 +289,16 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 	}
 
 	public void findAndShowPNR(long id, String pnr, int flagType) {
-		String sqlString = sqlManager.get("grab_report_addPnrSystemMap");
+		//String sqlString = sqlManager.get("grab_report_addPnrSystemMap");
+		String sqlString = null;
+		if (0 == flagType) {//散客
+			sqlString = sqlManager.get("grab_report_addPnrSystemMap");
+			sqlString += " limit 0,5";
+		}
+		if (1 == flagType) {//团队
+			sqlString = sqlManager.get("grab_report_addPnrSystemMap_Inter");
+			sqlString += "limit 0,5";
+		}
 		Sql sql = Sqls.create(sqlString);
 		Cnd cnd = Cnd.NEW();
 		cnd.and("PNR", "=", pnr);

@@ -48,7 +48,7 @@
                				<option value="${each.dictName }">${each.dictName }</option>
                			</c:forEach>
                     </select> --%>
-                  	<select id="pnrInfoSelect" name="pnrInfoSelect" onchange="setPNRINfo();" class="form-control select2 inpImpWid" multiple="multiple"></select>
+                  	<select id="pnrInfoSelect" name="pnrInfoSelect" onchange="setPNRINfo();" class="form-control select2 inpImpWid" multiple="multiple" data-placeholder="请输入PNR"></select>
                   	<input id="pnrInfoId"  name="PNR" type="hidden" class="form-control input-sm inputWidth" placeholder="请输入PNR" />
                   </div>
                 </div> 
