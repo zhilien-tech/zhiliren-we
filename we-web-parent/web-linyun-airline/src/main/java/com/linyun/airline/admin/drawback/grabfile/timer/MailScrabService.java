@@ -62,7 +62,9 @@ import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.util.grabmail.ContentImage;
 import com.linyun.airline.common.util.grabmail.ContentUrl;
 import com.linyun.airline.common.util.grabmail.EmlConvertToHtml;
+import com.linyun.airline.common.util.grabmail.HtmlToPdf;
 import com.uxuexi.core.common.util.BeanUtil;
+import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.FileUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.DbSqlUtil;
@@ -341,13 +343,35 @@ public class MailScrabService extends BaseService {
 		//
 		long rootId;
 		DateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日 E HH:mm ");
+		//================================根据抓取的类型不同，date获取途径不同==============================================
+		String str = null;
+		String dateStr = null;
 		Date date = null;
 		try {
-			date = dateFormat.parse(sendTime);
-		} catch (ParseException e) {
-			e.printStackTrace();
+			str = ctim.getContentHtml(msg);
+		} catch (Exception e1) {
+
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 
 		}
+		if (sender.contains(GrabMailConstants.FIT_JQ)) {
+			dateStr = this.getDate(str, 0);
+
+			date = DateUtil.string2Date(DateUtil.getMonthByEnNameOfDate(dateStr));
+		} else if (sender.contains(GrabMailConstants.FIT_TT)) {
+			dateStr = this.getDate(str, 1);
+			date = DateUtil.string2Date(DateUtil.getMonthByEnNameOfDate(dateStr));
+		} else {
+
+			try {
+				date = dateFormat.parse(sendTime);
+			} catch (ParseException e) {
+				e.printStackTrace();
+
+			}
+		}
+		//==============================================================================
 		/**************************发送邮件时间开始***************************/
 		Double fileDouble = Double.valueOf(fileSize);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy.MM");
@@ -602,7 +626,11 @@ public class MailScrabService extends BaseService {
 		File file1 = new File(str1 + File.separator + "12.html");
 		String fileURL = CommonConstants.IMAGES_SERVER_ADDR
 				+ qiniuUploadService.uploadImage(new FileInputStream(file1), "html", null);
-		return fileURL;
+		HtmlToPdf.convert(fileURL, str1 + File.separator + "12.pdf");
+		File file2 = new File(str1 + File.separator + "12.pdf");
+		String fileURLPdf = CommonConstants.IMAGES_SERVER_ADDR
+				+ qiniuUploadService.uploadImage(new FileInputStream(file2), "pdf", null);
+		return fileURLPdf;
 	}
 
 	/**
@@ -1013,7 +1041,7 @@ public class MailScrabService extends BaseService {
 			String subjectStr = msg.getSubject();
 			// getContent() 是获取包裹内容, Part相当于外包装  
 			Object o = msg.getContent();
-			String fileName = "content";
+			String fileName = "content-";
 			String PNR = null;
 			if (subjectStr.contains("#")) {
 
@@ -1023,6 +1051,7 @@ public class MailScrabService extends BaseService {
 			if (!Util.isEmpty(PNR)) {
 				fileName += PNR;
 			}
+			fileName += ".pdf";
 			contentHtml = ctim.getContentHtml(msg);
 			fileUrl = uploadFileNew(contentHtml, fileName);
 			TGrabFileEntity newFile = new TGrabFileEntity();
@@ -1059,6 +1088,10 @@ public class MailScrabService extends BaseService {
 
 		try {
 			fileUrl = ContentUrl.getUrl(msg);
+			String str1 = System.getProperty("java.io.tmpdir");
+			File file1 = new File(str1 + File.separator + "12.html");
+			fileUrl = CommonConstants.IMAGES_SERVER_ADDR
+					+ qiniuUploadService.uploadImage(new FileInputStream(file1), "pdf", null);
 			String subjectStr = msg.getSubject();
 			// getContent() 是获取包裹内容, Part相当于外包装  
 			String PNR = null;
@@ -1069,10 +1102,11 @@ public class MailScrabService extends BaseService {
 			}
 			TGrabFileEntity newFile = new TGrabFileEntity();
 			BeanUtil.copyProperties(fileProps, newFile);
-			String fileName = "link";
+			String fileName = "link-";
 			if (!Util.isEmpty(PNR)) {
 				fileName += PNR;
 			}
+			fileName += ".pdf";
 			String attachmentName = fileName;
 			int fileSort = 0;
 			if (Util.isEmpty(attachmentName)) {
@@ -1147,9 +1181,12 @@ public class MailScrabService extends BaseService {
 
 						File file3 = new File(str1 + File.separator + "12.html");
 
-						String fileURL = CommonConstants.IMAGES_SERVER_ADDR
+						fileUrl = CommonConstants.IMAGES_SERVER_ADDR
 								+ qiniuUploadService.uploadImage(new FileInputStream(file3), "html", null);
-
+						HtmlToPdf.convert(fileUrl, str1 + File.separator + "12.pdf");
+						File file2 = new File(str1 + File.separator + "12.pdf");
+						fileUrl = CommonConstants.IMAGES_SERVER_ADDR
+								+ qiniuUploadService.uploadImage(new FileInputStream(file2), "pdf", null);
 					} else {
 						fileUrl = uploadFile(is, fileExt);
 
@@ -1273,5 +1310,56 @@ public class MailScrabService extends BaseService {
 		double a = Math.round(fileSize / 1024);
 
 		return a;
+	}
+
+	private String getDate(String str, int flag) {
+		//==========JQ中Booking Date样式的时间抓取
+		int index = str.indexOf("Booking Date");
+		int index1 = str.indexOf("Booking date");
+		if (flag == 0 && index != -1) {
+
+			int a = str.indexOf("span", index);
+			System.out.println(a);
+			str.indexOf("<", str.indexOf(">", a));
+			String date = str.substring(str.indexOf(">", a) + 1, str.indexOf("<", str.indexOf(">", a)));
+			System.out.println(date);
+			return date;
+		}
+
+		//==========JQ中Booking date样式的时间抓取
+		if (flag == 0 && index1 != -1) {
+
+			int indexOf = str.indexOf("<", index1);
+			String substring = str.substring(index1, indexOf);
+			String str1[] = substring.split("\\s+");
+			String str2 = "";
+			for (int j = 0; j < str1.length; j++) {
+				if (j >= str1.length - 3) {
+					str2 += str1[j] + " ";
+				}
+			}
+			System.out.println(str2 + "===========================");
+			System.out.println(substring);
+			return str2;
+		}
+
+		//==========TT中Booking Date样式的时间抓取
+		if (flag == 1 && index != -1) {
+			int indexOf = str.indexOf("<", index);
+			String substring = str.substring(index, indexOf);
+			String str1[] = substring.split("\\s+");
+			String str2 = "";
+			for (int j = 0; j < str1.length; j++) {
+				if (j >= str1.length - 3) {
+					str2 += str1[j] + " ";
+				}
+			}
+			System.out.println(str2 + "===========================");
+			System.out.println(substring);
+			//System.out.println(str);
+			return str2;
+		}
+
+		return null;
 	}
 }
