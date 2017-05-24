@@ -148,7 +148,7 @@ public class TCustomerInfoAddForm extends AddForm implements Serializable {
 	private String linkMan;
 	/**联系人电话*/
 	private String telephone;
-	/**联系人银行*/
+	/**联系人账号名称*/
 	private String manBankInfo;
 	/**联系人银行名称*/
 	private String manBankName;
@@ -158,6 +158,8 @@ public class TCustomerInfoAddForm extends AddForm implements Serializable {
 	private String manWeChat;
 	/**联系人QQ号码*/
 	private String manQQ;
+	/**E-mail*/
+	private String manEmail;
 	/**联系人备注*/
 	private String manRemark;
 

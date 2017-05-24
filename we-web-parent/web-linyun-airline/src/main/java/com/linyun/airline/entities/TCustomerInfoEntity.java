@@ -195,6 +195,8 @@ public class TCustomerInfoEntity implements Serializable {
 	private String manWeChat;
 	@Comment("联系人QQ号码")
 	private String manQQ;
+	@Comment("E-Mail")
+	private String manEmail;
 	@Comment("联系人备注")
 	private String manRemark;
 

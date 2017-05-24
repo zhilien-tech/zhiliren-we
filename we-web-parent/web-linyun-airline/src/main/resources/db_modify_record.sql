@@ -679,11 +679,12 @@ MODIFY COLUMN `taxRefund`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_
 ADD COLUMN `comPhone`  varchar(255) NULL COMMENT '公司电话' AFTER `shortName`;
 
 ALTER TABLE `t_customer_info`
-ADD COLUMN `manBankInfo`  varchar(255) NULL COMMENT '联系人银行' AFTER `telephone`,
+ADD COLUMN `manBankInfo`  varchar(255) NULL COMMENT '联系人账户名称' AFTER `telephone`,
 ADD COLUMN `manBankName`  varchar(255) NULL COMMENT '联系人银行名称' AFTER `manBankInfo`,
 ADD COLUMN `manBankNum`  varchar(64) NULL COMMENT '联系人银行卡号' AFTER `manBankName`,
 ADD COLUMN `manWeChat`  varchar(255) NULL COMMENT '微信号码' AFTER `manBankNum`,
 ADD COLUMN `manQQ`  varchar(255) NULL COMMENT '联系人QQ号' AFTER `manWeChat`,
+ADD COLUMN `manEmail`  varchar(255) NULL COMMENT 'E-Mail' AFTER `manQQ`,
 ADD COLUMN `manRemark`  varchar(1024) NULL COMMENT '联系人备注' AFTER `manQQ`,
 ADD COLUMN `compTaxNum`  varchar(255) NULL COMMENT '纳税人识别号' AFTER `manRemark`,
 ADD COLUMN `compBank`  varchar(255) NULL COMMENT '公司开户银行' AFTER `compTaxNum`,

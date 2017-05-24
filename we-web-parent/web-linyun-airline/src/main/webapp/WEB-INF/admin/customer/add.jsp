@@ -70,7 +70,7 @@
 							<div class="form-group">
 								<label class="col-sm-1 text-right padding">电话：</label>
 								<div class="col-sm-3 padding">
-									<input id=" " name=" " type="text" class="form-control input-sm inpImportant" placeholder="请输入公司电话" />
+									<input id="comPhone" name="comPhone" type="text" class="form-control input-sm inpImportant" placeholder="请输入公司电话" />
 									<span class="prompt">*</span>
 								</div>
 							</div>
@@ -187,9 +187,8 @@
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">账号名称：</label>
 								<div class="col-sm-7 padding">
-									<input id=" " name=" " type="text"
-										class="form-control input-sm inpImpWid" placeholder=" " /><span
-										class="prompt">*</span>
+									<input id="manBankInfo" name="manBankInfo" type="text" class="form-control input-sm inpImpWid" placeholder=" " />
+									<span class="prompt">*</span>
 								</div>
 							</div>
 						</div>
@@ -197,7 +196,7 @@
 							<div class="form-group fax">
 								<label class="col-sm-3 text-right padding">银行名称：</label>
 								<div class="col-sm-3 padding">
-									<input name=" " type="text" class="form-control input-sm inpImportant" placeholder=" " />
+									<input id="manBankName" name="manBankName" type="text" class="form-control input-sm inpImportant" placeholder=" " />
 								</div>
 							</div>
 							<div class="form-group fax">
@@ -211,13 +210,14 @@
 							<div class="form-group fax">
 								<label class="col-sm-3 text-right padding">银行卡号：</label>
 								<div class="col-sm-3 padding">
-									<input name=" " type="text" class="form-control input-sm inpImportant" placeholder=" " />
+									<input id="manBankNum" name="manBankNum" type="text" class="form-control input-sm inpImportant" placeholder=" " />
+									<span class="prompt">*</span>
 								</div>
 							</div>
 							<div class="form-group fax">
 								<label class="col-sm-1 text-right padding">微信号码：</label>
 								<div  class="col-sm-3 padding">
-									<input id=" " name=" " type="text" class="form-control input-sm inpImportant" placeholder=" " />
+									<input id="manWeChat" name="manWeChat" type="text" class="form-control input-sm inpImportant" placeholder=" " />
 									<span class="prompt">*</span>
 								</div>
 							</div>
@@ -226,14 +226,14 @@
 							<div class="form-group fax">
 								<label class="col-sm-3 text-right padding">QQ号码：</label>
 								<div class="col-sm-3 padding">
-									<input name=" " type="text" class="form-control input-sm inpImportant" placeholder=" " />
+									<input id="manQQ" name="manQQ" type="text" class="form-control input-sm inpImportant" placeholder=" " />
 									<span class="prompt">*</span>
 								</div>
 							</div>
 							<div class="form-group fax">
 								<label class="col-sm-1 text-right padding">E-mail：</label>
 								<div class="col-sm-3 padding">
-									<input id=" " name=" " type="text" class="form-control input-sm inpImportant" placeholder=" " />
+									<input id="manEmail" name="manEmail" type="text" class="form-control input-sm inpImportant" placeholder=" " />
 									<span class="prompt">*</span>
 								</div>
 							</div>
@@ -242,7 +242,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">备注：</label>
 								<div class="col-sm-7 padding">
-									<textarea id="" class="form-control input-sm inpImpWid textareaHei">
+									<textarea id="manRemark" name="manRemark" class="form-control input-sm inpImpWid textareaHei">
 									</textarea>
 								</div>
 							</div>
@@ -445,7 +445,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">纳税人识别号：</label>
 								<div class="col-sm-7 padding">
-									<input id=" " name=" " type="text" class="form-control input-sm inpImpWid" placeholder=" " />
+									<input id="compTaxNum" name="compTaxNum" type="text" class="form-control input-sm inpImpWid" placeholder=" " />
 									<span class="prompt">*</span>
 								</div>
 							</div>
@@ -454,7 +454,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">开户行：</label>
 								<div class="col-sm-7 padding">
-									<input id=" " name=" " type="text" class="form-control input-sm inpImpWid" placeholder=" " />
+									<input id="compBank" name="compBank" type="text" class="form-control input-sm inpImpWid" placeholder=" " />
 									<span class="prompt">*</span>
 								</div>
 							</div>
@@ -463,7 +463,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">账号：</label>
 								<div class="col-sm-7 padding">
-									<input id=" " name=" " type="text" class="form-control input-sm inpImpWid" placeholder=" " />
+									<input id="compBankNum" name="compBankNum" type="text" class="form-control input-sm inpImpWid" placeholder=" " />
 									<span class="prompt">*</span>
 								</div>
 							</div>
@@ -472,7 +472,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">行号：</label>
 								<div class="col-sm-7 padding">
-									<input id=" " name=" " type="text" class="form-control input-sm inpImpWid" placeholder=" " />
+									<input id="compBankCode" name="compBankCode" type="text" class="form-control input-sm inpImpWid" placeholder=" " />
 									<span class="prompt">*</span>
 								</div>
 							</div>
