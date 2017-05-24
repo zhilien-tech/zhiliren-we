@@ -183,7 +183,7 @@
 							<div class="form-group">
 								<label class="col-sm-1 text-right padding">联系电话：</label>
 								<div id="phoneDiv" class="col-sm-3 padding">
-									<input id="telephone" name="telephone" type="tel" class="form-control input-sm inpImportant mustPhoneLength"
+									<input id="telephone" name="telephone" type="text" class="form-control input-sm inpImportant mustPhoneLength"
 										value="${obj.customer.telephone}" placeholder="请输入联系电话" />
 									<span class="prompt">*</span>
 								</div>
@@ -248,7 +248,8 @@
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">备注：</label>
 								<div class="col-sm-7 padding">
-									<textarea id="manRemark" name="manRemark" value="${obj.customer.manRemark}"  class="form-control input-sm inpImpWid textareaHei">
+									<textarea id="manRemark" name="manRemark" class="form-control input-sm inpImpWid textareaHei">
+										${obj.customer.manRemark}
 									</textarea>
 								</div>
 							</div>
@@ -893,6 +894,13 @@
 							} */
 						}
 					},
+					comPhone : {
+						validators : {
+							notEmpty : {
+								message : '公司电话不能为空'
+							}
+						}
+					},
 					linkMan : {
 						validators : {
 							notEmpty : {
@@ -936,6 +944,34 @@
 							regexp : {
 								regexp : /^[+]{0,1}(\d){1,3}[ ]?([-]?((\d)|[ ]){1,12})+$/,
 								message : '传真格式错误'
+							}
+						}
+					},
+					manBankNum : {
+						validators : {
+							notEmpty : {
+								message : '银行卡号不能为空'
+							}
+						}
+					},
+					manWeChat : {
+						validators : {
+							notEmpty : {
+								message : '微信号码不能为空'
+							}
+						}
+					},
+					manQQ : {
+						validators : {
+							notEmpty : {
+								message : 'QQ号码不能为空'
+							}
+						}
+					},
+					manEmail : {
+						validators : {
+							notEmpty : {
+								message : 'E-mail不能为空'
 							}
 						}
 					},
@@ -986,7 +1022,35 @@
 								message : '退税格式错误'
 							}
 						}
-					} 
+					},
+					compTaxNum : {
+						validators : {
+							notEmpty : {
+								message : '纳税人识别号不能为空'
+							}
+						}
+					},
+					compBank : {
+						validators : {
+							notEmpty : {
+								message : '开户行不能为空'
+							}
+						}
+					},
+					compBankNum : {
+						validators : {
+							notEmpty : {
+								message : '账号不能为空'
+							}
+						}
+					},
+					compBankCode : {
+						validators : {
+							notEmpty : {
+								message : '行号不能为空'
+							}
+						}
+					}
 				}
 			});
 		}
@@ -1116,15 +1180,32 @@
 			if (bootstrapValidator.isValid()) {
 				var selectedcompany = $('#companyId').find("option:selected").text();
 				var shortName = $("#shortName").val();
+				var comPhone = $("#comPhone").val();
+				var address = $("#address").val();
 				var linkMan = $("#linkMan").val();
 				var telephone = $("#telephone").val();
-				var address = $("#address").val();
+				var manBankNum = $("#manBankNum").val();
+				var manWeChat = $("#manWeChat").val();
+				var manQQ = $("#manQQ").val();
+				var manEmail = $("#manEmail").val();
+				var compTaxNum = $("#compTaxNum").val();
+				var compBank = $("#compBank").val();
+				var compBankNum = $("#compBankNum").val();
+				var compBankCode = $("#compBankCode").val();
 				if(selectedcompany==""){
 					layer.msg('公司名称不能为空');
 					return;
 				}
 				if(shortName==""){
 					layer.msg('公司简称不能为空');
+					return;
+				}
+				if(comPhone==""){
+					layer.msg('公司电话不能为空');
+					return;
+				}
+				if(address==""){
+					layer.msg('公司地址不能为空');
 					return;
 				}
 				if(linkMan==""){
@@ -1135,8 +1216,36 @@
 					layer.msg('联系电话不能为空');
 					return;
 				}
-				if(address==""){
-					layer.msg('地址不能为空');
+				if(manBankNum==""){
+					layer.msg('银行卡号不能为空');
+					return;
+				}
+				if(manWeChat==""){
+					layer.msg('微信号码不能为空');
+					return;
+				}
+				if(manQQ==""){
+					layer.msg('QQ号码不能为空');
+					return;
+				}
+				if(manEmail==""){
+					layer.msg('E-mail不能为空');
+					return;
+				}
+				if(compTaxNum==""){
+					layer.msg('纳税人识别号不能为空');
+					return;
+				}
+				if(compBank==""){
+					layer.msg('开户行不能为空');
+					return;
+				}
+				if(compBankNum==""){
+					layer.msg('账号不能为空');
+					return;
+				}
+				if(compBankCode==""){
+					layer.msg('行号不能为空');
 					return;
 				}
 				if(!$('small[data-bv-for="companyId"]').attr("style")=='display: none;'){

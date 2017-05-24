@@ -129,30 +129,30 @@ public class TCustomerInfoForm implements SQLParamForm, Serializable {
 
 	/**联系人*/
 	private String linkMan;
-	/**联系人电话*/
+	/**联系电话*/
 	private String telephone;
-	/**联系人账号名称*/
+	/**账号名称*/
 	private String manBankInfo;
-	/**联系人银行名称*/
+	/**银行名称*/
 	private String manBankName;
-	/**联系人银行卡号*/
+	/**银行卡号*/
 	private String manBankNum;
 	/**微信号码*/
 	private String manWeChat;
-	/**联系人QQ号码*/
+	/**QQ号码*/
 	private String manQQ;
 	/**E-mail*/
 	private String manEmail;
-	/**联系人备注*/
+	/**备注*/
 	private String manRemark;
 
 	/**纳税人识别号*/
 	private String compTaxNum;
-	/**公司开户银行*/
+	/**开户行*/
 	private String compBank;
-	/**公司开户账号*/
+	/**账号*/
 	private String compBankNum;
-	/**公司开户行号*/
+	/**行号*/
 	private String compBankCode;
 
 	@Override

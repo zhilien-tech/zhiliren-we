@@ -181,31 +181,40 @@ public class TCustomerInfoEntity implements Serializable {
 	@Comment("联系人")
 	private String linkMan;
 	@Column
-	@Comment("联系人电话")
+	@Comment("联系电话")
 	private String telephone;
 	@Column
-	@Comment("联系人银行")
+	@Comment("联系人账户名称")
 	private String manBankInfo;
 	@Column
 	@Comment("联系人银行名称")
 	private String manBankName;
+	@Column
 	@Comment("联系人银行卡号")
 	private String manBankNum;
+	@Column
 	@Comment("微信号码")
 	private String manWeChat;
-	@Comment("联系人QQ号码")
+	@Column
+	@Comment("联系人QQ号")
 	private String manQQ;
+	@Column
 	@Comment("E-Mail")
 	private String manEmail;
+	@Column
 	@Comment("联系人备注")
 	private String manRemark;
 
+	@Column
 	@Comment("纳税人识别号")
 	private String compTaxNum;
+	@Column
 	@Comment("公司开户银行")
 	private String compBank;
+	@Column
 	@Comment("公司开户账号")
 	private String compBankNum;
+	@Column
 	@Comment("公司开户行号")
 	private String compBankCode;
 

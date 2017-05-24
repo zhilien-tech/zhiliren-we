@@ -326,6 +326,10 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		if (!Util.isEmpty(businessStr)) {
 			addForm.setBusiness(businessStr.replace("\n", HUAN_HANG));
 		}
+		String manRemark = addForm.getManRemark();
+		if (!Util.isEmpty(manRemark)) {
+			addForm.setManRemark(manRemark.replace("\n", HUAN_HANG));
+		}
 
 		TCustomerInfoEntity customerInfo = this.add(addForm);
 
@@ -705,6 +709,10 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		String businessStr = updateForm.getBusiness();
 		if (!Util.isEmpty(businessStr)) {
 			updateForm.setBusiness(businessStr.replace("\n", HUAN_HANG));
+		}
+		String manRemark = updateForm.getManRemark();
+		if (!Util.isEmpty(manRemark)) {
+			updateForm.setManRemark(manRemark.replace("\n", HUAN_HANG));
 		}
 
 		this.update(updateForm);
