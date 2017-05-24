@@ -208,7 +208,7 @@
 							<div class="form-group fax">
 								<label class="col-sm-1 text-right padding">应返合计：</label>
 								<div  class="col-sm-3 padding">
-									<input id=" " name=" " type="text" class="form-control input-sm inpImportant" placeholder=" " />
+									<input id=" " name=" " type="text" readonly="readonly" value="<fmt:formatNumber type="number" value="${obj.customer.returnMoney}" pattern="0.00" maxFractionDigits="2"/>" pattern="0.00" maxFractionDigits="2"/>" class="form-control input-sm inpImportant"  placeholder=" " />
 								</div>
 							</div>
 						</div>
