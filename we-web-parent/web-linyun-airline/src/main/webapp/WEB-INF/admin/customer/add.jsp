@@ -70,7 +70,7 @@
 							<div class="form-group">
 								<label class="col-sm-1 text-right padding">电话：</label>
 								<div class="col-sm-3 padding">
-									<input id=" " name=" " type="text" class="form-control input-sm inpImportant" placeholder="请输入公司简称" />
+									<input id=" " name=" " type="text" class="form-control input-sm inpImportant" placeholder="请输入公司电话" />
 									<span class="prompt">*</span>
 								</div>
 							</div>
@@ -117,7 +117,6 @@
 								<label class="col-sm-3 text-right padding">网址：</label>
 								<div class="col-sm-7 padding">
 									<input name="siteUrl" type="text" class="form-control input-sm inpImpWid" placeholder="请输入网址" />
-									<span class="prompt">*</span>
 								</div>
 							</div>
 						</div>

@@ -40,12 +40,8 @@ public class TCustomerInfoEntity implements Serializable {
 	private String shortName;
 
 	@Column
-	@Comment("联系人")
-	private String linkMan;
-
-	@Column
-	@Comment("电话")
-	private String telephone;
+	@Comment("公司电话")
+	private String comPhone;
 
 	@Column
 	@Comment("传真")
@@ -180,4 +176,35 @@ public class TCustomerInfoEntity implements Serializable {
 	@Column
 	@Comment("退税")
 	private Double taxRefund;
+
+	@Column
+	@Comment("联系人")
+	private String linkMan;
+	@Column
+	@Comment("联系人电话")
+	private String telephone;
+	@Column
+	@Comment("联系人银行")
+	private String manBankInfo;
+	@Column
+	@Comment("联系人银行名称")
+	private String manBankName;
+	@Comment("联系人银行卡号")
+	private String manBankNum;
+	@Comment("微信号码")
+	private String manWeChat;
+	@Comment("联系人QQ号码")
+	private String manQQ;
+	@Comment("联系人备注")
+	private String manRemark;
+
+	@Comment("纳税人识别号")
+	private String compTaxNum;
+	@Comment("公司开户银行")
+	private String compBank;
+	@Comment("公司开户账号")
+	private String compBankNum;
+	@Comment("公司开户行号")
+	private String compBankCode;
+
 }

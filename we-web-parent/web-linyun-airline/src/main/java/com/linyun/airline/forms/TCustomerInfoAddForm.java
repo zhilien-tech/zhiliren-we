@@ -28,11 +28,8 @@ public class TCustomerInfoAddForm extends AddForm implements Serializable {
 	/**简称*/
 	private String shortName;
 
-	/**联系人*/
-	private String linkMan;
-
-	/**电话*/
-	private String telephone;
+	/**公司电话*/
+	private String comPhone;
 
 	/**传真*/
 	private String fax;
@@ -146,4 +143,30 @@ public class TCustomerInfoAddForm extends AddForm implements Serializable {
 
 	/**退税*/
 	private Double taxRefund;
+
+	/**联系人*/
+	private String linkMan;
+	/**联系人电话*/
+	private String telephone;
+	/**联系人银行*/
+	private String manBankInfo;
+	/**联系人银行名称*/
+	private String manBankName;
+	/**联系人银行卡号*/
+	private String manBankNum;
+	/**微信号码*/
+	private String manWeChat;
+	/**联系人QQ号码*/
+	private String manQQ;
+	/**联系人备注*/
+	private String manRemark;
+
+	/**纳税人识别号*/
+	private String compTaxNum;
+	/**公司开户银行*/
+	private String compBank;
+	/**公司开户账号*/
+	private String compBankNum;
+	/**公司开户行号*/
+	private String compBankCode;
 }
