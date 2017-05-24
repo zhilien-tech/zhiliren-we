@@ -216,7 +216,7 @@
 							<div class="form-group fax">
 								<label class="col-sm-3 text-right padding">银行卡号：</label>
 								<div class="col-sm-3 padding">
-									<input id="manBankNum" name="manBankNum" value="${obj.customer.manBankNum}"  type="text" class="form-control input-sm inpImportant" placeholder=" " />
+									<input id="manBankNum" name="manBankNum" value="${obj.customer.manBankNum}"  type="text" class="form-control input-sm inpImportant" placeholder=" " onkeyup="this.value=this.value.replace(/\s/g,'').replace(/....(?!$)/g,'$& ')" maxlength="32" />
 									<span class="prompt">*</span>
 								</div>
 							</div>
