@@ -5,7 +5,7 @@
 .infoTopContent{width:315px;height: 30px;float: right;}
 .infoTopContent input{display: inline-block;}
 .infoTopContent .conCheckInput{width: 15px;height: 15px;position: relative;top: 3px;right: 3px;}
-.infoTopContent .conSelect{width: 70px; height: 28px;display: inline-block;margin:0 15px; }
+.infoTopContent .conSelect{width: 70px; height: 28px;display: inline-block;margin:0 0 0 15px; }
 .infoTopContent .infoTopContent input{display: inline-block;}
 .infoTopContent .conTimeInput{width: 125px;height: 28px;position: relative;top: -2px;}
 .infoTopContent .btn{margin-left: 12px;padding: 4px 15px;position: relative;top: -3px;}
@@ -97,7 +97,7 @@ select#teamAirLevel {width: 208px !important;}
 .showDis{display:table-cell;}
 .timSelect{display: inline-block;width:90px;height: 28px !important;}
 .dropdown-toggle {display: block;margin-top: 10px;}
- .select2-container {width: 100px !important;}
+ .select2-container {width: 155px !important;}
 td[colspan="3"] .select2 .selection .select2-selection{width:100%;}
 td[colspan="3"] .select2 .selection .select2-selection ul .select2-search--inline{display: none;}
 #datatable2 tbody tr td ul{margin-bottom: 0;padding-left: 0px;}
