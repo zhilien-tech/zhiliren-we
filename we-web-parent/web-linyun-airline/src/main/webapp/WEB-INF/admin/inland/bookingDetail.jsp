@@ -47,7 +47,7 @@
   <!--right Content-->
   <div class="content-wrapper">
     <section class="content">
-        <div class="row col-sm-10">
+        <div class="col-sm-12">
           <div class="customerInfo"><!--客户信息-->
                <div class="infoTop">
                  <p>客户信息</p>
@@ -67,9 +67,11 @@
                      	</c:if>
 					</c:forEach>
                    </select>
+                   <button type="button" class="btn btn-primary input-sm btnCancel none">提醒设置</button>
+                   <button type="button" class="btn btn-primary input-sm btnCancel none">日志</button>
                    <button type="button" class="btn btn-primary input-sm btnSave none">保存</button>
                    <button type="button" class="btn btn-primary input-sm btnCancel none">取消</button>
-                   <button type="button" class="btn btn-primary input-sm editBtn">编辑</button>
+                   <button type="button" class="btn btn-primary input-sm editBtn right">编辑</button>
                  </div>
                </div>
                <div class="infofooter">
@@ -738,7 +740,7 @@
                    <tr class="KHinfo">
                      <td><label>应收金额：</label></td>
                      <td><input id=" " name=" " value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
-                   	 <td><label>实收合计</label></td>
+                   	 <td><label>实收合计：</label></td>
                      <td><input id=" " name=" " value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
                    	 <td><label>合计利润：</label></td>
                    	 <td><input id=" " name=" " value=" " type="text" class="form-control input-sm disab" disabled="disabled"></td>
@@ -799,7 +801,7 @@
           </div><!--end 退改票-->
           
         </div>
-        <div class="col-sm-2 rightRemind">
+        <%-- <div class="col-sm-2 rightRemind">
             <div class="infoTop">
               <p>提醒设置</p>
             </div>
@@ -831,7 +833,7 @@
             <div class="infofooter" id="orderlog">
                  
             </div>
-        </div>
+        </div> --%>
     </section>
   </div>
   <!--end right Content-->
