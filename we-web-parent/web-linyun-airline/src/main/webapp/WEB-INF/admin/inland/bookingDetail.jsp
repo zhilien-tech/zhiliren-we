@@ -1499,24 +1499,6 @@
       });
  }
  //设置财务信息
- 
- 
-  /*退票弹框*/
-  $('.tuiPiaoBtn').click(function(){
-	  layer.open({
-	         type: 2,
-	         title:false,
-	         skin: false, //加上边框
-	         closeBtn:false,//默认 右上角关闭按钮 是否显示
-	         shadeClose:true,
-	         scrollbar: false,
-	         area: ['880px', '570px'],
-	         url: BASE_PATH + '${base}/admin/inland/refundTicket.html',
-	         end:function(){
-	        	 
-	         }
-	       });
-  });
   </script>
 </body>
 </html>
