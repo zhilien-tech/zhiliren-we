@@ -123,6 +123,7 @@ public class Content {
 			throw new MessagingException("未找到要解析的邮件!");
 		}
 		// 解析所有邮件  
+		//==========JQ中Booking Date样式的时间抓取
 		/*	for (int i = 0, count = messages.length; i < count; i++) {
 				if (i == 232 * 100 + 3 - 4) {
 
@@ -143,15 +144,42 @@ public class Content {
 					}
 				}
 			}*/
+		//==========JQ中Booking date样式的时间抓取
+		/*	for (int i = 0, count = messages.length; i < count; i++) {
+				if (i == 430 * 100 - 92) {
+					MimeMessage msg = (MimeMessage) messages[i];
+					try {
+						String str = getContentHtml(msg);
+						//System.out.println(str);
+						int indexOf = str.indexOf("<", str.indexOf("Booking date"));
+						System.out.println(str.indexOf("Booking date"));
+						String substring = str.substring(str.indexOf("Booking date"), indexOf);
+						String str1[] = substring.split("\\s+");
+						String str2 = "";
+						for (int j = 0; j < str1.length; j++) {
+							if (j >= str1.length - 3) {
+								str2 += str1[j];
+							}
+						}
+						System.out.println(str2 + "===========================");
+						System.out.println(substring);
+					} catch (Exception e) {
+						e.printStackTrace();
+
+					}
+				}
+			}*/
+		//==========TT中Booking Date样式的时间抓取
 		for (int i = 0, count = messages.length; i < count; i++) {
-			if (i == 430 * 100 - 92) {
+			//System.out.println(messages.length + "======================================");
+			if (i == 430 * 100 - 43) {
+
 				MimeMessage msg = (MimeMessage) messages[i];
 				try {
 					String str = getContentHtml(msg);
-					//System.out.println(str);
-					int indexOf = str.indexOf("<", str.indexOf("Booking date"));
-					System.out.println(str.indexOf("Booking date"));
-					String substring = str.substring(str.indexOf("Booking date"), indexOf);
+					int indexOf = str.indexOf("<", str.indexOf("Booking Date"));
+					System.out.println(str.indexOf("Booking Date"));
+					String substring = str.substring(str.indexOf("Booking Date"), indexOf);
 					String str1[] = substring.split("\\s+");
 					String str2 = "";
 					for (int j = 0; j < str1.length; j++) {
@@ -161,12 +189,16 @@ public class Content {
 					}
 					System.out.println(str2 + "===========================");
 					System.out.println(substring);
+					//System.out.println(str);
 				} catch (Exception e) {
+
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 
 				}
 			}
 		}
+
 	}
 
 	/***
@@ -209,13 +241,17 @@ public class Content {
 		} else {
 			System.out.println("类型" + msg.getContentType());
 			System.out.println("内容" + msg.getContent());
+			map.put("content", msg.getContent() + "");
 		}
 		String content = map.get("content");
 
 		int a = 0;
 		while (a != -1) {
 			content = map.get("content");
-			a = setAddress(content);
+			if (!Util.isEmpty(content)) {
+
+				a = setAddress(content);
+			}
 		}
 		content = map.get("content");
 		return content;

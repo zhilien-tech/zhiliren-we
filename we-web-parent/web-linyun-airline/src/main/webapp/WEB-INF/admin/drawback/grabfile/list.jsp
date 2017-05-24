@@ -874,7 +874,7 @@ function successCallback(id){
 			                    		 if(null==updatetime || ""==updatetime){
 			                    			 return "";
 			                    		 }
-			                    		return updatetime;
+			                    		return updatetime.substring(0,updatetime.lastIndexOf(' '));
 			                        } 	
 			                    },
 			                    {"data": "filesize", "bSortable": false,"sWidth": "13%",
@@ -941,7 +941,7 @@ function successCallback(id){
 	}
 	//当点击进入下一级的时候重新加载表格
 	//var clickFlag = 1;
-	function createFodler(pid,filename,filetype,clickFlag){
+	function createFodler(pid,filename,filetype,clickFlag,level){
 		if(clickFlag===1 && filetype===2){
 			$.ajax({
 				type : "POST",
@@ -973,7 +973,8 @@ function successCallback(id){
 		}else{
 			
 			options0.ajax.data.parentId=pid;
-			var param = {parentId:pid};
+			var param = {parentId:pid,level:level};
+			/* var param = {parentId:pid}; */
 			rebatesEamilTable.settings()[0].ajax.data = param;
 			rebatesEamilTable.ajax.reload();
 			var exist=false;
@@ -1043,7 +1044,8 @@ function successCallback(id){
 			editFolder(a,1223,2,0);
 			return false;
 		}
-			createFodler(row.id,row.filename,filetype,clickFlag);
+		var level=row.level;
+			createFodler(row.id,row.filename,filetype,clickFlag,level);
 	});
 	//双击进入到下一层团队
 	$('#rebatesEamilTeamTable tbody').on("dblclick","tr",function(event){
@@ -1057,11 +1059,12 @@ function successCallback(id){
 			editFolder(a,1223,2,0);
 			return false;
 		}
-			createFodler1(row.id,row.filename,filetype,clickFlag);
+		var level=row.level;
+			createFodler1(row.id,row.filename,filetype,clickFlag,level);
 	});
 	//================================================================================================
 
-function createFodler1(pid,filename,filetype,clickFlag){//团队
+function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 		if(clickFlag===1 && filetype===2){
 			$.ajax({
 				type : "POST",
@@ -1092,7 +1095,7 @@ function createFodler1(pid,filename,filetype,clickFlag){//团队
 		}else{
 			
 			options1.ajax.data.parentId=pid;
-			var param = {parentId:pid};
+			var param = {parentId:pid,level:level};
 			rebatesEamilTeamTable.settings()[0].ajax.data = param;
 			rebatesEamilTeamTable.ajax.reload();
 			var exist=false;

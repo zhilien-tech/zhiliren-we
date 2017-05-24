@@ -85,7 +85,14 @@ public class TGrabFileSqlForm extends DataTablesParamForm {
 		 */
 		//String sqlString = EntityUtil.entityCndSql(TGrabFileEntity.class);
 		String sqlString = sqlManager.get("grab_mail_and_file_list");
-		sqlString += " AND ((gr.url NOT like '%.png' and gr.url NOT like '%.jpg' and gr.url NOT like '%.gif' and gr.url NOT like '%.doc' and gr.url NOT like '%.xls') or gr.url is null)";
+
+		if (level < 3) {
+
+			sqlString += " AND ((gr.url NOT like '%.png' and gr.url NOT like '%.jpg' and gr.url NOT like '%.gif' and gr.url NOT like '%.doc' and gr.url NOT like '%.xls') or gr.url is null) ORDER BY gr.updateTime DESC";
+		} else {
+
+			sqlString += " AND ((gr.url NOT like '%.png' and gr.url NOT like '%.jpg' and gr.url NOT like '%.gif' and gr.url NOT like '%.doc' and gr.url NOT like '%.xls') or gr.url is null)";
+		}
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;
