@@ -639,3 +639,55 @@ ADD COLUMN `realTicketPrice`  double(32,2) NULL COMMENT '实收票价' AFTER `ex
 
 ALTER TABLE `t_grab_report`
 ADD COLUMN `pnrRelationId`  int NULL COMMENT 'pnr系统关联id' AFTER `realTicketPrice`;
+
+
+/*(penghui)*/
+ALTER TABLE `t_customer_info`
+MODIFY COLUMN `fax`  varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '传真' AFTER `shortName`,
+MODIFY COLUMN `siteUrl`  varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '网址' AFTER `fax`,
+MODIFY COLUMN `address`  varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地址' AFTER `siteUrl`,
+MODIFY COLUMN `outCityName`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '出发城市' AFTER `address`,
+MODIFY COLUMN `interLine`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '国际' AFTER `outCityName`,
+MODIFY COLUMN `inlandLine`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '国境内陆' AFTER `interLine`,
+MODIFY COLUMN `responsibleId`  int(32) NULL DEFAULT NULL COMMENT '负责人' AFTER `inlandLine`,
+MODIFY COLUMN `appendix`  varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '附件管理' AFTER `responsibleId`,
+MODIFY COLUMN `createTime`  datetime NULL DEFAULT NULL COMMENT '添加时间' AFTER `appendix`,
+MODIFY COLUMN `appendixName`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '附件名称' AFTER `createTime`,
+MODIFY COLUMN `departureCity`  varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '出发城市' AFTER `appendixName`,
+MODIFY COLUMN `travelType`  int(11) NULL DEFAULT NULL COMMENT '旅行社类型' AFTER `departureCity`,
+MODIFY COLUMN `payWay`  varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '付款方式（现金、支票、银行汇款、第三方、其他）' AFTER `travelType`,
+MODIFY COLUMN `paywayName`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '付款方式名称' AFTER `payWay`,
+MODIFY COLUMN `invoice`  int(11) NULL DEFAULT NULL COMMENT '是否提供发票（0：否   1：是）' AFTER `paywayName`,
+MODIFY COLUMN `sellPrice`  double NULL DEFAULT NULL COMMENT '销售价' AFTER `invoice`,
+MODIFY COLUMN `moneyUnit`  varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '货币单位' AFTER `sellPrice`,
+MODIFY COLUMN `payType`  int(11) NULL DEFAULT NULL COMMENT '结算形式（月结、周结、单结、其他）' AFTER `moneyUnit`,
+MODIFY COLUMN `paytypeName`  varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '其他结算方式' AFTER `payType`,
+MODIFY COLUMN `cooperateTime`  datetime NULL DEFAULT NULL COMMENT '合作时间' AFTER `paytypeName`,
+MODIFY COLUMN `cooperateDueTime`  datetime NULL DEFAULT NULL COMMENT '合作到期时间' AFTER `cooperateTime`,
+MODIFY COLUMN `contractTime`  datetime NULL DEFAULT NULL COMMENT '签约时间' AFTER `cooperateDueTime`,
+MODIFY COLUMN `contractDueTime`  datetime NULL DEFAULT NULL COMMENT '签约到期时间' AFTER `contractTime`,
+MODIFY COLUMN `contract`  int(11) NULL DEFAULT NULL COMMENT '是否签约（未签约、已签约、禁止合作）' AFTER `contractDueTime`,
+MODIFY COLUMN `forbid`  int(11) NULL DEFAULT NULL COMMENT '是否禁用' AFTER `contract`,
+MODIFY COLUMN `business`  varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '业务范围' AFTER `forbid`,
+MODIFY COLUMN `creditLine`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '信用额度' AFTER `business`,
+MODIFY COLUMN `discountFare`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '票价折扣' AFTER `creditLine`,
+MODIFY COLUMN `arrears`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '已欠款' AFTER `discountFare`,
+MODIFY COLUMN `preDeposit`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '预存款' AFTER `arrears`,
+MODIFY COLUMN `fees`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '手续费' AFTER `preDeposit`,
+MODIFY COLUMN `exchangeRates`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '汇率' AFTER `fees`,
+MODIFY COLUMN `taxRefund`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '退税' AFTER `exchangeRates`,
+ADD COLUMN `comPhone`  varchar(255) NULL COMMENT '公司电话' AFTER `shortName`;
+
+ALTER TABLE `t_customer_info`
+ADD COLUMN `manBankInfo`  varchar(255) NULL COMMENT '联系人账户名称' AFTER `telephone`,
+ADD COLUMN `manBankName`  varchar(255) NULL COMMENT '联系人银行名称' AFTER `manBankInfo`,
+ADD COLUMN `manBankNum`  varchar(64) NULL COMMENT '联系人银行卡号' AFTER `manBankName`,
+ADD COLUMN `manWeChat`  varchar(255) NULL COMMENT '微信号码' AFTER `manBankNum`,
+ADD COLUMN `manQQ`  varchar(255) NULL COMMENT '联系人QQ号' AFTER `manWeChat`,
+ADD COLUMN `manEmail`  varchar(255) NULL COMMENT 'E-Mail' AFTER `manQQ`,
+ADD COLUMN `manRemark`  varchar(1024) NULL COMMENT '联系人备注' AFTER `manQQ`,
+ADD COLUMN `compTaxNum`  varchar(255) NULL COMMENT '纳税人识别号' AFTER `manRemark`,
+ADD COLUMN `compBank`  varchar(255) NULL COMMENT '公司开户银行' AFTER `compTaxNum`,
+ADD COLUMN `compBankNum`  varchar(255) NULL COMMENT '公司开户账号' AFTER `compBank`,
+ADD COLUMN `compBankCode`  varchar(255) NULL COMMENT '公司开户行号' AFTER `compBankNum`;
+
