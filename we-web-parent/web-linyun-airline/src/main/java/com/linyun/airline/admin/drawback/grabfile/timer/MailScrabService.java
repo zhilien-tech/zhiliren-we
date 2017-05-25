@@ -475,20 +475,27 @@ public class MailScrabService extends BaseService {
 					Cnd.where("id", "=", timeFileTwo.getId()));
 		} else {
 			timeFileTwo = dbDao.insert(timeFileTwo);
-			map.put("sort", 0L);
 		}
 		/**************************第二层结束***************************/
 		/**************************客户团号***************************/
 		/*long sort = getSort(timeFileTwo.getId());*/
 		String cusgroupnum = getcusGroupnum();//得到客户团号
 		long sort = 0;
-		if (!Util.isEmpty(map.get("sort"))) {
-			sort = map.get("sort");
-			if (Util.isEmpty(cusgroupnum)) {
-				sort += 1;
-				map.put("sort", sort);
-				cusgroupnum = "客户团号" + sort;
+		if (Util.isEmpty(cusgroupnum)) {
+			cusgroupnum = "客户团号";
+			TGrabFileEntity grabFileEntity = dbDao.fetch(TGrabFileEntity.class,
+					Cnd.where("id", "=", timeFileTwo.getId()));
+			Integer a = grabFileEntity.getCustomnum();
+			if (Util.isEmpty(a)) {
+				a = 1;
+				cusgroupnum += a;
+			} else {
+				a++;
+				cusgroupnum += a;
+
 			}
+			dbDao.update(TGrabFileEntity.class, Chain.make("customnum", a), Cnd.where("id", "=", timeFileTwo.getId()));
+
 		}
 		//父id
 		long pid = timeFileTwo.getId();

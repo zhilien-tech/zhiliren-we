@@ -641,6 +641,10 @@ ALTER TABLE `t_grab_report`
 ADD COLUMN `pnrRelationId`  int NULL COMMENT 'pnr系统关联id' AFTER `realTicketPrice`;
 
 
+
+ALTER TABLE `t_grab_file`
+CHANGE COLUMN `folderName` `customnum`  int(64) NULL DEFAULT NULL COMMENT '客户团号计数' AFTER `parentId`;
+
 /*(penghui)*/
 ALTER TABLE `t_customer_info`
 MODIFY COLUMN `fax`  varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '传真' AFTER `shortName`,
@@ -690,4 +694,5 @@ ADD COLUMN `compTaxNum`  varchar(255) NULL COMMENT '纳税人识别号' AFTER `m
 ADD COLUMN `compBank`  varchar(255) NULL COMMENT '公司开户银行' AFTER `compTaxNum`,
 ADD COLUMN `compBankNum`  varchar(255) NULL COMMENT '公司开户账号' AFTER `compBank`,
 ADD COLUMN `compBankCode`  varchar(255) NULL COMMENT '公司开户行号' AFTER `compBankNum`;
+
 

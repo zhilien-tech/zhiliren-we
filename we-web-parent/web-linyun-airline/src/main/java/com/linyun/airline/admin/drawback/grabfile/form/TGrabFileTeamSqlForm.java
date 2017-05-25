@@ -38,8 +38,8 @@ public class TGrabFileTeamSqlForm extends DataTablesParamForm {
 	/**上级id*/
 	private long parentId;
 
-	/**文件夹名称*/
-	private String folderName;
+	/**客户团号计数*/
+	private Integer customnum;
 
 	/**文件名称*/
 	private String fileName;

@@ -28,8 +28,8 @@ public class TGrabFileEntity implements Serializable {
 	private long parentId;
 
 	@Column
-	@Comment("文件夹名称")
-	private String folderName;
+	@Comment("客户团号计数")
+	private Integer customnum;
 
 	@Column
 	@Comment("文件名称")
