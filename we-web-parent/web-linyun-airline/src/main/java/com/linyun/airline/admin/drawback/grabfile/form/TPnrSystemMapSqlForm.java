@@ -43,6 +43,9 @@ public class TPnrSystemMapSqlForm extends DataTablesParamForm {
 	/**航空公司*/
 	private String fileName;
 
+	/**订单id**/
+	private Integer orderId;
+
 	@Override
 	public Sql sql(SqlManager sqlManager) {
 		/**

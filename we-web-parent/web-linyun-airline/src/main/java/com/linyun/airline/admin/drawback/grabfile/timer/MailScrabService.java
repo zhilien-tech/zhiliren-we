@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -1067,6 +1069,27 @@ public class MailScrabService extends BaseService {
 			fileName += ".pdf";
 			contentHtml = ctim.getContentHtml(msg);
 			fileUrl = uploadFileNew(contentHtml, fileName);
+			String str1 = System.getProperty("java.io.tmpdir");
+			//==============================从网络地址下载文件将其变为本地文件再读进程序中，进行length的获取==================================
+			InputStream is1 = null;
+			OutputStream out = null;
+			URL url = new URL(fileUrl);
+			URLConnection connection = url.openConnection();
+			is1 = connection.getInputStream();
+			File file3 = new File(str1 + File.separator + "12.pdf");
+			out = new FileOutputStream(file3);
+			byte b[] = new byte[1024];
+			int m = 0;
+			while ((m = is1.read(b)) > -1) {
+				out.write(b);
+				out.flush();
+			}
+			File file4 = new File(str1 + File.separator + "12.pdf");
+			InputStream is5 = new FileInputStream(file4);
+			int byteNum = is5.available();
+			double fileSize = Math.rint(byteNum / 1024);
+			//=======================================================	
+
 			TGrabFileEntity newFile = new TGrabFileEntity();
 			BeanUtil.copyProperties(fileProps, newFile);
 			String attachmentName = fileName;
@@ -1081,6 +1104,7 @@ public class MailScrabService extends BaseService {
 			fileProps.setSort(fileSort);
 			newFile.setUrl(fileUrl);
 			newFile.setType(FileTypeEnum.FILE.intKey());//文件
+			newFile.setFileSize(fileSize);
 			grabFileLst.add(newFile);
 
 		} catch (Exception e) {
@@ -1105,6 +1129,27 @@ public class MailScrabService extends BaseService {
 			File file1 = new File(str1 + File.separator + "12.html");
 			fileUrl = CommonConstants.IMAGES_SERVER_ADDR
 					+ qiniuUploadService.uploadImage(new FileInputStream(file1), "pdf", null);
+
+			//==============================从网络地址下载文件将其变为本地文件再读进程序中，进行length的获取==================================
+			InputStream is1 = null;
+			OutputStream out = null;
+			URL url = new URL(fileUrl);
+			URLConnection connection = url.openConnection();
+			is1 = connection.getInputStream();
+			File file3 = new File(str1 + File.separator + "12.pdf");
+			out = new FileOutputStream(file3);
+			byte b[] = new byte[1024];
+			int m = 0;
+			while ((m = is1.read(b)) > -1) {
+				out.write(b);
+				out.flush();
+			}
+			File file4 = new File(str1 + File.separator + "12.pdf");
+			InputStream is5 = new FileInputStream(file4);
+			int byteNum = is5.available();
+			double fileSize = Math.rint(byteNum / 1024);
+			//=======================================================	
+
 			String subjectStr = msg.getSubject();
 			// getContent() 是获取包裹内容, Part相当于外包装  
 			String PNR = null;
@@ -1132,6 +1177,7 @@ public class MailScrabService extends BaseService {
 			fileProps.setSort(fileSort);
 			newFile.setUrl(fileUrl);
 			newFile.setType(FileTypeEnum.FILE.intKey());//文件
+			newFile.setFileSize(fileSize);
 			grabFileLst.add(newFile);
 
 		} catch (Exception e) {
@@ -1163,13 +1209,13 @@ public class MailScrabService extends BaseService {
 				String fileName = bodyPart.getFileName();
 				String fileExt = FileUtil.getSuffix(fileName);//获取附件后缀名
 				//某一个邮件体也有可能是由多个邮件体组成的复杂体  
+				String str1 = System.getProperty("java.io.tmpdir");
 				String disp = bodyPart.getDisposition();
 				if (disp != null && (disp.equalsIgnoreCase(Part.ATTACHMENT) || disp.equalsIgnoreCase(Part.INLINE))) {
 					//向网络上上传一个文件，然后返回一个地址存储到数据库中
 					InputStream is = bodyPart.getInputStream();
 					String fileUrl = null;
 					if ("eml".equals(fileExt)) {
-						String str1 = System.getProperty("java.io.tmpdir");
 						File file = new File(str1 + File.separator + "12.eml");
 						OutputStream os = new FileOutputStream(file);
 						int length = 0;
@@ -1204,9 +1250,25 @@ public class MailScrabService extends BaseService {
 						fileUrl = uploadFile(is, fileExt);
 
 					}
+					//==============================从网络地址下载文件将其变为本地文件再读进程序中，进行length的获取==================================
+					InputStream is1 = null;
+					OutputStream out = null;
+					URL url = new URL(fileUrl);
+					URLConnection connection = url.openConnection();
+					is1 = connection.getInputStream();
+					File file3 = new File(str1 + File.separator + "12.pdf");
+					out = new FileOutputStream(file3);
+					byte b[] = new byte[1024];
+					int m = 0;
+					while ((m = is1.read(b)) > -1) {
+						out.write(b);
+						out.flush();
+					}
+					File file4 = new File(str1 + File.separator + "12.pdf");
+					InputStream is5 = new FileInputStream(file4);
 
-					//String fileUrl = uploadFile(is, fileExt);
-					int byteNum = is.available();
+					//=======================================================	
+					int byteNum = is5.available();
 					double fileSize = Math.rint(byteNum / 1024);
 					TGrabFileEntity newFile = new TGrabFileEntity();
 					BeanUtil.copyProperties(fileProps, newFile);
@@ -1246,7 +1308,34 @@ public class MailScrabService extends BaseService {
 						newFile.setFileName(attachmentName);
 						fileProps.setSort(fileSort);
 						newFile.setUrl(fileUrl);
-						int byteNum = is.available();
+						try {
+							Thread.sleep(200);
+						} catch (InterruptedException e) {
+
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+
+						}
+
+						//==============================从网络地址下载文件将其变为本地文件再读进程序中，进行length的获取==================================
+						InputStream is1 = null;
+						OutputStream out = null;
+						URL url = new URL(fileUrl);
+						URLConnection connection = url.openConnection();
+						is1 = connection.getInputStream();
+						File file3 = new File(str1 + File.separator + "12.pdf");
+						out = new FileOutputStream(file3);
+						byte b[] = new byte[1024];
+						int m = 0;
+						while ((m = is1.read(b)) > -1) {
+							out.write(b);
+							out.flush();
+						}
+						File file4 = new File(str1 + File.separator + "12.pdf");
+						InputStream is5 = new FileInputStream(file4);
+
+						//=======================================================	
+						int byteNum = is5.available();
 						double fileSize = Math.rint(byteNum / 1024);
 						newFile.setFileSize(fileSize);
 						setParentsFileSize(fileProps.getParentId(), fileSize);
