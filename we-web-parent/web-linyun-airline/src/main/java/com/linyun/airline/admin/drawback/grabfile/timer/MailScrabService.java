@@ -482,12 +482,13 @@ public class MailScrabService extends BaseService {
 		/*long sort = getSort(timeFileTwo.getId());*/
 		String cusgroupnum = getcusGroupnum();//得到客户团号
 		long sort = 0;
-		if (!Util.isEmpty(map.get("sort"))) {
-			sort = map.get("sort");
-			if (Util.isEmpty(cusgroupnum)) {
+		if (Util.isEmpty(cusgroupnum)) {
+			cusgroupnum = "客户团号";
+			if (!Util.isEmpty(map.get("sort"))) {
+				sort = map.get("sort");
 				sort += 1;
 				map.put("sort", sort);
-				cusgroupnum = "客户团号" + sort;
+				cusgroupnum += sort;
 			}
 		}
 		//父id

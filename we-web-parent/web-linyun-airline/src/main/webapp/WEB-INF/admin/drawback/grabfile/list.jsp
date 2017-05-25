@@ -42,10 +42,10 @@
                    </div>
                    <!-- 检索开始 -->
                    <div class="col-md-2 col-padding marBottom10">
-                   	 	<input id="fileNameId" name="fileName" type="text" onkeypress="onkeyEnter();" class="form-control" placeholder="请输入航空公司二字代码"/>
+                   	 	<input id="fileNameId" name="fileName" type="text" onkeypress="onkeyEnter(0);" class="form-control" placeholder="请输入航空公司二字代码"/>
                    </div>
                    <div class="col-md-2 col-padding">
-                   		<input id="sendTimeId" name="sendTime" type="text" onkeypress="onkeyEnter();" class="form-control" placeholder="请输入时间:例如2017.06"/>
+                   		<input id="sendTimeId" name="sendTime" type="text" onkeypress="onkeyEnter(0);" class="form-control" placeholder="请输入时间:例如2017.06"/>
                    </div>
                    <div class="col-md-3 col-padding">		
                    		<input id="searchBtnId" name="searchBtn" type="button" class="btn btn-primary btn-sm" value="搜索"/>
@@ -92,13 +92,13 @@
                    </div>
                    <!-- 检索开始 -->
                    <div class="col-md-2 col-padding marBottom10">
-                   	 	<input id="fileNameId" name="fileName" type="text" onkeypress="onkeyEnter();" class="form-control" placeholder="请输入航空公司二字代码"/>
+                   	 	<input id="fileNameIdInter" name="fileName" type="text" onkeypress="onkeyEnter(1);" class="form-control" placeholder="请输入航空公司二字代码"/>
                    </div>
                    <div class="col-md-2 col-padding">
-                   		<input id="sendTimeId" name="sendTime" type="text" onkeypress="onkeyEnter();" class="form-control" placeholder="请输入时间:例如2017.06"/>
+                   		<input id="sendTimeIdInter" name="sendTime" type="text" onkeypress="onkeyEnter(1);" class="form-control" placeholder="请输入时间:例如2017.06"/>
                    </div>
                    <div class="col-md-3 col-padding">		
-                   		<input id="searchBtnId" name="searchBtn" type="button" class="btn btn-primary btn-sm" value="搜索"/>
+                   		<input id="searchBtnIdInter" name="searchBtn" type="button" class="btn btn-primary btn-sm" value="搜索"/>
                    </div>
                    <!-- 检索结束 -->
                    <!-- 区分当前是哪个切换卡下面的 -->
@@ -1271,10 +1271,26 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 		rebatesEamilTable.settings()[0].ajax.data = param;
 		rebatesEamilTable.ajax.reload();
 	});
+	$("#searchBtnIdInter").on('click', function () {
+		var fileNameCode = $("#fileNameIdInter").val();
+		var fileNameTime = $("#sendTimeIdInter").val();
+	    var param = {
+			        "fileNameCode":fileNameCode,
+			        "fileNameTime":fileNameTime
+			    };
+	rebatesEamilTeamTable.settings()[0].ajax.data = param;
+	rebatesEamilTeamTable.ajax.reload();
+	});
 	//搜索回车事件
-	function onkeyEnter(){
+	function onkeyEnter(a){
 		 if(event.keyCode==13){
-			 $("#searchBtnId").click();
+			 if(a==0){
+				 
+			 	$("#searchBtnId").click();
+			 }else if(a==1){
+				 
+				 $("#searchBtnIdInter").click();
+			 }
 		 }
 	}
 </script>
