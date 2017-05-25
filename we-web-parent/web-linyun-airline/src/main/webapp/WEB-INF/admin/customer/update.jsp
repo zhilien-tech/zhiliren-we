@@ -63,19 +63,15 @@
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">公司简称：</label>
 								<div id="shortNameDiv" class="col-sm-3 padding">
-									<input id="shortName" name="shortName" type="tel" class="form-control input-sm inpImportant"
+									<input id="shortName" name="shortName" type="text" class="form-control input-sm inpImportant"
 										value="${obj.customer.shortName}" placeholder="请输入公司简称" /><span class="prompt">*</span>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-1 text-right padding">负责人：</label>
+								<label class="col-sm-1 text-right padding">电话：</label>
 								<div class="col-sm-3 padding">
-									<!-- 负责人下拉列表 -->
-									<select id="agent" name="responsibleId" class="form-control input-sm inpImportant">
-										<c:forEach var="one" items="${obj.userlist }">
-											<option value="${one.id }" <c:if test="${one.id eq obj.customer.responsibleId}">selected</c:if>>${one.fullName}</option>
-										</c:forEach>
-									</select><span class="prompt">*</span>
+									<input id="comPhone" name="comPhone" type="text" value="${obj.customer.comPhone}" class="form-control input-sm inpImportant" placeholder="请输入公司电话" />
+									<span class="prompt">*</span>
 								</div>
 							</div>
 						</div>
@@ -95,13 +91,24 @@
 								</div>
 							</div>
 						</div> --%>
-						<div class="row sitefax">
-							<label class="col-sm-3 text-right padding">网址：</label>
+						<div class="row">
+							<%-- <label class="col-sm-3 text-right padding">网址：</label>
 							<div class="col-sm-3 padding">
 								<input name="siteUrl" type="tel" class="form-control input-sm inpImportant"
 									value="${obj.customer.siteUrl}" placeholder="请输入网址" />
+							</div> --%>
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">负责人：</label>
+								<div class="col-sm-3 padding">
+									<!-- 负责人下拉列表 -->
+									<select id="agent" name="responsibleId" class="form-control input-sm inpImportant">
+										<c:forEach var="one" items="${obj.userlist }">
+											<option value="${one.id }" <c:if test="${one.id eq obj.customer.responsibleId}">selected</c:if>>${one.fullName}</option>
+										</c:forEach>
+									</select><span class="prompt">*</span>
+								</div>
 							</div>
-							<div class="form-group fax">
+							<div class="form-group">
 								<label class="col-sm-1 text-right padding">传真：</label>
 								<div class="col-sm-3 padding">
 									<input name="fax" type="tel" class="form-control input-sm inpImportant"
@@ -109,12 +116,19 @@
 								</div>
 							</div>
 						</div>
-						<div class="row address">
+						<div class="row">
+							<div class="form-group">
+								<label class="col-sm-3 text-right padding">网址：</label>
+								<div class="col-sm-7 padding">
+									<input name="siteUrl" type="tel" class="form-control input-sm inpImpWid" value="${obj.customer.siteUrl}" placeholder="请输入网址" />
+								</div>
+							</div>
+						</div>
+						<div class="row">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">地址：</label>
 								<div class="col-sm-7 padding">
-									<input id="address" name="address" type="tel" class="form-control input-sm inpImpWid"
-										value="${obj.customer.address}" placeholder="请输入详细地址" /><span class="prompt">*</span>
+									<input id="address" name="address" type="tel" class="form-control input-sm inpImpWid" value="${obj.customer.address}" placeholder="请输入详细地址" /><span class="prompt">*</span>
 								</div>
 							</div>
 						</div>
@@ -169,8 +183,9 @@
 							<div class="form-group">
 								<label class="col-sm-1 text-right padding">联系电话：</label>
 								<div id="phoneDiv" class="col-sm-3 padding">
-									<input id="telephone" name="telephone" type="tel" class="form-control input-sm inpImportant mustPhoneLength"
-										value="${obj.customer.telephone}" placeholder="请输入联系电话" /><span class="prompt">*</span>
+									<input id="telephone" name="telephone" type="text" class="form-control input-sm inpImportant mustPhoneLength"
+										value="${obj.customer.telephone}" placeholder="请输入联系电话" />
+									<span class="prompt">*</span>
 								</div>
 							</div>
 						</div>
@@ -178,9 +193,8 @@
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">账号名称：</label>
 								<div class="col-sm-7 padding">
-									<input id=" " name=" " type="text"
-										class="form-control input-sm inpImpWid" placeholder=" " /><span
-										class="prompt">*</span>
+									<input id="manBankInfo" name="manBankInfo" value="${obj.customer.manBankInfo}" type="text"
+										class="form-control input-sm inpImpWid" placeholder=" " />
 								</div>
 							</div>
 						</div>
@@ -188,13 +202,13 @@
 							<div class="form-group fax">
 								<label class="col-sm-3 text-right padding">银行名称：</label>
 								<div class="col-sm-3 padding">
-									<input name=" " type="text" class="form-control input-sm inpImportant" placeholder=" " />
+									<input id="manBankName" name="manBankName" value="${obj.customer.manBankName}" type="text" class="form-control input-sm inpImportant" placeholder=" " />
 								</div>
 							</div>
 							<div class="form-group fax">
 								<label class="col-sm-1 text-right padding">应返合计：</label>
 								<div  class="col-sm-3 padding">
-									<input id=" " name=" " type="text" class="form-control input-sm inpImportant" placeholder=" " />
+									<input id=" " name=" " type="text" readonly="readonly" value="<fmt:formatNumber type="number" value="" pattern="0.00" maxFractionDigits="2"/>" class="form-control input-sm inpImportant"  placeholder=" " />
 								</div>
 							</div>
 						</div>
@@ -202,13 +216,14 @@
 							<div class="form-group fax">
 								<label class="col-sm-3 text-right padding">银行卡号：</label>
 								<div class="col-sm-3 padding">
-									<input name=" " type="text" class="form-control input-sm inpImportant" placeholder=" " />
+									<input id="manBankNum" name="manBankNum" value="${obj.customer.manBankNum}"  type="text" class="form-control input-sm inpImportant" placeholder=" " onkeyup="this.value=this.value.replace(/\s/g,'').replace(/....(?!$)/g,'$& ')" maxlength="32" />
+									<span class="prompt">*</span>
 								</div>
 							</div>
 							<div class="form-group fax">
 								<label class="col-sm-1 text-right padding">微信号码：</label>
 								<div  class="col-sm-3 padding">
-									<input id=" " name=" " type="text" class="form-control input-sm inpImportant" placeholder=" " />
+									<input id="manWeChat" name="manWeChat" value="${obj.customer.manWeChat}" type="text" class="form-control input-sm inpImportant" placeholder=" " />
 									<span class="prompt">*</span>
 								</div>
 							</div>
@@ -217,14 +232,14 @@
 							<div class="form-group fax">
 								<label class="col-sm-3 text-right padding">QQ号码：</label>
 								<div class="col-sm-3 padding">
-									<input name=" " type="text" class="form-control input-sm inpImportant" placeholder=" " />
+									<input id="manQQ" name="manQQ" value="${obj.customer.manQQ}" type="text" class="form-control input-sm inpImportant" placeholder=" " />
 									<span class="prompt">*</span>
 								</div>
 							</div>
 							<div class="form-group fax">
 								<label class="col-sm-1 text-right padding">E-mail：</label>
 								<div class="col-sm-3 padding">
-									<input id=" " name=" " type="text" class="form-control input-sm inpImportant" placeholder=" " />
+									<input id="manEmail" name="manEmail" value="${obj.customer.manEmail}" type="text" class="form-control input-sm inpImportant" placeholder=" " />
 									<span class="prompt">*</span>
 								</div>
 							</div>
@@ -233,7 +248,8 @@
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">备注：</label>
 								<div class="col-sm-7 padding">
-									<textarea id="" class="form-control input-sm inpImpWid textareaHei">
+									<textarea id="manRemark" name="manRemark" class="form-control input-sm inpImpWid textareaHei">
+										${obj.customer.manRemark}
 									</textarea>
 								</div>
 							</div>
@@ -448,7 +464,7 @@
 						
 					</div>
 					<div class="tab-pane" id="tabs_7">
-						<div class="row">
+						<!-- <div class="row">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">公司名称：</label>
 								<div class="col-sm-7 padding">
@@ -456,12 +472,12 @@
 									<span class="prompt">*</span>
 								</div>
 							</div>
-						</div>
+						</div> -->
 						<div class="row">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">纳税人识别号：</label>
 								<div class="col-sm-7 padding">
-									<input id=" " name=" " type="text" class="form-control input-sm inpImpWid" placeholder=" " />
+									<input id="compTaxNum" name="compTaxNum" value="${obj.customer.compTaxNum}" type="text"  class="form-control input-sm inpImpWid" placeholder=" " />
 									<span class="prompt">*</span>
 								</div>
 							</div>
@@ -470,7 +486,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">开户行：</label>
 								<div class="col-sm-7 padding">
-									<input id=" " name=" " type="text" class="form-control input-sm inpImpWid" placeholder=" " />
+									<input id="compBank" name="compBank" value="${obj.customer.compBank}"  type="text" class="form-control input-sm inpImpWid" placeholder=" " />
 									<span class="prompt">*</span>
 								</div>
 							</div>
@@ -479,7 +495,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">账号：</label>
 								<div class="col-sm-7 padding">
-									<input id=" " name=" " type="text" class="form-control input-sm inpImpWid" placeholder=" " />
+									<input id="compBankNum" name="compBankNum" value="${obj.customer.compBankNum}" type="text" class="form-control input-sm inpImpWid" placeholder=" " />
 									<span class="prompt">*</span>
 								</div>
 							</div>
@@ -488,12 +504,12 @@
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">行号：</label>
 								<div class="col-sm-7 padding">
-									<input id=" " name=" " type="text" class="form-control input-sm inpImpWid" placeholder=" " />
+									<input id="compBankCode" name="compBankCode" value="${obj.customer.compBankCode}" type="text" class="form-control input-sm inpImpWid" placeholder=" " />
 									<span class="prompt">*</span>
 								</div>
 							</div>
 						</div>
-						<div class="row">
+						<!-- <div class="row">
 							<div class="form-group">
 								<label class="col-sm-3 text-right padding">电话：</label>
 								<div class="col-sm-7 padding">
@@ -509,7 +525,7 @@
 									<input id=" " name=" " type="text" class="form-control input-sm inpImpWid" placeholder=" " />
 								</div>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>
@@ -878,6 +894,13 @@
 							} */
 						}
 					},
+					comPhone : {
+						validators : {
+							notEmpty : {
+								message : '公司电话不能为空'
+							}
+						}
+					},
 					linkMan : {
 						validators : {
 							notEmpty : {
@@ -921,6 +944,34 @@
 							regexp : {
 								regexp : /^[+]{0,1}(\d){1,3}[ ]?([-]?((\d)|[ ]){1,12})+$/,
 								message : '传真格式错误'
+							}
+						}
+					},
+					manBankNum : {
+						validators : {
+							notEmpty : {
+								message : '银行卡号不能为空'
+							}
+						}
+					},
+					manWeChat : {
+						validators : {
+							notEmpty : {
+								message : '微信号码不能为空'
+							}
+						}
+					},
+					manQQ : {
+						validators : {
+							notEmpty : {
+								message : 'QQ号码不能为空'
+							}
+						}
+					},
+					manEmail : {
+						validators : {
+							notEmpty : {
+								message : 'E-mail不能为空'
 							}
 						}
 					},
@@ -971,7 +1022,35 @@
 								message : '退税格式错误'
 							}
 						}
-					} 
+					},
+					compTaxNum : {
+						validators : {
+							notEmpty : {
+								message : '纳税人识别号不能为空'
+							}
+						}
+					},
+					compBank : {
+						validators : {
+							notEmpty : {
+								message : '开户行不能为空'
+							}
+						}
+					},
+					compBankNum : {
+						validators : {
+							notEmpty : {
+								message : '账号不能为空'
+							}
+						}
+					},
+					compBankCode : {
+						validators : {
+							notEmpty : {
+								message : '行号不能为空'
+							}
+						}
+					}
 				}
 			});
 		}
@@ -1101,15 +1180,32 @@
 			if (bootstrapValidator.isValid()) {
 				var selectedcompany = $('#companyId').find("option:selected").text();
 				var shortName = $("#shortName").val();
+				var comPhone = $("#comPhone").val();
+				var address = $("#address").val();
 				var linkMan = $("#linkMan").val();
 				var telephone = $("#telephone").val();
-				var address = $("#address").val();
+				var manBankNum = $("#manBankNum").val();
+				var manWeChat = $("#manWeChat").val();
+				var manQQ = $("#manQQ").val();
+				var manEmail = $("#manEmail").val();
+				var compTaxNum = $("#compTaxNum").val();
+				var compBank = $("#compBank").val();
+				var compBankNum = $("#compBankNum").val();
+				var compBankCode = $("#compBankCode").val();
 				if(selectedcompany==""){
 					layer.msg('公司名称不能为空');
 					return;
 				}
 				if(shortName==""){
 					layer.msg('公司简称不能为空');
+					return;
+				}
+				if(comPhone==""){
+					layer.msg('公司电话不能为空');
+					return;
+				}
+				if(address==""){
+					layer.msg('公司地址不能为空');
 					return;
 				}
 				if(linkMan==""){
@@ -1120,8 +1216,36 @@
 					layer.msg('联系电话不能为空');
 					return;
 				}
-				if(address==""){
-					layer.msg('地址不能为空');
+				if(manBankNum==""){
+					layer.msg('银行卡号不能为空');
+					return;
+				}
+				if(manWeChat==""){
+					layer.msg('微信号码不能为空');
+					return;
+				}
+				if(manQQ==""){
+					layer.msg('QQ号码不能为空');
+					return;
+				}
+				if(manEmail==""){
+					layer.msg('E-mail不能为空');
+					return;
+				}
+				if(compTaxNum==""){
+					layer.msg('纳税人识别号不能为空');
+					return;
+				}
+				if(compBank==""){
+					layer.msg('开户行不能为空');
+					return;
+				}
+				if(compBankNum==""){
+					layer.msg('账号不能为空');
+					return;
+				}
+				if(compBankCode==""){
+					layer.msg('行号不能为空');
 					return;
 				}
 				if(!$('small[data-bv-for="companyId"]').attr("style")=='display: none;'){

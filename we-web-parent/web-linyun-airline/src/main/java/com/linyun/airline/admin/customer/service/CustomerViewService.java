@@ -84,6 +84,9 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 	private static final int TEAM = OrderTypeEnum.TEAM.intKey(); //国际
 	private static final int FIT = OrderTypeEnum.FIT.intKey(); //内陆
 
+	//备注信息换行
+	private static final String HUAN_HANG = "&#13;&#10;";
+
 	//订单状态  内陆
 	private static final int SEARCH = OrderStatusEnum.SEARCH.intKey();
 	private static final int CLOSE = OrderStatusEnum.CLOSE.intKey();
@@ -317,6 +320,15 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		TCompanyEntity company = dbDao.fetch(TCompanyEntity.class, Cnd.where("id", "=", companyId));
 		if (!Util.isEmpty(upcompany)) {
 			addForm.setUpComId(upcompany.getId());
+		}
+
+		String businessStr = addForm.getBusiness();
+		if (!Util.isEmpty(businessStr)) {
+			addForm.setBusiness(businessStr.replace("\n", HUAN_HANG));
+		}
+		String manRemark = addForm.getManRemark();
+		if (!Util.isEmpty(manRemark)) {
+			addForm.setManRemark(manRemark.replace("\n", HUAN_HANG));
 		}
 
 		TCustomerInfoEntity customerInfo = this.add(addForm);
@@ -692,6 +704,15 @@ public class CustomerViewService extends BaseService<TCustomerInfoEntity> {
 		TUpcompanyEntity upcompany = dbDao.fetch(TUpcompanyEntity.class, Cnd.where("comId", "=", companyId));
 		if (!Util.isEmpty(upcompany)) {
 			updateForm.setUpComId(upcompany.getId());
+		}
+
+		String businessStr = updateForm.getBusiness();
+		if (!Util.isEmpty(businessStr)) {
+			updateForm.setBusiness(businessStr.replace("\n", HUAN_HANG));
+		}
+		String manRemark = updateForm.getManRemark();
+		if (!Util.isEmpty(manRemark)) {
+			updateForm.setManRemark(manRemark.replace("\n", HUAN_HANG));
 		}
 
 		this.update(updateForm);
