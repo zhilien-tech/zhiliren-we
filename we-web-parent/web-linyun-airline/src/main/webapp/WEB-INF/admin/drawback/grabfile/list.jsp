@@ -42,10 +42,10 @@
                    </div>
                    <!-- 检索开始 -->
                    <div class="col-md-2 col-padding marBottom10">
-                   	 	<input id="fileNameId" name="fileName" type="text" onkeypress="onkeyEnter();" class="form-control" placeholder="请输入航空公司二字代码"/>
+                   	 	<input id="fileNameId" name="fileName" type="text" onkeypress="onkeyEnter(0);" class="form-control" placeholder="请输入航空公司二字代码"/>
                    </div>
                    <div class="col-md-2 col-padding">
-                   		<input id="sendTimeId" name="sendTime" type="text" onkeypress="onkeyEnter();" class="form-control" placeholder="请输入时间:例如2017.06"/>
+                   		<input id="sendTimeId" name="sendTime" type="text" onkeypress="onkeyEnter(0);" class="form-control" placeholder="请输入时间:例如2017.06"/>
                    </div>
                    <div class="col-md-3 col-padding">		
                    		<input id="searchBtnId" name="searchBtn" type="button" class="btn btn-primary btn-sm" value="搜索"/>
@@ -92,13 +92,13 @@
                    </div>
                    <!-- 检索开始 -->
                    <div class="col-md-2 col-padding marBottom10">
-                   	 	<input id="fileNameId" name="fileName" type="text" onkeypress="onkeyEnter();" class="form-control" placeholder="请输入航空公司二字代码"/>
+                   	 	<input id="fileNameIdInter" name="fileName" type="text" onkeypress="onkeyEnter(1);" class="form-control" placeholder="请输入航空公司二字代码"/>
                    </div>
                    <div class="col-md-2 col-padding">
-                   		<input id="sendTimeId" name="sendTime" type="text" onkeypress="onkeyEnter();" class="form-control" placeholder="请输入时间:例如2017.06"/>
+                   		<input id="sendTimeIdInter" name="sendTime" type="text" onkeypress="onkeyEnter(1);" class="form-control" placeholder="请输入时间:例如2017.06"/>
                    </div>
                    <div class="col-md-3 col-padding">		
-                   		<input id="searchBtnId" name="searchBtn" type="button" class="btn btn-primary btn-sm" value="搜索"/>
+                   		<input id="searchBtnIdInter" name="searchBtn" type="button" class="btn btn-primary btn-sm" value="搜索"/>
                    </div>
                    <!-- 检索结束 -->
                    <!-- 区分当前是哪个切换卡下面的 -->
@@ -747,7 +747,7 @@ function successCallback(id){
 				                    		fileExtension = filename.substring(filename.lastIndexOf('.') + 1);
 			                    		}
 			                    		if(null==filename || ""==filename){
-			                    			return null;
+			                    			return "";
 			                    		}
 			                    		//return filename;
 			                    		if(filetype===1){
@@ -778,11 +778,17 @@ function successCallback(id){
 			                    {"data": "filesize", "bSortable": false,"sWidth": "13%",
 			                    	render: function(data, type, row, meta) {
 			                    		var filesize = row.filesize;
-			                    		var unit = row.unit;
 			                    		if(null==filesize || ""==filesize){
-			                    			return null;
+			                    			return "";
 			                    		}
-			                    		return filesize+unit;
+			                    		if(filesize>1024){
+			                    			return (filesize/1024).toFixed(2)+"M";
+			                    		}
+			                    		if(filesize>1024*1024){
+			                    			return (filesize/1024/1024).toFixed(2)+"G";
+			                    		}
+			                    		
+			                    		return filesize+"K";
 			                    	}	
 			                    },
 			                    {"data": "no", "bSortable": false,"sWidth": "12%",
@@ -849,7 +855,7 @@ function successCallback(id){
 				                    		fileExtension = filename.substring(filename.lastIndexOf('.') + 1);
 			                    		}
 			                    		if(null==filename || ""==filename){
-			                    			return null;
+			                    			return "";
 			                    		}
 			                    		//return filename;
 			                    		if(filetype===1){
@@ -882,7 +888,7 @@ function successCallback(id){
 			                    		var filesize = row.filesize;
 			                    		var unit = row.unit;
 			                    		if(null==filesize || ""==filesize){
-			                    			return null;
+			                    			return "";
 			                    		}
 			                    		return filesize+unit;
 			                    	}	
@@ -1271,10 +1277,26 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 		rebatesEamilTable.settings()[0].ajax.data = param;
 		rebatesEamilTable.ajax.reload();
 	});
+	$("#searchBtnIdInter").on('click', function () {
+		var fileNameCode = $("#fileNameIdInter").val();
+		var fileNameTime = $("#sendTimeIdInter").val();
+	    var param = {
+			        "fileNameCode":fileNameCode,
+			        "fileNameTime":fileNameTime
+			    };
+	rebatesEamilTeamTable.settings()[0].ajax.data = param;
+	rebatesEamilTeamTable.ajax.reload();
+	});
 	//搜索回车事件
-	function onkeyEnter(){
+	function onkeyEnter(a){
 		 if(event.keyCode==13){
-			 $("#searchBtnId").click();
+			 if(a==0){
+				 
+			 	$("#searchBtnId").click();
+			 }else if(a==1){
+				 
+				 $("#searchBtnIdInter").click();
+			 }
 		 }
 	}
 </script>
@@ -1399,11 +1421,11 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 	                    	render: function(data, type, row, meta) {
 	                    		var backStatus = row.backstatus;
 	                    		if(backStatus===0){
-	                    			return "不退税";
+	                    			return "不退";
 	                    		}else if(backStatus===1){
-	                    			return "未退税";
+	                    			return "未退";
 	                    		}else if(backStatus===2){
-		                    		return "已退税";
+		                    		return "已退";
 	                    		}
 	                    	}
 	                    },
@@ -1465,15 +1487,15 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 	                    		return outAustralianTime;
 	                    	}
 	                    },
-	                    {"data": "backstatus", "bSortable": false,
+	                    {"data": "pnrrelationid", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var backStatus = row.backstatus;
-	                    		if(backStatus===0){
-	                    			return "未关联";
-	                    		}else if(backStatus===1){
+	                    		var relationstatus = row.pnrrelationid;
+	                    		if(1===relationstatus){
 	                    			return "已关联";
+	                    		}else if(0===relationstatus){
+	                    			return "未关联";
 	                    		}
-	                    		return "";
+	                    		return relationstatus;
 	                    	}
 	                    },
 	                    {"data": "remark", "bSortable": false,

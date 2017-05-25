@@ -15,6 +15,9 @@ public class TGrabReportUpdateForm extends ModForm implements Serializable {
 	/**备注*/
 	private String remark;
 
+	/**订单id*/
+	private Integer orderId;
+
 	/**文件名*/
 	private String fileName;
 

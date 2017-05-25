@@ -106,10 +106,11 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		//double数据四舍五入保留小数点后两位
 		TGrabReportEntity report = new TGrabReportEntity();
 		DecimalFormat df = new DecimalFormat("#.00");
-		String pnrId = addForm.getPNR();//pnrid
+		String pnrId = addForm.getPNR();//得到pnrid
 		TPnrInfoEntity one = dbDao.fetch(TPnrInfoEntity.class, Cnd.where("id", "=", pnrId));
+		String pnr = "";
 		if (!Util.isEmpty(one)) {
-			String pnr = one.getPNR();//得到PNR
+			pnr = one.getPNR();//得到PNR
 			report.setPNR(pnr);//PNR
 		}
 		/*Sql sql = Sqls.create(sqlManager.get("grab_report_list"));
@@ -126,7 +127,9 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		Double remit = addForm.getRemit();//汇款
 		Double tax = addForm.getTax();//税金/杂项
 		String remark = addForm.getRemark();//备注
+		Integer orderId = addForm.getOrderId();//得到订单id
 
+		report.setPnrInfoId(orderId);//保存订单id
 		report.setPeopleNum(peopleNum);
 		report.setCostUnitPrice(costUnitPrice);
 		report.setPaidUnitPrice(paidUnitPrice);
@@ -221,6 +224,11 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 			Double agencyFee2 = Double.parseDouble(df.format((realTotal - (realTotal / 11) - tax) * agentRebate));//代理费2
 			report.setAgencyFee2(agencyFee2);
 		}
+		//保存报表数据的时候同时将订单列表中的订单关联状态id保存在报表中
+		TPnrSystemMapEntity singleton = dbDao.fetch(TPnrSystemMapEntity.class,
+				Cnd.where("pnrId", "=", pnrId).and("orderId", "=", orderId));
+		Integer relationStatus = (int) singleton.getRelationStatus();//得到pnr系统关联表状态
+		report.setPnrRelationId(relationStatus);
 		TGrabReportEntity insertData = dbDao.insert(report);
 		return insertData;
 	}
