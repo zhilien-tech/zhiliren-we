@@ -640,7 +640,8 @@ ADD COLUMN `realTicketPrice`  double(32,2) NULL COMMENT '实收票价' AFTER `ex
 ALTER TABLE `t_grab_report`
 ADD COLUMN `pnrRelationId`  int NULL COMMENT 'pnr系统关联id' AFTER `realTicketPrice`;
 
-
+ALTER TABLE `t_grab_file`
+MODIFY COLUMN `fileSize`  double(128,2) NULL DEFAULT NULL COMMENT '文件大小' AFTER `url`;
 
 ALTER TABLE `t_grab_file`
 CHANGE COLUMN `folderName` `customnum`  int(64) NULL DEFAULT NULL COMMENT '客户团号计数' AFTER `parentId`;

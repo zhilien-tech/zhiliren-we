@@ -41,7 +41,7 @@ public class TGrabFileEntity implements Serializable {
 
 	@Column
 	@Comment("文件大小")
-	private String fileSize;
+	private double fileSize;
 
 	@Column
 	@Comment("文件单位")
