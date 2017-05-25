@@ -18,6 +18,9 @@ public class TGrabReportSqlForm extends DataTablesParamForm {
 	/**主键*/
 	private Integer id;
 
+	/**订单id*/
+	private Integer orderId;
+
 	/**备注*/
 	private String remark;
 

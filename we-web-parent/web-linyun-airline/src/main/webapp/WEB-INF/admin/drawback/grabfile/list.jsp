@@ -747,7 +747,7 @@ function successCallback(id){
 				                    		fileExtension = filename.substring(filename.lastIndexOf('.') + 1);
 			                    		}
 			                    		if(null==filename || ""==filename){
-			                    			return null;
+			                    			return "";
 			                    		}
 			                    		//return filename;
 			                    		if(filetype===1){
@@ -778,11 +778,17 @@ function successCallback(id){
 			                    {"data": "filesize", "bSortable": false,"sWidth": "13%",
 			                    	render: function(data, type, row, meta) {
 			                    		var filesize = row.filesize;
-			                    		var unit = row.unit;
 			                    		if(null==filesize || ""==filesize){
-			                    			return null;
+			                    			return "";
 			                    		}
-			                    		return filesize+unit;
+			                    		if(filesize>1024){
+			                    			return (filesize/1024).toFixed(2)+"M";
+			                    		}
+			                    		if(filesize>1024*1024){
+			                    			return (filesize/1024/1024).toFixed(2)+"G";
+			                    		}
+			                    		
+			                    		return filesize+"K";
 			                    	}	
 			                    },
 			                    {"data": "no", "bSortable": false,"sWidth": "12%",
@@ -849,7 +855,7 @@ function successCallback(id){
 				                    		fileExtension = filename.substring(filename.lastIndexOf('.') + 1);
 			                    		}
 			                    		if(null==filename || ""==filename){
-			                    			return null;
+			                    			return "";
 			                    		}
 			                    		//return filename;
 			                    		if(filetype===1){
@@ -882,7 +888,7 @@ function successCallback(id){
 			                    		var filesize = row.filesize;
 			                    		var unit = row.unit;
 			                    		if(null==filesize || ""==filesize){
-			                    			return null;
+			                    			return "";
 			                    		}
 			                    		return filesize+unit;
 			                    	}	
@@ -1415,11 +1421,11 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 	                    	render: function(data, type, row, meta) {
 	                    		var backStatus = row.backstatus;
 	                    		if(backStatus===0){
-	                    			return "不退税";
+	                    			return "不退";
 	                    		}else if(backStatus===1){
-	                    			return "未退税";
+	                    			return "未退";
 	                    		}else if(backStatus===2){
-		                    		return "已退税";
+		                    		return "已退";
 	                    		}
 	                    	}
 	                    },
@@ -1481,15 +1487,15 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 	                    		return outAustralianTime;
 	                    	}
 	                    },
-	                    {"data": "backstatus", "bSortable": false,
+	                    {"data": "pnrrelationid", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var backStatus = row.backstatus;
-	                    		if(backStatus===0){
-	                    			return "未关联";
-	                    		}else if(backStatus===1){
+	                    		var relationstatus = row.pnrrelationid;
+	                    		if(1===relationstatus){
 	                    			return "已关联";
+	                    		}else if(0===relationstatus){
+	                    			return "未关联";
 	                    		}
-	                    		return "";
+	                    		return relationstatus;
 	                    	}
 	                    },
 	                    {"data": "remark", "bSortable": false,

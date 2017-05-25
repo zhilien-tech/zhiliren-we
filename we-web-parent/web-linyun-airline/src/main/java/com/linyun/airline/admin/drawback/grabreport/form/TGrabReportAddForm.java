@@ -15,6 +15,9 @@ public class TGrabReportAddForm extends AddForm implements Serializable {
 	/**主键*/
 	private Long id;
 
+	/**订单id*/
+	private Integer orderId;
+
 	/**备注*/
 	private String remark;
 

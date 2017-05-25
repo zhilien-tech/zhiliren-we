@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -386,7 +388,7 @@ public class MailScrabService extends BaseService {
 		rootId = getTopParentId(sender, userTeam);
 		Chain chain = Chain.make("updateTime", date);
 		TGrabFileEntity single = dbDao.fetch(TGrabFileEntity.class, rootId);
-		if (Util.isEmpty(single.getFileSize())) {
+		/*if (Util.isEmpty(single.getFileSize())) {
 			double temp = convertToM(fileDouble);//将其单位转换为kb
 			temp = getFileSize(temp, chain);
 			chain.add("fileSize", temp);
@@ -401,7 +403,7 @@ public class MailScrabService extends BaseService {
 			double temp = convertToM(fileDouble) + afterConvert;
 			temp = getFileSize(temp, chain);
 			chain.add("fileSize", temp);
-		}
+		}*/
 		dbDao.update(TGrabFileEntity.class, chain, Cnd.where("id", "=", rootId));
 		//父id
 		TGrabFileEntity timeFile = new TGrabFileEntity();
@@ -438,7 +440,7 @@ public class MailScrabService extends BaseService {
 		Long rootIdTwo = timeFile.getId();
 		Chain chain2 = Chain.make("updateTime", date);
 		TGrabFileEntity one = dbDao.fetch(TGrabFileEntity.class, rootIdTwo);
-		if (Util.isEmpty(one.getFileSize())) {
+		/*if (Util.isEmpty(one.getFileSize())) {
 			double temp = convertToM(fileDouble);//将其单位转换为kb
 			temp = getFileSize(temp, chain2);
 			chain2.add("fileSize", temp);
@@ -453,7 +455,7 @@ public class MailScrabService extends BaseService {
 			double temp = convertToM(fileDouble) + afterConvert;
 			temp = getFileSize(temp, chain2);
 			chain2.add("fileSize", temp);
-		}
+		}*/
 		dbDao.update(TGrabFileEntity.class, chain2, Cnd.where("id", "=", rootIdTwo));
 		//父id
 		TGrabFileEntity timeFileTwo = new TGrabFileEntity();
@@ -507,23 +509,23 @@ public class MailScrabService extends BaseService {
 		long pid = timeFileTwo.getId();
 		Chain chain3 = Chain.make("updateTime", date);
 		TGrabFileEntity cusgroupOne = dbDao.fetch(TGrabFileEntity.class, pid);
-		if (Util.isEmpty(cusgroupOne.getFileSize())) {
-			double temp = convertToM(fileDouble);//将其单位转换为kb
-			temp = getFileSize(temp, chain3);
-			chain3.add("fileSize", temp);
-		} else {
+		/*	if (Util.isEmpty(cusgroupOne.getFileSize())) {
+				double temp = convertToM(fileDouble);//将其单位转换为kb
+				temp = getFileSize(temp, chain3);
+				chain3.add("fileSize", temp);
+			} else {
 
-			double afterConvert = 0;
-			if ("K".equals(single.getUnit())) {
-				afterConvert = Double.valueOf(single.getFileSize());
-			} else if ("M".equals(single.getUnit())) {
-				afterConvert = Double.valueOf(single.getFileSize()) * 1024;
-			}
+				double afterConvert = 0;
+				if ("K".equals(single.getUnit())) {
+					afterConvert = Double.valueOf(single.getFileSize());
+				} else if ("M".equals(single.getUnit())) {
+					afterConvert = Double.valueOf(single.getFileSize()) * 1024;
+				}
 
-			double temp = convertToM(fileDouble) + afterConvert;
-			temp = getFileSize(temp, chain3);
-			chain3.add("fileSize", temp);
-		}
+				double temp = convertToM(fileDouble) + afterConvert;
+				temp = getFileSize(temp, chain3);
+				chain3.add("fileSize", temp);
+			}*/
 		dbDao.update(TGrabFileEntity.class, chain3, Cnd.where("id", "=", pid));
 		TGrabFileEntity groupNumFile = new TGrabFileEntity();
 
@@ -670,7 +672,7 @@ public class MailScrabService extends BaseService {
 
 		Chain chain4 = Chain.make("updateTime", date);
 		TGrabFileEntity filePropsOne = dbDao.fetch(TGrabFileEntity.class, groupNumFile.getId());
-		if (Util.isEmpty(filePropsOne.getFileSize())) {
+		/*if (Util.isEmpty(filePropsOne.getFileSize())) {
 			double temp = convertToM(fileDouble);//将其单位转换为kb
 			temp = getFileSize(temp, chain4);
 			chain4.add("fileSize", temp);
@@ -685,20 +687,20 @@ public class MailScrabService extends BaseService {
 			double temp = convertToM(fileDouble) + afterConvert;
 			temp = getFileSize(temp, chain4);
 			chain4.add("fileSize", temp);
-		}
+		}*/
 		dbDao.update(TGrabFileEntity.class, chain4, Cnd.where("id", "=", groupNumFile.getId()));
 		//创建时间
 		fileProps.setCreateTime(new Date());
 		fileProps.setUpdateTime(date);
 		//类型
 		fileProps.setType(FileTypeEnum.FOLDER.intKey());
-		if (convertToM(Double.valueOf(fileSize)) > 1024) {
-			fileProps.setFileSize(convertToM(convertToM(Double.valueOf(fileSize))) + "");
-			fileProps.setUnit("M");
-		} else {
-			fileProps.setFileSize(convertToM(Double.valueOf(fileSize)) + "");
-			fileProps.setUnit("K");
-		}
+		/*	if (convertToM(Double.valueOf(fileSize)) > 1024) {
+				fileProps.setFileSize(convertToM(convertToM(Double.valueOf(fileSize))) + "");
+				fileProps.setUnit("M");
+			} else {
+				fileProps.setFileSize(convertToM(Double.valueOf(fileSize)) + "");
+				fileProps.setUnit("K");
+			}*/
 		//抓取记录id
 		fileProps.setMailId(grabRecordId);
 		//启用
@@ -1067,6 +1069,27 @@ public class MailScrabService extends BaseService {
 			fileName += ".pdf";
 			contentHtml = ctim.getContentHtml(msg);
 			fileUrl = uploadFileNew(contentHtml, fileName);
+			String str1 = System.getProperty("java.io.tmpdir");
+			//==============================从网络地址下载文件将其变为本地文件再读进程序中，进行length的获取==================================
+			InputStream is1 = null;
+			OutputStream out = null;
+			URL url = new URL(fileUrl);
+			URLConnection connection = url.openConnection();
+			is1 = connection.getInputStream();
+			File file3 = new File(str1 + File.separator + "12.pdf");
+			out = new FileOutputStream(file3);
+			byte b[] = new byte[1024];
+			int m = 0;
+			while ((m = is1.read(b)) > -1) {
+				out.write(b);
+				out.flush();
+			}
+			File file4 = new File(str1 + File.separator + "12.pdf");
+			InputStream is5 = new FileInputStream(file4);
+			int byteNum = is5.available();
+			double fileSize = Math.rint(byteNum / 1024);
+			//=======================================================	
+
 			TGrabFileEntity newFile = new TGrabFileEntity();
 			BeanUtil.copyProperties(fileProps, newFile);
 			String attachmentName = fileName;
@@ -1081,6 +1104,7 @@ public class MailScrabService extends BaseService {
 			fileProps.setSort(fileSort);
 			newFile.setUrl(fileUrl);
 			newFile.setType(FileTypeEnum.FILE.intKey());//文件
+			newFile.setFileSize(fileSize);
 			grabFileLst.add(newFile);
 
 		} catch (Exception e) {
@@ -1105,6 +1129,27 @@ public class MailScrabService extends BaseService {
 			File file1 = new File(str1 + File.separator + "12.html");
 			fileUrl = CommonConstants.IMAGES_SERVER_ADDR
 					+ qiniuUploadService.uploadImage(new FileInputStream(file1), "pdf", null);
+
+			//==============================从网络地址下载文件将其变为本地文件再读进程序中，进行length的获取==================================
+			InputStream is1 = null;
+			OutputStream out = null;
+			URL url = new URL(fileUrl);
+			URLConnection connection = url.openConnection();
+			is1 = connection.getInputStream();
+			File file3 = new File(str1 + File.separator + "12.pdf");
+			out = new FileOutputStream(file3);
+			byte b[] = new byte[1024];
+			int m = 0;
+			while ((m = is1.read(b)) > -1) {
+				out.write(b);
+				out.flush();
+			}
+			File file4 = new File(str1 + File.separator + "12.pdf");
+			InputStream is5 = new FileInputStream(file4);
+			int byteNum = is5.available();
+			double fileSize = Math.rint(byteNum / 1024);
+			//=======================================================	
+
 			String subjectStr = msg.getSubject();
 			// getContent() 是获取包裹内容, Part相当于外包装  
 			String PNR = null;
@@ -1132,6 +1177,7 @@ public class MailScrabService extends BaseService {
 			fileProps.setSort(fileSort);
 			newFile.setUrl(fileUrl);
 			newFile.setType(FileTypeEnum.FILE.intKey());//文件
+			newFile.setFileSize(fileSize);
 			grabFileLst.add(newFile);
 
 		} catch (Exception e) {
@@ -1163,13 +1209,13 @@ public class MailScrabService extends BaseService {
 				String fileName = bodyPart.getFileName();
 				String fileExt = FileUtil.getSuffix(fileName);//获取附件后缀名
 				//某一个邮件体也有可能是由多个邮件体组成的复杂体  
+				String str1 = System.getProperty("java.io.tmpdir");
 				String disp = bodyPart.getDisposition();
 				if (disp != null && (disp.equalsIgnoreCase(Part.ATTACHMENT) || disp.equalsIgnoreCase(Part.INLINE))) {
 					//向网络上上传一个文件，然后返回一个地址存储到数据库中
 					InputStream is = bodyPart.getInputStream();
 					String fileUrl = null;
 					if ("eml".equals(fileExt)) {
-						String str1 = System.getProperty("java.io.tmpdir");
 						File file = new File(str1 + File.separator + "12.eml");
 						OutputStream os = new FileOutputStream(file);
 						int length = 0;
@@ -1204,9 +1250,26 @@ public class MailScrabService extends BaseService {
 						fileUrl = uploadFile(is, fileExt);
 
 					}
+					//==============================从网络地址下载文件将其变为本地文件再读进程序中，进行length的获取==================================
+					InputStream is1 = null;
+					OutputStream out = null;
+					URL url = new URL(fileUrl);
+					URLConnection connection = url.openConnection();
+					is1 = connection.getInputStream();
+					File file3 = new File(str1 + File.separator + "12.pdf");
+					out = new FileOutputStream(file3);
+					byte b[] = new byte[1024];
+					int m = 0;
+					while ((m = is1.read(b)) > -1) {
+						out.write(b);
+						out.flush();
+					}
+					File file4 = new File(str1 + File.separator + "12.pdf");
+					InputStream is5 = new FileInputStream(file4);
 
-					//String fileUrl = uploadFile(is, fileExt);
-
+					//=======================================================	
+					int byteNum = is5.available();
+					double fileSize = Math.rint(byteNum / 1024);
 					TGrabFileEntity newFile = new TGrabFileEntity();
 					BeanUtil.copyProperties(fileProps, newFile);
 					String attachmentName = fileName;
@@ -1220,6 +1283,8 @@ public class MailScrabService extends BaseService {
 					newFile.setFileName(attachmentName);
 					fileProps.setSort(fileSort);
 					newFile.setUrl(fileUrl);
+					newFile.setFileSize(fileSize);
+					setParentsFileSize(fileProps.getParentId(), fileSize);
 					newFile.setType(FileTypeEnum.FILE.intKey());//文件
 					grabFileLst.add(newFile);
 				} else if (bodyPart.isMimeType("multipart/*")) {
@@ -1243,6 +1308,37 @@ public class MailScrabService extends BaseService {
 						newFile.setFileName(attachmentName);
 						fileProps.setSort(fileSort);
 						newFile.setUrl(fileUrl);
+						try {
+							Thread.sleep(200);
+						} catch (InterruptedException e) {
+
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+
+						}
+
+						//==============================从网络地址下载文件将其变为本地文件再读进程序中，进行length的获取==================================
+						InputStream is1 = null;
+						OutputStream out = null;
+						URL url = new URL(fileUrl);
+						URLConnection connection = url.openConnection();
+						is1 = connection.getInputStream();
+						File file3 = new File(str1 + File.separator + "12.pdf");
+						out = new FileOutputStream(file3);
+						byte b[] = new byte[1024];
+						int m = 0;
+						while ((m = is1.read(b)) > -1) {
+							out.write(b);
+							out.flush();
+						}
+						File file4 = new File(str1 + File.separator + "12.pdf");
+						InputStream is5 = new FileInputStream(file4);
+
+						//=======================================================	
+						int byteNum = is5.available();
+						double fileSize = Math.rint(byteNum / 1024);
+						newFile.setFileSize(fileSize);
+						setParentsFileSize(fileProps.getParentId(), fileSize);
 						newFile.setType(FileTypeEnum.FILE.intKey());//文件
 						grabFileLst.add(newFile);
 					}
@@ -1375,4 +1471,22 @@ public class MailScrabService extends BaseService {
 
 		return null;
 	}
+
+	//根据文件id设置之前所有父文件的大小
+	public void setParentsFileSize(long id, double size) {
+		TGrabFileEntity tGrabFileEntity = dbDao.fetch(TGrabFileEntity.class, Cnd.where("id", "=", id));
+		if (Util.isEmpty(tGrabFileEntity.getFileSize())) {
+
+			dbDao.update(TGrabFileEntity.class, Chain.make("fileSize", size), Cnd.where("id", "=", id));
+		} else {
+			dbDao.update(TGrabFileEntity.class, Chain.make("fileSize", size + tGrabFileEntity.getFileSize()),
+					Cnd.where("id", "=", id));
+
+		}
+		if (tGrabFileEntity.getParentId() == 0) {
+			return;
+		}
+		setParentsFileSize(tGrabFileEntity.getParentId(), size);
+	}
+
 }

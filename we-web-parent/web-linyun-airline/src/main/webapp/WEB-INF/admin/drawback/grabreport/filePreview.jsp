@@ -30,6 +30,7 @@
          <form id="addForm" method="post">
           	<div class="modal-body modal-bod" style="height:632px;overflow-y:auto; ">
           	  <input type="hidden" name="flagType" value="${obj.flagType }" id="flagType">
+          	  <input type="hidden" name="orderId" value="" id="orderId">
           	  <div class="row"><!--文件名称/PNR/退税状态-->
           	    <div class="form-group inline">
                   <label class="col-sm-2 text-right padding">文件名称：</label>
@@ -37,7 +38,7 @@
                   <div class="col-sm-2 padding">
                   		<input id="fileNameId" name="fileName" type="text" class="form-control input-sm inputWidth" value="${obj.fileurl.fileName }" />
                   </div>
-                </div>  
+                </div>
               	<div class="form-group inline">
                    <label class="col-sm-1 text-right padding">PNR：</label>
                   <div class="col-sm-2 padding selelct2Backgrou">
@@ -478,11 +479,11 @@ var empTable;
 	            		var modify3 = '<a style="cursor:pointer;" href="javascript:void(0);" onclick="doRelation('+row.id+','+false+','+a+');"> </a>';
 	            		
 	            	} */
-	            	
+	            	var b=row.orderid;
 	            	if(row.relationstatus ===0){
-              			var judge = '<a href="javascript:doRelation('+row.id+','+true+',\''+a+'\')" class="btn_mini btn_modify"><font color="#CCCCCC"></font>关联</a>';
+              			var judge = '<a href="javascript:doRelation('+row.id+','+true+',\''+a+'\',\''+b+'\')" class="btn_mini btn_modify"><font color="#CCCCCC"></font>关联</a>';
               		}else if(row.relationstatus ===1){
-              			var judge = '<a href="javascript:doRelation('+row.id+','+false+',\''+a+'\')" class="btn_mini btn_modify">取消</a>';
+              			var judge = '<a href="javascript:doRelation('+row.id+','+false+',\''+a+'\',\''+b+'\')" class="btn_mini btn_modify">取消</a>';
               		}
 	                return judge;
 	            }
@@ -558,25 +559,23 @@ $("#pnrInfoSelect").select2({
 
 
 //关联操作
- function doRelation(id,flag,b){
+ function doRelation(id,flag,b,c){
 	var a="取消";
+	$("#orderId").val("");
 	if(flag){
 		a="关联";
+		$("#orderId").val(c);
 	}
 		$.ajax({
 			type : "POST",
 			url : '${base}/admin/drawback/grabreport/changeRelationStatus.html?id='+id+'&flag='+flag,
 			data : $('#addForm').serialize(),
 			error : function(request) {
-			
 				layer.msg(a+'失败');
 			},
 			success : function(data) {
-
 				if ("200" == data.status) {
-					
 					layer.msg(a+"成功","", 3000);
-					 
 				} else {
 					layer.msg(a+"失败","",3000);
 				}

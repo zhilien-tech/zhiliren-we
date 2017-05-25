@@ -30,7 +30,7 @@ public class TGrabFileAddForm extends AddForm {
 	private String url;
 
 	/**文件大小*/
-	private String fileSize;
+	private double fileSize;
 
 	/**文件单位*/
 	private String unit;
