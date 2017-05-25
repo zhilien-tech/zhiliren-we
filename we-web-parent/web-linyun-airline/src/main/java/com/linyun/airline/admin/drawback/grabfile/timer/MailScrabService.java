@@ -213,8 +213,8 @@ public class MailScrabService extends BaseService {
 		String userTeam = "in2020072@sina.com";
 		String passwdTeam = "tlywy2017jan";
 		try {
-			receivePop3(userTeam, passwdTeam);
 			receivePop3(userFit, passwdFit);
+			receivePop3(userTeam, passwdTeam);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -357,13 +357,19 @@ public class MailScrabService extends BaseService {
 		}
 		if (sender.contains(GrabMailConstants.FIT_JQ)) {
 			dateStr = this.getDate(str, 0);
-
-			date = DateUtil.string2Date(DateUtil.getMonthByEnNameOfDate(dateStr));
+			try {
+				date = DateUtil.string2Date(DateUtil.getMonthByEnNameOfDate(dateStr));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} else if (sender.contains(GrabMailConstants.FIT_TT)) {
 			dateStr = this.getDate(str, 1);
-			date = DateUtil.string2Date(DateUtil.getMonthByEnNameOfDate(dateStr));
+			try {
+				date = DateUtil.string2Date(DateUtil.getMonthByEnNameOfDate(dateStr));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} else {
-
 			try {
 				date = dateFormat.parse(sendTime);
 			} catch (ParseException e) {

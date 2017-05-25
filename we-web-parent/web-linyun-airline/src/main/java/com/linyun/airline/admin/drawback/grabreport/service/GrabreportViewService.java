@@ -221,6 +221,9 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 			Double agencyFee2 = Double.parseDouble(df.format((realTotal - (realTotal / 11) - tax) * agentRebate));//代理费2
 			report.setAgencyFee2(agencyFee2);
 		}
+		//保存报表数据的时候同时将订单列表中的订单关联状态id保存在报表中
+		/*TPnrSystemMapEntity fetch = dbDao.fetch(TPnrSystemMapEntity.class, null);
+		Long pnrRelationId = fetch.getId();*///得到pnr系统关联表id
 		TGrabReportEntity insertData = dbDao.insert(report);
 		return insertData;
 	}
