@@ -237,7 +237,7 @@ $('.fuKuanBtn1').click(function(){
 			closeBtn:false,//默认 右上角关闭按钮 是否显示
 			shadeClose:true,
 			scrollbar: false,
-			area: ['850px', '520px'],
+			area: ['900px', '520px'],
 			content:  BASE_PATH + '/admin/inland/seaPayApply.html?ids='+ids,
 			end:function(){
 				payTable.ajax.reload(null,false);

@@ -46,31 +46,80 @@
                 	</c:forEach>
                 </tbody>
               </table>
-              <table border="0" class="selectTable">
-                <tr>
-                  <td><label>银行：</label></td>
-                  <td>
-                    <select id="bankcardid" name="bankcardid" class="form-control input-sm" onchange="loadbankcardname();">
-                    	<option value="">请选择</option>
-                        <c:forEach var="one" items="${obj.yhkSelect }">
-                        	<option value="${one.id }">${one.dictName }</option>
-                        </c:forEach>
-                    </select>
-                  </td>
-                  <td><label>银行卡名称：</label></td>
-                  <td>
-                    <select id="bankcardname" name="bankcardname" class="form-control input-sm" onchange="loadbankcardnum();">
-                    </select>
-                  </td>
-                  <td><label>卡号：</label></td>
-                  <td>
-                     <select id="bankcardnum" name="bankcardnum" class="form-control input-sm">
-                     </select>
-                  </td>
-                  <td><label>合计：</label></td>
-                  <td id="heji"><fmt:formatNumber type="number" value="${obj.sumincome }" pattern="0.00" maxFractionDigits="2"/></td>
-                </tr>
-              </table>
+              <!-- 加号图标 table  left部分 -->
+              <div class="bankDiv">
+	              <table class="bankTable">
+	                <tr>
+	                  <td><label>银行：</label></td>
+	                  <td>
+	                    <select id="bankcardid" name="bankcardid" class="form-control input-sm" onchange="loadbankcardname();">
+	                    	<option value="">请选择</option>
+	                        <c:forEach var="one" items="${obj.yhkSelect }">
+	                        	<option value="${one.id }">${one.dictName }</option>
+	                        </c:forEach>
+	                    </select>
+	                  </td>
+	                  <td><label>银行卡名称：</label></td>
+	                  <td>
+	                    <select id="bankcardname" name="bankcardname" class="form-control input-sm" onchange="loadbankcardnum();">
+	                    </select>
+	                  </td>
+	                  <td><label>卡号：</label></td>
+	                  <td>
+	                     <select id="bankcardnum" name="bankcardnum" class="form-control input-sm">
+	                     </select>
+	                  </td>
+	                  <td class="remTd"><a href="javascript:;" class="glyphicon glyphicon-plus addIcon jiaHaoBtn"></a></td>
+	                  <td> </td>
+	                  <%-- <td><label>合计：</label></td>
+	                  <td id="heji"><fmt:formatNumber type="number" value="${obj.sumincome }" pattern="0.00" maxFractionDigits="2"/></td> --%>
+	                </tr>
+	                <tr>
+	                  <td><label>币种：</label></td>
+	                  <td colspan="6">
+	                  	<select class="form-control input-sm inline BJselectWid">
+	                  		<option>请选择</option>
+	                  		<option>CNY</option>
+	                  		<option>USD</option>
+	                  		<option>AUD</option>
+	                  	</select>
+	                  	<input type="text" class="form-control input-sm inline BJinputWid">
+	                  	<input type="text" class="form-control input-sm inline BJinputWid" placeholder="请输入实时汇率">
+	                  	<input type="text" class="form-control input-sm inline BJinputWid" placeholder="金额计算结果">
+	                  </td>
+	                </tr>
+	              </table>
+              </div>
+              <!-- end 加号图标 table  left部分 -->
+              
+              <!-- 客户名称~预存款金额 -->
+              <table class="bankTable bankTable2">
+	                <tr>
+	                  <td><label>客户名称：</label></td>
+	                  <td><input type="text" class="form-control input-sm"></td>
+	                  <td><label><a href="javascript:;">减免：</a></label></td>
+	                  <td><input type="text" class="form-control input-sm"></td>
+	                  <td><label>合计：</label></td>
+	                  <td><label>CNY：</label>99999.00</td>
+	                </tr>
+	               	<tr>
+	               	  <td><label>原预存款：</label></td>
+	                  <td><input type="text" class="form-control input-sm"></td>
+	                  <td><label>水单金额：</label></td>
+	                  <td><input type="text" class="form-control input-sm"></td>
+	                  <td><label>本次预存款：</label></td>
+	                  <td><input type="text" class="form-control input-sm"></td>
+	                  <td><label>应返金额：</label></td>
+	                  <td><input type="text" class="form-control input-sm"></td>
+	                  <td><label>预存款金额：</label></td>
+	                  <td><input type="text" class="form-control input-sm"></td>
+	               	</tr>
+	          </table>
+	          <!-- end 客户名称~预存款金额 -->
+              <span class="total">
+              	<label>合计：</label>
+              	<label id="heji"><fmt:formatNumber type="number" value="${obj.sumincome }" pattern="0.00" maxFractionDigits="2"/></label>
+              </span>
               <input type="hidden" id="sumincome" name="sumincome" value="${obj.sumincome }">
               <button type="button" id="uploadFile" class="btn btn-primary btn-sm bankSlipBtn">上传水单</button>
               <input type="hidden" id="billurl" name="billurl" value="">
@@ -225,6 +274,38 @@
 		var url = '${base}/admin/inland/bookingDetail.html?id=' + id;
 		window.open(url);
 	}
+	
+	$(function(){
+		/*圆圈加号*/
+		$('.addIcon').click(function(){
+	          var divTest = $(this).parents('.bankTable'); 
+	          var lastDiv = $('.bankDiv').last();
+	          var newDiv = divTest.clone(false,true);
+	          /* newDiv.find('[name=invoicenum]').val('');
+	          newDiv.find('[name=invoicebalance]').val(''); 
+	          newDiv.find('[name=fileName]').html('未选择文件');
+	          newDiv.find('[name=invoiceurl]').val(''); */
+	          lastDiv.after(newDiv);
+	          var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
+	          newDiv.find("p").html(No); 
+	          /* newDiv.find('#preView').parent().remove();
+	          newDiv.find('.deleteInvoice').parent().remove();*/
+	          newDiv.find('.addIcon').remove(); 
+	          newDiv.find('.remTd').append('<a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a>');
+	      });
+		/*圆圈减号*/
+		$(document).on("click",".removIcon",function(){
+	    	  /* var divTest = $(this).parents('.bankTable');
+	    	  var invoicebalance = divTest.find('[name=invoicebalance]').val(); 
+	    	  if(invoicebalance){
+	    		  var yubanlance = parseFloat($('#balance').html()) + parseFloat(invoicebalance);
+	    		  $('#balance').html(yubanlance.toFixed(2));
+	    		  $('#backupbalance').val(yubanlance.toFixed(2));
+	    	  }
+	    	  $('#thisval').val(''); */
+	          $(this).parents('.bankTable').remove();
+	    });
+	});
 	</script>
 </body>
 </html>	
