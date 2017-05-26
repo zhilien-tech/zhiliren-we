@@ -7,7 +7,6 @@ public class HtmlToPdf {
 	//    private static final String toPdfTool = "D:\\wkhtmltopdf.exe";  
 	private static final String toPdfTool = "C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe";
 
-
 	/** 
 	 * html转pdf 
 	 * @param srcPath html路径，可以是硬盘上的路径，也可以是网络路径 
