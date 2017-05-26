@@ -199,13 +199,13 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="form-group fax">
+							<div class="form-group">
 								<label class="col-sm-3 text-right padding">银行名称：</label>
 								<div class="col-sm-3 padding">
 									<input id="manBankName" name="manBankName" value="${obj.customer.manBankName}" type="text" class="form-control input-sm inpImportant" placeholder=" " />
 								</div>
 							</div>
-							<div class="form-group fax">
+							<div class="form-group">
 								<label class="col-sm-1 text-right padding">应返合计：</label>
 								<div  class="col-sm-3 padding">
 									<input id=" " name=" " type="text" readonly="readonly" value="<fmt:formatNumber type="number" value="" pattern="0.00" maxFractionDigits="2"/>" class="form-control input-sm inpImportant"  placeholder=" " />
@@ -213,14 +213,14 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="form-group fax">
+							<div class="form-group">
 								<label class="col-sm-3 text-right padding">银行卡号：</label>
 								<div class="col-sm-3 padding">
 									<input id="manBankNum" name="manBankNum" value="${obj.customer.manBankNum}"  type="text" class="form-control input-sm inpImportant" placeholder=" " onkeyup="this.value=this.value.replace(/\s/g,'').replace(/....(?!$)/g,'$& ')" maxlength="32" />
 									<span class="prompt">*</span>
 								</div>
 							</div>
-							<div class="form-group fax">
+							<div class="form-group">
 								<label class="col-sm-1 text-right padding">微信号码：</label>
 								<div  class="col-sm-3 padding">
 									<input id="manWeChat" name="manWeChat" value="${obj.customer.manWeChat}" type="text" class="form-control input-sm inpImportant" placeholder=" " />
@@ -229,14 +229,14 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="form-group fax">
+							<div class="form-group">
 								<label class="col-sm-3 text-right padding">QQ号码：</label>
 								<div class="col-sm-3 padding">
 									<input id="manQQ" name="manQQ" value="${obj.customer.manQQ}" type="text" class="form-control input-sm inpImportant" placeholder=" " />
 									<span class="prompt">*</span>
 								</div>
 							</div>
-							<div class="form-group fax">
+							<div class="form-group">
 								<label class="col-sm-1 text-right padding">E-mail：</label>
 								<div class="col-sm-3 padding">
 									<input id="manEmail" name="manEmail" value="${obj.customer.manEmail}" type="text" class="form-control input-sm inpImportant" placeholder=" " />
