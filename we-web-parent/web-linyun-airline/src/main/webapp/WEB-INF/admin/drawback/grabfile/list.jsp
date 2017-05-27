@@ -886,11 +886,17 @@ function successCallback(id){
 			                    {"data": "filesize", "bSortable": false,"sWidth": "13%",
 			                    	render: function(data, type, row, meta) {
 			                    		var filesize = row.filesize;
-			                    		var unit = row.unit;
 			                    		if(null==filesize || ""==filesize){
 			                    			return "";
 			                    		}
-			                    		return filesize+unit;
+			                    		if(filesize>1024){
+			                    			return (filesize/1024).toFixed(2)+"M";
+			                    		}
+			                    		if(filesize>1024*1024){
+			                    			return (filesize/1024/1024).toFixed(2)+"G";
+			                    		}
+			                    		
+			                    		return filesize+"K";
 			                    	}	
 			                    },
 			                    {"data": "no", "bSortable": false,"sWidth": "12%",
@@ -949,12 +955,13 @@ function successCallback(id){
 	//var clickFlag = 1;
 	function createFodler(pid,filename,filetype,clickFlag,level){
 		if(clickFlag===1 && filetype===2){
+			alert(level);
 			$.ajax({
 				type : "POST",
 				url : '${base}/admin/drawback/grabreport/filePreview.html',
 				data : {
 					id : pid,
-					
+					level:level
 				},
 				success : function(data) {
 					if(filetype == 2){
@@ -997,7 +1004,7 @@ function successCallback(id){
 					$("#fitBreadcrumb").find("li").each(function(){
 						$(this).removeClass("active");
 					});
-					$("#fitBreadcrumb").append('<li id=\''+pid+'\' class="active"><a class="fa fa-folder-open" onclick="javascript:createFodler(\''+pid+'\',\''+filename+'\');"  href="#">'+filename+'</a></li>');
+					$("#fitBreadcrumb").append('<li id=\''+pid+'\' class="active"><a class="fa fa-folder-open" onclick="javascript:createFodler(\''+pid+'\',\''+filename+'\',1,2,'+level+');"  href="#">'+filename+'</a></li>');
 				}
 			}else{
 				//找到指定元素的下标
@@ -1076,7 +1083,8 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 				type : "POST",
 				url : '${base}/admin/drawback/grabfile/filePreview.html',
 				data : {
-					id : pid
+					id : pid,
+					level:level
 				},
 				success : function(data) {
 					if(filetype == 2){
@@ -1118,7 +1126,7 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 					$("#teamBreadcrumb").find("li").each(function(){
 						$(this).removeClass("active");
 					});
-					$("#teamBreadcrumb").append('<li id=\''+pid+'\' class="active"><a class="fa fa-folder-open" onclick="javascript:createFodler1(\''+pid+'\',\''+filename+'\');"  href="#">'+filename+'</a></li>');
+					$("#teamBreadcrumb").append('<li id=\''+pid+'\' class="active"><a class="fa fa-folder-open" onclick="javascript:createFodler1(\''+pid+'\',\''+filename+'\',1,2,'+level+');"  href="#">'+filename+'</a></li>');
 				}
 			}else{
 				//找到指定元素的下标
@@ -1236,7 +1244,7 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 					$("ol.breadcrumb").find("li").each(function(){
 						$(this).removeClass("active");
 					});
-					$("ol.breadcrumb").append('<li id=\''+pid+'\' class="active"><a class="fa fa-folder-open" onclick="javascript:createFodler(\''+pid+'\',\''+filename+'\');"  href="#">'+filename+'</a></li>');
+					$("ol.breadcrumb").append('<li id=\''+pid+'\' class="active"><a class="fa fa-folder-open" onclick="javascript:createFodler(\''+pid+'\',\''+filename+'\',1,2,'+level+');"  href="#">'+filename+'</a></li>');
 				}
 			}else{
 				//找到指定元素的下标
