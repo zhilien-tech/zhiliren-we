@@ -11,14 +11,15 @@
 	<link rel="stylesheet" href="${base }/public/dist/css/AdminLTE.css">
     <link rel="stylesheet" href="${base }/public/dist/css/inlandCross.css"><!--本页style-->
     <style type="text/css">
-    	.payTable2 tbody tr td:nth-child(1){width: 8%;}
-    	.payTable2 tbody tr td:nth-child(3){width: 8%;}
-    	.payTable2 tbody tr td:nth-child(5){width:8%;}
-    	.payTable2 tbody tr td:nth-child(even){width: 13%;}
+    	.labelWidth{width:105px;}
+    	.labelWid{width:80px !important;}
+    	#uploadFile { width: 85px !important;}
+    	.bankSlipBtn {margin-top: 0px;}
+    	.form-group {margin-bottom: 10px;}
     </style>
 </head>
 <body>
-	<div class="modal-top">
+	<%-- <div class="modal-top">
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo()" value="提交"/>
@@ -151,7 +152,162 @@
         </table>
       </div>
     </div>
+	</div> --%>
+	<div class="modal-content piaoKuanInfo">
+		<div class="modal-header">
+			<button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
+    		<button type="button" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo();">提交</button>
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tabs_1" data-toggle="tab">付款信息</a></li>
+				<li><a href="#tabs_2" data-toggle="tab">发票信息</a></li>
+			</ul>
+		</div>
+		<form id="addUserForm" method="post">
+			<div class="modal-body" style="height:549px;padding-bottom: 0;">
+				<div class="tab-content">
+					<div class="tab-pane active" id="tabs_1">
+						<div class="tab-content">
+						 <input id="id" name="id" type="hidden" value="${obj.id }" > 
+				         <table id="receivablesTable" class="table table-bordered table-hover">
+				                  <thead>
+				                    <tr>
+				                      <th>订单号</th>
+				                      <th>PNR</th>
+				                      <th>开票日期</th>
+				                      <th>客户团号</th>
+				                      <th>客户公司名称</th>
+				                      <th>联系人</th>
+				                      <th>票务</th>
+				                      <th>金额</th>
+				                    </tr>
+				                  </thead>
+				                  <tbody>
+				                  	<c:forEach var="one" items="${obj.pnrinfo }">
+				                  		<tr ondblclick="toOrderDetail(${one.ordersid})">
+				                  			<td>${one.ordersnum }</td>
+				                  			<td>${one.pnr }</td>
+				                  			<td><fmt:formatDate value="${one.billingdate }" pattern="yyyy-MM-dd" /></td>
+				                  			<td>${one.cusgroupnum }</td>
+				                  			<td>${one.customename }</td>
+				                  			<td>${one.linkMan }</td>
+				                  			<td>${one.issuer }</td>
+				                  			<td><fmt:formatNumber type="number" value="${one.costpricesum }" pattern="0.00" maxFractionDigits="2"/></td>
+				                  		</tr>
+				                  	</c:forEach>
+				                  </tbody>
+				         </table>
+
+						 <div class="form-group row"><!--申请人/审批人/审批结果-->
+					         <label class="col-sm-1 text-right padding labelWidth">申请人：</label>
+					         <div class="col-sm-2 padding"><input type="text" class="form-control input-sm wid115" disabled="disabled" value="${obj.user.fullName }"></div>
+					         <label class="col-sm-1 text-right padding labelWid">审批人：</label>
+					         <div class="col-sm-2 padding"><input id="approver" name="approver" type="text" class="form-control input-sm wid115" disabled="disabled" value="侯小凌"></div>
+					         <label class="col-sm-1 text-right padding">审批结果：</label>
+					         <div class="col-sm-2 padding"><input id="approveResult" name="approveResult" type="text" class="form-control input-sm wid115" disabled="disabled"></div>
+					      	 <label class="col-sm-1 text-right padding hejiWidth">合计：</label>
+				             <div class="col-sm-1 padding">
+				                <label><fmt:formatNumber type="number" value="${obj.sumjine }" pattern="0.00" maxFractionDigits="2"/></label>
+				             </div>
+					      </div>
+					      <div class="form-group row"><!--申请人/审批人/审批结果-->
+					         <label class="col-sm-1 text-right padding labelWidth">开户银行：</label>
+					         <div class="col-sm-2 padding"><input id="openbank" name="openbank" type="text" class="form-control input-sm wid115"></div>
+					         <label class="col-sm-1 text-right padding labelWid">开户名称：</label>
+					         <div class="col-sm-2 padding"><input id="openname" name="openname" type="text" class="form-control input-sm wid115"></div>
+					         <label class="col-sm-1 text-right padding">开户账号：</label>
+					         <div class="col-sm-2 padding"><input id="opennumber" name="opennumber" type="text" class="form-control input-sm wid115"></div>
+					      </div>
+					      
+					      <input type="hidden" id="sumincome" name="sumincome" value="${obj.sumincome }">
+			              <button type="button" id="uploadFile" class="btn btn-primary btn-sm bankSlipBtn">上传水单</button>
+			              <input type="hidden" id="billurl" name="billurl" value="">
+			              <div class="bankSlipImg" align="center"><img id="shuidanimg" alt="" src="" style="width:100%;height:305px;overflow: hidden;"></div>
+            			</div>
+					</div>
+					<div class="tab-pane" id="tabs_2">
+						<div class="tab-content">
+		                  <table class="faPiaoInfo Table1">
+				                <tr>
+				                  <td><label>发票项目：</label></td>
+				                  <td>
+				                  	<select class="form-control input-sm">
+				                  		<option>请选择</option>
+				                  		<option>机票款</option>
+				                  		<option>团款</option>
+				                  		<option>代订机票费用</option>
+				                  	</select>
+				                  </td>
+				                  <td><label>开发票日期：</a></td>
+				                  <td><input type="text" class="form-control input-sm"></td>
+				                  <td><label>差额：</a></td>
+				                  <td><input type="text" class="form-control input-sm"></td>
+				                  <td><label>余额：</label></td>
+				                  <td><label>CNY：</label>99999.00</td>
+				                  <td><input type="checkbox"></td>
+				                  <td><label>&nbsp;借发票</label></td>
+				                </tr>
+				                <tr>
+				                  <td><label class="TableBeizhu">备注：</a></td>
+				                  <td colspan="9">
+									<textarea class="form-control input-sm textareaHei"></textarea>
+								  </td>
+				                </tr>
+				          </table>
+				          
+				          <div class="faPiaoInfo-div">
+					        <table class="Table2">
+					          <tr>
+					             <td><label>发票数：</label></td>
+					             <td><input id=" " name=" " type="text" class="form-control input-sm"></td>
+					             <td><label> </label></td>
+					             <td> </td>
+					             <td><label> </label></label></td>
+					             <td colspan="2"> </td>
+					          </tr>
+					          <tr class="cloneTR">
+					             <td><label>发票号：</label></td>
+					             <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm"></td>
+					             <td><label>实际金额：</label></td>
+					             <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm mustNumberPoint"></td>
+					             <td><label>税控金额：</label></td>
+					             <td><input id="fiscalAmount" name="fiscalAmount" type="text" class="form-control input-sm mustNumberPoint"></td>
+					             <td colspan="4">
+					                <ul class="fileUL">
+					                   <li>
+					                      	<a href="javascript:;" class="FileDiv">
+					                      		上传
+					                          <input type="file" class="sc" id="sc" name="sc">
+					                        </a> 
+					                   </li>
+					                   <li><a href="javascript:;" id="fileName" name="fileName">未选择文件</a></li>
+					                      <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
+					                </ul>
+					                <input id="invoiceurl" name="invoiceurl" type="hidden" value="">
+					             </td>
+					          </tr>
+					        </table>
+					      </div>
+            			</div>
+					</div>
+				</div>
+			</div>
+		</form>
 	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
   <div id="light" class="white_content">
         <i class="fa fa-times-circle" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'"></i>

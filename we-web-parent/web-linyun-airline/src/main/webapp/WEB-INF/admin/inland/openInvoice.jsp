@@ -12,15 +12,9 @@
 	<link rel="stylesheet" href="${base }/public/dist/css/AdminLTE.css">
 	<link href="${base }/public/plugins/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="${base }/public/dist/css/inlandCross.css"><!--本页style-->
-    <style type="text/css">
-    	.payTable2 tbody tr td:nth-child(1){width: 8%;}
-    	.payTable2 tbody tr td:nth-child(3){width: 8%;}
-    	.payTable2 tbody tr td:nth-child(5){width:8%;}
-    	.payTable2 tbody tr td:nth-child(even){width: 13%;}
-    </style>
 </head>
 <body>
-	<div class="modal-top">
+	<%-- <div class="modal-top">
     <div class="modal-header boderButt">
             <button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
             <input type="submit" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo();" value="提交"/>
@@ -157,10 +151,216 @@
     </div>
 	</div>
 
-  <div id="light" class="white_content">
-        <i class="fa fa-times-circle" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'"></i>
-        <img id="fapiaoid" src="">
-  </div> 
+	<div id="light" class="white_content">
+	        <i class="fa fa-times-circle" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'"></i>
+	        <img id="fapiaoid" src="">
+	</div>  --%>
+  
+  
+  	<div class="modal-content piaoKuanInfo">
+		<div class="modal-header">
+			<button type="button" class="btn btn-primary right btn-sm" onclick="closewindow()">取消</button>
+    		<button type="button" id="submit" class="btn btn-primary right btn-sm" onclick="saveInvoiceInfo();">提交</button>
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tabs_1" data-toggle="tab">收款信息</a></li>
+				<li><a href="#tabs_2" data-toggle="tab">发票信息</a></li>
+			</ul>
+		</div>
+		<form id="addUserForm" method="post">
+			<div class="modal-body">
+				<div class="tab-content">
+					<div class="tab-pane active" id="tabs_1">
+						<div class="tab-content">
+						 <input type="hidden" id="id" name="id" value="${obj.id }" >
+				      	 <input type="hidden" id="orderstatus" name="orderstatus" value="${obj.receive.orderstatus }" >
+				         <table id="receivablesTable" class="table table-bordered table-hover">
+				                  <thead>
+				                    <tr>
+				                      <th>订单号</th>
+				                      <th>开票日期</th>
+				                      <th>客户团号</th>
+				                      <th>客户公司名称</th>
+				                      <th>联系人</th>
+				                      <th>票务</th>
+				                      <th>金额</th>
+				                    </tr>
+				                  </thead>
+				                  <tbody>
+				                    <c:forEach var="one" items="${obj.orders }">
+				                		<tr ondblclick="toOrderDetail(${one.id})">
+				                		  <td>${one.ordersnum }</td>
+				                		  <td><fmt:formatDate value="${one.billingdate }" pattern="yyyy-MM-dd" /></td>
+				                		  <td>${one.cusgroupnum }</td>
+				                		  <td>${one.shortName }</td>
+				                		  <td>${one.linkMan }</td>
+				                		  <td>${one.issuer }</td>
+				                		  <td><fmt:formatNumber type="number" value="${one.incometotal }" pattern="0.00" maxFractionDigits="2"/></td>
+				                		</tr>
+				                	</c:forEach>
+				                  </tbody>
+				         </table>
+			              <!-- 加号图标 table  left部分 -->
+			              <div class="bankDiv">
+				              <table class="bankTable">
+				                <tr>
+				                  <td><label>银行：</label></td>
+				                  <td>
+				                    <select id="bankcardid" name="bankcardid" class="form-control input-sm" onchange="loadbankcardname();">
+				                    	<option value="">请选择</option>
+				                        <c:forEach var="one" items="${obj.yhkSelect }">
+				                        	<option value="${one.id }">${one.dictName }</option>
+				                        </c:forEach>
+				                    </select>
+				                  </td>
+				                  <td><label>银行卡名称：</label></td>
+				                  <td>
+				                    <select id="bankcardname" name="bankcardname" class="form-control input-sm" onchange="loadbankcardnum();">
+				                    </select>
+				                  </td>
+				                  <td><label>卡号：</label></td>
+				                  <td>
+				                     <select id="bankcardnum" name="bankcardnum" class="form-control input-sm">
+				                     </select>
+				                  </td>
+				                  <td class="remTd"><a href="javascript:;" class="glyphicon glyphicon-plus addIcon jiaHaoBtn"></a></td>
+				                  <td> </td>
+				                  <%-- <td><label>合计：</label></td>
+				                  <td id="heji"><fmt:formatNumber type="number" value="${obj.sumincome }" pattern="0.00" maxFractionDigits="2"/></td> --%>
+				                </tr>
+				                <tr>
+				                  <td><label>币种：</label></td>
+				                  <td colspan="6">
+				                  	<select class="form-control input-sm inline BJselectWid">
+				                  		<option>请选择</option>
+				                  		<option>CNY</option>
+				                  		<option>USD</option>
+				                  		<option>AUD</option>
+				                  	</select>
+				                  	<input type="text" class="form-control input-sm inline BJinputWid">
+				                  	<input type="text" class="form-control input-sm inline BJinputWid" placeholder="请输入实时汇率">
+				                  	<input type="text" class="form-control input-sm inline BJinputWid" placeholder="金额计算结果">
+				                  </td>
+				                </tr>
+				              </table>
+			              </div>
+			              <!-- end 加号图标 table  left部分 -->
+			              
+			              <!-- 客户名称~预存款金额 -->
+			              <table class="bankTable bankTable2">
+				                <tr>
+				                  <td><label>客户名称：</label></td>
+				                  <td><input type="text" class="form-control input-sm"></td>
+				                  <td><label><a href="javascript:;">减免：</a></label></td>
+				                  <td><input type="text" class="form-control input-sm"></td>
+				                  <td><label>合计：</label></td>
+				                  <td><label>CNY：</label>99999.00</td>
+				                </tr>
+				               	<tr>
+				               	  <td><label>原预存款：</label></td>
+				                  <td><input type="text" class="form-control input-sm"></td>
+				                  <td><label>水单金额：</label></td>
+				                  <td><input type="text" class="form-control input-sm"></td>
+				                  <td><label>本次预存款：</label></td>
+				                  <td><input type="text" class="form-control input-sm"></td>
+				                  <td><label>应返金额：</label></td>
+				                  <td><input type="text" class="form-control input-sm"></td>
+				                  <td><label>预存款金额：</label></td>
+				                  <td><input type="text" class="form-control input-sm"></td>
+				               	</tr>
+				          </table>
+				          <!-- end 客户名称~预存款金额 -->
+			              <span class="total">
+			              	<label>合计：</label>
+			              	<label id="heji"><fmt:formatNumber type="number" value="${obj.sumincome }" pattern="0.00" maxFractionDigits="2"/></label>
+			              </span>
+			              <div class="bankSlipImg" align="center"><img id="shuidanimg" width="100%" height="305" alt="" src="${obj.bill.receiptUrl }"></div>
+            			</div>
+					</div>
+					<div class="tab-pane" id="tabs_2">
+						<div class="tab-content">
+		                  <table class="faPiaoInfo Table1">
+				                <tr>
+				                  <td><label>发票项目：</label></td>
+				                  <td>
+				                  	<select class="form-control input-sm">
+				                  		<option>请选择</option>
+				                  		<option>机票款</option>
+				                  		<option>团款</option>
+				                  		<option>代订机票费用</option>
+				                  	</select>
+				                  </td>
+				                  <td><label>开发票日期：</a></td>
+				                  <td><input type="text" class="form-control input-sm"></td>
+				                  <td><label>差额：</a></td>
+				                  <td><input type="text" class="form-control input-sm"></td>
+				                  <td><label>余额：</label></td>
+				                  <td><label>CNY：</label>99999.00</td>
+				                  <td><input type="checkbox"></td>
+				                  <td><label>&nbsp;借发票</label></td>
+				                </tr>
+				                <tr>
+				                  <td><label class="TableBeizhu">备注：</a></td>
+				                  <td colspan="9">
+									<textarea class="form-control input-sm textareaHei"></textarea>
+								  </td>
+				                </tr>
+				          </table>
+				          
+				          <div class="faPiaoInfo-div">
+					        <table class="Table2">
+					          <tr>
+					             <td><label>客户名称：</label></td>
+					             <td><input id=" " name=" " type="text" class="form-control input-sm"></td>
+					             <td><label>行号：</label></td>
+					             <td><input id=" " name=" " type="text" class="form-control input-sm"></td>
+					             <td><label>开户行：</label></label></td>
+					             <td colspan="2"><input id=" " name=" " type="text" class="form-control input-sm"></td>
+					          </tr>
+					          <tr>
+					             <td><label>账号：</label></td>
+					             <td><input id=" " name=" " type="text" class="form-control input-sm"></td>
+					             <td><label>电话：</label></td>
+					             <td><input id=" " name=" " type="text" class="form-control input-sm"></td>
+					             <td><label>地址：</label></label></td>
+					             <td colspan="2"><input id=" " name=" " type="text" class="form-control input-sm"></td>
+					          </tr>
+					          <tr>
+					             <td><label>纳税人识别号：</label></td>
+					             <td colspan="3"><input id="remark" name="remark" type="text" class="form-control input-sm"></td>
+					          </tr>
+					          <tr class="cloneTR">
+					             <td><label>发票号：</label></td>
+					             <td><input id="invoicenum" name="invoicenum" type="text" class="form-control input-sm"></td>
+					             <td><label>实际金额：</label></td>
+					             <td><input id="invoicebalance" name="invoicebalance" type="text" class="form-control input-sm mustNumberPoint"></td>
+					             <td><label>税控金额：</label></td>
+					             <td><input id="fiscalAmount" name="fiscalAmount" type="text" class="form-control input-sm mustNumberPoint"></td>
+					             <td colspan="4">
+					                <ul class="fileUL">
+					                   <li>
+					                      	<a href="javascript:;" class="FileDiv">
+					                      		上传
+					                          <input type="file" class="sc" id="sc" name="sc">
+					                        </a> 
+					                   </li>
+					                   <li><a href="javascript:;" id="fileName" name="fileName">未选择文件</a></li>
+					                      <li><a href="javascript:;" class="glyphicon glyphicon-plus addIcon"></a></li>
+					                </ul>
+					                <input id="invoiceurl" name="invoiceurl" type="hidden" value="">
+					             </td>
+					          </tr>
+					        </table>
+					      </div>
+            			</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+  	<div id="light" class="white_content">
+	        <i class="fa fa-times-circle" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'"></i>
+	        <img id="fapiaoid" src="">
+	</div>
   	<script type="text/javascript">
   		var BASE_PATH = '${base}';
   	</script>
@@ -309,6 +509,38 @@
 		var url = '${base}/admin/inland/bookingDetail.html?id=' + id;
 		window.open(url);
 	}
+   
+   $(function(){
+		/*圆圈加号*/
+		$('.addIcon').click(function(){
+	          var divTest = $(this).parents('.bankTable'); 
+	          var lastDiv = $('.bankDiv').last();
+	          var newDiv = divTest.clone(false,true);
+	          /* newDiv.find('[name=invoicenum]').val('');
+	          newDiv.find('[name=invoicebalance]').val(''); 
+	          newDiv.find('[name=fileName]').html('未选择文件');
+	          newDiv.find('[name=invoiceurl]').val(''); */
+	          lastDiv.after(newDiv);
+	          var No = parseInt(divTest.find("p").html())+1;//用p标签显示序号
+	          newDiv.find("p").html(No); 
+	          /* newDiv.find('#preView').parent().remove();
+	          newDiv.find('.deleteInvoice').parent().remove();*/
+	          newDiv.find('.addIcon').remove(); 
+	          newDiv.find('.remTd').append('<a href="javascript:;" class="glyphicon glyphicon-minus removIcon removTd"></a>');
+	      });
+		/*圆圈减号*/
+		$(document).on("click",".removIcon",function(){
+	    	  /* var divTest = $(this).parents('.bankTable');
+	    	  var invoicebalance = divTest.find('[name=invoicebalance]').val(); 
+	    	  if(invoicebalance){
+	    		  var yubanlance = parseFloat($('#balance').html()) + parseFloat(invoicebalance);
+	    		  $('#balance').html(yubanlance.toFixed(2));
+	    		  $('#backupbalance').val(yubanlance.toFixed(2));
+	    	  }
+	    	  $('#thisval').val(''); */
+	          $(this).parents('.bankTable').remove();
+	    });
+	});
   </script>
 </body>
 </html>	
