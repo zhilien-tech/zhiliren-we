@@ -76,3 +76,6 @@ FROM
 	dict_info dt
 LEFT JOIN t_grab_report gb ON dt.id = gb.dictInfoId
 $condition
+/*grab_report_delete_empty*/
+delete FROM `t_grab_file`
+where fileSize=0.00 and id not in (1,2,3,4,5,6,7,8,9); 

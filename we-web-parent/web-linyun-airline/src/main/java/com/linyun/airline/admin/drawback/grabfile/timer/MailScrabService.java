@@ -220,6 +220,13 @@ public class MailScrabService extends BaseService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		/*****
+		 * 抓取完邮件之后删除一些创建的空的文件夹
+		 */
+		String sqlString = sqlManager.get("grab_report_delete_empty");
+		Sql sql = Sqls.create(sqlString);
+		dbDao.execute(sql);
+
 	}
 
 	/** 
@@ -233,11 +240,26 @@ public class MailScrabService extends BaseService {
 		}
 		// 解析所有邮件  
 		for (int i = 0, count = messages.length; i < count; i++) {
-			MimeMessage msg = (MimeMessage) messages[i];
-			eachHandler(msg, userTeam);
-			boolean isRead = isRead(msg);
-			if (isRead) {
-				continue;
+			if (i > 500) {
+
+				//解决Folder is not open异常
+				if (!messages[i].getFolder().isOpen()) {
+
+					messages[i].getFolder().open(Folder.READ_WRITE); //如果close，就重新open    
+				} //判断是否open  
+				MimeMessage msg = (MimeMessage) messages[i];
+
+				try {
+					eachHandler(msg, userTeam);
+				} catch (Exception e) {
+
+					e.printStackTrace();
+
+				}
+				boolean isRead = isRead(msg);
+				if (isRead) {
+					continue;
+				}
 			}
 		}
 	}
@@ -254,9 +276,7 @@ public class MailScrabService extends BaseService {
 		//1、从邮件获取能直接保存的数据
 		String theme = getSubject(msg);//主题
 		String sender = getFrom(msg);//发件人
-
 		String addressee = getReceiveAddress(msg, null);//收件人
-
 		String sendTime = getSentDate(msg, null);//发送时间
 		String fileSize = Integer.toString(msg.getSize());//邮件大小
 		logger.info("邮件的主题是:" + theme);
@@ -352,10 +372,7 @@ public class MailScrabService extends BaseService {
 		try {
 			str = ctim.getContentHtml(msg);
 		} catch (Exception e1) {
-
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
-
 		}
 		if (sender.contains(GrabMailConstants.FIT_JQ)) {
 			dateStr = this.getDate(str, 0);
@@ -503,7 +520,6 @@ public class MailScrabService extends BaseService {
 
 			}
 			dbDao.update(TGrabFileEntity.class, Chain.make("customnum", a), Cnd.where("id", "=", timeFileTwo.getId()));
-
 		}
 		//父id
 		long pid = timeFileTwo.getId();
@@ -1248,7 +1264,6 @@ public class MailScrabService extends BaseService {
 								+ qiniuUploadService.uploadImage(new FileInputStream(file2), "pdf", null);
 					} else {
 						fileUrl = uploadFile(is, fileExt);
-
 					}
 					//==============================从网络地址下载文件将其变为本地文件再读进程序中，进行length的获取==================================
 					InputStream is1 = null;
@@ -1311,10 +1326,7 @@ public class MailScrabService extends BaseService {
 						try {
 							Thread.sleep(200);
 						} catch (InterruptedException e) {
-
-							// TODO Auto-generated catch block
 							e.printStackTrace();
-
 						}
 
 						//==============================从网络地址下载文件将其变为本地文件再读进程序中，进行length的获取==================================
