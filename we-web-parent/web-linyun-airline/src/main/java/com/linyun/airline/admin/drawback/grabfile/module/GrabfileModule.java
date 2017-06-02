@@ -170,7 +170,7 @@ public class GrabfileModule {
 	 */
 	@At
 	public Object delete(@Param("id") final long id) {
-		grabfileViewService.deleteById(id);
+		grabfileViewService.onedelete(id);
 		return JsonResult.success("删除成功");
 	}
 
@@ -179,7 +179,7 @@ public class GrabfileModule {
 	 */
 	@At
 	public Object batchDelete(@Param("ids") final Long[] ids) {
-		grabfileViewService.batchDelete(ids);
+		grabfileViewService.batchDeleteList(ids);
 		return JsonResult.success("删除成功");
 	}
 

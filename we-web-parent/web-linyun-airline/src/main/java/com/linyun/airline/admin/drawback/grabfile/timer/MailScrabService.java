@@ -285,28 +285,21 @@ public class MailScrabService extends BaseService {
 			throw new MessagingException("未找到要解析的邮件!");
 		}
 		// 解析所有邮件  
-		for (int i = 0, count = messages.length; i < count; i++) {
-
+		for (int i = messages.length - 1, count = messages.length; i < count; i--) {
 			//if (i > 364 * 100) {
-
 			//解决Folder is not open异常
 			if (!messages[i].getFolder().isOpen()) {
-
 				messages[i].getFolder().open(Folder.READ_WRITE); //如果close，就重新open    
 			} //判断是否open  
 			MimeMessage msg = (MimeMessage) messages[i];
-
 			try {
 				eachHandler(msg, userTeam);
 			} catch (Exception e) {
-
 				e.printStackTrace();
-
 			}
 			boolean isRead = isRead(msg);
 			if (isRead) {
 				continue;
-
 			}
 			//}
 		}

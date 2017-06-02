@@ -1,7 +1,12 @@
 package com.linyun.airline.admin.drawback.grabfile.service;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,6 +19,7 @@ import java.util.zip.ZipOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
@@ -74,6 +80,32 @@ public class GrabfileViewService extends BaseService<TGrabFileEntity> {
 		grabfile.setMailId(addForm.getId());
 		grabfile.setFileSize(addForm.getFileSize());//文件大小
 		grabfile.setType(FileTypeEnum.FILE.intKey());//文件类型
+
+		String str1 = System.getProperty("java.io.tmpdir");
+		InputStream is1 = null;
+		OutputStream out = null;
+		URL url;
+		try {
+			url = new URL(addForm.getUrl());
+			URLConnection connection = url.openConnection();
+			is1 = connection.getInputStream();
+			File file3 = new File(str1 + File.separator + "12.pdf");
+			out = new FileOutputStream(file3);
+			byte b[] = new byte[1024];
+			int m = 0;
+			while ((m = is1.read(b)) > -1) {
+				out.write(b);
+				out.flush();
+			}
+			File file4 = new File(str1 + File.separator + "12.pdf");
+			InputStream is5 = new FileInputStream(file4);
+			int byteNum = is5.available();
+			double fileSize = Math.rint(byteNum / 1024);
+			addForm.setFileSize(fileSize);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		setParentsFileSize(addForm.getParentId(), addForm.getFileSize());
 		if (flagType == 0) {
 			grabfile.setGroupType(OrderTypeEnum.FIT.intKey());
 		} else if (flagType == 1) {
@@ -228,5 +260,63 @@ public class GrabfileViewService extends BaseService<TGrabFileEntity> {
 		}
 		map.put("valid", count <= 0);
 		return map;
+	}
+
+	//根据文件id设置之前所有父文件的大小
+	public void setParentsFileSize(long id, double size) {
+		TGrabFileEntity tGrabFileEntity = dbDao.fetch(TGrabFileEntity.class, Cnd.where("id", "=", id));
+		if (Util.isEmpty(tGrabFileEntity.getFileSize())) {
+
+			dbDao.update(TGrabFileEntity.class, Chain.make("fileSize", size), Cnd.where("id", "=", id));
+		} else {
+			dbDao.update(TGrabFileEntity.class, Chain.make("fileSize", size + tGrabFileEntity.getFileSize()),
+					Cnd.where("id", "=", id));
+
+		}
+		if (tGrabFileEntity.getParentId() == 0) {
+			return;
+		}
+		setParentsFileSize(tGrabFileEntity.getParentId(), size);
+	}
+
+	//根据文件id设置之前所有父文件的大小
+	public void subParentsFileSize(long id, double size) {
+		TGrabFileEntity tGrabFileEntity = dbDao.fetch(TGrabFileEntity.class, Cnd.where("id", "=", id));
+		if (Util.isEmpty(tGrabFileEntity.getFileSize())) {
+
+			dbDao.update(TGrabFileEntity.class, Chain.make("fileSize", size), Cnd.where("id", "=", id));
+		} else {
+			dbDao.update(TGrabFileEntity.class, Chain.make("fileSize", tGrabFileEntity.getFileSize() - size),
+					Cnd.where("id", "=", id));
+
+		}
+		if (tGrabFileEntity.getParentId() == 0) {
+			return;
+		}
+		subParentsFileSize(tGrabFileEntity.getParentId(), size);
+	}
+
+	/**
+	 * 根据id单条删除数据
+	 * @param id
+	 */
+	public Object onedelete(long id) {
+		TGrabFileEntity fetch = dbDao.fetch(TGrabFileEntity.class, id);
+		this.deleteById(id);
+		subParentsFileSize(fetch.getParentId(), fetch.getFileSize());
+		return fetch;
+	}
+
+	/**
+	 * 批量删除
+	 * @param ids
+	 */
+	public Object batchDeleteList(Long[] ids) {
+		for (Long long1 : ids) {
+			TGrabFileEntity fetch = dbDao.fetch(TGrabFileEntity.class, long1);
+			subParentsFileSize(fetch.getParentId(), fetch.getFileSize());
+		}
+		this.batchDelete(ids);
+		return null;
 	}
 }

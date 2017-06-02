@@ -665,14 +665,15 @@ function move(id,flag){
 }
 //文件下载
 function downLoadZipFile(parentId){
-	$('#downloadId').val(parentId);
+ 	$('#downloadId').val(parentId);
 	document.forms[0].action="${base}/admin/drawback/grabfile/downLoadZipFile.html";
-	var index = layer.load(1000, {shade: [0.1,'#fff']});//0.1透明度的白色背景 
+	var index = layer.load(10000, {shade: [0.1,'#fff']});//0.1透明度的白色背景 
 	document.forms[0].submit();
-	layer.close(index);
+	layer.close(index); 
 	/* var index = layer.load(1, {shade: [0.1,'#fff']});//0.1透明度的白色背景 
 	$.ajax({
 		type : "POST",
+		async: false,
 		url : '${base}/admin/drawback/grabfile/downLoadZipFile.html',
 		data : {
 			id : parentId
@@ -685,7 +686,7 @@ function downLoadZipFile(parentId){
 		    window.parent.successCallback('7');
 		    //parent.location.reload(); // 父页面刷新
 		}
-	}); */
+	});  */
 }
 //邮件抓取入口
 $('#grabMailId').click(function(){
@@ -1546,6 +1547,8 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 	                    			return "已关联";
 	                    		}else if(0===relationstatus){
 	                    			return "未关联";
+	                    		}else{
+	                    			return "";
 	                    		}
 	                    		return relationstatus;
 	                    	}
@@ -1569,7 +1572,7 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 					                targets: 16,
 					                render: function(data, type, row, meta) {
 					                	/* var details = '<a style="cursor:pointer;" onclick="editPreview('+row.id+');">编辑</a>'; */
-					                    return null;
+					                    return "";
 					                }
 				               }]
 		});

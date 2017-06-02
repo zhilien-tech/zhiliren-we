@@ -103,12 +103,28 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 			dbDao.update(TGrabFileEntity.class, Chain.make("fileName", addForm.getFileName()),
 					Cnd.where("id", "=", pid));
 		}
-		TGrabFileEntity feach = dbDao.fetch(TGrabFileEntity.class, Cnd.where("id", "=", addForm.getPid()));
-		Long parentId = feach.getParentId();
-		if (!Util.isEmpty(parentId)) {
-			dbDao.update(TGrabFileEntity.class, Chain.make("fileName", addForm.getCusgroupnum()),
-					Cnd.where("parentId", "=", parentId));
+		//判断客户团号是否已经存在
+		TGrabFileEntity cusgroupnum = dbDao.fetch(TGrabFileEntity.class,
+				Cnd.where("fileName", "=", addForm.getCusgroupnum()));
+		if (Util.isEmpty(cusgroupnum)) {
+			TGrabFileEntity feach = dbDao.fetch(TGrabFileEntity.class, Cnd.where("id", "=", addForm.getPid()));
+			Long parentId = feach.getParentId();
+			if (!Util.isEmpty(parentId)) {
+				dbDao.update(TGrabFileEntity.class, Chain.make("fileName", addForm.getCusgroupnum()),
+						Cnd.where("id", "=", parentId));
+			}
+		} else {
+			dbDao.update(TGrabFileEntity.class, Chain.make("parentId", cusgroupnum.getId()), Cnd.where("id", "=", pid));
+			setParentsFileSize(cusgroupnum.getId(), oneFileNameBefore.getFileSize());
+			subParentsFileSize(oneFileNameBefore.getParentId(), oneFileNameBefore.getFileSize());
+			/*****
+			 * 抓取完邮件之后删除一些创建的空的文件夹
+			 */
+			String sqlString = sqlManager.get("grab_report_delete_empty");
+			Sql sql = Sqls.create(sqlString);
+			dbDao.execute(sql);
 		}
+
 		//double数据四舍五入保留小数点后两位
 		TGrabReportEntity report = new TGrabReportEntity();
 		DecimalFormat df = new DecimalFormat("#.00");
@@ -237,8 +253,11 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		//保存报表数据的时候同时将订单列表中的订单关联状态id保存在报表中
 		TPnrSystemMapEntity singleton = dbDao.fetch(TPnrSystemMapEntity.class,
 				Cnd.where("pnrId", "=", pnrId).and("orderId", "=", orderId));
-		Integer relationStatus = (int) singleton.getRelationStatus();//得到pnr系统关联表状态
-		report.setPnrRelationId(relationStatus);
+		Integer relationStatus = 0;
+		if (!Util.isEmpty(singleton)) {
+			relationStatus = (int) singleton.getRelationStatus();//得到pnr系统关联表状态
+			report.setPnrRelationId(relationStatus);
+		}
 		TGrabReportEntity insertData = dbDao.insert(report);
 		return insertData;
 	}
@@ -391,6 +410,38 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 
 		}
 
+	}
+
+	//根据文件id设置之前所有父文件的大小
+	public void setParentsFileSize(long id, double size) {
+		TGrabFileEntity tGrabFileEntity = dbDao.fetch(TGrabFileEntity.class, Cnd.where("id", "=", id));
+		if (Util.isEmpty(tGrabFileEntity.getFileSize())) {
+
+			dbDao.update(TGrabFileEntity.class, Chain.make("fileSize", size), Cnd.where("id", "=", id));
+		} else {
+			dbDao.update(TGrabFileEntity.class, Chain.make("fileSize", size + tGrabFileEntity.getFileSize()),
+					Cnd.where("id", "=", id));
+
+		}
+		if (tGrabFileEntity.getParentId() == 0) {
+			return;
+		}
+		setParentsFileSize(tGrabFileEntity.getParentId(), size);
+	}
+
+	//根据文件id设置之前所有父文件的大小
+	public void subParentsFileSize(long id, double size) {
+		TGrabFileEntity tGrabFileEntity = dbDao.fetch(TGrabFileEntity.class, Cnd.where("id", "=", id));
+		if (Util.isEmpty(tGrabFileEntity.getFileSize())) {
+			dbDao.update(TGrabFileEntity.class, Chain.make("fileSize", size), Cnd.where("id", "=", id));
+		} else {
+			dbDao.update(TGrabFileEntity.class, Chain.make("fileSize", tGrabFileEntity.getFileSize() - size),
+					Cnd.where("id", "=", id));
+		}
+		if (tGrabFileEntity.getParentId() == 0) {
+			return;
+		}
+		subParentsFileSize(tGrabFileEntity.getParentId(), size);
 	}
 
 }
