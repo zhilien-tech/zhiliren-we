@@ -172,12 +172,13 @@ public class Content {
 		//==========TT中Booking Date样式的时间抓取
 		for (int i = 0, count = messages.length; i < count; i++) {
 			//System.out.println(messages.length + "======================================");
-			if (i == 430 * 100 - 43) {
+			if (i == 364 * 100 + 101) {
 
 				MimeMessage msg = (MimeMessage) messages[i];
 				try {
 					String str = getContentHtml(msg);
-					int indexOf = str.indexOf("<", str.indexOf("Booking Date"));
+					//System.out.println("内容：=====" + str);
+					/*int indexOf = str.indexOf("<", str.indexOf("Booking Date"));
 					System.out.println(str.indexOf("Booking Date"));
 					String substring = str.substring(str.indexOf("Booking Date"), indexOf);
 					String str1[] = substring.split("\\s+");
@@ -188,8 +189,36 @@ public class Content {
 						}
 					}
 					System.out.println(str2 + "===========================");
-					System.out.println(substring);
+					System.out.println(substring);*/
 					//System.out.println(str);
+					int start = str.indexOf("<td align=\"center\" valign=\"top\">");
+					if (start > 0) {
+						int a = str.indexOf("left", start);
+						String str1 = str.substring(0, a + 5);
+						String str2 = str.substring(a + 5, str.length());
+						str = str1 + " style=\"display: inline-block;float: none;\"" + str2;
+						int start1 = str.lastIndexOf("<table width=\"345\" border=\"0\"");
+						int a0 = str.indexOf("left", start1);
+						String str10 = str.substring(0, a0 + 5);
+						String str20 = str.substring(a0 + 5, str.length());
+						str = str10 + " style=\"display: inline-block;float: none;\"" + str20;
+
+						/*int startwidth = str.indexOf("<td bgcolor=\"#ffffff\" align=\"center\">");
+
+						int b = str.indexOf("width", startwidth);
+						String str11 = str.substring(0, b + 7);
+						String str21 = str.substring(b + 10, str.length());
+						str = str11 + "750" + str21;*/
+
+					}
+					int start1 = str.indexOf("@media only");
+					int end1 = str.indexOf("appleLinks");
+					String content1 = str.substring(0, start1);
+					String content2 = str.substring(end1 - 8, str.length());
+					String content = content1 + content2;
+					content = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"
+							+ content;
+					System.out.println("内容：=====" + content);
 				} catch (Exception e) {
 
 					// TODO Auto-generated catch block

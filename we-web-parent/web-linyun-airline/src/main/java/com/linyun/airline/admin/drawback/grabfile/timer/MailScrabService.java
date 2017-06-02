@@ -45,6 +45,7 @@ import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
+import org.nutz.ioc.aop.Aop;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.slf4j.Logger;
@@ -80,7 +81,7 @@ import com.uxuexi.core.web.base.service.BaseService;
 @SuppressWarnings("rawtypes")
 @IocBean(name = "grabMailService")
 public class MailScrabService extends BaseService {
-
+	Object obj = new Object();
 	@Inject
 	private UploadService qiniuUploadService;
 	private Map<String, Long> map = new HashMap<String, Long>();
@@ -202,6 +203,51 @@ public class MailScrabService extends BaseService {
 
 		// 得到收件箱中的所有邮件,并解析  
 		Message[] messages = folder.getMessages();
+		//利用多线程进行邮件的抓取，提高速度
+		//=====================多线程开始=========================================
+		/*List<Message[]> messageList = Lists.newArrayList();
+		int count = 0;//总共要进行多少线程
+		if (messages.length % 500 == 0) {
+			count = messages.length / 500;
+		} else {
+			count = messages.length / 500 + 1;
+
+		}
+		for (int i = 0; i < count; i++) {
+			Message[] message = new Message[500];
+			messageList.add(message);
+
+		}
+		for (int i = 0; i < count; i++) {
+
+			for (int j = 0; j < messages.length; j++) {
+				messageList.get(i)[j % 500] = messages[j];
+
+			}
+		}
+		List<MutiThreadUtil> mutiThreadUtilList = Lists.newArrayList();
+		for (int i = 0; i < count; i++) {
+			MutiThreadUtil m = new MutiThreadUtil();
+			m.setFlag(userTeam);
+			m.setMailScrabService(this);
+			m.setMessages(messageList.get(i));
+			mutiThreadUtilList.add(m);
+		}
+
+		try {
+			ExecutorService executorService = Executors.newFixedThreadPool(mutiThreadUtilList.size());
+			executorService.invokeAll(mutiThreadUtilList);
+			 调用所有的多线程,必须执行完以后,main才能往下执行 
+			executorService.shutdown();
+		} catch (Exception e) {
+
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		}*/
+
+		//=====================多线程结束=========================================
+
 		parseMessage(userTeam, messages);
 
 		//释放资源  
@@ -240,28 +286,31 @@ public class MailScrabService extends BaseService {
 		}
 		// 解析所有邮件  
 		for (int i = 0, count = messages.length; i < count; i++) {
-			if (i > 500) {
 
-				//解决Folder is not open异常
-				if (!messages[i].getFolder().isOpen()) {
+			//if (i > 364 * 100) {
 
-					messages[i].getFolder().open(Folder.READ_WRITE); //如果close，就重新open    
-				} //判断是否open  
-				MimeMessage msg = (MimeMessage) messages[i];
+			//解决Folder is not open异常
+			if (!messages[i].getFolder().isOpen()) {
 
-				try {
-					eachHandler(msg, userTeam);
-				} catch (Exception e) {
+				messages[i].getFolder().open(Folder.READ_WRITE); //如果close，就重新open    
+			} //判断是否open  
+			MimeMessage msg = (MimeMessage) messages[i];
 
-					e.printStackTrace();
+			try {
+				eachHandler(msg, userTeam);
+			} catch (Exception e) {
 
-				}
-				boolean isRead = isRead(msg);
-				if (isRead) {
-					continue;
-				}
+				e.printStackTrace();
+
 			}
+			boolean isRead = isRead(msg);
+			if (isRead) {
+				continue;
+
+			}
+			//}
 		}
+
 	}
 
 	/**
@@ -359,6 +408,7 @@ public class MailScrabService extends BaseService {
 	 * @throws FileNotFoundException
 	 * @throws IOException 
 	 */
+	@Aop("txDb")
 	private void fileLevel(MimeMessage msg, Integer userTeam, String sender, String sendTime, String fileSize,
 			long grabRecordId) throws UnsupportedEncodingException, MessagingException, FileNotFoundException,
 			IOException {
@@ -442,6 +492,8 @@ public class MailScrabService extends BaseService {
 		timeFile.setLevel(2);
 		timeFile.setSort(0);
 		timeFile.setGroupType(userTeam);//散团类型
+
+		//synchronized (obj) {
 		List<TGrabFileEntity> list = existFile(rootId, fileName);
 		if (!Util.isEmpty(list)) {
 			timeFile = list.get(0);
@@ -449,6 +501,7 @@ public class MailScrabService extends BaseService {
 		} else {
 			timeFile = dbDao.insert(timeFile);
 		}
+		//}
 		/**************************时间结束***************************/
 		/**************************第二层开始***************************/
 
@@ -493,6 +546,7 @@ public class MailScrabService extends BaseService {
 		timeFileTwo.setLevel(3);
 		timeFileTwo.setSort(0);
 		timeFileTwo.setGroupType(userTeam);//散团类型
+		//synchronized (obj) {
 		List<TGrabFileEntity> lst = existFile(rootIdTwo, fileNameTwo);
 		if (!Util.isEmpty(lst)) {
 			timeFileTwo = lst.get(0);
@@ -501,11 +555,15 @@ public class MailScrabService extends BaseService {
 		} else {
 			timeFileTwo = dbDao.insert(timeFileTwo);
 		}
+		//}
 		/**************************第二层结束***************************/
 		/**************************客户团号***************************/
 		/*long sort = getSort(timeFileTwo.getId());*/
 		String cusgroupnum = getcusGroupnum();//得到客户团号
 		long sort = 0;
+
+		//synchronized (obj) {
+
 		if (Util.isEmpty(cusgroupnum)) {
 			cusgroupnum = "客户团号";
 			TGrabFileEntity grabFileEntity = dbDao.fetch(TGrabFileEntity.class,
@@ -521,6 +579,7 @@ public class MailScrabService extends BaseService {
 			}
 			dbDao.update(TGrabFileEntity.class, Chain.make("customnum", a), Cnd.where("id", "=", timeFileTwo.getId()));
 		}
+		//}
 		//父id
 		long pid = timeFileTwo.getId();
 		Chain chain3 = Chain.make("updateTime", date);
@@ -563,6 +622,7 @@ public class MailScrabService extends BaseService {
 
 		groupNumFile.setSort(sort);
 		groupNumFile.setGroupType(userTeam);//散团类型
+		//synchronized (obj) {
 
 		List<TGrabFileEntity> lstThree = existGroupNumFile(pid, cusgroupnum);
 		if (!Util.isEmpty(lstThree)) {
@@ -572,6 +632,7 @@ public class MailScrabService extends BaseService {
 		} else {
 			groupNumFile = dbDao.insert(groupNumFile);
 		}
+		//}
 
 		/****************************************************客户团号结束**********************************************/
 
@@ -813,11 +874,16 @@ public class MailScrabService extends BaseService {
 	 * @param rootId 父级id【此时的父id为最顶层文件夹的id】
 	 * @param fileName
 	 */
+	@Aop("txDb")
 	private List<TGrabFileEntity> existFile(long rootId, String fileName) {
+		List<TGrabFileEntity> list = null;
+		//synchronized (obj) {
+
 		Sql sqlCount = Sqls.create(sqlManager.get("grab_mail_count"));
 		sqlCount.params().set("fileName", fileName);
 		sqlCount.params().set("parentId", rootId);
-		List<TGrabFileEntity> list = DbSqlUtil.query(dbDao, TGrabFileEntity.class, sqlCount);
+		list = DbSqlUtil.query(dbDao, TGrabFileEntity.class, sqlCount);
+		//}
 		return list;
 	}
 
@@ -826,11 +892,16 @@ public class MailScrabService extends BaseService {
 	 * @param pid  父级id【此时的父id为上级时间文件夹的id】
 	 * @param cusgroupnum 文件名
 	 */
+	@Aop("txDb")
 	private List<TGrabFileEntity> existGroupNumFile(long pid, String cusgroupnum) {
+		List<TGrabFileEntity> lst = null;
+		//synchronized (obj) {
+
 		Sql sqlCount = Sqls.create(sqlManager.get("grab_mail_count"));
 		sqlCount.params().set("fileName", cusgroupnum);
 		sqlCount.params().set("parentId", pid);
-		List<TGrabFileEntity> lst = DbSqlUtil.query(dbDao, TGrabFileEntity.class, sqlCount);
+		lst = DbSqlUtil.query(dbDao, TGrabFileEntity.class, sqlCount);
+		//}
 		return lst;
 	}
 
@@ -1065,7 +1136,9 @@ public class MailScrabService extends BaseService {
 	 * @param fileProps
 	 * @param msg TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
 	 */
+	@Aop("txDb")
 	public void saveContent(List<TGrabFileEntity> grabFileLst, TGrabFileEntity fileProps, MimeMessage msg) {
+		//synchronized (obj) {
 		String contentHtml = null;
 		String fileUrl = null;
 		try {
@@ -1126,6 +1199,7 @@ public class MailScrabService extends BaseService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		//}
 
 	}
 
@@ -1138,7 +1212,7 @@ public class MailScrabService extends BaseService {
 	 */
 	public void saveLink(List<TGrabFileEntity> grabFileLst, TGrabFileEntity fileProps, MimeMessage msg) {
 		String fileUrl = null;
-
+		//synchronized (obj) {
 		try {
 			fileUrl = ContentUrl.getUrl(msg);
 			String str1 = System.getProperty("java.io.tmpdir");
@@ -1199,6 +1273,7 @@ public class MailScrabService extends BaseService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		//	}
 
 	}
 
@@ -1485,6 +1560,7 @@ public class MailScrabService extends BaseService {
 	}
 
 	//根据文件id设置之前所有父文件的大小
+	@Aop("txDb")
 	public void setParentsFileSize(long id, double size) {
 		TGrabFileEntity tGrabFileEntity = dbDao.fetch(TGrabFileEntity.class, Cnd.where("id", "=", id));
 		if (Util.isEmpty(tGrabFileEntity.getFileSize())) {

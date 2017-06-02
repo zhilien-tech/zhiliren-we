@@ -8,7 +8,9 @@ public class HtmlToPdf {
 	private static final String toPdfTool = "C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe";
 
 	public static void main(String[] args) {
-		convert("http://oluwc01ms.bkt.clouddn.com/155fd061-143a-44a7-8c9c-e98f01cff0d5.html", "e:\\14.pdf");
+		//convert("http://oluwc01ms.bkt.clouddn.com/155fd061-143a-44a7-8c9c-e98f01cff0d5.html", "e:\\14.pdf");
+		convert("e:\\bb.html", "e:\\14.pdf");
+
 	}
 
 	/** 
@@ -27,6 +29,12 @@ public class HtmlToPdf {
 
 		StringBuilder cmd = new StringBuilder();
 		cmd.append(toPdfTool);
+		/*	cmd.append(" ");
+			cmd.append("--minimum-font-size 38 ");
+			cmd.append(" ");
+			cmd.append("--zoom 3 ");*/
+		cmd.append(" ");
+		cmd.append("--load-error-handling skip ");
 		cmd.append(" ");
 		cmd.append(srcPath);
 		cmd.append(" ");
