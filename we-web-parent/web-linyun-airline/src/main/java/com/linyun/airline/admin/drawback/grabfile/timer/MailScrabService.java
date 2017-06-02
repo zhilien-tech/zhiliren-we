@@ -286,6 +286,7 @@ public class MailScrabService extends BaseService {
 		}
 		// 解析所有邮件  
 		for (int i = 0, count = messages.length; i < count; i++) {
+
 			//if (i > 364 * 100) {
 
 			//解决Folder is not open异常
@@ -305,6 +306,7 @@ public class MailScrabService extends BaseService {
 			boolean isRead = isRead(msg);
 			if (isRead) {
 				continue;
+
 			}
 			//}
 		}
