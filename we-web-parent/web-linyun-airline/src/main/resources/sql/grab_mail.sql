@@ -90,6 +90,7 @@ WHERE
 	
 /*grab_mail_and_file_list*/
 SELECT
+RIGHT(gr.fileName,LENGTH(gr.fileName)-instr(gr.fileName,"号")-8) as 'sub', 
 	gr.id,
 	gr.mailId,
 	gm.sendTime,

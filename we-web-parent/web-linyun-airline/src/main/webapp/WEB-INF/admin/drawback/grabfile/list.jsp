@@ -816,7 +816,7 @@ function successCallback(id){
 			                    		 if(null==updatetime || ""==updatetime){
 			                    			 return "";
 			                    		 }
-			                    		return updatetime;
+			                    		return updatetime.substring(0,updatetime.lastIndexOf(' '));
 			                        } 	
 			                    },
 			                    {"data": "filesize", "bSortable": false,"sWidth": "13%",

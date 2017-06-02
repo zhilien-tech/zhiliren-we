@@ -27,6 +27,12 @@ public class HtmlToPdf {
 
 		StringBuilder cmd = new StringBuilder();
 		cmd.append(toPdfTool);
+		/*	cmd.append(" ");
+			cmd.append("--minimum-font-size 38 ");
+			cmd.append(" ");
+			cmd.append("--zoom 3 ");*/
+		cmd.append(" ");
+		cmd.append("--load-error-handling skip ");
 		cmd.append(" ");
 		cmd.append(srcPath);
 		cmd.append(" ");

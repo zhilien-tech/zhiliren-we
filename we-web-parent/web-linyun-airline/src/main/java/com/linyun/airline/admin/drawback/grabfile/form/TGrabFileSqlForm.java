@@ -91,7 +91,7 @@ public class TGrabFileSqlForm extends DataTablesParamForm {
 			sqlString += " AND ((gr.url NOT like '%.png' and gr.url NOT like '%.jpg' and gr.url NOT like '%.gif' and gr.url NOT like '%.doc' and gr.url NOT like '%.xls') or gr.url is null) ORDER BY gr.updateTime DESC";
 		} else {
 
-			sqlString += " AND ((gr.url NOT like '%.png' and gr.url NOT like '%.jpg' and gr.url NOT like '%.gif' and gr.url NOT like '%.doc' and gr.url NOT like '%.xls') or gr.url is null)";
+			sqlString += " AND ((gr.url NOT like '%.png' and gr.url NOT like '%.jpg' and gr.url NOT like '%.gif' and gr.url NOT like '%.doc' and gr.url NOT like '%.xls') or gr.url is null) ORDER BY sub+0 ASC";
 		}
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());

@@ -24,7 +24,8 @@ public class HtmlToPdf {
 		StringBuilder cmd = new StringBuilder();
 		cmd.append(toPdfTool);
 		cmd.append(" ");
-		cmd.append("--no-pdf-compression ");
+		/*		cmd.append("--no-pdf-compression ");*/
+		cmd.append("--load-error-handling skip ");
 		cmd.append(" ");
 		cmd.append(srcPath);
 		cmd.append(" ");
