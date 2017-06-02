@@ -15,6 +15,9 @@
 <body class="hold-transition skin-blue sidebar-mini">
 <!--内容-->
   <div class="content-wrapper">
+   <form method="post">
+   		<input type="hidden" id="downloadId" name="id" value="" />
+   </form>
     <!-- Main content -->
     <section class="content">
           <div class="row">
@@ -41,7 +44,7 @@
                      <button type="button" class="btn btn-primary btn-sm right indexBtn none">返回首页</button>
                    </div>
                    <!-- 检索开始 -->
-                   <div class="col-md-2 col-padding marBottom10">
+                   <!-- <div class="col-md-2 col-padding marBottom10">
                    	 	<input id="fileNameId" name="fileName" type="text" onkeypress="onkeyEnter(0);" class="form-control" placeholder="请输入航空公司二字代码"/>
                    </div>
                    <div class="col-md-2 col-padding">
@@ -49,7 +52,7 @@
                    </div>
                    <div class="col-md-3 col-padding">		
                    		<input id="searchBtnId" name="searchBtn" type="button" class="btn btn-primary btn-sm" value="搜索"/>
-                   </div>
+                   </div> -->
                    <!-- 检索结束 -->
                    <input id="currentDirId" type="hidden" value="0"/>
                    <input type="hidden" name="fileName" id="fileName" />
@@ -91,7 +94,7 @@
                      <button type="button" class="btn btn-primary btn-sm right indexBtn none">返回首页</button>
                    </div>
                    <!-- 检索开始 -->
-                   <div class="col-md-2 col-padding marBottom10">
+                   <!-- <div class="col-md-2 col-padding marBottom10">
                    	 	<input id="fileNameIdInter" name="fileName" type="text" onkeypress="onkeyEnter(1);" class="form-control" placeholder="请输入航空公司二字代码"/>
                    </div>
                    <div class="col-md-2 col-padding">
@@ -99,7 +102,7 @@
                    </div>
                    <div class="col-md-3 col-padding">		
                    		<input id="searchBtnIdInter" name="searchBtn" type="button" class="btn btn-primary btn-sm" value="搜索"/>
-                   </div>
+                   </div> -->
                    <!-- 检索结束 -->
                    <!-- 区分当前是哪个切换卡下面的 -->
                    <input type="hidden" name="flagType" value="0" id="flagType">
@@ -625,27 +628,68 @@ $(function() {
 	$("[data-toggle='tooltip']").tooltip();
 });
 
-/* //移动到
-function move(id){
-     layer.open({
-   	    type: 2,
-   	    title:false,
-   	    closeBtn:false,
-   	    fix: false,
-   	    maxmin: false,
-   	    shadeClose: false,
-   	    area: ['800px', '500px'],
-   	    content: '${base}/admin/drawback/grabfile/move.html?id='+id,
-   	    end: function(){//添加完页面点击返回的时候自动加载表格数据
-   	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-   			parent.layer.close(index);
-   	    }
-  	});
-} */
+//移动到
+function move(id,flag){
+	if(2===flag){
+		layer.open({
+	   	    type: 2,
+	   	    title:false,
+	   	    closeBtn:false,
+	   	    fix: false,
+	   	    maxmin: false,
+	   	    shadeClose: false,
+	   	    area: ['800px', '500px'],
+	   	    content: '${base}/admin/drawback/grabfile/move.html?id='+id+'&flag='+flag,
+	   	    end: function(){//添加完页面点击返回的时候自动加载表格数据
+	   	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	   			parent.layer.close(index);
+	   	    }
+	  	});
+	}else if(1===flag){
+		layer.open({
+	   	    type: 2,
+	   	    title:false,
+	   	    closeBtn:false,
+	   	    fix: false,
+	   	    maxmin: false,
+	   	    shadeClose: false,
+	   	    area: ['800px', '500px'],
+	   	    content: '${base}/admin/drawback/grabfile/move.html?id='+id+'&flag='+flag,
+	   	    end: function(){//添加完页面点击返回的时候自动加载表格数据
+	   	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	   			parent.layer.close(index);
+	   	    }
+	  	});
+	}
+     
+}
+//文件下载
+function downLoadZipFile(parentId){
+	$('#downloadId').val(parentId);
+	document.forms[0].action="${base}/admin/drawback/grabfile/downLoadZipFile.html";
+	var index = layer.load(1000, {shade: [0.1,'#fff']});//0.1透明度的白色背景 
+	document.forms[0].submit();
+	layer.close(index);
+	/* var index = layer.load(1, {shade: [0.1,'#fff']});//0.1透明度的白色背景 
+	$.ajax({
+		type : "POST",
+		url : '${base}/admin/drawback/grabfile/downLoadZipFile.html',
+		data : {
+			id : parentId
+		},
+		error : function(request) {
+			layer.msg('下载失败!');
+		},
+		success : function(data) {
+			layer.close(index);
+		    window.parent.successCallback('7');
+		    //parent.location.reload(); // 父页面刷新
+		}
+	}); */
+}
 //邮件抓取入口
 $('#grabMailId').click(function(){
 	$.ajax({
-		cache : false,
 		type : "POST",
 		url : '${base}/admin/drawback/grabfile/grabMail.html',
 		error : function(request) {
@@ -794,14 +838,15 @@ function successCallback(id){
 			                    {"data": "no", "bSortable": false,"sWidth": "12%",
 			                    	render: function(data, type, row, meta) {
 					                	//var editFolder = '<a href="javascript:editFolder('+row.id+');" style="cursor:pointer;">编辑&nbsp;&nbsp;</a>';
-					                	var download = '<a href="${base}/admin/drawback/grabfile/downLoadZipFile.html?parentId='+row.id+'" style="cursor:pointer;">下载&nbsp;&nbsp;</a>';
-					                	//var move  = '<a href="javascript:move('+row.id+');" style="cursor:pointer;">移动到&nbsp;&nbsp;</a>';
+					                	//var download = '<a href="${base}/admin/drawback/grabfile/downLoadZipFile.html?parentId='+row.id+'" style="cursor:pointer;">下载&nbsp;&nbsp;</a>';
+					                	var download = '<a href="javascript:downLoadZipFile('+row.id+');" style="cursor:pointer;">下载&nbsp;&nbsp;</a>';
+					                	var move  = '<a href="javascript:move('+row.id+',2);" style="cursor:pointer;">移动到&nbsp;&nbsp;</a>';
 				                   		if(1==row.status){
 				                   			var judge = '<a href="javascript:physicalDelete('+row.id+',2);" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
 				                   		}else{
 				                   			var judge = '<a href="javascript:physicalDelete('+row.id+',1);" class="btn_mini btn_modify">启用</a>';
 				                   		}
-					                    return download+judge;
+					                    return download+move+judge;
 					                }	
 			                    }
 			            ]
@@ -903,13 +948,13 @@ function successCallback(id){
 			                    	render: function(data, type, row, meta) {
 					                	//var editFolder = '<a href="javascript:editFolder('+row.id+');" style="cursor:pointer;">编辑&nbsp;&nbsp;</a>';
 					                	var download = '<a href="${base}/admin/drawback/grabfile/downLoadZipFile.html?parentId='+row.id+'" style="cursor:pointer;">下载&nbsp;&nbsp;</a>';
-					                	//var move  = '<a href="javascript:move('+row.id+');" style="cursor:pointer;">移动到&nbsp;&nbsp;</a>';
+					                	var move  = '<a href="javascript:move('+row.id+',1);" style="cursor:pointer;">移动到&nbsp;&nbsp;</a>';
 				                   		if(1==row.status){
 				                   			var judge = '<a href="javascript:physicalDelete('+row.id+',2);" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
 				                   		}else{
 				                   			var judge = '<a href="javascript:physicalDelete('+row.id+',1);" class="btn_mini btn_modify">启用</a>';
 				                   		}
-					                    return download+judge;
+					                    return download+move+judge;
 					                }	
 			                    }
 			            ]
@@ -955,7 +1000,6 @@ function successCallback(id){
 	//var clickFlag = 1;
 	function createFodler(pid,filename,filetype,clickFlag,level){
 		if(clickFlag===1 && filetype===2){
-			alert(level);
 			$.ajax({
 				type : "POST",
 				url : '${base}/admin/drawback/grabreport/filePreview.html',

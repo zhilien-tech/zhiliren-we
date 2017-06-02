@@ -103,6 +103,12 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 			dbDao.update(TGrabFileEntity.class, Chain.make("fileName", addForm.getFileName()),
 					Cnd.where("id", "=", pid));
 		}
+		TGrabFileEntity feach = dbDao.fetch(TGrabFileEntity.class, Cnd.where("id", "=", addForm.getPid()));
+		Long parentId = feach.getParentId();
+		if (!Util.isEmpty(parentId)) {
+			dbDao.update(TGrabFileEntity.class, Chain.make("fileName", addForm.getCusgroupnum()),
+					Cnd.where("parentId", "=", parentId));
+		}
 		//double数据四舍五入保留小数点后两位
 		TGrabReportEntity report = new TGrabReportEntity();
 		DecimalFormat df = new DecimalFormat("#.00");
@@ -202,7 +208,11 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		Double taxRebate = Double.parseDouble(df.format(agencyFee * 0.1));//税返点
 		report.setTaxRebate(taxRebate);
 		//总计=票价+刷卡费+税金/杂项+消费税1-代理费1-税返点
-		Double total = ticketPrice + swipe + tax + exciseTax1 - agencyFee - taxRebate;
+		double total = 0;
+		if (!Util.isEmpty(ticketPrice) && !Util.isEmpty(swipe) && !Util.isEmpty(tax) && !Util.isEmpty(exciseTax1)
+				&& !Util.isEmpty(taxRebate)) {
+			total = ticketPrice + swipe + tax + exciseTax1 - agencyFee - taxRebate;
+		}
 		report.setTotal(total);
 		if (!Util.isEmpty(paidUnitPrice) && !Util.isEmpty(peopleNum)) {
 			//4、实收单价(含操作费)=SUM(实收单价)

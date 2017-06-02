@@ -8,7 +8,7 @@ public class HtmlToPdf {
 	private static final String toPdfTool = "C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe";
 
 	public static void main(String[] args) {
-		convert("http://oluwc01ms.bkt.clouddn.com/155fd061-143a-44a7-8c9c-e98f01cff0d5.html", "e:\\14.pdf");
+		convert("C:/Users/Administrator/Desktop/html转换为pdf/bb.html", "F:\\16.pdf");
 	}
 
 	/** 

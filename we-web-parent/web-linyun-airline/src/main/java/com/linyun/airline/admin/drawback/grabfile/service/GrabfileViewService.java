@@ -94,11 +94,17 @@ public class GrabfileViewService extends BaseService<TGrabFileEntity> {
 	}
 
 	//文件移动
-	public Object getFileId(long id) {
+	public Object getFileId(long id, int flag) {
 		HashMap<Object, Object> obj = Maps.newHashMap();
-		List<TGrabFileEntity> allModule = dbDao.query(TGrabFileEntity.class, null, null);
+		List<TGrabFileEntity> allModule = null;
+		if (1 == flag) {
+			allModule = dbDao.query(TGrabFileEntity.class, Cnd.where("groupType", "=", flag), null);
+		} else if (2 == flag) {
+			allModule = dbDao.query(TGrabFileEntity.class, Cnd.where("groupType", "=", flag), null);
+		}
 		obj.put("list", allModule);
 		obj.put("parentId", id);
+		obj.put("flag", flag);
 		return obj;
 	}
 

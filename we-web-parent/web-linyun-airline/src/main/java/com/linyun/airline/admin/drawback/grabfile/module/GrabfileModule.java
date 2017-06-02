@@ -3,6 +3,7 @@ package com.linyun.airline.admin.drawback.grabfile.module;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.linyun.airline.admin.drawback.grabfile.entity.TGrabFileEntity;
 import com.linyun.airline.admin.drawback.grabfile.enums.FileTypeEnum;
 import com.linyun.airline.admin.drawback.grabfile.form.TGrabFileAddForm;
@@ -108,7 +110,8 @@ public class GrabfileModule {
 	 * @throws Exception 
 	 */
 	@At
-	public void downLoadZipFile(@Param("parentId") long id, HttpServletResponse response, HttpServletRequest request)
+	@POST
+	public void downLoadZipFile(@Param("id") long id, HttpServletResponse response, HttpServletRequest request)
 			throws Exception {
 		grabfileViewService.downLoadZipFiles(id, request, response);
 	}
@@ -220,8 +223,8 @@ public class GrabfileModule {
 	@At
 	@GET
 	@Ok("jsp")
-	public Object move(@Param("id") final long id) {
-		return grabfileViewService.getFileId(id);
+	public Object move(@Param("id") final long id, @Param("flag") final int flag) {
+		return grabfileViewService.getFileId(id, flag);
 	}
 
 	/**
@@ -229,9 +232,20 @@ public class GrabfileModule {
 	 */
 	@At
 	@POST
-	public Object fileMove(@Param("id") final long id, @Param("parentId") final long parentId) {
+	public Object fileMove(@Param("id") final long id, @Param("parentId") final long parentId,
+			@Param("flag") final int flag) {
 		//将文件移动到新目录
-		return dbDao.update(TGrabFileEntity.class, Chain.make("parentId", id), Cnd.where("id", "=", parentId));
+		Map<String, Object> obj = Maps.newHashMap();
+		int update = 0;
+		if (1 == flag) {
+			update = dbDao.update(TGrabFileEntity.class, Chain.make("parentId", id), Cnd.where("id", "=", parentId)
+					.and("groupType", "=", flag));
+		} else if (2 == flag) {
+			update = dbDao.update(TGrabFileEntity.class, Chain.make("parentId", id), Cnd.where("id", "=", parentId)
+					.and("groupType", "=", flag));
+		}
+		obj.put("update", update);
+		return obj;
 	}
 
 	//邮件抓取按钮

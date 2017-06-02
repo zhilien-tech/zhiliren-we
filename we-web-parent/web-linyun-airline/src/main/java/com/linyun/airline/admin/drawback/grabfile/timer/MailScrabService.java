@@ -240,26 +240,23 @@ public class MailScrabService extends BaseService {
 		}
 		// 解析所有邮件  
 		for (int i = 0, count = messages.length; i < count; i++) {
-			if (i > 500) {
+			//解决Folder is not open异常
+			if (!messages[i].getFolder().isOpen()) {
 
-				//解决Folder is not open异常
-				if (!messages[i].getFolder().isOpen()) {
+				messages[i].getFolder().open(Folder.READ_WRITE); //如果close，就重新open    
+			} //判断是否open  
+			MimeMessage msg = (MimeMessage) messages[i];
 
-					messages[i].getFolder().open(Folder.READ_WRITE); //如果close，就重新open    
-				} //判断是否open  
-				MimeMessage msg = (MimeMessage) messages[i];
+			try {
+				eachHandler(msg, userTeam);
+			} catch (Exception e) {
 
-				try {
-					eachHandler(msg, userTeam);
-				} catch (Exception e) {
+				e.printStackTrace();
 
-					e.printStackTrace();
-
-				}
-				boolean isRead = isRead(msg);
-				if (isRead) {
-					continue;
-				}
+			}
+			boolean isRead = isRead(msg);
+			if (isRead) {
+				continue;
 			}
 		}
 	}
