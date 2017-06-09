@@ -24,25 +24,28 @@
             	<form id="addPnrForm">
             	<input id="id" name="id" type="hidden" value="${obj.pnrinfo.id }" >
             	<input id="needid" name="needid" type="hidden" value="${obj.pnrinfo.needid }" >
-				<table class="PNRtable">
-					<tr>
-                    <td>类型：</td>
+                <%-- <table class="PNRtable">
+                  <tr>
+                    <td>PNR：</td>
+                    <td><input id="pnr" name="pnr" type="text" class="form-control input-sm PNRlength" value="${obj.pnrinfo.PNR }"></td>
+                    <td>登录帐号：</td>
                     <td>
-                    	<select id="" name="" class="form-control input-sm">
+                    	<select id="loginid" name="loginid" class="form-control input-sm">
                     		<option value="">请选择</option>
-							<option value="">散</option>
-							<option value="">团</option>
+                    		<c:forEach items="${obj.loginselect }" var="one">
+	                    		<c:choose>
+	                        		<c:when test="${obj.pnrinfo.loginid eq one.id}">
+	                        			<option value="${one.id }" selected="selected">${one.loginNumName }</option>
+	                        		</c:when>
+	                        		<c:otherwise>
+			                    		<option value="${one.id }">${one.loginNumName }</option>
+	                        		</c:otherwise>
+	                        	</c:choose>
+	                    	</c:forEach>
                     	</select>
                     </td>
-                    <td>内陆跨海：</td>
-                    <td>
-                      <select id=" " name=" " class="form-control input-sm">
-                        <option value="">请选择</option>
-                        <option value="">跨海</option>
-                        <option value="">新西兰跨海</option>
-                        <option value="">澳洲内陆</option>
-                      </select>
-                    </td>
+                    <td>人数：</td>
+                    <td><input id="peoplecount" name="peoplecount" type="text" class="form-control input-sm mustNumber" value="${obj.pnrinfo.peoplecount }"></td></td>
                     <td>币种：</td>
                     <td>
                       <select id="currency" name="currency" class="form-control input-sm">
@@ -59,35 +62,21 @@
                      	</c:forEach>
                       </select>
                     </td>
-                    <td>付款方式：</td>
-                    <td>
-                      <select id=" " name=" " class="form-control input-sm">
-                        <option value="">请选择</option>
-                        <option value="">第三方支付</option>
-                      </select>
-                    </td>
                   </tr>
                   <tr>
-                    <td>PNR：</td>
-                    <td><input id="pNR" name="pNR" type="text" class="form-control input-sm PNRlength" value="${obj.pnrinfo.PNR }"></td>
-                    <td>登录账号：</td>
-                    <td>
-                      <select id="loginid" name="loginid" class="form-control input-sm">
-                    		<option value="">请选择</option>
-                    		<c:forEach items="${obj.loginselect }" var="one">
-	                    		<c:choose>
-	                        		<c:when test="${obj.pnrinfo.loginid eq one.id}">
-	                        			<option value="${one.id }" selected="selected">${one.loginNumName }</option>
-	                        		</c:when>
-	                        		<c:otherwise>
-			                    		<option value="${one.id }">${one.loginNumName }</option>
-	                        		</c:otherwise>
-	                        	</c:choose>
-	                    	</c:forEach>
-                      </select> 
-                    </td>
+                    <td>成本单价：</td>
+                    <td><input id="costprice" name="costprice" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.costprice }" pattern="0.00" maxFractionDigits="2"/>"></td>
+                    <td>成本总价：</td>
+                    <td><input id="costpricesum" name="costpricesum" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.costpricesum }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
+                    <td>销售单价：</td>
+                    <td><input id="salesprice" name="salesprice" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.salesprice }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
+                    <td>销售总价：</td>
+                    <td><input id="salespricesum" name="salespricesum" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.salespricesum }" pattern="0.00" maxFractionDigits="2"/>"></td></td>
                   </tr>
-                  <%-- <tr>
+                </table> --%>
+                
+				<table class="PNRtable">
+                  <tr>
                     <td>PNR：</td>
                     <td><input id="pNR" name="pNR" type="text" class="form-control input-sm PNRlength" value="${obj.pnrinfo.PNR }"></td>
                     <td>登录帐号：</td>
@@ -125,7 +114,7 @@
                     <td><input id="averagerate" name="averagerate" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.averagerate }"></td>
                     <td>实时汇率：</td>
                     <td><input id="currentrate" name="currentrate" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.currentrate }"></td>
-                  </tr> --%>
+                  </tr>
                   <tr class="priceinfo">
                   	<td>成人数：</td>
                     <td><input id="adultcount" name="adultcount" type="text" class="form-control input-sm mustNumber peoplecount autojisuan" value="${obj.pnrinfo.adultcount }"></td>
@@ -165,12 +154,12 @@
                   <tr>
                   	<td> </td>
                     <td> </td>
-                    <td>平均汇率：</td>
-                    <td><input id="averagerate" name="averagerate" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.averagerate }"></td>
+                    <td> </td>
+                    <td> </td>
                     <td>成本合计：</td>
                     <td><input id="costpricesum" name="costpricesum" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.costpricesum }" pattern="0.00" maxFractionDigits="2"/>"></td>
-                    <td>实时汇率：</td>
-                    <td><input id="currentrate" name="currentrate" type="text" class="form-control input-sm mustNumberPoint" value="${obj.pnrinfo.currentrate }"></td>
+                    <td> </td>
+                    <td> </td>
                     <td>销售合计：</td>
                     <td><input id="salespricesum" name="salespricesum" type="text" class="form-control input-sm mustNumberPoint" value="<fmt:formatNumber type="number" value="${obj.pnrinfo.salespricesum }" pattern="0.00" maxFractionDigits="2"/>"></td>
                   </tr>
