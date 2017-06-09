@@ -54,7 +54,6 @@
                         	</c:choose>
                      	</c:forEach>
                       </select>
-                      </select>
                     </td>
                     <td>平均汇率：</td>
                     <td><input disabled="disabled" type="text" class="form-control input-sm mustNumber" value="${obj.pnrinfo.averagerate }"></td>
