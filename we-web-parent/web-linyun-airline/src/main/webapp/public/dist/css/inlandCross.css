@@ -55,7 +55,17 @@ table.dataTable thead .sorting:after{display: none;}
 .nav-tabs-custom > .tab-content {padding: 0 0px;}
 .receivePay{position: relative;right: 10px;}
 #receivablesTable{margin-top: 10px;}
-a#fileName {display: inline-block;max-width:115px;overflow-x: hidden;text-overflow: ellipsis;white-space: nowrap;}
+.selectTable{width: 100%;}
+.selectTable tbody tr td:nth-child(odd){text-align: right;}
+.selectTable tbody tr td:nth-child(1){width:45px;}
+.selectTable tbody tr td:nth-child(2){width:150px;}
+.selectTable tbody tr td:nth-child(3){width:95px;}
+.selectTable tbody tr td:nth-child(4){width:20%;}
+.selectTable tbody tr td:nth-child(5){width:50px;}
+.selectTable tbody tr td:nth-child(6){width:240px;}
+.selectTable tbody tr td:nth-child(7){width:50px;}
+.selectTable tbody tr td:nth-child(odd) label{position: relative;top: 3px;}
+a#fileName {display: inline-block;max-width:135px;overflow-x: hidden;text-overflow: ellipsis;white-space: nowrap;}
 .bankSlipBtn{margin-top: 20px;}
 .bankSlipImg{background-color: rgba(238, 238, 238, 0.26);width: 100%;min-height: 200px;margin-top: 10px;border: solid 1px rgba(204, 204, 204, 0.41);border-radius: 3px;}
 .selectTableTr td{padding-top: 10px;}
@@ -76,84 +86,17 @@ table.dataTable thead > tr > th {padding-right: 5px;}
 #drawerPayTable tbody tr td ul{padding-left: 0;margin-bottom: 0;}
 table.dataTable thead .sorting_desc:after {display: none;}
 #drawerPayTable tbody tr td:nth-child(1) input{display: block;}
-/*----出票 付款----*/
+/*出票 付款*/
 #payTable tbody tr td ul li{list-style: none;border-bottom: solid 2px #f4f4f4;}
 #payTable tbody tr td ul{padding-left: 0;margin-bottom:0;}
 #payTable tbody tr td ul li:last-child{border-bottom: 0;}
 #payTable tbody tr .sorting_1 ul li{height: 22px;padding-top: 4px;}
-              /*弹框style*/
-.bankDiv{width:70%;}
-.bankTable tbody tr td .form-control{margin-bottom:10px;}
-.bankTable tbody tr td:nth-child(odd){text-align: right;}
-.bankTable tbody tr td:nth-child(odd) label{position: relative;top: -2px;}
-.bankTable tbody tr td:nth-child(1){width:65px;}
-.bankTable tbody tr td:nth-child(2){width:120px;}
-.bankTable tbody tr td:nth-child(3){width:85px;}
-.bankTable tbody tr td:nth-child(4){width:120px;}
-.bankTable tbody tr td:nth-child(5){width:85px;}
-.bankTable tbody tr td:nth-child(6){width:120px;}
-.bankTable tbody tr td:nth-child(7){width:64px;}
-.bankTable tbody tr td:nth-child(9){width:85px;}
-.bankTable2 tbody tr td:nth-child(7){width:73px;}
-.jiaHaoBtn{margin: 0 15px;float: left;position: relative;top: -5px;}
-.BJselectWid{width:120px;}
-.BJinputWid{ margin-left: 10px;width: 126.5px;}
-.total{width: 100px;position: absolute;top: 110px;right: 90px;}
-#bankcardid,#bankcardname,#bankcardnum,.BJselectWid{padding-left:3px;padding-right:3px;}
-.remTd .removIcon{float: left;position: relative;top: -5px;left: 39px;}
 /*---收/付款 付款---*/
 #shouFuKuanGatheringTable tbody tr td ul li{list-style: none;border-bottom: solid 1px #f4f4f4;}
 #shouFuKuanGatheringTable tbody tr td ul{padding-left: 0;margin-bottom:0;}
 #shouFuKuanGatheringTable tbody tr td ul li:last-child{border-bottom: 0;}
 #shouFuKuanPayTable tbody tr td:nth-child(7) span{width:70px;display: block; word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 auto;}
 #shouFuKuanPayTable tbody tr td:nth-child(8) span{width:70px;display: block; word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin: 0 auto;}
-.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{color: #3b8cbc !important;}
-[data-toggle="tab"]{color: #b9b9b9 !important;}
-.piaoKuanInfo{box-shadow: 0 2px 3px rgba(255, 255, 255, 0.125);height: 620px;}
-.piaoKuanInfo .modal-header{border-bottom: 0px;}
-.piaoKuanInfo form .modal-body{padding-top:5px;height: 561px;overflow-y: auto;margin-top: -15px;}
-.piaoKuanInfo form .modal-body .tab-content .tab-pane{margin-left: 0px;margin-top: 0px;}
-.faPiaoInfo{margin-top: 10px;width: 100%;}
-.faPiaoInfo tr td:nth-child(odd) label{position: relative;top:2px;text-align: right;width: 100%;}
-.faPiaoInfo tr td{padding-bottom:12px;}
-.faPiaoInfo tr td:nth-child(1){width:91px;}
-.faPiaoInfo tr td:nth-child(2){width:128px;}
-.faPiaoInfo tr td:nth-child(3){width:85px;}
-.faPiaoInfo tr td:nth-child(4){width:128px;}
-.faPiaoInfo tr td:nth-child(5){width:70px;}
-.faPiaoInfo tr td:nth-child(6){width:128px;}
-.faPiaoInfo tr td:nth-child(7){width:50px;}
-.faPiaoInfo tr td:nth-child(8){padding-top: 5px;}
-.faPiaoInfo tr td:nth-child(9){width:40px;}
-.faPiaoInfo tr td:nth-child(9) input{float:right;position: relative;top: -2px;}
-.faPiaoInfo tr td:nth-child(10){padding-top: 5px;}
-.TableBeizhu{position: relative;margin-top: -50px;}
-.Table2{width:100%;}
-.Table2 tr td{padding-bottom:12px;}
-.Table2 tr td label{float:right;}
-.Table2 tr td:nth-child(1){width:91px;}
-.Table2 tr td:nth-child(2){width:128px;}
-.Table2 tr td:nth-child(3){width:85px;}
-.Table2 tr td:nth-child(4){width:128px;}
-.Table2 tr td:nth-child(5){width:70px;}
-.Table2 tr td:nth-child(6){width:128px;}
-.faPiaoInfo-div{border-top: solid 2px #dcdcdd;padding-top: 20px;margin-top: 10px;}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*开发票 弹框*/
 .invoiceInfo-header{width: 100%;display: inline-block;border-bottom: solid 1px #e5e5e5;padding-bottom: 16px;padding-top: 10px;padding-left: 20px;font-size: 17px;}
 .invoiceH4{font-size: 17px !important;}
@@ -184,8 +127,8 @@ table.dataTable thead .sorting_desc:after {display: none;}
 .cloTable tbody tr td:nth-child(4) .select2{width:100px !important;}
 .cloTable tbody tr td:nth-child(8) input{width:65px;}
 .cloTable tbody tr td:nth-child(10){width:65px;}
-.table1 tbody tr td:nth-child(2){width:128px;}
-.table1 tbody tr td:nth-child(4){width: 128px;}
+.table1 tbody tr td:nth-child(2){width:100px;}
+.table1 tbody tr td:nth-child(4){width: 100px;}
 .table1 tbody tr td:nth-child(8) input{width:65px;}
 .table1 tbody tr td:nth-child(10){width:65px;}
 .addOrderKHXQ a.addDemand{left: 920px;padding: 3px 7px;margin-bottom: 7px;}
@@ -224,4 +167,4 @@ input#address {width: 100% !important;}
 #shouInvoiceTable tbody tr td:nth-child(11) span{display: block;width:80px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0 auto;}
 #drawerPayTable tbody tr td span {display: block;width:70px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin: 0 auto;}
 /*发票管理 style*/
-#borrowInvoiceId,#borrowInvoice{position: relative;top: 2px;right: 3px;height: 14px;width: 14px;}
+#borrowInvoiceId,#borrowInvoice{position: relative;top: 2px;right: 3px;}

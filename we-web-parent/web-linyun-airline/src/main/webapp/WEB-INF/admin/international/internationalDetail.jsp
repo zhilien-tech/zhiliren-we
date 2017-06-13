@@ -1109,7 +1109,7 @@
    	 		incometotal = yingshou;
    	 	}
    	 	if(!isNaN(incometotal)){
-   		 	$('#incometotal').val(incometotal.toFixed(2));
+   		 	$('#incometotal').val(incometotal.toFixed(0));
    	 	}
    	 });
     //自动加载利润合计
@@ -1159,7 +1159,7 @@
       	 		incometotal = receivable;
       	 	}
       	 	if(!isNaN(incometotal)){
-  		 		$('#incometotal').val(incometotal);
+  		 		$('#incometotal').val(incometotal.toFixed(0));
       	 	}
       	 	var returntotal = 0;
 	       	//应返合计
