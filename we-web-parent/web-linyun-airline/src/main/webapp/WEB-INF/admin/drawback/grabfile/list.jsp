@@ -489,7 +489,6 @@ $(document).on('click', '.checkchildTeam', function(e) {
     				    parent.layer.close(index);
     				}
     			});
-    			
     			var innerHtml = "";
                 if (response) {
                     innerHtml = "<div><a id='downloadA' href='#' download='"+file.name+"' onclick='downloadFile("
@@ -595,9 +594,7 @@ function batchDeleteFit(){
 }
 //团队批量删除
 function batchDeleteTeam(){
-
 	var ids = $('#checkedboxvalTeam').val();
-
 	var length = $(".checkchildTeam:checked").length;
 	if(!ids){
 		layer.msg("请至少选中一条记录","", 1000);
@@ -627,7 +624,6 @@ function batchDeleteTeam(){
 $(function() {
 	$("[data-toggle='tooltip']").tooltip();
 });
-
 //移动到
 function move(id,flag){
 	if(2===flag){
