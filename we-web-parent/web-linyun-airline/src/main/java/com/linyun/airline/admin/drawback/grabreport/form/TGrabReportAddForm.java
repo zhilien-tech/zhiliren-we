@@ -101,4 +101,10 @@ public class TGrabReportAddForm extends AddForm implements Serializable {
 
 	/**pnr系统关联id*/
 	private Integer pnrRelationId;
+
+	/**父id*/
+	private Integer pid;
+
+	/**客户团号*/
+	private String cusgroupnum;
 }

@@ -28,6 +28,8 @@
 	            <h4>附件预览</h4>
           	</div>
          <form id="addForm" method="post">
+         <input type="hidden" name="pid" value="${obj.pid }" id="pid">
+          	<input type="hidden" id="cusgroupnumId" name="cusgroupnum" value="" />
           	<div class="modal-body modal-bod" style="height:632px;overflow-y:auto; ">
           	  <input type="hidden" name="flagType" value="${obj.flagType }" id="flagType">
           	  <input type="hidden" name="orderId" value="" id="orderId">
@@ -57,7 +59,6 @@
 				<script type="text/javascript">
 					function setPNRINfo() {
 						var _selectedAreaIds = $("#pnrInfoSelect").select2("val");
-						
 						$("#pnrInfoId").val(_selectedAreaIds);
 					}
 				</script>
@@ -175,7 +176,7 @@
                   </div>
                 </div>
          	  </div><!--end 刷卡费/汇款金额/代理返点-->
-         	  <input type="hidden" name="pid" value="${obj.pid }" id="pid">
+         	  
          	  <table id="PnrShowTable" class="table table-bordered table-hover">
                 <thead>
                   <tr>
@@ -379,6 +380,7 @@ var empTable;
 	                    {"data": "cusgroupnum", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
 	                    		var depositBalance = row.cusgroupnum;
+	                    		$("#cusgroupnumId").val(depositBalance);
 	                    		if(null==depositBalance || ""==depositBalance){
 	                    			return "";
 	                    		}
@@ -531,6 +533,7 @@ $("#pnrInfoSelect").select2({
 		var pid=$("#pid").val();
 		var flagType=$("#flagType").val();
 		var text=repo.text;
+		$("#fileNameId").val(text+".pdf");//输入pnr时文件名也要跟着改变,此出是将pnr的值赋给文件名
 		$.ajax({
 			type : "POST",
 			url : '${base}/admin/drawback/grabreport/findAndShowPNR.html',
@@ -586,8 +589,6 @@ $("#pnrInfoSelect").select2({
 		});
 		
 }
-
-
 </script>
 </body>
 </html>

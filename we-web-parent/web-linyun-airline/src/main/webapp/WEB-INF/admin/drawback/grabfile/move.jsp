@@ -34,6 +34,7 @@
           </div>
           <div class="modal-body">
             <div class="moveDiv">
+            <input type="hidden" name="flag" value="${obj.flag }" id="flag">
                 <div id="fileName" class="moveCentent">
 	                <div id="tree_fileName" class="ztree">
 	                	<input type="hidden" id="ztreeids"/> 
@@ -50,8 +51,8 @@ $(document).ready(function () {
     var zTreeObj = $.fn.zTree.getZTreeObj("tree_fileName");
    	var parentId = "${obj.parentId}";
    	var toBeDeleteNode =  zTreeObj.getNodeByParam("id", parentId, null);
-   	zTreeObj.removeChildNodes(toBeDeleteNode);//移出选中节点下面的子节点
-   	zTreeObj.removeNode(toBeDeleteNode);//移出选出的本身节点
+   	//zTreeObj.removeChildNodes(toBeDeleteNode);//移出选中节点下面的子节点
+   	//zTreeObj.removeNode(toBeDeleteNode);//移出选出的本身节点
    	
 });
 //ztree配置
@@ -85,6 +86,7 @@ function zTreeOnClick(event,treeId,treeNode){
     $("#submit").click(function(){
     	var _parentId = "${obj.parentId}";//要被移动文件id
     	var _id = treeNode.id;//目标文件id
+    	var flag=$("#flag").val();
     	layer.confirm("确定要移动吗?", {
     	    btn: ["是","否"], //按钮
     	    shade: false //不显示遮罩
@@ -95,7 +97,8 @@ function zTreeOnClick(event,treeId,treeNode){
     	           url:'${base}/admin/drawback/grabfile/fileMove.html',
     	           data:{
     					id:_id,
-    					parentId:_parentId
+    					parentId:_parentId,
+    					flag:flag
     			   },
     	           error: function(request) {
     	              layer.msg('添加失败!');
