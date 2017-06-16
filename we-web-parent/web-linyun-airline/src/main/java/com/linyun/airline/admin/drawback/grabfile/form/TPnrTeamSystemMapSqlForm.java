@@ -1,3 +1,9 @@
+/**
+ * TPnrTeamSystemMapSqlForm.java
+ * com.linyun.airline.admin.drawback.grabfile.form
+ * Copyright (c) 2017, 北京科技有限公司版权所有.
+*/
+
 package com.linyun.airline.admin.drawback.grabfile.form;
 
 import java.util.Date;
@@ -14,9 +20,14 @@ import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.web.form.DataTablesParamForm;
 
+/**
+ * 团队附件列表展示sql
+ * @author   崔建斌
+ * @Date	 2017年6月15日 	 
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class TPnrSystemMapSqlForm extends DataTablesParamForm {
+public class TPnrTeamSystemMapSqlForm extends DataTablesParamForm {
 	/**主键*/
 	private Integer id;
 
@@ -53,9 +64,7 @@ public class TPnrSystemMapSqlForm extends DataTablesParamForm {
 		 * 默认使用了当前form关联entity的单表查询sql,如果是多表复杂sql，
 		 * 请使用sqlManager获取自定义的sql，并设置查询条件
 		 */
-		//String sqlString = EntityUtil.entityCndSql(TGrabReportEntity.class);
-		//String sqlString = sqlManager.get("grab_report_findPnrSystemMap");
-		String sqlString = sqlManager.get("grab_report_listPnrSystemMap_data");
+		String sqlString = sqlManager.get("grab_report_listPnrSystemMap_team_data");
 		Sql sql = Sqls.create(sqlString);
 		sql.setCondition(cnd());
 		return sql;
@@ -63,7 +72,7 @@ public class TPnrSystemMapSqlForm extends DataTablesParamForm {
 
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
-		cnd.and("uo.orderstype", "=", OrderTypeEnum.FIT.intKey());
+		cnd.and("uo.orderstype", "=", OrderTypeEnum.TEAM.intKey());
 		if (!Util.isEmpty(PNR)) {
 			cnd.and("p.PNR", "=", this.PNR);
 		} else {

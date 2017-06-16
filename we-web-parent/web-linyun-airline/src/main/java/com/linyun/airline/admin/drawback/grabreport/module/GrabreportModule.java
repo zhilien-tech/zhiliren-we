@@ -10,6 +10,7 @@ import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
 import com.linyun.airline.admin.drawback.grabfile.form.TPnrSystemMapSqlForm;
+import com.linyun.airline.admin.drawback.grabfile.form.TPnrTeamSystemMapSqlForm;
 import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportAddForm;
 import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportSqlForm;
 import com.linyun.airline.admin.drawback.grabreport.form.TGrabReportUpdateForm;
@@ -55,12 +56,31 @@ public class GrabreportModule {
 	}
 
 	/**
+	 * 跳转到团队'添加操作'的录入数据页面
+	 */
+	@At
+	@GET
+	@Ok("jsp")
+	public Object interFilePreview(@Param("id") long pid, @Param("flagType") long flagType) {
+		return grabreportViewService.addFilePreview(pid, flagType);
+	}
+
+	/**
 	 * 添加
 	 */
 	@At
 	@POST
 	public Object add(@Param("..") TGrabReportAddForm addForm, @Param("id") long pid) {
 		return grabreportViewService.saveFilePreview(addForm, pid);
+	}
+
+	/**
+	 * 添加
+	 */
+	@At
+	@POST
+	public Object addTeamData(@Param("..") TGrabReportAddForm addForm, @Param("id") long pid) {
+		return grabreportViewService.saveFileTeamPreview(addForm, pid);
 	}
 
 	/**
@@ -125,11 +145,20 @@ public class GrabreportModule {
 	}
 
 	/***
-	 * 附件预览表的展示
+	 * 散客附件预览表的展示
 	 */
 
 	@At
 	public Object listPnrSystem(@Param("..") final TPnrSystemMapSqlForm sqlForm) {
+		return grabreportViewService.listPage4Datatables(sqlForm);
+	}
+
+	/***
+	 * 团队附件预览表的展示
+	 */
+
+	@At
+	public Object teamListPnrSystem(@Param("..") final TPnrTeamSystemMapSqlForm sqlForm) {
 		return grabreportViewService.listPage4Datatables(sqlForm);
 	}
 
