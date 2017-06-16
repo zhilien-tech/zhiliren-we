@@ -45,8 +45,72 @@ LEFT JOIN t_pay_receive_record prr on prr.id=psm.payReceiveRecordId
 LEFT JOIN t_pnr_info pi on pi.id=psm.pnrId
 LEFT JOIN t_grab_file gf on gf.id=psm.grabFileId
 $condition
-/*grab_report_addPnrSystemMap_Inter*/
 
+/*grab_report_listPnrSystemMap_data*/
+SELECT
+	psm.id,
+	uo.ordersnum,
+	f.cusgroupnum,
+	p.PNR,
+	psm.fileName,
+	p.peoplecount,
+	p.costprice,
+	f.enterstarttime,
+	f.outstarttime,
+	uo.ordersstatus,
+	uo.orderstype,
+	psm.relationStatus,
+	psm.orderId,
+	psm.pnrId,
+	psm.financeId,
+	psm.grabFileId,
+	psm.payReceiveRecordId,
+	psm.airCode,
+	psm.createTime,
+	psm.updateTime,
+	psm.remark,
+	psm.type,
+	psm.def4,
+	psm.def5
+FROM
+	t_pnr_system_map psm
+LEFT JOIN t_up_order uo ON uo.id = psm.orderId
+LEFT JOIN t_finance_info f ON f.orderid = uo.id
+LEFT JOIN t_pnr_info p ON psm.pnrId = p.id
+LEFT JOIN t_grab_file gf ON gf.id = psm.grabFileId
+$condition
+/*grab_report_listPnrSystemMap_team_data*/
+SELECT
+	uo.ordersnum,
+	f.cusgroupnum,
+	p.PNR,
+	rr.actualnumber,
+	p.costprice,
+	uo.interOrderStatus,
+	psm.id,
+	psm.orderId,
+	psm.pnrId,
+	psm.financeId,
+	psm.grabFileId,
+	psm.payReceiveRecordId,
+	psm.fileName,
+	psm.airCode,
+	psm.relationStatus,
+	psm.createTime,
+	psm.updateTime,
+	psm.remark,
+	psm.type,
+	psm.def4,
+	psm.def5
+FROM
+	t_pnr_system_map psm
+LEFT JOIN t_pnr_info p ON psm.pnrId = p.id
+LEFT JOIN t_up_order uo ON uo.id = p.orderid
+LEFT JOIN t_finance_info f ON f.orderid = uo.id
+LEFT JOIN t_pay_receive_record rr ON rr.orderid = uo.id
+LEFT JOIN t_grab_file gf ON psm.grabFileId = gf.id
+$condition
+/*grab_report_addPnrSystemMap_Inter*/
 SELECT
 	uo.id AS 'orderId',
 	fi.id AS 'financeId',
