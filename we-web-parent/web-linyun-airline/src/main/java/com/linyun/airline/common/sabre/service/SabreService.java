@@ -1,6 +1,7 @@
 package com.linyun.airline.common.sabre.service;
 
 import com.linyun.airline.common.sabre.dto.SabreResponse;
+import com.linyun.airline.common.sabre.form.BargainFinderMaxSearchForm;
 import com.linyun.airline.common.sabre.form.InstaFlightsSearchForm;
 
 /**
@@ -12,8 +13,13 @@ import com.linyun.airline.common.sabre.form.InstaFlightsSearchForm;
 public interface SabreService {
 
 	/***
-	 * Sabre接口查询机票
+	 * instalFlight search
 	 */
 	public SabreResponse instaFlightsSearch(InstaFlightsSearchForm paramForm);
+
+	/**
+	 * BargainFinderMax search
+	 */
+	public SabreResponse bargainFinderMaxSearch(BargainFinderMaxSearchForm paramForm);
 
 }

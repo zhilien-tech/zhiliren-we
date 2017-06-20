@@ -262,6 +262,176 @@ public class GrabreportViewService extends BaseService<TGrabReportEntity> {
 		return insertData;
 	}
 
+	/**
+	 * 保存团队报表数据
+	 * @param addForm
+	 * @param pid
+	 */
+	public Object saveFileTeamPreview(TGrabReportAddForm addForm, long pid) {
+		//查询之前文件名是什么,修改后进行保存
+		TGrabFileEntity oneFileNameBefore = dbDao.fetch(TGrabFileEntity.class, pid);
+		String beforeFileName = oneFileNameBefore.getFileName();
+		Integer fileType = oneFileNameBefore.getType();
+		//欲更新为
+		if (!Util.isEmpty(beforeFileName) && fileType.equals(FileTypeEnum.FILE.intKey())) {
+			dbDao.update(TGrabFileEntity.class, Chain.make("fileName", addForm.getFileName()),
+					Cnd.where("id", "=", pid));
+		}
+		//判断客户团号是否已经存在
+		TGrabFileEntity cusgroupnum = dbDao.fetch(TGrabFileEntity.class,
+				Cnd.where("fileName", "=", addForm.getCusgroupnum()));
+		if (Util.isEmpty(cusgroupnum)) {
+			TGrabFileEntity feach = dbDao.fetch(TGrabFileEntity.class, Cnd.where("id", "=", addForm.getPid()));
+			Long parentId = feach.getParentId();
+			if (!Util.isEmpty(parentId)) {
+				dbDao.update(TGrabFileEntity.class, Chain.make("fileName", addForm.getCusgroupnum()),
+						Cnd.where("id", "=", parentId));
+			}
+		} else {
+			dbDao.update(TGrabFileEntity.class, Chain.make("parentId", cusgroupnum.getId()), Cnd.where("id", "=", pid));
+			setParentsFileSize(cusgroupnum.getId(), oneFileNameBefore.getFileSize());
+			subParentsFileSize(oneFileNameBefore.getParentId(), oneFileNameBefore.getFileSize());
+			/*****
+			 * 抓取完邮件之后删除一些创建的空的文件夹
+			 */
+			String sqlString = sqlManager.get("grab_report_delete_empty");
+			Sql sql = Sqls.create(sqlString);
+			dbDao.execute(sql);
+		}
+
+		//double数据四舍五入保留小数点后两位
+		TGrabReportEntity report = new TGrabReportEntity();
+		DecimalFormat df = new DecimalFormat("#.00");
+		String PNR = addForm.getPNR();//得到pnrid
+		report.setPNR(PNR);//PNR
+		TPnrInfoEntity fetch = dbDao.fetch(TPnrInfoEntity.class, Cnd.where("PNR", "=", PNR));
+		Integer pnrId = fetch.getId();//得到pnrid
+		Integer orderId = fetch.getOrderid();
+		/*Sql sql = Sqls.create(sqlManager.get("grab_report_list"));
+		sql.params().set("pnr", pnr);
+		TReportDto fetchPnr = DbSqlUtil.fetchEntity(dbDao, TReportDto.class, sql);*/
+		Integer peopleNum = addForm.getPeopleNum();//人数
+		Double costUnitPrice = addForm.getCostUnitPrice();//成本单价
+		Double paidUnitPrice = addForm.getPaidUnitPrice();//实收单价(销售价)
+		Double exciseTax1 = addForm.getExciseTax1();//消费税1
+		Integer backStatus = addForm.getBackStatus();//退税状态
+		String inAustralianTime = addForm.getInAustralianTime();//入澳时间
+		String outAustralianTime = addForm.getOutAustralianTime();//出澳时间
+		Double swipe = addForm.getSwipe();//刷卡费
+		Double remit = addForm.getRemit();//汇款
+		Double tax = addForm.getTax();//税金/杂项
+		String remark = addForm.getRemark();//备注
+
+		report.setPnrInfoId(orderId);//保存订单id
+		report.setPeopleNum(peopleNum);
+		report.setCostUnitPrice(costUnitPrice);
+		report.setPaidUnitPrice(paidUnitPrice);
+		report.setBackStatus(backStatus);//退税状态
+		report.setInAustralianTime(inAustralianTime);//入澳时间
+		report.setOutAustralianTime(outAustralianTime);//出澳时间
+		report.setRemark(remark);//备注
+		DictInfoEntity single = dbDao.fetch(DictInfoEntity.class, Cnd.where("dictCode", "=", addForm.getCurrency()));
+		long dictInfoId = 0;
+		if (!Util.isEmpty(single)) {
+			dictInfoId = single.getId();//得到字典信息id
+			report.setDictInfoId(dictInfoId);//字典信息id
+		}
+		report.setCurrency(addForm.getCurrency());//币种
+		report.setDepositBalance(addForm.getDepositBalance());//备用金余额
+
+		if (!Util.isEmpty(exciseTax1)) {
+			report.setExciseTax1(Double.parseDouble(df.format(exciseTax1)));//消费税
+		} else {
+			report.setExciseTax1(0.0);//页面传过来的值为0时消费税默认给0
+		}
+		if (!Util.isEmpty(swipe)) {
+			report.setSwipe(Double.parseDouble(df.format(swipe)));//刷卡费
+		} else {
+			report.setSwipe(0.0);//页面传过来的值为0时刷卡费默认给0
+		}
+		if (!Util.isEmpty(tax)) {
+			report.setTax(Double.parseDouble(df.format(tax)));//税金/杂项;
+		} else {
+			report.setTax(0.0);//页面传过来的值为0时税金/杂项默认给0
+		}
+		if (!Util.isEmpty(remit)) {
+			report.setRemit(Double.parseDouble(df.format(remit)));//汇款
+		} else {
+			report.setRemit(0.0);//页面传过来的值为0时汇款默认给0
+		}
+		/*List<TGrabReportEntity> reportList = dbDao.query(TGrabReportEntity.class, null, null);
+		TGrabReportEntity lastData = reportList.get(reportList.size() - 1);
+		Double boforeBalance = 7312.92;
+		if (!Util.isEmpty(lastData)) {
+			boforeBalance = lastData.getDepositBalance();
+		}*/
+		if (Util.isEmpty(remit)) {
+			remit = 0.0;
+		}
+		if (Util.isEmpty(peopleNum)) {
+			peopleNum = 0;
+		}
+		if (Util.isEmpty(costUnitPrice)) {
+			costUnitPrice = 0.0;
+		}
+		/*if (!Util.isEmpty(remit) && !Util.isEmpty(peopleNum) && !Util.isEmpty(costUnitPrice)) {
+			//TODO 1、备用金额=[上期备用金额+汇款-(人数*成本单价)]
+			Double depositBalance = Double
+					.parseDouble(df.format((boforeBalance + remit) - (peopleNum * costUnitPrice)));
+			report.setDepositBalance(depositBalance);
+		}*/
+		//2、代理费1=SUM(票价<含行李>*代理返点)
+		Double ticketPrice = addForm.getTicketPrice();//票价<含行李>
+		Double agentRebate = addForm.getAgentRebate();//代理返点
+		Double agencyFee = 0.0;
+		if (!Util.isEmpty(ticketPrice) && !Util.isEmpty(agentRebate)) {
+			agencyFee = Double.parseDouble(df.format(ticketPrice * agentRebate));//代理费1
+			report.setTicketPrice(Double.parseDouble(df.format(ticketPrice)));//票价<含行李>
+			report.setAgencyFee(agencyFee);//代理费
+			report.setAgentRebate(Double.parseDouble(df.format(agentRebate)));//代理返点
+		}
+
+		//3、税返点=SUM(代理费1*10%)
+		Double taxRebate = Double.parseDouble(df.format(agencyFee * 0.1));//税返点
+		report.setTaxRebate(taxRebate);
+		//总计=票价+刷卡费+税金/杂项+消费税1-代理费1-税返点
+		double total = 0;
+		if (!Util.isEmpty(ticketPrice) && !Util.isEmpty(swipe) && !Util.isEmpty(tax) && !Util.isEmpty(exciseTax1)
+				&& !Util.isEmpty(taxRebate)) {
+			total = ticketPrice + swipe + tax + exciseTax1 - agencyFee - taxRebate;
+		}
+		report.setTotal(total);
+		if (!Util.isEmpty(paidUnitPrice) && !Util.isEmpty(peopleNum)) {
+			//4、实收单价(含操作费)=SUM(实收单价)
+			Double realIncome = paidUnitPrice;//实收单价(含操作费)
+			report.setRealIncome(realIncome);
+			//5、实收合计(含操作费)=SUM[实收单价(含操作费)*人数]
+			Double realTotal = (realIncome * peopleNum);//实收合计(含操作费)
+			report.setRealTotal(realTotal);
+			//消费税2=实收合计<含操作费>/11
+			Double exciseTax2 = realTotal / 11;
+			report.setExciseTax2(exciseTax2);
+			//实收票价<含行李费>=实收合计<含操作费>-消费税2-税金/杂项
+			Double realTicketPrice = (realTotal - exciseTax2 - tax);
+			report.setRealTicketPrice(realTicketPrice);
+			/**6、代理费2 =实收票价(含行李)*代理返点
+			 *          =【实收合计(含操作费)-消费税2-税金/杂项 】*代理返点
+			 *          =【实收合计(含操作费)-SUM(实收合计(含操作费)/11)-税金/杂项】*代理返点
+			 */
+			Double agencyFee2 = Double.parseDouble(df.format((realTotal - (realTotal / 11) - tax) * agentRebate));//代理费2
+			report.setAgencyFee2(agencyFee2);
+		}
+		//保存报表数据的时候同时将订单列表中的订单关联状态id保存在报表中
+		TPnrSystemMapEntity singleton = dbDao.fetch(TPnrSystemMapEntity.class, Cnd.where("pnrId", "=", pnrId));
+		Integer relationStatus = 0;
+		if (!Util.isEmpty(singleton)) {
+			relationStatus = (int) singleton.getRelationStatus();//得到pnr系统关联表状态
+			report.setPnrRelationId(relationStatus);
+		}
+		TGrabReportEntity insertData = dbDao.insert(report);
+		return insertData;
+	}
+
 	/***
 	 * PNR select2查询
 	 * TODO(这里用一句话描述这个方法的作用)

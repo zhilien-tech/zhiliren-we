@@ -902,7 +902,7 @@ function successCallback(id){
 			                    		//return filename;
 			                    		if(filetype===1){
 			                    			/* return '<a id="'+fileId+'" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
-			                    			return '<a id="'+fileId+'" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
+			                    			return '<a id="'+fileId+'" href="javascript:editFolder1('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
 			                    		}else if(filetype===2 && fileExtension==="pdf"){
 			                    			/* return  '<a id="'+fileId+'" class="fa fa-file-pdf-o" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
 			                    			return  '<a id="'+fileId+'" class="fa fa-file-pdf-o" href="#">'+filename+'</a>';
@@ -912,7 +912,7 @@ function successCallback(id){
 			                    		//}
 			                    		else{
 			                    			/* return  '<a id="'+fileId+'" class="fa fa-file-text" href="javascript:createFodler('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>'; */
-			                    			return  '<a id="'+fileId+'" class="fa fa-file-text" href="javascript:editFolder('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
+			                    			return  '<a id="'+fileId+'" class="fa fa-file-text" href="javascript:editFolder1('+row.id+',\''+filename+'\','+filetype+',1);">'+filename+'</a>';
 			                    		}
 			                    	}
 			                    },
@@ -989,9 +989,7 @@ function successCallback(id){
 					$(this).remove(); 
 				} 
 			});
-
 		}
-		
 	}
 	//当点击进入下一级的时候重新加载表格
 	//var clickFlag = 1;
@@ -1018,14 +1016,12 @@ function successCallback(id){
 					  	    content: '${base}/admin/drawback/grabreport/filePreview.html?id='+pid
 					 	});
 					} 
-						
 				},
 				error : function(request) {
 					layer.msg("操作失败", "", 3000);
 				}
 			});
 		}else{
-			
 			options0.ajax.data.parentId=pid;
 			var param = {parentId:pid,level:level};
 			/* var param = {parentId:pid}; */
@@ -1039,7 +1035,6 @@ function successCallback(id){
 					return false;
 				}
 			});
-			
 			if(!exist){
 				if(filetype == 1){
 					$("#fitBreadcrumb").find("li").each(function(){
@@ -1057,7 +1052,6 @@ function successCallback(id){
 						return false;
 					}
 				});
-				
 				//删除大于该下标的其他元素
 				$("#fitBreadcrumb").find("li").each(function(index){
 					if(index > selectIndex){
@@ -1075,7 +1069,6 @@ function successCallback(id){
 			$("input#currentDirId").val(pid);
 		}
 	}
-	
 	//单击进行文件(文件夹)名称的修改
 	/* $('#rebatesEamilTable tbody').on('click','tr td:nth-child(2)',function(event){
 		//获取当前行的数据
@@ -1110,7 +1103,7 @@ function successCallback(id){
 		if(clickFlag ==1 && filetype==2){
 			clickFlag = 2;
 			var a=row.id;
-			editFolder(a,1223,2,0);
+			editFolder1(a,1223,2,0);
 			return false;
 		}
 		var level=row.level;
@@ -1122,7 +1115,7 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 		if(clickFlag===1 && filetype===2){
 			$.ajax({
 				type : "POST",
-				url : '${base}/admin/drawback/grabfile/filePreview.html',
+				url : '${base}/admin/drawback/grabreport/interFilePreview.html',
 				data : {
 					id : pid,
 					level:level
@@ -1138,17 +1131,15 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 					  	    shadeClose: false,
 					  	    scrollbar: false,
 					  	    area: ['1200px', '700px'],
-					  	    content: '${base}/admin/drawback/grabreport/filePreview.html?id='+pid
+					  	    content: '${base}/admin/drawback/grabreport/interFilePreview.html?id='+pid
 					 	});
 					} 
-						
 				},
 				error : function(request) {
 					layer.msg("操作失败", "", 3000);
 				}
 			});
 		}else{
-			
 			options1.ajax.data.parentId=pid;
 			var param = {parentId:pid,level:level};
 			rebatesEamilTeamTable.settings()[0].ajax.data = param;
@@ -1161,7 +1152,6 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 					return false;
 				}
 			});
-			
 			if(!exist){
 				if(filetype == 1){
 					$("#teamBreadcrumb").find("li").each(function(){
@@ -1179,7 +1169,6 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 						return false;
 					}
 				});
-				
 				//删除大于该下标的其他元素
 				$("#teamBreadcrumb").find("li").each(function(index){
 					if(index > selectIndex){
@@ -1220,7 +1209,6 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 	  	    }
 	 	});
 	}
-	
 	//修改文件夹名称
 	function editFolder(id,filename,filetype,clickFlag){
 		if(filetype===1){
@@ -1240,32 +1228,17 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 		  	    }
 		 	});
 		}else if(filetype===2){
-			/* $.ajax({ */
-				/* type : "POST",
-				url : '${base}/admin/drawback/grabfile/filePreview.html?flagType='+clickFlag,
-				data : {
-					id : id
-				},
-				success : function(data) { */
-					//if(filetype == 2){
-						layer.open({
-					  	    type: 2,
-					  	    title:false,
-					  	    closeBtn:false,
-					  	    fix: false,
-					  	    maxmin: false,
-					  	    shadeClose: false,
-					  	    scrollbar: false,
-					  	    area: ['1200px', '700px'],
-					  	    content: '${base}/admin/drawback/grabreport/filePreview.html?id='+id+'&flagType='+clickFlag
-					 	});
-					//} 
-						
-				/* },
-				error : function(request) {
-					layer.msg("操作失败", "", 3000);
-				}
-			}); */
+			layer.open({
+		  	    type: 2,
+		  	    title:false,
+		  	    closeBtn:false,
+		  	    fix: false,
+		  	    maxmin: false,
+		  	    shadeClose: false,
+		  	    scrollbar: false,
+		  	    area: ['1200px', '700px'],
+		  	    content: '${base}/admin/drawback/grabreport/filePreview.html?id='+id+'&flagType='+clickFlag
+		 	});
 		}else{
 			options.ajax.data.parentId=pid;
 			var param = {parentId:pid};
@@ -1279,7 +1252,6 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 					return false;
 				}
 			});
-			
 			if(!exist){
 				if(filetype == 1){
 					$("ol.breadcrumb").find("li").each(function(){
@@ -1348,8 +1320,84 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 			 }
 		 }
 	}
+//团队修改文件夹名称
+function editFolder1(id,filename,filetype,clickFlag){
+	if(filetype===1){
+		layer.open({
+	  	    type: 2,
+	  	    title:false,
+	  	    closeBtn:false,
+	  	    fix: false,
+	  	    maxmin: false,
+	  	    shadeClose: false,
+	  	    scrollbar: false,
+	  	    area: ['400px', '170px'],
+	  	    content: '${base}/admin/drawback/grabfile/update.html?id='+id,
+	  	    end: function(){//添加完页面点击返回的时候自动加载表格数据
+	  	    	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	  			parent.layer.close(index);
+	  	    }
+	 	});
+	}else if(filetype===2){
+		layer.open({
+	  	    type: 2,
+	  	    title:false,
+	  	    closeBtn:false,
+	  	    fix: false,
+	  	    maxmin: false,
+	  	    shadeClose: false,
+	  	    scrollbar: false,
+	  	    area: ['1200px', '700px'],
+	  	    content: '${base}/admin/drawback/grabreport/interFilePreview.html?id='+id+'&flagType='+clickFlag
+	 	});
+	}else{
+		options.ajax.data.parentId=pid;
+		var param = {parentId:pid};
+		rebatesEamilTable.settings()[0].ajax.data = param;
+		rebatesEamilTable.ajax.reload();
+		var exist=false;
+		$("ol.breadcrumb").find("li").each(function(index){
+			var currenuId = $(this).attr("id");
+			if(currenuId == pid){
+				exist = true ;
+				return false;
+			}
+		});
+		if(!exist){
+			if(filetype == 1){
+				$("ol.breadcrumb").find("li").each(function(){
+					$(this).removeClass("active");
+				});
+				$("ol.breadcrumb").append('<li id=\''+pid+'\' class="active"><a class="fa fa-folder-open" onclick="javascript:createFodler1(\''+pid+'\',\''+filename+'\',1,2,'+level+');"  href="#">'+filename+'</a></li>');
+			}
+		}else{
+			//找到指定元素的下标
+			var selectIndex = 0;
+			$("ol.breadcrumb").find("li").each(function(index){
+				var currenuId = $(this).attr("id");
+				if(currenuId == pid){
+					selectIndex=index;
+					return false;
+				}
+			});
+			//删除大于该下标的其他元素
+			$("ol.breadcrumb").find("li").each(function(index){
+				if(index > selectIndex){
+					$(this).remove(); 
+				}
+			});
+			var length = $("ol.breadcrumb").find("li").length;
+			$("ol.breadcrumb").find("li").each(function(index){
+				if(index != (length-1)){
+					$(this).removeClass("active");
+				}
+			});
+		}
+		//修改当前所在文件夹id
+		$("input#currentDirId").val(pid);
+	}
+}
 </script>
-
 <!------------------------------------------------------------ 报表分页显示 ---------------------------------------------------->
 <script type="text/javascript">
 	var rebatesReportTable;
@@ -1587,15 +1635,11 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 	  	    content: '${base}/admin/drawback/grabreport/update.html?id='+id
 	  	  });
 	}
-	
 	$(function() {
 		initDatatable2();
 	});
-	
-	
 	function turnToAll(flag){
 		$("input#currentDirId").val(0);
-
 		if(flag==0){
 			options0.ajax.data.parentId=0;
 			var param = {parentId:0};
@@ -1617,12 +1661,7 @@ function createFodler1(pid,filename,filetype,clickFlag,level){//团队
 				} 
 			});
 		}
-		
 	}
-	
-	
-	
-	
 </script>
 <!-- tab切换卡 -->
 <script type="text/javascript">

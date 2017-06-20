@@ -156,27 +156,12 @@
                   </div>
          	 	</div>
          	 	<div class="form-group inline">
-                  <label class="col-sm-2 text-right padding">入澳日期：</label>
-                  <div class="col-sm-2 padding">
-                  		<input id="inAustralianTimeId" name="inAustralianTime" type="text" class="form-control input-sm inputWidth" placeholder="请输入入澳时间" />
-                  </div>
-                </div>
-         	  </div><!--end 人数/成本单价/实收单价-->
-          	  <div class="row"><!--刷卡费/汇款金额/代理返点-->
-                <div class="form-group inline"> 
-                  <label class="col-sm-2 text-right padding">出澳日期：</label>
-                  <div class="col-sm-2 padding">
-                  		<input id="outAustralianTimeId" name="outAustralianTime" type="text" class="form-control input-sm inputWidth" placeholder="请输入出澳时间" />
-                  </div>
-         	 	</div>
-         	 	<div class="form-group inline">
-                  <label class="col-sm-1 text-right padding">备注：</label>
+                  <label class="col-sm-2 text-right padding">备注：</label>
                   <div class="col-sm-2 padding">
                   		<input id="remarkId" name="remark" type="text" class="form-control input-sm inputWidth" placeholder="请输入备注" />
                   </div>
                 </div>
-         	  </div><!--end 刷卡费/汇款金额/代理返点-->
-         	  
+         	  </div><!--end 人数/成本单价/实收单价-->
          	  <table id="PnrShowTable" class="table table-bordered table-hover">
                 <thead>
                   <tr>
@@ -186,8 +171,6 @@
                     <th>航空公司</th>
                     <th>人数</th>
                     <th>成本单价</th>
-                    <th>入澳日期</th>
-                    <th>出澳日期</th>
                     <th>订单状态</th>
                     <th>关联状态</th>
                     <th>操作</th>
@@ -202,7 +185,6 @@
           </div>
         </form>  
 	</div>
-	
 <!-- jQuery 2.2.3 -->
 <script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="${base}/public/bootstrap/js/bootstrap.js"></script>
@@ -317,7 +299,7 @@ $("#submit").click(function() {
 	if(bootstrapValidator.isValid()){
 		$.ajax({
 			type : "POST",
-			url : '${base}/admin/drawback/grabreport/add.html',
+			url : '${base}/admin/drawback/grabreport/addTeamData.html',
 			data : $('#addForm').serialize(),
 			error : function(request) {
 				layer.msg('添加失败!');
@@ -356,105 +338,97 @@ var empTable;
 				"url" : "${base}/public/plugins/datatables/cn.json"
 			},
 	       	"ajax": {
-	               "url": "${base}/admin/drawback/grabreport/listPnrSystem.html",
+	               "url": "${base}/admin/drawback/grabreport/teamListPnrSystem.html",
 	               "type": "post",
 	               "data": function (d) {
 	            	   
 	            	}
 	        },
-	        "columns": [
+	        "columns": [//订单号
 	                    {"data": "ordersnum", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var depositBalance = row.ordersnum;
-	                    		if(null==depositBalance || ""==depositBalance){
+	                    		var ordersnum = row.ordersnum;
+	                    		if(null==ordersnum || ""==ordersnum){
 	                    			return "";
 	                    		}
-	                    		return depositBalance;
+	                    		return ordersnum;
 	                    	}		
-	                    },//订单号
+	                    },//客户团号
 	                    {"data": "cusgroupnum", "bSortable": false,
 	                    	render: function(data, type, row, meta) {
-	                    		var depositBalance = row.cusgroupnum;
-	                    		$("#cusgroupnumId").val(depositBalance);
-	                    		if(null==depositBalance || ""==depositBalance){
-	                    			return "";
-	                    		}
-	                    		return depositBalance;
-	                    	}			
-	                    },//客户团号
-	                    {"data": "cusgroupnum", "bSortable": false,//PNR
-	                    	render: function(data, type, row, meta) {
 	                    		var cusgroupnum = row.cusgroupnum;
+	                    		$("#cusgroupnumId").val(cusgroupnum);
 	                    		if(null==cusgroupnum || ""==cusgroupnum){
 	                    			return "";
 	                    		}
 	                    		return cusgroupnum;
+	                    	}			
+	                    },
+	                    {"data": "pnr", "bSortable": false,//PNR
+	                    	render: function(data, type, row, meta) {
+	                    		var pnr = row.pnr;
+	                    		if(null==pnr || ""==pnr){
+	                    			return "";
+	                    		}
+	                    		return pnr;
 	                    	}		
 	                    },
 	                    {"data": "filename", "bSortable": false,//航空公司
 	                    	render: function(data, type, row, meta) {
-	                    		var depositBalance = row.filename;
-	                    		if(null==depositBalance || ""==depositBalance){
+	                    		var filename = row.filename;
+	                    		if(null==filename || ""==filename){
 	                    			return "";
 	                    		}
-	                    		return depositBalance;
+	                    		return filename;
 	                    	}	
 	                    },
-	                    {"data": "peoplecount", "bSortable": false,//人数
+	                    {"data": "actualnumber", "bSortable": false,//人数
 	                    	render: function(data, type, row, meta) {
-	                    		var peoplecount = row.peoplecount;
-	                    		if(null==peoplecount || ""==peoplecount){
+	                    		var actualnumber = row.actualnumber;
+	                    		if(null==actualnumber || ""==actualnumber){
 	                    			return "";
 	                    		}
-	                    		return peoplecount;
+	                    		return actualnumber;
 	                    	}	
 	                    },
 	                    {"data": "costprice", "bSortable": false,//成本单价
 	                    	render: function(data, type, row, meta) {
-	                    		var depositBalance = row.costprice;
-	                    		if(null==depositBalance || ""==depositBalance){
+	                    		var costprice = row.costprice;
+	                    		if(null==costprice || ""==costprice){
 	                    			return 0.00;
 	                    		}
-	                    		return depositBalance;
+	                    		return costprice;
 	                    	}	
 	                    },
-	                    {"data": "enterstarttime", "bSortable": false,//入澳时间
+	                    {"data": "interorderstatus", "bSortable": false,//订单状态
 	                    	render: function(data, type, row, meta) {
-	                    		var enterstarttime = row.enterstarttime;
-	                    		if(null==enterstarttime || ""==enterstarttime){
-	                    			return "";
-	                    		}
-	                    		return enterstarttime;
-	                    	}	
-	                    },
-	                    {"data": "outstarttime", "bSortable": false,//出澳时间
-	                    	render: function(data, type, row, meta) {
-	                    		var outstarttime = row.outstarttime;
-	                    		if(null==outstarttime || ""==outstarttime){
-	                    			return "";
-	                    		}
-	                    		return outstarttime;
-	                    	}	
-	                    },
-	                    {"data": "ordersstatus", "bSortable": false,//订单状态
-	                    	render: function(data, type, row, meta) {
-	                    		var ordersstatus = row.ordersstatus;
-	                    		if(null==ordersstatus || ""==ordersstatus){
+	                    		var interorderstatus = row.interorderstatus;
+	                    		if(null==interorderstatus || ""==interorderstatus){
 	                    			return "";
 	                    		}else{
-	                    			if(ordersstatus===1){
+	                    			if(interorderstatus===1){
 	                    				return "查询";
-	                    			}else if(ordersstatus===2){
+	                    			}else if(interorderstatus===2){
 	                    				return "预订";
-	                    			}else if(ordersstatus===3){
-	                    				return "开票";
-	                    			}else if(ordersstatus===4){
+	                    			}else if(interorderstatus===3){
 	                    				return "出票";
-	                    			}else if(ordersstatus===5){
+	                    			}else if(interorderstatus===4){
+	                    				return "开票";
+	                    			}else if(interorderstatus===5){
 	                    				return "关闭";
+	                    			}else if(interorderstatus===6){
+	                    				return "一订";
+	                    			}else if(interorderstatus===7){
+	                    				return "二订";
+	                    			}else if(interorderstatus===8){
+	                    				return "三订";
+	                    			}else if(interorderstatus===9){
+	                    				return "全款";
+	                    			}else if(interorderstatus===10){
+	                    				return "尾款";
 	                    			}
 	                    		}
-	                    		return ordersstatus;
+	                    		return interorderstatus;
 	                    	}	
 	                    },
 	                    {"data": "relationstatus", "bSortable": false,//关联状态
@@ -479,7 +453,7 @@ var empTable;
 	    				{ "sWidth": "26.66%",  "targets": [5] }, */
 	                    {
 	            //   指定第一列，从0开始，0表示第一列，1表示第二列……
-	            targets: 10,
+	            targets: 8,
 	            render: function(data, type, row, meta) {
 	            	var a=row.pnr;
 	            	/* if(row.relationstatus ===0){
@@ -499,12 +473,17 @@ var empTable;
 	        }]
 		});
 	}
+
+
+
+
 //点击取消
 function closewindow(){
 	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 	parent.layer.close(index);
 }
 //pnr的select2
+
 $("#pnrInfoSelect").select2({
 	ajax : {
 		url : BASE_PATH + "/admin/drawback/grabreport/selectPNRNames.html",
@@ -561,6 +540,8 @@ $("#pnrInfoSelect").select2({
 	maximumSelectionLength : 1, //设置最多可以选择多少项
 	tags : true, //设置必须存在的选项 才能选中
 });
+
+
 //关联操作
  function doRelation(id,flag,b,c){
 	var a="取消";
@@ -569,24 +550,25 @@ $("#pnrInfoSelect").select2({
 		a="关联";
 		$("#orderId").val(c);
 	}
-	$.ajax({
-		type : "POST",
-		url : '${base}/admin/drawback/grabreport/changeRelationStatus.html?id='+id+'&flag='+flag,
-		data : $('#addForm').serialize(),
-		error : function(request) {
-			layer.msg(a+'失败');
-		},
-		success : function(data) {
-			if ("200" == data.status) {
-				layer.msg(a+"成功","", 3000);
-			} else {
-				layer.msg(a+"失败","",3000);
+		$.ajax({
+			type : "POST",
+			url : '${base}/admin/drawback/grabreport/changeRelationStatus.html?id='+id+'&flag='+flag,
+			data : $('#addForm').serialize(),
+			error : function(request) {
+				layer.msg(a+'失败');
+			},
+			success : function(data) {
+				if ("200" == data.status) {
+					layer.msg(a+"成功","", 3000);
+				} else {
+					layer.msg(a+"失败","",3000);
+				}
+				var param = {PNR:b};
+				empTable.settings()[0].ajax.data = param;
+				empTable.ajax.reload();
 			}
-			var param = {PNR:b};
-			empTable.settings()[0].ajax.data = param;
-			empTable.ajax.reload();
-		}
-	});
+		});
+		
 }
 </script>
 </body>
