@@ -444,7 +444,8 @@ public class SabreServiceImpl implements SabreService {
 
 		List<OriginDest> originDests = paramForm.getOriginDests();
 		if (!Util.isEmpty(originDests)) {
-			for (OriginDest od : originDests) {
+			for (int idx = 0; idx < originDests.size(); idx++) {
+				OriginDest od = originDests.get(idx);
 				//<OriginDestinationInformation
 				OriginDestinationInformation odi = new OriginDestinationInformation();
 
@@ -481,6 +482,7 @@ public class SabreServiceImpl implements SabreService {
 				odiTpa.setSegmentType(segType);
 				odi.setTPAExtensions(odiTpa);
 
+				odi.setRPH((idx + 1) + "");
 				result.getOriginDestinationInformation().add(odi);
 			}
 		}
@@ -538,7 +540,7 @@ public class SabreServiceImpl implements SabreService {
 		TPAExtensions tpa = new TPAExtensions();
 		TransactionType intelliSell = new TransactionType();
 		RequestType reqType = new RequestType();
-		reqType.setName("50ITINS");
+		reqType.setName("100ITINS");
 		intelliSell.setRequestType(reqType);
 		tpa.setIntelliSellTransaction(intelliSell);
 

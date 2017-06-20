@@ -120,9 +120,13 @@ public class SabreAPITest {
 	public static void bargainFinderMaxSearch() {
 		BargainFinderMaxSearchForm form = new BargainFinderMaxSearchForm();
 
-		OriginDest od = new OriginDest();
-		od.setOrigin("JFK");
-		od.setDestination("LAX");
+		OriginDest od1 = new OriginDest();
+		od1.setOrigin("JFK");
+		od1.setDestination("LAX");
+
+		OriginDest od2 = new OriginDest();
+		od2.setOrigin("ATL");
+		od2.setDestination("LAS");
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
@@ -131,8 +135,11 @@ public class SabreAPITest {
 		String date = sdf.format(cal.getTime());
 		date = "2017-07-05T18:00:00";
 		System.out.println("departure date:" + date);
-		od.setDeparturedate(date);
-		form.getOriginDests().add(od);
+		od1.setDeparturedate(date);
+		od2.setDeparturedate(date);
+
+		form.getOriginDests().add(od1);
+		form.getOriginDests().add(od2);
 
 		form.setAirLevel("Y");
 		form.setAdt(1);
