@@ -12,6 +12,8 @@
  */
 package com.xiaoka.test;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.http.client.methods.HttpGet;
@@ -24,7 +26,9 @@ import com.linyun.airline.common.sabre.SabreConfig;
 import com.linyun.airline.common.sabre.SabreTokenFactory;
 import com.linyun.airline.common.sabre.bean.SabreAccessToken;
 import com.linyun.airline.common.sabre.dto.MACCitty;
+import com.linyun.airline.common.sabre.dto.OriginDest;
 import com.linyun.airline.common.sabre.dto.SabreResponse;
+import com.linyun.airline.common.sabre.form.BargainFinderMaxSearchForm;
 import com.linyun.airline.common.sabre.form.InstaFlightsSearchForm;
 import com.linyun.airline.common.sabre.form.MACLookupForm;
 import com.linyun.airline.common.sabre.service.SabreService;
@@ -113,6 +117,38 @@ public class SabreAPITest {
 		SabreResponse resp = service.instaFlightsSearch(form);
 	}
 
+	public static void bargainFinderMaxSearch() {
+		BargainFinderMaxSearchForm form = new BargainFinderMaxSearchForm();
+
+		OriginDest od1 = new OriginDest();
+		od1.setOrigin("JFK");
+		od1.setDestination("LAX");
+
+		OriginDest od2 = new OriginDest();
+		od2.setOrigin("ATL");
+		od2.setDestination("LAS");
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_YEAR, 1);
+
+		String date = sdf.format(cal.getTime());
+		date = "2017-07-05T18:00:00";
+		System.out.println("departure date:" + date);
+		od1.setDeparturedate(date);
+		od2.setDeparturedate(date);
+
+		form.getOriginDests().add(od1);
+		form.getOriginDests().add(od2);
+
+		form.setAirLevel("Y");
+		form.setAdt(1);
+		form.setSeatsRequested("1");
+
+		SabreService service = new SabreServiceImpl();
+		SabreResponse resp = service.bargainFinderMaxSearch(form);
+	}
+
 	/**
 	 * 多机场城市代码查询
 	 */
@@ -139,6 +175,6 @@ public class SabreAPITest {
 
 	public static void main(String[] args) {
 		//		macLookup();
-		instaFlightsSearch();
+		bargainFinderMaxSearch();
 	}
 }

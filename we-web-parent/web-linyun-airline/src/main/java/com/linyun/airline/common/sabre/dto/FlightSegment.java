@@ -50,7 +50,7 @@ public class FlightSegment {
 	/**
 	 * 航班号(售票分配的航班号)
 	 */
-	private int FlightNumber;
+	private String FlightNumber;
 
 	/**
 	 * 耗时（分）
