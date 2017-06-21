@@ -108,8 +108,8 @@ public class SabreAPITest {
 		InstaFlightsSearchForm form = new InstaFlightsSearchForm();
 		form.setOrigin("ATL");
 		form.setDestination("LAS");
-		form.setDeparturedate("2017-03-05");
-		form.setReturndate("2017-03-15");
+		form.setDeparturedate("2017-07-05");
+		form.setReturndate("2017-07-15");
 		form.setPointofsalecountry("US");
 		form.setOffset(1);
 		form.setLimit(10);
@@ -143,10 +143,11 @@ public class SabreAPITest {
 
 		form.setAirLevel("Y");
 		form.setAdt(1);
-		form.setSeatsRequested("1");
+		form.setSeatsRequested("3");
 
 		SabreService service = new SabreServiceImpl();
 		SabreResponse resp = service.bargainFinderMaxSearch(form);
+		System.out.println(resp);
 	}
 
 	/**

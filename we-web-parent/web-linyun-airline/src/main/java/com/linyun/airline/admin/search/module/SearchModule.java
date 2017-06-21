@@ -15,7 +15,7 @@ import org.nutz.mvc.annotation.Param;
 import com.linyun.airline.admin.search.form.SearchTicketSqlForm;
 import com.linyun.airline.admin.search.service.SearchViewService;
 import com.linyun.airline.common.base.MobileResult;
-import com.linyun.airline.common.sabre.form.InstaFlightsSearchForm;
+import com.linyun.airline.common.sabre.form.BargainFinderMaxSearchForm;
 import com.uxuexi.core.web.chain.support.JsonResult;
 
 @IocBean
@@ -131,7 +131,11 @@ public class SearchModule {
 	 */
 	@At
 	@POST
-	public Object searchSingleTickets(@Param("..") InstaFlightsSearchForm searchForm) {
+	/*public Object searchSingleTickets(@Param("..") InstaFlightsSearchForm searchForm) {
+		return searchViewService.searchSingleTickets(searchForm);
+	}
+	 */
+	public Object searchSingleTickets(@Param("..") BargainFinderMaxSearchForm searchForm) {
 		return searchViewService.searchSingleTickets(searchForm);
 	}
 

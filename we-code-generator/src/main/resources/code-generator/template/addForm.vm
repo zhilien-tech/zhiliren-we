@@ -2,11 +2,11 @@ package $packageName;
 
 import com.uxuexi.core.web.form.AddForm;
 #foreach ($import in $form.Imports)
-#if ($import)
-import $import;
-#else
-
-#end
+	#if ($import)
+	import $import;
+	#else
+	
+	#end
 #end
 public class ${form.addFormName} extends AddForm implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -14,10 +14,10 @@ public class ${form.addFormName} extends AddForm implements Serializable{
 	public static enum $column.SimpleJavaTypeName {
 
 
-#foreach ($value in $column.EnumValues) 
-		$value#if( $foreach.hasNext ),#end
-
-#end
+		#foreach ($value in $column.EnumValues) 
+				$value#if( $foreach.hasNext ),#end
+		
+		#end
 	}
 
 #end

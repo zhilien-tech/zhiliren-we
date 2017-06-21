@@ -62,4 +62,24 @@ public class BargainFinderMaxSearchForm {
 	 */
 	private String SeatsRequested;
 
+	/**
+	 * 用户 页面检索条件
+	 */
+	//起飞机场、出发城市
+	private String origin;
+	//降落机场、到达城市
+	private String destination;
+	//出发日期
+	private String departuredate;
+	//返程日期
+	private String returndate;
+	//成人
+	private String agentSelect;
+	//儿童
+	private String childrenSelect;
+	//婴儿
+	private String babySelect;
+	// 航空公司
+	private String includedcarriers;
+
 }

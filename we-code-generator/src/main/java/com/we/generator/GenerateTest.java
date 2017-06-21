@@ -11,7 +11,7 @@ public class GenerateTest {
 
 	public static void main(String[] args) throws Exception {
 		Generator generator = new Generator();
-		generator.generateEntity();
+		//generator.generateEntity();
 		generator.generatorModule();
 	}
 }
