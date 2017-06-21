@@ -143,10 +143,11 @@ public class SabreAPITest {
 
 		form.setAirLevel("Y");
 		form.setAdt(1);
-		form.setSeatsRequested("1");
+		form.setSeatsRequested("3");
 
 		SabreService service = new SabreServiceImpl();
 		SabreResponse resp = service.bargainFinderMaxSearch(form);
+		System.out.println(resp);
 	}
 
 	/**

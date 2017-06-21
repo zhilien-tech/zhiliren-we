@@ -1,6 +1,5 @@
 package com.linyun.airline.admin.search.service;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,11 +44,12 @@ import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.enums.UserStatusEnum;
 import com.linyun.airline.common.enums.UserTypeEnum;
 import com.linyun.airline.common.result.Select2Option;
+import com.linyun.airline.common.sabre.dto.BFMAirItinerary;
 import com.linyun.airline.common.sabre.dto.FlightSegment;
-import com.linyun.airline.common.sabre.dto.InstalFlightAirItinerary;
+import com.linyun.airline.common.sabre.dto.OriginDest;
 import com.linyun.airline.common.sabre.dto.SabreExResponse;
 import com.linyun.airline.common.sabre.dto.SabreResponse;
-import com.linyun.airline.common.sabre.form.InstaFlightsSearchForm;
+import com.linyun.airline.common.sabre.form.BargainFinderMaxSearchForm;
 import com.linyun.airline.common.sabre.service.SabreService;
 import com.linyun.airline.common.sabre.service.impl.SabreServiceImpl;
 import com.linyun.airline.entities.DictInfoEntity;
@@ -61,7 +61,6 @@ import com.linyun.airline.entities.TOrderCustomneedEntity;
 import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
-import com.uxuexi.core.common.util.DateTimeUtil;
 import com.uxuexi.core.common.util.DateUtil;
 import com.uxuexi.core.common.util.JsonUtil;
 import com.uxuexi.core.common.util.Util;
@@ -315,8 +314,127 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 	/**
 	 * 查询跨海内陆飞机票
+	 * 
+	 * TODO
 	 */
-	public Object searchSingleTickets(InstaFlightsSearchForm searchForm) {
+	public Object searchSingleTickets(BargainFinderMaxSearchForm searchForm) {
+
+		//出发日期
+		String dateStr = searchForm.getDeparturedate();
+		String departuredate = DateUtil.format(dateStr, "yyyy-MM-dd'T'HH:mm:ss");
+		OriginDest od = new OriginDest();
+		od.setOrigin(searchForm.getOrigin());
+		od.setDestination(searchForm.getDestination());
+		od.setDeparturedate(departuredate);
+
+		BargainFinderMaxSearchForm form = new BargainFinderMaxSearchForm();
+		form.getOriginDests().add(od);
+
+		//航空公司
+		String includedcarriers = form.getIncludedcarriers();
+		if (!Util.isEmpty(includedcarriers)) {
+			form.getCarriers().add(includedcarriers);
+		}
+		//乘客数量
+		String childrenSelect = searchForm.getChildrenSelect();
+		String agentSelect = searchForm.getAgentSelect();
+		String babySelect = searchForm.getBabySelect();
+		int agentNum = Integer.valueOf(agentSelect);
+		int childNum = Integer.valueOf(childrenSelect);
+		int babyNum = Integer.valueOf(babySelect);
+		int passengercount = agentNum + childNum + babyNum;
+		if (agentNum > 0) {
+			form.setAdt(agentNum);
+		}
+		if (childNum > 0) {
+			form.setCnn(childNum);
+		}
+		if (babyNum > 0) {
+			form.setInf(babyNum);
+		}
+		if (passengercount > 0) {
+			form.setSeatsRequested(String.valueOf(passengercount));
+		}
+		//舱位等级
+		form.setAirLevel("Y");
+		SabreService service = new SabreServiceImpl();
+		SabreResponse resp = service.bargainFinderMaxSearch(form);
+
+		if (resp.getStatusCode() == 200) {
+			List<BFMAirItinerary> directList = new ArrayList<BFMAirItinerary>(); //直飞列表
+
+			List<BFMAirItinerary> list = (List<BFMAirItinerary>) resp.getData();
+			for (BFMAirItinerary bfmAirItinerary : list) {
+				List<FlightSegment> flightSegment = bfmAirItinerary.getList();
+				if (flightSegment.size() == 1) {
+					directList.add(bfmAirItinerary);
+				}
+			}
+
+			for (BFMAirItinerary bfmAirItinerary : directList) {
+				List<FlightSegment> flightSegment = bfmAirItinerary.getList();
+				for (FlightSegment flight : flightSegment) {
+					String departureDateTime = flight.getDepartureDateTime();
+					String arrivalDateTime = flight.getArrivalDateTime();
+					if (!Util.isEmpty(departureDateTime) || "" != departureDateTime) {
+						departureDateTime = departureDateTime.substring(11, 13) + departureDateTime.substring(14, 16);
+						flight.setDepartureDateTime(departureDateTime);
+					}
+					if (!Util.isEmpty(arrivalDateTime) || "" != arrivalDateTime) {
+						arrivalDateTime = arrivalDateTime.substring(11, 13) + arrivalDateTime.substring(14, 16);
+						flight.setArrivalDateTime(arrivalDateTime);
+					}
+				}
+			}
+
+			resp.setData(directList);
+		}
+
+		if (resp.getStatusCode() == 0) {
+			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
+			String message = sabreExResponse.getMessage();
+			sabreExResponse.setMessage("乘客类型至少选择一人");
+		}
+
+		if (resp.getStatusCode() == 400) {
+			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
+			String message = sabreExResponse.getMessage();
+			if (message.contains("Parameter 'origin' must be specified")) {
+				sabreExResponse.setMessage("出发城市不能为空");
+			}
+			if (message.contains("Parameter 'destination' must be specified")) {
+				sabreExResponse.setMessage("到达城市不能为空");
+			}
+			if (message.contains("Parameter 'departuredate' must be specified")) {
+				sabreExResponse.setMessage("出发日期不能为空");
+			}
+			if (message.contains("arrivalDateTime")) {
+				sabreExResponse.setMessage("返回日期不能为空");
+			}
+			if (message.contains("No results")) {
+				sabreExResponse.setMessage("未查询到结果");
+			}
+			if (message.contains("Date range in 'departuredate' and 'returndate' exceeds the maximum allowed")) {
+				sabreExResponse.setMessage("出发日期和返回日期之差不超过15天");
+			}
+			if (message.contains("Parameter 'passengercount' must be between 0 and 10")) {
+				sabreExResponse.setMessage("乘客数量必须是 0 到 10 之间");
+			}
+		}
+		if (resp.getStatusCode() == 404) {
+			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
+			String message = sabreExResponse.getMessage();
+			if (message.contains("No results")) {
+				sabreExResponse.setMessage("未查询到结果");
+			}
+		}
+
+		System.out.println(resp);
+
+		return resp;
+	}
+
+	/*public Object searchSingleTickets(InstaFlightsSearchForm searchForm) {
 		InstaFlightsSearchForm form = new InstaFlightsSearchForm();
 		form.setOrigin(searchForm.getOrigin());
 		form.setDestination(searchForm.getDestination());
@@ -411,7 +529,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		}
 
 		return resp;
-	}
+	}*/
 
 	/**
 	 * 查询飞机库

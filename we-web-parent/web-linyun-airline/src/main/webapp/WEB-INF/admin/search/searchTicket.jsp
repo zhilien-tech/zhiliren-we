@@ -309,7 +309,7 @@
 												<input id="outDatepicker0" name="departuredate0"
 												onkeypress="onkeyEnter();" type="text"
 												class="form-control input-sm"
-												onFocus="WdatePicker({startDate:'%y', dateFmt:'yyyy-MM-dd',minDate:'%y-%M-{%d}'})"
+												onFocus="WdatePicker({startDate:'%y', dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'%y-%M-{%d}'})"
 												placeholder="2017-01-01">
 											</td>
 											<td class="setoutLabel gj1"><label>返回日期：</label></td>
@@ -318,7 +318,7 @@
 												<input id="returnDatepicker0" name="returndate0"
 												onkeypress="onkeyEnter();" type="text"
 												class="form-control input-sm"
-												onFocus="WdatePicker({startDate:'%y', dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'outDatepicker0\')}',maxDate:'#F{$dp.$D(\'outDatepicker0\',{d:15})}'})"
+												onFocus="WdatePicker({startDate:'%y', dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'outDatepicker0\')}',maxDate:'#F{$dp.$D(\'outDatepicker0\',{d:15})}'})"
 												placeholder="2017-01-15">
 											</td>
 											<td class="addIconTd addSingleIconTd none gjAdd"><i
