@@ -48,7 +48,6 @@ import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.common.sabre.dto.BFMAirItinerary;
 import com.linyun.airline.common.sabre.dto.FlightSegment;
 import com.linyun.airline.common.sabre.dto.OriginDest;
-import com.linyun.airline.common.sabre.dto.SabreExResponse;
 import com.linyun.airline.common.sabre.dto.SabreResponse;
 import com.linyun.airline.common.sabre.form.BargainFinderMaxSearchForm;
 import com.linyun.airline.common.sabre.service.SabreService;
@@ -343,8 +342,9 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		String airlineCode = searchForm.getAirlineCode();
 		if (!Util.isEmpty(airlineCode)) {
 			carriers.add(airlineCode);
+			form.setCarriers(carriers);
 		}
-		form.setCarriers(carriers);
+
 		//乘客数量
 		String childrenSelect = searchForm.getChildrenSelect();
 		String agentSelect = searchForm.getAgentSelect();
@@ -398,45 +398,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			}
 
 			resp.setData(directList);
-		}
-
-		if (resp.getStatusCode() == 0) {
-			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
-			String message = sabreExResponse.getMessage();
-			sabreExResponse.setMessage("乘客类型至少为一人");
-		}
-
-		if (resp.getStatusCode() == 400) {
-			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
-			String message = sabreExResponse.getMessage();
-			if (message.contains("Parameter 'origin' must be specified")) {
-				sabreExResponse.setMessage("出发城市不能为空");
-			}
-			if (message.contains("Parameter 'destination' must be specified")) {
-				sabreExResponse.setMessage("到达城市不能为空");
-			}
-			if (message.contains("Parameter 'departuredate' must be specified")) {
-				sabreExResponse.setMessage("出发日期不能为空");
-			}
-			if (message.contains("arrivalDateTime")) {
-				sabreExResponse.setMessage("返回日期不能为空");
-			}
-			if (message.contains("No results")) {
-				sabreExResponse.setMessage("未查询到结果");
-			}
-			if (message.contains("Date range in 'departuredate' and 'returndate' exceeds the maximum allowed")) {
-				sabreExResponse.setMessage("出发日期和返回日期之差不超过15天");
-			}
-			if (message.contains("Parameter 'passengercount' must be between 0 and 10")) {
-				sabreExResponse.setMessage("乘客数量必须是 0 到 10 之间");
-			}
-		}
-		if (resp.getStatusCode() == 404) {
-			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
-			String message = sabreExResponse.getMessage();
-			if (message.contains("No results")) {
-				sabreExResponse.setMessage("未查询到结果");
-			}
 		}
 
 		System.out.println(resp);

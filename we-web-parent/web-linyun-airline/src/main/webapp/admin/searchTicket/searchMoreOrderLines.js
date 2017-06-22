@@ -81,7 +81,7 @@ function searchInlandOrder(){
 				}
 				
 			} else {
-				layer.msg(resp.data.message, "", 2000);
+				layer.msg("未查询到结果", "", 2000);
 			}
 		},
 		error : function(xhr) {

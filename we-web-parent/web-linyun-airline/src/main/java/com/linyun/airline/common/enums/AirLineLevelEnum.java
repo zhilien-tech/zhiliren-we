@@ -17,7 +17,7 @@ import com.uxuexi.core.common.enums.IEnum;
  * @Date	 2017年6月22日 	 
  */
 public enum AirLineLevelEnum implements IEnum {
-	ECONOMY("Y", "经济舱"), FIRST("F", "头等舱"), BUSINESS("C", "公务舱");
+	ECONOMY("Y", "经济舱"), PREMIUM_ECONOMY("PremiumEconomy", "高端经济舱"), FIRST("F", "头等舱"), BUSINESS("C", "公务舱");
 	private String key;
 	private String value;
 
