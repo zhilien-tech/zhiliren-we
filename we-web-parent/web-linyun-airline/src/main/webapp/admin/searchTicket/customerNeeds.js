@@ -532,7 +532,7 @@ $(document).on("click",".chooseAirLineBtn",function(){
 		airLineNum = $(this).find('[class=p]').html();
 		DepartureDateTime = $(this).find('[class=DepartureDateTime]').html();
 		ArrivalDateTime = $(this).find('[class=ArrivalDateTime]').html();
-		airTotalMoney = $(this).find('[class=airTotalMoney]').html();
+		airTotalMoney = $(this).find('[class=airTotalMoney]').html().substring(3);
 	});
 	//选择项
 	var custLines = '';
