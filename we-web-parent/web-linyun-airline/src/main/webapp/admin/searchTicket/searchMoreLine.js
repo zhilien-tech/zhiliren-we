@@ -126,10 +126,12 @@ $(function () {
 				//设置新的出发城市下拉ID
 				var outCity = $(this).find('[name=origin0]');
 				outCity.attr("id","outCity"+i);
+				$('#outCity'+i).empty();
 				$('#outCity'+i).next().remove();
 				//设置新的返回城市下拉框ID
 				var singleArriveCity = $(this).find('[name=destination0]');
 				singleArriveCity.attr("id","singleArriveCity"+i);
+				$('#singleArriveCity'+i).empty();
 				$('#singleArriveCity'+i).next().remove();
 				//设置新的出发日期
 				var departuredate = $(this).find('[name=departuredate0]');
