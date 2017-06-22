@@ -80,6 +80,6 @@ public class BargainFinderMaxSearchForm {
 	//婴儿
 	private String babySelect;
 	// 航空公司
-	private String includedcarriers;
+	private String airlineCode;
 
 }

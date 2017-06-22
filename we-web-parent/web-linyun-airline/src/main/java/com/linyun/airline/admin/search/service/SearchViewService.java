@@ -339,10 +339,12 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		form.getOriginDests().add(od);
 
 		//航空公司
-		String includedcarriers = form.getIncludedcarriers();
-		if (!Util.isEmpty(includedcarriers)) {
-			form.getCarriers().add(includedcarriers);
+		List<String> carriers = new ArrayList<String>();
+		String airlineCode = searchForm.getAirlineCode();
+		if (!Util.isEmpty(airlineCode)) {
+			carriers.add(airlineCode);
 		}
+		form.setCarriers(carriers);
 		//乘客数量
 		String childrenSelect = searchForm.getChildrenSelect();
 		String agentSelect = searchForm.getAgentSelect();

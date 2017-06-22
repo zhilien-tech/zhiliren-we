@@ -355,10 +355,8 @@
 											<td><label>航空公司：</label></td>
 											<td>
 												<!-- <input type="text" class="form-control input-sm" placeholder="中文/二字代码"> -->
-												<select id="airline" name="includedcarriers"
-												onkeypress="onkeyEnter();" onchange="airlineNameOpt()"
-												class="form-control input-sm" multiple="multiple"
-												data-placeholder="中文/二字代码"></select>
+												<select id="airline" name="includedcarriers" onkeypress="onkeyEnter();" onchange="airlineNameOpt()" class="form-control input-sm" multiple="multiple" data-placeholder="中文/二字代码"></select>
+												<input id="airlineCode" type="hidden" name="airlineCode" /> 
 											</td>
 											<td>
 												<button id="searchSingleTicketsBtn" type="button"
@@ -941,6 +939,12 @@
 		     		$(this).parent().parent().find('[name=cAirPretium]').val('');
 		     	}
 		    });
+			
+			//航空公司change
+			function airlineNameOpt() {
+				var airline = $("#airline").select2("val"); 
+				$("#airlineCode").val(airline);
+			}
 		</script>
 		
 
