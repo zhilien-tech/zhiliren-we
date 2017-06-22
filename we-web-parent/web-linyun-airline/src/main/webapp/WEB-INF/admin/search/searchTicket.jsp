@@ -344,10 +344,13 @@
 											<td><label>舱位等级：</label></td>
 											<td><select id="airLevel" name="airLevel"
 												class="form-control input-sm selectWid">
-													<option value="1">经济舱</option>
+													<!-- <option value="1">经济舱</option>
 													<option value="2">超级经济舱</option>
 													<option value="3">商务舱</option>
-													<option value="4">头等舱</option>
+													<option value="4">头等舱</option> -->
+													<c:forEach var="map" items="${obj.AirLineLevelEnum}" >
+														<option value="${map.key}">${map.value}</option>
+													</c:forEach> 
 											</select></td>
 											<td><label>航空公司：</label></td>
 											<td>
@@ -450,12 +453,14 @@
 									<table class="scatteredTable3">
 										<tr>
 											<td><label>舱位等级：</label></td>
-											<td><select id="teamAirLevel" name="teamAirLevel"
-												class="form-control input-sm selectWid1">
-													<option value="1">经济舱</option>
+											<td><select id="teamAirLevel" name="teamAirLevel" class="form-control input-sm selectWid1">
+													<!-- <option value="1">经济舱</option>
 													<option value="2">超级经济舱</option>
 													<option value="3">商务舱</option>
-													<option value="4">头等舱</option>
+													<option value="4">头等舱</option> -->
+													<c:forEach var="map" items="${obj.AirLineLevelEnum}" >
+														<option value="${map.key}">${map.value}</option>
+													</c:forEach>
 											</select></td>
 											<td><label class="hkgsLabel">航空公司：</label></td>
 											<td class="txtSelect">
@@ -759,7 +764,7 @@
 
 				//加载客户需求下拉列表
 				initCustNeedsSelect2();
-
+				
 			});
 		</script>
 		<script type="text/javascript">

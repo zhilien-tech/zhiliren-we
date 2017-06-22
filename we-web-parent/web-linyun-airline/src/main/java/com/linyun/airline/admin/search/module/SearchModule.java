@@ -34,7 +34,7 @@ public class SearchModule {
 	@GET
 	@Ok("jsp")
 	public Object searchTicket() {
-		return null;
+		return searchViewService.toSearchTicketPage();
 	}
 
 	/**

@@ -34,6 +34,7 @@ import com.linyun.airline.admin.order.international.enums.InternationalStatusEnu
 import com.linyun.airline.admin.search.entities.ParsingSabreEntity;
 import com.linyun.airline.admin.search.form.SearchTicketSqlForm;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
+import com.linyun.airline.common.enums.AirLineLevelEnum;
 import com.linyun.airline.common.enums.MessageLevelEnum;
 import com.linyun.airline.common.enums.MessageRemindEnum;
 import com.linyun.airline.common.enums.MessageSourceEnum;
@@ -62,6 +63,7 @@ import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.DateUtil;
+import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.JsonUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.DbSqlUtil;
@@ -131,6 +133,12 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			customerInfos = customerInfos.subList(0, 5);
 		}
 		return customerInfos;
+	}
+
+	public Object toSearchTicketPage() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("AirLineLevelEnum", EnumUtil.enum2(AirLineLevelEnum.class));
+		return map;
 	}
 
 	/**
@@ -356,7 +364,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			form.setSeatsRequested(String.valueOf(passengercount));
 		}
 		//舱位等级
-		form.setAirLevel("Y");
+		form.setAirLevel(searchForm.getAirLevel());
 		SabreService service = new SabreServiceImpl();
 		SabreResponse resp = service.bargainFinderMaxSearch(form);
 
@@ -393,7 +401,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		if (resp.getStatusCode() == 0) {
 			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
 			String message = sabreExResponse.getMessage();
-			sabreExResponse.setMessage("乘客类型至少选择一人");
+			sabreExResponse.setMessage("乘客类型至少为一人");
 		}
 
 		if (resp.getStatusCode() == 400) {
