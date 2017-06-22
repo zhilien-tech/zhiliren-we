@@ -397,6 +397,10 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				}
 			}
 
+			//只展示直飞记录
+			if (directList.size() == 0) {
+				resp.setStatusCode(333);
+			}
 			resp.setData(directList);
 		}
 
