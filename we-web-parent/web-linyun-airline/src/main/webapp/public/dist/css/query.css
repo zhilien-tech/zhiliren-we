@@ -51,7 +51,7 @@ select#teamAirLevel {width: 208px !important;}
 .scatteredTable1 tr td input[type="radio"]{width: 14px;height: 14px; margin:2px 0 0;}
 .scatteredTable2{margin-top: 5px;}
 .scatteredTable2 tr{height: 45px;}
-.scatteredTable2 tr td .form-control {width: 115px;color: #555;font-weight: 500;}
+.scatteredTable2 tr td .form-control {width: 135px;color: #555;font-weight: 500;}
 .scatteredTable2 tr td label{position: relative;top: 2px;}
 .scatteredTable2 tr .untilTd i{width:20px;position: relative;top:-1px;left: 12px;color: #777;font-size: 12px;}
 .scatteredTable2 tr .untilTd1{width: 45px;}
