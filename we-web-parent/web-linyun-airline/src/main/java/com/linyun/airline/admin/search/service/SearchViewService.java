@@ -400,8 +400,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			resp.setData(directList);
 		}
 
-		System.out.println(resp);
-
 		return resp;
 	}
 
