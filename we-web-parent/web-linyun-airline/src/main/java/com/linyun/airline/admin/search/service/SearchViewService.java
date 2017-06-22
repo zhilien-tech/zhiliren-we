@@ -34,6 +34,7 @@ import com.linyun.airline.admin.order.international.enums.InternationalStatusEnu
 import com.linyun.airline.admin.search.entities.ParsingSabreEntity;
 import com.linyun.airline.admin.search.form.SearchTicketSqlForm;
 import com.linyun.airline.common.enums.AccountReceiveEnum;
+import com.linyun.airline.common.enums.AirLineLevelEnum;
 import com.linyun.airline.common.enums.MessageLevelEnum;
 import com.linyun.airline.common.enums.MessageRemindEnum;
 import com.linyun.airline.common.enums.MessageSourceEnum;
@@ -47,7 +48,6 @@ import com.linyun.airline.common.result.Select2Option;
 import com.linyun.airline.common.sabre.dto.BFMAirItinerary;
 import com.linyun.airline.common.sabre.dto.FlightSegment;
 import com.linyun.airline.common.sabre.dto.OriginDest;
-import com.linyun.airline.common.sabre.dto.SabreExResponse;
 import com.linyun.airline.common.sabre.dto.SabreResponse;
 import com.linyun.airline.common.sabre.form.BargainFinderMaxSearchForm;
 import com.linyun.airline.common.sabre.service.SabreService;
@@ -62,6 +62,7 @@ import com.linyun.airline.entities.TUpOrderEntity;
 import com.linyun.airline.entities.TUpcompanyEntity;
 import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.DateUtil;
+import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.JsonUtil;
 import com.uxuexi.core.common.util.Util;
 import com.uxuexi.core.db.util.DbSqlUtil;
@@ -131,6 +132,12 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			customerInfos = customerInfos.subList(0, 5);
 		}
 		return customerInfos;
+	}
+
+	public Object toSearchTicketPage() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("AirLineLevelEnum", EnumUtil.enum2(AirLineLevelEnum.class));
+		return map;
 	}
 
 	/**
@@ -331,10 +338,13 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		form.getOriginDests().add(od);
 
 		//航空公司
-		String includedcarriers = form.getIncludedcarriers();
-		if (!Util.isEmpty(includedcarriers)) {
-			form.getCarriers().add(includedcarriers);
+		List<String> carriers = new ArrayList<String>();
+		String airlineCode = searchForm.getAirlineCode();
+		if (!Util.isEmpty(airlineCode)) {
+			carriers.add(airlineCode);
+			form.setCarriers(carriers);
 		}
+
 		//乘客数量
 		String childrenSelect = searchForm.getChildrenSelect();
 		String agentSelect = searchForm.getAgentSelect();
@@ -356,7 +366,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			form.setSeatsRequested(String.valueOf(passengercount));
 		}
 		//舱位等级
-		form.setAirLevel("Y");
+		form.setAirLevel(searchForm.getAirLevel());
 		SabreService service = new SabreServiceImpl();
 		SabreResponse resp = service.bargainFinderMaxSearch(form);
 
@@ -388,45 +398,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			}
 
 			resp.setData(directList);
-		}
-
-		if (resp.getStatusCode() == 0) {
-			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
-			String message = sabreExResponse.getMessage();
-			sabreExResponse.setMessage("乘客类型至少选择一人");
-		}
-
-		if (resp.getStatusCode() == 400) {
-			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
-			String message = sabreExResponse.getMessage();
-			if (message.contains("Parameter 'origin' must be specified")) {
-				sabreExResponse.setMessage("出发城市不能为空");
-			}
-			if (message.contains("Parameter 'destination' must be specified")) {
-				sabreExResponse.setMessage("到达城市不能为空");
-			}
-			if (message.contains("Parameter 'departuredate' must be specified")) {
-				sabreExResponse.setMessage("出发日期不能为空");
-			}
-			if (message.contains("arrivalDateTime")) {
-				sabreExResponse.setMessage("返回日期不能为空");
-			}
-			if (message.contains("No results")) {
-				sabreExResponse.setMessage("未查询到结果");
-			}
-			if (message.contains("Date range in 'departuredate' and 'returndate' exceeds the maximum allowed")) {
-				sabreExResponse.setMessage("出发日期和返回日期之差不超过15天");
-			}
-			if (message.contains("Parameter 'passengercount' must be between 0 and 10")) {
-				sabreExResponse.setMessage("乘客数量必须是 0 到 10 之间");
-			}
-		}
-		if (resp.getStatusCode() == 404) {
-			SabreExResponse sabreExResponse = (SabreExResponse) resp.getData();
-			String message = sabreExResponse.getMessage();
-			if (message.contains("No results")) {
-				sabreExResponse.setMessage("未查询到结果");
-			}
 		}
 
 		System.out.println(resp);

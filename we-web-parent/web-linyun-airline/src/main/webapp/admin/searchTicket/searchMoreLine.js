@@ -126,10 +126,12 @@ $(function () {
 				//设置新的出发城市下拉ID
 				var outCity = $(this).find('[name=origin0]');
 				outCity.attr("id","outCity"+i);
+				$('#outCity'+i).empty();
 				$('#outCity'+i).next().remove();
 				//设置新的返回城市下拉框ID
 				var singleArriveCity = $(this).find('[name=destination0]');
 				singleArriveCity.attr("id","singleArriveCity"+i);
+				$('#singleArriveCity'+i).empty();
 				$('#singleArriveCity'+i).next().remove();
 				//设置新的出发日期
 				var departuredate = $(this).find('[name=departuredate0]');
@@ -173,7 +175,10 @@ $("#searchSingleTicketsBtn").click(function() {
 	var outDatepicker = $("#outDatepicker0").val();
 	var returnDatepicker = $("#returnDatepicker0").val();
 	var airType = $("input[name='voyageType']:checked").val();
-	
+	var agentNum = $("#agentSelect").val();
+	var childNum = $("#childrenSelect").val();
+	var babyNum = $("#babySelect").val();
+
 	var ariaStr = $('#tab_3Id').attr("aria-expanded");
 	//国际不需要验证 客户名称
 	if(ariaStr != "true"){
@@ -200,6 +205,10 @@ $("#searchSingleTicketsBtn").click(function() {
 			layer.msg('返回日期不能为空');
 			return;
 		}
+	}
+	if((agentNum=="0") && (childNum=="0") && (babyNum=="0")){
+		layer.msg('乘客类型至少为一人');
+		return;
 	}
 	
 	/*var msgIndex = layer.msg('查询中...',{time:0});*/
@@ -296,7 +305,7 @@ $("#searchSingleTicketsBtn").click(function() {
 				}
 				
 			} else {
-				layer.msg(resp.data.message, "", 2000);
+				layer.msg("未查询到结果", "", 2000);
 			}
 		},
 		error : function(xhr) {
