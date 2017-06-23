@@ -57,6 +57,13 @@ public class BargainFinderMaxSearchForm {
 	//舱位等级
 	private String airLevel;
 
+	/**是否直飞*/
+	private boolean directFlightsOnly;
+
+	public boolean getDirectFlightsOnly() {
+		return directFlightsOnly;
+	}
+
 	/**
 	 * 座位数:The sum of all seats required by all passenger groups.
 	 */
