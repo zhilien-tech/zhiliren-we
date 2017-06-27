@@ -493,10 +493,16 @@ public class SabreServiceImpl implements SabreService {
 		travelPreferences.setValidInterlineTicket(true);
 
 		//仓位等级
-		CabinPrefType cabinPref = new CabinPrefType();
-		cabinPref.setCabin(CabinType.fromValue(paramForm.getAirLevel()));
-		cabinPref.setPreferLevel(PreferLevelType.PREFERRED);
-		travelPreferences.getCabinPref().add(cabinPref);
+		List<String> airLevels = paramForm.getAirLevel();
+		if (!Util.isEmpty(airLevels)) {
+			for (String level : airLevels) {
+				CabinPrefType cabinPref = new CabinPrefType();
+				cabinPref.setCabin(CabinType.fromValue(level));
+				cabinPref.setPreferLevel(PreferLevelType.PREFERRED);
+				travelPreferences.getCabinPref().add(cabinPref);
+			}
+		}
+
 		result.setTravelPreferences(travelPreferences);
 
 		//<TravelerInfoSummary>
