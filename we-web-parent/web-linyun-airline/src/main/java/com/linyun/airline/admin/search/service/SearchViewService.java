@@ -370,30 +370,34 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			form.setSeatsRequested(String.valueOf(passengercount));
 		}
 		//舱位等级
-		List<String> airLevels = searchForm.getAirLevel();
+		List<String> airLevels = Lists.newArrayList();
 		int airLev = searchForm.getAirLev();
 		if (AIR_ECONOMY == airLev) {
 			//经济舱
-			airLevels.add("Y");
+			airLevels.add("S");
+			/*airLevels.add("Y");
 			airLevels.add("S");
 			airLevels.add("P");
 			airLevels.add("Economy");
-			airLevels.add("PremiumEconomy");
+			airLevels.add("PremiumEconomy");*/
 
 		} else if (AIR_FIRST == airLev) {
 			//头等舱
 			airLevels.add("F");
 			airLevels.add("First");
-			airLevels.add("PremiumFirst");
+			/*airLevels.add("PremiumFirst");*/
 
 		} else {
 			//商务舱
 			airLevels.add("C");
 			airLevels.add("J");
 			airLevels.add("Business");
-			airLevels.add("PremiumBusiness");
+			/*airLevels.add("PremiumBusiness");*/
 		}
 		form.setAirLevel(airLevels);
+		//直飞
+		/*form.setDirectFlightsOnly(true);*/
+
 		SabreService service = new SabreServiceImpl();
 		SabreResponse resp = service.bargainFinderMaxSearch(form);
 

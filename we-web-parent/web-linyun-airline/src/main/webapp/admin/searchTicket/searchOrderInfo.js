@@ -118,7 +118,7 @@ function clearSearchHtml(){
 	$("#agentSelect").val("0");
 	$("#childrenSelect").val("0");
 	$("#babySelect").val("0");
-	$("#airLevel").val("Y");
+	$("#airLevel").val("1");
 }
 
 //清除检索结果
