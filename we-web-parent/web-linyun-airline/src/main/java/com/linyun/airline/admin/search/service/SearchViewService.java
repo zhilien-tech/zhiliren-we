@@ -374,9 +374,8 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		int airLev = searchForm.getAirLev();
 		if (AIR_ECONOMY == airLev) {
 			//经济舱
-			airLevels.add("S");
-			/*airLevels.add("Y");
-			airLevels.add("S");
+			airLevels.add("Y");
+			/*airLevels.add("S");
 			airLevels.add("P");
 			airLevels.add("Economy");
 			airLevels.add("PremiumEconomy");*/
@@ -384,8 +383,8 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		} else if (AIR_FIRST == airLev) {
 			//头等舱
 			airLevels.add("F");
-			airLevels.add("First");
-			/*airLevels.add("PremiumFirst");*/
+			/*airLevels.add("First");
+			airLevels.add("PremiumFirst");*/
 
 		} else {
 			//商务舱
