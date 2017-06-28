@@ -487,6 +487,9 @@ public class SabreServiceImpl implements SabreService {
 			}
 		}
 
+		//是否直飞
+		result.setDirectFlightsOnly(paramForm.getDirectFlightsOnly());
+
 		//<TravelPreferences>
 		AirSearchPrefsType travelPreferences = new AirSearchPrefsType();
 		//票务协议
