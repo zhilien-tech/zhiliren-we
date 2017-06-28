@@ -487,16 +487,25 @@ public class SabreServiceImpl implements SabreService {
 			}
 		}
 
+		//是否直飞
+		result.setDirectFlightsOnly(paramForm.getDirectFlightsOnly());
+
 		//<TravelPreferences>
 		AirSearchPrefsType travelPreferences = new AirSearchPrefsType();
 		//票务协议
 		travelPreferences.setValidInterlineTicket(true);
 
 		//仓位等级
-		CabinPrefType cabinPref = new CabinPrefType();
-		cabinPref.setCabin(CabinType.fromValue(paramForm.getAirLevel()));
-		cabinPref.setPreferLevel(PreferLevelType.PREFERRED);
-		travelPreferences.getCabinPref().add(cabinPref);
+		List<String> airLevels = paramForm.getAirLevel();
+		if (!Util.isEmpty(airLevels)) {
+			for (String level : airLevels) {
+				CabinPrefType cabinPref = new CabinPrefType();
+				cabinPref.setCabin(CabinType.fromValue(level));
+				cabinPref.setPreferLevel(PreferLevelType.PREFERRED);
+				travelPreferences.getCabinPref().add(cabinPref);
+			}
+		}
+
 		result.setTravelPreferences(travelPreferences);
 
 		//<TravelerInfoSummary>

@@ -86,6 +86,10 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	private static final int UP_MANAGER = UserTypeEnum.UP_MANAGER.intKey();
 	private static final int AGENT_MANAGER = UserTypeEnum.AGENT_MANAGER.intKey();
 
+	private static final int AIR_ECONOMY = AirLineLevelEnum.ECONOMY.intKey();
+	private static final int AIR_FIRST = AirLineLevelEnum.FIRST.intKey();
+	private static final int AIR_BUSINESS = AirLineLevelEnum.BUSINESS.intKey();
+
 	@Inject
 	private CustomerViewService customerViewService;
 	@Inject
@@ -366,7 +370,33 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			form.setSeatsRequested(String.valueOf(passengercount));
 		}
 		//舱位等级
-		form.setAirLevel(searchForm.getAirLevel());
+		List<String> airLevels = Lists.newArrayList();
+		int airLev = searchForm.getAirLev();
+		if (AIR_ECONOMY == airLev) {
+			//经济舱
+			airLevels.add("Y");
+			/*airLevels.add("S");
+			airLevels.add("P");
+			airLevels.add("Economy");
+			airLevels.add("PremiumEconomy");*/
+
+		} else if (AIR_FIRST == airLev) {
+			//头等舱
+			airLevels.add("F");
+			/*airLevels.add("First");
+			airLevels.add("PremiumFirst");*/
+
+		} else {
+			//商务舱
+			airLevels.add("C");
+			airLevels.add("J");
+			airLevels.add("Business");
+			/*airLevels.add("PremiumBusiness");*/
+		}
+		form.setAirLevel(airLevels);
+		//直飞
+		/*form.setDirectFlightsOnly(true);*/
+
 		SabreService service = new SabreServiceImpl();
 		SabreResponse resp = service.bargainFinderMaxSearch(form);
 

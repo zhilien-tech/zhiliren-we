@@ -17,18 +17,18 @@ import com.uxuexi.core.common.enums.IEnum;
  * @Date	 2017年6月22日 	 
  */
 public enum AirLineLevelEnum implements IEnum {
-	ECONOMY("Y", "经济舱"), PREMIUM_ECONOMY("PremiumEconomy", "高端经济舱"), FIRST("F", "头等舱"), BUSINESS("C", "公务舱");
-	private String key;
+	ECONOMY(1, "经济舱"), FIRST(2, "头等舱"), BUSINESS(3, "公务舱");
+	private int key;
 	private String value;
 
-	private AirLineLevelEnum(final String key, final String value) {
+	private AirLineLevelEnum(final int key, final String value) {
 		this.value = value;
 		this.key = key;
 	}
 
 	@Override
 	public String key() {
-		return key;
+		return String.valueOf(key);
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public enum AirLineLevelEnum implements IEnum {
 		return value;
 	}
 
-	public String intKey() {
+	public int intKey() {
 		return key;
 	}
 }
