@@ -10,9 +10,9 @@ import org.nutz.dao.SqlManager;
 import org.nutz.dao.Sqls;
 import org.nutz.dao.sql.Sql;
 
-import com.linyun.airline.entities.FeedbackEntity;
 import com.uxuexi.core.db.util.EntityUtil;
 import com.uxuexi.core.web.form.SQLParamForm;
+import com.xiaoka.template.entities.FeedbackEntity;
 
 @Data
 public class FeedbackForm implements SQLParamForm, Serializable {
