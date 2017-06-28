@@ -167,7 +167,7 @@ function onkeyEnter(){
 /* 跨海内陆多程查询 */
 var clickfirst=1;
 $("#searchSingleTicketsBtn").click(function() {
-	//clearSearchHtml();
+	$("#paragraphListInfo").html("");
 	var linkName = $("#linkNameId").select2("val");
 	var phoneNum = $("#phoneNumId").select2("val");
 	var outCity = $('#outCity0').find("option:selected").text();

@@ -1,5 +1,6 @@
 /*跨海内陆多条件查询*/
 function searchInlandOrder(){
+	$("#paragraphListInfo").html("");
 	var linkName = $("#linkNameId").select2("val");
 	var phoneNum = $("#phoneNumId").select2("val");
 	var outCity = $('#outCity0').find("option:selected").text();
