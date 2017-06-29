@@ -50,8 +50,6 @@
 <script src="${base}/public/plugins/iCheck/icheck.min.js"></script>
 <!-- FastClick -->
 <script src="${base}/public/plugins/fastclick/fastclick.js"></script>
-<!-- FastClick -->
-<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="${base}/public/dist/js/app.min.js"></script>
 <script src="${base}/common/js/layer/layer.js"></script>
