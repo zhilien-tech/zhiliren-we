@@ -32,6 +32,11 @@ public class ModuleDesc {
 	private String moduleName;
 
 	/**
+	 * 模块代码
+	 */
+	private String moduleCode;
+
+	/**
 	 * 类名
 	 */
 	private String moduleClassName;

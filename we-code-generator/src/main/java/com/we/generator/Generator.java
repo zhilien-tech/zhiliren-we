@@ -196,6 +196,7 @@ public class Generator {
 					LoadConfig.SERVICE_PKG_NAME, serviceClassName);
 
 			md.setModuleName(moduleName);
+			md.setModuleCode(moduleCode);
 			md.setPackageName(mdPkgName.toLowerCase());
 			md.setServiceClassName(serviceClassName);
 			String atUrl = baseUri + logicPath + "/" + moduleCode;
@@ -269,6 +270,7 @@ public class Generator {
 		jspCtx.put("fieldList", fieldList);
 		jspCtx.put("atUrl", md.getAtUrl());
 		jspCtx.put("moudleName", md.getModuleName());
+		jspCtx.put("moudleCode", md.getModuleCode());
 
 		String listTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/view/list.vm";
 		File listPage = new File(jspOutPut, pageFilePath + "/" + "list.jsp");
