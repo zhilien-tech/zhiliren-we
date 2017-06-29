@@ -161,6 +161,8 @@ public class Generator {
 			String[] rowArr = moduleInfo.get(i); //每一行
 			//逻辑划分
 			String logic = rowArr[0];
+			//模块名称
+			String moduleName = rowArr[1];
 			//模块code
 			String moduleCode = rowArr[2];
 			//功能code
@@ -193,6 +195,7 @@ public class Generator {
 			String serviceFullClassName = Joiner.on(".").join(basePkg, logicPath, moduleCode,
 					LoadConfig.SERVICE_PKG_NAME, serviceClassName);
 
+			md.setModuleName(moduleName);
 			md.setPackageName(mdPkgName.toLowerCase());
 			md.setServiceClassName(serviceClassName);
 			String atUrl = baseUri + logicPath + "/" + moduleCode;
@@ -265,6 +268,7 @@ public class Generator {
 		VelocityContext jspCtx = new VelocityContext();
 		jspCtx.put("fieldList", fieldList);
 		jspCtx.put("atUrl", md.getAtUrl());
+		jspCtx.put("moudleName", md.getModuleName());
 
 		String listTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/view/list.vm";
 		File listPage = new File(jspOutPut, pageFilePath + "/" + "list.jsp");

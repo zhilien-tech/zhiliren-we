@@ -27,6 +27,11 @@ public class ModuleDesc {
 	private String packageName;
 
 	/**
+	 * 模块名
+	 */
+	private String moduleName;
+
+	/**
 	 * 类名
 	 */
 	private String moduleClassName;
