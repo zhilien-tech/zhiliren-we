@@ -305,6 +305,10 @@ public class Generator {
 		String entityClassName = rowArr[6];
 		String entityPkgName = Joiner.on(".").join(basePkg, LoadConfig.ENTITY_PKG_NAME);
 		String fullEntityClassName = Joiner.on(".").join(entityPkgName, entityClassName);
+		//form
+		String formClassName = entityClassName.split("Entity")[0] + "Form";
+		String formPkgName = Joiner.on(".").join(basePkg, LoadConfig.FORM_PKG_NAME);
+		String fullFormClassName = Joiner.on(".").join(formPkgName, formClassName);
 
 		double dl = Double.valueOf(logic);
 		int intL = (int) dl;
@@ -319,9 +323,11 @@ public class Generator {
 		sd.setServiceClassName(serviceClassName);
 		sd.setEntityClassName(entityClassName);
 		sd.setFullEntityClassName(fullEntityClassName);
+		sd.setFullFormClassName(fullFormClassName);
 
 		VelocityContext context = new VelocityContext();
 		context.put("service", sd);
+		context.put("formName", formClassName);
 
 		//service
 		String serviceFilePath = Utils.getPath4Pkg(sdPkgName);
