@@ -39,7 +39,7 @@ $("#airline").select2({
 /*------------------------搜索条件 下拉列表  start----------------------------*/
 /*成人下拉列表*/
 var _agentSelect = document.getElementById("agentSelect");
-for ( i = 1; i <= 10; i++){  
+for ( i = 2; i <= 10; i++){  
 	var _option = document.createElement("option");  
 	_option.value = i;  
 	_option.text = "成人"+i;  
