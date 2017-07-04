@@ -331,7 +331,7 @@
 											<td><label>乘客类型：</label></td>
 											<td><select id="agentSelect" name="agentSelect"
 												class="form-control input-sm">
-													<option value="0" selected="selected">成人 0</option>
+													<option value="1" selected="selected">成人 1</option>
 											</select></td>
 											<td class="paddTd"><select id="childrenSelect"
 												name="childrenSelect" class="form-control input-sm">

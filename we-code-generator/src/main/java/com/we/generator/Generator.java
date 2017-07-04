@@ -60,17 +60,16 @@ public class Generator {
 		boolean forceCover = false; //是否覆盖已经存在的文件 
 		useLombok = Boolean.valueOf(propConfig.get("use_lombok"));
 		forceCover = Boolean.valueOf(propConfig.get("force_cover"));
-		String templatePackage = propConfig.get("template_package");
 
-		String template = LoadConfig.TEMPLATE_PATH + templatePackage + "/entity.vm";
-		String formTemplate = LoadConfig.TEMPLATE_PATH + templatePackage + "/form.vm";
-		String addFormTemplate = LoadConfig.TEMPLATE_PATH + templatePackage + "/addForm.vm";
-		String updateFormTemplate = LoadConfig.TEMPLATE_PATH + templatePackage + "/updateForm.vm";
+		String template = LoadConfig.TEMPLATE_PATH + "entity.vm";
+		String formTemplate = LoadConfig.TEMPLATE_PATH + "form.vm";
+		String addFormTemplate = LoadConfig.TEMPLATE_PATH + "addForm.vm";
+		String updateFormTemplate = LoadConfig.TEMPLATE_PATH + "updateForm.vm";
 		if (useLombok) {
-			template = LoadConfig.TEMPLATE_PATH + templatePackage + "/entity4lombok.vm";
-			formTemplate = LoadConfig.TEMPLATE_PATH + templatePackage + "/form4lombok.vm";
-			addFormTemplate = LoadConfig.TEMPLATE_PATH + templatePackage + "/addForm4lombok.vm";
-			updateFormTemplate = LoadConfig.TEMPLATE_PATH + templatePackage + "/updateForm4lombok.vm";
+			template = LoadConfig.TEMPLATE_PATH + "entity4lombok.vm";
+			formTemplate = LoadConfig.TEMPLATE_PATH + "form4lombok.vm";
+			addFormTemplate = LoadConfig.TEMPLATE_PATH + "addForm4lombok.vm";
+			updateFormTemplate = LoadConfig.TEMPLATE_PATH + "updateForm4lombok.vm";
 		}
 
 		Pattern includePattern = Pattern.compile(".*");
@@ -133,9 +132,9 @@ public class Generator {
 		String basePkg = propConfig.get("base_package");
 		boolean forceCover = false; //是否覆盖已经存在的文件 
 		forceCover = Boolean.valueOf(propConfig.get("force_cover"));
-		String templatePackage = propConfig.get("template_package");
-		String moduleTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/module.vm";
-		String serviceTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/service.vm";
+
+		String moduleTpl = LoadConfig.TEMPLATE_PATH + "module.vm";
+		String serviceTpl = LoadConfig.TEMPLATE_PATH + "service.vm";
 
 		//读取excel功能模块信息
 		InputStream ins = ClassLoader.getSystemResourceAsStream("code-generator/module.xlsx");
@@ -232,11 +231,6 @@ public class Generator {
 
 	private void genJsp(boolean force, VelocityHandler handler, ModuleDesc md) throws ClassNotFoundException,
 			IOException {
-
-		Ioc ioc = new NutIoc(new JsonLoader(LoadConfig.IOC_KVCFG_PATH));
-		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
-		String templatePackage = propConfig.get("template_package");
-
 		String fullEntityClassName = md.getFullEntityClassName();
 		Class<?> entityClass = Class.forName(fullEntityClassName);
 		Mirror<?> mirror = Mirror.me(entityClass);
@@ -266,21 +260,21 @@ public class Generator {
 		jspCtx.put("fieldList", fieldList);
 		jspCtx.put("atUrl", md.getAtUrl());
 
-		String listTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/view/list.vm";
+		String listTpl = LoadConfig.TEMPLATE_PATH + "/view/list.vm";
 		File listPage = new File(jspOutPut, pageFilePath + "/" + "list.jsp");
 		handler.writeToFile(jspCtx, listTpl, listPage, force);
 
-		String updateTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/view/update.vm";
+		String updateTpl = LoadConfig.TEMPLATE_PATH + "/view/update.vm";
 		File updatePage = new File(jspOutPut, pageFilePath + "/" + "update.jsp");
 		handler.writeToFile(jspCtx, updateTpl, updatePage, force);
 
-		String addTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/view/add.vm";
+		String addTpl = LoadConfig.TEMPLATE_PATH + "/view/add.vm";
 		File addPage = new File(jspOutPut, pageFilePath + "/" + "add.jsp");
 		handler.writeToFile(jspCtx, addTpl, addPage, force);
 
 		for (ActionDesc ad : md.getActionList()) {
 			File commonPage = new File(jspOutPut, pageFilePath + "/" + ad.getActionName() + ".jsp");
-			String commonTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/view/common.vm";
+			String commonTpl = LoadConfig.TEMPLATE_PATH + "/view/common.vm";
 			handler.writeToFile(jspCtx, commonTpl, commonPage, force);
 		}
 	}
