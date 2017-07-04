@@ -36,4 +36,9 @@ public class ServiceDesc {
 	 */
 	private String fullEntityClassName;
 
+	/**
+	 * 相关form的完整类名，用于import
+	 */
+	private String fullFormClassName;
+
 }

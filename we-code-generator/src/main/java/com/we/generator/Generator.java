@@ -60,16 +60,17 @@ public class Generator {
 		boolean forceCover = false; //是否覆盖已经存在的文件 
 		useLombok = Boolean.valueOf(propConfig.get("use_lombok"));
 		forceCover = Boolean.valueOf(propConfig.get("force_cover"));
+		String templatePackage = propConfig.get("template_package");
 
-		String template = LoadConfig.TEMPLATE_PATH + "entity.vm";
-		String formTemplate = LoadConfig.TEMPLATE_PATH + "form.vm";
-		String addFormTemplate = LoadConfig.TEMPLATE_PATH + "addForm.vm";
-		String updateFormTemplate = LoadConfig.TEMPLATE_PATH + "updateForm.vm";
+		String template = LoadConfig.TEMPLATE_PATH + templatePackage + "/entity.vm";
+		String formTemplate = LoadConfig.TEMPLATE_PATH + templatePackage + "/form.vm";
+		String addFormTemplate = LoadConfig.TEMPLATE_PATH + templatePackage + "/addForm.vm";
+		String updateFormTemplate = LoadConfig.TEMPLATE_PATH + templatePackage + "/updateForm.vm";
 		if (useLombok) {
-			template = LoadConfig.TEMPLATE_PATH + "entity4lombok.vm";
-			formTemplate = LoadConfig.TEMPLATE_PATH + "form4lombok.vm";
-			addFormTemplate = LoadConfig.TEMPLATE_PATH + "addForm4lombok.vm";
-			updateFormTemplate = LoadConfig.TEMPLATE_PATH + "updateForm4lombok.vm";
+			template = LoadConfig.TEMPLATE_PATH + templatePackage + "/entity4lombok.vm";
+			formTemplate = LoadConfig.TEMPLATE_PATH + templatePackage + "/form4lombok.vm";
+			addFormTemplate = LoadConfig.TEMPLATE_PATH + templatePackage + "/addForm4lombok.vm";
+			updateFormTemplate = LoadConfig.TEMPLATE_PATH + templatePackage + "/updateForm4lombok.vm";
 		}
 
 		Pattern includePattern = Pattern.compile(".*");
@@ -132,9 +133,9 @@ public class Generator {
 		String basePkg = propConfig.get("base_package");
 		boolean forceCover = false; //是否覆盖已经存在的文件 
 		forceCover = Boolean.valueOf(propConfig.get("force_cover"));
-
-		String moduleTpl = LoadConfig.TEMPLATE_PATH + "module.vm";
-		String serviceTpl = LoadConfig.TEMPLATE_PATH + "service.vm";
+		String templatePackage = propConfig.get("template_package");
+		String moduleTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/module.vm";
+		String serviceTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/service.vm";
 
 		//读取excel功能模块信息
 		InputStream ins = ClassLoader.getSystemResourceAsStream("code-generator/module.xlsx");
@@ -160,6 +161,8 @@ public class Generator {
 			String[] rowArr = moduleInfo.get(i); //每一行
 			//逻辑划分
 			String logic = rowArr[0];
+			//模块名称
+			String moduleName = rowArr[1];
 			//模块code
 			String moduleCode = rowArr[2];
 			//功能code
@@ -192,6 +195,8 @@ public class Generator {
 			String serviceFullClassName = Joiner.on(".").join(basePkg, logicPath, moduleCode,
 					LoadConfig.SERVICE_PKG_NAME, serviceClassName);
 
+			md.setModuleName(moduleName);
+			md.setModuleCode(moduleCode);
 			md.setPackageName(mdPkgName.toLowerCase());
 			md.setServiceClassName(serviceClassName);
 			String atUrl = baseUri + logicPath + "/" + moduleCode;
@@ -231,6 +236,11 @@ public class Generator {
 
 	private void genJsp(boolean force, VelocityHandler handler, ModuleDesc md) throws ClassNotFoundException,
 			IOException {
+
+		Ioc ioc = new NutIoc(new JsonLoader(LoadConfig.IOC_KVCFG_PATH));
+		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
+		String templatePackage = propConfig.get("template_package");
+
 		String fullEntityClassName = md.getFullEntityClassName();
 		Class<?> entityClass = Class.forName(fullEntityClassName);
 		Mirror<?> mirror = Mirror.me(entityClass);
@@ -259,22 +269,24 @@ public class Generator {
 		VelocityContext jspCtx = new VelocityContext();
 		jspCtx.put("fieldList", fieldList);
 		jspCtx.put("atUrl", md.getAtUrl());
+		jspCtx.put("moudleName", md.getModuleName());
+		jspCtx.put("moudleCode", md.getModuleCode());
 
-		String listTpl = LoadConfig.TEMPLATE_PATH + "/view/list.vm";
+		String listTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/view/list.vm";
 		File listPage = new File(jspOutPut, pageFilePath + "/" + "list.jsp");
 		handler.writeToFile(jspCtx, listTpl, listPage, force);
 
-		String updateTpl = LoadConfig.TEMPLATE_PATH + "/view/update.vm";
+		String updateTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/view/update.vm";
 		File updatePage = new File(jspOutPut, pageFilePath + "/" + "update.jsp");
 		handler.writeToFile(jspCtx, updateTpl, updatePage, force);
 
-		String addTpl = LoadConfig.TEMPLATE_PATH + "/view/add.vm";
+		String addTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/view/add.vm";
 		File addPage = new File(jspOutPut, pageFilePath + "/" + "add.jsp");
 		handler.writeToFile(jspCtx, addTpl, addPage, force);
 
 		for (ActionDesc ad : md.getActionList()) {
 			File commonPage = new File(jspOutPut, pageFilePath + "/" + ad.getActionName() + ".jsp");
-			String commonTpl = LoadConfig.TEMPLATE_PATH + "/view/common.vm";
+			String commonTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/view/common.vm";
 			handler.writeToFile(jspCtx, commonTpl, commonPage, force);
 		}
 	}
@@ -293,6 +305,10 @@ public class Generator {
 		String entityClassName = rowArr[6];
 		String entityPkgName = Joiner.on(".").join(basePkg, LoadConfig.ENTITY_PKG_NAME);
 		String fullEntityClassName = Joiner.on(".").join(entityPkgName, entityClassName);
+		//form
+		String formClassName = entityClassName.split("Entity")[0] + "Form";
+		String formPkgName = Joiner.on(".").join(basePkg, LoadConfig.FORM_PKG_NAME);
+		String fullFormClassName = Joiner.on(".").join(formPkgName, formClassName);
 
 		double dl = Double.valueOf(logic);
 		int intL = (int) dl;
@@ -307,9 +323,11 @@ public class Generator {
 		sd.setServiceClassName(serviceClassName);
 		sd.setEntityClassName(entityClassName);
 		sd.setFullEntityClassName(fullEntityClassName);
+		sd.setFullFormClassName(fullFormClassName);
 
 		VelocityContext context = new VelocityContext();
 		context.put("service", sd);
+		context.put("formName", formClassName);
 
 		//service
 		String serviceFilePath = Utils.getPath4Pkg(sdPkgName);
