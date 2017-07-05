@@ -328,18 +328,38 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * 
 	 * TODO
 	 */
-	public Object searchSingleTickets(BargainFinderMaxSearchForm searchForm) {
+	public Object searchSingleTickets(BargainFinderMaxSearchForm searchForm, HttpSession session) {
 
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long userId = loginUser.getId();
+
+		String origin = searchForm.getOrigin();
+		String destination = searchForm.getDestination();
 		//出发日期
 		String dateStr = searchForm.getDeparturedate();
 		String departuredate = DateUtil.format(dateStr, "yyyy-MM-dd'T'HH:mm:ss");
+		//返程日期
+		String returnStr = searchForm.getReturndate();
+		String returndate = "";
+		if (!Util.isEmpty(returnStr)) {
+			returndate = DateUtil.format(returnStr, "yyyy-MM-dd'T'HH:mm:ss");
+		}
+
 		OriginDest od = new OriginDest();
-		od.setOrigin(searchForm.getOrigin());
-		od.setDestination(searchForm.getDestination());
+		od.setOrigin(origin);
+		od.setDestination(destination);
 		od.setDeparturedate(departuredate);
 
+		OriginDest rOd = new OriginDest();
+		rOd.setOrigin(destination);
+		rOd.setDestination(origin);
+		rOd.setDeparturedate(returndate);
 		BargainFinderMaxSearchForm form = new BargainFinderMaxSearchForm();
 		form.getOriginDests().add(od);
+		/*if (!Util.isEmpty(returnStr)) {
+			form.getOriginDests().add(rOd);
+		}*/
 
 		//航空公司
 		List<String> carriers = new ArrayList<String>();
@@ -391,8 +411,13 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		//直飞
 		/*form.setDirectFlightsOnly(true);*/
 
+		//缓存中的key值
+		String cacheKey = airlineCode + "-" + origin + "-" + destination + "-" + dateStr + "-" + returnStr + "-"
+				+ airLev + "-" + agentNum + "-" + childNum + "-" + babyNum + "-" + userId;
+
 		SabreService service = new SabreServiceImpl();
 		SabreResponse resp = service.bargainFinderMaxSearch(form);
+		//TODO 缓存机票
 
 		if (resp.getStatusCode() == 200) {
 			List<BFMAirItinerary> directList = new ArrayList<BFMAirItinerary>(); //直飞列表
@@ -1557,5 +1582,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 		return userIds;
 	}
+
+	//TODO 机票列表页缓存
 
 }
