@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,6 +23,11 @@ import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
 import com.google.common.base.Function;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.cache.RemovalListener;
+import com.google.common.cache.RemovalNotification;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.linyun.airline.admin.customer.service.CustomerViewService;
@@ -45,6 +52,7 @@ import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.enums.UserStatusEnum;
 import com.linyun.airline.common.enums.UserTypeEnum;
 import com.linyun.airline.common.result.Select2Option;
+import com.linyun.airline.common.sabre.bean.BargainFinderSearch;
 import com.linyun.airline.common.sabre.dto.BFMAirItinerary;
 import com.linyun.airline.common.sabre.dto.FlightSegment;
 import com.linyun.airline.common.sabre.dto.OriginDest;
@@ -105,6 +113,50 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	private static final String INTERTYPE = "interOrderType";
 	private static final String CITYCODE = "CFCS";
 	private static final String AIRCOMCODE = "HKGS";
+
+	//TODO
+	//token授权默认过期时间(秒)
+	private static final int DEFAULT_EXPIREXIN = 600;
+	//LoadingCache在缓存项不存在时可以自动加载缓存 
+	static LoadingCache<String, BargainFinderSearch> cache
+
+	//CacheBuilder的构造函数是私有的，只能通过其静态方法newBuilder()来获得CacheBuilder的实例
+	= CacheBuilder.newBuilder()
+
+	//设置并发级别,并发级别是指可以同时写缓存的线程数 
+			.concurrencyLevel(1000)
+
+			//设置写缓存后8秒钟过期
+			.expireAfterWrite(DEFAULT_EXPIREXIN, TimeUnit.SECONDS)
+
+			//设置缓存容器的初始容量为
+			.initialCapacity(1000)
+
+			//设置缓存最大容量，超过之后就会按照LRU最近虽少使用算法来移除缓存项
+			.maximumSize(1000)
+
+			//设置要统计缓存的命中率
+			.recordStats()
+
+			//设置缓存的移除通知
+			.removalListener(new RemovalListener<String, BargainFinderSearch>() {
+				@Override
+				public void onRemoval(RemovalNotification<String, BargainFinderSearch> notification) {
+					log.info(notification.getKey() + " was removed, cause is " + notification.getCause());
+				}
+			})
+
+			//指定CacheLoader，当缓存不存在时通过CacheLoader的实现自动加载缓存
+			.build(new CacheLoader<String, BargainFinderSearch>() {
+				@Override
+				public BargainFinderSearch load(String key) throws Exception {
+					/*BargainFinderSearch token = fetchToken();
+					long now = System.currentTimeMillis();
+					token.setLoadTimeMillis(now);
+					return token;*/
+					return null;
+				}
+			});
 
 	/**
 	 * 
@@ -326,15 +378,25 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	/**
 	 * 查询跨海内陆飞机票
 	 * 
-	 * TODO
 	 */
+	/**
+	 * TODO(这里用一句话描述这个方法的作用)
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param searchForm
+	 * @param session
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	*/
 	public Object searchSingleTickets(BargainFinderMaxSearchForm searchForm, HttpSession session) {
 
 		//当前用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long userId = loginUser.getId();
 
+		//出发城市
 		String origin = searchForm.getOrigin();
+		//抵达城市
 		String destination = searchForm.getDestination();
 		//出发日期
 		String dateStr = searchForm.getDeparturedate();
@@ -411,13 +473,45 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		//直飞
 		/*form.setDirectFlightsOnly(true);*/
 
+		SabreService service = new SabreServiceImpl();
+
 		//缓存中的key值
 		String cacheKey = airlineCode + "-" + origin + "-" + destination + "-" + dateStr + "-" + returnStr + "-"
 				+ airLev + "-" + agentNum + "-" + childNum + "-" + babyNum + "-" + userId;
 
-		SabreService service = new SabreServiceImpl();
-		SabreResponse resp = service.bargainFinderMaxSearch(form);
-		//TODO 缓存机票
+		//缓存机票 TODO
+		BargainFinderSearch bfSearch = null;
+		SabreResponse resp = new SabreResponse();
+
+		try {
+			bfSearch = cache.get(cacheKey);
+			long now = System.currentTimeMillis();
+			if (!Util.isEmpty(bfSearch)) {
+				long loadTimeMillis = bfSearch.getLoadTimeMillis();
+				int passed = (int) (now - loadTimeMillis) / 1000;
+
+				log.debug("get search passed " + passed);
+				if (passed >= bfSearch.getExpires_in()) {
+					//缓存过期
+					cache.invalidate(cacheKey);
+					bfSearch.setResp(service.bargainFinderMaxSearch(form));
+					bfSearch.setLoadTimeMillis(now);
+					bfSearch.setExpires_in(DEFAULT_EXPIREXIN);
+					cache.put(cacheKey, bfSearch);
+				}
+			} else {
+				//如果缓存中token为空的话，去sabre取
+				bfSearch.setResp(service.bargainFinderMaxSearch(form));
+				bfSearch.setLoadTimeMillis(now);
+				bfSearch.setExpires_in(DEFAULT_EXPIREXIN);
+				cache.put(cacheKey, bfSearch);
+			}
+			//从缓存中获取resp
+			resp = cache.get(cacheKey).getResp();
+
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
 
 		if (resp.getStatusCode() == 200) {
 			List<BFMAirItinerary> directList = new ArrayList<BFMAirItinerary>(); //直飞列表
@@ -1350,7 +1444,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		String msgContent = ""; //消息内容
 		switch (orderStatus) {
 		case 1:
-			//TODO  设置参数， 如果参数一致，则更新；  不一致，则添加
+			//设置参数， 如果参数一致，则更新；  不一致，则添加
 			//查询 4
 			msgType = MessageTypeEnum.SEARCHMSG.intKey();
 			//消息等级2
@@ -1510,7 +1604,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * @param id  客户信息id
 	 */
 	public Double getMoney(long id) {
-		//根据客户信息id， 查询已欠款   TODO
+		//根据客户信息id， 查询已欠款   
 		//INLAND 欠款统计
 		Sql arrearsSql = Sqls.create(sqlManager.get("customer_inland_arrearsMoney_byId"));
 		arrearsSql.setCallback(Sqls.callback.records());
