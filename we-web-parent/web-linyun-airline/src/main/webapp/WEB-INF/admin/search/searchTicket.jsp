@@ -579,6 +579,7 @@
 		<script src="${base }/admin/order/ordercommon.js"></script>
 		<!-- 解析sabre -->
 		<script type="text/javascript">
+		
 			function parsingText() {
 				$.ajax({
 					url : BASE_PATH + "/admin/search/parsingPNR.html",

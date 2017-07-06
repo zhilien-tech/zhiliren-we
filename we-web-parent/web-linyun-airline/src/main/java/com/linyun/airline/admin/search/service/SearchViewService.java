@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,11 +21,6 @@ import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
 import com.google.common.base.Function;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import com.google.common.cache.RemovalListener;
-import com.google.common.cache.RemovalNotification;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.linyun.airline.admin.customer.service.CustomerViewService;
@@ -117,46 +110,8 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	//TODO
 	//token授权默认过期时间(秒)
 	private static final int DEFAULT_EXPIREXIN = 600;
-	//LoadingCache在缓存项不存在时可以自动加载缓存 
-	static LoadingCache<String, BargainFinderSearch> cache
-
-	//CacheBuilder的构造函数是私有的，只能通过其静态方法newBuilder()来获得CacheBuilder的实例
-	= CacheBuilder.newBuilder()
-
-	//设置并发级别,并发级别是指可以同时写缓存的线程数 
-			.concurrencyLevel(1000)
-
-			//设置写缓存后8秒钟过期
-			.expireAfterWrite(DEFAULT_EXPIREXIN, TimeUnit.SECONDS)
-
-			//设置缓存容器的初始容量为
-			.initialCapacity(1000)
-
-			//设置缓存最大容量，超过之后就会按照LRU最近虽少使用算法来移除缓存项
-			.maximumSize(1000)
-
-			//设置要统计缓存的命中率
-			.recordStats()
-
-			//设置缓存的移除通知
-			.removalListener(new RemovalListener<String, BargainFinderSearch>() {
-				@Override
-				public void onRemoval(RemovalNotification<String, BargainFinderSearch> notification) {
-					log.info(notification.getKey() + " was removed, cause is " + notification.getCause());
-				}
-			})
-
-			//指定CacheLoader，当缓存不存在时通过CacheLoader的实现自动加载缓存
-			.build(new CacheLoader<String, BargainFinderSearch>() {
-				@Override
-				public BargainFinderSearch load(String key) throws Exception {
-					/*BargainFinderSearch token = fetchToken();
-					long now = System.currentTimeMillis();
-					token.setLoadTimeMillis(now);
-					return token;*/
-					return null;
-				}
-			});
+	//缓存 
+	static Map<String, BargainFinderSearch> cache = Maps.newHashMap();
 
 	/**
 	 * 
@@ -476,11 +431,11 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		SabreService service = new SabreServiceImpl();
 
 		//缓存中的key值
-		String cacheKey = airlineCode + "-" + origin + "-" + destination + "-" + dateStr + "-" + returnStr + "-"
-				+ airLev + "-" + agentNum + "-" + childNum + "-" + babyNum + "-" + userId;
+		String cacheKey = userId + "-" + airlineCode + "-" + origin + "-" + destination + "-" + dateStr + "-"
+				+ returnStr + "-" + airLev + "-" + agentNum + "-" + childNum + "-" + babyNum;
 
 		//缓存机票 TODO
-		BargainFinderSearch bfSearch = null;
+		BargainFinderSearch bfSearch = new BargainFinderSearch();
 		SabreResponse resp = new SabreResponse();
 
 		try {
@@ -493,15 +448,17 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				log.debug("get search passed " + passed);
 				if (passed >= bfSearch.getExpires_in()) {
 					//缓存过期
-					cache.invalidate(cacheKey);
-					bfSearch.setResp(service.bargainFinderMaxSearch(form));
+					SabreResponse sResp = service.bargainFinderMaxSearch(form);
+					bfSearch.setResp(sResp);
 					bfSearch.setLoadTimeMillis(now);
 					bfSearch.setExpires_in(DEFAULT_EXPIREXIN);
 					cache.put(cacheKey, bfSearch);
 				}
 			} else {
+				bfSearch = new BargainFinderSearch();
 				//如果缓存中token为空的话，去sabre取
-				bfSearch.setResp(service.bargainFinderMaxSearch(form));
+				SabreResponse sResp = service.bargainFinderMaxSearch(form);
+				bfSearch.setResp(sResp);
 				bfSearch.setLoadTimeMillis(now);
 				bfSearch.setExpires_in(DEFAULT_EXPIREXIN);
 				cache.put(cacheKey, bfSearch);
@@ -509,7 +466,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			//从缓存中获取resp
 			resp = cache.get(cacheKey).getResp();
 
-		} catch (ExecutionException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -529,20 +486,23 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				for (FlightSegment flight : flightSegment) {
 					String departureDateTime = flight.getDepartureDateTime();
 					String arrivalDateTime = flight.getArrivalDateTime();
-					if (!Util.isEmpty(departureDateTime) || "" != departureDateTime) {
-						departureDateTime = departureDateTime.substring(11, 13) + departureDateTime.substring(14, 16);
-						flight.setDepartureDateTime(departureDateTime);
+					if (departureDateTime.length() > 4 && arrivalDateTime.length() > 4) {
+						if (!Util.isEmpty(departureDateTime) || "" != departureDateTime) {
+							departureDateTime = departureDateTime.substring(11, 13)
+									+ departureDateTime.substring(14, 16);
+						}
+						if (!Util.isEmpty(arrivalDateTime) || "" != arrivalDateTime) {
+							arrivalDateTime = arrivalDateTime.substring(11, 13) + arrivalDateTime.substring(14, 16);
+						}
 					}
-					if (!Util.isEmpty(arrivalDateTime) || "" != arrivalDateTime) {
-						arrivalDateTime = arrivalDateTime.substring(11, 13) + arrivalDateTime.substring(14, 16);
-						flight.setArrivalDateTime(arrivalDateTime);
-					}
+					flight.setDepartureDateTime(departureDateTime);
+					flight.setArrivalDateTime(arrivalDateTime);
 				}
 			}
 
 			//只展示直飞记录
 			if (directList.size() == 0) {
-				resp.setStatusCode(333);
+				resp.setStatusCode(0);
 			}
 			resp.setData(directList);
 		}
