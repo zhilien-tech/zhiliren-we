@@ -24,7 +24,7 @@ public class TestTimer {
 		//timer1();  
 		//timer2();
 		//timer3();  
-		timer4();
+		timer2();
 	}
 
 	// 第一种方法：设定指定任务task在指定时间time执行 schedule(TimerTask task, Date time)  
@@ -45,7 +45,7 @@ public class TestTimer {
 			public void run() {
 				System.out.println("-------设定要指定任务--------");
 			}
-		}, 1000 * 30, 1000 * 60);
+		}, 0, 1000 * 6);
 	}
 
 	// 第三种方法：设定指定任务task在指定延迟delay后进行固定频率peroid的执行。  

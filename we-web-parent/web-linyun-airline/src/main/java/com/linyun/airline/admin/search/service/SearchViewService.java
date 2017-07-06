@@ -107,9 +107,8 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	private static final String CITYCODE = "CFCS";
 	private static final String AIRCOMCODE = "HKGS";
 
-	//TODO
-	//token授权默认过期时间(秒)
-	private static final int DEFAULT_EXPIREXIN = 600;
+	//授权默认过期时间(5分钟)
+	private static final int DEFAULT_EXPIREXIN = 480;
 	//缓存 
 	static Map<String, BargainFinderSearch> cache = Maps.newHashMap();
 
@@ -456,7 +455,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				}
 			} else {
 				bfSearch = new BargainFinderSearch();
-				//如果缓存中token为空的话，去sabre取
+				//如果缓存中token为空的话，去sabre接口查询，放到缓存中
 				SabreResponse sResp = service.bargainFinderMaxSearch(form);
 				bfSearch.setResp(sResp);
 				bfSearch.setLoadTimeMillis(now);
@@ -508,6 +507,22 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		}
 
 		return resp;
+	}
+
+	//清除缓存中的信息
+	public String clearCacheSabre() {
+		for (Map.Entry<String, BargainFinderSearch> map : cache.entrySet()) {
+			long now = System.currentTimeMillis();
+			String key = map.getKey();
+			BargainFinderSearch bfSearch = map.getValue();
+			long loadTimeMillis = bfSearch.getLoadTimeMillis();
+
+			int passed = (int) (now - loadTimeMillis) / 1000;
+			if (passed >= bfSearch.getExpires_in()) {
+				cache.remove(key);
+			}
+		}
+		return "CLEAR SUCCESS";
 	}
 
 	/*public Object searchSingleTickets(InstaFlightsSearchForm searchForm) {

@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import com.linyun.airline.admin.drawback.grabfile.timer.MailScrabService;
 import com.linyun.airline.admin.salary.service.SalaryViewService;
+import com.linyun.airline.admin.search.service.SearchViewService;
 import com.uxuexi.core.common.enums.IEnum;
 import com.uxuexi.core.common.util.MapUtil;
 import com.uxuexi.core.web.config.KvConfig;
@@ -86,6 +87,9 @@ public class WeSetup implements Setup {
 		startTasks(ioc);
 		//初始化时启动定时执行，统计工资的任务
 		taskOfSalary(ioc);
+
+		//定时清理机票缓存
+		taskOfSabreCache(ioc);
 	}
 
 	private void startTasks(Ioc ioc) {
@@ -135,6 +139,29 @@ public class WeSetup implements Setup {
 					}
 				}
 			}, startTime, 1, TimeUnit.DAYS);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	private void taskOfSabreCache(Ioc ioc) {
+
+		final SearchViewService searchViewService = ioc.get(SearchViewService.class, "searchViewService");
+		//定时每天某个时间执行
+		Date now = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String startTime = sdf.format(now);
+		try {
+			Tasks.scheduleAtFixedRate(new Runnable() {
+				public void run() {
+					logger.info("机票缓存定时清理任务启动----------");
+					try {
+						searchViewService.clearCacheSabre();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}, startTime, 1, TimeUnit.MINUTES);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}

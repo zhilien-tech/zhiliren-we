@@ -13,6 +13,13 @@
 			</web-resource-collection> <user-data-constraint> <transport-guarantee>CONFIDENTIAL</transport-guarantee> 
 			</user-data-constraint> </security-constraint> -->
 
+		<!-- session监听器 -->
+		<!-- <listener>    
+		    <listener-class>    
+		        com.linyun.airline.admin.search.service.SessionCounter  
+		    </listener-class>    
+		</listener> -->
+
 		<!-- 字符编码转换拦截器配置 -->
 		<filter>
 			<filter-name>encodingFilter</filter-name>
@@ -61,5 +68,5 @@
 			<error-code>500</error-code>
 			<location>/WEB-INF/common/500.jsp</location>
 		</error-page>
-
+		
 	</web-app>

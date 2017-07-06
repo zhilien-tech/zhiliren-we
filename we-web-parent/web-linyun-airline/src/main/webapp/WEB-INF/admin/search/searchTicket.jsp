@@ -946,6 +946,8 @@
 				var airline = $("#airline").select2("val"); 
 				$("#airlineCode").val(airline);
 			}
+			
+			
 		</script>
 		
 
