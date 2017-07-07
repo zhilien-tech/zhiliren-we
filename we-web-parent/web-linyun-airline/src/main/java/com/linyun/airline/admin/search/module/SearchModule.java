@@ -135,8 +135,8 @@ public class SearchModule {
 		return searchViewService.searchSingleTickets(searchForm);
 	}
 	 */
-	public Object searchSingleTickets(@Param("..") BargainFinderMaxSearchForm searchForm) {
-		return searchViewService.searchSingleTickets(searchForm);
+	public Object searchSingleTickets(@Param("..") BargainFinderMaxSearchForm searchForm, HttpSession session) {
+		return searchViewService.searchSingleTickets(searchForm, session);
 	}
 
 	/**

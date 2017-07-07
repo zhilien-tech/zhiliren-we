@@ -45,6 +45,7 @@ import com.linyun.airline.common.enums.OrderTypeEnum;
 import com.linyun.airline.common.enums.UserStatusEnum;
 import com.linyun.airline.common.enums.UserTypeEnum;
 import com.linyun.airline.common.result.Select2Option;
+import com.linyun.airline.common.sabre.bean.BargainFinderSearch;
 import com.linyun.airline.common.sabre.dto.BFMAirItinerary;
 import com.linyun.airline.common.sabre.dto.FlightSegment;
 import com.linyun.airline.common.sabre.dto.OriginDest;
@@ -105,6 +106,11 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	private static final String INTERTYPE = "interOrderType";
 	private static final String CITYCODE = "CFCS";
 	private static final String AIRCOMCODE = "HKGS";
+
+	//授权默认过期时间(5分钟)
+	private static final int DEFAULT_EXPIREXIN = 480;
+	//缓存 
+	static Map<String, BargainFinderSearch> cache = Maps.newHashMap();
 
 	/**
 	 * 
@@ -326,20 +332,50 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	/**
 	 * 查询跨海内陆飞机票
 	 * 
-	 * TODO
 	 */
-	public Object searchSingleTickets(BargainFinderMaxSearchForm searchForm) {
+	/**
+	 * TODO(这里用一句话描述这个方法的作用)
+	 * <p>
+	 * TODO(这里描述这个方法详情– 可选)
+	 *
+	 * @param searchForm
+	 * @param session
+	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
+	*/
+	public Object searchSingleTickets(BargainFinderMaxSearchForm searchForm, HttpSession session) {
 
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		long userId = loginUser.getId();
+
+		//出发城市
+		String origin = searchForm.getOrigin();
+		//抵达城市
+		String destination = searchForm.getDestination();
 		//出发日期
 		String dateStr = searchForm.getDeparturedate();
 		String departuredate = DateUtil.format(dateStr, "yyyy-MM-dd'T'HH:mm:ss");
+		//返程日期
+		String returnStr = searchForm.getReturndate();
+		String returndate = "";
+		if (!Util.isEmpty(returnStr)) {
+			returndate = DateUtil.format(returnStr, "yyyy-MM-dd'T'HH:mm:ss");
+		}
+
 		OriginDest od = new OriginDest();
-		od.setOrigin(searchForm.getOrigin());
-		od.setDestination(searchForm.getDestination());
+		od.setOrigin(origin);
+		od.setDestination(destination);
 		od.setDeparturedate(departuredate);
 
+		OriginDest rOd = new OriginDest();
+		rOd.setOrigin(destination);
+		rOd.setDestination(origin);
+		rOd.setDeparturedate(returndate);
 		BargainFinderMaxSearchForm form = new BargainFinderMaxSearchForm();
 		form.getOriginDests().add(od);
+		/*if (!Util.isEmpty(returnStr)) {
+			form.getOriginDests().add(rOd);
+		}*/
 
 		//航空公司
 		List<String> carriers = new ArrayList<String>();
@@ -392,7 +428,46 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		/*form.setDirectFlightsOnly(true);*/
 
 		SabreService service = new SabreServiceImpl();
-		SabreResponse resp = service.bargainFinderMaxSearch(form);
+
+		//缓存中的key值
+		String cacheKey = userId + "-" + airlineCode + "-" + origin + "-" + destination + "-" + dateStr + "-"
+				+ returnStr + "-" + airLev + "-" + agentNum + "-" + childNum + "-" + babyNum;
+
+		//缓存机票 TODO
+		BargainFinderSearch bfSearch = new BargainFinderSearch();
+		SabreResponse resp = new SabreResponse();
+
+		try {
+			bfSearch = cache.get(cacheKey);
+			long now = System.currentTimeMillis();
+			if (!Util.isEmpty(bfSearch)) {
+				long loadTimeMillis = bfSearch.getLoadTimeMillis();
+				int passed = (int) (now - loadTimeMillis) / 1000;
+
+				log.debug("get search passed " + passed);
+				if (passed >= bfSearch.getExpires_in()) {
+					//缓存过期
+					SabreResponse sResp = service.bargainFinderMaxSearch(form);
+					bfSearch.setResp(sResp);
+					bfSearch.setLoadTimeMillis(now);
+					bfSearch.setExpires_in(DEFAULT_EXPIREXIN);
+					cache.put(cacheKey, bfSearch);
+				}
+			} else {
+				bfSearch = new BargainFinderSearch();
+				//如果缓存中token为空的话，去sabre接口查询，放到缓存中
+				SabreResponse sResp = service.bargainFinderMaxSearch(form);
+				bfSearch.setResp(sResp);
+				bfSearch.setLoadTimeMillis(now);
+				bfSearch.setExpires_in(DEFAULT_EXPIREXIN);
+				cache.put(cacheKey, bfSearch);
+			}
+			//从缓存中获取resp
+			resp = cache.get(cacheKey).getResp();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		if (resp.getStatusCode() == 200) {
 			List<BFMAirItinerary> directList = new ArrayList<BFMAirItinerary>(); //直飞列表
@@ -410,25 +485,56 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				for (FlightSegment flight : flightSegment) {
 					String departureDateTime = flight.getDepartureDateTime();
 					String arrivalDateTime = flight.getArrivalDateTime();
-					if (!Util.isEmpty(departureDateTime) || "" != departureDateTime) {
-						departureDateTime = departureDateTime.substring(11, 13) + departureDateTime.substring(14, 16);
-						flight.setDepartureDateTime(departureDateTime);
+					if (departureDateTime.length() > 4 && arrivalDateTime.length() > 4) {
+						if (!Util.isEmpty(departureDateTime) || "" != departureDateTime) {
+							departureDateTime = departureDateTime.substring(11, 13)
+									+ departureDateTime.substring(14, 16);
+						}
+						if (!Util.isEmpty(arrivalDateTime) || "" != arrivalDateTime) {
+							arrivalDateTime = arrivalDateTime.substring(11, 13) + arrivalDateTime.substring(14, 16);
+						}
 					}
-					if (!Util.isEmpty(arrivalDateTime) || "" != arrivalDateTime) {
-						arrivalDateTime = arrivalDateTime.substring(11, 13) + arrivalDateTime.substring(14, 16);
-						flight.setArrivalDateTime(arrivalDateTime);
-					}
+					flight.setDepartureDateTime(departureDateTime);
+					flight.setArrivalDateTime(arrivalDateTime);
 				}
 			}
 
 			//只展示直飞记录
 			if (directList.size() == 0) {
-				resp.setStatusCode(333);
+				resp.setStatusCode(0);
 			}
 			resp.setData(directList);
 		}
 
 		return resp;
+	}
+
+	//清除缓存中的信息
+	public String clearCacheSabre() {
+		for (Map.Entry<String, BargainFinderSearch> map : cache.entrySet()) {
+			long now = System.currentTimeMillis();
+			String key = map.getKey();
+			BargainFinderSearch bfSearch = map.getValue();
+			long loadTimeMillis = bfSearch.getLoadTimeMillis();
+
+			int passed = (int) (now - loadTimeMillis) / 1000;
+			if (passed >= bfSearch.getExpires_in()) {
+				cache.remove(key);
+			}
+		}
+		return "CLEAR SUCCESS";
+	}
+
+	//清除缓存中的信息
+	public String clearCacheSabreById(long userId) {
+		System.out.print("开始清除缓存信息");
+		for (Map.Entry<String, BargainFinderSearch> map : cache.entrySet()) {
+			String key = map.getKey();
+			if (key.startsWith(userId + "")) {
+				cache.remove(key);
+			}
+		}
+		return "CLEAR SUCCESS";
 	}
 
 	/*public Object searchSingleTickets(InstaFlightsSearchForm searchForm) {
@@ -1325,7 +1431,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		String msgContent = ""; //消息内容
 		switch (orderStatus) {
 		case 1:
-			//TODO  设置参数， 如果参数一致，则更新；  不一致，则添加
+			//设置参数， 如果参数一致，则更新；  不一致，则添加
 			//查询 4
 			msgType = MessageTypeEnum.SEARCHMSG.intKey();
 			//消息等级2
@@ -1485,7 +1591,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * @param id  客户信息id
 	 */
 	public Double getMoney(long id) {
-		//根据客户信息id， 查询已欠款   TODO
+		//根据客户信息id， 查询已欠款   
 		//INLAND 欠款统计
 		Sql arrearsSql = Sqls.create(sqlManager.get("customer_inland_arrearsMoney_byId"));
 		arrearsSql.setCallback(Sqls.callback.records());
@@ -1557,5 +1663,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 		return userIds;
 	}
+
+	//TODO 机票列表页缓存
 
 }
