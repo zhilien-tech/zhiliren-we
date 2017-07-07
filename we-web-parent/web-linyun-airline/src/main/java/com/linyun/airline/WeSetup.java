@@ -161,7 +161,7 @@ public class WeSetup implements Setup {
 						e.printStackTrace();
 					}
 				}
-			}, startTime, 1, TimeUnit.MINUTES);
+			}, startTime, 15, TimeUnit.MINUTES);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}

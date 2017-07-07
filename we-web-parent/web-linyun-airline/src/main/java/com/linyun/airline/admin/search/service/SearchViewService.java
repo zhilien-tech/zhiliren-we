@@ -525,6 +525,18 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		return "CLEAR SUCCESS";
 	}
 
+	//清除缓存中的信息
+	public String clearCacheSabreById(long userId) {
+		System.out.print("开始清除缓存信息");
+		for (Map.Entry<String, BargainFinderSearch> map : cache.entrySet()) {
+			String key = map.getKey();
+			if (key.startsWith(userId + "")) {
+				cache.remove(key);
+			}
+		}
+		return "CLEAR SUCCESS";
+	}
+
 	/*public Object searchSingleTickets(InstaFlightsSearchForm searchForm) {
 		InstaFlightsSearchForm form = new InstaFlightsSearchForm();
 		form.setOrigin(searchForm.getOrigin());
