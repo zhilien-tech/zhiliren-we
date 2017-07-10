@@ -31,9 +31,6 @@ import com.uxuexi.core.common.util.Util;
 @IocBean
 public class SessionCounter implements HttpSessionListener {
 
-	/*@Inject
-	private SearchViewService searchViewService;*/
-
 	/* Session创建事件  */
 	@Override
 	public void sessionCreated(HttpSessionEvent event) {
@@ -48,15 +45,17 @@ public class SessionCounter implements HttpSessionListener {
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		if (!Util.isEmpty(loginUser)) {
 			long userId = loginUser.getId();
-			/*searchViewService.clearCacheSabreById(userId);*/
 			//清除缓存信息
 			Set<Entry<String, BargainFinderSearch>> entrySet = SearchViewService.cache.entrySet();
-			for (Map.Entry<String, BargainFinderSearch> map : entrySet) {
-				String key = map.getKey();
-				if (key.startsWith(userId + "")) {
-					entrySet.remove(key);
+			if (!Util.isEmpty(entrySet)) {
+				for (Map.Entry<String, BargainFinderSearch> map : entrySet) {
+					String key = map.getKey();
+					if (key.startsWith(userId + "")) {
+						entrySet.remove(key);
+					}
 				}
 			}
+
 		}
 		System.out.print("session失效时，调用");
 	}
