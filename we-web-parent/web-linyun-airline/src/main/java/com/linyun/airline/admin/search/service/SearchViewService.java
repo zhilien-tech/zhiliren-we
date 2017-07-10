@@ -446,8 +446,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 				log.debug("get search passed " + passed);
 				if (passed >= bfSearch.getExpires_in()) {
-					//清除缓存
-					cache.remove(cacheKey);
 					//缓存过期
 					SabreResponse sResp = service.bargainFinderMaxSearch(form);
 					bfSearch.setResp(sResp);
@@ -513,29 +511,43 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 	//清除缓存中的信息
 	public String clearCacheSabre() {
-		for (Map.Entry<String, BargainFinderSearch> map : cache.entrySet()) {
-			long now = System.currentTimeMillis();
-			String key = map.getKey();
-			BargainFinderSearch bfSearch = map.getValue();
-			long loadTimeMillis = bfSearch.getLoadTimeMillis();
+		if (!Util.isEmpty(cache.entrySet())) {
+			List<String> cacheKey = new ArrayList<String>();
+			for (Map.Entry<String, BargainFinderSearch> map : cache.entrySet()) {
+				long now = System.currentTimeMillis();
+				String key = map.getKey();
+				BargainFinderSearch bfSearch = map.getValue();
+				long loadTimeMillis = bfSearch.getLoadTimeMillis();
 
-			int passed = (int) (now - loadTimeMillis) / 1000;
-			if (passed >= bfSearch.getExpires_in()) {
+				int passed = (int) (now - loadTimeMillis) / 1000;
+				if (passed >= bfSearch.getExpires_in()) {
+					cacheKey.add(key);
+				}
+			}
+			for (String key : cacheKey) {
 				cache.remove(key);
 			}
 		}
+
 		return "CLEAR SUCCESS";
 	}
 
 	//清除缓存中的信息
 	public String clearCacheSabreById(long userId) {
 		System.out.print("开始清除缓存信息");
-		for (Map.Entry<String, BargainFinderSearch> map : cache.entrySet()) {
-			String key = map.getKey();
-			if (key.startsWith(userId + "")) {
+		if (!Util.isEmpty(cache.entrySet())) {
+			List<String> cacheKey = new ArrayList<String>();
+			for (Map.Entry<String, BargainFinderSearch> map : cache.entrySet()) {
+				String key = map.getKey();
+				if (key.startsWith(userId + "-")) {
+					cacheKey.add(key);
+				}
+			}
+			for (String key : cacheKey) {
 				cache.remove(key);
 			}
 		}
+
 		return "CLEAR SUCCESS";
 	}
 

@@ -6,6 +6,8 @@
 
 package com.linyun.airline.admin.search.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -45,15 +47,21 @@ public class SessionCounter implements HttpSessionListener {
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		if (!Util.isEmpty(loginUser)) {
 			long userId = loginUser.getId();
-			//清除缓存信息
-			Set<Entry<String, BargainFinderSearch>> entrySet = SearchViewService.cache.entrySet();
+			Map<String, BargainFinderSearch> cache = SearchViewService.cache;
+			Set<Entry<String, BargainFinderSearch>> entrySet = cache.entrySet();
 			if (!Util.isEmpty(entrySet)) {
+				List<String> cacheKey = new ArrayList<String>();
 				for (Map.Entry<String, BargainFinderSearch> map : entrySet) {
 					String key = map.getKey();
-					if (key.startsWith(userId + "")) {
-						entrySet.remove(key);
+					BargainFinderSearch value = map.getValue();
+					if (key.startsWith(userId + "-")) {
+						cacheKey.add(key);
 					}
 				}
+				for (String key : cacheKey) {
+					cache.remove(key);
+				}
+
 			}
 
 		}
