@@ -150,18 +150,18 @@ public class WeSetup implements Setup {
 		//定时每天某个时间执行
 		Date now = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String startTime = sdf.format(now);
+		String startTime = sdf.format(now) + "23:59:59";
 		try {
 			Tasks.scheduleAtFixedRate(new Runnable() {
 				public void run() {
-					logger.info("机票缓存定时清理任务启动----------");
+					logger.info("机票缓存清理定时任务启动----------");
 					try {
 						searchViewService.clearCacheSabre();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
-			}, startTime, 15, TimeUnit.MINUTES);
+			}, startTime, 1, TimeUnit.DAYS);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
