@@ -1,0 +1,52 @@
+/**
+ * SessionCounter.java
+ * com.linyun.airline.admin.search.service
+ * Copyright (c) 2017, 北京科技有限公司版权所有.
+ */
+
+package com.linyun.airline.admin.search.service;
+
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
+
+import org.nutz.ioc.loader.annotation.Inject;
+import org.nutz.ioc.loader.annotation.IocBean;
+
+import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.entities.TUserEntity;
+import com.uxuexi.core.common.util.Util;
+
+/**
+ * TODO(session 监听事件)
+ * <p>
+ *
+ * @author   彭辉
+ * @Date	 2017年7月6日 	 
+ */
+@IocBean
+public class SessionCounter implements HttpSessionListener {
+
+	@Inject
+	private SearchViewService searchViewService;
+
+	/* Session创建事件  */
+	@Override
+	public void sessionCreated(HttpSessionEvent event) {
+		System.out.println("session创建时，调用" + event);
+	}
+
+	/* Session失效事件 */
+	@Override
+	public void sessionDestroyed(HttpSessionEvent event) {
+		HttpSession session = event.getSession();
+		//当前用户id
+		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
+		if (!Util.isEmpty(loginUser)) {
+			long userId = loginUser.getId();
+			System.out.println(userId);
+			searchViewService.clearCacheSabreById(userId);
+		}
+		System.out.print("session失效时，调用");
+	}
+}
