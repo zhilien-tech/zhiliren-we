@@ -6,14 +6,18 @@
 
 package com.linyun.airline.admin.search.service;
 
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.ioc.loader.annotation.IocBean;
 
 import com.linyun.airline.admin.login.service.LoginService;
+import com.linyun.airline.common.sabre.bean.BargainFinderSearch;
 import com.linyun.airline.entities.TUserEntity;
 import com.uxuexi.core.common.util.Util;
 
@@ -27,8 +31,8 @@ import com.uxuexi.core.common.util.Util;
 @IocBean
 public class SessionCounter implements HttpSessionListener {
 
-	@Inject
-	private SearchViewService searchViewService;
+	/*@Inject
+	private SearchViewService searchViewService;*/
 
 	/* Session创建事件  */
 	@Override
@@ -44,8 +48,15 @@ public class SessionCounter implements HttpSessionListener {
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		if (!Util.isEmpty(loginUser)) {
 			long userId = loginUser.getId();
-			System.out.println(userId);
-			searchViewService.clearCacheSabreById(userId);
+			/*searchViewService.clearCacheSabreById(userId);*/
+			//清除缓存信息
+			Set<Entry<String, BargainFinderSearch>> entrySet = SearchViewService.cache.entrySet();
+			for (Map.Entry<String, BargainFinderSearch> map : entrySet) {
+				String key = map.getKey();
+				if (key.startsWith(userId + "")) {
+					entrySet.remove(key);
+				}
+			}
 		}
 		System.out.print("session失效时，调用");
 	}

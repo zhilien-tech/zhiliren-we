@@ -446,6 +446,8 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 
 				log.debug("get search passed " + passed);
 				if (passed >= bfSearch.getExpires_in()) {
+					//清除缓存
+					cache.remove(cacheKey);
 					//缓存过期
 					SabreResponse sResp = service.bargainFinderMaxSearch(form);
 					bfSearch.setResp(sResp);

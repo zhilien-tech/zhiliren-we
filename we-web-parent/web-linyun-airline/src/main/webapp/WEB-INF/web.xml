@@ -65,13 +65,13 @@
 		</error-page>
 		
 		<!-- session监听器 -->
-		<!-- <listener>    
+		<listener>    
 		    <listener-class>    
 		        com.linyun.airline.admin.search.service.SessionCounter  
 		    </listener-class>    
 		</listener>
 
-		<session-config>
+<!-- 		<session-config>
 			<session-timeout>1</session-timeout>
 		</session-config> -->
 		
