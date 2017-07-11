@@ -227,6 +227,10 @@ $("#searchSingleTicketsBtn").click(function() {
 	//段数
 	var airType = $("input[name='voyageType']:checked").val();
 	var html = "";
+	var oCity = $("#outCity0").select2("val");
+	var aCity = $("#singleArriveCity0").select2("val");
+	var oDate = $("#outDatepicker0").val();
+	var moreLines = "";
 	var outArrivalCity0 = $("#outCity0").select2("val") +'-'+ $("#singleArriveCity0").select2("val");
 	var arrivalOutCity0 = $("#singleArriveCity0").select2("val") +'-'+ $("#outCity0").select2("val");
 	if(airType == 1){
@@ -239,6 +243,7 @@ $("#searchSingleTicketsBtn").click(function() {
 	}
 	/* 多程 显示多段 */
 	if(airType == 3){
+		moreLines = "MORELINES" +" "+ oCity+aCity+oDate;
 		/*
 		//方案一 显示往返段
 		for(var i=1; i<$('.setMore').length*2; i=i+2){
@@ -251,7 +256,9 @@ $("#searchSingleTicketsBtn").click(function() {
 			var iNum = i-1;
 			var outArrivalCityi = $("#outCity"+ iNum).select2("val") +'-'+ $("#singleArriveCity"+ iNum).select2("val");
 			html +='<li id="moreNum'+i+'">第'+i+'段<p>'+ outArrivalCityi +'</p></li>';
+			moreLines += " " + $("#outCity"+ iNum).select2("val") + $("#singleArriveCity"+ iNum).select2("val") + $("#outDatepicker"+ iNum).val();
 		}
+		$("#moreLines").val(moreLines);
 		document.getElementById('travelTypeNum').innerHTML=html;
 	}
 	
