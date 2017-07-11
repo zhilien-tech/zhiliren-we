@@ -119,6 +119,7 @@ function clearSearchHtml(){
 	$("#childrenSelect").val("0");
 	$("#babySelect").val("0");
 	$("#airLevel").val("1");
+	$("#moreLines").val("");
 }
 
 //清除检索结果

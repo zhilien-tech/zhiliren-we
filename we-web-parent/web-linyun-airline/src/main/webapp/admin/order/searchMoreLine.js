@@ -160,6 +160,9 @@ function onkeyEnter(){
 /* 跨海内陆多程查询 */
 var clickfirst=1;
 $("#searchSingleTicketsBtn").click(function() {
+	
+	alert();
+	
 	//clearSearchHtml();
 	var customerId = $("#customerId").val();
 	//var phoneNum = $("#phoneNumId").select2("val");

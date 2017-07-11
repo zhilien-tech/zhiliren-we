@@ -359,6 +359,7 @@
 												<input id="airlineCode" type="hidden" name="airlineCode" /> 
 											</td>
 											<td>
+												<input id="moreLines" name="moreLines"  type="hidden"/> 
 												<button id="searchSingleTicketsBtn" type="button"
 													class="btn btn-primary btn-sm">搜索机票</button>
 											</td>
