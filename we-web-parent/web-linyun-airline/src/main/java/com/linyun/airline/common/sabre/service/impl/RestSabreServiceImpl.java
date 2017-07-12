@@ -93,7 +93,7 @@ public class RestSabreServiceImpl implements SabreService {
 
 		HttpResult hr = HttpClientUtil.httpsGet(httpget);
 		String result = hr.getResult();
-		log.info(result);
+		//log.info(result);
 
 		SabreResponse resp = new SabreResponse();
 		int statusCode = hr.getStatusCode();
