@@ -52,7 +52,6 @@ import com.linyun.airline.common.sabre.dto.OriginDest;
 import com.linyun.airline.common.sabre.dto.SabreResponse;
 import com.linyun.airline.common.sabre.form.BargainFinderMaxSearchForm;
 import com.linyun.airline.common.sabre.service.SabreService;
-import com.linyun.airline.common.sabre.service.impl.SabreServiceImpl;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAirlineInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
@@ -91,6 +90,8 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	private static final int AIR_FIRST = AirLineLevelEnum.FIRST.intKey();
 	private static final int AIR_BUSINESS = AirLineLevelEnum.BUSINESS.intKey();
 
+	@Inject
+	private SabreService restSabreService;
 	@Inject
 	private CustomerViewService customerViewService;
 	@Inject
@@ -350,9 +351,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		long userId = loginUser.getId();
 
 		SabreResponse resp = new SabreResponse();
-
-		SabreService service = new SabreServiceImpl();
-
 		//缓存机票 TODO
 		BargainFinderSearch bfSearch = new BargainFinderSearch();
 		BargainFinderSearch bfReturnSearch = new BargainFinderSearch();
@@ -445,7 +443,6 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		returnForm.setAirLevel(airLevels);
 		//直飞
 		/*form.setDirectFlightsOnly(true);*/
-
 		//缓存中的key值
 		String cacheKey = userId + "-" + airlineCode + "-" + origin + "-" + destination + "-" + dateStr + "-"
 				+ returnStr + "-" + airLev + "-" + agentNum + "-" + childNum + "-" + babyNum;
@@ -463,14 +460,14 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				log.debug("get search passed " + passed);
 				if (passed >= bfSearch.getExpires_in()) {
 					//缓存过期
-					SabreResponse sResp = service.bargainFinderMaxSearch(form);
+					SabreResponse sResp = restSabreService.bargainFinderMaxSearch(form);
 					bfSearch.setResp(sResp);
 					bfSearch.setLoadTimeMillis(now);
 					bfSearch.setExpires_in(DEFAULT_EXPIREXIN);
 					cache.put(cacheKey, bfSearch);
 					//往返段
 					if (Util.isEmpty(moreLines)) {
-						SabreResponse sReturnResp = service.bargainFinderMaxSearch(returnForm);
+						SabreResponse sReturnResp = restSabreService.bargainFinderMaxSearch(returnForm);
 						bfReturnSearch.setResp(sReturnResp);
 						bfReturnSearch.setLoadTimeMillis(now);
 						bfReturnSearch.setExpires_in(DEFAULT_EXPIREXIN);
@@ -481,14 +478,14 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			} else {
 				bfSearch = new BargainFinderSearch();
 				//如果缓存中token为空的话，去sabre接口查询，放到缓存中
-				SabreResponse sResp = service.bargainFinderMaxSearch(form);
+				SabreResponse sResp = restSabreService.bargainFinderMaxSearch(form);
 				bfSearch.setResp(sResp);
 				bfSearch.setLoadTimeMillis(now);
 				bfSearch.setExpires_in(DEFAULT_EXPIREXIN);
 				cache.put(cacheKey, bfSearch);
 				//往返段
 				if (Util.isEmpty(moreLines)) {
-					SabreResponse sReturnResp = service.bargainFinderMaxSearch(returnForm);
+					SabreResponse sReturnResp = restSabreService.bargainFinderMaxSearch(returnForm);
 					bfReturnSearch.setResp(sReturnResp);
 					bfReturnSearch.setLoadTimeMillis(now);
 					bfReturnSearch.setExpires_in(DEFAULT_EXPIREXIN);
@@ -529,7 +526,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 						log.debug("get search passed " + passed);
 						if (passed >= bfMoreSearch.getExpires_in()) {
 							//缓存过期
-							SabreResponse sResp = service.bargainFinderMaxSearch(form);
+							SabreResponse sResp = restSabreService.bargainFinderMaxSearch(form);
 							bfMoreSearch.setResp(sResp);
 							bfMoreSearch.setLoadTimeMillis(now);
 							bfMoreSearch.setExpires_in(DEFAULT_EXPIREXIN);
@@ -538,7 +535,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 					} else {
 						//如果缓存中token为空的话，去sabre接口查询，放到缓存中
 						bfMoreSearch = new BargainFinderSearch();
-						SabreResponse sResp = service.bargainFinderMaxSearch(form);
+						SabreResponse sResp = restSabreService.bargainFinderMaxSearch(form);
 						bfMoreSearch.setResp(sResp);
 						bfMoreSearch.setLoadTimeMillis(now);
 						bfMoreSearch.setExpires_in(DEFAULT_EXPIREXIN);
@@ -671,7 +668,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		SabreResponse resp = new SabreResponse();
 		try {
 			SabreService service = new SabreServiceImpl();
-			resp = service.instaFlightsSearch(form);
+			resp = restSabreService.instaFlightsSearch(form);
 			String departureDateTime = "";
 			String arrivalDateTime = "";
 			if (resp.getStatusCode() == 200) {
