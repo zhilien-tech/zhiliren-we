@@ -194,18 +194,17 @@ $("#searchSingleTicketsBtn").click(function() {
 	var j = $("tr.setMore").length;
 	if(j-1>0){
 		for(var i=1; i<j; i++){
+			//出发城市
 			var outCity = $('#outCity'+i).find("option:selected").text();
 			if(outCity==""){
 				oCityBoolean = false;
 			}
-		}
-		for(var i=1; i<j; i++){
+			//抵达城市
 			var singleArriveCity = $('#singleArriveCity'+i).find("option:selected").text();
 			if(singleArriveCity==""){
 				aCityBoolean = false;
 			}
-		}
-		for(var i=1; i<j; i++){
+			//出发日期
 			var outDatepicker = $('#outDatepicker'+i).val();
 			if(outDatepicker==""){
 				oDateBoolean = false;
