@@ -363,7 +363,7 @@ public class RestSabreServiceImpl implements SabreService {
 					currencyCode = readVal[0];
 				}
 
-				log.info("currencyCode:" + currencyCode);
+				log.debug("currencyCode:" + currencyCode);
 				log.debug("totalAmount:" + totalAmount);
 				log.debug("baseAmount:" + baseAmount);
 				log.debug("equivFareAmount:" + equivFareAmount);
