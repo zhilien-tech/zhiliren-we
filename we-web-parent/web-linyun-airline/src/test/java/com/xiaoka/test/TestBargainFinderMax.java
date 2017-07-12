@@ -28,6 +28,9 @@ import com.uxuexi.core.common.util.DateUtil;
 public class TestBargainFinderMax {
 
 	public static void main(String[] args) {
+		long startTime = System.currentTimeMillis(); //获取开始时间
+
+		/*第一段测试*/
 		BargainFinderMaxSearchForm form = new BargainFinderMaxSearchForm();
 
 		//出发信息
@@ -64,16 +67,15 @@ public class TestBargainFinderMax {
 		odr.setDestination("SYD");
 		odr.setDeparturedate(returndate);
 		OriginDests.add(od);
-		OriginDests.add(od1);
+		/*OriginDests.add(od1);
 		OriginDests.add(od2);
 		OriginDests.add(od3);
-		OriginDests.add(odr);
+		OriginDests.add(odr);*/
 		form.setOriginDests(OriginDests);
 
 		//乘客数量
 		form.setAdt(1); //成人1
 		form.setSeatsRequested("1");
-
 		//舱位等级
 		List<String> airLevels = Lists.newArrayList();
 		//经济舱
@@ -85,6 +87,31 @@ public class TestBargainFinderMax {
 		SabreService service = new SoapSabreServiceImpl();
 		SabreResponse resp = service.bargainFinderMaxSearch(form);
 
-		System.out.println(resp);
+		/*第二段测试数据*/
+		BargainFinderMaxSearchForm form2 = new BargainFinderMaxSearchForm();
+		List<OriginDest> OriginDests2 = Lists.newArrayList();
+		String returndate2 = DateUtil.format("2017-07-21", "yyyy-MM-dd'T'HH:mm:ss");
+		OriginDest odr2 = new OriginDest();
+		odr2.setOrigin("BNE");
+		odr2.setDestination("SYD");
+		odr2.setDeparturedate(returndate2);
+		OriginDests2.add(od2);
+		form2.setOriginDests(OriginDests2);
+		//乘客数量
+		form2.setAdt(1); //成人1
+		form2.setSeatsRequested("1");
+		//舱位等级
+		List<String> airLevels2 = Lists.newArrayList();
+		//经济舱
+		airLevels2.add("P");
+		airLevels2.add("S");
+		airLevels2.add("Y");
+		form2.setAirLevel(airLevels2);
+		SabreResponse resp2 = service.bargainFinderMaxSearch(form2);
+
+		long endTime = System.currentTimeMillis(); //获取结束时间
+
+		System.out.println("程序运行时间：" + (endTime - startTime) / 1000 + "s");
+
 	}
 }

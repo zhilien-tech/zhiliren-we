@@ -90,5 +90,7 @@ public class BargainFinderMaxSearchForm {
 	private int airLev;
 	// 航空公司
 	private String airlineCode;
+	//多称数据
+	private String moreLines;
 
 }

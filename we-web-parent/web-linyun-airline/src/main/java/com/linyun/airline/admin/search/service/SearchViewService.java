@@ -52,7 +52,6 @@ import com.linyun.airline.common.sabre.dto.OriginDest;
 import com.linyun.airline.common.sabre.dto.SabreResponse;
 import com.linyun.airline.common.sabre.form.BargainFinderMaxSearchForm;
 import com.linyun.airline.common.sabre.service.SabreService;
-import com.linyun.airline.common.sabre.service.impl.SoapSabreServiceImpl;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAirlineInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
@@ -91,6 +90,8 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	private static final int AIR_FIRST = AirLineLevelEnum.FIRST.intKey();
 	private static final int AIR_BUSINESS = AirLineLevelEnum.BUSINESS.intKey();
 
+	@Inject
+	private SabreService restSabreService;
 	@Inject
 	private CustomerViewService customerViewService;
 	@Inject
@@ -341,13 +342,24 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 	 * @param searchForm
 	 * @param session
 	 * @return TODO(这里描述每个参数,如果有返回值描述返回值,如果有异常描述异常)
-	*/
+	 */
 	public Object searchSingleTickets(BargainFinderMaxSearchForm searchForm, HttpSession session) {
 
+		long startTime = System.currentTimeMillis(); //获取开始时间
 		//当前用户id
 		TUserEntity loginUser = (TUserEntity) session.getAttribute(LoginService.LOGINUSER);
 		long userId = loginUser.getId();
 
+		SabreResponse resp = new SabreResponse();
+		//缓存机票 TODO
+		BargainFinderSearch bfSearch = new BargainFinderSearch();
+		BargainFinderSearch bfReturnSearch = new BargainFinderSearch();
+		BargainFinderSearch bfMoreSearch = new BargainFinderSearch();
+
+		long now = System.currentTimeMillis();
+
+		//是否多称
+		String moreLines = searchForm.getMoreLines();
 		//出发城市
 		String origin = searchForm.getOrigin();
 		//抵达城市
@@ -362,20 +374,19 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			returndate = DateUtil.format(returnStr, "yyyy-MM-dd'T'HH:mm:ss");
 		}
 
+		BargainFinderMaxSearchForm form = new BargainFinderMaxSearchForm();
 		OriginDest od = new OriginDest();
 		od.setOrigin(origin);
 		od.setDestination(destination);
 		od.setDeparturedate(departuredate);
+		form.getOriginDests().add(od);
 
+		BargainFinderMaxSearchForm returnForm = new BargainFinderMaxSearchForm();
 		OriginDest rOd = new OriginDest();
 		rOd.setOrigin(destination);
 		rOd.setDestination(origin);
 		rOd.setDeparturedate(returndate);
-		BargainFinderMaxSearchForm form = new BargainFinderMaxSearchForm();
-		form.getOriginDests().add(od);
-		/*if (!Util.isEmpty(returnStr)) {
-			form.getOriginDests().add(rOd);
-		}*/
+		returnForm.getOriginDests().add(rOd);
 
 		//航空公司
 		List<String> carriers = new ArrayList<String>();
@@ -383,6 +394,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		if (!Util.isEmpty(airlineCode)) {
 			carriers.add(airlineCode);
 			form.setCarriers(carriers);
+			returnForm.setCarriers(carriers);
 		}
 
 		//乘客数量
@@ -395,15 +407,19 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		int passengercount = agentNum + childNum + babyNum;
 		if (agentNum > 0) {
 			form.setAdt(agentNum);
+			returnForm.setAdt(agentNum);
 		}
 		if (childNum > 0) {
 			form.setCnn(childNum);
+			returnForm.setCnn(childNum);
 		}
 		if (babyNum > 0) {
 			form.setInf(babyNum);
+			returnForm.setInf(babyNum);
 		}
 		if (passengercount > 0) {
 			form.setSeatsRequested(String.valueOf(passengercount));
+			returnForm.setSeatsRequested(String.valueOf(passengercount));
 		}
 		//舱位等级
 		List<String> airLevels = Lists.newArrayList();
@@ -424,22 +440,19 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			airLevels.add("J");
 		}
 		form.setAirLevel(airLevels);
+		returnForm.setAirLevel(airLevels);
 		//直飞
 		/*form.setDirectFlightsOnly(true);*/
-
-		SabreService service = new SoapSabreServiceImpl();
-
 		//缓存中的key值
 		String cacheKey = userId + "-" + airlineCode + "-" + origin + "-" + destination + "-" + dateStr + "-"
 				+ returnStr + "-" + airLev + "-" + agentNum + "-" + childNum + "-" + babyNum;
-
-		//缓存机票 TODO
-		BargainFinderSearch bfSearch = new BargainFinderSearch();
-		SabreResponse resp = new SabreResponse();
+		//返回数据key
+		String returnCacheKey = userId + "-" + airlineCode + "-" + destination + "-" + origin + "-" + returnStr + "--"
+				+ airLev + "-" + agentNum + "-" + childNum + "-" + babyNum;
 
 		try {
 			bfSearch = cache.get(cacheKey);
-			long now = System.currentTimeMillis();
+
 			if (!Util.isEmpty(bfSearch)) {
 				long loadTimeMillis = bfSearch.getLoadTimeMillis();
 				int passed = (int) (now - loadTimeMillis) / 1000;
@@ -447,26 +460,91 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				log.debug("get search passed " + passed);
 				if (passed >= bfSearch.getExpires_in()) {
 					//缓存过期
-					SabreResponse sResp = service.bargainFinderMaxSearch(form);
+					SabreResponse sResp = restSabreService.bargainFinderMaxSearch(form);
 					bfSearch.setResp(sResp);
 					bfSearch.setLoadTimeMillis(now);
 					bfSearch.setExpires_in(DEFAULT_EXPIREXIN);
 					cache.put(cacheKey, bfSearch);
+					//往返段
+					if (Util.isEmpty(moreLines)) {
+						SabreResponse sReturnResp = restSabreService.bargainFinderMaxSearch(returnForm);
+						bfReturnSearch.setResp(sReturnResp);
+						bfReturnSearch.setLoadTimeMillis(now);
+						bfReturnSearch.setExpires_in(DEFAULT_EXPIREXIN);
+						cache.put(returnCacheKey, bfReturnSearch);
+					}
+
 				}
 			} else {
 				bfSearch = new BargainFinderSearch();
 				//如果缓存中token为空的话，去sabre接口查询，放到缓存中
-				SabreResponse sResp = service.bargainFinderMaxSearch(form);
+				SabreResponse sResp = restSabreService.bargainFinderMaxSearch(form);
 				bfSearch.setResp(sResp);
 				bfSearch.setLoadTimeMillis(now);
 				bfSearch.setExpires_in(DEFAULT_EXPIREXIN);
 				cache.put(cacheKey, bfSearch);
+				//往返段
+				if (Util.isEmpty(moreLines)) {
+					SabreResponse sReturnResp = restSabreService.bargainFinderMaxSearch(returnForm);
+					bfReturnSearch.setResp(sReturnResp);
+					bfReturnSearch.setLoadTimeMillis(now);
+					bfReturnSearch.setExpires_in(DEFAULT_EXPIREXIN);
+					cache.put(returnCacheKey, bfReturnSearch);
+				}
 			}
 			//从缓存中获取resp
 			resp = cache.get(cacheKey).getResp();
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+
+		//多程缓存
+		if (!Util.isEmpty(moreLines)) {
+			String[] lineInfos = moreLines.split(" ");
+			if (lineInfos.length > 2) {
+				for (int i = 2; i < lineInfos.length; i++) {
+					String str = lineInfos[i];
+					String oCity = str.substring(0, 3);
+					String aCity = str.substring(3, 6);
+					String oDateStr = str.substring(6, str.length());
+					String oDate = DateUtil.format(oDateStr, "yyyy-MM-dd'T'HH:mm:ss");
+					OriginDest odl = new OriginDest();
+					odl.setOrigin(oCity);
+					odl.setDestination(aCity);
+					odl.setDeparturedate(oDate);
+					form.getOriginDests().clear();
+					form.getOriginDests().add(odl);
+					//缓存中的key值
+					String cacheKeys = userId + "-" + airlineCode + "-" + oCity + "-" + aCity + "-" + oDateStr + "--"
+							+ airLev + "-" + agentNum + "-" + childNum + "-" + babyNum;
+					bfMoreSearch = cache.get(cacheKeys);
+					if (!Util.isEmpty(bfMoreSearch)) {
+						long loadTimeMillis = bfMoreSearch.getLoadTimeMillis();
+						int passed = (int) (now - loadTimeMillis) / 1000;
+
+						log.debug("get search passed " + passed);
+						if (passed >= bfMoreSearch.getExpires_in()) {
+							//缓存过期
+							SabreResponse sResp = restSabreService.bargainFinderMaxSearch(form);
+							bfMoreSearch.setResp(sResp);
+							bfMoreSearch.setLoadTimeMillis(now);
+							bfMoreSearch.setExpires_in(DEFAULT_EXPIREXIN);
+							cache.put(cacheKeys, bfMoreSearch);
+						}
+					} else {
+						//如果缓存中token为空的话，去sabre接口查询，放到缓存中
+						bfMoreSearch = new BargainFinderSearch();
+						SabreResponse sResp = restSabreService.bargainFinderMaxSearch(form);
+						bfMoreSearch.setResp(sResp);
+						bfMoreSearch.setLoadTimeMillis(now);
+						bfMoreSearch.setExpires_in(DEFAULT_EXPIREXIN);
+						cache.put(cacheKeys, bfMoreSearch);
+					}
+				}
+
+			}
+
 		}
 
 		if (resp.getStatusCode() == 200) {
@@ -505,6 +583,10 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 			}
 			resp.setData(directList);
 		}
+
+		long endTime = System.currentTimeMillis(); //获取结束时间
+
+		System.out.println("程序运行时间：" + (endTime - startTime) + "ms");
 
 		return resp;
 	}
@@ -586,7 +668,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		SabreResponse resp = new SabreResponse();
 		try {
 			SabreService service = new SabreServiceImpl();
-			resp = service.instaFlightsSearch(form);
+			resp = restSabreService.instaFlightsSearch(form);
 			String departureDateTime = "";
 			String arrivalDateTime = "";
 			if (resp.getStatusCode() == 200) {
