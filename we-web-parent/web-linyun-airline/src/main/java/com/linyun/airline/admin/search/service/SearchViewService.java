@@ -466,7 +466,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 					bfSearch.setExpires_in(DEFAULT_EXPIREXIN);
 					cache.put(cacheKey, bfSearch);
 					//往返段
-					if (Util.isEmpty(moreLines)) {
+					if (Util.isEmpty(moreLines) && !Util.isEmpty(returnStr)) {
 						SabreResponse sReturnResp = restSabreService.bargainFinderMaxSearch(returnForm);
 						bfReturnSearch.setResp(sReturnResp);
 						bfReturnSearch.setLoadTimeMillis(now);
@@ -484,7 +484,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 				bfSearch.setExpires_in(DEFAULT_EXPIREXIN);
 				cache.put(cacheKey, bfSearch);
 				//往返段
-				if (Util.isEmpty(moreLines)) {
+				if (Util.isEmpty(moreLines) && !Util.isEmpty(returnStr)) {
 					SabreResponse sReturnResp = restSabreService.bargainFinderMaxSearch(returnForm);
 					bfReturnSearch.setResp(sReturnResp);
 					bfReturnSearch.setLoadTimeMillis(now);
