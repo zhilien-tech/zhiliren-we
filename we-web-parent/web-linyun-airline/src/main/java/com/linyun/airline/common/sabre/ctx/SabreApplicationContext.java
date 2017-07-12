@@ -3,7 +3,7 @@ package com.linyun.airline.common.sabre.ctx;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import com.sabre.api.sacs.soap.SoapApplicationConfiguration;
+import com.sabre.api.sacs.rest.RestApplicationConfiguration;
 
 /**
  * @author   朱晓川
@@ -12,6 +12,6 @@ import com.sabre.api.sacs.soap.SoapApplicationConfiguration;
 public class SabreApplicationContext {
 
 	public static final ApplicationContext context = new AnnotationConfigApplicationContext(
-			new Class<?>[] { SoapApplicationConfiguration.class });
+			new Class<?>[] { RestApplicationConfiguration.class });
 
 }

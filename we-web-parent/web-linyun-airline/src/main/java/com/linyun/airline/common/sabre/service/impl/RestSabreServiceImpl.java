@@ -6,11 +6,14 @@
 
 package com.linyun.airline.common.sabre.service.impl;
 
-import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.jsoup.helper.StringUtil;
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.json.Json;
 import org.nutz.json.JsonFormat;
@@ -18,6 +21,8 @@ import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.springframework.context.ApplicationContext;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.jayway.jsonpath.JsonPath;
 import com.linyun.airline.common.result.HttpResult;
@@ -38,47 +43,45 @@ import com.linyun.airline.common.sabre.service.SabreService;
 import com.linyun.airline.common.util.HttpClientUtil;
 import com.linyun.airline.common.util.JsonPathGeneric;
 import com.sabre.api.sacs.configuration.SacsConfiguration;
-import com.sabre.api.sacs.contract.bargainfindermax.AirSearchPrefsType;
-import com.sabre.api.sacs.contract.bargainfindermax.CabinPrefType;
-import com.sabre.api.sacs.contract.bargainfindermax.CabinType;
-import com.sabre.api.sacs.contract.bargainfindermax.CompanyNameType;
-import com.sabre.api.sacs.contract.bargainfindermax.ExchangeOriginDestinationInformationType.SegmentType;
-import com.sabre.api.sacs.contract.bargainfindermax.IncludeVendorPrefType;
-import com.sabre.api.sacs.contract.bargainfindermax.OTAAirLowFareSearchRQ;
-import com.sabre.api.sacs.contract.bargainfindermax.OTAAirLowFareSearchRQ.OriginDestinationInformation;
-import com.sabre.api.sacs.contract.bargainfindermax.OTAAirLowFareSearchRQ.TPAExtensions;
-import com.sabre.api.sacs.contract.bargainfindermax.OTAAirLowFareSearchRS;
-import com.sabre.api.sacs.contract.bargainfindermax.OriginDestinationInformationType.DestinationLocation;
-import com.sabre.api.sacs.contract.bargainfindermax.OriginDestinationInformationType.OriginLocation;
-import com.sabre.api.sacs.contract.bargainfindermax.POSType;
-import com.sabre.api.sacs.contract.bargainfindermax.PassengerTypeQuantityType;
-import com.sabre.api.sacs.contract.bargainfindermax.PreferLevelType;
-import com.sabre.api.sacs.contract.bargainfindermax.SourceType;
-import com.sabre.api.sacs.contract.bargainfindermax.TransactionType;
-import com.sabre.api.sacs.contract.bargainfindermax.TransactionType.RequestType;
-import com.sabre.api.sacs.contract.bargainfindermax.TravelerInfoSummaryType;
-import com.sabre.api.sacs.contract.bargainfindermax.TravelerInformationType;
-import com.sabre.api.sacs.contract.bargainfindermax.UniqueIDType;
-import com.sabre.api.sacs.soap.orchestratedflow.BargainFinderMaxSoapActivity;
-import com.sabre.api.sacs.workflow.SharedContext;
-import com.sabre.api.sacs.workflow.Workflow;
+import com.sabre.api.sacs.rest.domain.bargainfindermax.BargainFinderMaxRequest;
+import com.sabre.api.sacs.rest.domain.bargainfindermax.rq.AirTravelerAvail;
+import com.sabre.api.sacs.rest.domain.bargainfindermax.rq.CabinPref;
+import com.sabre.api.sacs.rest.domain.bargainfindermax.rq.CompanyName;
+import com.sabre.api.sacs.rest.domain.bargainfindermax.rq.DestinationLocation;
+import com.sabre.api.sacs.rest.domain.bargainfindermax.rq.IncludeVendorPref;
+import com.sabre.api.sacs.rest.domain.bargainfindermax.rq.IntelliSellTransaction;
+import com.sabre.api.sacs.rest.domain.bargainfindermax.rq.OTAAirLowFareSearchRQ;
+import com.sabre.api.sacs.rest.domain.bargainfindermax.rq.OriginDestinationInformation;
+import com.sabre.api.sacs.rest.domain.bargainfindermax.rq.OriginLocation;
+import com.sabre.api.sacs.rest.domain.bargainfindermax.rq.POS;
+import com.sabre.api.sacs.rest.domain.bargainfindermax.rq.PassengerTypeQuantity;
+import com.sabre.api.sacs.rest.domain.bargainfindermax.rq.RequestType;
+import com.sabre.api.sacs.rest.domain.bargainfindermax.rq.RequestorID;
+import com.sabre.api.sacs.rest.domain.bargainfindermax.rq.SegmentType;
+import com.sabre.api.sacs.rest.domain.bargainfindermax.rq.Source;
+import com.sabre.api.sacs.rest.domain.bargainfindermax.rq.TPAExtensions;
+import com.sabre.api.sacs.rest.domain.bargainfindermax.rq.TPAExtensions___;
+import com.sabre.api.sacs.rest.domain.bargainfindermax.rq.TravelPreferences;
+import com.sabre.api.sacs.rest.domain.bargainfindermax.rq.TravelerInfoSummary;
 import com.uxuexi.core.common.util.Util;
 
 /**
  * @author   朱晓川
  * @Date	 2016年11月17日 	 
  */
-@IocBean(name = "sabreService")
-public class SabreServiceImpl implements SabreService {
+@IocBean(name = "restSabreService")
+public class RestSabreServiceImpl implements SabreService {
 
 	//打log用
-	private static Log log = Logs.getLog(SabreServiceImpl.class);
+	private static Log log = Logs.getLog(RestSabreServiceImpl.class);
+
+	private static final String default_prefer_level = "Preferred";
 
 	@Override
 	public SabreResponse instaFlightsSearch(InstaFlightsSearchForm paramForm) {
-		SabreResponse resp = new SabreResponse();
-
-		String searchUrl = SabreConfig.environment + SabreConfig.INSTAL_FLIGHTS_URl
+		final ApplicationContext ctx = SabreApplicationContext.context;
+		SacsConfiguration sabreCfg = ctx.getBean(SacsConfiguration.class);
+		String searchUrl = sabreCfg.getRestProperty("environment") + SabreConfig.INSTAL_FLIGHTS_URl
 				+ HttpClientUtil.getParams(paramForm);
 
 		HttpGet httpget = new HttpGet(searchUrl);
@@ -92,6 +95,7 @@ public class SabreServiceImpl implements SabreService {
 		String result = hr.getResult();
 		log.info(result);
 
+		SabreResponse resp = new SabreResponse();
 		int statusCode = hr.getStatusCode();
 		if (HttpClientUtil.SUCCESS_CODE != statusCode) {
 			SabreExResponse exResp = new JsonPathGeneric().getGenericObject(result, "$", SabreExResponse.class);
@@ -124,10 +128,10 @@ public class SabreServiceImpl implements SabreService {
 				ir.setSequenceNumber(sequenceNumber);
 				ir.setTicketType(ticketType);
 
-				log.info("sequenceNumber:" + sequenceNumber);
-				log.info("airlineCode:" + airlineCode);
-				log.info("ticketType:" + ticketType);
-				log.info("======================================");
+				log.debug("sequenceNumber:" + sequenceNumber);
+				log.debug("airlineCode:" + airlineCode);
+				log.debug("ticketType:" + ticketType);
+				log.debug("======================================");
 
 				readSegmentsInfo(json, ir);
 
@@ -251,80 +255,109 @@ public class SabreServiceImpl implements SabreService {
 
 	@Override
 	public SabreResponse bargainFinderMaxSearch(BargainFinderMaxSearchForm paramForm) {
+		SabreResponse resp = new SabreResponse();
+
 		final ApplicationContext ctx = SabreApplicationContext.context;
 		SacsConfiguration sabreCfg = ctx.getBean(SacsConfiguration.class);
 
-		BargainFinderMaxSoapActivity bfmAcitivity = ctx.getBean(BargainFinderMaxSoapActivity.class);
-		bfmAcitivity.setRequest(getRequestBody(sabreCfg, paramForm));
-		Workflow workflow = new Workflow(bfmAcitivity);
-		SharedContext sCtx = workflow.run();
-		String rq = (String) sCtx.getResult("BargainFinderMaxRQ");
-		log.info("bargainFinderMax request:" + rq);
-		OTAAirLowFareSearchRS rsObj = (OTAAirLowFareSearchRS) sCtx.getResult("BargainFinderMaxRSObj");
-		String rs = (String) sCtx.getResult("BargainFinderMaxRS");
-		String result = Json.toJson(rsObj, JsonFormat.compact());
-		log.info("bargainFinderMax result:" + result);
+		String searchUrl = sabreCfg.getRestProperty("environment") + SabreConfig.BARGAIN_FINDER_MAX_URl;
+		HttpPost httpPost = new HttpPost(searchUrl);
+		httpPost.addHeader("Accept", "*/*");
+		httpPost.addHeader("Content-Type", "application/json; charset=UTF-8");
 
-		SabreResponse resp = new SabreResponse();
-		if (!Util.isEmpty(rsObj)) {
-			List<Map<String, Object>> pricedItineraries = JsonPath.read(result,
-					"$.pricedItineraries.pricedItinerary[*]");
+		//添加授权信息
+		SabreAccessToken accessToken = SabreTokenFactory.getAccessToken();
+		String token = accessToken.getAccess_token();
+		httpPost.addHeader("Authorization", "Bearer " + token);
 
-			List<BFMAirItinerary> list = Lists.newArrayList();
+		BargainFinderMaxRequest requestBody = getRestRequestBody(sabreCfg, paramForm);
 
-			if (!Util.isEmpty(pricedItineraries)) {
-				for (Map<String, Object> map : pricedItineraries) {
-					//不换行，不忽略空值
-					String json = Json.toJson(map, JsonFormat.tidy());
-					BFMAirItinerary ir = new BFMAirItinerary();
-
-					//航空公司代码(两字)
-					String airlineCode = JsonPath.read(json, "$.tpaExtensions.validatingCarrier.code");
-					int sequenceNumber = JsonPath.read(json, "$.sequenceNumber");
-					String ticketType = JsonPath.read(json, "$.ticketingInfo.ticketType");
-
-					//TODO 航空公司名称、图片
-
-					//价格信息 
-					//TODO 类型转换异常 java.lang.String cannot be cast to java.lang.Double
-					readBFMPriceInfo(json, ir);
-
-					ir.setAirlineCode(airlineCode);
-					ir.setSequenceNumber(sequenceNumber);
-					ir.setTicketType(ticketType);
-
-					log.info("sequenceNumber:" + sequenceNumber);
-					log.info("airlineCode:" + airlineCode);
-					log.info("ticketType:" + ticketType);
-					log.info("======================================");
-
-					readBFMSegmentsInfo(json, ir);
-
-					list.add(ir);
-				}
-			}
-			resp.setStatusCode(200);
-			resp.setData(list);
+		/**使用jackson ObjectMapper 将对象转为json，能正确处理 jsonschema2pojo自动生成的additionalProperties*/
+		ObjectMapper mapper = new ObjectMapper();
+		String req = "";
+		try {
+			req = mapper.writeValueAsString(requestBody);
+			log.info("bfm request:" + req);
+		} catch (JsonProcessingException e) {
+			log.info("json 转换异常");
+			e.printStackTrace();
+			return resp;
 		}
+
+		StringEntity postEntity = new StringEntity(req, "UTF-8");
+		httpPost.setEntity(postEntity);
+		log.debug("executing request " + httpPost.getRequestLine());
+
+		HttpResult hr = HttpClientUtil.httpsPost(httpPost);
+		String result = hr.getResult();
+		log.info("bfm result:" + result);
+
+		int statusCode = hr.getStatusCode();
+		if (HttpClientUtil.SUCCESS_CODE != statusCode) {
+			SabreExResponse exResp = new JsonPathGeneric().getGenericObject(result, "$", SabreExResponse.class);
+			resp.setStatusCode(statusCode);
+			resp.setData(exResp);
+			return resp;
+		}
+
+		List<Map<String, Object>> pricedItineraries = JsonPath.read(result,
+				"$.OTA_AirLowFareSearchRS.PricedItineraries.PricedItinerary[*]");
+
+		List<BFMAirItinerary> list = Lists.newArrayList();
+
+		if (!Util.isEmpty(pricedItineraries)) {
+			for (Map<String, Object> map : pricedItineraries) {
+				//不换行，不忽略空值
+				String json = Json.toJson(map, JsonFormat.tidy());
+				BFMAirItinerary ir = new BFMAirItinerary();
+
+				//航空公司代码(两字)
+				String airlineCode = JsonPath.read(json, "$.TPA_Extensions.ValidatingCarrier.Code");
+				int sequenceNumber = JsonPath.read(json, "$.SequenceNumber");
+				String ticketType = JsonPath.read(json, "$.TicketingInfo.TicketType");
+
+				//TODO 航空公司名称、图片
+
+				//价格信息 
+				//TODO 类型转换异常 java.lang.String cannot be cast to java.lang.Double
+				readBFMPriceInfo(json, ir);
+
+				ir.setAirlineCode(airlineCode);
+				ir.setSequenceNumber(sequenceNumber);
+				ir.setTicketType(ticketType);
+
+				log.debug("sequenceNumber:" + sequenceNumber);
+				log.debug("airlineCode:" + airlineCode);
+				log.debug("ticketType:" + ticketType);
+				log.debug("======================================");
+
+				readBFMSegmentsInfo(json, ir);
+
+				list.add(ir);
+			}
+		}
+		resp.setStatusCode(200);
+		resp.setData(list);
+
 		return resp;
 	}
 
 	private void readBFMPriceInfo(String json, BFMAirItinerary ir) {
 		//airItineraryPricingInfo  是数组
 
-		List<Map<String, Object>> prices = JsonPath.read(json, "$.airItineraryPricingInfo[*]");
+		List<Map<String, Object>> prices = JsonPath.read(json, "$.AirItineraryPricingInfo[*]");
 		if (!Util.isEmpty(prices)) {
 			List<FlightPriceInfo> fiLst = Lists.newArrayList();
 			for (Map<String, Object> map : prices) {
 				//不换行，不忽略空值
 				String jprice = Json.toJson(map, JsonFormat.tidy());
 
-				double totalAmount = JsonPath.parse(jprice).read("$.itinTotalFare.totalFare.amount", Double.class);
-				double baseAmount = JsonPath.parse(jprice).read("$.itinTotalFare.baseFare.amount", Double.class);
-				double equivFareAmount = JsonPath.parse(jprice).read("$.itinTotalFare.equivFare.amount", Double.class);
+				double totalAmount = JsonPath.parse(jprice).read("$.ItinTotalFare.TotalFare.Amount", Double.class);
+				double baseAmount = JsonPath.parse(jprice).read("$.ItinTotalFare.BaseFare.Amount", Double.class);
+				double equivFareAmount = JsonPath.parse(jprice).read("$.ItinTotalFare.EquivFare.Amount", Double.class);
 
 				//数组字符串
-				String[] readVal = JsonPath.parse(jprice).read(".itinTotalFare.totalFare.currencyCode", String[].class);
+				String[] readVal = JsonPath.parse(jprice).read(".ItinTotalFare.TotalFare.CurrencyCode", String[].class);
 				String currencyCode = "";
 				if (!Util.isEmpty(readVal)) {
 					currencyCode = readVal[0];
@@ -352,13 +385,13 @@ public class SabreServiceImpl implements SabreService {
 	private void readBFMSegmentsInfo(String json, BFMAirItinerary ir) {
 
 		List<Map<String, Object>> odopts = JsonPath.read(json,
-				"$.airItinerary.originDestinationOptions.originDestinationOption[*]");
+				"$.AirItinerary.OriginDestinationOptions.OriginDestinationOption[*]");
 		if (!Util.isEmpty(odopts)) {
 			List<FlightSegment> segLst = Lists.newArrayList();
 			for (Map<String, Object> each : odopts) {
 				String optJ = Json.toJson(each, JsonFormat.tidy());
 
-				List<Map<String, Object>> segments = JsonPath.read(optJ, "$.flightSegment[*]");
+				List<Map<String, Object>> segments = JsonPath.read(optJ, "$.FlightSegment[*]");
 				if (!Util.isEmpty(segments)) {
 
 					for (Map<String, Object> eachSeg : segments) {
@@ -367,33 +400,33 @@ public class SabreServiceImpl implements SabreService {
 						FlightSegment seg = new FlightSegment();
 
 						//经停次数
-						int StopQuantity = JsonPath.parse(segJ).read("$.stopQuantity", Integer.class);
+						int StopQuantity = JsonPath.parse(segJ).read("$.StopQuantity", Integer.class);
 						//出发机场
-						String DepartureAirport = JsonPath.read(segJ, "$.departureAirport.locationCode");
+						String DepartureAirport = JsonPath.read(segJ, "$.DepartureAirport.LocationCode");
 						//到达机场
-						String ArrivalAirport = JsonPath.read(segJ, "$.arrivalAirport.locationCode");
+						String ArrivalAirport = JsonPath.read(segJ, "$.ArrivalAirport.LocationCode");
 						//航段合并数
-						String MarriageGrp = JsonPath.read(segJ, "$.marriageGrp");
+						String MarriageGrp = JsonPath.read(segJ, "$.MarriageGrp");
 						//出发时间
-						String DepartureDateTime = JsonPath.read(segJ, "$.departureDateTime");
+						String DepartureDateTime = JsonPath.read(segJ, "$.DepartureDateTime");
 						//抵达时间
-						String ArrivalDateTime = JsonPath.read(segJ, "$.arrivalDateTime");
+						String ArrivalDateTime = JsonPath.read(segJ, "$.ArrivalDateTime");
 
 						//航班号
-						String FlightNumber = JsonPath.parse(segJ).read("$.flightNumber", String.class);
+						String FlightNumber = JsonPath.parse(segJ).read("$.FlightNumber", String.class);
 						//耗时
-						int ElapsedTime = JsonPath.parse(segJ).read("$.elapsedTime", Integer.class);
+						int ElapsedTime = JsonPath.parse(segJ).read("$.ElapsedTime", Integer.class);
 
 						/**实际执行的航空公司代码*/
-						String opAirlineCode = JsonPath.read(segJ, "$.operatingAirline.code");
+						String opAirlineCode = JsonPath.read(segJ, "$.OperatingAirline.Code");
 						/**实际乘坐的航班号*/
-						int opFno = JsonPath.parse(segJ).read("$.operatingAirline.flightNumber", Integer.class);
+						int opFno = JsonPath.parse(segJ).read("$.OperatingAirline.FlightNumber", Integer.class);
 						/**出发时区*/
-						int deTimeZone = JsonPath.parse(segJ).read("$.departureTimeZone.gmtOffset", Integer.class);
+						int deTimeZone = JsonPath.parse(segJ).read("$.DepartureTimeZone.GMTOffset", Integer.class);
 						/**到达时区*/
-						int ArrivalTimeZone = JsonPath.parse(segJ).read("$.arrivalTimeZone.gmtOffset", Integer.class);
+						int ArrivalTimeZone = JsonPath.parse(segJ).read("$.ArrivalTimeZone.GMTOffset", Integer.class);
 
-						String ResBookDesigCode = JsonPath.read(segJ, "$.resBookDesigCode");
+						String ResBookDesigCode = JsonPath.read(segJ, "$.ResBookDesigCode");
 						//						String Equipment = JsonPath.read(segJ, "$.equipment.airEquipType");
 
 						seg.setStopQuantity(StopQuantity);
@@ -423,139 +456,152 @@ public class SabreServiceImpl implements SabreService {
 		}
 	}
 
-	private OTAAirLowFareSearchRQ getRequestBody(SacsConfiguration config, BargainFinderMaxSearchForm paramForm) {
-		OTAAirLowFareSearchRQ result = new OTAAirLowFareSearchRQ();
-
+	private BargainFinderMaxRequest getRestRequestBody(SacsConfiguration config, BargainFinderMaxSearchForm paramForm) {
 		//<POS>
-		POSType pos = new POSType();
-		SourceType srcType = new SourceType();
-		srcType.setPseudoCityCode(config.getSoapProperty("group"));//PCC 必须
+		List<Source> sourceList = new ArrayList<>();
+		//do not forget set the PCC code
+		//requestorId上不能出现PseudoCityCode
+		RequestorID requestorID = new RequestorID().withID("1").withType("1")
+				.withCompanyName(new CompanyName().withCode("TN"));
+		Source source = new Source().withRequestorID(requestorID).withAdditionalProperty("PseudoCityCode",
+				config.getRestProperty("group"));
 
-		UniqueIDType uidType = new UniqueIDType();
-		uidType.setType("1");
-		uidType.setID("1");
-		CompanyNameType compNameType = new CompanyNameType();
-		compNameType.setCode("TN");
-		uidType.setCompanyName(compNameType);
-		srcType.setRequestorID(uidType);
+		sourceList.add(source);
+		POS pos = new POS().withSource(sourceList);
 
-		pos.getSource().add(srcType);
-		result.setPOS(pos);
-
+		//出发到达信息
+		//OriginDestinationInformation
+		List<OriginDestinationInformation> originDestinationInfos = new ArrayList<>();
 		List<OriginDest> originDests = paramForm.getOriginDests();
 		if (!Util.isEmpty(originDests)) {
 			for (int idx = 0; idx < originDests.size(); idx++) {
 				OriginDest od = originDests.get(idx);
-				//<OriginDestinationInformation
 				OriginDestinationInformation odi = new OriginDestinationInformation();
 
 				//出发时间
 				odi.setDepartureDateTime(od.getDeparturedate());
 
-				//出发地/机场
+				//出发地
 				OriginLocation ol = new OriginLocation();
 				ol.setLocationCode(od.getOrigin());
 				odi.setOriginLocation(ol);
 
-				//目的地/机场
+				//目的地
 				DestinationLocation dl = new DestinationLocation();
 				dl.setLocationCode(od.getDestination());
 				odi.setDestinationLocation(dl);
 
-				//TPAExtensions
-				com.sabre.api.sacs.contract.bargainfindermax.OTAAirLowFareSearchRQ.OriginDestinationInformation.TPAExtensions odiTpa = new com.sabre.api.sacs.contract.bargainfindermax.OTAAirLowFareSearchRQ.OriginDestinationInformation.TPAExtensions();
+				//SegmentType
+				TPAExtensions segTpa = new TPAExtensions();
+				SegmentType segType = new SegmentType();
+				segType.setCode("O");
+				segTpa.withSegmentType(segType);
 
 				//航空公司
 				List<String> carriers = paramForm.getCarriers();
 				if (!Util.isEmpty(carriers)) {
-					List<IncludeVendorPrefType> includeVendorPref = odiTpa.getIncludeVendorPref();
+					List<IncludeVendorPref> includeVendorPrefs = Lists.newArrayList();
 					for (String carrier : carriers) {
-						IncludeVendorPrefType vendorPref = new IncludeVendorPrefType();
+						IncludeVendorPref vendorPref = new IncludeVendorPref();
 						vendorPref.setCode(carrier);
-						includeVendorPref.add(vendorPref);
+						includeVendorPrefs.add(vendorPref);
 					}
+					segTpa.withIncludeVendorPref(includeVendorPrefs);
 				}
+				odi.withTPAExtensions(segTpa);
 
-				//SegmentType
-				SegmentType segType = new SegmentType();
-				segType.setCode("O");//normal
-				odiTpa.setSegmentType(segType);
-				odi.setTPAExtensions(odiTpa);
+				//rph
+				String rph = (idx + 1) + "";
+				odi.setRPH(rph);
 
-				odi.setRPH((idx + 1) + "");
-				result.getOriginDestinationInformation().add(odi);
+				originDestinationInfos.add(odi);
 			}
 		}
-
-		//是否直飞
-		result.setDirectFlightsOnly(paramForm.getDirectFlightsOnly());
-
-		//<TravelPreferences>
-		AirSearchPrefsType travelPreferences = new AirSearchPrefsType();
+		//TravelPreferences  
+		//仓位等级
+		TravelPreferences tPfs = new TravelPreferences();
 		//票务协议
-		travelPreferences.setValidInterlineTicket(true);
+		tPfs.setValidInterlineTicket(true);
 
 		//仓位等级
+		/*
+			"Only","Unacceptable","Preferred"
+		*/
 		List<String> airLevels = paramForm.getAirLevel();
 		if (!Util.isEmpty(airLevels)) {
-			for (String level : airLevels) {
-				CabinPrefType cabinPref = new CabinPrefType();
-				cabinPref.setCabin(CabinType.fromValue(level));
-				cabinPref.setPreferLevel(PreferLevelType.PREFERRED);
-				travelPreferences.getCabinPref().add(cabinPref);
+			for (String cabin : airLevels) {
+				CabinPref cabinPref = new CabinPref();
+				cabinPref.setCabin(cabin);
+				cabinPref.setPreferLevel(default_prefer_level);
+				tPfs.getCabinPref().add(cabinPref);
 			}
 		}
 
-		result.setTravelPreferences(travelPreferences);
+		//-------------------<TravelerInfoSummary>--------------------------
+		//-------------------乘客类型和人数以及座位数--------------------------
+		List<PassengerTypeQuantity> pqs = Lists.newArrayList();
 
-		//<TravelerInfoSummary>
-		TravelerInfoSummaryType tiSummaryType = new TravelerInfoSummaryType();
-		//座位数
-		String seatsRequested = paramForm.getSeatsRequested();
-		if (!Util.isEmpty(seatsRequested)) {
-			tiSummaryType.getSeatsRequested().add(new BigInteger(seatsRequested));
-		}
-		TravelerInformationType airTravelerAvail = new TravelerInformationType();
 		//成人
 		Integer adt = paramForm.getAdt();
 		if (!Util.isEmpty(adt)) {
-			PassengerTypeQuantityType adtTypeQuantity = new PassengerTypeQuantityType();
+			PassengerTypeQuantity adtTypeQuantity = new PassengerTypeQuantity();
 			adtTypeQuantity.setCode("ADT");
-			adtTypeQuantity.setQuantity(paramForm.getAdt());
-			airTravelerAvail.getPassengerTypeQuantity().add(adtTypeQuantity);
+			adtTypeQuantity.setQuantity(adt);
+			pqs.add(adtTypeQuantity);
 		}
 
 		//儿童
 		Integer cnn = paramForm.getCnn();
 		if (!Util.isEmpty(cnn)) {
-			PassengerTypeQuantityType cnnTypeQuantity = new PassengerTypeQuantityType();
-			cnnTypeQuantity.setCode("CNN");
-			cnnTypeQuantity.setQuantity(cnn);
-			airTravelerAvail.getPassengerTypeQuantity().add(cnnTypeQuantity);
+			PassengerTypeQuantity adtTypeQuantity = new PassengerTypeQuantity();
+			adtTypeQuantity.setCode("CNN");
+			adtTypeQuantity.setQuantity(cnn);
+			pqs.add(adtTypeQuantity);
 		}
 
 		//婴儿
 		Integer inf = paramForm.getInf();
 		if (!Util.isEmpty(inf)) {
-			PassengerTypeQuantityType infTypeQuantity = new PassengerTypeQuantityType();
-			infTypeQuantity.setCode("INF");
-			infTypeQuantity.setQuantity(inf);
-			airTravelerAvail.getPassengerTypeQuantity().add(infTypeQuantity);
+			PassengerTypeQuantity adtTypeQuantity = new PassengerTypeQuantity();
+			adtTypeQuantity.setCode("INF");
+			adtTypeQuantity.setQuantity(inf);
+			pqs.add(adtTypeQuantity);
 		}
-		tiSummaryType.getAirTravelerAvail().add(airTravelerAvail);
-		result.setTravelerInfoSummary(tiSummaryType);
 
-		//<TPA_Extension>
-		TPAExtensions tpa = new TPAExtensions();
-		TransactionType intelliSell = new TransactionType();
-		RequestType reqType = new RequestType();
-		reqType.setName("100ITINS");
-		intelliSell.setRequestType(reqType);
-		tpa.setIntelliSellTransaction(intelliSell);
+		AirTravelerAvail avl = new AirTravelerAvail();
+		avl.setPassengerTypeQuantity(pqs);
+		List<AirTravelerAvail> avls = Lists.newArrayList();
+		avls.add(avl);
 
-		result.setTPAExtensions(tpa);
-		result.setVersion(config.getSoapProperty("BargainFinderMaxRQVersion"));
+		//座位数
+		String seatsRequested = paramForm.getSeatsRequested();
 
-		return result;
+		TravelerInfoSummary tis = new TravelerInfoSummary();
+		if (StringUtil.isNumeric(seatsRequested)) {
+			tis.setAdditionalProperty("SeatsRequested", new Integer[] { new Integer(seatsRequested) });
+		} else {
+			log.error("座位数必须是数字");
+		}
+		tis.setAirTravelerAvail(avls);
+
+		//请求多少条数据
+		RequestType rqt = new RequestType();
+		rqt.setName("50ITINS");
+		IntelliSellTransaction trans = new IntelliSellTransaction();
+		trans.withRequestType(rqt);
+		TPAExtensions___ tpa = new TPAExtensions___();
+		tpa.withIntelliSellTransaction(trans);
+
+		//OTAAirLowFareSearchRQ 不能出现version
+		BargainFinderMaxRequest bfmreq = new BargainFinderMaxRequest()
+				.withOTAAirLowFareSearchRQ(new OTAAirLowFareSearchRQ()
+						.withAdditionalProperty("ResponseType", "OTA")
+						.withAdditionalProperty("ResponseVersion", "3.1.0")
+						.withAdditionalProperty("Target", "Production")
+						//是否直飞
+						.withDirectFlightsOnly(paramForm.getDirectFlightsOnly()).withPOS(pos)
+						.withOriginDestinationInformation(originDestinationInfos).withTravelPreferences(tPfs)
+						.withTravelerInfoSummary(tis).withTPAExtensions(tpa));
+		return bfmreq;
 	}
 }
