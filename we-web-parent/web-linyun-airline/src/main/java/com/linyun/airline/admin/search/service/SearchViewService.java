@@ -52,7 +52,7 @@ import com.linyun.airline.common.sabre.dto.OriginDest;
 import com.linyun.airline.common.sabre.dto.SabreResponse;
 import com.linyun.airline.common.sabre.form.BargainFinderMaxSearchForm;
 import com.linyun.airline.common.sabre.service.SabreService;
-import com.linyun.airline.common.sabre.service.impl.SabreServiceImpl;
+import com.linyun.airline.common.sabre.service.impl.SoapSabreServiceImpl;
 import com.linyun.airline.entities.DictInfoEntity;
 import com.linyun.airline.entities.TAirlineInfoEntity;
 import com.linyun.airline.entities.TCompanyEntity;
@@ -427,7 +427,7 @@ public class SearchViewService extends BaseService<TMessageEntity> {
 		//直飞
 		/*form.setDirectFlightsOnly(true);*/
 
-		SabreService service = new SabreServiceImpl();
+		SabreService service = new SoapSabreServiceImpl();
 
 		//缓存中的key值
 		String cacheKey = userId + "-" + airlineCode + "-" + origin + "-" + destination + "-" + dateStr + "-"

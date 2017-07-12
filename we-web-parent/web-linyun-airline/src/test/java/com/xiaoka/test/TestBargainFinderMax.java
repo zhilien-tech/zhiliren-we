@@ -13,7 +13,7 @@ import com.linyun.airline.common.sabre.dto.OriginDest;
 import com.linyun.airline.common.sabre.dto.SabreResponse;
 import com.linyun.airline.common.sabre.form.BargainFinderMaxSearchForm;
 import com.linyun.airline.common.sabre.service.SabreService;
-import com.linyun.airline.common.sabre.service.impl.SabreServiceImpl;
+import com.linyun.airline.common.sabre.service.impl.SoapSabreServiceImpl;
 import com.uxuexi.core.common.util.DateUtil;
 
 /**
@@ -82,7 +82,7 @@ public class TestBargainFinderMax {
 		airLevels.add("Y");
 		form.setAirLevel(airLevels);
 
-		SabreService service = new SabreServiceImpl();
+		SabreService service = new SoapSabreServiceImpl();
 		SabreResponse resp = service.bargainFinderMaxSearch(form);
 
 		System.out.println(resp);

@@ -12,25 +12,37 @@
  */
 package com.xiaoka.test;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.nutz.lang.Files;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
+import org.springframework.context.ApplicationContext;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.google.common.collect.Lists;
 import com.linyun.airline.common.sabre.SabreConfig;
 import com.linyun.airline.common.sabre.SabreTokenFactory;
 import com.linyun.airline.common.sabre.bean.SabreAccessToken;
+import com.linyun.airline.common.sabre.ctx.SabreApplicationContext;
 import com.linyun.airline.common.sabre.dto.MACCitty;
+import com.linyun.airline.common.sabre.dto.OriginDest;
 import com.linyun.airline.common.sabre.dto.SabreResponse;
+import com.linyun.airline.common.sabre.form.BargainFinderMaxSearchForm;
 import com.linyun.airline.common.sabre.form.InstaFlightsSearchForm;
 import com.linyun.airline.common.sabre.form.MACLookupForm;
 import com.linyun.airline.common.sabre.service.SabreService;
-import com.linyun.airline.common.sabre.service.impl.SabreServiceImpl;
+import com.linyun.airline.common.sabre.service.impl.RestSabreServiceImpl;
+import com.linyun.airline.common.sabre.service.impl.SoapSabreServiceImpl;
 import com.linyun.airline.common.util.HttpClientUtil;
 import com.linyun.airline.common.util.JsonPathGeneric;
+import com.sabre.api.sacs.configuration.SacsConfiguration;
 import com.uxuexi.core.common.util.Util;
 
 /**
@@ -85,7 +97,10 @@ public class SabreAPITest {
 	 */
 	@Test
 	public static void flightTo() {
-		String searchUrl = SabreConfig.environment + "/v1/shop/flights/cheapest/fares/SYD";
+
+		final ApplicationContext ctx = SabreApplicationContext.context;
+		SacsConfiguration sabreCfg = ctx.getBean(SacsConfiguration.class);
+		String searchUrl = sabreCfg.getRestProperty("environment") + "/v1/shop/flights/cheapest/fares/SYD";
 		//		String searchUrl = test_environment + "/v1/shop/flights/cheapest/fares/BJS";
 
 		String result = null;
@@ -104,22 +119,71 @@ public class SabreAPITest {
 		InstaFlightsSearchForm form = new InstaFlightsSearchForm();
 		form.setOrigin("ATL");
 		form.setDestination("LAS");
-		form.setDeparturedate("2017-03-05");
-		form.setReturndate("2017-03-15");
+		form.setDeparturedate("2017-07-05");
+		form.setReturndate("2017-07-15");
 		form.setPointofsalecountry("US");
 		form.setOffset(1);
 		form.setLimit(10);
-		SabreService service = new SabreServiceImpl();
+		SabreService service = new SoapSabreServiceImpl();
 		SabreResponse resp = service.instaFlightsSearch(form);
+	}
+
+	public static void bargainFinderMaxSearch() {
+		BargainFinderMaxSearchForm form = new BargainFinderMaxSearchForm();
+
+		//出发到达信息
+		OriginDest od1 = new OriginDest();
+		od1.setOrigin("JFK");
+		od1.setDestination("LAX");
+
+		OriginDest od2 = new OriginDest();
+		od2.setOrigin("ATL");
+		od2.setDestination("LAS");
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_YEAR, 1);
+
+		String date = sdf.format(cal.getTime());
+		date = "2017-09-05T18:00:00";
+		System.out.println("departure date:" + date);
+		od1.setDeparturedate(date);
+		od2.setDeparturedate(date);
+
+		form.getOriginDests().add(od1);
+		form.getOriginDests().add(od2);
+
+		//仓位等级
+		List<String> airLevels = Lists.newArrayList();
+		airLevels.add("Y");
+		form.setAirLevel(airLevels);
+
+		form.setAdt(1);
+		form.setSeatsRequested("3");
+
+		//直飞
+		form.setDirectFlightsOnly(true);
+
+		List<String> carriers = Lists.newArrayList();
+		carriers.add("AA");
+		form.setCarriers(carriers);
+
+		SabreService service = new RestSabreServiceImpl();
+		SabreResponse resp = service.bargainFinderMaxSearch(form);
+		System.out.println(resp);
 	}
 
 	/**
 	 * 多机场城市代码查询
 	 */
 	public static void macLookup() {
+		final ApplicationContext ctx = SabreApplicationContext.context;
+		SacsConfiguration sabreCfg = ctx.getBean(SacsConfiguration.class);
+
 		MACLookupForm form = new MACLookupForm();
 		form.setCountry("CN");
-		String searchUrl = SabreConfig.environment + SabreConfig.MAC_LOOKUP_URI + HttpClientUtil.getParams(form);
+		String searchUrl = sabreCfg.getRestProperty("environment") + SabreConfig.MAC_LOOKUP_URI
+				+ HttpClientUtil.getParams(form);
 		String result = null;
 		HttpGet httpget = new HttpGet(searchUrl);
 
@@ -137,8 +201,29 @@ public class SabreAPITest {
 		}
 	}
 
+	public static void bargainFinderMaxSearchNew() {
+		SabreAccessToken accessToken = SabreTokenFactory.getAccessToken();
+		String token = accessToken.getAccess_token();
+
+		String url = "https://api.havail.sabre.com/v3.1.0/shop/flights?mode=live";
+		HttpPost httpPost = new HttpPost(url);
+		httpPost.addHeader("Accept", "*/*");
+		//添加授权信息
+		httpPost.addHeader("Authorization", "Bearer " + token);
+		httpPost.addHeader("Content-Type", "application/json; charset=UTF-8");
+
+		String req = Files.read("D:/test/request.txt");
+		System.out.println("request:" + req);
+		StringEntity postEntity = new StringEntity(req, "UTF-8");
+
+		httpPost.setEntity(postEntity);
+		log.debug("executing request " + httpPost.getRequestLine());
+		String result = HttpClientUtil.httpsPost(httpPost).getResult();
+		System.out.println("result:" + result);
+	}
+
 	public static void main(String[] args) {
 		//		macLookup();
-		instaFlightsSearch();
+		bargainFinderMaxSearch();
 	}
 }

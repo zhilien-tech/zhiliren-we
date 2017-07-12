@@ -15,6 +15,7 @@ import org.apache.http.entity.StringEntity;
 import org.nutz.json.Json;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
+import org.springframework.context.ApplicationContext;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -22,8 +23,10 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
 import com.linyun.airline.common.sabre.bean.SabreAccessToken;
+import com.linyun.airline.common.sabre.ctx.SabreApplicationContext;
 import com.linyun.airline.common.util.Base64;
 import com.linyun.airline.common.util.HttpClientUtil;
+import com.sabre.api.sacs.configuration.SacsConfiguration;
 import com.uxuexi.core.common.util.Util;
 
 /**
@@ -119,13 +122,24 @@ public class SabreTokenFactory {
 	 */
 	protected static SabreAccessToken fetchToken() throws UnsupportedEncodingException {
 		log.debug("load access_token from sabre");
-		String encodedCid = Base64.encode((SabreConfig.Client_ID).getBytes(SabreConfig.CHARSET));
-		String encodedSecret = Base64.encode(SabreConfig.Secret.getBytes(SabreConfig.CHARSET));
+
+		final ApplicationContext ctx = SabreApplicationContext.context;
+		SacsConfiguration config = ctx.getBean(SacsConfiguration.class);
+		String group = config.getRestProperty("group");
+		String userId = config.getRestProperty("userId");
+		String domain = config.getRestProperty("domain");
+		String clientSecret = config.getRestProperty("clientSecret");
+		String formatVersion = config.getRestProperty("formatVersion");
+
+		String clinetId = formatVersion + ":" + userId + ":" + group + ":" + domain;
+
+		String encodedCid = Base64.encode(clinetId.getBytes(SabreConfig.CHARSET));
+		String encodedSecret = Base64.encode(clientSecret.getBytes(SabreConfig.CHARSET));
 		log.debug("encodedCid:" + encodedCid);
 		log.debug("encodedSecret:" + encodedSecret);
 
 		String authorization = Base64.encode((encodedCid + ":" + encodedSecret).getBytes(SabreConfig.CHARSET));
-		String authUrl = SabreConfig.environment + SabreConfig.AUTH_URI;
+		String authUrl = config.getRestProperty("environment") + "/v2/auth/token";
 
 		String respTxt = null;
 		HttpPost httpPost = new HttpPost(authUrl);

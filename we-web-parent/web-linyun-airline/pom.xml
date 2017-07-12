@@ -183,13 +183,20 @@
 		    <version>1.2.1</version>
 		</dependency>
 		
+		<dependency>
+            <groupId>org.jsonschema2pojo</groupId>
+            <artifactId>jsonschema2pojo-core</artifactId>
+            <version>0.4.37</version>
+        </dependency>
+		
 		<!-- sabre begin -->
+		<!--
 			<dependency>
 				<groupId>com.sabre.api.sacs</groupId>
 				<artifactId>soap</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
-			
+		-->
 			<dependency>
 				<groupId>com.sabre.api.sacs</groupId>
 				<artifactId>rest</artifactId>
