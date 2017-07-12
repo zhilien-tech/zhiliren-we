@@ -128,6 +128,7 @@ function clearSearchResult(){
 	document.getElementById('travelTypeNum').innerHTML="";
 	document.getElementById('travelDateNum').innerHTML="";
 	document.getElementById('paragraphListInfo').innerHTML="";
+	$("#moreLines").val("");
 }
 
 //清除机票库 列表项
@@ -138,6 +139,7 @@ function clearSearchTeamHtml(){
 	document.getElementById('datatable2_paginate').innerHTML="";
 	document.getElementById('datatable2').innerHTML="";
 	$("#teamAirLevel").val("1");
+	$("#moreLines").val("");
 }
 
 

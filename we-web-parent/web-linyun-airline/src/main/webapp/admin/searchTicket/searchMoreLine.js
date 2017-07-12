@@ -188,17 +188,57 @@ $("#searchSingleTicketsBtn").click(function() {
 		}
 	}
 	
+	var oCityBoolean = true;
+	var aCityBoolean = true;
+	var oDateBoolean = true;
+	var j = $("tr.setMore").length;
+	if(j-1>0){
+		for(var i=1; i<j; i++){
+			var outCity = $('#outCity'+i).find("option:selected").text();
+			if(outCity==""){
+				oCityBoolean = false;
+			}
+		}
+		for(var i=1; i<j; i++){
+			var singleArriveCity = $('#singleArriveCity'+i).find("option:selected").text();
+			if(singleArriveCity==""){
+				aCityBoolean = false;
+			}
+		}
+		for(var i=1; i<j; i++){
+			var outDatepicker = $('#outDatepicker'+i).val();
+			if(outDatepicker==""){
+				oDateBoolean = false;
+			}
+		}
+	}
+	
 	if(outCity==""){
 		layer.msg('出发城市不能为空');
 		return;
+	}else{
+		if(oCityBoolean == false){
+			layer.msg('出发城市不能为空');
+			return;
+		}
 	}
 	if(arriveCity==""){
 		layer.msg('到达城市不能为空');
 		return;
+	}else{
+		if(aCityBoolean == false){
+			layer.msg('到达城市不能为空');
+			return;
+		}
 	}
 	if(outDatepicker==""){
 		layer.msg('出发日期不能为空');
 		return;
+	}else{
+		if(oDateBoolean == false){
+			layer.msg('出发日期不能为空');
+			return;
+		}
 	}
 	if(airType == 2){
 		if(returnDatepicker==""){
@@ -243,6 +283,7 @@ $("#searchSingleTicketsBtn").click(function() {
 	}
 	/* 多程 显示多段 */
 	if(airType == 3){
+		
 		moreLines = "MORELINES" +" "+ oCity+aCity+oDate;
 		/*
 		//方案一 显示往返段
