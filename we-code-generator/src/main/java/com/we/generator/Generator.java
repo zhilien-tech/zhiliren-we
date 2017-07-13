@@ -2,7 +2,7 @@
  * Generator.java
  * com.we.generator
  * Copyright (c) 2016, 北京科技有限公司版权所有.
-*/
+ */
 
 package com.we.generator;
 
@@ -231,6 +231,10 @@ public class Generator {
 
 			//jsp
 			genJsp(force, writer, md);
+
+			//js
+			genJS(force, writer, md);
+
 		}
 	}
 
@@ -289,6 +293,50 @@ public class Generator {
 			String commonTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/view/common.vm";
 			handler.writeToFile(jspCtx, commonTpl, commonPage, force);
 		}
+	}
+
+	private void genJS(boolean force, VelocityHandler handler, ModuleDesc md) throws ClassNotFoundException,
+			IOException {
+
+		Ioc ioc = new NutIoc(new JsonLoader(LoadConfig.IOC_KVCFG_PATH));
+		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
+		String templatePackage = propConfig.get("template_package");
+
+		String fullEntityClassName = md.getFullEntityClassName();
+		Class<?> entityClass = Class.forName(fullEntityClassName);
+		Mirror<?> mirror = Mirror.me(entityClass);
+		Field[] fields = mirror.getFields();
+		List<PageFieldDesc> fieldList = Lists.newArrayList();
+		for (Field f : fields) {
+			if ("id".equals(f.getName())) {
+				continue;
+			}
+
+			PageFieldDesc pd = new PageFieldDesc();
+			pd.setName(f.getName());
+
+			if (f.isAnnotationPresent(Comment.class)) {
+				Comment comment = f.getDeclaredAnnotation(Comment.class);
+				pd.setComment(comment.value());
+			} else {
+				pd.setComment("标题");
+			}
+			fieldList.add(pd);
+		}
+
+		String jsOutPut = LoadConfig.JS_OUTPUT;
+		String pageFilePath = md.getAtUrl();
+
+		VelocityContext jspCtx = new VelocityContext();
+		jspCtx.put("fieldList", fieldList);
+		jspCtx.put("atUrl", md.getAtUrl());
+		jspCtx.put("moudleName", md.getModuleName());
+		jspCtx.put("moudleCode", md.getModuleCode());
+
+		String listJsTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/js/listJS.vm";
+		File listJS = new File(jsOutPut, pageFilePath + "/" + "listTable.js");
+		handler.writeToFile(jspCtx, listJsTpl, listJS, force);
+
 	}
 
 	private void genService(boolean force, String basePkg, String serviceTpl, String[] rowArr) throws IOException {

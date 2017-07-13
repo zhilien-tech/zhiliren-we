@@ -13,6 +13,8 @@ import org.nutz.lang.Streams;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
+import com.uxuexi.core.common.util.Util;
+
 /**
  * 代码生成器
  * <p>
@@ -40,13 +42,16 @@ public class VelocityHandler {
 		//读取模板内容
 		log.debug("load velocity template from : [" + tplPath + "]");
 		InputStream ins = ClassLoader.getSystemResourceAsStream(tplPath);
-		byte[] data = Streams.readBytes(ins);
-		String template = new String(data, Charset.forName("utf8"));
+		if (!Util.isEmpty(ins)) {
+			byte[] data = Streams.readBytes(ins);
+			String template = new String(data, Charset.forName("utf8"));
 
-		VelocityEngine engine = new VelocityEngine();
-		engine.setProperty("runtime.references.strict", false);
-		engine.init();
-		engine.evaluate(context, writer, "generator", template);
+			VelocityEngine engine = new VelocityEngine();
+			engine.setProperty("runtime.references.strict", false);
+			engine.init();
+			engine.evaluate(context, writer, "generator", template);
+		}
+
 		return writer.toString();
 	}
 }
