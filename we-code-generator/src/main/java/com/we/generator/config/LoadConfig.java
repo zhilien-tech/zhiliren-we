@@ -44,6 +44,9 @@ public class LoadConfig {
 	/**jsp文件输出路径*/
 	public static final String JSP_OUTPUT = "src/main/webapp/WEB-INF";
 
+	/**js文件输出路径*/
+	public static final String JS_OUTPUT = "src/main/webapp";
+
 	/**默认生成的方法名*/
 	public static List<String> defaultMethods = Lists.newArrayList("list", "add", "update", "delete", "batchDelete");
 
