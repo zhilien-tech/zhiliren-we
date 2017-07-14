@@ -301,7 +301,6 @@ $("#searchSingleTicketsBtn").click(function() {
 		$("#moreLines").val(moreLines);
 		document.getElementById('travelTypeNum').innerHTML=html;
 	}
-	
 	$.ajax({
 		type : 'POST',
 		data : $("#searchSingleTicketsForm").serialize(),

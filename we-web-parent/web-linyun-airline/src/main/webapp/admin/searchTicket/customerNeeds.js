@@ -564,9 +564,9 @@ $(document).on("click",".chooseAirLineBtn",function(){
 			custLines += '<li class="chooseLi"><a href="javascript:;" class="custLineChoose" value='+custNeedNum+'>'+ custLine +'</a></li>';
 		}
 	});
+	
 	if(msgFlag){
-		/*layer.msg("客户需求需填一个城市", "", 3000);*/
-
+		layer.msg("客户需求未填写", "", 2000);
 		$(".airLineCity").hide();
 	}else{
 		$(".airLineCity").removeAttr("style");
