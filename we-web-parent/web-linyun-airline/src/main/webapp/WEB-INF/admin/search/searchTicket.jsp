@@ -780,7 +780,6 @@
 				if (moreNum == 0) {
 					document.getElementById('paragraphListInfo').innerHTML = "";
 					var index = num_id.substring(7,num_id.length) - 1;
-					
 					var setMoreTrTd = $("tr.setMore").eq(index).children('td');
 					//出发城市
 					var outSelect = setMoreTrTd.eq(1).children("select");
