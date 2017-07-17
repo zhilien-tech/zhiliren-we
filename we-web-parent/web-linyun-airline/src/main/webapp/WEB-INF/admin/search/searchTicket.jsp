@@ -823,20 +823,27 @@
 							.indexOf("teamNumMore");
 					if (teamNumMore == 0) {
 						/* 去程数据 */
-						var index = num_id.substring(11,
-								num_id.length) - 1;
-						var teamOutCityI = $(
-								"#teamOutCity" + index)
-								.select2("val");
-						var teamArriveCityI = $(
-								"#teamArriveCity" + index)
-								.select2("val");
-						var teamOutDateI = $(
-								"#teamOutDatepicker" + index)
-								.val();
-						var teamReturnDateI = $(
-								"#teamReturnDatepicker" + index)
-								.val();
+						var index = num_id.substring(11,num_id.length) - 1;
+						
+						
+						var setMoreTrTd = $("tr.setTeamMore").eq(index).children('td');
+						//出发城市
+						var outSelect = setMoreTrTd.eq(1).children("select");
+						var teamOutCityI =  outSelect.find("option:selected").text();
+						//抵达城市
+						var arrSelect = setMoreTrTd.eq(4).children("select");
+						var teamArriveCityI = arrSelect.find("option:selected").text();
+						//出发日期
+						var teamOutDateI = setMoreTrTd.eq(6).children().val();
+						//返回日期
+						var teamReturnDateI = setMoreTrTd.eq(8).children().val();
+						
+						
+						/* var teamOutCityI = $("#teamOutCity" + index).select2("val");
+						var teamArriveCityI = $("#teamArriveCity" + index).select2("val");
+						var teamOutDateI = $("#teamOutDatepicker" + index).val();
+						var teamReturnDateI = $("#teamReturnDatepicker" + index).val(); */
+						
 						$("#teamorigin").val(teamOutCityI);
 						$("#teamdestination").val(
 								teamArriveCityI);
