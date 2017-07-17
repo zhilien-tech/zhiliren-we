@@ -89,7 +89,7 @@ public class RestSabreServiceImpl implements SabreService {
 		SabreAccessToken accessToken = SabreTokenFactory.getAccessToken();
 		String token = accessToken.getAccess_token();
 		httpget.addHeader("Authorization", "Bearer " + token);
-		log.info("executing request " + httpget.getRequestLine());
+		log.debug("executing request " + httpget.getRequestLine());
 
 		HttpResult hr = HttpClientUtil.httpsGet(httpget);
 		String result = hr.getResult();
@@ -232,7 +232,7 @@ public class RestSabreServiceImpl implements SabreService {
 						seg.setResBookDesigCode(ResBookDesigCode);
 						//						seg.setEquipment(Equipment);
 
-						log.info(seg);
+						log.debug(seg);
 
 						segLst.add(seg);
 					}
@@ -277,9 +277,9 @@ public class RestSabreServiceImpl implements SabreService {
 		String req = "";
 		try {
 			req = mapper.writeValueAsString(requestBody);
-			log.info("bfm request:" + req);
+			log.debug("bfm request:" + req);
 		} catch (JsonProcessingException e) {
-			log.info("json 转换异常");
+			log.debug("json 转换异常");
 			e.printStackTrace();
 			return resp;
 		}
@@ -290,7 +290,7 @@ public class RestSabreServiceImpl implements SabreService {
 
 		HttpResult hr = HttpClientUtil.httpsPost(httpPost);
 		String result = hr.getResult();
-		log.info("bfm result:" + result);
+		log.debug("bfm result:" + result);
 
 		int statusCode = hr.getStatusCode();
 		if (HttpClientUtil.SUCCESS_CODE != statusCode) {
@@ -446,7 +446,7 @@ public class RestSabreServiceImpl implements SabreService {
 						seg.setResBookDesigCode(ResBookDesigCode);
 						//						seg.setEquipment(Equipment);
 
-						log.info(seg);
+						log.debug(seg);
 
 						segLst.add(seg);
 					}
