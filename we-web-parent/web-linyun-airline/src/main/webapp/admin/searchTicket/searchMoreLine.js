@@ -119,24 +119,118 @@ $(function () {
 		divTest.after(newDiv);
 		$('.setMore').each(function(i){
 			if($('.setMore').length - 1 == i){
+				
+				var setMoreTrTd = $("tr.setMore").eq(i).children('td');
+				//出发城市
+				var outSelect = setMoreTrTd.eq(1).children("select");
+				//抵达城市
+				var arrSelect = setMoreTrTd.eq(4).children("select");
+				//出发日期
+				var outDatepicker = setMoreTrTd.eq(6).children();
+				
 				$(this).find('.addSingleIconTd').remove();
 				$(this).append('<td class="removeIconTd"><i class="glyphicon glyphicon-minus removeMore"></i></td>');
 				$(this).find('.removIconId').remove();
 				$('.setMore').first().find('.removIconId').hide();
 				//设置新的出发城市下拉ID
 				var outCity = $(this).find('[name=origin0]');
+				
+				//动态加载id
+				var lastId = divTest.children('td').eq(1).children("select").attr("id");
+				i = parseInt(lastId.substring(7,lastId.length)) + 1;
+				
 				outCity.attr("id","outCity"+i);
-				$('#outCity'+i).empty();
-				$('#outCity'+i).next().remove();
+				outSelect.empty();
+				outSelect.next().remove();
+				newDiv.find('[name=origin0]').select2({
+					ajax : {
+						url : BASE_PATH  + "/admin/search/getCitySelect.html",
+						dataType : 'json',
+						delay : 250,
+						type : 'post',
+						data : function(params) {
+							var ids = $('#singleArriveCity'+i).val();
+							if(ids){
+								ids = ids.join(',');
+							}
+							return {
+								cityname : params.term, 
+								ids:ids,
+								page : params.page
+							};
+						},
+						processResults : function(data, params) {
+							params.page = params.page || 1;
+							var selectdata = $.map(data, function (obj) {
+								obj.id = obj.dictCode; 
+								obj.text = obj.dictCode +" - "+ obj.englishName +" - "+ obj.countryName; 
+								return obj;
+							});
+							return {
+								results : selectdata
+							};
+						},
+						cache : false
+					},
+					templateSelection: formatRepoSelection,
+					escapeMarkup : function(markup) {
+						return markup;
+					}, // let our custom formatter work
+					minimumInputLength : 1,
+					maximumInputLength : 20,
+					language : "zh-CN", 
+					maximumSelectionLength : 1, 
+					tags : false
+				});
 				//设置新的返回城市下拉框ID
 				var singleArriveCity = $(this).find('[name=destination0]');
 				singleArriveCity.attr("id","singleArriveCity"+i);
-				$('#singleArriveCity'+i).empty();
-				$('#singleArriveCity'+i).next().remove();
+				arrSelect.empty();
+				arrSelect.next().remove();
+				newDiv.find('[name=destination0]').select2({
+					ajax : {
+						url : BASE_PATH  + "/admin/search/getCitySelect.html",
+						dataType : 'json',
+						delay : 250,
+						type : 'post',
+						data : function(params) {
+							var ids = $('#outCity'+i).val();
+							if(ids){
+								ids = ids.join(',');
+							}
+							return {
+								cityname : params.term, 
+								ids:ids,
+								page : params.page
+							};
+						},
+						processResults : function(data, params) {
+							params.page = params.page || 1;
+							var selectdata = $.map(data, function (obj) {
+								obj.id = obj.dictCode; 
+								obj.text = obj.dictCode +" - "+ obj.englishName +" - "+ obj.countryName; 
+								return obj;
+							});
+							return {
+								results : selectdata
+							};
+						},
+						cache : false
+					},
+					templateSelection: formatRepoSelection,
+					escapeMarkup : function(markup) {
+						return markup;
+					}, // let our custom formatter work
+					minimumInputLength : 1,
+					maximumInputLength : 20,
+					language : "zh-CN", 
+					maximumSelectionLength : 1, 
+					tags : false
+				});
 				//设置新的出发日期
 				var departuredate = $(this).find('[name=departuredate0]');
 				departuredate.attr("id","outDatepicker"+i);
-				$("#outDatepicker"+i).val("");
+				outDatepicker.val("");
 				//设置新的到达日期
 				/*var returndate = $(this).find('[name=returndate0]');
 				returndate.attr("id","returnDatepicker"+i);
