@@ -194,18 +194,24 @@ $("#searchSingleTicketsBtn").click(function() {
 	var j = $("tr.setMore").length;
 	if(j-1>0){
 		for(var i=1; i<j; i++){
+			var setMoreTrTd = $("tr.setMore").eq(i).children('td');
+			
 			//出发城市
-			var outCity = $('#outCity'+i).find("option:selected").text();
+			var outSelect = setMoreTrTd.eq(1).children("select");
+			var outCity =  outSelect.find("option:selected").text();
 			if(outCity==""){
 				oCityBoolean = false;
 			}
+			
 			//抵达城市
-			var singleArriveCity = $('#singleArriveCity'+i).find("option:selected").text();
-			if(singleArriveCity==""){
+			var arrSelect = setMoreTrTd.eq(4).children("select");
+			var arriveCity = arrSelect.find("option:selected").text();
+			if(arriveCity==""){
 				aCityBoolean = false;
 			}
+			
 			//出发日期
-			var outDatepicker = $('#outDatepicker'+i).val();
+			var outDatepicker = setMoreTrTd.eq(6).children().val();
 			if(outDatepicker==""){
 				oDateBoolean = false;
 			}
@@ -293,10 +299,17 @@ $("#searchSingleTicketsBtn").click(function() {
 		//方案二 显示去程段
 		html ='<li id="moreNum1" class="btnStyle dClas">第1段<p>'+ outArrivalCity0 +'</p></li>';
 		for(var i=2; i<=$('.setMore').length; i++){
-			var iNum = i-1;
-			var outArrivalCityi = $("#outCity"+ iNum).select2("val") +'-'+ $("#singleArriveCity"+ iNum).select2("val");
-			html +='<li id="moreNum'+i+'">第'+i+'段<p>'+ outArrivalCityi +'</p></li>';
-			moreLines += " " + $("#outCity"+ iNum).select2("val") + $("#singleArriveCity"+ iNum).select2("val") + $("#outDatepicker"+ iNum).val();
+			var setMoreTrTd = $("tr.setMore").eq(i-1).children('td');
+			//出发城市
+			var outSelect = setMoreTrTd.eq(1).children("select");
+			var oCity = outSelect.find("option:selected").text();
+			//抵达城市
+			var arrSelect = setMoreTrTd.eq(4).children("select");
+			var aCity = arrSelect.find("option:selected").text();
+			//出发日期
+			var outDatepicker = setMoreTrTd.eq(6).children().val();
+			html +='<li id="moreNum'+i+'">第'+i+'段<p>'+  oCity +'-'+ aCity +'</p></li>';
+			moreLines += " " + oCity + aCity + outDatepicker;
 		}
 		$("#moreLines").val(moreLines);
 		document.getElementById('travelTypeNum').innerHTML=html;
