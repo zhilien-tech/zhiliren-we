@@ -173,25 +173,32 @@ public class Generator {
 
 	private void genModuleCode(boolean force, String basePkg, String moduleTpl, Map<Integer, String[]> moduleInfo)
 			throws IOException, ClassNotFoundException {
+
 		String baseUri = "/";
-		String javaOutput = LoadConfigWeb.JAVA_OUTPUT;
 		String webOutput = LoadConfigWeb.WEB_OUTPUT;
-		String jResOutput = LoadConfigWeb.JAVA_RES_OUTPUT;
-		String testJavaOut = LoadConfigWeb.TEST_JAVA_OUTPUT;
-		String testResOut = LoadConfigWeb.TEST_RES_OUTPUT;
+
+		String javaOutput = LoadConfigWeb.JAVA_OUTPUT;
 		javaOutput = webOutput + "/" + basePkg.replace(".", "-") + "/" + javaOutput;
 
 		//java Resources
+		String jResOutput = LoadConfigWeb.JAVA_RES_OUTPUT;
 		jResOutput = webOutput + "/" + basePkg.replace(".", "-") + "/" + jResOutput;
 		new File(jResOutput).mkdirs();
 
 		//test
+		String testJavaOut = LoadConfigWeb.TEST_JAVA_OUTPUT;
 		testJavaOut = webOutput + "/" + basePkg.replace(".", "-") + "/" + testJavaOut;
 		new File(testJavaOut).mkdirs();
 
 		//test Resources
+		String testResOut = LoadConfigWeb.TEST_RES_OUTPUT;
 		testResOut = webOutput + "/" + basePkg.replace(".", "-") + "/" + testResOut;
 		new File(testResOut).mkdirs();
+
+		//target
+		String targetOutput = LoadConfigWeb.TARGET_OUTPUT;
+		targetOutput = webOutput + "/" + basePkg.replace(".", "-") + "/" + targetOutput;
+		new File(targetOutput).mkdirs();
 
 		Map<String, ModuleDesc> moduleMap = Maps.newHashMap();
 

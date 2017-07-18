@@ -59,6 +59,9 @@ public class LoadConfigWeb {
 	/**test资源输出路径*/
 	public static final String TEST_RES_OUTPUT = "src/test/resources";
 
+	/**tarter 输出路径*/
+	public static final String TARGET_OUTPUT = "target";
+
 	/**默认生成的方法名*/
 	public static List<String> defaultMethods = Lists.newArrayList("list", "add", "update", "delete", "batchDelete");
 
