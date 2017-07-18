@@ -30,7 +30,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.Util;
-import com.we.generator.config.LoadConfig;
+import com.we.generator.config.LoadConfigWeb;
 import com.we.generator.core.ActionDesc;
 import com.we.generator.core.ModuleDesc;
 import com.we.generator.core.PageFieldDesc;
@@ -54,7 +54,7 @@ public class Generator {
 	private static final Log log = Logs.get();
 
 	public void generateEntity() throws Exception {
-		Ioc ioc = new NutIoc(new JsonLoader(LoadConfig.IOC_DBCFG_PATH));
+		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_DBCFG_PATH));
 		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
 		boolean useLombok = false;//是否使用lombok注解
 		boolean forceCover = false; //是否覆盖已经存在的文件 
@@ -62,24 +62,28 @@ public class Generator {
 		forceCover = Boolean.valueOf(propConfig.get("force_cover"));
 		String templatePackage = propConfig.get("template_package");
 
-		String template = LoadConfig.TEMPLATE_PATH + templatePackage + "/entity.vm";
-		String formTemplate = LoadConfig.TEMPLATE_PATH + templatePackage + "/form.vm";
-		String addFormTemplate = LoadConfig.TEMPLATE_PATH + templatePackage + "/addForm.vm";
-		String updateFormTemplate = LoadConfig.TEMPLATE_PATH + templatePackage + "/updateForm.vm";
+		String template = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/entity.vm";
+		String formTemplate = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/form.vm";
+		String addFormTemplate = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/addForm.vm";
+		String updateFormTemplate = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/updateForm.vm";
 		if (useLombok) {
-			template = LoadConfig.TEMPLATE_PATH + templatePackage + "/entity4lombok.vm";
-			formTemplate = LoadConfig.TEMPLATE_PATH + templatePackage + "/form4lombok.vm";
-			addFormTemplate = LoadConfig.TEMPLATE_PATH + templatePackage + "/addForm4lombok.vm";
-			updateFormTemplate = LoadConfig.TEMPLATE_PATH + templatePackage + "/updateForm4lombok.vm";
+			template = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/entity4lombok.vm";
+			formTemplate = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/form4lombok.vm";
+			addFormTemplate = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/addForm4lombok.vm";
+			updateFormTemplate = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/updateForm4lombok.vm";
 		}
 
 		Pattern includePattern = Pattern.compile(".*");
-		String entityPkgName = LoadConfig.ENTITY_PKG_NAME; //entity所在的包名 
-		String javaOutput = LoadConfig.JAVA_OUTPUT;
+		String entityPkgName = LoadConfigWeb.ENTITY_PKG_NAME; //entity所在的包名 
+		String webOutput = LoadConfigWeb.WEB_OUTPUT;
+		String javaOutput = LoadConfigWeb.JAVA_OUTPUT;
+
 		String baseUri = "/";
 		String basePkg = propConfig.get("base_package");
+		//web项目的输出目录
+		String webOut = webOutput + "/" + basePkg.replace(".", "-") + "/" + javaOutput;
 		String pkgName = basePkg + "." + entityPkgName;//实体包
-		String formPkgName = basePkg + "." + LoadConfig.FORM_PKG_NAME;//form包
+		String formPkgName = basePkg + "." + LoadConfigWeb.FORM_PKG_NAME;//form包
 
 		EntityLoader loader = ioc.get(EntityLoader.class, "loader");
 		Map<String, EntityDescriptor> entityMapping = loader.load(ioc, basePkg, baseUri, entityPkgName);
@@ -122,20 +126,37 @@ public class Generator {
 			handler.writeToFile(formContext, formTemplate, formFile, forceCover);
 			handler.writeToFile(formContext, addFormTemplate, addFormFile, forceCover);
 			handler.writeToFile(formContext, updateFormTemplate, updateFormFile, forceCover);
+
+			//entity
+			File wFile = new File(webOut, packagePath + "/" + entityClassName + ".java");
+			log.info("generate " + wFile.getName() + " for table :" + tableName);
+			handler.writeToFile(context, template, wFile, forceCover);
+			//form
+			String formPkgPathw = Utils.getPath4Pkg(formPkgName);
+			String formClassNamew = entityDesc.getEntityClassName().split("Entity")[0] + "Form"; //entity所对应的form类名
+			File formFilew = new File(javaOutput, formPkgPathw + "/" + formClassNamew + ".java");
+			File addFormFilew = new File(javaOutput, formPkgPathw + "/" + addFormClassName + ".java");
+			File updateFormFilew = new File(javaOutput, formPkgPathw + "/" + updateFormClassName + ".java");
+			VelocityContext formContextw = new VelocityContext();
+			formContextw.put("form", entityDesc);
+			formContextw.put("packageName", formPkgName);
+			handler.writeToFile(formContextw, formTemplate, formFilew, forceCover);
+			handler.writeToFile(formContextw, addFormTemplate, addFormFilew, forceCover);
+			handler.writeToFile(formContextw, updateFormTemplate, updateFormFilew, forceCover);
 		}
 		log.info("done!");
 
 	}
 
 	public void generatorModule() throws Exception {
-		Ioc ioc = new NutIoc(new JsonLoader(LoadConfig.IOC_KVCFG_PATH));
+		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
 		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
 		String basePkg = propConfig.get("base_package");
 		boolean forceCover = false; //是否覆盖已经存在的文件 
 		forceCover = Boolean.valueOf(propConfig.get("force_cover"));
 		String templatePackage = propConfig.get("template_package");
-		String moduleTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/module.vm";
-		String serviceTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/service.vm";
+		String moduleTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/module.vm";
+		String serviceTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/service.vm";
 
 		//读取excel功能模块信息
 		InputStream ins = ClassLoader.getSystemResourceAsStream("code-generator/module.xlsx");
@@ -153,7 +174,13 @@ public class Generator {
 	private void genModuleCode(boolean force, String basePkg, String moduleTpl, Map<Integer, String[]> moduleInfo)
 			throws IOException, ClassNotFoundException {
 		String baseUri = "/";
-		String javaOutput = LoadConfig.JAVA_OUTPUT;
+		String javaOutput = LoadConfigWeb.JAVA_OUTPUT;
+		String webOutput = LoadConfigWeb.WEB_OUTPUT;
+		String jResOutput = LoadConfigWeb.JAVA_RES_OUTPUT;
+		javaOutput = webOutput + "/" + basePkg.replace(".", "-") + "/" + javaOutput;
+
+		//java Resources
+		jResOutput = webOutput + "/" + basePkg.replace(".", "-") + "/" + jResOutput;
 
 		Map<String, ModuleDesc> moduleMap = Maps.newHashMap();
 
@@ -175,7 +202,7 @@ public class Generator {
 				md = new ModuleDesc();
 				moduleMap.put(moduleCode, md);
 			} else {
-				if (!LoadConfig.defaultMethods.contains(functionCode)) {
+				if (!LoadConfigWeb.defaultMethods.contains(functionCode)) {
 					ActionDesc ad = new ActionDesc();
 					ad.setActionName(functionCode);
 					ad.setViewType(viewType);
@@ -189,11 +216,11 @@ public class Generator {
 			LogicEnum le = EnumUtil.get(LogicEnum.class, intL);
 			String logicPath = le.value();
 
-			String mdPkgName = basePkg + "." + logicPath + "." + moduleCode + "." + LoadConfig.MODULE_PKG_NAME;
+			String mdPkgName = basePkg + "." + logicPath + "." + moduleCode + "." + LoadConfigWeb.MODULE_PKG_NAME;
 			String moduleClassName = Utils.upperFirst(moduleCode) + "Module";
 			String serviceClassName = Utils.upperFirst(moduleCode) + "ViewService";
 			String serviceFullClassName = Joiner.on(".").join(basePkg, logicPath, moduleCode,
-					LoadConfig.SERVICE_PKG_NAME, serviceClassName);
+					LoadConfigWeb.SERVICE_PKG_NAME, serviceClassName);
 
 			md.setModuleName(moduleName);
 			md.setModuleCode(moduleCode);
@@ -210,7 +237,7 @@ public class Generator {
 
 			//默认实体
 			String entityClassName = rowArr[6];
-			String entityPkgName = Joiner.on(".").join(basePkg, LoadConfig.ENTITY_PKG_NAME);
+			String entityPkgName = Joiner.on(".").join(basePkg, LoadConfigWeb.ENTITY_PKG_NAME);
 			String fullEntityClassName = Joiner.on(".").join(entityPkgName, entityClassName);
 			md.setEntityClassName(entityClassName);
 			md.setFullEntityClassName(fullEntityClassName);
@@ -241,7 +268,7 @@ public class Generator {
 	private void genJsp(boolean force, VelocityHandler handler, ModuleDesc md) throws ClassNotFoundException,
 			IOException {
 
-		Ioc ioc = new NutIoc(new JsonLoader(LoadConfig.IOC_KVCFG_PATH));
+		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
 		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
 		String templatePackage = propConfig.get("template_package");
 
@@ -267,7 +294,11 @@ public class Generator {
 			fieldList.add(pd);
 		}
 
-		String jspOutPut = LoadConfig.JSP_OUTPUT;
+		String jspOutPut = LoadConfigWeb.JSP_OUTPUT;
+		String webOutput = LoadConfigWeb.WEB_OUTPUT;
+		String basePkg = propConfig.get("base_package");
+		jspOutPut = webOutput + "/" + basePkg.replace(".", "-") + "/" + jspOutPut;
+
 		String pageFilePath = md.getAtUrl();
 
 		VelocityContext jspCtx = new VelocityContext();
@@ -276,21 +307,21 @@ public class Generator {
 		jspCtx.put("moudleName", md.getModuleName());
 		jspCtx.put("moudleCode", md.getModuleCode());
 
-		String listTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/view/list.vm";
+		String listTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/list.vm";
 		File listPage = new File(jspOutPut, pageFilePath + "/" + "list.jsp");
 		handler.writeToFile(jspCtx, listTpl, listPage, force);
 
-		String updateTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/view/update.vm";
+		String updateTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/update.vm";
 		File updatePage = new File(jspOutPut, pageFilePath + "/" + "update.jsp");
 		handler.writeToFile(jspCtx, updateTpl, updatePage, force);
 
-		String addTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/view/add.vm";
+		String addTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/add.vm";
 		File addPage = new File(jspOutPut, pageFilePath + "/" + "add.jsp");
 		handler.writeToFile(jspCtx, addTpl, addPage, force);
 
 		for (ActionDesc ad : md.getActionList()) {
 			File commonPage = new File(jspOutPut, pageFilePath + "/" + ad.getActionName() + ".jsp");
-			String commonTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/view/common.vm";
+			String commonTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/common.vm";
 			handler.writeToFile(jspCtx, commonTpl, commonPage, force);
 		}
 	}
@@ -298,7 +329,7 @@ public class Generator {
 	private void genJS(boolean force, VelocityHandler handler, ModuleDesc md) throws ClassNotFoundException,
 			IOException {
 
-		Ioc ioc = new NutIoc(new JsonLoader(LoadConfig.IOC_KVCFG_PATH));
+		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
 		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
 		String templatePackage = propConfig.get("template_package");
 
@@ -324,7 +355,10 @@ public class Generator {
 			fieldList.add(pd);
 		}
 
-		String jsOutPut = LoadConfig.JS_OUTPUT;
+		String jsOutPut = LoadConfigWeb.JS_OUTPUT;
+		String webOutput = LoadConfigWeb.WEB_OUTPUT;
+		String basePkg = propConfig.get("base_package");
+		jsOutPut = webOutput + "/" + basePkg.replace(".", "-") + "/" + jsOutPut;
 		String pageFilePath = md.getAtUrl();
 
 		VelocityContext jspCtx = new VelocityContext();
@@ -333,7 +367,7 @@ public class Generator {
 		jspCtx.put("moudleName", md.getModuleName());
 		jspCtx.put("moudleCode", md.getModuleCode());
 
-		String listJsTpl = LoadConfig.TEMPLATE_PATH + templatePackage + "/js/listJS.vm";
+		String listJsTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/js/listJS.vm";
 		File listJS = new File(jsOutPut, pageFilePath + "/" + "listTable.js");
 		handler.writeToFile(jspCtx, listJsTpl, listJS, force);
 
@@ -341,7 +375,9 @@ public class Generator {
 
 	private void genService(boolean force, String basePkg, String serviceTpl, String[] rowArr) throws IOException {
 
-		String javaOutput = LoadConfig.JAVA_OUTPUT;
+		String javaOutput = LoadConfigWeb.JAVA_OUTPUT;
+		String webOutput = LoadConfigWeb.WEB_OUTPUT;
+		javaOutput = webOutput + "/" + basePkg.replace(".", "-") + "/" + javaOutput;
 
 		//逻辑划分
 		String logic = rowArr[0];
@@ -351,11 +387,11 @@ public class Generator {
 
 		//默认实体
 		String entityClassName = rowArr[6];
-		String entityPkgName = Joiner.on(".").join(basePkg, LoadConfig.ENTITY_PKG_NAME);
+		String entityPkgName = Joiner.on(".").join(basePkg, LoadConfigWeb.ENTITY_PKG_NAME);
 		String fullEntityClassName = Joiner.on(".").join(entityPkgName, entityClassName);
 		//form
 		String formClassName = entityClassName.split("Entity")[0] + "Form";
-		String formPkgName = Joiner.on(".").join(basePkg, LoadConfig.FORM_PKG_NAME);
+		String formPkgName = Joiner.on(".").join(basePkg, LoadConfigWeb.FORM_PKG_NAME);
 		String fullFormClassName = Joiner.on(".").join(formPkgName, formClassName);
 
 		double dl = Double.valueOf(logic);
@@ -363,7 +399,7 @@ public class Generator {
 		LogicEnum le = EnumUtil.get(LogicEnum.class, intL);
 		String logicPkg = le.value();
 
-		String sdPkgName = basePkg + "." + logicPkg + "." + moduleCode + "." + LoadConfig.SERVICE_PKG_NAME;
+		String sdPkgName = basePkg + "." + logicPkg + "." + moduleCode + "." + LoadConfigWeb.SERVICE_PKG_NAME;
 		String serviceClassName = Utils.upperFirst(moduleCode) + "ViewService";
 
 		ServiceDesc sd = new ServiceDesc();
