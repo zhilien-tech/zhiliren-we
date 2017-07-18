@@ -177,10 +177,21 @@ public class Generator {
 		String javaOutput = LoadConfigWeb.JAVA_OUTPUT;
 		String webOutput = LoadConfigWeb.WEB_OUTPUT;
 		String jResOutput = LoadConfigWeb.JAVA_RES_OUTPUT;
+		String testJavaOut = LoadConfigWeb.TEST_JAVA_OUTPUT;
+		String testResOut = LoadConfigWeb.TEST_RES_OUTPUT;
 		javaOutput = webOutput + "/" + basePkg.replace(".", "-") + "/" + javaOutput;
 
 		//java Resources
 		jResOutput = webOutput + "/" + basePkg.replace(".", "-") + "/" + jResOutput;
+		new File(jResOutput).mkdirs();
+
+		//test
+		testJavaOut = webOutput + "/" + basePkg.replace(".", "-") + "/" + testJavaOut;
+		new File(testJavaOut).mkdirs();
+
+		//test Resources
+		testResOut = webOutput + "/" + basePkg.replace(".", "-") + "/" + testResOut;
+		new File(testResOut).mkdirs();
 
 		Map<String, ModuleDesc> moduleMap = Maps.newHashMap();
 
