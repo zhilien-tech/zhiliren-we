@@ -273,6 +273,9 @@ public class Generator {
 			//js
 			genJS(force, writer, md);
 
+			//pom
+			genPomXml(force, writer);
+
 		}
 	}
 
@@ -430,6 +433,27 @@ public class Generator {
 
 		VelocityHandler generator = new VelocityHandler();
 		generator.writeToFile(context, serviceTpl, file, force);
+	}
+
+	private void genPomXml(boolean force, VelocityHandler handler) throws ClassNotFoundException, IOException {
+
+		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
+		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
+		String templatePackage = propConfig.get("template_package");
+
+		String webOutput = LoadConfigWeb.WEB_OUTPUT;
+		String basePkg = propConfig.get("base_package");
+		String webName = basePkg.replace(".", "-");
+		String pomOutput = webOutput + "/" + webName;
+
+		String pomTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/xml/pom.vm";
+
+		VelocityContext pomCtx = new VelocityContext();
+		pomCtx.put("webName", webName);
+
+		File file = new File(pomOutput, "/" + "pom.xml");
+		handler.writeToFile(pomCtx, pomTpl, file, force);
+
 	}
 
 	private Map<Integer, String[]> loadExcel(InputStream ins) {
