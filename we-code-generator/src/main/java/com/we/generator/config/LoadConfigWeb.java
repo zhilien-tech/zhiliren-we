@@ -62,6 +62,11 @@ public class LoadConfigWeb {
 	/**tarter 输出路径*/
 	public static final String TARGET_OUTPUT = "target";
 
+	/**外部js路径*/
+	public static final String REFERENCES_PATH = "src/main/java/references";
+	/**js输出路径*/
+	public static final String REFERENCES_OUTPUT = "src/main/webapp";
+
 	/**默认生成的方法名*/
 	public static List<String> defaultMethods = Lists.newArrayList("list", "add", "update", "delete", "batchDelete");
 
