@@ -123,9 +123,9 @@ public class Generator {
 				//form
 				String formPkgPath = Utils.getPath4Pkg(formPkgName);
 				String formClassName = entityDesc.getEntityClassName().split("Entity")[0] + "Form"; //entity所对应的form类名
-				File formFile = new File(javaOutput, formPkgPath + "/" + formClassName + ".java");
-				File addFormFile = new File(javaOutput, formPkgPath + "/" + addFormClassName + ".java");
-				File updateFormFile = new File(javaOutput, formPkgPath + "/" + updateFormClassName + ".java");
+				File formFile = new File(out, formPkgPath + "/" + formClassName + ".java");
+				File addFormFile = new File(out, formPkgPath + "/" + addFormClassName + ".java");
+				File updateFormFile = new File(out, formPkgPath + "/" + updateFormClassName + ".java");
 				VelocityContext formContext = new VelocityContext();
 				formContext.put("form", entityDesc);
 				formContext.put("packageName", formPkgName);
@@ -342,12 +342,12 @@ public class Generator {
 
 		//404页面
 		String error404PageTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/common/404.vm";
-		File error404File = new File(jspOutPut, "/admin/common/" + "404.jsp");
+		File error404File = new File(jspOutPut, "/common/" + "404.jsp");
 		handler.writeToFile(jspCtx, error404PageTpl, error404File, force);
 
 		//500页面
 		String error500PageTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/common/500.vm";
-		File error500File = new File(jspOutPut, "/admin/common/" + "500.jsp");
+		File error500File = new File(jspOutPut, "/common/" + "500.jsp");
 		handler.writeToFile(jspCtx, error500PageTpl, error500File, force);
 	}
 
