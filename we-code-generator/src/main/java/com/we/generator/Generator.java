@@ -280,7 +280,7 @@ public class Generator {
 		genWebXml(force, writer);
 
 		//MainModule
-		genMainModule(force, writer);
+		genMainSetup(force, writer);
 	}
 
 	private void genJsp(boolean force, VelocityHandler handler, ModuleDesc md) throws ClassNotFoundException,
@@ -352,6 +352,11 @@ public class Generator {
 		String error500PageTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/common/500.vm";
 		File error500File = new File(jspOutPut, "/common/" + "500.jsp");
 		handler.writeToFile(jspCtx, error500PageTpl, error500File, force);
+
+		//tld页面
+		String tldPageTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/common/tld.vm";
+		File tldFile = new File(jspOutPut, "/common/" + "tld.jsp");
+		handler.writeToFile(jspCtx, tldPageTpl, tldFile, force);
 	}
 
 	private void genJS(boolean force, VelocityHandler handler, ModuleDesc md) throws ClassNotFoundException,
@@ -499,7 +504,7 @@ public class Generator {
 
 	}
 
-	private void genMainModule(boolean force, VelocityHandler handler) throws IOException {
+	private void genMainSetup(boolean force, VelocityHandler handler) throws IOException {
 
 		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
 		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
@@ -511,13 +516,16 @@ public class Generator {
 		String webName = basePkg.replace(".", "-");
 		String Output = webOutput + "/" + webName + "/" + javaOutput + "/" + Utils.getPath4Pkg(basePkg);
 
-		String webTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/MainModule.vm";
-
 		VelocityContext vCtx = new VelocityContext();
 		vCtx.put("webName", basePkg);
 
+		String webTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/MainModule.vm";
 		File file = new File(Output, "/" + "MainModule.java");
 		handler.writeToFile(vCtx, webTpl, file, force);
+
+		String setupTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/WeSetup.vm";
+		File setupFile = new File(Output, "/" + "WeSetup.java");
+		handler.writeToFile(vCtx, setupTpl, setupFile, force);
 
 	}
 
