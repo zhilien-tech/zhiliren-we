@@ -274,6 +274,9 @@ public class Generator {
 			//pom
 			genPomXml(force, writer);
 
+			//web.xml
+			genWebXml(force, writer);
+
 		}
 	}
 
@@ -514,6 +517,26 @@ public class Generator {
 
 		File file = new File(pomOutput, "/" + "pom.xml");
 		handler.writeToFile(pomCtx, pomTpl, file, force);
+
+	}
+
+	private void genWebXml(boolean force, VelocityHandler handler) throws ClassNotFoundException, IOException {
+
+		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
+		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
+		String templatePackage = propConfig.get("template_package");
+
+		String webOutput = LoadConfigWeb.WEB_OUTPUT;
+		String basePkg = propConfig.get("base_package");
+		String Output = webOutput + "/" + LoadConfigWeb.JSP_OUTPUT;
+
+		String webTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/xml/web.vm";
+
+		VelocityContext vCtx = new VelocityContext();
+		vCtx.put("webName", basePkg);
+
+		File file = new File(Output, "/" + "web.xml");
+		handler.writeToFile(vCtx, webTpl, file, force);
 
 	}
 
