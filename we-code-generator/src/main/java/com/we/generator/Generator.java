@@ -400,6 +400,11 @@ public class Generator {
 		String filePath = LoadConfigWeb.REFERENCES_PATH;
 		String toFilePath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.REFERENCES_OUTPUT;
 		copyFile(filePath, toFilePath);
+
+		//拷贝db配置信息
+		String dbFilePath = LoadConfigWeb.DB_CONFIG_PATH;
+		String toDBPath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.DB_CONFIG_OUTPUT;
+		copyFile(dbFilePath, toDBPath);
 	}
 
 	private void copyFile(String filePath, String toFilePath) {

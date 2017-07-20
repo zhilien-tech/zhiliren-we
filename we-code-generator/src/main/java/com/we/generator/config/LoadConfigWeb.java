@@ -67,6 +67,10 @@ public class LoadConfigWeb {
 	/**js输出路径*/
 	public static final String REFERENCES_OUTPUT = "src/main/webapp";
 
+	/**外部db配置信息*/
+	public static final String DB_CONFIG_PATH = "src/main/java/resources";
+	public static final String DB_CONFIG_OUTPUT = "src/main/";
+
 	/**默认生成的方法名*/
 	public static List<String> defaultMethods = Lists.newArrayList("list", "add", "update", "delete", "batchDelete");
 
