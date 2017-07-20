@@ -90,6 +90,10 @@ public class Generator {
 		EntityLoader loader = ioc.get(EntityLoader.class, "loader");
 		Map<String, EntityDescriptor> entityMapping = loader.load(ioc, basePkg, baseUri, entityPkgName);
 
+		List<String> outList = Lists.newArrayList();
+		outList.add(javaOutput);
+		outList.add(webOut);
+
 		for (Map.Entry<String, EntityDescriptor> entry : entityMapping.entrySet()) {
 			String tableName = entry.getKey();
 			if (includePattern != null) {
@@ -111,40 +115,25 @@ public class Generator {
 			context.put("table", entityDesc);
 			context.put("packageName", pkgName);
 
-			//entity
-			File file = new File(javaOutput, packagePath + "/" + entityClassName + ".java");
-			log.info("generate " + file.getName() + " for table :" + tableName);
-			handler.writeToFile(context, template, file, forceCover);
+			for (String out : outList) {
+				//entity
+				File file = new File(out, packagePath + "/" + entityClassName + ".java");
+				log.info("generate " + file.getName() + " for table :" + tableName);
+				handler.writeToFile(context, template, file, forceCover);
+				//form
+				String formPkgPath = Utils.getPath4Pkg(formPkgName);
+				String formClassName = entityDesc.getEntityClassName().split("Entity")[0] + "Form"; //entity所对应的form类名
+				File formFile = new File(javaOutput, formPkgPath + "/" + formClassName + ".java");
+				File addFormFile = new File(javaOutput, formPkgPath + "/" + addFormClassName + ".java");
+				File updateFormFile = new File(javaOutput, formPkgPath + "/" + updateFormClassName + ".java");
+				VelocityContext formContext = new VelocityContext();
+				formContext.put("form", entityDesc);
+				formContext.put("packageName", formPkgName);
+				handler.writeToFile(formContext, formTemplate, formFile, forceCover);
+				handler.writeToFile(formContext, addFormTemplate, addFormFile, forceCover);
+				handler.writeToFile(formContext, updateFormTemplate, updateFormFile, forceCover);
+			}
 
-			//form
-			String formPkgPath = Utils.getPath4Pkg(formPkgName);
-			String formClassName = entityDesc.getEntityClassName().split("Entity")[0] + "Form"; //entity所对应的form类名
-			File formFile = new File(javaOutput, formPkgPath + "/" + formClassName + ".java");
-			File addFormFile = new File(javaOutput, formPkgPath + "/" + addFormClassName + ".java");
-			File updateFormFile = new File(javaOutput, formPkgPath + "/" + updateFormClassName + ".java");
-			VelocityContext formContext = new VelocityContext();
-			formContext.put("form", entityDesc);
-			formContext.put("packageName", formPkgName);
-			handler.writeToFile(formContext, formTemplate, formFile, forceCover);
-			handler.writeToFile(formContext, addFormTemplate, addFormFile, forceCover);
-			handler.writeToFile(formContext, updateFormTemplate, updateFormFile, forceCover);
-
-			//entity
-			File wFile = new File(webOut, packagePath + "/" + entityClassName + ".java");
-			log.info("generate " + wFile.getName() + " for table :" + tableName);
-			handler.writeToFile(context, template, wFile, forceCover);
-			//form
-			String formPkgPathw = Utils.getPath4Pkg(formPkgName);
-			String formClassNamew = entityDesc.getEntityClassName().split("Entity")[0] + "Form"; //entity所对应的form类名
-			File formFilew = new File(javaOutput, formPkgPathw + "/" + formClassNamew + ".java");
-			File addFormFilew = new File(javaOutput, formPkgPathw + "/" + addFormClassName + ".java");
-			File updateFormFilew = new File(javaOutput, formPkgPathw + "/" + updateFormClassName + ".java");
-			VelocityContext formContextw = new VelocityContext();
-			formContextw.put("form", entityDesc);
-			formContextw.put("packageName", formPkgName);
-			handler.writeToFile(formContextw, formTemplate, formFilew, forceCover);
-			handler.writeToFile(formContextw, addFormTemplate, addFormFilew, forceCover);
-			handler.writeToFile(formContextw, updateFormTemplate, updateFormFilew, forceCover);
 		}
 		log.info("done!");
 
@@ -165,7 +154,7 @@ public class Generator {
 
 		Map<Integer, String[]> map = loadExcel(ins);
 		for (int i = 1; i <= map.size(); i++) {
-			String[] rowArr = map.get(i); //每一行
+			String[] rowArr = map.get(i); //每一行  
 			genService(forceCover, basePkg, serviceTpl, rowArr);
 		}
 
@@ -396,7 +385,7 @@ public class Generator {
 
 		//拷贝js
 		String filePath = LoadConfigWeb.REFERENCES_PATH;
-		String toFilePath = LoadConfigWeb.REFERENCES_OUTPUT;
+		String toFilePath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.REFERENCES_OUTPUT;
 		copyFile(filePath, toFilePath);
 	}
 
