@@ -69,6 +69,7 @@ public class LoadConfigWeb {
 
 	/**外部db配置信息*/
 	public static final String DB_CONFIG_PATH = "src/main/java/resources";
+	/**外部db配置位置*/
 	public static final String DB_CONFIG_OUTPUT = "src/main/";
 
 	/**默认生成的方法名*/

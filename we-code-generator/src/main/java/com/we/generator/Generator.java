@@ -271,13 +271,16 @@ public class Generator {
 			//js
 			genJS(force, writer, md);
 
-			//pom
-			genPomXml(force, writer);
-
-			//web.xml
-			genWebXml(force, writer);
-
 		}
+
+		//pom
+		genPomXml(force, writer);
+
+		//web.xml
+		genWebXml(force, writer);
+
+		//MainModule
+		genMainModule(force, writer);
 	}
 
 	private void genJsp(boolean force, VelocityHandler handler, ModuleDesc md) throws ClassNotFoundException,
@@ -407,6 +410,128 @@ public class Generator {
 		copyFile(dbFilePath, toDBPath);
 	}
 
+	private void genService(boolean force, String basePkg, String serviceTpl, String[] rowArr) throws IOException {
+
+		String javaOutput = LoadConfigWeb.JAVA_OUTPUT;
+		String webOutput = LoadConfigWeb.WEB_OUTPUT;
+		javaOutput = webOutput + "/" + basePkg.replace(".", "-") + "/" + javaOutput;
+
+		//逻辑划分
+		String logic = rowArr[0];
+
+		//模块code
+		String moduleCode = rowArr[2];
+
+		//默认实体
+		String entityClassName = rowArr[6];
+		String entityPkgName = Joiner.on(".").join(basePkg, LoadConfigWeb.ENTITY_PKG_NAME);
+		String fullEntityClassName = Joiner.on(".").join(entityPkgName, entityClassName);
+		//form
+		String formClassName = entityClassName.split("Entity")[0] + "Form";
+		String formPkgName = Joiner.on(".").join(basePkg, LoadConfigWeb.FORM_PKG_NAME);
+		String fullFormClassName = Joiner.on(".").join(formPkgName, formClassName);
+
+		double dl = Double.valueOf(logic);
+		int intL = (int) dl;
+		LogicEnum le = EnumUtil.get(LogicEnum.class, intL);
+		String logicPkg = le.value();
+
+		String sdPkgName = basePkg + "." + logicPkg + "." + moduleCode + "." + LoadConfigWeb.SERVICE_PKG_NAME;
+		String serviceClassName = Utils.upperFirst(moduleCode) + "ViewService";
+
+		ServiceDesc sd = new ServiceDesc();
+		sd.setPackageName(sdPkgName.toLowerCase());
+		sd.setServiceClassName(serviceClassName);
+		sd.setEntityClassName(entityClassName);
+		sd.setFullEntityClassName(fullEntityClassName);
+		sd.setFullFormClassName(fullFormClassName);
+
+		VelocityContext context = new VelocityContext();
+		context.put("service", sd);
+		context.put("formName", formClassName);
+
+		//service
+		String serviceFilePath = Utils.getPath4Pkg(sdPkgName);
+		File file = new File(javaOutput, serviceFilePath + "/" + serviceClassName + ".java");
+
+		VelocityHandler generator = new VelocityHandler();
+		generator.writeToFile(context, serviceTpl, file, force);
+	}
+
+	private void genPomXml(boolean force, VelocityHandler handler) throws IOException {
+
+		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
+		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
+		String templatePackage = propConfig.get("template_package");
+
+		String webOutput = LoadConfigWeb.WEB_OUTPUT;
+		String basePkg = propConfig.get("base_package");
+		String webName = basePkg.replace(".", "-");
+		String pomOutput = webOutput + "/" + webName;
+
+		String pomTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/xml/pom.vm";
+
+		VelocityContext pomCtx = new VelocityContext();
+		pomCtx.put("webName", webName);
+
+		File file = new File(pomOutput, "/" + "pom.xml");
+		handler.writeToFile(pomCtx, pomTpl, file, force);
+
+	}
+
+	private void genWebXml(boolean force, VelocityHandler handler) throws IOException {
+
+		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
+		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
+		String templatePackage = propConfig.get("template_package");
+
+		String webOutput = LoadConfigWeb.WEB_OUTPUT;
+		String basePkg = propConfig.get("base_package");
+		String Output = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.JSP_OUTPUT;
+
+		String webTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/xml/web.vm";
+
+		VelocityContext vCtx = new VelocityContext();
+		vCtx.put("webName", basePkg);
+
+		File file = new File(Output, "/" + "web.xml");
+		handler.writeToFile(vCtx, webTpl, file, force);
+
+	}
+
+	private void genMainModule(boolean force, VelocityHandler handler) throws IOException {
+
+		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
+		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
+		String templatePackage = propConfig.get("template_package");
+
+		String webOutput = LoadConfigWeb.WEB_OUTPUT;
+		String javaOutput = LoadConfigWeb.JAVA_OUTPUT;
+		String basePkg = propConfig.get("base_package");
+		String webName = basePkg.replace(".", "-");
+		String Output = webOutput + "/" + webName + "/" + javaOutput + "/" + Utils.getPath4Pkg(basePkg);
+
+		String webTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/MainModule.vm";
+
+		VelocityContext vCtx = new VelocityContext();
+		vCtx.put("webName", basePkg);
+
+		File file = new File(Output, "/" + "MainModule.java");
+		handler.writeToFile(vCtx, webTpl, file, force);
+
+	}
+
+	private Map<Integer, String[]> loadExcel(InputStream ins) {
+		Map<Integer, String[]> map = null;
+		try {
+			ExcelReader excelReader = new ExcelReader();
+			map = excelReader.readExcelContent(ins);
+		} catch (Exception e) {
+			log.info("文件格式错误，请使用模板文件进行操作");
+		}
+		return map;
+	}
+
 	private void copyFile(String filePath, String toFilePath) {
 		File file = new File(filePath);
 		File toFile = new File(toFilePath);
@@ -466,103 +591,4 @@ public class Generator {
 		}
 	}
 
-	private void genService(boolean force, String basePkg, String serviceTpl, String[] rowArr) throws IOException {
-
-		String javaOutput = LoadConfigWeb.JAVA_OUTPUT;
-		String webOutput = LoadConfigWeb.WEB_OUTPUT;
-		javaOutput = webOutput + "/" + basePkg.replace(".", "-") + "/" + javaOutput;
-
-		//逻辑划分
-		String logic = rowArr[0];
-
-		//模块code
-		String moduleCode = rowArr[2];
-
-		//默认实体
-		String entityClassName = rowArr[6];
-		String entityPkgName = Joiner.on(".").join(basePkg, LoadConfigWeb.ENTITY_PKG_NAME);
-		String fullEntityClassName = Joiner.on(".").join(entityPkgName, entityClassName);
-		//form
-		String formClassName = entityClassName.split("Entity")[0] + "Form";
-		String formPkgName = Joiner.on(".").join(basePkg, LoadConfigWeb.FORM_PKG_NAME);
-		String fullFormClassName = Joiner.on(".").join(formPkgName, formClassName);
-
-		double dl = Double.valueOf(logic);
-		int intL = (int) dl;
-		LogicEnum le = EnumUtil.get(LogicEnum.class, intL);
-		String logicPkg = le.value();
-
-		String sdPkgName = basePkg + "." + logicPkg + "." + moduleCode + "." + LoadConfigWeb.SERVICE_PKG_NAME;
-		String serviceClassName = Utils.upperFirst(moduleCode) + "ViewService";
-
-		ServiceDesc sd = new ServiceDesc();
-		sd.setPackageName(sdPkgName.toLowerCase());
-		sd.setServiceClassName(serviceClassName);
-		sd.setEntityClassName(entityClassName);
-		sd.setFullEntityClassName(fullEntityClassName);
-		sd.setFullFormClassName(fullFormClassName);
-
-		VelocityContext context = new VelocityContext();
-		context.put("service", sd);
-		context.put("formName", formClassName);
-
-		//service
-		String serviceFilePath = Utils.getPath4Pkg(sdPkgName);
-		File file = new File(javaOutput, serviceFilePath + "/" + serviceClassName + ".java");
-
-		VelocityHandler generator = new VelocityHandler();
-		generator.writeToFile(context, serviceTpl, file, force);
-	}
-
-	private void genPomXml(boolean force, VelocityHandler handler) throws ClassNotFoundException, IOException {
-
-		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
-		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
-		String templatePackage = propConfig.get("template_package");
-
-		String webOutput = LoadConfigWeb.WEB_OUTPUT;
-		String basePkg = propConfig.get("base_package");
-		String webName = basePkg.replace(".", "-");
-		String pomOutput = webOutput + "/" + webName;
-
-		String pomTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/xml/pom.vm";
-
-		VelocityContext pomCtx = new VelocityContext();
-		pomCtx.put("webName", webName);
-
-		File file = new File(pomOutput, "/" + "pom.xml");
-		handler.writeToFile(pomCtx, pomTpl, file, force);
-
-	}
-
-	private void genWebXml(boolean force, VelocityHandler handler) throws ClassNotFoundException, IOException {
-
-		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
-		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
-		String templatePackage = propConfig.get("template_package");
-
-		String webOutput = LoadConfigWeb.WEB_OUTPUT;
-		String basePkg = propConfig.get("base_package");
-		String Output = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.JSP_OUTPUT;
-
-		String webTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/xml/web.vm";
-
-		VelocityContext vCtx = new VelocityContext();
-		vCtx.put("webName", basePkg);
-
-		File file = new File(Output, "/" + "web.xml");
-		handler.writeToFile(vCtx, webTpl, file, force);
-
-	}
-
-	private Map<Integer, String[]> loadExcel(InputStream ins) {
-		Map<Integer, String[]> map = null;
-		try {
-			ExcelReader excelReader = new ExcelReader();
-			map = excelReader.readExcelContent(ins);
-		} catch (Exception e) {
-			log.info("文件格式错误，请使用模板文件进行操作");
-		}
-		return map;
-	}
 }
