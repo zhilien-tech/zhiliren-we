@@ -1,3 +1,5 @@
+#set($ERRORKEY='${REQ_ERROR_KEY}')
+#set($NOTEMPTY='${not empty REQ_ERROR_KEY }')
 <%@ page contentType="text/html; charset=utf-8" language="java" isErrorPage="true"%>
 <%@ page import="org.slf4j.Logger,org.slf4j.LoggerFactory"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
@@ -21,7 +23,7 @@
 		<div class="box500">
 			<div class="details">
 				<c:choose>
-					<c:when test='${not empty REQ_ERROR_KEY }'>出错了:${REQ_ERROR_KEY}</c:when>
+					<c:when test='$NOTEMPTY'>出错了:$ERRORKEY</c:when>
 					<c:otherwise>出错了:不知道啥错，你中奖了！</c:otherwise>
 				</c:choose>
 				<br>系统会在<label id="jumpTo"></label>秒内自动返回上一页，如果没有自动返回，请点击下面链接。

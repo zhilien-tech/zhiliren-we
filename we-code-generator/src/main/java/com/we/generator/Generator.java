@@ -339,6 +339,16 @@ public class Generator {
 			String commonTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/common.vm";
 			handler.writeToFile(jspCtx, commonTpl, commonPage, force);
 		}
+
+		//404页面
+		String error404PageTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/common/404.vm";
+		File error404File = new File(jspOutPut, "/admin/common/" + "404.jsp");
+		handler.writeToFile(jspCtx, error404PageTpl, error404File, force);
+
+		//500页面
+		String error500PageTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/common/500.vm";
+		File error500File = new File(jspOutPut, "/admin/common/" + "500.jsp");
+		handler.writeToFile(jspCtx, error500PageTpl, error500File, force);
 	}
 
 	private void genJS(boolean force, VelocityHandler handler, ModuleDesc md) throws ClassNotFoundException,
@@ -528,7 +538,7 @@ public class Generator {
 
 		String webOutput = LoadConfigWeb.WEB_OUTPUT;
 		String basePkg = propConfig.get("base_package");
-		String Output = webOutput + "/" + LoadConfigWeb.JSP_OUTPUT;
+		String Output = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.JSP_OUTPUT;
 
 		String webTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/xml/web.vm";
 
