@@ -343,6 +343,11 @@ public class Generator {
 			handler.writeToFile(jspCtx, commonTpl, commonPage, force);
 		}
 
+		//login页面
+		String loginPageTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/login.vm";
+		File loginFile = new File(jspOutPut, "/" + "login.jsp");
+		handler.writeToFile(jspCtx, loginPageTpl, loginFile, force);
+
 		//404页面
 		String error404PageTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/common/404.vm";
 		File error404File = new File(jspOutPut, "/common/" + "404.jsp");
