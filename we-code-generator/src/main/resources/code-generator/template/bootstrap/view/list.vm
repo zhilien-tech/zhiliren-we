@@ -16,13 +16,13 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<title>$moudleName</title>
-		<link rel="stylesheet" href="${base}/public/bootstrap/css/bootstrap.min.css">
-		<link rel="stylesheet" href="${base}/public/font-awesome/css/font-awesome.min.css">
-		<link rel="stylesheet" href="${base}/public/css/style.css">
-		<link rel="stylesheet" href="${base}/public/dist/css/ionicons.min.css">
-		<link rel="stylesheet" href="${base}/public/plugins/datatables/dataTables.bootstrap.css">
-		<link rel="stylesheet" href="${base}/public/dist/css/skins/skin-blue.min.css">
-		<link rel="stylesheet" href="${base}/public/dist/css/skins/_all-skins.min.css">
+		<link rel="stylesheet" href="${base}/references/public/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="${base}/references/public/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="${base}/references/public/css/style.css">
+		<link rel="stylesheet" href="${base}/references/public/dist/css/ionicons.min.css">
+		<link rel="stylesheet" href="${base}/references/public/plugins/datatables/dataTables.bootstrap.css">
+		<link rel="stylesheet" href="${base}/references/public/dist/css/skins/skin-blue.min.css">
+		<link rel="stylesheet" href="${base}/references/public/dist/css/skins/_all-skins.min.css">
 	</head>
 	<body class="hold-transition skin-blue sidebar-mini">
 		<div class="wrapper">
@@ -66,12 +66,12 @@
 		<!-- ./wrapper -->
 	
 		<!-- jQuery 2.2.3 -->
-		<script src="${base}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
+		<script src="${base}/references/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 		<!-- Bootstrap 3.3.6 -->
-		<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
+		<script src="${base}/references/public/bootstrap/js/bootstrap.min.js"></script>
 		<!-- DataTables -->
-		<script src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
-		<script src="${base}/common/js/layer/layer.js"></script>
+		<script src="${base}/references/public/plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="${base}/references/common/js/layer/layer.js"></script>
 		<!-- 引入JS -->
 		<script src="${base}$atUrl/listTable.js"></script>
 		<script type="text/javascript">

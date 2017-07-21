@@ -1,0 +1,18 @@
+/*---国际 style---*/
+.addIcon {top: 15px;margin-right: 11.8%;}
+#tab_2,#tab_3 {padding: 0 10px;}
+#tab_1 .box-header{position: relative;top: 5px;}
+tbody.tableTbody tr td ul {padding-left: 0 !important;margin-bottom: 0px !important;}
+.table tbody tr td ul li {border-bottom: solid 1px #eee;}
+[name="addButton"]{position:relative;top:7px;left:3px;}
+[name="closeButton"]{position:relative;top:7px;left:2px;margin-right: 11.8%;}
+.CSdiv{padding-right: 0;}
+.CSdiv .timeWid{width: 46.8%;}
+#teamtype,#teamtype1 {padding-left: 3px;}
+.nav-tabs-custom > .nav-tabs > li {border-top: 3px solid transparent;margin-bottom: -2px;margin-right: 0px;}
+.addCityAirline div .select2-container{width: 100% !important;}
+.select2-container{width: 100% !important;}
+#payTable tbody tr td ul li {border-bottom: solid 1px #f4f4f4;}
+#shouInvoiceTable tbody tr td ul{padding-left:0;}
+#shouInvoiceTable tbody tr td:nth-child(11) span{width:60px; display: block;word-break: keep-all;white-space: nowrap;overflow: hidden; text-overflow: ellipsis; margin: 0 auto;}
+#kaiInvoiceTable tbody td span {max-width: 50px;display: block;word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis; margin: 0 auto;}
