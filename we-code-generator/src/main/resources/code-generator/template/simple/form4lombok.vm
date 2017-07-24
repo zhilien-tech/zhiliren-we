@@ -17,8 +17,8 @@ import $import;
 #end
 #end
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class ${form.formClassName} extends SQLParamForm implements Serializable{
+/*@EqualsAndHashCode(callSuper = true)*/
+public class ${form.formClassName} implements SQLParamForm, Serializable{
 	private static final long serialVersionUID = 1L;
 #foreach ($column in $form.EnumColumns)
 	public static enum $column.SimpleJavaTypeName {
