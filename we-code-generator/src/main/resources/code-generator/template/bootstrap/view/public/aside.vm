@@ -1,0 +1,53 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+<style type="text/css">
+	.sidebar-mini .wrapper .wrapper footer:nth-child(even){display:none;} 
+</style>
+<!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- Sidebar Menu -->
+      <ul class="sidebar-menu">
+		#foreach ($vc in $vcLists)
+			<li id="$velocityCount">
+         		<a href="/admin/${vc.moudleCode}/list.html?currentPageIndex=$velocityCount">
+        			<span>${vc.moudleName}</span>
+        		</a>
+       		</li>
+		#end
+      </ul>
+      <!-- /.sidebar-menu -->
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+	<script>
+	
+	$(document).ready(function(){
+		var _index = '${currentPageIndex}';//当前下标
+		$(".sidebar-menu > li").click(function(){
+			 $(".sidebar-menu > li").removeClass('active');
+	         $(this).addClass("active");//同时 添加记录样式
+	      });
+		 //cookie记录已点击的index
+	    if(_index!=null && undefined != _index && _index != ""){
+	    	
+	    	$(".sidebar-menu > li").eq(_index).siblings().removeClass('active');
+	    	$(".sidebar-menu > li").eq(_index).addClass("active");//当前下标的元素添加样式
+	    }else{
+	    	$(".sidebar-menu > li").eq(0).siblings().removeClass('active');
+	    	$(".sidebar-menu > li").eq(0).addClass("active");//当前下标的元素添加样式
+	    }
+		 
+	  //二级菜单 显示隐藏
+		if($('.menu1').parent().is('.active')){
+			$(this).find('.menu-ul').show();
+		}else{
+			$(this).find('.menu-ul').hide();
+		}
+		
+		$('.menu1').click(function(){//点击一级菜单 二级显示/隐藏
+			$(this).next('ul').toggle();
+		}); 
+		
+	});
+	</script>
