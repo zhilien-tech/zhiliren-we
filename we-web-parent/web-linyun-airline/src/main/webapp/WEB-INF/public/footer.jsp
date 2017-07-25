@@ -2,22 +2,22 @@
     pageEncoding="UTF-8"%>
 <!-- REQUIRED JS SCRIPTS -->
 <!-- Bootstrap 3.3.6 -->
-<script src="${base}/public/bootstrap/js/bootstrap.min.js"></script>
+<script src="${base}/references/public/bootstrap/js/bootstrap.min.js"></script>
 <!-- DataTables -->
-<script src="${base}/public/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="${base}/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="${base}/references/public/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="${base}/references/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
-<script src="${base}/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="${base}/references/public/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
-<script src="${base}/public/plugins/fastclick/fastclick.js"></script>
+<script src="${base}/references/public/plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
-<script src="${base}/public/dist/js/app.min.js"></script>
+<script src="${base}/references/public/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="${base}/public/dist/js/demo.js"></script>
+<script src="${base}/references/public/dist/js/demo.js"></script>
 <!--layer -->
-<script src="${base}/common/js/layer/layer.js"></script>
+<script src="${base}/references/common/js/layer/layer.js"></script>
 <!-- My97DatePicker --> 
-<script src="${base}/common/js/My97DatePicker/WdatePicker.js"></script>
+<script src="${base}/references/common/js/My97DatePicker/WdatePicker.js"></script>
  <!-- Main Footer -->
   <footer class="main-footer">
     <!-- To the right -->
@@ -25,7 +25,7 @@
       <!-- Anything you want -->
     </div>
     <!-- Default to the left -->
-    <strong>版权 &copy; 2016 <a>聚优国际旅行社（北京）有限公司</a>.</strong> 保留所有权利.
+    <strong>版权 &copy; 2016 <a>XXXXX（北京）有限公司</a>.</strong> 保留所有权利.
   </footer>
   <div class="control-sidebar-bg"></div>
   

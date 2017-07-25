@@ -72,6 +72,9 @@ public class LoadConfigWeb {
 	/**外部db配置位置*/
 	public static final String DB_CONFIG_OUTPUT = "src/main/";
 
+	/**公共页位置*/
+	public static final String PUBLIC_PAGE_OUTPUT = "src/main/webapp/WEB-INF";
+
 	/**默认生成的方法名*/
 	public static List<String> defaultMethods = Lists.newArrayList("list", "add", "update", "delete", "batchDelete");
 
