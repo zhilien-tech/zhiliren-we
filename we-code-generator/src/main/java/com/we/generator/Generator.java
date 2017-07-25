@@ -483,12 +483,16 @@ public class Generator {
 		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
 		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
 		String templatePackage = propConfig.get("template_package");
+		String company_name = propConfig.get("company_name");
+		String system_name = propConfig.get("system_name");
 		String basePkg = propConfig.get("base_package");
 		String webName = basePkg.replace(".", "-");
 
 		VelocityContext publicCtx = new VelocityContext();
 		publicCtx.put("webName", webName);
 		publicCtx.put("vcLists", vcLists);
+		publicCtx.put("company_name", company_name);
+		publicCtx.put("system_name", system_name);
 
 		String pubilcOutput = LoadConfigWeb.PUBLIC_PAGE_OUTPUT;
 		String webOutput = LoadConfigWeb.WEB_OUTPUT;
@@ -521,9 +525,15 @@ public class Generator {
 		String pomOutput = webOutput + "/" + webName;
 
 		String pomTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/xml/pom.vm";
+		String pom_groupId = propConfig.get("pom_groupId");
+		String pom_atrifactId = propConfig.get("pom_atrifactId");
+		String pom_version = propConfig.get("pom_version");
 
 		VelocityContext pomCtx = new VelocityContext();
 		pomCtx.put("webName", webName);
+		pomCtx.put("groupId", pom_groupId);
+		pomCtx.put("atrifactId", pom_atrifactId);
+		pomCtx.put("version", pom_version);
 
 		File file = new File(pomOutput, "/" + "pom.xml");
 		handler.writeToFile(pomCtx, pomTpl, file, force);
