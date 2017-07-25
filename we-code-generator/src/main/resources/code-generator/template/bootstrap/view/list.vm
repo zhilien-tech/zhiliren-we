@@ -75,6 +75,7 @@
 		<script src="${base}/references/public/bootstrap/js/bootstrap.min.js"></script>
 		<!-- DataTables -->
 		<script src="${base}/references/public/plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="${base}/references/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 		<script src="${base}/references/common/js/layer/layer.js"></script>
 		<!-- 引入JS -->
 		<script src="${base}$atUrl/listTable.js"></script>
