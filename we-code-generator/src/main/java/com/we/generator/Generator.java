@@ -486,7 +486,6 @@ public class Generator {
 
 		File file = new File(pomOutput, "/" + "pom.xml");
 		handler.writeToFile(pomCtx, pomTpl, file, force);
-
 	}
 
 	private void genWebXml(boolean force, VelocityHandler handler) throws IOException {
