@@ -72,6 +72,12 @@ public class LoadConfigWeb {
 	/**外部db配置位置*/
 	public static final String DB_CONFIG_OUTPUT = "src/main/";
 
+	/**外部样式*/
+	public static final String STATIC_HTML_PATH = "src/main/resources/html";
+
+	/**外部分页*/
+	public static final String FTL_PAGE_PATH = "src/main/resources/share";
+
 	/**公共页位置*/
 	public static final String PUBLIC_PAGE_OUTPUT = "src/main/webapp/WEB-INF";
 

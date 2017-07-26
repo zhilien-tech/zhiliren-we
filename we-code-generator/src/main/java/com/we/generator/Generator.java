@@ -371,6 +371,11 @@ public class Generator {
 		File tldFile = new File(jspOutPut, "/common/" + "tld.jsp");
 		handler.writeToFile(jspCtx, tldPageTpl, tldFile, force);
 
+		//we.tld标签配置文件
+		String tldTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/common/wetld.vm";
+		File tldF = new File(jspOutPut, "/common/" + "we.tld");
+		handler.writeToFile(jspCtx, tldTpl, tldF, force);
+
 	}
 
 	private void genJS(boolean force, VelocityHandler handler, ModuleDesc md) throws ClassNotFoundException,
@@ -427,6 +432,17 @@ public class Generator {
 		String dbFilePath = LoadConfigWeb.DB_CONFIG_PATH;
 		String toDBPath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.DB_CONFIG_OUTPUT;
 		copyFile(dbFilePath, toDBPath);
+
+		//拷贝静态样式
+		String staticFilePath = LoadConfigWeb.STATIC_HTML_PATH;
+		String toStaticPath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.REFERENCES_OUTPUT;
+		copyFile(staticFilePath, toStaticPath);
+
+		//拷贝page分页
+		String pageFtlPath = LoadConfigWeb.FTL_PAGE_PATH;
+		String toFtlPath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.PUBLIC_PAGE_OUTPUT;
+		copyFile(pageFtlPath, toFtlPath);
+
 	}
 
 	private void genService(boolean force, String basePkg, String serviceTpl, String[] rowArr) throws IOException {
@@ -510,6 +526,11 @@ public class Generator {
 		String footerPageTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/public/footer.vm";
 		File footerFile = new File(pubilcOutput, "/public/" + "footer.jsp");
 		handler.writeToFile(publicCtx, footerPageTpl, footerFile, force);
+
+		//main页面
+		String mainPageTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/main.vm";
+		File mainFile = new File(pubilcOutput, "/" + "main.jsp");
+		handler.writeToFile(publicCtx, mainPageTpl, mainFile, force);
 
 	}
 

@@ -31,7 +31,7 @@ import com.uxuexi.core.web.view.WeViewMaker;
 public class MainModule {
 
 	@At("/")
-	@Ok("jsp:login")
+	@Ok("jsp:main")
 	public Object main() {
 		return null;
 	}
