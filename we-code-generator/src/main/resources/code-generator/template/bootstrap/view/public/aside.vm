@@ -8,12 +8,12 @@
     <section class="sidebar">
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
-      	<li id="-1">
+      	<!-- <li id="-1">
       		<a href="/html/home.html?currentPageIndex=-1">
       			<i class="fa fa-ship"></i>
       			<span>首页</span>
       		</a>
-      	</li>
+      	</li>-->
 		#foreach ($vc in $vcLists)
 			<li id="$velocityCount">
          		<a href="/admin/${vc.moudleCode}/list.html?currentPageIndex=$velocityCount">
