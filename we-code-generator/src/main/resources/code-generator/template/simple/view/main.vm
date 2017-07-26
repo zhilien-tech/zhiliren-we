@@ -46,7 +46,7 @@
   	<li><a href="${base}/html/home.html" target="navTab" icon="home">首页</a></li>
   	#foreach ($vc in $vcLists)
 		<li class="">
-			<a icon="table" href="/admin/${vc.moudleCode}/list.html" target="navTab" rel="function18" title="${vc.moudleName}">
+			<a icon="table" href="/admin/${vc.moudleCode}/list.html" target="navTab" rel="function$velocityCount" title="${vc.moudleName}">
 	  			<i class="icon icon_table"></i>
 	  			<span>${vc.moudleName}</span>
 	  		</a>

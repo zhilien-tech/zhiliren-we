@@ -17,6 +17,7 @@ import org.nutz.mvc.ioc.provider.ComboIocProvider;
 
 import com.uxuexi.core.web.view.WeViewMaker;
 
+@At("/")
 @IocBy(type = ComboIocProvider.class, args = { "*org.nutz.ioc.loader.json.JsonLoader", "webconfig/",
 		"*org.nutz.ioc.loader.annotation.AnnotationIocLoader", "$webName" })
 @Encoding(input = "UTF-8", output = "UTF-8")
@@ -30,7 +31,7 @@ import com.uxuexi.core.web.view.WeViewMaker;
 @IocBean
 public class MainModule {
 
-	@At("/")
+	@At
 	@Ok("jsp:main")
 	public Object main() {
 		return null;
