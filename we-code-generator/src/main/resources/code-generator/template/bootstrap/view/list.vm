@@ -8,7 +8,8 @@
 #set($obj_pageSize='${obj.pageSize}')
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" errorPage="/WEB-INF/common/500.jsp"%>
 <%@include file="/WEB-INF/common/tld.jsp"%>
-
+<%@include file="/WEB-INF/public/header.jsp"%>
+<%@include file="/WEB-INF/public/aside.jsp"%>
 <c:set var="url" value="$base$atUrl" />
 <!DOCTYPE html>
 <html lang="en-US">
@@ -27,14 +28,14 @@
 	<body class="hold-transition skin-blue sidebar-mini">
 		<div class="wrapper">
 			<!-- Content Wrapper. Contains page content -->
-			<div class="content-wrapper">
+			<div class="content-wrapper"  style="min-height: 848px;">
 				<!-- Main content -->
 				<section class="content">
 						<div class="col-xs-12">
 							<div class="box">
 								<div class="box-header">
 									<div class="form-group row form-right">
-										<div class="col-md-1 col-md-offset-1">
+										<div class="col-md-1 col-md-offset-11">
 											<a class="btn btn-primary btn-sm" onclick="add();" id="addBtn">添加</a>
 										</div>
 									</div>
@@ -62,6 +63,9 @@
 				</section><!-- /.content -->
 			</div><!-- /.content-wrapper -->
 	
+			<!-- Main Footer -->
+			<%@include file="/WEB-INF/public/footer.jsp"%>
+	
 		</div>
 		<!-- ./wrapper -->
 	
@@ -71,6 +75,7 @@
 		<script src="${base}/references/public/bootstrap/js/bootstrap.min.js"></script>
 		<!-- DataTables -->
 		<script src="${base}/references/public/plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="${base}/references/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 		<script src="${base}/references/common/js/layer/layer.js"></script>
 		<!-- 引入JS -->
 		<script src="${base}$atUrl/listTable.js"></script>

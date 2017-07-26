@@ -253,6 +253,7 @@ public class Generator {
 		}
 
 		VelocityHandler writer = new VelocityHandler();
+		List<VelocityContext> vcList = Lists.newArrayList();
 		Set<String> modules = moduleMap.keySet();
 		for (String mkey : modules) {
 			ModuleDesc md = moduleMap.get(mkey);
@@ -271,7 +272,14 @@ public class Generator {
 			//js
 			genJS(force, writer, md);
 
+			VelocityContext publicCtx = new VelocityContext();
+			publicCtx.put("moudleName", md.getModuleName());
+			publicCtx.put("moudleCode", md.getModuleCode());
+			vcList.add(publicCtx);
 		}
+
+		//public页面
+		genPublicPage(force, writer, vcList);
 
 		//pom
 		genPomXml(force, writer);
@@ -362,6 +370,12 @@ public class Generator {
 		String tldPageTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/common/tld.vm";
 		File tldFile = new File(jspOutPut, "/common/" + "tld.jsp");
 		handler.writeToFile(jspCtx, tldPageTpl, tldFile, force);
+
+		//we.tld标签配置文件
+		String tldTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/common/wetld.vm";
+		File tldF = new File(jspOutPut, "/common/" + "we.tld");
+		handler.writeToFile(jspCtx, tldTpl, tldF, force);
+
 	}
 
 	private void genJS(boolean force, VelocityHandler handler, ModuleDesc md) throws ClassNotFoundException,
@@ -418,6 +432,17 @@ public class Generator {
 		String dbFilePath = LoadConfigWeb.DB_CONFIG_PATH;
 		String toDBPath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.DB_CONFIG_OUTPUT;
 		copyFile(dbFilePath, toDBPath);
+
+		//拷贝静态样式
+		String staticFilePath = LoadConfigWeb.STATIC_HTML_PATH;
+		String toStaticPath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.REFERENCES_OUTPUT;
+		copyFile(staticFilePath, toStaticPath);
+
+		//拷贝page分页
+		String pageFtlPath = LoadConfigWeb.FTL_PAGE_PATH;
+		String toFtlPath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.PUBLIC_PAGE_OUTPUT;
+		copyFile(pageFtlPath, toFtlPath);
+
 	}
 
 	private void genService(boolean force, String basePkg, String serviceTpl, String[] rowArr) throws IOException {
@@ -468,6 +493,47 @@ public class Generator {
 		generator.writeToFile(context, serviceTpl, file, force);
 	}
 
+	private void genPublicPage(boolean force, VelocityHandler handler, List<VelocityContext> vcLists)
+			throws IOException {
+
+		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
+		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
+		String templatePackage = propConfig.get("template_package");
+		String company_name = propConfig.get("company_name");
+		String system_name = propConfig.get("system_name");
+		String basePkg = propConfig.get("base_package");
+		String webName = basePkg.replace(".", "-");
+
+		VelocityContext publicCtx = new VelocityContext();
+		publicCtx.put("webName", webName);
+		publicCtx.put("vcLists", vcLists);
+		publicCtx.put("company_name", company_name);
+		publicCtx.put("system_name", system_name);
+
+		String pubilcOutput = LoadConfigWeb.PUBLIC_PAGE_OUTPUT;
+		String webOutput = LoadConfigWeb.WEB_OUTPUT;
+		pubilcOutput = webOutput + "/" + basePkg.replace(".", "-") + "/" + pubilcOutput;
+
+		//public页面
+		String headerPageTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/public/header.vm";
+		File headerFile = new File(pubilcOutput, "/public/" + "header.jsp");
+		handler.writeToFile(publicCtx, headerPageTpl, headerFile, force);
+
+		String asidePageTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/public/aside.vm";
+		File asideFile = new File(pubilcOutput, "/public/" + "aside.jsp");
+		handler.writeToFile(publicCtx, asidePageTpl, asideFile, force);
+
+		String footerPageTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/public/footer.vm";
+		File footerFile = new File(pubilcOutput, "/public/" + "footer.jsp");
+		handler.writeToFile(publicCtx, footerPageTpl, footerFile, force);
+
+		//main页面
+		String mainPageTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/main.vm";
+		File mainFile = new File(pubilcOutput, "/" + "main.jsp");
+		handler.writeToFile(publicCtx, mainPageTpl, mainFile, force);
+
+	}
+
 	private void genPomXml(boolean force, VelocityHandler handler) throws IOException {
 
 		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
@@ -480,13 +546,18 @@ public class Generator {
 		String pomOutput = webOutput + "/" + webName;
 
 		String pomTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/xml/pom.vm";
+		String pom_groupId = propConfig.get("pom_groupId");
+		String pom_atrifactId = propConfig.get("pom_atrifactId");
+		String pom_version = propConfig.get("pom_version");
 
 		VelocityContext pomCtx = new VelocityContext();
 		pomCtx.put("webName", webName);
+		pomCtx.put("groupId", pom_groupId);
+		pomCtx.put("atrifactId", pom_atrifactId);
+		pomCtx.put("version", pom_version);
 
 		File file = new File(pomOutput, "/" + "pom.xml");
 		handler.writeToFile(pomCtx, pomTpl, file, force);
-
 	}
 
 	private void genWebXml(boolean force, VelocityHandler handler) throws IOException {

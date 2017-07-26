@@ -63,14 +63,23 @@ public class LoadConfigWeb {
 	public static final String TARGET_OUTPUT = "target";
 
 	/**外部js路径*/
-	public static final String REFERENCES_PATH = "src/main/java/references";
+	public static final String REFERENCES_PATH = "src/main/resources/references";
 	/**js输出路径*/
 	public static final String REFERENCES_OUTPUT = "src/main/webapp";
 
 	/**外部db配置信息*/
-	public static final String DB_CONFIG_PATH = "src/main/java/resources";
+	public static final String DB_CONFIG_PATH = "src/main/resources/resources";
 	/**外部db配置位置*/
 	public static final String DB_CONFIG_OUTPUT = "src/main/";
+
+	/**外部样式*/
+	public static final String STATIC_HTML_PATH = "src/main/resources/html";
+
+	/**外部分页*/
+	public static final String FTL_PAGE_PATH = "src/main/resources/share";
+
+	/**公共页位置*/
+	public static final String PUBLIC_PAGE_OUTPUT = "src/main/webapp/WEB-INF";
 
 	/**默认生成的方法名*/
 	public static List<String> defaultMethods = Lists.newArrayList("list", "add", "update", "delete", "batchDelete");
