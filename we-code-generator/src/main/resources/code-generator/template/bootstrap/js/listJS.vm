@@ -48,7 +48,7 @@ function initDatatable() {
                     	render: function(data, type, row, meta) {
                         	var modify = '<a style="cursor:pointer;" onclick="edit('+row.id+');">编辑</a>';
                         
-                          	var judge = '<a onclick="deleteById('+row.id+');" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
+                          	var judge = '<a style="cursor:pointer;" onclick="deleteById('+row.id+');" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
                           		
                             return modify+judge;
                         }	
