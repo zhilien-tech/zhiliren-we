@@ -158,12 +158,12 @@ public class Generator {
 			genService(forceCover, basePkg, serviceTpl, rowArr);
 		}
 
-		genModuleCode(forceCover, basePkg, moduleTpl, map);
+		genModuleCode(forceCover, basePkg, moduleTpl, map, propConfig);
 		log.info("done!");
 	}
 
-	private void genModuleCode(boolean force, String basePkg, String moduleTpl, Map<Integer, String[]> moduleInfo)
-			throws IOException, ClassNotFoundException {
+	private void genModuleCode(boolean force, String basePkg, String moduleTpl, Map<Integer, String[]> moduleInfo,
+			PropertiesProxy propConfig) throws IOException, ClassNotFoundException {
 
 		String baseUri = "/";
 		String webOutput = LoadConfigWeb.WEB_OUTPUT;
@@ -267,10 +267,10 @@ public class Generator {
 			writer.writeToFile(context, moduleTpl, file, force);
 
 			//jsp
-			genJsp(force, writer, md);
+			genJsp(force, writer, md, propConfig);
 
 			//js
-			genJS(force, writer, md);
+			genJS(force, writer, md, propConfig);
 
 			VelocityContext publicCtx = new VelocityContext();
 			publicCtx.put("moudleName", md.getModuleName());
@@ -279,25 +279,22 @@ public class Generator {
 		}
 
 		//public页面
-		genPublicPage(force, writer, vcList);
+		genPublicPage(force, writer, propConfig, vcList);
 
 		//pom
-		genPomXml(force, writer);
+		genPomXml(force, writer, propConfig);
 
 		//web.xml
-		genWebXml(force, writer);
+		genWebXml(force, writer, propConfig);
 
 		//MainModule
-		genMainSetup(force, writer);
+		genMainSetup(force, writer, propConfig);
 	}
 
-	private void genJsp(boolean force, VelocityHandler handler, ModuleDesc md) throws ClassNotFoundException,
-			IOException {
+	private void genJsp(boolean force, VelocityHandler handler, ModuleDesc md, PropertiesProxy propConfig)
+			throws ClassNotFoundException, IOException {
 
-		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
-		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
 		String templatePackage = propConfig.get("template_package");
-
 		String fullEntityClassName = md.getFullEntityClassName();
 		Class<?> entityClass = Class.forName(fullEntityClassName);
 		Mirror<?> mirror = Mirror.me(entityClass);
@@ -378,11 +375,9 @@ public class Generator {
 
 	}
 
-	private void genJS(boolean force, VelocityHandler handler, ModuleDesc md) throws ClassNotFoundException,
-			IOException {
+	private void genJS(boolean force, VelocityHandler handler, ModuleDesc md, PropertiesProxy propConfig)
+			throws ClassNotFoundException, IOException {
 
-		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
-		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
 		String templatePackage = propConfig.get("template_package");
 
 		String fullEntityClassName = md.getFullEntityClassName();
@@ -493,11 +488,9 @@ public class Generator {
 		generator.writeToFile(context, serviceTpl, file, force);
 	}
 
-	private void genPublicPage(boolean force, VelocityHandler handler, List<VelocityContext> vcLists)
-			throws IOException {
+	private void genPublicPage(boolean force, VelocityHandler handler, PropertiesProxy propConfig,
+			List<VelocityContext> vcLists) throws IOException {
 
-		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
-		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
 		String templatePackage = propConfig.get("template_package");
 		String company_name = propConfig.get("company_name");
 		String system_name = propConfig.get("system_name");
@@ -534,10 +527,8 @@ public class Generator {
 
 	}
 
-	private void genPomXml(boolean force, VelocityHandler handler) throws IOException {
+	private void genPomXml(boolean force, VelocityHandler handler, PropertiesProxy propConfig) throws IOException {
 
-		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
-		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
 		String templatePackage = propConfig.get("template_package");
 
 		String webOutput = LoadConfigWeb.WEB_OUTPUT;
@@ -560,14 +551,11 @@ public class Generator {
 		handler.writeToFile(pomCtx, pomTpl, file, force);
 	}
 
-	private void genWebXml(boolean force, VelocityHandler handler) throws IOException {
-
-		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
-		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
-		String templatePackage = propConfig.get("template_package");
+	private void genWebXml(boolean force, VelocityHandler handler, PropertiesProxy propConfig) throws IOException {
 
 		String webOutput = LoadConfigWeb.WEB_OUTPUT;
 		String basePkg = propConfig.get("base_package");
+		String templatePackage = propConfig.get("template_package");
 		String Output = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.JSP_OUTPUT;
 
 		String webTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/xml/web.vm";
@@ -580,15 +568,12 @@ public class Generator {
 
 	}
 
-	private void genMainSetup(boolean force, VelocityHandler handler) throws IOException {
-
-		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
-		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
-		String templatePackage = propConfig.get("template_package");
+	private void genMainSetup(boolean force, VelocityHandler handler, PropertiesProxy propConfig) throws IOException {
 
 		String webOutput = LoadConfigWeb.WEB_OUTPUT;
 		String javaOutput = LoadConfigWeb.JAVA_OUTPUT;
 		String basePkg = propConfig.get("base_package");
+		String templatePackage = propConfig.get("template_package");
 		String webName = basePkg.replace(".", "-");
 		String Output = webOutput + "/" + webName + "/" + javaOutput + "/" + Utils.getPath4Pkg(basePkg);
 
