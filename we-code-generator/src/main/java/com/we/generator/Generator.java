@@ -7,8 +7,6 @@
 package com.we.generator;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -41,6 +39,7 @@ import com.we.generator.core.VelocityHandler;
 import com.we.generator.core.enums.LogicEnum;
 import com.we.generator.load.EntityDescriptor;
 import com.we.generator.load.EntityLoader;
+import com.we.generator.util.CopyFile;
 import com.we.generator.util.ExcelReader;
 import com.we.generator.util.Utils;
 
@@ -421,22 +420,22 @@ public class Generator {
 		//拷贝js
 		String filePath = LoadConfigWeb.REFERENCES_PATH;
 		String toFilePath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.REFERENCES_OUTPUT;
-		copyFile(filePath, toFilePath);
+		CopyFile.copyFile(filePath, toFilePath);
 
 		//拷贝db配置信息
 		String dbFilePath = LoadConfigWeb.DB_CONFIG_PATH;
 		String toDBPath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.DB_CONFIG_OUTPUT;
-		copyFile(dbFilePath, toDBPath);
+		CopyFile.copyFile(dbFilePath, toDBPath);
 
 		//拷贝静态样式
 		String staticFilePath = LoadConfigWeb.STATIC_HTML_PATH;
 		String toStaticPath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.REFERENCES_OUTPUT;
-		copyFile(staticFilePath, toStaticPath);
+		CopyFile.copyFile(staticFilePath, toStaticPath);
 
 		//拷贝page分页
 		String pageFtlPath = LoadConfigWeb.FTL_PAGE_PATH;
 		String toFtlPath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.PUBLIC_PAGE_OUTPUT;
-		copyFile(pageFtlPath, toFtlPath);
+		CopyFile.copyFile(pageFtlPath, toFtlPath);
 
 	}
 
@@ -599,65 +598,6 @@ public class Generator {
 			log.info("文件格式错误，请使用模板文件进行操作");
 		}
 		return map;
-	}
-
-	private void copyFile(String filePath, String toFilePath) {
-		File file = new File(filePath);
-		File toFile = new File(toFilePath);
-		try {
-			copy(file, toFile);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block  
-			e.printStackTrace();
-		}
-	}
-
-	//拷贝文件到固定目录下
-	public static void copy(File file, File toFile) throws Exception {
-		byte[] b = new byte[1024];
-		int a;
-		FileInputStream fis;
-		FileOutputStream fos;
-		if (file.isDirectory()) {
-			String filepath = file.getAbsolutePath();
-			filepath = filepath.replaceAll("\\\\", "/");
-			String toFilepath = toFile.getAbsolutePath();
-			toFilepath = toFilepath.replaceAll("\\\\", "/");
-			int lastIndexOf = filepath.lastIndexOf("/");
-			toFilepath = toFilepath + filepath.substring(lastIndexOf, filepath.length());
-			File copy = new File(toFilepath);
-			//复制文件夹  
-			if (!copy.exists()) {
-				copy.mkdir();
-			}
-			//遍历文件夹  
-			for (File f : file.listFiles()) {
-				copy(f, copy);
-			}
-		} else {
-			if (toFile.isDirectory()) {
-				String filepath = file.getAbsolutePath();
-				filepath = filepath.replaceAll("\\\\", "/");
-				String toFilepath = toFile.getAbsolutePath();
-				toFilepath = toFilepath.replaceAll("\\\\", "/");
-				int lastIndexOf = filepath.lastIndexOf("/");
-				toFilepath = toFilepath + filepath.substring(lastIndexOf, filepath.length());
-
-				//写文件  
-				File newFile = new File(toFilepath);
-				fis = new FileInputStream(file);
-				fos = new FileOutputStream(newFile);
-				while ((a = fis.read(b)) != -1) {
-					fos.write(b, 0, a);
-				}
-			} else {
-				fis = new FileInputStream(file);
-				fos = new FileOutputStream(toFile);
-				while ((a = fis.read(b)) != -1) {
-					fos.write(b, 0, a);
-				}
-			}
-		}
 	}
 
 }
