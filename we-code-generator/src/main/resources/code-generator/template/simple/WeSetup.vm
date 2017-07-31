@@ -1,4 +1,4 @@
-package $webName;
+package $basePkg;
 
 import java.util.List;
 import java.util.Map;
@@ -82,7 +82,7 @@ public class WeSetup implements Setup {
 	}
 
 	private void startTasks(Ioc ioc) {
-		//taskOfGrabMail(ioc);
+		
 	}
 
 	private void initWebGlobalConfig(final KvConfig config, final ServletContext sc) {

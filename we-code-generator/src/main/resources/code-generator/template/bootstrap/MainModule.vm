@@ -1,4 +1,4 @@
-package $webName;
+package $basePkg;
 
 import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
@@ -18,7 +18,7 @@ import org.nutz.mvc.ioc.provider.ComboIocProvider;
 import com.uxuexi.core.web.view.WeViewMaker;
 
 @IocBy(type = ComboIocProvider.class, args = { "*org.nutz.ioc.loader.json.JsonLoader", "webconfig/",
-		"*org.nutz.ioc.loader.annotation.AnnotationIocLoader", "$webName" })
+		"*org.nutz.ioc.loader.annotation.AnnotationIocLoader", "$basePkg" })
 @Encoding(input = "UTF-8", output = "UTF-8")
 @Modules(scanPackage = true)
 @Localization("msg")
