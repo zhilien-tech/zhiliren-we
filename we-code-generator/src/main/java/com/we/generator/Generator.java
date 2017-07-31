@@ -442,13 +442,14 @@ public class Generator {
 	private VelocityContext getVContext() {
 		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
 		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
+		PropertiesProxy webPropConfig = ioc.get(PropertiesProxy.class, "webPropConfig");
 		String basePkg = propConfig.get("base_package");
-		String company_name = propConfig.get("company_name");
-		String system_name = propConfig.get("system_name");
-		String pom_groupId = propConfig.get("pom_groupId");
-		String pom_atrifactId = propConfig.get("pom_atrifactId");
-		String pom_version = propConfig.get("pom_version");
 		String webName = basePkg.replace(".", "-");
+		String company_name = webPropConfig.get("company_name");
+		String system_name = webPropConfig.get("system_name");
+		String pom_groupId = webPropConfig.get("pom_groupId");
+		String pom_atrifactId = webPropConfig.get("pom_atrifactId");
+		String pom_version = webPropConfig.get("pom_version");
 
 		VelocityContext context = new VelocityContext();
 		context.put("basePkg", basePkg);
