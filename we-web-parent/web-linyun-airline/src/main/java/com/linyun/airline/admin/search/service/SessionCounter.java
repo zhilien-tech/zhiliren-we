@@ -36,7 +36,7 @@ public class SessionCounter implements HttpSessionListener {
 	/* Session创建事件  */
 	@Override
 	public void sessionCreated(HttpSessionEvent event) {
-		System.out.println("session创建时，调用" + event);
+
 	}
 
 	/* Session失效事件 */
@@ -65,6 +65,5 @@ public class SessionCounter implements HttpSessionListener {
 			}
 
 		}
-		System.out.print("session失效时，调用");
 	}
 }
