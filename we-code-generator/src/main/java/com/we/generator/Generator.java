@@ -55,6 +55,7 @@ public class Generator {
 
 	private static final Log log = Logs.get();
 
+	//实体
 	public void generateEntity() throws Exception {
 		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_DBCFG_PATH));
 		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
@@ -139,6 +140,64 @@ public class Generator {
 
 	}
 
+	//JSP页
+	private void genJsp(boolean force, VelocityHandler handler, ModuleDesc md, PropertiesProxy propConfig)
+			throws ClassNotFoundException, IOException {
+
+		String pageFilePath = md.getAtUrl();
+
+		String jspOutPut = LoadConfigWeb.JSP_OUTPUT;
+		String webOutput = LoadConfigWeb.WEB_OUTPUT;
+		String basePkg = propConfig.get("base_package");
+		String templatePackage = propConfig.get("template_package");
+		jspOutPut = webOutput + "/" + basePkg.replace(".", "-") + "/" + jspOutPut;
+
+		VelocityContext jspCtx = getVContext(md);
+
+		String listTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/list.vm";
+		File listPage = new File(jspOutPut, pageFilePath + "/" + "list.jsp");
+		handler.writeToFile(jspCtx, listTpl, listPage, force);
+
+		String updateTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/update.vm";
+		File updatePage = new File(jspOutPut, pageFilePath + "/" + "update.jsp");
+		handler.writeToFile(jspCtx, updateTpl, updatePage, force);
+
+		String addTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/add.vm";
+		File addPage = new File(jspOutPut, pageFilePath + "/" + "add.jsp");
+		handler.writeToFile(jspCtx, addTpl, addPage, force);
+
+		for (ActionDesc ad : md.getActionList()) {
+			File commonPage = new File(jspOutPut, pageFilePath + "/" + ad.getActionName() + ".jsp");
+			String commonTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/common.vm";
+			handler.writeToFile(jspCtx, commonTpl, commonPage, force);
+		}
+
+	}
+
+	//JavaScript
+	private void genJS(boolean force, VelocityHandler handler, ModuleDesc md, PropertiesProxy propConfig)
+			throws ClassNotFoundException, IOException {
+
+		String templatePackage = propConfig.get("template_package");
+
+		String jsOutPut = LoadConfigWeb.JS_OUTPUT;
+		String webOutput = LoadConfigWeb.WEB_OUTPUT;
+		String basePkg = propConfig.get("base_package");
+		jsOutPut = webOutput + "/" + basePkg.replace(".", "-") + "/" + jsOutPut;
+		String pageFilePath = md.getAtUrl();
+
+		VelocityContext jspCtx = getVContext(md);
+
+		String listJsTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/js/listJS.vm";
+		File listJS = new File(jsOutPut, pageFilePath + "/" + "listTable.js");
+		handler.writeToFile(jspCtx, listJsTpl, listJS, force);
+
+		//拷贝外部引入文件
+		copyFiles(webOutput, basePkg);
+
+	}
+
+	//Module
 	public void generatorModule() throws Exception {
 		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
 		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
@@ -162,6 +221,7 @@ public class Generator {
 		log.info("done!");
 	}
 
+	//ModuleCode
 	private void genModuleCode(boolean force, String basePkg, String moduleTpl, Map<Integer, String[]> moduleInfo,
 			PropertiesProxy propConfig) throws IOException, ClassNotFoundException {
 
@@ -211,61 +271,7 @@ public class Generator {
 		genPublicPage(force, writer, propConfig, vcList);
 	}
 
-	private void genJsp(boolean force, VelocityHandler handler, ModuleDesc md, PropertiesProxy propConfig)
-			throws ClassNotFoundException, IOException {
-
-		String pageFilePath = md.getAtUrl();
-
-		String jspOutPut = LoadConfigWeb.JSP_OUTPUT;
-		String webOutput = LoadConfigWeb.WEB_OUTPUT;
-		String basePkg = propConfig.get("base_package");
-		String templatePackage = propConfig.get("template_package");
-		jspOutPut = webOutput + "/" + basePkg.replace(".", "-") + "/" + jspOutPut;
-
-		VelocityContext jspCtx = getVContext(md);
-
-		String listTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/list.vm";
-		File listPage = new File(jspOutPut, pageFilePath + "/" + "list.jsp");
-		handler.writeToFile(jspCtx, listTpl, listPage, force);
-
-		String updateTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/update.vm";
-		File updatePage = new File(jspOutPut, pageFilePath + "/" + "update.jsp");
-		handler.writeToFile(jspCtx, updateTpl, updatePage, force);
-
-		String addTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/add.vm";
-		File addPage = new File(jspOutPut, pageFilePath + "/" + "add.jsp");
-		handler.writeToFile(jspCtx, addTpl, addPage, force);
-
-		for (ActionDesc ad : md.getActionList()) {
-			File commonPage = new File(jspOutPut, pageFilePath + "/" + ad.getActionName() + ".jsp");
-			String commonTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/common.vm";
-			handler.writeToFile(jspCtx, commonTpl, commonPage, force);
-		}
-
-	}
-
-	private void genJS(boolean force, VelocityHandler handler, ModuleDesc md, PropertiesProxy propConfig)
-			throws ClassNotFoundException, IOException {
-
-		String templatePackage = propConfig.get("template_package");
-
-		String jsOutPut = LoadConfigWeb.JS_OUTPUT;
-		String webOutput = LoadConfigWeb.WEB_OUTPUT;
-		String basePkg = propConfig.get("base_package");
-		jsOutPut = webOutput + "/" + basePkg.replace(".", "-") + "/" + jsOutPut;
-		String pageFilePath = md.getAtUrl();
-
-		VelocityContext jspCtx = getVContext(md);
-
-		String listJsTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/js/listJS.vm";
-		File listJS = new File(jsOutPut, pageFilePath + "/" + "listTable.js");
-		handler.writeToFile(jspCtx, listJsTpl, listJS, force);
-
-		//拷贝外部引入文件
-		copyFiles(webOutput, basePkg);
-
-	}
-
+	//service
 	private void genService(boolean force, String basePkg, String serviceTpl, String[] rowArr) throws IOException {
 
 		String javaOutput = LoadConfigWeb.JAVA_OUTPUT;
@@ -314,6 +320,7 @@ public class Generator {
 		generator.writeToFile(context, serviceTpl, file, force);
 	}
 
+	//公共页
 	private void genPublicPage(boolean force, VelocityHandler handler, PropertiesProxy propConfig,
 			List<VelocityContext> vcLists) throws IOException {
 
@@ -376,6 +383,7 @@ public class Generator {
 
 	}
 
+	//pom.xml
 	private void genPomXml(boolean force, VelocityHandler handler, PropertiesProxy propConfig) throws IOException {
 
 		String webOutput = LoadConfigWeb.WEB_OUTPUT;
@@ -391,6 +399,7 @@ public class Generator {
 		handler.writeToFile(pomCtx, pomTpl, file, force);
 	}
 
+	//web.xml
 	private void genWebXml(boolean force, VelocityHandler handler, PropertiesProxy propConfig) throws IOException {
 
 		String webOutput = LoadConfigWeb.WEB_OUTPUT;
@@ -407,6 +416,7 @@ public class Generator {
 
 	}
 
+	//项目启动的定时任务
 	private void genMainSetup(boolean force, VelocityHandler handler, PropertiesProxy propConfig) throws IOException {
 
 		String webOutput = LoadConfigWeb.WEB_OUTPUT;
@@ -429,22 +439,6 @@ public class Generator {
 	}
 
 	//获取引擎上下文
-	private VelocityContext getVContext(ModuleDesc md) throws ClassNotFoundException {
-
-		//获取列表标题栏
-		List<PageFieldDesc> fieldList = getPageFields(md);
-
-		VelocityContext context = new VelocityContext();
-		context.put("module", md);
-		context.put("atUrl", md.getAtUrl());
-		context.put("moudleName", md.getModuleName());
-		context.put("moudleCode", md.getModuleCode());
-		context.put("fieldList", fieldList);
-
-		return context;
-	}
-
-	//获取引擎上下文
 	private VelocityContext getVContext() {
 		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
 		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
@@ -464,6 +458,22 @@ public class Generator {
 		context.put("groupId", pom_groupId);
 		context.put("atrifactId", pom_atrifactId);
 		context.put("version", pom_version);
+
+		return context;
+	}
+
+	//获取引擎上下文
+	private VelocityContext getVContext(ModuleDesc md) throws ClassNotFoundException {
+
+		//获取列表标题栏
+		List<PageFieldDesc> fieldList = getPageFields(md);
+
+		VelocityContext context = new VelocityContext();
+		context.put("module", md);
+		context.put("atUrl", md.getAtUrl());
+		context.put("moudleName", md.getModuleName());
+		context.put("moudleCode", md.getModuleCode());
+		context.put("fieldList", fieldList);
 
 		return context;
 	}
