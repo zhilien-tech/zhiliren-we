@@ -41,6 +41,7 @@ import com.we.generator.load.EntityDescriptor;
 import com.we.generator.load.EntityLoader;
 import com.we.generator.util.CopyFile;
 import com.we.generator.util.ExcelReader;
+import com.we.generator.util.MakeFile;
 import com.we.generator.util.Utils;
 
 /**
@@ -173,22 +174,22 @@ public class Generator {
 		//java Resources
 		String jResOutput = LoadConfigWeb.JAVA_RES_OUTPUT;
 		jResOutput = webOutput + "/" + basePkg.replace(".", "-") + "/" + jResOutput;
-		new File(jResOutput).mkdirs();
+		MakeFile.makeFile(jResOutput);
 
 		//test
 		String testJavaOut = LoadConfigWeb.TEST_JAVA_OUTPUT;
 		testJavaOut = webOutput + "/" + basePkg.replace(".", "-") + "/" + testJavaOut;
-		new File(testJavaOut).mkdirs();
+		MakeFile.makeFile(testJavaOut);
 
 		//test Resources
 		String testResOut = LoadConfigWeb.TEST_RES_OUTPUT;
 		testResOut = webOutput + "/" + basePkg.replace(".", "-") + "/" + testResOut;
-		new File(testResOut).mkdirs();
+		MakeFile.makeFile(testResOut);
 
 		//target
 		String targetOutput = LoadConfigWeb.TARGET_OUTPUT;
 		targetOutput = webOutput + "/" + basePkg.replace(".", "-") + "/" + targetOutput;
-		new File(targetOutput).mkdirs();
+		MakeFile.makeFile(targetOutput);
 
 		Map<String, ModuleDesc> moduleMap = Maps.newHashMap();
 
@@ -293,35 +294,16 @@ public class Generator {
 	private void genJsp(boolean force, VelocityHandler handler, ModuleDesc md, PropertiesProxy propConfig)
 			throws ClassNotFoundException, IOException {
 
-		String templatePackage = propConfig.get("template_package");
-		String fullEntityClassName = md.getFullEntityClassName();
-		Class<?> entityClass = Class.forName(fullEntityClassName);
-		Mirror<?> mirror = Mirror.me(entityClass);
-		Field[] fields = mirror.getFields();
-		List<PageFieldDesc> fieldList = Lists.newArrayList();
-		for (Field f : fields) {
-			if ("id".equals(f.getName())) {
-				continue;
-			}
+		String pageFilePath = md.getAtUrl();
 
-			PageFieldDesc pd = new PageFieldDesc();
-			pd.setName(f.getName());
-
-			if (f.isAnnotationPresent(Comment.class)) {
-				Comment comment = f.getDeclaredAnnotation(Comment.class);
-				pd.setComment(comment.value());
-			} else {
-				pd.setComment("标题");
-			}
-			fieldList.add(pd);
-		}
+		//获取列表标题栏
+		List<PageFieldDesc> fieldList = getPageFields(md);
 
 		String jspOutPut = LoadConfigWeb.JSP_OUTPUT;
 		String webOutput = LoadConfigWeb.WEB_OUTPUT;
 		String basePkg = propConfig.get("base_package");
+		String templatePackage = propConfig.get("template_package");
 		jspOutPut = webOutput + "/" + basePkg.replace(".", "-") + "/" + jspOutPut;
-
-		String pageFilePath = md.getAtUrl();
 
 		VelocityContext jspCtx = new VelocityContext();
 		jspCtx.put("fieldList", fieldList);
@@ -379,27 +361,8 @@ public class Generator {
 
 		String templatePackage = propConfig.get("template_package");
 
-		String fullEntityClassName = md.getFullEntityClassName();
-		Class<?> entityClass = Class.forName(fullEntityClassName);
-		Mirror<?> mirror = Mirror.me(entityClass);
-		Field[] fields = mirror.getFields();
-		List<PageFieldDesc> fieldList = Lists.newArrayList();
-		for (Field f : fields) {
-			if ("id".equals(f.getName())) {
-				continue;
-			}
-
-			PageFieldDesc pd = new PageFieldDesc();
-			pd.setName(f.getName());
-
-			if (f.isAnnotationPresent(Comment.class)) {
-				Comment comment = f.getDeclaredAnnotation(Comment.class);
-				pd.setComment(comment.value());
-			} else {
-				pd.setComment("标题");
-			}
-			fieldList.add(pd);
-		}
+		//获取列表标题栏
+		List<PageFieldDesc> fieldList = getPageFields(md);
 
 		String jsOutPut = LoadConfigWeb.JS_OUTPUT;
 		String webOutput = LoadConfigWeb.WEB_OUTPUT;
@@ -417,25 +380,8 @@ public class Generator {
 		File listJS = new File(jsOutPut, pageFilePath + "/" + "listTable.js");
 		handler.writeToFile(jspCtx, listJsTpl, listJS, force);
 
-		//拷贝js
-		String filePath = LoadConfigWeb.REFERENCES_PATH;
-		String toFilePath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.REFERENCES_OUTPUT;
-		CopyFile.copyFile(filePath, toFilePath);
-
-		//拷贝db配置信息
-		String dbFilePath = LoadConfigWeb.DB_CONFIG_PATH;
-		String toDBPath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.DB_CONFIG_OUTPUT;
-		CopyFile.copyFile(dbFilePath, toDBPath);
-
-		//拷贝静态样式
-		String staticFilePath = LoadConfigWeb.STATIC_HTML_PATH;
-		String toStaticPath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.REFERENCES_OUTPUT;
-		CopyFile.copyFile(staticFilePath, toStaticPath);
-
-		//拷贝page分页
-		String pageFtlPath = LoadConfigWeb.FTL_PAGE_PATH;
-		String toFtlPath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.PUBLIC_PAGE_OUTPUT;
-		CopyFile.copyFile(pageFtlPath, toFtlPath);
+		//拷贝外部引入文件
+		copyFiles(webOutput, basePkg);
 
 	}
 
@@ -587,6 +533,58 @@ public class Generator {
 		File setupFile = new File(Output, "/" + "WeSetup.java");
 		handler.writeToFile(vCtx, setupTpl, setupFile, force);
 
+	}
+
+	//获取列表标题栏
+	private List<PageFieldDesc> getPageFields(ModuleDesc md) throws ClassNotFoundException {
+
+		List<PageFieldDesc> fieldList = Lists.newArrayList();
+		String fullEntityClassName = md.getFullEntityClassName();
+		Class<?> entityClass = Class.forName(fullEntityClassName);
+		Mirror<?> mirror = Mirror.me(entityClass);
+		Field[] fields = mirror.getFields();
+
+		for (Field f : fields) {
+			if ("id".equals(f.getName())) {
+				continue;
+			}
+
+			PageFieldDesc pd = new PageFieldDesc();
+			pd.setName(f.getName());
+
+			if (f.isAnnotationPresent(Comment.class)) {
+				Comment comment = f.getDeclaredAnnotation(Comment.class);
+				pd.setComment(comment.value());
+			} else {
+				pd.setComment("标题");
+			}
+			fieldList.add(pd);
+		}
+
+		return fieldList;
+	}
+
+	//拷贝外部文件到生成项目中
+	private void copyFiles(String webOutput, String basePkg) {
+		//拷贝js
+		String filePath = LoadConfigWeb.REFERENCES_PATH;
+		String toFilePath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.REFERENCES_OUTPUT;
+		CopyFile.copyFile(filePath, toFilePath);
+
+		//拷贝db配置信息
+		String dbFilePath = LoadConfigWeb.DB_CONFIG_PATH;
+		String toDBPath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.DB_CONFIG_OUTPUT;
+		CopyFile.copyFile(dbFilePath, toDBPath);
+
+		//拷贝静态样式
+		String staticFilePath = LoadConfigWeb.STATIC_HTML_PATH;
+		String toStaticPath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.REFERENCES_OUTPUT;
+		CopyFile.copyFile(staticFilePath, toStaticPath);
+
+		//拷贝page分页
+		String pageFtlPath = LoadConfigWeb.FTL_PAGE_PATH;
+		String toFtlPath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.PUBLIC_PAGE_OUTPUT;
+		CopyFile.copyFile(pageFtlPath, toFtlPath);
 	}
 
 	private Map<Integer, String[]> loadExcel(InputStream ins) {
