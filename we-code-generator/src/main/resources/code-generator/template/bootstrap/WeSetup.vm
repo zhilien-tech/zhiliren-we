@@ -82,7 +82,7 @@ public class WeSetup implements Setup {
 	}
 
 	private void startTasks(Ioc ioc) {
-		//taskOfGrabMail(ioc);
+		
 	}
 
 	private void initWebGlobalConfig(final KvConfig config, final ServletContext sc) {
