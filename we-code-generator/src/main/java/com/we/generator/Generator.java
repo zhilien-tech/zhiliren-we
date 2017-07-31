@@ -547,7 +547,7 @@ public class Generator {
 	}
 
 	//获取列表标题栏信息
-	private static List<PageFieldDesc> getPageFields(ModuleDesc md) throws ClassNotFoundException {
+	private List<PageFieldDesc> getPageFields(ModuleDesc md) throws ClassNotFoundException {
 
 		List<PageFieldDesc> fieldList = Lists.newArrayList();
 		String fullEntityClassName = md.getFullEntityClassName();
