@@ -8,15 +8,23 @@ package com.we.generator.template;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
 
 import org.apache.velocity.VelocityContext;
+import org.nutz.ioc.Ioc;
+import org.nutz.ioc.impl.NutIoc;
+import org.nutz.ioc.impl.PropertiesProxy;
+import org.nutz.ioc.loader.json.JsonLoader;
 
 import com.google.common.base.Joiner;
 import com.uxuexi.core.common.util.EnumUtil;
+import com.we.generator.config.GetExcelInfo;
 import com.we.generator.config.GetVelocityContext;
 import com.we.generator.config.LoadConfigWeb;
 import com.we.generator.fileDesc.enums.LogicEnum;
 import com.we.generator.fileDesc.web.ServiceDesc;
+import com.we.generator.load.ExcelLoader;
 import com.we.generator.util.Utils;
 
 /**
@@ -27,6 +35,26 @@ import com.we.generator.util.Utils;
  * @Date	 2017年8月1日 	 
  */
 public class GenService {
+
+	public static void genService() throws IOException {
+		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
+		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
+
+		boolean forceCover = false; //是否覆盖已经存在的文件 
+		String basePkg = propConfig.get("base_package");
+		forceCover = Boolean.valueOf(propConfig.get("force_cover"));
+		String templatePackage = propConfig.get("template_package");
+		String serviceTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/service.vm";
+
+		//读取excel功能模块信息
+		InputStream ins = GetExcelInfo.getExcelIns();
+		Map<Integer, String[]> map = ExcelLoader.loadExcel(ins);
+
+		for (int i = 1; i <= map.size(); i++) {
+			String[] rowArr = map.get(i); //每一行  
+			genServiceCode(forceCover, basePkg, serviceTpl, rowArr);
+		}
+	}
 
 	//service
 	public static void genServiceCode(boolean force, String basePkg, String serviceTpl, String[] rowArr)

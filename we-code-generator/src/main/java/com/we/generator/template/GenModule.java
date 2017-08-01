@@ -8,14 +8,19 @@ package com.we.generator.template;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.velocity.VelocityContext;
+import org.nutz.ioc.Ioc;
+import org.nutz.ioc.impl.NutIoc;
 import org.nutz.ioc.impl.PropertiesProxy;
+import org.nutz.ioc.loader.json.JsonLoader;
 
 import com.google.common.collect.Lists;
+import com.we.generator.config.GetExcelInfo;
 import com.we.generator.config.GetVelocityContext;
 import com.we.generator.config.LoadConfigWeb;
 import com.we.generator.config.SetWebDirectory;
@@ -31,6 +36,23 @@ import com.we.generator.util.Utils;
  * @Date	 2017年8月1日 	 
  */
 public class GenModule {
+
+	public static void genModule() throws IOException, ClassNotFoundException {
+		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
+		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
+
+		boolean forceCover = false; //是否覆盖已经存在的文件 
+		String basePkg = propConfig.get("base_package");
+		forceCover = Boolean.valueOf(propConfig.get("force_cover"));
+		String templatePackage = propConfig.get("template_package");
+		String moduleTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/module.vm";
+
+		//读取excel功能模块信息
+		InputStream ins = GetExcelInfo.getExcelIns();
+		Map<Integer, String[]> map = ExcelLoader.loadExcel(ins);
+
+		genModuleCode(forceCover, basePkg, moduleTpl, map, propConfig);
+	}
 
 	//ModuleCode
 	public static void genModuleCode(boolean force, String basePkg, String moduleTpl,
