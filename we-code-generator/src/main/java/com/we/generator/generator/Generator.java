@@ -26,8 +26,8 @@ import com.we.generator.template.GenService;
  * 
  * 代码生成器入口
  * 
- * @author   朱晓川
- * @Date	 2016年9月3日 	 
+ * @author   彭辉
+ * @Date	 2017年8月1日
  */
 public class Generator {
 

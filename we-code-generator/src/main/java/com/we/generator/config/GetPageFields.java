@@ -13,8 +13,8 @@ import org.nutz.dao.entity.annotation.Comment;
 import org.nutz.lang.Mirror;
 
 import com.google.common.collect.Lists;
-import com.we.generator.core.ModuleDesc;
-import com.we.generator.core.PageFieldDesc;
+import com.we.generator.fileDesc.web.ModuleDesc;
+import com.we.generator.fileDesc.web.PageFieldDesc;
 
 /**
  * 获取列表标题栏

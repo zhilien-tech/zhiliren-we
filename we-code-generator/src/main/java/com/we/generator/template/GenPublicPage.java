@@ -15,7 +15,6 @@ import org.nutz.ioc.impl.PropertiesProxy;
 
 import com.we.generator.config.GetVelocityContext;
 import com.we.generator.config.LoadConfigWeb;
-import com.we.generator.core.VelocityHandler;
 
 /**
  * 根据模板，生成对应的 公共页代码

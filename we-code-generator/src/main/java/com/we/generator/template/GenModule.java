@@ -19,8 +19,7 @@ import com.google.common.collect.Lists;
 import com.we.generator.config.GetVelocityContext;
 import com.we.generator.config.LoadConfigWeb;
 import com.we.generator.config.SetWebDirectory;
-import com.we.generator.core.ModuleDesc;
-import com.we.generator.core.VelocityHandler;
+import com.we.generator.fileDesc.web.ModuleDesc;
 import com.we.generator.load.ExcelLoader;
 import com.we.generator.util.Utils;
 
@@ -70,7 +69,7 @@ public class GenModule {
 			vcList.add(context);
 		}
 
-		//pom
+		//pom.xml
 		GenPomXml.genXmlFile(force, writer, propConfig);
 
 		//web.xml

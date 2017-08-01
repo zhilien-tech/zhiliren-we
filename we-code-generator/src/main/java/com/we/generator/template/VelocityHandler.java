@@ -1,4 +1,4 @@
-package com.we.generator.core;
+package com.we.generator.template;
 
 import java.io.File;
 import java.io.IOException;

@@ -17,9 +17,9 @@ import com.google.common.collect.Maps;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.Util;
 import com.we.generator.config.LoadConfigWeb;
-import com.we.generator.core.ActionDesc;
-import com.we.generator.core.ModuleDesc;
-import com.we.generator.core.enums.LogicEnum;
+import com.we.generator.fileDesc.enums.LogicEnum;
+import com.we.generator.fileDesc.web.ActionDesc;
+import com.we.generator.fileDesc.web.ModuleDesc;
 import com.we.generator.util.ExcelReader;
 import com.we.generator.util.Utils;
 
@@ -29,7 +29,7 @@ import com.we.generator.util.Utils;
  *
  * @author   彭辉
  * @Date	 2017年8月1日 	 
- * @param ins 
+ * @param    ins 
  */
 public class ExcelLoader {
 

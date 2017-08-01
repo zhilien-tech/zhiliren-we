@@ -22,7 +22,6 @@ import org.nutz.log.Logs;
 import com.google.common.collect.Lists;
 import com.we.generator.config.GetVelocityContext;
 import com.we.generator.config.LoadConfigWeb;
-import com.we.generator.core.VelocityHandler;
 import com.we.generator.load.EntityDescriptor;
 import com.we.generator.load.EntityLoader;
 import com.we.generator.util.Utils;

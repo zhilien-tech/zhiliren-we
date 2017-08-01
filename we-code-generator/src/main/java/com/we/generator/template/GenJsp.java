@@ -14,9 +14,8 @@ import org.nutz.ioc.impl.PropertiesProxy;
 
 import com.we.generator.config.GetVelocityContext;
 import com.we.generator.config.LoadConfigWeb;
-import com.we.generator.core.ActionDesc;
-import com.we.generator.core.ModuleDesc;
-import com.we.generator.core.VelocityHandler;
+import com.we.generator.fileDesc.web.ActionDesc;
+import com.we.generator.fileDesc.web.ModuleDesc;
 
 /**
  * 根据模板，生成对应的jsp页面

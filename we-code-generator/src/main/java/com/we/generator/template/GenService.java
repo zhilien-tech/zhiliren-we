@@ -15,9 +15,8 @@ import com.google.common.base.Joiner;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.we.generator.config.GetVelocityContext;
 import com.we.generator.config.LoadConfigWeb;
-import com.we.generator.core.ServiceDesc;
-import com.we.generator.core.VelocityHandler;
-import com.we.generator.core.enums.LogicEnum;
+import com.we.generator.fileDesc.enums.LogicEnum;
+import com.we.generator.fileDesc.web.ServiceDesc;
 import com.we.generator.util.Utils;
 
 /**

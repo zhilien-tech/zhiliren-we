@@ -4,7 +4,7 @@
  * Copyright (c) 2016, 北京聚智未来科技有限公司版权所有.
 */
 
-package com.we.generator.core;
+package com.we.generator.fileDesc.web;
 
 import lombok.Data;
 

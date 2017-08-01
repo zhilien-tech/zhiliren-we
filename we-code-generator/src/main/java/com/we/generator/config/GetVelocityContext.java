@@ -14,8 +14,8 @@ import org.nutz.ioc.impl.NutIoc;
 import org.nutz.ioc.impl.PropertiesProxy;
 import org.nutz.ioc.loader.json.JsonLoader;
 
-import com.we.generator.core.ModuleDesc;
-import com.we.generator.core.PageFieldDesc;
+import com.we.generator.fileDesc.web.ModuleDesc;
+import com.we.generator.fileDesc.web.PageFieldDesc;
 
 /**
  * 根据配置信息，获取引擎上下文内容

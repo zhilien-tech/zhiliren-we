@@ -14,7 +14,6 @@ import org.nutz.ioc.impl.PropertiesProxy;
 
 import com.we.generator.config.GetVelocityContext;
 import com.we.generator.config.LoadConfigWeb;
-import com.we.generator.core.VelocityHandler;
 import com.we.generator.util.Utils;
 
 /**
