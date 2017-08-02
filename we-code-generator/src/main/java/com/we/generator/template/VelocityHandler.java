@@ -1,4 +1,4 @@
-package com.we.generator.core;
+package com.we.generator.template;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +37,7 @@ public class VelocityHandler {
 
 	/**得到模板输出的内容*/
 	private String writeContent(VelocityContext context, String tplPath) throws IOException {
+
 		StringWriter writer = new StringWriter();
 
 		//读取模板内容

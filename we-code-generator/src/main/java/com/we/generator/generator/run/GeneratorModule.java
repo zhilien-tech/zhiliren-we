@@ -1,10 +1,11 @@
 /**
  * GeneratorModule.java
  * com.we.generator
- * Copyright (c) 2017, 北京科技有限公司版权所有.
 */
 
-package com.we.generator;
+package com.we.generator.generator.run;
+
+import com.we.generator.generator.Generator;
 
 /**
  * 生成模块对应的Module代码
