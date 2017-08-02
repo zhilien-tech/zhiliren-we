@@ -10,10 +10,11 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.velocity.VelocityContext;
-import org.nutz.ioc.impl.PropertiesProxy;
 
 import com.we.generator.config.GetVelocityContext;
 import com.we.generator.config.LoadConfigWeb;
+import com.we.generator.config.PropProxyConfig;
+import com.we.generator.config.TplPathConfig;
 
 /**
  * 根据模板，生成Maven项目对应的 pom.xml文件
@@ -25,18 +26,11 @@ import com.we.generator.config.LoadConfigWeb;
 public class GenPomXml {
 
 	//pom.xml
-	public static void genXmlFile(boolean force, VelocityHandler handler, PropertiesProxy propConfig)
-			throws IOException {
+	public static void genXmlFile(boolean force, VelocityHandler handler) throws IOException {
 
-		String webOutput = LoadConfigWeb.WEB_OUTPUT;
-		String basePkg = propConfig.get("base_package");
-		String webName = basePkg.replace(".", "-");
-		String pomOutput = webOutput + "/" + webName;
-		String templatePackage = propConfig.get("template_package");
-		String pomTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/xml/pom.vm";
-
+		String pomTpl = TplPathConfig.pomTpl;
+		String pomOutput = LoadConfigWeb.WEB_OUTPUT + "/" + PropProxyConfig.basePkgRep;
 		VelocityContext pomCtx = GetVelocityContext.getVContext();
-
 		File file = new File(pomOutput, "/" + "pom.xml");
 		handler.writeToFile(pomCtx, pomTpl, file, force);
 	}

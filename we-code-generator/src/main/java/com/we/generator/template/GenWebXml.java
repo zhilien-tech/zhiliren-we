@@ -10,10 +10,11 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.velocity.VelocityContext;
-import org.nutz.ioc.impl.PropertiesProxy;
 
 import com.we.generator.config.GetVelocityContext;
 import com.we.generator.config.LoadConfigWeb;
+import com.we.generator.config.PropProxyConfig;
+import com.we.generator.config.TplPathConfig;
 
 /**
  * 根据模板，生成对应的Web.xml文件
@@ -25,20 +26,12 @@ import com.we.generator.config.LoadConfigWeb;
 public class GenWebXml {
 
 	//web.xml
-	public static void genXmlFile(boolean force, VelocityHandler handler, PropertiesProxy propConfig)
-			throws IOException {
-
+	public static void genXmlFile(boolean force, VelocityHandler handler) throws IOException {
 		String webOutput = LoadConfigWeb.WEB_OUTPUT;
-		String basePkg = propConfig.get("base_package");
-		String templatePackage = propConfig.get("template_package");
-		String Output = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.JSP_OUTPUT;
-
-		String webTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/xml/web.vm";
-
+		String webTpl = TplPathConfig.webXmlTpl;
+		String Output = webOutput + "/" + PropProxyConfig.basePkgRep + "/" + LoadConfigWeb.JSP_OUTPUT;
 		VelocityContext vCtx = GetVelocityContext.getVContext();
-
 		File file = new File(Output, "/" + "web.xml");
 		handler.writeToFile(vCtx, webTpl, file, force);
-
 	}
 }

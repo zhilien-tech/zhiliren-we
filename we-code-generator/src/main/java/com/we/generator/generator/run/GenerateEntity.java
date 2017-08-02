@@ -6,6 +6,7 @@
 
 package com.we.generator.generator.run;
 
+import com.we.generator.config.SetWebDirectory;
 import com.we.generator.generator.Generator;
 
 /**
@@ -18,6 +19,9 @@ import com.we.generator.generator.Generator;
 public class GenerateEntity {
 	public static void main(String[] args) throws Exception {
 		Generator generator = new Generator();
+		//创建web项目的目录结构
+		SetWebDirectory.makeFiles();
+		//生成实体
 		generator.generateEntity();
 	}
 }

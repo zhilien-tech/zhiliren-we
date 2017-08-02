@@ -10,10 +10,11 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.velocity.VelocityContext;
-import org.nutz.ioc.impl.PropertiesProxy;
 
 import com.we.generator.config.GetVelocityContext;
 import com.we.generator.config.LoadConfigWeb;
+import com.we.generator.config.PropProxyConfig;
+import com.we.generator.config.TplPathConfig;
 import com.we.generator.fileDesc.web.ModuleDesc;
 import com.we.generator.util.CopyFile;
 
@@ -27,48 +28,45 @@ import com.we.generator.util.CopyFile;
 public class GenJs {
 
 	//JavaScript
-	public static void genJsCode(boolean force, VelocityHandler handler, ModuleDesc md, PropertiesProxy propConfig)
-			throws ClassNotFoundException, IOException {
-
-		String templatePackage = propConfig.get("template_package");
+	public static void genJsCode(boolean force, VelocityHandler handler, ModuleDesc md) throws ClassNotFoundException,
+			IOException {
 
 		String jsOutPut = LoadConfigWeb.JS_OUTPUT;
 		String webOutput = LoadConfigWeb.WEB_OUTPUT;
-		String basePkg = propConfig.get("base_package");
-		jsOutPut = webOutput + "/" + basePkg.replace(".", "-") + "/" + jsOutPut;
+		jsOutPut = webOutput + "/" + PropProxyConfig.basePkgRep + "/" + jsOutPut;
 		String pageFilePath = md.getAtUrl();
 
 		VelocityContext jspCtx = GetVelocityContext.getVContext(md);
 
-		String listJsTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/js/listJS.vm";
+		String listJsTpl = TplPathConfig.listJsTpl;
 		File listJS = new File(jsOutPut, pageFilePath + "/" + "listTable.js");
 		handler.writeToFile(jspCtx, listJsTpl, listJS, force);
 
 		//拷贝外部引入文件
-		copyFiles(webOutput, basePkg);
+		copyFiles(webOutput);
 
 	}
 
 	//拷贝外部文件到生成项目中
-	private static void copyFiles(String webOutput, String basePkg) {
+	private static void copyFiles(String webOutput) {
 		//拷贝js
 		String filePath = LoadConfigWeb.REFERENCES_PATH;
-		String toFilePath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.REFERENCES_OUTPUT;
+		String toFilePath = webOutput + "/" + PropProxyConfig.basePkgRep + "/" + LoadConfigWeb.REFERENCES_OUTPUT;
 		CopyFile.copyFile(filePath, toFilePath);
 
 		//拷贝db配置信息
 		String dbFilePath = LoadConfigWeb.DB_CONFIG_PATH;
-		String toDBPath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.DB_CONFIG_OUTPUT;
+		String toDBPath = webOutput + "/" + PropProxyConfig.basePkgRep + "/" + LoadConfigWeb.DB_CONFIG_OUTPUT;
 		CopyFile.copyFile(dbFilePath, toDBPath);
 
 		//拷贝静态样式
 		String staticFilePath = LoadConfigWeb.STATIC_HTML_PATH;
-		String toStaticPath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.REFERENCES_OUTPUT;
+		String toStaticPath = webOutput + "/" + PropProxyConfig.basePkgRep + "/" + LoadConfigWeb.REFERENCES_OUTPUT;
 		CopyFile.copyFile(staticFilePath, toStaticPath);
 
 		//拷贝page分页
 		String pageFtlPath = LoadConfigWeb.FTL_PAGE_PATH;
-		String toFtlPath = webOutput + "/" + basePkg.replace(".", "-") + "/" + LoadConfigWeb.PUBLIC_PAGE_OUTPUT;
+		String toFtlPath = webOutput + "/" + PropProxyConfig.basePkgRep + "/" + LoadConfigWeb.PUBLIC_PAGE_OUTPUT;
 		CopyFile.copyFile(pageFtlPath, toFtlPath);
 	}
 

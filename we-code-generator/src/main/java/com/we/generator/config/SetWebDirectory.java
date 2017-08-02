@@ -18,32 +18,38 @@ import com.we.generator.util.MakeFile;
 public class SetWebDirectory {
 
 	//创建web项目 基本目录
-	public static void makeFiles(String basePkg) {
+	public static void makeFiles() {
 
 		String webOutput = LoadConfigWeb.WEB_OUTPUT;
 
+		//java
 		String javaOutput = LoadConfigWeb.JAVA_OUTPUT;
-		javaOutput = webOutput + "/" + basePkg.replace(".", "-") + "/" + javaOutput;
+		javaOutput = webOutput + "/" + PropProxyConfig.basePkgRep + "/" + javaOutput;
 		MakeFile.makeFile(javaOutput);
 
 		//java Resources
 		String jResOutput = LoadConfigWeb.JAVA_RES_OUTPUT;
-		jResOutput = webOutput + "/" + basePkg.replace(".", "-") + "/" + jResOutput;
+		jResOutput = webOutput + "/" + PropProxyConfig.basePkgRep + "/" + jResOutput;
 		MakeFile.makeFile(jResOutput);
+
+		//webapp
+		String jWebappOutput = LoadConfigWeb.JSP_OUTPUT;
+		jWebappOutput = webOutput + "/" + PropProxyConfig.basePkgRep + "/" + jWebappOutput;
+		MakeFile.makeFile(jWebappOutput);
 
 		//test
 		String testJavaOut = LoadConfigWeb.TEST_JAVA_OUTPUT;
-		testJavaOut = webOutput + "/" + basePkg.replace(".", "-") + "/" + testJavaOut;
+		testJavaOut = webOutput + "/" + PropProxyConfig.basePkgRep + "/" + testJavaOut;
 		MakeFile.makeFile(testJavaOut);
 
 		//test Resources
 		String testResOut = LoadConfigWeb.TEST_RES_OUTPUT;
-		testResOut = webOutput + "/" + basePkg.replace(".", "-") + "/" + testResOut;
+		testResOut = webOutput + "/" + PropProxyConfig.basePkgRep + "/" + testResOut;
 		MakeFile.makeFile(testResOut);
 
 		//target
 		String targetOutput = LoadConfigWeb.TARGET_OUTPUT;
-		targetOutput = webOutput + "/" + basePkg.replace(".", "-") + "/" + targetOutput;
+		targetOutput = webOutput + "/" + PropProxyConfig.basePkgRep + "/" + targetOutput;
 		MakeFile.makeFile(targetOutput);
 	}
 }

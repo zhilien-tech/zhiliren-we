@@ -13,15 +13,14 @@ import java.util.regex.Pattern;
 
 import org.apache.velocity.VelocityContext;
 import org.nutz.ioc.Ioc;
-import org.nutz.ioc.impl.NutIoc;
-import org.nutz.ioc.impl.PropertiesProxy;
-import org.nutz.ioc.loader.json.JsonLoader;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 
 import com.google.common.collect.Lists;
 import com.we.generator.config.GetVelocityContext;
 import com.we.generator.config.LoadConfigWeb;
+import com.we.generator.config.PropProxyConfig;
+import com.we.generator.config.TplPathConfig;
 import com.we.generator.load.EntityDescriptor;
 import com.we.generator.load.EntityLoader;
 import com.we.generator.util.Utils;
@@ -37,25 +36,23 @@ public class GenEntity {
 
 	private static final Log log = Logs.get();
 
-	//实体
+	//生成实体
 	public static void genEntityCode() throws Exception {
-		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_DBCFG_PATH));
-		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
+		Ioc ioc = PropProxyConfig.ioc;
 		boolean useLombok = false;//是否使用lombok注解
 		boolean forceCover = false; //是否覆盖已经存在的文件 
-		useLombok = Boolean.valueOf(propConfig.get("use_lombok"));
-		forceCover = Boolean.valueOf(propConfig.get("force_cover"));
-		String templatePackage = propConfig.get("template_package");
+		useLombok = PropProxyConfig.useLombok;
+		forceCover = PropProxyConfig.forceCover;
 
-		String template = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/entity.vm";
-		String formTemplate = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/form.vm";
-		String addFormTemplate = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/addForm.vm";
-		String updateFormTemplate = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/updateForm.vm";
+		String template = TplPathConfig.entityTemplate;
+		String formTemplate = TplPathConfig.formTemplate;
+		String addFormTemplate = TplPathConfig.addFormTemplate;
+		String updateFormTemplate = TplPathConfig.updateFormTemplate;
 		if (useLombok) {
-			template = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/entity4lombok.vm";
-			formTemplate = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/form4lombok.vm";
-			addFormTemplate = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/addForm4lombok.vm";
-			updateFormTemplate = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/updateForm4lombok.vm";
+			template = TplPathConfig.entityTemplateLombok;
+			formTemplate = TplPathConfig.formTemplateLombok;
+			addFormTemplate = TplPathConfig.addFormTemplateLombok;
+			updateFormTemplate = TplPathConfig.updateFormTemplateLombok;
 		}
 
 		Pattern includePattern = Pattern.compile(".*");
@@ -63,10 +60,10 @@ public class GenEntity {
 		String webOutput = LoadConfigWeb.WEB_OUTPUT;
 		String javaOutput = LoadConfigWeb.JAVA_OUTPUT;
 
-		String baseUri = "/";
-		String basePkg = propConfig.get("base_package");
+		String baseUri = PropProxyConfig.baseUri;
+		String basePkg = PropProxyConfig.basePkg;
 		//web项目的输出目录
-		String webOut = webOutput + "/" + basePkg.replace(".", "-") + "/" + javaOutput;
+		String webOut = webOutput + "/" + PropProxyConfig.basePkgRep + "/" + javaOutput;
 		String pkgName = basePkg + "." + entityPkgName;//实体包
 		String formPkgName = basePkg + "." + LoadConfigWeb.FORM_PKG_NAME;//form包
 
@@ -85,7 +82,6 @@ public class GenEntity {
 					continue;
 				}
 			}
-
 			EntityDescriptor entityDesc = entry.getValue();
 			VelocityHandler handler = new VelocityHandler();
 
@@ -109,9 +105,11 @@ public class GenEntity {
 				File formFile = new File(out, formPkgPath + "/" + formClassName + ".java");
 				File addFormFile = new File(out, formPkgPath + "/" + addFormClassName + ".java");
 				File updateFormFile = new File(out, formPkgPath + "/" + updateFormClassName + ".java");
+
 				VelocityContext formContext = GetVelocityContext.getVContext();
 				formContext.put("form", entityDesc);
 				formContext.put("packageName", formPkgName);
+
 				handler.writeToFile(formContext, formTemplate, formFile, forceCover);
 				handler.writeToFile(formContext, addFormTemplate, addFormFile, forceCover);
 				handler.writeToFile(formContext, updateFormTemplate, updateFormFile, forceCover);

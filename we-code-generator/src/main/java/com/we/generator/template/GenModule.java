@@ -14,16 +14,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.velocity.VelocityContext;
-import org.nutz.ioc.Ioc;
-import org.nutz.ioc.impl.NutIoc;
-import org.nutz.ioc.impl.PropertiesProxy;
-import org.nutz.ioc.loader.json.JsonLoader;
 
 import com.google.common.collect.Lists;
 import com.we.generator.config.GetExcelInfo;
 import com.we.generator.config.GetVelocityContext;
 import com.we.generator.config.LoadConfigWeb;
-import com.we.generator.config.SetWebDirectory;
+import com.we.generator.config.PropProxyConfig;
+import com.we.generator.config.TplPathConfig;
 import com.we.generator.fileDesc.web.ModuleDesc;
 import com.we.generator.load.ExcelLoader;
 import com.we.generator.util.Utils;
@@ -38,33 +35,26 @@ import com.we.generator.util.Utils;
 public class GenModule {
 
 	public static void genModule() throws IOException, ClassNotFoundException {
-		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
-		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
 
-		boolean forceCover = false; //是否覆盖已经存在的文件 
-		String basePkg = propConfig.get("base_package");
-		forceCover = Boolean.valueOf(propConfig.get("force_cover"));
-		String templatePackage = propConfig.get("template_package");
-		String moduleTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/module.vm";
+		boolean forceCover = false; //是否覆盖已经存在的文件
+		forceCover = PropProxyConfig.forceCover;
+		String basePkg = PropProxyConfig.basePkg;
+		String moduleTpl = TplPathConfig.moduleTpl;
 
 		//读取excel功能模块信息
 		InputStream ins = GetExcelInfo.getExcelIns();
 		Map<Integer, String[]> map = ExcelLoader.loadExcel(ins);
 
-		genModuleCode(forceCover, basePkg, moduleTpl, map, propConfig);
+		genModuleCode(forceCover, basePkg, moduleTpl, map);
 	}
 
 	//ModuleCode
-	public static void genModuleCode(boolean force, String basePkg, String moduleTpl,
-			Map<Integer, String[]> moduleInfo, PropertiesProxy propConfig) throws IOException, ClassNotFoundException {
-
-		//创建web项目的目录结构
-		SetWebDirectory.makeFiles(basePkg);
+	public static void genModuleCode(boolean force, String basePkg, String moduleTpl, Map<Integer, String[]> moduleInfo)
+			throws IOException, ClassNotFoundException {
 
 		String webOutput = LoadConfigWeb.WEB_OUTPUT;
-
 		String javaOutput = LoadConfigWeb.JAVA_OUTPUT;
-		javaOutput = webOutput + "/" + basePkg.replace(".", "-") + "/" + javaOutput;
+		javaOutput = webOutput + "/" + PropProxyConfig.basePkgRep + "/" + javaOutput;
 
 		//获取Module集合
 		Map<String, ModuleDesc> moduleMap = ExcelLoader.getModuleMap(moduleInfo, basePkg);
@@ -74,7 +64,6 @@ public class GenModule {
 		Set<String> modules = moduleMap.keySet();
 		for (String mkey : modules) {
 			ModuleDesc md = moduleMap.get(mkey);
-
 			VelocityContext context = GetVelocityContext.getVContext(md);
 
 			//module
@@ -83,24 +72,23 @@ public class GenModule {
 			writer.writeToFile(context, moduleTpl, file, force);
 
 			//jsp
-			GenJsp.genJspCode(force, writer, md, propConfig);
+			GenJsp.genJspCode(force, writer, md);
 
 			//js
-			GenJs.genJsCode(force, writer, md, propConfig);
-
+			GenJs.genJsCode(force, writer, md);
 			vcList.add(context);
 		}
 
 		//pom.xml
-		GenPomXml.genXmlFile(force, writer, propConfig);
+		GenPomXml.genXmlFile(force, writer);
 
 		//web.xml
-		GenWebXml.genXmlFile(force, writer, propConfig);
+		GenWebXml.genXmlFile(force, writer);
 
 		//MainModule
-		GenMainSetup.genCode(force, writer, propConfig);
+		GenMainSetup.genCode(force, writer);
 
 		//public页面
-		GenPublicPage.genPublicPage(force, writer, propConfig, vcList);
+		GenPublicPage.genPublicPage(force, writer, vcList);
 	}
 }

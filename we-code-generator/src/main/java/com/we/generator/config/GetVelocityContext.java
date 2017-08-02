@@ -31,8 +31,8 @@ public class GetVelocityContext {
 		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
 		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
 		PropertiesProxy webPropConfig = ioc.get(PropertiesProxy.class, "webPropConfig");
-		String basePkg = propConfig.get("base_package");
-		String webName = basePkg.replace(".", "-");
+		String basePkg = PropProxyConfig.basePkg;
+		String webName = PropProxyConfig.basePkgRep;
 		String company_name = webPropConfig.get("company_name");
 		String system_name = webPropConfig.get("system_name");
 		String pom_groupId = webPropConfig.get("pom_groupId");

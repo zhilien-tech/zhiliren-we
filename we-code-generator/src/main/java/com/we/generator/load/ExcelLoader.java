@@ -17,6 +17,7 @@ import com.google.common.collect.Maps;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.uxuexi.core.common.util.Util;
 import com.we.generator.config.LoadConfigWeb;
+import com.we.generator.config.PropProxyConfig;
 import com.we.generator.fileDesc.enums.LogicEnum;
 import com.we.generator.fileDesc.web.ActionDesc;
 import com.we.generator.fileDesc.web.ModuleDesc;
@@ -50,7 +51,7 @@ public class ExcelLoader {
 	//获取模块信息
 	public static Map<String, ModuleDesc> getModuleMap(Map<Integer, String[]> moduleInfo, String basePkg) {
 
-		String baseUri = "/";
+		String baseUri = PropProxyConfig.baseUri;
 		Map<String, ModuleDesc> moduleMap = Maps.newHashMap();
 
 		for (int i = 1; i <= moduleInfo.size(); i++) {

@@ -10,11 +10,11 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.velocity.VelocityContext;
-import org.nutz.ioc.impl.PropertiesProxy;
 
 import com.we.generator.config.GetVelocityContext;
 import com.we.generator.config.LoadConfigWeb;
-import com.we.generator.util.Utils;
+import com.we.generator.config.PropProxyConfig;
+import com.we.generator.config.TplPathConfig;
 
 /**
  * 根据模板，生成项目的入口文件
@@ -25,22 +25,20 @@ import com.we.generator.util.Utils;
  */
 public class GenMainSetup {
 
-	public static void genCode(boolean force, VelocityHandler handler, PropertiesProxy propConfig) throws IOException {
+	public static void genCode(boolean force, VelocityHandler handler) throws IOException {
 
 		String webOutput = LoadConfigWeb.WEB_OUTPUT;
 		String javaOutput = LoadConfigWeb.JAVA_OUTPUT;
-		String basePkg = propConfig.get("base_package");
-		String templatePackage = propConfig.get("template_package");
-		String webName = basePkg.replace(".", "-");
-		String Output = webOutput + "/" + webName + "/" + javaOutput + "/" + Utils.getPath4Pkg(basePkg);
+		String basePath4Pkg = PropProxyConfig.basePath4Pkg;
+		String Output = webOutput + "/" + PropProxyConfig.basePkgRep + "/" + javaOutput + "/" + basePath4Pkg;
 
 		VelocityContext vCtx = GetVelocityContext.getVContext();
 
-		String webTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/MainModule.vm";
+		String webTpl = TplPathConfig.webMainTpl;
 		File file = new File(Output, "/" + "MainModule.java");
 		handler.writeToFile(vCtx, webTpl, file, force);
 
-		String setupTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/WeSetup.vm";
+		String setupTpl = TplPathConfig.weSetupTpl;
 		File setupFile = new File(Output, "/" + "WeSetup.java");
 		handler.writeToFile(vCtx, setupTpl, setupFile, force);
 

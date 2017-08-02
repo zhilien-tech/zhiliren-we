@@ -12,16 +12,14 @@ import java.io.InputStream;
 import java.util.Map;
 
 import org.apache.velocity.VelocityContext;
-import org.nutz.ioc.Ioc;
-import org.nutz.ioc.impl.NutIoc;
-import org.nutz.ioc.impl.PropertiesProxy;
-import org.nutz.ioc.loader.json.JsonLoader;
 
 import com.google.common.base.Joiner;
 import com.uxuexi.core.common.util.EnumUtil;
 import com.we.generator.config.GetExcelInfo;
 import com.we.generator.config.GetVelocityContext;
 import com.we.generator.config.LoadConfigWeb;
+import com.we.generator.config.PropProxyConfig;
+import com.we.generator.config.TplPathConfig;
 import com.we.generator.fileDesc.enums.LogicEnum;
 import com.we.generator.fileDesc.web.ServiceDesc;
 import com.we.generator.load.ExcelLoader;
@@ -37,14 +35,11 @@ import com.we.generator.util.Utils;
 public class GenService {
 
 	public static void genService() throws IOException {
-		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
-		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
 
 		boolean forceCover = false; //是否覆盖已经存在的文件 
-		String basePkg = propConfig.get("base_package");
-		forceCover = Boolean.valueOf(propConfig.get("force_cover"));
-		String templatePackage = propConfig.get("template_package");
-		String serviceTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/service.vm";
+		String basePkg = PropProxyConfig.basePkg;
+		forceCover = PropProxyConfig.forceCover;
+		String serviceTpl = TplPathConfig.serviceTpl;
 
 		//读取excel功能模块信息
 		InputStream ins = GetExcelInfo.getExcelIns();
@@ -60,20 +55,13 @@ public class GenService {
 	public static void genServiceCode(boolean force, String basePkg, String serviceTpl, String[] rowArr)
 			throws IOException {
 
-		String javaOutput = LoadConfigWeb.JAVA_OUTPUT;
-		String webOutput = LoadConfigWeb.WEB_OUTPUT;
-		javaOutput = webOutput + "/" + basePkg.replace(".", "-") + "/" + javaOutput;
-
-		//逻辑划分
-		String logic = rowArr[0];
-
-		//模块code
-		String moduleCode = rowArr[2];
-
-		//默认实体
-		String entityClassName = rowArr[6];
+		//entity
+		String logic = rowArr[0];//逻辑划分
+		String moduleCode = rowArr[2];//模块code
+		String entityClassName = rowArr[6];//默认实体
 		String entityPkgName = Joiner.on(".").join(basePkg, LoadConfigWeb.ENTITY_PKG_NAME);
 		String fullEntityClassName = Joiner.on(".").join(entityPkgName, entityClassName);
+
 		//form
 		String formClassName = entityClassName.split("Entity")[0] + "Form";
 		String formPkgName = Joiner.on(".").join(basePkg, LoadConfigWeb.FORM_PKG_NAME);
@@ -83,7 +71,6 @@ public class GenService {
 		int intL = (int) dl;
 		LogicEnum le = EnumUtil.get(LogicEnum.class, intL);
 		String logicPkg = le.value();
-
 		String sdPkgName = basePkg + "." + logicPkg + "." + moduleCode + "." + LoadConfigWeb.SERVICE_PKG_NAME;
 		String serviceClassName = Utils.upperFirst(moduleCode) + "ViewService";
 
@@ -99,6 +86,8 @@ public class GenService {
 		context.put("formName", formClassName);
 
 		//service
+		String javaOutput = LoadConfigWeb.JAVA_OUTPUT;
+		javaOutput = LoadConfigWeb.WEB_OUTPUT + "/" + PropProxyConfig.basePkgRep + "/" + javaOutput;
 		String serviceFilePath = Utils.getPath4Pkg(sdPkgName);
 		File file = new File(javaOutput, serviceFilePath + "/" + serviceClassName + ".java");
 
