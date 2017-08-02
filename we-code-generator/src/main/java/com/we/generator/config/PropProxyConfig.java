@@ -22,7 +22,7 @@ import com.we.generator.util.Utils;
  */
 public class PropProxyConfig {
 
-	public static Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_DBCFG_PATH));
+	private static Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_DBCFG_PATH));
 	public static PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
 
 	public static String baseUri = "/";
