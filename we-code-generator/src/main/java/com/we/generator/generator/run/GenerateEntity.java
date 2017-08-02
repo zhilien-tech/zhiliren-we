@@ -1,7 +1,6 @@
 /**
  * GenerateEntity.java
  * com.we.generator
- * Copyright (c) 2017, 北京科技有限公司版权所有.
 */
 
 package com.we.generator.generator.run;
