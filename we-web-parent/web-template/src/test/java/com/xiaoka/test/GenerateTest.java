@@ -1,6 +1,6 @@
 package com.xiaoka.test;
 
-import com.we.generator.Generator;
+import com.we.generator.generator.Generator;
 
 public class GenerateTest {
 
