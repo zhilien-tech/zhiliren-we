@@ -5,10 +5,6 @@
 
 package com.we.generator.config;
 
-import org.nutz.ioc.Ioc;
-import org.nutz.ioc.impl.NutIoc;
-import org.nutz.ioc.impl.PropertiesProxy;
-import org.nutz.ioc.loader.json.JsonLoader;
 
 /**
  * 模板配置路径
@@ -19,18 +15,7 @@ import org.nutz.ioc.loader.json.JsonLoader;
  */
 public class TplPathConfig {
 
-	private static Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_DBCFG_PATH));
-	private static PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
-
-	public static Ioc getIoc() {
-		return ioc;
-	}
-
-	public PropertiesProxy getPropConfig() {
-		return propConfig;
-	}
-
-	public static String templatePackage = propConfig.get("template_package");
+	private static String templatePackage = PropProxyConfig.templatePackage;
 
 	public static String entityTemplate = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/entity.vm";
 	public static String formTemplate = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/form.vm";

@@ -25,6 +25,10 @@ public class PropProxyConfig {
 	private static PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
 	private static PropertiesProxy webPropConfig = ioc.get(PropertiesProxy.class, "webPropConfig");
 
+	private PropProxyConfig() {
+
+	}
+
 	public static Ioc getIoc() {
 		return ioc;
 	}
@@ -41,6 +45,7 @@ public class PropProxyConfig {
 	public static String basePkg = propConfig.get("base_package");
 	public static String basePkgRep = Utils.getbasePkgName(basePkg);
 	public static String basePath4Pkg = Utils.getPath4Pkg(basePkg);
+	public static String templatePackage = propConfig.get("template_package");
 
 	public static boolean useLombok = Boolean.valueOf(propConfig.get("use_lombok"));//是否使用lombok注解
 	public static boolean forceCover = Boolean.valueOf(propConfig.get("force_cover"));//是否覆盖已经存在的文件 
