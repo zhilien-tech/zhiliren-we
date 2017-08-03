@@ -12,8 +12,6 @@ import java.util.regex.Pattern;
 
 import org.apache.velocity.VelocityContext;
 import org.nutz.ioc.Ioc;
-import org.nutz.ioc.impl.NutIoc;
-import org.nutz.ioc.loader.json.JsonLoader;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 

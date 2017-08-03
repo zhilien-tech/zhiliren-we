@@ -11,7 +11,6 @@ import com.we.generator.generator.Generator;
 /**
  * 
  * 创建web项目文件夹、生成模块对应的实体类
- * <p>
  *
  * @author   彭辉
  * @Date	 2017年7月28日 	 

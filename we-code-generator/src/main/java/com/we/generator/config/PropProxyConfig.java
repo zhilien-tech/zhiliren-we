@@ -22,6 +22,7 @@ import com.we.generator.util.Utils;
 public class PropProxyConfig {
 
 	private static Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_DBCFG_PATH));
+
 	private static PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
 	private static PropertiesProxy webPropConfig = ioc.get(PropertiesProxy.class, "webPropConfig");
 

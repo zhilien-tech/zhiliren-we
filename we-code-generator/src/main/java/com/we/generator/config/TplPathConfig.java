@@ -5,7 +5,6 @@
 
 package com.we.generator.config;
 
-
 /**
  * 模板配置路径
  * <p>
