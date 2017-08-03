@@ -8,10 +8,6 @@ package com.we.generator.config;
 import java.util.List;
 
 import org.apache.velocity.VelocityContext;
-import org.nutz.ioc.Ioc;
-import org.nutz.ioc.impl.NutIoc;
-import org.nutz.ioc.impl.PropertiesProxy;
-import org.nutz.ioc.loader.json.JsonLoader;
 
 import com.we.generator.fileDesc.web.ModuleDesc;
 import com.we.generator.fileDesc.web.PageFieldDesc;
@@ -27,16 +23,13 @@ public class GetVelocityContext {
 
 	//获取引擎上下文
 	public static VelocityContext getVContext() {
-		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_KVCFG_PATH));
-		PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
-		PropertiesProxy webPropConfig = ioc.get(PropertiesProxy.class, "webPropConfig");
 		String basePkg = PropProxyConfig.basePkg;
 		String webName = PropProxyConfig.basePkgRep;
-		String company_name = webPropConfig.get("company_name");
-		String system_name = webPropConfig.get("system_name");
-		String pom_groupId = webPropConfig.get("pom_groupId");
-		String pom_atrifactId = webPropConfig.get("pom_atrifactId");
-		String pom_version = webPropConfig.get("pom_version");
+		String company_name = PropProxyConfig.company_name;
+		String system_name = PropProxyConfig.system_name;
+		String pom_groupId = PropProxyConfig.pom_groupId;
+		String pom_atrifactId = PropProxyConfig.pom_atrifactId;
+		String pom_version = PropProxyConfig.pom_version;
 
 		VelocityContext context = new VelocityContext();
 		context.put("basePkg", basePkg);

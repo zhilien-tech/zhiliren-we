@@ -19,8 +19,17 @@ import org.nutz.ioc.loader.json.JsonLoader;
  */
 public class TplPathConfig {
 
-	public static Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_DBCFG_PATH));
-	public static PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
+	private static Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_DBCFG_PATH));
+	private static PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
+
+	public static Ioc getIoc() {
+		return ioc;
+	}
+
+	public PropertiesProxy getPropConfig() {
+		return propConfig;
+	}
+
 	public static String templatePackage = propConfig.get("template_package");
 
 	public static String entityTemplate = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/entity.vm";

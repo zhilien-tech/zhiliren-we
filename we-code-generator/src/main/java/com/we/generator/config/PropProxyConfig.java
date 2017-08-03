@@ -21,15 +21,34 @@ import com.we.generator.util.Utils;
  */
 public class PropProxyConfig {
 
-	public static Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_DBCFG_PATH));
-	public static PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
+	private static Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_DBCFG_PATH));
+	private static PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
+	private static PropertiesProxy webPropConfig = ioc.get(PropertiesProxy.class, "webPropConfig");
+
+	public static Ioc getIoc() {
+		return ioc;
+	}
+
+	public PropertiesProxy getPropConfig() {
+		return propConfig;
+	}
+
+	public PropertiesProxy getWebPropConfig() {
+		return webPropConfig;
+	}
 
 	public static String baseUri = "/";
 	public static String basePkg = propConfig.get("base_package");
+	public static String basePkgRep = Utils.getbasePkgName(basePkg);
+	public static String basePath4Pkg = Utils.getPath4Pkg(basePkg);
+
 	public static boolean useLombok = Boolean.valueOf(propConfig.get("use_lombok"));//是否使用lombok注解
 	public static boolean forceCover = Boolean.valueOf(propConfig.get("force_cover"));//是否覆盖已经存在的文件 
 
-	public static String basePkgRep = Utils.getbasePkgName(basePkg);
-	public static String basePath4Pkg = Utils.getPath4Pkg(basePkg);
+	public static String company_name = webPropConfig.get("company_name");
+	public static String system_name = webPropConfig.get("system_name");
+	public static String pom_groupId = webPropConfig.get("pom_groupId");
+	public static String pom_atrifactId = webPropConfig.get("pom_atrifactId");
+	public static String pom_version = webPropConfig.get("pom_version");
 
 }

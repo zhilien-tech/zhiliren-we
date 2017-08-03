@@ -39,7 +39,7 @@ public class GenEntity {
 
 	//生成实体
 	public static void genEntityCode() throws Exception {
-		Ioc ioc = new NutIoc(new JsonLoader(LoadConfigWeb.IOC_DBCFG_PATH));
+		Ioc ioc = PropProxyConfig.getIoc();
 		boolean useLombok = false;//是否使用lombok注解
 		boolean forceCover = false; //是否覆盖已经存在的文件 
 		useLombok = PropProxyConfig.useLombok;
