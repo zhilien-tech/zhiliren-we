@@ -34,11 +34,11 @@ public class PropProxyConfig {
 		return ioc;
 	}
 
-	public PropertiesProxy getPropConfig() {
+	public static PropertiesProxy getPropConfig() {
 		return propConfig;
 	}
 
-	public PropertiesProxy getWebPropConfig() {
+	public static PropertiesProxy getWebPropConfig() {
 		return webPropConfig;
 	}
 
