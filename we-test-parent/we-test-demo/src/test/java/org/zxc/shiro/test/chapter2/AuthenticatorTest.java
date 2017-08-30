@@ -30,16 +30,16 @@ public class AuthenticatorTest {
 
 	/**
 	 * 测试必须全部通过才算通过
+	 * @see org.apache.shiro.authc.pam.AllSuccessfulStrategy
 	 */
 	@Test
 	public void testAllSuccessfulStrategyWithSuccess() {
 		login("classpath:chapter2/shiro-authenticator-all-success.ini");
 		Subject subject = SecurityUtils.getSubject();
 
-		//得到一个身份集合，其包含了Realm验证成功的身份信息
+		//获取身份集合
 		PrincipalCollection principalCollection = subject.getPrincipals();
 		Assert.assertEquals(2, principalCollection.asList().size());
-		ThreadContext.unbindSubject();
 	}
 
 	@Test(expectedExceptions = UnknownAccountException.class)
@@ -55,7 +55,7 @@ public class AuthenticatorTest {
 		login("classpath:chapter2/shiro-authenticator-atLeastOne-success.ini");
 		Subject subject = SecurityUtils.getSubject();
 
-		//得到一个身份集合，其包含了Realm验证成功的身份信息
+		//获取身份集合
 		PrincipalCollection principalCollection = subject.getPrincipals();
 		Assert.assertEquals(2, principalCollection.asList().size());
 	}
@@ -68,7 +68,7 @@ public class AuthenticatorTest {
 		login("classpath:chapter2/shiro-authenticator-first-success.ini");
 		Subject subject = SecurityUtils.getSubject();
 
-		//得到一个身份集合，其包含了第一个Realm验证成功的身份信息
+		//获取身份集合
 		PrincipalCollection principalCollection = subject.getPrincipals();
 		Assert.assertEquals(1, principalCollection.asList().size());
 	}

@@ -13,16 +13,35 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.zxc.shiro.chapter3.permission.BitPermission;
 
+/**
+ * 用特定格式的字符串代表权限，在Realm中查询用户的权限，通过Authorizer进行验证.
+ * 实现protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection)
+ * <p>
+ * @author   朱晓川
+ * @Date	 2017年8月29日
+ */
 public class MyRealm extends AuthorizingRealm {
 
+	/**
+	 * 拥有role1和role2两个角色，user1的CRUD
+	 * 0 表示所有权限
+	 *     1 新增 0001
+	 *     2 修改 0010
+	 *     4 删除 0100
+	 *     8 查看 1000
+	 *     10=2+8
+	 * user2的修改、查看权限
+	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		SimpleAuthorizationInfo authInfo = new SimpleAuthorizationInfo();
 		authInfo.addRole("role1");
 		authInfo.addRole("role2");
+		//添加BitPermission
 		authInfo.addObjectPermission(new BitPermission("+user1+10"));
-		authInfo.addObjectPermission(new WildcardPermission("user1:*"));
 		authInfo.addStringPermission("+user2+10");
+		//添加WildcardPermission
+		authInfo.addObjectPermission(new WildcardPermission("user1:*"));
 		authInfo.addStringPermission("user2:*");
 		return authInfo;
 	}

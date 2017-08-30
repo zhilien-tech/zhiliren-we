@@ -19,7 +19,7 @@ import org.testng.annotations.Test;
 /**
  * Shiro LoginLogoutTest
  * <p>
- *
+ * 只是使用的配置文件不同，其他代码基本相同
  * @author   朱晓川
  * @Date	 2017年7月31日 	 
  */
@@ -74,7 +74,10 @@ public class LoginLogoutTest {
 		subject.logout();
 	}
 
-	/**多个自定义realm*/
+	/**
+	 * 多个自定义realm,
+	 * 权限校验的顺序按照属性文件的配置进行，只要有一个realm验证通过则为通过(默认的策略)
+	 */
 	@Test
 	public void testCustomMultiRealm() {
 		Factory<SecurityManager> factory = new IniSecurityManagerFactory("classpath:chapter2/shiro-multi-realm.ini");

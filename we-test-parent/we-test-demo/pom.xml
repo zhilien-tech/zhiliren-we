@@ -10,7 +10,23 @@
 	<name>we-test-demo</name>
 	<description>测试demo包，用于编写各种测试demo</description>
 	<packaging>jar</packaging>
-
+	
+	<dependencyManagement>  
+        <dependencies>  
+            <dependency>  
+                <groupId>com.opera</groupId>  
+                <artifactId>operadriver</artifactId>  
+                <version>0.16</version>  
+                <exclusions>  
+                    <exclusion>  
+                        <groupId>org.seleniumhq.selenium</groupId>  
+                        <artifactId>selenium-remote-driver</artifactId>  
+                    </exclusion>  
+                </exclusions>  
+            </dependency>  
+        </dependencies>  
+    </dependencyManagement>  
+	
 	<dependencies>
 		<dependency>
 			<groupId>${pgroupId}</groupId>
@@ -107,7 +123,24 @@
 		    <artifactId>selenium-java</artifactId>
 		    <version>3.4.0</version>
 		</dependency>
+        <!-- Selenium  -->
+        <dependency>  
+            <groupId>com.opera</groupId>  
+            <artifactId>operadriver</artifactId>  
+        </dependency> 
         
-				
+        <!-- 单独指定21.0版本的guava，否则不兼容selenium -->
+        <dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>21.0</version>
+		</dependency> 
+		
+		<dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache-core</artifactId>
+            <version>2.6.6</version>
+        </dependency>
 	</dependencies>
+	
 </project>

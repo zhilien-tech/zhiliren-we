@@ -27,10 +27,14 @@ import com.alibaba.druid.util.StringUtils;
  */
 public class BitPermission implements Permission {
 
-	private String resourceIdentify;
-	private int permissionBit;
-	private String instanceId;
+	private String resourceIdentify;//资源标志
+	private int permissionBit; //权限位
+	private String instanceId; //实例id
 
+	/**
+	 * 创建 BitPermission对象.
+	 * 将权限字符串进行拆分，赋值到对象属性，以便匹配的时候使用
+	 */
 	public BitPermission(String permissionString) {
 		String[] array = permissionString.split("\\+");
 
@@ -56,6 +60,10 @@ public class BitPermission implements Permission {
 
 	}
 
+	/**
+	 * 自定义授权是否匹配的逻辑
+	 * @param Permission p  当前需要校验的权限，可理解为用户正在使用的权限
+	 */
 	@Override
 	public boolean implies(Permission p) {
 		if (!(p instanceof BitPermission)) {
