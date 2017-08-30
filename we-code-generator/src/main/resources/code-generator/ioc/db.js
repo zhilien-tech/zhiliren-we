@@ -1,11 +1,18 @@
 {
-	//使用属性文件进行配置
+	//使用属性文件，配置生成器项目
 	propConfig:{
 		type:"org.nutz.ioc.impl.PropertiesProxy",
 		fields:{
-			paths:"code-generator/code-generator.properties"
+			paths:"code-generator/properties/code-generator.properties"
 		}
 	},
+	//使用属性文件，配置WEB项目
+	webPropConfig:{
+		type:"org.nutz.ioc.impl.PropertiesProxy",
+		fields:{
+			paths:"code-generator/properties/code-web.properties"
+		}
+	}
 	dataSource : {
 	    type : "com.alibaba.druid.pool.DruidDataSource",
 	    events : {

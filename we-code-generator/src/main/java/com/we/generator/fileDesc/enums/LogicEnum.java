@@ -1,4 +1,4 @@
-package com.we.generator.core.enums;
+package com.we.generator.fileDesc.enums;
 
 import com.uxuexi.core.common.enums.IEnum;
 

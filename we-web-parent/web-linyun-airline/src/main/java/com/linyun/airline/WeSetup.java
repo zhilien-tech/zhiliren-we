@@ -154,7 +154,6 @@ public class WeSetup implements Setup {
 		try {
 			Tasks.scheduleAtFixedRate(new Runnable() {
 				public void run() {
-					logger.info("机票缓存清理定时任务启动----------");
 					try {
 						searchViewService.clearCacheSabre();
 					} catch (Exception e) {

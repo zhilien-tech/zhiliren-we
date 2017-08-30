@@ -20,7 +20,18 @@ public class Utils {
 
 	public static String getPath4Pkg(String pkg) {
 		Preconditions.checkNotNull(pkg, "包名不能为空");
-		return pkg.replace('.', '/');
+		if (pkg.contains(".")) {
+			pkg = pkg.replace('.', '/');
+		}
+		return pkg;
+	}
+
+	public static String getbasePkgName(String pkg) {
+		Preconditions.checkNotNull(pkg, "包名不能为空");
+		if (pkg.contains(".")) {
+			pkg = pkg.replace(".", "-");
+		}
+		return pkg;
 	}
 
 	/**
