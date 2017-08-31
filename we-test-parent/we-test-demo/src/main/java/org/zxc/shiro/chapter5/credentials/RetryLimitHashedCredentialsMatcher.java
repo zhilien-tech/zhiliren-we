@@ -1,4 +1,4 @@
-package org.zxc.shiro.test.chapter5.credentials;
+package org.zxc.shiro.chapter5.credentials;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -12,6 +12,7 @@ import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 
 /**
+ * 登陆凭证验证器
  */
 public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher {
 
@@ -19,7 +20,7 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
 
 	public RetryLimitHashedCredentialsMatcher() {
 		CacheManager cacheManager = CacheManager.newInstance(CacheManager.class.getClassLoader().getResource(
-				"ehcache.xml"));
+				"chapter5/ehcache.xml"));
 		passwordRetryCache = cacheManager.getCache("passwordRetryCache");
 	}
 

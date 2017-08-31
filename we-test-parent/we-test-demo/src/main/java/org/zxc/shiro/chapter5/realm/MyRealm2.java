@@ -1,4 +1,4 @@
-package org.zxc.shiro.test.chapter5.realm;
+package org.zxc.shiro.chapter5.realm;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;

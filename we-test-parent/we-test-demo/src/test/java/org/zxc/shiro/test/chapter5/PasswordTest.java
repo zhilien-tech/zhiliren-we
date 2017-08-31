@@ -6,7 +6,7 @@ import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.jdbc.JdbcRealm;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 /**
  */
@@ -14,12 +14,12 @@ public class PasswordTest extends BaseTest {
 
 	@Test
 	public void testPasswordServiceWithMyRealm() {
-		login("classpath:shiro-passwordservice.ini", "wu", "123");
+		login("classpath:chapter5/shiro-passwordservice.ini", "wu", "123");
 	}
 
 	@Test
 	public void testPasswordServiceWithJdbcRealm() {
-		login("classpath:shiro-jdbc-passwordservice.ini", "wu", "123");
+		login("classpath:chapter5/shiro-jdbc-passwordservice.ini", "wu", "123");
 	}
 
 	@Test
@@ -41,7 +41,7 @@ public class PasswordTest extends BaseTest {
 	@Test
 	public void testHashedCredentialsMatcherWithMyRealm2() {
 		//使用testGeneratePassword生成的散列密码
-		login("classpath:shiro-hashedCredentialsMatcher.ini", "liu", "123");
+		login("classpath:chapter5/shiro-hashedCredentialsMatcher.ini", "liu", "123");
 	}
 
 	@Test
@@ -50,7 +50,7 @@ public class PasswordTest extends BaseTest {
 		BeanUtilsBean.getInstance().getConvertUtils().register(new EnumConverter(), JdbcRealm.SaltStyle.class);
 
 		//使用testGeneratePassword生成的散列密码
-		login("classpath:shiro-jdbc-hashedCredentialsMatcher.ini", "liu", "123");
+		login("classpath:chapter5/shiro-jdbc-hashedCredentialsMatcher.ini", "liu", "123");
 	}
 
 	private class EnumConverter extends AbstractConverter {
@@ -71,14 +71,14 @@ public class PasswordTest extends BaseTest {
 
 	}
 
-	@Test(expected = ExcessiveAttemptsException.class)
+	@Test(expectedExceptions = ExcessiveAttemptsException.class)
 	public void testRetryLimitHashedCredentialsMatcherWithMyRealm() {
 		for (int i = 1; i <= 5; i++) {
 			try {
-				login("classpath:shiro-retryLimitHashedCredentialsMatcher.ini", "liu", "234");
+				login("classpath:chapter5/shiro-retryLimitHashedCredentialsMatcher.ini", "liu", "234");
 			} catch (Exception e) {/*ignore*/
 			}
 		}
-		login("classpath:shiro-retryLimitHashedCredentialsMatcher.ini", "liu", "234");
+		login("classpath:chapter5/shiro-retryLimitHashedCredentialsMatcher.ini", "liu", "234");
 	}
 }
