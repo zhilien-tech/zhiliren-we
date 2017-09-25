@@ -625,6 +625,16 @@ public class DateUtil {
 	}
 
 	/**
+	 * 获取系统时区的时区差
+	 */
+	public static int getZoneSub() {
+		Date nowDate = nowDate();
+		int aisaZone = -8;
+		int timeZone = nowDate.getTimezoneOffset() / 60;
+		return aisaZone - timeZone;
+	}
+
+	/**
 	 * 获取日期中的数字 月份缩写
 	 * @Data  "04 Jan 2013"   FORMAT_YYYY_MM_DD_SS
 	 * @return String
