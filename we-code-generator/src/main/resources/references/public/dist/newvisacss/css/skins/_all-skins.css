@@ -3,7 +3,7 @@
  * ----------
  */
 .skin-blue .main-header .navbar {
-  background-color: #3c8dbc;
+  background-color: #fff;
 }
 .skin-blue .main-header .navbar .nav > li > a {
   color: #ffffff;
@@ -59,7 +59,7 @@
 .skin-blue .wrapper,
 .skin-blue .main-sidebar,
 .skin-blue .left-side {
-  background-color: #222d32;
+  background-color: #fff;
 }
 .skin-blue .user-panel > .info,
 .skin-blue .user-panel > .info > a {
@@ -72,11 +72,16 @@
 .skin-blue .sidebar-menu > li > a {
   border-left: 3px solid transparent;
 }
-.skin-blue .sidebar-menu > li:hover > a,
 .skin-blue .sidebar-menu > li.active > a {
-  color: #ffffff;
-  background: #1e282c;
-  border-left-color: #3c8dbc;
+  /*color: #4588e6 !important;*/
+  background: #eef5ff;
+  border-left-color: #2f86f0;
+  padding: 14px;
+}
+.skin-blue .sidebar-menu > li:hover > a{
+  background: #eef5ff;
+  border-left-color: #2f86f0;
+  padding: 14px;
 }
 .skin-blue .sidebar-menu > li > .treeview-menu {
   margin: 0 1px;
