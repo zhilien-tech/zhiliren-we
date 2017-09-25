@@ -92,8 +92,9 @@
 		<script src="${base}/references/public/plugins/datatables/dataTables.bootstrap.min.js"></script>
 		<script src="${base}/references/common/js/My97DatePicker/WdatePicker.js"></script>
 		<script src="${base}/references/common/js/layer/layer.js"></script>
-		<script src="${base}/admin/base.js"></script><!-- 公用js文件 -->
-		<!-- 引入JS -->
+		<!-- 公用js文件 -->
+		<script src="${base}/references/common/js/base/base.js"></script>
+		<!-- 引入DataTables JS -->
 		<script src="${base}$atUrl/listTable.js"></script>
 		<script type="text/javascript">
 			var BASE_PATH = '${base}';
