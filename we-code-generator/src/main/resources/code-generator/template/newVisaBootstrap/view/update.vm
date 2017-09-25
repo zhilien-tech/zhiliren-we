@@ -1,0 +1,138 @@
+#set($base = '${base}')
+#set($obj = '${obj.')
+#set($Form = 'UpdateForm')
+#set($Id = 'id')
+<%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" errorPage="/WEB-INF/common/500.jsp"%>
+<%@include file="/WEB-INF/common/tld.jsp"%>
+
+<c:set var="url" value="$base$atUrl" />
+
+<!DOCTYPE HTML>
+<html lang="en-US" id="updateHtml">
+<head>
+	<meta charset="UTF-8">
+	<title>更新</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+	<link rel="stylesheet" href="${base}/references/public/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" href="${base}/references/public/dist/css/AdminLTE.css">
+	<link rel="stylesheet" href="${base}/references/public/dist/css/bootstrapValidator.css">
+</head>
+<body>
+	
+	<div class="modal-content">
+		<form id="$moudleCode$Form">
+			<div class="modal-header">
+				<input id="backBtn" type="button" onclick="closeWindow()" class="btn btn-primary pull-right btn-sm" data-dismiss="modal" value="取消"/>
+				<input id="updateBtn" type="button" onclick="save()" class="btn btn-primary pull-right btn-sm btn-right" value="保存"/>
+			</div>
+			<div class="modal-body">
+				<div class="tab-content">
+					<input name="id" type="hidden" value="$obj$Id}">
+					#foreach ($field in $fieldList)
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label><span>*</span>${field.comment}：</label>
+								<input id="${field.name}" name="${field.name}" value="$obj${field.name}}" type="text" class="form-control input-sm" placeholder=" " />
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label><span>*</span>${field.comment}：</label>
+								<input id="" name="" value="" type="text" class="form-control input-sm" placeholder=" " />
+							</div>
+						</div>
+					#end
+					
+				</div>
+			</div>
+		</form>
+	</div>
+	
+	<script type="text/javascript">
+		var BASE_PATH = '${base}';
+	</script>
+	<!-- jQuery 2.2.3 -->
+	<script src="${base}/references/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
+	<!-- Bootstrap 3.3.6 -->
+	<script src="${base}/references/public/bootstrap/js/bootstrap.js"></script>
+	<script src="${base}/references/public/plugins/fastclick/fastclick.js"></script>
+	<script src="${base}/references/public/dist/js/bootstrapValidator.js"></script>
+	<script src="${base}/references/common/js/layer/layer.js"></script>
+	
+	<script type="text/javascript">
+		var base = "${base}";
+
+		function initvalidate(){
+			//校验
+			$('#$moudleCode$Form').bootstrapValidator({
+				message : '验证不通过',
+				feedbackIcons : {
+					valid : 'glyphicon glyphicon-ok',
+					invalid : 'glyphicon glyphicon-remove',
+					validating : 'glyphicon glyphicon-refresh'
+				},
+				fields : {
+					#foreach ($field in $fieldList)
+						${field.name} : {
+							validators : {
+								notEmpty : {
+									message : '${field.comment}不能为空'
+								}
+							}
+						},
+					#end
+				}
+			});
+		}
+		
+		//更新时刷新页面
+		function update() {
+			window.location.reload();
+		}
+		
+	    initvalidate();
+		$('#$moudleCode$Form').bootstrapValidator('validate');
+		function save() {
+			$('#$moudleCode$Form').bootstrapValidator('validate');
+			var bootstrapValidator = $("#$moudleCode$Form").data('bootstrapValidator');
+			if (bootstrapValidator.isValid()) {
+			
+				//获取必填项信息
+				#foreach ($field in $fieldList)
+					var ${field.name} = $("#${field.name}").val();
+					if(${field.name}==""){
+						layer.msg('${field.name}不能为空');
+						return;
+					}
+				#end
+				
+				
+				$.ajax({
+					type : 'POST',
+					data : $("#$moudleCode$Form").serialize(),
+					url : '$base$atUrl/update.html',
+					success : function(data) {
+						var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+						layer.close(index);
+						window.parent.layer.msg("编辑成功", "", 3000);
+						parent.layer.close(index);
+						parent.datatable.ajax.reload();
+					},
+					error : function(xhr) {
+						layer.msg("编辑失败", "", 3000);
+					}
+				});
+			}
+		}
+	
+		//返回刷新页面 
+		function closeWindow() {
+			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        	parent.layer.close(index);
+		}
+	</script>
+	
+	
+</body>
+</html>
+
