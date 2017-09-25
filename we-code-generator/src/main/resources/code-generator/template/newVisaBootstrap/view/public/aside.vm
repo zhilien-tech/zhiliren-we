@@ -10,13 +10,13 @@
       <ul class="sidebar-menu">
       	
       	<div class="hamburgerImg">
-  			<img src="${base}/references/public/dist/img/02.jpg" />
+  			<img src="${base}/references/public/dist/newvisacss/img/02.jpg" />
   		</div>
       	
 		#foreach ($vc in $vcLists)
 			<li id="$velocityCount">
          		<a href="/admin/${vc.moudleCode}/list.html?currentPageIndex=$velocityCount">
-         			<img src="${base}/references/public/dist/img/index.png" />
+         			<img src="${base}/references/public/dist/newvisacss/img/index.png" />
         			<span>${vc.moudleName}</span>
         		</a>
        		</li>

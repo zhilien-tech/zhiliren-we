@@ -46,10 +46,8 @@ function initDatatable() {
 					#end
 					{"data": " ", "bSortable": false,
                     	render: function(data, type, row, meta) {
-                        	var modify = '<a style="cursor:pointer;" onclick="edit('+row.id+');">编辑</a>';
-                        
-                          	var judge = '<a style="cursor:pointer;" onclick="deleteById('+row.id+');" class="btn_mini btn_modify"><font color="#CCCCCC">删除</font></a>';
-                          		
+                        	var modify = '<a style="cursor:pointer;" class="edit-icon" onclick="edit('+row.id+');"></a>';
+                          	var judge = '<a style="cursor:pointer;" class="delete-icon" onclick="deleteById('+row.id+');"></a>';
                             return modify+judge;
                         }	
                     } 

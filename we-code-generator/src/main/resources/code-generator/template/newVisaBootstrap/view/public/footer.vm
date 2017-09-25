@@ -11,9 +11,9 @@
 <!-- FastClick -->
 <script src="${base}/references/public/plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
-<script src="${base}/references/public/dist/js/app.min.js"></script>
+<script src="${base}/references/public/dist/newvisacss/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="${base}/references/public/dist/js/demo.js"></script>
+<script src="${base}/references/public/dist/newvisacss/js/demo.js"></script>
 <!--layer -->
 <script src="${base}/references/common/js/layer/layer.js"></script>
 <!-- My97DatePicker --> 
