@@ -38,9 +38,10 @@ function initDatatable() {
 		                		 var ${field.name} = row.${field.name};
 		                		 if(null==${field.name} || ""==${field.name}){
 		                			 return "";
+		                		 }else{
+		                		 	/*${field.name} = '<span data-toggle="tooltip" data-placement="right" title="'+${field.name}+'">'+${field.name}+'<span>';*/
+		                		 	return ${field.name};
 		                		 }
-		                		 
-		                		return ${field.name};
 		                    } 	
 		                },
 					#end

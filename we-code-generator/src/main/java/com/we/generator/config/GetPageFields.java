@@ -40,7 +40,8 @@ public class GetPageFields {
 			}
 
 			PageFieldDesc pd = new PageFieldDesc();
-			pd.setName(f.getName());
+			String name = f.getName();
+			pd.setName(name);
 
 			if (f.isAnnotationPresent(Comment.class)) {
 				Comment comment = f.getDeclaredAnnotation(Comment.class);
