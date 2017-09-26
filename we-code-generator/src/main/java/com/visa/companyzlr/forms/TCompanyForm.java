@@ -77,7 +77,7 @@ public class TCompanyForm extends DataTablesParamForm {
 	private Cnd cnd() {
 		Cnd cnd = Cnd.NEW();
 		//TODO 添加自定义查询条件（可选）
-
+		cnd.orderBy("id", "DESC");
 		return cnd;
 	}
 }
