@@ -22,6 +22,7 @@
 	<div class="modal-content">
 		<form id="$moudleCode$Form">
 			<div class="modal-header">
+			<span class="heading">编辑</span>
 				<input id="backBtn" type="button" onclick="closeWindow()" class="btn btn-primary pull-right btn-sm" data-dismiss="modal" value="取消"/>
 				<input id="updateBtn" type="button" onclick="save()" class="btn btn-primary pull-right btn-sm btn-right" value="保存"/>
 			</div>
