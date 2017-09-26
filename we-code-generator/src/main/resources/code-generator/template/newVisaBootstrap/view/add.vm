@@ -28,20 +28,30 @@
 			<div class="modal-body">
 				<div class="tab-content">
 					#foreach ($field in $fieldList)
-						<div class="row">
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label><span>*</span>${field.comment}：</label>
-									<input id="${field.name}" name="${field.name}" type="text" class="form-control input-sm" placeholder=" " />
+					
+						#if($velocityCount % 2 == 1) 
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label><span>*</span>${field.comment}：</label>
+										<input id="${field.name}" name="${field.name}" type="text" class="form-control input-sm" placeholder=" " />
+									</div>
 								</div>
+								#set($brandIndex = $velocityCount+1)
+								
+								#foreach ($field in $fieldList)
+									#if($brandIndex == $velocityCount)
+										<div class="col-sm-6">
+											<div class="form-group">
+												<label><span>*</span>${field.comment}：</label>
+												<input id="${field.name}" name="${field.name}" type="text" class="form-control input-sm" placeholder=" " />
+											</div>
+										</div>
+									#end
+								#end
 							</div>
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label><span>*</span>${field.comment}：</label>
-									<input id="" name="" type="text" class="form-control input-sm" placeholder=" " />
-								</div>
-							</div>
-						</div>
+						#end
+						
 					#end
 					
 				</div>
