@@ -22,7 +22,7 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
 
 	private static Log logger = Logs.get();
 
-	@Override
+		@Override
 	public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
 			Map<String, Object> attributes) throws Exception {
 
@@ -36,15 +36,22 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
 			ServletServerHttpRequest sreq = (ServletServerHttpRequest) request;
 			HttpSession session = sreq.getServletRequest().getSession(false);
 
-			// 标记用户
-			String uid = (String) session.getAttribute("uid");
-			if (!Util.isEmpty(uid)) {
-				attributes.put("uid", uid);
-			} else {
-				uid = session.getId();
-				attributes.put("uid", uid);
+			if (!Util.isEmpty(session)) {
+				// 标记用户
+				Object ouid = session.getAttribute("uid");
+				String uid = "";
+				if (!Util.isEmpty(ouid)) {
+					uid = (String) ouid;
+					if (!Util.isEmpty(uid)) {
+						attributes.put("uid", uid);
+					}
+					logger.info("Websocket:用户[ID:" + session.getAttribute("uid") + "]已经建立连接");
+				} else {
+					uid = session.getId();
+					attributes.put("uid", uid);
+				}
 			}
-			logger.info("Websocket:用户[ID:" + session.getAttribute("uid") + "]已经建立连接");
+
 		}
 		return true;
 	}

@@ -64,7 +64,7 @@ public class GenWebSocket {
 		File handshakeInterceptorFile = new File(outPut, "/" + "HandshakeInterceptor.java");
 		handler.writeToFile(vCtx, handshakeInterceptorTpl, handshakeInterceptorFile, force);
 
-		String webSocketConfigTpl = TplPathConfig.demoWSHandlerTpl;
+		String webSocketConfigTpl = TplPathConfig.webSocketConfigTpl;
 		File webSocketConfigFile = new File(outPut, "/" + "WebSocketConfig.java");
 		handler.writeToFile(vCtx, webSocketConfigTpl, webSocketConfigFile, force);
 
@@ -74,7 +74,7 @@ public class GenWebSocket {
 	public static void getDemoPage(boolean force, String outPut, VelocityHandler handler) throws IOException {
 		VelocityContext vCtx = GetVelocityContext.getVContext();
 		String demoWSHandlerTpl = TplPathConfig.webSocketDemoPageTpl;
-		File demoWSHandlerFile = new File(outPut, "/" + "webSocketDemoPage.html");
+		File demoWSHandlerFile = new File(outPut, "/" + "demo.html");
 		handler.writeToFile(vCtx, demoWSHandlerTpl, demoWSHandlerFile, force);
 	}
 

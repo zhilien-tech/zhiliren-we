@@ -9,9 +9,9 @@ import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
 /**
- * Websocket配置类
+ * websocket业务处理器
  * <p>
- * 用于配置websocket的请求路径以及各请求路径的拦截器和业务处理类
+ * 获取当前登陆的用户，把用户和该用户所有需要消息通知的页面
  */
 @Configuration
 //指明该类为Spring 配置类
@@ -40,4 +40,5 @@ public class WebSocketConfig implements WebSocketConfigurer {
 	public HandshakeInterceptor myInterceptors() {
 		return new HandshakeInterceptor();
 	}
+
 }
