@@ -18,6 +18,24 @@
 		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
 
+	<!-- 使用spring-websocket，注意:此Servlet定义的路径仅用于处理websocket请求-->
+	<servlet>
+        <servlet-name>SpringWebsocket</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring-websocket.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+        <async-supported>true</async-supported>
+    </servlet>
+    <servlet-mapping>
+		<servlet-name>SpringWebsocket</servlet-name>
+		<url-pattern>/websocket/*</url-pattern>
+		<url-pattern>/sockjs/websocket/*</url-pattern>
+	</servlet-mapping>
+
+
 	<!-- 扫描注入@相关的包 -->
 	<filter>
 		<filter-name>scanFile</filter-name>
