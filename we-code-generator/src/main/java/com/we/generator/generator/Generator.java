@@ -11,6 +11,7 @@ import org.nutz.log.Logs;
 import com.we.generator.template.GenEntity;
 import com.we.generator.template.GenModule;
 import com.we.generator.template.GenService;
+import com.we.generator.template.GenWebSocket;
 
 /**
  * 
@@ -36,6 +37,7 @@ public class Generator {
 	public void generatorModule() throws Exception {
 		GenService.genService();
 		GenModule.genModule();
+		GenWebSocket.genWebSocket();
 		log.info("done!");
 	}
 
