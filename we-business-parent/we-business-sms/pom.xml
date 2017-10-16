@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.we</groupId>
+		<artifactId>we-business-parent</artifactId>
+		<version>1.0.0</version>
+	</parent>
+	
+	<artifactId>we-business-sms</artifactId>
+	<packaging>pom</packaging>
+	<name>we-business-sms</name>
+	<description>短信服务</description>
+	
+	<properties>
+		<api.version>1.0.0</api.version>
+	</properties>
+		
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>${pgroupId}</groupId>
+				<artifactId>we-business-sms-api</artifactId>
+				<version>${api.version}</version>
+				<scope>compile</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<modules>
+		<module>we-business-sms-api</module> 
+		<module>we-business-sms-provider</module>
+	</modules>
+	
+</project>

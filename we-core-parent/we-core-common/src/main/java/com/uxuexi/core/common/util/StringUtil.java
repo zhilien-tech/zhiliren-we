@@ -6,8 +6,8 @@
 
 package com.uxuexi.core.common.util;
 
-import static com.uxuexi.core.common.util.ExceptionUtil.pEx;
-import static com.uxuexi.core.common.util.Util.isEmpty;
+import static com.uxuexi.core.common.util.ExceptionUtil.*;
+import static com.uxuexi.core.common.util.Util.*;
 
 import java.text.MessageFormat;
 import java.util.Collection;
@@ -24,10 +24,10 @@ import org.nutz.lang.Lang;
  *  @Date	 2014-4-3 
  */
 public final class StringUtil {
-	
+
 	/**匹配数字的数字正则表达式*/
 	public static final String REGEX_NUMBER = "\\d+";
-	
+
 	/**
 	 * 抽取出字符串中的所有数字,如果没有数字字符，则返回空字符串
 	 */
@@ -46,7 +46,7 @@ public final class StringUtil {
 		}
 		return buff.toString();
 	}
-	
+
 	/**返回字符串source匹配正则表达式regex的matcher实例(regex对大小写敏感)*/
 	public static Matcher getMatcher(String source, String regex) {
 		Pattern pattern = Pattern.compile(regex);
@@ -274,7 +274,7 @@ public final class StringUtil {
 		}
 		return orgin.replaceAll(regex, replaceStr);
 	}
-	
+
 	/**
 	 * 移除trim标记以及其后面的部分
 	 * @param content  要操作的字符串
@@ -303,5 +303,70 @@ public final class StringUtil {
 			return path;
 		}
 		return path.replace('\\', '/');
+	}
+
+	public static String decodeUnicode(String theString) {
+		char aChar;
+		int len = theString.length();
+		StringBuffer outBuffer = new StringBuffer(len);
+		for (int x = 0; x < len;) {
+			aChar = theString.charAt(x++);
+			if (aChar == '\\') {
+				aChar = theString.charAt(x++);
+				if (aChar == 'u') {
+					// Read the xxxx
+					int value = 0;
+					for (int i = 0; i < 4; i++) {
+						aChar = theString.charAt(x++);
+						switch (aChar) {
+						case '0':
+						case '1':
+						case '2':
+						case '3':
+						case '4':
+						case '5':
+						case '6':
+						case '7':
+						case '8':
+						case '9':
+							value = (value << 4) + aChar - '0';
+							break;
+						case 'a':
+						case 'b':
+						case 'c':
+						case 'd':
+						case 'e':
+						case 'f':
+							value = (value << 4) + 10 + aChar - 'a';
+							break;
+						case 'A':
+						case 'B':
+						case 'C':
+						case 'D':
+						case 'E':
+						case 'F':
+							value = (value << 4) + 10 + aChar - 'A';
+							break;
+						default:
+							throw new IllegalArgumentException("Malformed   \\uxxxx   encoding.");
+						}
+
+					}
+					outBuffer.append((char) value);
+				} else {
+					if (aChar == 't')
+						aChar = '\t';
+					else if (aChar == 'r')
+						aChar = '\r';
+					else if (aChar == 'n')
+						aChar = '\n';
+					else if (aChar == 'f')
+						aChar = '\f';
+					outBuffer.append(aChar);
+				}
+			} else
+				outBuffer.append(aChar);
+		}
+		return outBuffer.toString();
 	}
 }

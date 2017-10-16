@@ -58,7 +58,7 @@ public class SyncDemo_数据服务_5_1_身份证识别 {
 	}
 
 	public static void main(String[] args) {
-		String filepath = "D:\\test\\tmp\\u=596711927,2764943794&fm=27&gp=0.jpg";
+		String filepath = "D:\\test\\tmp\\ID1.jpg";
 
 		byte[] bytes = Files.readBytes(filepath);
 		String imageDataValue = Base64.encodeBase64String(bytes);
@@ -68,6 +68,10 @@ public class SyncDemo_数据服务_5_1_身份证识别 {
 		rd.getInputs().add(input);
 
 		String content = Json.toJson(rd);
+		appSecretCall(content);
+	}
+
+	private static void appSecretCall(String content) {
 		byte[] body = content.getBytes(Charset.forName("utf-8"));
 		SyncDemo_数据服务_5_1_身份证识别 service = new SyncDemo_数据服务_5_1_身份证识别();
 		service.印刷文字识别_身份证识别Demo(body);
@@ -77,6 +81,7 @@ public class SyncDemo_数据服务_5_1_身份证识别 {
 		String host = "https://dm-51.data.aliyun.com";
 		String path = "/rest/160601/ocr/ocr_idcard.json";
 		String method = "POST";
+
 		String appcode = AppCode;
 		Map<String, String> headers = new HashMap<String, String>();
 		//最后在header中的格式(中间是英文空格)为Authorization:APPCODE 83359fd73fe94948385f570e3c139105

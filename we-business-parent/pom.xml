@@ -72,6 +72,14 @@
 				<version>${web.version}</version>
 				<scope>compile</scope>
 			</dependency>
+			
+			<!-- 网站前端相关包 -->
+			<dependency>
+				<groupId>${pgroupId}</groupId>
+				<artifactId>we-core-web-www</artifactId>
+				<version>${webwww.version}</version>
+				<scope>compile</scope>
+			</dependency>
 		
 			<!-- zookeeper -->
 			<dependency>
@@ -84,5 +92,6 @@
 	
 	<modules>
 	    <module>we-business-template</module>
+		<module>we-business-sms</module>
 	</modules>
 </project>

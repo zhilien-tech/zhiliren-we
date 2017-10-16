@@ -66,10 +66,6 @@
 		</dependency>
 		
 		 <!-- Netty -->
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-        </dependency>
 		
 		<!-- Protostuff -->
 		<dependency>
@@ -94,10 +90,21 @@
 			<version>4.1.0</version>
 		</dependency>
 		
+		<!-- 因为netty包版本冲突，因此排除低版本的netty，此包存在于hadoop-client依赖关系中 -->
 		<dependency>
 		    <groupId>org.apache.hadoop</groupId>
 		    <artifactId>hadoop-client</artifactId>
 		    <version>2.7.2</version>
+		    <exclusions>
+		    	<exclusion>
+		    		<artifactId>netty</artifactId>
+		    		<groupId>io.netty</groupId>
+		    	</exclusion>
+		    	<exclusion>
+		    		<artifactId>netty-all</artifactId>
+		    		<groupId>io.netty</groupId>
+		    	</exclusion>
+		    </exclusions>
 		</dependency>
 		
 		<!-- Shiro test -->
@@ -148,11 +155,27 @@
             <version>4.0.0.RELEASE</version>
         </dependency>
         
+        <!-- 阿里云ocr -->
         <dependency>
 			<groupId>com.aliyun.api.gateway</groupId>
 			<artifactId>sdk-core-java</artifactId>
 			<version>1.0.4</version>
 		</dependency>
+		
+		<!-- 阿里云消息队列 -->
+		<dependency>
+	       <groupId>com.aliyun.mns</groupId>
+	       <artifactId>aliyun-sdk-mns</artifactId>
+	       <version>1.1.8</version>
+	       <classifier>jar-with-dependencies</classifier>
+		 </dependency>
+		 
+		<!-- rocketmq消息队列 -->  
+	    <dependency>  
+	        <groupId>com.alibaba.rocketmq</groupId>  
+	        <artifactId>rocketmq-client</artifactId>  
+	        <version>3.6.2.Final</version>
+	    </dependency>  
         
 	</dependencies>
 	
