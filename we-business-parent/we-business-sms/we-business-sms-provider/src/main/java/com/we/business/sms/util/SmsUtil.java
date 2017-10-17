@@ -21,7 +21,7 @@ public class SmsUtil {
 		ExceptionUtil.checkEmptyBEx(code, "验证码不允许为空");
 
 		String key = smsType.key();
-		String content = CustomizedPropertyConfigurer.getContextProperty(key);
+		String content = PropertiesUtil.getProperty(key);
 		ExceptionUtil.checkEmptyBEx(content, "短信内容不允许为空");
 		content = StringUtil.decodeUnicode(content);
 

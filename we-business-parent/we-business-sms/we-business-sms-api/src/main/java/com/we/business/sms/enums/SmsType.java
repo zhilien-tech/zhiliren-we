@@ -16,17 +16,17 @@ public enum SmsType implements IEnum {
 	/**
 	 * 用户登录验证码
 	 */
-	LOGIN("login", "用户登录"),
+	LOGIN("sms_login", "用户登录"),
 
 	/**
 	 * 用户注册验证码
 	 */
-	REGISTER("register", "用户注册"),
+	REGISTER("sms_register", "用户注册"),
 
 	/**
 	 * 重置密码
 	 */
-	RESETPWD("resetpwd", "重置密码");
+	RESETPWD("sms_resetpwd", "重置密码");
 
 	private String key;
 	private String value;

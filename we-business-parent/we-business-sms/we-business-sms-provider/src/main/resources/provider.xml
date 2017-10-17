@@ -19,7 +19,7 @@
     	owner:负责人
     	environment：环境,只支持develop/test/product 
     -->
-    <dubbo:application name="we-business-template" owner="zhuxiaochuan"/> 
+    <dubbo:application name="we-business-sms" owner="zhuxiaochuan"/> 
  
     <!--
     	注册信息(com.alibaba.dubbo.config.RegistryConfig)
@@ -58,8 +58,8 @@
     	version:     版本
      -->
     <dubbo:service 
-    	interface="com.xiaoka.template.service.TemplateService" 
-    	ref="templateService" 
+    	interface="com.we.business.sms.SMSService" 
+    	ref="huaxinSMSService" 
     	version="1.0.0"
     	cluster="failover" 
     	retries="2" 

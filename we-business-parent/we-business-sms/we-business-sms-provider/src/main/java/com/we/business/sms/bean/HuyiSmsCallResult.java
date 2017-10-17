@@ -8,8 +8,14 @@ package com.we.business.sms.bean;
 
 import lombok.Data;
 
+/**
+ * 互亿无线短信发送结果
+ * <p>
+ * @author   朱晓川
+ * @Date	 2017年10月17日
+ */
 @Data
-public class SmsCallResult {
+public class HuyiSmsCallResult {
 
 	/**接口调用状态码*/
 	private String code;
