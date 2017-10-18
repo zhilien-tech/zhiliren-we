@@ -15,6 +15,7 @@ import java.util.Set;
 import org.apache.velocity.VelocityContext;
 
 import com.google.common.collect.Lists;
+import com.uxuexi.core.common.util.Util;
 import com.we.generator.config.GetExcelInfo;
 import com.we.generator.config.GetVelocityContext;
 import com.we.generator.config.LoadConfigWeb;
@@ -32,6 +33,8 @@ import com.we.generator.util.Utils;
  * @Date	 2017年8月1日 	 
  */
 public class GenModule {
+
+	private static String templatePackage = PropProxyConfig.templatePackage;
 
 	public static void genModule() throws IOException, ClassNotFoundException {
 
@@ -84,10 +87,17 @@ public class GenModule {
 		//web.xml
 		GenWebXml.genXmlFile(force, writer);
 
+		//newvisacss模板 适用
+		if (Util.eq(templatePackage, "newVisaBootstrap")) {
+			//spring-websocket.xml
+			GenWebSocketXml.GenWebSocketXml(force, writer);
+		}
+
 		//MainModule
 		GenMainSetup.genCode(force, writer);
 
 		//public页面
 		GenPublicPage.genPublicPage(force, writer, vcList);
+
 	}
 }

@@ -26,7 +26,7 @@ public class PropProxyConfig {
 	private static PropertiesProxy propConfig = ioc.get(PropertiesProxy.class, "propConfig");
 	private static PropertiesProxy webPropConfig = ioc.get(PropertiesProxy.class, "webPropConfig");
 
-	private PropProxyConfig() {
+	public PropProxyConfig() {
 
 	}
 

@@ -42,6 +42,7 @@ public class TplPathConfig {
 
 	public static String pomTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/xml/pom.vm";
 	public static String webXmlTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/xml/web.vm";
+	public static String webSocketXmlTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/xml/spring-websocket.vm";
 
 	public static String headerPageTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/public/header.vm";
 	public static String asidePageTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/public/aside.vm";
@@ -56,4 +57,13 @@ public class TplPathConfig {
 	public static String tldPageTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/common/tld.vm";
 	//we.tld标签配置文件
 	public static String tldTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/view/common/wetld.vm";
+
+	//webSocket
+	public static String webSocketDemoPageTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage
+			+ "/view/webSocketDemo.vm";
+	public static String demoWSHandlerTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/DemoWSHandler.vm";
+	public static String handshakeInterceptorTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage
+			+ "/HandshakeInterceptor.vm";
+	public static String webSocketConfigTpl = LoadConfigWeb.TEMPLATE_PATH + templatePackage + "/WebSocketConfig.vm";
+
 }

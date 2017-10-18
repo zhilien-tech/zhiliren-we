@@ -14,8 +14,8 @@
 	<title>更新</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 	<link rel="stylesheet" href="${base}/references/public/bootstrap/css/bootstrap.css">
-	<link rel="stylesheet" href="${base}/references/public/dist/css/AdminLTE.css">
-	<link rel="stylesheet" href="${base}/references/public/dist/css/bootstrapValidator.css">
+	<link rel="stylesheet" href="${base}/references/public/dist/bootstrapcss/css/AdminLTE.css">
+	<link rel="stylesheet" href="${base}/references/public/dist/bootstrapcss/css/bootstrapValidator.css">
 </head>
 <body>
 	
@@ -53,7 +53,7 @@
 	<!-- Bootstrap 3.3.6 -->
 	<script src="${base}/references/public/bootstrap/js/bootstrap.js"></script>
 	<script src="${base}/references/public/plugins/fastclick/fastclick.js"></script>
-	<script src="${base}/references/public/dist/js/bootstrapValidator.js"></script>
+	<script src="${base}/references/public/dist/bootstrapcss/js/bootstrapValidator.js"></script>
 	<script src="${base}/references/common/js/layer/layer.js"></script>
 	
 	<script type="text/javascript">
