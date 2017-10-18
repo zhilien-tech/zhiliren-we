@@ -19,13 +19,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import redis.clients.jedis.ShardedJedis;
+import redis.clients.jedis.ShardedJedisPipeline;
+
 import com.uxuexi.core.common.util.CollectionUtil;
 import com.uxuexi.core.redis.support.IRedisDataSource;
 import com.uxuexi.core.redis.support.RedisTransController;
 import com.uxuexi.core.redis.util.PipelineUtil;
-
-import redis.clients.jedis.ShardedJedis;
-import redis.clients.jedis.ShardedJedisPipeline;
 
 /**
  * DAO的集群Redis实现
@@ -413,7 +413,7 @@ public class ShardRedisDao implements IRedisDao {
 	}
 
 	@Override
-	public long zadd(final String key, final Map<Double, String> scoreMembers) {
+	public long zadd(final String key, final Map<String, Double> scoreMembers) {
 		checkKey(key);
 		checkValue(scoreMembers);
 		return getCurrentJedis().zadd(key, scoreMembers);

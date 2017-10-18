@@ -7,15 +7,14 @@
 package com.uxuexi.core.redis.support.impl;
 
 import static com.uxuexi.core.common.util.ExceptionUtil.*;
-
-import com.uxuexi.core.redis.support.IRedisDataSource;
-import com.uxuexi.core.redis.support.RedisConfig;
-
 import lombok.Data;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCommands;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+
+import com.uxuexi.core.redis.support.IRedisDataSource;
+import com.uxuexi.core.redis.support.RedisConfig;
 
 /**
  * redis配置的数据源
@@ -38,8 +37,8 @@ public class RedisDataSource implements IRedisDataSource {
 			return;
 		}
 		JedisPoolConfig conf = new JedisPoolConfig();
-		conf.setMaxActive(maxConnect);
-		conf.testOnBorrow = true;
+		conf.setMaxTotal(maxConnect);
+		conf.setTestOnBorrow(true);
 		pool = new JedisPool(conf, config.getHost(), config.getPort(), config.getTimeout());
 
 	}

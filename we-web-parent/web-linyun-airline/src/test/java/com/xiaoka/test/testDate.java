@@ -38,5 +38,11 @@ public class testDate {
 		System.out.println(sdf.format(date));
 
 		System.out.println(DateUtil.addMonth(new Date(), 1));
+
+		Date birthday = DateUtil.string2Date("20030719");
+		Date workDate = DateUtil.addYear(birthday, 14);
+		Date now = DateTimeUtil.nowDate();
+		boolean worked = workDate.before(now);
+		System.out.println("是否已经工作:" + worked);
 	}
 }
