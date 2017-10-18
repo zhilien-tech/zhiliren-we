@@ -14,11 +14,14 @@ import com.we.business.sms.enums.SmsType;
 import com.we.business.sms.util.CustomizedPropertyConfigurer;
 
 /**
+ * 使用spring加载applicationContext的方式进行测试，也意味着如果要以dubbo服务的方式启动，
+ * 则需要配置本项目的sms_config.properties以及redis.xml两个文件
+ * <p>
  * 注意:
  * 1，AbstractTransactionalJUnit4SpringContextTests默认会回滚,
  * 2，如果要测试事务是否生效，就不要使用AbstractTransactionalJUnit4SpringContextTests完成
  * @author 朱晓川
- *
+ * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })

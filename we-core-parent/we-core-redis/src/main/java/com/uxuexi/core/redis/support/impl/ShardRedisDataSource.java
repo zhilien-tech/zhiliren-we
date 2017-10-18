@@ -12,15 +12,15 @@ import static com.uxuexi.core.common.util.Util.*;
 
 import java.util.List;
 
-import com.uxuexi.core.redis.support.IRedisDataSource;
-import com.uxuexi.core.redis.support.RedisConfig;
-
 import lombok.Data;
 import redis.clients.jedis.JedisCommands;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisShardInfo;
 import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.ShardedJedisPool;
+
+import com.uxuexi.core.redis.support.IRedisDataSource;
+import com.uxuexi.core.redis.support.RedisConfig;
 
 /**
  * redis配置的集群数据源
@@ -49,8 +49,8 @@ public class ShardRedisDataSource implements IRedisDataSource {
 			throw pEx("读取JedisShardInfo 相关配置信息失败");
 		}
 		JedisPoolConfig conf = new JedisPoolConfig();
-		conf.setMaxActive(maxConnect);
-		conf.testOnBorrow = true;
+		conf.setMaxTotal(maxConnect);
+		conf.setTestOnBorrow(true);
 		pool = new ShardedJedisPool(conf, shards);
 	}
 

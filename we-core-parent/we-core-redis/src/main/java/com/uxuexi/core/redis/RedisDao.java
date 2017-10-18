@@ -18,13 +18,13 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Pipeline;
+
 import com.uxuexi.core.common.util.CollectionUtil;
 import com.uxuexi.core.redis.support.IRedisDataSource;
 import com.uxuexi.core.redis.support.RedisTransController;
 import com.uxuexi.core.redis.util.PipelineUtil;
-
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.Pipeline;
 
 /**
  * DAO的Redis实现
@@ -414,7 +414,7 @@ public class RedisDao implements IRedisDao {
 	}
 
 	@Override
-	public long zadd(final String key, final Map<Double, String> scoreMembers) {
+	public long zadd(final String key, final Map<String, Double> scoreMembers) {
 		checkKey(key);
 		checkValue(scoreMembers);
 		return getCurrentJedis().zadd(key, scoreMembers);

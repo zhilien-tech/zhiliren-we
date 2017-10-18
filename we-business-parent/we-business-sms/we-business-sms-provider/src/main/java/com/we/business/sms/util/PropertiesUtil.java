@@ -15,6 +15,8 @@ import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.collections.Maps;
 
 /**
@@ -25,6 +27,8 @@ import org.testng.collections.Maps;
  * @Date	 2017年10月17日 	 
  */
 public class PropertiesUtil {
+
+	private static final Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);
 
 	private static final String FILE_NAME = "/sms_config.properties";
 
@@ -43,6 +47,7 @@ public class PropertiesUtil {
 			uri = PropertiesUtil.class.getResource(fileName).toURI();
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.error("短信服务配置文件加载失败，请确保系统classpath中存在sms_config.properties属性文件");
 		}
 	}
 

@@ -406,7 +406,7 @@ public interface IRedisDao {
 	 * @param scoreMembers 权重及值的map
 	 * @return 添加的对象个数
 	 */
-	public long zadd(final String key, final Map<Double, String> scoreMembers);
+	public long zadd(final String key, final Map<String, Double> scoreMembers);
 
 	/**
 	 * 返回有序集 key 中，指定区间内的成员。<br/>
