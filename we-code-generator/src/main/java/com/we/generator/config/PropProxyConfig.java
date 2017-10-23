@@ -44,7 +44,8 @@ public class PropProxyConfig {
 
 	public static String baseUri = "/";
 	public static String basePkg = propConfig.get("base_package");
-	public static String basePkgRep = Utils.getbasePkgName(basePkg);
+	public static String project_name = propConfig.get("project_name");
+	public static String basePkgRep = Utils.getbasePkgName(project_name);
 	public static String basePath4Pkg = Utils.getPath4Pkg(basePkg);
 	public static String templatePackage = propConfig.get("template_package");
 
