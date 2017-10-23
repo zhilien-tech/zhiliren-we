@@ -17,7 +17,7 @@
 			<li id="$velocityCount">
          		<a href="/admin/${vc.moudleCode}/list.html?currentPageIndex=$velocityCount">
          			<img src="${base}/references/public/dist/newvisacss/img/index.png" />
-        			<span>${vc.moudleName}</span>
+        			<font>${vc.moudleName}</font>
         		</a>
        		</li>
 		#end
