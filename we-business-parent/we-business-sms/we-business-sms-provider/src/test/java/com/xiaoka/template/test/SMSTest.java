@@ -10,7 +10,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.we.business.sms.SMSService;
-import com.we.business.sms.enums.SmsType;
 import com.we.business.sms.util.CustomizedPropertyConfigurer;
 
 /**
@@ -44,7 +43,9 @@ public class SMSTest {
 	@Test
 	public void testSendCaptcha() {
 		try {
-			smsService.sendCaptcha(SmsType.REGISTER, "18911451383");
+			//			smsService.sendCaptcha(SmsType.REGISTER, "18911451383");
+			String content = "亲爱的小魔女，您申请的签证需要补充资料，请点击链接登录填写签证资料http://www.f-visa.com/。【优悦签】";
+			smsService.send("18911451383", content);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

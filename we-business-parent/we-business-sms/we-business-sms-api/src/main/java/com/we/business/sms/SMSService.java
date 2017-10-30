@@ -7,7 +7,9 @@ import com.we.business.sms.enums.SmsType;
 
 public interface SMSService {
 
-	/**向手机发送短信内容*/
+	/**
+	 * 向手机发送短信内容,此方法慎用，因为没有做诸如60秒之后才能再次发送等业务限制
+	 */
 	public Map<String, Object> send(final String tel, final String content) throws Exception;
 
 	/**
