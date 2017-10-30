@@ -4,9 +4,7 @@
  * Copyright (c) 2017, 北京科技有限公司版权所有.
 */
 
-package org.zxc.rocketmq.tx;
-
-import java.util.concurrent.atomic.AtomicInteger;
+package org.zxc.rocketmq.tx.local;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.rocketmq.client.producer.LocalTransactionState;
 import com.alibaba.rocketmq.client.producer.TransactionCheckListener;
 import com.alibaba.rocketmq.common.message.MessageExt;
+import com.uxuexi.core.common.util.Util;
 
 /**
  * MQ事务状态监听器
@@ -23,27 +22,24 @@ import com.alibaba.rocketmq.common.message.MessageExt;
  * @author   朱晓川
  * @Date	 2017年10月19日 	 
  */
-public class TransactionCheckListenerImpl implements TransactionCheckListener {
+public class LocalTxCheckListenerImpl implements TransactionCheckListener {
 
-	private static final Logger logger = LoggerFactory.getLogger(TransactionProducer.class);
-
-	private AtomicInteger transactionIndex = new AtomicInteger(0);
+	private static final Logger logger = LoggerFactory.getLogger(LocalTxMsgProducer.class);
 
 	@Override
 	public LocalTransactionState checkLocalTransactionState(MessageExt msg) {
-		logger.info("server checking TrMsg " + msg.toString());
+		String msgStr = new String(msg.getBody());
+		logger.info("-mq server checking TrMsg: " + new String(msg.getBody()));
+		String[] data = msgStr.split(":");
+		String txId = data[0];
 
-		int value = transactionIndex.getAndIncrement();
-		if ((value % 6) == 0) {
-			throw new RuntimeException("Could not find db");
-		} else if ((value % 5) == 0) {
+		Boolean txStat = TxStatusHolder.getTxStat(txId);
+		logger.info("-txId: " + txId + "-->status:" + txStat);
+		if (Util.isEmpty(txStat) || !txStat) {
 			return LocalTransactionState.ROLLBACK_MESSAGE;
-		} else if ((value % 4) == 0) {
+		} else {
 			return LocalTransactionState.COMMIT_MESSAGE;
 		}
-
-		return LocalTransactionState.UNKNOW;
-
 	}
 
 }

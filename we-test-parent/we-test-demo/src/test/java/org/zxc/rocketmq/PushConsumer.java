@@ -8,6 +8,8 @@ package org.zxc.rocketmq;
 
 import java.util.List;
 
+import org.zxc.rocketmq.tx.common.MqConstants;
+
 import com.alibaba.rocketmq.client.consumer.DefaultMQPushConsumer;
 import com.alibaba.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import com.alibaba.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
@@ -37,7 +39,7 @@ public class PushConsumer {
 			 * *；TagA || TagC || TagD;TagA
 			 */
 			//			consumer.subscribe("PushTopicTest", "*");
-			consumer.subscribe("PushTopicTest", "TagA || TagC || TagD");
+			consumer.subscribe(MqConstants.TX_TOPIC, "*");
 			// 订阅PushTopic下Tag为push的消息,都订阅消息  
 			//			consumer.subscribe("PushTopicTest", "push");
 

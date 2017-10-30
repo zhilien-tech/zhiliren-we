@@ -165,6 +165,13 @@
 	        <artifactId>rocketmq-client</artifactId>  
 	        <version>3.6.2.Final</version>
 	    </dependency> 
+	    
+	    <dependency>
+	        <groupId>org.nutz</groupId>
+	        <artifactId>nutz-plugins-mock</artifactId>
+	        <version>1.r.60</version>
+	        <scope>test</scope>
+	    </dependency>
         
 	</dependencies>
 	
