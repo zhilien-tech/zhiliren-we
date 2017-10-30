@@ -58,11 +58,11 @@ public class HuyiSMSServiceImpl implements SMSService {
 	/**
 	 * 互亿无线账号名
 	 */
-	private static final String AC = "cf_paifan";
+	private static final String AC = "";
 	/**
 	 * 互亿无线密码
 	 */
-	private static final String PW = "luowei0407";
+	private static final String PW = "";
 
 	/**接口请求地址*/
 	private static String URL = "http://106.ihuyi.cn/webservice/sms.php?method=Submit";

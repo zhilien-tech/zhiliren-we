@@ -159,7 +159,12 @@
 	       <classifier>jar-with-dependencies</classifier>
 		 </dependency>
 		 
-		
+		<!-- rocketmq消息队列 -->  
+	    <dependency>  
+	        <groupId>com.alibaba.rocketmq</groupId>  
+	        <artifactId>rocketmq-client</artifactId>  
+	        <version>3.6.2.Final</version>
+	    </dependency> 
         
 	</dependencies>
 	
