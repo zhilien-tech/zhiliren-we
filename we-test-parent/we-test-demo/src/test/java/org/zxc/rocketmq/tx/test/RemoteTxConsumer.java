@@ -4,7 +4,7 @@
  * Copyright (c) 2017, 北京科技有限公司版权所有.
 */
 
-package org.zxc.rocketmq.tx.remote;
+package org.zxc.rocketmq.tx.test;
 
 import java.util.List;
 
@@ -14,6 +14,7 @@ import org.nutz.ioc.loader.combo.ComboIocLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zxc.rocketmq.tx.common.MqConstants;
+import org.zxc.rocketmq.tx.remote.RemoteWealthService;
 
 import com.alibaba.rocketmq.client.consumer.DefaultMQPushConsumer;
 import com.alibaba.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
@@ -24,7 +25,7 @@ import com.alibaba.rocketmq.common.message.Message;
 import com.alibaba.rocketmq.common.message.MessageExt;
 
 /**
- * 2 "拉"方式消费消息
+ * 远程事务消费者
  * @author   朱晓川
  * @Date	 2017年10月20日 	 
  */
