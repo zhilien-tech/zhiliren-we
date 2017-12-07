@@ -42,10 +42,10 @@ public class HuaxinSMSServiceImpl implements SMSService {
 	/**
 	 * 账号
 	 */
-	private static final String ACCOUNT = "AC00601";
+	private static final String ACCOUNT = "AC00719";
 
 	/**接口秘钥*/
-	private static final String API_KEY = "AC0060166";
+	private static final String API_KEY = "AC0071955";
 
 	/**接口请求地址*/
 	private static String URL = "https://dx.ipyy.net/smsJson.aspx?action=send";

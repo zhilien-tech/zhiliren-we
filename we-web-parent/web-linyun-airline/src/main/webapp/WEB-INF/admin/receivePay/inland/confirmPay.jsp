@@ -186,7 +186,7 @@
 	<script src="${base}/public/dist/js/app.min.js"></script>
 	<script src="${base}/common/js/layer/layer.js"></script>
 	<!-- uploadify -->
-	<script type="text/javascript" src="${base }/public/plugins/uploadify/jquery.uploadify.min.js"></script>
+	<script type="text/javascript" src="${base}/public/plugins/uploadify/jquery.uploadify.min.js"></script>
 	
 	<!-- 確認付款js -->
 	<script src="${base}/admin/receivePayment/inland/confirmPay.js"></script>

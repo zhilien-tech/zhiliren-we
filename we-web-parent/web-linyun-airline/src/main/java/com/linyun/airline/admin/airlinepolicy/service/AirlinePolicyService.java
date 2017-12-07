@@ -452,6 +452,7 @@ public class AirlinePolicyService extends BaseService<TAirlinePolicyEntity> {
 
 			}*/
 		}
+
 		String userAgent = request.getHeader("User-Agent");
 		//针对IE或者以IE为内核的浏览器：
 		if (userAgent.contains("MSIE") || userAgent.contains("Trident")) {
