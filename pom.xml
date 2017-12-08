@@ -59,7 +59,7 @@
 		<!-- CORE END-->
 		
 		<!-- 私服仓库地址  -->
-		<nexusRepositories>http://123.57.46.249:8081/nexus/content/repositories</nexusRepositories>
+		<nexusRepositories>http://114.215.195.220:8081/nexus/content/repositories</nexusRepositories>
 	</properties>
 	<!-- 插件管理 -->
 	<build>
