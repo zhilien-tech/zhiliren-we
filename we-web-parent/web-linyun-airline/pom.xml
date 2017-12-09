@@ -59,12 +59,12 @@
 			<version>[7.0.0, 7.0.99]</version>
 		</dependency>
 		
-		<dependency>
+		<!-- <dependency>
             <groupId>com.we</groupId>
             <artifactId>we-code-generator</artifactId>
             <version>1.0.0</version>
             <scope>test</scope>
-        </dependency>
+        </dependency> -->
         
         <!-- http -->
         <dependency>
